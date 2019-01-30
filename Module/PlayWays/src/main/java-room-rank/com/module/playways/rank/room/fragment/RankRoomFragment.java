@@ -39,6 +39,7 @@ import com.facebook.imagepipeline.image.ImageInfo;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
+import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.comment.CommentView;
 import com.module.playways.rank.room.gift.GiftBigAnimationViewGroup;
@@ -165,12 +166,13 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             } else if (SHOW_RIVAL_LYRIC == msg.what) {
 
             } else if (MSG_LYRIC_END_EVENT == msg.what) {
-                MyLog.d(TAG, "handleMessage MSG_LYRIC_END_EVENT " + " msg.arg1=" + msg.arg1);
                 int uid = msg.arg2;
-                if (RoomDataUtils.getUidOfRoundInfo(mRoomData.getRealRoundInfo()) == uid) {
+                if (RoomDataUtils.getUidOfRoundInfo(mRoomData.getRealRoundInfo()) == ((RoundInfoModel)msg.obj).getUserID()) {
                     if (msg.arg2 == 1 && msg.arg1 == 0) {
+                        MyLog.d(TAG, "handleMessage MSG_LYRIC_END_EVENT " + " start");
                         EventBus.getDefault().post(new LrcEvent.LineStartEvent(msg.arg1));
                     } else {
+                        MyLog.d(TAG, "handleMessage MSG_LYRIC_END_EVENT " + " end");
                         EventBus.getDefault().post(new LrcEvent.LineEndEvent(msg.arg1));
                     }
                 }
@@ -1261,13 +1263,15 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             Map.Entry<Integer, LyricsLineInfo> entry = it.next();
             Message msg = mUiHanlder.obtainMessage(MSG_LYRIC_END_EVENT);
             msg.arg1 = entry.getKey();
-            msg.arg2 = mRoomData.getRealRoundInfo().getUserID();
+            msg.arg2 = 0;
+            msg.obj = mRoomData.getRealRoundInfo();
 
             if (entry.getKey() == 0) {
                 //暂定   1为开始，0为结束
                 Message message = mUiHanlder.obtainMessage(MSG_LYRIC_END_EVENT);
                 message.arg1 = entry.getKey();
                 message.arg2 = 1;
+                message.obj = mRoomData.getRealRoundInfo();
                 mUiHanlder.sendMessageDelayed(message, entry.getValue().getStartTime() - mPlayingSongModel.getBeginMs());
             }
 
