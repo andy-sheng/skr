@@ -61,6 +61,42 @@ installApkForAllDevices(){
 	done  
 }
 
+#遍历文件夹
+function walk()  
+{  
+  for file in `ls $1`  
+  do  
+    local path=$1"/"$file  
+    if [ -d $path ]  
+     then  
+      echo "DIR $path"  
+      walk $path  
+    else  
+      echo "FILE $path"
+	  #echo "filename: ${path%.*}"
+	  ext=${path##*.}
+	  echo $ext
+	  if [[ $ext = "apk" ]]; then
+	  		movePackage $path
+	  fi
+    fi  
+  done  
+}  
+
+#移动apk
+movePackage(){
+	echo "movePackage $1"
+	path=$1
+	date1=`date +%m_%d_%H_%M`
+	pre=${path%.*}
+	name=${pre##*/}
+	ext=${path##*.}
+	echo name:$name ext:$ext date1:$date1
+	echo mv $path ${name}_${date1}.${ext}
+	mv $path ./publish/${name}_${date1}.${ext}
+}
+
+
 echo "运行示例 ./ins.sh app release all  或 ./ins.sh modulechannel 编译组件module"
 if [ $# -le 0 ] ; then 
 	echo "输入需要编译的模块名" 
@@ -94,9 +130,15 @@ if [[ $1 = "app" ]]; then
 		#./gradlew :app:assembleRelease --profile
 		if [[ $3 = "all" ]];then
 		    echo "编译release所有渠道"
+		    echo rm -rf app/build/outputs/apk
+		    rm -rf app/build/outputs/apk
 		    ./gradlew :app:assembleRelease
 		    installApkForAllDevices app/build/outputs/apk/channel_mishop/release/app-channel_mishop-release.apk
             myandroidlog.sh  com.zq.live
+            #拷贝所有包到主目录
+            rm -rf ./publish
+            mkdir ./publish
+			walk app/build/outputs/apk
 		else
 		    echo "只编译release default渠道"
 		    ./gradlew :app:assemblechannel_defaultRelease --stacktrace

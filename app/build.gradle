@@ -21,14 +21,14 @@ android {
         channel_default {
             flavorDimensions("channel")
             buildConfigField("String", "CHANNEL_NAME", '\"DEFAULT\"')
-            resValue("string", "channel_desc", '这是default demo')
+            resValue("string", "channel_desc", '自升级渠道')
             // 生产环境
             manifestPlaceholders = [RC_KEY: "e5t4ouvpec57a"]
 //            // TODO 默认显示测试环境
 //            manifestPlaceholders = [RC_KEY: "0vnjpoad03v7z"]
         }
 
-        channel_mishop {
+        channel_mi {
             flavorDimensions("channel")
             buildConfigField("String", "CHANNEL_NAME", '\"MI_SHOP\"')
             resValue("string", "channel_desc", '小米应用商店')
@@ -39,6 +39,41 @@ android {
             flavorDimensions("channel")
             buildConfigField("String", "CHANNEL_NAME", '\"YYB_SHOP\"')
             resValue("string", "channel_desc", '应用宝')
+            manifestPlaceholders = [RC_KEY: "e5t4ouvpec57a"]
+        }
+
+        channel_360 {
+            flavorDimensions("channel")
+            buildConfigField("String", "CHANNEL_NAME", '\"360_SHOP\"')
+            resValue("string", "channel_desc", '360应用商店')
+            manifestPlaceholders = [RC_KEY: "e5t4ouvpec57a"]
+        }
+
+        channel_oppo {
+            flavorDimensions("channel")
+            buildConfigField("String", "CHANNEL_NAME", '\"OPPO_SHOP\"')
+            resValue("string", "channel_desc", 'oppo应用商店')
+            manifestPlaceholders = [RC_KEY: "e5t4ouvpec57a"]
+        }
+
+        channel_vivo {
+            flavorDimensions("channel")
+            buildConfigField("String", "CHANNEL_NAME", '\"VIVO_SHOP\"')
+            resValue("string", "channel_desc", 'vivo应用商店')
+            manifestPlaceholders = [RC_KEY: "e5t4ouvpec57a"]
+        }
+
+        channel_huawei {
+            flavorDimensions("channel")
+            buildConfigField("String", "CHANNEL_NAME", '\"HUAWEI_SHOP\"')
+            resValue("string", "channel_desc", '华为应用商店')
+            manifestPlaceholders = [RC_KEY: "e5t4ouvpec57a"]
+        }
+
+        channel_market1 {
+            flavorDimensions("channel")
+            buildConfigField("String", "CHANNEL_NAME", '\"MARKET1\"')
+            resValue("string", "channel_desc", '自定义渠道1')
             manifestPlaceholders = [RC_KEY: "e5t4ouvpec57a"]
         }
 
