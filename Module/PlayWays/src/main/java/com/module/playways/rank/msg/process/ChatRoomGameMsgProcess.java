@@ -176,7 +176,7 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
 
         GameReadyModel jsonGameReadyInfo = new GameReadyModel();
         jsonGameReadyInfo.parse(readyNoticeMsg);
-        MyLog.d(TAG, " processReadyNoticeMsg " + " startTime = " + jsonGameReadyInfo.getJsonGameStartInfo().getStartTimeMs());
+        MyLog.d(TAG, " processReadyNoticeMsg " + " startTime = " + jsonGameReadyInfo.getGameStartInfo().getStartTimeMs());
         EventBus.getDefault().post(new ReadyNoticeEvent(info, jsonGameReadyInfo));
     }
 

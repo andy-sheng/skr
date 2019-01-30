@@ -362,8 +362,8 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
     @Override
     public void allPlayerIsReady(GameReadyModel jsonGameReadyInfo) {
         mPrepareData.setGameReadyInfo(jsonGameReadyInfo);
-        long localStartTs = System.currentTimeMillis() - jsonGameReadyInfo.getJsonGameStartInfo().getStartPassedMs();
-        mPrepareData.setShiftTs((int) (localStartTs - jsonGameReadyInfo.getJsonGameStartInfo().getStartTimeMs()));
+        long localStartTs = System.currentTimeMillis() - jsonGameReadyInfo.getGameStartInfo().getStartPassedMs();
+        mPrepareData.setShiftTs((int) (localStartTs - jsonGameReadyInfo.getGameStartInfo().getStartTimeMs()));
 
         initAvatar(false);
 

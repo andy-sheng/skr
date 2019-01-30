@@ -45,13 +45,13 @@ public class GrabRoomActivity extends BaseActivity {
             mRoomData.setGameId(prepareData.getGameId());
             mRoomData.setGameType(prepareData.getGameType());
             mRoomData.setGameCreateTs(prepareData.getGameCreatMs());
-            mRoomData.setGameStartTs(prepareData.getGameReadyInfo().getJsonGameStartInfo().getStartTimeMs());
+            mRoomData.setGameStartTs(prepareData.getGameReadyInfo().getGameStartInfo().getStartTimeMs());
             mRoomData.setShiftTs(prepareData.getShiftTs());
             if(mRoomData.getGameType() == GameModeType.GAME_MODE_GRAB){
                 mRoomData.setTagId(prepareData.getTagId());
             }
 
-            mRoomData.setRoundInfoModelList(prepareData.getGameReadyInfo().getJsonRoundInfo());
+            mRoomData.setRoundInfoModelList(prepareData.getGameReadyInfo().getRoundInfo());
             for (int i = 0; i < prepareData.getSongModelList().size(); i++) {
                 SongModel songModel = prepareData.getSongModelList().get(i);
                 RoundInfoModel roundInfoModel = mRoomData.getRoundInfoModelList().get(i);

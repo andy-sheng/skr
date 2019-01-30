@@ -12,102 +12,114 @@ import java.util.List;
 
 public class GameReadyModel implements Serializable {
     /**
-     * jsonReadyInfo : [{"userID":7,"readySeq":1,"readyTimeMs":1544584287997},{"userID":8,"readySeq":2,"readyTimeMs":1544584290741},{"userID":9,"readySeq":3,"readyTimeMs":1544586876228}]
-     * HasReadyedUserCnt : 3
+     * readyInfo : [{"userID":2054313,"readySeq":1,"readyTimeMs":1548861310386},{"userID":200003,"readySeq":2,"readyTimeMs":1548861311058},{"userID":200276,"readySeq":3,"readyTimeMs":1548861312095}]
+     * hasReadyedUserCnt : 3
      * isGameStart : true
-     * jsonRoundInfo : [{"userID":7,"playbookID":1,"roundSeq":1,"singBeginMs":3000,"singEndMs":341000},{"userID":8,"playbookID":1,"roundSeq":2,"singBeginMs":344000,"singEndMs":682000},{"userID":9,"playbookID":1,"roundSeq":3,"singBeginMs":685000,"singEndMs":1023000}]
-     * jsonGameStartInfo : {"startTimeMs":1544586876239,"startPassedMs":3119}
+     * gameStartInfo : {"startTimeMs":1548861312105,"startPassedMs":7210}
+     * roundInfo : [{"userID":2054313,"playbookID":1456,"roundSeq":1,"singBeginMs":6000,"singEndMs":7079},{"userID":200003,"playbookID":909,"roundSeq":2,"singBeginMs":11079,"singEndMs":42079},{"userID":200276,"playbookID":970,"roundSeq":3,"singBeginMs":75000,"singEndMs":102000}]
+     * qRoundInfo : null
      */
 
-    private int HasReadyedUserCnt;
+    private int hasReadyedUserCnt;
     private boolean isGameStart;
-    private GameStartInfoModel jsonGameStartInfo;
-    private List<ReadyInfoModel> jsonReadyInfo;
-    private List<RoundInfoModel> jsonRoundInfo;
+    private GameStartInfoModel gameStartInfo;
+    private List<RoundInfoModel> qRoundInfo;    //一唱到底roundInfo todo确定是不是要舍弃服务器的数据？
+    private List<ReadyInfoModel> readyInfo;     //准备信息
+    private List<RoundInfoModel> roundInfo;     //pk的轮次信息
 
     public int getHasReadyedUserCnt() {
-        return HasReadyedUserCnt;
+        return hasReadyedUserCnt;
     }
 
-    public void setHasReadyedUserCnt(int HasReadyedUserCnt) {
-        this.HasReadyedUserCnt = HasReadyedUserCnt;
+    public void setHasReadyedUserCnt(int hasReadyedUserCnt) {
+        this.hasReadyedUserCnt = hasReadyedUserCnt;
     }
 
-    public boolean isIsGameStart() {
+    public boolean isGameStart() {
         return isGameStart;
     }
 
-    public void setIsGameStart(boolean isGameStart) {
-        this.isGameStart = isGameStart;
+    public void setGameStart(boolean gameStart) {
+        isGameStart = gameStart;
     }
 
-    public GameStartInfoModel getJsonGameStartInfo() {
-        return jsonGameStartInfo;
+    public GameStartInfoModel getGameStartInfo() {
+        return gameStartInfo;
     }
 
-    public void setJsonGameStartInfo(GameStartInfoModel jsonGameStartInfo) {
-        this.jsonGameStartInfo = jsonGameStartInfo;
+    public void setGameStartInfo(GameStartInfoModel gameStartInfo) {
+        this.gameStartInfo = gameStartInfo;
     }
 
-    public List<ReadyInfoModel> getJsonReadyInfo() {
-        return jsonReadyInfo;
+    public List<RoundInfoModel> getqRoundInfo() {
+        return qRoundInfo;
     }
 
-    public void setJsonReadyInfo(List<ReadyInfoModel> jsonReadyInfo) {
-        this.jsonReadyInfo = jsonReadyInfo;
+    public void setqRoundInfo(List<RoundInfoModel> qRoundInfo) {
+        this.qRoundInfo = qRoundInfo;
     }
 
-    public List<RoundInfoModel> getJsonRoundInfo() {
-        return jsonRoundInfo;
+    public List<ReadyInfoModel> getReadyInfo() {
+        return readyInfo;
     }
 
-    public void setJsonRoundInfo(List<RoundInfoModel> jsonRoundInfo) {
-        this.jsonRoundInfo = jsonRoundInfo;
+    public void setReadyInfo(List<ReadyInfoModel> readyInfo) {
+        this.readyInfo = readyInfo;
+    }
+
+    public List<RoundInfoModel> getRoundInfo() {
+        return roundInfo;
+    }
+
+    public void setRoundInfo(List<RoundInfoModel> roundInfo) {
+        this.roundInfo = roundInfo;
     }
 
     public void parse(ReadyNoticeMsg msg) {
         if (msg == null) {
-            MyLog.e("JsonGameReadyInfo ReadyNoticeMsg == null");
+            MyLog.e("GameReadyModel ReadyNoticeMsg == null");
             return;
         }
 
         this.setHasReadyedUserCnt(msg.getHasReadyedUserCnt());
-        this.setIsGameStart(msg.getIsGameStart());
+        this.setGameStart(msg.getIsGameStart());
 
-        GameStartInfoModel jsonGameStartInfo = new GameStartInfoModel();
-        jsonGameStartInfo.parse(msg.getGameStartInfo());
-        this.setJsonGameStartInfo(jsonGameStartInfo);
+        GameStartInfoModel gameStartInfoModel = new GameStartInfoModel();
+        gameStartInfoModel.parse(msg.getGameStartInfo());
+        this.setGameStartInfo(gameStartInfoModel);
 
-        List<ReadyInfoModel> jsonReadyInfos = new ArrayList<>();
+        List<ReadyInfoModel> readyInfoModels = new ArrayList<>();
         for (ReadyInfo info : msg.getReadyInfoList()) {
-            ReadyInfoModel jsonReadyInfo = new ReadyInfoModel();
-            jsonReadyInfo.parse(info);
-            jsonReadyInfos.add(jsonReadyInfo);
+            ReadyInfoModel readyInfoModel = new ReadyInfoModel();
+            readyInfoModel.parse(info);
+            readyInfoModels.add(readyInfoModel);
         }
-        this.setJsonReadyInfo(jsonReadyInfos);
+        this.setReadyInfo(readyInfoModels);
 
         List<RoundInfoModel> jsonRoundInfos = new ArrayList<>();
         for (RoundInfo roundInfo : msg.getRoundInfoList()) {
             RoundInfoModel jsonRoundInfo = RoundInfoModel.parseFromRoundInfo(roundInfo);
             jsonRoundInfos.add(jsonRoundInfo);
         }
+
         for (QRoundInfo roundInfo : msg.getQRoundInfoList()) {
             RoundInfoModel jsonRoundInfo = RoundInfoModel.parseFromRoundInfo(roundInfo);
             jsonRoundInfos.add(jsonRoundInfo);
         }
-        this.setJsonRoundInfo(jsonRoundInfos);
+        this.setRoundInfo(jsonRoundInfos);
 
         return;
     }
 
     @Override
     public String toString() {
-        return "JsonGameReadyInfo{" +
-                "HasReadyedUserCnt=" + HasReadyedUserCnt +
+        return "GameReadyModel{" +
+                "hasReadyedUserCnt=" + hasReadyedUserCnt +
                 ", isGameStart=" + isGameStart +
-                ", jsonGameStartInfo=" + jsonGameStartInfo +
-                ", jsonReadyInfo=" + jsonReadyInfo +
-                ", jsonRoundInfo=" + jsonRoundInfo +
+                ", gameStartInfo=" + gameStartInfo +
+                ", qRoundInfo=" + qRoundInfo +
+                ", readyInfo=" + readyInfo +
+                ", roundInfo=" + roundInfo +
                 '}';
     }
 }

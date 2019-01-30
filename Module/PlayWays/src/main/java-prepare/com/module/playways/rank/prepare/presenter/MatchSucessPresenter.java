@@ -96,7 +96,7 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
                             MyLog.w(TAG, "checkPlayerReadyState 成功，traceid是：" + result.getTraceId());
                             // todo 带回所有已准备人的信息
                             GameReadyModel jsonGameReadyInfo = JSON.parseObject(result.getData().toString(), GameReadyModel.class);
-                            if (jsonGameReadyInfo.isIsGameStart()) {
+                            if (jsonGameReadyInfo.isGameStart()) {
                                 iMatchSucessView.allPlayerIsReady(jsonGameReadyInfo);
                             } else {
                                 iMatchSucessView.needReMatch(false);
@@ -173,7 +173,7 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ReadyNoticeEvent readyNoticeEvent) {
         MyLog.w(TAG, "onEventMainThread readyNoticeEvent " + readyNoticeEvent + " timeMs = " + readyNoticeEvent.info.getTimeMs());
-        if (readyNoticeEvent.gameReadyInfo.isIsGameStart()) {
+        if (readyNoticeEvent.gameReadyInfo.isGameStart()) {
             if (checkTask != null) {
                 checkTask.dispose();
             }
@@ -182,7 +182,7 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
         }
 
         // 已准备人
-        iMatchSucessView.readyList(readyNoticeEvent.gameReadyInfo.getJsonReadyInfo());
+        iMatchSucessView.readyList(readyNoticeEvent.gameReadyInfo.getReadyInfo());
     }
 
     // TODO: 2018/12/18 有人退出游戏了

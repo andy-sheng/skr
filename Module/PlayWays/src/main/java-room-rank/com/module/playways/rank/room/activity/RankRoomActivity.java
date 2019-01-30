@@ -37,10 +37,10 @@ public class RankRoomActivity extends BaseActivity {
             mRoomData.setGameId(prepareData.getGameId());
             mRoomData.setSysAvatar(prepareData.getSysAvatar());
             mRoomData.setGameCreateTs(prepareData.getGameCreatMs());
-            mRoomData.setGameStartTs(prepareData.getGameReadyInfo().getJsonGameStartInfo().getStartTimeMs());
+            mRoomData.setGameStartTs(prepareData.getGameReadyInfo().getGameStartInfo().getStartTimeMs());
             mRoomData.setShiftTs(prepareData.getShiftTs());
 
-            mRoomData.setRoundInfoModelList(prepareData.getGameReadyInfo().getJsonRoundInfo());
+            mRoomData.setRoundInfoModelList(prepareData.getGameReadyInfo().getRoundInfo());
             mRoomData.setExpectRoundInfo(RoomDataUtils.findFirstRoundInfo(mRoomData.getRoundInfoModelList()));
             MyLog.d(TAG, "" + prepareData.getPlayerInfoList());
             mRoomData.setPlayerInfoList(prepareData.getPlayerInfoList());
