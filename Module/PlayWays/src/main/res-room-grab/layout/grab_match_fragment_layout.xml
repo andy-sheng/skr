@@ -5,17 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.common.view.ex.ExImageView
-        android:id="@+id/iv_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="@dimen/view_20_dp"
-        android:layout_marginTop="@dimen/view_30_dp"
-        android:padding="@dimen/view_16_dp"
-        android:src="@drawable/img_back" />
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -26,17 +15,16 @@
         android:background="@drawable/img_kaishipipei_bg">
 
 
-
         <FrameLayout
-
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <com.opensource.svgaplayer.SVGAImageView
-                android:layout_gravity="center"
-                android:layout_centerInParent="true"
                 android:id="@+id/svga_match_bg"
                 android:layout_width="match_parent"
                 android:layout_height="1000dp"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
                 app:antiAlias="true"
                 app:autoPlay="false"
                 app:loopCount="-1" />
@@ -47,31 +35,31 @@
             <!--android:layout_height="match_parent" />-->
 
             <com.common.view.ex.ExRelativeLayout
-                android:layout_gravity="center"
                 android:id="@+id/rl_icon1_root"
                 android:layout_width="@dimen/view_90_dp"
                 android:layout_height="@dimen/view_96_dp"
                 android:layout_centerInParent="true"
+                android:layout_gravity="center"
                 app:bl_corners_radius="@dimen/view_45_dp"
                 app:bl_stroke_width="@dimen/view_3_dp">
 
                 <com.facebook.drawee.view.SimpleDraweeView
-                    android:tag="icon_1"
-                    android:layout_marginTop="@dimen/view_3_dp"
-                    android:layout_centerHorizontal="true"
                     android:id="@+id/sdv_own_icon"
                     android:layout_width="@dimen/view_84_dp"
-                    android:layout_height="@dimen/view_84_dp" />
+                    android:layout_height="@dimen/view_84_dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/view_3_dp"
+                    android:tag="icon_1" />
             </com.common.view.ex.ExRelativeLayout>
         </FrameLayout>
 
         <RelativeLayout
-            android:visibility="gone"
             android:id="@+id/rl_icon_container"
             android:layout_width="@dimen/view_262_dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/view_142_dp">
+            android:layout_marginTop="@dimen/view_142_dp"
+            android:visibility="gone">
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/sdv_icon3"
@@ -111,18 +99,18 @@
         </RelativeLayout>
 
         <com.common.view.ex.ExTextView
-            android:layout_alignParentBottom="true"
-            android:visibility="visible"
             android:id="@+id/tv_tip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/view_40_dp"
             android:gravity="center"
             android:text=""
             android:textColor="#0C2275"
             android:textSize="@dimen/textsize_16_dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="visible" />
 
         <!--<com.common.view.ex.ExTextView-->
         <!--android:layout_marginRight="@dimen/view_77_dp"-->
@@ -159,15 +147,25 @@
         android:background="@drawable/zhengzaipipei_head" />
 
     <com.common.view.ex.ExTextView
-        android:textStyle="bold"
-        android:layout_marginBottom="@dimen/view_32_dp"
-        android:layout_alignBottom="@id/iv_top"
         android:id="@+id/tv_matched_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/iv_top"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_28_dp"
+        android:layout_marginBottom="@dimen/view_32_dp"
         android:text="已经匹配20s"
         android:textColor="@color/white"
-        />
+        android:textStyle="bold" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/iv_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/view_20_dp"
+        android:layout_marginTop="@dimen/view_30_dp"
+        android:padding="@dimen/view_16_dp"
+        android:src="@drawable/img_back" />
 </RelativeLayout>
