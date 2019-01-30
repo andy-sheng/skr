@@ -77,9 +77,9 @@
         android:id="@+id/medal_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_288_dp"
+        android:layout_below="@+id/flowlayout"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="@dimen/view_14_dp"
-        android:layout_marginTop="@dimen/view_258_dp"
         android:layout_marginRight="@dimen/view_14_dp"
         android:background="@drawable/gerenzhongxin_zhanji_bg">
 
