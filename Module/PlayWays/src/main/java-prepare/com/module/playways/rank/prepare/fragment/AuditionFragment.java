@@ -238,7 +238,9 @@ public class AuditionFragment extends BaseFragment {
                             .build());
 
                     mUiHanlder.postDelayed(() -> {
-                        getActivity().finish();
+                        if (getActivity() != null) {
+                            getActivity().finish();
+                        }
                     }, 2000);
 //                    U.getFragmentUtils().popFragment(AuditionFragment.this);
                 });
@@ -315,7 +317,7 @@ public class AuditionFragment extends BaseFragment {
                     .setArtist(mSongModel.getOwner())
                     .setMResultListener(new ArcRecognizeListener() {
                         @Override
-                        public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo,int lineNo) {
+                        public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
                             int score = 0;
                             if (targetSongInfo != null) {
                                 score = (int) (targetSongInfo.getScore() * 100);
