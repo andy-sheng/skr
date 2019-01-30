@@ -152,7 +152,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                     break;
                 default:
                     int lineNo = (msg.what - MSG_SHOW_SCORE_EVENT) / 100;
-                    if (lineNo >= mLastLineNum) {
+                    if (lineNo > mLastLineNum) {
                         int score = EngineManager.getInstance().getLineScore();
                         processScore(score, lineNo);
                     }
@@ -219,7 +219,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                         @Override
                         public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
                             mUiHandler.removeMessages(MSG_SHOW_SCORE_EVENT + lineNo * 100);
-                            if (lineNo >= mLastLineNum) {
+                            if (lineNo > mLastLineNum) {
                                 // 使用最新的打分方案做优化
                                 int score = EngineManager.getInstance().getLineScore();
                                 if (targetSongInfo != null) {
@@ -1219,7 +1219,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     }
 
     void processScore(int score, int line) {
-        if (line < mLastLineNum) {
+        if (line <= mLastLineNum) {
             return;
         }
         mLastLineNum = line;
