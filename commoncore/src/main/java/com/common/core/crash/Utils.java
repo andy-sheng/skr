@@ -20,7 +20,7 @@
 **
 **/
 
-package com.common.core.crash_collect;
+package com.common.core.crash;
 
 import java.util.ArrayList;
 import java.util.HashSet;

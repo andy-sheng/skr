@@ -25,7 +25,7 @@ import com.common.base.ConfigModule;
 import com.common.base.GlobalParams;
 import com.common.base.delegate.AppLifecycles;
 import com.common.core.account.UserAccountManager;
-import com.common.core.crash_collect.MyCrashHandler;
+import com.common.core.crash.MyCrashHandler;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.interceptor.CoreInfoInterceptor;
 import com.module.ModuleServiceManager;

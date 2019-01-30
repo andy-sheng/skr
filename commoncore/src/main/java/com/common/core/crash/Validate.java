@@ -20,7 +20,7 @@
 **
 **/
 
-package com.common.core.crash_collect;
+package com.common.core.crash;
 
 /**
  * Created by Andy Zhang(zhangyong232@gmail.com)ClassUtils on 2015/3/26.
