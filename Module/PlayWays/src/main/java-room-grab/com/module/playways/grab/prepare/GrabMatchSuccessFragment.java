@@ -444,6 +444,7 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
                     .setHasAnimation(true)
                     .build());
         } else {
+            U.getToastUtil().showShort("您未准备，已经被踢出房间啦");
             U.getSoundUtils().release(TAG);
             getActivity().finish();
             ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
