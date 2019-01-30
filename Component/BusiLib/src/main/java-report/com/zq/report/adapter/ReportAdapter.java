@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 
 import com.common.view.recyclerview.DiffAdapter;
 import com.component.busilib.R;
@@ -51,11 +52,14 @@ public class ReportAdapter extends DiffAdapter<ReportModel, RecyclerView.ViewHol
     private class ReportItemHolder extends RecyclerView.ViewHolder {
 
         CheckBox mCheckBox;
+        TextView mCheckText;
         ReportModel mReportModel;
 
         public ReportItemHolder(View itemView) {
             super(itemView);
             mCheckBox = itemView.findViewById(R.id.checkbox);
+            mCheckText = itemView.findViewById(R.id.check_text);
+
 
             mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -77,7 +81,7 @@ public class ReportAdapter extends DiffAdapter<ReportModel, RecyclerView.ViewHol
 
         public void bind(ReportModel model) {
             this.mReportModel = model;
-            mCheckBox.setText(model.getText());
+            mCheckText.setText(model.getText());
         }
 
         public void setCheckBox(boolean isCheck) {

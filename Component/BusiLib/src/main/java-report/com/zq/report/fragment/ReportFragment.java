@@ -24,6 +24,7 @@ import com.component.busilib.R;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.zq.report.adapter.ReportAdapter;
 import com.zq.report.model.ReportModel;
+import com.zq.toast.CommonToastView;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -148,6 +149,16 @@ public class ReportFragment extends BaseFragment {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
+                    U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(getContext())
+                            .setImage(R.drawable.touxiangshezhichenggong_icon)
+                            .setText("举报成功")
+                            .build());
+                    U.getFragmentUtils().popFragment(ReportFragment.this);
+                } else {
+                    U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(getContext())
+                            .setImage(R.drawable.touxiangshezhishibai_icon)
+                            .setText("举报失败")
+                            .build());
                     U.getFragmentUtils().popFragment(ReportFragment.this);
                 }
             }

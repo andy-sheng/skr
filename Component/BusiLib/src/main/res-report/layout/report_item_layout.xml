@@ -5,12 +5,21 @@
 
     <CheckBox
         android:id="@+id/checkbox"
-        style="@style/LeftCustomCheckTheme"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/view_28_dp"
-        android:drawablePadding="@dimen/view_11_dp"
+        android:button="@drawable/checkbox_default"
+        android:drawablePadding="@dimen/view_11_dp" />
+
+    <TextView
+        android:id="@+id/check_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/view_11_dp"
+        android:layout_toRightOf="@+id/checkbox"
         android:textColor="#0C2275"
         android:textSize="@dimen/textsize_16_dp" />
 
