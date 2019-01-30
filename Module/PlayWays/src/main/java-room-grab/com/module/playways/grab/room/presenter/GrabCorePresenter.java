@@ -4,6 +4,8 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.changba.songstudio.audioeffect.AudioEffectStyleEnum;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
@@ -230,7 +232,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                         .setMode(RecognizeConfig.MODE_AUTO)
                         .setMResultListener(new ArcRecognizeListener() {
                             @Override
-                            public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo,int lineNo) {
+                            public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
                                 int score = 0;
                                 if (targetSongInfo != null) {
                                     score = (int) (targetSongInfo.getScore() * 100);
@@ -296,7 +298,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 if (result.getErrno() == 0) {
                     //抢成功了
                     RoundInfoModel now = mRoomData.getRealRoundInfo();
-                    if(now != null && now.getRoundSeq() == seq){
+                    if (now != null && now.getRoundSeq() == seq) {
                         now.addGrabUid(RoomDataUtils.isCurrentRound(now.getRoundSeq(), mRoomData), (int) MyUserInfoManager.getInstance().getUid());
                     }
                 } else {
@@ -651,7 +653,32 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     long syncStatusTimes = result.getData().getLong("syncStatusTimeMs");  //状态同步时的毫秒时间戳
                     long gameOverTimeMs = result.getData().getLong("gameOverTimeMs");  //游戏结束时间
                     List<OnlineInfoModel> onlineInfos = JSON.parseArray(result.getData().getString("onlineInfo"), OnlineInfoModel.class); //在线状态
-                    RoundInfoModel currentInfo = JSON.parseObject(result.getData().getString("currentRound"), RoundInfoModel.class); //当前轮次信息
+                    JSONObject roundObject = result.getData().getJSONObject("currentRound");
+                    RoundInfoModel currentInfo = JSON.parseObject(roundObject.toString(), RoundInfoModel.class); //当前轮次信息
+                    {
+                        JSONArray jsonArray = roundObject.getJSONArray("wantSingInfos");
+                        if (jsonArray != null) {
+                            for (int i = 0; i < jsonArray.size(); i++) {
+                                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                if (jsonObject != null) {
+                                    int useId = jsonObject.getInteger("userID");
+                                    currentInfo.addGrabUid(false, useId);
+                                }
+                            }
+                        }
+                    }
+                    {
+                        JSONArray jsonArray = roundObject.getJSONArray("noPassSingInfos");
+                        if (jsonArray != null) {
+                            for (int i = 0; i < jsonArray.size(); i++) {
+                                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                if (jsonObject != null) {
+                                    int useId = jsonObject.getInteger("userID");
+                                    currentInfo.addLightOffUid(false, useId);
+                                }
+                            }
+                        }
+                    }
                     String msg = "";
                     if (currentInfo != null) {
                         msg = "syncGameStatus成功了, currentRound 是 " + currentInfo;
@@ -887,7 +914,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 .setSex(ESex.fromValue(0))
                 .build());
         PlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, event.getUserID());
-        if(playerInfoModel != null){
+        if (playerInfoModel != null) {
             String text = playerInfoModel.getUserInfo().getNickname() + "偷偷溜走啦～";
             MyLog.d(TAG, "onEvent" + " event.getInfo().getSender:" + event.getInfo().getSender());
             CommentMsgEvent msgEvent = new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text);
