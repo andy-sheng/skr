@@ -107,6 +107,12 @@ public class DisplayUtils {
                 return 2118;
             }
         }
+        if (!U.getDeviceUtils().hasNavigationBar()
+                && U.getDeviceUtils().getProductModel().equals("Redmi Note 7")) {
+            if (h == 2120) {
+                return 2340;
+            }
+        }
         return h;
     }
 
