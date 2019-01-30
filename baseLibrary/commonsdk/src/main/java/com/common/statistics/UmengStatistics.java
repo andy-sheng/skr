@@ -17,11 +17,6 @@ import java.util.Map;
 public class UmengStatistics {
     public static final String TAG = "UmengStatistics";
 
-
-    private static void init() {
-        UmengInit.init();
-    }
-
     /**
      * 记录某个页面被打开，并在sdk内部会创建一个session
      *
@@ -30,7 +25,6 @@ public class UmengStatistics {
      */
     static void recordSessionStart(Context context, String key) {
         MyLog.d(TAG, "recordPageStart" + " key=" + key);
-        init();
         MobclickAgent.onResume(context);
     }
 
@@ -43,7 +37,6 @@ public class UmengStatistics {
      */
     static void recordSessionEnd(Context context, String key) {
         MyLog.d(TAG, "recordPageEnd" + " key=" + key);
-        init();
         MobclickAgent.onPause(context);
     }
 
@@ -53,7 +46,6 @@ public class UmengStatistics {
      * @param pageName
      */
     static void recordPageStart(String pageName) {
-        init();
         MobclickAgent.onPageStart(pageName);
     }
 
@@ -63,7 +55,6 @@ public class UmengStatistics {
      * @param pageName
      */
     static void recordPageEnd(String pageName) {
-        init();
         MobclickAgent.onPageEnd(pageName);
     }
 
@@ -75,12 +66,10 @@ public class UmengStatistics {
      * @param userId
      */
     public static void onProfileSignIn(String from, String userId) {
-        init();
         MobclickAgent.onProfileSignIn(from, userId);
     }
 
     public static void onProfileSignOff() {
-        init();
         MobclickAgent.onProfileSignOff();
     }
 
@@ -95,7 +84,6 @@ public class UmengStatistics {
             MyLog.w(TAG, "eventid is empty");
             return;
         }
-        init();
         MobclickAgent.onEvent(U.app().getApplicationContext(), eventId, param);
     }
 
@@ -111,7 +99,6 @@ public class UmengStatistics {
             MyLog.w(TAG, "eventid is empty");
             return;
         }
-        init();
         MobclickAgent.onEventValue(U.app().getApplicationContext(), eventId, param, cal);
     }
 }

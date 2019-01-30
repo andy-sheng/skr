@@ -25,6 +25,7 @@ import android.util.Log;
 import com.common.base.delegate.AppDelegate;
 import com.common.base.delegate.AppLifecycles;
 import com.common.base.delegate.PluginAppDelegate;
+import com.common.umeng.UmengInit;
 import com.common.utils.U;
 
 import java.util.List;
@@ -122,6 +123,8 @@ public class BaseApplication extends Application {
                 this.mAppDelegate.onOtherProcessCreate(this);
             }
         }
+
+        UmengInit.init();
     }
 
 //    private ClientAppInfo getClientAppInfo() {
