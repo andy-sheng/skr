@@ -362,8 +362,8 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
 
     @Override
     public void showFirstThreeRankInfo(List<RankInfoModel> rankInfoModelList) {
-        for(int i = 0; i < 3; i++){
-            if(rankInfoModelList.size() > i){
+        for (int i = 0; i < 3; i++) {
+            if (rankInfoModelList.size() > i) {
                 setTopThreeInfo(rankInfoModelList.get(i));
                 continue;
             }
@@ -372,15 +372,17 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         }
     }
 
-    public void setEmptyTopInfo(int seq){
-        switch (seq){
+    public void setEmptyTopInfo(int seq) {
+        switch (seq) {
             case 1:
                 mTvRightChanpainName.setText("虚位以待");
                 mSdvRightChampainIcon.setBackground(U.getDrawable(R.drawable.zanwu_dierming));
+                mRightChanpainLevelView.setVisibility(View.GONE);
                 break;
             case 2:
                 mTvLeftChanpainName.setText("虚位以待");
                 mSdvLeftChampainIcon.setBackground(U.getDrawable(R.drawable.zanwu_disanming));
+                mLeftChanpainLevelView.setVisibility(View.GONE);
                 break;
         }
     }
@@ -430,6 +432,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                 }
             });
             mTvRightChanpainName.setText(rankInfoModel.getNickname());
+            mRightChanpainLevelView.setVisibility(View.VISIBLE);
             mRightChanpainLevelView.bindData(rankInfoModel.getMainRanking(), rankInfoModel.getSubRanking(), rankInfoModel.getMaxStar(), rankInfoModel.getStarCnt());
         } else if (rankInfoModel.getRankSeq() == 3) {
             AvatarUtils.loadAvatarByUrl(mSdvLeftChampainIcon,
@@ -450,6 +453,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                 }
             });
             mTvLeftChanpainName.setText(rankInfoModel.getNickname());
+            mLeftChanpainLevelView.setVisibility(View.VISIBLE);
             mLeftChanpainLevelView.bindData(rankInfoModel.getMainRanking(), rankInfoModel.getSubRanking(), rankInfoModel.getMaxStar(), rankInfoModel.getStarCnt());
         }
     }
