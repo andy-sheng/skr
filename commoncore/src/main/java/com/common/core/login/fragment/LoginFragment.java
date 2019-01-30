@@ -99,6 +99,10 @@ public class LoginFragment extends BaseFragment {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
+                        if(!UMShareAPI.get(getContext()).isInstall(getActivity(), SHARE_MEDIA.WEIXIN)){
+                            U.getToastUtil().showShort("你没有安装微信");
+                            return;
+                        }
                         showLoginingBar(true);
                         UMShareAPI.get(getContext()).doOauthVerify(getActivity(), SHARE_MEDIA.WEIXIN, authListener);
                     }
@@ -114,6 +118,10 @@ public class LoginFragment extends BaseFragment {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
+                        if(!UMShareAPI.get(getContext()).isInstall(getActivity(), SHARE_MEDIA.QQ)){
+                            U.getToastUtil().showShort("你没有安装QQ");
+                            return;
+                        }
                         showLoginingBar(true);
                         UMShareAPI.get(getContext()).doOauthVerify(getActivity(), SHARE_MEDIA.QQ, authListener);
                     }
