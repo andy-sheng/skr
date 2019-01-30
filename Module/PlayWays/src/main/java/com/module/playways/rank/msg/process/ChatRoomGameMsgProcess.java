@@ -354,7 +354,7 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
     private void processMachineScore(BasePushInfo basePushInfo, MachineScore machineScore) {
         // TODO: 2019/1/4  完善再补充
         if (machineScore != null) {
-            MachineScoreEvent machineScoreEvent = new MachineScoreEvent(basePushInfo, machineScore.userID, machineScore.no, machineScore.score);
+            MachineScoreEvent machineScoreEvent = new MachineScoreEvent(basePushInfo, machineScore.getUserID(), machineScore.getNo(), machineScore.getScore());
             EventBus.getDefault().post(machineScoreEvent);
         }
     }
