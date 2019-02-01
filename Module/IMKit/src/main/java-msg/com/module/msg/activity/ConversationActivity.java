@@ -53,8 +53,10 @@ public class ConversationActivity extends BaseActivity {
     public void initData(@Nullable Bundle savedInstanceState) {
         mTitleBar = findViewById(R.id.titlebar);
 
-        String title = getIntent().getData().getQueryParameter("title");
-        mTitleBar.getCenterTextView().setText(title);
+        if (getIntent() != null && getIntent().getData() != null) {
+            String title = getIntent().getData().getQueryParameter("title");
+            mTitleBar.getCenterTextView().setText(title);
+        }
 
         RxView.clicks(mTitleBar.getLeftTextView())
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
