@@ -147,7 +147,9 @@ public class UploadAccountInfoFragment extends BaseFragment {
                 int selectionStart = mNicknameEt.getSelectionStart();
                 int selectionEnd = mNicknameEt.getSelectionEnd();
                 if (length > 14) {
-                    editable.delete(selectionStart - 1, selectionEnd);
+                    if ((selectionStart - 1) >= 0 && selectionEnd > (selectionStart - 1)) {
+                        editable.delete(selectionStart - 1, selectionEnd);
+                    }
                     mNicknameEt.setText(editable.toString());
                     int selection = editable.length();
                     mNicknameEt.setSelection(selection);
