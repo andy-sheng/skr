@@ -2,7 +2,9 @@ package com.module.playways.grab.room.model;
 
 import com.zq.live.proto.Room.NoPassSingInfo;
 
-public class NoPassingInfo {
+import java.io.Serializable;
+
+public class NoPassingInfo implements Serializable {
     int userID;
     long timeMs;
 

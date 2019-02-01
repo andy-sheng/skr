@@ -2,7 +2,9 @@ package com.module.playways.grab.room.model;
 
 import com.zq.live.proto.Room.WantSingInfo;
 
-public class WantSingerInfo {
+import java.io.Serializable;
+
+public class WantSingerInfo implements Serializable {
     int userID;
     long timeMs;
 
