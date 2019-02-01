@@ -204,7 +204,8 @@ public class MatchPresenter extends RxLifeCyclePresenter {
         disposeLoopMatchTask();
         disposeMatchTask();
         EventBus.getDefault().unregister(this);
-        if(mMatchState.getV()>=MatchState.JoinRongYunRoomSuccess.getV()){
+        if(mMatchState==MatchState.JoinRongYunRoomSuccess ){
+            // 只是加入融云成功但是并没有返回进入准备页面
             ModuleServiceManager.getInstance().getMsgService().leaveChatRoom(String.valueOf(mCurrentGameId));
         }
     }

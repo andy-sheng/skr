@@ -221,6 +221,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
 
 
     public void leaveChatRoom(String roomId) {
+        MyLog.d(TAG,"leaveChatRoom" + " roomId=" + roomId);
         mJoinroomCallback = null;
         RongIM.getInstance().quitChatRoom(roomId, mOperationCallback);
     }

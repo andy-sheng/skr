@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -167,6 +168,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        if (System.currentTimeMillis() - mRoomData.getGameStartTs() > 3 * 60 * 1000) {
+            Log.w(TAG, "隔了很久从后台返回的，直接finish Activity");
+            getActivity().finish();
+            return;
+        }
+
         // 请保证从下面的view往上面的view开始初始化
         mRankingContainer = mRootView.findViewById(R.id.ranking_container);
         initInputView();
