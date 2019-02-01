@@ -4,6 +4,8 @@ import com.common.log.MyLog;
 import com.module.playways.grab.room.event.GrabRoundStatusChangeEvent;
 import com.module.playways.grab.room.event.SomeOneGrabEvent;
 import com.module.playways.grab.room.event.SomeOneLightOffEvent;
+import com.module.playways.grab.room.model.NoPassingInfo;
+import com.module.playways.grab.room.model.WantSingerInfo;
 import com.module.playways.rank.song.model.SongModel;
 import com.zq.live.proto.Room.NoPassSingInfo;
 import com.zq.live.proto.Room.QRoundInfo;
@@ -14,7 +16,6 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Set;
 
 public class RoundInfoModel implements Serializable {
     public static final int TYPE_RANK = 1;
@@ -62,9 +63,9 @@ public class RoundInfoModel implements Serializable {
     //5有种可惜叫我觉得你行（90%<=t<=100%)
     private int resultType; // 结果类型
 
-    private Set<Integer> hasGrabUserSet = new HashSet<>(); //已经抢了的人
+    private HashSet<WantSingerInfo> wantSingInfos = new HashSet<>(); //已经抢了的人
 
-    private Set<Integer> hasLightOffUserSet = new HashSet<>();//已经灭灯的人
+    private HashSet<NoPassingInfo> noPassSingInfos = new HashSet<>();//已经灭灯的人
 
     public RoundInfoModel() {
 
@@ -106,14 +107,6 @@ public class RoundInfoModel implements Serializable {
 
     public void setSongModel(SongModel songModel) {
         this.songModel = songModel;
-    }
-
-    public Set<Integer> getHasGrabUserSet() {
-        return hasGrabUserSet;
-    }
-
-    public Set<Integer> getHasLightOffUserSet() {
-        return hasLightOffUserSet;
     }
 
     public int getUserID() {
@@ -196,6 +189,22 @@ public class RoundInfoModel implements Serializable {
         this.resultType = resultType;
     }
 
+    public HashSet<WantSingerInfo> getWantSingInfos() {
+        return wantSingInfos;
+    }
+
+    public void setWantSingInfos(HashSet<WantSingerInfo> wantSingInfos) {
+        this.wantSingInfos = wantSingInfos;
+    }
+
+    public HashSet<NoPassingInfo> getNoPassSingInfos() {
+        return noPassSingInfos;
+    }
+
+    public void setNoPassSingInfos(HashSet<NoPassingInfo> noPassSingInfos) {
+        this.noPassSingInfos = noPassSingInfos;
+    }
+
     public static RoundInfoModel parseFromRoundInfo(RoundInfo roundInfo) {
         RoundInfoModel roundInfoModel = new RoundInfoModel(TYPE_RANK);
         roundInfoModel.setUserID(roundInfo.getUserID());
@@ -215,10 +224,10 @@ public class RoundInfoModel implements Serializable {
         roundInfoModel.setSingEndMs(roundInfo.getSingEndMs());
         roundInfoModel.setStatus(roundInfo.getStatus().getValue());
         for (WantSingInfo wantSingInfo : roundInfo.getWantSingInfosList()) {
-            roundInfoModel.addGrabUid(false, wantSingInfo.getUserID());
+            roundInfoModel.addGrabUid(false, WantSingerInfo.parse(wantSingInfo));
         }
         for (NoPassSingInfo noPassSingInfo : roundInfo.getNoPassSingInfosList()) {
-            roundInfoModel.addLightOffUid(false, noPassSingInfo.getUserID());
+            roundInfoModel.addLightOffUid(false, NoPassingInfo.parse(noPassSingInfo));
         }
         roundInfoModel.setOverReason(roundInfo.getOverReason().getValue());
         roundInfoModel.setResultType(roundInfo.getResultType().getValue());
@@ -236,11 +245,11 @@ public class RoundInfoModel implements Serializable {
         this.setSingBeginMs(roundInfo.getSingBeginMs());
         this.setSingEndMs(roundInfo.getSingEndMs());
         //TODO 抢 灭 结束原因 补全
-        for (int uid : roundInfo.getHasGrabUserSet()) {
-            addGrabUid(notify, uid);
+        for (WantSingerInfo wantSingerInfo : roundInfo.getWantSingInfos()) {
+            addGrabUid(notify, wantSingerInfo);
         }
-        for (int uid : roundInfo.getHasLightOffUserSet()) {
-            addLightOffUid(notify, uid);
+        for (NoPassingInfo noPassingInfo : roundInfo.getNoPassSingInfos()) {
+            addLightOffUid(notify, noPassingInfo);
         }
         if (roundInfo.getOverReason() > 0) {
             this.setOverReason(roundInfo.getOverReason());
@@ -252,21 +261,21 @@ public class RoundInfoModel implements Serializable {
         return;
     }
 
-    public void addGrabUid(boolean notify, int userID) {
-        if (!hasGrabUserSet.contains(userID)) {
-            hasGrabUserSet.add(userID);
+    public void addGrabUid(boolean notify, WantSingerInfo wantSingerInfo) {
+        if (!wantSingInfos.contains(wantSingerInfo)) {
+            wantSingInfos.add(wantSingerInfo);
             if (notify) {
-                SomeOneGrabEvent event = new SomeOneGrabEvent(userID, this);
+                SomeOneGrabEvent event = new SomeOneGrabEvent(wantSingerInfo.getUserID(), this);
                 EventBus.getDefault().post(event);
             }
         }
     }
 
-    public void addLightOffUid(boolean notify, Integer userID) {
-        if (!hasLightOffUserSet.contains(userID)) {
-            hasLightOffUserSet.add(userID);
+    public void addLightOffUid(boolean notify, NoPassingInfo noPassingInfo) {
+        if (!noPassSingInfos.contains(noPassingInfo)) {
+            noPassSingInfos.add(noPassingInfo);
             if (notify) {
-                SomeOneLightOffEvent event = new SomeOneLightOffEvent(userID, this);
+                SomeOneLightOffEvent event = new SomeOneLightOffEvent(noPassingInfo.getUserID(), this);
                 EventBus.getDefault().post(event);
             }
         }
@@ -326,8 +335,8 @@ public class RoundInfoModel implements Serializable {
                 ", status=" + status +
                 ", overReason=" + overReason +
                 ", resultType=" + resultType +
-                ", hasGrabUserSet=" + hasGrabUserSet +
-                ", hasLightOffUserSet=" + hasLightOffUserSet +
+                ", hasGrabUserSet=" + wantSingInfos +
+                ", hasLightOffUserSet=" + noPassSingInfos +
                 '}';
     }
 

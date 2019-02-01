@@ -21,6 +21,8 @@ import com.module.playways.RoomData;
 import com.module.playways.grab.room.event.LightOffAnimationOverEvent;
 import com.module.playways.grab.room.event.ShowPersonCardEvent;
 import com.module.playways.grab.room.fragment.GrabRoomFragment;
+import com.module.playways.grab.room.model.NoPassingInfo;
+import com.module.playways.grab.room.model.WantSingerInfo;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.rank.R;
@@ -134,8 +136,8 @@ public class GrabTopRv extends RelativeLayout {
             i++;
         }
         if (now != null) {
-            for (int uid : now.getHasGrabUserSet()) {
-                VP vp = mInfoMap.get(uid);
+            for (WantSingerInfo wantSingerInfo : now.getWantSingInfos()) {
+                VP vp = mInfoMap.get(wantSingerInfo.getUserID());
                 if (vp != null && vp.grabTopItemView != null) {
                     vp.grabTopItemView.setGrap(true);
                 }
@@ -158,7 +160,9 @@ public class GrabTopRv extends RelativeLayout {
             if (vp != null && vp.grabTopItemView != null) {
                 vp.grabTopItemView.setVisibility(VISIBLE);
                 vp.grabTopItemView.reset();
-                if (mRoomData.getRealRoundInfo().getHasGrabUserSet().contains(uId)) {
+                WantSingerInfo wantSingerInfo = new WantSingerInfo();
+                wantSingerInfo.setUserID(uId);
+                if (mRoomData.getRealRoundInfo().getWantSingInfos().contains(wantSingerInfo)) {
                     vp.grabTopItemView.setGrap(true);
                 } else {
                     if (vp.grabTopItemView.getPlayerInfoModel().isOnline()) {
@@ -394,8 +398,8 @@ public class GrabTopRv extends RelativeLayout {
     private void syncLight() {
         RoundInfoModel now = mRoomData.getRealRoundInfo();
         if (now != null) {
-            for (int uid : now.getHasLightOffUserSet()) {
-                VP vp = mInfoMap.get(uid);
+            for (NoPassingInfo noPassingInfo : now.getNoPassSingInfos()) {
+                VP vp = mInfoMap.get(noPassingInfo.getUserID());
                 if (vp != null && vp.grabTopItemView != null) {
                     vp.grabTopItemView.setLight(false);
                 }
