@@ -204,6 +204,9 @@ public class MatchPresenter extends RxLifeCyclePresenter {
         disposeLoopMatchTask();
         disposeMatchTask();
         EventBus.getDefault().unregister(this);
+        if(mMatchState.getV()>=MatchState.JoinRongYunRoomSuccess.getV()){
+            ModuleServiceManager.getInstance().getMsgService().leaveChatRoom(String.valueOf(mCurrentGameId));
+        }
     }
 
     /**
@@ -375,10 +378,20 @@ public class MatchPresenter extends RxLifeCyclePresenter {
     }
 
     enum MatchState {
-        IDLE,
-        Matching,
-        MatchSucess,
-        JoinRongYunRoomSuccess,
-        JoinGameSuccess
+        IDLE(1),
+        Matching(2),
+        MatchSucess(3),
+        JoinRongYunRoomSuccess(4),
+        JoinGameSuccess(5);
+
+        MatchState(int v) {
+            this.v = v;
+        }
+
+        int v;
+
+        public int getV() {
+            return v;
+        }
     }
 }

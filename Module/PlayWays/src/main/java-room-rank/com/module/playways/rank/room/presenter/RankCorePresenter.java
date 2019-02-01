@@ -45,6 +45,7 @@ import com.module.playways.rank.msg.manager.ChatRoomMsgManager;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
+import com.module.playways.rank.prepare.presenter.MatchPresenter;
 import com.module.playways.rank.room.RoomServerApi;
 import com.module.playways.rank.room.SwapStatusType;
 import com.module.playways.rank.room.event.RoundInfoChangeEvent;
@@ -266,6 +267,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
             mExoPlayer = null;
         }
         ChatRoomMsgManager.getInstance().removeFilter(mPushMsgFilter);
+        ModuleServiceManager.getInstance().getMsgService().leaveChatRoom(String.valueOf(mRoomData.getGameId()));
     }
 
     /**

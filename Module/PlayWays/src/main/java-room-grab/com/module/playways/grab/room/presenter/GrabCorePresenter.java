@@ -27,6 +27,7 @@ import com.engine.Params;
 import com.engine.arccloud.ArcRecognizeListener;
 import com.engine.arccloud.RecognizeConfig;
 import com.engine.arccloud.SongInfo;
+import com.module.ModuleServiceManager;
 import com.module.playways.RoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.event.GrabGameOverEvent;
@@ -509,6 +510,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         } else {
             MyLog.d(TAG, "mExoPlayer == null ");
         }
+        ModuleServiceManager.getInstance().getMsgService().leaveChatRoom(String.valueOf(mRoomData.getGameId()));
         MyLog.d(TAG, "destroy over");
     }
 
