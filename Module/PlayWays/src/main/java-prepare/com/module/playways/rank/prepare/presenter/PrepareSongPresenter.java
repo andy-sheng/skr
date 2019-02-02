@@ -107,7 +107,7 @@ public class PrepareSongPresenter extends RxLifeCyclePresenter {
 
                         for (int i = 0; i < lyricsLineInfos.size(); i++){
                             LyricsLineInfo lyricsLineInfo = lyricsLineInfos.get(i);
-                            if(lyricsLineInfo.getStartTime() >= mSongModel.getBeginMs()){
+                            if(lyricsLineInfo.getStartTime() >= mSongModel.getRankLrcBeginT()){
                                 String l = lyricsLineInfo.getLineLyrics();
                                 l = l + "\n" + lyricsLineInfos.get(i + 1).getLineLyrics();
                                 l = l + "\n" + lyricsLineInfos.get(i + 2).getLineLyrics();
