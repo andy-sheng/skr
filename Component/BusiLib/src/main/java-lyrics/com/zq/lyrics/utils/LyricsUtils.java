@@ -1237,6 +1237,9 @@ public class LyricsUtils {
      * @return
      */
     public static int getSplitDynamicLyricsLineNum(TreeMap<Integer, LyricsLineInfo> lyricsLineTreeMap, int origLineNumber, long oldPlayingTime, long playOffset) {
+        if (lyricsLineTreeMap == null) {
+            return -1;
+        }
         LyricsLineInfo lyrLine = lyricsLineTreeMap.get(origLineNumber);
         List<LyricsLineInfo> lyricsLineInfos = lyrLine.getSplitLyricsLineInfos();
         return getSplitLyricsLineNum(lyricsLineInfos, oldPlayingTime, playOffset);
@@ -1252,6 +1255,9 @@ public class LyricsUtils {
      * @return
      */
     public static int getSplitLrcLyricsLineNum(TreeMap<Integer, LyricsLineInfo> mLrcLineInfos, int mLyricsLineNum, long playProgress, long playOffset) {
+        if (mLrcLineInfos == null) {
+            return -1;
+        }
         LyricsLineInfo lyrLine = mLrcLineInfos.get(mLyricsLineNum);
         List<LyricsLineInfo> lyricsLineInfos = lyrLine.getSplitLyricsLineInfos();
         return getSplitLrcLyricsLineNum(lyricsLineInfos, playProgress, playOffset);
