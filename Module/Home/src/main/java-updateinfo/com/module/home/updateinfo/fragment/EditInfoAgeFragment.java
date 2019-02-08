@@ -151,7 +151,9 @@ public class EditInfoAgeFragment extends BaseFragment {
                             .build(), false, new MyUserInfoManager.ServerCallback() {
                         @Override
                         public void onSucess() {
-                            getActivity().finish();
+                            if (getActivity() != null) {
+                                getActivity().finish();
+                            }
                         }
 
                         @Override

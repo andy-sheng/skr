@@ -22,5 +22,6 @@ android {
 
 dependencies {
     api files("libs/Rong_IMLib.jar")
+    api rootProject.ext.dependencies["gson"]
 }
 
