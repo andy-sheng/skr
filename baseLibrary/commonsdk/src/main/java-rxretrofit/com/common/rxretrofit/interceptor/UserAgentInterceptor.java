@@ -2,8 +2,10 @@ package com.common.rxretrofit.interceptor;
 
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.text.TextUtils;
 import android.webkit.WebSettings;
 
+import com.common.log.MyLog;
 import com.common.utils.U;
 
 import java.io.IOException;
@@ -19,18 +21,29 @@ import okhttp3.Response;
  */
 public class UserAgentInterceptor implements Interceptor {
 
+    public final static String TAG = "UserAgentInterceptor";
+
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     public Response intercept(Chain chain) throws IOException {
-        Request request = chain.request()
-                .newBuilder()
-                .removeHeader("User-Agent")//移除旧的
-                /**
-                 * 使用手机浏览器默认的 User-Agent
-                 */
-                .addHeader("User-Agent", WebSettings.getDefaultUserAgent(U.app()))//添加真正的头部
-                .build();
-        return chain.proceed(request);
-
+        String userAgent = null;
+        try {
+            userAgent = WebSettings.getDefaultUserAgent(U.app());
+        } catch (Exception e) {
+            MyLog.e(e);
+        }
+        if (!TextUtils.isEmpty(userAgent)) {
+            Request request = chain.request()
+                    .newBuilder()
+                    .removeHeader("User-Agent")//移除旧的
+                    /**
+                     * 使用手机浏览器默认的 User-Agent
+                     */
+                    .addHeader("User-Agent", userAgent)//添加真正的头部
+                    .build();
+            return chain.proceed(request);
+        } else {
+            return chain.proceed(chain.request());
+        }
     }
 }
