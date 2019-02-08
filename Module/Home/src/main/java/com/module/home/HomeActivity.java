@@ -53,14 +53,21 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        if (!UserAccountManager.getInstance().hasAccount()) {
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_LOGIN).navigation();
+        }
+        boolean needFinish = false;
         for (Activity activity : U.getActivityUtils().getActivityList()) {
             if (activity instanceof HomeActivity) {
                 MyLog.w(TAG, "已经有HomeActivity在堆栈中，取消当前的");
-                finish();
-                return;
+                needFinish = true;
+                break;
             }
         }
         super.onCreate(savedInstanceState);
+        if (needFinish) {
+            finish();
+        }
     }
 
     @Override

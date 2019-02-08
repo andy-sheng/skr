@@ -2,7 +2,6 @@ package com.common.utils;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothHeadset;
 import android.bluetooth.BluetoothProfile;
 import android.content.BroadcastReceiver;
@@ -313,6 +312,7 @@ public class DeviceUtils {
 
     /**
      * 耳机是否插着，包括有线 和 蓝牙
+     *
      * @return
      */
     public boolean getHeadsetPlugOn() {
@@ -323,7 +323,10 @@ public class DeviceUtils {
     public void setWiredHeadsetPlugOn(int headsetPlugOn) {
         if (headsetPlugOn != mHeadsetPlugOn) {
             mHeadsetPlugOn = headsetPlugOn;
-            EventBus.getDefault().post(new HeadsetPlugEvent(mHeadsetPlugOn == 1 || mBlueToothHeadsetPlugOn == 1));
+            HeadsetPlugEvent headsetPlugEvent = new HeadsetPlugEvent(mHeadsetPlugOn == 1 || mBlueToothHeadsetPlugOn == 1);
+            headsetPlugEvent.headsetPlugStatus = mHeadsetPlugOn;
+            headsetPlugEvent.bluetoothStatus = mBlueToothHeadsetPlugOn;
+            EventBus.getDefault().post(headsetPlugEvent);
         }
     }
 
@@ -353,7 +356,10 @@ public class DeviceUtils {
     public void setBlueToothHeadsetPlugOn(int headsetPlugOn) {
         if (headsetPlugOn != mBlueToothHeadsetPlugOn) {
             mBlueToothHeadsetPlugOn = headsetPlugOn;
-            EventBus.getDefault().post(new HeadsetPlugEvent(mHeadsetPlugOn == 1 || mBlueToothHeadsetPlugOn == 1));
+            HeadsetPlugEvent headsetPlugEvent = new HeadsetPlugEvent(mHeadsetPlugOn == 1 || mBlueToothHeadsetPlugOn == 1);
+            headsetPlugEvent.headsetPlugStatus = mHeadsetPlugOn;
+            headsetPlugEvent.bluetoothStatus = mBlueToothHeadsetPlugOn;
+            EventBus.getDefault().post(headsetPlugEvent);
         }
     }
 
@@ -400,6 +406,8 @@ public class DeviceUtils {
      */
     public static class HeadsetPlugEvent {
         public boolean on;
+        public int bluetoothStatus;
+        public int headsetPlugStatus;
 
         public HeadsetPlugEvent(boolean on) {
             this.on = on;

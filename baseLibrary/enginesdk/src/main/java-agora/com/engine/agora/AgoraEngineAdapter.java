@@ -188,6 +188,14 @@ public class AgoraEngineAdapter {
                 mOutCallback.onAudioVolumeIndication(speakers, totalVolume);
             }
         }
+
+        @Override
+        public void onAudioRouteChanged(int routing) {
+            super.onAudioRouteChanged(routing);
+            if (mOutCallback != null) {
+                mOutCallback.onAudioRouteChanged(routing);
+            }
+        }
     };
 
     public void setOutCallback(AgoraOutCallback outCallback) {
@@ -712,6 +720,7 @@ public class AgoraEngineAdapter {
      * @param fromSpeaker
      */
     public void setEnableSpeakerphone(boolean fromSpeaker) {
+        MyLog.d(TAG,"setEnableSpeakerphone" + " fromSpeaker=" + fromSpeaker);
         mRtcEngine.setEnableSpeakerphone(fromSpeaker);
     }
 
@@ -729,6 +738,7 @@ public class AgoraEngineAdapter {
      * 默认关闭
      */
     public void enableInEarMonitoring(boolean enable) {
+        MyLog.d(TAG,"enableInEarMonitoring" + " enable=" + enable);
         mRtcEngine.enableInEarMonitoring(enable);
     }
 

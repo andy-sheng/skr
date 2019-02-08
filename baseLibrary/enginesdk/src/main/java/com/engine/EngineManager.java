@@ -173,6 +173,22 @@ public class EngineManager implements AgoraOutCallback {
         EventBus.getDefault().post(engineEvent);
     }
 
+
+    /**
+     * AUDIO_ROUTE_DEFAULT(-1)：使用默认的音频路由。
+     * AUDIO_ROUTE_HEADSET(0)：使用耳机为语音路由。
+     * AUDIO_ROUTE_EARPIECE(1)：使用听筒为语音路由。
+     * AUDIO_ROUTE_HEADSETNOMIC(2)：使用不带麦的耳机为语音路由。
+     * AUDIO_ROUTE_SPEAKERPHONE(3)：使用手机的扬声器为语音路由。
+     * AUDIO_ROUTE_LOUDSPEAKER(4)：使用外接的扬声器为语音路由。
+     * AUDIO_ROUTE_HEADSETBLUETOOTH(5)：使用蓝牙耳机为语音路由。
+     * @param routing
+     */
+    @Override
+    public void onAudioRouteChanged(int routing) {
+        MyLog.w(TAG,"onAudioRouteChanged 音频路由发生变化 routing=" + routing);
+    }
+
     private UserStatus ensureJoin(int uid) {
         if (!mUserStatusMap.containsKey(uid)) {
             UserStatus userStatus = new UserStatus(uid);
@@ -336,13 +352,13 @@ public class EngineManager implements AgoraOutCallback {
                 }
                 AgoraEngineAdapter.getInstance().joinChannel(null, roomid, "Extra Optional Data", userId);
                 //TODO 临时关闭耳返
-                if (U.getDeviceUtils().getHeadsetPlugOn()) {
-                    setEnableSpeakerphone(false);
-                    enableInEarMonitoring(false);
-                } else {
-                    setEnableSpeakerphone(true);
-                    enableInEarMonitoring(false);
-                }
+//                if (U.getDeviceUtils().getHeadsetPlugOn()) {
+//                    setEnableSpeakerphone(false);
+//                    enableInEarMonitoring(false);
+//                } else {
+//                    setEnableSpeakerphone(true);
+//                    enableInEarMonitoring(false);
+//                }
             }
         });
 
@@ -619,13 +635,13 @@ public class EngineManager implements AgoraOutCallback {
      */
     @Subscribe
     public void onEvent(DeviceUtils.HeadsetPlugEvent event) {
-        if (event.on) {
-            setEnableSpeakerphone(false);
-            enableInEarMonitoring(false);
-        } else {
-            setEnableSpeakerphone(true);
-            enableInEarMonitoring(false);
-        }
+//        if (event.on) {
+//            setEnableSpeakerphone(false);
+//            enableInEarMonitoring(false);
+//        } else {
+//            setEnableSpeakerphone(true);
+//            enableInEarMonitoring(false);
+//        }
     }
     /*视频基础结束*/
 
@@ -1051,6 +1067,7 @@ public class EngineManager implements AgoraOutCallback {
      * 请确保 App 里指定的目录存在且可写。该接口需在加入频道之后调用。如果调用 leaveChannel 时还在录音，录音会自动停止。
      */
     public void startAudioRecording(final String saveAudioForAiFilePath, final int audioRecordingQualityHigh) {
+        MyLog.d(TAG,"startAudioRecording" + " saveAudioForAiFilePath=" + saveAudioForAiFilePath + " audioRecordingQualityHigh=" + audioRecordingQualityHigh);
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {
@@ -1075,6 +1092,7 @@ public class EngineManager implements AgoraOutCallback {
      * 该方法停止录音。该接口需要在 leaveChannel 之前调用，不然会在调用 leaveChannel 时自动停止。
      */
     public void stopAudioRecording() {
+        MyLog.d(TAG,"stopAudioRecording" );
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {
