@@ -21,6 +21,7 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.HttpImage;
 import com.common.log.MyLog;
+import com.common.rx.RxRetryAssist;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
@@ -401,8 +402,10 @@ public class SelfSingCardView extends RelativeLayout {
                 File newName = new File(SongResUtils.createStandLyricFileName(songModel.getStandLrc()));
 
                 if (isSuccess) {
-                    if (oldName.renameTo(newName)) {
+                    if (oldName!=null && oldName.renameTo(newName)) {
                         MyLog.w(TAG, "已重命名");
+                        emitter.onNext(newName);
+                        emitter.onComplete();
                     } else {
                         MyLog.w(TAG, "Error");
                         emitter.onError(new Throwable("重命名错误"));
@@ -410,13 +413,10 @@ public class SelfSingCardView extends RelativeLayout {
                 } else {
                     emitter.onError(new Throwable("下载失败"));
                 }
-
-                emitter.onNext(newName);
-                emitter.onComplete();
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .retry(1000)
+                .retryWhen(new RxRetryAssist(5,1,false))
 //                .compose(bindUntilEvent(FragmentEvent.DESTROY))
                 .subscribe(file -> {
                     final File fileName = SongResUtils.getGrabLyricFileByUrl(songModel.getStandLrc());
