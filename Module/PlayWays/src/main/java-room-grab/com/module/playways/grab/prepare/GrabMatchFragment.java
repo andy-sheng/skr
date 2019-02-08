@@ -362,6 +362,9 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
                             U.getToastUtil().showShort("现在小伙伴有点少，稍后再匹配试试吧～");
                             mMatchPresenter.cancelMatch();
                             stopTimeTask();
+                            if (mPrepareData.getGameType() == GameModeType.GAME_MODE_GRAB) {
+                                BgMusicManager.getInstance().destory();
+                            }
                             getActivity().finish();
                             ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
                                     .withInt("key_game_type", mPrepareData.getGameType())

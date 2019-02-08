@@ -53,7 +53,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         if (!UserAccountManager.getInstance().hasAccount()) {
             ARouter.getInstance().build(RouterConstants.ACTIVITY_LOGIN).navigation();
         }
@@ -64,6 +63,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
                 return;
             }
         }
+        super.onCreate(savedInstanceState);
     }
 
     @Override
