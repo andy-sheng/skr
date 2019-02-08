@@ -317,12 +317,14 @@ public class MyUserInfoManager {
         if (!MyUserInfoManager.getInstance().hasLocation()) {
             // 没有地理位置
             uploadLocation();
-        } else {
-            long lastUpdateLocationTs = U.getPreferenceUtils().getSettingLong(PREF_KEY_UPDATE_LACATION_TS, 0);
-            if (System.currentTimeMillis() - lastUpdateLocationTs > 3600 * 1000 * 6) {
-                uploadLocation();
-            }
         }
+        // TODO: 2019/2/8 去掉位置更新策略，除了第一次，让用户主动触发 
+//        else {
+//            long lastUpdateLocationTs = U.getPreferenceUtils().getSettingLong(PREF_KEY_UPDATE_LACATION_TS, 0);
+//            if (System.currentTimeMillis() - lastUpdateLocationTs > 3600 * 1000 * 6) {
+//                uploadLocation();
+//            }
+//        }
     }
 
     public void uploadLocation() {
