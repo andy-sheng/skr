@@ -248,7 +248,7 @@ public class MyUserInfoManager {
                 } else {
                     U.getToastUtil().showShort(obj.getErrmsg());
                     if (callback != null) {
-                        callback.onSucess();
+                        callback.onFail();
                     }
                 }
             }
