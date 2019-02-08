@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -641,7 +642,10 @@ public class AuditionFragment extends BaseFragment {
                                         .build());
 
                                 mUiHanlder.postDelayed(() -> {
-                                    getActivity().finish();
+                                    Activity activity = getActivity();
+                                    if (activity != null) {
+                                        activity.finish();
+                                    }
                                 }, 2000);
 
                             }
