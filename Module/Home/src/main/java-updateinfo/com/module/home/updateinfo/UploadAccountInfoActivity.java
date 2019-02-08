@@ -43,7 +43,7 @@ public class UploadAccountInfoActivity extends BaseActivity {
                     .setAddToBackStack(false)
                     .setHasAnimation(true)
                     .build());
-        } else {
+        }else{
             finish();
         }
     }
