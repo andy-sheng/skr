@@ -67,7 +67,9 @@ public class ResDataSource {
     }
 
     public void destroy() {
-        mPhotoAlbumContentResolver.unregisterContentObserver(mPhotoAlbumContentObserver);
+        if (mPhotoAlbumContentResolver != null) {
+            mPhotoAlbumContentResolver.unregisterContentObserver(mPhotoAlbumContentObserver);
+        }
     }
 
     public ContentResolver getPhotoAlbumResolver() {
@@ -94,7 +96,7 @@ public class ResDataSource {
                 ArrayList<ResItem> totalList = new ArrayList<>();
                 ArrayList<ImageItem> imageItemList = loadPhotoAlbum();
                 totalList.addAll(imageItemList);
-                if(ResPicker.getInstance().getParams().isIncludeVideo()) {
+                if (ResPicker.getInstance().getParams().isIncludeVideo()) {
                     ArrayList<VideoItem> videoList = loadVideo();
                     totalList.addAll(videoList);
                 }
