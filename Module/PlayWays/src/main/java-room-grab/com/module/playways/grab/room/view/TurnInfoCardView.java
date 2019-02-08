@@ -174,6 +174,7 @@ public class TurnInfoCardView extends RelativeLayout {
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
         if (visibility == GONE) {
+            this.mSVGAListener = null;
             if (mFirstSvga != null) {
                 mFirstSvga.stopAnimation(false);
             }
@@ -187,12 +188,12 @@ public class TurnInfoCardView extends RelativeLayout {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+        this.mSVGAListener = null;
         if (mFirstSvga != null) {
             mFirstSvga.stopAnimation(true);
         }
         if (mNextSvga != null) {
             mNextSvga.stopAnimation(true);
         }
-        this.mSVGAListener = null;
     }
 }

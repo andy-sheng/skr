@@ -20,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 public class GrabGameOverView extends RelativeLayout {
 
     SVGAImageView mEndGameIv;
+    SVGAListener mSVGAListener;
 
     public GrabGameOverView(Context context) {
         super(context);
@@ -43,6 +44,7 @@ public class GrabGameOverView extends RelativeLayout {
     }
 
     public void starAnimation(SVGAListener listener) {
+        this.mSVGAListener = listener;
         mEndGameIv.clearAnimation();
         mEndGameIv.setVisibility(VISIBLE);
         mEndGameIv.setLoops(1);
@@ -77,8 +79,8 @@ public class GrabGameOverView extends RelativeLayout {
                     mEndGameIv.stopAnimation(true);
                     mEndGameIv.setVisibility(GONE);
                 }
-                if (listener != null) {
-                    listener.onFinished();
+                if (mSVGAListener != null) {
+                    mSVGAListener.onFinished();
                 }
             }
 
@@ -100,6 +102,7 @@ public class GrabGameOverView extends RelativeLayout {
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
         if (visibility == GONE) {
+            this.mSVGAListener = null;
             if (mEndGameIv != null) {
                 mEndGameIv.stopAnimation(false);
             }
@@ -109,6 +112,7 @@ public class GrabGameOverView extends RelativeLayout {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+        this.mSVGAListener = null;
         if (mEndGameIv != null) {
             mEndGameIv.stopAnimation(true);
         }

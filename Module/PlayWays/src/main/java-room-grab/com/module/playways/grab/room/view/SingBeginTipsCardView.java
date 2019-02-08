@@ -150,6 +150,7 @@ public class SingBeginTipsCardView extends RelativeLayout {
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
         if (visibility == GONE) {
+            this.mSVGAListener = null;
             if (mSingBeginSvga != null) {
                 mSingBeginSvga.stopAnimation(false);
             }
@@ -159,9 +160,9 @@ public class SingBeginTipsCardView extends RelativeLayout {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+        this.mSVGAListener = null;
         if (mSingBeginSvga != null) {
             mSingBeginSvga.stopAnimation(true);
         }
-        this.mSVGAListener = null;
     }
 }

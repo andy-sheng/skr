@@ -283,6 +283,7 @@ public class RoundOverCardView extends RelativeLayout {
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
         if (visibility == GONE) {
+            this.mSVGAListener = null;
             if (mNoneSingSvga != null) {
                 mNoneSingSvga.stopAnimation(false);
             }
@@ -292,9 +293,9 @@ public class RoundOverCardView extends RelativeLayout {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+        this.mSVGAListener = null;
         if (mNoneSingSvga != null) {
             mNoneSingSvga.stopAnimation(true);
         }
-        this.mSVGAListener = null;
     }
 }
