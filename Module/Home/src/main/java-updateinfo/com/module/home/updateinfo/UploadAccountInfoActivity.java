@@ -35,7 +35,6 @@ public class UploadAccountInfoActivity extends BaseActivity {
         bundle.putBoolean(BUNDLE_IS_UPLOAD, true);
 
         if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName())
-                || TextUtils.isEmpty(MyUserInfoManager.getInstance().getAvatar())
                 || TextUtils.isEmpty(MyUserInfoManager.getInstance().getBirthday())
                 || MyUserInfoManager.getInstance().getSex() == 0) {
             U.getFragmentUtils().addFragment(FragmentUtils
@@ -44,6 +43,8 @@ public class UploadAccountInfoActivity extends BaseActivity {
                     .setAddToBackStack(false)
                     .setHasAnimation(true)
                     .build());
+        } else {
+            finish();
         }
     }
 
