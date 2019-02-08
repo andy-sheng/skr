@@ -450,7 +450,6 @@ public class AuditionFragment extends BaseFragment {
                 }
             });
         }
-
         mExoPlayer.startPlay(AAC_SAVE_PATH);
         mIvPlay.setEnabled(false);
     }
