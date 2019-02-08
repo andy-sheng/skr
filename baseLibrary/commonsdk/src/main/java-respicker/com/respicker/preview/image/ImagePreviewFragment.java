@@ -124,7 +124,7 @@ public class ImagePreviewFragment extends ImageBaseFragment implements ResPicker
                     for (ResItem item : mSelectedImages) {
                         size += item.getSize();
                     }
-                    String fileSize = Formatter.formatFileSize(getContext(), size);
+                    String fileSize = Formatter.formatFileSize(U.app(), size);
                     mImagePicker.setOrigin(true);
                     mCbOrigin.setText(getString(R.string.ip_origin_size, fileSize));
                 } else {
@@ -190,14 +190,14 @@ public class ImagePreviewFragment extends ImageBaseFragment implements ResPicker
      */
     public void onImageSingleTap() {
         if (mTitleBar.getVisibility() == View.VISIBLE) {
-            mTitleBar.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.top_out));
-            mBottomBar.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.fade_out));
+            mTitleBar.setAnimation(AnimationUtils.loadAnimation(U.app(), R.anim.top_out));
+            mBottomBar.setAnimation(AnimationUtils.loadAnimation(U.app(), R.anim.fade_out));
             mTitleBar.setVisibility(View.GONE);
             mBottomBar.setVisibility(View.GONE);
             U.getStatusBarUtil().setColorBar(getActivity(), Color.TRANSPARENT);
         } else {
-            mTitleBar.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.top_in));
-            mBottomBar.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.fade_in));
+            mTitleBar.setAnimation(AnimationUtils.loadAnimation(U.app(), R.anim.top_in));
+            mBottomBar.setAnimation(AnimationUtils.loadAnimation(U.app(), R.anim.fade_in));
             mTitleBar.setVisibility(View.VISIBLE);
             mBottomBar.setVisibility(View.VISIBLE);
             U.getStatusBarUtil().setColorBar(getActivity(), U.app().getResources().getColor(R.color.ip_color_primary_dark));
@@ -255,7 +255,7 @@ public class ImagePreviewFragment extends ImageBaseFragment implements ResPicker
             for (ImageItem imageItem : mSelectedImages) {
                 size += imageItem.getSize();
             }
-            String fileSize = Formatter.formatFileSize(getContext(), size);
+            String fileSize = Formatter.formatFileSize(U.app(), size);
             mCbOrigin.setText(getString(R.string.ip_origin_size, fileSize));
         }
     }
