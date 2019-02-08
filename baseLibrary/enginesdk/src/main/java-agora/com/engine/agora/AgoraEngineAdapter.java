@@ -800,8 +800,8 @@ public class AgoraEngineAdapter {
      * @param bandGain      每个 band 的增益，单位是 dB，每一个值的范围是 [-15，15]，默认值为 0
      */
     public void setLocalVoiceEqualization(int bandFrequency, int bandGain) {
-        if(mRtcEngine==null){
-            return ;
+        if (mRtcEngine == null) {
+            return;
         }
         mRtcEngine.setLocalVoiceEqualization(bandFrequency, bandGain);
     }
@@ -817,8 +817,8 @@ public class AgoraEngineAdapter {
      *                  AUDIO_REVERB_STRENGTH(4)：混响持续的强度，取值范围为 [0, 100]
      */
     public void setLocalVoiceReverb(int reverbKey, int value) {
-        if(mRtcEngine==null){
-            return ;
+        if (mRtcEngine == null) {
+            return;
         }
         mRtcEngine.setLocalVoiceReverb(reverbKey, value);
     }
@@ -839,8 +839,8 @@ public class AgoraEngineAdapter {
      *                 -1：无限循环
      */
     public void startAudioMixing(String filePath, boolean loopback, boolean replace, int cycle) {
-        if(mRtcEngine==null){
-            return ;
+        if (mRtcEngine == null) {
+            return;
         }
         mRtcEngine.startAudioMixing(filePath, loopback, replace, cycle);
     }
@@ -850,8 +850,8 @@ public class AgoraEngineAdapter {
      * 请在频道内调用该方法。
      */
     public void stopAudioMixing() {
-        if(mRtcEngine==null){
-            return ;
+        if (mRtcEngine == null) {
+            return;
         }
         mRtcEngine.stopAudioMixing();
     }
@@ -860,8 +860,8 @@ public class AgoraEngineAdapter {
      * 暂停播放音乐文件及混音
      */
     public void pauseAudioMixing() {
-        if(mRtcEngine==null){
-            return ;
+        if (mRtcEngine == null) {
+            return;
         }
         mRtcEngine.pauseAudioMixing();
     }
@@ -870,8 +870,8 @@ public class AgoraEngineAdapter {
      * 继续播放混音
      */
     public void resumeAudioMixing() {
-        if(mRtcEngine==null){
-            return ;
+        if (mRtcEngine == null) {
+            return;
         }
         mRtcEngine.resumeAudioMixing();
     }
@@ -883,8 +883,8 @@ public class AgoraEngineAdapter {
      * @param volume 1-100 默认100
      */
     public void adjustAudioMixingVolume(int volume) {
-        if(mRtcEngine==null){
-            return ;
+        if (mRtcEngine == null) {
+            return;
         }
         mRtcEngine.adjustAudioMixingVolume(volume);
     }
@@ -893,7 +893,7 @@ public class AgoraEngineAdapter {
      * @return 获取伴奏时长，单位ms
      */
     public int getAudioMixingDuration() {
-        if(mRtcEngine==null){
+        if (mRtcEngine == null) {
             return 0;
         }
         return mRtcEngine.getAudioMixingDuration();
@@ -903,7 +903,7 @@ public class AgoraEngineAdapter {
      * @return 获取混音当前播放位置 ms
      */
     public int getAudioMixingCurrentPosition() {
-        if(mRtcEngine==null){
+        if (mRtcEngine == null) {
             return 0;
         }
         return mRtcEngine.getAudioMixingCurrentPosition();
@@ -915,8 +915,8 @@ public class AgoraEngineAdapter {
      * @param posMs
      */
     public void setAudioMixingPosition(int posMs) {
-        if(mRtcEngine==null){
-            return ;
+        if (mRtcEngine == null) {
+            return;
         }
         mRtcEngine.setAudioMixingPosition(posMs);
     }
@@ -945,7 +945,7 @@ public class AgoraEngineAdapter {
                     mArcCloudManager.putPool(samples, samplesPerSec, channels);
                 }
                 long ts = 0;
-                if (mConfig!=null && mConfig.isMixMusicPlaying() && mConfig.getLrcHasStart()) {
+                if (mConfig != null && mConfig.isMixMusicPlaying() && mConfig.getLrcHasStart()) {
                     ts = mConfig.getCurrentMusicTs() + mConfig.getMixMusicBeginOffset() + (System.currentTimeMillis() - mConfig.getRecordCurrentMusicTsTs());
                 }
                 CbEngineAdapter.getInstance().processAudioFrames(samples,
@@ -981,8 +981,8 @@ public class AgoraEngineAdapter {
      * 请确保 App 里指定的目录存在且可写。该接口需在加入频道之后调用。如果调用 leaveChannel 时还在录音，录音会自动停止。
      */
     public void startAudioRecording(String saveAudioForAiFilePath, int audioRecordingQualityHigh) {
-        if(mRtcEngine==null){
-            return ;
+        if (mRtcEngine == null) {
+            return;
         }
         mRtcEngine.startAudioRecording(saveAudioForAiFilePath, audioRecordingQualityHigh);
     }
@@ -993,8 +993,8 @@ public class AgoraEngineAdapter {
      * 该方法停止录音。该接口需要在 leaveChannel 之前调用，不然会在调用 leaveChannel 时自动停止。
      */
     public void stopAudioRecording() {
-        if(mRtcEngine==null){
-            return ;
+        if (mRtcEngine == null) {
+            return;
         }
         mRtcEngine.stopAudioRecording();
     }
@@ -1016,13 +1016,15 @@ public class AgoraEngineAdapter {
                 File file = new File(U.getAppInfoUtils().getMainDir(), "effects");
                 U.getFileUtils().copyAssetsToSdcard("effects", file.getPath(), false);
                 int id = 0;
-                for (File effectFile : file.listFiles()) {
-                    EffectModel effectModel = new EffectModel();
-                    effectModel.setId(id++);
-                    effectModel.setName(effectFile.getName());
-                    effectModel.setPath(effectFile.getAbsolutePath());
-                    if (!mEffectModels.contains(effectModel)) {
-                        mEffectModels.add(effectModel);
+                if (file != null && file.listFiles() != null) {
+                    for (File effectFile : file.listFiles()) {
+                        EffectModel effectModel = new EffectModel();
+                        effectModel.setId(id++);
+                        effectModel.setName(effectFile.getName());
+                        effectModel.setPath(effectFile.getAbsolutePath());
+                        if (!mEffectModels.contains(effectModel)) {
+                            mEffectModels.add(effectModel);
+                        }
                     }
                 }
                 emitter.onComplete();
