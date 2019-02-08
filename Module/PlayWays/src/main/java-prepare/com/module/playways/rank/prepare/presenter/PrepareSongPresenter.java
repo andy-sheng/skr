@@ -83,11 +83,16 @@ public class PrepareSongPresenter extends RxLifeCyclePresenter {
                     .fetchLyricTask(mSongModel.getLyric())
                     .compose(bindUntilEvent(PresenterEvent.DESTROY))
                     .subscribe(new Consumer<File>() {
-                @Override
-                public void accept(File file) throws Exception {
-                    showLyric();
-                }
-            });
+                        @Override
+                        public void accept(File file) throws Exception {
+                            showLyric();
+                        }
+                    }, new Consumer<Throwable>() {
+                        @Override
+                        public void accept(Throwable throwable) throws Exception {
+                            MyLog.e(throwable);
+                        }
+                    });
         } else {
             showLyric();
         }

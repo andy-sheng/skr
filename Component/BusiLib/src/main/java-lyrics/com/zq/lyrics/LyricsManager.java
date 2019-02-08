@@ -47,8 +47,6 @@ public class LyricsManager {
     private static LyricsManager _LyricsManager;
 
     public LyricsManager(Context context) {
-
-
         mContext = context;
     }
 
@@ -56,7 +54,6 @@ public class LyricsManager {
         if (_LyricsManager == null) {
             _LyricsManager = new LyricsManager(context);
             copyLrcFileInfo();
-
         }
         return _LyricsManager;
     }
@@ -145,8 +142,10 @@ public class LyricsManager {
                 File newName = new File(SongResUtils.createLyricFileName(url));
 
                 if (isSuccess) {
-                    if (oldName.renameTo(newName)) {
+                    if (oldName != null && oldName.renameTo(newName)) {
                         System.out.println("已重命名");
+                        emitter.onNext(newName);
+                        emitter.onComplete();
                     } else {
                         System.out.println("Error");
                         emitter.onError(new Throwable("重命名错误"));
@@ -154,9 +153,6 @@ public class LyricsManager {
                 } else {
                     emitter.onError(new Throwable("下载失败"));
                 }
-
-                emitter.onNext(newName);
-                emitter.onComplete();
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
