@@ -59,7 +59,7 @@ public class FragmentUtils {
             return null;
         }
         Fragment f = l.get(l.size() - 1);
-        if ( f instanceof BaseFragment) {
+        if (f instanceof BaseFragment) {
             return (BaseFragment) f;
         }
 
@@ -128,7 +128,11 @@ public class FragmentUtils {
                              *
                              *  使用这种方式pop时 请确保 add fragment 是已经压入addToBackStack = true 压入堆栈
                              */
-                            fragmentManager.popBackStackImmediate(f.getTag(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                            try {
+                                fragmentManager.popBackStackImmediate(f.getTag(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                            } catch (Exception e) {
+                                MyLog.e(e);
+                            }
                         } else {
                             ft = fragmentManager.beginTransaction();
                             if (params.hasAnimation) {
@@ -210,7 +214,7 @@ public class FragmentUtils {
                 MyLog.d(TAG, "addFragment" + " oldFragment!=null");
                 if (params.useOldFragmentIfExist) {
                     // 这个一般设置为true，防止低内存时一些重复添加Fragment的问题
-                    MyLog.d(TAG, "使用老的重建"+oldFragment.getTag());
+                    MyLog.d(TAG, "使用老的重建" + oldFragment.getTag());
                     if (!oldFragment.isAdded()) {
                         ft = ft.add(params.containerViewId, oldFragment, showTag);
                     }
