@@ -37,7 +37,7 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.functions.Consumer;
 
 
-@Route(path = RouterConstants.ACTIVITY_HOME, extras = JudgeLoginInterceptor.NO_NEED_LOGIN)
+@Route(path = RouterConstants.ACTIVITY_HOME)
 public class HomeActivity extends BaseActivity implements IHomeActivity {
 
     public final static String TAG = "HomeActivity";
@@ -53,9 +53,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        if (!UserAccountManager.getInstance().hasAccount()) {
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_LOGIN).navigation();
-        }
         for (Activity activity : U.getActivityUtils().getActivityList()) {
             if (activity instanceof HomeActivity) {
                 MyLog.w(TAG, "已经有HomeActivity在堆栈中，取消当前的");
