@@ -462,7 +462,6 @@ public class ExoPlayer implements IPlayer {
 
     @Override
     public void setVolume(float volume) {
-        MyLog.d(TAG, "setVolume" + " volume=" + volume);
         if (mPlayer == null) {
             return;
         }
