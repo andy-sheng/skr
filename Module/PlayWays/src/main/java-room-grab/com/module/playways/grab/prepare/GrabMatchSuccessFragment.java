@@ -150,10 +150,8 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
                 mVsSvga.startAnimation();
             }
         }, 700);
-
         // 加上保护
         BgMusicManager.getInstance().setRoom(true);
-        BgMusicManager.getInstance().destory();
     }
 
     private void loadIcon(SimpleDraweeView simpleDraweeView, boolean isGray, String avatar) {
@@ -489,7 +487,6 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
         mRootView.setVisibility(VISIBLE);
         // 加上保护
         BgMusicManager.getInstance().setRoom(true);
-        BgMusicManager.getInstance().destory();
     }
 
     @Override

@@ -123,9 +123,12 @@ public class BgMusicManager {
     }
 
     public void setRoom(boolean room) {
-        mIsRoom = room;
-        if(mIsRoom){
-            destory();
+        if(room!=mIsRoom){
+            mIsRoom = room;
+            if(mIsRoom){
+                // 如果切换到房间内了，destroy保护一下
+                destory();
+            }
         }
     }
 
