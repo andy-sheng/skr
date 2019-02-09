@@ -6,10 +6,12 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.common.base.BaseFragment;
 import com.common.core.avatar.AvatarUtils;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.GameStatisModel;
 import com.common.core.userinfo.model.UserInfoModel;
@@ -89,6 +91,8 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
 
     OtherPersonPresenter mOtherPersonPresenter;
 
+    LinearLayout mLlBottomContainer;
+
     UserInfoModel mUserInfoModel;
 
     int rank = 0;           //当前父段位
@@ -107,6 +111,8 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
 
         mBackIv = (ExImageView) mRootView.findViewById(R.id.back_iv);
         mReport = (ExTextView) mRootView.findViewById(R.id.report);
+
+        mLlBottomContainer = mRootView.findViewById(R.id.ll_bottom_container);
 
         mAvatarIv = (BaseImageView) mRootView.findViewById(R.id.avatar_iv);
         mNameTv = (ExTextView) mRootView.findViewById(R.id.name_tv);
@@ -197,6 +203,11 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
                                 String.valueOf(mUserInfoModel.getUserId()), mUserInfoModel.getNickname());
                     }
                 });
+
+        if(mUserInfoModel.getUserId() == MyUserInfoManager.getInstance().getUid()){
+            mLlBottomContainer.setVisibility(View.GONE);
+            mReport.setVisibility(View.GONE);
+        }
     }
 
     @Override

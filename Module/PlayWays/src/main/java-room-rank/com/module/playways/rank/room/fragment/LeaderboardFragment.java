@@ -161,7 +161,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         RxView.clicks(mOwnInfoItem).subscribe(new Consumer<Object>() {
             @Override
             public void accept(Object o) {
-
+                gotoPersonFragment((int) MyUserInfoManager.getInstance().getUid(), MyUserInfoManager.getInstance().getNickName(), MyUserInfoManager.getInstance().getAvatar());
             }
         });
 
@@ -405,10 +405,6 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
             RxView.clicks(mSdvChampainIcon).subscribe(new Consumer<Object>() {
                 @Override
                 public void accept(Object o) {
-                    if (MyUserInfoManager.getInstance().getUid() == rankInfoModel.getUserID()) {
-                        return;
-                    }
-
                     gotoPersonFragment(rankInfoModel.getUserID(), rankInfoModel.getNickname(), rankInfoModel.getAvatar());
                 }
             });
@@ -425,9 +421,6 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
             RxView.clicks(mSdvRightChampainIcon).subscribe(new Consumer<Object>() {
                 @Override
                 public void accept(Object o) {
-                    if (MyUserInfoManager.getInstance().getUid() == rankInfoModel.getUserID()) {
-                        return;
-                    }
                     gotoPersonFragment(rankInfoModel.getUserID(), rankInfoModel.getNickname(), rankInfoModel.getAvatar());
                 }
             });
@@ -445,10 +438,6 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
             RxView.clicks(mSdvLeftChampainIcon).subscribe(new Consumer<Object>() {
                 @Override
                 public void accept(Object o) {
-                    if (MyUserInfoManager.getInstance().getUid() == rankInfoModel.getUserID()) {
-                        return;
-                    }
-
                     gotoPersonFragment(rankInfoModel.getUserID(), rankInfoModel.getNickname(), rankInfoModel.getAvatar());
                 }
             });

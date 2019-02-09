@@ -82,10 +82,6 @@ public class LeaderBoardAdapter extends DiffAdapter<RankInfoModel, RecyclerView.
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (mRankInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
-                        return;
-                    }
-
                     UserInfoModel userInfoModel = new UserInfoModel();
                     userInfoModel.setUserId(mRankInfoModel.getUserID());
                     userInfoModel.setNickname(mRankInfoModel.getNickname());
