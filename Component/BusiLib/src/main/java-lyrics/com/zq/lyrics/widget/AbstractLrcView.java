@@ -1048,6 +1048,11 @@ public abstract class AbstractLrcView extends View {
      */
     public void seekto(int playProgress) {
         synchronized (lock) {
+            if(mLyricsReader == null){
+                MyLog.w(TAG, "seekto" + " mLyricsReader=null");
+                return;
+            }
+
             mCurEndLineNum = mLyricsReader.getLineInfoIdByStartTs(playProgress);
             mCurSplitLyricsEndLineNum = 0;
             if (mLrcPlayerStatus == LRCPLAYERSTATUS_PLAY) {
