@@ -892,7 +892,9 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             mDialogPlus = null;
         }
         mUiHanlder.removeCallbacksAndMessages(null);
-        mManyLyricsView.release();
+        if (mManyLyricsView != null) {
+            mManyLyricsView.release();
+        }
 //        mFloatLyricsView.release();
 
         isGameEndAniamtionShow = false;
