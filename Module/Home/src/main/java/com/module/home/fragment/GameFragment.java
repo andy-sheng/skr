@@ -298,8 +298,12 @@ public class GameFragment extends BaseFragment {
 
             mPopupWindow.setWidth(U.getDisplayUtils().dip2px(36) + content.length() * U.getDisplayUtils().dip2px(10));
             mPopupWindow.setHeight(U.getDisplayUtils().dip2px(31));
-            mPopupWindow.showAsDropDown(mRankText);
-
+            mRankText.post(new Runnable() {
+                @Override
+                public void run() {
+                    mPopupWindow.showAsDropDown(mRankText);
+                }
+            });
         } else {
             content = "下降" + Math.abs(diff) + "名";
             mRankDiffTv.setText(content);
@@ -308,7 +312,12 @@ public class GameFragment extends BaseFragment {
 
             mPopupWindow.setWidth(U.getDisplayUtils().dip2px(36) + content.length() * U.getDisplayUtils().dip2px(10));
             mPopupWindow.setHeight(U.getDisplayUtils().dip2px(31));
-            mPopupWindow.showAsDropDown(mRankText);
+            mRankText.post(new Runnable() {
+                @Override
+                public void run() {
+                    mPopupWindow.showAsDropDown(mRankText);
+                }
+            });
         }
 
     }
@@ -332,7 +341,7 @@ public class GameFragment extends BaseFragment {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     List<SlideShowModel> slideShowModelList = JSON.parseArray(result.getData().getString("slideshow"), SlideShowModel.class);
-                    if(slideShowModelList == null || slideShowModelList.size() == 0){
+                    if (slideShowModelList == null || slideShowModelList.size() == 0) {
                         MyLog.d(TAG, "initOperationArea 为null");
                         return;
                     }
