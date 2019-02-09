@@ -53,8 +53,6 @@ public class MatchPresenter extends RxLifeCyclePresenter {
     volatile MatchState mMatchState = MatchState.IDLE;
     private List<String> mAvatarURL;
 
-    int ALL_JOIN_NUM = 3;
-
     public MatchPresenter(@NonNull IMatchingView view) {
         this.mView = view;
         mMatchServerApi = ApiManager.getInstance().createService(MatchServerApi.class);
@@ -71,9 +69,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
         MyLog.d(TAG, "startLoopMatchTask");
         this.mCurrentMusicId = playbookItemID;
         this.mGameType = gameType;
-        if (mGameType == GameModeType.GAME_MODE_GRAB) {
-            ALL_JOIN_NUM = 5;
-        }
+
         disposeLoopMatchTask();
         mLoopMatchTask = HandlerTaskTimer.newBuilder()
                 .interval(10000)
@@ -182,9 +178,9 @@ public class MatchPresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(JoinNoticeEvent joinNoticeEvent) {
         if (joinNoticeEvent != null && joinNoticeEvent.jsonGameInfo != null) {
-            MyLog.w(TAG, " onEventMainThread JoinNoticeEvent timeMs = " + joinNoticeEvent.info.getTimeMs());
+            MyLog.w(TAG, " onEventMainThread JoinNoticeEvent timeMs = " + joinNoticeEvent.info.getTimeMs() + ", joinNoticeEvent.jsonGameInfo.getReadyClockResMs() " + joinNoticeEvent.jsonGameInfo.getReadyClockResMs());
             // 需要去更新GameInfo
-            if (joinNoticeEvent.jsonGameInfo.getHasJoinedUserCnt() == 3) {
+            if (joinNoticeEvent.jsonGameInfo.getReadyClockResMs() != 0) {
                 if (mMatchState == MatchState.JoinRongYunRoomSuccess) {
                     mMatchState = MatchState.JoinGameSuccess;
 
@@ -308,7 +304,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
                                 MyLog.w(TAG, "checkCurrentGameData result = " + result.getErrno() + " traceId = " + result.getTraceId());
                                 if (result.getErrno() == 0) {
                                     GameInfoModel jsonGameInfo = JSON.parseObject(result.getData().toString(), GameInfoModel.class);
-                                    if (jsonGameInfo.getHasJoinedUserCnt() == ALL_JOIN_NUM) {
+                                    if (jsonGameInfo.getReadyClockResMs() != 0) {
                                         if (mMatchState == MatchState.JoinRongYunRoomSuccess) {
                                             mMatchState = MatchState.JoinGameSuccess;
                                             mJsonGameInfo = jsonGameInfo;
@@ -349,7 +345,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
                 MyLog.w(TAG, "updateUserListState result = " + result.getErrno() + " traceId = " + result.getTraceId());
                 if (result.getErrno() == 0) {
                     GameInfoModel jsonGameInfo = JSON.parseObject(result.getData().toString(), GameInfoModel.class);
-                    if (jsonGameInfo.getHasJoinedUserCnt() == ALL_JOIN_NUM) {
+                    if (jsonGameInfo.getReadyClockResMs() != 0) {
                         if (mMatchState == MatchState.JoinRongYunRoomSuccess) {
                             mMatchState = MatchState.JoinGameSuccess;
                             mJsonGameInfo = jsonGameInfo;
