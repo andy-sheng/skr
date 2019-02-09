@@ -68,7 +68,7 @@
         android:id="@+id/flowlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/view_40_dp"
+        android:layout_marginLeft="@dimen/view_20_dp"
         android:layout_marginTop="@dimen/view_212_dp"
         android:layout_marginRight="@dimen/view_14_dp"></com.common.flowlayout.TagFlowLayout>
 
@@ -108,7 +108,7 @@
             android:gravity="center"
             android:maxLines="1"
             android:textColor="#0C2275"
-            android:textSize="@dimen/textsize_22_dp" />
+            android:textSize="@dimen/textsize_20_dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
