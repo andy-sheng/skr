@@ -99,6 +99,9 @@ public class LogUploadUtils {
         ArrayList<String> lastThreeFiles = new ArrayList<>();
         if (logDir.exists() && logDir.isDirectory()) {
             File[] fileList = logDir.listFiles();
+            if(fileList == null || fileList.length == 0){
+                return lastThreeFiles;
+            }
             // 文件修改时间排序
             Arrays.sort(fileList, new Comparator<File>() {
                 public int compare(File f1, File f2) {
