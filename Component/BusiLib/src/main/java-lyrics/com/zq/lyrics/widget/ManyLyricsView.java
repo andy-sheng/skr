@@ -24,6 +24,7 @@ import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.widget.Scroller;
 
+import com.common.log.MyLog;
 import com.component.busilib.R;
 import com.zq.lyrics.LyricsReader;
 import com.zq.lyrics.model.LyricsInfo;
@@ -803,6 +804,11 @@ public class ManyLyricsView extends AbstractLrcView {
         //获取数据
         LyricsReader lyricsReader = getLyricsReader();
         TreeMap<Integer, LyricsLineInfo> lrcLineInfos = getLrcLineInfos();
+        if(lrcLineInfos == null){
+            MyLog.d(TAG, "updateManyLrcView " + " lrcLineInfos为null");
+            return;
+        }
+
         int lyricsLineNum = getLyricsLineNum();
 
         //

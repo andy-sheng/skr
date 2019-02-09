@@ -6,6 +6,7 @@ import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Shader;
 
+import com.common.log.MyLog;
 import com.zq.lyrics.model.LyricsInfo;
 import com.zq.lyrics.model.LyricsLineInfo;
 import com.zq.lyrics.model.TranslateLrcLineInfo;
@@ -23,6 +24,7 @@ import java.util.TreeMap;
  */
 
 public class LyricsUtils {
+    public final static String TAG = "LyricsUtils";
 
     /**
      * 获取双行动感歌词图片
@@ -754,6 +756,11 @@ public class LyricsUtils {
      * @return
      */
     public static int getLineNumber(int lyricsType, TreeMap<Integer, LyricsLineInfo> lyricsLineTreeMap, long curPlayingTime, long playOffset) {
+
+        if(lyricsLineTreeMap == null){
+            MyLog.e(TAG, "getLineNumber lyricsLineTreeMap 为null，为什么？？？");
+            return 0;
+        }
 
         //添加歌词增量
         long newPlayingTime = curPlayingTime + playOffset;
