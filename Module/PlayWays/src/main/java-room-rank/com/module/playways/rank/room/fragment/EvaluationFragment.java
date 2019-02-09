@@ -520,7 +520,9 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
     @Override
     protected boolean onBackPressed() {
         stopTimeTask();
-        getActivity().finish();
+        if (getActivity() != null) {
+            getActivity().finish();
+        }
         return true;
     }
 }

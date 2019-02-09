@@ -102,7 +102,9 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
                     U.getSoundUtils().play(TAG, R.raw.general_back, 500);
-                    getActivity().finish();
+                    if (getActivity() != null) {
+                        getActivity().finish();
+                    }
                 });
 
         U.getSoundUtils().preLoad(TAG, R.raw.general_button, R.raw.general_back, R.raw.musiclist_nextpage);

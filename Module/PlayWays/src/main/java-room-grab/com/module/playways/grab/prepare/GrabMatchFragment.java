@@ -365,7 +365,9 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
                             if (mPrepareData.getGameType() == GameModeType.GAME_MODE_GRAB) {
                                 BgMusicManager.getInstance().destory();
                             }
-                            getActivity().finish();
+                            if (getActivity() != null) {
+                                getActivity().finish();
+                            }
                             ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
                                     .withInt("key_game_type", mPrepareData.getGameType())
                                     .withBoolean("selectSong", true)
@@ -454,7 +456,9 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
                                     BgMusicManager.getInstance().destory();
                                 }
                                 stopTimeTask();
-                                getActivity().finish();
+                                if (getActivity() != null) {
+                                    getActivity().finish();
+                                }
                                 ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
                                         .withInt("key_game_type", mPrepareData.getGameType())
                                         .withBoolean("selectSong", true)

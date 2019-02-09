@@ -669,7 +669,9 @@ public class AuditionFragment extends BaseFragment {
             mQuitTipsDialog.show();
             return true;
         } else {
-            getActivity().finish();
+            if (getActivity() != null) {
+                getActivity().finish();
+            }
             return true;
         }
     }

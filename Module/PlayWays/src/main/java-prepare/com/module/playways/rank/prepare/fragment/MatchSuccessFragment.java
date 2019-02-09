@@ -372,7 +372,9 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
                 .navigation();
 
         //直接到首页，不是选歌界面
-        getActivity().finish();
+        if (getActivity() != null) {
+            getActivity().finish();
+        }
     }
 
     @Override

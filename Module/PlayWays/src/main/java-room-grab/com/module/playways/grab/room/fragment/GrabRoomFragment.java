@@ -170,7 +170,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     public void initData(@Nullable Bundle savedInstanceState) {
         if (System.currentTimeMillis() - mRoomData.getGameStartTs() > 3 * 60 * 1000) {
             Log.w(TAG, "隔了很久从后台返回的，直接finish Activity");
-            getActivity().finish();
+            if (getActivity() != null) {
+                getActivity().finish();
+            }
             return;
         }
 
@@ -692,7 +694,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
                         @Override
                         public void onClick(View v) {
                             mQuitTipsDialog.dismiss(false);
-                            getActivity().finish();
+                            if (getActivity() != null) {
+                                getActivity().finish();
+                            }
                         }
                     })
                     .setCancelBtnClickListener(new View.OnClickListener() {

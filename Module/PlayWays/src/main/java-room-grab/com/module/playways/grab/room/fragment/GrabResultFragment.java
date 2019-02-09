@@ -88,7 +88,7 @@ public class GrabResultFragment extends BaseFragment {
         mLlBottomArea = (LinearLayout) mRootView.findViewById(R.id.ll_bottom_area);
         mTvBack = (ExTextView) mRootView.findViewById(R.id.tv_back);
         mTvAgain = (ExTextView) mRootView.findViewById(R.id.tv_again);
-        mTvShare = (ExTextView)mRootView.findViewById(R.id.tv_share);
+        mTvShare = (ExTextView) mRootView.findViewById(R.id.tv_share);
 
 
         List<GrabResultInfoModel> list = mRoomData.getResultList();
@@ -106,7 +106,9 @@ public class GrabResultFragment extends BaseFragment {
         RxView.clicks(mTvBack)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
-                    getActivity().finish();
+                    if (getActivity() != null) {
+                        getActivity().finish();
+                    }
                 });
 
         RxView.clicks(mTvShare)
@@ -128,7 +130,9 @@ public class GrabResultFragment extends BaseFragment {
                             .withSerializable("prepare_data", prepareData)
                             .navigation();
 
-                    getActivity().finish();
+                    if (getActivity() != null) {
+                        getActivity().finish();
+                    }
                 });
 
         U.getSoundUtils().preLoad(TAG, R.raw.result);
@@ -204,7 +208,9 @@ public class GrabResultFragment extends BaseFragment {
 
     @Override
     protected boolean onBackPressed() {
-        getActivity().finish();
+        if (getActivity() != null) {
+            getActivity().finish();
+        }
         return super.onBackPressed();
     }
 

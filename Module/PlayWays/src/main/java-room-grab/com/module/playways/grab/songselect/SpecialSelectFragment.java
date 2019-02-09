@@ -107,7 +107,9 @@ public class SpecialSelectFragment extends BaseFragment {
                     @Override
                     public void accept(Object o) {
                         U.getSoundUtils().play(TAG, R.raw.general_back, 500);
-                        getActivity().finish();
+                        if (getActivity() != null) {
+                            getActivity().finish();
+                        }
                     }
                 });
 
@@ -192,7 +194,9 @@ public class SpecialSelectFragment extends BaseFragment {
         if (musicURLs != null && musicURLs.size() > 0) {
             prepareData.setBgMusic(musicURLs.get(0));
         }
-        getActivity().finish();
+        if (getActivity() != null) {
+            getActivity().finish();
+        }
         ARouter.getInstance()
                 .build(RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)
                 .withSerializable("prepare_data", prepareData)

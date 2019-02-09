@@ -220,7 +220,9 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     public void initData(@Nullable Bundle savedInstanceState) {
         if (System.currentTimeMillis() - mRoomData.getGameStartTs() > 3 * 60 * 1000) {
             Log.w(TAG, "隔了很久从后台返回的，直接finish Activity");
-            getActivity().finish();
+            if (getActivity() != null) {
+                getActivity().finish();
+            }
             return;
         }
         // 请保证从下面的view往上面的view开始初始化
@@ -934,7 +936,9 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                         @Override
                         public void onClick(View v) {
                             mQuitTipsDialog.dismiss(false);
-                            getActivity().finish();
+                            if (getActivity() != null) {
+                                getActivity().finish();
+                            }
                         }
                     })
                     .setCancelBtnClickListener(new View.OnClickListener() {

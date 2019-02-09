@@ -117,7 +117,9 @@ public class RankRecordFragment extends BaseFragment implements IVoteView {
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
                     EventBus.getDefault().post(new FinishPlayWayActivityEvent());
-                    getActivity().finish();
+                    if (getActivity() != null) {
+                        getActivity().finish();
+                    }
 
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
                             .withInt("key_game_type", mRoomData.getGameType())
@@ -230,7 +232,9 @@ public class RankRecordFragment extends BaseFragment implements IVoteView {
 
     @Override
     protected boolean onBackPressed() {
-        getActivity().finish();
+        if (getActivity() != null) {
+            getActivity().finish();
+        }
         return true;
     }
 

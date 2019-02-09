@@ -403,7 +403,9 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
         }
 
         //直接到首页，不是选歌界面
-        getActivity().finish();
+        if (getActivity() != null) {
+            getActivity().finish();
+        }
     }
 
     @Override
@@ -446,7 +448,9 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
         } else {
             U.getToastUtil().showShort("您未准备，已经被踢出房间啦");
             U.getSoundUtils().release(TAG);
-            getActivity().finish();
+            if (getActivity() != null) {
+                getActivity().finish();
+            }
             ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
                     .withInt("key_game_type", mPrepareData.getGameType())
                     .withBoolean("selectSong", true)
