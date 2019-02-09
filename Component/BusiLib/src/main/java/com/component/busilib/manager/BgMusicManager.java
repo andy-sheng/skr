@@ -124,6 +124,9 @@ public class BgMusicManager {
 
     public void setRoom(boolean room) {
         mIsRoom = room;
+        if(mIsRoom){
+            destory();
+        }
     }
 
     public boolean isPlaying() {
