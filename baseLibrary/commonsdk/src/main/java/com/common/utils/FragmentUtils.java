@@ -194,6 +194,10 @@ public class FragmentUtils {
         // 这里用 类名做TAG 保证了
         String showTag = params.targetFragment.getName();
 
+        if (params.fragmentActivity == null) {
+            return null;
+        }
+
         FragmentManager fragmentManager = params.fragmentActivity.getSupportFragmentManager();
         Object fragmentObject = fragmentManager.findFragmentByTag(showTag);
 
