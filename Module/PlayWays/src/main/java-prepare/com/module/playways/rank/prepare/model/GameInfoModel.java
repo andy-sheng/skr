@@ -17,7 +17,7 @@ public class GameInfoModel implements Serializable {
 
     private int hasJoinedUserCnt;
     private int readyClockResMs;
-    private List<JoinInfoModel> jsonJoinInfo;
+    private List<JoinInfoModel> joinInfo;
 
     public int getHasJoinedUserCnt() {
         return hasJoinedUserCnt;
@@ -35,12 +35,12 @@ public class GameInfoModel implements Serializable {
         this.readyClockResMs = readyClockResMs;
     }
 
-    public List<JoinInfoModel> getJsonJoinInfo() {
-        return jsonJoinInfo;
+    public List<JoinInfoModel> getJoinInfo() {
+        return joinInfo;
     }
 
-    public void setJsonJoinInfo(List<JoinInfoModel> jsonJoinInfo) {
-        this.jsonJoinInfo = jsonJoinInfo;
+    public void setJoinInfo(List<JoinInfoModel> joinInfo) {
+        this.joinInfo = joinInfo;
     }
 
     public void parse(JoinNoticeMsg joinNoticeMsg) {
@@ -57,7 +57,7 @@ public class GameInfoModel implements Serializable {
             jsonJoinInfo.parse(info);
             jsonJoinInfos.add(jsonJoinInfo);
         }
-        this.setJsonJoinInfo(jsonJoinInfos);
+        this.setJoinInfo(jsonJoinInfos);
 
         return;
     }
