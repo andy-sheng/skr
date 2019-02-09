@@ -134,7 +134,10 @@ public class VoiceControlPanelView extends ScrollView {
     }
 
     public void bindData() {
-        AudioEffectStyleEnum styleEnum = EngineManager.getInstance().getParams().getStyleEnum();
+        AudioEffectStyleEnum styleEnum = null;
+        if (EngineManager.getInstance().getParams() != null) {
+            styleEnum = EngineManager.getInstance().getParams().getStyleEnum();
+        }
 
         if (styleEnum == AudioEffectStyleEnum.POPULAR) {
             mScenesBtnGroup.check(R.id.dianyin_sbtn);
