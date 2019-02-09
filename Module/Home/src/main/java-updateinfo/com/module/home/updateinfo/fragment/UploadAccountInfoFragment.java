@@ -176,7 +176,9 @@ public class UploadAccountInfoFragment extends BaseFragment {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        getActivity().finish();
+                        if (getActivity() != null) {
+                            getActivity().finish();
+                        }
                         ARouter.getInstance().build(RouterConstants.ACTIVITY_LOGIN)
                                 .greenChannel().navigation();
                     }

@@ -153,7 +153,9 @@ public class EditInfoSexFragment extends BaseFragment {
                         .setHasAnimation(true)
                         .build());
             } else {
-                getActivity().finish();
+                if (getActivity() != null) {
+                    getActivity().finish();
+                }
             }
         }
     }
