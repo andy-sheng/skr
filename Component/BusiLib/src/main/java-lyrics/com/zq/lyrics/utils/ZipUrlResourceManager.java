@@ -34,7 +34,11 @@ public class ZipUrlResourceManager {
     volatile long totalLength = 0;
     volatile long downloadLength = 0;
 
-    boolean isFinished = false;
+    boolean mIsFinished = false;
+
+    volatile boolean mIsCancel = false;
+
+    int mFiledTime = 0;
 
     public ZipUrlResourceManager(List<UrlRes> songResArrayList, HttpUtils.OnDownloadProgress onDownloadProgress) {
         this.taskQueue = new LinkedList<>(songResArrayList);
@@ -99,6 +103,10 @@ public class ZipUrlResourceManager {
     }
 
     private void startQueue() {
+        if(mIsCancel){
+            return;
+        }
+
         UrlRes res = null;
         if (taskQueue.size() > 0) {
             res = taskQueue.remove(0);
@@ -113,7 +121,7 @@ public class ZipUrlResourceManager {
                 onDownloadProgress.onCompleted("");
             }
 
-            isFinished = true;
+            mIsFinished = true;
             currentTask = null;
             return;
         }
@@ -181,6 +189,11 @@ public class ZipUrlResourceManager {
             @Override
             public void onFailed() {
                 MyLog.w(TAG, "onFailed");
+                if(++mFiledTime < 10){
+                    taskQueue.add(songRes);
+                    startQueue();
+                }
+
                 if (onDownloadProgress != null) {
                     onDownloadProgress.onFailed();
                 }
@@ -192,7 +205,8 @@ public class ZipUrlResourceManager {
      * 取消当前以及之后的所有task
      */
     public void cancelAllTask() {
-        if(isFinished){
+        mIsCancel = true;
+        if(mIsFinished){
             MyLog.d(TAG, "cancel when tasklist is finished");
             return;
         }
