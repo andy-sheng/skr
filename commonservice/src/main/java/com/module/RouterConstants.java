@@ -37,6 +37,7 @@ public interface RouterConstants {
 
     //WebViewActivity
     String ACTIVITY_WEB = "/common/WebViewActivity";
+    String ACTIVITY_DEBUG_CORE_ACTIVITY = "/debug/DebugCoreActivity";
     String KEY_WEB_URL = "url";
 
     String SERVICE_HOME = "/home/service1";

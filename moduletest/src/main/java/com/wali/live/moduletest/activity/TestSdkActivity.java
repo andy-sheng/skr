@@ -49,7 +49,6 @@ import com.example.smartrefresh.SmartRefreshFragment;
 import com.example.wxcontact.PickContactFragment;
 import com.respicker.ResPicker;
 import com.respicker.fragment.ResPickerFragment;
-import com.respicker.model.ResItem;
 import com.respicker.preview.image.ImagePreviewFragment;
 import com.respicker.model.ImageItem;
 import com.respicker.view.CropImageView;
@@ -85,7 +84,7 @@ public class TestSdkActivity extends BaseActivity {
 
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
-        return R.layout.test_main_layout;
+        return R.layout.debug_core_activity_layout;
     }
 
     void loadAccountInfo() {

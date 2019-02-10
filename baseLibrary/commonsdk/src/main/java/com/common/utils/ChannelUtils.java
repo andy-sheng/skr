@@ -6,11 +6,14 @@ import android.net.Uri;
 import android.text.TextUtils;
 
 
+import com.common.log.MyLog;
+
 import java.lang.reflect.Field;
 
 public class ChannelUtils {
     public final static String TAG = "ChannelUtils";
     private static final String PREF_KEY_CHANNEL = "key_channel";
+    private static final String PREF_KEY_DEBUG_CHANNEL = "key_debug_channel";
     private String channelNameFromBuildConfig = "DEFAULT";
     private String channelNameFromPref;
 
@@ -19,13 +22,20 @@ public class ChannelUtils {
             Class ct = Class.forName(U.getAppInfoUtils().getPackageName() + ".BuildConfig");
             Field field = ct.getField("CHANNEL_NAME");
             channelNameFromBuildConfig = (String) field.get(null);
+            channelNameFromBuildConfig = U.getPreferenceUtils().getSettingString(PREF_KEY_DEBUG_CHANNEL, channelNameFromBuildConfig);
         } catch (Exception e) {
+            MyLog.e(e);
 //            PgyCrashManager.reportCaughtException(e);
         }
     }
 
     public String getChannelNameFromBuildConfig() {
         return channelNameFromBuildConfig;
+    }
+
+    public void setChannelNameFromBuildConfig(String channel) {
+        channelNameFromBuildConfig = channel;
+        U.getPreferenceUtils().setSettingString(PREF_KEY_DEBUG_CHANNEL, channel);
     }
 
     /**

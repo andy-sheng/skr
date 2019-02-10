@@ -274,7 +274,10 @@ public class MyLog {
         } else {
             ScreenLogPrinter.getInstance().onDebugOpenFlagChange(isDebugLogOpen());
         }
+    }
 
+    public static boolean getForceOpenFlag() {
+        return sForceOpenFlag;
     }
 
     public static boolean isDebugLogOpen() {

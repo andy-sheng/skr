@@ -38,11 +38,15 @@ android {
             java.srcDirs += 'src/main/java-engine'
             res.srcDirs += ['src/main/res-engine']
 
+            java.srcDirs += 'src/main/java-debugcore'
+            res.srcDirs += ['src/main/res-debugcore']
+
             res.srcDirs += ['src/main/res']
             res.srcDirs += ['src/main/res-login']
             res.srcDirs += ['src/main/res-cta']
             res.srcDirs += ['src/main/res-config']
             res.srcDirs += ['src/main/res-umeng']
+
         }
     }
 

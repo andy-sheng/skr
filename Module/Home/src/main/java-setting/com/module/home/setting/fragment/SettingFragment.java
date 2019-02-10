@@ -205,11 +205,12 @@ public class SettingFragment extends BaseFragment {
         mVersionTv.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                MyLog.setForceOpenFlag(true);
-                U.getToastUtil().showShort("日志已开");
+                // 跳到调试中心页面
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_DEBUG_CORE_ACTIVITY).navigation();
                 return false;
             }
         });
+
         mVersionTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
