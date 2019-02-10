@@ -11,6 +11,7 @@ import android.util.Pair;
 
 import com.common.download.DownloadTask;
 import com.common.log.MyLog;
+import com.common.statistics.StatisticsAdapter;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -418,7 +419,7 @@ public class HttpUtils {
                 .subscribe();
     }
 
-    public long getFileLength(String urlStr){
+    public long getFileLength(String urlStr) {
         long length = 0;
         try {
             URL url = new URL(urlStr);
@@ -428,7 +429,7 @@ public class HttpUtils {
             HttpURLConnection.setFollowRedirects(true);
             conn.connect();
             length = conn.getContentLength();
-        } catch (Exception e){
+        } catch (Exception e) {
             MyLog.e(TAG, "getFileLength error:" + e);
         } finally {
 
@@ -463,6 +464,7 @@ public class HttpUtils {
         }
         InputStream input = null;
         OutputStream output = null;
+        long startDownMs = System.currentTimeMillis();
         try {
             output = new FileOutputStream(outputFile);
             URL url = new URL(urlStr);
@@ -487,6 +489,11 @@ public class HttpUtils {
                     // 下载取消了
                     if (null != progress) {
                         progress.onCanceled();
+                        // 下载取消打点
+                        long cancelDownMs = System.currentTimeMillis();
+                        HashMap param = new HashMap();
+                        param.put("downUrl", urlStr);
+                        StatisticsAdapter.recordCalculateEvent("download", "cancel", cancelDownMs - startDownMs, param);
                     }
                     mDownLoadMap.remove(urlStr);
                     return false;
@@ -498,12 +505,21 @@ public class HttpUtils {
             }
             if (null != progress) {
                 progress.onCompleted(outputFile.getAbsolutePath());
+                // 下载完成打点
+                long compleDownMs = System.currentTimeMillis();
+                StatisticsAdapter.recordCalculateEvent("download", "sucess", compleDownMs - startDownMs, null);
             }
             mDownLoadMap.remove(urlStr);
             return true;
         } catch (Exception e) {
             if (null != progress) {
                 progress.onFailed();
+                // 下载失败打点
+                long failDownMs = System.currentTimeMillis();
+                HashMap param = new HashMap();
+                param.put("downUrl", urlStr);
+                param.put("exception", e.toString());
+                StatisticsAdapter.recordCalculateEvent("download", "failed", failDownMs - startDownMs, param);
             }
         } finally {
             if (input != null) {

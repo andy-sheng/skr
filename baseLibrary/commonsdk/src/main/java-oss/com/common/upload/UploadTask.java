@@ -21,6 +21,7 @@ import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
 
 import java.io.File;
@@ -161,6 +162,7 @@ public class UploadTask {
     }
 
     private void upload(String filePath, UploadCallback uploadCallback) {
+        long uploadStartMs = System.currentTimeMillis();
         PutObjectRequest request = createRequest(filePath);
 
         request.setProgressCallback(new OSSProgressCallback<PutObjectRequest>() {
@@ -186,17 +188,33 @@ public class UploadTask {
                     String url = jo.getString("url");
                     if (!TextUtils.isEmpty(url)) {
                         uploadCallback.onSuccess(url);
+                        // 上传成功打点
+                        StatisticsAdapter.recordCalculateEvent("upload", "sucess", System.currentTimeMillis() - uploadStartMs, null);
                     } else {
                         uploadCallback.onFailure("上传失败");
+                        // 上传失败打点
+                        HashMap param = new HashMap();
+                        param.put("filePath", filePath);
+                        param.put("fileReason", "url 为空");
+                        StatisticsAdapter.recordCalculateEvent("upload", "failed", System.currentTimeMillis() - uploadStartMs, param);
                     }
                 }
+
             }
 
             @Override
             public void onFailure(PutObjectRequest request, ClientException clientException, ServiceException serviceException) {
                 if (uploadCallback != null) {
                     uploadCallback.onFailure("error:" + serviceException.getErrorCode() + " clientMsg:" + clientException.getMessage() + " serverMsg:" + serviceException.getMessage());
+                    // 上传失败打点
+                    HashMap param = new HashMap();
+                    param.put("filePath", filePath);
+                    param.put("errorCode", serviceException.getErrorCode());
+                    param.put("clientMsg", clientException.getMessage());
+                    param.put("serverMsg", serviceException.getMessage());
+                    StatisticsAdapter.recordCalculateEvent("upload", "failed", System.currentTimeMillis() - uploadStartMs, param);
                 }
+
             }
         });
     }
