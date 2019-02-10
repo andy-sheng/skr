@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.changba.songstudio.CbEngineAdapter;
 import com.changba.songstudio.audioeffect.AudioEffectStyleEnum;
 import com.common.log.MyLog;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.CustomHandlerThread;
 import com.common.utils.DeviceUtils;
 import com.common.utils.U;
@@ -48,6 +49,9 @@ public class EngineManager implements AgoraOutCallback {
     static final int STATUS_UNINIT = 0;
     static final int STATUS_INITING = 1;
     static final int STATUS_INITED = 2;
+    static final int MSG_JOIN_ROOM_TIMEOUT = 11;
+    static final int MSG_JOIN_ROOM_AGAIN = 12;
+
     private Params mConfig = new Params(); // 为了防止崩溃
     private Object mLock = new Object();
 
@@ -58,7 +62,17 @@ public class EngineManager implements AgoraOutCallback {
      */
     private HashMap<Integer, UserStatus> mUserStatusMap = new HashMap<>();
     private HashSet<View> mRemoteViewCache = new HashSet<>();
-    private Handler mUiHandler = new Handler();
+    private Handler mUiHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == MSG_JOIN_ROOM_TIMEOUT) {
+                // 加入房间超时
+                StatisticsAdapter.recordCountEvent("agora", "join_timeout", null);
+                joinRoomInner((String) msg.obj, msg.arg1);
+            }
+        }
+    };
     private Disposable mMusicTimePlayTimeListener;
 
     private String mInitFrom;
@@ -116,6 +130,9 @@ public class EngineManager implements AgoraOutCallback {
         userStatus.setIsSelf(true);
         mConfig.setSelfUid(uid);
         EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_JOIN, userStatus));
+        StatisticsAdapter.recordCalculateEvent("agora", "join_duration", System.currentTimeMillis() - mConfig.getJoinRoomBeginTs(), null);
+        mUiHandler.removeMessages(MSG_JOIN_ROOM_TIMEOUT);
+        mCustomHandlerThread.removeMessage(MSG_JOIN_ROOM_AGAIN);
     }
 
     @Override
@@ -182,11 +199,12 @@ public class EngineManager implements AgoraOutCallback {
      * AUDIO_ROUTE_SPEAKERPHONE(3)：使用手机的扬声器为语音路由。
      * AUDIO_ROUTE_LOUDSPEAKER(4)：使用外接的扬声器为语音路由。
      * AUDIO_ROUTE_HEADSETBLUETOOTH(5)：使用蓝牙耳机为语音路由。
+     *
      * @param routing
      */
     @Override
     public void onAudioRouteChanged(int routing) {
-        MyLog.w(TAG,"onAudioRouteChanged 音频路由发生变化 routing=" + routing);
+        MyLog.w(TAG, "onAudioRouteChanged 音频路由发生变化 routing=" + routing);
     }
 
     private UserStatus ensureJoin(int uid) {
@@ -218,8 +236,10 @@ public class EngineManager implements AgoraOutCallback {
         }
         mCustomHandlerThread = new CustomHandlerThread(TAG) {
             @Override
-            protected void processMessage(Message var1) {
-
+            protected void processMessage(Message msg) {
+                if (msg.what == MSG_JOIN_ROOM_AGAIN) {
+                    joinRoomInner((String) msg.obj, msg.arg1);
+                }
             }
         };
         final int oldStatus = mStatus;
@@ -284,7 +304,7 @@ public class EngineManager implements AgoraOutCallback {
      */
     public void destroy(final String from) {
         MyLog.d(TAG, "destroy" + " from=" + from + " status=" + mStatus);
-        if (!"force" .equals(from)) {
+        if (!"force".equals(from)) {
             if (mInitFrom != null && !mInitFrom.equals(from)) {
                 return;
             }
@@ -304,6 +324,10 @@ public class EngineManager implements AgoraOutCallback {
     }
 
     private void destroyInner(int status) {
+        if (mCustomHandlerThread != null) {
+            mCustomHandlerThread.removeMessage(MSG_JOIN_ROOM_AGAIN);
+        }
+        mUiHandler.removeMessages(MSG_JOIN_ROOM_TIMEOUT);
         if (status == STATUS_INITED) {
             if (mMusicTimePlayTimeListener != null && !mMusicTimePlayTimeListener.isDisposed()) {
                 mMusicTimePlayTimeListener.dispose();
@@ -350,7 +374,7 @@ public class EngineManager implements AgoraOutCallback {
                         AgoraEngineAdapter.getInstance().setClientRole(isAnchor);
                     }
                 }
-                AgoraEngineAdapter.getInstance().joinChannel(null, roomid, "Extra Optional Data", userId);
+                joinRoomInner(roomid, userId);
                 //TODO 临时关闭耳返
 //                if (U.getDeviceUtils().getHeadsetPlugOn()) {
 //                    setEnableSpeakerphone(false);
@@ -361,7 +385,42 @@ public class EngineManager implements AgoraOutCallback {
 //                }
             }
         });
+    }
 
+
+    private void joinRoomInner(final String roomid, final int userId) {
+        MyLog.w(TAG, "joinRoomInner" + " roomid=" + roomid + " userId=" + userId);
+        if (Looper.myLooper() != mCustomHandlerThread.getLooper()) {
+            MyLog.d(TAG, "joinRoomInner not looper");
+            mCustomHandlerThread.post(new Runnable() {
+                @Override
+                public void run() {
+                    joinRoomInner(roomid, userId);
+                }
+            });
+            return;
+        }
+        int retCode = AgoraEngineAdapter.getInstance().joinChannel(null, roomid, "Extra Optional Data", userId);
+        if (retCode < 0) {
+            HashMap map = new HashMap();
+            map.put("reason", retCode);
+            StatisticsAdapter.recordCountEvent("agora", "join_failed", map);
+            Message msg = mCustomHandlerThread.obtainMessage();
+            msg.what = MSG_JOIN_ROOM_AGAIN;
+            msg.obj = roomid;
+            msg.arg1 = userId;
+            mCustomHandlerThread.removeMessage(MSG_JOIN_ROOM_AGAIN);
+            mCustomHandlerThread.sendMessageDelayed(msg, 2000);
+        } else {
+            //告诉我成功
+            mConfig.setJoinRoomBeginTs(System.currentTimeMillis());
+            Message msg = mUiHandler.obtainMessage();
+            msg.what = MSG_JOIN_ROOM_TIMEOUT;
+            msg.obj = roomid;
+            msg.arg1 = userId;
+            mUiHandler.removeMessages(MSG_JOIN_ROOM_TIMEOUT);
+            mUiHandler.sendMessageDelayed(msg, 4000);
+        }
     }
 
     public void setClientRole(final boolean isAnchor) {
@@ -912,7 +971,7 @@ public class EngineManager implements AgoraOutCallback {
      * 请在频道内调用该方法。
      */
     public void stopAudioMixing() {
-        MyLog.d(TAG,"stopAudioMixing" );
+        MyLog.d(TAG, "stopAudioMixing");
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {
@@ -939,7 +998,7 @@ public class EngineManager implements AgoraOutCallback {
      * 继续播放混音
      */
     public void resumeAudioMixing() {
-        MyLog.d(TAG,"resumeAudioMixing" );
+        MyLog.d(TAG, "resumeAudioMixing");
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {
@@ -958,7 +1017,7 @@ public class EngineManager implements AgoraOutCallback {
      * 暂停播放音乐文件及混音
      */
     public void pauseAudioMixing() {
-        MyLog.d(TAG,"pauseAudioMixing" );
+        MyLog.d(TAG, "pauseAudioMixing");
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {
@@ -987,7 +1046,7 @@ public class EngineManager implements AgoraOutCallback {
 
                     @Override
                     public void accept(Long aLong) throws Exception {
-                        MyLog.d(TAG, "PlayTimeListener accept ts="+aLong);
+                        MyLog.d(TAG, "PlayTimeListener accept ts=" + aLong);
                         int currentPostion = getAudioMixingCurrentPosition();
                         mConfig.setCurrentMusicTs(currentPostion);
                         mConfig.setRecordCurrentMusicTsTs(System.currentTimeMillis());
@@ -1067,7 +1126,7 @@ public class EngineManager implements AgoraOutCallback {
      * 请确保 App 里指定的目录存在且可写。该接口需在加入频道之后调用。如果调用 leaveChannel 时还在录音，录音会自动停止。
      */
     public void startAudioRecording(final String saveAudioForAiFilePath, final int audioRecordingQualityHigh) {
-        MyLog.d(TAG,"startAudioRecording" + " saveAudioForAiFilePath=" + saveAudioForAiFilePath + " audioRecordingQualityHigh=" + audioRecordingQualityHigh);
+        MyLog.d(TAG, "startAudioRecording" + " saveAudioForAiFilePath=" + saveAudioForAiFilePath + " audioRecordingQualityHigh=" + audioRecordingQualityHigh);
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {
@@ -1092,7 +1151,7 @@ public class EngineManager implements AgoraOutCallback {
      * 该方法停止录音。该接口需要在 leaveChannel 之前调用，不然会在调用 leaveChannel 时自动停止。
      */
     public void stopAudioRecording() {
-        MyLog.d(TAG,"stopAudioRecording" );
+        MyLog.d(TAG, "stopAudioRecording");
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {

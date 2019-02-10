@@ -100,6 +100,7 @@ public class Params implements Serializable {
     private int mCurrentMusicTs;
     private long mRecordCurrentMusicTsTs;
     private boolean mLrcHasStart;
+    private long mJoinRoomBeginTs; // 开始加入房间的时间
 
     public static Builder newBuilder(int channelProfile) {
         return new Builder().setChannelProfile(channelProfile);
@@ -447,6 +448,14 @@ public class Params implements Serializable {
 
     public boolean getLrcHasStart() {
         return mLrcHasStart;
+    }
+
+    public void setJoinRoomBeginTs(long joinRoomBeginTs) {
+        mJoinRoomBeginTs = joinRoomBeginTs;
+    }
+
+    public long getJoinRoomBeginTs() {
+        return mJoinRoomBeginTs;
     }
 
     public static class Builder {

@@ -376,11 +376,12 @@ public class AgoraEngineAdapter {
      * 频道内每个用户的 UID 必须是唯一的。如果将 UID 设为 0，系统将自动分配一个 UID。
      * 如果已在频道中，用户必须调用 leaveChannel 方法退出当前频道，才能进入下一个频道。
      */
-    public void joinChannel(String token, String channelId, String extra, int uid) {
+    public int joinChannel(String token, String channelId, String extra, int uid) {
         tryInitRtcEngine();
         MyLog.d(TAG, "joinChannel" + " token=" + token + " channelId=" + channelId + " extra=" + extra + " uid=" + uid);
         // 一定要设置一个角色
-        mRtcEngine.joinChannel(token, channelId, extra, uid);
+        int retCode = mRtcEngine.joinChannel(token, channelId, extra, uid);
+        return retCode;
     }
 
     /*视频渲染相关开始*/
