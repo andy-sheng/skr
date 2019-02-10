@@ -205,7 +205,7 @@ public class ScreenLogView extends RelativeLayout {
 
             @Override
             public int getNotifyInterval() {
-                return 1000;
+                return 2000;
             }
 
             @Override

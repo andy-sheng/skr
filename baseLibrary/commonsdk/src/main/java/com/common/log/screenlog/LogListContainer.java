@@ -1,17 +1,12 @@
 package com.common.log.screenlog;
 
-import android.util.Log;
-
-import com.common.log.MyFlattener;
+import android.os.Message;
+import com.common.utils.CustomHandlerThread;
 import com.common.utils.U;
 import com.elvishew.xlog.LogLevel;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Locale;
 
 public class LogListContainer {
 
@@ -21,6 +16,10 @@ public class LogListContainer {
     }
 
     public static final int MAX_COUNT = 2000;
+
+    public static final int MSG_REFRESH = 10;
+
+    CustomHandlerThread mCustomHandlerThread;
 
     HashMap<String, Integer> mTagNumMap = new HashMap<>();
 
@@ -45,60 +44,71 @@ public class LogListContainer {
         mTail = mHead;
         mLength = 1;
         mLastInput = mTail;
+        mCustomHandlerThread = new CustomHandlerThread("LogListContainer") {
+            @Override
+            protected void processMessage(Message msg) {
+                if (msg.what == MSG_REFRESH){
+                    addLogInner((LogModel) msg.obj);
+                }
+            }
+        };
     }
 
     public void addLog(LogModel logModel) {
-        synchronized (this) {
-            if (mTagNumMap.containsKey(logModel.tag)) {
-                int n = mTagNumMap.get(logModel.tag);
-                mTagNumMap.put(logModel.tag, n + 1);
-            } else {
-                mTagNumMap.put(logModel.tag, 1);
-            }
-            Node node = new Node();
-            node.mLogModel = logModel;
-            mTail.next = node;
-            mTail = node;
-            if (mLastInput == null) {
-                mLastInput = mTail;
-            }
-            mLength++;
-            if (mLength > MAX_COUNT) {
-                mLength = MAX_COUNT;
-                Node t = mHead;
-                mHead = mHead.next;
-                t.next = null;
-            }
-            if (mListener != null) {
-                long now = System.currentTimeMillis();
-                if (now - mLastNotifyTs > mListener.getNotifyInterval()) {
-                    mLastNotifyTs = System.currentTimeMillis();
-                    StringBuilder sb = new StringBuilder();
-                    while (mLastInput != null) {
-                        LogModel l = mLastInput.mLogModel;
-                        if (mListener.accept(l.tag)) {
-                            sb.append(flatten(l)).append("\n");
-                        }
-                        mLastInput = mLastInput.next;
+        Message msg = mCustomHandlerThread.obtainMessage();
+        msg.what = MSG_REFRESH;
+        msg.obj = logModel;
+        mCustomHandlerThread.sendMessage(msg);
+    }
+
+    private void addLogInner(LogModel logModel){
+        if (mTagNumMap.containsKey(logModel.tag)) {
+            int n = mTagNumMap.get(logModel.tag);
+            mTagNumMap.put(logModel.tag, n + 1);
+        } else {
+            mTagNumMap.put(logModel.tag, 1);
+        }
+        Node node = new Node();
+        node.mLogModel = logModel;
+        mTail.next = node;
+        mTail = node;
+        if (mLastInput == null) {
+            mLastInput = mTail;
+        }
+        mLength++;
+        if (mLength > MAX_COUNT) {
+            mLength = MAX_COUNT;
+            Node t = mHead;
+            mHead = mHead.next;
+            t.next = null;
+        }
+        if (mListener != null) {
+            long now = System.currentTimeMillis();
+            if (now - mLastNotifyTs > mListener.getNotifyInterval()) {
+                mLastNotifyTs = System.currentTimeMillis();
+                StringBuilder sb = new StringBuilder();
+                while (mLastInput != null) {
+                    LogModel l = mLastInput.mLogModel;
+                    if (mListener.accept(l.tag)) {
+                        sb.append(flatten(l)).append("\n");
                     }
-                    // 通知更新
-                    mListener.notifyLogUpdate(sb.toString());
+                    mLastInput = mLastInput.next;
                 }
+                // 通知更新
+                mListener.notifyLogUpdate(sb.toString());
             }
         }
     }
 
     public String getLogByTag(HashSet<String> set) {
         StringBuilder sb = new StringBuilder();
-        synchronized (this) {
-            mLastInput = mHead;
-            while (mLastInput != null) {
-                if (set == null || set.contains(mLastInput.mLogModel.tag)) {
-                    LogModel l = mLastInput.mLogModel;
-                    sb.append(flatten(l)).append("\n");
-                }
-                mLastInput = mLastInput.next;
+        mLastInput = mHead;
+        while (mLastInput != null) {
+            if (set == null || set.contains(mLastInput.mLogModel.tag)) {
+                LogModel l = mLastInput.mLogModel;
+                sb.append(flatten(l)).append("\n");
             }
+            mLastInput = mLastInput.next;
         }
         return sb.toString();
     }
