@@ -162,9 +162,9 @@ public class ZipUrlResourceManager {
                 File newName = new File(songRes.getAbsolutPath());
 
                 if (oldName.renameTo(newName)) {
-                    System.out.println("已重命名");
+                    MyLog.w(TAG, "已重命名");
                 } else {
-                    System.out.println("Error");
+                    MyLog.w(TAG, "重命名失败");
                 }
 
                 startQueue();
@@ -172,6 +172,7 @@ public class ZipUrlResourceManager {
 
             @Override
             public void onCanceled() {
+                MyLog.w(TAG, "onCanceled");
                 if (onDownloadProgress != null) {
                     onDownloadProgress.onCanceled();
                 }
@@ -179,6 +180,7 @@ public class ZipUrlResourceManager {
 
             @Override
             public void onFailed() {
+                MyLog.w(TAG, "onFailed");
                 if (onDownloadProgress != null) {
                     onDownloadProgress.onFailed();
                 }

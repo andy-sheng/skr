@@ -115,17 +115,11 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
             @Override
             public void onCanceled() {
                 MyLog.d(TAG, "onCanceled");
-                mUiHandler.post(() -> {
-
-                });
             }
 
             @Override
             public void onFailed() {
                 MyLog.d(TAG, "onFailed");
-                mUiHandler.post(() -> {
-
-                });
             }
         };
 
