@@ -189,13 +189,12 @@ public class UploadTask {
                     if (!TextUtils.isEmpty(url)) {
                         uploadCallback.onSuccess(url);
                         // 上传成功打点
-                        StatisticsAdapter.recordCalculateEvent("upload", "sucess", System.currentTimeMillis() - uploadStartMs, null);
+                        StatisticsAdapter.recordCalculateEvent("upload", "success", System.currentTimeMillis() - uploadStartMs, null);
                     } else {
                         uploadCallback.onFailure("上传失败");
                         // 上传失败打点
                         HashMap param = new HashMap();
-                        param.put("filePath", filePath);
-                        param.put("fileReason", "url 为空");
+                        param.put("reason", "url为空");
                         StatisticsAdapter.recordCalculateEvent("upload", "failed", System.currentTimeMillis() - uploadStartMs, param);
                     }
                 }
@@ -205,13 +204,11 @@ public class UploadTask {
             @Override
             public void onFailure(PutObjectRequest request, ClientException clientException, ServiceException serviceException) {
                 if (uploadCallback != null) {
-                    uploadCallback.onFailure("error:" + serviceException.getErrorCode() + " clientMsg:" + clientException.getMessage() + " serverMsg:" + serviceException.getMessage());
+                    String log = "error:" + serviceException.getErrorCode() + " clientMsg:" + clientException.getMessage() + " serverMsg:" + serviceException.getMessage();
+                    uploadCallback.onFailure(log);
                     // 上传失败打点
                     HashMap param = new HashMap();
-                    param.put("filePath", filePath);
-                    param.put("errorCode", serviceException.getErrorCode());
-                    param.put("clientMsg", clientException.getMessage());
-                    param.put("serverMsg", serviceException.getMessage());
+                    param.put("reason", log);
                     StatisticsAdapter.recordCalculateEvent("upload", "failed", System.currentTimeMillis() - uploadStartMs, param);
                 }
 

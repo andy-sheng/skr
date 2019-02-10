@@ -464,7 +464,7 @@ public class HttpUtils {
         }
         InputStream input = null;
         OutputStream output = null;
-        long startDownMs = System.currentTimeMillis();
+        long startDownloadMs = System.currentTimeMillis();
         try {
             output = new FileOutputStream(outputFile);
             URL url = new URL(urlStr);
@@ -493,7 +493,7 @@ public class HttpUtils {
                         long cancelDownMs = System.currentTimeMillis();
                         HashMap param = new HashMap();
                         param.put("downUrl", urlStr);
-                        StatisticsAdapter.recordCalculateEvent("download", "cancel", cancelDownMs - startDownMs, param);
+                        StatisticsAdapter.recordCalculateEvent("download", "cancel", cancelDownMs - startDownloadMs, param);
                     }
                     mDownLoadMap.remove(urlStr);
                     return false;
@@ -507,7 +507,7 @@ public class HttpUtils {
                 progress.onCompleted(outputFile.getAbsolutePath());
                 // 下载完成打点
                 long compleDownMs = System.currentTimeMillis();
-                StatisticsAdapter.recordCalculateEvent("download", "sucess", compleDownMs - startDownMs, null);
+                StatisticsAdapter.recordCalculateEvent("download", "success", compleDownMs - startDownloadMs, null);
             }
             mDownLoadMap.remove(urlStr);
             return true;
@@ -519,7 +519,7 @@ public class HttpUtils {
                 HashMap param = new HashMap();
                 param.put("downUrl", urlStr);
                 param.put("exception", e.toString());
-                StatisticsAdapter.recordCalculateEvent("download", "failed", failDownMs - startDownMs, param);
+                StatisticsAdapter.recordCalculateEvent("download", "failed", failDownMs - startDownloadMs, param);
             }
         } finally {
             if (input != null) {

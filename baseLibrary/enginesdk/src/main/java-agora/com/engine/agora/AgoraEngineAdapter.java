@@ -226,6 +226,7 @@ public class AgoraEngineAdapter {
                 try {
                     if (mRtcEngine == null) {
                         mRtcEngine = RtcEngine.create(U.app(), APP_ID, mCallback);
+                        //mRtcEngine.setParameters("{\"rtc.log_filter\": 65535}");
                         mRtcEngine.setLogFile(U.getAppInfoUtils().getSubDirPath("logs") + "agorasdk.log");
                         // 模式为广播,必须在加入频道前调用
                         // 如果想要切换模式，则需要先调用 destroy 销毁当前引擎，然后使用 create 创建一个新的引擎后，再调用该方法设置新的频道模式
