@@ -292,7 +292,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
         MyLog.d(TAG, "checkCurrentGameData");
 
         mCheckJoinStateTask = HandlerTaskTimer.newBuilder()
-                .delay(3000)
+                .delay(5000)
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
@@ -310,17 +310,17 @@ public class MatchPresenter extends RxLifeCyclePresenter {
                                             mJsonGameInfo = jsonGameInfo;
                                             mView.matchSucess(mCurrentGameId, joinActionEvent.gameCreateMs, joinActionEvent.playerInfoList, joinActionEvent.info.getSender().getAvatar(), joinActionEvent.songModelList);
                                         } else {
-                                            MyLog.d(TAG, "3 秒后拉去信息回来发现当前状态不是 JoinRongYunRoomSuccess");
+                                            MyLog.d(TAG, "5秒后拉去信息回来发现当前状态不是 JoinRongYunRoomSuccess");
                                             //跟下面的更新唯一的区别就是三秒钟之后人还不全就从新match
                                             startLoopMatchTask(mCurrentMusicId, mGameType);
                                         }
                                     } else {
-                                        MyLog.d(TAG, "3秒后拉完房间信息人数不够3个，需要重新match了");
+                                        MyLog.d(TAG, "5秒后拉完房间信息人数不够3个，需要重新match了");
                                         // TODO: 2018/12/12 方便测试这个先注掉
                                         startLoopMatchTask(mCurrentMusicId, mGameType);
                                     }
                                 } else {
-                                    MyLog.d(TAG, "3秒钟后拉去的信息返回的resule error code不是 0,是" + result.getErrno());
+                                    MyLog.d(TAG, "5秒钟后拉去的信息返回的resule error code不是 0,是" + result.getErrno());
                                     startLoopMatchTask(mCurrentMusicId, mGameType);
                                 }
                             }
