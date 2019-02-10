@@ -301,7 +301,9 @@ public class GameFragment extends BaseFragment {
             mRankText.post(new Runnable() {
                 @Override
                 public void run() {
-                    mPopupWindow.showAsDropDown(mRankText);
+                    if (GameFragment.this.fragmentVisible) {
+                        mPopupWindow.showAsDropDown(mRankText);
+                    }
                 }
             });
         } else {
@@ -315,7 +317,9 @@ public class GameFragment extends BaseFragment {
             mRankText.post(new Runnable() {
                 @Override
                 public void run() {
-                    mPopupWindow.showAsDropDown(mRankText);
+                    if (GameFragment.this.fragmentVisible) {
+                        mPopupWindow.showAsDropDown(mRankText);
+                    }
                 }
             });
         }
