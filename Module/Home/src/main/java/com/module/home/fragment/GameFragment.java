@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.view.Gravity;
 import android.view.View;
@@ -20,6 +21,7 @@ import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONException;
 import com.common.banner.BannerImageLoader;
 import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
@@ -39,6 +41,7 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.FragmentUtils;
+import com.common.utils.PreferenceUtils;
 import com.common.utils.ToastUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
@@ -340,34 +343,47 @@ public class GameFragment extends BaseFragment {
     }
 
     private void initOperationArea() {
+        String slideshow = U.getPreferenceUtils().getSettingString("slideshow", "");
+        if(!TextUtils.isEmpty(slideshow)){
+            try {
+                List<SlideShowModel> slideShowModelList = JSON.parseArray(slideshow, SlideShowModel.class);
+                setBannerImage(slideShowModelList);
+            } catch (Exception e) {
+                MyLog.e(TAG, e);
+            }
+        }
+
         mMainPageSlideApi = ApiManager.getInstance().createService(MainPageSlideApi.class);
         ApiMethods.subscribe(mMainPageSlideApi.getSlideList(), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     List<SlideShowModel> slideShowModelList = JSON.parseArray(result.getData().getString("slideshow"), SlideShowModel.class);
-                    if (slideShowModelList == null || slideShowModelList.size() == 0) {
-                        MyLog.d(TAG, "initOperationArea 为null");
-                        return;
-                    }
-
-                    mBannerView.setVisibility(View.VISIBLE);
-
-                    MyLog.d(TAG, "initOperationArea " + slideShowModelList.get(0).getCoverURL());
-                    mBannerView.setImages(getSlideUrlList(slideShowModelList))
-                            .setImageLoader(new BannerImageLoader())
-                            .setOnBannerListener(new OnBannerListener() {
-                                @Override
-                                public void OnBannerClick(int position) {
-                                    ARouter.getInstance().build(RouterConstants.ACTIVITY_SHARE_WEB)
-                                            .withString("url", slideShowModelList.get(position).getLinkURL())
-                                            .greenChannel().navigation();
-                                }
-                            })
-                            .start();
+                    U.getPreferenceUtils().setSettingString("slideshow", result.getData().getString("slideshow"));
+                    setBannerImage(slideShowModelList);
                 }
             }
         });
+    }
+
+    private void setBannerImage(List<SlideShowModel> slideShowModelList){
+        if (slideShowModelList == null || slideShowModelList.size() == 0) {
+            MyLog.w(TAG, "initOperationArea 为null");
+            return;
+        }
+
+        MyLog.d(TAG, "initOperationArea " + slideShowModelList.get(0).getCoverURL());
+        mBannerView.setImages(getSlideUrlList(slideShowModelList))
+                .setImageLoader(new BannerImageLoader())
+                .setOnBannerListener(new OnBannerListener() {
+                    @Override
+                    public void OnBannerClick(int position) {
+                        ARouter.getInstance().build(RouterConstants.ACTIVITY_SHARE_WEB)
+                                .withString("url", slideShowModelList.get(position).getLinkURL())
+                                .greenChannel().navigation();
+                    }
+                })
+                .start();
     }
 
     private ArrayList<String> getSlideUrlList(List<SlideShowModel> slideShowModelList) {
