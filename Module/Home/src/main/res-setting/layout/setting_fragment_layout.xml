@@ -221,7 +221,8 @@
         android:id="@+id/log_update"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_60_dp"
-        android:layout_below="@id/comment">
+        android:layout_below="@id/comment"
+        android:visibility="gone">
 
         <com.common.view.ex.ExTextView
             android:layout_width="wrap_content"

@@ -74,8 +74,6 @@ public class SettingFragment extends BaseFragment {
 
     ExTextView mCacheSizeTv;
 
-    RelativeLayout mLogUpdate;
-
     ProgressBar mUploadProgressBar;
 
 
@@ -101,7 +99,6 @@ public class SettingFragment extends BaseFragment {
         mExitLogin = (ExTextView) mRootView.findViewById(R.id.exit_login);
         mVersionTv = (ExTextView) mRootView.findViewById(R.id.version_tv);
         mCacheSizeTv = (ExTextView) mRootView.findViewById(R.id.cache_size_tv);
-        mLogUpdate = (RelativeLayout) mRootView.findViewById(R.id.log_update);
         mUploadProgressBar = (ProgressBar)mRootView.findViewById(R.id.upload_progress_bar);
 
 
@@ -149,16 +146,6 @@ public class SettingFragment extends BaseFragment {
                                 .setAddToBackStack(true)
                                 .setHasAnimation(true)
                                 .build());
-                    }
-                });
-
-        RxView.clicks(mLogUpdate)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        mUploadProgressBar.setVisibility(View.VISIBLE);
-                        U.getLogUploadUtils().upload(MyUserInfoManager.getInstance().getUid());
                     }
                 });
 
@@ -371,15 +358,8 @@ public class SettingFragment extends BaseFragment {
         U.getSoundUtils().release(TAG);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(LogUploadUtils.UploadLogEvent event) {
-        mUploadProgressBar.setVisibility(View.GONE);
-
-        U.getToastUtil().showShort(event.mIsSuccess ? "反馈成功" : "反馈失败");
-    }
-
     @Override
     public boolean useEventBus() {
-        return true;
+        return false;
     }
 }

@@ -4,16 +4,23 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.common.base.BaseFragment;
+import com.common.core.myinfo.MyUserInfoManager;
+import com.common.utils.LogUploadUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.NoLeakEditText;
 import com.common.view.titlebar.CommonTitleBar;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.home.R;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.concurrent.TimeUnit;
 
@@ -28,6 +35,8 @@ public class FeedbackFragment extends BaseFragment {
     NoLeakEditText mFeedbackContent;
     ExTextView mContentTextSize;
     ExTextView mSubmitTv;
+
+    ProgressBar mUploadProgressBar;
 
     int before;  // 记录之前的位置
 
@@ -46,6 +55,8 @@ public class FeedbackFragment extends BaseFragment {
         mFeedbackContent = (NoLeakEditText)mRootView.findViewById(R.id.feedback_content);
         mContentTextSize = (ExTextView)mRootView.findViewById(R.id.content_text_size);
         mSubmitTv = (ExTextView)mRootView.findViewById(R.id.submit_tv);
+        mUploadProgressBar = (ProgressBar)mRootView.findViewById(R.id.upload_progress_bar);
+
 
         RxView.clicks(mTitlebar.getLeftTextView())
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
@@ -89,7 +100,8 @@ public class FeedbackFragment extends BaseFragment {
                     @Override
                     public void accept(Object o) {
                         U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-                        U.getFragmentUtils().popFragment(FeedbackFragment.this);
+                        mUploadProgressBar.setVisibility(View.VISIBLE);
+                        U.getLogUploadUtils().upload(MyUserInfoManager.getInstance().getUid());
                     }
                 });
 
@@ -97,6 +109,14 @@ public class FeedbackFragment extends BaseFragment {
 
     @Override
     public boolean useEventBus() {
-        return false;
+        return true;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(LogUploadUtils.UploadLogEvent event) {
+        mUploadProgressBar.setVisibility(View.GONE);
+        U.getToastUtil().showShort(event.mIsSuccess ? "反馈成功" : "反馈失败");
+
+        U.getFragmentUtils().popFragment(FeedbackFragment.this);
     }
 }
