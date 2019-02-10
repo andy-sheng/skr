@@ -9,16 +9,21 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.core.account.UserAccountManager;
 import com.common.core.upgrade.UpgradeManager;
+import com.common.core.upgrade.UpgradeCheckApi;
+import com.common.rxretrofit.ApiManager;
+import com.common.rxretrofit.ApiMethods;
+import com.common.rxretrofit.ApiObserver;
+import com.common.rxretrofit.ApiResult;
 import com.common.utils.FragmentUtils;
 import com.common.utils.RomUtils;
 import com.common.utils.U;
+import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
 import com.dialog.view.TipsDialogView;
@@ -57,13 +62,17 @@ public class SettingFragment extends BaseFragment {
     RelativeLayout mUserFeedback;
     RelativeLayout mServiceAgreen;
     RelativeLayout mComment;
-    ExTextView mExitLogin;
+
+    RelativeLayout mVersionArea;
+    ExImageView mNewVersionIv;
     ExTextView mVersionTv;
+    ExImageView mVersionArrow;
+
+    ExTextView mExitLogin;
 
     ExTextView mCacheSizeTv;
 
-    ProgressBar mUploadProgressBar;
-
+    boolean hasNewVersion = false; // 判断是否有新版本
 
     static final String[] CACHE_CAN_DELETE = {
             "fresco", "gif", "upload"
@@ -84,13 +93,18 @@ public class SettingFragment extends BaseFragment {
         mUserFeedback = (RelativeLayout) mRootView.findViewById(R.id.user_feedback);
         mServiceAgreen = (RelativeLayout) mRootView.findViewById(R.id.service_agreen);
         mComment = (RelativeLayout) mRootView.findViewById(R.id.comment);
-        mExitLogin = (ExTextView) mRootView.findViewById(R.id.exit_login);
-        mVersionTv = (ExTextView) mRootView.findViewById(R.id.version_tv);
         mCacheSizeTv = (ExTextView) mRootView.findViewById(R.id.cache_size_tv);
-        mUploadProgressBar = (ProgressBar)mRootView.findViewById(R.id.upload_progress_bar);
 
+        mVersionArea = (RelativeLayout) mRootView.findViewById(R.id.version_area);
+        mNewVersionIv = (ExImageView) mRootView.findViewById(R.id.new_version_iv);
+        mVersionTv = (ExTextView) mRootView.findViewById(R.id.version_tv);
+        mVersionArrow = (ExImageView) mRootView.findViewById(R.id.version_arrow);
+        mExitLogin = (ExTextView) mRootView.findViewById(R.id.exit_login);
 
         U.getSoundUtils().preLoad(TAG, R.raw.general_back, R.raw.allclick);
+
+        initCache();
+        initVersion();
 
         RxView.clicks(mTitlebar.getLeftTextView())
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
@@ -180,17 +194,9 @@ public class SettingFragment extends BaseFragment {
                         exitLogin();
                     }
                 });
-        long cacheSize = U.getPreferenceUtils().getSettingLong("key_cache_size", 0);
-        long cacheLastUpdateTs = U.getPreferenceUtils().getSettingLong("key_cache_update_ts", 0);
-        setCacheSize(cacheSize);
-        if (System.currentTimeMillis() - cacheLastUpdateTs > 2 * 60 * 1000) {
-            // 大于两分钟了，可以重新算下
-            computeCache();
-        }
 
-        mVersionTv.setText("当前版本:" + U.getAppInfoUtils().getVersionName());
-
-        mVersionTv.setOnLongClickListener(new View.OnLongClickListener() {
+        mVersionTv.setText("版本号:" + U.getAppInfoUtils().getVersionName());
+        mVersionArea.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 // 跳到调试中心页面
@@ -199,13 +205,48 @@ public class SettingFragment extends BaseFragment {
             }
         });
 
-        mVersionTv.setOnClickListener(new View.OnClickListener() {
+        mVersionArea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UpgradeManager.getInstance().checkUpdate2();
+                if (hasNewVersion) {
+                    UpgradeManager.getInstance().checkUpdate2();
+                }
             }
         });
     }
+
+    private void initVersion() {
+        UpgradeCheckApi checkApi = ApiManager.getInstance().createService(UpgradeCheckApi.class);
+        ApiMethods.subscribe(checkApi.getUpdateInfo(U.getAppInfoUtils().getPackageName(), 2, 1, U.getAppInfoUtils().getVersionCode()),
+                new ApiObserver<ApiResult>() {
+                    @Override
+                    public void process(ApiResult apiResult) {
+                        if (apiResult.getErrno() == 0) {
+                            boolean needUpdate = apiResult.getData().getBoolean("needUpdate");
+                            if (needUpdate) {
+                                hasNewVersion = true;
+                                mNewVersionIv.setVisibility(View.VISIBLE);
+                                mVersionArrow.setVisibility(View.VISIBLE);
+                            } else {
+                                hasNewVersion = false;
+                                mNewVersionIv.setVisibility(View.GONE);
+                                mVersionArrow.setVisibility(View.INVISIBLE);
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void initCache() {
+        long cacheSize = U.getPreferenceUtils().getSettingLong("key_cache_size", 0);
+        long cacheLastUpdateTs = U.getPreferenceUtils().getSettingLong("key_cache_update_ts", 0);
+        setCacheSize(cacheSize);
+        if (System.currentTimeMillis() - cacheLastUpdateTs > 2 * 60 * 1000) {
+            // 大于两分钟了，可以重新算下
+            computeCache();
+        }
+    }
+
 
     private void exitLogin() {
         TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())

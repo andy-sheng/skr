@@ -14,7 +14,7 @@ public interface RouterConstants {
     String ACTIVITY_PLAY_WAYS = "/rankingmode/PlayWaysActivity";
     String ACTIVITY_RANK_ROOM = "/rankingmode/RankRoomActivity";
     String ACTIVITY_GRAB_ROOM = "/rankingmode/GrabRoomActivity";
-    String ACTIVITY_SHARE_WEB = "/rankingmode/ShareWebViewActivityoooo";
+    String ACTIVITY_SHARE_WEB = "/rankingmode/ShareWebActivity";
     String ACTIVITY_GRAB_MATCH_ROOM = "/rankingmode/GrabMatchActivity";
 
     String ACTIVITY_DEVICE_INFO = "/test/DeviceInfoActivity";
@@ -36,7 +36,7 @@ public interface RouterConstants {
     String ACTIVITY_CHANNEL_LIST_SDK = "/channel/ChannelListSdkActivity";
 
     //WebViewActivity
-    String ACTIVITY_WEB = "/common/WebViewActivity";
+    String ACTIVITY_WEB = "/common/AgentWebActivity";
     String ACTIVITY_DEBUG_CORE_ACTIVITY = "/debug/DebugCoreActivity";
     String KEY_WEB_URL = "url";
 

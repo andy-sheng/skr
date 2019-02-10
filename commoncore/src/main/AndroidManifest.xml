@@ -45,7 +45,9 @@
 
         <activity android:name="com.xiaomi.account.openauth.AuthorizeActivity" />
 
-        <activity android:name="com.debugcore.DebugCoreActivity">
+        <activity
+            android:name="com.debugcore.DebugCoreActivity"
+            android:screenOrientation="portrait">
 
         </activity>
 

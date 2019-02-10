@@ -27,7 +27,7 @@ import com.just.agentweb.MiddlewareWebClientBase;
 
 import static com.common.view.titlebar.CommonTitleBar.ACTION_LEFT_TEXT;
 
-@Route(path = "/common/WebViewActivity")
+@Route(path = "/common/AgentWebActivity")
 public class AgentWebActivity extends BaseActivity {
 
     protected AgentWeb mAgentWeb;
