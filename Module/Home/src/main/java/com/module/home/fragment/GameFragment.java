@@ -405,7 +405,7 @@ public class GameFragment extends BaseFragment {
             public void onAnimationEnd(Animator animator) {
                 if (!mTag.contains(tag)) {
                     mTag.add(tag);
-                    U.getToastUtil().showShort("您的网络有延迟");
+                    //U.getToastUtil().showShort("您的网络有延迟");
                     return;
                 }
 
@@ -474,6 +474,9 @@ public class GameFragment extends BaseFragment {
         ApiMethods.subscribe(mMainPageSlideApi.getGameConfig(mode, true), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
+                if (result == null) {
+                    U.getToastUtil().showShort("网络异常");
+                }
                 if (result.getErrno() != 0) {
                     MyLog.w(TAG, "checkGameConf faild, traceid is " + result.getTraceId());
                     U.getToastUtil().showShort(result.getErrmsg());
