@@ -231,7 +231,7 @@ dependencies {
     // 小米统计sdk
     api files('libs/MiStats_SDK_Client_1_4_0.jar')
     // 蒲公英 用户反馈 与 崩溃收集
-    api files('libs/pgyer_sdk_3.0.2.jar')
+    //api files('libs/pgyer_sdk_3.0.2.jar')
 
     //api files('libs/milinksdk-3.2.0.jar')
 

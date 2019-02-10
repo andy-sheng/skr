@@ -3,7 +3,6 @@ package com.module.home.feedback;
 import com.alibaba.sdk.android.feedback.impl.FeedbackAPI;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.utils.U;
-import com.pgyersdk.feedback.PgyerFeedbackManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,17 +57,17 @@ public class FeedbackManager {
                 }
             });
         } else if (USE_PGY) {
-            new PgyerFeedbackManager.PgyerFeedbackBuilder()
-                    .setShakeInvoke(false)           //设置是否摇一摇的方式激活反馈，默认为 true
-                    .setBarBackgroundColor("")      // 设置顶部按钮和底部背景色，默认颜色为 #2E2D2D
-                    .setBarButtonPressedColor("")        //设置顶部按钮和底部按钮按下时的反馈色 默认颜色为 #383737
-                    .setColorPickerBackgroundColor("")   //设置颜色选择器的背景色,默认颜色为 #272828
-                    .setBarImmersive(true)              //设置activity 是否以沉浸式的方式打开，默认为 false
-                    .setDisplayType(PgyerFeedbackManager.TYPE.DIALOG_TYPE)   //设置以Dialog 的方式打开
-                    .setMoreParam("KEY1", "VALUE1")
-                    .setMoreParam("KEY2", "VALUE2")
-                    .builder()
-                    .invoke();                  //激活直接显示的方式
+//            new PgyerFeedbackManager.PgyerFeedbackBuilder()
+//                    .setShakeInvoke(false)           //设置是否摇一摇的方式激活反馈，默认为 true
+//                    .setBarBackgroundColor("")      // 设置顶部按钮和底部背景色，默认颜色为 #2E2D2D
+//                    .setBarButtonPressedColor("")        //设置顶部按钮和底部按钮按下时的反馈色 默认颜色为 #383737
+//                    .setColorPickerBackgroundColor("")   //设置颜色选择器的背景色,默认颜色为 #272828
+//                    .setBarImmersive(true)              //设置activity 是否以沉浸式的方式打开，默认为 false
+//                    .setDisplayType(PgyerFeedbackManager.TYPE.DIALOG_TYPE)   //设置以Dialog 的方式打开
+//                    .setMoreParam("KEY1", "VALUE1")
+//                    .setMoreParam("KEY2", "VALUE2")
+//                    .builder()
+//                    .invoke();                  //激活直接显示的方式
         }
 
     }

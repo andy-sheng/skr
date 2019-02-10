@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
 
-import com.pgyersdk.crash.PgyCrashManager;
 
 import java.lang.reflect.Field;
 
@@ -21,7 +20,7 @@ public class ChannelUtils {
             Field field = ct.getField("CHANNEL_NAME");
             channelNameFromBuildConfig = (String) field.get(null);
         } catch (Exception e) {
-            PgyCrashManager.reportCaughtException(e);
+//            PgyCrashManager.reportCaughtException(e);
         }
     }
 

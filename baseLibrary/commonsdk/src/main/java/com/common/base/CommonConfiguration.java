@@ -31,7 +31,6 @@ import com.common.utils.U;
 import com.kingja.loadsir.LoadSirUtil;
 import com.kingja.loadsir.callback.SuccessCallback;
 import com.kingja.loadsir.core.LoadSir;
-import com.pgyersdk.crash.PgyCrashManager;
 
 import java.util.List;
 
@@ -73,7 +72,7 @@ public class CommonConfiguration implements ConfigModule {
                 ARouter.init(application); // 尽可能早,推荐在Application中初始化
                 MyLog.init();
                 FrescoInitManager.initFresco(U.app());
-                PgyCrashManager.register();
+//                PgyCrashManager.register();
                 CommonReceiver.register();
             }
 
@@ -84,7 +83,7 @@ public class CommonConfiguration implements ConfigModule {
 
             @Override
             public void onTerminate(@NonNull Application application) {
-                PgyCrashManager.unregister();
+//                PgyCrashManager.unregister();
             }
         });
     }
