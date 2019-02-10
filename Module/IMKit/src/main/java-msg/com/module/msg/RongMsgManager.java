@@ -9,6 +9,7 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.cache.BuddyCache;
 import com.common.log.MyLog;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.module.common.ICallback;
@@ -91,6 +92,13 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                 if (processors != null) {
                     for (IPushMsgProcess process : processors) {
                         process.process(MSG_TYPE_ROOM, data);
+                    }
+                }
+                // 针对融云的系统消息增加打点，统计下
+                if (message.getConversationType() == Conversation.ConversationType.SYSTEM) {
+                    long delay = message.getReceivedTime() - message.getSentTime();
+                    if (delay > 0) {
+                        StatisticsAdapter.recordCalculateEvent("rc", "system_msg_delay", delay, null);
                     }
                 }
                 return true;
