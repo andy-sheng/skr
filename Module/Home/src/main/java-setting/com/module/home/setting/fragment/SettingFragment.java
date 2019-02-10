@@ -30,6 +30,7 @@ import com.dialog.view.TipsDialogView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
 import com.module.home.R;
+import com.module.home.feedback.FeedbackFragment;
 import com.module.home.feedback.FeedbackManager;
 import com.module.home.updateinfo.EditInfoActivity;
 import com.module.home.updateinfo.fragment.EditInfoNameFragment;
@@ -167,7 +168,11 @@ public class SettingFragment extends BaseFragment {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        FeedbackManager.openFeedbackActivity();
+//                        FeedbackManager.openFeedbackActivity();
+                        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), FeedbackFragment.class)
+                                .setAddToBackStack(true)
+                                .setHasAnimation(true)
+                                .build());
                     }
                 });
 

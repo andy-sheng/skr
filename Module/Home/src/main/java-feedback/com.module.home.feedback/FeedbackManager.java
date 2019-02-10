@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import java.util.concurrent.Callable;
 
+// TODO: 2019/2/10 第三方反馈
 public class FeedbackManager {
 
     static boolean sInit = false;
