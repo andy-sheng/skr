@@ -119,15 +119,17 @@ public class DebugCoreActivity extends BaseActivity {
             }
         }));
 
-        mDataList.add(new DebugData("修改强制调试标记位", new Runnable() {
+        mDataList.add(new DebugData("修改强制调试标记位" + MyLog.getForceOpenFlag(), new Runnable() {
             @Override
             public void run() {
                 if (MyLog.getForceOpenFlag()) {
                     MyLog.setForceOpenFlag(false);
                     U.getToastUtil().showShort("MyLog.sForceOpenFlag 变为false");
+                    loadData();
                 } else {
                     MyLog.setForceOpenFlag(true);
                     U.getToastUtil().showShort("MyLog.sForceOpenFlag 变为true");
+                    loadData();
                 }
             }
         }));
