@@ -39,6 +39,7 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.FragmentUtils;
+import com.common.utils.ToastUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
@@ -404,6 +405,7 @@ public class GameFragment extends BaseFragment {
             public void onAnimationEnd(Animator animator) {
                 if (!mTag.contains(tag)) {
                     mTag.add(tag);
+                    U.getToastUtil().showShort("您的网络有延迟");
                     return;
                 }
 
@@ -435,6 +437,8 @@ public class GameFragment extends BaseFragment {
 
             mDialogPlus = DialogPlus.newDialog(getContext())
                     .setContentHolder(new ViewHolder(gameTimeTipsView))
+                    .setContentBackgroundResource(R.color.transparent)
+                    .setOverlayBackgroundResource(R.color.transparent)
                     .setGravity(Gravity.CENTER)
                     .setOnClickListener(new OnClickListener() {
                         @Override
@@ -472,6 +476,7 @@ public class GameFragment extends BaseFragment {
             public void process(ApiResult result) {
                 if (result.getErrno() != 0) {
                     MyLog.w(TAG, "checkGameConf faild, traceid is " + result.getTraceId());
+                    U.getToastUtil().showShort(result.getErrmsg());
                     return;
                 }
 
