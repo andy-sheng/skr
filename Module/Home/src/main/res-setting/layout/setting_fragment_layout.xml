@@ -274,4 +274,11 @@
         android:textColor="#8590BA"
         android:textSize="@dimen/textsize_16_dp" />
 
+    <ProgressBar
+        android:visibility="gone"
+        android:id="@+id/upload_progress_bar"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 </RelativeLayout>

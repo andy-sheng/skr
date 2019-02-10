@@ -4,8 +4,12 @@ import com.common.log.MyLog;
 import com.common.upload.UploadCallback;
 import com.common.upload.UploadParams;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.greendao.annotation.NotNull;
+
 import java.io.File;
 import java.io.IOException;
+import java.lang.ref.Reference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -22,7 +26,7 @@ public class LogUploadUtils {
     public final static String TAG = "LogUploadUtils";
     Disposable mUploadLogTask;
 
-    public void upload(long uid) {
+    public void upload(final long uid) {
 
         if (mUploadLogTask != null && !mUploadLogTask.isDisposed()) {
             U.getToastUtil().showShort("正在上传日志");
@@ -35,6 +39,7 @@ public class LogUploadUtils {
                 File logDir = new File(U.getAppInfoUtils().getMainDir() + File.separator + "logs/");
                 if (logDir == null) {
                     emitter.onError(new Throwable("没有log文件夹"));
+                    return;
                 }
 
                 String zipFile = U.getAppInfoUtils().getMainDir() + File.separator + "logs/" + System.currentTimeMillis() + "log.zip";
@@ -46,18 +51,21 @@ public class LogUploadUtils {
                 try {
                     filez.createNewFile();
                 } catch (Exception e) {
-                    emitter.onError(new Throwable("文件创建失败" + e.getMessage()));
+                    emitter.onError(new Throwable("文件创建失败:" + e.getMessage()));
+                    return;
                 }
 
                 boolean success = false;
                 try {
                     success = U.getZipUtils().zip(getLastThreeFile(), filez.getAbsolutePath());
                 } catch (IOException e) {
-                    emitter.onError(new Throwable("文件压缩失败" + e.getMessage()));
+                    emitter.onError(new Throwable("文件压缩失败:" + e.getMessage()));
+                    return;
                 }
 
                 if (!success) {
                     emitter.onError(new Throwable("文件压缩没成功"));
+                    return;
                 }
 
                 emitter.onNext(filez);
@@ -65,7 +73,7 @@ public class LogUploadUtils {
             }
         }).subscribeOn(Schedulers.io()).subscribe(new Consumer<File>() {
             @Override
-            public void accept(File file) throws Exception {
+            public void accept(final File file) throws Exception {
                 UploadParams.newBuilder(file.getAbsolutePath())
                         .setFileType(UploadParams.FileType.log)
                         .setFileName(uid + "_" + U.getDateTimeUtils().formatTimeStringForDate(System.currentTimeMillis()) + ".zip")
@@ -80,17 +88,22 @@ public class LogUploadUtils {
                                 MyLog.w(TAG, "日志上传成功");
                                 U.getToastUtil().showShort("反馈成功");
                                 file.delete();
+                                EventBus.getDefault().post(new UploadLogEvent(true));
                             }
 
                             @Override
                             public void onFailure(String msg) {
                                 MyLog.e(TAG, msg);
                                 file.delete();
+                                EventBus.getDefault().post(new UploadLogEvent(false));
                             }
                         });
             }
-        }, throwable -> {
-            MyLog.e(TAG, throwable);
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Exception {
+                MyLog.e(TAG, throwable);
+            }
         });
     }
 
@@ -124,5 +137,13 @@ public class LogUploadUtils {
             }
         }
         return lastThreeFiles;
+    }
+
+    public static class UploadLogEvent{
+        public boolean mIsSuccess = false;
+
+        public UploadLogEvent(boolean isSuccess) {
+            mIsSuccess = isSuccess;
+        }
     }
 }

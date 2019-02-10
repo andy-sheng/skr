@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -16,8 +17,11 @@ import com.common.base.BaseFragment;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.upgrade.UpgradeManager;
+import com.common.core.userinfo.event.RelationChangeEvent;
 import com.common.log.MyLog;
+import com.common.upload.UploadCallback;
 import com.common.utils.FragmentUtils;
+import com.common.utils.LogUploadUtils;
 import com.common.utils.RomUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
@@ -35,6 +39,9 @@ import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.respicker.fragment.ResPickerFragment;
 import com.zq.toast.CommonToastView;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;
@@ -68,6 +75,8 @@ public class SettingFragment extends BaseFragment {
 
     RelativeLayout mLogUpdate;
 
+    ProgressBar mUploadProgressBar;
+
 
     static final String[] CACHE_CAN_DELETE = {
             "fresco", "gif", "upload"
@@ -92,6 +101,8 @@ public class SettingFragment extends BaseFragment {
         mVersionTv = (ExTextView) mRootView.findViewById(R.id.version_tv);
         mCacheSizeTv = (ExTextView) mRootView.findViewById(R.id.cache_size_tv);
         mLogUpdate = (RelativeLayout) mRootView.findViewById(R.id.log_update);
+        mUploadProgressBar = (ProgressBar)mRootView.findViewById(R.id.upload_progress_bar);
+
 
         U.getSoundUtils().preLoad(TAG, R.raw.general_back, R.raw.allclick);
 
@@ -145,6 +156,7 @@ public class SettingFragment extends BaseFragment {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
+                        mUploadProgressBar.setVisibility(View.VISIBLE);
                         U.getLogUploadUtils().upload(MyUserInfoManager.getInstance().getUid());
                     }
                 });
@@ -354,8 +366,18 @@ public class SettingFragment extends BaseFragment {
         U.getSoundUtils().release(TAG);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(LogUploadUtils.UploadLogEvent event) {
+        if(!event.mIsSuccess){
+            U.getLogUploadUtils().upload(MyUserInfoManager.getInstance().getUid());
+            return;
+        }
+
+        mUploadProgressBar.setVisibility(View.GONE);
+    }
+
     @Override
     public boolean useEventBus() {
-        return false;
+        return true;
     }
 }
