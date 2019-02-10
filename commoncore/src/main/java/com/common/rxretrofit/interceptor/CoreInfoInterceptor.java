@@ -76,7 +76,10 @@ public class CoreInfoInterceptor implements Interceptor {
         //before
         Response response = null;
         try {
+            long beginTs = System.currentTimeMillis();
             response = chain.proceed(request);
+            long duration = System.currentTimeMillis() - beginTs;
+            StatisticsAdapter.recordCalculateEvent("api", "duration", duration,null);
         } catch (Exception e) {
             //TODO 增加异常打点
             if (e instanceof SocketTimeoutException) {

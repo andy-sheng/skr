@@ -326,9 +326,9 @@ public class ArcCloudManager implements IACRCloudListener {
                                 }
                                 process(result, lineNo);
                             }
-                            long endTs = System.currentTimeMillis() - beginTs;
+                            long duration = System.currentTimeMillis() - beginTs;
                             // 打点统计acr的耗时
-                            StatisticsAdapter.recordCalculateEvent("acr", "recognize_haoshi", endTs, null);
+                            StatisticsAdapter.recordCalculateEvent("acr", "recognize_haoshi", duration, null);
                             emitter.onComplete();
                         }
                     }).subscribeOn(Schedulers.io())
