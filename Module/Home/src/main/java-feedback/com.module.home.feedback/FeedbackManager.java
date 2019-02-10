@@ -1,14 +1,5 @@
 package com.module.home.feedback;
 
-import com.alibaba.sdk.android.feedback.impl.FeedbackAPI;
-import com.common.core.myinfo.MyUserInfoManager;
-import com.common.utils.U;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.concurrent.Callable;
-
 // TODO: 2019/2/10 第三方反馈
 public class FeedbackManager {
 
@@ -21,19 +12,19 @@ public class FeedbackManager {
         if (!sInit) {
             sInit = true;
             if (USE_ALI) {
-                FeedbackAPI.init(U.app(),"25466017","82f5f51a6ee2cb94e70ff1a7d021757d");
-                FeedbackAPI.setHistoryTextSize(20);//置标题栏中“历史反馈”的字号
-//            FeedbackAPI.setBackIcon(R.drawable.ali_feedback_icon_more);//设置返回按钮的图片
-                FeedbackAPI.setTranslucent(true);//默认使用沉浸式任务栏
-                FeedbackAPI.setDefaultUserContactInfo("13800000000");// 联系方式
-                FeedbackAPI.setUserNick(MyUserInfoManager.getInstance().getNickName());// 用户昵称
-
-                JSONObject extInfo = new JSONObject();
-                try {
-                    extInfo.put("key1", "value1");
-                } catch (JSONException e) {
-                }
-                FeedbackAPI.setAppExtInfo(extInfo);
+//                FeedbackAPI.init(U.app(),"25466017","82f5f51a6ee2cb94e70ff1a7d021757d");
+//                FeedbackAPI.setHistoryTextSize(20);//置标题栏中“历史反馈”的字号
+////            FeedbackAPI.setBackIcon(R.drawable.ali_feedback_icon_more);//设置返回按钮的图片
+//                FeedbackAPI.setTranslucent(true);//默认使用沉浸式任务栏
+//                FeedbackAPI.setDefaultUserContactInfo("13800000000");// 联系方式
+//                FeedbackAPI.setUserNick(MyUserInfoManager.getInstance().getNickName());// 用户昵称
+//
+//                JSONObject extInfo = new JSONObject();
+//                try {
+//                    extInfo.put("key1", "value1");
+//                } catch (JSONException e) {
+//                }
+//                FeedbackAPI.setAppExtInfo(extInfo);
             }
         }
     }
@@ -44,19 +35,19 @@ public class FeedbackManager {
     public static void openFeedbackActivity() {
         tryInit();
         if (USE_ALI) {
-            FeedbackAPI.openFeedbackActivity(new Callable() {
-                @Override
-                public Object call() throws Exception {
-                    // 成功了
-                    return null;
-                }
-            }, new Callable() {
-                @Override
-                public Object call() throws Exception {
-                    // 失败了
-                    return null;
-                }
-            });
+//            FeedbackAPI.openFeedbackActivity(new Callable() {
+//                @Override
+//                public Object call() throws Exception {
+//                    // 成功了
+//                    return null;
+//                }
+//            }, new Callable() {
+//                @Override
+//                public Object call() throws Exception {
+//                    // 失败了
+//                    return null;
+//                }
+//            });
         } else if (USE_PGY) {
 //            new PgyerFeedbackManager.PgyerFeedbackBuilder()
 //                    .setShakeInvoke(false)           //设置是否摇一摇的方式激活反馈，默认为 true
