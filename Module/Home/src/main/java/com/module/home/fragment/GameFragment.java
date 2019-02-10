@@ -476,6 +476,7 @@ public class GameFragment extends BaseFragment {
             public void process(ApiResult result) {
                 if (result == null) {
                     U.getToastUtil().showShort("网络异常");
+                    return;
                 }
                 if (result.getErrno() != 0) {
                     MyLog.w(TAG, "checkGameConf faild, traceid is " + result.getTraceId());
