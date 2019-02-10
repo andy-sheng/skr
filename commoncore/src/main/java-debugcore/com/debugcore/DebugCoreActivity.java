@@ -1,6 +1,8 @@
 package com.debugcore;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Process;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -148,6 +150,14 @@ public class DebugCoreActivity extends BaseActivity {
                         @Override
                         public void run() {
                             U.getChannelUtils().setChannelNameFromBuildConfig(channel);
+                            U.getToastUtil().showShort("请重启app");
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Process.killProcess(Process.myPid());
+                                }
+                            }, 1000);
+
                             if (mChannelListDialog != null) {
                                 mChannelListDialog.dismiss();
                             }

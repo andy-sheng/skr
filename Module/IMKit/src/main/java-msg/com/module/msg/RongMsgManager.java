@@ -104,7 +104,14 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
 
     public void init(Application application) {
         if (!mIsInit) {
-            RongIM.init(application);
+            // 生产环境
+            String rongKey;
+            if (U.getChannelUtils().isStaging()) {
+                rongKey = "0vnjpoad03v7z";
+            } else {
+                rongKey = "e5t4ouvpec57a";
+            }
+            RongIM.init(application, rongKey);
             RongIM.setUserInfoProvider(this, true);
             mIsInit = true;
             RongIM.registerMessageType(CustomChatRoomMsg.class);
@@ -221,7 +228,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
 
 
     public void leaveChatRoom(String roomId) {
-        MyLog.d(TAG,"leaveChatRoom" + " roomId=" + roomId);
+        MyLog.d(TAG, "leaveChatRoom" + " roomId=" + roomId);
         mJoinroomCallback = null;
         RongIM.getInstance().quitChatRoom(roomId, mOperationCallback);
     }
