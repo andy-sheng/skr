@@ -10,6 +10,7 @@ import com.acrcloud.rec.utils.ACRCloudLogger;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.common.log.MyLog;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
 
 import java.io.File;
@@ -247,6 +248,9 @@ public class ArcCloudManager implements IACRCloudListener {
                     Observable.create(new ObservableOnSubscribe<Object>() {
                         @Override
                         public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
+                            // 识别次数打点
+                            StatisticsAdapter.recordCountEvent("acr", "recognize", null);
+                            long beginTs = System.currentTimeMillis();
                             RecognizeConfig recognizeConfig = ArcCloudManager.this.mRecognizeConfig;
                             if (recognizeConfig != null
                                     && recognizeConfig.getResultListener() != null
@@ -263,7 +267,7 @@ public class ArcCloudManager implements IACRCloudListener {
                                 if (!TextUtils.isEmpty(artist)) {
                                     hashMap.put("artist", artist);
                                 }
-                                MyLog.d(TAG, "开始识别 arr.length="+arr.length+" mSampleRate="+mSampleRate+" mChannels="+mChannels);
+                                MyLog.d(TAG, "开始识别 arr.length=" + arr.length + " mSampleRate=" + mSampleRate + " mChannels=" + mChannels);
                                 String result = mClient.recognize(arr, arr.length, mSampleRate, mChannels, recType, hashMap);
                                 MyLog.d(TAG, "识别结束");
 
@@ -322,6 +326,9 @@ public class ArcCloudManager implements IACRCloudListener {
                                 }
                                 process(result, lineNo);
                             }
+                            long endTs = System.currentTimeMillis() - beginTs;
+                            // 打点统计acr的耗时
+                            StatisticsAdapter.recordCalculateEvent("acr", "recognize_haoshi", endTs, null);
                             emitter.onComplete();
                         }
                     }).subscribeOn(Schedulers.io())
@@ -372,6 +379,8 @@ public class ArcCloudManager implements IACRCloudListener {
                     for (SongInfo songInfo : list) {
                         if (songInfo.getTitle().equalsIgnoreCase(songName)) {
                             targetSongInfo = songInfo;
+                            // 识别成功打点
+                            StatisticsAdapter.recordCountEvent("acr", "recognize_success", null);
                             break;
                         }
                     }
