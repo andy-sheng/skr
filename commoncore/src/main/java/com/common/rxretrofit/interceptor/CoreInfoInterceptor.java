@@ -6,10 +6,12 @@ import com.alibaba.fastjson.JSON;
 import com.common.core.account.UserAccountManager;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 
 import okhttp3.HttpUrl;
@@ -33,10 +35,10 @@ public class CoreInfoInterceptor implements Interceptor {
             request = request.newBuilder().removeHeader("NO_NEED_LOGIN").build();
         } else {
             if (!UserAccountManager.getInstance().hasAccount()) {
-                MyLog.e(TAG,"未登录前不能发送该请求-->"+request.url());
+                MyLog.e(TAG, "未登录前不能发送该请求-->" + request.url());
                 HashMap hashMap = new HashMap<>();
-                hashMap.put("errno",102);
-                hashMap.put("errmsg","未登录不能发送该请求-->"+request.url());
+                hashMap.put("errno", 102);
+                hashMap.put("errmsg", "未登录不能发送该请求-->" + request.url());
                 ResponseBody responseBody = ResponseBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(hashMap));
                 Response response = new Response.Builder()
                         .request(request)
@@ -75,12 +77,18 @@ public class CoreInfoInterceptor implements Interceptor {
         Response response = null;
         try {
             response = chain.proceed(request);
-        } catch (SocketTimeoutException exception) {
-            String log = new StringBuilder().append("请求超时").append(exception.getMessage())
-                    .append("\n")
-                    .append("url=").append(httpUrl.toString())
-                    .toString();
-            MyLog.w(TAG, log);
+        } catch (Exception e) {
+            //TODO 增加异常打点
+            if (e instanceof SocketTimeoutException) {
+                HashMap map = new HashMap();
+                map.put("url", httpUrl.toString());
+                StatisticsAdapter.recordCountEvent("api", "timeout", map);
+            }else if(e instanceof UnknownHostException){
+                HashMap map = new HashMap();
+                map.put("url", httpUrl.toString());
+                StatisticsAdapter.recordCountEvent("api", "unknownHost", map);
+            }
+            throw e;
         }
         //after
         return response;

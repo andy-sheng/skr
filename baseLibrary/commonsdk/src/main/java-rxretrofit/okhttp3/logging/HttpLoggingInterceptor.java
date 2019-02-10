@@ -157,9 +157,10 @@ public final class HttpLoggingInterceptor implements Interceptor {
         }
          String alwaysLog = request.header("ALWAYS_LOG");
         if(TextUtils.isEmpty(alwaysLog)){
-            if (!MyLog.isDebugLogOpen()) {
-                return chain.proceed(request);
-            }
+            //TODO 版本初期阶段不拦截，日志都打印出来，后期可以放开这个注释
+//            if (!MyLog.isDebugLogOpen()) {
+//                return chain.proceed(request);
+//            }
         }else{
             request = request.newBuilder().removeHeader("ALWAYS_LOG").build();
         }

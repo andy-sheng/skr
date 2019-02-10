@@ -40,6 +40,7 @@ public class MyLog {
             if (isDebugLogOpen()) {
                 sCurrentLogLevel = LogLevel.ALL;
             } else {
+//                sCurrentLogLevel = LogLevel.WARN;
                 //这里开发中先全部放开日志
                 sCurrentLogLevel = LogLevel.ALL;
             }
