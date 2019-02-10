@@ -86,7 +86,6 @@ public class LogUploadUtils {
                             @Override
                             public void onSuccess(String url) {
                                 MyLog.w(TAG, "日志上传成功");
-                                U.getToastUtil().showShort("反馈成功");
                                 file.delete();
                                 EventBus.getDefault().post(new UploadLogEvent(true));
                             }
@@ -102,6 +101,7 @@ public class LogUploadUtils {
         }, new Consumer<Throwable>() {
             @Override
             public void accept(Throwable throwable) throws Exception {
+                EventBus.getDefault().post(new UploadLogEvent(false));
                 MyLog.e(TAG, throwable);
             }
         });

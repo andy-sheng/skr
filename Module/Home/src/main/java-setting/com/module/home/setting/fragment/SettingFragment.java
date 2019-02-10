@@ -368,12 +368,9 @@ public class SettingFragment extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(LogUploadUtils.UploadLogEvent event) {
-        if(!event.mIsSuccess){
-            U.getLogUploadUtils().upload(MyUserInfoManager.getInstance().getUid());
-            return;
-        }
-
         mUploadProgressBar.setVisibility(View.GONE);
+
+        U.getToastUtil().showShort(event.mIsSuccess ? "反馈成功" : "反馈失败");
     }
 
     @Override
