@@ -8,6 +8,9 @@ import com.common.core.account.UserAccountManager;
 import com.common.log.MyLog;
 import com.common.utils.U;
 
+import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
+
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
@@ -45,17 +48,39 @@ public abstract class ApiObserver<T> implements Observer<T> {
 
     @Override
     public void onError(Throwable e) {
+        String log = Log.getStackTraceString(e);
+        if (TextUtils.isEmpty(log)) {
+            log = e.getMessage();
+        }
         if (MyLog.isDebugLogOpen()) {
-            String log = Log.getStackTraceString(e);
             if (!TextUtils.isEmpty(log)) {
                 U.getToastUtil().showShort(log);
             }
         }
-        MyLog.e(API_TAG, e);
+        MyLog.e(API_TAG, log);
+        if(e instanceof UnknownHostException){
+            onNetworkError(ErrorType.unknownHost);
+        }else if(e instanceof SocketTimeoutException){
+            onNetworkError(ErrorType.socketTimeout);
+        }
     }
 
     @Override
     public void onComplete() {
 
+    }
+
+
+    /**
+     * 业务方想处理超时逻辑，请覆盖这个方法
+     * @param errorType
+     */
+    public void onNetworkError(ErrorType errorType) {
+
+    }
+
+    public enum ErrorType{
+        unknownHost,// 解析域名失败，一般无网络情况会有这个
+        socketTimeout // 超时，弱网络情况下容易触发这个
     }
 }

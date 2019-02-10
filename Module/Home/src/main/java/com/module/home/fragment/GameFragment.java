@@ -470,34 +470,30 @@ public class GameFragment extends BaseFragment {
     }
 
     private void checkGameConf(int mode, long tag, final View view) {
-
         ApiMethods.subscribe(mMainPageSlideApi.getGameConfig(mode, true), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
-                if (result == null) {
-                    U.getToastUtil().showShort("网络异常");
-                    return;
-                }
                 if (result.getErrno() != 0) {
                     MyLog.w(TAG, "checkGameConf faild, traceid is " + result.getTraceId());
                     U.getToastUtil().showShort(result.getErrmsg());
                     return;
                 }
-
                 GameConfModel gameConfModel = JSON.parseObject(result.getData().toString(), GameConfModel.class);
-
                 //说明接口的数据在500毫秒内拉到的
                 if (!mTag.contains(tag)) {
                     mGameConfModel = gameConfModel;
                     mTag.add(tag);
                     return;
                 }
-
                 mTag.remove(tag);
-
                 if (isGameOpen()) {
                     jump(view, "checkGameConf");
                 }
+            }
+
+            @Override
+            public void onNetworkError(ErrorType errorType) {
+                U.getToastUtil().showShort("网络异常");
             }
         }, this);
     }
