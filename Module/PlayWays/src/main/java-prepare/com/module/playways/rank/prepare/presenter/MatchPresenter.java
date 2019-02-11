@@ -310,28 +310,58 @@ public class MatchPresenter extends RxLifeCyclePresenter {
                                             mJsonGameInfo = jsonGameInfo;
                                             mView.matchSucess(mCurrentGameId, joinActionEvent.gameCreateMs, joinActionEvent.playerInfoList, joinActionEvent.info.getSender().getAvatar(), joinActionEvent.songModelList);
                                         } else {
-                                            MyLog.d(TAG, "5秒后拉去信息回来发现当前状态不是 JoinRongYunRoomSuccess");
+                                            MyLog.w(TAG, "5秒后拉去信息回来发现当前状态不是 JoinRongYunRoomSuccess");
                                             //跟下面的更新唯一的区别就是三秒钟之后人还不全就从新match
                                             startLoopMatchTask(mCurrentMusicId, mGameType);
+                                            exitGame(mCurrentGameId);
                                         }
                                     } else {
-                                        MyLog.d(TAG, "5秒后拉完房间信息人数不够3个，需要重新match了");
-                                        // TODO: 2018/12/12 方便测试这个先注掉
+                                        MyLog.w(TAG, "5秒后拉完房间信息人数不够3个，需要重新match了");
                                         startLoopMatchTask(mCurrentMusicId, mGameType);
+                                        exitGame(mCurrentGameId);
                                     }
                                 } else {
-                                    MyLog.d(TAG, "5秒钟后拉去的信息返回的resule error code不是 0,是" + result.getErrno());
+                                    MyLog.w(TAG, "5秒钟后拉去的信息返回的resule error code不是 0,是" + result.getErrno());
                                     startLoopMatchTask(mCurrentMusicId, mGameType);
+                                    exitGame(mCurrentGameId);
                                 }
                             }
 
                             @Override
                             public void onError(Throwable e) {
                                 MyLog.d(MatchPresenter.TAG, "checkCurrentGameData2 process" + " e=" + e);
+                                startLoopMatchTask(mCurrentMusicId, mGameType);
+                                exitGame(mCurrentGameId);
                             }
                         }, MatchPresenter.this);
                     }
                 });
+    }
+
+    /**
+     * 退出游戏
+     */
+    public void exitGame(int gameId) {
+        if(gameId <= 0){
+            MyLog.w(TAG, "exitGame gameId <= 0");
+            return;
+        }
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("gameID", gameId);
+
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        ApiMethods.subscribe(mMatchServerApi.exitGame(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                MyLog.w(TAG, "退出房间 resule no is " + result.getErrno() + ", traceid is " + result.getTraceId());
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                MyLog.w(MatchPresenter.TAG, "exitGame error, " + " e=" + e);
+            }
+        }, MatchPresenter.this);
     }
 
     /**

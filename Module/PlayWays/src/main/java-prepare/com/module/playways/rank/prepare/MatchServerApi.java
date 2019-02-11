@@ -87,4 +87,13 @@ public interface MatchServerApi {
      */
     @GET("http://dev.game.inframe.mobi/v1/game/on-match-player-avatar")
     Observable<ApiResult> getMatchingAvatar(@Query("mode") int mode);
+
+    /**
+     * 退出游戏
+     *
+     * @param body 游戏标识 gameID (必选)
+     * @return
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/game/exit")
+    Observable<ApiResult> exitGame(@Body RequestBody body);
 }
