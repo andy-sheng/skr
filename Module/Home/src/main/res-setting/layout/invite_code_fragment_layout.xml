@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_act_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F9F4F1">
+
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:centerText="填写邀请码"
+        app:centerTextColor="@color/white"
+        app:centerTextSize="@dimen/textsize_20_dp"
+        app:centerType="textView"
+        app:leftDrawable="@drawable/img_back"
+        app:leftType="textView"
+        app:showBottomLine="false"
+        app:statusBarColor="#0288D0"
+        app:titleBarColor="#0288D0"></com.common.view.titlebar.CommonTitleBar>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_3_dp"
+        android:layout_below="@+id/titlebar"
+        android:background="#0C2275" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titlebar"
+        android:layout_marginTop="@dimen/view_3_dp">
+
+        <com.common.core.login.view.SeparatedEditText
+            android:id="@+id/invite_code_spet"
+            android:layout_width="@dimen/view_322_dp"
+            android:layout_height="@dimen/view_42_dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/view_60_dp"
+            android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:inputType="number"
+            app:blockColor="#66F5A623"
+            app:blockSpacing="@dimen/view_10_dp"
+            app:borderColor="#0C2275"
+            app:borderWidth="@dimen/view_3_dp"
+            app:corner="@dimen/view_5_dp"
+            app:cursorColor="#CA2C60"
+            app:cursorDuration="1000"
+            app:cursorWidth="@dimen/view_3_dp"
+            app:maxLength="6"
+            app:separateType="@integer/type_solid"
+            app:textColor="@color/black" />
+
+        <com.common.view.ex.ExTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/invite_code_spet"
+            android:layout_marginLeft="@dimen/view_35_dp"
+            android:layout_marginTop="@dimen/view_57_dp"
+            android:layout_marginRight="@dimen/view_35_dp"
+            android:text="验证手机号"
+            android:textColor="#0C2275"
+            android:textSize="@dimen/textsize_16_dp" />
+
+        <com.common.view.ex.NoLeakEditText
+            android:id="@+id/phone_input_tv"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_50_dp"
+            android:layout_below="@+id/invite_code_spet"
+            android:layout_marginLeft="@dimen/view_35_dp"
+            android:layout_marginTop="@dimen/view_96_dp"
+            android:layout_marginRight="@dimen/view_35_dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center_vertical"
+            android:hint="请输入手机号"
+            android:inputType="number"
+            android:maxLength="14"
+            android:maxLines="1"
+            android:paddingLeft="@dimen/view_20_dp"
+            android:paddingRight="@dimen/view_20_dp"
+            android:textColor="#091E77"
+            android:textCursorDrawable="@drawable/login_edit_cursor_color"
+            android:textSize="@dimen/view_18_dp"
+            app:bl_corners_radius="@dimen/view_8_dp"
+            app:bl_shape="rectangle"
+            app:bl_solid_color="#E1E1EC"
+            app:bl_stroke_color="#0C2275"
+            app:bl_stroke_width="@dimen/view_3_dp" />
+
+
+        <com.common.view.ex.NoLeakEditText
+            android:id="@+id/code_input_tv"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_54_dp"
+            android:layout_below="@+id/phone_input_tv"
+            android:layout_marginLeft="@dimen/view_35_dp"
+            android:layout_marginTop="@dimen/view_25_dp"
+            android:layout_marginRight="@dimen/view_35_dp"
+            android:cursorVisible="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center_vertical"
+            android:hint="请输入验证码"
+            android:inputType="number"
+            android:maxLength="6"
+            android:maxLines="1"
+            android:paddingLeft="@dimen/view_20_dp"
+            android:paddingRight="@dimen/view_20_dp"
+            android:textColor="#091E77"
+            android:textColorHint="#4c0C2275"
+            android:textCursorDrawable="@drawable/login_edit_cursor_color"
+            android:textSize="@dimen/view_18_dp"
+            app:bl_corners_radius="@dimen/view_8_dp"
+            app:bl_shape="rectangle"
+            app:bl_solid_color="#E1E1EC"
+            app:bl_stroke_color="#0C2275"
+            app:bl_stroke_width="@dimen/view_3_dp" />
+
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/get_code_tv"
+            android:layout_width="@dimen/view_111_dp"
+            android:layout_height="@dimen/view_54_dp"
+            android:layout_alignTop="@+id/code_input_tv"
+            android:layout_alignRight="@+id/code_input_tv"
+            android:layout_alignBottom="@+id/code_input_tv"
+            android:gravity="center"
+            android:text="获取验证码"
+            android:textColor="@color/white"
+            android:textSize="@dimen/view_14_dp"
+            android:textStyle="bold"
+            app:bl_selected_drawable="@drawable/get_verify_code_selected"
+            app:bl_selected_textColor="#7681B0"
+            app:bl_unSelected_drawable="@drawable/get_verify_code_normal"
+            app:bl_unSelected_textColor="@color/white" />
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/error_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/code_input_tv"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/view_12_dp"
+            android:text="验证码错误"
+            android:textColor="#EF5E85"
+            android:textSize="@dimen/textsize_12_dp"
+            android:visibility="gone" />
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/submit_tv"
+            android:layout_width="@dimen/view_206_dp"
+            android:layout_height="@dimen/view_54_dp"
+            android:layout_below="@+id/code_input_tv"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/view_60_dp"
+            android:background="@drawable/img_btn_bg_gray"
+            android:gravity="center"
+            android:paddingRight="@dimen/view_6_dp"
+            android:paddingBottom="@dimen/view_6_dp"
+            android:text="提交"
+            android:textColor="#0C2275"
+            android:textSize="@dimen/textsize_20_dp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+</RelativeLayout>

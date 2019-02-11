@@ -68,6 +68,8 @@ public class SettingFragment extends BaseFragment {
     ExTextView mVersionTv;
     ExImageView mVersionArrow;
 
+    RelativeLayout mInviteCode;
+
     ExTextView mExitLogin;
 
     ExTextView mCacheSizeTv;
@@ -96,9 +98,11 @@ public class SettingFragment extends BaseFragment {
         mCacheSizeTv = (ExTextView) mRootView.findViewById(R.id.cache_size_tv);
 
         mVersionArea = (RelativeLayout) mRootView.findViewById(R.id.version_area);
+        mInviteCode = (RelativeLayout)mRootView.findViewById(R.id.invite_code);
         mNewVersionIv = (ExImageView) mRootView.findViewById(R.id.new_version_iv);
         mVersionTv = (ExTextView) mRootView.findViewById(R.id.version_tv);
         mVersionArrow = (ExImageView) mRootView.findViewById(R.id.version_arrow);
+
         mExitLogin = (ExTextView) mRootView.findViewById(R.id.exit_login);
 
         U.getSoundUtils().preLoad(TAG, R.raw.general_back, R.raw.allclick);
@@ -213,6 +217,18 @@ public class SettingFragment extends BaseFragment {
                 }
             }
         });
+
+        RxView.clicks(mInviteCode)
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), InviteCodeFragment.class)
+                                .setAddToBackStack(true)
+                                .setHasAnimation(true)
+                                .build());
+                    }
+                });
     }
 
     private void initVersion() {

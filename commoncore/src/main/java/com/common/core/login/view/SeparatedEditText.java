@@ -19,7 +19,7 @@ import java.util.TimerTask;
 
 /**
  * 仿支付宝密码输入框、微信密码输入框，美团外卖验证码输入框等。有实心，空心以及下划线形式。可控制文本是否显示
- *
+ * <p>
  * 具体用法见  https://github.com/WGwangguan/SeparatedEditText
  */
 
@@ -36,13 +36,13 @@ public class SeparatedEditText extends EditText {
 
     private RectF borderRectF;
     private RectF boxRectF;//小方块、小矩形
+    private RectF boxborderF;
 
     private int width;//可绘制宽度
     private int height;//可绘制高度
 
     private int boxWidth;//方块宽度
     private int boxHeight;//方块高度
-
 
     private int spacing;//方块之间间隙
     private int corner;//圆角
@@ -207,6 +207,7 @@ public class SeparatedEditText extends EditText {
 
         borderRectF = new RectF();
         boxRectF = new RectF();
+        boxborderF = new RectF();
 
         if (type == TYPE_HOLLOW)
             spacing = 0;
@@ -267,9 +268,13 @@ public class SeparatedEditText extends EditText {
             boxRectF.set(spacing * (i + 1) + boxWidth * i, 0,
                     spacing * (i + 1) + boxWidth * i + boxWidth,
                     boxHeight);
+            boxborderF.set(spacing * (i + 1) + boxWidth * i + borderWidth / 2, borderWidth / 2,
+                    spacing * (i + 1) + boxWidth * i + boxWidth - borderWidth / 2,
+                    boxHeight - borderWidth / 2);
 
             if (type == TYPE_SOLID) {
                 canvas.drawRoundRect(boxRectF, corner, corner, blockPaint);
+                canvas.drawRoundRect(boxborderF, corner, corner, borderPaint);
             } else if (type == TYPE_UNDERLINE) {
                 canvas.drawLine(boxRectF.left, boxRectF.bottom, boxRectF.right, boxRectF.bottom, borderPaint);
             } else if (type == TYPE_HOLLOW) {
