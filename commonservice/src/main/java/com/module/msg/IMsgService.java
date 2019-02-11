@@ -2,6 +2,7 @@ package com.module.msg;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Pair;
 
 import com.alibaba.android.arouter.facade.template.IProvider;
 import com.alibaba.fastjson.JSONObject;
@@ -13,6 +14,12 @@ public interface IMsgService extends IProvider {
      * 初始化融云
      */
     void initRongIM(Application application);
+
+    /**
+     * 得到当前融云链接状态以及描述
+     * @return
+     */
+    Pair<Integer,String> getConnectStatus();
 
     /**
      * 与融云服务器建立连接

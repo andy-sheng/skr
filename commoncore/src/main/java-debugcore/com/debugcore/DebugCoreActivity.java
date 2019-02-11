@@ -21,6 +21,7 @@ import com.common.log.MyLog;
 import com.common.statistics.TimeStatistics;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
+import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ListHolder;
@@ -116,6 +117,7 @@ public class DebugCoreActivity extends BaseActivity {
                 sb.append("agora sdk version:").append(RtcEngine.getSdkVersion()).append("\n");
                 sb.append("是否插着有线耳机:").append(U.getDeviceUtils().getWiredHeadsetPlugOn()).append("\n");
                 sb.append("是否插着蓝牙耳机:").append(U.getDeviceUtils().getBlueToothHeadsetOn()).append("\n");
+                sb.append("融云当前链接状态:").append(ModuleServiceManager.getInstance().getMsgService().getConnectStatus()).append("\n");
 
                 showMessage(sb.toString());
             }

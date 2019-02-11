@@ -3,6 +3,7 @@ package com.module.msg;
 import android.app.Application;
 import android.content.Context;
 import android.net.Uri;
+import android.util.Pair;
 
 import com.alibaba.fastjson.JSONObject;
 import com.common.core.myinfo.MyUserInfoManager;
@@ -30,7 +31,7 @@ import static com.module.msg.CustomMsgType.MSG_TYPE_ROOM;
 
 public class RongMsgManager implements RongIM.UserInfoProvider {
 
-    public final static String TAG = "RongMsgAdapter";
+    public final static String TAG = "RongMsgManager";
 
     private static class RongMsgAdapterHolder {
         private static final RongMsgManager INSTANCE = new RongMsgManager();
@@ -49,6 +50,8 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
         @Override
         public void onSuccess() {
             if (mJoinroomCallback != null) {
+                MyLog.d(TAG, "join rc room onSuccess");
+                StatisticsAdapter.recordCountEvent("rc", "join_room_success", null);
                 mJoinroomCallback.onSucess(null);
             }
         }
@@ -56,6 +59,8 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
         @Override
         public void onError(RongIMClient.ErrorCode errorCode) {
             if (mJoinroomCallback != null) {
+                MyLog.d(TAG, "join rc room error,code:" + errorCode);
+                StatisticsAdapter.recordCountEvent("rc", "join_room_failed", null);
                 mJoinroomCallback.onFailed(null, errorCode.getValue(), errorCode.getMessage());
             }
         }
@@ -110,6 +115,8 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
     // 是否初始化
     private boolean mIsInit = false;
 
+    private RongIMClient.ConnectionStatusListener.ConnectionStatus mConnectionStatus = RongIMClient.ConnectionStatusListener.ConnectionStatus.DISCONNECTED;
+
     public void init(Application application) {
         if (!mIsInit) {
             // 生产环境
@@ -126,7 +133,8 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             RongIM.setConnectionStatusListener(new RongIMClient.ConnectionStatusListener() {
                 @Override
                 public void onChanged(ConnectionStatus connectionStatus) {
-
+                    MyLog.w(TAG, "onChanged" + " connectionStatus=" + connectionStatus);
+                    mConnectionStatus = connectionStatus;
                 }
             });
             RongIM.setOnReceiveMessageListener(mReceiveMessageListener);
@@ -176,7 +184,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
              */
             @Override
             public void onSuccess(String userid) {
-                MyLog.d(TAG, "ConnectCallback connect Success userid is " + userid);
+                MyLog.w(TAG, "ConnectCallback connect Success userid is " + userid);
                 if (callback != null) {
                     callback.onSucess(userid);
                 }
@@ -189,7 +197,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
              */
             @Override
             public void onError(RongIMClient.ErrorCode errorCode) {
-                MyLog.d(TAG, "ConnectCallback " + "onError" + " errorCode=" + errorCode);
+                MyLog.w(TAG, "ConnectCallback " + "onError" + " errorCode=" + errorCode);
                 if (callback != null) {
                     callback.onFailed(true, errorCode.getValue(), errorCode.getMessage());
                 }
@@ -201,13 +209,16 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
              */
             @Override
             public void onTokenIncorrect() {
-                MyLog.d(TAG, "ConnectCallback connect onTokenIncorrect");
+                MyLog.w(TAG, "ConnectCallback connect onTokenIncorrect");
                 if (callback != null) {
                     callback.onFailed(false, 0, "");
                 }
             }
         });
+    }
 
+    public Pair<Integer, String> getConnectStatus() {
+        return new Pair<Integer, String>(mConnectionStatus.getValue(), mConnectionStatus.getMessage());
     }
 
     /**
@@ -233,7 +244,6 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
          */
         RongIM.getInstance().joinChatRoom(roomId, 10, mOperationCallback);
     }
-
 
     public void leaveChatRoom(String roomId) {
         MyLog.d(TAG, "leaveChatRoom" + " roomId=" + roomId);

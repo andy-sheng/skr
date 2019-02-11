@@ -2,6 +2,7 @@ package com.module.msg;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Pair;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.fastjson.JSONObject;
@@ -16,6 +17,11 @@ public class RongMsgServiceImpl implements IMsgService {
     @Override
     public void initRongIM(Application application) {
         RongMsgManager.getInstance().init(application);
+    }
+
+    @Override
+    public Pair<Integer, String> getConnectStatus() {
+        return RongMsgManager.getInstance().getConnectStatus();
     }
 
     @Override

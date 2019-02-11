@@ -467,7 +467,7 @@ public class UserAccountManager {
         });
     }
 
-    public void connectRongIM(String rongToken) {
+    private void connectRongIM(String rongToken) {
         MyLog.d(TAG, "connectRongIM" + " rongToken=" + rongToken);
         if (TextUtils.isEmpty(rongToken)) {
             getIMToken();
