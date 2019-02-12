@@ -28,6 +28,7 @@ import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
 import com.common.core.account.event.AccountEvent;
 import com.common.core.avatar.AvatarUtils;
+import com.common.core.login.LoginActivity;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.myinfo.event.ScoreDetailChangeEvent;
@@ -378,6 +379,11 @@ public class GameFragment extends BaseFragment {
                 .setOnBannerListener(new OnBannerListener() {
                     @Override
                     public void OnBannerClick(int position) {
+
+//                        ARouter.getInstance().build(RouterConstants.ACTIVITY_SCHEME)
+//                                .withString("uri", "inframeskr://web/fullScreen?url=" + slideShowModelList.get(position).getLinkURL())
+//                                .navigation();
+
                         ARouter.getInstance().build(RouterConstants.ACTIVITY_SHARE_WEB)
                                 .withString("url", slideShowModelList.get(position).getLinkURL())
                                 .greenChannel().navigation();

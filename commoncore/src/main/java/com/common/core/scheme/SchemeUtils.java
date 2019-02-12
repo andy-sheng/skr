@@ -30,14 +30,6 @@ public class SchemeUtils {
         return defaultValue;
     }
 
-    public static String getRecommendTag(String uriStr) {
-        if (TextUtils.isEmpty(uriStr)) {
-            return "";
-        }
-        Uri uri = Uri.parse(uriStr);
-        return uri.getQueryParameter(SchemeConstants.PARAM_RECOMMEND_TAG);
-    }
-
     public static String getString(Uri uri, String key) {
         try {
             return uri.getQueryParameter(key);
