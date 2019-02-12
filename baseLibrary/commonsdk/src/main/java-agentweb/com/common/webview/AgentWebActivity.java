@@ -9,16 +9,24 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.common.base.BaseActivity;
 import com.common.base.R;
+import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
+import com.github.lzyzsd.jsbridge.BridgeHandler;
+import com.github.lzyzsd.jsbridge.BridgeWebView;
+import com.github.lzyzsd.jsbridge.BridgeWebViewClient;
+import com.github.lzyzsd.jsbridge.CallBackFunction;
+import com.google.gson.Gson;
 import com.just.agentweb.AgentWeb;
 import com.just.agentweb.AgentWebSettingsImpl;
 import com.just.agentweb.AgentWebUIControllerImplBase;
@@ -39,6 +47,8 @@ public class AgentWebActivity extends BaseActivity {
 
     CommonTitleBar mTitlebar;
     RelativeLayout mContentContainer;
+
+    BridgeWebView mBridgeWebView;
 
 
     private WebChromeClient mWebChromeClient = new WebChromeClient() {
@@ -97,25 +107,35 @@ public class AgentWebActivity extends BaseActivity {
     protected void buildAgentWeb() {
         ErrorLayoutEntity mErrorLayoutEntity = getErrorLayoutEntity();
         String url = getIntent().getStringExtra("url");
-        mAgentWeb = AgentWeb.with(this)
-                .setAgentWebParent(mContentContainer, new RelativeLayout.LayoutParams(-1, -1))
-                .useDefaultIndicator(Color.parseColor("#ff0000"), 3)
+//        mBridgeWebView=new BridgeWebView(getActivity());
+        mBridgeWebView=new BridgeWebView(this);
+        mAgentWeb = AgentWeb.with(this)//
+                .setAgentWebParent((ViewGroup) mContentContainer, new RelativeLayout.LayoutParams(-1, -1))//
+                .useDefaultIndicator(-1, 2)//
+//                .setAgentWebWebSettings(getSettings())//
+                .setWebViewClient(new BridgeWebViewClient(mBridgeWebView))
                 .setWebChromeClient(mWebChromeClient)
-                .setWebViewClient(mWebViewClient)
-                .setMainFrameErrorView(mErrorLayoutEntity.layoutRes, mErrorLayoutEntity.reloadId)
-//                .setWebView(getWebView())
-//                .setPermissionInterceptor(getPermissionInterceptor())
-//                .setWebLayout(getWebLayout())
-//                .setAgentWebUIController(getAgentWebUIController())
-//                .interceptUnkownUrl()
-//                .setOpenOtherPageWays(getOpenOtherAppWay())
-                .useMiddlewareWebChrome(getMiddleWareWebChrome())
-                .useMiddlewareWebClient(getMiddleWareWebClient())
-                .setAgentWebWebSettings(AgentWebSettingsImpl.getInstance())
-//                .setSecurityType(AgentWeb.SecurityType.STRICT_CHECK)
-                .createAgentWeb()
-                .ready()
+                .setWebView(mBridgeWebView)
+                .setSecurityType(AgentWeb.SecurityType.STRICT_CHECK)
+//                .setDownloadListener(mDownloadListener) 4.0.0 删除该API
+                .createAgentWeb()//
+                .ready()//
                 .go(url);
+
+        mBridgeWebView.registerHandler("submitFromWeb", new BridgeHandler() {
+            @Override
+            public void handler(String data, CallBackFunction function) {
+                function.onCallBack("submitFromWeb exe, response data 中文 fr Java");
+                U.getToastUtil().showShort("你好，java");
+            }
+        });
+
+        mBridgeWebView.callHandler("functionInJs", "你好，js", new CallBackFunction() {
+            @Override
+            public void onCallBack(String data) {
+                Log.i(TAG,"data:"+data);
+            }
+        });
     }
 
 

@@ -380,13 +380,13 @@ public class GameFragment extends BaseFragment {
                     @Override
                     public void OnBannerClick(int position) {
 
-//                        ARouter.getInstance().build(RouterConstants.ACTIVITY_SCHEME)
-//                                .withString("uri", "inframeskr://web/fullScreen?url=" + slideShowModelList.get(position).getLinkURL())
-//                                .navigation();
+                        ARouter.getInstance().build(RouterConstants.ACTIVITY_SCHEME)
+                                .withString("uri", "inframeskr://web/fullScreen?url=" + slideShowModelList.get(position).getLinkURL())
+                                .navigation();
 
-                        ARouter.getInstance().build(RouterConstants.ACTIVITY_SHARE_WEB)
-                                .withString("url", slideShowModelList.get(position).getLinkURL())
-                                .greenChannel().navigation();
+//                        ARouter.getInstance().build(RouterConstants.ACTIVITY_SHARE_WEB)
+//                                .withString("url", slideShowModelList.get(position).getLinkURL())
+//                                .greenChannel().navigation();
                     }
                 })
                 .start();
