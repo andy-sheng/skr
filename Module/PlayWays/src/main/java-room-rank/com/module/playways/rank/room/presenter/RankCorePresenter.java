@@ -97,6 +97,8 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     String TAG = "RankCorePresenter";
 
     static final int MSG_ROBOT_SING_BEGIN = 10;
+
+    static final int MSG_ENSURE_SWITCH_BROADCAST_SUCCESS = 21; // 确保用户切换成主播成功，防止引擎不回调的保护
     //    static final int MSG_ROBOT_SING_END = 11;
 //    static final int MSG_GET_VOTE = 20;
 
@@ -105,6 +107,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     static final int MSG_LYRIC_END_EVENT = 31;
 
     static final int MSG_SHOW_SCORE_EVENT = 32;
+
 
     private static long sHeartBeatTaskInterval = 3000;
     private static long sSyncStateTaskInterval = 12000;
@@ -143,6 +146,9 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                 case MSG_ROBOT_SING_BEGIN:
                     robotSingBegin((PlayerInfoModel) msg.obj);
                     break;
+                case MSG_ENSURE_SWITCH_BROADCAST_SUCCESS:
+                    onChangeBroadcastSuccess();
+                    break;
 //                case MSG_ROBOT_SING_END:
 //                    break;
                 case MSG_START_LAST_TWO_SECONDS_TASK:
@@ -153,10 +159,10 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                     break;
                 default:
                     int lineNo = (msg.what - MSG_SHOW_SCORE_EVENT) / 100;
-                    MyLog.d(TAG,"handleMessage" + " lineNo=" + lineNo);
+                    MyLog.d(TAG, "handleMessage" + " lineNo=" + lineNo);
                     if (lineNo > mLastLineNum) {
                         int score = EngineManager.getInstance().getLineScore();
-                        MyLog.d(TAG,"handleMessage acr超时 本地获取得分:"+score);
+                        MyLog.d(TAG, "handleMessage acr超时 本地获取得分:" + score);
                         processScore(score, lineNo);
                     }
             }
@@ -273,8 +279,8 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     /**
      * 上报轮次结束信息
      */
-    public void sendRoundOverInfo() {
-        MyLog.w(TAG, "上报我的演唱结束");
+    public void sendRoundOverInfo(String reason) {
+        MyLog.w(TAG, "上报我的演唱结束 reason:" + reason);
         estimateOverTsThisRound();
 
         // TODO: 2018/12/27 机器评分先写死，都给90分
@@ -558,6 +564,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         estimateOverTsThisRound();
         //以防万一
         tryStopRobotPlay();
+        mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS);
         if (event.myturn) {
             // 轮到我唱了
             // 开始发心跳
@@ -576,6 +583,8 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                             if (mRoomData.getRealRoundInfo() != null && mRoomData.getRealRoundInfo().getUserID() == MyUserInfoManager.getInstance().getUid()) {
                                 EngineManager.getInstance().setClientRole(true);
                                 // 等待角色变换成功回调
+                                Message msg = mUiHandler.obtainMessage(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS);
+                                mUiHandler.sendMessageDelayed(msg, 2000);
                             }
                         }
                     });
@@ -875,38 +884,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         } else if (event.getType() == EngineEvent.TYPE_USER_ROLE_CHANGE) {
             EngineEvent.RoleChangeInfo roleChangeInfo = event.getObj();
             if (roleChangeInfo.getNewRole() == 1) {
-                mUiHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        // 开始开始混伴奏，开始解除引擎mute
-                        File accFile = SongResUtils.getAccFileByUrl(mRoomData.getSongModel().getAcc());
-                        File midiFile = SongResUtils.getMIDIFileByUrl(mRoomData.getSongModel().getMidi());
-
-                        if (accFile != null && accFile.exists()) {
-
-//                                    EngineManager.getInstance().muteLocalAudioStream(false);
-                            EngineManager.getInstance().startAudioMixing((int) MyUserInfoManager.getInstance().getUid(), accFile.getAbsolutePath()
-                                    , midiFile == null ? "" : midiFile.getAbsolutePath(), mRoomData.getSongModel().getBeginMs(), false, false, 1);
-                            /**
-                             * 现在歌儿都是截断过的，getSingBeginMs和getSingEndMs是歌词的时间，伴奏从0位置开始播放
-                             */
-                            EngineManager.getInstance().setAudioMixingPosition(0);
-                            // 还应开始播放歌词
-                            mIGameRuleView.playLyric(mRoomData.getSongModel(), true);
-                            mIGameRuleView.showLeftTime(mRoomData.getRealRoundInfo().getSingEndMs() - mRoomData.getRealRoundInfo().getSingBeginMs());
-                            MyLog.w(TAG, "本人开始唱了，歌词和伴奏响起");
-
-                            //开始录制声音
-                            if (SkrConfig.getInstance().isNeedUploadAudioForAI()) {
-                                // 需要上传音频伪装成机器人
-                                EngineManager.getInstance().startAudioRecording(RoomDataUtils.getSaveAudioForAiFilePath(), Constants.AUDIO_RECORDING_QUALITY_HIGH);
-                            }
-                            mRobotScoreHelper = new RobotScoreHelper();
-                            //尝试再用融云通知对端
-                            sendUserSpeakEventToOthers();
-                        }
-                    }
-                });
+                onChangeBroadcastSuccess();
             }
         } else if (event.getType() == EngineEvent.TYPE_USER_AUDIO_VOLUME_INDICATION) {
 //            if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
@@ -924,13 +902,13 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 //            }
         } else if (event.getType() == EngineEvent.TYPE_MUSIC_PLAY_FINISH) {
             //伴奏播放结束了也发结束轮次的通知了
-            sendRoundOverInfo();
+            sendRoundOverInfo("TYPE_MUSIC_PLAY_FINISH");
         } else if (event.getType() == EngineEvent.TYPE_MUSIC_PLAY_TIME_FLY_LISTENER) {
             EngineEvent.MixMusicTimeInfo timeInfo = (EngineEvent.MixMusicTimeInfo) event.getObj();
             //这个是唱的时间，先在按长度算时间
             if (timeInfo.getCurrent() >= mRoomData.getSongModel().getEndMs() - mRoomData.getSongModel().getBeginMs()) {
                 //可以发结束轮次的通知了
-                sendRoundOverInfo();
+                sendRoundOverInfo("TYPE_MUSIC_PLAY_TIME_FLY_LISTENER");
             }
         } else if (event.getType() == EngineEvent.TYPE_USER_MUTE_AUDIO) {
             int muteUserId = event.getUserStatus().getUserId();
@@ -946,6 +924,46 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
             }
         }
     }
+
+    /**
+     * 成功切换为主播
+     */
+    private void onChangeBroadcastSuccess() {
+        mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS);
+        mUiHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                // 开始开始混伴奏，开始解除引擎mute
+                File accFile = SongResUtils.getAccFileByUrl(mRoomData.getSongModel().getAcc());
+                File midiFile = SongResUtils.getMIDIFileByUrl(mRoomData.getSongModel().getMidi());
+
+                if (accFile != null && accFile.exists()) {
+
+//                                    EngineManager.getInstance().muteLocalAudioStream(false);
+                    EngineManager.getInstance().startAudioMixing((int) MyUserInfoManager.getInstance().getUid(), accFile.getAbsolutePath()
+                            , midiFile == null ? "" : midiFile.getAbsolutePath(), mRoomData.getSongModel().getBeginMs(), false, false, 1);
+                    /**
+                     * 现在歌儿都是截断过的，getSingBeginMs和getSingEndMs是歌词的时间，伴奏从0位置开始播放
+                     */
+                    EngineManager.getInstance().setAudioMixingPosition(0);
+                    // 还应开始播放歌词
+                    mIGameRuleView.playLyric(mRoomData.getSongModel(), true);
+                    mIGameRuleView.showLeftTime(mRoomData.getRealRoundInfo().getSingEndMs() - mRoomData.getRealRoundInfo().getSingBeginMs());
+                    MyLog.w(TAG, "本人开始唱了，歌词和伴奏响起");
+
+                    //开始录制声音
+                    if (SkrConfig.getInstance().isNeedUploadAudioForAI()) {
+                        // 需要上传音频伪装成机器人
+                        EngineManager.getInstance().startAudioRecording(RoomDataUtils.getSaveAudioForAiFilePath(), Constants.AUDIO_RECORDING_QUALITY_HIGH);
+                    }
+                    mRobotScoreHelper = new RobotScoreHelper();
+                    //尝试再用融云通知对端
+                    sendUserSpeakEventToOthers();
+                }
+            }
+        });
+    }
+
 
     private void sendUserSpeakEventToOthers() {
         IMsgService msgService = ModuleServiceManager.getInstance().getMsgService();
@@ -1186,7 +1204,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(LrcEvent.LineEndEvent event) {
-        MyLog.d(TAG,"onEvent LineEndEvent lineno=" + event.getLineNum());
+        MyLog.d(TAG, "onEvent LineEndEvent lineno=" + event.getLineNum());
         if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
             EngineManager.getInstance().recognizeInManualMode(event.getLineNum());
             Message msg = mUiHandler.obtainMessage(MSG_SHOW_SCORE_EVENT + event.getLineNum() * 100);
@@ -1216,7 +1234,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(LrcEvent.LineStartEvent event) {
-        MyLog.d(TAG,"onEvent LineStartEvent");
+        MyLog.d(TAG, "onEvent LineStartEvent");
         Params params = EngineManager.getInstance().getParams();
         if (params != null) {
             params.setLrcHasStart(true);
