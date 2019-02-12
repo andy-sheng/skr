@@ -1,5 +1,6 @@
 package com.zq.lyrics.formats.zrce;
 
+import android.text.TextUtils;
 import android.util.Base64;
 
 import com.zq.lyrics.formats.LyricsFileReader;
@@ -50,6 +51,7 @@ public class ZrceLyricsFileReader extends LyricsFileReader {
     private final static String LEGAL_QQ_PREFIX = "[qq:";
     private final static String LEGAL_TOTAL_PREFIX = "[total:";
     private final static String LEGAL_LANGUAGE_PREFIX = "[language:";
+
     @Override
     public LyricsInfo readInputStream(InputStream in) throws Exception {
         LyricsInfo lyricsIfno = new LyricsInfo();
@@ -57,28 +59,30 @@ public class ZrceLyricsFileReader extends LyricsFileReader {
         if (in != null) {
 
             String lyricsTextStr = decodeLrc(in);
-            String[] lyricsTexts = lyricsTextStr.split("\n");
-            TreeMap<Integer, LyricsLineInfo> lyricsLineInfos = new TreeMap<Integer, LyricsLineInfo>();
-            Map<String, Object> lyricsTags = new HashMap<String, Object>();
-            int index = 0;
+            if (!TextUtils.isEmpty(lyricsTextStr)) {
+                String[] lyricsTexts = lyricsTextStr.split("\n");
+                TreeMap<Integer, LyricsLineInfo> lyricsLineInfos = new TreeMap<Integer, LyricsLineInfo>();
+                Map<String, Object> lyricsTags = new HashMap<String, Object>();
+                int index = 0;
 
-            for (int i = 0; i < lyricsTexts.length; i++) {
-                String lineInfo = lyricsTexts[i];
+                for (int i = 0; i < lyricsTexts.length; i++) {
+                    String lineInfo = lyricsTexts[i];
 
-                // 行读取，并解析每行歌词的内容
-                LyricsLineInfo lyricsLineInfo = parserLineInfos(lyricsTags,
-                        lineInfo, lyricsIfno);
-                if (lyricsLineInfo != null) {
-                    lyricsLineInfos.put(index, lyricsLineInfo);
-                    index++;
+                    // 行读取，并解析每行歌词的内容
+                    LyricsLineInfo lyricsLineInfo = parserLineInfos(lyricsTags,
+                            lineInfo, lyricsIfno);
+                    if (lyricsLineInfo != null) {
+                        lyricsLineInfos.put(index, lyricsLineInfo);
+                        index++;
+                    }
                 }
+                in.close();
+                in = null;
+                // 设置歌词的标签类
+                lyricsIfno.setLyricsTags(lyricsTags);
+                //
+                lyricsIfno.setLyricsLineInfoTreeMap(lyricsLineInfos);
             }
-            in.close();
-            in = null;
-            // 设置歌词的标签类
-            lyricsIfno.setLyricsTags(lyricsTags);
-            //
-            lyricsIfno.setLyricsLineInfoTreeMap(lyricsLineInfos);
         }
         return lyricsIfno;
     }
@@ -228,7 +232,7 @@ public class ZrceLyricsFileReader extends LyricsFileReader {
         }
     }
 
-    public static String decodeLrc (InputStream in){
+    public static String decodeLrc(InputStream in) {
         BufferedSource bufferedSource = null;
         byte[] bytes;
         try {
