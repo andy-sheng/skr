@@ -228,17 +228,6 @@ dependencies {
     // SVGA YY的动画播放框架
     api rootProject.ext.dependencies["svga"]
 
-    // 小米统计sdk
-    api files('libs/MiStats_SDK_Client_1_4_0.jar')
-    // 蒲公英 用户反馈 与 崩溃收集
-    //api files('libs/pgyer_sdk_3.0.2.jar')
-
-    //api files('libs/milinksdk-3.2.0.jar')
-
-    api files('libs/BaiduLBS_Android.jar')
-
-    compileOnly files("libs/alipaySdk-20170922.jar")
-
     api rootProject.ext.dependencies["rxbinding"]
     api rootProject.ext.dependencies["rxbinding-support-v4"]
     api rootProject.ext.dependencies["rxbinding-appcompat-v7"]
@@ -260,6 +249,17 @@ dependencies {
         // replugin 组件
         api project(":baseLibrary:replugin-host-library")
     }
+
+    // 小米统计sdk
+    api files('libs/MiStats_SDK_Client_1_4_0.jar')
+    // 蒲公英 用户反馈 与 崩溃收集
+    //api files('libs/pgyer_sdk_3.0.2.jar')
+
+    //api files('libs/milinksdk-3.2.0.jar')
+
+    api files('libs/BaiduLBS_Android.jar')
+
+    compileOnly files("libs/alipaySdk-20170922.jar")
 }
 
 //与dependencies平级，主要用于配置数据库相关信息的及自动生成的“DAO”资源的目录

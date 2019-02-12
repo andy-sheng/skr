@@ -74,6 +74,7 @@ public class CommonConfiguration implements ConfigModule {
                 FrescoInitManager.initFresco(U.app());
 //                PgyCrashManager.register();
                 CommonReceiver.register();
+
             }
 
             @Override

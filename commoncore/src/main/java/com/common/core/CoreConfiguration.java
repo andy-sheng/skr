@@ -28,6 +28,7 @@ import com.common.core.account.UserAccountManager;
 import com.common.core.crash.MyCrashHandler;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.interceptor.CoreInfoInterceptor;
+import com.doraemon.DoraemonManager;
 import com.module.ModuleServiceManager;
 
 import java.util.List;
@@ -68,6 +69,7 @@ public class CoreConfiguration implements ConfigModule {
                 ApiManager.getInstance().addInterceptor(new CoreInfoInterceptor());
                 ModuleServiceManager.getInstance().getMsgService().initRongIM(application);
                 UserAccountManager.getInstance().init();
+                DoraemonManager.init();
             }
 
             @Override

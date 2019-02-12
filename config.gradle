@@ -174,9 +174,11 @@ ext {
 
             // facebook 性能调试工具 国内被墙，不好用
             "stetho"                           : "com.facebook.stetho:stetho:1.5.0",
-
             // 直接在浏览器查看数据库的工具
             "debug-db"                         : "com.amitshekhar.android:debug-db:1.0.3",
+            // doraemonkit 滴滴开源一款app内调试工具,以源码方式引入
+            //"doraemonkit"                      : 'com.didichuxing.doraemonkit:doraemonkit:1.0.5',
+            //"doraemonkit-no-op"                   : 'com.didichuxing.doraemonkit:doraemonkit-no-op:1.0.5',
 
             // 左滑退出activity
             "swipebackhelper"                  : 'com.jude:swipebackhelper:3.1.2',
@@ -200,8 +202,6 @@ ext {
             "logger"                           : "com.orhanobut:logger:2.2.0",
             "canary-debug"                     : "com.squareup.leakcanary:leakcanary-android:${version["canarySdkVersion"]}",
             "canary-release"                   : "com.squareup.leakcanary:leakcanary-android-no-op:${version["canarySdkVersion"]}",
-            "umeng-analytics"                  : "com.umeng.umsdk:analytics:7.5.4",
-            "umeng-common"                     : "com.umeng.umsdk:common:1.5.4",
             "lzyzsd-jsbridge"                  : "com.github.lzyzsd:jsbridge:1.0.4"
     ]
 

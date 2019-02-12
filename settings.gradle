@@ -11,7 +11,6 @@ include ':baseLibrary:my-utils-gradle'
 if (droidPluginEnable.toBoolean()) {
     include ':baseLibrary:DroidPlugin'
 }
-
 if (repluginHostEnable.toBoolean()) {
     include ':baseLibrary:replugin-host-gradle', ':baseLibrary:replugin-host-library'
 }
@@ -21,5 +20,7 @@ if (repluginPluginEnable.toBoolean()) {
 if (arcCloud.toBoolean()) {
     include ':baseLibrary:arcCloud'
 }
+
+include ':baseLibrary:doraemonkit'
 
 

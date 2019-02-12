@@ -47,6 +47,8 @@ android {
             res.srcDirs += ['src/main/res-config']
             res.srcDirs += ['src/main/res-umeng']
 
+            // doraemonkit 滴滴开源一款app内调试工具
+            java.srcDirs += 'src/main/java-doraemonkit'
         }
     }
 
@@ -60,6 +62,8 @@ dependencies {
     annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
     api project(":baseLibrary:commonsdk")
     api project(":baseLibrary:enginesdk")
+    // doraemonkit 滴滴开源一款app内调试工具
+    api project(":baseLibrary:doraemonkit")
     api project(":commonservice")
 
 
