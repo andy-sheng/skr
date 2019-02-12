@@ -68,6 +68,8 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
 
   public static final String DEFAULT_RANKUSERVOICE = "";
 
+  public static final Integer DEFAULT_RANKLRCENDT = 0;
+
   /**
    * 音乐条目标识
    */
@@ -257,19 +259,28 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
   )
   public final String rankUserVoice;
 
+  /**
+   * 匹配玩法最后一句歌词的结束时间,毫秒
+   */
+  @WireField(
+      tag = 23,
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+  )
+  public final Integer rankLrcEndT;
+
   public MusicInfo(Integer itemID, String itemName, String cover, String owner, String lyric,
       String ori, String acc, String midi, String zip, Integer totalTimeMs, Integer beginTimeMs,
       Integer endTimeMs, Integer rankLrcBeginT, String standIntro, Integer standIntroBeginT,
       Integer standIntroEndT, Integer standLrcBeginT, Integer standLrcEndT, Boolean isBlank,
-      String standLrc, String rankUserVoice) {
-    this(itemID, itemName, cover, owner, lyric, ori, acc, midi, zip, totalTimeMs, beginTimeMs, endTimeMs, rankLrcBeginT, standIntro, standIntroBeginT, standIntroEndT, standLrcBeginT, standLrcEndT, isBlank, standLrc, rankUserVoice, ByteString.EMPTY);
+      String standLrc, String rankUserVoice, Integer rankLrcEndT) {
+    this(itemID, itemName, cover, owner, lyric, ori, acc, midi, zip, totalTimeMs, beginTimeMs, endTimeMs, rankLrcBeginT, standIntro, standIntroBeginT, standIntroEndT, standLrcBeginT, standLrcEndT, isBlank, standLrc, rankUserVoice, rankLrcEndT, ByteString.EMPTY);
   }
 
   public MusicInfo(Integer itemID, String itemName, String cover, String owner, String lyric,
       String ori, String acc, String midi, String zip, Integer totalTimeMs, Integer beginTimeMs,
       Integer endTimeMs, Integer rankLrcBeginT, String standIntro, Integer standIntroBeginT,
       Integer standIntroEndT, Integer standLrcBeginT, Integer standLrcEndT, Boolean isBlank,
-      String standLrc, String rankUserVoice, ByteString unknownFields) {
+      String standLrc, String rankUserVoice, Integer rankLrcEndT, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.itemID = itemID;
     this.itemName = itemName;
@@ -292,6 +303,7 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     this.isBlank = isBlank;
     this.standLrc = standLrc;
     this.rankUserVoice = rankUserVoice;
+    this.rankLrcEndT = rankLrcEndT;
   }
 
   @Override
@@ -318,6 +330,7 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     builder.isBlank = isBlank;
     builder.standLrc = standLrc;
     builder.rankUserVoice = rankUserVoice;
+    builder.rankLrcEndT = rankLrcEndT;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -348,7 +361,8 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
         && Internal.equals(standLrcEndT, o.standLrcEndT)
         && Internal.equals(isBlank, o.isBlank)
         && Internal.equals(standLrc, o.standLrc)
-        && Internal.equals(rankUserVoice, o.rankUserVoice);
+        && Internal.equals(rankUserVoice, o.rankUserVoice)
+        && Internal.equals(rankLrcEndT, o.rankLrcEndT);
   }
 
   @Override
@@ -377,6 +391,7 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
       result = result * 37 + (isBlank != null ? isBlank.hashCode() : 0);
       result = result * 37 + (standLrc != null ? standLrc.hashCode() : 0);
       result = result * 37 + (rankUserVoice != null ? rankUserVoice.hashCode() : 0);
+      result = result * 37 + (rankLrcEndT != null ? rankLrcEndT.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -406,6 +421,7 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     if (isBlank != null) builder.append(", isBlank=").append(isBlank);
     if (standLrc != null) builder.append(", standLrc=").append(standLrc);
     if (rankUserVoice != null) builder.append(", rankUserVoice=").append(rankUserVoice);
+    if (rankLrcEndT != null) builder.append(", rankLrcEndT=").append(rankLrcEndT);
     return builder.replace(0, 2, "MusicInfo{").append('}').toString();
   }
 
@@ -630,6 +646,16 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
   }
 
   /**
+   * 匹配玩法最后一句歌词的结束时间,毫秒
+   */
+  public Integer getRankLrcEndT() {
+    if(rankLrcEndT==null){
+        return DEFAULT_RANKLRCENDT;
+    }
+    return rankLrcEndT;
+  }
+
+  /**
    * 音乐条目标识
    */
   public boolean hasItemID() {
@@ -776,6 +802,13 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     return rankUserVoice!=null;
   }
 
+  /**
+   * 匹配玩法最后一句歌词的结束时间,毫秒
+   */
+  public boolean hasRankLrcEndT() {
+    return rankLrcEndT!=null;
+  }
+
   public static final class Builder extends Message.Builder<MusicInfo, Builder> {
     public Integer itemID;
 
@@ -818,6 +851,8 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     public String standLrc;
 
     public String rankUserVoice;
+
+    public Integer rankLrcEndT;
 
     public Builder() {
     }
@@ -990,9 +1025,17 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
       return this;
     }
 
+    /**
+     * 匹配玩法最后一句歌词的结束时间,毫秒
+     */
+    public Builder setRankLrcEndT(Integer rankLrcEndT) {
+      this.rankLrcEndT = rankLrcEndT;
+      return this;
+    }
+
     @Override
     public MusicInfo build() {
-      return new MusicInfo(itemID, itemName, cover, owner, lyric, ori, acc, midi, zip, totalTimeMs, beginTimeMs, endTimeMs, rankLrcBeginT, standIntro, standIntroBeginT, standIntroEndT, standLrcBeginT, standLrcEndT, isBlank, standLrc, rankUserVoice, super.buildUnknownFields());
+      return new MusicInfo(itemID, itemName, cover, owner, lyric, ori, acc, midi, zip, totalTimeMs, beginTimeMs, endTimeMs, rankLrcBeginT, standIntro, standIntroBeginT, standIntroEndT, standLrcBeginT, standLrcEndT, isBlank, standLrc, rankUserVoice, rankLrcEndT, super.buildUnknownFields());
     }
   }
 
@@ -1024,6 +1067,7 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
           + ProtoAdapter.BOOL.encodedSizeWithTag(19, value.isBlank)
           + ProtoAdapter.STRING.encodedSizeWithTag(20, value.standLrc)
           + ProtoAdapter.STRING.encodedSizeWithTag(22, value.rankUserVoice)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(23, value.rankLrcEndT)
           + value.unknownFields().size();
     }
 
@@ -1050,6 +1094,7 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
       ProtoAdapter.BOOL.encodeWithTag(writer, 19, value.isBlank);
       ProtoAdapter.STRING.encodeWithTag(writer, 20, value.standLrc);
       ProtoAdapter.STRING.encodeWithTag(writer, 22, value.rankUserVoice);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 23, value.rankLrcEndT);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -1080,6 +1125,7 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
           case 19: builder.setIsBlank(ProtoAdapter.BOOL.decode(reader)); break;
           case 20: builder.setStandLrc(ProtoAdapter.STRING.decode(reader)); break;
           case 22: builder.setRankUserVoice(ProtoAdapter.STRING.decode(reader)); break;
+          case 23: builder.setRankLrcEndT(ProtoAdapter.UINT32.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

@@ -529,7 +529,7 @@ public class AuditionFragment extends BaseFragment {
                         MyLog.d(TAG, "playMusic, start play lyric");
                         mManyLyricsView.resetData();
                         mManyLyricsView.initLrcData();
-                        lyricsReader.cut(songModel.getRankLrcBeginT(), songModel.getEndMs());
+                        lyricsReader.cut(songModel.getRankLrcBeginT(), songModel.getRankLrcEndT());
                         if (isRecord) {
                             Set<Integer> set = new HashSet<>();
                             set.add(lyricsReader.getLineInfoIdByStartTs(songModel.getRankLrcBeginT()));

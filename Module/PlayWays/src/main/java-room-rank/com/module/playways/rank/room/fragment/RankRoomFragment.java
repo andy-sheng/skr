@@ -1239,7 +1239,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                     == MyUserInfoManager.getInstance().getUid()) {
                 mManyLyricsView.setVisibility(View.VISIBLE);
                 mManyLyricsView.initLrcData();
-                lyricsReader.cut(mPlayingSongModel.getRankLrcBeginT(), mPlayingSongModel.getEndMs());
+                lyricsReader.cut(mPlayingSongModel.getRankLrcBeginT(), mPlayingSongModel.getRankLrcEndT());
                 mManyLyricsView.setLyricsReader(lyricsReader);
 
                 Set<Integer> set = new HashSet<>();
@@ -1257,7 +1257,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                 }
             } else {
                 if (play) {
-                    lyricsReader.cut(mPlayingSongModel.getRankLrcBeginT(), mPlayingSongModel.getEndMs());
+                    lyricsReader.cut(mPlayingSongModel.getRankLrcBeginT(), mPlayingSongModel.getRankLrcEndT());
                     postLyricEndEvent(lyricsReader);
                 }
 

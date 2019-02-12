@@ -49,6 +49,7 @@ public class SongModel implements Serializable {
     private boolean isblank = false;   //一唱到底是否是白板item
     private String standLrc = "";   //一唱到底是否是白板item
     private String rankUserVoice;   //排位进入游戏前的背景音乐
+    private int rankLrcEndT;   //排位进入游戏前的背景音乐
 
     public int getRankLrcBeginT() {
         return rankLrcBeginT;
@@ -158,6 +159,14 @@ public class SongModel implements Serializable {
         return endMs;
     }
 
+    public int getRankLrcEndT() {
+        return rankLrcEndT;
+    }
+
+    public void setRankLrcEndT(int rankLrcEndT) {
+        this.rankLrcEndT = rankLrcEndT;
+    }
+
     public void setEndMs(int endMs) {
         this.endMs = endMs;
     }
@@ -254,6 +263,7 @@ public class SongModel implements Serializable {
         this.setIsblank(musicInfo.getIsBlank());
         this.setStandLrc(musicInfo.getStandLrc());
         this.setRankUserVoice(musicInfo.getRankUserVoice());
+        this.setRankLrcEndT(musicInfo.getRankLrcEndT());
     }
 
     public boolean isAllResExist() {
@@ -299,11 +309,17 @@ public class SongModel implements Serializable {
                 ", rankBgm='" + rankBgm + '\'' +
                 ", beginMs=" + beginMs +
                 ", endMs=" + endMs +
+                ", totalMs=" + totalMs +
+                ", rankLrcBeginT=" + rankLrcBeginT +
                 ", StandIntro='" + StandIntro + '\'' +
                 ", StandIntroBeginT=" + StandIntroBeginT +
                 ", StandIntroEndT=" + StandIntroEndT +
-                ", totalMs=" + totalMs +
-                ", rankLrcBeginT=" + rankLrcBeginT +
+                ", standLrcBeginT=" + standLrcBeginT +
+                ", standLrcEndT=" + standLrcEndT +
+                ", isblank=" + isblank +
+                ", standLrc='" + standLrc + '\'' +
+                ", rankUserVoice='" + rankUserVoice + '\'' +
+                ", rankLrcEndT=" + rankLrcEndT +
                 '}';
     }
 }

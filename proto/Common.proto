@@ -42,6 +42,7 @@ message MusicInfo {
     bool isBlank            = 19; //一唱到底是否是白板item
     string standLrc         = 20; //一唱到底歌词URL
     string rankUserVoice    = 22; //排位进入游戏前的背景音乐.p.s.为了兼容，这里丢弃了21.
+    uint32 rankLrcEndT      = 23; //匹配玩法最后一句歌词的结束时间,毫秒
 }
 
 enum ESex {
