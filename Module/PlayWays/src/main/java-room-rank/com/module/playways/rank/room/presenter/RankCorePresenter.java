@@ -964,7 +964,6 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         });
     }
 
-
     private void sendUserSpeakEventToOthers() {
         IMsgService msgService = ModuleServiceManager.getInstance().getMsgService();
         if (msgService != null) {

@@ -140,7 +140,14 @@ public class LyricsManager {
 
                 File oldName = new File(SongResUtils.createTempLyricFileName(url));
                 File newName = new File(SongResUtils.createLyricFileName(url));
-
+//                if (true) {
+//                    MyLog.d(TAG, "fetchLyricTask 哦哦哦哦哦哦哦哦哦哦哦哦哦哦哦");
+//                    for (int i = 0; i < 308613; i++) {
+//                        MyLog.d(TAG, "i=" + i);
+//                    }
+//                    emitter.onError(new Throwable("下载失败"));
+//                    return;
+//                }
                 if (isSuccess) {
                     if (oldName != null && oldName.renameTo(newName)) {
                         System.out.println("已重命名");

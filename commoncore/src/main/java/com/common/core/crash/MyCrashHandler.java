@@ -39,6 +39,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
+import io.reactivex.plugins.RxJavaPlugins;
+
 /**
  * @author Andy Zhang(zhangyong232@gmail.com)
  */
@@ -68,7 +72,22 @@ public class MyCrashHandler implements UncaughtExceptionHandler {
                 Thread.setDefaultUncaughtExceptionHandler(this);
             }
             mContext = context;
+
+            //TODO 看的实现 RxJavaPlugins.onError
+            RxJavaPlugins.setErrorHandler(new Consumer<Throwable>() {
+                @Override
+                public void accept(Throwable throwable) throws Exception {
+                    MyLog.d(TAG,throwable);
+                    uncaught(new Throwable("来自的rx的异常,不会导致崩溃，但要分析下原因是否合理",throwable));
+                }
+            });
         }
+    }
+
+    static void uncaught(@NonNull Throwable error) {
+        Thread currentThread = Thread.currentThread();
+        UncaughtExceptionHandler handler = currentThread.getUncaughtExceptionHandler();
+        handler.uncaughtException(currentThread, error);
     }
 
     @Override
