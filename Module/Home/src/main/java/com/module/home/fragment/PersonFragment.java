@@ -190,7 +190,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
 
                                                     @Override
                                                     public void onSuccess(String url) {
-                                                        U.getToastUtil().showShort("上传成功 url:" + url);
+                                                        MyLog.d(TAG, "onSuccess" + " url=" + url);
                                                         MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
                                                                 .setAvatar(url)
                                                                 .build(), false);
