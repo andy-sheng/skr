@@ -28,6 +28,7 @@ import com.common.base.R;
 import com.common.log.MyLog;
 import com.common.utils.U;
 
+import java.lang.reflect.Field;
 import java.util.UUID;
 
 
@@ -155,6 +156,7 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
     private boolean centerSearchEdiable;                // 搜索框是否可输入
     private int centerSearchBgResource;                 // 搜索框背景图片
     private int centerSearchRightType;                  // 搜索框右边按钮类型  0: voice 1: delete
+    private String centerSearchHintText;                // 搜索框中间提示的字
     private int centerCustomViewRes;                    // 中间自定义布局资源
 
     private int PADDING_5;
@@ -244,6 +246,7 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
             centerSearchEdiable = array.getBoolean(R.styleable.CommonTitleBar_centerSearchEditable, true);
             centerSearchBgResource = array.getResourceId(R.styleable.CommonTitleBar_centerSearchBg, R.drawable.comm_titlebar_search_gray_shape);
             centerSearchRightType = array.getInt(R.styleable.CommonTitleBar_centerSearchRightType, TYPE_CENTER_SEARCH_RIGHT_VOICE);
+            centerSearchHintText = array.getString(R.styleable.CommonTitleBar_centerSearchHint);
         } else if (centerType == TYPE_CENTER_CUSTOM_VIEW) {
             centerCustomViewRes = array.getResourceId(R.styleable.CommonTitleBar_centerCustomView, 0);
         }
@@ -574,9 +577,13 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
             etSearchHint = new EditText(context);
             etSearchHint.setBackgroundColor(Color.TRANSPARENT);
             etSearchHint.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
-            etSearchHint.setHint(getResources().getString(R.string.titlebar_search_hint));
-            etSearchHint.setTextColor(Color.parseColor("#666666"));
-            etSearchHint.setHintTextColor(Color.parseColor("#999999"));
+            if (TextUtils.isEmpty(centerSearchHintText)) {
+                etSearchHint.setHint(getResources().getString(R.string.titlebar_search_hint));
+            } else {
+                etSearchHint.setHint(centerSearchHintText);
+            }
+            etSearchHint.setTextColor(Color.parseColor("#0C2275"));
+            etSearchHint.setHintTextColor(Color.parseColor("#800C2275"));
             etSearchHint.setTextSize(TypedValue.COMPLEX_UNIT_PX, U.getDisplayUtils().dip2px(context, 14));
             etSearchHint.setPadding(PADDING_5, 0, PADDING_5, 0);
             if (!centerSearchEdiable) {
@@ -587,6 +594,7 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
             }
             etSearchHint.setCursorVisible(false);
             etSearchHint.setSingleLine(true);
+            changeCursor(etSearchHint);
             etSearchHint.setEllipsize(TextUtils.TruncateAt.END);
             etSearchHint.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
             etSearchHint.addTextChangedListener(centerSearchWatcher);
@@ -631,6 +639,15 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
 //                centerCustomParams.addRule(RelativeLayout.LEFT_OF, viewCustomRight.getId());
 //            }
             rlMain.addView(centerCustomView, centerCustomParams);
+        }
+    }
+
+    private void changeCursor(EditText editText) {
+        try {
+            Field f = TextView.class.getDeclaredField("mCursorDrawableRes");
+            f.setAccessible(true);
+            f.set(editText, R.drawable.comm_titlebar_search_cursor_shape);
+        } catch (Exception ignored) {
         }
     }
 

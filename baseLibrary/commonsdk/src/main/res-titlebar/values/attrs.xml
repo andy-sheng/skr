@@ -87,6 +87,8 @@
         <attr name="centerSearchEditable" format="boolean" />
         <!-- 搜索框背景 -->
         <attr name="centerSearchBg" format="reference" />
+        <!-- 搜索框提示文字 -->
+        <attr name="centerSearchHint" format="string" />
         <!-- 中间自定义布局, 对应centerType_CustomView -->
         <attr name="centerCustomView" format="reference" />
 
