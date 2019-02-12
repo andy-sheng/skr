@@ -40,6 +40,11 @@ public class KeyBoardUtils {
         imm.showSoftInput(focusView, InputMethodManager.SHOW_FORCED);
     }
 
+    public void showSoftInputKeyBoard(Context context) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.SHOW_FORCED);
+    }
+
     /**
      * 获取软键盘高度
      *

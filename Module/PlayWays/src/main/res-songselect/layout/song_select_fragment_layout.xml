@@ -19,9 +19,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
-        swipe:min_adapter_stack="4"
         swipe:max_visible="4"
-        swipe:y_offset_step="28dp"/>
+        swipe:min_adapter_stack="4"
+        swipe:y_offset_step="28dp" />
 
     <com.common.view.ex.ExImageView
         android:id="@+id/select_back_iv"
@@ -29,8 +29,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
-        android:padding="@dimen/view_13_dp"
         android:layout_marginLeft="@dimen/view_93_dp"
+        android:padding="@dimen/view_13_dp"
         android:src="@drawable/select_song_back" />
 
     <com.common.view.ex.ExImageView
@@ -39,8 +39,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:padding="@dimen/view_13_dp"
         android:layout_marginRight="@dimen/view_80_dp"
+        android:padding="@dimen/view_13_dp"
         android:src="@drawable/img_yidian" />
 
     <com.common.view.ex.ExImageView
@@ -49,10 +49,20 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:padding="@dimen/view_16_dp"
         android:layout_marginLeft="@dimen/view_20_dp"
         android:layout_marginTop="@dimen/view_30_dp"
+        android:padding="@dimen/view_16_dp"
         android:src="@drawable/img_back" />
 
+    <com.common.view.ex.ExImageView
+        android:id="@+id/select_select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/view_30_dp"
+        android:layout_marginRight="@dimen/view_20_dp"
+        android:padding="@dimen/view_16_dp"
+        android:src="@drawable/search_icon" />
 
 </RelativeLayout>

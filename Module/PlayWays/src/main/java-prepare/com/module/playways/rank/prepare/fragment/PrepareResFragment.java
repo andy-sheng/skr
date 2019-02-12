@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
@@ -39,6 +40,8 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
 
     public final static String TAG = "PrepareResFragment";
 
+    RelativeLayout mMainActContainer;
+
     ExImageView mIvTop;
     SimpleDraweeView mSongIcon;
     ExTextView mSongName;
@@ -57,6 +60,8 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
 
     Handler mUiHandler;
 
+    boolean mSetBackGround = false;
+
     @Override
     public int initView() {
         return R.layout.prepare_res_fragment_layout;
@@ -69,6 +74,7 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        mMainActContainer = (RelativeLayout)mRootView.findViewById(R.id.main_act_container);
         mIvTop = (ExImageView) mRootView.findViewById(R.id.iv_top);
         mSongIcon = (SimpleDraweeView) mRootView.findViewById(R.id.song_icon);
         mSongName = (ExTextView) mRootView.findViewById(R.id.song_name);
@@ -80,6 +86,10 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
         mSongName.setText(mPrepareData.getSongModel().getItemName());
 
         mIvBack = (ExImageView) mRootView.findViewById(R.id.iv_back);
+
+        if (mSetBackGround) {
+            mMainActContainer.setBackgroundResource(R.drawable.dabeijing);
+        }
 
         AvatarUtils.loadAvatarByUrl(mSongIcon,
                 AvatarUtils.newParamsBuilder(mPrepareData.getSongModel().getCover())
@@ -184,6 +194,9 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
         }
         if (type == 1) {
             mPrepareData.setGameType((int) data);
+        }
+        if (type == 2) {
+            mSetBackGround = (boolean) data;
         }
     }
 

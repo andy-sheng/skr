@@ -24,6 +24,7 @@ public interface SongSelectServerApi {
 
     /**
      * 搜索曲库剧本的详细条目
+     *
      * @param key
      * @return
      */
@@ -33,10 +34,11 @@ public interface SongSelectServerApi {
 
     /**
      * 获取推荐的列表
+     *
      * @param offset
      * @param cnt
-     * @return  包含  歌曲信息 items（List）
-     *                偏移量 offset
+     * @return 包含  歌曲信息 items（List）
+     * 偏移量 offset
      */
     @GET("/v1/recommend/list-playbook-items")
     Observable<ApiResult> getRcomdMusicItems(@Query("offset") int offset,
@@ -45,12 +47,20 @@ public interface SongSelectServerApi {
 
     /**
      * 获取已点的列表
+     *
      * @param offset
      * @param cnt
-     * @return  包含  歌曲信息 items（List）
-     *                偏移量 offset
+     * @return 包含  歌曲信息 items（List）
+     * 偏移量 offset
      */
     @GET("/v1/mate/list-playbook-items-clicked")
     Observable<ApiResult> getClickedMusicItmes(@Query("offset") int offset,
                                                @Query("cnt") int cnt);
+
+
+    /**
+     * 搜索条目
+     */
+    @GET("/v1/playbook/search-items")
+    Observable<ApiResult> searchMusicItems(@Query("keyword") String keyword);
 }

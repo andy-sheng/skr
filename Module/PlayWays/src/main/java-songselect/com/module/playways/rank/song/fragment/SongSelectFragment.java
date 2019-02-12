@@ -49,6 +49,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
     SongCardSwipAdapter mSongCardSwipAdapter;
 
     ExImageView mSelectBack;
+    ExImageView mSelectSelect;
     ExImageView mSelectBackIv;
     ExImageView mSelectClickedIv;
 
@@ -74,6 +75,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
         mSelectBackIv = (ExImageView) mRootView.findViewById(R.id.select_back_iv);
         mSelectClickedIv = (ExImageView) mRootView.findViewById(R.id.select_clicked_iv);
         mSelectBack = (ExImageView) mRootView.findViewById(R.id.select_back);
+        mSelectSelect = (ExImageView) mRootView.findViewById(R.id.select_select);
 
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -89,6 +91,16 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
                     backToLastCard();
+                });
+
+        RxView.clicks(mSelectSelect)
+                .throttleFirst(300, TimeUnit.MILLISECONDS)
+                .subscribe(o -> {
+                    U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), SearchSongFragment.class)
+                            .setAddToBackStack(true)
+                            .setHasAnimation(true)
+                            .setBundle(bundle)
+                            .build());
                 });
 
         RxView.clicks(mSelectClickedIv)

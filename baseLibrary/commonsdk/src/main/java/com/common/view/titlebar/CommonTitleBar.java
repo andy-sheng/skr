@@ -89,7 +89,7 @@ import java.util.UUID;
  * </declare-styleable>
  * <p/>
  * Created by wuhenzhizao on 16/1/12.
- *
+ * <p>
  * 不熟悉怎么用，看下面的github
  * https://github.com/wuhenzhizao/android-titlebar
  */
@@ -189,7 +189,7 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
     private void loadAttributes(Context context, AttributeSet attrs) {
 
         PADDING_5 = U.getDisplayUtils().dip2px(5);
-        PADDING_12 =  U.getDisplayUtils().dip2px(12);
+        PADDING_12 = U.getDisplayUtils().dip2px(12);
 
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.CommonTitleBar);
 
@@ -237,8 +237,8 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
             centerSubText = array.getString(R.styleable.CommonTitleBar_centerSubText);
             centerSubTextColor = array.getColor(R.styleable.CommonTitleBar_centerSubTextColor, Color.parseColor("#666666"));
             centerSubTextSize = array.getDimension(R.styleable.CommonTitleBar_centerSubTextSize, U.getDisplayUtils().dip2px(context, 11));
-            centerSubTextLeftDrawable = array.getResourceId(R.styleable.CommonTitleBar_centerSubTextLeftDrawable,0);
-            centerSubTextLeftDrawablePadding = array.getDimension(R.styleable.CommonTitleBar_centerSubTextLeftDrawablePadding,2);
+            centerSubTextLeftDrawable = array.getResourceId(R.styleable.CommonTitleBar_centerSubTextLeftDrawable, 0);
+            centerSubTextLeftDrawablePadding = array.getDimension(R.styleable.CommonTitleBar_centerSubTextLeftDrawablePadding, 2);
 
         } else if (centerType == TYPE_CENTER_SEARCHVIEW) {
             centerSearchEdiable = array.getBoolean(R.styleable.CommonTitleBar_centerSearchEditable, true);
@@ -936,8 +936,9 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
         if (centerSearchEdiable && show) {
             etSearchHint.setFocusable(true);
             etSearchHint.setFocusableInTouchMode(true);
+            etSearchHint.setCursorVisible(true);
             etSearchHint.requestFocus();
-            U.getKeyBoardUtils().showSoftInputKeyBoard(getContext(), etSearchHint);
+            U.getKeyBoardUtils().showSoftInputKeyBoard(getContext());
         } else {
             U.getKeyBoardUtils().hideSoftInputKeyBoard(getContext(), etSearchHint);
         }
@@ -977,7 +978,7 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
      *
      * @param listener
      */
-    public void setListener(OnTitleBarListener listener){
+    public void setListener(OnTitleBarListener listener) {
         this.listener = listener;
     }
 

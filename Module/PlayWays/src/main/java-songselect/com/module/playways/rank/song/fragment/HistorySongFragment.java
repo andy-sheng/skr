@@ -54,6 +54,7 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
 
     RelativeLayout mMainActContainer;
     ExImageView mHistoryBack;
+    ExImageView mSelectSelect;
     SmartRefreshLayout mRefreshLayout;
     RecyclerView mHistoryRecycle;
 
@@ -73,6 +74,7 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
     public void initData(@Nullable Bundle savedInstanceState) {
         mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
         mHistoryBack = (ExImageView) mRootView.findViewById(R.id.history_back);
+        mSelectSelect = (ExImageView) mRootView.findViewById(R.id.select_select);
         mRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.refreshLayout);
         mHistoryRecycle = (RecyclerView) mRootView.findViewById(R.id.history_recycle);
 
@@ -182,6 +184,16 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
                     U.getFragmentUtils().popFragment(this);
+                });
+
+        RxView.clicks(mSelectSelect)
+                .throttleFirst(300, TimeUnit.MILLISECONDS)
+                .subscribe(o -> {
+                    U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), SearchSongFragment.class)
+                            .setAddToBackStack(true)
+                            .setHasAnimation(true)
+                            .setBundle(bundle)
+                            .build());
                 });
 
         LoadSir mLoadSir = new LoadSir.Builder()
