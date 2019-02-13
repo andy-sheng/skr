@@ -10,6 +10,7 @@ import android.os.HandlerThread;
 import android.os.Message;
 import android.widget.Toast;
 
+import com.common.utils.U;
 import com.didichuxing.doraemonkit.R;
 
 import java.io.File;
@@ -30,7 +31,7 @@ public class CrashHandlerManager implements Thread.UncaughtExceptionHandler {
     private static final String TAG = CrashHandlerManager.class.getSimpleName();
     private static CrashHandlerManager INSTANCE = new CrashHandlerManager();
 
-    private String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/doraemon/Crash/";
+    private String path = U.getAppInfoUtils().getSubDirPath("Crash_Doraemon");
 
     private Thread.UncaughtExceptionHandler mDefaultHandler;
 

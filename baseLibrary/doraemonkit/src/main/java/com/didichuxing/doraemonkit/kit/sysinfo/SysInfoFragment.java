@@ -16,6 +16,7 @@ import android.view.View;
 
 import com.common.base.BuildConfig;
 import com.common.log.MyLog;
+import com.common.statistics.TimeStatistics;
 import com.common.utils.U;
 import com.didichuxing.doraemonkit.R;
 import com.didichuxing.doraemonkit.ui.base.BaseFragment;
@@ -124,6 +125,8 @@ public class SysInfoFragment extends BaseFragment {
         sysInfoItems.add(new SysInfoItem("BuildConfig.DEBUG", "" + BuildConfig.DEBUG));
         sysInfoItems.add(new SysInfoItem("MyLog.sForceOpenFlag", "" + MyLog.getForceOpenFlag()));
         sysInfoItems.add(new SysInfoItem("数据库调试地址", U.getAppInfoUtils().getDebugDBAddressLog()));
+        sysInfoItems.add(new SysInfoItem("deviceId(参考miui唯一设备号的方法)", U.getDeviceUtils().getDeviceID()));
+        //sysInfoItems.add(new SysInfoItem("agora sdk version", U.getAppInfoUtils().getDebugDBAddressLog()));
     }
 
     private void addDeviceData(List<SysInfoItem> sysInfoItems) {
