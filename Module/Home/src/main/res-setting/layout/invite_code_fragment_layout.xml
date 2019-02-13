@@ -32,12 +32,22 @@
         android:layout_below="@+id/titlebar"
         android:layout_marginTop="@dimen/view_3_dp">
 
+        <com.common.view.ex.ExTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_35_dp"
+            android:layout_marginTop="@dimen/view_36_dp"
+            android:layout_marginRight="@dimen/view_35_dp"
+            android:text="输入邀请码"
+            android:textColor="#0C2275"
+            android:textSize="@dimen/textsize_16_dp" />
+
         <com.common.core.login.view.SeparatedEditText
             android:id="@+id/invite_code_spet"
             android:layout_width="@dimen/view_322_dp"
             android:layout_height="@dimen/view_42_dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/view_60_dp"
+            android:layout_marginTop="@dimen/view_74_dp"
             android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
             android:focusable="true"
             android:focusableInTouchMode="true"
@@ -71,7 +81,7 @@
             android:layout_height="@dimen/view_50_dp"
             android:layout_below="@+id/invite_code_spet"
             android:layout_marginLeft="@dimen/view_35_dp"
-            android:layout_marginTop="@dimen/view_96_dp"
+            android:layout_marginTop="@dimen/view_85_dp"
             android:layout_marginRight="@dimen/view_35_dp"
             android:focusable="true"
             android:focusableInTouchMode="true"
