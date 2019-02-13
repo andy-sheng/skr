@@ -14,10 +14,18 @@
         app:leftDrawable="@drawable/img_back"
         app:leftType="imageButton" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/list_rv"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/titlebar" />
+        android:layout_below="@+id/titlebar">
+
+        <LinearLayout
+            android:id="@+id/content_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>

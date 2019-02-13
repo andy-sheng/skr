@@ -14,6 +14,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.common.base.BuildConfig;
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.didichuxing.doraemonkit.R;
 import com.didichuxing.doraemonkit.ui.base.BaseFragment;
@@ -119,7 +121,9 @@ public class SysInfoFragment extends BaseFragment {
             sysInfoItems.add(new SysInfoItem(getString(R.string.dk_sysinfo_package_min_sdk), String.valueOf(getContext().getApplicationInfo().minSdkVersion)));
         }
         sysInfoItems.add(new SysInfoItem(getString(R.string.dk_sysinfo_package_target_sdk), String.valueOf(getContext().getApplicationInfo().targetSdkVersion)));
-        sysInfoItems.add(new SysInfoItem("数据库调试地址",U.getAppInfoUtils().getDebugDBAddressLog()));
+        sysInfoItems.add(new SysInfoItem("BuildConfig.DEBUG", "" + BuildConfig.DEBUG));
+        sysInfoItems.add(new SysInfoItem("MyLog.sForceOpenFlag", "" + MyLog.getForceOpenFlag()));
+        sysInfoItems.add(new SysInfoItem("数据库调试地址", U.getAppInfoUtils().getDebugDBAddressLog()));
     }
 
     private void addDeviceData(List<SysInfoItem> sysInfoItems) {

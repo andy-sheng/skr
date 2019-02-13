@@ -198,13 +198,17 @@ public class DoraemonKit {
         }
     }
 
-    private static void showFloatIcon(Context context) {
+    public static void showFloatIcon(Context context) {
         if (context instanceof UniversalActivity) {
             return;
         }
         PageIntent intent = new PageIntent(FloatIconPage.class);
         intent.mode = PageIntent.MODE_SINGLE_INSTANCE;
         FloatPageManager.getInstance().add(intent);
+    }
+
+    public static void hideFloatIcon() {
+        FloatPageManager.getInstance().removeAll();
     }
 
     public static List<KitItem> getKitItems(int catgory) {
@@ -218,5 +222,6 @@ public class DoraemonKit {
             return null;
         }
     }
+
 
 }

@@ -1,7 +1,13 @@
 package com.doraemon;
 
+import android.content.Context;
+
 import com.common.utils.U;
 import com.didichuxing.doraemonkit.DoraemonKit;
+import com.didichuxing.doraemonkit.ui.FloatIconPage;
+import com.didichuxing.doraemonkit.ui.UniversalActivity;
+import com.didichuxing.doraemonkit.ui.base.FloatPageManager;
+import com.didichuxing.doraemonkit.ui.base.PageIntent;
 
 public class DoraemonManager {
     public final static String TAG = "DoraemonManager";
@@ -18,6 +24,14 @@ public class DoraemonManager {
 //
 //            }
 //        });
+    }
+
+    public static void showFloatIcon() {
+        DoraemonKit.showFloatIcon(U.getActivityUtils().getTopActivity());
+    }
+
+    public static void hideFloatIcon(){
+        DoraemonKit.hideFloatIcon();
     }
 
 }
