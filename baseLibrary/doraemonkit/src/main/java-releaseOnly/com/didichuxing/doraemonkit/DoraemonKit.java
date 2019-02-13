@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.SparseArray;
 import android.widget.Toast;
 
+import com.common.log.MyLog;
 import com.didichuxing.doraemonkit.kit.Category;
 import com.didichuxing.doraemonkit.kit.IKit;
 import com.didichuxing.doraemonkit.kit.crash.Crash;
@@ -55,16 +56,6 @@ public class DoraemonKit {
 
     public static void install(final Application app, List<IKit> selfKits) {
         if (sHasInit) {
-//            if (selfKits != null) {
-//                List<IKit> biz = sKitMap.get(Category.BIZ);
-//                if (biz != null) {
-//                    biz.clear();
-//                    biz.addAll(selfKits);
-//                    for (IKit kit : biz) {
-//                        kit.onAppInit(app);
-//                    }
-//                }
-//            }
             return;
         }
         sHasInit = true;
@@ -87,10 +78,12 @@ public class DoraemonKit {
             @Override
             public void onActivityResumed(Activity activity) {
                 FloatPageManager.getInstance().onActivityResumed(activity);
-                if (PermissionUtil.canDrawOverlays(activity)) {
-                    showFloatIcon(activity);
-                } else {
-                    requestPermission(activity);
+                if (MyLog.isDebugLogOpen()) {
+                    if (PermissionUtil.canDrawOverlays(activity)) {
+                        showFloatIcon(activity);
+                    } else {
+                        requestPermission(activity);
+                    }
                 }
             }
 
