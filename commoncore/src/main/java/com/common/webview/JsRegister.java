@@ -2,9 +2,9 @@ package com.common.webview;
 
 import com.common.base.BaseActivity;
 import com.common.log.MyLog;
-import com.github.lzyzsd.jsbridge.BridgeHandler;
-import com.github.lzyzsd.jsbridge.BridgeWebView;
-import com.github.lzyzsd.jsbridge.CallBackFunction;
+import com.jsbridge.BridgeHandler;
+import com.jsbridge.BridgeWebView;
+import com.jsbridge.CallBackFunction;
 
 public class JsRegister {
     public final static String TAG = "JsRegister";

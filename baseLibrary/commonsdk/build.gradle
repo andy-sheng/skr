@@ -128,6 +128,8 @@ android {
             java.srcDirs += 'src/main/java-switchbutton'
             res.srcDirs += 'src/main/res-switchbutton'
 
+            java.srcDirs += 'src/main/java-jsbridge'
+
         }
 
 //        release {
@@ -234,7 +236,7 @@ dependencies {
     api rootProject.ext.dependencies["rxbinding-support-v4"]
     api rootProject.ext.dependencies["rxbinding-appcompat-v7"]
     api rootProject.ext.dependencies["cardview-v7"]
-    api rootProject.ext.dependencies["lzyzsd-jsbridge"]
+//    api rootProject.ext.dependencies["lzyzsd-jsbridge"]
     api 'com.youth.banner:banner:1.4.10'
 
     if (virtualApkEnable.toBoolean()) {
