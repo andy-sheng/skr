@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.common.utils.U;
 import com.didichuxing.doraemonkit.R;
 import com.didichuxing.doraemonkit.constant.BundleKey;
 import com.didichuxing.doraemonkit.ui.base.BaseFragment;
@@ -133,6 +134,7 @@ public class FileExplorerFragment extends BaseFragment {
         fileInfos.add(new FileInfo(context.getFilesDir().getParentFile()));
         fileInfos.add(new FileInfo(context.getExternalCacheDir()));
         fileInfos.add(new FileInfo(context.getExternalFilesDir(null)));
+        fileInfos.add(new FileInfo(U.getAppInfoUtils().getMainDir()));
         return fileInfos;
     }
 
@@ -142,6 +144,8 @@ public class FileExplorerFragment extends BaseFragment {
         }
         return file.equals(context.getExternalCacheDir())
                 || file.equals(context.getExternalFilesDir(null))
-                || file.equals(context.getFilesDir().getParentFile());
+                || file.equals(context.getFilesDir().getParentFile())
+                || file.equals(U.getAppInfoUtils().getMainDir())
+                ;
     }
 }
