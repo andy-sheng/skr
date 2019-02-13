@@ -197,7 +197,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                         .setNickName(playerInfoModel.getUserInfo().getNickname())
                         .setSex(ESex.fromValue(playerInfoModel.getUserInfo().getSex()))
                         .build());
-                String text = String.format("%s第%s个唱", playerInfoModel.getUserInfo().getNickname(), i + 1);
+                String text = String.format("第%s个唱", i + 1);
                 CommentMsgEvent msgEvent = new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text);
                 EventBus.getDefault().post(msgEvent);
             }

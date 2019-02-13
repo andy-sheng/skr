@@ -15,13 +15,16 @@ public class CommentModel {
     private int commentType = 0;
     private int userId;
     private String avatar;
-    private String text;
+    private String userName;
+    private String content;
     private int avatarColor;
-    private int textColor = U.getColor(R.color.white_trans_80);
+    private int nameColor = Color.parseColor("#ccFFAD00");   // 昵称颜色
+    private int textColor = U.getColor(R.color.white_trans_80);  // 文本内容颜色
 
     public static CommentModel parseFromEvent(CommentMsgEvent event, RoomData roomData) {
         CommentModel commentModel = new CommentModel();
         commentModel.setUserId(event.info.getSender().getUserID());
+        commentModel.setUserName(event.info.getSender().getNickName());
         if (roomData != null) {
             UserInfoModel sender = roomData.getUserInfo(event.info.getSender().getUserID());
             if (sender != null) {
@@ -42,7 +45,7 @@ public class CommentModel {
             // 系统消息
             commentModel.setTextColor(Color.parseColor("#EF5E85"));
         }
-        commentModel.setText(event.text);
+        commentModel.setContent(event.text);
         commentModel.setCommentType(CommentModel.TYPE_TEXT);
         return commentModel;
     }
@@ -55,16 +58,24 @@ public class CommentModel {
         this.commentType = commentType;
     }
 
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
     public int getUserId() {
         return userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public void setUserId(int userId) {
@@ -77,6 +88,14 @@ public class CommentModel {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public int getNameColor() {
+        return nameColor;
+    }
+
+    public void setNameColor(int nameColor) {
+        this.nameColor = nameColor;
     }
 
     public int getTextColor() {

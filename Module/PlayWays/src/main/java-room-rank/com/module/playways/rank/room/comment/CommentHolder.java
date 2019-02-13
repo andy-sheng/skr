@@ -2,15 +2,18 @@ package com.module.playways.rank.room.comment;
 
 import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
+import android.text.SpannableStringBuilder;
 import android.text.TextPaint;
 import android.view.View;
 import android.widget.TextView;
 
 import com.common.core.avatar.AvatarUtils;
 import com.common.image.fresco.BaseImageView;
+import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
+import com.module.playways.RoomData;
 import com.module.rank.R;
 
 public class CommentHolder extends RecyclerView.ViewHolder {
@@ -46,9 +49,16 @@ public class CommentHolder extends RecyclerView.ViewHolder {
                 .setBorderWidth(U.getDisplayUtils().dip2px(2))
                 .setBorderColor(model.getAvatarColor())
                 .build());
-        mCommentTv.setText(model.getText());
-        mCommentTv.setTextColor(model.getTextColor());
 
+        if (model.getUserId() == RoomData.SYSTEM_ID) {
+            mCommentTv.setText(model.getContent());
+            mCommentTv.setTextColor(model.getTextColor());
+        } else {
+            SpannableStringBuilder ssb = new SpanUtils()
+                    .append(model.getUserName() + ": ").setForegroundColor(model.getNameColor())
+                    .append(model.getContent()).setForegroundColor(model.getTextColor()).create();
+            mCommentTv.setText(ssb);
+        }
     }
 
 
