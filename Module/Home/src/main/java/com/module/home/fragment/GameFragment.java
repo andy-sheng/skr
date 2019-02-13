@@ -62,6 +62,9 @@ import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.youth.banner.Banner;
 import com.youth.banner.listener.OnBannerListener;
 import com.zq.dialog.PersonInfoDialogView;
@@ -123,6 +126,8 @@ public class GameFragment extends BaseFragment {
 
     DialogPlus mDialogPlus;
 
+    SmartRefreshLayout mSmartRefreshLayout;
+
     Vector<Long> mTag = new Vector<>();
 
     @Override
@@ -153,9 +158,26 @@ public class GameFragment extends BaseFragment {
         mPopArea = (LinearLayout) linearLayout.findViewById(R.id.pop_area);
         mRankDiffIcon = (ImageView) linearLayout.findViewById(R.id.rank_diff_icon);
         mRankDiffTv = (ExTextView) linearLayout.findViewById(R.id.rank_diff_tv);
-
+        mSmartRefreshLayout = mRootView.findViewById(R.id.smart_refresh_layout);
         mPopupWindow = new PopupWindow(linearLayout);
         mPopupWindow.setOutsideTouchable(true);
+
+        mSmartRefreshLayout.setEnableRefresh(true);
+        mSmartRefreshLayout.setEnableLoadMore(false);
+        mSmartRefreshLayout.setEnableLoadMoreWhenContentNotFull(true);
+        mSmartRefreshLayout.setEnableOverScrollDrag(false);
+        mSmartRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+
+            }
+
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                initRankLevel();
+                initOperationArea();
+            }
+        });
 
         RxView.clicks(ivAthleticsPk)
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
@@ -247,10 +269,23 @@ public class GameFragment extends BaseFragment {
         ApiMethods.subscribe(mUserInfoServerApi.getReginDiff(), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
+                mSmartRefreshLayout.finishRefresh();
                 if (result.getErrno() == 0) {
                     UserRankModel userRankModel = JSON.parseObject(result.getData().getString("diff"), UserRankModel.class);
                     showRankView(userRankModel);
                 }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                U.getToastUtil().showShort("网络异常");
+                mSmartRefreshLayout.finishRefresh();
+            }
+
+            @Override
+            public void onNetworkError(ErrorType errorType) {
+                mSmartRefreshLayout.finishRefresh();
+                U.getToastUtil().showShort("网络超时");
             }
         });
     }
@@ -358,11 +393,24 @@ public class GameFragment extends BaseFragment {
         ApiMethods.subscribe(mMainPageSlideApi.getSlideList(), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
+                mSmartRefreshLayout.finishRefresh();
                 if (result.getErrno() == 0) {
                     List<SlideShowModel> slideShowModelList = JSON.parseArray(result.getData().getString("slideshow"), SlideShowModel.class);
                     U.getPreferenceUtils().setSettingString("slideshow", result.getData().getString("slideshow"));
                     setBannerImage(slideShowModelList);
                 }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                U.getToastUtil().showShort("网络异常");
+                mSmartRefreshLayout.finishRefresh();
+            }
+
+            @Override
+            public void onNetworkError(ErrorType errorType) {
+                U.getToastUtil().showShort("网络超时");
+                mSmartRefreshLayout.finishRefresh();
             }
         });
     }
