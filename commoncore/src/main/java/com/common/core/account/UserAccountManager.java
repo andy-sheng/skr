@@ -12,7 +12,6 @@ import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoLocalApi;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
-import com.common.log.screenlog.ScreenLogView;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -90,7 +89,7 @@ public class UserAccountManager {
             // 与融云服务器建立连接
             connectRongIM(account.getRongToken());
 
-            ScreenLogView.addInfo("用户id", account.getUid());
+//            ScreenLogView.addInfo("用户id", account.getUid());
         } else {
 
         }

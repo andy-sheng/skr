@@ -167,7 +167,6 @@ public class LogInfoFloatPage extends BaseFloatPage implements LogInfoManager.On
             checkBox.setText("服务器Api");
             final String[] arrs = new String[]{
                     ApiManager.TAG
-
             };
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override

@@ -56,6 +56,9 @@ android {
 
             //xlog
             java.srcDirs += 'src/main/java-xlog'
+
+            // 使用多啦A梦的log工具了，这个可以暂时不要了
+            //java.srcDirs += 'src/main/java-screenlog'
             // 直接引入支持下拉加载 recyclerView,放弃 paginate，使用SmartRefreshLayout
 //            java.srcDirs += 'src/main/java-paginate'
 //            res.srcDirs += 'src/main/res-paginate'

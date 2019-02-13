@@ -3,7 +3,6 @@ package com.common.log;
 import android.util.Log;
 
 import com.common.base.BuildConfig;
-import com.common.log.screenlog.ScreenLogPrinter;
 import com.common.utils.U;
 import com.elvishew.xlog.LogConfiguration;
 import com.elvishew.xlog.LogLevel;
@@ -75,8 +74,8 @@ public class MyLog {
             XLog.init(                                                 // 初始化 XLog
                     config,                                                // 指定日志配置，如果不指定，会默认使用 new LogConfiguration.Builder().build()
                     androidPrinter,                                        // 添加任意多的打印器。如果没有添加任何打印器，会默认使用 AndroidPrinter(Android)/ConsolePrinter(java)
-                    filePrinter,
-                    ScreenLogPrinter.getInstance()
+                    filePrinter
+//                    ,ScreenLogPrinter.getInstance()
             );
         }
         sHasInit = true;
@@ -269,11 +268,11 @@ public class MyLog {
     public static void setForceOpenFlag(boolean flag) {
         sForceOpenFlag = flag;
         U.getPreferenceUtils().setSettingBoolean("key_forceOpenFlag", flag);
-        if (sForceOpenFlag) {
-            ScreenLogPrinter.getInstance().onDebugOpenFlagChange(true);
-        } else {
-            ScreenLogPrinter.getInstance().onDebugOpenFlagChange(isDebugLogOpen());
-        }
+//        if (sForceOpenFlag) {
+//            ScreenLogPrinter.getInstance().onDebugOpenFlagChange(true);
+//        } else {
+//            ScreenLogPrinter.getInstance().onDebugOpenFlagChange(isDebugLogOpen());
+//        }
     }
 
     public static boolean getForceOpenFlag() {
