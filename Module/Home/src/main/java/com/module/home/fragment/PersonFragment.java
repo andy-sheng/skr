@@ -142,7 +142,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
                     @Override
                     public void accept(Object o) {
                         SharePanel sharePanel = new SharePanel(getActivity());
-                        sharePanel.setShareContent("http://res-static.inframe.mobi/common/skr-share.png", R.drawable.share_sker);
+                        sharePanel.setShareContent("http://res-static.inframe.mobi/common/skr-share.png");
                         sharePanel.show(ShareType.IMAGE_RUL);
                     }
                 });

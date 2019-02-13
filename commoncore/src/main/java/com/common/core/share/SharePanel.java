@@ -25,7 +25,6 @@ public class SharePanel {
     String mTitle;
     String mDes;
     String mUrl;
-    int mImageDrawable;
 
     public SharePanel(Activity activity) {
         mActivity = activity;
@@ -37,9 +36,8 @@ public class SharePanel {
         mUrl = url;
     }
 
-    public void setShareContent(String url, int imageurlDrawable) {
+    public void setShareContent(String url) {
         mUrl = url;
-        mImageDrawable = imageurlDrawable;
     }
 
     /**
@@ -133,7 +131,7 @@ public class SharePanel {
 
     public void shareImageUrl(SharePlatform sharePlatform){
         UMImage imageurl = new UMImage(mActivity, mUrl);
-        imageurl.setThumb(new UMImage(mActivity , mImageDrawable));
+        imageurl.setThumb(new UMImage(mActivity , mUrl));
         switch (sharePlatform) {
             case WEIXIN:
                 new ShareAction(mActivity).withMedia(imageurl)

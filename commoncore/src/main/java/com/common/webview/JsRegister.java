@@ -1,10 +1,7 @@
 package com.common.webview;
 
-import android.util.Log;
-
 import com.common.base.BaseActivity;
 import com.common.log.MyLog;
-import com.common.utils.U;
 import com.github.lzyzsd.jsbridge.BridgeHandler;
 import com.github.lzyzsd.jsbridge.BridgeWebView;
 import com.github.lzyzsd.jsbridge.CallBackFunction;
@@ -33,10 +30,19 @@ public class JsRegister {
             }
         });
 
-        mBridgeWebView.registerHandler("share", new BridgeHandler() {
+        mBridgeWebView.registerHandler("shareUrl", new BridgeHandler() {
             @Override
-            public void handler(String schema, CallBackFunction function) {
+            public void handler(String url, CallBackFunction function) {
+                MyLog.w(TAG, "handler" + " url=" + url);
+                mJsBridgeImpl.shareUrl(url);
+            }
+        });
 
+        mBridgeWebView.registerHandler("shareImg", new BridgeHandler() {
+            @Override
+            public void handler(String url, CallBackFunction function) {
+                MyLog.w(TAG, "handler" + " url=" + url);
+                mJsBridgeImpl.shareImg(url);
             }
         });
 

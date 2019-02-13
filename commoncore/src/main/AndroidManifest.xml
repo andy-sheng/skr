@@ -153,7 +153,13 @@
             android:configChanges="keyboardHidden|orientation"
             android:exported="false"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
-
+        <activity
+            android:name="com.common.webview.AgentWebActivity"
+            android:configChanges="orientation|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            >
+        </activity>
     </application>
 
 </manifest>
