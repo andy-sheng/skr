@@ -11,6 +11,7 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.jakewharton.rxbinding2.view.RxView;
@@ -106,8 +107,8 @@ public class BottomContainerView extends RelativeLayout {
                 if (U.getCommonUtils().isFastDoubleClick()) {
                     return;
                 }
-                int w = U.getDisplayUtils().dip2px(343);
-                int h = U.getDisplayUtils().dip2px(146);
+                int w = U.getDisplayUtils().getScreenWidth() - U.getDisplayUtils().dip2px(36);
+                int h = U.getDisplayUtils().dip2px(172);
                 if (mQuickMsgPopWindow == null) {
                     QuickMsgView quickMsgView = new QuickMsgView(getContext());
                     quickMsgView.setRoomData(mRoomData);
@@ -129,7 +130,7 @@ public class BottomContainerView extends RelativeLayout {
                 if (!mQuickMsgPopWindow.isShowing()) {
                     int l[] = new int[2];
                     mQuickBtn.getLocationInWindow(l);
-                    mQuickMsgPopWindow.showAtLocation(mQuickBtn, Gravity.START | Gravity.TOP, l[0], l[1] - h);
+                    mQuickMsgPopWindow.showAtLocation(mQuickBtn, Gravity.START | Gravity.TOP, l[0], l[1] - h - U.getDisplayUtils().dip2px(5));
                 }
             }
         });
@@ -234,11 +235,19 @@ public class BottomContainerView extends RelativeLayout {
         }
     }
 
+    public void dismissPopWindow() {
+        if (mQuickMsgPopWindow != null) {
+            mQuickMsgPopWindow.dismiss();
+        }
+    }
+
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+        MyLog.d("BottomContainerView", "onDetachedFromWindow");
         EventBus.getDefault().unregister(this);
         mHandler.removeCallbacksAndMessages(null);
+        dismissPopWindow();
     }
 
 

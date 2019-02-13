@@ -33,7 +33,7 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/view_22_dp"
         android:scaleType="centerInside"
-        app:src_unPressed_drawable="@drawable/ic_dialog_normal1" />
+        app:src_unPressed_drawable="@drawable/yanchangjiemian_xin" />
 
     <com.common.view.ex.ExImageView
         android:id="@+id/emoji1_btn"
@@ -43,6 +43,6 @@
         android:layout_marginRight="@dimen/view_20_dp"
         android:layout_toLeftOf="@+id/emoji2_btn"
         android:scaleType="centerInside"
-        app:src_unPressed_drawable="@drawable/ic_dialog_normal" />
+        app:src_unPressed_drawable="@drawable/yanchangjiemian_dabian" />
 
 </merge>
