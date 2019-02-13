@@ -50,6 +50,8 @@ public class AgentWebActivity extends BaseActivity {
 
     BridgeWebView mBridgeWebView;
 
+    JsRegister mJsRegister;
+
 
     private WebChromeClient mWebChromeClient = new WebChromeClient() {
         @Override
@@ -107,7 +109,7 @@ public class AgentWebActivity extends BaseActivity {
     protected void buildAgentWeb() {
         ErrorLayoutEntity mErrorLayoutEntity = getErrorLayoutEntity();
         String url = getIntent().getStringExtra("url");
-//        mBridgeWebView=new BridgeWebView(getActivity());
+
         mBridgeWebView=new BridgeWebView(this);
         mAgentWeb = AgentWeb.with(this)//
                 .setAgentWebParent((ViewGroup) mContentContainer, new RelativeLayout.LayoutParams(-1, -1))//
@@ -122,20 +124,8 @@ public class AgentWebActivity extends BaseActivity {
                 .ready()//
                 .go(url);
 
-        mBridgeWebView.registerHandler("submitFromWeb", new BridgeHandler() {
-            @Override
-            public void handler(String data, CallBackFunction function) {
-                function.onCallBack("submitFromWeb exe, response data 中文 fr Java");
-                U.getToastUtil().showShort("你好，java");
-            }
-        });
-
-        mBridgeWebView.callHandler("functionInJs", "你好，js", new CallBackFunction() {
-            @Override
-            public void onCallBack(String data) {
-                Log.i(TAG,"data:"+data);
-            }
-        });
+        mJsRegister = new JsRegister(mBridgeWebView,this);
+        mJsRegister.register();
     }
 
 

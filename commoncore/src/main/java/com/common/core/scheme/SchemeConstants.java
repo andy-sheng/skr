@@ -11,6 +11,9 @@ package com.common.core.scheme;
 public class SchemeConstants {
     public static final String LOG_PREFIX = "SchemeLog#";
 
+    //inframeskr://game/rank/chooseSong?gameMode=1
+    //inframeskr://web/fullScreen?url=https://www.baidu.com
+
     /**
      * @notice Scheme : inframeskr
      */
@@ -20,14 +23,18 @@ public class SchemeConstants {
     public static final String HOST_ROOM = "room";
     public static final String HOST_WEB = "web";
     public static final String HOST_SHARE = "share";
+    public static final String HOST_GAME = "game";
+
 
     //path
     public static final String PATH_JOIN = "/join";
     public static final String PATH_FULL_SCREEN = "/fullScreen";
+    public static final String PATH_RANK_CHOOSE_SONG = "/rank/chooseSong";
 
     //param
     public static final String PARAM_LIST_ID = "id";
     public static final String PARAM_URL = "url";
+    public static final String PARAM_GAME_MODE = "gameMode";
 
 
     /**

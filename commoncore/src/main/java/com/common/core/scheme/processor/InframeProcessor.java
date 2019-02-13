@@ -67,10 +67,35 @@ public class InframeProcessor implements ISchemeProcessor {
             case SchemeConstants.HOST_WEB:
                 processWebUrl(uri);
                 return true;
+            case SchemeConstants.HOST_GAME:
+                processGameUrl(uri);
+                return true;
         }
 
         activity.finish();
         return false;
+    }
+
+    private void processGameUrl(Uri uri) {
+        String path = uri.getPath();
+        if (TextUtils.isEmpty(path)) {
+            MyLog.w(TAG, "processGameUrl path is empty");
+            return;
+        }
+
+        if (SchemeConstants.PATH_RANK_CHOOSE_SONG.equals(path)) {
+            try {
+                String gameMode = SchemeUtils.getString(uri, SchemeConstants.PARAM_GAME_MODE);
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
+                        .withInt("key_game_type", Integer.parseInt(gameMode))
+                        .withBoolean("selectSong", true)
+                        .navigation();
+            } catch (Exception e) {
+                MyLog.e(TAG, e);
+            }
+        } else {
+
+        }
     }
 
     private void processShareUrl(Uri uri) {
@@ -80,15 +105,14 @@ public class InframeProcessor implements ISchemeProcessor {
     private void processWebUrl(Uri uri) {
         String path = uri.getPath();
         if (TextUtils.isEmpty(path)) {
-            MyLog.d(TAG, "processWebUrl path is empty");
+            MyLog.w(TAG, "processWebUrl path is empty");
             return;
         }
 
         if (SchemeConstants.PATH_FULL_SCREEN.equals(path)) {
             try {
-                Map<String, String> map = splitQuery(uri);
-                if (map == null || !map.containsKey("url")) {
-                    MyLog.d(TAG, "processWebUrl url is empty");
+                if (TextUtils.isEmpty(SchemeUtils.getString(uri, SchemeConstants.PARAM_URL))) {
+                    MyLog.w(TAG, "processWebUrl url is empty");
                     return;
                 }
 
@@ -96,22 +120,11 @@ public class InframeProcessor implements ISchemeProcessor {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
                         .withString("url", url)
                         .greenChannel().navigation();
-            } catch (UnsupportedEncodingException e) {
+            } catch (Exception e) {
                 MyLog.e(TAG, e);
             }
         } else {
 
         }
-    }
-
-    public static Map<String, String> splitQuery(Uri url) throws UnsupportedEncodingException {
-        Map<String, String> query_pairs = new LinkedHashMap<String, String>();
-        String query = url.getQuery();
-        String[] pairs = query.split("&");
-        for (String pair : pairs) {
-            int idx = pair.indexOf("=");
-            query_pairs.put(URLDecoder.decode(pair.substring(0, idx), "UTF-8"), URLDecoder.decode(pair.substring(idx + 1), "UTF-8"));
-        }
-        return query_pairs;
     }
 }
