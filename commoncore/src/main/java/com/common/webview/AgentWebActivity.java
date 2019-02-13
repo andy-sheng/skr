@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.RelativeLayout;
@@ -18,6 +19,7 @@ import android.widget.RelativeLayout;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.common.base.BaseActivity;
 import com.common.base.R;
+import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
 import com.jsbridge.BridgeWebView;
 import com.jsbridge.BridgeWebViewClient;
@@ -119,6 +121,10 @@ public class AgentWebActivity extends BaseActivity {
                 .createAgentWeb()//
                 .ready()//
                 .go(url);
+
+        WebSettings settings = mBridgeWebView.getSettings();
+        String userAgentString = settings.getUserAgentString();
+        mBridgeWebView.getSettings().setUserAgentString(userAgentString + " pid/" + U.getDeviceUtils().getDeviceID());
 
         mJsRegister = new JsRegister(mBridgeWebView,this);
         mJsRegister.register();
