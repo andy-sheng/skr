@@ -1,16 +1,17 @@
-package com.debugcore;
+package com.didichuxing.doraemonkit.ui.widget.dialog;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.common.core.R;
+import com.didichuxing.doraemonkit.R;
 
-public class DebugViewHolder extends RecyclerView.ViewHolder {
+
+public class DialogListViewHolder extends RecyclerView.ViewHolder {
     TextView titleTv;
-    DebugData data;
+    DialogListItem data;
 
-    public DebugViewHolder(View itemView) {
+    public DialogListViewHolder(View itemView) {
         super(itemView);
         if (itemView instanceof TextView) {
             titleTv = (TextView) itemView;
@@ -27,7 +28,7 @@ public class DebugViewHolder extends RecyclerView.ViewHolder {
         });
     }
 
-    public void bindData(DebugData data) {
+    public void bindData(DialogListItem data) {
         this.data = data;
         titleTv.setText(data.title);
     }

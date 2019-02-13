@@ -68,6 +68,7 @@ public class SysInfoItemAdapter extends AbsRecyclerAdapter<AbsViewBinder<SysInfo
         public void bind(SysInfoItem sysInfoItem) {
             mLabelText.setLabel(sysInfoItem.name);
             mLabelText.setText(sysInfoItem.value);
+            mLabelText.setOnClickListener(sysInfoItem.listener);
         }
     }
 

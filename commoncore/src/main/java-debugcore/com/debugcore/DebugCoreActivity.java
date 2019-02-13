@@ -11,7 +11,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.common.base.BaseActivity;
@@ -21,10 +20,10 @@ import com.common.log.MyLog;
 import com.common.statistics.TimeStatistics;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
+import com.didichuxing.doraemonkit.ui.widget.dialog.DialogListViewHolder;
 import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
 import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.ListHolder;
 import com.orhanobut.dialogplus.ViewHolder;
 
 import java.util.ArrayList;
@@ -59,28 +58,6 @@ public class DebugCoreActivity extends BaseActivity {
         });
         mListRv = (RecyclerView) this.findViewById(R.id.list_rv);
         mListRv.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new RecyclerView.Adapter() {
-            @NonNull
-            @Override
-            public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.debug_item_tv, parent, false);
-                DebugViewHolder testHolder = new DebugViewHolder(view);
-                return testHolder;
-            }
-
-            @Override
-            public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-                if (holder instanceof DebugViewHolder) {
-                    DebugViewHolder testHolder = (DebugViewHolder) holder;
-                    testHolder.bindData(mDataList.get(position));
-                }
-            }
-
-            @Override
-            public int getItemCount() {
-                return mDataList.size();
-            }
-        };
         mListRv.setAdapter(mAdapter);
         loadData();
     }
@@ -138,39 +115,6 @@ public class DebugCoreActivity extends BaseActivity {
             }
         }));
 
-        mDataList.add(new DebugData("修改渠道，当前为" + U.getChannelUtils().getChannel(), new Runnable() {
-            @Override
-            public void run() {
-                final List<String> channels = new ArrayList<>();
-                channels.add("TEST");
-                channels.add("DEV");
-                channels.add("SANDBOX");
-                channels.add("DEFAULT");
-                List<DebugData> debugDataList = new ArrayList<>();
-                for (final String channel : channels) {
-                    debugDataList.add(new DebugData(channel, new Runnable() {
-                        @Override
-                        public void run() {
-                            U.getChannelUtils().setChannelNameFromBuildConfig(channel);
-                            U.getToastUtil().showShort("请重启app");
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Process.killProcess(Process.myPid());
-                                }
-                            }, 1000);
-
-                            if (mChannelListDialog != null) {
-                                mChannelListDialog.dismiss();
-                            }
-                            loadData();
-                        }
-                    }));
-                }
-                showList(debugDataList);
-            }
-        }));
-
         mAdapter.notifyDataSetChanged();
     }
 
@@ -191,52 +135,7 @@ public class DebugCoreActivity extends BaseActivity {
         mShowMsgDialog.show();
     }
 
-    private void showList(final List<DebugData> list) {
-        BaseAdapter baseAdapter = new BaseAdapter() {
-            @Override
-            public int getCount() {
-                return list.size();
-            }
 
-            @Override
-            public Object getItem(int position) {
-                return list.get(position);
-            }
-
-            @Override
-            public long getItemId(int position) {
-                return position;
-            }
-
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                View v = null;
-                if (convertView == null) {
-                    v = LayoutInflater.from(DebugCoreActivity.this).inflate(
-                            R.layout.debug_item_tv, parent, false);
-                    DebugViewHolder vh = new DebugViewHolder(v);
-                    vh.titleTv.setTextColor(U.getColor(R.color.green));
-                    v.setTag(vh);
-                } else {
-                    v = convertView;
-                }
-                DebugViewHolder vh = (DebugViewHolder) v.getTag();
-                DebugData debugData = list.get(position);
-                vh.bindData(debugData);
-                return v;
-            }
-        };
-        mChannelListDialog = DialogPlus.newDialog(DebugCoreActivity.this)
-                .setContentHolder(new ListHolder())
-                .setAdapter(baseAdapter)
-                .setGravity(Gravity.CENTER)
-                .setCancelable(true)
-                .setContentBackgroundResource(R.color.transparent)
-                .setOverlayBackgroundResource(R.color.black_trans_80)
-                .setExpanded(false)
-                .create();
-        mChannelListDialog.show();
-    }
 
     @Override
     public boolean useEventBus() {

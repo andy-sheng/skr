@@ -6,14 +6,19 @@ import android.content.pm.PackageInfo;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Process;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.common.utils.U;
 import com.didichuxing.doraemonkit.R;
 import com.didichuxing.doraemonkit.ui.base.BaseFragment;
+import com.didichuxing.doraemonkit.ui.widget.dialog.DialogListItem;
+import com.didichuxing.doraemonkit.ui.widget.dialog.ListDialog;
 import com.didichuxing.doraemonkit.ui.widget.recyclerview.DividerItemDecoration;
 import com.didichuxing.doraemonkit.ui.widget.titlebar.HomeTitleBar;
 import com.didichuxing.doraemonkit.util.DeviceUtils;
@@ -80,12 +85,41 @@ public class SysInfoFragment extends BaseFragment {
         PackageInfo pi = DeviceUtils.getPackageInfo(getContext());
         sysInfoItems.add(new TitleItem(getString(R.string.dk_sysinfo_app_info)));
         sysInfoItems.add(new SysInfoItem(getString(R.string.dk_sysinfo_package_name), pi.packageName));
+        sysInfoItems.add(new SysInfoItem("渠道号", U.getChannelUtils().getChannel(), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final List<String> channels = new ArrayList<>();
+                channels.add("TEST");
+                channels.add("DEV");
+                channels.add("SANDBOX");
+                channels.add("DEFAULT");
+                List<DialogListItem> listItems = new ArrayList<>();
+                for (final String channel : channels) {
+                    listItems.add(new DialogListItem(channel, new Runnable() {
+                        @Override
+                        public void run() {
+                            U.getChannelUtils().setChannelNameFromBuildConfig(channel);
+                            U.getToastUtil().showShort("请重启app");
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Process.killProcess(Process.myPid());
+                                }
+                            }, 1000);
+                        }
+                    }));
+                }
+                ListDialog listDialog = new ListDialog(getContext());
+                listDialog.showList(listItems);
+            }
+        }));
         sysInfoItems.add(new SysInfoItem(getString(R.string.dk_sysinfo_package_version_name), pi.versionName));
         sysInfoItems.add(new SysInfoItem(getString(R.string.dk_sysinfo_package_version_code), String.valueOf(pi.versionCode)));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             sysInfoItems.add(new SysInfoItem(getString(R.string.dk_sysinfo_package_min_sdk), String.valueOf(getContext().getApplicationInfo().minSdkVersion)));
         }
         sysInfoItems.add(new SysInfoItem(getString(R.string.dk_sysinfo_package_target_sdk), String.valueOf(getContext().getApplicationInfo().targetSdkVersion)));
+        sysInfoItems.add(new SysInfoItem("数据库调试地址",U.getAppInfoUtils().getDebugDBAddressLog()));
     }
 
     private void addDeviceData(List<SysInfoItem> sysInfoItems) {
