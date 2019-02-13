@@ -8,7 +8,9 @@
 
     <com.common.view.titlebar.CommonTitleBar
         app:leftType="textView"
+        app:rightType="imageButton"
         app:leftTextColor="@color/black"
+        app:rightImageResource="@drawable/gerenzhuye_fenxiangicon"
         app:leftDrawable="@drawable/yonghuxieyi_back"
         android:id="@+id/titlebar"
         android:layout_width="match_parent"

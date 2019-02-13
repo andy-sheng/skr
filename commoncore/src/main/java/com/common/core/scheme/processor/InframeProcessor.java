@@ -117,8 +117,10 @@ public class InframeProcessor implements ISchemeProcessor {
                 }
 
                 String url = SchemeUtils.getString(uri, SchemeConstants.PARAM_URL);
+                int showShare = SchemeUtils.getInt(uri, SchemeConstants.PARAM_SHOW_SHARE, 0);
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
                         .withString("url", url)
+                        .withBoolean("showShare", showShare == 1)
                         .greenChannel().navigation();
             } catch (Exception e) {
                 MyLog.e(TAG, e);

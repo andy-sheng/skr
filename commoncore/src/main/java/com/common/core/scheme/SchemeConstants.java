@@ -35,6 +35,7 @@ public class SchemeConstants {
     public static final String PARAM_LIST_ID = "id";
     public static final String PARAM_URL = "url";
     public static final String PARAM_GAME_MODE = "gameMode";
+    public static final String PARAM_SHOW_SHARE = "showShare";
 
 
     /**

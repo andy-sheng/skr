@@ -2,7 +2,6 @@ package com.module.playways.grab.room.fragment;
 
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -32,7 +31,6 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
 import com.module.playways.RoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
-import com.module.playways.grab.room.activity.ShareWebActivity;
 import com.module.playways.grab.room.model.GrabResultInfoModel;
 import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.rank.R;

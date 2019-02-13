@@ -427,14 +427,9 @@ public class GameFragment extends BaseFragment {
                 .setOnBannerListener(new OnBannerListener() {
                     @Override
                     public void OnBannerClick(int position) {
-
                         ARouter.getInstance().build(RouterConstants.ACTIVITY_SCHEME)
-                                .withString("uri", "inframeskr://web/fullScreen?url=" + slideShowModelList.get(position).getLinkURL())
+                                .withString("uri", "inframeskr://web/fullScreen?url=" + slideShowModelList.get(position).getLinkURL() + "&showShare=1")
                                 .navigation();
-
-//                        ARouter.getInstance().build(RouterConstants.ACTIVITY_SHARE_WEB)
-//                                .withString("url", slideShowModelList.get(position).getLinkURL())
-//                                .greenChannel().navigation();
                     }
                 })
                 .start();

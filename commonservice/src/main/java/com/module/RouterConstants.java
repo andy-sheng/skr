@@ -36,7 +36,7 @@ public interface RouterConstants {
     String ACTIVITY_CHANNEL_LIST_SDK = "/channel/ChannelListSdkActivity";
 
     //WebViewActivity
-    String ACTIVITY_WEB = "/common/AgentWebActivity";
+    String ACTIVITY_WEB = "/common/ExpendWebActivity";
     String ACTIVITY_DEBUG_CORE_ACTIVITY = "/debug/DebugCoreActivity";
     String KEY_WEB_URL = "url";
 

@@ -28,7 +28,7 @@ import com.just.agentweb.MiddlewareWebClientBase;
 
 import static com.common.view.titlebar.CommonTitleBar.ACTION_LEFT_TEXT;
 
-@Route(path = "/common/AgentWebActivity")
+
 public class AgentWebActivity extends BaseActivity {
 
     protected AgentWeb mAgentWeb;
@@ -59,19 +59,7 @@ public class AgentWebActivity extends BaseActivity {
             if (mTitlebar != null) {
                 mTitlebar.getCenterTextView().setText(title);
             }
-        }
-    };
-
-    private WebViewClient mWebViewClient = new WebViewClient() {
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-            return super.shouldOverrideUrlLoading(view, request);
-        }
-
-        @Override
-        public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            //do you  work
-            Log.i("Info", "BaseWebActivity onPageStarted");
+            receivedTitle(view, title);
         }
     };
 
@@ -96,6 +84,14 @@ public class AgentWebActivity extends BaseActivity {
         });
     }
 
+    protected void pageFinished(WebView view, String url){
+
+    }
+
+    protected void receivedTitle(WebView view, String title){
+
+    }
+
     /**
      * 更多使用实例，参考 AgentWeb 官网上的 samples
      */
@@ -103,12 +99,19 @@ public class AgentWebActivity extends BaseActivity {
         ErrorLayoutEntity mErrorLayoutEntity = getErrorLayoutEntity();
         String url = getIntent().getStringExtra("url");
 
+        BridgeWebViewClient mBridgeWebViewClient = new BridgeWebViewClient(mBridgeWebView){
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                pageFinished(view, url);
+            }
+        };
+
         mBridgeWebView=new BridgeWebView(this);
         mAgentWeb = AgentWeb.with(this)//
                 .setAgentWebParent((ViewGroup) mContentContainer, new RelativeLayout.LayoutParams(-1, -1))//
                 .useDefaultIndicator(-1, 2)//
 //                .setAgentWebWebSettings(getSettings())//
-                .setWebViewClient(new BridgeWebViewClient(mBridgeWebView))
+                .setWebViewClient(mBridgeWebViewClient)
                 .setWebChromeClient(mWebChromeClient)
                 .setWebView(mBridgeWebView)
                 .setSecurityType(AgentWeb.SecurityType.STRICT_CHECK)
