@@ -4,13 +4,16 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
+import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -23,7 +26,6 @@ import com.component.busilib.callback.EmptyCallback;
 import com.component.busilib.callback.ErrorCallback;
 import com.component.busilib.callback.LoadingCallback;
 import com.kingja.loadsir.callback.Callback;
-import com.kingja.loadsir.callback.SuccessCallback;
 import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
 import com.module.playways.PlayWaysActivity;
@@ -37,9 +39,17 @@ import com.module.playways.rank.song.adapter.SongSelectAdapter;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
 
-import org.greenrobot.eventbus.Subscribe;
-
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.ObservableSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.PublishSubject;
 
 import static com.module.playways.PlayWaysActivity.KEY_GAME_TYPE;
 
@@ -55,6 +65,10 @@ public class SearchSongFragment extends BaseFragment {
 
     int mGameType;
     String mKeyword;
+
+    CompositeDisposable mCompositeDisposable;
+    PublishSubject<String> mPublishSubject;
+    DisposableObserver<ApiResult> mDisposableObserver;
 
     @Override
     public int initView() {
@@ -156,7 +170,23 @@ public class SearchSongFragment extends BaseFragment {
         });
 
         mTitlebar.showSoftInputKeyboard(true);
+        initPublishSubject();
+        mTitlebar.getCenterSearchEditText().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                mPublishSubject.onNext(editable.toString());
+            }
+        });
 
         LoadSir mLoadSir = new LoadSir.Builder()
                 .addCallback(new LoadingCallback(R.drawable.wulishigedan, "数据正在努力加载中..."))
@@ -171,6 +201,43 @@ public class SearchSongFragment extends BaseFragment {
         });
     }
 
+    private void initPublishSubject() {
+        mPublishSubject = PublishSubject.create();
+        mDisposableObserver = new DisposableObserver<ApiResult>() {
+            @Override
+            public void onNext(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    List<SongModel> list = JSON.parseArray(result.getData().getString("items"), SongModel.class);
+                    loadSongsDetailItems(list, false);
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+        mPublishSubject.debounce(200, TimeUnit.MILLISECONDS).filter(new Predicate<String>() {
+            @Override
+            public boolean test(String s) throws Exception {
+                return s.length() > 0;
+            }
+        }).switchMap(new Function<String, ObservableSource<ApiResult>>() {
+            @Override
+            public ObservableSource<ApiResult> apply(String s) throws Exception {
+                SongSelectServerApi songSelectServerApi = ApiManager.getInstance().createService(SongSelectServerApi.class);
+                return songSelectServerApi.searchMusicItems(s).subscribeOn(Schedulers.io());
+            }
+        }).observeOn(AndroidSchedulers.mainThread()).subscribe(mDisposableObserver);
+        mCompositeDisposable = new CompositeDisposable();
+        mCompositeDisposable.add(mDisposableObserver);
+    }
+
     private void searchMusicItems(String keyword) {
         mKeyword = keyword;
         if (TextUtils.isEmpty(keyword)) {
@@ -183,7 +250,7 @@ public class SearchSongFragment extends BaseFragment {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     List<SongModel> list = JSON.parseArray(result.getData().getString("items"), SongModel.class);
-                    loadSongsDetailItems(list);
+                    loadSongsDetailItems(list, true);
                 } else {
                     mLoadService.showCallback(ErrorCallback.class);
                 }
@@ -197,13 +264,17 @@ public class SearchSongFragment extends BaseFragment {
         }, this);
     }
 
-    public void loadSongsDetailItems(List<SongModel> list) {
+    public void loadSongsDetailItems(List<SongModel> list, boolean isSubmit) {
         if (list == null || list.size() == 0) {
-            mLoadService.showCallback(EmptyCallback.class);
+            if (isSubmit) {
+                mLoadService.showCallback(EmptyCallback.class);
+            }
             return;
         }
 
-        U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+        if (isSubmit) {
+            U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+        }
         if (mSongSelectAdapter != null) {
             mLoadService.showSuccess();
             mSearchResult.setVisibility(View.VISIBLE);
@@ -222,5 +293,11 @@ public class SearchSongFragment extends BaseFragment {
         U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
         U.getFragmentUtils().popFragment(SearchSongFragment.this);
         return true;
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        mCompositeDisposable.clear();
     }
 }
