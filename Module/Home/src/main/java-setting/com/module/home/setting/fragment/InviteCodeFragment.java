@@ -74,6 +74,7 @@ public class InviteCodeFragment extends BaseFragment {
             @Override
             public void textCompleted(CharSequence text) {
                 mInviteCode = text.toString();
+                mPhoneInputTv.requestFocus();
             }
         });
 

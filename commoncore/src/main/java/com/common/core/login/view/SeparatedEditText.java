@@ -291,13 +291,15 @@ public class SeparatedEditText extends EditText {
     @Override
     protected void onTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter) {
         super.onTextChanged(text, start, lengthBefore, lengthAfter);
-        contentText = text;
+        // 转为大写
+        String upperCase = text.toString().toUpperCase();
+        contentText = upperCase;
         invalidate();
 
         if (textChangedListener != null)
-            if (text.length() == maxLength)
-                textChangedListener.textCompleted(text);
-            else textChangedListener.textChanged(text);
+            if (upperCase.length() == maxLength)
+                textChangedListener.textCompleted(upperCase);
+            else textChangedListener.textChanged(upperCase);
     }
 
     @Override
