@@ -87,6 +87,7 @@
                     android:ellipsize="end"
                     android:maxWidth="@dimen/view_90_dp"
                     android:maxLines="1"
+                    android:singleLine="true"
                     android:textColor="#0C2275"
                     android:textStyle="bold" />
 
@@ -152,6 +153,7 @@
                     android:ellipsize="end"
                     android:maxWidth="@dimen/view_90_dp"
                     android:maxLines="1"
+                    android:singleLine="true"
                     android:textColor="#0C2275"
                     android:textStyle="bold" />
 
@@ -220,6 +222,7 @@
                 android:ellipsize="end"
                 android:maxWidth="@dimen/view_90_dp"
                 android:maxLines="1"
+                android:singleLine="true"
                 android:textColor="#0C2275"
                 android:textStyle="bold" />
 

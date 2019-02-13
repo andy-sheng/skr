@@ -10,6 +10,7 @@
         android:layout_centerInParent="true"
         android:gravity="center"
         android:maxLines="1"
+        android:singleLine="true"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
         android:textColor="@drawable/channel_color_channel_tab_text"

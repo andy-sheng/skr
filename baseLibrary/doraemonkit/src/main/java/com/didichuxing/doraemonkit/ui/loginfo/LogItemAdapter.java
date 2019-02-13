@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.common.view.ex.EllipsizingTextView;
 import com.didichuxing.doraemonkit.R;
 import com.didichuxing.doraemonkit.kit.logInfo.LogInfoItem;
 import com.didichuxing.doraemonkit.ui.widget.recyclerview.AbsRecyclerAdapter;
@@ -36,7 +37,7 @@ public class LogItemAdapter extends AbsRecyclerAdapter<AbsViewBinder<LogInfoItem
 
     public class LogInfoViewHolder extends AbsViewBinder<LogInfoItem> {
 
-        private TextView mLogText;
+        private EllipsizingTextView mLogText;
 
         private ImageView mShowFullBtn;
 

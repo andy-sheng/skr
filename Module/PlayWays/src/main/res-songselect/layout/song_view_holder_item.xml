@@ -40,6 +40,7 @@
         android:layout_toRightOf="@+id/song_cover_iv"
         android:ellipsize="end"
         android:maxLines="1"
+        android:singleLine="true"
         android:text="有多少爱可以重来"
         android:textColor="#0C2275"
         android:textSize="@dimen/textsize_16_dp" />
@@ -53,6 +54,7 @@
         android:layout_alignRight="@+id/song_name_tv"
         android:ellipsize="end"
         android:maxLines="1"
+        android:singleLine="true"
         android:text="迪克牛仔"
         android:textColor="#800C2275"
         android:textSize="@dimen/textsize_12_dp" />

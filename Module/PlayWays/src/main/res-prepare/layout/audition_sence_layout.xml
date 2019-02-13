@@ -19,6 +19,7 @@
         android:gravity="center"
         android:maxWidth="@dimen/view_260_dp"
         android:maxLines="1"
+        android:singleLine="true"
         android:id="@+id/tv_song_name"
         android:textSize="@dimen/textsize_20_dp"
         android:layout_marginTop="@dimen/view_36_dp"

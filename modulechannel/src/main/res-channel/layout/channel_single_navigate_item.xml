@@ -31,6 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
+            android:singleLine="true"
             android:text=""
             android:textColor="@color/black_trans_80"
             android:textSize="@dimen/view_dimen_42" />
@@ -41,6 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/view_dimen_14"
             android:maxLines="1"
+            android:singleLine="true"
             android:text=""
             android:textColor="@color/black_trans_50"
             android:textSize="@dimen/view_dimen_34" />

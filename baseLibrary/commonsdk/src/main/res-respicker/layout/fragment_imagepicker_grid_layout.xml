@@ -60,6 +60,7 @@
                     android:ellipsize="end"
                     android:includeFontPadding="false"
                     android:maxLines="1"
+                    android:singleLine="true"
                     android:text="所有图片"
                     android:textColor="#CFCFCF"
                     android:textSize="16sp" />

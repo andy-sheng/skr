@@ -42,6 +42,7 @@
         android:ellipsize="end"
         android:maxWidth="@dimen/view_160_dp"
         android:maxLines="1"
+        android:singleLine="true"
         android:textColor="#800C2275"
         android:textSize="@dimen/textsize_16_dp" />
 

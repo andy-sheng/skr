@@ -196,6 +196,7 @@
             android:ellipsize="end"
             android:gravity="center"
             android:maxLines="1"
+            android:singleLine="true"
             android:textColor="#0C2275"
             android:textSize="@dimen/textsize_16_dp" />
 

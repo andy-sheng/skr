@@ -19,5 +19,6 @@
         android:layout_marginTop="6dp"
         android:gravity="center"
         android:maxLines="1"
+        android:singleLine="true"
         android:text="@string/dk_app_name" />
 </LinearLayout>

@@ -71,6 +71,7 @@
                 android:inputType="text"
                 android:maxLength="14"
                 android:maxLines="1"
+                android:singleLine="true"
                 android:paddingLeft="@dimen/view_60_dp"
                 android:paddingRight="@dimen/view_14_dp"
                 android:textColor="#091E77"

@@ -102,6 +102,7 @@
         android:ellipsize="end"
         android:gravity="left"
         android:maxLines="1"
+        android:singleLine="true"
         android:textColor="#0C2275"
         android:textSize="@dimen/textsize_16_dp"
         android:textStyle="bold" />
@@ -118,6 +119,7 @@
         android:ellipsize="end"
         android:gravity="left"
         android:maxLines="1"
+        android:singleLine="true"
         android:textColor="#800C2275"
         android:textSize="@dimen/textsize_12_dp"
         android:textStyle="bold" />

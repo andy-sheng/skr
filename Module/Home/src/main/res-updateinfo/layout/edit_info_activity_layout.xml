@@ -137,6 +137,7 @@
             android:layout_marginRight="@dimen/view_55_dp"
             android:ellipsize="end"
             android:maxLines="1"
+            android:singleLine="true"
             android:text="这个签名是撕哥送的"
             android:textColor="#80091E77"
             android:textSize="@dimen/textsize_16_dp" />

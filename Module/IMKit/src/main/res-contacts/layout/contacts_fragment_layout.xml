@@ -19,6 +19,7 @@
         android:drawablePadding="10dp"
         android:hint="@string/Search"
         android:maxLines="1"
+        android:singleLine="true"
         android:textSize="16sp"
         android:imeOptions="actionSearch"
         android:visibility="gone"/>
