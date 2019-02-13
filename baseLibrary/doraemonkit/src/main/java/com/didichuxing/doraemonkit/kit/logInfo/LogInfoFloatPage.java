@@ -1,5 +1,6 @@
 package com.didichuxing.doraemonkit.kit.logInfo;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,16 +13,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.CheckBox;
+import android.widget.CheckedTextView;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.common.rxretrofit.ApiManager;
+import com.common.utils.U;
 import com.didichuxing.doraemonkit.R;
 import com.didichuxing.doraemonkit.ui.base.BaseFloatPage;
 import com.didichuxing.doraemonkit.ui.loginfo.LogItemAdapter;
 import com.didichuxing.doraemonkit.ui.widget.titlebar.TitleBar;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -31,7 +39,7 @@ import java.util.List;
 public class LogInfoFloatPage extends BaseFloatPage implements LogInfoManager.OnLogCatchListener {
     private static final String TAG = "LogInfoFloatPage";
 
-    private static final int MAX_LOG_LINE_NUM = 50;
+    private static final int MAX_LOG_LINE_NUM = 200;
 
     private RecyclerView mLogList;
     private LogItemAdapter mLogItemAdapter;
@@ -43,6 +51,9 @@ public class LogInfoFloatPage extends BaseFloatPage implements LogInfoManager.On
     private WindowManager mWindowManager;
     private TextView mLogHint;
     private View mLogPage;
+
+    private HashSet<String> mTagSet = new HashSet<>();
+    private int mLevel = Log.VERBOSE;
 
     @Override
     protected void onCreate(Context context) {
@@ -132,48 +143,121 @@ public class LogInfoFloatPage extends BaseFloatPage implements LogInfoManager.On
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.verbose) {
-                    mLogItemAdapter.clear();
-                    mLogItemAdapter.setData(mLogInfoItems);
+                    mLevel = Log.VERBOSE;
                 } else if (checkedId == R.id.debug) {
-                    List<LogInfoItem> infoItems = new ArrayList<>();
-                    for (LogInfoItem item : mLogInfoItems) {
-                        if (item.level >= Log.DEBUG) {
-                            infoItems.add(item);
-                        }
-                    }
-                    mLogItemAdapter.clear();
-                    mLogItemAdapter.setData(infoItems);
+                    mLevel = Log.DEBUG;
                 } else if (checkedId == R.id.info) {
-                    List<LogInfoItem> infoItems = new ArrayList<>();
-                    for (LogInfoItem item : mLogInfoItems) {
-                        if (item.level >= Log.INFO) {
-                            infoItems.add(item);
-                        }
-                    }
-                    mLogItemAdapter.clear();
-                    mLogItemAdapter.setData(infoItems);
+                    mLevel = Log.INFO;
                 } else if (checkedId == R.id.warn) {
-                    List<LogInfoItem> infoItems = new ArrayList<>();
-                    for (LogInfoItem item : mLogInfoItems) {
-                        if (item.level >= Log.WARN) {
-                            infoItems.add(item);
-                        }
-                    }
-                    mLogItemAdapter.clear();
-                    mLogItemAdapter.setData(infoItems);
+                    mLevel = Log.WARN;
                 } else if (checkedId == R.id.error) {
-                    List<LogInfoItem> infoItems = new ArrayList<>();
-                    for (LogInfoItem item : mLogInfoItems) {
-                        if (item.level >= Log.ERROR) {
-                            infoItems.add(item);
-                        }
-                    }
-                    mLogItemAdapter.clear();
-                    mLogItemAdapter.setData(infoItems);
+                    mLevel = Log.ERROR;
                 }
+                List<LogInfoItem> infoItems = getListItem();
+                mLogItemAdapter.clear();
+                mLogItemAdapter.setData(infoItems);
             }
         });
         mRadioGroup.check(R.id.verbose);
+
+        LinearLayout tagContainer = findViewById(R.id.tag_container);
+
+        {
+            CheckBox checkBox = new CheckBox(getContext());
+            checkBox.setText("服务器Api");
+            final String[] arrs = new String[]{
+                    ApiManager.TAG
+
+            };
+            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        addTagSets(arrs);
+                    } else {
+                        removeTagSets(arrs);
+                    }
+                    List<LogInfoItem> infoItems = getListItem();
+                    mLogItemAdapter.clear();
+                    mLogItemAdapter.setData(infoItems);
+                }
+            });
+            tagContainer.addView(checkBox);
+        }
+
+        {
+            CheckBox checkBox = new CheckBox(getContext());
+            checkBox.setText("融云相关");
+            final String[] arrs = new String[]{
+                    "RC:",
+                    "Rong"
+            };
+            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        addTagSets(arrs);
+                    } else {
+                        removeTagSets(arrs);
+                    }
+                    List<LogInfoItem> infoItems = getListItem();
+                    mLogItemAdapter.clear();
+                    mLogItemAdapter.setData(infoItems);
+                }
+            });
+            tagContainer.addView(checkBox);
+        }
+    }
+
+    void addTagSets(String[] arrs) {
+        StringBuilder sb = new StringBuilder();
+        for (String tag : arrs) {
+            mTagSet.add(tag);
+            sb.append(tag).append(" ");
+        }
+        U.getToastUtil().showShort("过滤" + sb.toString());
+    }
+
+    void removeTagSets(String[] arrs) {
+        for (String tag : arrs) {
+            mTagSet.remove(tag);
+        }
+    }
+
+    List<LogInfoItem> getListItem() {
+        List<LogInfoItem> infoItems = new ArrayList<>();
+        for (LogInfoItem infoItem : mLogInfoItems) {
+            if (accept(infoItem)) {
+                infoItems.add(infoItem);
+            }
+        }
+        return infoItems;
+    }
+
+    boolean accept(LogInfoItem infoItem) {
+        if (infoItem.level >= mLevel) {
+            boolean goOn = mTagSet.isEmpty();
+            for (String tag : mTagSet) {
+                if (infoItem.orginalLog.contains(tag)) {
+                    goOn = true;
+                    break;
+                }
+            }
+            if (!goOn) {
+                return false;
+            }
+            if (!TextUtils.isEmpty(mLogFilter.getText())) {
+                CharSequence filter = mLogFilter.getText();
+                if (infoItem.orginalLog.contains(filter)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -190,35 +274,11 @@ public class LogInfoFloatPage extends BaseFloatPage implements LogInfoManager.On
         if (mLogInfoItems.size() == MAX_LOG_LINE_NUM) {
             mLogInfoItems.remove(0);
         }
-        if (infoItem.level >= getSelectLogLevel()) {
-            if (!TextUtils.isEmpty(mLogFilter.getText())) {
-                CharSequence filter = mLogFilter.getText();
-                if (infoItem.orginalLog.contains(filter)) {
-                    mLogItemAdapter.append(infoItem);
-                }
-            } else {
-                mLogItemAdapter.append(infoItem);
-            }
+        if (accept(infoItem)) {
+            mLogItemAdapter.append(infoItem);
             if (mLogItemAdapter.getItemCount() == MAX_LOG_LINE_NUM) {
                 mLogItemAdapter.remove(0);
             }
-        }
-    }
-
-    private int getSelectLogLevel() {
-        int checkedId = mRadioGroup.getCheckedRadioButtonId();
-        if (checkedId == R.id.verbose) {
-            return Log.VERBOSE;
-        } else if (checkedId == R.id.debug) {
-            return Log.DEBUG;
-        } else if (checkedId == R.id.info) {
-            return Log.INFO;
-        } else if (checkedId == R.id.warn) {
-            return Log.WARN;
-        } else if (checkedId == R.id.error) {
-            return Log.ERROR;
-        } else {
-            return Log.VERBOSE;
         }
     }
 
@@ -246,6 +306,10 @@ public class LogInfoFloatPage extends BaseFloatPage implements LogInfoManager.On
 
     @Override
     protected boolean onBackPressed() {
+        if (U.getKeyBoardUtils().isSoftKeyboardShowing(U.getActivityUtils().getTopActivity())) {
+            U.getKeyBoardUtils().hideSoftInputKeyBoard(U.getActivityUtils().getTopActivity());
+            return true;
+        }
         hidePage();
         return true;
     }

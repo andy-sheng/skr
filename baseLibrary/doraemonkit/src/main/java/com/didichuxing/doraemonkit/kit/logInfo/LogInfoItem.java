@@ -12,6 +12,7 @@ public class LogInfoItem {
     public String time;
     public String packagePriority;
     public String tag;
+    public int processId;
     public String meseage;
     public String orginalLog;
     public boolean showFull = false;
@@ -37,7 +38,22 @@ public class LogInfoItem {
         } else {
             meseage = log.substring(beginIndex + 2);
         }
+        int b1 = beginIndex;
         beginIndex = log.indexOf("/");
+        if (b1 != -1 && beginIndex != -1 && b1 > beginIndex) {
+            String t = log.substring(beginIndex + 1, b1);
+            int bb = t.lastIndexOf("(");
+            if (bb == -1) {
+                tag = t;
+            } else {
+                tag = t.substring(0, bb);
+                if (bb + 1 < t.length() - 1) {
+                    String processIdStr = t.substring(bb + 1, t.length() - 1);
+                    processId = Integer.parseInt(processIdStr.trim());
+                }
+            }
+        }
+
         int endIndex = log.indexOf("/", beginIndex + 1);
         if (beginIndex != -1 && endIndex != -1) {
             packagePriority = log.substring(beginIndex + 1, endIndex - 3);

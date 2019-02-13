@@ -52,7 +52,6 @@ public class LogInfoSettingFragment extends BaseFragment {
                         intent.mode = PageIntent.MODE_SINGLE_INSTANCE;
                         FloatPageManager.getInstance().add(intent);
                     } else {
-
                         FloatPageManager.getInstance().removeAll(LogInfoFloatPage.class);
                     }
                     LogInfoConfig.setLogInfoOpen(getContext(), on);

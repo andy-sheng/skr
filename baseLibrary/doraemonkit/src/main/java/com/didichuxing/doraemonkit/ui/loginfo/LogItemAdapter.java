@@ -93,7 +93,8 @@ public class LogItemAdapter extends AbsRecyclerAdapter<AbsViewBinder<LogInfoItem
                 default:
                     break;
             }
-            String text = item.date + " " + item.time + "\n" + item.meseage;
+//            item.date + " " +
+            String text = item.time +" "+item.tag+"\n" + item.meseage;
             mLogText.setText(text);
         }
     }
