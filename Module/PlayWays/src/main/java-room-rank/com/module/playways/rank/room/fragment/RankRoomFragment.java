@@ -75,6 +75,7 @@ import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.FloatLyricsView;
 import com.zq.lyrics.widget.ManyLyricsView;
 import com.zq.lyrics.widget.VoiceScaleView;
+import com.zq.lyrics.widget.VoiceScaleView2;
 import com.zq.report.fragment.ReportFragment;
 
 import org.greenrobot.eventbus.EventBus;
@@ -208,7 +209,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     AnimatorSet mGameEndAnimation;
 
-    VoiceScaleView mVoiceScaleView;
+    VoiceScaleView2 mVoiceScaleView;
 
     List<Animator> mAnimatorList = new ArrayList<>();  //存放所有需要尝试取消的动画
 
@@ -239,7 +240,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         initTurnChangeView();
         initGiftDisplayView();
 
-        mVoiceScaleView = (VoiceScaleView)mRootView.findViewById(R.id.voice_scale_view);
+        mVoiceScaleView = mRootView.findViewById(R.id.voice_scale_view);
 
         showReadyGoView();
 
