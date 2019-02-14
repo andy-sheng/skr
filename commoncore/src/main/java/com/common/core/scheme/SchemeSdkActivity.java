@@ -1,5 +1,6 @@
 package com.common.core.scheme;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.core.R;
 import com.common.core.cta.CTANotifyFragment;
@@ -15,6 +17,7 @@ import com.common.core.scheme.processor.ZqSchemeProcessorManager;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.module.RouterConstants;
+import com.module.home.IHomeService;
 
 @Route(path = RouterConstants.ACTIVITY_SCHEME)
 public class SchemeSdkActivity extends BaseActivity {
@@ -77,8 +80,15 @@ public class SchemeSdkActivity extends BaseActivity {
 
         String uri = mIntent.getStringExtra("uri");
         if(TextUtils.isEmpty(uri)){
-            MyLog.w(TAG, "getStringExtra(uri) is empty");
             uri = getIntent().getDataString();
+        }
+
+        if(!isHomeActivityExist()){
+            MyLog.w(TAG, "HomeActivity不存在，需要先启动HomeActivity");
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_HOME)
+                    .withString("from_schema", uri)
+                    .navigation();
+            return;
         }
 
         if(TextUtils.isEmpty(uri)){
@@ -101,6 +111,18 @@ public class SchemeSdkActivity extends BaseActivity {
         } finally {
             finish();
         }
+    }
+
+    private boolean isHomeActivityExist(){
+        IHomeService channelService = (IHomeService) ARouter.getInstance().build(RouterConstants.SERVICE_HOME).navigation();
+        String homeActivityName = (String) channelService.getData(1, "");
+        for (Activity activity : U.getActivityUtils().getActivityList()) {
+            if (activity.getClass().getSimpleName().equals(homeActivityName)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @Override

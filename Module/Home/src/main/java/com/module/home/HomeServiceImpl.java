@@ -20,6 +20,8 @@ public class HomeServiceImpl implements IHomeService {
     public Object getData(int type, Object object) {
         if(0 == type){
             return PersonFragment.class;
+        }else if(1 == type){
+            return HomeActivity.class.getSimpleName();
         }
         return null;
     }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.text.TextUtils;
 import android.widget.LinearLayout;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -80,6 +81,8 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
         mPersonInfoBtn = (ExImageView) findViewById(R.id.person_info_btn);
         mMainVp = (NestViewPager) findViewById(R.id.main_vp);
         mMsgService = ModuleServiceManager.getInstance().getMsgService();
+
+        checkIfFromSchema();
 
         mMainVp.setViewPagerCanScroll(false);
         FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
@@ -161,6 +164,16 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
         U.getSoundUtils().preLoad(TAG, R.raw.trans_tab);
     }
 
+    private void checkIfFromSchema(){
+        if(getIntent() != null){
+            String schema = getIntent().getStringExtra("from_schema");
+            if(!TextUtils.isEmpty(schema)){
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_SCHEME)
+                        .withString("uri", schema)
+                        .navigation();
+            }
+        }
+    }
 
     @Override
     protected void onResume() {
