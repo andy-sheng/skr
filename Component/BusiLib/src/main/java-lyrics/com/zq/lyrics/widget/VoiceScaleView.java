@@ -36,6 +36,7 @@ public class VoiceScaleView extends View {
     boolean hasRed = false;  // 是否有圆点
     int redWith;   //圆心点
     int redHight;  //圆心点
+    int nextRedHight; //下一个圆心点
 
     //毫秒为单位
     int showTime = U.getDisplayUtils().getScreenWidth() / mSpeed * 1000;// 可显示时长
@@ -70,7 +71,7 @@ public class VoiceScaleView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if(mLyricsLineInfoList == null || mLyricsLineInfoList.size() == 0){
+        if (mLyricsLineInfoList == null || mLyricsLineInfoList.size() == 0) {
             return;
         }
 
@@ -106,16 +107,13 @@ public class VoiceScaleView extends View {
         Paint rightPaint = new Paint();
         rightPaint.setColor(Color.parseColor("#474A5F"));
 
-//        List<LyricsLineInfo> canShowLyrics = getCanShowLyrics(mLyricsLineInfoList, startTime, endTime);
-//        if (canShowLyrics == null || canShowLyrics.size() <= 0) {
-//            if (mTaskTimer != null) {
-//                mTaskTimer.dispose();
-//            }
-//            return;
-//        }
+        List<LyricsLineInfo> canShowLyrics = getCanShowLyrics(mLyricsLineInfoList, startTime, endTime);
+        if (canShowLyrics == null || canShowLyrics.size() <= 0) {
+            return;
+        }
 
-        // 假设一句歌词长度为40dp
-        boolean isLowStart = true;
+        boolean isLowStart = true;  //从低开始还是高开始的标记位
+        boolean isRedFlag = false;         //标记当前此时歌词是否与圆点重合
         for (LyricsLineInfo lyricsLineInfo : mLyricsLineInfoList) {
             //屏幕宽度 - 已经过去的长度 + 一行歌词真正开始的位置 - 再减去红点到屏幕右边的位置
             int left = getMeasuredWidth() - srcollLength + (lyricsLineInfo.getStartTime() - starLyricsLine) * mSpeed / 1000 - (getMeasuredWidth() - mRedLine);
@@ -144,8 +142,16 @@ public class VoiceScaleView extends View {
                 rectRightF.bottom = bottom;
                 canvas.drawRoundRect(rectRightF, U.getDisplayUtils().dip2px(10), U.getDisplayUtils().dip2px(10), rightPaint);
                 hasRed = true;
+                isRedFlag = true;
                 redWith = mRedLine;
-                redHight = (top + bottom) / 2;
+                if (isLowStart) {
+                    redHight = (U.getDisplayUtils().dip2px(40) + U.getDisplayUtils().dip2px(40) + U.getDisplayUtils().dip2px(7)) / 2;
+                    nextRedHight = (U.getDisplayUtils().dip2px(20) + U.getDisplayUtils().dip2px(20) + top + U.getDisplayUtils().dip2px(7)) / 2;
+                } else {
+                    redHight = (U.getDisplayUtils().dip2px(20) + U.getDisplayUtils().dip2px(20) + U.getDisplayUtils().dip2px(7)) / 2;
+                    nextRedHight = (U.getDisplayUtils().dip2px(40) + U.getDisplayUtils().dip2px(40) + U.getDisplayUtils().dip2px(7)) / 2;
+                }
+
             } else {
                 RectF rectF = new RectF();
                 rectF.left = left;
@@ -157,7 +163,11 @@ public class VoiceScaleView extends View {
             isLowStart = !isLowStart;
         }
 
+        MyLog.d(TAG, "drawView" + " isRedFlag=" + isRedFlag + " hasRed=" + hasRed);
         if (hasRed) {
+            if (!isRedFlag) {
+                redHight = nextRedHight;
+            }
             Paint mOutpaint = new Paint(); //外圈
             mOutpaint.setColor(Color.parseColor("#EF5E85"));
             mOutpaint.setAntiAlias(true);
@@ -167,8 +177,6 @@ public class VoiceScaleView extends View {
             mInpaint.setAntiAlias(true);
             canvas.drawCircle(redWith, redHight, U.getDisplayUtils().dip2px(6), mInpaint);
         }
-        hasRed = false;
-
         LyricsLineInfo lyricsLineInfo = mLyricsLineInfoList.get(mLyricsLineInfoList.size() - 1);
         int left = getMeasuredWidth() - srcollLength + (lyricsLineInfo.getStartTime() - starLyricsLine) * mSpeed / 1000 - (getMeasuredWidth() - mRedLine);
         int right = left + (lyricsLineInfo.getEndTime() - lyricsLineInfo.getStartTime()) * mSpeed / 1000;
@@ -185,8 +193,8 @@ public class VoiceScaleView extends View {
 
         List<LyricsLineInfo> lyricsLineInfos = new ArrayList<>();
         for (LyricsLineInfo lyricsLineInfo : lyricsLineInfoList) {
-            if ((lyricsLineInfo.getStartTime() > (starLyricsLine + startTime) && lyricsLineInfo.getStartTime() < (starLyricsLine + endTime))
-                    || (lyricsLineInfo.getEndTime() > (starLyricsLine + startTime) && lyricsLineInfo.getEndTime() < (starLyricsLine + endTime))) {
+            if ((lyricsLineInfo.getStartTime() >= (starLyricsLine + startTime) && lyricsLineInfo.getStartTime() <= (starLyricsLine + endTime))
+                    || (lyricsLineInfo.getEndTime() >= (starLyricsLine + startTime) && lyricsLineInfo.getEndTime() <= (starLyricsLine + endTime))) {
                 lyricsLineInfos.add(lyricsLineInfo);
             }
         }

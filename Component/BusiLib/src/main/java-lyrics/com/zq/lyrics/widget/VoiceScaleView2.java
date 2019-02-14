@@ -24,6 +24,7 @@ public class VoiceScaleView2 extends View {
     static final int SPEED = U.getDisplayUtils().dip2px(72);// 每秒走72个像素单位
     float mReadLineX = 0.2f;// 红线大约在距离左边 20% 的位置
     float mRedCy = -1;
+    float mNextRedCy = -1;
     int mWidth = -1;// view的宽度
     int mHeight = -1;// view的高度
     long mLocalBeginTs = -1;// 本地开始播放的时间戳，本地基准时间
@@ -94,6 +95,7 @@ public class VoiceScaleView2 extends View {
         float divideLineTX = mReadLineX * mWidth;
 
         boolean isLowStart = true;
+        boolean isRedFlag = false;         //标记当前此时歌词是否与圆点重合
         long duration = System.currentTimeMillis() - mLocalBeginTs;// 流逝了这么多的物理时间
         for (LyricsLineInfo lyricsLineInfo : mLyricsLineInfoList) {
             float left = divideLineTX + (lyricsLineInfo.getStartTime() - mTranslateTX - duration) * SPEED / 1000;
@@ -104,6 +106,7 @@ public class VoiceScaleView2 extends View {
                 MyLog.w(TAG, "right<left? error");
                 continue;
             }
+
             if (right <= divideLineTX) {
                 RectF rectF = new RectF();
                 rectF.left = left;
@@ -124,7 +127,15 @@ public class VoiceScaleView2 extends View {
                 rectRightF.top = top;
                 rectRightF.bottom = bottom;
                 canvas.drawRoundRect(rectRightF, U.getDisplayUtils().dip2px(10), U.getDisplayUtils().dip2px(10), mRightPaint);
-                mRedCy = (top + bottom) / 2;
+                isRedFlag = true;
+                if (isLowStart) {
+                    mRedCy = (U.getDisplayUtils().dip2px(40) + U.getDisplayUtils().dip2px(40) + U.getDisplayUtils().dip2px(7)) / 2;
+                    mNextRedCy = (U.getDisplayUtils().dip2px(20) + U.getDisplayUtils().dip2px(20) + U.getDisplayUtils().dip2px(7)) / 2;
+                } else {
+                    mRedCy = (U.getDisplayUtils().dip2px(20) + U.getDisplayUtils().dip2px(20) + U.getDisplayUtils().dip2px(7)) / 2;
+                    mNextRedCy = (U.getDisplayUtils().dip2px(40) + U.getDisplayUtils().dip2px(40) + U.getDisplayUtils().dip2px(7)) / 2;
+                }
+
             } else if (left >= divideLineTX) {
                 RectF rectF = new RectF();
                 rectF.left = left;
@@ -136,6 +147,9 @@ public class VoiceScaleView2 extends View {
             isLowStart = !isLowStart;
         }
         if (mRedCy > 0) {
+            if (!isRedFlag) {
+                mRedCy = mNextRedCy;
+            }
             canvas.drawCircle(divideLineTX, mRedCy, U.getDisplayUtils().dip2px(9), mRedOutpaint);
             canvas.drawCircle(divideLineTX, mRedCy, U.getDisplayUtils().dip2px(6), mRedInnerpaint);
         }
