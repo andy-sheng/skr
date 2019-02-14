@@ -13,7 +13,6 @@ public class DefaultProcessor implements ISchemeProcessor {
     @Override
     public boolean process(@NonNull Uri uri, @NonNull BaseActivity activity) {
         MyLog.w(TAG, "" + uri);
-        activity.finish();
         return true;
     }
 

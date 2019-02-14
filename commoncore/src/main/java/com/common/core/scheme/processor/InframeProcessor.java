@@ -72,7 +72,6 @@ public class InframeProcessor implements ISchemeProcessor {
                 return true;
         }
 
-        activity.finish();
         return false;
     }
 

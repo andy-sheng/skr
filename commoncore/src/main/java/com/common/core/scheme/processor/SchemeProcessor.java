@@ -16,7 +16,6 @@ public class SchemeProcessor implements ISchemeProcessor {
 
     public boolean process(@NonNull Uri uri, @NonNull BaseActivity activity) {
         MyLog.w(TAG, "" + uri);
-        activity.finish();
         return false;
     }
 

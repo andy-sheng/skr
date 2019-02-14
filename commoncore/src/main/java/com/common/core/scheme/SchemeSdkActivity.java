@@ -88,11 +88,19 @@ public class SchemeSdkActivity extends BaseActivity {
             finish();
             return;
         }
+
         try {
             process(mUri);
         } catch (Exception e) {
+            MyLog.e(TAG, e);
+        } finally {
             finish();
         }
+    }
+
+    @Override
+    protected void destroy() {
+        super.destroy();
     }
 
     private void process(final Uri uri) throws Exception {
