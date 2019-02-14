@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
+import com.common.core.account.UserAccountManager;
 import com.common.core.scheme.SchemeConstants;
 import com.common.core.scheme.SchemeUtils;
 import com.common.log.MyLog;
@@ -84,6 +85,11 @@ public class InframeProcessor implements ISchemeProcessor {
 
         if (SchemeConstants.PATH_RANK_CHOOSE_SONG.equals(path)) {
             try {
+                if(!UserAccountManager.getInstance().hasAccount()){
+                    MyLog.w(TAG, "processGameUrl 没有登录");
+                    return;
+                }
+
                 String gameMode = SchemeUtils.getString(uri, SchemeConstants.PARAM_GAME_MODE);
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
                         .withInt("key_game_type", Integer.parseInt(gameMode))
@@ -112,6 +118,11 @@ public class InframeProcessor implements ISchemeProcessor {
             try {
                 if (TextUtils.isEmpty(SchemeUtils.getString(uri, SchemeConstants.PARAM_URL))) {
                     MyLog.w(TAG, "processWebUrl url is empty");
+                    return;
+                }
+
+                if(!UserAccountManager.getInstance().hasAccount()){
+                    MyLog.w(TAG, "processWebUrl 没有登录");
                     return;
                 }
 
