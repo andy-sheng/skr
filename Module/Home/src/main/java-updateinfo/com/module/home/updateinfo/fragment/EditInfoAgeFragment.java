@@ -122,7 +122,7 @@ public class EditInfoAgeFragment extends BaseFragment {
         String birthday = MyUserInfoManager.getInstance().getMyUserInfo().getBirthday();
         Calendar selectedDate = Calendar.getInstance();//系统当前时间
         if (TextUtils.isEmpty(birthday)) {
-            selectedDate.set(1990, 0, 1);
+            selectedDate.set(2000, 12, 12);
         } else {
             String[] strings = birthday.split("-");
             int year = Integer.valueOf(strings[0]);
