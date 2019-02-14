@@ -117,6 +117,7 @@ public class LyricsManager {
                         } catch (Exception e) {
                             Log.e("LyricsManager", "" + e.toString());
                             emitter.onError(e);
+                            return;
                         }
                     }
                 } else {
