@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,7 +13,6 @@ import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -22,20 +20,15 @@ import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONException;
 import com.common.banner.BannerImageLoader;
 import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
 import com.common.core.account.event.AccountEvent;
 import com.common.core.avatar.AvatarUtils;
-import com.common.core.login.LoginActivity;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
-import com.common.core.myinfo.event.ScoreDetailChangeEvent;
-import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
-import com.common.core.userinfo.model.UserLevelModel;
 import com.common.core.userinfo.model.UserRankModel;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
@@ -43,9 +36,6 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.FragmentUtils;
-import com.common.utils.PreferenceUtils;
-import com.common.utils.SongResUtils;
-import com.common.utils.ToastUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
@@ -58,29 +48,20 @@ import com.module.home.R;
 import com.module.home.model.GameConfModel;
 import com.module.home.model.SlideShowModel;
 import com.module.home.view.GameTimeTipsView;
-import com.module.home.widget.UserInfoTitleView;
 import com.module.rank.IRankingModeService;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
-import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
-import com.trello.rxlifecycle2.android.FragmentEvent;
 import com.youth.banner.Banner;
 import com.youth.banner.listener.OnBannerListener;
-import com.zq.dialog.PersonInfoDialogView;
 import com.zq.level.utils.LevelConfigUtils;
-import com.zq.level.view.NormalLevelView;
-import com.zq.lyrics.LyricsManager;
-import com.zq.lyrics.widget.VoiceScaleView;
-import com.zq.lyrics.widget.VoiceScaleView2;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -88,12 +69,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
-import io.reactivex.subjects.BehaviorSubject;
-
-import static android.widget.RelativeLayout.ALIGN_RIGHT;
 
 public class GameFragment extends BaseFragment {
 
@@ -244,25 +220,6 @@ public class GameFragment extends BaseFragment {
         initBaseInfo();
         initRankLevel();
         initOperationArea();
-//        {
-//            VoiceScaleView2 voiceScaleView = new VoiceScaleView2(getContext());
-//            mTopArea.addView(voiceScaleView,new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,U.getDisplayUtils().dip2px(100)));
-//            String url = "http://song-static.inframe.mobi/lrc/a5461febe394f78416161f4ad7d1b2d9.zrce";
-//            File file = SongResUtils.getZRCELyricFileByUrl(url);
-//            final String fileName = SongResUtils.getFileNameWithMD5(url);
-//            LyricsManager.getLyricsManager(getActivity()).loadLyricsObserable(fileName, fileName.hashCode() + "")
-//                    .delay(5000,TimeUnit.MILLISECONDS)
-//                    .subscribeOn(Schedulers.io())
-//                    .observeOn(AndroidSchedulers.mainThread())
-//                    .retry(10)
-//                    .compose(bindUntilEvent(FragmentEvent.DESTROY))
-//                    .subscribe(lyricsReader -> {
-//                        voiceScaleView.setVisibility(View.VISIBLE);
-//                        voiceScaleView.startWithData(lyricsReader.getLyricsLineInfoList(), 19166);
-//                    }, throwable -> {
-//                        MyLog.e(TAG, throwable);
-//                    });
-//        }
     }
 
     private void initBaseInfo() {

@@ -54,7 +54,7 @@
         app:ly_paint_text_size="@dimen/textsize_dimen_16"
         app:ly_top_line_num="2" />
 
-    <com.zq.lyrics.widget.VoiceScaleView2
+    <com.zq.lyrics.widget.VoiceScaleView
         android:visibility="gone"
         android:layout_below="@+id/many_lyrics_view"
         android:id="@+id/voice_scale_view"

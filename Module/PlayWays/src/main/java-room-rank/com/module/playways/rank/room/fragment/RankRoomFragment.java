@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.graphics.Color;
 import android.graphics.drawable.Animatable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -72,14 +71,11 @@ import com.zq.lyrics.LyricsReader;
 import com.zq.lyrics.event.LrcEvent;
 import com.zq.lyrics.model.LyricsLineInfo;
 import com.zq.lyrics.widget.AbstractLrcView;
-import com.zq.lyrics.widget.FloatLyricsView;
 import com.zq.lyrics.widget.ManyLyricsView;
 import com.zq.lyrics.widget.VoiceScaleView;
-import com.zq.lyrics.widget.VoiceScaleView2;
 import com.zq.report.fragment.ReportFragment;
 
 import org.greenrobot.eventbus.EventBus;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -109,7 +105,6 @@ import okhttp3.Response;
 
 import static com.zq.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
 import static com.zq.report.fragment.ReportFragment.FORM_GAME;
-import static com.zq.report.fragment.ReportFragment.FORM_PERSON;
 import static com.zq.report.fragment.ReportFragment.REPORT_FROM_KEY;
 import static com.zq.report.fragment.ReportFragment.REPORT_USER_ID;
 
@@ -209,7 +204,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     AnimatorSet mGameEndAnimation;
 
-    VoiceScaleView2 mVoiceScaleView;
+    VoiceScaleView mVoiceScaleView;
 
     List<Animator> mAnimatorList = new ArrayList<>();  //存放所有需要尝试取消的动画
 

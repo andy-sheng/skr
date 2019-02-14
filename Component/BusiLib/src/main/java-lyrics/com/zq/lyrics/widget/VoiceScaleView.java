@@ -1,6 +1,7 @@
 package com.zq.lyrics.widget;
 
 import android.content.Context;
+import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -9,7 +10,6 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.common.log.MyLog;
-import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.zq.lyrics.model.LyricsLineInfo;
 
@@ -17,187 +17,190 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 以秒为基准
  * 音阶view
  */
 public class VoiceScaleView extends View {
     public final static String TAG = "VoiceScaleView";
-    int mSpeed = U.getDisplayUtils().dip2px(36);   //一秒钟走多少
+    static final int SPEED = U.getDisplayUtils().dip2px(72);// 每秒走72个像素单位
+    float mReadLineX = 0.2f;// 红线大约在距离左边 20% 的位置
+    float mDefaultCy = (U.getDisplayUtils().dip2px(30) + U.getDisplayUtils().dip2px(30) + U.getDisplayUtils().dip2px(7)) / 2;
+    float mRedCy = mDefaultCy;
+    int mWidth = -1;// view的宽度
+    int mHeight = -1;// view的高度
+    long mLocalBeginTs = -1;// 本地开始播放的时间戳，本地基准时间
+    long mTranslateTX = 0;// 调用方告知的偏移量
 
-    int mRedLine = U.getDisplayUtils().dip2px(87);  //中间红点的线
+    List<LyricsLineInfo> mLyricsLineInfoList = new ArrayList<>(); // 歌词
 
-    int srcollLength;   //滚动的距离
-    int srcollTime;     //滚动的时间
-
-    //歌词
-    List<LyricsLineInfo> mLyricsLineInfoList;
-    //歌词开始播放时间
-    int starLyricsLine = 0;
-
-    boolean hasRed = false;  // 是否有圆点
-    int redWith;   //圆心点
-    int redHight;  //圆心点
-    int nextRedHight; //下一个圆心点
-
-    //毫秒为单位
-    int showTime = U.getDisplayUtils().getScreenWidth() / mSpeed * 1000;// 可显示时长
-
-    HandlerTaskTimer mTaskTimer;
-
-    long mStartTs = 0;
+    Paint mLeftBgPaint;
+    Paint mRightBgPaint;
+    Paint mRedLinePaint;
+    Paint mLeftPaint;
+    Paint mRightPaint;
+    Paint mRedOutpaint;
+    Paint mRedInnerpaint;
 
     public VoiceScaleView(Context context) {
         this(context, null);
+        init();
     }
 
     public VoiceScaleView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
+        init();
     }
 
     public VoiceScaleView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init();
     }
 
-    public void startWithData(List<LyricsLineInfo> lyricsLineInfoList, int beginTime) {
+    private void init() {
+        setLayerType(LAYER_TYPE_SOFTWARE, null);
+        mLeftPaint = new Paint();
+        mLeftPaint.setMaskFilter(new BlurMaskFilter(U.getDisplayUtils().dip2px(5), BlurMaskFilter.Blur.SOLID));
+        mLeftPaint.setColor(Color.parseColor("#F5A623"));
+
+        mRightPaint = new Paint();
+        mRightPaint.setColor(Color.parseColor("#474A5F"));
+
+        mLeftBgPaint = new Paint();
+        mLeftBgPaint.setColor(Color.parseColor("#252736"));
+
+        mRedLinePaint = new Paint();
+        mRedLinePaint.setColor(Color.parseColor("#494C62"));
+
+        mRightBgPaint = new Paint();
+        mRightBgPaint.setColor(Color.parseColor("#292B3A"));
+
+        mRedOutpaint = new Paint(); //外圈
+        mRedOutpaint.setColor(Color.parseColor("#EF5E85"));
+        mRedOutpaint.setAntiAlias(true);
+
+        mRedInnerpaint = new Paint(); //内圈
+        mRedInnerpaint.setColor(Color.parseColor("#CA2C60"));
+        mRedInnerpaint.setAntiAlias(true);
+    }
+
+    /**
+     * @param lyricsLineInfoList
+     * @param translateTX        调用方告知的偏移量
+     */
+    public void startWithData(List<LyricsLineInfo> lyricsLineInfoList, int translateTX) {
         MyLog.d(TAG, "startWithData" + " lyricsLineInfoList=" + lyricsLineInfoList);
         this.mLyricsLineInfoList = lyricsLineInfoList;
-
-        starLyricsLine = beginTime;
-
-        mStartTs = System.currentTimeMillis();
+        this.mLocalBeginTs = -1;
+        this.mTranslateTX = translateTX;
         postInvalidate();
     }
-
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (mLyricsLineInfoList == null || mLyricsLineInfoList.size() == 0) {
-            return;
+        if (mWidth < 0) {
+            mWidth = getWidth();
+        }
+        if (mHeight < 0) {
+            mHeight = getHeight();
+        }
+        if (mLocalBeginTs < 0) {
+            mLocalBeginTs = System.currentTimeMillis();
+        }
+        float divideLineTX = mReadLineX * mWidth;
+
+        initBackground(canvas, divideLineTX);
+
+        boolean isLowStart = true;
+        boolean isRedFlag = false;         //标记当前此时歌词是否与圆点重合
+        long duration = System.currentTimeMillis() - mLocalBeginTs;// 流逝了这么多的物理时间
+        for (LyricsLineInfo lyricsLineInfo : mLyricsLineInfoList) {
+            float left = divideLineTX + (lyricsLineInfo.getStartTime() - mTranslateTX - duration) * SPEED / 1000;
+            float right = divideLineTX + (lyricsLineInfo.getEndTime() - mTranslateTX - duration) * SPEED / 1000;
+            float top = isLowStart ? U.getDisplayUtils().dip2px(40) : U.getDisplayUtils().dip2px(20);
+            float bottom = top + U.getDisplayUtils().dip2px(7);
+            if (right < left) {
+                MyLog.w(TAG, "right<left? error");
+                continue;
+            }
+
+            if (right <= divideLineTX) {
+                RectF rectF = new RectF();
+                rectF.left = left;
+                rectF.right = right;
+                rectF.top = top;
+                rectF.bottom = bottom;
+                canvas.drawRoundRect(rectF, U.getDisplayUtils().dip2px(10), U.getDisplayUtils().dip2px(10), mLeftPaint);
+            } else if (left < divideLineTX && right > divideLineTX) {
+                RectF rectLeftF = new RectF();
+                rectLeftF.left = left;
+                rectLeftF.right = divideLineTX;
+                rectLeftF.top = top;
+                rectLeftF.bottom = bottom;
+                canvas.drawRoundRect(rectLeftF, U.getDisplayUtils().dip2px(10), U.getDisplayUtils().dip2px(10), mLeftPaint);
+                RectF rectRightF = new RectF();
+                rectRightF.left = divideLineTX;
+                rectRightF.right = right;
+                rectRightF.top = top;
+                rectRightF.bottom = bottom;
+                canvas.drawRoundRect(rectRightF, U.getDisplayUtils().dip2px(10), U.getDisplayUtils().dip2px(10), mRightPaint);
+                isRedFlag = true;
+                mRedCy = (top + bottom) / 2;
+            } else if (left >= divideLineTX) {
+                RectF rectF = new RectF();
+                rectF.left = left;
+                rectF.right = right;
+                rectF.top = top;
+                rectF.bottom = bottom;
+                canvas.drawRoundRect(rectF, U.getDisplayUtils().dip2px(10), U.getDisplayUtils().dip2px(10), mRightPaint);
+            }
+            isLowStart = !isLowStart;
         }
 
-        srcollTime = (int) (System.currentTimeMillis() - mStartTs);
-        srcollLength = srcollTime * mSpeed / 1000;
-
-        if (srcollTime >= showTime) {
-            drawView(canvas, srcollTime - showTime, srcollTime);
-        } else if (srcollTime != 0) {
-            drawView(canvas, 0, srcollTime);
+        if (mRedCy > 0) {
+            if (!isRedFlag) {
+                mRedCy = mDefaultCy;
+            }
         }
+        canvas.drawCircle(divideLineTX, mRedCy, U.getDisplayUtils().dip2px(9), mRedOutpaint);
+        canvas.drawCircle(divideLineTX, mRedCy, U.getDisplayUtils().dip2px(6), mRedInnerpaint);
+
+        if (!mLyricsLineInfoList.isEmpty()) {
+            LyricsLineInfo last = mLyricsLineInfoList.get(mLyricsLineInfoList.size() - 1);
+            if (divideLineTX / SPEED * 1000 + last.getEndTime() - mTranslateTX - duration > 0) {
+                // 还能画，让时间继续流逝
+                postInvalidateDelayed(30);
+            }
+        }
+
+    }
+
+    private void initBackground(Canvas canvas, float divideLineTX) {
+        RectF leftBgF = new RectF();
+        leftBgF.left = 0;
+        leftBgF.right = divideLineTX;
+        leftBgF.top = 0;
+        leftBgF.bottom = mHeight;
+        canvas.drawRect(leftBgF, mLeftBgPaint);
+
+        RectF rightBgF = new RectF();
+        rightBgF.left = divideLineTX;
+        rightBgF.right = mWidth;
+        rightBgF.top = 0;
+        rightBgF.bottom = mHeight;
+        canvas.drawRect(rightBgF, mRightBgPaint);
+
+        RectF redLineF = new RectF();
+        redLineF.left = divideLineTX - U.getDisplayUtils().dip2px(1) / 2;
+        redLineF.right = divideLineTX + U.getDisplayUtils().dip2px(1) / 2;
+        redLineF.top = 0;
+        redLineF.bottom = mHeight;
+        canvas.drawRect(redLineF, mRedLinePaint);
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if (mTaskTimer != null) {
-            mTaskTimer.dispose();
-        }
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        showTime = getMeasuredWidth() / mSpeed * 1000;// 可显示时长
-    }
-
-    private void drawView(Canvas canvas, int startTime, int endTime) {
-        MyLog.d(TAG, "drawView" + " canvas=" + canvas + " startTime=" + startTime + " endTime=" + endTime);
-        Paint leftPaint = new Paint();
-        leftPaint.setColor(Color.parseColor("#F5A623"));
-
-        Paint rightPaint = new Paint();
-        rightPaint.setColor(Color.parseColor("#474A5F"));
-
-        List<LyricsLineInfo> canShowLyrics = getCanShowLyrics(mLyricsLineInfoList, startTime, endTime);
-        if (canShowLyrics == null || canShowLyrics.size() <= 0) {
-            return;
-        }
-
-        boolean isLowStart = true;  //从低开始还是高开始的标记位
-        boolean isRedFlag = false;         //标记当前此时歌词是否与圆点重合
-        for (LyricsLineInfo lyricsLineInfo : mLyricsLineInfoList) {
-            //屏幕宽度 - 已经过去的长度 + 一行歌词真正开始的位置 - 再减去红点到屏幕右边的位置
-            int left = getMeasuredWidth() - srcollLength + (lyricsLineInfo.getStartTime() - starLyricsLine) * mSpeed / 1000 - (getMeasuredWidth() - mRedLine);
-            int right = left + (lyricsLineInfo.getEndTime() - lyricsLineInfo.getStartTime()) * mSpeed / 1000;
-            int top = isLowStart ? U.getDisplayUtils().dip2px(40) : U.getDisplayUtils().dip2px(20);
-            int bottom = top + U.getDisplayUtils().dip2px(7);
-
-            if (left < mRedLine && right <= mRedLine) {
-                RectF rectF = new RectF();
-                rectF.left = left;
-                rectF.right = right;
-                rectF.top = top;
-                rectF.bottom = bottom;
-                canvas.drawRoundRect(rectF, U.getDisplayUtils().dip2px(10), U.getDisplayUtils().dip2px(10), leftPaint);
-            } else if (left < mRedLine) {
-                RectF rectLeftF = new RectF();
-                rectLeftF.left = left;
-                rectLeftF.right = mRedLine;
-                rectLeftF.top = top;
-                rectLeftF.bottom = bottom;
-                canvas.drawRoundRect(rectLeftF, U.getDisplayUtils().dip2px(10), U.getDisplayUtils().dip2px(10), leftPaint);
-                RectF rectRightF = new RectF();
-                rectRightF.left = mRedLine;
-                rectRightF.right = right;
-                rectRightF.top = top;
-                rectRightF.bottom = bottom;
-                canvas.drawRoundRect(rectRightF, U.getDisplayUtils().dip2px(10), U.getDisplayUtils().dip2px(10), rightPaint);
-                hasRed = true;
-                isRedFlag = true;
-                redWith = mRedLine;
-                if (isLowStart) {
-                    redHight = (U.getDisplayUtils().dip2px(40) + U.getDisplayUtils().dip2px(40) + U.getDisplayUtils().dip2px(7)) / 2;
-                    nextRedHight = (U.getDisplayUtils().dip2px(20) + U.getDisplayUtils().dip2px(20) + top + U.getDisplayUtils().dip2px(7)) / 2;
-                } else {
-                    redHight = (U.getDisplayUtils().dip2px(20) + U.getDisplayUtils().dip2px(20) + U.getDisplayUtils().dip2px(7)) / 2;
-                    nextRedHight = (U.getDisplayUtils().dip2px(40) + U.getDisplayUtils().dip2px(40) + U.getDisplayUtils().dip2px(7)) / 2;
-                }
-
-            } else {
-                RectF rectF = new RectF();
-                rectF.left = left;
-                rectF.right = right;
-                rectF.top = top;
-                rectF.bottom = bottom;
-                canvas.drawRoundRect(rectF, U.getDisplayUtils().dip2px(10), U.getDisplayUtils().dip2px(10), rightPaint);
-            }
-            isLowStart = !isLowStart;
-        }
-
-        MyLog.d(TAG, "drawView" + " isRedFlag=" + isRedFlag + " hasRed=" + hasRed);
-        if (hasRed) {
-            if (!isRedFlag) {
-                redHight = nextRedHight;
-            }
-            Paint mOutpaint = new Paint(); //外圈
-            mOutpaint.setColor(Color.parseColor("#EF5E85"));
-            mOutpaint.setAntiAlias(true);
-            canvas.drawCircle(redWith, redHight, U.getDisplayUtils().dip2px(9), mOutpaint);
-            Paint mInpaint = new Paint(); //内圈
-            mInpaint.setColor(Color.parseColor("#CA2C60"));
-            mInpaint.setAntiAlias(true);
-            canvas.drawCircle(redWith, redHight, U.getDisplayUtils().dip2px(6), mInpaint);
-        }
-        LyricsLineInfo lyricsLineInfo = mLyricsLineInfoList.get(mLyricsLineInfoList.size() - 1);
-        int left = getMeasuredWidth() - srcollLength + (lyricsLineInfo.getStartTime() - starLyricsLine) * mSpeed / 1000 - (getMeasuredWidth() - mRedLine);
-        int right = left + (lyricsLineInfo.getEndTime() - lyricsLineInfo.getStartTime()) * mSpeed / 1000;
-        if(right >= 0){
-            postInvalidateDelayed(30);
-        }
-    }
-
-    // 得到可显示的歌词
-    private List<LyricsLineInfo> getCanShowLyrics(List<LyricsLineInfo> lyricsLineInfoList, int startTime, int endTime) {
-        if (lyricsLineInfoList == null || lyricsLineInfoList.size() <= 0) {
-            return null;
-        }
-
-        List<LyricsLineInfo> lyricsLineInfos = new ArrayList<>();
-        for (LyricsLineInfo lyricsLineInfo : lyricsLineInfoList) {
-            if ((lyricsLineInfo.getStartTime() >= (starLyricsLine + startTime) && lyricsLineInfo.getStartTime() <= (starLyricsLine + endTime))
-                    || (lyricsLineInfo.getEndTime() >= (starLyricsLine + startTime) && lyricsLineInfo.getEndTime() <= (starLyricsLine + endTime))) {
-                lyricsLineInfos.add(lyricsLineInfo);
-            }
-        }
-        return lyricsLineInfos;
-    }
 }
