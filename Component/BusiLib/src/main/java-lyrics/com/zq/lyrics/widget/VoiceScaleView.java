@@ -22,8 +22,6 @@ import java.util.List;
 public class VoiceScaleView extends View {
     public final static String TAG = "VoiceScaleView";
     int mSpeed = U.getDisplayUtils().dip2px(36);   //一秒钟走多少
-    int mIntervalTime = 10; //视图刷新时间，毫秒为单位,绘制频率
-    int mIntervalSpeed = mSpeed * mIntervalTime / 1000; //每个周期移动的距离
 
     int mRedLine = U.getDisplayUtils().dip2px(87);  //中间红点的线
 
@@ -40,8 +38,11 @@ public class VoiceScaleView extends View {
     //毫秒为单位
     int showTime = U.getDisplayUtils().getScreenWidth() / mSpeed * 1000;// 可显示时长
 
+    HandlerTaskTimer mTaskTimer;
+
     int diffTime;  //偏移的时间
-    long startDrawLyricsLine = 0;   //开始画的时间
+
+    long mStartTs = 0;
 
     public VoiceScaleView(Context context) {
         this(context, null);
@@ -58,13 +59,10 @@ public class VoiceScaleView extends View {
     public void startWithData(List<LyricsLineInfo> lyricsLineInfoList, int beginTime) {
         MyLog.d(TAG, "startWithData" + " lyricsLineInfoList=" + lyricsLineInfoList);
         this.mLyricsLineInfoList = lyricsLineInfoList;
-        if (mLyricsLineInfoList != null && mLyricsLineInfoList.size() > 0) {
-            starLyricsLine = mLyricsLineInfoList.get(0).getStartTime();
-        }
 
-        diffTime = starLyricsLine - beginTime;
-        startDrawLyricsLine = System.currentTimeMillis();
+        starLyricsLine = beginTime;
 
+        mStartTs = System.currentTimeMillis();
         postInvalidate();
     }
 
@@ -72,9 +70,13 @@ public class VoiceScaleView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        long now = System.currentTimeMillis();
-        srcollTime = (int) (now - startDrawLyricsLine);
+        if(mLyricsLineInfoList == null || mLyricsLineInfoList.size() == 0){
+            return;
+        }
+
+        srcollTime = (int) (System.currentTimeMillis() - mStartTs);
         srcollLength = srcollTime * mSpeed / 1000;
+
         if (srcollTime >= showTime) {
             drawView(canvas, srcollTime - showTime, srcollTime);
         } else if (srcollTime != 0) {
@@ -85,6 +87,9 @@ public class VoiceScaleView extends View {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+        if (mTaskTimer != null) {
+            mTaskTimer.dispose();
+        }
     }
 
     private void drawView(Canvas canvas, int startTime, int endTime) {
@@ -106,8 +111,8 @@ public class VoiceScaleView extends View {
         // 假设一句歌词长度为40dp
         boolean isLowStart = true;
         for (LyricsLineInfo lyricsLineInfo : mLyricsLineInfoList) {
-            int left = U.getDisplayUtils().getScreenWidth() - srcollLength + (lyricsLineInfo.getStartTime() - starLyricsLine) * mSpeed / 1000 -
-                    (U.getDisplayUtils().getScreenWidth() - diffTime * mSpeed / 1000 - mRedLine);
+            //屏幕宽度 - 已经过去的长度 + 一行歌词真正开始的位置 - 再减去红点到屏幕右边的位置
+            int left = U.getDisplayUtils().getScreenWidth() - srcollLength + (lyricsLineInfo.getStartTime() - starLyricsLine) * mSpeed / 1000 - (U.getDisplayUtils().getScreenWidth() - mRedLine);
             int right = left + (lyricsLineInfo.getEndTime() - lyricsLineInfo.getStartTime()) * mSpeed / 1000;
             int top = isLowStart ? U.getDisplayUtils().dip2px(40) : U.getDisplayUtils().dip2px(20);
             int bottom = top + U.getDisplayUtils().dip2px(7);
@@ -159,6 +164,12 @@ public class VoiceScaleView extends View {
         hasRed = false;
 
         postInvalidateDelayed(30);
+    }
+
+    public void cancelTaskTimer() {
+        if (mTaskTimer != null) {
+            mTaskTimer.dispose();
+        }
     }
 
     // 得到可显示的歌词
