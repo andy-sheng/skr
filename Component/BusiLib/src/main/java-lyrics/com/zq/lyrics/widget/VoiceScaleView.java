@@ -40,9 +40,8 @@ public class VoiceScaleView extends View {
     //毫秒为单位
     int showTime = U.getDisplayUtils().getScreenWidth() / mSpeed * 1000;// 可显示时长
 
-    HandlerTaskTimer mTaskTimer;
-
     int diffTime;  //偏移的时间
+    long startDrawLyricsLine = 0;   //开始画的时间
 
     public VoiceScaleView(Context context) {
         this(context, null);
@@ -63,32 +62,19 @@ public class VoiceScaleView extends View {
             starLyricsLine = mLyricsLineInfoList.get(0).getStartTime();
         }
 
-        diffTime = (U.getDisplayUtils().getScreenWidth() - mRedLine) / mSpeed * 1000 - (starLyricsLine - beginTime);
+        diffTime = starLyricsLine - beginTime;
+        startDrawLyricsLine = System.currentTimeMillis();
 
-        cancelTaskTimer();
-        mTaskTimer = HandlerTaskTimer.newBuilder()
-                .interval(mIntervalTime)
-                .start(new HandlerTaskTimer.ObserverW() {
-                    @Override
-                    public void onNext(Integer integer) {
-                        MyLog.d(TAG, "onNext" + " integer=" + integer);
-                        srcollLength = integer * mIntervalSpeed;
-                        srcollTime = integer * mIntervalTime;
-                        postInvalidate();
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        super.onComplete();
-                    }
-                });
-
+        postInvalidate();
     }
 
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        long now = System.currentTimeMillis();
+        srcollTime = (int) (now - startDrawLyricsLine);
+        srcollLength = srcollTime * mSpeed / 1000;
         if (srcollTime >= showTime) {
             drawView(canvas, srcollTime - showTime, srcollTime);
         } else if (srcollTime != 0) {
@@ -99,9 +85,6 @@ public class VoiceScaleView extends View {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if (mTaskTimer != null) {
-            mTaskTimer.dispose();
-        }
     }
 
     private void drawView(Canvas canvas, int startTime, int endTime) {
@@ -123,7 +106,8 @@ public class VoiceScaleView extends View {
         // 假设一句歌词长度为40dp
         boolean isLowStart = true;
         for (LyricsLineInfo lyricsLineInfo : mLyricsLineInfoList) {
-            int left = U.getDisplayUtils().getScreenWidth() - srcollLength + (lyricsLineInfo.getStartTime() - starLyricsLine) * mSpeed / 1000 - (U.getDisplayUtils().getScreenWidth() - mRedLine - diffTime * mSpeed / 1000);
+            int left = U.getDisplayUtils().getScreenWidth() - srcollLength + (lyricsLineInfo.getStartTime() - starLyricsLine) * mSpeed / 1000 -
+                    (U.getDisplayUtils().getScreenWidth() - diffTime * mSpeed / 1000 - mRedLine);
             int right = left + (lyricsLineInfo.getEndTime() - lyricsLineInfo.getStartTime()) * mSpeed / 1000;
             int top = isLowStart ? U.getDisplayUtils().dip2px(40) : U.getDisplayUtils().dip2px(20);
             int bottom = top + U.getDisplayUtils().dip2px(7);
@@ -173,12 +157,8 @@ public class VoiceScaleView extends View {
             canvas.drawCircle(redWith, redHight, U.getDisplayUtils().dip2px(6), mInpaint);
         }
         hasRed = false;
-    }
 
-    public void cancelTaskTimer() {
-        if (mTaskTimer != null) {
-            mTaskTimer.dispose();
-        }
+        postInvalidateDelayed(30);
     }
 
     // 得到可显示的歌词

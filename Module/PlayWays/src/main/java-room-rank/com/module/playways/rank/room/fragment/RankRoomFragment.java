@@ -1022,7 +1022,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     public void startRivalCountdown(int uid, String avatar) {
         MyLog.d(TAG, "startRivalCountdown" + " uid=" + uid + " avatar=" + avatar);
         mVoiceScaleView.setVisibility(View.GONE);
-        mVoiceScaleView.cancelTaskTimer();
         mTopContainerView.loadAvatar(AvatarUtils.newParamsBuilder(avatar).build());
         mManyLyricsView.setVisibility(View.GONE);
         mUiHanlder.removeMessages(MSG_LYRIC_END_EVENT);
@@ -1174,7 +1173,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         mManyLyricsView.setVisibility(View.GONE);
         mManyLyricsView.release();
         mVoiceScaleView.setVisibility(View.GONE);
-        mVoiceScaleView.cancelTaskTimer();
         startGameEndAniamtion();
     }
 
