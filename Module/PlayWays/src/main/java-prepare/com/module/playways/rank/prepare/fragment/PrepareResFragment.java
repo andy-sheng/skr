@@ -14,6 +14,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.core.avatar.AvatarUtils;
 import com.common.log.MyLog;
+import com.common.utils.ActivityUtils;
 import com.common.utils.FragmentUtils;
 import com.common.utils.HttpUtils;
 import com.common.utils.U;
@@ -30,6 +31,9 @@ import com.module.playways.rank.prepare.presenter.PrepareSongPresenter;
 import com.module.playways.rank.prepare.view.IPrepareResView;
 import com.module.playways.rank.song.fragment.SongSelectFragment;
 import com.module.playways.rank.song.model.SongModel;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.concurrent.TimeUnit;
 
@@ -69,12 +73,12 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
 
     @Override
     public boolean useEventBus() {
-        return false;
+        return true;
     }
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mMainActContainer = (RelativeLayout)mRootView.findViewById(R.id.main_act_container);
+        mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
         mIvTop = (ExImageView) mRootView.findViewById(R.id.iv_top);
         mSongIcon = (SimpleDraweeView) mRootView.findViewById(R.id.song_icon);
         mSongName = (ExTextView) mRootView.findViewById(R.id.song_name);
@@ -219,7 +223,7 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
     }
 
     private void playBackgroundMusic() {
-        if (!BgMusicManager.getInstance().isPlaying() && mPrepareData != null) {
+        if (!BgMusicManager.getInstance().isPlaying() && mPrepareData != null && PrepareResFragment.this.fragmentVisible) {
             if (!TextUtils.isEmpty(mPrepareData.getBgMusic())) {
                 BgMusicManager.getInstance().starPlay(mPrepareData.getBgMusic(), 0, "PrepareResFragment");
             }
@@ -230,5 +234,15 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
     public void notifyToHide() {
         MyLog.d(TAG, "pushIntoStash");
         mRootView.setVisibility(View.GONE);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ActivityUtils.ForeOrBackgroundChange event) {
+        MyLog.w(TAG, event.foreground ? "切换到前台" : "切换到后台");
+        if (event.foreground) {
+            playBackgroundMusic();
+        } else {
+            BgMusicManager.getInstance().destory();
+        }
     }
 }

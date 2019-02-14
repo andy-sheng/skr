@@ -21,6 +21,7 @@ import com.common.base.FragmentDataListener;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
+import com.common.utils.ActivityUtils;
 import com.common.utils.FragmentUtils;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
@@ -50,6 +51,8 @@ import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.live.proto.Common.ESex;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.greenrobot.greendao.annotation.NotNull;
 
 import java.util.Arrays;
@@ -389,7 +392,18 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
 
     @Override
     public boolean useEventBus() {
-        return false;
+        return true;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ActivityUtils.ForeOrBackgroundChange event) {
+        MyLog.w(TAG, event.foreground ? "切换到前台" : "切换到后台");
+        if (event.foreground) {
+            playBackgroundMusic();
+        } else {
+            BgMusicManager.getInstance().destory();
+        }
+
     }
 
     @Override
@@ -533,7 +547,7 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
     }
 
     private void playBackgroundMusic() {
-        if (!BgMusicManager.getInstance().isPlaying() && mPrepareData != null) {
+        if (!BgMusicManager.getInstance().isPlaying() && mPrepareData != null && GrabMatchFragment.this.fragmentVisible) {
             if (!TextUtils.isEmpty(mPrepareData.getBgMusic())) {
                 BgMusicManager.getInstance().starPlay(mPrepareData.getBgMusic(), 0, "GrabMatchFragment");
             }
