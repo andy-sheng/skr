@@ -175,7 +175,6 @@ public class UserInfoManager {
             @Override
             public void process(ApiResult obj) {
                 if (obj.getErrno() == 0) {
-                    U.getToastUtil().showShort("关系处理请求成功");
                     final boolean isFriend = obj.getData().getBoolean("isFriend");
                     final boolean isFollow = obj.getData().getBoolean("isFollow");
                     if (action == RA_BUILD) {
@@ -192,6 +191,8 @@ public class UserInfoManager {
                         }
 
                     }
+                } else {
+                    U.getToastUtil().showShort("关系请求处理出错");
                 }
             }
         });
