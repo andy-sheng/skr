@@ -78,6 +78,8 @@ public class U {
 
     private static TimeUtils timeUtils;
 
+    private static MediaUtils mediaUtils;
+
     public static void setApp(Application app) {
         application = app;
 
@@ -317,8 +319,14 @@ public class U {
         if (timeUtils == null) {
             timeUtils = new TimeUtils();
         }
-
         return timeUtils;
+    }
+
+    public static MediaUtils getMediaUtils() {
+        if (mediaUtils == null) {
+            mediaUtils = new MediaUtils();
+        }
+        return mediaUtils;
     }
 
     private static int REQUEST_CODE_FIRST = 100000;

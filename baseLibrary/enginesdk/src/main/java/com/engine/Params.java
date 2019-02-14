@@ -99,8 +99,9 @@ public class Params implements Serializable {
     private long mMixMusicBeginOffset;// midi文件起始偏移量
     private int mCurrentMusicTs;
     private long mRecordCurrentMusicTsTs;
-    private boolean mLrcHasStart;
+    private boolean mLrcHasStart; // 歌词是否开始
     private long mJoinRoomBeginTs; // 开始加入房间的时间
+    private String mRecordingFromCallbackSavePath;// 保存录音的路径
 
     public static Builder newBuilder(int channelProfile) {
         return new Builder().setChannelProfile(channelProfile);
@@ -456,6 +457,14 @@ public class Params implements Serializable {
 
     public long getJoinRoomBeginTs() {
         return mJoinRoomBeginTs;
+    }
+
+    public void setRecordingFromCallbackSavePath(String recordingFromCallbackSavePath) {
+        mRecordingFromCallbackSavePath = recordingFromCallbackSavePath;
+    }
+
+    public String getRecordingFromCallbackSavePath() {
+        return mRecordingFromCallbackSavePath;
     }
 
     public static class Builder {

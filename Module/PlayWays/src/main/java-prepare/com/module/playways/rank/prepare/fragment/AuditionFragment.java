@@ -8,7 +8,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.View;
@@ -21,8 +20,10 @@ import com.common.base.BaseFragment;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
+import com.common.player.IPlayer;
 import com.common.player.IPlayerCallback;
 import com.common.player.exoplayer.ExoPlayer;
+import com.common.player.mediaplayer.AndroidMediaPlayer;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
@@ -35,12 +36,10 @@ import com.engine.arccloud.ArcRecognizeListener;
 import com.engine.arccloud.RecognizeConfig;
 import com.engine.arccloud.SongInfo;
 import com.jakewharton.rxbinding2.view.RxView;
-import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.playways.rank.prepare.view.SendGiftCircleCountDownView;
 import com.module.playways.rank.prepare.view.VoiceControlPanelView;
 import com.module.playways.rank.song.model.SongModel;
-import com.module.rank.BuildConfig;
 import com.module.rank.R;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
@@ -80,7 +79,9 @@ public class AuditionFragment extends BaseFragment {
 
     static final int MSG_LYRIC_END_EVENT = 10;
 
-    static final String AAC_SAVE_PATH = new File(U.getAppInfoUtils().getMainDir(), "audition.aac").getAbsolutePath();
+    static final boolean RECORD_BY_CALLBACK = true;
+    static final String ACC_SAVE_PATH = new File(U.getAppInfoUtils().getMainDir(), "audition.acc").getAbsolutePath();
+    static final String PCM_SAVE_PATH = new File(U.getAppInfoUtils().getMainDir(), "audition.pcm").getAbsolutePath();
 
     ExImageView mIvBack;
     ExTextView mTvSongName;
@@ -120,7 +121,7 @@ public class AuditionFragment extends BaseFragment {
 
     private volatile boolean isRecord = false;
 
-    ExoPlayer mExoPlayer;
+    IPlayer mExoPlayer;
 
     Handler mUiHanlder;
 
@@ -309,7 +310,11 @@ public class AuditionFragment extends BaseFragment {
         mRlControlContainer.setVisibility(View.GONE);
         mTvRecordTip.setText("点击结束试音演唱");
         mIvPlay.setEnabled(true);
-        EngineManager.getInstance().startAudioRecording(AAC_SAVE_PATH, Constants.AUDIO_RECORDING_QUALITY_HIGH);
+        if(RECORD_BY_CALLBACK) {
+            EngineManager.getInstance().startAudioRecording(PCM_SAVE_PATH, Constants.AUDIO_RECORDING_QUALITY_HIGH, true);
+        }else{
+            EngineManager.getInstance().startAudioRecording(ACC_SAVE_PATH, Constants.AUDIO_RECORDING_QUALITY_HIGH, false);
+        }
 
         if (MyLog.isDebugLogOpen()) {
             EngineManager.getInstance().startRecognize(RecognizeConfig.newBuilder()
@@ -407,10 +412,15 @@ public class AuditionFragment extends BaseFragment {
      */
     private void playRecord() {
         if (mExoPlayer != null) {
-            mExoPlayer.stop();
+            mExoPlayer.reset();
         }
         if (mExoPlayer == null) {
-            mExoPlayer = new ExoPlayer();
+            if(RECORD_BY_CALLBACK){
+                mExoPlayer = new AndroidMediaPlayer();
+            }else{
+                mExoPlayer = new ExoPlayer();
+            }
+
             mExoPlayer.setCallback(new IPlayerCallback() {
                 @Override
                 public void onPrepared() {
@@ -450,7 +460,12 @@ public class AuditionFragment extends BaseFragment {
                 }
             });
         }
-        mExoPlayer.startPlay(AAC_SAVE_PATH);
+        if(RECORD_BY_CALLBACK){
+            mExoPlayer.startPlayPcm(PCM_SAVE_PATH, 2, 44100, 44100 * 2);
+        }else{
+            mExoPlayer.startPlay(ACC_SAVE_PATH);
+        }
+
         mIvPlay.setEnabled(false);
     }
 
@@ -690,7 +705,7 @@ public class AuditionFragment extends BaseFragment {
             mRecordAnimator.cancel();
         }
         EngineManager.getInstance().destroy("prepare");
-        File recordFile = new File(AAC_SAVE_PATH);
+        File recordFile = new File(PCM_SAVE_PATH);
         if (recordFile != null && recordFile.exists()) {
             recordFile.delete();
         }

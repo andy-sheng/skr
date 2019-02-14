@@ -47,6 +47,7 @@ public interface IPlayer {
 
     void startPlay(String path);
 
+    void startPlayPcm(String path, int channels, int sampleRate, int byteRate);
 //    void prepare(boolean realTime);
 
 //    void start();

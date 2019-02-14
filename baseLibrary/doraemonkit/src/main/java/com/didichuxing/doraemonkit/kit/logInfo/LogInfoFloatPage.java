@@ -206,6 +206,28 @@ public class LogInfoFloatPage extends BaseFloatPage implements LogInfoManager.On
             });
             tagContainer.addView(checkBox);
         }
+
+        {
+            CheckBox checkBox = new CheckBox(getContext());
+            checkBox.setText("播放器");
+            final String[] arrs = new String[]{
+                    "Player"
+            };
+            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        addTagSets(arrs);
+                    } else {
+                        removeTagSets(arrs);
+                    }
+                    List<LogInfoItem> infoItems = getListItem();
+                    mLogItemAdapter.clear();
+                    mLogItemAdapter.setData(infoItems);
+                }
+            });
+            tagContainer.addView(checkBox);
+        }
     }
 
     void addTagSets(String[] arrs) {

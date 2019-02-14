@@ -118,6 +118,27 @@ public class FileUtils {
     }
 
     /**
+     * 传入一个文件路径，返回文件名  /sdcard/aa.jpg 返回 aa
+     *
+     * @param path
+     * @return
+     */
+    public String getFileNameFromFilePathWithoutExt(String path) {
+        String extension = path;
+        if (!TextUtils.isEmpty(path)) {
+            int indexOfSlash = path.lastIndexOf('/');
+            int indexOfDot = path.lastIndexOf('.');
+            if (indexOfDot == -1) {
+                return path.substring(indexOfSlash + 1);
+            }
+            if (indexOfDot > indexOfSlash) {
+                return path.substring(indexOfSlash + 1, indexOfDot);
+            }
+        }
+        return extension;
+    }
+
+    /**
      * 获取上传文件的类型(仅针对图片类型)
      *
      * @param filePath

@@ -2,6 +2,7 @@ package com.engine.agora;
 
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.TextureView;
@@ -952,6 +953,11 @@ public class AgoraEngineAdapter {
             ) {
                 if (++mLogtag % 500 == 0) {
                     MyLog.d(TAG, "onRecordFrame" + " samples=" + samples + " numOfSamples=" + numOfSamples + " bytesPerSample=" + bytesPerSample + " channels=" + channels + " samplesPerSec=" + samplesPerSec);
+                }
+                if(!TextUtils.isEmpty(mConfig.getRecordingFromCallbackSavePath())){
+                    if (mOutCallback != null) {
+                        mOutCallback.onRecordingBuffer(samples);
+                    }
                 }
                 if (mArcCloudManager != null) {
                     mArcCloudManager.putPool(samples, samplesPerSec, channels);

@@ -39,6 +39,9 @@ import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+import okio.BufferedSink;
+import okio.Okio;
+import okio.Sink;
 
 /**
  * 关于音视频引擎的都放在这个类里
@@ -205,6 +208,16 @@ public class EngineManager implements AgoraOutCallback {
     @Override
     public void onAudioRouteChanged(int routing) {
         MyLog.w(TAG, "onAudioRouteChanged 音频路由发生变化 routing=" + routing);
+    }
+
+    @Override
+    public void onRecordingBuffer(final byte[] samples) {
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                saveRecordingFrame(samples);
+            }
+        });
     }
 
     private UserStatus ensureJoin(int uid) {
@@ -1116,6 +1129,64 @@ public class EngineManager implements AgoraOutCallback {
 
     }
 
+
+    /**
+     * 开始客户端录音。
+     * <p>
+     * Agora SDK 支持通话过程中在客户端进行录音。该方法录制频道内所有用户的音频，并生成一个包含所有用户声音的录音文件，录音文件格式可以为：
+     * <p>
+     * .wav：文件大，音质保真度高
+     * .aac：文件小，有一定的音质保真度损失
+     * 请确保 App 里指定的目录存在且可写。该接口需在加入频道之后调用。如果调用 leaveChannel 时还在录音，录音会自动停止。
+     */
+    public void startAudioRecording(final String saveAudioForAiFilePath, final int audioRecordingQualityHigh, final boolean fromRecodFrameCallback) {
+        MyLog.d(TAG, "startAudioRecording" + " saveAudioForAiFilePath=" + saveAudioForAiFilePath + " audioRecordingQualityHigh=" + audioRecordingQualityHigh);
+        mCustomHandlerThread.post(new Runnable() {
+            @Override
+            public void run() {
+                File file = new File(saveAudioForAiFilePath);
+                if (!file.getParentFile().exists()) {
+                    file.getParentFile().mkdirs();
+                }
+                if (file.exists()) {
+                    file.delete();
+                }
+                if (fromRecodFrameCallback) {
+                    mConfig.setRecordingFromCallbackSavePath(saveAudioForAiFilePath);
+                } else {
+                    AgoraEngineAdapter.getInstance().startAudioRecording(saveAudioForAiFilePath, audioRecordingQualityHigh);
+                }
+            }
+        });
+    }
+
+    private void saveRecordingFrame(byte[] newBuffer) {
+        String path = mConfig.getRecordingFromCallbackSavePath();
+        if (TextUtils.isEmpty(path)) {
+            return;
+        }
+        File file = new File(path);
+        if (!file.getParentFile().exists()) {
+            file.getParentFile().mkdirs();
+        }
+        BufferedSink bufferedSink = null;
+        try {
+            Sink sink = Okio.appendingSink(file);
+            bufferedSink = Okio.buffer(sink);
+            bufferedSink.write(newBuffer);
+            MyLog.d(TAG, "写入文件 path:" + file.getAbsolutePath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (null != bufferedSink) {
+                bufferedSink.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * 开始客户端录音。
      * <p>
@@ -1126,23 +1197,7 @@ public class EngineManager implements AgoraOutCallback {
      * 请确保 App 里指定的目录存在且可写。该接口需在加入频道之后调用。如果调用 leaveChannel 时还在录音，录音会自动停止。
      */
     public void startAudioRecording(final String saveAudioForAiFilePath, final int audioRecordingQualityHigh) {
-        MyLog.d(TAG, "startAudioRecording" + " saveAudioForAiFilePath=" + saveAudioForAiFilePath + " audioRecordingQualityHigh=" + audioRecordingQualityHigh);
-        mCustomHandlerThread.post(new Runnable() {
-            @Override
-            public void run() {
-                File file = new File(saveAudioForAiFilePath);
-                if (!file.getParentFile().exists()) {
-                    file.getParentFile().mkdirs();
-                }
-                if (file.exists()) {
-                    try {
-                        file.createNewFile();
-                    } catch (IOException e) {
-                    }
-                }
-                AgoraEngineAdapter.getInstance().startAudioRecording(saveAudioForAiFilePath, audioRecordingQualityHigh);
-            }
-        });
+        startAudioRecording(saveAudioForAiFilePath, audioRecordingQualityHigh, false);
     }
 
     /**
@@ -1155,6 +1210,7 @@ public class EngineManager implements AgoraOutCallback {
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {
+                mConfig.setRecordingFromCallbackSavePath(null);
                 AgoraEngineAdapter.getInstance().stopAudioRecording();
             }
         });

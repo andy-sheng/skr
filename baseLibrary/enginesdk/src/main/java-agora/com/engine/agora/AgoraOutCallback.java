@@ -35,4 +35,6 @@ public interface AgoraOutCallback {
     void onAudioVolumeIndication(IRtcEngineEventHandler.AudioVolumeInfo[] speakers, int totalVolume);
 
     void onAudioRouteChanged(int routing);
+
+    void onRecordingBuffer(byte[] samples);
 }

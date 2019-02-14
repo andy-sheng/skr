@@ -61,7 +61,7 @@ public class ExoPlayer implements IPlayer {
     private static DataSource.Factory mediaDataSourceFactory = new DefaultDataSourceFactory(U.app(), BANDWIDTH_METER,
             new DefaultHttpDataSourceFactory(Util.getUserAgent(U.app(), "MiLivePlayer"), BANDWIDTH_METER));
     // 为了预加载使用
-    private static SimpleExoPlayer sExoPlayer;
+    private static SimpleExoPlayer sPrePlayer;
     private static String mPreLoadUrl;
     private static MediaSource mPreLoadMediaSource;
     private static Handler sUiHanlder = new Handler();
@@ -107,13 +107,13 @@ public class ExoPlayer implements IPlayer {
     }
 
     private void initializePlayer() {
-        if (null != sExoPlayer) {
-            mPlayer = sExoPlayer;
+        if (null != sPrePlayer) {
+            mPlayer = sPrePlayer;
             mUrl = mPreLoadUrl;
             mMediaSource = mPreLoadMediaSource;
             mPreLoadUrl = "";
             mPreLoadMediaSource = null;
-            sExoPlayer = null;
+            sPrePlayer = null;
         } else {
             mPlayer = genPlayer();
         }
@@ -498,6 +498,11 @@ public class ExoPlayer implements IPlayer {
     }
 
     @Override
+    public void startPlayPcm(String path, int channels, int sampleRate, int byteRate) {
+        throw new IllegalArgumentException("Exoplayer not support PCM");
+    }
+
+    @Override
     public void pause() {
         MyLog.d(TAG, "pause");
         if (mPlayer == null) {
@@ -548,7 +553,7 @@ public class ExoPlayer implements IPlayer {
         mPlayer.setVideoDebugListener(null);
         mPlayer = null;
         mMediaSource = null;
-        sExoPlayer = null;
+        sPrePlayer = null;
         mCallback = null;
         mView = null;
         mUrl = null;

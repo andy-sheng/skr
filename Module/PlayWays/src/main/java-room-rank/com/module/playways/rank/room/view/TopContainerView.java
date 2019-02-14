@@ -116,11 +116,11 @@ public class TopContainerView extends RelativeLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(InputBoardEvent event) {
-        if (event.show) {
-            setVisibility(GONE);
-        } else {
-            setVisibility(VISIBLE);
-        }
+//        if (event.show) {
+//            setVisibility(GONE);
+//        } else {
+//            setVisibility(VISIBLE);
+//        }
     }
 
     public void loadAvatar(AvatarUtils.LoadParams params) {
