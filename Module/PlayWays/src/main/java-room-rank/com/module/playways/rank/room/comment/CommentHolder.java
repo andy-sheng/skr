@@ -55,7 +55,7 @@ public class CommentHolder extends RecyclerView.ViewHolder {
             mCommentTv.setTextColor(model.getTextColor());
         } else {
             SpannableStringBuilder ssb = new SpanUtils()
-                    .append(model.getUserName() + ": ").setForegroundColor(model.getNameColor())
+                    .append(model.getUserName() + " ").setForegroundColor(model.getNameColor())
                     .append(model.getContent()).setForegroundColor(model.getTextColor()).create();
             mCommentTv.setText(ssb);
         }

@@ -92,6 +92,11 @@ public class AndroidBug5497WorkaroundSupportingTranslucentStatus {
          * 未弹出键盘时
          *  r.top=110
          *  r.bottom=2118
+         *
+         *  红米NOTE 7 全面屏时
+         *  0 110 1080 2340
+         *  开启虚拟导航键时
+         *  0 110 1080 2210
          */
         Rect r = new Rect();
         mChildOfContent.getWindowVisibleDisplayFrame(r);

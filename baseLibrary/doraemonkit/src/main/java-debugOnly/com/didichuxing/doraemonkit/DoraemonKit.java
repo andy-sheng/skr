@@ -192,7 +192,7 @@ public class DoraemonKit {
 
     private static void requestPermission(Context context) {
         if (!PermissionUtil.canDrawOverlays(context) && !sHasRequestPermission) {
-            Toast.makeText(context, context.getText(R.string.dk_float_permission_toast), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getText(R.string.dk_float_permission_toast), Toast.LENGTH_LONG).show();
             PermissionUtil.requestDrawOverlays(context);
             sHasRequestPermission = true;
         }
