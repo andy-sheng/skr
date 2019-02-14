@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -226,6 +227,12 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         }
         // 请保证从下面的view往上面的view开始初始化
         mRankingContainer = mRootView.findViewById(R.id.ranking_container);
+        mRankingContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mInputContainerView.hideSoftInput();
+            }
+        });
         initInputView();
         initBottomView();
         initCommentView();

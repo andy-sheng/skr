@@ -178,6 +178,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
         // 请保证从下面的view往上面的view开始初始化
         mRankingContainer = mRootView.findViewById(R.id.ranking_container);
+        mRankingContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mInputContainerView.hideSoftInput();
+            }
+        });
         initInputView();
         initBottomView();
         initCommentView();

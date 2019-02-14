@@ -286,6 +286,11 @@ public class EmotionKeyboard {
             mBoardStatusListener.onBoradHide();
         }
         mEditText.clearFocus();
+        // 防止闪一下 在 设置 PlaceHolder 高度为0
+        if (!isEmotionShown()) {
+            mPlaceHolderView.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            mPlaceHolderView.setLayoutParams(mPlaceHolderView.getLayoutParams());
+        }
         mEditText.post(new Runnable() {
             @Override
             public void run() {
