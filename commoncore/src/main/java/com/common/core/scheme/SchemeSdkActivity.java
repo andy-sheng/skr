@@ -77,6 +77,11 @@ public class SchemeSdkActivity extends BaseActivity {
 
         String uri = mIntent.getStringExtra("uri");
         if(TextUtils.isEmpty(uri)){
+            MyLog.w(TAG, "getStringExtra(uri) is empty");
+            uri = getIntent().getDataString();
+        }
+
+        if(TextUtils.isEmpty(uri)){
             MyLog.w(TAG, "process uri is empty or null");
             finish();
             return;
