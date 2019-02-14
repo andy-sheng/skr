@@ -75,6 +75,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        MyLog.w(TAG, "HomeActivity initData" + ", version is " + U.getAppInfoUtils().getVersionCode());
         mBottomContainer = (LinearLayout) findViewById(R.id.bottom_container);
         mGameBtn = (ExImageView) findViewById(R.id.game_btn);
         mMessageBtn = (ExImageView) findViewById(R.id.message_btn);
