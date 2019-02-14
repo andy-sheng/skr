@@ -169,7 +169,10 @@ public class VoiceScaleView extends View {
         }
         hasRed = false;
 
-        if(getVisibility() == VISIBLE){
+        LyricsLineInfo lyricsLineInfo = mLyricsLineInfoList.get(mLyricsLineInfoList.size() - 1);
+        int left = getMeasuredWidth() - srcollLength + (lyricsLineInfo.getStartTime() - starLyricsLine) * mSpeed / 1000 - (getMeasuredWidth() - mRedLine);
+        int right = left + (lyricsLineInfo.getEndTime() - lyricsLineInfo.getStartTime()) * mSpeed / 1000;
+        if(right >= 0){
             postInvalidateDelayed(30);
         }
     }
