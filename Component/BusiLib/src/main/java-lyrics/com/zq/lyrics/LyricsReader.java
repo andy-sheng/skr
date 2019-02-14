@@ -11,6 +11,7 @@ import com.zq.lyrics.utils.LyricsIOUtils;
 import com.zq.lyrics.utils.LyricsUtils;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -171,6 +172,19 @@ public class LyricsReader {
             Map.Entry<Integer, LyricsLineInfo> entry = newIt.next();
             mLrcLineInfos.put(index++, entry.getValue());
         }
+    }
+
+    public List<LyricsLineInfo> getLyricsLineInfoList(){
+        ArrayList<LyricsLineInfo> mLyricsLineInfoList = new ArrayList<>();
+
+        Iterator<Map.Entry<Integer, LyricsLineInfo>> newIt = mLrcLineInfos.entrySet().iterator();
+
+        while (newIt.hasNext()) {
+            Map.Entry<Integer, LyricsLineInfo> entry = newIt.next();
+            mLyricsLineInfoList.add(entry.getValue());
+        }
+
+        return mLyricsLineInfoList;
     }
 
     public int getLineInfoIdByStartTs(long startTs) {

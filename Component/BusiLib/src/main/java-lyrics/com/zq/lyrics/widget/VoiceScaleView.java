@@ -8,6 +8,7 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.common.log.MyLog;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.zq.lyrics.model.LyricsLineInfo;
@@ -19,7 +20,7 @@ import java.util.List;
  * 音阶view
  */
 public class VoiceScaleView extends View {
-
+    public final static String TAG = "VoiceScaleView";
     int mSpeed = U.getDisplayUtils().dip2px(36);   //一秒钟走多少
     int mIntervalTime = 10; //视图刷新时间，毫秒为单位,绘制频率
     int mIntervalSpeed = mSpeed * mIntervalTime / 1000; //每个周期移动的距离
@@ -54,16 +55,19 @@ public class VoiceScaleView extends View {
     }
 
     public void startWithData(List<LyricsLineInfo> lyricsLineInfoList) {
+        MyLog.d(TAG, "startWithData" + " lyricsLineInfoList=" + lyricsLineInfoList);
         this.mLyricsLineInfoList = lyricsLineInfoList;
         if (mLyricsLineInfoList != null && mLyricsLineInfoList.size() > 0) {
             starLyricsLine = mLyricsLineInfoList.get(0).getStartTime();
         }
 
+        cancelTaskTimer();
         mTaskTimer = HandlerTaskTimer.newBuilder()
                 .interval(mIntervalTime)
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
+                        MyLog.d(TAG, "onNext" + " integer=" + integer);
                         srcollLength = integer * mIntervalSpeed;
                         srcollTime = integer * mIntervalTime;
                         postInvalidate();
@@ -97,19 +101,20 @@ public class VoiceScaleView extends View {
     }
 
     private void drawView(Canvas canvas, int startTime, int endTime) {
+        MyLog.d(TAG, "drawView" + " canvas=" + canvas + " startTime=" + startTime + " endTime=" + endTime);
         Paint leftPaint = new Paint();
         leftPaint.setColor(Color.parseColor("#F5A623"));
 
         Paint rightPaint = new Paint();
         rightPaint.setColor(Color.parseColor("#474A5F"));
 
-        List<LyricsLineInfo> canShowLyrics = getCanShowLyrics(mLyricsLineInfoList, startTime, endTime);
-        if (canShowLyrics == null || canShowLyrics.size() <= 0) {
-            if (mTaskTimer != null) {
-                mTaskTimer.dispose();
-            }
-            return;
-        }
+//        List<LyricsLineInfo> canShowLyrics = getCanShowLyrics(mLyricsLineInfoList, startTime, endTime);
+//        if (canShowLyrics == null || canShowLyrics.size() <= 0) {
+//            if (mTaskTimer != null) {
+//                mTaskTimer.dispose();
+//            }
+//            return;
+//        }
 
         // 假设一句歌词长度为40dp
         boolean isLowStart = true;
@@ -164,6 +169,12 @@ public class VoiceScaleView extends View {
             canvas.drawCircle(redWith, redHight, U.getDisplayUtils().dip2px(6), mInpaint);
         }
         hasRed = false;
+    }
+
+    public void cancelTaskTimer(){
+        if(mTaskTimer != null){
+            mTaskTimer.dispose();
+        }
     }
 
     // 得到可显示的歌词

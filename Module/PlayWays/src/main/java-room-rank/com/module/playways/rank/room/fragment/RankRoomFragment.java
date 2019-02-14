@@ -74,6 +74,7 @@ import com.zq.lyrics.model.LyricsLineInfo;
 import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.FloatLyricsView;
 import com.zq.lyrics.widget.ManyLyricsView;
+import com.zq.lyrics.widget.VoiceScaleView;
 import com.zq.report.fragment.ReportFragment;
 
 import org.greenrobot.eventbus.EventBus;
@@ -207,6 +208,8 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     AnimatorSet mGameEndAnimation;
 
+    VoiceScaleView mVoiceScaleView;
+
     List<Animator> mAnimatorList = new ArrayList<>();  //存放所有需要尝试取消的动画
 
     boolean isGameEndAniamtionShow = false; // 标记对战结束动画是否播放
@@ -235,6 +238,9 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         initLyricsView();
         initTurnChangeView();
         initGiftDisplayView();
+
+        mVoiceScaleView = (VoiceScaleView)mRootView.findViewById(R.id.voice_scale_view);
+
         showReadyGoView();
 
         mCorePresenter = new RankCorePresenter(this, mRoomData);
@@ -1015,6 +1021,8 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     @Override
     public void startRivalCountdown(int uid, String avatar) {
         MyLog.d(TAG, "startRivalCountdown" + " uid=" + uid + " avatar=" + avatar);
+        mVoiceScaleView.setVisibility(View.GONE);
+        mVoiceScaleView.cancelTaskTimer();
         mTopContainerView.loadAvatar(AvatarUtils.newParamsBuilder(avatar).build());
         mManyLyricsView.setVisibility(View.GONE);
         mUiHanlder.removeMessages(MSG_LYRIC_END_EVENT);
@@ -1165,6 +1173,8 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         }
         mManyLyricsView.setVisibility(View.GONE);
         mManyLyricsView.release();
+        mVoiceScaleView.setVisibility(View.GONE);
+        mVoiceScaleView.cancelTaskTimer();
         startGameEndAniamtion();
     }
 
@@ -1257,6 +1267,8 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                     MyLog.w(TAG, "onEventMainThread " + "play");
                     mManyLyricsView.play(mPlayingSongModel.getBeginMs());
                     postLyricEndEvent(lyricsReader);
+                    mVoiceScaleView.setVisibility(View.VISIBLE);
+                    mVoiceScaleView.startWithData(lyricsReader.getLyricsLineInfoList());
                 }
             } else {
                 if (play) {

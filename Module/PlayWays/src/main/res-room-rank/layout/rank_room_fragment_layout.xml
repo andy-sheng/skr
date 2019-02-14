@@ -54,6 +54,13 @@
         app:ly_paint_text_size="@dimen/textsize_dimen_16"
         app:ly_top_line_num="2" />
 
+    <com.zq.lyrics.widget.VoiceScaleView
+        android:visibility="gone"
+        android:layout_below="@+id/many_lyrics_view"
+        android:id="@+id/voice_scale_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_61_dp" />
+
 
     <!--这里面是软键盘弹出时 需要上移的布局-->
     <com.module.playways.rank.room.view.BottomContainerView
