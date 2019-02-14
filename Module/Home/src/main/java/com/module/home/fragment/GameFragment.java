@@ -244,27 +244,25 @@ public class GameFragment extends BaseFragment {
         initBaseInfo();
         initRankLevel();
         initOperationArea();
-
-
-        {
-            VoiceScaleView2 voiceScaleView = new VoiceScaleView2(getContext());
-            mTopArea.addView(voiceScaleView,new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,U.getDisplayUtils().dip2px(100)));
-            String url = "http://song-static.inframe.mobi/lrc/a5461febe394f78416161f4ad7d1b2d9.zrce";
-            File file = SongResUtils.getZRCELyricFileByUrl(url);
-            final String fileName = SongResUtils.getFileNameWithMD5(url);
-            LyricsManager.getLyricsManager(getActivity()).loadLyricsObserable(fileName, fileName.hashCode() + "")
-                    .delay(5000,TimeUnit.MILLISECONDS)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .retry(10)
-                    .compose(bindUntilEvent(FragmentEvent.DESTROY))
-                    .subscribe(lyricsReader -> {
-                        voiceScaleView.setVisibility(View.VISIBLE);
-                        voiceScaleView.startWithData(lyricsReader.getLyricsLineInfoList(), 19166);
-                    }, throwable -> {
-                        MyLog.e(TAG, throwable);
-                    });
-        }
+//        {
+//            VoiceScaleView2 voiceScaleView = new VoiceScaleView2(getContext());
+//            mTopArea.addView(voiceScaleView,new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,U.getDisplayUtils().dip2px(100)));
+//            String url = "http://song-static.inframe.mobi/lrc/a5461febe394f78416161f4ad7d1b2d9.zrce";
+//            File file = SongResUtils.getZRCELyricFileByUrl(url);
+//            final String fileName = SongResUtils.getFileNameWithMD5(url);
+//            LyricsManager.getLyricsManager(getActivity()).loadLyricsObserable(fileName, fileName.hashCode() + "")
+//                    .delay(5000,TimeUnit.MILLISECONDS)
+//                    .subscribeOn(Schedulers.io())
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .retry(10)
+//                    .compose(bindUntilEvent(FragmentEvent.DESTROY))
+//                    .subscribe(lyricsReader -> {
+//                        voiceScaleView.setVisibility(View.VISIBLE);
+//                        voiceScaleView.startWithData(lyricsReader.getLyricsLineInfoList(), 19166);
+//                    }, throwable -> {
+//                        MyLog.e(TAG, throwable);
+//                    });
+//        }
     }
 
     private void initBaseInfo() {

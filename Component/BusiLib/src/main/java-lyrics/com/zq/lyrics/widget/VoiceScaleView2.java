@@ -93,10 +93,11 @@ public class VoiceScaleView2 extends View {
             mLocalBeginTs = System.currentTimeMillis();
         }
         float divideLineTX = mReadLineX * mWidth;
-
         boolean isLowStart = true;
         boolean isRedFlag = false;         //标记当前此时歌词是否与圆点重合
         long duration = System.currentTimeMillis() - mLocalBeginTs;// 流逝了这么多的物理时间
+        mRedCy = U.getDisplayUtils().dip2px(40+7)/2;
+
         for (LyricsLineInfo lyricsLineInfo : mLyricsLineInfoList) {
             float left = divideLineTX + (lyricsLineInfo.getStartTime() - mTranslateTX - duration) * SPEED / 1000;
             float right = divideLineTX + (lyricsLineInfo.getEndTime() - mTranslateTX - duration) * SPEED / 1000;
