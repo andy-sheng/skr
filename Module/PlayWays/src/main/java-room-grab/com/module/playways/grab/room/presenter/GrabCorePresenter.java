@@ -146,7 +146,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                         .setNickName(playerInfoModel.getUserInfo().getNickname())
                         .setSex(ESex.fromValue(playerInfoModel.getUserInfo().getSex()))
                         .build());
-                String text = String.format("%s加入房间", playerInfoModel.getUserInfo().getNickname());
+                String text = String.format("加入房间", playerInfoModel.getUserInfo().getNickname());
                 CommentMsgEvent msgEvent = new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text);
                 EventBus.getDefault().post(msgEvent);
             }
