@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.common.base.BaseActivity;
@@ -75,10 +76,17 @@ public class SchemeSdkActivity extends BaseActivity {
         }
 
         String uri = mIntent.getStringExtra("uri");
+        if(TextUtils.isEmpty(uri)){
+            MyLog.w(TAG, "process uri is empty or null");
+            finish();
+            return;
+        }
+
         mUri = Uri.parse(uri);
         if (mUri == null) {
             MyLog.w(TAG, "process intent data uri is null");
             finish();
+            return;
         }
         try {
             process(mUri);
