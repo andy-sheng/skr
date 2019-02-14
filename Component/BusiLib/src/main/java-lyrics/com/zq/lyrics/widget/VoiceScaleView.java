@@ -42,6 +42,8 @@ public class VoiceScaleView extends View {
 
     HandlerTaskTimer mTaskTimer;
 
+    int diffTime;  //偏移的时间
+
     public VoiceScaleView(Context context) {
         this(context, null);
     }
@@ -60,6 +62,8 @@ public class VoiceScaleView extends View {
         if (mLyricsLineInfoList != null && mLyricsLineInfoList.size() > 0) {
             starLyricsLine = mLyricsLineInfoList.get(0).getStartTime();
         }
+
+        diffTime = (U.getDisplayUtils().getScreenWidth() - mRedLine) / mSpeed * 1000 - (starLyricsLine - beginTime);
 
         cancelTaskTimer();
         mTaskTimer = HandlerTaskTimer.newBuilder()
@@ -119,7 +123,7 @@ public class VoiceScaleView extends View {
         // 假设一句歌词长度为40dp
         boolean isLowStart = true;
         for (LyricsLineInfo lyricsLineInfo : mLyricsLineInfoList) {
-            int left = U.getDisplayUtils().getScreenWidth() - srcollLength + (lyricsLineInfo.getStartTime() - starLyricsLine) * mSpeed / 1000;
+            int left = U.getDisplayUtils().getScreenWidth() - srcollLength + (lyricsLineInfo.getStartTime() - starLyricsLine) * mSpeed / 1000 - (U.getDisplayUtils().getScreenWidth() - mRedLine - diffTime * mSpeed / 1000);
             int right = left + (lyricsLineInfo.getEndTime() - lyricsLineInfo.getStartTime()) * mSpeed / 1000;
             int top = isLowStart ? U.getDisplayUtils().dip2px(40) : U.getDisplayUtils().dip2px(20);
             int bottom = top + U.getDisplayUtils().dip2px(7);
@@ -171,8 +175,8 @@ public class VoiceScaleView extends View {
         hasRed = false;
     }
 
-    public void cancelTaskTimer(){
-        if(mTaskTimer != null){
+    public void cancelTaskTimer() {
+        if (mTaskTimer != null) {
             mTaskTimer.dispose();
         }
     }
