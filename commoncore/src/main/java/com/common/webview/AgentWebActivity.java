@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.webkit.WebViewClient;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.base.R;
 import com.common.utils.U;
@@ -27,7 +29,9 @@ import com.just.agentweb.AgentWeb;
 import com.just.agentweb.AgentWebUIControllerImplBase;
 import com.just.agentweb.MiddlewareWebChromeBase;
 import com.just.agentweb.MiddlewareWebClientBase;
+import com.module.RouterConstants;
 
+import static com.common.core.scheme.SchemeConstants.SCHEME_INFRAMESKER;
 import static com.common.view.titlebar.CommonTitleBar.ACTION_LEFT_TEXT;
 
 
@@ -105,6 +109,19 @@ public class AgentWebActivity extends BaseActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 pageFinished(view, url);
+            }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if (!TextUtils.isEmpty(url) && url.startsWith(SCHEME_INFRAMESKER)) { //
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_SCHEME)
+                            .withString("uri", url)
+                            .navigation();
+
+                    return true;
+                }
+
+                return super.shouldOverrideUrlLoading(view, url);
             }
         };
 
