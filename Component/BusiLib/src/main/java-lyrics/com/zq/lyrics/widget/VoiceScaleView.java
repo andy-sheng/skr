@@ -28,8 +28,10 @@ public class VoiceScaleView extends View {
     int srcollLength;   //滚动的距离
     int srcollTime;     //滚动的时间
 
-    List<LyricsLineInfo> mLyricsLineInfoList; // 歌词
-    int starLyricsLine = 0;                   // 第一句歌词开始的时间
+    //歌词
+    List<LyricsLineInfo> mLyricsLineInfoList;
+    //歌词开始播放时间
+    int starLyricsLine = 0;
 
     boolean hasRed = false;  // 是否有圆点
     int redWith;   //圆心点
@@ -39,8 +41,6 @@ public class VoiceScaleView extends View {
     int showTime = U.getDisplayUtils().getScreenWidth() / mSpeed * 1000;// 可显示时长
 
     HandlerTaskTimer mTaskTimer;
-
-    int diffTime;  //偏移的时间
 
     long mStartTs = 0;
 
