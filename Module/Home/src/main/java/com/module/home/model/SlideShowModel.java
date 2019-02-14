@@ -15,6 +15,15 @@ public class SlideShowModel implements Serializable {
     private String coverURL;
     private String linkURL;
     private String desc;
+    private String schema;
+
+    public String getSchema() {
+        return schema;
+    }
+
+    public void setSchema(String schema) {
+        this.schema = schema;
+    }
 
     public int getRoundSeq() {
         return roundSeq;
