@@ -1268,7 +1268,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                     mManyLyricsView.play(mPlayingSongModel.getBeginMs());
                     postLyricEndEvent(lyricsReader);
                     mVoiceScaleView.setVisibility(View.VISIBLE);
-                    mVoiceScaleView.startWithData(lyricsReader.getLyricsLineInfoList());
+                    mVoiceScaleView.startWithData(lyricsReader.getLyricsLineInfoList(), mPlayingSongModel.getBeginMs());
                 }
             } else {
                 if (play) {

@@ -54,7 +54,7 @@ public class VoiceScaleView extends View {
         super(context, attrs, defStyleAttr);
     }
 
-    public void startWithData(List<LyricsLineInfo> lyricsLineInfoList) {
+    public void startWithData(List<LyricsLineInfo> lyricsLineInfoList, int beginTime) {
         MyLog.d(TAG, "startWithData" + " lyricsLineInfoList=" + lyricsLineInfoList);
         this.mLyricsLineInfoList = lyricsLineInfoList;
         if (mLyricsLineInfoList != null && mLyricsLineInfoList.size() > 0) {
