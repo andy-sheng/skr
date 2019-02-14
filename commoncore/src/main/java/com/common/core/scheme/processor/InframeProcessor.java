@@ -32,7 +32,7 @@ public class InframeProcessor implements ISchemeProcessor {
     public boolean accept(Uri uri) {
         //inframesker://game/match?from=h5
         //inframesker://person/homepage?from=h5
-        //其中scheme为inframesker, host为com.zp.live, relativePath为match, query为from=h5.
+        //其中scheme为inframesker, host为game , relativePath为match, query为from=h5.
         String scheme = uri.getScheme();
         MyLog.w(TAG, "process scheme=" + scheme);
         if (TextUtils.isEmpty(scheme)) {
