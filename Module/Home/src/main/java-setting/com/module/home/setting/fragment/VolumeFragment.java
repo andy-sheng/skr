@@ -1,5 +1,9 @@
 package com.module.home.setting.fragment;
 
+import android.app.NotificationManager;
+import android.content.Context;
+import android.media.AudioManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.CompoundButton;
@@ -7,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 
 import com.common.base.BaseFragment;
+import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
@@ -81,6 +86,21 @@ public class VolumeFragment extends BaseFragment {
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 U.getPreferenceUtils().setSettingBoolean(PREF_KEY_GAME_VOLUME_SWITCH, isChecked);
                 U.getSoundUtils().setPlay(isChecked);
+                if (isChecked) {
+                    NotificationManager mNotificationManager = (NotificationManager) U.app().getSystemService(Context.NOTIFICATION_SERVICE);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                            && !mNotificationManager.isNotificationPolicyAccessGranted()) {
+                        U.getToastUtil().showShort("手机处于免打扰状态，可能听不到音效");
+                        return;
+                    }
+                    AudioManager mAudioManager = (AudioManager) U.app().getSystemService(Context.AUDIO_SERVICE);
+                    int v = mAudioManager.getStreamVolume(AudioManager.STREAM_RING);
+                    int max = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_RING);
+                    if (v < max / 2) {
+                        U.getToastUtil().showShort("按键音效音量太小，可能听不到音效");
+                        return;
+                    }
+                }
             }
         });
 

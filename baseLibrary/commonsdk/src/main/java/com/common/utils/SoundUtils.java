@@ -1,8 +1,11 @@
 package com.common.utils;
 
+import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 
@@ -17,6 +20,8 @@ import java.util.List;
  * 可以同时播放多个又短又频繁的音效
  */
 public class SoundUtils {
+
+    public final static String TAG = "SoundUtils";
 
     public static final String PREF_KEY_GAME_VOLUME_SWITCH = "pref_game_volume_switch";
 
@@ -36,6 +41,7 @@ public class SoundUtils {
     private int mSystemRingVolume = -1;
     private long mSystemRingVolumeGetTs = 0;
 
+    NotificationManager mNotificationManager;
     Handler mUiHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -52,6 +58,8 @@ public class SoundUtils {
         //获取系统的Audio管理者
         mAudioManager = (AudioManager) U.app().getSystemService(Context.AUDIO_SERVICE);
         MAX_SYSTEM_RING_VOLUME = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_RING);
+
+        mNotificationManager = (NotificationManager) U.app().getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
     public boolean isPlay() {
@@ -145,10 +153,7 @@ public class SoundUtils {
     }
 
     private int getSystemRingVolume() {
-        if (System.currentTimeMillis() - mSystemRingVolumeGetTs > 5000) {
-            mSystemRingVolumeGetTs = System.currentTimeMillis();
-            mSystemRingVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_RING);
-        }
+        mSystemRingVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_RING);
         return mSystemRingVolume;
     }
 
@@ -156,10 +161,18 @@ public class SoundUtils {
      * 保证播放时有个基本的音量
      */
     private void tryEnsureBaseVolume() {
-        int base = (int) (MAX_SYSTEM_RING_VOLUME * 0.4);
-        if (getSystemRingVolume() < base) {
-            mAudioManager.setStreamVolume(AudioManager.STREAM_RING, base, AudioManager.FLAG_PLAY_SOUND);
-            mSystemRingVolume = base;
+        if (System.currentTimeMillis() - mSystemRingVolumeGetTs > 10000) {
+            mSystemRingVolumeGetTs = System.currentTimeMillis();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                    && !mNotificationManager.isNotificationPolicyAccessGranted()) {
+                MyLog.w(TAG, "免打扰状态，不能改变按键音量");
+                return;
+            }
+            int base = (int) (MAX_SYSTEM_RING_VOLUME * 0.4);
+            if (getSystemRingVolume() < base) {
+                mAudioManager.setStreamVolume(AudioManager.STREAM_RING, base, AudioManager.FLAG_PLAY_SOUND);
+                mSystemRingVolume = base;
+            }
         }
     }
 
