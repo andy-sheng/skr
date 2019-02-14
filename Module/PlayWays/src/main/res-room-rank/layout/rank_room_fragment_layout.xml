@@ -15,52 +15,60 @@
         app:antiAlias="true"
         app:autoPlay="false" />
 
-    <!--<com.opensource.svgaplayer.SVGAImageView-->
-        <!--android:id="@+id/stage_people_bg"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="300dp"-->
-        <!--android:layout_marginTop="@dimen/view_80_dp"-->
-        <!--android:scaleType="fitCenter"-->
-        <!--app:antiAlias="true"-->
-        <!--app:autoPlay="false"-->
-        <!--app:clearsAfterStop="false" />-->
-
-    <!--<com.opensource.svgaplayer.SVGAImageView-->
-        <!--android:id="@+id/stage_ufo_bg"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="@dimen/view_300_dp"-->
-        <!--android:layout_marginTop="@dimen/view_80_dp"-->
-        <!--android:scaleType="fitCenter"-->
-        <!--app:antiAlias="true"-->
-        <!--app:autoPlay="false"-->
-        <!--app:clearsAfterStop="false" />-->
-
-    <com.zq.lyrics.widget.ManyLyricsView
-        android:id="@+id/many_lyrics_view"
+    <com.module.playways.rank.room.view.TopContainerView
+        android:id="@+id/top_container_view"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="@dimen/view_90_dp"
-        android:visibility="gone"
-        app:ly_eable_scroll="false"
-        app:ly_eable_verbatim="true"
-        app:ly_high_light_paint_color_from="#EF5E85"
-        app:ly_high_light_paint_color_to="#EF5E85"
-        app:ly_high_light_paint_text_size="@dimen/textsize_dimen_20"
-        app:ly_high_light_sub_paint_color="#EF5E85"
-        app:ly_outline_paint_color="@color/black"
-        app:ly_paint_color_from="@color/white_trans_50"
-        app:ly_paint_color_to="@color/white_trans_50"
-        app:ly_paint_text_size="@dimen/textsize_dimen_16"
-        app:ly_top_line_num="2" />
+        android:layout_height="@dimen/view_100_dp"
+        android:layout_marginTop="@dimen/view_5_dp" />
 
-    <com.zq.lyrics.widget.VoiceScaleView
-        android:visibility="gone"
-        android:layout_below="@+id/many_lyrics_view"
-        android:id="@+id/voice_scale_view"
+    <RelativeLayout
+        android:id="@+id/middle_area"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_61_dp" />
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/view_300_dp">
 
+        <com.zq.lyrics.widget.ManyLyricsView
+            android:id="@+id/many_lyrics_view"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="@dimen/view_90_dp"
+            android:visibility="gone"
+            app:ly_eable_scroll="false"
+            app:ly_eable_verbatim="true"
+            app:ly_high_light_paint_color_from="#EF5E85"
+            app:ly_high_light_paint_color_to="#EF5E85"
+            app:ly_high_light_paint_text_size="@dimen/textsize_dimen_20"
+            app:ly_high_light_sub_paint_color="#EF5E85"
+            app:ly_outline_paint_color="@color/black"
+            app:ly_paint_color_from="@color/white_trans_50"
+            app:ly_paint_color_to="@color/white_trans_50"
+            app:ly_paint_text_size="@dimen/textsize_dimen_16"
+            app:ly_top_line_num="2" />
+
+        <com.zq.lyrics.widget.VoiceScaleView
+            android:id="@+id/voice_scale_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_61_dp"
+            android:layout_below="@+id/many_lyrics_view"
+            android:visibility="gone" />
+
+        <com.common.image.fresco.BaseImageView
+            android:id="@+id/stage_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_140_dp"
+            android:layout_marginTop="@dimen/view_155_dp"
+            android:visibility="gone" />
+
+        <com.common.image.fresco.BaseImageView
+            android:id="@+id/sing_avatar_view"
+            android:layout_width="@dimen/view_90_dp"
+            android:layout_height="@dimen/view_90_dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/view_180_dp"
+            android:visibility="gone" />
+
+    </RelativeLayout>
 
     <!--这里面是软键盘弹出时 需要上移的布局-->
     <com.module.playways.rank.room.view.BottomContainerView
@@ -73,12 +81,13 @@
     <com.module.playways.rank.room.comment.CommentView
         android:id="@+id/comment_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_400_dp"
+        android:layout_height="match_parent"
+        android:layout_below="@id/middle_area"
         android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/view_30_dp"
         android:layout_marginRight="@dimen/view_128_dp"
-        android:layout_marginBottom="@dimen/view_66_dp"
-        android:paddingLeft="@dimen/view_18_dp"
-        android:paddingBottom="@dimen/view_7_dp" />
+        android:layout_marginBottom="@dimen/view_63_dp"
+        android:paddingLeft="@dimen/view_18_dp" />
 
     <com.common.view.ex.ExImageView
         android:id="@+id/cover_iv"
@@ -87,33 +96,11 @@
         android:layout_alignTop="@+id/comment_view"
         android:src="@drawable/zhengzaiyanchang_duihua_zhezhao" />
 
-
-    <com.module.playways.rank.room.view.TopContainerView
-        android:id="@+id/top_container_view"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_100_dp"
-        android:layout_marginTop="@dimen/view_5_dp" />
-
-    <com.common.image.fresco.BaseImageView
-        android:id="@+id/stage_view"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_140_dp"
-        android:layout_marginTop="@dimen/view_155_dp"
-        android:visibility="gone" />
-
-    <com.common.image.fresco.BaseImageView
-        android:id="@+id/sing_avatar_view"
-        android:layout_width="@dimen/view_90_dp"
-        android:layout_height="@dimen/view_90_dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_180_dp"
-        android:visibility="gone" />
-
     <com.module.playways.rank.room.gift.GiftContinueViewGroup
         android:id="@+id/gift_continue_vg"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_75_dp"
-        android:layout_above="@+id/comment_view"
+        android:layout_below="@+id/middle_area"
         android:layout_marginLeft="@dimen/view_18_dp"
         android:layout_marginBottom="@dimen/view_10_dp" />
 

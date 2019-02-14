@@ -6,24 +6,23 @@
     <!--这里面是软键盘弹出时 需要上移的布局-->
 
     <com.common.view.ex.ExImageView
-        android:id="@+id/quick_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_40_dp"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/view_16_dp"
-        android:scaleType="centerInside"
-        app:src_unPressed_drawable="@drawable/btn_notify_normal" />
-
-
-    <com.common.view.ex.ExImageView
         android:id="@+id/show_input_container_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_40_dp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_45_dp"
+        android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginRight="@dimen/view_23_dp"
         android:layout_toLeftOf="@+id/emoji1_btn"
-        android:layout_toRightOf="@+id/quick_btn"
         android:scaleType="fitXY"
-        app:src_unPressed_drawable="@drawable/img_dialog_normal" />
+        android:src="@drawable/kuaijie" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/quick_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_45_dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:scaleType="fitXY"
+        app:src_unPressed_drawable="@drawable/kuaijie_btn" />
 
     <com.common.view.ex.ExImageView
         android:id="@+id/emoji2_btn"
