@@ -23,7 +23,7 @@ public class VoiceScaleView2 extends View {
     public final static String TAG = "VoiceScaleView";
     static final int SPEED = U.getDisplayUtils().dip2px(72);// 每秒走72个像素单位
     float mReadLineX = 0.2f;// 红线大约在距离左边 20% 的位置
-    float mRedCy = 0;
+    float mRedCy = -1;
     int mWidth = -1;// view的宽度
     int mHeight = -1;// view的高度
     long mLocalBeginTs = -1;// 本地开始播放的时间戳，本地基准时间
@@ -135,8 +135,10 @@ public class VoiceScaleView2 extends View {
             }
             isLowStart = !isLowStart;
         }
-        canvas.drawCircle(divideLineTX, mRedCy, U.getDisplayUtils().dip2px(9), mRedOutpaint);
-        canvas.drawCircle(divideLineTX, mRedCy, U.getDisplayUtils().dip2px(6), mRedInnerpaint);
+        if (mRedCy > 0) {
+            canvas.drawCircle(divideLineTX, mRedCy, U.getDisplayUtils().dip2px(9), mRedOutpaint);
+            canvas.drawCircle(divideLineTX, mRedCy, U.getDisplayUtils().dip2px(6), mRedInnerpaint);
+        }
         if (!mLyricsLineInfoList.isEmpty()) {
             LyricsLineInfo last = mLyricsLineInfoList.get(mLyricsLineInfoList.size() - 1);
             if (last.getEndTime() - mTranslateTX - duration > 0) {
