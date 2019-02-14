@@ -1,9 +1,9 @@
 package com.common.utils;
 
+import android.content.Context;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 
 import com.common.log.MyLog;
@@ -29,7 +29,12 @@ public class SoundUtils {
 
     private String mPendingReleaseTag;
 
-    private boolean isPlay;
+    private boolean mIsPlay;
+
+    private AudioManager mAudioManager;
+    private int MAX_SYSTEM_RING_VOLUME;
+    private int mSystemRingVolume = -1;
+    private long mSystemRingVolumeGetTs = 0;
 
     Handler mUiHandler = new Handler() {
         @Override
@@ -43,15 +48,18 @@ public class SoundUtils {
     };
 
     SoundUtils() {
-        isPlay = U.getPreferenceUtils().getSettingBoolean(PREF_KEY_GAME_VOLUME_SWITCH, true);
+        mIsPlay = U.getPreferenceUtils().getSettingBoolean(PREF_KEY_GAME_VOLUME_SWITCH, true);
+        //获取系统的Audio管理者
+        mAudioManager = (AudioManager) U.app().getSystemService(Context.AUDIO_SERVICE);
+        MAX_SYSTEM_RING_VOLUME = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_RING);
     }
 
     public boolean isPlay() {
-        return isPlay;
+        return mIsPlay;
     }
 
     public void setPlay(boolean play) {
-        isPlay = play;
+        mIsPlay = play;
     }
 
     /**
@@ -105,7 +113,7 @@ public class SoundUtils {
      *                            一般用于返回键的音效播放，因为返回键一般伴随着destroy方法
      */
     public void play(String key, int rawId, int inteceptorReleaseTs) {
-        if (!isPlay) {
+        if (!mIsPlay) {
             MyLog.d("SoundUtils", "starPlay" + " isPlay = false ");
             return;
         }
@@ -113,6 +121,8 @@ public class SoundUtils {
         if (holder != null) {
             for (Item item : holder.mItemList) {
                 if (item.rawId == rawId) {
+                    tryEnsureBaseVolume();
+                    mAudioManager.getStreamVolume(AudioManager.STREAM_RING);
                     holder.soundPool.play(item.seq, 1, 1, 0, 0, 1);
                     if (inteceptorReleaseTs > 0) {
                         mPreventReleaseTime = System.currentTimeMillis() + inteceptorReleaseTs;
@@ -132,6 +142,25 @@ public class SoundUtils {
 
     public void play(String key, int rawId) {
         play(key, rawId, -1);
+    }
+
+    private int getSystemRingVolume() {
+        if (System.currentTimeMillis() - mSystemRingVolumeGetTs > 5000) {
+            mSystemRingVolumeGetTs = System.currentTimeMillis();
+            mSystemRingVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_RING);
+        }
+        return mSystemRingVolume;
+    }
+
+    /**
+     * 保证播放时有个基本的音量
+     */
+    private void tryEnsureBaseVolume() {
+        int base = (int) (MAX_SYSTEM_RING_VOLUME * 0.4);
+        if (getSystemRingVolume() < base) {
+            mAudioManager.setStreamVolume(AudioManager.STREAM_RING, base, AudioManager.FLAG_PLAY_SOUND);
+            mSystemRingVolume = base;
+        }
     }
 
     static class Holder {
