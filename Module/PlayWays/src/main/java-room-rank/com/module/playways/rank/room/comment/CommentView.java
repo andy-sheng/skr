@@ -5,10 +5,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.RelativeLayout;
 
 import com.common.log.MyLog;
+import com.common.utils.U;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.rank.R;
 import com.module.playways.rank.msg.event.CommentMsgEvent;
@@ -28,6 +30,8 @@ public class CommentView extends RelativeLayout {
     CommentAdapter mCommentAdapter;
 
     RecyclerOnItemClickListener mClickListener;
+
+    int maxHeight = U.getDisplayUtils().dip2px(260);
 
     private RoomData mRoomData;
     private boolean mOnBottom = true;
@@ -95,6 +99,17 @@ public class CommentView extends RelativeLayout {
 //                }
             }
             // 不在底部不需要更新数据
+        }
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (this.getLayoutParams().height > maxHeight) {
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) this.getLayoutParams();
+            layoutParams.topMargin = layoutParams.topMargin + (layoutParams.height - maxHeight);
+            layoutParams.height = maxHeight;
+            setLayoutParams(layoutParams);
         }
     }
 

@@ -85,7 +85,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/middle_area"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="@dimen/view_30_dp"
+        android:layout_marginTop="@dimen/view_35_dp"
         android:layout_marginRight="@dimen/view_128_dp"
         android:layout_marginBottom="@dimen/view_63_dp"
         android:paddingLeft="@dimen/view_18_dp" />
@@ -101,8 +101,9 @@
         android:id="@+id/gift_continue_vg"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_75_dp"
-        android:layout_below="@+id/middle_area"
+        android:layout_alignTop="@+id/comment_view"
         android:layout_marginLeft="@dimen/view_18_dp"
+        android:layout_marginTop="-30dp"
         android:layout_marginBottom="@dimen/view_10_dp" />
 
     <com.module.playways.rank.room.view.TurnChangeCardView
