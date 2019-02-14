@@ -92,6 +92,12 @@ public class VoiceScaleView extends View {
         }
     }
 
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        showTime = getMeasuredWidth() / mSpeed * 1000;// 可显示时长
+    }
+
     private void drawView(Canvas canvas, int startTime, int endTime) {
         MyLog.d(TAG, "drawView" + " canvas=" + canvas + " startTime=" + startTime + " endTime=" + endTime);
         Paint leftPaint = new Paint();
@@ -112,7 +118,7 @@ public class VoiceScaleView extends View {
         boolean isLowStart = true;
         for (LyricsLineInfo lyricsLineInfo : mLyricsLineInfoList) {
             //屏幕宽度 - 已经过去的长度 + 一行歌词真正开始的位置 - 再减去红点到屏幕右边的位置
-            int left = U.getDisplayUtils().getScreenWidth() - srcollLength + (lyricsLineInfo.getStartTime() - starLyricsLine) * mSpeed / 1000 - (U.getDisplayUtils().getScreenWidth() - mRedLine);
+            int left = getMeasuredWidth() - srcollLength + (lyricsLineInfo.getStartTime() - starLyricsLine) * mSpeed / 1000 - (getMeasuredWidth() - mRedLine);
             int right = left + (lyricsLineInfo.getEndTime() - lyricsLineInfo.getStartTime()) * mSpeed / 1000;
             int top = isLowStart ? U.getDisplayUtils().dip2px(40) : U.getDisplayUtils().dip2px(20);
             int bottom = top + U.getDisplayUtils().dip2px(7);
@@ -163,12 +169,8 @@ public class VoiceScaleView extends View {
         }
         hasRed = false;
 
-        postInvalidateDelayed(30);
-    }
-
-    public void cancelTaskTimer() {
-        if (mTaskTimer != null) {
-            mTaskTimer.dispose();
+        if(getVisibility() == VISIBLE){
+            postInvalidateDelayed(30);
         }
     }
 
