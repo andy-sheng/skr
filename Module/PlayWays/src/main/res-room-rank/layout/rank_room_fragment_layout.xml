@@ -19,7 +19,7 @@
         android:id="@+id/top_container_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_100_dp"
-        android:layout_marginTop="@dimen/view_5_dp" />
+        android:layout_marginTop="@dimen/view_10_dp" />
 
     <RelativeLayout
         android:id="@+id/middle_area"
@@ -30,9 +30,9 @@
         <com.zq.lyrics.widget.ManyLyricsView
             android:id="@+id/many_lyrics_view"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="@dimen/view_150_dp"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="@dimen/view_90_dp"
+            android:layout_marginTop="@dimen/view_112_dp"
             android:visibility="gone"
             app:ly_eable_scroll="false"
             app:ly_eable_verbatim="true"
@@ -51,6 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_61_dp"
             android:layout_below="@+id/many_lyrics_view"
+            android:layout_marginTop="@dimen/view_4_dp"
             android:visibility="gone" />
 
         <com.common.image.fresco.BaseImageView
