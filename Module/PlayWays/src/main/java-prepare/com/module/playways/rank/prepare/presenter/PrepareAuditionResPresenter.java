@@ -44,11 +44,11 @@ public class PrepareAuditionResPresenter extends RxLifeCyclePresenter {
         }
 
         //原唱
-        String oriUrl = mSongModel.getOri();
-        if (!TextUtils.isEmpty(oriUrl)) {
-            UrlRes acc = new UrlRes(oriUrl, SongResUtils.getORIDir(), U.getFileUtils().getSuffixFromUrl(oriUrl,SongResUtils.SUFF_ORI));
-            songResList.add(acc);
-        }
+//        String oriUrl = mSongModel.getOri();
+//        if (!TextUtils.isEmpty(oriUrl)) {
+//            UrlRes acc = new UrlRes(oriUrl, SongResUtils.getORIDir(), U.getFileUtils().getSuffixFromUrl(oriUrl,SongResUtils.SUFF_ORI));
+//            songResList.add(acc);
+//        }
 
         //评分文件
         String midiUrl = mSongModel.getMidi();

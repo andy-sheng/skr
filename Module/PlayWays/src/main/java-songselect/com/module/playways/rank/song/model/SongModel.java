@@ -279,11 +279,11 @@ public class SongModel implements Serializable {
             return false;
         }
 
-        File ori = SongResUtils.getORIFileByUrl(getOri());
-
-        if (ori == null || !ori.exists()) {
-            return false;
-        }
+//        File ori = SongResUtils.getORIFileByUrl(getOri());
+//
+//        if (ori == null || !ori.exists()) {
+//            return false;
+//        }
 
         File midi = SongResUtils.getMIDIFileByUrl(getMidi());
 
