@@ -1,6 +1,7 @@
 package com.zq.lyrics.widget;
 
 import android.content.Context;
+import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -53,7 +54,11 @@ public class VoiceScaleView2 extends View {
     }
 
     private void init() {
+        setLayerType(LAYER_TYPE_SOFTWARE, null);
         mLeftPaint = new Paint();
+        mLeftPaint.setMaskFilter(new BlurMaskFilter(U.getDisplayUtils().dip2px(5), BlurMaskFilter.Blur.SOLID));
+//        canvas.drawCircle(200f, 200f, 100f, paint)
+//        mLeftPaint.setShadowLayer(100,0,0,Color.GREEN);
         mLeftPaint.setColor(Color.parseColor("#F5A623"));
 
         mRightPaint = new Paint();
@@ -96,7 +101,7 @@ public class VoiceScaleView2 extends View {
         boolean isLowStart = true;
         boolean isRedFlag = false;         //标记当前此时歌词是否与圆点重合
         long duration = System.currentTimeMillis() - mLocalBeginTs;// 流逝了这么多的物理时间
-        mRedCy = U.getDisplayUtils().dip2px(40+7)/2;
+        mRedCy = U.getDisplayUtils().dip2px(40 + 7) / 2;
 
         for (LyricsLineInfo lyricsLineInfo : mLyricsLineInfoList) {
             float left = divideLineTX + (lyricsLineInfo.getStartTime() - mTranslateTX - duration) * SPEED / 1000;
