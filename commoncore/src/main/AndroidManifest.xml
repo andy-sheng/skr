@@ -64,7 +64,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="livesdk" />
+                <data android:scheme="inframeskr" />
             </intent-filter>
         </activity>
 
