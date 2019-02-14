@@ -88,7 +88,7 @@ public class SysInfoFragment extends BaseFragment {
         PackageInfo pi = DeviceUtils.getPackageInfo(getContext());
         sysInfoItems.add(new TitleItem(getString(R.string.dk_sysinfo_app_info)));
         sysInfoItems.add(new SysInfoItem(getString(R.string.dk_sysinfo_package_name), pi.packageName));
-        sysInfoItems.add(new SysInfoItem("渠道号", U.getChannelUtils().getChannel(), new View.OnClickListener() {
+        sysInfoItems.add(new SysInfoItem("渠道号(点击切换)", U.getChannelUtils().getChannel(), new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final List<String> channels = new ArrayList<>();
