@@ -141,6 +141,11 @@ public class LyricsReader {
     }
 
     public void cut(long startTs, long endTs) {
+        if(startTs >= endTs){
+            MyLog.d(TAG, "歌词开始时间大于结束时间，不截取:" + "cut" + " startTs=" + startTs + " endTs=" + endTs);
+            return;
+        }
+
         Iterator<Map.Entry<Integer, LyricsLineInfo>> it = mLrcLineInfos.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry<Integer, LyricsLineInfo> entry = it.next();
