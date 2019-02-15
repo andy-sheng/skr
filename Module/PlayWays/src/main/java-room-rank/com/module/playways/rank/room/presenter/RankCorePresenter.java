@@ -957,6 +957,8 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                     mRobotScoreHelper = new RobotScoreHelper();
                     //尝试再用融云通知对端
                     sendUserSpeakEventToOthers();
+                } else {
+                    MyLog.e(TAG, "onChangeBroadcastSuccess acc 文件不存在，什么情况？");
                 }
             }
         });
