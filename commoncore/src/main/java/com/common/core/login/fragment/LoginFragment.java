@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.text.Html;
 import android.text.Spannable;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -46,7 +47,7 @@ public class LoginFragment extends BaseFragment {
     ExTextView mQqLoginTv;
     ProgressBar mProgressBar;
 
-    TextView mTvUserAgree;
+    LinearLayout mTvUserAgree;
 
     volatile boolean isWaitOss = false;
 
@@ -66,8 +67,7 @@ public class LoginFragment extends BaseFragment {
         mWeixinLoginTv = (ExTextView) mRootView.findViewById(R.id.weixin_login_tv);
         mPhoneLoginTv = (ExTextView) mRootView.findViewById(R.id.phone_login_tv);
         mQqLoginTv = (ExTextView) mRootView.findViewById(R.id.qq_login_tv);
-        mTvUserAgree = (TextView) mRootView.findViewById(R.id.tv_user_agree);
-        mTvUserAgree.setText(Html.fromHtml("<u>" + "《服务协议》" + "</u>"));
+        mTvUserAgree = (LinearLayout) mRootView.findViewById(R.id.tv_user_agree);
         mProgressBar = (ProgressBar) mRootView.findViewById(R.id.progress_bar);
 
         RxView.clicks(mPhoneLoginTv)
@@ -99,7 +99,7 @@ public class LoginFragment extends BaseFragment {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        if(!UMShareAPI.get(getContext()).isInstall(getActivity(), SHARE_MEDIA.WEIXIN)){
+                        if (!UMShareAPI.get(getContext()).isInstall(getActivity(), SHARE_MEDIA.WEIXIN)) {
                             U.getToastUtil().showShort("你没有安装微信");
                             return;
                         }
@@ -118,7 +118,7 @@ public class LoginFragment extends BaseFragment {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        if(!UMShareAPI.get(getContext()).isInstall(getActivity(), SHARE_MEDIA.QQ)){
+                        if (!UMShareAPI.get(getContext()).isInstall(getActivity(), SHARE_MEDIA.QQ)) {
                             U.getToastUtil().showShort("你没有安装QQ");
                             return;
                         }
