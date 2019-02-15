@@ -40,7 +40,7 @@ public interface SongSelectServerApi {
      * @return 包含  歌曲信息 items（List）
      * 偏移量 offset
      */
-    @GET("/v1/recommend/list-playbook-items")
+    @GET("/v2/recommend/list-playbook-items")
     Observable<ApiResult> getRcomdMusicItems(@Query("offset") int offset,
                                              @Query("cnt") int cnt);
 
