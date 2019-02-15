@@ -14,6 +14,28 @@
         android:layout_marginTop="@dimen/view_24_dp"
         android:src="@drawable/img_top_xuanzegequ_bg" />
 
+    <com.common.view.ex.ExImageView
+        android:id="@+id/select_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/view_20_dp"
+        android:layout_marginTop="@dimen/view_30_dp"
+        android:padding="@dimen/view_16_dp"
+        android:src="@drawable/img_back" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/select_select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/view_25_dp"
+        android:layout_marginRight="@dimen/view_20_dp"
+        android:padding="@dimen/view_16_dp"
+        android:src="@drawable/xuanzegequ_sousuo" />
+
     <com.module.playways.rank.song.flingswipe.SwipeFlingAdapterView
         android:id="@+id/swipe_view"
         android:layout_width="match_parent"
@@ -43,26 +65,5 @@
         android:padding="@dimen/view_13_dp"
         android:src="@drawable/img_yidian" />
 
-    <com.common.view.ex.ExImageView
-        android:id="@+id/select_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="@dimen/view_20_dp"
-        android:layout_marginTop="@dimen/view_30_dp"
-        android:padding="@dimen/view_16_dp"
-        android:src="@drawable/img_back" />
-
-    <com.common.view.ex.ExImageView
-        android:id="@+id/select_select"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="@dimen/view_25_dp"
-        android:layout_marginRight="@dimen/view_20_dp"
-        android:padding="@dimen/view_16_dp"
-        android:src="@drawable/xuanzegequ_sousuo" />
 
 </RelativeLayout>
