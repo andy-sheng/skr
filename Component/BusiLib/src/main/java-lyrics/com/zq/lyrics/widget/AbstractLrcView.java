@@ -1202,8 +1202,8 @@ public abstract class AbstractLrcView extends View {
         mSplitLyricsWordIndex = -1;
         mLyricsWordHLTime = 0;
 
-        //
-        mLrcLineInfos = null;
+        //防止出现空指针，不至为null
+//        mLrcLineInfos = null;
         mTranslateLrcLineInfos = null;
         mTransliterationLrcLineInfos = null;
         mExtraSplitLyricsLineNum = 0;
