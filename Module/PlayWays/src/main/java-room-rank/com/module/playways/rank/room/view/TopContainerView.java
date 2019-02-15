@@ -141,7 +141,7 @@ public class TopContainerView extends RelativeLayout {
             item.setLevel(ScoreTipsView.Level.Good);
         } else if (progress >= 70) {
             item.setLevel(ScoreTipsView.Level.Ok);
-        } else if (progress < 40) {
+        } else if (progress < 20) {
             item.setLevel(ScoreTipsView.Level.Bad);
         }
         if (item.getLevel() != null) {
