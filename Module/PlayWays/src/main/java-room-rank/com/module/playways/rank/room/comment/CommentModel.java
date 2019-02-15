@@ -1,6 +1,8 @@
 package com.module.playways.rank.room.comment;
 
 import android.graphics.Color;
+import android.text.TextUtils;
+import android.widget.TextView;
 
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.utils.U;
@@ -8,6 +10,7 @@ import com.module.playways.rank.msg.event.CommentMsgEvent;
 import com.module.playways.RoomData;
 import com.module.rank.R;
 import com.zq.live.proto.Common.ESex;
+import com.zq.live.proto.Common.UserInfo;
 
 public class CommentModel {
     public static final int TYPE_TEXT = 1;
@@ -24,7 +27,13 @@ public class CommentModel {
     public static CommentModel parseFromEvent(CommentMsgEvent event, RoomData roomData) {
         CommentModel commentModel = new CommentModel();
         commentModel.setUserId(event.info.getSender().getUserID());
-        commentModel.setUserName(event.info.getSender().getNickName());
+        if (!TextUtils.isEmpty(event.info.getSender().getNickName())) {
+            commentModel.setUserName(event.info.getSender().getNickName());
+        } else {
+            UserInfoModel userInfoModel = roomData.getUserInfo(event.info.getSender().getUserID());
+            commentModel.setUserName(userInfoModel.getNickname());
+        }
+
         if (roomData != null) {
             UserInfoModel sender = roomData.getUserInfo(event.info.getSender().getUserID());
             if (sender != null) {
