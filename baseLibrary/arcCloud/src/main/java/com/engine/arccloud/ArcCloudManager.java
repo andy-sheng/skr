@@ -122,7 +122,8 @@ public class ArcCloudManager implements IACRCloudListener {
         MyLog.d(TAG, "startCollect" + " recognizeConfig=" + recognizeConfig);
         // 开始积攒
         this.mRecognizeConfig = recognizeConfig;
-
+        // 停止积攒
+        setLen(0);
         if (DEBUG) {
             File file = new File(U.getAppInfoUtils().getSubDirPath("acr"));
             if (file.exists()) {
@@ -134,7 +135,7 @@ public class ArcCloudManager implements IACRCloudListener {
     public void stopRecognize() {
         MyLog.d(TAG, "stopRecognize");
         // 停止积攒
-        setLen(0);
+//        setLen(0);
         this.mRecognizeConfig = null;
     }
 
@@ -196,10 +197,11 @@ public class ArcCloudManager implements IACRCloudListener {
         if (mChannels < 0) {
             mChannels = nChannels;
         }
-        if (mLength + newBuffer.length <= BUFFER_LEN) {
+        int tl = mLength;
+        if (tl + newBuffer.length <= BUFFER_LEN) {
             // buffer还没满，足够容纳，那就放呗
-            System.arraycopy(newBuffer, 0, mBuffer, mLength, newBuffer.length);
-            setLen(mLength + newBuffer.length);
+            System.arraycopy(newBuffer, 0, mBuffer, tl, newBuffer.length);
+            setLen(tl + newBuffer.length);
             if (mLength == BUFFER_LEN) {
                 if (recognizeConfig.getMode() == RecognizeConfig.MODE_MANUAL) {
                     if (recognizeConfig.isWantRecognizeInManualMode()) {
@@ -209,13 +211,13 @@ public class ArcCloudManager implements IACRCloudListener {
             }
         } else {
             // 再放buffer就要满了，头部的要移走
-            int left = mLength + newBuffer.length - BUFFER_LEN;
+            int left = tl + newBuffer.length - BUFFER_LEN;
             //MyLog.d(TAG, "left=" + left + " mLenth=" + mLength + " buffer.length:" + buffer.length + " BUFFER_LEN:" + BUFFER_LEN);
             // 往左移动 left 个位置
 //            byte [] temp = new byte[BUFFER_LEN];
 
-            System.arraycopy(mBuffer, left, mBuffer, 0, mLength - left);
-            System.arraycopy(newBuffer, 0, mBuffer, mLength - left, newBuffer.length);
+            System.arraycopy(mBuffer, left, mBuffer, 0, tl - left);
+            System.arraycopy(newBuffer, 0, mBuffer, tl - left, newBuffer.length);
             setLen(BUFFER_LEN);
             if (recognizeConfig.getMode() == RecognizeConfig.MODE_AUTO) {
                 // 自动识别
@@ -230,7 +232,7 @@ public class ArcCloudManager implements IACRCloudListener {
 
     int logtag = 0;
 
-    public synchronized void setLen(int len) {
+    public void setLen(int len) {
         if (++logtag % 500 == 0) {
             MyLog.d(TAG, "setLen" + " len=" + len);
         }

@@ -79,4 +79,10 @@ public class PlayWaysActivity extends BaseActivity {
     public boolean canSlide() {
         return false;
     }
+
+    @Override
+    public boolean resizeLayoutSelfWhenKeybordShow() {
+        // 自己处理有键盘时的整体布局
+        return true;
+    }
 }
