@@ -25,6 +25,7 @@ import com.common.view.titlebar.CommonTitleBar;
 import com.component.busilib.callback.EmptyCallback;
 import com.component.busilib.callback.ErrorCallback;
 import com.component.busilib.callback.LoadingCallback;
+import com.jakewharton.rxbinding2.view.RxView;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
@@ -45,6 +46,7 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 import io.reactivex.observers.DisposableObserver;
@@ -155,11 +157,10 @@ public class SearchSongFragment extends BaseFragment {
         mTitlebar.setListener(new CommonTitleBar.OnTitleBarListener() {
             @Override
             public void onClicked(View v, int action, String extra) {
+                if (U.getTimeUtils().isFastClick()) {
+                    return;
+                }
                 switch (action) {
-                    case CommonTitleBar.ACTION_RIGHT_TEXT:
-                        U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-                        U.getFragmentUtils().popFragment(SearchSongFragment.this);
-                        break;
                     case CommonTitleBar.ACTION_SEARCH_SUBMIT:
                         searchMusicItems(extra);
                         break;
@@ -169,6 +170,18 @@ public class SearchSongFragment extends BaseFragment {
                 }
             }
         });
+
+        RxView.clicks(mTitlebar.getRightTextView())
+                .throttleFirst(300, TimeUnit.MILLISECONDS)
+                .subscribe(o -> {
+                    if (U.getTimeUtils().isFastClick()) {
+                        return;
+                    }
+                    if (U.getKeyBoardUtils().isSoftKeyboardShowing(getActivity())) {
+                        U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+                    }
+                    U.getFragmentUtils().popFragment(this);
+                });
 
         mTitlebar.showSoftInputKeyboard(true);
         initPublishSubject();
