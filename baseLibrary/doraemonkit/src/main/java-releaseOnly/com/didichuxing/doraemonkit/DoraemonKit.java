@@ -79,11 +79,7 @@ public class DoraemonKit {
             public void onActivityResumed(Activity activity) {
                 FloatPageManager.getInstance().onActivityResumed(activity);
                 if (MyLog.isDebugLogOpen()) {
-                    if (PermissionUtil.canDrawOverlays(activity)) {
-                        showFloatIcon(activity);
-                    } else {
-                        requestPermission(activity);
-                    }
+                    tryShowFloatIcon(activity);
                 }
             }
 
@@ -160,7 +156,15 @@ public class DoraemonKit {
         }
     }
 
-    public static void showFloatIcon(Context context) {
+    public static void tryShowFloatIcon(Context activity) {
+        if (PermissionUtil.canDrawOverlays(activity)) {
+            showFloatIcon(activity);
+        } else {
+            requestPermission(activity);
+        }
+    }
+
+    private static void showFloatIcon(Context context) {
         if (context instanceof UniversalActivity) {
             return;
         }

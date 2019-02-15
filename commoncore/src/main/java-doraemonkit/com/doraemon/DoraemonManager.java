@@ -27,7 +27,7 @@ public class DoraemonManager {
     }
 
     public static void showFloatIcon() {
-        DoraemonKit.showFloatIcon(U.getActivityUtils().getTopActivity());
+        DoraemonKit.tryShowFloatIcon(U.getActivityUtils().getTopActivity());
     }
 
     public static void hideFloatIcon(){

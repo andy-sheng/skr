@@ -100,11 +100,7 @@ public class DoraemonKit {
             @Override
             public void onActivityResumed(Activity activity) {
                 FloatPageManager.getInstance().onActivityResumed(activity);
-                if (PermissionUtil.canDrawOverlays(activity)) {
-                    showFloatIcon(activity);
-                } else {
-                    requestPermission(activity);
-                }
+                tryShowFloatIcon(activity);
             }
 
             @Override
@@ -198,7 +194,15 @@ public class DoraemonKit {
         }
     }
 
-    public static void showFloatIcon(Context context) {
+    public static void tryShowFloatIcon(Context activity) {
+        if (PermissionUtil.canDrawOverlays(activity)) {
+            showFloatIcon(activity);
+        } else {
+            requestPermission(activity);
+        }
+    }
+
+    private static void showFloatIcon(Context context) {
         if (context instanceof UniversalActivity) {
             return;
         }
