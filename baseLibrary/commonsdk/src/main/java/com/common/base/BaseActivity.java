@@ -302,7 +302,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
 
     @Override
     public final void onBackPressed() {
-        if (U.getTimeUtils().isFastClick()) {
+        if (U.getCommonUtils().isFastDoubleClick()) {
             return;
         }
 

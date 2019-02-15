@@ -157,7 +157,7 @@ public class SearchSongFragment extends BaseFragment {
         mTitlebar.setListener(new CommonTitleBar.OnTitleBarListener() {
             @Override
             public void onClicked(View v, int action, String extra) {
-                if (U.getTimeUtils().isFastClick()) {
+                if (U.getCommonUtils().isFastDoubleClick()) {
                     return;
                 }
                 switch (action) {
@@ -174,7 +174,7 @@ public class SearchSongFragment extends BaseFragment {
         RxView.clicks(mTitlebar.getRightTextView())
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
-                    if (U.getTimeUtils().isFastClick()) {
+                    if (U.getCommonUtils().isFastDoubleClick()) {
                         return;
                     }
                     if (U.getKeyBoardUtils().isSoftKeyboardShowing(getActivity())) {

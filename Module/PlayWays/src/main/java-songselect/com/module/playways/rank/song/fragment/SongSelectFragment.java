@@ -96,7 +96,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
         RxView.clicks(mSelectSelect)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
-                    if (U.getTimeUtils().isFastClick()) {
+                    if (U.getCommonUtils().isFastDoubleClick()) {
                         return;
                     }
                     U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), SearchSongFragment.class)

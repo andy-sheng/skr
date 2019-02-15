@@ -76,8 +76,6 @@ public class U {
 
     private static LogUploadUtils logUploadUtils;
 
-    private static TimeUtils timeUtils;
-
     private static MediaUtils mediaUtils;
 
     public static void setApp(Application app) {
@@ -313,13 +311,6 @@ public class U {
             logUploadUtils = new LogUploadUtils();
         }
         return logUploadUtils;
-    }
-
-    public static TimeUtils getTimeUtils() {
-        if (timeUtils == null) {
-            timeUtils = new TimeUtils();
-        }
-        return timeUtils;
     }
 
     public static MediaUtils getMediaUtils() {
