@@ -131,6 +131,12 @@ public class EditInfoSexFragment extends BaseFragment {
             isUpload = bundle.getBoolean(UploadAccountInfoActivity.BUNDLE_IS_UPLOAD);
             uploadNickname = bundle.getString(UploadAccountInfoActivity.BUNDLE_UPLOAD_NICKNAME);
         }
+
+        if (MyUserInfoManager.getInstance().getSex() == ESex.SX_MALE.getValue()) {
+            selectSex(true);
+        } else if (MyUserInfoManager.getInstance().getSex() == ESex.SX_FEMALE.getValue()) {
+            selectSex(false);
+        }
     }
 
     private void clickNext() {

@@ -32,6 +32,7 @@ import com.module.home.updateinfo.UploadAccountInfoActivity;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
+import com.zq.live.proto.Common.ESex;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -122,7 +123,7 @@ public class EditInfoAgeFragment extends BaseFragment {
         String birthday = MyUserInfoManager.getInstance().getMyUserInfo().getBirthday();
         Calendar selectedDate = Calendar.getInstance();//系统当前时间
         if (TextUtils.isEmpty(birthday)) {
-            selectedDate.set(2000, 12, 12);
+            selectedDate.set(2000, 11, 12);
         } else {
             String[] strings = birthday.split("-");
             int year = Integer.valueOf(strings[0]);

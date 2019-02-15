@@ -107,7 +107,7 @@
                 android:paddingRight="@dimen/view_6_dp"
                 android:paddingBottom="@dimen/view_6_dp"
                 android:text="登录"
-                android:textColor="#0C2275"
+                android:textColor="#660C2275"
                 android:textSize="@dimen/textsize_20_dp"
                 android:textStyle="bold" />
 

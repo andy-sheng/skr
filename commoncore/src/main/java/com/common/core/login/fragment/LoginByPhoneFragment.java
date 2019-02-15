@@ -1,5 +1,6 @@
 package com.common.core.login.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -122,6 +123,7 @@ public class LoginByPhoneFragment extends BaseFragment {
                 });
 
         mLoginTv.setClickable(false);
+        mLoginTv.setTextColor(Color.parseColor("#660C2275"));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -164,6 +166,7 @@ public class LoginByPhoneFragment extends BaseFragment {
                     mCodeInputTv.setFocusableInTouchMode(true);
                     mCodeInputTv.requestFocus();
                     mLoginTv.setClickable(true);
+                    mLoginTv.setTextColor(Color.parseColor("#0C2275"));
                     mLoginTv.setBackgroundResource(R.drawable.img_btn_bg_yellow);
                     startTimeTask();
                 } else {
