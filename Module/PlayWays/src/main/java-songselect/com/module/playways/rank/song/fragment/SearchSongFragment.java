@@ -158,12 +158,7 @@ public class SearchSongFragment extends BaseFragment {
                 switch (action) {
                     case CommonTitleBar.ACTION_RIGHT_TEXT:
                         U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-                        mTitlebar.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                U.getFragmentUtils().popFragment(SearchSongFragment.this);
-                            }
-                        }, 200);
+                        U.getFragmentUtils().popFragment(SearchSongFragment.this);
                         break;
                     case CommonTitleBar.ACTION_SEARCH_SUBMIT:
                         searchMusicItems(extra);
