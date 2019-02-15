@@ -133,12 +133,11 @@ if [[ $1 = "app" ]]; then
 		    echo rm -rf app/build/outputs/apk
 		    rm -rf app/build/outputs/apk
 		    ./gradlew :app:assembleRelease
-		    installApkForAllDevices app/build/outputs/apk/channel_mishop/release/app-channel_mishop-release.apk
-            myandroidlog.sh  com.zq.live
             #拷贝所有包到主目录
             rm -rf ./publish
             mkdir ./publish
 			walk app/build/outputs/apk
+			echo "拷贝完毕"
 		else
 		    echo "只编译release default渠道"
 		    ./gradlew :app:assemblechannel_defaultRelease --stacktrace
