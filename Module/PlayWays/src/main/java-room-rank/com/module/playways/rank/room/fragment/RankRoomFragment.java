@@ -242,8 +242,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         initTurnChangeView();
         initGiftDisplayView();
 
-        mVoiceScaleView = mRootView.findViewById(R.id.voice_scale_view);
-
         showReadyGoView();
 
         mCorePresenter = new RankCorePresenter(this, mRoomData);
@@ -766,6 +764,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         mManyLyricsView = mRootView.findViewById(R.id.many_lyrics_view);
         mManyLyricsView.setLrcStatus(AbstractLrcView.LRCSTATUS_LOADING);
 
+        mVoiceScaleView = mRootView.findViewById(R.id.voice_scale_view);
     }
 
     private void initTurnChangeView() {
