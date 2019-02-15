@@ -136,6 +136,7 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
                             .setHasAnimation(true)
                             .addDataBeforeAdd(0, songModel)
                             .addDataBeforeAdd(1, mGameType)
+                            .addDataBeforeAdd(2, true)
                             .setFragmentDataListener(new FragmentDataListener() {
                                 @Override
                                 public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
