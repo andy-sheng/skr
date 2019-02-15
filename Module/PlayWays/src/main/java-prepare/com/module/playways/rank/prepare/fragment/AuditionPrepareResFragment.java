@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
+import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.HttpUtils;
@@ -95,7 +96,8 @@ public class AuditionPrepareResFragment extends BaseFragment {
 
             @Override
             public void onFailed() {
-
+                U.getToastUtil().showShort("下载资源失败，请退出重试");
+                MyLog.w(TAG, "download song res failed");
             }
         }, mPrepareData.getSongModel());
 

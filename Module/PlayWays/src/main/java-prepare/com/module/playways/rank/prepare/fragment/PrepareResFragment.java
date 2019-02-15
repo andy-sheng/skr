@@ -133,7 +133,8 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
 
             @Override
             public void onFailed() {
-                MyLog.d(TAG, "onFailed");
+                U.getToastUtil().showShort("下载资源失败，请退出重试");
+                MyLog.w(TAG, "download song res failed");
             }
         };
 
