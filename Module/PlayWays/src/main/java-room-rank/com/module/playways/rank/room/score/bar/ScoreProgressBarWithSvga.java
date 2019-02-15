@@ -110,10 +110,7 @@ public class ScoreProgressBarWithSvga extends RelativeLayout {
         int tx = mScoreProgressBar.getStarXByScore(progress);
         MyLog.d(TAG, "setProgress1" + " progress=" + progress + " star_tx=" + tx);
         if (tx > 0) {
-            mStarIv.setVisibility(VISIBLE);
-            mStarIv.setTranslationX(-getWidth() / 2 + tx);
-            mStarIv.startAnimation();
-
+            startStarAnimation("star.svga", tx);
             if (progress > 90) {
                 startScoreAnimation("score_sss.svga", tx, R.drawable.ycjm_jdt_sss);
             } else if (progress > 75) {
@@ -128,6 +125,25 @@ public class ScoreProgressBarWithSvga extends RelativeLayout {
 
     public void setProgress2(int progress) {
         mScoreProgressBar.setProgress2(progress);
+    }
+
+    private void startStarAnimation(String assetsName, int tx) {
+        getSVGAParser().parse(assetsName, new SVGAParser.ParseCompletion() {
+            @Override
+            public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
+                SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
+                mStarIv.setTranslationX(-getWidth() / 2 + tx);
+                mStarIv.setVisibility(VISIBLE);
+                mStarIv.stopAnimation(true);
+                mStarIv.setImageDrawable(drawable);
+                mStarIv.startAnimation();
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
     }
 
     private void startScoreAnimation(String assetsName, int tx, int drawableId) {
