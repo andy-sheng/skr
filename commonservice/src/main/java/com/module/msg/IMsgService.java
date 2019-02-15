@@ -17,9 +17,10 @@ public interface IMsgService extends IProvider {
 
     /**
      * 得到当前融云链接状态以及描述
+     *
      * @return
      */
-    Pair<Integer,String> getConnectStatus();
+    Pair<Integer, String> getConnectStatus();
 
     /**
      * 与融云服务器建立连接
@@ -55,7 +56,7 @@ public interface IMsgService extends IProvider {
 
     void sendChatRoomMessage(String roomId, int messageType, String content, ICallback callback);
 
-    void syncHistoryFromChatRoom(String roomId, int count,boolean reverse, ICallback callback);
+    void syncHistoryFromChatRoom(String roomId, int count, boolean reverse, ICallback callback);
 
     /**
      * 其他module设置自己的push处理模块
@@ -79,4 +80,10 @@ public interface IMsgService extends IProvider {
      * 在融云服务器上更新当前用户信息
      */
     void updateCurrentUserInfo();
+
+    void addToBlacklist(String userId, ICallback callback);
+
+    void removeFromBlacklist(String userId, ICallback callback);
+
+    void getBlacklist(ICallback callback);
 }

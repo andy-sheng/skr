@@ -60,8 +60,8 @@ public class RongMsgServiceImpl implements IMsgService {
     }
 
     @Override
-    public void syncHistoryFromChatRoom(String roomId, int count,boolean reverse,ICallback callback) {
-        RongMsgManager.getInstance().syncHistoryFromChatRoom(roomId, count,reverse,callback);
+    public void syncHistoryFromChatRoom(String roomId, int count, boolean reverse, ICallback callback) {
+        RongMsgManager.getInstance().syncHistoryFromChatRoom(roomId, count, reverse, callback);
     }
 
     @Override
@@ -82,6 +82,21 @@ public class RongMsgServiceImpl implements IMsgService {
     @Override
     public void updateCurrentUserInfo() {
         RongMsgManager.getInstance().updateCurrentUserInfo();
+    }
+
+    @Override
+    public void addToBlacklist(String userId, ICallback callback) {
+        RongMsgManager.getInstance().addToBlacklist(userId, callback);
+    }
+
+    @Override
+    public void removeFromBlacklist(String userId, ICallback callback) {
+        RongMsgManager.getInstance().removeFromBlacklist(userId, callback);
+    }
+
+    @Override
+    public void getBlacklist(ICallback callback) {
+        RongMsgManager.getInstance().getBlacklist(callback);
     }
 
 

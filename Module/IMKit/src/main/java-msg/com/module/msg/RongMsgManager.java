@@ -325,4 +325,58 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
         RongIM.getInstance().refreshUserInfoCache(userInfo);
     }
 
+    public void addToBlacklist(String userId, ICallback callback) {
+        RongIM.getInstance().addToBlacklist(userId, new RongIMClient.OperationCallback() {
+            @Override
+            public void onSuccess() {
+                if (callback != null) {
+                    callback.onSucess(null);
+                }
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+                if (callback != null) {
+                    callback.onFailed(errorCode, errorCode.getValue(), errorCode.getMessage());
+                }
+            }
+        });
+    }
+
+    public void removeFromBlacklist(String userId, ICallback callback) {
+        RongIM.getInstance().removeFromBlacklist(userId, new RongIMClient.OperationCallback() {
+            @Override
+            public void onSuccess() {
+                if (callback != null) {
+                    callback.onSucess(null);
+                }
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+                if (callback != null) {
+                    callback.onFailed(errorCode, errorCode.getValue(), errorCode.getMessage());
+                }
+            }
+        });
+    }
+
+    public void getBlacklist(ICallback callback) {
+        RongIM.getInstance().getBlacklist(new RongIMClient.GetBlacklistCallback() {
+            @Override
+            public void onSuccess(String[] strings) {
+                if (callback != null) {
+                    callback.onSucess(strings);
+                }
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+                if (callback != null) {
+                    callback.onFailed(errorCode, errorCode.getValue(), errorCode.getMessage());
+                }
+            }
+        });
+    }
+
 }
