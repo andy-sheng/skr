@@ -310,9 +310,9 @@ public class AuditionFragment extends BaseFragment {
         mRlControlContainer.setVisibility(View.GONE);
         mTvRecordTip.setText("点击结束试音演唱");
         mIvPlay.setEnabled(true);
-        if(RECORD_BY_CALLBACK) {
+        if (RECORD_BY_CALLBACK) {
             EngineManager.getInstance().startAudioRecording(PCM_SAVE_PATH, Constants.AUDIO_RECORDING_QUALITY_HIGH, true);
-        }else{
+        } else {
             EngineManager.getInstance().startAudioRecording(ACC_SAVE_PATH, Constants.AUDIO_RECORDING_QUALITY_HIGH, false);
         }
 
@@ -415,9 +415,9 @@ public class AuditionFragment extends BaseFragment {
             mExoPlayer.reset();
         }
         if (mExoPlayer == null) {
-            if(RECORD_BY_CALLBACK){
+            if (RECORD_BY_CALLBACK) {
                 mExoPlayer = new AndroidMediaPlayer();
-            }else{
+            } else {
                 mExoPlayer = new ExoPlayer();
             }
 
@@ -460,9 +460,9 @@ public class AuditionFragment extends BaseFragment {
                 }
             });
         }
-        if(RECORD_BY_CALLBACK){
+        if (RECORD_BY_CALLBACK) {
             mExoPlayer.startPlayPcm(PCM_SAVE_PATH, 2, 44100, 44100 * 2);
-        }else{
+        } else {
             mExoPlayer.startPlay(ACC_SAVE_PATH);
         }
 
@@ -525,7 +525,11 @@ public class AuditionFragment extends BaseFragment {
 
         File midiFile = SongResUtils.getMIDIFileByUrl(songModel.getMidi());
         if (accFile != null) {
-            EngineManager.getInstance().startAudioMixing((int) MyUserInfoManager.getInstance().getUid(), accFile.getAbsolutePath(), midiFile.getAbsolutePath(), songModel.getBeginMs(), true, false, 1);
+            if (RECORD_BY_CALLBACK) {
+                EngineManager.getInstance().startAudioMixing((int) MyUserInfoManager.getInstance().getUid(), accFile.getAbsolutePath(), midiFile.getAbsolutePath(), songModel.getBeginMs(), false, false, 1);
+            } else {
+                EngineManager.getInstance().startAudioMixing((int) MyUserInfoManager.getInstance().getUid(), accFile.getAbsolutePath(), midiFile.getAbsolutePath(), songModel.getBeginMs(), true, false, 1);
+            }
         }
     }
 
