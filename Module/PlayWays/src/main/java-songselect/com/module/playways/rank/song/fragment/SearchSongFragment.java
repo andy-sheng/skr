@@ -157,7 +157,13 @@ public class SearchSongFragment extends BaseFragment {
             public void onClicked(View v, int action, String extra) {
                 switch (action) {
                     case CommonTitleBar.ACTION_RIGHT_TEXT:
-                        onBackPressed();
+                        U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+                        mTitlebar.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                U.getFragmentUtils().popFragment(SearchSongFragment.this);
+                            }
+                        }, 200);
                         break;
                     case CommonTitleBar.ACTION_SEARCH_SUBMIT:
                         searchMusicItems(extra);
@@ -187,6 +193,13 @@ public class SearchSongFragment extends BaseFragment {
                 mPublishSubject.onNext(editable.toString());
             }
         });
+
+        mTitlebar.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                U.getKeyBoardUtils().showSoftInputKeyBoard(getContext());
+            }
+        }, 200);
 
         LoadSir mLoadSir = new LoadSir.Builder()
                 .addCallback(new LoadingCallback(R.drawable.wulishigedan, "数据正在努力加载中..."))
@@ -286,13 +299,6 @@ public class SearchSongFragment extends BaseFragment {
     @Override
     public boolean useEventBus() {
         return false;
-    }
-
-    @Override
-    protected boolean onBackPressed() {
-        U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-        U.getFragmentUtils().popFragment(SearchSongFragment.this);
-        return true;
     }
 
     @Override

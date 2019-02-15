@@ -955,7 +955,6 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
             etSearchHint.setFocusableInTouchMode(true);
             etSearchHint.setCursorVisible(true);
             etSearchHint.requestFocus();
-            U.getKeyBoardUtils().showSoftInputKeyBoard(getContext());
         } else {
             U.getKeyBoardUtils().hideSoftInputKeyBoard(getContext(), etSearchHint);
         }
