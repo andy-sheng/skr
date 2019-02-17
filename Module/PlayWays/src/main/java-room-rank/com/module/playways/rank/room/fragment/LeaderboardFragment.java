@@ -270,7 +270,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
 
     private String getAreaFromLocation(Location location) {
         if (!TextUtils.isEmpty(location.getDistrict())) {
-            return location.getDistrict();
+            return location.getDistrict() + "榜";
         } else {
             return "未知位置";
         }
