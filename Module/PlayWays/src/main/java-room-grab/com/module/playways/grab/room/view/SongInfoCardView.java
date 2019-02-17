@@ -89,7 +89,7 @@ public class SongInfoCardView extends RelativeLayout {
             mSongNameTv.setVisibility(VISIBLE);
             mSongOwnerTv.setVisibility(VISIBLE);
             mBaibanIv.setVisibility(GONE);
-            mSongNameTv.setText(songModel.getItemName());
+            mSongNameTv.setText("《" + songModel.getItemName() + "》");
             mSongOwnerTv.setText(songModel.getOwner());
         }
 
@@ -165,8 +165,8 @@ public class SongInfoCardView extends RelativeLayout {
                                 .build()
                 )
                 .build();
-        String url  = httpImage.getUrl();
-        MyLog.d(TAG,"requestDynamicBitmapItem" + " url=" + url);
+        String url = httpImage.getUrl();
+        MyLog.d(TAG, "requestDynamicBitmapItem" + " url=" + url);
         SVGADynamicEntity dynamicEntity = new SVGADynamicEntity();
         if (!TextUtils.isEmpty(url)) {
             dynamicEntity.setDynamicImage(url, "cover");
