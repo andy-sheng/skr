@@ -1,5 +1,6 @@
 package com.common.core.scheme.processor;
 
+import android.app.Activity;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
@@ -24,7 +25,7 @@ public class ZqSchemeProcessorManager {
         mISchemeProcessors.add(new DefaultProcessor());
     }
 
-    public void process(final Uri uri, @NonNull BaseActivity activity) {
+    public void process(final Uri uri, @NonNull Activity activity) {
         for (ISchemeProcessor processor : mISchemeProcessors) {
             if(processor.accept(uri)){
                 processor.process(uri, activity);

@@ -1,5 +1,6 @@
 package com.common.core.scheme.processor;
 
+import android.app.Activity;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
@@ -14,7 +15,7 @@ import com.common.log.MyLog;
 public class SchemeProcessor implements ISchemeProcessor {
     private static final String TAG = SchemeConstants.LOG_PREFIX + SchemeProcessor.class.getSimpleName();
 
-    public boolean process(@NonNull Uri uri, @NonNull BaseActivity activity) {
+    public boolean process(@NonNull Uri uri, @NonNull Activity activity) {
         MyLog.w(TAG, "" + uri);
         return false;
     }

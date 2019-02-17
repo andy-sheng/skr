@@ -27,6 +27,8 @@ public class MyLog {
     static boolean sHasInit = false;
     static boolean sForceOpenFlag = false;
 
+    public final static String TAG = "SKRER";
+
     static {
         sForceOpenFlag = U.getPreferenceUtils().getSettingBoolean("key_forceOpenFlag", false);
         Log.e("MyLog", "forceOpenFlag:" + sForceOpenFlag);
@@ -45,7 +47,7 @@ public class MyLog {
             }
             LogConfiguration config = new LogConfiguration.Builder()
                     .logLevel(sCurrentLogLevel)            // 指定日志级别，低于该级别的日志将不会被打印，默认为 LogLevel.ALL
-                    .tag("SKER")                                         // 指定 TAG，默认为 "X-LOG"
+                    .tag(TAG)                                         // 指定 TAG，默认为 "X-LOG"
 //                    .t()                                                   // 允许打印线程信息，默认禁止
 //                    .st(2)                                                 // 允许打印深度为2的调用栈信息，默认禁止
 //                .b()                                                   // 允许打印日志边框，默认禁止
@@ -62,7 +64,7 @@ public class MyLog {
                     .addInterceptor(new MyInterceptor())                   // 添加一个日志拦截器
                     .build();
 
-            Printer androidPrinter = new AndroidPrinter();             // 通过 android.util.Log 打印日志的打印器
+            //Printer androidPrinter = new AndroidPrinter();             // 通过 android.util.Log 打印日志的打印器
             Printer consolePrinter = new ConsolePrinter();             // 通过 System.out 打印日志到控制台的打印器
             Printer filePrinter = new FilePrinter                      // 打印日志到文件的打印器
                     .Builder(U.getAppInfoUtils().getSubDirPath("logs"))                              // 指定保存日志文件的路径
@@ -73,7 +75,7 @@ public class MyLog {
 
             XLog.init(                                                 // 初始化 XLog
                     config,                                                // 指定日志配置，如果不指定，会默认使用 new LogConfiguration.Builder().build()
-                    androidPrinter,                                        // 添加任意多的打印器。如果没有添加任何打印器，会默认使用 AndroidPrinter(Android)/ConsolePrinter(java)
+//                    androidPrinter,                                        // 添加任意多的打印器。如果没有添加任何打印器，会默认使用 AndroidPrinter(Android)/ConsolePrinter(java)
                     filePrinter
 //                    ,ScreenLogPrinter.getInstance()
             );
@@ -85,6 +87,7 @@ public class MyLog {
     // 日志打印方法
     // ------------------------------------------------------------------------------
     public static final void v(String msg) {
+        Log.v(TAG,msg);
         if (!sHasInit) {
             return;
         }
@@ -92,6 +95,7 @@ public class MyLog {
     }
 
     public static final void d(String msg) {
+        Log.d(TAG,msg);
         if (!sHasInit) {
             return;
         }
@@ -99,6 +103,7 @@ public class MyLog {
     }
 
     public static final void w(String msg) {
+        Log.w(TAG,msg);
         if (!sHasInit) {
             return;
         }
@@ -121,6 +126,7 @@ public class MyLog {
     }
 
     public static final void e(String msg) {
+        Log.e(TAG,msg);
         if (!sHasInit) {
             return;
         }
@@ -130,6 +136,7 @@ public class MyLog {
     /*分割*/
 
     public static final void v(String tag, String msg) {
+        Log.v(tag,msg);
         if (!sHasInit) {
             return;
         }
@@ -137,6 +144,7 @@ public class MyLog {
     }
 
     public static final void d(String tag, String msg) {
+        Log.d(tag,msg);
         if (!sHasInit) {
             return;
         }
@@ -145,6 +153,7 @@ public class MyLog {
 
 
     public static final void w(String tag, String msg) {
+        Log.w(tag,msg);
         if (!sHasInit) {
             return;
         }
@@ -153,7 +162,7 @@ public class MyLog {
 
 
     public static final void i(String tag, String msg) {
-
+        Log.i(tag,msg);
         if (!sHasInit) {
             return;
         }
@@ -161,6 +170,7 @@ public class MyLog {
     }
 
     public static final void e(String tag, String msg) {
+        Log.e(tag,msg);
         if (!sHasInit) {
             return;
         }
@@ -171,6 +181,7 @@ public class MyLog {
 
 
     public static final void d(String tag, String msg, Throwable tr) {
+        Log.d(tag,msg,tr);
         if (!sHasInit) {
             return;
         }
@@ -178,6 +189,7 @@ public class MyLog {
     }
 
     public static final void d(String tag, Throwable tr) {
+        Log.d(tag,"",tr);
         if (!sHasInit) {
             return;
         }
@@ -185,6 +197,7 @@ public class MyLog {
     }
 
     public static final void d(Throwable tr) {
+        Log.d(TAG,"",tr);
         if (!sHasInit) {
             return;
         }
@@ -192,6 +205,7 @@ public class MyLog {
     }
 
     public static final void e(String tag, String msg, Throwable tr) {
+        Log.e(tag,msg,tr);
         if (!sHasInit) {
             return;
         }
@@ -199,6 +213,7 @@ public class MyLog {
     }
 
     public static final void e(String tag, Throwable tr) {
+        Log.e(tag,"",tr);
         if (!sHasInit) {
             return;
         }
@@ -206,6 +221,7 @@ public class MyLog {
     }
 
     public static final void e(Throwable tr) {
+        Log.e(TAG,"",tr);
         if (!sHasInit) {
             return;
         }

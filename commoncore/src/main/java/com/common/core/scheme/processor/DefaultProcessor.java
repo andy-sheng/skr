@@ -1,5 +1,6 @@
 package com.common.core.scheme.processor;
 
+import android.app.Activity;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
@@ -11,7 +12,7 @@ public class DefaultProcessor implements ISchemeProcessor {
     public final static String TAG = SchemeConstants.LOG_PREFIX + "DefaultProcessor";
 
     @Override
-    public boolean process(@NonNull Uri uri, @NonNull BaseActivity activity) {
+    public boolean process(@NonNull Uri uri, @NonNull Activity activity) {
         MyLog.w(TAG, "" + uri);
         return true;
     }

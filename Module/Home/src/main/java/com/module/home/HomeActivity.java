@@ -50,6 +50,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
     NestViewPager mMainVp;
     IMsgService mMsgService;
     HomeCorePresenter mHomePresenter;
+    String mPengingSchemeUri; //想要跳转的scheme，但因为没登录被挂起了
     boolean mFromCreate = false;
 
     @Override
@@ -82,10 +83,9 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
         mPersonInfoBtn = (ExImageView) findViewById(R.id.person_info_btn);
         mMainVp = (NestViewPager) findViewById(R.id.main_vp);
         mMsgService = ModuleServiceManager.getInstance().getMsgService();
-
+        mMainVp.setViewPagerCanScroll(false);
         checkIfFromSchema();
 
-        mMainVp.setViewPagerCanScroll(false);
         FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
@@ -161,20 +161,39 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
                 });
         mMainVp.setCurrentItem(0, false);
         mFromCreate = true;
-
         U.getSoundUtils().preLoad(TAG, R.raw.trans_tab);
     }
 
-    private void checkIfFromSchema(){
-        if(getIntent() != null){
-            String schema = getIntent().getStringExtra("from_schema");
-            if(!TextUtils.isEmpty(schema)){
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_SCHEME)
-                        .withString("uri", schema)
-                        .navigation();
+    private void checkIfFromSchema() {
+        if (getIntent() != null) {
+            String scheme = getIntent().getStringExtra("from_scheme");
+            if (!TextUtils.isEmpty(scheme)) {
+                if (UserAccountManager.getInstance().hasAccount()) {
+                    goSchemeActivity(scheme);
+                } else {
+                    MyLog.d(TAG, "挂起scheme mPengingSchemeUri:" + mPengingSchemeUri);
+                    mPengingSchemeUri = scheme;
+                }
             }
         }
     }
+
+    @Override
+    public void tryJumpSchemeIfNeed() {
+        // 账号登录等信息都成功了，看看有没有悬而未全的scheme
+        if (!TextUtils.isEmpty(mPengingSchemeUri)) {
+            goSchemeActivity(mPengingSchemeUri);
+        }
+    }
+
+    private void goSchemeActivity(String scheme) {
+        MyLog.d(TAG, "goSchemeActivity" + " scheme=" + scheme);
+        ARouter.getInstance().build(RouterConstants.ACTIVITY_SCHEME)
+                .withString("uri", scheme)
+                .navigation();
+        mPengingSchemeUri = null;
+    }
+
 
     @Override
     protected void onResume() {
@@ -246,4 +265,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
         mMessageBtn.setSelected(false);
         mPersonInfoBtn.setSelected(false);
     }
+
+
 }

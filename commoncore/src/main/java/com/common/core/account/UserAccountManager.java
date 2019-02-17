@@ -368,8 +368,6 @@ public class UserAccountManager {
                 }
             }
         });
-
-
     }
 
     // 获取IM的token

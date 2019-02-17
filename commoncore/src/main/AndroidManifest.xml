@@ -55,6 +55,7 @@
             android:name="com.common.core.scheme.SchemeSdkActivity"
             android:excludeFromRecents="true"
             android:exported="true"
+            android:launchMode="singleTask"
             android:noHistory="true"
             android:theme="@style/TransparentTheme">
 
@@ -67,6 +68,14 @@
                 <data android:scheme="inframeskr" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="com.common.core.scheme.UmengThirdPushActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:noHistory="true"
+            android:theme="@style/TransparentTheme" />
 
         <!-- milinkservice -->
         <!--<service-->
@@ -157,17 +166,13 @@
             android:name="com.common.webview.AgentWebActivity"
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            >
-        </activity>
+            android:screenOrientation="portrait"></activity>
 
         <activity
             android:name="com.common.webview.ExpendWebActivity"
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            >
-        </activity>
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

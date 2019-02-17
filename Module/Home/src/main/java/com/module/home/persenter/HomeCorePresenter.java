@@ -145,6 +145,7 @@ public class HomeCorePresenter {
                 public void onRequestPermissionSuccess() {
                     MyLog.d(TAG, "onRequestPermissionSuccess");
                     onAgree();
+                    check4(activity);
                 }
 
                 @Override
@@ -157,6 +158,31 @@ public class HomeCorePresenter {
                 public void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions) {
                     MyLog.d(TAG, "onRequestPermissionFailure" + " permissions=" + permissions);
                     onReject("请开启定位权限，保证应用正常使用");
+                }
+            }, activity);
+        } else {
+            onAgree();
+            check4(activity);
+        }
+    }
+
+    void check4(Activity activity){
+        if (!U.getPermissionUtils().checkReadPhoneState(activity)) {
+            U.getPermissionUtils().requestReadPhonestate(new PermissionUtils.RequestPermission() {
+                @Override
+                public void onRequestPermissionSuccess() {
+                    MyLog.d(TAG, "onRequestPermissionSuccess");
+                    onAgree();
+                }
+
+                @Override
+                public void onRequestPermissionFailure(List<String> permissions) {
+                    MyLog.d(TAG, "onRequestPermissionFailure" + " permissions=" + permissions);
+                }
+
+                @Override
+                public void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions) {
+                    MyLog.d(TAG, "onRequestPermissionFailure" + " permissions=" + permissions);
                 }
             }, activity);
         } else {
@@ -278,6 +304,8 @@ public class HomeCorePresenter {
                         }
                     } else {
                         MyUserInfoManager.getInstance().trySyncLocation();
+                        //账号正常
+                        mView.tryJumpSchemeIfNeed();
                     }
                 } else {
 

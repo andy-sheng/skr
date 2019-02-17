@@ -12,7 +12,6 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.core.R;
-import com.common.core.cta.CTANotifyFragment;
 import com.common.core.scheme.processor.ZqSchemeProcessorManager;
 import com.common.log.MyLog;
 import com.common.utils.U;
@@ -38,7 +37,6 @@ public class SchemeSdkActivity extends BaseActivity {
 
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
-
         return 0;
     }
 
@@ -46,33 +44,12 @@ public class SchemeSdkActivity extends BaseActivity {
     public void initData(@Nullable Bundle savedInstanceState) {
         U.getStatusBarUtil().setTransparentBar(this, true);
         overridePendingTransition(R.anim.slide_in_right, 0);
-
-//        if (isNeedShowCtaDialog()) {
-//            CTANotifyFragment.openFragment(this, new CTANotifyFragment.CTANotifyButtonClickListener() {
-//
-//                @Override
-//                public void onClickCancelButton() {
-//                    finish();
-//                }
-//
-//                @Override
-//                public void onClickConfirmButton() {
-//                    mHandler.post(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            process();
-//                        }
-//                    });
-//                }
-//            });
-//        } else {
         mHandler.post(new Runnable() {
             @Override
             public void run() {
                 process(getIntent());
             }
         });
-//        }
     }
 
     @Override
@@ -95,8 +72,9 @@ public class SchemeSdkActivity extends BaseActivity {
         if (!isHomeActivityExist()) {
             MyLog.w(TAG, "HomeActivity不存在，需要先启动HomeActivity");
             ARouter.getInstance().build(RouterConstants.ACTIVITY_HOME)
-                    .withString("from_schema", uri)
+                    .withString("from_scheme", uri)
                     .navigation();
+            finish();
             return;
         } else {
             MyLog.w(TAG, "HomeActivity存在");
@@ -132,7 +110,6 @@ public class SchemeSdkActivity extends BaseActivity {
                 return true;
             }
         }
-
         return false;
     }
 
@@ -146,14 +123,4 @@ public class SchemeSdkActivity extends BaseActivity {
         ZqSchemeProcessorManager.getInstance().process(uri, this);
     }
 
-    /**
-     * 是否工信部的包
-     * "5005_1_android".equalsIgnoreCase(Constants.ReleaseChannel)
-     *
-     * @return
-     */
-//    public boolean isNeedShowCtaDialog() {
-//
-//        return false;
-//    }
 }

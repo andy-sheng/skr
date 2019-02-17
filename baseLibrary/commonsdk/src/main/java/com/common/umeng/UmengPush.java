@@ -9,6 +9,7 @@ import android.widget.RemoteViews;
 import com.common.base.R;
 import com.common.log.MyLog;
 import com.common.utils.U;
+import com.umeng.message.IUmengCallback;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
 import com.umeng.message.UTrack;
@@ -16,6 +17,7 @@ import com.umeng.message.UmengMessageHandler;
 import com.umeng.message.UmengNotificationClickHandler;
 import com.umeng.message.entity.UMessage;
 
+import org.android.agoo.xiaomi.MiPushRegistar;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.Map;
@@ -46,7 +48,6 @@ public class UmengPush {
             @Override
             public void onSuccess(String deviceToken) {
                 //注册成功会返回deviceToken deviceToken是推送消息的唯一标志
-                Log.w(TAG, "注册成功" + " deviceToken=" + deviceToken);
                 MyLog.w(TAG, "注册成功" + " deviceToken=" + deviceToken);
                 sDeviceToken = deviceToken;
                 EventBus.getDefault().post(new UmengPushRegisterSuccessEvent());
@@ -60,7 +61,7 @@ public class UmengPush {
         });
 
         // 小米push
-//        MiPushRegistar.register(U.app(), "2882303761517932750", "5701793259750");
+        MiPushRegistar.register(U.app(), "2882303761517932750", "5701793259750");
 
         UmengMessageHandler messageHandler = new UmengMessageHandler() {
 
@@ -111,6 +112,12 @@ public class UmengPush {
         mPushAgent.setNotificationClickHandler(notificationClickHandler);
     }
 
+    /**
+     * 打印通知消息
+     *
+     * @param msg
+     * @return
+     */
     static String getPrintPushMsg(UMessage msg) {
         StringBuilder sb = new StringBuilder();
         sb.append(" title=").append(msg.title)
@@ -131,10 +138,20 @@ public class UmengPush {
         return sb.toString();
     }
 
+    /**
+     * 获取注册push的id
+     *
+     * @return
+     */
     public static String getDeviceToken() {
         return sDeviceToken;
     }
 
+    /**
+     * 设置别名
+     *
+     * @param uuidAsLong
+     */
     public static void setAlias(String uuidAsLong) {
         if (TextUtils.isEmpty(sDeviceToken)) {
             PushAgent.getInstance(U.app()).setAlias(uuidAsLong, "skr_id", new UTrack.ICallBack() {
@@ -146,11 +163,34 @@ public class UmengPush {
         }
     }
 
+    /**
+     * 清除别名
+     *
+     * @param uuidAsLong
+     */
     public static void clearAlias(String uuidAsLong) {
         PushAgent.getInstance(U.app()).deleteAlias(uuidAsLong, "skr_id", new UTrack.ICallBack() {
             @Override
             public void onMessage(boolean b, String s) {
                 MyLog.d(TAG, "clearAlias onMessage" + " b=" + b + " s=" + s);
+            }
+        });
+    }
+
+    /**
+     * 关闭push
+     */
+    public static void disablePush() {
+        MyLog.d(TAG,"disablePush" );
+        PushAgent.getInstance(U.app()).disable(new IUmengCallback() {
+            @Override
+            public void onSuccess() {
+                MyLog.d(TAG, "disablePush onSuccess");
+            }
+
+            @Override
+            public void onFailure(String s, String s1) {
+                MyLog.d(TAG, "onFailure" + " s=" + s + " s1=" + s1);
             }
         });
     }

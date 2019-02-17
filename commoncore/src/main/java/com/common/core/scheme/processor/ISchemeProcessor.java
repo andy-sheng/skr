@@ -1,5 +1,6 @@
 package com.common.core.scheme.processor;
 
+import android.app.Activity;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
@@ -11,7 +12,7 @@ public interface ISchemeProcessor {
      * @param activity
      * @return 有没有解析成功
      */
-    boolean process(@NonNull Uri uri, @NonNull BaseActivity activity);
+    boolean process(@NonNull Uri uri, @NonNull Activity activity);
 
     /**
      *

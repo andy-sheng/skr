@@ -50,6 +50,9 @@ public class PermissionUtils {
     PermissionUtils() {
     }
 
+    public boolean checkReadPhoneState(Activity activity) {
+        return checkPermission(activity, Manifest.permission.READ_PHONE_STATE);
+    }
 
     public boolean checkRecordAudio(Activity activity) {
         return checkPermission(activity, Manifest.permission.RECORD_AUDIO);
