@@ -8,6 +8,7 @@ import android.widget.RemoteViews;
 
 import com.common.base.R;
 import com.common.log.MyLog;
+import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.umeng.message.IUmengCallback;
 import com.umeng.message.IUmengRegisterCallback;
@@ -17,6 +18,7 @@ import com.umeng.message.UmengMessageHandler;
 import com.umeng.message.UmengNotificationClickHandler;
 import com.umeng.message.entity.UMessage;
 
+import org.android.agoo.huawei.HuaWeiRegister;
 import org.android.agoo.xiaomi.MiPushRegistar;
 import org.greenrobot.eventbus.EventBus;
 
@@ -43,25 +45,13 @@ public class UmengPush {
 
         //注册推送服务，每次调用register方法都会回调该接口
         Log.d(TAG, "mPushAgent.register begin");
-        mPushAgent.register(new IUmengRegisterCallback() {
-
-            @Override
-            public void onSuccess(String deviceToken) {
-                //注册成功会返回deviceToken deviceToken是推送消息的唯一标志
-                MyLog.w(TAG, "注册成功" + " deviceToken=" + deviceToken);
-                sDeviceToken = deviceToken;
-                EventBus.getDefault().post(new UmengPushRegisterSuccessEvent());
-            }
-
-            @Override
-            public void onFailure(String s, String s1) {
-                MyLog.w(TAG, "注册失败" + " s=" + s + " s1=" + s1);
-                sDeviceToken = "";
-            }
-        });
+        registerUmengPush(0);
 
         // 小米push
         MiPushRegistar.register(U.app(), "2882303761517932750", "5701793259750");
+
+        // 华为push
+        HuaWeiRegister.register(U.app());
 
         UmengMessageHandler messageHandler = new UmengMessageHandler() {
 
@@ -110,6 +100,39 @@ public class UmengPush {
         };
 
         mPushAgent.setNotificationClickHandler(notificationClickHandler);
+    }
+
+    static void registerUmengPush(int tryTime) {
+        if (tryTime > 2) {
+            return;
+        }
+        PushAgent mPushAgent = PushAgent.getInstance(U.app());
+        mPushAgent.register(new IUmengRegisterCallback() {
+
+            @Override
+            public void onSuccess(String deviceToken) {
+                //注册成功会返回deviceToken deviceToken是推送消息的唯一标志
+                MyLog.w(TAG, "注册成功" + " deviceToken=" + deviceToken);
+                sDeviceToken = deviceToken;
+                EventBus.getDefault().post(new UmengPushRegisterSuccessEvent());
+            }
+
+            @Override
+            public void onFailure(String s, String s1) {
+                MyLog.w(TAG, "注册失败" + " s=" + s + " s1=" + s1);
+                sDeviceToken = "";
+                HandlerTaskTimer.newBuilder()
+                        .delay(2000)
+                        .start(new HandlerTaskTimer.ObserverW() {
+                            @Override
+                            public void onNext(Integer integer) {
+                                MyLog.d(TAG, "重新尝试注册UmengPush");
+                                registerUmengPush(tryTime + 1);
+                            }
+                        });
+
+            }
+        });
     }
 
     /**
@@ -181,7 +204,7 @@ public class UmengPush {
      * 关闭push
      */
     public static void disablePush() {
-        MyLog.d(TAG,"disablePush" );
+        MyLog.d(TAG, "disablePush");
         PushAgent.getInstance(U.app()).disable(new IUmengCallback() {
             @Override
             public void onSuccess() {
