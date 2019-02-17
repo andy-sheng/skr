@@ -102,7 +102,7 @@ public class GiftContinuousView extends RelativeLayout {
         AvatarUtils.loadAvatarByUrl(mSendAvatarIv, AvatarUtils.newParamsBuilder(model.getSender().getAvatar())
                 .setCircle(true)
                 .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                .setBorderColor(Color.parseColor("#FF79A9"))
+                .setBorderColorBySex(model.getSender().getIsMale())
                 .build()
         );
         mDescTv.setText(model.getSender().getNickname() + model.getAction());
