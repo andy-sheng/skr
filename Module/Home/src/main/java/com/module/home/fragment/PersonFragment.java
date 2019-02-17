@@ -1,6 +1,5 @@
 package com.module.home.fragment;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.RelativeLayout;
@@ -28,6 +27,7 @@ import com.common.upload.UploadTask;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
+import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.constans.GameModeType;
 import com.module.home.musictest.fragment.MusicTestFragment;
@@ -42,7 +42,6 @@ import com.module.home.R;
 import com.module.home.persenter.PersonCorePresenter;
 import com.module.home.view.IPersonView;
 import com.zq.level.view.NormalLevelView;
-import com.zq.live.proto.Common.ESex;
 import com.zq.relation.fragment.RelationFragment;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -61,7 +60,6 @@ public class PersonFragment extends BaseFragment implements IPersonView {
     RelativeLayout mPersonMainContainner;
     BaseImageView mAvatarIv;
     ExTextView mShareTv;
-    ExTextView mSettingTv;
     ExTextView mNameTv;
     ExTextView mUseridTv;
     ExTextView mSignTv;
@@ -72,17 +70,16 @@ public class PersonFragment extends BaseFragment implements IPersonView {
     RelativeLayout mFollows;
     ExTextView mFollowsNumTv;
 
-    RelativeLayout mMedalLayout;
-    ExTextView mLevelTv;
-    ExTextView mRankTv;
-    NormalLevelView mLevelView;
-
+    ExRelativeLayout mMedalLayout;
     ExTextView mRankNumTv;
-    ExTextView mFunnyNumTv;
     ExTextView mSingendNumTv;
+    NormalLevelView mLevelView;
+    ExTextView mRankTv;
 
-    ExImageView mAuditionRoomTv;
-    ExImageView mMusicTestTv;
+    RelativeLayout mWalletArea;
+    RelativeLayout mAuditionArea;
+    RelativeLayout mMusicTestArea;
+    RelativeLayout mSettingArea;
 
     PersonCorePresenter mPersonCorePresenter;
 
@@ -107,6 +104,8 @@ public class PersonFragment extends BaseFragment implements IPersonView {
         initMedalView();
         initAudioView();
         initMusicTest();
+        initWallet();
+        initSetting();
 
         initViewData();
 
@@ -119,7 +118,6 @@ public class PersonFragment extends BaseFragment implements IPersonView {
         mPersonMainContainner = (RelativeLayout) mRootView.findViewById(R.id.person_main_containner);
         mAvatarIv = (BaseImageView) mRootView.findViewById(R.id.avatar_iv);
         mShareTv = (ExTextView) mRootView.findViewById(R.id.share_tv);
-        mSettingTv = (ExTextView) mRootView.findViewById(R.id.setting_tv);
         mNameTv = (ExTextView) mRootView.findViewById(R.id.name_tv);
         mUseridTv = (ExTextView) mRootView.findViewById(R.id.userid_tv);
         mSignTv = (ExTextView) mRootView.findViewById(R.id.sign_tv);
@@ -129,10 +127,6 @@ public class PersonFragment extends BaseFragment implements IPersonView {
         mFansNumTv = (ExTextView) mRootView.findViewById(R.id.fans_num_tv);
         mFollows = (RelativeLayout) mRootView.findViewById(R.id.follows);
         mFollowsNumTv = (ExTextView) mRootView.findViewById(R.id.follows_num_tv);
-
-        mRankNumTv = (ExTextView) mRootView.findViewById(R.id.rank_num_tv);
-        mFunnyNumTv = (ExTextView) mRootView.findViewById(R.id.funny_num_tv);
-        mSingendNumTv = (ExTextView) mRootView.findViewById(R.id.singend_num_tv);
 
         U.getSoundUtils().preLoad(TAG, R.raw.allclick);
 
@@ -144,20 +138,6 @@ public class PersonFragment extends BaseFragment implements IPersonView {
                         SharePanel sharePanel = new SharePanel(getActivity());
                         sharePanel.setShareContent("http://res-static.inframe.mobi/common/skr-share.png");
                         sharePanel.show(ShareType.IMAGE_RUL);
-                    }
-                });
-
-        RxView.clicks(mSettingTv)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        U.getSoundUtils().play(TAG, R.raw.allclick);
-                        U.getFragmentUtils().addFragment(
-                                FragmentUtils.newAddParamsBuilder(getActivity(), SettingFragment.class)
-                                        .setAddToBackStack(true)
-                                        .setHasAnimation(true)
-                                        .build());
                     }
                 });
 
@@ -265,16 +245,16 @@ public class PersonFragment extends BaseFragment implements IPersonView {
     }
 
     private void initMedalView() {
-        mMedalLayout = (RelativeLayout) mRootView.findViewById(R.id.medal_layout);
-        mLevelTv = (ExTextView) mRootView.findViewById(R.id.level_tv);
-        mRankTv = (ExTextView) mRootView.findViewById(R.id.rank_tv);
+        mMedalLayout = (ExRelativeLayout) mRootView.findViewById(R.id.medal_layout);
+        mRankNumTv = (ExTextView) mRootView.findViewById(R.id.rank_num_tv);
+        mSingendNumTv = (ExTextView) mRootView.findViewById(R.id.singend_num_tv);
         mLevelView = (NormalLevelView) mRootView.findViewById(R.id.level_view);
-
+        mRankTv = (ExTextView) mRootView.findViewById(R.id.rank_tv);
     }
 
     private void initAudioView() {
-        mAuditionRoomTv = (ExImageView) mRootView.findViewById(R.id.audition_room_tv);
-        RxView.clicks(mAuditionRoomTv)
+        mAuditionArea = (RelativeLayout) mRootView.findViewById(R.id.audition_area);
+        RxView.clicks(mAuditionArea)
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
                 .subscribe(new Consumer<Object>() {
                     @Override
@@ -288,8 +268,8 @@ public class PersonFragment extends BaseFragment implements IPersonView {
     }
 
     private void initMusicTest() {
-        mMusicTestTv = (ExImageView) mRootView.findViewById(R.id.music_test_tv);
-        RxView.clicks(mMusicTestTv)
+        mMusicTestArea = (RelativeLayout) mRootView.findViewById(R.id.music_test_area);
+        RxView.clicks(mMusicTestArea)
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
                 .subscribe(new Consumer<Object>() {
                     @Override
@@ -303,6 +283,28 @@ public class PersonFragment extends BaseFragment implements IPersonView {
                     }
                 });
     }
+
+    private void initWallet() {
+        mWalletArea = (RelativeLayout) mRootView.findViewById(R.id.wallet_area);
+    }
+
+    private void initSetting() {
+        mSettingArea = (RelativeLayout) mRootView.findViewById(R.id.setting_area);
+        RxView.clicks(mSettingArea)
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        U.getSoundUtils().play(TAG, R.raw.allclick);
+                        U.getFragmentUtils().addFragment(
+                                FragmentUtils.newAddParamsBuilder(getActivity(), SettingFragment.class)
+                                        .setAddToBackStack(true)
+                                        .setHasAnimation(true)
+                                        .build());
+                    }
+                });
+    }
+
 
     private void initViewData() {
         AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance()
@@ -430,8 +432,6 @@ public class PersonFragment extends BaseFragment implements IPersonView {
         for (GameStatisModel gameStatisModel : list) {
             if (gameStatisModel.getMode() == GameModeType.GAME_MODE_CLASSIC_RANK) {
                 mRankNumTv.setText(gameStatisModel.getTotalTimes() + "场");
-            } else if (gameStatisModel.getMode() == GameModeType.GAME_MODE_FUNNY) {
-                mFunnyNumTv.setText(gameStatisModel.getTotalTimes() + "场");
             } else if (gameStatisModel.getMode() == GameModeType.GAME_MODE_GRAB) {
                 mSingendNumTv.setText(gameStatisModel.getTotalTimes() + "场");
             }
