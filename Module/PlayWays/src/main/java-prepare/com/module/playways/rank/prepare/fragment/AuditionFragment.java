@@ -645,7 +645,7 @@ public class AuditionFragment extends BaseFragment {
         if (mVoiceControlPanelView.isChange()) {
             if (mQuitTipsDialog == null) {
                 TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
-                        .setMessageTip("直接返回你的设置变动\n将不回去被保存哦～")
+                        .setMessageTip("直接返回你的设置变动\n将不会被保存哦～")
                         .setConfirmTip("保存")
                         .setCancelTip("取消")
                         .setConfirmBtnClickListener(new View.OnClickListener() {
