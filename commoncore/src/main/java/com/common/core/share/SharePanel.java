@@ -3,6 +3,7 @@ package com.common.core.share;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.view.Gravity;
 
 import com.common.core.R;
@@ -25,15 +26,17 @@ public class SharePanel {
     String mTitle;
     String mDes;
     String mUrl;
+    String mShareImage;
 
     public SharePanel(Activity activity) {
         mActivity = activity;
     }
 
-    public void setShareContent(String title, String des, String url) {
+    public void setShareContent(String shareImage, String title, String des, String url) {
         mTitle = title;
         mDes = des;
         mUrl = url;
+        mShareImage = shareImage;
     }
 
     public void setShareContent(String url) {
@@ -107,7 +110,11 @@ public class SharePanel {
     public void shareUrl(SharePlatform sharePlatform){
         UMWeb web = new UMWeb(mUrl);
         web.setTitle(mTitle);
-        web.setThumb(new UMImage(mActivity, R.drawable.share_app_icon));
+        if(!TextUtils.isEmpty(mShareImage)){
+            web.setThumb(new UMImage(mActivity, mShareImage));
+        }else {
+            web.setThumb(new UMImage(mActivity, R.drawable.share_app_icon));
+        }
         web.setDescription(mDes);
 
         switch (sharePlatform) {

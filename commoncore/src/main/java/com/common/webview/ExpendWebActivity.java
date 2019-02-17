@@ -49,7 +49,7 @@ public class ExpendWebActivity extends AgentWebActivity {
                     finish();
                 } else if (action == ACTION_RIGHT_BUTTON) {
                     SharePanel sharePanel = new SharePanel(ExpendWebActivity.this);
-                    sharePanel.setShareContent(mTitle, mDes, mUrl);
+                    sharePanel.setShareContent(mIcon, mTitle, mDes, mUrl);
                     sharePanel.show(ShareType.URL);
                 }
             }
