@@ -2,6 +2,7 @@ package com.module.home.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.SpannableStringBuilder;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -25,8 +26,8 @@ import com.common.upload.UploadCallback;
 import com.common.upload.UploadParams;
 import com.common.upload.UploadTask;
 import com.common.utils.FragmentUtils;
+import com.common.utils.SpanUtils;
 import com.common.utils.U;
-import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.constans.GameModeType;
@@ -402,9 +403,9 @@ public class PersonFragment extends BaseFragment implements IPersonView {
         }
 
         if (reginRankModel != null && reginRankModel.getRankSeq() != 0) {
-            mRankTv.setText(reginRankModel.getRegionDesc() + "荣耀榜" + String.valueOf(reginRankModel.getRankSeq()) + "位");
+            mRankTv.setText(reginRankModel.getRegionDesc() + "第" + String.valueOf(reginRankModel.getRankSeq()) + "位");
         } else if (countryRankModel != null && countryRankModel.getRankSeq() != 0) {
-            mRankTv.setText(countryRankModel.getRegionDesc() + "荣耀榜" + String.valueOf(countryRankModel.getRankSeq()) + "位");
+            mRankTv.setText(countryRankModel.getRegionDesc() + "第" + String.valueOf(countryRankModel.getRankSeq()) + "位");
         } else {
             mRankTv.setText("暂无排名");
         }
@@ -431,9 +432,17 @@ public class PersonFragment extends BaseFragment implements IPersonView {
     public void showGameStatic(List<GameStatisModel> list) {
         for (GameStatisModel gameStatisModel : list) {
             if (gameStatisModel.getMode() == GameModeType.GAME_MODE_CLASSIC_RANK) {
-                mRankNumTv.setText(gameStatisModel.getTotalTimes() + "场");
+                SpannableStringBuilder stringBuilder = new SpanUtils()
+                        .append(String.valueOf(gameStatisModel.getTotalTimes())).setFontSize(14, true)
+                        .append("场").setFontSize(10, true)
+                        .create();
+                mRankNumTv.setText(stringBuilder);
             } else if (gameStatisModel.getMode() == GameModeType.GAME_MODE_GRAB) {
-                mSingendNumTv.setText(gameStatisModel.getTotalTimes() + "场");
+                SpannableStringBuilder stringBuilder = new SpanUtils()
+                        .append(String.valueOf(gameStatisModel.getTotalTimes())).setFontSize(14, true)
+                        .append("场").setFontSize(10, true)
+                        .create();
+                mSingendNumTv.setText(stringBuilder);
             }
         }
     }
