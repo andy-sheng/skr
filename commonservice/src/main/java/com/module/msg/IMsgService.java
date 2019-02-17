@@ -86,4 +86,6 @@ public interface IMsgService extends IProvider {
     void removeFromBlacklist(String userId, ICallback callback);
 
     void getBlacklist(ICallback callback);
+
+    void getBlacklistStatus(String userId, ICallback callback);
 }

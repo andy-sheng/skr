@@ -37,6 +37,7 @@ import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
+import com.zq.relation.fragment.BlackListFragment;
 import com.zq.toast.CommonToastView;
 
 import java.io.File;
@@ -57,23 +58,26 @@ public class SettingFragment extends BaseFragment {
 
     RelativeLayout mMainActContainer;
     CommonTitleBar mTitlebar;
+
     RelativeLayout mEditPerson;
-    RelativeLayout mClearCache;
     RelativeLayout mVolumeSet;
-    RelativeLayout mUserFeedback;
-    RelativeLayout mServiceAgreen;
-    RelativeLayout mComment;
+
+    RelativeLayout mClearCache;
+    ExImageView mCacheArraw;
+    ExTextView mCacheSizeTv;
 
     RelativeLayout mVersionArea;
+    ExTextView mVersionTips;
     ExImageView mNewVersionIv;
-    ExTextView mVersionTv;
     ExImageView mVersionArrow;
+    ExTextView mVersionTv;
 
     RelativeLayout mInviteCode;
-
+    RelativeLayout mUserBlacklist;
+    RelativeLayout mUserFeedback;
+    RelativeLayout mComment;
+    RelativeLayout mServiceAgreen;
     ExTextView mExitLogin;
-
-    ExTextView mCacheSizeTv;
 
     boolean hasNewVersion = false; // 判断是否有新版本
 
@@ -90,20 +94,25 @@ public class SettingFragment extends BaseFragment {
     public void initData(@Nullable Bundle savedInstanceState) {
         mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
         mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
+
         mEditPerson = (RelativeLayout) mRootView.findViewById(R.id.edit_person);
-        mClearCache = (RelativeLayout) mRootView.findViewById(R.id.clear_cache);
         mVolumeSet = (RelativeLayout) mRootView.findViewById(R.id.volume_set);
-        mUserFeedback = (RelativeLayout) mRootView.findViewById(R.id.user_feedback);
-        mServiceAgreen = (RelativeLayout) mRootView.findViewById(R.id.service_agreen);
-        mComment = (RelativeLayout) mRootView.findViewById(R.id.comment);
+
+        mClearCache = (RelativeLayout) mRootView.findViewById(R.id.clear_cache);
+        mCacheArraw = (ExImageView) mRootView.findViewById(R.id.cache_arraw);
         mCacheSizeTv = (ExTextView) mRootView.findViewById(R.id.cache_size_tv);
 
         mVersionArea = (RelativeLayout) mRootView.findViewById(R.id.version_area);
-        mInviteCode = (RelativeLayout) mRootView.findViewById(R.id.invite_code);
+        mVersionTips = (ExTextView) mRootView.findViewById(R.id.version_tips);
         mNewVersionIv = (ExImageView) mRootView.findViewById(R.id.new_version_iv);
-        mVersionTv = (ExTextView) mRootView.findViewById(R.id.version_tv);
         mVersionArrow = (ExImageView) mRootView.findViewById(R.id.version_arrow);
+        mVersionTv = (ExTextView) mRootView.findViewById(R.id.version_tv);
 
+        mInviteCode = (RelativeLayout) mRootView.findViewById(R.id.invite_code);
+        mUserBlacklist = (RelativeLayout) mRootView.findViewById(R.id.user_blacklist);
+        mUserFeedback = (RelativeLayout) mRootView.findViewById(R.id.user_feedback);
+        mComment = (RelativeLayout) mRootView.findViewById(R.id.comment);
+        mServiceAgreen = (RelativeLayout) mRootView.findViewById(R.id.service_agreen);
         mExitLogin = (ExTextView) mRootView.findViewById(R.id.exit_login);
 
         U.getSoundUtils().preLoad(TAG, R.raw.general_back, R.raw.allclick);
@@ -150,6 +159,18 @@ public class SettingFragment extends BaseFragment {
                     @Override
                     public void accept(Object o) {
                         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), VolumeFragment.class)
+                                .setAddToBackStack(true)
+                                .setHasAnimation(true)
+                                .build());
+                    }
+                });
+
+        RxView.clicks(mUserBlacklist)
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), BlackListFragment.class)
                                 .setAddToBackStack(true)
                                 .setHasAnimation(true)
                                 .build());

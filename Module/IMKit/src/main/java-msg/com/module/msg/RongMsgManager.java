@@ -379,4 +379,28 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
         });
     }
 
+    public void getBlacklistStatus(String userId, ICallback callback) {
+        RongIM.getInstance().getBlacklistStatus(userId, new RongIMClient.ResultCallback<RongIMClient.BlacklistStatus>() {
+            @Override
+            public void onSuccess(RongIMClient.BlacklistStatus blacklistStatus) {
+                if (blacklistStatus == RongIMClient.BlacklistStatus.IN_BLACK_LIST) {
+                    if (callback != null) {
+                        callback.onSucess(true);
+                    }
+                } else if (blacklistStatus == RongIMClient.BlacklistStatus.NOT_IN_BLACK_LIST) {
+                    if (callback != null) {
+                        callback.onSucess(false);
+                    }
+                }
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+                if (callback != null) {
+                    callback.onFailed(errorCode, errorCode.getValue(), errorCode.getMessage());
+                }
+            }
+        });
+    }
+
 }

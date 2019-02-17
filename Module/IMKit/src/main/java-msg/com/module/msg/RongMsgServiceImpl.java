@@ -99,6 +99,10 @@ public class RongMsgServiceImpl implements IMsgService {
         RongMsgManager.getInstance().getBlacklist(callback);
     }
 
+    @Override
+    public void getBlacklistStatus(String userId, ICallback callback) {
+        RongMsgManager.getInstance().getBlacklistStatus(userId, callback);
+    }
 
     @Override
     public void init(Context context) {

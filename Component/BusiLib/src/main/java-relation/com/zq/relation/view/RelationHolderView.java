@@ -73,20 +73,28 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
         } else if (mode == UserInfoManager.RELATION_FANS) {
             if (userInfoModel.isFriend()) {
                 mFollowTv.setText("互关");
+                mFollowTv.setWidth(U.getDisplayUtils().dip2px(72));
                 mFollowTv.setBackground(ContextCompat.getDrawable(U.app(), R.drawable.followed_bg));
             } else {
                 mFollowTv.setText("关注");
+                mFollowTv.setWidth(U.getDisplayUtils().dip2px(72));
                 mFollowTv.setBackground(ContextCompat.getDrawable(U.app(), R.drawable.unfollow_bg));
             }
         } else if (mode == UserInfoManager.RELATION_FOLLOW) {
             if (userInfoModel.isFriend()) {
                 mFollowTv.setText("互关");
+                mFollowTv.setWidth(U.getDisplayUtils().dip2px(72));
             } else {
                 mFollowTv.setText("已关注");
+                mFollowTv.setWidth(U.getDisplayUtils().dip2px(86));
             }
             mFollowTv.setTextColor(Color.parseColor("#787B8E"));
-            mFollowTv.setWidth(U.getDisplayUtils().dip2px(86));
             mFollowTv.setBackground(ContextCompat.getDrawable(U.app(), R.drawable.followed_bg));
+        } else if (mode == UserInfoManager.RELATION_BLACKLIST) {
+            mFollowTv.setText("移出黑名单");
+            mFollowTv.setTextColor(Color.parseColor("#0C2275"));
+            mFollowTv.setWidth(U.getDisplayUtils().dip2px(90));
+            mFollowTv.setBackground(ContextCompat.getDrawable(U.app(), R.drawable.unfollow_bg));
         }
     }
 }

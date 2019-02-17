@@ -27,6 +27,9 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.functions.Consumer;
 
+/**
+ * 关系列表
+ */
 public class RelationFragment extends BaseFragment {
 
     public static final int FROM_FRIENDS = 0;

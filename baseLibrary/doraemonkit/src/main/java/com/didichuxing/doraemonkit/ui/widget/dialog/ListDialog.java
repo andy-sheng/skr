@@ -76,4 +76,10 @@ public class ListDialog {
         mChannelListDialog.show();
     }
 
+    public void dissmiss() {
+        if (mChannelListDialog != null) {
+            mChannelListDialog.dismiss();
+        }
+    }
+
 }

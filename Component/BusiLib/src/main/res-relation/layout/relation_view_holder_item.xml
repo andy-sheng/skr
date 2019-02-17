@@ -19,9 +19,9 @@
         android:layout_marginLeft="@dimen/view_9_dp"
         android:layout_toRightOf="@+id/avatar_iv"
         android:text="小巴拉巴拉"
-        android:textStyle="bold"
         android:textColor="#0C2275"
-        android:textSize="@dimen/textsize_16_dp" />
+        android:textSize="@dimen/textsize_16_dp"
+        android:textStyle="bold" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/userid_tv"
@@ -35,7 +35,7 @@
 
     <com.common.view.ex.ExTextView
         android:id="@+id/follow_tv"
-        android:layout_width="@dimen/view_72_dp"
+        android:layout_width="wrap_content"
         android:layout_height="@dimen/view_32_dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"

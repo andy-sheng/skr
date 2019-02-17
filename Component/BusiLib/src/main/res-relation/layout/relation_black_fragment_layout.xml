@@ -10,13 +10,12 @@
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:centerText="小黑屋"
         app:centerTextColor="@color/white"
         app:centerTextSize="@dimen/textsize_20_dp"
         app:centerType="textView"
         app:leftDrawable="@drawable/img_back"
         app:leftType="textView"
-        app:rightImageResource="@drawable/heimingdanrukou"
-        app:rightType="imageButton"
         app:showBottomLine="false"
         app:statusBarColor="#0288D0"
         app:titleBarColor="#0288D0"></com.common.view.titlebar.CommonTitleBar>
@@ -27,12 +26,13 @@
         android:layout_below="@+id/titlebar"
         android:background="#0C2275" />
 
-    <fragment
-        android:id="@+id/conversation"
-        android:name="io.rong.imkit.fragment.ConversationFragment"
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/titlebar"
-        android:layout_marginTop="@dimen/view_3_dp" />
+        android:layout_below="@id/titlebar"
+        android:layout_marginTop="@dimen/view_3_dp">
+    </android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>
