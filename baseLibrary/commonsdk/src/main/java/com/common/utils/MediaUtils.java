@@ -8,6 +8,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,48 +27,71 @@ import java.util.Locale;
 public class MediaUtils {
     public final static String TAG = "MediaUtils";
 
+
     public void rawToWave(final File rawFile, final File waveFile, int channels, int sampleRate, int byteRate) throws IOException {
         MyLog.d(TAG, "rawToWave" + " rawFile=" + rawFile + " waveFile=" + waveFile + " channels=" + channels + " sampleRate=" + sampleRate + " byteRate=" + byteRate);
 
-
-        byte[] rawData = new byte[(int) rawFile.length()];
-        DataInputStream input = null;
-        try {
-            input = new DataInputStream(new FileInputStream(rawFile));
-            input.read(rawData);
-        } finally {
-            if (input != null) {
-                input.close();
-            }
-        }
-
+        long len = rawFile.length();
         DataOutputStream output = null;
         try {
             output = new DataOutputStream(new FileOutputStream(waveFile));
-            // WAVE header
-            // see http://ccrma.stanford.edu/courses/422/projects/WaveFormat/
-            writeString(output, "RIFF"); // chunk id
-            writeInt(output, 36 + rawData.length); // chunk size
-            writeString(output, "WAVE"); // format
-            writeString(output, "fmt "); // subchunk 1 id
-            writeInt(output, 16); // subchunk 1 size
-            writeShort(output, (short) 1); // audio format (1 = PCM)
-            writeShort(output, (short) channels); // number of channels
-            writeInt(output, sampleRate); // sample rate
-            writeInt(output, byteRate); // byte rate
-            writeShort(output, (short) 2); // block align
-            writeShort(output, (short) 16); // bits per sample
-            writeString(output, "data"); // subchunk 2 id
-            writeInt(output, rawData.length); // subchunk 2 size
-            // Audio data (conversion big endian -> little endian)
-            short[] shorts = new short[rawData.length / 2];
-            ByteBuffer.wrap(rawData).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().get(shorts);
-            ByteBuffer bytes = ByteBuffer.allocate(shorts.length * 2);
-            for (short s : shorts) {
-                bytes.putShort(s);
-            }
 
-            output.write(fullyReadFileToBytes(rawFile));
+            long totalDataLen = len + 36;
+
+            byte[] header = new byte[44];
+            header[0] = 'R';
+            header[1] = 'I';
+            header[2] = 'F';
+            header[3] = 'F';
+            header[4] = (byte) (totalDataLen & 0xff);
+            header[5] = (byte) ((totalDataLen >> 8) & 0xff);
+            header[6] = (byte) ((totalDataLen >> 16) & 0xff);
+            header[7] = (byte) ((totalDataLen >> 24) & 0xff);
+            header[8] = 'W';
+            header[9] = 'A';
+            header[10] = 'V';
+            header[11] = 'E';
+            header[12] = 'f';
+            header[13] = 'm';
+            header[14] = 't';
+            header[15] = ' ';
+
+            header[16] = (byte) 16;
+            header[17] = 0;
+            header[18] = 0;
+            header[19] = 0;
+
+            header[20] = 1;
+            header[21] = 0;
+
+            header[22] = (byte) channels;
+            header[23] = 0;
+
+            header[24] = (byte) (sampleRate & 0xff);
+            header[25] = (byte) ((sampleRate >> 8) & 0xff);
+            header[26] = (byte) ((sampleRate >> 16) & 0xff);
+            header[27] = (byte) ((sampleRate >> 24) & 0xff);
+
+            header[28] = (byte) (byteRate & 0xff);
+            header[29] = (byte) ((byteRate >> 8) & 0xff);
+            header[30] = (byte) ((byteRate >> 16) & 0xff);
+            header[31] = (byte) ((byteRate >> 24) & 0xff);
+
+            header[32] = (byte) 2;
+            header[33] = 0;
+            header[34] = 16;
+            header[35] = 0;
+            header[36] = 'd';
+            header[37] = 'a';
+            header[38] = 't';
+            header[39] = 'a';
+            header[40] = (byte) (len  & 0xff);
+            header[41] = (byte) ((len >> 8) & 0xff);
+            header[42] = (byte) ((len >> 16) & 0xff);
+            header[43] = (byte) ((len >> 24) & 0xff);
+
+            output.write(header,0,header.length);
+            writeSlow(rawFile, output);
         } finally {
             if (output != null) {
                 output.close();
@@ -75,29 +99,24 @@ public class MediaUtils {
         }
     }
 
-    byte[] fullyReadFileToBytes(File f) throws IOException {
-        int size = (int) f.length();
-        byte bytes[] = new byte[size];
-        byte tmpBuff[] = new byte[size];
-        FileInputStream fis = new FileInputStream(f);
+
+    void writeSlow(File f, DataOutputStream outputStream) throws IOException {
         try {
-
-            int read = fis.read(bytes, 0, size);
-            if (read < size) {
-                int remain = size - read;
-                while (remain > 0) {
-                    read = fis.read(tmpBuff, 0, remain);
-                    System.arraycopy(tmpBuff, 0, bytes, size - remain, read);
-                    remain -= read;
-                }
+            //创建一个字节输入流对象
+            InputStream is = new FileInputStream(f);
+            //指定每次读取的大小--可根据性能字节修改
+            byte bytes[] = new byte[1024 * 2];
+            StringBuffer sb = new StringBuffer();
+            int len = -1;//每次读取的实际长度
+            while ((len = is.read(bytes)) != -1) {
+                outputStream.write(bytes, 0, len);
             }
+            is.close();//关闭流
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         } catch (IOException e) {
-            throw e;
-        } finally {
-            fis.close();
+            e.printStackTrace();
         }
-
-        return bytes;
     }
 
     private void writeInt(final DataOutputStream output, final int value) throws IOException {
