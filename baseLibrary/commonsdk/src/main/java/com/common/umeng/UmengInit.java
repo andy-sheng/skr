@@ -49,7 +49,11 @@ public class UmengInit {
         //获取消息推送代理示例
         PushAgent mPushAgent = PushAgent.getInstance(U.app());
 
-        mPushAgent.setResourcePackageName();
+        //自定义icon资源的包名，否则使用应用包名
+//        mPushAgent.setResourcePackageName("com.common.base");
+        //设置前台不显示通知
+//        mPushAgent.setNotificaitonOnForeground(false);
+
         //注册推送服务，每次调用register方法都会回调该接口
         Log.d(TAG, "mPushAgent.register begin");
         mPushAgent.register(new IUmengRegisterCallback() {

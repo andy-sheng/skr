@@ -81,6 +81,9 @@ public class CommonConfiguration implements ConfigModule {
             @Override
             public void onOtherProcessCreate(@NonNull Application application) {
                 Log.d(TAG, "onOtherProcessCreate processName:" + U.getProcessName());
+                /**
+                 * com.zq.live:channel 是友盟的push的通道，只针对这个进程再init一次就好了
+                 */
                 if (U.getProcessName().endsWith(":channel")) {
                     UmengInit.init();
                 }
