@@ -190,6 +190,7 @@ public class RelationView extends RelativeLayout {
                 mOffset = result.getData().getIntValue("offset");
                 List<UserInfoModel> userInfoModels = JSON.parseArray(result.getData().getString("users"), UserInfoModel.class);
                 if (userInfoModels != null && userInfoModels.size() != 0) {
+                    mRefreshLayout.finishLoadMore();
                     mLoadService.showSuccess();
                     mRelationAdapter.addData(userInfoModels);
                     mRelationAdapter.notifyDataSetChanged();
@@ -206,14 +207,13 @@ public class RelationView extends RelativeLayout {
                         } else if (mode == UserInfoManager.RELATION_FOLLOW){
                             mLoadService.showCallback(FriendsEmptyCallback.class);
                         }
-
                     }
                 }
             }
 
             @Override
             public void onServerFailed() {
-
+                mRefreshLayout.finishLoadMore();
             }
         });
     }
