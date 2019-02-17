@@ -28,6 +28,7 @@ import com.module.playways.rank.song.model.SongModel;
 import com.module.playways.rank.song.presenter.SongTagDetailsPresenter;
 import com.module.playways.rank.song.view.ISongTagDetailView;
 import com.module.rank.R;
+import com.umeng.socialize.media.Base;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -176,6 +177,10 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
                 }
 
                 if (getActivity() instanceof PlayWaysActivity) {
+                    if(U.getFragmentUtils().findFragment((BaseActivity)getActivity(), PrepareResFragment.class) != null){
+                        return;
+                    }
+
                     U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), PrepareResFragment.class)
                             .setAddToBackStack(true)
                             .setNotifyHideFragment(SongSelectFragment.class)
