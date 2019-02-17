@@ -88,6 +88,9 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
         songSelectAdapter = new SongSelectAdapter(new RecyclerOnItemClickListener() {
             @Override
             public void onItemClicked(View view, int position, Object model) {
+                if (U.getCommonUtils().isFastDoubleClick()) {
+                    return;
+                }
                 U.getSoundUtils().play(TAG, R.raw.general_button);
                 SongModel songModel = (SongModel) model;
                 if (getActivity() instanceof AudioRoomActivity) {

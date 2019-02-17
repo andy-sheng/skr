@@ -130,6 +130,10 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
         mSongCardSwipAdapter = new SongCardSwipAdapter(new RecyclerOnItemClickListener() {
             @Override
             public void onItemClicked(View view, int position, Object model) {
+                if (U.getCommonUtils().isFastDoubleClick()) {
+                    return;
+                }
+
                 if (!U.getNetworkUtils().hasNetwork()) {
                     U.getToastUtil().showShort("无网络连接，请检查网络后重试");
                     return;
@@ -177,7 +181,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
                 }
 
                 if (getActivity() instanceof PlayWaysActivity) {
-                    if(U.getFragmentUtils().findFragment((BaseActivity)getActivity(), PrepareResFragment.class) != null){
+                    if (U.getFragmentUtils().findFragment((BaseActivity) getActivity(), PrepareResFragment.class) != null) {
                         return;
                     }
 
