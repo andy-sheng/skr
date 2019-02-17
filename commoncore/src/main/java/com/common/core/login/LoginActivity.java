@@ -49,6 +49,7 @@ public class LoginActivity extends BaseActivity {
         if (intent != null) {
             mReason = intent.getIntExtra(KEY_REASON, 0);
         }
+        MyLog.d(TAG, "initData" + " mReason=" + mReason);
         U.getFragmentUtils().addFragment(FragmentUtils
                 .newAddParamsBuilder(LoginActivity.this, LoginFragment.class)
                 .setAddToBackStack(false)
@@ -73,6 +74,16 @@ public class LoginActivity extends BaseActivity {
             // 所以这里还要跳到 HomeActivity
             ARouter.getInstance().build(RouterConstants.ACTIVITY_HOME)
                     .navigation();
+        } else {
+            Intent intent = getIntent();
+            String originPath = intent.getStringExtra(KEY_ORIGIN_PATH);
+            MyLog.d(TAG, "登录成功，跳回原页面 originPath:" + originPath);
+            if (!TextUtils.isEmpty(originPath)) {
+                // 登录成功后，跳回原页面
+                ARouter.getInstance().build(originPath)
+                        .with(intent.getExtras())
+                        .navigation();
+            }
         }
     }
 

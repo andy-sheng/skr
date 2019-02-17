@@ -12,6 +12,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.core.R;
+import com.common.core.login.interceptor.JudgeLoginInterceptor;
 import com.common.core.scheme.processor.ZqSchemeProcessorManager;
 import com.common.log.MyLog;
 import com.common.utils.U;
@@ -22,7 +23,7 @@ import com.module.home.IHomeService;
  * 所有的push，不管是umeng的还是厂家的
  * 最终都会走到这
  */
-@Route(path = RouterConstants.ACTIVITY_SCHEME)
+@Route(path = RouterConstants.ACTIVITY_SCHEME ,extras = JudgeLoginInterceptor.NO_NEED_LOGIN)
 public class SchemeSdkActivity extends BaseActivity {
 
     private Uri mUri;
