@@ -1,25 +1,13 @@
 package com.common.utils;
 
-import android.text.TextUtils;
-
 import com.common.log.MyLog;
 
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Locale;
 
 /**
  * Created by linjinbin on 15/2/10.
@@ -85,13 +73,15 @@ public class MediaUtils {
             header[37] = 'a';
             header[38] = 't';
             header[39] = 'a';
-            header[40] = (byte) (len  & 0xff);
+            header[40] = (byte) (len & 0xff);
             header[41] = (byte) ((len >> 8) & 0xff);
             header[42] = (byte) ((len >> 16) & 0xff);
             header[43] = (byte) ((len >> 24) & 0xff);
 
-            output.write(header,0,header.length);
+            output.write(header, 0, header.length);
             writeSlow(rawFile, output);
+        } catch (Exception e) {
+            MyLog.e(TAG, e);
         } finally {
             if (output != null) {
                 output.close();
@@ -99,23 +89,20 @@ public class MediaUtils {
         }
     }
 
-
     void writeSlow(File f, DataOutputStream outputStream) throws IOException {
+        InputStream is = new FileInputStream(f);
         try {
             //创建一个字节输入流对象
-            InputStream is = new FileInputStream(f);
             //指定每次读取的大小--可根据性能字节修改
             byte bytes[] = new byte[1024 * 2];
-            StringBuffer sb = new StringBuffer();
             int len = -1;//每次读取的实际长度
             while ((len = is.read(bytes)) != -1) {
                 outputStream.write(bytes, 0, len);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
             is.close();//关闭流
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
