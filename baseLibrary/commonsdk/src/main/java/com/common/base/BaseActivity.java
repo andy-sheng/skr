@@ -130,7 +130,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
          * 只会让虚拟按键变透明，布局没有动
          */
 //        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        overridePendingTransition(R.anim.translate_right_to_center, R.anim.translate_center_to_left);
+        animationEnter();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -283,6 +283,14 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
     @Override
     public void finish() {
         super.finish();
+        animationOut();
+    }
+
+    protected void animationEnter() {
+        overridePendingTransition(R.anim.translate_right_to_center, R.anim.translate_center_to_left);
+    }
+
+    protected void animationOut() {
         overridePendingTransition(R.anim.translate_left_to_center, R.anim.translate_center_to_right);
     }
 
@@ -305,6 +313,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
             mCache.clear();
         }
     }
+
 
     @Override
     public final void onBackPressed() {
