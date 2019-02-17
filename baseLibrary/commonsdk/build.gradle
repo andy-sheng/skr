@@ -222,9 +222,23 @@ dependencies {
     // loadsir 处理各种异常页面空页面 无法改变现有layout
     //api rootProject.ext.dependencies["loadsir"]
 
-    // 友盟
+    // 友盟统计
     api rootProject.ext.dependencies['umeng-common']
     api rootProject.ext.dependencies['umeng-analytics']
+//     友盟push
+    api rootProject.ext.dependencies['umeng-push']
+    api rootProject.ext.dependencies['umeng-utdid']
+//
+//    // 友盟push 集成小米push
+    api rootProject.ext.dependencies['umeng-xiaomi-push']
+    api rootProject.ext.dependencies['umeng-xiaomi-umengaccs']
+//
+//    // 友盟push 集成华为push
+    api rootProject.ext.dependencies['umeng-huawei-basetb']
+    api rootProject.ext.dependencies['umeng-huawei-pushtb']
+    api rootProject.ext.dependencies['umeng-huawei-umengaccs']
+
+
 //    debugApi rootProject.ext.dependencies["stetho"]
 
     // 使用矢量图来播动画的库

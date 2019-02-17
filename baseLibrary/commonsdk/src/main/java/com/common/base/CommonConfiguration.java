@@ -26,6 +26,7 @@ import com.common.base.delegate.AppLifecycles;
 import com.common.image.fresco.FrescoInitManager;
 import com.common.log.MyLog;
 import com.common.statistics.StatisticsAdapter;
+import com.common.umeng.UmengInit;
 import com.common.utils.CommonReceiver;
 import com.common.utils.U;
 import com.kingja.loadsir.LoadSirUtil;
@@ -74,12 +75,15 @@ public class CommonConfiguration implements ConfigModule {
                 FrescoInitManager.initFresco(U.app());
 //                PgyCrashManager.register();
                 CommonReceiver.register();
-
+                UmengInit.init();
             }
 
             @Override
             public void onOtherProcessCreate(@NonNull Application application) {
-
+                Log.d(TAG, "onOtherProcessCreate processName:" + U.getProcessName());
+                if (U.getProcessName().endsWith(":channel")) {
+                    UmengInit.init();
+                }
             }
 
             @Override

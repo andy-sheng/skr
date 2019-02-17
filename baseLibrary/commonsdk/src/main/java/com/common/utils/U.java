@@ -10,6 +10,8 @@ import android.graphics.drawable.Drawable;
 public class U {
     private static boolean sCoreProcess = true;
 
+    private static String sProcessName = "";
+
     private static Application application;
 
     private static AppInfoUtils appInfoUtils;
@@ -349,5 +351,13 @@ public class U {
 
     public static Drawable getDrawable(int drawableId) {
         return U.app().getResources().getDrawable(drawableId);
+    }
+
+    public static void setProcessName(String processName) {
+        sProcessName = processName;
+    }
+
+    public static String getProcessName() {
+        return sProcessName;
     }
 }

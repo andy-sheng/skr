@@ -27,9 +27,12 @@ import com.common.base.delegate.IActivity;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.ActivityUtils;
 import com.common.utils.U;
+import com.umeng.message.PushAgent;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import anet.channel.util.Utils;
 
 
 /**
@@ -88,6 +91,7 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
             U.getActivityUtils().addActivity(activity);
 
         registerFragmentCallbacks(activity);
+        PushAgent.getInstance(U.app()).onAppStart();
     }
 
     @Override

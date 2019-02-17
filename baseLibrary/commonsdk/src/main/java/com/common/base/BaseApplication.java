@@ -56,7 +56,7 @@ public class BaseApplication extends Application {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        Log.d(TAG, "base.getPackageName:"+base.getPackageName() + " Application.getPackageName:"+BaseApplication.this.getPackageName());
+        Log.d(TAG, "base.getPackageName:" + base.getPackageName() + " Application.getPackageName:" + BaseApplication.this.getPackageName());
         TAG += hashCode();
         /**
          * 这里可以了解一下 多dex 安装的原理
@@ -84,6 +84,7 @@ public class BaseApplication extends Application {
             }
             // DroidPlugin 会新建进程 所以不是核心进程
             Log.d(TAG, "getPackageName=" + getPackageName() + "  info.processName=" + info.processName);
+            U.setProcessName(info.processName);
             if (getPackageName().equals(info.processName)) {
                 U.setCoreProcess(true);
             } else {
@@ -92,17 +93,10 @@ public class BaseApplication extends Application {
             break;
         }
 
-        /**
-         * 只有主进程才走
-         */
-        if (U.isCoreProcess()) {
-            if (mAppDelegate == null) {
-                this.mAppDelegate = new AppDelegate(base);
-            }
-            this.mAppDelegate.attachBaseContext(base);
-        } else {
-            Log.d(TAG, "not coreProcess");
+        if (mAppDelegate == null) {
+            this.mAppDelegate = new AppDelegate(base);
         }
+        this.mAppDelegate.attachBaseContext(base);
     }
 
     @Override
@@ -118,8 +112,8 @@ public class BaseApplication extends Application {
             if (mAppDelegate != null) {
                 this.mAppDelegate.onMainProcessCreate(this);
             }
-        }else{
-            if(mAppDelegate!=null){
+        } else {
+            if (mAppDelegate != null) {
                 this.mAppDelegate.onOtherProcessCreate(this);
             }
         }
