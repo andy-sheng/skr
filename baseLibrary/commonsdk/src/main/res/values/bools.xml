@@ -1,0 +1,3 @@
+<resources>
+    <bool name="translucent_has_bug">true</bool>
+</resources>

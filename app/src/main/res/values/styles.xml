@@ -3,7 +3,7 @@
     <!--首页Activity的设置-->
     <style name="AppTheme_MainActivity" parent="AppTheme_Base">
         <item name="android:windowBackground">@drawable/splash</item>
+        <item name="android:windowIsTranslucent">@bool/translucent_has_bug</item>
         <!--<item name="android:colorBackgroundCacheHint">@null</item>-->
-        <!--<item name="android:windowIsTranslucent">true</item>-->
     </style>
 </resources>

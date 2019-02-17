@@ -2,6 +2,7 @@ package com.doraemon;
 
 import android.content.Context;
 
+import com.common.core.R;
 import com.common.umeng.UmengInit;
 import com.common.umeng.UmengPush;
 import com.common.utils.U;
@@ -36,6 +37,7 @@ public class DoraemonManager {
             public List<SysInfoItem> getExtraInfo() {
                 List<SysInfoItem> extras = new ArrayList<>();
                 extras.add(new SysInfoItem("友盟push DeviceToken", UmengPush.getDeviceToken()));
+                extras.add(new SysInfoItem("translucent_has_bug", U.app().getResources().getBoolean(R.bool.translucent_has_bug)+""));
                 return extras;
             }
         });
