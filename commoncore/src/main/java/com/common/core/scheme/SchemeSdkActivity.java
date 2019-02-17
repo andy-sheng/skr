@@ -18,6 +18,10 @@ import com.common.utils.U;
 import com.module.RouterConstants;
 import com.module.home.IHomeService;
 
+/**
+ * 所有的push，不管是umeng的还是厂家的
+ * 最终都会走到这
+ */
 @Route(path = RouterConstants.ACTIVITY_SCHEME)
 public class SchemeSdkActivity extends BaseActivity {
 
