@@ -23,6 +23,7 @@ import com.didichuxing.doraemonkit.kit.gpsmock.GpsMock;
 import com.didichuxing.doraemonkit.kit.logInfo.LogInfo;
 import com.didichuxing.doraemonkit.kit.network.NetworkKit;
 import com.didichuxing.doraemonkit.kit.ram.Ram;
+import com.didichuxing.doraemonkit.kit.sysinfo.ExtraInfoProvider;
 import com.didichuxing.doraemonkit.kit.sysinfo.SysInfo;
 import com.didichuxing.doraemonkit.kit.temporaryclose.TemporaryClose;
 import com.didichuxing.doraemonkit.kit.viewcheck.ViewChecker;
@@ -227,5 +228,13 @@ public class DoraemonKit {
         }
     }
 
+    private static ExtraInfoProvider sExtraInfoProvider;
 
+    public static void setExtraInfoProvider(ExtraInfoProvider provider){
+        sExtraInfoProvider = provider;
+    }
+
+    public static ExtraInfoProvider getExtraInfoProvider(){
+        return sExtraInfoProvider;
+    }
 }

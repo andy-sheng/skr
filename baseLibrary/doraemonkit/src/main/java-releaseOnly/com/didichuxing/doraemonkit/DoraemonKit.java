@@ -23,6 +23,8 @@ import com.didichuxing.doraemonkit.ui.base.FloatPageManager;
 import com.didichuxing.doraemonkit.ui.base.PageIntent;
 import com.didichuxing.doraemonkit.ui.kit.KitItem;
 import com.didichuxing.doraemonkit.util.PermissionUtil;
+import com.didichuxing.doraemonkit.kit.sysinfo.ExtraInfoProvider;
+import com.didichuxing.doraemonkit.kit.sysinfo.SysInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -189,4 +191,13 @@ public class DoraemonKit {
         }
     }
 
+    private static ExtraInfoProvider sExtraInfoProvider;
+
+    public static void setExtraInfoProvider(ExtraInfoProvider provider) {
+        sExtraInfoProvider = provider;
+    }
+
+    public static ExtraInfoProvider getExtraInfoProvider() {
+        return sExtraInfoProvider;
+    }
 }

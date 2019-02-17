@@ -22,9 +22,19 @@ import com.module.home.IHomeService;
 @Route(path = RouterConstants.ACTIVITY_SCHEME)
 public class SchemeSdkActivity extends BaseActivity {
 
-    private Intent mIntent;
     private Uri mUri;
     private Handler mHandler = new Handler();
+
+    @Override
+    protected void onNewIntent(final Intent intent) {
+        super.onNewIntent(intent);
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                process(intent);
+            }
+        });
+    }
 
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
@@ -37,32 +47,32 @@ public class SchemeSdkActivity extends BaseActivity {
         U.getStatusBarUtil().setTransparentBar(this, true);
         overridePendingTransition(R.anim.slide_in_right, 0);
 
-        if (isNeedShowCtaDialog()) {
-            CTANotifyFragment.openFragment(this, new CTANotifyFragment.CTANotifyButtonClickListener() {
-
-                @Override
-                public void onClickCancelButton() {
-                    finish();
-                }
-
-                @Override
-                public void onClickConfirmButton() {
-                    mHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            process();
-                        }
-                    });
-                }
-            });
-        } else {
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    process();
-                }
-            });
-        }
+//        if (isNeedShowCtaDialog()) {
+//            CTANotifyFragment.openFragment(this, new CTANotifyFragment.CTANotifyButtonClickListener() {
+//
+//                @Override
+//                public void onClickCancelButton() {
+//                    finish();
+//                }
+//
+//                @Override
+//                public void onClickConfirmButton() {
+//                    mHandler.post(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            process();
+//                        }
+//                    });
+//                }
+//            });
+//        } else {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                process(getIntent());
+            }
+        });
+//        }
     }
 
     @Override
@@ -70,30 +80,29 @@ public class SchemeSdkActivity extends BaseActivity {
         return false;
     }
 
-    private void process() {
-        mIntent = getIntent();
-        if (mIntent == null) {
+    private void process(Intent intent) {
+        if (intent == null) {
             MyLog.w(TAG, "process intent is null");
             finish();
             return;
         }
 
-        String uri = mIntent.getStringExtra("uri");
-        if(TextUtils.isEmpty(uri)){
+        String uri = intent.getStringExtra("uri");
+        if (TextUtils.isEmpty(uri)) {
             uri = getIntent().getDataString();
         }
 
-        if(!isHomeActivityExist()){
+        if (!isHomeActivityExist()) {
             MyLog.w(TAG, "HomeActivity不存在，需要先启动HomeActivity");
             ARouter.getInstance().build(RouterConstants.ACTIVITY_HOME)
                     .withString("from_schema", uri)
                     .navigation();
             return;
-        }else{
+        } else {
             MyLog.w(TAG, "HomeActivity存在");
         }
 
-        if(TextUtils.isEmpty(uri)){
+        if (TextUtils.isEmpty(uri)) {
             MyLog.w(TAG, "process uri is empty or null");
             finish();
             return;
@@ -115,7 +124,7 @@ public class SchemeSdkActivity extends BaseActivity {
         }
     }
 
-    private boolean isHomeActivityExist(){
+    private boolean isHomeActivityExist() {
         IHomeService channelService = (IHomeService) ARouter.getInstance().build(RouterConstants.SERVICE_HOME).navigation();
         String homeActivityName = (String) channelService.getData(1, "");
         for (Activity activity : U.getActivityUtils().getActivityList()) {
@@ -143,8 +152,8 @@ public class SchemeSdkActivity extends BaseActivity {
      *
      * @return
      */
-    public boolean isNeedShowCtaDialog() {
-
-        return false;
-    }
+//    public boolean isNeedShowCtaDialog() {
+//
+//        return false;
+//    }
 }

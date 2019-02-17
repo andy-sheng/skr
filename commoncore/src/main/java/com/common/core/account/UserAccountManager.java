@@ -17,11 +17,15 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.statistics.UmengStatistics;
+import com.common.umeng.UmengPush;
+import com.common.umeng.UmengPushRegisterSuccessEvent;
 import com.common.utils.U;
 import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -46,7 +50,7 @@ public class UserAccountManager {
     }
 
     private UserAccountManager() {
-
+        EventBus.getDefault().register(this);
     }
 
     public static final UserAccountManager getInstance() {
@@ -89,6 +93,7 @@ public class UserAccountManager {
             // 与融云服务器建立连接
             connectRongIM(account.getRongToken());
 
+            trySetUmengPushAlias();
 //            ScreenLogView.addInfo("用户id", account.getUid());
         } else {
 
@@ -161,87 +166,6 @@ public class UserAccountManager {
         return "";
     }
 
-//    /**
-//     * 具体发登录请求
-//     **/
-//    public void loginByMiOauth(final String code) {
-//        Observable.create(new ObservableOnSubscribe<Object>() {
-//            @Override
-//            public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
-//                int channelId = HostChannelManager.getInstance().getChannelId();
-//                LoginRsp rsp = UserAccountServerApi.loginByThirdPartyOauthloginReq(LoginType.LOGIN_XIAOMI, code, null,
-//                        null, null, null
-//                        , String.valueOf(channelId));
-//                if (rsp == null) {
-//                    emitter.onError(new Exception("loginRsp == null"));
-//                    return;
-//                }
-//                if (rsp.getRetCode() == 0) {
-//                    //登录成功
-//                    UserAccount userAccount = new UserAccount();
-//                    userAccount.setChannelId(channelId);
-//                    userAccount.setUid(String.valueOf(rsp.getUuid()));
-//                    userAccount.setNickName(rsp.getNickname());
-//                    userAccount.setImgUrl(rsp.getHeadimgurl());
-//                    userAccount.setPassToken(rsp.getPassToken());
-//                    userAccount.setServiceToken(rsp.getServiceToken());
-//                    userAccount.setSSecurity(rsp.getSecurityKey());
-//                    userAccount.setNeedEditUserInfo(rsp.getIsSetGuide());
-//                    userAccount.setIsLogOff(false);
-//
-//                    onLoginResult(userAccount);
-//                    emitter.onComplete();
-//                } else {
-//                    emitter.onError(new Exception("retcode = " + rsp.getRetCode()));
-//                }
-//
-//            }
-//        }).subscribeOn(Schedulers.io())
-//                .retryWhen(new RxRetryAssist())
-//                .subscribe(new Observer<Object>() {
-//                    @Override
-//                    public void onSubscribe(Disposable d) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onNext(Object o) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        U.getActivityUtils().showSnackbar(e.getMessage(), false);
-//                    }
-//
-//                    @Override
-//                    public void onComplete() {
-//
-//                    }
-//                });
-//    }
-//
-//    public void loginByMiSso(final long mid, final String token) {
-//        Observable.create(new ObservableOnSubscribe<Object>() {
-//            @Override
-//            public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
-//                MiSsoLoginRsp rsp = UserAccountServerApi.loginByMiSso(mid, token, HostChannelManager.getInstance().getChannelId());
-//
-//                UserAccount userAccount = new UserAccount();
-//                userAccount.setChannelId(HostChannelManager.getInstance().getChannelId());
-//                userAccount.setUid(String.valueOf(rsp.getUuid()));
-//                userAccount.setPassToken(rsp.getPassToken());
-//                userAccount.setServiceToken(rsp.getServiceToken());
-//                userAccount.setSSecurity(rsp.getSecurityKey());
-//                userAccount.setNeedEditUserInfo(rsp.getIsSetGuide());
-//                userAccount.setIsLogOff(false);
-////                userAccount.setMiid(miid);
-//                onLoginResult(userAccount);
-//                emitter.onComplete();
-//            }
-//        }).subscribeOn(Schedulers.io())
-//                .subscribe();
-//    }
 
     // 手机登录
     public void loginByPhoneNum(final String phoneNum, String verifyCode) {
@@ -403,6 +327,7 @@ public class UserAccountManager {
         }
         ModuleServiceManager.getInstance().getMsgService().logout();
         if (mAccount != null) {
+            final String userId = mAccount.getUid();
             Observable.create(new ObservableOnSubscribe<Object>() {
                 @Override
                 public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
@@ -415,6 +340,7 @@ public class UserAccountManager {
                     mAccount = null;
                     ApiManager.getInstance().clearCookies();
                     UmengStatistics.onProfileSignOff();
+                    UmengPush.clearAlias(userId);
                     MyUserInfoManager.getInstance().logoff();
                     EventBus.getDefault().post(new AccountEvent.LogoffAccountEvent(reason));
                     emitter.onComplete();
@@ -493,4 +419,17 @@ public class UserAccountManager {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onEvent(UmengPushRegisterSuccessEvent event){
+        trySetUmengPushAlias();
+    }
+
+    /**
+     * 给Umeng的push通道设置 Alias
+     */
+    void trySetUmengPushAlias(){
+        if(UserAccountManager.getInstance().hasAccount()){
+            UmengPush.setAlias(UserAccountManager.getInstance().getUuid());
+        }
+    }
 }

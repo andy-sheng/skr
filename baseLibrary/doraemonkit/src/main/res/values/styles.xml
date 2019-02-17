@@ -31,6 +31,7 @@
     <style name="DK.Text.White" parent="DK.Text">
         <item name="android:textColor">@color/dk_color_FFFFFF</item>
     </style>
+
     <style name="DK.Text.Gray" parent="DK.Text">
         <item name="android:textColor">@color/dk_color_666666</item>
     </style>
@@ -164,7 +165,7 @@
 
     <style name="DK.CommonItem">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingLeft">10dp</item>
         <item name="android:paddingRight">10dp</item>
         <item name="android:orientation">horizontal</item>
