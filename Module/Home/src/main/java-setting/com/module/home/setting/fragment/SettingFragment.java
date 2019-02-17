@@ -16,6 +16,7 @@ import com.common.base.BaseFragment;
 import com.common.core.account.UserAccountManager;
 import com.common.core.upgrade.UpgradeManager;
 import com.common.core.upgrade.UpgradeCheckApi;
+import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -98,7 +99,7 @@ public class SettingFragment extends BaseFragment {
         mCacheSizeTv = (ExTextView) mRootView.findViewById(R.id.cache_size_tv);
 
         mVersionArea = (RelativeLayout) mRootView.findViewById(R.id.version_area);
-        mInviteCode = (RelativeLayout)mRootView.findViewById(R.id.invite_code);
+        mInviteCode = (RelativeLayout) mRootView.findViewById(R.id.invite_code);
         mNewVersionIv = (ExImageView) mRootView.findViewById(R.id.new_version_iv);
         mVersionTv = (ExTextView) mRootView.findViewById(R.id.version_tv);
         mVersionArrow = (ExImageView) mRootView.findViewById(R.id.version_arrow);
@@ -341,7 +342,7 @@ public class SettingFragment extends BaseFragment {
                  */
                 for (String dirName : CACHE_CAN_DELETE) {
                     String dirPath = U.getAppInfoUtils().getSubDirPath(dirName);
-                    new File(dirPath).delete();
+                    U.getFileUtils().deleteAllFiles(dirPath);
                 }
                 emitter.onComplete();
             }

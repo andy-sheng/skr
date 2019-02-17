@@ -279,5 +279,42 @@ public class FileUtils {
         }
     }
 
+    public void deleteAllFiles(String srcPath) {
+        if (TextUtils.isEmpty(srcPath)) {
+            MyLog.w("FileUtils", "deleteAllFiles srcPath is null");
+            return;
+        }
+
+        File file = new File(srcPath);
+        deleteAllFiles(file);
+    }
+
+    public void deleteAllFiles(File root) {
+        if (root == null || !root.exists()) {
+            MyLog.w("FileUtils", "deleteAllFiles root error");
+            return;
+        }
+
+        File files[] = root.listFiles();
+        if (files != null)
+            for (File f : files) {
+                if (f.isDirectory()) { // 判断是否为文件夹
+                    deleteAllFiles(f);
+                    try {
+                        f.delete();
+                    } catch (Exception e) {
+                    }
+                } else {
+                    if (f.exists()) { // 判断是否存在
+                        deleteAllFiles(f);
+                        try {
+                            f.delete();
+                        } catch (Exception e) {
+                        }
+                    }
+                }
+            }
+    }
+
 }
 
