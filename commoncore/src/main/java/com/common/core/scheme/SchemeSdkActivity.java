@@ -89,6 +89,8 @@ public class SchemeSdkActivity extends BaseActivity {
                     .withString("from_schema", uri)
                     .navigation();
             return;
+        }else{
+            MyLog.w(TAG, "HomeActivity存在");
         }
 
         if(TextUtils.isEmpty(uri)){
