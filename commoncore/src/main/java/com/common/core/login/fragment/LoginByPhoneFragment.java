@@ -113,6 +113,7 @@ public class LoginByPhoneFragment extends BaseFragment {
                     @Override
                     public void accept(Object o) {
                         U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+                        stopTimeTask();
                         U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
                                 .setPopFragment(LoginByPhoneFragment.this)
                                 .setPopAbove(false)
