@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
@@ -21,6 +23,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.base.R;
+import com.common.rxretrofit.cookie.persistence.SharedPrefsCookiePersistor;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
 import com.jsbridge.BridgeWebView;
@@ -30,6 +33,10 @@ import com.just.agentweb.AgentWebUIControllerImplBase;
 import com.just.agentweb.MiddlewareWebChromeBase;
 import com.just.agentweb.MiddlewareWebClientBase;
 import com.module.RouterConstants;
+
+import java.util.List;
+
+import okhttp3.Cookie;
 
 import static com.common.core.scheme.SchemeConstants.SCHEME_INFRAMESKER;
 import static com.common.view.titlebar.CommonTitleBar.ACTION_LEFT_TEXT;
@@ -43,7 +50,7 @@ public class AgentWebActivity extends BaseActivity {
     private MiddlewareWebChromeBase mMiddleWareWebChrome;
     private MiddlewareWebClientBase mMiddleWareWebClient;
 
-
+//    private SharedPrefsCookiePersistor mSharedPrefsCookiePersistor;
     CommonTitleBar mTitlebar;
     RelativeLayout mContentContainer;
 
@@ -124,6 +131,19 @@ public class AgentWebActivity extends BaseActivity {
                 return super.shouldOverrideUrlLoading(view, url);
             }
         };
+
+        //种cookie，先注释掉
+//        mSharedPrefsCookiePersistor = new SharedPrefsCookiePersistor(this);
+//        List<Cookie> cookies = mSharedPrefsCookiePersistor.loadAll();
+//        if(cookies != null && cookies.size() > 0){
+//            CookieSyncManager.createInstance(this);
+//            CookieManager cookieManager = CookieManager.getInstance();
+//            cookieManager.setAcceptCookie(true);
+//            for(Cookie cookie : cookies){
+//                cookieManager.setCookie(url, cookie.value());//cookies是在HttpClient中获得的cookie
+//            }
+//            CookieSyncManager.getInstance().sync();
+//        }
 
         mBridgeWebView=new BridgeWebView(this);
         mAgentWeb = AgentWeb.with(this)//
