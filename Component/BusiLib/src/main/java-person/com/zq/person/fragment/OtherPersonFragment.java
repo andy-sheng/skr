@@ -3,9 +3,11 @@ package com.zq.person.fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -22,8 +24,10 @@ import com.common.flowlayout.TagAdapter;
 import com.common.flowlayout.TagFlowLayout;
 import com.common.image.fresco.BaseImageView;
 import com.common.utils.FragmentUtils;
+import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
+import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
 import com.component.busilib.constans.GameModeType;
@@ -68,30 +72,24 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
     private HashMap<Integer, String> mHashMap = new HashMap();
 
     TagAdapter<String> mTagAdapter;
-
     RelativeLayout mPersonMainContainner;
-
+    BaseImageView mAvatarIv;
     ExImageView mBackIv;
     ExTextView mReport;
-
-    BaseImageView mAvatarIv;
     ExTextView mNameTv;
     ExTextView mUseridTv;
     ExTextView mSignTv;
     TagFlowLayout mFlowlayout;
-    RelativeLayout mMedalLayout;
+    ExRelativeLayout mMedalLayout;
+    ExTextView mRankNumTv;
+    ExTextView mSingendNumTv;
     NormalLevelView mLevelView;
     ExTextView mRankTv;
+    LinearLayout mLlBottomContainer;
     ExTextView mFollowTv;
     ExTextView mMessageTv;
 
-    ExTextView mRankNumTv;
-    ExTextView mFunnyNumTv;
-    ExTextView mSingendNumTv;
-
     OtherPersonPresenter mOtherPersonPresenter;
-
-    LinearLayout mLlBottomContainer;
 
     UserInfoModel mUserInfoModel;
 
@@ -107,27 +105,24 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mPersonMainContainner = (RelativeLayout) mRootView.findViewById(R.id.person_main_containner);
 
+
+        mPersonMainContainner = (RelativeLayout) mRootView.findViewById(R.id.person_main_containner);
+        mAvatarIv = (BaseImageView) mRootView.findViewById(R.id.avatar_iv);
         mBackIv = (ExImageView) mRootView.findViewById(R.id.back_iv);
         mReport = (ExTextView) mRootView.findViewById(R.id.report);
-
-        mLlBottomContainer = mRootView.findViewById(R.id.ll_bottom_container);
-
-        mAvatarIv = (BaseImageView) mRootView.findViewById(R.id.avatar_iv);
         mNameTv = (ExTextView) mRootView.findViewById(R.id.name_tv);
         mUseridTv = (ExTextView) mRootView.findViewById(R.id.userid_tv);
         mSignTv = (ExTextView) mRootView.findViewById(R.id.sign_tv);
         mFlowlayout = (TagFlowLayout) mRootView.findViewById(R.id.flowlayout);
-        mMedalLayout = (RelativeLayout) mRootView.findViewById(R.id.medal_layout);
+        mMedalLayout = (ExRelativeLayout) mRootView.findViewById(R.id.medal_layout);
+        mRankNumTv = (ExTextView) mRootView.findViewById(R.id.rank_num_tv);
+        mSingendNumTv = (ExTextView) mRootView.findViewById(R.id.singend_num_tv);
         mLevelView = (NormalLevelView) mRootView.findViewById(R.id.level_view);
         mRankTv = (ExTextView) mRootView.findViewById(R.id.rank_tv);
+        mLlBottomContainer = (LinearLayout) mRootView.findViewById(R.id.ll_bottom_container);
         mFollowTv = (ExTextView) mRootView.findViewById(R.id.follow_tv);
         mMessageTv = (ExTextView) mRootView.findViewById(R.id.message_tv);
-
-        mRankNumTv = (ExTextView) mRootView.findViewById(R.id.rank_num_tv);
-        mFunnyNumTv = (ExTextView) mRootView.findViewById(R.id.funny_num_tv);
-        mSingendNumTv = (ExTextView) mRootView.findViewById(R.id.singend_num_tv);
 
         mOtherPersonPresenter = new OtherPersonPresenter(this);
         addPresent(mOtherPersonPresenter);
@@ -204,7 +199,7 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
                     }
                 });
 
-        if(mUserInfoModel.getUserId() == MyUserInfoManager.getInstance().getUid()){
+        if (mUserInfoModel.getUserId() == MyUserInfoManager.getInstance().getUid()) {
             mLlBottomContainer.setVisibility(View.GONE);
             mReport.setVisibility(View.GONE);
         }
@@ -280,9 +275,9 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
         }
 
         if (reginRankModel != null && reginRankModel.getRankSeq() != 0) {
-            mRankTv.setText(reginRankModel.getRegionDesc() + "荣耀榜" + String.valueOf(reginRankModel.getRankSeq()) + "位");
+            mRankTv.setText(reginRankModel.getRegionDesc() + "第" + String.valueOf(reginRankModel.getRankSeq()) + "位");
         } else if (countryRankModel != null && countryRankModel.getRankSeq() != 0) {
-            mRankTv.setText(countryRankModel.getRegionDesc() + "荣耀榜" + String.valueOf(countryRankModel.getRankSeq()) + "位");
+            mRankTv.setText(countryRankModel.getRegionDesc() + "第" + String.valueOf(countryRankModel.getRankSeq()) + "位");
         } else {
             mRankTv.setText("暂无排名");
         }
@@ -324,12 +319,14 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
     @Override
     public void showGameStatic(List<GameStatisModel> list) {
         for (GameStatisModel gameStatisModel : list) {
+            SpannableStringBuilder stringBuilder = new SpanUtils()
+                    .append(String.valueOf(gameStatisModel.getTotalTimes())).setFontSize(14, true)
+                    .append("场").setFontSize(10, true)
+                    .create();
             if (gameStatisModel.getMode() == GameModeType.GAME_MODE_CLASSIC_RANK) {
-                mRankNumTv.setText(gameStatisModel.getTotalTimes() + "场");
-            } else if (gameStatisModel.getMode() == GameModeType.GAME_MODE_FUNNY) {
-                mFunnyNumTv.setText(gameStatisModel.getTotalTimes() + "场");
+                mRankNumTv.setText(stringBuilder);
             } else if (gameStatisModel.getMode() == GameModeType.GAME_MODE_GRAB) {
-                mSingendNumTv.setText(gameStatisModel.getTotalTimes() + "场");
+                mSingendNumTv.setText(stringBuilder);
             }
         }
 

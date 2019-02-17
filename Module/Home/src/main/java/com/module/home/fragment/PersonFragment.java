@@ -431,17 +431,13 @@ public class PersonFragment extends BaseFragment implements IPersonView {
     @Override
     public void showGameStatic(List<GameStatisModel> list) {
         for (GameStatisModel gameStatisModel : list) {
+            SpannableStringBuilder stringBuilder = new SpanUtils()
+                    .append(String.valueOf(gameStatisModel.getTotalTimes())).setFontSize(14, true)
+                    .append("场").setFontSize(10, true)
+                    .create();
             if (gameStatisModel.getMode() == GameModeType.GAME_MODE_CLASSIC_RANK) {
-                SpannableStringBuilder stringBuilder = new SpanUtils()
-                        .append(String.valueOf(gameStatisModel.getTotalTimes())).setFontSize(14, true)
-                        .append("场").setFontSize(10, true)
-                        .create();
                 mRankNumTv.setText(stringBuilder);
             } else if (gameStatisModel.getMode() == GameModeType.GAME_MODE_GRAB) {
-                SpannableStringBuilder stringBuilder = new SpanUtils()
-                        .append(String.valueOf(gameStatisModel.getTotalTimes())).setFontSize(14, true)
-                        .append("场").setFontSize(10, true)
-                        .create();
                 mSingendNumTv.setText(stringBuilder);
             }
         }
