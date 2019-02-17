@@ -111,7 +111,7 @@ public class VolumeFragment extends BaseFragment {
                     public void accept(Object o) {
                         U.getFragmentUtils().popFragment(FragmentUtils.newPopParamsBuilder()
                                 .setPopFragment(VolumeFragment.this)
-                                .setPopAbove(false)
+                                .setPopAbove(true)
                                 .setHasAnimation(true)
                                 .build());
                     }
