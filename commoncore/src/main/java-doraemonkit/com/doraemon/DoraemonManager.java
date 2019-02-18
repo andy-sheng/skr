@@ -1,19 +1,11 @@
 package com.doraemon;
 
-import android.content.Context;
-
 import com.common.core.R;
-import com.common.umeng.UmengInit;
 import com.common.umeng.UmengPush;
 import com.common.utils.U;
 import com.didichuxing.doraemonkit.DoraemonKit;
 import com.didichuxing.doraemonkit.kit.sysinfo.ExtraInfoProvider;
 import com.didichuxing.doraemonkit.kit.sysinfo.SysInfoItem;
-import com.didichuxing.doraemonkit.ui.FloatIconPage;
-import com.didichuxing.doraemonkit.ui.UniversalActivity;
-import com.didichuxing.doraemonkit.ui.base.FloatPageManager;
-import com.didichuxing.doraemonkit.ui.base.PageIntent;
-import com.engine.agora.AgoraEngineAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +29,7 @@ public class DoraemonManager {
             public List<SysInfoItem> getExtraInfo() {
                 List<SysInfoItem> extras = new ArrayList<>();
                 extras.add(new SysInfoItem("友盟push DeviceToken", UmengPush.getDeviceToken()));
-                extras.add(new SysInfoItem("translucent_has_bug", U.app().getResources().getBoolean(R.bool.translucent_has_bug)+""));
+                extras.add(new SysInfoItem("translucent_no_bug", U.app().getResources().getBoolean(R.bool.translucent_no_bug)+""));
                 return extras;
             }
         });

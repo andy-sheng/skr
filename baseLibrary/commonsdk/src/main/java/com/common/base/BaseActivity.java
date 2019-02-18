@@ -130,7 +130,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
          * 只会让虚拟按键变透明，布局没有动
          */
 //        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        animationEnter();
+        //animationEnter();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -283,7 +283,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
     @Override
     public void finish() {
         super.finish();
-        animationOut();
+        //animationOut();
     }
 
     protected void animationEnter() {
