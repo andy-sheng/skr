@@ -6,6 +6,7 @@ import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
@@ -22,6 +23,17 @@ public interface UserInfoServerApi {
      */
     @GET("v1/uprofile/information")
     Observable<ApiResult> getUserInfo(@Query("userID") int userID);
+
+
+    /**
+     * 拿到某些人的信息
+     * @param body  body: {
+     *  "userIDs": [1982416,1156569]
+     * }
+     * @return
+     */
+    @POST("/v1/query/uprofiles")
+    Observable<ApiResult> getUserInfos(@Body RequestBody body);
 
 
     /**

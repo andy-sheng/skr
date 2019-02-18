@@ -69,6 +69,7 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
         if (mode == UserInfoManager.RELATION_FRIENDS) {
             mFollowTv.setText("互关");
             mFollowTv.setTextColor(Color.parseColor("#787B8E"));
+            mFollowTv.setWidth(U.getDisplayUtils().dip2px(72));
             mFollowTv.setBackground(ContextCompat.getDrawable(U.app(), R.drawable.followed_bg));
         } else if (mode == UserInfoManager.RELATION_FANS) {
             if (userInfoModel.isFriend()) {
