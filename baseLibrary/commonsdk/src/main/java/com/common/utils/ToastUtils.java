@@ -544,7 +544,7 @@ public class ToastUtils {
         public void cancel() {
             try {
                 mWM.removeView(mView);
-            } catch (IllegalArgumentException ignored) { /**/ }
+            } catch (Exception ignored) { /**/ }
             mView = null;
             mHandler = null;
             mToast = null;
