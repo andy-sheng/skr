@@ -287,6 +287,19 @@ public class PersonFragment extends BaseFragment implements IPersonView {
 
     private void initWallet() {
         mWalletArea = (RelativeLayout) mRootView.findViewById(R.id.wallet_area);
+        RxView.clicks(mWalletArea)
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        U.getSoundUtils().play(TAG, R.raw.allclick);
+                        U.getFragmentUtils().addFragment(
+                                FragmentUtils.newAddParamsBuilder(getActivity(), WalletFragment.class)
+                                        .setAddToBackStack(true)
+                                        .setHasAnimation(true)
+                                        .build());
+                    }
+                });
     }
 
     private void initSetting() {

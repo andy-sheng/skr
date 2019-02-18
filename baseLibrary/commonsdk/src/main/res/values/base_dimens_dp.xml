@@ -2028,5 +2028,6 @@
     <dimen name="textsize_32_33_dp">32.33dp</dimen>
     <dimen name="textsize_32_67_dp">32.67dp</dimen>
     <dimen name="textsize_33_dp">33dp</dimen>
+    <dimen name="textsize_50_dp">50dp</dimen>
 </resources>
 
