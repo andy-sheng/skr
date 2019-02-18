@@ -1,4 +1,4 @@
-package com.didichuxing.doraemonkit.ui.widget.dialog;
+package com.dialog.list;
 
 public class DialogListItem {
     public String title;

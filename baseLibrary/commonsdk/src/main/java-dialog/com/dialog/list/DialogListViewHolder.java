@@ -1,14 +1,15 @@
-package com.didichuxing.doraemonkit.ui.widget.dialog;
+package com.dialog.list;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.didichuxing.doraemonkit.R;
+import com.common.base.R;
 
 
 public class DialogListViewHolder extends RecyclerView.ViewHolder {
     TextView titleTv;
+    View mDivider;
     DialogListItem data;
 
     public DialogListViewHolder(View itemView) {
@@ -17,6 +18,7 @@ public class DialogListViewHolder extends RecyclerView.ViewHolder {
             titleTv = (TextView) itemView;
         } else {
             titleTv = (TextView) itemView.findViewById(R.id.desc_tv);
+            mDivider = (View) itemView.findViewById(R.id.divider);
         }
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override

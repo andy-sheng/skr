@@ -1,4 +1,4 @@
-package com.didichuxing.doraemonkit.ui.widget.dialog;
+package com.dialog.list;
 
 import android.content.Context;
 import android.view.Gravity;
@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import com.common.base.R;
 import com.common.utils.U;
-import com.didichuxing.doraemonkit.R;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ListHolder;
 
@@ -44,15 +44,23 @@ public class ListDialog {
                 View v = null;
                 if (convertView == null) {
                     v = LayoutInflater.from(mContext).inflate(
-                            R.layout.dk_dialog_list_item, parent, false);
+                            R.layout.dialog_list_item, parent, false);
                     DialogListViewHolder vh = new DialogListViewHolder(v);
-                    vh.titleTv.setTextColor(U.getColor(R.color.dk_color_48BB31));
                     v.setTag(vh);
                 } else {
                     v = convertView;
                 }
                 DialogListViewHolder vh = (DialogListViewHolder) v.getTag();
                 DialogListItem debugData = mDataList.get(position);
+                if ((mDataList.size() - 1) == position) {
+                    if (vh.mDivider != null) {
+                        vh.mDivider.setVisibility(View.GONE);
+                    }
+                } else {
+                    if (vh.mDivider != null) {
+                        vh.mDivider.setVisibility(View.VISIBLE);
+                    }
+                }
                 vh.bindData(debugData);
                 return v;
             }
@@ -63,8 +71,9 @@ public class ListDialog {
                 .setAdapter(mBaseAdapter)
                 .setGravity(Gravity.CENTER)
                 .setCancelable(true)
-                .setContentBackgroundResource(R.color.dk_list_dialog_content_bg)
-                .setOverlayBackgroundResource(R.color.dk_list_dialog_overlay_bg)
+                .setContentBackgroundResource(R.drawable.img_dialog_bg)
+                .setMargin(U.getDisplayUtils().dip2px(45), 0, U.getDisplayUtils().dip2px(45), 0)
+                .setOverlayBackgroundResource(R.color.black_trans_60)
                 .setExpanded(false)
                 .create();
     }

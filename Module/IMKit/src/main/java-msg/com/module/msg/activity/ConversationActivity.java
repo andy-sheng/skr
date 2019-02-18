@@ -1,19 +1,13 @@
 package com.module.msg.activity;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Process;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
-import android.view.View;
 
 import com.common.base.BaseActivity;
-import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
-import com.didichuxing.doraemonkit.kit.sysinfo.SysInfoItem;
-import com.didichuxing.doraemonkit.ui.widget.dialog.DialogListItem;
-import com.didichuxing.doraemonkit.ui.widget.dialog.ListDialog;
+import com.dialog.list.DialogListItem;
+import com.dialog.list.ListDialog;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
@@ -25,8 +19,6 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.functions.Consumer;
 import io.rong.imkit.R;
-
-import static com.umeng.socialize.utils.ContextUtil.getContext;
 
 /**
  * 单聊界面
