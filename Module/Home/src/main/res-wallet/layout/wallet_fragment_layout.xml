@@ -25,6 +25,7 @@
         app:titleBarColor="#0288D0"></com.common.view.titlebar.CommonTitleBar>
 
     <com.common.view.ex.ExRelativeLayout
+        android:id="@+id/blance_area"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_200_dp"
         android:layout_below="@+id/titlebar"
@@ -66,5 +67,19 @@
             android:textStyle="bold" />
 
     </com.common.view.ex.ExRelativeLayout>
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/blance_area">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
 
 </RelativeLayout>
