@@ -219,7 +219,7 @@ public class ArcCloudManager implements IACRCloudListener {
             System.arraycopy(mBuffer, left, mBuffer, 0, tl - left);
             System.arraycopy(newBuffer, 0, mBuffer, tl - left, newBuffer.length);
             setLen(BUFFER_LEN);
-            if (recognizeConfig.getMode() == RecognizeConfig.MODE_AUTO) {
+            if (recognizeConfig.getMode() == RecognizeConfig.MODE_AUTO && recognizeConfig.getAutoTimes()>0) {
                 // 自动识别
                 recognizeInner(mLineNo);
             } else if (recognizeConfig.getMode() == RecognizeConfig.MODE_MANUAL) {
@@ -322,6 +322,7 @@ public class ArcCloudManager implements IACRCloudListener {
                                 mProcessing = false;
                                 if (recognizeConfig != null && recognizeConfig.getMode() == RecognizeConfig.MODE_AUTO) {
                                     recognizeConfig.setAutoTimes(recognizeConfig.getAutoTimes() - 1);
+                                    setLen(0);
                                 }
                                 if (recognizeConfig != null && recognizeConfig.getMode() == RecognizeConfig.MODE_MANUAL) {
                                     recognizeConfig.setWantRecognizeInManualMode(false);

@@ -233,6 +233,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                         .setSongName(now.getSongModel().getItemName())
                         .setArtist(now.getSongModel().getOwner())
                         .setMode(RecognizeConfig.MODE_AUTO)
+                        .setAutoTimes(8)
                         .setMResultListener(new ArcRecognizeListener() {
                             @Override
                             public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
@@ -240,9 +241,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                                 if (targetSongInfo != null) {
                                     score = (int) (targetSongInfo.getScore() * 100);
                                 }
-
                                 MachineScoreItem machineScoreItem = new MachineScoreItem();
-                                machineScoreItem.setNo(0);
+                                machineScoreItem.setNo(lineNo);
                                 machineScoreItem.setTs(System.currentTimeMillis() - mRobotScoreHelper.getBeginRecordTs());
                                 machineScoreItem.setScore(score);
                                 mRobotScoreHelper.add(machineScoreItem);
@@ -410,11 +410,16 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             }
             // 上传打分
             if (mRobotScoreHelper != null) {
-                if (mRobotScoreHelper != null && mRobotScoreHelper.isScoreEnough()
-                        && roundInfoModel.getOverReason() == EQRoundResultType.ROT_TYPE_1.getValue()) {
-                    // 是一唱到底的才上传
-                    roundInfoModel.setSysScore(mRobotScoreHelper.getAverageScore());
-                    uploadRes1ForAi(roundInfoModel);
+                if (mRobotScoreHelper.isScoreEnough()) {
+                    if (roundInfoModel.getOverReason() == EQRoundResultType.ROT_TYPE_1.getValue()) {
+                        // 是一唱到底的才上传
+                        roundInfoModel.setSysScore(mRobotScoreHelper.getAverageScore());
+                        uploadRes1ForAi(roundInfoModel);
+                    } else {
+                        MyLog.d(TAG, "没有唱到一唱到底不上传");
+                    }
+                } else {
+                    MyLog.d(TAG, "isScoreEnough false");
                 }
             }
         }
@@ -426,7 +431,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      * @param roundInfoModel
      */
     private void uploadRes1ForAi(RoundInfoModel roundInfoModel) {
-        if (mRobotScoreHelper != null && mRobotScoreHelper.vilid()) {
+        if (mRobotScoreHelper != null) {
+            MyLog.d(TAG, "uploadRes1ForAi 开始上传资源 得分:" + roundInfoModel.getSysScore());
             UploadParams.newBuilder(RoomDataUtils.getSaveAudioForAiFilePath())
                     .setFileType(UploadParams.FileType.audioAi)
                     .startUploadAsync(new UploadCallback() {
@@ -437,6 +443,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
                         @Override
                         public void onSuccess(String url) {
+                            MyLog.d(TAG, "uploadRes1ForAi 上传成功 url=" + url);
                             sendUploadRequest(roundInfoModel, url);
                         }
 
@@ -924,7 +931,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             noPassingInfo.setUserID(event.getUserID());
             noPassingInfo.setTimeMs(System.currentTimeMillis());
 
-            roundInfoModel.addLightOffUid(true,noPassingInfo );
+            roundInfoModel.addLightOffUid(true, noPassingInfo);
         } else {
             MyLog.w(TAG, "有人灭灯了,但是不是这个轮次：userID " + event.getUserID() + ", seq " + event.getRoundSeq() + "，当前轮次是 " + mRoomData.getRealRoundSeq());
         }
