@@ -156,6 +156,20 @@ public class StatusBarUtils {
         return false;
     }
 
+    public boolean supportTransparentStatusBar() {
+
+        if (U.getDeviceUtils().isMiui()
+                || U.getDeviceUtils().isFlyme()
+                || (U.getDeviceUtils().isOppo() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                || Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return true;
+        }
+        if (U.getDeviceUtils().isEmui() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            return true;
+        }
+        return false;
+    }
+
     private View createStatusBarView(Context context, @ColorInt int color) {
         View mStatusBarTintView = new View(context);
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams

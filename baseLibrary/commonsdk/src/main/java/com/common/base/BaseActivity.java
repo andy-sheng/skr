@@ -28,6 +28,8 @@ import android.support.v7.app.AppCompatDelegate;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 
 import com.common.base.delegate.IActivity;
@@ -189,6 +191,11 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
             layoutResID = R.layout.empty_activity_layout;
         }
         setContentView(layoutResID);
+//        ViewGroup contentFrameLayout = (ViewGroup) findViewById(Window.ID_ANDROID_CONTENT);
+//        View parentView = contentFrameLayout.getChildAt(0);
+//        if (parentView != null && Build.VERSION.SDK_INT >= 14) {
+//            parentView.setFitsSystemWindows(true);
+//        }
         initData(savedInstanceState);
         if (useEventBus()) {
             if (!EventBus.getDefault().isRegistered(this)) {

@@ -266,13 +266,8 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
         ViewGroup.LayoutParams globalParams = new ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
         setLayoutParams(globalParams);
         // 构建标题栏填充视图
-        boolean supportStatusBarLightMode = false;
-        try {
-            supportStatusBarLightMode = U.getStatusBarUtil().supportStatusBarLightMode((Activity) getContext());
-        } catch (ClassCastException e) {
-            e.printStackTrace();
-        }
-        if (fillStatusBar && supportStatusBarLightMode) {
+        boolean transparentStatusBar = U.getStatusBarUtil().supportTransparentStatusBar();
+        if (fillStatusBar && transparentStatusBar) {
             int statusBarHeight = U.getStatusBarUtil().getStatusBarHeight(context);
             viewStatusBarFill = new View(context);
             viewStatusBarFill.setId(generateViewId());
@@ -286,7 +281,7 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
         rlMain.setId(generateViewId());
         rlMain.setBackgroundColor(titleBarColor);
         LayoutParams mainParams = new LayoutParams(MATCH_PARENT, titleBarHeight);
-        if (fillStatusBar && supportStatusBarLightMode) {
+        if (fillStatusBar && transparentStatusBar) {
             mainParams.addRule(RelativeLayout.BELOW, viewStatusBarFill.getId());
         } else {
             mainParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
