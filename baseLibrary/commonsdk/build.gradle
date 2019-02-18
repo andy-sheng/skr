@@ -130,6 +130,9 @@ android {
 
             java.srcDirs += 'src/main/java-jsbridge'
 
+            java.srcDirs += 'src/main/java-banner'
+            res.srcDirs += 'src/main/res-banner'
+
         }
 
 //        release {
@@ -251,7 +254,7 @@ dependencies {
     api rootProject.ext.dependencies["rxbinding-appcompat-v7"]
     api rootProject.ext.dependencies["cardview-v7"]
 //    api rootProject.ext.dependencies["lzyzsd-jsbridge"]
-    api 'com.youth.banner:banner:1.4.10'
+//    api 'com.youth.banner:banner:1.4.10'
 
     if (virtualApkEnable.toBoolean()) {
         // VirtualApk 组件
