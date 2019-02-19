@@ -144,6 +144,7 @@ public class CommentView extends RelativeLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(CommentMsgEvent event) {
+        MyLog.d(TAG, "onEvent" + " CommentMsgEvent = " + event.text);
         CommentModel commentModel = CommentModel.parseFromEvent(event, mRoomData);
         mCommentAdapter.getDataList().add(0, commentModel);
         if (!mOnBottom || mDraging) {
