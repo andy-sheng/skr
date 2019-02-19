@@ -52,6 +52,7 @@ import com.module.playways.rank.room.presenter.RankCorePresenter;
 import com.module.playways.rank.room.view.BottomContainerView;
 import com.module.playways.rank.room.view.IGameRuleView;
 import com.module.playways.rank.room.view.InputContainerView;
+import com.module.playways.rank.room.view.RankOpView;
 import com.module.playways.rank.room.view.TopContainerView;
 import com.module.playways.rank.room.view.TurnChangeCardView;
 import com.module.playways.rank.song.model.SongModel;
@@ -199,6 +200,8 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     PendingRivalData mPendingRivalCountdown;
 
+    RankOpView mRankOpView;
+
 //    int mUFOMode = 0; //UFO飞碟模式 1即入场 2即循环 3即离场 4动画结束
 
     SVGAParser mSVGAParser;
@@ -241,8 +244,9 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         initLyricsView();
         initTurnChangeView();
         initGiftDisplayView();
-
         showReadyGoView();
+
+        mRankOpView = mRootView.findViewById(R.id.rank_op_view);
 
         mCorePresenter = new RankCorePresenter(this, mRoomData);
         addPresent(mCorePresenter);

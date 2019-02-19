@@ -11,6 +11,7 @@ import com.module.rank.R;
 import java.util.concurrent.TimeUnit;
 
 public class RankOpView extends RelativeLayout {
+    public static final int COUNT_DOWN_NUM = 20;
     ExImageView mIvBurst;
     ExImageView mIvTurnOff;
     ExTextView mTvCountDown;
@@ -20,6 +21,8 @@ public class RankOpView extends RelativeLayout {
     OpListener mOpListener;
 
     HandlerTaskTimer mCountDownTask;
+
+
 
     volatile boolean mBurstSuccess = false;
 
@@ -64,13 +67,15 @@ public class RankOpView extends RelativeLayout {
 
         mCountDownTask = HandlerTaskTimer.newBuilder()
                 .interval(1000)
-                .take(20)
+                .take(COUNT_DOWN_NUM)
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
+                        integer = COUNT_DOWN_NUM - integer;
                         if (integer == 0) {
                             mIvTurnOff.setEnabled(true);
                         }
+
                         mTvCountDown.setText(integer + "");
                     }
                 });

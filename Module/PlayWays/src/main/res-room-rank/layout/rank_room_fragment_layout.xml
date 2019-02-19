@@ -119,6 +119,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <com.module.playways.rank.room.view.RankOpView
+        android:layout_alignParentBottom="true"
+        android:id="@+id/rank_op_view"
+        android:layout_marginBottom="@dimen/view_160_dp"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
     <ImageView
         android:id="@+id/end_game_iv"
         android:layout_width="@dimen/view_324_dp"

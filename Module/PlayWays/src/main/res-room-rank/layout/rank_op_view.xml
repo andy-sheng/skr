@@ -4,7 +4,7 @@
     tools:parentTag="android.widget.RelativeLayout"
     android:orientation="vertical"
     android:layout_width="@dimen/view_86_dp"
-    android:layout_height="@dimen/view_237_dp">
+    android:layout_height="wrap_content">
     <com.common.view.ex.ExImageView
         android:layout_marginTop="@dimen/view_52_dp"
         android:layout_alignParentRight="true"
@@ -26,16 +26,17 @@
         android:layout_height="@dimen/view_53_dp"
         />
     <com.common.view.ex.ExTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textStyle="bold"
         android:id="@+id/tv_count_down"
         android:textSize="@dimen/textsize_24_dp"
-        android:paddingBottom="@dimen/view_6_dp"
+        android:paddingBottom="@dimen/view_10_dp"
         android:textColor="#680000"
         android:gravity="center"
         android:text="1"
         android:shadowColor="@color/black"
         android:shadowRadius="1"
-        android:shadowDx="10"
         android:shadowDy="10"
         android:layout_alignLeft="@+id/iv_turn_off"
         android:layout_alignRight="@+id/iv_turn_off"
