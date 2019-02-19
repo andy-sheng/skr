@@ -1,5 +1,7 @@
 package com.module.playways.rank.room.view;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -10,7 +12,6 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
-
 import com.common.utils.U;
 import com.module.rank.R;
 
@@ -23,6 +24,8 @@ public class EnergySlotView extends View {
     Drawable mEmptyEnergyDrawable;
 
     AnimatorSet mAnimatorSet;
+
+    AnimatorListenerAdapter mAnimatorListenerAdapter;
 
     int mCur = 0;
     int mTarget;
@@ -92,6 +95,10 @@ public class EnergySlotView extends View {
         postInvalidate();
     }
 
+    public void setAnimatorListenerAdapter(AnimatorListenerAdapter animationEndListener){
+        mAnimatorListenerAdapter = animationEndListener;
+    }
+
     public void setTarget(int target){
         mTarget = target;
 
@@ -109,7 +116,17 @@ public class EnergySlotView extends View {
             }
         });
 
+
         mAnimatorSet = new AnimatorSet();
+        mAnimatorSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if(mAnimatorListenerAdapter != null){
+                    mAnimatorListenerAdapter.onAnimationEnd(animation);
+                }
+            }
+        });
+
         mAnimatorSet.setDuration(Math.abs(target - mCur) * 20)
                 .play(creditValueAnimator);
 
