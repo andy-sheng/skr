@@ -137,7 +137,6 @@ public class MyUserInfoManager {
                 MyLog.d(e);
             }
         }
-
     }
 
     public void updateInfo(final MyInfoUpdateParams updateParams) {

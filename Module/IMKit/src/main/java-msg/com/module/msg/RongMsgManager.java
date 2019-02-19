@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.util.Pair;
 
 import com.alibaba.fastjson.JSONObject;
+import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.cache.BuddyCache;
@@ -135,6 +136,9 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                 public void onChanged(ConnectionStatus connectionStatus) {
                     MyLog.w(TAG, "onChanged" + " connectionStatus=" + connectionStatus);
                     mConnectionStatus = connectionStatus;
+                    if(connectionStatus == ConnectionStatus.KICKED_OFFLINE_BY_OTHER_CLIENT){
+                        UserAccountManager.getInstance().rcKickedByOthers();
+                    }
                 }
             });
             RongIM.setOnReceiveMessageListener(mReceiveMessageListener);

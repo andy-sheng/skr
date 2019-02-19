@@ -40,6 +40,9 @@ public abstract class ApiObserver<T> implements Observer<T> {
             if (result.errno == 107) {
                 UserAccountManager.getInstance().notifyAccountExpired();
             }
+            if(result.errno == 0){
+                UserAccountManager.getInstance().accountValidFromServer();
+            }
         }
         process(obj);
     }

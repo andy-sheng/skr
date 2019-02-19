@@ -11,6 +11,8 @@ import com.common.core.myinfo.Location;
 import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoLocalApi;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.myinfo.MyUserInfoServerApi;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -19,6 +21,7 @@ import com.common.rxretrofit.ApiResult;
 import com.common.statistics.UmengStatistics;
 import com.common.umeng.UmengPush;
 import com.common.umeng.UmengPushRegisterSuccessEvent;
+import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
@@ -31,6 +34,8 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Response;
 
 
 /**
@@ -42,6 +47,8 @@ public class UserAccountManager {
     private static final String TAG = UserAccountManager.class.getSimpleName();
 
     private UserAccount mAccount;
+
+    private boolean mHasTryConnentRM = false;//有没有尝试过登录过融云
 
     private boolean mHasloadAccountFromDB = false;//有没有尝试load过账号
 
@@ -61,7 +68,7 @@ public class UserAccountManager {
         MyLog.d(TAG, "init");
         long channelId = HostChannelManager.getInstance().getChannelId();
         UserAccount userAccount = UserAccountLocalApi.getUserAccount(channelId);
-        setAccount(userAccount);
+        setAccount(userAccount, false);
     }
 
     public void onLoginResult(UserAccount account) {
@@ -71,13 +78,12 @@ public class UserAccountManager {
             // 登出所有其他账号
             UserAccountLocalApi.loginAccount(account);
             // 用户登录成功，这里应该是要发出通知的
-            setAccount(account);
-
+            setAccount(account, true);
             U.getActivityUtils().showSnackbar("登录成功", false);
         }
     }
 
-    private void setAccount(UserAccount account) {
+    private void setAccount(UserAccount account, boolean fromServer) {
         mAccount = account;
         mHasloadAccountFromDB = true;
         if (account != null) {
@@ -90,8 +96,15 @@ public class UserAccountManager {
             // 同步昵称等详细信息
             MyUserInfoManager.getInstance().init();
 
-            // 与融云服务器建立连接
-            connectRongIM(account.getRongToken());
+            if (fromServer) {
+                // 与融云服务器建立连接
+                MyLog.d(TAG, "从服务器取的账号，可以立马登录融云");
+                mHasTryConnentRM = true;
+                connectRongIM(account.getRongToken());
+            } else {
+                // 账号不是从服务器取的，至少一个服务器请求成功后，才登录融云
+
+            }
 
             trySetUmengPushAlias();
 //            ScreenLogView.addInfo("用户id", account.getUid());
@@ -100,10 +113,6 @@ public class UserAccountManager {
         }
         EventBus.getDefault().post(new AccountEvent.SetAccountEvent());
         // 只有非游客模式才发已有账号的事件
-    }
-
-    public void setAnonymousId(long anonymousId) {
-
     }
 
     public boolean hasLoadAccountFromDB() {
@@ -165,7 +174,6 @@ public class UserAccountManager {
         }
         return "";
     }
-
 
     // 手机登录
     public void loginByPhoneNum(final String phoneNum, String verifyCode) {
@@ -232,7 +240,6 @@ public class UserAccountManager {
      */
     public void loginByThirdPart(final int mode, String accessToken, String openId) {
         UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
-        //
         userAccountServerApi.loginWX(mode, accessToken, openId)
                 .subscribeOn(Schedulers.io())
                 .subscribe(new ApiObserver<ApiResult>() {
@@ -286,7 +293,6 @@ public class UserAccountManager {
                         }
                     }
                 });
-
     }
 
     /**
@@ -301,6 +307,14 @@ public class UserAccountManager {
      */
     public void notifyAccountExpired() {
         logoff(false, AccountEvent.LogoffAccountEvent.REASON_ACCOUNT_EXPIRED, false);
+    }
+
+    /**
+     * 经过服务器的api认证，账号有效
+     */
+    public void accountValidFromServer() {
+        // 认证有效时，再连融云，防止无效的账号将有效账号的融云踢下线
+        tryConnectRongIM();
     }
 
     /**
@@ -370,8 +384,68 @@ public class UserAccountManager {
         });
     }
 
+    public void tryConnectRongIM() {
+        if (mHasTryConnentRM) {
+            return;
+        }
+        if (mAccount != null) {
+            String token = mAccount.getRongToken();
+            if (!TextUtils.isEmpty(token)) {
+                mHasTryConnentRM = true;
+                connectRongIM(token);
+            }
+        }
+    }
+
+    /**
+     * 融云账号被人提了
+     * 融云账号被人提了，不一定代表这个账号无效了
+     * 这时候访问一下服务器，看看这个账号是不是真的无效
+     */
+    public void rcKickedByOthers(final int times) {
+        MyLog.d(TAG, "融云被KICK了  rcKickedByOthers" + " times=" + times);
+        if (times > 5) {
+            MyLog.d(TAG, "rcKickedByOthers" + " times=" + times + ",超过重试次数了");
+            return;
+        }
+        if (hasAccount()) {
+            //还有账号
+            MyUserInfoServerApi api = ApiManager.getInstance().createService(MyUserInfoServerApi.class);
+            Call<ApiResult> apiResultCall = api.getUserInfo((int) getUuidAsLong());
+            if (apiResultCall != null) {
+                try {
+                    Response<ApiResult> resultResponse = apiResultCall.execute();
+                    if (resultResponse != null) {
+                        ApiResult obj = resultResponse.body();
+                        if (obj != null) {
+                            if (obj.getErrno() == 0) {
+                                connectRongIM(mAccount.getRongToken());
+                            } else if (obj.getErrno() == 107) {
+                                UserAccountManager.getInstance().notifyAccountExpired();
+                            }
+                        } else {
+                            MyLog.w(TAG, "syncMyInfoFromServer obj==null");
+                        }
+                    }
+                } catch (Exception e) {
+                    MyLog.d(e);
+                }
+            } else {
+                HandlerTaskTimer.newBuilder().delay(2000)
+                        .start(new HandlerTaskTimer.ObserverW() {
+                            @Override
+                            public void onNext(Integer integer) {
+                                rcKickedByOthers(times + 1);
+                            }
+                        });
+            }
+        } else {
+            MyLog.d(TAG, "rcKickedByOthers no account,do nothing");
+        }
+    }
+
     // 获取IM的token
-    public void getIMToken() {
+    private void getIMToken() {
         MyLog.d(TAG, "getIMToken");
         UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
         ApiMethods.subscribe(userAccountServerApi.getIMToken(), new ApiObserver<ApiResult>() {
@@ -418,15 +492,15 @@ public class UserAccountManager {
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onEvent(UmengPushRegisterSuccessEvent event){
+    public void onEvent(UmengPushRegisterSuccessEvent event) {
         trySetUmengPushAlias();
     }
 
     /**
      * 给Umeng的push通道设置 Alias
      */
-    void trySetUmengPushAlias(){
-        if(UserAccountManager.getInstance().hasAccount()){
+    void trySetUmengPushAlias() {
+        if (UserAccountManager.getInstance().hasAccount()) {
             UmengPush.setAlias(UserAccountManager.getInstance().getUuid());
         }
     }
