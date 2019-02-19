@@ -45,6 +45,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
+import static com.common.core.userinfo.UserInfoManager.RELATION_FOLLOW;
 import static com.common.core.userinfo.event.RelationChangeEvent.FOLLOW_TYPE;
 import static com.common.core.userinfo.event.RelationChangeEvent.UNFOLLOW_TYPE;
 
@@ -183,39 +184,41 @@ public class RelationView extends RelativeLayout {
         mDialogPlus.show();
     }
 
-    public void loadData(final int mode, final int offset, int limit) {
-        UserInfoManager.getInstance().getRelationList(mode, offset, limit, new UserInfoManager.ResponseCallBack<ApiResult>() {
-            @Override
-            public void onServerSucess(ApiResult result) {
-                mOffset = result.getData().getIntValue("offset");
-                List<UserInfoModel> userInfoModels = JSON.parseArray(result.getData().getString("users"), UserInfoModel.class);
-                if (userInfoModels != null && userInfoModels.size() != 0) {
-                    mRefreshLayout.finishLoadMore();
-                    mLoadService.showSuccess();
-                    mRelationAdapter.addData(userInfoModels);
-                    mRelationAdapter.notifyDataSetChanged();
-                    hasMore = true;
-                } else {
-                    hasMore = false;
-                    mRefreshLayout.finishLoadMore();
-                    if (offset == 0) {
-                        // 第一次拉数据
-                        if (mode == UserInfoManager.RELATION_FRIENDS) {
-                            mLoadService.showCallback(FriendsEmptyCallback.class);
-                        } else if (mode == UserInfoManager.RELATION_FANS) {
-                            mLoadService.showCallback(FansEmptyCallback.class);
-                        } else if (mode == UserInfoManager.RELATION_FOLLOW){
-                            mLoadService.showCallback(FriendsEmptyCallback.class);
-                        }
+    UserInfoManager.ResponseCallBack<ApiResult> mApiResultResponseCallBack = new UserInfoManager.ResponseCallBack<ApiResult>() {
+        @Override
+        public void onServerSucess(ApiResult result) {
+            mOffset = result.getData().getIntValue("offset");
+            List<UserInfoModel> userInfoModels = JSON.parseArray(result.getData().getString("users"), UserInfoModel.class);
+            if (userInfoModels != null && userInfoModels.size() != 0) {
+                mRefreshLayout.finishLoadMore();
+                mLoadService.showSuccess();
+                mRelationAdapter.addData(userInfoModels);
+                mRelationAdapter.notifyDataSetChanged();
+                hasMore = true;
+            } else {
+                hasMore = false;
+                mRefreshLayout.finishLoadMoreWithNoMoreData();
+                if ((mOffset - DEFAULT_COUNT) <= 0) {
+                    // 第一次拉数据
+                    if (mMode == UserInfoManager.RELATION_FRIENDS) {
+                        mLoadService.showCallback(FriendsEmptyCallback.class);
+                    } else if (mMode == UserInfoManager.RELATION_FANS) {
+                        mLoadService.showCallback(FansEmptyCallback.class);
+                    } else if (mMode == RELATION_FOLLOW) {
+                        mLoadService.showCallback(FriendsEmptyCallback.class);
                     }
                 }
             }
+        }
 
-            @Override
-            public void onServerFailed() {
-                mRefreshLayout.finishLoadMore();
-            }
-        });
+        @Override
+        public void onServerFailed() {
+            mRefreshLayout.finishLoadMore();
+        }
+    };
+
+    public void loadData(final int mode, final int offset, int limit) {
+        UserInfoManager.getInstance().getRelationList(mode, offset, limit, mApiResultResponseCallBack);
     }
 
     @Override
@@ -306,7 +309,7 @@ public class RelationView extends RelativeLayout {
                     mRelationAdapter.notifyDataSetChanged();
                 }
             }
-        } else if (mMode == UserInfoManager.RELATION_FOLLOW) {
+        } else if (mMode == RELATION_FOLLOW) {
             // 关注页面
             if (event.type == FOLLOW_TYPE) {
                 UserInfoModel userInfoModel = buddyCacheEntry.parseUserInfoMode();
@@ -337,7 +340,7 @@ public class RelationView extends RelativeLayout {
                 mLoadService.showCallback(FriendsEmptyCallback.class);
             } else if (mMode == UserInfoManager.RELATION_FANS) {
                 mLoadService.showCallback(FansEmptyCallback.class);
-            } else if (mMode == UserInfoManager.RELATION_FOLLOW){
+            } else if (mMode == RELATION_FOLLOW) {
                 mLoadService.showCallback(FriendsEmptyCallback.class);
             }
         }
