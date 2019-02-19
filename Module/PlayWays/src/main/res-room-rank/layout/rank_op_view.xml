@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:parentTag="android.widget.RelativeLayout"
     android:orientation="vertical"
-    android:layout_width="@dimen/view_146_dp"
+    android:layout_width="@dimen/view_86_dp"
     android:layout_height="@dimen/view_237_dp">
     <com.common.view.ex.ExImageView
         android:layout_marginTop="@dimen/view_52_dp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/view_16_dp"
-        android:background="@drawable/img_btn_bg_yellow"
+        android:background="@drawable/guanzhong_baodeng"
         android:id="@+id/iv_burst"
         android:layout_width="@dimen/view_50_dp"
         android:layout_height="@dimen/view_53_dp"
@@ -20,12 +20,13 @@
         android:layout_marginRight="@dimen/view_16_dp"
         android:layout_marginTop="@dimen/view_23_dp"
         android:layout_below="@+id/iv_burst"
-        android:background="@drawable/img_btn_bg_yellow"
+        android:background="@drawable/yanchang_miedeng"
         android:id="@+id/iv_turn_off"
         android:layout_width="@dimen/view_50_dp"
         android:layout_height="@dimen/view_53_dp"
         />
     <com.common.view.ex.ExTextView
+        android:textStyle="bold"
         android:id="@+id/tv_count_down"
         android:textSize="@dimen/textsize_24_dp"
         android:paddingBottom="@dimen/view_6_dp"
