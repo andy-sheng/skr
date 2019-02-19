@@ -32,8 +32,12 @@
         android:layout_alignTop="@+id/avatar_iv"
         android:layout_marginLeft="@dimen/view_10_dp"
         android:layout_marginTop="@dimen/view_8_dp"
+        android:layout_marginRight="@dimen/view_45_dp"
         android:layout_toRightOf="@+id/avatar_iv"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:minWidth="@dimen/view_100_dp"
+        android:singleLine="true"
         android:textColor="#0C2275"
         android:textSize="@dimen/textsize_24_dp" />
 
@@ -52,8 +56,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/userid_tv"
-        android:layout_alignLeft="@+id/userid_tv"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_45_dp"
+        android:layout_toRightOf="@+id/avatar_iv"
+        android:ellipsize="marquee"
+        android:focusableInTouchMode="true"
+        android:marqueeRepeatLimit="marquee_forever"
         android:minWidth="@dimen/view_100_dp"
+        android:singleLine="true"
         android:textColor="#0C2275"
         android:textSize="@dimen/textsize_16_dp" />
 
