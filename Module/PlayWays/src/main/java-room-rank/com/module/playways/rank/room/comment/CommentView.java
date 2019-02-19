@@ -111,14 +111,14 @@ public class CommentView extends RelativeLayout {
             layoutParams.height = maxHeight;
             setLayoutParams(layoutParams);
         }
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 
     private void init() {
         inflate(getContext(), R.layout.comment_view_layout, this);
         mCommentRv = (RecyclerView) this.findViewById(R.id.comment_rv);
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
-        }
         mLinearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, true);
         mLinearLayoutManager.setStackFromEnd(true);
         mCommentRv.setLayoutManager(mLinearLayoutManager);
