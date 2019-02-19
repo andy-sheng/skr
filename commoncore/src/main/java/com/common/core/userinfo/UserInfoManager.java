@@ -138,7 +138,9 @@ public class UserInfoManager {
                                 // 写入数据库
                                 UserInfoLocalApi.insertOrUpdate(jsonUserInfo, false, false);
                                 UserInfoModel userInfo = UserInfoLocalApi.getUserInfoByUUid(uuid);
-                                BuddyCache.getInstance().putBuddy(new BuddyCache.BuddyCacheEntry(userInfo));
+                                if (userInfo != null) {
+                                    BuddyCache.getInstance().putBuddy(new BuddyCache.BuddyCacheEntry(userInfo));
+                                }
 
                                 emitter.onNext(userInfo);
                                 emitter.onComplete();

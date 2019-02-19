@@ -185,6 +185,9 @@ public class BuddyCache {
         }
 
         public BuddyCacheEntry(UserInfoModel userInfoModel) {
+            if (userInfoModel == null) {
+                return;
+            }
             this.uuid = userInfoModel.getUserId();
             this.name = userInfoModel.getNickname();
             this.avatar = userInfoModel.getAvatar();
