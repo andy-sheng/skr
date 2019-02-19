@@ -47,14 +47,18 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
 
     public final static String TAG = "HomeActivity";
 
+    RelativeLayout mMainActContainer;
     LinearLayout mBottomContainer;
+    RelativeLayout mGameArea;
     ExImageView mGameBtn;
     RelativeLayout mMessageArea;
     ExImageView mMessageBtn;
     ExTextView mUnreadNumTv;
+    RelativeLayout mPersonArea;
     ExImageView mPersonInfoBtn;
-    ImageView mPersonInfoRedDot;
+    ExImageView mPersonInfoRedDot;
     NestViewPager mMainVp;
+
     IMsgService mMsgService;
     HomeCorePresenter mHomePresenter;
     String mPengingSchemeUri; //想要跳转的scheme，但因为没登录被挂起了
@@ -84,15 +88,18 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         MyLog.w(TAG, "HomeActivity initData" + ", version is " + U.getAppInfoUtils().getVersionCode());
+        mMainActContainer = (RelativeLayout) findViewById(R.id.main_act_container);
         mBottomContainer = (LinearLayout) findViewById(R.id.bottom_container);
+        mGameArea = (RelativeLayout) findViewById(R.id.game_area);
         mGameBtn = (ExImageView) findViewById(R.id.game_btn);
         mMessageArea = (RelativeLayout) findViewById(R.id.message_area);
         mMessageBtn = (ExImageView) findViewById(R.id.message_btn);
         mUnreadNumTv = (ExTextView) findViewById(R.id.unread_num_tv);
+        mPersonArea = (RelativeLayout) findViewById(R.id.person_area);
         mPersonInfoBtn = (ExImageView) findViewById(R.id.person_info_btn);
-        mPersonInfoRedDot = findViewById(R.id.person_info_red_dot);
-
+        mPersonInfoRedDot = (ExImageView) findViewById(R.id.person_info_red_dot);
         mMainVp = (NestViewPager) findViewById(R.id.main_vp);
+
         mMsgService = ModuleServiceManager.getInstance().getMsgService();
         mMainVp.setViewPagerCanScroll(false);
         checkIfFromSchema();
@@ -126,22 +133,21 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
         };
 
         mMainVp.setAdapter(fragmentPagerAdapter);
-        mGameBtn.setSelected(true);
 
         mHomePresenter = new HomeCorePresenter(this);
 
         mHomePresenter.checkUserInfo("HomeActivity onCreate");
 
-        RxView.clicks(mGameBtn)
+        RxView.clicks(mGameArea)
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
                         U.getSoundUtils().play(TAG, R.raw.trans_tab);
                         mMainVp.setCurrentItem(0, false);
-                        mGameBtn.setSelected(true);
+                        mGameBtn.setImageResource(R.drawable.ic_home_selected);
                         mMessageBtn.setImageResource(R.drawable.ic_chat_normal);
-                        mPersonInfoBtn.setSelected(false);
+                        mPersonInfoBtn.setImageResource(R.drawable.ic_me_normal);
                     }
                 });
 
@@ -152,22 +158,22 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
                     public void accept(Object o) {
                         U.getSoundUtils().play(TAG, R.raw.trans_tab);
                         mMainVp.setCurrentItem(1, false);
-                        mGameBtn.setSelected(false);
+                        mGameBtn.setImageResource(R.drawable.ic_home_normal);
                         mMessageBtn.setImageResource(R.drawable.ic_chat_selected);
-                        mPersonInfoBtn.setSelected(false);
+                        mPersonInfoBtn.setImageResource(R.drawable.ic_me_normal);
                     }
                 });
 
-        RxView.clicks(mPersonInfoBtn)
+        RxView.clicks(mPersonArea)
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
                         U.getSoundUtils().play(TAG, R.raw.trans_tab);
                         mMainVp.setCurrentItem(2, false);
-                        mGameBtn.setSelected(false);
+                        mGameBtn.setImageResource(R.drawable.ic_home_normal);
                         mMessageBtn.setImageResource(R.drawable.ic_chat_normal);
-                        mPersonInfoBtn.setSelected(true);
+                        mPersonInfoBtn.setImageResource(R.drawable.ic_me_selected);
                     }
                 });
         mMainVp.setCurrentItem(0, false);
@@ -284,9 +290,9 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
     @Override
     public void onLogoff() {
         mMainVp.setCurrentItem(1, false);
-        mGameBtn.setSelected(true);
+        mGameBtn.setImageResource(R.drawable.ic_home_selected);
         mMessageBtn.setImageResource(R.drawable.ic_chat_normal);
-        mPersonInfoBtn.setSelected(false);
+        mPersonInfoBtn.setImageResource(R.drawable.ic_me_normal);
     }
 
 
