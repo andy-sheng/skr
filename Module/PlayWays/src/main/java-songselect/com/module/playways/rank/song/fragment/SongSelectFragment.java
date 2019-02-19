@@ -12,6 +12,7 @@ import com.common.base.FragmentDataListener;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.jakewharton.rxbinding2.view.RxView;
@@ -88,40 +89,38 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
         DEFAULT_COUNT = songCardHeight / U.getDisplayUtils().dip2px(72);
         DEFAULT_FIRST_COUNT = DEFAULT_COUNT * 5;
 
-        RxView.clicks(mSelectBackIv)
-                .throttleFirst(300, TimeUnit.MILLISECONDS)
-                .subscribe(o -> {
-                    backToLastCard();
-                });
-
-        RxView.clicks(mSelectSelect)
-                .throttleFirst(300, TimeUnit.MILLISECONDS)
-                .subscribe(o -> {
-                    if (U.getCommonUtils().isFastDoubleClick()) {
-                        return;
-                    }
-                    U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), SearchSongFragment.class)
-                            .setAddToBackStack(true)
-                            .setHasAnimation(true)
-                            .setBundle(bundle)
-                            .build());
-                });
-
-        RxView.clicks(mSelectClickedIv)
-                .throttleFirst(300, TimeUnit.MILLISECONDS)
-                .subscribe(o -> {
-                    U.getSoundUtils().play(TAG, R.raw.general_button);
-                    switchToClicked();
-                });
-
-        RxView.clicks(mSelectBack)
-                .throttleFirst(300, TimeUnit.MILLISECONDS)
-                .subscribe(o -> {
-                    U.getSoundUtils().play(TAG, R.raw.general_back, 500);
-                    if (getActivity() != null) {
-                        getActivity().finish();
-                    }
-                });
+        mSelectBackIv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                backToLastCard();
+            }
+        });
+        mSelectSelect.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), SearchSongFragment.class)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(true)
+                        .setBundle(bundle)
+                        .build());
+            }
+        });
+        mSelectClickedIv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                U.getSoundUtils().play(TAG, R.raw.general_button);
+                switchToClicked();
+            }
+        });
+        mSelectBack.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                U.getSoundUtils().play(TAG, R.raw.general_back, 500);
+                if (getActivity() != null) {
+                    getActivity().finish();
+                }
+            }
+        });
 
         U.getSoundUtils().preLoad(TAG, R.raw.general_button, R.raw.general_back, R.raw.musiclist_nextpage);
 
@@ -130,9 +129,6 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
         mSongCardSwipAdapter = new SongCardSwipAdapter(new RecyclerOnItemClickListener() {
             @Override
             public void onItemClicked(View view, int position, Object model) {
-                if (U.getCommonUtils().isFastDoubleClick()) {
-                    return;
-                }
 
                 if (!U.getNetworkUtils().hasNetwork()) {
                     U.getToastUtil().showShort("无网络连接，请检查网络后重试");
@@ -222,7 +218,6 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
             mSwipeView.setIsNeedSwipe(true);
             mSwipeView.setFlingListener(this);
             mSwipeView.setOnItemClickListener(this);
-
 
             mSwipeView.setAdapter(mSongCardSwipAdapter);
         }

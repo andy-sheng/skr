@@ -9,6 +9,7 @@ import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
 import com.common.log.MyLog;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -33,9 +34,9 @@ public class SongInfoHolder extends RecyclerView.ViewHolder {
         mSongOwnerTv = (ExTextView) itemView.findViewById(R.id.song_owner_tv);
         mSongSelectTv = (ExTextView) itemView.findViewById(R.id.song_select_tv);
 
-        mSongSelectTv.setOnClickListener(new View.OnClickListener() {
+        mSongSelectTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
-            public void onClick(View view) {
+            public void clickValid(View v) {
                 if (recyclerOnItemClickListener != null) {
                     recyclerOnItemClickListener.onItemClicked(itemView, position, mSongModel);
                 }
