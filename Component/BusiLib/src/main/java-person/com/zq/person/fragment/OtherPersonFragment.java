@@ -26,6 +26,7 @@ import com.common.image.fresco.BaseImageView;
 import com.common.utils.FragmentUtils;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
@@ -144,60 +145,52 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
         };
         mFlowlayout.setAdapter(mTagAdapter);
 
-        RxView.clicks(mBackIv)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        U.getFragmentUtils().popFragment(OtherPersonFragment.this);
-                    }
-                });
+        mBackIv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                U.getFragmentUtils().popFragment(OtherPersonFragment.this);
+            }
+        });
 
-        RxView.clicks(mReport)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        Bundle bundle = new Bundle();
-                        bundle.putInt(REPORT_FROM_KEY, FORM_PERSON);
-                        bundle.putInt(REPORT_USER_ID, mUserInfoModel.getUserId());
-                        U.getFragmentUtils().addFragment(
-                                FragmentUtils.newAddParamsBuilder(getActivity(), ReportFragment.class)
-                                        .setBundle(bundle)
-                                        .setAddToBackStack(true)
-                                        .setHasAnimation(true)
-                                        .setEnterAnim(R.anim.slide_in_bottom)
-                                        .setExitAnim(R.anim.slide_out_bottom)
-                                        .build());
-                    }
-                });
+        mReport.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putInt(REPORT_FROM_KEY, FORM_PERSON);
+                bundle.putInt(REPORT_USER_ID, mUserInfoModel.getUserId());
+                U.getFragmentUtils().addFragment(
+                        FragmentUtils.newAddParamsBuilder(getActivity(), ReportFragment.class)
+                                .setBundle(bundle)
+                                .setAddToBackStack(true)
+                                .setHasAnimation(true)
+                                .setEnterAnim(R.anim.slide_in_bottom)
+                                .setExitAnim(R.anim.slide_out_bottom)
+                                .build());
+            }
+        });
 
-        RxView.clicks(mFollowTv)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        if (!U.getNetworkUtils().hasNetwork()) {
-                            U.getToastUtil().showShort("网络异常，请检查网络后重试!");
-                            return;
-                        }
-                        if ((int) mFollowTv.getTag() == RELATION_FOLLOWED) {
-                            UserInfoManager.getInstance().mateRelation(mUserInfoModel.getUserId(), UserInfoManager.RA_UNBUILD, mUserInfoModel.isFriend());
-                        } else if ((int) mFollowTv.getTag() == RELATION_UN_FOLLOW) {
-                            UserInfoManager.getInstance().mateRelation(mUserInfoModel.getUserId(), UserInfoManager.RA_BUILD, mUserInfoModel.isFriend());
-                        }
-                    }
-                });
+        mMessageTv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                ModuleServiceManager.getInstance().getMsgService().startPrivateChat(getContext(),
+                        String.valueOf(mUserInfoModel.getUserId()), mUserInfoModel.getNickname());
+            }
+        });
 
-        RxView.clicks(mMessageTv)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        ModuleServiceManager.getInstance().getMsgService().startPrivateChat(getContext(),
-                                String.valueOf(mUserInfoModel.getUserId()), mUserInfoModel.getNickname());
-                    }
-                });
+        mFollowTv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (!U.getNetworkUtils().hasNetwork()) {
+                    U.getToastUtil().showShort("网络异常，请检查网络后重试!");
+                    return;
+                }
+                if ((int) mFollowTv.getTag() == RELATION_FOLLOWED) {
+                    UserInfoManager.getInstance().mateRelation(mUserInfoModel.getUserId(), UserInfoManager.RA_UNBUILD, mUserInfoModel.isFriend());
+                } else if ((int) mFollowTv.getTag() == RELATION_UN_FOLLOW) {
+                    UserInfoManager.getInstance().mateRelation(mUserInfoModel.getUserId(), UserInfoManager.RA_BUILD, mUserInfoModel.isFriend());
+                }
+            }
+        });
 
         if (mUserInfoModel.getUserId() == MyUserInfoManager.getInstance().getUid()) {
             mLlBottomContainer.setVisibility(View.GONE);
