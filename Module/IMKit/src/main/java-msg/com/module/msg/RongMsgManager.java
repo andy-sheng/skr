@@ -137,7 +137,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                     MyLog.w(TAG, "onChanged" + " connectionStatus=" + connectionStatus);
                     mConnectionStatus = connectionStatus;
                     if(connectionStatus == ConnectionStatus.KICKED_OFFLINE_BY_OTHER_CLIENT){
-                        UserAccountManager.getInstance().rcKickedByOthers();
+                        UserAccountManager.getInstance().rcKickedByOthers(0);
                     }
                 }
             });
