@@ -8,6 +8,7 @@ import android.util.Pair;
 import com.alibaba.fastjson.JSONObject;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.cache.BuddyCache;
 import com.common.log.MyLog;
@@ -17,11 +18,14 @@ import com.common.utils.U;
 import com.module.common.ICallback;
 import com.module.msg.model.CustomChatRoomMsg;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
 import io.rong.imkit.RongIM;
+import io.rong.imkit.manager.IUnReadMessageObserver;
 import io.rong.imlib.IRongCallback;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
@@ -136,7 +140,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                 public void onChanged(ConnectionStatus connectionStatus) {
                     MyLog.w(TAG, "onChanged" + " connectionStatus=" + connectionStatus);
                     mConnectionStatus = connectionStatus;
-                    if(connectionStatus == ConnectionStatus.KICKED_OFFLINE_BY_OTHER_CLIENT){
+                    if (connectionStatus == ConnectionStatus.KICKED_OFFLINE_BY_OTHER_CLIENT) {
                         UserAccountManager.getInstance().rcKickedByOthers(0);
                     }
                 }
@@ -219,6 +223,18 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                 }
             }
         });
+    }
+
+    public void addUnReadMessageCountChangedObserver(ICallback callback) {
+        RongIM.getInstance().addUnReadMessageCountChangedObserver(new IUnReadMessageObserver() {
+            @Override
+            public void onCountChanged(int unReadNum) {
+                MyLog.d(TAG, "onCountChanged" + " unReadNum=" + unReadNum);
+                if (callback != null) {
+                    callback.onSucess(unReadNum);
+                }
+            }
+        }, Conversation.ConversationType.PRIVATE);
     }
 
     public Pair<Integer, String> getConnectStatus() {

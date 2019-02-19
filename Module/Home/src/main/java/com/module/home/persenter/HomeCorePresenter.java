@@ -22,11 +22,14 @@ import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.manager.BgMusicManager;
 import com.dialog.view.TipsDialogView;
+import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
+import com.module.common.ICallback;
 import com.module.home.R;
 import com.module.home.updateinfo.UploadAccountInfoActivity;
 import com.module.home.view.IHomeActivity;
 import com.module.home.view.PermissionTipsView;
+import com.module.msg.IMsgService;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.ViewHolder;
@@ -62,6 +65,18 @@ public class HomeCorePresenter {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
+
+        ModuleServiceManager.getInstance().getMsgService().addUnReadMessageCountChangedObserver(new ICallback() {
+            @Override
+            public void onSucess(Object obj) {
+                mView.showUnReadNum((int) obj);
+            }
+
+            @Override
+            public void onFailed(Object obj, int errcode, String message) {
+
+            }
+        });
     }
 
     public void destroy() {
@@ -166,7 +181,7 @@ public class HomeCorePresenter {
         }
     }
 
-    void check4(Activity activity){
+    void check4(Activity activity) {
         if (!U.getPermissionUtils().checkReadPhoneState(activity)) {
             U.getPermissionUtils().requestReadPhonestate(new PermissionUtils.RequestPermission() {
                 @Override
@@ -270,14 +285,14 @@ public class HomeCorePresenter {
         checkUserInfo("UserInfoLoadOkEvent");
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN,priority = 0)
+    @Subscribe(threadMode = ThreadMode.MAIN, priority = 0)
     public void onEvent(AccountEvent.LogoffAccountEvent event) {
         if (event.reason == AccountEvent.LogoffAccountEvent.REASON_ACCOUNT_EXPIRED) {
             MyLog.w(TAG, "LogoffAccountEvent" + " 账号已经过期，需要重新登录,跳到登录页面");
         }
         if (!UserAccountManager.getInstance().hasAccount()) {
             ARouter.getInstance().build(RouterConstants.ACTIVITY_LOGIN)
-                    .withInt(LoginActivity.KEY_REASON,LoginActivity.REASON_LOGOFF)
+                    .withInt(LoginActivity.KEY_REASON, LoginActivity.REASON_LOGOFF)
                     .navigation();
             mView.onLogoff();
         }

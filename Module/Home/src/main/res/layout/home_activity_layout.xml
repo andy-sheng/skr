@@ -23,16 +23,32 @@
             app:src_selected_drawable="@drawable/ic_home_selected"
             app:src_unSelected_drawable="@drawable/ic_home_normal" />
 
-        <com.common.view.ex.ExImageView
-            android:id="@+id/message_btn"
+        <RelativeLayout
+            android:id="@+id/message_area"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:scaleType="center"
-            app:src_selected_drawable="@drawable/ic_chat_selected"
-            app:src_unSelected_drawable="@drawable/ic_chat_normal" />
+            android:layout_weight="1">
+
+            <com.common.view.ex.ExImageView
+                android:id="@+id/message_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_chat_normal" />
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/unread_num_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/message_btn"
+                android:layout_alignRight="@+id/message_btn"
+                android:textColor="@color/red"
+                android:textSize="@dimen/textsize_12_dp"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
 
         <com.common.view.ex.ExImageView
             android:id="@+id/person_info_btn"

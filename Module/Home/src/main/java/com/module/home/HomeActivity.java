@@ -6,7 +6,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -20,6 +22,7 @@ import com.common.utils.ActivityUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 
+import com.common.view.ex.ExTextView;
 import com.common.view.viewpager.NestViewPager;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.ModuleServiceManager;
@@ -45,7 +48,9 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
 
     LinearLayout mBottomContainer;
     ExImageView mGameBtn;
+    RelativeLayout mMessageArea;
     ExImageView mMessageBtn;
+    ExTextView mUnreadNumTv;
     ExImageView mPersonInfoBtn;
     NestViewPager mMainVp;
     IMsgService mMsgService;
@@ -79,7 +84,9 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
         MyLog.w(TAG, "HomeActivity initData" + ", version is " + U.getAppInfoUtils().getVersionCode());
         mBottomContainer = (LinearLayout) findViewById(R.id.bottom_container);
         mGameBtn = (ExImageView) findViewById(R.id.game_btn);
+        mMessageArea = (RelativeLayout) findViewById(R.id.message_area);
         mMessageBtn = (ExImageView) findViewById(R.id.message_btn);
+        mUnreadNumTv = (ExTextView) findViewById(R.id.unread_num_tv);
         mPersonInfoBtn = (ExImageView) findViewById(R.id.person_info_btn);
         mMainVp = (NestViewPager) findViewById(R.id.main_vp);
         mMsgService = ModuleServiceManager.getInstance().getMsgService();
@@ -129,12 +136,12 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
                         U.getSoundUtils().play(TAG, R.raw.trans_tab);
                         mMainVp.setCurrentItem(0, false);
                         mGameBtn.setSelected(true);
-                        mMessageBtn.setSelected(false);
+                        mMessageBtn.setImageResource(R.drawable.ic_chat_normal);
                         mPersonInfoBtn.setSelected(false);
                     }
                 });
 
-        RxView.clicks(mMessageBtn)
+        RxView.clicks(mMessageArea)
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
                 .subscribe(new Consumer<Object>() {
                     @Override
@@ -142,7 +149,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
                         U.getSoundUtils().play(TAG, R.raw.trans_tab);
                         mMainVp.setCurrentItem(1, false);
                         mGameBtn.setSelected(false);
-                        mMessageBtn.setSelected(true);
+                        mMessageBtn.setImageResource(R.drawable.ic_chat_selected);
                         mPersonInfoBtn.setSelected(false);
                     }
                 });
@@ -155,7 +162,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
                         U.getSoundUtils().play(TAG, R.raw.trans_tab);
                         mMainVp.setCurrentItem(2, false);
                         mGameBtn.setSelected(false);
-                        mMessageBtn.setSelected(false);
+                        mMessageBtn.setImageResource(R.drawable.ic_chat_normal);
                         mPersonInfoBtn.setSelected(true);
                     }
                 });
@@ -186,6 +193,20 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
         }
     }
 
+    @Override
+    public void showUnReadNum(int unReadNum) {
+        if (unReadNum == 0) {
+            mUnreadNumTv.setVisibility(View.GONE);
+        } else {
+            mUnreadNumTv.setVisibility(View.VISIBLE);
+            if (unReadNum > 99) {
+                mUnreadNumTv.setText("99+");
+            } else {
+                mUnreadNumTv.setText("" + unReadNum);
+            }
+        }
+    }
+
     private void goSchemeActivity(String scheme) {
         MyLog.d(TAG, "goSchemeActivity" + " scheme=" + scheme);
         ARouter.getInstance().build(RouterConstants.ACTIVITY_SCHEME)
@@ -203,17 +224,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
         }
         mFromCreate = false;
         UpgradeManager.getInstance().checkUpdate1();
-//        ExoPlayer exoPlayer = new ExoPlayer();
-//        exoPlayer.startPlay("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/audios/56e25fc3bccff9b8.aac");
-//
-//        HandlerTaskTimer.newBuilder().delay(10000).start(new HandlerTaskTimer.ObserverW() {
-//            @Override
-//            public void onNext(Integer integer) {
-//                U.getToastUtil().showShort("换首歌");
-//                exoPlayer.reset();
-//                exoPlayer.startPlay("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/audios/62366357537f356c.aac");
-//            }
-//        });
     }
 
     @Override
@@ -262,7 +272,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
     public void onLogoff() {
         mMainVp.setCurrentItem(1, false);
         mGameBtn.setSelected(true);
-        mMessageBtn.setSelected(false);
+        mMessageBtn.setImageResource(R.drawable.ic_chat_normal);
         mPersonInfoBtn.setSelected(false);
     }
 

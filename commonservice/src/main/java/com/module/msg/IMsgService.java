@@ -34,6 +34,8 @@ public interface IMsgService extends IProvider {
 
     void logout();
 
+    void addUnReadMessageCountChangedObserver(ICallback callback);
+
     /**
      * 加入融云聊天室
      *
