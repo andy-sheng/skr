@@ -264,6 +264,7 @@ public class ActivityUtils {
      */
     public void setAppForeground(boolean isAppForeground) {
         if (this.mIsAppForeground != isAppForeground) {
+            MyLog.d(TAG,"发生前后台切换" + " isAppForeground=" + isAppForeground);
             this.mIsAppForeground = isAppForeground;
             EventBus.getDefault().post(new ForeOrBackgroundChange(mIsAppForeground));
         }

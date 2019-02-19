@@ -1,5 +1,6 @@
 package com.module.playways;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.RelativeLayout;
@@ -8,6 +9,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.base.FragmentDataListener;
+import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.component.busilib.constans.GameModeType;
@@ -28,15 +30,31 @@ public class PlayWaysActivity extends BaseActivity {
 
     public static final String KEY_GAME_TYPE = "key_game_type";
 
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        MyLog.d(TAG,"PlayWaysActivity onCreate" + " savedInstanceState=" + savedInstanceState);
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        /**
+         * 由准备页面未准备回退时，如果不在前台
+         */
+        if (!U.getActivityUtils().isAppForeground()) {
+            MyLog.d(TAG,"PlayWaysActivity 在后台，不唤起");
+            moveTaskToBack(true);
+        }
+    }
+
     public int initView(@Nullable Bundle savedInstanceState) {
         return R.layout.rankingmode_activity_layout;
     }
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-
-        RelativeLayout mainActContainer = (RelativeLayout)findViewById(R.id.main_act_container);
-
+        RelativeLayout mainActContainer = (RelativeLayout) findViewById(R.id.main_act_container);
         boolean selectSong = getIntent().getBooleanExtra("selectSong", false);
         int gameType = getIntent().getIntExtra(KEY_GAME_TYPE, GameModeType.GAME_MODE_CLASSIC_RANK);
         if (gameType == GameModeType.GAME_MODE_CLASSIC_RANK || gameType == GameModeType.GAME_MODE_FUNNY) {
