@@ -14,6 +14,7 @@ import com.common.core.login.LoginActivity;
 import com.common.core.myinfo.Location;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
+import com.common.core.upgrade.UpgradeData;
 import com.common.log.MyLog;
 import com.common.utils.LbsUtils;
 import com.common.utils.NetworkUtils;
@@ -328,4 +329,12 @@ public class HomeCorePresenter {
             }
         }
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(UpgradeData.RedDotStatusEvent event) {
+        if (mView != null) {
+            mView.updatePersonIconRedDot();
+        }
+    }
+
 }

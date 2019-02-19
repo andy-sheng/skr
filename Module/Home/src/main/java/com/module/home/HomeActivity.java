@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -52,6 +53,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
     ExImageView mMessageBtn;
     ExTextView mUnreadNumTv;
     ExImageView mPersonInfoBtn;
+    ImageView mPersonInfoRedDot;
     NestViewPager mMainVp;
     IMsgService mMsgService;
     HomeCorePresenter mHomePresenter;
@@ -88,6 +90,8 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
         mMessageBtn = (ExImageView) findViewById(R.id.message_btn);
         mUnreadNumTv = (ExTextView) findViewById(R.id.unread_num_tv);
         mPersonInfoBtn = (ExImageView) findViewById(R.id.person_info_btn);
+        mPersonInfoRedDot = findViewById(R.id.person_info_red_dot);
+
         mMainVp = (NestViewPager) findViewById(R.id.main_vp);
         mMsgService = ModuleServiceManager.getInstance().getMsgService();
         mMainVp.setViewPagerCanScroll(false);
@@ -213,6 +217,15 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
                 .withString("uri", scheme)
                 .navigation();
         mPengingSchemeUri = null;
+    }
+
+    @Override
+    public void updatePersonIconRedDot() {
+        if (UpgradeManager.getInstance().needShowRedDotTips()) {
+            mPersonInfoRedDot.setVisibility(View.VISIBLE);
+        } else {
+            mPersonInfoRedDot.setVisibility(View.GONE);
+        }
     }
 
 

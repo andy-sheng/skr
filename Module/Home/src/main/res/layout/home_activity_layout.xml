@@ -10,11 +10,12 @@
         android:layout_height="@dimen/view_56_dp"
         android:layout_alignParentBottom="true"
         android:background="#F0E9E5"
+        android:orientation="horizontal"
         android:padding="@dimen/view_dimen_10">
 
         <com.common.view.ex.ExImageView
             android:id="@+id/game_btn"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
@@ -25,8 +26,8 @@
 
         <RelativeLayout
             android:id="@+id/message_area"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1">
 
@@ -50,16 +51,32 @@
         </RelativeLayout>
 
 
-        <com.common.view.ex.ExImageView
-            android:id="@+id/person_info_btn"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:scaleType="center"
-            app:src_selected_drawable="@drawable/ic_me_selected"
-            app:src_unSelected_drawable="@drawable/ic_me_normal" />
+            android:layout_weight="1">
+
+            <com.common.view.ex.ExImageView
+                android:id="@+id/person_info_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:scaleType="center"
+                app:src_selected_drawable="@drawable/ic_me_selected"
+                app:src_unSelected_drawable="@drawable/ic_me_normal" />
+
+            <com.common.view.ex.ExImageView
+                android:id="@+id/person_info_red_dot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@+id/person_info_btn"
+                android:layout_marginTop="@dimen/view_0_dp"
+                android:layout_marginRight="@dimen/view_0_dp"
+                android:src="@drawable/reddot"
+                android:visibility="gone" />
+        </RelativeLayout>
+
     </LinearLayout>
 
     <View

@@ -237,6 +237,7 @@ public class SettingFragment extends BaseFragment {
                 if (hasNewVersion) {
                     UpgradeManager.getInstance().checkUpdate2();
                 }
+                UpgradeManager.getInstance().setNotNeedShowRedDotTips();
             }
         });
 

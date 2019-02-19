@@ -6,4 +6,6 @@ public interface IHomeActivity {
     void tryJumpSchemeIfNeed();
 
     void showUnReadNum(int unReadNum);
+
+    void updatePersonIconRedDot();
 }

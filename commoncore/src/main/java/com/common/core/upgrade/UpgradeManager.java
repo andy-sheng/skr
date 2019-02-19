@@ -54,6 +54,7 @@ public class UpgradeManager {
     FinishReceiver mFinishReceiver;
     DownloadChangeObserver mDownloadChangeObserver;
 
+
     private static class UpgradeManagerHolder {
         private static final UpgradeManager INSTANCE = new UpgradeManager();
     }
@@ -177,10 +178,46 @@ public class UpgradeManager {
                                 MyLog.d(TAG, "不是wifi，非强制更新，算了");
                             }
                         }
+                        //此时如果没有出现过红点可以出现红点
+                        tryShowRedDotTips();
                     }
                 }
             }
         }
+    }
+
+    /**
+     * 尝试更新红点是否显示逻辑
+     */
+    private void tryShowRedDotTips() {
+        UpgradeInfoModel upgradeInfoModel = mUpgradeData.getUpgradeInfoModel();
+        if (upgradeInfoModel != null) {
+            int verionsCodePref = U.getPreferenceUtils().getSettingInt("show_reddot_upgrade_version", 0);
+            if (verionsCodePref != upgradeInfoModel.getLatestVersionCode()) {
+                // 需要显示红点
+                U.getPreferenceUtils().setSettingInt("show_reddot_upgrade_version", upgradeInfoModel.getLatestVersionCode());
+                U.getPreferenceUtils().setSettingBoolean("need_show_upgrade_reddot", true);
+                mUpgradeData.setNeedShowRedDot(true);
+            } else {
+                boolean needShowReddot = U.getPreferenceUtils().getSettingBoolean("need_show_upgrade_reddot", false);
+                mUpgradeData.setNeedShowRedDot(needShowReddot);
+            }
+        }
+    }
+
+    /**
+     * 是否需要显示红点
+     */
+    public boolean needShowRedDotTips() {
+        return mUpgradeData.isNeedShowRedDot();
+    }
+
+    /**
+     * 不需要显示红点了
+     */
+    public void setNotNeedShowRedDotTips() {
+        U.getPreferenceUtils().setSettingBoolean("need_show_upgrade_reddot", false);
+        mUpgradeData.setNeedShowRedDot(false);
     }
 
     private void showNormalUpgradeDialog() {

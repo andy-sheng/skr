@@ -3,6 +3,8 @@ package com.module.home.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.SpannableStringBuilder;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -14,6 +16,8 @@ import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.myinfo.event.ScoreDetailChangeEvent;
 import com.common.core.share.SharePanel;
 import com.common.core.share.ShareType;
+import com.common.core.upgrade.UpgradeData;
+import com.common.core.upgrade.UpgradeManager;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.event.RelationChangeEvent;
 import com.common.core.userinfo.model.GameStatisModel;
@@ -28,6 +32,7 @@ import com.common.upload.UploadTask;
 import com.common.utils.FragmentUtils;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.constans.GameModeType;
@@ -81,6 +86,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
     RelativeLayout mAuditionArea;
     RelativeLayout mMusicTestArea;
     RelativeLayout mSettingArea;
+    ImageView mSettingRedDot;
 
     PersonCorePresenter mPersonCorePresenter;
 
@@ -304,21 +310,28 @@ public class PersonFragment extends BaseFragment implements IPersonView {
 
     private void initSetting() {
         mSettingArea = (RelativeLayout) mRootView.findViewById(R.id.setting_area);
-        RxView.clicks(mSettingArea)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        U.getSoundUtils().play(TAG, R.raw.allclick);
-                        U.getFragmentUtils().addFragment(
-                                FragmentUtils.newAddParamsBuilder(getActivity(), SettingFragment.class)
-                                        .setAddToBackStack(true)
-                                        .setHasAnimation(true)
-                                        .build());
-                    }
-                });
+        mSettingArea.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                U.getSoundUtils().play(TAG, R.raw.allclick);
+                U.getFragmentUtils().addFragment(
+                        FragmentUtils.newAddParamsBuilder(getActivity(), SettingFragment.class)
+                                .setAddToBackStack(true)
+                                .setHasAnimation(true)
+                                .build());
+            }
+        });
+        mSettingRedDot = mSettingArea.findViewById(R.id.setting_red_dot);
+        updateSettingRedDot();
     }
 
+    private void updateSettingRedDot(){
+        if(UpgradeManager.getInstance().needShowRedDotTips()){
+            mSettingRedDot.setVisibility(View.VISIBLE);
+        }else{
+            mSettingRedDot.setVisibility(View.GONE);
+        }
+    }
 
     private void initViewData() {
         AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance()
@@ -365,6 +378,11 @@ public class PersonFragment extends BaseFragment implements IPersonView {
         }
 
         refreshRelationNum();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(UpgradeData.RedDotStatusEvent event) {
+        updateSettingRedDot();
     }
 
     @Override

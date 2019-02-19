@@ -1,5 +1,7 @@
 package com.common.core.upgrade;
 
+import org.greenrobot.eventbus.EventBus;
+
 public class UpgradeData {
     public static final int STATUS_INIT = 1;
     public static final int STATUS_LOAD_DATA_FROM_SERVER = 2;
@@ -14,6 +16,7 @@ public class UpgradeData {
     long mDownloadId;
     boolean needShowDialog = false;
     private boolean mNeedUpdate;
+    boolean needShowRedDot = false; // 是否需要显示升级红点
 
     public boolean isNeedShowDialog() {
         return needShowDialog;
@@ -61,5 +64,24 @@ public class UpgradeData {
 
     public boolean getNeedUpdate() {
         return mNeedUpdate;
+    }
+
+    public boolean isNeedShowRedDot() {
+        return needShowRedDot;
+    }
+
+    public void setNeedShowRedDot(boolean needShowRedDot) {
+        if(this.needShowRedDot != needShowRedDot){
+            this.needShowRedDot = needShowRedDot;
+            EventBus.getDefault().post(new RedDotStatusEvent(needShowRedDot));
+        }
+    }
+
+    public static class RedDotStatusEvent{
+        boolean show = false;
+
+        public RedDotStatusEvent(boolean show) {
+            this.show = show;
+        }
     }
 }
