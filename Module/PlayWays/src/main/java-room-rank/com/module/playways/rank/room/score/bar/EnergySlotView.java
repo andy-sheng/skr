@@ -1,4 +1,4 @@
-package com.module.playways.rank.room.view;
+package com.module.playways.rank.room.score.bar;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
