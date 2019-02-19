@@ -51,7 +51,6 @@ public class SongCardSwipAdapter extends BaseAdapter {
         }
     }
 
-
     @Override
     public int getCount() {
         if (mSongCardHolderArrayList != null) {

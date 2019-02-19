@@ -82,9 +82,6 @@ public class EndGamePresenter extends RxLifeCyclePresenter {
      */
     public void vote(int gameID, long pickUserID) {
         MyLog.d(TAG, "vote" + " gameID=" + gameID + " votedUserID=" + pickUserID);
-        if(U.getCommonUtils().isFastDoubleClick()){
-            return;
-        }
 
         HashMap<String, Object> map = new HashMap<>();
         map.put("gameID", gameID);

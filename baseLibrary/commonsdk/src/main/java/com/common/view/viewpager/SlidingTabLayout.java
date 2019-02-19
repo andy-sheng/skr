@@ -36,6 +36,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 
 
 /**
@@ -430,12 +431,9 @@ public class SlidingTabLayout extends HorizontalScrollView {
 
     }
 
-    private class TabClickListener implements OnClickListener {
+    private class TabClickListener extends DebounceViewClickListener {
         @Override
-        public void onClick(View tabView) {
-            if(U.getCommonUtils().isFastDoubleClick()){
-                return;
-            }
+        public void clickValid(View tabView) {
             for (int i = 0; i < mTabStrip.getChildCount(); i++) {
                 if (tabView == mTabStrip.getChildAt(i)) {
                     mViewPager.setCurrentItem(getViewPagerPosition(i));

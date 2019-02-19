@@ -20,6 +20,7 @@ import com.common.rxretrofit.ApiResult;
 
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
 
@@ -88,12 +89,9 @@ public class VerifyCodeFragment extends BaseFragment {
             }
         });
 
-        mCountDownTv.setOnClickListener(new View.OnClickListener() {
+        mCountDownTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
-            public void onClick(View view) {
-                if (U.getCommonUtils().isFastDoubleClick()) {
-                    return;
-                }
+            public void clickValid(View v) {
                 // 重新发送验证码
                 mVerifyCodeSpet.clearText();
                 sendSmsVerifyCode(mPhoneNumber);

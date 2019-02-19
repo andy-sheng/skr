@@ -23,6 +23,7 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.utils.FragmentUtils;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
@@ -158,21 +159,23 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
         mPresenter = new EndGamePresenter(this);
         addPresent(mPresenter);
 
-        RxView.clicks(mVoteLeftMie)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(o -> {
-                    mVoteLeftMie.setClickable(false);
-                    mVoteRightMie.setClickable(false);
-                    mPresenter.vote(mRoomData.getGameId(), left.getUserInfo().getUserId());
-                });
+        mVoteLeftMie.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                mVoteLeftMie.setClickable(false);
+                mVoteRightMie.setClickable(false);
+                mPresenter.vote(mRoomData.getGameId(), left.getUserInfo().getUserId());
+            }
+        });
 
-        RxView.clicks(mVoteRightMie)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(o -> {
-                    mVoteLeftMie.setClickable(false);
-                    mVoteRightMie.setClickable(false);
-                    mPresenter.vote(mRoomData.getGameId(), right.getUserInfo().getUserId());
-                });
+        mVoteRightMie.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                mVoteLeftMie.setClickable(false);
+                mVoteRightMie.setClickable(false);
+                mPresenter.vote(mRoomData.getGameId(), right.getUserInfo().getUserId());
+            }
+        });
 
         startTimeTask();
 

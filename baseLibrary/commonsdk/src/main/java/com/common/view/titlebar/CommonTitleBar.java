@@ -702,7 +702,9 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
     @Override
     public void onClick(View v) {
         if (listener == null) return;
-
+        if(U.getCommonUtils().isFastDoubleClick()){
+            return;
+        }
         if (v.equals(llMainCenter) && doubleClickListener != null) {
             long currentClickMillis = System.currentTimeMillis();
             if (currentClickMillis - lastClickMillis < 500) {

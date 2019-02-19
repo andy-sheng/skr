@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import com.common.log.MyLog;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.rank.R;
@@ -98,9 +99,10 @@ public class GrabOpView extends RelativeLayout {
         mIvLightOff = (ExImageView) findViewById(R.id.iv_light_off);
         mGrabContainer = (RelativeLayout)findViewById(R.id.grab_container);
 
-        mBtnIv.setOnClickListener(new OnClickListener() {
+        mBtnIv.setOnClickListener(new DebounceViewClickListener() {
+
             @Override
-            public void onClick(View v) {
+            public void clickValid(View v) {
                 if (mStatus == STATUS_GRAP) {
                     if (mListener != null) {
                         mListener.clickGrabBtn(mSeq);
@@ -110,18 +112,13 @@ public class GrabOpView extends RelativeLayout {
             }
         });
 
-        RxView.clicks(mIvLightOff)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .filter(new Predicate<Object>() {
+        mIvLightOff.setOnClickListener(new DebounceViewClickListener() {
             @Override
-            public boolean test(Object o) {
-                return mStatus == STATUS_CAN_LIGHT_OFF;
-            }
-        }).subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) {
-                if (mListener != null) {
-                    mListener.clickLightOff();
+            public void clickValid(View v) {
+                if(mStatus == STATUS_CAN_LIGHT_OFF){
+                    if (mListener != null) {
+                        mListener.clickLightOff();
+                    }
                 }
             }
         });

@@ -20,6 +20,7 @@ import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.common.view.titlebar.CommonTitleBar;
 import com.component.busilib.callback.EmptyCallback;
@@ -157,9 +158,6 @@ public class SearchSongFragment extends BaseFragment {
         mTitlebar.setListener(new CommonTitleBar.OnTitleBarListener() {
             @Override
             public void onClicked(View v, int action, String extra) {
-                if (U.getCommonUtils().isFastDoubleClick()) {
-                    return;
-                }
                 switch (action) {
                     case CommonTitleBar.ACTION_SEARCH_SUBMIT:
                         searchMusicItems(extra);
@@ -171,17 +169,15 @@ public class SearchSongFragment extends BaseFragment {
             }
         });
 
-        RxView.clicks(mTitlebar.getRightTextView())
-                .throttleFirst(300, TimeUnit.MILLISECONDS)
-                .subscribe(o -> {
-                    if (U.getCommonUtils().isFastDoubleClick()) {
-                        return;
-                    }
-                    if (U.getKeyBoardUtils().isSoftKeyboardShowing(getActivity())) {
-                        U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-                    }
-                    U.getFragmentUtils().popFragment(this);
-                });
+        mTitlebar.getRightTextView().setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (U.getKeyBoardUtils().isSoftKeyboardShowing(getActivity())) {
+                    U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+                }
+                U.getFragmentUtils().popFragment(SearchSongFragment.this);
+            }
+        });
 
         mTitlebar.showSoftInputKeyboard(true);
         initPublishSubject();

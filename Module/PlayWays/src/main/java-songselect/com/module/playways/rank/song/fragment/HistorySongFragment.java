@@ -12,6 +12,7 @@ import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 
 import android.support.v7.widget.RecyclerView;
@@ -88,9 +89,6 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
         songSelectAdapter = new SongSelectAdapter(new RecyclerOnItemClickListener() {
             @Override
             public void onItemClicked(View view, int position, Object model) {
-                if (U.getCommonUtils().isFastDoubleClick()) {
-                    return;
-                }
                 U.getSoundUtils().play(TAG, R.raw.general_button);
                 SongModel songModel = (SongModel) model;
                 if (getActivity() instanceof AudioRoomActivity) {
@@ -184,24 +182,22 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
             }
         });
 
-        RxView.clicks(mHistoryBack)
-                .throttleFirst(300, TimeUnit.MILLISECONDS)
-                .subscribe(o -> {
-                    U.getFragmentUtils().popFragment(this);
-                });
-
-        RxView.clicks(mSelectSelect)
-                .throttleFirst(300, TimeUnit.MILLISECONDS)
-                .subscribe(o -> {
-                    if (U.getCommonUtils().isFastDoubleClick()) {
-                        return;
-                    }
-                    U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), SearchSongFragment.class)
-                            .setAddToBackStack(true)
-                            .setHasAnimation(true)
-                            .setBundle(bundle)
-                            .build());
-                });
+        mHistoryBack.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                U.getFragmentUtils().popFragment(HistorySongFragment.this);
+            }
+        });
+        mSelectSelect.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), SearchSongFragment.class)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(true)
+                        .setBundle(bundle)
+                        .build());
+            }
+        });
 
         LoadSir mLoadSir = new LoadSir.Builder()
                 .addCallback(new LoadingCallback(R.drawable.wulishigedan, "数据正在努力加载中..."))

@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.ModuleServiceManager;
@@ -89,24 +90,18 @@ public class BottomContainerView extends RelativeLayout {
         mEmoji2Btn = (ExImageView) this.findViewById(R.id.emoji2_btn);
         mEmoji1Btn = (ExImageView) this.findViewById(R.id.emoji1_btn);
 
-        mShowInputContainerBtn.setOnClickListener(new OnClickListener() {
+        mShowInputContainerBtn.setOnClickListener(new DebounceViewClickListener() {
             @Override
-            public void onClick(View v) {
-                if (U.getCommonUtils().isFastDoubleClick()) {
-                    return;
-                }
+            public void clickValid(View v) {
                 if (mBottomContainerListener != null) {
                     mBottomContainerListener.showInputBtnClick();
                 }
             }
         });
 
-        mQuickBtn.setOnClickListener(new OnClickListener() {
+        mQuickBtn.setOnClickListener(new DebounceViewClickListener() {
             @Override
-            public void onClick(View v) {
-                if (U.getCommonUtils().isFastDoubleClick()) {
-                    return;
-                }
+            public void clickValid(View v) {
                 int w = U.getDisplayUtils().getScreenWidth() - U.getDisplayUtils().dip2px(36);
                 int h = U.getDisplayUtils().dip2px(172);
                 if (mQuickMsgPopWindow == null) {
@@ -138,23 +133,20 @@ public class BottomContainerView extends RelativeLayout {
             EventBus.getDefault().register(this);
         }
 
-        RxView.clicks(mEmoji1Btn).throttleFirst(200, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) throws Exception {
-                        // 发送动态表情，爱心
-                        sendSpecialEmojiMsg(SpecialEmojiMsgType.SP_EMOJI_TYPE_UNLIKE, "扔了粑粑");
-                    }
-                });
-
-        RxView.clicks(mEmoji2Btn).throttleFirst(200, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) throws Exception {
-                        // 发送动态表情，爱心
-                        sendSpecialEmojiMsg(SpecialEmojiMsgType.SP_EMOJI_TYPE_LIKE, "送出爱心");
-                    }
-                });
+        mEmoji1Btn.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                // 发送动态表情，爱心
+                sendSpecialEmojiMsg(SpecialEmojiMsgType.SP_EMOJI_TYPE_UNLIKE, "扔了粑粑");
+            }
+        });
+        mEmoji2Btn.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                // 发送动态表情，爱心
+                sendSpecialEmojiMsg(SpecialEmojiMsgType.SP_EMOJI_TYPE_LIKE, "送出爱心");
+            }
+        });
     }
 
     void sendSpecialEmojiMsg(SpecialEmojiMsgType type, String actionDesc) {
