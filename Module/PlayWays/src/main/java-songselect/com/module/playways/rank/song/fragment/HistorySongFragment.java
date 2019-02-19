@@ -235,25 +235,27 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
         this.offset = offset;
         this.hasMore = hasMore;
         if (!hasMore) {
-            mRefreshLayout.finishLoadMore();
+            mRefreshLayout.finishLoadMoreWithNoMoreData();
             if (datas == null || datas.size() == 0) {
                 mLoadService.showCallback(EmptyCallback.class);
             }
             return;
         }
+        mRefreshLayout.finishLoadMore();
         if (datas == null) {
             datas = new ArrayList<>();
         }
         if (songSelectAdapter != null && list != null) {
             mLoadService.showSuccess();
             datas.addAll(list);
-            songSelectAdapter.setDataList(list);
+            songSelectAdapter.setDataList(datas);
             songSelectAdapter.notifyDataSetChanged();
         }
     }
 
     @Override
     public void loadSongsDetailItemsFail() {
+        mRefreshLayout.finishLoadMore();
         mLoadService.showCallback(ErrorCallback.class);
     }
 }
