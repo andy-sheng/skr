@@ -53,8 +53,8 @@ public class EnergySlotView extends View {
     }
 
     private void init() {
-        mFullEnergyDrawable = U.getDrawable(R.drawable.xulicao_man);
-        mEmptyEnergyDrawable = U.getDrawable(R.drawable.xulicao_kong);
+        mFullEnergyDrawable = U.getDrawable(R.drawable.xulichi_man);
+        mEmptyEnergyDrawable = U.getDrawable(R.drawable.xulichi_kong);
         postDelayed(new Runnable() {
             @Override
             public void run() {
