@@ -6,15 +6,6 @@
     android:layout_height="match_parent"
     android:background="#2E3041">
 
-    <com.opensource.svgaplayer.SVGAImageView
-        android:id="@+id/ready_go_bg"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_350_dp"
-        android:layout_marginTop="@dimen/view_75_dp"
-        android:scaleType="fitCenter"
-        app:antiAlias="true"
-        app:autoPlay="false" />
-
     <com.module.playways.rank.room.view.TopContainerView
         android:id="@+id/top_container_view"
         android:layout_width="match_parent"
@@ -111,7 +102,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_110_dp"
         android:visibility="gone" />
 
     <com.module.playways.rank.room.gift.GiftBigAnimationViewGroup

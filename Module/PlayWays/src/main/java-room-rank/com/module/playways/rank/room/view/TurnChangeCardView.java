@@ -1,30 +1,51 @@
 package com.module.playways.rank.room.view;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Typeface;
+import android.text.TextPaint;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.widget.RelativeLayout;
 
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.image.fresco.FrescoWorker;
+import com.common.image.model.HttpImage;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.module.playways.grab.room.listener.SVGAListener;
+import com.module.playways.rank.room.fragment.RankRecordFragment;
 import com.module.rank.R;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.RoomData;
+import com.opensource.svgaplayer.SVGACallback;
+import com.opensource.svgaplayer.SVGADrawable;
+import com.opensource.svgaplayer.SVGADynamicEntity;
+import com.opensource.svgaplayer.SVGAImageView;
+import com.opensource.svgaplayer.SVGAParser;
+import com.opensource.svgaplayer.SVGAVideoEntity;
+import com.zq.level.view.NormalLevelView;
 import com.zq.live.proto.Common.ESex;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.io.File;
 
 public class TurnChangeCardView extends RelativeLayout {
 
     RoomData mRoomData;
 
-    ExImageView mTurnChangeBgIv;
-    SimpleDraweeView mTurnCurrentIv;
-    ExTextView mTurnNameTv;
-    ExTextView mTurnSongTv;
+    SVGAImageView mFirstSvga;
+    SVGAImageView mNextSvga;
+
+    SVGAListener mSVGAListener;
 
     public TurnChangeCardView(Context context) {
         super(context);
@@ -41,110 +62,216 @@ public class TurnChangeCardView extends RelativeLayout {
         init();
     }
 
-    public boolean setData(RoomData data) {
+    public void init() {
+        inflate(getContext(), R.layout.room_turn_change_view_layout, this);
+        mFirstSvga = (SVGAImageView) findViewById(R.id.first_svga);
+        mNextSvga = (SVGAImageView) findViewById(R.id.next_svga);
+    }
+
+    public boolean setData(RoomData data, SVGAListener listener) {
         this.mRoomData = data;
+        this.mSVGAListener = listener;
 
         if (mRoomData.getRealRoundInfo() == null) {
             return false;
         }
+
         int curUid = mRoomData.getRealRoundInfo().getUserID();
         int seq = mRoomData.getRealRoundInfo().getRoundSeq();
 
-        PlayerInfoModel nexInfo = null;
-        PlayerInfoModel curInfo = null;
-        if (seq == 3) {
-            nexInfo = null;
-            for (PlayerInfoModel playerInfo : mRoomData.getPlayerInfoList()) {
-                if (playerInfo.getUserInfo().getUserId() == curUid) {
-                    curInfo = playerInfo;
-                }
-            }
-        } else {
-            int nextUid = 0;
-            for (RoundInfoModel roundInfoModel : mRoomData.getRoundInfoModelList()) {
-                if (roundInfoModel.getRoundSeq() == seq + 1) {
-                    nextUid = roundInfoModel.getUserID();
-                    break;
-                }
-            }
-
-            for (PlayerInfoModel playerInfo : mRoomData.getPlayerInfoList()) {
-                if (playerInfo.getUserInfo().getUserId() == curUid) {
-                    curInfo = playerInfo;
-                } else if (playerInfo.getUserInfo().getUserId() == nextUid) {
-                    nexInfo = playerInfo;
-                }
-            }
-
-        }
+        PlayerInfoModel curInfo = mRoomData.getPlayerInfoModel(curUid);
 
         if (curInfo == null) {
+            if (mSVGAListener != null) {
+                mSVGAListener.onFinished();
+            }
             return false;
         }
 
-        bindData(curInfo, nexInfo);
+        bindData(curInfo, seq);
         return true;
     }
 
-    public void init() {
-        inflate(getContext(), R.layout.room_turn_change_view_layout, this);
-        mTurnChangeBgIv = (ExImageView) findViewById(R.id.turn_change_bg_iv);
-        mTurnCurrentIv = (SimpleDraweeView) findViewById(R.id.turn_current_iv);
-        mTurnNameTv = (ExTextView) findViewById(R.id.turn_name_tv);
-        mTurnSongTv = (ExTextView) findViewById(R.id.turn_song_tv);
 
+    public void bindData(PlayerInfoModel cur, int seq) {
+        if (seq == 1) {
+            firstTurnCard(cur);
+        } else {
+            nextTurnCard(cur);
+        }
     }
 
-    public void bindData(PlayerInfoModel cur, PlayerInfoModel next) {
-        if (cur != null) {
-            if (cur.getUserInfo().getUserId() == MyUserInfoManager.getInstance().getUid()) {
-                mTurnNameTv.setText("轮到你唱啦！");
-                mTurnSongTv.setText("《" + cur.getSongList().get(0).getItemName() + "》");
-            } else {
-                mTurnNameTv.setText("《" + cur.getSongList().get(0).getItemName() + "》");
-                mTurnSongTv.setText("演唱：" + cur.getUserInfo().getNickname());
-            }
+    private void firstTurnCard(PlayerInfoModel info) {
+        setVisibility(VISIBLE);
+        mFirstSvga.clearAnimation();
+        mFirstSvga.setVisibility(VISIBLE);
+        mFirstSvga.setLoops(1);
+        SVGAParser parser = new SVGAParser(getContext());
+        try {
+            parser.parse("rank_battle_start.svga", new SVGAParser.ParseCompletion() {
+                @Override
+                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                    SVGADrawable drawable = new SVGADrawable(videoItem, requestDynamicItem(info));
+                    mFirstSvga.setImageDrawable(drawable);
+                    mFirstSvga.startAnimation();
+                }
 
-            if (cur.getUserInfo().getSex() == ESex.SX_MALE.getValue()) {
-                AvatarUtils.loadAvatarByUrl(mTurnCurrentIv, AvatarUtils.newParamsBuilder(cur.getUserInfo().getAvatar())
-                        .setCircle(true)
-                        .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                        .setBorderColor(Color.parseColor("#33A4E1"))
-                        .build());
-            } else if (cur.getUserInfo().getSex() == ESex.SX_FEMALE.getValue()) {
-                AvatarUtils.loadAvatarByUrl(mTurnCurrentIv, AvatarUtils.newParamsBuilder(cur.getUserInfo().getAvatar())
-                        .setCircle(true)
-                        .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                        .setBorderColor(Color.parseColor("#FF79A9"))
-                        .build());
-            }
+                @Override
+                public void onError() {
 
+                }
+            });
+        } catch (Exception e) {
+            System.out.print(true);
         }
 
-//        if (next != null) {
-//            AvatarUtils.loadAvatarByUrl(mTurnNextIv, AvatarUtils.newParamsBuilder(next.getUserInfo().getAvatar())
-//                    .setCircle(true)
-//                    .setBorderWidth(U.getDisplayUtils().dip2px(2))
-//                    .setBorderColor(Color.WHITE)
-//                    .build());
-//            SpannableStringBuilder ssb = new SpanUtils()
-//                    .append("下一首由").append(next.getUserInfo().getNickname()).setClickSpan(new ClickableSpan() {
-//                        @Override
-//                        public void onClick(View widget) {
-//                            U.getToastUtil().showShort("事件触发了");
-//                        }
-//
-//                        @Override
-//                        public void updateDrawState(TextPaint ds) {
-//                            ds.setColor(Color.YELLOW);
-//                            ds.setUnderlineText(false);
-//                        }
-//                    }).append("点击事件").create();
-//            mTurnNextInfoTv.setText(ssb);
-//        } else {
-//            mTurnNextIv.setVisibility(GONE);
-//            mTurnNextInfoTv.setVisibility(GONE);
-//        }
+        mFirstSvga.setCallback(new SVGACallback() {
+            @Override
+            public void onPause() {
+
+            }
+
+            @Override
+            public void onFinished() {
+                if (mFirstSvga != null) {
+                    mFirstSvga.stopAnimation(true);
+                    mFirstSvga.setVisibility(GONE);
+                }
+                if (mSVGAListener != null) {
+                    mSVGAListener.onFinished();
+                }
+            }
+
+            @Override
+            public void onRepeat() {
+                if (mFirstSvga != null && mFirstSvga.isAnimating()) {
+                    mFirstSvga.stopAnimation(false);
+                }
+            }
+
+            @Override
+            public void onStep(int i, double v) {
+
+            }
+        });
+
     }
 
+    private void nextTurnCard(PlayerInfoModel info) {
+        setVisibility(VISIBLE);
+        mNextSvga.clearAnimation();
+        mNextSvga.setVisibility(VISIBLE);
+        mNextSvga.setLoops(1);
+        SVGAParser parser = new SVGAParser(getContext());
+        try {
+            parser.parse("rank_battle_next.svga", new SVGAParser.ParseCompletion() {
+                @Override
+                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                    SVGADrawable drawable = new SVGADrawable(videoItem, requestDynamicItem(info));
+                    mNextSvga.setImageDrawable(drawable);
+                    mNextSvga.startAnimation();
+                }
+
+                @Override
+                public void onError() {
+
+                }
+            });
+        } catch (Exception e) {
+            System.out.print(true);
+        }
+
+        mNextSvga.setCallback(new SVGACallback() {
+            @Override
+            public void onPause() {
+
+            }
+
+            @Override
+            public void onFinished() {
+                if (mNextSvga != null) {
+                    mNextSvga.stopAnimation(true);
+                    mNextSvga.setVisibility(GONE);
+                }
+                if (mSVGAListener != null) {
+                    mSVGAListener.onFinished();
+                }
+            }
+
+            @Override
+            public void onRepeat() {
+                if (mNextSvga != null && mNextSvga.isAnimating()) {
+                    mNextSvga.stopAnimation(false);
+                }
+            }
+
+            @Override
+            public void onStep(int i, double v) {
+
+            }
+        });
+
+    }
+
+    private SVGADynamicEntity requestDynamicItem(PlayerInfoModel info) {
+        SVGADynamicEntity dynamicEntity = new SVGADynamicEntity();
+        Bitmap bitmap = Bitmap.createBitmap(U.getDisplayUtils().dip2px(70), U.getDisplayUtils().dip2px(70), Bitmap.Config.ARGB_8888);
+        bitmap.eraseColor(info.getUserInfo().getSex() == ESex.SX_MALE.getValue() ? U.getColor(com.common.core.R.color.color_man_stroke_color) : U.getColor(com.common.core.R.color.color_woman_stroke_color));
+        dynamicEntity.setDynamicImage(bitmap, "border");
+
+        HttpImage image = AvatarUtils.getAvatarUrl(AvatarUtils.newParamsBuilder(info.getUserInfo().getAvatar())
+                .setWidth(U.getDisplayUtils().dip2px(64))
+                .setHeight(U.getDisplayUtils().dip2px(64))
+                .build());
+        File file = FrescoWorker.getCacheFileFromFrescoDiskCache(image.getUrl());
+        dynamicEntity.setDynamicImage(BitmapFactory.decodeFile(file.getPath()), "avatar128");
+
+        TextPaint textPaint1 = new TextPaint();
+        textPaint1.setColor(Color.parseColor("#0C2275"));
+        textPaint1.setTypeface(Typeface.DEFAULT_BOLD);
+        textPaint1.setTextAlign(Paint.Align.LEFT);
+        textPaint1.setTextSize(U.getDisplayUtils().dip2px(24));
+
+        TextPaint textPaint2 = new TextPaint();
+        textPaint2.setColor(Color.parseColor("#0C2275"));
+        textPaint2.setTextAlign(Paint.Align.LEFT);
+        textPaint2.setTextSize(U.getDisplayUtils().dip2px(16));
+
+        if (info.getUserInfo().getUserId() == MyUserInfoManager.getInstance().getUid()) {
+            dynamicEntity.setDynamicText("轮到你唱啦！", textPaint1, "text1");
+            dynamicEntity.setDynamicText("《" + info.getSongList().get(0).getItemName() + "》", textPaint2, "text2");
+        } else {
+            dynamicEntity.setDynamicText("《" + info.getSongList().get(0).getItemName() + "》", textPaint1, "text1");
+            dynamicEntity.setDynamicText("演唱：" + info.getUserInfo().getNickname(), textPaint2, "text2");
+        }
+        return dynamicEntity;
+    }
+
+
+    @Override
+    public void setVisibility(int visibility) {
+        super.setVisibility(visibility);
+        if (visibility == GONE) {
+            this.mSVGAListener = null;
+            if (mFirstSvga != null) {
+                mFirstSvga.stopAnimation(false);
+            }
+
+            if (mNextSvga != null) {
+                mNextSvga.stopAnimation(false);
+            }
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        this.mSVGAListener = null;
+        if (mFirstSvga != null) {
+            mFirstSvga.stopAnimation(true);
+        }
+        if (mNextSvga != null) {
+            mNextSvga.stopAnimation(true);
+        }
+    }
 }

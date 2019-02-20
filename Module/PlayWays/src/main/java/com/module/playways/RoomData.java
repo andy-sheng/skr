@@ -285,6 +285,22 @@ public class RoomData implements Serializable {
         return null;
     }
 
+    public PlayerInfoModel getPlayerInfoModel(int userID){
+        if (userID == 0) {
+            return null;
+        }
+        if (mPlayerInfoList == null) {
+            return null;
+        }
+        for (PlayerInfoModel playerInfo : mPlayerInfoList) {
+            if (playerInfo.getUserInfo().getUserId() == userID) {
+                return playerInfo;
+            }
+        }
+
+        return null;
+    }
+
     public int getRealRoundSeq() {
         if (mRealRoundInfo != null) {
             return mRealRoundInfo.getRoundSeq();

@@ -1,55 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/view_324_dp"
-    android:layout_height="@dimen/view_185_dp"
-    android:layout_centerHorizontal="true"
-    android:layout_marginTop="@dimen/view_30_dp">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:parentTag="android.widget.RelativeLayout">
 
-    <com.common.view.ex.ExImageView
-        android:id="@+id/turn_change_bg_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/yanchangkaishi_gequbeijingban" />
-
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/turn_current_iv"
-        android:layout_width="@dimen/view_64_dp"
-        android:layout_height="@dimen/view_64_dp"
-        android:layout_centerHorizontal="true" />
-
-
-    <com.common.view.ex.ExTextView
-        android:id="@+id/turn_name_tv"
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/first_svga"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/turn_current_iv"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="@dimen/view_20_dp"
-        android:layout_marginTop="@dimen/view_16_dp"
-        android:layout_marginRight="@dimen/view_20_dp"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:maxLines="1"
-        android:singleLine="true"
-        android:textColor="#0C2275"
-        android:textSize="@dimen/textsize_24_dp"
-        android:textStyle="bold" />
+        android:layout_height="@dimen/view_250_dp"
+        android:layout_marginTop="@dimen/view_125_dp"
+        android:visibility="gone"
+        app:antiAlias="true"
+        app:autoPlay="false" />
 
-    <com.common.view.ex.ExTextView
-        android:id="@+id/turn_song_tv"
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/next_svga"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/turn_name_tv"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="@dimen/view_20_dp"
-        android:layout_marginTop="@dimen/view_8_dp"
-        android:layout_marginRight="@dimen/view_20_dp"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:maxLines="1"
-        android:singleLine="true"
-        android:textColor="#0C2275"
-        android:textSize="@dimen/textsize_16_dp" />
+        android:layout_height="@dimen/view_250_dp"
+        android:layout_marginTop="@dimen/view_125_dp"
+        android:visibility="gone"
+        app:antiAlias="true"
+        app:autoPlay="false" />
+</merge>
 
-</RelativeLayout>
