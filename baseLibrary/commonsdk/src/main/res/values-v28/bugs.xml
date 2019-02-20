@@ -1,6 +1,6 @@
 <resources>
     <bool name="translucent_no_bug">true</bool>
-    <style name="Activity_Animation" parent="@android:style/Animation.Activity">
+    <style name="Activity_Animation" parent="@android:style/Animation.Translucent">
         <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
         <item name="android:activityOpenExitAnimation">@null</item>
         <item name="android:activityCloseEnterAnimation">@null</item>
