@@ -39,7 +39,9 @@
         android:layout_below="@+id/avatar_iv"
         android:layout_marginTop="@dimen/view_5_dp"
         android:gravity="center"
+        android:maxLines="1"
         android:minWidth="@dimen/view_100_dp"
+        android:singleLine="true"
         android:textColor="#0C2275"
         android:textSize="@dimen/textsize_24_dp" />
 
@@ -59,7 +61,9 @@
         android:layout_below="@+id/userid_tv"
         android:layout_marginTop="@dimen/view_9_dp"
         android:gravity="center"
+        android:maxLines="1"
         android:minWidth="@dimen/view_100_dp"
+        android:singleLine="true"
         android:textColor="#0C2275"
         android:textSize="@dimen/textsize_16_dp" />
 
