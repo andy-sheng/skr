@@ -47,7 +47,7 @@ public class PlayWaysActivity extends BaseActivity {
         if (!U.getActivityUtils().isAppForeground()
                 // 如果应用刚回到前台500ms，也认为应用在后台。防止某些手机，比如华为Mate P20，
                 // onActivityStarted 会比 onNewIntent 先调用，这里就是前台状态了
-                || (U.getActivityUtils().getIsAppForegroundChangeTs() - System.currentTimeMillis() < 500)) {
+                || ( System.currentTimeMillis() - U.getActivityUtils().getIsAppForegroundChangeTs() < 500)) {
             MyLog.d(TAG, "PlayWaysActivity 在后台，不唤起");
             moveTaskToBack(true);
         }
