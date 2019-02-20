@@ -83,6 +83,22 @@ public interface IMsgService extends IProvider {
      */
     void updateCurrentUserInfo();
 
+    /**
+     * 更新融云缓存中个人信息
+     *
+     * @param userId
+     * @param nickName
+     * @param avatar
+     */
+    void refreshUserInfoCache(int userId, String nickName, String avatar);
+
+
+    /**
+     * 融云聊天黑名单
+     *
+     * @param userId
+     * @param callback
+     */
     void addToBlacklist(String userId, ICallback callback);
 
     void removeFromBlacklist(String userId, ICallback callback);

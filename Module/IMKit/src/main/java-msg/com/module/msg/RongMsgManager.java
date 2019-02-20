@@ -286,6 +286,11 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
         RongIM.getInstance().joinChatRoom(roomId, 10, mOperationCallback);
     }
 
+    public void refreshUserInfoCache(int userId, String nickName, String avatar) {
+        UserInfo userInfo = new UserInfo(String.valueOf(userId), nickName, Uri.parse(avatar));
+        RongIM.getInstance().refreshUserInfoCache(userInfo);
+    }
+
     public void leaveChatRoom(String roomId) {
         MyLog.d(TAG, "leaveChatRoom" + " roomId=" + roomId);
         mJoinroomCallback = null;

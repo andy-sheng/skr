@@ -50,7 +50,7 @@
         android:background="@android:color/transparent"
         android:scaleType="centerCrop"
         app:RCCornerRadius="3dp"
-        app:RCDefDrawable="@drawable/rc_ic_def_msg_portrait"
+        app:RCDefDrawable="@drawable/avatar_default_b"
         app:RCShape="circle" />
 
     <io.rong.imkit.widget.AsyncImageView
@@ -63,7 +63,7 @@
         android:background="@android:color/transparent"
         android:scaleType="centerCrop"
         app:RCCornerRadius="3dp"
-        app:RCDefDrawable="@drawable/rc_ic_def_msg_portrait"
+        app:RCDefDrawable="@drawable/avatar_default_b"
         app:RCShape="circle" />
 
 

@@ -55,6 +55,11 @@ public class RongMsgServiceImpl implements IMsgService {
     }
 
     @Override
+    public void refreshUserInfoCache(int userId, String nickName, String avatar) {
+        RongMsgManager.getInstance().refreshUserInfoCache(userId, nickName, avatar);
+    }
+
+    @Override
     public void sendChatRoomMessage(String roomId, int messageType, JSONObject contentJson, ICallback callback) {
         RongMsgManager.getInstance().sendChatRoomMessage(roomId, messageType, contentJson, callback);
     }

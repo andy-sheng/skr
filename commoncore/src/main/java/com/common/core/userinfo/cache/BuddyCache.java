@@ -8,6 +8,7 @@ import com.common.core.userinfo.UserInfoLocalApi;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
+import com.module.ModuleServiceManager;
 
 import java.util.List;
 
@@ -78,6 +79,7 @@ public class BuddyCache {
             return;
         }
 
+        ModuleServiceManager.getInstance().getMsgService().refreshUserInfoCache(buddyCacheEntry.getUuid(), buddyCacheEntry.getName(), buddyCacheEntry.getAvatar());
         mLruCache.put(buddyCacheEntry.getUuid(), buddyCacheEntry);
     }
 
@@ -102,7 +104,6 @@ public class BuddyCache {
             if (queryIfNotExist) {
                 // 网络查询
                 UserInfoManager.getInstance().getUserInfoByUuid(uuid, null);
-                result = mLruCache.get(uuid);
             }
         }
         return result;

@@ -13,6 +13,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
         android:scaleType="centerCrop"
+        app:RCDefDrawable="@drawable/avatar_default_b"
         app:RCShape="circle" />
 
     <ImageView
