@@ -37,10 +37,19 @@
         android:layout_height="@dimen/view_200_dp"
         android:layout_marginTop="@dimen/view_5_dp" />
 
+    <com.module.playways.voice.view.VoiceUserStatusContainerView
+        android:id="@+id/user_status_container_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/comment_view"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/view_72_dp" />
 
     <com.module.playways.rank.room.view.InputContainerView
         android:id="@+id/input_container_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true" />
+
+
 </RelativeLayout>

@@ -32,9 +32,10 @@ public class VoiceRoomActivity extends BaseActivity {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         RoomData mRoomData = (RoomData) getIntent().getSerializableExtra("voice_room_data");
-        if(mRoomData==null){
-            mRoomData = new RoomData();
+        if (mRoomData == null) {
             //TODO test
+            mRoomData = new RoomData();
+            mRoomData.setGameId(10001);
             {
                 List<RoundInfoModel> roundingModeList = new ArrayList<>();
                 for (int i = 0; i < 3; i++) {

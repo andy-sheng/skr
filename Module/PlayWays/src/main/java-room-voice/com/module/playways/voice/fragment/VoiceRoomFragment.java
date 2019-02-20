@@ -26,6 +26,7 @@ import com.module.playways.voice.inter.IVoiceView;
 import com.module.playways.voice.presenter.VoiceCorePresenter;
 import com.module.playways.voice.view.VoiceBottomContainerView;
 import com.module.playways.voice.view.VoiceTopContainerView;
+import com.module.playways.voice.view.VoiceUserStatusContainerView;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGAParser;
 import com.orhanobut.dialogplus.DialogPlus;
@@ -68,6 +69,8 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
 
     VoiceTopContainerView mTopContainerView;
 
+    VoiceUserStatusContainerView mUserStatusContainerView;
+
     VoiceCorePresenter mCorePresenter;
 
     DialogPlus mShowPersonInfoDialogPlus;
@@ -104,12 +107,14 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
         initBottomView();
         initCommentView();
         initTopView();
+        initUserStatusView();
 
         mCorePresenter = new VoiceCorePresenter(this, mRoomData);
         addPresent(mCorePresenter);
 
         BgMusicManager.getInstance().setRoom(true);
     }
+
 
     @Override
     public void onStart() {
@@ -150,7 +155,32 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
 
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mCommentView.getLayoutParams();
         layoutParams.height = U.getDisplayUtils().getPhoneHeight() - U.getDisplayUtils().dip2px(430 + 60);
+    }
 
+
+    private void initTopView() {
+        mTopContainerView = mRootView.findViewById(R.id.top_container_view);
+
+        // 加上状态栏的高度
+        int statusBarHeight = U.getStatusBarUtil().getStatusBarHeight(getContext());
+        RelativeLayout.LayoutParams topLayoutParams = (RelativeLayout.LayoutParams) mTopContainerView.getLayoutParams();
+        topLayoutParams.topMargin = statusBarHeight + topLayoutParams.topMargin;
+//        mTopContainerView.setListener(new GrabTopContainerView.Listener() {
+//            @Override
+//            public void closeBtnClick() {
+//                quitGame();
+//            }
+//
+//            @Override
+//            public void onVoiceChange(boolean voiceOpen) {
+//                mCorePresenter.muteAllRemoteAudioStreams(!voiceOpen, true);
+//            }
+//        });
+    }
+
+    private void initUserStatusView() {
+        mUserStatusContainerView = mRootView.findViewById(R.id.user_status_container_view);
+        mUserStatusContainerView.setRoomData(mRoomData);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -223,25 +253,6 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
                         .build());
     }
 
-    private void initTopView() {
-        mTopContainerView = mRootView.findViewById(R.id.top_container_view);
-
-        // 加上状态栏的高度
-        int statusBarHeight = U.getStatusBarUtil().getStatusBarHeight(getContext());
-        RelativeLayout.LayoutParams topLayoutParams = (RelativeLayout.LayoutParams) mTopContainerView.getLayoutParams();
-        topLayoutParams.topMargin = statusBarHeight + topLayoutParams.topMargin;
-//        mTopContainerView.setListener(new GrabTopContainerView.Listener() {
-//            @Override
-//            public void closeBtnClick() {
-//                quitGame();
-//            }
-//
-//            @Override
-//            public void onVoiceChange(boolean voiceOpen) {
-//                mCorePresenter.muteAllRemoteAudioStreams(!voiceOpen, true);
-//            }
-//        });
-    }
 
 
     private SVGAParser getSVGAParser() {
