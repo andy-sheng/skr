@@ -10,4 +10,12 @@ public class PkBurstLightMsgEvent {
         info = basePushInfo;
         pKBLightMsg = pkbLightMsg;
     }
+
+    public BasePushInfo getInfo() {
+        return info;
+    }
+
+    public PKBLightMsg getpKBLightMsg() {
+        return pKBLightMsg;
+    }
 }

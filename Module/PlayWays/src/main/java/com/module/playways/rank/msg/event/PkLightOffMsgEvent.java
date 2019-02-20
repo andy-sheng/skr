@@ -11,4 +11,12 @@ public class PkLightOffMsgEvent {
         info = basePushInfo;
         pKMLightMsg = pkmLightMsg;
     }
+
+    public BasePushInfo getInfo() {
+        return info;
+    }
+
+    public PKMLightMsg getpKMLightMsg() {
+        return pKMLightMsg;
+    }
 }

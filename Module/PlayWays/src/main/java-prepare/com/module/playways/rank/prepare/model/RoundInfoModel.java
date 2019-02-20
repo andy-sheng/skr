@@ -77,6 +77,8 @@ public class RoundInfoModel implements Serializable {
 
     private HashSet<MLightInfoModel> pklightOffInfos = new HashSet<>();  //已经灭灯的人, pk
 
+    private ERoundOverReasonModel eRoundOverReasonModel = ERoundOverReasonModel.EROR_UNKNOWN;
+
     public RoundInfoModel() {
 
     }
@@ -215,6 +217,16 @@ public class RoundInfoModel implements Serializable {
         this.noPassSingInfos = noPassSingInfos;
     }
 
+    public ERoundOverReasonModel geteRoundOverReasonModel() {
+        return eRoundOverReasonModel;
+    }
+
+    public void changeRoundOverReason(ERoundOverReasonModel roundOverReasonModel){
+        if(eRoundOverReasonModel != ERoundOverReasonModel.EROR_UNKNOWN){
+            eRoundOverReasonModel = roundOverReasonModel;
+        }
+    }
+
     public static RoundInfoModel parseFromRoundInfo(RoundInfo roundInfo) {
         RoundInfoModel roundInfoModel = new RoundInfoModel(TYPE_RANK);
         roundInfoModel.setUserID(roundInfo.getUserID());
@@ -234,6 +246,7 @@ public class RoundInfoModel implements Serializable {
                 roundInfoModel.addPkLightOffUid(false, MLightInfoModel.parse(m));
             }
         }
+
         return roundInfoModel;
     }
 

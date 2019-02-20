@@ -31,6 +31,7 @@ import com.engine.arccloud.SongInfo;
 import com.module.ModuleServiceManager;
 import com.module.msg.CustomMsgType;
 import com.module.msg.IMsgService;
+import com.module.playways.grab.room.model.NoPassingInfo;
 import com.module.playways.rank.msg.BasePushInfo;
 import com.module.playways.rank.msg.event.AccBeginEvent;
 import com.module.playways.rank.msg.event.AppSwapEvent;
@@ -53,6 +54,8 @@ import com.module.playways.rank.room.SwapStatusType;
 import com.module.playways.rank.room.event.PkSomeOneBurstLightEvent;
 import com.module.playways.rank.room.event.PkSomeOneLightOffEvent;
 import com.module.playways.rank.room.event.RoundInfoChangeEvent;
+import com.module.playways.rank.room.model.BLightInfoModel;
+import com.module.playways.rank.room.model.MLightInfoModel;
 import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.RoomData;
 import com.module.playways.RoomDataUtils;
@@ -897,16 +900,46 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 
     }
 
-    //服务器push，某人灭灯了
-    @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onEvent(PkBurstLightMsgEvent event) {
-
-    }
-
     //服务器push，某人爆灯了
     @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onEvent(PkLightOffMsgEvent event) {
+    public void onEvent(PkBurstLightMsgEvent event) {
+        if (RoomDataUtils.isCurrentRound(event.getpKBLightMsg().getRoundSeq(), mRoomData)) {
+            MyLog.w(TAG, "有人爆灯了：userID " + event.getpKBLightMsg().getUserID() + ", seq " + event.getpKBLightMsg().getRoundSeq());
+            RoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
 
+            BLightInfoModel bLightInfoModel = new BLightInfoModel();
+            bLightInfoModel.setUserID(event.getpKBLightMsg().getUserID());
+            bLightInfoModel.setTimeMs(event.getInfo().getTimeMs());
+
+            roundInfoModel.addBrustLightUid(true, bLightInfoModel);
+        } else {
+            RoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
+            if(roundInfoModel != null && event.getpKBLightMsg().getRoundSeq() > roundInfoModel.getRoundSeq()){
+                // TODO: 2019/2/20  如果此次爆灯的round比现在的高，需要切换到下一个round或者sync
+            }
+            MyLog.w(TAG, "有人爆灯了,但是不是这个轮次：userID " + event.getpKBLightMsg().getUserID() + ", seq " + event.getpKBLightMsg().getRoundSeq() + "，当前轮次是 " + mRoomData.getRealRoundSeq());
+        }
+    }
+
+    //服务器push，某人灭灯了
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onEvent(PkLightOffMsgEvent event) {
+        if (RoomDataUtils.isCurrentRound(event.getpKMLightMsg().getRoundSeq(), mRoomData)) {
+            MyLog.w(TAG, "有人灭灯了：userID " + event.getpKMLightMsg().getUserID() + ", seq " + event.getpKMLightMsg().getRoundSeq());
+            RoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
+
+            MLightInfoModel mLightInfoModel = new MLightInfoModel();
+            mLightInfoModel.setUserID(event.getpKMLightMsg().getUserID());
+            mLightInfoModel.setTimeMs(event.getInfo().getTimeMs());
+
+            roundInfoModel.addPkLightOffUid(true, mLightInfoModel);
+        } else {
+            RoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
+            if(roundInfoModel != null && event.getpKMLightMsg().getRoundSeq() > roundInfoModel.getRoundSeq()){
+                // TODO: 2019/2/20  如果此次灭灯的round比现在的高，需要切换到下一个round或者sync
+            }
+            MyLog.w(TAG, "有人灭灯了,但是不是这个轮次：userID " + event.getpKMLightMsg().getUserID() + ", seq " + event.getpKMLightMsg().getRoundSeq() + "，当前轮次是 " + mRoomData.getRealRoundSeq());
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
