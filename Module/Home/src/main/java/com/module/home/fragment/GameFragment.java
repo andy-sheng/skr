@@ -37,6 +37,7 @@ import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.constans.GameModeType;
@@ -164,37 +165,33 @@ public class GameFragment extends BaseFragment {
             }
         });
 
-        RxView.clicks(ivAthleticsPk)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        long tag = System.currentTimeMillis();
-                        checkGameConf(1, tag, ivAthleticsPk);
-                        clickAnimation(ivAthleticsPk, tag);
-                    }
-                });
+        ivAthleticsPk.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                long tag = System.currentTimeMillis();
+                checkGameConf(1, tag, ivAthleticsPk);
+                clickAnimation(ivAthleticsPk, tag);
+            }
+        });
 
-        RxView.clicks(mIvGrabPk)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        long tag = System.currentTimeMillis();
-                        checkGameConf(3, tag, mIvGrabPk);
-                        clickAnimation(mIvGrabPk, tag);
-                    }
-                });
+        mIvGrabPk.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                long tag = System.currentTimeMillis();
+                checkGameConf(3, tag, mIvGrabPk);
+                clickAnimation(mIvGrabPk, tag);
+            }
+        });
 
         if (MyLog.isDebugLogOpen()) {
-            RxView.longClicks(mIvGrabPk)
-                    .subscribe(new Consumer<Object>() {
-                        @Override
-                        public void accept(Object o) throws Exception {
-                            ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_ROOM)
-                                    .navigation();
-                        }
-                    });
+            mIvGrabPk.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_VOICEROOM)
+                            .navigation();
+                    return false;
+                }
+            });
         }
 
         RxView.clicks(mRankArea).subscribe(new Consumer<Object>() {

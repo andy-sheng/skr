@@ -835,12 +835,12 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                             mDialogPlus.dismiss();
                         }
 
-                        if(true){
-                            ARouter.getInstance().build(RouterConstants.ACTIVITY_VOICEROOM)
-                                    .withSerializable("voice_room_data",mRoomData)
-                                    .navigation();
-                            return;
-                        }
+//                        if(true){
+//                            ARouter.getInstance().build(RouterConstants.ACTIVITY_VOICEROOM)
+//                                    .withSerializable("voice_room_data",mRoomData)
+//                                    .navigation();
+//                            return;
+//                        }
                         RecordData recordData = mRoomData.getRecordData();
                         if (recordData != null && recordData.mVoteInfoModels != null && recordData.mVoteInfoModels.size() > 0) {
                             showRecordView();
