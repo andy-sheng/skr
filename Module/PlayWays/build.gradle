@@ -76,6 +76,9 @@ android {
 
             java.srcDirs += 'src/main/java-room-grab'
             res.srcDirs += 'src/main/res-room-grab'
+
+            java.srcDirs += 'src/main/java-room-voice'
+            res.srcDirs += 'src/main/res-room-voice'
         }
     }
 }

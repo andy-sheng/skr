@@ -32,6 +32,7 @@ public class ActivityUtils {
     //当前在前台的 Activity
     private Activity mCurrentActivity;
     private boolean mIsAppForeground;
+    private long mIsAppForegroundChangeTs;
     //提供给外部扩展 AppManager 的 onReceive 方法
 //    private HandleListener mHandleListener;
 //
@@ -266,6 +267,7 @@ public class ActivityUtils {
         if (this.mIsAppForeground != isAppForeground) {
             MyLog.d(TAG,"发生前后台切换" + " isAppForeground=" + isAppForeground);
             this.mIsAppForeground = isAppForeground;
+            mIsAppForegroundChangeTs = System.currentTimeMillis();
             EventBus.getDefault().post(new ForeOrBackgroundChange(mIsAppForeground));
         }
 
@@ -276,6 +278,10 @@ public class ActivityUtils {
      */
     public boolean isAppForeground() {
         return this.mIsAppForeground;
+    }
+
+    public long getIsAppForegroundChangeTs() {
+        return mIsAppForegroundChangeTs;
     }
 
     /**
