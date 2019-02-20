@@ -322,7 +322,7 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
         if (mInputContainerView.onBackPressed()) {
             return true;
         }
-        return true;
+        return false;
     }
 
 

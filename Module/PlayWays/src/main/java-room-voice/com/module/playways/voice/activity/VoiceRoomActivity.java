@@ -71,6 +71,7 @@ public class VoiceRoomActivity extends BaseActivity {
         U.getStatusBarUtil().setTransparentBar(this, false);
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, VoiceRoomFragment.class)
                 .setAddToBackStack(false)
+                .setHasAnimation(false)
                 .addDataBeforeAdd(0, mRoomData)
                 .build()
         );
