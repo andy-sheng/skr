@@ -2,12 +2,17 @@ package com.module.playways.rank.room.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.RelativeLayout;
+
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.module.playways.RoomData;
 import com.module.playways.rank.room.score.bar.EnergySlotView;
 import com.module.rank.R;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.ViewHolder;
 
 public class RankTopContainerView extends RelativeLayout {
     ExImageView mMoreBtn;
@@ -17,6 +22,8 @@ public class RankTopContainerView extends RelativeLayout {
     ExImageView mIvCenter;
     ExImageView mIvRignt;
     EnergySlotView mEnergySlotView;
+    ExImageView mIvGameRole;
+    DialogPlus mGameRoleDialog;
 
     TopContainerView.Listener mListener;
     RoomData mRoomData;
@@ -51,6 +58,26 @@ public class RankTopContainerView extends RelativeLayout {
         mIvCenter = (ExImageView) findViewById(R.id.iv_center);
         mIvRignt = (ExImageView) findViewById(R.id.iv_rignt);
         mEnergySlotView = (EnergySlotView)findViewById(R.id.energy_slot_view);
+        mIvGameRole = (ExImageView)findViewById(R.id.iv_game_role);
+
+        mIvGameRole.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if(mGameRoleDialog != null){
+                    mGameRoleDialog.dismiss();
+                }
+
+                mGameRoleDialog = DialogPlus.newDialog(getContext())
+                        .setContentHolder(new ViewHolder(R.layout.game_role_view_layout))
+                        .setContentBackgroundResource(R.color.transparent)
+                        .setOverlayBackgroundResource(R.color.black_trans_50)
+                        .setExpanded(false)
+                        .setGravity(Gravity.CENTER)
+                        .create();
+
+                mGameRoleDialog.show();
+            }
+        });
 
         mMoreBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +105,14 @@ public class RankTopContainerView extends RelativeLayout {
                 mMoreOpView.showAt(mMoreBtn);
             }
         });
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if(mGameRoleDialog != null && mGameRoleDialog.isShowing()){
+            mGameRoleDialog.dismiss();
+        }
     }
 
     /**
