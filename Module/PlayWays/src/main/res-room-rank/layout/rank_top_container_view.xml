@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:parentTag="android.widget.RelativeLayout">
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/iv_led"
+        android:layout_width="@dimen/view_316_dp"
+        android:layout_height="@dimen/view_102_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_28_dp"
+        android:background="@drawable/yanchang_xianshiping" />
+
+    <RelativeLayout
+        android:gravity="center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_56_dp"
+        android:layout_alignLeft="@+id/iv_led"
+        android:layout_alignTop="@+id/iv_led"
+        android:layout_alignRight="@+id/iv_led"
+        android:layout_marginLeft="@dimen/view_17_dp"
+        android:layout_marginTop="@dimen/view_11_dp"
+        android:layout_marginRight="@dimen/view_11_dp">
+
+        <com.common.view.ex.ExImageView
+            android:src="@drawable/yanchang_mie"
+            android:id="@+id/iv_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true" />
+
+        <com.common.view.ex.ExImageView
+            android:src="@drawable/yanchang_mie"
+            android:id="@+id/iv_center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true" />
+
+        <com.common.view.ex.ExImageView
+            android:src="@drawable/yanchang_bao"
+            android:id="@+id/iv_rignt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+
+    <com.module.playways.rank.room.score.bar.EnergySlotView
+        android:id="@+id/energy_slot_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_led"
+        android:layout_alignLeft="@+id/iv_led"
+        android:layout_alignRight="@+id/iv_led"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="@dimen/view_47_dp"
+        android:layout_marginTop="@dimen/view_d_30_dp"
+        android:layout_marginRight="@dimen/view_40_dp" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/more_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/iv_led"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/view_30_dp"
+        android:layout_marginRight="@dimen/view_12_dp"
+        android:paddingLeft="@dimen/view_12_dp"
+        android:paddingRight="@dimen/view_12_dp"
+        android:scaleType="centerInside"
+        app:src_unPressed_drawable="@drawable/more" />
+
+</merge>

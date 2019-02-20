@@ -93,6 +93,7 @@
     <dimen name="view_29_33_dp">29.33dp</dimen>
     <dimen name="view_29_67_dp">29.67dp</dimen>
     <dimen name="view_30_dp">30dp</dimen>
+    <dimen name="view_d_30_dp">-30dp</dimen>
     <dimen name="view_30_33_dp">30.33dp</dimen>
     <dimen name="view_30_67_dp">30.67dp</dimen>
     <dimen name="view_31_dp">31dp</dimen>

@@ -7,10 +7,15 @@
     android:background="#2E3041">
 
     <com.module.playways.rank.room.view.TopContainerView
+        android:visibility="invisible"
         android:id="@+id/top_container_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_100_dp"
         android:layout_marginTop="@dimen/view_10_dp" />
+
+    <com.module.playways.rank.room.view.RankTopContainerView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
     <RelativeLayout
         android:id="@+id/middle_area"
