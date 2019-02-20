@@ -42,7 +42,7 @@
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
         swipe:max_visible="4"
-        swipe:min_adapter_stack="4"
+        swipe:min_adapter_stack="5"
         swipe:y_offset_step="28dp" />
 
     <com.common.view.ex.ExImageView
