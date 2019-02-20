@@ -46,13 +46,17 @@ public class RankOpView extends RelativeLayout {
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .filter(o -> !mBurstSuccess)
                 .subscribe(o -> {
-                    mOpListener.clickBurst(mSeq);
+                    if(mOpListener != null){
+                        mOpListener.clickBurst(mSeq);
+                    }
                 });
 
         RxView.clicks(mIvTurnOff)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
-                    mOpListener.clickLightOff(mSeq);
+                    if(mOpListener != null){
+                        mOpListener.clickLightOff(mSeq);
+                    }
                 });
     }
 
