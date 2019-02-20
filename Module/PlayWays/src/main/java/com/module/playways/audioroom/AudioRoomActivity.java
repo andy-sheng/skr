@@ -11,6 +11,9 @@ import com.module.RouterConstants;
 import com.module.playways.rank.song.fragment.SongSelectFragment;
 import com.module.rank.R;
 
+/**
+ * 调音间
+ */
 @Route(path = RouterConstants.ACTIVITY_AUDIOROOM)
 public class AudioRoomActivity extends BaseActivity {
 

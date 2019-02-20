@@ -1,7 +1,5 @@
 package com.engine;
 
-import io.agora.rtc.IRtcEngineEventHandler;
-
 public class EngineEvent {
     public static final int TYPE_USER_JOIN = 1;
     public static final int TYPE_USER_LEAVE = 2;

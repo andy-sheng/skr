@@ -10,6 +10,7 @@ public interface RouterConstants {
     String ACTIVITY_LOGIN = "/core/LoginActivity";
     String ACTIVITY_SCHEME = "/core/SchemeSdkActivity";
 
+    String ACTIVITY_VOICEROOM = "/rankingmode/VoiceRoomActivity";
     String ACTIVITY_AUDIOROOM = "/rankingmode/AudioRoomActivity";
     String ACTIVITY_PLAY_WAYS = "/rankingmode/PlayWaysActivity";
     String ACTIVITY_RANK_ROOM = "/rankingmode/RankRoomActivity";

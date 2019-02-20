@@ -190,7 +190,6 @@ public class SpecialSelectFragment extends BaseFragment {
         prepareData.setGameType(GameModeType.GAME_MODE_GRAB);
         prepareData.setTagId(specialId);
 
-
         if (musicURLs != null && musicURLs.size() > 0) {
             prepareData.setBgMusic(musicURLs.get(0));
         }

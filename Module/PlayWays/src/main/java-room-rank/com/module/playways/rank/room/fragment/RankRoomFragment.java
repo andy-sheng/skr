@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
@@ -36,6 +37,7 @@ import com.facebook.fresco.animation.drawable.AnimatedDrawable2;
 import com.facebook.fresco.animation.drawable.AnimationListener;
 import com.facebook.imagepipeline.image.ImageInfo;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.module.RouterConstants;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
@@ -831,6 +833,13 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                     public void run() {
                         if (mDialogPlus != null && mDialogPlus.isShowing()) {
                             mDialogPlus.dismiss();
+                        }
+
+                        if(true){
+                            ARouter.getInstance().build(RouterConstants.ACTIVITY_VOICEROOM)
+                                    .withSerializable("voice_room_data",mRoomData)
+                                    .navigation();
+                            return;
                         }
                         RecordData recordData = mRoomData.getRecordData();
                         if (recordData != null && recordData.mVoteInfoModels != null && recordData.mVoteInfoModels.size() > 0) {

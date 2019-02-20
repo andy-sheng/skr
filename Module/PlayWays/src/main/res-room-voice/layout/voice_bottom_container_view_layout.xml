@@ -1,0 +1,27 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="android.widget.RelativeLayout">
+
+    <!--这里面是软键盘弹出时 需要上移的布局-->
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/show_input_container_btn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_45_dp"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginRight="@dimen/view_23_dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/kuaijie" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/quick_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_45_dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:scaleType="fitXY"
+        app:src_unPressed_drawable="@drawable/kuaijie_btn" />
+
+
+</merge>
