@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
-
 import com.common.view.ex.ExImageView;
 import com.module.playways.RoomData;
 import com.module.playways.rank.room.score.bar.EnergySlotView;
@@ -21,6 +20,10 @@ public class RankTopContainerView extends RelativeLayout {
 
     TopContainerView.Listener mListener;
     RoomData mRoomData;
+
+    enum LightState{
+        BAO, MIE
+    }
 
     public RankTopContainerView(Context context) {
         super(context);
@@ -77,7 +80,11 @@ public class RankTopContainerView extends RelativeLayout {
         });
     }
 
-    public void updateLight(boolean[] light){
+    /**
+     * @param seq  轮次信息
+     * @param lightState  爆灭情况
+     */
+    public void updateLight(int seq, LightState lightState){
 
     }
 
