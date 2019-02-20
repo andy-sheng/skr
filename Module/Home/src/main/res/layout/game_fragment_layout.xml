@@ -5,9 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#c0F9F4F1">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <RelativeLayout
             android:id="@+id/top_area"
             android:layout_width="match_parent"
@@ -116,6 +118,7 @@
             android:layout_marginTop="@dimen/view_28_dp"
             android:layout_marginRight="@dimen/view_13_dp"
             android:visibility="visible"
+            app:banner_space="16dp"
             app:image_scale_type="fit_xy" />
 
         <android.support.v4.widget.NestedScrollView

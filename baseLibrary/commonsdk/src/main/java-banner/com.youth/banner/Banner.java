@@ -41,6 +41,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
     private int mIndicatorHeight;
     private int indicatorSize;
     private int bannerBackgroundImage;
+    private int bannerSpace;
     private int bannerStyle = BannerConfig.CIRCLE_INDICATOR;
     private int delayTime = BannerConfig.TIME;
     private int scrollTime = BannerConfig.DURATION;
@@ -133,6 +134,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         titleTextSize = typedArray.getDimensionPixelSize(R.styleable.Banner_title_textsize, BannerConfig.TITLE_TEXT_SIZE);
         mLayoutResId = typedArray.getResourceId(R.styleable.Banner_banner_layout, mLayoutResId);
         bannerBackgroundImage = typedArray.getResourceId(R.styleable.Banner_banner_default_image, R.drawable.no_banner);
+        bannerSpace = typedArray.getDimensionPixelSize(R.styleable.Banner_banner_space, BannerConfig.BANNER_SPACE);
         typedArray.recycle();
     }
 
@@ -296,7 +298,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
     }
 
     private void setBannerStyleUI() {
-        int visibility =count > 1 ? View.VISIBLE :View.GONE;
+        int visibility = count > 1 ? View.VISIBLE : View.GONE;
         switch (bannerStyle) {
             case BannerConfig.CIRCLE_INDICATOR:
                 indicator.setVisibility(visibility);
@@ -431,6 +433,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         }
         viewPager.setAdapter(adapter);
         viewPager.setFocusable(true);
+        viewPager.setPageMargin(bannerSpace);
         viewPager.setCurrentItem(1);
         if (gravity != -1)
             indicator.setGravity(gravity);
@@ -577,7 +580,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
 
     @Override
     public void onPageSelected(int position) {
-        currentItem=position;
+        currentItem = position;
         if (mOnPageChangeListener != null) {
             mOnPageChangeListener.onPageSelected(toRealPosition(position));
         }
