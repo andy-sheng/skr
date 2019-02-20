@@ -126,11 +126,7 @@ public class SettingFragment extends BaseFragment {
                     @Override
                     public void accept(Object o) {
                         U.getSoundUtils().play(TAG, R.raw.general_back);
-                        U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
-                                .setPopFragment(SettingFragment.this)
-                                .setPopAbove(false)
-                                .setHasAnimation(true)
-                                .build());
+                        U.getFragmentUtils().popFragment(SettingFragment.this);
                     }
                 });
 

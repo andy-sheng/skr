@@ -463,7 +463,7 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
 
                             if (view.getId() == R.id.cancel_tv) {
                                 dialog.dismiss();
-                                U.getSoundUtils().play(TAG, R.raw.general_back, 500);
+                                U.getSoundUtils().play(GrabMatchFragment.TAG, R.raw.general_back, 500);
                                 U.getSoundUtils().release(GrabMatchSuccessFragment.TAG);
                                 mMatchPresenter.cancelMatch();
                                 if (mPrepareData.getGameType() == GameModeType.GAME_MODE_GRAB) {

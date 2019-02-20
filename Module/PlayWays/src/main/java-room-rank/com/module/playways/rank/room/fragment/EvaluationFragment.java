@@ -373,7 +373,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
             mLeftVoteAnimationSet.cancel();
         }
 
-        U.getSoundUtils().play(TAG, R.raw.select_dislikebutton, 500);
+        U.getSoundUtils().play(EvaluationFragment.TAG, R.raw.select_dislikebutton, 500);
         HandlerTaskTimer.newBuilder().delay(250).start(new HandlerTaskTimer.ObserverW() {
             @Override
             public void onNext(Integer integer) {

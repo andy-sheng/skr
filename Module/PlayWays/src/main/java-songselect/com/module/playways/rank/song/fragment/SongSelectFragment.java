@@ -89,6 +89,8 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
         DEFAULT_COUNT = songCardHeight / U.getDisplayUtils().dip2px(72);
         DEFAULT_FIRST_COUNT = DEFAULT_COUNT * 5;
 
+        U.getSoundUtils().preLoad(TAG, R.raw.general_button, R.raw.general_back, R.raw.musiclist_nextpage);
+
         mSelectBackIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
@@ -105,24 +107,24 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
                         .build());
             }
         });
+
         mSelectClickedIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                U.getSoundUtils().play(TAG, R.raw.general_button);
+                U.getSoundUtils().play(SongSelectFragment.TAG, R.raw.general_button, 500);
                 switchToClicked();
             }
         });
+
         mSelectBack.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                U.getSoundUtils().play(TAG, R.raw.general_back, 500);
+                U.getSoundUtils().play(SongSelectFragment.TAG, R.raw.general_back, 500);
                 if (getActivity() != null) {
                     getActivity().finish();
                 }
             }
         });
-
-        U.getSoundUtils().preLoad(TAG, R.raw.general_button, R.raw.general_back, R.raw.musiclist_nextpage);
 
         mDeleteList = new ArrayList<>();
 

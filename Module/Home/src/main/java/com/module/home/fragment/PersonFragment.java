@@ -107,6 +107,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         MyLog.d(TAG, "initData" + " savedInstanceState=" + savedInstanceState);
+        U.getSoundUtils().preLoad(TAG, R.raw.allclick);
         initTopView();
         initMedalView();
         initAudioView();
@@ -134,8 +135,6 @@ public class PersonFragment extends BaseFragment implements IPersonView {
         mFansNumTv = (ExTextView) mRootView.findViewById(R.id.fans_num_tv);
         mFollows = (RelativeLayout) mRootView.findViewById(R.id.follows);
         mFollowsNumTv = (ExTextView) mRootView.findViewById(R.id.follows_num_tv);
-
-        U.getSoundUtils().preLoad(TAG, R.raw.allclick);
 
         RxView.clicks(mShareTv)
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
@@ -266,7 +265,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        U.getSoundUtils().play(TAG, R.raw.allclick);
+                        U.getSoundUtils().play(PersonFragment.TAG, R.raw.allclick, 500);
                         ARouter.getInstance().build(RouterConstants.ACTIVITY_AUDIOROOM)
                                 .withBoolean("selectSong", true)
                                 .navigation();
@@ -281,7 +280,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        U.getSoundUtils().play(TAG, R.raw.allclick);
+                        U.getSoundUtils().play(PersonFragment.TAG, R.raw.allclick, 500);
                         U.getFragmentUtils().addFragment(
                                 FragmentUtils.newAddParamsBuilder(getActivity(), MusicTestFragment.class)
                                         .setAddToBackStack(true)
@@ -298,7 +297,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        U.getSoundUtils().play(TAG, R.raw.allclick);
+                        U.getSoundUtils().play(PersonFragment.TAG, R.raw.allclick, 500);
                         U.getFragmentUtils().addFragment(
                                 FragmentUtils.newAddParamsBuilder(getActivity(), WalletFragment.class)
                                         .setAddToBackStack(true)
@@ -313,7 +312,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
         mSettingArea.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                U.getSoundUtils().play(TAG, R.raw.allclick);
+                U.getSoundUtils().play(PersonFragment.TAG, R.raw.allclick, 500);
                 U.getFragmentUtils().addFragment(
                         FragmentUtils.newAddParamsBuilder(getActivity(), SettingFragment.class)
                                 .setAddToBackStack(true)
@@ -325,10 +324,10 @@ public class PersonFragment extends BaseFragment implements IPersonView {
         updateSettingRedDot();
     }
 
-    private void updateSettingRedDot(){
-        if(UpgradeManager.getInstance().needShowRedDotTips()){
+    private void updateSettingRedDot() {
+        if (UpgradeManager.getInstance().needShowRedDotTips()) {
             mSettingRedDot.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             mSettingRedDot.setVisibility(View.GONE);
         }
     }

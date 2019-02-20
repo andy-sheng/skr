@@ -236,7 +236,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         mIvBack.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                U.getSoundUtils().play(TAG, R.raw.general_back, 500);
+                U.getSoundUtils().play(LeaderboardFragment.TAG, R.raw.general_back, 500);
                 finish();
             }
         });

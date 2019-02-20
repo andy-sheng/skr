@@ -93,7 +93,7 @@ public class SpecialSelectFragment extends BaseFragment {
         mSpecialSelectAdapter = new SpecialSelectAdapter(new RecyclerOnItemClickListener<SpecialModel>() {
             @Override
             public void onItemClicked(View view, int position, SpecialModel model) {
-                U.getSoundUtils().play(TAG, R.raw.general_button, 500);
+                U.getSoundUtils().play(SpecialSelectFragment.TAG, R.raw.general_button, 500);
                 goMatchFragment(model.getTagID());
             }
         });
@@ -106,7 +106,7 @@ public class SpecialSelectFragment extends BaseFragment {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        U.getSoundUtils().play(TAG, R.raw.general_back, 500);
+                        U.getSoundUtils().play(SpecialSelectFragment.TAG, R.raw.general_back, 500);
                         if (getActivity() != null) {
                             getActivity().finish();
                         }

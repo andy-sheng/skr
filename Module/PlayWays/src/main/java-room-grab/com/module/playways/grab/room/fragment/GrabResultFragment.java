@@ -138,7 +138,7 @@ public class GrabResultFragment extends BaseFragment {
         mUiHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                U.getSoundUtils().play(TAG, R.raw.result, 500);
+                U.getSoundUtils().play(GrabResultFragment.TAG, R.raw.result, 500);
             }
         }, 500);
     }
