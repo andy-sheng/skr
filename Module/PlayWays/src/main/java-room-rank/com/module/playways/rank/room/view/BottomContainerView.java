@@ -102,7 +102,7 @@ public class BottomContainerView extends RelativeLayout {
         mQuickBtn.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                int w = U.getDisplayUtils().getScreenWidth() - U.getDisplayUtils().dip2px(36);
+                int w = U.getDisplayUtils().getScreenWidth() - U.getDisplayUtils().dip2px(32);
                 int h = U.getDisplayUtils().dip2px(172);
                 if (mQuickMsgPopWindow == null) {
                     QuickMsgView quickMsgView = new QuickMsgView(getContext());

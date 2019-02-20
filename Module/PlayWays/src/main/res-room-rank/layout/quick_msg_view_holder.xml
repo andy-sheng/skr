@@ -11,7 +11,7 @@
         android:layout_marginBottom="@dimen/view_5_dp"
         android:gravity="left|center_vertical"
         android:text="你是海豚转世吧！"
-        android:textColor="#ff0c2275"
+        android:textColor="#B2B6D6"
         android:textSize="@dimen/textsize_16_dp" />
 
 </RelativeLayout>
