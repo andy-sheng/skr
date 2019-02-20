@@ -15,6 +15,7 @@ import java.lang.Object;
 import java.lang.Override;
 import java.lang.String;
 import java.lang.StringBuilder;
+import java.util.List;
 import okio.ByteString;
 
 public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
@@ -77,19 +78,42 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
   )
   public final Integer singEndMs;
 
+  /**
+   * 爆灯列表
+   */
+  @WireField(
+      tag = 6,
+      adapter = "com.zq.live.proto.Room.BLightInfo#ADAPTER",
+      label = WireField.Label.REPEATED
+  )
+  public final List<BLightInfo> bLightInfos;
+
+  /**
+   * 灭灯列表
+   */
+  @WireField(
+      tag = 7,
+      adapter = "com.zq.live.proto.Room.MlightInfo#ADAPTER",
+      label = WireField.Label.REPEATED
+  )
+  public final List<MlightInfo> mLightInfos;
+
   public RoundInfo(Integer userID, Integer playbookID, Integer roundSeq, Integer singBeginMs,
-      Integer singEndMs) {
-    this(userID, playbookID, roundSeq, singBeginMs, singEndMs, ByteString.EMPTY);
+      Integer singEndMs, List<BLightInfo> bLightInfos, List<MlightInfo> mLightInfos) {
+    this(userID, playbookID, roundSeq, singBeginMs, singEndMs, bLightInfos, mLightInfos, ByteString.EMPTY);
   }
 
   public RoundInfo(Integer userID, Integer playbookID, Integer roundSeq, Integer singBeginMs,
-      Integer singEndMs, ByteString unknownFields) {
+      Integer singEndMs, List<BLightInfo> bLightInfos, List<MlightInfo> mLightInfos,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
     this.playbookID = playbookID;
     this.roundSeq = roundSeq;
     this.singBeginMs = singBeginMs;
     this.singEndMs = singEndMs;
+    this.bLightInfos = Internal.immutableCopyOf("bLightInfos", bLightInfos);
+    this.mLightInfos = Internal.immutableCopyOf("mLightInfos", mLightInfos);
   }
 
   @Override
@@ -100,6 +124,8 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
     builder.roundSeq = roundSeq;
     builder.singBeginMs = singBeginMs;
     builder.singEndMs = singEndMs;
+    builder.bLightInfos = Internal.copyOf("bLightInfos", bLightInfos);
+    builder.mLightInfos = Internal.copyOf("mLightInfos", mLightInfos);
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -114,7 +140,9 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
         && Internal.equals(playbookID, o.playbookID)
         && Internal.equals(roundSeq, o.roundSeq)
         && Internal.equals(singBeginMs, o.singBeginMs)
-        && Internal.equals(singEndMs, o.singEndMs);
+        && Internal.equals(singEndMs, o.singEndMs)
+        && bLightInfos.equals(o.bLightInfos)
+        && mLightInfos.equals(o.mLightInfos);
   }
 
   @Override
@@ -127,6 +155,8 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
       result = result * 37 + (roundSeq != null ? roundSeq.hashCode() : 0);
       result = result * 37 + (singBeginMs != null ? singBeginMs.hashCode() : 0);
       result = result * 37 + (singEndMs != null ? singEndMs.hashCode() : 0);
+      result = result * 37 + bLightInfos.hashCode();
+      result = result * 37 + mLightInfos.hashCode();
       super.hashCode = result;
     }
     return result;
@@ -140,6 +170,8 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
     if (roundSeq != null) builder.append(", roundSeq=").append(roundSeq);
     if (singBeginMs != null) builder.append(", singBeginMs=").append(singBeginMs);
     if (singEndMs != null) builder.append(", singEndMs=").append(singEndMs);
+    if (!bLightInfos.isEmpty()) builder.append(", bLightInfos=").append(bLightInfos);
+    if (!mLightInfos.isEmpty()) builder.append(", mLightInfos=").append(mLightInfos);
     return builder.replace(0, 2, "RoundInfo{").append('}').toString();
   }
 
@@ -204,6 +236,26 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
   }
 
   /**
+   * 爆灯列表
+   */
+  public List<BLightInfo> getBLightInfosList() {
+    if(bLightInfos==null){
+        return new java.util.ArrayList<BLightInfo>();
+    }
+    return bLightInfos;
+  }
+
+  /**
+   * 灭灯列表
+   */
+  public List<MlightInfo> getMLightInfosList() {
+    if(mLightInfos==null){
+        return new java.util.ArrayList<MlightInfo>();
+    }
+    return mLightInfos;
+  }
+
+  /**
    * 玩家id
    */
   public boolean hasUserID() {
@@ -238,6 +290,20 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
     return singEndMs!=null;
   }
 
+  /**
+   * 爆灯列表
+   */
+  public boolean hasBLightInfosList() {
+    return bLightInfos!=null;
+  }
+
+  /**
+   * 灭灯列表
+   */
+  public boolean hasMLightInfosList() {
+    return mLightInfos!=null;
+  }
+
   public static final class Builder extends Message.Builder<RoundInfo, Builder> {
     public Integer userID;
 
@@ -249,7 +315,13 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
 
     public Integer singEndMs;
 
+    public List<BLightInfo> bLightInfos;
+
+    public List<MlightInfo> mLightInfos;
+
     public Builder() {
+      bLightInfos = Internal.newMutableList();
+      mLightInfos = Internal.newMutableList();
     }
 
     /**
@@ -292,9 +364,27 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
       return this;
     }
 
+    /**
+     * 爆灯列表
+     */
+    public Builder addAllBLightInfos(List<BLightInfo> bLightInfos) {
+      Internal.checkElementsNotNull(bLightInfos);
+      this.bLightInfos = bLightInfos;
+      return this;
+    }
+
+    /**
+     * 灭灯列表
+     */
+    public Builder addAllMLightInfos(List<MlightInfo> mLightInfos) {
+      Internal.checkElementsNotNull(mLightInfos);
+      this.mLightInfos = mLightInfos;
+      return this;
+    }
+
     @Override
     public RoundInfo build() {
-      return new RoundInfo(userID, playbookID, roundSeq, singBeginMs, singEndMs, super.buildUnknownFields());
+      return new RoundInfo(userID, playbookID, roundSeq, singBeginMs, singEndMs, bLightInfos, mLightInfos, super.buildUnknownFields());
     }
   }
 
@@ -310,6 +400,8 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
           + ProtoAdapter.UINT32.encodedSizeWithTag(3, value.roundSeq)
           + ProtoAdapter.UINT32.encodedSizeWithTag(4, value.singBeginMs)
           + ProtoAdapter.UINT32.encodedSizeWithTag(5, value.singEndMs)
+          + BLightInfo.ADAPTER.asRepeated().encodedSizeWithTag(6, value.bLightInfos)
+          + MlightInfo.ADAPTER.asRepeated().encodedSizeWithTag(7, value.mLightInfos)
           + value.unknownFields().size();
     }
 
@@ -320,6 +412,8 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
       ProtoAdapter.UINT32.encodeWithTag(writer, 3, value.roundSeq);
       ProtoAdapter.UINT32.encodeWithTag(writer, 4, value.singBeginMs);
       ProtoAdapter.UINT32.encodeWithTag(writer, 5, value.singEndMs);
+      BLightInfo.ADAPTER.asRepeated().encodeWithTag(writer, 6, value.bLightInfos);
+      MlightInfo.ADAPTER.asRepeated().encodeWithTag(writer, 7, value.mLightInfos);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -334,6 +428,8 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
           case 3: builder.setRoundSeq(ProtoAdapter.UINT32.decode(reader)); break;
           case 4: builder.setSingBeginMs(ProtoAdapter.UINT32.decode(reader)); break;
           case 5: builder.setSingEndMs(ProtoAdapter.UINT32.decode(reader)); break;
+          case 6: builder.bLightInfos.add(BLightInfo.ADAPTER.decode(reader)); break;
+          case 7: builder.mLightInfos.add(MlightInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -348,6 +444,8 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
     @Override
     public RoundInfo redact(RoundInfo value) {
       Builder builder = value.newBuilder();
+      Internal.redactElements(builder.bLightInfos, BLightInfo.ADAPTER);
+      Internal.redactElements(builder.mLightInfos, MlightInfo.ADAPTER);
       builder.clearUnknownFields();
       return builder.build();
     }

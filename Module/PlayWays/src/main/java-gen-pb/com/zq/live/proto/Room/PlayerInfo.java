@@ -28,6 +28,8 @@ public final class PlayerInfo extends Message<PlayerInfo, PlayerInfo.Builder> {
 
   public static final Boolean DEFAULT_ISSKRER = false;
 
+  public static final Boolean DEFAULT_ISAIUSER = false;
+
   /**
    * 玩家信息
    */
@@ -66,18 +68,28 @@ public final class PlayerInfo extends Message<PlayerInfo, PlayerInfo.Builder> {
   )
   public final List<ResourceInfo> resource;
 
+  /**
+   * 是否为ai裁判用户
+   */
+  @WireField(
+      tag = 5,
+      adapter = "com.squareup.wire.ProtoAdapter#BOOL"
+  )
+  public final Boolean isAIUser;
+
   public PlayerInfo(UserInfo userInfo, List<MusicInfo> musicInfo, Boolean isSkrer,
-      List<ResourceInfo> resource) {
-    this(userInfo, musicInfo, isSkrer, resource, ByteString.EMPTY);
+      List<ResourceInfo> resource, Boolean isAIUser) {
+    this(userInfo, musicInfo, isSkrer, resource, isAIUser, ByteString.EMPTY);
   }
 
   public PlayerInfo(UserInfo userInfo, List<MusicInfo> musicInfo, Boolean isSkrer,
-      List<ResourceInfo> resource, ByteString unknownFields) {
+      List<ResourceInfo> resource, Boolean isAIUser, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userInfo = userInfo;
     this.musicInfo = Internal.immutableCopyOf("musicInfo", musicInfo);
     this.isSkrer = isSkrer;
     this.resource = Internal.immutableCopyOf("resource", resource);
+    this.isAIUser = isAIUser;
   }
 
   @Override
@@ -87,6 +99,7 @@ public final class PlayerInfo extends Message<PlayerInfo, PlayerInfo.Builder> {
     builder.musicInfo = Internal.copyOf("musicInfo", musicInfo);
     builder.isSkrer = isSkrer;
     builder.resource = Internal.copyOf("resource", resource);
+    builder.isAIUser = isAIUser;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -100,7 +113,8 @@ public final class PlayerInfo extends Message<PlayerInfo, PlayerInfo.Builder> {
         && Internal.equals(userInfo, o.userInfo)
         && musicInfo.equals(o.musicInfo)
         && Internal.equals(isSkrer, o.isSkrer)
-        && resource.equals(o.resource);
+        && resource.equals(o.resource)
+        && Internal.equals(isAIUser, o.isAIUser);
   }
 
   @Override
@@ -112,6 +126,7 @@ public final class PlayerInfo extends Message<PlayerInfo, PlayerInfo.Builder> {
       result = result * 37 + musicInfo.hashCode();
       result = result * 37 + (isSkrer != null ? isSkrer.hashCode() : 0);
       result = result * 37 + resource.hashCode();
+      result = result * 37 + (isAIUser != null ? isAIUser.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -124,6 +139,7 @@ public final class PlayerInfo extends Message<PlayerInfo, PlayerInfo.Builder> {
     if (!musicInfo.isEmpty()) builder.append(", musicInfo=").append(musicInfo);
     if (isSkrer != null) builder.append(", isSkrer=").append(isSkrer);
     if (!resource.isEmpty()) builder.append(", resource=").append(resource);
+    if (isAIUser != null) builder.append(", isAIUser=").append(isAIUser);
     return builder.replace(0, 2, "PlayerInfo{").append('}').toString();
   }
 
@@ -178,6 +194,16 @@ public final class PlayerInfo extends Message<PlayerInfo, PlayerInfo.Builder> {
   }
 
   /**
+   * 是否为ai裁判用户
+   */
+  public Boolean getIsAIUser() {
+    if(isAIUser==null){
+        return DEFAULT_ISAIUSER;
+    }
+    return isAIUser;
+  }
+
+  /**
    * 玩家信息
    */
   public boolean hasUserInfo() {
@@ -205,6 +231,13 @@ public final class PlayerInfo extends Message<PlayerInfo, PlayerInfo.Builder> {
     return resource!=null;
   }
 
+  /**
+   * 是否为ai裁判用户
+   */
+  public boolean hasIsAIUser() {
+    return isAIUser!=null;
+  }
+
   public static final class Builder extends Message.Builder<PlayerInfo, Builder> {
     public UserInfo userInfo;
 
@@ -213,6 +246,8 @@ public final class PlayerInfo extends Message<PlayerInfo, PlayerInfo.Builder> {
     public Boolean isSkrer;
 
     public List<ResourceInfo> resource;
+
+    public Boolean isAIUser;
 
     public Builder() {
       musicInfo = Internal.newMutableList();
@@ -253,9 +288,17 @@ public final class PlayerInfo extends Message<PlayerInfo, PlayerInfo.Builder> {
       return this;
     }
 
+    /**
+     * 是否为ai裁判用户
+     */
+    public Builder setIsAIUser(Boolean isAIUser) {
+      this.isAIUser = isAIUser;
+      return this;
+    }
+
     @Override
     public PlayerInfo build() {
-      return new PlayerInfo(userInfo, musicInfo, isSkrer, resource, super.buildUnknownFields());
+      return new PlayerInfo(userInfo, musicInfo, isSkrer, resource, isAIUser, super.buildUnknownFields());
     }
   }
 
@@ -270,6 +313,7 @@ public final class PlayerInfo extends Message<PlayerInfo, PlayerInfo.Builder> {
           + MusicInfo.ADAPTER.asRepeated().encodedSizeWithTag(2, value.musicInfo)
           + ProtoAdapter.BOOL.encodedSizeWithTag(3, value.isSkrer)
           + ResourceInfo.ADAPTER.asRepeated().encodedSizeWithTag(4, value.resource)
+          + ProtoAdapter.BOOL.encodedSizeWithTag(5, value.isAIUser)
           + value.unknownFields().size();
     }
 
@@ -279,6 +323,7 @@ public final class PlayerInfo extends Message<PlayerInfo, PlayerInfo.Builder> {
       MusicInfo.ADAPTER.asRepeated().encodeWithTag(writer, 2, value.musicInfo);
       ProtoAdapter.BOOL.encodeWithTag(writer, 3, value.isSkrer);
       ResourceInfo.ADAPTER.asRepeated().encodeWithTag(writer, 4, value.resource);
+      ProtoAdapter.BOOL.encodeWithTag(writer, 5, value.isAIUser);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -292,6 +337,7 @@ public final class PlayerInfo extends Message<PlayerInfo, PlayerInfo.Builder> {
           case 2: builder.musicInfo.add(MusicInfo.ADAPTER.decode(reader)); break;
           case 3: builder.setIsSkrer(ProtoAdapter.BOOL.decode(reader)); break;
           case 4: builder.resource.add(ResourceInfo.ADAPTER.decode(reader)); break;
+          case 5: builder.setIsAIUser(ProtoAdapter.BOOL.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

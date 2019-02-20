@@ -45,15 +45,24 @@ public final class VoteResultMsg extends Message<VoteResultMsg, VoteResultMsg.Bu
   )
   public final List<UserScoreResult> scoreResults;
 
-  public VoteResultMsg(List<VoteInfo> voteInfo, List<UserScoreResult> scoreResults) {
-    this(voteInfo, scoreResults, ByteString.EMPTY);
+  @WireField(
+      tag = 3,
+      adapter = "com.zq.live.proto.Room.UserGameResult#ADAPTER",
+      label = WireField.Label.REPEATED
+  )
+  public final List<UserGameResult> gameResults;
+
+  public VoteResultMsg(List<VoteInfo> voteInfo, List<UserScoreResult> scoreResults,
+      List<UserGameResult> gameResults) {
+    this(voteInfo, scoreResults, gameResults, ByteString.EMPTY);
   }
 
   public VoteResultMsg(List<VoteInfo> voteInfo, List<UserScoreResult> scoreResults,
-      ByteString unknownFields) {
+      List<UserGameResult> gameResults, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.voteInfo = Internal.immutableCopyOf("voteInfo", voteInfo);
     this.scoreResults = Internal.immutableCopyOf("scoreResults", scoreResults);
+    this.gameResults = Internal.immutableCopyOf("gameResults", gameResults);
   }
 
   @Override
@@ -61,6 +70,7 @@ public final class VoteResultMsg extends Message<VoteResultMsg, VoteResultMsg.Bu
     Builder builder = new Builder();
     builder.voteInfo = Internal.copyOf("voteInfo", voteInfo);
     builder.scoreResults = Internal.copyOf("scoreResults", scoreResults);
+    builder.gameResults = Internal.copyOf("gameResults", gameResults);
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -72,7 +82,8 @@ public final class VoteResultMsg extends Message<VoteResultMsg, VoteResultMsg.Bu
     VoteResultMsg o = (VoteResultMsg) other;
     return unknownFields().equals(o.unknownFields())
         && voteInfo.equals(o.voteInfo)
-        && scoreResults.equals(o.scoreResults);
+        && scoreResults.equals(o.scoreResults)
+        && gameResults.equals(o.gameResults);
   }
 
   @Override
@@ -82,6 +93,7 @@ public final class VoteResultMsg extends Message<VoteResultMsg, VoteResultMsg.Bu
       result = unknownFields().hashCode();
       result = result * 37 + voteInfo.hashCode();
       result = result * 37 + scoreResults.hashCode();
+      result = result * 37 + gameResults.hashCode();
       super.hashCode = result;
     }
     return result;
@@ -92,6 +104,7 @@ public final class VoteResultMsg extends Message<VoteResultMsg, VoteResultMsg.Bu
     StringBuilder builder = new StringBuilder();
     if (!voteInfo.isEmpty()) builder.append(", voteInfo=").append(voteInfo);
     if (!scoreResults.isEmpty()) builder.append(", scoreResults=").append(scoreResults);
+    if (!gameResults.isEmpty()) builder.append(", gameResults=").append(gameResults);
     return builder.replace(0, 2, "VoteResultMsg{").append('}').toString();
   }
 
@@ -125,6 +138,13 @@ public final class VoteResultMsg extends Message<VoteResultMsg, VoteResultMsg.Bu
     return scoreResults;
   }
 
+  public List<UserGameResult> getGameResultsList() {
+    if(gameResults==null){
+        return new java.util.ArrayList<UserGameResult>();
+    }
+    return gameResults;
+  }
+
   /**
    * 投票打分信息
    */
@@ -139,14 +159,21 @@ public final class VoteResultMsg extends Message<VoteResultMsg, VoteResultMsg.Bu
     return scoreResults!=null;
   }
 
+  public boolean hasGameResultsList() {
+    return gameResults!=null;
+  }
+
   public static final class Builder extends Message.Builder<VoteResultMsg, Builder> {
     public List<VoteInfo> voteInfo;
 
     public List<UserScoreResult> scoreResults;
 
+    public List<UserGameResult> gameResults;
+
     public Builder() {
       voteInfo = Internal.newMutableList();
       scoreResults = Internal.newMutableList();
+      gameResults = Internal.newMutableList();
     }
 
     /**
@@ -167,9 +194,15 @@ public final class VoteResultMsg extends Message<VoteResultMsg, VoteResultMsg.Bu
       return this;
     }
 
+    public Builder addAllGameResults(List<UserGameResult> gameResults) {
+      Internal.checkElementsNotNull(gameResults);
+      this.gameResults = gameResults;
+      return this;
+    }
+
     @Override
     public VoteResultMsg build() {
-      return new VoteResultMsg(voteInfo, scoreResults, super.buildUnknownFields());
+      return new VoteResultMsg(voteInfo, scoreResults, gameResults, super.buildUnknownFields());
     }
   }
 
@@ -182,6 +215,7 @@ public final class VoteResultMsg extends Message<VoteResultMsg, VoteResultMsg.Bu
     public int encodedSize(VoteResultMsg value) {
       return VoteInfo.ADAPTER.asRepeated().encodedSizeWithTag(1, value.voteInfo)
           + UserScoreResult.ADAPTER.asRepeated().encodedSizeWithTag(2, value.scoreResults)
+          + UserGameResult.ADAPTER.asRepeated().encodedSizeWithTag(3, value.gameResults)
           + value.unknownFields().size();
     }
 
@@ -189,6 +223,7 @@ public final class VoteResultMsg extends Message<VoteResultMsg, VoteResultMsg.Bu
     public void encode(ProtoWriter writer, VoteResultMsg value) throws IOException {
       VoteInfo.ADAPTER.asRepeated().encodeWithTag(writer, 1, value.voteInfo);
       UserScoreResult.ADAPTER.asRepeated().encodeWithTag(writer, 2, value.scoreResults);
+      UserGameResult.ADAPTER.asRepeated().encodeWithTag(writer, 3, value.gameResults);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -200,6 +235,7 @@ public final class VoteResultMsg extends Message<VoteResultMsg, VoteResultMsg.Bu
         switch (tag) {
           case 1: builder.voteInfo.add(VoteInfo.ADAPTER.decode(reader)); break;
           case 2: builder.scoreResults.add(UserScoreResult.ADAPTER.decode(reader)); break;
+          case 3: builder.gameResults.add(UserGameResult.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -216,6 +252,7 @@ public final class VoteResultMsg extends Message<VoteResultMsg, VoteResultMsg.Bu
       Builder builder = value.newBuilder();
       Internal.redactElements(builder.voteInfo, VoteInfo.ADAPTER);
       Internal.redactElements(builder.scoreResults, UserScoreResult.ADAPTER);
+      Internal.redactElements(builder.gameResults, UserGameResult.ADAPTER);
       builder.clearUnknownFields();
       return builder.build();
     }

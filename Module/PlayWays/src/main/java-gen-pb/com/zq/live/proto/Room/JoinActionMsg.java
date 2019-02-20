@@ -70,18 +70,28 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
   )
   public final List<MusicInfo> commonMusicInfo;
 
+  /**
+   * 配置信息
+   */
+  @WireField(
+      tag = 5,
+      adapter = "com.zq.live.proto.Room.GameConfig#ADAPTER"
+  )
+  public final GameConfig config;
+
   public JoinActionMsg(Integer gameID, Long CreateTimeMs, List<PlayerInfo> players,
-      List<MusicInfo> commonMusicInfo) {
-    this(gameID, CreateTimeMs, players, commonMusicInfo, ByteString.EMPTY);
+      List<MusicInfo> commonMusicInfo, GameConfig config) {
+    this(gameID, CreateTimeMs, players, commonMusicInfo, config, ByteString.EMPTY);
   }
 
   public JoinActionMsg(Integer gameID, Long CreateTimeMs, List<PlayerInfo> players,
-      List<MusicInfo> commonMusicInfo, ByteString unknownFields) {
+      List<MusicInfo> commonMusicInfo, GameConfig config, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.gameID = gameID;
     this.CreateTimeMs = CreateTimeMs;
     this.players = Internal.immutableCopyOf("players", players);
     this.commonMusicInfo = Internal.immutableCopyOf("commonMusicInfo", commonMusicInfo);
+    this.config = config;
   }
 
   @Override
@@ -91,6 +101,7 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
     builder.CreateTimeMs = CreateTimeMs;
     builder.players = Internal.copyOf("players", players);
     builder.commonMusicInfo = Internal.copyOf("commonMusicInfo", commonMusicInfo);
+    builder.config = config;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -104,7 +115,8 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
         && Internal.equals(gameID, o.gameID)
         && Internal.equals(CreateTimeMs, o.CreateTimeMs)
         && players.equals(o.players)
-        && commonMusicInfo.equals(o.commonMusicInfo);
+        && commonMusicInfo.equals(o.commonMusicInfo)
+        && Internal.equals(config, o.config);
   }
 
   @Override
@@ -116,6 +128,7 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
       result = result * 37 + (CreateTimeMs != null ? CreateTimeMs.hashCode() : 0);
       result = result * 37 + players.hashCode();
       result = result * 37 + commonMusicInfo.hashCode();
+      result = result * 37 + (config != null ? config.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -128,6 +141,7 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
     if (CreateTimeMs != null) builder.append(", CreateTimeMs=").append(CreateTimeMs);
     if (!players.isEmpty()) builder.append(", players=").append(players);
     if (!commonMusicInfo.isEmpty()) builder.append(", commonMusicInfo=").append(commonMusicInfo);
+    if (config != null) builder.append(", config=").append(config);
     return builder.replace(0, 2, "JoinActionMsg{").append('}').toString();
   }
 
@@ -182,6 +196,16 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
   }
 
   /**
+   * 配置信息
+   */
+  public GameConfig getConfig() {
+    if(config==null){
+        return new GameConfig.Builder().build();
+    }
+    return config;
+  }
+
+  /**
    * 游戏ID
    */
   public boolean hasGameID() {
@@ -209,6 +233,13 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
     return commonMusicInfo!=null;
   }
 
+  /**
+   * 配置信息
+   */
+  public boolean hasConfig() {
+    return config!=null;
+  }
+
   public static final class Builder extends Message.Builder<JoinActionMsg, Builder> {
     public Integer gameID;
 
@@ -217,6 +248,8 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
     public List<PlayerInfo> players;
 
     public List<MusicInfo> commonMusicInfo;
+
+    public GameConfig config;
 
     public Builder() {
       players = Internal.newMutableList();
@@ -257,9 +290,17 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
       return this;
     }
 
+    /**
+     * 配置信息
+     */
+    public Builder setConfig(GameConfig config) {
+      this.config = config;
+      return this;
+    }
+
     @Override
     public JoinActionMsg build() {
-      return new JoinActionMsg(gameID, CreateTimeMs, players, commonMusicInfo, super.buildUnknownFields());
+      return new JoinActionMsg(gameID, CreateTimeMs, players, commonMusicInfo, config, super.buildUnknownFields());
     }
   }
 
@@ -274,6 +315,7 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
           + ProtoAdapter.SINT64.encodedSizeWithTag(2, value.CreateTimeMs)
           + PlayerInfo.ADAPTER.asRepeated().encodedSizeWithTag(3, value.players)
           + MusicInfo.ADAPTER.asRepeated().encodedSizeWithTag(4, value.commonMusicInfo)
+          + GameConfig.ADAPTER.encodedSizeWithTag(5, value.config)
           + value.unknownFields().size();
     }
 
@@ -283,6 +325,7 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
       ProtoAdapter.SINT64.encodeWithTag(writer, 2, value.CreateTimeMs);
       PlayerInfo.ADAPTER.asRepeated().encodeWithTag(writer, 3, value.players);
       MusicInfo.ADAPTER.asRepeated().encodeWithTag(writer, 4, value.commonMusicInfo);
+      GameConfig.ADAPTER.encodeWithTag(writer, 5, value.config);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -296,6 +339,7 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
           case 2: builder.setCreateTimeMs(ProtoAdapter.SINT64.decode(reader)); break;
           case 3: builder.players.add(PlayerInfo.ADAPTER.decode(reader)); break;
           case 4: builder.commonMusicInfo.add(MusicInfo.ADAPTER.decode(reader)); break;
+          case 5: builder.setConfig(GameConfig.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -312,6 +356,7 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
       Builder builder = value.newBuilder();
       Internal.redactElements(builder.players, PlayerInfo.ADAPTER);
       Internal.redactElements(builder.commonMusicInfo, MusicInfo.ADAPTER);
+      if (builder.config != null) builder.config = GameConfig.ADAPTER.redact(builder.config);
       builder.clearUnknownFields();
       return builder.build();
     }
