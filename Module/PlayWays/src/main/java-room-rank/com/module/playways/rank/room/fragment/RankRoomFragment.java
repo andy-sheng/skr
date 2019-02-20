@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.graphics.drawable.Animatable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -837,6 +838,10 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
                         if (true) {
                             // 以后跳转到语音房
+                            Activity activity = getActivity();
+                            if (activity != null) {
+                                activity.finish();
+                            }
                             ARouter.getInstance().build(RouterConstants.ACTIVITY_VOICEROOM)
                                     .withSerializable("voice_room_data", mRoomData)
                                     .navigation();

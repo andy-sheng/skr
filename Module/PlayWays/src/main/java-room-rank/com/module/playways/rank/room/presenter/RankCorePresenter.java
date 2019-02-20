@@ -62,6 +62,7 @@ import com.module.playways.rank.room.model.score.ScoreResultModel;
 import com.module.playways.rank.room.score.MachineScoreItem;
 import com.module.playways.rank.room.score.RobotScoreHelper;
 import com.module.playways.rank.room.view.IGameRuleView;
+import com.module.playways.voice.activity.VoiceRoomActivity;
 import com.zq.live.proto.Common.ESex;
 import com.zq.live.proto.Common.UserInfo;
 import com.zq.live.proto.Room.EMsgPosType;
@@ -275,7 +276,12 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
             mExoPlayer = null;
         }
         ChatRoomMsgManager.getInstance().removeFilter(mPushMsgFilter);
-        ModuleServiceManager.getInstance().getMsgService().leaveChatRoom(String.valueOf(mRoomData.getGameId()));
+        if (U.getActivityUtils().getTopActivity() instanceof VoiceRoomActivity) {
+            //  如果顶部是VoiceRoomActivity 就不离开聊天室了
+            MyLog.d(TAG,"顶部是VoiceRoomActivity 就不离开聊天室");
+        } else {
+            ModuleServiceManager.getInstance().getMsgService().leaveChatRoom(String.valueOf(mRoomData.getGameId()));
+        }
     }
 
     /**
@@ -727,6 +733,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         cancelSyncGameStateTask();
         // 游戏结束，直接关闭引擎，节省计费
         EngineManager.getInstance().destroy("rankingroom");
+        EventBus.getDefault().isRegistered(this);
     }
 
     private void recvGameOverFromServer(String from, long gameOverTs) {
