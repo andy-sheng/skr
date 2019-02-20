@@ -55,7 +55,7 @@ public class KeyBoardUtils {
         activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
         //考虑到虚拟导航栏的情况（虚拟导航栏情况下：screenHeight = rect.bottom + 虚拟导航栏高度）
         //选取screenHeight*2/3进行判断
-        return screenHeight*2/3 > rect.bottom+getVirtualNavBarHeight();
+        return screenHeight*2/3 > rect.bottom+U.getDeviceUtils().getVirtualNavBarHeight();
     }
 
     /**
@@ -96,9 +96,9 @@ public class KeyBoardUtils {
          * 这是因为高度是包括了虚拟按键栏的(例如华为系列)，所以在API Level高于20时，
          * 我们需要减去底部虚拟按键栏的高度（如果有的话）
          */
-        if (Build.VERSION.SDK_INT >= 20 && hasNavigationBar()) {
+        if (Build.VERSION.SDK_INT >= 20 && U.getDeviceUtils().hasNavigationBar()) {
             // When SDK Level >= 20 (Android L), the softInputHeight will contain the height of softButtonsBar (if has)
-            softInputHeight = softInputHeight - getVirtualNavBarHeight();
+            softInputHeight = softInputHeight - U.getDeviceUtils().getVirtualNavBarHeight();
         }
         if (softInputHeight < 0) {
             Log.w("LQR", "EmotionKeyboard--Warning: value of softInputHeight is below zero!");
@@ -109,24 +109,6 @@ public class KeyBoardUtils {
             U.getKeyBoardUtils().setKeyBoardHeight(softInputHeight);
         }
         return softInputHeight;
-    }
-
-    public boolean hasNavigationBar() {
-        return U.getDeviceUtils().hasNavigationBar();
-    }
-
-    /**
-     * 虚拟导航栏高度
-     */
-
-    /**
-     * 底部虚拟按键栏的高度
-     * 真是屏幕高度与显示屏幕高度的差值
-     *
-     * @return
-     */
-    public int getVirtualNavBarHeight() {
-        return U.getDisplayUtils().getPhoneHeight() - U.getDisplayUtils().getScreenHeight();
     }
 
 }

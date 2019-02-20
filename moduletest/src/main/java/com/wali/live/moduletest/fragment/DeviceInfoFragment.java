@@ -37,7 +37,7 @@ public class DeviceInfoFragment extends BaseFragment {
                 .append(" densityDpi:").append(U.getDisplayUtils().getDensityDpi())
                 .append("\n");
         sb.append("是否开启了虚拟导航键：").append(U.getDeviceUtils().hasNavigationBar()).append(" 虚拟导航键高度:")
-                .append(U.getKeyBoardUtils().getVirtualNavBarHeight())
+                .append(U.getDeviceUtils().getVirtualNavBarHeight())
                 .append("\n");
         sb.append("最小宽度为 px/(dpi/160)=").append((U.getDisplayUtils().getPhoneWidth() / (U.getDisplayUtils().getDensityDpi() / 160))).append("dp").append("\n");
         sb.append("当前手机适用的资源文件夹是").append(U.app().getResources().getString(R.string.values_from)).append("\n");

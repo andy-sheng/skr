@@ -118,6 +118,8 @@ public class DisplayUtils {
                 }
             }
         }
+        if(U.getDeviceUtils().getProductModel().equals("HMA-AL00")){
+        }
         return h;
     }
 

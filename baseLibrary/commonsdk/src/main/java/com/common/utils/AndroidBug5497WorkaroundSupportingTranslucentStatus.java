@@ -119,8 +119,8 @@ public class AndroidBug5497WorkaroundSupportingTranslucentStatus {
 //            } else {
 //                usableHeightSansKeyboard = ((ViewGroup) mChildOfContent.getParent()).getHeight();
 //            }
-            if (U.getKeyBoardUtils().hasNavigationBar()) {
-                int navBarHeight = U.getKeyBoardUtils().getVirtualNavBarHeight();
+            if (U.getDeviceUtils().hasNavigationBar()) {
+                int navBarHeight = U.getDeviceUtils().getVirtualNavBarHeight();
                 MyLog.d(TAG, "possiblyResizeChildOfContent navBarHeight=" + navBarHeight);
                 usableHeightSansKeyboard -= navBarHeight;
             }

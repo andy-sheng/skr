@@ -1,6 +1,7 @@
 package com.common.utils;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothHeadset;
 import android.bluetooth.BluetoothProfile;
@@ -11,6 +12,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Point;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Environment;
@@ -18,6 +20,13 @@ import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Display;
+import android.view.KeyCharacterMap;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.ViewConfiguration;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -269,46 +278,84 @@ public class DeviceUtils {
 
     private int mDeviceHasNavigationBar = -1;
 
-    /**
-     * 判断是否有虚拟按键
-     * 小米手机跟别的手机不一样，古怪一些
-     *
-     * @return
-     */
-    public boolean hasNavigationBar() {
-        if (mDeviceHasNavigationBar == -1) {
-            boolean hasNavigationBar = false;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1
-                    && U.getDeviceUtils().isMiui()) {
-                hasNavigationBar = Settings.Global.getInt(U.app().getContentResolver(), "force_fsg_nav_bar", 0) == 0;
-            } else {
-                Resources rs = U.app().getResources();
-                int id = rs.getIdentifier("config_showNavigationBar", "bool", "android");
-                if (id > 0) {
-                    hasNavigationBar = rs.getBoolean(id);
-                }
-                try {
-                    Class systemPropertiesClass = Class.forName("android.os.SystemProperties");
-                    Method m = systemPropertiesClass.getMethod("get", String.class);
-                    String navBarOverride = (String) m.invoke(systemPropertiesClass, "qemu.hw.mainkeys");
-                    if ("1".equals(navBarOverride)) {
-                        hasNavigationBar = false;
-                    } else if ("0".equals(navBarOverride)) {
-                        hasNavigationBar = true;
-                    }
-                } catch (Exception e) {
+//    /**
+//     * 判断是否有虚拟按键
+//     * 小米手机跟别的手机不一样，古怪一些
+//     *
+//     * @return
+//     */
+//    public boolean hasNavigationBar() {
+//        if (true) {
+//            boolean menu = ViewConfiguration.get(U.app()).hasPermanentMenuKey();
+//            boolean back = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK);
+//            if (menu || back) {
+//                return false;
+//            } else {
+//                return true;
+//            }
+//        }
+//        if (mDeviceHasNavigationBar == -1) {
+//            boolean hasNavigationBar = false;
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1
+//                    && U.getDeviceUtils().isMiui()) {
+//                hasNavigationBar = Settings.Global.getInt(U.app().getContentResolver(), "force_fsg_nav_bar", 0) == 0;
+//            } else {
+//                Resources rs = U.app().getResources();
+//                int id = rs.getIdentifier("config_showNavigationBar", "bool", "android");
+//                if (id > 0) {
+//                    hasNavigationBar = rs.getBoolean(id);
+//                }
+//                try {
+//                    Class systemPropertiesClass = Class.forName("android.os.SystemProperties");
+//                    Method m = systemPropertiesClass.getMethod("get", String.class);
+//                    String navBarOverride = (String) m.invoke(systemPropertiesClass, "qemu.hw.mainkeys");
+//                    if ("1".equals(navBarOverride)) {
+//                        hasNavigationBar = false;
+//                    } else if ("0".equals(navBarOverride)) {
+//                        hasNavigationBar = true;
+//                    }
+//                } catch (Exception e) {
+//
+//                }
+//            }
+//            if (hasNavigationBar) {
+//                mDeviceHasNavigationBar = 1;
+//            } else {
+//                mDeviceHasNavigationBar = 0;
+//            }
+//        }
+//        return mDeviceHasNavigationBar == 1;
+//    }
 
+    // 该方法需要在View完全被绘制出来之后调用，否则判断不了
+    //在比如 onWindowFocusChanged（）方法中可以得到正确的结果
+    public static  boolean hasNavigationBar(){
+        Activity activity = U.getActivityUtils().getTopActivity();
+        if(activity==null){
+            return false;
+        }
+        ViewGroup vp = (ViewGroup) activity.getWindow().getDecorView();
+        if (vp != null) {
+            for (int i = 0; i < vp.getChildCount(); i++) {
+                vp.getChildAt(i).getContext().getPackageName();
+                if (vp.getChildAt(i).getId()!= View.NO_ID && "navigationBarBackground".equals(activity.getResources().getResourceEntryName(vp.getChildAt(i).getId()))) {
+                    return true;
                 }
-            }
-            if (hasNavigationBar) {
-                mDeviceHasNavigationBar = 1;
-            } else {
-                mDeviceHasNavigationBar = 0;
             }
         }
-        return mDeviceHasNavigationBar == 1;
+        return false;
     }
 
+    public int getVirtualNavBarHeight() {
+        Resources resources = U.app().getResources();
+        int resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            int naviBarHeight = resources.getDimensionPixelSize(resourceId);
+            return naviBarHeight;
+        } else {
+            return U.getDisplayUtils().getPhoneHeight() - U.getDisplayUtils().getScreenHeight();
+        }
+    }
 
     /**
      * 耳机是否插着，包括有线 和 蓝牙
