@@ -25,6 +25,7 @@ import com.module.playways.rank.room.view.InputContainerView;
 import com.module.playways.voice.inter.IVoiceView;
 import com.module.playways.voice.presenter.VoiceCorePresenter;
 import com.module.playways.voice.view.VoiceBottomContainerView;
+import com.module.playways.voice.view.VoiceRightOpView;
 import com.module.playways.voice.view.VoiceTopContainerView;
 import com.module.playways.voice.view.VoiceUserStatusContainerView;
 import com.module.rank.R;
@@ -71,6 +72,8 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
 
     VoiceUserStatusContainerView mUserStatusContainerView;
 
+    VoiceRightOpView mVoiceRightOpView;
+
     VoiceCorePresenter mCorePresenter;
 
     DialogPlus mShowPersonInfoDialogPlus;
@@ -108,13 +111,13 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
         initCommentView();
         initTopView();
         initUserStatusView();
+        initOpView();
 
         mCorePresenter = new VoiceCorePresenter(this, mRoomData);
         addPresent(mCorePresenter);
 
         BgMusicManager.getInstance().setRoom(true);
     }
-
 
     @Override
     public void onStart() {
@@ -181,6 +184,10 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
     private void initUserStatusView() {
         mUserStatusContainerView = mRootView.findViewById(R.id.user_status_container_view);
         mUserStatusContainerView.setRoomData(mRoomData);
+    }
+
+    private void initOpView() {
+        mVoiceRightOpView  = mRootView.findViewById(R.id.voice_right_op_view);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

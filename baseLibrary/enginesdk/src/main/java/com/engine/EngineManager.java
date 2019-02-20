@@ -730,6 +730,11 @@ public class EngineManager implements AgoraOutCallback {
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {
+                UserStatus status = mUserStatusMap.get(mConfig.getSelfUid());
+                if (status != null) {
+                    status.setAudioMute(muted);
+                    EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_MUTE_AUDIO, status));
+                }
                 mConfig.setLocalAudioStreamMute(muted);
                 AgoraEngineAdapter.getInstance().muteLocalAudioStream(muted);
             }

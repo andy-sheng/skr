@@ -835,12 +835,13 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                             mDialogPlus.dismiss();
                         }
 
-//                        if(true){
-//                            ARouter.getInstance().build(RouterConstants.ACTIVITY_VOICEROOM)
-//                                    .withSerializable("voice_room_data",mRoomData)
-//                                    .navigation();
-//                            return;
-//                        }
+                        if (true) {
+                            // 以后跳转到语音房
+                            ARouter.getInstance().build(RouterConstants.ACTIVITY_VOICEROOM)
+                                    .withSerializable("voice_room_data", mRoomData)
+                                    .navigation();
+                            return;
+                        }
                         RecordData recordData = mRoomData.getRecordData();
                         if (recordData != null && recordData.mVoteInfoModels != null && recordData.mVoteInfoModels.size() > 0) {
                             showRecordView();
@@ -852,7 +853,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             }
         });
         mGameEndAnimation.start();
-
     }
 
     private void destroyAnimation() {

@@ -45,6 +45,14 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/view_72_dp" />
 
+    <com.module.playways.voice.view.VoiceRightOpView
+        android:id="@+id/voice_right_op_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignBottom="@+id/comment_view"
+        android:layout_marginRight="@dimen/view_16_dp" />
+
     <com.module.playways.rank.room.view.InputContainerView
         android:id="@+id/input_container_view"
         android:layout_width="match_parent"
