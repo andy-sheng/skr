@@ -21,6 +21,7 @@ import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.common.view.titlebar.CommonTitleBar;
 import com.component.busilib.R;
@@ -65,6 +66,13 @@ public class BlackListFragment extends BaseFragment {
         mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
         mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
+
+        mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                U.getFragmentUtils().popFragment(BlackListFragment.this);
+            }
+        });
 
         mRelationAdapter = new RelationAdapter(UserInfoManager.RELATION_BLACKLIST, new RecyclerOnItemClickListener() {
             @Override
