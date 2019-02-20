@@ -9,6 +9,8 @@ import com.module.playways.rank.msg.event.ExitGameEvent;
 import com.module.playways.rank.msg.event.JoinActionEvent;
 import com.module.playways.rank.msg.event.JoinNoticeEvent;
 import com.module.playways.rank.msg.event.MachineScoreEvent;
+import com.module.playways.rank.msg.event.PkBurstLightMsgEvent;
+import com.module.playways.rank.msg.event.PkLightOffMsgEvent;
 import com.module.playways.rank.msg.event.QExitGameMsgEvent;
 import com.module.playways.rank.msg.event.QGetSingChanceMsgEvent;
 import com.module.playways.rank.msg.event.QNoPassSingMsgEvent;
@@ -21,6 +23,7 @@ import com.module.playways.rank.msg.event.RoundAndGameOverEvent;
 import com.module.playways.rank.msg.event.RoundOverEvent;
 import com.module.playways.rank.msg.event.SyncStatusEvent;
 import com.module.playways.rank.msg.event.VoteResultEvent;
+import com.module.playways.rank.prepare.model.GameConfigModel;
 import com.module.playways.rank.prepare.model.GameInfoModel;
 import com.module.playways.rank.prepare.model.GameReadyModel;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
@@ -40,6 +43,8 @@ import com.zq.live.proto.Room.JoinActionMsg;
 import com.zq.live.proto.Room.JoinNoticeMsg;
 import com.zq.live.proto.Room.MachineScore;
 import com.zq.live.proto.Room.OnlineInfo;
+import com.zq.live.proto.Room.PKBLightMsg;
+import com.zq.live.proto.Room.PKMLightMsg;
 import com.zq.live.proto.Room.QExitGameMsg;
 import com.zq.live.proto.Room.QGetSingChanceMsg;
 import com.zq.live.proto.Room.QNoPassSingMsg;
@@ -111,6 +116,10 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
             processQNoPassSingMsg(basePushInfo, msg.getQNoPassSingMsg());
         } else if (msg.getMsgType() == ERoomMsgType.RM_Q_EXIT_GAME) {
             processQExitGameMsg(basePushInfo, msg.getQExitGameMsg());
+        } else if (msg.getMsgType() == ERoomMsgType.RM_PK_BLIGHT) {
+            processPkBurstLightMsg(basePushInfo, msg.getPkBLightMsg());
+        } else if (msg.getMsgType() == ERoomMsgType.RM_PK_MLIGHT) {
+            processPkLightOffMsg(basePushInfo, msg.getPkMLightMsg());
         }
     }
 
@@ -153,7 +162,12 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
             songModels.add(songModel);
         }
 
-        EventBus.getDefault().post(new JoinActionEvent(info, gameId, gameCreateMs, playerInfos, songModels));
+        GameConfigModel gameConfigModel = null;
+        if(joinActionMsg.getConfig() != null){
+            gameConfigModel = GameConfigModel.parse(joinActionMsg.getConfig());
+        }
+
+        EventBus.getDefault().post(new JoinActionEvent(info, gameId, gameCreateMs, playerInfos, songModels, gameConfigModel));
     }
 
     //加入游戏通知消息
@@ -391,6 +405,16 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
 
     private void processQExitGameMsg(BasePushInfo basePushInfo, QExitGameMsg qExitGameMsg) {
         QExitGameMsgEvent machineScoreEvent = new QExitGameMsgEvent(basePushInfo, qExitGameMsg);
+        EventBus.getDefault().post(machineScoreEvent);
+    }
+
+    private void processPkBurstLightMsg(BasePushInfo basePushInfo, PKBLightMsg qNoPassSingMsg) {
+        PkBurstLightMsgEvent machineScoreEvent = new PkBurstLightMsgEvent(basePushInfo, qNoPassSingMsg);
+        EventBus.getDefault().post(machineScoreEvent);
+    }
+
+    private void processPkLightOffMsg(BasePushInfo basePushInfo, PKMLightMsg qExitGameMsg) {
+        PkLightOffMsgEvent machineScoreEvent = new PkLightOffMsgEvent(basePushInfo, qExitGameMsg);
         EventBus.getDefault().post(machineScoreEvent);
     }
 

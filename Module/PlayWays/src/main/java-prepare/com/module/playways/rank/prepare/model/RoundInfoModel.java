@@ -6,7 +6,13 @@ import com.module.playways.grab.room.event.SomeOneGrabEvent;
 import com.module.playways.grab.room.event.SomeOneLightOffEvent;
 import com.module.playways.grab.room.model.NoPassingInfo;
 import com.module.playways.grab.room.model.WantSingerInfo;
+import com.module.playways.rank.room.event.PkSomeOneBurstLightEvent;
+import com.module.playways.rank.room.event.PkSomeOneLightOffEvent;
+import com.module.playways.rank.room.model.BLightInfoModel;
+import com.module.playways.rank.room.model.MLightInfoModel;
 import com.module.playways.rank.song.model.SongModel;
+import com.zq.live.proto.Room.BLightInfo;
+import com.zq.live.proto.Room.MlightInfo;
 import com.zq.live.proto.Room.NoPassSingInfo;
 import com.zq.live.proto.Room.QRoundInfo;
 import com.zq.live.proto.Room.RoundInfo;
@@ -65,7 +71,11 @@ public class RoundInfoModel implements Serializable {
 
     private HashSet<WantSingerInfo> wantSingInfos = new HashSet<>(); //已经抢了的人
 
-    private HashSet<NoPassingInfo> noPassSingInfos = new HashSet<>();//已经灭灯的人
+    private HashSet<NoPassingInfo> noPassSingInfos = new HashSet<>();//已经灭灯的人, 一唱到底
+
+    private HashSet<BLightInfoModel> burstLightInfos = new HashSet<>();//已经爆灯的人, pk
+
+    private HashSet<MLightInfoModel> pklightOffInfos = new HashSet<>();  //已经灭灯的人, pk
 
     public RoundInfoModel() {
 
@@ -212,6 +222,18 @@ public class RoundInfoModel implements Serializable {
         roundInfoModel.setRoundSeq(roundInfo.getRoundSeq());
         roundInfoModel.setSingBeginMs(roundInfo.getSingBeginMs());
         roundInfoModel.setSingEndMs(roundInfo.getSingEndMs());
+        if(roundInfo.getBLightInfosList() != null){
+            for (BLightInfo b :
+                    roundInfo.getBLightInfosList()) {
+                roundInfoModel.addBrustLightUid(false, BLightInfoModel.parse(b));
+            }
+        }
+        if(roundInfo.getMLightInfosList() != null){
+            for (MlightInfo m :
+                    roundInfo.getMLightInfosList()) {
+                roundInfoModel.addPkLightOffUid(false, MLightInfoModel.parse(m));
+            }
+        }
         return roundInfoModel;
     }
 
@@ -276,6 +298,26 @@ public class RoundInfoModel implements Serializable {
             noPassSingInfos.add(noPassingInfo);
             if (notify) {
                 SomeOneLightOffEvent event = new SomeOneLightOffEvent(noPassingInfo.getUserID(), this);
+                EventBus.getDefault().post(event);
+            }
+        }
+    }
+
+    public void addBrustLightUid(boolean notify, BLightInfoModel bLightInfoModel) {
+        if (!burstLightInfos.contains(bLightInfoModel)) {
+            burstLightInfos.add(bLightInfoModel);
+            if (notify) {
+                PkSomeOneBurstLightEvent event = new PkSomeOneBurstLightEvent(bLightInfoModel.getUserID(), this);
+                EventBus.getDefault().post(event);
+            }
+        }
+    }
+
+    public void addPkLightOffUid(boolean notify, MLightInfoModel mLightInfoModel) {
+        if (!pklightOffInfos.contains(mLightInfoModel)) {
+            pklightOffInfos.add(mLightInfoModel);
+            if (notify) {
+                PkSomeOneLightOffEvent event = new PkSomeOneLightOffEvent(mLightInfoModel.getUserID(), this);
                 EventBus.getDefault().post(event);
             }
         }

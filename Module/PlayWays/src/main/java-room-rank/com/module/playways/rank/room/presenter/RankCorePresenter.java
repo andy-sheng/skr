@@ -37,6 +37,8 @@ import com.module.playways.rank.msg.event.AppSwapEvent;
 import com.module.playways.rank.msg.event.CommentMsgEvent;
 import com.module.playways.rank.msg.event.ExitGameEvent;
 import com.module.playways.rank.msg.event.MachineScoreEvent;
+import com.module.playways.rank.msg.event.PkBurstLightMsgEvent;
+import com.module.playways.rank.msg.event.PkLightOffMsgEvent;
 import com.module.playways.rank.msg.event.RoundAndGameOverEvent;
 import com.module.playways.rank.msg.event.RoundOverEvent;
 import com.module.playways.rank.msg.event.SyncStatusEvent;
@@ -48,6 +50,8 @@ import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.rank.prepare.presenter.MatchPresenter;
 import com.module.playways.rank.room.RoomServerApi;
 import com.module.playways.rank.room.SwapStatusType;
+import com.module.playways.rank.room.event.PkSomeOneBurstLightEvent;
+import com.module.playways.rank.room.event.PkSomeOneLightOffEvent;
 import com.module.playways.rank.room.event.RoundInfoChangeEvent;
 import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.RoomData;
@@ -872,6 +876,30 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(AccBeginEvent event) {
         onUserSpeakFromEngine("AccBeginEvent", event.userId);
+    }
+
+    //某人灭灯了
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onEvent(PkSomeOneLightOffEvent event) {
+
+    }
+
+    //某人爆灯了
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onEvent(PkSomeOneBurstLightEvent event) {
+
+    }
+
+    //服务器push，某人灭灯了
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onEvent(PkBurstLightMsgEvent event) {
+
+    }
+
+    //服务器push，某人爆灯了
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onEvent(PkLightOffMsgEvent event) {
+
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
