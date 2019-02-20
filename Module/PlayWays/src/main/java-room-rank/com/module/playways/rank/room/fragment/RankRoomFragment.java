@@ -51,6 +51,7 @@ import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.RoomData;
 import com.module.playways.rank.room.presenter.DownLoadScoreFilePresenter;
 import com.module.playways.rank.room.presenter.RankCorePresenter;
+import com.module.playways.rank.room.view.ArcProgressBar;
 import com.module.playways.rank.room.view.BottomContainerView;
 import com.module.playways.rank.room.view.IGameRuleView;
 import com.module.playways.rank.room.view.InputContainerView;
@@ -132,6 +133,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     BaseImageView mStageView;      //主舞台动画，webp形式
     BaseImageView mSingAvatarView; //主舞台中心，歌唱者头像
+    ArcProgressBar mCountDownProcess; //主舞台中心，倒计时
 
     ImageView mEndGameIv;
 
@@ -263,6 +265,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     private void initMainStage() {
         mStageView = (BaseImageView) mRootView.findViewById(R.id.stage_view);
         mSingAvatarView = (BaseImageView) mRootView.findViewById(R.id.sing_avatar_view);
+        mCountDownProcess = (ArcProgressBar) mRootView.findViewById(R.id.count_down_process);
     }
 
     @Override
@@ -303,6 +306,12 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         objectAnimatorAvatar.setDuration(1000);
         mAnimatorList.add(objectAnimatorAvatar);
         objectAnimatorAvatar.start();
+
+        // 头像退出，淡出
+        ObjectAnimator objectAnimatorTime = ObjectAnimator.ofFloat(mCountDownProcess, View.ALPHA, 1f, 0f);
+        objectAnimatorTime.setDuration(1000);
+        mAnimatorList.add(objectAnimatorTime);
+        objectAnimatorTime.start();
 
         objectAnimatorStage.addListener(new Animator.AnimatorListener() {
             @Override
@@ -347,6 +356,28 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
             }
         });
+
+        objectAnimatorTime.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                mCountDownProcess.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+                onAnimationEnd(animator);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+
+            }
+        });
     }
 
     // 播放主舞台动画,入场、循环的离场
@@ -370,6 +401,9 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                                 public void onAnimationStart(AnimatedDrawable2 drawable) {
                                     MyLog.d(TAG, "onAnimationStart" + " drawable=" + drawable);
                                     mSingAvatarView.setVisibility(View.VISIBLE);
+                                    mCountDownProcess.setVisibility(View.VISIBLE);
+                                    // TODO: 2019/2/20  测试UI
+                                    mCountDownProcess.setProgress(75);
                                     AvatarUtils.loadAvatarByUrl(mSingAvatarView,
                                             AvatarUtils.newParamsBuilder(avatar)
                                                     .setCircle(true)
@@ -383,6 +417,11 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                                     objectAnimatorAvatar.setDuration(1000);
                                     objectAnimatorAvatar.start();
                                     mAnimatorList.add(objectAnimatorAvatar);
+
+                                    ObjectAnimator objectAnimatorTime = ObjectAnimator.ofFloat(mCountDownProcess, View.ALPHA, 0f, 1f);
+                                    objectAnimatorTime.setDuration(1000);
+                                    objectAnimatorTime.start();
+                                    mAnimatorList.add(objectAnimatorTime);
                                 }
 
                                 @Override
@@ -708,6 +747,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         // 加保护，确保当前主舞台一定被移除
         mStageView.setVisibility(View.GONE);
         mSingAvatarView.setVisibility(View.GONE);
+        mCountDownProcess.setVisibility(View.GONE);
 
         // 确保演唱逻辑一定要执行
         Message msg = mUiHanlder.obtainMessage(ENSURE_RUN);
@@ -751,6 +791,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         // 加保护，确保当前主舞台一定被移除
         mStageView.setVisibility(View.GONE);
         mSingAvatarView.setVisibility(View.GONE);
+        mCountDownProcess.setVisibility(View.GONE);
 
 //        mTopContainerView.cancelShowLastedTimeTask();
         MyLog.w(TAG, "用户" + uid + "的演唱开始了");

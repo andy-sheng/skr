@@ -7,16 +7,15 @@
     android:background="#2E3041">
 
     <com.module.playways.rank.room.view.TopContainerView
-        android:visibility="invisible"
         android:id="@+id/top_container_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_100_dp"
-        android:layout_marginTop="@dimen/view_10_dp" />
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:visibility="invisible" />
 
     <com.module.playways.rank.room.view.RankTopContainerView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
+        android:layout_height="wrap_content" />
 
 
     <RelativeLayout
@@ -65,6 +64,14 @@
             android:layout_height="@dimen/view_90_dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/view_180_dp"
+            android:visibility="gone" />
+
+        <com.module.playways.rank.room.view.ArcProgressBar
+            android:id="@+id/count_down_process"
+            android:layout_width="@dimen/view_116_dp"
+            android:layout_height="@dimen/view_116_dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/view_167_dp"
             android:visibility="gone" />
 
     </RelativeLayout>
@@ -117,12 +124,12 @@
         android:layout_height="match_parent" />
 
     <com.module.playways.rank.room.view.RankOpView
-        android:layout_alignParentBottom="true"
         android:id="@+id/rank_op_view"
-        android:layout_marginBottom="@dimen/view_160_dp"
-        android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/view_160_dp" />
 
     <ImageView
         android:id="@+id/end_game_iv"
