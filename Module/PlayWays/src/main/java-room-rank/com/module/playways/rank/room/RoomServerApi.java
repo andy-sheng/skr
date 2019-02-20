@@ -120,5 +120,50 @@ public interface RoomServerApi {
     @PUT("http://dev.game.inframe.mobi/v1/game/resource")
     Observable<ApiResult> putGameResource(@Body RequestBody body);
 
+    /**
+     * 参数
+     * { "gameID" : 1,
+     *   "roundSeq" : 1
+     * }
+     *
+     * res
+     *
+     * 灭灯
+     * @param body
+     * @return
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/game/pk-show-mlight")
+    Observable<ApiResult> lightOff(@Body RequestBody body);
 
+    /**
+     * 参数
+     * { "gameID" : 1,
+     *   "roundSeq" : 1
+     * }
+     *
+     * res
+     *
+     * 爆灯
+     * @param body
+     * @return
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/game/pk-show-blight")
+    Observable<ApiResult> burst(@Body RequestBody body);
+
+    /**
+     * 参数
+     * {
+     *   "itemID" : 1,
+     *   "score" : 11,
+     *   "no" : 1,
+     *   "gameID" : 1
+     * }
+     *
+     * res
+     *
+     * @param body
+     * @return
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/game/pk-commit-segment-result")
+    Observable<ApiResult> commitLyricObtain(@Body RequestBody body);
 }
