@@ -454,6 +454,10 @@ public class UserAccountManager {
                 if (result.getErrno() == 0) {
                     String token = result.getData().getString("RC");
                     if (!TextUtils.isEmpty(token)) {
+                        // 更新数据库中融云token
+                        mAccount.setRongToken(token);
+                        UserAccountLocalApi.loginAccount(mAccount);
+                        // 连接融云
                         connectRongIM(token);
                     } else {
                         MyLog.e(TAG, "getIMToken from Server is null");
