@@ -27,6 +27,7 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.NetworkUtils;
 import com.common.utils.PermissionUtils;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -158,94 +159,87 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
             }
         });
 
-        RxView.clicks(mOwnInfoItem).subscribe(new Consumer<Object>() {
+        mOwnInfoItem.setOnClickListener(new DebounceViewClickListener() {
             @Override
-            public void accept(Object o) {
+            public void clickValid(View v) {
                 gotoPersonFragment((int) MyUserInfoManager.getInstance().getUid(), MyUserInfoManager.getInstance().getNickName(), MyUserInfoManager.getInstance().getAvatar());
             }
         });
 
-        RxView.clicks(mTvArea)
-                .throttleFirst(300, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        if (mPopupWindow.isShowing()) {
-                            mPopupWindow.dismiss();
-                        } else {
-                            mPopupWindow.setWidth(mTvArea.getMeasuredWidth());
-                            mPopupWindow.setHeight(300);
-                            mPopupWindow.showAsDropDown(mTvArea);
-                        }
+        mTvArea.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mPopupWindow.isShowing()) {
+                    mPopupWindow.dismiss();
+                } else {
+                    mPopupWindow.setWidth(mTvArea.getMeasuredWidth());
+                    mPopupWindow.setHeight(300);
+                    mPopupWindow.showAsDropDown(mTvArea);
+                }
 
 //                        mLlAreaContainer.setVisibility(mLlAreaContainer.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
-                        Drawable drawable = null;
+                Drawable drawable = null;
 
-                        if (mPopupWindow.isShowing()) {
-                            drawable = getResources().getDrawable(R.drawable.paihangbang_xuanzediquxialaicon_down);
-                            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-                        } else {
-                            drawable = getResources().getDrawable(R.drawable.paihangbang_xuanzediquxialaicon);
-                            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-                        }
+                if (mPopupWindow.isShowing()) {
+                    drawable = getResources().getDrawable(R.drawable.paihangbang_xuanzediquxialaicon_down);
+                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+                } else {
+                    drawable = getResources().getDrawable(R.drawable.paihangbang_xuanzediquxialaicon);
+                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+                }
 
-                        mTvArea.setCompoundDrawables(null, null, drawable, null);
-                        if (mRankMode == UserRankModel.COUNTRY) {
-                            if (MyUserInfoManager.getInstance().hasLocation()) {
-                                mTvOtherArea.setText(getAreaFromLocation(MyUserInfoManager.getInstance().getLocation()));
-                            } else {
-                                mTvOtherArea.setText("地域榜");
-                            }
-                        } else if (mRankMode == UserRankModel.REGION) {
-                            mTvOtherArea.setText("全国榜");
-                        }
-                        mTvOtherArea.setSelected(false);
+                mTvArea.setCompoundDrawables(null, null, drawable, null);
+                if (mRankMode == UserRankModel.COUNTRY) {
+                    if (MyUserInfoManager.getInstance().hasLocation()) {
+                        mTvOtherArea.setText(getAreaFromLocation(MyUserInfoManager.getInstance().getLocation()));
+                    } else {
+                        mTvOtherArea.setText("地域榜");
                     }
-                });
+                } else if (mRankMode == UserRankModel.REGION) {
+                    mTvOtherArea.setText("全国榜");
+                }
+                mTvOtherArea.setSelected(false);
+            }
+        });
 
+        mTvOtherArea.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                mPopupWindow.dismiss();
+                Drawable drawable = getResources().getDrawable(R.drawable.paihangbang_xuanzediquxialaicon);
+                drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+                mTvArea.setCompoundDrawables(null, null, drawable, null);
 
-        RxView.clicks(mTvOtherArea)
-                .throttleFirst(300, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        mPopupWindow.dismiss();
-                        Drawable drawable = getResources().getDrawable(R.drawable.paihangbang_xuanzediquxialaicon);
-                        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-                        mTvArea.setCompoundDrawables(null, null, drawable, null);
+                if (!MyUserInfoManager.getInstance().hasLocation()) {
+                    tryGetLocation();
+                    return;
+                }
 
-                        if (!MyUserInfoManager.getInstance().hasLocation()) {
-                            tryGetLocation();
-                            return;
-                        }
+                if (!U.getNetworkUtils().hasNetwork()) {
+                    noNetWork();
+                    return;
+                }
 
-                        if (!U.getNetworkUtils().hasNetwork()) {
-                            noNetWork();
-                            return;
-                        }
+                if (mRankMode == UserRankModel.REGION) {
+                    mTvArea.setText("全国榜");
+                    mTvOtherArea.setText(getAreaFromLocation(MyUserInfoManager.getInstance().getLocation()));
+                    mLeaderboardPresenter.setRankMode(UserRankModel.COUNTRY);
+                    mRankMode = UserRankModel.COUNTRY;
+                } else if (mRankMode == UserRankModel.COUNTRY) {
+                    mTvArea.setText(getAreaFromLocation(MyUserInfoManager.getInstance().getLocation()));
+                    mLeaderboardPresenter.setRankMode(UserRankModel.REGION);
+                    mRankMode = UserRankModel.REGION;
+                }
+            }
+        });
 
-                        if (mRankMode == UserRankModel.REGION) {
-                            mTvArea.setText("全国榜");
-                            mTvOtherArea.setText(getAreaFromLocation(MyUserInfoManager.getInstance().getLocation()));
-                            mLeaderboardPresenter.setRankMode(UserRankModel.COUNTRY);
-                            mRankMode = UserRankModel.COUNTRY;
-                        } else if (mRankMode == UserRankModel.COUNTRY) {
-                            mTvArea.setText(getAreaFromLocation(MyUserInfoManager.getInstance().getLocation()));
-                            mLeaderboardPresenter.setRankMode(UserRankModel.REGION);
-                            mRankMode = UserRankModel.REGION;
-                        }
-                    }
-                });
-
-        RxView.clicks(mIvBack)
-                .throttleFirst(300, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        U.getSoundUtils().play(TAG, R.raw.general_back, 500);
-                        finish();
-                    }
-                });
+        mIvBack.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                U.getSoundUtils().play(TAG, R.raw.general_back, 500);
+                finish();
+            }
+        });
 
         setRankMode();
         if (!MyUserInfoManager.getInstance().hasLocation()) {

@@ -168,7 +168,7 @@
         app:bl_corners_radius="@dimen/view_10_dp"
         app:bl_solid_color="#FFF8DA"
         app:bl_stroke_color="#122074"
-        app:bl_stroke_width="@dimen/view_3_dp">
+        app:bl_stroke_width="@dimen/view_2_dp">
 
         <RelativeLayout
             android:layout_width="@dimen/view_70_dp"
@@ -293,7 +293,7 @@
             app:bl_corners_radius="@dimen/view_10_dp"
             app:bl_solid_color="#F9F4F1"
             app:bl_stroke_color="#122074"
-            app:bl_stroke_width="@dimen/view_3_dp">
+            app:bl_stroke_width="@dimen/view_2_dp">
 
             <!--钱包-->
             <RelativeLayout
