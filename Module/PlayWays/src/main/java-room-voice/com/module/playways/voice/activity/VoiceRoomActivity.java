@@ -2,6 +2,7 @@ package com.module.playways.voice.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.WindowManager;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.common.base.BaseActivity;
@@ -32,6 +33,7 @@ public class VoiceRoomActivity extends BaseActivity {
     public void initData(@Nullable Bundle savedInstanceState) {
         RoomData mRoomData = (RoomData) getIntent().getSerializableExtra("voice_room_data");
         if(mRoomData==null){
+            mRoomData = new RoomData();
             //TODO test
             {
                 List<RoundInfoModel> roundingModeList = new ArrayList<>();
@@ -71,5 +73,32 @@ public class VoiceRoomActivity extends BaseActivity {
                 .addDataBeforeAdd(0, mRoomData)
                 .build()
         );
+    }
+
+    @Override
+    public boolean useEventBus() {
+        return false;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
+
+    @Override
+    protected void destroy() {
+        super.destroy();
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
+
+    @Override
+    public boolean canSlide() {
+        return false;
+    }
+
+    @Override
+    public boolean resizeLayoutSelfWhenKeybordShow() {
+        return true;
     }
 }
