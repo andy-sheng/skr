@@ -14,10 +14,10 @@ import java.util.List;
 public class PlayerInfoModel implements Serializable {
     UserInfoModel userInfo;
     List<SongModel> songList;
-    //是否是机器人
-    boolean isSkrer;
+    boolean isSkrer;//是否是机器人
+    boolean isAI;//是否是AI裁判
     List<ResourceInfoModel> resourceInfoList;
-    boolean online = true;
+    boolean online = true;//是否在线
 
     public boolean isSkrer() {
         return isSkrer;
@@ -69,6 +69,7 @@ public class PlayerInfoModel implements Serializable {
         this.setSongList(list);
         this.isSkrer = playerInfo.getIsSkrer();
         this.resourceInfoList = ResourceInfoModel.parse(playerInfo.getResourceList());
+        this.isAI = playerInfo.isAIUser;
     }
 
 
