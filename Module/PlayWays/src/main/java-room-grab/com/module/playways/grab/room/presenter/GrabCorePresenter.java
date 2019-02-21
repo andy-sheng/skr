@@ -4,8 +4,6 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.changba.songstudio.audioeffect.AudioEffectStyleEnum;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
@@ -33,14 +31,12 @@ import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.event.GrabGameOverEvent;
 import com.module.playways.grab.room.event.GrabRoundChangeEvent;
 import com.module.playways.grab.room.event.GrabRoundStatusChangeEvent;
-import com.module.playways.grab.room.event.SomeOneLightOffEvent;
 import com.module.playways.grab.room.inter.IGrabView;
 import com.module.playways.grab.room.model.GrabResultInfoModel;
 import com.module.playways.grab.room.model.NoPassingInfo;
 import com.module.playways.grab.room.model.WantSingerInfo;
 import com.module.playways.rank.msg.BasePushInfo;
 import com.module.playways.rank.msg.event.CommentMsgEvent;
-import com.module.playways.rank.msg.event.ExitGameEvent;
 import com.module.playways.rank.msg.event.QExitGameMsgEvent;
 import com.module.playways.rank.msg.event.QGetSingChanceMsgEvent;
 import com.module.playways.rank.msg.event.QNoPassSingMsgEvent;
@@ -60,7 +56,6 @@ import com.module.playways.rank.room.score.RobotScoreHelper;
 import com.zq.live.proto.Common.ESex;
 import com.zq.live.proto.Common.UserInfo;
 import com.zq.live.proto.Room.EQRoundResultType;
-import com.zq.live.proto.Room.PlayerInfo;
 import com.zq.live.proto.Room.RoomMsg;
 
 import org.greenrobot.eventbus.EventBus;
@@ -72,15 +67,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import io.agora.rtc.Constants;
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
-
-import static com.module.playways.rank.msg.event.ExitGameEvent.EXIT_GAME_AFTER_PLAY;
-import static com.module.playways.rank.msg.event.ExitGameEvent.EXIT_GAME_OUT_ROUND;
 
 public class GrabCorePresenter extends RxLifeCyclePresenter {
     public String TAG = "GrabCorePresenter";
@@ -736,14 +724,14 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 if (RoomDataUtils.roundSeqLarger(newRoundInfo, mRoomData.getRealRoundInfo())) {
                     MyLog.w(TAG, "updatePlayerState" + " sync发现本地轮次信息滞后，更新");
                     // 轮次确实比当前的高，可以切换
-                    mRoomData.setExpectRoundInfo(RoomDataUtils.getRoundInfoFromRoundInfoList(mRoomData, newRoundInfo));
+                    mRoomData.setExpectRoundInfo(RoomDataUtils.getRoundInfoFromRoundInfoListInGrabMode(mRoomData, newRoundInfo));
                     mRoomData.checkRoundInGrabMode();
                 } else if (RoomDataUtils.isCurrentRound(newRoundInfo.getRoundSeq(), mRoomData)) {
                     /**
                      * 是当前轮次，最近状态就更新整个轮次
                      */
                     if (syncStatusTimes > mRoomData.getLastSyncTs()) {
-                        mRoomData.getRealRoundInfo().tryUpdateByRoundInfoModel(newRoundInfo, true);
+                        mRoomData.getRealRoundInfo().tryUpdateGrabByRoundInfoModel(newRoundInfo, true);
                     }
                 }
             } else {
@@ -947,13 +935,13 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
         if (RoomDataUtils.isCurrentRound(event.getCurrentRound().getRoundSeq(), mRoomData)) {
             // 如果是当前轮次
-            mRoomData.getRealRoundInfo().tryUpdateByRoundInfoModel(event.currentRound, true);
+            mRoomData.getRealRoundInfo().tryUpdateGrabByRoundInfoModel(event.currentRound, true);
         }
         // 游戏轮次结束
         if (RoomDataUtils.roundSeqLarger(event.nextRound, mRoomData.getRealRoundInfo())) {
             // 轮次确实比当前的高，可以切换
             MyLog.w(TAG, "轮次确实比当前的高，可以切换");
-            mRoomData.setExpectRoundInfo(RoomDataUtils.getRoundInfoFromRoundInfoList(mRoomData, event.nextRound));
+            mRoomData.setExpectRoundInfo(RoomDataUtils.getRoundInfoFromRoundInfoListInGrabMode(mRoomData, event.nextRound));
             mRoomData.checkRoundInGrabMode();
         }
     }
@@ -963,7 +951,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         cancelSyncGameStateTask();
         if (RoomDataUtils.isCurrentRound(event.roundInfoModel.getRoundSeq(), mRoomData)) {
             // 如果是当前轮次
-            mRoomData.getRealRoundInfo().tryUpdateByRoundInfoModel(event.roundInfoModel, true);
+            mRoomData.getRealRoundInfo().tryUpdateGrabByRoundInfoModel(event.roundInfoModel, true);
         }
         onGameOver("QRoundAndGameOverMsgEvent", event.roundOverTimeMs, event.resultInfo);
     }

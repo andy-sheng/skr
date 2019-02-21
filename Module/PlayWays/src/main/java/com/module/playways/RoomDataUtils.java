@@ -122,13 +122,26 @@ public class RoomDataUtils {
     /**
      * 根据用户id 尝试找到该用户对应的轮次
      *
-     * @param jsonRoundInfo
      * @param uid
      * @return
      */
-    public static RoundInfoModel getRoundInfoByUserId(List<RoundInfoModel> jsonRoundInfo, int uid) {
-        for (RoundInfoModel infoModel : jsonRoundInfo) {
+    public static RoundInfoModel getRoundInfoByUserId(RoomData roomData, int uid) {
+        for (RoundInfoModel infoModel : roomData.getRoundInfoModelList()) {
             if (infoModel.getUserID() == uid) {
+                return infoModel;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 根据轮次信息 尝试找到该用户对应的轮次
+     *
+     * @return
+     */
+    public static RoundInfoModel getRoundInfoBySeq(RoomData roomData, int seq) {
+        for (RoundInfoModel infoModel : roomData.getRoundInfoModelList()) {
+            if (infoModel.getRoundSeq() == seq) {
                 return infoModel;
             }
         }
@@ -248,19 +261,31 @@ public class RoomDataUtils {
         return false;
     }
 
-    public static RoundInfoModel getRoundInfoFromRoundInfoList(RoomData roomData, RoundInfoModel roundInfoModel) {
+    public static RoundInfoModel getRoundInfoFromRoundInfoListInGrabMode(RoomData roomData, RoundInfoModel roundInfoModel) {
+        if (roundInfoModel == null) {
+            return null;
+        }
+        for (RoundInfoModel roundInfo : roomData.getRoundInfoModelList()) {
+            if (roundInfo.getRoundSeq() == roundInfoModel.getRoundSeq()) {
+                roundInfo.tryUpdateGrabByRoundInfoModel(roundInfoModel,false);
+                return roundInfo;
+            }
+        }
+        return null;
+    }
+
+    public static RoundInfoModel getRoundInfoFromRoundInfoListInRankMode(RoomData roomData, RoundInfoModel roundInfoModel) {
         if (roundInfoModel == null) {
             return null;
         }
 
         for (RoundInfoModel roundInfo : roomData.getRoundInfoModelList()) {
             if (roundInfo.getRoundSeq() == roundInfoModel.getRoundSeq()) {
-                roundInfo.tryUpdateByRoundInfoModel(roundInfoModel,false);
+                roundInfo.tryUpdateRankRoundInfoModel(roundInfoModel,false);
                 return roundInfo;
             }
         }
 
         return null;
     }
-
 }

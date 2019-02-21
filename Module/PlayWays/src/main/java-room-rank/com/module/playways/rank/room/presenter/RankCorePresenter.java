@@ -47,8 +47,6 @@ import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.rank.room.RoomServerApi;
 import com.module.playways.rank.room.SwapStatusType;
-import com.module.playways.rank.room.event.PkSomeOneBurstLightEvent;
-import com.module.playways.rank.room.event.PkSomeOneLightOffEvent;
 import com.module.playways.rank.room.event.RoundInfoChangeEvent;
 import com.module.playways.rank.room.model.BLightInfoModel;
 import com.module.playways.rank.room.model.MLightInfoModel;
@@ -601,12 +599,12 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                 if (RoomDataUtils.roundSeqLarger(currentInfo, mRoomData.getRealRoundInfo())) {
                     MyLog.w(TAG, "updatePlayerState" + " sync发现本地轮次信息滞后，更新");
                     // 轮次确实比当前的高，可以切换
-                    mRoomData.setExpectRoundInfo(currentInfo);
+                    mRoomData.setExpectRoundInfo(RoomDataUtils.getRoundInfoFromRoundInfoListInRankMode(mRoomData,currentInfo));
                     mRoomData.checkRoundInRankMode();
                 } else if (RoomDataUtils.roundInfoEqual(currentInfo, mRoomData.getRealRoundInfo())) {
                     // TODO: 2019/2/21 更新本次round的数据
                     if (mRoomData.getRealRoundInfo() != null) {
-                        mRoomData.getRealRoundInfo().tryUpdatePkRoundInfoModel(currentInfo, true);
+                        mRoomData.getRealRoundInfo().tryUpdateRankRoundInfoModel(currentInfo, true);
                     }
                 }
             } else {
@@ -1166,7 +1164,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 
     private void onUserSpeakFromEngine(String from, int muteUserId) {
         MyLog.w(TAG, "onUserSpeakFromEngine muteUserId=" + muteUserId + "解麦了,from:" + from);
-        RoundInfoModel infoModel = RoomDataUtils.getRoundInfoByUserId(mRoomData.getRoundInfoModelList(), muteUserId);
+        RoundInfoModel infoModel = RoomDataUtils.getRoundInfoByUserId(mRoomData, muteUserId);
         if (infoModel != null && infoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
             MyLog.d(TAG, "onUserSpeakFromEngine" + " 解麦的是本人，忽略");
             return;
@@ -1272,27 +1270,23 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 
     // 游戏轮次结束的通知消息（在某人向服务器短连接成功后推送)
     @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onEventMainThread(RoundOverEvent roundOverEvent) {
-        MyLog.w(TAG, "收到服务器的某一个人轮次结束的push，id是 " + roundOverEvent.currenRound.getUserID()
-                + ", exitUserID 是 " + roundOverEvent.exitUserID + " timets 是" + roundOverEvent.info.getTimeMs());
-        if (mRoomData.getLastSyncTs() > roundOverEvent.info.getTimeMs()) {
+    public void onEventMainThread(RoundOverEvent event) {
+        MyLog.w(TAG, "收到服务器的某一个人轮次结束的push，id是 " + event.currenRound.getUserID()
+                + ", exitUserID 是 " + event.exitUserID + " timets 是" + event.info.getTimeMs());
+        if (mRoomData.getLastSyncTs() > event.info.getTimeMs()) {
             MyLog.w(TAG, "但是是旧数据");
             return;
         }
 
-        if (RoomDataUtils.roundInfoEqual(roundOverEvent.currenRound, mRoomData.getRealRoundInfo())) {
-            // 确实等于当前轮次
-            if (mRoomData.getRealRoundInfo() != null) {
-                MyLog.w(TAG, "确实是当前轮次结束了,设置结束原因");
-                mRoomData.getRealRoundInfo().changeRoundOverReason(roundOverEvent.currenRound.geteRoundOverReasonModel());
-                mRoomData.getRealRoundInfo().setEndTs(roundOverEvent.roundOverTimeMs);
-            }
+        if (RoomDataUtils.isCurrentRound(event.currenRound.getRoundSeq(), mRoomData)) {
+            // 如果是当前轮次
+            mRoomData.getRealRoundInfo().tryUpdateRankRoundInfoModel(event.currenRound, true);
         }
         // 游戏轮次结束
-        if (RoomDataUtils.roundSeqLarger(roundOverEvent.nextRound, mRoomData.getExpectRoundInfo())) {
+        if (RoomDataUtils.roundSeqLarger(event.nextRound, mRoomData.getRealRoundInfo())) {
             // 轮次确实比当前的高，可以切换
             MyLog.w(TAG, "轮次确实比当前的高，可以切换");
-            mRoomData.setExpectRoundInfo(roundOverEvent.nextRound);
+            mRoomData.setExpectRoundInfo(RoomDataUtils.getRoundInfoFromRoundInfoListInRankMode(mRoomData,event.nextRound));
             mRoomData.checkRoundInRankMode();
         }
     }

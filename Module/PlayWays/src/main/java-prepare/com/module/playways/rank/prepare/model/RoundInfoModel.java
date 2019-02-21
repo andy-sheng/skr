@@ -50,17 +50,28 @@ public class RoundInfoModel implements Serializable {
     private int sysScore;//本轮系统打分，先搞个默认60分
     private boolean hasSing = false;
 
-    private int status = STATUS_INIT;// 轮次状态，在一唱到底中使用
-
     /**
+     * 一唱到底 结束原因
      * 0未知
      * 1上个轮次结束
      * 2没人抢唱
      * 3当前玩家退出
      * 4多人灭灯
+     * <p>
+     * 排位赛 结束原因
+     * 0 未知
+     * 1 正常
+     * 2 玩家退出
+     * 3 多人灭灯
      */
     private int overReason; // 结束的原因
 
+    private HashSet<BLightInfoModel> burstLightInfos = new HashSet<>();//已经爆灯的人, pk
+
+    private HashSet<MLightInfoModel> pklightOffInfos = new HashSet<>();  //已经灭灯的人, pk
+
+    /* 一唱到底使用 */
+    private int status = STATUS_INIT;// 轮次状态，在一唱到底中使用
     //0未知
     //1有种优秀叫一唱到底（全部唱完）
     //2有种结束叫刚刚开始（t<30%）
@@ -73,11 +84,6 @@ public class RoundInfoModel implements Serializable {
 
     private HashSet<NoPassingInfo> noPassSingInfos = new HashSet<>();//已经灭灯的人, 一唱到底
 
-    private HashSet<BLightInfoModel> burstLightInfos = new HashSet<>();//已经爆灯的人, pk
-
-    private HashSet<MLightInfoModel> pklightOffInfos = new HashSet<>();  //已经灭灯的人, pk
-
-    private ERoundOverReasonModel eRoundOverReasonModel = ERoundOverReasonModel.EROR_UNKNOWN;
 
     public RoundInfoModel() {
 
@@ -225,16 +231,9 @@ public class RoundInfoModel implements Serializable {
         return pklightOffInfos;
     }
 
-    public ERoundOverReasonModel geteRoundOverReasonModel() {
-        return eRoundOverReasonModel;
-    }
-
-    public void changeRoundOverReason(ERoundOverReasonModel roundOverReasonModel){
-        if(eRoundOverReasonModel != ERoundOverReasonModel.EROR_UNKNOWN){
-            eRoundOverReasonModel = roundOverReasonModel;
-        }
-    }
-
+    /**
+     * 排位赛使用
+     */
     public static RoundInfoModel parseFromRoundInfo(RoundInfo roundInfo) {
         RoundInfoModel roundInfoModel = new RoundInfoModel(TYPE_RANK);
         roundInfoModel.setUserID(roundInfo.getUserID());
@@ -242,21 +241,76 @@ public class RoundInfoModel implements Serializable {
         roundInfoModel.setRoundSeq(roundInfo.getRoundSeq());
         roundInfoModel.setSingBeginMs(roundInfo.getSingBeginMs());
         roundInfoModel.setSingEndMs(roundInfo.getSingEndMs());
-        if(roundInfo.getBLightInfosList() != null){
+        if (roundInfo.getBLightInfosList() != null) {
             for (BLightInfo b :
                     roundInfo.getBLightInfosList()) {
                 roundInfoModel.addBrustLightUid(false, BLightInfoModel.parse(b));
             }
         }
-        if(roundInfo.getMLightInfosList() != null){
+        if (roundInfo.getMLightInfosList() != null) {
             for (MlightInfo m :
                     roundInfo.getMLightInfosList()) {
                 roundInfoModel.addPkLightOffUid(false, MLightInfoModel.parse(m));
             }
         }
+        roundInfoModel.setOverReason(roundInfo.getOverReason().getValue());
         return roundInfoModel;
     }
 
+    /**
+     * 排位赛使用
+     */
+    public void tryUpdateRankRoundInfoModel(RoundInfoModel roundInfo, boolean notify) {
+        if (roundInfo == null) {
+            MyLog.e("JsonRoundInfo RoundInfo == null");
+            return;
+        }
+        this.setUserID(roundInfo.getUserID());
+        this.setPlaybookID(roundInfo.getPlaybookID());
+        this.setRoundSeq(roundInfo.getRoundSeq());
+        this.setSingBeginMs(roundInfo.getSingBeginMs());
+        this.setSingEndMs(roundInfo.getSingEndMs());
+        //TODO 抢 灭 结束原因 补全
+        for (BLightInfoModel bLightInfoModel : roundInfo.getBurstLightInfos()) {
+            addBrustLightUid(notify, bLightInfoModel);
+        }
+        for (MLightInfoModel mLightInfoModel : roundInfo.getPklightOffInfos()) {
+            addPkLightOffUid(notify, mLightInfoModel);
+        }
+        if (roundInfo.getOverReason() > 0) {
+            this.setOverReason(roundInfo.getOverReason());
+        }
+    }
+
+    /**
+     * 排位赛使用
+     */
+    public void addBrustLightUid(boolean notify, BLightInfoModel bLightInfoModel) {
+        if (!burstLightInfos.contains(bLightInfoModel)) {
+            burstLightInfos.add(bLightInfoModel);
+            if (notify) {
+                PkSomeOneBurstLightEvent event = new PkSomeOneBurstLightEvent(bLightInfoModel.getUserID(), this);
+                EventBus.getDefault().post(event);
+            }
+        }
+    }
+
+    /**
+     * 排位赛使用
+     */
+    public void addPkLightOffUid(boolean notify, MLightInfoModel mLightInfoModel) {
+        if (!pklightOffInfos.contains(mLightInfoModel)) {
+            pklightOffInfos.add(mLightInfoModel);
+            if (notify) {
+                PkSomeOneLightOffEvent event = new PkSomeOneLightOffEvent(mLightInfoModel.getUserID(), this);
+                EventBus.getDefault().post(event);
+            }
+        }
+    }
+
+    /**
+     * 一唱到底使用
+     */
     public static RoundInfoModel parseFromRoundInfo(QRoundInfo roundInfo) {
         RoundInfoModel roundInfoModel = new RoundInfoModel(TYPE_GRAB);
         roundInfoModel.setUserID(roundInfo.getUserID());
@@ -276,7 +330,10 @@ public class RoundInfoModel implements Serializable {
         return roundInfoModel;
     }
 
-    public void tryUpdatePkRoundInfoModel(RoundInfoModel roundInfo, boolean notify) {
+    /**
+     * 一唱到底使用
+     */
+    public void tryUpdateGrabByRoundInfoModel(RoundInfoModel roundInfo, boolean notify) {
         if (roundInfo == null) {
             MyLog.e("JsonRoundInfo RoundInfo == null");
             return;
@@ -286,37 +343,6 @@ public class RoundInfoModel implements Serializable {
         this.setRoundSeq(roundInfo.getRoundSeq());
         this.setSingBeginMs(roundInfo.getSingBeginMs());
         this.setSingEndMs(roundInfo.getSingEndMs());
-
-        //TODO 抢 灭 结束原因 补全
-        for (BLightInfoModel bLightInfoModel : roundInfo.getBurstLightInfos()) {
-            addBrustLightUid(notify, bLightInfoModel);
-        }
-        for (MLightInfoModel mLightInfoModel : roundInfo.getPklightOffInfos()) {
-            addPkLightOffUid(notify, mLightInfoModel);
-        }
-        //拉出来的信息里肯定没有结束的原因，因为已经结束了
-//        changeRoundOverReason(roundInfo.geteRoundOverReasonModel());
-//        if (roundInfo.getOverReason() > 0) {
-//            this.setOverReason(roundInfo.getOverReason());
-//        }
-//        if (roundInfo.getResultType() > 0) {
-//            this.setResultType(roundInfo.getResultType());
-//        }
-//        updateStatus(notify, roundInfo.getStatus());
-        return;
-    }
-
-    public void tryUpdateByRoundInfoModel(RoundInfoModel roundInfo, boolean notify) {
-        if (roundInfo == null) {
-            MyLog.e("JsonRoundInfo RoundInfo == null");
-            return;
-        }
-        this.setUserID(roundInfo.getUserID());
-        this.setPlaybookID(roundInfo.getPlaybookID());
-        this.setRoundSeq(roundInfo.getRoundSeq());
-        this.setSingBeginMs(roundInfo.getSingBeginMs());
-        this.setSingEndMs(roundInfo.getSingEndMs());
-        //TODO 抢 灭 结束原因 补全
         for (WantSingerInfo wantSingerInfo : roundInfo.getWantSingInfos()) {
             addGrabUid(notify, wantSingerInfo);
         }
@@ -333,6 +359,9 @@ public class RoundInfoModel implements Serializable {
         return;
     }
 
+    /**
+     * 一唱到底使用
+     */
     public void addGrabUid(boolean notify, WantSingerInfo wantSingerInfo) {
         if (!wantSingInfos.contains(wantSingerInfo)) {
             wantSingInfos.add(wantSingerInfo);
@@ -343,6 +372,9 @@ public class RoundInfoModel implements Serializable {
         }
     }
 
+    /**
+     * 一唱到底使用
+     */
     public void addLightOffUid(boolean notify, NoPassingInfo noPassingInfo) {
         if (!noPassSingInfos.contains(noPassingInfo)) {
             noPassSingInfos.add(noPassingInfo);
@@ -353,26 +385,9 @@ public class RoundInfoModel implements Serializable {
         }
     }
 
-    public void addBrustLightUid(boolean notify, BLightInfoModel bLightInfoModel) {
-        if (!burstLightInfos.contains(bLightInfoModel)) {
-            burstLightInfos.add(bLightInfoModel);
-            if (notify) {
-                PkSomeOneBurstLightEvent event = new PkSomeOneBurstLightEvent(bLightInfoModel.getUserID(), this);
-                EventBus.getDefault().post(event);
-            }
-        }
-    }
-
-    public void addPkLightOffUid(boolean notify, MLightInfoModel mLightInfoModel) {
-        if (!pklightOffInfos.contains(mLightInfoModel)) {
-            pklightOffInfos.add(mLightInfoModel);
-            if (notify) {
-                PkSomeOneLightOffEvent event = new PkSomeOneLightOffEvent(mLightInfoModel.getUserID(), this);
-                EventBus.getDefault().post(event);
-            }
-        }
-    }
-
+    /**
+     * 一唱到底使用
+     */
     public void updateStatus(boolean notify, int statusGrab) {
         if (status < statusGrab) {
             int old = status;
