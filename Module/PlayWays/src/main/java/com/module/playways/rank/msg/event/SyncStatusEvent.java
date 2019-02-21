@@ -22,7 +22,7 @@ public class SyncStatusEvent {
     public RoundInfoModel nextInfo; //下个轮次信息
 
     public SyncStatusEvent(BasePushInfo info, SyncStatusMsg syncStatusMsg) {
-        // TODO: 2019/2/21 这里需要把爆灯灭灯解析出来
+        // TODO: 2019/2/21 这里需要把爆灯灭灯解析出来, 等PB更新
         List<OnlineInfoModel> onLineInfos = new ArrayList<>();
         for (OnlineInfo onlineInfo : syncStatusMsg.getOnlineInfoList()) {
             OnlineInfoModel jsonOnLineInfo = new OnlineInfoModel();

@@ -1,0 +1,113 @@
+package com.module.playways.rank.room.model;
+
+import com.zq.live.proto.Room.ListenProgress;
+import com.zq.live.proto.Room.UserGameResult;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+public class UserGameResultModel implements Serializable {
+    /**
+     * isEscape : true
+     * itemID : 0
+     * listenProgress : [{"lightType":"ELT_UNKNOWN","progress":0,"userID":0}]
+     * rank : 0
+     * totalScore : 0
+     * userID : 0
+     * winType : InvalidEWinType
+     */
+
+    private boolean isEscape;
+    private int itemID;
+    private int rank;
+    private int totalScore;
+    private int userID;
+    private String winType;
+    private List<ListenProgressModel> listenProgress;
+
+    public boolean isIsEscape() {
+        return isEscape;
+    }
+
+    public void setIsEscape(boolean isEscape) {
+        this.isEscape = isEscape;
+    }
+
+    public int getItemID() {
+        return itemID;
+    }
+
+    public void setItemID(int itemID) {
+        this.itemID = itemID;
+    }
+
+    public int getRank() {
+        return rank;
+    }
+
+    public void setRank(int rank) {
+        this.rank = rank;
+    }
+
+    public int getTotalScore() {
+        return totalScore;
+    }
+
+    public void setTotalScore(int totalScore) {
+        this.totalScore = totalScore;
+    }
+
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
+
+    public String getWinType() {
+        return winType;
+    }
+
+    public void setWinType(String winType) {
+        this.winType = winType;
+    }
+
+    public List<ListenProgressModel> getListenProgress() {
+        return listenProgress;
+    }
+
+    public void setListenProgress(List<ListenProgressModel> listenProgress) {
+        this.listenProgress = listenProgress;
+    }
+
+    public static UserGameResultModel parse(UserGameResult userGameResult) {
+        // TODO: 2019/2/21 等room的PB完善
+        UserGameResultModel gameResultModel = new UserGameResultModel();
+        gameResultModel.setIsEscape(userGameResult.getIsEscape());
+        gameResultModel.setItemID(userGameResult.getItemID());
+        gameResultModel.setRank(userGameResult.getRank());
+//        gameResult.setTotalScore(userGameResult.getTotalScore());
+        gameResultModel.setUserID(userGameResult.getUserID());
+        List<ListenProgressModel> listenProgressModels = new ArrayList<>();
+        for (ListenProgress listenProgress : userGameResult.getListenProgressList()) {
+            listenProgressModels.add(ListenProgressModel.parse(listenProgress));
+        }
+        gameResultModel.setListenProgress(listenProgressModels);
+        return gameResultModel;
+    }
+
+    @Override
+    public String toString() {
+        return "UserGameResult{" +
+                "isEscape=" + isEscape +
+                ", itemID=" + itemID +
+                ", rank=" + rank +
+                ", totalScore=" + totalScore +
+                ", userID=" + userID +
+                ", winType='" + winType + '\'' +
+                ", listenProgress=" + listenProgress +
+                '}';
+    }
+}

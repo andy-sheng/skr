@@ -281,7 +281,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         ChatRoomMsgManager.getInstance().removeFilter(mPushMsgFilter);
         if (U.getActivityUtils().getTopActivity() instanceof VoiceRoomActivity) {
             //  如果顶部是VoiceRoomActivity 就不离开聊天室了
-            MyLog.d(TAG,"顶部是VoiceRoomActivity 就不离开聊天室");
+            MyLog.d(TAG, "顶部是VoiceRoomActivity 就不离开聊天室");
         } else {
             ModuleServiceManager.getInstance().getMsgService().leaveChatRoom(String.valueOf(mRoomData.getGameId()));
         }
@@ -529,6 +529,59 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     }
 
     /**
+     * pk灭灯等
+     */
+    public void pklightOff() {
+        MyLog.d(TAG, "pklightOff");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("gameID", mRoomData.getGameId());
+        map.put("roundSeq", mRoomData.getRealRoundSeq());
+
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        ApiMethods.subscribe(mRoomServerApi.pklightOff(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    // TODO: 2019/2/21 灭灯成功
+                    MyLog.w(TAG, "灭灯ok, traceid is " + result.getTraceId());
+                } else {
+                    MyLog.w(TAG, "灭灯失败, traceid is " + result.getTraceId());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                MyLog.w(TAG, "灭灯失败, errno is " + e);
+            }
+        }, this);
+    }
+
+    public void pkburst(){
+        MyLog.d(TAG, "pkburst" );
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("gameID", mRoomData.getGameId());
+        map.put("roundSeq", mRoomData.getRealRoundSeq());
+
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        ApiMethods.subscribe(mRoomServerApi.pkburst(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    // TODO: 2019/2/21 灭灯成功
+                    MyLog.w(TAG, "爆灯ok, traceid is " + result.getTraceId());
+                } else {
+                    MyLog.w(TAG, "爆灯失败, traceid is " + result.getTraceId());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                MyLog.w(TAG, "爆灯失败, errno is " + e);
+            }
+        }, this);
+    }
+
+    /**
      * 根据时间戳更新选手状态,目前就只有两个入口，SyncStatusEvent push了sycn，不写更多入口
      */
     private synchronized void updatePlayerState(long gameOverTimeMs, long syncStatusTimes, List<OnlineInfoModel> onlineInfos, RoundInfoModel currentInfo, RoundInfoModel nextInfo) {
@@ -559,9 +612,9 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                     // 轮次确实比当前的高，可以切换
                     mRoomData.setExpectRoundInfo(currentInfo);
                     mRoomData.checkRoundInRankMode();
-                } else if(RoomDataUtils.roundInfoEqual(currentInfo, mRoomData.getRealRoundInfo())) {
+                } else if (RoomDataUtils.roundInfoEqual(currentInfo, mRoomData.getRealRoundInfo())) {
                     // TODO: 2019/2/21 更新本次round的数据
-                    if(mRoomData.getRealRoundInfo() != null){
+                    if (mRoomData.getRealRoundInfo() != null) {
                         mRoomData.getRealRoundInfo().tryUpdatePkRoundInfoModel(currentInfo, true);
                     }
                 }
@@ -915,12 +968,12 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 
             BLightInfoModel bLightInfoModel = new BLightInfoModel();
             bLightInfoModel.setUserID(event.getpKBLightMsg().getUserID());
-            bLightInfoModel.setTimeMs(event.getInfo().getTimeMs());
+            bLightInfoModel.setTimeMs((int) event.getInfo().getTimeMs());
 
             roundInfoModel.addBrustLightUid(true, bLightInfoModel);
         } else {
             RoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
-            if(roundInfoModel != null && event.getpKBLightMsg().getRoundSeq() > roundInfoModel.getRoundSeq()){
+            if (roundInfoModel != null && event.getpKBLightMsg().getRoundSeq() > roundInfoModel.getRoundSeq()) {
                 // TODO: 2019/2/20  如果此次爆灯的round比现在的高，需要切换到下一个round或者sync
             }
             MyLog.w(TAG, "有人爆灯了,但是不是这个轮次：userID " + event.getpKBLightMsg().getUserID() + ", seq " + event.getpKBLightMsg().getRoundSeq() + "，当前轮次是 " + mRoomData.getRealRoundSeq());
@@ -936,12 +989,12 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 
             MLightInfoModel mLightInfoModel = new MLightInfoModel();
             mLightInfoModel.setUserID(event.getpKMLightMsg().getUserID());
-            mLightInfoModel.setTimeMs(event.getInfo().getTimeMs());
+            mLightInfoModel.setTimeMs((int) event.getInfo().getTimeMs());
 
             roundInfoModel.addPkLightOffUid(true, mLightInfoModel);
         } else {
             RoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
-            if(roundInfoModel != null && event.getpKMLightMsg().getRoundSeq() > roundInfoModel.getRoundSeq()){
+            if (roundInfoModel != null && event.getpKMLightMsg().getRoundSeq() > roundInfoModel.getRoundSeq()) {
                 // TODO: 2019/2/20  如果此次灭灯的round比现在的高，需要切换到下一个round或者sync
             }
             MyLog.w(TAG, "有人灭灯了,但是不是这个轮次：userID " + event.getpKMLightMsg().getUserID() + ", seq " + event.getpKMLightMsg().getRoundSeq() + "，当前轮次是 " + mRoomData.getRealRoundSeq());

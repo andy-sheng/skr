@@ -16,6 +16,7 @@ import com.common.utils.U;
 import com.module.playways.rank.msg.event.VoteResultEvent;
 import com.module.playways.rank.room.RoomServerApi;
 import com.module.playways.rank.room.model.RecordData;
+import com.module.playways.rank.room.model.UserGameResultModel;
 import com.module.playways.rank.room.model.WinResultModel;
 import com.module.playways.rank.room.model.score.ScoreResultModel;
 import com.module.playways.rank.room.model.VoteInfoModel;
@@ -123,7 +124,9 @@ public class EndGamePresenter extends RxLifeCyclePresenter {
                 if (result.getErrno() == 0) {
                     List<VoteInfoModel> voteInfoModelList = JSON.parseArray(result.getData().getString("voteInfo"), VoteInfoModel.class);
                     List<ScoreResultModel> scoreResultModels = JSON.parseArray(result.getData().getString("userScoreResult"), ScoreResultModel.class);
+                    List<UserGameResultModel> userGameResults = JSON.parseArray(result.getData().getString("userGameResult"), UserGameResultModel.class);
 
+                    // TODO: 2019/2/21 结果会由 scoreResultModels 和 userGameResults来呈现
                     if (scoreResultModels != null && scoreResultModels.size() > 0) {
                         List<WinResultModel> winResultModels = new ArrayList<>();     // 保存3个人胜负平和投票、逃跑结果
                         ScoreResultModel myScoreResultModel = new ScoreResultModel();

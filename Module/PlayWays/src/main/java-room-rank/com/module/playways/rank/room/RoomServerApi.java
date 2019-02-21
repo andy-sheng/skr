@@ -133,7 +133,7 @@ public interface RoomServerApi {
      * @return
      */
     @PUT("http://dev.game.inframe.mobi/v1/game/pk-show-mlight")
-    Observable<ApiResult> lightOff(@Body RequestBody body);
+    Observable<ApiResult> pklightOff(@Body RequestBody body);
 
     /**
      * 参数
@@ -148,7 +148,7 @@ public interface RoomServerApi {
      * @return
      */
     @PUT("http://dev.game.inframe.mobi/v1/game/pk-show-blight")
-    Observable<ApiResult> burst(@Body RequestBody body);
+    Observable<ApiResult> pkburst(@Body RequestBody body);
 
     /**
      * 参数

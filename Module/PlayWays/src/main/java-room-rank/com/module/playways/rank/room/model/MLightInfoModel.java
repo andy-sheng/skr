@@ -1,6 +1,5 @@
 package com.module.playways.rank.room.model;
 
-import com.zq.live.proto.Room.BLightInfo;
 import com.zq.live.proto.Room.MlightInfo;
 
 import java.io.Serializable;
@@ -9,34 +8,42 @@ import java.util.List;
 
 public class MLightInfoModel implements Serializable {
     /**
-     * 玩家id
+     * per : 0
+     * timeMs : 0
+     * userID : 0
      */
-    public int userID;
 
-    /**
-     * 爆灯时间戳
-     */
-    public long timeMs;
+    private int per;     //进度
+    private int timeMs;  //时间戳
+    private int userID;  //用户id
 
-    public Integer getUserID() {
-        return userID;
+    public int getPer() {
+        return per;
     }
 
-    public void setUserID(Integer userID) {
-        this.userID = userID;
+    public void setPer(int per) {
+        this.per = per;
     }
 
-    public Long getTimeMs() {
+    public int getTimeMs() {
         return timeMs;
     }
 
-    public void setTimeMs(Long timeMs) {
+    public void setTimeMs(int timeMs) {
         this.timeMs = timeMs;
     }
 
-    public static List<MLightInfoModel> parse(List<MlightInfo> mLightInfoList){
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
+
+    public static List<MLightInfoModel> parse(List<MlightInfo> mLightInfoList) {
         ArrayList<MLightInfoModel> mLightInfoModels = new ArrayList<>();
-        if(mLightInfoList != null){
+        if (mLightInfoList != null) {
             for (MlightInfo mlightInfo :
                     mLightInfoList) {
                 mLightInfoModels.add(MLightInfoModel.parse(mlightInfo));
@@ -46,11 +53,18 @@ public class MLightInfoModel implements Serializable {
         return mLightInfoModels;
     }
 
-    public static MLightInfoModel parse(MlightInfo mlightInfo){
+    public static MLightInfoModel parse(MlightInfo mlightInfo) {
         MLightInfoModel mLightInfoModel = new MLightInfoModel();
-        mLightInfoModel.userID = mlightInfo.getUserID();
-        mLightInfoModel.timeMs = mlightInfo.getTimeMs();
-
+        // TODO: 2019/2/21 等服务器上传新的PB
         return mLightInfoModel;
+    }
+
+    @Override
+    public String toString() {
+        return "MLightInfoModel{" +
+                "per=" + per +
+                ", timeMs=" + timeMs +
+                ", userID=" + userID +
+                '}';
     }
 }

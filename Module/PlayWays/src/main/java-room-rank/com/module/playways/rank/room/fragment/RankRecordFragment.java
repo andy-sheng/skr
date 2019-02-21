@@ -2,7 +2,6 @@ package com.module.playways.rank.room.fragment;
 
 import android.os.Bundle;
 
-import android.os.Handler;
 import android.support.annotation.Nullable;
 
 import android.view.View;
@@ -33,11 +32,11 @@ import com.module.playways.event.FinishPlayWayActivityEvent;
 import com.module.playways.rank.room.RoomServerApi;
 import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.RoomData;
+import com.module.playways.rank.room.model.UserGameResultModel;
 import com.module.playways.rank.room.model.VoteInfoModel;
 import com.module.playways.rank.room.model.WinResultModel;
 import com.module.playways.rank.room.model.score.ScoreResultModel;
 
-import com.module.playways.rank.room.presenter.EndGamePresenter;
 import com.module.playways.rank.room.view.IVoteView;
 
 import com.module.playways.rank.room.view.RecordItemView;
@@ -165,7 +164,9 @@ public class RankRecordFragment extends BaseFragment implements IVoteView {
                 if (result.getErrno() == 0) {
                     List<VoteInfoModel> voteInfoModelList = JSON.parseArray(result.getData().getString("voteInfo"), VoteInfoModel.class);
                     List<ScoreResultModel> scoreResultModels = JSON.parseArray(result.getData().getString("userScoreResult"), ScoreResultModel.class);
+                    List<UserGameResultModel> userGameResults = JSON.parseArray(result.getData().getString("userGameResult"), UserGameResultModel.class);
 
+                    // TODO: 2019/2/21 结果会由 scoreResultModels 和 userGameResults来呈现
                     if (scoreResultModels != null && scoreResultModels.size() > 0) {
                         List<WinResultModel> winResultModels = new ArrayList<>();     // 保存3个人胜负平和投票、逃跑结果
                         ScoreResultModel myScoreResultModel = new ScoreResultModel();
