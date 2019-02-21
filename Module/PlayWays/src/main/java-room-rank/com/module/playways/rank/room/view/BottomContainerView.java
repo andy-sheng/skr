@@ -15,6 +15,7 @@ import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
+import com.common.view.ex.ExTextView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
@@ -49,8 +50,9 @@ public class BottomContainerView extends RelativeLayout {
 
     Listener mBottomContainerListener;
 
-    ExImageView mQuickBtn;
-    ExImageView mShowInputContainerBtn;
+    ExTextView mQuickBtn;
+    ExTextView mShowInputContainerBtn;
+
     ExImageView mEmoji2Btn;
     ExImageView mEmoji1Btn;
 
@@ -85,8 +87,8 @@ public class BottomContainerView extends RelativeLayout {
     private void init() {
         inflate(getContext(), R.layout.bottom_container_view_layout, this);
 
-        mQuickBtn = (ExImageView) this.findViewById(R.id.quick_btn);
-        mShowInputContainerBtn = (ExImageView) this.findViewById(R.id.show_input_container_btn);
+        mQuickBtn = (ExTextView) this.findViewById(R.id.quick_btn);
+        mShowInputContainerBtn = (ExTextView) this.findViewById(R.id.show_input_container_btn);
         mEmoji2Btn = (ExImageView) this.findViewById(R.id.emoji2_btn);
         mEmoji1Btn = (ExImageView) this.findViewById(R.id.emoji1_btn);
 
