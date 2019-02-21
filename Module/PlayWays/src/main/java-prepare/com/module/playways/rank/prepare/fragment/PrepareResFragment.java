@@ -13,6 +13,8 @@ import android.widget.RelativeLayout;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.core.avatar.AvatarUtils;
+import com.common.image.fresco.FrescoWorker;
+import com.common.image.model.ImageFactory;
 import com.common.log.MyLog;
 import com.common.utils.ActivityUtils;
 import com.common.utils.FragmentUtils;
@@ -95,12 +97,19 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
             mMainActContainer.setBackgroundResource(R.drawable.dabeijing);
         }
 
-        AvatarUtils.loadAvatarByUrl(mSongIcon,
-                AvatarUtils.newParamsBuilder(mPrepareData.getSongModel().getCover())
-                        .setBorderColor(Color.parseColor("#0C2275"))
-                        .setCornerRadius(U.getDisplayUtils().dip2px(6))
-                        .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                        .build());
+        if (!TextUtils.isEmpty(mPrepareData.getSongModel().getCover())) {
+            FrescoWorker.loadImage(mSongIcon,
+                    ImageFactory.newHttpImage(mPrepareData.getSongModel().getCover())
+                    .setCornerRadius(U.getDisplayUtils().dip2px(6))
+                    .setBorderWidth(U.getDisplayUtils().dip2px(3))
+                    .setBorderColor(Color.parseColor("#0C2275")).build());
+        } else {
+            FrescoWorker.loadImage(mSongIcon,
+                    ImageFactory.newResImage(R.drawable.xuanzegequ_wufengmian)
+                    .setCornerRadius(U.getDisplayUtils().dip2px(6))
+                    .setBorderWidth(U.getDisplayUtils().dip2px(3))
+                    .setBorderColor(Color.parseColor("#0C2275")).build());
+        }
 
         mTvDuration.setText(U.getDateTimeUtils().formatTimeStringForDate(mPrepareData.getSongModel().getTotalMs(), "mm:ss"));
 

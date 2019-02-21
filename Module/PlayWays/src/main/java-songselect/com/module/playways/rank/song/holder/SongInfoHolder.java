@@ -2,8 +2,10 @@ package com.module.playways.rank.song.holder;
 
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
@@ -57,9 +59,16 @@ public class SongInfoHolder extends RecyclerView.ViewHolder {
 
         mSongNameTv.setText(mSongModel.getItemName());
         mSongOwnerTv.setText(mSongModel.getOwner());
-        FrescoWorker.loadImage(mSongCoverIv, ImageFactory.newHttpImage(mSongModel.getCover())
-                .setCornerRadius(U.getDisplayUtils().dip2px(4)).setBorderWidth(U.getDisplayUtils().dip2px(2))
-                .setBorderColor(Color.parseColor("#0C2275")).build());
+        if (!TextUtils.isEmpty(mSongModel.getCover())) {
+            FrescoWorker.loadImage(mSongCoverIv, ImageFactory.newHttpImage(mSongModel.getCover())
+                    .setCornerRadius(U.getDisplayUtils().dip2px(4)).setBorderWidth(U.getDisplayUtils().dip2px(2))
+                    .setBorderColor(Color.parseColor("#0C2275")).build());
+        } else {
+            FrescoWorker.loadImage(mSongCoverIv, ImageFactory.newResImage(R.drawable.xuanzegequ_wufengmian)
+                    .setCornerRadius(U.getDisplayUtils().dip2px(4)).setBorderWidth(U.getDisplayUtils().dip2px(2))
+                    .setBorderColor(Color.parseColor("#0C2275")).build());
+        }
+
     }
 
 }
