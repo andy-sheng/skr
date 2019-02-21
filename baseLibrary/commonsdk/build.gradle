@@ -160,6 +160,10 @@ dependencies {
     api(rootProject.ext.dependencies["appcompat-v7"])
     api(rootProject.ext.dependencies["design"])
 
+    debugImplementation(rootProject.ext.dependencies["canary-debug"])
+    releaseImplementation(rootProject.ext.dependencies["canary-release"])
+    debugImplementation(rootProject.ext.dependencies["canary-debug-fragment"])
+
     // 导入ARouter库
     api(rootProject.ext.dependencies["arouter"])
     // eventbus 事件总线
@@ -240,7 +244,6 @@ dependencies {
     api rootProject.ext.dependencies['umeng-huawei-basetb']
     api rootProject.ext.dependencies['umeng-huawei-pushtb']
     api rootProject.ext.dependencies['umeng-huawei-umengaccs']
-
 
 //    debugApi rootProject.ext.dependencies["stetho"]
 

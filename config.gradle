@@ -18,7 +18,7 @@ ext {
             rxlifecycleSdkVersion   : "1.0",
             rxlifecycle2SdkVersion  : "2.2.1",
             espressoSdkVersion      : "3.0.1",
-            canarySdkVersion        : "1.5.4",
+            canarySdkVersion        : "1.6.3",
             frescoVersion           : "1.11.0",
             greenDaoVersion         : "3.2.2",
             okhttp3                 : "3.12.0"
@@ -213,6 +213,8 @@ ext {
             "logger"                           : "com.orhanobut:logger:2.2.0",
             "canary-debug"                     : "com.squareup.leakcanary:leakcanary-android:${version["canarySdkVersion"]}",
             "canary-release"                   : "com.squareup.leakcanary:leakcanary-android-no-op:${version["canarySdkVersion"]}",
+            "canary-debug-fragment"           : "com.squareup.leakcanary:leakcanary-support-fragment:${version["canarySdkVersion"]}",
+
             "lzyzsd-jsbridge"                  : "com.github.lzyzsd:jsbridge:1.0.4"
     ]
 

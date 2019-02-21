@@ -16,7 +16,7 @@ public class PkLightOffMsgEvent {
         return info;
     }
 
-    public PKMLightMsg getpKMLightMsg() {
+    public PKMLightMsg getPKMLightMsg() {
         return pKMLightMsg;
     }
 }

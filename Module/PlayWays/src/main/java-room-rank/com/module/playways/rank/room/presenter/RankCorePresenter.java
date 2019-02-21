@@ -2,11 +2,9 @@ package com.module.playways.rank.room.presenter;
 
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.util.Pair;
 
 import com.alibaba.fastjson.JSON;
 import com.common.core.account.UserAccountManager;
-import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
@@ -31,7 +29,6 @@ import com.engine.arccloud.SongInfo;
 import com.module.ModuleServiceManager;
 import com.module.msg.CustomMsgType;
 import com.module.msg.IMsgService;
-import com.module.playways.grab.room.model.NoPassingInfo;
 import com.module.playways.rank.msg.BasePushInfo;
 import com.module.playways.rank.msg.event.AccBeginEvent;
 import com.module.playways.rank.msg.event.AppSwapEvent;
@@ -48,7 +45,6 @@ import com.module.playways.rank.msg.manager.ChatRoomMsgManager;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
-import com.module.playways.rank.prepare.presenter.MatchPresenter;
 import com.module.playways.rank.room.RoomServerApi;
 import com.module.playways.rank.room.SwapStatusType;
 import com.module.playways.rank.room.event.PkSomeOneBurstLightEvent;
@@ -59,9 +55,6 @@ import com.module.playways.rank.room.model.MLightInfoModel;
 import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.RoomData;
 import com.module.playways.RoomDataUtils;
-import com.module.playways.rank.room.model.VoteInfoModel;
-import com.module.playways.rank.room.model.WinResultModel;
-import com.module.playways.rank.room.model.score.ScoreResultModel;
 import com.module.playways.rank.room.score.MachineScoreItem;
 import com.module.playways.rank.room.score.RobotScoreHelper;
 import com.module.playways.rank.room.view.IGameRuleView;
@@ -72,7 +65,6 @@ import com.zq.live.proto.Room.EMsgPosType;
 import com.zq.live.proto.Room.ERoomMsgType;
 import com.zq.live.proto.Room.MachineScore;
 import com.zq.live.proto.Room.RoomMsg;
-import com.zq.live.proto.Room.UserScoreResult;
 import com.zq.lyrics.event.LrcEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -81,7 +73,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.greenrobot.greendao.annotation.NotNull;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -1053,21 +1044,21 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     //服务器push，某人灭灯了
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(PkLightOffMsgEvent event) {
-        if (RoomDataUtils.isCurrentRound(event.getpKMLightMsg().getRoundSeq(), mRoomData)) {
-            MyLog.w(TAG, "有人灭灯了：userID " + event.getpKMLightMsg().getUserID() + ", seq " + event.getpKMLightMsg().getRoundSeq());
+        if (RoomDataUtils.isCurrentRound(event.getPKMLightMsg().getRoundSeq(), mRoomData)) {
+            MyLog.w(TAG, "有人灭灯了：userID " + event.getPKMLightMsg().getUserID() + ", seq " + event.getPKMLightMsg().getRoundSeq());
             RoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
 
             MLightInfoModel mLightInfoModel = new MLightInfoModel();
-            mLightInfoModel.setUserID(event.getpKMLightMsg().getUserID());
+            mLightInfoModel.setUserID(event.getPKMLightMsg().getUserID());
             mLightInfoModel.setTimeMs((int) event.getInfo().getTimeMs());
 
             roundInfoModel.addPkLightOffUid(true, mLightInfoModel);
         } else {
             RoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
-            if (roundInfoModel != null && event.getpKMLightMsg().getRoundSeq() > roundInfoModel.getRoundSeq()) {
+            if (roundInfoModel != null && event.getPKMLightMsg().getRoundSeq() > roundInfoModel.getRoundSeq()) {
                 // TODO: 2019/2/20  如果此次灭灯的round比现在的高，需要切换到下一个round或者sync
             }
-            MyLog.w(TAG, "有人灭灯了,但是不是这个轮次：userID " + event.getpKMLightMsg().getUserID() + ", seq " + event.getpKMLightMsg().getRoundSeq() + "，当前轮次是 " + mRoomData.getRealRoundSeq());
+            MyLog.w(TAG, "有人灭灯了,但是不是这个轮次：userID " + event.getPKMLightMsg().getUserID() + ", seq " + event.getPKMLightMsg().getRoundSeq() + "，当前轮次是 " + mRoomData.getRealRoundSeq());
         }
     }
 

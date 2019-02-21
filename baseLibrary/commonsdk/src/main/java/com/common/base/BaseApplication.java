@@ -27,6 +27,7 @@ import com.common.base.delegate.AppLifecycles;
 import com.common.base.delegate.PluginAppDelegate;
 import com.common.umeng.UmengInit;
 import com.common.utils.U;
+import com.squareup.leakcanary.LeakCanary;
 
 import java.util.List;
 
@@ -103,6 +104,8 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "onCreate");
+        // Normal app init code...
+
         if (mPluginAppDelegate != null) {
             mPluginAppDelegate.onCreate(this);
         }

@@ -254,7 +254,6 @@ public class RoundInfoModel implements Serializable {
                 roundInfoModel.addPkLightOffUid(false, MLightInfoModel.parse(m));
             }
         }
-
         return roundInfoModel;
     }
 

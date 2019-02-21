@@ -32,6 +32,7 @@ import com.common.utils.U;
 import com.kingja.loadsir.LoadSirUtil;
 import com.kingja.loadsir.callback.SuccessCallback;
 import com.kingja.loadsir.core.LoadSir;
+import com.squareup.leakcanary.LeakCanary;
 
 import java.util.List;
 
@@ -76,6 +77,8 @@ public class CommonConfiguration implements ConfigModule {
 //                PgyCrashManager.register();
                 CommonReceiver.register();
                 UmengInit.init();
+                //leakCanary 引用
+                LeakCanary.install(application);
             }
 
             @Override
