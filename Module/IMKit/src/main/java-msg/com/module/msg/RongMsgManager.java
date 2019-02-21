@@ -8,8 +8,6 @@ import android.util.Pair;
 import com.alibaba.fastjson.JSONObject;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
-import com.common.core.myinfo.event.MyUserInfoEvent;
-import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.cache.BuddyCache;
 import com.common.log.MyLog;
 import com.common.statistics.StatisticsAdapter;
@@ -17,8 +15,6 @@ import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.module.common.ICallback;
 import com.module.msg.model.CustomChatRoomMsg;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -57,24 +53,26 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
     private RongIMClient.OperationCallback mOperationCallback = new RongIMClient.OperationCallback() {
         @Override
         public void onSuccess() {
-            if (mJoinroomCallback != null) {
+            if (mOneTimeJoinroomCallback != null) {
                 MyLog.d(TAG, "join rc room onSuccess");
                 StatisticsAdapter.recordCountEvent("rc", "join_room_success", null);
-                mJoinroomCallback.onSucess(null);
+                mOneTimeJoinroomCallback.onSucess(null);
+                mOneTimeJoinroomCallback = null;
             }
         }
 
         @Override
         public void onError(RongIMClient.ErrorCode errorCode) {
-            if (mJoinroomCallback != null) {
+            if (mOneTimeJoinroomCallback != null) {
                 MyLog.d(TAG, "join rc room error,code:" + errorCode);
                 StatisticsAdapter.recordCountEvent("rc", "join_room_failed", null);
-                mJoinroomCallback.onFailed(null, errorCode.getValue(), errorCode.getMessage());
+                mOneTimeJoinroomCallback.onFailed(null, errorCode.getValue(), errorCode.getMessage());
+                mOneTimeJoinroomCallback = null;
             }
         }
     };
 
-    private ICallback mJoinroomCallback;
+    private ICallback mOneTimeJoinroomCallback;
 
     /**
      * 消息类型-->消息处理器的映射
@@ -279,7 +277,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
     }
 
     public void joinChatRoom(String roomId, ICallback callback) {
-        mJoinroomCallback = callback;
+        mOneTimeJoinroomCallback = callback;
         /**
          * 不拉之前的消息
          */
@@ -293,7 +291,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
 
     public void leaveChatRoom(String roomId) {
         MyLog.d(TAG, "leaveChatRoom" + " roomId=" + roomId);
-        mJoinroomCallback = null;
+        mOneTimeJoinroomCallback = null;
         RongIM.getInstance().quitChatRoom(roomId, mOperationCallback);
     }
 

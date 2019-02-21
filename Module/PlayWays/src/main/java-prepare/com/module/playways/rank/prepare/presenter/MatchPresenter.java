@@ -54,7 +54,6 @@ public class MatchPresenter extends RxLifeCyclePresenter {
     GameInfoModel mJsonGameInfo;
 
     volatile MatchState mMatchState = MatchState.IDLE;
-    private List<String> mAvatarURL;
 
     public MatchPresenter(@NonNull IMatchingView view) {
         this.mView = view;
