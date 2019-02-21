@@ -2,17 +2,21 @@ package com.module.playways.rank.room.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.RelativeLayout;
+
 import com.common.utils.HandlerTaskTimer;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.rank.prepare.model.GameConfigModel;
 import com.module.rank.R;
+
 import java.util.concurrent.TimeUnit;
 
 public class RankOpView extends RelativeLayout {
-    public static final int COUNT_DOWN_NUM = 20;
+    public int mLightOffDelayTime = 20;
     ExImageView mIvBurst;
     ExImageView mIvTurnOff;
     ExTextView mTvCountDown;
@@ -25,8 +29,8 @@ public class RankOpView extends RelativeLayout {
 
     GameConfigModel mGameConfigModel;
 
-    int mBurstMaxNum = 0;
-    int mLightOffMaxNum = 0;
+    int mBurstMaxNum = 1;
+    int mLightOffMaxNum = 2;
 
     public RankOpView(Context context) {
         super(context);
@@ -44,20 +48,20 @@ public class RankOpView extends RelativeLayout {
         mIvTurnOff = findViewById(R.id.iv_turn_off);
         mTvCountDown = findViewById(R.id.tv_count_down);
 
-        RxView.clicks(mIvBurst)
-                .throttleFirst(300, TimeUnit.MILLISECONDS)
-                .filter(o -> mBurstMaxNum > 0)
-                .subscribe(o -> {
-                    if(mOpListener != null){
-                        mOpListener.clickBurst(mSeq);
-                    }
-                });
+        mIvBurst.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mBurstMaxNum > 0 && mOpListener != null) {
+                    mOpListener.clickBurst(mSeq);
+                }
+            }
+        });
 
         RxView.clicks(mIvTurnOff)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
                 .filter(o -> mLightOffMaxNum > 0)
                 .subscribe(o -> {
-                    if(mOpListener != null){
+                    if (mOpListener != null) {
                         mOpListener.clickLightOff(mSeq);
                     }
                 });
@@ -66,26 +70,35 @@ public class RankOpView extends RelativeLayout {
     public void setOpListener(OpListener opListener, GameConfigModel gameConfigModel) {
         mOpListener = opListener;
         mGameConfigModel = gameConfigModel;
-        if(mGameConfigModel != null){
+        if (mGameConfigModel != null) {
             mBurstMaxNum = mGameConfigModel.getpKMaxShowBLightTimes();
             mLightOffMaxNum = mGameConfigModel.getpKMaxShowMLightTimes();
+            mLightOffDelayTime = mGameConfigModel.getpKEnableShowMLightWaitTimeMs() / 1000;
         }
     }
 
     public void playCountDown(int seq) {
+        if (seq <= 0) {
+            return;
+        }
+
         mSeq = seq;
         cancelTimer();
-        mIvTurnOff.setEnabled(false);
+        mIvTurnOff.setVisibility(GONE);
+        mTvCountDown.setVisibility(VISIBLE);
 
         mCountDownTask = HandlerTaskTimer.newBuilder()
                 .interval(1000)
-                .take(COUNT_DOWN_NUM)
+                .take(mLightOffDelayTime)
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
-                        integer = COUNT_DOWN_NUM - integer;
+                        integer = mLightOffDelayTime - integer;
                         if (integer == 0) {
-                            mIvTurnOff.setEnabled(true);
+                            mIvTurnOff.setVisibility(VISIBLE);
+                            mTvCountDown.setVisibility(GONE);
+                            mTvCountDown.setText("");
+                            return;
                         }
 
                         mTvCountDown.setText(integer + "");
@@ -103,7 +116,7 @@ public class RankOpView extends RelativeLayout {
         if (success) {
             mBurstMaxNum--;
             //没有爆灯机会了
-            if(mBurstMaxNum <= 0){
+            if (mBurstMaxNum <= 0) {
                 mIvBurst.setVisibility(GONE);
             }
         }
@@ -113,7 +126,7 @@ public class RankOpView extends RelativeLayout {
         if (seq == mSeq) {
             mLightOffMaxNum--;
             //没有灭灯机会了
-            if(mLightOffMaxNum <= 0){
+            if (mLightOffMaxNum <= 0) {
 
             }
         }

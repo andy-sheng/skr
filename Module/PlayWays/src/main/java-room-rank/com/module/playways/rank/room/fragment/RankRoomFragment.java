@@ -489,6 +489,16 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView, Ran
         mCorePresenter.lightOff(seq);
     }
 
+    @Override
+    public void burstByUser(int id, int seq) {
+        mRankTopContainerView.updateLight(id, seq, RankTopContainerView.LightState.BAO);
+    }
+
+    @Override
+    public void lightOffByUser(int id, int seq) {
+        mRankTopContainerView.updateLight(id, seq, RankTopContainerView.LightState.MIE);
+    }
+
     private void initInputView() {
         mInputContainerView = mRootView.findViewById(R.id.input_container_view);
         mInputContainerView.setRoomData(mRoomData);
@@ -813,6 +823,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView, Ran
         mStageView.setVisibility(View.GONE);
         mSingAvatarView.setVisibility(View.GONE);
         mCountDownProcess.setVisibility(View.GONE);
+//        mRankOpView.playCountDown(mRoomData.getRealRoundSeq());
 
 //        mTopContainerView.cancelShowLastedTimeTask();
         MyLog.w(TAG, "用户" + uid + "的演唱开始了");

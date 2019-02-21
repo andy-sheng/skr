@@ -38,4 +38,8 @@ public interface IGameRuleView {
     void burstSuccess(boolean success, int seq);
 
     void lightOffSuccess(boolean success, int seq);
+
+    void burstByUser(int id, int seq);
+
+    void lightOffByUser(int id, int seq);
 }

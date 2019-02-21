@@ -6,6 +6,8 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.common.log.MyLog;
+import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.module.playways.RoomData;
@@ -14,7 +16,14 @@ import com.module.rank.R;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 public class RankTopContainerView extends RelativeLayout {
+    public final static String TAG = "RankTopContainerView";
     ExImageView mMoreBtn;
     MoreOpView mMoreOpView;
     ExImageView mIvLed;
@@ -28,7 +37,11 @@ public class RankTopContainerView extends RelativeLayout {
     TopContainerView.Listener mListener;
     RoomData mRoomData;
 
-    enum LightState{
+    int mSeq;
+
+    Map<Integer, Map<Integer, LightState>> mRecord = new ConcurrentHashMap<>();
+
+    public enum LightState {
         BAO, MIE
     }
 
@@ -57,13 +70,13 @@ public class RankTopContainerView extends RelativeLayout {
         mIvLeft = (ExImageView) findViewById(R.id.iv_left);
         mIvCenter = (ExImageView) findViewById(R.id.iv_center);
         mIvRignt = (ExImageView) findViewById(R.id.iv_rignt);
-        mEnergySlotView = (EnergySlotView)findViewById(R.id.energy_slot_view);
-        mIvGameRole = (ExImageView)findViewById(R.id.iv_game_role);
+        mEnergySlotView = (EnergySlotView) findViewById(R.id.energy_slot_view);
+        mIvGameRole = (ExImageView) findViewById(R.id.iv_game_role);
 
         mIvGameRole.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                if(mGameRoleDialog != null){
+                if (mGameRoleDialog != null) {
                     mGameRoleDialog.dismiss();
                 }
 
@@ -110,25 +123,52 @@ public class RankTopContainerView extends RelativeLayout {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if(mGameRoleDialog != null && mGameRoleDialog.isShowing()){
+        if (mGameRoleDialog != null && mGameRoleDialog.isShowing()) {
             mGameRoleDialog.dismiss();
         }
     }
 
     //轮次结束
-    public void roundOver(){
-
+    public void roundOver() {
+        mIvLeft.setImageDrawable(null);
+        mIvCenter.setImageDrawable(null);
+        mIvRignt.setImageDrawable(null);
     }
 
     /**
-     * @param seq  轮次信息
-     * @param lightState  爆灭情况
+     * @param userId
+     * @param seq
+     * @param lightState
      */
-    public void updateLight(int seq, LightState lightState){
+    public void updateLight(int userId, int seq, LightState lightState) {
+        MyLog.w(TAG, "updateLight" + " userId=" + userId + " seq=" + seq + " lightState=" + lightState + ",currentSeq is " + mRoomData.getRealRoundSeq());
+        if (mRoomData.getRealRoundSeq() > 0 && mRoomData.getRealRoundSeq() == seq) {
+            Map<Integer, LightState> hashMap = mRecord.get(seq);
+            if (hashMap == null) {
+                hashMap = new ConcurrentHashMap<>();
+                mRecord.put(seq, hashMap);
+            }
 
+            hashMap.put(userId, lightState);
+            setLight(hashMap.size(), lightState);
+        }
     }
 
-    public EnergySlotView getEnergySlotView(){
+    private void setLight(int index, LightState lightState) {
+        switch (index) {
+            case 1:
+                mIvLeft.setImageDrawable(lightState == LightState.BAO ? U.getDrawable(R.drawable.yanchang_bao) : U.getDrawable(R.drawable.yanchang_mie));
+                break;
+            case 2:
+                mIvCenter.setImageDrawable(lightState == LightState.BAO ? U.getDrawable(R.drawable.yanchang_bao) : U.getDrawable(R.drawable.yanchang_mie));
+                break;
+            case 3:
+                mIvRignt.setImageDrawable(lightState == LightState.BAO ? U.getDrawable(R.drawable.yanchang_bao) : U.getDrawable(R.drawable.yanchang_mie));
+                break;
+        }
+    }
+
+    public EnergySlotView getEnergySlotView() {
         return mEnergySlotView;
     }
 }

@@ -1020,13 +1020,13 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     //某人灭灯了
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(PkSomeOneLightOffEvent event) {
-
+        mIGameRuleView.lightOffByUser(event.uid, event.roundInfo.getRoundSeq());
     }
 
     //某人爆灯了
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(PkSomeOneBurstLightEvent event) {
-
+        mIGameRuleView.burstByUser(event.uid, event.roundInfo.getRoundSeq());
     }
 
     //服务器push，某人爆灯了
