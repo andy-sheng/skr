@@ -7,13 +7,13 @@ import com.module.playways.grab.room.event.GrabGameOverEvent;
 import com.module.playways.grab.room.event.GrabRoundChangeEvent;
 import com.module.playways.grab.room.model.GrabResultInfoModel;
 import com.module.playways.rank.prepare.model.GameConfigModel;
-import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
+import com.module.playways.rank.room.event.PkMyBurstSuccessEvent;
+import com.module.playways.rank.room.event.PkMyLightOffSuccessEvent;
 import com.module.playways.rank.room.event.RoundInfoChangeEvent;
 import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.rank.song.model.SongModel;
-import com.zq.live.proto.Room.PlayerInfo;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -75,16 +75,36 @@ public class RoomData implements Serializable {
 
     private RecordData mRecordData; // PK赛的结果信息
 
-    private volatile boolean mIsGameFinish = false;
+    private volatile boolean mIsGameFinish = false; // 游戏开始了
 
     private List<GrabResultInfoModel> mResultList; // 一唱到底对战结果数据
 
-    private boolean mMute = false;
+    private boolean mMute = false;//是否mute
 
-    //一场到底歌曲分类
-    private int tagId;
+    private int mTagId;//一场到底歌曲分类
 
-    GameConfigModel mGameConfigModel;
+    private GameConfigModel mGameConfigModel;// 配置信息
+
+    private int mLeftBaoLightTimes; //剩余爆灯次数
+    private int mLeftMieLightTimes; //剩余灭灯次数
+
+    public int getLeftBurstLightTimes() {
+        return mLeftBaoLightTimes;
+    }
+
+    public void consumeBurstLightTimes(RoundInfoModel which) {
+        mLeftBaoLightTimes = mLeftBaoLightTimes - 1;
+        EventBus.getDefault().post(new PkMyBurstSuccessEvent(which));
+    }
+
+    public int getLeftLightOffTimes() {
+        return mLeftMieLightTimes;
+    }
+
+    public void consumeLightOffTimes(RoundInfoModel which) {
+        mLeftMieLightTimes = mLeftMieLightTimes - 1;
+        EventBus.getDefault().post(new PkMyLightOffSuccessEvent(which));
+    }
 
     public GameConfigModel getGameConfigModel() {
         return mGameConfigModel;
@@ -92,14 +112,16 @@ public class RoomData implements Serializable {
 
     public void setGameConfigModel(GameConfigModel gameConfigModel) {
         mGameConfigModel = gameConfigModel;
+        mLeftMieLightTimes = mGameConfigModel.getpKMaxShowMLightTimes();
+        mLeftBaoLightTimes = mGameConfigModel.getpKMaxShowBLightTimes();
     }
 
     public int getTagId() {
-        return tagId;
+        return mTagId;
     }
 
     public void setTagId(int tagId) {
-        this.tagId = tagId;
+        this.mTagId = tagId;
     }
 
     /**
@@ -296,7 +318,7 @@ public class RoomData implements Serializable {
         return null;
     }
 
-    public PlayerInfoModel getPlayerInfoModel(int userID){
+    public PlayerInfoModel getPlayerInfoModel(int userID) {
         if (userID == 0) {
             return null;
         }

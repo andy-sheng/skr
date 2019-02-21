@@ -35,11 +35,4 @@ public interface IGameRuleView {
     // 主舞台离开（开始主舞台消失动画）
     void hideMainStage();
 
-    void burstSuccess(boolean success, int seq);
-
-    void lightOffSuccess(boolean success, int seq);
-
-    void burstByUser(int id, int seq);
-
-    void lightOffByUser(int id, int seq);
 }

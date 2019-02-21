@@ -110,7 +110,7 @@ import static com.zq.report.fragment.ReportFragment.FORM_GAME;
 import static com.zq.report.fragment.ReportFragment.REPORT_FROM_KEY;
 import static com.zq.report.fragment.ReportFragment.REPORT_USER_ID;
 
-public class RankRoomFragment extends BaseFragment implements IGameRuleView, RankOpView.OpListener {
+public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     public final static String TAG = "RankingRoomFragment";
 
@@ -231,9 +231,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView, Ran
         initLyricsView();
         initTurnChangeView();
         initGiftDisplayView();
-
-        mRankOpView = mRootView.findViewById(R.id.rank_op_view);
-        mRankOpView.setOpListener(this, mRoomData.getGameConfigModel());
+        initOpView();
 
         mCorePresenter = new RankCorePresenter(this, mRoomData);
         addPresent(mCorePresenter);
@@ -469,36 +467,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView, Ran
                 });
     }
 
-    @Override
-    public void burstSuccess(boolean success, int seq) {
-        mRankOpView.burstSuccess(success, seq);
-    }
-
-    @Override
-    public void lightOffSuccess(boolean success, int seq) {
-        mRankOpView.lightOffSuccess(success, seq);
-    }
-
-    @Override
-    public void clickBurst(int seq) {
-        mCorePresenter.burst(seq);
-    }
-
-    @Override
-    public void clickLightOff(int seq) {
-        mCorePresenter.lightOff(seq);
-    }
-
-    @Override
-    public void burstByUser(int id, int seq) {
-        mRankTopContainerView.updateLight(id, seq, RankTopContainerView.LightState.BAO);
-    }
-
-    @Override
-    public void lightOffByUser(int id, int seq) {
-        mRankTopContainerView.updateLight(id, seq, RankTopContainerView.LightState.MIE);
-    }
-
     private void initInputView() {
         mInputContainerView = mRootView.findViewById(R.id.input_container_view);
         mInputContainerView.setRoomData(mRoomData);
@@ -635,6 +603,22 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView, Ran
         giftContinueViewGroup.setRoomData(mRoomData);
         GiftBigAnimationViewGroup giftBigAnimationViewGroup = mRootView.findViewById(R.id.gift_big_animation_vg);
         giftBigAnimationViewGroup.setRoomData(mRoomData);
+    }
+
+    private void initOpView() {
+        mRankOpView = mRootView.findViewById(R.id.rank_op_view);
+        mRankOpView.setRoomData(mRoomData);
+        mRankOpView.setOpListener(new RankOpView.OpListener() {
+            @Override
+            public void clickBurst(int seq) {
+                mCorePresenter.sendBurst(seq);
+            }
+
+            @Override
+            public void clickLightOff(int seq) {
+                mCorePresenter.sendLightOff(seq);
+            }
+        });
     }
 
     private SVGAParser getSVGAParser() {

@@ -11,19 +11,23 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.module.playways.RoomData;
+import com.module.playways.rank.room.event.PkSomeOneBurstLightEvent;
+import com.module.playways.rank.room.event.PkSomeOneLightOffEvent;
 import com.module.playways.rank.room.score.bar.EnergySlotView;
 import com.module.rank.R;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class RankTopContainerView extends RelativeLayout {
     public final static String TAG = "RankTopContainerView";
+    static final int MAX_USER_NUM = 3;
     ExImageView mMoreBtn;
     MoreOpView mMoreOpView;
     ExImageView mIvLed;
@@ -37,12 +41,16 @@ public class RankTopContainerView extends RelativeLayout {
     TopContainerView.Listener mListener;
     RoomData mRoomData;
 
-    int mSeq;
+    UserLightInfo mStatusArr[] = new UserLightInfo[MAX_USER_NUM];
+    int mIndex = 0;
 
-    Map<Integer, Map<Integer, LightState>> mRecord = new ConcurrentHashMap<>();
+    static class UserLightInfo {
+        int mUserId;
+        LightState mLightState;
+    }
 
     public enum LightState {
-        BAO, MIE
+        BAO, MIE;
     }
 
     public RankTopContainerView(Context context) {
@@ -121,11 +129,60 @@ public class RankTopContainerView extends RelativeLayout {
     }
 
     @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         if (mGameRoleDialog != null && mGameRoleDialog.isShowing()) {
             mGameRoleDialog.dismiss();
         }
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(PkSomeOneBurstLightEvent event) {
+        for (int i = 0; i < mStatusArr.length && i < mIndex; i++) {
+            UserLightInfo ul = mStatusArr[i];
+            if (ul != null) {
+                if (ul.mUserId == event.uid) {
+                    ul.mLightState = LightState.BAO;
+                    setLight(i, ul.mLightState);
+                    return;
+                }
+            }
+        }
+        UserLightInfo ul = new UserLightInfo();
+        ul.mUserId = event.uid;
+        ul.mLightState = LightState.BAO;
+        setLight(mIndex, ul.mLightState);
+        mStatusArr[mIndex] = ul;
+        mIndex = (mIndex + 1) % MAX_USER_NUM;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(PkSomeOneLightOffEvent event) {
+        for (int i = 0; i < mStatusArr.length & i < mIndex; i++) {
+            UserLightInfo ul = mStatusArr[i];
+            if (ul != null) {
+                if (ul.mUserId == event.uid) {
+                    ul.mLightState = LightState.MIE;
+                    setLight(i, ul.mLightState);
+                    return;
+                }
+            }
+        }
+        UserLightInfo ul = new UserLightInfo();
+        ul.mUserId = event.uid;
+        ul.mLightState = LightState.MIE;
+        setLight(mIndex, ul.mLightState);
+        mStatusArr[mIndex] = ul;
+        mIndex = (mIndex + 1) % MAX_USER_NUM;
     }
 
     //轮次结束
@@ -133,26 +190,9 @@ public class RankTopContainerView extends RelativeLayout {
         mIvLeft.setImageDrawable(null);
         mIvCenter.setImageDrawable(null);
         mIvRignt.setImageDrawable(null);
+        mIndex = 0;
     }
 
-    /**
-     * @param userId
-     * @param seq
-     * @param lightState
-     */
-    public void updateLight(int userId, int seq, LightState lightState) {
-        MyLog.w(TAG, "updateLight" + " userId=" + userId + " seq=" + seq + " lightState=" + lightState + ",currentSeq is " + mRoomData.getRealRoundSeq());
-        if (mRoomData.getRealRoundSeq() > 0 && mRoomData.getRealRoundSeq() == seq) {
-            Map<Integer, LightState> hashMap = mRecord.get(seq);
-            if (hashMap == null) {
-                hashMap = new ConcurrentHashMap<>();
-                mRecord.put(seq, hashMap);
-            }
-
-            hashMap.put(userId, lightState);
-            setLight(hashMap.size(), lightState);
-        }
-    }
 
     private void setLight(int index, LightState lightState) {
         switch (index) {

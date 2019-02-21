@@ -12,11 +12,20 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.module.playways.RoomData;
+import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.prepare.model.GameConfigModel;
+import com.module.playways.rank.room.event.PkMyBurstSuccessEvent;
+import com.module.playways.rank.room.event.PkMyLightOffSuccessEvent;
 import com.module.rank.R;
 
 import java.util.HashMap;
 import java.util.HashSet;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.concurrent.TimeUnit;
 
 public class RankOpView extends RelativeLayout {
@@ -32,10 +41,7 @@ public class RankOpView extends RelativeLayout {
 
     HandlerTaskTimer mCountDownTask;
 
-    GameConfigModel mGameConfigModel;
-
-    int mBurstMaxNum = 1;
-    int mLightOffMaxNum = 2;
+    RoomData mRoomData;
 
     HashSet<Integer> mHasOpSeq = new HashSet<>();
 
@@ -55,43 +61,74 @@ public class RankOpView extends RelativeLayout {
         mIvTurnOff = findViewById(R.id.iv_turn_off);
         mTvCountDown = findViewById(R.id.tv_count_down);
 
-        RxView.clicks(mIvBurst)
-                .throttleFirst(300, TimeUnit.MILLISECONDS)
-                .filter(o -> mBurstMaxNum > 0)
-                .subscribe(o -> {
+        mIvBurst.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mRoomData.getLeftBurstLightTimes() > 0) {
                     if (mOpListener != null) {
-                        if(mHasOpSeq.contains(mSeq)){
+                        if (mHasOpSeq.contains(mSeq)) {
                             U.getToastUtil().showShort("灭灯之后不能爆灯哦");
                             return;
                         }
-                        mOpListener.clickBurst(mSeq);
                     }
-                });
+                    mOpListener.clickBurst(mSeq);
+                }
+            }
+        });
 
-        RxView.clicks(mIvTurnOff)
-                .throttleFirst(300, TimeUnit.MILLISECONDS)
-                .filter(o -> mLightOffMaxNum > 0)
-                .subscribe(o -> {
+        mIvTurnOff.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mRoomData.getLeftLightOffTimes() > 0) {
                     if (mOpListener != null) {
-                        if(mHasOpSeq.contains(mSeq)){
+                        if (mHasOpSeq.contains(mSeq)) {
                             U.getToastUtil().showShort("爆灯之后不能灭灯哦");
                             return;
                         }
                         mOpListener.clickLightOff(mSeq);
                     }
-                });
+                }
+            }
+        });
     }
 
-    public void setOpListener(OpListener opListener, GameConfigModel gameConfigModel) {
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        EventBus.getDefault().unregister(this);
+    }
+
+    public void setRoomData(RoomData roomData) {
+        mRoomData = roomData;
+    }
+
+    public void setOpListener(OpListener opListener) {
         mOpListener = opListener;
-        mGameConfigModel = gameConfigModel;
-        if (mGameConfigModel != null) {
-            mBurstMaxNum = mGameConfigModel.getpKMaxShowBLightTimes();
-            mLightOffMaxNum = mGameConfigModel.getpKMaxShowMLightTimes();
-            mLightOffDelayTime = mGameConfigModel.getpKEnableShowMLightWaitTimeMs() / 1000;
-            mBurstMaxNum = 1;
-            mLightOffMaxNum = 2;
-            mLightOffDelayTime = 20;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(PkMyBurstSuccessEvent event) {
+        mHasOpSeq.add(event.roundInfo.getRoundSeq());
+        if (RoomDataUtils.isCurrentRound(event.roundInfo.getRoundSeq(), mRoomData)) {
+            // 爆灯成功
+            mIvBurst.setEnabled(false);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(PkMyLightOffSuccessEvent event) {
+        mHasOpSeq.add(event.roundInfo.getRoundSeq());
+        if (RoomDataUtils.isCurrentRound(event.roundInfo.getRoundSeq(), mRoomData)) {
+            // 灭灯成功
+            mIvTurnOff.setEnabled(false);
         }
     }
 
@@ -100,18 +137,17 @@ public class RankOpView extends RelativeLayout {
             setVisibility(GONE);
             return;
         }
-
         mSeq = seq;
         cancelTimer();
 
-        if(mBurstMaxNum <= 0){
+        if (mRoomData.getLeftBurstLightTimes() <= 0) {
             mIvBurst.setVisibility(GONE);
         } else {
             mIvBurst.setVisibility(VISIBLE);
             mIvBurst.setEnabled(true);
         }
 
-        if(mLightOffMaxNum <= 0){
+        if (mRoomData.getLeftLightOffTimes() <= 0) {
             mIvTurnOff.setVisibility(GONE);
             mTvCountDown.setVisibility(GONE);
         } else {
@@ -126,7 +162,7 @@ public class RankOpView extends RelativeLayout {
                         public void onNext(Integer integer) {
                             integer = mLightOffDelayTime - integer;
                             if (integer == 0) {
-                                if(mLightOffMaxNum > 0){
+                                if (mRoomData.getLeftBurstLightTimes() > 0) {
                                     mIvTurnOff.setVisibility(VISIBLE);
                                 }
 
@@ -144,30 +180,6 @@ public class RankOpView extends RelativeLayout {
     private void cancelTimer() {
         if (mCountDownTask != null) {
             mCountDownTask.dispose();
-        }
-    }
-
-    public void burstSuccess(boolean success, int seq) {
-        MyLog.w(TAG, "burstSuccess" + " success=" + success + " seq=" + seq);
-        if(success){
-            mHasOpSeq.add(seq);
-            mBurstMaxNum--;
-            MyLog.w(TAG, "burstSuccess" + " mBurstMaxNum=" + mBurstMaxNum + ", mSeq " + mSeq);
-            if (seq == mSeq) {
-                mIvBurst.setEnabled(false);
-            }
-        }
-    }
-
-    public void lightOffSuccess(boolean success, int seq) {
-        MyLog.w(TAG, "lightOffSuccess" + " success=" + success + " seq=" + seq);
-        if (success) {
-            mHasOpSeq.add(seq);
-            mLightOffMaxNum--;
-            MyLog.w(TAG, "lightOffSuccess" + " mLightOffMaxNum=" + mLightOffMaxNum + ", mSeq " + mSeq);
-            if(seq == mSeq){
-                mIvTurnOff.setEnabled(false);
-            }
         }
     }
 

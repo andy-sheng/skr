@@ -547,8 +547,8 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         }, this);
     }
 
-    public void pkburst(){
-        MyLog.d(TAG, "pkburst" );
+    public void pkburst() {
+        MyLog.d(TAG, "pkburst");
         HashMap<String, Object> map = new HashMap<>();
         map.put("gameID", mRoomData.getGameId());
         map.put("roundSeq", mRoomData.getRealRoundSeq());
@@ -750,9 +750,9 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
-    public void burst(int seq) {
+    public void sendBurst(int seq) {
         RoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
-        if(roundInfoModel != null && roundInfoModel.getRoundSeq() == seq){
+        if (roundInfoModel != null && roundInfoModel.getRoundSeq() == seq) {
             HashMap<String, Object> map = new HashMap<>();
             map.put("gameID", mRoomData.getGameId());
             map.put("roundSeq", roundInfoModel.getRoundSeq());
@@ -762,17 +762,15 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                 public void process(ApiResult result) {
                     if (result.getErrno() == 0) {
                         MyLog.w(TAG, "爆灯成功 traceid is " + result.getTraceId() + "，seq是" + roundInfoModel.getRoundSeq());
-                        mIGameRuleView.burstSuccess(true, seq);
+                        mRoomData.consumeBurstLightTimes(roundInfoModel);
                     } else {
                         MyLog.w(TAG, "爆灯上报失败 traceid is " + result.getTraceId() + "，seq是" + roundInfoModel.getRoundSeq());
-                        mIGameRuleView.burstSuccess(false, seq);
                     }
                 }
 
                 @Override
                 public void onError(Throwable e) {
                     MyLog.w(TAG, "burst" + " error " + e);
-                    mIGameRuleView.burstSuccess(false, seq);
                 }
 
                 @Override
@@ -780,34 +778,33 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                     MyLog.w(TAG, "burst" + " errorType " + errorType);
                 }
             }, this);
-        }else {
+        } else {
             MyLog.d(TAG, "爆灯，但不是本轮次，" + "seq=" + seq);
         }
     }
 
-    public void lightOff(int seq) {
+    public void sendLightOff(int seq) {
         RoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
-        if(roundInfoModel != null && roundInfoModel.getRoundSeq() == seq){
+        if (roundInfoModel != null && roundInfoModel.getRoundSeq() == seq) {
             HashMap<String, Object> map = new HashMap<>();
             map.put("gameID", mRoomData.getGameId());
             map.put("roundSeq", roundInfoModel.getRoundSeq());
             RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
             ApiMethods.subscribe(mRoomServerApi.pklightOff(body), new ApiObserver<ApiResult>() {
+
                 @Override
                 public void process(ApiResult result) {
                     if (result.getErrno() == 0) {
                         MyLog.w(TAG, "灭灯成功 traceid is " + result.getTraceId() + "，seq是" + roundInfoModel.getRoundSeq());
-                        mIGameRuleView.lightOffSuccess(true, seq);
+                        mRoomData.consumeLightOffTimes(roundInfoModel);
                     } else {
                         MyLog.w(TAG, "灭灯上报失败 traceid is " + result.getTraceId() + "，seq是" + roundInfoModel.getRoundSeq());
-                        mIGameRuleView.lightOffSuccess(false, seq);
                     }
                 }
 
                 @Override
                 public void onError(Throwable e) {
                     MyLog.w(TAG, "lightOff" + " error " + e);
-                    mIGameRuleView.lightOffSuccess(false, seq);
                 }
 
                 @Override
@@ -815,7 +812,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                     MyLog.w(TAG, "lightOff" + " errorType " + errorType);
                 }
             }, this);
-        }else {
+        } else {
             MyLog.d(TAG, "灭灯，但不是本轮次，" + "seq=" + seq);
         }
     }
@@ -1006,18 +1003,6 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(AccBeginEvent event) {
         onUserSpeakFromEngine("AccBeginEvent", event.userId);
-    }
-
-    //某人灭灯了
-    @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onEvent(PkSomeOneLightOffEvent event) {
-        mIGameRuleView.lightOffByUser(event.uid, event.roundInfo.getRoundSeq());
-    }
-
-    //某人爆灯了
-    @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onEvent(PkSomeOneBurstLightEvent event) {
-        mIGameRuleView.burstByUser(event.uid, event.roundInfo.getRoundSeq());
     }
 
     //服务器push，某人爆灯了
