@@ -773,7 +773,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView, Ran
     @Override
     public void startSelfCountdown(Runnable countDownOver) {
         MyLog.d(TAG, "startSelfCountdown" + " countDownOver=" + countDownOver);
-
+        mRankOpView.setVisibility(View.GONE);
         mManyLyricsView.setVisibility(View.GONE);
         mUiHanlder.removeMessages(MSG_LYRIC_END_EVENT);
         // 加保护，确保当前主舞台一定被移除
@@ -816,6 +816,8 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView, Ran
     @Override
     public void startRivalCountdown(int uid, String avatar) {
         MyLog.d(TAG, "startRivalCountdown" + " uid=" + uid + " avatar=" + avatar);
+        mRankOpView.setVisibility(View.VISIBLE);
+        mRankOpView.playCountDown(mRoomData.getRealRoundSeq());
         mVoiceScaleView.setVisibility(View.GONE);
         mManyLyricsView.setVisibility(View.GONE);
         mUiHanlder.removeMessages(MSG_LYRIC_END_EVENT);

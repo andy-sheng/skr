@@ -118,6 +118,7 @@
         android:layout_height="match_parent" />
 
     <com.module.playways.rank.room.view.RankOpView
+        android:visibility="gone"
         android:id="@+id/rank_op_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
