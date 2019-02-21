@@ -13,22 +13,23 @@
         <RelativeLayout
             android:id="@+id/top_area"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/view_50_dp">
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/avatar_bg"
                 android:layout_width="@dimen/view_63_dp"
                 android:layout_height="@dimen/view_63_dp"
                 android:layout_centerHorizontal="true"
-                android:background="@drawable/shouye_touxiang" />
+                android:background="@drawable/shouye_touxiang"
+                android:visibility="gone" />
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/avatar_iv"
                 android:layout_width="@dimen/view_60_dp"
                 android:layout_height="@dimen/view_60_dp"
                 android:layout_alignLeft="@id/avatar_bg"
-                android:layout_alignTop="@+id/avatar_bg" />
+                android:layout_alignTop="@+id/avatar_bg"
+                android:visibility="gone" />
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/name_tv"
@@ -39,7 +40,8 @@
                 android:layout_marginTop="@dimen/view_1_dp"
                 android:textColor="#0C2275"
                 android:textSize="@dimen/textsize_20_dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="gone" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -47,7 +49,8 @@
                 android:layout_alignTop="@+id/name_tv"
                 android:layout_alignBottom="@+id/name_tv"
                 android:layout_marginRight="@dimen/view_5_dp"
-                android:layout_toRightOf="@id/name_tv">
+                android:layout_toRightOf="@id/name_tv"
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/main_rank_iv"
@@ -63,11 +66,18 @@
 
             </RelativeLayout>
 
+            <com.module.home.widget.UserInfoTitleView
+                android:id="@+id/user_info_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true">
+            </com.module.home.widget.UserInfoTitleView>
+
             <RelativeLayout
                 android:id="@+id/rank_area"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/view_35_dp"
-                android:layout_below="@id/name_tv"
+                android:layout_below="@id/user_info_title"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/view_3_dp"
                 android:background="@drawable/mingci_dianjiu">
@@ -107,6 +117,7 @@
                     android:background="@drawable/gengduo_btn" />
 
             </RelativeLayout>
+
         </RelativeLayout>
 
         <com.youth.banner.Banner
@@ -171,7 +182,6 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="@dimen/view_41_dp"
                     android:layout_marginRight="@dimen/view_9_dp"
-                    android:background="@drawable/shouye_duanwei"
                     android:visibility="gone" />
 
                 <com.zq.level.view.NormalLevelView

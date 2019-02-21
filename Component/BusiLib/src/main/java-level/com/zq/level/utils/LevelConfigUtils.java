@@ -8,6 +8,49 @@ public class LevelConfigUtils {
 
     public final static String TAG = "LevelConfigUtils";
 
+    // 首页顶部背景
+    public static int getHomePageLevelTopBg(int mainLevel) {
+        switch (mainLevel) {
+            case UserLevelType.SKRER_LEVEL_POTENTIAL:
+                return R.drawable.shouye_qianli;
+            case UserLevelType.SKRER_LEVEL_SILVER:
+                return R.drawable.shouye_baiyin;
+            case UserLevelType.SKRER_LEVEL_GOLD:
+                return R.drawable.shouye_jinpai;
+            case UserLevelType.SKRER_LEVEL_PLATINUM:
+                return R.drawable.shouye_bojin;
+            case UserLevelType.SKRER_LEVEL_DIAMOND:
+                return R.drawable.shouye_zuanshi;
+            case UserLevelType.SKRER_LEVEL_KING:
+                return R.drawable.shouye_gewang;
+            default:
+                MyLog.w(TAG, "getHomePageLevelTopBg null" + " mainLevel = " + mainLevel);
+                return 0;
+        }
+    }
+
+    public static int getAvatarLevelBg(int mainLevel){
+        switch (mainLevel) {
+            case UserLevelType.SKRER_LEVEL_POTENTIAL:
+                return R.drawable.touxiang_qianli;
+            case UserLevelType.SKRER_LEVEL_SILVER:
+                return R.drawable.touxiang_baiyin;
+            case UserLevelType.SKRER_LEVEL_GOLD:
+                return R.drawable.touxiang_jinpai;
+            case UserLevelType.SKRER_LEVEL_PLATINUM:
+                return R.drawable.touxiang_bojin;
+            case UserLevelType.SKRER_LEVEL_DIAMOND:
+                return R.drawable.touxiang_zuanshi;
+            case UserLevelType.SKRER_LEVEL_KING:
+                return R.drawable.touxiang_gewang;
+            default:
+                MyLog.w(TAG, "getAvatarLevelBg null" + " mainLevel = " + mainLevel);
+                return 0;
+        }
+    }
+
+
+
     // 父段位资源
     public static int getImageResoucesLevel(int level) {
         switch (level) {

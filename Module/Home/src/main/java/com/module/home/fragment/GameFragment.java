@@ -49,6 +49,7 @@ import com.module.home.R;
 import com.module.home.model.GameConfModel;
 import com.module.home.model.SlideShowModel;
 import com.module.home.view.GameTimeTipsView;
+import com.module.home.widget.UserInfoTitleView;
 import com.module.rank.IRankingModeService;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
@@ -82,6 +83,8 @@ public class GameFragment extends BaseFragment {
     public static final int SHANDIAN_BADGE = 3;
 
     RelativeLayout mTopArea;
+    UserInfoTitleView mUserInfoTitle;
+
     ImageView mAvatarBg;
     SimpleDraweeView mAvatarIv;
     ExTextView mNameTv;
@@ -93,9 +96,6 @@ public class GameFragment extends BaseFragment {
     ExImageView mMedalIv;     // 排名的勋章
     ExTextView mRankText;     // 显示的文本
     ExImageView mRankDiffIv;  // 上升下降的标识
-
-    ExImageView mIvAthleticsPk;
-    ExImageView mIvGrabGame;
 
     Banner mBannerView;
     ExImageView ivAthleticsPk;
@@ -125,6 +125,7 @@ public class GameFragment extends BaseFragment {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         mTopArea = (RelativeLayout) mRootView.findViewById(R.id.top_area);
+        mUserInfoTitle = (UserInfoTitleView) mRootView.findViewById(R.id.user_info_title);
         mAvatarBg = (ImageView) mRootView.findViewById(R.id.avatar_bg);
         mAvatarIv = (SimpleDraweeView) mRootView.findViewById(R.id.avatar_iv);
 
@@ -228,6 +229,8 @@ public class GameFragment extends BaseFragment {
                         .setBorderWidth(U.getDisplayUtils().dip2px(3))
                         .build());
         mNameTv.setText(MyUserInfoManager.getInstance().getNickName());
+
+        mUserInfoTitle.showBaseInfo();
     }
 
     @Override
@@ -275,6 +278,7 @@ public class GameFragment extends BaseFragment {
 
     private void showRankView(UserRankModel userRankModel) {
         MyLog.d(TAG, "showRankView" + " userRankModel=" + userRankModel);
+        mUserInfoTitle.showRankView(userRankModel);
         mMainRankIv.setImageResource(LevelConfigUtils.getImageResoucesLevel(userRankModel.getMainRanking()));
         mSubRankIv.setImageResource(LevelConfigUtils.getImageResoucesSubLevel(userRankModel.getMainRanking(), userRankModel.getSubRanking()));
 
@@ -363,7 +367,7 @@ public class GameFragment extends BaseFragment {
 
     private void initOperationArea() {
         String slideshow = U.getPreferenceUtils().getSettingString("slideshow", "");
-        if(!TextUtils.isEmpty(slideshow)){
+        if (!TextUtils.isEmpty(slideshow)) {
             try {
                 List<SlideShowModel> slideShowModelList = JSON.parseArray(slideshow, SlideShowModel.class);
                 setBannerImage(slideShowModelList);
@@ -398,7 +402,7 @@ public class GameFragment extends BaseFragment {
         });
     }
 
-    private void setBannerImage(List<SlideShowModel> slideShowModelList){
+    private void setBannerImage(List<SlideShowModel> slideShowModelList) {
         if (slideShowModelList == null || slideShowModelList.size() == 0) {
             MyLog.w(TAG, "initOperationArea 为null");
             return;
