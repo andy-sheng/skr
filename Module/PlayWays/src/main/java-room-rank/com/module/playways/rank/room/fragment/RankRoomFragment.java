@@ -591,7 +591,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView, Ran
     }
 
     private void initTopView() {
-        mRankTopContainerView = mRootView.findViewById(R.id.top_container_view);
+        mRankTopContainerView = mRootView.findViewById(R.id.rank_top_view);
         mRankTopContainerView.setRoomData(mRoomData);
 
         mRankTopContainerView.setListener(new TopContainerView.Listener() {
