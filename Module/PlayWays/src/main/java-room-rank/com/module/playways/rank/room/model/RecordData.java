@@ -20,7 +20,6 @@ public class RecordData implements Serializable {
         this.mUserGameResultModels = mUserGameResultModels;
     }
 
-    public void
     public VoteInfoModel getSelfVoteInfoModel() {
         for (VoteInfoModel voteInfoModel : mVoteInfoModels) {
             if (voteInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
