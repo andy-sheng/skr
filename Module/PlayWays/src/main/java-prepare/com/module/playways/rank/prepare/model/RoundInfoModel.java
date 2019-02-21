@@ -84,6 +84,12 @@ public class RoundInfoModel implements Serializable {
 
     private HashSet<NoPassingInfo> noPassSingInfos = new HashSet<>();//已经灭灯的人, 一唱到底
 
+    private HashSet<BLightInfoModel> bLightInfos = new HashSet<>();//已经爆灯的人, pk
+
+    private HashSet<MLightInfoModel> mLightInfos = new HashSet<>();  //已经灭灯的人, pk
+
+    private ERoundOverReasonModel eRoundOverReasonModel = ERoundOverReasonModel.EROR_UNKNOWN;
+
 
     public RoundInfoModel() {
 
@@ -223,17 +229,35 @@ public class RoundInfoModel implements Serializable {
         this.noPassSingInfos = noPassSingInfos;
     }
 
-    public HashSet<BLightInfoModel> getBurstLightInfos() {
-        return burstLightInfos;
+    public ERoundOverReasonModel geteRoundOverReasonModel() {
+        return eRoundOverReasonModel;
     }
 
-    public HashSet<MLightInfoModel> getPklightOffInfos() {
-        return pklightOffInfos;
+    public HashSet<BLightInfoModel> getbLightInfos() {
+        return bLightInfos;
     }
 
     /**
      * 排位赛使用
      */
+    public void setbLightInfos(HashSet<BLightInfoModel> bLightInfos) {
+        this.bLightInfos = bLightInfos;
+    }
+
+    public HashSet<MLightInfoModel> getLightInfos() {
+        return mLightInfos;
+    }
+
+    public void setLightInfos(HashSet<MLightInfoModel> lightInfos) {
+        mLightInfos = lightInfos;
+    }
+
+    public void changeRoundOverReason(ERoundOverReasonModel roundOverReasonModel) {
+        if (eRoundOverReasonModel != ERoundOverReasonModel.EROR_UNKNOWN) {
+            eRoundOverReasonModel = roundOverReasonModel;
+        }
+    }
+
     public static RoundInfoModel parseFromRoundInfo(RoundInfo roundInfo) {
         RoundInfoModel roundInfoModel = new RoundInfoModel(TYPE_RANK);
         roundInfoModel.setUserID(roundInfo.getUserID());
@@ -242,15 +266,13 @@ public class RoundInfoModel implements Serializable {
         roundInfoModel.setSingBeginMs(roundInfo.getSingBeginMs());
         roundInfoModel.setSingEndMs(roundInfo.getSingEndMs());
         if (roundInfo.getBLightInfosList() != null) {
-            for (BLightInfo b :
-                    roundInfo.getBLightInfosList()) {
-                roundInfoModel.addBrustLightUid(false, BLightInfoModel.parse(b));
+            for (BLightInfo bLightInfo : roundInfo.getBLightInfosList()) {
+                roundInfoModel.addBrustLightUid(false, BLightInfoModel.parse(bLightInfo));
             }
         }
         if (roundInfo.getMLightInfosList() != null) {
-            for (MlightInfo m :
-                    roundInfo.getMLightInfosList()) {
-                roundInfoModel.addPkLightOffUid(false, MLightInfoModel.parse(m));
+            for (MlightInfo mlightInfo : roundInfo.getMLightInfosList()) {
+                roundInfoModel.addPkLightOffUid(false, MLightInfoModel.parse(mlightInfo));
             }
         }
         roundInfoModel.setOverReason(roundInfo.getOverReason().getValue());
@@ -271,10 +293,10 @@ public class RoundInfoModel implements Serializable {
         this.setSingBeginMs(roundInfo.getSingBeginMs());
         this.setSingEndMs(roundInfo.getSingEndMs());
         //TODO 抢 灭 结束原因 补全
-        for (BLightInfoModel bLightInfoModel : roundInfo.getBurstLightInfos()) {
+        for (BLightInfoModel bLightInfoModel : roundInfo.getbLightInfos()) {
             addBrustLightUid(notify, bLightInfoModel);
         }
-        for (MLightInfoModel mLightInfoModel : roundInfo.getPklightOffInfos()) {
+        for (MLightInfoModel mLightInfoModel : roundInfo.getLightInfos()) {
             addPkLightOffUid(notify, mLightInfoModel);
         }
         if (roundInfo.getOverReason() > 0) {
@@ -385,9 +407,7 @@ public class RoundInfoModel implements Serializable {
         }
     }
 
-    /**
-     * 一唱到底使用
-     */
+
     public void updateStatus(boolean notify, int statusGrab) {
         if (status < statusGrab) {
             int old = status;

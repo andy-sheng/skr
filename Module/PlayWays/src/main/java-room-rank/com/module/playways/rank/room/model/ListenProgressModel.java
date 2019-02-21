@@ -40,7 +40,6 @@ public class ListenProgressModel implements Serializable {
     }
 
     public static ListenProgressModel parse(ListenProgress listenProgress) {
-        // TODO: 2019/2/21 等PB完成再更新
         ListenProgressModel model = new ListenProgressModel();
         return model;
     }

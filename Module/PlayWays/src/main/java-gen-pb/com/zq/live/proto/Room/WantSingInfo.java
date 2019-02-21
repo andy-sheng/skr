@@ -10,6 +10,7 @@ import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
 import java.io.IOException;
+import java.lang.Float;
 import java.lang.Integer;
 import java.lang.Long;
 import java.lang.Object;
@@ -26,6 +27,8 @@ public final class WantSingInfo extends Message<WantSingInfo, WantSingInfo.Build
   public static final Integer DEFAULT_USERID = 0;
 
   public static final Long DEFAULT_TIMEMS = 0L;
+
+  public static final Float DEFAULT_PROCESS = 0.0f;
 
   /**
    * 玩家id
@@ -45,14 +48,24 @@ public final class WantSingInfo extends Message<WantSingInfo, WantSingInfo.Build
   )
   private final Long timeMs;
 
-  public WantSingInfo(Integer userID, Long timeMs) {
-    this(userID, timeMs, ByteString.EMPTY);
+  /**
+   * 演唱进度
+   */
+  @WireField(
+      tag = 3,
+      adapter = "com.squareup.wire.ProtoAdapter#FLOAT"
+  )
+  private final Float process;
+
+  public WantSingInfo(Integer userID, Long timeMs, Float process) {
+    this(userID, timeMs, process, ByteString.EMPTY);
   }
 
-  public WantSingInfo(Integer userID, Long timeMs, ByteString unknownFields) {
+  public WantSingInfo(Integer userID, Long timeMs, Float process, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
     this.timeMs = timeMs;
+    this.process = process;
   }
 
   @Override
@@ -60,6 +73,7 @@ public final class WantSingInfo extends Message<WantSingInfo, WantSingInfo.Build
     Builder builder = new Builder();
     builder.userID = userID;
     builder.timeMs = timeMs;
+    builder.process = process;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -71,7 +85,8 @@ public final class WantSingInfo extends Message<WantSingInfo, WantSingInfo.Build
     WantSingInfo o = (WantSingInfo) other;
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(userID, o.userID)
-        && Internal.equals(timeMs, o.timeMs);
+        && Internal.equals(timeMs, o.timeMs)
+        && Internal.equals(process, o.process);
   }
 
   @Override
@@ -81,6 +96,7 @@ public final class WantSingInfo extends Message<WantSingInfo, WantSingInfo.Build
       result = unknownFields().hashCode();
       result = result * 37 + (userID != null ? userID.hashCode() : 0);
       result = result * 37 + (timeMs != null ? timeMs.hashCode() : 0);
+      result = result * 37 + (process != null ? process.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -91,6 +107,7 @@ public final class WantSingInfo extends Message<WantSingInfo, WantSingInfo.Build
     StringBuilder builder = new StringBuilder();
     if (userID != null) builder.append(", userID=").append(userID);
     if (timeMs != null) builder.append(", timeMs=").append(timeMs);
+    if (process != null) builder.append(", process=").append(process);
     return builder.replace(0, 2, "WantSingInfo{").append('}').toString();
   }
 
@@ -125,6 +142,16 @@ public final class WantSingInfo extends Message<WantSingInfo, WantSingInfo.Build
   }
 
   /**
+   * 演唱进度
+   */
+  public Float getProcess() {
+    if(process==null){
+        return DEFAULT_PROCESS;
+    }
+    return process;
+  }
+
+  /**
    * 玩家id
    */
   public boolean hasUserID() {
@@ -138,10 +165,19 @@ public final class WantSingInfo extends Message<WantSingInfo, WantSingInfo.Build
     return timeMs!=null;
   }
 
+  /**
+   * 演唱进度
+   */
+  public boolean hasProcess() {
+    return process!=null;
+  }
+
   public static final class Builder extends Message.Builder<WantSingInfo, Builder> {
     private Integer userID;
 
     private Long timeMs;
+
+    private Float process;
 
     public Builder() {
     }
@@ -162,9 +198,17 @@ public final class WantSingInfo extends Message<WantSingInfo, WantSingInfo.Build
       return this;
     }
 
+    /**
+     * 演唱进度
+     */
+    public Builder setProcess(Float process) {
+      this.process = process;
+      return this;
+    }
+
     @Override
     public WantSingInfo build() {
-      return new WantSingInfo(userID, timeMs, super.buildUnknownFields());
+      return new WantSingInfo(userID, timeMs, process, super.buildUnknownFields());
     }
   }
 
@@ -177,6 +221,7 @@ public final class WantSingInfo extends Message<WantSingInfo, WantSingInfo.Build
     public int encodedSize(WantSingInfo value) {
       return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.userID)
           + ProtoAdapter.SINT64.encodedSizeWithTag(2, value.timeMs)
+          + ProtoAdapter.FLOAT.encodedSizeWithTag(3, value.process)
           + value.unknownFields().size();
     }
 
@@ -184,6 +229,7 @@ public final class WantSingInfo extends Message<WantSingInfo, WantSingInfo.Build
     public void encode(ProtoWriter writer, WantSingInfo value) throws IOException {
       ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.userID);
       ProtoAdapter.SINT64.encodeWithTag(writer, 2, value.timeMs);
+      ProtoAdapter.FLOAT.encodeWithTag(writer, 3, value.process);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -195,6 +241,7 @@ public final class WantSingInfo extends Message<WantSingInfo, WantSingInfo.Build
         switch (tag) {
           case 1: builder.setUserID(ProtoAdapter.UINT32.decode(reader)); break;
           case 2: builder.setTimeMs(ProtoAdapter.SINT64.decode(reader)); break;
+          case 3: builder.setProcess(ProtoAdapter.FLOAT.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

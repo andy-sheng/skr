@@ -13,7 +13,7 @@ public class UserGameResultModel implements Serializable {
      * itemID : 0
      * listenProgress : [{"lightType":"ELT_UNKNOWN","progress":0,"userID":0}]
      * rank : 0
-     * totalScore : 0
+     * totalScore : 0.0
      * userID : 0
      * winType : InvalidEWinType
      */
@@ -21,7 +21,7 @@ public class UserGameResultModel implements Serializable {
     private boolean isEscape;
     private int itemID;
     private int rank;
-    private int totalScore;
+    private float totalScore;
     private int userID;
     private String winType;
     private List<ListenProgressModel> listenProgress;
@@ -50,11 +50,11 @@ public class UserGameResultModel implements Serializable {
         this.rank = rank;
     }
 
-    public int getTotalScore() {
+    public float getTotalScore() {
         return totalScore;
     }
 
-    public void setTotalScore(int totalScore) {
+    public void setTotalScore(float totalScore) {
         this.totalScore = totalScore;
     }
 
@@ -83,12 +83,11 @@ public class UserGameResultModel implements Serializable {
     }
 
     public static UserGameResultModel parse(UserGameResult userGameResult) {
-        // TODO: 2019/2/21 等room的PB完善
         UserGameResultModel gameResultModel = new UserGameResultModel();
         gameResultModel.setIsEscape(userGameResult.getIsEscape());
         gameResultModel.setItemID(userGameResult.getItemID());
         gameResultModel.setRank(userGameResult.getRank());
-//        gameResult.setTotalScore(userGameResult.getTotalScore());
+        gameResultModel.setTotalScore(userGameResult.getTotalScore());
         gameResultModel.setUserID(userGameResult.getUserID());
         List<ListenProgressModel> listenProgressModels = new ArrayList<>();
         for (ListenProgress listenProgress : userGameResult.getListenProgressList()) {

@@ -8,28 +8,28 @@ import java.util.List;
 
 public class MLightInfoModel implements Serializable {
     /**
-     * per : 0
+     * process : 0
      * timeMs : 0
      * userID : 0
      */
 
-    private int per;     //进度
-    private int timeMs;  //时间戳
-    private int userID;  //用户id
+    private float process;
+    private long timeMs;
+    private int userID;
 
-    public int getPer() {
-        return per;
+    public float getProcess() {
+        return process;
     }
 
-    public void setPer(int per) {
-        this.per = per;
+    public void setProcess(float process) {
+        this.process = process;
     }
 
-    public int getTimeMs() {
+    public long getTimeMs() {
         return timeMs;
     }
 
-    public void setTimeMs(int timeMs) {
+    public void setTimeMs(long timeMs) {
         this.timeMs = timeMs;
     }
 
@@ -55,16 +55,10 @@ public class MLightInfoModel implements Serializable {
 
     public static MLightInfoModel parse(MlightInfo mlightInfo) {
         MLightInfoModel mLightInfoModel = new MLightInfoModel();
-        // TODO: 2019/2/21 等服务器上传新的PB
+        mLightInfoModel.setProcess(mlightInfo.getProcess());
+        mLightInfoModel.setUserID(mlightInfo.getUserID());
+        mLightInfoModel.setTimeMs(mlightInfo.getTimeMs());
         return mLightInfoModel;
     }
 
-    @Override
-    public String toString() {
-        return "MLightInfoModel{" +
-                "per=" + per +
-                ", timeMs=" + timeMs +
-                ", userID=" + userID +
-                '}';
-    }
 }

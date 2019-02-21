@@ -400,18 +400,21 @@ message BLightInfo
 {
     uint32 userID = 1; //玩家id
     sint64 timeMs = 2; //爆灯时间戳
+    float process = 3; //演唱进度
 }
 
 message MlightInfo
 {
     uint32 userID = 1; //玩家id
     sint64 timeMs = 2; //灭灯时间戳
+    float process = 3; //演唱进度
 }
 
 message WantSingInfo
 {
     uint32 userID = 1; //玩家id
     sint64 timeMs = 2; //抢唱时间戳
+    float process = 3; //演唱进度
 }
 
 message NoPassSingInfo
