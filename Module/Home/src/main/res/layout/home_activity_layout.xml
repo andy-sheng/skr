@@ -48,12 +48,20 @@
             <com.common.view.ex.ExTextView
                 android:id="@+id/unread_num_tv"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/message_btn"
-                android:layout_alignRight="@+id/message_btn"
-                android:textColor="@color/red"
+                android:layout_height="@dimen/view_18_dp"
+                android:layout_above="@+id/message_btn"
+                android:layout_marginLeft="-6dp"
+                android:layout_marginBottom="-10dp"
+                android:layout_toRightOf="@+id/message_btn"
+                android:gravity="center"
+                android:paddingLeft="@dimen/view_6_dp"
+                android:paddingRight="@dimen/view_6_dp"
+                android:textColor="@color/white"
                 android:textSize="@dimen/textsize_12_dp"
-                android:visibility="gone" />
+                android:visibility="gone"
+                app:bl_corners_radius="@dimen/view_9_dp"
+                app:bl_shape="rectangle"
+                app:bl_solid_color="#FB5151" />
 
         </RelativeLayout>
 
