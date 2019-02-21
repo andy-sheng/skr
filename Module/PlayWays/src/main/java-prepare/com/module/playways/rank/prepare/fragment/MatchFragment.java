@@ -28,6 +28,7 @@ import com.component.busilib.manager.BgMusicManager;
 import com.dialog.view.TipsDialogView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.module.playways.rank.msg.event.JoinActionEvent;
 import com.module.playways.rank.prepare.model.MatchIconModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.PrepareData;
@@ -389,13 +390,13 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
     }
 
     @Override
-    public void matchSucess(int gameId, long gameCreatMs, List<PlayerInfoModel> playerInfoList, String avatar, List<SongModel> songModels) {
-        MyLog.d(TAG, "matchSucess" + " gameId=" + gameId + " gameCreatMs=" + gameCreatMs + " playerInfoList=" + playerInfoList);
-        mPrepareData.setGameId(gameId);
-        mPrepareData.setSysAvatar(avatar);
-        mPrepareData.setGameCreatMs(gameCreatMs);
-        mPrepareData.setPlayerInfoList(playerInfoList);
-        mPrepareData.setSongModelList(songModels);
+    public void matchSucess(JoinActionEvent event) {
+        mPrepareData.setGameId(event.gameId);
+        mPrepareData.setSysAvatar(event.info.getSender().getAvatar());
+        mPrepareData.setGameCreatMs(event.gameCreateMs);
+        mPrepareData.setPlayerInfoList(event.playerInfoList);
+        mPrepareData.setSongModelList(event.songModelList);
+        mPrepareData.setGameConfigModel(event.gameConfigModel);
         stopTimeTask();
         BgMusicManager.getInstance().destory();
 

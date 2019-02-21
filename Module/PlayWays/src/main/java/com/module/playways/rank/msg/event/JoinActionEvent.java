@@ -16,7 +16,7 @@ public class JoinActionEvent {
     public long gameCreateMs;
     public List<PlayerInfoModel> playerInfoList;
     public List<SongModel> songModelList;
-    GameConfigModel gameConfigModel;
+    public GameConfigModel gameConfigModel;
 
     public JoinActionEvent(BasePushInfo info, JoinActionMsg joinActionMsg) {
         List<PlayerInfoModel> playerInfos = new ArrayList<>();
@@ -44,5 +44,17 @@ public class JoinActionEvent {
         this.playerInfoList = playerInfos;
         this.songModelList = songModels;
         this.gameConfigModel = gameConfigModel;
+    }
+
+    @Override
+    public String toString() {
+        return "JoinActionEvent{" +
+                "info=" + info +
+                ", gameId=" + gameId +
+                ", gameCreateMs=" + gameCreateMs +
+                ", playerInfoList=" + playerInfoList +
+                ", songModelList=" + songModelList +
+                ", gameConfigModel=" + gameConfigModel +
+                '}';
     }
 }

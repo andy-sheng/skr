@@ -19,6 +19,7 @@ import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
@@ -126,14 +127,15 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
 //            }
 //        }
 
-        RxView.clicks(mIvPrepare)
-                .throttleFirst(300, TimeUnit.MILLISECONDS)
-                .subscribe(o -> {
-                    U.getSoundUtils().play(TAG, R.raw.pregame_ready);
-                    mIvPrepare.setBackground(getResources().getDrawable(R.drawable.btn_pipeichenggong_pressed));
-                    mIvPrepare.setClickable(false);
-                    mMatchSucessPresenter.prepare(!isPrepared);
-                });
+        mIvPrepare.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                U.getSoundUtils().play(TAG, R.raw.pregame_ready);
+                mIvPrepare.setBackground(getResources().getDrawable(R.drawable.btn_pipeichenggong_pressed));
+                mIvPrepare.setClickable(false);
+                mMatchSucessPresenter.prepare(!isPrepared);
+            }
+        });
 
         initAvatar(true);
 

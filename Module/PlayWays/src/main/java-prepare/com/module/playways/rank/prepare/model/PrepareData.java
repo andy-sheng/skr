@@ -7,24 +7,26 @@ import java.util.List;
 
 public class PrepareData implements Serializable {
     private int mGameType;
-    private String sysAvatar; // 系统头像
+    private String mSysAvatar; // 系统头像
     private SongModel mSongModel;
     private int mGameId;
     private long mGameCreatMs;
     private List<PlayerInfoModel> mPlayerInfoList;
     private GameReadyModel mGameReadyInfo;
-    private int shiftTs;
+    private int mShiftTs;
     //一场到底歌曲分类
-    private int tagId;
+    private int mTagId;
 
-    private String bgMusic; // 背景音乐
+    private String mBgMusic; // 背景音乐
+
+    private GameConfigModel mGameConfigModel;// 游戏配置
 
     public int getTagId() {
-        return tagId;
+        return mTagId;
     }
 
     public void setTagId(int tagId) {
-        this.tagId = tagId;
+        this.mTagId = tagId;
     }
 
     //一场到低所有歌曲
@@ -39,11 +41,11 @@ public class PrepareData implements Serializable {
     }
 
     public String getSysAvatar() {
-        return sysAvatar;
+        return mSysAvatar;
     }
 
     public void setSysAvatar(String sysAvatar) {
-        this.sysAvatar = sysAvatar;
+        this.mSysAvatar = sysAvatar;
     }
 
     public void setSongModel(SongModel songModel) {
@@ -95,19 +97,27 @@ public class PrepareData implements Serializable {
     }
 
     public void setShiftTs(int shiftTs) {
-        this.shiftTs = shiftTs;
+        this.mShiftTs = shiftTs;
     }
 
     public int getShiftTs() {
-        return shiftTs;
+        return mShiftTs;
     }
 
 
     public String getBgMusic() {
-        return bgMusic;
+        return mBgMusic;
     }
 
     public void setBgMusic(String bgMusic) {
-        this.bgMusic = bgMusic;
+        this.mBgMusic = bgMusic;
+    }
+
+    public GameConfigModel getGameConfigModel() {
+        return mGameConfigModel;
+    }
+
+    public void setGameConfigModel(GameConfigModel gameConfigModel) {
+        mGameConfigModel = gameConfigModel;
     }
 }

@@ -25,6 +25,7 @@ import com.common.utils.ActivityUtils;
 import com.common.utils.FragmentUtils;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
@@ -35,6 +36,7 @@ import com.dialog.view.TipsDialogView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
+import com.module.playways.rank.msg.event.JoinActionEvent;
 import com.module.playways.rank.prepare.model.MatchIconModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.PrepareData;
@@ -94,7 +96,6 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
 
     SVGAImageView mSvgaMatchBg;
 
-
     DialogPlus mExitDialog;
 
     @Override
@@ -142,19 +143,21 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
         Resources res = getResources();
         mQuotationsArray = Arrays.asList(res.getStringArray(R.array.match_quotations));
 
-        RxView.clicks(mIvCancelMatch)
-                .throttleFirst(300, TimeUnit.MILLISECONDS)
-                .subscribe(o -> {
-                    U.getSoundUtils().play(TAG, R.raw.allclick);
-                    goBack();
-                });
+        mIvCancelMatch.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                U.getSoundUtils().play(TAG, R.raw.allclick);
+                goBack();
+            }
+        });
 
-        RxView.clicks(mIvBack)
-                .throttleFirst(300, TimeUnit.MILLISECONDS)
-                .subscribe(o -> {
-                    U.getSoundUtils().play(TAG, R.raw.general_back);
-                    goBack();
-                });
+        mIvBack.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                U.getSoundUtils().play(TAG, R.raw.general_back);
+                goBack();
+            }
+        });
 
 //        AvatarUtils.loadAvatarByUrl(mSdvIcon2,
 //                AvatarUtils.newParamsBuilder(mPrepareData.getSongModel().getCover())
@@ -487,14 +490,15 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
     }
 
     @Override
-    public void matchSucess(int gameId, long gameCreatMs, List<PlayerInfoModel> playerInfoList, String avatar, List<SongModel> songModels) {
-        MyLog.d(TAG, "matchSucess" + " gameId=" + gameId + " gameCreatMs=" + gameCreatMs + " playerInfoList=" + playerInfoList);
+    public void matchSucess(JoinActionEvent event) {
+        MyLog.d(TAG,"matchSucess" + " event=" + event);
         BgMusicManager.getInstance().destory();
-        mPrepareData.setGameId(gameId);
-        mPrepareData.setSysAvatar(avatar);
-        mPrepareData.setGameCreatMs(gameCreatMs);
-        mPrepareData.setPlayerInfoList(playerInfoList);
-        mPrepareData.setSongModelList(songModels);
+        mPrepareData.setGameId(event.gameId);
+        mPrepareData.setSysAvatar(event.info.getSender().getAvatar());
+        mPrepareData.setGameCreatMs(event.gameCreateMs);
+        mPrepareData.setPlayerInfoList(event.playerInfoList);
+        mPrepareData.setSongModelList(event.songModelList);
+        mPrepareData.setGameConfigModel(event.gameConfigModel);
         stopTimeTask();
 
         //先添加成功界面面
