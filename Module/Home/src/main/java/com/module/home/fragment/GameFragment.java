@@ -57,6 +57,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.youth.banner.Banner;
+import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
 import com.zq.level.utils.LevelConfigUtils;
 
@@ -404,6 +405,7 @@ public class GameFragment extends BaseFragment {
         }
 
         MyLog.d(TAG, "initOperationArea " + slideShowModelList.get(0).getCoverURL());
+        mBannerView.setIndicatorGravity(BannerConfig.RIGHT);
         mBannerView.setImages(getSlideUrlList(slideShowModelList))
                 .setImageLoader(new BannerImageLoader())
                 .setOnBannerListener(new OnBannerListener() {
