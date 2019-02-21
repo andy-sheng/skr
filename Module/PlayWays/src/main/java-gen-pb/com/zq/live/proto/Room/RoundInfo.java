@@ -33,6 +33,8 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
 
   public static final Integer DEFAULT_SINGENDMS = 0;
 
+  public static final ERoundOverReason DEFAULT_OVERREASON = ERoundOverReason.EROR_UNKNOWN;
+
   /**
    * 玩家id
    */
@@ -98,14 +100,24 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
   )
   public final List<MlightInfo> mLightInfos;
 
+  /**
+   * 结束原因
+   */
+  @WireField(
+      tag = 8,
+      adapter = "com.zq.live.proto.Room.ERoundOverReason#ADAPTER"
+  )
+  public final ERoundOverReason overReason;
+
   public RoundInfo(Integer userID, Integer playbookID, Integer roundSeq, Integer singBeginMs,
-      Integer singEndMs, List<BLightInfo> bLightInfos, List<MlightInfo> mLightInfos) {
-    this(userID, playbookID, roundSeq, singBeginMs, singEndMs, bLightInfos, mLightInfos, ByteString.EMPTY);
+      Integer singEndMs, List<BLightInfo> bLightInfos, List<MlightInfo> mLightInfos,
+      ERoundOverReason overReason) {
+    this(userID, playbookID, roundSeq, singBeginMs, singEndMs, bLightInfos, mLightInfos, overReason, ByteString.EMPTY);
   }
 
   public RoundInfo(Integer userID, Integer playbookID, Integer roundSeq, Integer singBeginMs,
       Integer singEndMs, List<BLightInfo> bLightInfos, List<MlightInfo> mLightInfos,
-      ByteString unknownFields) {
+      ERoundOverReason overReason, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
     this.playbookID = playbookID;
@@ -114,6 +126,7 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
     this.singEndMs = singEndMs;
     this.bLightInfos = Internal.immutableCopyOf("bLightInfos", bLightInfos);
     this.mLightInfos = Internal.immutableCopyOf("mLightInfos", mLightInfos);
+    this.overReason = overReason;
   }
 
   @Override
@@ -126,6 +139,7 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
     builder.singEndMs = singEndMs;
     builder.bLightInfos = Internal.copyOf("bLightInfos", bLightInfos);
     builder.mLightInfos = Internal.copyOf("mLightInfos", mLightInfos);
+    builder.overReason = overReason;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -142,7 +156,8 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
         && Internal.equals(singBeginMs, o.singBeginMs)
         && Internal.equals(singEndMs, o.singEndMs)
         && bLightInfos.equals(o.bLightInfos)
-        && mLightInfos.equals(o.mLightInfos);
+        && mLightInfos.equals(o.mLightInfos)
+        && Internal.equals(overReason, o.overReason);
   }
 
   @Override
@@ -157,6 +172,7 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
       result = result * 37 + (singEndMs != null ? singEndMs.hashCode() : 0);
       result = result * 37 + bLightInfos.hashCode();
       result = result * 37 + mLightInfos.hashCode();
+      result = result * 37 + (overReason != null ? overReason.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -172,6 +188,7 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
     if (singEndMs != null) builder.append(", singEndMs=").append(singEndMs);
     if (!bLightInfos.isEmpty()) builder.append(", bLightInfos=").append(bLightInfos);
     if (!mLightInfos.isEmpty()) builder.append(", mLightInfos=").append(mLightInfos);
+    if (overReason != null) builder.append(", overReason=").append(overReason);
     return builder.replace(0, 2, "RoundInfo{").append('}').toString();
   }
 
@@ -256,6 +273,16 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
   }
 
   /**
+   * 结束原因
+   */
+  public ERoundOverReason getOverReason() {
+    if(overReason==null){
+        return new ERoundOverReason.Builder().build();
+    }
+    return overReason;
+  }
+
+  /**
    * 玩家id
    */
   public boolean hasUserID() {
@@ -304,6 +331,13 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
     return mLightInfos!=null;
   }
 
+  /**
+   * 结束原因
+   */
+  public boolean hasOverReason() {
+    return overReason!=null;
+  }
+
   public static final class Builder extends Message.Builder<RoundInfo, Builder> {
     public Integer userID;
 
@@ -318,6 +352,8 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
     public List<BLightInfo> bLightInfos;
 
     public List<MlightInfo> mLightInfos;
+
+    public ERoundOverReason overReason;
 
     public Builder() {
       bLightInfos = Internal.newMutableList();
@@ -382,9 +418,17 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
       return this;
     }
 
+    /**
+     * 结束原因
+     */
+    public Builder setOverReason(ERoundOverReason overReason) {
+      this.overReason = overReason;
+      return this;
+    }
+
     @Override
     public RoundInfo build() {
-      return new RoundInfo(userID, playbookID, roundSeq, singBeginMs, singEndMs, bLightInfos, mLightInfos, super.buildUnknownFields());
+      return new RoundInfo(userID, playbookID, roundSeq, singBeginMs, singEndMs, bLightInfos, mLightInfos, overReason, super.buildUnknownFields());
     }
   }
 
@@ -402,6 +446,7 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
           + ProtoAdapter.UINT32.encodedSizeWithTag(5, value.singEndMs)
           + BLightInfo.ADAPTER.asRepeated().encodedSizeWithTag(6, value.bLightInfos)
           + MlightInfo.ADAPTER.asRepeated().encodedSizeWithTag(7, value.mLightInfos)
+          + ERoundOverReason.ADAPTER.encodedSizeWithTag(8, value.overReason)
           + value.unknownFields().size();
     }
 
@@ -414,6 +459,7 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
       ProtoAdapter.UINT32.encodeWithTag(writer, 5, value.singEndMs);
       BLightInfo.ADAPTER.asRepeated().encodeWithTag(writer, 6, value.bLightInfos);
       MlightInfo.ADAPTER.asRepeated().encodeWithTag(writer, 7, value.mLightInfos);
+      ERoundOverReason.ADAPTER.encodeWithTag(writer, 8, value.overReason);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -430,6 +476,14 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
           case 5: builder.setSingEndMs(ProtoAdapter.UINT32.decode(reader)); break;
           case 6: builder.bLightInfos.add(BLightInfo.ADAPTER.decode(reader)); break;
           case 7: builder.mLightInfos.add(MlightInfo.ADAPTER.decode(reader)); break;
+          case 8: {
+            try {
+              builder.setOverReason(ERoundOverReason.ADAPTER.decode(reader));
+            } catch (ProtoAdapter.EnumConstantNotFoundException e) {
+              builder.addUnknownField(tag, FieldEncoding.VARINT, (long) e.value);
+            }
+            break;
+          }
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

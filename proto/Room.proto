@@ -385,6 +385,7 @@ message RoundInfo
 
     repeated BLightInfo bLightInfos = 6; //爆灯列表
     repeated MlightInfo mLightInfos = 7; //灭灯列表
+    ERoundOverReason overReason     = 8; //结束原因
 }
 
 enum EQRoundStatus {
@@ -473,8 +474,6 @@ message RoundOverMsg
     RoundInfo currentRound = 2; //当前轮次信息
     RoundInfo nextRound    = 3; //下个轮次信息
     uint32 exitUserID      = 4; //退出用户的ID
-
-    ERoundOverReason overReason = 5; //结束原因
 }
 
 enum ERoundOverReason {
@@ -494,8 +493,7 @@ message RoundAndGameOverMsg
     repeated VoteInfo voteInfo            = 4; //投票打分信息
     repeated UserScoreResult scoreResults = 5; //所有参与者的评分结果，应该使用这个结构
 
-    ERoundOverReason overReason         = 6; //结束原因
-    repeated UserGameResult gameResults = 7; //游戏结果评分数据
+    repeated UserGameResult gameResults = 6; //游戏结果评分数据
 }
 
 message ExitGameBeforePlayMsg
@@ -532,6 +530,7 @@ message SyncStatusMsg
     RoundInfo currentRound         = 4; //当前轮次信息
     RoundInfo nextRound            = 5; //下个轮次信息
 }
+
 
 
 

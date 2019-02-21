@@ -489,6 +489,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                     long syncStatusTimes = result.getData().getLong("syncStatusTimeMs");  //状态同步时的毫秒时间戳
                     long gameOverTimeMs = result.getData().getLong("gameOverTimeMs");  //游戏结束时间
                     List<OnlineInfoModel> onlineInfos = JSON.parseArray(result.getData().getString("onlineInfo"), OnlineInfoModel.class); //在线状态
+                    // TODO: 2019/2/21 这里需要把爆灯灭灯数据解析出来
                     RoundInfoModel currentInfo = JSON.parseObject(result.getData().getString("currentRound"), RoundInfoModel.class); //当前轮次信息
                     RoundInfoModel nextInfo = JSON.parseObject(result.getData().getString("nextRound"), RoundInfoModel.class); //下个轮次信息
 
@@ -558,6 +559,11 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                     // 轮次确实比当前的高，可以切换
                     mRoomData.setExpectRoundInfo(currentInfo);
                     mRoomData.checkRoundInRankMode();
+                } else if(RoomDataUtils.roundInfoEqual(currentInfo, mRoomData.getRealRoundInfo())) {
+                    // TODO: 2019/2/21 更新本次round的数据
+                    if(mRoomData.getRealRoundInfo() != null){
+                        mRoomData.getRealRoundInfo().tryUpdatePkRoundInfoModel(currentInfo, true);
+                    }
                 }
             } else {
                 MyLog.w(TAG, "服务器结束时间不合法 currentInfo=null");
@@ -1178,7 +1184,8 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         if (RoomDataUtils.roundInfoEqual(roundOverEvent.currenRound, mRoomData.getRealRoundInfo())) {
             // 确实等于当前轮次
             if (mRoomData.getRealRoundInfo() != null) {
-                MyLog.w(TAG, "确实是当前轮次结束了");
+                MyLog.w(TAG, "确实是当前轮次结束了,设置结束原因");
+                mRoomData.getRealRoundInfo().changeRoundOverReason(roundOverEvent.currenRound.geteRoundOverReasonModel());
                 mRoomData.getRealRoundInfo().setEndTs(roundOverEvent.roundOverTimeMs);
             }
         }

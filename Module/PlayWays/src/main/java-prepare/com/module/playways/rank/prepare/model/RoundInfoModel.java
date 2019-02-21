@@ -217,6 +217,14 @@ public class RoundInfoModel implements Serializable {
         this.noPassSingInfos = noPassSingInfos;
     }
 
+    public HashSet<BLightInfoModel> getBurstLightInfos() {
+        return burstLightInfos;
+    }
+
+    public HashSet<MLightInfoModel> getPklightOffInfos() {
+        return pklightOffInfos;
+    }
+
     public ERoundOverReasonModel geteRoundOverReasonModel() {
         return eRoundOverReasonModel;
     }
@@ -267,6 +275,36 @@ public class RoundInfoModel implements Serializable {
         roundInfoModel.setOverReason(roundInfo.getOverReason().getValue());
         roundInfoModel.setResultType(roundInfo.getResultType().getValue());
         return roundInfoModel;
+    }
+
+    public void tryUpdatePkRoundInfoModel(RoundInfoModel roundInfo, boolean notify) {
+        if (roundInfo == null) {
+            MyLog.e("JsonRoundInfo RoundInfo == null");
+            return;
+        }
+        this.setUserID(roundInfo.getUserID());
+        this.setPlaybookID(roundInfo.getPlaybookID());
+        this.setRoundSeq(roundInfo.getRoundSeq());
+        this.setSingBeginMs(roundInfo.getSingBeginMs());
+        this.setSingEndMs(roundInfo.getSingEndMs());
+
+        //TODO 抢 灭 结束原因 补全
+        for (BLightInfoModel bLightInfoModel : roundInfo.getBurstLightInfos()) {
+            addBrustLightUid(notify, bLightInfoModel);
+        }
+        for (MLightInfoModel mLightInfoModel : roundInfo.getPklightOffInfos()) {
+            addPkLightOffUid(notify, mLightInfoModel);
+        }
+        //拉出来的信息里肯定没有结束的原因，因为已经结束了
+//        changeRoundOverReason(roundInfo.geteRoundOverReasonModel());
+//        if (roundInfo.getOverReason() > 0) {
+//            this.setOverReason(roundInfo.getOverReason());
+//        }
+//        if (roundInfo.getResultType() > 0) {
+//            this.setResultType(roundInfo.getResultType());
+//        }
+//        updateStatus(notify, roundInfo.getStatus());
+        return;
     }
 
     public void tryUpdateByRoundInfoModel(RoundInfoModel roundInfo, boolean notify) {

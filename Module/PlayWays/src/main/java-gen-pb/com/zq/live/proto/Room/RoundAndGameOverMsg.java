@@ -31,8 +31,6 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
 
   public static final Integer DEFAULT_EXITUSERID = 0;
 
-  public static final ERoundOverReason DEFAULT_OVERREASON = ERoundOverReason.EROR_UNKNOWN;
-
   /**
    * 轮次结束的毫秒时间戳
    */
@@ -81,40 +79,30 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
   public final List<UserScoreResult> scoreResults;
 
   /**
-   * 结束原因
-   */
-  @WireField(
-      tag = 6,
-      adapter = "com.zq.live.proto.Room.ERoundOverReason#ADAPTER"
-  )
-  public final ERoundOverReason overReason;
-
-  /**
    * 游戏结果评分数据
    */
   @WireField(
-      tag = 7,
+      tag = 6,
       adapter = "com.zq.live.proto.Room.UserGameResult#ADAPTER",
       label = WireField.Label.REPEATED
   )
   public final List<UserGameResult> gameResults;
 
   public RoundAndGameOverMsg(Long roundOverTimeMs, RoundInfo currentRound, Integer exitUserID,
-      List<VoteInfo> voteInfo, List<UserScoreResult> scoreResults, ERoundOverReason overReason,
+      List<VoteInfo> voteInfo, List<UserScoreResult> scoreResults,
       List<UserGameResult> gameResults) {
-    this(roundOverTimeMs, currentRound, exitUserID, voteInfo, scoreResults, overReason, gameResults, ByteString.EMPTY);
+    this(roundOverTimeMs, currentRound, exitUserID, voteInfo, scoreResults, gameResults, ByteString.EMPTY);
   }
 
   public RoundAndGameOverMsg(Long roundOverTimeMs, RoundInfo currentRound, Integer exitUserID,
-      List<VoteInfo> voteInfo, List<UserScoreResult> scoreResults, ERoundOverReason overReason,
-      List<UserGameResult> gameResults, ByteString unknownFields) {
+      List<VoteInfo> voteInfo, List<UserScoreResult> scoreResults, List<UserGameResult> gameResults,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.roundOverTimeMs = roundOverTimeMs;
     this.currentRound = currentRound;
     this.exitUserID = exitUserID;
     this.voteInfo = Internal.immutableCopyOf("voteInfo", voteInfo);
     this.scoreResults = Internal.immutableCopyOf("scoreResults", scoreResults);
-    this.overReason = overReason;
     this.gameResults = Internal.immutableCopyOf("gameResults", gameResults);
   }
 
@@ -126,7 +114,6 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
     builder.exitUserID = exitUserID;
     builder.voteInfo = Internal.copyOf("voteInfo", voteInfo);
     builder.scoreResults = Internal.copyOf("scoreResults", scoreResults);
-    builder.overReason = overReason;
     builder.gameResults = Internal.copyOf("gameResults", gameResults);
     builder.addUnknownFields(unknownFields());
     return builder;
@@ -143,7 +130,6 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
         && Internal.equals(exitUserID, o.exitUserID)
         && voteInfo.equals(o.voteInfo)
         && scoreResults.equals(o.scoreResults)
-        && Internal.equals(overReason, o.overReason)
         && gameResults.equals(o.gameResults);
   }
 
@@ -157,7 +143,6 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
       result = result * 37 + (exitUserID != null ? exitUserID.hashCode() : 0);
       result = result * 37 + voteInfo.hashCode();
       result = result * 37 + scoreResults.hashCode();
-      result = result * 37 + (overReason != null ? overReason.hashCode() : 0);
       result = result * 37 + gameResults.hashCode();
       super.hashCode = result;
     }
@@ -172,7 +157,6 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
     if (exitUserID != null) builder.append(", exitUserID=").append(exitUserID);
     if (!voteInfo.isEmpty()) builder.append(", voteInfo=").append(voteInfo);
     if (!scoreResults.isEmpty()) builder.append(", scoreResults=").append(scoreResults);
-    if (overReason != null) builder.append(", overReason=").append(overReason);
     if (!gameResults.isEmpty()) builder.append(", gameResults=").append(gameResults);
     return builder.replace(0, 2, "RoundAndGameOverMsg{").append('}').toString();
   }
@@ -238,16 +222,6 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
   }
 
   /**
-   * 结束原因
-   */
-  public ERoundOverReason getOverReason() {
-    if(overReason==null){
-        return new ERoundOverReason.Builder().build();
-    }
-    return overReason;
-  }
-
-  /**
    * 游戏结果评分数据
    */
   public List<UserGameResult> getGameResultsList() {
@@ -293,13 +267,6 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
   }
 
   /**
-   * 结束原因
-   */
-  public boolean hasOverReason() {
-    return overReason!=null;
-  }
-
-  /**
    * 游戏结果评分数据
    */
   public boolean hasGameResultsList() {
@@ -316,8 +283,6 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
     public List<VoteInfo> voteInfo;
 
     public List<UserScoreResult> scoreResults;
-
-    public ERoundOverReason overReason;
 
     public List<UserGameResult> gameResults;
 
@@ -370,14 +335,6 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
     }
 
     /**
-     * 结束原因
-     */
-    public Builder setOverReason(ERoundOverReason overReason) {
-      this.overReason = overReason;
-      return this;
-    }
-
-    /**
      * 游戏结果评分数据
      */
     public Builder addAllGameResults(List<UserGameResult> gameResults) {
@@ -388,7 +345,7 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
 
     @Override
     public RoundAndGameOverMsg build() {
-      return new RoundAndGameOverMsg(roundOverTimeMs, currentRound, exitUserID, voteInfo, scoreResults, overReason, gameResults, super.buildUnknownFields());
+      return new RoundAndGameOverMsg(roundOverTimeMs, currentRound, exitUserID, voteInfo, scoreResults, gameResults, super.buildUnknownFields());
     }
   }
 
@@ -404,8 +361,7 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
           + ProtoAdapter.UINT32.encodedSizeWithTag(3, value.exitUserID)
           + VoteInfo.ADAPTER.asRepeated().encodedSizeWithTag(4, value.voteInfo)
           + UserScoreResult.ADAPTER.asRepeated().encodedSizeWithTag(5, value.scoreResults)
-          + ERoundOverReason.ADAPTER.encodedSizeWithTag(6, value.overReason)
-          + UserGameResult.ADAPTER.asRepeated().encodedSizeWithTag(7, value.gameResults)
+          + UserGameResult.ADAPTER.asRepeated().encodedSizeWithTag(6, value.gameResults)
           + value.unknownFields().size();
     }
 
@@ -416,8 +372,7 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
       ProtoAdapter.UINT32.encodeWithTag(writer, 3, value.exitUserID);
       VoteInfo.ADAPTER.asRepeated().encodeWithTag(writer, 4, value.voteInfo);
       UserScoreResult.ADAPTER.asRepeated().encodeWithTag(writer, 5, value.scoreResults);
-      ERoundOverReason.ADAPTER.encodeWithTag(writer, 6, value.overReason);
-      UserGameResult.ADAPTER.asRepeated().encodeWithTag(writer, 7, value.gameResults);
+      UserGameResult.ADAPTER.asRepeated().encodeWithTag(writer, 6, value.gameResults);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -432,15 +387,7 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
           case 3: builder.setExitUserID(ProtoAdapter.UINT32.decode(reader)); break;
           case 4: builder.voteInfo.add(VoteInfo.ADAPTER.decode(reader)); break;
           case 5: builder.scoreResults.add(UserScoreResult.ADAPTER.decode(reader)); break;
-          case 6: {
-            try {
-              builder.setOverReason(ERoundOverReason.ADAPTER.decode(reader));
-            } catch (ProtoAdapter.EnumConstantNotFoundException e) {
-              builder.addUnknownField(tag, FieldEncoding.VARINT, (long) e.value);
-            }
-            break;
-          }
-          case 7: builder.gameResults.add(UserGameResult.ADAPTER.decode(reader)); break;
+          case 6: builder.gameResults.add(UserGameResult.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

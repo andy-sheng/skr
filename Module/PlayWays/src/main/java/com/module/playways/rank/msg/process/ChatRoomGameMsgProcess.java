@@ -293,6 +293,7 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
             onLineInfos.add(jsonOnLineInfo);
         }
 
+        // TODO: 2019/2/21 这里需要把爆灯灭灯解析出来
         RoundInfoModel currentInfo = RoundInfoModel.parseFromRoundInfo(syncStatusMsg.getCurrentRound());
         RoundInfoModel nextInfo = RoundInfoModel.parseFromRoundInfo(syncStatusMsg.getNextRound());
 

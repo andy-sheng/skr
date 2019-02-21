@@ -30,8 +30,6 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
 
   public static final Integer DEFAULT_EXITUSERID = 0;
 
-  public static final ERoundOverReason DEFAULT_OVERREASON = ERoundOverReason.EROR_UNKNOWN;
-
   /**
    * 本轮次结束的毫秒时间戳
    */
@@ -68,28 +66,18 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
   )
   public final Integer exitUserID;
 
-  /**
-   * 结束原因
-   */
-  @WireField(
-      tag = 5,
-      adapter = "com.zq.live.proto.Room.ERoundOverReason#ADAPTER"
-  )
-  public final ERoundOverReason overReason;
-
   public RoundOverMsg(Long roundOverTimeMs, RoundInfo currentRound, RoundInfo nextRound,
-      Integer exitUserID, ERoundOverReason overReason) {
-    this(roundOverTimeMs, currentRound, nextRound, exitUserID, overReason, ByteString.EMPTY);
+      Integer exitUserID) {
+    this(roundOverTimeMs, currentRound, nextRound, exitUserID, ByteString.EMPTY);
   }
 
   public RoundOverMsg(Long roundOverTimeMs, RoundInfo currentRound, RoundInfo nextRound,
-      Integer exitUserID, ERoundOverReason overReason, ByteString unknownFields) {
+      Integer exitUserID, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.roundOverTimeMs = roundOverTimeMs;
     this.currentRound = currentRound;
     this.nextRound = nextRound;
     this.exitUserID = exitUserID;
-    this.overReason = overReason;
   }
 
   @Override
@@ -99,7 +87,6 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
     builder.currentRound = currentRound;
     builder.nextRound = nextRound;
     builder.exitUserID = exitUserID;
-    builder.overReason = overReason;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -113,8 +100,7 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
         && Internal.equals(roundOverTimeMs, o.roundOverTimeMs)
         && Internal.equals(currentRound, o.currentRound)
         && Internal.equals(nextRound, o.nextRound)
-        && Internal.equals(exitUserID, o.exitUserID)
-        && Internal.equals(overReason, o.overReason);
+        && Internal.equals(exitUserID, o.exitUserID);
   }
 
   @Override
@@ -126,7 +112,6 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
       result = result * 37 + (currentRound != null ? currentRound.hashCode() : 0);
       result = result * 37 + (nextRound != null ? nextRound.hashCode() : 0);
       result = result * 37 + (exitUserID != null ? exitUserID.hashCode() : 0);
-      result = result * 37 + (overReason != null ? overReason.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -139,7 +124,6 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
     if (currentRound != null) builder.append(", currentRound=").append(currentRound);
     if (nextRound != null) builder.append(", nextRound=").append(nextRound);
     if (exitUserID != null) builder.append(", exitUserID=").append(exitUserID);
-    if (overReason != null) builder.append(", overReason=").append(overReason);
     return builder.replace(0, 2, "RoundOverMsg{").append('}').toString();
   }
 
@@ -194,16 +178,6 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
   }
 
   /**
-   * 结束原因
-   */
-  public ERoundOverReason getOverReason() {
-    if(overReason==null){
-        return new ERoundOverReason.Builder().build();
-    }
-    return overReason;
-  }
-
-  /**
    * 本轮次结束的毫秒时间戳
    */
   public boolean hasRoundOverTimeMs() {
@@ -231,13 +205,6 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
     return exitUserID!=null;
   }
 
-  /**
-   * 结束原因
-   */
-  public boolean hasOverReason() {
-    return overReason!=null;
-  }
-
   public static final class Builder extends Message.Builder<RoundOverMsg, Builder> {
     public Long roundOverTimeMs;
 
@@ -246,8 +213,6 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
     public RoundInfo nextRound;
 
     public Integer exitUserID;
-
-    public ERoundOverReason overReason;
 
     public Builder() {
     }
@@ -284,17 +249,9 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
       return this;
     }
 
-    /**
-     * 结束原因
-     */
-    public Builder setOverReason(ERoundOverReason overReason) {
-      this.overReason = overReason;
-      return this;
-    }
-
     @Override
     public RoundOverMsg build() {
-      return new RoundOverMsg(roundOverTimeMs, currentRound, nextRound, exitUserID, overReason, super.buildUnknownFields());
+      return new RoundOverMsg(roundOverTimeMs, currentRound, nextRound, exitUserID, super.buildUnknownFields());
     }
   }
 
@@ -309,7 +266,6 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
           + RoundInfo.ADAPTER.encodedSizeWithTag(2, value.currentRound)
           + RoundInfo.ADAPTER.encodedSizeWithTag(3, value.nextRound)
           + ProtoAdapter.UINT32.encodedSizeWithTag(4, value.exitUserID)
-          + ERoundOverReason.ADAPTER.encodedSizeWithTag(5, value.overReason)
           + value.unknownFields().size();
     }
 
@@ -319,7 +275,6 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
       RoundInfo.ADAPTER.encodeWithTag(writer, 2, value.currentRound);
       RoundInfo.ADAPTER.encodeWithTag(writer, 3, value.nextRound);
       ProtoAdapter.UINT32.encodeWithTag(writer, 4, value.exitUserID);
-      ERoundOverReason.ADAPTER.encodeWithTag(writer, 5, value.overReason);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -333,14 +288,6 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
           case 2: builder.setCurrentRound(RoundInfo.ADAPTER.decode(reader)); break;
           case 3: builder.setNextRound(RoundInfo.ADAPTER.decode(reader)); break;
           case 4: builder.setExitUserID(ProtoAdapter.UINT32.decode(reader)); break;
-          case 5: {
-            try {
-              builder.setOverReason(ERoundOverReason.ADAPTER.decode(reader));
-            } catch (ProtoAdapter.EnumConstantNotFoundException e) {
-              builder.addUnknownField(tag, FieldEncoding.VARINT, (long) e.value);
-            }
-            break;
-          }
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
