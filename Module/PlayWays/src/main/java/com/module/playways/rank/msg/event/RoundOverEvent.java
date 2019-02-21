@@ -2,6 +2,7 @@ package com.module.playways.rank.msg.event;
 
 import com.module.playways.rank.msg.BasePushInfo;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
+import com.zq.live.proto.Room.RoundOverMsg;
 
 public class RoundOverEvent {
     public BasePushInfo info;
@@ -11,11 +12,11 @@ public class RoundOverEvent {
     public RoundInfoModel nextRound;  //下个轮次信息
     public int exitUserID; //退出用户的ID, 无退出会则为0
 
-    public RoundOverEvent(BasePushInfo info, long roundOverTimeMs, RoundInfoModel currenRound, RoundInfoModel nextRound, int exitUserID) {
+    public RoundOverEvent(BasePushInfo info, RoundOverMsg roundOverMsgr) {
         this.info = info;
-        this.roundOverTimeMs = roundOverTimeMs;
-        this.currenRound = currenRound;
-        this.nextRound = nextRound;
-        this.exitUserID = exitUserID;
+        this.roundOverTimeMs = roundOverMsgr.getRoundOverTimeMs();
+        this.currenRound = RoundInfoModel.parseFromRoundInfo(roundOverMsgr.getCurrentRound());
+        this.nextRound = RoundInfoModel.parseFromRoundInfo(roundOverMsgr.getNextRound());
+        this.exitUserID = roundOverMsgr.getExitUserID();
     }
 }

@@ -3,7 +3,10 @@ package com.module.playways.rank.msg.event;
 import com.module.playways.rank.msg.BasePushInfo;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
+import com.zq.live.proto.Room.OnlineInfo;
+import com.zq.live.proto.Room.SyncStatusMsg;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SyncStatusEvent {
@@ -18,14 +21,20 @@ public class SyncStatusEvent {
     public RoundInfoModel currentInfo; //当前轮次信息
     public RoundInfoModel nextInfo; //下个轮次信息
 
-    public SyncStatusEvent(BasePushInfo info, long syncStatusTimes, long gameOverTimeMs,
-                           List<OnlineInfoModel> onlineInfos, RoundInfoModel currentInfo, RoundInfoModel nextInfo) {
-        this.info = info;
-        this.syncStatusTimes = syncStatusTimes;
-        this.gameOverTimeMs = gameOverTimeMs;
-        this.onlineInfos = onlineInfos;
-        this.currentInfo = currentInfo;
-        this.nextInfo = nextInfo;
-    }
+    public SyncStatusEvent(BasePushInfo info, SyncStatusMsg syncStatusMsg) {
+        // TODO: 2019/2/21 这里需要把爆灯灭灯解析出来
+        List<OnlineInfoModel> onLineInfos = new ArrayList<>();
+        for (OnlineInfo onlineInfo : syncStatusMsg.getOnlineInfoList()) {
+            OnlineInfoModel jsonOnLineInfo = new OnlineInfoModel();
+            jsonOnLineInfo.parse(onlineInfo);
+            onLineInfos.add(jsonOnLineInfo);
+        }
 
+        this.info = info;
+        this.syncStatusTimes = syncStatusMsg.getSyncStatusTimeMs();
+        this.gameOverTimeMs = syncStatusMsg.getGameOverTimeMs();
+        this.onlineInfos = onLineInfos;
+        this.currentInfo = RoundInfoModel.parseFromRoundInfo(syncStatusMsg.getCurrentRound());
+        this.nextInfo = RoundInfoModel.parseFromRoundInfo(syncStatusMsg.getNextRound());
+    }
 }
