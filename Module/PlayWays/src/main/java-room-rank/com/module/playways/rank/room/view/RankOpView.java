@@ -7,6 +7,7 @@ import com.common.utils.HandlerTaskTimer;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.module.playways.rank.prepare.model.GameConfigModel;
 import com.module.rank.R;
 import java.util.concurrent.TimeUnit;
 
@@ -22,9 +23,10 @@ public class RankOpView extends RelativeLayout {
 
     HandlerTaskTimer mCountDownTask;
 
+    GameConfigModel mGameConfigModel;
 
-
-    volatile boolean mBurstSuccess = false;
+    int mBurstMaxNum = 0;
+    int mLightOffMaxNum = 0;
 
     public RankOpView(Context context) {
         super(context);
@@ -44,7 +46,7 @@ public class RankOpView extends RelativeLayout {
 
         RxView.clicks(mIvBurst)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
-                .filter(o -> !mBurstSuccess)
+                .filter(o -> mBurstMaxNum > 0)
                 .subscribe(o -> {
                     if(mOpListener != null){
                         mOpListener.clickBurst(mSeq);
@@ -53,6 +55,7 @@ public class RankOpView extends RelativeLayout {
 
         RxView.clicks(mIvTurnOff)
                 .throttleFirst(300, TimeUnit.MILLISECONDS)
+                .filter(o -> mLightOffMaxNum > 0)
                 .subscribe(o -> {
                     if(mOpListener != null){
                         mOpListener.clickLightOff(mSeq);
@@ -60,8 +63,13 @@ public class RankOpView extends RelativeLayout {
                 });
     }
 
-    public void setOpListener(OpListener opListener) {
+    public void setOpListener(OpListener opListener, GameConfigModel gameConfigModel) {
         mOpListener = opListener;
+        mGameConfigModel = gameConfigModel;
+        if(mGameConfigModel != null){
+            mBurstMaxNum = mGameConfigModel.getpKMaxShowBLightTimes();
+            mLightOffMaxNum = mGameConfigModel.getpKMaxShowMLightTimes();
+        }
     }
 
     public void playCountDown(int seq) {
@@ -92,15 +100,22 @@ public class RankOpView extends RelativeLayout {
     }
 
     public void burstSuccess(boolean success, int seq) {
-        mBurstSuccess = success;
-        if (mBurstSuccess) {
-            mIvBurst.setVisibility(GONE);
+        if (success) {
+            mBurstMaxNum--;
+            //没有爆灯机会了
+            if(mBurstMaxNum <= 0){
+                mIvBurst.setVisibility(GONE);
+            }
         }
     }
 
     public void lightOffSuccess(boolean success, int seq) {
         if (seq == mSeq) {
+            mLightOffMaxNum--;
+            //没有灭灯机会了
+            if(mLightOffMaxNum <= 0){
 
+            }
         }
     }
 

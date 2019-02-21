@@ -39,7 +39,7 @@ public class RankRoomActivity extends BaseActivity {
             mRoomData.setGameCreateTs(prepareData.getGameCreatMs());
             mRoomData.setGameStartTs(prepareData.getGameReadyInfo().getGameStartInfo().getStartTimeMs());
             mRoomData.setShiftTs(prepareData.getShiftTs());
-
+            mRoomData.setGameConfigModel(prepareData.getGameConfigModel());
             mRoomData.setRoundInfoModelList(prepareData.getGameReadyInfo().getRoundInfo());
             mRoomData.setExpectRoundInfo(RoomDataUtils.findFirstRoundInfo(mRoomData.getRoundInfoModelList()));
             MyLog.d(TAG, "" + prepareData.getPlayerInfoList());

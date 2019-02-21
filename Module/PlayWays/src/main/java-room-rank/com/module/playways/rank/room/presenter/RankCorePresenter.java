@@ -759,6 +759,76 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
+    public void burst(int seq) {
+        RoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
+        if(roundInfoModel != null && roundInfoModel.getRoundSeq() == seq){
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("gameID", mRoomData.getGameId());
+            map.put("roundSeq", roundInfoModel.getRoundSeq());
+            RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+            ApiMethods.subscribe(mRoomServerApi.burst(body), new ApiObserver<ApiResult>() {
+                @Override
+                public void process(ApiResult result) {
+                    if (result.getErrno() == 0) {
+                        MyLog.w(TAG, "爆灯成功 traceid is " + result.getTraceId() + "，seq是" + roundInfoModel.getRoundSeq());
+                        mIGameRuleView.burstSuccess(true, seq);
+                    } else {
+                        MyLog.w(TAG, "爆灯上报失败 traceid is " + result.getTraceId() + "，seq是" + roundInfoModel.getRoundSeq());
+                        mIGameRuleView.burstSuccess(false, seq);
+                    }
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    MyLog.w(TAG, "burst" + " error " + e);
+                    mIGameRuleView.burstSuccess(false, seq);
+                }
+
+                @Override
+                public void onNetworkError(ErrorType errorType) {
+                    MyLog.w(TAG, "burst" + " errorType " + errorType);
+                }
+            }, this);
+        }else {
+            MyLog.d(TAG, "爆灯，但不是本轮次，" + "seq=" + seq);
+        }
+    }
+
+    public void lightOff(int seq) {
+        RoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
+        if(roundInfoModel != null && roundInfoModel.getRoundSeq() == seq){
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("gameID", mRoomData.getGameId());
+            map.put("roundSeq", roundInfoModel.getRoundSeq());
+            RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+            ApiMethods.subscribe(mRoomServerApi.burst(body), new ApiObserver<ApiResult>() {
+                @Override
+                public void process(ApiResult result) {
+                    if (result.getErrno() == 0) {
+                        MyLog.w(TAG, "灭灯成功 traceid is " + result.getTraceId() + "，seq是" + roundInfoModel.getRoundSeq());
+                        mIGameRuleView.lightOffSuccess(true, seq);
+                    } else {
+                        MyLog.w(TAG, "灭灯上报失败 traceid is " + result.getTraceId() + "，seq是" + roundInfoModel.getRoundSeq());
+                        mIGameRuleView.lightOffSuccess(false, seq);
+                    }
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    MyLog.w(TAG, "lightOff" + " error " + e);
+                    mIGameRuleView.lightOffSuccess(false, seq);
+                }
+
+                @Override
+                public void onNetworkError(ErrorType errorType) {
+                    MyLog.w(TAG, "lightOff" + " errorType " + errorType);
+                }
+            }, this);
+        }else {
+            MyLog.d(TAG, "灭灯，但不是本轮次，" + "seq=" + seq);
+        }
+    }
+
     private void checkMachineUser(long uid) {
         PlayerInfoModel playerInfo = RoomDataUtils.getPlayerInfoById(mRoomData, uid);
         if (playerInfo == null) {

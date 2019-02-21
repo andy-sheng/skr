@@ -6,6 +6,7 @@ import com.common.log.MyLog;
 import com.module.playways.grab.room.event.GrabGameOverEvent;
 import com.module.playways.grab.room.event.GrabRoundChangeEvent;
 import com.module.playways.grab.room.model.GrabResultInfoModel;
+import com.module.playways.rank.prepare.model.GameConfigModel;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
@@ -82,6 +83,16 @@ public class RoomData implements Serializable {
 
     //一场到底歌曲分类
     private int tagId;
+
+    GameConfigModel mGameConfigModel;
+
+    public GameConfigModel getGameConfigModel() {
+        return mGameConfigModel;
+    }
+
+    public void setGameConfigModel(GameConfigModel gameConfigModel) {
+        mGameConfigModel = gameConfigModel;
+    }
 
     public int getTagId() {
         return tagId;

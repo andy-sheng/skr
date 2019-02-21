@@ -115,6 +115,11 @@ public class RankTopContainerView extends RelativeLayout {
         }
     }
 
+    //轮次结束
+    public void roundOver(){
+
+    }
+
     /**
      * @param seq  轮次信息
      * @param lightState  爆灭情况

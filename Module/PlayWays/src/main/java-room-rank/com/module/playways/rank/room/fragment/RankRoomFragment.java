@@ -51,11 +51,13 @@ import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.RoomData;
 import com.module.playways.rank.room.presenter.DownLoadScoreFilePresenter;
 import com.module.playways.rank.room.presenter.RankCorePresenter;
+import com.module.playways.rank.room.score.bar.EnergySlotView;
 import com.module.playways.rank.room.view.ArcProgressBar;
 import com.module.playways.rank.room.view.BottomContainerView;
 import com.module.playways.rank.room.view.IGameRuleView;
 import com.module.playways.rank.room.view.InputContainerView;
 import com.module.playways.rank.room.view.RankOpView;
+import com.module.playways.rank.room.view.RankTopContainerView;
 import com.module.playways.rank.room.view.TopContainerView;
 import com.module.playways.rank.room.view.TurnChangeCardView;
 import com.module.playways.rank.song.model.SongModel;
@@ -108,7 +110,7 @@ import static com.zq.report.fragment.ReportFragment.FORM_GAME;
 import static com.zq.report.fragment.ReportFragment.REPORT_FROM_KEY;
 import static com.zq.report.fragment.ReportFragment.REPORT_USER_ID;
 
-public class RankRoomFragment extends BaseFragment implements IGameRuleView {
+public class RankRoomFragment extends BaseFragment implements IGameRuleView, RankOpView.OpListener {
 
     public final static String TAG = "RankingRoomFragment";
 
@@ -129,7 +131,9 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     CommentView mCommentView;
 
-    TopContainerView mTopContainerView;
+    RankTopContainerView mRankTopContainerView;
+
+    EnergySlotView mEnergySlotView;
 
     BaseImageView mStageView;      //主舞台动画，webp形式
     BaseImageView mSingAvatarView; //主舞台中心，歌唱者头像
@@ -229,6 +233,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         initGiftDisplayView();
 
         mRankOpView = mRootView.findViewById(R.id.rank_op_view);
+        mRankOpView.setOpListener(this, mRoomData.getGameConfigModel());
 
         mCorePresenter = new RankCorePresenter(this, mRoomData);
         addPresent(mCorePresenter);
@@ -464,6 +469,26 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                 });
     }
 
+    @Override
+    public void burstSuccess(boolean success, int seq) {
+        mRankOpView.burstSuccess(success, seq);
+    }
+
+    @Override
+    public void lightOffSuccess(boolean success, int seq) {
+        mRankOpView.lightOffSuccess(success, seq);
+    }
+
+    @Override
+    public void clickBurst(int seq) {
+        mCorePresenter.burst(seq);
+    }
+
+    @Override
+    public void clickLightOff(int seq) {
+        mCorePresenter.lightOff(seq);
+    }
+
     private void initInputView() {
         mInputContainerView = mRootView.findViewById(R.id.input_container_view);
         mInputContainerView.setRoomData(mRoomData);
@@ -566,14 +591,10 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     }
 
     private void initTopView() {
-        mTopContainerView = mRootView.findViewById(R.id.top_container_view);
-        mTopContainerView.setRoomData(mRoomData);
+        mRankTopContainerView = mRootView.findViewById(R.id.top_container_view);
+        mRankTopContainerView.setRoomData(mRoomData);
 
-        // 加上状态栏的高度
-        int statusBarHeight = U.getStatusBarUtil().getStatusBarHeight(getContext());
-        RelativeLayout.LayoutParams topLayoutParams = (RelativeLayout.LayoutParams) mTopContainerView.getLayoutParams();
-        topLayoutParams.topMargin = statusBarHeight + topLayoutParams.topMargin;
-        mTopContainerView.setListener(new TopContainerView.Listener() {
+        mRankTopContainerView.setListener(new TopContainerView.Listener() {
             @Override
             public void closeBtnClick() {
                 quitGame();
@@ -584,6 +605,8 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                 mCorePresenter.muteAllRemoteAudioStreams(!voiceOpen, true);
             }
         });
+
+        mEnergySlotView = mRankTopContainerView.getEnergySlotView();
     }
 
     private void initLyricsView() {
@@ -740,8 +763,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     @Override
     public void startSelfCountdown(Runnable countDownOver) {
         MyLog.d(TAG, "startSelfCountdown" + " countDownOver=" + countDownOver);
-        mTopContainerView.loadAvatar(AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
-                .build());
+
         mManyLyricsView.setVisibility(View.GONE);
         mUiHanlder.removeMessages(MSG_LYRIC_END_EVENT);
         // 加保护，确保当前主舞台一定被移除
@@ -785,7 +807,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     public void startRivalCountdown(int uid, String avatar) {
         MyLog.d(TAG, "startRivalCountdown" + " uid=" + uid + " avatar=" + avatar);
         mVoiceScaleView.setVisibility(View.GONE);
-        mTopContainerView.loadAvatar(AvatarUtils.newParamsBuilder(avatar).build());
         mManyLyricsView.setVisibility(View.GONE);
         mUiHanlder.removeMessages(MSG_LYRIC_END_EVENT);
         // 加保护，确保当前主舞台一定被移除
@@ -846,7 +867,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         if (isGameEndAniamtionShow) {
             return;
         }
-        mTopContainerView.onGameFinish();
         isGameEndAniamtionShow = true;
 
         destroyAnimation();
@@ -918,7 +938,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     public void gameFinish() {
         MyLog.w(TAG, "游戏结束了");
         mUiHanlder.removeMessages(MSG_LYRIC_END_EVENT);
-        mTopContainerView.cancelShowLastedTimeTask();
         if (mPrepareLyricTask != null && !mPrepareLyricTask.isDisposed()) {
             mPrepareLyricTask.dispose();
         }
@@ -942,13 +961,12 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     @Override
     public void updateScrollBarProgress(int volume) {
-        mTopContainerView.setScoreProgress(volume);
+
     }
 
     @Override
     public void showLeftTime(long wholeTile) {
         MyLog.d(TAG, "showLastedTime" + " wholeTile=" + wholeTile);
-        mTopContainerView.startPlayLeftTime(wholeTile);
     }
 
     @Override
