@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     android:background="#2E3041">
 
+    <ImageView
+        android:layout_width="@dimen/view_182_dp"
+        android:layout_height="@dimen/view_207_dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="-35dp"
+        android:layout_marginRight="-20dp"
+        android:background="@drawable/yuyinfang_bj" />
+
     <!--这里面是软键盘弹出时 需要上移的布局-->
     <com.module.playways.voice.view.VoiceBottomContainerView
         android:id="@+id/bottom_container_view"
@@ -49,9 +58,20 @@
         android:id="@+id/voice_right_op_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_alignBottom="@+id/comment_view"
-        android:layout_marginRight="@dimen/view_16_dp" />
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/view_16_dp"
+        android:layout_marginBottom="@dimen/view_8_dp" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/game_result_iv"
+        android:layout_width="@dimen/view_46_dp"
+        android:layout_height="@dimen/view_52_dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="@dimen/view_8_dp"
+        android:layout_marginBottom="235dp"
+        android:background="@drawable/yuyinfang_zhanjibtn"/>
 
     <com.module.playways.rank.room.view.InputContainerView
         android:id="@+id/input_container_view"

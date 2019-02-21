@@ -15,6 +15,8 @@ import com.common.core.userinfo.UserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
+import com.common.view.ex.ExImageView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.manager.BgMusicManager;
 import com.module.playways.RoomData;
@@ -74,6 +76,8 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
 
     VoiceRightOpView mVoiceRightOpView;
 
+    ExImageView mGameResultIv;
+
     VoiceCorePresenter mCorePresenter;
 
     DialogPlus mShowPersonInfoDialogPlus;
@@ -112,6 +116,7 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
         initTopView();
         initUserStatusView();
         initOpView();
+        initResultView();
 
         mCorePresenter = new VoiceCorePresenter(this, mRoomData);
         addPresent(mCorePresenter);
@@ -187,7 +192,17 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
     }
 
     private void initOpView() {
-        mVoiceRightOpView  = mRootView.findViewById(R.id.voice_right_op_view);
+        mVoiceRightOpView = mRootView.findViewById(R.id.voice_right_op_view);
+    }
+
+    private void initResultView() {
+        mGameResultIv = (ExImageView) mRootView.findViewById(R.id.game_result_iv);
+        mGameResultIv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+
+            }
+        });
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -259,7 +274,6 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
                         .setExitAnim(com.component.busilib.R.anim.slide_out_bottom)
                         .build());
     }
-
 
 
     private SVGAParser getSVGAParser() {

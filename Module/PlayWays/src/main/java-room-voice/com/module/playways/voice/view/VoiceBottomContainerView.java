@@ -14,6 +14,7 @@ import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
+import com.common.view.ex.ExTextView;
 import com.module.playways.RoomData;
 import com.module.playways.rank.room.event.InputBoardEvent;
 import com.module.playways.rank.room.quickmsg.QuickMsgView;
@@ -30,8 +31,8 @@ public class VoiceBottomContainerView extends RelativeLayout {
 
     Listener mBottomContainerListener;
 
-    ExImageView mQuickBtn;
-    ExImageView mShowInputContainerBtn;
+    ExTextView mQuickBtn;
+    ExTextView mShowInputContainerBtn;
 
     PopupWindow mQuickMsgPopWindow;
     private RoomData mRoomData;
@@ -64,8 +65,8 @@ public class VoiceBottomContainerView extends RelativeLayout {
     private void init() {
         inflate(getContext(), R.layout.voice_bottom_container_view_layout, this);
 
-        mQuickBtn = (ExImageView) this.findViewById(R.id.quick_btn);
-        mShowInputContainerBtn = (ExImageView) this.findViewById(R.id.show_input_container_btn);
+        mQuickBtn = (ExTextView) this.findViewById(R.id.quick_btn);
+        mShowInputContainerBtn = (ExTextView) this.findViewById(R.id.show_input_container_btn);
 
         mShowInputContainerBtn.setOnClickListener(new DebounceViewClickListener() {
             @Override
