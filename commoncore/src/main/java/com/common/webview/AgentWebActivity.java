@@ -50,7 +50,7 @@ public class AgentWebActivity extends BaseActivity {
     private MiddlewareWebChromeBase mMiddleWareWebChrome;
     private MiddlewareWebClientBase mMiddleWareWebClient;
 
-//    private SharedPrefsCookiePersistor mSharedPrefsCookiePersistor;
+    private SharedPrefsCookiePersistor mSharedPrefsCookiePersistor;
     CommonTitleBar mTitlebar;
     RelativeLayout mContentContainer;
 
@@ -133,18 +133,7 @@ public class AgentWebActivity extends BaseActivity {
             }
         };
 
-        //种cookie，先注释掉
-//        mSharedPrefsCookiePersistor = new SharedPrefsCookiePersistor(this);
-//        List<Cookie> cookies = mSharedPrefsCookiePersistor.loadAll();
-//        if(cookies != null && cookies.size() > 0){
-//            CookieSyncManager.createInstance(this);
-//            CookieManager cookieManager = CookieManager.getInstance();
-//            cookieManager.setAcceptCookie(true);
-//            for(Cookie cookie : cookies){
-//                cookieManager.setCookie(url, cookie.value());//cookies是在HttpClient中获得的cookie
-//            }
-//            CookieSyncManager.getInstance().sync();
-//        }
+        setCookie(url);
 
         mAgentWeb = AgentWeb.with(this)//
                 .setAgentWebParent((ViewGroup) mContentContainer, new RelativeLayout.LayoutParams(-1, -1))//
@@ -165,6 +154,23 @@ public class AgentWebActivity extends BaseActivity {
 
         mJsRegister = new JsRegister(mBridgeWebView,this);
         mJsRegister.register();
+    }
+
+    private void setCookie(String url){
+        //种cookie，先注释掉
+        if(!TextUtils.isEmpty(url) && url.contains("inframe.mobi")){
+            mSharedPrefsCookiePersistor = new SharedPrefsCookiePersistor(this);
+            List<Cookie> cookies = mSharedPrefsCookiePersistor.loadAll();
+            if(cookies != null && cookies.size() > 0){
+                CookieSyncManager.createInstance(this);
+                CookieManager cookieManager = CookieManager.getInstance();
+                cookieManager.setAcceptCookie(true);
+                for(Cookie cookie : cookies){
+                    cookieManager.setCookie(url, cookie.value());//cookies是在HttpClient中获得的cookie
+                }
+                CookieSyncManager.getInstance().sync();
+            }
+        }
     }
 
 
