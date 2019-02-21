@@ -9,7 +9,9 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
+import com.common.base.FragmentDataListener;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.log.MyLog;
@@ -23,6 +25,7 @@ import com.module.playways.RoomData;
 import com.module.playways.grab.room.event.ShowPersonCardEvent;
 import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.comment.CommentView;
+import com.module.playways.rank.room.fragment.RankResultFragment;
 import com.module.playways.rank.room.view.InputContainerView;
 import com.module.playways.voice.inter.IVoiceView;
 import com.module.playways.voice.presenter.VoiceCorePresenter;
@@ -200,7 +203,11 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
         mGameResultIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), RankResultFragment.class)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(true)
+                        .addDataBeforeAdd(1, mRoomData)
+                        .build());
             }
         });
     }

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black_trans_80">
+
+    <com.common.view.ex.ExRelativeLayout
+        android:id="@+id/result_area"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_496_dp"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="@dimen/view_27_dp"
+        android:layout_marginRight="@dimen/view_27_dp"
+        android:paddingLeft="@dimen/view_2_dp"
+        android:paddingRight="@dimen/view_2_dp"
+        app:bl_corners_radius="@dimen/view_12_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#404559"
+        app:bl_stroke_color="#2E3041"
+        app:bl_stroke_width="@dimen/view_2_dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_17_dp"
+            android:layout_marginTop="@dimen/view_66_dp"
+            android:orientation="horizontal">
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="@dimen/view_0_dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="演唱者"
+                android:textColor="#9697A0"
+                android:textSize="@dimen/textsize_12_dp" />
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="@dimen/view_0_dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="听歌完整度"
+                android:textColor="#9697A0"
+                android:textSize="@dimen/textsize_12_dp" />
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="@dimen/view_0_dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="综合评分"
+                android:textColor="#9697A0"
+                android:textSize="@dimen/textsize_12_dp" />
+
+        </LinearLayout>
+
+        <com.module.playways.rank.room.view.RankResultView
+            android:id="@+id/first_result"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_125_dp"
+            android:layout_marginTop="@dimen/view_87_dp">
+
+        </com.module.playways.rank.room.view.RankResultView>
+
+        <com.module.playways.rank.room.view.RankResultView
+            android:id="@+id/second_result"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_125_dp"
+            android:layout_below="@id/first_result">
+
+        </com.module.playways.rank.room.view.RankResultView>
+
+        <com.module.playways.rank.room.view.RankResultView
+            android:id="@+id/third_result"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_125_dp"
+            android:layout_below="@id/second_result"></com.module.playways.rank.room.view.RankResultView>
+
+    </com.common.view.ex.ExRelativeLayout>
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/result_top"
+        android:layout_width="@dimen/view_101_dp"
+        android:layout_height="@dimen/view_86_dp"
+        android:layout_alignTop="@+id/result_area"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-30dp"
+        android:background="@drawable/zhanji_top_win" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/result_exit"
+        android:layout_width="@dimen/view_48_dp"
+        android:layout_height="@dimen/view_48_dp"
+        android:layout_alignBottom="@+id/result_area"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-24dp"
+        android:background="@drawable/zhanji_guanbi" />
+
+
+</RelativeLayout>
