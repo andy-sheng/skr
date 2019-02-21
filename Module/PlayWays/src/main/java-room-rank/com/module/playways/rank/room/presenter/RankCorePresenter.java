@@ -766,7 +766,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
             map.put("gameID", mRoomData.getGameId());
             map.put("roundSeq", roundInfoModel.getRoundSeq());
             RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
-            ApiMethods.subscribe(mRoomServerApi.burst(body), new ApiObserver<ApiResult>() {
+            ApiMethods.subscribe(mRoomServerApi.pkburst(body), new ApiObserver<ApiResult>() {
                 @Override
                 public void process(ApiResult result) {
                     if (result.getErrno() == 0) {
@@ -801,7 +801,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
             map.put("gameID", mRoomData.getGameId());
             map.put("roundSeq", roundInfoModel.getRoundSeq());
             RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
-            ApiMethods.subscribe(mRoomServerApi.burst(body), new ApiObserver<ApiResult>() {
+            ApiMethods.subscribe(mRoomServerApi.pklightOff(body), new ApiObserver<ApiResult>() {
                 @Override
                 public void process(ApiResult result) {
                     if (result.getErrno() == 0) {

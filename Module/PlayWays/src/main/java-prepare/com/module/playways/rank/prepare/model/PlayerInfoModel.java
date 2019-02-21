@@ -69,7 +69,7 @@ public class PlayerInfoModel implements Serializable {
         this.setSongList(list);
         this.isSkrer = playerInfo.getIsSkrer();
         this.resourceInfoList = ResourceInfoModel.parse(playerInfo.getResourceList());
-        this.isAI = playerInfo.isAIUser;
+        this.isAI = playerInfo.getIsAIUser();
     }
 
 
