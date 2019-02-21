@@ -112,6 +112,7 @@ public class AgentWebActivity extends BaseActivity {
         ErrorLayoutEntity mErrorLayoutEntity = getErrorLayoutEntity();
         String url = getIntent().getStringExtra("url");
 
+        mBridgeWebView=new BridgeWebView(this);
         BridgeWebViewClient mBridgeWebViewClient = new BridgeWebViewClient(mBridgeWebView){
             @Override
             public void onPageFinished(WebView view, String url) {
@@ -145,7 +146,6 @@ public class AgentWebActivity extends BaseActivity {
 //            CookieSyncManager.getInstance().sync();
 //        }
 
-        mBridgeWebView=new BridgeWebView(this);
         mAgentWeb = AgentWeb.with(this)//
                 .setAgentWebParent((ViewGroup) mContentContainer, new RelativeLayout.LayoutParams(-1, -1))//
                 .useDefaultIndicator(-1, 2)//
