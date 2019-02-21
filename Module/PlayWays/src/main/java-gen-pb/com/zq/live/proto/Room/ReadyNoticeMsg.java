@@ -39,7 +39,7 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
       adapter = "com.zq.live.proto.Room.ReadyInfo#ADAPTER",
       label = WireField.Label.REPEATED
   )
-  public final List<ReadyInfo> readyInfo;
+  private final List<ReadyInfo> readyInfo;
 
   /**
    * 已经准备人数
@@ -48,7 +48,7 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
       tag = 2,
       adapter = "com.squareup.wire.ProtoAdapter#SINT32"
   )
-  public final Integer hasReadyedUserCnt;
+  private final Integer hasReadyedUserCnt;
 
   /**
    * 游戏是否开始
@@ -57,7 +57,7 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
       tag = 3,
       adapter = "com.squareup.wire.ProtoAdapter#BOOL"
   )
-  public final Boolean isGameStart;
+  private final Boolean isGameStart;
 
   /**
    * 轮次信息
@@ -67,7 +67,7 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
       adapter = "com.zq.live.proto.Room.RoundInfo#ADAPTER",
       label = WireField.Label.REPEATED
   )
-  public final List<RoundInfo> roundInfo;
+  private final List<RoundInfo> roundInfo;
 
   /**
    * 游戏信息
@@ -76,7 +76,7 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
       tag = 5,
       adapter = "com.zq.live.proto.Room.GameStartInfo#ADAPTER"
   )
-  public final GameStartInfo gameStartInfo;
+  private final GameStartInfo gameStartInfo;
 
   /**
    * 一场到底轮次信息
@@ -86,7 +86,7 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
       adapter = "com.zq.live.proto.Room.QRoundInfo#ADAPTER",
       label = WireField.Label.REPEATED
   )
-  public final List<QRoundInfo> qRoundInfo;
+  private final List<QRoundInfo> qRoundInfo;
 
   public ReadyNoticeMsg(List<ReadyInfo> readyInfo, Integer hasReadyedUserCnt, Boolean isGameStart,
       List<RoundInfo> roundInfo, GameStartInfo gameStartInfo, List<QRoundInfo> qRoundInfo) {
@@ -273,17 +273,17 @@ public final class ReadyNoticeMsg extends Message<ReadyNoticeMsg, ReadyNoticeMsg
   }
 
   public static final class Builder extends Message.Builder<ReadyNoticeMsg, Builder> {
-    public List<ReadyInfo> readyInfo;
+    private List<ReadyInfo> readyInfo;
 
-    public Integer hasReadyedUserCnt;
+    private Integer hasReadyedUserCnt;
 
-    public Boolean isGameStart;
+    private Boolean isGameStart;
 
-    public List<RoundInfo> roundInfo;
+    private List<RoundInfo> roundInfo;
 
-    public GameStartInfo gameStartInfo;
+    private GameStartInfo gameStartInfo;
 
-    public List<QRoundInfo> qRoundInfo;
+    private List<QRoundInfo> qRoundInfo;
 
     public Builder() {
       readyInfo = Internal.newMutableList();

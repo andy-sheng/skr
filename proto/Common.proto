@@ -4,7 +4,7 @@ package com.zq.live.proto.Common;
 
 /**
 
-java -jar -Dfile.encoding=UTF-8 ./proto/wire-compiler-2.3.0-SNAPSHOT-jar-with-dependencies_backup.jar \
+java -jar -Dfile.encoding=UTF-8 ./proto/wire-compiler-2.3.0-SNAPSHOT-jar-with-dependencies.jar \
 --proto_path=./proto --java_out=./commoncore/src/main/java-gen-pb/ Common.proto
 
 */

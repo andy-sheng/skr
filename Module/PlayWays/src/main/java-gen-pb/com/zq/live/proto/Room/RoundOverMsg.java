@@ -37,7 +37,7 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#SINT64"
   )
-  public final Long roundOverTimeMs;
+  private final Long roundOverTimeMs;
 
   /**
    * 当前轮次信息
@@ -46,7 +46,7 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
       tag = 2,
       adapter = "com.zq.live.proto.Room.RoundInfo#ADAPTER"
   )
-  public final RoundInfo currentRound;
+  private final RoundInfo currentRound;
 
   /**
    * 下个轮次信息
@@ -55,7 +55,7 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
       tag = 3,
       adapter = "com.zq.live.proto.Room.RoundInfo#ADAPTER"
   )
-  public final RoundInfo nextRound;
+  private final RoundInfo nextRound;
 
   /**
    * 退出用户的ID
@@ -64,7 +64,7 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
       tag = 4,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer exitUserID;
+  private final Integer exitUserID;
 
   public RoundOverMsg(Long roundOverTimeMs, RoundInfo currentRound, RoundInfo nextRound,
       Integer exitUserID) {
@@ -206,13 +206,13 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
   }
 
   public static final class Builder extends Message.Builder<RoundOverMsg, Builder> {
-    public Long roundOverTimeMs;
+    private Long roundOverTimeMs;
 
-    public RoundInfo currentRound;
+    private RoundInfo currentRound;
 
-    public RoundInfo nextRound;
+    private RoundInfo nextRound;
 
-    public Integer exitUserID;
+    private Integer exitUserID;
 
     public Builder() {
     }

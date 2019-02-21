@@ -33,7 +33,7 @@ public final class VoteResultMsg extends Message<VoteResultMsg, VoteResultMsg.Bu
       adapter = "com.zq.live.proto.Room.VoteInfo#ADAPTER",
       label = WireField.Label.REPEATED
   )
-  public final List<VoteInfo> voteInfo;
+  private final List<VoteInfo> voteInfo;
 
   /**
    * 所有参与者的评分结果，应该使用这个结构
@@ -43,14 +43,14 @@ public final class VoteResultMsg extends Message<VoteResultMsg, VoteResultMsg.Bu
       adapter = "com.zq.live.proto.Room.UserScoreResult#ADAPTER",
       label = WireField.Label.REPEATED
   )
-  public final List<UserScoreResult> scoreResults;
+  private final List<UserScoreResult> scoreResults;
 
   @WireField(
       tag = 3,
       adapter = "com.zq.live.proto.Room.UserGameResult#ADAPTER",
       label = WireField.Label.REPEATED
   )
-  public final List<UserGameResult> gameResults;
+  private final List<UserGameResult> gameResults;
 
   public VoteResultMsg(List<VoteInfo> voteInfo, List<UserScoreResult> scoreResults,
       List<UserGameResult> gameResults) {
@@ -164,11 +164,11 @@ public final class VoteResultMsg extends Message<VoteResultMsg, VoteResultMsg.Bu
   }
 
   public static final class Builder extends Message.Builder<VoteResultMsg, Builder> {
-    public List<VoteInfo> voteInfo;
+    private List<VoteInfo> voteInfo;
 
-    public List<UserScoreResult> scoreResults;
+    private List<UserScoreResult> scoreResults;
 
-    public List<UserGameResult> gameResults;
+    private List<UserGameResult> gameResults;
 
     public Builder() {
       voteInfo = Internal.newMutableList();

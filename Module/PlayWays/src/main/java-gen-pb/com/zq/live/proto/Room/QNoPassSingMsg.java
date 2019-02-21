@@ -33,7 +33,7 @@ public final class QNoPassSingMsg extends Message<QNoPassSingMsg, QNoPassSingMsg
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer userID;
+  private final Integer userID;
 
   /**
    * 轮次顺序
@@ -42,7 +42,7 @@ public final class QNoPassSingMsg extends Message<QNoPassSingMsg, QNoPassSingMsg
       tag = 2,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer roundSeq;
+  private final Integer roundSeq;
 
   public QNoPassSingMsg(Integer userID, Integer roundSeq) {
     this(userID, roundSeq, ByteString.EMPTY);
@@ -138,9 +138,9 @@ public final class QNoPassSingMsg extends Message<QNoPassSingMsg, QNoPassSingMsg
   }
 
   public static final class Builder extends Message.Builder<QNoPassSingMsg, Builder> {
-    public Integer userID;
+    private Integer userID;
 
-    public Integer roundSeq;
+    private Integer roundSeq;
 
     public Builder() {
     }

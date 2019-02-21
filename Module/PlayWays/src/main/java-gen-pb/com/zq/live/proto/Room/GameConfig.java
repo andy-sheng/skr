@@ -45,7 +45,7 @@ public final class GameConfig extends Message<GameConfig, GameConfig.Builder> {
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer PKMaxShowBLightTimes;
+  private final Integer PKMaxShowBLightTimes;
 
   /**
    * 最大灭灯次数
@@ -54,7 +54,7 @@ public final class GameConfig extends Message<GameConfig, GameConfig.Builder> {
       tag = 2,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer PKMaxShowMLightTimes;
+  private final Integer PKMaxShowMLightTimes;
 
   /**
    * 爆灯等待时间(毫秒)
@@ -63,7 +63,7 @@ public final class GameConfig extends Message<GameConfig, GameConfig.Builder> {
       tag = 3,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer PKEnableShowBLightWaitTimeMs;
+  private final Integer PKEnableShowBLightWaitTimeMs;
 
   /**
    * 灭灯等待时间(毫秒)
@@ -72,7 +72,7 @@ public final class GameConfig extends Message<GameConfig, GameConfig.Builder> {
       tag = 4,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer PKEnableShowMLightWaitTimeMs;
+  private final Integer PKEnableShowMLightWaitTimeMs;
 
   /**
    * 反馈分提示语
@@ -82,7 +82,7 @@ public final class GameConfig extends Message<GameConfig, GameConfig.Builder> {
       adapter = "com.zq.live.proto.Room.PKScoreTipMsg#ADAPTER",
       label = WireField.Label.REPEATED
   )
-  public final List<PKScoreTipMsg> pkScoreTipMsg;
+  private final List<PKScoreTipMsg> pkScoreTipMsg;
 
   /**
    * 满能量比例
@@ -91,7 +91,7 @@ public final class GameConfig extends Message<GameConfig, GameConfig.Builder> {
       tag = 6,
       adapter = "com.squareup.wire.ProtoAdapter#FLOAT"
   )
-  public final Float PKFullEnergyPercentage;
+  private final Float PKFullEnergyPercentage;
 
   /**
    * 爆灯加能量比例
@@ -100,7 +100,7 @@ public final class GameConfig extends Message<GameConfig, GameConfig.Builder> {
       tag = 7,
       adapter = "com.squareup.wire.ProtoAdapter#FLOAT"
   )
-  public final Float PKBLightEnergyPercentage;
+  private final Float PKBLightEnergyPercentage;
 
   /**
    * 灭灯减能量比例
@@ -109,7 +109,7 @@ public final class GameConfig extends Message<GameConfig, GameConfig.Builder> {
       tag = 8,
       adapter = "com.squareup.wire.ProtoAdapter#FLOAT"
   )
-  public final Float PKMLightEnergyPercentage;
+  private final Float PKMLightEnergyPercentage;
 
   public GameConfig(Integer PKMaxShowBLightTimes, Integer PKMaxShowMLightTimes,
       Integer PKEnableShowBLightWaitTimeMs, Integer PKEnableShowMLightWaitTimeMs,
@@ -343,21 +343,21 @@ public final class GameConfig extends Message<GameConfig, GameConfig.Builder> {
   }
 
   public static final class Builder extends Message.Builder<GameConfig, Builder> {
-    public Integer PKMaxShowBLightTimes;
+    private Integer PKMaxShowBLightTimes;
 
-    public Integer PKMaxShowMLightTimes;
+    private Integer PKMaxShowMLightTimes;
 
-    public Integer PKEnableShowBLightWaitTimeMs;
+    private Integer PKEnableShowBLightWaitTimeMs;
 
-    public Integer PKEnableShowMLightWaitTimeMs;
+    private Integer PKEnableShowMLightWaitTimeMs;
 
-    public List<PKScoreTipMsg> pkScoreTipMsg;
+    private List<PKScoreTipMsg> pkScoreTipMsg;
 
-    public Float PKFullEnergyPercentage;
+    private Float PKFullEnergyPercentage;
 
-    public Float PKBLightEnergyPercentage;
+    private Float PKBLightEnergyPercentage;
 
-    public Float PKMLightEnergyPercentage;
+    private Float PKMLightEnergyPercentage;
 
     public Builder() {
       pkScoreTipMsg = Internal.newMutableList();

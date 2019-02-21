@@ -34,25 +34,25 @@ public final class PKScoreTipMsg extends Message<PKScoreTipMsg, PKScoreTipMsg.Bu
       tag = 1,
       adapter = "com.zq.live.proto.Room.ScoreTipType#ADAPTER"
   )
-  public final ScoreTipType tipType;
+  private final ScoreTipType tipType;
 
   @WireField(
       tag = 2,
       adapter = "com.squareup.wire.ProtoAdapter#STRING"
   )
-  public final String tipDesc;
+  private final String tipDesc;
 
   @WireField(
       tag = 3,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer fromScore;
+  private final Integer fromScore;
 
   @WireField(
       tag = 4,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer toScore;
+  private final Integer toScore;
 
   public PKScoreTipMsg(ScoreTipType tipType, String tipDesc, Integer fromScore, Integer toScore) {
     this(tipType, tipDesc, fromScore, toScore, ByteString.EMPTY);
@@ -169,13 +169,13 @@ public final class PKScoreTipMsg extends Message<PKScoreTipMsg, PKScoreTipMsg.Bu
   }
 
   public static final class Builder extends Message.Builder<PKScoreTipMsg, Builder> {
-    public ScoreTipType tipType;
+    private ScoreTipType tipType;
 
-    public String tipDesc;
+    private String tipDesc;
 
-    public Integer fromScore;
+    private Integer fromScore;
 
-    public Integer toScore;
+    private Integer toScore;
 
     public Builder() {
     }

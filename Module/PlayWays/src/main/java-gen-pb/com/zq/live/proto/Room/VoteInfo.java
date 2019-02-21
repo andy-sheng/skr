@@ -48,7 +48,7 @@ public final class VoteInfo extends Message<VoteInfo, VoteInfo.Builder> {
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer userID;
+  private final Integer userID;
 
   /**
    * 演唱曲目ID
@@ -57,7 +57,7 @@ public final class VoteInfo extends Message<VoteInfo, VoteInfo.Builder> {
       tag = 2,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer itemID;
+  private final Integer itemID;
 
   /**
    * 排名
@@ -66,7 +66,7 @@ public final class VoteInfo extends Message<VoteInfo, VoteInfo.Builder> {
       tag = 3,
       adapter = "com.squareup.wire.ProtoAdapter#SINT32"
   )
-  public final Integer rank;
+  private final Integer rank;
 
   /**
    * 系统是否投票
@@ -75,7 +75,7 @@ public final class VoteInfo extends Message<VoteInfo, VoteInfo.Builder> {
       tag = 4,
       adapter = "com.squareup.wire.ProtoAdapter#BOOL"
   )
-  public final Boolean sysVote;
+  private final Boolean sysVote;
 
   /**
    * 系统打分分值
@@ -84,7 +84,7 @@ public final class VoteInfo extends Message<VoteInfo, VoteInfo.Builder> {
       tag = 5,
       adapter = "com.squareup.wire.ProtoAdapter#SINT32"
   )
-  public final Integer sysScore;
+  private final Integer sysScore;
 
   /**
    * 给我投票的用户IDs
@@ -94,7 +94,7 @@ public final class VoteInfo extends Message<VoteInfo, VoteInfo.Builder> {
       adapter = "com.squareup.wire.ProtoAdapter#UINT32",
       label = WireField.Label.REPEATED
   )
-  public final List<Integer> voter;
+  private final List<Integer> voter;
 
   /**
    * 是否逃跑
@@ -103,7 +103,7 @@ public final class VoteInfo extends Message<VoteInfo, VoteInfo.Builder> {
       tag = 7,
       adapter = "com.squareup.wire.ProtoAdapter#BOOL"
   )
-  public final Boolean isEscape;
+  private final Boolean isEscape;
 
   /**
    * 是否给出投票
@@ -112,7 +112,7 @@ public final class VoteInfo extends Message<VoteInfo, VoteInfo.Builder> {
       tag = 8,
       adapter = "com.squareup.wire.ProtoAdapter#BOOL"
   )
-  public final Boolean hasVote;
+  private final Boolean hasVote;
 
   /**
    * 投票给哪些用户IDs
@@ -122,7 +122,7 @@ public final class VoteInfo extends Message<VoteInfo, VoteInfo.Builder> {
       adapter = "com.squareup.wire.ProtoAdapter#UINT32",
       label = WireField.Label.REPEATED
   )
-  public final List<Integer> otherVoters;
+  private final List<Integer> otherVoters;
 
   public VoteInfo(Integer userID, Integer itemID, Integer rank, Boolean sysVote, Integer sysScore,
       List<Integer> voter, Boolean isEscape, Boolean hasVote, List<Integer> otherVoters) {
@@ -375,23 +375,23 @@ public final class VoteInfo extends Message<VoteInfo, VoteInfo.Builder> {
   }
 
   public static final class Builder extends Message.Builder<VoteInfo, Builder> {
-    public Integer userID;
+    private Integer userID;
 
-    public Integer itemID;
+    private Integer itemID;
 
-    public Integer rank;
+    private Integer rank;
 
-    public Boolean sysVote;
+    private Boolean sysVote;
 
-    public Integer sysScore;
+    private Integer sysScore;
 
-    public List<Integer> voter;
+    private List<Integer> voter;
 
-    public Boolean isEscape;
+    private Boolean isEscape;
 
-    public Boolean hasVote;
+    private Boolean hasVote;
 
-    public List<Integer> otherVoters;
+    private List<Integer> otherVoters;
 
     public Builder() {
       voter = Internal.newMutableList();

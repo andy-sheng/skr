@@ -42,7 +42,7 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer userID;
+  private final Integer userID;
 
   /**
    * 曲库id
@@ -51,7 +51,7 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
       tag = 2,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer playbookID;
+  private final Integer playbookID;
 
   /**
    * 轮次顺序
@@ -60,7 +60,7 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
       tag = 3,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer roundSeq;
+  private final Integer roundSeq;
 
   /**
    * 演唱开始相对时间（相对于startTimeMs时间）
@@ -69,7 +69,7 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
       tag = 4,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer singBeginMs;
+  private final Integer singBeginMs;
 
   /**
    * 演唱结束相对时间（相对于startTimeMs时间）
@@ -78,7 +78,7 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
       tag = 5,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer singEndMs;
+  private final Integer singEndMs;
 
   /**
    * 爆灯列表
@@ -88,7 +88,7 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
       adapter = "com.zq.live.proto.Room.BLightInfo#ADAPTER",
       label = WireField.Label.REPEATED
   )
-  public final List<BLightInfo> bLightInfos;
+  private final List<BLightInfo> bLightInfos;
 
   /**
    * 灭灯列表
@@ -98,7 +98,7 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
       adapter = "com.zq.live.proto.Room.MlightInfo#ADAPTER",
       label = WireField.Label.REPEATED
   )
-  public final List<MlightInfo> mLightInfos;
+  private final List<MlightInfo> mLightInfos;
 
   /**
    * 结束原因
@@ -107,7 +107,7 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
       tag = 8,
       adapter = "com.zq.live.proto.Room.ERoundOverReason#ADAPTER"
   )
-  public final ERoundOverReason overReason;
+  private final ERoundOverReason overReason;
 
   public RoundInfo(Integer userID, Integer playbookID, Integer roundSeq, Integer singBeginMs,
       Integer singEndMs, List<BLightInfo> bLightInfos, List<MlightInfo> mLightInfos,
@@ -339,21 +339,21 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
   }
 
   public static final class Builder extends Message.Builder<RoundInfo, Builder> {
-    public Integer userID;
+    private Integer userID;
 
-    public Integer playbookID;
+    private Integer playbookID;
 
-    public Integer roundSeq;
+    private Integer roundSeq;
 
-    public Integer singBeginMs;
+    private Integer singBeginMs;
 
-    public Integer singEndMs;
+    private Integer singEndMs;
 
-    public List<BLightInfo> bLightInfos;
+    private List<BLightInfo> bLightInfos;
 
-    public List<MlightInfo> mLightInfos;
+    private List<MlightInfo> mLightInfos;
 
-    public ERoundOverReason overReason;
+    private ERoundOverReason overReason;
 
     public Builder() {
       bLightInfos = Internal.newMutableList();

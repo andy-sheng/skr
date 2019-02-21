@@ -19,7 +19,7 @@ public class ResourceInfoModel implements Serializable {
 
     public static ResourceInfoModel parse(com.zq.live.proto.Common.ResourceInfo resourceInfo){
 
-        return new ResourceInfoModel(resourceInfo.resourceID, resourceInfo.itemID, resourceInfo.audioURL, resourceInfo.midiURL);
+        return new ResourceInfoModel(resourceInfo.getResourceID(), resourceInfo.getItemID(), resourceInfo.getAudioURL(), resourceInfo.getMidiURL());
     }
 
     public static List<ResourceInfoModel> parse(List<com.zq.live.proto.Common.ResourceInfo> resourceInfoList){

@@ -33,7 +33,7 @@ public final class GameStartInfo extends Message<GameStartInfo, GameStartInfo.Bu
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#SINT64"
   )
-  public final Long startTimeMs;
+  private final Long startTimeMs;
 
   /**
    * 已经开始时间
@@ -42,7 +42,7 @@ public final class GameStartInfo extends Message<GameStartInfo, GameStartInfo.Bu
       tag = 2,
       adapter = "com.squareup.wire.ProtoAdapter#SINT64"
   )
-  public final Long startPassedMs;
+  private final Long startPassedMs;
 
   public GameStartInfo(Long startTimeMs, Long startPassedMs) {
     this(startTimeMs, startPassedMs, ByteString.EMPTY);
@@ -138,9 +138,9 @@ public final class GameStartInfo extends Message<GameStartInfo, GameStartInfo.Bu
   }
 
   public static final class Builder extends Message.Builder<GameStartInfo, Builder> {
-    public Long startTimeMs;
+    private Long startTimeMs;
 
-    public Long startPassedMs;
+    private Long startPassedMs;
 
     public Builder() {
     }

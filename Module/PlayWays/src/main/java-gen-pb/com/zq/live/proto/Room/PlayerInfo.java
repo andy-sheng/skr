@@ -37,7 +37,7 @@ public final class PlayerInfo extends Message<PlayerInfo, PlayerInfo.Builder> {
       tag = 1,
       adapter = "com.zq.live.proto.Common.UserInfo#ADAPTER"
   )
-  public final UserInfo userInfo;
+  private final UserInfo userInfo;
 
   /**
    * 演唱信息
@@ -47,7 +47,7 @@ public final class PlayerInfo extends Message<PlayerInfo, PlayerInfo.Builder> {
       adapter = "com.zq.live.proto.Common.MusicInfo#ADAPTER",
       label = WireField.Label.REPEATED
   )
-  public final List<MusicInfo> musicInfo;
+  private final List<MusicInfo> musicInfo;
 
   /**
    * 是否为机器人
@@ -56,7 +56,7 @@ public final class PlayerInfo extends Message<PlayerInfo, PlayerInfo.Builder> {
       tag = 3,
       adapter = "com.squareup.wire.ProtoAdapter#BOOL"
   )
-  public final Boolean isSkrer;
+  private final Boolean isSkrer;
 
   /**
    * 资源信息
@@ -66,7 +66,7 @@ public final class PlayerInfo extends Message<PlayerInfo, PlayerInfo.Builder> {
       adapter = "com.zq.live.proto.Common.ResourceInfo#ADAPTER",
       label = WireField.Label.REPEATED
   )
-  public final List<ResourceInfo> resource;
+  private final List<ResourceInfo> resource;
 
   /**
    * 是否为ai裁判用户
@@ -75,7 +75,7 @@ public final class PlayerInfo extends Message<PlayerInfo, PlayerInfo.Builder> {
       tag = 5,
       adapter = "com.squareup.wire.ProtoAdapter#BOOL"
   )
-  public final Boolean isAIUser;
+  private final Boolean isAIUser;
 
   public PlayerInfo(UserInfo userInfo, List<MusicInfo> musicInfo, Boolean isSkrer,
       List<ResourceInfo> resource, Boolean isAIUser) {
@@ -239,15 +239,15 @@ public final class PlayerInfo extends Message<PlayerInfo, PlayerInfo.Builder> {
   }
 
   public static final class Builder extends Message.Builder<PlayerInfo, Builder> {
-    public UserInfo userInfo;
+    private UserInfo userInfo;
 
-    public List<MusicInfo> musicInfo;
+    private List<MusicInfo> musicInfo;
 
-    public Boolean isSkrer;
+    private Boolean isSkrer;
 
-    public List<ResourceInfo> resource;
+    private List<ResourceInfo> resource;
 
-    public Boolean isAIUser;
+    private Boolean isAIUser;
 
     public Builder() {
       musicInfo = Internal.newMutableList();

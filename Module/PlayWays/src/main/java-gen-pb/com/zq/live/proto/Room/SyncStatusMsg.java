@@ -34,7 +34,7 @@ public final class SyncStatusMsg extends Message<SyncStatusMsg, SyncStatusMsg.Bu
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#SINT64"
   )
-  public final Long syncStatusTimeMs;
+  private final Long syncStatusTimeMs;
 
   /**
    * 游戏结束时间
@@ -43,7 +43,7 @@ public final class SyncStatusMsg extends Message<SyncStatusMsg, SyncStatusMsg.Bu
       tag = 2,
       adapter = "com.squareup.wire.ProtoAdapter#SINT64"
   )
-  public final Long gameOverTimeMs;
+  private final Long gameOverTimeMs;
 
   /**
    * 在线状态
@@ -53,7 +53,7 @@ public final class SyncStatusMsg extends Message<SyncStatusMsg, SyncStatusMsg.Bu
       adapter = "com.zq.live.proto.Room.OnlineInfo#ADAPTER",
       label = WireField.Label.REPEATED
   )
-  public final List<OnlineInfo> onlineInfo;
+  private final List<OnlineInfo> onlineInfo;
 
   /**
    * 当前轮次信息
@@ -62,7 +62,7 @@ public final class SyncStatusMsg extends Message<SyncStatusMsg, SyncStatusMsg.Bu
       tag = 4,
       adapter = "com.zq.live.proto.Room.RoundInfo#ADAPTER"
   )
-  public final RoundInfo currentRound;
+  private final RoundInfo currentRound;
 
   /**
    * 下个轮次信息
@@ -71,7 +71,7 @@ public final class SyncStatusMsg extends Message<SyncStatusMsg, SyncStatusMsg.Bu
       tag = 5,
       adapter = "com.zq.live.proto.Room.RoundInfo#ADAPTER"
   )
-  public final RoundInfo nextRound;
+  private final RoundInfo nextRound;
 
   public SyncStatusMsg(Long syncStatusTimeMs, Long gameOverTimeMs, List<OnlineInfo> onlineInfo,
       RoundInfo currentRound, RoundInfo nextRound) {
@@ -235,15 +235,15 @@ public final class SyncStatusMsg extends Message<SyncStatusMsg, SyncStatusMsg.Bu
   }
 
   public static final class Builder extends Message.Builder<SyncStatusMsg, Builder> {
-    public Long syncStatusTimeMs;
+    private Long syncStatusTimeMs;
 
-    public Long gameOverTimeMs;
+    private Long gameOverTimeMs;
 
-    public List<OnlineInfo> onlineInfo;
+    private List<OnlineInfo> onlineInfo;
 
-    public RoundInfo currentRound;
+    private RoundInfo currentRound;
 
-    public RoundInfo nextRound;
+    private RoundInfo nextRound;
 
     public Builder() {
       onlineInfo = Internal.newMutableList();

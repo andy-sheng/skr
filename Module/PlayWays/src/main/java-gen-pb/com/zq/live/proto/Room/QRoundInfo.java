@@ -52,7 +52,7 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer userID;
+  private final Integer userID;
 
   /**
    * 抢唱成功的时间戳
@@ -61,7 +61,7 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
       tag = 2,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer getSingMs;
+  private final Integer getSingMs;
 
   /**
    * 曲库id
@@ -70,7 +70,7 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
       tag = 3,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer playbookID;
+  private final Integer playbookID;
 
   /**
    * 轮次顺序
@@ -79,7 +79,7 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
       tag = 4,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer roundSeq;
+  private final Integer roundSeq;
 
   /**
    * 导唱开始相对时间（相对于startTimeMs时间）
@@ -88,7 +88,7 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
       tag = 5,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer introBeginMs;
+  private final Integer introBeginMs;
 
   /**
    * 导唱结束相对时间（相对于startTimeMs时间）
@@ -97,7 +97,7 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
       tag = 6,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer introEndMs;
+  private final Integer introEndMs;
 
   /**
    * 演唱开始相对时间（相对于startTimeMs时间）
@@ -106,7 +106,7 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
       tag = 7,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer singBeginMs;
+  private final Integer singBeginMs;
 
   /**
    * 演唱结束相对时间（相对于startTimeMs时间）
@@ -115,7 +115,7 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
       tag = 8,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer singEndMs;
+  private final Integer singEndMs;
 
   /**
    * 轮次状态
@@ -124,7 +124,7 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
       tag = 9,
       adapter = "com.zq.live.proto.Room.EQRoundStatus#ADAPTER"
   )
-  public final EQRoundStatus status;
+  private final EQRoundStatus status;
 
   /**
    * 抢唱列表
@@ -134,7 +134,7 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
       adapter = "com.zq.live.proto.Room.WantSingInfo#ADAPTER",
       label = WireField.Label.REPEATED
   )
-  public final List<WantSingInfo> wantSingInfos;
+  private final List<WantSingInfo> wantSingInfos;
 
   /**
    * 灭灯列表
@@ -144,7 +144,7 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
       adapter = "com.zq.live.proto.Room.NoPassSingInfo#ADAPTER",
       label = WireField.Label.REPEATED
   )
-  public final List<NoPassSingInfo> noPassSingInfos;
+  private final List<NoPassSingInfo> noPassSingInfos;
 
   /**
    * 切换轮次原因
@@ -153,7 +153,7 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
       tag = 12,
       adapter = "com.zq.live.proto.Room.EQRoundOverReason#ADAPTER"
   )
-  public final EQRoundOverReason overReason;
+  private final EQRoundOverReason overReason;
 
   /**
    * 当EQRoundOverReason == ROR_MULTI_NO_PASS 演唱结果信息
@@ -162,7 +162,7 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
       tag = 13,
       adapter = "com.zq.live.proto.Room.EQRoundResultType#ADAPTER"
   )
-  public final EQRoundResultType resultType;
+  private final EQRoundResultType resultType;
 
   public QRoundInfo(Integer userID, Integer getSingMs, Integer playbookID, Integer roundSeq,
       Integer introBeginMs, Integer introEndMs, Integer singBeginMs, Integer singEndMs,
@@ -506,31 +506,31 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
   }
 
   public static final class Builder extends Message.Builder<QRoundInfo, Builder> {
-    public Integer userID;
+    private Integer userID;
 
-    public Integer getSingMs;
+    private Integer getSingMs;
 
-    public Integer playbookID;
+    private Integer playbookID;
 
-    public Integer roundSeq;
+    private Integer roundSeq;
 
-    public Integer introBeginMs;
+    private Integer introBeginMs;
 
-    public Integer introEndMs;
+    private Integer introEndMs;
 
-    public Integer singBeginMs;
+    private Integer singBeginMs;
 
-    public Integer singEndMs;
+    private Integer singEndMs;
 
-    public EQRoundStatus status;
+    private EQRoundStatus status;
 
-    public List<WantSingInfo> wantSingInfos;
+    private List<WantSingInfo> wantSingInfos;
 
-    public List<NoPassSingInfo> noPassSingInfos;
+    private List<NoPassSingInfo> noPassSingInfos;
 
-    public EQRoundOverReason overReason;
+    private EQRoundOverReason overReason;
 
-    public EQRoundResultType resultType;
+    private EQRoundResultType resultType;
 
     public Builder() {
       wantSingInfos = Internal.newMutableList();

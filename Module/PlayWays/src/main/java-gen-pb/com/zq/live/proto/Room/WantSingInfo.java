@@ -34,7 +34,7 @@ public final class WantSingInfo extends Message<WantSingInfo, WantSingInfo.Build
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer userID;
+  private final Integer userID;
 
   /**
    * 抢唱时间戳
@@ -43,7 +43,7 @@ public final class WantSingInfo extends Message<WantSingInfo, WantSingInfo.Build
       tag = 2,
       adapter = "com.squareup.wire.ProtoAdapter#SINT64"
   )
-  public final Long timeMs;
+  private final Long timeMs;
 
   public WantSingInfo(Integer userID, Long timeMs) {
     this(userID, timeMs, ByteString.EMPTY);
@@ -139,9 +139,9 @@ public final class WantSingInfo extends Message<WantSingInfo, WantSingInfo.Build
   }
 
   public static final class Builder extends Message.Builder<WantSingInfo, Builder> {
-    public Integer userID;
+    private Integer userID;
 
-    public Long timeMs;
+    private Long timeMs;
 
     public Builder() {
     }

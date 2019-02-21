@@ -42,7 +42,7 @@ public final class QResultInfo extends Message<QResultInfo, QResultInfo.Builder>
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer userID;
+  private final Integer userID;
 
   /**
    * 想唱歌数量
@@ -51,7 +51,7 @@ public final class QResultInfo extends Message<QResultInfo, QResultInfo.Builder>
       tag = 2,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer wantSingChanceCnt;
+  private final Integer wantSingChanceCnt;
 
   /**
    * 演唱机会数量
@@ -60,7 +60,7 @@ public final class QResultInfo extends Message<QResultInfo, QResultInfo.Builder>
       tag = 3,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer getSingChanceCnt;
+  private final Integer getSingChanceCnt;
 
   /**
    * 一唱到底数量
@@ -69,7 +69,7 @@ public final class QResultInfo extends Message<QResultInfo, QResultInfo.Builder>
       tag = 4,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer wholeTimeSingCnt;
+  private final Integer wholeTimeSingCnt;
 
   /**
    * 一唱到底成功率
@@ -78,7 +78,7 @@ public final class QResultInfo extends Message<QResultInfo, QResultInfo.Builder>
       tag = 5,
       adapter = "com.squareup.wire.ProtoAdapter#FLOAT"
   )
-  public final Float wholeTimeSingRatio;
+  private final Float wholeTimeSingRatio;
 
   /**
    * 超过同段位
@@ -87,7 +87,7 @@ public final class QResultInfo extends Message<QResultInfo, QResultInfo.Builder>
       tag = 6,
       adapter = "com.squareup.wire.ProtoAdapter#FLOAT"
   )
-  public final Float beyondSkrerRatio;
+  private final Float beyondSkrerRatio;
 
   public QResultInfo(Integer userID, Integer wantSingChanceCnt, Integer getSingChanceCnt,
       Integer wholeTimeSingCnt, Float wholeTimeSingRatio, Float beyondSkrerRatio) {
@@ -274,17 +274,17 @@ public final class QResultInfo extends Message<QResultInfo, QResultInfo.Builder>
   }
 
   public static final class Builder extends Message.Builder<QResultInfo, Builder> {
-    public Integer userID;
+    private Integer userID;
 
-    public Integer wantSingChanceCnt;
+    private Integer wantSingChanceCnt;
 
-    public Integer getSingChanceCnt;
+    private Integer getSingChanceCnt;
 
-    public Integer wholeTimeSingCnt;
+    private Integer wholeTimeSingCnt;
 
-    public Float wholeTimeSingRatio;
+    private Float wholeTimeSingRatio;
 
-    public Float beyondSkrerRatio;
+    private Float beyondSkrerRatio;
 
     public Builder() {
     }

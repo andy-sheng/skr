@@ -33,7 +33,7 @@ public final class QWantSingChanceMsg extends Message<QWantSingChanceMsg, QWantS
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer userID;
+  private final Integer userID;
 
   /**
    * 轮次顺序
@@ -42,7 +42,7 @@ public final class QWantSingChanceMsg extends Message<QWantSingChanceMsg, QWantS
       tag = 2,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer roundSeq;
+  private final Integer roundSeq;
 
   public QWantSingChanceMsg(Integer userID, Integer roundSeq) {
     this(userID, roundSeq, ByteString.EMPTY);
@@ -138,9 +138,9 @@ public final class QWantSingChanceMsg extends Message<QWantSingChanceMsg, QWantS
   }
 
   public static final class Builder extends Message.Builder<QWantSingChanceMsg, Builder> {
-    public Integer userID;
+    private Integer userID;
 
-    public Integer roundSeq;
+    private Integer roundSeq;
 
     public Builder() {
     }

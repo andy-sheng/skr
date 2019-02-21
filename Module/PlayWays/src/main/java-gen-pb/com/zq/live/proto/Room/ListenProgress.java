@@ -33,19 +33,19 @@ public final class ListenProgress extends Message<ListenProgress, ListenProgress
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer userID;
+  private final Integer userID;
 
   @WireField(
       tag = 2,
       adapter = "com.zq.live.proto.Room.ELightType#ADAPTER"
   )
-  public final ELightType lightType;
+  private final ELightType lightType;
 
   @WireField(
       tag = 3,
       adapter = "com.squareup.wire.ProtoAdapter#FLOAT"
   )
-  public final Float progress;
+  private final Float progress;
 
   public ListenProgress(Integer userID, ELightType lightType, Float progress) {
     this(userID, lightType, progress, ByteString.EMPTY);
@@ -146,11 +146,11 @@ public final class ListenProgress extends Message<ListenProgress, ListenProgress
   }
 
   public static final class Builder extends Message.Builder<ListenProgress, Builder> {
-    public Integer userID;
+    private Integer userID;
 
-    public ELightType lightType;
+    private ELightType lightType;
 
-    public Float progress;
+    private Float progress;
 
     public Builder() {
     }

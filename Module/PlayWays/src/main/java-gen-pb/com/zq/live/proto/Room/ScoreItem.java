@@ -38,7 +38,7 @@ public final class ScoreItem extends Message<ScoreItem, ScoreItem.Builder> {
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#STRING"
   )
-  public final String why;
+  private final String why;
 
   /**
    * 分值变动
@@ -47,7 +47,7 @@ public final class ScoreItem extends Message<ScoreItem, ScoreItem.Builder> {
       tag = 2,
       adapter = "com.squareup.wire.ProtoAdapter#INT32"
   )
-  public final Integer score;
+  private final Integer score;
 
   /**
    * 原因标识
@@ -56,7 +56,7 @@ public final class ScoreItem extends Message<ScoreItem, ScoreItem.Builder> {
       tag = 3,
       adapter = "com.squareup.wire.ProtoAdapter#INT32"
   )
-  public final Integer index;
+  private final Integer index;
 
   public ScoreItem(String why, Integer score, Integer index) {
     this(why, score, index, ByteString.EMPTY);
@@ -174,11 +174,11 @@ public final class ScoreItem extends Message<ScoreItem, ScoreItem.Builder> {
   }
 
   public static final class Builder extends Message.Builder<ScoreItem, Builder> {
-    public String why;
+    private String why;
 
-    public Integer score;
+    private Integer score;
 
-    public Integer index;
+    private Integer index;
 
     public Builder() {
     }

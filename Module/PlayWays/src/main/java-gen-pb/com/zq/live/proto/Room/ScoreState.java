@@ -50,7 +50,7 @@ public final class ScoreState extends Message<ScoreState, ScoreState.Builder> {
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer userID;
+  private final Integer userID;
 
   /**
    * 分值状态的时间顺序, 数字越大越晚
@@ -59,7 +59,7 @@ public final class ScoreState extends Message<ScoreState, ScoreState.Builder> {
       tag = 2,
       adapter = "com.squareup.wire.ProtoAdapter#INT32"
   )
-  public final Integer seq;
+  private final Integer seq;
 
   /**
    * 主段位数值
@@ -68,7 +68,7 @@ public final class ScoreState extends Message<ScoreState, ScoreState.Builder> {
       tag = 3,
       adapter = "com.squareup.wire.ProtoAdapter#INT64"
   )
-  public final Long mainRanking;
+  private final Long mainRanking;
 
   /**
    * 子段位数值
@@ -77,7 +77,7 @@ public final class ScoreState extends Message<ScoreState, ScoreState.Builder> {
       tag = 4,
       adapter = "com.squareup.wire.ProtoAdapter#INT64"
   )
-  public final Long subRanking;
+  private final Long subRanking;
 
   /**
    * 子段位当前星星数
@@ -86,7 +86,7 @@ public final class ScoreState extends Message<ScoreState, ScoreState.Builder> {
       tag = 5,
       adapter = "com.squareup.wire.ProtoAdapter#INT64"
   )
-  public final Long currStar;
+  private final Long currStar;
 
   /**
    * 子段位星星数上限
@@ -95,7 +95,7 @@ public final class ScoreState extends Message<ScoreState, ScoreState.Builder> {
       tag = 6,
       adapter = "com.squareup.wire.ProtoAdapter#INT64"
   )
-  public final Long maxStar;
+  private final Long maxStar;
 
   /**
    * 掉段保护所需战力分值
@@ -104,7 +104,7 @@ public final class ScoreState extends Message<ScoreState, ScoreState.Builder> {
       tag = 7,
       adapter = "com.squareup.wire.ProtoAdapter#INT64"
   )
-  public final Long protectBattleIndex;
+  private final Long protectBattleIndex;
 
   /**
    * 当前战力分值
@@ -113,7 +113,7 @@ public final class ScoreState extends Message<ScoreState, ScoreState.Builder> {
       tag = 8,
       adapter = "com.squareup.wire.ProtoAdapter#INT64"
   )
-  public final Long currBattleIndex;
+  private final Long currBattleIndex;
 
   /**
    * 战力分值上限
@@ -122,7 +122,7 @@ public final class ScoreState extends Message<ScoreState, ScoreState.Builder> {
       tag = 9,
       adapter = "com.squareup.wire.ProtoAdapter#INT64"
   )
-  public final Long maxBattleIndex;
+  private final Long maxBattleIndex;
 
   /**
    * 用在段位排行榜中的总分值
@@ -131,7 +131,7 @@ public final class ScoreState extends Message<ScoreState, ScoreState.Builder> {
       tag = 10,
       adapter = "com.squareup.wire.ProtoAdapter#INT64"
   )
-  public final Long totalScore;
+  private final Long totalScore;
 
   public ScoreState(Integer userID, Integer seq, Long mainRanking, Long subRanking, Long currStar,
       Long maxStar, Long protectBattleIndex, Long currBattleIndex, Long maxBattleIndex,
@@ -401,25 +401,25 @@ public final class ScoreState extends Message<ScoreState, ScoreState.Builder> {
   }
 
   public static final class Builder extends Message.Builder<ScoreState, Builder> {
-    public Integer userID;
+    private Integer userID;
 
-    public Integer seq;
+    private Integer seq;
 
-    public Long mainRanking;
+    private Long mainRanking;
 
-    public Long subRanking;
+    private Long subRanking;
 
-    public Long currStar;
+    private Long currStar;
 
-    public Long maxStar;
+    private Long maxStar;
 
-    public Long protectBattleIndex;
+    private Long protectBattleIndex;
 
-    public Long currBattleIndex;
+    private Long currBattleIndex;
 
-    public Long maxBattleIndex;
+    private Long maxBattleIndex;
 
-    public Long totalScore;
+    private Long totalScore;
 
     public Builder() {
     }

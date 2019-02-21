@@ -34,7 +34,7 @@ public final class OnlineInfo extends Message<OnlineInfo, OnlineInfo.Builder> {
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer userID;
+  private final Integer userID;
 
   /**
    * 是否在线
@@ -43,7 +43,7 @@ public final class OnlineInfo extends Message<OnlineInfo, OnlineInfo.Builder> {
       tag = 2,
       adapter = "com.squareup.wire.ProtoAdapter#BOOL"
   )
-  public final Boolean isOnline;
+  private final Boolean isOnline;
 
   public OnlineInfo(Integer userID, Boolean isOnline) {
     this(userID, isOnline, ByteString.EMPTY);
@@ -139,9 +139,9 @@ public final class OnlineInfo extends Message<OnlineInfo, OnlineInfo.Builder> {
   }
 
   public static final class Builder extends Message.Builder<OnlineInfo, Builder> {
-    public Integer userID;
+    private Integer userID;
 
-    public Boolean isOnline;
+    private Boolean isOnline;
 
     public Builder() {
     }

@@ -20,7 +20,7 @@ import java.lang.StringBuilder;
 import okio.ByteString;
 
 /**
- * java -jar -Dfile.encoding=UTF-8 ./proto/wire-compiler-2.3.0-SNAPSHOT-jar-with-dependencies_backup.jar \
+ * java -jar -Dfile.encoding=UTF-8 ./proto/wire-compiler-2.3.0-SNAPSHOT-jar-with-dependencies.jar \
  * --proto_path=./proto --java_out=./Module/PlayWays/src/main/java-gen-pb/ Room.proto
  * 房间消息：此结构会通过pb编码后，通过聊天室通道到达客户端
  */
@@ -46,7 +46,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#SINT64"
   )
-  public final Long timeMs;
+  private final Long timeMs;
 
   /**
    * 消息类型
@@ -55,7 +55,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       tag = 2,
       adapter = "com.zq.live.proto.Room.ERoomMsgType#ADAPTER"
   )
-  public final ERoomMsgType msgType;
+  private final ERoomMsgType msgType;
 
   /**
    * 房间ID
@@ -64,7 +64,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       tag = 3,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer roomID;
+  private final Integer roomID;
 
   /**
    * 房间内的消息序号，每个房间有自己的消息序号,不存在则系统生成,一般情况下调用方不必设置
@@ -73,7 +73,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       tag = 4,
       adapter = "com.squareup.wire.ProtoAdapter#SINT64"
   )
-  public final Long no;
+  private final Long no;
 
   /**
    * 消息显示位置类型
@@ -82,7 +82,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       tag = 5,
       adapter = "com.zq.live.proto.Room.EMsgPosType#ADAPTER"
   )
-  public final EMsgPosType posType;
+  private final EMsgPosType posType;
 
   /**
    * 发送者简要信息
@@ -91,7 +91,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       tag = 6,
       adapter = "com.zq.live.proto.Common.UserInfo#ADAPTER"
   )
-  public final UserInfo sender;
+  private final UserInfo sender;
 
   /**
    * 评论消息 msgType == RM_COMMENT
@@ -100,7 +100,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       tag = 10,
       adapter = "com.zq.live.proto.Room.CommentMsg#ADAPTER"
   )
-  public final CommentMsg commentMsg;
+  private final CommentMsg commentMsg;
 
   /**
    * 特殊表情消息  msgType == RM_SPECIAL_EMOJI
@@ -109,7 +109,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       tag = 11,
       adapter = "com.zq.live.proto.Room.SpecialEmojiMsg#ADAPTER"
   )
-  public final SpecialEmojiMsg specialEmojiMsg;
+  private final SpecialEmojiMsg specialEmojiMsg;
 
   /**
    * 动态表情消息  msgType == RM_DYNAMIC_EMOJI
@@ -118,7 +118,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       tag = 12,
       adapter = "com.zq.live.proto.Room.DynamicEmojiMsg#ADAPTER"
   )
-  public final DynamicEmojiMsg dynamicemojiMsg;
+  private final DynamicEmojiMsg dynamicemojiMsg;
 
   /**
    * 加入游戏指令消息 msgType == RM_JOIN_ACTION
@@ -127,7 +127,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       tag = 100,
       adapter = "com.zq.live.proto.Room.JoinActionMsg#ADAPTER"
   )
-  public final JoinActionMsg joinActionMsg;
+  private final JoinActionMsg joinActionMsg;
 
   /**
    * 加入游戏通知消息 msgType == RM_JOIN_NOTICE
@@ -136,7 +136,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       tag = 101,
       adapter = "com.zq.live.proto.Room.JoinNoticeMsg#ADAPTER"
   )
-  public final JoinNoticeMsg joinNoticeMsg;
+  private final JoinNoticeMsg joinNoticeMsg;
 
   /**
    * 准备游戏通知消息 msgType == RM_READY_NOTICE
@@ -145,7 +145,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       tag = 102,
       adapter = "com.zq.live.proto.Room.ReadyNoticeMsg#ADAPTER"
   )
-  public final ReadyNoticeMsg readyNoticeMsg;
+  private final ReadyNoticeMsg readyNoticeMsg;
 
   /**
    * 游戏轮次结束通知消息 msgType == RM_ROUND_OVER
@@ -154,7 +154,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       tag = 103,
       adapter = "com.zq.live.proto.Room.RoundOverMsg#ADAPTER"
   )
-  public final RoundOverMsg roundOverMsg;
+  private final RoundOverMsg roundOverMsg;
 
   /**
    * 轮次和游戏结束通知消息 msgType == RM_ROUND_AND_GAME_OVER
@@ -163,7 +163,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       tag = 104,
       adapter = "com.zq.live.proto.Room.RoundAndGameOverMsg#ADAPTER"
   )
-  public final RoundAndGameOverMsg roundAndGameOverMsg;
+  private final RoundAndGameOverMsg roundAndGameOverMsg;
 
   /**
    * app进程后台通知  msgType ==  RM_APP_SWAP
@@ -172,7 +172,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       tag = 105,
       adapter = "com.zq.live.proto.Room.AppSwapMsg#ADAPTER"
   )
-  public final AppSwapMsg appSwapMsg;
+  private final AppSwapMsg appSwapMsg;
 
   /**
    * 状态同步消息 msgType == RM_SYNC_STATUS
@@ -181,7 +181,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       tag = 106,
       adapter = "com.zq.live.proto.Room.SyncStatusMsg#ADAPTER"
   )
-  public final SyncStatusMsg syncStatusMsg;
+  private final SyncStatusMsg syncStatusMsg;
 
   /**
    * 再开始游戏前，退出游戏通知  msgType == RM_EXIT_GAME_BEFORE_PLAY
@@ -190,7 +190,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       tag = 107,
       adapter = "com.zq.live.proto.Room.ExitGameBeforePlayMsg#ADAPTER"
   )
-  public final ExitGameBeforePlayMsg exitGameBeforePlayMsg;
+  private final ExitGameBeforePlayMsg exitGameBeforePlayMsg;
 
   /**
    * 游戏结束后，退出游戏通知  msgType == RM_EXIT_GAME_AFTER_PLAY
@@ -199,7 +199,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       tag = 108,
       adapter = "com.zq.live.proto.Room.ExitGameAfterPlayMsg#ADAPTER"
   )
-  public final ExitGameAfterPlayMsg exitGameAfterPlayMsg;
+  private final ExitGameAfterPlayMsg exitGameAfterPlayMsg;
 
   /**
    * 游戏中，不在Round时，退出游戏通知  msgType == RM_EXIT_GAME_ON_PLAY
@@ -208,7 +208,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       tag = 109,
       adapter = "com.zq.live.proto.Room.ExitGameOutRoundMsg#ADAPTER"
   )
-  public final ExitGameOutRoundMsg exitGameOutRoundMsg;
+  private final ExitGameOutRoundMsg exitGameOutRoundMsg;
 
   /**
    * 游戏投票结果消息 msgType == RM_VOTE_RESULT
@@ -217,7 +217,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       tag = 110,
       adapter = "com.zq.live.proto.Room.VoteResultMsg#ADAPTER"
   )
-  public final VoteResultMsg voteResultMsg;
+  private final VoteResultMsg voteResultMsg;
 
   /**
    * 实时机器评分 msgType == RM_ROUND_MACHINE_SCORE
@@ -226,7 +226,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       tag = 111,
       adapter = "com.zq.live.proto.Room.MachineScore#ADAPTER"
   )
-  public final MachineScore machineScore;
+  private final MachineScore machineScore;
 
   /**
    * 一唱到底：想唱消息,即抢唱
@@ -235,7 +235,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       tag = 112,
       adapter = "com.zq.live.proto.Room.QWantSingChanceMsg#ADAPTER"
   )
-  public final QWantSingChanceMsg qWantSingChanceMsg;
+  private final QWantSingChanceMsg qWantSingChanceMsg;
 
   /**
    * 一唱到底：获得轮次机会,即抢唱成功
@@ -244,7 +244,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       tag = 113,
       adapter = "com.zq.live.proto.Room.QGetSingChanceMsg#ADAPTER"
   )
-  public final QGetSingChanceMsg qGetSingChanceMsg;
+  private final QGetSingChanceMsg qGetSingChanceMsg;
 
   /**
    * 一唱到底：同步状态
@@ -253,7 +253,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       tag = 114,
       adapter = "com.zq.live.proto.Room.QSyncStatusMsg#ADAPTER"
   )
-  public final QSyncStatusMsg qSyncStatusMsg;
+  private final QSyncStatusMsg qSyncStatusMsg;
 
   /**
    * 一唱到底：轮次结束
@@ -262,7 +262,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       tag = 115,
       adapter = "com.zq.live.proto.Room.QRoundOverMsg#ADAPTER"
   )
-  public final QRoundOverMsg qRoundOverMsg;
+  private final QRoundOverMsg qRoundOverMsg;
 
   /**
    * 一唱到底：最后轮次结束，即游戏结束，游戏结果数据
@@ -271,7 +271,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       tag = 116,
       adapter = "com.zq.live.proto.Room.QRoundAndGameOverMsg#ADAPTER"
   )
-  public final QRoundAndGameOverMsg qRoundAndGameOverMsg;
+  private final QRoundAndGameOverMsg qRoundAndGameOverMsg;
 
   /**
    * 一唱到底：演唱不通过，即灭灯
@@ -280,7 +280,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       tag = 117,
       adapter = "com.zq.live.proto.Room.QNoPassSingMsg#ADAPTER"
   )
-  public final QNoPassSingMsg qNoPassSingMsg;
+  private final QNoPassSingMsg qNoPassSingMsg;
 
   /**
    * 一唱到底：退出游戏
@@ -289,7 +289,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       tag = 118,
       adapter = "com.zq.live.proto.Room.QExitGameMsg#ADAPTER"
   )
-  public final QExitGameMsg qExitGameMsg;
+  private final QExitGameMsg qExitGameMsg;
 
   /**
    * 排位赛：爆灯通知
@@ -298,7 +298,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       tag = 119,
       adapter = "com.zq.live.proto.Room.PKBLightMsg#ADAPTER"
   )
-  public final PKBLightMsg pkBLightMsg;
+  private final PKBLightMsg pkBLightMsg;
 
   /**
    * 排位赛：灭灯通知
@@ -307,7 +307,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       tag = 120,
       adapter = "com.zq.live.proto.Room.PKMLightMsg#ADAPTER"
   )
-  public final PKMLightMsg pkMLightMsg;
+  private final PKMLightMsg pkMLightMsg;
 
   public RoomMsg(Long timeMs, ERoomMsgType msgType, Integer roomID, Long no, EMsgPosType posType,
       UserInfo sender, CommentMsg commentMsg, SpecialEmojiMsg specialEmojiMsg,
@@ -1041,65 +1041,65 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
   }
 
   public static final class Builder extends Message.Builder<RoomMsg, Builder> {
-    public Long timeMs;
+    private Long timeMs;
 
-    public ERoomMsgType msgType;
+    private ERoomMsgType msgType;
 
-    public Integer roomID;
+    private Integer roomID;
 
-    public Long no;
+    private Long no;
 
-    public EMsgPosType posType;
+    private EMsgPosType posType;
 
-    public UserInfo sender;
+    private UserInfo sender;
 
-    public CommentMsg commentMsg;
+    private CommentMsg commentMsg;
 
-    public SpecialEmojiMsg specialEmojiMsg;
+    private SpecialEmojiMsg specialEmojiMsg;
 
-    public DynamicEmojiMsg dynamicemojiMsg;
+    private DynamicEmojiMsg dynamicemojiMsg;
 
-    public JoinActionMsg joinActionMsg;
+    private JoinActionMsg joinActionMsg;
 
-    public JoinNoticeMsg joinNoticeMsg;
+    private JoinNoticeMsg joinNoticeMsg;
 
-    public ReadyNoticeMsg readyNoticeMsg;
+    private ReadyNoticeMsg readyNoticeMsg;
 
-    public RoundOverMsg roundOverMsg;
+    private RoundOverMsg roundOverMsg;
 
-    public RoundAndGameOverMsg roundAndGameOverMsg;
+    private RoundAndGameOverMsg roundAndGameOverMsg;
 
-    public AppSwapMsg appSwapMsg;
+    private AppSwapMsg appSwapMsg;
 
-    public SyncStatusMsg syncStatusMsg;
+    private SyncStatusMsg syncStatusMsg;
 
-    public ExitGameBeforePlayMsg exitGameBeforePlayMsg;
+    private ExitGameBeforePlayMsg exitGameBeforePlayMsg;
 
-    public ExitGameAfterPlayMsg exitGameAfterPlayMsg;
+    private ExitGameAfterPlayMsg exitGameAfterPlayMsg;
 
-    public ExitGameOutRoundMsg exitGameOutRoundMsg;
+    private ExitGameOutRoundMsg exitGameOutRoundMsg;
 
-    public VoteResultMsg voteResultMsg;
+    private VoteResultMsg voteResultMsg;
 
-    public MachineScore machineScore;
+    private MachineScore machineScore;
 
-    public QWantSingChanceMsg qWantSingChanceMsg;
+    private QWantSingChanceMsg qWantSingChanceMsg;
 
-    public QGetSingChanceMsg qGetSingChanceMsg;
+    private QGetSingChanceMsg qGetSingChanceMsg;
 
-    public QSyncStatusMsg qSyncStatusMsg;
+    private QSyncStatusMsg qSyncStatusMsg;
 
-    public QRoundOverMsg qRoundOverMsg;
+    private QRoundOverMsg qRoundOverMsg;
 
-    public QRoundAndGameOverMsg qRoundAndGameOverMsg;
+    private QRoundAndGameOverMsg qRoundAndGameOverMsg;
 
-    public QNoPassSingMsg qNoPassSingMsg;
+    private QNoPassSingMsg qNoPassSingMsg;
 
-    public QExitGameMsg qExitGameMsg;
+    private QExitGameMsg qExitGameMsg;
 
-    public PKBLightMsg pkBLightMsg;
+    private PKBLightMsg pkBLightMsg;
 
-    public PKMLightMsg pkMLightMsg;
+    private PKMLightMsg pkMLightMsg;
 
     public Builder() {
     }

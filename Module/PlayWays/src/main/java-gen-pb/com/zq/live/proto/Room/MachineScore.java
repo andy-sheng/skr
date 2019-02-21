@@ -37,7 +37,7 @@ public final class MachineScore extends Message<MachineScore, MachineScore.Build
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer userID;
+  private final Integer userID;
 
   /**
    * 演唱曲目
@@ -46,7 +46,7 @@ public final class MachineScore extends Message<MachineScore, MachineScore.Build
       tag = 2,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer itemID;
+  private final Integer itemID;
 
   /**
    * 机器分数
@@ -55,7 +55,7 @@ public final class MachineScore extends Message<MachineScore, MachineScore.Build
       tag = 3,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer score;
+  private final Integer score;
 
   /**
    * 对应截断后的歌词行号
@@ -64,7 +64,7 @@ public final class MachineScore extends Message<MachineScore, MachineScore.Build
       tag = 4,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer no;
+  private final Integer no;
 
   public MachineScore(Integer userID, Integer itemID, Integer score, Integer no) {
     this(userID, itemID, score, no, ByteString.EMPTY);
@@ -205,13 +205,13 @@ public final class MachineScore extends Message<MachineScore, MachineScore.Build
   }
 
   public static final class Builder extends Message.Builder<MachineScore, Builder> {
-    public Integer userID;
+    private Integer userID;
 
-    public Integer itemID;
+    private Integer itemID;
 
-    public Integer score;
+    private Integer score;
 
-    public Integer no;
+    private Integer no;
 
     public Builder() {
     }

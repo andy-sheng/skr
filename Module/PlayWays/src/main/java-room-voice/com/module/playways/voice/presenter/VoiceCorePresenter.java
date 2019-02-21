@@ -50,7 +50,7 @@ public class VoiceCorePresenter extends RxLifeCyclePresenter {
     PushMsgFilter mPushMsgFilter = new PushMsgFilter() {
         @Override
         public boolean doFilter(RoomMsg msg) {
-            if (msg != null && msg.roomID == mRoomData.getGameId()) {
+            if (msg != null && msg.getRoomID() == mRoomData.getGameId()) {
                 return true;
             }
             return false;

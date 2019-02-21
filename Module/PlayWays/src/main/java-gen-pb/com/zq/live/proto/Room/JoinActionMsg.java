@@ -39,7 +39,7 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer gameID;
+  private final Integer gameID;
 
   /**
    * 创建毫秒时间戳
@@ -48,7 +48,7 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
       tag = 2,
       adapter = "com.squareup.wire.ProtoAdapter#SINT64"
   )
-  public final Long CreateTimeMs;
+  private final Long CreateTimeMs;
 
   /**
    * 玩家信息
@@ -58,7 +58,7 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
       adapter = "com.zq.live.proto.Room.PlayerInfo#ADAPTER",
       label = WireField.Label.REPEATED
   )
-  public final List<PlayerInfo> players;
+  private final List<PlayerInfo> players;
 
   /**
    * 共同演唱音乐信息
@@ -68,7 +68,7 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
       adapter = "com.zq.live.proto.Common.MusicInfo#ADAPTER",
       label = WireField.Label.REPEATED
   )
-  public final List<MusicInfo> commonMusicInfo;
+  private final List<MusicInfo> commonMusicInfo;
 
   /**
    * 配置信息
@@ -77,7 +77,7 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
       tag = 5,
       adapter = "com.zq.live.proto.Room.GameConfig#ADAPTER"
   )
-  public final GameConfig config;
+  private final GameConfig config;
 
   public JoinActionMsg(Integer gameID, Long CreateTimeMs, List<PlayerInfo> players,
       List<MusicInfo> commonMusicInfo, GameConfig config) {
@@ -241,15 +241,15 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
   }
 
   public static final class Builder extends Message.Builder<JoinActionMsg, Builder> {
-    public Integer gameID;
+    private Integer gameID;
 
-    public Long CreateTimeMs;
+    private Long CreateTimeMs;
 
-    public List<PlayerInfo> players;
+    private List<PlayerInfo> players;
 
-    public List<MusicInfo> commonMusicInfo;
+    private List<MusicInfo> commonMusicInfo;
 
-    public GameConfig config;
+    private GameConfig config;
 
     public Builder() {
       players = Internal.newMutableList();

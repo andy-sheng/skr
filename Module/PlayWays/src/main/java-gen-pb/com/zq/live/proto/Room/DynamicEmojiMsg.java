@@ -34,7 +34,7 @@ public final class DynamicEmojiMsg extends Message<DynamicEmojiMsg, DynamicEmoji
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer id;
+  private final Integer id;
 
   public DynamicEmojiMsg(Integer id) {
     this(id, ByteString.EMPTY);
@@ -108,7 +108,7 @@ public final class DynamicEmojiMsg extends Message<DynamicEmojiMsg, DynamicEmoji
   }
 
   public static final class Builder extends Message.Builder<DynamicEmojiMsg, Builder> {
-    public Integer id;
+    private Integer id;
 
     public Builder() {
     }

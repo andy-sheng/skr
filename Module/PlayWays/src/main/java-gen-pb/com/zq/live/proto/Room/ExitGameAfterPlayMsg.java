@@ -34,7 +34,7 @@ public final class ExitGameAfterPlayMsg extends Message<ExitGameAfterPlayMsg, Ex
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer exitUserID;
+  private final Integer exitUserID;
 
   /**
    * 退出毫秒时间戳
@@ -43,7 +43,7 @@ public final class ExitGameAfterPlayMsg extends Message<ExitGameAfterPlayMsg, Ex
       tag = 2,
       adapter = "com.squareup.wire.ProtoAdapter#SINT64"
   )
-  public final Long exitTimeMs;
+  private final Long exitTimeMs;
 
   public ExitGameAfterPlayMsg(Integer exitUserID, Long exitTimeMs) {
     this(exitUserID, exitTimeMs, ByteString.EMPTY);
@@ -139,9 +139,9 @@ public final class ExitGameAfterPlayMsg extends Message<ExitGameAfterPlayMsg, Ex
   }
 
   public static final class Builder extends Message.Builder<ExitGameAfterPlayMsg, Builder> {
-    public Integer exitUserID;
+    private Integer exitUserID;
 
-    public Long exitTimeMs;
+    private Long exitTimeMs;
 
     public Builder() {
     }

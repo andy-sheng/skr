@@ -43,7 +43,7 @@ public final class ReadyAndStartNoticeMsg extends Message<ReadyAndStartNoticeMsg
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer readyUserID;
+  private final Integer readyUserID;
 
   /**
    * 准备的毫秒时间戳
@@ -52,7 +52,7 @@ public final class ReadyAndStartNoticeMsg extends Message<ReadyAndStartNoticeMsg
       tag = 2,
       adapter = "com.squareup.wire.ProtoAdapter#SINT64"
   )
-  public final Long readyTimeMs;
+  private final Long readyTimeMs;
 
   /**
    * 开始的毫秒时间戳
@@ -61,7 +61,7 @@ public final class ReadyAndStartNoticeMsg extends Message<ReadyAndStartNoticeMsg
       tag = 3,
       adapter = "com.squareup.wire.ProtoAdapter#SINT64"
   )
-  public final Long startTimeMS;
+  private final Long startTimeMS;
 
   /**
    * 第一个用户ID
@@ -70,7 +70,7 @@ public final class ReadyAndStartNoticeMsg extends Message<ReadyAndStartNoticeMsg
       tag = 4,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer firstUserID;
+  private final Integer firstUserID;
 
   /**
    * 第一首歌曲ID
@@ -79,7 +79,7 @@ public final class ReadyAndStartNoticeMsg extends Message<ReadyAndStartNoticeMsg
       tag = 5,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer firstMusicID;
+  private final Integer firstMusicID;
 
   public ReadyAndStartNoticeMsg(Integer readyUserID, Long readyTimeMs, Long startTimeMS,
       Integer firstUserID, Integer firstMusicID) {
@@ -243,15 +243,15 @@ public final class ReadyAndStartNoticeMsg extends Message<ReadyAndStartNoticeMsg
   }
 
   public static final class Builder extends Message.Builder<ReadyAndStartNoticeMsg, Builder> {
-    public Integer readyUserID;
+    private Integer readyUserID;
 
-    public Long readyTimeMs;
+    private Long readyTimeMs;
 
-    public Long startTimeMS;
+    private Long startTimeMS;
 
-    public Integer firstUserID;
+    private Integer firstUserID;
 
-    public Integer firstMusicID;
+    private Integer firstMusicID;
 
     public Builder() {
     }

@@ -31,7 +31,7 @@ public final class QExitGameMsg extends Message<QExitGameMsg, QExitGameMsg.Build
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer userID;
+  private final Integer userID;
 
   public QExitGameMsg(Integer userID) {
     this(userID, ByteString.EMPTY);
@@ -105,7 +105,7 @@ public final class QExitGameMsg extends Message<QExitGameMsg, QExitGameMsg.Build
   }
 
   public static final class Builder extends Message.Builder<QExitGameMsg, Builder> {
-    public Integer userID;
+    private Integer userID;
 
     public Builder() {
     }

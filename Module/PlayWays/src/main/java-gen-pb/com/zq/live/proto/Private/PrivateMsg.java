@@ -20,8 +20,8 @@ import java.lang.StringBuilder;
 import okio.ByteString;
 
 /**
- * java -jar -Dfile.encoding=UTF-8 ./proto/wire-compiler-2.3.0-SNAPSHOT-jar-with-dependencies_backup.jar \
- * --proto_path=./proto --java_out=./Module/RankingMode/src/main/java-gen-pb/ Private.proto
+ * java -jar -Dfile.encoding=UTF-8 ./proto/wire-compiler-2.3.0-SNAPSHOT-jar-with-dependencies.jar \
+ * --proto_path=./proto --java_out=./Module/PlayWays/src/main/java-gen-pb/ Private.proto
  * 私聊消息：此结构会通过pb编码后，通过IM单聊通道到达客户端
  */
 public final class PrivateMsg extends Message<PrivateMsg, PrivateMsg.Builder> {
@@ -44,7 +44,7 @@ public final class PrivateMsg extends Message<PrivateMsg, PrivateMsg.Builder> {
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#SINT64"
   )
-  public final Long timeMs;
+  private final Long timeMs;
 
   /**
    * 消息类型
@@ -53,7 +53,7 @@ public final class PrivateMsg extends Message<PrivateMsg, PrivateMsg.Builder> {
       tag = 2,
       adapter = "com.zq.live.proto.Private.EPrivateMsgType#ADAPTER"
   )
-  public final EPrivateMsgType msgType;
+  private final EPrivateMsgType msgType;
 
   /**
    * 消息接受者的ID
@@ -62,7 +62,7 @@ public final class PrivateMsg extends Message<PrivateMsg, PrivateMsg.Builder> {
       tag = 3,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer toUserID;
+  private final Integer toUserID;
 
   /**
    * 消息序号
@@ -71,7 +71,7 @@ public final class PrivateMsg extends Message<PrivateMsg, PrivateMsg.Builder> {
       tag = 4,
       adapter = "com.squareup.wire.ProtoAdapter#SINT64"
   )
-  public final Long no;
+  private final Long no;
 
   /**
    * 发送者简要信息
@@ -80,7 +80,7 @@ public final class PrivateMsg extends Message<PrivateMsg, PrivateMsg.Builder> {
       tag = 5,
       adapter = "com.zq.live.proto.Common.UserInfo#ADAPTER"
   )
-  public final UserInfo sender;
+  private final UserInfo sender;
 
   /**
    * 文字消息，当MsgType == PM_TEXT 时应存在
@@ -89,7 +89,7 @@ public final class PrivateMsg extends Message<PrivateMsg, PrivateMsg.Builder> {
       tag = 10,
       adapter = "com.zq.live.proto.Private.TextMsg#ADAPTER"
   )
-  public final TextMsg textMsg;
+  private final TextMsg textMsg;
 
   public PrivateMsg(Long timeMs, EPrivateMsgType msgType, Integer toUserID, Long no,
       UserInfo sender, TextMsg textMsg) {
@@ -275,17 +275,17 @@ public final class PrivateMsg extends Message<PrivateMsg, PrivateMsg.Builder> {
   }
 
   public static final class Builder extends Message.Builder<PrivateMsg, Builder> {
-    public Long timeMs;
+    private Long timeMs;
 
-    public EPrivateMsgType msgType;
+    private EPrivateMsgType msgType;
 
-    public Integer toUserID;
+    private Integer toUserID;
 
-    public Long no;
+    private Long no;
 
-    public UserInfo sender;
+    private UserInfo sender;
 
-    public TextMsg textMsg;
+    private TextMsg textMsg;
 
     public Builder() {
     }

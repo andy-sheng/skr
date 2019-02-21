@@ -33,7 +33,7 @@ public final class QGetSingChanceMsg extends Message<QGetSingChanceMsg, QGetSing
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer userID;
+  private final Integer userID;
 
   /**
    * 轮次顺序
@@ -42,7 +42,7 @@ public final class QGetSingChanceMsg extends Message<QGetSingChanceMsg, QGetSing
       tag = 2,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer roundSeq;
+  private final Integer roundSeq;
 
   /**
    * 当前轮次信息
@@ -51,7 +51,7 @@ public final class QGetSingChanceMsg extends Message<QGetSingChanceMsg, QGetSing
       tag = 3,
       adapter = "com.zq.live.proto.Room.QRoundInfo#ADAPTER"
   )
-  public final QRoundInfo currentRound;
+  private final QRoundInfo currentRound;
 
   public QGetSingChanceMsg(Integer userID, Integer roundSeq, QRoundInfo currentRound) {
     this(userID, roundSeq, currentRound, ByteString.EMPTY);
@@ -170,11 +170,11 @@ public final class QGetSingChanceMsg extends Message<QGetSingChanceMsg, QGetSing
   }
 
   public static final class Builder extends Message.Builder<QGetSingChanceMsg, Builder> {
-    public Integer userID;
+    private Integer userID;
 
-    public Integer roundSeq;
+    private Integer roundSeq;
 
-    public QRoundInfo currentRound;
+    private QRoundInfo currentRound;
 
     public Builder() {
     }

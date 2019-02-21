@@ -38,7 +38,7 @@ public final class JoinNoticeMsg extends Message<JoinNoticeMsg, JoinNoticeMsg.Bu
       adapter = "com.zq.live.proto.Room.JoinInfo#ADAPTER",
       label = WireField.Label.REPEATED
   )
-  public final List<JoinInfo> joinInfo;
+  private final List<JoinInfo> joinInfo;
 
   /**
    * 已经加入游戏的人数
@@ -47,7 +47,7 @@ public final class JoinNoticeMsg extends Message<JoinNoticeMsg, JoinNoticeMsg.Bu
       tag = 2,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer hasJoinedUserCnt;
+  private final Integer hasJoinedUserCnt;
 
   /**
    * 准备时钟剩余秒数,最后一个玩家加入后，赋值
@@ -56,7 +56,7 @@ public final class JoinNoticeMsg extends Message<JoinNoticeMsg, JoinNoticeMsg.Bu
       tag = 3,
       adapter = "com.squareup.wire.ProtoAdapter#SINT32"
   )
-  public final Integer readyClockResMs;
+  private final Integer readyClockResMs;
 
   public JoinNoticeMsg(List<JoinInfo> joinInfo, Integer hasJoinedUserCnt, Integer readyClockResMs) {
     this(joinInfo, hasJoinedUserCnt, readyClockResMs, ByteString.EMPTY);
@@ -175,11 +175,11 @@ public final class JoinNoticeMsg extends Message<JoinNoticeMsg, JoinNoticeMsg.Bu
   }
 
   public static final class Builder extends Message.Builder<JoinNoticeMsg, Builder> {
-    public List<JoinInfo> joinInfo;
+    private List<JoinInfo> joinInfo;
 
-    public Integer hasJoinedUserCnt;
+    private Integer hasJoinedUserCnt;
 
-    public Integer readyClockResMs;
+    private Integer readyClockResMs;
 
     public Builder() {
       joinInfo = Internal.newMutableList();

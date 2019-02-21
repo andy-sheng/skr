@@ -31,7 +31,7 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#SINT64"
   )
-  public final Long roundOverTimeMs;
+  private final Long roundOverTimeMs;
 
   /**
    * 当前轮次信息
@@ -40,7 +40,7 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
       tag = 2,
       adapter = "com.zq.live.proto.Room.QRoundInfo#ADAPTER"
   )
-  public final QRoundInfo currentRound;
+  private final QRoundInfo currentRound;
 
   /**
    * 下个轮次信息
@@ -49,7 +49,7 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
       tag = 3,
       adapter = "com.zq.live.proto.Room.QRoundInfo#ADAPTER"
   )
-  public final QRoundInfo nextRound;
+  private final QRoundInfo nextRound;
 
   public QRoundOverMsg(Long roundOverTimeMs, QRoundInfo currentRound, QRoundInfo nextRound) {
     this(roundOverTimeMs, currentRound, nextRound, ByteString.EMPTY);
@@ -168,11 +168,11 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
   }
 
   public static final class Builder extends Message.Builder<QRoundOverMsg, Builder> {
-    public Long roundOverTimeMs;
+    private Long roundOverTimeMs;
 
-    public QRoundInfo currentRound;
+    private QRoundInfo currentRound;
 
-    public QRoundInfo nextRound;
+    private QRoundInfo nextRound;
 
     public Builder() {
     }

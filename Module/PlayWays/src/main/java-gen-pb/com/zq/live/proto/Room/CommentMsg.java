@@ -33,7 +33,7 @@ public final class CommentMsg extends Message<CommentMsg, CommentMsg.Builder> {
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#STRING"
   )
-  public final String text;
+  private final String text;
 
   public CommentMsg(String text) {
     this(text, ByteString.EMPTY);
@@ -107,7 +107,7 @@ public final class CommentMsg extends Message<CommentMsg, CommentMsg.Builder> {
   }
 
   public static final class Builder extends Message.Builder<CommentMsg, Builder> {
-    public String text;
+    private String text;
 
     public Builder() {
     }

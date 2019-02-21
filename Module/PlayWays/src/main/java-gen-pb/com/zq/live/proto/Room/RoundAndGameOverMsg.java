@@ -38,7 +38,7 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#SINT64"
   )
-  public final Long roundOverTimeMs;
+  private final Long roundOverTimeMs;
 
   /**
    * 当前轮次信息
@@ -47,7 +47,7 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
       tag = 2,
       adapter = "com.zq.live.proto.Room.RoundInfo#ADAPTER"
   )
-  public final RoundInfo currentRound;
+  private final RoundInfo currentRound;
 
   /**
    * 退出用户的ID
@@ -56,7 +56,7 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
       tag = 3,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer exitUserID;
+  private final Integer exitUserID;
 
   /**
    * 投票打分信息
@@ -66,7 +66,7 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
       adapter = "com.zq.live.proto.Room.VoteInfo#ADAPTER",
       label = WireField.Label.REPEATED
   )
-  public final List<VoteInfo> voteInfo;
+  private final List<VoteInfo> voteInfo;
 
   /**
    * 所有参与者的评分结果，应该使用这个结构
@@ -76,7 +76,7 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
       adapter = "com.zq.live.proto.Room.UserScoreResult#ADAPTER",
       label = WireField.Label.REPEATED
   )
-  public final List<UserScoreResult> scoreResults;
+  private final List<UserScoreResult> scoreResults;
 
   /**
    * 游戏结果评分数据
@@ -86,7 +86,7 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
       adapter = "com.zq.live.proto.Room.UserGameResult#ADAPTER",
       label = WireField.Label.REPEATED
   )
-  public final List<UserGameResult> gameResults;
+  private final List<UserGameResult> gameResults;
 
   public RoundAndGameOverMsg(Long roundOverTimeMs, RoundInfo currentRound, Integer exitUserID,
       List<VoteInfo> voteInfo, List<UserScoreResult> scoreResults,
@@ -274,17 +274,17 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
   }
 
   public static final class Builder extends Message.Builder<RoundAndGameOverMsg, Builder> {
-    public Long roundOverTimeMs;
+    private Long roundOverTimeMs;
 
-    public RoundInfo currentRound;
+    private RoundInfo currentRound;
 
-    public Integer exitUserID;
+    private Integer exitUserID;
 
-    public List<VoteInfo> voteInfo;
+    private List<VoteInfo> voteInfo;
 
-    public List<UserScoreResult> scoreResults;
+    private List<UserScoreResult> scoreResults;
 
-    public List<UserGameResult> gameResults;
+    private List<UserGameResult> gameResults;
 
     public Builder() {
       voteInfo = Internal.newMutableList();

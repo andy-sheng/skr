@@ -33,7 +33,7 @@ public final class UserScoreResult extends Message<UserScoreResult, UserScoreRes
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer userID;
+  private final Integer userID;
 
   /**
    * 分值状态：初始、中间、最终状态，第0个为占位用
@@ -43,7 +43,7 @@ public final class UserScoreResult extends Message<UserScoreResult, UserScoreRes
       adapter = "com.zq.live.proto.Room.ScoreState#ADAPTER",
       label = WireField.Label.REPEATED
   )
-  public final List<ScoreState> states;
+  private final List<ScoreState> states;
 
   /**
    * 星星变动详情，通过累加可以判断是加星还是减星
@@ -53,7 +53,7 @@ public final class UserScoreResult extends Message<UserScoreResult, UserScoreRes
       adapter = "com.zq.live.proto.Room.ScoreItem#ADAPTER",
       label = WireField.Label.REPEATED
   )
-  public final List<ScoreItem> starChange;
+  private final List<ScoreItem> starChange;
 
   /**
    * 战力值变动详情，累加可以判断是增加还是减少
@@ -63,7 +63,7 @@ public final class UserScoreResult extends Message<UserScoreResult, UserScoreRes
       adapter = "com.zq.live.proto.Room.ScoreItem#ADAPTER",
       label = WireField.Label.REPEATED
   )
-  public final List<ScoreItem> battleIndexChange;
+  private final List<ScoreItem> battleIndexChange;
 
   /**
    * 胜负平等等
@@ -72,7 +72,7 @@ public final class UserScoreResult extends Message<UserScoreResult, UserScoreRes
       tag = 5,
       adapter = "com.zq.live.proto.Room.EWinType#ADAPTER"
   )
-  public final EWinType winType;
+  private final EWinType winType;
 
   /**
    * 战斗评价, sss or ss or s or a...
@@ -81,7 +81,7 @@ public final class UserScoreResult extends Message<UserScoreResult, UserScoreRes
       tag = 6,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer sss;
+  private final Integer sss;
 
   public UserScoreResult(Integer userID, List<ScoreState> states, List<ScoreItem> starChange,
       List<ScoreItem> battleIndexChange, EWinType winType, Integer sss) {
@@ -261,17 +261,17 @@ public final class UserScoreResult extends Message<UserScoreResult, UserScoreRes
   }
 
   public static final class Builder extends Message.Builder<UserScoreResult, Builder> {
-    public Integer userID;
+    private Integer userID;
 
-    public List<ScoreState> states;
+    private List<ScoreState> states;
 
-    public List<ScoreItem> starChange;
+    private List<ScoreItem> starChange;
 
-    public List<ScoreItem> battleIndexChange;
+    private List<ScoreItem> battleIndexChange;
 
-    public EWinType winType;
+    private EWinType winType;
 
-    public Integer sss;
+    private Integer sss;
 
     public Builder() {
       states = Internal.newMutableList();

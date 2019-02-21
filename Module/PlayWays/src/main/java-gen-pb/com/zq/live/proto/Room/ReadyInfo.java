@@ -36,7 +36,7 @@ public final class ReadyInfo extends Message<ReadyInfo, ReadyInfo.Builder> {
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer userID;
+  private final Integer userID;
 
   /**
    * 准备顺序
@@ -45,7 +45,7 @@ public final class ReadyInfo extends Message<ReadyInfo, ReadyInfo.Builder> {
       tag = 2,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer readySeq;
+  private final Integer readySeq;
 
   /**
    * 准备时间戳
@@ -54,7 +54,7 @@ public final class ReadyInfo extends Message<ReadyInfo, ReadyInfo.Builder> {
       tag = 3,
       adapter = "com.squareup.wire.ProtoAdapter#SINT64"
   )
-  public final Long readyTimeMs;
+  private final Long readyTimeMs;
 
   public ReadyInfo(Integer userID, Integer readySeq, Long readyTimeMs) {
     this(userID, readySeq, readyTimeMs, ByteString.EMPTY);
@@ -172,11 +172,11 @@ public final class ReadyInfo extends Message<ReadyInfo, ReadyInfo.Builder> {
   }
 
   public static final class Builder extends Message.Builder<ReadyInfo, Builder> {
-    public Integer userID;
+    private Integer userID;
 
-    public Integer readySeq;
+    private Integer readySeq;
 
-    public Long readyTimeMs;
+    private Long readyTimeMs;
 
     public Builder() {
     }

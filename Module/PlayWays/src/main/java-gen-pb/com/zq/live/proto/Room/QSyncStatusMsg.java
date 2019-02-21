@@ -34,7 +34,7 @@ public final class QSyncStatusMsg extends Message<QSyncStatusMsg, QSyncStatusMsg
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#SINT64"
   )
-  public final Long syncStatusTimeMs;
+  private final Long syncStatusTimeMs;
 
   /**
    * 游戏结束时间
@@ -43,7 +43,7 @@ public final class QSyncStatusMsg extends Message<QSyncStatusMsg, QSyncStatusMsg
       tag = 2,
       adapter = "com.squareup.wire.ProtoAdapter#SINT64"
   )
-  public final Long gameOverTimeMs;
+  private final Long gameOverTimeMs;
 
   /**
    * 在线状态
@@ -53,7 +53,7 @@ public final class QSyncStatusMsg extends Message<QSyncStatusMsg, QSyncStatusMsg
       adapter = "com.zq.live.proto.Room.OnlineInfo#ADAPTER",
       label = WireField.Label.REPEATED
   )
-  public final List<OnlineInfo> onlineInfo;
+  private final List<OnlineInfo> onlineInfo;
 
   /**
    * 当前轮次信息
@@ -62,7 +62,7 @@ public final class QSyncStatusMsg extends Message<QSyncStatusMsg, QSyncStatusMsg
       tag = 4,
       adapter = "com.zq.live.proto.Room.QRoundInfo#ADAPTER"
   )
-  public final QRoundInfo currentRound;
+  private final QRoundInfo currentRound;
 
   /**
    * 下个轮次信息
@@ -71,7 +71,7 @@ public final class QSyncStatusMsg extends Message<QSyncStatusMsg, QSyncStatusMsg
       tag = 5,
       adapter = "com.zq.live.proto.Room.QRoundInfo#ADAPTER"
   )
-  public final QRoundInfo nextRound;
+  private final QRoundInfo nextRound;
 
   public QSyncStatusMsg(Long syncStatusTimeMs, Long gameOverTimeMs, List<OnlineInfo> onlineInfo,
       QRoundInfo currentRound, QRoundInfo nextRound) {
@@ -235,15 +235,15 @@ public final class QSyncStatusMsg extends Message<QSyncStatusMsg, QSyncStatusMsg
   }
 
   public static final class Builder extends Message.Builder<QSyncStatusMsg, Builder> {
-    public Long syncStatusTimeMs;
+    private Long syncStatusTimeMs;
 
-    public Long gameOverTimeMs;
+    private Long gameOverTimeMs;
 
-    public List<OnlineInfo> onlineInfo;
+    private List<OnlineInfo> onlineInfo;
 
-    public QRoundInfo currentRound;
+    private QRoundInfo currentRound;
 
-    public QRoundInfo nextRound;
+    private QRoundInfo nextRound;
 
     public Builder() {
       onlineInfo = Internal.newMutableList();

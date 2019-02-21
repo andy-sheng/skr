@@ -32,7 +32,7 @@ public final class QRoundAndGameOverMsg extends Message<QRoundAndGameOverMsg, QR
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#SINT64"
   )
-  public final Long roundOverTimeMs;
+  private final Long roundOverTimeMs;
 
   /**
    * 当前轮次信息
@@ -41,7 +41,7 @@ public final class QRoundAndGameOverMsg extends Message<QRoundAndGameOverMsg, QR
       tag = 2,
       adapter = "com.zq.live.proto.Room.QRoundInfo#ADAPTER"
   )
-  public final QRoundInfo currentRound;
+  private final QRoundInfo currentRound;
 
   /**
    * 最终结果信息
@@ -51,7 +51,7 @@ public final class QRoundAndGameOverMsg extends Message<QRoundAndGameOverMsg, QR
       adapter = "com.zq.live.proto.Room.QResultInfo#ADAPTER",
       label = WireField.Label.REPEATED
   )
-  public final List<QResultInfo> resultInfo;
+  private final List<QResultInfo> resultInfo;
 
   public QRoundAndGameOverMsg(Long roundOverTimeMs, QRoundInfo currentRound,
       List<QResultInfo> resultInfo) {
@@ -171,11 +171,11 @@ public final class QRoundAndGameOverMsg extends Message<QRoundAndGameOverMsg, QR
   }
 
   public static final class Builder extends Message.Builder<QRoundAndGameOverMsg, Builder> {
-    public Long roundOverTimeMs;
+    private Long roundOverTimeMs;
 
-    public QRoundInfo currentRound;
+    private QRoundInfo currentRound;
 
-    public List<QResultInfo> resultInfo;
+    private List<QResultInfo> resultInfo;
 
     public Builder() {
       resultInfo = Internal.newMutableList();

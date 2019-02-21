@@ -39,7 +39,7 @@ public final class AppSwapMsg extends Message<AppSwapMsg, AppSwapMsg.Builder> {
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer swapUserID;
+  private final Integer swapUserID;
 
   /**
    * 切换时间戳
@@ -48,7 +48,7 @@ public final class AppSwapMsg extends Message<AppSwapMsg, AppSwapMsg.Builder> {
       tag = 2,
       adapter = "com.squareup.wire.ProtoAdapter#SINT64"
   )
-  public final Long swapTimsMs;
+  private final Long swapTimsMs;
 
   /**
    * 后台运行
@@ -57,7 +57,7 @@ public final class AppSwapMsg extends Message<AppSwapMsg, AppSwapMsg.Builder> {
       tag = 3,
       adapter = "com.squareup.wire.ProtoAdapter#BOOL"
   )
-  public final Boolean swapOut;
+  private final Boolean swapOut;
 
   /**
    * 前台运行
@@ -66,7 +66,7 @@ public final class AppSwapMsg extends Message<AppSwapMsg, AppSwapMsg.Builder> {
       tag = 4,
       adapter = "com.squareup.wire.ProtoAdapter#BOOL"
   )
-  public final Boolean swapIn;
+  private final Boolean swapIn;
 
   public AppSwapMsg(Integer swapUserID, Long swapTimsMs, Boolean swapOut, Boolean swapIn) {
     this(swapUserID, swapTimsMs, swapOut, swapIn, ByteString.EMPTY);
@@ -207,13 +207,13 @@ public final class AppSwapMsg extends Message<AppSwapMsg, AppSwapMsg.Builder> {
   }
 
   public static final class Builder extends Message.Builder<AppSwapMsg, Builder> {
-    public Integer swapUserID;
+    private Integer swapUserID;
 
-    public Long swapTimsMs;
+    private Long swapTimsMs;
 
-    public Boolean swapOut;
+    private Boolean swapOut;
 
-    public Boolean swapIn;
+    private Boolean swapIn;
 
     public Builder() {
     }

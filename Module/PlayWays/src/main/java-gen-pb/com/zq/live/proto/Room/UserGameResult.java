@@ -47,7 +47,7 @@ public final class UserGameResult extends Message<UserGameResult, UserGameResult
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer userID;
+  private final Integer userID;
 
   /**
    * 演唱曲目ID
@@ -56,7 +56,7 @@ public final class UserGameResult extends Message<UserGameResult, UserGameResult
       tag = 2,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer itemID;
+  private final Integer itemID;
 
   /**
    * 排名
@@ -65,7 +65,7 @@ public final class UserGameResult extends Message<UserGameResult, UserGameResult
       tag = 3,
       adapter = "com.squareup.wire.ProtoAdapter#SINT32"
   )
-  public final Integer rank;
+  private final Integer rank;
 
   /**
    * 听歌完整度
@@ -75,7 +75,7 @@ public final class UserGameResult extends Message<UserGameResult, UserGameResult
       adapter = "com.zq.live.proto.Room.ListenProgress#ADAPTER",
       label = WireField.Label.REPEATED
   )
-  public final List<ListenProgress> listenProgress;
+  private final List<ListenProgress> listenProgress;
 
   /**
    * 综合评分
@@ -84,7 +84,7 @@ public final class UserGameResult extends Message<UserGameResult, UserGameResult
       tag = 5,
       adapter = "com.squareup.wire.ProtoAdapter#FLOAT"
   )
-  public final Float totalScore;
+  private final Float totalScore;
 
   /**
    * 胜负平等等
@@ -93,7 +93,7 @@ public final class UserGameResult extends Message<UserGameResult, UserGameResult
       tag = 6,
       adapter = "com.zq.live.proto.Room.EWinType#ADAPTER"
   )
-  public final EWinType winType;
+  private final EWinType winType;
 
   /**
    * 是否逃跑
@@ -102,7 +102,7 @@ public final class UserGameResult extends Message<UserGameResult, UserGameResult
       tag = 7,
       adapter = "com.squareup.wire.ProtoAdapter#BOOL"
   )
-  public final Boolean isEscape;
+  private final Boolean isEscape;
 
   public UserGameResult(Integer userID, Integer itemID, Integer rank,
       List<ListenProgress> listenProgress, Float totalScore, EWinType winType, Boolean isEscape) {
@@ -311,19 +311,19 @@ public final class UserGameResult extends Message<UserGameResult, UserGameResult
   }
 
   public static final class Builder extends Message.Builder<UserGameResult, Builder> {
-    public Integer userID;
+    private Integer userID;
 
-    public Integer itemID;
+    private Integer itemID;
 
-    public Integer rank;
+    private Integer rank;
 
-    public List<ListenProgress> listenProgress;
+    private List<ListenProgress> listenProgress;
 
-    public Float totalScore;
+    private Float totalScore;
 
-    public EWinType winType;
+    private EWinType winType;
 
-    public Boolean isEscape;
+    private Boolean isEscape;
 
     public Builder() {
       listenProgress = Internal.newMutableList();

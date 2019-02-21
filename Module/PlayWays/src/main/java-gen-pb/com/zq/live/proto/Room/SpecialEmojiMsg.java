@@ -41,7 +41,7 @@ public final class SpecialEmojiMsg extends Message<SpecialEmojiMsg, SpecialEmoji
       tag = 1,
       adapter = "com.zq.live.proto.Room.SpecialEmojiMsgType#ADAPTER"
   )
-  public final SpecialEmojiMsgType emojiType;
+  private final SpecialEmojiMsgType emojiType;
 
   /**
    * 数量
@@ -50,7 +50,7 @@ public final class SpecialEmojiMsg extends Message<SpecialEmojiMsg, SpecialEmoji
       tag = 2,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer count;
+  private final Integer count;
 
   /**
    * 动作
@@ -59,7 +59,7 @@ public final class SpecialEmojiMsg extends Message<SpecialEmojiMsg, SpecialEmoji
       tag = 3,
       adapter = "com.squareup.wire.ProtoAdapter#STRING"
   )
-  public final String emojiAction;
+  private final String emojiAction;
 
   /**
    * 用来标记属于哪一组连送，一般设置为 X1 的时间戳
@@ -68,7 +68,7 @@ public final class SpecialEmojiMsg extends Message<SpecialEmojiMsg, SpecialEmoji
       tag = 4,
       adapter = "com.squareup.wire.ProtoAdapter#UINT64"
   )
-  public final Long continueId;
+  private final Long continueId;
 
   public SpecialEmojiMsg(SpecialEmojiMsgType emojiType, Integer count, String emojiAction,
       Long continueId) {
@@ -210,13 +210,13 @@ public final class SpecialEmojiMsg extends Message<SpecialEmojiMsg, SpecialEmoji
   }
 
   public static final class Builder extends Message.Builder<SpecialEmojiMsg, Builder> {
-    public SpecialEmojiMsgType emojiType;
+    private SpecialEmojiMsgType emojiType;
 
-    public Integer count;
+    private Integer count;
 
-    public String emojiAction;
+    private String emojiAction;
 
-    public Long continueId;
+    private Long continueId;
 
     public Builder() {
     }

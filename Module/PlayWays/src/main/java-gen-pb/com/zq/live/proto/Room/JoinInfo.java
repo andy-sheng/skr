@@ -36,7 +36,7 @@ public final class JoinInfo extends Message<JoinInfo, JoinInfo.Builder> {
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer userID;
+  private final Integer userID;
 
   /**
    * 加入顺序
@@ -45,7 +45,7 @@ public final class JoinInfo extends Message<JoinInfo, JoinInfo.Builder> {
       tag = 2,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  public final Integer joinSeq;
+  private final Integer joinSeq;
 
   /**
    * 加入毫秒时间戳
@@ -54,7 +54,7 @@ public final class JoinInfo extends Message<JoinInfo, JoinInfo.Builder> {
       tag = 3,
       adapter = "com.squareup.wire.ProtoAdapter#SINT64"
   )
-  public final Long joinTimeMs;
+  private final Long joinTimeMs;
 
   public JoinInfo(Integer userID, Integer joinSeq, Long joinTimeMs) {
     this(userID, joinSeq, joinTimeMs, ByteString.EMPTY);
@@ -172,11 +172,11 @@ public final class JoinInfo extends Message<JoinInfo, JoinInfo.Builder> {
   }
 
   public static final class Builder extends Message.Builder<JoinInfo, Builder> {
-    public Integer userID;
+    private Integer userID;
 
-    public Integer joinSeq;
+    private Integer joinSeq;
 
-    public Long joinTimeMs;
+    private Long joinTimeMs;
 
     public Builder() {
     }
