@@ -11,16 +11,18 @@ public class RecordData implements Serializable {
     public List<VoteInfoModel> mVoteInfoModels;
     public ScoreResultModel mScoreResultModel;
     public List<WinResultModel> mWinResultModels;
+    public List<UserGameResultModel> mUserGameResultModels;
 
-    public RecordData(List<VoteInfoModel> mVoteInfoModels, ScoreResultModel mScoreResultModel, List<WinResultModel> mWinResultModels) {
+    public RecordData(List<VoteInfoModel> mVoteInfoModels, ScoreResultModel mScoreResultModel, List<WinResultModel> mWinResultModels,List<UserGameResultModel> mUserGameResultModels) {
         this.mVoteInfoModels = mVoteInfoModels;
         this.mScoreResultModel = mScoreResultModel;
         this.mWinResultModels = mWinResultModels;
+        this.mUserGameResultModels = mUserGameResultModels;
     }
 
+    public void
     public VoteInfoModel getSelfVoteInfoModel() {
-        for (VoteInfoModel voteInfoModel :
-                mVoteInfoModels) {
+        for (VoteInfoModel voteInfoModel : mVoteInfoModels) {
             if (voteInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
                 return voteInfoModel;
             }

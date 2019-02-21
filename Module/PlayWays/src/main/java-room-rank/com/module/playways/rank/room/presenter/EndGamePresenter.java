@@ -143,7 +143,7 @@ public class EndGamePresenter extends RxLifeCyclePresenter {
                         MyLog.d(TAG, " getVoteResult " + " voteInfoModelList " + voteInfoModelList.toString());
                         MyLog.d(TAG, " getVoteResult " + " scoreResultModel " + myScoreResultModel.toString());
                         MyLog.d(TAG, " getVoteResult " + " winResultModels " + winResultModels.toString());
-                        mView.showRecordView(new RecordData(voteInfoModelList, myScoreResultModel, winResultModels));
+                        mView.showRecordView(new RecordData(voteInfoModelList, myScoreResultModel, winResultModels,userGameResults));
                     } else {
                         mUiHandler.removeMessages(MSG_GET_VOTE);
                         Message message = mUiHandler.obtainMessage(MSG_GET_VOTE);
@@ -172,6 +172,6 @@ public class EndGamePresenter extends RxLifeCyclePresenter {
         MyLog.d(TAG, "VoteResultEvent" + " mVoteInfoModels event = " + event.mVoteInfoModels.toString());
         MyLog.d(TAG, "VoteResultEvent" + " mScoreResultModel event = " + event.mScoreResultModel.toString());
         MyLog.d(TAG, "VoteResultEvent" + " mWinResultModels event = " + event.mWinResultModels.toString());
-        mView.showRecordView(new RecordData(event.mVoteInfoModels, event.mScoreResultModel, event.mWinResultModels));
+        mView.showRecordView(new RecordData(event.mVoteInfoModels, event.mScoreResultModel, event.mWinResultModels,event.mUserGameResultModels));
     }
 }

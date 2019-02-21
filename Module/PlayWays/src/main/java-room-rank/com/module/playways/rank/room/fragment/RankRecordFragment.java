@@ -184,7 +184,7 @@ public class RankRecordFragment extends BaseFragment implements IVoteView {
                         MyLog.d(TAG, " getVoteResult " + " scoreResultModel " + myScoreResultModel.toString());
                         MyLog.d(TAG, " getVoteResult " + " winResultModels " + winResultModels.toString());
 
-                        mRecordData = new RecordData(voteInfoModelList, myScoreResultModel, winResultModels);
+                        mRecordData = new RecordData(voteInfoModelList, myScoreResultModel, winResultModels,userGameResults);
                         toLoadSuccessState();
                     }
                 } else {
