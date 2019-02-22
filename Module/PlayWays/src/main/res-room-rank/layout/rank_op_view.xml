@@ -25,6 +25,7 @@
         android:layout_below="@+id/iv_burst"
         app:src_pressed_drawable="@drawable/guanzhong_anxiamie"
         app:src_unPressed_drawable="@drawable/guanzhong_miedeng"
+        app:src_unEnabled_drawable="@drawable/guanzhong_anxiamie"
         android:id="@+id/iv_turn_off"
         android:layout_width="@dimen/view_50_dp"
         android:layout_height="@dimen/view_53_dp"
