@@ -23,7 +23,7 @@
         android:layout_marginRight="@dimen/view_16_dp"
         android:layout_marginTop="@dimen/view_23_dp"
         android:layout_below="@+id/iv_burst"
-        app:src_pressed_drawable="@drawable/guanzhong_anxiamie"
+        app:src_pressed_drawable="@drawable/miedeng_anxia"
         app:src_unPressed_drawable="@drawable/guanzhong_miedeng"
         app:src_unEnabled_drawable="@drawable/guanzhong_anxiamie"
         android:id="@+id/iv_turn_off"
