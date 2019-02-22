@@ -36,8 +36,9 @@ public class UmengInit {
             Log.d(TAG, "UmengInit init 友盟初始化开始 " + U.getProcessName());
             UMConfigure.init(U.app(), "5bf40cc8f1f556f36200032b"
                     , U.getChannelUtils().getChannel(), UMConfigure.DEVICE_TYPE_PHONE, "34d3e8844e007050b8a968d974f1adee");
-//            UMConfigure.setLogEnabled(true);
             MobclickAgent.setScenarioType(U.app(), MobclickAgent.EScenarioType.E_UM_NORMAL);
+            //默认SDK对Activity页面进行自动统计，现在我们自己统计，所以需要把自动统计关掉
+            MobclickAgent.openActivityDurationTrack(false);
             UmengPush.pushInit();
             hasInited = true;
         }
