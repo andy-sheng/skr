@@ -24,7 +24,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 
-public class TopContainerView extends RelativeLayout {
+public class RankTopContainerView1 extends RelativeLayout {
     public final static String TAG = "TopContainerView";
     ExImageView mMoreBtn;
     ScoreProgressBarWithSvga mScoreProgressBar;
@@ -39,12 +39,12 @@ public class TopContainerView extends RelativeLayout {
 
     ScoreTipsView.Item mLastItem;
 
-    public TopContainerView(Context context) {
+    public RankTopContainerView1(Context context) {
         super(context);
         init();
     }
 
-    public TopContainerView(Context context, AttributeSet attrs) {
+    public RankTopContainerView1(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }

@@ -45,12 +45,10 @@ public class PkScoreTipMsgModel {
     public static List<PkScoreTipMsgModel> parse(List<PKScoreTipMsg> pkScoreTipMsgList){
         ArrayList<PkScoreTipMsgModel> pkScoreTipMsgModels = new ArrayList<>();
         if(pkScoreTipMsgList != null){
-            for (PKScoreTipMsg pkScoreTipMsg :
-                    pkScoreTipMsgList) {
+            for (PKScoreTipMsg pkScoreTipMsg : pkScoreTipMsgList) {
                 pkScoreTipMsgModels.add(parse(pkScoreTipMsg));
             }
         }
-
         return pkScoreTipMsgModels;
     }
 

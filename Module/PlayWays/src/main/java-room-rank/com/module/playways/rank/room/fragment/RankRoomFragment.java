@@ -57,8 +57,8 @@ import com.module.playways.rank.room.view.BottomContainerView;
 import com.module.playways.rank.room.view.IGameRuleView;
 import com.module.playways.rank.room.view.InputContainerView;
 import com.module.playways.rank.room.view.RankOpView;
-import com.module.playways.rank.room.view.RankTopContainerView;
-import com.module.playways.rank.room.view.TopContainerView;
+import com.module.playways.rank.room.view.RankTopContainerView2;
+import com.module.playways.rank.room.view.RankTopContainerView1;
 import com.module.playways.rank.room.view.TurnChangeCardView;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
@@ -131,7 +131,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     CommentView mCommentView;
 
-    RankTopContainerView mRankTopContainerView;
+    RankTopContainerView2 mRankTopContainerView;
 
     EnergySlotView mEnergySlotView;
 
@@ -572,7 +572,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         mRankTopContainerView = mRootView.findViewById(R.id.rank_top_view);
         mRankTopContainerView.setRoomData(mRoomData);
 
-        mRankTopContainerView.setListener(new TopContainerView.Listener() {
+        mRankTopContainerView.setListener(new RankTopContainerView1.Listener() {
             @Override
             public void closeBtnClick() {
                 quitGame();
@@ -943,6 +943,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         mManyLyricsView.setVisibility(View.GONE);
         mManyLyricsView.release();
         mVoiceScaleView.setVisibility(View.GONE);
+        mRankTopContainerView.onGameFinish();
         startGameEndAniamtion();
     }
 
@@ -959,8 +960,8 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     }
 
     @Override
-    public void updateScrollBarProgress(int volume) {
-
+    public void updateScrollBarProgress(int score) {
+        mRankTopContainerView.setScoreProgress(score);
     }
 
     @Override

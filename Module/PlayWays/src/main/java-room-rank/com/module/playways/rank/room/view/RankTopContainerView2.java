@@ -6,14 +6,17 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.module.playways.RoomData;
+import com.module.playways.rank.prepare.model.GameConfigModel;
+import com.module.playways.rank.prepare.model.PkScoreTipMsgModel;
+import com.module.playways.rank.prepare.model.ScoreTipTypeModel;
 import com.module.playways.rank.room.event.PkSomeOneBurstLightEvent;
 import com.module.playways.rank.room.event.PkSomeOneLightOffEvent;
 import com.module.playways.rank.room.score.bar.EnergySlotView;
+import com.module.playways.rank.room.score.bar.ScoreTipsView;
 import com.module.rank.R;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
@@ -22,7 +25,9 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-public class RankTopContainerView extends RelativeLayout {
+import java.util.List;
+
+public class RankTopContainerView2 extends RelativeLayout {
     public final static String TAG = "RankTopContainerView";
     static final int MAX_USER_NUM = 3;
     ExImageView mMoreBtn;
@@ -35,7 +40,10 @@ public class RankTopContainerView extends RelativeLayout {
     ExImageView mIvGameRole;
     DialogPlus mGameRoleDialog;
 
-    TopContainerView.Listener mListener;
+    RankTopContainerView1.Listener mListener;
+
+    ScoreTipsView.Item mLastItem;
+
     RoomData mRoomData;
 
     UserLightInfo mStatusArr[] = new UserLightInfo[MAX_USER_NUM];
@@ -50,17 +58,17 @@ public class RankTopContainerView extends RelativeLayout {
         BAO, MIE;
     }
 
-    public RankTopContainerView(Context context) {
+    public RankTopContainerView2(Context context) {
         super(context);
         init();
     }
 
-    public RankTopContainerView(Context context, AttributeSet attrs) {
+    public RankTopContainerView2(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public void setListener(TopContainerView.Listener l) {
+    public void setListener(RankTopContainerView1.Listener l) {
         mListener = l;
     }
 
@@ -191,7 +199,6 @@ public class RankTopContainerView extends RelativeLayout {
         mIndex = 0;
     }
 
-
     private void setLight(int index, LightState lightState) {
         switch (index) {
             case 1:
@@ -208,5 +215,70 @@ public class RankTopContainerView extends RelativeLayout {
 
     public EnergySlotView getEnergySlotView() {
         return mEnergySlotView;
+    }
+
+    public void onGameFinish() {
+        if (mMoreOpView != null) {
+            mMoreOpView.dismiss();
+        }
+    }
+
+    public void setScoreProgress(int progress) {
+        for (int i = 0; i < 1; i++) {
+            progress = (int) (Math.sqrt(progress) * 10);
+        }
+
+        GameConfigModel gameConfigModel = mRoomData.getGameConfigModel();
+        ScoreTipsView.Item item = new ScoreTipsView.Item();
+
+        if (gameConfigModel != null) {
+            List<PkScoreTipMsgModel> scoreTipMsgModelList = gameConfigModel.getPkScoreTipMsgModelList();
+            if (scoreTipMsgModelList != null) {
+                for (PkScoreTipMsgModel m : scoreTipMsgModelList) {
+                    if (progress >= m.getFromScore() && progress < m.getToScore()) {
+                        // 命中
+                        switch (m.getScoreTipTypeModel()) {
+                            case ST_UNKNOWN:
+                                break;
+                            case ST_TOO_BAD:
+                                item.setLevel(ScoreTipsView.Level.Bad);
+                                break;
+                            case ST_NOT_BAD:
+                                item.setLevel(ScoreTipsView.Level.Ok);
+                                break;
+                            case ST_VERY_GOOD:
+                                item.setLevel(ScoreTipsView.Level.Good);
+                                break;
+                            case ST_NICE_PERFECT:
+                                item.setLevel(ScoreTipsView.Level.Perfect);
+                                break;
+                        }
+                        break;
+                    }
+                }
+            }
+        } else {
+            if (progress >= 95) {
+                item.setLevel(ScoreTipsView.Level.Perfect);
+            } else if (progress >= 90) {
+                item.setLevel(ScoreTipsView.Level.Good);
+            } else if (progress >= 70) {
+                item.setLevel(ScoreTipsView.Level.Ok);
+            } else if (progress < 20) {
+                item.setLevel(ScoreTipsView.Level.Bad);
+            }
+        }
+        if (item.getLevel() != null) {
+            if (mLastItem != null && item.getLevel() == mLastItem.getLevel()) {
+                if (item.getLevel() == ScoreTipsView.Level.Bad) {
+                    item.setNum(1);
+                } else {
+                    item.setNum(mLastItem.getNum() + 1);
+                }
+
+            }
+            mLastItem = item;
+            ScoreTipsView.play(this, item);
+        }
     }
 }
