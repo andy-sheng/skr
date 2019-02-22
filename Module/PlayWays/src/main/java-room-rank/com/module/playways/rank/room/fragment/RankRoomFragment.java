@@ -966,8 +966,8 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     }
 
     @Override
-    public void updateScrollBarProgress(int score) {
-        mRankTopContainerView.setScoreProgress(score);
+    public void updateScrollBarProgress(int score,int curTotalScore,int lineNum){
+        mRankTopContainerView.setScoreProgress(score,curTotalScore,lineNum);
     }
 
     @Override
@@ -1020,7 +1020,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         MyLog.w(TAG, "drawLyric" + " fileNameHash=" + fileNameHash + " lyricsReader=" + lyricsReader);
         if (lyricsReader != null) {
             lyricsReader.setHash(fileNameHash);
-
             //自己
             if (mRoomData.getRealRoundInfo().getUserID()
                     == MyUserInfoManager.getInstance().getUid()) {
@@ -1040,23 +1039,22 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                 if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY && play) {
                     MyLog.w(TAG, "onEventMainThread " + "play");
                     mManyLyricsView.play(mPlayingSongModel.getBeginMs());
-                    postLyricEndEvent(lyricsReader);
+                    postLyricEndEvent(lyricsReader,true);
                     mVoiceScaleView.setVisibility(View.VISIBLE);
                     mVoiceScaleView.startWithData(lyricsReader.getLyricsLineInfoList(), mPlayingSongModel.getBeginMs());
                 }
             } else {
                 if (play) {
                     lyricsReader.cut(mPlayingSongModel.getRankLrcBeginT(), mPlayingSongModel.getRankLrcEndT());
-                    postLyricEndEvent(lyricsReader);
+                    postLyricEndEvent(lyricsReader,false);
                 }
-
                 mManyLyricsView.setVisibility(View.GONE);
                 mManyLyricsView.resetData();
             }
         }
     }
 
-    private void postLyricEndEvent(LyricsReader lyricsReader) {
+    private void postLyricEndEvent(LyricsReader lyricsReader,boolean isSelf) {
         RoundInfoModel now = mRoomData.getRealRoundInfo();
         if (now == null) {
             return;
@@ -1064,6 +1062,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         Map<Integer, LyricsLineInfo> lyricsLineInfos = lyricsReader.getLrcLineInfos();
         Iterator<Map.Entry<Integer, LyricsLineInfo>> it = lyricsLineInfos.entrySet().iterator();
         mUiHanlder.removeMessages(MSG_LYRIC_END_EVENT);
+        int eventNum = 0;
         while (it.hasNext()) {
             Map.Entry<Integer, LyricsLineInfo> entry = it.next();
             if (entry.getKey() == 0) {
@@ -1084,7 +1083,9 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             } else {
                 mUiHanlder.sendMessageDelayed(msg, entry.getValue().getEndTime() - mPlayingSongModel.getBeginMs());
             }
+            eventNum++;
         }
+        mRoomData.setSongLineNum(eventNum);
     }
 
     private void fetchLyricTask(SongModel songModel, boolean play) {
@@ -1102,6 +1103,8 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                 if (isSuccess) {
                     if (oldName.renameTo(newName)) {
                         MyLog.w(TAG, "已重命名");
+                        emitter.onNext(newName);
+                        emitter.onComplete();
                     } else {
                         MyLog.w(TAG, "Error");
                         emitter.onError(new Throwable("重命名错误"));
@@ -1109,9 +1112,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                 } else {
                     emitter.onError(new Throwable("下载失败"));
                 }
-
-                emitter.onNext(newName);
-                emitter.onComplete();
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

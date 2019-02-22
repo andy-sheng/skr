@@ -26,7 +26,7 @@ public class MachineScoreModel implements Serializable {
         mDataList = dataList;
     }
 
-    public int getAverageScore(){
+    public int getAverageScore() {
         return mAverageScore;
     }
 
@@ -34,7 +34,7 @@ public class MachineScoreModel implements Serializable {
         if (mTotalScore < 0) {
             int t = 0;
             for (MachineScoreItem machineScoreItem : mDataList) {
-                MyLog.d(TAG,"compute 行数:"+machineScoreItem.no+" 得分:"+machineScoreItem.score);
+                MyLog.d(TAG, "compute 行数:" + machineScoreItem.no + " 得分:" + machineScoreItem.score);
                 t += machineScoreItem.score;
             }
             mTotalScore = t;
@@ -43,7 +43,7 @@ public class MachineScoreModel implements Serializable {
             } else {
                 mAverageScore = 0;
             }
-            MyLog.d(TAG,"平均分:"+ mAverageScore);
+            MyLog.d(TAG, "平均分:" + mAverageScore);
         }
     }
 
@@ -86,9 +86,26 @@ public class MachineScoreModel implements Serializable {
         return null;
     }
 
+    public int tryGetTotalScoreByLine(int lineNo) {
+        int curTotal = 0;
+        for (int i = 0; i < mDataList.size(); i++) {
+            MachineScoreItem machineScoreItem = mDataList.get(i);
+            if (machineScoreItem.getNo() > lineNo) {
+                break;
+            } else {
+                curTotal += machineScoreItem.getScore();
+            }
+        }
+        return curTotal;
+    }
+
     public void reset() {
         mDataList.clear();
         mAverageScore = -1;
         mTotalScore = -1;
+    }
+
+    public int getScoreLineNum() {
+        return mDataList.size();
     }
 }

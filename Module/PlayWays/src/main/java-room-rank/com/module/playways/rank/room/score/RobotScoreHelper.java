@@ -161,6 +161,25 @@ public class RobotScoreHelper {
         }
     }
 
+    /**
+     * 得到<=lineNo所有的总分
+     *
+     * @param lineNo
+     * @return
+     */
+    public int tryGetTotalScoreByLine(int lineNo) {
+        return mRobotScoreModel.tryGetTotalScoreByLine(lineNo);
+    }
+
+    public int tryGetScoreLineNum() {
+        int linenum = mRobotScoreModel.getScoreLineNum();
+        if (linenum == 0) {
+            MyLog.d(TAG, "tryGetScoreLineNum 行数为0？？？？？why？？？");
+            return 1;
+        }
+        return linenum;
+    }
+
     public int getAverageScore() {
         mMachineScoreModel.compute();
         return mMachineScoreModel.getAverageScore();

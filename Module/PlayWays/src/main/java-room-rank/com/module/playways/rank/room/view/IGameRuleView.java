@@ -27,7 +27,7 @@ public interface IGameRuleView {
     //先显示，然后再播放
     void playLyric(SongModel songModel, boolean play);
 
-    void updateScrollBarProgress(int volume);
+    void updateScrollBarProgress(int score,int curTotalScore,int lineNum);
 
     // 显示演唱剩余时间倒计时
     void showLeftTime(long wholeTile);

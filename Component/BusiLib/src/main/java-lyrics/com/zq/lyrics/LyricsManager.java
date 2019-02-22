@@ -111,7 +111,6 @@ public class LyricsManager {
                     if (lrcFile != null) {
                         lyricsReader = new LyricsReader();
                         try {
-
                             lyricsReader.loadLrc(lrcFile);
                             mLyricsUtils.put(hash, lyricsReader);
                         } catch (Exception e) {

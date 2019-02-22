@@ -1,6 +1,7 @@
 package com.module.playways.rank.msg.event;
 
 import com.module.playways.rank.msg.BasePushInfo;
+import com.zq.live.proto.Room.MachineScore;
 
 public class MachineScoreEvent {
 
@@ -8,11 +9,16 @@ public class MachineScoreEvent {
     public int userId;
     public int lineNo;
     public int score;
+    public int totalScore;
+    public int lineNum;
 
-    public MachineScoreEvent(BasePushInfo mBasePushInfo, int userId, int lineNo, int score) {
+
+    public MachineScoreEvent(BasePushInfo mBasePushInfo, MachineScore machineScore) {
         this.mBasePushInfo = mBasePushInfo;
-        this.userId = userId;
-        this.lineNo = lineNo;
-        this.score = score;
+        this.userId = machineScore.getUserID();
+        this.lineNo = machineScore.getNo();
+        this.score = machineScore.getScore();
+        this.totalScore = machineScore.getCurScore();
+        this.lineNum = machineScore.getLineNum();
     }
 }

@@ -30,6 +30,10 @@ public final class MachineScore extends Message<MachineScore, MachineScore.Build
 
   public static final Integer DEFAULT_NO = 0;
 
+  public static final Integer DEFAULT_CURSCORE = 0;
+
+  public static final Integer DEFAULT_LINENUM = 0;
+
   /**
    * 演唱者
    */
@@ -66,17 +70,38 @@ public final class MachineScore extends Message<MachineScore, MachineScore.Build
   )
   private final Integer no;
 
-  public MachineScore(Integer userID, Integer itemID, Integer score, Integer no) {
-    this(userID, itemID, score, no, ByteString.EMPTY);
+  /**
+   * 当前分
+   */
+  @WireField(
+      tag = 5,
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+  )
+  private final Integer curScore;
+
+  /**
+   * 歌词行数 总分为 100*lineNum*Percent
+   */
+  @WireField(
+      tag = 6,
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+  )
+  private final Integer lineNum;
+
+  public MachineScore(Integer userID, Integer itemID, Integer score, Integer no, Integer curScore,
+      Integer lineNum) {
+    this(userID, itemID, score, no, curScore, lineNum, ByteString.EMPTY);
   }
 
-  public MachineScore(Integer userID, Integer itemID, Integer score, Integer no,
-      ByteString unknownFields) {
+  public MachineScore(Integer userID, Integer itemID, Integer score, Integer no, Integer curScore,
+      Integer lineNum, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
     this.itemID = itemID;
     this.score = score;
     this.no = no;
+    this.curScore = curScore;
+    this.lineNum = lineNum;
   }
 
   @Override
@@ -86,6 +111,8 @@ public final class MachineScore extends Message<MachineScore, MachineScore.Build
     builder.itemID = itemID;
     builder.score = score;
     builder.no = no;
+    builder.curScore = curScore;
+    builder.lineNum = lineNum;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -99,7 +126,9 @@ public final class MachineScore extends Message<MachineScore, MachineScore.Build
         && Internal.equals(userID, o.userID)
         && Internal.equals(itemID, o.itemID)
         && Internal.equals(score, o.score)
-        && Internal.equals(no, o.no);
+        && Internal.equals(no, o.no)
+        && Internal.equals(curScore, o.curScore)
+        && Internal.equals(lineNum, o.lineNum);
   }
 
   @Override
@@ -111,6 +140,8 @@ public final class MachineScore extends Message<MachineScore, MachineScore.Build
       result = result * 37 + (itemID != null ? itemID.hashCode() : 0);
       result = result * 37 + (score != null ? score.hashCode() : 0);
       result = result * 37 + (no != null ? no.hashCode() : 0);
+      result = result * 37 + (curScore != null ? curScore.hashCode() : 0);
+      result = result * 37 + (lineNum != null ? lineNum.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -123,6 +154,8 @@ public final class MachineScore extends Message<MachineScore, MachineScore.Build
     if (itemID != null) builder.append(", itemID=").append(itemID);
     if (score != null) builder.append(", score=").append(score);
     if (no != null) builder.append(", no=").append(no);
+    if (curScore != null) builder.append(", curScore=").append(curScore);
+    if (lineNum != null) builder.append(", lineNum=").append(lineNum);
     return builder.replace(0, 2, "MachineScore{").append('}').toString();
   }
 
@@ -177,6 +210,26 @@ public final class MachineScore extends Message<MachineScore, MachineScore.Build
   }
 
   /**
+   * 当前分
+   */
+  public Integer getCurScore() {
+    if(curScore==null){
+        return DEFAULT_CURSCORE;
+    }
+    return curScore;
+  }
+
+  /**
+   * 歌词行数 总分为 100*lineNum*Percent
+   */
+  public Integer getLineNum() {
+    if(lineNum==null){
+        return DEFAULT_LINENUM;
+    }
+    return lineNum;
+  }
+
+  /**
    * 演唱者
    */
   public boolean hasUserID() {
@@ -204,6 +257,20 @@ public final class MachineScore extends Message<MachineScore, MachineScore.Build
     return no!=null;
   }
 
+  /**
+   * 当前分
+   */
+  public boolean hasCurScore() {
+    return curScore!=null;
+  }
+
+  /**
+   * 歌词行数 总分为 100*lineNum*Percent
+   */
+  public boolean hasLineNum() {
+    return lineNum!=null;
+  }
+
   public static final class Builder extends Message.Builder<MachineScore, Builder> {
     private Integer userID;
 
@@ -212,6 +279,10 @@ public final class MachineScore extends Message<MachineScore, MachineScore.Build
     private Integer score;
 
     private Integer no;
+
+    private Integer curScore;
+
+    private Integer lineNum;
 
     public Builder() {
     }
@@ -248,9 +319,25 @@ public final class MachineScore extends Message<MachineScore, MachineScore.Build
       return this;
     }
 
+    /**
+     * 当前分
+     */
+    public Builder setCurScore(Integer curScore) {
+      this.curScore = curScore;
+      return this;
+    }
+
+    /**
+     * 歌词行数 总分为 100*lineNum*Percent
+     */
+    public Builder setLineNum(Integer lineNum) {
+      this.lineNum = lineNum;
+      return this;
+    }
+
     @Override
     public MachineScore build() {
-      return new MachineScore(userID, itemID, score, no, super.buildUnknownFields());
+      return new MachineScore(userID, itemID, score, no, curScore, lineNum, super.buildUnknownFields());
     }
   }
 
@@ -265,6 +352,8 @@ public final class MachineScore extends Message<MachineScore, MachineScore.Build
           + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.itemID)
           + ProtoAdapter.UINT32.encodedSizeWithTag(3, value.score)
           + ProtoAdapter.UINT32.encodedSizeWithTag(4, value.no)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(5, value.curScore)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(6, value.lineNum)
           + value.unknownFields().size();
     }
 
@@ -274,6 +363,8 @@ public final class MachineScore extends Message<MachineScore, MachineScore.Build
       ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.itemID);
       ProtoAdapter.UINT32.encodeWithTag(writer, 3, value.score);
       ProtoAdapter.UINT32.encodeWithTag(writer, 4, value.no);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 5, value.curScore);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 6, value.lineNum);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -287,6 +378,8 @@ public final class MachineScore extends Message<MachineScore, MachineScore.Build
           case 2: builder.setItemID(ProtoAdapter.UINT32.decode(reader)); break;
           case 3: builder.setScore(ProtoAdapter.UINT32.decode(reader)); break;
           case 4: builder.setNo(ProtoAdapter.UINT32.decode(reader)); break;
+          case 5: builder.setCurScore(ProtoAdapter.UINT32.decode(reader)); break;
+          case 6: builder.setLineNum(ProtoAdapter.UINT32.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

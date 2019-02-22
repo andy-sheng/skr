@@ -25,8 +25,6 @@ public class EnergySlotView extends View {
 
     AnimatorSet mAnimatorSet;
 
-    AnimatorListenerAdapter mAnimatorListenerAdapter;
-
     int mCur = 0;
     int mTarget;
 
@@ -58,7 +56,7 @@ public class EnergySlotView extends View {
         postDelayed(new Runnable() {
             @Override
             public void run() {
-                setTarget(100);
+                setTarget(100,null);
             }
         }, 500);
     }
@@ -95,11 +93,7 @@ public class EnergySlotView extends View {
         postInvalidate();
     }
 
-    public void setAnimatorListenerAdapter(AnimatorListenerAdapter animationEndListener){
-        mAnimatorListenerAdapter = animationEndListener;
-    }
-
-    public void setTarget(int target){
+    public void setTarget(int target,AnimatorListenerAdapter mAnimatorListenerAdapter){
         mTarget = target;
 
         if(mAnimatorSet != null && mAnimatorSet.isRunning()){

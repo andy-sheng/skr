@@ -1,5 +1,7 @@
 package com.module.playways.rank.room.view;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -61,6 +63,9 @@ public class RankTopContainerView2 extends RelativeLayout {
     public enum LightState {
         BAO, MIE;
     }
+
+    int mTotalScore;
+    int mCurScore;
 
     public RankTopContainerView2(Context context) {
         super(context);
@@ -199,6 +204,8 @@ public class RankTopContainerView2 extends RelativeLayout {
         setLight(mIndex, ul.mLightState);
         mStatusArr[mIndex] = ul;
         mIndex = (mIndex + 1) % MAX_USER_NUM;
+        mCurScore += mRoomData.getGameConfigModel().getpKBLightEnergyPercentage() * mTotalScore;
+        tryPlayProgressAnimation();
     }
 
     private void parseBurstEvent(int uid){
@@ -222,6 +229,9 @@ public class RankTopContainerView2 extends RelativeLayout {
         setLight(mIndex, ul.mLightState);
         mStatusArr[mIndex] = ul;
         mIndex = (mIndex + 1) % MAX_USER_NUM;
+
+        mCurScore -= mRoomData.getGameConfigModel().getpKMLightEnergyPercentage() * mTotalScore;
+        tryPlayProgressAnimation();
     }
 
     //轮次结束
@@ -229,8 +239,10 @@ public class RankTopContainerView2 extends RelativeLayout {
         mIvLeft.setImageDrawable(U.getDrawable(R.drawable.yanchang_xiaolian));
         mIvCenter.setImageDrawable(U.getDrawable(R.drawable.yanchang_xiaolian));
         mIvRignt.setImageDrawable(U.getDrawable(R.drawable.yanchang_xiaolian));
-        getEnergySlotView().setTarget(0);
+        mEnergySlotView.setTarget(0, null);
         mIndex = 0;
+        mCurScore = 0;
+        mTotalScore = -1;
     }
 
     private void setLight(int index, LightState lightState) {
@@ -257,11 +269,10 @@ public class RankTopContainerView2 extends RelativeLayout {
         }
     }
 
-    public void setScoreProgress(int progress) {
+    public void setScoreProgress(int score, int curTotalScore, int lineNum) {
         for (int i = 0; i < 1; i++) {
-            progress = (int) (Math.sqrt(progress) * 10);
+            score = (int) (Math.sqrt(score) * 10);
         }
-
         GameConfigModel gameConfigModel = mRoomData.getGameConfigModel();
         ScoreTipsView.Item item = new ScoreTipsView.Item();
 
@@ -269,7 +280,7 @@ public class RankTopContainerView2 extends RelativeLayout {
             List<PkScoreTipMsgModel> scoreTipMsgModelList = gameConfigModel.getPkScoreTipMsgModelList();
             if (scoreTipMsgModelList != null) {
                 for (PkScoreTipMsgModel m : scoreTipMsgModelList) {
-                    if (progress >= m.getFromScore() && progress < m.getToScore()) {
+                    if (score >= m.getFromScore() && score < m.getToScore()) {
                         // 命中
                         switch (m.getScoreTipTypeModel()) {
                             case ST_UNKNOWN:
@@ -291,14 +302,20 @@ public class RankTopContainerView2 extends RelativeLayout {
                     }
                 }
             }
+            // 总分是这个肯定没错
+            if (mTotalScore <= 0) {
+                mTotalScore = (int) (gameConfigModel.getpKFullEnergyPercentage() * 100 * lineNum);
+            }
+            mCurScore += score;
+            tryPlayProgressAnimation();
         } else {
-            if (progress >= 95) {
+            if (score >= 95) {
                 item.setLevel(ScoreTipsView.Level.Perfect);
-            } else if (progress >= 90) {
+            } else if (score >= 90) {
                 item.setLevel(ScoreTipsView.Level.Good);
-            } else if (progress >= 70) {
+            } else if (score >= 70) {
                 item.setLevel(ScoreTipsView.Level.Ok);
-            } else if (progress < 20) {
+            } else if (score < 20) {
                 item.setLevel(ScoreTipsView.Level.Bad);
             }
         }
@@ -309,10 +326,33 @@ public class RankTopContainerView2 extends RelativeLayout {
                 } else {
                     item.setNum(mLastItem.getNum() + 1);
                 }
-
             }
             mLastItem = item;
             ScoreTipsView.play(this, item);
+        }
+    }
+
+    void tryPlayProgressAnimation() {
+        MyLog.d(TAG, "tryPlayProgressAnimation mCurScore:" + mCurScore);
+
+        if (mCurScore < 0) {
+            mCurScore = 0;
+        }
+        if (mCurScore / mTotalScore >= 1) {
+            // 能量槽满了,要触发大动画了
+            mCurScore = mCurScore % mTotalScore;
+            int progress = mCurScore * 100 / mTotalScore;
+            mEnergySlotView.setTarget(0, new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    mEnergySlotView.setTarget(progress, null);
+                }
+            });
+        } else {
+            mCurScore = mCurScore % mTotalScore;
+            int progress = mCurScore * 100 / mTotalScore;
+            mEnergySlotView.setTarget(progress, null);
         }
     }
 }

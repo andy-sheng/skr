@@ -1262,6 +1262,8 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                             .setNo(machineScoreItem.getNo())
                             .setScore(machineScoreItem.getScore())
                             .setItemID(mRoomData.getSongModel().getItemID())
+                            .setCurScore(mRoomData.getCurSongTotalScore())
+                            .setLineNum(mRoomData.getSongLineNum())
                             .build()
                     )
                     .build();
@@ -1393,7 +1395,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                         mUiHandler.post(new Runnable() {
                             @Override
                             public void run() {
-                                mIGameRuleView.updateScrollBarProgress(score);
+                                mIGameRuleView.updateScrollBarProgress(score,mRobotScoreHelper.tryGetTotalScoreByLine(event.getLineNum()),mRobotScoreHelper.tryGetScoreLineNum());
                             }
                         });
                     }
@@ -1420,29 +1422,30 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         mLastLineNum = line;
 //        U.getToastUtil().showShort("score:" + score);
         MyLog.d(TAG, "onEvent" + " 得分=" + score);
-        mUiHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                mIGameRuleView.updateScrollBarProgress(score);
-            }
-        });
         MachineScoreItem machineScoreItem = new MachineScoreItem();
         machineScoreItem.setScore(score);
         long ts = EngineManager.getInstance().getAudioMixingCurrentPosition();
         machineScoreItem.setTs(ts);
         machineScoreItem.setNo(line);
+        mRoomData.setCurSongTotalScore(mRoomData.getCurSongTotalScore()+score);
         // 打分信息传输给其他人
         sendScoreToOthers(machineScoreItem);
         if (mRobotScoreHelper != null) {
             mRobotScoreHelper.add(machineScoreItem);
         }
+        mUiHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                mIGameRuleView.updateScrollBarProgress(score,mRoomData.getCurSongTotalScore(),mRoomData.getSongLineNum());
+            }
+        });
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(MachineScoreEvent event) {
         //收到其他人的机器打分消息，比较复杂，暂时简单点，轮次正确就直接展示
         if (RoomDataUtils.isThisUserRound(mRoomData.getRealRoundInfo(), event.userId)) {
-            mIGameRuleView.updateScrollBarProgress(event.score);
+            mIGameRuleView.updateScrollBarProgress(event.score,event.totalScore,event.lineNum);
         }
     }
 

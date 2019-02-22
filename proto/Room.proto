@@ -177,6 +177,8 @@ message MachineScore
     uint32 itemID = 2; // 演唱曲目
     uint32 score  = 3; // 机器分数
     uint32 no     = 4; // 对应截断后的歌词行号
+    uint32 curScore     = 5; // 当前分 不含爆灯灭灯
+    uint32 lineNum     = 6; // 歌词行数 总分为 100*lineNum*Percent
 }
 
 // 投票结果
@@ -495,7 +497,6 @@ message RoundAndGameOverMsg
 
     repeated VoteInfo voteInfo            = 4; //投票打分信息
     repeated UserScoreResult scoreResults = 5; //所有参与者的评分结果，应该使用这个结构
-
     repeated UserGameResult gameResults = 6; //游戏结果评分数据
 
     uint32 lastMLightUserID = 7; //最后一个灭灯的用户ID

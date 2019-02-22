@@ -87,6 +87,8 @@ public class RoomData implements Serializable {
 
     private int mLeftBaoLightTimes; //剩余爆灯次数
     private int mLeftMieLightTimes; //剩余灭灯次数
+    private int mSongLineNum;// 歌词行数
+    private int mCurSongTotalScore; // 歌曲部分演唱的累计总分
 
     public int getLeftBurstLightTimes() {
         return mLeftBaoLightTimes;
@@ -376,6 +378,21 @@ public class RoomData implements Serializable {
         }
     }
 
+    public void setSongLineNum(int songLineNum) {
+        mSongLineNum = songLineNum;
+    }
+
+    public int getSongLineNum() {
+        return mSongLineNum;
+    }
+
+    public int getCurSongTotalScore() {
+        return mCurSongTotalScore;
+    }
+
+    public void setCurSongTotalScore(int curSongTotalScore) {
+        mCurSongTotalScore = curSongTotalScore;
+    }
     @Override
     public String toString() {
         return "RoomData{" +
