@@ -132,7 +132,7 @@
                 android:layout_height="@dimen/view_28_dp"
                 android:layout_marginTop="@dimen/view_79_dp"
                 android:layout_toRightOf="@id/avatar_iv_three"
-                android:background="@drawable/zhanji_ping" />
+                android:background="@drawable/zhanji_xiaolian" />
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/third_result_tv"
@@ -152,6 +152,12 @@
             android:layout_width="@dimen/view_0_dp"
             android:layout_height="match_parent"
             android:layout_weight="1">
+
+            <com.component.busilib.view.BitmapTextView
+                android:id="@+id/pk_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true" />
 
         </RelativeLayout>
 

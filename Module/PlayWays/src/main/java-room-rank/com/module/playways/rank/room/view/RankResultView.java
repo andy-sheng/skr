@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 import com.common.view.ex.ExTextView;
+import com.component.busilib.view.BitmapTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.RoomData;
 import com.module.rank.R;
@@ -26,6 +27,7 @@ public class RankResultView extends RelativeLayout {
     SimpleDraweeView mAvatarIvThree;
     ExTextView mThirdResultTv;
     RelativeLayout mScoreArea;
+    BitmapTextView mPkScore;
 
     public RankResultView(Context context) {
         super(context);
@@ -57,6 +59,9 @@ public class RankResultView extends RelativeLayout {
         mAvatarIvThree = (SimpleDraweeView) findViewById(R.id.avatar_iv_three);
         mThirdResultTv = (ExTextView) findViewById(R.id.third_result_tv);
         mScoreArea = (RelativeLayout) findViewById(R.id.score_area);
+        mPkScore = (BitmapTextView) findViewById(R.id.pk_score);
+        mPkScore.setText("11.5");
+
     }
 
     //绑定数据
