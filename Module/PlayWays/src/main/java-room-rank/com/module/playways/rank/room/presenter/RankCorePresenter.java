@@ -59,8 +59,10 @@ import com.module.playways.rank.room.view.IGameRuleView;
 import com.module.playways.voice.activity.VoiceRoomActivity;
 import com.zq.live.proto.Common.ESex;
 import com.zq.live.proto.Common.UserInfo;
+import com.zq.live.proto.Room.BLightInfo;
 import com.zq.live.proto.Room.EMsgPosType;
 import com.zq.live.proto.Room.ERoomMsgType;
+import com.zq.live.proto.Room.MLightInfo;
 import com.zq.live.proto.Room.MachineScore;
 import com.zq.live.proto.Room.RoomMsg;
 import com.zq.lyrics.event.LrcEvent;
@@ -480,7 +482,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                     long syncStatusTimes = result.getData().getLong("syncStatusTimeMs");  //状态同步时的毫秒时间戳
                     long gameOverTimeMs = result.getData().getLong("gameOverTimeMs");  //游戏结束时间
                     List<OnlineInfoModel> onlineInfos = JSON.parseArray(result.getData().getString("onlineInfo"), OnlineInfoModel.class); //在线状态
-                    // TODO: 2019/2/21 这里需要把爆灯灭灯数据解析出来
+
                     RoundInfoModel currentInfo = JSON.parseObject(result.getData().getString("currentRound"), RoundInfoModel.class); //当前轮次信息
                     RoundInfoModel nextInfo = JSON.parseObject(result.getData().getString("nextRound"), RoundInfoModel.class); //下个轮次信息
 
@@ -1015,6 +1017,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
             BLightInfoModel bLightInfoModel = new BLightInfoModel();
             bLightInfoModel.setUserID(event.getpKBLightMsg().getUserID());
             bLightInfoModel.setTimeMs((int) event.getInfo().getTimeMs());
+            bLightInfoModel.setSeq(event.getpKBLightMsg().getRoundSeq());
 
             roundInfoModel.addBrustLightUid(true, bLightInfoModel);
         } else {
@@ -1036,6 +1039,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
             MLightInfoModel mLightInfoModel = new MLightInfoModel();
             mLightInfoModel.setUserID(event.getPKMLightMsg().getUserID());
             mLightInfoModel.setTimeMs((int) event.getInfo().getTimeMs());
+            mLightInfoModel.setSeq(event.getPKMLightMsg().getRoundSeq());
 
             roundInfoModel.addPkLightOffUid(true, mLightInfoModel);
         } else {
@@ -1328,7 +1332,8 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         msg = msg + ", nextInfo 是 " + (syncStatusEvent.nextInfo == null ? "null" : syncStatusEvent.nextInfo.getUserID() + "");
         msg = msg + ", timeMs" + syncStatusEvent.info.getTimeMs();
         MyLog.w(TAG, msg);
-        startSyncGameStateTask(sSyncStateTaskInterval);
+//        startSyncGameStateTask(sSyncStateTaskInterval);
+
         updatePlayerState(syncStatusEvent.gameOverTimeMs, syncStatusEvent.syncStatusTimes, syncStatusEvent.onlineInfos, syncStatusEvent.currentInfo, syncStatusEvent.nextInfo);
     }
 

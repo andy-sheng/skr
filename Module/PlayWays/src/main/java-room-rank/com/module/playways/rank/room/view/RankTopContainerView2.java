@@ -8,6 +8,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -161,77 +162,82 @@ public class RankTopContainerView2 extends RelativeLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(PkMyBurstSuccessEvent event) {
-        MyLog.d(TAG, "onEvent" + " event=" + event);
-        parseBurstEvent(event.roundInfo.getUserID());
+        MyLog.d(TAG, "PkMyBurstSuccessEvent onEvent" + " event=" + event);
+        parseBurstEvent((int) MyUserInfoManager.getInstance().getUid());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(PkMyLightOffSuccessEvent event) {
-        MyLog.d(TAG, "onEvent" + " event=" + event);
-        parseLightOffEvent(event.roundInfo.getUserID());
+        MyLog.d(TAG, "PkMyLightOffSuccessEvent onEvent" + " event=" + event);
+        parseLightOffEvent((int) MyUserInfoManager.getInstance().getUid());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(PkSomeOneBurstLightEvent event) {
-        MyLog.d(TAG, "PkSomeOneBurstLightEvent onEvent" + " 1");
-        parseBurstEvent(event.roundInfo.getUserID());
+        MyLog.d(TAG, "PkSomeOneBurstLightEvent onEvent uid " + event.uid);
+        parseBurstEvent(event.uid);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(PkSomeOneLightOffEvent event) {
         MyLog.d(TAG, "PkSomeOneLightOffEvent onEvent 1");
-        parseLightOffEvent(event.roundInfo.getUserID());
+        parseLightOffEvent(event.uid);
     }
 
     private void parseLightOffEvent(int uid){
-        for (int i = 0; i < mStatusArr.length & i < mIndex; i++) {
-            MyLog.d(TAG, "PkSomeOneLightOffEvent onEvent 2");
+        for (int i = 0; i < mStatusArr.length && i < mIndex; i++) {
+            MyLog.d(TAG, "parseLightOffEvent onEvent 2");
             UserLightInfo ul = mStatusArr[i];
             if (ul != null) {
-                MyLog.d(TAG, "PkSomeOneLightOffEvent onEvent 3");
+                MyLog.d(TAG, "parseLightOffEvent onEvent 3");
                 if (ul.mUserId == uid) {
                     ul.mLightState = LightState.MIE;
                     setLight(i, ul.mLightState);
-                    MyLog.d(TAG, "PkSomeOneLightOffEvent onEvent 4");
+                    MyLog.d(TAG, "parseLightOffEvent onEvent 4");
                     return;
                 }
             }
         }
-        MyLog.d(TAG, "PkSomeOneLightOffEvent onEvent 5");
+        MyLog.d(TAG, "parseLightOffEvent onEvent 5");
         UserLightInfo ul = new UserLightInfo();
         ul.mUserId = uid;
         ul.mLightState = LightState.MIE;
         setLight(mIndex, ul.mLightState);
         mStatusArr[mIndex] = ul;
+
         mIndex = (mIndex + 1) % MAX_USER_NUM;
         mCurScore += mRoomData.getGameConfigModel().getpKBLightEnergyPercentage() * mTotalScore;
         tryPlayProgressAnimation();
+
     }
 
     private void parseBurstEvent(int uid){
+
         for (int i = 0; i < mStatusArr.length && i < mIndex; i++) {
             UserLightInfo ul = mStatusArr[i];
-            MyLog.d(TAG, "PkSomeOneBurstLightEvent onEvent" + " 2");
+            MyLog.d(TAG, "parseBurstEvent onEvent" + " 2");
             if (ul != null) {
-                MyLog.d(TAG, "PkSomeOneBurstLightEvent onEvent" + " 3");
+                MyLog.d(TAG, "parseBurstEvent onEvent" + " 3");
                 if (ul.mUserId == uid) {
                     ul.mLightState = LightState.BAO;
-                    MyLog.d(TAG, "PkSomeOneBurstLightEvent onEvent" + " 4");
+                    MyLog.d(TAG, "parseBurstEvent onEvent" + " 4");
                     setLight(i, ul.mLightState);
                     return;
                 }
             }
         }
-        MyLog.d(TAG, " PkSomeOneBurstLightEvent onEvent" + " 5");
+        MyLog.d(TAG, " parseBurstEvent onEvent" + " 5");
         UserLightInfo ul = new UserLightInfo();
         ul.mUserId = uid;
         ul.mLightState = LightState.BAO;
         setLight(mIndex, ul.mLightState);
         mStatusArr[mIndex] = ul;
+
         mIndex = (mIndex + 1) % MAX_USER_NUM;
 
         mCurScore -= mRoomData.getGameConfigModel().getpKMLightEnergyPercentage() * mTotalScore;
         tryPlayProgressAnimation();
+
     }
 
     //轮次结束

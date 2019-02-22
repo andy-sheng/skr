@@ -66,10 +66,6 @@ public class RoundInfoModel implements Serializable {
      */
     private int overReason; // 结束的原因
 
-    private HashSet<BLightInfoModel> burstLightInfos = new HashSet<>();//已经爆灯的人, pk
-
-    private HashSet<MLightInfoModel> pklightOffInfos = new HashSet<>();  //已经灭灯的人, pk
-
     /* 一唱到底使用 */
     private int status = STATUS_INIT;// 轮次状态，在一唱到底中使用
     //0未知
@@ -267,12 +263,12 @@ public class RoundInfoModel implements Serializable {
         roundInfoModel.setSingEndMs(roundInfo.getSingEndMs());
         if (roundInfo.getBLightInfosList() != null) {
             for (BLightInfo bLightInfo : roundInfo.getBLightInfosList()) {
-                roundInfoModel.addBrustLightUid(false, BLightInfoModel.parse(bLightInfo));
+                roundInfoModel.addBrustLightUid(false, BLightInfoModel.parse(bLightInfo, roundInfo.getRoundSeq()));
             }
         }
         if (roundInfo.getMLightInfosList() != null) {
             for (MLightInfo mlightInfo : roundInfo.getMLightInfosList()) {
-                roundInfoModel.addPkLightOffUid(false, MLightInfoModel.parse(mlightInfo));
+                roundInfoModel.addPkLightOffUid(false, MLightInfoModel.parse(mlightInfo, roundInfo.getRoundSeq()));
             }
         }
         roundInfoModel.setOverReason(roundInfo.getOverReason().getValue());
@@ -308,8 +304,8 @@ public class RoundInfoModel implements Serializable {
      * 排位赛使用
      */
     public void addBrustLightUid(boolean notify, BLightInfoModel bLightInfoModel) {
-        if (!burstLightInfos.contains(bLightInfoModel)) {
-            burstLightInfos.add(bLightInfoModel);
+        if (!bLightInfos.contains(bLightInfoModel)) {
+            bLightInfos.add(bLightInfoModel);
             if (notify) {
                 PkSomeOneBurstLightEvent event = new PkSomeOneBurstLightEvent(bLightInfoModel.getUserID(), this);
                 EventBus.getDefault().post(event);
@@ -321,8 +317,8 @@ public class RoundInfoModel implements Serializable {
      * 排位赛使用
      */
     public void addPkLightOffUid(boolean notify, MLightInfoModel mLightInfoModel) {
-        if (!pklightOffInfos.contains(mLightInfoModel)) {
-            pklightOffInfos.add(mLightInfoModel);
+        if (!mLightInfos.contains(mLightInfoModel)) {
+            mLightInfos.add(mLightInfoModel);
             if (notify) {
                 PkSomeOneLightOffEvent event = new PkSomeOneLightOffEvent(mLightInfoModel.getUserID(), this);
                 EventBus.getDefault().post(event);
