@@ -12,9 +12,12 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.common.base.BaseFragment;
+import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.log.MyLog;
+import com.common.statistics.StatConstants;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.HttpUtils;
 import com.common.utils.U;
@@ -756,6 +759,10 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
                 .setPopAbove(false)
                 .setHasAnimation(true)
                 .build());
+
+        StatisticsAdapter.recordCountEvent(U.getCommonUtils().getGategory(StatConstants.CATEGORY_GRAB,
+                UserAccountManager.getInstance().isOldAccount()),
+                StatConstants.KEY_GAME_FINISH, null);
     }
 
     static class PendingPlaySongCardData {

@@ -24,6 +24,7 @@ import com.common.banner.BannerImageLoader;
 import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
+import com.common.core.account.UserAccountManager;
 import com.common.core.account.event.AccountEvent;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
@@ -35,6 +36,8 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.statistics.StatConstants;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -151,7 +154,7 @@ public class GameFragment extends BaseFragment {
         mRankDiffIcon = (ImageView) linearLayout.findViewById(R.id.rank_diff_icon);
         mRankDiffTv = (ExTextView) linearLayout.findViewById(R.id.rank_diff_tv);
         mSmartRefreshLayout = mRootView.findViewById(R.id.smart_refresh_layout);
-        mClassicsHeader = (ClassicsHeader)mRootView.findViewById(R.id.classics_header);
+        mClassicsHeader = (ClassicsHeader) mRootView.findViewById(R.id.classics_header);
         mPopupWindow = new PopupWindow(linearLayout);
         mPopupWindow.setOutsideTouchable(true);
 
@@ -179,6 +182,9 @@ public class GameFragment extends BaseFragment {
                 long tag = System.currentTimeMillis();
                 checkGameConf(1, tag, ivAthleticsPk);
                 clickAnimation(ivAthleticsPk, tag);
+                StatisticsAdapter.recordCountEvent(U.getCommonUtils().getGategory(StatConstants.CATEGORY_HOME,
+                        UserAccountManager.getInstance().isOldAccount()),
+                        StatConstants.KEY_RANK_CLICK, null);
             }
         });
 
@@ -188,6 +194,9 @@ public class GameFragment extends BaseFragment {
                 long tag = System.currentTimeMillis();
                 checkGameConf(3, tag, mIvGrabPk);
                 clickAnimation(mIvGrabPk, tag);
+                StatisticsAdapter.recordCountEvent(U.getCommonUtils().getGategory(StatConstants.CATEGORY_HOME,
+                        UserAccountManager.getInstance().isOldAccount()),
+                        StatConstants.KEY_GRAB_CLICK, null);
             }
         });
 

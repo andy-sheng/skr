@@ -7,9 +7,12 @@ import android.view.WindowManager;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.common.base.BaseActivity;
+import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
+import com.common.statistics.StatConstants;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.component.busilib.constans.GameModeType;
@@ -102,8 +105,10 @@ public class GrabRoomActivity extends BaseActivity {
                 FragmentUtils.newAddParamsBuilder(this, GrabRoomFragment.class)
                         .setAddToBackStack(false)
                         .addDataBeforeAdd(0, mRoomData)
-                        .build()
-        );
+                        .build());
+        StatisticsAdapter.recordCountEvent(U.getCommonUtils().getGategory(StatConstants.CATEGORY_GRAB,
+                UserAccountManager.getInstance().isOldAccount()),
+                StatConstants.KEY_GAME_START, null);
     }
 
     @Override

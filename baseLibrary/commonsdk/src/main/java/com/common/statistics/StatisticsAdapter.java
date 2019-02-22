@@ -3,6 +3,7 @@ package com.common.statistics;
 import android.app.Activity;
 import android.text.TextUtils;
 
+import com.common.log.MyLog;
 import com.xiaomi.mistatistic.sdk.MiStatInterface;
 
 import java.util.HashMap;

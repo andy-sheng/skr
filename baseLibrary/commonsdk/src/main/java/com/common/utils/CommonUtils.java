@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 通过U.getCommonUtils 获得
- *
+ * <p>
  * 一些实在不好分类的 utils 方法,放在这。
  */
 public class CommonUtils {
@@ -94,5 +94,9 @@ public class CommonUtils {
         final List<ResolveInfo> list = packageManager.queryIntentActivities(
                 intent, PackageManager.MATCH_DEFAULT_ONLY);
         return list.size() > 0;
+    }
+
+    public String getGategory(String category, boolean isOldAccount) {
+        return isOldAccount ? ("old_" + category) : ("new_" + category);
     }
 }

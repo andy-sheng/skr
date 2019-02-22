@@ -5,6 +5,9 @@ import android.graphics.BitmapFactory;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
+import com.common.core.account.UserAccountManager;
+import com.common.statistics.StatConstants;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
 import com.module.playways.grab.room.fragment.GrabRoomFragment;
 import com.module.playways.grab.room.listener.SVGAListener;
@@ -100,6 +103,9 @@ public class RoundOverCardView extends RelativeLayout {
 
     private void startNoneSing() {
         U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.nobodywants);
+        StatisticsAdapter.recordCountEvent(U.getCommonUtils().getGategory(StatConstants.CATEGORY_GRAB,
+                UserAccountManager.getInstance().isOldAccount()),
+                StatConstants.KEY_SONG_NO_ONE, null);
         mNoneSingSvga.setVisibility(VISIBLE);
         mNoneSingSvga.setLoops(1);
         SVGAParser parser = new SVGAParser(getContext());
@@ -156,6 +162,9 @@ public class RoundOverCardView extends RelativeLayout {
     // 优秀, 目前缺动画
     private void startPerfect() {
         U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.success);
+        StatisticsAdapter.recordCountEvent(U.getCommonUtils().getGategory(StatConstants.CATEGORY_GRAB,
+                UserAccountManager.getInstance().isOldAccount()),
+                StatConstants.KEY_SONG_SUCCESS, null);
         mSingResultSvga.setVisibility(VISIBLE);
         mSingResultSvga.setLoops(1);
         SVGAParser parser = new SVGAParser(getContext());
@@ -212,6 +221,9 @@ public class RoundOverCardView extends RelativeLayout {
     // 不够优秀，换字即可，目前缺动画
     private void startFailed(int model) {
         U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.lose);
+        StatisticsAdapter.recordCountEvent(U.getCommonUtils().getGategory(StatConstants.CATEGORY_GRAB,
+                UserAccountManager.getInstance().isOldAccount()),
+                StatConstants.KEY_SONG_FAIL, null);
         mSingResultSvga.setVisibility(VISIBLE);
         mSingResultSvga.setLoops(1);
         SVGAParser parser = new SVGAParser(getContext());

@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
+import com.common.core.account.UserAccountManager;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
@@ -27,6 +28,8 @@ import com.common.image.fresco.FrescoWorker;
 import com.common.image.fresco.IFrescoCallBack;
 import com.common.image.model.ImageFactory;
 import com.common.log.MyLog;
+import com.common.statistics.StatConstants;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.HttpUtils;
 import com.common.utils.SongResUtils;
@@ -905,6 +908,9 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                             ARouter.getInstance().build(RouterConstants.ACTIVITY_VOICEROOM)
                                     .withSerializable("voice_room_data", mRoomData)
                                     .navigation();
+                            StatisticsAdapter.recordCountEvent(U.getCommonUtils().getGategory(StatConstants.CATEGORY_RANK,
+                                    UserAccountManager.getInstance().isOldAccount()),
+                                    StatConstants.KEY_GAME_FINISH, null);
                             return;
                         }
                         RecordData recordData = mRoomData.getRecordData();

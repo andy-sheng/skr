@@ -9,12 +9,16 @@ import android.widget.RelativeLayout;
 import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
+import com.common.core.account.UserAccountManager;
 import com.common.log.MyLog;
+import com.common.statistics.StatConstants;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
+import com.component.busilib.constans.GameModeType;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.audioroom.AudioRoomActivity;
 import com.module.playways.PlayWaysActivity;
@@ -83,7 +87,6 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
         if (bundle != null) {
             mGameType = bundle.getInt(KEY_GAME_TYPE);
         }
-
 
         int songCardHeight = U.getDisplayUtils().getScreenHeight() - U.getDisplayUtils().dip2px(205);
         DEFAULT_COUNT = songCardHeight / U.getDisplayUtils().dip2px(72);
@@ -185,8 +188,8 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
 
                     U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), PrepareResFragment.class)
                             .setAddToBackStack(true)
-                            .setNotifyHideFragment(SongSelectFragment.class)
                             .setHasAnimation(true)
+                            .setNotifyHideFragment(SongSelectFragment.class)
                             .addDataBeforeAdd(0, songModel)
                             .addDataBeforeAdd(1, mGameType)
                             .setFragmentDataListener(new FragmentDataListener() {
@@ -224,6 +227,16 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
             mSwipeView.setAdapter(mSongCardSwipAdapter);
         }
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mGameType == GameModeType.GAME_MODE_CLASSIC_RANK) {
+            StatisticsAdapter.recordCountEvent(U.getCommonUtils().getGategory(StatConstants.CATEGORY_RANK,
+                    UserAccountManager.getInstance().isOldAccount()),
+                    StatConstants.KEY_SELECTSONG_EXPOSE, null);
+        }
     }
 
     // 返回上一张选歌卡片

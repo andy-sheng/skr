@@ -12,10 +12,13 @@ import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
+import com.common.core.account.UserAccountManager;
 import com.common.core.avatar.AvatarUtils;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
 import com.common.log.MyLog;
+import com.common.statistics.StatConstants;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.ActivityUtils;
 import com.common.utils.FragmentUtils;
 import com.common.utils.HttpUtils;
@@ -155,6 +158,9 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
                             .build(RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)
                             .withSerializable("prepare_data", mPrepareData)
                             .navigation();
+                    StatisticsAdapter.recordCountEvent(U.getCommonUtils().getGategory(StatConstants.CATEGORY_RANK,
+                            UserAccountManager.getInstance().isOldAccount()),
+                            StatConstants.KEY_MATCH_START, null);
                 });
 
         RxView.clicks(mIvBack)

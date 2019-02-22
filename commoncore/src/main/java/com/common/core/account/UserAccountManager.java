@@ -52,6 +52,8 @@ public class UserAccountManager {
 
     private boolean mHasloadAccountFromDB = false;//有没有尝试load过账号
 
+    private boolean isOldAccount = false; //是否是老账号
+
     private static class UserAccountManagerHolder {
         private static final UserAccountManager INSTANCE = new UserAccountManager();
     }
@@ -175,6 +177,27 @@ public class UserAccountManager {
         return "";
     }
 
+    // 是否是老账号
+    public boolean isOldAccount() {
+        if (isOldAccount) {
+            return true;
+        }
+
+        long firstLoginTime = U.getPreferenceUtils().getSettingLong("first_login_time", 0);
+        if (firstLoginTime == 0) {
+            return true;
+        } else {
+            long diff = U.getDateTimeUtils().getDayDiff(System.currentTimeMillis(), firstLoginTime);
+            if (diff <= 1) {
+                isOldAccount = false;
+                return false;
+            } else {
+                isOldAccount = true;
+                return true;
+            }
+        }
+    }
+
     // 手机登录
     public void loginByPhoneNum(final String phoneNum, String verifyCode) {
         UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
@@ -198,6 +221,9 @@ public class UserAccountManager {
                             Location location = JSON.parseObject(profileJO.getString("location"), Location.class);
 
                             boolean isFirstLogin = obj.getData().getBoolean("isFirstLogin");
+                            if (isFirstLogin) {
+                                U.getPreferenceUtils().setSettingLong("first_login_time", System.currentTimeMillis());
+                            }
 
                             // 设置个人信息
                             MyUserInfo myUserInfo = new MyUserInfo();
@@ -259,6 +285,9 @@ public class UserAccountManager {
                             Location location = JSON.parseObject(profileJO.getString("location"), Location.class);
 
                             boolean isFirstLogin = obj.getData().getBoolean("isFirstLogin");
+                            if (isFirstLogin) {
+                                U.getPreferenceUtils().setSettingLong("first_login_time", System.currentTimeMillis());
+                            }
 
                             // 设置个人信息
                             MyUserInfo myUserInfo = new MyUserInfo();

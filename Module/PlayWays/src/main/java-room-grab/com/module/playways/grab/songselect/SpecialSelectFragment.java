@@ -11,10 +11,13 @@ import android.widget.RelativeLayout;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
+import com.common.core.account.UserAccountManager;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.statistics.StatConstants;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
@@ -95,6 +98,9 @@ public class SpecialSelectFragment extends BaseFragment {
             public void onItemClicked(View view, int position, SpecialModel model) {
                 U.getSoundUtils().play(SpecialSelectFragment.TAG, R.raw.general_button, 500);
                 goMatchFragment(model.getTagID());
+                StatisticsAdapter.recordCountEvent(U.getCommonUtils().getGategory(StatConstants.CATEGORY_GRAB,
+                        UserAccountManager.getInstance().isOldAccount()),
+                        StatConstants.KEY_MATCH_START, null);
             }
         });
         mContentRv.setAdapter(mSpecialSelectAdapter);
@@ -145,6 +151,14 @@ public class SpecialSelectFragment extends BaseFragment {
                 }
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        StatisticsAdapter.recordCountEvent(U.getCommonUtils().getGategory(StatConstants.CATEGORY_GRAB,
+                UserAccountManager.getInstance().isOldAccount()),
+                StatConstants.KEY_SELECTSONG_EXPOSE, null);
     }
 
     private void getBackgroundMusic() {
