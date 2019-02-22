@@ -98,8 +98,7 @@ public class SpecialSelectFragment extends BaseFragment {
             public void onItemClicked(View view, int position, SpecialModel model) {
                 U.getSoundUtils().play(SpecialSelectFragment.TAG, R.raw.general_button, 500);
                 goMatchFragment(model.getTagID());
-                StatisticsAdapter.recordCountEvent(U.getCommonUtils().getGategory(StatConstants.CATEGORY_GRAB,
-                        UserAccountManager.getInstance().isOldAccount()),
+                StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
                         StatConstants.KEY_MATCH_START, null);
             }
         });
@@ -156,8 +155,7 @@ public class SpecialSelectFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        StatisticsAdapter.recordCountEvent(U.getCommonUtils().getGategory(StatConstants.CATEGORY_GRAB,
-                UserAccountManager.getInstance().isOldAccount()),
+        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
                 StatConstants.KEY_SELECTSONG_EXPOSE, null);
     }
 

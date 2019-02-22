@@ -95,8 +95,4 @@ public class CommonUtils {
                 intent, PackageManager.MATCH_DEFAULT_ONLY);
         return list.size() > 0;
     }
-
-    public String getGategory(String category, boolean isOldAccount) {
-        return isOldAccount ? ("old_" + category) : ("new_" + category);
-    }
 }

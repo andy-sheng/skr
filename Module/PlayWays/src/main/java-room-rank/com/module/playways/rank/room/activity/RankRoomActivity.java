@@ -57,8 +57,7 @@ public class RankRoomActivity extends BaseActivity {
                 .setAddToBackStack(false)
                 .addDataBeforeAdd(0, mRoomData)
                 .build());
-        StatisticsAdapter.recordCountEvent(U.getCommonUtils().getGategory(StatConstants.CATEGORY_RANK,
-                UserAccountManager.getInstance().isOldAccount()),
+        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK),
                 StatConstants.KEY_GAME_START, null);
     }
 

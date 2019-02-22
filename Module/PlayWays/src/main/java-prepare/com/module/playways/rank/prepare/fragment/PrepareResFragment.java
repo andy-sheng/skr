@@ -103,15 +103,15 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
         if (!TextUtils.isEmpty(mPrepareData.getSongModel().getCover())) {
             FrescoWorker.loadImage(mSongIcon,
                     ImageFactory.newHttpImage(mPrepareData.getSongModel().getCover())
-                    .setCornerRadius(U.getDisplayUtils().dip2px(6))
-                    .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                    .setBorderColor(Color.parseColor("#0C2275")).build());
+                            .setCornerRadius(U.getDisplayUtils().dip2px(6))
+                            .setBorderWidth(U.getDisplayUtils().dip2px(3))
+                            .setBorderColor(Color.parseColor("#0C2275")).build());
         } else {
             FrescoWorker.loadImage(mSongIcon,
                     ImageFactory.newResImage(R.drawable.xuanzegequ_wufengmian)
-                    .setCornerRadius(U.getDisplayUtils().dip2px(6))
-                    .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                    .setBorderColor(Color.parseColor("#0C2275")).build());
+                            .setCornerRadius(U.getDisplayUtils().dip2px(6))
+                            .setBorderWidth(U.getDisplayUtils().dip2px(3))
+                            .setBorderColor(Color.parseColor("#0C2275")).build());
         }
 
         mTvDuration.setText(U.getDateTimeUtils().formatTimeStringForDate(mPrepareData.getSongModel().getTotalMs(), "mm:ss"));
@@ -158,8 +158,7 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
                             .build(RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)
                             .withSerializable("prepare_data", mPrepareData)
                             .navigation();
-                    StatisticsAdapter.recordCountEvent(U.getCommonUtils().getGategory(StatConstants.CATEGORY_RANK,
-                            UserAccountManager.getInstance().isOldAccount()),
+                    StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK),
                             StatConstants.KEY_MATCH_START, null);
                 });
 

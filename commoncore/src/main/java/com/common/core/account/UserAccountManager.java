@@ -178,7 +178,7 @@ public class UserAccountManager {
     }
 
     // 是否是老账号
-    public boolean isOldAccount() {
+    private boolean isOldAccount() {
         if (isOldAccount) {
             return true;
         }
@@ -196,6 +196,10 @@ public class UserAccountManager {
                 return true;
             }
         }
+    }
+
+    public String getGategory(String category) {
+        return isOldAccount() ? ("old_" + category) : ("new_" + category);
     }
 
     // 手机登录

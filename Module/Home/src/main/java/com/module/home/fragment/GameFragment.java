@@ -182,8 +182,7 @@ public class GameFragment extends BaseFragment {
                 long tag = System.currentTimeMillis();
                 checkGameConf(1, tag, ivAthleticsPk);
                 clickAnimation(ivAthleticsPk, tag);
-                StatisticsAdapter.recordCountEvent(U.getCommonUtils().getGategory(StatConstants.CATEGORY_HOME,
-                        UserAccountManager.getInstance().isOldAccount()),
+                StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_HOME),
                         StatConstants.KEY_RANK_CLICK, null);
             }
         });
@@ -194,8 +193,7 @@ public class GameFragment extends BaseFragment {
                 long tag = System.currentTimeMillis();
                 checkGameConf(3, tag, mIvGrabPk);
                 clickAnimation(mIvGrabPk, tag);
-                StatisticsAdapter.recordCountEvent(U.getCommonUtils().getGategory(StatConstants.CATEGORY_HOME,
-                        UserAccountManager.getInstance().isOldAccount()),
+                StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_HOME),
                         StatConstants.KEY_GRAB_CLICK, null);
             }
         });

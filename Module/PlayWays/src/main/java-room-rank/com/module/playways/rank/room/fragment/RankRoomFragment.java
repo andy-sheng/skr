@@ -908,8 +908,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                             ARouter.getInstance().build(RouterConstants.ACTIVITY_VOICEROOM)
                                     .withSerializable("voice_room_data", mRoomData)
                                     .navigation();
-                            StatisticsAdapter.recordCountEvent(U.getCommonUtils().getGategory(StatConstants.CATEGORY_RANK,
-                                    UserAccountManager.getInstance().isOldAccount()),
+                            StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK),
                                     StatConstants.KEY_GAME_FINISH, null);
                             return;
                         }

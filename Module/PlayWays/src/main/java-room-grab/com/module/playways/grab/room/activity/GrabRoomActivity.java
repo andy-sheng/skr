@@ -51,7 +51,7 @@ public class GrabRoomActivity extends BaseActivity {
             mRoomData.setGameCreateTs(prepareData.getGameCreatMs());
             mRoomData.setGameStartTs(prepareData.getGameReadyInfo().getGameStartInfo().getStartTimeMs());
             mRoomData.setShiftTs(prepareData.getShiftTs());
-            if(mRoomData.getGameType() == GameModeType.GAME_MODE_GRAB){
+            if (mRoomData.getGameType() == GameModeType.GAME_MODE_GRAB) {
                 mRoomData.setTagId(prepareData.getTagId());
             }
 
@@ -106,8 +106,7 @@ public class GrabRoomActivity extends BaseActivity {
                         .setAddToBackStack(false)
                         .addDataBeforeAdd(0, mRoomData)
                         .build());
-        StatisticsAdapter.recordCountEvent(U.getCommonUtils().getGategory(StatConstants.CATEGORY_GRAB,
-                UserAccountManager.getInstance().isOldAccount()),
+        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
                 StatConstants.KEY_GAME_START, null);
     }
 

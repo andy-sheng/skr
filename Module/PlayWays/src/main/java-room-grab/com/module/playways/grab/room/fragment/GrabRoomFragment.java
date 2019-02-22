@@ -760,8 +760,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
                 .setHasAnimation(true)
                 .build());
 
-        StatisticsAdapter.recordCountEvent(U.getCommonUtils().getGategory(StatConstants.CATEGORY_GRAB,
-                UserAccountManager.getInstance().isOldAccount()),
+        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
                 StatConstants.KEY_GAME_FINISH, null);
     }
 

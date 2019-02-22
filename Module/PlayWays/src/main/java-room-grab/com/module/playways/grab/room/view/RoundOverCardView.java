@@ -103,8 +103,7 @@ public class RoundOverCardView extends RelativeLayout {
 
     private void startNoneSing() {
         U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.nobodywants);
-        StatisticsAdapter.recordCountEvent(U.getCommonUtils().getGategory(StatConstants.CATEGORY_GRAB,
-                UserAccountManager.getInstance().isOldAccount()),
+        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
                 StatConstants.KEY_SONG_NO_ONE, null);
         mNoneSingSvga.setVisibility(VISIBLE);
         mNoneSingSvga.setLoops(1);
@@ -162,8 +161,7 @@ public class RoundOverCardView extends RelativeLayout {
     // 优秀, 目前缺动画
     private void startPerfect() {
         U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.success);
-        StatisticsAdapter.recordCountEvent(U.getCommonUtils().getGategory(StatConstants.CATEGORY_GRAB,
-                UserAccountManager.getInstance().isOldAccount()),
+        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
                 StatConstants.KEY_SONG_SUCCESS, null);
         mSingResultSvga.setVisibility(VISIBLE);
         mSingResultSvga.setLoops(1);
@@ -221,8 +219,7 @@ public class RoundOverCardView extends RelativeLayout {
     // 不够优秀，换字即可，目前缺动画
     private void startFailed(int model) {
         U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.lose);
-        StatisticsAdapter.recordCountEvent(U.getCommonUtils().getGategory(StatConstants.CATEGORY_GRAB,
-                UserAccountManager.getInstance().isOldAccount()),
+        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
                 StatConstants.KEY_SONG_FAIL, null);
         mSingResultSvga.setVisibility(VISIBLE);
         mSingResultSvga.setLoops(1);
