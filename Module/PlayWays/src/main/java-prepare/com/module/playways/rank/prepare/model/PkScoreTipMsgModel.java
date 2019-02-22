@@ -1,10 +1,12 @@
 package com.module.playways.rank.prepare.model;
 
 import com.zq.live.proto.Room.PKScoreTipMsg;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PkScoreTipMsgModel {
+public class PkScoreTipMsgModel implements Serializable {
     ScoreTipTypeModel scoreTipTypeModel;
     String tipDesc;
     int fromScore;
