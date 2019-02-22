@@ -187,6 +187,7 @@ public class RankTopContainerView extends RelativeLayout {
         mIvLeft.setImageDrawable(U.getDrawable(R.drawable.yanchang_xiaolian));
         mIvCenter.setImageDrawable(U.getDrawable(R.drawable.yanchang_xiaolian));
         mIvRignt.setImageDrawable(U.getDrawable(R.drawable.yanchang_xiaolian));
+        getEnergySlotView().setTarget(0);
         mIndex = 0;
     }
 
