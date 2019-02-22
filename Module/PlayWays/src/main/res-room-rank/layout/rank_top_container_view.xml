@@ -75,9 +75,9 @@
         android:layout_alignTop="@+id/iv_led"
         android:layout_alignParentRight="true"
         android:layout_marginTop="@dimen/view_30_dp"
-        android:layout_marginRight="@dimen/view_12_dp"
+        android:layout_marginRight="@dimen/view_4_dp"
         android:paddingLeft="@dimen/view_12_dp"
-        android:paddingRight="@dimen/view_12_dp"
+        android:paddingRight="@dimen/view_6_dp"
         android:scaleType="centerInside"
         app:src_unPressed_drawable="@drawable/more" />
 
