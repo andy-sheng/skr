@@ -56,6 +56,9 @@ import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.header.BezierRadarHeader;
+import com.scwang.smartrefresh.layout.header.ClassicsHeader;
+import com.scwang.smartrefresh.layout.header.FalsifyHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -153,7 +156,7 @@ public class GameFragment extends BaseFragment {
         mSmartRefreshLayout.setEnableRefresh(true);
         mSmartRefreshLayout.setEnableLoadMore(false);
         mSmartRefreshLayout.setEnableLoadMoreWhenContentNotFull(true);
-        mSmartRefreshLayout.setEnableOverScrollDrag(false);
+        mSmartRefreshLayout.setEnableOverScrollDrag(true);
         mSmartRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {

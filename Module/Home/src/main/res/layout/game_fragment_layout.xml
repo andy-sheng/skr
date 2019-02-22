@@ -1,205 +1,176 @@
 <com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:levelView="http://schemas.android.com/apk/res-auto"
     android:id="@+id/smart_refresh_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#c0F9F4F1">
+    android:background="#c0F9F4F1"
+    app:srlEnablePreviewInEditMode="true">
 
-    <RelativeLayout
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fadingEdge="none"
+        android:overScrollMode="never"
+        android:scrollbars="none">
 
         <RelativeLayout
-            android:id="@+id/top_area"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/avatar_bg"
-                android:layout_width="@dimen/view_63_dp"
-                android:layout_height="@dimen/view_63_dp"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/shouye_touxiang"
-                android:visibility="gone" />
-
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/avatar_iv"
-                android:layout_width="@dimen/view_60_dp"
-                android:layout_height="@dimen/view_60_dp"
-                android:layout_alignLeft="@id/avatar_bg"
-                android:layout_alignTop="@+id/avatar_bg"
-                android:visibility="gone" />
-
-            <com.common.view.ex.ExTextView
-                android:id="@+id/name_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/avatar_bg"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/view_1_dp"
-                android:textColor="#0C2275"
-                android:textSize="@dimen/textsize_20_dp"
-                android:textStyle="bold"
-                android:visibility="gone" />
+            android:layout_height="match_parent">
 
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/name_tv"
-                android:layout_alignBottom="@+id/name_tv"
-                android:layout_marginRight="@dimen/view_5_dp"
-                android:layout_toRightOf="@id/name_tv"
-                android:visibility="gone">
-
-                <ImageView
-                    android:id="@+id/main_rank_iv"
-                    android:layout_width="@dimen/view_30_dp"
-                    android:layout_height="@dimen/view_27_dp" />
-
-                <ImageView
-                    android:id="@+id/sub_rank_iv"
-                    android:layout_width="@dimen/view_5_dp"
-                    android:layout_height="@dimen/view_5_dp"
-                    android:layout_alignBottom="@id/main_rank_iv"
-                    android:layout_centerHorizontal="true" />
-
-            </RelativeLayout>
-
-            <com.module.home.widget.UserInfoTitleView
-                android:id="@+id/user_info_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true">
-            </com.module.home.widget.UserInfoTitleView>
-
-            <RelativeLayout
-                android:id="@+id/rank_area"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/view_35_dp"
-                android:layout_below="@id/user_info_title"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/view_3_dp"
-                android:background="@drawable/mingci_dianjiu">
-
-                <com.common.view.ex.ExImageView
-                    android:id="@+id/medal_iv"
-                    android:layout_width="@dimen/view_28_dp"
-                    android:layout_height="@dimen/view_30_dp"
-                    android:layout_marginLeft="@dimen/view_22_dp"
-                    android:layout_marginTop="@dimen/view_6_dp" />
-
-                <com.common.view.ex.ExTextView
-                    android:id="@+id/rank_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/view_6_dp"
-                    android:layout_marginTop="@dimen/view_11_dp"
-                    android:layout_toRightOf="@id/medal_iv"
-                    android:textColor="#0C2275"
-                    android:textSize="@dimen/textsize_13_dp" />
-
-                <com.common.view.ex.ExImageView
-                    android:id="@+id/rank_diff_iv"
-                    android:layout_width="@dimen/view_8_dp"
-                    android:layout_height="@dimen/view_10_dp"
-                    android:layout_marginLeft="@dimen/view_3_dp"
-                    android:layout_marginTop="@dimen/view_15_dp"
-                    android:layout_toRightOf="@id/rank_text" />
-
-                <com.common.view.ex.ExImageView
-                    android:layout_width="@dimen/view_7_dp"
-                    android:layout_height="@dimen/view_8_dp"
-                    android:layout_marginLeft="@dimen/view_9_dp"
-                    android:layout_marginTop="@dimen/view_16_dp"
-                    android:layout_marginRight="@dimen/view_24_dp"
-                    android:layout_toRightOf="@id/rank_diff_iv"
-                    android:background="@drawable/gengduo_btn" />
-
-            </RelativeLayout>
-
-        </RelativeLayout>
-
-        <com.youth.banner.Banner
-            android:id="@+id/banner_view"
-            android:layout_width="match_parent"
-            android:layout_height="145dp"
-            android:layout_below="@+id/top_area"
-            android:layout_marginLeft="@dimen/view_13_dp"
-            android:layout_marginTop="@dimen/view_28_dp"
-            android:layout_marginRight="@dimen/view_13_dp"
-            android:visibility="visible"
-            app:banner_layout="@layout/game_banner_layout"
-            app:banner_space="16dp"
-            app:image_scale_type="fit_xy"
-            app:indicator_drawable_unselected="@drawable/indicator_unselected"
-            app:indicator_drawable_selected="@drawable/indicator_selected"
-            app:indicator_height="@dimen/view_8_dp"
-            app:indicator_margin="@dimen/view_5_dp"
-            app:indicator_width="@dimen/view_8_dp" />
-
-        <android.support.v4.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/banner_view"
-            android:fadingEdge="none"
-            android:overScrollMode="never"
-            android:scrollbars="none">
-
-            <RelativeLayout
+                android:id="@+id/top_area"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/view_13_dp"
-                android:layout_marginRight="@dimen/view_13_dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/view_17_dp"
-                    android:orientation="horizontal">
-
-                    <com.common.view.ex.ExImageView
-                        android:id="@+id/iv_athletics_pk"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:adjustViewBounds="true"
-                        android:src="@drawable/btn_paiweisai_shouye_top_normal" />
-
-                    <com.common.view.ex.ExImageView
-                        android:id="@+id/iv_grab_game"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_weight="1"
-                        android:adjustViewBounds="true"
-                        android:src="@drawable/btn_yule_shouye_down_normal" />
-                </LinearLayout>
+                android:layout_height="wrap_content">
 
                 <ImageView
-                    android:layout_width="@dimen/view_100_dp"
-                    android:layout_height="@dimen/view_85_dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginTop="@dimen/view_41_dp"
-                    android:layout_marginRight="@dimen/view_9_dp"
+                    android:id="@+id/avatar_bg"
+                    android:layout_width="@dimen/view_63_dp"
+                    android:layout_height="@dimen/view_63_dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/shouye_touxiang"
                     android:visibility="gone" />
 
-                <com.zq.level.view.NormalLevelView
-                    android:id="@+id/level_view"
-                    android:layout_width="@dimen/view_100_dp"
-                    android:layout_height="@dimen/view_86_dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginTop="@dimen/view_30_dp"
-                    android:layout_marginRight="@dimen/view_9_dp"
-                    android:visibility="gone"
-                    levelView:largeStar="@dimen/view_16_dp"
-                    levelView:mainHeight="@dimen/view_68_dp"
-                    levelView:mainWidth="@dimen/view_78_dp"
-                    levelView:normalStar="@dimen/view_16_dp"
-                    levelView:starTotalWidth="@dimen/view_100_dp"
-                    levelView:subHeight="@dimen/view_13_dp"
-                    levelView:subWidth="@dimen/view_13_dp"></com.zq.level.view.NormalLevelView>
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/avatar_iv"
+                    android:layout_width="@dimen/view_60_dp"
+                    android:layout_height="@dimen/view_60_dp"
+                    android:layout_alignLeft="@id/avatar_bg"
+                    android:layout_alignTop="@+id/avatar_bg"
+                    android:visibility="gone" />
+
+                <com.common.view.ex.ExTextView
+                    android:id="@+id/name_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/avatar_bg"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/view_1_dp"
+                    android:textColor="#0C2275"
+                    android:textSize="@dimen/textsize_20_dp"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/name_tv"
+                    android:layout_alignBottom="@+id/name_tv"
+                    android:layout_marginRight="@dimen/view_5_dp"
+                    android:layout_toRightOf="@id/name_tv"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/main_rank_iv"
+                        android:layout_width="@dimen/view_30_dp"
+                        android:layout_height="@dimen/view_27_dp" />
+
+                    <ImageView
+                        android:id="@+id/sub_rank_iv"
+                        android:layout_width="@dimen/view_5_dp"
+                        android:layout_height="@dimen/view_5_dp"
+                        android:layout_alignBottom="@id/main_rank_iv"
+                        android:layout_centerHorizontal="true" />
+
+                </RelativeLayout>
+
+                <com.module.home.widget.UserInfoTitleView
+                    android:id="@+id/user_info_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"></com.module.home.widget.UserInfoTitleView>
+
+                <RelativeLayout
+                    android:id="@+id/rank_area"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/view_35_dp"
+                    android:layout_below="@id/user_info_title"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/view_3_dp"
+                    android:background="@drawable/mingci_dianjiu">
+
+                    <com.common.view.ex.ExImageView
+                        android:id="@+id/medal_iv"
+                        android:layout_width="@dimen/view_28_dp"
+                        android:layout_height="@dimen/view_30_dp"
+                        android:layout_marginLeft="@dimen/view_22_dp"
+                        android:layout_marginTop="@dimen/view_6_dp" />
+
+                    <com.common.view.ex.ExTextView
+                        android:id="@+id/rank_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/view_6_dp"
+                        android:layout_marginTop="@dimen/view_11_dp"
+                        android:layout_toRightOf="@id/medal_iv"
+                        android:textColor="#0C2275"
+                        android:textSize="@dimen/textsize_13_dp" />
+
+                    <com.common.view.ex.ExImageView
+                        android:id="@+id/rank_diff_iv"
+                        android:layout_width="@dimen/view_8_dp"
+                        android:layout_height="@dimen/view_10_dp"
+                        android:layout_marginLeft="@dimen/view_3_dp"
+                        android:layout_marginTop="@dimen/view_15_dp"
+                        android:layout_toRightOf="@id/rank_text" />
+
+                    <com.common.view.ex.ExImageView
+                        android:layout_width="@dimen/view_7_dp"
+                        android:layout_height="@dimen/view_8_dp"
+                        android:layout_marginLeft="@dimen/view_9_dp"
+                        android:layout_marginTop="@dimen/view_16_dp"
+                        android:layout_marginRight="@dimen/view_24_dp"
+                        android:layout_toRightOf="@id/rank_diff_iv"
+                        android:background="@drawable/gengduo_btn" />
+
+                </RelativeLayout>
+
             </RelativeLayout>
-        </android.support.v4.widget.NestedScrollView>
-    </RelativeLayout>
+
+            <com.youth.banner.Banner
+                android:id="@+id/banner_view"
+                android:layout_width="match_parent"
+                android:layout_height="145dp"
+                android:layout_below="@+id/top_area"
+                android:layout_marginLeft="@dimen/view_13_dp"
+                android:layout_marginTop="@dimen/view_28_dp"
+                android:layout_marginRight="@dimen/view_13_dp"
+                android:visibility="visible"
+                app:banner_layout="@layout/game_banner_layout"
+                app:banner_space="16dp"
+                app:image_scale_type="fit_xy"
+                app:indicator_drawable_selected="@drawable/indicator_selected"
+                app:indicator_drawable_unselected="@drawable/indicator_unselected"
+                app:indicator_height="@dimen/view_8_dp"
+                app:indicator_margin="@dimen/view_5_dp"
+                app:indicator_width="@dimen/view_8_dp" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/banner_view"
+                android:layout_marginLeft="@dimen/view_13_dp"
+                android:layout_marginTop="@dimen/view_17_dp"
+                android:layout_marginRight="@dimen/view_13_dp"
+                android:orientation="horizontal">
+
+                <com.common.view.ex.ExImageView
+                    android:id="@+id/iv_athletics_pk"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/btn_paiweisai_shouye_top_normal" />
+
+                <com.common.view.ex.ExImageView
+                    android:id="@+id/iv_grab_game"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/btn_yule_shouye_down_normal" />
+            </LinearLayout>
+        </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
 </com.scwang.smartrefresh.layout.SmartRefreshLayout>
