@@ -22,9 +22,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 public class RankTopContainerView extends RelativeLayout {
     public final static String TAG = "RankTopContainerView";
     static final int MAX_USER_NUM = 3;

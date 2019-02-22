@@ -35,21 +35,21 @@
         android:layout_marginRight="@dimen/view_11_dp">
 
         <com.common.view.ex.ExImageView
-            android:src="@drawable/yanchang_mie"
+
             android:id="@+id/iv_left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true" />
 
         <com.common.view.ex.ExImageView
-            android:src="@drawable/yanchang_mie"
+
             android:id="@+id/iv_center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true" />
 
         <com.common.view.ex.ExImageView
-            android:src="@drawable/yanchang_bao"
+
             android:id="@+id/iv_rignt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
