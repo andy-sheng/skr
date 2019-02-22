@@ -26,7 +26,8 @@ public class EventHelper {
                     , MyUserInfoManager.getInstance().getAvatar()
                     , ESex.SX_FEMALE
                     , ""
-                    , false);
+                    , false
+                    , 0);
 
             basePushInfo.setSender(userInfo);
             EventBus.getDefault().post(new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text));
