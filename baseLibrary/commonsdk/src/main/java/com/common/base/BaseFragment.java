@@ -292,6 +292,7 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
     public void onDestroyView() {
         MyLog.w(TAG, "onDestroyView");
         super.onDestroyView();
+        fragmentOnCreated = false;
     }
 
     @CallSuper
