@@ -1,6 +1,6 @@
 package com.module.playways.rank.room.model;
 
-import com.zq.live.proto.Room.MlightInfo;
+import com.zq.live.proto.Room.MLightInfo;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -41,10 +41,10 @@ public class MLightInfoModel implements Serializable {
         this.userID = userID;
     }
 
-    public static List<MLightInfoModel> parse(List<MlightInfo> mLightInfoList) {
+    public static List<MLightInfoModel> parse(List<MLightInfo> mLightInfoList) {
         ArrayList<MLightInfoModel> mLightInfoModels = new ArrayList<>();
         if (mLightInfoList != null) {
-            for (MlightInfo mlightInfo :
+            for (MLightInfo mlightInfo :
                     mLightInfoList) {
                 mLightInfoModels.add(MLightInfoModel.parse(mlightInfo));
             }
@@ -53,7 +53,7 @@ public class MLightInfoModel implements Serializable {
         return mLightInfoModels;
     }
 
-    public static MLightInfoModel parse(MlightInfo mlightInfo) {
+    public static MLightInfoModel parse(MLightInfo mlightInfo) {
         MLightInfoModel mLightInfoModel = new MLightInfoModel();
         mLightInfoModel.setProcess(mlightInfo.getProcess());
         mLightInfoModel.setUserID(mlightInfo.getUserID());

@@ -162,7 +162,7 @@ public class RankOpView extends RelativeLayout {
                         public void onNext(Integer integer) {
                             integer = mLightOffDelayTime - integer;
                             if (integer == 0) {
-                                if (mRoomData.getLeftBurstLightTimes() > 0) {
+                                if (mRoomData.getLeftLightOffTimes() > 0) {
                                     mIvTurnOff.setVisibility(VISIBLE);
                                 }
 

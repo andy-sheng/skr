@@ -31,6 +31,8 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
 
   public static final Integer DEFAULT_EXITUSERID = 0;
 
+  public static final Integer DEFAULT_LASTMLIGHTUSERID = 0;
+
   /**
    * 轮次结束的毫秒时间戳
    */
@@ -88,15 +90,24 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
   )
   private final List<UserGameResult> gameResults;
 
+  /**
+   * 最后一个灭灯的用户ID
+   */
+  @WireField(
+      tag = 7,
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+  )
+  private final Integer lastMLightUserID;
+
   public RoundAndGameOverMsg(Long roundOverTimeMs, RoundInfo currentRound, Integer exitUserID,
-      List<VoteInfo> voteInfo, List<UserScoreResult> scoreResults,
-      List<UserGameResult> gameResults) {
-    this(roundOverTimeMs, currentRound, exitUserID, voteInfo, scoreResults, gameResults, ByteString.EMPTY);
+      List<VoteInfo> voteInfo, List<UserScoreResult> scoreResults, List<UserGameResult> gameResults,
+      Integer lastMLightUserID) {
+    this(roundOverTimeMs, currentRound, exitUserID, voteInfo, scoreResults, gameResults, lastMLightUserID, ByteString.EMPTY);
   }
 
   public RoundAndGameOverMsg(Long roundOverTimeMs, RoundInfo currentRound, Integer exitUserID,
       List<VoteInfo> voteInfo, List<UserScoreResult> scoreResults, List<UserGameResult> gameResults,
-      ByteString unknownFields) {
+      Integer lastMLightUserID, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.roundOverTimeMs = roundOverTimeMs;
     this.currentRound = currentRound;
@@ -104,6 +115,7 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
     this.voteInfo = Internal.immutableCopyOf("voteInfo", voteInfo);
     this.scoreResults = Internal.immutableCopyOf("scoreResults", scoreResults);
     this.gameResults = Internal.immutableCopyOf("gameResults", gameResults);
+    this.lastMLightUserID = lastMLightUserID;
   }
 
   @Override
@@ -115,6 +127,7 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
     builder.voteInfo = Internal.copyOf("voteInfo", voteInfo);
     builder.scoreResults = Internal.copyOf("scoreResults", scoreResults);
     builder.gameResults = Internal.copyOf("gameResults", gameResults);
+    builder.lastMLightUserID = lastMLightUserID;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -130,7 +143,8 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
         && Internal.equals(exitUserID, o.exitUserID)
         && voteInfo.equals(o.voteInfo)
         && scoreResults.equals(o.scoreResults)
-        && gameResults.equals(o.gameResults);
+        && gameResults.equals(o.gameResults)
+        && Internal.equals(lastMLightUserID, o.lastMLightUserID);
   }
 
   @Override
@@ -144,6 +158,7 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
       result = result * 37 + voteInfo.hashCode();
       result = result * 37 + scoreResults.hashCode();
       result = result * 37 + gameResults.hashCode();
+      result = result * 37 + (lastMLightUserID != null ? lastMLightUserID.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -158,6 +173,7 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
     if (!voteInfo.isEmpty()) builder.append(", voteInfo=").append(voteInfo);
     if (!scoreResults.isEmpty()) builder.append(", scoreResults=").append(scoreResults);
     if (!gameResults.isEmpty()) builder.append(", gameResults=").append(gameResults);
+    if (lastMLightUserID != null) builder.append(", lastMLightUserID=").append(lastMLightUserID);
     return builder.replace(0, 2, "RoundAndGameOverMsg{").append('}').toString();
   }
 
@@ -232,6 +248,16 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
   }
 
   /**
+   * 最后一个灭灯的用户ID
+   */
+  public Integer getLastMLightUserID() {
+    if(lastMLightUserID==null){
+        return DEFAULT_LASTMLIGHTUSERID;
+    }
+    return lastMLightUserID;
+  }
+
+  /**
    * 轮次结束的毫秒时间戳
    */
   public boolean hasRoundOverTimeMs() {
@@ -273,6 +299,13 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
     return gameResults!=null;
   }
 
+  /**
+   * 最后一个灭灯的用户ID
+   */
+  public boolean hasLastMLightUserID() {
+    return lastMLightUserID!=null;
+  }
+
   public static final class Builder extends Message.Builder<RoundAndGameOverMsg, Builder> {
     private Long roundOverTimeMs;
 
@@ -285,6 +318,8 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
     private List<UserScoreResult> scoreResults;
 
     private List<UserGameResult> gameResults;
+
+    private Integer lastMLightUserID;
 
     public Builder() {
       voteInfo = Internal.newMutableList();
@@ -343,9 +378,17 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
       return this;
     }
 
+    /**
+     * 最后一个灭灯的用户ID
+     */
+    public Builder setLastMLightUserID(Integer lastMLightUserID) {
+      this.lastMLightUserID = lastMLightUserID;
+      return this;
+    }
+
     @Override
     public RoundAndGameOverMsg build() {
-      return new RoundAndGameOverMsg(roundOverTimeMs, currentRound, exitUserID, voteInfo, scoreResults, gameResults, super.buildUnknownFields());
+      return new RoundAndGameOverMsg(roundOverTimeMs, currentRound, exitUserID, voteInfo, scoreResults, gameResults, lastMLightUserID, super.buildUnknownFields());
     }
   }
 
@@ -362,6 +405,7 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
           + VoteInfo.ADAPTER.asRepeated().encodedSizeWithTag(4, value.voteInfo)
           + UserScoreResult.ADAPTER.asRepeated().encodedSizeWithTag(5, value.scoreResults)
           + UserGameResult.ADAPTER.asRepeated().encodedSizeWithTag(6, value.gameResults)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(7, value.lastMLightUserID)
           + value.unknownFields().size();
     }
 
@@ -373,6 +417,7 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
       VoteInfo.ADAPTER.asRepeated().encodeWithTag(writer, 4, value.voteInfo);
       UserScoreResult.ADAPTER.asRepeated().encodeWithTag(writer, 5, value.scoreResults);
       UserGameResult.ADAPTER.asRepeated().encodeWithTag(writer, 6, value.gameResults);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 7, value.lastMLightUserID);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -388,6 +433,7 @@ public final class RoundAndGameOverMsg extends Message<RoundAndGameOverMsg, Roun
           case 4: builder.voteInfo.add(VoteInfo.ADAPTER.decode(reader)); break;
           case 5: builder.scoreResults.add(UserScoreResult.ADAPTER.decode(reader)); break;
           case 6: builder.gameResults.add(UserGameResult.ADAPTER.decode(reader)); break;
+          case 7: builder.setLastMLightUserID(ProtoAdapter.UINT32.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

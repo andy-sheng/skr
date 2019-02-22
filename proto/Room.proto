@@ -384,7 +384,7 @@ message RoundInfo
     uint32 singEndMs   = 5; //演唱结束相对时间（相对于startTimeMs时间）
 
     repeated BLightInfo bLightInfos = 6; //爆灯列表
-    repeated MlightInfo mLightInfos = 7; //灭灯列表
+    repeated MLightInfo mLightInfos = 7; //灭灯列表
     ERoundOverReason overReason     = 8; //结束原因
 }
 
@@ -403,7 +403,7 @@ message BLightInfo
     float process = 3; //演唱进度
 }
 
-message MlightInfo
+message MLightInfo
 {
     uint32 userID = 1; //玩家id
     sint64 timeMs = 2; //灭灯时间戳
@@ -414,7 +414,6 @@ message WantSingInfo
 {
     uint32 userID = 1; //玩家id
     sint64 timeMs = 2; //抢唱时间戳
-    float process = 3; //演唱进度
 }
 
 message NoPassSingInfo
@@ -473,10 +472,11 @@ message ReadyNoticeMsg
 // 游戏轮次结束通知消息
 message RoundOverMsg
 {
-    sint64 roundOverTimeMs = 1; //本轮次结束的毫秒时间戳
-    RoundInfo currentRound = 2; //当前轮次信息
-    RoundInfo nextRound    = 3; //下个轮次信息
-    uint32 exitUserID      = 4; //退出用户的ID
+    sint64 roundOverTimeMs  = 1; //本轮次结束的毫秒时间戳
+    RoundInfo currentRound  = 2; //当前轮次信息
+    RoundInfo nextRound     = 3; //下个轮次信息
+    uint32 exitUserID       = 4; //退出用户的ID
+    uint32 lastMLightUserID = 5; //最后一个灭灯的用户ID
 }
 
 enum ERoundOverReason {
@@ -497,6 +497,8 @@ message RoundAndGameOverMsg
     repeated UserScoreResult scoreResults = 5; //所有参与者的评分结果，应该使用这个结构
 
     repeated UserGameResult gameResults = 6; //游戏结果评分数据
+
+    uint32 lastMLightUserID = 7; //最后一个灭灯的用户ID
 }
 
 message ExitGameBeforePlayMsg

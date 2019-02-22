@@ -95,10 +95,10 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
    */
   @WireField(
       tag = 7,
-      adapter = "com.zq.live.proto.Room.MlightInfo#ADAPTER",
+      adapter = "com.zq.live.proto.Room.MLightInfo#ADAPTER",
       label = WireField.Label.REPEATED
   )
-  private final List<MlightInfo> mLightInfos;
+  private final List<MLightInfo> mLightInfos;
 
   /**
    * 结束原因
@@ -110,13 +110,13 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
   private final ERoundOverReason overReason;
 
   public RoundInfo(Integer userID, Integer playbookID, Integer roundSeq, Integer singBeginMs,
-      Integer singEndMs, List<BLightInfo> bLightInfos, List<MlightInfo> mLightInfos,
+      Integer singEndMs, List<BLightInfo> bLightInfos, List<MLightInfo> mLightInfos,
       ERoundOverReason overReason) {
     this(userID, playbookID, roundSeq, singBeginMs, singEndMs, bLightInfos, mLightInfos, overReason, ByteString.EMPTY);
   }
 
   public RoundInfo(Integer userID, Integer playbookID, Integer roundSeq, Integer singBeginMs,
-      Integer singEndMs, List<BLightInfo> bLightInfos, List<MlightInfo> mLightInfos,
+      Integer singEndMs, List<BLightInfo> bLightInfos, List<MLightInfo> mLightInfos,
       ERoundOverReason overReason, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
@@ -265,9 +265,9 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
   /**
    * 灭灯列表
    */
-  public List<MlightInfo> getMLightInfosList() {
+  public List<MLightInfo> getMLightInfosList() {
     if(mLightInfos==null){
-        return new java.util.ArrayList<MlightInfo>();
+        return new java.util.ArrayList<MLightInfo>();
     }
     return mLightInfos;
   }
@@ -351,7 +351,7 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
 
     private List<BLightInfo> bLightInfos;
 
-    private List<MlightInfo> mLightInfos;
+    private List<MLightInfo> mLightInfos;
 
     private ERoundOverReason overReason;
 
@@ -412,7 +412,7 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
     /**
      * 灭灯列表
      */
-    public Builder addAllMLightInfos(List<MlightInfo> mLightInfos) {
+    public Builder addAllMLightInfos(List<MLightInfo> mLightInfos) {
       Internal.checkElementsNotNull(mLightInfos);
       this.mLightInfos = mLightInfos;
       return this;
@@ -445,7 +445,7 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
           + ProtoAdapter.UINT32.encodedSizeWithTag(4, value.singBeginMs)
           + ProtoAdapter.UINT32.encodedSizeWithTag(5, value.singEndMs)
           + BLightInfo.ADAPTER.asRepeated().encodedSizeWithTag(6, value.bLightInfos)
-          + MlightInfo.ADAPTER.asRepeated().encodedSizeWithTag(7, value.mLightInfos)
+          + MLightInfo.ADAPTER.asRepeated().encodedSizeWithTag(7, value.mLightInfos)
           + ERoundOverReason.ADAPTER.encodedSizeWithTag(8, value.overReason)
           + value.unknownFields().size();
     }
@@ -458,7 +458,7 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
       ProtoAdapter.UINT32.encodeWithTag(writer, 4, value.singBeginMs);
       ProtoAdapter.UINT32.encodeWithTag(writer, 5, value.singEndMs);
       BLightInfo.ADAPTER.asRepeated().encodeWithTag(writer, 6, value.bLightInfos);
-      MlightInfo.ADAPTER.asRepeated().encodeWithTag(writer, 7, value.mLightInfos);
+      MLightInfo.ADAPTER.asRepeated().encodeWithTag(writer, 7, value.mLightInfos);
       ERoundOverReason.ADAPTER.encodeWithTag(writer, 8, value.overReason);
       writer.writeBytes(value.unknownFields());
     }
@@ -475,7 +475,7 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
           case 4: builder.setSingBeginMs(ProtoAdapter.UINT32.decode(reader)); break;
           case 5: builder.setSingEndMs(ProtoAdapter.UINT32.decode(reader)); break;
           case 6: builder.bLightInfos.add(BLightInfo.ADAPTER.decode(reader)); break;
-          case 7: builder.mLightInfos.add(MlightInfo.ADAPTER.decode(reader)); break;
+          case 7: builder.mLightInfos.add(MLightInfo.ADAPTER.decode(reader)); break;
           case 8: {
             try {
               builder.setOverReason(ERoundOverReason.ADAPTER.decode(reader));
@@ -499,7 +499,7 @@ public final class RoundInfo extends Message<RoundInfo, RoundInfo.Builder> {
     public RoundInfo redact(RoundInfo value) {
       Builder builder = value.newBuilder();
       Internal.redactElements(builder.bLightInfos, BLightInfo.ADAPTER);
-      Internal.redactElements(builder.mLightInfos, MlightInfo.ADAPTER);
+      Internal.redactElements(builder.mLightInfos, MLightInfo.ADAPTER);
       builder.clearUnknownFields();
       return builder.build();
     }

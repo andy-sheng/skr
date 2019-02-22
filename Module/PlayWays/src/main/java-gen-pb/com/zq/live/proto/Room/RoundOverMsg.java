@@ -30,6 +30,8 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
 
   public static final Integer DEFAULT_EXITUSERID = 0;
 
+  public static final Integer DEFAULT_LASTMLIGHTUSERID = 0;
+
   /**
    * 本轮次结束的毫秒时间戳
    */
@@ -66,18 +68,28 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
   )
   private final Integer exitUserID;
 
+  /**
+   * 最后一个灭灯的用户ID
+   */
+  @WireField(
+      tag = 5,
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+  )
+  private final Integer lastMLightUserID;
+
   public RoundOverMsg(Long roundOverTimeMs, RoundInfo currentRound, RoundInfo nextRound,
-      Integer exitUserID) {
-    this(roundOverTimeMs, currentRound, nextRound, exitUserID, ByteString.EMPTY);
+      Integer exitUserID, Integer lastMLightUserID) {
+    this(roundOverTimeMs, currentRound, nextRound, exitUserID, lastMLightUserID, ByteString.EMPTY);
   }
 
   public RoundOverMsg(Long roundOverTimeMs, RoundInfo currentRound, RoundInfo nextRound,
-      Integer exitUserID, ByteString unknownFields) {
+      Integer exitUserID, Integer lastMLightUserID, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.roundOverTimeMs = roundOverTimeMs;
     this.currentRound = currentRound;
     this.nextRound = nextRound;
     this.exitUserID = exitUserID;
+    this.lastMLightUserID = lastMLightUserID;
   }
 
   @Override
@@ -87,6 +99,7 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
     builder.currentRound = currentRound;
     builder.nextRound = nextRound;
     builder.exitUserID = exitUserID;
+    builder.lastMLightUserID = lastMLightUserID;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -100,7 +113,8 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
         && Internal.equals(roundOverTimeMs, o.roundOverTimeMs)
         && Internal.equals(currentRound, o.currentRound)
         && Internal.equals(nextRound, o.nextRound)
-        && Internal.equals(exitUserID, o.exitUserID);
+        && Internal.equals(exitUserID, o.exitUserID)
+        && Internal.equals(lastMLightUserID, o.lastMLightUserID);
   }
 
   @Override
@@ -112,6 +126,7 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
       result = result * 37 + (currentRound != null ? currentRound.hashCode() : 0);
       result = result * 37 + (nextRound != null ? nextRound.hashCode() : 0);
       result = result * 37 + (exitUserID != null ? exitUserID.hashCode() : 0);
+      result = result * 37 + (lastMLightUserID != null ? lastMLightUserID.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -124,6 +139,7 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
     if (currentRound != null) builder.append(", currentRound=").append(currentRound);
     if (nextRound != null) builder.append(", nextRound=").append(nextRound);
     if (exitUserID != null) builder.append(", exitUserID=").append(exitUserID);
+    if (lastMLightUserID != null) builder.append(", lastMLightUserID=").append(lastMLightUserID);
     return builder.replace(0, 2, "RoundOverMsg{").append('}').toString();
   }
 
@@ -178,6 +194,16 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
   }
 
   /**
+   * 最后一个灭灯的用户ID
+   */
+  public Integer getLastMLightUserID() {
+    if(lastMLightUserID==null){
+        return DEFAULT_LASTMLIGHTUSERID;
+    }
+    return lastMLightUserID;
+  }
+
+  /**
    * 本轮次结束的毫秒时间戳
    */
   public boolean hasRoundOverTimeMs() {
@@ -205,6 +231,13 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
     return exitUserID!=null;
   }
 
+  /**
+   * 最后一个灭灯的用户ID
+   */
+  public boolean hasLastMLightUserID() {
+    return lastMLightUserID!=null;
+  }
+
   public static final class Builder extends Message.Builder<RoundOverMsg, Builder> {
     private Long roundOverTimeMs;
 
@@ -213,6 +246,8 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
     private RoundInfo nextRound;
 
     private Integer exitUserID;
+
+    private Integer lastMLightUserID;
 
     public Builder() {
     }
@@ -249,9 +284,17 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
       return this;
     }
 
+    /**
+     * 最后一个灭灯的用户ID
+     */
+    public Builder setLastMLightUserID(Integer lastMLightUserID) {
+      this.lastMLightUserID = lastMLightUserID;
+      return this;
+    }
+
     @Override
     public RoundOverMsg build() {
-      return new RoundOverMsg(roundOverTimeMs, currentRound, nextRound, exitUserID, super.buildUnknownFields());
+      return new RoundOverMsg(roundOverTimeMs, currentRound, nextRound, exitUserID, lastMLightUserID, super.buildUnknownFields());
     }
   }
 
@@ -266,6 +309,7 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
           + RoundInfo.ADAPTER.encodedSizeWithTag(2, value.currentRound)
           + RoundInfo.ADAPTER.encodedSizeWithTag(3, value.nextRound)
           + ProtoAdapter.UINT32.encodedSizeWithTag(4, value.exitUserID)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(5, value.lastMLightUserID)
           + value.unknownFields().size();
     }
 
@@ -275,6 +319,7 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
       RoundInfo.ADAPTER.encodeWithTag(writer, 2, value.currentRound);
       RoundInfo.ADAPTER.encodeWithTag(writer, 3, value.nextRound);
       ProtoAdapter.UINT32.encodeWithTag(writer, 4, value.exitUserID);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 5, value.lastMLightUserID);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -288,6 +333,7 @@ public final class RoundOverMsg extends Message<RoundOverMsg, RoundOverMsg.Build
           case 2: builder.setCurrentRound(RoundInfo.ADAPTER.decode(reader)); break;
           case 3: builder.setNextRound(RoundInfo.ADAPTER.decode(reader)); break;
           case 4: builder.setExitUserID(ProtoAdapter.UINT32.decode(reader)); break;
+          case 5: builder.setLastMLightUserID(ProtoAdapter.UINT32.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

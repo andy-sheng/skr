@@ -301,6 +301,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         map.put("sysScore", sysScore);
         map.put("timeMs", timeMs);
         map.put("sign", sign);
+        map.put("roundSeq", mRoomData.getRealRoundSeq());
 
         // 提前获取roundSeq，如果在result里在获取，可能是下下一个了，如果提前收到轮次变化的push
         int roundSeq = -1;

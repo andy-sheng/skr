@@ -19,8 +19,8 @@ import java.lang.String;
 import java.lang.StringBuilder;
 import okio.ByteString;
 
-public final class MlightInfo extends Message<MlightInfo, MlightInfo.Builder> {
-  public static final ProtoAdapter<MlightInfo> ADAPTER = new ProtoAdapter_MlightInfo();
+public final class MLightInfo extends Message<MLightInfo, MLightInfo.Builder> {
+  public static final ProtoAdapter<MLightInfo> ADAPTER = new ProtoAdapter_MLightInfo();
 
   private static final long serialVersionUID = 0L;
 
@@ -57,11 +57,11 @@ public final class MlightInfo extends Message<MlightInfo, MlightInfo.Builder> {
   )
   private final Float process;
 
-  public MlightInfo(Integer userID, Long timeMs, Float process) {
+  public MLightInfo(Integer userID, Long timeMs, Float process) {
     this(userID, timeMs, process, ByteString.EMPTY);
   }
 
-  public MlightInfo(Integer userID, Long timeMs, Float process, ByteString unknownFields) {
+  public MLightInfo(Integer userID, Long timeMs, Float process, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
     this.timeMs = timeMs;
@@ -81,8 +81,8 @@ public final class MlightInfo extends Message<MlightInfo, MlightInfo.Builder> {
   @Override
   public boolean equals(Object other) {
     if (other == this) return true;
-    if (!(other instanceof MlightInfo)) return false;
-    MlightInfo o = (MlightInfo) other;
+    if (!(other instanceof MLightInfo)) return false;
+    MLightInfo o = (MLightInfo) other;
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(userID, o.userID)
         && Internal.equals(timeMs, o.timeMs)
@@ -108,16 +108,16 @@ public final class MlightInfo extends Message<MlightInfo, MlightInfo.Builder> {
     if (userID != null) builder.append(", userID=").append(userID);
     if (timeMs != null) builder.append(", timeMs=").append(timeMs);
     if (process != null) builder.append(", process=").append(process);
-    return builder.replace(0, 2, "MlightInfo{").append('}').toString();
+    return builder.replace(0, 2, "MLightInfo{").append('}').toString();
   }
 
   public byte[] toByteArray() {
-    return MlightInfo.ADAPTER.encode(this);
+    return MLightInfo.ADAPTER.encode(this);
   }
 
-  public static final MlightInfo parseFrom(byte[] data) throws IOException {
-    MlightInfo c = null;
-       c = MlightInfo.ADAPTER.decode(data);
+  public static final MLightInfo parseFrom(byte[] data) throws IOException {
+    MLightInfo c = null;
+       c = MLightInfo.ADAPTER.decode(data);
     return c;
   }
 
@@ -172,7 +172,7 @@ public final class MlightInfo extends Message<MlightInfo, MlightInfo.Builder> {
     return process!=null;
   }
 
-  public static final class Builder extends Message.Builder<MlightInfo, Builder> {
+  public static final class Builder extends Message.Builder<MLightInfo, Builder> {
     private Integer userID;
 
     private Long timeMs;
@@ -207,18 +207,18 @@ public final class MlightInfo extends Message<MlightInfo, MlightInfo.Builder> {
     }
 
     @Override
-    public MlightInfo build() {
-      return new MlightInfo(userID, timeMs, process, super.buildUnknownFields());
+    public MLightInfo build() {
+      return new MLightInfo(userID, timeMs, process, super.buildUnknownFields());
     }
   }
 
-  private static final class ProtoAdapter_MlightInfo extends ProtoAdapter<MlightInfo> {
-    public ProtoAdapter_MlightInfo() {
-      super(FieldEncoding.LENGTH_DELIMITED, MlightInfo.class);
+  private static final class ProtoAdapter_MLightInfo extends ProtoAdapter<MLightInfo> {
+    public ProtoAdapter_MLightInfo() {
+      super(FieldEncoding.LENGTH_DELIMITED, MLightInfo.class);
     }
 
     @Override
-    public int encodedSize(MlightInfo value) {
+    public int encodedSize(MLightInfo value) {
       return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.userID)
           + ProtoAdapter.SINT64.encodedSizeWithTag(2, value.timeMs)
           + ProtoAdapter.FLOAT.encodedSizeWithTag(3, value.process)
@@ -226,7 +226,7 @@ public final class MlightInfo extends Message<MlightInfo, MlightInfo.Builder> {
     }
 
     @Override
-    public void encode(ProtoWriter writer, MlightInfo value) throws IOException {
+    public void encode(ProtoWriter writer, MLightInfo value) throws IOException {
       ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.userID);
       ProtoAdapter.SINT64.encodeWithTag(writer, 2, value.timeMs);
       ProtoAdapter.FLOAT.encodeWithTag(writer, 3, value.process);
@@ -234,7 +234,7 @@ public final class MlightInfo extends Message<MlightInfo, MlightInfo.Builder> {
     }
 
     @Override
-    public MlightInfo decode(ProtoReader reader) throws IOException {
+    public MLightInfo decode(ProtoReader reader) throws IOException {
       Builder builder = new Builder();
       long token = reader.beginMessage();
       for (int tag; (tag = reader.nextTag()) != -1;) {
@@ -254,7 +254,7 @@ public final class MlightInfo extends Message<MlightInfo, MlightInfo.Builder> {
     }
 
     @Override
-    public MlightInfo redact(MlightInfo value) {
+    public MLightInfo redact(MLightInfo value) {
       Builder builder = value.newBuilder();
       builder.clearUnknownFields();
       return builder.build();

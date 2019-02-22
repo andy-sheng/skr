@@ -48,6 +48,9 @@ import com.zq.live.proto.Room.VoteResultMsg;
 
 import org.greenrobot.eventbus.EventBus;
 
+import static com.zq.live.proto.Room.ERoomMsgType.RM_PK_BLIGHT;
+import static com.zq.live.proto.Room.ERoomMsgType.RM_PK_MLIGHT;
+
 public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
 
     public final static String TAG = "ChatRoomGameMsgProcess";
@@ -98,9 +101,9 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
             processQNoPassSingMsg(basePushInfo, msg.getQNoPassSingMsg());
         } else if (msg.getMsgType() == ERoomMsgType.RM_Q_EXIT_GAME) {
             processQExitGameMsg(basePushInfo, msg.getQExitGameMsg());
-        } else if (msg.getMsgType() == ERoomMsgType.RM_PK_BLIGHT) {
+        } else if (msg.getMsgType() == RM_PK_BLIGHT) {
             processPkBurstLightMsg(basePushInfo, msg.getPkBLightMsg());
-        } else if (msg.getMsgType() == ERoomMsgType.RM_PK_MLIGHT) {
+        } else if (msg.getMsgType() == RM_PK_MLIGHT) {
             processPkLightOffMsg(basePushInfo, msg.getPkMLightMsg());
         }
     }
@@ -117,7 +120,7 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
                 ERoomMsgType.RM_ROUND_ACC_BEGIN, ERoomMsgType.RM_Q_WANT_SING_CHANCE,
                 ERoomMsgType.RM_Q_GET_SING_CHANCE, ERoomMsgType.RM_Q_SYNC_STATUS,
                 ERoomMsgType.RM_Q_ROUND_OVER, ERoomMsgType.RM_Q_ROUND_AND_GAME_OVER,
-                ERoomMsgType.RM_Q_NO_PASS_SING, ERoomMsgType.RM_Q_EXIT_GAME
+                ERoomMsgType.RM_Q_NO_PASS_SING, ERoomMsgType.RM_Q_EXIT_GAME, RM_PK_BLIGHT, RM_PK_MLIGHT
         };
     }
 

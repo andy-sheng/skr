@@ -12,7 +12,7 @@ import com.module.playways.rank.room.model.BLightInfoModel;
 import com.module.playways.rank.room.model.MLightInfoModel;
 import com.module.playways.rank.song.model.SongModel;
 import com.zq.live.proto.Room.BLightInfo;
-import com.zq.live.proto.Room.MlightInfo;
+import com.zq.live.proto.Room.MLightInfo;
 import com.zq.live.proto.Room.NoPassSingInfo;
 import com.zq.live.proto.Room.QRoundInfo;
 import com.zq.live.proto.Room.RoundInfo;
@@ -271,7 +271,7 @@ public class RoundInfoModel implements Serializable {
             }
         }
         if (roundInfo.getMLightInfosList() != null) {
-            for (MlightInfo mlightInfo : roundInfo.getMLightInfosList()) {
+            for (MLightInfo mlightInfo : roundInfo.getMLightInfosList()) {
                 roundInfoModel.addPkLightOffUid(false, MLightInfoModel.parse(mlightInfo));
             }
         }

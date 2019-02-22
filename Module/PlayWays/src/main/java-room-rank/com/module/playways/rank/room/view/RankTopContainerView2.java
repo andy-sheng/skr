@@ -6,13 +6,17 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.module.playways.RoomData;
+import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.prepare.model.GameConfigModel;
 import com.module.playways.rank.prepare.model.PkScoreTipMsgModel;
 import com.module.playways.rank.prepare.model.ScoreTipTypeModel;
+import com.module.playways.rank.room.event.PkMyBurstSuccessEvent;
+import com.module.playways.rank.room.event.PkMyLightOffSuccessEvent;
 import com.module.playways.rank.room.event.PkSomeOneBurstLightEvent;
 import com.module.playways.rank.room.event.PkSomeOneLightOffEvent;
 import com.module.playways.rank.room.score.bar.EnergySlotView;
@@ -151,40 +155,70 @@ public class RankTopContainerView2 extends RelativeLayout {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(PkMyBurstSuccessEvent event) {
+        MyLog.d(TAG, "onEvent" + " event=" + event);
+        parseBurstEvent(event.roundInfo.getUserID());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(PkMyLightOffSuccessEvent event) {
+        MyLog.d(TAG, "onEvent" + " event=" + event);
+        parseLightOffEvent(event.roundInfo.getUserID());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(PkSomeOneBurstLightEvent event) {
-        for (int i = 0; i < mStatusArr.length && i < mIndex; i++) {
+        MyLog.d(TAG, "PkSomeOneBurstLightEvent onEvent" + " 1");
+        parseBurstEvent(event.roundInfo.getUserID());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(PkSomeOneLightOffEvent event) {
+        MyLog.d(TAG, "PkSomeOneLightOffEvent onEvent 1");
+        parseLightOffEvent(event.roundInfo.getUserID());
+    }
+
+    private void parseLightOffEvent(int uid){
+        for (int i = 0; i < mStatusArr.length & i < mIndex; i++) {
+            MyLog.d(TAG, "PkSomeOneLightOffEvent onEvent 2");
             UserLightInfo ul = mStatusArr[i];
             if (ul != null) {
-                if (ul.mUserId == event.uid) {
-                    ul.mLightState = LightState.BAO;
+                MyLog.d(TAG, "PkSomeOneLightOffEvent onEvent 3");
+                if (ul.mUserId == uid) {
+                    ul.mLightState = LightState.MIE;
                     setLight(i, ul.mLightState);
+                    MyLog.d(TAG, "PkSomeOneLightOffEvent onEvent 4");
                     return;
                 }
             }
         }
+        MyLog.d(TAG, "PkSomeOneLightOffEvent onEvent 5");
         UserLightInfo ul = new UserLightInfo();
-        ul.mUserId = event.uid;
-        ul.mLightState = LightState.BAO;
+        ul.mUserId = uid;
+        ul.mLightState = LightState.MIE;
         setLight(mIndex, ul.mLightState);
         mStatusArr[mIndex] = ul;
         mIndex = (mIndex + 1) % MAX_USER_NUM;
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(PkSomeOneLightOffEvent event) {
-        for (int i = 0; i < mStatusArr.length & i < mIndex; i++) {
+    private void parseBurstEvent(int uid){
+        for (int i = 0; i < mStatusArr.length && i < mIndex; i++) {
             UserLightInfo ul = mStatusArr[i];
+            MyLog.d(TAG, "PkSomeOneBurstLightEvent onEvent" + " 2");
             if (ul != null) {
-                if (ul.mUserId == event.uid) {
-                    ul.mLightState = LightState.MIE;
+                MyLog.d(TAG, "PkSomeOneBurstLightEvent onEvent" + " 3");
+                if (ul.mUserId == uid) {
+                    ul.mLightState = LightState.BAO;
+                    MyLog.d(TAG, "PkSomeOneBurstLightEvent onEvent" + " 4");
                     setLight(i, ul.mLightState);
                     return;
                 }
             }
         }
+        MyLog.d(TAG, " PkSomeOneBurstLightEvent onEvent" + " 5");
         UserLightInfo ul = new UserLightInfo();
-        ul.mUserId = event.uid;
-        ul.mLightState = LightState.MIE;
+        ul.mUserId = uid;
+        ul.mLightState = LightState.BAO;
         setLight(mIndex, ul.mLightState);
         mStatusArr[mIndex] = ul;
         mIndex = (mIndex + 1) % MAX_USER_NUM;
@@ -201,13 +235,13 @@ public class RankTopContainerView2 extends RelativeLayout {
 
     private void setLight(int index, LightState lightState) {
         switch (index) {
-            case 1:
+            case 0:
                 mIvLeft.setImageDrawable(lightState == LightState.BAO ? U.getDrawable(R.drawable.yanchang_bao) : U.getDrawable(R.drawable.yanchang_mie));
                 break;
-            case 2:
+            case 1:
                 mIvCenter.setImageDrawable(lightState == LightState.BAO ? U.getDrawable(R.drawable.yanchang_bao) : U.getDrawable(R.drawable.yanchang_mie));
                 break;
-            case 3:
+            case 2:
                 mIvRignt.setImageDrawable(lightState == LightState.BAO ? U.getDrawable(R.drawable.yanchang_bao) : U.getDrawable(R.drawable.yanchang_mie));
                 break;
         }
