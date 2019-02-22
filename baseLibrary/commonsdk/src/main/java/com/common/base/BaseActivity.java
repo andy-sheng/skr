@@ -127,6 +127,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        MyLog.d(TAG, "onCreate" + hashCode());
         /**
          * 解决虚拟按键遮挡布局问题
          * 只会让虚拟按键变透明，布局没有动
@@ -243,7 +244,14 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
 
 
     @Override
+    protected void onRestart() {
+        MyLog.d(TAG, "onRestart" + hashCode());
+        super.onRestart();
+    }
+
+    @Override
     protected void onStart() {
+        MyLog.d(TAG, "onStart" + hashCode());
         super.onStart();
         for (Presenter presenter : mPresenterSet) {
             presenter.start();
@@ -252,6 +260,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
 
     @Override
     protected void onResume() {
+        MyLog.d(TAG, "onResume" + hashCode());
         super.onResume();
         for (Presenter presenter : mPresenterSet) {
             presenter.resume();
@@ -260,6 +269,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
 
     @Override
     protected void onPause() {
+        MyLog.d(TAG, "onPause" + hashCode());
         super.onPause();
         for (Presenter presenter : mPresenterSet) {
             presenter.pause();
@@ -268,6 +278,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
 
     @Override
     protected void onStop() {
+        MyLog.d(TAG, "onStop" + hashCode());
         super.onStop();
         for (Presenter presenter : mPresenterSet) {
             presenter.stop();
@@ -280,6 +291,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
 
     @Override
     protected final void onDestroy() {
+        MyLog.d(TAG, "onDestroy" + hashCode());
         super.onDestroy();
         if (!mIsDestroyed) {
             destroy();

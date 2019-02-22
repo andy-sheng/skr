@@ -29,7 +29,7 @@ public class UmengStatistics {
      * @param key
      */
     static void recordSessionStart(Context context, String key) {
-        MyLog.d(TAG, "recordPageStart" + " key=" + key);
+        MyLog.d(TAG, "recordSessionStart" + " key=" + key);
         init();
         MobclickAgent.onResume(context);
     }
@@ -42,7 +42,7 @@ public class UmengStatistics {
      * @param key     必填，确保与recordActivityPageStart的一致
      */
     static void recordSessionEnd(Context context, String key) {
-        MyLog.d(TAG, "recordPageEnd" + " key=" + key);
+        MyLog.d(TAG, "recordSessionEnd" + " key=" + key);
         init();
         MobclickAgent.onPause(context);
     }
@@ -53,6 +53,7 @@ public class UmengStatistics {
      * @param pageName
      */
     static void recordPageStart(String pageName) {
+        MyLog.d(TAG, "recordPageStart" + " pageName=" + pageName);
         init();
         MobclickAgent.onPageStart(pageName);
     }
@@ -63,6 +64,7 @@ public class UmengStatistics {
      * @param pageName
      */
     static void recordPageEnd(String pageName) {
+        MyLog.d(TAG, "recordPageEnd" + " pageName=" + pageName);
         init();
         MobclickAgent.onPageEnd(pageName);
     }

@@ -476,10 +476,10 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
                                 if (getActivity() != null) {
                                     getActivity().finish();
                                 }
-                                ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
-                                        .withInt("key_game_type", mPrepareData.getGameType())
-                                        .withBoolean("selectSong", true)
-                                        .navigation();
+//                                ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
+//                                        .withInt("key_game_type", mPrepareData.getGameType())
+//                                        .withBoolean("selectSong", true)
+//                                        .navigation();
                             }
                         }
                     }

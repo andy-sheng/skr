@@ -128,8 +128,8 @@ ext {
             "tinypinyin"                       : "com.github.promeg:tinypinyin:2.0.3",
 
             // 友盟相关
-            "umeng-common"                     : "com.umeng.umsdk:common:1.5.4",
-            "umeng-analytics"                  : "com.umeng.umsdk:analytics:7.5.4",
+            "umeng-common"                     : "com.umeng.umsdk:common:2.0.0",
+            "umeng-analytics"                  : "com.umeng.umsdk:analytics:8.0.0",
             "umeng-push"                       : "com.umeng.umsdk:push:5.0.2",
             "umeng-utdid"                      : "com.umeng.umsdk:utdid:1.1.5.3",
 
