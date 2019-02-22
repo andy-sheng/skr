@@ -64,7 +64,6 @@ public class PersonFragment extends BaseFragment implements IPersonView {
 
     public final static String TAG = "PersonFragment";
 
-    RelativeLayout mPersonMainContainner;
     SmartRefreshLayout mRefreshLayout;
     BaseImageView mAvatarIv;
     ExTextView mShareTv;
@@ -125,12 +124,12 @@ public class PersonFragment extends BaseFragment implements IPersonView {
     }
 
     private void initTopView() {
-        mPersonMainContainner = (RelativeLayout) mRootView.findViewById(R.id.person_main_containner);
         mRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.refreshLayout);
 
         mRefreshLayout.setEnableRefresh(false);
         mRefreshLayout.setEnableLoadMore(false);
         mRefreshLayout.setEnableOverScrollDrag(true);
+        mRefreshLayout.setEnablePureScrollMode(true);
 
         mAvatarIv = (BaseImageView) mRootView.findViewById(R.id.avatar_iv);
         mShareTv = (ExTextView) mRootView.findViewById(R.id.share_tv);

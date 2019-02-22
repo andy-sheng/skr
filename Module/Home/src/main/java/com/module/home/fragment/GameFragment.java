@@ -151,10 +151,10 @@ public class GameFragment extends BaseFragment {
         mRankDiffIcon = (ImageView) linearLayout.findViewById(R.id.rank_diff_icon);
         mRankDiffTv = (ExTextView) linearLayout.findViewById(R.id.rank_diff_tv);
         mSmartRefreshLayout = mRootView.findViewById(R.id.smart_refresh_layout);
+        mClassicsHeader = (ClassicsHeader)mRootView.findViewById(R.id.classics_header);
         mPopupWindow = new PopupWindow(linearLayout);
         mPopupWindow.setOutsideTouchable(true);
 
-        mClassicsHeader = new ClassicsHeader(getContext());
         mSmartRefreshLayout.setEnableRefresh(true);
         mSmartRefreshLayout.setEnableLoadMore(false);
         mSmartRefreshLayout.setEnableLoadMoreWhenContentNotFull(true);

@@ -6,6 +6,12 @@
     android:background="#c0F9F4F1"
     app:srlEnablePreviewInEditMode="true">
 
+    <com.scwang.smartrefresh.layout.header.ClassicsHeader
+        android:id="@+id/classics_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </com.scwang.smartrefresh.layout.header.ClassicsHeader>
+
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
