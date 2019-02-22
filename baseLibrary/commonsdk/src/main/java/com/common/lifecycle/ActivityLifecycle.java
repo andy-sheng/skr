@@ -18,6 +18,7 @@ package com.common.lifecycle;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 
@@ -70,6 +71,8 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
 
     int mActivityCount = 0;
 
+    Handler mUiHanlder = new Handler();
+
     public ActivityLifecycle() {
 
     }
@@ -110,7 +113,22 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
 
     @Override
     public void onActivityPaused(Activity activity) {
-        StatisticsAdapter.recordSessionEnd(activity, activity.getClass().getSimpleName());
+        /**
+         * 02-22 21:39:58.831 D/PlayWaysActivity(20945): onPause137180481
+         * 02-22 21:39:58.831 D/UmengStatistics(20945): recordSessionEnd key=PlayWaysActivity
+         * 02-22 21:39:58.832 D/SongSelectFragment(20945): onPause
+         * 02-22 21:39:58.832 D/SongSelectFragment(20945): onFragmentInvisible
+         * 02-22 21:39:58.832 D/UmengStatistics(20945): recordPageEnd pageName=SongSelectFragment
+         *
+         * 这么改因为先调用 Activity 的onPause 在调用 Fragment 的 onPause
+         * 导致统计顺序可能有问题
+         */
+        mUiHanlder.post(new Runnable() {
+            @Override
+            public void run() {
+                StatisticsAdapter.recordSessionEnd(activity, activity.getClass().getSimpleName());
+            }
+        });
     }
 
     @Override
