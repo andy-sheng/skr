@@ -117,6 +117,7 @@ public class GameFragment extends BaseFragment {
     DialogPlus mDialogPlus;
 
     SmartRefreshLayout mSmartRefreshLayout;
+    ClassicsHeader mClassicsHeader;
 
     Vector<Long> mTag = new Vector<>();
 
@@ -153,10 +154,12 @@ public class GameFragment extends BaseFragment {
         mPopupWindow = new PopupWindow(linearLayout);
         mPopupWindow.setOutsideTouchable(true);
 
+        mClassicsHeader = new ClassicsHeader(getContext());
         mSmartRefreshLayout.setEnableRefresh(true);
         mSmartRefreshLayout.setEnableLoadMore(false);
         mSmartRefreshLayout.setEnableLoadMoreWhenContentNotFull(true);
         mSmartRefreshLayout.setEnableOverScrollDrag(true);
+        mSmartRefreshLayout.setRefreshHeader(mClassicsHeader);
         mSmartRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
@@ -282,6 +285,7 @@ public class GameFragment extends BaseFragment {
     private void showRankView(UserRankModel userRankModel) {
         MyLog.d(TAG, "showRankView" + " userRankModel=" + userRankModel);
         mUserInfoTitle.showRankView(userRankModel);
+        mClassicsHeader.setBackgroundColor(Color.parseColor(LevelConfigUtils.getHomePageTopBgColor(userRankModel.getMainRanking())));
         mMainRankIv.setImageResource(LevelConfigUtils.getImageResoucesLevel(userRankModel.getMainRanking()));
         mSubRankIv.setImageResource(LevelConfigUtils.getImageResoucesSubLevel(userRankModel.getMainRanking(), userRankModel.getSubRanking()));
 
