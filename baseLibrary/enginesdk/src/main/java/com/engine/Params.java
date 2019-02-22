@@ -26,6 +26,7 @@ public class Params implements Serializable {
     public static final int CHANNEL_TYPE_LIVE_BROADCASTING = Constants.CHANNEL_PROFILE_LIVE_BROADCASTING;
 
     private int channelProfile = CHANNEL_TYPE_LIVE_BROADCASTING;
+    private Scene scene = Scene.audiotest;
     // 是否使用唱吧的引擎
     private boolean useCbEngine = false;
     private boolean enableVideo = true;
@@ -59,10 +60,6 @@ public class Params implements Serializable {
      * 注意注意，会影响FistDDecode的 width height 以及 rotation
      */
     private VideoEncoderConfiguration.ORIENTATION_MODE orientationMode = VideoEncoderConfiguration.ORIENTATION_MODE.ORIENTATION_MODE_FIXED_PORTRAIT;
-
-    private Constants.AudioProfile audioProfile = Constants.AudioProfile.MUSIC_STANDARD_STEREO ; // 默认 最牛逼的 音乐编码 双声道 192kbps
-
-    private Constants.AudioScenario audioScenario = Constants.AudioScenario.SHOWROOM; // 秀场场景
 
     private boolean enableAudioQualityIndication = true;// 开启音量提示
 
@@ -177,22 +174,6 @@ public class Params implements Serializable {
 
     public void setEnableAudio(boolean enableAudio) {
         this.enableAudio = enableAudio;
-    }
-
-    public Constants.AudioProfile getAudioProfile() {
-        return audioProfile;
-    }
-
-    public void setAudioProfile(Constants.AudioProfile audioProfile) {
-        this.audioProfile = audioProfile;
-    }
-
-    public Constants.AudioScenario getAudioScenario() {
-        return audioScenario;
-    }
-
-    public void setAudioScenario(Constants.AudioScenario audioScenario) {
-        this.audioScenario = audioScenario;
     }
 
     public boolean isEnableAudioQualityIndication() {
@@ -467,6 +448,14 @@ public class Params implements Serializable {
         return mRecordingFromCallbackSavePath;
     }
 
+    public Scene getScene() {
+        return scene;
+    }
+
+    public void setScene(Scene scene) {
+        this.scene = scene;
+    }
+
     public static class Builder {
         Params mParams = new Params();
 
@@ -515,16 +504,6 @@ public class Params implements Serializable {
 
         public Builder setEnableAudio(boolean enableAudio) {
             mParams.setEnableAudio(enableAudio);
-            return this;
-        }
-
-        public Builder setAudioProfile(Constants.AudioProfile audioProfile) {
-            mParams.setAudioProfile(audioProfile);
-            return this;
-        }
-
-        public Builder setAudioScenario(Constants.AudioScenario audioScenario) {
-            mParams.setAudioScenario(audioScenario);
             return this;
         }
 
@@ -613,6 +592,11 @@ public class Params implements Serializable {
             return this;
         }
 
+        public Builder setScene(Scene scene) {
+            mParams.setScene(scene);
+            return this;
+        }
+
         public Params build() {
             return mParams;
         }
@@ -641,9 +625,9 @@ public class Params implements Serializable {
         MyLog.w(EngineManager.TAG, "getFromPref " + s);
         Params params;
         if (!TextUtils.isEmpty(s)) {
-             params = JSON.parseObject(s, Params.class);
+            params = JSON.parseObject(s, Params.class);
         } else {
-            params =  Params.newBuilder(Params.CHANNEL_TYPE_LIVE_BROADCASTING)
+            params = Params.newBuilder(Params.CHANNEL_TYPE_LIVE_BROADCASTING)
                     .setEnableVideo(false)
                     .setEnableAudio(true)
                     .setUseCbEngine(false)
@@ -652,5 +636,9 @@ public class Params implements Serializable {
         }
 //        params.setAudioMixingVolume(0);
         return params;
+    }
+
+    public enum Scene {
+        rank, grab, voice, audiotest
     }
 }

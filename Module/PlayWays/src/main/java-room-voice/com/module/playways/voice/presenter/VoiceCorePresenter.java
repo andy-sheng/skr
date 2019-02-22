@@ -63,8 +63,7 @@ public class VoiceCorePresenter extends RxLifeCyclePresenter {
         TAG = "VoiceCorePresenter";
         if (mRoomData.getGameId() > 0) {
             Params params = Params.getFromPref();
-            params.setAudioProfile(Constants.AudioProfile.SPEECH_STANDARD);
-            params.setAudioScenario(Constants.AudioScenario.CHATROOM_ENTERTAINMENT);
+            params.setScene(Params.Scene.voice);
             params.setStyleEnum(AudioEffectStyleEnum.ORIGINAL);
             EngineManager.getInstance().init("voiceroom", params);
             EngineManager.getInstance().joinRoom(mRoomData.getGameId() + "_chat", (int) UserAccountManager.getInstance().getUuidAsLong(), true);

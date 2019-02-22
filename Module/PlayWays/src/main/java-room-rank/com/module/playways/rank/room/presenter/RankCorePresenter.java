@@ -174,6 +174,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 
         if (mRoomData.getGameId() > 0) {
             Params params = Params.getFromPref();
+            params.setScene(Params.Scene.rank);
             EngineManager.getInstance().init("rankingroom", params);
             boolean isAnchor = false;
 //            if(RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())){

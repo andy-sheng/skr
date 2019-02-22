@@ -140,7 +140,9 @@ public class AuditionFragment extends BaseFragment {
     public void initData(@Nullable Bundle savedInstanceState) {
         if (!EngineManager.getInstance().isInit()) {
             // 不能每次都初始化,播放伴奏
-            EngineManager.getInstance().init("prepare", Params.getFromPref());
+            Params params = Params.getFromPref();
+            params.setScene(Params.Scene.audiotest);
+            EngineManager.getInstance().init("prepare", params);
             EngineManager.getInstance().joinRoom("" + System.currentTimeMillis(), (int) UserAccountManager.getInstance().getUuidAsLong(), true);
         } else {
             EngineManager.getInstance().resumeAudioMixing();

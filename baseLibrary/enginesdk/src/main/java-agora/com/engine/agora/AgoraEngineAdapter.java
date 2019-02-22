@@ -228,6 +228,7 @@ public class AgoraEngineAdapter {
                     if (mRtcEngine == null) {
                         mRtcEngine = RtcEngine.create(U.app(), APP_ID, mCallback);
                         //mRtcEngine.setParameters("{\"rtc.log_filter\": 65535}");
+
                         mRtcEngine.setLogFile(U.getAppInfoUtils().getSubDirPath("logs") + "agorasdk.log");
                         // 模式为广播,必须在加入频道前调用
                         // 如果想要切换模式，则需要先调用 destroy 销毁当前引擎，然后使用 create 创建一个新的引擎后，再调用该方法设置新的频道模式
@@ -251,9 +252,32 @@ public class AgoraEngineAdapter {
             //该方法需要在 joinChannel 之前设置好，joinChannel 后设置不生效。
             mRtcEngine.enableAudio();
 
-            mRtcEngine.setAudioProfile(Constants.AudioProfile.getValue(mConfig.getAudioProfile())
-                    , Constants.AudioScenario.getValue(mConfig.getAudioScenario()));
-
+            int a = 3, b = 4;
+            switch (mConfig.getScene()) {
+                case rank:
+                    if (U.getDeviceUtils().getHeadsetPlugOn()) {
+                        b = 4;
+                        mRtcEngine.setParameters("{\"che.audio.enable.aec\":true }");
+                    } else {
+                        b = 1;
+                    }
+                    break;
+                case grab:
+                    b = 4;
+                    break;
+                case voice:
+                    b = 1;
+                    break;
+                case audiotest:
+                    if (U.getDeviceUtils().getHeadsetPlugOn()) {
+                        b = 4;
+                        mRtcEngine.setParameters("{\"che.audio.enable.aec\":true }");
+                    } else {
+                        b = 1;
+                    }
+                    break;
+            }
+            mRtcEngine.setAudioProfile(a, b);
 
             enableAudioQualityIndication(mConfig.isEnableAudioQualityIndication());
             enableAudioVolumeIndication(mConfig.getVolumeIndicationInterval(), mConfig.getVolumeIndicationSmooth());
@@ -723,7 +747,7 @@ public class AgoraEngineAdapter {
      * @param fromSpeaker
      */
     public void setEnableSpeakerphone(boolean fromSpeaker) {
-        MyLog.d(TAG,"setEnableSpeakerphone" + " fromSpeaker=" + fromSpeaker);
+        MyLog.d(TAG, "setEnableSpeakerphone" + " fromSpeaker=" + fromSpeaker);
         mRtcEngine.setEnableSpeakerphone(fromSpeaker);
     }
 
@@ -741,7 +765,7 @@ public class AgoraEngineAdapter {
      * 默认关闭
      */
     public void enableInEarMonitoring(boolean enable) {
-        MyLog.d(TAG,"enableInEarMonitoring" + " enable=" + enable);
+        MyLog.d(TAG, "enableInEarMonitoring" + " enable=" + enable);
         mRtcEngine.enableInEarMonitoring(enable);
     }
 
@@ -954,7 +978,7 @@ public class AgoraEngineAdapter {
                 if (++mLogtag % 500 == 0) {
                     MyLog.d(TAG, "onRecordFrame" + " samples=" + samples + " numOfSamples=" + numOfSamples + " bytesPerSample=" + bytesPerSample + " channels=" + channels + " samplesPerSec=" + samplesPerSec);
                 }
-                if(!TextUtils.isEmpty(mConfig.getRecordingFromCallbackSavePath())){
+                if (!TextUtils.isEmpty(mConfig.getRecordingFromCallbackSavePath())) {
                     if (mOutCallback != null) {
                         mOutCallback.onRecordingBuffer(samples);
                     }
