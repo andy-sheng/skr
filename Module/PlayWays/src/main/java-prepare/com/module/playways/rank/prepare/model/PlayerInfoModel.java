@@ -14,6 +14,8 @@ import java.util.List;
 public class PlayerInfoModel implements Serializable {
     UserInfoModel userInfo;
     List<SongModel> songList;
+
+    int mainLevel; // 主段位
     boolean isSkrer;//是否是机器人
     boolean isAI;//是否是AI裁判
     List<ResourceInfoModel> resourceInfoList;
@@ -47,6 +49,14 @@ public class PlayerInfoModel implements Serializable {
         return online;
     }
 
+    public int getMainLevel() {
+        return mainLevel;
+    }
+
+    public void setMainLevel(int mainLevel) {
+        this.mainLevel = mainLevel;
+    }
+
     public void setOnline(boolean online) {
         if (this.online != online) {
             this.online = online;
@@ -60,6 +70,7 @@ public class PlayerInfoModel implements Serializable {
         }
         UserInfoModel userInfo = DataUtils.parse2UserInfo(playerInfo.getUserInfo());
         this.setUserInfo(userInfo);
+        this.setMainLevel(playerInfo.getUserInfo().getMainLevel());
         List<SongModel> list = new ArrayList<>();
         for (MusicInfo musicInfo : playerInfo.getMusicInfoList()) {
             SongModel songModel = new SongModel();

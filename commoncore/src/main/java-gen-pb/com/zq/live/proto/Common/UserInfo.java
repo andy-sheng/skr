@@ -40,6 +40,8 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
 
   public static final Boolean DEFAULT_ISSYSTEM = false;
 
+  public static final Integer DEFAULT_MAINLEVEL = 0;
+
   /**
    * 用户ID
    */
@@ -94,13 +96,22 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
   )
   private final Boolean isSystem;
 
+  /**
+   * 主段位
+   */
+  @WireField(
+      tag = 7,
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+  )
+  private final Integer mainLevel;
+
   public UserInfo(Integer userID, String nickName, String avatar, ESex sex, String description,
-      Boolean isSystem) {
-    this(userID, nickName, avatar, sex, description, isSystem, ByteString.EMPTY);
+      Boolean isSystem, Integer mainLevel) {
+    this(userID, nickName, avatar, sex, description, isSystem, mainLevel, ByteString.EMPTY);
   }
 
   public UserInfo(Integer userID, String nickName, String avatar, ESex sex, String description,
-      Boolean isSystem, ByteString unknownFields) {
+      Boolean isSystem, Integer mainLevel, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
     this.nickName = nickName;
@@ -108,6 +119,7 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
     this.sex = sex;
     this.description = description;
     this.isSystem = isSystem;
+    this.mainLevel = mainLevel;
   }
 
   @Override
@@ -119,6 +131,7 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
     builder.sex = sex;
     builder.description = description;
     builder.isSystem = isSystem;
+    builder.mainLevel = mainLevel;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -134,7 +147,8 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
         && Internal.equals(avatar, o.avatar)
         && Internal.equals(sex, o.sex)
         && Internal.equals(description, o.description)
-        && Internal.equals(isSystem, o.isSystem);
+        && Internal.equals(isSystem, o.isSystem)
+        && Internal.equals(mainLevel, o.mainLevel);
   }
 
   @Override
@@ -148,6 +162,7 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
       result = result * 37 + (sex != null ? sex.hashCode() : 0);
       result = result * 37 + (description != null ? description.hashCode() : 0);
       result = result * 37 + (isSystem != null ? isSystem.hashCode() : 0);
+      result = result * 37 + (mainLevel != null ? mainLevel.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -162,6 +177,7 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
     if (sex != null) builder.append(", sex=").append(sex);
     if (description != null) builder.append(", description=").append(description);
     if (isSystem != null) builder.append(", isSystem=").append(isSystem);
+    if (mainLevel != null) builder.append(", mainLevel=").append(mainLevel);
     return builder.replace(0, 2, "UserInfo{").append('}').toString();
   }
 
@@ -236,6 +252,16 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
   }
 
   /**
+   * 主段位
+   */
+  public Integer getMainLevel() {
+    if(mainLevel==null){
+        return DEFAULT_MAINLEVEL;
+    }
+    return mainLevel;
+  }
+
+  /**
    * 用户ID
    */
   public boolean hasUserID() {
@@ -277,6 +303,13 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
     return isSystem!=null;
   }
 
+  /**
+   * 主段位
+   */
+  public boolean hasMainLevel() {
+    return mainLevel!=null;
+  }
+
   public static final class Builder extends Message.Builder<UserInfo, Builder> {
     private Integer userID;
 
@@ -289,6 +322,8 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
     private String description;
 
     private Boolean isSystem;
+
+    private Integer mainLevel;
 
     public Builder() {
     }
@@ -341,9 +376,17 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
       return this;
     }
 
+    /**
+     * 主段位
+     */
+    public Builder setMainLevel(Integer mainLevel) {
+      this.mainLevel = mainLevel;
+      return this;
+    }
+
     @Override
     public UserInfo build() {
-      return new UserInfo(userID, nickName, avatar, sex, description, isSystem, super.buildUnknownFields());
+      return new UserInfo(userID, nickName, avatar, sex, description, isSystem, mainLevel, super.buildUnknownFields());
     }
   }
 
@@ -360,6 +403,7 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
           + ESex.ADAPTER.encodedSizeWithTag(4, value.sex)
           + ProtoAdapter.STRING.encodedSizeWithTag(5, value.description)
           + ProtoAdapter.BOOL.encodedSizeWithTag(6, value.isSystem)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(7, value.mainLevel)
           + value.unknownFields().size();
     }
 
@@ -371,6 +415,7 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
       ESex.ADAPTER.encodeWithTag(writer, 4, value.sex);
       ProtoAdapter.STRING.encodeWithTag(writer, 5, value.description);
       ProtoAdapter.BOOL.encodeWithTag(writer, 6, value.isSystem);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 7, value.mainLevel);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -393,6 +438,7 @@ public final class UserInfo extends Message<UserInfo, UserInfo.Builder> {
           }
           case 5: builder.setDescription(ProtoAdapter.STRING.decode(reader)); break;
           case 6: builder.setIsSystem(ProtoAdapter.BOOL.decode(reader)); break;
+          case 7: builder.setMainLevel(ProtoAdapter.UINT32.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

@@ -17,6 +17,7 @@ message UserInfo {
     ESex sex           = 4; //性别
     string description = 5; //个人描述
     bool isSystem      = 6; //是否为系统
+    uint32 mainLevel   = 7; //主段位
 }
 
 // 音乐信息
