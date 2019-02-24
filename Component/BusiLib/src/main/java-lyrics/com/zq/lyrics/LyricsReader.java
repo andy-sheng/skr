@@ -160,7 +160,7 @@ public class LyricsReader {
                 continue;
             }
 
-            if(entry.getValue().getEndTime() < startTs){
+            if(entry.getValue().getEndTime() <= startTs){
                 it.remove();
                 continue;
             }
