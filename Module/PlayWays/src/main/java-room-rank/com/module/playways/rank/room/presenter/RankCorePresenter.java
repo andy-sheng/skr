@@ -1464,7 +1464,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     public void sendScoreToServer(int score, int line) {
         HashMap<String, Object> map = new HashMap<>();
         map.put("gameID", mRoomData.getGameId());
-        int itemID = mRoomData.getRealRoundInfo().getSongModel().getItemID();
+        int itemID = mRoomData.getRealRoundInfo().getPlaybookID();
         map.put("itemID", itemID);
         int mainLevel = 0;
         PlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, MyUserInfoManager.getInstance().getUid());
