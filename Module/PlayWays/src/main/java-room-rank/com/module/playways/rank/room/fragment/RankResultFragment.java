@@ -10,6 +10,7 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
 import com.module.playways.RoomData;
+import com.module.playways.rank.room.model.UserGameResultModel;
 import com.module.playways.rank.room.view.RankResultView;
 import com.module.rank.R;
 

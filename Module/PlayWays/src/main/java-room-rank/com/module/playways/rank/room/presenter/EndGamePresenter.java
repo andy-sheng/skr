@@ -17,7 +17,6 @@ import com.module.playways.rank.msg.event.VoteResultEvent;
 import com.module.playways.rank.room.RoomServerApi;
 import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.rank.room.model.UserGameResultModel;
-import com.module.playways.rank.room.model.WinResultModel;
 import com.module.playways.rank.room.model.score.ScoreResultModel;
 import com.module.playways.rank.room.model.VoteInfoModel;
 import com.module.playways.rank.room.view.IVoteView;
@@ -26,7 +25,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -128,22 +126,16 @@ public class EndGamePresenter extends RxLifeCyclePresenter {
 
                     // TODO: 2019/2/21 结果会由 scoreResultModels 和 userGameResults来呈现
                     if (scoreResultModels != null && scoreResultModels.size() > 0) {
-                        List<WinResultModel> winResultModels = new ArrayList<>();     // 保存3个人胜负平和投票、逃跑结果
                         ScoreResultModel myScoreResultModel = new ScoreResultModel();
                         for (ScoreResultModel scoreResultModel : scoreResultModels) {
-                            WinResultModel model = new WinResultModel();
-                            model.setUseID(scoreResultModel.getUserID());
-                            model.setType(scoreResultModel.getWinType());
-                            winResultModels.add(model);
-
                             if (scoreResultModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
                                 myScoreResultModel = scoreResultModel;
                             }
                         }
                         MyLog.d(TAG, " getVoteResult " + " voteInfoModelList " + voteInfoModelList.toString());
                         MyLog.d(TAG, " getVoteResult " + " scoreResultModel " + myScoreResultModel.toString());
-                        MyLog.d(TAG, " getVoteResult " + " winResultModels " + winResultModels.toString());
-                        mView.showRecordView(new RecordData(voteInfoModelList, myScoreResultModel, winResultModels,userGameResults));
+                        MyLog.d(TAG, " getVoteResult " + " UserGameResultModel " + userGameResults.toString());
+                        mView.showRecordView(new RecordData(voteInfoModelList, myScoreResultModel, userGameResults));
                     } else {
                         mUiHandler.removeMessages(MSG_GET_VOTE);
                         Message message = mUiHandler.obtainMessage(MSG_GET_VOTE);
@@ -171,7 +163,6 @@ public class EndGamePresenter extends RxLifeCyclePresenter {
         MyLog.d(TAG, "VoteResultEvent" + " mBasePushInfo event TimeMs = " + event.mBasePushInfo.getTimeMs());
         MyLog.d(TAG, "VoteResultEvent" + " mVoteInfoModels event = " + event.mVoteInfoModels.toString());
         MyLog.d(TAG, "VoteResultEvent" + " mScoreResultModel event = " + event.mScoreResultModel.toString());
-        MyLog.d(TAG, "VoteResultEvent" + " mWinResultModels event = " + event.mWinResultModels.toString());
-        mView.showRecordView(new RecordData(event.mVoteInfoModels, event.mScoreResultModel, event.mWinResultModels,event.mUserGameResultModels));
+        mView.showRecordView(new RecordData(event.mVoteInfoModels, event.mScoreResultModel, event.mUserGameResultModels));
     }
 }

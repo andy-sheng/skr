@@ -85,8 +85,7 @@
         android:layout_height="@dimen/view_86_dp"
         android:layout_alignTop="@+id/result_area"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="-30dp"
-        android:background="@drawable/zhanji_top_win" />
+        android:layout_marginTop="-30dp" />
 
     <com.common.view.ex.ExImageView
         android:id="@+id/result_exit"

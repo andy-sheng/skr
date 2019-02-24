@@ -8,6 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserGameResultModel implements Serializable {
+
+    public static final int Win = 1;
+    public static final int Draw = 2;
+    public static final int Lose = 3;
+
     /**
      * isEscape : true
      * itemID : 0

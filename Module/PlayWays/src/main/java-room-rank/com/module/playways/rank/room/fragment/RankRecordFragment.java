@@ -34,7 +34,6 @@ import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.RoomData;
 import com.module.playways.rank.room.model.UserGameResultModel;
 import com.module.playways.rank.room.model.VoteInfoModel;
-import com.module.playways.rank.room.model.WinResultModel;
 import com.module.playways.rank.room.model.score.ScoreResultModel;
 
 import com.module.playways.rank.room.view.IVoteView;
@@ -168,13 +167,8 @@ public class RankRecordFragment extends BaseFragment implements IVoteView {
 
                     // TODO: 2019/2/21 结果会由 scoreResultModels 和 userGameResults来呈现
                     if (scoreResultModels != null && scoreResultModels.size() > 0) {
-                        List<WinResultModel> winResultModels = new ArrayList<>();     // 保存3个人胜负平和投票、逃跑结果
                         ScoreResultModel myScoreResultModel = new ScoreResultModel();
                         for (ScoreResultModel scoreResultModel : scoreResultModels) {
-                            WinResultModel model = new WinResultModel();
-                            model.setUseID(scoreResultModel.getUserID());
-                            model.setType(scoreResultModel.getWinType());
-                            winResultModels.add(model);
 
                             if (scoreResultModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
                                 myScoreResultModel = scoreResultModel;
@@ -182,10 +176,9 @@ public class RankRecordFragment extends BaseFragment implements IVoteView {
                         }
                         MyLog.d(TAG, " getVoteResult " + " voteInfoModelList " + voteInfoModelList.toString());
                         MyLog.d(TAG, " getVoteResult " + " scoreResultModel " + myScoreResultModel.toString());
-                        MyLog.d(TAG, " getVoteResult " + " winResultModels " + winResultModels.toString());
                         MyLog.d(TAG, " getVoteResult " + " userGameResults " + userGameResults.toString());
 
-                        mRecordData = new RecordData(voteInfoModelList, myScoreResultModel, winResultModels,userGameResults);
+                        mRecordData = new RecordData(voteInfoModelList, myScoreResultModel, userGameResults);
                         toLoadSuccessState();
                     }
                 } else {

@@ -1306,11 +1306,10 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 
         MyLog.d(TAG, "onEventMainThread" + " roundAndGameOverEvent mVoteInfoModels =" + roundAndGameOverEvent.mVoteInfoModels);
         MyLog.d(TAG, "onEventMainThread" + " roundAndGameOverEvent mScoreResultModel =" + roundAndGameOverEvent.mScoreResultModel);
-        MyLog.d(TAG, "onEventMainThread" + " roundAndGameOverEvent mWinResultModels =" + roundAndGameOverEvent.mWinResultModels);
+        MyLog.d(TAG, "onEventMainThread" + " roundAndGameOverEvent mUserGameResultModels =" + roundAndGameOverEvent.mUserGameResultModels);
 
         RecordData recordData = new RecordData(roundAndGameOverEvent.mVoteInfoModels,
                 roundAndGameOverEvent.mScoreResultModel,
-                roundAndGameOverEvent.mWinResultModels,
                 roundAndGameOverEvent.mUserGameResultModels);
         mRoomData.setRecordData(recordData);
 

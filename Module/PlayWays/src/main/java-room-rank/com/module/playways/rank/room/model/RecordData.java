@@ -10,13 +10,11 @@ public class RecordData implements Serializable {
 
     public List<VoteInfoModel> mVoteInfoModels;
     public ScoreResultModel mScoreResultModel;
-    public List<WinResultModel> mWinResultModels;
     public List<UserGameResultModel> mUserGameResultModels;
 
-    public RecordData(List<VoteInfoModel> mVoteInfoModels, ScoreResultModel mScoreResultModel, List<WinResultModel> mWinResultModels,List<UserGameResultModel> mUserGameResultModels) {
+    public RecordData(List<VoteInfoModel> mVoteInfoModels, ScoreResultModel mScoreResultModel,List<UserGameResultModel> mUserGameResultModels) {
         this.mVoteInfoModels = mVoteInfoModels;
         this.mScoreResultModel = mScoreResultModel;
-        this.mWinResultModels = mWinResultModels;
         this.mUserGameResultModels = mUserGameResultModels;
     }
 
@@ -39,22 +37,6 @@ public class RecordData implements Serializable {
         }
         return false;
     }
-
-    public WinResultModel getWinResult(int userID) {
-        if (userID == 0) {
-            return null;
-        }
-        if (mWinResultModels == null || mWinResultModels.size() <= 0) {
-            return null;
-        }
-        for (WinResultModel winResultModel : mWinResultModels) {
-            if (winResultModel.getUseID() == userID) {
-                return winResultModel;
-            }
-        }
-        return null;
-    }
-
 
     public VoteInfoModel getVoteInfoModel(int userID) {
         if (userID == 0) {

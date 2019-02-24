@@ -17,14 +17,16 @@ import com.component.busilib.constans.GameModeType;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.RoomData;
 import com.module.playways.rank.room.model.RecordData;
+import com.module.playways.rank.room.model.UserGameResultModel;
 import com.module.playways.rank.room.model.VoteInfoModel;
-import com.module.playways.rank.room.model.WinResultModel;
 import com.module.playways.rank.room.model.score.ScoreResultModel;
 import com.module.playways.rank.room.model.score.ScoreStateModel;
 import com.module.playways.rank.room.utils.ScoreAnimationHelp;
 import com.module.playways.rank.room.utils.ScoreConfigUtils;
 import com.module.rank.R;
 import com.zq.level.view.NormalLevelView;
+import com.zq.live.proto.Room.EWinType;
+import com.zq.live.proto.Room.UserGameResult;
 
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
@@ -147,26 +149,26 @@ public class RecordTitleView extends RelativeLayout {
                         }
                     }, throwable -> MyLog.e(throwable));
         } else if (roomData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK) {
-            Observable.fromIterable(mRecordData.mWinResultModels)
-                    .filter(new Predicate<WinResultModel>() {
+            Observable.fromIterable(mRecordData.mUserGameResultModels)
+                    .filter(new Predicate<UserGameResultModel>() {
                         @Override
-                        public boolean test(WinResultModel winResultModel) throws Exception {
-                            return winResultModel.getUseID() == MyUserInfoManager.getInstance().getUid();
+                        public boolean test(UserGameResultModel userGameResultModel) throws Exception {
+                            return userGameResultModel.getUserID() == MyUserInfoManager.getInstance().getUid();
                         }
                     })
-                    .subscribe(new Consumer<WinResultModel>() {
+                    .subscribe(new Consumer<UserGameResultModel>() {
                         @Override
-                        public void accept(WinResultModel winResultModel) throws Exception {
+                        public void accept(UserGameResultModel userGameResultModel) throws Exception {
                             Drawable drawable = null;
                             String str = "";
-                            switch (winResultModel.getType()) {
-                                case WinResultModel.Win:
+                            switch (userGameResultModel.getWinType()) {
+                                case UserGameResultModel.Win:
                                     drawable = getResources().getDrawable(R.drawable.ic_medal_win);
                                     break;
-                                case WinResultModel.Draw:
+                                case UserGameResultModel.Draw:
                                     drawable = getResources().getDrawable(R.drawable.ic_medal_draw);
                                     break;
-                                case WinResultModel.Lose:
+                                case UserGameResultModel.Lose:
                                     drawable = getResources().getDrawable(R.drawable.ic_medal_lose);
                                     break;
                             }

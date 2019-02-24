@@ -18,10 +18,11 @@ import com.module.playways.rank.room.fragment.RankRecordFragment;
 import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.RoomData;
 import com.module.playways.RoomDataUtils;
+import com.module.playways.rank.room.model.UserGameResultModel;
 import com.module.playways.rank.room.model.VoteInfoModel;
-import com.module.playways.rank.room.model.WinResultModel;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
+import com.zq.live.proto.Room.UserGameResult;
 
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
@@ -102,9 +103,9 @@ public class RecordItemView extends RelativeLayout {
 
         mRecordData = recordData;
 
-        WinResultModel winResultModel = mRecordData.mWinResultModels.get(index);
+        UserGameResultModel userGameResultModel = mRecordData.mUserGameResultModels.get(index);
 
-        VoteInfoModel voteInfoModel = mRecordData.getVoteInfoModel(winResultModel.getUseID());
+        VoteInfoModel voteInfoModel = mRecordData.getVoteInfoModel(userGameResultModel.getUserID());
 
         init();
 
@@ -122,8 +123,8 @@ public class RecordItemView extends RelativeLayout {
         mTvSingerName.setText(playerInfo.getNickname());
         mTvSongName.setText("《" + songModel.getItemName() + "》");
 
-        if (winResultModel != null) {
-            switch (winResultModel.getType()) {
+        if (userGameResultModel != null) {
+            switch (userGameResultModel.getWinType()) {
                 case 1:
                     mIvRanking.setBackground(getResources().getDrawable(R.drawable.ic_medal_win));
                     mIvRanking.setVisibility(VISIBLE);
