@@ -70,6 +70,7 @@ import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
+import com.respicker.fragment.ResPickerFragment;
 import com.trello.rxlifecycle2.android.FragmentEvent;
 import com.zq.dialog.PersonInfoDialogView;
 import com.zq.lyrics.LyricsManager;
@@ -900,23 +901,13 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                         }
 
                         if (true) {
-                            // 以后跳转到语音房
-                            Activity activity = getActivity();
-                            if (activity != null) {
-                                activity.finish();
-                            }
-                            ARouter.getInstance().build(RouterConstants.ACTIVITY_VOICEROOM)
-                                    .withSerializable("voice_room_data", mRoomData)
-                                    .navigation();
-                            StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK),
-                                    StatConstants.KEY_GAME_FINISH, null);
+                            // 先播放段位动画
+                            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankLevelChangeFragment.class)
+                                    .setAddToBackStack(true)
+                                    .setHasAnimation(false)
+                                    .addDataBeforeAdd(1, mRoomData)
+                                    .build());
                             return;
-                        }
-                        RecordData recordData = mRoomData.getRecordData();
-                        if (recordData != null && recordData.mVoteInfoModels != null && recordData.mVoteInfoModels.size() > 0) {
-                            showRecordView();
-                        } else {
-                            showVoteView();
                         }
                     }
                 }, 2250);
@@ -965,8 +956,8 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     }
 
     @Override
-    public void updateScrollBarProgress(int score,int curTotalScore,int lineNum){
-        mRankTopContainerView.setScoreProgress(score,curTotalScore,lineNum);
+    public void updateScrollBarProgress(int score, int curTotalScore, int lineNum) {
+        mRankTopContainerView.setScoreProgress(score, curTotalScore, lineNum);
     }
 
     @Override
@@ -1038,14 +1029,14 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                 if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY && play) {
                     MyLog.w(TAG, "onEventMainThread " + "play");
                     mManyLyricsView.play(mPlayingSongModel.getBeginMs());
-                    postLyricEndEvent(lyricsReader,true);
+                    postLyricEndEvent(lyricsReader, true);
                     mVoiceScaleView.setVisibility(View.VISIBLE);
                     mVoiceScaleView.startWithData(lyricsReader.getLyricsLineInfoList(), mPlayingSongModel.getBeginMs());
                 }
             } else {
                 if (play) {
                     lyricsReader.cut(mPlayingSongModel.getRankLrcBeginT(), mPlayingSongModel.getRankLrcEndT());
-                    postLyricEndEvent(lyricsReader,false);
+                    postLyricEndEvent(lyricsReader, false);
                     mRankOpView.playCountDown(mRoomData.getRealRoundSeq(), true);
 
                 }
@@ -1055,7 +1046,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         }
     }
 
-    private void postLyricEndEvent(LyricsReader lyricsReader,boolean isSelf) {
+    private void postLyricEndEvent(LyricsReader lyricsReader, boolean isSelf) {
         RoundInfoModel now = mRoomData.getRealRoundInfo();
         if (now == null) {
             return;

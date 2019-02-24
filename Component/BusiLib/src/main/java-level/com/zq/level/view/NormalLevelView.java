@@ -117,7 +117,7 @@ public class NormalLevelView extends RelativeLayout {
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(mainWidth, mainHeight);
             params.addRule(RelativeLayout.CENTER_HORIZONTAL);
             mLevelIv.setLayoutParams(params);
-            mLevelIv.setImageResource(LevelConfigUtils.getImageResoucesLevel(level));
+            mLevelIv.setBackground(getResources().getDrawable(LevelConfigUtils.getImageResoucesLevel(level)));
         }
 
         // 子段位
@@ -127,7 +127,7 @@ public class NormalLevelView extends RelativeLayout {
             params.addRule(RelativeLayout.ALIGN_BOTTOM, mLevelIv.getId());
             params.setMargins(0, 0, 0, U.getDisplayUtils().dip2px(1));
             mSubLeveIv.setLayoutParams(params);
-            mSubLeveIv.setImageResource(LevelConfigUtils.getImageResoucesSubLevel(level, subLevel));
+            mSubLeveIv.setBackground(getResources().getDrawable(LevelConfigUtils.getImageResoucesSubLevel(level, subLevel)));
         }
 
         initStart();

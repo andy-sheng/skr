@@ -12,7 +12,7 @@ public class RecordData implements Serializable {
     public ScoreResultModel mScoreResultModel;
     public List<UserGameResultModel> mUserGameResultModels;
 
-    public RecordData(List<VoteInfoModel> mVoteInfoModels, ScoreResultModel mScoreResultModel,List<UserGameResultModel> mUserGameResultModels) {
+    public RecordData(List<VoteInfoModel> mVoteInfoModels, ScoreResultModel mScoreResultModel, List<UserGameResultModel> mUserGameResultModels) {
         this.mVoteInfoModels = mVoteInfoModels;
         this.mScoreResultModel = mScoreResultModel;
         this.mUserGameResultModels = mUserGameResultModels;
@@ -38,6 +38,16 @@ public class RecordData implements Serializable {
         return false;
     }
 
+    public int getSelfWinType() {
+        for (UserGameResultModel userGameResultModel : mUserGameResultModels) {
+            if (userGameResultModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                return userGameResultModel.getWinType();
+            }
+        }
+
+        return 0;
+    }
+
     public VoteInfoModel getVoteInfoModel(int userID) {
         if (userID == 0) {
             return null;
@@ -53,7 +63,7 @@ public class RecordData implements Serializable {
         return null;
     }
 
-    public UserGameResultModel getUserGameResultModel(int userID){
+    public UserGameResultModel getUserGameResultModel(int userID) {
         if (userID == 0) {
             return null;
         }
