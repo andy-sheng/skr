@@ -20,6 +20,7 @@ public class JsRegister {
     public static final String DATA = "data";
 
     public static final String SHARE = "share";
+    public static final String BIND_WE_CHAT = "bindWeChat";
 
     BridgeWebView mBridgeWebView;
 
@@ -67,6 +68,8 @@ public class JsRegister {
 
         if(SHARE.equals(opt)){
             mJsBridgeImpl.share(paramData, callBackFunction);
+        }else if(BIND_WE_CHAT.equals(opt)){
+            mJsBridgeImpl.bindWeChat(paramData, callBackFunction);
         }
     }
 }

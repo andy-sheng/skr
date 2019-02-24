@@ -52,6 +52,12 @@ public class SharePanel {
 
     }
 
+    UMShareListener mOUMShareListener;
+
+    public void setUMShareListener(UMShareListener umShareListener){
+        mOUMShareListener = umShareListener;
+    }
+
     public void show(final ShareType shareType) {
         ShareView shareView = new ShareView(mActivity);
         shareView.setOnClickShareListener(new ShareView.OnClickShareListener() {
@@ -75,23 +81,34 @@ public class SharePanel {
     UMShareListener mUMShareListener = new UMShareListener() {
         @Override
         public void onStart(SHARE_MEDIA share_media) {
-
+            if(mOUMShareListener != null){
+                mOUMShareListener.onStart(share_media);
+            }
         }
 
         @Override
         public void onResult(SHARE_MEDIA share_media) {
             U.getToastUtil().showShort("分享成功");
+            if(mOUMShareListener != null){
+                mOUMShareListener.onResult(share_media);
+            }
         }
 
         @Override
         public void onError(SHARE_MEDIA share_media, Throwable throwable) {
             MyLog.e(TAG, throwable);
-            U.getToastUtil().showShort("分享失败");
+            if(mOUMShareListener != null){
+                mOUMShareListener.onError(share_media, throwable);
+            }
+            U.getToastUtil().showShort("分享失败, " + throwable.getMessage());
         }
 
         @Override
         public void onCancel(SHARE_MEDIA share_media) {
             U.getToastUtil().showShort("分享取消");
+            if(mOUMShareListener != null){
+                mOUMShareListener.onCancel(share_media);
+            }
         }
     };
 
