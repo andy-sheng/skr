@@ -167,17 +167,17 @@ public class RankTopContainerView2 extends RelativeLayout {
         EventBus.getDefault().unregister(this);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(PkMyBurstSuccessEvent event) {
-        MyLog.d(TAG, "PkMyBurstSuccessEvent onEvent" + " event=" + event);
-        parseBurstEvent((int) MyUserInfoManager.getInstance().getUid());
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(PkMyLightOffSuccessEvent event) {
-        MyLog.d(TAG, "PkMyLightOffSuccessEvent onEvent" + " event=" + event);
-        parseLightOffEvent((int) MyUserInfoManager.getInstance().getUid());
-    }
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void onEvent(PkMyBurstSuccessEvent event) {
+//        MyLog.d(TAG, "PkMyBurstSuccessEvent onEvent" + " event=" + event);
+//        parseBurstEvent((int) MyUserInfoManager.getInstance().getUid());
+//    }
+//
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void onEvent(PkMyLightOffSuccessEvent event) {
+//        MyLog.d(TAG, "PkMyLightOffSuccessEvent onEvent" + " event=" + event);
+//        parseLightOffEvent((int) MyUserInfoManager.getInstance().getUid());
+//    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(PkSomeOneBurstLightEvent event) {
