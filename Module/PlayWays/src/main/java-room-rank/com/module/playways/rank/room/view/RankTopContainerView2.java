@@ -47,6 +47,10 @@ public class RankTopContainerView2 extends RelativeLayout {
     ExImageView mIvGameRole;
     DialogPlus mGameRoleDialog;
 
+    RankTopLEDView mLeftLedView;
+    RankTopLEDView mMidLedView;
+    RankTopLEDView mRightLedView;
+
     RankTopContainerView1.Listener mListener;
 
     ScoreTipsView.Item mLastItem;
@@ -95,6 +99,9 @@ public class RankTopContainerView2 extends RelativeLayout {
         mIvRignt = (ExImageView) findViewById(R.id.iv_rignt);
         mEnergySlotView = (EnergySlotView) findViewById(R.id.energy_slot_view);
         mIvGameRole = (ExImageView) findViewById(R.id.iv_game_role);
+        mLeftLedView = (RankTopLEDView) findViewById(R.id.left_led_view);
+        mMidLedView = (RankTopLEDView) findViewById(R.id.mid_led_view);
+        mRightLedView = (RankTopLEDView) findViewById(R.id.right_led_view);
 
         mIvGameRole.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -245,6 +252,10 @@ public class RankTopContainerView2 extends RelativeLayout {
         mIvLeft.setImageDrawable(U.getDrawable(R.drawable.yanchang_xiaolian));
         mIvCenter.setImageDrawable(U.getDrawable(R.drawable.yanchang_xiaolian));
         mIvRignt.setImageDrawable(U.getDrawable(R.drawable.yanchang_xiaolian));
+
+        mLeftLedView.initSVGA();
+        mMidLedView.initSVGA();
+        mRightLedView.initSVGA();
         mEnergySlotView.setTarget(0, null);
         mIndex = 0;
         mCurScore = 0;
@@ -252,15 +263,28 @@ public class RankTopContainerView2 extends RelativeLayout {
     }
 
     private void setLight(int index, LightState lightState) {
+        MyLog.d(TAG, "setLight" + " index=" + index + " lightState=" + lightState);
         switch (index) {
             case 0:
                 mIvLeft.setImageDrawable(lightState == LightState.BAO ? U.getDrawable(R.drawable.yanchang_bao) : U.getDrawable(R.drawable.yanchang_mie));
+                mLeftLedView.setVisibility(GONE);
+                mMidLedView.setVisibility(GONE);
+                mRightLedView.setVisibility(GONE);
+                mLeftLedView.setSVGAMode(lightState == LightState.BAO);
                 break;
             case 1:
                 mIvCenter.setImageDrawable(lightState == LightState.BAO ? U.getDrawable(R.drawable.yanchang_bao) : U.getDrawable(R.drawable.yanchang_mie));
+                mLeftLedView.setVisibility(GONE);
+                mMidLedView.setVisibility(GONE);
+                mRightLedView.setVisibility(GONE);
+                mMidLedView.setSVGAMode(lightState == LightState.BAO);
                 break;
             case 2:
                 mIvRignt.setImageDrawable(lightState == LightState.BAO ? U.getDrawable(R.drawable.yanchang_bao) : U.getDrawable(R.drawable.yanchang_mie));
+                mLeftLedView.setVisibility(GONE);
+                mMidLedView.setVisibility(GONE);
+                mRightLedView.setVisibility(GONE);
+                mRightLedView.setSVGAMode(lightState == LightState.BAO);
                 break;
         }
     }

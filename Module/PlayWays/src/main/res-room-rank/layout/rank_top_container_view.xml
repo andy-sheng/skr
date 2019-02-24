@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:rankLED="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     tools:parentTag="android.widget.RelativeLayout">
 
     <com.common.view.ex.ExImageView
-        android:background="@drawable/yanchang_bisaiguize"
         android:id="@+id/iv_game_role"
-        android:layout_marginTop="@dimen/view_97_dp"
-        android:layout_marginLeft="@dimen/view_15_dp"
         android:layout_width="@dimen/view_24_dp"
-        android:layout_height="@dimen/view_24_dp" />
+        android:layout_height="@dimen/view_24_dp"
+        android:layout_marginLeft="@dimen/view_15_dp"
+        android:layout_marginTop="@dimen/view_97_dp"
+        android:background="@drawable/yanchang_bisaiguize" />
 
     <com.common.view.ex.ExImageView
         android:id="@+id/iv_led"
@@ -24,7 +24,6 @@
         android:background="@drawable/yanchang_xianshiping" />
 
     <RelativeLayout
-        android:gravity="center_vertical"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_56_dp"
         android:layout_alignLeft="@+id/iv_led"
@@ -32,7 +31,9 @@
         android:layout_alignRight="@+id/iv_led"
         android:layout_marginLeft="@dimen/view_17_dp"
         android:layout_marginTop="@dimen/view_11_dp"
-        android:layout_marginRight="@dimen/view_11_dp">
+        android:layout_marginRight="@dimen/view_11_dp"
+        android:gravity="center_vertical"
+        android:visibility="gone">
 
         <com.common.view.ex.ExImageView
 
@@ -80,5 +81,26 @@
         android:paddingRight="@dimen/view_6_dp"
         android:scaleType="centerInside"
         app:src_unPressed_drawable="@drawable/more" />
+
+    <com.module.playways.rank.room.view.RankTopLEDView
+        android:id="@+id/left_led_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_8_dp"
+        rankLED:position="left"></com.module.playways.rank.room.view.RankTopLEDView>
+
+    <com.module.playways.rank.room.view.RankTopLEDView
+        android:id="@+id/mid_led_view"
+        android:layout_marginTop="@dimen/view_8_dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        rankLED:position="mid"></com.module.playways.rank.room.view.RankTopLEDView>
+
+    <com.module.playways.rank.room.view.RankTopLEDView
+        android:id="@+id/right_led_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_8_dp"
+        rankLED:position="right"></com.module.playways.rank.room.view.RankTopLEDView>
 
 </merge>
