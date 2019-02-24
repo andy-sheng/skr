@@ -4,7 +4,7 @@ import com.zq.live.proto.Room.AudienceScore;
 
 import java.io.Serializable;
 
-public class ListenProgressModel implements Serializable {
+public class AudienceScoreModel implements Serializable {
     /**
      * lightType : ELT_UNKNOWN
      * progress : 0
@@ -39,8 +39,8 @@ public class ListenProgressModel implements Serializable {
         this.userID = userID;
     }
 
-    public static ListenProgressModel parse(AudienceScore audienceScore) {
-        ListenProgressModel model = new ListenProgressModel();
+    public static AudienceScoreModel parse(AudienceScore audienceScore) {
+        AudienceScoreModel model = new AudienceScoreModel();
         model.setLightType(audienceScore.getLightType().getValue());
         model.setProgress(audienceScore.getScore());
         model.setUserID(audienceScore.getUserID());

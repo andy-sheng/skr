@@ -29,7 +29,8 @@ public class UserGameResultModel implements Serializable {
     private float totalScore;
     private int userID;
     private int winType;
-    private List<ListenProgressModel> listenProgress;
+
+    private List<AudienceScoreModel> audienceScores;
 
     public boolean isIsEscape() {
         return isEscape;
@@ -79,13 +80,15 @@ public class UserGameResultModel implements Serializable {
         this.winType = winType;
     }
 
-    public List<ListenProgressModel> getListenProgress() {
-        return listenProgress;
+
+    public List<AudienceScoreModel> getAudienceScores() {
+        return audienceScores;
     }
 
-    public void setListenProgress(List<ListenProgressModel> listenProgress) {
-        this.listenProgress = listenProgress;
+    public void setAudienceScores(List<AudienceScoreModel> audienceScores) {
+        this.audienceScores = audienceScores;
     }
+
 
     public static UserGameResultModel parse(UserGameResult userGameResult) {
         UserGameResultModel gameResultModel = new UserGameResultModel();
@@ -95,24 +98,24 @@ public class UserGameResultModel implements Serializable {
         gameResultModel.setTotalScore(userGameResult.getTotalScore());
         gameResultModel.setUserID(userGameResult.getUserID());
         gameResultModel.setWinType(userGameResult.getWinType().getValue());
-        List<ListenProgressModel> listenProgressModels = new ArrayList<>();
+        List<AudienceScoreModel> listenProgressModels = new ArrayList<>();
         for (AudienceScore audienceScore : userGameResult.getAudienceScoresList()) {
-            listenProgressModels.add(ListenProgressModel.parse(audienceScore));
+            listenProgressModels.add(AudienceScoreModel.parse(audienceScore));
         }
-        gameResultModel.setListenProgress(listenProgressModels);
+        gameResultModel.setAudienceScores(listenProgressModels);
         return gameResultModel;
     }
 
     @Override
     public String toString() {
-        return "UserGameResult{" +
+        return "UserGameResultModel{" +
                 "isEscape=" + isEscape +
                 ", itemID=" + itemID +
                 ", rank=" + rank +
                 ", totalScore=" + totalScore +
                 ", userID=" + userID +
-                ", winType='" + winType + '\'' +
-                ", listenProgress=" + listenProgress +
+                ", winType=" + winType +
+                ", audienceScores=" + audienceScores +
                 '}';
     }
 }

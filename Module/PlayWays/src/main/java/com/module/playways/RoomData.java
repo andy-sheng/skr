@@ -403,6 +403,7 @@ public class RoomData implements Serializable {
         return mSingBeginTs;
     }
 
+
     @Override
     public String toString() {
         return "RoomData{" +
@@ -419,9 +420,17 @@ public class RoomData implements Serializable {
                 ", mExpectRoundInfo=" + mExpectRoundInfo +
                 ", mRealRoundInfo=" + mRealRoundInfo +
                 ", mPlayerInfoList=" + mPlayerInfoList +
+                ", mRecordData=" + mRecordData +
                 ", mIsGameFinish=" + mIsGameFinish +
+                ", mResultList=" + mResultList +
+                ", mMute=" + mMute +
+                ", mTagId=" + mTagId +
+                ", mGameConfigModel=" + mGameConfigModel +
+                ", mLeftBaoLightTimes=" + mLeftBaoLightTimes +
+                ", mLeftMieLightTimes=" + mLeftMieLightTimes +
+                ", mSongLineNum=" + mSongLineNum +
+                ", mCurSongTotalScore=" + mCurSongTotalScore +
+                ", mSingBeginTs=" + mSingBeginTs +
                 '}';
     }
-
-
 }

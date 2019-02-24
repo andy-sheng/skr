@@ -78,4 +78,21 @@ public class RecordData implements Serializable {
         return null;
     }
 
+    public int getUserIdByRank(int rank) {
+        for (UserGameResultModel userGameResultModel : mUserGameResultModels) {
+            if (userGameResultModel.getRank() == rank) {
+                return userGameResultModel.getUserID();
+            }
+        }
+        return 0;
+    }
+
+    @Override
+    public String toString() {
+        return "RecordData{" +
+                "mVoteInfoModels=" + mVoteInfoModels +
+                ", mScoreResultModel=" + mScoreResultModel +
+                ", mUserGameResultModels=" + mUserGameResultModels +
+                '}';
+    }
 }

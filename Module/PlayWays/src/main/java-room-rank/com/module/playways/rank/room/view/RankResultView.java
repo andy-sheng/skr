@@ -69,28 +69,29 @@ public class RankResultView extends RelativeLayout {
         mThirdResultTv = (ExTextView) findViewById(R.id.third_result_tv);
         mScoreArea = (RelativeLayout) findViewById(R.id.score_area);
         mPkScore = (BitmapTextView) findViewById(R.id.pk_score);
-        mPkScore.setText("11.5");
-
     }
 
-    //绑定数据
-    public void bindData(RoomData roomData) {
-        UserGameResultModel userGameResultModel = roomData.getRecordData().getUserGameResultModel(0);
-        PlayerInfoModel ownInfo = RoomDataUtils.getPlayerInfoById(roomData, userGameResultModel.getUserID());
-        if(ownInfo != null){
+    //绑定数据,表示是某个人的投票结果
+    public void bindData(RoomData roomData, int useID) {
+        if (useID == 0) {
+            return;
+        }
+        UserGameResultModel userGameResultModel = roomData.getRecordData().getUserGameResultModel(useID);
+        PlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(roomData, userGameResultModel.getUserID());
+        if (playerInfoModel != null) {
             AvatarUtils.loadAvatarByUrl(mAvatarIv,
                     AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
                             .setCircle(true)
-                            .setBorderColorBySex(ownInfo.getUserInfo().getIsMale())
+                            .setBorderColorBySex(playerInfoModel.getUserInfo().getIsMale())
                             .setBorderWidth(U.getDisplayUtils().dip2px(3))
                             .build());
-            mNameTv.setText(ownInfo.getUserInfo().getNickname());
-            mSongTv.setText(ownInfo.getSongList().get(0).getItemName());
+            mNameTv.setText(playerInfoModel.getUserInfo().getNickname());
+            mSongTv.setText(playerInfoModel.getSongList().get(0).getItemName());
         }
 
-        if(userGameResultModel.getListenProgress().size() == 3){
-            PlayerInfoModel playerInfoModel1 = RoomDataUtils.getPlayerInfoById(roomData, userGameResultModel.getListenProgress().get(0).getUserID());
-            if(playerInfoModel1 != null){
+        if (userGameResultModel.getAudienceScores().size() == 3) {
+            PlayerInfoModel playerInfoModel1 = RoomDataUtils.getPlayerInfoById(roomData, userGameResultModel.getAudienceScores().get(0).getUserID());
+            if (playerInfoModel1 != null) {
                 AvatarUtils.loadAvatarByUrl(mAvatarIvFirst,
                         AvatarUtils.newParamsBuilder(playerInfoModel1.getUserInfo().getAvatar())
                                 .setCircle(true)
@@ -99,8 +100,8 @@ public class RankResultView extends RelativeLayout {
                                 .build());
             }
 
-            PlayerInfoModel playerInfoModel2 = RoomDataUtils.getPlayerInfoById(roomData, userGameResultModel.getListenProgress().get(0).getUserID());
-            if(playerInfoModel2 != null){
+            PlayerInfoModel playerInfoModel2 = RoomDataUtils.getPlayerInfoById(roomData, userGameResultModel.getAudienceScores().get(0).getUserID());
+            if (playerInfoModel2 != null) {
                 AvatarUtils.loadAvatarByUrl(mAvatarIvSecond,
                         AvatarUtils.newParamsBuilder(playerInfoModel2.getUserInfo().getAvatar())
                                 .setCircle(true)
@@ -109,8 +110,8 @@ public class RankResultView extends RelativeLayout {
                                 .build());
             }
 
-            PlayerInfoModel playerInfoModel3 = RoomDataUtils.getPlayerInfoById(roomData, userGameResultModel.getListenProgress().get(0).getUserID());
-            if(playerInfoModel3 != null){
+            PlayerInfoModel playerInfoModel3 = RoomDataUtils.getPlayerInfoById(roomData, userGameResultModel.getAudienceScores().get(0).getUserID());
+            if (playerInfoModel3 != null) {
                 AvatarUtils.loadAvatarByUrl(mAvatarIvThree,
                         AvatarUtils.newParamsBuilder(playerInfoModel3.getUserInfo().getAvatar())
                                 .setCircle(true)

@@ -39,6 +39,7 @@ import com.module.playways.rank.room.utils.ScoreAnimationHelp;
 import com.module.playways.rank.room.view.RecordCircleView;
 import com.module.rank.R;
 import com.zq.level.view.NormalLevelView;
+import com.zq.live.proto.Room.EWinType;
 
 import java.util.List;
 
@@ -146,6 +147,14 @@ public class RankLevelChangeFragment extends BaseFragment {
     }
 
     private void animationGo() {
+        if (mRoomData.getRecordData().getSelfWinType() == EWinType.Win.getValue()) {
+            mRankResult.setBackground(getResources().getDrawable(R.drawable.zhanji_top_win));
+        } else if (mRoomData.getRecordData().getSelfWinType() == EWinType.Draw.getValue()) {
+            mRankResult.setBackground(getResources().getDrawable(R.drawable.zhanji_top_draw));
+        } else if (mRoomData.getRecordData().getSelfWinType() == EWinType.Lose.getValue()) {
+            mRankResult.setBackground(getResources().getDrawable(R.drawable.zhanji_top_loss));
+        }
+
         mMainActContainer.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -221,6 +230,7 @@ public class RankLevelChangeFragment extends BaseFragment {
         if (activity != null) {
             activity.finish();
         }
+        MyLog.d(TAG, "goVoiceRoom" + mRoomData );
         ARouter.getInstance().build(RouterConstants.ACTIVITY_VOICEROOM)
                 .withSerializable("voice_room_data", mRoomData)
                 .navigation();

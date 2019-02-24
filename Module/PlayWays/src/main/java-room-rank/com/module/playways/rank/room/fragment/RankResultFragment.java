@@ -13,6 +13,7 @@ import com.module.playways.RoomData;
 import com.module.playways.rank.room.model.UserGameResultModel;
 import com.module.playways.rank.room.view.RankResultView;
 import com.module.rank.R;
+import com.zq.live.proto.Room.EWinType;
 
 /**
  * pk战绩页面
@@ -49,9 +50,17 @@ public class RankResultFragment extends BaseFragment {
             }
         });
 
-        mFirstResult.bindData(mRoomData);
-        mSecondResult.bindData(mRoomData);
-        mThirdResult.bindData(mRoomData);
+        if (mRoomData.getRecordData().getSelfWinType() == EWinType.Win.getValue()) {
+            mResultTop.setBackground(getResources().getDrawable(R.drawable.zhanji_top_win));
+        } else if (mRoomData.getRecordData().getSelfWinType() == EWinType.Draw.getValue()) {
+            mResultTop.setBackground(getResources().getDrawable(R.drawable.zhanji_top_draw));
+        } else if (mRoomData.getRecordData().getSelfWinType() == EWinType.Lose.getValue()) {
+            mResultTop.setBackground(getResources().getDrawable(R.drawable.zhanji_top_loss));
+        }
+
+        mFirstResult.bindData(mRoomData, mRoomData.getRecordData().getUserIdByRank(1));
+        mSecondResult.bindData(mRoomData, mRoomData.getRecordData().getUserIdByRank(2));
+        mThirdResult.bindData(mRoomData, mRoomData.getRecordData().getUserIdByRank(3));
     }
 
     @Override

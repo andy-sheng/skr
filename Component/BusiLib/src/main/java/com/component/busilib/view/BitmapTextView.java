@@ -20,8 +20,8 @@ public class BitmapTextView extends View {
 
     List<Bitmap> mBitmapList = new ArrayList<>();
     int diff = U.getDisplayUtils().dip2px(5);  //两张图片的偏移量重合部分
-    int mWidth = -1;// view的宽度
-    int mHeight = -1;// view的高度
+    int mWidth = 0;// view的宽度
+    int mHeight = 0;// view的高度
 
     public BitmapTextView(Context context) {
         super(context);
@@ -90,6 +90,8 @@ public class BitmapTextView extends View {
     }
 
     public void setText(String text) {
+        mWidth = 0;
+        mHeight = 0;
         if (!TextUtils.isEmpty(text)) {
             mBitmapList.clear();
             char[] chars = text.toCharArray();
@@ -101,6 +103,7 @@ public class BitmapTextView extends View {
                 }
                 mBitmapList.add(bitmap);
             }
+            mWidth = mWidth - diff * (chars.length - 1);
             invalidate();
         }
     }
