@@ -26,6 +26,7 @@ public class Params implements Serializable {
     public static final int CHANNEL_TYPE_LIVE_BROADCASTING = Constants.CHANNEL_PROFILE_LIVE_BROADCASTING;
 
     private int channelProfile = CHANNEL_TYPE_LIVE_BROADCASTING;
+    @JSONField(serialize=false)
     private Scene scene = Scene.audiotest;
     // 是否使用唱吧的引擎
     private boolean useCbEngine = false;
@@ -91,13 +92,22 @@ public class Params implements Serializable {
     private int selfUid; // 本人在引擎中的id
     private AudioEffectStyleEnum styleEnum = null;// 混响style
     private boolean enableSpeakerphone = false;// 开启扬声器
+
+    @JSONField(serialize=false)
     private String mMixMusicFilePath;// 伴奏路径
+    @JSONField(serialize=false)
     private String mMidiPath;// midi打分文件路径
+    @JSONField(serialize=false)
     private long mMixMusicBeginOffset;// midi文件起始偏移量
-    private int mCurrentMusicTs;
-    private long mRecordCurrentMusicTsTs;
+    @JSONField(serialize=false)
+    private int mCurrentMusicTs;// 当前伴奏的偏移
+    @JSONField(serialize=false)
+    private long mRecordCurrentMusicTsTs;// 记录当前伴奏偏移的物理时间戳，在什么时间记录了这次偏移
+    @JSONField(serialize=false)
     private boolean mLrcHasStart; // 歌词是否开始
+    @JSONField(serialize=false)
     private long mJoinRoomBeginTs; // 开始加入房间的时间
+    @JSONField(serialize=false)
     private String mRecordingFromCallbackSavePath;// 保存录音的路径
 
     public static Builder newBuilder(int channelProfile) {

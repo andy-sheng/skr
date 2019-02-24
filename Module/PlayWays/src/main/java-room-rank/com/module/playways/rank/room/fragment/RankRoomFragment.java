@@ -967,11 +967,11 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     @Override
     public void playLyric(SongModel songModel, boolean play) {
-        MyLog.w(TAG, "开始播放歌词 songId=" + songModel.getItemID());
         if (songModel == null) {
             MyLog.d(TAG, "songModel 是空的");
             return;
         }
+        MyLog.w(TAG, "开始播放歌词 songId=" + songModel.getItemID());
         mPlayingSongModel = songModel;
 
         if (mPrepareLyricTask != null && !mPrepareLyricTask.isDisposed()) {
