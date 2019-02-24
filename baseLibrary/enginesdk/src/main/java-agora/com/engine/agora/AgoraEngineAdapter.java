@@ -255,12 +255,8 @@ public class AgoraEngineAdapter {
             int a = 3, b = 4;
             switch (mConfig.getScene()) {
                 case rank:
-                    if (U.getDeviceUtils().getHeadsetPlugOn()) {
-                        b = 4;
-                        mRtcEngine.setParameters("{\"che.audio.enable.aec\":true }");
-                    } else {
-                        b = 1;
-                    }
+                    b = 4;
+                    mRtcEngine.setParameters("{\"che.audio.enable.aec\":true }");
                     break;
                 case grab:
                     b = 4;
@@ -269,12 +265,8 @@ public class AgoraEngineAdapter {
                     b = 1;
                     break;
                 case audiotest:
-                    if (U.getDeviceUtils().getHeadsetPlugOn()) {
-                        b = 4;
-                        mRtcEngine.setParameters("{\"che.audio.enable.aec\":true }");
-                    } else {
-                        b = 1;
-                    }
+                    b = 4;
+                    mRtcEngine.setParameters("{\"che.audio.enable.aec\":true }");
                     break;
             }
             mRtcEngine.setAudioProfile(a, b);

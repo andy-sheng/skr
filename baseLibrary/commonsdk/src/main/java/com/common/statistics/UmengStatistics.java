@@ -93,6 +93,7 @@ public class UmengStatistics {
      * @param param
      */
     static void recordCountEvent(String eventId, Map<String, String> param) {
+        MyLog.d(TAG,"recordCountEvent" + " eventId=" + eventId + " param=" + param);
         if (TextUtils.isEmpty(eventId)) {
             MyLog.w(TAG, "eventid is empty");
             return;
