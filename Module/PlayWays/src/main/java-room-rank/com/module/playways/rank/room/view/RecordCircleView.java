@@ -289,7 +289,7 @@ public class RecordCircleView extends View {
 
     private SweepGradient generateSweepGradient() {
         SweepGradient sweepGradient = new SweepGradient(mCenterX, mCenterY,
-                new int[]{0xFFDA8E00, 0xFFFFED61},
+                new int[]{0xFF53FFFD, 0xFF106CF8},
                 new float[]{0, calculateRelativeAngleWithValue(mCreditValue) / 360}
         );
 
