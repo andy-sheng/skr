@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.app.Activity;
 import android.graphics.drawable.Animatable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,9 +16,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
-import com.common.core.account.UserAccountManager;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
@@ -28,8 +25,6 @@ import com.common.image.fresco.FrescoWorker;
 import com.common.image.fresco.IFrescoCallBack;
 import com.common.image.model.ImageFactory;
 import com.common.log.MyLog;
-import com.common.statistics.StatConstants;
-import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.HttpUtils;
 import com.common.utils.SongResUtils;
@@ -41,16 +36,15 @@ import com.facebook.fresco.animation.drawable.AnimatedDrawable2;
 import com.facebook.fresco.animation.drawable.AnimationListener;
 import com.facebook.imagepipeline.image.ImageInfo;
 import com.jakewharton.rxbinding2.view.RxView;
-import com.module.RouterConstants;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.comment.CommentView;
+import com.module.playways.rank.room.event.RankToVoiceTransformDataEvent;
 import com.module.playways.rank.room.gift.GiftBigAnimationViewGroup;
 import com.module.playways.rank.room.gift.GiftContinueViewGroup;
-import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.RoomData;
 import com.module.playways.rank.room.presenter.DownLoadScoreFilePresenter;
 import com.module.playways.rank.room.presenter.RankCorePresenter;
@@ -70,7 +64,6 @@ import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
-import com.respicker.fragment.ResPickerFragment;
 import com.trello.rxlifecycle2.android.FragmentEvent;
 import com.zq.dialog.PersonInfoDialogView;
 import com.zq.lyrics.LyricsManager;
@@ -901,6 +894,10 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                         }
 
                         if (true) {
+                            RankToVoiceTransformDataEvent event = new RankToVoiceTransformDataEvent();
+                            event.mCommentModelList = mCommentView.getComments();
+                            EventBus.getDefault().removeStickyEvent(RankToVoiceTransformDataEvent.class);
+                            EventBus.getDefault().postSticky(event);
                             // 先播放段位动画
                             U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankLevelChangeFragment.class)
                                     .setAddToBackStack(true)

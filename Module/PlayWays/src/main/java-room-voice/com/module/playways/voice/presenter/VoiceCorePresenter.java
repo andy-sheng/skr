@@ -69,31 +69,31 @@ public class VoiceCorePresenter extends RxLifeCyclePresenter {
             EngineManager.getInstance().joinRoom(mRoomData.getGameId() + "_chat", (int) UserAccountManager.getInstance().getUuidAsLong(), true);
         }
         if (mRoomData.getGameId() > 0) {
-            for (PlayerInfoModel playerInfoModel : mRoomData.getPlayerInfoList()) {
-                BasePushInfo basePushInfo = new BasePushInfo();
-                basePushInfo.setRoomID(mRoomData.getGameId());
-                basePushInfo.setSender(new UserInfo.Builder()
-                        .setUserID(playerInfoModel.getUserInfo().getUserId())
-                        .setAvatar(playerInfoModel.getUserInfo().getAvatar())
-                        .setNickName(playerInfoModel.getUserInfo().getNickname())
-                        .setSex(ESex.fromValue(playerInfoModel.getUserInfo().getSex()))
-                        .build());
-                String text = String.format("加入房间", playerInfoModel.getUserInfo().getNickname());
-                CommentMsgEvent msgEvent = new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text);
-                EventBus.getDefault().post(msgEvent);
-            }
-
-            BasePushInfo basePushInfo = new BasePushInfo();
-            basePushInfo.setRoomID(mRoomData.getGameId());
-            basePushInfo.setSender(new UserInfo.Builder()
-                    .setUserID(1)
-                    .setAvatar("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/common/system_default.png")
-                    .setNickName("系统消息")
-                    .setSex(ESex.fromValue(0))
-                    .build());
-            String text = "撕哥一声吼：请文明参赛，发现坏蛋请用力举报！";
-            CommentMsgEvent msgEvent = new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text);
-            EventBus.getDefault().post(msgEvent);
+//            for (PlayerInfoModel playerInfoModel : mRoomData.getPlayerInfoList()) {
+//                BasePushInfo basePushInfo = new BasePushInfo();
+//                basePushInfo.setRoomID(mRoomData.getGameId());
+//                basePushInfo.setSender(new UserInfo.Builder()
+//                        .setUserID(playerInfoModel.getUserInfo().getUserId())
+//                        .setAvatar(playerInfoModel.getUserInfo().getAvatar())
+//                        .setNickName(playerInfoModel.getUserInfo().getNickname())
+//                        .setSex(ESex.fromValue(playerInfoModel.getUserInfo().getSex()))
+//                        .build());
+//                String text = String.format("加入房间", playerInfoModel.getUserInfo().getNickname());
+//                CommentMsgEvent msgEvent = new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text);
+//                EventBus.getDefault().post(msgEvent);
+//            }
+//
+//            BasePushInfo basePushInfo = new BasePushInfo();
+//            basePushInfo.setRoomID(mRoomData.getGameId());
+//            basePushInfo.setSender(new UserInfo.Builder()
+//                    .setUserID(1)
+//                    .setAvatar("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/common/system_default.png")
+//                    .setNickName("系统消息")
+//                    .setSex(ESex.fromValue(0))
+//                    .build());
+//            String text = "撕哥一声吼：请文明参赛，发现坏蛋请用力举报！";
+//            CommentMsgEvent msgEvent = new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text);
+//            EventBus.getDefault().post(msgEvent);
 //            IMsgService msgService = ModuleServiceManager.getInstance().getMsgService();
 //            if (msgService != null) {
 //                msgService.syncHistoryFromChatRoom(String.valueOf(mRoomData.getGameId()), 10, true, null);

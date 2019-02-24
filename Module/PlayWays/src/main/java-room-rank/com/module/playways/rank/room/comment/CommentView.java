@@ -12,6 +12,8 @@ import android.widget.RelativeLayout;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
+import com.module.playways.rank.room.event.RankToVoiceTransformDataEvent;
+import com.module.playways.voice.activity.VoiceRoomActivity;
 import com.module.rank.R;
 import com.module.playways.rank.msg.event.CommentMsgEvent;
 import com.module.playways.RoomData;
@@ -19,6 +21,8 @@ import com.module.playways.RoomData;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.List;
 
 public class CommentView extends RelativeLayout {
     public final static String TAG = "CommentView";
@@ -134,6 +138,15 @@ public class CommentView extends RelativeLayout {
         });
         mCommentRv.setAdapter(mCommentAdapter);
         mCommentRv.addOnScrollListener(mOnScrollListener);
+
+        if(getContext() instanceof VoiceRoomActivity) {
+            RankToVoiceTransformDataEvent rankToVoiceTransformDataEvent = EventBus.getDefault().getStickyEvent(RankToVoiceTransformDataEvent.class);
+            EventBus.getDefault().removeStickyEvent(RankToVoiceTransformDataEvent.class);
+            if (rankToVoiceTransformDataEvent != null) {
+                mCommentAdapter.setDataList(rankToVoiceTransformDataEvent.mCommentModelList);
+            }
+            mCommentRv.scrollToPosition(0);
+        }
     }
 
     @Override
@@ -181,5 +194,9 @@ public class CommentView extends RelativeLayout {
 
     public RoomData getRoomData() {
         return mRoomData;
+    }
+
+    public List<CommentModel> getComments() {
+        return mCommentAdapter.getDataList();
     }
 }
