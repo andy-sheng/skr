@@ -76,14 +76,14 @@ public class JsBridgeImpl {
             }
 
             @Override
-            public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
-                function.onCallBack(getJsonObj(new Pair("errcode", "1"), new Pair("errmsg", throwable.getMessage()),
+            public void onCancel(SHARE_MEDIA share_media, int i) {
+                function.onCallBack(getJsonObj(new Pair("errcode", "1"), new Pair("errmsg", "取消授权"),
                         new Pair("data", getJsonObj(new Pair("access_token", ""), new Pair("open_id", "")))));
             }
 
             @Override
-            public void onCancel(SHARE_MEDIA share_media, int i) {
-                function.onCallBack(getJsonObj(new Pair("errcode", "2"), new Pair("errmsg", "取消授权"),
+            public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
+                function.onCallBack(getJsonObj(new Pair("errcode", "2"), new Pair("errmsg", throwable.getMessage()),
                         new Pair("data", getJsonObj(new Pair("access_token", ""), new Pair("open_id", "")))));
             }
         });
