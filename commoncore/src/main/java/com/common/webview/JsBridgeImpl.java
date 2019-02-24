@@ -36,18 +36,18 @@ public class JsBridgeImpl {
 
         String url = jsonObject.getString("url");
 
-        if ("image".equals(type)) {
+        if ("url".equals(type)) {
             String icon = jsonObject.getString("icon");
             String des = jsonObject.getString("des");
             String title = jsonObject.getString("title");
 
             SharePanel sharePanel = new SharePanel(mBaseActivity);
             sharePanel.setShareContent(icon, title, des, url);
-            sharePanel.show(ShareType.IMAGE_RUL);
-        } else if ("url".equals(type)) {
+            sharePanel.show(ShareType.URL);
+        } else if ("image".equals(type)) {
             SharePanel sharePanel = new SharePanel(mBaseActivity);
             sharePanel.setShareContent(url);
-            sharePanel.show(ShareType.URL);
+            sharePanel.show(ShareType.IMAGE_RUL);
         }
     }
 }
