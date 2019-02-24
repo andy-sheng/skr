@@ -8,6 +8,7 @@ import android.widget.RelativeLayout;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.utils.U;
+import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.view.BitmapTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -16,6 +17,7 @@ import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.room.model.UserGameResultModel;
 import com.module.rank.R;
+import com.zq.live.proto.Room.EWinType;
 
 import java.util.List;
 
@@ -26,8 +28,10 @@ public class RankResultView extends RelativeLayout {
 
     RelativeLayout mAvatarArea;
     SimpleDraweeView mAvatarIv;
+    ExImageView mResultIv;
     ExTextView mNameTv;
     ExTextView mSongTv;
+
     RelativeLayout mResultArea;
     SimpleDraweeView mAvatarIvFirst;
     ExTextView mFirstResultTv;
@@ -35,6 +39,7 @@ public class RankResultView extends RelativeLayout {
     ExTextView mSecondResultTv;
     SimpleDraweeView mAvatarIvThree;
     ExTextView mThirdResultTv;
+
     RelativeLayout mScoreArea;
     BitmapTextView mPkScore;
 
@@ -58,6 +63,7 @@ public class RankResultView extends RelativeLayout {
 
         mAvatarArea = (RelativeLayout) findViewById(R.id.avatar_area);
         mAvatarIv = (SimpleDraweeView) findViewById(R.id.avatar_iv);
+        mResultIv = (ExImageView) findViewById(R.id.result_iv);
         mNameTv = (ExTextView) findViewById(R.id.name_tv);
         mSongTv = (ExTextView) findViewById(R.id.song_tv);
         mResultArea = (RelativeLayout) findViewById(R.id.result_area);
@@ -87,6 +93,13 @@ public class RankResultView extends RelativeLayout {
                             .build());
             mNameTv.setText(playerInfoModel.getUserInfo().getNickname());
             mSongTv.setText(playerInfoModel.getSongList().get(0).getItemName());
+            if (userGameResultModel.getWinType() == EWinType.Win.getValue()) {
+                mResultIv.setBackground(getResources().getDrawable(R.drawable.ic_medal_win));
+            } else if (userGameResultModel.getWinType() == EWinType.Draw.getValue()) {
+                mResultIv.setBackground(getResources().getDrawable(R.drawable.ic_medal_draw));
+            } else if (userGameResultModel.getWinType() == EWinType.Lose.getValue()) {
+                mResultIv.setBackground(getResources().getDrawable(R.drawable.ic_medal_lose));
+            }
         }
 
         if (userGameResultModel.getAudienceScores().size() == 3) {
@@ -96,7 +109,7 @@ public class RankResultView extends RelativeLayout {
                         AvatarUtils.newParamsBuilder(playerInfoModel1.getUserInfo().getAvatar())
                                 .setCircle(true)
                                 .setBorderColorBySex(playerInfoModel1.getUserInfo().getIsMale())
-                                .setBorderWidth(U.getDisplayUtils().dip2px(3))
+                                .setBorderWidth(U.getDisplayUtils().dip2px(2))
                                 .build());
             }
 
@@ -106,7 +119,7 @@ public class RankResultView extends RelativeLayout {
                         AvatarUtils.newParamsBuilder(playerInfoModel2.getUserInfo().getAvatar())
                                 .setCircle(true)
                                 .setBorderColorBySex(playerInfoModel2.getUserInfo().getIsMale())
-                                .setBorderWidth(U.getDisplayUtils().dip2px(3))
+                                .setBorderWidth(U.getDisplayUtils().dip2px(2))
                                 .build());
             }
 
@@ -116,7 +129,7 @@ public class RankResultView extends RelativeLayout {
                         AvatarUtils.newParamsBuilder(playerInfoModel3.getUserInfo().getAvatar())
                                 .setCircle(true)
                                 .setBorderColorBySex(playerInfoModel3.getUserInfo().getIsMale())
-                                .setBorderWidth(U.getDisplayUtils().dip2px(3))
+                                .setBorderWidth(U.getDisplayUtils().dip2px(2))
                                 .build());
             }
         }
