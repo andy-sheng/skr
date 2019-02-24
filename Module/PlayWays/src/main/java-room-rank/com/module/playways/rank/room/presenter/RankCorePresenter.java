@@ -42,6 +42,7 @@ import com.module.playways.rank.msg.event.RoundOverEvent;
 import com.module.playways.rank.msg.event.SyncStatusEvent;
 import com.module.playways.rank.msg.filter.PushMsgFilter;
 import com.module.playways.rank.msg.manager.ChatRoomMsgManager;
+import com.module.playways.rank.prepare.model.DataUtils;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
@@ -603,7 +604,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                 if (RoomDataUtils.roundSeqLarger(currentInfo, mRoomData.getRealRoundInfo())) {
                     MyLog.w(TAG, "updatePlayerState" + " sync发现本地轮次信息滞后，更新");
                     // 轮次确实比当前的高，可以切换
-                    mRoomData.setExpectRoundInfo(RoomDataUtils.getRoundInfoFromRoundInfoListInRankMode(mRoomData,currentInfo));
+                    mRoomData.setExpectRoundInfo(RoomDataUtils.getRoundInfoFromRoundInfoListInRankMode(mRoomData, currentInfo));
                     mRoomData.checkRoundInRankMode();
                 } else if (RoomDataUtils.roundInfoEqual(currentInfo, mRoomData.getRealRoundInfo())) {
                     // TODO: 2019/2/21 更新本次round的数据
@@ -1125,7 +1126,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                     mIGameRuleView.playLyric(mRoomData.getSongModel(), true);
                     mIGameRuleView.showLeftTime(mRoomData.getRealRoundInfo().getSingEndMs() - mRoomData.getRealRoundInfo().getSingBeginMs());
                     MyLog.w(TAG, "本人开始唱了，歌词和伴奏响起");
-
+                    mRoomData.setSingBeginTs(System.currentTimeMillis());
                     //开始录制声音
                     if (SkrConfig.getInstance().isNeedUploadAudioForAI()) {
                         // 需要上传音频伪装成机器人
@@ -1294,7 +1295,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         if (RoomDataUtils.roundSeqLarger(event.nextRound, mRoomData.getRealRoundInfo())) {
             // 轮次确实比当前的高，可以切换
             MyLog.w(TAG, "轮次确实比当前的高，可以切换");
-            mRoomData.setExpectRoundInfo(RoomDataUtils.getRoundInfoFromRoundInfoListInRankMode(mRoomData,event.nextRound));
+            mRoomData.setExpectRoundInfo(RoomDataUtils.getRoundInfoFromRoundInfoListInRankMode(mRoomData, event.nextRound));
             mRoomData.checkRoundInRankMode();
         }
     }
@@ -1399,7 +1400,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                         mUiHandler.post(new Runnable() {
                             @Override
                             public void run() {
-                                mIGameRuleView.updateScrollBarProgress(score,mRobotScoreHelper.tryGetTotalScoreByLine(event.getLineNum()),mRobotScoreHelper.tryGetScoreLineNum());
+                                mIGameRuleView.updateScrollBarProgress(score, mRobotScoreHelper.tryGetTotalScoreByLine(event.getLineNum()), mRobotScoreHelper.tryGetScoreLineNum());
                             }
                         });
                     }
@@ -1431,7 +1432,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         long ts = EngineManager.getInstance().getAudioMixingCurrentPosition();
         machineScoreItem.setTs(ts);
         machineScoreItem.setNo(line);
-        mRoomData.setCurSongTotalScore(mRoomData.getCurSongTotalScore()+score);
+        mRoomData.setCurSongTotalScore(mRoomData.getCurSongTotalScore() + score);
         // 打分信息传输给其他人
         sendScoreToOthers(machineScoreItem);
         if (mRobotScoreHelper != null) {
@@ -1440,30 +1441,73 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         mUiHandler.post(new Runnable() {
             @Override
             public void run() {
-                mIGameRuleView.updateScrollBarProgress(score,mRoomData.getCurSongTotalScore(),mRoomData.getSongLineNum());
+                mIGameRuleView.updateScrollBarProgress(score, mRoomData.getCurSongTotalScore(), mRoomData.getSongLineNum());
             }
         });
+        //打分传给服务器
+        sendScoreToServer(score, line);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(MachineScoreEvent event) {
         //收到其他人的机器打分消息，比较复杂，暂时简单点，轮次正确就直接展示
         if (RoomDataUtils.isThisUserRound(mRoomData.getRealRoundInfo(), event.userId)) {
-            mIGameRuleView.updateScrollBarProgress(event.score,event.totalScore,event.lineNum);
+            mIGameRuleView.updateScrollBarProgress(event.score, event.totalScore, event.lineNum);
         }
     }
 
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    public void onEvent(PlayerEvent.TimeFly event) {
-//        if (!RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
-//            // 尝试算打分
-//            if (mRobotScoreHelper != null) {
-//                int score = mRobotScoreHelper.tryGetScoreByTs(event.curPostion);
-//                if (score >= 0) {
-//                    U.getToastUtil().showShort("score:" + score);
-//                    mIGameRuleView.updateScrollBarProgress(score);
-//                }
-//            }
-//        }
-//    }
+    /**
+     * 单句打分上报
+     * @param score
+     * @param line
+     */
+    public void sendScoreToServer(int score, int line) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("gameID", mRoomData.getGameId());
+        int itemID = mRoomData.getRealRoundInfo().getSongModel().getItemID();
+        map.put("itemID", itemID);
+        int mainLevel = 0;
+        PlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, MyUserInfoManager.getInstance().getUid());
+        if (playerInfoModel != null) {
+            mainLevel = playerInfoModel.getMainLevel();
+        }
+        map.put("mainLevel", mainLevel);
+        map.put("no", line);
+        map.put("roundSeq", mRoomData.getRealRoundSeq());
+        map.put("score", score);
+        long nowTs = System.currentTimeMillis();
+        int singSecond = (int) (nowTs - mRoomData.getSingBeginTs() / 1000);
+        map.put("singSecond", singSecond);
+        map.put("timeMs", nowTs);
+        map.put("userID", MyUserInfoManager.getInstance().getUid());
+        StringBuilder sb = new StringBuilder();
+        sb.append("skrer")
+                .append("|").append(MyUserInfoManager.getInstance().getUid())
+                .append("|").append(itemID)
+                .append("|").append(score)
+                .append("|").append(line)
+                .append("|").append(mRoomData.getGameId())
+                .append("|").append(mainLevel)
+                .append("|").append(singSecond)
+                .append("|").append(mRoomData.getRealRoundSeq())
+                .append("|").append(nowTs);
+        map.put("sign", U.getMD5Utils().MD5_32(sb.toString()));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        ApiMethods.subscribe(mRoomServerApi.sendPkPerSegmentResult(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    // TODO: 2018/12/13  当前postman返回的为空 待补充
+                    MyLog.w(TAG, "单句打分上报成功");
+                } else {
+                    MyLog.w(TAG, "单句打分上报失败" + result.getErrno());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                MyLog.e(e);
+            }
+        }, this);
+    }
 }
