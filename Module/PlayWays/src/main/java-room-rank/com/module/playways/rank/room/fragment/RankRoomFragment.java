@@ -806,7 +806,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         MyLog.d(TAG, "startRivalCountdown" + " uid=" + uid + " avatar=" + avatar);
         mRankTopContainerView.roundOver();
         mRankOpView.setVisibility(View.VISIBLE);
-        mRankOpView.playCountDown(mRoomData.getRealRoundSeq());
+        mRankOpView.playCountDown(mRoomData.getRealRoundSeq(), false);
         mVoiceScaleView.setVisibility(View.GONE);
         mManyLyricsView.setVisibility(View.GONE);
         mUiHanlder.removeMessages(MSG_LYRIC_END_EVENT);
@@ -1046,6 +1046,8 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                 if (play) {
                     lyricsReader.cut(mPlayingSongModel.getRankLrcBeginT(), mPlayingSongModel.getRankLrcEndT());
                     postLyricEndEvent(lyricsReader,false);
+                    mRankOpView.playCountDown(mRoomData.getRealRoundSeq(), true);
+
                 }
                 mManyLyricsView.setVisibility(View.GONE);
                 mManyLyricsView.resetData();

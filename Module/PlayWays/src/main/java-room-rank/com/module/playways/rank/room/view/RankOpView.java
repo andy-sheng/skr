@@ -108,6 +108,7 @@ public class RankOpView extends RelativeLayout {
 
     public void setRoomData(RoomData roomData) {
         mRoomData = roomData;
+        mLightOffDelayTime = mRoomData.getGameConfigModel().getpKEnableShowMLightWaitTimeMs() / 1000;
     }
 
     public void setOpListener(OpListener opListener) {
@@ -132,7 +133,7 @@ public class RankOpView extends RelativeLayout {
         }
     }
 
-    public void playCountDown(int seq) {
+    public void playCountDown(int seq, boolean startCountDown) {
         if (seq <= 0) {
             setVisibility(GONE);
             return;
@@ -153,27 +154,29 @@ public class RankOpView extends RelativeLayout {
         } else {
             mIvTurnOff.setVisibility(GONE);
             mTvCountDown.setVisibility(VISIBLE);
+            mTvCountDown.setText(mLightOffDelayTime + "");
+            if(startCountDown){
+                mCountDownTask = HandlerTaskTimer.newBuilder()
+                        .interval(1000)
+                        .take(mLightOffDelayTime)
+                        .start(new HandlerTaskTimer.ObserverW() {
+                            @Override
+                            public void onNext(Integer integer) {
+                                integer = mLightOffDelayTime - integer;
+                                if (integer == 0) {
+                                    if (mRoomData.getLeftLightOffTimes() > 0) {
+                                        mIvTurnOff.setVisibility(VISIBLE);
+                                    }
 
-            mCountDownTask = HandlerTaskTimer.newBuilder()
-                    .interval(1000)
-                    .take(mLightOffDelayTime)
-                    .start(new HandlerTaskTimer.ObserverW() {
-                        @Override
-                        public void onNext(Integer integer) {
-                            integer = mLightOffDelayTime - integer;
-                            if (integer == 0) {
-                                if (mRoomData.getLeftLightOffTimes() > 0) {
-                                    mIvTurnOff.setVisibility(VISIBLE);
+                                    mTvCountDown.setVisibility(GONE);
+                                    mTvCountDown.setText("");
+                                    return;
                                 }
 
-                                mTvCountDown.setVisibility(GONE);
-                                mTvCountDown.setText("");
-                                return;
+                                mTvCountDown.setText(integer + "");
                             }
-
-                            mTvCountDown.setText(integer + "");
-                        }
-                    });
+                        });
+            }
         }
     }
 
