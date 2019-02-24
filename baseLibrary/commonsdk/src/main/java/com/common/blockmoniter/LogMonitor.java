@@ -11,7 +11,7 @@ public class LogMonitor {
     private static LogMonitor sInstance = new LogMonitor();
     private Handler mIoHandler;
     //方法耗时的卡口,300毫秒
-    private static final long TIME_BLOCK = 400L;
+    private static final long TIME_BLOCK = 1000L;
 
     private LogMonitor() {
         HandlerThread logThread = new HandlerThread("log");

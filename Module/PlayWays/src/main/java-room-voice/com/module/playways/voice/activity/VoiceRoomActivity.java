@@ -54,6 +54,16 @@ public class VoiceRoomActivity extends BaseActivity {
                         userInfoModel.setAvatar(MyUserInfoManager.getInstance().getAvatar());
                         userInfoModel.setUserId((int) MyUserInfoManager.getInstance().getUid());
                         userInfoModel.setNickname("用户：" + i);
+                    } else if (i == 1) {
+                        userInfoModel.setAvatar("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/common/system_default.png");
+                        if (MyUserInfoManager.getInstance().getUid() == 1156569) {
+                            userInfoModel.setUserId(1738030);
+                        } else if (MyUserInfoManager.getInstance().getUid() == 1738030) {
+                            userInfoModel.setUserId(1156569);
+                        } else {
+                            userInfoModel.setUserId(1 + i * 2);
+                        }
+                        userInfoModel.setNickname("用户：" + i);
                     } else {
                         userInfoModel.setAvatar("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/common/system_default.png");
                         userInfoModel.setUserId(1 + i * 2);

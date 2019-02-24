@@ -83,6 +83,13 @@ public class PlayerInfoModel implements Serializable {
         this.isAI = playerInfo.getIsAIUser();
     }
 
+    public boolean isAI() {
+        return isAI;
+    }
+
+    public void setAI(boolean AI) {
+        isAI = AI;
+    }
 
     @Override
     public String toString() {

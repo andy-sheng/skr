@@ -184,7 +184,7 @@ public class RankTopContainerView2 extends RelativeLayout {
         parseLightOffEvent(event.uid);
     }
 
-    private void parseLightOffEvent(int uid){
+    private void parseLightOffEvent(int uid) {
         for (int i = 0; i < mStatusArr.length && i < mIndex; i++) {
             MyLog.d(TAG, "parseLightOffEvent onEvent 2");
             UserLightInfo ul = mStatusArr[i];
@@ -211,7 +211,7 @@ public class RankTopContainerView2 extends RelativeLayout {
 
     }
 
-    private void parseBurstEvent(int uid){
+    private void parseBurstEvent(int uid) {
 
         for (int i = 0; i < mStatusArr.length && i < mIndex; i++) {
             UserLightInfo ul = mStatusArr[i];
@@ -276,6 +276,7 @@ public class RankTopContainerView2 extends RelativeLayout {
     }
 
     public void setScoreProgress(int score, int curTotalScore, int lineNum) {
+        MyLog.d(TAG, "setScoreProgress" + " score=" + score + " curTotalScore=" + curTotalScore + " lineNum=" + lineNum);
         for (int i = 0; i < 1; i++) {
             score = (int) (Math.sqrt(score) * 10);
         }

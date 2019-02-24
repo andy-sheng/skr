@@ -291,11 +291,11 @@ public class LogInfoFloatPage extends BaseFloatPage implements LogInfoManager.On
         if (mLogList == null || mLogItemAdapter == null) {
             return;
         }
-        mLogInfoItems.add(infoItem);
-        if (mLogInfoItems.size() == MAX_LOG_LINE_NUM) {
-            mLogInfoItems.remove(0);
-        }
         if (accept(infoItem)) {
+            mLogInfoItems.add(infoItem);
+            if (mLogInfoItems.size() == MAX_LOG_LINE_NUM) {
+                mLogInfoItems.remove(0);
+            }
             mLogItemAdapter.append(infoItem);
             if (mLogItemAdapter.getItemCount() == MAX_LOG_LINE_NUM) {
                 mLogItemAdapter.remove(0);

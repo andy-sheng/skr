@@ -66,6 +66,9 @@ public class VoiceUserStatusContainerView extends RelativeLayout {
 
     private void bindData() {
         for (PlayerInfoModel playerInfoModel : mRoomData.getPlayerInfoList()) {
+            if (playerInfoModel.isAI()) {
+                continue;
+            }
             VoiceUserStatusView voiceUserStatusView = new VoiceUserStatusView(getContext());
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT);
             lp.weight = 1;
