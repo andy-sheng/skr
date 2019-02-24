@@ -48,6 +48,10 @@ public class RankResultFragment extends BaseFragment {
                 U.getFragmentUtils().popFragment(RankResultFragment.this);
             }
         });
+
+        mFirstResult.bindData(mRoomData);
+        mSecondResult.bindData(mRoomData);
+        mThirdResult.bindData(mRoomData);
     }
 
     @Override
