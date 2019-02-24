@@ -1,6 +1,6 @@
 package com.module.playways.rank.room.model;
 
-import com.zq.live.proto.Room.ListenProgress;
+import com.zq.live.proto.Room.AudienceScore;
 
 import java.io.Serializable;
 
@@ -11,23 +11,23 @@ public class ListenProgressModel implements Serializable {
      * userID : 0
      */
 
-    private String lightType;
-    private int progress;
+    private int lightType;
+    private float progress;
     private int userID;
 
-    public String getLightType() {
+    public int getLightType() {
         return lightType;
     }
 
-    public void setLightType(String lightType) {
+    public void setLightType(int lightType) {
         this.lightType = lightType;
     }
 
-    public int getProgress() {
+    public float getProgress() {
         return progress;
     }
 
-    public void setProgress(int progress) {
+    public void setProgress(float progress) {
         this.progress = progress;
     }
 
@@ -39,8 +39,11 @@ public class ListenProgressModel implements Serializable {
         this.userID = userID;
     }
 
-    public static ListenProgressModel parse(ListenProgress listenProgress) {
+    public static ListenProgressModel parse(AudienceScore audienceScore) {
         ListenProgressModel model = new ListenProgressModel();
+        model.setLightType(audienceScore.getLightType().getValue());
+        model.setProgress(audienceScore.getScore());
+        model.setUserID(audienceScore.getUserID());
         return model;
     }
 

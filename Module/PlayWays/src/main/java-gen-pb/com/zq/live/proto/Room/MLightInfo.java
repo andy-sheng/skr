@@ -28,7 +28,7 @@ public final class MLightInfo extends Message<MLightInfo, MLightInfo.Builder> {
 
   public static final Long DEFAULT_TIMEMS = 0L;
 
-  public static final Float DEFAULT_PROCESS = 0.0f;
+  public static final Float DEFAULT_SCORE = 0.0f;
 
   /**
    * 玩家id
@@ -55,17 +55,17 @@ public final class MLightInfo extends Message<MLightInfo, MLightInfo.Builder> {
       tag = 3,
       adapter = "com.squareup.wire.ProtoAdapter#FLOAT"
   )
-  private final Float process;
+  private final Float score;
 
-  public MLightInfo(Integer userID, Long timeMs, Float process) {
-    this(userID, timeMs, process, ByteString.EMPTY);
+  public MLightInfo(Integer userID, Long timeMs, Float score) {
+    this(userID, timeMs, score, ByteString.EMPTY);
   }
 
-  public MLightInfo(Integer userID, Long timeMs, Float process, ByteString unknownFields) {
+  public MLightInfo(Integer userID, Long timeMs, Float score, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
     this.timeMs = timeMs;
-    this.process = process;
+    this.score = score;
   }
 
   @Override
@@ -73,7 +73,7 @@ public final class MLightInfo extends Message<MLightInfo, MLightInfo.Builder> {
     Builder builder = new Builder();
     builder.userID = userID;
     builder.timeMs = timeMs;
-    builder.process = process;
+    builder.score = score;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -86,7 +86,7 @@ public final class MLightInfo extends Message<MLightInfo, MLightInfo.Builder> {
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(userID, o.userID)
         && Internal.equals(timeMs, o.timeMs)
-        && Internal.equals(process, o.process);
+        && Internal.equals(score, o.score);
   }
 
   @Override
@@ -96,7 +96,7 @@ public final class MLightInfo extends Message<MLightInfo, MLightInfo.Builder> {
       result = unknownFields().hashCode();
       result = result * 37 + (userID != null ? userID.hashCode() : 0);
       result = result * 37 + (timeMs != null ? timeMs.hashCode() : 0);
-      result = result * 37 + (process != null ? process.hashCode() : 0);
+      result = result * 37 + (score != null ? score.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -107,7 +107,7 @@ public final class MLightInfo extends Message<MLightInfo, MLightInfo.Builder> {
     StringBuilder builder = new StringBuilder();
     if (userID != null) builder.append(", userID=").append(userID);
     if (timeMs != null) builder.append(", timeMs=").append(timeMs);
-    if (process != null) builder.append(", process=").append(process);
+    if (score != null) builder.append(", score=").append(score);
     return builder.replace(0, 2, "MLightInfo{").append('}').toString();
   }
 
@@ -144,11 +144,11 @@ public final class MLightInfo extends Message<MLightInfo, MLightInfo.Builder> {
   /**
    * 演唱进度
    */
-  public Float getProcess() {
-    if(process==null){
-        return DEFAULT_PROCESS;
+  public Float getScore() {
+    if(score==null){
+        return DEFAULT_SCORE;
     }
-    return process;
+    return score;
   }
 
   /**
@@ -168,8 +168,8 @@ public final class MLightInfo extends Message<MLightInfo, MLightInfo.Builder> {
   /**
    * 演唱进度
    */
-  public boolean hasProcess() {
-    return process!=null;
+  public boolean hasScore() {
+    return score!=null;
   }
 
   public static final class Builder extends Message.Builder<MLightInfo, Builder> {
@@ -177,7 +177,7 @@ public final class MLightInfo extends Message<MLightInfo, MLightInfo.Builder> {
 
     private Long timeMs;
 
-    private Float process;
+    private Float score;
 
     public Builder() {
     }
@@ -201,14 +201,14 @@ public final class MLightInfo extends Message<MLightInfo, MLightInfo.Builder> {
     /**
      * 演唱进度
      */
-    public Builder setProcess(Float process) {
-      this.process = process;
+    public Builder setScore(Float score) {
+      this.score = score;
       return this;
     }
 
     @Override
     public MLightInfo build() {
-      return new MLightInfo(userID, timeMs, process, super.buildUnknownFields());
+      return new MLightInfo(userID, timeMs, score, super.buildUnknownFields());
     }
   }
 
@@ -221,7 +221,7 @@ public final class MLightInfo extends Message<MLightInfo, MLightInfo.Builder> {
     public int encodedSize(MLightInfo value) {
       return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.userID)
           + ProtoAdapter.SINT64.encodedSizeWithTag(2, value.timeMs)
-          + ProtoAdapter.FLOAT.encodedSizeWithTag(3, value.process)
+          + ProtoAdapter.FLOAT.encodedSizeWithTag(3, value.score)
           + value.unknownFields().size();
     }
 
@@ -229,7 +229,7 @@ public final class MLightInfo extends Message<MLightInfo, MLightInfo.Builder> {
     public void encode(ProtoWriter writer, MLightInfo value) throws IOException {
       ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.userID);
       ProtoAdapter.SINT64.encodeWithTag(writer, 2, value.timeMs);
-      ProtoAdapter.FLOAT.encodeWithTag(writer, 3, value.process);
+      ProtoAdapter.FLOAT.encodeWithTag(writer, 3, value.score);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -241,7 +241,7 @@ public final class MLightInfo extends Message<MLightInfo, MLightInfo.Builder> {
         switch (tag) {
           case 1: builder.setUserID(ProtoAdapter.UINT32.decode(reader)); break;
           case 2: builder.setTimeMs(ProtoAdapter.SINT64.decode(reader)); break;
-          case 3: builder.setProcess(ProtoAdapter.FLOAT.decode(reader)); break;
+          case 3: builder.setScore(ProtoAdapter.FLOAT.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

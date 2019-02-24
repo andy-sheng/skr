@@ -18,8 +18,8 @@ import java.lang.String;
 import java.lang.StringBuilder;
 import okio.ByteString;
 
-public final class ListenProgress extends Message<ListenProgress, ListenProgress.Builder> {
-  public static final ProtoAdapter<ListenProgress> ADAPTER = new ProtoAdapter_ListenProgress();
+public final class AudienceScore extends Message<AudienceScore, AudienceScore.Builder> {
+  public static final ProtoAdapter<AudienceScore> ADAPTER = new ProtoAdapter_AudienceScore();
 
   private static final long serialVersionUID = 0L;
 
@@ -27,7 +27,7 @@ public final class ListenProgress extends Message<ListenProgress, ListenProgress
 
   public static final ELightType DEFAULT_LIGHTTYPE = ELightType.ELT_UNKNOWN;
 
-  public static final Float DEFAULT_PROGRESS = 0.0f;
+  public static final Float DEFAULT_SCORE = 0.0f;
 
   @WireField(
       tag = 1,
@@ -45,18 +45,18 @@ public final class ListenProgress extends Message<ListenProgress, ListenProgress
       tag = 3,
       adapter = "com.squareup.wire.ProtoAdapter#FLOAT"
   )
-  private final Float progress;
+  private final Float score;
 
-  public ListenProgress(Integer userID, ELightType lightType, Float progress) {
-    this(userID, lightType, progress, ByteString.EMPTY);
+  public AudienceScore(Integer userID, ELightType lightType, Float score) {
+    this(userID, lightType, score, ByteString.EMPTY);
   }
 
-  public ListenProgress(Integer userID, ELightType lightType, Float progress,
+  public AudienceScore(Integer userID, ELightType lightType, Float score,
       ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
     this.lightType = lightType;
-    this.progress = progress;
+    this.score = score;
   }
 
   @Override
@@ -64,7 +64,7 @@ public final class ListenProgress extends Message<ListenProgress, ListenProgress
     Builder builder = new Builder();
     builder.userID = userID;
     builder.lightType = lightType;
-    builder.progress = progress;
+    builder.score = score;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -72,12 +72,12 @@ public final class ListenProgress extends Message<ListenProgress, ListenProgress
   @Override
   public boolean equals(Object other) {
     if (other == this) return true;
-    if (!(other instanceof ListenProgress)) return false;
-    ListenProgress o = (ListenProgress) other;
+    if (!(other instanceof AudienceScore)) return false;
+    AudienceScore o = (AudienceScore) other;
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(userID, o.userID)
         && Internal.equals(lightType, o.lightType)
-        && Internal.equals(progress, o.progress);
+        && Internal.equals(score, o.score);
   }
 
   @Override
@@ -87,7 +87,7 @@ public final class ListenProgress extends Message<ListenProgress, ListenProgress
       result = unknownFields().hashCode();
       result = result * 37 + (userID != null ? userID.hashCode() : 0);
       result = result * 37 + (lightType != null ? lightType.hashCode() : 0);
-      result = result * 37 + (progress != null ? progress.hashCode() : 0);
+      result = result * 37 + (score != null ? score.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -98,17 +98,17 @@ public final class ListenProgress extends Message<ListenProgress, ListenProgress
     StringBuilder builder = new StringBuilder();
     if (userID != null) builder.append(", userID=").append(userID);
     if (lightType != null) builder.append(", lightType=").append(lightType);
-    if (progress != null) builder.append(", progress=").append(progress);
-    return builder.replace(0, 2, "ListenProgress{").append('}').toString();
+    if (score != null) builder.append(", score=").append(score);
+    return builder.replace(0, 2, "AudienceScore{").append('}').toString();
   }
 
   public byte[] toByteArray() {
-    return ListenProgress.ADAPTER.encode(this);
+    return AudienceScore.ADAPTER.encode(this);
   }
 
-  public static final ListenProgress parseFrom(byte[] data) throws IOException {
-    ListenProgress c = null;
-       c = ListenProgress.ADAPTER.decode(data);
+  public static final AudienceScore parseFrom(byte[] data) throws IOException {
+    AudienceScore c = null;
+       c = AudienceScore.ADAPTER.decode(data);
     return c;
   }
 
@@ -126,11 +126,11 @@ public final class ListenProgress extends Message<ListenProgress, ListenProgress
     return lightType;
   }
 
-  public Float getProgress() {
-    if(progress==null){
-        return DEFAULT_PROGRESS;
+  public Float getScore() {
+    if(score==null){
+        return DEFAULT_SCORE;
     }
-    return progress;
+    return score;
   }
 
   public boolean hasUserID() {
@@ -141,16 +141,16 @@ public final class ListenProgress extends Message<ListenProgress, ListenProgress
     return lightType!=null;
   }
 
-  public boolean hasProgress() {
-    return progress!=null;
+  public boolean hasScore() {
+    return score!=null;
   }
 
-  public static final class Builder extends Message.Builder<ListenProgress, Builder> {
+  public static final class Builder extends Message.Builder<AudienceScore, Builder> {
     private Integer userID;
 
     private ELightType lightType;
 
-    private Float progress;
+    private Float score;
 
     public Builder() {
     }
@@ -165,40 +165,40 @@ public final class ListenProgress extends Message<ListenProgress, ListenProgress
       return this;
     }
 
-    public Builder setProgress(Float progress) {
-      this.progress = progress;
+    public Builder setScore(Float score) {
+      this.score = score;
       return this;
     }
 
     @Override
-    public ListenProgress build() {
-      return new ListenProgress(userID, lightType, progress, super.buildUnknownFields());
+    public AudienceScore build() {
+      return new AudienceScore(userID, lightType, score, super.buildUnknownFields());
     }
   }
 
-  private static final class ProtoAdapter_ListenProgress extends ProtoAdapter<ListenProgress> {
-    public ProtoAdapter_ListenProgress() {
-      super(FieldEncoding.LENGTH_DELIMITED, ListenProgress.class);
+  private static final class ProtoAdapter_AudienceScore extends ProtoAdapter<AudienceScore> {
+    public ProtoAdapter_AudienceScore() {
+      super(FieldEncoding.LENGTH_DELIMITED, AudienceScore.class);
     }
 
     @Override
-    public int encodedSize(ListenProgress value) {
+    public int encodedSize(AudienceScore value) {
       return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.userID)
           + ELightType.ADAPTER.encodedSizeWithTag(2, value.lightType)
-          + ProtoAdapter.FLOAT.encodedSizeWithTag(3, value.progress)
+          + ProtoAdapter.FLOAT.encodedSizeWithTag(3, value.score)
           + value.unknownFields().size();
     }
 
     @Override
-    public void encode(ProtoWriter writer, ListenProgress value) throws IOException {
+    public void encode(ProtoWriter writer, AudienceScore value) throws IOException {
       ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.userID);
       ELightType.ADAPTER.encodeWithTag(writer, 2, value.lightType);
-      ProtoAdapter.FLOAT.encodeWithTag(writer, 3, value.progress);
+      ProtoAdapter.FLOAT.encodeWithTag(writer, 3, value.score);
       writer.writeBytes(value.unknownFields());
     }
 
     @Override
-    public ListenProgress decode(ProtoReader reader) throws IOException {
+    public AudienceScore decode(ProtoReader reader) throws IOException {
       Builder builder = new Builder();
       long token = reader.beginMessage();
       for (int tag; (tag = reader.nextTag()) != -1;) {
@@ -212,7 +212,7 @@ public final class ListenProgress extends Message<ListenProgress, ListenProgress
             }
             break;
           }
-          case 3: builder.setProgress(ProtoAdapter.FLOAT.decode(reader)); break;
+          case 3: builder.setScore(ProtoAdapter.FLOAT.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -225,7 +225,7 @@ public final class ListenProgress extends Message<ListenProgress, ListenProgress
     }
 
     @Override
-    public ListenProgress redact(ListenProgress value) {
+    public AudienceScore redact(AudienceScore value) {
       Builder builder = value.newBuilder();
       builder.clearUnknownFields();
       return builder.build();

@@ -8,15 +8,23 @@ import java.util.List;
 
 public class MLightInfoModel implements Serializable {
     /**
-     * process : 0
+     * score : 0
      * timeMs : 0
      * userID : 0
      */
 
-    private float process;
+    private float score;
     private long timeMs;
     private int userID;
     private int seq;
+
+    public float getScore() {
+        return score;
+    }
+
+    public void setScore(float score) {
+        this.score = score;
+    }
 
     public int getSeq() {
         return seq;
@@ -26,13 +34,6 @@ public class MLightInfoModel implements Serializable {
         this.seq = seq;
     }
 
-    public float getProcess() {
-        return process;
-    }
-
-    public void setProcess(float process) {
-        this.process = process;
-    }
 
     public long getTimeMs() {
         return timeMs;
@@ -75,7 +76,7 @@ public class MLightInfoModel implements Serializable {
 
     public static MLightInfoModel parse(MLightInfo mlightInfo, int seq) {
         MLightInfoModel mLightInfoModel = new MLightInfoModel();
-        mLightInfoModel.setProcess(mlightInfo.getProcess());
+        mLightInfoModel.setScore(mlightInfo.getScore());
         mLightInfoModel.setUserID(mlightInfo.getUserID());
         mLightInfoModel.setTimeMs(mlightInfo.getTimeMs());
         mLightInfoModel.setSeq(seq);

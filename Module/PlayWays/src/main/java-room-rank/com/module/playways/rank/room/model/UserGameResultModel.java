@@ -1,6 +1,6 @@
 package com.module.playways.rank.room.model;
 
-import com.zq.live.proto.Room.ListenProgress;
+import com.zq.live.proto.Room.AudienceScore;
 import com.zq.live.proto.Room.UserGameResult;
 
 import java.io.Serializable;
@@ -23,7 +23,7 @@ public class UserGameResultModel implements Serializable {
     private int rank;
     private float totalScore;
     private int userID;
-    private String winType;
+    private int winType;
     private List<ListenProgressModel> listenProgress;
 
     public boolean isIsEscape() {
@@ -66,11 +66,11 @@ public class UserGameResultModel implements Serializable {
         this.userID = userID;
     }
 
-    public String getWinType() {
+    public int getWinType() {
         return winType;
     }
 
-    public void setWinType(String winType) {
+    public void setWinType(int winType) {
         this.winType = winType;
     }
 
@@ -89,9 +89,10 @@ public class UserGameResultModel implements Serializable {
         gameResultModel.setRank(userGameResult.getRank());
         gameResultModel.setTotalScore(userGameResult.getTotalScore());
         gameResultModel.setUserID(userGameResult.getUserID());
+        gameResultModel.setWinType(userGameResult.getWinType().getValue());
         List<ListenProgressModel> listenProgressModels = new ArrayList<>();
-        for (ListenProgress listenProgress : userGameResult.getListenProgressList()) {
-            listenProgressModels.add(ListenProgressModel.parse(listenProgress));
+        for (AudienceScore audienceScore : userGameResult.getAudienceScoresList()) {
+            listenProgressModels.add(ListenProgressModel.parse(audienceScore));
         }
         gameResultModel.setListenProgress(listenProgressModels);
         return gameResultModel;

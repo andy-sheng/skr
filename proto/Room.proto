@@ -249,17 +249,17 @@ message UserGameResult
     uint32 userID                          = 1; //用户标识
     uint32 itemID                          = 2; //演唱曲目ID
     sint32 rank                            = 3; //排名
-    repeated ListenProgress listenProgress = 4; //听歌完整度
+    repeated AudienceScore audienceScores  = 4; //观众评分
     float totalScore                       = 5; //综合评分
     EWinType winType                       = 6; //胜负平等等
     bool isEscape                          = 7; //是否逃跑
 }
 
-message ListenProgress
+message AudienceScore
 {
     uint32 userID        = 1;
     ELightType lightType = 2;
-    float progress       = 3;
+    float score       = 3;
 }
 
 enum ELightType {
@@ -402,14 +402,14 @@ message BLightInfo
 {
     uint32 userID = 1; //玩家id
     sint64 timeMs = 2; //爆灯时间戳
-    float process = 3; //演唱进度
+    float score = 3; //演唱进度
 }
 
 message MLightInfo
 {
     uint32 userID = 1; //玩家id
     sint64 timeMs = 2; //灭灯时间戳
-    float process = 3; //演唱进度
+    float score = 3; //演唱进度
 }
 
 message WantSingInfo

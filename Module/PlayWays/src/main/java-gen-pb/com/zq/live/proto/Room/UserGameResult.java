@@ -68,14 +68,14 @@ public final class UserGameResult extends Message<UserGameResult, UserGameResult
   private final Integer rank;
 
   /**
-   * 听歌完整度
+   * 观众评分
    */
   @WireField(
       tag = 4,
-      adapter = "com.zq.live.proto.Room.ListenProgress#ADAPTER",
+      adapter = "com.zq.live.proto.Room.AudienceScore#ADAPTER",
       label = WireField.Label.REPEATED
   )
-  private final List<ListenProgress> listenProgress;
+  private final List<AudienceScore> audienceScores;
 
   /**
    * 综合评分
@@ -105,18 +105,18 @@ public final class UserGameResult extends Message<UserGameResult, UserGameResult
   private final Boolean isEscape;
 
   public UserGameResult(Integer userID, Integer itemID, Integer rank,
-      List<ListenProgress> listenProgress, Float totalScore, EWinType winType, Boolean isEscape) {
-    this(userID, itemID, rank, listenProgress, totalScore, winType, isEscape, ByteString.EMPTY);
+      List<AudienceScore> audienceScores, Float totalScore, EWinType winType, Boolean isEscape) {
+    this(userID, itemID, rank, audienceScores, totalScore, winType, isEscape, ByteString.EMPTY);
   }
 
   public UserGameResult(Integer userID, Integer itemID, Integer rank,
-      List<ListenProgress> listenProgress, Float totalScore, EWinType winType, Boolean isEscape,
+      List<AudienceScore> audienceScores, Float totalScore, EWinType winType, Boolean isEscape,
       ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
     this.itemID = itemID;
     this.rank = rank;
-    this.listenProgress = Internal.immutableCopyOf("listenProgress", listenProgress);
+    this.audienceScores = Internal.immutableCopyOf("audienceScores", audienceScores);
     this.totalScore = totalScore;
     this.winType = winType;
     this.isEscape = isEscape;
@@ -128,7 +128,7 @@ public final class UserGameResult extends Message<UserGameResult, UserGameResult
     builder.userID = userID;
     builder.itemID = itemID;
     builder.rank = rank;
-    builder.listenProgress = Internal.copyOf("listenProgress", listenProgress);
+    builder.audienceScores = Internal.copyOf("audienceScores", audienceScores);
     builder.totalScore = totalScore;
     builder.winType = winType;
     builder.isEscape = isEscape;
@@ -145,7 +145,7 @@ public final class UserGameResult extends Message<UserGameResult, UserGameResult
         && Internal.equals(userID, o.userID)
         && Internal.equals(itemID, o.itemID)
         && Internal.equals(rank, o.rank)
-        && listenProgress.equals(o.listenProgress)
+        && audienceScores.equals(o.audienceScores)
         && Internal.equals(totalScore, o.totalScore)
         && Internal.equals(winType, o.winType)
         && Internal.equals(isEscape, o.isEscape);
@@ -159,7 +159,7 @@ public final class UserGameResult extends Message<UserGameResult, UserGameResult
       result = result * 37 + (userID != null ? userID.hashCode() : 0);
       result = result * 37 + (itemID != null ? itemID.hashCode() : 0);
       result = result * 37 + (rank != null ? rank.hashCode() : 0);
-      result = result * 37 + listenProgress.hashCode();
+      result = result * 37 + audienceScores.hashCode();
       result = result * 37 + (totalScore != null ? totalScore.hashCode() : 0);
       result = result * 37 + (winType != null ? winType.hashCode() : 0);
       result = result * 37 + (isEscape != null ? isEscape.hashCode() : 0);
@@ -174,7 +174,7 @@ public final class UserGameResult extends Message<UserGameResult, UserGameResult
     if (userID != null) builder.append(", userID=").append(userID);
     if (itemID != null) builder.append(", itemID=").append(itemID);
     if (rank != null) builder.append(", rank=").append(rank);
-    if (!listenProgress.isEmpty()) builder.append(", listenProgress=").append(listenProgress);
+    if (!audienceScores.isEmpty()) builder.append(", audienceScores=").append(audienceScores);
     if (totalScore != null) builder.append(", totalScore=").append(totalScore);
     if (winType != null) builder.append(", winType=").append(winType);
     if (isEscape != null) builder.append(", isEscape=").append(isEscape);
@@ -222,13 +222,13 @@ public final class UserGameResult extends Message<UserGameResult, UserGameResult
   }
 
   /**
-   * 听歌完整度
+   * 观众评分
    */
-  public List<ListenProgress> getListenProgressList() {
-    if(listenProgress==null){
-        return new java.util.ArrayList<ListenProgress>();
+  public List<AudienceScore> getAudienceScoresList() {
+    if(audienceScores==null){
+        return new java.util.ArrayList<AudienceScore>();
     }
-    return listenProgress;
+    return audienceScores;
   }
 
   /**
@@ -283,10 +283,10 @@ public final class UserGameResult extends Message<UserGameResult, UserGameResult
   }
 
   /**
-   * 听歌完整度
+   * 观众评分
    */
-  public boolean hasListenProgressList() {
-    return listenProgress!=null;
+  public boolean hasAudienceScoresList() {
+    return audienceScores!=null;
   }
 
   /**
@@ -317,7 +317,7 @@ public final class UserGameResult extends Message<UserGameResult, UserGameResult
 
     private Integer rank;
 
-    private List<ListenProgress> listenProgress;
+    private List<AudienceScore> audienceScores;
 
     private Float totalScore;
 
@@ -326,7 +326,7 @@ public final class UserGameResult extends Message<UserGameResult, UserGameResult
     private Boolean isEscape;
 
     public Builder() {
-      listenProgress = Internal.newMutableList();
+      audienceScores = Internal.newMutableList();
     }
 
     /**
@@ -354,11 +354,11 @@ public final class UserGameResult extends Message<UserGameResult, UserGameResult
     }
 
     /**
-     * 听歌完整度
+     * 观众评分
      */
-    public Builder addAllListenProgress(List<ListenProgress> listenProgress) {
-      Internal.checkElementsNotNull(listenProgress);
-      this.listenProgress = listenProgress;
+    public Builder addAllAudienceScores(List<AudienceScore> audienceScores) {
+      Internal.checkElementsNotNull(audienceScores);
+      this.audienceScores = audienceScores;
       return this;
     }
 
@@ -388,7 +388,7 @@ public final class UserGameResult extends Message<UserGameResult, UserGameResult
 
     @Override
     public UserGameResult build() {
-      return new UserGameResult(userID, itemID, rank, listenProgress, totalScore, winType, isEscape, super.buildUnknownFields());
+      return new UserGameResult(userID, itemID, rank, audienceScores, totalScore, winType, isEscape, super.buildUnknownFields());
     }
   }
 
@@ -402,7 +402,7 @@ public final class UserGameResult extends Message<UserGameResult, UserGameResult
       return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.userID)
           + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.itemID)
           + ProtoAdapter.SINT32.encodedSizeWithTag(3, value.rank)
-          + ListenProgress.ADAPTER.asRepeated().encodedSizeWithTag(4, value.listenProgress)
+          + AudienceScore.ADAPTER.asRepeated().encodedSizeWithTag(4, value.audienceScores)
           + ProtoAdapter.FLOAT.encodedSizeWithTag(5, value.totalScore)
           + EWinType.ADAPTER.encodedSizeWithTag(6, value.winType)
           + ProtoAdapter.BOOL.encodedSizeWithTag(7, value.isEscape)
@@ -414,7 +414,7 @@ public final class UserGameResult extends Message<UserGameResult, UserGameResult
       ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.userID);
       ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.itemID);
       ProtoAdapter.SINT32.encodeWithTag(writer, 3, value.rank);
-      ListenProgress.ADAPTER.asRepeated().encodeWithTag(writer, 4, value.listenProgress);
+      AudienceScore.ADAPTER.asRepeated().encodeWithTag(writer, 4, value.audienceScores);
       ProtoAdapter.FLOAT.encodeWithTag(writer, 5, value.totalScore);
       EWinType.ADAPTER.encodeWithTag(writer, 6, value.winType);
       ProtoAdapter.BOOL.encodeWithTag(writer, 7, value.isEscape);
@@ -430,7 +430,7 @@ public final class UserGameResult extends Message<UserGameResult, UserGameResult
           case 1: builder.setUserID(ProtoAdapter.UINT32.decode(reader)); break;
           case 2: builder.setItemID(ProtoAdapter.UINT32.decode(reader)); break;
           case 3: builder.setRank(ProtoAdapter.SINT32.decode(reader)); break;
-          case 4: builder.listenProgress.add(ListenProgress.ADAPTER.decode(reader)); break;
+          case 4: builder.audienceScores.add(AudienceScore.ADAPTER.decode(reader)); break;
           case 5: builder.setTotalScore(ProtoAdapter.FLOAT.decode(reader)); break;
           case 6: {
             try {
@@ -455,7 +455,7 @@ public final class UserGameResult extends Message<UserGameResult, UserGameResult
     @Override
     public UserGameResult redact(UserGameResult value) {
       Builder builder = value.newBuilder();
-      Internal.redactElements(builder.listenProgress, ListenProgress.ADAPTER);
+      Internal.redactElements(builder.audienceScores, AudienceScore.ADAPTER);
       builder.clearUnknownFields();
       return builder.build();
     }

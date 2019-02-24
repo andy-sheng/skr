@@ -71,4 +71,19 @@ public class RecordData implements Serializable {
         return null;
     }
 
+    public UserGameResultModel getUserGameResultModel(int userID){
+        if (userID == 0) {
+            return null;
+        }
+        if (mUserGameResultModels == null || mUserGameResultModels.size() <= 0) {
+            return null;
+        }
+        for (UserGameResultModel userGameResultModel : mUserGameResultModels) {
+            if (userGameResultModel.getUserID() == userID) {
+                return userGameResultModel;
+            }
+        }
+        return null;
+    }
+
 }

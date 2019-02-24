@@ -8,15 +8,23 @@ import java.util.List;
 
 public class BLightInfoModel implements Serializable {
     /**
-     * process : 0
+     * score : 0
      * timeMs : 0
      * userID : 0
      */
 
-    private float process;
+    private float score;
     private long timeMs;
     private int userID;
     private int seq;
+
+    public float getScore() {
+        return score;
+    }
+
+    public void setScore(float score) {
+        this.score = score;
+    }
 
     public int getSeq() {
         return seq;
@@ -24,14 +32,6 @@ public class BLightInfoModel implements Serializable {
 
     public void setSeq(int seq) {
         this.seq = seq;
-    }
-
-    public float getProcess() {
-        return process;
-    }
-
-    public void setProcess(float process) {
-        this.process = process;
     }
 
     public long getTimeMs() {
@@ -75,7 +75,7 @@ public class BLightInfoModel implements Serializable {
     public static BLightInfoModel parse(BLightInfo bLightInfo, int seq) {
         BLightInfoModel bLightInfoModel = new BLightInfoModel();
         bLightInfoModel.setUserID(bLightInfo.getUserID());
-        bLightInfoModel.setProcess(bLightInfo.getProcess());
+        bLightInfoModel.setScore(bLightInfo.getScore());
         bLightInfoModel.setTimeMs(bLightInfo.getTimeMs());
         bLightInfoModel.setSeq(seq);
         return bLightInfoModel;

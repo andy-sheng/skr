@@ -71,7 +71,7 @@ public final class MachineScore extends Message<MachineScore, MachineScore.Build
   private final Integer no;
 
   /**
-   * 当前分
+   * 当前分 不含爆灯灭灯
    */
   @WireField(
       tag = 5,
@@ -210,7 +210,7 @@ public final class MachineScore extends Message<MachineScore, MachineScore.Build
   }
 
   /**
-   * 当前分
+   * 当前分 不含爆灯灭灯
    */
   public Integer getCurScore() {
     if(curScore==null){
@@ -258,7 +258,7 @@ public final class MachineScore extends Message<MachineScore, MachineScore.Build
   }
 
   /**
-   * 当前分
+   * 当前分 不含爆灯灭灯
    */
   public boolean hasCurScore() {
     return curScore!=null;
@@ -320,7 +320,7 @@ public final class MachineScore extends Message<MachineScore, MachineScore.Build
     }
 
     /**
-     * 当前分
+     * 当前分 不含爆灯灭灯
      */
     public Builder setCurScore(Integer curScore) {
       this.curScore = curScore;
