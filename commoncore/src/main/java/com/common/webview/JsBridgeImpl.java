@@ -43,11 +43,11 @@ public class JsBridgeImpl {
 
             SharePanel sharePanel = new SharePanel(mBaseActivity);
             sharePanel.setShareContent(icon, title, des, url);
-            sharePanel.show(ShareType.URL);
+            sharePanel.show(ShareType.IMAGE_RUL);
         } else if ("url".equals(type)) {
             SharePanel sharePanel = new SharePanel(mBaseActivity);
             sharePanel.setShareContent(url);
-            sharePanel.show(ShareType.IMAGE_RUL);
+            sharePanel.show(ShareType.URL);
         }
     }
 }
