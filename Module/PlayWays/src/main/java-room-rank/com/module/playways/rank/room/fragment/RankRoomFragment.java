@@ -1068,6 +1068,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             msg.arg2 = 0;
             msg.obj = now;
             if (entry.getValue().getEndTime() > mPlayingSongModel.getEndMs()) {
+                //dev 环境会一下把所有都发出来
                 mUiHanlder.sendMessageDelayed(msg, mPlayingSongModel.getEndMs() - mPlayingSongModel.getBeginMs());
             } else {
                 mUiHanlder.sendMessageDelayed(msg, entry.getValue().getEndTime() - mPlayingSongModel.getBeginMs());
