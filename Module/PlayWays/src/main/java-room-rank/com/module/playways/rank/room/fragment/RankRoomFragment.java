@@ -59,7 +59,10 @@ import com.module.playways.rank.room.view.RankTopContainerView1;
 import com.module.playways.rank.room.view.TurnChangeCardView;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
+import com.opensource.svgaplayer.SVGADrawable;
+import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
+import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.OnDismissListener;
@@ -76,6 +79,7 @@ import com.zq.lyrics.widget.VoiceScaleView;
 import com.zq.report.fragment.ReportFragment;
 
 import org.greenrobot.eventbus.EventBus;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -132,7 +136,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     EnergySlotView mEnergySlotView;
 
-    BaseImageView mStageView;      //主舞台动画，webp形式
+    SVGAImageView mStageView;      //主舞台动画，webp形式
     BaseImageView mSingAvatarView; //主舞台中心，歌唱者头像
     ArcProgressBar mCountDownProcess; //主舞台中心，倒计时
 
@@ -263,7 +267,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     }
 
     private void initMainStage() {
-        mStageView = (BaseImageView) mRootView.findViewById(R.id.stage_view);
+        mStageView = (SVGAImageView) mRootView.findViewById(R.id.stage_view);
         mSingAvatarView = (BaseImageView) mRootView.findViewById(R.id.sing_avatar_view);
         mCountDownProcess = (ArcProgressBar) mRootView.findViewById(R.id.count_down_process);
     }
@@ -271,13 +275,12 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     @Override
     public void hideMainStage() {
         MyLog.d(TAG, "hideMainStage");
-        // 显示end小卡片
         mUiHanlder.postDelayed(new Runnable() {
             @Override
             public void run() {
                 // 模式改为3，自动播放主舞台退出的svga动画
 //                mUFOMode = 3;
-                hideWebpStage();
+                playhideMainStageAnimator();
                 mManyLyricsView.setVisibility(View.GONE);
             }
         }, 800);
@@ -293,9 +296,9 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         }
     }
 
-    private void hideWebpStage() {
-        MyLog.d(TAG, "hideWebpStage");
-        // 舞台退出，淡出
+    private void playhideMainStageAnimator() {
+        MyLog.d(TAG, "playhideMainStageAnimator");
+        //        // 舞台退出，淡出
         ObjectAnimator objectAnimatorStage = ObjectAnimator.ofFloat(mStageView, View.ALPHA, 1f, 0f);
         objectAnimatorStage.setDuration(1000);
         mAnimatorList.add(objectAnimatorStage);
@@ -321,6 +324,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
             @Override
             public void onAnimationEnd(Animator animator) {
+                mStageView.stopAnimation(true);
                 mStageView.setVisibility(View.GONE);
             }
 
@@ -380,79 +384,140 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         });
     }
 
+//    private void hideWebpStage() {
+//        MyLog.d(TAG, "hideWebpStage");
+//        // 舞台退出，淡出
+//        ObjectAnimator objectAnimatorStage = ObjectAnimator.ofFloat(mStageView, View.ALPHA, 1f, 0f);
+//        objectAnimatorStage.setDuration(1000);
+//        mAnimatorList.add(objectAnimatorStage);
+//        objectAnimatorStage.start();
+//
+//        // 头像退出，淡出
+//        ObjectAnimator objectAnimatorAvatar = ObjectAnimator.ofFloat(mSingAvatarView, View.ALPHA, 1f, 0f);
+//        objectAnimatorAvatar.setDuration(1000);
+//        mAnimatorList.add(objectAnimatorAvatar);
+//        objectAnimatorAvatar.start();
+//
+//        // 头像退出，淡出
+//        ObjectAnimator objectAnimatorTime = ObjectAnimator.ofFloat(mCountDownProcess, View.ALPHA, 1f, 0f);
+//        objectAnimatorTime.setDuration(1000);
+//        mAnimatorList.add(objectAnimatorTime);
+//        objectAnimatorTime.start();
+//
+//        objectAnimatorStage.addListener(new Animator.AnimatorListener() {
+//            @Override
+//            public void onAnimationStart(Animator animator) {
+//
+//            }
+//
+//            @Override
+//            public void onAnimationEnd(Animator animator) {
+//                mStageView.setVisibility(View.GONE);
+//            }
+//
+//            @Override
+//            public void onAnimationCancel(Animator animator) {
+//                onAnimationEnd(animator);
+//            }
+//
+//            @Override
+//            public void onAnimationRepeat(Animator animator) {
+//
+//            }
+//        });
+//
+//        objectAnimatorAvatar.addListener(new Animator.AnimatorListener() {
+//            @Override
+//            public void onAnimationStart(Animator animator) {
+//
+//            }
+//
+//            @Override
+//            public void onAnimationEnd(Animator animator) {
+//                mSingAvatarView.setVisibility(View.GONE);
+//            }
+//
+//            @Override
+//            public void onAnimationCancel(Animator animator) {
+//                onAnimationEnd(animator);
+//            }
+//
+//            @Override
+//            public void onAnimationRepeat(Animator animator) {
+//
+//            }
+//        });
+//
+//        objectAnimatorTime.addListener(new Animator.AnimatorListener() {
+//            @Override
+//            public void onAnimationStart(Animator animator) {
+//
+//            }
+//
+//            @Override
+//            public void onAnimationEnd(Animator animator) {
+//                mCountDownProcess.setVisibility(View.GONE);
+//            }
+//
+//            @Override
+//            public void onAnimationCancel(Animator animator) {
+//                onAnimationEnd(animator);
+//            }
+//
+//            @Override
+//            public void onAnimationRepeat(Animator animator) {
+//
+//            }
+//        });
+//    }
+
     // 播放主舞台动画,入场、循环的离场
     private void playShowMainStageAnimator() {
         MyLog.d(TAG, "playShowMainStageAnimator");
-        playWebpMainStage();
-    }
-
-    private void playWebpMainStage() {
         mStageView.setVisibility(View.VISIBLE);
         int userId = mRoomData.getRealRoundInfo().getUserID();
         String avatar = mRoomData.getUserInfo(userId).getAvatar();
-        FrescoWorker.loadImage(mStageView, ImageFactory.newHttpImage(RoomData.PK_MAIN_STAGE_WEBP)
-                .setCallBack(new IFrescoCallBack() {
-                    @Override
-                    public void processWithInfo(ImageInfo info, Animatable animatable) {
-                        if (animatable != null && animatable instanceof AnimatedDrawable2) {
-                            ((AnimatedDrawable2) animatable).setAnimationListener(new AnimationListener() {
 
-                                @Override
-                                public void onAnimationStart(AnimatedDrawable2 drawable) {
-                                    MyLog.d(TAG, "onAnimationStart" + " drawable=" + drawable);
-                                    mSingAvatarView.setVisibility(View.VISIBLE);
-                                    mCountDownProcess.setVisibility(View.VISIBLE);
-                                    // TODO: 2019/2/20  测试UI
-                                    mCountDownProcess.setProgress(75);
-                                    AvatarUtils.loadAvatarByUrl(mSingAvatarView,
-                                            AvatarUtils.newParamsBuilder(avatar)
-                                                    .setCircle(true)
-                                                    .build());
-                                    ObjectAnimator objectAnimatorStage = ObjectAnimator.ofFloat(mStageView, View.ALPHA, 0f, 1f);
-                                    objectAnimatorStage.setDuration(1000);
-                                    objectAnimatorStage.start();
-                                    mAnimatorList.add(objectAnimatorStage);
+        mStageView.setLoops(0);
+        SVGAParser parser = new SVGAParser(getContext());
+        try {
+            parser.parse("rank_stage_voice.svga", new SVGAParser.ParseCompletion() {
+                @Override
+                public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
+                    SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
+                    mStageView.setImageDrawable(drawable);
+                    mStageView.startAnimation();
+                    mSingAvatarView.setVisibility(View.VISIBLE);
+                    mCountDownProcess.setVisibility(View.VISIBLE);
+                    mCountDownProcess.restart();
+                    AvatarUtils.loadAvatarByUrl(mSingAvatarView,
+                            AvatarUtils.newParamsBuilder(avatar)
+                                    .setCircle(true)
+                                    .build());
+                    ObjectAnimator objectAnimatorStage = ObjectAnimator.ofFloat(mStageView, View.ALPHA, 0f, 1f);
+                    objectAnimatorStage.setDuration(1000);
+                    objectAnimatorStage.start();
+                    mAnimatorList.add(objectAnimatorStage);
 
-                                    ObjectAnimator objectAnimatorAvatar = ObjectAnimator.ofFloat(mSingAvatarView, View.ALPHA, 0f, 1f);
-                                    objectAnimatorAvatar.setDuration(1000);
-                                    objectAnimatorAvatar.start();
-                                    mAnimatorList.add(objectAnimatorAvatar);
+                    ObjectAnimator objectAnimatorAvatar = ObjectAnimator.ofFloat(mSingAvatarView, View.ALPHA, 0f, 1f);
+                    objectAnimatorAvatar.setDuration(1000);
+                    objectAnimatorAvatar.start();
+                    mAnimatorList.add(objectAnimatorAvatar);
 
-                                    ObjectAnimator objectAnimatorTime = ObjectAnimator.ofFloat(mCountDownProcess, View.ALPHA, 0f, 1f);
-                                    objectAnimatorTime.setDuration(1000);
-                                    objectAnimatorTime.start();
-                                    mAnimatorList.add(objectAnimatorTime);
-                                }
+                    ObjectAnimator objectAnimatorTime = ObjectAnimator.ofFloat(mCountDownProcess, View.ALPHA, 0f, 1f);
+                    objectAnimatorTime.setDuration(1000);
+                    objectAnimatorTime.start();
+                    mAnimatorList.add(objectAnimatorTime);
+                }
 
-                                @Override
-                                public void onAnimationStop(AnimatedDrawable2 drawable) {
-                                    MyLog.d(TAG, "onAnimationStop" + " drawable=" + drawable);
-                                }
+                @Override
+                public void onError() {
 
-                                @Override
-                                public void onAnimationReset(AnimatedDrawable2 drawable) {
-                                }
-
-                                @Override
-                                public void onAnimationRepeat(AnimatedDrawable2 drawable) {
-
-                                }
-
-                                @Override
-                                public void onAnimationFrame(AnimatedDrawable2 drawable, int frameNumber) {
-                                }
-                            });
-                            animatable.start();
-                        }
-                    }
-
-                    @Override
-                    public void processWithFailure() {
-                        MyLog.d(TAG, "processWithFailure");
-                    }
-                })
-                .build()
-        );
+                }
+            });
+        } catch (Exception e) {
+            System.out.print(true);
+        }
 
         RxView.clicks(mSingAvatarView)
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
@@ -462,7 +527,77 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                         showPersonInfoView(userId);
                     }
                 });
+
     }
+
+//    private void playWebpMainStage() {
+//        mStageView.setVisibility(View.VISIBLE);
+//        int userId = mRoomData.getRealRoundInfo().getUserID();
+//        String avatar = mRoomData.getUserInfo(userId).getAvatar();
+//        FrescoWorker.loadImage(mStageView, ImageFactory.newHttpImage(RoomData.PK_MAIN_STAGE_WEBP)
+//                .setCallBack(new IFrescoCallBack() {
+//                    @Override
+//                    public void processWithInfo(ImageInfo info, Animatable animatable) {
+//                        if (animatable != null && animatable instanceof AnimatedDrawable2) {
+//                            ((AnimatedDrawable2) animatable).setAnimationListener(new AnimationListener() {
+//
+//                                @Override
+//                                public void onAnimationStart(AnimatedDrawable2 drawable) {
+//                                    MyLog.d(TAG, "onAnimationStart" + " drawable=" + drawable);
+//                                    mSingAvatarView.setVisibility(View.VISIBLE);
+//                                    mCountDownProcess.setVisibility(View.VISIBLE);
+//                                    // TODO: 2019/2/20  测试UI
+//                                    mCountDownProcess.setProgress(75);
+//                                    AvatarUtils.loadAvatarByUrl(mSingAvatarView,
+//                                            AvatarUtils.newParamsBuilder(avatar)
+//                                                    .setCircle(true)
+//                                                    .build());
+//                                    ObjectAnimator objectAnimatorStage = ObjectAnimator.ofFloat(mStageView, View.ALPHA, 0f, 1f);
+//                                    objectAnimatorStage.setDuration(1000);
+//                                    objectAnimatorStage.start();
+//                                    mAnimatorList.add(objectAnimatorStage);
+//
+//                                    ObjectAnimator objectAnimatorAvatar = ObjectAnimator.ofFloat(mSingAvatarView, View.ALPHA, 0f, 1f);
+//                                    objectAnimatorAvatar.setDuration(1000);
+//                                    objectAnimatorAvatar.start();
+//                                    mAnimatorList.add(objectAnimatorAvatar);
+//
+//                                    ObjectAnimator objectAnimatorTime = ObjectAnimator.ofFloat(mCountDownProcess, View.ALPHA, 0f, 1f);
+//                                    objectAnimatorTime.setDuration(1000);
+//                                    objectAnimatorTime.start();
+//                                    mAnimatorList.add(objectAnimatorTime);
+//                                }
+//
+//                                @Override
+//                                public void onAnimationStop(AnimatedDrawable2 drawable) {
+//                                    MyLog.d(TAG, "onAnimationStop" + " drawable=" + drawable);
+//                                }
+//
+//                                @Override
+//                                public void onAnimationReset(AnimatedDrawable2 drawable) {
+//                                }
+//
+//                                @Override
+//                                public void onAnimationRepeat(AnimatedDrawable2 drawable) {
+//
+//                                }
+//
+//                                @Override
+//                                public void onAnimationFrame(AnimatedDrawable2 drawable, int frameNumber) {
+//                                }
+//                            });
+//                            animatable.start();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void processWithFailure() {
+//                        MyLog.d(TAG, "processWithFailure");
+//                    }
+//                })
+//                .build()
+//        );
+//    }
 
     private void initInputView() {
         mInputContainerView = mRootView.findViewById(R.id.input_container_view);

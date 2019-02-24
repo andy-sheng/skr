@@ -45,12 +45,14 @@
             android:layout_marginTop="@dimen/view_4_dp"
             android:visibility="gone" />
 
-        <com.common.image.fresco.BaseImageView
+        <com.opensource.svgaplayer.SVGAImageView
             android:id="@+id/stage_view"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/view_140_dp"
-            android:layout_marginTop="@dimen/view_155_dp"
-            android:visibility="gone" />
+            android:layout_height="@dimen/view_180_dp"
+            android:layout_marginTop="@dimen/view_135_dp"
+            android:visibility="gone"
+            app:antiAlias="true"
+            app:autoPlay="false" />
 
         <com.common.image.fresco.BaseImageView
             android:id="@+id/sing_avatar_view"
@@ -118,13 +120,13 @@
         android:layout_height="match_parent" />
 
     <com.module.playways.rank.room.view.RankOpView
-        android:visibility="gone"
         android:id="@+id/rank_op_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/view_160_dp" />
+        android:layout_marginBottom="@dimen/view_160_dp"
+        android:visibility="gone" />
 
     <ImageView
         android:id="@+id/end_game_iv"
