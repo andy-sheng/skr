@@ -758,7 +758,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         mUiHanlder.post(new Runnable() {
             @Override
             public void run() {
-                mIGrabView.roundOver(event.lastRoundInfo.getOverReason(), event.lastRoundInfo.getResultType(), false, null);
+                mIGrabView.roundOver(event.lastRoundInfo.getSongModel().getItemID(),event.lastRoundInfo.getOverReason(), event.lastRoundInfo.getResultType(), false, null);
             }
         });
         // 销毁引擎，减小成本
@@ -790,7 +790,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 mUiHanlder.post(new Runnable() {
                     @Override
                     public void run() {
-                        mIGrabView.roundOver(event.lastRoundInfo.getOverReason(), event.lastRoundInfo.getResultType(), true, now);
+                        mIGrabView.roundOver(event.lastRoundInfo.getSongModel().getItemID(),event.lastRoundInfo.getOverReason(), event.lastRoundInfo.getResultType(), true, now);
                     }
                 });
 

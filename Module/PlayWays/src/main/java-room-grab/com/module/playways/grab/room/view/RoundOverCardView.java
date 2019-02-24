@@ -9,6 +9,7 @@ import com.common.core.account.UserAccountManager;
 import com.common.statistics.StatConstants;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
+import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.fragment.GrabRoomFragment;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.rank.R;
@@ -21,6 +22,8 @@ import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.zq.live.proto.Room.EQRoundOverReason;
 
 import org.greenrobot.greendao.annotation.NotNull;
+
+import java.util.HashMap;
 
 /**
  * 轮次结束
@@ -68,22 +71,22 @@ public class RoundOverCardView extends RelativeLayout {
         mSingResultSvga = (SVGAImageView) findViewById(R.id.sing_result_svga);
     }
 
-    public void bindData(int reason, int resultType, SVGAListener listener) {
+    public void bindData(int songId,int reason, int resultType, SVGAListener listener) {
         this.mSVGAListener = listener;
         setVisibility(VISIBLE);
         int mode = getRoundOver(reason, resultType);
         switch (mode) {
             case NONE_SING_END:
-                startNoneSing();
+                startNoneSing(songId);
                 break;
             case SING_PERFECT_END:
-                startPerfect();
+                startPerfect(songId);
                 break;
             case SING_MOMENT_END:
             case SING_NO_PASS_END:
             case SING_PASS_END:
             case SING_ENOUGH_END:
-                startFailed(mode);
+                startFailed(mode,songId);
                 break;
             default:
                 if (mSVGAListener != null) {
@@ -101,10 +104,12 @@ public class RoundOverCardView extends RelativeLayout {
         }
     }
 
-    private void startNoneSing() {
+    private void startNoneSing(int songId) {
         U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.nobodywants);
+        HashMap map = new HashMap();
+        map.put("song_id",songId);
         StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-                StatConstants.KEY_SONG_NO_ONE, null);
+                StatConstants.KEY_SONG_NO_ONE, map);
         mNoneSingSvga.setVisibility(VISIBLE);
         mNoneSingSvga.setLoops(1);
         SVGAParser parser = new SVGAParser(getContext());
@@ -159,10 +164,12 @@ public class RoundOverCardView extends RelativeLayout {
     }
 
     // 优秀, 目前缺动画
-    private void startPerfect() {
+    private void startPerfect(int songId) {
         U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.success);
+        HashMap map = new HashMap();
+        map.put("song_id",songId);
         StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-                StatConstants.KEY_SONG_SUCCESS, null);
+                StatConstants.KEY_SONG_SUCCESS, map);
         mSingResultSvga.setVisibility(VISIBLE);
         mSingResultSvga.setLoops(1);
         SVGAParser parser = new SVGAParser(getContext());
@@ -217,10 +224,12 @@ public class RoundOverCardView extends RelativeLayout {
     }
 
     // 不够优秀，换字即可，目前缺动画
-    private void startFailed(int model) {
+    private void startFailed(int model,int songId) {
         U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.lose);
+        HashMap map = new HashMap();
+        map.put("song_id",songId);
         StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-                StatConstants.KEY_SONG_FAIL, null);
+                StatConstants.KEY_SONG_FAIL, map);
         mSingResultSvga.setVisibility(VISIBLE);
         mSingResultSvga.setLoops(1);
         SVGAParser parser = new SVGAParser(getContext());

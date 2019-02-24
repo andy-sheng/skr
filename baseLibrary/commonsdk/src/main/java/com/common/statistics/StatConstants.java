@@ -26,5 +26,4 @@ public interface StatConstants {
     String KEY_SONG_NO_ONE = "song_noone";
     String KEY_SONG_SUCCESS = "song_success";
     String KEY_SONG_FAIL = "song_fail";
-
 }

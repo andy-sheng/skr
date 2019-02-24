@@ -3,6 +3,7 @@ package com.common.statistics;
 import android.app.Activity;
 import android.text.TextUtils;
 
+import com.common.cache.LruCache;
 import com.common.log.MyLog;
 import com.xiaomi.mistatistic.sdk.MiStatInterface;
 
@@ -20,6 +21,11 @@ public class StatisticsAdapter {
 
     static boolean useXiaomi = false;
     static boolean userUmeng = true;
+    /**
+     * 去抖动，防止因为某些bug，快速的重复打某个点，
+     * 比如某些情况下 Fragment 的 onresume 调用了多次
+     */
+    static LruCache<String, Long> debounceLruCache = new LruCache<>(10);
 
     public static void recordSessionStart(Activity activity, String simpleName) {
         if (useXiaomi) {
@@ -77,7 +83,14 @@ public class StatisticsAdapter {
             if (!TextUtils.isEmpty(category)) {
                 s = category + "_" + key;
             }
-            UmengStatistics.recordCountEvent(s, params);
+            Long ts = debounceLruCache.get(s);
+            long now = System.currentTimeMillis();
+            if (ts != null && now - ts < 400) {
+                MyLog.d(TAG, "recordCountEvent 删除" + s + ",去抖动");
+            } else {
+                debounceLruCache.put(s, now);
+                UmengStatistics.recordCountEvent(s, params);
+            }
         }
     }
 
@@ -107,10 +120,10 @@ public class StatisticsAdapter {
     }
 
     public static void recordPropertyEvent(String category, String key, String value) {
-        if(useXiaomi) {
+        if (useXiaomi) {
             MiStatInterface.recordStringPropertyEvent(category, key, value);
         }
-        if(userUmeng){
+        if (userUmeng) {
 
         }
     }

@@ -34,7 +34,7 @@ public interface IGrabView {
      * @param reason               原因
      * @param playNextSongInfoCard 是否播放下一场抢唱的歌曲卡片
      */
-    void roundOver(int reason, int reasonType, boolean playNextSongInfoCard, RoundInfoModel now);
+    void roundOver(int songId,int reason, int reasonType, boolean playNextSongInfoCard, RoundInfoModel now);
 
     void updateUserState(List<OnlineInfoModel> jsonOnLineInfoList);
 

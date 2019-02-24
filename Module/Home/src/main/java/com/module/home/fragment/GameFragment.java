@@ -259,6 +259,7 @@ public class GameFragment extends BaseFragment {
         super.onFragmentVisible();
         initRankLevel();
         initOperationArea();
+        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_HOME), StatConstants.KEY_EXPOSE, null);
     }
 
     private void initRankLevel() {

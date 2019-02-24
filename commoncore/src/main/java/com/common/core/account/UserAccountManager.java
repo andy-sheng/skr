@@ -12,7 +12,6 @@ import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoLocalApi;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.MyUserInfoServerApi;
-import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -52,7 +51,7 @@ public class UserAccountManager {
 
     private boolean mHasloadAccountFromDB = false;//有没有尝试load过账号
 
-    private boolean isOldAccount = false; //是否是老账号
+    private int mOldOrNewAccount = 0;
 
     private static class UserAccountManagerHolder {
         private static final UserAccountManager INSTANCE = new UserAccountManager();
@@ -178,28 +177,26 @@ public class UserAccountManager {
     }
 
     // 是否是老账号
-    private boolean isOldAccount() {
-        if (isOldAccount) {
-            return true;
-        }
-
-        long firstLoginTime = U.getPreferenceUtils().getSettingLong("first_login_time", 0);
-        if (firstLoginTime == 0) {
-            return true;
-        } else {
-            long diff = U.getDateTimeUtils().getDayDiff(System.currentTimeMillis(), firstLoginTime);
-            if (diff <= 1) {
-                isOldAccount = false;
-                return false;
+    private boolean isNewAccount() {
+        if (mOldOrNewAccount == 0) {
+            long firstLoginTime = U.getPreferenceUtils().getSettingLong("first_login_time", 0);
+            if (System.currentTimeMillis() - firstLoginTime > 24 * 3600 * 1000) {
+                mOldOrNewAccount = 2;
             } else {
-                isOldAccount = true;
-                return true;
+                // 一天内的算新用户
+                mOldOrNewAccount = 1;
             }
         }
+        if (mOldOrNewAccount == 1) {
+            return true;
+        }
+        return false;
+
+
     }
 
     public String getGategory(String category) {
-        return isOldAccount() ? ("old_" + category) : ("new_" + category);
+        return isNewAccount() ? ("new_" + category) : ("old_" + category);
     }
 
     // 手机登录
