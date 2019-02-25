@@ -48,39 +48,7 @@ public class RankTopLEDView extends RelativeLayout {
     // 初始状态
     public void initSVGA() {
         mDengSvga.stopAnimation(true);
-        setVisibility(VISIBLE);
-        String assetsName = "rank_love_left_beat.svga";
-        switch (postion) {
-            case 0:
-                assetsName = "rank_love_left_beat.svga";
-                break;
-            case 1:
-                assetsName = "rank_love_mid_beat.svga";
-                break;
-            case 2:
-                assetsName = "rank_love_right_beat.svga";
-                break;
-        }
-        mDengSvga.setVisibility(VISIBLE);
-        mDengSvga.setLoops(0);
-        SVGAParser parser = new SVGAParser(getContext());
-        try {
-            parser.parse(assetsName, new SVGAParser.ParseCompletion() {
-                @Override
-                public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
-                    SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
-                    mDengSvga.setImageDrawable(drawable);
-                    mDengSvga.startAnimation();
-                }
-
-                @Override
-                public void onError() {
-
-                }
-            });
-        } catch (Exception e) {
-            System.out.print(true);
-        }
+        setVisibility(GONE);
     }
 
     // 爆灯或者灭灯
@@ -131,6 +99,9 @@ public class RankTopLEDView extends RelativeLayout {
                 if (mDengSvga != null) {
                     mDengSvga.stopAnimation(false);
                 }
+                if (isBao) {
+                    playBaoDengAnimation();
+                }
             }
 
             @Override
@@ -145,6 +116,41 @@ public class RankTopLEDView extends RelativeLayout {
 
             }
         });
+    }
+
+    private void playBaoDengAnimation() {
+        String assetsName = "rank_love_left_beat.svga";
+        switch (postion) {
+            case 0:
+                assetsName = "rank_love_left_beat.svga";
+                break;
+            case 1:
+                assetsName = "rank_love_mid_beat.svga";
+                break;
+            case 2:
+                assetsName = "rank_love_right_beat.svga";
+                break;
+        }
+        mDengSvga.setVisibility(VISIBLE);
+        mDengSvga.setLoops(0);
+        SVGAParser parser = new SVGAParser(getContext());
+        try {
+            parser.parse(assetsName, new SVGAParser.ParseCompletion() {
+                @Override
+                public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
+                    SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
+                    mDengSvga.setImageDrawable(drawable);
+                    mDengSvga.startAnimation();
+                }
+
+                @Override
+                public void onError() {
+
+                }
+            });
+        } catch (Exception e) {
+            System.out.print(true);
+        }
     }
 
     @Override

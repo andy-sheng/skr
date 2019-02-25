@@ -249,6 +249,7 @@ public class RankTopContainerView2 extends RelativeLayout {
 
     //轮次结束
     public void roundOver() {
+        MyLog.d(TAG, "roundOver" );
         mIvLeft.setImageDrawable(U.getDrawable(R.drawable.yanchang_xiaolian));
         mIvCenter.setImageDrawable(U.getDrawable(R.drawable.yanchang_xiaolian));
         mIvRignt.setImageDrawable(U.getDrawable(R.drawable.yanchang_xiaolian));
@@ -267,23 +268,14 @@ public class RankTopContainerView2 extends RelativeLayout {
         switch (index) {
             case 0:
                 mIvLeft.setImageDrawable(lightState == LightState.BAO ? U.getDrawable(R.drawable.yanchang_bao) : U.getDrawable(R.drawable.yanchang_mie));
-                mLeftLedView.setVisibility(GONE);
-                mMidLedView.setVisibility(GONE);
-                mRightLedView.setVisibility(GONE);
                 mLeftLedView.setSVGAMode(lightState == LightState.BAO);
                 break;
             case 1:
                 mIvCenter.setImageDrawable(lightState == LightState.BAO ? U.getDrawable(R.drawable.yanchang_bao) : U.getDrawable(R.drawable.yanchang_mie));
-                mLeftLedView.setVisibility(GONE);
-                mMidLedView.setVisibility(GONE);
-                mRightLedView.setVisibility(GONE);
                 mMidLedView.setSVGAMode(lightState == LightState.BAO);
                 break;
             case 2:
                 mIvRignt.setImageDrawable(lightState == LightState.BAO ? U.getDrawable(R.drawable.yanchang_bao) : U.getDrawable(R.drawable.yanchang_mie));
-                mLeftLedView.setVisibility(GONE);
-                mMidLedView.setVisibility(GONE);
-                mRightLedView.setVisibility(GONE);
                 mRightLedView.setSVGAMode(lightState == LightState.BAO);
                 break;
         }
