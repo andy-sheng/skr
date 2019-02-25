@@ -112,7 +112,7 @@ public class RoundOverCardView extends RelativeLayout {
                 StatConstants.KEY_SONG_NO_ONE, map);
         mNoneSingSvga.setVisibility(VISIBLE);
         mNoneSingSvga.setLoops(1);
-        SVGAParser parser = new SVGAParser(getContext());
+        SVGAParser parser = new SVGAParser(U.app());
         try {
             parser.parse("grab_none_sing_end.svga", new SVGAParser.ParseCompletion() {
                 @Override
@@ -172,7 +172,7 @@ public class RoundOverCardView extends RelativeLayout {
                 StatConstants.KEY_SONG_SUCCESS, map);
         mSingResultSvga.setVisibility(VISIBLE);
         mSingResultSvga.setLoops(1);
-        SVGAParser parser = new SVGAParser(getContext());
+        SVGAParser parser = new SVGAParser(U.app());
         try {
             parser.parse("grab_sing_sucess_end.svga", new SVGAParser.ParseCompletion() {
                 @Override
@@ -232,7 +232,7 @@ public class RoundOverCardView extends RelativeLayout {
                 StatConstants.KEY_SONG_FAIL, map);
         mSingResultSvga.setVisibility(VISIBLE);
         mSingResultSvga.setLoops(1);
-        SVGAParser parser = new SVGAParser(getContext());
+        SVGAParser parser = new SVGAParser(U.app());
         try {
             parser.parse("grab_sing_fail_end.svga", new SVGAParser.ParseCompletion() {
                 @Override

@@ -186,7 +186,7 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
         mSvgaMatchBg.setVisibility(View.VISIBLE);
         mSvgaMatchBg.setLoops(1);
 
-        SVGAParser parser = new SVGAParser(getContext());
+        SVGAParser parser = new SVGAParser(U.app());
         try {
             parser.parse("grab_matching.svga", new SVGAParser.ParseCompletion() {
                 @Override

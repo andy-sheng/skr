@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 import com.common.log.MyLog;
+import com.common.utils.U;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGACallback;
@@ -66,7 +67,7 @@ public class TurnInfoCardView extends RelativeLayout {
         mFirstSvga.clearAnimation();
         mFirstSvga.setVisibility(VISIBLE);
         mFirstSvga.setLoops(1);
-        SVGAParser parser = new SVGAParser(getContext());
+        SVGAParser parser = new SVGAParser(U.app());
         try {
             parser.parse("grab_battle_start.svga", new SVGAParser.ParseCompletion() {
                 @Override
@@ -120,7 +121,7 @@ public class TurnInfoCardView extends RelativeLayout {
         mNextSvga.clearAnimation();
         mNextSvga.setVisibility(VISIBLE);
         mNextSvga.setLoops(1);
-        SVGAParser parser = new SVGAParser(getContext());
+        SVGAParser parser = new SVGAParser(U.app());
         try {
             parser.parse("grab_battle_next.svga", new SVGAParser.ParseCompletion() {
                 @Override

@@ -303,7 +303,7 @@ public class SelfSingCardView extends RelativeLayout {
         setVisibility(VISIBLE);
         mSingBgSvga.setVisibility(VISIBLE);
         mSingBgSvga.setLoops(0);
-        SVGAParser parser = new SVGAParser(getContext());
+        SVGAParser parser = new SVGAParser(U.app());
         try {
             parser.parse("grab_self_sing_bg.svga", new SVGAParser.ParseCompletion() {
                 @Override

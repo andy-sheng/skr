@@ -181,7 +181,7 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
     private void playTopSvgaAnimation() {
         mTopSvgaView.setVisibility(VISIBLE);
         mTopSvgaView.setLoops(1);
-        SVGAParser parser = new SVGAParser(getContext());
+        SVGAParser parser = new SVGAParser(U.app());
         try {
             parser.parse("match_sucess_top.svga", new SVGAParser.ParseCompletion() {
                 @Override

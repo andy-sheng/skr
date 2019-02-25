@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
+import com.common.utils.U;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGADrawable;
@@ -69,7 +70,7 @@ public class RankTopLEDView extends RelativeLayout {
         }
         mDengSvga.setVisibility(VISIBLE);
         mDengSvga.setLoops(1);
-        SVGAParser parser = new SVGAParser(getContext());
+        SVGAParser parser = new SVGAParser(U.app());
         try {
             parser.parse(assetsName, new SVGAParser.ParseCompletion() {
                 @Override
@@ -133,7 +134,7 @@ public class RankTopLEDView extends RelativeLayout {
         }
         mDengSvga.setVisibility(VISIBLE);
         mDengSvga.setLoops(0);
-        SVGAParser parser = new SVGAParser(getContext());
+        SVGAParser parser = new SVGAParser(U.app());
         try {
             parser.parse(assetsName, new SVGAParser.ParseCompletion() {
                 @Override

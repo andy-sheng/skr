@@ -95,7 +95,7 @@ public class SongInfoCardView extends RelativeLayout {
 
         mSongCover.setVisibility(VISIBLE);
         mSongCover.setLoops(0);
-        SVGAParser parser = new SVGAParser(getContext());
+        SVGAParser parser = new SVGAParser(U.app());
         try {
             parser.parse("grab_record_player.svga", new SVGAParser.ParseCompletion() {
                 @Override

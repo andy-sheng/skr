@@ -285,7 +285,7 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
 
     private SVGAParser getSVGAParser() {
         if (mSVGAParser == null) {
-            mSVGAParser = new SVGAParser(getActivity());
+            mSVGAParser = new SVGAParser(U.app());
             mSVGAParser.setFileDownloader(new SVGAParser.FileDownloader() {
                 @Override
                 public void resume(final URL url, final Function1<? super InputStream, Unit> complete, final Function1<? super Exception, Unit> failure) {

@@ -479,7 +479,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         String avatar = mRoomData.getUserInfo(userId).getAvatar();
 
         mStageView.setLoops(0);
-        SVGAParser parser = new SVGAParser(getContext());
+        SVGAParser parser = new SVGAParser(U.app());
         try {
             parser.parse("rank_stage_voice.svga", new SVGAParser.ParseCompletion() {
                 @Override
@@ -755,7 +755,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     private SVGAParser getSVGAParser() {
         if (mSVGAParser == null) {
-            mSVGAParser = new SVGAParser(getActivity());
+            mSVGAParser = new SVGAParser(U.app());
             mSVGAParser.setFileDownloader(new SVGAParser.FileDownloader() {
                 @Override
                 public void resume(final URL url, final Function1<? super InputStream, Unit> complete, final Function1<? super Exception, Unit> failure) {

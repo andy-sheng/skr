@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
+import com.common.utils.U;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGACallback;
@@ -48,7 +49,7 @@ public class GrabGameOverView extends RelativeLayout {
         mEndGameIv.clearAnimation();
         mEndGameIv.setVisibility(VISIBLE);
         mEndGameIv.setLoops(1);
-        SVGAParser parser = new SVGAParser(getContext());
+        SVGAParser parser = new SVGAParser(U.app());
         try {
             parser.parse("grab_game_over.svga", new SVGAParser.ParseCompletion() {
                 @Override

@@ -64,7 +64,7 @@ public class SingBeginTipsCardView extends RelativeLayout {
     public void bindData(UserInfoModel info, SVGAListener listener) {
         this.mSVGAListener = listener;
         setVisibility(VISIBLE);
-        SVGAParser parser = new SVGAParser(getContext());
+        SVGAParser parser = new SVGAParser(U.app());
         String assetsName = "grab_sing_self_chance.svga";
         if (info.getUserId() != MyUserInfoManager.getInstance().getUid()) {
             assetsName = "grab_sing_other_chance.svga";

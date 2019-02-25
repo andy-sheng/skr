@@ -270,7 +270,7 @@ public class NormalLevelView extends RelativeLayout {
         levelChange.setLayoutParams(rl);
         viewGroup.addView(levelChange);
 
-        SVGAParser parser = new SVGAParser(getContext());
+        SVGAParser parser = new SVGAParser(U.app());
         try {
             parser.parse("duanwei_change.svga", new SVGAParser.ParseCompletion() {
                 @Override
@@ -413,7 +413,7 @@ public class NormalLevelView extends RelativeLayout {
 
         viewGroup.addView(starUp);
 
-        SVGAParser parser = new SVGAParser(getContext());
+        SVGAParser parser = new SVGAParser(U.app());
         try {
             parser.parse("star_up.svga", new SVGAParser.ParseCompletion() {
                 @Override
@@ -489,7 +489,7 @@ public class NormalLevelView extends RelativeLayout {
 
         viewGroup.addView(starLoss);
 
-        SVGAParser parser = new SVGAParser(getContext());
+        SVGAParser parser = new SVGAParser(U.app());
         try {
             parser.parse("star_loss.svga", new SVGAParser.ParseCompletion() {
                 @Override

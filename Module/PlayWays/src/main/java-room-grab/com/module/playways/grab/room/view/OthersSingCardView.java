@@ -103,7 +103,7 @@ public class OthersSingCardView extends RelativeLayout {
 
         mOtherBgSvga.setVisibility(VISIBLE);
         mOtherBgSvga.setLoops(0);
-        SVGAParser parser = new SVGAParser(getContext());
+        SVGAParser parser = new SVGAParser(U.app());
         try {
             parser.parse("grab_other_sing_bg.svga", new SVGAParser.ParseCompletion() {
                 @Override

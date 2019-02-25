@@ -106,7 +106,7 @@ public class TurnChangeCardView extends RelativeLayout {
         mFirstSvga.clearAnimation();
         mFirstSvga.setVisibility(VISIBLE);
         mFirstSvga.setLoops(1);
-        SVGAParser parser = new SVGAParser(getContext());
+        SVGAParser parser = new SVGAParser(U.app());
         try {
             parser.parse("rank_battle_start.svga", new SVGAParser.ParseCompletion() {
                 @Override
@@ -162,7 +162,7 @@ public class TurnChangeCardView extends RelativeLayout {
         mNextSvga.clearAnimation();
         mNextSvga.setVisibility(VISIBLE);
         mNextSvga.setLoops(1);
-        SVGAParser parser = new SVGAParser(getContext());
+        SVGAParser parser = new SVGAParser(U.app());
         try {
             parser.parse("rank_battle_next.svga", new SVGAParser.ParseCompletion() {
                 @Override
