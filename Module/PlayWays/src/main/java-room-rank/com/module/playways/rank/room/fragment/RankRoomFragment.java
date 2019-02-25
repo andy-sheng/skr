@@ -933,6 +933,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     @Override
     public void startRivalCountdown(int uid, String avatar) {
         MyLog.d(TAG, "startRivalCountdown" + " uid=" + uid + " avatar=" + avatar);
+        mCountDownProcess.restart();
         mRankTopContainerView.roundOver();
         mRankOpView.setVisibility(View.VISIBLE);
         mRankOpView.playCountDown(mRoomData.getRealRoundSeq(), false);
@@ -1170,7 +1171,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                     lyricsReader.cut(mPlayingSongModel.getRankLrcBeginT(), mPlayingSongModel.getRankLrcEndT());
                     postLyricEndEvent(lyricsReader, false);
                     mRankOpView.playCountDown(mRoomData.getRealRoundSeq(), true);
-
+                    mCountDownProcess.startCountDown(mPlayingSongModel.getTotalMs());
                 }
                 mManyLyricsView.setVisibility(View.GONE);
                 mManyLyricsView.resetData();

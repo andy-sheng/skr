@@ -1,11 +1,17 @@
 package com.module.playways.rank.room.view;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.AnimationSet;
+import android.view.animation.DecelerateInterpolator;
 
 import com.common.utils.U;
 
@@ -50,6 +56,8 @@ public class ArcProgressBar extends View {
     private boolean isRestart = false;
 
     private int mRealProgress;
+
+    AnimatorSet mAnimatorSet;
 
     public ArcProgressBar(Context context) {
         this(context, null, 0);
@@ -127,6 +135,37 @@ public class ArcProgressBar extends View {
         isRestart = false;
         this.mProgress = ((mDottedLineCount) * progress) / mProgressMax;
         postInvalidate();
+    }
+
+    public void startCountDown(long duration){
+        if(mAnimatorSet != null && mAnimatorSet.isRunning()){
+            mAnimatorSet.cancel();
+        }
+
+        ValueAnimator creditValueAnimator = ValueAnimator.ofInt(0, 100);
+        creditValueAnimator.setInterpolator(new DecelerateInterpolator());
+        creditValueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                int progress = (int) animation.getAnimatedValue();
+                setProgress(progress);
+            }
+        });
+
+
+        mAnimatorSet = new AnimatorSet();
+        mAnimatorSet.setDuration(duration)
+                .play(creditValueAnimator);
+
+        mAnimatorSet.start();
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if(mAnimatorSet != null && mAnimatorSet.isRunning()){
+            mAnimatorSet.cancel();
+        }
     }
 
     private void drawRunDottedLineArc(Canvas canvas) {
