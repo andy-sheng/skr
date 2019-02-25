@@ -309,9 +309,7 @@ public class HomeCorePresenter {
             } else {
                 if (MyUserInfoManager.getInstance().hasMyUserInfo() && MyUserInfoManager.getInstance().isUserInfoFromServer()) {
                     // 如果有账号了
-                    if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName())
-                            || MyUserInfoManager.getInstance().getSex() == 0
-                            || TextUtils.isEmpty(MyUserInfoManager.getInstance().getBirthday())) {
+                    if (MyUserInfoManager.getInstance().isNeedCompleteInfo()) {
                         boolean isUpAc = U.getActivityUtils().getTopActivity() instanceof UploadAccountInfoActivity;
                         if (!isUpAc) {
                             // 顶层的不是这个activity

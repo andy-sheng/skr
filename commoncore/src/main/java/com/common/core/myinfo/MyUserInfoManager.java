@@ -254,6 +254,16 @@ public class MyUserInfoManager {
         });
     }
 
+    //是否需要完善资料
+    public boolean isNeedCompleteInfo() {
+        if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName())
+                || MyUserInfoManager.getInstance().getSex() == 0) {
+            return true;
+        }
+
+        return false;
+    }
+
     public long getUid() {
         if (mUser != null && mUser.getUserId() != 0) {
             return mUser.getUserId();

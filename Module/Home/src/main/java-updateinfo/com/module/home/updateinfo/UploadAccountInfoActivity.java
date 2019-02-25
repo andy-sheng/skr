@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.common.base.BaseActivity;
+import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
@@ -34,9 +35,7 @@ public class UploadAccountInfoActivity extends BaseActivity {
         Bundle bundle = new Bundle();
         bundle.putBoolean(BUNDLE_IS_UPLOAD, true);
 
-        if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName())
-                || TextUtils.isEmpty(MyUserInfoManager.getInstance().getBirthday())
-                || MyUserInfoManager.getInstance().getSex() == 0) {
+        if (MyUserInfoManager.getInstance().isNeedCompleteInfo()) {
             U.getFragmentUtils().addFragment(FragmentUtils
                     .newAddParamsBuilder(this, UploadAccountInfoFragment.class)
                     .setBundle(bundle)
