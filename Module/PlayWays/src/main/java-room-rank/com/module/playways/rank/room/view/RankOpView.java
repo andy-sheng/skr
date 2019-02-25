@@ -104,6 +104,9 @@ public class RankOpView extends RelativeLayout {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         EventBus.getDefault().unregister(this);
+        if (mCountDownTask != null) {
+            mCountDownTask.dispose();
+        }
     }
 
     public void setRoomData(RoomData roomData) {
