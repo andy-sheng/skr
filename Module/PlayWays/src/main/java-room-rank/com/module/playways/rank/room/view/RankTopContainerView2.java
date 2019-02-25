@@ -187,7 +187,7 @@ public class RankTopContainerView2 extends RelativeLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(PkSomeOneLightOffEvent event) {
-        MyLog.d(TAG, "PkSomeOneLightOffEvent onEvent 1");
+        MyLog.d(TAG, "PkSomeOneLightOffEvent onEvent event.uid " + event.uid);
         parseLightOffEvent(event.uid);
     }
 
@@ -198,9 +198,9 @@ public class RankTopContainerView2 extends RelativeLayout {
             if (ul != null) {
                 MyLog.d(TAG, "parseLightOffEvent onEvent 3");
                 if (ul.mUserId == uid) {
-                    ul.mLightState = LightState.MIE;
-                    setLight(i, ul.mLightState);
-                    MyLog.d(TAG, "parseLightOffEvent onEvent 4");
+//                    ul.mLightState = LightState.MIE;
+//                    setLight(i, ul.mLightState);
+//                    MyLog.d(TAG, "parseLightOffEvent onEvent 4");
                     return;
                 }
             }
@@ -226,9 +226,9 @@ public class RankTopContainerView2 extends RelativeLayout {
             if (ul != null) {
                 MyLog.d(TAG, "parseBurstEvent onEvent" + " 3");
                 if (ul.mUserId == uid) {
-                    ul.mLightState = LightState.BAO;
-                    MyLog.d(TAG, "parseBurstEvent onEvent" + " 4");
-                    setLight(i, ul.mLightState);
+//                    ul.mLightState = LightState.BAO;
+//                    MyLog.d(TAG, "parseBurstEvent onEvent" + " 4");
+//                    setLight(i, ul.mLightState);
                     return;
                 }
             }
