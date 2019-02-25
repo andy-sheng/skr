@@ -12,7 +12,7 @@ public class AudienceScoreModel implements Serializable {
      */
 
     private int lightType;
-    private float progress;
+    private float score;
     private int userID;
 
     public int getLightType() {
@@ -23,12 +23,12 @@ public class AudienceScoreModel implements Serializable {
         this.lightType = lightType;
     }
 
-    public float getProgress() {
-        return progress;
+    public float getScore() {
+        return score;
     }
 
-    public void setProgress(float progress) {
-        this.progress = progress;
+    public void setScore(float score) {
+        this.score = score;
     }
 
     public int getUserID() {
@@ -42,16 +42,16 @@ public class AudienceScoreModel implements Serializable {
     public static AudienceScoreModel parse(AudienceScore audienceScore) {
         AudienceScoreModel model = new AudienceScoreModel();
         model.setLightType(audienceScore.getLightType().getValue());
-        model.setProgress(audienceScore.getScore());
+        model.setScore(audienceScore.getScore());
         model.setUserID(audienceScore.getUserID());
         return model;
     }
 
     @Override
     public String toString() {
-        return "ListenProgress{" +
-                "lightType='" + lightType + '\'' +
-                ", progress=" + progress +
+        return "AudienceScoreModel{" +
+                "lightType=" + lightType +
+                ", score=" + score +
                 ", userID=" + userID +
                 '}';
     }

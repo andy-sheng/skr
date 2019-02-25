@@ -34,10 +34,10 @@
                 android:id="@+id/result_iv"
                 android:layout_width="@dimen/view_28_dp"
                 android:layout_height="@dimen/view_28_dp"
-                android:layout_marginTop="-4dp"
-                android:layout_toRightOf="@id/avatar_iv"
                 android:layout_alignTop="@id/avatar_iv"
-                android:layout_marginLeft="-10dp" />
+                android:layout_marginLeft="-10dp"
+                android:layout_marginTop="-4dp"
+                android:layout_toRightOf="@id/avatar_iv" />
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/name_tv"
@@ -79,80 +79,84 @@
             android:layout_weight="1">
 
             <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/avatar_iv_first"
-                android:layout_width="@dimen/view_20_dp"
-                android:layout_height="@dimen/view_20_dp"
-                android:layout_marginTop="@dimen/view_24_dp" />
+                android:id="@+id/first_avatar_iv"
+                android:layout_width="@dimen/view_22_dp"
+                android:layout_height="@dimen/view_22_dp"
+                android:layout_marginTop="@dimen/view_20_dp" />
 
             <ImageView
+                android:id="@+id/first_img_iv"
                 android:layout_width="@dimen/view_28_dp"
                 android:layout_height="@dimen/view_28_dp"
+                android:layout_marginLeft="@dimen/view_6_dp"
                 android:layout_marginTop="@dimen/view_17_dp"
-                android:layout_toRightOf="@id/avatar_iv_first"
+                android:layout_toRightOf="@id/first_avatar_iv"
                 android:background="@drawable/zhanji_baodeng" />
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/first_result_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/view_20_dp"
-                android:layout_marginLeft="@dimen/view_40_dp"
+                android:layout_marginLeft="@dimen/view_4_dp"
                 android:layout_marginTop="@dimen/view_21_dp"
-                android:layout_toRightOf="@id/avatar_iv_first"
+                android:layout_toRightOf="@id/first_img_iv"
                 android:gravity="center_vertical"
                 android:text="x1"
                 android:textColor="#FFBF00"
                 android:textSize="@dimen/textsize_14_dp" />
 
             <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/avatar_iv_second"
-                android:layout_width="@dimen/view_20_dp"
-                android:layout_height="@dimen/view_20_dp"
-                android:layout_below="@id/avatar_iv_first"
-                android:layout_marginTop="@dimen/view_12_dp" />
+                android:id="@+id/second_avatar_iv"
+                android:layout_width="@dimen/view_22_dp"
+                android:layout_height="@dimen/view_22_dp"
+                android:layout_marginTop="@dimen/view_50_dp" />
 
             <ImageView
+                android:id="@+id/second_img_iv"
                 android:layout_width="@dimen/view_28_dp"
                 android:layout_height="@dimen/view_28_dp"
-                android:layout_marginTop="@dimen/view_48_dp"
-                android:layout_toRightOf="@id/avatar_iv_second"
+                android:layout_marginLeft="@dimen/view_6_dp"
+                android:layout_marginTop="@dimen/view_47_dp"
+                android:layout_toRightOf="@id/second_avatar_iv"
                 android:background="@drawable/zhanji_mie" />
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/second_result_tv"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/view_40_dp"
-                android:layout_marginTop="@dimen/view_52_dp"
-                android:layout_toRightOf="@id/avatar_iv_second"
+                android:layout_height="@dimen/view_20_dp"
+                android:layout_marginLeft="@dimen/view_4_dp"
+                android:layout_marginTop="@dimen/view_51_dp"
+                android:layout_toRightOf="@id/second_img_iv"
                 android:gravity="center_vertical"
                 android:text="0%"
                 android:textColor="#9697A0"
                 android:textSize="@dimen/textsize_14_dp" />
 
             <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/avatar_iv_three"
-                android:layout_width="@dimen/view_20_dp"
-                android:layout_height="@dimen/view_20_dp"
-                android:layout_below="@id/avatar_iv_second"
-                android:layout_marginTop="@dimen/view_12_dp" />
+                android:id="@+id/third_avatar_iv"
+                android:layout_width="@dimen/view_22_dp"
+                android:layout_height="@dimen/view_22_dp"
+                android:layout_marginTop="@dimen/view_80_dp" />
 
             <ImageView
+                android:id="@+id/third_img_iv"
                 android:layout_width="@dimen/view_28_dp"
                 android:layout_height="@dimen/view_28_dp"
-                android:layout_marginTop="@dimen/view_79_dp"
-                android:layout_toRightOf="@id/avatar_iv_three"
+                android:layout_marginLeft="@dimen/view_6_dp"
+                android:layout_marginTop="@dimen/view_77_dp"
+                android:layout_toRightOf="@id/third_avatar_iv"
                 android:background="@drawable/zhanji_xiaolian" />
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/third_result_tv"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/view_40_dp"
-                android:layout_marginTop="@dimen/view_83_dp"
-                android:layout_toRightOf="@id/avatar_iv_three"
+                android:layout_height="@dimen/view_20_dp"
+                android:layout_marginLeft="@dimen/view_4_dp"
+                android:layout_marginTop="@dimen/view_81_dp"
+                android:layout_toRightOf="@id/third_img_iv"
                 android:gravity="center_vertical"
-                android:text="100%"
-                android:textColor="#9697A0" />
+                android:textColor="#9697A0"
+                android:textSize="@dimen/textsize_14_dp"/>
 
         </RelativeLayout>
 
