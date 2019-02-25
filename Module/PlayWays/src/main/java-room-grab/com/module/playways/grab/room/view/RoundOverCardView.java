@@ -313,7 +313,12 @@ public class RoundOverCardView extends RelativeLayout {
         super.onDetachedFromWindow();
         this.mSVGAListener = null;
         if (mNoneSingSvga != null) {
+            mNoneSingSvga.setCallback(null);
             mNoneSingSvga.stopAnimation(true);
+        }
+        if (mSingResultSvga != null) {
+            mSingResultSvga.setCallback(null);
+            mSingResultSvga.stopAnimation(true);
         }
     }
 }

@@ -500,6 +500,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
     public void destroy() {
         super.destroy();
         stopTimeTask();
+
         if (mLeftVoteAnimationSet != null) {
             mLeftVoteAnimationSet.cancel();
         }
@@ -508,10 +509,12 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
         }
 
         if (mStartLeftSvga != null) {
+            mStartLeftSvga.setCallback(null);
             mStartLeftSvga.stopAnimation(true);
         }
 
         if (mStartRightSvga != null) {
+            mStartRightSvga.setCallback(null);
             mStartRightSvga.stopAnimation(true);
         }
         if (mUiHanlder != null) {
