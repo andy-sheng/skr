@@ -340,6 +340,12 @@ public class NormalLevelView extends RelativeLayout {
         MyLog.d(TAG, "starUp" + " from=" + from + " to=" + to);
         for (int postion = from; postion <= to; postion++) {
             final int finalPostion = postion;
+            if (finalPostion < 0 || finalPostion >= totalStats) {
+                if (listener != null) {
+                    listener.onFinish();
+                }
+                return;
+            }
             mLevelIv.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -367,6 +373,12 @@ public class NormalLevelView extends RelativeLayout {
         bindStarData(totalStats, from + 1);
         for (int postion = from; postion >= to; postion--) {
             final int finalPostion = postion;
+            if (finalPostion < 0 || finalPostion >= totalStats) {
+                if (listener != null) {
+                    listener.onFinish();
+                }
+                return;
+            }
             mLevelIv.postDelayed(new Runnable() {
                 @Override
                 public void run() {
