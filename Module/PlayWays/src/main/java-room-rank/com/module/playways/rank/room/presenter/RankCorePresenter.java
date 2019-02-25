@@ -1476,7 +1476,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         map.put("roundSeq", mRoomData.getRealRoundSeq());
         map.put("score", score);
         long nowTs = System.currentTimeMillis();
-        int singSecond = (int) (nowTs - mRoomData.getSingBeginTs() / 1000);
+        int singSecond = (int) ((nowTs - mRoomData.getSingBeginTs()) / 1000);
         map.put("singSecond", singSecond);
         map.put("timeMs", nowTs);
         map.put("userID", MyUserInfoManager.getInstance().getUid());
