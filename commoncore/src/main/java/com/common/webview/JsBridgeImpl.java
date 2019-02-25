@@ -74,31 +74,33 @@ public class JsBridgeImpl {
             return;
         }
 
-        //渠道，微信好友，微信朋友圈，qq好友，qq朋友圈
-        String channel = jsonObject.getString("channel");
-        if (TextUtils.isEmpty(channel)) {
-            MyLog.w(TAG, "share" + " channel=empty");
-            return;
-        }
-
         if ("panel".equals(param)) {
             sharePanel.show(shareType);
-        } else if ("wx".equals(param)) {
-            if("wx_friend_circle".equals(channel)){
-                sharePanel.share(SharePlatform.WEIXIN_CIRCLE, shareType);
-            } else if("wx_friend".equals(channel)){
-                sharePanel.share(SharePlatform.WEIXIN, shareType);
-            } else {
-                MyLog.w(TAG, "share not find channel, " + " channel is " + channel);
-            }
-        } else if ("qq".equals(param)) {
-            if("qq_friend".equals(channel)){
-                sharePanel.share(SharePlatform.QQ, shareType);
-            } else {
-                MyLog.w(TAG, "share not find channel, " + " channel is " + channel);
-            }
         } else {
-            MyLog.w(TAG, "share not find param, " + " param is " + channel);
+            //渠道，微信好友，微信朋友圈，qq好友，qq朋友圈
+            String channel = jsonObject.getString("channel");
+            if (TextUtils.isEmpty(channel)) {
+                MyLog.w(TAG, "share" + " channel=empty");
+                return;
+            }
+
+            if ("wx".equals(param)) {
+                if("wx_friend_circle".equals(channel)){
+                    sharePanel.share(SharePlatform.WEIXIN_CIRCLE, shareType);
+                } else if("wx_friend".equals(channel)){
+                    sharePanel.share(SharePlatform.WEIXIN, shareType);
+                } else {
+                    MyLog.w(TAG, "share not find channel, " + " channel is " + channel);
+                }
+            } else if ("qq".equals(param)) {
+                if("qq_friend".equals(channel)){
+                    sharePanel.share(SharePlatform.QQ, shareType);
+                } else {
+                    MyLog.w(TAG, "share not find channel, " + " channel is " + channel);
+                }
+            } else {
+                MyLog.w(TAG, "share not find param, " + " param is " + channel);
+            }
         }
 
 
