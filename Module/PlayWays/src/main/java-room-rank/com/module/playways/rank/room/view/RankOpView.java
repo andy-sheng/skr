@@ -166,6 +166,10 @@ public class RankOpView extends RelativeLayout {
                                 if (integer == 0) {
                                     if (mRoomData.getLeftLightOffTimes() > 0) {
                                         mIvTurnOff.setVisibility(VISIBLE);
+                                        mIvTurnOff.setEnabled(true);
+                                    } else {
+                                        mIvTurnOff.setVisibility(GONE);
+                                        mIvTurnOff.setEnabled(false);
                                     }
 
                                     mTvCountDown.setVisibility(GONE);
