@@ -45,6 +45,11 @@ public class RongMsgServiceImpl implements IMsgService {
     }
 
     @Override
+    public void removeUnReadMessageCountChangedObserver() {
+        RongMsgManager.getInstance().removeUnReadMessageCountChangedObserver();
+    }
+
+    @Override
     public void joinChatRoom(String roomId, ICallback callback) {
         RongMsgManager.getInstance().joinChatRoom(roomId, callback);
     }

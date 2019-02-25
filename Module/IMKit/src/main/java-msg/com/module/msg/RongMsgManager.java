@@ -244,16 +244,26 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
         });
     }
 
-    public void addUnReadMessageCountChangedObserver(ICallback callback) {
-        RongIM.getInstance().addUnReadMessageCountChangedObserver(new IUnReadMessageObserver() {
-            @Override
-            public void onCountChanged(int unReadNum) {
-                MyLog.d(TAG, "onCountChanged" + " unReadNum=" + unReadNum);
-                if (callback != null) {
-                    callback.onSucess(unReadNum);
-                }
+    ICallback mUnreadCallback;
+
+    IUnReadMessageObserver mIUnReadMessageObserver = new IUnReadMessageObserver() {
+        @Override
+        public void onCountChanged(int unReadNum) {
+            MyLog.d(TAG, "onCountChanged" + " unReadNum=" + unReadNum);
+            if (mUnreadCallback != null) {
+                mUnreadCallback.onSucess(unReadNum);
             }
-        }, Conversation.ConversationType.PRIVATE);
+        }
+    };
+
+    public void addUnReadMessageCountChangedObserver(ICallback callback) {
+        this.mUnreadCallback = callback;
+        RongIM.getInstance().addUnReadMessageCountChangedObserver(mIUnReadMessageObserver, Conversation.ConversationType.PRIVATE);
+    }
+
+    public void removeUnReadMessageCountChangedObserver() {
+        this.mUnreadCallback = null;
+        RongIM.getInstance().removeUnReadMessageCountChangedObserver(mIUnReadMessageObserver);
     }
 
     public Pair<Integer, String> getConnectStatus() {

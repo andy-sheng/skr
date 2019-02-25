@@ -61,29 +61,33 @@ public class HomeCorePresenter {
         }
     };
 
+    private ICallback mUnreadICallback = new ICallback() {
+        @Override
+        public void onSucess(Object obj) {
+            mView.showUnReadNum((int) obj);
+        }
+
+        @Override
+        public void onFailed(Object obj, int errcode, String message) {
+
+        }
+    };
+
     public HomeCorePresenter(IHomeActivity view) {
         mView = view;
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
 
-        ModuleServiceManager.getInstance().getMsgService().addUnReadMessageCountChangedObserver(new ICallback() {
-            @Override
-            public void onSucess(Object obj) {
-                mView.showUnReadNum((int) obj);
-            }
-
-            @Override
-            public void onFailed(Object obj, int errcode, String message) {
-
-            }
-        });
+        ModuleServiceManager.getInstance().getMsgService().addUnReadMessageCountChangedObserver(mUnreadICallback);
     }
 
     public void destroy() {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
+        mView = null;
+        ModuleServiceManager.getInstance().getMsgService().removeUnReadMessageCountChangedObserver();
     }
 
     public void checkPermiss(Activity activity) {

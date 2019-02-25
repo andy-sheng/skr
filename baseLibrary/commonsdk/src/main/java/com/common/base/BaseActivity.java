@@ -314,6 +314,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
     }
 
     protected void destroy() {
+        MyLog.d(TAG,"destroy" );
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }

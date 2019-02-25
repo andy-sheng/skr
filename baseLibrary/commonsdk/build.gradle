@@ -162,7 +162,8 @@ dependencies {
 
     debugImplementation(rootProject.ext.dependencies["canary-debug"])
     releaseImplementation(rootProject.ext.dependencies["canary-release"])
-    debugImplementation(rootProject.ext.dependencies["canary-debug-fragment"])
+    // 检查fragment 泄露的 暂时关掉
+    //debugImplementation(rootProject.ext.dependencies["canary-debug-fragment"])
 
     // 导入ARouter库
     api(rootProject.ext.dependencies["arouter"])
