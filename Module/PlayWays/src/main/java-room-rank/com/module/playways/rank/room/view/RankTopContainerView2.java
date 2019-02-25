@@ -335,7 +335,16 @@ public class RankTopContainerView2 extends RelativeLayout {
             }
             // 总分是这个肯定没错
             if (mTotalScore <= 0) {
-                mTotalScore = (int) (gameConfigModel.getpKFullEnergyPercentage() * 100 * lineNum);
+                float p = gameConfigModel.getpKFullEnergyPercentage();
+                if (p <= 0) {
+                    p = 0.6f;
+                    MyLog.w(TAG, "服务器给的getpKFullEnergyPercentage不对，为0了");
+                }
+                if (lineNum == 0) {
+                    lineNum = 6;
+                    MyLog.w(TAG, "lineNum值不对，为0了");
+                }
+                mTotalScore = (int) (lineNum * 100 * p);
             }
             mCurScore += score;
             tryPlayProgressAnimation();
