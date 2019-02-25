@@ -188,7 +188,7 @@ public class RankTopContainerView2 extends RelativeLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(RobotScoreHelper.RobotSongLineNum event) {
-        MyLog.d(TAG, "PkSomeOneLightOffEvent onEvent event.uid " + event.uid);
+        MyLog.d(TAG,"onEvent" + " event=" + event.lineNum);
         setScoreProgress(999, 0, event.lineNum);
     }
 
