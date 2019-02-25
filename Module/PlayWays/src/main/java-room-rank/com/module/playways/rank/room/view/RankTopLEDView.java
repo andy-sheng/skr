@@ -163,4 +163,11 @@ public class RankTopLEDView extends RelativeLayout {
             }
         }
     }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mDengSvga.setCallback(null);
+        mDengSvga.stopAnimation(true);
+    }
 }
