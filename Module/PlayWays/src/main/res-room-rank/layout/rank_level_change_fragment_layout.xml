@@ -8,16 +8,16 @@
 
     <ImageView
         android:id="@+id/background_iv"
-        android:layout_width="@dimen/view_375_dp"
-        android:layout_height="@dimen/view_375_dp"
+        android:layout_width="@dimen/view_290_dp"
+        android:layout_height="@dimen/view_290_dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_55_dp"
-        android:background="@drawable/shibaiguangquan" />
+        android:layout_marginTop="@dimen/view_122_dp"
+        android:background="@drawable/zhanji_win_guangquan"/>
 
     <ImageView
         android:id="@+id/rank_result"
-        android:layout_width="@dimen/view_203_dp"
-        android:layout_height="@dimen/view_173_dp"
+        android:layout_width="@dimen/view_201_dp"
+        android:layout_height="@dimen/view_174_dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_180_dp"
         android:background="@drawable/zhanji_top_win" />

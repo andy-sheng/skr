@@ -1,17 +1,13 @@
 package com.module.playways.rank.room.fragment;
 
-import android.animation.Animator;
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.v4.util.Pair;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -149,10 +145,13 @@ public class RankLevelChangeFragment extends BaseFragment {
     private void animationGo() {
         if (mRoomData.getRecordData().getSelfWinType() == EWinType.Win.getValue()) {
             mRankResult.setBackground(getResources().getDrawable(R.drawable.zhanji_top_win));
+            mBackgroundIv.setBackground(getResources().getDrawable(R.drawable.zhanji_win_guangquan));
         } else if (mRoomData.getRecordData().getSelfWinType() == EWinType.Draw.getValue()) {
             mRankResult.setBackground(getResources().getDrawable(R.drawable.zhanji_top_draw));
+            mBackgroundIv.setBackground(getResources().getDrawable(R.drawable.zhanji_draw_guangquan));
         } else if (mRoomData.getRecordData().getSelfWinType() == EWinType.Lose.getValue()) {
             mRankResult.setBackground(getResources().getDrawable(R.drawable.zhanji_top_loss));
+            mBackgroundIv.setBackground(getResources().getDrawable(R.drawable.zhanji_lose_guangquan));
         }
 
         mMainActContainer.postDelayed(new Runnable() {
