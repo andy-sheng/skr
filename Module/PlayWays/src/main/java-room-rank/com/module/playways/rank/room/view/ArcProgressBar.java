@@ -12,6 +12,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AnimationSet;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
 
 import com.common.utils.U;
 
@@ -137,13 +138,13 @@ public class ArcProgressBar extends View {
         postInvalidate();
     }
 
-    public void startCountDown(long duration){
-        if(mAnimatorSet != null && mAnimatorSet.isRunning()){
+    public void startCountDown(long duration) {
+        if (mAnimatorSet != null && mAnimatorSet.isRunning()) {
             mAnimatorSet.cancel();
         }
 
-        ValueAnimator creditValueAnimator = ValueAnimator.ofInt(0, 100);
-        creditValueAnimator.setInterpolator(new DecelerateInterpolator());
+        ValueAnimator creditValueAnimator = ValueAnimator.ofInt(1, 100);
+        creditValueAnimator.setInterpolator(new LinearInterpolator());
         creditValueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -154,16 +155,14 @@ public class ArcProgressBar extends View {
 
 
         mAnimatorSet = new AnimatorSet();
-        mAnimatorSet.setDuration(duration)
-                .play(creditValueAnimator);
-
+        mAnimatorSet.setDuration(duration).play(creditValueAnimator);
         mAnimatorSet.start();
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if(mAnimatorSet != null && mAnimatorSet.isRunning()){
+        if (mAnimatorSet != null && mAnimatorSet.isRunning()) {
             mAnimatorSet.cancel();
         }
     }
@@ -172,7 +171,7 @@ public class ArcProgressBar extends View {
         mDottedLinePaint.setColor(mDottedRunColor);
         float evenryDegrees = (float) (2.0f * Math.PI / mDottedLineCount);
 
-        float startDegress = (float) (180 * Math.PI / 180);
+        float startDegress = (float) (90 * Math.PI / 180);
 
         for (int i = 0; i < mProgress; i++) {
             float degrees = i * evenryDegrees + startDegress;
