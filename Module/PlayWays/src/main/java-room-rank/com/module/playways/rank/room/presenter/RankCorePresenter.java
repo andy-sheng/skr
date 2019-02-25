@@ -1267,7 +1267,6 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                             .setNo(machineScoreItem.getNo())
                             .setScore(machineScoreItem.getScore())
                             .setItemID(mRoomData.getSongModel().getItemID())
-                            .setCurScore(mRoomData.getCurSongTotalScore())
                             .setLineNum(mRoomData.getSongLineNum())
                             .build()
                     )

@@ -177,8 +177,7 @@ message MachineScore
     uint32 itemID = 2; // 演唱曲目
     uint32 score  = 3; // 机器分数
     uint32 no     = 4; // 对应截断后的歌词行号
-    uint32 curScore     = 5; // 当前分 不含爆灯灭灯
-    uint32 lineNum     = 6; // 歌词行数 总分为 100*lineNum*Percent
+    uint32 lineNum     = 5; // 歌词行数 总分为 100*lineNum*Percent
 }
 
 // 投票结果
