@@ -54,11 +54,6 @@ public class ScoreTipsView extends RelativeLayout {
     private void bindData(Item item) {
         mLevelIv.setImageResource(item.level.mDrawableId);
         mNumIv.setImageResource(getNum(item.num));
-        if (item.level == Level.Bad) {
-            mNumIv.setVisibility(GONE);
-        } else {
-            mNumIv.setVisibility(VISIBLE);
-        }
     }
 
     private int getNum(int num) {
