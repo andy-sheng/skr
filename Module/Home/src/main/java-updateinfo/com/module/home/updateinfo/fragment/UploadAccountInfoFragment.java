@@ -297,4 +297,13 @@ public class UploadAccountInfoFragment extends BaseFragment {
     public boolean useEventBus() {
         return false;
     }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        if (mCompositeDisposable != null) {
+            mCompositeDisposable.clear();
+        }
+
+    }
 }

@@ -308,6 +308,8 @@ public class SearchSongFragment extends BaseFragment {
     @Override
     public void destroy() {
         super.destroy();
-        mCompositeDisposable.clear();
+        if (mCompositeDisposable != null) {
+            mCompositeDisposable.clear();
+        }
     }
 }
