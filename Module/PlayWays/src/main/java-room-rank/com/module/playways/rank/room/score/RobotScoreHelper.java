@@ -10,6 +10,8 @@ import com.common.utils.U;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -120,6 +122,7 @@ public class RobotScoreHelper {
             MachineScoreModel machineScoreModel = JSON.parseObject(content, MachineScoreModel.class);
             if (machineScoreModel != null) {
                 mRobotScoreModel = machineScoreModel;
+                EventBus.getDefault().post(new RobotSongLineNum(mRobotScoreModel.getScoreLineNum()));
             }
         } catch (Exception e) {
             MyLog.e(TAG, e);
@@ -199,4 +202,11 @@ public class RobotScoreHelper {
         return mBeginRecordTs;
     }
 
+    public static class RobotSongLineNum{
+        public int lineNum;
+
+        public RobotSongLineNum(int lineNum) {
+            this.lineNum = lineNum;
+        }
+    }
 }

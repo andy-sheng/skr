@@ -17,6 +17,7 @@ import com.module.playways.rank.prepare.model.GameConfigModel;
 import com.module.playways.rank.prepare.model.PkScoreTipMsgModel;
 import com.module.playways.rank.room.event.PkSomeOneBurstLightEvent;
 import com.module.playways.rank.room.event.PkSomeOneLightOffEvent;
+import com.module.playways.rank.room.score.RobotScoreHelper;
 import com.module.playways.rank.room.score.bar.EnergySlotView;
 import com.module.playways.rank.room.score.bar.ScoreTipsView;
 import com.module.rank.R;
@@ -184,6 +185,13 @@ public class RankTopContainerView2 extends RelativeLayout {
         MyLog.d(TAG, "PkSomeOneLightOffEvent onEvent event.uid " + event.uid);
         parseLightOffEvent(event.uid);
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(RobotScoreHelper.RobotSongLineNum event) {
+        MyLog.d(TAG, "PkSomeOneLightOffEvent onEvent event.uid " + event.uid);
+        setScoreProgress(999, 0, event.lineNum);
+    }
+
 
     private void parseLightOffEvent(int uid) {
         MyLog.d(TAG, "parseLightOffEvent onEvent 5");
