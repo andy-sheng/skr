@@ -7,6 +7,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.common.base.BaseActivity;
 
 import com.common.core.share.SharePanel;
+import com.common.core.share.SharePlatform;
 import com.common.core.share.ShareType;
 import com.common.log.MyLog;
 import com.jsbridge.CallBackFunction;
@@ -34,27 +35,72 @@ public class JsBridgeImpl {
             return;
         }
 
-        String type = jsonObject.getString("type");
-        if (TextUtils.isEmpty(type)) {
-            MyLog.w(TAG, "share" + " type=empty");
+        //panel/wx/qq,弹出分享弹窗还是直接指定一个平台
+        String param = jsonObject.getString("param");
+        if (TextUtils.isEmpty(param)) {
+            MyLog.w(TAG, "share" + " param=empty");
             return;
         }
 
-        String url = jsonObject.getString("url");
+        SharePanel sharePanel = null;
+        ShareType shareType = ShareType.URL;
+        {
+            String type = jsonObject.getString("type");
+            if (TextUtils.isEmpty(type)) {
+                MyLog.w(TAG, "share" + " type=empty");
+                return;
+            }
 
-        if ("url".equals(type)) {
-            String icon = jsonObject.getString("icon");
-            String des = jsonObject.getString("des");
-            String title = jsonObject.getString("title");
+            if ("url".equals(type)) {
+                String icon = jsonObject.getString("icon");
+                String des = jsonObject.getString("des");
+                String title = jsonObject.getString("title");
+                String url = jsonObject.getString("url");
 
-            SharePanel sharePanel = new SharePanel(mBaseActivity);
-            sharePanel.setShareContent(icon, title, des, url);
-            sharePanel.show(ShareType.URL);
-        } else if ("image".equals(type)) {
-            SharePanel sharePanel = new SharePanel(mBaseActivity);
-            sharePanel.setShareContent(url);
-            sharePanel.show(ShareType.IMAGE_RUL);
+                sharePanel = new SharePanel(mBaseActivity);
+                sharePanel.setShareContent(icon, title, des, url);
+                shareType = ShareType.URL;
+            } else if ("image".equals(type)) {
+                String url = jsonObject.getString("url");
+
+                sharePanel = new SharePanel(mBaseActivity);
+                sharePanel.setShareContent(url);
+                shareType = ShareType.IMAGE_RUL;
+            }
         }
+
+        if (sharePanel == null) {
+            MyLog.w(TAG, "share" + " sharePanel=null");
+            return;
+        }
+
+        //渠道，微信好友，微信朋友圈，qq好友，qq朋友圈
+        String channel = jsonObject.getString("channel");
+        if (TextUtils.isEmpty(channel)) {
+            MyLog.w(TAG, "share" + " channel=empty");
+            return;
+        }
+
+        if ("panel".equals(param)) {
+            sharePanel.show(shareType);
+        } else if ("wx".equals(param)) {
+            if("wx_friend_circle".equals(channel)){
+                sharePanel.share(SharePlatform.WEIXIN_CIRCLE, shareType);
+            } else if("wx_friend".equals(channel)){
+                sharePanel.share(SharePlatform.WEIXIN, shareType);
+            } else {
+                MyLog.w(TAG, "share not find channel, " + " channel is " + channel);
+            }
+        } else if ("qq".equals(param)) {
+            if("qq_friend".equals(channel)){
+                sharePanel.share(SharePlatform.QQ, shareType);
+            } else {
+                MyLog.w(TAG, "share not find channel, " + " channel is " + channel);
+            }
+        } else {
+            MyLog.w(TAG, "share not find param, " + " param is " + channel);
+        }
+
 
         function.onCallBack(getJsonObj(new Pair("errcode", "0"), new Pair("errmsg", ""), new Pair("data", "{}")));
     }
@@ -89,9 +135,9 @@ public class JsBridgeImpl {
         });
     }
 
-    public static String getJsonObj(Pair<String, String>... pairArray){
+    public static String getJsonObj(Pair<String, String>... pairArray) {
         JSONObject jsonObject = new JSONObject();
-        for (Pair<String, String> pair : pairArray){
+        for (Pair<String, String> pair : pairArray) {
             jsonObject.put(pair.first, pair.second);
         }
 
