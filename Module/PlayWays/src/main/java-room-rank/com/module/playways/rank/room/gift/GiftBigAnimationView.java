@@ -41,7 +41,6 @@ public class GiftBigAnimationView {
     Listener mListener;
 
     SVGAImageView mSVGAImageView;
-    Context mContext;
     GiftPlayModel mGiftPlayModel;
 
 //    static SLocation[] mSLocations = new SLocation[]{
@@ -63,12 +62,11 @@ public class GiftBigAnimationView {
     };
 
     public GiftBigAnimationView(@Nullable Context context) {
-        mContext = context;
         init();
     }
 
     private void init() {
-        mSVGAImageView = new SVGAImageView(mContext);
+        mSVGAImageView = new SVGAImageView(U.app());
         mSVGAParser = new SVGAParser(U.app());
         mSVGAParser.setFileDownloader(new SVGAParser.FileDownloader() {
             @Override
@@ -200,8 +198,10 @@ public class GiftBigAnimationView {
     }
 
     public void destroy() {
-        mSVGAImageView.setCallback(null);
-        mSVGAImageView.stopAnimation(true);
+        if (mSVGAImageView != null) {
+            mSVGAImageView.setCallback(null);
+            mSVGAImageView.stopAnimation(true);
+        }
     }
 
     public interface Listener {

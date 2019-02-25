@@ -1049,7 +1049,9 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     private void destroyAnimation() {
         MyLog.d(TAG, "destroyAnimation");
 
-        if (mStageView != null && mStageView.getVisibility() == View.VISIBLE) {
+        if (mStageView != null) {
+            mStageView.setCallback(null);
+            mStageView.stopAnimation(true);
             mStageView.setVisibility(View.GONE);
         }
 

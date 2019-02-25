@@ -462,7 +462,12 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
     public void destroy() {
         super.destroy();
         if (mTopSvgaView != null) {
+            mTopSvgaView.setCallback(null);
             mTopSvgaView.stopAnimation(true);
+        }
+        if (mVsSvga != null) {
+            mVsSvga.setCallback(null);
+            mVsSvga.stopAnimation(true);
         }
         // 加上保护
         BgMusicManager.getInstance().setRoom(false);

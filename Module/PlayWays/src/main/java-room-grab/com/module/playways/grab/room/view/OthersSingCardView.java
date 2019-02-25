@@ -84,7 +84,7 @@ public class OthersSingCardView extends RelativeLayout {
     private void init() {
         inflate(getContext(), R.layout.grab_others_sing_card_layout, this);
         mOtherBgSvga = (SVGAImageView) findViewById(R.id.other_bg_svga);
-        mIvHStub = (ImageView)findViewById(R.id.iv_h_stub);
+        mIvHStub = (ImageView) findViewById(R.id.iv_h_stub);
         mIvTStub = (ImageView) findViewById(R.id.iv_t_stub);
         mIvOStub = (ImageView) findViewById(R.id.iv_o_stub);
         mIvS = (ImageView) findViewById(R.id.iv_s);
@@ -150,7 +150,7 @@ public class OthersSingCardView extends RelativeLayout {
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
-                        setNum(((mSongModel.getStandLrcEndT() - mSongModel.getStandLrcBeginT()) / 1000) - integer );
+                        setNum(((mSongModel.getStandLrcEndT() - mSongModel.getStandLrcBeginT()) / 1000) - integer);
                     }
                 });
     }
@@ -224,11 +224,11 @@ public class OthersSingCardView extends RelativeLayout {
 
     public String getNum(long num, int index) {
         MyLog.d(TAG, "getNum" + " num=" + num + " index=" + index);
-        if(num < 0){
+        if (num < 0) {
             return "0";
         }
         String s = String.valueOf(num);
-        if(index > s.length() || index < 0){
+        if (index > s.length() || index < 0) {
             return "";
         }
         String result = String.valueOf(s.charAt(s.length() - index));
@@ -276,6 +276,7 @@ public class OthersSingCardView extends RelativeLayout {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         if (mOtherBgSvga != null) {
+            mOtherBgSvga.setCallback(null);
             mOtherBgSvga.stopAnimation(true);
         }
         mUiHandler.removeCallbacksAndMessages(null);

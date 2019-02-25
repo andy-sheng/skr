@@ -255,7 +255,7 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
                     @Override
                     public void onNext(Integer integer) {
                         U.getSoundUtils().play(TAG, R.raw.general_countdown);
-                        if(10 - integer < 0){
+                        if (10 - integer < 0) {
                             return;
                         }
                         mTvReadyTime.setText(String.format(U.app().getString(R.string.ready_time_info), 10 - integer));
@@ -427,6 +427,10 @@ public class MatchSuccessFragment extends BaseFragment implements IMatchSucessVi
     @Override
     public void destroy() {
         super.destroy();
+        if (mVsSvga != null) {
+            mVsSvga.setCallback(null);
+            mVsSvga.stopAnimation(true);
+        }
         U.getSoundUtils().release(TAG);
     }
 

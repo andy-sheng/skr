@@ -286,7 +286,7 @@ public class SelfSingCardView extends RelativeLayout {
 
     public String getNum(long num, int index) {
         MyLog.d(TAG, "getNum" + " num=" + num + " index=" + index);
-        if(num < 0){
+        if (num < 0) {
             return "0";
         }
         String s = String.valueOf(num);
@@ -402,7 +402,7 @@ public class SelfSingCardView extends RelativeLayout {
                 File newName = new File(SongResUtils.createStandLyricFileName(songModel.getStandLrc()));
 
                 if (isSuccess) {
-                    if (oldName!=null && oldName.renameTo(newName)) {
+                    if (oldName != null && oldName.renameTo(newName)) {
                         MyLog.w(TAG, "已重命名");
                         emitter.onNext(newName);
                         emitter.onComplete();
@@ -416,7 +416,7 @@ public class SelfSingCardView extends RelativeLayout {
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .retryWhen(new RxRetryAssist(5,1,false))
+                .retryWhen(new RxRetryAssist(5, 1, false))
 //                .compose(bindUntilEvent(FragmentEvent.DESTROY))
                 .subscribe(file -> {
                     final File fileName = SongResUtils.getGrabLyricFileByUrl(songModel.getStandLrc());
@@ -507,7 +507,11 @@ public class SelfSingCardView extends RelativeLayout {
         super.onDetachedFromWindow();
         mUiHandler.removeCallbacksAndMessages(null);
         if (mSingBgSvga != null) {
+            mSingBgSvga.setCallback(null);
             mSingBgSvga.stopAnimation(true);
+        }
+        if (mLeaveAnimation != null) {
+            mLeaveAnimation.cancel();
         }
         cancelCountDownTask();
     }

@@ -215,6 +215,7 @@ public class SongInfoCardView extends RelativeLayout {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         if (mSongCover != null) {
+            mSongCover.setCallback(null);
             mSongCover.stopAnimation(true);
         }
         if (mAnimatorSet != null) {

@@ -115,6 +115,7 @@ public class GrabGameOverView extends RelativeLayout {
         super.onDetachedFromWindow();
         this.mSVGAListener = null;
         if (mEndGameIv != null) {
+            mEndGameIv.setCallback(null);
             mEndGameIv.stopAnimation(true);
         }
     }

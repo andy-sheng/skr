@@ -256,7 +256,7 @@ public class NormalLevelView extends RelativeLayout {
         }
 
         // 播放段位动画
-        final SVGAImageView levelChange = new SVGAImageView(getContext());
+        final SVGAImageView levelChange = new SVGAImageView(U.app());
         levelChange.setClearsAfterStop(false);   // 停在最后一帧
         levelChange.setLoops(1);  // 只播1次
 
