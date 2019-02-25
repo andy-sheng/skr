@@ -58,9 +58,9 @@ public class RankResultFragment extends BaseFragment {
             mResultTop.setBackground(getResources().getDrawable(R.drawable.zhanji_top_loss));
         }
 
-        mFirstResult.bindData(mRoomData, mRoomData.getRecordData().getUserIdByRank(1));
-        mSecondResult.bindData(mRoomData, mRoomData.getRecordData().getUserIdByRank(2));
-        mThirdResult.bindData(mRoomData, mRoomData.getRecordData().getUserIdByRank(3));
+        mFirstResult.bindData(mRoomData, mRoomData.getRecordData().getUserIdByRank(1), 1);
+        mSecondResult.bindData(mRoomData, mRoomData.getRecordData().getUserIdByRank(2), 2);
+        mThirdResult.bindData(mRoomData, mRoomData.getRecordData().getUserIdByRank(3), 3);
     }
 
     @Override

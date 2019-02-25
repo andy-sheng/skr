@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#404559">
+    android:layout_height="match_parent">
 
     <View
         android:layout_width="match_parent"
@@ -156,7 +156,7 @@
                 android:layout_toRightOf="@id/third_img_iv"
                 android:gravity="center_vertical"
                 android:textColor="#9697A0"
-                android:textSize="@dimen/textsize_14_dp"/>
+                android:textSize="@dimen/textsize_14_dp" />
 
         </RelativeLayout>
 
@@ -170,10 +170,54 @@
                 android:id="@+id/pk_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true" />
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_48_dp" />
 
         </RelativeLayout>
 
     </LinearLayout>
+
+
+    <com.common.view.ex.ExRelativeLayout
+        android:id="@+id/is_escape_norml"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/view_1_dp"
+        app:bl_solid_color="@color/black_trans_40"
+        app:bl_shape="rectangle"
+        android:visibility="gone">
+        
+        <ImageView
+            android:layout_width="@dimen/view_77_dp"
+            android:layout_height="@dimen/view_77_dp"
+            android:background="@drawable/taopao"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/view_67_dp"
+            android:layout_marginTop="@dimen/view_12_dp"/>
+        
+    </com.common.view.ex.ExRelativeLayout>
+
+    <com.common.view.ex.ExRelativeLayout
+        android:id="@+id/is_escape_last"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/view_1_dp"
+        app:bl_gradient_type="linear"
+        app:bl_gradient_angle="90"
+        app:bl_gradient_useLevel="true"
+        app:bl_gradient_startColor="@color/transparent"
+        app:bl_gradient_endColor="@color/black_trans_45"
+        app:bl_shape="rectangle"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="@dimen/view_77_dp"
+            android:layout_height="@dimen/view_77_dp"
+            android:background="@drawable/taopao"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/view_67_dp"
+            android:layout_marginTop="@dimen/view_12_dp"/>
+
+    </com.common.view.ex.ExRelativeLayout>
 
 </RelativeLayout>

@@ -16,8 +16,8 @@
         android:paddingRight="@dimen/view_2_dp"
         app:bl_corners_radius="@dimen/view_12_dp"
         app:bl_shape="rectangle"
-        app:bl_solid_color="#404559"
-        app:bl_stroke_color="#2E3041"
+        app:bl_solid_color="#ff2E3041"
+        app:bl_stroke_color="#ff404559"
         app:bl_stroke_width="@dimen/view_2_dp">
 
         <LinearLayout
@@ -58,7 +58,7 @@
         <com.module.playways.rank.room.view.RankResultView
             android:id="@+id/first_result"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/view_125_dp"
+            android:layout_height="@dimen/view_127_dp"
             android:layout_marginTop="@dimen/view_87_dp">
 
         </com.module.playways.rank.room.view.RankResultView>
@@ -66,7 +66,7 @@
         <com.module.playways.rank.room.view.RankResultView
             android:id="@+id/second_result"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/view_125_dp"
+            android:layout_height="@dimen/view_127_dp"
             android:layout_below="@id/first_result">
 
         </com.module.playways.rank.room.view.RankResultView>
@@ -74,7 +74,7 @@
         <com.module.playways.rank.room.view.RankResultView
             android:id="@+id/third_result"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/view_125_dp"
+            android:layout_height="@dimen/view_127_dp"
             android:layout_below="@id/second_result"></com.module.playways.rank.room.view.RankResultView>
 
     </com.common.view.ex.ExRelativeLayout>

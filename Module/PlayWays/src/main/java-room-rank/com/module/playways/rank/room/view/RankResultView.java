@@ -10,6 +10,7 @@ import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
+import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.view.BitmapTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -49,6 +50,9 @@ public class RankResultView extends RelativeLayout {
     RelativeLayout mScoreArea;
     BitmapTextView mPkScore;
 
+    ExRelativeLayout mIsEscapeNorml;  //正常逃跑蒙层
+    ExRelativeLayout mIsEscapeLast;   //最后一个的逃跑蒙层
+
     public RankResultView(Context context) {
         super(context);
         init();
@@ -84,10 +88,19 @@ public class RankResultView extends RelativeLayout {
         mThirdResultTv = (ExTextView) findViewById(R.id.third_result_tv);
         mScoreArea = (RelativeLayout) findViewById(R.id.score_area);
         mPkScore = (BitmapTextView) findViewById(R.id.pk_score);
+        mIsEscapeNorml = (ExRelativeLayout) findViewById(R.id.is_escape_norml);
+        mIsEscapeLast = (ExRelativeLayout) findViewById(R.id.is_escape_last);
+
     }
 
-    //绑定数据,表示是某个人的投票结果
-    public void bindData(RoomData roomData, int useID) {
+    /**
+     * 绑定数据,表示是某个人的演唱结果
+     *
+     * @param roomData
+     * @param useID
+     * @param index    第几个
+     */
+    public void bindData(RoomData roomData, int useID, int index) {
         if (useID == 0) {
             return;
         }
@@ -95,7 +108,7 @@ public class RankResultView extends RelativeLayout {
         PlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(roomData, userGameResultModel.getUserID());
         if (playerInfoModel != null) {
             AvatarUtils.loadAvatarByUrl(mAvatarIv,
-                    AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
+                    AvatarUtils.newParamsBuilder(playerInfoModel.getUserInfo().getAvatar())
                             .setCircle(true)
                             .setBorderColorBySex(playerInfoModel.getUserInfo().getIsMale())
                             .setBorderWidth(U.getDisplayUtils().dip2px(3))
@@ -108,6 +121,16 @@ public class RankResultView extends RelativeLayout {
                 mResultIv.setBackground(getResources().getDrawable(R.drawable.ic_medal_draw));
             } else if (userGameResultModel.getWinType() == EWinType.Lose.getValue()) {
                 mResultIv.setBackground(getResources().getDrawable(R.drawable.ic_medal_lose));
+            }
+
+            if (userGameResultModel.isIsEscape()) {
+                if (index == userGameResultModel.getAudienceScores().size()) {
+                    mIsEscapeNorml.setVisibility(GONE);
+                    mIsEscapeLast.setVisibility(VISIBLE);
+                } else {
+                    mIsEscapeNorml.setVisibility(VISIBLE);
+                    mIsEscapeLast.setVisibility(GONE);
+                }
             }
         }
 
