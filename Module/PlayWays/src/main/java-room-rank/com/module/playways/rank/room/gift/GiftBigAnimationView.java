@@ -69,7 +69,7 @@ public class GiftBigAnimationView {
 
     private void init() {
         mSVGAImageView = new SVGAImageView(mContext);
-        mSVGAParser = new SVGAParser(mContext);
+        mSVGAParser = new SVGAParser(U.app());
         mSVGAParser.setFileDownloader(new SVGAParser.FileDownloader() {
             @Override
             public void resume(final URL url, final Function1<? super InputStream, Unit> complete, final Function1<? super Exception, Unit> failure) {
@@ -93,7 +93,6 @@ public class GiftBigAnimationView {
 
     public void play(RelativeLayout parent, GiftPlayModel giftPlayModel) {
         if (parent.indexOfChild(mSVGAImageView) < 0) {
-
             int translateX = U.getDisplayUtils().dip2px(mRandom.nextInt(200) - 100);
             int translateY = U.getDisplayUtils().dip2px(mRandom.nextInt(200) - 100);
             SLocation l = new SLocation(0.67f + mRandom.nextFloat() / 3f, translateX, translateY);
@@ -148,7 +147,6 @@ public class GiftBigAnimationView {
 
     private void onLoadComplete(SVGAVideoEntity videoItem) {
         SVGADrawable drawable = new SVGADrawable(videoItem);
-
         mSVGAImageView.setImageDrawable(drawable);
         mSVGAImageView.setCallback(new SVGACallback() {
             @Override
@@ -173,7 +171,6 @@ public class GiftBigAnimationView {
         });
         mSVGAImageView.startAnimation();
     }
-
 
     private void onFinish() {
         if (mStatus == STATUS_PLAYING) {
@@ -200,6 +197,11 @@ public class GiftBigAnimationView {
 
     public void setListener(Listener listener) {
         mListener = listener;
+    }
+
+    public void destroy() {
+        mSVGAImageView.setCallback(null);
+        mSVGAImageView.stopAnimation(true);
     }
 
     public interface Listener {

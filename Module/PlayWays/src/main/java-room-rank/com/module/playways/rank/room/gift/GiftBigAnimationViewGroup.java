@@ -91,6 +91,9 @@ public class GiftBigAnimationViewGroup extends RelativeLayout {
         super.onDetachedFromWindow();
         EventBus.getDefault().unregister(this);
         mGiftPlayControlTemplate.destroy();
+        for(GiftBigAnimationView giftBigAnimationView:mFeedGiftAnimationViews){
+            giftBigAnimationView.destroy();
+        }
     }
 
     private GiftBigAnimationView isIdle() {
