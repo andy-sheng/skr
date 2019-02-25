@@ -107,7 +107,7 @@ public class JsBridgeImpl {
 
     public void bindWeChat(String data, final CallBackFunction function) {
         MyLog.w(TAG, "bindWeChat" + " data=" + data);
-        UMShareAPI.get(mBaseActivity).doOauthVerify(mBaseActivity, SHARE_MEDIA.QQ, new UMAuthListener() {
+        UMShareAPI.get(mBaseActivity).doOauthVerify(mBaseActivity, SHARE_MEDIA.WEIXIN, new UMAuthListener() {
             @Override
             public void onStart(SHARE_MEDIA share_media) {
 
