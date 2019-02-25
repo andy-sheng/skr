@@ -18,7 +18,7 @@ public class MachineScoreEvent {
         this.userId = machineScore.getUserID();
         this.lineNo = machineScore.getNo();
         this.score = machineScore.getScore();
-        this.totalScore = machineScore.getCurScore();
+        this.totalScore = machineScore.getScore();
         this.lineNum = machineScore.getLineNum();
     }
 }
