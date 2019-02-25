@@ -96,5 +96,14 @@
         android:layout_marginBottom="-24dp"
         android:background="@drawable/zhanji_guanbi" />
 
+    <com.common.view.ex.ExImageView
+        android:id="@+id/share_iv"
+        android:layout_width="@dimen/view_26_dp"
+        android:layout_height="@dimen/view_16_dp"
+        android:layout_alignTop="@+id/result_area"
+        android:layout_alignRight="@+id/result_area"
+        android:layout_marginTop="@dimen/view_16_dp"
+        android:layout_marginRight="@dimen/view_16_dp"
+        android:background="@drawable/gerenzhuye_fenxiang"/>
 
 </RelativeLayout>

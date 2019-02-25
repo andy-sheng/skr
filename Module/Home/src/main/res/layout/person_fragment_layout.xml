@@ -39,7 +39,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="@dimen/view_44_dp"
                     android:layout_marginRight="@dimen/view_16_dp"
-                    android:drawableTop="@drawable/gerenzhuye_fenxiangicon"
+                    android:drawableTop="@drawable/gerenzhuye_fenxiang"
                     android:text="分享"
                     android:visibility="visible" />
 

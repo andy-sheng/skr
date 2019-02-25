@@ -5,15 +5,20 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.common.base.BaseFragment;
+import com.common.core.share.SharePanel;
+import com.common.core.share.ShareType;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
+import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.RoomData;
 import com.module.playways.rank.room.model.UserGameResultModel;
 import com.module.playways.rank.room.view.RankResultView;
 import com.module.rank.R;
 import com.zq.live.proto.Room.EWinType;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * pk战绩页面
@@ -26,6 +31,7 @@ public class RankResultFragment extends BaseFragment {
     RankResultView mThirdResult;
     ExImageView mResultTop;
     ExImageView mResultExit;
+    ExImageView mShareIv;
 
     RoomData mRoomData;
 
@@ -42,6 +48,7 @@ public class RankResultFragment extends BaseFragment {
         mThirdResult = (RankResultView) mRootView.findViewById(R.id.third_result);
         mResultTop = (ExImageView) mRootView.findViewById(R.id.result_top);
         mResultExit = (ExImageView) mRootView.findViewById(R.id.result_exit);
+        mShareIv = (ExImageView)mRootView.findViewById(R.id.share_iv);
 
         mResultExit.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -61,6 +68,15 @@ public class RankResultFragment extends BaseFragment {
         mFirstResult.bindData(mRoomData, mRoomData.getRecordData().getUserIdByRank(1), 1);
         mSecondResult.bindData(mRoomData, mRoomData.getRecordData().getUserIdByRank(2), 2);
         mThirdResult.bindData(mRoomData, mRoomData.getRecordData().getUserIdByRank(3), 3);
+
+        RxView.clicks(mShareIv)
+                .throttleFirst(300, TimeUnit.MILLISECONDS)
+                .subscribe(o -> {
+                    SharePanel sharePanel = new SharePanel(getActivity());
+                    sharePanel.setShareContent("http://res-static.inframe.mobi/common/skr-share.png");
+                    sharePanel.show(ShareType.IMAGE_RUL);
+
+                });
     }
 
     @Override
