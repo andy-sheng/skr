@@ -8,18 +8,13 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.module.playways.RoomData;
-import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.prepare.model.GameConfigModel;
 import com.module.playways.rank.prepare.model.PkScoreTipMsgModel;
-import com.module.playways.rank.prepare.model.ScoreTipTypeModel;
-import com.module.playways.rank.room.event.PkMyBurstSuccessEvent;
-import com.module.playways.rank.room.event.PkMyLightOffSuccessEvent;
 import com.module.playways.rank.room.event.PkSomeOneBurstLightEvent;
 import com.module.playways.rank.room.event.PkSomeOneLightOffEvent;
 import com.module.playways.rank.room.score.bar.EnergySlotView;
@@ -58,7 +53,6 @@ public class RankTopContainerView2 extends RelativeLayout {
     RoomData mRoomData;
 
     UserLightInfo mStatusArr[] = new UserLightInfo[MAX_USER_NUM];
-    int mIndex = 0;
 
     static class UserLightInfo {
         int mUserId;
@@ -69,7 +63,7 @@ public class RankTopContainerView2 extends RelativeLayout {
         BAO, MIE;
     }
 
-    int mTotalScore;
+    int mTotalScore=-1;
     int mCurScore;
 
     public RankTopContainerView2(Context context) {
@@ -192,64 +186,44 @@ public class RankTopContainerView2 extends RelativeLayout {
     }
 
     private void parseLightOffEvent(int uid) {
-        for (int i = 0; i < mStatusArr.length && i < mIndex; i++) {
-            MyLog.d(TAG, "parseLightOffEvent onEvent 2");
-            UserLightInfo ul = mStatusArr[i];
-            if (ul != null) {
-                MyLog.d(TAG, "parseLightOffEvent onEvent 3");
-                if (ul.mUserId == uid) {
-//                    ul.mLightState = LightState.MIE;
-//                    setLight(i, ul.mLightState);
-//                    MyLog.d(TAG, "parseLightOffEvent onEvent 4");
-                    return;
-                }
-            }
-        }
         MyLog.d(TAG, "parseLightOffEvent onEvent 5");
         UserLightInfo ul = new UserLightInfo();
         ul.mUserId = uid;
         ul.mLightState = LightState.MIE;
-        setLight(mIndex, ul.mLightState);
-        mStatusArr[mIndex] = ul;
-
-        mIndex = (mIndex + 1) % MAX_USER_NUM;
-        mCurScore += mRoomData.getGameConfigModel().getpKBLightEnergyPercentage() * mTotalScore;
+        if (mStatusArr[0] == null) {
+            setLight(0, ul);
+        } else {
+            if (mStatusArr[1] == null) {
+                setLight(1, ul);
+            } else if (mStatusArr[2] == null) {
+                setLight(2, ul);
+            }
+        }
+        mCurScore -= mRoomData.getGameConfigModel().getpKBLightEnergyPercentage() * mTotalScore;
         tryPlayProgressAnimation();
-
     }
 
     private void parseBurstEvent(int uid) {
-
-        for (int i = 0; i < mStatusArr.length && i < mIndex; i++) {
-            UserLightInfo ul = mStatusArr[i];
-            MyLog.d(TAG, "parseBurstEvent onEvent" + " 2");
-            if (ul != null) {
-                MyLog.d(TAG, "parseBurstEvent onEvent" + " 3");
-                if (ul.mUserId == uid) {
-//                    ul.mLightState = LightState.BAO;
-//                    MyLog.d(TAG, "parseBurstEvent onEvent" + " 4");
-//                    setLight(i, ul.mLightState);
-                    return;
-                }
-            }
-        }
-        MyLog.d(TAG, " parseBurstEvent onEvent" + " 5");
+        MyLog.d(TAG, "parseBurstEvent" + " uid=" + uid);
         UserLightInfo ul = new UserLightInfo();
         ul.mUserId = uid;
         ul.mLightState = LightState.BAO;
-        setLight(mIndex, ul.mLightState);
-        mStatusArr[mIndex] = ul;
-
-        mIndex = (mIndex + 1) % MAX_USER_NUM;
-
-        mCurScore -= mRoomData.getGameConfigModel().getpKMLightEnergyPercentage() * mTotalScore;
+        if (mStatusArr[1] == null) {
+            setLight(1, ul);
+        } else {
+            if (mStatusArr[0] == null) {
+                setLight(0, ul);
+            } else if (mStatusArr[2] == null) {
+                setLight(2, ul);
+            }
+        }
+        mCurScore += mRoomData.getGameConfigModel().getpKMLightEnergyPercentage() * mTotalScore;
         tryPlayProgressAnimation();
-
     }
 
     //轮次结束
     public void roundOver() {
-        MyLog.d(TAG, "roundOver" );
+        MyLog.d(TAG, "roundOver");
         mIvLeft.setImageDrawable(U.getDrawable(R.drawable.yanchang_xiaolian));
         mIvCenter.setImageDrawable(U.getDrawable(R.drawable.yanchang_xiaolian));
         mIvRignt.setImageDrawable(U.getDrawable(R.drawable.yanchang_xiaolian));
@@ -258,12 +232,16 @@ public class RankTopContainerView2 extends RelativeLayout {
         mMidLedView.initSVGA();
         mRightLedView.initSVGA();
         mEnergySlotView.setTarget(0, null);
-        mIndex = 0;
+        for (int i = 0; i < mStatusArr.length; i++) {
+            mStatusArr[i] = null;
+        }
         mCurScore = 0;
         mTotalScore = -1;
     }
 
-    private void setLight(int index, LightState lightState) {
+    private void setLight(int index, UserLightInfo userLightInfo) {
+        mStatusArr[index] = userLightInfo;
+        LightState lightState = userLightInfo.mLightState;
         MyLog.d(TAG, "setLight" + " index=" + index + " lightState=" + lightState);
         switch (index) {
             case 0:
@@ -300,6 +278,23 @@ public class RankTopContainerView2 extends RelativeLayout {
         ScoreTipsView.Item item = new ScoreTipsView.Item();
 
         if (gameConfigModel != null) {
+            // 总分是这个肯定没错
+            if (mTotalScore <= 0) {
+                float p = gameConfigModel.getpKFullEnergyPercentage();
+                if (p <= 0) {
+                    p = 0.6f;
+                    MyLog.w(TAG, "服务器给的getpKFullEnergyPercentage不对，为0了");
+                }
+                if (lineNum == 0) {
+                    lineNum = 6;
+                    MyLog.w(TAG, "lineNum值不对，为0了");
+                }
+                mTotalScore = (int) (lineNum * 100 * p);
+            }
+            if (score == 999) {
+                //与ios约定，如果传递是分数是999就代表只是想告诉这首歌的总分
+                return;
+            }
             List<PkScoreTipMsgModel> scoreTipMsgModelList = gameConfigModel.getPkScoreTipMsgModelList();
             if (scoreTipMsgModelList != null) {
                 for (PkScoreTipMsgModel m : scoreTipMsgModelList) {
@@ -324,19 +319,6 @@ public class RankTopContainerView2 extends RelativeLayout {
                         break;
                     }
                 }
-            }
-            // 总分是这个肯定没错
-            if (mTotalScore <= 0) {
-                float p = gameConfigModel.getpKFullEnergyPercentage();
-                if (p <= 0) {
-                    p = 0.6f;
-                    MyLog.w(TAG, "服务器给的getpKFullEnergyPercentage不对，为0了");
-                }
-                if (lineNum == 0) {
-                    lineNum = 6;
-                    MyLog.w(TAG, "lineNum值不对，为0了");
-                }
-                mTotalScore = (int) (lineNum * 100 * p);
             }
             mCurScore += score;
             tryPlayProgressAnimation();

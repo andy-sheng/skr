@@ -1212,6 +1212,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             eventNum++;
         }
         mRoomData.setSongLineNum(eventNum);
+        mCorePresenter.sendTotalScoreToOthers(eventNum);
     }
 
     private void fetchLyricTask(SongModel songModel, boolean play) {

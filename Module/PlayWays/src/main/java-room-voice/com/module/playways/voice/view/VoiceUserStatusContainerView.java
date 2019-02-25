@@ -1,6 +1,7 @@
 package com.module.playways.voice.view;
 
 import android.content.Context;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -26,6 +27,7 @@ public class VoiceUserStatusContainerView extends RelativeLayout {
     ExLinearLayout mUserStatusContainer;
     RoomData mRoomData;
     HashMap<Integer, VoiceUserStatusView> mViewMap = new HashMap<>();
+    Handler mUiHanlder = new Handler();
 
     public VoiceUserStatusContainerView(Context context) {
         super(context);
@@ -54,14 +56,12 @@ public class VoiceUserStatusContainerView extends RelativeLayout {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         EventBus.getDefault().unregister(this);
+        mUiHanlder.removeCallbacksAndMessages(null);
     }
 
     public void setRoomData(RoomData roomData) {
         mRoomData = roomData;
         bindData();
-        for (PlayerInfoModel playerInfoModel : mRoomData.getPlayerInfoList()) {
-            // 让xx变离线
-        }
     }
 
     private void bindData() {
@@ -75,8 +75,18 @@ public class VoiceUserStatusContainerView extends RelativeLayout {
             mUserStatusContainer.addView(voiceUserStatusView, lp);
             voiceUserStatusView.bindData(playerInfoModel.getUserInfo());
             mViewMap.put(playerInfoModel.getUserInfo().getUserId(), voiceUserStatusView);
+            if (playerInfoModel.isSkrer()) {
+                // 是机器人
+                mUiHanlder.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        voiceUserStatusView.userOffline();
+                    }
+                }, (long) (Math.random() * 4000));
+            }
         }
     }
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EngineEvent event) {

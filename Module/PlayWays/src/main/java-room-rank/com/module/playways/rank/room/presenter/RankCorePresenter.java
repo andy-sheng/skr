@@ -1237,6 +1237,20 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     }
 
     /**
+     * 提前告诉对手总分，因为有可能对手在第一句没唱完之前就爆灯了
+     *
+     * @param lineNum
+     */
+    public void sendTotalScoreToOthers(int lineNum) {
+        MachineScoreItem machineScoreItem = new MachineScoreItem();
+        machineScoreItem.setScore(999);// 与ios约定，如果传递是分数是999就代表只是想告诉这首歌的总分
+        long ts = EngineManager.getInstance().getAudioMixingCurrentPosition();
+        machineScoreItem.setTs(ts);
+        machineScoreItem.setNo(lineNum);
+        sendScoreToOthers(machineScoreItem);
+    }
+
+    /**
      * 将自己的分数传给其他人
      *
      * @param machineScoreItem
@@ -1457,6 +1471,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 
     /**
      * 单句打分上报
+     *
      * @param score
      * @param line
      */
