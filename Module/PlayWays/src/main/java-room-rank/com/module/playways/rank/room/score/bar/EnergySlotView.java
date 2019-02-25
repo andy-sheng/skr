@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
+
 import com.common.utils.U;
 import com.module.rank.R;
 
@@ -26,7 +27,7 @@ public class EnergySlotView extends View {
     AnimatorSet mAnimatorSet;
 
     int mCur = 0;
-    int mTarget;
+    int mTarget = 100;
 
     public EnergySlotView(Context context) {
         this(context, null);
@@ -56,7 +57,7 @@ public class EnergySlotView extends View {
         postDelayed(new Runnable() {
             @Override
             public void run() {
-                setTarget(100,null);
+                setTarget(0, null);
             }
         }, 500);
     }
@@ -84,8 +85,8 @@ public class EnergySlotView extends View {
         canvas.restore();
     }
 
-    public void reset(){
-        if(mAnimatorSet != null && mAnimatorSet.isRunning()){
+    public void reset() {
+        if (mAnimatorSet != null && mAnimatorSet.isRunning()) {
             mAnimatorSet.cancel();
         }
 
@@ -93,10 +94,10 @@ public class EnergySlotView extends View {
         postInvalidate();
     }
 
-    public void setTarget(int target,AnimatorListenerAdapter mAnimatorListenerAdapter){
+    public void setTarget(int target, AnimatorListenerAdapter mAnimatorListenerAdapter) {
         mTarget = target;
 
-        if(mAnimatorSet != null && mAnimatorSet.isRunning()){
+        if (mAnimatorSet != null && mAnimatorSet.isRunning()) {
             mAnimatorSet.cancel();
         }
 
@@ -115,7 +116,7 @@ public class EnergySlotView extends View {
         mAnimatorSet.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                if(mAnimatorListenerAdapter != null){
+                if (mAnimatorListenerAdapter != null) {
                     mAnimatorListenerAdapter.onAnimationEnd(animation);
                 }
             }
@@ -130,17 +131,17 @@ public class EnergySlotView extends View {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if(mAnimatorSet != null && mAnimatorSet.isRunning()){
+        if (mAnimatorSet != null && mAnimatorSet.isRunning()) {
             mAnimatorSet.cancel();
         }
     }
 
-    private RectF getLeftClipRect(){
+    private RectF getLeftClipRect() {
         int width = mWidth * mCur / 100;
         return new RectF(0, 0, width, mHeight);
     }
 
-    private RectF getRightClipRect(){
+    private RectF getRightClipRect() {
         int left = mWidth * mCur / 100;
         return new RectF(left, 0, mWidth, mHeight);
     }

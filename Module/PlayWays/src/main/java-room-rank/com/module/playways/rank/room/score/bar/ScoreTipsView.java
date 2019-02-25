@@ -54,6 +54,11 @@ public class ScoreTipsView extends RelativeLayout {
     private void bindData(Item item) {
         mLevelIv.setImageResource(item.level.mDrawableId);
         mNumIv.setImageResource(getNum(item.num));
+        if (item.level == Level.Bad) {
+            mNumIv.setVisibility(GONE);
+        } else {
+            mNumIv.setVisibility(VISIBLE);
+        }
     }
 
     private int getNum(int num) {
@@ -156,6 +161,13 @@ public class ScoreTipsView extends RelativeLayout {
     }
 
     public static void play(RelativeLayout parent, Item item) {
+        if (item == null) {
+            return;
+        }
+        if (item.level == Level.Bad && item.num > 1) {
+            // 丢人不能连续
+            return;
+        }
         ScoreTipsView scoreTipsView = new ScoreTipsView(parent.getContext());
         scoreTipsView.bindData(item);
         RelativeLayout.LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);

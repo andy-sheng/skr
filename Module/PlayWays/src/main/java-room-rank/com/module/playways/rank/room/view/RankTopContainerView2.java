@@ -63,7 +63,7 @@ public class RankTopContainerView2 extends RelativeLayout {
         BAO, MIE;
     }
 
-    int mTotalScore=-1;
+    int mTotalScore = -1;
     int mCurScore;
 
     public RankTopContainerView2(Context context) {
@@ -259,10 +259,6 @@ public class RankTopContainerView2 extends RelativeLayout {
         }
     }
 
-    public EnergySlotView getEnergySlotView() {
-        return mEnergySlotView;
-    }
-
     public void onGameFinish() {
         if (mMoreOpView != null) {
             mMoreOpView.dismiss();
@@ -335,11 +331,7 @@ public class RankTopContainerView2 extends RelativeLayout {
         }
         if (item.getLevel() != null) {
             if (mLastItem != null && item.getLevel() == mLastItem.getLevel()) {
-                if (item.getLevel() == ScoreTipsView.Level.Bad) {
-                    item.setNum(1);
-                } else {
-                    item.setNum(mLastItem.getNum() + 1);
-                }
+                item.setNum(mLastItem.getNum() + 1);
             }
             mLastItem = item;
             ScoreTipsView.play(this, item);

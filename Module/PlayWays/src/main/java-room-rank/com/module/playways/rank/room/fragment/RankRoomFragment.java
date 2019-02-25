@@ -134,8 +134,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     RankTopContainerView2 mRankTopContainerView;
 
-    EnergySlotView mEnergySlotView;
-
     SVGAImageView mStageView;      //主舞台动画，webp形式
     BaseImageView mSingAvatarView; //主舞台中心，歌唱者头像
     ArcProgressBar mCountDownProcess; //主舞台中心，倒计时
@@ -716,7 +714,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             }
         });
 
-        mEnergySlotView = mRankTopContainerView.getEnergySlotView();
     }
 
     private void initLyricsView() {

@@ -82,7 +82,7 @@ public class VoiceUserStatusContainerView extends RelativeLayout {
                     public void run() {
                         voiceUserStatusView.userOffline();
                     }
-                }, (long) (Math.random() * 4000));
+                }, (long) (Math.random() * 3000) + 1000);
             }
         }
     }
