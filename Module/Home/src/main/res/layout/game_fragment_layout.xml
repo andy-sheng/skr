@@ -91,16 +91,16 @@
                     android:layout_below="@id/user_info_title"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/view_5_dp"
+                    android:background="@drawable/shouye_paiming"
                     android:paddingLeft="@dimen/view_42_dp"
-                    android:paddingRight="@dimen/view_12_dp"
-                    android:background="@drawable/shouye_paiming">
+                    android:paddingRight="@dimen/view_12_dp">
 
                     <com.common.view.ex.ExTextView
                         android:id="@+id/rank_text"
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/view_20_dp"
-                        android:layout_marginLeft="@dimen/view_6_dp"
                         android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/view_6_dp"
                         android:gravity="center_vertical"
                         android:textColor="#0C2275"
                         android:textSize="@dimen/textsize_14_dp" />
@@ -121,7 +121,7 @@
                         android:layout_marginRight="@dimen/view_24_dp"
                         android:layout_toRightOf="@id/rank_diff_iv"
                         android:background="@drawable/gengduo_btn"
-                        android:visibility="gone"/>
+                        android:visibility="gone" />
 
                 </RelativeLayout>
 
@@ -129,10 +129,10 @@
                     android:id="@+id/medal_iv"
                     android:layout_width="@dimen/view_30_dp"
                     android:layout_height="@dimen/view_30_dp"
-                    android:layout_marginLeft="@dimen/view_12_dp"
-                    android:layout_marginTop="-1dp"
                     android:layout_alignLeft="@+id/rank_area"
-                    android:layout_alignTop="@+id/rank_area" />
+                    android:layout_alignTop="@+id/rank_area"
+                    android:layout_marginLeft="@dimen/view_12_dp"
+                    android:layout_marginTop="-1dp" />
 
             </RelativeLayout>
 
@@ -164,26 +164,64 @@
                 android:layout_marginRight="@dimen/view_16_dp"
                 android:orientation="horizontal">
 
-
-                <com.common.view.ex.ExImageView
-                    android:id="@+id/iv_grab_game"
-                    android:layout_width="0dp"
+                <RelativeLayout
+                    android:layout_width="@dimen/view_0_dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
                     android:layout_marginRight="@dimen/view_10_dp"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:src="@drawable/shouye_yichangdaodi" />
+                    android:layout_weight="1">
 
-                <com.common.view.ex.ExImageView
-                    android:id="@+id/iv_athletics_pk"
-                    android:layout_width="0dp"
+                    <com.common.view.ex.ExImageView
+                        android:id="@+id/iv_grab_game"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/shouye_yichangdaodi" />
+
+                    <com.common.view.ex.ExTextView
+                        android:id="@+id/text_grab_game"
+                        android:layout_width="@dimen/view_118_dp"
+                        android:layout_height="@dimen/view_32_dp"
+                        android:layout_alignBottom="@+id/iv_grab_game"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="@dimen/view_12_dp"
+                        android:background="@drawable/shouye_gaiyaobj"
+                        android:gravity="center"
+                        android:text="清唱 挑战30s"
+                        android:textColor="#0C2275"
+                        android:textSize="@dimen/textsize_13_dp"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="@dimen/view_0_dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/view_10_dp"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:src="@drawable/shouye_paiweisai" />
+                    android:layout_weight="1">
 
+                    <com.common.view.ex.ExImageView
+                        android:id="@+id/iv_athletics_pk"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/shouye_paiweisai" />
+
+                    <com.common.view.ex.ExTextView
+                        android:id="@+id/text_athletics_pk"
+                        android:layout_width="@dimen/view_118_dp"
+                        android:layout_height="@dimen/view_32_dp"
+                        android:layout_alignBottom="@+id/iv_athletics_pk"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="@dimen/view_12_dp"
+                        android:background="@drawable/shouye_gaiyaobj"
+                        android:gravity="center"
+                        android:text="K歌 3人赛"
+                        android:textColor="#0C2275"
+                        android:textSize="@dimen/textsize_13_dp"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+                </RelativeLayout>
             </LinearLayout>
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
