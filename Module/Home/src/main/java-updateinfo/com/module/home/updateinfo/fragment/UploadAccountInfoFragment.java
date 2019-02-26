@@ -17,6 +17,7 @@ import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.MyUserInfoServerApi;
+import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -61,7 +62,8 @@ public class UploadAccountInfoFragment extends BaseFragment {
     ExTextView mCompleteTv;
 
     int sex = 0;// 未知、非法参数
-    String nickName = "";
+    String mNickName = "";
+    String mLastName = "";   //最后一次检查的昵称
 
     CompositeDisposable mCompositeDisposable;
     PublishSubject<String> mPublishSubject;
@@ -101,15 +103,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 int length = U.getStringUtils().getStringLength(editable.toString());
-                int selectionStart = mNicknameEt.getSelectionStart();
-                int selectionEnd = mNicknameEt.getSelectionEnd();
                 if (length > 14) {
-                    if ((selectionStart - 1) >= 0 && selectionEnd > (selectionStart - 1)) {
-                        editable.delete(selectionStart - 1, selectionEnd);
-                    }
-                    mNicknameEt.setText(editable.toString());
-                    int selection = editable.length();
-                    mNicknameEt.setSelection(selection);
                     mNicknameHintTv.setVisibility(View.VISIBLE);
                     mNicknameHintTv.setTextColor(Color.parseColor("#EF5E85"));
                     mNicknameHintTv.setText("昵称不能超过7个汉字或14个英文");
@@ -140,9 +134,9 @@ public class UploadAccountInfoFragment extends BaseFragment {
         mCompleteTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                nickName = mNicknameEt.getText().toString().trim();
+                mNickName = mNicknameEt.getText().toString().trim();
                 MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
-                        .setNickName(nickName).setSex(sex)
+                        .setNickName(mNickName).setSex(sex)
                         .build(), false, new MyUserInfoManager.ServerCallback() {
                     @Override
                     public void onSucess() {
@@ -250,18 +244,21 @@ public class UploadAccountInfoFragment extends BaseFragment {
                 if (result.getErrno() == 0) {
                     boolean isValid = result.getData().getBoolean("isValid");
                     String unValidReason = result.getData().getString("unValidReason");
-                    if (isValid) {
-                        // 昵称可用
-                        mNicknameHintTv.setVisibility(View.VISIBLE);
-                        mNicknameHintTv.setTextColor(Color.parseColor("#7ED321"));
-                        mNicknameHintTv.setText("昵称可用");
-                        setCompleteTv(true);
-                    } else {
-                        // 昵称不可用
-                        mNicknameHintTv.setVisibility(View.VISIBLE);
-                        mNicknameHintTv.setTextColor(Color.parseColor("#EF5E85"));
-                        mNicknameHintTv.setText(unValidReason);
-                        setCompleteTv(false);
+                    mNickName = mNicknameEt.getText().toString().trim();
+                    if (!TextUtils.isEmpty(mLastName) && mLastName.equals(mNickName)) {
+                        if (isValid) {
+                            // 昵称可用
+                            mNicknameHintTv.setVisibility(View.VISIBLE);
+                            mNicknameHintTv.setTextColor(Color.parseColor("#7ED321"));
+                            mNicknameHintTv.setText("昵称可用");
+                            setCompleteTv(true);
+                        } else {
+                            // 昵称不可用
+                            mNicknameHintTv.setVisibility(View.VISIBLE);
+                            mNicknameHintTv.setTextColor(Color.parseColor("#EF5E85"));
+                            mNicknameHintTv.setText(unValidReason);
+                            setCompleteTv(false);
+                        }
                     }
                 }
             }
@@ -283,9 +280,10 @@ public class UploadAccountInfoFragment extends BaseFragment {
             }
         }).switchMap(new Function<String, ObservableSource<ApiResult>>() {
             @Override
-            public ObservableSource<ApiResult> apply(String s) throws Exception {
+            public ObservableSource<ApiResult> apply(String string) throws Exception {
+                mLastName = string;
                 MyUserInfoServerApi myUserInfoServerApi = ApiManager.getInstance().createService(MyUserInfoServerApi.class);
-                return myUserInfoServerApi.checkNickName(s).subscribeOn(Schedulers.io());
+                return myUserInfoServerApi.checkNickName(string).subscribeOn(Schedulers.io());
             }
         }).observeOn(AndroidSchedulers.mainThread()).subscribe(mDisposableObserver);
         mCompositeDisposable = new CompositeDisposable();

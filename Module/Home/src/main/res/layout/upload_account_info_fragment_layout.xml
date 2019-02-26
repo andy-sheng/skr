@@ -46,7 +46,7 @@
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:gravity="center_vertical"
-                android:hint="昵 称"
+                android:hint="昵称"
                 android:inputType="text"
                 android:maxLength="14"
                 android:maxLines="1"
