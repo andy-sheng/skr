@@ -295,6 +295,7 @@ public class SearchSongFragment extends BaseFragment {
             mSearchResult.setVisibility(View.VISIBLE);
             mSongSelectAdapter.setDataList(list);
             mSongSelectAdapter.notifyDataSetChanged();
+            mSearchResult.scrollToPosition(0);
         }
     }
 
