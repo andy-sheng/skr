@@ -3,6 +3,7 @@
 package com.module.playways.rank.msg.event;
 
 import com.module.playways.rank.msg.BasePushInfo;
+import com.module.playways.rank.prepare.model.GrabRoundInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.zq.live.proto.Room.EQRoundOverReason;
 import com.zq.live.proto.Room.EQRoundResultType;
@@ -28,8 +29,8 @@ public final class QRoundOverMsgEvent {
     public QRoundOverMsgEvent(BasePushInfo info, QRoundOverMsg qRoundOverMsg) {
         this.info = info;
         this.roundOverTimeMs = qRoundOverMsg.getRoundOverTimeMs();
-        this.currentRound = RoundInfoModel.parseFromRoundInfo(qRoundOverMsg.getCurrentRound());
-        this.nextRound = RoundInfoModel.parseFromRoundInfo(qRoundOverMsg.getNextRound());
+        this.currentRound = GrabRoundInfoModel.parseFromRoundInfo(qRoundOverMsg.getCurrentRound());
+        this.nextRound = GrabRoundInfoModel.parseFromRoundInfo(qRoundOverMsg.getNextRound());
     }
 
     public BasePushInfo getInfo() {

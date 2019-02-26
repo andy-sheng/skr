@@ -24,6 +24,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 
 public class RoundInfoModel implements Serializable {
+    public final static String TAG = "RoundInfoModel";
     public static final int TYPE_RANK = 1;
     public static final int TYPE_GRAB = 2;
 
@@ -38,17 +39,17 @@ public class RoundInfoModel implements Serializable {
      * singBeginMs : 3000
      * singEndMs : 341000
      */
-    private int type = TYPE_RANK;
-    private int userID;
-    private int playbookID;   //songModelId
-    private SongModel songModel;//本轮次要唱的歌儿的详细信息
-    private int roundSeq;
-    private int singBeginMs;
-    private int singEndMs;
-    private long startTs;// 开始时间，服务器的
-    private long endTs;// 结束时间，服务器的
-    private int sysScore;//本轮系统打分，先搞个默认60分
-    private boolean hasSing = false;
+    protected int type = TYPE_RANK;
+    protected int userID;
+    protected int playbookID;   //songModelId
+    protected SongModel songModel;//本轮次要唱的歌儿的详细信息
+    protected int roundSeq;
+    protected int singBeginMs;
+    protected int singEndMs;
+    protected long startTs;// 开始时间，服务器的
+    protected long endTs;// 结束时间，服务器的
+    protected int sysScore;//本轮系统打分，先搞个默认60分
+    protected boolean hasSing = false;
 
     /**
      * 一唱到底 结束原因
@@ -64,33 +65,11 @@ public class RoundInfoModel implements Serializable {
      * 2 玩家退出
      * 3 多人灭灯
      */
-    private int overReason; // 结束的原因
-
-    /* 一唱到底使用 */
-    private int status = STATUS_INIT;// 轮次状态，在一唱到底中使用
-    //0未知
-    //1有种优秀叫一唱到底（全部唱完）
-    //2有种结束叫刚刚开始（t<30%）
-    //3有份悲伤叫都没及格(30%<=t <60%)
-    //4有种遗憾叫明明可以（60%<=t<90%）
-    //5有种可惜叫我觉得你行（90%<=t<=100%)
-    private int resultType; // 结果类型
-
-    private HashSet<WantSingerInfo> wantSingInfos = new HashSet<>(); //已经抢了的人
-
-    private HashSet<NoPassingInfo> noPassSingInfos = new HashSet<>();//已经灭灯的人, 一唱到底
-
-    private HashSet<BLightInfoModel> bLightInfos = new HashSet<>();//已经爆灯的人, pk
-
-    private HashSet<MLightInfoModel> mLightInfos = new HashSet<>();  //已经灭灯的人, pk
-
-    private ERoundOverReasonModel eRoundOverReasonModel = ERoundOverReasonModel.EROR_UNKNOWN;
-
+    protected int overReason; // 结束的原因
 
     public RoundInfoModel() {
 
     }
-
 
     public RoundInfoModel(int type) {
         this.type = type;
@@ -103,14 +82,6 @@ public class RoundInfoModel implements Serializable {
 
     public void setType(int type) {
         this.type = type;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
     }
 
     public int getOverReason() {
@@ -201,219 +172,6 @@ public class RoundInfoModel implements Serializable {
         this.hasSing = hasSing;
     }
 
-    public int getResultType() {
-        return resultType;
-    }
-
-    public void setResultType(int resultType) {
-        this.resultType = resultType;
-    }
-
-    public HashSet<WantSingerInfo> getWantSingInfos() {
-        return wantSingInfos;
-    }
-
-    public void setWantSingInfos(HashSet<WantSingerInfo> wantSingInfos) {
-        this.wantSingInfos = wantSingInfos;
-    }
-
-    public HashSet<NoPassingInfo> getNoPassSingInfos() {
-        return noPassSingInfos;
-    }
-
-    public void setNoPassSingInfos(HashSet<NoPassingInfo> noPassSingInfos) {
-        this.noPassSingInfos = noPassSingInfos;
-    }
-
-    public ERoundOverReasonModel geteRoundOverReasonModel() {
-        return eRoundOverReasonModel;
-    }
-
-    public HashSet<BLightInfoModel> getbLightInfos() {
-        return bLightInfos;
-    }
-
-    /**
-     * 排位赛使用
-     */
-    public void setbLightInfos(HashSet<BLightInfoModel> bLightInfos) {
-        this.bLightInfos = bLightInfos;
-    }
-
-    public HashSet<MLightInfoModel> getLightInfos() {
-        return mLightInfos;
-    }
-
-    public void setLightInfos(HashSet<MLightInfoModel> lightInfos) {
-        mLightInfos = lightInfos;
-    }
-
-    public void changeRoundOverReason(ERoundOverReasonModel roundOverReasonModel) {
-        if (eRoundOverReasonModel != ERoundOverReasonModel.EROR_UNKNOWN) {
-            eRoundOverReasonModel = roundOverReasonModel;
-        }
-    }
-
-    public static RoundInfoModel parseFromRoundInfo(RoundInfo roundInfo) {
-        RoundInfoModel roundInfoModel = new RoundInfoModel(TYPE_RANK);
-        roundInfoModel.setUserID(roundInfo.getUserID());
-        roundInfoModel.setPlaybookID(roundInfo.getPlaybookID());
-        roundInfoModel.setRoundSeq(roundInfo.getRoundSeq());
-        roundInfoModel.setSingBeginMs(roundInfo.getSingBeginMs());
-        roundInfoModel.setSingEndMs(roundInfo.getSingEndMs());
-        if (roundInfo.getBLightInfosList() != null) {
-            for (BLightInfo bLightInfo : roundInfo.getBLightInfosList()) {
-                roundInfoModel.addBrustLightUid(false, BLightInfoModel.parse(bLightInfo, roundInfo.getRoundSeq()));
-            }
-        }
-        if (roundInfo.getMLightInfosList() != null) {
-            for (MLightInfo mlightInfo : roundInfo.getMLightInfosList()) {
-                roundInfoModel.addPkLightOffUid(false, MLightInfoModel.parse(mlightInfo, roundInfo.getRoundSeq()));
-            }
-        }
-        roundInfoModel.setOverReason(roundInfo.getOverReason().getValue());
-        return roundInfoModel;
-    }
-
-    /**
-     * 排位赛使用
-     */
-    public void tryUpdateRankRoundInfoModel(RoundInfoModel roundInfo, boolean notify) {
-        if (roundInfo == null) {
-            MyLog.e("JsonRoundInfo RoundInfo == null");
-            return;
-        }
-        this.setUserID(roundInfo.getUserID());
-        this.setPlaybookID(roundInfo.getPlaybookID());
-        this.setRoundSeq(roundInfo.getRoundSeq());
-        this.setSingBeginMs(roundInfo.getSingBeginMs());
-        this.setSingEndMs(roundInfo.getSingEndMs());
-        //TODO 抢 灭 结束原因 补全
-        for (BLightInfoModel bLightInfoModel : roundInfo.getbLightInfos()) {
-            addBrustLightUid(notify, bLightInfoModel);
-        }
-        for (MLightInfoModel mLightInfoModel : roundInfo.getLightInfos()) {
-            addPkLightOffUid(notify, mLightInfoModel);
-        }
-        if (roundInfo.getOverReason() > 0) {
-            this.setOverReason(roundInfo.getOverReason());
-        }
-    }
-
-    /**
-     * 排位赛使用
-     */
-    public void addBrustLightUid(boolean notify, BLightInfoModel bLightInfoModel) {
-        if (!bLightInfos.contains(bLightInfoModel)) {
-            bLightInfos.add(bLightInfoModel);
-            if (notify) {
-                PkSomeOneBurstLightEvent event = new PkSomeOneBurstLightEvent(bLightInfoModel.getUserID(), this);
-                EventBus.getDefault().post(event);
-            }
-        }
-    }
-
-    /**
-     * 排位赛使用
-     */
-    public void addPkLightOffUid(boolean notify, MLightInfoModel mLightInfoModel) {
-        if (!mLightInfos.contains(mLightInfoModel)) {
-            mLightInfos.add(mLightInfoModel);
-            if (notify) {
-                PkSomeOneLightOffEvent event = new PkSomeOneLightOffEvent(mLightInfoModel.getUserID(), this);
-                EventBus.getDefault().post(event);
-            }
-        }
-    }
-
-    /**
-     * 一唱到底使用
-     */
-    public static RoundInfoModel parseFromRoundInfo(QRoundInfo roundInfo) {
-        RoundInfoModel roundInfoModel = new RoundInfoModel(TYPE_GRAB);
-        roundInfoModel.setUserID(roundInfo.getUserID());
-        roundInfoModel.setPlaybookID(roundInfo.getPlaybookID());
-        roundInfoModel.setRoundSeq(roundInfo.getRoundSeq());
-        roundInfoModel.setSingBeginMs(roundInfo.getSingBeginMs());
-        roundInfoModel.setSingEndMs(roundInfo.getSingEndMs());
-        roundInfoModel.setStatus(roundInfo.getStatus().getValue());
-        for (WantSingInfo wantSingInfo : roundInfo.getWantSingInfosList()) {
-            roundInfoModel.addGrabUid(false, WantSingerInfo.parse(wantSingInfo));
-        }
-        for (NoPassSingInfo noPassSingInfo : roundInfo.getNoPassSingInfosList()) {
-            roundInfoModel.addLightOffUid(false, NoPassingInfo.parse(noPassSingInfo));
-        }
-        roundInfoModel.setOverReason(roundInfo.getOverReason().getValue());
-        roundInfoModel.setResultType(roundInfo.getResultType().getValue());
-        return roundInfoModel;
-    }
-
-    /**
-     * 一唱到底使用
-     */
-    public void tryUpdateGrabByRoundInfoModel(RoundInfoModel roundInfo, boolean notify) {
-        if (roundInfo == null) {
-            MyLog.e("JsonRoundInfo RoundInfo == null");
-            return;
-        }
-        this.setUserID(roundInfo.getUserID());
-        this.setPlaybookID(roundInfo.getPlaybookID());
-        this.setRoundSeq(roundInfo.getRoundSeq());
-        this.setSingBeginMs(roundInfo.getSingBeginMs());
-        this.setSingEndMs(roundInfo.getSingEndMs());
-        for (WantSingerInfo wantSingerInfo : roundInfo.getWantSingInfos()) {
-            addGrabUid(notify, wantSingerInfo);
-        }
-        for (NoPassingInfo noPassingInfo : roundInfo.getNoPassSingInfos()) {
-            addLightOffUid(notify, noPassingInfo);
-        }
-        if (roundInfo.getOverReason() > 0) {
-            this.setOverReason(roundInfo.getOverReason());
-        }
-        if (roundInfo.getResultType() > 0) {
-            this.setResultType(roundInfo.getResultType());
-        }
-        updateStatus(notify, roundInfo.getStatus());
-        return;
-    }
-
-    /**
-     * 一唱到底使用
-     */
-    public void addGrabUid(boolean notify, WantSingerInfo wantSingerInfo) {
-        if (!wantSingInfos.contains(wantSingerInfo)) {
-            wantSingInfos.add(wantSingerInfo);
-            if (notify) {
-                SomeOneGrabEvent event = new SomeOneGrabEvent(wantSingerInfo.getUserID(), this);
-                EventBus.getDefault().post(event);
-            }
-        }
-    }
-
-    /**
-     * 一唱到底使用
-     */
-    public void addLightOffUid(boolean notify, NoPassingInfo noPassingInfo) {
-        if (!noPassSingInfos.contains(noPassingInfo)) {
-            noPassSingInfos.add(noPassingInfo);
-            if (notify) {
-                SomeOneLightOffEvent event = new SomeOneLightOffEvent(noPassingInfo.getUserID(), this);
-                EventBus.getDefault().post(event);
-            }
-        }
-    }
-
-
-    public void updateStatus(boolean notify, int statusGrab) {
-        if (status < statusGrab) {
-            int old = status;
-            status = statusGrab;
-            if (notify) {
-                EventBus.getDefault().post(new GrabRoundStatusChangeEvent(this, old));
-            }
-        }
-    }
-
     @Override
     public boolean equals(Object o) {
         RoundInfoModel that = (RoundInfoModel) o;
@@ -441,6 +199,10 @@ public class RoundInfoModel implements Serializable {
         return result;
     }
 
+    public void tryUpdateRoundInfoModel(RoundInfoModel round, boolean notify){
+        MyLog.d(TAG, "tryUpdateRoundInfoModel" + " round=" + round + " notify=" + notify);
+    }
+
     @Override
     public String toString() {
         return "RoundInfoModel{" +
@@ -455,11 +217,7 @@ public class RoundInfoModel implements Serializable {
                 ", endTs=" + endTs +
                 ", sysScore=" + sysScore +
                 ", hasSing=" + hasSing +
-                ", status=" + status +
                 ", overReason=" + overReason +
-                ", resultType=" + resultType +
-                ", hasGrabUserSet=" + wantSingInfos +
-                ", hasLightOffUserSet=" + noPassSingInfos +
                 '}';
     }
 

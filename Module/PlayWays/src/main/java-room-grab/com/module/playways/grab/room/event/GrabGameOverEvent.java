@@ -1,11 +1,12 @@
 package com.module.playways.grab.room.event;
 
+import com.module.playways.rank.prepare.model.GrabRoundInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 
 public class GrabGameOverEvent {
-    public RoundInfoModel lastRoundInfo;
+    public GrabRoundInfoModel lastRoundInfo;
 
-    public GrabGameOverEvent(RoundInfoModel lastRoundInfo) {
+    public GrabGameOverEvent(GrabRoundInfoModel lastRoundInfo) {
         this.lastRoundInfo = lastRoundInfo;
     }
 }

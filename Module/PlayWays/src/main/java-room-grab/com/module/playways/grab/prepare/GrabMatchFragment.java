@@ -34,15 +34,14 @@ import com.component.busilib.constans.GameModeType;
 import com.component.busilib.manager.BgMusicManager;
 import com.dialog.view.TipsDialogView;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
+import com.module.playways.grab.prepare.presenter.RankMatchPresenter;
 import com.module.playways.rank.msg.event.JoinActionEvent;
 import com.module.playways.rank.prepare.model.MatchIconModel;
-import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.PrepareData;
-import com.module.playways.rank.prepare.presenter.MatchPresenter;
+import com.module.playways.rank.prepare.presenter.BaseMatchPresenter;
+import com.module.playways.rank.prepare.presenter.GrabMatchPresenter;
 import com.module.playways.rank.prepare.view.IMatchingView;
-import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGAImageView;
@@ -60,7 +59,6 @@ import org.greenrobot.greendao.annotation.NotNull;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 //这个是匹配界面，之前的FastMatchingSence
 public class GrabMatchFragment extends BaseFragment implements IMatchingView {
@@ -83,7 +81,7 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
 
     RelativeLayout mRlIconContainer;
 
-    MatchPresenter mMatchPresenter;
+    BaseMatchPresenter mMatchPresenter;
     PrepareData mPrepareData;
 
     List<String> mQuotationsArray;
@@ -166,12 +164,13 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
 //                        .setBorderColor(Color.WHITE)
 //                        .build());
 
-        mMatchPresenter = new MatchPresenter(this);
-        addPresent(mMatchPresenter);
-
         if (mPrepareData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK) {
+            mMatchPresenter = new RankMatchPresenter(this);
+            addPresent(mMatchPresenter);
             mMatchPresenter.startLoopMatchTask(mPrepareData.getSongModel().getItemID(), mPrepareData.getGameType());
         } else if (mPrepareData.getGameType() == GameModeType.GAME_MODE_GRAB) {
+            mMatchPresenter = new GrabMatchPresenter(this);
+            addPresent(mMatchPresenter);
             mMatchPresenter.startLoopMatchTask(mPrepareData.getTagId(), mPrepareData.getGameType());
         }
 
@@ -501,26 +500,37 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
         mPrepareData.setGameConfigModel(event.gameConfigModel);
         stopTimeTask();
 
-        //先添加成功界面面
-        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), GrabMatchSuccessFragment.class)
-                .setAddToBackStack(false)
-                .setNotifyHideFragment(GrabMatchFragment.class)
-                .setHasAnimation(false)
-                .addDataBeforeAdd(0, mPrepareData)
-                .setFragmentDataListener(new FragmentDataListener() {
-                    @Override
-                    public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
+        if(mPrepareData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK){
+            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), GrabMatchSuccessFragment.class)
+                    .setAddToBackStack(false)
+                    .setNotifyHideFragment(GrabMatchFragment.class)
+                    .setHasAnimation(false)
+                    .addDataBeforeAdd(0, mPrepareData)
+                    .setFragmentDataListener(new FragmentDataListener() {
+                        @Override
+                        public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
 
-                    }
-                })
-                .build());
+                        }
+                    })
+                    .build());
 
-        //匹配成功直接先把自己pop掉
-        U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
-                .setPopFragment(GrabMatchFragment.this)
-                .setPopAbove(false)
-                .setHasAnimation(false)
-                .build());
+            //匹配成功直接先把自己pop掉
+            U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
+                    .setPopFragment(GrabMatchFragment.this)
+                    .setPopAbove(false)
+                    .setHasAnimation(false)
+                    .build());
+        }else if(mPrepareData.getGameType() == GameModeType.GAME_MODE_GRAB){
+            //先跳转
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_ROOM)
+                    .withSerializable("prepare_data", mPrepareData)
+                    .navigation();
+
+            //结束当前Activity
+            if (getActivity() != null) {
+                getActivity().finish();
+            }
+        }
 
     }
 

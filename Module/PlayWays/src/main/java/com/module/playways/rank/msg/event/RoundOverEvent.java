@@ -1,6 +1,7 @@
 package com.module.playways.rank.msg.event;
 
 import com.module.playways.rank.msg.BasePushInfo;
+import com.module.playways.rank.prepare.model.RankRoundInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.zq.live.proto.Room.RoundOverMsg;
 
@@ -15,8 +16,8 @@ public class RoundOverEvent {
     public RoundOverEvent(BasePushInfo info, RoundOverMsg roundOverMsgr) {
         this.info = info;
         this.roundOverTimeMs = roundOverMsgr.getRoundOverTimeMs();
-        this.currenRound = RoundInfoModel.parseFromRoundInfo(roundOverMsgr.getCurrentRound());
-        this.nextRound = RoundInfoModel.parseFromRoundInfo(roundOverMsgr.getNextRound());
+        this.currenRound = RankRoundInfoModel.parseFromRoundInfo(roundOverMsgr.getCurrentRound());
+        this.nextRound = RankRoundInfoModel.parseFromRoundInfo(roundOverMsgr.getNextRound());
         this.exitUserID = roundOverMsgr.getExitUserID();
     }
 }

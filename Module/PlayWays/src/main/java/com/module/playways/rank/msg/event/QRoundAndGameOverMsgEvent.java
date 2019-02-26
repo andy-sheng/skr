@@ -4,6 +4,7 @@ package com.module.playways.rank.msg.event;
 
 import com.module.playways.grab.room.model.GrabResultInfoModel;
 import com.module.playways.rank.msg.BasePushInfo;
+import com.module.playways.rank.prepare.model.GrabRoundInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.zq.live.proto.Room.EQRoundOverReason;
 import com.zq.live.proto.Room.EQRoundResultType;
@@ -35,7 +36,7 @@ public final class QRoundAndGameOverMsgEvent {
     public QRoundAndGameOverMsgEvent(BasePushInfo info, QRoundAndGameOverMsg qRoundAndGameOverMsg) {
         this.info = info;
         this.roundOverTimeMs = qRoundAndGameOverMsg.getRoundOverTimeMs();
-        this.roundInfoModel = RoundInfoModel.parseFromRoundInfo(qRoundAndGameOverMsg.getCurrentRound());
+        this.roundInfoModel = GrabRoundInfoModel.parseFromRoundInfo(qRoundAndGameOverMsg.getCurrentRound());
         resultInfo = new ArrayList<>();
         for(QResultInfo qResultInfo:qRoundAndGameOverMsg.getResultInfoList()){
             resultInfo.add(GrabResultInfoModel.parse(qResultInfo));

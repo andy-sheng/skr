@@ -267,7 +267,7 @@ public class RoomDataUtils {
         }
         for (RoundInfoModel roundInfo : roomData.getRoundInfoModelList()) {
             if (roundInfo.getRoundSeq() == roundInfoModel.getRoundSeq()) {
-                roundInfo.tryUpdateGrabByRoundInfoModel(roundInfoModel,false);
+                roundInfo.tryUpdateRoundInfoModel(roundInfoModel,false);
                 return roundInfo;
             }
         }
@@ -281,7 +281,7 @@ public class RoomDataUtils {
 
         for (RoundInfoModel roundInfo : roomData.getRoundInfoModelList()) {
             if (roundInfo.getRoundSeq() == roundInfoModel.getRoundSeq()) {
-                roundInfo.tryUpdateRankRoundInfoModel(roundInfoModel,false);
+                roundInfo.tryUpdateRoundInfoModel(roundInfoModel,false);
                 return roundInfo;
             }
         }

@@ -23,6 +23,7 @@ import com.module.playways.grab.room.event.ShowPersonCardEvent;
 import com.module.playways.grab.room.fragment.GrabRoomFragment;
 import com.module.playways.grab.room.model.NoPassingInfo;
 import com.module.playways.grab.room.model.WantSingerInfo;
+import com.module.playways.rank.prepare.model.GrabRoundInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.rank.R;
@@ -104,7 +105,7 @@ public class GrabTopRv extends RelativeLayout {
         if (mInited) {
             return;
         }
-        RoundInfoModel now = mRoomData.getRealRoundInfo();
+        GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
         List<PlayerInfoModel> playerInfoModels = mRoomData.getPlayerInfoList();
         int i = 0;
         for (PlayerInfoModel playerInfoModel : playerInfoModels) {
@@ -162,7 +163,9 @@ public class GrabTopRv extends RelativeLayout {
                 vp.grabTopItemView.reset();
                 WantSingerInfo wantSingerInfo = new WantSingerInfo();
                 wantSingerInfo.setUserID(uId);
-                if (mRoomData.getRealRoundInfo().getWantSingInfos().contains(wantSingerInfo)) {
+                GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
+                // TODO: 2019/2/26 判空
+                if (grabRoundInfoModel.getWantSingInfos().contains(wantSingerInfo)) {
                     vp.grabTopItemView.setGrap(true);
                 } else {
                     if (vp.grabTopItemView.getPlayerInfoModel().isOnline()) {
@@ -396,7 +399,7 @@ public class GrabTopRv extends RelativeLayout {
     }
 
     private void syncLight() {
-        RoundInfoModel now = mRoomData.getRealRoundInfo();
+        GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
         if (now != null) {
             for (NoPassingInfo noPassingInfo : now.getNoPassSingInfos()) {
                 VP vp = mInfoMap.get(noPassingInfo.getUserID());

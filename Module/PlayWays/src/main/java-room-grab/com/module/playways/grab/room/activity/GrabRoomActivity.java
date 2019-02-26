@@ -61,6 +61,7 @@ public class GrabRoomActivity extends BaseActivity {
                 RoundInfoModel roundInfoModel = mRoomData.getRoundInfoModelList().get(i);
                 roundInfoModel.setSongModel(songModel);
             }
+            // TODO: 2019/2/26  这里需要把当前的轮次找到设置
             mRoomData.setExpectRoundInfo(RoomDataUtils.findFirstRoundInfo(mRoomData.getRoundInfoModelList()));
             MyLog.d(TAG, "" + prepareData.getPlayerInfoList());
             mRoomData.setPlayerInfoList(prepareData.getPlayerInfoList());

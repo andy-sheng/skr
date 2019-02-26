@@ -30,11 +30,9 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.rank.msg.event.JoinActionEvent;
 import com.module.playways.rank.prepare.model.MatchIconModel;
-import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.PrepareData;
-import com.module.playways.rank.prepare.presenter.MatchPresenter;
+import com.module.playways.rank.prepare.presenter.GrabMatchPresenter;
 import com.module.playways.rank.prepare.view.IMatchingView;
-import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
@@ -67,7 +65,7 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
 
     RelativeLayout mRlIconContainer;
 
-    MatchPresenter mMatchPresenter;
+    GrabMatchPresenter mMatchPresenter;
     PrepareData mPrepareData;
 
     List<String> mQuotationsArray;
@@ -121,7 +119,7 @@ public class MatchFragment extends BaseFragment implements IMatchingView {
                         .setBorderColor(Color.WHITE)
                         .build());
 
-        mMatchPresenter = new MatchPresenter(this);
+        mMatchPresenter = new GrabMatchPresenter(this);
         addPresent(mMatchPresenter);
         mMatchPresenter.startLoopMatchTask(mPrepareData.getSongModel().getItemID(), mPrepareData.getGameType());
 

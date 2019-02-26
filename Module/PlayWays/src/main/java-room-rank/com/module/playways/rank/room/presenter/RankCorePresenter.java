@@ -45,6 +45,7 @@ import com.module.playways.rank.msg.manager.ChatRoomMsgManager;
 import com.module.playways.rank.prepare.model.DataUtils;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
+import com.module.playways.rank.prepare.model.RankRoundInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.rank.room.RoomServerApi;
 import com.module.playways.rank.room.SwapStatusType;
@@ -484,8 +485,8 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                     long gameOverTimeMs = result.getData().getLong("gameOverTimeMs");  //游戏结束时间
                     List<OnlineInfoModel> onlineInfos = JSON.parseArray(result.getData().getString("onlineInfo"), OnlineInfoModel.class); //在线状态
 
-                    RoundInfoModel currentInfo = JSON.parseObject(result.getData().getString("currentRound"), RoundInfoModel.class); //当前轮次信息
-                    RoundInfoModel nextInfo = JSON.parseObject(result.getData().getString("nextRound"), RoundInfoModel.class); //下个轮次信息
+                    RankRoundInfoModel currentInfo = JSON.parseObject(result.getData().getString("currentRound"), RankRoundInfoModel.class); //当前轮次信息
+                    RankRoundInfoModel nextInfo = JSON.parseObject(result.getData().getString("nextRound"), RankRoundInfoModel.class); //下个轮次信息
 
                     String msg = "";
                     if (currentInfo != null) {
@@ -609,7 +610,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                 } else if (RoomDataUtils.roundInfoEqual(currentInfo, mRoomData.getRealRoundInfo())) {
                     // TODO: 2019/2/21 更新本次round的数据
                     if (mRoomData.getRealRoundInfo() != null) {
-                        mRoomData.getRealRoundInfo().tryUpdateRankRoundInfoModel(currentInfo, true);
+                        mRoomData.getRealRoundInfo().tryUpdateRoundInfoModel(currentInfo, true);
                     }
                 }
             } else {
@@ -1013,7 +1014,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     public void onEvent(PkBurstLightMsgEvent event) {
         if (RoomDataUtils.isCurrentRound(event.getpKBLightMsg().getRoundSeq(), mRoomData)) {
             MyLog.w(TAG, "有人爆灯了：userID " + event.getpKBLightMsg().getUserID() + ", seq " + event.getpKBLightMsg().getRoundSeq());
-            RoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
+            RankRoundInfoModel roundInfoModel = (RankRoundInfoModel)mRoomData.getRealRoundInfo();
 
             BLightInfoModel bLightInfoModel = new BLightInfoModel();
             bLightInfoModel.setUserID(event.getpKBLightMsg().getUserID());
@@ -1035,7 +1036,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     public void onEvent(PkLightOffMsgEvent event) {
         if (RoomDataUtils.isCurrentRound(event.getPKMLightMsg().getRoundSeq(), mRoomData)) {
             MyLog.w(TAG, "有人灭灯了：userID " + event.getPKMLightMsg().getUserID() + ", seq " + event.getPKMLightMsg().getRoundSeq());
-            RoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
+            RankRoundInfoModel roundInfoModel = (RankRoundInfoModel) mRoomData.getRealRoundInfo();
 
             MLightInfoModel mLightInfoModel = new MLightInfoModel();
             mLightInfoModel.setUserID(event.getPKMLightMsg().getUserID());
@@ -1302,7 +1303,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 
         if (RoomDataUtils.isCurrentRound(event.currenRound.getRoundSeq(), mRoomData)) {
             // 如果是当前轮次
-            mRoomData.getRealRoundInfo().tryUpdateRankRoundInfoModel(event.currenRound, true);
+            mRoomData.getRealRoundInfo().tryUpdateRoundInfoModel(event.currenRound, true);
         }
         // 游戏轮次结束
         if (RoomDataUtils.roundSeqLarger(event.nextRound, mRoomData.getRealRoundInfo())) {
