@@ -224,7 +224,11 @@ public class TurnChangeCardView extends RelativeLayout {
                 .setHeight(U.getDisplayUtils().dip2px(64))
                 .build());
         File file = FrescoWorker.getCacheFileFromFrescoDiskCache(image.getUrl());
-        dynamicEntity.setDynamicImage(BitmapFactory.decodeFile(file.getPath()), "avatar128");
+        if (file != null && file.exists()) {
+            dynamicEntity.setDynamicImage(BitmapFactory.decodeFile(file.getPath()), "avatar128");
+        } else {
+            dynamicEntity.setDynamicImage(image.getUrl(), "avatar128");
+        }
 
         TextPaint textPaint1 = new TextPaint();
         textPaint1.setColor(Color.parseColor("#0C2275"));
