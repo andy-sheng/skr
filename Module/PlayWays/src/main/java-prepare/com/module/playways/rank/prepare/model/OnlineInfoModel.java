@@ -1,5 +1,6 @@
 package com.module.playways.rank.prepare.model;
 
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.zq.live.proto.Room.OnlineInfo;
 
@@ -13,6 +14,7 @@ public class OnlineInfoModel implements Serializable {
 
     private int userID;
     private boolean isOnline;
+    private UserInfoModel userInfoModel;
 
     public int getUserID() {
         return userID;
@@ -30,11 +32,20 @@ public class OnlineInfoModel implements Serializable {
         this.isOnline = isOnline;
     }
 
+    public UserInfoModel getUserInfoModel() {
+        return userInfoModel;
+    }
+
+    public void setUserInfoModel(UserInfoModel userInfoModel) {
+        this.userInfoModel = userInfoModel;
+    }
+
     @Override
     public String toString() {
         return "OnlineInfoModel{" +
                 "userID=" + userID +
                 ", isOnline=" + isOnline +
+                ", userInfoModel=" + userInfoModel +
                 '}';
     }
 
@@ -46,5 +57,6 @@ public class OnlineInfoModel implements Serializable {
 
         this.setUserID(onlineInfo.getUserID());
         this.setIsOnline(onlineInfo.getIsOnline());
+        this.setUserInfoModel(UserInfoModel.parseFromPB(onlineInfo.getUserInfo()));
     }
 }

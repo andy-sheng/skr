@@ -1,6 +1,7 @@
 package com.module.playways.rank.msg.process;
 
 import com.common.log.MyLog;
+import com.module.playways.grab.room.event.QLightActionEvent;
 import com.module.playways.rank.msg.BasePushInfo;
 import com.module.playways.rank.msg.event.AccBeginEvent;
 import com.module.playways.rank.msg.event.AppSwapEvent;
@@ -34,6 +35,7 @@ import com.zq.live.proto.Room.PKBLightMsg;
 import com.zq.live.proto.Room.PKMLightMsg;
 import com.zq.live.proto.Room.QExitGameMsg;
 import com.zq.live.proto.Room.QGetSingChanceMsg;
+import com.zq.live.proto.Room.QLightActionMsg;
 import com.zq.live.proto.Room.QNoPassSingMsg;
 import com.zq.live.proto.Room.QRoundAndGameOverMsg;
 import com.zq.live.proto.Room.QRoundOverMsg;
@@ -50,6 +52,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import static com.zq.live.proto.Room.ERoomMsgType.RM_PK_BLIGHT;
 import static com.zq.live.proto.Room.ERoomMsgType.RM_PK_MLIGHT;
+import static com.zq.live.proto.Room.ERoomMsgType.RM_Q_LIGHT_ACTION;
 
 public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
 
@@ -105,6 +108,8 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
             processPkBurstLightMsg(basePushInfo, msg.getPkBLightMsg());
         } else if (msg.getMsgType() == RM_PK_MLIGHT) {
             processPkLightOffMsg(basePushInfo, msg.getPkMLightMsg());
+        } else if (msg.getMsgType() == RM_Q_LIGHT_ACTION) {
+            processQLightActionMsg(basePushInfo, msg.getQLightActionMsg());
         }
     }
 
@@ -120,7 +125,9 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
                 ERoomMsgType.RM_ROUND_ACC_BEGIN, ERoomMsgType.RM_Q_WANT_SING_CHANCE,
                 ERoomMsgType.RM_Q_GET_SING_CHANCE, ERoomMsgType.RM_Q_SYNC_STATUS,
                 ERoomMsgType.RM_Q_ROUND_OVER, ERoomMsgType.RM_Q_ROUND_AND_GAME_OVER,
-                ERoomMsgType.RM_Q_NO_PASS_SING, ERoomMsgType.RM_Q_EXIT_GAME, RM_PK_BLIGHT, RM_PK_MLIGHT
+                ERoomMsgType.RM_Q_NO_PASS_SING, ERoomMsgType.RM_Q_EXIT_GAME,
+                ERoomMsgType.RM_PK_BLIGHT, ERoomMsgType.RM_PK_MLIGHT,
+                RM_Q_LIGHT_ACTION
         };
     }
 
@@ -339,6 +346,15 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
             EventBus.getDefault().post(machineScoreEvent);
         } else {
             MyLog.w(TAG, "processPkLightOffMsg" + " basePushInfo=" + basePushInfo + " qExitGameMsg = null");
+        }
+    }
+
+    private void processQLightActionMsg(BasePushInfo basePushInfo, QLightActionMsg qLightActionMsg) {
+        if (qLightActionMsg != null) {
+            QLightActionEvent qLightActionEvent = new QLightActionEvent(qLightActionMsg, basePushInfo);
+            EventBus.getDefault().post(qLightActionEvent);
+        } else {
+            MyLog.d(TAG, "processQLightActionMsg" + " basePushInfo=" + basePushInfo + " qLightActionMsg=" + qLightActionMsg);
         }
     }
 

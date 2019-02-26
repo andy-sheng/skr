@@ -1,18 +1,23 @@
 package com.module.playways.rank.prepare.model;
 
 import com.common.log.MyLog;
+import com.module.playways.grab.room.event.GrabQLightActionEvent;
 import com.module.playways.grab.room.event.GrabRoundStatusChangeEvent;
 import com.module.playways.grab.room.event.SomeOneGrabEvent;
 import com.module.playways.grab.room.event.SomeOneLightOffEvent;
 import com.module.playways.grab.room.model.NoPassingInfo;
+import com.module.playways.grab.room.model.QLightActionMsgModel;
 import com.module.playways.grab.room.model.WantSingerInfo;
 import com.zq.live.proto.Room.NoPassSingInfo;
+import com.zq.live.proto.Room.QLightActionMsg;
 import com.zq.live.proto.Room.QRoundInfo;
 import com.zq.live.proto.Room.WantSingInfo;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 public class GrabRoundInfoModel extends RoundInfoModel {
     /* 一唱到底使用 */
@@ -20,7 +25,12 @@ public class GrabRoundInfoModel extends RoundInfoModel {
 
     private HashSet<WantSingerInfo> wantSingInfos = new HashSet<>(); //已经抢了的人
 
+    //!!!!弃用
     private HashSet<NoPassingInfo> noPassSingInfos = new HashSet<>();//已经灭灯的人, 一唱到底
+
+    private HashSet<QLightActionMsgModel> qLightActionMsgModelHashSet = new HashSet<>();//爆灭灯的set
+
+    private List<PlayerInfoModel> playerInfoModelList = new ArrayList<>();
 
     //0未知
     //1有种优秀叫一唱到底（全部唱完）
@@ -36,6 +46,22 @@ public class GrabRoundInfoModel extends RoundInfoModel {
 
     public GrabRoundInfoModel(int type) {
         this.type = type;
+    }
+
+    public HashSet<QLightActionMsgModel> getQLightActionMsgModelHashSet() {
+        return qLightActionMsgModelHashSet;
+    }
+
+    public void setQLightActionMsgModelHashSet(HashSet<QLightActionMsgModel> QLightActionMsgModelHashSet) {
+        qLightActionMsgModelHashSet = QLightActionMsgModelHashSet;
+    }
+
+    public List<PlayerInfoModel> getPlayerInfoModelList() {
+        return playerInfoModelList;
+    }
+
+    public void setPlayerInfoModelList(List<PlayerInfoModel> playerInfoModelList) {
+        this.playerInfoModelList = playerInfoModelList;
     }
 
     public HashSet<WantSingerInfo> getWantSingInfos() {
@@ -85,6 +111,17 @@ public class GrabRoundInfoModel extends RoundInfoModel {
         }
     }
 
+
+    public void addQLightAction(boolean notify, QLightActionMsgModel qLightActionMsgModel) {
+        if (!qLightActionMsgModelHashSet.contains(qLightActionMsgModel)) {
+            qLightActionMsgModelHashSet.add(qLightActionMsgModel);
+            if (notify) {
+                GrabQLightActionEvent event = new GrabQLightActionEvent(qLightActionMsgModel, this);
+                EventBus.getDefault().post(event);
+            }
+        }
+    }
+
     /**
      * 一唱到底使用
      */
@@ -118,6 +155,9 @@ public class GrabRoundInfoModel extends RoundInfoModel {
         for (NoPassingInfo noPassingInfo : roundInfo.getNoPassSingInfos()) {
             addLightOffUid(notify, noPassingInfo);
         }
+        for (QLightActionMsgModel qLightActionMsgModel : roundInfo.getQLightActionMsgModelHashSet()) {
+            addQLightAction(notify, qLightActionMsgModel);
+        }
         if (roundInfo.getOverReason() > 0) {
             this.setOverReason(roundInfo.getOverReason());
         }
@@ -145,6 +185,10 @@ public class GrabRoundInfoModel extends RoundInfoModel {
         for (NoPassSingInfo noPassSingInfo : roundInfo.getNoPassSingInfosList()) {
             roundInfoModel.addLightOffUid(false, NoPassingInfo.parse(noPassSingInfo));
         }
+        // TODO: 2019/2/26 这里把当前用户和当前观众拉下来
+//        for (NoPassSingInfo noPassSingInfo : roundInfo.getNoPassSingInfosList()) {
+//            roundInfoModel.addLightOffUid(false, NoPassingInfo.parse(noPassSingInfo));
+//        }
         roundInfoModel.setOverReason(roundInfo.getOverReason().getValue());
         roundInfoModel.setResultType(roundInfo.getResultType().getValue());
         return roundInfoModel;

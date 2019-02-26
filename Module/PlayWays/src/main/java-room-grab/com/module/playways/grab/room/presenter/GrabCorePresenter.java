@@ -29,11 +29,14 @@ import com.module.ModuleServiceManager;
 import com.module.playways.RoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.event.GrabGameOverEvent;
+import com.module.playways.grab.room.event.GrabQLightActionEvent;
 import com.module.playways.grab.room.event.GrabRoundChangeEvent;
 import com.module.playways.grab.room.event.GrabRoundStatusChangeEvent;
+import com.module.playways.grab.room.event.QLightActionEvent;
 import com.module.playways.grab.room.inter.IGrabView;
 import com.module.playways.grab.room.model.GrabResultInfoModel;
 import com.module.playways.grab.room.model.NoPassingInfo;
+import com.module.playways.grab.room.model.QLightActionMsgModel;
 import com.module.playways.grab.room.model.WantSingerInfo;
 import com.module.playways.rank.msg.BasePushInfo;
 import com.module.playways.rank.msg.event.CommentMsgEvent;
@@ -867,6 +870,33 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         } else {
             MyLog.w(TAG, "有人想唱,但是不是这个轮次：userID " + event.getUserID() + ", seq " + event.getRoundSeq() + "，当前轮次是 " + mRoomData.getRealRoundSeq());
         }
+    }
+
+    /**
+     * 有人爆灭灯了, 服务器过来的
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(QLightActionEvent event) {
+        if (RoomDataUtils.isCurrentRound(event.getqLightActionMsg().getRoundSeq(), mRoomData)) {
+            MyLog.w(TAG, "有人想唱：userID " + event.getqLightActionMsg().getUserID() + ", seq " + event.getqLightActionMsg().getRoundSeq());
+            GrabRoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
+            if(roundInfoModel != null){
+                roundInfoModel.addQLightAction(true, QLightActionMsgModel.parse(event.getqLightActionMsg()));
+            }
+        } else {
+            MyLog.w(TAG, "有人想唱,但是不是这个轮次：userID " + event.getqLightActionMsg().getUserID() + ", seq " + event.getqLightActionMsg().getRoundSeq() + "，当前轮次是 " + mRoomData.getRealRoundSeq());
+        }
+    }
+
+    /**
+     * 有人爆灭灯了, 真正更新ui
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(GrabQLightActionEvent event) {
+        MyLog.d(TAG, "onEvent" + " event=" + event);
+
     }
 
     /**
