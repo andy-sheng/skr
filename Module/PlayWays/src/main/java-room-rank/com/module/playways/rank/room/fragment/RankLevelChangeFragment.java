@@ -2,6 +2,7 @@ package com.module.playways.rank.room.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.animation.Animation;
@@ -53,6 +54,8 @@ public class RankLevelChangeFragment extends BaseFragment {
 
     ScoreResultModel scoreResultModel;
 
+    Handler mUiHanlder;
+
     @Override
     public int initView() {
         return R.layout.rank_level_change_fragment_layout;
@@ -65,6 +68,8 @@ public class RankLevelChangeFragment extends BaseFragment {
         mRankResult = (ImageView) mRootView.findViewById(R.id.rank_result);
         mLevelView = (NormalLevelView) mRootView.findViewById(R.id.level_view);
         mRecordCircleView = (RecordCircleView) mRootView.findViewById(R.id.record_circle_view);
+
+        mUiHanlder = new Handler();
 
         BgAnimationGo();
         if (mRoomData != null && mRoomData.getRecordData() != null) {
@@ -131,6 +136,9 @@ public class RankLevelChangeFragment extends BaseFragment {
     @Override
     public void destroy() {
         super.destroy();
+        if (mUiHanlder != null) {
+            mUiHanlder.removeCallbacksAndMessages(null);
+        }
         if (mBgAnimation != null) {
             mBgAnimation.cancel();
         }
@@ -154,7 +162,7 @@ public class RankLevelChangeFragment extends BaseFragment {
             mBackgroundIv.setBackground(getResources().getDrawable(R.drawable.zhanji_lose_guangquan));
         }
 
-        mMainActContainer.postDelayed(new Runnable() {
+        mUiHanlder.postDelayed(new Runnable() {
             @Override
             public void run() {
                 mRankResult.setVisibility(View.GONE);
@@ -162,6 +170,14 @@ public class RankLevelChangeFragment extends BaseFragment {
                 levelAnimationGo(mRoomData.getRecordData().mScoreResultModel);
             }
         }, 1000);
+
+        // 加入保护，最多
+        mUiHanlder.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                goVoiceRoom();
+            }
+        }, 5000);
     }
 
 
@@ -225,16 +241,19 @@ public class RankLevelChangeFragment extends BaseFragment {
     }
 
     private void goVoiceRoom() {
+        MyLog.d(TAG, "goVoiceRoom" + mRoomData);
+        if (mUiHanlder != null) {
+            mUiHanlder.removeCallbacksAndMessages(null);
+        }
         Activity activity = getActivity();
         if (activity != null) {
             activity.finish();
+            ARouter.getInstance().build(RouterConstants.ACTIVITY_VOICEROOM)
+                    .withSerializable("voice_room_data", mRoomData)
+                    .navigation();
+            StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK),
+                    StatConstants.KEY_GAME_FINISH, null);
         }
-        MyLog.d(TAG, "goVoiceRoom" + mRoomData );
-        ARouter.getInstance().build(RouterConstants.ACTIVITY_VOICEROOM)
-                .withSerializable("voice_room_data", mRoomData)
-                .navigation();
-        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK),
-                StatConstants.KEY_GAME_FINISH, null);
     }
 
     @Override
