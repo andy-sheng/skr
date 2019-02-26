@@ -14,8 +14,8 @@
         android:layout_marginRight="@dimen/view_16_dp"
         app:src_unEnabled_drawable="@drawable/baodeng_bukedian"
         android:id="@+id/iv_burst"
-        android:layout_width="@dimen/view_50_dp"
-        android:layout_height="@dimen/view_53_dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         />
 
     <com.common.view.ex.ExImageView
