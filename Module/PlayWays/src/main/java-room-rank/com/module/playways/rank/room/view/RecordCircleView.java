@@ -165,7 +165,7 @@ public class RecordCircleView extends View {
 
         mPaint.setAlpha(255);
 
-        if(mFullLevel){
+        if (mFullLevel) {
             mPaint.setShader(generateSweepGradient());
             canvas.drawArc(mRectFProgressArc, mStartAngle + 1,
                     mSweepAngle, false, mPaint);
@@ -386,6 +386,9 @@ public class RecordCircleView extends View {
      */
     public void setCreditValueWithAnim(int creditValue) {
         if (creditValue < mMin || creditValue > mMax || !isAnimFinish) {
+            if (mAnimationListener != null) {
+                mAnimationListener.onFinish();
+            }
             return;
         }
 
