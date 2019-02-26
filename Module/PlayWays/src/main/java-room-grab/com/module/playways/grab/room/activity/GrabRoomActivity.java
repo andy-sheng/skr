@@ -71,7 +71,7 @@ public class GrabRoomActivity extends BaseActivity {
             {
                 List<GrabRoundInfoModel> roundingModeList = new ArrayList<>();
                 for (int i = 0; i < 10; i++) {
-                    GrabRoundInfoModel roundingMode = new GrabRoundInfoModel(RoundInfoModel.TYPE_GRAB);
+                    GrabRoundInfoModel roundingMode = new GrabRoundInfoModel();
                     roundingMode.setRoundSeq(i + 1);
                     SongModel songModel = new SongModel();
                     songModel.setItemName("歌曲" + i);

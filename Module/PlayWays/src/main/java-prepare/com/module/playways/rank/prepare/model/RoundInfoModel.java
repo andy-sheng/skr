@@ -1,49 +1,18 @@
 package com.module.playways.rank.prepare.model;
 
-import com.common.log.MyLog;
-import com.module.playways.grab.room.event.GrabRoundStatusChangeEvent;
-import com.module.playways.grab.room.event.SomeOneGrabEvent;
-import com.module.playways.grab.room.event.SomeOneLightOffEvent;
-import com.module.playways.grab.room.model.NoPassingInfo;
-import com.module.playways.grab.room.model.WantSingerInfo;
-import com.module.playways.rank.room.event.PkSomeOneBurstLightEvent;
-import com.module.playways.rank.room.event.PkSomeOneLightOffEvent;
-import com.module.playways.rank.room.model.BLightInfoModel;
-import com.module.playways.rank.room.model.MLightInfoModel;
 import com.module.playways.rank.song.model.SongModel;
-import com.zq.live.proto.Room.BLightInfo;
-import com.zq.live.proto.Room.MLightInfo;
-import com.zq.live.proto.Room.NoPassSingInfo;
-import com.zq.live.proto.Room.QRoundInfo;
-import com.zq.live.proto.Room.RoundInfo;
-import com.zq.live.proto.Room.WantSingInfo;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.io.Serializable;
-import java.util.HashSet;
 
 public abstract class RoundInfoModel implements Serializable {
     public final static String TAG = "RoundInfoModel";
     public static final int TYPE_RANK = 1;
     public static final int TYPE_GRAB = 2;
 
-    public static final int STATUS_INIT = 1;
-    public static final int STATUS_GRAB = 2;
-    public static final int STATUS_SING = 3;
-    public static final int STATUS_OVER = 4;
-    /**
-     * userID : 7
-     * playbookID : 1
-     * roundSeq : 1
-     * singBeginMs : 3000
-     * singEndMs : 341000
-     */
-    protected int type = TYPE_RANK;
     protected int userID;
+    protected int roundSeq;
     protected int playbookID;   //songModelId
     protected SongModel songModel;//本轮次要唱的歌儿的详细信息
-    protected int roundSeq;
     protected int singBeginMs;
     protected int singEndMs;
     protected long startTs;// 开始时间，服务器的
@@ -71,18 +40,7 @@ public abstract class RoundInfoModel implements Serializable {
 
     }
 
-    public RoundInfoModel(int type) {
-        this.type = type;
-    }
-
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
-    }
+    public abstract int getType();
 
     public int getOverReason() {
         return overReason;
@@ -179,9 +137,6 @@ public abstract class RoundInfoModel implements Serializable {
             return false;
         }
 
-        if (this.type != that.type) {
-            return false;
-        }
         if (roundSeq != that.roundSeq) {
             return false;
         }
@@ -193,7 +148,7 @@ public abstract class RoundInfoModel implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = type;
+        int result = 0;
         result = 31 * result + roundSeq;
         result = 31 * result + playbookID;
         return result;
@@ -204,7 +159,7 @@ public abstract class RoundInfoModel implements Serializable {
     @Override
     public String toString() {
         return "RoundInfoModel{" +
-                "type=" + type +
+                "type=" + getType() +
                 ", userID=" + userID +
                 ", playbookID=" + playbookID +
 //                ", songModel=" + songModel.getItemName() +

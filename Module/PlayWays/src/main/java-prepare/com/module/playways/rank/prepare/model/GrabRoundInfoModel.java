@@ -9,7 +9,6 @@ import com.module.playways.grab.room.model.NoPassingInfo;
 import com.module.playways.grab.room.model.QLightActionMsgModel;
 import com.module.playways.grab.room.model.WantSingerInfo;
 import com.zq.live.proto.Room.NoPassSingInfo;
-import com.zq.live.proto.Room.QLightActionMsg;
 import com.zq.live.proto.Room.QRoundInfo;
 import com.zq.live.proto.Room.WantSingInfo;
 
@@ -20,6 +19,11 @@ import java.util.HashSet;
 import java.util.List;
 
 public class GrabRoundInfoModel extends RoundInfoModel {
+    public static final int STATUS_INIT = 1;
+    public static final int STATUS_GRAB = 2;
+    public static final int STATUS_SING = 3;
+    public static final int STATUS_OVER = 4;
+
     /* 一唱到底使用 */
     private int status = STATUS_INIT;// 轮次状态，在一唱到底中使用
 
@@ -44,9 +48,11 @@ public class GrabRoundInfoModel extends RoundInfoModel {
 
     }
 
-    public GrabRoundInfoModel(int type) {
-        this.type = type;
+    @Override
+    public int getType() {
+        return TYPE_GRAB;
     }
+
 
     public HashSet<QLightActionMsgModel> getQLightActionMsgModelHashSet() {
         return qLightActionMsgModelHashSet;
@@ -172,7 +178,7 @@ public class GrabRoundInfoModel extends RoundInfoModel {
      * 一唱到底使用
      */
     public static GrabRoundInfoModel parseFromRoundInfo(QRoundInfo roundInfo) {
-        GrabRoundInfoModel roundInfoModel = new GrabRoundInfoModel(TYPE_GRAB);
+        GrabRoundInfoModel roundInfoModel = new GrabRoundInfoModel();
         roundInfoModel.setUserID(roundInfo.getUserID());
         roundInfoModel.setPlaybookID(roundInfo.getPlaybookID());
         roundInfoModel.setRoundSeq(roundInfo.getRoundSeq());

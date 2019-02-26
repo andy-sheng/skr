@@ -22,8 +22,9 @@ public class RankRoundInfoModel extends RoundInfoModel {
 
     }
 
-    public RankRoundInfoModel(int type) {
-        this.type = type;
+    @Override
+    public int getType() {
+        return TYPE_RANK;
     }
 
     public HashSet<BLightInfoModel> getbLightInfos() {
@@ -79,7 +80,6 @@ public class RankRoundInfoModel extends RoundInfoModel {
             MyLog.e("JsonRoundInfo RoundInfo == null");
             return;
         }
-
         RankRoundInfoModel roundInfo = (RankRoundInfoModel)round;
         this.setUserID(roundInfo.getUserID());
         this.setPlaybookID(roundInfo.getPlaybookID());
@@ -99,7 +99,7 @@ public class RankRoundInfoModel extends RoundInfoModel {
     }
 
     public static RankRoundInfoModel parseFromRoundInfo(RoundInfo roundInfo) {
-        RankRoundInfoModel roundInfoModel = new RankRoundInfoModel(TYPE_RANK);
+        RankRoundInfoModel roundInfoModel = new RankRoundInfoModel();
         roundInfoModel.setUserID(roundInfo.getUserID());
         roundInfoModel.setPlaybookID(roundInfo.getPlaybookID());
         roundInfoModel.setRoundSeq(roundInfo.getRoundSeq());

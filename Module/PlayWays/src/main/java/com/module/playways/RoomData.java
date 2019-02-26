@@ -173,7 +173,7 @@ public class RoomData<T extends RoundInfoModel> implements Serializable {
             // 结束状态了
             if (mRealRoundInfo != null) {
                 GrabRoundInfoModel lastRoundInfoModel = (GrabRoundInfoModel) mRealRoundInfo;
-                lastRoundInfoModel.updateStatus(false, RoundInfoModel.STATUS_OVER);
+                lastRoundInfoModel.updateStatus(false, GrabRoundInfoModel.STATUS_OVER);
                 mRealRoundInfo = null;
                 EventBus.getDefault().post(new GrabGameOverEvent(lastRoundInfoModel));
             }
@@ -183,11 +183,11 @@ public class RoomData<T extends RoundInfoModel> implements Serializable {
             // 轮次大于，才切换
             GrabRoundInfoModel lastRoundInfoModel = (GrabRoundInfoModel) mRealRoundInfo;
             if (lastRoundInfoModel != null) {
-                lastRoundInfoModel.updateStatus(false, RoundInfoModel.STATUS_OVER);
+                lastRoundInfoModel.updateStatus(false, GrabRoundInfoModel.STATUS_OVER);
             }
             mRealRoundInfo = mExpectRoundInfo;
             if (mRealRoundInfo != null) {
-                ((GrabRoundInfoModel)mRealRoundInfo).updateStatus(false, RoundInfoModel.STATUS_GRAB);
+                ((GrabRoundInfoModel)mRealRoundInfo).updateStatus(false, GrabRoundInfoModel.STATUS_GRAB);
             }
             // 告知切换到新的轮次了
             EventBus.getDefault().post(new GrabRoundChangeEvent(lastRoundInfoModel, (GrabRoundInfoModel) mRealRoundInfo));
