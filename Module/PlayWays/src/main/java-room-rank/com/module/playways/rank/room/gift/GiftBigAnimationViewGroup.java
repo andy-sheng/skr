@@ -91,7 +91,7 @@ public class GiftBigAnimationViewGroup extends RelativeLayout {
         super.onDetachedFromWindow();
         EventBus.getDefault().unregister(this);
         mGiftPlayControlTemplate.destroy();
-        for(GiftBigAnimationView giftBigAnimationView:mFeedGiftAnimationViews){
+        for (GiftBigAnimationView giftBigAnimationView : mFeedGiftAnimationViews) {
             giftBigAnimationView.destroy();
         }
     }
@@ -124,7 +124,7 @@ public class GiftBigAnimationViewGroup extends RelativeLayout {
             return;
         }
         // 收到一条礼物消息,进入生产者队列
-        GiftPlayModel playModel = GiftPlayModel.parseFromEvent(event);
+        GiftPlayModel playModel = GiftPlayModel.parseFromEvent(event, mRoomData);
         mGiftPlayControlTemplate.add(playModel, false);
     }
 

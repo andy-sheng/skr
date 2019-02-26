@@ -116,7 +116,7 @@ public class GiftContinueViewGroup extends RelativeLayout {
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(SpecialEmojiMsgEvent event) {
         // 收到一条礼物消息,进入生产者队列
-        GiftPlayModel playModel = GiftPlayModel.parseFromEvent(event);
+        GiftPlayModel playModel = GiftPlayModel.parseFromEvent(event, mRoomData);
         // 如果消息能被当前忙碌的view接受
         for (GiftContinuousView giftContinuousView : mFeedGiftContinueViews) {
             if (!giftContinuousView.isIdle()) {
