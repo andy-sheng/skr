@@ -1,5 +1,6 @@
 package com.module.home.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.SpannableStringBuilder;
@@ -38,6 +39,7 @@ import com.common.view.ex.ExTextView;
 import com.component.busilib.constans.GameModeType;
 import com.module.home.musictest.fragment.MusicTestFragment;
 import com.module.home.setting.fragment.SettingFragment;
+import com.module.home.updateinfo.EditInfoActivity;
 import com.respicker.ResPicker;
 import com.respicker.fragment.ResPickerFragment;
 import com.respicker.model.ImageItem;
@@ -153,53 +155,61 @@ public class PersonFragment extends BaseFragment implements IPersonView {
                         sharePanel.show(ShareType.IMAGE_RUL);
                     }
                 });
+//
+//        RxView.clicks(mAvatarIv)
+//                .throttleFirst(500, TimeUnit.MILLISECONDS)
+//                .subscribe(new Consumer<Object>() {
+//                    @Override
+//                    public void accept(Object o) {
+//                        // TODO: 2018/12/28 可能会加上一个大图预览的功能
+//                        ResPicker.getInstance().setParams(ResPicker.newParamsBuilder()
+//                                .setSelectLimit(1)
+//                                .setCropStyle(CropImageView.Style.CIRCLE)
+//                                .build()
+//                        );
+//
+//                        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), ResPickerFragment.class)
+//                                .setAddToBackStack(true)
+//                                .setHasAnimation(true)
+//                                .setFragmentDataListener(new FragmentDataListener() {
+//                                    @Override
+//                                    public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object object) {
+//                                        ImageItem imageItem = ResPicker.getInstance().getSingleSelectedImage();
+//                                        UploadTask uploadTask = UploadParams.newBuilder(imageItem.getPath())
+//                                                .setNeedCompress(true)
+//                                                .startUploadAsync(new UploadCallback() {
+//                                                    @Override
+//                                                    public void onProgress(long currentSize, long totalSize) {
+//
+//                                                    }
+//
+//                                                    @Override
+//                                                    public void onSuccess(String url) {
+//                                                        MyLog.d(TAG, "onSuccess" + " url=" + url);
+//                                                        MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
+//                                                                .setAvatar(url)
+//                                                                .build(), false);
+//                                                    }
+//
+//                                                    @Override
+//                                                    public void onFailure(String msg) {
+//
+//                                                    }
+//
+//                                                });
+//                                    }
+//                                })
+//                                .build());
+//                    }
+//                });
 
-        RxView.clicks(mAvatarIv)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        // TODO: 2018/12/28 可能会加上一个大图预览的功能
-                        ResPicker.getInstance().setParams(ResPicker.newParamsBuilder()
-                                .setSelectLimit(1)
-                                .setCropStyle(CropImageView.Style.CIRCLE)
-                                .build()
-                        );
-
-                        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), ResPickerFragment.class)
-                                .setAddToBackStack(true)
-                                .setHasAnimation(true)
-                                .setFragmentDataListener(new FragmentDataListener() {
-                                    @Override
-                                    public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object object) {
-                                        ImageItem imageItem = ResPicker.getInstance().getSingleSelectedImage();
-                                        UploadTask uploadTask = UploadParams.newBuilder(imageItem.getPath())
-                                                .setNeedCompress(true)
-                                                .startUploadAsync(new UploadCallback() {
-                                                    @Override
-                                                    public void onProgress(long currentSize, long totalSize) {
-
-                                                    }
-
-                                                    @Override
-                                                    public void onSuccess(String url) {
-                                                        MyLog.d(TAG, "onSuccess" + " url=" + url);
-                                                        MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
-                                                                .setAvatar(url)
-                                                                .build(), false);
-                                                    }
-
-                                                    @Override
-                                                    public void onFailure(String msg) {
-
-                                                    }
-
-                                                });
-                                    }
-                                })
-                                .build());
-                    }
-                });
+        mAvatarIv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                Intent intent = new Intent(getActivity(), EditInfoActivity.class);
+                startActivity(intent);
+            }
+        });
 
         RxView.clicks(mFriends)
                 .throttleFirst(500, TimeUnit.MILLISECONDS)

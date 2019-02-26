@@ -209,7 +209,8 @@
                 android:id="@+id/invite_code"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/view_64_dp"
-                android:layout_below="@id/version_area">
+                android:layout_below="@id/version_area"
+                android:visibility="gone">
 
                 <com.common.view.ex.ExTextView
                     android:layout_width="wrap_content"
