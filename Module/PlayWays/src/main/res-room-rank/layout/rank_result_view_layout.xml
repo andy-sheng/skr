@@ -50,7 +50,6 @@
                 android:gravity="center"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:text="KTV酒彪子"
                 android:textColor="@color/white"
                 android:textSize="@dimen/textsize_14_dp" />
 
@@ -65,7 +64,6 @@
                 android:gravity="center"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:text="《天空》"
                 android:textColor="@color/white_trans_50"
                 android:textSize="@dimen/textsize_12_dp" />
 
@@ -90,8 +88,7 @@
                 android:layout_height="@dimen/view_28_dp"
                 android:layout_marginLeft="@dimen/view_6_dp"
                 android:layout_marginTop="@dimen/view_17_dp"
-                android:layout_toRightOf="@id/first_avatar_iv"
-                android:background="@drawable/zhanji_baodeng" />
+                android:layout_toRightOf="@id/first_avatar_iv" />
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/first_result_tv"
@@ -101,7 +98,6 @@
                 android:layout_marginTop="@dimen/view_21_dp"
                 android:layout_toRightOf="@id/first_img_iv"
                 android:gravity="center_vertical"
-                android:text="x1"
                 android:textColor="#FFBF00"
                 android:textSize="@dimen/textsize_14_dp" />
 
@@ -117,8 +113,7 @@
                 android:layout_height="@dimen/view_28_dp"
                 android:layout_marginLeft="@dimen/view_6_dp"
                 android:layout_marginTop="@dimen/view_47_dp"
-                android:layout_toRightOf="@id/second_avatar_iv"
-                android:background="@drawable/zhanji_mie" />
+                android:layout_toRightOf="@id/second_avatar_iv" />
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/second_result_tv"
@@ -128,7 +123,6 @@
                 android:layout_marginTop="@dimen/view_51_dp"
                 android:layout_toRightOf="@id/second_img_iv"
                 android:gravity="center_vertical"
-                android:text="0%"
                 android:textColor="#9697A0"
                 android:textSize="@dimen/textsize_14_dp" />
 
@@ -144,8 +138,7 @@
                 android:layout_height="@dimen/view_28_dp"
                 android:layout_marginLeft="@dimen/view_6_dp"
                 android:layout_marginTop="@dimen/view_77_dp"
-                android:layout_toRightOf="@id/third_avatar_iv"
-                android:background="@drawable/zhanji_xiaolian" />
+                android:layout_toRightOf="@id/third_avatar_iv" />
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/third_result_tv"

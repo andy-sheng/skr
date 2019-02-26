@@ -40,7 +40,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="听歌完整度"
+                android:text="观众评分"
                 android:textColor="#9697A0"
                 android:textSize="@dimen/textsize_12_dp" />
 
