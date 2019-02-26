@@ -104,8 +104,10 @@ public class GameFragment extends BaseFragment {
     ExImageView mRankDiffIv;  // 上升下降的标识
 
     Banner mBannerView;
-    ExImageView ivAthleticsPk;
-    ExImageView mIvGrabPk;
+    ExImageView mIvGrabGame;
+    ExTextView mTextGrabGame;
+    ExImageView mIvAthleticsPk;
+    ExTextView mTextAthleticsPk;
 
     PopupWindow mPopupWindow;  // 显示上升或者下降的标识
     LinearLayout mPopArea;
@@ -146,8 +148,10 @@ public class GameFragment extends BaseFragment {
         mRankDiffIv = (ExImageView) mRootView.findViewById(R.id.rank_diff_iv);
 
         mBannerView = (Banner) mRootView.findViewById(R.id.banner_view);
-        ivAthleticsPk = (ExImageView) mRootView.findViewById(R.id.iv_athletics_pk);
-        mIvGrabPk = (ExImageView) mRootView.findViewById(R.id.iv_grab_game);
+        mIvGrabGame = (ExImageView)mRootView.findViewById(R.id.iv_grab_game);
+        mTextGrabGame = (ExTextView)mRootView.findViewById(R.id.text_grab_game);
+        mIvAthleticsPk = (ExImageView)mRootView.findViewById(R.id.iv_athletics_pk);
+        mTextAthleticsPk = (ExTextView)mRootView.findViewById(R.id.text_athletics_pk);
 
         LinearLayout linearLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.area_diff_popup_window_layout, null);
         mPopArea = (LinearLayout) linearLayout.findViewById(R.id.pop_area);
@@ -176,30 +180,31 @@ public class GameFragment extends BaseFragment {
             }
         });
 
-        ivAthleticsPk.setOnClickListener(new DebounceViewClickListener() {
+
+        mIvAthleticsPk.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 long tag = System.currentTimeMillis();
-                checkGameConf(1, tag, ivAthleticsPk);
-                clickAnimation(ivAthleticsPk, tag);
+                checkGameConf(1, tag, mIvAthleticsPk);
+                clickAnimation(mIvAthleticsPk, tag);
                 StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_HOME),
                         StatConstants.KEY_RANK_CLICK, null);
             }
         });
 
-        mIvGrabPk.setOnClickListener(new DebounceViewClickListener() {
+        mIvGrabGame.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 long tag = System.currentTimeMillis();
-                checkGameConf(3, tag, mIvGrabPk);
-                clickAnimation(mIvGrabPk, tag);
+                checkGameConf(3, tag, mIvGrabGame);
+                clickAnimation(mIvGrabGame, tag);
                 StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_HOME),
                         StatConstants.KEY_GRAB_CLICK, null);
             }
         });
 
         if (MyLog.isDebugLogOpen()) {
-            mIvGrabPk.setOnLongClickListener(new View.OnLongClickListener() {
+            mIvGrabGame.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_VOICEROOM)
@@ -232,6 +237,7 @@ public class GameFragment extends BaseFragment {
         initBaseInfo();
         initRankLevel();
         initOperationArea();
+        initGameKConfig();
     }
 
     private void initBaseInfo() {
@@ -412,6 +418,24 @@ public class GameFragment extends BaseFragment {
             @Override
             public void onNetworkError(ErrorType errorType) {
                 U.getToastUtil().showShort("网络超时");
+                mSmartRefreshLayout.finishRefresh();
+            }
+        });
+    }
+
+    private void initGameKConfig(){
+        mMainPageSlideApi = ApiManager.getInstance().createService(MainPageSlideApi.class);
+        ApiMethods.subscribe(mMainPageSlideApi.getKConfig(), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                U.getToastUtil().showShort("网络异常");
                 mSmartRefreshLayout.finishRefresh();
             }
         });
