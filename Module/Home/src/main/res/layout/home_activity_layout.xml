@@ -7,11 +7,10 @@
     <LinearLayout
         android:id="@+id/bottom_container"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_56_dp"
+        android:layout_height="@dimen/view_50_dp"
         android:layout_alignParentBottom="true"
-        android:background="#F0E9E5"
-        android:orientation="horizontal"
-        android:padding="@dimen/view_dimen_10">
+        android:background="#F9F4F1"
+        android:orientation="horizontal">
 
         <!--游戏-->
         <RelativeLayout
@@ -97,7 +96,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_1_dp"
-        android:layout_above="@+id/bottom_container"
+        android:layout_alignTop="@+id/bottom_container"
         android:background="#F0E9E5" />
 
     <com.common.view.viewpager.NestViewPager
@@ -105,7 +104,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottom_container"
-        android:layout_marginBottom="@dimen/view_1_dp"
-        android:background="@color/white" />
+        android:background="#F9F4F1" />
 
 </RelativeLayout>
