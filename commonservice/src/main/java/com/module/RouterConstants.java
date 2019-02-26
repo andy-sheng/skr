@@ -7,6 +7,8 @@ package com.module;
 public interface RouterConstants {
     String ACTIVITY_HOME = "/home/HomeActivity";
     String ACTIVITY_UPLOAD = "/home/UploadAccountInfoActivity";
+    String ACTIVITY_EDIT_INFO = "/home/EditInfoActivity";
+
     String ACTIVITY_LOGIN = "/core/LoginActivity";
     String ACTIVITY_SCHEME = "/core/SchemeSdkActivity";
 
@@ -21,7 +23,6 @@ public interface RouterConstants {
     String ACTIVITY_DEVICE_INFO = "/test/DeviceInfoActivity";
     String ACTIVITY_EMOJI = "/test/EmojiActivity";
     String ACTIVITY_TEST = "/test/TestSdkActivity";
-
 
     String ACTIVITY_WATCH = "/watch/WatchSdkAcitivity";
     //VideoDetailSdkActivity

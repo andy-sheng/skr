@@ -206,8 +206,8 @@ public class PersonFragment extends BaseFragment implements IPersonView {
         mAvatarIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                Intent intent = new Intent(getActivity(), EditInfoActivity.class);
-                startActivity(intent);
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_EDIT_INFO)
+                        .navigation();
             }
         });
 

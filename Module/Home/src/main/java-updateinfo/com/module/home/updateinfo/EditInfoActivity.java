@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.alibaba.android.arouter.facade.annotation.Route;
 import com.common.base.BaseActivity;
 import com.common.base.FragmentDataListener;
 import com.common.core.avatar.AvatarUtils;
@@ -21,6 +22,7 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.module.RouterConstants;
 import com.respicker.ResPicker;
 import com.respicker.fragment.ResPickerFragment;
 import com.respicker.model.ImageItem;
@@ -41,6 +43,7 @@ import io.reactivex.functions.Consumer;
 
 
 // 个人资料编辑
+@Route(path = RouterConstants.ACTIVITY_EDIT_INFO)
 public class EditInfoActivity extends BaseActivity implements View.OnClickListener {
 
     RelativeLayout mMainActContainer;

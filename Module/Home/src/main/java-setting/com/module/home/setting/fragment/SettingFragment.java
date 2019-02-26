@@ -135,8 +135,8 @@ public class SettingFragment extends BaseFragment {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        Intent intent = new Intent(getActivity(), EditInfoActivity.class);
-                        startActivity(intent);
+                        ARouter.getInstance().build(RouterConstants.ACTIVITY_EDIT_INFO)
+                                .navigation();
                     }
                 });
 
