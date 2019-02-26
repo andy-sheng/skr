@@ -314,11 +314,11 @@ public class GameFragment extends BaseFragment {
         showPopWindow(userRankModel.getDiff());
 
         if (userRankModel.getBadge() == STAR_BADGE) {
-            mMedalIv.setImageResource(R.drawable.paiming);
+            mMedalIv.setBackground(getResources().getDrawable(R.drawable.paiming));
         } else if (userRankModel.getBadge() == TOP_BADGE) {
-            mMedalIv.setImageResource(R.drawable.paihang);
+            mMedalIv.setBackground(getResources().getDrawable(R.drawable.paihang));
         } else if (userRankModel.getBadge() == SHANDIAN_BADGE) {
-            mMedalIv.setImageResource(R.drawable.dabai);
+            mMedalIv.setBackground(getResources().getDrawable(R.drawable.dabai));
         }
     }
 
