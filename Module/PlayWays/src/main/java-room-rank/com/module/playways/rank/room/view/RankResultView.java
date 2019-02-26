@@ -114,7 +114,7 @@ public class RankResultView extends RelativeLayout {
                             .setBorderWidth(U.getDisplayUtils().dip2px(3))
                             .build());
             mNameTv.setText(playerInfoModel.getUserInfo().getNickname());
-            mSongTv.setText(playerInfoModel.getSongList().get(0).getItemName());
+            mSongTv.setText("《" + playerInfoModel.getSongList().get(0).getItemName() + "》");
             if (userGameResultModel.getWinType() == EWinType.Win.getValue()) {
                 mResultIv.setBackground(getResources().getDrawable(R.drawable.ic_medal_win));
             } else if (userGameResultModel.getWinType() == EWinType.Draw.getValue()) {
