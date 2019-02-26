@@ -172,9 +172,7 @@ public class SearchSongFragment extends BaseFragment {
         mTitlebar.getRightTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                if (U.getKeyBoardUtils().isSoftKeyboardShowing(getActivity())) {
-                    U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-                }
+                U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
                 U.getFragmentUtils().popFragment(SearchSongFragment.this);
             }
         });
