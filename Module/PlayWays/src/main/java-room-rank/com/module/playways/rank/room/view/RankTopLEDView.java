@@ -133,6 +133,7 @@ public class RankTopLEDView extends RelativeLayout {
                 break;
         }
         mDengSvga.setVisibility(VISIBLE);
+        mDengSvga.setCallback(null);
         mDengSvga.setLoops(0);
         SVGAParser parser = new SVGAParser(U.app());
         try {
