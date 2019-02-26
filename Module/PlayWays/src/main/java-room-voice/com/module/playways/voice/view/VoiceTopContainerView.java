@@ -6,10 +6,13 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
+import com.module.RouterConstants;
 import com.module.playways.RoomData;
+import com.module.playways.event.FinishPlayWayActivityEvent;
 import com.module.playways.grab.room.event.SomeOneGrabEvent;
 import com.module.playways.grab.room.event.SomeOneLightOffEvent;
 import com.module.playways.grab.room.event.SomeOneOnlineChangeEvent;
@@ -45,8 +48,14 @@ public class VoiceTopContainerView extends RelativeLayout {
             @Override
             public void clickValid(View v) {
                 if (getContext() instanceof Activity) {
+                    EventBus.getDefault().post(new FinishPlayWayActivityEvent());
                     Activity activity = (Activity) getContext();
-                    activity.finish();
+                    if (activity != null) {
+                        activity.finish();
+                    }
+
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_HOME)
+                            .navigation();
                 }
             }
         });
