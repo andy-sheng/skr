@@ -7,13 +7,11 @@ import android.widget.RelativeLayout;
 
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
-import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
 import com.common.utils.HandlerTaskTimer;
-import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
-import com.module.playways.RoomData;
+import com.module.playways.BaseRoomData;
 import com.module.playways.rank.room.score.bar.ScoreProgressBarWithSvga;
 import com.module.playways.rank.room.score.bar.ScoreTipsView;
 import com.module.rank.R;
@@ -33,7 +31,7 @@ public class RankTopContainerView1 extends RelativeLayout {
     ExTextView mTvPassedTime;
 
     Listener mListener;
-    RoomData mRoomData;
+    BaseRoomData mRoomData;
 
     HandlerTaskTimer mShowLastedTimeTask;
 
@@ -157,7 +155,7 @@ public class RankTopContainerView1 extends RelativeLayout {
         mListener = l;
     }
 
-    public void setRoomData(RoomData roomData) {
+    public void setRoomData(BaseRoomData roomData) {
         mRoomData = roomData;
     }
 

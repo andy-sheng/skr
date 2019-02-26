@@ -26,7 +26,8 @@ import com.engine.arccloud.ArcRecognizeListener;
 import com.engine.arccloud.RecognizeConfig;
 import com.engine.arccloud.SongInfo;
 import com.module.ModuleServiceManager;
-import com.module.playways.RoomData;
+import com.module.playways.BaseRoomData;
+import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.event.GrabGameOverEvent;
 import com.module.playways.grab.room.event.GrabQLightActionEvent;
@@ -52,7 +53,7 @@ import com.module.playways.rank.msg.manager.ChatRoomMsgManager;
 import com.module.playways.rank.prepare.model.GrabRoundInfoModel;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
-import com.module.playways.rank.prepare.model.RoundInfoModel;
+import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
 import com.module.playways.rank.room.SwapStatusType;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.room.score.MachineScoreItem;
@@ -80,7 +81,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     private static long sSyncStateTaskInterval = 4500;
     static final int MSG_ROBOT_SING_BEGIN = 10;
 
-    RoomData<GrabRoundInfoModel> mRoomData;
+    GrabRoomData mRoomData;
 
     GrabRoomServerApi mRoomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
 
@@ -116,7 +117,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
     };
 
-    public GrabCorePresenter(@NotNull IGrabView iGrebView, @NotNull RoomData roomData) {
+    public GrabCorePresenter(@NotNull IGrabView iGrebView, @NotNull GrabRoomData roomData) {
         mIGrabView = iGrebView;
         mRoomData = roomData;
         TAG = "GrabCorePresenter";
@@ -177,7 +178,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     public void onOpeningAnimationOver() {
         // 开始触发触发轮次变化
-        mRoomData.checkRoundInGrabMode();
+        mRoomData.checkRoundInEachMode();
         startSyncGameStateTask(sSyncStateTaskInterval);
     }
 
@@ -188,7 +189,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         if (mDestroyed) {
             return;
         }
-        RoundInfoModel now = mRoomData.getRealRoundInfo();
+        BaseRoundInfoModel now = mRoomData.getRealRoundInfo();
         if (now != null) {
             if (mExoPlayer == null) {
                 mExoPlayer = new ExoPlayer();
@@ -217,7 +218,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             if (SkrConfig.getInstance().isNeedUploadAudioForAI()) {
                 // 需要上传音频伪装成机器人
                 EngineManager.getInstance().startAudioRecording(RoomDataUtils.getSaveAudioForAiFilePath(), Constants.AUDIO_RECORDING_QUALITY_HIGH);
-                RoundInfoModel now = mRoomData.getRealRoundInfo();
+                BaseRoundInfoModel now = mRoomData.getRealRoundInfo();
                 if (mRobotScoreHelper == null) {
                     mRobotScoreHelper = new RobotScoreHelper();
                 }
@@ -393,7 +394,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      *
      * @param roundInfoModel
      */
-    private void onSelfRoundOver(RoundInfoModel roundInfoModel) {
+    private void onSelfRoundOver(BaseRoundInfoModel roundInfoModel) {
         // 上一轮演唱是自己，开始上传资源
         if (SkrConfig.getInstance().isNeedUploadAudioForAI()) {
             //属于需要上传音频文件的状态
@@ -423,7 +424,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      *
      * @param roundInfoModel
      */
-    private void uploadRes1ForAi(RoundInfoModel roundInfoModel) {
+    private void uploadRes1ForAi(BaseRoundInfoModel roundInfoModel) {
         if (mRobotScoreHelper != null) {
             MyLog.d(TAG, "uploadRes1ForAi 开始上传资源 得分:" + roundInfoModel.getSysScore());
             UploadParams.newBuilder(RoomDataUtils.getSaveAudioForAiFilePath())
@@ -454,7 +455,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      * @param roundInfoModel
      * @param audioUrl
      */
-    private void sendUploadRequest(RoundInfoModel roundInfoModel, String audioUrl) {
+    private void sendUploadRequest(BaseRoundInfoModel roundInfoModel, String audioUrl) {
         long timeMs = System.currentTimeMillis();
         HashMap<String, Object> map = new HashMap<>();
         map.put("gameID", mRoomData.getGameId());
@@ -519,7 +520,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     public void sendMyGrabOver() {
         MyLog.d(TAG, "上报我的抢唱结束 ");
-        RoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
+        BaseRoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
         if (roundInfoModel == null) {
             return;
         }
@@ -552,7 +553,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         MyLog.w(TAG, "上报我的演唱结束");
         estimateOverTsThisRound();
 
-        RoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
+        BaseRoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
         if (roundInfoModel == null || roundInfoModel.getUserID() != MyUserInfoManager.getInstance().getUid()) {
             return;
         }
@@ -729,7 +730,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     MyLog.w(TAG, "updatePlayerState" + " sync发现本地轮次信息滞后，更新");
                     // 轮次确实比当前的高，可以切换
                     mRoomData.setExpectRoundInfo(RoomDataUtils.getRoundInfoFromRoundInfoListInGrabMode(mRoomData, newRoundInfo));
-                    mRoomData.checkRoundInGrabMode();
+                    mRoomData.checkRoundInEachMode();
                 } else if (RoomDataUtils.isCurrentRound(newRoundInfo.getRoundSeq(), mRoomData)) {
                     /**
                      * 是当前轮次，最近状态就更新整个轮次
@@ -815,7 +816,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             MyLog.w(TAG, "自动切换到下个轮次");
             GrabRoundInfoModel roundInfoModel = RoomDataUtils.findRoundInfoBySeq(mRoomData.getRoundInfoModelList(), now.getRoundSeq() + 1);
             mRoomData.setExpectRoundInfo(roundInfoModel);
-            mRoomData.checkRoundInGrabMode();
+            mRoomData.checkRoundInEachMode();
         }
     }
 
@@ -973,7 +974,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             // 轮次确实比当前的高，可以切换
             MyLog.w(TAG, "轮次确实比当前的高，可以切换");
             mRoomData.setExpectRoundInfo(RoomDataUtils.getRoundInfoFromRoundInfoListInGrabMode(mRoomData, event.nextRound));
-            mRoomData.checkRoundInGrabMode();
+            mRoomData.checkRoundInEachMode();
         }
     }
 
@@ -1002,7 +1003,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             }
             mRoomData.setGameOverTs(gameOverTs);
             mRoomData.setExpectRoundInfo(null);
-            mRoomData.checkRoundInGrabMode();
+            mRoomData.checkRoundInEachMode();
         } else {
             MyLog.w(TAG, "游戏结束 gameOverTs 不合法，取消");
         }
@@ -1019,7 +1020,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
          */
         if (playerInfo.isSkrer()) {
             MyLog.d(TAG, "checkMachineUser" + " uid=" + uid + " is machine");
-            RoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
+            BaseRoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
             //这个时间现在待定
             //移除之前的要发生的机器人演唱
             mUiHanlder.removeMessages(MSG_ROBOT_SING_BEGIN);

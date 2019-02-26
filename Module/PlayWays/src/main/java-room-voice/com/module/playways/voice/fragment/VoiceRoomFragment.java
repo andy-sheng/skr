@@ -11,7 +11,6 @@ import android.widget.RelativeLayout;
 
 import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
-import com.common.base.FragmentDataListener;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.log.MyLog;
@@ -21,7 +20,7 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.manager.BgMusicManager;
-import com.module.playways.RoomData;
+import com.module.playways.BaseRoomData;
 import com.module.playways.grab.room.event.ShowPersonCardEvent;
 import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.comment.CommentView;
@@ -63,7 +62,7 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
 
     public final static String TAG = "GrabRoomFragment";
 
-    RoomData mRoomData;
+    BaseRoomData mRoomData;
 
     RelativeLayout mRankingContainer;
 
@@ -319,7 +318,7 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
     public void setData(int type, @Nullable Object data) {
         super.setData(type, data);
         if (type == 0) {
-            mRoomData = (RoomData) data;
+            mRoomData = (BaseRoomData) data;
         }
     }
 

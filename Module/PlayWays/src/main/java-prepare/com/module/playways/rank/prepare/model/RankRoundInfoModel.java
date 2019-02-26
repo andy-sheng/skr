@@ -13,7 +13,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashSet;
 
-public class RankRoundInfoModel extends RoundInfoModel {
+public class RankRoundInfoModel extends BaseRoundInfoModel {
     private HashSet<BLightInfoModel> bLightInfos = new HashSet<>();//已经爆灯的人, pk
 
     private HashSet<MLightInfoModel> mLightInfos = new HashSet<>();  //已经灭灯的人, pk
@@ -75,7 +75,7 @@ public class RankRoundInfoModel extends RoundInfoModel {
     /**
      * 排位赛使用
      */
-    public void tryUpdateRoundInfoModel(RoundInfoModel round, boolean notify) {
+    public void tryUpdateRoundInfoModel(BaseRoundInfoModel round, boolean notify) {
         if (round == null) {
             MyLog.e("JsonRoundInfo RoundInfo == null");
             return;

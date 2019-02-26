@@ -13,9 +13,8 @@ import android.widget.RelativeLayout;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
-import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
-import com.module.playways.RoomData;
+import com.module.playways.BaseRoomData;
 import com.module.playways.rank.room.event.InputBoardEvent;
 import com.module.playways.rank.room.quickmsg.QuickMsgView;
 import com.module.rank.R;
@@ -35,7 +34,7 @@ public class VoiceBottomContainerView extends RelativeLayout {
     ExTextView mShowInputContainerBtn;
 
     PopupWindow mQuickMsgPopWindow;
-    private RoomData mRoomData;
+    private BaseRoomData mRoomData;
 
     SpecialEmojiMsgType mLastSendType = null;
     int mContinueCount = 1;
@@ -141,7 +140,7 @@ public class VoiceBottomContainerView extends RelativeLayout {
         mBottomContainerListener = l;
     }
 
-    public void setRoomData(RoomData roomData) {
+    public void setRoomData(BaseRoomData roomData) {
         mRoomData = roomData;
     }
 

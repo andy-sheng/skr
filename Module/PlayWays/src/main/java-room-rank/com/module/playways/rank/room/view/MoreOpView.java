@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
-import com.module.playways.RoomData;
+import com.module.playways.BaseRoomData;
 import com.module.playways.RoomDataUtils;
 import com.module.rank.R;
 
@@ -27,7 +27,7 @@ public class MoreOpView extends RelativeLayout {
 
     Listener mListener;
 
-    RoomData mRoomData;
+    BaseRoomData mRoomData;
 
     boolean mVoiceOpen = true;
 
@@ -110,7 +110,7 @@ public class MoreOpView extends RelativeLayout {
         mListener = listener;
     }
 
-    public void setRoomData(RoomData roomData) {
+    public void setRoomData(BaseRoomData roomData) {
         mRoomData = roomData;
     }
 

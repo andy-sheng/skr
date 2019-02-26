@@ -5,28 +5,23 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.common.log.MyLog;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
-import com.jakewharton.rxbinding2.view.RxView;
-import com.module.playways.RoomData;
+import com.module.playways.BaseRoomData;
 import com.module.playways.RoomDataUtils;
-import com.module.playways.rank.prepare.model.GameConfigModel;
+import com.module.playways.rank.room.RankRoomData;
 import com.module.playways.rank.room.event.PkMyBurstSuccessEvent;
 import com.module.playways.rank.room.event.PkMyLightOffSuccessEvent;
 import com.module.rank.R;
 
-import java.util.HashMap;
 import java.util.HashSet;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.concurrent.TimeUnit;
 
 public class RankOpView extends RelativeLayout {
     public final static String TAG = "RankOpView";
@@ -41,7 +36,7 @@ public class RankOpView extends RelativeLayout {
 
     HandlerTaskTimer mCountDownTask;
 
-    RoomData mRoomData;
+    RankRoomData mRoomData;
 
     HashSet<Integer> mHasOpSeq = new HashSet<>();
 
@@ -109,7 +104,7 @@ public class RankOpView extends RelativeLayout {
         }
     }
 
-    public void setRoomData(RoomData roomData) {
+    public void setRoomData(RankRoomData roomData) {
         mRoomData = roomData;
         mLightOffDelayTime = mRoomData.getGameConfigModel().getpKEnableShowMLightWaitTimeMs() / 1000;
     }

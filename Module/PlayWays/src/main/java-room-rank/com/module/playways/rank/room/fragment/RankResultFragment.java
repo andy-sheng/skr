@@ -12,8 +12,8 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
 import com.jakewharton.rxbinding2.view.RxView;
-import com.module.playways.RoomData;
-import com.module.playways.rank.room.model.UserGameResultModel;
+import com.module.playways.BaseRoomData;
+import com.module.playways.rank.room.RankRoomData;
 import com.module.playways.rank.room.view.RankResultView;
 import com.module.rank.R;
 import com.zq.live.proto.Room.EWinType;
@@ -33,7 +33,7 @@ public class RankResultFragment extends BaseFragment {
     ExImageView mResultExit;
     ExImageView mShareIv;
 
-    RoomData mRoomData;
+    RankRoomData mRoomData;
 
     @Override
     public int initView() {
@@ -82,7 +82,7 @@ public class RankResultFragment extends BaseFragment {
     @Override
     public void setData(int type, @Nullable Object data) {
         if (type == 1) {
-            mRoomData = (RoomData) data;
+            mRoomData = (RankRoomData) data;
         }
     }
 

@@ -16,13 +16,12 @@ import com.component.busilib.constans.GameModeType;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.rank.room.fragment.RankRecordFragment;
 import com.module.playways.rank.room.model.RecordData;
-import com.module.playways.RoomData;
+import com.module.playways.BaseRoomData;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.room.model.UserGameResultModel;
 import com.module.playways.rank.room.model.VoteInfoModel;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
-import com.zq.live.proto.Room.UserGameResult;
 
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
@@ -48,7 +47,7 @@ public class RecordItemView extends RelativeLayout {
     ExImageView[] mExImageViews = new ExImageView[3];
     SimpleDraweeView[] mSimpleDraweeViews = new SimpleDraweeView[3];
 
-    RoomData mRoomData;
+    BaseRoomData mRoomData;
 
     RecordData mRecordData;
 
@@ -90,7 +89,7 @@ public class RecordItemView extends RelativeLayout {
         mExImageViews[2] = mIvLightThree;
     }
 
-    public void setData(RoomData roomData, RecordData recordData, int index, int strokeColor) {
+    public void setData(BaseRoomData roomData, RecordData recordData, int index, int strokeColor) {
         if (recordData == null
                 || recordData.mVoteInfoModels == null
                 || recordData.mVoteInfoModels.size() <= index

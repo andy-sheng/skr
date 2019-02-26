@@ -4,9 +4,6 @@ package com.module.playways.rank.msg.event;
 
 import com.module.playways.rank.msg.BasePushInfo;
 import com.module.playways.rank.prepare.model.GrabRoundInfoModel;
-import com.module.playways.rank.prepare.model.RoundInfoModel;
-import com.zq.live.proto.Room.EQRoundOverReason;
-import com.zq.live.proto.Room.EQRoundResultType;
 import com.zq.live.proto.Room.QRoundOverMsg;
 
 public final class QRoundOverMsgEvent {

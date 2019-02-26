@@ -7,7 +7,7 @@ import android.widget.RelativeLayout;
 import com.common.anim.AnimationPlayControlTemplate;
 import com.module.playways.rank.msg.event.SpecialEmojiMsgEvent;
 import com.module.playways.rank.room.gift.model.GiftPlayModel;
-import com.module.playways.RoomData;
+import com.module.playways.BaseRoomData;
 import com.module.playways.RoomDataUtils;
 import com.module.rank.R;
 
@@ -29,7 +29,7 @@ public class GiftBigAnimationViewGroup extends RelativeLayout {
     static final int MAX_CONSUMER_NUM = 6;
 
     private List<GiftBigAnimationView> mFeedGiftAnimationViews = new ArrayList<>(MAX_CONSUMER_NUM);
-    private RoomData mRoomData;
+    private BaseRoomData mRoomData;
 
     public GiftBigAnimationViewGroup(Context context) {
         super(context);
@@ -128,7 +128,7 @@ public class GiftBigAnimationViewGroup extends RelativeLayout {
         mGiftPlayControlTemplate.add(playModel, false);
     }
 
-    public void setRoomData(RoomData roomData) {
+    public void setRoomData(BaseRoomData roomData) {
         mRoomData = roomData;
     }
 

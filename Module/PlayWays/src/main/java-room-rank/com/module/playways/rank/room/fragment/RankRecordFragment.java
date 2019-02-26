@@ -29,9 +29,10 @@ import com.common.view.ex.ExTextView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
 import com.module.playways.event.FinishPlayWayActivityEvent;
+import com.module.playways.rank.room.RankRoomData;
 import com.module.playways.rank.room.RoomServerApi;
 import com.module.playways.rank.room.model.RecordData;
-import com.module.playways.RoomData;
+import com.module.playways.BaseRoomData;
 import com.module.playways.rank.room.model.UserGameResultModel;
 import com.module.playways.rank.room.model.VoteInfoModel;
 import com.module.playways.rank.room.model.score.ScoreResultModel;
@@ -45,7 +46,6 @@ import com.zq.level.view.NormalLevelView;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -64,7 +64,7 @@ public class RankRecordFragment extends BaseFragment implements IVoteView {
 
     RecordTitleView mRecordTitleView;
 
-    RoomData mRoomData;
+    RankRoomData mRoomData;
 
     ExTextView mTvReload;
 
@@ -236,7 +236,7 @@ public class RankRecordFragment extends BaseFragment implements IVoteView {
     @Override
     public void setData(int type, @Nullable Object data) {
         super.setData(type, data);
-        mRoomData = (RoomData) data;
+        mRoomData = (RankRoomData) data;
     }
 
     @Override

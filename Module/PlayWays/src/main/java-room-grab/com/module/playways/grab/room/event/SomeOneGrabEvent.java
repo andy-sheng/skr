@@ -1,12 +1,12 @@
 package com.module.playways.grab.room.event;
 
-import com.module.playways.rank.prepare.model.RoundInfoModel;
+import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
 
 public class SomeOneGrabEvent {
-    public RoundInfoModel roundInfo;
+    public BaseRoundInfoModel roundInfo;
     public int uid;
 
-    public SomeOneGrabEvent(int uid, RoundInfoModel newRoundInfo) {
+    public SomeOneGrabEvent(int uid, BaseRoundInfoModel newRoundInfo) {
         this.uid = uid;
         roundInfo = newRoundInfo;
     }

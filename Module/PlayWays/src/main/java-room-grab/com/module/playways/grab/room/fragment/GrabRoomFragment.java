@@ -24,8 +24,9 @@ import com.common.utils.U;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.manager.BgMusicManager;
 import com.dialog.view.TipsDialogView;
-import com.module.playways.RoomData;
+import com.module.playways.BaseRoomData;
 import com.module.playways.RoomDataUtils;
+import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.LightOffAnimationOverEvent;
 import com.module.playways.grab.room.event.ShowPersonCardEvent;
 import com.module.playways.grab.room.event.SomeOneLightOffEvent;
@@ -42,7 +43,7 @@ import com.module.playways.grab.room.view.SingBeginTipsCardView;
 import com.module.playways.grab.room.view.SongInfoCardView;
 import com.module.playways.grab.room.view.TurnInfoCardView;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
-import com.module.playways.rank.prepare.model.RoundInfoModel;
+import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
 import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.comment.CommentView;
 import com.module.playways.rank.room.gift.GiftBigAnimationViewGroup;
@@ -95,7 +96,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     public static final int MSG_ENSURE_GAME_OVER = 6;
 
-    RoomData mRoomData;
+    GrabRoomData mRoomData;
 
     RelativeLayout mRankingContainer;
 
@@ -155,7 +156,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
                     onSingBeginTipsPlayOver(msg.arg1);
                     break;
                 case MSG_ENSURE_ROUND_OVER_PLAY_OVER:
-                    onRoundOverPlayOver(msg.arg1 == 1, (RoundInfoModel) msg.obj);
+                    onRoundOverPlayOver(msg.arg1 == 1, (BaseRoundInfoModel) msg.obj);
                     break;
                 case MSG_ENSURE_GAME_OVER:
                     onGrabGameOver("MSG_ENSURE_GAME_OVER");
@@ -604,7 +605,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     }
 
     @Override
-    public void roundOver(int songId,int reason, int resultType, boolean playNextSongInfoCard, RoundInfoModel now) {
+    public void roundOver(int songId,int reason, int resultType, boolean playNextSongInfoCard, BaseRoundInfoModel now) {
         mUiHanlder.removeMessages(MSG_ENSURE_ROUND_OVER_PLAY_OVER);
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_ROUND_OVER_PLAY_OVER);
         msg.arg1 = playNextSongInfoCard ? 1 : 0;
@@ -622,7 +623,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         });
     }
 
-    private void onRoundOverPlayOver(boolean playNextSongInfoCard, RoundInfoModel now) {
+    private void onRoundOverPlayOver(boolean playNextSongInfoCard, BaseRoundInfoModel now) {
         mUiHanlder.removeMessages(MSG_ENSURE_ROUND_OVER_PLAY_OVER);
         mRoundOverCardView.setVisibility(View.GONE);
         if (playNextSongInfoCard) {
@@ -639,7 +640,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     public void setData(int type, @Nullable Object data) {
         super.setData(type, data);
         if (type == 0) {
-            mRoomData = (RoomData) data;
+            mRoomData = (GrabRoomData) data;
         }
     }
 

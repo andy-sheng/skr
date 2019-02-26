@@ -5,7 +5,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.RelativeLayout;
 
@@ -16,7 +15,7 @@ import com.module.playways.rank.room.event.RankToVoiceTransformDataEvent;
 import com.module.playways.voice.activity.VoiceRoomActivity;
 import com.module.rank.R;
 import com.module.playways.rank.msg.event.CommentMsgEvent;
-import com.module.playways.RoomData;
+import com.module.playways.BaseRoomData;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -37,7 +36,7 @@ public class CommentView extends RelativeLayout {
 
     int maxHeight = U.getDisplayUtils().dip2px(260);
 
-    private RoomData mRoomData;
+    private BaseRoomData mRoomData;
     private boolean mOnBottom = true;
     private boolean mDraging = false;
     private boolean mHasDataUpdate = false;
@@ -130,7 +129,7 @@ public class CommentView extends RelativeLayout {
             @Override
             public void onItemClicked(View view, int position, CommentModel model) {
                 if (mClickListener != null) {
-                    if (model.getUserId() != RoomData.SYSTEM_ID) {
+                    if (model.getUserId() != BaseRoomData.SYSTEM_ID) {
                         mClickListener.onItemClicked(view, position, model);
                     }
                 }
@@ -188,11 +187,11 @@ public class CommentView extends RelativeLayout {
 //        setLayoutParams(lp);
 //    }
 
-    public void setRoomData(RoomData roomData) {
+    public void setRoomData(BaseRoomData roomData) {
         this.mRoomData = roomData;
     }
 
-    public RoomData getRoomData() {
+    public BaseRoomData getRoomData() {
         return mRoomData;
     }
 

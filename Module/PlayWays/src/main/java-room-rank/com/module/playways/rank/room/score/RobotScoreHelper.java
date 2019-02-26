@@ -2,25 +2,16 @@ package com.module.playways.rank.room.score;
 
 import com.alibaba.fastjson.JSON;
 import com.common.log.MyLog;
-import com.common.upload.UploadCallback;
-import com.common.upload.UploadParams;
 import com.common.utils.HttpUtils;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
-import com.module.playways.RoomDataUtils;
-import com.module.playways.rank.prepare.model.RoundInfoModel;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.schedulers.Schedulers;
 import okio.BufferedSink;
 import okio.BufferedSource;
 import okio.Okio;

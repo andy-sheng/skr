@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.graphics.drawable.Animatable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -21,9 +20,6 @@ import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.image.fresco.BaseImageView;
-import com.common.image.fresco.FrescoWorker;
-import com.common.image.fresco.IFrescoCallBack;
-import com.common.image.model.ImageFactory;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.HttpUtils;
@@ -32,23 +28,20 @@ import com.common.utils.U;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.manager.BgMusicManager;
 import com.dialog.view.TipsDialogView;
-import com.facebook.fresco.animation.drawable.AnimatedDrawable2;
-import com.facebook.fresco.animation.drawable.AnimationListener;
-import com.facebook.imagepipeline.image.ImageInfo;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
-import com.module.playways.rank.prepare.model.RoundInfoModel;
+import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
+import com.module.playways.rank.room.RankRoomData;
 import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.comment.CommentView;
 import com.module.playways.rank.room.event.RankToVoiceTransformDataEvent;
 import com.module.playways.rank.room.gift.GiftBigAnimationViewGroup;
 import com.module.playways.rank.room.gift.GiftContinueViewGroup;
-import com.module.playways.RoomData;
+import com.module.playways.BaseRoomData;
 import com.module.playways.rank.room.presenter.DownLoadScoreFilePresenter;
 import com.module.playways.rank.room.presenter.RankCorePresenter;
-import com.module.playways.rank.room.score.bar.EnergySlotView;
 import com.module.playways.rank.room.view.ArcProgressBar;
 import com.module.playways.rank.room.view.BottomContainerView;
 import com.module.playways.rank.room.view.IGameRuleView;
@@ -122,7 +115,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     //模拟机器人打分事件
     static final int MSG_LYRIC_END_EVENT = 11;
 
-    RoomData mRoomData;
+    RankRoomData mRoomData;
 
     RelativeLayout mRankingContainer;
 
@@ -163,7 +156,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
             } else if (MSG_LYRIC_END_EVENT == msg.what) {
                 MyLog.d(TAG, "handleMessage MSG_LYRIC_END_EVENT " + " msg.arg1=" + msg.arg1 + " msg.arg2=" + msg.arg2);
-                if (RoomDataUtils.getUidOfRoundInfo(mRoomData.getRealRoundInfo()) == ((RoundInfoModel) msg.obj).getUserID()) {
+                if (RoomDataUtils.getUidOfRoundInfo(mRoomData.getRealRoundInfo()) == ((BaseRoundInfoModel) msg.obj).getUserID()) {
                     if (msg.arg2 == 1 && msg.arg1 == 0) {
                         MyLog.d(TAG, "handleMessage MSG_LYRIC_END_EVENT " + " start");
                         EventBus.getDefault().post(new LrcEvent.LineStartEvent(msg.arg1));
@@ -799,7 +792,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     public void setData(int type, @Nullable Object data) {
         super.setData(type, data);
         if (type == 0) {
-            mRoomData = (RoomData) data;
+            mRoomData = (RankRoomData) data;
         }
     }
 
@@ -1179,7 +1172,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     }
 
     private void postLyricEndEvent(LyricsReader lyricsReader, boolean isSelf) {
-        RoundInfoModel now = mRoomData.getRealRoundInfo();
+        BaseRoundInfoModel now = mRoomData.getRealRoundInfo();
         if (now == null) {
             return;
         }

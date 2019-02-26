@@ -1,13 +1,13 @@
 package com.module.playways.grab.room.event;
 
 import com.module.playways.grab.room.model.QLightActionMsgModel;
-import com.module.playways.rank.prepare.model.RoundInfoModel;
+import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
 
 public class GrabQLightActionEvent {
-    public RoundInfoModel roundInfo;
+    public BaseRoundInfoModel roundInfo;
     QLightActionMsgModel mQLightActionMsgModel;
 
-    public GrabQLightActionEvent(QLightActionMsgModel qLightActionMsgModel, RoundInfoModel newRoundInfo) {
+    public GrabQLightActionEvent(QLightActionMsgModel qLightActionMsgModel, BaseRoundInfoModel newRoundInfo) {
         this.mQLightActionMsgModel = qLightActionMsgModel;
         roundInfo = newRoundInfo;
     }

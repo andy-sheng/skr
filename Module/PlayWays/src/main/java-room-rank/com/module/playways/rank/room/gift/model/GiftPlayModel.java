@@ -1,7 +1,7 @@
 package com.module.playways.rank.room.gift.model;
 
 import com.common.core.userinfo.model.UserInfoModel;
-import com.module.playways.RoomData;
+import com.module.playways.BaseRoomData;
 import com.module.playways.rank.msg.event.SpecialEmojiMsgEvent;
 import com.zq.live.proto.Room.SpecialEmojiMsgType;
 
@@ -16,7 +16,7 @@ public class GiftPlayModel {
     int endCount;
 
 
-    public static GiftPlayModel parseFromEvent(SpecialEmojiMsgEvent event, RoomData roomData) {
+    public static GiftPlayModel parseFromEvent(SpecialEmojiMsgEvent event, BaseRoomData roomData) {
         GiftPlayModel giftPlayModel = new GiftPlayModel();
         giftPlayModel.setContinueId(event.coutinueId);
         giftPlayModel.setEmojiType(event.emojiType);

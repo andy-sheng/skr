@@ -15,7 +15,7 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.constans.GameModeType;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.module.playways.RoomData;
+import com.module.playways.BaseRoomData;
 import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.rank.room.model.UserGameResultModel;
 import com.module.playways.rank.room.model.VoteInfoModel;
@@ -25,8 +25,6 @@ import com.module.playways.rank.room.utils.ScoreAnimationHelp;
 import com.module.playways.rank.room.utils.ScoreConfigUtils;
 import com.module.rank.R;
 import com.zq.level.view.NormalLevelView;
-import com.zq.live.proto.Room.EWinType;
-import com.zq.live.proto.Room.UserGameResult;
 
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
@@ -36,7 +34,7 @@ public class RecordTitleView extends RelativeLayout {
 
     public final static String TAG = "RecordTitleView";
 
-    RoomData mRoomData;
+    BaseRoomData mRoomData;
 
     ScoreResultModel scoreResultModel;
 
@@ -66,7 +64,7 @@ public class RecordTitleView extends RelativeLayout {
         super(context, attrs);
     }
 
-    public void setData(ViewGroup viewGroup, RecordData recordData, RoomData roomData) {
+    public void setData(ViewGroup viewGroup, RecordData recordData, BaseRoomData roomData) {
         this.mViewGroup = viewGroup;
         mRoomData = roomData;
         mRecordData = recordData;

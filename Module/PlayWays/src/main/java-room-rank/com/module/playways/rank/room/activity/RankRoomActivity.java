@@ -14,10 +14,11 @@ import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.module.RouterConstants;
+import com.module.playways.rank.room.RankRoomData;
 import com.module.rank.R;
 import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.playways.rank.room.fragment.RankRoomFragment;
-import com.module.playways.RoomData;
+import com.module.playways.BaseRoomData;
 import com.module.playways.RoomDataUtils;
 
 @Route(path = RouterConstants.ACTIVITY_RANK_ROOM)
@@ -26,7 +27,7 @@ public class RankRoomActivity extends BaseActivity {
     /**
      * 存起该房间一些状态信息
      */
-    RoomData mRoomData = new RoomData();
+    RankRoomData mRoomData = new RankRoomData();
 
     public int initView(@Nullable Bundle savedInstanceState) {
         return R.layout.ranking_room_activity_layout;
@@ -36,7 +37,6 @@ public class RankRoomActivity extends BaseActivity {
     public void initData(@Nullable Bundle savedInstanceState) {
         PrepareData prepareData = (PrepareData) getIntent().getSerializableExtra("prepare_data");
         if (prepareData != null) {
-            mRoomData.setGameType(prepareData.getGameType());
             mRoomData.setGameId(prepareData.getGameId());
             mRoomData.setSysAvatar(prepareData.getSysAvatar());
             mRoomData.setGameCreateTs(prepareData.getGameCreatMs());

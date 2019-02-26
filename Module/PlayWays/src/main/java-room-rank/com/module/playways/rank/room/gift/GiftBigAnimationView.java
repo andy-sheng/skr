@@ -10,7 +10,7 @@ import android.widget.RelativeLayout;
 
 import com.common.utils.U;
 import com.module.playways.rank.room.gift.model.GiftPlayModel;
-import com.module.playways.RoomData;
+import com.module.playways.BaseRoomData;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGAImageView;
@@ -110,10 +110,10 @@ public class GiftBigAnimationView {
         String url = null;
         switch (giftPlayModel.getEmojiType()) {
             case SP_EMOJI_TYPE_UNLIKE:
-                url = RoomData.ROOM_SPECAIL_EMOJI_DABIAN;
+                url = BaseRoomData.ROOM_SPECAIL_EMOJI_DABIAN;
                 break;
             case SP_EMOJI_TYPE_LIKE:
-                url = RoomData.ROOM_SPECAIL_EMOJI_AIXIN;
+                url = BaseRoomData.ROOM_SPECAIL_EMOJI_AIXIN;
                 break;
         }
         load(url);

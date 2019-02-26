@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-public class GrabRoundInfoModel extends RoundInfoModel {
+public class GrabRoundInfoModel extends BaseRoundInfoModel {
     public static final int STATUS_INIT = 1;
     public static final int STATUS_GRAB = 2;
     public static final int STATUS_SING = 3;
@@ -144,7 +144,7 @@ public class GrabRoundInfoModel extends RoundInfoModel {
     /**
      * 一唱到底使用
      */
-    public void tryUpdateRoundInfoModel(RoundInfoModel round, boolean notify) {
+    public void tryUpdateRoundInfoModel(BaseRoundInfoModel round, boolean notify) {
         if (round == null) {
             MyLog.e("JsonRoundInfo RoundInfo == null");
             return;

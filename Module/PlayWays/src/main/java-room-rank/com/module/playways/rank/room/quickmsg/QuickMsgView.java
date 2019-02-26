@@ -18,7 +18,7 @@ import com.component.busilib.constans.GameModeType;
 import com.module.rank.R;
 import com.module.playways.rank.msg.event.EventHelper;
 import com.module.playways.rank.room.RoomServerApi;
-import com.module.playways.RoomData;
+import com.module.playways.BaseRoomData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,7 +31,7 @@ public class QuickMsgView extends RelativeLayout {
 
     RecyclerView mQuickMsgRv;
     QuickMsgAdapter mQuickMsgAdapter;
-    RoomData mRoomData;
+    BaseRoomData mRoomData;
     Listener mListener;
 
     public QuickMsgView(Context context) {
@@ -82,7 +82,7 @@ public class QuickMsgView extends RelativeLayout {
         setBackgroundResource(R.drawable.quick_msg_view_bg);
     }
 
-    public void setRoomData(RoomData roomData) {
+    public void setRoomData(BaseRoomData roomData) {
         mRoomData = roomData;
         String[] arrays = U.app().getResources().getStringArray(R.array.rank_quick_msg_arr);
         if (mRoomData.getGameType() == GameModeType.GAME_MODE_GRAB) {

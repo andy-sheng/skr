@@ -7,23 +7,21 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.common.core.avatar.AvatarUtils;
-import com.common.core.myinfo.MyUserInfoManager;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.view.BitmapTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.module.playways.RoomData;
+import com.module.playways.BaseRoomData;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
+import com.module.playways.rank.room.RankRoomData;
 import com.module.playways.rank.room.model.AudienceScoreModel;
 import com.module.playways.rank.room.model.UserGameResultModel;
 import com.module.rank.R;
 import com.zq.live.proto.Room.ELightType;
 import com.zq.live.proto.Room.EWinType;
-
-import java.util.List;
 
 /**
  * 某个人的战绩
@@ -100,7 +98,7 @@ public class RankResultView extends RelativeLayout {
      * @param useID
      * @param index    第几个
      */
-    public void bindData(RoomData roomData, int useID, int index) {
+    public void bindData(RankRoomData roomData, int useID, int index) {
         if (useID == 0) {
             return;
         }

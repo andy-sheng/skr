@@ -1,7 +1,7 @@
 package com.module.playways.grab.room.inter;
 
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
-import com.module.playways.rank.prepare.model.RoundInfoModel;
+import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
 import com.module.playways.rank.song.model.SongModel;
 
 import java.util.List;
@@ -34,7 +34,7 @@ public interface IGrabView {
      * @param reason               原因
      * @param playNextSongInfoCard 是否播放下一场抢唱的歌曲卡片
      */
-    void roundOver(int songId,int reason, int reasonType, boolean playNextSongInfoCard, RoundInfoModel now);
+    void roundOver(int songId,int reason, int reasonType, boolean playNextSongInfoCard, BaseRoundInfoModel now);
 
     void updateUserState(List<OnlineInfoModel> jsonOnLineInfoList);
 

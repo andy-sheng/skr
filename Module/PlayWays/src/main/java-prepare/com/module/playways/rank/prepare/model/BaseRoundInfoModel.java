@@ -4,7 +4,7 @@ import com.module.playways.rank.song.model.SongModel;
 
 import java.io.Serializable;
 
-public abstract class RoundInfoModel implements Serializable {
+public abstract class BaseRoundInfoModel implements Serializable {
     public final static String TAG = "RoundInfoModel";
     public static final int TYPE_RANK = 1;
     public static final int TYPE_GRAB = 2;
@@ -36,7 +36,7 @@ public abstract class RoundInfoModel implements Serializable {
      */
     protected int overReason; // 结束的原因
 
-    public RoundInfoModel() {
+    public BaseRoundInfoModel() {
 
     }
 
@@ -132,7 +132,7 @@ public abstract class RoundInfoModel implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        RoundInfoModel that = (RoundInfoModel) o;
+        BaseRoundInfoModel that = (BaseRoundInfoModel) o;
         if (that == null) {
             return false;
         }
@@ -154,7 +154,7 @@ public abstract class RoundInfoModel implements Serializable {
         return result;
     }
 
-    public abstract void  tryUpdateRoundInfoModel(RoundInfoModel round, boolean notify);
+    public abstract void  tryUpdateRoundInfoModel(BaseRoundInfoModel round, boolean notify);
 
     @Override
     public String toString() {

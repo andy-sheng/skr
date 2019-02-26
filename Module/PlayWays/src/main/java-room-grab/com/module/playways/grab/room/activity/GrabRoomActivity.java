@@ -2,7 +2,6 @@ package com.module.playways.grab.room.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.WindowManager;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -17,12 +16,13 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.component.busilib.constans.GameModeType;
 import com.module.RouterConstants;
+import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.rank.prepare.model.GrabRoundInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.PrepareData;
 
-import com.module.playways.RoomData;
-import com.module.playways.rank.prepare.model.RoundInfoModel;
+import com.module.playways.BaseRoomData;
+import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
@@ -37,7 +37,7 @@ public class GrabRoomActivity extends BaseActivity {
     /**
      * 存起该房间一些状态信息
      */
-    RoomData<GrabRoundInfoModel> mRoomData = new RoomData();
+    GrabRoomData mRoomData = new GrabRoomData();
 
     public int initView(@Nullable Bundle savedInstanceState) {
         return R.layout.grab_room_activity_layout;
@@ -48,7 +48,6 @@ public class GrabRoomActivity extends BaseActivity {
         PrepareData prepareData = (PrepareData) getIntent().getSerializableExtra("prepare_data");
         if (prepareData != null) {
             mRoomData.setGameId(prepareData.getGameId());
-            mRoomData.setGameType(prepareData.getGameType());
             mRoomData.setGameCreateTs(prepareData.getGameCreatMs());
             mRoomData.setGameStartTs(prepareData.getGameReadyInfo().getGameStartInfo().getStartTimeMs());
             mRoomData.setShiftTs(prepareData.getShiftTs());
@@ -59,7 +58,7 @@ public class GrabRoomActivity extends BaseActivity {
             mRoomData.setRoundInfoModelList(prepareData.getGameReadyInfo().getqRoundInfo());
             for (int i = 0; i < prepareData.getSongModelList().size(); i++) {
                 SongModel songModel = prepareData.getSongModelList().get(i);
-                RoundInfoModel roundInfoModel = mRoomData.getRoundInfoModelList().get(i);
+                BaseRoundInfoModel roundInfoModel = mRoomData.getRoundInfoModelList().get(i);
                 roundInfoModel.setSongModel(songModel);
             }
             // TODO: 2019/2/26  这里需要把当前的轮次找到设置

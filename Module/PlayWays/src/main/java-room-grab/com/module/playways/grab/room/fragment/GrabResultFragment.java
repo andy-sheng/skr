@@ -29,7 +29,8 @@ import com.component.busilib.constans.GameModeType;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
-import com.module.playways.RoomData;
+import com.module.playways.BaseRoomData;
+import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.model.GrabResultInfoModel;
 import com.module.playways.rank.prepare.model.PrepareData;
@@ -45,7 +46,7 @@ public class GrabResultFragment extends BaseFragment {
 
     public final static String TAG = "GrabResultFragment";
 
-    RoomData mRoomData;
+    GrabRoomData mRoomData;
     GrabResultInfoModel mGrabResultInfoModel;
 
     RelativeLayout mSingEndRecord;
@@ -200,7 +201,7 @@ public class GrabResultFragment extends BaseFragment {
     public void setData(int type, @Nullable Object data) {
         super.setData(type, data);
         if (type == 0) {
-            mRoomData = (RoomData) data;
+            mRoomData = (GrabRoomData) data;
         }
     }
 

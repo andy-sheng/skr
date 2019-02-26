@@ -8,7 +8,6 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.text.TextPaint;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.widget.RelativeLayout;
 
 import com.common.core.avatar.AvatarUtils;
@@ -16,22 +15,16 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.HttpImage;
 import com.common.utils.U;
-import com.common.view.ex.ExImageView;
-import com.common.view.ex.ExTextView;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.grab.room.listener.SVGAListener;
-import com.module.playways.rank.room.fragment.RankRecordFragment;
 import com.module.rank.R;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
-import com.module.playways.rank.prepare.model.RoundInfoModel;
-import com.module.playways.RoomData;
+import com.module.playways.BaseRoomData;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGADynamicEntity;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
-import com.zq.level.view.NormalLevelView;
 import com.zq.live.proto.Common.ESex;
 
 import org.jetbrains.annotations.NotNull;
@@ -40,7 +33,7 @@ import java.io.File;
 
 public class TurnChangeCardView extends RelativeLayout {
 
-    RoomData mRoomData;
+    BaseRoomData mRoomData;
 
     SVGAImageView mFirstSvga;
     SVGAImageView mNextSvga;
@@ -68,7 +61,7 @@ public class TurnChangeCardView extends RelativeLayout {
         mNextSvga = (SVGAImageView) findViewById(R.id.next_svga);
     }
 
-    public boolean setData(RoomData data, SVGAListener listener) {
+    public boolean setData(BaseRoomData data, SVGAListener listener) {
         this.mRoomData = data;
         this.mSVGAListener = listener;
 
