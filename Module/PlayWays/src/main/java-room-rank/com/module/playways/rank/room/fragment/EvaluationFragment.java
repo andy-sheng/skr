@@ -28,24 +28,23 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
+import com.module.playways.rank.prepare.model.RankRoundInfoModel;
+import com.module.playways.rank.room.RankRoomData;
 import com.module.playways.rank.room.model.RecordData;
-import com.module.playways.RoomData;
+import com.module.playways.BaseRoomData;
 import com.module.playways.rank.room.presenter.EndGamePresenter;
 import com.module.playways.rank.room.view.IVoteView;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGAImageView;
 
-import java.util.concurrent.TimeUnit;
-
 // 游戏结束页
 public class EvaluationFragment extends BaseFragment implements IVoteView {
 
     public final static String TAG = "EvaluationFragment";
 
-    RoomData mRoomData;
+    RankRoomData mRoomData;
 
     RelativeLayout mMainActContainer;
 
@@ -354,7 +353,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
     public void setData(int type, @Nullable Object data) {
         super.setData(type, data);
         if (type == 0) {
-            mRoomData = (RoomData) data;
+            mRoomData = (RankRoomData) data;
             if (mRoomData.getPlayerInfoList() != null && mRoomData.getPlayerInfoList().size() > 0) {
                 for (PlayerInfoModel playerInfo : mRoomData.getPlayerInfoList()) {
                     if (left != null && playerInfo.getUserInfo().getUserId() != MyUserInfoManager.getInstance().getUid()) {

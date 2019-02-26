@@ -3,9 +3,7 @@
 package com.module.playways.rank.msg.event;
 
 import com.module.playways.rank.msg.BasePushInfo;
-import com.module.playways.rank.prepare.model.RoundInfoModel;
-import com.zq.live.proto.Room.EQRoundOverReason;
-import com.zq.live.proto.Room.EQRoundResultType;
+import com.module.playways.rank.prepare.model.GrabRoundInfoModel;
 import com.zq.live.proto.Room.QRoundOverMsg;
 
 public final class QRoundOverMsgEvent {
@@ -18,18 +16,18 @@ public final class QRoundOverMsgEvent {
     /**
      * 当前轮次信息
      */
-    public RoundInfoModel currentRound;
+    public GrabRoundInfoModel currentRound;
 
     /**
      * 下个轮次信息
      */
-    public RoundInfoModel nextRound;
+    public GrabRoundInfoModel nextRound;
 
     public QRoundOverMsgEvent(BasePushInfo info, QRoundOverMsg qRoundOverMsg) {
         this.info = info;
         this.roundOverTimeMs = qRoundOverMsg.getRoundOverTimeMs();
-        this.currentRound = RoundInfoModel.parseFromRoundInfo(qRoundOverMsg.getCurrentRound());
-        this.nextRound = RoundInfoModel.parseFromRoundInfo(qRoundOverMsg.getNextRound());
+        this.currentRound = GrabRoundInfoModel.parseFromRoundInfo(qRoundOverMsg.getCurrentRound());
+        this.nextRound = GrabRoundInfoModel.parseFromRoundInfo(qRoundOverMsg.getNextRound());
     }
 
     public BasePushInfo getInfo() {
@@ -40,11 +38,11 @@ public final class QRoundOverMsgEvent {
         return roundOverTimeMs;
     }
 
-    public RoundInfoModel getCurrentRound() {
+    public GrabRoundInfoModel getCurrentRound() {
         return currentRound;
     }
 
-    public RoundInfoModel getNextRound() {
+    public GrabRoundInfoModel getNextRound() {
         return nextRound;
     }
 

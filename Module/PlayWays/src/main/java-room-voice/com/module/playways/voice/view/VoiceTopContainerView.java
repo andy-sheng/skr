@@ -8,17 +8,10 @@ import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.view.DebounceViewClickListener;
-import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.module.RouterConstants;
-import com.module.playways.RoomData;
 import com.module.playways.event.FinishPlayWayActivityEvent;
-import com.module.playways.grab.room.event.SomeOneGrabEvent;
-import com.module.playways.grab.room.event.SomeOneLightOffEvent;
-import com.module.playways.grab.room.event.SomeOneOnlineChangeEvent;
-import com.module.playways.grab.room.top.GrabTopRv;
 import com.module.playways.rank.room.event.InputBoardEvent;
-import com.module.playways.rank.room.view.MoreOpView;
 import com.module.rank.R;
 
 import org.greenrobot.eventbus.EventBus;

@@ -25,7 +25,7 @@ import com.module.rank.R;
 import com.module.playways.rank.msg.event.EventHelper;
 import com.module.playways.rank.room.RoomServerApi;
 import com.module.playways.rank.room.event.InputBoardEvent;
-import com.module.playways.RoomData;
+import com.module.playways.BaseRoomData;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -43,7 +43,7 @@ public class InputContainerView extends RelativeLayout {
     ViewGroup mPlaceHolderView;
     View mSendMsgBtn;
 
-    private RoomData mRoomData;
+    private BaseRoomData mRoomData;
 
     public InputContainerView(Context context) {
         super(context);
@@ -174,7 +174,7 @@ public class InputContainerView extends RelativeLayout {
         return false;
     }
 
-    public void setRoomData(RoomData roomData) {
+    public void setRoomData(BaseRoomData roomData) {
         mRoomData = roomData;
 //        EventHelper.pretendCommentPush("请注意保持直播间和谐", mRoomData.getGameId());
     }

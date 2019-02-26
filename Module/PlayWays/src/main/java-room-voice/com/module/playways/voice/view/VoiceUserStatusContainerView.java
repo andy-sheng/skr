@@ -10,8 +10,9 @@ import com.common.core.account.UserAccountManager;
 import com.common.view.ex.ExLinearLayout;
 import com.engine.EngineEvent;
 import com.engine.UserStatus;
-import com.module.playways.RoomData;
+import com.module.playways.BaseRoomData;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
+import com.module.playways.rank.prepare.model.RankRoundInfoModel;
 import com.module.rank.R;
 
 import org.greenrobot.eventbus.EventBus;
@@ -25,7 +26,7 @@ import java.util.List;
 public class VoiceUserStatusContainerView extends RelativeLayout {
 
     ExLinearLayout mUserStatusContainer;
-    RoomData mRoomData;
+    BaseRoomData<RankRoundInfoModel> mRoomData;
     HashMap<Integer, VoiceUserStatusView> mViewMap = new HashMap<>();
     Handler mUiHanlder = new Handler();
 
@@ -59,7 +60,7 @@ public class VoiceUserStatusContainerView extends RelativeLayout {
         mUiHanlder.removeCallbacksAndMessages(null);
     }
 
-    public void setRoomData(RoomData roomData) {
+    public void setRoomData(BaseRoomData roomData) {
         mRoomData = roomData;
         bindData();
     }

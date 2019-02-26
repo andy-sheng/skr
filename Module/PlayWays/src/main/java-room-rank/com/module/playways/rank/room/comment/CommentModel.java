@@ -2,15 +2,13 @@ package com.module.playways.rank.room.comment;
 
 import android.graphics.Color;
 import android.text.TextUtils;
-import android.widget.TextView;
 
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.utils.U;
 import com.module.playways.rank.msg.event.CommentMsgEvent;
-import com.module.playways.RoomData;
+import com.module.playways.BaseRoomData;
 import com.module.rank.R;
 import com.zq.live.proto.Common.ESex;
-import com.zq.live.proto.Common.UserInfo;
 
 public class CommentModel {
     public static final int TYPE_TEXT = 1;
@@ -24,7 +22,7 @@ public class CommentModel {
     private int nameColor = Color.parseColor("#ccFFAD00");   // 昵称颜色
     private int textColor = U.getColor(R.color.white_trans_80);  // 文本内容颜色
 
-    public static CommentModel parseFromEvent(CommentMsgEvent event, RoomData roomData) {
+    public static CommentModel parseFromEvent(CommentMsgEvent event, BaseRoomData roomData) {
         CommentModel commentModel = new CommentModel();
         commentModel.setUserId(event.info.getSender().getUserID());
         if (!TextUtils.isEmpty(event.info.getSender().getNickName())) {
@@ -50,7 +48,7 @@ public class CommentModel {
                 commentModel.setAvatarColor(Color.WHITE);
             }
         }
-        if (commentModel.getUserId() == RoomData.SYSTEM_ID) {
+        if (commentModel.getUserId() == BaseRoomData.SYSTEM_ID) {
             // 系统消息
             commentModel.setTextColor(Color.parseColor("#EF5E85"));
         }

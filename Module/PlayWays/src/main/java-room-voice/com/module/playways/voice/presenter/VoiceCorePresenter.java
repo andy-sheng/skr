@@ -11,15 +11,10 @@ import com.engine.EngineEvent;
 import com.engine.EngineManager;
 import com.engine.Params;
 import com.module.ModuleServiceManager;
-import com.module.playways.RoomData;
-import com.module.playways.rank.msg.BasePushInfo;
-import com.module.playways.rank.msg.event.CommentMsgEvent;
+import com.module.playways.BaseRoomData;
 import com.module.playways.rank.msg.filter.PushMsgFilter;
 import com.module.playways.rank.msg.manager.ChatRoomMsgManager;
-import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.voice.inter.IVoiceView;
-import com.zq.live.proto.Common.ESex;
-import com.zq.live.proto.Common.UserInfo;
 import com.zq.live.proto.Room.RoomMsg;
 
 import org.greenrobot.eventbus.EventBus;
@@ -27,12 +22,10 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.greenrobot.greendao.annotation.NotNull;
 
-import io.agora.rtc.Constants;
-
 public class VoiceCorePresenter extends RxLifeCyclePresenter {
     public String TAG = "VoiceCorePresenter";
 
-    RoomData mRoomData;
+    BaseRoomData mRoomData;
 
     IVoiceView mIVoiceView;
 
@@ -57,7 +50,7 @@ public class VoiceCorePresenter extends RxLifeCyclePresenter {
         }
     };
 
-    public VoiceCorePresenter(@NotNull IVoiceView iVoiceView, @NotNull RoomData roomData) {
+    public VoiceCorePresenter(@NotNull IVoiceView iVoiceView, @NotNull BaseRoomData roomData) {
         mIVoiceView = iVoiceView;
         mRoomData = roomData;
         TAG = "VoiceCorePresenter";

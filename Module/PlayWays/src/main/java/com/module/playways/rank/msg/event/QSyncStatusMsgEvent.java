@@ -3,8 +3,8 @@
 package com.module.playways.rank.msg.event;
 
 import com.module.playways.rank.msg.BasePushInfo;
+import com.module.playways.rank.prepare.model.GrabRoundInfoModel;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
-import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.zq.live.proto.Room.OnlineInfo;
 import com.zq.live.proto.Room.QSyncStatusMsg;
 
@@ -32,7 +32,7 @@ public final class QSyncStatusMsgEvent {
   /**
    * 当前轮次信息
    */
-  public RoundInfoModel currentRound;
+  public GrabRoundInfoModel currentRound;
 
   public QSyncStatusMsgEvent(BasePushInfo info, QSyncStatusMsg qSyncStatusMsg) {
     this.info = info;
@@ -45,7 +45,7 @@ public final class QSyncStatusMsgEvent {
       onLineInfos.add(jsonOnLineInfo);
     }
     this.onlineInfo = onLineInfos;
-    this.currentRound = RoundInfoModel.parseFromRoundInfo(qSyncStatusMsg.getCurrentRound());
+    this.currentRound = GrabRoundInfoModel.parseFromRoundInfo(qSyncStatusMsg.getCurrentRound());
   }
 
   public BasePushInfo getInfo() {
@@ -64,7 +64,7 @@ public final class QSyncStatusMsgEvent {
     return onlineInfo;
   }
 
-  public RoundInfoModel getCurrentRound() {
+  public GrabRoundInfoModel getCurrentRound() {
     return currentRound;
   }
 }

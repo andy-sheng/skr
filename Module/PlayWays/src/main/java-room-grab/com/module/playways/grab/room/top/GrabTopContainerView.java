@@ -7,7 +7,7 @@ import android.widget.RelativeLayout;
 
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
-import com.module.playways.RoomData;
+import com.module.playways.BaseRoomData;
 import com.module.playways.grab.room.event.SomeOneGrabEvent;
 import com.module.playways.grab.room.event.SomeOneLightOffEvent;
 import com.module.playways.grab.room.event.SomeOneOnlineChangeEvent;
@@ -30,7 +30,7 @@ public class GrabTopContainerView extends RelativeLayout {
     MoreOpView mMoreOpView;
 
     Listener mListener;
-    RoomData mRoomData;
+    BaseRoomData mRoomData;
 
 //    GrabTopAdapter mGrabTopAdapter;
 
@@ -147,7 +147,7 @@ public class GrabTopContainerView extends RelativeLayout {
         mListener = l;
     }
 
-    public void setRoomData(RoomData roomData) {
+    public void setRoomData(BaseRoomData roomData) {
         mRoomData = roomData;
         mTopContentRv.setRoomData(roomData);
     }

@@ -12,9 +12,10 @@ import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
-import com.module.playways.RoomData;
+import com.module.playways.BaseRoomData;
 import com.module.playways.rank.prepare.model.GameConfigModel;
 import com.module.playways.rank.prepare.model.PkScoreTipMsgModel;
+import com.module.playways.rank.room.RankRoomData;
 import com.module.playways.rank.room.event.PkSomeOneBurstLightEvent;
 import com.module.playways.rank.room.event.PkSomeOneLightOffEvent;
 import com.module.playways.rank.room.score.RobotScoreHelper;
@@ -51,7 +52,7 @@ public class RankTopContainerView2 extends RelativeLayout {
 
     ScoreTipsView.Item mLastItem;
 
-    RoomData mRoomData;
+    RankRoomData mRoomData;
 
     UserLightInfo mStatusArr[] = new UserLightInfo[MAX_USER_NUM];
 
@@ -81,7 +82,7 @@ public class RankTopContainerView2 extends RelativeLayout {
         mListener = l;
     }
 
-    public void setRoomData(RoomData roomData) {
+    public void setRoomData(RankRoomData roomData) {
         mRoomData = roomData;
     }
 

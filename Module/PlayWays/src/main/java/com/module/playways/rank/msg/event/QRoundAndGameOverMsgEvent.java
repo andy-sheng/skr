@@ -4,9 +4,8 @@ package com.module.playways.rank.msg.event;
 
 import com.module.playways.grab.room.model.GrabResultInfoModel;
 import com.module.playways.rank.msg.BasePushInfo;
-import com.module.playways.rank.prepare.model.RoundInfoModel;
-import com.zq.live.proto.Room.EQRoundOverReason;
-import com.zq.live.proto.Room.EQRoundResultType;
+import com.module.playways.rank.prepare.model.GrabRoundInfoModel;
+import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
 import com.zq.live.proto.Room.QResultInfo;
 import com.zq.live.proto.Room.QRoundAndGameOverMsg;
 
@@ -25,7 +24,7 @@ public final class QRoundAndGameOverMsgEvent {
     /**
      * 退出用户的ID
      */
-    public RoundInfoModel roundInfoModel;
+    public BaseRoundInfoModel roundInfoModel;
 
     /**
      * 最终结果信息
@@ -35,7 +34,7 @@ public final class QRoundAndGameOverMsgEvent {
     public QRoundAndGameOverMsgEvent(BasePushInfo info, QRoundAndGameOverMsg qRoundAndGameOverMsg) {
         this.info = info;
         this.roundOverTimeMs = qRoundAndGameOverMsg.getRoundOverTimeMs();
-        this.roundInfoModel = RoundInfoModel.parseFromRoundInfo(qRoundAndGameOverMsg.getCurrentRound());
+        this.roundInfoModel = GrabRoundInfoModel.parseFromRoundInfo(qRoundAndGameOverMsg.getCurrentRound());
         resultInfo = new ArrayList<>();
         for(QResultInfo qResultInfo:qRoundAndGameOverMsg.getResultInfoList()){
             resultInfo.add(GrabResultInfoModel.parse(qResultInfo));
@@ -50,7 +49,7 @@ public final class QRoundAndGameOverMsgEvent {
         return roundOverTimeMs;
     }
 
-    public RoundInfoModel getRoundInfoModel() {
+    public BaseRoundInfoModel getRoundInfoModel() {
         return roundInfoModel;
     }
 

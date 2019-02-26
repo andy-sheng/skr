@@ -9,7 +9,9 @@ import com.squareup.wire.ProtoReader;
 import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
+import com.zq.live.proto.Common.UserInfo;
 import java.io.IOException;
+import java.lang.Boolean;
 import java.lang.Integer;
 import java.lang.Long;
 import java.lang.Object;
@@ -28,6 +30,8 @@ public final class JoinInfo extends Message<JoinInfo, JoinInfo.Builder> {
   public static final Integer DEFAULT_JOINSEQ = 0;
 
   public static final Long DEFAULT_JOINTIMEMS = 0L;
+
+  public static final Boolean DEFAULT_ISSKRER = false;
 
   /**
    * 用户ID
@@ -56,15 +60,37 @@ public final class JoinInfo extends Message<JoinInfo, JoinInfo.Builder> {
   )
   private final Long joinTimeMs;
 
-  public JoinInfo(Integer userID, Integer joinSeq, Long joinTimeMs) {
-    this(userID, joinSeq, joinTimeMs, ByteString.EMPTY);
+  /**
+   * 用户详细资料，一唱到底会用到
+   */
+  @WireField(
+      tag = 4,
+      adapter = "com.zq.live.proto.Common.UserInfo#ADAPTER"
+  )
+  private final UserInfo userInfo;
+
+  /**
+   * 是否机器人
+   */
+  @WireField(
+      tag = 5,
+      adapter = "com.squareup.wire.ProtoAdapter#BOOL"
+  )
+  private final Boolean isSkrer;
+
+  public JoinInfo(Integer userID, Integer joinSeq, Long joinTimeMs, UserInfo userInfo,
+      Boolean isSkrer) {
+    this(userID, joinSeq, joinTimeMs, userInfo, isSkrer, ByteString.EMPTY);
   }
 
-  public JoinInfo(Integer userID, Integer joinSeq, Long joinTimeMs, ByteString unknownFields) {
+  public JoinInfo(Integer userID, Integer joinSeq, Long joinTimeMs, UserInfo userInfo,
+      Boolean isSkrer, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
     this.joinSeq = joinSeq;
     this.joinTimeMs = joinTimeMs;
+    this.userInfo = userInfo;
+    this.isSkrer = isSkrer;
   }
 
   @Override
@@ -73,6 +99,8 @@ public final class JoinInfo extends Message<JoinInfo, JoinInfo.Builder> {
     builder.userID = userID;
     builder.joinSeq = joinSeq;
     builder.joinTimeMs = joinTimeMs;
+    builder.userInfo = userInfo;
+    builder.isSkrer = isSkrer;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -85,7 +113,9 @@ public final class JoinInfo extends Message<JoinInfo, JoinInfo.Builder> {
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(userID, o.userID)
         && Internal.equals(joinSeq, o.joinSeq)
-        && Internal.equals(joinTimeMs, o.joinTimeMs);
+        && Internal.equals(joinTimeMs, o.joinTimeMs)
+        && Internal.equals(userInfo, o.userInfo)
+        && Internal.equals(isSkrer, o.isSkrer);
   }
 
   @Override
@@ -96,6 +126,8 @@ public final class JoinInfo extends Message<JoinInfo, JoinInfo.Builder> {
       result = result * 37 + (userID != null ? userID.hashCode() : 0);
       result = result * 37 + (joinSeq != null ? joinSeq.hashCode() : 0);
       result = result * 37 + (joinTimeMs != null ? joinTimeMs.hashCode() : 0);
+      result = result * 37 + (userInfo != null ? userInfo.hashCode() : 0);
+      result = result * 37 + (isSkrer != null ? isSkrer.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -107,6 +139,8 @@ public final class JoinInfo extends Message<JoinInfo, JoinInfo.Builder> {
     if (userID != null) builder.append(", userID=").append(userID);
     if (joinSeq != null) builder.append(", joinSeq=").append(joinSeq);
     if (joinTimeMs != null) builder.append(", joinTimeMs=").append(joinTimeMs);
+    if (userInfo != null) builder.append(", userInfo=").append(userInfo);
+    if (isSkrer != null) builder.append(", isSkrer=").append(isSkrer);
     return builder.replace(0, 2, "JoinInfo{").append('}').toString();
   }
 
@@ -151,6 +185,26 @@ public final class JoinInfo extends Message<JoinInfo, JoinInfo.Builder> {
   }
 
   /**
+   * 用户详细资料，一唱到底会用到
+   */
+  public UserInfo getUserInfo() {
+    if(userInfo==null){
+        return new UserInfo.Builder().build();
+    }
+    return userInfo;
+  }
+
+  /**
+   * 是否机器人
+   */
+  public Boolean getIsSkrer() {
+    if(isSkrer==null){
+        return DEFAULT_ISSKRER;
+    }
+    return isSkrer;
+  }
+
+  /**
    * 用户ID
    */
   public boolean hasUserID() {
@@ -171,12 +225,30 @@ public final class JoinInfo extends Message<JoinInfo, JoinInfo.Builder> {
     return joinTimeMs!=null;
   }
 
+  /**
+   * 用户详细资料，一唱到底会用到
+   */
+  public boolean hasUserInfo() {
+    return userInfo!=null;
+  }
+
+  /**
+   * 是否机器人
+   */
+  public boolean hasIsSkrer() {
+    return isSkrer!=null;
+  }
+
   public static final class Builder extends Message.Builder<JoinInfo, Builder> {
     private Integer userID;
 
     private Integer joinSeq;
 
     private Long joinTimeMs;
+
+    private UserInfo userInfo;
+
+    private Boolean isSkrer;
 
     public Builder() {
     }
@@ -205,9 +277,25 @@ public final class JoinInfo extends Message<JoinInfo, JoinInfo.Builder> {
       return this;
     }
 
+    /**
+     * 用户详细资料，一唱到底会用到
+     */
+    public Builder setUserInfo(UserInfo userInfo) {
+      this.userInfo = userInfo;
+      return this;
+    }
+
+    /**
+     * 是否机器人
+     */
+    public Builder setIsSkrer(Boolean isSkrer) {
+      this.isSkrer = isSkrer;
+      return this;
+    }
+
     @Override
     public JoinInfo build() {
-      return new JoinInfo(userID, joinSeq, joinTimeMs, super.buildUnknownFields());
+      return new JoinInfo(userID, joinSeq, joinTimeMs, userInfo, isSkrer, super.buildUnknownFields());
     }
   }
 
@@ -221,6 +309,8 @@ public final class JoinInfo extends Message<JoinInfo, JoinInfo.Builder> {
       return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.userID)
           + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.joinSeq)
           + ProtoAdapter.SINT64.encodedSizeWithTag(3, value.joinTimeMs)
+          + UserInfo.ADAPTER.encodedSizeWithTag(4, value.userInfo)
+          + ProtoAdapter.BOOL.encodedSizeWithTag(5, value.isSkrer)
           + value.unknownFields().size();
     }
 
@@ -229,6 +319,8 @@ public final class JoinInfo extends Message<JoinInfo, JoinInfo.Builder> {
       ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.userID);
       ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.joinSeq);
       ProtoAdapter.SINT64.encodeWithTag(writer, 3, value.joinTimeMs);
+      UserInfo.ADAPTER.encodeWithTag(writer, 4, value.userInfo);
+      ProtoAdapter.BOOL.encodeWithTag(writer, 5, value.isSkrer);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -241,6 +333,8 @@ public final class JoinInfo extends Message<JoinInfo, JoinInfo.Builder> {
           case 1: builder.setUserID(ProtoAdapter.UINT32.decode(reader)); break;
           case 2: builder.setJoinSeq(ProtoAdapter.UINT32.decode(reader)); break;
           case 3: builder.setJoinTimeMs(ProtoAdapter.SINT64.decode(reader)); break;
+          case 4: builder.setUserInfo(UserInfo.ADAPTER.decode(reader)); break;
+          case 5: builder.setIsSkrer(ProtoAdapter.BOOL.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -255,6 +349,7 @@ public final class JoinInfo extends Message<JoinInfo, JoinInfo.Builder> {
     @Override
     public JoinInfo redact(JoinInfo value) {
       Builder builder = value.newBuilder();
+      if (builder.userInfo != null) builder.userInfo = UserInfo.ADAPTER.redact(builder.userInfo);
       builder.clearUnknownFields();
       return builder.build();
     }

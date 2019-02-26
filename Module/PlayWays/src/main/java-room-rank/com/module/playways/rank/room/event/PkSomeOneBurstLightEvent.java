@@ -1,12 +1,12 @@
 package com.module.playways.rank.room.event;
 
-import com.module.playways.rank.prepare.model.RoundInfoModel;
+import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
 
 public class PkSomeOneBurstLightEvent {
-    public RoundInfoModel roundInfo;
+    public BaseRoundInfoModel roundInfo;
     public int uid;
 
-    public PkSomeOneBurstLightEvent(int uid, RoundInfoModel newRoundInfo) {
+    public PkSomeOneBurstLightEvent(int uid, BaseRoundInfoModel newRoundInfo) {
         this.uid = uid;
         roundInfo = newRoundInfo;
     }

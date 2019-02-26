@@ -1,30 +1,15 @@
 package com.module.playways.voice.view;
 
 import android.content.Context;
-import android.graphics.drawable.BitmapDrawable;
-import android.os.Handler;
-import android.os.Message;
 import android.util.AttributeSet;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
-import com.common.log.MyLog;
-import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.engine.EngineManager;
 import com.engine.Params;
-import com.module.playways.RoomData;
-import com.module.playways.rank.room.event.InputBoardEvent;
-import com.module.playways.rank.room.quickmsg.QuickMsgView;
 import com.module.rank.R;
-import com.zq.live.proto.Room.SpecialEmojiMsgType;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 public class VoiceRightOpView extends RelativeLayout {
 

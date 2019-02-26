@@ -48,6 +48,9 @@ message RoomMsg
 
     PKBLightMsg pkBLightMsg = 119; //排位赛：爆灯通知
     PKMLightMsg pkMLightMsg = 120; //排位赛：灭灯通知
+
+    QGameStartMsg qGameStartMsg = 121; //一唱到底游戏开始
+    QLightActionMsg qLightActionMsg = 122; //一唱到底爆灯/灭灯
 }
 
 // ERoomMsgType 房间消息类型
@@ -82,7 +85,28 @@ enum ERoomMsgType {
     RM_PK_BLIGHT = 119; //排位赛：爆灯通知
     RM_PK_MLIGHT = 120; //排位赛：灭灯通知
 
+    RM_Q_GAME_START = 121;
+    RM_Q_LIGHT_ACTION = 122;
+
     RM_ROUND_ACC_BEGIN = 190; //告知伴奏开始
+}
+
+message QLightActionMsg
+{
+    uint32 userID   = 1; // 用户id
+    uint32 roundSeq = 2; // 轮次顺序
+    ELightAction action = 3; //灭灯or爆灯
+}
+enum ELightAction
+{
+    InvalidLightAction = 0;
+    LightOff = 1; //灭灯
+    LightOn = 2; //爆灯
+}
+
+message QGameStartMsg
+{
+    sint64 startTimeMS  = 1; //游戏的开始时间，毫秒时间戳
 }
 
 message PKBLightMsg
@@ -245,20 +269,20 @@ message VoteInfo
 //本局综合评分信息
 message UserGameResult
 {
-    uint32 userID                          = 1; //用户标识
-    uint32 itemID                          = 2; //演唱曲目ID
-    sint32 rank                            = 3; //排名
-    repeated AudienceScore audienceScores  = 4; //观众评分
-    float totalScore                       = 5; //综合评分
-    EWinType winType                       = 6; //胜负平等等
-    bool isEscape                          = 7; //是否逃跑
+    uint32 userID                         = 1; //用户标识
+    uint32 itemID                         = 2; //演唱曲目ID
+    sint32 rank                           = 3; //排名
+    repeated AudienceScore audienceScores = 4; //观众评分
+    float totalScore                      = 5; //综合评分
+    EWinType winType                      = 6; //胜负平等等
+    bool isEscape                         = 7; //是否逃跑
 }
 
 message AudienceScore
 {
     uint32 userID        = 1;
     ELightType lightType = 2;
-    float score       = 3;
+    float score          = 3;
 }
 
 enum ELightType {
@@ -374,6 +398,8 @@ message JoinInfo
     uint32 userID     = 1; //用户ID
     uint32 joinSeq    = 2; //加入顺序
     sint64 joinTimeMs = 3; //加入毫秒时间戳
+    Common.UserInfo userInfo = 4; //用户详细资料，一唱到底会用到
+    bool isSkrer = 5; //是否机器人
 }
 
 message RoundInfo
@@ -401,14 +427,14 @@ message BLightInfo
 {
     uint32 userID = 1; //玩家id
     sint64 timeMs = 2; //爆灯时间戳
-    float score = 3; //演唱进度
+    float score   = 3; //得分
 }
 
 message MLightInfo
 {
     uint32 userID = 1; //玩家id
     sint64 timeMs = 2; //灭灯时间戳
-    float score = 3; //演唱进度
+    float score   = 3; //得分
 }
 
 message WantSingInfo
@@ -451,6 +477,7 @@ message OnlineInfo
 {
     uint32 userID = 1; //用户id
     bool isOnline = 2; //是否在线
+    Common.UserInfo userInfo = 3;
 }
 
 message GameStartInfo

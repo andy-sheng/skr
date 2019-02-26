@@ -11,10 +11,12 @@ import com.common.core.userinfo.model.UserInfoModel;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.module.RouterConstants;
-import com.module.playways.RoomData;
+import com.module.playways.BaseRoomData;
 import com.module.playways.RoomDataUtils;
+import com.module.playways.rank.prepare.model.GrabRoundInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
-import com.module.playways.rank.prepare.model.RoundInfoModel;
+import com.module.playways.rank.prepare.model.RankRoundInfoModel;
+import com.module.playways.rank.room.RankRoomData;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.playways.voice.fragment.VoiceRoomFragment;
 import com.module.rank.R;
@@ -31,15 +33,15 @@ public class VoiceRoomActivity extends BaseActivity {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        RoomData mRoomData = (RoomData) getIntent().getSerializableExtra("voice_room_data");
+        RankRoomData mRoomData = (RankRoomData) getIntent().getSerializableExtra("voice_room_data");
         if (mRoomData == null) {
             //TODO test
-            mRoomData = new RoomData();
+            mRoomData = new RankRoomData();
             mRoomData.setGameId(10001);
             {
-                List<RoundInfoModel> roundingModeList = new ArrayList<>();
+                List<RankRoundInfoModel> roundingModeList = new ArrayList<>();
                 for (int i = 0; i < 3; i++) {
-                    RoundInfoModel roundingMode = new RoundInfoModel(RoundInfoModel.TYPE_GRAB);
+                    RankRoundInfoModel roundingMode = new RankRoundInfoModel();
                     roundingMode.setRoundSeq(i + 1);
                     SongModel songModel = new SongModel();
                     songModel.setItemName("歌曲" + i);
@@ -69,7 +71,6 @@ public class VoiceRoomActivity extends BaseActivity {
                         userInfoModel.setUserId(1 + i * 2);
                         userInfoModel.setNickname("用户：" + i);
                     }
-
                     playerInfoModel.setUserInfo(userInfoModel);
                     playerInfoModelList.add(playerInfoModel);
                 }

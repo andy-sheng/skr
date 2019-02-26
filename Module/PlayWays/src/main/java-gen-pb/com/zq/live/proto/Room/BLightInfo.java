@@ -49,7 +49,7 @@ public final class BLightInfo extends Message<BLightInfo, BLightInfo.Builder> {
   private final Long timeMs;
 
   /**
-   * 演唱进度
+   * 得分
    */
   @WireField(
       tag = 3,
@@ -142,7 +142,7 @@ public final class BLightInfo extends Message<BLightInfo, BLightInfo.Builder> {
   }
 
   /**
-   * 演唱进度
+   * 得分
    */
   public Float getScore() {
     if(score==null){
@@ -166,7 +166,7 @@ public final class BLightInfo extends Message<BLightInfo, BLightInfo.Builder> {
   }
 
   /**
-   * 演唱进度
+   * 得分
    */
   public boolean hasScore() {
     return score!=null;
@@ -199,7 +199,7 @@ public final class BLightInfo extends Message<BLightInfo, BLightInfo.Builder> {
     }
 
     /**
-     * 演唱进度
+     * 得分
      */
     public Builder setScore(Float score) {
       this.score = score;

@@ -16,15 +16,13 @@ import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
-import com.jakewharton.rxbinding2.view.RxView;
-import com.module.playways.RoomData;
+import com.module.playways.BaseRoomData;
 import com.module.playways.grab.room.event.LightOffAnimationOverEvent;
-import com.module.playways.grab.room.event.ShowPersonCardEvent;
 import com.module.playways.grab.room.fragment.GrabRoomFragment;
 import com.module.playways.grab.room.model.NoPassingInfo;
 import com.module.playways.grab.room.model.WantSingerInfo;
+import com.module.playways.rank.prepare.model.GrabRoundInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
-import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGADrawable;
@@ -42,7 +40,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import io.reactivex.functions.Consumer;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 import okhttp3.OkHttpClient;
@@ -53,7 +50,7 @@ public class GrabTopRv extends RelativeLayout {
     public final static String TAG = "GrabTopRv";
 
     private LinkedHashMap<Integer, VP> mInfoMap = new LinkedHashMap<>();
-    private RoomData mRoomData;
+    private BaseRoomData<GrabRoundInfoModel> mRoomData;
     private boolean mInited = false;
     AnimatorSet mAnimatorAllSet;
 
@@ -104,7 +101,7 @@ public class GrabTopRv extends RelativeLayout {
         if (mInited) {
             return;
         }
-        RoundInfoModel now = mRoomData.getRealRoundInfo();
+        GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
         List<PlayerInfoModel> playerInfoModels = mRoomData.getPlayerInfoList();
         int i = 0;
         for (PlayerInfoModel playerInfoModel : playerInfoModels) {
@@ -162,7 +159,9 @@ public class GrabTopRv extends RelativeLayout {
                 vp.grabTopItemView.reset();
                 WantSingerInfo wantSingerInfo = new WantSingerInfo();
                 wantSingerInfo.setUserID(uId);
-                if (mRoomData.getRealRoundInfo().getWantSingInfos().contains(wantSingerInfo)) {
+                GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
+                // TODO: 2019/2/26 判空
+                if (grabRoundInfoModel.getWantSingInfos().contains(wantSingerInfo)) {
                     vp.grabTopItemView.setGrap(true);
                 } else {
                     if (vp.grabTopItemView.getPlayerInfoModel().isOnline()) {
@@ -396,7 +395,7 @@ public class GrabTopRv extends RelativeLayout {
     }
 
     private void syncLight() {
-        RoundInfoModel now = mRoomData.getRealRoundInfo();
+        GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
         if (now != null) {
             for (NoPassingInfo noPassingInfo : now.getNoPassSingInfos()) {
                 VP vp = mInfoMap.get(noPassingInfo.getUserID());
@@ -511,7 +510,7 @@ public class GrabTopRv extends RelativeLayout {
         return mSVGAParser;
     }
 
-    public void setRoomData(RoomData roomData) {
+    public void setRoomData(BaseRoomData roomData) {
         mRoomData = roomData;
         initData();
     }

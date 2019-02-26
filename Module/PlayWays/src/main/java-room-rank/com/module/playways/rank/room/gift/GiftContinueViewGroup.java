@@ -7,7 +7,7 @@ import android.widget.RelativeLayout;
 import com.module.playways.rank.msg.event.SpecialEmojiMsgEvent;
 import com.module.playways.rank.room.gift.model.GiftPlayControlTemplate;
 import com.module.playways.rank.room.gift.model.GiftPlayModel;
-import com.module.playways.RoomData;
+import com.module.playways.BaseRoomData;
 import com.module.rank.R;
 
 import org.greenrobot.eventbus.EventBus;
@@ -26,7 +26,7 @@ public class GiftContinueViewGroup extends RelativeLayout {
     public static String TAG = GiftContinueViewGroup.class.getSimpleName();
 
     private List<GiftContinuousView> mFeedGiftContinueViews = new ArrayList<>(2);
-    private RoomData mRoomData;
+    private BaseRoomData mRoomData;
 
     public GiftContinueViewGroup(Context context) {
         super(context);
@@ -130,7 +130,7 @@ public class GiftContinueViewGroup extends RelativeLayout {
         mGiftPlayControlTemplate.add(playModel, false);
     }
 
-    public void setRoomData(RoomData roomData) {
+    public void setRoomData(BaseRoomData roomData) {
         mRoomData = roomData;
     }
 

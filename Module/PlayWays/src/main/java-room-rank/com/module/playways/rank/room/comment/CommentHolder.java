@@ -13,7 +13,7 @@ import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
-import com.module.playways.RoomData;
+import com.module.playways.BaseRoomData;
 import com.module.rank.R;
 
 public class CommentHolder extends RecyclerView.ViewHolder {
@@ -50,7 +50,7 @@ public class CommentHolder extends RecyclerView.ViewHolder {
                 .setBorderColor(model.getAvatarColor())
                 .build());
 
-        if (model.getUserId() == RoomData.SYSTEM_ID) {
+        if (model.getUserId() == BaseRoomData.SYSTEM_ID) {
             mCommentTv.setText(model.getContent());
             mCommentTv.setTextColor(model.getTextColor());
         } else {

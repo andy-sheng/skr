@@ -136,6 +136,10 @@ public enum ERoomMsgType implements WireEnum {
    */
   RM_PK_MLIGHT(120),
 
+  RM_Q_GAME_START(121),
+
+  RM_Q_LIGHT_ACTION(122),
+
   /**
    * 告知伴奏开始
    */
@@ -179,6 +183,8 @@ public enum ERoomMsgType implements WireEnum {
       case 118: return RM_Q_EXIT_GAME;
       case 119: return RM_PK_BLIGHT;
       case 120: return RM_PK_MLIGHT;
+      case 121: return RM_Q_GAME_START;
+      case 122: return RM_Q_LIGHT_ACTION;
       case 190: return RM_ROUND_ACC_BEGIN;
       default: return null;
     }

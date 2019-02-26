@@ -16,7 +16,6 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
-import com.jakewharton.rxbinding2.view.RxView;
 import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
 import com.module.msg.CustomMsgType;
@@ -26,7 +25,7 @@ import com.module.playways.rank.msg.event.SpecialEmojiMsgEvent;
 import com.module.playways.RoomDataUtils;
 import com.module.rank.R;
 import com.module.playways.rank.room.event.InputBoardEvent;
-import com.module.playways.RoomData;
+import com.module.playways.BaseRoomData;
 import com.module.playways.rank.room.quickmsg.QuickMsgView;
 import com.zq.live.proto.Common.ESex;
 import com.zq.live.proto.Common.UserInfo;
@@ -39,10 +38,6 @@ import com.zq.live.proto.Room.SpecialEmojiMsgType;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.functions.Consumer;
 
 public class BottomContainerView extends RelativeLayout {
 
@@ -57,7 +52,7 @@ public class BottomContainerView extends RelativeLayout {
     ExImageView mEmoji1Btn;
 
     PopupWindow mQuickMsgPopWindow;
-    private RoomData mRoomData;
+    private BaseRoomData mRoomData;
 
     SpecialEmojiMsgType mLastSendType = null;
     int mContinueCount = 1;
@@ -258,7 +253,7 @@ public class BottomContainerView extends RelativeLayout {
         mBottomContainerListener = l;
     }
 
-    public void setRoomData(RoomData roomData) {
+    public void setRoomData(BaseRoomData roomData) {
         mRoomData = roomData;
     }
 

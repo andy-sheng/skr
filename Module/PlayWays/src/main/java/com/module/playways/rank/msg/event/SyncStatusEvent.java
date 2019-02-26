@@ -2,7 +2,7 @@ package com.module.playways.rank.msg.event;
 
 import com.module.playways.rank.msg.BasePushInfo;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
-import com.module.playways.rank.prepare.model.RoundInfoModel;
+import com.module.playways.rank.prepare.model.RankRoundInfoModel;
 import com.zq.live.proto.Room.OnlineInfo;
 import com.zq.live.proto.Room.SyncStatusMsg;
 
@@ -18,8 +18,8 @@ public class SyncStatusEvent {
 
     public List<OnlineInfoModel> onlineInfos; //在线状态
 
-    public RoundInfoModel currentInfo; //当前轮次信息
-    public RoundInfoModel nextInfo; //下个轮次信息
+    public RankRoundInfoModel currentInfo; //当前轮次信息
+    public RankRoundInfoModel nextInfo; //下个轮次信息
 
     public SyncStatusEvent(BasePushInfo info, SyncStatusMsg syncStatusMsg) {
         // TODO: 2019/2/21 这里需要把爆灯灭灯解析出来, 等PB更新
@@ -34,7 +34,7 @@ public class SyncStatusEvent {
         this.syncStatusTimes = syncStatusMsg.getSyncStatusTimeMs();
         this.gameOverTimeMs = syncStatusMsg.getGameOverTimeMs();
         this.onlineInfos = onLineInfos;
-        this.currentInfo = RoundInfoModel.parseFromRoundInfo(syncStatusMsg.getCurrentRound());
-        this.nextInfo = RoundInfoModel.parseFromRoundInfo(syncStatusMsg.getNextRound());
+        this.currentInfo = RankRoundInfoModel.parseFromRoundInfo(syncStatusMsg.getCurrentRound());
+        this.nextInfo = RankRoundInfoModel.parseFromRoundInfo(syncStatusMsg.getNextRound());
     }
 }

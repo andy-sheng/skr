@@ -9,6 +9,7 @@ import com.squareup.wire.ProtoReader;
 import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
+import com.zq.live.proto.Common.UserInfo;
 import java.io.IOException;
 import java.lang.Boolean;
 import java.lang.Integer;
@@ -45,14 +46,21 @@ public final class OnlineInfo extends Message<OnlineInfo, OnlineInfo.Builder> {
   )
   private final Boolean isOnline;
 
-  public OnlineInfo(Integer userID, Boolean isOnline) {
-    this(userID, isOnline, ByteString.EMPTY);
+  @WireField(
+      tag = 3,
+      adapter = "com.zq.live.proto.Common.UserInfo#ADAPTER"
+  )
+  private final UserInfo userInfo;
+
+  public OnlineInfo(Integer userID, Boolean isOnline, UserInfo userInfo) {
+    this(userID, isOnline, userInfo, ByteString.EMPTY);
   }
 
-  public OnlineInfo(Integer userID, Boolean isOnline, ByteString unknownFields) {
+  public OnlineInfo(Integer userID, Boolean isOnline, UserInfo userInfo, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
     this.isOnline = isOnline;
+    this.userInfo = userInfo;
   }
 
   @Override
@@ -60,6 +68,7 @@ public final class OnlineInfo extends Message<OnlineInfo, OnlineInfo.Builder> {
     Builder builder = new Builder();
     builder.userID = userID;
     builder.isOnline = isOnline;
+    builder.userInfo = userInfo;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -71,7 +80,8 @@ public final class OnlineInfo extends Message<OnlineInfo, OnlineInfo.Builder> {
     OnlineInfo o = (OnlineInfo) other;
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(userID, o.userID)
-        && Internal.equals(isOnline, o.isOnline);
+        && Internal.equals(isOnline, o.isOnline)
+        && Internal.equals(userInfo, o.userInfo);
   }
 
   @Override
@@ -81,6 +91,7 @@ public final class OnlineInfo extends Message<OnlineInfo, OnlineInfo.Builder> {
       result = unknownFields().hashCode();
       result = result * 37 + (userID != null ? userID.hashCode() : 0);
       result = result * 37 + (isOnline != null ? isOnline.hashCode() : 0);
+      result = result * 37 + (userInfo != null ? userInfo.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -91,6 +102,7 @@ public final class OnlineInfo extends Message<OnlineInfo, OnlineInfo.Builder> {
     StringBuilder builder = new StringBuilder();
     if (userID != null) builder.append(", userID=").append(userID);
     if (isOnline != null) builder.append(", isOnline=").append(isOnline);
+    if (userInfo != null) builder.append(", userInfo=").append(userInfo);
     return builder.replace(0, 2, "OnlineInfo{").append('}').toString();
   }
 
@@ -124,6 +136,13 @@ public final class OnlineInfo extends Message<OnlineInfo, OnlineInfo.Builder> {
     return isOnline;
   }
 
+  public UserInfo getUserInfo() {
+    if(userInfo==null){
+        return new UserInfo.Builder().build();
+    }
+    return userInfo;
+  }
+
   /**
    * 用户id
    */
@@ -138,10 +157,16 @@ public final class OnlineInfo extends Message<OnlineInfo, OnlineInfo.Builder> {
     return isOnline!=null;
   }
 
+  public boolean hasUserInfo() {
+    return userInfo!=null;
+  }
+
   public static final class Builder extends Message.Builder<OnlineInfo, Builder> {
     private Integer userID;
 
     private Boolean isOnline;
+
+    private UserInfo userInfo;
 
     public Builder() {
     }
@@ -162,9 +187,14 @@ public final class OnlineInfo extends Message<OnlineInfo, OnlineInfo.Builder> {
       return this;
     }
 
+    public Builder setUserInfo(UserInfo userInfo) {
+      this.userInfo = userInfo;
+      return this;
+    }
+
     @Override
     public OnlineInfo build() {
-      return new OnlineInfo(userID, isOnline, super.buildUnknownFields());
+      return new OnlineInfo(userID, isOnline, userInfo, super.buildUnknownFields());
     }
   }
 
@@ -177,6 +207,7 @@ public final class OnlineInfo extends Message<OnlineInfo, OnlineInfo.Builder> {
     public int encodedSize(OnlineInfo value) {
       return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.userID)
           + ProtoAdapter.BOOL.encodedSizeWithTag(2, value.isOnline)
+          + UserInfo.ADAPTER.encodedSizeWithTag(3, value.userInfo)
           + value.unknownFields().size();
     }
 
@@ -184,6 +215,7 @@ public final class OnlineInfo extends Message<OnlineInfo, OnlineInfo.Builder> {
     public void encode(ProtoWriter writer, OnlineInfo value) throws IOException {
       ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.userID);
       ProtoAdapter.BOOL.encodeWithTag(writer, 2, value.isOnline);
+      UserInfo.ADAPTER.encodeWithTag(writer, 3, value.userInfo);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -195,6 +227,7 @@ public final class OnlineInfo extends Message<OnlineInfo, OnlineInfo.Builder> {
         switch (tag) {
           case 1: builder.setUserID(ProtoAdapter.UINT32.decode(reader)); break;
           case 2: builder.setIsOnline(ProtoAdapter.BOOL.decode(reader)); break;
+          case 3: builder.setUserInfo(UserInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -209,6 +242,7 @@ public final class OnlineInfo extends Message<OnlineInfo, OnlineInfo.Builder> {
     @Override
     public OnlineInfo redact(OnlineInfo value) {
       Builder builder = value.newBuilder();
+      if (builder.userInfo != null) builder.userInfo = UserInfo.ADAPTER.redact(builder.userInfo);
       builder.clearUnknownFields();
       return builder.build();
     }

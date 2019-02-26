@@ -1,8 +1,7 @@
-package com.module.playways.rank.prepare.presenter;
+package com.module.playways.grab.prepare.presenter;
 
 import com.alibaba.fastjson.JSON;
 import com.common.log.MyLog;
-import com.common.mvp.RxLifeCyclePresenter;
 import com.common.rx.RxRetryAssist;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -17,6 +16,7 @@ import com.module.playways.rank.msg.event.JoinNoticeEvent;
 import com.module.playways.rank.prepare.MatchServerApi;
 import com.module.playways.rank.prepare.model.GameInfoModel;
 import com.module.playways.rank.prepare.model.MatchingUserIconListInfo;
+import com.module.playways.rank.prepare.presenter.BaseMatchPresenter;
 import com.module.playways.rank.prepare.view.IMatchingView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -24,7 +24,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
-import java.util.List;
 
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
@@ -34,8 +33,8 @@ import okhttp3.RequestBody;
 import static com.common.rxretrofit.ApiManager.APPLICATION_JSOIN;
 
 // 只处理匹配 请求匹配 取消匹配 和 收到加入游戏通知
-public class MatchPresenter extends RxLifeCyclePresenter {
-    public final static String TAG = "MatchPresenter";
+public class RankMatchPresenter extends BaseMatchPresenter {
+    public final static String TAG = "RankMatchPresenter";
 
     IMatchingView mView;
     MatchServerApi mMatchServerApi;
@@ -55,7 +54,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
 
     volatile MatchState mMatchState = MatchState.IDLE;
 
-    public MatchPresenter(@NonNull IMatchingView view) {
+    public RankMatchPresenter(@NonNull IMatchingView view) {
         this.mView = view;
         mMatchServerApi = ApiManager.getInstance().createService(MatchServerApi.class);
         addToLifeCycle();
@@ -191,7 +190,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
         disposeLoopMatchTask();
         disposeMatchTask();
         EventBus.getDefault().unregister(this);
-        if(mMatchState==MatchState.JoinRongYunRoomSuccess ){
+        if(mMatchState== MatchState.JoinRongYunRoomSuccess ){
             // 只是加入融云成功但是并没有返回进入准备页面
             ModuleServiceManager.getInstance().getMsgService().leaveChatRoom(String.valueOf(mJoinActionEvent.gameId));
         }
@@ -320,11 +319,11 @@ public class MatchPresenter extends RxLifeCyclePresenter {
 
                             @Override
                             public void onError(Throwable e) {
-                                MyLog.d(MatchPresenter.TAG, "checkCurrentGameData2 process" + " e=" + e);
+                                MyLog.d(RankMatchPresenter.TAG, "checkCurrentGameData2 process" + " e=" + e);
                                 startLoopMatchTask(mCurrentMusicId, mGameType);
                                 exitGame(mJoinActionEvent.gameId);
                             }
-                        }, MatchPresenter.this);
+                        }, RankMatchPresenter.this);
                     }
                 });
     }
@@ -350,9 +349,9 @@ public class MatchPresenter extends RxLifeCyclePresenter {
 
             @Override
             public void onError(Throwable e) {
-                MyLog.w(MatchPresenter.TAG, "exitGame error, " + " e=" + e);
+                MyLog.w(RankMatchPresenter.TAG, "exitGame error, " + " e=" + e);
             }
-        }, MatchPresenter.this);
+        }, RankMatchPresenter.this);
     }
 
     /**
@@ -384,7 +383,7 @@ public class MatchPresenter extends RxLifeCyclePresenter {
             public void onError(Throwable e) {
                 MyLog.e(TAG, e);
             }
-        }, MatchPresenter.this);
+        }, RankMatchPresenter.this);
     }
 
     enum MatchState {

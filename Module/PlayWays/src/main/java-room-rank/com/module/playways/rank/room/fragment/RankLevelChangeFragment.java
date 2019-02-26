@@ -25,7 +25,8 @@ import com.common.statistics.StatConstants;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
 import com.module.RouterConstants;
-import com.module.playways.RoomData;
+import com.module.playways.BaseRoomData;
+import com.module.playways.rank.room.RankRoomData;
 import com.module.playways.rank.room.RoomServerApi;
 import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.rank.room.model.UserGameResultModel;
@@ -50,7 +51,7 @@ public class RankLevelChangeFragment extends BaseFragment {
 
     RotateAnimation mBgAnimation;
 
-    RoomData mRoomData;
+    RankRoomData mRoomData;
 
     ScoreResultModel scoreResultModel;
 
@@ -129,7 +130,7 @@ public class RankLevelChangeFragment extends BaseFragment {
     public void setData(int type, @Nullable Object data) {
         super.setData(type, data);
         if (type == 1) {
-            mRoomData = (RoomData) data;
+            mRoomData = (RankRoomData) data;
         }
     }
 
