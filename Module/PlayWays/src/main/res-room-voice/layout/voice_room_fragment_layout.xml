@@ -60,8 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/comment_view"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/view_16_dp"
-        android:layout_marginBottom="@dimen/view_8_dp" />
+        android:layout_marginBottom="@dimen/view_3_dp" />
 
     <com.common.view.ex.ExImageView
         android:id="@+id/game_result_iv"

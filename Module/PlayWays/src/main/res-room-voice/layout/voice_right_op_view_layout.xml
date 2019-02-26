@@ -7,17 +7,24 @@
 
     <com.common.view.ex.ExImageView
         android:id="@+id/mic_iv"
-        android:layout_width="@dimen/view_30_dp"
-        android:layout_height="@dimen/view_30_dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/view_16_dp"
+        android:paddingTop="@dimen/view_5_dp"
+        android:paddingRight="@dimen/view_16_dp"
+        android:paddingBottom="@dimen/view_5_dp"
         android:scaleType="center"
         android:src="@drawable/jingyin_changtai" />
 
     <com.common.view.ex.ExImageView
         android:id="@+id/speaker_iv"
-        android:layout_width="@dimen/view_30_dp"
-        android:layout_height="@dimen/view_30_dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/mic_iv"
-        android:layout_marginTop="@dimen/view_10_dp"
+        android:paddingLeft="@dimen/view_16_dp"
+        android:paddingTop="@dimen/view_5_dp"
+        android:paddingRight="@dimen/view_16_dp"
+        android:paddingBottom="@dimen/view_5_dp"
         android:scaleType="center"
         android:src="@drawable/guanbishengyin" />
 
