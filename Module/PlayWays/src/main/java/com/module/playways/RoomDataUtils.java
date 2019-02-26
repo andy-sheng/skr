@@ -21,7 +21,7 @@ public class RoomDataUtils {
      * @param jsonRoundInfo
      * @return
      */
-    public static RoundInfoModel findFirstRoundInfo(List<RoundInfoModel> jsonRoundInfo) {
+    public static <T extends RoundInfoModel> T findFirstRoundInfo(List<T> jsonRoundInfo) {
         Collections.sort(jsonRoundInfo, new Comparator<RoundInfoModel>() {
             @Override
             public int compare(RoundInfoModel r1, RoundInfoModel r2) {
@@ -96,8 +96,8 @@ public class RoomDataUtils {
      * @param seq
      * @return
      */
-    public static RoundInfoModel findRoundInfoBySeq(List<RoundInfoModel> jsonRoundInfo, int seq) {
-        for (RoundInfoModel infoModel : jsonRoundInfo) {
+    public static <T extends RoundInfoModel> T findRoundInfoBySeq(List<T> jsonRoundInfo, int seq) {
+        for (T infoModel : jsonRoundInfo) {
             if (infoModel.getRoundSeq() == seq) {
                 return infoModel;
             }
@@ -105,14 +105,14 @@ public class RoomDataUtils {
         return null;
     }
 
-    public static int getUidOfRoundInfo(RoundInfoModel infoModel) {
+    public static <T extends RoundInfoModel> int getUidOfRoundInfo(T infoModel) {
         if (infoModel == null) {
             return 0;
         }
         return infoModel.getUserID();
     }
 
-    public static int getSeqOfRoundInfo(RoundInfoModel infoModel) {
+    public static <T extends RoundInfoModel> int getSeqOfRoundInfo(T infoModel) {
         if (infoModel == null) {
             return 0;
         }
@@ -125,8 +125,8 @@ public class RoomDataUtils {
      * @param uid
      * @return
      */
-    public static RoundInfoModel getRoundInfoByUserId(RoomData roomData, int uid) {
-        for (RoundInfoModel infoModel : roomData.getRoundInfoModelList()) {
+    public static <T extends RoundInfoModel> T getRoundInfoByUserId(RoomData<T> roomData, int uid) {
+        for (T infoModel : roomData.getRoundInfoModelList()) {
             if (infoModel.getUserID() == uid) {
                 return infoModel;
             }
@@ -139,8 +139,8 @@ public class RoomDataUtils {
      *
      * @return
      */
-    public static RoundInfoModel getRoundInfoBySeq(RoomData roomData, int seq) {
-        for (RoundInfoModel infoModel : roomData.getRoundInfoModelList()) {
+    public static <T extends RoundInfoModel> T getRoundInfoBySeq(RoomData<T> roomData, int seq) {
+        for (T infoModel : roomData.getRoundInfoModelList()) {
             if (infoModel.getRoundSeq() == seq) {
                 return infoModel;
             }
@@ -177,7 +177,7 @@ public class RoomDataUtils {
      * @param roomData
      * @param realRoundInfo
      */
-    public static int estimateTs2End(RoomData roomData, RoundInfoModel realRoundInfo) {
+    public static <T extends RoundInfoModel> int estimateTs2End(RoomData<T> roomData, T realRoundInfo) {
         if (realRoundInfo == null) {
             MyLog.d("estimateTs2End realRoundInfo=" + realRoundInfo);
             return 0;
@@ -186,11 +186,11 @@ public class RoomDataUtils {
         return (int) (ts - System.currentTimeMillis());
     }
 
-    public static boolean isMyRound(RoundInfoModel infoModel) {
+    public static <T extends RoundInfoModel> boolean isMyRound(T infoModel) {
         return infoModel != null && infoModel.getUserID() == MyUserInfoManager.getInstance().getUid();
     }
 
-    public static boolean isRobotRound(RoundInfoModel infoModel, List<PlayerInfoModel> playerInfoModels) {
+    public static <T extends RoundInfoModel> boolean isRobotRound(T infoModel, List<PlayerInfoModel> playerInfoModels) {
         if (infoModel != null) {
             int uid = infoModel.getUserID();
             for (PlayerInfoModel playerInfoModel : playerInfoModels) {
@@ -202,9 +202,8 @@ public class RoomDataUtils {
         return false;
     }
 
-    public static PlayerInfoModel getPlayerInfoById(RoomData roomData, long uid) {
-        for (PlayerInfoModel playerInfo :
-                roomData.getPlayerInfoList()) {
+    public static <T extends RoundInfoModel> PlayerInfoModel getPlayerInfoById(RoomData<T> roomData, long uid) {
+        for (PlayerInfoModel playerInfo : roomData.getPlayerInfoList()) {
             if (playerInfo.getUserInfo().getUserId() == uid) {
                 return playerInfo;
             }
@@ -217,7 +216,7 @@ public class RoomDataUtils {
      * @param roundInfoModel
      * @return
      */
-    public static long getSongDuration(RoundInfoModel roundInfoModel) {
+    public static <T extends RoundInfoModel> long getSongDuration(T roundInfoModel) {
         if (roundInfoModel == null) {
             return 0;
         }
@@ -235,7 +234,7 @@ public class RoomDataUtils {
         return saveAudioForAiFilePath;
     }
 
-    public static boolean isThisUserRound(RoundInfoModel infoModel, int userId) {
+    public static <T extends RoundInfoModel> boolean isThisUserRound(T infoModel, int userId) {
         if (infoModel != null && infoModel.getUserID() == userId) {
             return true;
         }
@@ -248,7 +247,7 @@ public class RoomDataUtils {
      * @param roomData
      * @return
      */
-    public static boolean isCurrentRound(int eventSeq, RoomData roomData) {
+    public static <T extends RoundInfoModel> boolean isCurrentRound(int eventSeq, RoomData<T> roomData) {
         if (roomData != null) {
             if (roomData.getRealRoundInfo() == null) {
                 return false;
@@ -261,11 +260,11 @@ public class RoomDataUtils {
         return false;
     }
 
-    public static RoundInfoModel getRoundInfoFromRoundInfoListInGrabMode(RoomData roomData, RoundInfoModel roundInfoModel) {
+    public static <T extends RoundInfoModel> T getRoundInfoFromRoundInfoListInGrabMode(RoomData<T> roomData, T roundInfoModel) {
         if (roundInfoModel == null) {
             return null;
         }
-        for (RoundInfoModel roundInfo : roomData.getRoundInfoModelList()) {
+        for (T roundInfo : roomData.getRoundInfoModelList()) {
             if (roundInfo.getRoundSeq() == roundInfoModel.getRoundSeq()) {
                 roundInfo.tryUpdateRoundInfoModel(roundInfoModel,false);
                 return roundInfo;
@@ -274,12 +273,12 @@ public class RoomDataUtils {
         return null;
     }
 
-    public static RoundInfoModel getRoundInfoFromRoundInfoListInRankMode(RoomData roomData, RoundInfoModel roundInfoModel) {
+    public static <T extends RoundInfoModel> T getRoundInfoFromRoundInfoListInRankMode(RoomData<T> roomData, T roundInfoModel) {
         if (roundInfoModel == null) {
             return null;
         }
 
-        for (RoundInfoModel roundInfo : roomData.getRoundInfoModelList()) {
+        for (T roundInfo : roomData.getRoundInfoModelList()) {
             if (roundInfo.getRoundSeq() == roundInfoModel.getRoundSeq()) {
                 roundInfo.tryUpdateRoundInfoModel(roundInfoModel,false);
                 return roundInfo;

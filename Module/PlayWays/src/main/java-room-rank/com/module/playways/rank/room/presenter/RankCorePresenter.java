@@ -111,7 +111,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     private static long sHeartBeatTaskInterval = 3000;
     private static long sSyncStateTaskInterval = 12000;
 
-    RoomData mRoomData;
+    RoomData<RankRoundInfoModel> mRoomData;
 
     RoomServerApi mRoomServerApi = ApiManager.getInstance().createService(RoomServerApi.class);
 
@@ -189,7 +189,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 //            EngineManager.getInstance().muteLocalAudioStream(true);
             // 伪装评论消息
             for (int i = 0; i < mRoomData.getRoundInfoModelList().size(); i++) {
-                RoundInfoModel roundInfoModel = mRoomData.getRoundInfoModelList().get(i);
+                RankRoundInfoModel roundInfoModel = mRoomData.getRoundInfoModelList().get(i);
                 PlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, roundInfoModel.getUserID());
                 BasePushInfo basePushInfo = new BasePushInfo();
                 basePushInfo.setRoomID(mRoomData.getGameId());
@@ -579,7 +579,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     /**
      * 根据时间戳更新选手状态,目前就只有两个入口，SyncStatusEvent push了sycn，不写更多入口
      */
-    private synchronized void updatePlayerState(long gameOverTimeMs, long syncStatusTimes, List<OnlineInfoModel> onlineInfos, RoundInfoModel currentInfo, RoundInfoModel nextInfo) {
+    private synchronized void updatePlayerState(long gameOverTimeMs, long syncStatusTimes, List<OnlineInfoModel> onlineInfos, RankRoundInfoModel currentInfo, RankRoundInfoModel nextInfo) {
         MyLog.w(TAG, "updatePlayerState" + " gameOverTimeMs=" + gameOverTimeMs + " syncStatusTimes=" + syncStatusTimes + " onlineInfos=" + onlineInfos + " currentInfo=" + currentInfo + " nextInfo=" + nextInfo);
         if (syncStatusTimes > mRoomData.getLastSyncTs()) {
             mRoomData.setLastSyncTs(syncStatusTimes);
@@ -1172,7 +1172,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 
     private void onUserSpeakFromEngine(String from, int muteUserId) {
         MyLog.w(TAG, "onUserSpeakFromEngine muteUserId=" + muteUserId + "解麦了,from:" + from);
-        RoundInfoModel infoModel = RoomDataUtils.getRoundInfoByUserId(mRoomData, muteUserId);
+        RankRoundInfoModel infoModel = RoomDataUtils.getRoundInfoByUserId(mRoomData, muteUserId);
         if (infoModel != null && infoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
             MyLog.d(TAG, "onUserSpeakFromEngine" + " 解麦的是本人，忽略");
             return;

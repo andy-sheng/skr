@@ -17,6 +17,7 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.component.busilib.constans.GameModeType;
 import com.module.RouterConstants;
+import com.module.playways.rank.prepare.model.GrabRoundInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.PrepareData;
 
@@ -36,7 +37,7 @@ public class GrabRoomActivity extends BaseActivity {
     /**
      * 存起该房间一些状态信息
      */
-    RoomData mRoomData = new RoomData();
+    RoomData<GrabRoundInfoModel> mRoomData = new RoomData();
 
     public int initView(@Nullable Bundle savedInstanceState) {
         return R.layout.grab_room_activity_layout;
@@ -68,9 +69,9 @@ public class GrabRoomActivity extends BaseActivity {
         } else {
             //TODO test
             {
-                List<RoundInfoModel> roundingModeList = new ArrayList<>();
+                List<GrabRoundInfoModel> roundingModeList = new ArrayList<>();
                 for (int i = 0; i < 10; i++) {
-                    RoundInfoModel roundingMode = new RoundInfoModel(RoundInfoModel.TYPE_GRAB);
+                    GrabRoundInfoModel roundingMode = new GrabRoundInfoModel(RoundInfoModel.TYPE_GRAB);
                     roundingMode.setRoundSeq(i + 1);
                     SongModel songModel = new SongModel();
                     songModel.setItemName("歌曲" + i);

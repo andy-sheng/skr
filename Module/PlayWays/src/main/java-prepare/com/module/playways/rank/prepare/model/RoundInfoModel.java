@@ -23,7 +23,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.Serializable;
 import java.util.HashSet;
 
-public class RoundInfoModel implements Serializable {
+public abstract class RoundInfoModel implements Serializable {
     public final static String TAG = "RoundInfoModel";
     public static final int TYPE_RANK = 1;
     public static final int TYPE_GRAB = 2;
@@ -199,9 +199,7 @@ public class RoundInfoModel implements Serializable {
         return result;
     }
 
-    public void tryUpdateRoundInfoModel(RoundInfoModel round, boolean notify){
-        MyLog.d(TAG, "tryUpdateRoundInfoModel" + " round=" + round + " notify=" + notify);
-    }
+    public abstract void  tryUpdateRoundInfoModel(RoundInfoModel round, boolean notify);
 
     @Override
     public String toString() {

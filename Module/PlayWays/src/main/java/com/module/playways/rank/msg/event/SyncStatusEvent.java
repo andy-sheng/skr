@@ -19,8 +19,8 @@ public class SyncStatusEvent {
 
     public List<OnlineInfoModel> onlineInfos; //在线状态
 
-    public RoundInfoModel currentInfo; //当前轮次信息
-    public RoundInfoModel nextInfo; //下个轮次信息
+    public RankRoundInfoModel currentInfo; //当前轮次信息
+    public RankRoundInfoModel nextInfo; //下个轮次信息
 
     public SyncStatusEvent(BasePushInfo info, SyncStatusMsg syncStatusMsg) {
         // TODO: 2019/2/21 这里需要把爆灯灭灯解析出来, 等PB更新

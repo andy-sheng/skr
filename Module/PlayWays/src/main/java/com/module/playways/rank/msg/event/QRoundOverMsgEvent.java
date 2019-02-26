@@ -19,12 +19,12 @@ public final class QRoundOverMsgEvent {
     /**
      * 当前轮次信息
      */
-    public RoundInfoModel currentRound;
+    public GrabRoundInfoModel currentRound;
 
     /**
      * 下个轮次信息
      */
-    public RoundInfoModel nextRound;
+    public GrabRoundInfoModel nextRound;
 
     public QRoundOverMsgEvent(BasePushInfo info, QRoundOverMsg qRoundOverMsg) {
         this.info = info;
@@ -41,11 +41,11 @@ public final class QRoundOverMsgEvent {
         return roundOverTimeMs;
     }
 
-    public RoundInfoModel getCurrentRound() {
+    public GrabRoundInfoModel getCurrentRound() {
         return currentRound;
     }
 
-    public RoundInfoModel getNextRound() {
+    public GrabRoundInfoModel getNextRound() {
         return nextRound;
     }
 

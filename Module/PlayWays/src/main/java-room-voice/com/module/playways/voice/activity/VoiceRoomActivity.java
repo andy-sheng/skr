@@ -13,6 +13,7 @@ import com.common.utils.U;
 import com.module.RouterConstants;
 import com.module.playways.RoomData;
 import com.module.playways.RoomDataUtils;
+import com.module.playways.rank.prepare.model.GrabRoundInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.RoundInfoModel;
 import com.module.playways.rank.song.model.SongModel;
@@ -37,9 +38,9 @@ public class VoiceRoomActivity extends BaseActivity {
             mRoomData = new RoomData();
             mRoomData.setGameId(10001);
             {
-                List<RoundInfoModel> roundingModeList = new ArrayList<>();
+                List<GrabRoundInfoModel> roundingModeList = new ArrayList<>();
                 for (int i = 0; i < 3; i++) {
-                    RoundInfoModel roundingMode = new RoundInfoModel(RoundInfoModel.TYPE_GRAB);
+                    GrabRoundInfoModel roundingMode = new GrabRoundInfoModel(RoundInfoModel.TYPE_GRAB);
                     roundingMode.setRoundSeq(i + 1);
                     SongModel songModel = new SongModel();
                     songModel.setItemName("歌曲" + i);
@@ -69,7 +70,6 @@ public class VoiceRoomActivity extends BaseActivity {
                         userInfoModel.setUserId(1 + i * 2);
                         userInfoModel.setNickname("用户：" + i);
                     }
-
                     playerInfoModel.setUserInfo(userInfoModel);
                     playerInfoModelList.add(playerInfoModel);
                 }

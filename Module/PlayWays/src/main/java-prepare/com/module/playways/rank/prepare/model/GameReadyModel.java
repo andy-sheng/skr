@@ -23,9 +23,9 @@ public class GameReadyModel implements Serializable {
     private int hasReadyedUserCnt;
     private boolean isGameStart;
     private GameStartInfoModel gameStartInfo;
-    private List<RoundInfoModel> qRoundInfo;    //一唱到底roundInfo todo确定是不是要舍弃服务器的数据？
+    private List<GrabRoundInfoModel> qRoundInfo;    //一唱到底roundInfo todo确定是不是要舍弃服务器的数据？
     private List<ReadyInfoModel> readyInfo;     //准备信息
-    private List<RoundInfoModel> roundInfo;     //pk的轮次信息
+    private List<RankRoundInfoModel> roundInfo;     //pk的轮次信息
 
     public int getHasReadyedUserCnt() {
         return hasReadyedUserCnt;
@@ -51,11 +51,11 @@ public class GameReadyModel implements Serializable {
         this.gameStartInfo = gameStartInfo;
     }
 
-    public List<RoundInfoModel> getqRoundInfo() {
+    public List<GrabRoundInfoModel> getqRoundInfo() {
         return qRoundInfo;
     }
 
-    public void setqRoundInfo(List<RoundInfoModel> qRoundInfo) {
+    public void setqRoundInfo(List<GrabRoundInfoModel> qRoundInfo) {
         this.qRoundInfo = qRoundInfo;
     }
 
@@ -67,11 +67,11 @@ public class GameReadyModel implements Serializable {
         this.readyInfo = readyInfo;
     }
 
-    public List<RoundInfoModel> getRoundInfo() {
+    public List<RankRoundInfoModel> getRoundInfo() {
         return roundInfo;
     }
 
-    public void setRoundInfo(List<RoundInfoModel> roundInfo) {
+    public void setRoundInfo(List<RankRoundInfoModel> roundInfo) {
         this.roundInfo = roundInfo;
     }
 
@@ -96,16 +96,16 @@ public class GameReadyModel implements Serializable {
         }
         this.setReadyInfo(readyInfoModels);
 
-        List<RoundInfoModel> roundInfoModels = new ArrayList<>();
+        List<RankRoundInfoModel> roundInfoModels = new ArrayList<>();
         for (RoundInfo roundInfo : msg.getRoundInfoList()) {
-            RoundInfoModel jsonRoundInfo = RankRoundInfoModel.parseFromRoundInfo(roundInfo);
+            RankRoundInfoModel jsonRoundInfo = RankRoundInfoModel.parseFromRoundInfo(roundInfo);
             roundInfoModels.add(jsonRoundInfo);
         }
         this.setRoundInfo(roundInfoModels);
 
-        List<RoundInfoModel> qroundInfoModels = new ArrayList<>();
+        List<GrabRoundInfoModel> qroundInfoModels = new ArrayList<>();
         for (QRoundInfo roundInfo : msg.getQRoundInfoList()) {
-            RoundInfoModel jsonRoundInfo = GrabRoundInfoModel.parseFromRoundInfo(roundInfo);
+            GrabRoundInfoModel jsonRoundInfo = GrabRoundInfoModel.parseFromRoundInfo(roundInfo);
             qroundInfoModels.add(jsonRoundInfo);
         }
         this.setqRoundInfo(qroundInfoModels);

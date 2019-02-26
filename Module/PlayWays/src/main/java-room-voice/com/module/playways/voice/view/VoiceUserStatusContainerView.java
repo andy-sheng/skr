@@ -12,6 +12,7 @@ import com.engine.EngineEvent;
 import com.engine.UserStatus;
 import com.module.playways.RoomData;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
+import com.module.playways.rank.prepare.model.RankRoundInfoModel;
 import com.module.rank.R;
 
 import org.greenrobot.eventbus.EventBus;
@@ -25,7 +26,7 @@ import java.util.List;
 public class VoiceUserStatusContainerView extends RelativeLayout {
 
     ExLinearLayout mUserStatusContainer;
-    RoomData mRoomData;
+    RoomData<RankRoundInfoModel> mRoomData;
     HashMap<Integer, VoiceUserStatusView> mViewMap = new HashMap<>();
     Handler mUiHanlder = new Handler();
 

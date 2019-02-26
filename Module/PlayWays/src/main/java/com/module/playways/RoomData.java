@@ -26,7 +26,7 @@ import java.util.List;
  * 房间内所有数据的聚合类
  * 每种模式的房间内状态信息都由其存储
  */
-public class RoomData implements Serializable {
+public class RoomData<T extends RoundInfoModel> implements Serializable {
     public final static String TAG = "RoomData";
 
     public static final int SYSTEM_ID = 1;
@@ -64,11 +64,11 @@ public class RoomData implements Serializable {
 
     private SongModel mSongModel; // 歌曲信息
 
-    private List<RoundInfoModel> mRoundInfoModelList;//所有的轮次信息
+    private List<T> mRoundInfoModelList;//所有的轮次信息
 
-    private RoundInfoModel mExpectRoundInfo;// 按理的 期望的当前的轮次
+    private T mExpectRoundInfo;// 按理的 期望的当前的轮次
 
-    private RoundInfoModel mRealRoundInfo;// 实际的当前轮次信息
+    private T mRealRoundInfo;// 实际的当前轮次信息
 
 //    private List<OnlineInfoModel> mOnlineInfoList;//所有的用户在线信息
 
@@ -274,19 +274,19 @@ public class RoomData implements Serializable {
         mSongModel = songModel;
     }
 
-    public List<RoundInfoModel> getRoundInfoModelList() {
+    public List<T> getRoundInfoModelList() {
         return mRoundInfoModelList;
     }
 
-    public void setRoundInfoModelList(List<RoundInfoModel> roundInfoModelList) {
+    public void setRoundInfoModelList(List<T> roundInfoModelList) {
         mRoundInfoModelList = roundInfoModelList;
     }
 
-    public RoundInfoModel getExpectRoundInfo() {
+    public T getExpectRoundInfo() {
         return mExpectRoundInfo;
     }
 
-    public void setExpectRoundInfo(RoundInfoModel expectRoundInfo) {
+    public void setExpectRoundInfo(T expectRoundInfo) {
         mExpectRoundInfo = expectRoundInfo;
     }
 
@@ -294,7 +294,7 @@ public class RoomData implements Serializable {
         return (T)mRealRoundInfo;
     }
 
-    public void setRealRoundInfo(RoundInfoModel realRoundInfo) {
+    public void setRealRoundInfo(T realRoundInfo) {
         mRealRoundInfo = realRoundInfo;
     }
 

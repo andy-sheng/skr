@@ -54,7 +54,7 @@ public class GrabTopRv extends RelativeLayout {
     public final static String TAG = "GrabTopRv";
 
     private LinkedHashMap<Integer, VP> mInfoMap = new LinkedHashMap<>();
-    private RoomData mRoomData;
+    private RoomData<GrabRoundInfoModel> mRoomData;
     private boolean mInited = false;
     AnimatorSet mAnimatorAllSet;
 

@@ -33,7 +33,7 @@ public final class QSyncStatusMsgEvent {
   /**
    * 当前轮次信息
    */
-  public RoundInfoModel currentRound;
+  public GrabRoundInfoModel currentRound;
 
   public QSyncStatusMsgEvent(BasePushInfo info, QSyncStatusMsg qSyncStatusMsg) {
     this.info = info;
@@ -65,7 +65,7 @@ public final class QSyncStatusMsgEvent {
     return onlineInfo;
   }
 
-  public RoundInfoModel getCurrentRound() {
+  public GrabRoundInfoModel getCurrentRound() {
     return currentRound;
   }
 }

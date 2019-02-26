@@ -98,7 +98,7 @@ public class RankRoundInfoModel extends RoundInfoModel {
         }
     }
 
-    public static RoundInfoModel parseFromRoundInfo(RoundInfo roundInfo) {
+    public static RankRoundInfoModel parseFromRoundInfo(RoundInfo roundInfo) {
         RankRoundInfoModel roundInfoModel = new RankRoundInfoModel(TYPE_RANK);
         roundInfoModel.setUserID(roundInfo.getUserID());
         roundInfoModel.setPlaybookID(roundInfo.getPlaybookID());

@@ -30,6 +30,7 @@ import com.common.view.ex.ExTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
+import com.module.playways.rank.prepare.model.RankRoundInfoModel;
 import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.RoomData;
 import com.module.playways.rank.room.presenter.EndGamePresenter;
@@ -45,7 +46,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
 
     public final static String TAG = "EvaluationFragment";
 
-    RoomData mRoomData;
+    RoomData<RankRoundInfoModel> mRoomData;
 
     RelativeLayout mMainActContainer;
 
