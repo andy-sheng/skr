@@ -263,7 +263,7 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
                         mMatchState = MatchState.JoinGameSuccess;
                         //todo 这里直接加入房间, 在JoinNotice里也可以
                         JoinGrabRoomRspModel grabCurGameStateModel = JSON.parseObject(result.getData().toString(), JoinGrabRoomRspModel.class);
-                        mView.matchSucess(grabCurGameStateModel);
+                        mView.matchGrabSucess(grabCurGameStateModel);
                         if (mCheckJoinStateTask != null) {
                             mCheckJoinStateTask.dispose();
                         }

@@ -19,7 +19,8 @@ import com.module.RouterConstants;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.module.playways.rank.prepare.model.PlayerInfoModel;
+import com.module.playways.rank.prepare.model.GameConfigModel;
+import com.module.playways.rank.prepare.model.JoinGrabRoomRspModel;
 import com.module.playways.rank.prepare.model.PrepareData;
 
 import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
@@ -47,22 +48,18 @@ public class GrabRoomActivity extends BaseActivity {
     public void initData(@Nullable Bundle savedInstanceState) {
         PrepareData prepareData = (PrepareData) getIntent().getSerializableExtra("prepare_data");
         if (prepareData != null) {
-            mRoomData.setGameId(prepareData.getGameId());
-            mRoomData.setGameCreateTs(prepareData.getGameCreatMs());
-            mRoomData.setGameStartTs(prepareData.getGameReadyInfo().getGameStartInfo().getStartTimeMs());
-            mRoomData.setShiftTs(prepareData.getShiftTs());
+            JoinGrabRoomRspModel joinGrabRoomRspModel = prepareData.getJoinGrabRoomRspModel();
+            GameConfigModel gameConfigModel = prepareData.getGameConfigModel();
+
+            mRoomData.setGameId(joinGrabRoomRspModel.getRoomID());
+            mRoomData.setCoin(joinGrabRoomRspModel.getCoin());
+            mRoomData.setExpectRoundInfo(joinGrabRoomRspModel.getCurrentRound());
+//            mRoomData.setRealRoundInfo(joinGrabRoomRspModel.getCurrentRound());
             if (mRoomData.getGameType() == GameModeType.GAME_MODE_GRAB) {
                 mRoomData.setTagId(prepareData.getTagId());
             }
+            mRoomData.setShiftTs(prepareData.getShiftTs());
 
-            mRoomData.setRoundInfoModelList(prepareData.getGameReadyInfo().getqRoundInfo());
-            for (int i = 0; i < prepareData.getSongModelList().size(); i++) {
-                SongModel songModel = prepareData.getSongModelList().get(i);
-                BaseRoundInfoModel roundInfoModel = mRoomData.getRoundInfoModelList().get(i);
-                roundInfoModel.setSongModel(songModel);
-            }
-            // TODO: 2019/2/26  这里需要把当前的轮次找到设置
-            mRoomData.setExpectRoundInfo(RoomDataUtils.findFirstRoundInfo(mRoomData.getRoundInfoModelList()));
             MyLog.d(TAG, "" + prepareData.getPlayerInfoList());
 //            mRoomData.setPlayerInfoList(prepareData.getPlayerInfoList());
         } else {

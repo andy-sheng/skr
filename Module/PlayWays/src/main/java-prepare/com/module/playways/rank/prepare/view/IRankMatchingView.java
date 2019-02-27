@@ -8,9 +8,9 @@ import com.module.playways.rank.song.model.SongModel;
 
 import java.util.List;
 
-public interface IMatchingView {
+public interface IRankMatchingView {
     /**
      * 匹配成功
      */
-    void matchSucess(JoinActionEvent event);
+    void matchRankSucess(JoinActionEvent event);
 }

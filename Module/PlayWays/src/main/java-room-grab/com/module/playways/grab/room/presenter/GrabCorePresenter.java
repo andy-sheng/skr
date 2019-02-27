@@ -124,7 +124,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             params.setStyleEnum(AudioEffectStyleEnum.ORIGINAL);
             params.setScene(Params.Scene.grab);
             EngineManager.getInstance().init("grabroom", params);
-            EngineManager.getInstance().joinRoom(String.valueOf(mRoomData.getGameId()), (int) UserAccountManager.getInstance().getUuidAsLong(), true);
+            EngineManager.getInstance().joinRoom(String.valueOf(mRoomData.getGameId()), (int) UserAccountManager.getInstance().getUuidAsLong(), false);
             // 不发送本地音频
             EngineManager.getInstance().muteLocalAudioStream(true);
         }

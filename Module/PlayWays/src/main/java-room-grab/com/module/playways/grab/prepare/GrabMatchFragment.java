@@ -43,7 +43,7 @@ import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.playways.rank.prepare.presenter.BaseMatchPresenter;
 import com.module.playways.rank.prepare.presenter.GrabMatchPresenter;
 import com.module.playways.rank.prepare.view.IGrabMatchingView;
-import com.module.playways.rank.prepare.view.IMatchingView;
+import com.module.playways.rank.prepare.view.IRankMatchingView;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGAImageView;
@@ -63,7 +63,7 @@ import java.util.Collections;
 import java.util.List;
 
 //这个是匹配界面，之前的FastMatchingSence
-public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView, IMatchingView {
+public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView, IRankMatchingView {
 
     public final static String TAG = "GrabMatchFragment";
 
@@ -492,7 +492,7 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
 
     //pk
     @Override
-    public void matchSucess(JoinActionEvent event) {
+    public void matchRankSucess(JoinActionEvent event) {
         BgMusicManager.getInstance().destory();
         mPrepareData.setGameId(event.gameId);
         mPrepareData.setSysAvatar(event.info.getSender().getAvatar());
@@ -525,10 +525,10 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
 
     //一唱到底
     @Override
-    public void matchSucess(JoinGrabRoomRspModel grabCurGameStateModel) {
+    public void matchGrabSucess(JoinGrabRoomRspModel grabCurGameStateModel) {
         MyLog.d(TAG, "matchSucess" + " event=" + grabCurGameStateModel);
         BgMusicManager.getInstance().destory();
-        mPrepareData.setGrabCurGameStateModel(grabCurGameStateModel);
+        mPrepareData.setJoinGrabRoomRspModel(grabCurGameStateModel);
         stopTimeTask();
 
         //先跳转

@@ -15,9 +15,8 @@ import com.module.playways.rank.msg.event.JoinActionEvent;
 import com.module.playways.rank.msg.event.JoinNoticeEvent;
 import com.module.playways.rank.prepare.MatchServerApi;
 import com.module.playways.rank.prepare.model.GameInfoModel;
-import com.module.playways.rank.prepare.model.MatchingUserIconListInfo;
 import com.module.playways.rank.prepare.presenter.BaseMatchPresenter;
-import com.module.playways.rank.prepare.view.IMatchingView;
+import com.module.playways.rank.prepare.view.IRankMatchingView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -36,7 +35,7 @@ import static com.common.rxretrofit.ApiManager.APPLICATION_JSOIN;
 public class RankMatchPresenter extends BaseMatchPresenter {
     public final static String TAG = "RankMatchPresenter";
 
-    IMatchingView mView;
+    IRankMatchingView mView;
     MatchServerApi mMatchServerApi;
     Disposable mStartMatchTask;
     HandlerTaskTimer mLoopMatchTask;
@@ -54,7 +53,7 @@ public class RankMatchPresenter extends BaseMatchPresenter {
 
     volatile MatchState mMatchState = MatchState.IDLE;
 
-    public RankMatchPresenter(@NonNull IMatchingView view) {
+    public RankMatchPresenter(@NonNull IRankMatchingView view) {
         this.mView = view;
         mMatchServerApi = ApiManager.getInstance().createService(MatchServerApi.class);
         addToLifeCycle();
@@ -173,12 +172,10 @@ public class RankMatchPresenter extends BaseMatchPresenter {
             if (joinNoticeEvent.jsonGameInfo.getReadyClockResMs() != 0) {
                 if (mMatchState == MatchState.JoinRongYunRoomSuccess) {
                     mMatchState = MatchState.JoinGameSuccess;
-
                     if (mCheckJoinStateTask != null) {
                         mCheckJoinStateTask.dispose();
                     }
-
-                    mView.matchSucess(mJoinActionEvent);
+                    mView.matchRankSucess(mJoinActionEvent);
                 }
             }
         }
@@ -273,7 +270,7 @@ public class RankMatchPresenter extends BaseMatchPresenter {
                                         if (mMatchState == MatchState.JoinRongYunRoomSuccess) {
                                             mMatchState = MatchState.JoinGameSuccess;
                                             mJsonGameInfo = jsonGameInfo;
-                                            mView.matchSucess(mJoinActionEvent);
+                                            mView.matchRankSucess(mJoinActionEvent);
                                         } else {
                                             MyLog.w(TAG, "5秒后拉去信息回来发现当前状态不是 JoinRongYunRoomSuccess");
                                             //跟下面的更新唯一的区别就是三秒钟之后人还不全就从新match
@@ -344,7 +341,7 @@ public class RankMatchPresenter extends BaseMatchPresenter {
                         if (mMatchState == MatchState.JoinRongYunRoomSuccess) {
                             mMatchState = MatchState.JoinGameSuccess;
                             mJsonGameInfo = jsonGameInfo;
-                            mView.matchSucess(mJoinActionEvent);
+                            mView.matchRankSucess(mJoinActionEvent);
                         }
                     } else {
                         MyLog.d(TAG, "process updateUserListState else");

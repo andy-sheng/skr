@@ -24,11 +24,11 @@ public class PrepareData implements Serializable {
 
     private JoinGrabRoomRspModel mGrabCurGameStateModel;
 
-    public JoinGrabRoomRspModel getGrabCurGameStateModel() {
+    public JoinGrabRoomRspModel getJoinGrabRoomRspModel() {
         return mGrabCurGameStateModel;
     }
 
-    public void setGrabCurGameStateModel(JoinGrabRoomRspModel grabCurGameStateModel) {
+    public void setJoinGrabRoomRspModel(JoinGrabRoomRspModel grabCurGameStateModel) {
         mGrabCurGameStateModel = grabCurGameStateModel;
     }
 

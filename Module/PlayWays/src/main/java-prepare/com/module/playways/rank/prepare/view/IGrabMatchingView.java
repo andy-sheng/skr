@@ -7,5 +7,5 @@ public interface IGrabMatchingView {
     /**
      * 匹配成功
      */
-    void matchSucess(JoinGrabRoomRspModel t);
+    void matchGrabSucess(JoinGrabRoomRspModel t);
 }
