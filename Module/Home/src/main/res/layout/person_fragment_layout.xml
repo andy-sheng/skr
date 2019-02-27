@@ -26,11 +26,11 @@
 
                 <com.common.image.fresco.BaseImageView
                     android:id="@+id/avatar_iv"
-                    android:layout_width="@dimen/view_88_dp"
-                    android:layout_height="@dimen/view_88_dp"
+                    android:layout_width="@dimen/view_80_dp"
+                    android:layout_height="@dimen/view_80_dp"
                     android:layout_alignParentLeft="true"
-                    android:layout_marginLeft="@dimen/view_16_dp"
-                    android:layout_marginTop="@dimen/view_42_dp" />
+                    android:layout_marginLeft="@dimen/view_30_dp"
+                    android:layout_marginTop="@dimen/view_50_dp" />
 
                 <com.common.view.ex.ExTextView
                     android:id="@+id/share_tv"
@@ -75,8 +75,8 @@
                         android:id="@+id/setting_red_dot"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignRight="@+id/setting_img_iv"
                         android:layout_alignTop="@+id/setting_img_iv"
+                        android:layout_alignRight="@+id/setting_img_iv"
                         android:src="@drawable/reddot" />
 
                 </RelativeLayout>
@@ -84,41 +84,42 @@
                 <com.common.view.ex.ExTextView
                     android:id="@+id/name_tv"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/view_30_dp"
                     android:layout_alignTop="@+id/avatar_iv"
-                    android:layout_marginLeft="@dimen/view_10_dp"
-                    android:layout_marginTop="@dimen/view_8_dp"
-                    android:layout_marginRight="@dimen/view_45_dp"
+                    android:layout_marginLeft="@dimen/view_18_dp"
+                    android:layout_marginTop="@dimen/view_4_dp"
+                    android:layout_marginRight="@dimen/view_50_dp"
                     android:layout_toRightOf="@+id/avatar_iv"
                     android:ellipsize="end"
+                    android:gravity="center_vertical"
                     android:maxLines="1"
-                    android:minWidth="@dimen/view_100_dp"
                     android:singleLine="true"
                     android:textColor="#0C2275"
-                    android:textSize="@dimen/textsize_24_dp" />
+                    android:textSize="@dimen/textsize_22_dp" />
 
                 <com.common.view.ex.ExTextView
                     android:id="@+id/userid_tv"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/view_20_dp"
                     android:layout_below="@+id/name_tv"
                     android:layout_alignLeft="@+id/name_tv"
                     android:layout_marginTop="@dimen/view_4_dp"
+                    android:gravity="center_vertical"
                     android:textColor="#0C2275"
-                    android:textSize="@dimen/textsize_15_dp" />
+                    android:textSize="@dimen/textsize_14_dp" />
 
                 <com.common.view.ex.ExTextView
                     android:id="@+id/sign_tv"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/view_20_dp"
                     android:layout_below="@+id/userid_tv"
-                    android:layout_marginLeft="@dimen/view_10_dp"
-                    android:layout_marginRight="@dimen/view_45_dp"
+                    android:layout_marginLeft="@dimen/view_18_dp"
+                    android:layout_marginRight="@dimen/view_50_dp"
                     android:layout_toRightOf="@+id/avatar_iv"
                     android:ellipsize="marquee"
                     android:focusableInTouchMode="true"
+                    android:gravity="center_vertical"
                     android:marqueeRepeatLimit="marquee_forever"
-                    android:minWidth="@dimen/view_100_dp"
                     android:singleLine="true"
                     android:textColor="#0C2275"
                     android:textSize="@dimen/textsize_16_dp" />
@@ -139,17 +140,19 @@
                         <com.common.view.ex.ExTextView
                             android:id="@+id/friends_num_tv"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/view_36_dp"
                             android:layout_centerHorizontal="true"
+                            android:gravity="center"
                             android:text="0"
                             android:textColor="#0C2275"
-                            android:textSize="@dimen/textsize_30_dp" />
+                            android:textSize="@dimen/textsize_26_dp" />
 
                         <com.common.view.ex.ExTextView
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/view_16_dp"
                             android:layout_below="@+id/friends_num_tv"
                             android:layout_centerHorizontal="true"
+                            android:gravity="center"
                             android:text="好友"
                             android:textColor="#0C2275"
                             android:textSize="@dimen/textsize_12_dp" />
@@ -165,15 +168,16 @@
                         <com.common.view.ex.ExTextView
                             android:id="@+id/fans_num_tv"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/view_36_dp"
                             android:layout_centerHorizontal="true"
+                            android:gravity="center"
                             android:text="0"
                             android:textColor="#0C2275"
-                            android:textSize="@dimen/textsize_30_dp" />
+                            android:textSize="@dimen/textsize_26_dp" />
 
                         <com.common.view.ex.ExTextView
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/view_16_dp"
                             android:layout_below="@+id/fans_num_tv"
                             android:layout_centerHorizontal="true"
                             android:text="粉丝"
@@ -194,15 +198,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
+                            android:gravity="center"
                             android:text="0"
                             android:textColor="#0C2275"
-                            android:textSize="@dimen/textsize_30_dp" />
+                            android:textSize="@dimen/textsize_26_dp" />
 
                         <com.common.view.ex.ExTextView
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/view_16_dp"
                             android:layout_below="@+id/follows_num_tv"
                             android:layout_centerHorizontal="true"
+                            android:gravity="center"
                             android:text="关注"
                             android:textColor="#0C2275"
                             android:textSize="@dimen/textsize_12_dp" />
@@ -218,7 +224,7 @@
                     android:layout_height="@dimen/view_145_dp"
                     android:layout_centerHorizontal="true"
                     android:layout_marginLeft="@dimen/view_16_dp"
-                    android:layout_marginTop="@dimen/view_237_dp"
+                    android:layout_marginTop="@dimen/view_235_dp"
                     android:layout_marginRight="@dimen/view_16_dp"
                     android:clipChildren="false"
                     app:bl_corners_radius="@dimen/view_10_dp"
@@ -335,11 +341,10 @@
                     android:layout_height="match_parent"
                     android:layout_below="@id/medal_layout"
                     android:layout_marginLeft="@dimen/view_16_dp"
-                    android:layout_marginTop="@dimen/view_12_dp"
+                    android:layout_marginTop="@dimen/view_10_dp"
                     android:layout_marginRight="@dimen/view_16_dp"
-                    android:layout_marginBottom="@dimen/view_12_dp"
-                    android:paddingLeft="@dimen/view_3_dp"
-                    android:paddingRight="@dimen/view_3_dp"
+                    android:paddingLeft="@dimen/view_2_dp"
+                    android:paddingRight="@dimen/view_2_dp"
                     app:bl_corners_radius="@dimen/view_10_dp"
                     app:bl_solid_color="#F9F4F1"
                     app:bl_stroke_color="#122074"
