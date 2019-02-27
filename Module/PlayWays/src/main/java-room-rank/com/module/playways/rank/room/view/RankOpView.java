@@ -55,7 +55,7 @@ public class RankOpView extends RelativeLayout {
         mIvBurst = findViewById(R.id.iv_burst);
         mIvTurnOff = findViewById(R.id.iv_turn_off);
         mTvCountDown = findViewById(R.id.tv_count_down);
-
+        mIvBurst.setLongClickable(false);
         mIvBurst.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
@@ -71,6 +71,7 @@ public class RankOpView extends RelativeLayout {
             }
         });
 
+        mIvTurnOff.setLongClickable(false);
         mIvTurnOff.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
