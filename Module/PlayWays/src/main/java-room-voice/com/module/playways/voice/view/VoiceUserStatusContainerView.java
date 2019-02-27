@@ -12,6 +12,8 @@ import com.engine.EngineEvent;
 import com.engine.UserStatus;
 import com.module.playways.BaseRoomData;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
+import com.module.playways.rank.room.RankRoomData;
+import com.module.playways.rank.room.model.RankPlayerInfoModel;
 import com.module.playways.rank.room.model.RankRoundInfoModel;
 import com.module.rank.R;
 
@@ -26,7 +28,7 @@ import java.util.List;
 public class VoiceUserStatusContainerView extends RelativeLayout {
 
     ExLinearLayout mUserStatusContainer;
-    BaseRoomData<RankRoundInfoModel> mRoomData;
+    RankRoomData mRoomData;
     HashMap<Integer, VoiceUserStatusView> mViewMap = new HashMap<>();
     Handler mUiHanlder = new Handler();
 
@@ -60,13 +62,13 @@ public class VoiceUserStatusContainerView extends RelativeLayout {
         mUiHanlder.removeCallbacksAndMessages(null);
     }
 
-    public void setRoomData(BaseRoomData roomData) {
+    public void setRoomData(RankRoomData roomData) {
         mRoomData = roomData;
         bindData();
     }
 
     private void bindData() {
-        for (PlayerInfoModel playerInfoModel : mRoomData.getPlayerInfoList()) {
+        for (RankPlayerInfoModel playerInfoModel : mRoomData.getPlayerInfoList()) {
             if (playerInfoModel.isAI()) {
                 continue;
             }

@@ -6,17 +6,28 @@ import com.module.playways.BaseRoomData;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.event.GrabGameOverEvent;
 import com.module.playways.grab.room.event.GrabRoundChangeEvent;
+import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.GrabResultInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
+import com.module.playways.rank.prepare.model.PlayerInfoModel;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
 
     protected List<GrabResultInfoModel> mResultList; // 一唱到底对战结果数据
     protected int mTagId;//一场到底歌曲分类
+
+    @Override
+    public  List<GrabPlayerInfoModel> getPlayerInfoList() {
+        List<GrabPlayerInfoModel> l = new ArrayList<>();
+        l.addAll(mRealRoundInfo.getPlayUsers());
+        l.addAll(mRealRoundInfo.getWaitUsers());
+        return l;
+    }
 
     @Override
     public int getGameType() {
@@ -51,7 +62,7 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
             }
             mRealRoundInfo = mExpectRoundInfo;
             if (mRealRoundInfo != null) {
-                ((GrabRoundInfoModel)mRealRoundInfo).updateStatus(false, GrabRoundInfoModel.STATUS_GRAB);
+                ((GrabRoundInfoModel) mRealRoundInfo).updateStatus(false, GrabRoundInfoModel.STATUS_GRAB);
             }
             // 告知切换到新的轮次了
             EventBus.getDefault().post(new GrabRoundChangeEvent(lastRoundInfoModel, (GrabRoundInfoModel) mRealRoundInfo));

@@ -1,5 +1,6 @@
 package com.module.playways.rank.prepare.model;
 
+import com.module.playways.rank.room.model.RankPlayerInfoModel;
 import com.module.playways.rank.song.model.SongModel;
 
 import java.io.Serializable;
@@ -11,7 +12,7 @@ public class PrepareData implements Serializable {
     private SongModel mSongModel;
     private int mGameId;
     private long mGameCreatMs;
-    private List<PlayerInfoModel> mPlayerInfoList;
+    private List<RankPlayerInfoModel> mPlayerInfoList;
     private GameReadyModel mGameReadyInfo;
     private int mShiftTs;
     //一场到底歌曲分类
@@ -90,11 +91,11 @@ public class PrepareData implements Serializable {
         return mGameCreatMs;
     }
 
-    public void setPlayerInfoList(List<PlayerInfoModel> playerInfoList) {
+    public void setPlayerInfoList(List<RankPlayerInfoModel> playerInfoList) {
         mPlayerInfoList = playerInfoList;
     }
 
-    public List<PlayerInfoModel> getPlayerInfoList() {
+    public List<RankPlayerInfoModel> getPlayerInfoList() {
         return mPlayerInfoList;
     }
 

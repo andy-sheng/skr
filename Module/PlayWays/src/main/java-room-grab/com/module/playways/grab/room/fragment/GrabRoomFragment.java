@@ -109,7 +109,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     GrabCorePresenter mCorePresenter;
 
-    DownLoadScoreFilePresenter mDownLoadScoreFilePresenter;
+//    DownLoadScoreFilePresenter mDownLoadScoreFilePresenter;
 
     TurnInfoCardView mTurnInfoCardView; //歌曲次序 以及 对战开始卡片
 
@@ -199,30 +199,30 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mCorePresenter = new GrabCorePresenter(this, mRoomData);
         addPresent(mCorePresenter);
 
-        mDownLoadScoreFilePresenter = new DownLoadScoreFilePresenter(new HttpUtils.OnDownloadProgress() {
-            @Override
-            public void onDownloaded(long downloaded, long totalLength) {
-
-            }
-
-            @Override
-            public void onCompleted(String localPath) {
-                MyLog.d(TAG, "机器人打分文件下载就绪");
-            }
-
-            @Override
-            public void onCanceled() {
-
-            }
-
-            @Override
-            public void onFailed() {
-
-            }
-        }, mRoomData.getPlayerInfoList());
-
-        addPresent(mDownLoadScoreFilePresenter);
-        mDownLoadScoreFilePresenter.prepareRes();
+//        mDownLoadScoreFilePresenter = new DownLoadScoreFilePresenter(new HttpUtils.OnDownloadProgress() {
+//            @Override
+//            public void onDownloaded(long downloaded, long totalLength) {
+//
+//            }
+//
+//            @Override
+//            public void onCompleted(String localPath) {
+//                MyLog.d(TAG, "机器人打分文件下载就绪");
+//            }
+//
+//            @Override
+//            public void onCanceled() {
+//
+//            }
+//
+//            @Override
+//            public void onFailed() {
+//
+//            }
+//        }, mRoomData.getPlayerInfoList());
+//
+//        addPresent(mDownLoadScoreFilePresenter);
+//        mDownLoadScoreFilePresenter.prepareRes();
 
         U.getSoundUtils().preLoad(TAG, R.raw.startgame, R.raw.dislike, R.raw.iwannasing, R.raw.nobodywants, R.raw.success, R.raw.lose, R.raw.lightup);
 

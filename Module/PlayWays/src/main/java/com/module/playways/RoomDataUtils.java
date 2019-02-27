@@ -3,8 +3,12 @@ package com.module.playways;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.U;
+import com.module.playways.grab.room.GrabRoomData;
+import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
+import com.module.playways.rank.room.RankRoomData;
+import com.module.playways.rank.room.model.RankPlayerInfoModel;
 import com.module.playways.rank.song.model.SongModel;
 
 import java.util.Collections;
@@ -155,9 +159,9 @@ public class RoomDataUtils {
      * @param uid
      * @return
      */
-    public static SongModel getPlayerSongInfoUserId(List<PlayerInfoModel> playerInfos, long uid) {
+    public static SongModel getPlayerSongInfoUserId(List<RankPlayerInfoModel> playerInfos, long uid) {
         try {
-            for (PlayerInfoModel infoModel : playerInfos) {
+            for (RankPlayerInfoModel infoModel : playerInfos) {
                 if (infoModel.getUserInfo().getUserId() == uid) {
                     return infoModel.getSongList().get(0);
                 }
@@ -190,7 +194,7 @@ public class RoomDataUtils {
         return infoModel != null && infoModel.getUserID() == MyUserInfoManager.getInstance().getUid();
     }
 
-    public static <T extends BaseRoundInfoModel> boolean isRobotRound(T infoModel, List<PlayerInfoModel> playerInfoModels) {
+    public static <T extends BaseRoundInfoModel,A extends PlayerInfoModel> boolean isRobotRound(T infoModel,  List<A> playerInfoModels) {
         if (infoModel != null) {
             int uid = infoModel.getUserID();
             for (PlayerInfoModel playerInfoModel : playerInfoModels) {
@@ -202,13 +206,21 @@ public class RoomDataUtils {
         return false;
     }
 
-    public static <T extends BaseRoundInfoModel> PlayerInfoModel getPlayerInfoById(BaseRoomData<T> roomData, long uid) {
-        for (PlayerInfoModel playerInfo : roomData.getPlayerInfoList()) {
+    public static RankPlayerInfoModel getPlayerInfoById(RankRoomData roomData, long uid) {
+        for (RankPlayerInfoModel playerInfo : roomData.getPlayerInfoList()) {
             if (playerInfo.getUserInfo().getUserId() == uid) {
                 return playerInfo;
             }
         }
+        return null;
+    }
 
+    public static GrabPlayerInfoModel getPlayerInfoById(GrabRoomData roomData, long uid) {
+        for (GrabPlayerInfoModel playerInfo : roomData.getPlayerInfoList()) {
+            if (playerInfo.getUserInfo().getUserId() == uid) {
+                return playerInfo;
+            }
+        }
         return null;
     }
 

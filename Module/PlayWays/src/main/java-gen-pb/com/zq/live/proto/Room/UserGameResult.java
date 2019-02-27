@@ -40,6 +40,8 @@ public final class UserGameResult extends Message<UserGameResult, UserGameResult
 
   public static final Boolean DEFAULT_ISESCAPE = false;
 
+  public static final Integer DEFAULT_SSS = 0;
+
   /**
    * 用户标识
    */
@@ -104,14 +106,24 @@ public final class UserGameResult extends Message<UserGameResult, UserGameResult
   )
   private final Boolean isEscape;
 
+  /**
+   * 战斗评价, sss or ss or s or a...
+   */
+  @WireField(
+      tag = 8,
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+  )
+  private final Integer sss;
+
   public UserGameResult(Integer userID, Integer itemID, Integer rank,
-      List<AudienceScore> audienceScores, Float totalScore, EWinType winType, Boolean isEscape) {
-    this(userID, itemID, rank, audienceScores, totalScore, winType, isEscape, ByteString.EMPTY);
+      List<AudienceScore> audienceScores, Float totalScore, EWinType winType, Boolean isEscape,
+      Integer sss) {
+    this(userID, itemID, rank, audienceScores, totalScore, winType, isEscape, sss, ByteString.EMPTY);
   }
 
   public UserGameResult(Integer userID, Integer itemID, Integer rank,
       List<AudienceScore> audienceScores, Float totalScore, EWinType winType, Boolean isEscape,
-      ByteString unknownFields) {
+      Integer sss, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
     this.itemID = itemID;
@@ -120,6 +132,7 @@ public final class UserGameResult extends Message<UserGameResult, UserGameResult
     this.totalScore = totalScore;
     this.winType = winType;
     this.isEscape = isEscape;
+    this.sss = sss;
   }
 
   @Override
@@ -132,6 +145,7 @@ public final class UserGameResult extends Message<UserGameResult, UserGameResult
     builder.totalScore = totalScore;
     builder.winType = winType;
     builder.isEscape = isEscape;
+    builder.sss = sss;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -148,7 +162,8 @@ public final class UserGameResult extends Message<UserGameResult, UserGameResult
         && audienceScores.equals(o.audienceScores)
         && Internal.equals(totalScore, o.totalScore)
         && Internal.equals(winType, o.winType)
-        && Internal.equals(isEscape, o.isEscape);
+        && Internal.equals(isEscape, o.isEscape)
+        && Internal.equals(sss, o.sss);
   }
 
   @Override
@@ -163,6 +178,7 @@ public final class UserGameResult extends Message<UserGameResult, UserGameResult
       result = result * 37 + (totalScore != null ? totalScore.hashCode() : 0);
       result = result * 37 + (winType != null ? winType.hashCode() : 0);
       result = result * 37 + (isEscape != null ? isEscape.hashCode() : 0);
+      result = result * 37 + (sss != null ? sss.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -178,6 +194,7 @@ public final class UserGameResult extends Message<UserGameResult, UserGameResult
     if (totalScore != null) builder.append(", totalScore=").append(totalScore);
     if (winType != null) builder.append(", winType=").append(winType);
     if (isEscape != null) builder.append(", isEscape=").append(isEscape);
+    if (sss != null) builder.append(", sss=").append(sss);
     return builder.replace(0, 2, "UserGameResult{").append('}').toString();
   }
 
@@ -262,6 +279,16 @@ public final class UserGameResult extends Message<UserGameResult, UserGameResult
   }
 
   /**
+   * 战斗评价, sss or ss or s or a...
+   */
+  public Integer getSss() {
+    if(sss==null){
+        return DEFAULT_SSS;
+    }
+    return sss;
+  }
+
+  /**
    * 用户标识
    */
   public boolean hasUserID() {
@@ -310,6 +337,13 @@ public final class UserGameResult extends Message<UserGameResult, UserGameResult
     return isEscape!=null;
   }
 
+  /**
+   * 战斗评价, sss or ss or s or a...
+   */
+  public boolean hasSss() {
+    return sss!=null;
+  }
+
   public static final class Builder extends Message.Builder<UserGameResult, Builder> {
     private Integer userID;
 
@@ -324,6 +358,8 @@ public final class UserGameResult extends Message<UserGameResult, UserGameResult
     private EWinType winType;
 
     private Boolean isEscape;
+
+    private Integer sss;
 
     public Builder() {
       audienceScores = Internal.newMutableList();
@@ -386,9 +422,17 @@ public final class UserGameResult extends Message<UserGameResult, UserGameResult
       return this;
     }
 
+    /**
+     * 战斗评价, sss or ss or s or a...
+     */
+    public Builder setSss(Integer sss) {
+      this.sss = sss;
+      return this;
+    }
+
     @Override
     public UserGameResult build() {
-      return new UserGameResult(userID, itemID, rank, audienceScores, totalScore, winType, isEscape, super.buildUnknownFields());
+      return new UserGameResult(userID, itemID, rank, audienceScores, totalScore, winType, isEscape, sss, super.buildUnknownFields());
     }
   }
 
@@ -406,6 +450,7 @@ public final class UserGameResult extends Message<UserGameResult, UserGameResult
           + ProtoAdapter.FLOAT.encodedSizeWithTag(5, value.totalScore)
           + EWinType.ADAPTER.encodedSizeWithTag(6, value.winType)
           + ProtoAdapter.BOOL.encodedSizeWithTag(7, value.isEscape)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(8, value.sss)
           + value.unknownFields().size();
     }
 
@@ -418,6 +463,7 @@ public final class UserGameResult extends Message<UserGameResult, UserGameResult
       ProtoAdapter.FLOAT.encodeWithTag(writer, 5, value.totalScore);
       EWinType.ADAPTER.encodeWithTag(writer, 6, value.winType);
       ProtoAdapter.BOOL.encodeWithTag(writer, 7, value.isEscape);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 8, value.sss);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -441,6 +487,7 @@ public final class UserGameResult extends Message<UserGameResult, UserGameResult
             break;
           }
           case 7: builder.setIsEscape(ProtoAdapter.BOOL.decode(reader)); break;
+          case 8: builder.setSss(ProtoAdapter.UINT32.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

@@ -1,12 +1,15 @@
 package com.module.playways.rank.room;
 
 import com.common.core.account.UserAccountManager;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.component.busilib.constans.GameModeType;
 import com.module.playways.BaseRoomData;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
 import com.module.playways.rank.prepare.model.GameConfigModel;
+import com.module.playways.rank.prepare.model.PlayerInfoModel;
+import com.module.playways.rank.room.model.RankPlayerInfoModel;
 import com.module.playways.rank.room.model.RankRoundInfoModel;
 import com.module.playways.rank.room.event.PkMyBurstSuccessEvent;
 import com.module.playways.rank.room.event.PkMyLightOffSuccessEvent;
@@ -15,9 +18,13 @@ import com.module.playways.rank.room.model.RecordData;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.List;
+
 public class RankRoomData extends BaseRoomData<RankRoundInfoModel> {
 
     protected RecordData mRecordData; // PK赛的结果信息
+
+    protected List<RankPlayerInfoModel> mPlayerInfoList;//选手信息
 
     protected GameConfigModel mGameConfigModel;// 配置信息
 
@@ -123,5 +130,38 @@ public class RankRoomData extends BaseRoomData<RankRoundInfoModel> {
 
     public long getSingBeginTs() {
         return mSingBeginTs;
+    }
+
+    public void setPlayerInfoList(List<RankPlayerInfoModel> playerInfoList) {
+        mPlayerInfoList = playerInfoList;
+    }
+
+    public List<RankPlayerInfoModel> getPlayerInfoList() {
+        return mPlayerInfoList;
+    }
+
+    public RankPlayerInfoModel getPlayerInfoModel(int userID) {
+        if (userID == 0) {
+            return null;
+        }
+        if (mPlayerInfoList == null) {
+            return null;
+        }
+        for (RankPlayerInfoModel playerInfo : mPlayerInfoList) {
+            if (playerInfo.getUserInfo().getUserId() == userID) {
+                return playerInfo;
+            }
+        }
+        return null;
+    }
+
+    public void setOnline(int userID, boolean online) {
+        if (mPlayerInfoList != null) {
+            for (PlayerInfoModel playerInfo : mPlayerInfoList) {
+                if (playerInfo.getUserInfo().getUserId() == userID) {
+                    playerInfo.setOnline(online);
+                }
+            }
+        }
     }
 }

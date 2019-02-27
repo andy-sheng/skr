@@ -13,6 +13,7 @@ import com.common.utils.U;
 import com.module.RouterConstants;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
+import com.module.playways.rank.room.model.RankPlayerInfoModel;
 import com.module.playways.rank.room.model.RankRoundInfoModel;
 import com.module.playways.rank.room.RankRoomData;
 import com.module.playways.rank.song.model.SongModel;
@@ -46,9 +47,9 @@ public class VoiceRoomActivity extends BaseActivity {
                     roundingMode.setSongModel(songModel);
                     roundingModeList.add(roundingMode);
                 }
-                List<PlayerInfoModel> playerInfoModelList = new ArrayList<>();
+                List<RankPlayerInfoModel> playerInfoModelList = new ArrayList<>();
                 for (int i = 0; i < 3; i++) {
-                    PlayerInfoModel playerInfoModel = new PlayerInfoModel();
+                    RankPlayerInfoModel playerInfoModel = new RankPlayerInfoModel();
                     UserInfoModel userInfoModel = new UserInfoModel();
                     if (i == 0) {
                         userInfoModel.setAvatar(MyUserInfoManager.getInstance().getAvatar());

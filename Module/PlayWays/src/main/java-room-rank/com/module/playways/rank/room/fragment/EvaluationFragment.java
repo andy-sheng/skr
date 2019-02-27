@@ -30,6 +30,7 @@ import com.common.view.ex.ExTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.room.RankRoomData;
+import com.module.playways.rank.room.model.RankPlayerInfoModel;
 import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.rank.room.presenter.EndGamePresenter;
 import com.module.playways.rank.room.view.IVoteView;
@@ -68,8 +69,8 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
 
     EndGamePresenter mPresenter;
 
-    PlayerInfoModel left;
-    PlayerInfoModel right;
+    RankPlayerInfoModel left;
+    RankPlayerInfoModel right;
 
     ExRelativeLayout mRlLeft;
     ExRelativeLayout mRlRight;
@@ -353,7 +354,7 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
         if (type == 0) {
             mRoomData = (RankRoomData) data;
             if (mRoomData.getPlayerInfoList() != null && mRoomData.getPlayerInfoList().size() > 0) {
-                for (PlayerInfoModel playerInfo : mRoomData.getPlayerInfoList()) {
+                for (RankPlayerInfoModel playerInfo : mRoomData.getPlayerInfoList()) {
                     if (left != null && playerInfo.getUserInfo().getUserId() != MyUserInfoManager.getInstance().getUid()) {
                         right = playerInfo;
                     } else if (playerInfo.getUserInfo().getUserId() != MyUserInfoManager.getInstance().getUid()) {

@@ -16,6 +16,8 @@ import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.HttpImage;
 import com.common.utils.U;
 import com.module.playways.grab.room.listener.SVGAListener;
+import com.module.playways.rank.room.RankRoomData;
+import com.module.playways.rank.room.model.RankPlayerInfoModel;
 import com.module.rank.R;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.BaseRoomData;
@@ -33,7 +35,7 @@ import java.io.File;
 
 public class TurnChangeCardView extends RelativeLayout {
 
-    BaseRoomData mRoomData;
+    RankRoomData mRoomData;
 
     SVGAImageView mFirstSvga;
     SVGAImageView mNextSvga;
@@ -61,7 +63,7 @@ public class TurnChangeCardView extends RelativeLayout {
         mNextSvga = (SVGAImageView) findViewById(R.id.next_svga);
     }
 
-    public boolean setData(BaseRoomData data, SVGAListener listener) {
+    public boolean setData(RankRoomData data, SVGAListener listener) {
         this.mRoomData = data;
         this.mSVGAListener = listener;
 
@@ -72,7 +74,7 @@ public class TurnChangeCardView extends RelativeLayout {
         int curUid = mRoomData.getRealRoundInfo().getUserID();
         int seq = mRoomData.getRealRoundInfo().getRoundSeq();
 
-        PlayerInfoModel curInfo = mRoomData.getPlayerInfoModel(curUid);
+        RankPlayerInfoModel curInfo = mRoomData.getPlayerInfoModel(curUid);
 
         if (curInfo == null) {
             if (mSVGAListener != null) {
@@ -86,7 +88,7 @@ public class TurnChangeCardView extends RelativeLayout {
     }
 
 
-    public void bindData(PlayerInfoModel cur, int seq) {
+    public void bindData(RankPlayerInfoModel cur, int seq) {
         if (seq == 1) {
             firstTurnCard(cur);
         } else {
@@ -94,7 +96,7 @@ public class TurnChangeCardView extends RelativeLayout {
         }
     }
 
-    private void firstTurnCard(PlayerInfoModel info) {
+    private void firstTurnCard(RankPlayerInfoModel info) {
         setVisibility(VISIBLE);
         mFirstSvga.clearAnimation();
         mFirstSvga.setVisibility(VISIBLE);
@@ -150,7 +152,7 @@ public class TurnChangeCardView extends RelativeLayout {
 
     }
 
-    private void nextTurnCard(PlayerInfoModel info) {
+    private void nextTurnCard(RankPlayerInfoModel info) {
         setVisibility(VISIBLE);
         mNextSvga.clearAnimation();
         mNextSvga.setVisibility(VISIBLE);
@@ -206,7 +208,7 @@ public class TurnChangeCardView extends RelativeLayout {
 
     }
 
-    private SVGADynamicEntity requestDynamicItem(PlayerInfoModel info) {
+    private SVGADynamicEntity requestDynamicItem(RankPlayerInfoModel info) {
         SVGADynamicEntity dynamicEntity = new SVGADynamicEntity();
         Bitmap bitmap = Bitmap.createBitmap(U.getDisplayUtils().dip2px(70), U.getDisplayUtils().dip2px(70), Bitmap.Config.ARGB_8888);
         bitmap.eraseColor(info.getUserInfo().getSex() == ESex.SX_MALE.getValue() ? U.getColor(com.common.core.R.color.color_man_stroke_color) : U.getColor(com.common.core.R.color.color_woman_stroke_color));

@@ -55,8 +55,6 @@ public abstract class BaseRoomData<T extends BaseRoundInfoModel> implements Seri
 
     protected T mRealRoundInfo;// 实际的当前轮次信息
 
-    protected List<PlayerInfoModel> mPlayerInfoList;//选手信息
-
     protected boolean mIsGameFinish = false; // 游戏开始了
 
     protected boolean mMute = false;//是否mute
@@ -162,45 +160,6 @@ public abstract class BaseRoomData<T extends BaseRoundInfoModel> implements Seri
         mRealRoundInfo = realRoundInfo;
     }
 
-    public void setPlayerInfoList(List<PlayerInfoModel> playerInfoList) {
-        mPlayerInfoList = playerInfoList;
-    }
-
-    public List<PlayerInfoModel> getPlayerInfoList() {
-        return mPlayerInfoList;
-    }
-
-    public UserInfoModel getUserInfo(int userID) {
-        if (userID == 0) {
-            return null;
-        }
-        if (mPlayerInfoList == null) {
-            return null;
-        }
-        for (PlayerInfoModel playerInfo : mPlayerInfoList) {
-            if (playerInfo.getUserInfo().getUserId() == userID) {
-                return playerInfo.getUserInfo();
-            }
-        }
-
-        return null;
-    }
-
-    public PlayerInfoModel getPlayerInfoModel(int userID) {
-        if (userID == 0) {
-            return null;
-        }
-        if (mPlayerInfoList == null) {
-            return null;
-        }
-        for (PlayerInfoModel playerInfo : mPlayerInfoList) {
-            if (playerInfo.getUserInfo().getUserId() == userID) {
-                return playerInfo;
-            }
-        }
-
-        return null;
-    }
 
     public int getRealRoundSeq() {
         if (mRealRoundInfo != null) {
@@ -218,16 +177,6 @@ public abstract class BaseRoomData<T extends BaseRoundInfoModel> implements Seri
         mMute = mute;
     }
 
-    public void setOnline(int userID, boolean online) {
-        if (mPlayerInfoList != null) {
-            for (PlayerInfoModel playerInfo : mPlayerInfoList) {
-                if (playerInfo.getUserInfo().getUserId() == userID) {
-                    playerInfo.setOnline(online);
-                }
-            }
-        }
-    }
-
     @Override
     public String toString() {
         return "RoomData{" +
@@ -243,9 +192,27 @@ public abstract class BaseRoomData<T extends BaseRoundInfoModel> implements Seri
                 ", mRoundInfoModelList=" + mRoundInfoModelList +
                 ", mExpectRoundInfo=" + mExpectRoundInfo +
                 ", mRealRoundInfo=" + mRealRoundInfo +
-                ", mPlayerInfoList=" + mPlayerInfoList +
                 ", mIsGameFinish=" + mIsGameFinish +
                 ", mMute=" + mMute +
                 '}';
     }
+
+    public abstract <T extends PlayerInfoModel> List<T> getPlayerInfoList();
+
+    public UserInfoModel getUserInfo(int userID) {
+        if (userID == 0) {
+            return null;
+        }
+        List<PlayerInfoModel> l = getPlayerInfoList();
+        if (l == null) {
+            return null;
+        }
+        for (PlayerInfoModel playerInfo : l) {
+            if (playerInfo.getUserInfo().getUserId() == userID) {
+                return playerInfo.getUserInfo();
+            }
+        }
+        return null;
+    }
+
 }

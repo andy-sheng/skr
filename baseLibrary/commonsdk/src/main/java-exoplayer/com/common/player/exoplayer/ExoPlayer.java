@@ -480,6 +480,9 @@ public class ExoPlayer implements IPlayer {
     @Override
     public void startPlay(String path) {
         MyLog.d(TAG, "startPlay" + " path=" + path);
+        if (TextUtils.isEmpty(path)) {
+            return;
+        }
         if (mPlayer == null) {
             MyLog.w(TAG, "startPlay but mPlayer === null,return");
             return;

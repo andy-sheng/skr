@@ -32,11 +32,10 @@ import com.module.playways.grab.room.event.GrabGameOverEvent;
 import com.module.playways.grab.room.event.GrabQLightActionEvent;
 import com.module.playways.grab.room.event.GrabRoundChangeEvent;
 import com.module.playways.grab.room.event.GrabRoundStatusChangeEvent;
-import com.module.playways.grab.room.event.QLightActionEvent;
 import com.module.playways.grab.room.inter.IGrabView;
 import com.module.playways.grab.room.model.GrabResultInfoModel;
+import com.module.playways.grab.room.model.GrabSkrResourceModel;
 import com.module.playways.grab.room.model.MLightInfoModel;
-import com.module.playways.grab.room.model.QLightActionMsgModel;
 import com.module.playways.grab.room.model.WantSingerInfo;
 import com.module.playways.rank.msg.BasePushInfo;
 import com.module.playways.rank.msg.event.CommentMsgEvent;
@@ -100,7 +99,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             super.handleMessage(msg);
             switch (msg.what) {
                 case MSG_ROBOT_SING_BEGIN:
-                    robotSingBegin((PlayerInfoModel) msg.obj);
+                    robotSingBegin();
                     break;
             }
         }
@@ -346,8 +345,13 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }, this);
     }
 
-    private void robotSingBegin(PlayerInfoModel playerInfo) {
-        String skrerUrl = playerInfo.getResourceInfoList().get(0).getAudioURL();
+    private void robotSingBegin() {
+        GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
+        GrabSkrResourceModel grabSkrResourceModel = grabRoundInfoModel.getSkrResource();
+        String skrerUrl = null;
+        if (grabSkrResourceModel != null) {
+            skrerUrl = grabSkrResourceModel.getAudioURL();
+        }
         if (mRobotScoreHelper == null) {
             mRobotScoreHelper = new RobotScoreHelper();
         }
@@ -702,7 +706,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             mRoomData.setLastSyncTs(syncStatusTimes);
             if (onlineInfos != null) {
                 for (OnlineInfoModel onlineInfoModel : onlineInfos) {
-                    mRoomData.setOnline(onlineInfoModel.getUserID(), onlineInfoModel.isIsOnline());
+//                    mRoomData.setOnline(onlineInfoModel.getUserID(), onlineInfoModel.isIsOnline());
                 }
             }
             mUiHanlder.post(new Runnable() {
@@ -761,7 +765,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         mUiHanlder.post(new Runnable() {
             @Override
             public void run() {
-                mIGrabView.roundOver(event.lastRoundInfo.getSongModel().getItemID(),event.lastRoundInfo.getOverReason(), event.lastRoundInfo.getResultType(), false, null);
+                mIGrabView.roundOver(event.lastRoundInfo.getSongModel().getItemID(), event.lastRoundInfo.getOverReason(), event.lastRoundInfo.getResultType(), false, null);
             }
         });
         // 销毁引擎，减小成本
@@ -793,7 +797,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 mUiHanlder.post(new Runnable() {
                     @Override
                     public void run() {
-                        mIGrabView.roundOver(event.lastRoundInfo.getSongModel().getItemID(),event.lastRoundInfo.getOverReason(), event.lastRoundInfo.getResultType(), true, now);
+                        mIGrabView.roundOver(event.lastRoundInfo.getSongModel().getItemID(), event.lastRoundInfo.getOverReason(), event.lastRoundInfo.getResultType(), true, now);
                     }
                 });
 
@@ -872,24 +876,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     }
 
     /**
-     * 有人爆灭灯了, 服务器过来的
-     * @param event
-     */
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(QLightActionEvent event) {
-        if (RoomDataUtils.isCurrentRound(event.getqLightActionMsg().getRoundSeq(), mRoomData)) {
-            MyLog.w(TAG, "有人想唱：userID " + event.getqLightActionMsg().getUserID() + ", seq " + event.getqLightActionMsg().getRoundSeq());
-            GrabRoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
-            if(roundInfoModel != null){
-                roundInfoModel.addQLightAction(true, QLightActionMsgModel.parse(event.getqLightActionMsg()));
-            }
-        } else {
-            MyLog.w(TAG, "有人想唱,但是不是这个轮次：userID " + event.getqLightActionMsg().getUserID() + ", seq " + event.getqLightActionMsg().getRoundSeq() + "，当前轮次是 " + mRoomData.getRealRoundSeq());
-        }
-    }
-
-    /**
      * 有人爆灭灯了, 真正更新ui
+     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -919,22 +907,24 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QExitGameMsgEvent event) {
         MyLog.w(TAG, "有人退出了：userID is " + event.getUserID());
-        mRoomData.setOnline(event.userID, false);
-        BasePushInfo basePushInfo = new BasePushInfo();
-        basePushInfo.setRoomID(mRoomData.getGameId());
-        basePushInfo.setSender(new UserInfo.Builder()
-                .setUserID(1)
-                .setAvatar("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/common/system_default.png")
-                .setNickName("系统消息")
-                .setSex(ESex.fromValue(0))
-                .build());
-        PlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, event.getUserID());
-        if (playerInfoModel != null) {
-            String text = playerInfoModel.getUserInfo().getNickname() + "偷偷溜走啦～";
-            MyLog.d(TAG, "onEvent" + " event.getInfo().getSender:" + event.getInfo().getSender());
-            CommentMsgEvent msgEvent = new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text);
-            EventBus.getDefault().post(msgEvent);
-        }
+//        mRoomData.setOnline(event.userID, false);
+        GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
+        //TODO
+//        BasePushInfo basePushInfo = new BasePushInfo();
+//        basePushInfo.setRoomID(mRoomData.getGameId());
+//        basePushInfo.setSender(new UserInfo.Builder()
+//                .setUserID(1)
+//                .setAvatar("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/common/system_default.png")
+//                .setNickName("系统消息")
+//                .setSex(ESex.fromValue(0))
+//                .build());
+//        PlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, event.getUserID());
+//        if (playerInfoModel != null) {
+//            String text = playerInfoModel.getUserInfo().getNickname() + "偷偷溜走啦～";
+//            MyLog.d(TAG, "onEvent" + " event.getInfo().getSender:" + event.getInfo().getSender());
+//            CommentMsgEvent msgEvent = new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text);
+//            EventBus.getDefault().post(msgEvent);
+//        }
     }
 
     //！！！！弃用
@@ -1019,12 +1009,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
          */
         if (playerInfo.isSkrer()) {
             MyLog.d(TAG, "checkMachineUser" + " uid=" + uid + " is machine");
-            BaseRoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
             //这个时间现在待定
             //移除之前的要发生的机器人演唱
             mUiHanlder.removeMessages(MSG_ROBOT_SING_BEGIN);
             Message message = mUiHanlder.obtainMessage(MSG_ROBOT_SING_BEGIN);
-            message.obj = playerInfo;
             mUiHanlder.sendMessage(message);
         }
     }

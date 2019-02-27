@@ -49,8 +49,9 @@ message RoomMsg
     PKBLightMsg pkBLightMsg = 119; //排位赛：爆灯通知
     PKMLightMsg pkMLightMsg = 120; //排位赛：灭灯通知
 
-    QGameStartMsg qGameStartMsg = 121; //一唱到底游戏开始
-    QLightActionMsg qLightActionMsg = 122; //一唱到底爆灯/灭灯
+    QBLightMsg qBLightMsg         = 121; //一唱到底：爆灯通知
+    QMLightMsg qMLightMsg         = 122; //一唱到底：灭灯通知
+    QJoinNoticeMsg qJoinNoticeMsg = 123; //加入游戏通知消息 msgType == RM_JOIN_NOTICE
 }
 
 // ERoomMsgType 房间消息类型
@@ -85,28 +86,19 @@ enum ERoomMsgType {
     RM_PK_BLIGHT = 119; //排位赛：爆灯通知
     RM_PK_MLIGHT = 120; //排位赛：灭灯通知
 
-    RM_Q_GAME_START = 121;
-    RM_Q_LIGHT_ACTION = 122;
+    RM_Q_BLIGHT      = 121; //一唱到底：爆灯通知
+    RM_Q_MLIGHT      = 122; //一唱到底：灭灯通知
+    RM_Q_JOIN_NOTICE = 123; //一唱到底：加入游戏通知消息
 
     RM_ROUND_ACC_BEGIN = 190; //告知伴奏开始
 }
 
-message QLightActionMsg
+message QJoinNoticeMsg
 {
-    uint32 userID   = 1; // 用户id
-    uint32 roundSeq = 2; // 轮次顺序
-    ELightAction action = 3; //灭灯or爆灯
-}
-enum ELightAction
-{
-    InvalidLightAction = 0;
-    LightOff = 1; //灭灯
-    LightOn = 2; //爆灯
-}
-
-message QGameStartMsg
-{
-    sint64 startTimeMS  = 1; //游戏的开始时间，毫秒时间戳
+    Common.UserInfo user     = 1; //加入游戏的信息
+    sint64 joinTimeMs = 2; //加入毫秒时间戳
+    EQUserRole role   = 3; //角色
+    uint32 roundSeq   = 4; //轮次顺序
 }
 
 message PKBLightMsg
@@ -193,15 +185,16 @@ message QNoPassSingMsg
 message QExitGameMsg
 {
     uint32 userID = 1; // 用户id
+    uint32 roundSeq = 2; //轮次顺
 }
 
 message MachineScore
 {
-    uint32 userID = 1; // 演唱者
-    uint32 itemID = 2; // 演唱曲目
-    uint32 score  = 3; // 机器分数
-    uint32 no     = 4; // 对应截断后的歌词行号
-    uint32 lineNum     = 5; // 歌词行数 总分为 100*lineNum*Percent
+    uint32 userID  = 1; // 演唱者
+    uint32 itemID  = 2; // 演唱曲目
+    uint32 score   = 3; // 机器分数 (游戏开始后，使用特殊值999向其他端同步歌词行数)
+    uint32 no      = 4; // 对应截断后的歌词行号
+    uint32 lineNum = 5; // 歌词行数 总分为 100*lineNum*Percent
 }
 
 // 投票结果
@@ -276,6 +269,7 @@ message UserGameResult
     float totalScore                      = 5; //综合评分
     EWinType winType                      = 6; //胜负平等等
     bool isEscape                         = 7; //是否逃跑
+    uint32 sss                            = 8; //战斗评价, sss or ss or s or a...
 }
 
 message AudienceScore
@@ -399,7 +393,7 @@ message JoinInfo
     uint32 joinSeq    = 2; //加入顺序
     sint64 joinTimeMs = 3; //加入毫秒时间戳
     Common.UserInfo userInfo = 4; //用户详细资料，一唱到底会用到
-    bool isSkrer = 5; //是否机器人
+    bool isSkrer      = 5; //是否机器人
 }
 
 message RoundInfo
@@ -464,6 +458,30 @@ message QRoundInfo
     repeated NoPassSingInfo noPassSingInfos = 11; //灭灯列表
     EQRoundOverReason overReason            = 12; //切换轮次原因
     EQRoundResultType resultType            = 13; //当EQRoundOverReason == ROR_MULTI_NO_PASS 演唱结果信息
+    Common.MusicInfo music                         = 14; //本轮次的歌曲信息
+    repeated QBLightMsg bLightInfos         = 15; //爆灭灯列表
+    repeated QMLightMsg mLightInfos         = 16; //灭灭灯列表
+    RoundInit roundInit                     = 17; //轮次初始信息
+    Common.ResourceInfo skrResource                = 18; //机器人资源
+    repeated OnlineInfo waitUsers           = 19; //等待中用户列表
+    repeated OnlineInfo playUsers           = 20; //当局玩的用户列表
+}
+
+message QBLightMsg
+{
+    uint32 userID = 1; //玩家id
+    sint64 timeMs = 2; //时间戳
+}
+
+message QMLightMsg
+{
+    uint32 userID = 1; //玩家id
+    sint64 timeMs = 2; //时间戳
+}
+
+message RoundInit
+{
+    uint32 userCnt = 1; //轮次初始的人数
 }
 
 message ReadyInfo
@@ -477,7 +495,17 @@ message OnlineInfo
 {
     uint32 userID = 1; //用户id
     bool isOnline = 2; //是否在线
-    Common.UserInfo userInfo = 3;
+
+    Common.UserInfo userInfo = 3; //一唱到底使用：带入用户信息
+    bool isSkrer      = 4; //一唱到底使用：是否机器人
+    EQUserRole role   = 5; //一唱到底使用：用户角色
+}
+
+enum EQUserRole
+{
+    EQUR_UNKNOWN   = 0; //未知角色
+    EQUR_PLAY_USER = 1; //在玩的用户角色
+    EQUR_WAIT_USER = 2; //等待的用户角色
 }
 
 message GameStartInfo
@@ -523,6 +551,7 @@ message RoundAndGameOverMsg
 
     repeated VoteInfo voteInfo            = 4; //投票打分信息
     repeated UserScoreResult scoreResults = 5; //所有参与者的评分结果，应该使用这个结构
+
     repeated UserGameResult gameResults = 6; //游戏结果评分数据
 
     uint32 lastMLightUserID = 7; //最后一个灭灯的用户ID
@@ -562,8 +591,3 @@ message SyncStatusMsg
     RoundInfo currentRound         = 4; //当前轮次信息
     RoundInfo nextRound            = 5; //下个轮次信息
 }
-
-
-
-
-

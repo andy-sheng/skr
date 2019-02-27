@@ -3,6 +3,7 @@ package com.module.playways.rank.msg.event;
 import com.module.playways.rank.msg.BasePushInfo;
 import com.module.playways.rank.prepare.model.GameConfigModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
+import com.module.playways.rank.room.model.RankPlayerInfoModel;
 import com.module.playways.rank.song.model.SongModel;
 import com.zq.live.proto.Common.MusicInfo;
 import com.zq.live.proto.Room.JoinActionMsg;
@@ -14,14 +15,14 @@ public class JoinActionEvent {
     public BasePushInfo info;
     public int gameId;
     public long gameCreateMs;
-    public List<PlayerInfoModel> playerInfoList;
+    public List<RankPlayerInfoModel> playerInfoList;
     public List<SongModel> songModelList;
     public GameConfigModel gameConfigModel;
 
     public JoinActionEvent(BasePushInfo info, JoinActionMsg joinActionMsg) {
-        List<PlayerInfoModel> playerInfos = new ArrayList<>();
+        List<RankPlayerInfoModel> playerInfos = new ArrayList<>();
         for (com.zq.live.proto.Room.PlayerInfo player : joinActionMsg.getPlayersList()) {
-            PlayerInfoModel playerInfo = new PlayerInfoModel();
+            RankPlayerInfoModel playerInfo = new RankPlayerInfoModel();
             playerInfo.parse(player);
             playerInfos.add(playerInfo);
         }

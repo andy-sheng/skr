@@ -397,7 +397,7 @@ public class GrabPlayerRv extends RelativeLayout {
     private void syncLight() {
         GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
         if (now != null) {
-            for (MLightInfoModel noPassingInfo : now.getNoPassSingInfos()) {
+            for (MLightInfoModel noPassingInfo : now.getMLightInfos()) {
                 VP vp = mInfoMap.get(noPassingInfo.getUserID());
                 if (vp != null && vp.grabTopItemView != null) {
                     vp.grabTopItemView.setLight(false);

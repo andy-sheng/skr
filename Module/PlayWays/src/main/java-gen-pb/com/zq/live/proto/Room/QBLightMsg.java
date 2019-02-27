@@ -11,23 +11,24 @@ import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
 import java.io.IOException;
 import java.lang.Integer;
+import java.lang.Long;
 import java.lang.Object;
 import java.lang.Override;
 import java.lang.String;
 import java.lang.StringBuilder;
 import okio.ByteString;
 
-public final class QExitGameMsg extends Message<QExitGameMsg, QExitGameMsg.Builder> {
-  public static final ProtoAdapter<QExitGameMsg> ADAPTER = new ProtoAdapter_QExitGameMsg();
+public final class QBLightMsg extends Message<QBLightMsg, QBLightMsg.Builder> {
+  public static final ProtoAdapter<QBLightMsg> ADAPTER = new ProtoAdapter_QBLightMsg();
 
   private static final long serialVersionUID = 0L;
 
   public static final Integer DEFAULT_USERID = 0;
 
-  public static final Integer DEFAULT_ROUNDSEQ = 0;
+  public static final Long DEFAULT_TIMEMS = 0L;
 
   /**
-   * 用户id
+   * 玩家id
    */
   @WireField(
       tag = 1,
@@ -36,29 +37,29 @@ public final class QExitGameMsg extends Message<QExitGameMsg, QExitGameMsg.Build
   private final Integer userID;
 
   /**
-   * 轮次顺
+   * 时间戳
    */
   @WireField(
       tag = 2,
-      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+      adapter = "com.squareup.wire.ProtoAdapter#SINT64"
   )
-  private final Integer roundSeq;
+  private final Long timeMs;
 
-  public QExitGameMsg(Integer userID, Integer roundSeq) {
-    this(userID, roundSeq, ByteString.EMPTY);
+  public QBLightMsg(Integer userID, Long timeMs) {
+    this(userID, timeMs, ByteString.EMPTY);
   }
 
-  public QExitGameMsg(Integer userID, Integer roundSeq, ByteString unknownFields) {
+  public QBLightMsg(Integer userID, Long timeMs, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
-    this.roundSeq = roundSeq;
+    this.timeMs = timeMs;
   }
 
   @Override
   public Builder newBuilder() {
     Builder builder = new Builder();
     builder.userID = userID;
-    builder.roundSeq = roundSeq;
+    builder.timeMs = timeMs;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -66,11 +67,11 @@ public final class QExitGameMsg extends Message<QExitGameMsg, QExitGameMsg.Build
   @Override
   public boolean equals(Object other) {
     if (other == this) return true;
-    if (!(other instanceof QExitGameMsg)) return false;
-    QExitGameMsg o = (QExitGameMsg) other;
+    if (!(other instanceof QBLightMsg)) return false;
+    QBLightMsg o = (QBLightMsg) other;
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(userID, o.userID)
-        && Internal.equals(roundSeq, o.roundSeq);
+        && Internal.equals(timeMs, o.timeMs);
   }
 
   @Override
@@ -79,7 +80,7 @@ public final class QExitGameMsg extends Message<QExitGameMsg, QExitGameMsg.Build
     if (result == 0) {
       result = unknownFields().hashCode();
       result = result * 37 + (userID != null ? userID.hashCode() : 0);
-      result = result * 37 + (roundSeq != null ? roundSeq.hashCode() : 0);
+      result = result * 37 + (timeMs != null ? timeMs.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -89,22 +90,22 @@ public final class QExitGameMsg extends Message<QExitGameMsg, QExitGameMsg.Build
   public String toString() {
     StringBuilder builder = new StringBuilder();
     if (userID != null) builder.append(", userID=").append(userID);
-    if (roundSeq != null) builder.append(", roundSeq=").append(roundSeq);
-    return builder.replace(0, 2, "QExitGameMsg{").append('}').toString();
+    if (timeMs != null) builder.append(", timeMs=").append(timeMs);
+    return builder.replace(0, 2, "QBLightMsg{").append('}').toString();
   }
 
   public byte[] toByteArray() {
-    return QExitGameMsg.ADAPTER.encode(this);
+    return QBLightMsg.ADAPTER.encode(this);
   }
 
-  public static final QExitGameMsg parseFrom(byte[] data) throws IOException {
-    QExitGameMsg c = null;
-       c = QExitGameMsg.ADAPTER.decode(data);
+  public static final QBLightMsg parseFrom(byte[] data) throws IOException {
+    QBLightMsg c = null;
+       c = QBLightMsg.ADAPTER.decode(data);
     return c;
   }
 
   /**
-   * 用户id
+   * 玩家id
    */
   public Integer getUserID() {
     if(userID==null){
@@ -114,39 +115,39 @@ public final class QExitGameMsg extends Message<QExitGameMsg, QExitGameMsg.Build
   }
 
   /**
-   * 轮次顺
+   * 时间戳
    */
-  public Integer getRoundSeq() {
-    if(roundSeq==null){
-        return DEFAULT_ROUNDSEQ;
+  public Long getTimeMs() {
+    if(timeMs==null){
+        return DEFAULT_TIMEMS;
     }
-    return roundSeq;
+    return timeMs;
   }
 
   /**
-   * 用户id
+   * 玩家id
    */
   public boolean hasUserID() {
     return userID!=null;
   }
 
   /**
-   * 轮次顺
+   * 时间戳
    */
-  public boolean hasRoundSeq() {
-    return roundSeq!=null;
+  public boolean hasTimeMs() {
+    return timeMs!=null;
   }
 
-  public static final class Builder extends Message.Builder<QExitGameMsg, Builder> {
+  public static final class Builder extends Message.Builder<QBLightMsg, Builder> {
     private Integer userID;
 
-    private Integer roundSeq;
+    private Long timeMs;
 
     public Builder() {
     }
 
     /**
-     * 用户id
+     * 玩家id
      */
     public Builder setUserID(Integer userID) {
       this.userID = userID;
@@ -154,46 +155,46 @@ public final class QExitGameMsg extends Message<QExitGameMsg, QExitGameMsg.Build
     }
 
     /**
-     * 轮次顺
+     * 时间戳
      */
-    public Builder setRoundSeq(Integer roundSeq) {
-      this.roundSeq = roundSeq;
+    public Builder setTimeMs(Long timeMs) {
+      this.timeMs = timeMs;
       return this;
     }
 
     @Override
-    public QExitGameMsg build() {
-      return new QExitGameMsg(userID, roundSeq, super.buildUnknownFields());
+    public QBLightMsg build() {
+      return new QBLightMsg(userID, timeMs, super.buildUnknownFields());
     }
   }
 
-  private static final class ProtoAdapter_QExitGameMsg extends ProtoAdapter<QExitGameMsg> {
-    public ProtoAdapter_QExitGameMsg() {
-      super(FieldEncoding.LENGTH_DELIMITED, QExitGameMsg.class);
+  private static final class ProtoAdapter_QBLightMsg extends ProtoAdapter<QBLightMsg> {
+    public ProtoAdapter_QBLightMsg() {
+      super(FieldEncoding.LENGTH_DELIMITED, QBLightMsg.class);
     }
 
     @Override
-    public int encodedSize(QExitGameMsg value) {
+    public int encodedSize(QBLightMsg value) {
       return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.userID)
-          + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.roundSeq)
+          + ProtoAdapter.SINT64.encodedSizeWithTag(2, value.timeMs)
           + value.unknownFields().size();
     }
 
     @Override
-    public void encode(ProtoWriter writer, QExitGameMsg value) throws IOException {
+    public void encode(ProtoWriter writer, QBLightMsg value) throws IOException {
       ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.userID);
-      ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.roundSeq);
+      ProtoAdapter.SINT64.encodeWithTag(writer, 2, value.timeMs);
       writer.writeBytes(value.unknownFields());
     }
 
     @Override
-    public QExitGameMsg decode(ProtoReader reader) throws IOException {
+    public QBLightMsg decode(ProtoReader reader) throws IOException {
       Builder builder = new Builder();
       long token = reader.beginMessage();
       for (int tag; (tag = reader.nextTag()) != -1;) {
         switch (tag) {
           case 1: builder.setUserID(ProtoAdapter.UINT32.decode(reader)); break;
-          case 2: builder.setRoundSeq(ProtoAdapter.UINT32.decode(reader)); break;
+          case 2: builder.setTimeMs(ProtoAdapter.SINT64.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -206,7 +207,7 @@ public final class QExitGameMsg extends Message<QExitGameMsg, QExitGameMsg.Build
     }
 
     @Override
-    public QExitGameMsg redact(QExitGameMsg value) {
+    public QBLightMsg redact(QBLightMsg value) {
       Builder builder = value.newBuilder();
       builder.clearUnknownFields();
       return builder.build();

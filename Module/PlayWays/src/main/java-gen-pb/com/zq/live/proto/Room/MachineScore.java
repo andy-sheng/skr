@@ -51,7 +51,7 @@ public final class MachineScore extends Message<MachineScore, MachineScore.Build
   private final Integer itemID;
 
   /**
-   * 机器分数
+   * 机器分数 (游戏开始后，使用特殊值999向其他端同步歌词行数)
    */
   @WireField(
       tag = 3,
@@ -173,7 +173,7 @@ public final class MachineScore extends Message<MachineScore, MachineScore.Build
   }
 
   /**
-   * 机器分数
+   * 机器分数 (游戏开始后，使用特殊值999向其他端同步歌词行数)
    */
   public Integer getScore() {
     if(score==null){
@@ -217,7 +217,7 @@ public final class MachineScore extends Message<MachineScore, MachineScore.Build
   }
 
   /**
-   * 机器分数
+   * 机器分数 (游戏开始后，使用特殊值999向其他端同步歌词行数)
    */
   public boolean hasScore() {
     return score!=null;
@@ -268,7 +268,7 @@ public final class MachineScore extends Message<MachineScore, MachineScore.Build
     }
 
     /**
-     * 机器分数
+     * 机器分数 (游戏开始后，使用特殊值999向其他端同步歌词行数)
      */
     public Builder setScore(Integer score) {
       this.score = score;

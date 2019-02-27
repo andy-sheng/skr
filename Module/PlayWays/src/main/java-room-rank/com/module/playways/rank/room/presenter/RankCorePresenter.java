@@ -44,6 +44,7 @@ import com.module.playways.rank.msg.filter.PushMsgFilter;
 import com.module.playways.rank.msg.manager.ChatRoomMsgManager;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
+import com.module.playways.rank.room.model.RankPlayerInfoModel;
 import com.module.playways.rank.room.model.RankRoundInfoModel;
 import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
 import com.module.playways.rank.room.RankRoomData;
@@ -140,7 +141,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
             super.handleMessage(msg);
             switch (msg.what) {
                 case MSG_ROBOT_SING_BEGIN:
-                    robotSingBegin((PlayerInfoModel) msg.obj);
+                    robotSingBegin((RankPlayerInfoModel) msg.obj);
                     break;
                 case MSG_ENSURE_SWITCH_BROADCAST_SUCCESS:
                     onChangeBroadcastSuccess();
@@ -717,7 +718,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
-    private void robotSingBegin(PlayerInfoModel playerInfo) {
+    private void robotSingBegin(RankPlayerInfoModel playerInfo) {
         String skrerUrl = playerInfo.getResourceInfoList().get(0).getAudioURL();
         String midiUrl = playerInfo.getResourceInfoList().get(0).getMidiURL();
         if (mRobotScoreHelper == null) {
@@ -1481,7 +1482,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         int mainLevel = 0;
         PlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, MyUserInfoManager.getInstance().getUid());
         if (playerInfoModel != null) {
-            mainLevel = playerInfoModel.getMainLevel();
+            mainLevel = playerInfoModel.getUserInfo().getMainLevel();
         }
         map.put("mainLevel", mainLevel);
         map.put("no", line);

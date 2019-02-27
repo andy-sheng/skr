@@ -18,6 +18,7 @@ import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.room.RankRoomData;
 import com.module.playways.rank.room.model.AudienceScoreModel;
+import com.module.playways.rank.room.model.RankPlayerInfoModel;
 import com.module.playways.rank.room.model.UserGameResultModel;
 import com.module.rank.R;
 import com.zq.live.proto.Room.ELightType;
@@ -103,7 +104,7 @@ public class RankResultView extends RelativeLayout {
             return;
         }
         UserGameResultModel userGameResultModel = roomData.getRecordData().getUserGameResultModel(useID);
-        PlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(roomData, userGameResultModel.getUserID());
+        RankPlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(roomData, userGameResultModel.getUserID());
         if (playerInfoModel != null) {
             AvatarUtils.loadAvatarByUrl(mAvatarIv,
                     AvatarUtils.newParamsBuilder(playerInfoModel.getUserInfo().getAvatar())

@@ -22,6 +22,7 @@ import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.manager.BgMusicManager;
 import com.module.playways.BaseRoomData;
 import com.module.playways.grab.room.event.ShowPersonCardEvent;
+import com.module.playways.rank.room.RankRoomData;
 import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.comment.CommentView;
 import com.module.playways.rank.room.fragment.RankResultFragment;
@@ -62,7 +63,7 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
 
     public final static String TAG = "GrabRoomFragment";
 
-    BaseRoomData mRoomData;
+    RankRoomData mRoomData;
 
     RelativeLayout mRankingContainer;
 
@@ -318,7 +319,7 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
     public void setData(int type, @Nullable Object data) {
         super.setData(type, data);
         if (type == 0) {
-            mRoomData = (BaseRoomData) data;
+            mRoomData = (RankRoomData) data;
         }
     }
 

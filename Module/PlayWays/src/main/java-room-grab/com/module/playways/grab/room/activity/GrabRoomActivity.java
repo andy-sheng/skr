@@ -17,6 +17,7 @@ import com.common.utils.U;
 import com.component.busilib.constans.GameModeType;
 import com.module.RouterConstants;
 import com.module.playways.grab.room.GrabRoomData;
+import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.PrepareData;
@@ -63,7 +64,7 @@ public class GrabRoomActivity extends BaseActivity {
             // TODO: 2019/2/26  这里需要把当前的轮次找到设置
             mRoomData.setExpectRoundInfo(RoomDataUtils.findFirstRoundInfo(mRoomData.getRoundInfoModelList()));
             MyLog.d(TAG, "" + prepareData.getPlayerInfoList());
-            mRoomData.setPlayerInfoList(prepareData.getPlayerInfoList());
+//            mRoomData.setPlayerInfoList(prepareData.getPlayerInfoList());
         } else {
             //TODO test
             {
@@ -76,9 +77,9 @@ public class GrabRoomActivity extends BaseActivity {
                     roundingMode.setSongModel(songModel);
                     roundingModeList.add(roundingMode);
                 }
-                List<PlayerInfoModel> playerInfoModelList = new ArrayList<>();
+                List<GrabPlayerInfoModel> playerInfoModelList = new ArrayList<>();
                 for (int i = 0; i < 5; i++) {
-                    PlayerInfoModel playerInfoModel = new PlayerInfoModel();
+                    GrabPlayerInfoModel playerInfoModel = new GrabPlayerInfoModel();
                     UserInfoModel userInfoModel = new UserInfoModel();
                     if (i == 0) {
                         userInfoModel.setAvatar(MyUserInfoManager.getInstance().getAvatar());
@@ -93,9 +94,10 @@ public class GrabRoomActivity extends BaseActivity {
                     playerInfoModel.setUserInfo(userInfoModel);
                     playerInfoModelList.add(playerInfoModel);
                 }
-                mRoomData.setPlayerInfoList(playerInfoModelList);
                 mRoomData.setRoundInfoModelList(roundingModeList);
-                mRoomData.setExpectRoundInfo(RoomDataUtils.findFirstRoundInfo(mRoomData.getRoundInfoModelList()));
+                GrabRoundInfoModel grabRoundInfoModel = RoomDataUtils.findFirstRoundInfo(mRoomData.getRoundInfoModelList());
+                grabRoundInfoModel.setPlayUsers(playerInfoModelList);
+                mRoomData.setExpectRoundInfo(grabRoundInfoModel);
             }
         }
 
