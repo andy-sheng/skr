@@ -46,7 +46,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class GrabTopRv extends RelativeLayout {
+public class GrabPlayerRv extends RelativeLayout {
     public final static String TAG = "GrabTopRv";
 
     private LinkedHashMap<Integer, VP> mInfoMap = new LinkedHashMap<>();
@@ -60,17 +60,17 @@ public class GrabTopRv extends RelativeLayout {
     SVGAParser mSVGAParser;
 
 
-    public GrabTopRv(Context context) {
+    public GrabPlayerRv(Context context) {
         super(context);
         init();
     }
 
-    public GrabTopRv(Context context, @Nullable AttributeSet attrs) {
+    public GrabPlayerRv(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public GrabTopRv(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public GrabPlayerRv(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
@@ -122,7 +122,7 @@ public class GrabTopRv extends RelativeLayout {
             if (vp.SVGAImageView == null) {
                 vp.SVGAImageView = new SVGAImageView(getContext());
                 LayoutParams lp = new LayoutParams(U.getDisplayUtils().dip2px(100), U.getDisplayUtils().dip2px(100));
-                GrabTopRv.this.addView(vp.SVGAImageView, lp);
+                GrabPlayerRv.this.addView(vp.SVGAImageView, lp);
             }
 
 //            if (i % 2 == 0) {

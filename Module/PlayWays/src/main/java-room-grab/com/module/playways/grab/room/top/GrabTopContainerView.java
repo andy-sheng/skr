@@ -24,7 +24,7 @@ public class GrabTopContainerView extends RelativeLayout {
     public final static String TAG = "GrapTopContainerView";
 
     RelativeLayout mRelativeLayoutIconContainer;
-    GrabTopRv mTopContentRv;
+    GrabPlayerRv mTopContentRv;
     ExImageView mMoreBtn;
     ExTextView mSongIndexTv;
     MoreOpView mMoreOpView;
