@@ -10,6 +10,7 @@
         android:layout_width="@dimen/view_311_dp"
         android:layout_height="wrap_content"
         android:background="@drawable/img_kaishipipei_bg"
-        android:paddingBottom="@dimen/view_24_dp" />
+        android:paddingTop="@dimen/view_12_dp"
+        android:paddingBottom="@dimen/view_12_dp" />
 
 </com.common.view.ex.ExLinearLayout>

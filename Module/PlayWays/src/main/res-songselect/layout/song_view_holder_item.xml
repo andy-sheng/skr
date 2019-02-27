@@ -7,7 +7,7 @@
         android:id="@+id/song_cover_iv"
         android:layout_width="@dimen/view_48_dp"
         android:layout_height="@dimen/view_48_dp"
-        android:layout_alignParentBottom="true"
+        android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/view_22_dp" />
 
     <com.common.view.ex.ExTextView
@@ -15,9 +15,8 @@
         android:layout_width="@dimen/view_58_dp"
         android:layout_height="@dimen/view_33_dp"
         android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
+        android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/view_16_dp"
-        android:layout_marginBottom="@dimen/view_7_dp"
         android:gravity="center"
         android:text="演唱"
         android:textColor="#0C2275"
