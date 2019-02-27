@@ -70,7 +70,7 @@ public class ApiManager {
             } else if (U.getChannelUtils().isSandboxChannel()) {
                 return "sandbox.api.inframe.mobi";
             } else {
-                // 说明是线下环境，暂时没给域名
+                // 说明是线上环境，暂时没给域名
                 return "api.inframe.mobi";
             }
         } else if (host.endsWith("game.inframe.mobi")) {
@@ -81,7 +81,7 @@ public class ApiManager {
             } else if (U.getChannelUtils().isSandboxChannel()) {
                 return "sandbox.game.inframe.mobi";
             } else {
-                // 说明是线下环境，暂时没给域名
+                // 说明是线上环境，暂时没给域名
                 return "game.inframe.mobi";
             }
         } else if (host.endsWith("res.inframe.mobi")) {
@@ -92,8 +92,19 @@ public class ApiManager {
             } else if (U.getChannelUtils().isSandboxChannel()) {
                 return "sandbox.res.inframe.mobi";
             } else {
-                // 说明是线下环境，暂时没给域名
+                // 说明是线上环境，暂时没给域名
                 return "res.inframe.mobi";
+            }
+        }else if(host.endsWith("kconf.inframe.mobi")){
+            if (U.getChannelUtils().isDevChannel()) {
+                return "dev.kconf.inframe.mobi";
+            } else if (U.getChannelUtils().isTestChannel()) {
+                return "test.kconf.inframe.mobi";
+            } else if (U.getChannelUtils().isSandboxChannel()) {
+                return "sandbox.kconf.inframe.mobi";
+            } else {
+                // 说明是线上环境，暂时没给域名
+                return "kconf.inframe.mobi";
             }
         }
         return host;
