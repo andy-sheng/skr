@@ -45,7 +45,7 @@ public class RankRoomData extends BaseRoomData<RankRoundInfoModel> {
         if (mExpectRoundInfo == null) {
             // 结束状态了
             if (mRealRoundInfo != null) {
-                BaseRoundInfoModel lastRoundInfoModel = mRealRoundInfo;
+                RankRoundInfoModel lastRoundInfoModel = mRealRoundInfo;
                 mRealRoundInfo = null;
                 EventBus.getDefault().post(new RoundInfoChangeEvent(false, lastRoundInfoModel));
             }
@@ -53,7 +53,7 @@ public class RankRoomData extends BaseRoomData<RankRoundInfoModel> {
         }
         if (!RoomDataUtils.roundInfoEqual(mExpectRoundInfo, mRealRoundInfo)) {
             // 轮次需要更新了
-            BaseRoundInfoModel lastRoundInfoModel = mRealRoundInfo;
+            RankRoundInfoModel lastRoundInfoModel = mRealRoundInfo;
             mRealRoundInfo = mExpectRoundInfo;
             if (mRealRoundInfo.getUserID() == UserAccountManager.getInstance().getUuidAsLong()) {
                 // 轮到自己唱了。开始发心跳，开始倒计时，3秒后 开始开始混伴奏，开始解除引擎mute，
@@ -72,6 +72,7 @@ public class RankRoomData extends BaseRoomData<RankRoundInfoModel> {
     public RecordData getRecordData() {
         return mRecordData;
     }
+
     public int getLeftBurstLightTimes() {
         return mLeftBaoLightTimes;
     }
