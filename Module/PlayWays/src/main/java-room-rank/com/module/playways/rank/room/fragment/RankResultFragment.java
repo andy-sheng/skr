@@ -64,17 +64,19 @@ public class RankResultFragment extends BaseFragment {
             }
         });
 
-        if (mRoomData.getRecordData().getSelfWinType() == EWinType.Win.getValue()) {
-            mResultTop.setBackground(getResources().getDrawable(R.drawable.zhanji_top_win));
-        } else if (mRoomData.getRecordData().getSelfWinType() == EWinType.Draw.getValue()) {
-            mResultTop.setBackground(getResources().getDrawable(R.drawable.zhanji_top_draw));
-        } else if (mRoomData.getRecordData().getSelfWinType() == EWinType.Lose.getValue()) {
-            mResultTop.setBackground(getResources().getDrawable(R.drawable.zhanji_top_loss));
-        }
+        if (mRoomData.getRecordData() != null) {
+            if (mRoomData.getRecordData().getSelfWinType() == EWinType.Win.getValue()) {
+                mResultTop.setBackground(getResources().getDrawable(R.drawable.zhanji_top_win));
+            } else if (mRoomData.getRecordData().getSelfWinType() == EWinType.Draw.getValue()) {
+                mResultTop.setBackground(getResources().getDrawable(R.drawable.zhanji_top_draw));
+            } else if (mRoomData.getRecordData().getSelfWinType() == EWinType.Lose.getValue()) {
+                mResultTop.setBackground(getResources().getDrawable(R.drawable.zhanji_top_loss));
+            }
 
-        mFirstResult.bindData(mRoomData, mRoomData.getRecordData().getUserIdByRank(1), 1);
-        mSecondResult.bindData(mRoomData, mRoomData.getRecordData().getUserIdByRank(2), 2);
-        mThirdResult.bindData(mRoomData, mRoomData.getRecordData().getUserIdByRank(3), 3);
+            mFirstResult.bindData(mRoomData, mRoomData.getRecordData().getUserIdByRank(1), 1);
+            mSecondResult.bindData(mRoomData, mRoomData.getRecordData().getUserIdByRank(2), 2);
+            mThirdResult.bindData(mRoomData, mRoomData.getRecordData().getUserIdByRank(3), 3);
+        }
 
         mShareIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -94,7 +96,6 @@ public class RankResultFragment extends BaseFragment {
 
                 mGameRoleDialog = DialogPlus.newDialog(getContext())
                         .setContentHolder(new ViewHolder(R.layout.game_role_view_layout))
-                        .setContentHeight(U.getDisplayUtils().dip2px(200))
                         .setContentBackgroundResource(R.color.transparent)
                         .setOverlayBackgroundResource(R.color.black_trans_50)
                         .setExpanded(false)

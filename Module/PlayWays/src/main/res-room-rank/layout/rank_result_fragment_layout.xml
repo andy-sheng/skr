@@ -29,7 +29,7 @@
             <com.common.view.ex.ExTextView
                 android:layout_width="@dimen/view_0_dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="5"
                 android:gravity="center"
                 android:text="演唱者"
                 android:textColor="#9697A0"
@@ -38,7 +38,7 @@
             <com.common.view.ex.ExTextView
                 android:layout_width="@dimen/view_0_dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="4"
                 android:gravity="center"
                 android:text="观众评分"
                 android:textColor="#9697A0"
@@ -47,7 +47,7 @@
             <com.common.view.ex.ExTextView
                 android:layout_width="@dimen/view_0_dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:gravity="center"
                 android:text="综合评分"
                 android:textColor="#9697A0"
