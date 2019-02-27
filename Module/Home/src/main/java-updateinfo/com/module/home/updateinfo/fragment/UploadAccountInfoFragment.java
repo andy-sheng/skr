@@ -66,7 +66,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
     String mLastName = "";   //最后一次检查的昵称
 
     CompositeDisposable mCompositeDisposable;
-    PublishSubject<String> mPublishSubject;
+    PublishSubject<String> mPublishSubject = PublishSubject.create();
     DisposableObserver<ApiResult> mDisposableObserver;
 
     @Override
@@ -102,7 +102,8 @@ public class UploadAccountInfoFragment extends BaseFragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                int length = U.getStringUtils().getStringLength(editable.toString());
+                String str = editable.toString();
+                int length = U.getStringUtils().getStringLength(str);
                 if (length > 14) {
                     mNicknameHintTv.setVisibility(View.VISIBLE);
                     mNicknameHintTv.setTextColor(Color.parseColor("#EF5E85"));
@@ -115,7 +116,9 @@ public class UploadAccountInfoFragment extends BaseFragment {
                     setCompleteTv(false);
                 } else {
                     mNicknameHintTv.setVisibility(View.GONE);
-                    mPublishSubject.onNext(editable.toString());
+                    if (mPublishSubject != null) {
+                        mPublishSubject.onNext(str);
+                    }
                 }
             }
         });
@@ -237,7 +240,6 @@ public class UploadAccountInfoFragment extends BaseFragment {
     }
 
     private void initPublishSubject() {
-        mPublishSubject = PublishSubject.create();
         mDisposableObserver = new DisposableObserver<ApiResult>() {
             @Override
             public void onNext(ApiResult result) {
