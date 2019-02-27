@@ -61,4 +61,10 @@ public class UploadAccountInfoActivity extends BaseActivity {
     public boolean onBackPressedForActivity() {
         return true;
     }
+
+    @Override
+    public boolean resizeLayoutSelfWhenKeybordShow() {
+        // 自己处理有键盘时的整体布局
+        return true;
+    }
 }

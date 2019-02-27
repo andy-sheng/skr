@@ -20,7 +20,7 @@
             android:exported="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateUnspecified|adjustPan" />
+            android:windowSoftInputMode="adjustResize" />
 
     </application>
 
