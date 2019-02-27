@@ -72,9 +72,17 @@ public class GrabOpView extends RelativeLayout {
                 case MSG_HIDE:
                     mIvLightOff.setVisibility(GONE);
                     mGrabContainer.setVisibility(GONE);
+                    mIvBurst.setVisibility(GONE);
                     break;
                 case MSG_SHOW_BRUST_BTN:
-                    mIvBurst.setVisibility(VISIBLE);
+                    TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF,1.0f,Animation.RELATIVE_TO_SELF,0.0f,
+                            Animation.RELATIVE_TO_SELF,0,Animation.RELATIVE_TO_SELF,0);
+                    animation.setDuration(200);
+                    animation.setRepeatMode(Animation.REVERSE);
+                    animation.setInterpolator(new OvershootInterpolator());
+                    animation.setFillAfter(true);
+                    mIvBurst.startAnimation(animation);
+                    mIvBurst.setEnabled(true);
                     break;
             }
         }
@@ -104,7 +112,6 @@ public class GrabOpView extends RelativeLayout {
         mIvBurst = findViewById(R.id.iv_burst);
 
         mBtnIv.setOnClickListener(new DebounceViewClickListener() {
-
             @Override
             public void clickValid(View v) {
                 if (mStatus == STATUS_GRAP) {
@@ -153,14 +160,10 @@ public class GrabOpView extends RelativeLayout {
         // 播放 3 2 1 导唱倒计时
         MyLog.d(TAG, "playCountDown");
         mSeq = seq;
-        mBtnIv.clearAnimation();
-        mBtnIv.setClickable(false);
-        mIvLightOff.setVisibility(GONE);
-        mIvBurst.setVisibility(GONE);
-        mGrabContainer.setVisibility(VISIBLE);
+
         mStatus = STATUS_COUNT_DOWN;
-        mUiHandler.removeMessages(MSG_HIDE_FROM_END_GUIDE_AUDIO);
-        mUiHandler.removeMessages(MSG_HIDE);
+        onChangeState();
+        mUiHandler.removeCallbacksAndMessages(null);
 
         TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF,1.0f,Animation.RELATIVE_TO_SELF,0.0f,
                 Animation.RELATIVE_TO_SELF,0,Animation.RELATIVE_TO_SELF,0);
@@ -190,7 +193,6 @@ public class GrabOpView extends RelativeLayout {
                                 break;
                         }
                         mBtnIv.setImageDrawable(drawable);
-//                        mGrabOpBtn.setBackgroundResource(R.drawable.yanchangjiemian_dabian);
                     }
 
                     @Override
@@ -200,9 +202,6 @@ public class GrabOpView extends RelativeLayout {
                             mListener.countDownOver();
                         }
                         // 按钮变成抢唱，且可点击
-                        mBtnIv.setClickable(true);
-                        mBtnIv.setImageDrawable(U.getDrawable(R.drawable.xiangchang));
-
                         mUiHandler.removeMessages(MSG_HIDE_FROM_END_GUIDE_AUDIO);
 
                         if(waitNum <= 0){
@@ -216,18 +215,52 @@ public class GrabOpView extends RelativeLayout {
                         }
 
                         mStatus = STATUS_GRAP;
-
-                        ScaleAnimation animation = new ScaleAnimation(
-                                1.0f, 1.1f, 1.0f, 1.1f,
-                                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f
-                        );
-
-                        animation.setRepeatCount(INFINITE);
-                        animation.setRepeatMode(REVERSE);
-                        animation.setDuration(500);
-                        mBtnIv.startAnimation(animation);
+                        onChangeState();
                     }
                 });
+    }
+
+    /**
+     * 状态发生变化
+     */
+    private void onChangeState(){
+        switch (mStatus){
+            case STATUS_COUNT_DOWN:
+                mIvLightOff.setVisibility(GONE);
+                mIvBurst.setVisibility(GONE);
+                mGrabContainer.setVisibility(VISIBLE);
+                mBtnIv.setEnabled(false);
+                mBtnIv.setBackground(U.getDrawable(R.drawable.xiangchang_bj));
+
+                break;
+            case STATUS_GRAP:
+                mGrabContainer.setVisibility(VISIBLE);
+                mIvLightOff.setVisibility(GONE);
+                mIvBurst.setVisibility(GONE);
+                mBtnIv.setEnabled(true);
+                mBtnIv.setImageDrawable(null);
+                mBtnIv.setBackground(null);
+                Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20))
+                        .setShape(DrawableCreator.Shape.Rectangle)
+                        .setPressedDrawable(U.getDrawable(R.drawable.xiangchang_anxia))
+                        .setUnPressedDrawable(U.getDrawable(R.drawable.xiangchang_daojishi))
+                        .build();
+                mBtnIv.setImageDrawable(drawable);
+
+                break;
+            case STATUS_CAN_OP:
+                mGrabContainer.setVisibility(GONE);
+                mIvLightOff.setVisibility(VISIBLE);
+                mIvBurst.setVisibility(VISIBLE);
+
+                mIvLightOff.setBackground(U.getDrawable(R.drawable.miedeng_bj));
+                mIvLightOff.setClickable(false);
+                break;
+            case STATUS_HAS_OP:
+                hide();
+                break;
+        }
+
     }
 
     public void hide(){
@@ -244,6 +277,7 @@ public class GrabOpView extends RelativeLayout {
         startAnimation(animation);
 
         mUiHandler.removeMessages(MSG_HIDE_FROM_END_GUIDE_AUDIO);
+        mUiHandler.removeMessages(MSG_SHOW_BRUST_BTN);
         Message msg = mUiHandler.obtainMessage(MSG_HIDE);
         mUiHandler.sendMessageDelayed(msg, 200);
     }
@@ -264,13 +298,9 @@ public class GrabOpView extends RelativeLayout {
 
         setVisibility(VISIBLE);
         mStatus = STATUS_CAN_OP;
-        mIvLightOff.setVisibility(VISIBLE);
-        mIvLightOff.setBackground(U.getDrawable(R.drawable.mie_red_bj));
-        mGrabContainer.setVisibility(GONE);
-        mIvLightOff.setClickable(false);
-        mUiHandler.removeMessages(MSG_HIDE_FROM_END_GUIDE_AUDIO);
-        mUiHandler.removeMessages(MSG_HIDE);
-        mUiHandler.removeMessages(MSG_SHOW_BRUST_BTN);
+        onChangeState();
+
+        mUiHandler.removeCallbacksAndMessages(null);
 
         cancelCountDownTask();
         mCountDownTask = HandlerTaskTimer.newBuilder().interval(1000)
@@ -314,6 +344,7 @@ public class GrabOpView extends RelativeLayout {
                                 .setPressedDrawable(U.getDrawable(R.drawable.grab_yanchang_miedeng))
                                 .setUnPressedDrawable(U.getDrawable(R.drawable.grab_miedeng_anxia))
                                 .build();
+
                         mIvLightOff.setImageDrawable(drawable);
 
                     }
@@ -324,11 +355,13 @@ public class GrabOpView extends RelativeLayout {
         mUiHandler.sendMessageDelayed(msg, 15000);
     }
 
-    public void toLightOffState(){
+    /**
+     * 有人操作了等，灭灯或者爆灯
+     */
+    public void hasOpLight(boolean burst){
         if(mStatus == STATUS_CAN_OP){
             mStatus = STATUS_HAS_OP;
-            mIvLightOff.setBackground(U.getDrawable(R.drawable.mie_an_bj));
-            mIvLightOff.setClickable(false);
+            onChangeState();
         }
     }
 

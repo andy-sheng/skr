@@ -24,7 +24,6 @@ import com.common.utils.U;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.manager.BgMusicManager;
 import com.dialog.view.TipsDialogView;
-import com.module.playways.BaseRoomData;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.LightOffAnimationOverEvent;
@@ -464,7 +463,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         U.getSoundUtils().play(TAG, R.raw.dislike);
         //自己灭了别人的灯成功了
         if (event.uid == MyUserInfoManager.getInstance().getUid()) {
-            mGrabOpBtn.toLightOffState();
+            mGrabOpBtn.hasOpLight(false);
         }
     }
 
