@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
 import android.text.SpannableStringBuilder;
 import android.text.TextPaint;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -51,8 +52,17 @@ public class CommentHolder extends RecyclerView.ViewHolder {
                 .build());
 
         if (model.getUserId() == BaseRoomData.SYSTEM_ID) {
-            mCommentTv.setText(model.getContent());
-            mCommentTv.setTextColor(model.getTextColor());
+            if (model.getCommentType() == CommentModel.TYPE_RANK_MIE) {
+                SpannableStringBuilder ssb = new SpanUtils()
+                        .append("选手").setForegroundColor(model.getTextColor())
+                        .append(model.getHighlightContent()).setForegroundColor(model.getNameColor())
+                        .append(model.getContent()).setForegroundColor(model.getTextColor())
+                        .create();
+                mCommentTv.setText(ssb);
+            } else {
+                mCommentTv.setText(model.getContent());
+                mCommentTv.setTextColor(model.getTextColor());
+            }
         } else {
             SpannableStringBuilder ssb = new SpanUtils()
                     .append(model.getUserName() + "  ").setForegroundColor(model.getNameColor())
@@ -61,13 +71,6 @@ public class CommentHolder extends RecyclerView.ViewHolder {
         }
     }
 
-
-    float getTextSize(TextView view) {
-        CharSequence text = view.getText();
-        TextPaint paint = view.getPaint();
-        float textSize = (int) Layout.getDesiredWidth(text, 0, text.length(), paint);
-        return textSize;
-    }
 
     public void setListener(RecyclerOnItemClickListener recyclerOnItemClickListener) {
         mRecyclerOnItemClickListener = recyclerOnItemClickListener;

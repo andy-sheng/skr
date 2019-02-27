@@ -3,6 +3,7 @@ package com.module.playways.rank.room.view;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -13,17 +14,23 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.module.playways.BaseRoomData;
+import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.prepare.model.GameConfigModel;
 import com.module.playways.rank.prepare.model.PkScoreTipMsgModel;
+import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.room.RankRoomData;
+import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.event.PkSomeOneBurstLightEvent;
 import com.module.playways.rank.room.event.PkSomeOneLightOffEvent;
+import com.module.playways.rank.room.event.PretendCommentMsgEvent;
 import com.module.playways.rank.room.score.RobotScoreHelper;
 import com.module.playways.rank.room.score.bar.EnergySlotView;
 import com.module.playways.rank.room.score.bar.ScoreTipsView;
 import com.module.rank.R;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
+import com.zq.live.proto.Common.UserInfo;
+import com.zq.live.proto.Room.PlayerInfo;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -189,7 +196,7 @@ public class RankTopContainerView2 extends RelativeLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(RobotScoreHelper.RobotSongLineNum event) {
-        MyLog.d(TAG,"onEvent" + " event=" + event.lineNum);
+        MyLog.d(TAG, "onEvent" + " event=" + event.lineNum);
         setScoreProgress(999, 0, event.lineNum);
     }
 
@@ -201,15 +208,34 @@ public class RankTopContainerView2 extends RelativeLayout {
         ul.mLightState = LightState.MIE;
         if (mStatusArr[0] == null) {
             setLight(0, ul);
+            pretendMieComment(uid, 0);
         } else {
             if (mStatusArr[1] == null) {
                 setLight(1, ul);
+                pretendMieComment(uid, 1);
             } else if (mStatusArr[2] == null) {
                 setLight(2, ul);
+                pretendMieComment(uid, 2);
             }
         }
         mCurScore -= mRoomData.getGameConfigModel().getpKBLightEnergyPercentage() * mTotalScore;
         tryPlayProgressAnimation();
+    }
+
+    private void pretendMieComment(int uid, int index) {
+        CommentModel commentModel = new CommentModel();
+        commentModel.setCommentType(CommentModel.TYPE_RANK_MIE);
+        commentModel.setUserId(BaseRoomData.SYSTEM_ID);
+        commentModel.setAvatar(BaseRoomData.SYSTEM_AVATAR);
+        commentModel.setUserName("系统消息");
+        commentModel.setAvatarColor(Color.WHITE);
+        commentModel.setTextColor(Color.parseColor("#EF5E85"));
+        PlayerInfoModel model = RoomDataUtils.getPlayerInfoById(mRoomData, uid);
+        if (model != null) {
+            commentModel.setContent("收到" + (index + 1) + "个'x'");
+            commentModel.setHighlightContent(model.getUserInfo().getNickname());
+        }
+        EventBus.getDefault().post(new PretendCommentMsgEvent(commentModel));
     }
 
     private void parseBurstEvent(int uid) {

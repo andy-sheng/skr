@@ -2,6 +2,7 @@ package com.module.playways.rank.msg.event;
 
 import com.module.playways.rank.msg.BasePushInfo;
 
+// 处理用户真实的信息
 public class CommentMsgEvent {
 
     public final static int MSG_TYPE_SEND = 0;
