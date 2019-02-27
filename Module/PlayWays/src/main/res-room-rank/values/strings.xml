@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="rank_quick_msg_arr">
-        <item>开口跪！</item>
-        <item>高手，这是高手</item>
-        <item>大家好，我先表演一个劈叉！</item>
-        <item>你可真skr小调皮！</item>
-        <item>你是国家分配给我的对象吗！</item>
-        <item>好好唱，不然我喊撕哥来揍你！</item>
-        <item>请开始你的表演！</item>
-        <item>你这该死的，无处安放的魅力！</item>
-        <item>我关注你你就关注我好不好呀</item>
-        <item>秀儿，是你吗？</item>
+        <item>兄dei，唱歌这件事要走心喔</item>
+        <item>好好唱，我可要灭灯啦！</item>
+        <item>大点声，俺听不见。。</item>
+        <item>my god 这是什么神仙嗓音？</item>
+        <item>完了，耳朵要怀孕了</item>
+        <item>声音这么好听，人长的也很美吧？</item>
+        <item>这是原唱吗？简直和放CD一样！</item>
+        <item>这首歌送给你</item>
+        <item>我关注你，你就关注我好不好呀？？</item>
     </string-array>
-
+    
     <string-array name="grab_quick_msg_arr">
         <item>开口跪！</item>
         <item>灭灯还是灭你！</item>
