@@ -352,7 +352,7 @@ public class UserAccountManager {
      *
      * @param deleteAccount
      */
-    private void logoff(final boolean deleteAccount, final int reason, boolean notifyServer) {
+    public void logoff(final boolean deleteAccount, final int reason, boolean notifyServer) {
         MyLog.w(TAG, "logoff" + " deleteAccount=" + deleteAccount + " reason=" + reason + " notifyServer=" + notifyServer);
         if (!UserAccountManager.getInstance().hasAccount()) {
             MyLog.w(TAG, "logoff but hasAccount = false");

@@ -15,6 +15,8 @@ import android.widget.RelativeLayout;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
+import com.common.core.account.UserAccountManager;
+import com.common.core.account.event.AccountEvent;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.MyUserInfoServerApi;
 import com.common.log.MyLog;
@@ -129,6 +131,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
                 if (getActivity() != null) {
                     getActivity().finish();
                 }
+                UserAccountManager.getInstance().logoff(true, AccountEvent.LogoffAccountEvent.REASON_SELF_QUIT, false);
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_LOGIN)
                         .greenChannel().navigation();
             }
