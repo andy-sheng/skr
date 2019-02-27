@@ -2,6 +2,7 @@ package com.module.playways.rank.room.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.Gravity;
 import android.view.View;
 
 import com.common.base.BaseFragment;
@@ -16,6 +17,8 @@ import com.module.playways.BaseRoomData;
 import com.module.playways.rank.room.RankRoomData;
 import com.module.playways.rank.room.view.RankResultView;
 import com.module.rank.R;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.live.proto.Room.EWinType;
 
 import java.util.concurrent.TimeUnit;
@@ -32,8 +35,11 @@ public class RankResultFragment extends BaseFragment {
     ExImageView mResultTop;
     ExImageView mResultExit;
     ExImageView mShareIv;
+    ExImageView mIvGameRole;
 
     RankRoomData mRoomData;
+
+    DialogPlus mGameRoleDialog;
 
     @Override
     public int initView() {
@@ -48,7 +54,8 @@ public class RankResultFragment extends BaseFragment {
         mThirdResult = (RankResultView) mRootView.findViewById(R.id.third_result);
         mResultTop = (ExImageView) mRootView.findViewById(R.id.result_top);
         mResultExit = (ExImageView) mRootView.findViewById(R.id.result_exit);
-        mShareIv = (ExImageView)mRootView.findViewById(R.id.share_iv);
+        mShareIv = (ExImageView) mRootView.findViewById(R.id.share_iv);
+        mIvGameRole = (ExImageView) mRootView.findViewById(R.id.iv_game_role);
 
         mResultExit.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -69,14 +76,42 @@ public class RankResultFragment extends BaseFragment {
         mSecondResult.bindData(mRoomData, mRoomData.getRecordData().getUserIdByRank(2), 2);
         mThirdResult.bindData(mRoomData, mRoomData.getRecordData().getUserIdByRank(3), 3);
 
-        RxView.clicks(mShareIv)
-                .throttleFirst(300, TimeUnit.MILLISECONDS)
-                .subscribe(o -> {
-                    SharePanel sharePanel = new SharePanel(getActivity());
-                    sharePanel.setShareContent("http://res-static.inframe.mobi/common/skr-share.png");
-                    sharePanel.show(ShareType.IMAGE_RUL);
+        mShareIv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                SharePanel sharePanel = new SharePanel(getActivity());
+                sharePanel.setShareContent("http://res-static.inframe.mobi/common/skr-share.png");
+                sharePanel.show(ShareType.IMAGE_RUL);
+            }
+        });
 
-                });
+        mIvGameRole.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mGameRoleDialog != null) {
+                    mGameRoleDialog.dismiss();
+                }
+
+                mGameRoleDialog = DialogPlus.newDialog(getContext())
+                        .setContentHolder(new ViewHolder(R.layout.game_role_view_layout))
+                        .setContentHeight(U.getDisplayUtils().dip2px(200))
+                        .setContentBackgroundResource(R.color.transparent)
+                        .setOverlayBackgroundResource(R.color.black_trans_50)
+                        .setExpanded(false)
+                        .setGravity(Gravity.CENTER)
+                        .create();
+
+                mGameRoleDialog.show();
+            }
+        });
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        if (mGameRoleDialog != null && mGameRoleDialog.isShowing()) {
+            mGameRoleDialog.dismiss();
+        }
     }
 
     @Override
