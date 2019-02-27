@@ -7,6 +7,7 @@ import com.module.playways.BaseRoomData;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
 import com.module.playways.rank.prepare.model.GameConfigModel;
+import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.RankRoundInfoModel;
 import com.module.playways.rank.room.event.PkMyBurstSuccessEvent;
 import com.module.playways.rank.room.event.PkMyLightOffSuccessEvent;
@@ -123,5 +124,16 @@ public class RankRoomData extends BaseRoomData<RankRoundInfoModel> {
 
     public long getSingBeginTs() {
         return mSingBeginTs;
+    }
+
+    public PlayerInfoModel getAiJudgeInfo() {
+        if (getPlayerInfoList() != null && getPlayerInfoList().size() > 0) {
+            for (PlayerInfoModel playerInfoModel : getPlayerInfoList()) {
+                if (playerInfoModel.isAI()) {
+                    return playerInfoModel;
+                }
+            }
+        }
+        return null;
     }
 }
