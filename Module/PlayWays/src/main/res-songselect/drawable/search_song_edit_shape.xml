@@ -2,10 +2,6 @@
 
     <solid android:color="#F9F4F1" />
 
-    <stroke
-        android:width="@dimen/view_2_dp"
-        android:color="#0C2275" />
-
     <corners android:radius="@dimen/view_21_dp" />
 
 </shape>

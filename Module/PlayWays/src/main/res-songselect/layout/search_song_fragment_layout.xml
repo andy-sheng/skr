@@ -24,7 +24,7 @@
     <View
         android:id="@+id/divide"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_3_dp"
+        android:layout_height="@dimen/view_2_dp"
         android:layout_below="@+id/titlebar"
         android:background="#0C2275" />
 
