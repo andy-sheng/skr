@@ -1,6 +1,5 @@
 package com.module.home.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.SpannableStringBuilder;
@@ -10,7 +9,6 @@ import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
-import com.common.base.FragmentDataListener;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
@@ -27,9 +25,7 @@ import com.common.core.userinfo.model.UserLevelModel;
 import com.common.core.userinfo.model.UserRankModel;
 import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
-import com.common.upload.UploadCallback;
-import com.common.upload.UploadParams;
-import com.common.upload.UploadTask;
+
 import com.common.utils.FragmentUtils;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
@@ -39,11 +35,7 @@ import com.common.view.ex.ExTextView;
 import com.component.busilib.constans.GameModeType;
 import com.module.home.musictest.fragment.MusicTestFragment;
 import com.module.home.setting.fragment.SettingFragment;
-import com.module.home.updateinfo.EditInfoActivity;
-import com.respicker.ResPicker;
-import com.respicker.fragment.ResPickerFragment;
-import com.respicker.model.ImageItem;
-import com.respicker.view.CropImageView;
+
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
 import com.module.home.R;

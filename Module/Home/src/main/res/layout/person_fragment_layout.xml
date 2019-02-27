@@ -41,7 +41,45 @@
                     android:layout_marginRight="@dimen/view_16_dp"
                     android:drawableTop="@drawable/gerenzhuye_fenxiang"
                     android:text="分享"
-                    android:visibility="visible" />
+                    android:visibility="gone" />
+
+                <!--设置-->
+                <RelativeLayout
+                    android:id="@+id/setting_area"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/view_56_dp"
+                    android:layout_marginRight="@dimen/view_16_dp">
+
+                    <ImageView
+                        android:id="@+id/setting_img_iv"
+                        android:layout_width="@dimen/view_23_dp"
+                        android:layout_height="@dimen/view_21_dp"
+                        android:layout_alignParentRight="true"
+                        android:background="@drawable/gerenzhongxin_shezhi" />
+
+
+                    <com.common.view.ex.ExTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/setting_img_iv"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="@dimen/view_2_dp"
+                        android:text="设置"
+                        android:textColor="#0C2275"
+                        android:textSize="@dimen/textsize_12_dp" />
+
+                    <com.common.view.ex.ExImageView
+                        android:id="@+id/setting_red_dot"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignRight="@+id/setting_img_iv"
+                        android:layout_alignTop="@+id/setting_img_iv"
+                        android:src="@drawable/reddot" />
+
+                </RelativeLayout>
 
                 <com.common.view.ex.ExTextView
                     android:id="@+id/name_tv"
@@ -415,55 +453,6 @@
                             android:layout_centerVertical="true"
                             android:layout_marginRight="@dimen/view_17_dp"
                             android:src="@drawable/icon_back" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/view_1_dp"
-                            android:layout_alignParentBottom="true"
-                            android:background="#D8D8D8" />
-
-                    </RelativeLayout>
-
-                    <!--设置-->
-                    <RelativeLayout
-                        android:id="@+id/setting_area"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/view_64_dp"
-                        android:layout_below="@+id/music_test_area">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="@dimen/view_17_dp"
-                            android:src="@drawable/icon_setting" />
-
-                        <com.common.view.ex.ExTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="@dimen/view_56_dp"
-                            android:text="设置"
-                            android:textColor="#0C2275"
-                            android:textSize="@dimen/textsize_16_dp" />
-
-                        <com.common.view.ex.ExImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginRight="@dimen/view_17_dp"
-                            android:src="@drawable/icon_back" />
-
-                        <com.common.view.ex.ExImageView
-                            android:id="@+id/setting_red_dot"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginRight="@dimen/view_33_dp"
-                            android:src="@drawable/reddot" />
-
                     </RelativeLayout>
 
                 </com.common.view.ex.ExRelativeLayout>
