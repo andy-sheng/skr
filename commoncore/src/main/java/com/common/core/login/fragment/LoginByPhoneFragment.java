@@ -68,6 +68,7 @@ public class LoginByPhoneFragment extends BaseFragment {
 
         if (TextUtils.isEmpty(mPhoneInputTv.getText().toString().trim())) {
             mPhoneInputTv.requestFocus();
+            U.getKeyBoardUtils().showSoftInputKeyBoard(getActivity());
         } else {
             mCodeInputTv.requestFocus();
         }
@@ -160,6 +161,7 @@ public class LoginByPhoneFragment extends BaseFragment {
                 if (result.getErrno() == 0) {
                     // 发送验证码成功
                     U.getToastUtil().showShort("验证码发送成功");
+                    U.getKeyBoardUtils().showSoftInputKeyBoard(getActivity());
                     U.getPreferenceUtils().setSettingString(PREF_KEY_PHONE_NUM, phoneNumber);
                     mGetCodeTv.setSelected(true);
                     mGetCodeTv.setClickable(false);
