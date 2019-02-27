@@ -27,8 +27,8 @@
             <com.common.view.ex.ExTextView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/view_25_dp"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/view_45_dp"
-                android:layout_toRightOf="@+id/back_iv"
                 android:gravity="center_vertical"
                 android:text="完善个人信息"
                 android:textColor="#0C2275"
@@ -77,8 +77,8 @@
             <LinearLayout
                 android:layout_width="@dimen/view_234_dp"
                 android:layout_height="@dimen/view_92_dp"
-                android:layout_centerHorizontal="true"
                 android:layout_below="@+id/nickname_et"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/view_54_dp"
                 android:orientation="horizontal">
 
@@ -92,8 +92,8 @@
                         android:layout_width="@dimen/view_76_dp"
                         android:layout_height="@dimen/view_76_dp"
                         android:layout_centerInParent="true"
-                        android:scaleType="center"
-                        android:background="@drawable/head_man_weixuanzhong" />
+                        android:background="@drawable/head_man_weixuanzhong"
+                        android:scaleType="center" />
 
                 </RelativeLayout>
 
@@ -107,8 +107,8 @@
                         android:layout_width="@dimen/view_76_dp"
                         android:layout_height="@dimen/view_76_dp"
                         android:layout_centerInParent="true"
-                        android:scaleType="center"
-                        android:background="@drawable/head_woman_weixuanzhong" />
+                        android:background="@drawable/head_woman_weixuanzhong"
+                        android:scaleType="center" />
 
                 </RelativeLayout>
 

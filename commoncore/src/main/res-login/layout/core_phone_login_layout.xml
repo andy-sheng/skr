@@ -121,8 +121,8 @@
     <com.common.view.ex.ExTextView
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_25_dp"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_45_dp"
-        android:layout_toRightOf="@id/iv_back"
         android:gravity="center_vertical"
         android:text="手机登录"
         android:textColor="#0C2275"
