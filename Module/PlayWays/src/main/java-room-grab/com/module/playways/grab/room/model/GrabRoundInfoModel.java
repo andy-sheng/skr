@@ -1,13 +1,13 @@
-package com.module.playways.rank.prepare.model;
+package com.module.playways.grab.room.model;
 
 import com.common.log.MyLog;
 import com.module.playways.grab.room.event.GrabQLightActionEvent;
 import com.module.playways.grab.room.event.GrabRoundStatusChangeEvent;
 import com.module.playways.grab.room.event.SomeOneGrabEvent;
+import com.module.playways.grab.room.event.SomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.SomeOneLightOffEvent;
-import com.module.playways.grab.room.model.NoPassingInfo;
-import com.module.playways.grab.room.model.QLightActionMsgModel;
-import com.module.playways.grab.room.model.WantSingerInfo;
+import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
+import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.zq.live.proto.Room.NoPassSingInfo;
 import com.zq.live.proto.Room.QRoundInfo;
 import com.zq.live.proto.Room.WantSingInfo;
@@ -27,14 +27,17 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
     /* 一唱到底使用 */
     private int status = STATUS_INIT;// 轮次状态，在一唱到底中使用
 
+    private HashSet<BLightInfoModel> bLightInfos = new HashSet<>();//已经爆灯的人, 一唱到底
+
+    private HashSet<MLightInfoModel> mLightInfos = new HashSet<>();//已经灭灯的人, 一唱到底
+
+    private List<GrabPlayerInfoModel> playUsers = new ArrayList<>(); // 参与这轮游戏中的人，包括离线
+
+    private List<GrabPlayerInfoModel> waitUsers = new ArrayList<>(); // 等待参与这轮游戏的人，包括观众
+
+    private GrabSkrResourceModel skrResource; // 机器人资源
+
     private HashSet<WantSingerInfo> wantSingInfos = new HashSet<>(); //已经抢了的人
-
-    //!!!!弃用
-    private HashSet<NoPassingInfo> noPassSingInfos = new HashSet<>();//已经灭灯的人, 一唱到底
-
-    private HashSet<QLightActionMsgModel> qLightActionMsgModelHashSet = new HashSet<>();//爆灭灯的set
-
-    private List<PlayerInfoModel> playerInfoModelList = new ArrayList<>();
 
     //0未知
     //1有种优秀叫一唱到底（全部唱完）
@@ -54,20 +57,44 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
     }
 
 
-    public HashSet<QLightActionMsgModel> getQLightActionMsgModelHashSet() {
-        return qLightActionMsgModelHashSet;
+    public HashSet<BLightInfoModel> getbLightInfos() {
+        return bLightInfos;
     }
 
-    public void setQLightActionMsgModelHashSet(HashSet<QLightActionMsgModel> QLightActionMsgModelHashSet) {
-        qLightActionMsgModelHashSet = QLightActionMsgModelHashSet;
+    public void setbLightInfos(HashSet<BLightInfoModel> bLightInfos) {
+        this.bLightInfos = bLightInfos;
     }
 
-    public List<PlayerInfoModel> getPlayerInfoModelList() {
-        return playerInfoModelList;
+    public HashSet<MLightInfoModel> getLightInfos() {
+        return mLightInfos;
     }
 
-    public void setPlayerInfoModelList(List<PlayerInfoModel> playerInfoModelList) {
-        this.playerInfoModelList = playerInfoModelList;
+    public void setLightInfos(HashSet<MLightInfoModel> lightInfos) {
+        mLightInfos = lightInfos;
+    }
+
+    public List<GrabPlayerInfoModel> getPlayUsers() {
+        return playUsers;
+    }
+
+    public void setPlayUsers(List<GrabPlayerInfoModel> playUsers) {
+        this.playUsers = playUsers;
+    }
+
+    public List<GrabPlayerInfoModel> getWaitUsers() {
+        return waitUsers;
+    }
+
+    public void setWaitUsers(List<GrabPlayerInfoModel> waitUsers) {
+        this.waitUsers = waitUsers;
+    }
+
+    public GrabSkrResourceModel getSkrResource() {
+        return skrResource;
+    }
+
+    public void setSkrResource(GrabSkrResourceModel skrResource) {
+        this.skrResource = skrResource;
     }
 
     public HashSet<WantSingerInfo> getWantSingInfos() {
@@ -78,12 +105,12 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         this.wantSingInfos = wantSingInfos;
     }
 
-    public HashSet<NoPassingInfo> getNoPassSingInfos() {
-        return noPassSingInfos;
+    public HashSet<MLightInfoModel> getMLightInfos() {
+        return mLightInfos;
     }
 
-    public void setNoPassSingInfos(HashSet<NoPassingInfo> noPassSingInfos) {
-        this.noPassSingInfos = noPassSingInfos;
+    public void setMLightInfos(HashSet<MLightInfoModel> noPassSingInfos) {
+        this.mLightInfos = noPassSingInfos;
     }
 
     public int getResultType() {
@@ -105,7 +132,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
     }
 
     /**
-     * 一唱到底使用
+     * 一唱到底使用 抢唱
      */
     public void addGrabUid(boolean notify, WantSingerInfo wantSingerInfo) {
         if (!wantSingInfos.contains(wantSingerInfo)) {
@@ -117,25 +144,27 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         }
     }
 
-
-    public void addQLightAction(boolean notify, QLightActionMsgModel qLightActionMsgModel) {
-        if (!qLightActionMsgModelHashSet.contains(qLightActionMsgModel)) {
-            qLightActionMsgModelHashSet.add(qLightActionMsgModel);
+    /**
+     * 一唱到底使用 灭灯
+     */
+    public void addLightOffUid(boolean notify, MLightInfoModel noPassingInfo) {
+        if (!mLightInfos.contains(noPassingInfo)) {
+            mLightInfos.add(noPassingInfo);
             if (notify) {
-                GrabQLightActionEvent event = new GrabQLightActionEvent(qLightActionMsgModel, this);
+                SomeOneLightOffEvent event = new SomeOneLightOffEvent(noPassingInfo.getUserID(), this);
                 EventBus.getDefault().post(event);
             }
         }
     }
 
     /**
-     * 一唱到底使用
+     * 一唱到底使用 爆灯
      */
-    public void addLightOffUid(boolean notify, NoPassingInfo noPassingInfo) {
-        if (!noPassSingInfos.contains(noPassingInfo)) {
-            noPassSingInfos.add(noPassingInfo);
+    public void addLightBurstUid(boolean notify, BLightInfoModel bLightInfoModel) {
+        if (!bLightInfos.contains(bLightInfoModel)) {
+            bLightInfos.add(bLightInfoModel);
             if (notify) {
-                SomeOneLightOffEvent event = new SomeOneLightOffEvent(noPassingInfo.getUserID(), this);
+                SomeOneLightBurstEvent event = new SomeOneLightBurstEvent(bLightInfoModel.getUserID(), this);
                 EventBus.getDefault().post(event);
             }
         }
@@ -149,7 +178,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
             MyLog.e("JsonRoundInfo RoundInfo == null");
             return;
         }
-        GrabRoundInfoModel roundInfo = (GrabRoundInfoModel)round;
+        GrabRoundInfoModel roundInfo = (GrabRoundInfoModel) round;
         this.setUserID(roundInfo.getUserID());
         this.setPlaybookID(roundInfo.getPlaybookID());
         this.setRoundSeq(roundInfo.getRoundSeq());
@@ -158,11 +187,11 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         for (WantSingerInfo wantSingerInfo : roundInfo.getWantSingInfos()) {
             addGrabUid(notify, wantSingerInfo);
         }
-        for (NoPassingInfo noPassingInfo : roundInfo.getNoPassSingInfos()) {
-            addLightOffUid(notify, noPassingInfo);
+        for (MLightInfoModel m : roundInfo.getMLightInfos()) {
+            addLightOffUid(notify, m);
         }
-        for (QLightActionMsgModel qLightActionMsgModel : roundInfo.getQLightActionMsgModelHashSet()) {
-            addQLightAction(notify, qLightActionMsgModel);
+        for (BLightInfoModel m : roundInfo.getbLightInfos()) {
+            addLightBurstUid(notify, m);
         }
         if (roundInfo.getOverReason() > 0) {
             this.setOverReason(roundInfo.getOverReason());
@@ -171,12 +200,13 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
             this.setResultType(roundInfo.getResultType());
         }
         updateStatus(notify, roundInfo.getStatus());
+
+        //TODO 这里还要更新本轮用户信息。。。。记住了额
         return;
     }
 
-    /**
-     * 一唱到底使用
-     */
+
+    //TODO PB 待处理
     public static GrabRoundInfoModel parseFromRoundInfo(QRoundInfo roundInfo) {
         GrabRoundInfoModel roundInfoModel = new GrabRoundInfoModel();
         roundInfoModel.setUserID(roundInfo.getUserID());
@@ -189,7 +219,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
             roundInfoModel.addGrabUid(false, WantSingerInfo.parse(wantSingInfo));
         }
         for (NoPassSingInfo noPassSingInfo : roundInfo.getNoPassSingInfosList()) {
-            roundInfoModel.addLightOffUid(false, NoPassingInfo.parse(noPassSingInfo));
+            roundInfoModel.addLightOffUid(false, MLightInfoModel.parse(noPassSingInfo));
         }
         // TODO: 2019/2/26 这里把当前用户和当前观众拉下来
 //        for (NoPassSingInfo noPassSingInfo : roundInfo.getNoPassSingInfosList()) {

@@ -19,9 +19,9 @@ import com.common.view.ex.ExImageView;
 import com.module.playways.BaseRoomData;
 import com.module.playways.grab.room.event.LightOffAnimationOverEvent;
 import com.module.playways.grab.room.fragment.GrabRoomFragment;
-import com.module.playways.grab.room.model.NoPassingInfo;
+import com.module.playways.grab.room.model.MLightInfoModel;
 import com.module.playways.grab.room.model.WantSingerInfo;
-import com.module.playways.rank.prepare.model.GrabRoundInfoModel;
+import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGACallback;
@@ -397,7 +397,7 @@ public class GrabPlayerRv extends RelativeLayout {
     private void syncLight() {
         GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
         if (now != null) {
-            for (NoPassingInfo noPassingInfo : now.getNoPassSingInfos()) {
+            for (MLightInfoModel noPassingInfo : now.getNoPassSingInfos()) {
                 VP vp = mInfoMap.get(noPassingInfo.getUserID());
                 if (vp != null && vp.grabTopItemView != null) {
                     vp.grabTopItemView.setLight(false);

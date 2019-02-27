@@ -1,6 +1,8 @@
 package com.module.playways.rank.prepare.model;
 
 import com.common.log.MyLog;
+import com.module.playways.grab.room.model.GrabRoundInfoModel;
+import com.module.playways.rank.room.model.RankRoundInfoModel;
 import com.zq.live.proto.Room.QRoundInfo;
 import com.zq.live.proto.Room.ReadyInfo;
 import com.zq.live.proto.Room.ReadyNoticeMsg;

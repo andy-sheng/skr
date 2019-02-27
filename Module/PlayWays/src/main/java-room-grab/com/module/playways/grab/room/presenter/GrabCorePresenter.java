@@ -26,7 +26,6 @@ import com.engine.arccloud.ArcRecognizeListener;
 import com.engine.arccloud.RecognizeConfig;
 import com.engine.arccloud.SongInfo;
 import com.module.ModuleServiceManager;
-import com.module.playways.BaseRoomData;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.event.GrabGameOverEvent;
@@ -36,7 +35,7 @@ import com.module.playways.grab.room.event.GrabRoundStatusChangeEvent;
 import com.module.playways.grab.room.event.QLightActionEvent;
 import com.module.playways.grab.room.inter.IGrabView;
 import com.module.playways.grab.room.model.GrabResultInfoModel;
-import com.module.playways.grab.room.model.NoPassingInfo;
+import com.module.playways.grab.room.model.MLightInfoModel;
 import com.module.playways.grab.room.model.QLightActionMsgModel;
 import com.module.playways.grab.room.model.WantSingerInfo;
 import com.module.playways.rank.msg.BasePushInfo;
@@ -50,7 +49,7 @@ import com.module.playways.rank.msg.event.QSyncStatusMsgEvent;
 import com.module.playways.rank.msg.event.QWantSingChanceMsgEvent;
 import com.module.playways.rank.msg.filter.PushMsgFilter;
 import com.module.playways.rank.msg.manager.ChatRoomMsgManager;
-import com.module.playways.rank.prepare.model.GrabRoundInfoModel;
+import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
@@ -330,7 +329,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 MyLog.e(TAG, "lightsOff erro code is " + result.getErrno() + ",traceid is " + result.getTraceId());
                 if (result.getErrno() == 0) {
                     boolean notify = RoomDataUtils.isCurrentRound(now.getRoundSeq(), mRoomData);
-                    NoPassingInfo noPassingInfo = new NoPassingInfo();
+                    MLightInfoModel noPassingInfo = new MLightInfoModel();
                     noPassingInfo.setUserID((int) MyUserInfoManager.getInstance().getUid());
                     noPassingInfo.setTimeMs(System.currentTimeMillis());
                     now.addLightOffUid(notify, noPassingInfo);
@@ -947,7 +946,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             //都开始灭灯肯定是已经开始唱了
             roundInfoModel.updateStatus(true, GrabRoundInfoModel.STATUS_SING);
 
-            NoPassingInfo noPassingInfo = new NoPassingInfo();
+            MLightInfoModel noPassingInfo = new MLightInfoModel();
             noPassingInfo.setUserID(event.getUserID());
             noPassingInfo.setTimeMs(System.currentTimeMillis());
 

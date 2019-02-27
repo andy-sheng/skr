@@ -1,7 +1,7 @@
 package com.module.playways.rank.room.event;
 
 import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
-import com.module.playways.rank.prepare.model.RankRoundInfoModel;
+import com.module.playways.rank.room.model.RankRoundInfoModel;
 
 public class RoundInfoChangeEvent {
     // 上一轮是谁在唱

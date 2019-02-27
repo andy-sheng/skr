@@ -95,7 +95,7 @@ public class ApiManager {
                 // 说明是线上环境，暂时没给域名
                 return "res.inframe.mobi";
             }
-        }else if(host.endsWith("kconf.inframe.mobi")){
+        } else if (host.endsWith("kconf.inframe.mobi")) {
             if (U.getChannelUtils().isDevChannel()) {
                 return "dev.kconf.inframe.mobi";
             } else if (U.getChannelUtils().isTestChannel()) {
@@ -105,6 +105,28 @@ public class ApiManager {
             } else {
                 // 说明是线上环境，暂时没给域名
                 return "kconf.inframe.mobi";
+            }
+        } else if (host.endsWith("room.inframe.mobi")) {
+            if (U.getChannelUtils().isDevChannel()) {
+                return "dev.room.inframe.mobi";
+            } else if (U.getChannelUtils().isTestChannel()) {
+                return "test.room.inframe.mobi";
+            } else if (U.getChannelUtils().isSandboxChannel()) {
+                return "sandbox.room.inframe.mobi";
+            } else {
+                // 说明是线上环境，暂时没给域名
+                return "room.inframe.mobi";
+            }
+        } else if (host.endsWith("stand.inframe.mobi")) {
+            if (U.getChannelUtils().isDevChannel()) {
+                return "dev.stand.inframe.mobi";
+            } else if (U.getChannelUtils().isTestChannel()) {
+                return "test.stand.inframe.mobi";
+            } else if (U.getChannelUtils().isSandboxChannel()) {
+                return "sandbox.stand.inframe.mobi";
+            } else {
+                // 说明是线上环境，暂时没给域名
+                return "stand.inframe.mobi";
             }
         }
         return host;
@@ -150,7 +172,7 @@ public class ApiManager {
                     HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
                         @Override
                         public void log(String message) {
-                                MyLog.w(TAG, message);
+                            MyLog.w(TAG, message);
                         }
                     });
                     httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);

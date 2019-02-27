@@ -11,13 +11,10 @@ import com.common.utils.HandlerTaskTimer;
 import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
 import com.module.playways.rank.msg.event.JoinActionEvent;
-import com.module.playways.rank.msg.event.JoinNoticeEvent;
 import com.module.playways.rank.prepare.MatchServerApi;
 import com.module.playways.rank.prepare.model.GameInfoModel;
-import com.module.playways.rank.prepare.model.GrabCurGameStateModel;
-import com.module.playways.rank.prepare.model.MatchingUserIconListInfo;
+import com.module.playways.rank.prepare.model.JoinGrabRoomRspModel;
 import com.module.playways.rank.prepare.view.IGrabMatchingView;
-import com.module.playways.rank.prepare.view.IMatchingView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -109,7 +106,7 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
         map.put("tagID", playbookItemID);
 
         RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSOIN), JSON.toJSONString(map));
-        mStartMatchTask = ApiMethods.subscribeWith(mMatchServerApi.startMatch(body).retryWhen(new RxRetryAssist(1, 5, false)), new ApiObserver<ApiResult>() {
+        mStartMatchTask = ApiMethods.subscribeWith(mMatchServerApi.startGrabMatch(body).retryWhen(new RxRetryAssist(1, 5, false)), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 MyLog.w(TAG, "process" + " result =" + result.getErrno() + " traceId =" + result.getTraceId());
@@ -140,7 +137,7 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
         map.put("modeID", mGameType);
 
         RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSOIN), JSON.toJSONString(map));
-        ApiMethods.subscribe(mMatchServerApi.cancleMatch(body).retry(3), null);
+        ApiMethods.subscribe(mMatchServerApi.cancleGrabMatch(body).retry(3), null);
     }
 
     // 加入指令，即服务器通知加入房间的指令
@@ -163,8 +160,8 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
     }
 
     // 加入游戏通知（别人进房间也会给我通知）
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(JoinNoticeEvent joinNoticeEvent) {
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void onEventMainThread(JoinNoticeEvent joinNoticeEvent) {
 //        if (joinNoticeEvent != null && joinNoticeEvent.jsonGameInfo != null) {
 //            MyLog.w(TAG, " onEventMainThread JoinNoticeEvent timeMs = " + joinNoticeEvent.info.getTimeMs() + ", joinNoticeEvent.jsonGameInfo.getReadyClockResMs() " + joinNoticeEvent.jsonGameInfo.getReadyClockResMs());
 //            // 需要去更新GameInfo
@@ -180,7 +177,7 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
 //                }
 //            }
 //        }
-    }
+//    }
 
     @Override
     public void destroy() {
@@ -204,7 +201,7 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
             public void onSucess(Object obj) {
                 if (mMatchState == MatchState.MatchSucess) {
                     mMatchState = MatchState.JoinRongYunRoomSuccess;
-                    joinGame();
+                    joinGrabRoom();
                 } else {
                     MyLog.d(TAG, "joinRongRoom 加入房间成功，但是状态不是 MatchSucess， 当前状态是 " + mMatchState);
                     startLoopMatchTask(mCurrentMusicId, mGameType);
@@ -219,45 +216,45 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
         });
     }
 
-    /**
-     * 加入我们自己的房间，失败的话继续match，这里的失败得统计一下
-     */
-    private void joinGame() {
-        MyLog.d(TAG, "joinGame gameId ");
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("gameID", mJoinActionEvent.gameId);
-
-        RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSOIN), JSON.toJSONString(map));
-        ApiMethods.subscribe(mMatchServerApi.joinGame(body), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                MyLog.w(TAG, "加入房间 result =  " + result.getErrno() + " traceId = " + result.getTraceId());
-                if (result.getErrno() == 0) {
-                    sendIntoRoomReq();
-                } else {
-                    startLoopMatchTask(mCurrentMusicId, mGameType);
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-//                U.getToastUtil().showShort("加入房间失败");
-                startLoopMatchTask(mCurrentMusicId, mGameType);
-            }
-        }, this);
-    }
+//    /**
+//     * 加入我们自己的房间，失败的话继续match，这里的失败得统计一下
+//     */
+//    private void joinGame() {
+//        MyLog.d(TAG, "joinGame gameId ");
+//        HashMap<String, Object> map = new HashMap<>();
+//        map.put("gameID", mJoinActionEvent.gameId);
+//
+//        RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSOIN), JSON.toJSONString(map));
+//        ApiMethods.subscribe(mMatchServerApi.joinGame(body), new ApiObserver<ApiResult>() {
+//            @Override
+//            public void process(ApiResult result) {
+//                MyLog.w(TAG, "加入房间 result =  " + result.getErrno() + " traceId = " + result.getTraceId());
+//                if (result.getErrno() == 0) {
+//                    sendIntoRoomReq();
+//                } else {
+//                    startLoopMatchTask(mCurrentMusicId, mGameType);
+//                }
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+////                U.getToastUtil().showShort("加入房间失败");
+//                startLoopMatchTask(mCurrentMusicId, mGameType);
+//            }
+//        }, this);
+//    }
 
     /**
      * 请求进入房间
      */
-    private void sendIntoRoomReq() {
+    private void joinGrabRoom() {
         HashMap<String, Object> map = new HashMap<>();
         map.put("modeID", mGameType);
         map.put("platform", PLAT_FORM);
         map.put("roomID", mJoinActionEvent.gameId);
 
         RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSOIN), JSON.toJSONString(map));
-        ApiMethods.subscribe(mMatchServerApi.reqIntoGameRoom(body), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mMatchServerApi.joinGrabRoom(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 MyLog.w(TAG, "sendIntoRoomReq 请求加入房间 result =  " + result.getErrno() + " traceId = " + result.getTraceId());
@@ -265,7 +262,7 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
                     if (mMatchState == MatchState.JoinRongYunRoomSuccess) {
                         mMatchState = MatchState.JoinGameSuccess;
                         //todo 这里直接加入房间, 在JoinNotice里也可以
-                        GrabCurGameStateModel grabCurGameStateModel = JSON.parseObject(result.getData().toString(), GrabCurGameStateModel.class);
+                        JoinGrabRoomRspModel grabCurGameStateModel = JSON.parseObject(result.getData().toString(), JoinGrabRoomRspModel.class);
                         mView.matchSucess(grabCurGameStateModel);
                         if (mCheckJoinStateTask != null) {
                             mCheckJoinStateTask.dispose();

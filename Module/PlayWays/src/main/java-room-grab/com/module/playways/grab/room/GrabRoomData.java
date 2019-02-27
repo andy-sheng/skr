@@ -7,7 +7,7 @@ import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.event.GrabGameOverEvent;
 import com.module.playways.grab.room.event.GrabRoundChangeEvent;
 import com.module.playways.grab.room.model.GrabResultInfoModel;
-import com.module.playways.rank.prepare.model.GrabRoundInfoModel;
+import com.module.playways.grab.room.model.GrabRoundInfoModel;
 
 import org.greenrobot.eventbus.EventBus;
 

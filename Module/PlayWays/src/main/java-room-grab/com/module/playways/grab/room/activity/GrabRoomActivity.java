@@ -17,11 +17,10 @@ import com.common.utils.U;
 import com.component.busilib.constans.GameModeType;
 import com.module.RouterConstants;
 import com.module.playways.grab.room.GrabRoomData;
-import com.module.playways.rank.prepare.model.GrabRoundInfoModel;
+import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.PrepareData;
 
-import com.module.playways.BaseRoomData;
 import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.song.model.SongModel;

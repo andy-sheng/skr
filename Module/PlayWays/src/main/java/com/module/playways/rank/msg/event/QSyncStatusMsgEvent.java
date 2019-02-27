@@ -3,7 +3,7 @@
 package com.module.playways.rank.msg.event;
 
 import com.module.playways.rank.msg.BasePushInfo;
-import com.module.playways.rank.prepare.model.GrabRoundInfoModel;
+import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.zq.live.proto.Room.OnlineInfo;
 import com.zq.live.proto.Room.QSyncStatusMsg;

@@ -40,6 +40,7 @@ public class UserInfoModel implements Serializable, Cloneable {
     private int mIsSystem;
     private boolean isFriend;
     private boolean isFollow;
+    private int mainLevel; // 主段位
 
     public int getUserId() {
         return userId;
@@ -135,11 +136,19 @@ public class UserInfoModel implements Serializable, Cloneable {
 
     public int getAge() {
         String[] array = this.birthday.split("-");
-        if (!TextUtils.isEmpty(array[0])){
+        if (!TextUtils.isEmpty(array[0])) {
             int year = Integer.valueOf(array[0]);
             return Calendar.getInstance().get(Calendar.YEAR) - year;
         }
         return 0;
+    }
+
+    public int getMainLevel() {
+        return mainLevel;
+    }
+
+    public void setMainLevel(int mainLevel) {
+        this.mainLevel = mainLevel;
     }
 
     @Override
@@ -171,7 +180,7 @@ public class UserInfoModel implements Serializable, Cloneable {
             userInfoModel.setAvatar(model.getAvatar());
             userInfoModel.setSignature(model.getDescription());
             userInfoModel.setIsSystem(model.getIsSystem() ? 1 : 0);
-
+            userInfoModel.setMainLevel(model.getMainLevel());
         }
         return userInfoModel;
     }
@@ -199,6 +208,7 @@ public class UserInfoModel implements Serializable, Cloneable {
             JSONObject jsonObject = new JSONObject();
             Location location = userInfModel.getLocation();
             jsonObject.put("location", location);
+            jsonObject.put("mainLevel", userInfModel.getMainLevel());
             userInfoDB.setExt(jsonObject.toJSONString());
         }
         return userInfoDB;
@@ -220,6 +230,8 @@ public class UserInfoModel implements Serializable, Cloneable {
                 JSONObject jsonObject = JSON.parseObject(extJSon, JSONObject.class);
                 Location location = jsonObject.getObject("location", Location.class);
                 userInfoModel.setLocation(location);
+                int mainLevel = jsonObject.getInteger("mainLevel");
+                userInfoModel.setMainLevel(mainLevel);
             }
         }
         return userInfoModel;

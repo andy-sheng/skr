@@ -7,7 +7,7 @@ import com.module.playways.BaseRoomData;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
 import com.module.playways.rank.prepare.model.GameConfigModel;
-import com.module.playways.rank.prepare.model.RankRoundInfoModel;
+import com.module.playways.rank.room.model.RankRoundInfoModel;
 import com.module.playways.rank.room.event.PkMyBurstSuccessEvent;
 import com.module.playways.rank.room.event.PkMyLightOffSuccessEvent;
 import com.module.playways.rank.room.event.RoundInfoChangeEvent;

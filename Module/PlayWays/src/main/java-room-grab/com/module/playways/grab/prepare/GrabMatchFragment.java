@@ -37,7 +37,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.RouterConstants;
 import com.module.playways.grab.prepare.presenter.RankMatchPresenter;
 import com.module.playways.rank.msg.event.JoinActionEvent;
-import com.module.playways.rank.prepare.model.GrabCurGameStateModel;
+import com.module.playways.rank.prepare.model.JoinGrabRoomRspModel;
 import com.module.playways.rank.prepare.model.MatchIconModel;
 import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.playways.rank.prepare.presenter.BaseMatchPresenter;
@@ -525,7 +525,7 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
 
     //一唱到底
     @Override
-    public void matchSucess(GrabCurGameStateModel grabCurGameStateModel) {
+    public void matchSucess(JoinGrabRoomRspModel grabCurGameStateModel) {
         MyLog.d(TAG, "matchSucess" + " event=" + grabCurGameStateModel);
         BgMusicManager.getInstance().destory();
         mPrepareData.setGrabCurGameStateModel(grabCurGameStateModel);

@@ -1,10 +1,9 @@
-package com.module.playways.rank.prepare.model;
+package com.module.playways.rank.room.model;
 
 import com.common.log.MyLog;
+import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
 import com.module.playways.rank.room.event.PkSomeOneBurstLightEvent;
 import com.module.playways.rank.room.event.PkSomeOneLightOffEvent;
-import com.module.playways.rank.room.model.BLightInfoModel;
-import com.module.playways.rank.room.model.MLightInfoModel;
 import com.zq.live.proto.Room.BLightInfo;
 import com.zq.live.proto.Room.MLightInfo;
 import com.zq.live.proto.Room.RoundInfo;

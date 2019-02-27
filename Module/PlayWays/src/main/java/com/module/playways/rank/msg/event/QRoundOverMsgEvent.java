@@ -3,7 +3,7 @@
 package com.module.playways.rank.msg.event;
 
 import com.module.playways.rank.msg.BasePushInfo;
-import com.module.playways.rank.prepare.model.GrabRoundInfoModel;
+import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.zq.live.proto.Room.QRoundOverMsg;
 
 public final class QRoundOverMsgEvent {

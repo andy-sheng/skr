@@ -12,7 +12,7 @@ import com.engine.EngineEvent;
 import com.engine.UserStatus;
 import com.module.playways.BaseRoomData;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
-import com.module.playways.rank.prepare.model.RankRoundInfoModel;
+import com.module.playways.rank.room.model.RankRoundInfoModel;
 import com.module.rank.R;
 
 import org.greenrobot.eventbus.EventBus;

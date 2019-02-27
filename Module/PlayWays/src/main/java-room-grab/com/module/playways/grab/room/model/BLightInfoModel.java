@@ -4,7 +4,10 @@ import com.zq.live.proto.Room.NoPassSingInfo;
 
 import java.io.Serializable;
 
-public class NoPassingInfo implements Serializable {
+/**
+ * 爆灯信息
+ */
+public class BLightInfoModel implements Serializable {
     int userID;
     long timeMs;
 
@@ -26,7 +29,7 @@ public class NoPassingInfo implements Serializable {
 
     @Override
     public String toString() {
-        return "NoPassingInfo{" +
+        return "BLightInfo{" +
                 "userID=" + userID +
                 ", timeMs=" + timeMs +
                 '}';
@@ -36,7 +39,7 @@ public class NoPassingInfo implements Serializable {
     public boolean equals(Object object) {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
-        NoPassingInfo that = (NoPassingInfo) object;
+        BLightInfoModel that = (BLightInfoModel) object;
         return userID == that.userID;
     }
 
@@ -45,8 +48,8 @@ public class NoPassingInfo implements Serializable {
         return userID;
     }
 
-    public static NoPassingInfo parse(NoPassSingInfo pb) {
-        NoPassingInfo noPassingInfo = new NoPassingInfo();
+    public static BLightInfoModel parse(NoPassSingInfo pb) {
+        BLightInfoModel noPassingInfo = new BLightInfoModel();
         noPassingInfo.setUserID(pb.getUserID());
         noPassingInfo.setTimeMs(pb.getTimeMs());
         return noPassingInfo;

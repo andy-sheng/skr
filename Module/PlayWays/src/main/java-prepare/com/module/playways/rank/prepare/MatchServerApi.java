@@ -97,12 +97,32 @@ public interface MatchServerApi {
     @PUT("http://dev.game.inframe.mobi/v1/game/exit")
     Observable<ApiResult> exitGame(@Body RequestBody body);
 
+
     /**
      *  请求发JoinNotice的push
      *
      * @param body 游戏标识 gameID (必选)
      * @return
      */
-    @PUT("http://dev.game.inframe.mobi/v1/room/join-room")
-    Observable<ApiResult> reqIntoGameRoom(@Body RequestBody body);
+    @PUT("http://dev.room.inframe.mobi/v1/room/join-room")
+    Observable<ApiResult> joinGrabRoom(@Body RequestBody body);
+
+    /**
+     * 请求匹配
+     * @param body 包含mode 游戏类型(必选)
+     *             包含playbookItemID 演唱歌曲id(必选)
+     *             包含platform 平台类型(必选)
+     * @return
+     */
+    @PUT("http://dev.room.inframe.mobi/v1/room/query-match")
+    Observable<ApiResult> startGrabMatch(@Body RequestBody body);
+
+
+    /**
+     * 取消匹配
+     * @param body  游戏类型 mode (必选)
+     * @return
+     */
+    @PUT("http://dev.room.inframe.mobi/v1/room/cancel-match")
+    Observable<ApiResult> cancleGrabMatch(@Body RequestBody body);
 }
