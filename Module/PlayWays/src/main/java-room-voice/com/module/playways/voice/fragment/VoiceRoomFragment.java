@@ -205,6 +205,8 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
                 U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), RankResultFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
+                        .setEnterAnim(R.anim.rank_result_enter)
+                        .setExitAnim(R.anim.rank_result_exit)
                         .addDataBeforeAdd(1, mRoomData)
                         .build());
             }
