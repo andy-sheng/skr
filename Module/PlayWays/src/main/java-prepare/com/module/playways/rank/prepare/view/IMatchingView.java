@@ -13,6 +13,4 @@ public interface IMatchingView {
      * 匹配成功
      */
     void matchSucess(JoinActionEvent event);
-
-    void showUserIconList(List<MatchIconModel> avatarURL);
 }

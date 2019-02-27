@@ -249,31 +249,6 @@ public class RankMatchPresenter extends BaseMatchPresenter {
     }
 
     /**
-     * 获取头像
-     */
-    public void getMatchingUserIconList() {
-        MyLog.d(TAG, "getMatchingUserIconList gameId ");
-
-        ApiMethods.subscribe(mMatchServerApi.getMatchingAvatar(1), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    MyLog.d(TAG, "getMatchingUserIconList result =  " + result.getErrno() + " traceId = " + result.getTraceId());
-                    MatchingUserIconListInfo matchingUserIconListInfo = JSON.parseObject(result.getData().toString(), MatchingUserIconListInfo.class);
-                    mView.showUserIconList(matchingUserIconListInfo.getPlayers());
-                } else {
-                    MyLog.w(TAG, "getMatchingUserIconList result =  " + result.getErrno() + " traceId = " + result.getTraceId());
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                MyLog.e(TAG, "getMatchingUserIconList 失败");
-            }
-        }, this);
-    }
-
-    /**
      * 加入完我们服务器三秒钟后检查房间的情况，
      * 如果三个人都已经加入房间了或者还没到三秒就已经有push告诉客户端已经三个人都加入房间了
      * 就可以跳转到准备界面

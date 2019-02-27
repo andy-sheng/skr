@@ -37,10 +37,12 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.RouterConstants;
 import com.module.playways.grab.prepare.presenter.RankMatchPresenter;
 import com.module.playways.rank.msg.event.JoinActionEvent;
+import com.module.playways.rank.prepare.model.GrabCurGameStateModel;
 import com.module.playways.rank.prepare.model.MatchIconModel;
 import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.playways.rank.prepare.presenter.BaseMatchPresenter;
 import com.module.playways.rank.prepare.presenter.GrabMatchPresenter;
+import com.module.playways.rank.prepare.view.IGrabMatchingView;
 import com.module.playways.rank.prepare.view.IMatchingView;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGADrawable;
@@ -61,7 +63,7 @@ import java.util.Collections;
 import java.util.List;
 
 //这个是匹配界面，之前的FastMatchingSence
-public class GrabMatchFragment extends BaseFragment implements IMatchingView {
+public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView, IMatchingView {
 
     public final static String TAG = "GrabMatchFragment";
 
@@ -488,9 +490,9 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
 
     }
 
+    //pk
     @Override
     public void matchSucess(JoinActionEvent event) {
-        MyLog.d(TAG,"matchSucess" + " event=" + event);
         BgMusicManager.getInstance().destory();
         mPrepareData.setGameId(event.gameId);
         mPrepareData.setSysAvatar(event.info.getSender().getAvatar());
@@ -500,52 +502,49 @@ public class GrabMatchFragment extends BaseFragment implements IMatchingView {
         mPrepareData.setGameConfigModel(event.gameConfigModel);
         stopTimeTask();
 
-        if(mPrepareData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK){
-            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), GrabMatchSuccessFragment.class)
-                    .setAddToBackStack(false)
-                    .setNotifyHideFragment(GrabMatchFragment.class)
-                    .setHasAnimation(false)
-                    .addDataBeforeAdd(0, mPrepareData)
-                    .setFragmentDataListener(new FragmentDataListener() {
-                        @Override
-                        public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
+        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), GrabMatchSuccessFragment.class)
+                .setAddToBackStack(false)
+                .setNotifyHideFragment(GrabMatchFragment.class)
+                .setHasAnimation(false)
+                .addDataBeforeAdd(0, mPrepareData)
+                .setFragmentDataListener(new FragmentDataListener() {
+                    @Override
+                    public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
 
-                        }
-                    })
-                    .build());
+                    }
+                })
+                .build());
 
-            //匹配成功直接先把自己pop掉
-            U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
-                    .setPopFragment(GrabMatchFragment.this)
-                    .setPopAbove(false)
-                    .setHasAnimation(false)
-                    .build());
-        }else if(mPrepareData.getGameType() == GameModeType.GAME_MODE_GRAB){
-            //先跳转
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_ROOM)
-                    .withSerializable("prepare_data", mPrepareData)
-                    .navigation();
+        //匹配成功直接先把自己pop掉
+        U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
+                .setPopFragment(GrabMatchFragment.this)
+                .setPopAbove(false)
+                .setHasAnimation(false)
+                .build());
+    }
 
-            //结束当前Activity
-            if (getActivity() != null) {
-                getActivity().finish();
-            }
+    //一唱到底
+    @Override
+    public void matchSucess(GrabCurGameStateModel grabCurGameStateModel) {
+        MyLog.d(TAG, "matchSucess" + " event=" + grabCurGameStateModel);
+        BgMusicManager.getInstance().destory();
+        mPrepareData.setGrabCurGameStateModel(grabCurGameStateModel);
+        stopTimeTask();
+
+        //先跳转
+        ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_ROOM)
+                .withSerializable("prepare_data", mPrepareData)
+                .navigation();
+
+        //结束当前Activity
+        if (getActivity() != null) {
+            getActivity().finish();
         }
-
     }
 
     private int mIconListIndex = 0;
 
     List<MatchIconModel> mAvatarURL = null;
-
-    @Override
-    public void showUserIconList(List<MatchIconModel> avatarURL) {
-        if (avatarURL == null || avatarURL.size() == 0) {
-            return;
-        }
-        mAvatarURL = avatarURL;
-        changeIcons(0);
-    }
 
     @Override
     protected boolean onBackPressed() {

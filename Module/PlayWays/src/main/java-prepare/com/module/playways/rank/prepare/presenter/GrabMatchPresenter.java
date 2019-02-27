@@ -8,14 +8,15 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.HandlerTaskTimer;
-import com.component.busilib.constans.GameModeType;
 import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
 import com.module.playways.rank.msg.event.JoinActionEvent;
 import com.module.playways.rank.msg.event.JoinNoticeEvent;
 import com.module.playways.rank.prepare.MatchServerApi;
 import com.module.playways.rank.prepare.model.GameInfoModel;
+import com.module.playways.rank.prepare.model.GrabCurGameStateModel;
 import com.module.playways.rank.prepare.model.MatchingUserIconListInfo;
+import com.module.playways.rank.prepare.view.IGrabMatchingView;
 import com.module.playways.rank.prepare.view.IMatchingView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -34,8 +35,9 @@ import static com.common.rxretrofit.ApiManager.APPLICATION_JSOIN;
 // 只处理匹配 请求匹配 取消匹配 和 收到加入游戏通知
 public class GrabMatchPresenter extends BaseMatchPresenter {
     public final static String TAG = "GrabMatchPresenter";
+    public final static int PLAT_FORM = 20;
 
-    IMatchingView mView;
+    IGrabMatchingView mView;
     MatchServerApi mMatchServerApi;
     Disposable mStartMatchTask;
     HandlerTaskTimer mLoopMatchTask;
@@ -53,7 +55,7 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
 
     volatile MatchState mMatchState = MatchState.IDLE;
 
-    public GrabMatchPresenter(@NonNull IMatchingView view) {
+    public GrabMatchPresenter(@NonNull IGrabMatchingView view) {
         this.mView = view;
         mMatchServerApi = ApiManager.getInstance().createService(MatchServerApi.class);
         addToLifeCycle();
@@ -102,13 +104,10 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
         mMatchState = MatchState.Matching;
 
         HashMap<String, Object> map = new HashMap<>();
-        map.put("mode", gameType);
-        if (mGameType == GameModeType.GAME_MODE_GRAB) {
-            map.put("playbookTagID", playbookItemID);
-        } else {
-            map.put("playbookItemID", playbookItemID);
-        }
-        map.put("platform", 20);   // 代表是android平台
+        map.put("modeID", gameType);
+        map.put("platform", PLAT_FORM);   // 代表是android平台
+        map.put("tagID", playbookItemID);
+
         RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSOIN), JSON.toJSONString(map));
         mStartMatchTask = ApiMethods.subscribeWith(mMatchServerApi.startMatch(body).retryWhen(new RxRetryAssist(1, 5, false)), new ApiObserver<ApiResult>() {
             @Override
@@ -138,7 +137,7 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
 
         mMatchState = MatchState.IDLE;
         HashMap<String, Object> map = new HashMap<>();
-        map.put("mode", mGameType);
+        map.put("modeID", mGameType);
 
         RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSOIN), JSON.toJSONString(map));
         ApiMethods.subscribe(mMatchServerApi.cancleMatch(body).retry(3), null);
@@ -158,7 +157,7 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
                 this.mJoinActionEvent = joinActionEvent;
                 disposeLoopMatchTask();
                 disposeMatchTask();
-                joinRoom();
+                joinRongRoom();
             }
         }
     }
@@ -166,21 +165,21 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
     // 加入游戏通知（别人进房间也会给我通知）
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(JoinNoticeEvent joinNoticeEvent) {
-        if (joinNoticeEvent != null && joinNoticeEvent.jsonGameInfo != null) {
-            MyLog.w(TAG, " onEventMainThread JoinNoticeEvent timeMs = " + joinNoticeEvent.info.getTimeMs() + ", joinNoticeEvent.jsonGameInfo.getReadyClockResMs() " + joinNoticeEvent.jsonGameInfo.getReadyClockResMs());
-            // 需要去更新GameInfo
-            if (joinNoticeEvent.jsonGameInfo.getReadyClockResMs() != 0) {
-                if (mMatchState == MatchState.JoinRongYunRoomSuccess) {
-                    mMatchState = MatchState.JoinGameSuccess;
-
-                    if (mCheckJoinStateTask != null) {
-                        mCheckJoinStateTask.dispose();
-                    }
-
-                    mView.matchSucess(mJoinActionEvent);
-                }
-            }
-        }
+//        if (joinNoticeEvent != null && joinNoticeEvent.jsonGameInfo != null) {
+//            MyLog.w(TAG, " onEventMainThread JoinNoticeEvent timeMs = " + joinNoticeEvent.info.getTimeMs() + ", joinNoticeEvent.jsonGameInfo.getReadyClockResMs() " + joinNoticeEvent.jsonGameInfo.getReadyClockResMs());
+//            // 需要去更新GameInfo
+//            if (joinNoticeEvent.jsonGameInfo.getReadyClockResMs() != 0) {
+//                if (mMatchState == MatchState.JoinRongYunRoomSuccess) {
+//                    mMatchState = MatchState.JoinGameSuccess;
+//
+//                    if (mCheckJoinStateTask != null) {
+//                        mCheckJoinStateTask.dispose();
+//                    }
+//
+//                    mView.matchSucess(null);
+//                }
+//            }
+//        }
     }
 
     @Override
@@ -198,14 +197,17 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
     /**
      * 加入融云房间，失败的话继续match，这里的失败得统计一下
      */
-    private void joinRoom() {
-        MyLog.d(TAG, "joinRoom gameId " + mJoinActionEvent.gameId);
+    private void joinRongRoom() {
+        MyLog.d(TAG, "joinRongRoom gameId " + mJoinActionEvent.gameId);
         ModuleServiceManager.getInstance().getMsgService().joinChatRoom(String.valueOf(mJoinActionEvent.gameId), new ICallback() {
             @Override
             public void onSucess(Object obj) {
                 if (mMatchState == MatchState.MatchSucess) {
                     mMatchState = MatchState.JoinRongYunRoomSuccess;
                     joinGame();
+                } else {
+                    MyLog.d(TAG, "joinRongRoom 加入房间成功，但是状态不是 MatchSucess， 当前状态是 " + mMatchState);
+                    startLoopMatchTask(mCurrentMusicId, mGameType);
                 }
             }
 
@@ -249,30 +251,38 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
      * 请求进入房间
      */
     private void sendIntoRoomReq() {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("modeID", mGameType);
+        map.put("platform", PLAT_FORM);
+        map.put("roomID", mJoinActionEvent.gameId);
 
-    }
-
-    /**
-     * 获取头像
-     */
-    public void getMatchingUserIconList() {
-        MyLog.d(TAG, "getMatchingUserIconList gameId ");
-
-        ApiMethods.subscribe(mMatchServerApi.getMatchingAvatar(1), new ApiObserver<ApiResult>() {
+        RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSOIN), JSON.toJSONString(map));
+        ApiMethods.subscribe(mMatchServerApi.reqIntoGameRoom(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
+                MyLog.w(TAG, "sendIntoRoomReq 请求加入房间 result =  " + result.getErrno() + " traceId = " + result.getTraceId());
                 if (result.getErrno() == 0) {
-                    MyLog.d(TAG, "getMatchingUserIconList result =  " + result.getErrno() + " traceId = " + result.getTraceId());
-                    MatchingUserIconListInfo matchingUserIconListInfo = JSON.parseObject(result.getData().toString(), MatchingUserIconListInfo.class);
-                    mView.showUserIconList(matchingUserIconListInfo.getPlayers());
+                    if (mMatchState == MatchState.JoinRongYunRoomSuccess) {
+                        mMatchState = MatchState.JoinGameSuccess;
+                        //todo 这里直接加入房间, 在JoinNotice里也可以
+                        GrabCurGameStateModel grabCurGameStateModel = JSON.parseObject(result.getData().toString(), GrabCurGameStateModel.class);
+                        mView.matchSucess(grabCurGameStateModel);
+                        if (mCheckJoinStateTask != null) {
+                            mCheckJoinStateTask.dispose();
+                        }
+                    } else {
+                        MyLog.d(TAG, "joinRongRoom 加入房间成功，但是状态不是 JoinRongYunRoomSuccess， 当前状态是 " + mMatchState);
+                        startLoopMatchTask(mCurrentMusicId, mGameType);
+                    }
                 } else {
-                    MyLog.w(TAG, "getMatchingUserIconList result =  " + result.getErrno() + " traceId = " + result.getTraceId());
+                    startLoopMatchTask(mCurrentMusicId, mGameType);
                 }
             }
 
             @Override
             public void onError(Throwable e) {
-                MyLog.e(TAG, "getMatchingUserIconList 失败");
+//                U.getToastUtil().showShort("加入房间失败");
+                startLoopMatchTask(mCurrentMusicId, mGameType);
             }
         }, this);
     }
@@ -287,7 +297,8 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
         }
 
         HashMap<String, Object> map = new HashMap<>();
-        map.put("gameID", gameId);
+        // TODO: 2019/2/27  roomId
+        map.put("roomID", mJoinActionEvent.gameId);
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
         ApiMethods.subscribe(mMatchServerApi.exitGame(body), new ApiObserver<ApiResult>() {

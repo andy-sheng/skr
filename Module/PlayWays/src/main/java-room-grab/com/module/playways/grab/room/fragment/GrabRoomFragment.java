@@ -412,6 +412,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
             public void countDownOver() {
 
             }
+
+            @Override
+            public void clickBurst(int seq) {
+
+            }
         });
 
         mGrabOpBtn.hide();

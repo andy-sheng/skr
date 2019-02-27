@@ -21,6 +21,16 @@ public class PrepareData implements Serializable {
 
     private GameConfigModel mGameConfigModel;// 游戏配置
 
+    private GrabCurGameStateModel mGrabCurGameStateModel;
+
+    public GrabCurGameStateModel getGrabCurGameStateModel() {
+        return mGrabCurGameStateModel;
+    }
+
+    public void setGrabCurGameStateModel(GrabCurGameStateModel grabCurGameStateModel) {
+        mGrabCurGameStateModel = grabCurGameStateModel;
+    }
+
     public int getTagId() {
         return mTagId;
     }

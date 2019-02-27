@@ -96,4 +96,13 @@ public interface MatchServerApi {
      */
     @PUT("http://dev.game.inframe.mobi/v1/game/exit")
     Observable<ApiResult> exitGame(@Body RequestBody body);
+
+    /**
+     *  请求发JoinNotice的push
+     *
+     * @param body 游戏标识 gameID (必选)
+     * @return
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/room/join-room")
+    Observable<ApiResult> reqIntoGameRoom(@Body RequestBody body);
 }

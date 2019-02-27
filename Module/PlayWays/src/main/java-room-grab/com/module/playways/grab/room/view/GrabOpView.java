@@ -17,13 +17,8 @@ import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
-import com.jakewharton.rxbinding2.view.RxView;
+import com.common.view.ex.drawable.DrawableCreator;
 import com.module.rank.R;
-
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Predicate;
 
 import static android.animation.ValueAnimator.REVERSE;
 import static android.view.animation.Animation.INFINITE;
@@ -37,11 +32,14 @@ public class GrabOpView extends RelativeLayout {
 
     public static final int MSG_HIDE_FROM_END_GUIDE_AUDIO = 0;
     public static final int MSG_HIDE = 1;
+    public static final int MSG_SHOW_BRUST_BTN = 2;
 
     public static final int STATUS_GRAP = 1;
     public static final int STATUS_COUNT_DOWN = 2;
-    public static final int STATUS_CAN_LIGHT_OFF = 3;
-    public static final int STATUS_LIGHT_OFF = 4;
+    //可操作
+    public static final int STATUS_CAN_OP = 3;
+    //已经操作完成
+    public static final int STATUS_HAS_OP = 4;
 
     int mSeq = -1;
 
@@ -54,6 +52,8 @@ public class GrabOpView extends RelativeLayout {
     ExImageView mIvLightOff;
 
     Listener mListener;
+
+    ExImageView mIvBurst;
 
     RelativeLayout mGrabContainer;
 
@@ -72,6 +72,9 @@ public class GrabOpView extends RelativeLayout {
                 case MSG_HIDE:
                     mIvLightOff.setVisibility(GONE);
                     mGrabContainer.setVisibility(GONE);
+                    break;
+                case MSG_SHOW_BRUST_BTN:
+                    mIvBurst.setVisibility(VISIBLE);
                     break;
             }
         }
@@ -94,10 +97,11 @@ public class GrabOpView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.grab_op_view_layout, this);
-        mBtnIv = (ExImageView) this.findViewById(R.id.iv_text);
-        mRrlProgress = (RoundRectangleView) findViewById(R.id.rrl_progress);
-        mIvLightOff = (ExImageView) findViewById(R.id.iv_light_off);
-        mGrabContainer = (RelativeLayout)findViewById(R.id.grab_container);
+        mBtnIv = this.findViewById(R.id.iv_text);
+        mRrlProgress = findViewById(R.id.rrl_progress);
+        mIvLightOff = findViewById(R.id.iv_light_off);
+        mGrabContainer = findViewById(R.id.grab_container);
+        mIvBurst = findViewById(R.id.iv_burst);
 
         mBtnIv.setOnClickListener(new DebounceViewClickListener() {
 
@@ -112,10 +116,22 @@ public class GrabOpView extends RelativeLayout {
             }
         });
 
+        mIvBurst.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mStatus == STATUS_CAN_OP) {
+                    if (mListener != null) {
+                        mListener.clickBurst(mSeq);
+                        mIvBurst.setClickable(false);
+                    }
+                }
+            }
+        });
+
         mIvLightOff.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                if(mStatus == STATUS_CAN_LIGHT_OFF){
+                if(mStatus == STATUS_CAN_OP){
                     if (mListener != null) {
                         mListener.clickLightOff();
                     }
@@ -140,6 +156,7 @@ public class GrabOpView extends RelativeLayout {
         mBtnIv.clearAnimation();
         mBtnIv.setClickable(false);
         mIvLightOff.setVisibility(GONE);
+        mIvBurst.setVisibility(GONE);
         mGrabContainer.setVisibility(VISIBLE);
         mStatus = STATUS_COUNT_DOWN;
         mUiHandler.removeMessages(MSG_HIDE_FROM_END_GUIDE_AUDIO);
@@ -246,13 +263,14 @@ public class GrabOpView extends RelativeLayout {
         startAnimation(animation);
 
         setVisibility(VISIBLE);
-        mStatus = STATUS_CAN_LIGHT_OFF;
+        mStatus = STATUS_CAN_OP;
         mIvLightOff.setVisibility(VISIBLE);
         mIvLightOff.setBackground(U.getDrawable(R.drawable.mie_red_bj));
         mGrabContainer.setVisibility(GONE);
         mIvLightOff.setClickable(false);
         mUiHandler.removeMessages(MSG_HIDE_FROM_END_GUIDE_AUDIO);
         mUiHandler.removeMessages(MSG_HIDE);
+        mUiHandler.removeMessages(MSG_SHOW_BRUST_BTN);
 
         cancelCountDownTask();
         mCountDownTask = HandlerTaskTimer.newBuilder().interval(1000)
@@ -289,16 +307,26 @@ public class GrabOpView extends RelativeLayout {
                         if (mListener != null) {
                             mListener.countDownOver();
                         }
-                        // 按钮变成抢唱，且可点击
+
                         mIvLightOff.setClickable(true);
-                        mIvLightOff.setImageDrawable(U.getDrawable(R.drawable.miedeng_zi));
+                        Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20))
+                                .setShape(DrawableCreator.Shape.Rectangle)
+                                .setPressedDrawable(U.getDrawable(R.drawable.grab_yanchang_miedeng))
+                                .setUnPressedDrawable(U.getDrawable(R.drawable.grab_miedeng_anxia))
+                                .build();
+                        mIvLightOff.setImageDrawable(drawable);
+
                     }
                 });
+
+        Message msg = Message.obtain();
+        msg.what = MSG_SHOW_BRUST_BTN;
+        mUiHandler.sendMessageDelayed(msg, 15000);
     }
 
     public void toLightOffState(){
-        if(mStatus == STATUS_CAN_LIGHT_OFF){
-            mStatus = STATUS_LIGHT_OFF;
+        if(mStatus == STATUS_CAN_OP){
+            mStatus = STATUS_HAS_OP;
             mIvLightOff.setBackground(U.getDrawable(R.drawable.mie_an_bj));
             mIvLightOff.setClickable(false);
         }
@@ -322,6 +350,8 @@ public class GrabOpView extends RelativeLayout {
         void clickGrabBtn(int seq);
 
         void clickLightOff();
+
+        void clickBurst(int seq);
 
         void grabCountDownOver();
 
