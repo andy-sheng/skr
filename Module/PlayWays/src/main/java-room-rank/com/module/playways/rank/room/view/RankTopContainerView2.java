@@ -199,9 +199,8 @@ public class RankTopContainerView2 extends RelativeLayout {
     }
 
     /**
-     *
-     * @param uid    投票人的id
-     * @param currUid    被投票人id
+     * @param uid     投票人的id
+     * @param currUid 被投票人id
      */
     private void parseLightOffEvent(int uid, int currUid) {
         MyLog.d(TAG, "parseLightOffEvent onEvent 5");
@@ -225,8 +224,7 @@ public class RankTopContainerView2 extends RelativeLayout {
     }
 
     /**
-     *
-     * @param currUid  被投票者
+     * @param currUid 被投票者
      * @param index
      */
     private void pretendMieComment(int currUid, int index) {
@@ -241,7 +239,7 @@ public class RankTopContainerView2 extends RelativeLayout {
         if (model != null) {
             if (index != 2) {
                 commentModel.setContent("收到" + (index + 1) + "个'x'");
-            }else {
+            } else {
                 commentModel.setContent("收到" + (index + 1) + "个'x'，演唱结束");
             }
             commentModel.setHighlightContent(model.getUserInfo().getNickname());
@@ -286,6 +284,11 @@ public class RankTopContainerView2 extends RelativeLayout {
     }
 
     private void setLight(int index, UserLightInfo userLightInfo) {
+        if (isEmpty(mStatusArr)) {
+            mLeftLedView.setVisibility(GONE);
+            mRightLedView.setVisibility(GONE);
+            mMidLedView.setVisibility(GONE);
+        }
         mStatusArr[index] = userLightInfo;
         LightState lightState = userLightInfo.mLightState;
         MyLog.d(TAG, "setLight" + " index=" + index + " lightState=" + lightState);
@@ -303,6 +306,24 @@ public class RankTopContainerView2 extends RelativeLayout {
                 mRightLedView.setSVGAMode(lightState == LightState.BAO);
                 break;
         }
+    }
+
+    private boolean isEmpty(UserLightInfo mStatusArr[]) {
+        if (mStatusArr == null) {
+            return true;
+        }
+
+        if (mStatusArr.length == 0) {
+            return true;
+        }
+
+        for (UserLightInfo userLightInfo : mStatusArr) {
+            if (userLightInfo != null) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public void onGameFinish() {
