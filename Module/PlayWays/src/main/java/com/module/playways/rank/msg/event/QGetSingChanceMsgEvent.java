@@ -2,6 +2,7 @@
 // Source file: Room.proto
 package com.module.playways.rank.msg.event;
 
+import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.rank.msg.BasePushInfo;
 import com.zq.live.proto.Room.QGetSingChanceMsg;
 import com.zq.live.proto.Room.QRoundInfo;
@@ -21,13 +22,13 @@ public final class QGetSingChanceMsgEvent  {
    * 当前轮次信息
    */
 
-  public  QRoundInfo currentRound;
+  public GrabRoundInfoModel currentRound;
 
   public QGetSingChanceMsgEvent(BasePushInfo info, QGetSingChanceMsg qGetSingChanceMsg) {
     this.info = info;
     this.userID = qGetSingChanceMsg.getUserID();
     this.roundSeq = qGetSingChanceMsg.getRoundSeq();
-    this.currentRound = qGetSingChanceMsg.getCurrentRound();
+    this.currentRound = GrabRoundInfoModel.parseFromRoundInfo(qGetSingChanceMsg.getCurrentRound());
   }
 
   public BasePushInfo getInfo() {
@@ -42,7 +43,7 @@ public final class QGetSingChanceMsgEvent  {
     return roundSeq;
   }
 
-  public QRoundInfo getCurrentRound() {
+  public GrabRoundInfoModel getCurrentRound() {
     return currentRound;
   }
 }

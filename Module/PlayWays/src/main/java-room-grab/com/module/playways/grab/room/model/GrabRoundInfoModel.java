@@ -2,12 +2,13 @@ package com.module.playways.grab.room.model;
 
 import com.common.log.MyLog;
 import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent;
-import com.module.playways.grab.room.event.GrabQLightActionEvent;
 import com.module.playways.grab.room.event.GrabRoundStatusChangeEvent;
 import com.module.playways.grab.room.event.GrabWaitSeatUpdateEvent;
 import com.module.playways.grab.room.event.SomeOneGrabEvent;
 import com.module.playways.grab.room.event.SomeOneJoinPlaySeatEvent;
 import com.module.playways.grab.room.event.SomeOneJoinWaitSeatEvent;
+import com.module.playways.grab.room.event.SomeOneLeavePlaySeatEvent;
+import com.module.playways.grab.room.event.SomeOneLeaveWaitSeatEvent;
 import com.module.playways.grab.room.event.SomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.SomeOneLightOffEvent;
 import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
@@ -306,4 +307,34 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         this.status = status;
     }
 
+    public void addUser(boolean b, GrabPlayerInfoModel playerInfoModel) {
+        if (playerInfoModel.getRole() == GrabPlayerInfoModel.ROLE_PLAY) {
+            addPlayUser(b, playerInfoModel);
+        } else if (playerInfoModel.getRole() == GrabPlayerInfoModel.ROLE_WAIT) {
+            addWaitUser(b, playerInfoModel);
+        }
+    }
+
+    public void removeUser(boolean notify, int uid) {
+        for (int i = 0; i < playUsers.size(); i++) {
+            GrabPlayerInfoModel infoModel = playUsers.get(i);
+            if (infoModel.getUserID() == uid) {
+                playUsers.remove(infoModel);
+                if(notify) {
+                    EventBus.getDefault().post(new SomeOneLeavePlaySeatEvent(infoModel));
+                }
+                break;
+            }
+        }
+        for (int i = 0; i < waitUsers.size(); i++) {
+            GrabPlayerInfoModel infoModel = waitUsers.get(i);
+            if (infoModel.getUserID() == uid) {
+                waitUsers.remove(infoModel);
+                if(notify) {
+                    EventBus.getDefault().post(new SomeOneLeaveWaitSeatEvent(infoModel));
+                }
+                break;
+            }
+        }
+    }
 }

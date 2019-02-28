@@ -29,10 +29,11 @@ import com.module.ModuleServiceManager;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.event.GrabGameOverEvent;
-import com.module.playways.grab.room.event.GrabQLightActionEvent;
 import com.module.playways.grab.room.event.GrabRoundChangeEvent;
 import com.module.playways.grab.room.event.GrabRoundStatusChangeEvent;
 import com.module.playways.grab.room.inter.IGrabView;
+import com.module.playways.grab.room.model.BLightInfoModel;
+import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.GrabResultInfoModel;
 import com.module.playways.grab.room.model.GrabSkrResourceModel;
 import com.module.playways.grab.room.model.MLightInfoModel;
@@ -41,6 +42,9 @@ import com.module.playways.rank.msg.BasePushInfo;
 import com.module.playways.rank.msg.event.CommentMsgEvent;
 import com.module.playways.rank.msg.event.QExitGameMsgEvent;
 import com.module.playways.rank.msg.event.QGetSingChanceMsgEvent;
+import com.module.playways.rank.msg.event.QJoinNoticeEvent;
+import com.module.playways.rank.msg.event.QLightBurstMsgEvent;
+import com.module.playways.rank.msg.event.QLightOffMsgEvent;
 import com.module.playways.rank.msg.event.QNoPassSingMsgEvent;
 import com.module.playways.rank.msg.event.QRoundAndGameOverMsgEvent;
 import com.module.playways.rank.msg.event.QRoundOverMsgEvent;
@@ -698,8 +702,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     /**
      * 根据时间戳更新选手状态,目前就只有两个入口，SyncStatusEvent push了sycn，不写更多入口
      */
-    private synchronized void updatePlayerState(long gameOverTimeMs, long syncStatusTimes,  GrabRoundInfoModel newRoundInfo) {
-        MyLog.w(TAG, "updatePlayerState" + " gameOverTimeMs=" + gameOverTimeMs + " syncStatusTimes=" + syncStatusTimes  + " currentInfo=" + newRoundInfo.getRoundSeq());
+    private synchronized void updatePlayerState(long gameOverTimeMs, long syncStatusTimes, GrabRoundInfoModel newRoundInfo) {
+        MyLog.w(TAG, "updatePlayerState" + " gameOverTimeMs=" + gameOverTimeMs + " syncStatusTimes=" + syncStatusTimes + " currentInfo=" + newRoundInfo.getRoundSeq());
         if (syncStatusTimes > mRoomData.getLastSyncTs()) {
             mRoomData.setLastSyncTs(syncStatusTimes);
         }
@@ -844,7 +848,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     /**
      * 想要演唱机会的人
-     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -852,7 +855,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         if (RoomDataUtils.isCurrentRound(event.getRoundSeq(), mRoomData)) {
             MyLog.w(TAG, "有人想唱：userID " + event.getUserID() + ", seq " + event.getRoundSeq());
             GrabRoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
-
             WantSingerInfo wantSingerInfo = new WantSingerInfo();
             wantSingerInfo.setUserID(event.getUserID());
             wantSingerInfo.setTimeMs(System.currentTimeMillis());
@@ -863,19 +865,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     }
 
     /**
-     * 有人爆灭灯了, 真正更新ui
-     *
-     * @param event
-     */
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(GrabQLightActionEvent event) {
-        MyLog.d(TAG, "onEvent" + " event=" + event);
-
-    }
-
-    /**
      * 抢到演唱机会的人
-     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -891,12 +881,56 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
+    /**
+     * 有人灭灯
+     * @param event
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(QExitGameMsgEvent event) {
-        MyLog.w(TAG, "有人退出了：userID is " + event.getUserID());
-//        mRoomData.setOnline(event.userID, false);
-        GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
-        //TODO
+    public void onEvent(QLightOffMsgEvent event) {
+        if (RoomDataUtils.isCurrentRound(event.roundSeq, mRoomData)) {
+            MyLog.w(TAG, "有人灭灯了：userID " + event.userID + ", seq " + event.roundSeq);
+            GrabRoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
+            //都开始灭灯肯定是已经开始唱了
+            roundInfoModel.updateStatus(true, GrabRoundInfoModel.STATUS_SING);
+            MLightInfoModel noPassingInfo = new MLightInfoModel();
+            noPassingInfo.setUserID(event.userID);
+            roundInfoModel.addLightOffUid(true, noPassingInfo);
+        } else {
+            MyLog.w(TAG, "有人灭灯了,但是不是这个轮次：userID " + event.userID + ", seq " + event.roundSeq + "，当前轮次是 " + mRoomData.getRealRoundSeq());
+        }
+    }
+
+    /**
+     * 有人爆灯
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(QLightBurstMsgEvent event) {
+        if (RoomDataUtils.isCurrentRound(event.roundSeq, mRoomData)) {
+            MyLog.w(TAG, "有人爆灯了：userID " + event.userID + ", seq " + event.roundSeq);
+            GrabRoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
+            //都开始灭灯肯定是已经开始唱了
+            roundInfoModel.updateStatus(true, GrabRoundInfoModel.STATUS_SING);
+            BLightInfoModel noPassingInfo = new BLightInfoModel();
+            noPassingInfo.setUserID(event.userID);
+            roundInfoModel.addLightBurstUid(true, noPassingInfo);
+        } else {
+            MyLog.w(TAG, "有人爆灯了,但是不是这个轮次：userID " + event.userID + ", seq " + event.roundSeq + "，当前轮次是 " + mRoomData.getRealRoundSeq());
+        }
+    }
+
+    /**
+     * 有人加入房间
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(QJoinNoticeEvent event) {
+        if (RoomDataUtils.isCurrentRound(event.roundSeq, mRoomData)) {
+            GrabPlayerInfoModel playerInfoModel = event.infoModel;
+            MyLog.d(TAG, "有人加入房间,id=" + playerInfoModel.getUserID() + " name=" + playerInfoModel.getUserInfo().getNickname() + " role=" + playerInfoModel.getRole());
+            GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
+            grabRoundInfoModel.addUser(true, playerInfoModel);
+            //TODO 加入房间的弹幕
 //        BasePushInfo basePushInfo = new BasePushInfo();
 //        basePushInfo.setRoomID(mRoomData.getGameId());
 //        basePushInfo.setSender(new UserInfo.Builder()
@@ -912,25 +946,22 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 //            CommentMsgEvent msgEvent = new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text);
 //            EventBus.getDefault().post(msgEvent);
 //        }
-    }
-
-    //！！！！弃用
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(QNoPassSingMsgEvent event) {
-        if (RoomDataUtils.isCurrentRound(event.getRoundSeq(), mRoomData)) {
-            MyLog.w(TAG, "有人灭灯了：userID " + event.getUserID() + ", seq " + event.getRoundSeq());
-            GrabRoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
-            //都开始灭灯肯定是已经开始唱了
-            roundInfoModel.updateStatus(true, GrabRoundInfoModel.STATUS_SING);
-
-            MLightInfoModel noPassingInfo = new MLightInfoModel();
-            noPassingInfo.setUserID(event.getUserID());
-
-            roundInfoModel.addLightOffUid(true, noPassingInfo);
         } else {
-            MyLog.w(TAG, "有人灭灯了,但是不是这个轮次：userID " + event.getUserID() + ", seq " + event.getRoundSeq() + "，当前轮次是 " + mRoomData.getRealRoundSeq());
+            MyLog.w(TAG, "有人加入房间了,但是不是这个轮次：userID " + event.infoModel.getUserID() + ", seq " + event.roundSeq + "，当前轮次是 " + mRoomData.getRealRoundSeq());
         }
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(QExitGameMsgEvent event) {
+        if (RoomDataUtils.isCurrentRound(event.roundSeq, mRoomData)) {
+            MyLog.d(TAG, "有人离开房间,id=" + event.userID);
+            GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
+            grabRoundInfoModel.removeUser(true, event.userID);
+        } else {
+            MyLog.w(TAG, "有人离开房间了,但是不是这个轮次：userID " + event.userID + ", seq " + event.roundSeq + "，当前轮次是 " + mRoomData.getRealRoundSeq());
+        }
+    }
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QRoundOverMsgEvent event) {

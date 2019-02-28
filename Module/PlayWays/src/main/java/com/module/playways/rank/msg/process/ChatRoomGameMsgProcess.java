@@ -12,6 +12,9 @@ import com.module.playways.rank.msg.event.PkBurstLightMsgEvent;
 import com.module.playways.rank.msg.event.PkLightOffMsgEvent;
 import com.module.playways.rank.msg.event.QExitGameMsgEvent;
 import com.module.playways.rank.msg.event.QGetSingChanceMsgEvent;
+import com.module.playways.rank.msg.event.QJoinNoticeEvent;
+import com.module.playways.rank.msg.event.QLightBurstMsgEvent;
+import com.module.playways.rank.msg.event.QLightOffMsgEvent;
 import com.module.playways.rank.msg.event.QNoPassSingMsgEvent;
 import com.module.playways.rank.msg.event.QRoundAndGameOverMsgEvent;
 import com.module.playways.rank.msg.event.QRoundOverMsgEvent;
@@ -32,9 +35,12 @@ import com.zq.live.proto.Room.JoinNoticeMsg;
 import com.zq.live.proto.Room.MachineScore;
 import com.zq.live.proto.Room.PKBLightMsg;
 import com.zq.live.proto.Room.PKMLightMsg;
+import com.zq.live.proto.Room.QBLightMsg;
 import com.zq.live.proto.Room.QExitGameMsg;
 import com.zq.live.proto.Room.QGetSingChanceMsg;
+import com.zq.live.proto.Room.QJoinNoticeMsg;
 import com.zq.live.proto.Room.QLightActionMsg;
+import com.zq.live.proto.Room.QMLightMsg;
 import com.zq.live.proto.Room.QNoPassSingMsg;
 import com.zq.live.proto.Room.QRoundAndGameOverMsg;
 import com.zq.live.proto.Room.QRoundOverMsg;
@@ -49,8 +55,6 @@ import com.zq.live.proto.Room.VoteResultMsg;
 
 import org.greenrobot.eventbus.EventBus;
 
-import static com.zq.live.proto.Room.ERoomMsgType.RM_PK_BLIGHT;
-import static com.zq.live.proto.Room.ERoomMsgType.RM_PK_MLIGHT;
 
 public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
 
@@ -102,10 +106,16 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
             processQNoPassSingMsg(basePushInfo, msg.getQNoPassSingMsg());
         } else if (msg.getMsgType() == ERoomMsgType.RM_Q_EXIT_GAME) {
             processQExitGameMsg(basePushInfo, msg.getQExitGameMsg());
-        } else if (msg.getMsgType() == RM_PK_BLIGHT) {
+        } else if (msg.getMsgType() == ERoomMsgType.RM_PK_BLIGHT) {
             processPkBurstLightMsg(basePushInfo, msg.getPkBLightMsg());
-        } else if (msg.getMsgType() == RM_PK_MLIGHT) {
+        } else if (msg.getMsgType() == ERoomMsgType.RM_PK_MLIGHT) {
             processPkLightOffMsg(basePushInfo, msg.getPkMLightMsg());
+        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_BLIGHT) {
+            processGrabLightBurstMsg(basePushInfo,msg.getQBLightMsg());
+        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_MLIGHT) {
+            processGrabLightOffMsg(basePushInfo,msg.getQMLightMsg());
+        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_JOIN_NOTICE) {
+            processGrabJoinMsg(basePushInfo,msg.getQJoinNoticeMsg());
         }
     }
 
@@ -123,6 +133,7 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
                 ERoomMsgType.RM_Q_ROUND_OVER, ERoomMsgType.RM_Q_ROUND_AND_GAME_OVER,
                 ERoomMsgType.RM_Q_NO_PASS_SING, ERoomMsgType.RM_Q_EXIT_GAME,
                 ERoomMsgType.RM_PK_BLIGHT, ERoomMsgType.RM_PK_MLIGHT,
+                ERoomMsgType.RM_Q_BLIGHT, ERoomMsgType.RM_Q_MLIGHT, ERoomMsgType.RM_Q_JOIN_NOTICE,
         };
     }
 
@@ -344,6 +355,34 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
         }
     }
 
+
+
+    private void processGrabLightOffMsg(BasePushInfo basePushInfo, QMLightMsg msg) {
+        if (msg != null) {
+            QLightOffMsgEvent event = new QLightOffMsgEvent(basePushInfo, msg);
+            EventBus.getDefault().post(event);
+        } else {
+            MyLog.w(TAG, "processPkLightOffMsg" + " basePushInfo=" + basePushInfo + " qExitGameMsg = null");
+        }
+    }
+
+    private void processGrabLightBurstMsg(BasePushInfo basePushInfo, QBLightMsg msg) {
+        if (msg != null) {
+            QLightBurstMsgEvent event = new QLightBurstMsgEvent(basePushInfo, msg);
+            EventBus.getDefault().post(event);
+        } else {
+            MyLog.w(TAG, "processPkLightOffMsg" + " basePushInfo=" + basePushInfo + " qExitGameMsg = null");
+        }
+    }
+
+    private void processGrabJoinMsg(BasePushInfo basePushInfo, QJoinNoticeMsg msg) {
+        if (msg != null) {
+            QJoinNoticeEvent event = new QJoinNoticeEvent(basePushInfo, msg);
+            EventBus.getDefault().post(event);
+        } else {
+            MyLog.w(TAG, "processPkLightOffMsg" + " basePushInfo=" + basePushInfo + " qExitGameMsg = null");
+        }
+    }
 
     private void processAccBeigin(BasePushInfo basePushInfo) {
         if (basePushInfo != null) {
