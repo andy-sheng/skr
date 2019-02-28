@@ -57,6 +57,10 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
     //5有种可惜叫我觉得你行（90%<=t<=100%)
     private int resultType; // 结果类型
 
+    private boolean isParticipant = true;// 我是不是这局的参与者
+
+    private int elapsedTimeMs;//这个轮次已经经过的时间，一般用于中途加入者使用
+
     public GrabRoundInfoModel() {
 
     }
@@ -336,5 +340,21 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
                 break;
             }
         }
+    }
+
+    public boolean isParticipant() {
+        return isParticipant;
+    }
+
+    public void setParticipant(boolean participant) {
+        isParticipant = participant;
+    }
+
+    public int getElapsedTimeMs() {
+        return elapsedTimeMs;
+    }
+
+    public void setElapsedTimeMs(int elapsedTimeMs) {
+        this.elapsedTimeMs = elapsedTimeMs;
     }
 }

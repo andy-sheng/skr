@@ -1,5 +1,6 @@
 package com.module.playways.rank.prepare.model;
 
+import com.module.playways.grab.room.model.GrabConfigModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 
 import java.io.Serializable;
@@ -184,7 +185,9 @@ public class JoinGrabRoomRspModel implements Serializable {
     private int gameOverTimeMs;// 结束时间
     private int roomID;// 房间id
     private int syncStatusTimeMs; // 同步时间
-    private int tagID;
+    private int tagID;// 剧本游戏
+    private boolean isNewGame;// 是否是一局新游戏
+    private GrabConfigModel config;
 
     public JoinGrabRoomRspModel() {
 
@@ -252,5 +255,21 @@ public class JoinGrabRoomRspModel implements Serializable {
 
     public void setTagID(int tagID) {
         this.tagID = tagID;
+    }
+
+    public boolean isNewGame() {
+        return isNewGame;
+    }
+
+    public void setNewGame(boolean newGame) {
+        isNewGame = newGame;
+    }
+
+    public GrabConfigModel getConfig() {
+        return config;
+    }
+
+    public void setConfig(GrabConfigModel config) {
+        this.config = config;
     }
 }

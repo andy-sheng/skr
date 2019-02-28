@@ -46,21 +46,27 @@ public class GrabRoomActivity extends BaseActivity {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        PrepareData prepareData = (PrepareData) getIntent().getSerializableExtra("prepare_data");
-        if (prepareData != null) {
-            JoinGrabRoomRspModel joinGrabRoomRspModel = prepareData.getJoinGrabRoomRspModel();
-            RankGameConfigModel gameConfigModel = prepareData.getGameConfigModel();
-
-            mRoomData.setGameId(joinGrabRoomRspModel.getRoomID());
-            mRoomData.setCoin(joinGrabRoomRspModel.getCoin());
-            mRoomData.setExpectRoundInfo(joinGrabRoomRspModel.getCurrentRound());
-//            mRoomData.setRealRoundInfo(joinGrabRoomRspModel.getCurrentRound());
-            if (mRoomData.getGameType() == GameModeType.GAME_MODE_GRAB) {
-                mRoomData.setTagId(prepareData.getTagId());
+        JoinGrabRoomRspModel rsp = (JoinGrabRoomRspModel) getIntent().getSerializableExtra("prepare_data");
+        if (rsp != null) {
+            mRoomData.setGrabConfigModel(rsp.getConfig());
+            mRoomData.setGameId(rsp.getRoomID());
+            mRoomData.setCoin(rsp.getCoin());
+            GrabRoundInfoModel grabRoundInfoModel = rsp.getCurrentRound();
+            if (rsp.isNewGame()) {
+                grabRoundInfoModel.setParticipant(true);
+            } else {
+                grabRoundInfoModel.setParticipant(false);
             }
-            mRoomData.setShiftTs(prepareData.getShiftTs());
-
-            MyLog.d(TAG, "" + prepareData.getPlayerInfoList());
+            grabRoundInfoModel.setElapsedTimeMs(rsp.getElapsedTimeMs());
+            mRoomData.setExpectRoundInfo(grabRoundInfoModel);
+//            mRoomData.setRealRoundInfo(rsp.getCurrentRound());
+            mRoomData.setTagId(rsp.getTagID());
+            if (mRoomData.getGameStartTs() == 0) {
+                mRoomData.setGameCreateTs(System.currentTimeMillis());
+            }
+            if (mRoomData.getGameCreateTs() == 0) {
+                mRoomData.setGameCreateTs(System.currentTimeMillis());
+            }
 //            mRoomData.setPlayerInfoList(prepareData.getPlayerInfoList());
         } else {
             //TODO test
