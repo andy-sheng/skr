@@ -79,18 +79,18 @@ public class InframeProcessor implements ISchemeProcessor {
             MyLog.w(TAG, "processGameUrl path is empty");
             return;
         }
-        if ("mimusic".equals(path)) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("mimusic");
-            String opid = uri.getQueryParameter("opid");
-            if(TextUtils.isEmpty(opid)){
-            }else{
-                sb.append("_").append(opid);
-            }
-            U.getChannelUtils().setSubChannel(sb.toString());
-        } else {
-
+        String subchannel = path;
+        if (subchannel.startsWith("/")) {
+            subchannel = subchannel.substring(1);
         }
+        StringBuilder sb = new StringBuilder();
+        sb.append(subchannel);
+        String opid = uri.getQueryParameter("opid");
+        if (TextUtils.isEmpty(opid)) {
+        } else {
+            sb.append("_").append(opid);
+        }
+        U.getChannelUtils().setSubChannel(sb.toString());
     }
 
     private void processGameUrl(Uri uri) {

@@ -7,8 +7,10 @@ import android.text.TextUtils;
 
 
 import com.common.log.MyLog;
+import com.common.statistics.StatisticsAdapter;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
 
 public class ChannelUtils {
     public final static String TAG = "ChannelUtils";
@@ -21,6 +23,7 @@ public class ChannelUtils {
 
     ChannelUtils() {
         try {
+            mSubChannel = U.getPreferenceUtils().getSettingString(PREF_KEY_SUB_CHANNEL, "");
             Class ct = Class.forName(U.getAppInfoUtils().getPackageName() + ".BuildConfig");
             Field field = ct.getField("CHANNEL_NAME");
             channelNameFromBuildConfig = (String) field.get(null);
@@ -75,7 +78,13 @@ public class ChannelUtils {
                 U.getPreferenceUtils().setSettingString(PREF_KEY_CHANNEL, channelNameFromPref);
             }
         }
-        return channelNameFromPref;
+        if ("DEFAULT".equals(channelNameFromPref)) {
+            return "DEFAULT";
+        }
+        if (TextUtils.isEmpty(mSubChannel)) {
+            return channelNameFromPref;
+        }
+        return channelNameFromPref + mSubChannel;
     }
 
     public boolean isStaging() {
@@ -97,8 +106,11 @@ public class ChannelUtils {
 
     public void setSubChannel(String subChannel) {
         mSubChannel = subChannel;
-        if (!TextUtils.isEmpty("mSubChannel")) {
-            U.getPreferenceUtils().setSettingString(PREF_KEY_SUB_CHANNEL, mSubChannel);
+        if (!TextUtils.isEmpty(subChannel)) {
+            HashMap map = new HashMap();
+            map.put("from", subChannel);
+            StatisticsAdapter.recordCountEvent(U.getChannelUtils().getChannel(), "sub_channel", map);
+            U.getPreferenceUtils().setSettingString(PREF_KEY_SUB_CHANNEL, subChannel);
         } else {
             U.getPreferenceUtils().setSettingString(PREF_KEY_SUB_CHANNEL, "");
         }

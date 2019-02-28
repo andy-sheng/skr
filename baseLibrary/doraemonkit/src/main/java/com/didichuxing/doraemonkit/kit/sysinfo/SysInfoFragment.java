@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.common.base.BuildConfig;
@@ -114,6 +115,12 @@ public class SysInfoFragment extends BaseFragment {
                 listDialog.showList(listItems);
             }
         }));
+        String subChannel = U.getChannelUtils().getSubChannel();
+        if (TextUtils.isEmpty(subChannel)) {
+            sysInfoItems.add(new SysInfoItem("子渠道", "无"));
+        } else {
+            sysInfoItems.add(new SysInfoItem("子渠道", subChannel));
+        }
         sysInfoItems.add(new SysInfoItem(getString(R.string.dk_sysinfo_package_version_name), pi.versionName));
         sysInfoItems.add(new SysInfoItem(getString(R.string.dk_sysinfo_package_version_code), String.valueOf(pi.versionCode)));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -128,7 +135,7 @@ public class SysInfoFragment extends BaseFragment {
         ExtraInfoProvider extraInfoProvider = DoraemonKit.getExtraInfoProvider();
         if (extraInfoProvider != null) {
             List<SysInfoItem> extras = extraInfoProvider.getExtraInfo();
-            for(SysInfoItem sysInfoItem:extras){
+            for (SysInfoItem sysInfoItem : extras) {
                 sysInfoItems.add(sysInfoItem);
             }
         }
