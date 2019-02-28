@@ -62,7 +62,7 @@ public class GrabRoomActivity extends BaseActivity {
 //            mRoomData.setRealRoundInfo(rsp.getCurrentRound());
             mRoomData.setTagId(rsp.getTagID());
             if (mRoomData.getGameStartTs() == 0) {
-                mRoomData.setGameCreateTs(System.currentTimeMillis());
+                mRoomData.setGameStartTs(System.currentTimeMillis());
             }
             if (mRoomData.getGameCreateTs() == 0) {
                 mRoomData.setGameCreateTs(System.currentTimeMillis());
@@ -96,7 +96,7 @@ public class GrabRoomActivity extends BaseActivity {
             grabRoundInfoModel.setElapsedTimeMs(5000);
             mRoomData.setGrabConfigModel(grabConfigModel);
             if (mRoomData.getGameStartTs() == 0) {
-                mRoomData.setGameCreateTs(System.currentTimeMillis());
+                mRoomData.setGameStartTs(System.currentTimeMillis());
             }
             if (mRoomData.getGameCreateTs() == 0) {
                 mRoomData.setGameCreateTs(System.currentTimeMillis());
