@@ -104,7 +104,7 @@ public class JsBridgeImpl {
         }
 
 
-        function.onCallBack(getJsonObj(new Pair("errcode", "0"), new Pair("errmsg", ""), new Pair("data", "{}")));
+        function.onCallBack(getJsonObj(new Pair("errcode", "0"), new Pair("errmsg", ""), new Pair("data", "{}")).toJSONString());
     }
 
     public void bindWeChat(String data, final CallBackFunction function) {
@@ -120,29 +120,29 @@ public class JsBridgeImpl {
                 String accessToken = data.get("access_token");
                 String openid = data.get("openid");
                 function.onCallBack(getJsonObj(new Pair("errcode", "0"), new Pair("errmsg", ""),
-                        new Pair("data", getJsonObj(new Pair("access_token", accessToken), new Pair("open_id", openid)))));
+                        new Pair("data", getJsonObj(new Pair("access_token", accessToken), new Pair("open_id", openid)))).toJSONString());
             }
 
             @Override
             public void onCancel(SHARE_MEDIA share_media, int i) {
                 function.onCallBack(getJsonObj(new Pair("errcode", "1"), new Pair("errmsg", "取消授权"),
-                        new Pair("data", getJsonObj(new Pair("access_token", ""), new Pair("open_id", "")))));
+                        new Pair("data", getJsonObj(new Pair("access_token", ""), new Pair("open_id", "")))).toJSONString());
             }
 
             @Override
             public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
                 function.onCallBack(getJsonObj(new Pair("errcode", "2"), new Pair("errmsg", throwable.getMessage()),
-                        new Pair("data", getJsonObj(new Pair("access_token", ""), new Pair("open_id", "")))));
+                        new Pair("data", getJsonObj(new Pair("access_token", ""), new Pair("open_id", "")))).toJSONString());
             }
         });
     }
 
-    public static String getJsonObj(Pair<String, String>... pairArray) {
+    public static JSONObject getJsonObj(Pair<String, Object>... pairArray) {
         JSONObject jsonObject = new JSONObject();
-        for (Pair<String, String> pair : pairArray) {
+        for (Pair<String, Object> pair : pairArray) {
             jsonObject.put(pair.first, pair.second);
         }
 
-        return jsonObject.toJSONString();
+        return jsonObject;
     }
 }
