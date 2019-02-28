@@ -561,7 +561,7 @@ public class EngineManager implements AgoraOutCallback {
                         && !userStatus.hasBindView()
                         && !userStatus.isVideoMute()
                         && userStatus.isFirstVideoDecoded()
-                        ) {
+                ) {
                     // 这个用户有资格消费一个 surfaceview
                     if (view instanceof TextureView) {
                         canRemoveViews.add(view);
@@ -730,11 +730,11 @@ public class EngineManager implements AgoraOutCallback {
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {
-                UserStatus status = mUserStatusMap.get(mConfig.getSelfUid());
-                if (status != null) {
-                    status.setAudioMute(muted);
-                    EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_MUTE_AUDIO, status));
-                }
+
+                UserStatus status = new UserStatus(mConfig.getSelfUid());
+                status.setAudioMute(muted);
+                EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_MUTE_AUDIO, status));
+
                 mConfig.setLocalAudioStreamMute(muted);
                 AgoraEngineAdapter.getInstance().muteLocalAudioStream(muted);
             }

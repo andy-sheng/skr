@@ -127,7 +127,7 @@ public class VoiceUserStatusContainerView extends RelativeLayout {
                     }
                     VoiceUserStatusView voiceUserStatusView = mViewMap.get(uid);
                     if (voiceUserStatusView != null) {
-                        voiceUserStatusView.userSpeak();
+                        voiceUserStatusView.userSpeak(u.getVolume());
                     }
                 }
                 break;

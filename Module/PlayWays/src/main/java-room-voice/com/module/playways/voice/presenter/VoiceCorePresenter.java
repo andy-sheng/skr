@@ -5,6 +5,7 @@ import android.os.Message;
 
 import com.changba.songstudio.audioeffect.AudioEffectStyleEnum;
 import com.common.core.account.UserAccountManager;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.engine.EngineEvent;
@@ -58,8 +59,10 @@ public class VoiceCorePresenter extends RxLifeCyclePresenter {
             Params params = Params.getFromPref();
             params.setScene(Params.Scene.voice);
             params.setStyleEnum(AudioEffectStyleEnum.ORIGINAL);
+            params.setSelfUid((int) MyUserInfoManager.getInstance().getUid());
             EngineManager.getInstance().init("voiceroom", params);
             EngineManager.getInstance().joinRoom(mRoomData.getGameId() + "_chat", (int) UserAccountManager.getInstance().getUuidAsLong(), true);
+            EngineManager.getInstance().muteLocalAudioStream(true);
         }
         if (mRoomData.getGameId() > 0) {
 //            for (PlayerInfoModel playerInfoModel : mRoomData.getPlayerInfoList()) {

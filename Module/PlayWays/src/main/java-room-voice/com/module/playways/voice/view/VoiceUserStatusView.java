@@ -93,7 +93,7 @@ public class VoiceUserStatusView extends RelativeLayout {
                 .setCircle(true)
                 .build()
         );
-        mMuteMicIv.setVisibility(GONE);
+        mMuteMicIv.setVisibility(VISIBLE);
     }
 
     public void userOffline() {
@@ -115,8 +115,13 @@ public class VoiceUserStatusView extends RelativeLayout {
         }
     }
 
-    public void userSpeak() {
-        playSpeakSVGA();
+    public void userSpeak(int volume) {
+        if (volume > 0) {
+            mMuteMicIv.setVisibility(GONE);
+        }
+        if (volume > 30) {
+            playSpeakSVGA();
+        }
         mUiHanlder.removeMessages(MSG_SPEAK_OVER);
         mUiHanlder.sendEmptyMessageDelayed(MSG_SPEAK_OVER, 2000);
     }

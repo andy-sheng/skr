@@ -5,14 +5,25 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.common.core.account.UserAccountManager;
+import com.common.core.myinfo.MyUserInfoManager;
+import com.common.log.MyLog;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
+import com.engine.EngineEvent;
 import com.engine.EngineManager;
 import com.engine.Params;
+import com.engine.UserStatus;
 import com.module.rank.R;
 
-public class VoiceRightOpView extends RelativeLayout {
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.List;
+
+public class VoiceRightOpView extends RelativeLayout {
+    public final static String TAG = "VoiceRightOpView";
     //    Listener mListener;
     ExImageView mMicIv;
     ExImageView mSpeakerIv;
@@ -52,13 +63,19 @@ public class VoiceRightOpView extends RelativeLayout {
                 if (params != null) {
                     if (params.isAllRemoteAudioStreamsMute()) {
                         mSpeakerIv.setImageResource(R.drawable.guanbishengyin);
+                        EngineManager.getInstance().muteAllRemoteAudioStreams(false);
                     } else {
                         mSpeakerIv.setImageResource(R.drawable.guanbishengyin_anxia);
+                        mMicIv.setImageResource(R.drawable.jingyin_anxia);
+                        EngineManager.getInstance().muteAllRemoteAudioStreams(true);
+                        EngineManager.getInstance().muteLocalAudioStream(true);
                     }
-                    EngineManager.getInstance().muteAllRemoteAudioStreams(!params.isAllRemoteAudioStreamsMute());
                 }
             }
         });
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 
     @Override
@@ -66,6 +83,7 @@ public class VoiceRightOpView extends RelativeLayout {
         super.onAttachedToWindow();
         Params params = EngineManager.getInstance().getParams();
         if (params != null) {
+            MyLog.d(TAG, "onAttachedToWindow audioMute=" + params.isLocalAudioStreamMute());
             if (params.isLocalAudioStreamMute()) {
                 mMicIv.setImageResource(R.drawable.jingyin_anxia);
             } else {
@@ -76,11 +94,36 @@ public class VoiceRightOpView extends RelativeLayout {
             } else {
                 mSpeakerIv.setImageResource(R.drawable.guanbishengyin);
             }
-
         }
     }
 
-//    public void setListener(Listener l) {
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(EngineEvent event) {
+
+        switch (event.getType()) {
+            case EngineEvent.TYPE_USER_MUTE_AUDIO: {
+                //用户闭麦，开麦
+                UserStatus userStatus = event.getUserStatus();
+                MyLog.d(TAG, "onEvent audioMute=" + userStatus.isAudioMute());
+                int userId = userStatus.getUserId();
+                if (userId == MyUserInfoManager.getInstance().getUid()) {
+                    if (userStatus.isAudioMute()) {
+                        mMicIv.setImageResource(R.drawable.jingyin_anxia);
+                    } else {
+                        mMicIv.setImageResource(R.drawable.jingyin_changtai);
+                    }
+                }
+                break;
+            }
+        }
+    }
+    //    public void setListener(Listener l) {
 //        mListener = l;
 //    }
 
