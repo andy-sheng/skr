@@ -31,6 +31,7 @@ import com.module.playways.grab.room.event.ShowPersonCardEvent;
 import com.module.playways.grab.room.event.SomeOneLightOffEvent;
 import com.module.playways.grab.room.inter.IGrabView;
 import com.module.playways.grab.room.listener.SVGAListener;
+import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.presenter.GrabCorePresenter;
 import com.module.playways.grab.room.top.GrabTopContainerView;
 import com.module.playways.grab.room.top.SingerTopView;
@@ -353,7 +354,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     }
 
     private void initTopView() {
-        mSingerTopView = (SingerTopView)mRootView.findViewById(R.id.singer_top_view);
+        mSingerTopView = (SingerTopView) mRootView.findViewById(R.id.singer_top_view);
         mTopContainerView = mRootView.findViewById(R.id.top_container_view);
         mTopContainerView.setRoomData(mRoomData);
 
@@ -427,6 +428,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     private void initSingStageView() {
         mOthersSingCardView = mRootView.findViewById(R.id.other_sing_card_view);
+        mOthersSingCardView.setRoomData(mRoomData);
         mSelfSingCardView = mRootView.findViewById(R.id.self_sing_card_view);
         mSelfSingCardView.setListener(new SelfSingCardView.Listener() {
             @Override
@@ -512,13 +514,19 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
             mUiHanlder.sendMessageDelayed(msg, 1200);
         }
 
-        mTurnInfoCardView.setModeSongSeq(seq == 1, new SVGAListener() {
-            @Override
-            public void onFinished() {
-                mTurnInfoCardView.setVisibility(View.GONE);
-                onSongInfoCardPlayOver(pendingPlaySongCardData);
-            }
-        });
+        GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
+        if(!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() ==GrabRoundInfoModel.STATUS_GRAB){
+            mTurnInfoCardView.setVisibility(View.GONE);
+            onSongInfoCardPlayOver(pendingPlaySongCardData);
+        }else{
+            mTurnInfoCardView.setModeSongSeq(seq == 1, new SVGAListener() {
+                @Override
+                public void onFinished() {
+                    mTurnInfoCardView.setVisibility(View.GONE);
+                    onSongInfoCardPlayOver(pendingPlaySongCardData);
+                }
+            });
+        }
         mTopContainerView.setModeGrab();
     }
 
@@ -526,9 +534,13 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         MyLog.d(TAG, "onSongInfoCardPlayOver" + " pendingPlaySongCardData=" + pendingPlaySongCardData);
         mUiHanlder.removeMessages(MSG_ENSURE_SONGCARD_OVER);
         mSingBeginTipsCardView.setVisibility(View.GONE);
-        mSongInfoCardView.bindSongModel(pendingPlaySongCardData.songModel);
-
-        mGrabOpBtn.playCountDown(pendingPlaySongCardData.getSeq(), 4, pendingPlaySongCardData.songModel.getStandIntroEndT() - pendingPlaySongCardData.songModel.getStandIntroBeginT());
+        GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
+        if(!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() ==GrabRoundInfoModel.STATUS_GRAB){
+            MyLog.d(TAG,"这轮刚进来，不播放导唱过场");
+        }else{
+            mSongInfoCardView.bindSongModel(pendingPlaySongCardData.songModel);
+            mGrabOpBtn.playCountDown(pendingPlaySongCardData.getSeq(), 4, pendingPlaySongCardData.songModel.getStandIntroEndT() - pendingPlaySongCardData.songModel.getStandIntroBeginT());
+        }
         mCorePresenter.playGuide();
     }
 
@@ -575,19 +587,30 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         singBeginTipsPlay((int) uid, new Runnable() {
             @Override
             public void run() {
-                mGrabOpBtn.toSingState();
+                GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
+                if (grabRoundInfoModel.isParticipant()) {
+                    mGrabOpBtn.toSingState();
+                } else {
+                    MyLog.d(TAG, "中途进来的，不是本局参与者，隐藏按钮");
+                }
                 onSingBeginTipsPlayOver(uid);
             }
         });
     }
 
     private void singBeginTipsPlay(int uid, Runnable runnable) {
-        mSingBeginTipsCardView.bindData(mRoomData.getUserInfo(uid), new SVGAListener() {
-            @Override
-            public void onFinished() {
-                runnable.run();
-            }
-        });
+        GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
+        if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_SING) {
+            MyLog.d(TAG," 进入时已经时演唱阶段了，则不用播卡片了");
+            runnable.run();
+        } else {
+            mSingBeginTipsCardView.bindData(mRoomData.getUserInfo(uid), new SVGAListener() {
+                @Override
+                public void onFinished() {
+                    runnable.run();
+                }
+            });
+        }
     }
 
     private void onSingBeginTipsPlayOver(long uid) {
@@ -602,7 +625,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         } else {
             // 显示收音机
             mOthersSingCardView.setVisibility(View.VISIBLE);
-            mOthersSingCardView.bindData(mRoomData.getUserInfo((int) uid).getAvatar(), mRoomData.getRealRoundInfo().getSongModel());
+            mOthersSingCardView.bindData(mRoomData.getUserInfo((int) uid).getAvatar());
         }
     }
 

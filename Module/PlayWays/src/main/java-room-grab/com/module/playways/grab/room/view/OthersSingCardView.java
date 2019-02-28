@@ -18,6 +18,9 @@ import com.common.image.model.HttpImage;
 import com.common.log.MyLog;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
+import com.module.playways.grab.room.GrabRoomData;
+import com.module.playways.grab.room.model.GrabRoundInfoModel;
+import com.module.playways.rank.room.RankRoomData;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGADrawable;
@@ -51,7 +54,7 @@ public class OthersSingCardView extends RelativeLayout {
 
     HandlerTaskTimer mCountDownTask;
 
-    SongModel mSongModel;
+    GrabRoomData mGrabRoomData;
 
     int mCountDownStatus = COUNT_DOWN_STATUS_WAIT;
 
@@ -90,9 +93,12 @@ public class OthersSingCardView extends RelativeLayout {
         mIvS = (ImageView) findViewById(R.id.iv_s);
     }
 
-    public void bindData(String avatar, SongModel songModel) {
+    public void setRoomData(GrabRoomData roomData) {
+        mGrabRoomData = roomData;
+    }
+
+    public void bindData(String avatar) {
         setVisibility(VISIBLE);
-        mSongModel = songModel;
         mCountDownStatus = COUNT_DOWN_STATUS_WAIT;
         // 平移动画
         if (mEnterAnimation == null) {
@@ -132,25 +138,34 @@ public class OthersSingCardView extends RelativeLayout {
     }
 
     private void countDown() {
-        if (mSongModel == null) {
+        GrabRoundInfoModel grabRoundInfoModel = mGrabRoomData.getRealRoundInfo();
+        SongModel songModel = grabRoundInfoModel.getSongModel();
+        if (songModel == null) {
             return;
         }
         mUiHandler.removeMessages(MSG_ENSURE_PLAY);
         if (mCountDownStatus == COUNT_DOWN_STATUS_WAIT) {
             // 不需要播放countdown
-            int num = (mSongModel.getStandLrcEndT() - mSongModel.getStandLrcBeginT()) / 1000;
+            int num = (songModel.getStandLrcEndT() - songModel.getStandLrcBeginT()) / 1000;
             setNum(num);
             mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_PLAY, 3000);
             return;
         }
         cancelCountDownTask();
+        int takeNum;
+        if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_SING) {
+            MyLog.d(TAG, "演唱阶段加入的，倒计时没那么多");
+            takeNum = ((songModel.getStandLrcEndT() - songModel.getStandLrcBeginT()) / 1000) + 1 - grabRoundInfoModel.getElapsedTimeMs() / 1000;
+        } else {
+            takeNum = ((songModel.getStandLrcEndT() - songModel.getStandLrcBeginT()) / 1000) + 1;
+        }
         mCountDownTask = HandlerTaskTimer.newBuilder()
                 .interval(1000)
-                .take(((mSongModel.getStandLrcEndT() - mSongModel.getStandLrcBeginT()) / 1000) + 1)
+                .take(takeNum)
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
-                        setNum(((mSongModel.getStandLrcEndT() - mSongModel.getStandLrcBeginT()) / 1000) - integer);
+                        setNum(takeNum - 1 - integer);
                     }
                 });
     }

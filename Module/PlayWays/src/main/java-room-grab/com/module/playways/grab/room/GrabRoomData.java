@@ -116,9 +116,11 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
             grabRoundInfoModel.setParticipant(true);
         } else {
             grabRoundInfoModel.setParticipant(false);
+            grabRoundInfoModel.setEnterStatus(grabRoundInfoModel.getStatus());
         }
         grabRoundInfoModel.setElapsedTimeMs(rsp.getElapsedTimeMs());
         this.setExpectRoundInfo(grabRoundInfoModel);
+        this.setRealRoundInfo(null);
 //            mRoomData.setRealRoundInfo(rsp.getCurrentRound());
         this.setTagId(rsp.getTagID());
         this.setGameCreateTs(rsp.getGameCreateMs());

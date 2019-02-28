@@ -59,7 +59,9 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
 
     private boolean isParticipant = true;// 我是不是这局的参与者
 
-    private int elapsedTimeMs;//这个轮次已经经过的时间，一般用于中途加入者使用
+    private int elapsedTimeMs;//这个轮次当前状态已经经过的时间，一般用于中途加入者使用
+
+    private int enterStatus;//你进入这个轮次处于的状态
 
     public GrabRoundInfoModel() {
 
@@ -324,7 +326,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
             GrabPlayerInfoModel infoModel = playUsers.get(i);
             if (infoModel.getUserID() == uid) {
                 playUsers.remove(infoModel);
-                if(notify) {
+                if (notify) {
                     EventBus.getDefault().post(new SomeOneLeavePlaySeatEvent(infoModel));
                 }
                 break;
@@ -334,7 +336,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
             GrabPlayerInfoModel infoModel = waitUsers.get(i);
             if (infoModel.getUserID() == uid) {
                 waitUsers.remove(infoModel);
-                if(notify) {
+                if (notify) {
                     EventBus.getDefault().post(new SomeOneLeaveWaitSeatEvent(infoModel));
                 }
                 break;
@@ -356,5 +358,13 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
 
     public void setElapsedTimeMs(int elapsedTimeMs) {
         this.elapsedTimeMs = elapsedTimeMs;
+    }
+
+    public int getEnterStatus() {
+        return enterStatus;
+    }
+
+    public void setEnterStatus(int enterStatus) {
+        this.enterStatus = enterStatus;
     }
 }

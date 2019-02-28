@@ -10,6 +10,8 @@ import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
+import com.common.player.IPlayerCallback;
+import com.common.player.VideoPlayerAdapter;
 import com.common.player.exoplayer.ExoPlayer;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -215,11 +217,21 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         if (mDestroyed) {
             return;
         }
-        BaseRoundInfoModel now = mRoomData.getRealRoundInfo();
+        GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
         if (now != null) {
             if (mExoPlayer == null) {
                 mExoPlayer = new ExoPlayer();
             }
+            mExoPlayer.setCallback(new VideoPlayerAdapter.PlayerCallbackAdapter() {
+                @Override
+                public void onPrepared() {
+                    super.onPrepared();
+                    if (!now.isParticipant() && now.getEnterStatus() == GrabRoundInfoModel.STATUS_GRAB) {
+                        MyLog.d(TAG, "这轮刚进来，导唱需要seek");
+                        mExoPlayer.seekTo(now.getElapsedTimeMs());
+                    }
+                }
+            });
             mExoPlayer.startPlay(now.getSongModel().getStandIntro());
         }
     }
@@ -406,6 +418,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     }
 
     private void robotSingBegin() {
+
         GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
         GrabSkrResourceModel grabSkrResourceModel = grabRoundInfoModel.getSkrResource();
         String skrerUrl = null;
@@ -420,6 +433,15 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             mExoPlayer = new ExoPlayer();
         }
         mExoPlayer.startPlay(skrerUrl);
+        mExoPlayer.setCallback(new VideoPlayerAdapter.PlayerCallbackAdapter() {
+            @Override
+            public void onPrepared() {
+                if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_SING) {
+                    MyLog.d(TAG, "进来时已经时演唱阶段了，则机器人资源要seek一下 " + grabRoundInfoModel.getElapsedTimeMs());
+                    mExoPlayer.seekTo(grabRoundInfoModel.getElapsedTimeMs());
+                }
+            }
+        });
         if (!EngineManager.getInstance().getParams().isAllRemoteAudioStreamsMute()) {
             mExoPlayer.setVolume(1);
         } else {
@@ -924,6 +946,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 mIGrabView.singBySelf();
             } else {
                 mIGrabView.singByOthers(now.getUserID());
+                checkMachineUser(now.getUserID());
             }
         } else if (now.getStatus() == GrabRoundInfoModel.STATUS_OVER) {
             MyLog.w(TAG, "GrabRoundChangeEvent 刚切换到该轮次就告诉我轮次结束？？？roundSeq:" + now.getRoundSeq());

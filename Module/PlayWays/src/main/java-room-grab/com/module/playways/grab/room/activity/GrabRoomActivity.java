@@ -73,6 +73,7 @@ public class GrabRoomActivity extends BaseActivity {
             mRoomData.setGameId(1);
             GrabConfigModel grabConfigModel = new GrabConfigModel();
             grabConfigModel.setTotalGameRoundSeq(88);
+            grabRoundInfoModel.setStatus(GrabRoundInfoModel.STATUS_GRAB);
             grabRoundInfoModel.setParticipant(false);
             grabRoundInfoModel.setElapsedTimeMs(5000);
             mRoomData.setGrabConfigModel(grabConfigModel);
@@ -85,6 +86,7 @@ public class GrabRoomActivity extends BaseActivity {
             SongModel songModel = new SongModel();
             songModel.setItemName("歌曲22");
             grabRoundInfoModel.setSongModel(songModel);
+            grabRoundInfoModel.setEnterStatus(grabRoundInfoModel.getStatus());
             mRoomData.setExpectRoundInfo(grabRoundInfoModel);
         }
 
