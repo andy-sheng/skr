@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.WindowManager;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.common.base.ActivityLeakSolutionUtils;
 import com.common.base.BaseActivity;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
@@ -75,6 +76,7 @@ public class RankRoomActivity extends BaseActivity {
     @Override
     protected void destroy() {
         super.destroy();
+        ActivityLeakSolutionUtils.fixInputMethodManagerLeak(this);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
