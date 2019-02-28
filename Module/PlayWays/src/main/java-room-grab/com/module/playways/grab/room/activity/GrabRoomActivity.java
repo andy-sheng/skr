@@ -101,6 +101,9 @@ public class GrabRoomActivity extends BaseActivity {
             if (mRoomData.getGameCreateTs() == 0) {
                 mRoomData.setGameCreateTs(System.currentTimeMillis());
             }
+            SongModel songModel = new SongModel();
+            songModel.setItemName("歌曲22");
+            grabRoundInfoModel.setSongModel(songModel);
             mRoomData.setExpectRoundInfo(grabRoundInfoModel);
         }
 
