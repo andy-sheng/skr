@@ -167,15 +167,6 @@ public class UserInfoModel implements Serializable, Cloneable {
     }
 
     @Override
-    public String toString() {
-        return "UserInfoModel{" +
-                "userId=" + userId +
-                ", nickname='" + nickname + '\'' +
-                ", avatar='" + avatar + '\'' +
-                '}';
-    }
-
-    @Override
     public Object clone() throws CloneNotSupportedException {
         UserInfoModel userInfoModel = null;
         try {
@@ -253,4 +244,21 @@ public class UserInfoModel implements Serializable, Cloneable {
     }
 
 
+    @Override
+    public String toString() {
+        return "UserInfoModel{" +
+                "userId=" + userId +
+                ", nickname='" + nickname + '\'' +
+                ", sex=" + sex +
+                ", birthday='" + birthday + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", signature='" + signature + '\'' +
+                ", location=" + location +
+                ", letter='" + letter + '\'' +
+                ", mIsSystem=" + mIsSystem +
+                ", isFriend=" + isFriend +
+                ", isFollow=" + isFollow +
+                ", mainLevel=" + mainLevel +
+                '}';
+    }
 }

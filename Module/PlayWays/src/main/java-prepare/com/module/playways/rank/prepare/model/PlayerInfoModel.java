@@ -19,9 +19,6 @@ public abstract class PlayerInfoModel implements Serializable {
 
     /**以下是只在排位赛才会用到的**/
 
-    /**以下是只在排位赛才会用到的**/
-
-
     public void setSkrer(boolean skrer) {
         isSkrer = skrer;
     }

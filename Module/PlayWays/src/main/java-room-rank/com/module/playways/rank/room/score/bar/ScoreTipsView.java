@@ -167,7 +167,7 @@ public class ScoreTipsView extends RelativeLayout {
         scoreTipsView.bindData(item);
         RelativeLayout.LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         lp.addRule(RelativeLayout.CENTER_HORIZONTAL);
-        lp.topMargin = U.getDisplayUtils().dip2px(60);
+        lp.topMargin = U.getDisplayUtils().dip2px(135);
         parent.addView(scoreTipsView, lp);
         scoreTipsView.startPlay();
     }
