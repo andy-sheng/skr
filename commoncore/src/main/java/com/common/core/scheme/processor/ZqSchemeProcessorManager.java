@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
-import com.common.base.BaseActivity;
-
 import java.util.ArrayList;
 
 public class ZqSchemeProcessorManager {
@@ -21,16 +19,16 @@ public class ZqSchemeProcessorManager {
 
     private ZqSchemeProcessorManager() {
         mISchemeProcessors.add(new InframeProcessor());
-        mISchemeProcessors.add(new SchemeProcessor());
         mISchemeProcessors.add(new DefaultProcessor());
     }
 
-    public void process(final Uri uri, @NonNull Activity activity) {
+    public void process(final Uri uri, @NonNull Activity activity,boolean beforeHomeExistJudge) {
         for (ISchemeProcessor processor : mISchemeProcessors) {
-            if(processor.accept(uri)){
-                processor.process(uri, activity);
-                break;
+            ProcessResult processResult = processor.process(uri,beforeHomeExistJudge);
+            if(processResult == ProcessResult.AcceptedAndReturn){
+                return;
             }
         }
     }
+
 }

@@ -7,17 +7,13 @@ import android.support.annotation.NonNull;
 import com.common.base.BaseActivity;
 
 public interface ISchemeProcessor {
-    /**
-     * @param uri
-     * @param activity
-     * @return 有没有解析成功
-     */
-    boolean process(@NonNull Uri uri, @NonNull Activity activity);
 
     /**
      *
      * @param uri
-     * @return 接不接受这个host的url
+     * @param beforeHomeExistJudge 在home是否存在的判断之前，true的话就不确定home是否存在
+     *                             false 的话 home肯定存在
+     * @return
      */
-    boolean accept(Uri uri);
+    ProcessResult process(Uri uri,boolean beforeHomeExistJudge);
 }

@@ -11,15 +11,9 @@ import com.common.log.MyLog;
 public class DefaultProcessor implements ISchemeProcessor {
     public final static String TAG = SchemeConstants.LOG_PREFIX + "DefaultProcessor";
 
-    @Override
-    public boolean process(@NonNull Uri uri, @NonNull Activity activity) {
-        MyLog.w(TAG, "" + uri);
-        return true;
-    }
 
     @Override
-    public boolean accept(Uri uri) {
-        MyLog.w(TAG, "" + uri);
-        return true;
+    public ProcessResult process(Uri uri, boolean beforeHomeExistJudge) {
+        return ProcessResult.NotAccepted;
     }
 }

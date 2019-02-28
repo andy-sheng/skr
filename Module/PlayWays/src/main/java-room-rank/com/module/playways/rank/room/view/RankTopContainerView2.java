@@ -304,8 +304,9 @@ public class RankTopContainerView2 extends RelativeLayout {
         }
     }
 
-    public void setScoreProgress(int score, int curTotalScore, int lineNum) {
-        MyLog.d(TAG, "setScoreProgress" + " score=" + score + " curTotalScore=" + curTotalScore + " lineNum=" + lineNum);
+    public void setScoreProgress(int score1, int curTotalScore, int lineNum) {
+        MyLog.d(TAG, "setScoreProgress" + " score=" + score1 + " curTotalScore=" + curTotalScore + " lineNum=" + lineNum);
+        int score = score1;
         for (int i = 0; i < 1; i++) {
             score = (int) (Math.sqrt(score) * 10);
         }
@@ -326,7 +327,7 @@ public class RankTopContainerView2 extends RelativeLayout {
                 }
                 mTotalScore = (int) (lineNum * 100 * p);
             }
-            if (score == 999) {
+            if (score1 == 999) {
                 //与ios约定，如果传递是分数是999就代表只是想告诉这首歌的总分
                 return;
             }

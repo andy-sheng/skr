@@ -23,7 +23,7 @@ import com.module.home.IHomeService;
  * 所有的push，不管是umeng的还是厂家的
  * 最终都会走到这
  */
-@Route(path = RouterConstants.ACTIVITY_SCHEME ,extras = JudgeLoginInterceptor.NO_NEED_LOGIN)
+@Route(path = RouterConstants.ACTIVITY_SCHEME, extras = JudgeLoginInterceptor.NO_NEED_LOGIN)
 public class SchemeSdkActivity extends BaseActivity {
 
     private Uri mUri;
@@ -73,7 +73,8 @@ public class SchemeSdkActivity extends BaseActivity {
         if (TextUtils.isEmpty(uri)) {
             uri = getIntent().getDataString();
         }
-
+        mUri = Uri.parse(uri);
+        ZqSchemeProcessorManager.getInstance().process(mUri,this,true);
         if (!isHomeActivityExist()) {
             MyLog.w(TAG, "HomeActivity不存在，需要先启动HomeActivity");
             ARouter.getInstance().build(RouterConstants.ACTIVITY_HOME)
@@ -91,7 +92,7 @@ public class SchemeSdkActivity extends BaseActivity {
             return;
         }
 
-        mUri = Uri.parse(uri);
+
         if (mUri == null) {
             MyLog.w(TAG, "process intent data uri is null");
             finish();
@@ -125,7 +126,7 @@ public class SchemeSdkActivity extends BaseActivity {
 
     private void process(final Uri uri) throws Exception {
         MyLog.w(TAG, "process uri=" + uri);
-        ZqSchemeProcessorManager.getInstance().process(uri, this);
+        ZqSchemeProcessorManager.getInstance().process(mUri,this,false);
     }
 
 }

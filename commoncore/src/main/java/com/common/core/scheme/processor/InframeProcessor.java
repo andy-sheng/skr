@@ -11,6 +11,7 @@ import com.common.core.account.UserAccountManager;
 import com.common.core.scheme.SchemeConstants;
 import com.common.core.scheme.SchemeUtils;
 import com.common.log.MyLog;
+import com.common.utils.U;
 import com.module.RouterConstants;
 
 import org.w3c.dom.Text;
@@ -30,51 +31,66 @@ import java.util.Map;
 public class InframeProcessor implements ISchemeProcessor {
     private static final String TAG = SchemeConstants.LOG_PREFIX + "InframeProcessor";
 
+
     @Override
-    public boolean accept(Uri uri) {
+    public ProcessResult process(Uri uri, boolean beforeHomeExistJudge) {
         //inframesker://game/match?from=h5
         //inframesker://person/homepage?from=h5
         //其中scheme为inframesker, host为game , relativePath为match, query为from=h5.
         String scheme = uri.getScheme();
         MyLog.w(TAG, "process scheme=" + scheme);
         if (TextUtils.isEmpty(scheme)) {
-            return false;
+            return ProcessResult.NotAccepted;
         }
 
         final String authority = uri.getAuthority();
         MyLog.w(TAG, "process authority=" + authority);
         if (TextUtils.isEmpty(authority)) {
-            return false;
+            return ProcessResult.NotAccepted;
         }
-
         if (SchemeConstants.SCHEME_INFRAMESKER.equals(scheme)) {
-            return true;
+            if (beforeHomeExistJudge) {
+                switch (authority) {
+                    case SchemeConstants.HOST_CHANNEL:
+                        processChannel(uri);
+                        return ProcessResult.AcceptedAndContinue;
+                }
+            } else {
+                switch (authority) {
+                    case SchemeConstants.HOST_SHARE:
+                        processShareUrl(uri);
+                        return ProcessResult.AcceptedAndReturn;
+                    case SchemeConstants.HOST_WEB:
+                        processWebUrl(uri);
+                        return ProcessResult.AcceptedAndReturn;
+                    case SchemeConstants.HOST_GAME:
+                        processGameUrl(uri);
+                        return ProcessResult.AcceptedAndReturn;
+                }
+            }
         }
-
-        return false;
+        return ProcessResult.NotAccepted;
     }
 
-    public boolean process(@NonNull Uri uri, @NonNull Activity activity) {
-        final String authority = uri.getAuthority();
-        MyLog.w(TAG, "process authority=" + authority);
-        if (TextUtils.isEmpty(authority)) {
-            return false;
+    private void processChannel(Uri uri) {
+        MyLog.d(TAG, "processChannel" + " uri=" + uri);
+        String path = uri.getPath();
+        if (TextUtils.isEmpty(path)) {
+            MyLog.w(TAG, "processGameUrl path is empty");
+            return;
         }
+        if ("mimusic".equals(path)) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("mimusic");
+            String opid = uri.getQueryParameter("opid");
+            if(TextUtils.isEmpty(opid)){
+            }else{
+                sb.append("_").append(opid);
+            }
+            U.getChannelUtils().setSubChannel(sb.toString());
+        } else {
 
-        MyLog.d(TAG, "process authority=" + authority);
-        switch (authority) {
-            case SchemeConstants.HOST_SHARE:
-                processShareUrl(uri);
-                return true;
-            case SchemeConstants.HOST_WEB:
-                processWebUrl(uri);
-                return true;
-            case SchemeConstants.HOST_GAME:
-                processGameUrl(uri);
-                return true;
         }
-
-        return false;
     }
 
     private void processGameUrl(Uri uri) {
@@ -86,7 +102,7 @@ public class InframeProcessor implements ISchemeProcessor {
 
         if (SchemeConstants.PATH_RANK_CHOOSE_SONG.equals(path)) {
             try {
-                if(!UserAccountManager.getInstance().hasAccount()){
+                if (!UserAccountManager.getInstance().hasAccount()) {
                     MyLog.w(TAG, "processGameUrl 没有登录");
                     return;
                 }
@@ -122,7 +138,7 @@ public class InframeProcessor implements ISchemeProcessor {
                     return;
                 }
 
-                if(!UserAccountManager.getInstance().hasAccount()){
+                if (!UserAccountManager.getInstance().hasAccount()) {
                     MyLog.w(TAG, "processWebUrl 没有登录");
                     return;
                 }
@@ -140,4 +156,6 @@ public class InframeProcessor implements ISchemeProcessor {
 
         }
     }
+
+
 }

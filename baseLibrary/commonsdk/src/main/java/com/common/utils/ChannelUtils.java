@@ -13,9 +13,11 @@ import java.lang.reflect.Field;
 public class ChannelUtils {
     public final static String TAG = "ChannelUtils";
     private static final String PREF_KEY_CHANNEL = "key_channel";
+    private static final String PREF_KEY_SUB_CHANNEL = "key_sub_channel";
     private static final String PREF_KEY_DEBUG_CHANNEL = "key_debug_channel";
     private String channelNameFromBuildConfig = "DEFAULT";
     private String channelNameFromPref;
+    private String mSubChannel;
 
     ChannelUtils() {
         try {
@@ -93,4 +95,16 @@ public class ChannelUtils {
     }
 
 
+    public void setSubChannel(String subChannel) {
+        mSubChannel = subChannel;
+        if (!TextUtils.isEmpty("mSubChannel")) {
+            U.getPreferenceUtils().setSettingString(PREF_KEY_SUB_CHANNEL, mSubChannel);
+        } else {
+            U.getPreferenceUtils().setSettingString(PREF_KEY_SUB_CHANNEL, "");
+        }
+    }
+
+    public String getSubChannel() {
+        return mSubChannel;
+    }
 }
