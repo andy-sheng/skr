@@ -12,20 +12,27 @@ import android.widget.RelativeLayout;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.image.fresco.BaseImageView;
+import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.module.rank.R;
+import com.opensource.svgaplayer.SVGADrawable;
+import com.opensource.svgaplayer.SVGAImageView;
+import com.opensource.svgaplayer.SVGAParser;
+import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.zq.person.fragment.OtherPersonFragment;
+
+import org.jetbrains.annotations.NotNull;
 
 public class VoiceUserStatusView extends RelativeLayout {
 
     static final int MSG_SPEAK_OVER = 1;
+    SVGAImageView mSpeakerSvga;
     BaseImageView mAvatarIv;
     ExImageView mMuteMicIv;
-    ExTextView mTestTipsView;
 
     Handler mUiHanlder = new Handler() {
         @Override
@@ -33,7 +40,7 @@ public class VoiceUserStatusView extends RelativeLayout {
             super.handleMessage(msg);
             switch (msg.what) {
                 case MSG_SPEAK_OVER: {
-                    mTestTipsView.setVisibility(GONE);
+                    stopSpeakSVGA();
                     break;
                 }
             }
@@ -59,9 +66,9 @@ public class VoiceUserStatusView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.voice_user_status_view, this);
+        mSpeakerSvga = (SVGAImageView) this.findViewById(R.id.speaker_svga);
         mAvatarIv = (BaseImageView) this.findViewById(R.id.avatar_iv);
         mMuteMicIv = (ExImageView) this.findViewById(R.id.mute_mic_iv);
-        mTestTipsView = (ExTextView) this.findViewById(R.id.test_tips_view);
 
         mAvatarIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -87,7 +94,6 @@ public class VoiceUserStatusView extends RelativeLayout {
                 .build()
         );
         mMuteMicIv.setVisibility(GONE);
-        mTestTipsView.setVisibility(GONE);
     }
 
     public void userOffline() {
@@ -103,22 +109,56 @@ public class VoiceUserStatusView extends RelativeLayout {
     public void userMute(boolean audioMute) {
         if (audioMute) {
             mMuteMicIv.setVisibility(VISIBLE);
-            mTestTipsView.setVisibility(GONE);
+            stopSpeakSVGA();
         } else {
             mMuteMicIv.setVisibility(GONE);
         }
     }
 
     public void userSpeak() {
-        mTestTipsView.setVisibility(VISIBLE);
-        mTestTipsView.setText("正在说话");
+        playSpeakSVGA();
         mUiHanlder.removeMessages(MSG_SPEAK_OVER);
         mUiHanlder.sendEmptyMessageDelayed(MSG_SPEAK_OVER, 2000);
+    }
+
+    public void playSpeakSVGA() {
+        if (mSpeakerSvga.getVisibility() == VISIBLE && mSpeakerSvga.isAnimating()) {
+            return;
+        }
+        mSpeakerSvga.stopAnimation(true);
+        mSpeakerSvga.setVisibility(VISIBLE);
+        mSpeakerSvga.setLoops(0);
+        SVGAParser parser = new SVGAParser(U.app());
+        try {
+            parser.parse("voice_room_speak.svga", new SVGAParser.ParseCompletion() {
+                @Override
+                public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
+                    SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
+                    mSpeakerSvga.setImageDrawable(drawable);
+                    mSpeakerSvga.startAnimation();
+                }
+
+                @Override
+                public void onError() {
+
+                }
+            });
+        } catch (Exception e) {
+            System.out.print(true);
+        }
+    }
+
+    public void stopSpeakSVGA() {
+        mSpeakerSvga.stopAnimation(true);
+        mSpeakerSvga.setVisibility(GONE);
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+        if (mSpeakerSvga != null) {
+            mSpeakerSvga.stopAnimation(true);
+        }
         mUiHanlder.removeCallbacksAndMessages(null);
     }
 }
