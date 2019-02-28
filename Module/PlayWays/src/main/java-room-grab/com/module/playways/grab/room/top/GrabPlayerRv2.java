@@ -19,9 +19,9 @@ import com.common.view.ex.ExImageView;
 import com.module.playways.BaseRoomData;
 import com.module.playways.grab.room.event.LightOffAnimationOverEvent;
 import com.module.playways.grab.room.fragment.GrabRoomFragment;
-import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.MLightInfoModel;
 import com.module.playways.grab.room.model.WantSingerInfo;
+import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGACallback;
@@ -46,12 +46,11 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class GrabPlayerRv extends RelativeLayout {
+public class GrabPlayerRv2 extends RelativeLayout {
     public final static String TAG = "GrabTopRv";
 
     private LinkedHashMap<Integer, VP> mInfoMap = new LinkedHashMap<>();
     private BaseRoomData<GrabRoundInfoModel> mRoomData;
-    private boolean mInited = false;
     AnimatorSet mAnimatorAllSet;
 
     LinearLayout mContentLl;
@@ -60,17 +59,17 @@ public class GrabPlayerRv extends RelativeLayout {
     SVGAParser mSVGAParser;
 
 
-    public GrabPlayerRv(Context context) {
+    public GrabPlayerRv2(Context context) {
         super(context);
         init();
     }
 
-    public GrabPlayerRv(Context context, @Nullable AttributeSet attrs) {
+    public GrabPlayerRv2(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public GrabPlayerRv(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public GrabPlayerRv2(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
@@ -98,19 +97,19 @@ public class GrabPlayerRv extends RelativeLayout {
     }
 
     private void initData() {
-        if (mInited) {
-            return;
-        }
+        mContentLl.removeAllViews();
+        //为了复用之前的view
+        LinkedHashMap<Integer, VP> mTemInfoMap = new LinkedHashMap<>();
         GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
         List<PlayerInfoModel> playerInfoModels = mRoomData.getPlayerInfoList();
+
         int i = 0;
         for (PlayerInfoModel playerInfoModel : playerInfoModels) {
-            mInited = true;
             UserInfoModel userInfo = playerInfoModel.getUserInfo();
             VP vp = mInfoMap.get(userInfo.getUserId());
             if (vp == null) {
                 vp = new VP();
-                mInfoMap.put(userInfo.getUserId(), vp);
+                mTemInfoMap.put(userInfo.getUserId(), vp);
             }
             if (vp.grabTopItemView == null) {
                 vp.grabTopItemView = new GrabTopItemView(getContext());
@@ -122,7 +121,7 @@ public class GrabPlayerRv extends RelativeLayout {
             if (vp.SVGAImageView == null) {
                 vp.SVGAImageView = new SVGAImageView(getContext());
                 LayoutParams lp = new LayoutParams(U.getDisplayUtils().dip2px(100), U.getDisplayUtils().dip2px(100));
-                GrabPlayerRv.this.addView(vp.SVGAImageView, lp);
+                GrabPlayerRv2.this.addView(vp.SVGAImageView, lp);
             }
 
 //            if (i % 2 == 0) {
@@ -132,6 +131,22 @@ public class GrabPlayerRv extends RelativeLayout {
 //            }
             i++;
         }
+
+        mInfoMap.clear();
+        mInfoMap = mTemInfoMap;
+
+        //空位置，补位的
+        if (playerInfoModels != null && playerInfoModels.size() > 0 && playerInfoModels.size() < 7) {
+            //需要补的位置数量
+            int placeHolderSize = 7 - playerInfoModels.size();
+            for (int b = 0; b < placeHolderSize; b++) {
+                GrabTopItemView grabTopItemView = new GrabTopItemView(getContext());
+                grabTopItemView.setVisibility(VISIBLE);
+                grabTopItemView.setToPlaceHolder();
+                grabTopItemView.tryAddParent(mContentLl);
+            }
+        }
+
         if (now != null) {
             for (WantSingerInfo wantSingerInfo : now.getWantSingInfos()) {
                 VP vp = mInfoMap.get(wantSingerInfo.getUserID());
@@ -140,18 +155,21 @@ public class GrabPlayerRv extends RelativeLayout {
                 }
             }
         }
-        LayoutParams lp = (LayoutParams) mContentLl.getLayoutParams();
+
+        RelativeLayout.LayoutParams lp = (LayoutParams) mContentLl.getLayoutParams();
         lp.leftMargin = U.getDisplayUtils().dip2px(15);
         lp.rightMargin = U.getDisplayUtils().dip2px(15);
         mContentLl.setLayoutParams(lp);
     }
 
+    //这里可能人员有变动
     public void setModeGrab() {
         // 切换到抢唱模式
         if (mAnimatorAllSet != null) {
             mAnimatorAllSet.cancel();
         }
         mErjiIv.setVisibility(GONE);
+        initData();
         for (int uId : mInfoMap.keySet()) {
             VP vp = mInfoMap.get(uId);
             if (vp != null && vp.grabTopItemView != null) {
@@ -172,7 +190,8 @@ public class GrabPlayerRv extends RelativeLayout {
                 }
             }
         }
-        LayoutParams lp = (LayoutParams) mContentLl.getLayoutParams();
+
+        RelativeLayout.LayoutParams lp = (LayoutParams) mContentLl.getLayoutParams();
         lp.leftMargin = U.getDisplayUtils().dip2px(15);
         lp.rightMargin = U.getDisplayUtils().dip2px(15);
         mContentLl.setLayoutParams(lp);
@@ -235,7 +254,7 @@ public class GrabPlayerRv extends RelativeLayout {
                     lp.weight = weight;
                     finalGrabTopItemView.setLayoutParams(lp);
 
-                    LayoutParams lp2 = (LayoutParams) mContentLl.getLayoutParams();
+                    RelativeLayout.LayoutParams lp2 = (LayoutParams) mContentLl.getLayoutParams();
                     int t = (int) (U.getDisplayUtils().dip2px(15) * weight);
                     lp2.leftMargin = U.getDisplayUtils().dip2px(30) - t;
                     lp2.rightMargin = U.getDisplayUtils().dip2px(30) - t;
@@ -249,61 +268,61 @@ public class GrabPlayerRv extends RelativeLayout {
             allAnimator.add(animatorSet123);
         }
 
-        {
-            // 耳机的出现
-            ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(mErjiIv, View.TRANSLATION_Y, -U.getDisplayUtils().dip2px(100), 0);
-            objectAnimator1.addListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationStart(Animator animation) {
-                    super.onAnimationStart(animation);
-                    mErjiIv.setVisibility(VISIBLE);
-                }
-            });
-            objectAnimator1.setDuration(14 * 33);
-
-            List<Animator> mieDengList = new ArrayList<>();
-            mieDengList.add(objectAnimator1);
-            int i = 0;
-            // 灯的出现，以灭灯的形式出现
-            for (int uId : mInfoMap.keySet()) {
-                if (uId == singUid) {
-                    continue;
-                }
-                VP vp1 = mInfoMap.get(uId);
-                GrabTopItemView itemView = vp1.grabTopItemView;
-                if (!itemView.getPlayerInfoModel().isOnline()) {
-                    continue;
-                }
-                ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(itemView.mFlagIv, View.SCALE_X, 1, 2);
-                ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(itemView.mFlagIv, View.SCALE_Y, 1, 2);
-                ObjectAnimator objectAnimator4 = ObjectAnimator.ofFloat(itemView.mFlagIv, View.ALPHA, 0, 1);
-                ObjectAnimator objectAnimator5 = ObjectAnimator.ofFloat(itemView.mFlagIv, View.TRANSLATION_Y, U.getDisplayUtils().dip2px(100), 0);
-                AnimatorSet animatorSet2345 = new AnimatorSet();
-                animatorSet2345.playTogether(objectAnimator2, objectAnimator3, objectAnimator4, objectAnimator5);
-                animatorSet2345.setDuration(7 * 33);
-
-                ObjectAnimator objectAnimator6 = ObjectAnimator.ofFloat(itemView.mFlagIv, View.SCALE_X, 2, 1);
-                ObjectAnimator objectAnimator7 = ObjectAnimator.ofFloat(itemView.mFlagIv, View.SCALE_Y, 2, 1);
-                AnimatorSet animatorSet67 = new AnimatorSet();
-                animatorSet67.playTogether(objectAnimator6, objectAnimator7);
-                animatorSet67.setDuration(3 * 33);
-                AnimatorSet animatorSet234567 = new AnimatorSet();
-                animatorSet234567.playSequentially(animatorSet2345, animatorSet67);
-                animatorSet234567.setStartDelay(i * 4 * 33);
-                animatorSet234567.addListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationStart(Animator animation) {
-                        super.onAnimationStart(animation);
-                        itemView.setLight(false);
-                    }
-                });
-                mieDengList.add(animatorSet234567);
-                i++;
-            }
-            AnimatorSet animatorSet1_234567s = new AnimatorSet();
-            animatorSet1_234567s.playTogether(mieDengList);
-            allAnimator.add(animatorSet1_234567s);
-        }
+//        {
+//            // 耳机的出现
+//            ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(mErjiIv, View.TRANSLATION_Y, -U.getDisplayUtils().dip2px(100), 0);
+//            objectAnimator1.addListener(new AnimatorListenerAdapter() {
+//                @Override
+//                public void onAnimationStart(Animator animation) {
+//                    super.onAnimationStart(animation);
+//                    mErjiIv.setVisibility(VISIBLE);
+//                }
+//            });
+//            objectAnimator1.setDuration(14 * 33);
+//
+//            List<Animator> mieDengList = new ArrayList<>();
+//            mieDengList.add(objectAnimator1);
+//            int i = 0;
+//            // 灯的出现，以灭灯的形式出现
+//            for (int uId : mInfoMap.keySet()) {
+//                if (uId == singUid) {
+//                    continue;
+//                }
+//                VP vp1 = mInfoMap.get(uId);
+//                GrabTopItemView itemView = vp1.grabTopItemView;
+//                if (!itemView.getPlayerInfoModel().isOnline()) {
+//                    continue;
+//                }
+//                ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(itemView.mFlagIv, View.SCALE_X, 1, 2);
+//                ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(itemView.mFlagIv, View.SCALE_Y, 1, 2);
+//                ObjectAnimator objectAnimator4 = ObjectAnimator.ofFloat(itemView.mFlagIv, View.ALPHA, 0, 1);
+//                ObjectAnimator objectAnimator5 = ObjectAnimator.ofFloat(itemView.mFlagIv, View.TRANSLATION_Y, U.getDisplayUtils().dip2px(100), 0);
+//                AnimatorSet animatorSet2345 = new AnimatorSet();
+//                animatorSet2345.playTogether(objectAnimator2, objectAnimator3, objectAnimator4, objectAnimator5);
+//                animatorSet2345.setDuration(7 * 33);
+//
+//                ObjectAnimator objectAnimator6 = ObjectAnimator.ofFloat(itemView.mFlagIv, View.SCALE_X, 2, 1);
+//                ObjectAnimator objectAnimator7 = ObjectAnimator.ofFloat(itemView.mFlagIv, View.SCALE_Y, 2, 1);
+//                AnimatorSet animatorSet67 = new AnimatorSet();
+//                animatorSet67.playTogether(objectAnimator6, objectAnimator7);
+//                animatorSet67.setDuration(3 * 33);
+//                AnimatorSet animatorSet234567 = new AnimatorSet();
+//                animatorSet234567.playSequentially(animatorSet2345, animatorSet67);
+//                animatorSet234567.setStartDelay(i * 4 * 33);
+//                animatorSet234567.addListener(new AnimatorListenerAdapter() {
+//                    @Override
+//                    public void onAnimationStart(Animator animation) {
+//                        super.onAnimationStart(animation);
+//                        itemView.setLight(false);
+//                    }
+//                });
+//                mieDengList.add(animatorSet234567);
+//                i++;
+//            }
+//            AnimatorSet animatorSet1_234567s = new AnimatorSet();
+//            animatorSet1_234567s.playTogether(mieDengList);
+//            allAnimator.add(animatorSet1_234567s);
+//        }
         // 等 125 个节拍
         {
             List<Animator> liangdengList = new ArrayList<>();
@@ -392,6 +411,16 @@ public class GrabPlayerRv extends RelativeLayout {
             }
         });
         mAnimatorAllSet.start();
+    }
+
+    //有人爆灯了，这个时候所有的灯都闪烁
+    public void toBurstState(){
+        for (int uId : mInfoMap.keySet()) {
+            VP vp = mInfoMap.get(uId);
+            if (vp != null && vp.grabTopItemView != null) {
+                vp.grabTopItemView.startEvasive();
+            }
+        }
     }
 
     private void syncLight() {
@@ -512,7 +541,7 @@ public class GrabPlayerRv extends RelativeLayout {
 
     public void setRoomData(BaseRoomData roomData) {
         mRoomData = roomData;
-        initData();
+//        initData();
     }
 
     @Override

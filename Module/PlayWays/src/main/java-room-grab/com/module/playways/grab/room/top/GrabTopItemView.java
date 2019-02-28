@@ -1,6 +1,8 @@
 package com.module.playways.grab.room.top;
 
 import android.content.Context;
+import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -48,6 +50,7 @@ public class GrabTopItemView extends RelativeLayout {
     public BaseImageView mAvatarIv;
     public ExImageView mFlagIv;
     public PlayerInfoModel mPlayerInfoModel;
+    AnimationDrawable mFlickerAnim;
 
     public ExTextView mLeaveIv;
 
@@ -110,9 +113,39 @@ public class GrabTopItemView extends RelativeLayout {
             mLeaveIv.setVisibility(GONE);
             mFlagIv.setVisibility(VISIBLE);
         } else {
-            mLeaveIv.setVisibility(VISIBLE);
-            mFlagIv.setVisibility(GONE);
+//            mLeaveIv.setVisibility(VISIBLE);
+//            mFlagIv.setVisibility(GONE);
         }
+    }
+
+    //占位的View
+    public void setToPlaceHolder() {
+        mAvatarIv.setImageDrawable(U.getDrawable(R.drawable.guanzhong_kongwei));
+    }
+
+    //开始闪烁，有人爆灯的时候
+    public void startEvasive() {
+        stopEvasive();
+        mFlickerAnim = new AnimationDrawable();
+        mFlickerAnim.setOneShot(false);
+        Drawable drawable = U.getDrawable(R.drawable.liangdeng_shan);
+        mFlickerAnim.addFrame(drawable, 100);
+        drawable = U.getDrawable(R.drawable.liangdeng);
+        mFlickerAnim.addFrame(drawable, 100);
+        mFlagIv.setImageDrawable(mFlickerAnim);
+        mFlickerAnim.start();
+    }
+
+    public void stopEvasive() {
+        if(mFlickerAnim != null){
+            mFlickerAnim.stop();
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        stopEvasive();
     }
 
     public void reset() {
@@ -135,6 +168,7 @@ public class GrabTopItemView extends RelativeLayout {
         mAvatarIv.setScaleX(1);
         mAvatarIv.setScaleY(1);
         mCircleAnimationView.setVisibility(GONE);
+        stopEvasive();
     }
 
     public void setGrap(boolean grap) {
