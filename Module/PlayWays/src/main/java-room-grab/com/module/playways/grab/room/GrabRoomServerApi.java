@@ -11,36 +11,70 @@ import retrofit2.http.Query;
 
 public interface GrabRoomServerApi {
 
-    @GET("http://dev.game.inframe.mobi/v1/game/stand-sync-status")
-    Observable<ApiResult> syncGameStatus(@Query("gameID") int gameID);
+    /**
+     * {
+     * "roomID" : 111
+     * }
+     *
+     * @param body
+     * @return
+     */
+    @PUT("http://dev.room.inframe.mobi/v1/room/exit-room")
+    Observable<ApiResult> exitRoom(@Body RequestBody body);
 
     /**
      * {
-     * "gameID" : 11111,
+     * "roomID": 0,
+     * "tagID": 0
+     * }
+     *
+     * @param body
+     * @return
+     */
+    @PUT("http://dev.room.inframe.mobi/v1/room/change-room")
+    Observable<ApiResult> switchRoom(@Body RequestBody body);
+
+    /**
+     * {
+     * "roomID" : 111,
      * "roundSeq" : 1
      * }
      *
      * @param body
      * @return
      */
-    @PUT("http://dev.game.inframe.mobi/v1/game/stand-want-sing-chance")
-    Observable<ApiResult> wangSingChance(@Body RequestBody body);
-
-    /**
-     * {
-     * "gameID" : 111,
-     * "roundSeq" : 1
-     * }
-     *
-     * @param body
-     * @return
-     */
-    @PUT("http://dev.game.inframe.mobi/v1/game/stand-pass-sing-no")
+    @PUT("http://dev.stand.inframe.mobi/v1/stand/m-light")
     Observable<ApiResult> lightOff(@Body RequestBody body);
 
     /**
      * {
-     * "gameID" : 30000004,
+     * "roomID" : 111,
+     * "roundSeq" : 1
+     * }
+     *
+     * @param body
+     * @return
+     */
+    @PUT("http://dev.stand.inframe.mobi/v1/stand/b-light")
+    Observable<ApiResult> lightBurst(@Body RequestBody body);
+
+
+    /**
+     * 相当于告知服务器，我不抢
+     * {
+     * "roomID" : 20001505,
+     * "roundSeq" : 1
+     * }
+     *
+     * @param body
+     * @return
+     */
+    @PUT("http://dev.stand.inframe.mobi/v1/stand/intro-over")
+    Observable<ApiResult> sendGrapOver(@Body RequestBody body);
+
+    /**
+     * {
+     * "roomID" : 30000004,
      * "itemID" : 11,
      * "sysScore": 90,
      * "audioURL" : "http://audio-4.xxxxxx.com",
@@ -51,63 +85,65 @@ public interface GrabRoomServerApi {
      * @param body
      * @return
      */
-    @PUT("http://dev.game.inframe.mobi/v1/game/stand-resource")
+    @PUT("http://dev.stand.inframe.mobi/v1/stand/resource")
     Observable<ApiResult> saveRes(@Body RequestBody body);
+
 
     /**
      * {
-     * "gameID" : 111,
+     * "roomID" : 30000004
+     * }
+     *
+     * @param roomID
+     * @return
+     */
+    @GET("http://dev.stand.inframe.mobi/v1/stand/result")
+    Observable<ApiResult> getStandResult(@Query("roomID") int roomID);
+
+    /**
+     * {
+     * "roomID" : 20001505,
+     * "roundSeq" : 1
+     * }
+     * 上报结束一轮游戏
+     *
+     * @param body 游戏标识 roomID (必选)
+     *             机器评分 sysScore (必选)
+     *             时间戳 timeMs (必选)
+     *             签名  sign (必选)  md5(skrer|roomID|score|timeMs)
+     * @return 当前轮次结束时间戳roundOverTimeMs
+     * 当前轮次信息currentRound
+     * 下个轮次信息nextRound
+     */
+    @PUT("http://dev.stand.inframe.mobi/v1/stand/round-over")
+    Observable<ApiResult> sendRoundOver(@Body RequestBody body);
+
+    /**
+     * {
+     * "roomID" : 111,
      * "status" : 1
      * }
      *
      * @param body
      * @return
      */
-    @PUT("http://dev.game.inframe.mobi/v1/game/stand-swap")
+    @PUT("http://dev.stand.inframe.mobi/v1/stand/swap")
     Observable<ApiResult> swap(@Body RequestBody body);
 
-    /**
-     * {
-     * "gameID" : 111
-     * }
-     *
-     * @param body
-     * @return
-     */
-    @PUT("http://dev.game.inframe.mobi/v1/game/stand-exit")
-    Observable<ApiResult> exitGame(@Body RequestBody body);
+    @GET("http://dev.stand.inframe.mobi/v1/stand/sync-status")
+    Observable<ApiResult> syncGameStatus(@Query("roomID") int roomID);
 
     /**
      * {
-     * 	"gameID" : 20001505,
-     * 	"roundSeq" : 1
-     * }
-     * 上报结束一轮游戏
-     *
-     * @param body 游戏标识 gameID (必选)
-     *             机器评分 sysScore (必选)
-     *             时间戳 timeMs (必选)
-     *             签名  sign (必选)  md5(skrer|gameID|score|timeMs)
-     * @return 当前轮次结束时间戳roundOverTimeMs
-     * 当前轮次信息currentRound
-     * 下个轮次信息nextRound
-     */
-    @PUT("http://dev.game.inframe.mobi/v1/game/stand-round-over")
-    Observable<ApiResult> sendRoundOver(@Body RequestBody body);
-
-    /**
-     * 相当于告知服务器，我不抢
-     * {
-     * "gameID" : 20001505,
+     * "roomID" : 11111,
      * "roundSeq" : 1
      * }
      *
      * @param body
      * @return
      */
-    @PUT("http://dev.game.inframe.mobi/v1/game/stand-intro-over")
-    Observable<ApiResult> sendGrapOver(@Body RequestBody body);
+    @PUT("http://dev.stand.inframe.mobi/v1/stand/want-sing-chance")
+    Observable<ApiResult> wangSingChance(@Body RequestBody body);
+    /*----------牛逼---------*/
 
-    @GET("http://dev.game.inframe.mobi/v1/game/stand-result")
-    Observable<ApiResult> getStandResult(@Query("gameID") int gameID);
 }

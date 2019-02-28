@@ -184,6 +184,7 @@ public class JoinGrabRoomRspModel implements Serializable {
     private int gameOverTimeMs;// 结束时间
     private int roomID;// 房间id
     private int syncStatusTimeMs; // 同步时间
+    private int tagID;
 
     public JoinGrabRoomRspModel() {
 
@@ -243,5 +244,13 @@ public class JoinGrabRoomRspModel implements Serializable {
 
     public void setNextRound(GrabRoundInfoModel nextRound) {
         this.nextRound = nextRound;
+    }
+
+    public int getTagID() {
+        return tagID;
+    }
+
+    public void setTagID(int tagID) {
+        this.tagID = tagID;
     }
 }

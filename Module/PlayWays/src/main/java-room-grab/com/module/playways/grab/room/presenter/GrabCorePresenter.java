@@ -21,6 +21,7 @@ import com.common.utils.ActivityUtils;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.component.busilib.SkrConfig;
+import com.component.busilib.constans.GameModeType;
 import com.engine.EngineManager;
 import com.engine.Params;
 import com.engine.arccloud.ArcRecognizeListener;
@@ -53,8 +54,11 @@ import com.module.playways.rank.msg.event.QWantSingChanceMsgEvent;
 import com.module.playways.rank.msg.filter.PushMsgFilter;
 import com.module.playways.rank.msg.manager.ChatRoomMsgManager;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
+import com.module.playways.rank.prepare.model.GameConfigModel;
+import com.module.playways.rank.prepare.model.JoinGrabRoomRspModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
+import com.module.playways.rank.room.RankRoomData;
 import com.module.playways.rank.room.SwapStatusType;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.room.score.MachineScoreItem;
@@ -96,6 +100,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     boolean mDestroyed = false;
 
     ExoPlayer mExoPlayer;
+
+    boolean mSwitchRooming = false;
 
     Handler mUiHanlder = new Handler() {
         @Override
@@ -286,7 +292,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 //        }
 
         HashMap<String, Object> map = new HashMap<>();
-        map.put("gameID", mRoomData.getGameId());
+        map.put("roomID", mRoomData.getGameId());
         map.put("roundSeq", seq);
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
@@ -322,7 +328,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     public void lightsOff() {
         GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
         HashMap<String, Object> map = new HashMap<>();
-        map.put("gameID", mRoomData.getGameId());
+        map.put("roomID", mRoomData.getGameId());
         map.put("roundSeq", mRoomData.getRealRoundSeq());
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
@@ -338,6 +344,39 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 } else {
 
                 }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                MyLog.e(TAG, "lightsOff error " + e);
+
+            }
+        }, this);
+    }
+
+    /**
+     * 爆灯
+     */
+    public void lightsBurst() {
+        GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("roomID", mRoomData.getGameId());
+        map.put("roundSeq", mRoomData.getRealRoundSeq());
+
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        ApiMethods.subscribe(mRoomServerApi.lightBurst(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                MyLog.e(TAG, "lightsOff erro code is " + result.getErrno() + ",traceid is " + result.getTraceId());
+                if (result.getErrno() == 0) {
+                    boolean notify = RoomDataUtils.isCurrentRound(now.getRoundSeq(), mRoomData);
+                    BLightInfoModel noPassingInfo = new BLightInfoModel();
+                    noPassingInfo.setUserID((int) MyUserInfoManager.getInstance().getUid());
+                    now.addLightBurstUid(notify, noPassingInfo);
+                } else {
+
+                }
+                mRoomData.setCoin(result.getData().getInteger("coin"));
             }
 
             @Override
@@ -464,7 +503,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     private void sendUploadRequest(BaseRoundInfoModel roundInfoModel, String audioUrl) {
         long timeMs = System.currentTimeMillis();
         HashMap<String, Object> map = new HashMap<>();
-        map.put("gameID", mRoomData.getGameId());
+        map.put("roomID", mRoomData.getGameId());
         map.put("itemID", roundInfoModel.getPlaybookID());
         map.put("sysScore", roundInfoModel.getSysScore());
         map.put("audioURL", audioUrl);
@@ -531,7 +570,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             return;
         }
         HashMap<String, Object> map = new HashMap<>();
-        map.put("gameID", mRoomData.getGameId());
+        map.put("roomID", mRoomData.getGameId());
         map.put("roundSeq", roundInfoModel.getRoundSeq());
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
@@ -564,7 +603,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             return;
         }
         HashMap<String, Object> map = new HashMap<>();
-        map.put("gameID", mRoomData.getGameId());
+        map.put("roomID", mRoomData.getGameId());
         map.put("roundSeq", roundInfoModel.getRoundSeq());
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
@@ -585,16 +624,15 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }, this);
     }
 
-
     /**
-     * 退出游戏
+     * 退出房间
      */
     public void exitRoom() {
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", mRoomData.getGameId());
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
-        ApiMethods.subscribe(mRoomServerApi.exitGame(body), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mRoomServerApi.exitRoom(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
@@ -623,6 +661,46 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     }
 
     /**
+     * 切换房间
+     */
+    public void switchRoom() {
+        if (mSwitchRooming) {
+            U.getToastUtil().showShort("切换中");
+            return;
+        }
+        mSwitchRooming = true;
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("roomID", mRoomData.getGameId());
+        map.put("tagID", mRoomData.getTagId());
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        ApiMethods.subscribe(mRoomServerApi.switchRoom(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    JoinGrabRoomRspModel joinGrabRoomRspModel = JSON.parseObject(result.getData().toJSONString(), JoinGrabRoomRspModel.class);
+                    GrabRoomData newGrabRoomData = new GrabRoomData();
+                    newGrabRoomData.setGameId(joinGrabRoomRspModel.getRoomID());
+                    newGrabRoomData.setCoin(joinGrabRoomRspModel.getCoin());
+                    newGrabRoomData.setExpectRoundInfo(joinGrabRoomRspModel.getCurrentRound());
+                    newGrabRoomData.setTagId(joinGrabRoomRspModel.getTagID());
+                    newGrabRoomData.setShiftTs(0);
+                    mRoomData = newGrabRoomData;
+                    mRoomData.checkRoundInEachMode();
+                } else {
+                    U.getToastUtil().showShort("切换失败:" + result.getErrmsg());
+                }
+                mSwitchRooming = false;
+            }
+
+            @Override
+            public void onNetworkError(ErrorType errorType) {
+                super.onNetworkError(errorType);
+                mSwitchRooming = false;
+            }
+        });
+    }
+
+    /**
      * 游戏切后台或切回来
      *
      * @param out 切出去
@@ -631,7 +709,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     public void swapGame(boolean out, boolean in) {
         MyLog.w(TAG, "swapGame" + " out=" + out + " in=" + in);
         HashMap<String, Object> map = new HashMap<>();
-        map.put("gameID", mRoomData.getGameId());
+        map.put("roomID", mRoomData.getGameId());
         if (out) {
             map.put("status", SwapStatusType.SS_SWAP_OUT);
         } else if (in) {
