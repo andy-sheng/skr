@@ -5,10 +5,13 @@
     tools:parentTag="android.widget.RelativeLayout"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_marginLeft="@dimen/view_16_dp"
     android:layout_marginTop="@dimen/view_34_dp"
     android:layout_height="@dimen/view_32_dp">
     <com.common.view.ex.ExTextView
+        android:textColor="#B2B6D6"
+        android:textSize="@dimen/textsize_14_dp"
+        android:text="换房间"
+        android:layout_marginLeft="@dimen/view_16_dp"
         android:gravity="center"
         android:layout_centerVertical="true"
         android:id="@+id/tv_change_room"

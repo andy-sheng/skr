@@ -48,9 +48,9 @@ public class GrabOpView extends RelativeLayout {
 
     int mStatus;
 
-    public ExTextView mBtnIv;
+    public ExImageView mBtnIv;
 
-    ExImageView mIvLightOff;
+    ExTextView mIvLightOff;
 
     Listener mListener;
 
@@ -184,16 +184,16 @@ public class GrabOpView extends RelativeLayout {
                         Drawable drawable = null;
                         switch (num1) {
                             case 3:
-                                drawable = U.getDrawable(R.drawable.zhanji_3);
+                                drawable = U.getDrawable(R.drawable.xiangchang_3);
                                 break;
                             case 2:
-                                drawable = U.getDrawable(R.drawable.zhanji_2);
+                                drawable = U.getDrawable(R.drawable.xiangchang_2);
                                 break;
                             case 1:
-                                drawable = U.getDrawable(R.drawable.zhanji_1);
+                                drawable = U.getDrawable(R.drawable.xiangchang_1);
                                 break;
                         }
-                        mBtnIv.setBackground(drawable);
+                        mBtnIv.setImageDrawable(drawable);
                     }
 
                     @Override
@@ -310,26 +310,26 @@ public class GrabOpView extends RelativeLayout {
                     @Override
                     public void onNext(Integer integer) {
                         int num1 = 7 - integer - 1;
-                        Drawable drawable = null;
-                        switch (num1) {
-                            case 5:
-                                drawable = U.getDrawable(R.drawable.mie_5);
-                                break;
-                            case 4:
-                                drawable = U.getDrawable(R.drawable.mie_4);
-                                break;
-                            case 3:
-                                drawable = U.getDrawable(R.drawable.mie_3);
-                                break;
-                            case 2:
-                                drawable = U.getDrawable(R.drawable.mie_2);
-                                break;
-                            case 1:
-                                drawable = U.getDrawable(R.drawable.mie_1);
-                                break;
-                        }
+//                        Drawable drawable = null;
+//                        switch (num1) {
+//                            case 5:
+//                                drawable = U.getDrawable(R.drawable.mie_5);
+//                                break;
+//                            case 4:
+//                                drawable = U.getDrawable(R.drawable.mie_4);
+//                                break;
+//                            case 3:
+//                                drawable = U.getDrawable(R.drawable.mie_3);
+//                                break;
+//                            case 2:
+//                                drawable = U.getDrawable(R.drawable.mie_2);
+//                                break;
+//                            case 1:
+//                                drawable = U.getDrawable(R.drawable.mie_1);
+//                                break;
+//                        }
 
-                        mIvLightOff.setImageDrawable(drawable);
+                        mIvLightOff.setText(num1);
                     }
 
                     @Override
@@ -346,7 +346,7 @@ public class GrabOpView extends RelativeLayout {
                                 .setUnPressedDrawable(U.getDrawable(R.drawable.grab_miedeng_anxia))
                                 .build();
 
-                        mIvLightOff.setImageDrawable(drawable);
+                        mIvLightOff.setBackground(drawable);
 
                     }
                 });
