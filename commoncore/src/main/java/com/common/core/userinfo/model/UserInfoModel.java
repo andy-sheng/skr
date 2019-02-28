@@ -230,7 +230,7 @@ public class UserInfoModel implements Serializable, Cloneable {
                 JSONObject jsonObject = JSON.parseObject(extJSon, JSONObject.class);
                 Location location = jsonObject.getObject("location", Location.class);
                 userInfoModel.setLocation(location);
-                int mainLevel = jsonObject.getInteger("mainLevel");
+                int mainLevel = jsonObject.getIntValue("mainLevel");
                 userInfoModel.setMainLevel(mainLevel);
             }
         }

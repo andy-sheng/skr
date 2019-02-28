@@ -191,7 +191,7 @@ public class RankTopContainerView2 extends RelativeLayout {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(PkSomeOneLightOffEvent event) {
         MyLog.d(TAG, "PkSomeOneLightOffEvent onEvent event.uid " + event.uid);
-        parseLightOffEvent(event.uid);
+        parseLightOffEvent(event.uid, event.roundInfo.getUserID());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -200,29 +200,38 @@ public class RankTopContainerView2 extends RelativeLayout {
         setScoreProgress(999, 0, event.lineNum);
     }
 
-
-    private void parseLightOffEvent(int uid) {
+    /**
+     *
+     * @param uid    投票人的id
+     * @param currUid    被投票人id
+     */
+    private void parseLightOffEvent(int uid, int currUid) {
         MyLog.d(TAG, "parseLightOffEvent onEvent 5");
         UserLightInfo ul = new UserLightInfo();
         ul.mUserId = uid;
         ul.mLightState = LightState.MIE;
         if (mStatusArr[0] == null) {
             setLight(0, ul);
-            pretendMieComment(uid, 0);
+            pretendMieComment(currUid, 0);
         } else {
             if (mStatusArr[1] == null) {
                 setLight(1, ul);
-                pretendMieComment(uid, 1);
+                pretendMieComment(currUid, 1);
             } else if (mStatusArr[2] == null) {
                 setLight(2, ul);
-                pretendMieComment(uid, 2);
+                pretendMieComment(currUid, 2);
             }
         }
         mCurScore -= mRoomData.getGameConfigModel().getpKBLightEnergyPercentage() * mTotalScore;
         tryPlayProgressAnimation();
     }
 
-    private void pretendMieComment(int uid, int index) {
+    /**
+     *
+     * @param currUid  被投票者
+     * @param index
+     */
+    private void pretendMieComment(int currUid, int index) {
         CommentModel commentModel = new CommentModel();
         commentModel.setCommentType(CommentModel.TYPE_RANK_MIE);
         commentModel.setUserId(BaseRoomData.SYSTEM_ID);
@@ -230,7 +239,7 @@ public class RankTopContainerView2 extends RelativeLayout {
         commentModel.setUserName("系统消息");
         commentModel.setAvatarColor(Color.WHITE);
         commentModel.setTextColor(Color.parseColor("#EF5E85"));
-        PlayerInfoModel model = RoomDataUtils.getPlayerInfoById(mRoomData, uid);
+        PlayerInfoModel model = RoomDataUtils.getPlayerInfoById(mRoomData, currUid);
         if (model != null) {
             if (index != 2) {
                 commentModel.setContent("收到" + (index + 1) + "个'x'");
