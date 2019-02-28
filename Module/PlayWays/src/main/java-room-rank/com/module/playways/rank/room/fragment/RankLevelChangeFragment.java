@@ -152,6 +152,10 @@ public class RankLevelChangeFragment extends BaseFragment {
         if (mBgAnimation != null) {
             mBgAnimation.cancel();
         }
+        if (mResultSvga != null) {
+            mResultSvga.setCallback(null);
+            mResultSvga.stopAnimation(true);
+        }
         U.getSoundUtils().release(NormalLevelView.TAG);
     }
 

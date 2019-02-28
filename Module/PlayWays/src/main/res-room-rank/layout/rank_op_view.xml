@@ -37,11 +37,11 @@
         android:background="@drawable/yanchang_miedeng"
         android:gravity="center"
         android:paddingLeft="@dimen/view_16_dp"
-        android:shadowColor="@color/black"
+        android:shadowColor="@color/gray"
         android:shadowDy="4"
         android:shadowRadius="1"
         android:text="1"
-        android:textColor="#680000"
+        android:textColor="@color/white"
         android:textSize="@dimen/textsize_24_dp"
         android:textStyle="bold" />
 </merge>
