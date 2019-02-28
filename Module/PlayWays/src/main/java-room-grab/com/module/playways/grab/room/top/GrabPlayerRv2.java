@@ -182,11 +182,12 @@ public class GrabPlayerRv2 extends RelativeLayout {
                 if (grabRoundInfoModel.getWantSingInfos().contains(wantSingerInfo)) {
                     vp.grabTopItemView.setGrap(true);
                 } else {
-                    if (vp.grabTopItemView.getPlayerInfoModel().isOnline()) {
-                        vp.grabTopItemView.setGrap(false);
-                    } else {
-                        //离线了
-                    }
+//                    if (vp.grabTopItemView.getPlayerInfoModel().isOnline()) {
+//                        vp.grabTopItemView.setGrap(false);
+//                    } else {
+//                        //离线了
+//                    }
+                    vp.grabTopItemView.setGrap(false);
                 }
             }
         }
@@ -334,9 +335,9 @@ public class GrabPlayerRv2 extends RelativeLayout {
 
                 VP vp1 = mInfoMap.get(uId);
                 GrabTopItemView itemView = vp1.grabTopItemView;
-                if (!itemView.getPlayerInfoModel().isOnline()) {
-                    continue;
-                }
+//                if (!itemView.getPlayerInfoModel().isOnline()) {
+//                    continue;
+//                }
                 ObjectAnimator objectAnimator1 = new ObjectAnimator();
                 objectAnimator1.setIntValues(0, 0);
                 objectAnimator1.setDuration(1);
