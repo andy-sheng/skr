@@ -533,7 +533,7 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
 
         //先跳转
         ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_ROOM)
-                .withSerializable("prepare_data", mPrepareData)
+                .withSerializable("prepare_data", grabCurGameStateModel)
                 .navigation();
 
         //结束当前Activity

@@ -11,6 +11,7 @@ import com.common.utils.HandlerTaskTimer;
 import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
 import com.module.playways.rank.msg.event.JoinActionEvent;
+import com.module.playways.rank.msg.event.QJoinActionEvent;
 import com.module.playways.rank.prepare.MatchServerApi;
 import com.module.playways.rank.prepare.model.GameInfoModel;
 import com.module.playways.rank.prepare.model.JoinGrabRoomRspModel;
@@ -42,7 +43,7 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
     int mCurrentMusicId; //选择的歌曲id
     int mGameType; // 当前游戏类型
     // TODO: 2018/12/12 怎么确定一个push肯定是当前一轮的push？？？
-    JoinActionEvent mJoinActionEvent;
+    QJoinActionEvent mJoinActionEvent;
 
 //    int mCurrentGameId; // 游戏标识
 //    long mGameCreateTime;
@@ -142,11 +143,10 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
 
     // 加入指令，即服务器通知加入房间的指令
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(JoinActionEvent joinActionEvent) {
+    public void onEventMainThread(QJoinActionEvent joinActionEvent) {
         if (joinActionEvent != null) {
             MyLog.w(TAG, "onEventMainThread JoinActionEvent currentGameId is " + joinActionEvent.gameId
                     + " timeMs = " + joinActionEvent.info.getTimeMs()
-                    + " songSize = " + joinActionEvent.songModelList.size()
             );
             // 是否要对加入通知进行过滤
             if (mMatchState == MatchState.Matching) {
@@ -261,8 +261,8 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
                 if (result.getErrno() == 0) {
                     if (mMatchState == MatchState.JoinRongYunRoomSuccess) {
                         mMatchState = MatchState.JoinGameSuccess;
-                        //todo 这里直接加入房间, 在JoinNotice里也可以
                         JoinGrabRoomRspModel grabCurGameStateModel = JSON.parseObject(result.getData().toString(), JoinGrabRoomRspModel.class);
+                        grabCurGameStateModel.setGameCreateMs(GrabMatchPresenter.this.mJoinActionEvent.gameCreateMs);
                         mView.matchGrabSucess(grabCurGameStateModel);
                         if (mCheckJoinStateTask != null) {
                             mCheckJoinStateTask.dispose();

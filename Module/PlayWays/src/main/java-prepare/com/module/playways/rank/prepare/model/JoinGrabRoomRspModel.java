@@ -187,7 +187,8 @@ public class JoinGrabRoomRspModel implements Serializable {
     private int syncStatusTimeMs; // 同步时间
     private int tagID;// 剧本游戏
     private boolean isNewGame;// 是否是一局新游戏
-    private GrabConfigModel config;
+    private GrabConfigModel config;//游戏的配置信息
+    private long mGameCreateMs;// 游戏创建时间
 
     public JoinGrabRoomRspModel() {
 
@@ -271,5 +272,13 @@ public class JoinGrabRoomRspModel implements Serializable {
 
     public void setConfig(GrabConfigModel config) {
         this.config = config;
+    }
+
+    public void setGameCreateMs(long gameCreateMs) {
+        mGameCreateMs = gameCreateMs;
+    }
+
+    public long getGameCreateMs() {
+        return mGameCreateMs;
     }
 }

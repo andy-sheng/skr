@@ -152,6 +152,11 @@ public enum ERoomMsgType implements WireEnum {
   RM_Q_JOIN_NOTICE(123),
 
   /**
+   * 一唱到底：加入游戏指令消息
+   */
+  RM_Q_JOIN_ACTION(124),
+
+  /**
    * 告知伴奏开始
    */
   RM_ROUND_ACC_BEGIN(190);
@@ -197,6 +202,7 @@ public enum ERoomMsgType implements WireEnum {
       case 121: return RM_Q_BLIGHT;
       case 122: return RM_Q_MLIGHT;
       case 123: return RM_Q_JOIN_NOTICE;
+      case 124: return RM_Q_JOIN_ACTION;
       case 190: return RM_ROUND_ACC_BEGIN;
       default: return null;
     }

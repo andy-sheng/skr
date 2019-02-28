@@ -61,11 +61,12 @@ public class GrabRoomActivity extends BaseActivity {
             mRoomData.setExpectRoundInfo(grabRoundInfoModel);
 //            mRoomData.setRealRoundInfo(rsp.getCurrentRound());
             mRoomData.setTagId(rsp.getTagID());
-            if (mRoomData.getGameStartTs() == 0) {
-                mRoomData.setGameStartTs(System.currentTimeMillis());
-            }
+            mRoomData.setGameCreateTs(rsp.getGameCreateMs());
             if (mRoomData.getGameCreateTs() == 0) {
                 mRoomData.setGameCreateTs(System.currentTimeMillis());
+            }
+            if (mRoomData.getGameStartTs() == 0) {
+                mRoomData.setGameStartTs(mRoomData.getGameCreateTs());
             }
 //            mRoomData.setPlayerInfoList(prepareData.getPlayerInfoList());
         } else {
@@ -91,7 +92,7 @@ public class GrabRoomActivity extends BaseActivity {
             grabRoundInfoModel.updatePlayUsers(playerInfoModelList);
             mRoomData.setGameId(1);
             GrabConfigModel grabConfigModel = new GrabConfigModel();
-            grabConfigModel.setTotalRoundNum(88);
+            grabConfigModel.setTotalGameRoundSeq(88);
             grabRoundInfoModel.setParticipant(false);
             grabRoundInfoModel.setElapsedTimeMs(5000);
             mRoomData.setGrabConfigModel(grabConfigModel);

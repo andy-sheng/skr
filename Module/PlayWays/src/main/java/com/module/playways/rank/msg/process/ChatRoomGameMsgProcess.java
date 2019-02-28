@@ -12,6 +12,7 @@ import com.module.playways.rank.msg.event.PkBurstLightMsgEvent;
 import com.module.playways.rank.msg.event.PkLightOffMsgEvent;
 import com.module.playways.rank.msg.event.QExitGameMsgEvent;
 import com.module.playways.rank.msg.event.QGetSingChanceMsgEvent;
+import com.module.playways.rank.msg.event.QJoinActionEvent;
 import com.module.playways.rank.msg.event.QJoinNoticeEvent;
 import com.module.playways.rank.msg.event.QLightBurstMsgEvent;
 import com.module.playways.rank.msg.event.QLightOffMsgEvent;
@@ -38,8 +39,8 @@ import com.zq.live.proto.Room.PKMLightMsg;
 import com.zq.live.proto.Room.QBLightMsg;
 import com.zq.live.proto.Room.QExitGameMsg;
 import com.zq.live.proto.Room.QGetSingChanceMsg;
+import com.zq.live.proto.Room.QJoinActionMsg;
 import com.zq.live.proto.Room.QJoinNoticeMsg;
-import com.zq.live.proto.Room.QLightActionMsg;
 import com.zq.live.proto.Room.QMLightMsg;
 import com.zq.live.proto.Room.QNoPassSingMsg;
 import com.zq.live.proto.Room.QRoundAndGameOverMsg;
@@ -111,11 +112,13 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
         } else if (msg.getMsgType() == ERoomMsgType.RM_PK_MLIGHT) {
             processPkLightOffMsg(basePushInfo, msg.getPkMLightMsg());
         } else if (msg.getMsgType() == ERoomMsgType.RM_Q_BLIGHT) {
-            processGrabLightBurstMsg(basePushInfo,msg.getQBLightMsg());
+            processGrabLightBurstMsg(basePushInfo, msg.getQBLightMsg());
         } else if (msg.getMsgType() == ERoomMsgType.RM_Q_MLIGHT) {
-            processGrabLightOffMsg(basePushInfo,msg.getQMLightMsg());
+            processGrabLightOffMsg(basePushInfo, msg.getQMLightMsg());
         } else if (msg.getMsgType() == ERoomMsgType.RM_Q_JOIN_NOTICE) {
-            processGrabJoinMsg(basePushInfo,msg.getQJoinNoticeMsg());
+            processGrabJoinNoticeMsg(basePushInfo, msg.getQJoinNoticeMsg());
+        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_JOIN_ACTION) {
+            processGrabJoinActionMsg(basePushInfo, msg.getQJoinActionMsg());
         }
     }
 
@@ -133,7 +136,7 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
                 ERoomMsgType.RM_Q_ROUND_OVER, ERoomMsgType.RM_Q_ROUND_AND_GAME_OVER,
                 ERoomMsgType.RM_Q_NO_PASS_SING, ERoomMsgType.RM_Q_EXIT_GAME,
                 ERoomMsgType.RM_PK_BLIGHT, ERoomMsgType.RM_PK_MLIGHT,
-                ERoomMsgType.RM_Q_BLIGHT, ERoomMsgType.RM_Q_MLIGHT, ERoomMsgType.RM_Q_JOIN_NOTICE,
+                ERoomMsgType.RM_Q_BLIGHT, ERoomMsgType.RM_Q_MLIGHT, ERoomMsgType.RM_Q_JOIN_NOTICE,ERoomMsgType.RM_Q_JOIN_ACTION
         };
     }
 
@@ -356,7 +359,6 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
     }
 
 
-
     private void processGrabLightOffMsg(BasePushInfo basePushInfo, QMLightMsg msg) {
         if (msg != null) {
             QLightOffMsgEvent event = new QLightOffMsgEvent(basePushInfo, msg);
@@ -375,7 +377,7 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
         }
     }
 
-    private void processGrabJoinMsg(BasePushInfo basePushInfo, QJoinNoticeMsg msg) {
+    private void processGrabJoinNoticeMsg(BasePushInfo basePushInfo, QJoinNoticeMsg msg) {
         if (msg != null) {
             QJoinNoticeEvent event = new QJoinNoticeEvent(basePushInfo, msg);
             EventBus.getDefault().post(event);
@@ -383,6 +385,16 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
             MyLog.w(TAG, "processPkLightOffMsg" + " basePushInfo=" + basePushInfo + " qExitGameMsg = null");
         }
     }
+
+    private void processGrabJoinActionMsg(BasePushInfo basePushInfo, QJoinActionMsg msg) {
+        if (msg != null) {
+            QJoinActionEvent event = new QJoinActionEvent(basePushInfo, msg);
+            EventBus.getDefault().post(event);
+        } else {
+            MyLog.w(TAG, "processPkLightOffMsg" + " basePushInfo=" + basePushInfo + " qExitGameMsg = null");
+        }
+    }
+
 
     private void processAccBeigin(BasePushInfo basePushInfo) {
         if (basePushInfo != null) {

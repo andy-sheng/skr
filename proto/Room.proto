@@ -52,6 +52,7 @@ message RoomMsg
     QBLightMsg qBLightMsg         = 121; //一唱到底：爆灯通知
     QMLightMsg qMLightMsg         = 122; //一唱到底：灭灯通知
     QJoinNoticeMsg qJoinNoticeMsg = 123; //加入游戏通知消息 msgType == RM_JOIN_NOTICE
+    QJoinActionMsg qJoinActionMsg = 124; //一唱到底：加入游戏指令消息
 }
 
 // ERoomMsgType 房间消息类型
@@ -89,6 +90,7 @@ enum ERoomMsgType {
     RM_Q_BLIGHT      = 121; //一唱到底：爆灯通知
     RM_Q_MLIGHT      = 122; //一唱到底：灭灯通知
     RM_Q_JOIN_NOTICE = 123; //一唱到底：加入游戏通知消息
+    RM_Q_JOIN_ACTION = 124; //一唱到底：加入游戏指令消息
 
     RM_ROUND_ACC_BEGIN = 190; //告知伴奏开始
 }
@@ -310,6 +312,19 @@ message CommentMsg
     string text = 1; //发表内容
 }
 
+message QJoinActionMsg
+{
+    uint32 gameID       = 1; //游戏ID
+    sint64 createTimeMs = 2; //创建毫秒时间戳
+    QGameConfig config  = 3; //配置信息
+}
+
+message QGameConfig
+{
+    uint32 TotalGameRoundSeq          = 1; //轮次总数
+    uint32 EnableShowBLightWaitTimeMs = 2; //爆灯等待时间(毫秒)
+    uint32 EnableShowMLightWaitTimeMs = 3; //灭灯等待时间(毫秒)
+}
 // 加入指令
 message JoinActionMsg
 {
