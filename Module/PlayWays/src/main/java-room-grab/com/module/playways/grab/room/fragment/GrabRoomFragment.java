@@ -609,7 +609,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     }
 
     @Override
-    public void roundOver(int songId,int reason, int resultType, boolean playNextSongInfoCard, BaseRoundInfoModel now) {
+    public void roundOver(int songId, int reason, int resultType, boolean playNextSongInfoCard, BaseRoundInfoModel now) {
         mUiHanlder.removeMessages(MSG_ENSURE_ROUND_OVER_PLAY_OVER);
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_ROUND_OVER_PLAY_OVER);
         msg.arg1 = playNextSongInfoCard ? 1 : 0;
@@ -619,7 +619,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mOthersSingCardView.hide();
         mSongInfoCardView.hide();
         mGrabOpBtn.hide();
-        mRoundOverCardView.bindData(songId,reason, resultType, new SVGAListener() {
+        mRoundOverCardView.bindData(songId, reason, resultType, new SVGAListener() {
             @Override
             public void onFinished() {
                 onRoundOverPlayOver(playNextSongInfoCard, now);
@@ -705,9 +705,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
                         @Override
                         public void onClick(View v) {
                             mQuitTipsDialog.dismiss(false);
-                            if (getActivity() != null) {
-                                getActivity().finish();
-                            }
+                            mCorePresenter.exitRoom();
                         }
                     })
                     .setCancelBtnClickListener(new View.OnClickListener() {
@@ -749,6 +747,17 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
                 onGrabGameOver("onFinished");
             }
         });
+    }
+
+    @Override
+    public void onGetGameResult(boolean success) {
+        if (success) {
+            onGrabGameOver("onGetGameResultSuccess");
+        } else {
+            if (getActivity() != null) {
+                getActivity().finish();
+            }
+        }
     }
 
     private void onGrabGameOver(String from) {

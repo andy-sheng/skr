@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
-    protected int coin;
+    protected int coin;// 金币数
     protected List<GrabResultInfoModel> mResultList; // 一唱到底对战结果数据
     protected int mTagId;//一场到底歌曲分类
 

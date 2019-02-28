@@ -47,4 +47,6 @@ public interface IGrabView {
     void gameFinish();
 
 
+    void onGetGameResult(boolean success);
+
 }

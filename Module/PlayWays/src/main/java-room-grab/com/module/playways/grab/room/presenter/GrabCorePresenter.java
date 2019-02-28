@@ -2,6 +2,7 @@ package com.module.playways.grab.room.presenter;
 
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.changba.songstudio.audioeffect.AudioEffectStyleEnum;
@@ -45,7 +46,6 @@ import com.module.playways.rank.msg.event.QGetSingChanceMsgEvent;
 import com.module.playways.rank.msg.event.QJoinNoticeEvent;
 import com.module.playways.rank.msg.event.QLightBurstMsgEvent;
 import com.module.playways.rank.msg.event.QLightOffMsgEvent;
-import com.module.playways.rank.msg.event.QNoPassSingMsgEvent;
 import com.module.playways.rank.msg.event.QRoundAndGameOverMsgEvent;
 import com.module.playways.rank.msg.event.QRoundOverMsgEvent;
 import com.module.playways.rank.msg.event.QSyncStatusMsgEvent;
@@ -53,7 +53,6 @@ import com.module.playways.rank.msg.event.QWantSingChanceMsgEvent;
 import com.module.playways.rank.msg.filter.PushMsgFilter;
 import com.module.playways.rank.msg.manager.ChatRoomMsgManager;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
 import com.module.playways.rank.room.SwapStatusType;
@@ -70,6 +69,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.greenrobot.greendao.annotation.NotNull;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -503,7 +503,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         MyLog.d(TAG, "destroy begin");
         super.destroy();
         mDestroyed = true;
-        exitGame();
+        exitRoom();
         cancelSyncGameStateTask();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
@@ -589,12 +589,37 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     /**
      * 退出游戏
      */
-    public void exitGame() {
+    public void exitRoom() {
         HashMap<String, Object> map = new HashMap<>();
-        map.put("gameID", mRoomData.getGameId());
+        map.put("roomID", mRoomData.getGameId());
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
-        ApiMethods.subscribe(mRoomServerApi.exitGame(body), null);
+        ApiMethods.subscribe(mRoomServerApi.exitGame(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    String resultStr = result.getData().getString("resultInfo");
+                    if (!TextUtils.isEmpty(resultStr)) {
+                        GrabResultInfoModel grabResultInfoModel = JSON.parseObject(resultStr, GrabResultInfoModel.class);
+                        List<GrabResultInfoModel> l = new ArrayList<>();
+                        l.add(grabResultInfoModel);
+                        // 得到结果
+                        mRoomData.setResultList(l);
+                        mIGrabView.onGetGameResult(true);
+                    } else {
+                        mIGrabView.onGetGameResult(false);
+                    }
+                } else {
+                    mIGrabView.onGetGameResult(false);
+                }
+            }
+
+            @Override
+            public void onNetworkError(ErrorType errorType) {
+                super.onNetworkError(errorType);
+                mIGrabView.onGetGameResult(false);
+            }
+        });
     }
 
     /**
@@ -723,7 +748,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 if (RoomDataUtils.roundSeqLarger(newRoundInfo, mRoomData.getRealRoundInfo())) {
                     MyLog.w(TAG, "updatePlayerState" + " sync发现本地轮次信息滞后，更新");
                     // 轮次确实比当前的高，可以切换
-                    mRoomData.setExpectRoundInfo(RoomDataUtils.getRoundInfoFromRoundInfoListInGrabMode(mRoomData, newRoundInfo));
+                    mRoomData.setExpectRoundInfo(newRoundInfo);
                     mRoomData.checkRoundInEachMode();
                 } else if (RoomDataUtils.isCurrentRound(newRoundInfo.getRoundSeq(), mRoomData)) {
                     /**
@@ -848,6 +873,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     /**
      * 想要演唱机会的人
+     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -866,6 +892,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     /**
      * 抢到演唱机会的人
+     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -883,6 +910,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     /**
      * 有人灭灯
+     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -902,6 +930,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     /**
      * 有人爆灯
+     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -921,6 +950,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     /**
      * 有人加入房间
+     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -979,7 +1009,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         if (RoomDataUtils.roundSeqLarger(event.nextRound, mRoomData.getRealRoundInfo())) {
             // 轮次确实比当前的高，可以切换
             MyLog.w(TAG, "轮次确实比当前的高，可以切换");
-            mRoomData.setExpectRoundInfo(RoomDataUtils.getRoundInfoFromRoundInfoListInGrabMode(mRoomData, event.nextRound));
+            mRoomData.setExpectRoundInfo(event.nextRound);
             mRoomData.checkRoundInEachMode();
         }
     }

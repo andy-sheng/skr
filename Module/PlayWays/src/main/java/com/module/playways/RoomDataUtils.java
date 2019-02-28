@@ -271,19 +271,6 @@ public class RoomDataUtils {
         return false;
     }
 
-    public static <T extends BaseRoundInfoModel> T getRoundInfoFromRoundInfoListInGrabMode(BaseRoomData<T> roomData, T roundInfoModel) {
-        if (roundInfoModel == null) {
-            return null;
-        }
-        for (T roundInfo : roomData.getRoundInfoModelList()) {
-            if (roundInfo.getRoundSeq() == roundInfoModel.getRoundSeq()) {
-                roundInfo.tryUpdateRoundInfoModel(roundInfoModel,false);
-                return roundInfo;
-            }
-        }
-        return null;
-    }
-
     public static <T extends BaseRoundInfoModel> T getRoundInfoFromRoundInfoListInRankMode(BaseRoomData<T> roomData, T roundInfoModel) {
         if (roundInfoModel == null) {
             return null;
