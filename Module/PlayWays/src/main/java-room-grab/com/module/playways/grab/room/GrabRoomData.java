@@ -5,11 +5,12 @@ import com.component.busilib.constans.GameModeType;
 import com.module.playways.BaseRoomData;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.event.GrabGameOverEvent;
+import com.module.playways.grab.room.event.GrabMyCoinChangeEvent;
 import com.module.playways.grab.room.event.GrabRoundChangeEvent;
+import com.module.playways.grab.room.model.GrabConfigModel;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.GrabResultInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.module.playways.rank.prepare.model.PlayerInfoModel;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -17,12 +18,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
-    protected int coin;// 金币数
+    protected int mCoin;// 金币数
     protected List<GrabResultInfoModel> mResultList; // 一唱到底对战结果数据
     protected int mTagId;//一场到底歌曲分类
+    protected GrabConfigModel mGrabConfigModel;
 
     @Override
-    public  List<GrabPlayerInfoModel> getPlayerInfoList() {
+    public List<GrabPlayerInfoModel> getPlayerInfoList() {
         List<GrabPlayerInfoModel> l = new ArrayList<>();
         l.addAll(mRealRoundInfo.getPlayUsers());
         l.addAll(mRealRoundInfo.getWaitUsers());
@@ -86,10 +88,21 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
     }
 
     public int getCoin() {
-        return coin;
+        return mCoin;
     }
 
     public void setCoin(int coin) {
-        this.coin = coin;
+        if (this.mCoin != coin) {
+            this.mCoin = coin;
+            EventBus.getDefault().post(new GrabMyCoinChangeEvent(coin));
+        }
+    }
+
+    public GrabConfigModel getGrabConfigModel() {
+        return mGrabConfigModel;
+    }
+
+    public void setGrabConfigModel(GrabConfigModel grabConfigModel) {
+        mGrabConfigModel = grabConfigModel;
     }
 }

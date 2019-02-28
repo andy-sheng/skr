@@ -1,4 +1,4 @@
-package com.module.playways.rank.prepare.model;
+package com.module.playways.rank.room.model;
 
 import java.io.Serializable;
 

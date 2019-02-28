@@ -15,8 +15,8 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.module.playways.BaseRoomData;
 import com.module.playways.RoomDataUtils;
-import com.module.playways.rank.prepare.model.GameConfigModel;
-import com.module.playways.rank.prepare.model.PkScoreTipMsgModel;
+import com.module.playways.rank.room.model.RankGameConfigModel;
+import com.module.playways.rank.room.model.PkScoreTipMsgModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.room.RankRoomData;
 import com.module.playways.rank.room.comment.CommentModel;
@@ -29,8 +29,6 @@ import com.module.playways.rank.room.score.bar.ScoreTipsView;
 import com.module.rank.R;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
-import com.zq.live.proto.Common.UserInfo;
-import com.zq.live.proto.Room.PlayerInfo;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -319,7 +317,7 @@ public class RankTopContainerView2 extends RelativeLayout {
         for (int i = 0; i < 1; i++) {
             score = (int) (Math.sqrt(score) * 10);
         }
-        GameConfigModel gameConfigModel = mRoomData.getGameConfigModel();
+        RankGameConfigModel gameConfigModel = mRoomData.getGameConfigModel();
         ScoreTipsView.Item item = new ScoreTipsView.Item();
 
         if (gameConfigModel != null) {

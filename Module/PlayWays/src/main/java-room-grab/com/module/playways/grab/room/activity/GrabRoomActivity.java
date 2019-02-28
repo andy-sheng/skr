@@ -19,11 +19,10 @@ import com.module.RouterConstants;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.module.playways.rank.prepare.model.GameConfigModel;
+import com.module.playways.rank.room.model.RankGameConfigModel;
 import com.module.playways.rank.prepare.model.JoinGrabRoomRspModel;
 import com.module.playways.rank.prepare.model.PrepareData;
 
-import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
@@ -49,7 +48,7 @@ public class GrabRoomActivity extends BaseActivity {
         PrepareData prepareData = (PrepareData) getIntent().getSerializableExtra("prepare_data");
         if (prepareData != null) {
             JoinGrabRoomRspModel joinGrabRoomRspModel = prepareData.getJoinGrabRoomRspModel();
-            GameConfigModel gameConfigModel = prepareData.getGameConfigModel();
+            RankGameConfigModel gameConfigModel = prepareData.getGameConfigModel();
 
             mRoomData.setGameId(joinGrabRoomRspModel.getRoomID());
             mRoomData.setCoin(joinGrabRoomRspModel.getCoin());

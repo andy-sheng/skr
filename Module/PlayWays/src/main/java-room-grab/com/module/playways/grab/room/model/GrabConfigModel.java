@@ -1,10 +1,11 @@
-package com.module.playways.rank.prepare.model;
+package com.module.playways.grab.room.model;
 
-import com.zq.live.proto.Room.GameConfig;
+import com.module.playways.rank.room.model.PkScoreTipMsgModel;
+
 import java.io.Serializable;
 import java.util.List;
 
-public class GameConfigModel implements Serializable {
+public class GrabConfigModel implements Serializable {
     int pKMaxShowBLightTimes; //最大爆灯次数
     int pKMaxShowMLightTimes; //最大灭灯次数
     int pKEnableShowBLightWaitTimeMs; //爆灯等待时间(毫秒)
@@ -78,17 +79,4 @@ public class GameConfigModel implements Serializable {
         this.pKMLightEnergyPercentage = pKMLightEnergyPercentage;
     }
 
-    public static GameConfigModel parse(GameConfig gameConfig) {
-        GameConfigModel gameConfigModel = new GameConfigModel();
-        gameConfigModel.pKMaxShowBLightTimes = gameConfig.getPKMaxShowBLightTimes();
-        gameConfigModel.pKMaxShowMLightTimes = gameConfig.getPKMaxShowMLightTimes();
-        gameConfigModel.pKEnableShowBLightWaitTimeMs = gameConfig.getPKEnableShowBLightWaitTimeMs();
-        gameConfigModel.pKEnableShowMLightWaitTimeMs = gameConfig.getPKEnableShowMLightWaitTimeMs();
-        gameConfigModel.pkScoreTipMsgModelList = PkScoreTipMsgModel.parse(gameConfig.getPkScoreTipMsgList());
-        gameConfigModel.pKFullEnergyPercentage = gameConfig.getPKFullEnergyPercentage();
-        gameConfigModel.pKBLightEnergyPercentage = gameConfig.getPKBLightEnergyPercentage();
-        gameConfigModel.pKMLightEnergyPercentage = gameConfig.getPKMLightEnergyPercentage();
-
-        return gameConfigModel;
-    }
 }

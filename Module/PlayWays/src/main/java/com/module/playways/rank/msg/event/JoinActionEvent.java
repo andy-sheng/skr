@@ -1,8 +1,7 @@
 package com.module.playways.rank.msg.event;
 
 import com.module.playways.rank.msg.BasePushInfo;
-import com.module.playways.rank.prepare.model.GameConfigModel;
-import com.module.playways.rank.prepare.model.PlayerInfoModel;
+import com.module.playways.rank.room.model.RankGameConfigModel;
 import com.module.playways.rank.room.model.RankPlayerInfoModel;
 import com.module.playways.rank.song.model.SongModel;
 import com.zq.live.proto.Common.MusicInfo;
@@ -17,7 +16,7 @@ public class JoinActionEvent {
     public long gameCreateMs;
     public List<RankPlayerInfoModel> playerInfoList;
     public List<SongModel> songModelList;
-    public GameConfigModel gameConfigModel;
+    public RankGameConfigModel gameConfigModel;
 
     public JoinActionEvent(BasePushInfo info, JoinActionMsg joinActionMsg) {
         List<RankPlayerInfoModel> playerInfos = new ArrayList<>();
@@ -34,9 +33,9 @@ public class JoinActionEvent {
             songModels.add(songModel);
         }
 
-        GameConfigModel gameConfigModel = null;
+        RankGameConfigModel gameConfigModel = null;
         if (joinActionMsg.getConfig() != null) {
-            gameConfigModel = GameConfigModel.parse(joinActionMsg.getConfig());
+            gameConfigModel = RankGameConfigModel.parse(joinActionMsg.getConfig());
         }
 
         this.info = info;

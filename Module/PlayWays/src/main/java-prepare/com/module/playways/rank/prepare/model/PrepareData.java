@@ -1,5 +1,6 @@
 package com.module.playways.rank.prepare.model;
 
+import com.module.playways.rank.room.model.RankGameConfigModel;
 import com.module.playways.rank.room.model.RankPlayerInfoModel;
 import com.module.playways.rank.song.model.SongModel;
 
@@ -20,7 +21,7 @@ public class PrepareData implements Serializable {
 
     private String mBgMusic; // 背景音乐
 
-    private GameConfigModel mGameConfigModel;// 游戏配置
+    private RankGameConfigModel mGameConfigModel;// 游戏配置
 
     private JoinGrabRoomRspModel mGrabCurGameStateModel;
 
@@ -124,11 +125,11 @@ public class PrepareData implements Serializable {
         this.mBgMusic = bgMusic;
     }
 
-    public GameConfigModel getGameConfigModel() {
+    public RankGameConfigModel getGameConfigModel() {
         return mGameConfigModel;
     }
 
-    public void setGameConfigModel(GameConfigModel gameConfigModel) {
+    public void setGameConfigModel(RankGameConfigModel gameConfigModel) {
         mGameConfigModel = gameConfigModel;
     }
 }

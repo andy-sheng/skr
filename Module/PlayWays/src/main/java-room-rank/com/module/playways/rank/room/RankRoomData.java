@@ -6,7 +6,7 @@ import com.component.busilib.constans.GameModeType;
 import com.module.playways.BaseRoomData;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
-import com.module.playways.rank.prepare.model.GameConfigModel;
+import com.module.playways.rank.room.model.RankGameConfigModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.room.model.RankPlayerInfoModel;
 import com.module.playways.rank.room.model.RankRoundInfoModel;
@@ -25,7 +25,7 @@ public class RankRoomData extends BaseRoomData<RankRoundInfoModel> {
 
     protected List<RankPlayerInfoModel> mPlayerInfoList;//选手信息
 
-    protected GameConfigModel mGameConfigModel;// 配置信息
+    protected RankGameConfigModel mGameConfigModel;// 配置信息
 
     protected int mLeftBaoLightTimes; //剩余爆灯次数
     protected int mLeftMieLightTimes; //剩余灭灯次数
@@ -97,11 +97,11 @@ public class RankRoomData extends BaseRoomData<RankRoundInfoModel> {
         EventBus.getDefault().post(new PkMyLightOffSuccessEvent(which));
     }
 
-    public GameConfigModel getGameConfigModel() {
+    public RankGameConfigModel getGameConfigModel() {
         return mGameConfigModel;
     }
 
-    public void setGameConfigModel(GameConfigModel gameConfigModel) {
+    public void setGameConfigModel(RankGameConfigModel gameConfigModel) {
         mGameConfigModel = gameConfigModel;
         mLeftMieLightTimes = mGameConfigModel.getpKMaxShowMLightTimes();
         mLeftBaoLightTimes = mGameConfigModel.getpKMaxShowBLightTimes();
