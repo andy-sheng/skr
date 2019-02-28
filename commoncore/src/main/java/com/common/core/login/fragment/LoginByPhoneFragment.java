@@ -68,10 +68,10 @@ public class LoginByPhoneFragment extends BaseFragment {
 
         if (TextUtils.isEmpty(mPhoneInputTv.getText().toString().trim())) {
             mPhoneInputTv.requestFocus();
-            U.getKeyBoardUtils().showSoftInputKeyBoard(getActivity());
         } else {
             mCodeInputTv.requestFocus();
         }
+        U.getKeyBoardUtils().showSoftInputKeyBoard(getActivity());
 
         RxView.clicks(mGetCodeTv)
                 .throttleFirst(500, TimeUnit.MILLISECONDS)

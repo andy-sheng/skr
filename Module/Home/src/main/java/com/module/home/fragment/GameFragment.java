@@ -50,6 +50,7 @@ import com.module.RouterConstants;
 import com.module.home.MainPageSlideApi;
 import com.module.home.R;
 import com.module.home.model.GameConfModel;
+import com.module.home.model.GameKConfigModel;
 import com.module.home.model.SlideShowModel;
 import com.module.home.view.GameTimeTipsView;
 import com.module.home.widget.UserInfoTitleView;
@@ -148,10 +149,10 @@ public class GameFragment extends BaseFragment {
         mRankDiffIv = (ExImageView) mRootView.findViewById(R.id.rank_diff_iv);
 
         mBannerView = (Banner) mRootView.findViewById(R.id.banner_view);
-        mIvGrabGame = (ExImageView)mRootView.findViewById(R.id.iv_grab_game);
-        mTextGrabGame = (ExTextView)mRootView.findViewById(R.id.text_grab_game);
-        mIvAthleticsPk = (ExImageView)mRootView.findViewById(R.id.iv_athletics_pk);
-        mTextAthleticsPk = (ExTextView)mRootView.findViewById(R.id.text_athletics_pk);
+        mIvGrabGame = (ExImageView) mRootView.findViewById(R.id.iv_grab_game);
+        mTextGrabGame = (ExTextView) mRootView.findViewById(R.id.text_grab_game);
+        mIvAthleticsPk = (ExImageView) mRootView.findViewById(R.id.iv_athletics_pk);
+        mTextAthleticsPk = (ExTextView) mRootView.findViewById(R.id.text_athletics_pk);
 
         LinearLayout linearLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.area_diff_popup_window_layout, null);
         mPopArea = (LinearLayout) linearLayout.findViewById(R.id.pop_area);
@@ -423,13 +424,14 @@ public class GameFragment extends BaseFragment {
         });
     }
 
-    private void initGameKConfig(){
+    private void initGameKConfig() {
         mMainPageSlideApi = ApiManager.getInstance().createService(MainPageSlideApi.class);
         ApiMethods.subscribe(mMainPageSlideApi.getKConfig(), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
-
+                    GameKConfigModel gameKConfigModel = JSON.parseObject(result.getData().getString("common"), GameKConfigModel.class);
+                    showGameKConfig(gameKConfigModel);
                 }
             }
 
@@ -439,6 +441,31 @@ public class GameFragment extends BaseFragment {
                 mSmartRefreshLayout.finishRefresh();
             }
         });
+    }
+
+    private void showGameKConfig(GameKConfigModel gameKConfigModel) {
+        String pkTags = "";
+        String standTags = "";
+        if (gameKConfigModel != null) {
+            if (gameKConfigModel.getPktags() != null && gameKConfigModel.getPktags().size() > 0) {
+                pkTags = gameKConfigModel.getPktags().get(0);
+            }
+
+            if (gameKConfigModel.getStandtags() != null && gameKConfigModel.getStandtags().size() > 0) {
+                standTags = gameKConfigModel.getStandtags().get(0);
+            }
+        }
+
+        if (!TextUtils.isEmpty(pkTags)) {
+            mTextAthleticsPk.setVisibility(View.VISIBLE);
+            mTextAthleticsPk.setText(pkTags);
+        }
+
+        if (!TextUtils.isEmpty(standTags)) {
+            mTextGrabGame.setVisibility(View.VISIBLE);
+            mTextGrabGame.setText(standTags);
+        }
+
     }
 
     private void setBannerImage(List<SlideShowModel> slideShowModelList) {
