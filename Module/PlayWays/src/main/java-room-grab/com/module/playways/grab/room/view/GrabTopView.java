@@ -30,6 +30,7 @@ public class GrabTopView extends RelativeLayout {
     }
 
     public void init() {
+        inflate(getContext(), R.layout.grab_top_view, this);
         mTvChangeRoom = (ExTextView) findViewById(R.id.tv_change_room);
         mTvCoin = (ExTextView) findViewById(R.id.tv_coin);
         mIvMore = (ImageView) findViewById(R.id.iv_more);

@@ -17,6 +17,7 @@ import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
+import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
 import com.module.rank.R;
 
@@ -47,7 +48,7 @@ public class GrabOpView extends RelativeLayout {
 
     int mStatus;
 
-    public ExImageView mBtnIv;
+    public ExTextView mBtnIv;
 
     ExImageView mIvLightOff;
 
@@ -192,7 +193,7 @@ public class GrabOpView extends RelativeLayout {
                                 drawable = U.getDrawable(R.drawable.zhanji_1);
                                 break;
                         }
-                        mBtnIv.setImageDrawable(drawable);
+                        mBtnIv.setBackground(drawable);
                     }
 
                     @Override
@@ -238,14 +239,14 @@ public class GrabOpView extends RelativeLayout {
                 mIvLightOff.setVisibility(GONE);
                 mIvBurst.setVisibility(GONE);
                 mBtnIv.setEnabled(true);
-                mBtnIv.setImageDrawable(null);
+                mBtnIv.setBackground(null);
                 mBtnIv.setBackground(null);
                 Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20))
                         .setShape(DrawableCreator.Shape.Rectangle)
                         .setPressedDrawable(U.getDrawable(R.drawable.xiangchang_anxia))
                         .setUnPressedDrawable(U.getDrawable(R.drawable.xiangchang_daojishi))
                         .build();
-                mBtnIv.setImageDrawable(drawable);
+                mBtnIv.setBackground(drawable);
 
                 break;
             case STATUS_CAN_OP:
