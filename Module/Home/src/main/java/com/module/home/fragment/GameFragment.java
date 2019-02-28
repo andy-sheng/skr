@@ -205,7 +205,7 @@ public class GameFragment extends BaseFragment {
         });
 
         if (MyLog.isDebugLogOpen()) {
-            mIvGrabGame.setOnLongClickListener(new View.OnLongClickListener() {
+            mIvAthleticsPk.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_VOICEROOM)
@@ -215,9 +215,19 @@ public class GameFragment extends BaseFragment {
             });
         }
 
-        RxView.clicks(mRankArea).subscribe(new Consumer<Object>() {
+        if (MyLog.isDebugLogOpen()) {
+            mIvGrabGame.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_ROOM)
+                            .navigation();
+                    return false;
+                }
+            });
+        }
+        mRankArea.setOnClickListener(new DebounceViewClickListener() {
             @Override
-            public void accept(Object o) {
+            public void clickValid(View v) {
                 IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
                 Class<BaseFragment> baseFragment = (Class<BaseFragment>) iRankingModeService.getLeaderboardFragmentClass();
                 U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), baseFragment)

@@ -17,6 +17,7 @@ import com.common.utils.U;
 import com.component.busilib.constans.GameModeType;
 import com.module.RouterConstants;
 import com.module.playways.grab.room.GrabRoomData;
+import com.module.playways.grab.room.model.GrabConfigModel;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.rank.room.model.RankGameConfigModel;
@@ -64,17 +65,9 @@ public class GrabRoomActivity extends BaseActivity {
         } else {
             //TODO test
             {
-                List<GrabRoundInfoModel> roundingModeList = new ArrayList<>();
-                for (int i = 0; i < 10; i++) {
-                    GrabRoundInfoModel roundingMode = new GrabRoundInfoModel();
-                    roundingMode.setRoundSeq(i + 1);
-                    SongModel songModel = new SongModel();
-                    songModel.setItemName("歌曲" + i);
-                    roundingMode.setSongModel(songModel);
-                    roundingModeList.add(roundingMode);
-                }
+                GrabRoundInfoModel grabRoundInfoModel = new GrabRoundInfoModel();
                 List<GrabPlayerInfoModel> playerInfoModelList = new ArrayList<>();
-                for (int i = 0; i < 5; i++) {
+                for (int i = 0; i < 7; i++) {
                     GrabPlayerInfoModel playerInfoModel = new GrabPlayerInfoModel();
                     UserInfoModel userInfoModel = new UserInfoModel();
                     if (i == 0) {
@@ -90,9 +83,11 @@ public class GrabRoomActivity extends BaseActivity {
                     playerInfoModel.setUserInfo(userInfoModel);
                     playerInfoModelList.add(playerInfoModel);
                 }
-                mRoomData.setRoundInfoModelList(roundingModeList);
-                GrabRoundInfoModel grabRoundInfoModel = RoomDataUtils.findFirstRoundInfo(mRoomData.getRoundInfoModelList());
-                grabRoundInfoModel.setPlayUsers(playerInfoModelList);
+                grabRoundInfoModel.updatePlayUsers(playerInfoModelList);
+                mRoomData.setGameId(1);
+                GrabConfigModel grabConfigModel = new GrabConfigModel();
+                grabConfigModel.setTotalRoundNum(88);
+                mRoomData.setGrabConfigModel(grabConfigModel);
                 mRoomData.setExpectRoundInfo(grabRoundInfoModel);
             }
         }

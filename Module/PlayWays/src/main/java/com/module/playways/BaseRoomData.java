@@ -52,8 +52,6 @@ public abstract class BaseRoomData<T extends BaseRoundInfoModel> implements Seri
 
     protected SongModel mSongModel; // 歌曲信息
 
-    protected List<T> mRoundInfoModelList;//所有的轮次信息
-
     protected T mExpectRoundInfo;// 按理的 期望的当前的轮次
 
     protected T mRealRoundInfo;// 实际的当前轮次信息
@@ -139,14 +137,6 @@ public abstract class BaseRoomData<T extends BaseRoundInfoModel> implements Seri
         mSongModel = songModel;
     }
 
-    public List<T> getRoundInfoModelList() {
-        return mRoundInfoModelList;
-    }
-
-    public void setRoundInfoModelList(List<T> roundInfoModelList) {
-        mRoundInfoModelList = roundInfoModelList;
-    }
-
     public T getExpectRoundInfo() {
         return mExpectRoundInfo;
     }
@@ -192,7 +182,6 @@ public abstract class BaseRoomData<T extends BaseRoundInfoModel> implements Seri
                 ", mGameOverTs=" + mGameOverTs +
                 ", mLastSyncTs=" + mLastSyncTs +
                 ", mSongModel=" + mSongModel +
-                ", mRoundInfoModelList=" + mRoundInfoModelList +
                 ", mExpectRoundInfo=" + mExpectRoundInfo +
                 ", mRealRoundInfo=" + mRealRoundInfo +
                 ", mIsGameFinish=" + mIsGameFinish +

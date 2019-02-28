@@ -122,8 +122,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
     };
 
-    public GrabCorePresenter(@NotNull IGrabView iGrebView, @NotNull GrabRoomData roomData) {
-        mIGrabView = iGrebView;
+    public GrabCorePresenter(@NotNull IGrabView iGrabView, @NotNull GrabRoomData roomData) {
+        mIGrabView = iGrabView;
         mRoomData = roomData;
         TAG = "GrabCorePresenter";
         if (mRoomData.getGameId() > 0) {
@@ -908,9 +908,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         } else if (now.getStatus() == GrabRoundInfoModel.STATUS_OVER) {
             MyLog.w(TAG, "GrabRoundChangeEvent 刚切换到该轮次就告诉我轮次结束？？？roundSeq:" + now.getRoundSeq());
             MyLog.w(TAG, "自动切换到下个轮次");
-            GrabRoundInfoModel roundInfoModel = RoomDataUtils.findRoundInfoBySeq(mRoomData.getRoundInfoModelList(), now.getRoundSeq() + 1);
-            mRoomData.setExpectRoundInfo(roundInfoModel);
-            mRoomData.checkRoundInEachMode();
+//            GrabRoundInfoModel roundInfoModel = RoomDataUtils.findRoundInfoBySeq(mRoomData.getRoundInfoModelList(), now.getRoundSeq() + 1);
+//            mRoomData.setExpectRoundInfo(roundInfoModel);
+//            mRoomData.checkRoundInEachMode();
         }
     }
 

@@ -9,6 +9,7 @@ import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
 import com.module.playways.rank.room.RankRoomData;
 import com.module.playways.rank.room.model.RankPlayerInfoModel;
+import com.module.playways.rank.room.model.RankRoundInfoModel;
 import com.module.playways.rank.song.model.SongModel;
 
 import java.util.Collections;
@@ -129,8 +130,8 @@ public class RoomDataUtils {
      * @param uid
      * @return
      */
-    public static <T extends BaseRoundInfoModel> T getRoundInfoByUserId(BaseRoomData<T> roomData, int uid) {
-        for (T infoModel : roomData.getRoundInfoModelList()) {
+    public static RankRoundInfoModel getRoundInfoByUserId(RankRoomData roomData, int uid) {
+        for (RankRoundInfoModel infoModel : roomData.getRoundInfoModelList()) {
             if (infoModel.getUserID() == uid) {
                 return infoModel;
             }
@@ -143,8 +144,8 @@ public class RoomDataUtils {
      *
      * @return
      */
-    public static <T extends BaseRoundInfoModel> T getRoundInfoBySeq(BaseRoomData<T> roomData, int seq) {
-        for (T infoModel : roomData.getRoundInfoModelList()) {
+    public static RankRoundInfoModel getRoundInfoBySeq(RankRoomData roomData, int seq) {
+        for (RankRoundInfoModel infoModel : roomData.getRoundInfoModelList()) {
             if (infoModel.getRoundSeq() == seq) {
                 return infoModel;
             }
@@ -194,7 +195,7 @@ public class RoomDataUtils {
         return infoModel != null && infoModel.getUserID() == MyUserInfoManager.getInstance().getUid();
     }
 
-    public static <T extends BaseRoundInfoModel,A extends PlayerInfoModel> boolean isRobotRound(T infoModel,  List<A> playerInfoModels) {
+    public static <T extends BaseRoundInfoModel, A extends PlayerInfoModel> boolean isRobotRound(T infoModel, List<A> playerInfoModels) {
         if (infoModel != null) {
             int uid = infoModel.getUserID();
             for (PlayerInfoModel playerInfoModel : playerInfoModels) {
@@ -254,6 +255,7 @@ public class RoomDataUtils {
 
     /**
      * 与真实轮次是否一致
+     *
      * @param eventSeq
      * @param roomData
      * @return
@@ -271,14 +273,14 @@ public class RoomDataUtils {
         return false;
     }
 
-    public static <T extends BaseRoundInfoModel> T getRoundInfoFromRoundInfoListInRankMode(BaseRoomData<T> roomData, T roundInfoModel) {
+    public static RankRoundInfoModel getRoundInfoFromRoundInfoListInRankMode(RankRoomData roomData, RankRoundInfoModel roundInfoModel) {
         if (roundInfoModel == null) {
             return null;
         }
 
-        for (T roundInfo : roomData.getRoundInfoModelList()) {
+        for (RankRoundInfoModel roundInfo : roomData.getRoundInfoModelList()) {
             if (roundInfo.getRoundSeq() == roundInfoModel.getRoundSeq()) {
-                roundInfo.tryUpdateRoundInfoModel(roundInfoModel,false);
+                roundInfo.tryUpdateRoundInfoModel(roundInfoModel, false);
                 return roundInfo;
             }
         }

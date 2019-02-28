@@ -21,6 +21,8 @@ import java.util.List;
 
 public class RankRoomData extends BaseRoomData<RankRoundInfoModel> {
 
+    protected List<RankRoundInfoModel> mRoundInfoModelList;//所有的轮次信息
+
     protected RecordData mRecordData; // PK赛的结果信息
 
     protected List<RankPlayerInfoModel> mPlayerInfoList;//选手信息
@@ -173,5 +175,13 @@ public class RankRoomData extends BaseRoomData<RankRoundInfoModel> {
             }
         }
         return null;
+    }
+
+    public List<RankRoundInfoModel> getRoundInfoModelList() {
+        return mRoundInfoModelList;
+    }
+
+    public void setRoundInfoModelList(List<RankRoundInfoModel> roundInfoModelList) {
+        mRoundInfoModelList = roundInfoModelList;
     }
 }

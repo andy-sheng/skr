@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 public class GrabConfigModel implements Serializable {
+    int totalRoundNum;// 总局数信息
     int pKMaxShowBLightTimes; //最大爆灯次数
     int pKMaxShowMLightTimes; //最大灭灯次数
     int pKEnableShowBLightWaitTimeMs; //爆灯等待时间(毫秒)
@@ -79,4 +80,11 @@ public class GrabConfigModel implements Serializable {
         this.pKMLightEnergyPercentage = pKMLightEnergyPercentage;
     }
 
+    public int getTotalRoundNum() {
+        return totalRoundNum;
+    }
+
+    public void setTotalRoundNum(int totalRoundNum) {
+        this.totalRoundNum = totalRoundNum;
+    }
 }
