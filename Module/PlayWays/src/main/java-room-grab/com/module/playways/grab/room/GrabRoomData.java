@@ -11,6 +11,7 @@ import com.module.playways.grab.room.model.GrabConfigModel;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.GrabResultInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
+import com.module.playways.rank.prepare.model.JoinGrabRoomRspModel;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -104,5 +105,28 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
 
     public void setGrabConfigModel(GrabConfigModel grabConfigModel) {
         mGrabConfigModel = grabConfigModel;
+    }
+
+    public void loadFromRsp(JoinGrabRoomRspModel rsp) {
+        this.setGrabConfigModel(rsp.getConfig());
+        this.setGameId(rsp.getRoomID());
+        this.setCoin(rsp.getCoin());
+        GrabRoundInfoModel grabRoundInfoModel = rsp.getCurrentRound();
+        if (rsp.isNewGame()) {
+            grabRoundInfoModel.setParticipant(true);
+        } else {
+            grabRoundInfoModel.setParticipant(false);
+        }
+        grabRoundInfoModel.setElapsedTimeMs(rsp.getElapsedTimeMs());
+        this.setExpectRoundInfo(grabRoundInfoModel);
+//            mRoomData.setRealRoundInfo(rsp.getCurrentRound());
+        this.setTagId(rsp.getTagID());
+        this.setGameCreateTs(rsp.getGameCreateMs());
+        if (this.getGameCreateTs() == 0) {
+            this.setGameCreateTs(System.currentTimeMillis());
+        }
+        if (this.getGameStartTs() == 0) {
+            this.setGameStartTs(this.getGameCreateTs());
+        }
     }
 }

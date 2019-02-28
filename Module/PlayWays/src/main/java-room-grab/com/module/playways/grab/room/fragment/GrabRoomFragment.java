@@ -527,7 +527,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mUiHanlder.removeMessages(MSG_ENSURE_SONGCARD_OVER);
         mSingBeginTipsCardView.setVisibility(View.GONE);
         mSongInfoCardView.bindSongModel(pendingPlaySongCardData.songModel);
-//        mGrabOpBtn.setVisibility(View.VISIBLE);
+
         mGrabOpBtn.playCountDown(pendingPlaySongCardData.getSeq(), 4, pendingPlaySongCardData.songModel.getStandIntroEndT() - pendingPlaySongCardData.songModel.getStandIntroBeginT());
         mCorePresenter.playGuide();
     }

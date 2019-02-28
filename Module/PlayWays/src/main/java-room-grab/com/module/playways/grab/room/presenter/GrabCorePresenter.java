@@ -27,11 +27,13 @@ import com.engine.arccloud.ArcRecognizeListener;
 import com.engine.arccloud.RecognizeConfig;
 import com.engine.arccloud.SongInfo;
 import com.module.ModuleServiceManager;
+import com.module.common.ICallback;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.event.GrabGameOverEvent;
 import com.module.playways.grab.room.event.GrabRoundChangeEvent;
 import com.module.playways.grab.room.event.GrabRoundStatusChangeEvent;
+import com.module.playways.grab.room.event.GrabSwitchRoomEvent;
 import com.module.playways.grab.room.inter.IGrabView;
 import com.module.playways.grab.room.model.BLightInfoModel;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
@@ -56,6 +58,7 @@ import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.rank.prepare.model.JoinGrabRoomRspModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
+import com.module.playways.rank.prepare.presenter.GrabMatchPresenter;
 import com.module.playways.rank.room.SwapStatusType;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.room.score.MachineScoreItem;
@@ -126,6 +129,17 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         mIGrabView = iGrabView;
         mRoomData = roomData;
         TAG = "GrabCorePresenter";
+        ChatRoomMsgManager.getInstance().addFilter(mPushMsgFilter);
+        joinRoomAndInit(true);
+    }
+
+    /**
+     * 加入引擎房间
+     * 加入融云房间
+     * 系统消息弹幕
+     */
+    private void joinRoomAndInit(boolean first) {
+        MyLog.d(TAG, "joinRoomAndInit" + " first=" + first);
         if (mRoomData.getGameId() > 0) {
             Params params = Params.getFromPref();
             params.setStyleEnum(AudioEffectStyleEnum.ORIGINAL);
@@ -134,6 +148,18 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             EngineManager.getInstance().joinRoom(String.valueOf(mRoomData.getGameId()), (int) UserAccountManager.getInstance().getUuidAsLong(), false);
             // 不发送本地音频
             EngineManager.getInstance().muteLocalAudioStream(true);
+        }
+        if (mRoomData.getGameId() > 0) {
+            ModuleServiceManager.getInstance().getMsgService().joinChatRoom(String.valueOf(mRoomData.getGameId()), new ICallback() {
+                @Override
+                public void onSucess(Object obj) {
+                    MyLog.d(TAG, "加入融云房间成功，但是状态不是 MatchSucess， 当前状态是 ");
+                }
+
+                @Override
+                public void onFailed(Object obj, int errcode, String message) {
+                }
+            });
         }
         if (mRoomData.getGameId() > 0) {
             for (PlayerInfoModel playerInfoModel : mRoomData.getPlayerInfoList()) {
@@ -161,12 +187,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             String text = "撕哥一声吼：请文明参赛，发现坏蛋请用力举报！";
             CommentMsgEvent msgEvent = new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text);
             EventBus.getDefault().post(msgEvent);
-//            IMsgService msgService = ModuleServiceManager.getInstance().getMsgService();
-//            if (msgService != null) {
-//                msgService.syncHistoryFromChatRoom(String.valueOf(mRoomData.getGameId()), 10, true, null);
-//            }
-            ChatRoomMsgManager.getInstance().addFilter(mPushMsgFilter);
         }
+        startSyncGameStateTask(sSyncStateTaskInterval);
     }
 
     @Override
@@ -184,7 +206,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     public void onOpeningAnimationOver() {
         // 开始触发触发轮次变化
         mRoomData.checkRoundInEachMode();
-        startSyncGameStateTask(sSyncStateTaskInterval);
     }
 
     /**
@@ -675,13 +696,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     JoinGrabRoomRspModel joinGrabRoomRspModel = JSON.parseObject(result.getData().toJSONString(), JoinGrabRoomRspModel.class);
-                    GrabRoomData newGrabRoomData = new GrabRoomData();
-                    newGrabRoomData.setGameId(joinGrabRoomRspModel.getRoomID());
-                    newGrabRoomData.setCoin(joinGrabRoomRspModel.getCoin());
-                    newGrabRoomData.setExpectRoundInfo(joinGrabRoomRspModel.getCurrentRound());
-                    newGrabRoomData.setTagId(joinGrabRoomRspModel.getTagID());
-                    newGrabRoomData.setShiftTs(0);
-                    mRoomData = newGrabRoomData;
+                    mRoomData.loadFromRsp(joinGrabRoomRspModel);
+                    joinRoomAndInit(false);
+                    EventBus.getDefault().post(new GrabSwitchRoomEvent());
                     mRoomData.checkRoundInEachMode();
                 } else {
                     U.getToastUtil().showShort("切换失败:" + result.getErrmsg());
@@ -694,7 +711,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 super.onNetworkError(errorType);
                 mSwitchRooming = false;
             }
-        });
+        }, this);
     }
 
     /**
@@ -767,6 +784,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
+                    if (gameID != mRoomData.getGameId()) {
+                        MyLog.d(TAG, "syncGameStatus gameID 不一致");
+                        return;
+                    }
                     long syncStatusTimes = result.getData().getLong("syncStatusTimeMs");  //状态同步时的毫秒时间戳
                     long gameOverTimeMs = result.getData().getLong("gameOverTimeMs");  //游戏结束时间
                     GrabRoundInfoModel currentInfo = JSON.parseObject(result.getData().getString("currentRound"), GrabRoundInfoModel.class); //当前轮次信息
@@ -884,7 +905,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             //抢唱阶段，播抢唱卡片
             if (event.lastRoundInfo != null && event.lastRoundInfo.getStatus() >= GrabRoundInfoModel.STATUS_SING) {
                 // 新一轮的抢唱阶段，得告诉上一轮演唱结束了啊，上一轮演唱结束卡片播完，才播歌曲卡片
-
                 mUiHanlder.post(new Runnable() {
                     @Override
                     public void run() {

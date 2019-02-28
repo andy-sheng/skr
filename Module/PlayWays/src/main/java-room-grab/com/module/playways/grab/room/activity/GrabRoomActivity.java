@@ -48,27 +48,7 @@ public class GrabRoomActivity extends BaseActivity {
     public void initData(@Nullable Bundle savedInstanceState) {
         JoinGrabRoomRspModel rsp = (JoinGrabRoomRspModel) getIntent().getSerializableExtra("prepare_data");
         if (rsp != null) {
-            mRoomData.setGrabConfigModel(rsp.getConfig());
-            mRoomData.setGameId(rsp.getRoomID());
-            mRoomData.setCoin(rsp.getCoin());
-            GrabRoundInfoModel grabRoundInfoModel = rsp.getCurrentRound();
-            if (rsp.isNewGame()) {
-                grabRoundInfoModel.setParticipant(true);
-            } else {
-                grabRoundInfoModel.setParticipant(false);
-            }
-            grabRoundInfoModel.setElapsedTimeMs(rsp.getElapsedTimeMs());
-            mRoomData.setExpectRoundInfo(grabRoundInfoModel);
-//            mRoomData.setRealRoundInfo(rsp.getCurrentRound());
-            mRoomData.setTagId(rsp.getTagID());
-            mRoomData.setGameCreateTs(rsp.getGameCreateMs());
-            if (mRoomData.getGameCreateTs() == 0) {
-                mRoomData.setGameCreateTs(System.currentTimeMillis());
-            }
-            if (mRoomData.getGameStartTs() == 0) {
-                mRoomData.setGameStartTs(mRoomData.getGameCreateTs());
-            }
-//            mRoomData.setPlayerInfoList(prepareData.getPlayerInfoList());
+            mRoomData.loadFromRsp(rsp);
         } else {
             //TODO test
             GrabRoundInfoModel grabRoundInfoModel = new GrabRoundInfoModel();

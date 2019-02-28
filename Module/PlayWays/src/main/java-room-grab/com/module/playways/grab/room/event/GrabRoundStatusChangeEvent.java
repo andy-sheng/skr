@@ -2,6 +2,9 @@ package com.module.playways.grab.room.event;
 
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 
+/**
+ * 一场到底轮次内状态切换，由抢唱阶段变为演唱阶段
+ */
 public class GrabRoundStatusChangeEvent {
     public int oldStatus;
     public GrabRoundInfoModel roundInfo;

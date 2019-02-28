@@ -12,6 +12,7 @@ import com.common.log.MyLog;
 import com.common.mvp.PresenterEvent;
 import com.common.utils.U;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
+import com.module.playways.grab.room.event.GrabSwitchRoomEvent;
 import com.module.playways.rank.room.event.PretendCommentMsgEvent;
 import com.module.playways.rank.room.event.RankToVoiceTransformDataEvent;
 import com.module.playways.voice.activity.VoiceRoomActivity;
@@ -140,7 +141,7 @@ public class CommentView extends RelativeLayout {
         mCommentRv.setAdapter(mCommentAdapter);
         mCommentRv.addOnScrollListener(mOnScrollListener);
 
-        if(getContext() instanceof VoiceRoomActivity) {
+        if (getContext() instanceof VoiceRoomActivity) {
             RankToVoiceTransformDataEvent rankToVoiceTransformDataEvent = EventBus.getDefault().getStickyEvent(RankToVoiceTransformDataEvent.class);
             EventBus.getDefault().removeStickyEvent(RankToVoiceTransformDataEvent.class);
             if (rankToVoiceTransformDataEvent != null) {
@@ -160,28 +161,17 @@ public class CommentView extends RelativeLayout {
     public void onEvent(CommentMsgEvent event) {
         MyLog.d(TAG, "onEvent" + " CommentMsgEvent = " + event.text);
         CommentModel commentModel = CommentModel.parseFromEvent(event, mRoomData);
-        mCommentAdapter.getDataList().add(0, commentModel);
-        if (!mOnBottom || mDraging) {
-            mHasDataUpdate = true;
-//            mHasMore++;
-//            mMoveToLastItemIv.setVisibility(VISIBLE);
-//            String s = mHasMore > 99 ? "99+" : String.valueOf(mHasMore);
-//            mMoveToLastItemIv.setText(getResources().getQuantityString(R.plurals.more_comment_text, mHasMore, s));
-//            if (mRoomChatMsgManager != null) {
-//                mRoomChatMsgManager.updateMaxSize(Integer.MAX_VALUE);
-//            }
-        } else {
-            // TODO: 2018/12/23 后期可优化，只更新某一部分位置信息 
-            mCommentAdapter.notifyDataSetChanged();
-            mCommentRv.smoothScrollToPosition(0);
-        }
+        processCommentModel(commentModel);
     }
-
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(PretendCommentMsgEvent event) {
         MyLog.d(TAG, "onEvent" + " PresenterEvent =" + event.mCommentModel);
-        mCommentAdapter.getDataList().add(0, event.mCommentModel);
+        processCommentModel(event.mCommentModel);
+    }
+
+    void processCommentModel(CommentModel commentModel) {
+        mCommentAdapter.getDataList().add(0, commentModel);
         if (!mOnBottom || mDraging) {
             mHasDataUpdate = true;
 //            mHasMore++;
@@ -198,6 +188,14 @@ public class CommentView extends RelativeLayout {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(GrabSwitchRoomEvent event) {
+        mCommentAdapter.getDataList().clear();
+        mCommentAdapter.notifyDataSetChanged();
+        mOnBottom = true;
+        mDraging = false;
+        mHasDataUpdate = false;
+    }
 
 //    @Subscribe(threadMode = ThreadMode.MAIN)
 //    public void onEvent(InputBoardEvent event) {
