@@ -192,21 +192,10 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
             EngineManager.getInstance().joinRoom(String.valueOf(mRoomData.getGameId()), (int) UserAccountManager.getInstance().getUuidAsLong(), isAnchor);
             // 不发送本地音频
 //            EngineManager.getInstance().muteLocalAudioStream(true);
+            // 系统提示
+            pretenSystemMsg();
             // 伪装AI裁判
-            PlayerInfoModel ai = mRoomData.getAiJudgeInfo();
-            if (ai != null) {
-                BasePushInfo basePushInfo = new BasePushInfo();
-                basePushInfo.setRoomID(mRoomData.getGameId());
-                basePushInfo.setSender(new UserInfo.Builder()
-                        .setUserID(1)
-                        .setAvatar(ai.getUserInfo().getAvatar())
-                        .setNickName("系统消息")
-                        .setSex(ESex.fromValue(0))
-                        .build());
-                String text = "AI裁判就位，将参与本局演唱评价，比赛正式开始！";
-                CommentMsgEvent msgEvent = new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text);
-                EventBus.getDefault().post(msgEvent);
-            }
+            pretenAiJudgeMsg();
             // 伪装评论消息
             for (int i = 0; i < mRoomData.getRoundInfoModelList().size(); i++) {
                 RankRoundInfoModel roundInfoModel = mRoomData.getRoundInfoModelList().get(i);
@@ -223,18 +212,6 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                 CommentMsgEvent msgEvent = new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text);
                 EventBus.getDefault().post(msgEvent);
             }
-            // 系统提示
-            BasePushInfo basePushInfo = new BasePushInfo();
-            basePushInfo.setRoomID(mRoomData.getGameId());
-            basePushInfo.setSender(new UserInfo.Builder()
-                    .setUserID(1)
-                    .setAvatar(BaseRoomData.SYSTEM_AVATAR)
-                    .setNickName("系统消息")
-                    .setSex(ESex.fromValue(0))
-                    .build());
-            String text = "撕哥一声吼：请文明参赛，发现坏蛋请用力举报！";
-            CommentMsgEvent msgEvent = new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text);
-            EventBus.getDefault().post(msgEvent);
 //            IMsgService msgService = ModuleServiceManager.getInstance().getMsgService();
 //            if (msgService != null) {
 //                msgService.syncHistoryFromChatRoom(String.valueOf(mRoomData.getGameId()), 10, true, null);
@@ -265,6 +242,33 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                         }
                     }).build()
             );
+        }
+    }
+
+    private void pretenSystemMsg() {
+        CommentModel commentModel = new CommentModel();
+        commentModel.setCommentType(CommentModel.TYPE_TEXT);
+        commentModel.setUserId(BaseRoomData.SYSTEM_ID);
+        commentModel.setAvatar(BaseRoomData.SYSTEM_AVATAR);
+        commentModel.setUserName("系统消息");
+        commentModel.setAvatarColor(Color.WHITE);
+        commentModel.setTextColor(Color.parseColor("#EF5E85"));
+        commentModel.setContent("欢迎进入撕歌排位赛，对局马上开始，比赛过程发现坏蛋请用力举报哦～");
+        EventBus.getDefault().post(new PretendCommentMsgEvent(commentModel));
+    }
+
+    private void pretenAiJudgeMsg() {
+        PlayerInfoModel ai = mRoomData.getAiJudgeInfo();
+        if (ai != null) {
+            CommentModel commentModel = new CommentModel();
+            commentModel.setCommentType(CommentModel.TYPE_TEXT);
+            commentModel.setUserId(BaseRoomData.SYSTEM_ID);
+            commentModel.setAvatar(ai.getUserInfo().getAvatar());
+            commentModel.setUserName("系统消息");
+            commentModel.setAvatarColor(Color.WHITE);
+            commentModel.setTextColor(Color.parseColor("#EF5E85"));
+            commentModel.setContent("AI裁判就位，将参与本局演唱评价，比赛正式开始！");
+            EventBus.getDefault().post(new PretendCommentMsgEvent(commentModel));
         }
     }
 
