@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.common.core.account.UserAccountManager;
+import com.common.utils.U;
 import com.common.view.ex.ExLinearLayout;
 import com.engine.EngineEvent;
 import com.engine.UserStatus;
@@ -58,7 +59,9 @@ public class VoiceUserStatusContainerView extends RelativeLayout {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        EventBus.getDefault().unregister(this);
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
         mUiHanlder.removeCallbacksAndMessages(null);
     }
 
@@ -73,7 +76,7 @@ public class VoiceUserStatusContainerView extends RelativeLayout {
                 continue;
             }
             VoiceUserStatusView voiceUserStatusView = new VoiceUserStatusView(getContext());
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, U.getDisplayUtils().dip2px(150));
             lp.weight = 1;
             mUserStatusContainer.addView(voiceUserStatusView, lp);
             voiceUserStatusView.bindData(playerInfoModel.getUserInfo());

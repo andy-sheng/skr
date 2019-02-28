@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
-    <com.module.playways.grab.room.top.GrabPlayerRv
+    <com.module.playways.grab.room.top.GrabPlayerRv2
         android:layout_below="@+id/grab_top_view"
         android:id="@+id/top_content_rv"
         android:layout_width="match_parent"

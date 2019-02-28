@@ -1,6 +1,8 @@
 package com.module.playways.grab.room.top;
 
 import android.content.Context;
+import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -48,6 +50,7 @@ public class GrabTopItemView extends RelativeLayout {
     public BaseImageView mAvatarIv;
     public ExImageView mFlagIv;
     public PlayerInfoModel mPlayerInfoModel;
+    AnimationDrawable mFlickerAnim;
 
     public ExTextView mLeaveIv;
 
@@ -100,19 +103,52 @@ public class GrabTopItemView extends RelativeLayout {
         }
         mPlayerInfoModel = userInfoModel;
         AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mPlayerInfoModel.getUserInfo().getAvatar())
-                .setCircle(true)
-                .setGray(mPlayerInfoModel.isOnline() ? false : true)
-                .setBorderColorBySex(mPlayerInfoModel.getUserInfo().getSex() == 1)
-                .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                .build()
+                        .setCircle(true)
+//                .setGray(mPlayerInfoModel.isOnline() ? false : true)
+                        .setBorderColorBySex(mPlayerInfoModel.getUserInfo().getSex() == 1)
+                        .setBorderWidth(U.getDisplayUtils().dip2px(2))
+                        .build()
         );
-        if (mPlayerInfoModel.isOnline()) {
-            mLeaveIv.setVisibility(GONE);
-            mFlagIv.setVisibility(VISIBLE);
-        } else {
-            mLeaveIv.setVisibility(VISIBLE);
-            mFlagIv.setVisibility(GONE);
+
+//        if (mPlayerInfoModel.isOnline()) {
+//            mLeaveIv.setVisibility(GONE);
+//            mFlagIv.setVisibility(VISIBLE);
+//        } else {
+//            mLeaveIv.setVisibility(VISIBLE);
+//            mFlagIv.setVisibility(GONE);
+//        }
+        mLeaveIv.setVisibility(GONE);
+        mFlagIv.setVisibility(VISIBLE);
+    }
+
+    //占位的View
+    public void setToPlaceHolder() {
+        mAvatarIv.setImageDrawable(U.getDrawable(R.drawable.guanzhong_kongwei));
+    }
+
+    //开始闪烁，有人爆灯的时候
+    public void startEvasive() {
+        stopEvasive();
+        mFlickerAnim = new AnimationDrawable();
+        mFlickerAnim.setOneShot(false);
+        Drawable drawable = U.getDrawable(R.drawable.liangdeng_shan);
+        mFlickerAnim.addFrame(drawable, 100);
+        drawable = U.getDrawable(R.drawable.liangdeng);
+        mFlickerAnim.addFrame(drawable, 100);
+        mFlagIv.setImageDrawable(mFlickerAnim);
+        mFlickerAnim.start();
+    }
+
+    public void stopEvasive() {
+        if (mFlickerAnim != null) {
+            mFlickerAnim.stop();
         }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        stopEvasive();
     }
 
     public void reset() {
@@ -135,39 +171,60 @@ public class GrabTopItemView extends RelativeLayout {
         mAvatarIv.setScaleX(1);
         mAvatarIv.setScaleY(1);
         mCircleAnimationView.setVisibility(GONE);
+        stopEvasive();
     }
 
     public void setGrap(boolean grap) {
-        if (!mPlayerInfoModel.isOnline()) {
-            mLeaveIv.setVisibility(VISIBLE);
-            mFlagIv.setVisibility(GONE);
+//        if (!mPlayerInfoModel.isOnline()) {
+//            mLeaveIv.setVisibility(VISIBLE);
+//            mFlagIv.setVisibility(GONE);
+//        } else {
+//            if (grap) {
+//                mFlagIv.setVisibility(VISIBLE);
+//                LayoutParams lp = (LayoutParams) mFlagIv.getLayoutParams();
+//                lp.topMargin = -U.getDisplayUtils().dip2px(10);
+//                mFlagIv.setLayoutParams(lp);
+//                mFlagIv.setImageResource(R.drawable.xiangchang_flag);
+//            } else {
+//                mFlagIv.setVisibility(GONE);
+//            }
+//        }
+
+        if (grap) {
+            mFlagIv.setVisibility(VISIBLE);
+            LayoutParams lp = (LayoutParams) mFlagIv.getLayoutParams();
+            lp.topMargin = -U.getDisplayUtils().dip2px(10);
+            mFlagIv.setLayoutParams(lp);
+            mFlagIv.setImageResource(R.drawable.xiangchang_flag);
         } else {
-            if (grap) {
-                mFlagIv.setVisibility(VISIBLE);
-                LayoutParams lp = (LayoutParams) mFlagIv.getLayoutParams();
-                lp.topMargin = -U.getDisplayUtils().dip2px(10);
-                mFlagIv.setLayoutParams(lp);
-                mFlagIv.setImageResource(R.drawable.xiangchang_flag);
-            } else {
-                mFlagIv.setVisibility(GONE);
-            }
+            mFlagIv.setVisibility(GONE);
         }
     }
 
     public void setLight(boolean on) {
-        if (!mPlayerInfoModel.isOnline()) {
-            mLeaveIv.setVisibility(VISIBLE);
-            mFlagIv.setVisibility(GONE);
+//        if (!mPlayerInfoModel.isOnline()) {
+//            mLeaveIv.setVisibility(VISIBLE);
+//            mFlagIv.setVisibility(GONE);
+//        } else {
+//            mFlagIv.setVisibility(VISIBLE);
+//            LayoutParams lp = (LayoutParams) mFlagIv.getLayoutParams();
+//            lp.topMargin = -U.getDisplayUtils().dip2px(20);
+//            mFlagIv.setLayoutParams(lp);
+//            if (on) {
+//                mFlagIv.setImageResource(R.drawable.liangdeng);
+//            } else {
+//                mFlagIv.setImageResource(R.drawable.miedeng);
+//            }
+//        }
+
+        mFlagIv.setVisibility(VISIBLE);
+        LayoutParams lp = (LayoutParams) mFlagIv.getLayoutParams();
+        lp.topMargin = -U.getDisplayUtils().dip2px(20);
+        mFlagIv.setLayoutParams(lp);
+        if (on) {
+            mFlagIv.setImageResource(R.drawable.liangdeng);
         } else {
-            mFlagIv.setVisibility(VISIBLE);
-            LayoutParams lp = (LayoutParams) mFlagIv.getLayoutParams();
-            lp.topMargin = -U.getDisplayUtils().dip2px(20);
-            mFlagIv.setLayoutParams(lp);
-            if (on) {
-                mFlagIv.setImageResource(R.drawable.liangdeng);
-            } else {
-                mFlagIv.setImageResource(R.drawable.miedeng);
-            }
+            mFlagIv.setImageResource(R.drawable.miedeng);
         }
     }
 

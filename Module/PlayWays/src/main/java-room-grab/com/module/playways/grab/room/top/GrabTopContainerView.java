@@ -11,6 +11,7 @@ import com.module.playways.BaseRoomData;
 import com.module.playways.grab.room.event.SomeOneGrabEvent;
 import com.module.playways.grab.room.event.SomeOneLightOffEvent;
 import com.module.playways.grab.room.event.SomeOneOnlineChangeEvent;
+import com.module.playways.grab.room.view.GrabTopView;
 import com.module.playways.rank.room.event.InputBoardEvent;
 import com.module.playways.rank.room.view.MoreOpView;
 import com.module.rank.R;
@@ -24,11 +25,11 @@ public class GrabTopContainerView extends RelativeLayout {
     public final static String TAG = "GrapTopContainerView";
 
     RelativeLayout mRelativeLayoutIconContainer;
-    GrabPlayerRv mTopContentRv;
+    GrabPlayerRv2 mTopContentRv;
     ExImageView mMoreBtn;
     ExTextView mSongIndexTv;
     MoreOpView mMoreOpView;
-
+    GrabTopView mGrabTopView;
     Listener mListener;
     BaseRoomData mRoomData;
 
@@ -48,7 +49,7 @@ public class GrabTopContainerView extends RelativeLayout {
         inflate(getContext(), R.layout.grab_top_container_view_layout, this);
         mRelativeLayoutIconContainer = (RelativeLayout) this.findViewById(R.id.relativeLayout_icon_container);
         mTopContentRv = this.findViewById(R.id.top_content_rv);
-
+        mGrabTopView = (GrabTopView) findViewById(R.id.grab_top_view);
         mMoreBtn = (ExImageView) this.findViewById(R.id.more_btn);
         mSongIndexTv = (ExTextView) this.findViewById(R.id.song_index_tv);
 
