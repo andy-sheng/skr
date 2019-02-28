@@ -70,32 +70,38 @@ public class GrabRoomActivity extends BaseActivity {
 //            mRoomData.setPlayerInfoList(prepareData.getPlayerInfoList());
         } else {
             //TODO test
-            {
-                GrabRoundInfoModel grabRoundInfoModel = new GrabRoundInfoModel();
-                List<GrabPlayerInfoModel> playerInfoModelList = new ArrayList<>();
-                for (int i = 0; i < 7; i++) {
-                    GrabPlayerInfoModel playerInfoModel = new GrabPlayerInfoModel();
-                    UserInfoModel userInfoModel = new UserInfoModel();
-                    if (i == 0) {
-                        userInfoModel.setAvatar(MyUserInfoManager.getInstance().getAvatar());
-                        userInfoModel.setUserId((int) MyUserInfoManager.getInstance().getUid());
-                        userInfoModel.setNickname("用户：" + i);
-                    } else {
-                        userInfoModel.setAvatar("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/common/system_default.png");
-                        userInfoModel.setUserId(1 + i * 2);
-                        userInfoModel.setNickname("用户：" + i);
-                    }
-
-                    playerInfoModel.setUserInfo(userInfoModel);
-                    playerInfoModelList.add(playerInfoModel);
+            GrabRoundInfoModel grabRoundInfoModel = new GrabRoundInfoModel();
+            List<GrabPlayerInfoModel> playerInfoModelList = new ArrayList<>();
+            for (int i = 0; i < 7; i++) {
+                GrabPlayerInfoModel playerInfoModel = new GrabPlayerInfoModel();
+                UserInfoModel userInfoModel = new UserInfoModel();
+                if (i == 0) {
+                    userInfoModel.setAvatar(MyUserInfoManager.getInstance().getAvatar());
+                    userInfoModel.setUserId((int) MyUserInfoManager.getInstance().getUid());
+                    userInfoModel.setNickname("用户：" + i);
+                } else {
+                    userInfoModel.setAvatar("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/common/system_default.png");
+                    userInfoModel.setUserId(1 + i * 2);
+                    userInfoModel.setNickname("用户：" + i);
                 }
-                grabRoundInfoModel.updatePlayUsers(playerInfoModelList);
-                mRoomData.setGameId(1);
-                GrabConfigModel grabConfigModel = new GrabConfigModel();
-                grabConfigModel.setTotalRoundNum(88);
-                mRoomData.setGrabConfigModel(grabConfigModel);
-                mRoomData.setExpectRoundInfo(grabRoundInfoModel);
+
+                playerInfoModel.setUserInfo(userInfoModel);
+                playerInfoModelList.add(playerInfoModel);
             }
+            grabRoundInfoModel.updatePlayUsers(playerInfoModelList);
+            mRoomData.setGameId(1);
+            GrabConfigModel grabConfigModel = new GrabConfigModel();
+            grabConfigModel.setTotalRoundNum(88);
+            grabRoundInfoModel.setParticipant(false);
+            grabRoundInfoModel.setElapsedTimeMs(5000);
+            mRoomData.setGrabConfigModel(grabConfigModel);
+            if (mRoomData.getGameStartTs() == 0) {
+                mRoomData.setGameCreateTs(System.currentTimeMillis());
+            }
+            if (mRoomData.getGameCreateTs() == 0) {
+                mRoomData.setGameCreateTs(System.currentTimeMillis());
+            }
+            mRoomData.setExpectRoundInfo(grabRoundInfoModel);
         }
 
         U.getStatusBarUtil().setTransparentBar(this, false);
