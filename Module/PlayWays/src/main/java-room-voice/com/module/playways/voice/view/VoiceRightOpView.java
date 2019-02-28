@@ -10,6 +10,7 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
+import com.common.view.ex.ExTextView;
 import com.engine.EngineEvent;
 import com.engine.EngineManager;
 import com.engine.Params;
@@ -26,6 +27,7 @@ public class VoiceRightOpView extends RelativeLayout {
     public final static String TAG = "VoiceRightOpView";
     //    Listener mListener;
     ExImageView mMicIv;
+    ExTextView mVoiceTips;
     ExImageView mSpeakerIv;
 
     public VoiceRightOpView(Context context) {
@@ -41,10 +43,12 @@ public class VoiceRightOpView extends RelativeLayout {
     private void init() {
         inflate(getContext(), R.layout.voice_right_op_view_layout, this);
         mMicIv = (ExImageView) this.findViewById(R.id.mic_iv);
+        mVoiceTips = (ExTextView) this.findViewById(R.id.voice_tips);
         mSpeakerIv = (ExImageView) this.findViewById(R.id.speaker_iv);
         mMicIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+                mVoiceTips.setVisibility(GONE);
                 Params params = EngineManager.getInstance().getParams();
                 if (params != null) {
                     if (params.isLocalAudioStreamMute()) {

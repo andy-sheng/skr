@@ -3,12 +3,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:parentTag="android.widget.RelativeLayout">
 
-    <!--这里面是软键盘弹出时 需要上移的布局-->
+    <com.common.view.ex.ExTextView
+        android:id="@+id/voice_tips"
+        android:layout_width="@dimen/view_85_dp"
+        android:layout_height="@dimen/view_40_dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/view_16_dp"
+        android:background="@drawable/voice_tips_bg"
+        android:paddingBottom="@dimen/view_5_dp"
+        android:gravity="center"
+        android:text="打开麦克风"
+        android:textColor="#B2B6D6"
+        android:textSize="@dimen/textsize_14_dp" />
 
     <com.common.view.ex.ExImageView
         android:id="@+id/mic_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/voice_tips"
+        android:layout_alignParentRight="true"
         android:paddingLeft="@dimen/view_16_dp"
         android:paddingTop="@dimen/view_5_dp"
         android:paddingRight="@dimen/view_16_dp"
@@ -21,6 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/mic_iv"
+        android:layout_alignParentRight="true"
         android:paddingLeft="@dimen/view_16_dp"
         android:paddingTop="@dimen/view_5_dp"
         android:paddingRight="@dimen/view_16_dp"
