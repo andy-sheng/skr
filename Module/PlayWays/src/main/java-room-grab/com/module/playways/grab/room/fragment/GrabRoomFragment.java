@@ -33,6 +33,7 @@ import com.module.playways.grab.room.inter.IGrabView;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.grab.room.presenter.GrabCorePresenter;
 import com.module.playways.grab.room.top.GrabTopContainerView;
+import com.module.playways.grab.room.top.SingerTopView;
 import com.module.playways.grab.room.view.GrabGameOverView;
 import com.module.playways.grab.room.view.GrabOpView;
 import com.module.playways.grab.room.view.OthersSingCardView;
@@ -104,6 +105,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     BottomContainerView mBottomContainerView;
 
     CommentView mCommentView;
+
+    SingerTopView mSingerTopView;
 
     GrabTopContainerView mTopContainerView;
 
@@ -350,6 +353,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     }
 
     private void initTopView() {
+        mSingerTopView = (SingerTopView)mRootView.findViewById(R.id.singer_top_view);
         mTopContainerView = mRootView.findViewById(R.id.top_container_view);
         mTopContainerView.setRoomData(mRoomData);
 
@@ -531,6 +535,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     @Override
     public void singBySelf() {
+        mTopContainerView.setVisibility(View.GONE);
+        mSingerTopView.setVisibility(View.VISIBLE);
+        mSingerTopView.startSelfShow(mRoomData.getRealRoundInfo());
         mCorePresenter.stopGuide();
         mTopContainerView.setModeSing((int) MyUserInfoManager.getInstance().getUid());
         mTopContainerView.setSeqIndex(RoomDataUtils.getSeqOfRoundInfo(mRoomData.getRealRoundInfo()), mRoomData.getRoundInfoModelList().size());
@@ -552,6 +559,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     @Override
     public void singByOthers(long uid) {
+        mTopContainerView.setVisibility(View.VISIBLE);
+        mSingerTopView.setVisibility(View.GONE);
         mCorePresenter.stopGuide();
         mTopContainerView.setModeSing(uid);
         mTopContainerView.setSeqIndex(RoomDataUtils.getSeqOfRoundInfo(mRoomData.getRealRoundInfo()), mRoomData.getRoundInfoModelList().size());

@@ -19,8 +19,8 @@
 
     <com.common.image.fresco.BaseImageView
         android:id="@+id/avatar_iv"
-        android:layout_width="@dimen/view_40_dp"
-        android:layout_height="@dimen/view_40_dp"
+        android:layout_width="@dimen/view_36_dp"
+        android:layout_height="@dimen/view_36_dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_11_dp" />
 
