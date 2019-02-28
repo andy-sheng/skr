@@ -16,14 +16,14 @@
         android:id="@+id/middle_area"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="@dimen/view_300_dp">
+        android:minHeight="@dimen/view_365_dp">
 
         <com.zq.lyrics.widget.ManyLyricsView
             android:id="@+id/many_lyrics_view"
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_150_dp"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="@dimen/view_112_dp"
+            android:layout_marginTop="@dimen/view_147_dp"
             android:visibility="gone"
             app:ly_eable_scroll="false"
             app:ly_eable_verbatim="true"
@@ -49,7 +49,7 @@
             android:id="@+id/stage_view"
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_180_dp"
-            android:layout_marginTop="@dimen/view_135_dp"
+            android:layout_marginTop="@dimen/view_170_dp"
             android:visibility="gone"
             app:antiAlias="true"
             app:autoPlay="false" />
@@ -59,7 +59,7 @@
             android:layout_width="@dimen/view_90_dp"
             android:layout_height="@dimen/view_90_dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/view_180_dp"
+            android:layout_marginTop="@dimen/view_215_dp"
             android:visibility="gone" />
 
         <com.module.playways.rank.room.view.ArcProgressBar
@@ -67,7 +67,7 @@
             android:layout_width="@dimen/view_116_dp"
             android:layout_height="@dimen/view_116_dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/view_167_dp"
+            android:layout_marginTop="@dimen/view_202_dp"
             android:visibility="gone" />
 
     </RelativeLayout>
