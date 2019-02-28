@@ -48,8 +48,42 @@ public class RankTopLEDView extends RelativeLayout {
 
     // 初始状态
     public void initSVGA() {
+        mDengSvga.setCallback(null);
         mDengSvga.stopAnimation(true);
-        setVisibility(GONE);
+        setVisibility(VISIBLE);
+        mDengSvga.setVisibility(VISIBLE);
+
+        String assetsName = "";
+        switch (postion) {
+            case 0:
+                assetsName = "rank_love_left_beat.svga";
+                break;
+            case 1:
+                assetsName = "rank_love_mid.svga";
+                break;
+            case 2:
+                assetsName = "rank_love_right_beat.svga";
+                break;
+        }
+        mDengSvga.setLoops(0);
+        SVGAParser parser = new SVGAParser(U.app());
+        try {
+            parser.parse(assetsName, new SVGAParser.ParseCompletion() {
+                @Override
+                public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
+                    SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
+                    mDengSvga.setImageDrawable(drawable);
+                    mDengSvga.startAnimation();
+                }
+
+                @Override
+                public void onError() {
+
+                }
+            });
+        } catch (Exception e) {
+            System.out.print(true);
+        }
     }
 
     // 爆灯或者灭灯
@@ -160,6 +194,7 @@ public class RankTopLEDView extends RelativeLayout {
         super.setVisibility(visibility);
         if (visibility == GONE) {
             if (mDengSvga != null) {
+                mDengSvga.setCallback(null);
                 mDengSvga.stopAnimation(true);
             }
         }
