@@ -56,6 +56,11 @@
         android:layout_alignLeft="@+id/avatar_iv"
         android:layout_marginTop="@dimen/view_4_dp"
         android:paddingLeft="@dimen/view_7_dp"
+        android:ellipsize="marquee"
+        android:focusableInTouchMode="true"
+        android:gravity="center_vertical"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:singleLine="true"
         android:textColor="#0C2275"
         android:textSize="@dimen/textsize_16_dp" />
 

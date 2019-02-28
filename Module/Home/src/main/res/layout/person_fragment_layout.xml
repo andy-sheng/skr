@@ -46,7 +46,7 @@
                 <!--设置-->
                 <RelativeLayout
                     android:id="@+id/setting_area"
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/view_25_dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="@dimen/view_56_dp"
@@ -56,15 +56,14 @@
                         android:id="@+id/setting_img_iv"
                         android:layout_width="@dimen/view_23_dp"
                         android:layout_height="@dimen/view_21_dp"
-                        android:layout_alignParentRight="true"
+                        android:layout_centerHorizontal="true"
                         android:background="@drawable/gerenzhongxin_shezhi" />
-
 
                     <com.common.view.ex.ExTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/setting_img_iv"
-                        android:layout_alignParentRight="true"
+                        android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
                         android:layout_marginTop="@dimen/view_2_dp"
                         android:text="设置"
