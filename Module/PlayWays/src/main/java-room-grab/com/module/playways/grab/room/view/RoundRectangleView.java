@@ -24,10 +24,10 @@ public class RoundRectangleView extends View {
     private int min = 0;
 
     //右上角开始,满足 0 < startAngle < 90
-    private int startAngle = 45;
+    private int startAngle = 0;
 
     //右下角结束,满足 270 < startAngle < 360
-    private int endAngle = 315;
+    private int endAngle = 360;
 
     //毫秒
     private long mDuration = 3000;
@@ -83,7 +83,7 @@ public class RoundRectangleView extends View {
 
         mLineWidth = getMeasuredWidthR() - getMeasuredHeight();
 
-        totalLenght =  (int) (2 * Math.PI * mRadio * 270 / 360) + mLineWidth * 2;
+        totalLenght =  (int) (2 * Math.PI * mRadio) + mLineWidth * 2;
 
         circleCenterA.set(
                 mProgressWidth / 2, mProgressWidth / 2,
@@ -111,7 +111,7 @@ public class RoundRectangleView extends View {
 
         int angle = percentageToAngle(currentProgress, a);
 
-        canvas.drawArc(circleCenterB, 0 + 45,
+        canvas.drawArc(circleCenterB, 0,
                 angle, false, mPaint);
 
         int lastedProgress = currentProgress - (int) arc;
@@ -160,7 +160,7 @@ public class RoundRectangleView extends View {
         mPaint.setStrokeCap(Paint.Cap.ROUND);
         mPaint.setStrokeWidth(mProgressWidth);
         mPaint.setStyle(Paint.Style.STROKE);
-        mPaint.setColor(Color.parseColor("#FFED61"));
+        mPaint.setColor(Color.parseColor("#FFFFFF"));
 //        mPaint.setShader(generateOutSweepGradient());
     }
 

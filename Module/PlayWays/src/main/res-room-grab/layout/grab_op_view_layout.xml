@@ -10,12 +10,6 @@
         android:id="@+id/grab_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-        <com.module.playways.grab.room.view.RoundRectangleView
-            android:id="@+id/rrl_progress"
-            android:layout_width="@dimen/view_97_dp"
-            android:layout_height="@dimen/view_60_dp"
-            android:visibility="visible" />
-
         <com.common.view.ex.ExImageView
             android:src="@drawable/xiangchang_1"
             android:paddingRight="@dimen/view_13_dp"
@@ -27,6 +21,14 @@
             android:background="@drawable/xiangchang_bj"
             android:textColor="@color/white"
             android:textSize="@dimen/textsize_20_dp" />
+
+        <com.module.playways.grab.room.view.RoundRectangleView
+            android:layout_marginLeft="@dimen/view_4_dp"
+            android:layout_alignLeft="@+id/iv_text"
+            android:id="@+id/rrl_progress"
+            android:layout_width="@dimen/view_72_dp"
+            android:layout_height="@dimen/view_42_dp"
+            android:visibility="visible" />
     </RelativeLayout>
 
     <com.common.view.ex.ExImageView
