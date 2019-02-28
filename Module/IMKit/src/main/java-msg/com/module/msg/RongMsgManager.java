@@ -217,7 +217,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                 }
             }
 
-            /**
+            /**x
              * 连接融云失败
              * @param errorCode 错误码，可到官网 查看错误码对应的注释
              *                  https://www.rongcloud.cn/docs/status_code.html#android_ios_code

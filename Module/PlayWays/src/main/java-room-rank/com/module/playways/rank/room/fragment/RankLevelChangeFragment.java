@@ -36,16 +36,25 @@ import com.module.playways.rank.room.model.score.ScoreStateModel;
 import com.module.playways.rank.room.utils.ScoreAnimationHelp;
 import com.module.playways.rank.room.view.RecordCircleView;
 import com.module.rank.R;
+import com.opensource.svgaplayer.SVGACallback;
+import com.opensource.svgaplayer.SVGADrawable;
+import com.opensource.svgaplayer.SVGAImageView;
+import com.opensource.svgaplayer.SVGAParser;
+import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.zq.level.view.NormalLevelView;
 import com.zq.live.proto.Room.EWinType;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
+
+import static android.view.View.VISIBLE;
 
 public class RankLevelChangeFragment extends BaseFragment {
 
     RelativeLayout mMainActContainer;
     ImageView mBackgroundIv;
-    ImageView mRankResult;
+    SVGAImageView mResultSvga;
     NormalLevelView mLevelView;
     RecordCircleView mRecordCircleView;
 
@@ -66,7 +75,7 @@ public class RankLevelChangeFragment extends BaseFragment {
     public void initData(@Nullable Bundle savedInstanceState) {
         mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
         mBackgroundIv = (ImageView) mRootView.findViewById(R.id.background_iv);
-        mRankResult = (ImageView) mRootView.findViewById(R.id.rank_result);
+        mResultSvga = (SVGAImageView) mRootView.findViewById(R.id.result_svga);
         mLevelView = (NormalLevelView) mRootView.findViewById(R.id.level_view);
         mRecordCircleView = (RecordCircleView) mRootView.findViewById(R.id.record_circle_view);
 
@@ -152,25 +161,70 @@ public class RankLevelChangeFragment extends BaseFragment {
     }
 
     private void animationGo() {
+        String assetsName = "";
         if (mRoomData.getRecordData().getSelfWinType() == EWinType.Win.getValue()) {
-            mRankResult.setBackground(getResources().getDrawable(R.drawable.zhanji_top_win));
             mBackgroundIv.setBackground(getResources().getDrawable(R.drawable.zhanji_win_guangquan));
+            assetsName = "rank_result_win.svga";
         } else if (mRoomData.getRecordData().getSelfWinType() == EWinType.Draw.getValue()) {
-            mRankResult.setBackground(getResources().getDrawable(R.drawable.zhanji_top_draw));
             mBackgroundIv.setBackground(getResources().getDrawable(R.drawable.zhanji_draw_guangquan));
+            assetsName = "rank_result_draw.svga";
         } else if (mRoomData.getRecordData().getSelfWinType() == EWinType.Lose.getValue()) {
-            mRankResult.setBackground(getResources().getDrawable(R.drawable.zhanji_top_loss));
             mBackgroundIv.setBackground(getResources().getDrawable(R.drawable.zhanji_lose_guangquan));
+            assetsName = "rank_result_lose.svga";
         }
 
-        mUiHanlder.postDelayed(new Runnable() {
+        mResultSvga.setVisibility(VISIBLE);
+        mResultSvga.setLoops(1);
+        SVGAParser parser = new SVGAParser(U.app());
+        try {
+            parser.parse(assetsName, new SVGAParser.ParseCompletion() {
+                @Override
+                public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
+                    SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
+                    mResultSvga.setImageDrawable(drawable);
+                    mResultSvga.startAnimation();
+                }
+
+                @Override
+                public void onError() {
+
+                }
+            });
+        } catch (Exception e) {
+            System.out.print(true);
+        }
+
+        mResultSvga.setCallback(new SVGACallback() {
             @Override
-            public void run() {
-                mRankResult.setVisibility(View.GONE);
-                mLevelView.setVisibility(View.VISIBLE);
-                levelAnimationGo(mRoomData.getRecordData().mScoreResultModel);
+            public void onPause() {
+
             }
-        }, 1000);
+
+            @Override
+            public void onFinished() {
+                if (mResultSvga != null) {
+                    mResultSvga.setCallback(null);
+                    mResultSvga.stopAnimation(true);
+                    mResultSvga.setVisibility(View.GONE);
+
+                    mLevelView.setVisibility(VISIBLE);
+                    mRecordCircleView.setVisibility(VISIBLE);
+                    levelAnimationGo(mRoomData.getRecordData().mScoreResultModel);
+                }
+            }
+
+            @Override
+            public void onRepeat() {
+                if (mResultSvga != null && mResultSvga.isAnimating()) {
+                    mResultSvga.stopAnimation(false);
+                }
+            }
+
+            @Override
+            public void onStep(int i, double v) {
+
+            }
+        });
 
         // 加入保护，最多
         mUiHanlder.postDelayed(new Runnable() {
@@ -246,15 +300,20 @@ public class RankLevelChangeFragment extends BaseFragment {
         if (mUiHanlder != null) {
             mUiHanlder.removeCallbacksAndMessages(null);
         }
-        Activity activity = getActivity();
-        if (activity != null) {
-            activity.finish();
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_VOICEROOM)
-                    .withSerializable("voice_room_data", mRoomData)
-                    .navigation();
-            StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK),
-                    StatConstants.KEY_GAME_FINISH, null);
-        }
+        mUiHanlder.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Activity activity = getActivity();
+                if (activity != null) {
+                    activity.finish();
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_VOICEROOM)
+                            .withSerializable("voice_room_data", mRoomData)
+                            .navigation();
+                    StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK),
+                            StatConstants.KEY_GAME_FINISH, null);
+                }
+            }
+        }, 1000);
     }
 
     @Override
