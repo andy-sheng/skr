@@ -17,6 +17,7 @@ public abstract class BaseRoomData<T extends BaseRoundInfoModel> implements Seri
     public final static String TAG = "RoomData";
 
     public static final int SYSTEM_ID = 1;
+    public static final String SYSTEM_AVATAR ="http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/common/system_default.png"; //系统头像
 
     public final static String PK_MAIN_STAGE_WEBP = "http://res-static.inframe.mobi/app/pk_main_stage.webp";
     public final static String READY_GO_SVGA_URL = "http://res-static.inframe.mobi/app/sige_go.svga";
@@ -25,6 +26,8 @@ public abstract class BaseRoomData<T extends BaseRoundInfoModel> implements Seri
     public final static String ROOM_SPECAIL_EMOJI_AIXIN = "http://res-static.inframe.mobi/app/emoji_love.svga";
     public static final String AUDIO_FOR_AI_PATH = "audioforai.aac";
     public static final String MATCHING_SCORE_FOR_AI_PATH = "matchingscore.json";
+
+
 
     protected int mGameId; // 房间id
 

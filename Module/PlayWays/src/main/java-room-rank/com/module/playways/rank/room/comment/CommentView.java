@@ -9,8 +9,10 @@ import android.widget.AbsListView;
 import android.widget.RelativeLayout;
 
 import com.common.log.MyLog;
+import com.common.mvp.PresenterEvent;
 import com.common.utils.U;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
+import com.module.playways.rank.room.event.PretendCommentMsgEvent;
 import com.module.playways.rank.room.event.RankToVoiceTransformDataEvent;
 import com.module.playways.voice.activity.VoiceRoomActivity;
 import com.module.rank.R;
@@ -174,6 +176,28 @@ public class CommentView extends RelativeLayout {
             mCommentRv.smoothScrollToPosition(0);
         }
     }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(PretendCommentMsgEvent event) {
+        MyLog.d(TAG, "onEvent" + " PresenterEvent =" + event.mCommentModel);
+        mCommentAdapter.getDataList().add(0, event.mCommentModel);
+        if (!mOnBottom || mDraging) {
+            mHasDataUpdate = true;
+//            mHasMore++;
+//            mMoveToLastItemIv.setVisibility(VISIBLE);
+//            String s = mHasMore > 99 ? "99+" : String.valueOf(mHasMore);
+//            mMoveToLastItemIv.setText(getResources().getQuantityString(R.plurals.more_comment_text, mHasMore, s));
+//            if (mRoomChatMsgManager != null) {
+//                mRoomChatMsgManager.updateMaxSize(Integer.MAX_VALUE);
+//            }
+        } else {
+            // TODO: 2018/12/23 后期可优化，只更新某一部分位置信息
+            mCommentAdapter.notifyDataSetChanged();
+            mCommentRv.smoothScrollToPosition(0);
+        }
+    }
+
 
 //    @Subscribe(threadMode = ThreadMode.MAIN)
 //    public void onEvent(InputBoardEvent event) {

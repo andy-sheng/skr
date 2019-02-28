@@ -1,7 +1,9 @@
 package com.module.playways.rank.room.presenter;
 
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.common.core.account.UserAccountManager;
@@ -50,6 +52,9 @@ import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
 import com.module.playways.rank.room.RankRoomData;
 import com.module.playways.rank.room.RoomServerApi;
 import com.module.playways.rank.room.SwapStatusType;
+import com.module.playways.rank.room.comment.CommentModel;
+import com.module.playways.rank.room.event.PkSomeOneLightOffEvent;
+import com.module.playways.rank.room.event.PretendCommentMsgEvent;
 import com.module.playways.rank.room.event.RoundInfoChangeEvent;
 import com.module.playways.rank.room.model.BLightInfoModel;
 import com.module.playways.rank.room.model.MLightInfoModel;
@@ -185,6 +190,21 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
             EngineManager.getInstance().joinRoom(String.valueOf(mRoomData.getGameId()), (int) UserAccountManager.getInstance().getUuidAsLong(), isAnchor);
             // 不发送本地音频
 //            EngineManager.getInstance().muteLocalAudioStream(true);
+            // 伪装AI裁判
+            PlayerInfoModel ai = mRoomData.getAiJudgeInfo();
+            if (ai != null) {
+                BasePushInfo basePushInfo = new BasePushInfo();
+                basePushInfo.setRoomID(mRoomData.getGameId());
+                basePushInfo.setSender(new UserInfo.Builder()
+                        .setUserID(1)
+                        .setAvatar(ai.getUserInfo().getAvatar())
+                        .setNickName("系统消息")
+                        .setSex(ESex.fromValue(0))
+                        .build());
+                String text = "AI裁判就位，将参与本局演唱评价，比赛正式开始！";
+                CommentMsgEvent msgEvent = new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text);
+                EventBus.getDefault().post(msgEvent);
+            }
             // 伪装评论消息
             for (int i = 0; i < mRoomData.getRoundInfoModelList().size(); i++) {
                 RankRoundInfoModel roundInfoModel = mRoomData.getRoundInfoModelList().get(i);
@@ -201,11 +221,12 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                 CommentMsgEvent msgEvent = new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text);
                 EventBus.getDefault().post(msgEvent);
             }
+            // 系统提示
             BasePushInfo basePushInfo = new BasePushInfo();
             basePushInfo.setRoomID(mRoomData.getGameId());
             basePushInfo.setSender(new UserInfo.Builder()
                     .setUserID(1)
-                    .setAvatar("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/common/system_default.png")
+                    .setAvatar(BaseRoomData.SYSTEM_AVATAR)
                     .setNickName("系统消息")
                     .setSex(ESex.fromValue(0))
                     .build());
@@ -1012,7 +1033,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     public void onEvent(PkBurstLightMsgEvent event) {
         if (RoomDataUtils.isCurrentRound(event.getpKBLightMsg().getRoundSeq(), mRoomData)) {
             MyLog.w(TAG, "有人爆灯了：userID " + event.getpKBLightMsg().getUserID() + ", seq " + event.getpKBLightMsg().getRoundSeq());
-            RankRoundInfoModel roundInfoModel = (RankRoundInfoModel)mRoomData.getRealRoundInfo();
+            RankRoundInfoModel roundInfoModel = (RankRoundInfoModel) mRoomData.getRealRoundInfo();
 
             BLightInfoModel bLightInfoModel = new BLightInfoModel();
             bLightInfoModel.setUserID(event.getpKBLightMsg().getUserID());
@@ -1363,8 +1384,8 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         BasePushInfo basePushInfo = new BasePushInfo();
         basePushInfo.setRoomID(mRoomData.getGameId());
         basePushInfo.setSender(new UserInfo.Builder()
-                .setUserID(1)
-                .setAvatar("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/common/system_default.png")
+                .setUserID(BaseRoomData.SYSTEM_ID)
+                .setAvatar(BaseRoomData.SYSTEM_AVATAR)
                 .setNickName("系统消息")
                 .setSex(ESex.fromValue(0))
                 .build());

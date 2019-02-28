@@ -23,7 +23,6 @@
         android:paddingRight="@dimen/view_10_dp"
         android:text="沙漠骆驼好听"
         android:textColor="@color/white_trans_80"
-        android:textSize="@dimen/textsize_14_dp"
-        android:textStyle="bold" />
+        android:textSize="@dimen/textsize_14_dp" />
 
 </RelativeLayout>

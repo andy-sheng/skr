@@ -1,9 +1,14 @@
 package com.module.playways.rank.room.fragment;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.widget.RelativeLayout;
 
 import com.common.base.BaseFragment;
 import com.common.core.share.SharePanel;
@@ -28,6 +33,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class RankResultFragment extends BaseFragment {
 
+    RelativeLayout mResultInfoArea;
+
     ExRelativeLayout mResultArea;
     RankResultView mFirstResult;
     RankResultView mSecondResult;
@@ -48,6 +55,7 @@ public class RankResultFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        mResultInfoArea = (RelativeLayout)mRootView.findViewById(R.id.result_info_area);
         mResultArea = (ExRelativeLayout) mRootView.findViewById(R.id.result_area);
         mFirstResult = (RankResultView) mRootView.findViewById(R.id.first_result);
         mSecondResult = (RankResultView) mRootView.findViewById(R.id.second_result);
@@ -60,7 +68,7 @@ public class RankResultFragment extends BaseFragment {
         mResultExit.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                U.getFragmentUtils().popFragment(RankResultFragment.this);
+                animationExitGo();
             }
         });
 
@@ -105,7 +113,53 @@ public class RankResultFragment extends BaseFragment {
                 mGameRoleDialog.show();
             }
         });
+
+        animationEnterGo();
     }
+
+    private void animationEnterGo() {
+        AnimatorSet set = new AnimatorSet();
+        ObjectAnimator a1 = ObjectAnimator.ofFloat(mResultInfoArea, View.SCALE_X, 0.5f, 1f);
+        ObjectAnimator a2 = ObjectAnimator.ofFloat(mResultInfoArea, View.SCALE_Y, 0.5f, 1f);
+        ObjectAnimator a3 = ObjectAnimator.ofFloat(mResultInfoArea, View.ALPHA, 0f, 1f);
+        set.setDuration(300);
+        set.playTogether(a1, a2, a3);
+        set.start();
+    }
+
+
+    private void animationExitGo() {
+        AnimatorSet set = new AnimatorSet();
+        ObjectAnimator a1 = ObjectAnimator.ofFloat(mResultInfoArea, View.SCALE_X, 1f, 0.5f);
+        ObjectAnimator a2 = ObjectAnimator.ofFloat(mResultInfoArea, View.SCALE_Y, 1f, 0.5f);
+        ObjectAnimator a3 = ObjectAnimator.ofFloat(mResultInfoArea, View.ALPHA, 1f, 0f);
+        set.setDuration(300);
+        set.playTogether(a1, a2, a3);
+        set.start();
+
+        set.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                U.getFragmentUtils().popFragment(RankResultFragment.this);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+                onAnimationEnd(animator);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+
+            }
+        });
+    }
+
 
     @Override
     public void destroy() {

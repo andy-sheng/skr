@@ -11,13 +11,15 @@ import com.module.rank.R;
 import com.zq.live.proto.Common.ESex;
 
 public class CommentModel {
-    public static final int TYPE_TEXT = 1;
+    public static final int TYPE_TEXT = 101;     // 普通文本消息
+    public static final int TYPE_RANK_MIE = 102; // rank灭灯消息
 
     private int commentType = 0;
     private int userId;
     private String avatar;
     private String userName;
-    private String content;
+    private String content;    // 显示内容
+    private String highlightContent;  // 高亮显示内容
     private int avatarColor;
     private int nameColor = Color.parseColor("#ccFFAD00");   // 昵称颜色
     private int textColor = U.getColor(R.color.white_trans_80);  // 文本内容颜色
@@ -119,5 +121,13 @@ public class CommentModel {
 
     public void setAvatarColor(int avatarColor) {
         this.avatarColor = avatarColor;
+    }
+
+    public String getHighlightContent() {
+        return highlightContent;
+    }
+
+    public void setHighlightContent(String highlightContent) {
+        this.highlightContent = highlightContent;
     }
 }

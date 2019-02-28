@@ -1,7 +1,6 @@
 package com.module.playways.rank.room;
 
 import com.common.core.account.UserAccountManager;
-import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.component.busilib.constans.GameModeType;
 import com.module.playways.BaseRoomData;
@@ -163,5 +162,16 @@ public class RankRoomData extends BaseRoomData<RankRoundInfoModel> {
                 }
             }
         }
+    }
+
+    public PlayerInfoModel getAiJudgeInfo() {
+        if (getPlayerInfoList() != null && getPlayerInfoList().size() > 0) {
+            for (RankPlayerInfoModel playerInfoModel : getPlayerInfoList()) {
+                if (playerInfoModel.isAI()) {
+                    return playerInfoModel;
+                }
+            }
+        }
+        return null;
     }
 }
