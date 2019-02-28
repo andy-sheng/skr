@@ -68,7 +68,7 @@ public class LoginActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(AccountEvent.SetAccountEvent setAccountEvent) {
         //登陆成功
-        finish();
+
         if (mReason == REASON_LOGOFF) {
             // 因为是因为退出登录 或者 被踢 才到这个登录页面的，所以要清除除了 LoginActivity 外的所有 Activity
             // 所以这里还要跳到 HomeActivity
@@ -85,6 +85,9 @@ public class LoginActivity extends BaseActivity {
                         .navigation();
             }
         }
+
+        // 必须放在这，防止当前栈中没有activity导致底部露出
+        finish();
     }
 
 
