@@ -1,53 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:parentTag="android.widget.RelativeLayout"
-    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="@dimen/view_86_dp"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:parentTag="android.widget.RelativeLayout">
+
     <com.common.view.ex.ExImageView
-        app:src_pressed_drawable="@drawable/baodeng_anxia"
-        app:src_unPressed_drawable="@drawable/guanzhong_baodeng"
-        android:layout_marginTop="@dimen/view_52_dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/view_16_dp"
-        app:src_unEnabled_drawable="@drawable/baodeng_bukedian"
         android:id="@+id/iv_burst"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        />
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/view_52_dp"
+        android:layout_marginRight="@dimen/view_16_dp"
+        app:src_pressed_drawable="@drawable/baodeng_anxia"
+        app:src_unEnabled_drawable="@drawable/baodeng_bukedian"
+        app:src_unPressed_drawable="@drawable/guanzhong_baodeng" />
 
     <com.common.view.ex.ExImageView
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/view_16_dp"
-        android:layout_marginTop="@dimen/view_23_dp"
-        android:layout_below="@+id/iv_burst"
-        app:src_pressed_drawable="@drawable/miedeng_anxia"
-        app:src_unPressed_drawable="@drawable/guanzhong_miedeng"
-        app:src_unEnabled_drawable="@drawable/guanzhong_anxiamie"
         android:id="@+id/iv_turn_off"
-        android:layout_width="@dimen/view_50_dp"
-        android:layout_height="@dimen/view_53_dp"
-        />
+        android:layout_width="@dimen/view_104_dp"
+        android:layout_height="@dimen/view_112_dp"
+        android:layout_below="@+id/iv_burst"
+        android:layout_alignParentRight="true"
+        app:src_pressed_drawable="@drawable/guanzhong_miedeng"
+        app:src_unEnabled_drawable="@drawable/guanzhong_anxiamie"
+        app:src_unPressed_drawable="@drawable/guanzhong_miedeng" />
 
     <com.common.view.ex.ExTextView
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/iv_burst"
-        android:layout_marginRight="@dimen/view_16_dp"
-        android:layout_marginTop="@dimen/view_23_dp"
-        android:background="@drawable/yanchang_miedeng"
-        android:layout_width="@dimen/view_50_dp"
-        android:layout_height="@dimen/view_53_dp"
-        android:textStyle="bold"
         android:id="@+id/tv_count_down"
-        android:textSize="@dimen/textsize_24_dp"
-        android:paddingBottom="@dimen/view_10_dp"
-        android:textColor="#680000"
+        android:layout_width="@dimen/view_104_dp"
+        android:layout_height="@dimen/view_112_dp"
+        android:layout_below="@+id/iv_burst"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/yanchang_miedeng"
         android:gravity="center"
-        android:text="1"
+        android:paddingLeft="@dimen/view_16_dp"
         android:shadowColor="@color/black"
+        android:shadowDy="4"
         android:shadowRadius="1"
-        android:shadowDy="10"
-        />
+        android:text="1"
+        android:textColor="#680000"
+        android:textSize="@dimen/textsize_24_dp"
+        android:textStyle="bold" />
 </merge>
