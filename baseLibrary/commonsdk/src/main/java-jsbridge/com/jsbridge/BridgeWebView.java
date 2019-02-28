@@ -3,6 +3,7 @@ package com.jsbridge;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
+import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.text.TextUtils;
@@ -25,6 +26,8 @@ public class BridgeWebView extends WebView implements WebViewJavascriptBridge{
 	Map<String, CallBackFunction> responseCallbacks = new HashMap<String, CallBackFunction>();
 	Map<String, BridgeHandler> messageHandlers = new HashMap<String, BridgeHandler>();
 	BridgeHandler defaultHandler = new DefaultHandler();
+
+	Handler mUiHandler = new Handler(Looper.getMainLooper());
 
 	private List<Message> startupMessage = new ArrayList<Message>();
 
@@ -151,9 +154,12 @@ public class BridgeWebView extends WebView implements WebViewJavascriptBridge{
 		messageJson = messageJson.replaceAll("%22", URLEncoder.encode("%22"));
         String javascriptCommand = String.format(BridgeUtil.JS_HANDLE_MESSAGE_FROM_JAVA, messageJson);
         // 必须要找主线程才会将数据传递出去 --- 划重点
-        if (Thread.currentThread() == Looper.getMainLooper().getThread()) {
-            this.loadUrl(javascriptCommand);
-        }
+		mUiHandler.post(new Runnable() {
+			@Override
+			public void run() {
+				BridgeWebView.this.loadUrl(javascriptCommand);
+			}
+		});
     }
 
     /**

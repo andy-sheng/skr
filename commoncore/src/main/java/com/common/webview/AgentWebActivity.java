@@ -116,6 +116,7 @@ public class AgentWebActivity extends BaseActivity {
         BridgeWebViewClient mBridgeWebViewClient = new BridgeWebViewClient(mBridgeWebView){
             @Override
             public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
                 pageFinished(view, url);
             }
 
