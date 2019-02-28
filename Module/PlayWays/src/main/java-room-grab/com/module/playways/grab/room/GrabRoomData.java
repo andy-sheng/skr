@@ -26,8 +26,8 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
     @Override
     public List<GrabPlayerInfoModel> getPlayerInfoList() {
         List<GrabPlayerInfoModel> l = new ArrayList<>();
-        l.addAll(mRealRoundInfo.getPlayUsers());
-        l.addAll(mRealRoundInfo.getWaitUsers());
+        l.addAll(mExpectRoundInfo.getPlayUsers());
+        l.addAll(mExpectRoundInfo.getWaitUsers());
         return l;
     }
 
