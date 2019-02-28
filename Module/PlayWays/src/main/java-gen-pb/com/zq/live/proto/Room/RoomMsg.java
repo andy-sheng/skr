@@ -274,7 +274,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
   private final QRoundAndGameOverMsg qRoundAndGameOverMsg;
 
   /**
-   * 一唱到底：演唱不通过，即灭灯
+   * 一唱到底：使用QMLightMsg代替
    */
   @WireField(
       tag = 117,
@@ -835,7 +835,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
   }
 
   /**
-   * 一唱到底：演唱不通过，即灭灯
+   * 一唱到底：使用QMLightMsg代替
    */
   public QNoPassSingMsg getQNoPassSingMsg() {
     if(qNoPassSingMsg==null){
@@ -1087,7 +1087,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
   }
 
   /**
-   * 一唱到底：演唱不通过，即灭灯
+   * 一唱到底：使用QMLightMsg代替
    */
   public boolean hasQNoPassSingMsg() {
     return qNoPassSingMsg!=null;
@@ -1414,7 +1414,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
     }
 
     /**
-     * 一唱到底：演唱不通过，即灭灯
+     * 一唱到底：使用QMLightMsg代替
      */
     public Builder setQNoPassSingMsg(QNoPassSingMsg qNoPassSingMsg) {
       this.qNoPassSingMsg = qNoPassSingMsg;

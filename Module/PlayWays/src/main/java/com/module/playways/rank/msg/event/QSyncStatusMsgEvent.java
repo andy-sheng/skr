@@ -24,10 +24,6 @@ public final class QSyncStatusMsgEvent {
    */
   public Long gameOverTimeMs;
 
-  /**
-   * 在线状态
-   */
-  public List<OnlineInfoModel> onlineInfo;
 
   /**
    * 当前轮次信息
@@ -38,13 +34,6 @@ public final class QSyncStatusMsgEvent {
     this.info = info;
     this.syncStatusTimeMs = qSyncStatusMsg.getSyncStatusTimeMs();
     this.gameOverTimeMs = qSyncStatusMsg.getGameOverTimeMs();
-    List<OnlineInfoModel> onLineInfos = new ArrayList<>();
-    for (OnlineInfo onlineInfo : qSyncStatusMsg.getOnlineInfoList()) {
-      OnlineInfoModel jsonOnLineInfo = new OnlineInfoModel();
-      jsonOnLineInfo.parse(onlineInfo);
-      onLineInfos.add(jsonOnLineInfo);
-    }
-    this.onlineInfo = onLineInfos;
     this.currentRound = GrabRoundInfoModel.parseFromRoundInfo(qSyncStatusMsg.getCurrentRound());
   }
 
@@ -58,10 +47,6 @@ public final class QSyncStatusMsgEvent {
 
   public Long getGameOverTimeMs() {
     return gameOverTimeMs;
-  }
-
-  public List<OnlineInfoModel> getOnlineInfo() {
-    return onlineInfo;
   }
 
   public GrabRoundInfoModel getCurrentRound() {

@@ -1,6 +1,7 @@
 package com.module.playways.grab.room.model;
 
 import com.zq.live.proto.Room.NoPassSingInfo;
+import com.zq.live.proto.Room.QBLightMsg;
 
 import java.io.Serializable;
 
@@ -9,7 +10,6 @@ import java.io.Serializable;
  */
 public class BLightInfoModel implements Serializable {
     int userID;
-    long timeMs;
 
     public int getUserID() {
         return userID;
@@ -19,19 +19,11 @@ public class BLightInfoModel implements Serializable {
         this.userID = userID;
     }
 
-    public long getTimeMs() {
-        return timeMs;
-    }
-
-    public void setTimeMs(long timeMs) {
-        this.timeMs = timeMs;
-    }
 
     @Override
     public String toString() {
         return "BLightInfo{" +
                 "userID=" + userID +
-                ", timeMs=" + timeMs +
                 '}';
     }
 
@@ -48,10 +40,9 @@ public class BLightInfoModel implements Serializable {
         return userID;
     }
 
-    public static BLightInfoModel parse(NoPassSingInfo pb) {
+    public static BLightInfoModel parse(QBLightMsg pb) {
         BLightInfoModel noPassingInfo = new BLightInfoModel();
         noPassingInfo.setUserID(pb.getUserID());
-        noPassingInfo.setTimeMs(pb.getTimeMs());
         return noPassingInfo;
     }
 }

@@ -152,6 +152,21 @@ public class UserInfoModel implements Serializable, Cloneable {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UserInfoModel that = (UserInfoModel) o;
+
+        return userId == that.userId;
+    }
+
+    @Override
+    public int hashCode() {
+        return userId;
+    }
+
+    @Override
     public String toString() {
         return "UserInfoModel{" +
                 "userId=" + userId +

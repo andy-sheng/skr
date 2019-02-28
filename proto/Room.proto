@@ -43,7 +43,7 @@ message RoomMsg
     QSyncStatusMsg qSyncStatusMsg             = 114; //一唱到底：同步状态
     QRoundOverMsg qRoundOverMsg               = 115; //一唱到底：轮次结束
     QRoundAndGameOverMsg qRoundAndGameOverMsg = 116; //一唱到底：最后轮次结束，即游戏结束，游戏结果数据
-    QNoPassSingMsg qNoPassSingMsg             = 117; //一唱到底：演唱不通过，即灭灯
+    QNoPassSingMsg qNoPassSingMsg             = 117; //一唱到底：使用QMLightMsg代替
     QExitGameMsg qExitGameMsg                 = 118; //一唱到底：退出游戏
 
     PKBLightMsg pkBLightMsg = 119; //排位赛：爆灯通知
@@ -128,11 +128,10 @@ message QGetSingChanceMsg
 
 message QSyncStatusMsg
 {
-    sint64 syncStatusTimeMs        = 1; //状态同步时的毫秒时间戳
-    sint64 gameOverTimeMs          = 2; //游戏结束时间
-    repeated OnlineInfo onlineInfo = 3; //在线状态
-    QRoundInfo currentRound        = 4; //当前轮次信息
-    QRoundInfo nextRound           = 5; //下个轮次信息
+    sint64 syncStatusTimeMs = 1; //状态同步时的毫秒时间戳
+    sint64 gameOverTimeMs   = 2; //游戏结束时间
+    QRoundInfo currentRound = 3; //当前轮次信息
+    QRoundInfo nextRound    = 4; //下个轮次信息
 }
 
 message QRoundOverMsg
@@ -184,7 +183,7 @@ message QNoPassSingMsg
 
 message QExitGameMsg
 {
-    uint32 userID = 1; // 用户id
+    uint32 userID   = 1; // 用户id
     uint32 roundSeq = 2; //轮次顺
 }
 
@@ -317,7 +316,7 @@ message JoinActionMsg
     uint32 gameID                      = 1; //游戏ID
     sint64 CreateTimeMs                = 2; //创建毫秒时间戳
     repeated PlayerInfo players        = 3; //玩家信息
-    repeated Common.MusicInfo commonMusicInfo = 4; //共同演唱音乐信息
+    repeated Common.MusicInfo music = 4; //共同演唱音乐信息
     GameConfig config                  = 5; //配置信息
 }
 
@@ -437,46 +436,37 @@ message WantSingInfo
     sint64 timeMs = 2; //抢唱时间戳
 }
 
-message NoPassSingInfo
-{
-    uint32 userID = 1; //玩家id
-    sint64 timeMs = 2; //灭灯时间戳
-}
-
 message QRoundInfo
 {
-    uint32 userID                           = 1; //抢唱成功的玩家id
-    uint32 getSingMs                        = 2; //抢唱成功的时间戳
-    uint32 playbookID                       = 3; //曲库id
-    uint32 roundSeq                         = 4; //轮次顺序
-    uint32 introBeginMs                     = 5; //导唱开始相对时间（相对于startTimeMs时间）
-    uint32 introEndMs                       = 6; //导唱结束相对时间（相对于startTimeMs时间）
-    uint32 singBeginMs                      = 7; //演唱开始相对时间（相对于startTimeMs时间）
-    uint32 singEndMs                        = 8; //演唱结束相对时间（相对于startTimeMs时间）
-    EQRoundStatus status                    = 9; //轮次状态
-    repeated WantSingInfo wantSingInfos     = 10; //抢唱列表
-    repeated NoPassSingInfo noPassSingInfos = 11; //灭灯列表
-    EQRoundOverReason overReason            = 12; //切换轮次原因
-    EQRoundResultType resultType            = 13; //当EQRoundOverReason == ROR_MULTI_NO_PASS 演唱结果信息
-    Common.MusicInfo music                         = 14; //本轮次的歌曲信息
-    repeated QBLightMsg bLightInfos         = 15; //爆灭灯列表
-    repeated QMLightMsg mLightInfos         = 16; //灭灭灯列表
-    RoundInit roundInit                     = 17; //轮次初始信息
-    Common.ResourceInfo skrResource                = 18; //机器人资源
-    repeated OnlineInfo waitUsers           = 19; //等待中用户列表
-    repeated OnlineInfo playUsers           = 20; //当局玩的用户列表
+    uint32 userID                       = 1; //抢唱成功的玩家id
+    uint32 playbookID                   = 2; //曲库id
+    uint32 roundSeq                     = 3; //轮次顺序
+    uint32 introBeginMs                 = 4; //导唱开始相对时间（相对于startTimeMs时间）
+    uint32 introEndMs                   = 5; //导唱结束相对时间（相对于startTimeMs时间）
+    uint32 singBeginMs                  = 6; //演唱开始相对时间（相对于startTimeMs时间）
+    uint32 singEndMs                    = 7; //演唱结束相对时间（相对于startTimeMs时间）
+    EQRoundStatus status                = 8; //轮次状态
+    repeated WantSingInfo wantSingInfos = 9; //抢唱列表
+    EQRoundOverReason overReason        = 10; //切换轮次原因
+    EQRoundResultType resultType        = 11; //当EQRoundOverReason == ROR_MULTI_NO_PASS 演唱结果信息
+    Common.MusicInfo music                     = 12; //本轮次的歌曲信息
+    repeated QBLightMsg bLightInfos     = 13; //爆灭灯列表
+    repeated QMLightMsg mLightInfos     = 14; //灭灭灯列表
+    Common.ResourceInfo skrResource            = 15; //机器人资源
+    repeated OnlineInfo waitUsers       = 16; //等待中用户列表
+    repeated OnlineInfo playUsers       = 17; //当局玩的用户列表
 }
 
 message QBLightMsg
 {
-    uint32 userID = 1; //玩家id
-    sint64 timeMs = 2; //时间戳
+    uint32 userID   = 1; //玩家id
+    uint32 roundSeq = 2; // 轮次顺序
 }
 
 message QMLightMsg
 {
-    uint32 userID = 1; //玩家id
-    sint64 timeMs = 2; //时间戳
+    uint32 userID   = 1; //玩家id
+    uint32 roundSeq = 2; // 轮次顺序
 }
 
 message RoundInit
@@ -501,8 +491,7 @@ message OnlineInfo
     EQUserRole role   = 5; //一唱到底使用：用户角色
 }
 
-enum EQUserRole
-{
+enum EQUserRole {
     EQUR_UNKNOWN   = 0; //未知角色
     EQUR_PLAY_USER = 1; //在玩的用户角色
     EQUR_WAIT_USER = 2; //等待的用户角色

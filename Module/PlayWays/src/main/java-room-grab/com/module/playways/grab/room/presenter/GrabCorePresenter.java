@@ -330,7 +330,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     boolean notify = RoomDataUtils.isCurrentRound(now.getRoundSeq(), mRoomData);
                     MLightInfoModel noPassingInfo = new MLightInfoModel();
                     noPassingInfo.setUserID((int) MyUserInfoManager.getInstance().getUid());
-                    noPassingInfo.setTimeMs(System.currentTimeMillis());
                     now.addLightOffUid(notify, noPassingInfo);
                 } else {
 
@@ -666,7 +665,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 if (result.getErrno() == 0) {
                     long syncStatusTimes = result.getData().getLong("syncStatusTimeMs");  //状态同步时的毫秒时间戳
                     long gameOverTimeMs = result.getData().getLong("gameOverTimeMs");  //游戏结束时间
-                    List<OnlineInfoModel> onlineInfos = JSON.parseArray(result.getData().getString("onlineInfo"), OnlineInfoModel.class); //在线状态
                     GrabRoundInfoModel currentInfo = JSON.parseObject(result.getData().getString("currentRound"), GrabRoundInfoModel.class); //当前轮次信息
                     String msg = "";
                     if (currentInfo != null) {
@@ -683,7 +681,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                         return;
                     }
 
-                    updatePlayerState(gameOverTimeMs, syncStatusTimes, onlineInfos, currentInfo);
+                    updatePlayerState(gameOverTimeMs, syncStatusTimes, currentInfo);
                 } else {
                     MyLog.w(TAG, "syncGameStatus失败 traceid is " + result.getTraceId());
                     estimateOverTsThisRound();
@@ -700,21 +698,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     /**
      * 根据时间戳更新选手状态,目前就只有两个入口，SyncStatusEvent push了sycn，不写更多入口
      */
-    private synchronized void updatePlayerState(long gameOverTimeMs, long syncStatusTimes, List<OnlineInfoModel> onlineInfos, GrabRoundInfoModel newRoundInfo) {
-        MyLog.w(TAG, "updatePlayerState" + " gameOverTimeMs=" + gameOverTimeMs + " syncStatusTimes=" + syncStatusTimes + " onlineInfos=" + onlineInfos + " currentInfo=" + newRoundInfo.getRoundSeq());
+    private synchronized void updatePlayerState(long gameOverTimeMs, long syncStatusTimes,  GrabRoundInfoModel newRoundInfo) {
+        MyLog.w(TAG, "updatePlayerState" + " gameOverTimeMs=" + gameOverTimeMs + " syncStatusTimes=" + syncStatusTimes  + " currentInfo=" + newRoundInfo.getRoundSeq());
         if (syncStatusTimes > mRoomData.getLastSyncTs()) {
             mRoomData.setLastSyncTs(syncStatusTimes);
-            if (onlineInfos != null) {
-                for (OnlineInfoModel onlineInfoModel : onlineInfos) {
-//                    mRoomData.setOnline(onlineInfoModel.getUserID(), onlineInfoModel.isIsOnline());
-                }
-            }
-            mUiHanlder.post(new Runnable() {
-                @Override
-                public void run() {
-                    mIGrabView.updateUserState(onlineInfos);
-                }
-            });
         }
 
         if (gameOverTimeMs != 0) {
@@ -938,7 +925,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
             MLightInfoModel noPassingInfo = new MLightInfoModel();
             noPassingInfo.setUserID(event.getUserID());
-            noPassingInfo.setTimeMs(System.currentTimeMillis());
 
             roundInfoModel.addLightOffUid(true, noPassingInfo);
         } else {
@@ -980,7 +966,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QSyncStatusMsgEvent event) {
         MyLog.w(TAG, "收到服务器更新状态,event.currentRound是" + event.getCurrentRound().getRoundSeq() + ", timets 是" + event.info.getTimeMs());
-        updatePlayerState(event.getGameOverTimeMs(), event.getSyncStatusTimeMs(), event.getOnlineInfo(), event.getCurrentRound());
+        updatePlayerState(event.getGameOverTimeMs(), event.getSyncStatusTimeMs(), event.getCurrentRound());
     }
 
     private void onGameOver(String from, long gameOverTs, List<GrabResultInfoModel> grabResultInfoModels) {

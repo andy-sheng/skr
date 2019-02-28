@@ -27,8 +27,6 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
 
   public static final Integer DEFAULT_USERID = 0;
 
-  public static final Integer DEFAULT_GETSINGMS = 0;
-
   public static final Integer DEFAULT_PLAYBOOKID = 0;
 
   public static final Integer DEFAULT_ROUNDSEQ = 0;
@@ -57,19 +55,10 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
   private final Integer userID;
 
   /**
-   * 抢唱成功的时间戳
-   */
-  @WireField(
-      tag = 2,
-      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
-  )
-  private final Integer getSingMs;
-
-  /**
    * 曲库id
    */
   @WireField(
-      tag = 3,
+      tag = 2,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
   private final Integer playbookID;
@@ -78,7 +67,7 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
    * 轮次顺序
    */
   @WireField(
-      tag = 4,
+      tag = 3,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
   private final Integer roundSeq;
@@ -87,7 +76,7 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
    * 导唱开始相对时间（相对于startTimeMs时间）
    */
   @WireField(
-      tag = 5,
+      tag = 4,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
   private final Integer introBeginMs;
@@ -96,7 +85,7 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
    * 导唱结束相对时间（相对于startTimeMs时间）
    */
   @WireField(
-      tag = 6,
+      tag = 5,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
   private final Integer introEndMs;
@@ -105,7 +94,7 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
    * 演唱开始相对时间（相对于startTimeMs时间）
    */
   @WireField(
-      tag = 7,
+      tag = 6,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
   private final Integer singBeginMs;
@@ -114,7 +103,7 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
    * 演唱结束相对时间（相对于startTimeMs时间）
    */
   @WireField(
-      tag = 8,
+      tag = 7,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
   private final Integer singEndMs;
@@ -123,7 +112,7 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
    * 轮次状态
    */
   @WireField(
-      tag = 9,
+      tag = 8,
       adapter = "com.zq.live.proto.Room.EQRoundStatus#ADAPTER"
   )
   private final EQRoundStatus status;
@@ -132,27 +121,17 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
    * 抢唱列表
    */
   @WireField(
-      tag = 10,
+      tag = 9,
       adapter = "com.zq.live.proto.Room.WantSingInfo#ADAPTER",
       label = WireField.Label.REPEATED
   )
   private final List<WantSingInfo> wantSingInfos;
 
   /**
-   * 灭灯列表
-   */
-  @WireField(
-      tag = 11,
-      adapter = "com.zq.live.proto.Room.NoPassSingInfo#ADAPTER",
-      label = WireField.Label.REPEATED
-  )
-  private final List<NoPassSingInfo> noPassSingInfos;
-
-  /**
    * 切换轮次原因
    */
   @WireField(
-      tag = 12,
+      tag = 10,
       adapter = "com.zq.live.proto.Room.EQRoundOverReason#ADAPTER"
   )
   private final EQRoundOverReason overReason;
@@ -161,7 +140,7 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
    * 当EQRoundOverReason == ROR_MULTI_NO_PASS 演唱结果信息
    */
   @WireField(
-      tag = 13,
+      tag = 11,
       adapter = "com.zq.live.proto.Room.EQRoundResultType#ADAPTER"
   )
   private final EQRoundResultType resultType;
@@ -170,7 +149,7 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
    * 本轮次的歌曲信息
    */
   @WireField(
-      tag = 14,
+      tag = 12,
       adapter = "com.zq.live.proto.Common.MusicInfo#ADAPTER"
   )
   private final MusicInfo music;
@@ -179,7 +158,7 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
    * 爆灭灯列表
    */
   @WireField(
-      tag = 15,
+      tag = 13,
       adapter = "com.zq.live.proto.Room.QBLightMsg#ADAPTER",
       label = WireField.Label.REPEATED
   )
@@ -189,26 +168,17 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
    * 灭灭灯列表
    */
   @WireField(
-      tag = 16,
+      tag = 14,
       adapter = "com.zq.live.proto.Room.QMLightMsg#ADAPTER",
       label = WireField.Label.REPEATED
   )
   private final List<QMLightMsg> mLightInfos;
 
   /**
-   * 轮次初始信息
-   */
-  @WireField(
-      tag = 17,
-      adapter = "com.zq.live.proto.Room.RoundInit#ADAPTER"
-  )
-  private final RoundInit roundInit;
-
-  /**
    * 机器人资源
    */
   @WireField(
-      tag = 18,
+      tag = 15,
       adapter = "com.zq.live.proto.Common.ResourceInfo#ADAPTER"
   )
   private final ResourceInfo skrResource;
@@ -217,7 +187,7 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
    * 等待中用户列表
    */
   @WireField(
-      tag = 19,
+      tag = 16,
       adapter = "com.zq.live.proto.Room.OnlineInfo#ADAPTER",
       label = WireField.Label.REPEATED
   )
@@ -227,31 +197,28 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
    * 当局玩的用户列表
    */
   @WireField(
-      tag = 20,
+      tag = 17,
       adapter = "com.zq.live.proto.Room.OnlineInfo#ADAPTER",
       label = WireField.Label.REPEATED
   )
   private final List<OnlineInfo> playUsers;
 
-  public QRoundInfo(Integer userID, Integer getSingMs, Integer playbookID, Integer roundSeq,
-      Integer introBeginMs, Integer introEndMs, Integer singBeginMs, Integer singEndMs,
-      EQRoundStatus status, List<WantSingInfo> wantSingInfos, List<NoPassSingInfo> noPassSingInfos,
-      EQRoundOverReason overReason, EQRoundResultType resultType, MusicInfo music,
-      List<QBLightMsg> bLightInfos, List<QMLightMsg> mLightInfos, RoundInit roundInit,
+  public QRoundInfo(Integer userID, Integer playbookID, Integer roundSeq, Integer introBeginMs,
+      Integer introEndMs, Integer singBeginMs, Integer singEndMs, EQRoundStatus status,
+      List<WantSingInfo> wantSingInfos, EQRoundOverReason overReason, EQRoundResultType resultType,
+      MusicInfo music, List<QBLightMsg> bLightInfos, List<QMLightMsg> mLightInfos,
       ResourceInfo skrResource, List<OnlineInfo> waitUsers, List<OnlineInfo> playUsers) {
-    this(userID, getSingMs, playbookID, roundSeq, introBeginMs, introEndMs, singBeginMs, singEndMs, status, wantSingInfos, noPassSingInfos, overReason, resultType, music, bLightInfos, mLightInfos, roundInit, skrResource, waitUsers, playUsers, ByteString.EMPTY);
+    this(userID, playbookID, roundSeq, introBeginMs, introEndMs, singBeginMs, singEndMs, status, wantSingInfos, overReason, resultType, music, bLightInfos, mLightInfos, skrResource, waitUsers, playUsers, ByteString.EMPTY);
   }
 
-  public QRoundInfo(Integer userID, Integer getSingMs, Integer playbookID, Integer roundSeq,
-      Integer introBeginMs, Integer introEndMs, Integer singBeginMs, Integer singEndMs,
-      EQRoundStatus status, List<WantSingInfo> wantSingInfos, List<NoPassSingInfo> noPassSingInfos,
-      EQRoundOverReason overReason, EQRoundResultType resultType, MusicInfo music,
-      List<QBLightMsg> bLightInfos, List<QMLightMsg> mLightInfos, RoundInit roundInit,
+  public QRoundInfo(Integer userID, Integer playbookID, Integer roundSeq, Integer introBeginMs,
+      Integer introEndMs, Integer singBeginMs, Integer singEndMs, EQRoundStatus status,
+      List<WantSingInfo> wantSingInfos, EQRoundOverReason overReason, EQRoundResultType resultType,
+      MusicInfo music, List<QBLightMsg> bLightInfos, List<QMLightMsg> mLightInfos,
       ResourceInfo skrResource, List<OnlineInfo> waitUsers, List<OnlineInfo> playUsers,
       ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
-    this.getSingMs = getSingMs;
     this.playbookID = playbookID;
     this.roundSeq = roundSeq;
     this.introBeginMs = introBeginMs;
@@ -260,13 +227,11 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
     this.singEndMs = singEndMs;
     this.status = status;
     this.wantSingInfos = Internal.immutableCopyOf("wantSingInfos", wantSingInfos);
-    this.noPassSingInfos = Internal.immutableCopyOf("noPassSingInfos", noPassSingInfos);
     this.overReason = overReason;
     this.resultType = resultType;
     this.music = music;
     this.bLightInfos = Internal.immutableCopyOf("bLightInfos", bLightInfos);
     this.mLightInfos = Internal.immutableCopyOf("mLightInfos", mLightInfos);
-    this.roundInit = roundInit;
     this.skrResource = skrResource;
     this.waitUsers = Internal.immutableCopyOf("waitUsers", waitUsers);
     this.playUsers = Internal.immutableCopyOf("playUsers", playUsers);
@@ -276,7 +241,6 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
   public Builder newBuilder() {
     Builder builder = new Builder();
     builder.userID = userID;
-    builder.getSingMs = getSingMs;
     builder.playbookID = playbookID;
     builder.roundSeq = roundSeq;
     builder.introBeginMs = introBeginMs;
@@ -285,13 +249,11 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
     builder.singEndMs = singEndMs;
     builder.status = status;
     builder.wantSingInfos = Internal.copyOf("wantSingInfos", wantSingInfos);
-    builder.noPassSingInfos = Internal.copyOf("noPassSingInfos", noPassSingInfos);
     builder.overReason = overReason;
     builder.resultType = resultType;
     builder.music = music;
     builder.bLightInfos = Internal.copyOf("bLightInfos", bLightInfos);
     builder.mLightInfos = Internal.copyOf("mLightInfos", mLightInfos);
-    builder.roundInit = roundInit;
     builder.skrResource = skrResource;
     builder.waitUsers = Internal.copyOf("waitUsers", waitUsers);
     builder.playUsers = Internal.copyOf("playUsers", playUsers);
@@ -306,7 +268,6 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
     QRoundInfo o = (QRoundInfo) other;
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(userID, o.userID)
-        && Internal.equals(getSingMs, o.getSingMs)
         && Internal.equals(playbookID, o.playbookID)
         && Internal.equals(roundSeq, o.roundSeq)
         && Internal.equals(introBeginMs, o.introBeginMs)
@@ -315,13 +276,11 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
         && Internal.equals(singEndMs, o.singEndMs)
         && Internal.equals(status, o.status)
         && wantSingInfos.equals(o.wantSingInfos)
-        && noPassSingInfos.equals(o.noPassSingInfos)
         && Internal.equals(overReason, o.overReason)
         && Internal.equals(resultType, o.resultType)
         && Internal.equals(music, o.music)
         && bLightInfos.equals(o.bLightInfos)
         && mLightInfos.equals(o.mLightInfos)
-        && Internal.equals(roundInit, o.roundInit)
         && Internal.equals(skrResource, o.skrResource)
         && waitUsers.equals(o.waitUsers)
         && playUsers.equals(o.playUsers);
@@ -333,7 +292,6 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
     if (result == 0) {
       result = unknownFields().hashCode();
       result = result * 37 + (userID != null ? userID.hashCode() : 0);
-      result = result * 37 + (getSingMs != null ? getSingMs.hashCode() : 0);
       result = result * 37 + (playbookID != null ? playbookID.hashCode() : 0);
       result = result * 37 + (roundSeq != null ? roundSeq.hashCode() : 0);
       result = result * 37 + (introBeginMs != null ? introBeginMs.hashCode() : 0);
@@ -342,13 +300,11 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
       result = result * 37 + (singEndMs != null ? singEndMs.hashCode() : 0);
       result = result * 37 + (status != null ? status.hashCode() : 0);
       result = result * 37 + wantSingInfos.hashCode();
-      result = result * 37 + noPassSingInfos.hashCode();
       result = result * 37 + (overReason != null ? overReason.hashCode() : 0);
       result = result * 37 + (resultType != null ? resultType.hashCode() : 0);
       result = result * 37 + (music != null ? music.hashCode() : 0);
       result = result * 37 + bLightInfos.hashCode();
       result = result * 37 + mLightInfos.hashCode();
-      result = result * 37 + (roundInit != null ? roundInit.hashCode() : 0);
       result = result * 37 + (skrResource != null ? skrResource.hashCode() : 0);
       result = result * 37 + waitUsers.hashCode();
       result = result * 37 + playUsers.hashCode();
@@ -361,7 +317,6 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
   public String toString() {
     StringBuilder builder = new StringBuilder();
     if (userID != null) builder.append(", userID=").append(userID);
-    if (getSingMs != null) builder.append(", getSingMs=").append(getSingMs);
     if (playbookID != null) builder.append(", playbookID=").append(playbookID);
     if (roundSeq != null) builder.append(", roundSeq=").append(roundSeq);
     if (introBeginMs != null) builder.append(", introBeginMs=").append(introBeginMs);
@@ -370,13 +325,11 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
     if (singEndMs != null) builder.append(", singEndMs=").append(singEndMs);
     if (status != null) builder.append(", status=").append(status);
     if (!wantSingInfos.isEmpty()) builder.append(", wantSingInfos=").append(wantSingInfos);
-    if (!noPassSingInfos.isEmpty()) builder.append(", noPassSingInfos=").append(noPassSingInfos);
     if (overReason != null) builder.append(", overReason=").append(overReason);
     if (resultType != null) builder.append(", resultType=").append(resultType);
     if (music != null) builder.append(", music=").append(music);
     if (!bLightInfos.isEmpty()) builder.append(", bLightInfos=").append(bLightInfos);
     if (!mLightInfos.isEmpty()) builder.append(", mLightInfos=").append(mLightInfos);
-    if (roundInit != null) builder.append(", roundInit=").append(roundInit);
     if (skrResource != null) builder.append(", skrResource=").append(skrResource);
     if (!waitUsers.isEmpty()) builder.append(", waitUsers=").append(waitUsers);
     if (!playUsers.isEmpty()) builder.append(", playUsers=").append(playUsers);
@@ -401,16 +354,6 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
         return DEFAULT_USERID;
     }
     return userID;
-  }
-
-  /**
-   * 抢唱成功的时间戳
-   */
-  public Integer getGetSingMs() {
-    if(getSingMs==null){
-        return DEFAULT_GETSINGMS;
-    }
-    return getSingMs;
   }
 
   /**
@@ -494,16 +437,6 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
   }
 
   /**
-   * 灭灯列表
-   */
-  public List<NoPassSingInfo> getNoPassSingInfosList() {
-    if(noPassSingInfos==null){
-        return new java.util.ArrayList<NoPassSingInfo>();
-    }
-    return noPassSingInfos;
-  }
-
-  /**
    * 切换轮次原因
    */
   public EQRoundOverReason getOverReason() {
@@ -554,16 +487,6 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
   }
 
   /**
-   * 轮次初始信息
-   */
-  public RoundInit getRoundInit() {
-    if(roundInit==null){
-        return new RoundInit.Builder().build();
-    }
-    return roundInit;
-  }
-
-  /**
    * 机器人资源
    */
   public ResourceInfo getSkrResource() {
@@ -598,13 +521,6 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
    */
   public boolean hasUserID() {
     return userID!=null;
-  }
-
-  /**
-   * 抢唱成功的时间戳
-   */
-  public boolean hasGetSingMs() {
-    return getSingMs!=null;
   }
 
   /**
@@ -664,13 +580,6 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
   }
 
   /**
-   * 灭灯列表
-   */
-  public boolean hasNoPassSingInfosList() {
-    return noPassSingInfos!=null;
-  }
-
-  /**
    * 切换轮次原因
    */
   public boolean hasOverReason() {
@@ -706,13 +615,6 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
   }
 
   /**
-   * 轮次初始信息
-   */
-  public boolean hasRoundInit() {
-    return roundInit!=null;
-  }
-
-  /**
    * 机器人资源
    */
   public boolean hasSkrResource() {
@@ -736,8 +638,6 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
   public static final class Builder extends Message.Builder<QRoundInfo, Builder> {
     private Integer userID;
 
-    private Integer getSingMs;
-
     private Integer playbookID;
 
     private Integer roundSeq;
@@ -754,8 +654,6 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
 
     private List<WantSingInfo> wantSingInfos;
 
-    private List<NoPassSingInfo> noPassSingInfos;
-
     private EQRoundOverReason overReason;
 
     private EQRoundResultType resultType;
@@ -766,8 +664,6 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
 
     private List<QMLightMsg> mLightInfos;
 
-    private RoundInit roundInit;
-
     private ResourceInfo skrResource;
 
     private List<OnlineInfo> waitUsers;
@@ -776,7 +672,6 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
 
     public Builder() {
       wantSingInfos = Internal.newMutableList();
-      noPassSingInfos = Internal.newMutableList();
       bLightInfos = Internal.newMutableList();
       mLightInfos = Internal.newMutableList();
       waitUsers = Internal.newMutableList();
@@ -788,14 +683,6 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
      */
     public Builder setUserID(Integer userID) {
       this.userID = userID;
-      return this;
-    }
-
-    /**
-     * 抢唱成功的时间戳
-     */
-    public Builder setGetSingMs(Integer getSingMs) {
-      this.getSingMs = getSingMs;
       return this;
     }
 
@@ -865,15 +752,6 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
     }
 
     /**
-     * 灭灯列表
-     */
-    public Builder addAllNoPassSingInfos(List<NoPassSingInfo> noPassSingInfos) {
-      Internal.checkElementsNotNull(noPassSingInfos);
-      this.noPassSingInfos = noPassSingInfos;
-      return this;
-    }
-
-    /**
      * 切换轮次原因
      */
     public Builder setOverReason(EQRoundOverReason overReason) {
@@ -916,14 +794,6 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
     }
 
     /**
-     * 轮次初始信息
-     */
-    public Builder setRoundInit(RoundInit roundInit) {
-      this.roundInit = roundInit;
-      return this;
-    }
-
-    /**
      * 机器人资源
      */
     public Builder setSkrResource(ResourceInfo skrResource) {
@@ -951,7 +821,7 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
 
     @Override
     public QRoundInfo build() {
-      return new QRoundInfo(userID, getSingMs, playbookID, roundSeq, introBeginMs, introEndMs, singBeginMs, singEndMs, status, wantSingInfos, noPassSingInfos, overReason, resultType, music, bLightInfos, mLightInfos, roundInit, skrResource, waitUsers, playUsers, super.buildUnknownFields());
+      return new QRoundInfo(userID, playbookID, roundSeq, introBeginMs, introEndMs, singBeginMs, singEndMs, status, wantSingInfos, overReason, resultType, music, bLightInfos, mLightInfos, skrResource, waitUsers, playUsers, super.buildUnknownFields());
     }
   }
 
@@ -963,50 +833,44 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
     @Override
     public int encodedSize(QRoundInfo value) {
       return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.userID)
-          + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.getSingMs)
-          + ProtoAdapter.UINT32.encodedSizeWithTag(3, value.playbookID)
-          + ProtoAdapter.UINT32.encodedSizeWithTag(4, value.roundSeq)
-          + ProtoAdapter.UINT32.encodedSizeWithTag(5, value.introBeginMs)
-          + ProtoAdapter.UINT32.encodedSizeWithTag(6, value.introEndMs)
-          + ProtoAdapter.UINT32.encodedSizeWithTag(7, value.singBeginMs)
-          + ProtoAdapter.UINT32.encodedSizeWithTag(8, value.singEndMs)
-          + EQRoundStatus.ADAPTER.encodedSizeWithTag(9, value.status)
-          + WantSingInfo.ADAPTER.asRepeated().encodedSizeWithTag(10, value.wantSingInfos)
-          + NoPassSingInfo.ADAPTER.asRepeated().encodedSizeWithTag(11, value.noPassSingInfos)
-          + EQRoundOverReason.ADAPTER.encodedSizeWithTag(12, value.overReason)
-          + EQRoundResultType.ADAPTER.encodedSizeWithTag(13, value.resultType)
-          + MusicInfo.ADAPTER.encodedSizeWithTag(14, value.music)
-          + QBLightMsg.ADAPTER.asRepeated().encodedSizeWithTag(15, value.bLightInfos)
-          + QMLightMsg.ADAPTER.asRepeated().encodedSizeWithTag(16, value.mLightInfos)
-          + RoundInit.ADAPTER.encodedSizeWithTag(17, value.roundInit)
-          + ResourceInfo.ADAPTER.encodedSizeWithTag(18, value.skrResource)
-          + OnlineInfo.ADAPTER.asRepeated().encodedSizeWithTag(19, value.waitUsers)
-          + OnlineInfo.ADAPTER.asRepeated().encodedSizeWithTag(20, value.playUsers)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.playbookID)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(3, value.roundSeq)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(4, value.introBeginMs)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(5, value.introEndMs)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(6, value.singBeginMs)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(7, value.singEndMs)
+          + EQRoundStatus.ADAPTER.encodedSizeWithTag(8, value.status)
+          + WantSingInfo.ADAPTER.asRepeated().encodedSizeWithTag(9, value.wantSingInfos)
+          + EQRoundOverReason.ADAPTER.encodedSizeWithTag(10, value.overReason)
+          + EQRoundResultType.ADAPTER.encodedSizeWithTag(11, value.resultType)
+          + MusicInfo.ADAPTER.encodedSizeWithTag(12, value.music)
+          + QBLightMsg.ADAPTER.asRepeated().encodedSizeWithTag(13, value.bLightInfos)
+          + QMLightMsg.ADAPTER.asRepeated().encodedSizeWithTag(14, value.mLightInfos)
+          + ResourceInfo.ADAPTER.encodedSizeWithTag(15, value.skrResource)
+          + OnlineInfo.ADAPTER.asRepeated().encodedSizeWithTag(16, value.waitUsers)
+          + OnlineInfo.ADAPTER.asRepeated().encodedSizeWithTag(17, value.playUsers)
           + value.unknownFields().size();
     }
 
     @Override
     public void encode(ProtoWriter writer, QRoundInfo value) throws IOException {
       ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.userID);
-      ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.getSingMs);
-      ProtoAdapter.UINT32.encodeWithTag(writer, 3, value.playbookID);
-      ProtoAdapter.UINT32.encodeWithTag(writer, 4, value.roundSeq);
-      ProtoAdapter.UINT32.encodeWithTag(writer, 5, value.introBeginMs);
-      ProtoAdapter.UINT32.encodeWithTag(writer, 6, value.introEndMs);
-      ProtoAdapter.UINT32.encodeWithTag(writer, 7, value.singBeginMs);
-      ProtoAdapter.UINT32.encodeWithTag(writer, 8, value.singEndMs);
-      EQRoundStatus.ADAPTER.encodeWithTag(writer, 9, value.status);
-      WantSingInfo.ADAPTER.asRepeated().encodeWithTag(writer, 10, value.wantSingInfos);
-      NoPassSingInfo.ADAPTER.asRepeated().encodeWithTag(writer, 11, value.noPassSingInfos);
-      EQRoundOverReason.ADAPTER.encodeWithTag(writer, 12, value.overReason);
-      EQRoundResultType.ADAPTER.encodeWithTag(writer, 13, value.resultType);
-      MusicInfo.ADAPTER.encodeWithTag(writer, 14, value.music);
-      QBLightMsg.ADAPTER.asRepeated().encodeWithTag(writer, 15, value.bLightInfos);
-      QMLightMsg.ADAPTER.asRepeated().encodeWithTag(writer, 16, value.mLightInfos);
-      RoundInit.ADAPTER.encodeWithTag(writer, 17, value.roundInit);
-      ResourceInfo.ADAPTER.encodeWithTag(writer, 18, value.skrResource);
-      OnlineInfo.ADAPTER.asRepeated().encodeWithTag(writer, 19, value.waitUsers);
-      OnlineInfo.ADAPTER.asRepeated().encodeWithTag(writer, 20, value.playUsers);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.playbookID);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 3, value.roundSeq);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 4, value.introBeginMs);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 5, value.introEndMs);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 6, value.singBeginMs);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 7, value.singEndMs);
+      EQRoundStatus.ADAPTER.encodeWithTag(writer, 8, value.status);
+      WantSingInfo.ADAPTER.asRepeated().encodeWithTag(writer, 9, value.wantSingInfos);
+      EQRoundOverReason.ADAPTER.encodeWithTag(writer, 10, value.overReason);
+      EQRoundResultType.ADAPTER.encodeWithTag(writer, 11, value.resultType);
+      MusicInfo.ADAPTER.encodeWithTag(writer, 12, value.music);
+      QBLightMsg.ADAPTER.asRepeated().encodeWithTag(writer, 13, value.bLightInfos);
+      QMLightMsg.ADAPTER.asRepeated().encodeWithTag(writer, 14, value.mLightInfos);
+      ResourceInfo.ADAPTER.encodeWithTag(writer, 15, value.skrResource);
+      OnlineInfo.ADAPTER.asRepeated().encodeWithTag(writer, 16, value.waitUsers);
+      OnlineInfo.ADAPTER.asRepeated().encodeWithTag(writer, 17, value.playUsers);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -1017,14 +881,13 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
       for (int tag; (tag = reader.nextTag()) != -1;) {
         switch (tag) {
           case 1: builder.setUserID(ProtoAdapter.UINT32.decode(reader)); break;
-          case 2: builder.setGetSingMs(ProtoAdapter.UINT32.decode(reader)); break;
-          case 3: builder.setPlaybookID(ProtoAdapter.UINT32.decode(reader)); break;
-          case 4: builder.setRoundSeq(ProtoAdapter.UINT32.decode(reader)); break;
-          case 5: builder.setIntroBeginMs(ProtoAdapter.UINT32.decode(reader)); break;
-          case 6: builder.setIntroEndMs(ProtoAdapter.UINT32.decode(reader)); break;
-          case 7: builder.setSingBeginMs(ProtoAdapter.UINT32.decode(reader)); break;
-          case 8: builder.setSingEndMs(ProtoAdapter.UINT32.decode(reader)); break;
-          case 9: {
+          case 2: builder.setPlaybookID(ProtoAdapter.UINT32.decode(reader)); break;
+          case 3: builder.setRoundSeq(ProtoAdapter.UINT32.decode(reader)); break;
+          case 4: builder.setIntroBeginMs(ProtoAdapter.UINT32.decode(reader)); break;
+          case 5: builder.setIntroEndMs(ProtoAdapter.UINT32.decode(reader)); break;
+          case 6: builder.setSingBeginMs(ProtoAdapter.UINT32.decode(reader)); break;
+          case 7: builder.setSingEndMs(ProtoAdapter.UINT32.decode(reader)); break;
+          case 8: {
             try {
               builder.setStatus(EQRoundStatus.ADAPTER.decode(reader));
             } catch (ProtoAdapter.EnumConstantNotFoundException e) {
@@ -1032,9 +895,8 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
             }
             break;
           }
-          case 10: builder.wantSingInfos.add(WantSingInfo.ADAPTER.decode(reader)); break;
-          case 11: builder.noPassSingInfos.add(NoPassSingInfo.ADAPTER.decode(reader)); break;
-          case 12: {
+          case 9: builder.wantSingInfos.add(WantSingInfo.ADAPTER.decode(reader)); break;
+          case 10: {
             try {
               builder.setOverReason(EQRoundOverReason.ADAPTER.decode(reader));
             } catch (ProtoAdapter.EnumConstantNotFoundException e) {
@@ -1042,7 +904,7 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
             }
             break;
           }
-          case 13: {
+          case 11: {
             try {
               builder.setResultType(EQRoundResultType.ADAPTER.decode(reader));
             } catch (ProtoAdapter.EnumConstantNotFoundException e) {
@@ -1050,13 +912,12 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
             }
             break;
           }
-          case 14: builder.setMusic(MusicInfo.ADAPTER.decode(reader)); break;
-          case 15: builder.bLightInfos.add(QBLightMsg.ADAPTER.decode(reader)); break;
-          case 16: builder.mLightInfos.add(QMLightMsg.ADAPTER.decode(reader)); break;
-          case 17: builder.setRoundInit(RoundInit.ADAPTER.decode(reader)); break;
-          case 18: builder.setSkrResource(ResourceInfo.ADAPTER.decode(reader)); break;
-          case 19: builder.waitUsers.add(OnlineInfo.ADAPTER.decode(reader)); break;
-          case 20: builder.playUsers.add(OnlineInfo.ADAPTER.decode(reader)); break;
+          case 12: builder.setMusic(MusicInfo.ADAPTER.decode(reader)); break;
+          case 13: builder.bLightInfos.add(QBLightMsg.ADAPTER.decode(reader)); break;
+          case 14: builder.mLightInfos.add(QMLightMsg.ADAPTER.decode(reader)); break;
+          case 15: builder.setSkrResource(ResourceInfo.ADAPTER.decode(reader)); break;
+          case 16: builder.waitUsers.add(OnlineInfo.ADAPTER.decode(reader)); break;
+          case 17: builder.playUsers.add(OnlineInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -1072,11 +933,9 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
     public QRoundInfo redact(QRoundInfo value) {
       Builder builder = value.newBuilder();
       Internal.redactElements(builder.wantSingInfos, WantSingInfo.ADAPTER);
-      Internal.redactElements(builder.noPassSingInfos, NoPassSingInfo.ADAPTER);
       if (builder.music != null) builder.music = MusicInfo.ADAPTER.redact(builder.music);
       Internal.redactElements(builder.bLightInfos, QBLightMsg.ADAPTER);
       Internal.redactElements(builder.mLightInfos, QMLightMsg.ADAPTER);
-      if (builder.roundInit != null) builder.roundInit = RoundInit.ADAPTER.redact(builder.roundInit);
       if (builder.skrResource != null) builder.skrResource = ResourceInfo.ADAPTER.redact(builder.skrResource);
       Internal.redactElements(builder.waitUsers, OnlineInfo.ADAPTER);
       Internal.redactElements(builder.playUsers, OnlineInfo.ADAPTER);

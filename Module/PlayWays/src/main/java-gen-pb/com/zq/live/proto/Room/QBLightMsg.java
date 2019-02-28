@@ -11,7 +11,6 @@ import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
 import java.io.IOException;
 import java.lang.Integer;
-import java.lang.Long;
 import java.lang.Object;
 import java.lang.Override;
 import java.lang.String;
@@ -25,7 +24,7 @@ public final class QBLightMsg extends Message<QBLightMsg, QBLightMsg.Builder> {
 
   public static final Integer DEFAULT_USERID = 0;
 
-  public static final Long DEFAULT_TIMEMS = 0L;
+  public static final Integer DEFAULT_ROUNDSEQ = 0;
 
   /**
    * 玩家id
@@ -37,29 +36,29 @@ public final class QBLightMsg extends Message<QBLightMsg, QBLightMsg.Builder> {
   private final Integer userID;
 
   /**
-   * 时间戳
+   * 轮次顺序
    */
   @WireField(
       tag = 2,
-      adapter = "com.squareup.wire.ProtoAdapter#SINT64"
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  private final Long timeMs;
+  private final Integer roundSeq;
 
-  public QBLightMsg(Integer userID, Long timeMs) {
-    this(userID, timeMs, ByteString.EMPTY);
+  public QBLightMsg(Integer userID, Integer roundSeq) {
+    this(userID, roundSeq, ByteString.EMPTY);
   }
 
-  public QBLightMsg(Integer userID, Long timeMs, ByteString unknownFields) {
+  public QBLightMsg(Integer userID, Integer roundSeq, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
-    this.timeMs = timeMs;
+    this.roundSeq = roundSeq;
   }
 
   @Override
   public Builder newBuilder() {
     Builder builder = new Builder();
     builder.userID = userID;
-    builder.timeMs = timeMs;
+    builder.roundSeq = roundSeq;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -71,7 +70,7 @@ public final class QBLightMsg extends Message<QBLightMsg, QBLightMsg.Builder> {
     QBLightMsg o = (QBLightMsg) other;
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(userID, o.userID)
-        && Internal.equals(timeMs, o.timeMs);
+        && Internal.equals(roundSeq, o.roundSeq);
   }
 
   @Override
@@ -80,7 +79,7 @@ public final class QBLightMsg extends Message<QBLightMsg, QBLightMsg.Builder> {
     if (result == 0) {
       result = unknownFields().hashCode();
       result = result * 37 + (userID != null ? userID.hashCode() : 0);
-      result = result * 37 + (timeMs != null ? timeMs.hashCode() : 0);
+      result = result * 37 + (roundSeq != null ? roundSeq.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -90,7 +89,7 @@ public final class QBLightMsg extends Message<QBLightMsg, QBLightMsg.Builder> {
   public String toString() {
     StringBuilder builder = new StringBuilder();
     if (userID != null) builder.append(", userID=").append(userID);
-    if (timeMs != null) builder.append(", timeMs=").append(timeMs);
+    if (roundSeq != null) builder.append(", roundSeq=").append(roundSeq);
     return builder.replace(0, 2, "QBLightMsg{").append('}').toString();
   }
 
@@ -115,13 +114,13 @@ public final class QBLightMsg extends Message<QBLightMsg, QBLightMsg.Builder> {
   }
 
   /**
-   * 时间戳
+   * 轮次顺序
    */
-  public Long getTimeMs() {
-    if(timeMs==null){
-        return DEFAULT_TIMEMS;
+  public Integer getRoundSeq() {
+    if(roundSeq==null){
+        return DEFAULT_ROUNDSEQ;
     }
-    return timeMs;
+    return roundSeq;
   }
 
   /**
@@ -132,16 +131,16 @@ public final class QBLightMsg extends Message<QBLightMsg, QBLightMsg.Builder> {
   }
 
   /**
-   * 时间戳
+   * 轮次顺序
    */
-  public boolean hasTimeMs() {
-    return timeMs!=null;
+  public boolean hasRoundSeq() {
+    return roundSeq!=null;
   }
 
   public static final class Builder extends Message.Builder<QBLightMsg, Builder> {
     private Integer userID;
 
-    private Long timeMs;
+    private Integer roundSeq;
 
     public Builder() {
     }
@@ -155,16 +154,16 @@ public final class QBLightMsg extends Message<QBLightMsg, QBLightMsg.Builder> {
     }
 
     /**
-     * 时间戳
+     * 轮次顺序
      */
-    public Builder setTimeMs(Long timeMs) {
-      this.timeMs = timeMs;
+    public Builder setRoundSeq(Integer roundSeq) {
+      this.roundSeq = roundSeq;
       return this;
     }
 
     @Override
     public QBLightMsg build() {
-      return new QBLightMsg(userID, timeMs, super.buildUnknownFields());
+      return new QBLightMsg(userID, roundSeq, super.buildUnknownFields());
     }
   }
 
@@ -176,14 +175,14 @@ public final class QBLightMsg extends Message<QBLightMsg, QBLightMsg.Builder> {
     @Override
     public int encodedSize(QBLightMsg value) {
       return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.userID)
-          + ProtoAdapter.SINT64.encodedSizeWithTag(2, value.timeMs)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.roundSeq)
           + value.unknownFields().size();
     }
 
     @Override
     public void encode(ProtoWriter writer, QBLightMsg value) throws IOException {
       ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.userID);
-      ProtoAdapter.SINT64.encodeWithTag(writer, 2, value.timeMs);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.roundSeq);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -194,7 +193,7 @@ public final class QBLightMsg extends Message<QBLightMsg, QBLightMsg.Builder> {
       for (int tag; (tag = reader.nextTag()) != -1;) {
         switch (tag) {
           case 1: builder.setUserID(ProtoAdapter.UINT32.decode(reader)); break;
-          case 2: builder.setTimeMs(ProtoAdapter.SINT64.decode(reader)); break;
+          case 2: builder.setRoundSeq(ProtoAdapter.UINT32.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

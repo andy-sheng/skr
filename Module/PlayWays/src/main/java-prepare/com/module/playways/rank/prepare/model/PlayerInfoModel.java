@@ -59,6 +59,24 @@ public abstract class PlayerInfoModel implements Serializable {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        PlayerInfoModel that = (PlayerInfoModel) o;
+
+        if (userID != that.userID) return false;
+        return userInfo != null ? userInfo.equals(that.userInfo) : that.userInfo == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = userID;
+        result = 31 * result + (userInfo != null ? userInfo.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "PlayerInfo{" +
                 "userInfo=" + userInfo +

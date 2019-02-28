@@ -28,7 +28,7 @@ public class JoinActionEvent {
         }
 
         List<SongModel> songModels = new ArrayList<>();
-        for (MusicInfo musicInfo : joinActionMsg.getCommonMusicInfoList()) {
+        for (MusicInfo musicInfo : joinActionMsg.getMusicList()) {
             SongModel songModel = new SongModel();
             songModel.parse(musicInfo);
             songModels.add(songModel);

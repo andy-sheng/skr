@@ -1,14 +1,23 @@
 package com.module.playways.grab.room.model;
 
 import com.common.log.MyLog;
+import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent;
 import com.module.playways.grab.room.event.GrabQLightActionEvent;
 import com.module.playways.grab.room.event.GrabRoundStatusChangeEvent;
+import com.module.playways.grab.room.event.GrabWaitSeatUpdateEvent;
 import com.module.playways.grab.room.event.SomeOneGrabEvent;
+import com.module.playways.grab.room.event.SomeOneJoinPlaySeatEvent;
+import com.module.playways.grab.room.event.SomeOneJoinWaitSeatEvent;
 import com.module.playways.grab.room.event.SomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.SomeOneLightOffEvent;
 import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
+import com.module.playways.rank.song.model.SongModel;
+import com.zq.live.proto.Room.MLightInfo;
 import com.zq.live.proto.Room.NoPassSingInfo;
+import com.zq.live.proto.Room.OnlineInfo;
+import com.zq.live.proto.Room.QBLightMsg;
+import com.zq.live.proto.Room.QMLightMsg;
 import com.zq.live.proto.Room.QRoundInfo;
 import com.zq.live.proto.Room.WantSingInfo;
 
@@ -170,6 +179,38 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         }
     }
 
+    public void addWaitUser(boolean notify, GrabPlayerInfoModel grabPlayerInfoModel) {
+        if (!waitUsers.contains(grabPlayerInfoModel)) {
+            waitUsers.add(grabPlayerInfoModel);
+            if (notify) {
+                SomeOneJoinWaitSeatEvent event = new SomeOneJoinWaitSeatEvent(grabPlayerInfoModel);
+                EventBus.getDefault().post(event);
+            }
+        }
+    }
+
+    public void addPlayUser(boolean notify, GrabPlayerInfoModel grabPlayerInfoModel) {
+        if (!playUsers.contains(grabPlayerInfoModel)) {
+            playUsers.add(grabPlayerInfoModel);
+            if (notify) {
+                SomeOneJoinPlaySeatEvent event = new SomeOneJoinPlaySeatEvent(grabPlayerInfoModel);
+                EventBus.getDefault().post(event);
+            }
+        }
+    }
+
+    public void updateWaitUsers(List<GrabPlayerInfoModel> l) {
+        waitUsers.clear();
+        waitUsers.addAll(l);
+        EventBus.getDefault().post(new GrabWaitSeatUpdateEvent(waitUsers));
+    }
+
+    public void updatePlayUsers(List<GrabPlayerInfoModel> l) {
+        playUsers.clear();
+        playUsers.addAll(l);
+        EventBus.getDefault().post(new GrabPlaySeatUpdateEvent(playUsers));
+    }
+
     /**
      * 一唱到底使用
      */
@@ -184,6 +225,12 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         this.setRoundSeq(roundInfo.getRoundSeq());
         this.setSingBeginMs(roundInfo.getSingBeginMs());
         this.setSingEndMs(roundInfo.getSingEndMs());
+        if (this.getSkrResource() == null) {
+            this.setSkrResource(roundInfo.getSkrResource());
+        }
+        if (this.getSongModel() == null) {
+            this.setSongModel(roundInfo.getSongModel());
+        }
         for (WantSingerInfo wantSingerInfo : roundInfo.getWantSingInfos()) {
             addGrabUid(notify, wantSingerInfo);
         }
@@ -193,6 +240,10 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         for (BLightInfoModel m : roundInfo.getbLightInfos()) {
             addLightBurstUid(notify, m);
         }
+        // 观众席与玩家席更新，以最新的为准
+        updateWaitUsers(roundInfo.getWaitUsers());
+        updatePlayUsers(roundInfo.getPlayUsers());
+
         if (roundInfo.getOverReason() > 0) {
             this.setOverReason(roundInfo.getOverReason());
         }
@@ -201,12 +252,10 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         }
         updateStatus(notify, roundInfo.getStatus());
 
-        //TODO 这里还要更新本轮用户信息。。。。记住了额
         return;
     }
 
 
-    //TODO PB 待处理
     public static GrabRoundInfoModel parseFromRoundInfo(QRoundInfo roundInfo) {
         GrabRoundInfoModel roundInfoModel = new GrabRoundInfoModel();
         roundInfoModel.setUserID(roundInfo.getUserID());
@@ -215,20 +264,39 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         roundInfoModel.setSingBeginMs(roundInfo.getSingBeginMs());
         roundInfoModel.setSingEndMs(roundInfo.getSingEndMs());
         roundInfoModel.setStatus(roundInfo.getStatus().getValue());
+        SongModel songModel = new SongModel();
+        songModel.parse(roundInfo.getMusic());
+        roundInfoModel.setSongModel(songModel);
         for (WantSingInfo wantSingInfo : roundInfo.getWantSingInfosList()) {
             roundInfoModel.addGrabUid(false, WantSingerInfo.parse(wantSingInfo));
         }
-        for (NoPassSingInfo noPassSingInfo : roundInfo.getNoPassSingInfosList()) {
-            roundInfoModel.addLightOffUid(false, MLightInfoModel.parse(noPassSingInfo));
+        for (QMLightMsg m : roundInfo.getMLightInfosList()) {
+            roundInfoModel.addLightOffUid(false, MLightInfoModel.parse(m));
         }
-        // TODO: 2019/2/26 这里把当前用户和当前观众拉下来
-//        for (NoPassSingInfo noPassSingInfo : roundInfo.getNoPassSingInfosList()) {
-//            roundInfoModel.addLightOffUid(false, NoPassingInfo.parse(noPassSingInfo));
-//        }
+        for (QBLightMsg m : roundInfo.getBLightInfosList()) {
+            roundInfoModel.addLightBurstUid(false, BLightInfoModel.parse(m));
+        }
+
+        GrabSkrResourceModel grabSkrResourceModel = GrabSkrResourceModel.parse(roundInfo.getSkrResource());
+        roundInfoModel.setSkrResource(grabSkrResourceModel);
+
         roundInfoModel.setOverReason(roundInfo.getOverReason().getValue());
         roundInfoModel.setResultType(roundInfo.getResultType().getValue());
+
+        // 观众席
+        for (OnlineInfo m : roundInfo.getWaitUsersList()) {
+            GrabPlayerInfoModel grabPlayerInfoModel = GrabPlayerInfoModel.parse(m);
+            roundInfoModel.addWaitUser(false, grabPlayerInfoModel);
+        }
+
+        // 玩家
+        for (OnlineInfo m : roundInfo.getPlayUsersList()) {
+            GrabPlayerInfoModel grabPlayerInfoModel = GrabPlayerInfoModel.parse(m);
+            roundInfoModel.addPlayUser(false, grabPlayerInfoModel);
+        }
         return roundInfoModel;
     }
+
 
     public int getStatus() {
         return status;
