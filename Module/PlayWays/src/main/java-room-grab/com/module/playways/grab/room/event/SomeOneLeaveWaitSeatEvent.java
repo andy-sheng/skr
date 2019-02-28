@@ -11,4 +11,8 @@ public class SomeOneLeaveWaitSeatEvent {
     public SomeOneLeaveWaitSeatEvent(GrabPlayerInfoModel playerInfoModel) {
         this.mPlayerInfoModel = playerInfoModel;
     }
+
+    public GrabPlayerInfoModel getPlayerInfoModel() {
+        return mPlayerInfoModel;
+    }
 }

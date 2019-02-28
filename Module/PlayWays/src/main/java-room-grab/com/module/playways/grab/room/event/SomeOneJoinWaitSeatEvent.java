@@ -12,4 +12,8 @@ public class SomeOneJoinWaitSeatEvent {
     public SomeOneJoinWaitSeatEvent(GrabPlayerInfoModel playerInfoModel) {
         this.mPlayerInfoModel = playerInfoModel;
     }
+
+    public GrabPlayerInfoModel getPlayerInfoModel() {
+        return mPlayerInfoModel;
+    }
 }
