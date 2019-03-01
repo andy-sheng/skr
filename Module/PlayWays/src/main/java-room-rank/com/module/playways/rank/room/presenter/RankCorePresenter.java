@@ -21,6 +21,7 @@ import com.common.upload.UploadParams;
 import com.common.utils.ActivityUtils;
 import com.common.utils.SongResUtils;
 import com.common.utils.SpanUtils;
+import com.common.utils.ToastUtils;
 import com.common.utils.U;
 import com.component.busilib.SkrConfig;
 import com.engine.EngineEvent;
@@ -1418,6 +1419,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 
         if(event.model.getUserID() == MyUserInfoManager.getInstance().getUid()){
             MyLog.d(TAG, "本人溜走了，需要关掉当前房间,id是" + event.model.getUserID());
+            U.getToastUtil().showShort("您长时间不在对局状态，已自动退出对局啦");
             mIGameRuleView.finishActivity();
         }
     }
