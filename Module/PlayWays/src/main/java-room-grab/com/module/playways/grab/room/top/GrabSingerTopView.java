@@ -9,6 +9,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.common.log.MyLog;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -27,6 +28,8 @@ import org.greenrobot.eventbus.ThreadMode;
 
 
 public class GrabSingerTopView extends FrameLayout {
+    public final static String TAG = "GrabSingerTopView";
+
     ImageView mIvLight;
     ExTextView mTvCurLight;
     ExTextView mTvCountDown;
@@ -100,13 +103,19 @@ public class GrabSingerTopView extends FrameLayout {
 
     private void startSing(SongModel songModel) {
         cancelCountDownTask();
+        int total = songModel.getTotalMs();
+        if (total == 0) {
+            MyLog.d(TAG, "歌曲总时间为0 totoal");
+            total = 30;
+        }
+        int finalTotal = total;
         mCountDownTask = HandlerTaskTimer.newBuilder()
-                .take(songModel.getTotalMs() == 0 ? 12000 / 1000 : songModel.getTotalMs())
+                .take(total)
                 .interval(1000)
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
-                        int remainTime = (songModel.getTotalMs() == 0 ? 12000 : songModel.getTotalMs()) - integer * 1000;
+                        int remainTime = (finalTotal - integer) * 1000;
                         if (remainTime >= 0) {
                             mTvCountDown.setText(U.getDateTimeUtils().formatTimeStringForDate(remainTime, "mm:ss"));
                         }

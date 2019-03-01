@@ -1146,7 +1146,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QSyncStatusMsgEvent event) {
-        MyLog.w(TAG, "收到服务器push更新状态,event.currentRound是" + event.getCurrentRound().getRoundSeq() + ", timets 是" + event.info.getTimeMs());
+        MyLog.w(TAG, "收到服务器push更新状态,event.currentRound是" + event.getCurrentRound().getRoundSeq() + ", timeMs 是" + event.info.getTimeMs());
         startSyncGameStateTask(sSyncStateTaskInterval);
         updatePlayerState(event.getGameOverTimeMs(), event.getSyncStatusTimeMs(), event.getCurrentRound());
     }
