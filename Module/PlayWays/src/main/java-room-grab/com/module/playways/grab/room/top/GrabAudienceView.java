@@ -62,10 +62,13 @@ public class GrabAudienceView extends LinearLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabWaitSeatUpdateEvent event) {
+        mPlayerInfoModelList.clear();
         if (event.list != null) {
-            mPlayerInfoModelList = event.list;
-            updateAllView();
+            for (GrabPlayerInfoModel grabPlayerInfoModel : event.list){
+                mPlayerInfoModelList.add(grabPlayerInfoModel);
+            }
         }
+        updateAllView();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

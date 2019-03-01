@@ -327,7 +327,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         ApiMethods.subscribe(mRoomServerApi.wangSingChance(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
-                MyLog.e(TAG, "grabThisRound erro code is " + result.getErrno() + ",traceid is " + result.getTraceId());
+                MyLog.w(TAG, "grabThisRound erro code is " + result.getErrno() + ",traceid is " + result.getTraceId());
                 if (result.getErrno() == 0) {
                     //抢成功了
                     GrabRoundInfoModel now = mRoomData.getRealRoundInfo();

@@ -17,7 +17,9 @@ import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.module.playways.BaseRoomData;
+import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent;
 import com.module.playways.grab.room.event.LightOffAnimationOverEvent;
+import com.module.playways.grab.room.event.SomeOneOnlineChangeEvent;
 import com.module.playways.grab.room.fragment.GrabRoomFragment;
 import com.module.playways.grab.room.model.MLightInfoModel;
 import com.module.playways.grab.room.model.WantSingerInfo;
@@ -31,6 +33,8 @@ import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -549,6 +553,13 @@ public class GrabPlayerRv2 extends RelativeLayout {
         }
         return mSVGAParser;
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(GrabPlaySeatUpdateEvent event) {
+        MyLog.d(TAG, "onEvent" + " event=" + event);
+        initData();
+    }
+
 
     public void setRoomData(BaseRoomData roomData) {
         mRoomData = roomData;

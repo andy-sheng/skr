@@ -44,19 +44,21 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
 
   public static final String DEFAULT_ZIP = "";
 
-  public static final Integer DEFAULT_TOTALTIMEMS = 0;
+  public static final String DEFAULT_RANKBGM = "";
 
-  public static final Integer DEFAULT_BEGINTIMEMS = 0;
+  public static final Integer DEFAULT_BEGINMS = 0;
 
-  public static final Integer DEFAULT_ENDTIMEMS = 0;
-
-  public static final Integer DEFAULT_RANKLRCBEGINT = 0;
+  public static final Integer DEFAULT_ENDMS = 0;
 
   public static final String DEFAULT_STANDINTRO = "";
 
   public static final Integer DEFAULT_STANDINTROBEGINT = 0;
 
   public static final Integer DEFAULT_STANDINTROENDT = 0;
+
+  public static final Integer DEFAULT_TOTALMS = 0;
+
+  public static final Integer DEFAULT_RANKLRCBEGINT = 0;
 
   public static final Integer DEFAULT_STANDLRCBEGINT = 0;
 
@@ -152,106 +154,115 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
   private final String zip;
 
   /**
-   * 共计多少毫秒
+   * 匹配玩法的伴奏
    */
   @WireField(
       tag = 10,
-      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+      adapter = "com.squareup.wire.ProtoAdapter#STRING"
   )
-  private final Integer totalTimeMs;
+  private final String rankBgm;
 
   /**
-   * 开始毫秒
+   * beginTimeMs,匹配玩法的伴奏开始毫秒
    */
   @WireField(
       tag = 11,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  private final Integer beginTimeMs;
+  private final Integer beginMs;
 
   /**
-   * 结束毫秒
+   * endTimeMs,匹配玩法的伴奏结束毫秒
    */
   @WireField(
       tag = 12,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  private final Integer endTimeMs;
+  private final Integer endMs;
 
   /**
-   * 匹配玩法第一句歌词开始时间,毫秒
+   * standIntro,一唱到底的导唱
    */
   @WireField(
       tag = 13,
-      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
-  )
-  private final Integer rankLrcBeginT;
-
-  /**
-   * 一唱到底的导唱
-   */
-  @WireField(
-      tag = 14,
       adapter = "com.squareup.wire.ProtoAdapter#STRING"
   )
   private final String standIntro;
 
   /**
-   * 一唱到底导唱的开始毫秒
+   * standIntroBeginT,一唱到底导唱的开始毫秒
    */
   @WireField(
-      tag = 15,
+      tag = 14,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
   private final Integer standIntroBeginT;
 
   /**
-   * 一唱到底导唱的结束毫秒
+   * standIntroEndT,一唱到底导唱的结束毫秒
    */
   @WireField(
-      tag = 16,
+      tag = 15,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
   private final Integer standIntroEndT;
 
   /**
-   * 一唱到底第一句歌词的开始毫秒
+   * totalTimeMs,匹配玩法伴奏总时长
+   */
+  @WireField(
+      tag = 16,
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+  )
+  private final Integer totalMs;
+
+  /**
+   * rankLrcBeginT,匹配玩法第一句歌词开始时间,毫秒
    */
   @WireField(
       tag = 17,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  private final Integer standLrcBeginT;
+  private final Integer rankLrcBeginT;
 
   /**
-   * 一唱到底歌词的结束毫秒
+   * standLrcBeginT,一唱到底第一句歌词的开始毫秒
    */
   @WireField(
       tag = 18,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  private final Integer standLrcEndT;
+  private final Integer standLrcBeginT;
 
   /**
-   * 一唱到底是否是白板item
+   * standLrcEndT,一唱到底歌词的结束毫秒
    */
   @WireField(
       tag = 19,
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+  )
+  private final Integer standLrcEndT;
+
+  /**
+   * isBlank,是否一唱到底的白板item
+   */
+  @WireField(
+      tag = 20,
       adapter = "com.squareup.wire.ProtoAdapter#BOOL"
   )
   private final Boolean isBlank;
 
   /**
-   * 一唱到底歌词URL
+   * standLrc,一唱到底歌词URL
    */
   @WireField(
-      tag = 20,
+      tag = 21,
       adapter = "com.squareup.wire.ProtoAdapter#STRING"
   )
   private final String standLrc;
 
   /**
-   * 排位进入游戏前的背景音乐.p.s.为了兼容，这里丢弃了21.
+   * rankUserVoice,匹配进入游戏前的背景音乐
    */
   @WireField(
       tag = 22,
@@ -260,7 +271,7 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
   private final String rankUserVoice;
 
   /**
-   * 匹配玩法最后一句歌词的结束时间,毫秒
+   * rankLrcEndT,匹配玩法最后一句歌词的结束时间,毫秒
    */
   @WireField(
       tag = 23,
@@ -269,18 +280,19 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
   private final Integer rankLrcEndT;
 
   public MusicInfo(Integer itemID, String itemName, String cover, String owner, String lyric,
-      String ori, String acc, String midi, String zip, Integer totalTimeMs, Integer beginTimeMs,
-      Integer endTimeMs, Integer rankLrcBeginT, String standIntro, Integer standIntroBeginT,
-      Integer standIntroEndT, Integer standLrcBeginT, Integer standLrcEndT, Boolean isBlank,
-      String standLrc, String rankUserVoice, Integer rankLrcEndT) {
-    this(itemID, itemName, cover, owner, lyric, ori, acc, midi, zip, totalTimeMs, beginTimeMs, endTimeMs, rankLrcBeginT, standIntro, standIntroBeginT, standIntroEndT, standLrcBeginT, standLrcEndT, isBlank, standLrc, rankUserVoice, rankLrcEndT, ByteString.EMPTY);
+      String ori, String acc, String midi, String zip, String rankBgm, Integer beginMs,
+      Integer endMs, String standIntro, Integer standIntroBeginT, Integer standIntroEndT,
+      Integer totalMs, Integer rankLrcBeginT, Integer standLrcBeginT, Integer standLrcEndT,
+      Boolean isBlank, String standLrc, String rankUserVoice, Integer rankLrcEndT) {
+    this(itemID, itemName, cover, owner, lyric, ori, acc, midi, zip, rankBgm, beginMs, endMs, standIntro, standIntroBeginT, standIntroEndT, totalMs, rankLrcBeginT, standLrcBeginT, standLrcEndT, isBlank, standLrc, rankUserVoice, rankLrcEndT, ByteString.EMPTY);
   }
 
   public MusicInfo(Integer itemID, String itemName, String cover, String owner, String lyric,
-      String ori, String acc, String midi, String zip, Integer totalTimeMs, Integer beginTimeMs,
-      Integer endTimeMs, Integer rankLrcBeginT, String standIntro, Integer standIntroBeginT,
-      Integer standIntroEndT, Integer standLrcBeginT, Integer standLrcEndT, Boolean isBlank,
-      String standLrc, String rankUserVoice, Integer rankLrcEndT, ByteString unknownFields) {
+      String ori, String acc, String midi, String zip, String rankBgm, Integer beginMs,
+      Integer endMs, String standIntro, Integer standIntroBeginT, Integer standIntroEndT,
+      Integer totalMs, Integer rankLrcBeginT, Integer standLrcBeginT, Integer standLrcEndT,
+      Boolean isBlank, String standLrc, String rankUserVoice, Integer rankLrcEndT,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.itemID = itemID;
     this.itemName = itemName;
@@ -291,13 +303,14 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     this.acc = acc;
     this.midi = midi;
     this.zip = zip;
-    this.totalTimeMs = totalTimeMs;
-    this.beginTimeMs = beginTimeMs;
-    this.endTimeMs = endTimeMs;
-    this.rankLrcBeginT = rankLrcBeginT;
+    this.rankBgm = rankBgm;
+    this.beginMs = beginMs;
+    this.endMs = endMs;
     this.standIntro = standIntro;
     this.standIntroBeginT = standIntroBeginT;
     this.standIntroEndT = standIntroEndT;
+    this.totalMs = totalMs;
+    this.rankLrcBeginT = rankLrcBeginT;
     this.standLrcBeginT = standLrcBeginT;
     this.standLrcEndT = standLrcEndT;
     this.isBlank = isBlank;
@@ -318,13 +331,14 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     builder.acc = acc;
     builder.midi = midi;
     builder.zip = zip;
-    builder.totalTimeMs = totalTimeMs;
-    builder.beginTimeMs = beginTimeMs;
-    builder.endTimeMs = endTimeMs;
-    builder.rankLrcBeginT = rankLrcBeginT;
+    builder.rankBgm = rankBgm;
+    builder.beginMs = beginMs;
+    builder.endMs = endMs;
     builder.standIntro = standIntro;
     builder.standIntroBeginT = standIntroBeginT;
     builder.standIntroEndT = standIntroEndT;
+    builder.totalMs = totalMs;
+    builder.rankLrcBeginT = rankLrcBeginT;
     builder.standLrcBeginT = standLrcBeginT;
     builder.standLrcEndT = standLrcEndT;
     builder.isBlank = isBlank;
@@ -350,13 +364,14 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
         && Internal.equals(acc, o.acc)
         && Internal.equals(midi, o.midi)
         && Internal.equals(zip, o.zip)
-        && Internal.equals(totalTimeMs, o.totalTimeMs)
-        && Internal.equals(beginTimeMs, o.beginTimeMs)
-        && Internal.equals(endTimeMs, o.endTimeMs)
-        && Internal.equals(rankLrcBeginT, o.rankLrcBeginT)
+        && Internal.equals(rankBgm, o.rankBgm)
+        && Internal.equals(beginMs, o.beginMs)
+        && Internal.equals(endMs, o.endMs)
         && Internal.equals(standIntro, o.standIntro)
         && Internal.equals(standIntroBeginT, o.standIntroBeginT)
         && Internal.equals(standIntroEndT, o.standIntroEndT)
+        && Internal.equals(totalMs, o.totalMs)
+        && Internal.equals(rankLrcBeginT, o.rankLrcBeginT)
         && Internal.equals(standLrcBeginT, o.standLrcBeginT)
         && Internal.equals(standLrcEndT, o.standLrcEndT)
         && Internal.equals(isBlank, o.isBlank)
@@ -379,13 +394,14 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
       result = result * 37 + (acc != null ? acc.hashCode() : 0);
       result = result * 37 + (midi != null ? midi.hashCode() : 0);
       result = result * 37 + (zip != null ? zip.hashCode() : 0);
-      result = result * 37 + (totalTimeMs != null ? totalTimeMs.hashCode() : 0);
-      result = result * 37 + (beginTimeMs != null ? beginTimeMs.hashCode() : 0);
-      result = result * 37 + (endTimeMs != null ? endTimeMs.hashCode() : 0);
-      result = result * 37 + (rankLrcBeginT != null ? rankLrcBeginT.hashCode() : 0);
+      result = result * 37 + (rankBgm != null ? rankBgm.hashCode() : 0);
+      result = result * 37 + (beginMs != null ? beginMs.hashCode() : 0);
+      result = result * 37 + (endMs != null ? endMs.hashCode() : 0);
       result = result * 37 + (standIntro != null ? standIntro.hashCode() : 0);
       result = result * 37 + (standIntroBeginT != null ? standIntroBeginT.hashCode() : 0);
       result = result * 37 + (standIntroEndT != null ? standIntroEndT.hashCode() : 0);
+      result = result * 37 + (totalMs != null ? totalMs.hashCode() : 0);
+      result = result * 37 + (rankLrcBeginT != null ? rankLrcBeginT.hashCode() : 0);
       result = result * 37 + (standLrcBeginT != null ? standLrcBeginT.hashCode() : 0);
       result = result * 37 + (standLrcEndT != null ? standLrcEndT.hashCode() : 0);
       result = result * 37 + (isBlank != null ? isBlank.hashCode() : 0);
@@ -409,13 +425,14 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     if (acc != null) builder.append(", acc=").append(acc);
     if (midi != null) builder.append(", midi=").append(midi);
     if (zip != null) builder.append(", zip=").append(zip);
-    if (totalTimeMs != null) builder.append(", totalTimeMs=").append(totalTimeMs);
-    if (beginTimeMs != null) builder.append(", beginTimeMs=").append(beginTimeMs);
-    if (endTimeMs != null) builder.append(", endTimeMs=").append(endTimeMs);
-    if (rankLrcBeginT != null) builder.append(", rankLrcBeginT=").append(rankLrcBeginT);
+    if (rankBgm != null) builder.append(", rankBgm=").append(rankBgm);
+    if (beginMs != null) builder.append(", beginMs=").append(beginMs);
+    if (endMs != null) builder.append(", endMs=").append(endMs);
     if (standIntro != null) builder.append(", standIntro=").append(standIntro);
     if (standIntroBeginT != null) builder.append(", standIntroBeginT=").append(standIntroBeginT);
     if (standIntroEndT != null) builder.append(", standIntroEndT=").append(standIntroEndT);
+    if (totalMs != null) builder.append(", totalMs=").append(totalMs);
+    if (rankLrcBeginT != null) builder.append(", rankLrcBeginT=").append(rankLrcBeginT);
     if (standLrcBeginT != null) builder.append(", standLrcBeginT=").append(standLrcBeginT);
     if (standLrcEndT != null) builder.append(", standLrcEndT=").append(standLrcEndT);
     if (isBlank != null) builder.append(", isBlank=").append(isBlank);
@@ -526,47 +543,37 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
   }
 
   /**
-   * 共计多少毫秒
+   * 匹配玩法的伴奏
    */
-  public Integer getTotalTimeMs() {
-    if(totalTimeMs==null){
-        return DEFAULT_TOTALTIMEMS;
+  public String getRankBgm() {
+    if(rankBgm==null){
+        return DEFAULT_RANKBGM;
     }
-    return totalTimeMs;
+    return rankBgm;
   }
 
   /**
-   * 开始毫秒
+   * beginTimeMs,匹配玩法的伴奏开始毫秒
    */
-  public Integer getBeginTimeMs() {
-    if(beginTimeMs==null){
-        return DEFAULT_BEGINTIMEMS;
+  public Integer getBeginMs() {
+    if(beginMs==null){
+        return DEFAULT_BEGINMS;
     }
-    return beginTimeMs;
+    return beginMs;
   }
 
   /**
-   * 结束毫秒
+   * endTimeMs,匹配玩法的伴奏结束毫秒
    */
-  public Integer getEndTimeMs() {
-    if(endTimeMs==null){
-        return DEFAULT_ENDTIMEMS;
+  public Integer getEndMs() {
+    if(endMs==null){
+        return DEFAULT_ENDMS;
     }
-    return endTimeMs;
+    return endMs;
   }
 
   /**
-   * 匹配玩法第一句歌词开始时间,毫秒
-   */
-  public Integer getRankLrcBeginT() {
-    if(rankLrcBeginT==null){
-        return DEFAULT_RANKLRCBEGINT;
-    }
-    return rankLrcBeginT;
-  }
-
-  /**
-   * 一唱到底的导唱
+   * standIntro,一唱到底的导唱
    */
   public String getStandIntro() {
     if(standIntro==null){
@@ -576,7 +583,7 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
   }
 
   /**
-   * 一唱到底导唱的开始毫秒
+   * standIntroBeginT,一唱到底导唱的开始毫秒
    */
   public Integer getStandIntroBeginT() {
     if(standIntroBeginT==null){
@@ -586,7 +593,7 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
   }
 
   /**
-   * 一唱到底导唱的结束毫秒
+   * standIntroEndT,一唱到底导唱的结束毫秒
    */
   public Integer getStandIntroEndT() {
     if(standIntroEndT==null){
@@ -596,7 +603,27 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
   }
 
   /**
-   * 一唱到底第一句歌词的开始毫秒
+   * totalTimeMs,匹配玩法伴奏总时长
+   */
+  public Integer getTotalMs() {
+    if(totalMs==null){
+        return DEFAULT_TOTALMS;
+    }
+    return totalMs;
+  }
+
+  /**
+   * rankLrcBeginT,匹配玩法第一句歌词开始时间,毫秒
+   */
+  public Integer getRankLrcBeginT() {
+    if(rankLrcBeginT==null){
+        return DEFAULT_RANKLRCBEGINT;
+    }
+    return rankLrcBeginT;
+  }
+
+  /**
+   * standLrcBeginT,一唱到底第一句歌词的开始毫秒
    */
   public Integer getStandLrcBeginT() {
     if(standLrcBeginT==null){
@@ -606,7 +633,7 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
   }
 
   /**
-   * 一唱到底歌词的结束毫秒
+   * standLrcEndT,一唱到底歌词的结束毫秒
    */
   public Integer getStandLrcEndT() {
     if(standLrcEndT==null){
@@ -616,7 +643,7 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
   }
 
   /**
-   * 一唱到底是否是白板item
+   * isBlank,是否一唱到底的白板item
    */
   public Boolean getIsBlank() {
     if(isBlank==null){
@@ -626,7 +653,7 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
   }
 
   /**
-   * 一唱到底歌词URL
+   * standLrc,一唱到底歌词URL
    */
   public String getStandLrc() {
     if(standLrc==null){
@@ -636,7 +663,7 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
   }
 
   /**
-   * 排位进入游戏前的背景音乐.p.s.为了兼容，这里丢弃了21.
+   * rankUserVoice,匹配进入游戏前的背景音乐
    */
   public String getRankUserVoice() {
     if(rankUserVoice==null){
@@ -646,7 +673,7 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
   }
 
   /**
-   * 匹配玩法最后一句歌词的结束时间,毫秒
+   * rankLrcEndT,匹配玩法最后一句歌词的结束时间,毫秒
    */
   public Integer getRankLrcEndT() {
     if(rankLrcEndT==null){
@@ -719,91 +746,98 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
   }
 
   /**
-   * 共计多少毫秒
+   * 匹配玩法的伴奏
    */
-  public boolean hasTotalTimeMs() {
-    return totalTimeMs!=null;
+  public boolean hasRankBgm() {
+    return rankBgm!=null;
   }
 
   /**
-   * 开始毫秒
+   * beginTimeMs,匹配玩法的伴奏开始毫秒
    */
-  public boolean hasBeginTimeMs() {
-    return beginTimeMs!=null;
+  public boolean hasBeginMs() {
+    return beginMs!=null;
   }
 
   /**
-   * 结束毫秒
+   * endTimeMs,匹配玩法的伴奏结束毫秒
    */
-  public boolean hasEndTimeMs() {
-    return endTimeMs!=null;
+  public boolean hasEndMs() {
+    return endMs!=null;
   }
 
   /**
-   * 匹配玩法第一句歌词开始时间,毫秒
-   */
-  public boolean hasRankLrcBeginT() {
-    return rankLrcBeginT!=null;
-  }
-
-  /**
-   * 一唱到底的导唱
+   * standIntro,一唱到底的导唱
    */
   public boolean hasStandIntro() {
     return standIntro!=null;
   }
 
   /**
-   * 一唱到底导唱的开始毫秒
+   * standIntroBeginT,一唱到底导唱的开始毫秒
    */
   public boolean hasStandIntroBeginT() {
     return standIntroBeginT!=null;
   }
 
   /**
-   * 一唱到底导唱的结束毫秒
+   * standIntroEndT,一唱到底导唱的结束毫秒
    */
   public boolean hasStandIntroEndT() {
     return standIntroEndT!=null;
   }
 
   /**
-   * 一唱到底第一句歌词的开始毫秒
+   * totalTimeMs,匹配玩法伴奏总时长
+   */
+  public boolean hasTotalMs() {
+    return totalMs!=null;
+  }
+
+  /**
+   * rankLrcBeginT,匹配玩法第一句歌词开始时间,毫秒
+   */
+  public boolean hasRankLrcBeginT() {
+    return rankLrcBeginT!=null;
+  }
+
+  /**
+   * standLrcBeginT,一唱到底第一句歌词的开始毫秒
    */
   public boolean hasStandLrcBeginT() {
     return standLrcBeginT!=null;
   }
 
   /**
-   * 一唱到底歌词的结束毫秒
+   * standLrcEndT,一唱到底歌词的结束毫秒
    */
   public boolean hasStandLrcEndT() {
     return standLrcEndT!=null;
   }
 
   /**
-   * 一唱到底是否是白板item
+   * isBlank,是否一唱到底的白板item
    */
   public boolean hasIsBlank() {
     return isBlank!=null;
   }
 
   /**
-   * 一唱到底歌词URL
+   * standLrc,一唱到底歌词URL
    */
   public boolean hasStandLrc() {
     return standLrc!=null;
   }
 
   /**
-   * 排位进入游戏前的背景音乐.p.s.为了兼容，这里丢弃了21.
+   * rankUserVoice,匹配进入游戏前的背景音乐
    */
   public boolean hasRankUserVoice() {
     return rankUserVoice!=null;
   }
 
   /**
-   * 匹配玩法最后一句歌词的结束时间,毫秒
+   * rankLrcEndT,匹配玩法最后一句歌词的结束时间,毫秒
    */
   public boolean hasRankLrcEndT() {
     return rankLrcEndT!=null;
@@ -828,19 +862,21 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
 
     private String zip;
 
-    private Integer totalTimeMs;
+    private String rankBgm;
 
-    private Integer beginTimeMs;
+    private Integer beginMs;
 
-    private Integer endTimeMs;
-
-    private Integer rankLrcBeginT;
+    private Integer endMs;
 
     private String standIntro;
 
     private Integer standIntroBeginT;
 
     private Integer standIntroEndT;
+
+    private Integer totalMs;
+
+    private Integer rankLrcBeginT;
 
     private Integer standLrcBeginT;
 
@@ -930,39 +966,31 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     }
 
     /**
-     * 共计多少毫秒
+     * 匹配玩法的伴奏
      */
-    public Builder setTotalTimeMs(Integer totalTimeMs) {
-      this.totalTimeMs = totalTimeMs;
+    public Builder setRankBgm(String rankBgm) {
+      this.rankBgm = rankBgm;
       return this;
     }
 
     /**
-     * 开始毫秒
+     * beginTimeMs,匹配玩法的伴奏开始毫秒
      */
-    public Builder setBeginTimeMs(Integer beginTimeMs) {
-      this.beginTimeMs = beginTimeMs;
+    public Builder setBeginMs(Integer beginMs) {
+      this.beginMs = beginMs;
       return this;
     }
 
     /**
-     * 结束毫秒
+     * endTimeMs,匹配玩法的伴奏结束毫秒
      */
-    public Builder setEndTimeMs(Integer endTimeMs) {
-      this.endTimeMs = endTimeMs;
+    public Builder setEndMs(Integer endMs) {
+      this.endMs = endMs;
       return this;
     }
 
     /**
-     * 匹配玩法第一句歌词开始时间,毫秒
-     */
-    public Builder setRankLrcBeginT(Integer rankLrcBeginT) {
-      this.rankLrcBeginT = rankLrcBeginT;
-      return this;
-    }
-
-    /**
-     * 一唱到底的导唱
+     * standIntro,一唱到底的导唱
      */
     public Builder setStandIntro(String standIntro) {
       this.standIntro = standIntro;
@@ -970,7 +998,7 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     }
 
     /**
-     * 一唱到底导唱的开始毫秒
+     * standIntroBeginT,一唱到底导唱的开始毫秒
      */
     public Builder setStandIntroBeginT(Integer standIntroBeginT) {
       this.standIntroBeginT = standIntroBeginT;
@@ -978,7 +1006,7 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     }
 
     /**
-     * 一唱到底导唱的结束毫秒
+     * standIntroEndT,一唱到底导唱的结束毫秒
      */
     public Builder setStandIntroEndT(Integer standIntroEndT) {
       this.standIntroEndT = standIntroEndT;
@@ -986,7 +1014,23 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     }
 
     /**
-     * 一唱到底第一句歌词的开始毫秒
+     * totalTimeMs,匹配玩法伴奏总时长
+     */
+    public Builder setTotalMs(Integer totalMs) {
+      this.totalMs = totalMs;
+      return this;
+    }
+
+    /**
+     * rankLrcBeginT,匹配玩法第一句歌词开始时间,毫秒
+     */
+    public Builder setRankLrcBeginT(Integer rankLrcBeginT) {
+      this.rankLrcBeginT = rankLrcBeginT;
+      return this;
+    }
+
+    /**
+     * standLrcBeginT,一唱到底第一句歌词的开始毫秒
      */
     public Builder setStandLrcBeginT(Integer standLrcBeginT) {
       this.standLrcBeginT = standLrcBeginT;
@@ -994,7 +1038,7 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     }
 
     /**
-     * 一唱到底歌词的结束毫秒
+     * standLrcEndT,一唱到底歌词的结束毫秒
      */
     public Builder setStandLrcEndT(Integer standLrcEndT) {
       this.standLrcEndT = standLrcEndT;
@@ -1002,7 +1046,7 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     }
 
     /**
-     * 一唱到底是否是白板item
+     * isBlank,是否一唱到底的白板item
      */
     public Builder setIsBlank(Boolean isBlank) {
       this.isBlank = isBlank;
@@ -1010,7 +1054,7 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     }
 
     /**
-     * 一唱到底歌词URL
+     * standLrc,一唱到底歌词URL
      */
     public Builder setStandLrc(String standLrc) {
       this.standLrc = standLrc;
@@ -1018,7 +1062,7 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     }
 
     /**
-     * 排位进入游戏前的背景音乐.p.s.为了兼容，这里丢弃了21.
+     * rankUserVoice,匹配进入游戏前的背景音乐
      */
     public Builder setRankUserVoice(String rankUserVoice) {
       this.rankUserVoice = rankUserVoice;
@@ -1026,7 +1070,7 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     }
 
     /**
-     * 匹配玩法最后一句歌词的结束时间,毫秒
+     * rankLrcEndT,匹配玩法最后一句歌词的结束时间,毫秒
      */
     public Builder setRankLrcEndT(Integer rankLrcEndT) {
       this.rankLrcEndT = rankLrcEndT;
@@ -1035,7 +1079,7 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
 
     @Override
     public MusicInfo build() {
-      return new MusicInfo(itemID, itemName, cover, owner, lyric, ori, acc, midi, zip, totalTimeMs, beginTimeMs, endTimeMs, rankLrcBeginT, standIntro, standIntroBeginT, standIntroEndT, standLrcBeginT, standLrcEndT, isBlank, standLrc, rankUserVoice, rankLrcEndT, super.buildUnknownFields());
+      return new MusicInfo(itemID, itemName, cover, owner, lyric, ori, acc, midi, zip, rankBgm, beginMs, endMs, standIntro, standIntroBeginT, standIntroEndT, totalMs, rankLrcBeginT, standLrcBeginT, standLrcEndT, isBlank, standLrc, rankUserVoice, rankLrcEndT, super.buildUnknownFields());
     }
   }
 
@@ -1055,17 +1099,18 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
           + ProtoAdapter.STRING.encodedSizeWithTag(7, value.acc)
           + ProtoAdapter.STRING.encodedSizeWithTag(8, value.midi)
           + ProtoAdapter.STRING.encodedSizeWithTag(9, value.zip)
-          + ProtoAdapter.UINT32.encodedSizeWithTag(10, value.totalTimeMs)
-          + ProtoAdapter.UINT32.encodedSizeWithTag(11, value.beginTimeMs)
-          + ProtoAdapter.UINT32.encodedSizeWithTag(12, value.endTimeMs)
-          + ProtoAdapter.UINT32.encodedSizeWithTag(13, value.rankLrcBeginT)
-          + ProtoAdapter.STRING.encodedSizeWithTag(14, value.standIntro)
-          + ProtoAdapter.UINT32.encodedSizeWithTag(15, value.standIntroBeginT)
-          + ProtoAdapter.UINT32.encodedSizeWithTag(16, value.standIntroEndT)
-          + ProtoAdapter.UINT32.encodedSizeWithTag(17, value.standLrcBeginT)
-          + ProtoAdapter.UINT32.encodedSizeWithTag(18, value.standLrcEndT)
-          + ProtoAdapter.BOOL.encodedSizeWithTag(19, value.isBlank)
-          + ProtoAdapter.STRING.encodedSizeWithTag(20, value.standLrc)
+          + ProtoAdapter.STRING.encodedSizeWithTag(10, value.rankBgm)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(11, value.beginMs)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(12, value.endMs)
+          + ProtoAdapter.STRING.encodedSizeWithTag(13, value.standIntro)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(14, value.standIntroBeginT)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(15, value.standIntroEndT)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(16, value.totalMs)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(17, value.rankLrcBeginT)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(18, value.standLrcBeginT)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(19, value.standLrcEndT)
+          + ProtoAdapter.BOOL.encodedSizeWithTag(20, value.isBlank)
+          + ProtoAdapter.STRING.encodedSizeWithTag(21, value.standLrc)
           + ProtoAdapter.STRING.encodedSizeWithTag(22, value.rankUserVoice)
           + ProtoAdapter.UINT32.encodedSizeWithTag(23, value.rankLrcEndT)
           + value.unknownFields().size();
@@ -1082,17 +1127,18 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
       ProtoAdapter.STRING.encodeWithTag(writer, 7, value.acc);
       ProtoAdapter.STRING.encodeWithTag(writer, 8, value.midi);
       ProtoAdapter.STRING.encodeWithTag(writer, 9, value.zip);
-      ProtoAdapter.UINT32.encodeWithTag(writer, 10, value.totalTimeMs);
-      ProtoAdapter.UINT32.encodeWithTag(writer, 11, value.beginTimeMs);
-      ProtoAdapter.UINT32.encodeWithTag(writer, 12, value.endTimeMs);
-      ProtoAdapter.UINT32.encodeWithTag(writer, 13, value.rankLrcBeginT);
-      ProtoAdapter.STRING.encodeWithTag(writer, 14, value.standIntro);
-      ProtoAdapter.UINT32.encodeWithTag(writer, 15, value.standIntroBeginT);
-      ProtoAdapter.UINT32.encodeWithTag(writer, 16, value.standIntroEndT);
-      ProtoAdapter.UINT32.encodeWithTag(writer, 17, value.standLrcBeginT);
-      ProtoAdapter.UINT32.encodeWithTag(writer, 18, value.standLrcEndT);
-      ProtoAdapter.BOOL.encodeWithTag(writer, 19, value.isBlank);
-      ProtoAdapter.STRING.encodeWithTag(writer, 20, value.standLrc);
+      ProtoAdapter.STRING.encodeWithTag(writer, 10, value.rankBgm);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 11, value.beginMs);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 12, value.endMs);
+      ProtoAdapter.STRING.encodeWithTag(writer, 13, value.standIntro);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 14, value.standIntroBeginT);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 15, value.standIntroEndT);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 16, value.totalMs);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 17, value.rankLrcBeginT);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 18, value.standLrcBeginT);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 19, value.standLrcEndT);
+      ProtoAdapter.BOOL.encodeWithTag(writer, 20, value.isBlank);
+      ProtoAdapter.STRING.encodeWithTag(writer, 21, value.standLrc);
       ProtoAdapter.STRING.encodeWithTag(writer, 22, value.rankUserVoice);
       ProtoAdapter.UINT32.encodeWithTag(writer, 23, value.rankLrcEndT);
       writer.writeBytes(value.unknownFields());
@@ -1113,17 +1159,18 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
           case 7: builder.setAcc(ProtoAdapter.STRING.decode(reader)); break;
           case 8: builder.setMidi(ProtoAdapter.STRING.decode(reader)); break;
           case 9: builder.setZip(ProtoAdapter.STRING.decode(reader)); break;
-          case 10: builder.setTotalTimeMs(ProtoAdapter.UINT32.decode(reader)); break;
-          case 11: builder.setBeginTimeMs(ProtoAdapter.UINT32.decode(reader)); break;
-          case 12: builder.setEndTimeMs(ProtoAdapter.UINT32.decode(reader)); break;
-          case 13: builder.setRankLrcBeginT(ProtoAdapter.UINT32.decode(reader)); break;
-          case 14: builder.setStandIntro(ProtoAdapter.STRING.decode(reader)); break;
-          case 15: builder.setStandIntroBeginT(ProtoAdapter.UINT32.decode(reader)); break;
-          case 16: builder.setStandIntroEndT(ProtoAdapter.UINT32.decode(reader)); break;
-          case 17: builder.setStandLrcBeginT(ProtoAdapter.UINT32.decode(reader)); break;
-          case 18: builder.setStandLrcEndT(ProtoAdapter.UINT32.decode(reader)); break;
-          case 19: builder.setIsBlank(ProtoAdapter.BOOL.decode(reader)); break;
-          case 20: builder.setStandLrc(ProtoAdapter.STRING.decode(reader)); break;
+          case 10: builder.setRankBgm(ProtoAdapter.STRING.decode(reader)); break;
+          case 11: builder.setBeginMs(ProtoAdapter.UINT32.decode(reader)); break;
+          case 12: builder.setEndMs(ProtoAdapter.UINT32.decode(reader)); break;
+          case 13: builder.setStandIntro(ProtoAdapter.STRING.decode(reader)); break;
+          case 14: builder.setStandIntroBeginT(ProtoAdapter.UINT32.decode(reader)); break;
+          case 15: builder.setStandIntroEndT(ProtoAdapter.UINT32.decode(reader)); break;
+          case 16: builder.setTotalMs(ProtoAdapter.UINT32.decode(reader)); break;
+          case 17: builder.setRankLrcBeginT(ProtoAdapter.UINT32.decode(reader)); break;
+          case 18: builder.setStandLrcBeginT(ProtoAdapter.UINT32.decode(reader)); break;
+          case 19: builder.setStandLrcEndT(ProtoAdapter.UINT32.decode(reader)); break;
+          case 20: builder.setIsBlank(ProtoAdapter.BOOL.decode(reader)); break;
+          case 21: builder.setStandLrc(ProtoAdapter.STRING.decode(reader)); break;
           case 22: builder.setRankUserVoice(ProtoAdapter.STRING.decode(reader)); break;
           case 23: builder.setRankLrcEndT(ProtoAdapter.UINT32.decode(reader)); break;
           default: {

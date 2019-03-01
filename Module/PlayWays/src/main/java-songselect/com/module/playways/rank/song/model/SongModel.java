@@ -250,9 +250,9 @@ public class SongModel implements Serializable {
         this.setAcc(musicInfo.getAcc());
         this.setMidi(musicInfo.getMidi());
         this.setZip(musicInfo.getZip());
-        this.setTotalMs(musicInfo.getTotalTimeMs());
-        this.setBeginMs(musicInfo.getBeginTimeMs());
-        this.setEndMs(musicInfo.getEndTimeMs());
+        this.setTotalMs(musicInfo.getTotalMs());
+        this.setBeginMs(musicInfo.getBeginMs());
+        this.setEndMs(musicInfo.getEndMs());
         this.setRankLrcBeginT(musicInfo.getRankLrcBeginT());
 
         this.setStandIntro(musicInfo.getStandIntro());
