@@ -84,7 +84,7 @@ import okhttp3.RequestBody;
 public class GrabCorePresenter extends RxLifeCyclePresenter {
     public String TAG = "GrabCorePresenter";
 
-    private static long sSyncStateTaskInterval = 4500;
+    private static long sSyncStateTaskInterval = 5000;
     static final int MSG_ROBOT_SING_BEGIN = 10;
 
     GrabRoomData mRoomData;
@@ -1146,7 +1146,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QSyncStatusMsgEvent event) {
-        MyLog.w(TAG, "收到服务器更新状态,event.currentRound是" + event.getCurrentRound().getRoundSeq() + ", timets 是" + event.info.getTimeMs());
+        MyLog.w(TAG, "收到服务器push更新状态,event.currentRound是" + event.getCurrentRound().getRoundSeq() + ", timets 是" + event.info.getTimeMs());
+        startSyncGameStateTask(sSyncStateTaskInterval);
         updatePlayerState(event.getGameOverTimeMs(), event.getSyncStatusTimeMs(), event.getCurrentRound());
     }
 

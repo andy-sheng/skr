@@ -121,6 +121,7 @@ public class GrabOpView extends RelativeLayout {
         mBtnIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+                MyLog.d(TAG,"mStatus ==" + mStatus);
                 if (mStatus == STATUS_GRAP) {
                     if (mListener != null) {
                         mListener.clickGrabBtn(mSeq);
@@ -133,6 +134,7 @@ public class GrabOpView extends RelativeLayout {
         mIvBurst.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+                MyLog.d(TAG,"mStatus ==" + mStatus);
                 if (mStatus == STATUS_CAN_OP) {
                     if (mListener != null) {
                         mListener.clickBurst(mSeq);
@@ -145,6 +147,7 @@ public class GrabOpView extends RelativeLayout {
         mIvLightOff.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+                MyLog.d(TAG,"mStatus ==" + mStatus);
                 if(mStatus == STATUS_CAN_OP){
                     if (mListener != null) {
                         mListener.clickLightOff();
