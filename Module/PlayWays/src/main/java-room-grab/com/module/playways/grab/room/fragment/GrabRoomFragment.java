@@ -98,6 +98,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     public static final int MSG_ENSURE_GAME_OVER = 6;
 
+    //自己演唱玩
+    public static final int MSG_SEND_SELF_SING_END = 7;
+
     GrabRoomData mRoomData;
 
     RelativeLayout mRankingContainer;
@@ -168,6 +171,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
                     break;
                 case MSG_ENSURE_GAME_OVER:
                     onGrabGameOver("MSG_ENSURE_GAME_OVER");
+                    break;
+                case MSG_SEND_SELF_SING_END:
+                    mCorePresenter.sendRoundOverInfo();
                     break;
             }
         }
@@ -568,6 +574,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     @Override
     public void singBySelf() {
+        mUiHanlder.removeMessages(MSG_SEND_SELF_SING_END);
         mTopContainerView.setVisibility(View.GONE);
         mSingerTopView.setVisibility(View.VISIBLE);
         mSingerTopView.startSelfShow();
@@ -581,6 +588,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
         msg.arg1 = (int) MyUserInfoManager.getInstance().getUid();
         mUiHanlder.sendMessageDelayed(msg, 4000);
+
+        mUiHanlder.sendMessageDelayed(mUiHanlder.obtainMessage(MSG_SEND_SELF_SING_END), mRoomData.getRealRoundInfo().getMusic().getTotalMs());
 
         singBeginTipsPlay((int) MyUserInfoManager.getInstance().getUid(), new Runnable() {
             @Override
@@ -602,6 +611,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mSingBeginTipsCardView.setVisibility(View.VISIBLE);
 
         mUiHanlder.removeMessages(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
+        mUiHanlder.removeMessages(MSG_SEND_SELF_SING_END);
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
         msg.arg1 = (int) uid;
         mUiHanlder.sendMessageDelayed(msg, 2600);
@@ -666,6 +676,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     @Override
     public void roundOver(int songId, int reason, int resultType, boolean playNextSongInfoCard, BaseRoundInfoModel now) {
         mUiHanlder.removeMessages(MSG_ENSURE_ROUND_OVER_PLAY_OVER);
+        mUiHanlder.removeMessages(MSG_SEND_SELF_SING_END);
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_ROUND_OVER_PLAY_OVER);
         msg.arg1 = playNextSongInfoCard ? 1 : 0;
         msg.obj = now;
@@ -788,6 +799,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     public void gameFinish() {
         MyLog.w(TAG, "游戏结束了");
         mUiHanlder.removeMessages(MSG_ENSURE_GAME_OVER);
+        mUiHanlder.removeMessages(MSG_SEND_SELF_SING_END);
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_GAME_OVER);
         mUiHanlder.sendMessageDelayed(msg, 4000);
 
