@@ -31,7 +31,7 @@
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/tv_change_room"
         android:layout_marginLeft="@dimen/view_10_dp"
-        android:gravity="center_horizontal"
+        android:gravity="center_vertical"
         android:textColor="#B2B6D6"
         android:textSize="@dimen/textsize_16_dp"
         android:drawableLeft="@drawable/money"

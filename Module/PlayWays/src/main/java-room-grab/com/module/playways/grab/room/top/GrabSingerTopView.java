@@ -21,6 +21,7 @@ import com.module.playways.rank.room.view.MoreOpView;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -159,10 +160,19 @@ public class GrabSingerTopView extends FrameLayout {
     }
 
     @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if(!EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         cancelCountDownTask();
         stopFlickerAnim();
+        EventBus.getDefault().unregister(this);
     }
 
     public void startSelfShow() {
