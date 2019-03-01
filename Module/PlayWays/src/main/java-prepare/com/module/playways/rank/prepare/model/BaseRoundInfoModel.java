@@ -162,7 +162,7 @@ public abstract class BaseRoundInfoModel implements Serializable {
                 "type=" + getType() +
                 ", userID=" + userID +
                 ", playbookID=" + playbookID +
-//                ", songModel=" + songModel.getItemName() +
+                ", songModel=" + songModel +
                 ", roundSeq=" + roundSeq +
                 ", singBeginMs=" + singBeginMs +
                 ", singEndMs=" + singEndMs +

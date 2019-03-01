@@ -51,6 +51,17 @@ public class GrabSkrResourceModel implements Serializable {
         this.sysScore = sysScore;
     }
 
+    @Override
+    public String toString() {
+        return "GrabSkrResourceModel{" +
+                "audioURL='" + audioURL + '\'' +
+                ", itemID=" + itemID +
+                ", midiURL='" + midiURL + '\'' +
+                ", resourceID=" + resourceID +
+                ", sysScore=" + sysScore +
+                '}';
+    }
+
     public static GrabSkrResourceModel parse(ResourceInfo resourceInfo){
         GrabSkrResourceModel grabSkrResourceModel = new GrabSkrResourceModel();
         grabSkrResourceModel.setAudioURL(resourceInfo.getAudioURL());
