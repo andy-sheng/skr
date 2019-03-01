@@ -12,10 +12,7 @@ import com.module.playways.grab.room.event.SomeOneLeaveWaitSeatEvent;
 import com.module.playways.grab.room.event.SomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.SomeOneLightOffEvent;
 import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
-import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.song.model.SongModel;
-import com.zq.live.proto.Room.MLightInfo;
-import com.zq.live.proto.Room.NoPassSingInfo;
 import com.zq.live.proto.Room.OnlineInfo;
 import com.zq.live.proto.Room.QBLightMsg;
 import com.zq.live.proto.Room.QMLightMsg;
@@ -48,6 +45,8 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
     private GrabSkrResourceModel skrResource; // 机器人资源
 
     private HashSet<WantSingerInfo> wantSingInfos = new HashSet<>(); //已经抢了的人
+
+    protected SongModel music;//本轮次要唱的歌儿的详细信息
 
     //0未知
     //1有种优秀叫一唱到底（全部唱完）
@@ -235,8 +234,8 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         if (this.getSkrResource() == null) {
             this.setSkrResource(roundInfo.getSkrResource());
         }
-        if (this.getSongModel() == null) {
-            this.setSongModel(roundInfo.getSongModel());
+        if (this.getMusic() == null) {
+            this.setMusic(roundInfo.getMusic());
         }
         for (WantSingerInfo wantSingerInfo : roundInfo.getWantSingInfos()) {
             addGrabUid(notify, wantSingerInfo);
@@ -273,7 +272,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         roundInfoModel.setStatus(roundInfo.getStatus().getValue());
         SongModel songModel = new SongModel();
         songModel.parse(roundInfo.getMusic());
-        roundInfoModel.setSongModel(songModel);
+        roundInfoModel.setMusic(songModel);
         for (WantSingInfo wantSingInfo : roundInfo.getWantSingInfosList()) {
             roundInfoModel.addGrabUid(false, WantSingerInfo.parse(wantSingInfo));
         }

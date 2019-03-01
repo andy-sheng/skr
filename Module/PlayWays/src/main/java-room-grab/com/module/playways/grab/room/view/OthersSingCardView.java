@@ -20,7 +20,6 @@ import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.module.playways.rank.room.RankRoomData;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGADrawable;
@@ -139,7 +138,7 @@ public class OthersSingCardView extends RelativeLayout {
 
     private void countDown() {
         GrabRoundInfoModel grabRoundInfoModel = mGrabRoomData.getRealRoundInfo();
-        SongModel songModel = grabRoundInfoModel.getSongModel();
+        SongModel songModel = grabRoundInfoModel.getMusic();
         if (songModel == null) {
             return;
         }

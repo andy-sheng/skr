@@ -12,7 +12,6 @@ import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
-import com.module.playways.BaseRoomData;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.SomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.SomeOneLightOffEvent;
@@ -173,6 +172,6 @@ public class GrabSingerTopView extends RelativeLayout {
         mTvTotalLight.setText("/" + grabRoundInfoModel.getPlayUsers().size());
         int num = grabRoundInfoModel.getPlayUsers().size() - grabRoundInfoModel.getMLightInfos().size();
         mTvCurLight.setText(String.valueOf(num));
-        startSing(grabRoundInfoModel.getSongModel());
+        startSing(grabRoundInfoModel.getMusic());
     }
 }

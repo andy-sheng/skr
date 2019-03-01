@@ -230,7 +230,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     }
                 }
             });
-            mExoPlayer.startPlay(now.getSongModel().getStandIntro());
+            mExoPlayer.startPlay(now.getMusic().getStandIntro());
         }
     }
 
@@ -260,8 +260,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 }
                 mRobotScoreHelper.reset();
                 EngineManager.getInstance().startRecognize(RecognizeConfig.newBuilder()
-                        .setSongName(now.getSongModel().getItemName())
-                        .setArtist(now.getSongModel().getOwner())
+                        .setSongName(now.getMusic().getItemName())
+                        .setArtist(now.getMusic().getOwner())
                         .setMode(RecognizeConfig.MODE_AUTO)
                         .setAutoTimes(8)
                         .setMResultListener(new ArcRecognizeListener() {
@@ -901,7 +901,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         mUiHanlder.post(new Runnable() {
             @Override
             public void run() {
-                mIGrabView.roundOver(event.lastRoundInfo.getSongModel().getItemID(), event.lastRoundInfo.getOverReason(), event.lastRoundInfo.getResultType(), false, null);
+                mIGrabView.roundOver(event.lastRoundInfo.getMusic().getItemID(), event.lastRoundInfo.getOverReason(), event.lastRoundInfo.getResultType(), false, null);
             }
         });
         // 销毁引擎，减小成本
@@ -932,7 +932,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 mUiHanlder.post(new Runnable() {
                     @Override
                     public void run() {
-                        mIGrabView.roundOver(event.lastRoundInfo.getSongModel().getItemID(), event.lastRoundInfo.getOverReason(), event.lastRoundInfo.getResultType(), true, now);
+                        mIGrabView.roundOver(event.lastRoundInfo.getMusic().getItemID(), event.lastRoundInfo.getOverReason(), event.lastRoundInfo.getResultType(), true, now);
                     }
                 });
 
@@ -940,7 +940,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     onSelfRoundOver(event.lastRoundInfo);
                 }
             } else {
-                mIGrabView.grabBegin(now.getRoundSeq(), now.getSongModel());
+                mIGrabView.grabBegin(now.getRoundSeq(), now.getMusic());
             }
         } else if (now.getStatus() == GrabRoundInfoModel.STATUS_SING) {
             // 演唱阶段
@@ -973,7 +973,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         tryStopRobotPlay();
         if (now.getStatus() == GrabRoundInfoModel.STATUS_GRAB) {
             //抢唱阶段，播抢唱卡片
-            mIGrabView.grabBegin(now.getRoundSeq(), now.getSongModel());
+            mIGrabView.grabBegin(now.getRoundSeq(), now.getMusic());
         } else if (now.getStatus() == GrabRoundInfoModel.STATUS_SING) {
             // 演唱阶段
             if (now.getUserID() == MyUserInfoManager.getInstance().getUid()) {

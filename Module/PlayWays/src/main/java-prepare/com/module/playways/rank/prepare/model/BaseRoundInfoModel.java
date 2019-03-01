@@ -50,11 +50,11 @@ public abstract class BaseRoundInfoModel implements Serializable {
         this.overReason = overReason;
     }
 
-    public SongModel getSongModel() {
+    public SongModel getMusic() {
         return songModel;
     }
 
-    public void setSongModel(SongModel songModel) {
+    public void setMusic(SongModel songModel) {
         this.songModel = songModel;
     }
 

@@ -9,22 +9,17 @@ import com.common.base.BaseActivity;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
-import com.common.log.MyLog;
 import com.common.statistics.StatConstants;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
-import com.component.busilib.constans.GameModeType;
 import com.module.RouterConstants;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabConfigModel;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.module.playways.rank.room.model.RankGameConfigModel;
 import com.module.playways.rank.prepare.model.JoinGrabRoomRspModel;
-import com.module.playways.rank.prepare.model.PrepareData;
 
-import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
 import com.module.playways.grab.room.fragment.GrabRoomFragment;
@@ -85,7 +80,7 @@ public class GrabRoomActivity extends BaseActivity {
             }
             SongModel songModel = new SongModel();
             songModel.setItemName("歌曲22");
-            grabRoundInfoModel.setSongModel(songModel);
+            grabRoundInfoModel.setMusic(songModel);
             grabRoundInfoModel.setEnterStatus(grabRoundInfoModel.getStatus());
             mRoomData.setExpectRoundInfo(grabRoundInfoModel);
         }
