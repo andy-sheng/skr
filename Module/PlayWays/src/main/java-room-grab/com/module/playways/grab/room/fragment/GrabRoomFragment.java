@@ -141,7 +141,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     List<Animator> mAnimatorList = new ArrayList<>();  //存放所有需要尝试取消的动画
 
-    boolean isGameEndAniamtionShow = false; // 标记对战结束动画是否播放
+    boolean mIsGameEndAniamtionShow = false; // 标记对战结束动画是否播放
+
+    long mBeginChangeRoomTs;
 
     Handler mUiHanlder = new Handler() {
         @Override
@@ -383,6 +385,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mTopContainerView.getGrabTopView().setListener(new GrabTopView.Listener() {
             @Override
             public void changeRoom() {
+                mBeginChangeRoomTs = System.currentTimeMillis();
                 mGrabChangeRoomTransitionView.setVisibility(View.VISIBLE);
                 mCorePresenter.switchRoom();
             }
@@ -709,7 +712,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         }
         mUiHanlder.removeCallbacksAndMessages(null);
 
-        isGameEndAniamtionShow = false;
+        mIsGameEndAniamtionShow = false;
 
         if (mAnimatorList != null) {
             for (Animator animator : mAnimatorList) {
@@ -809,7 +812,17 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     @Override
     public void onChangeRoomResult(boolean success) {
-        mGrabChangeRoomTransitionView.setVisibility(View.GONE);
+        long t = System.currentTimeMillis() - mBeginChangeRoomTs;
+        if (t > 1000) {
+            mGrabChangeRoomTransitionView.setVisibility(View.GONE);
+        } else {
+            mUiHanlder.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mGrabChangeRoomTransitionView.setVisibility(View.GONE);
+                }
+            }, 1000 - t);
+        }
     }
 
     private void onGrabGameOver(String from) {

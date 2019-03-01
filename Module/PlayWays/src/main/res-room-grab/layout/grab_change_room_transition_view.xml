@@ -18,7 +18,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/change_room_tip_tv"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/view_10_dp"
         android:scaleType="centerInside"
-        android:src="@drawable/change_room_loading" />
+        android:src="@drawable/huanfangjian_loading" />
 </merge>
