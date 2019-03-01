@@ -19,7 +19,6 @@ import com.common.log.MyLog;
 import com.common.statistics.StatConstants;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
-import com.common.utils.HttpUtils;
 import com.common.utils.U;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.manager.BgMusicManager;
@@ -34,7 +33,7 @@ import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.presenter.GrabCorePresenter;
 import com.module.playways.grab.room.top.GrabTopContainerView;
-import com.module.playways.grab.room.top.SingerTopView;
+import com.module.playways.grab.room.top.GrabSingerTopView;
 import com.module.playways.grab.room.view.GrabGameOverView;
 import com.module.playways.grab.room.view.GrabOpView;
 import com.module.playways.grab.room.view.OthersSingCardView;
@@ -49,7 +48,6 @@ import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.comment.CommentView;
 import com.module.playways.rank.room.gift.GiftBigAnimationViewGroup;
 import com.module.playways.rank.room.gift.GiftContinueViewGroup;
-import com.module.playways.rank.room.presenter.DownLoadScoreFilePresenter;
 import com.module.playways.rank.room.view.BottomContainerView;
 import com.module.playways.rank.room.view.InputContainerView;
 import com.module.playways.rank.song.model.SongModel;
@@ -107,7 +105,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     CommentView mCommentView;
 
-    SingerTopView mSingerTopView;
+    GrabSingerTopView mSingerTopView;
 
     GrabTopContainerView mTopContainerView;
 
@@ -354,7 +352,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     }
 
     private void initTopView() {
-        mSingerTopView = (SingerTopView) mRootView.findViewById(R.id.singer_top_view);
+        mSingerTopView = (GrabSingerTopView)mRootView.findViewById(R.id.singer_top_view);
+        mSingerTopView.setRoomData(mRoomData);
+
         mTopContainerView = mRootView.findViewById(R.id.top_container_view);
         mTopContainerView.setRoomData(mRoomData);
 
@@ -362,18 +362,21 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         int statusBarHeight = U.getStatusBarUtil().getStatusBarHeight(getContext());
         RelativeLayout.LayoutParams topLayoutParams = (RelativeLayout.LayoutParams) mTopContainerView.getLayoutParams();
         topLayoutParams.topMargin = statusBarHeight + topLayoutParams.topMargin;
-        mTopContainerView.setListener(new GrabTopContainerView.Listener() {
-            @Override
-            public void closeBtnClick() {
-                quitGame();
-            }
-
-            @Override
-            public void onVoiceChange(boolean voiceOpen) {
-                mCorePresenter.muteAllRemoteAudioStreams(!voiceOpen, true);
-            }
-        });
+        mTopContainerView.setListener(mListener);
+        mSingerTopView.setListener(mListener);
     }
+
+    GrabTopContainerView.Listener mListener = new GrabTopContainerView.Listener() {
+        @Override
+        public void closeBtnClick() {
+            quitGame();
+        }
+
+        @Override
+        public void onVoiceChange(boolean voiceOpen) {
+            mCorePresenter.muteAllRemoteAudioStreams(!voiceOpen, true);
+        }
+    };
 
     /**
      * 转场动画相关初始化

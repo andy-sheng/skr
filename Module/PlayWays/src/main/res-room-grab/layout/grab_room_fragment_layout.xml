@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#2E3041">
 
-    <com.module.playways.grab.room.top.SingerTopView
+    <com.module.playways.grab.room.top.GrabSingerTopView
         android:id="@+id/singer_top_view"
         android:visibility="gone"
         android:layout_width="match_parent"
