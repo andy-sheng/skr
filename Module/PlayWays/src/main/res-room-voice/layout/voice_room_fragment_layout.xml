@@ -15,6 +15,14 @@
         android:layout_marginRight="-20dp"
         android:background="@drawable/yuyinfang_bj" />
 
+    <ImageView
+        android:layout_width="@dimen/view_82_dp"
+        android:layout_height="@dimen/view_25_dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_126_dp"
+        android:background="@drawable/liaotianshi" />
+
     <!--这里面是软键盘弹出时 需要上移的布局-->
     <com.module.playways.voice.view.VoiceBottomContainerView
         android:id="@+id/bottom_container_view"
