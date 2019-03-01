@@ -32,10 +32,11 @@
 
     <com.common.view.ex.ExImageView
         android:id="@+id/cover_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_128_dp"
         android:layout_alignTop="@+id/comment_view"
-        android:src="@drawable/zhengzaiyanchang_duihua_zhezhao" />
+        android:background="@drawable/zhengzaiyanchang_duihua_zhezhao" />
 
     <com.module.playways.grab.room.top.GrabTopContainerView
         android:id="@+id/top_container_view"

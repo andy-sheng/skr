@@ -150,7 +150,7 @@ public class RankResultView extends RelativeLayout {
                     mFirstImgIv.setBackground(getResources().getDrawable(R.drawable.zhanji_mie));
                     mFirstResultTv.setTextColor(Color.parseColor("#9697A0"));
                 } else if (audienceScoreModel1.getLightType() == ELightType.ELT_X_LIGHT.getValue()) {
-                    mFirstImgIv.setBackground(getResources().getDrawable(R.drawable.zhanji_xiaolian));
+                    mFirstImgIv.setBackground(getResources().getDrawable(R.drawable.zhanji_baodeng));
                     mFirstResultTv.setTextColor(Color.parseColor("#9697A0"));
                 }
                 mFirstResultTv.setText("" + audienceScoreModel1.getScore());
