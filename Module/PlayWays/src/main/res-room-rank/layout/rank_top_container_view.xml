@@ -11,8 +11,9 @@
         android:id="@+id/iv_game_role"
         android:layout_width="@dimen/view_24_dp"
         android:layout_height="@dimen/view_24_dp"
-        android:layout_marginLeft="@dimen/view_15_dp"
+        android:layout_alignParentRight="true"
         android:layout_marginTop="@dimen/view_97_dp"
+        android:layout_marginRight="@dimen/view_11_dp"
         android:background="@drawable/yanchang_bisaiguize" />
 
     <com.common.view.ex.ExImageView
@@ -98,9 +99,9 @@
 
     <com.module.playways.rank.room.view.RankTopLEDView
         android:id="@+id/mid_led_view"
-        android:layout_marginTop="@dimen/view_8_dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_8_dp"
         rankLED:position="mid"></com.module.playways.rank.room.view.RankTopLEDView>
 
 </merge>
