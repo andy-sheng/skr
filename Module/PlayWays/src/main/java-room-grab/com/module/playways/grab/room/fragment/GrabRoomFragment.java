@@ -39,6 +39,7 @@ import com.module.playways.grab.room.view.GrabOpView;
 import com.module.playways.grab.room.view.OthersSingCardView;
 import com.module.playways.grab.room.view.RoundOverCardView;
 import com.module.playways.grab.room.view.SelfSingCardView;
+import com.module.playways.grab.room.view.SelfSingCardView2;
 import com.module.playways.grab.room.view.SingBeginTipsCardView;
 import com.module.playways.grab.room.view.SongInfoCardView;
 import com.module.playways.grab.room.view.TurnInfoCardView;
@@ -125,7 +126,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     OthersSingCardView mOthersSingCardView;
 
-    SelfSingCardView mSelfSingCardView;
+    SelfSingCardView2 mSelfSingCardView;
 
     GrabGameOverView mGrabGameOverView;
 
@@ -433,12 +434,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mOthersSingCardView = mRootView.findViewById(R.id.other_sing_card_view);
         mOthersSingCardView.setRoomData(mRoomData);
         mSelfSingCardView = mRootView.findViewById(R.id.self_sing_card_view);
-        mSelfSingCardView.setListener(new SelfSingCardView.Listener() {
-            @Override
-            public void onCountDownOver() {
-                mCorePresenter.sendRoundOverInfo();
-            }
-        });
     }
 
     private SVGAParser getSVGAParser() {
@@ -636,7 +631,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     public void onEvent(LightOffAnimationOverEvent event) {
         //灭灯动画播放结束
         if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
-            mSelfSingCardView.tryStartCountDown();
+
         } else {
             mOthersSingCardView.tryStartCountDown();
         }
@@ -649,7 +644,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         msg.arg1 = playNextSongInfoCard ? 1 : 0;
         msg.obj = now;
         mUiHanlder.sendMessageDelayed(msg, 2400);
-        mSelfSingCardView.hide();
+        mSelfSingCardView.setVisibility(View.GONE);
         mOthersSingCardView.hide();
         mSongInfoCardView.hide();
         mGrabOpBtn.hide();
@@ -768,7 +763,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_GAME_OVER);
         mUiHanlder.sendMessageDelayed(msg, 4000);
 
-        mSelfSingCardView.hide();
+        mSelfSingCardView.setVisibility(View.GONE);
         mOthersSingCardView.hide();
         mTurnInfoCardView.setVisibility(View.GONE);
         mSingBeginTipsCardView.setVisibility(View.GONE);

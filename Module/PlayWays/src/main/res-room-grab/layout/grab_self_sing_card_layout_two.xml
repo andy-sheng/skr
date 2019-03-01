@@ -1,0 +1,30 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:parentTag="android.widget.RelativeLayout">
+    <ScrollView
+
+        android:paddingBottom="@dimen/view_24_dp"
+        android:paddingTop="@dimen/view_24_dp"
+        android:paddingLeft="@dimen/view_60_dp"
+        android:paddingRight="@dimen/view_60_dp"
+        android:background="#272938"
+        android:id="@+id/sv_lyric"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_252_dp"
+        >
+
+        <TextView
+            android:alpha="0.6"
+            android:id="@+id/tv_lyric"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:lineSpacingExtra="7dp"
+            android:textColor="#B2B6D6"
+            android:textSize="@dimen/textsize_18_dp"
+            android:textStyle="bold" />
+    </ScrollView>
+</merge>
