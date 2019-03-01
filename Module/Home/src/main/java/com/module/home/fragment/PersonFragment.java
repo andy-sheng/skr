@@ -33,6 +33,7 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.constans.GameModeType;
+import com.component.busilib.view.MarqueeTextView;
 import com.module.home.musictest.fragment.MusicTestFragment;
 import com.module.home.setting.fragment.SettingFragment;
 
@@ -63,7 +64,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
     ExTextView mShareTv;
     ExTextView mNameTv;
     ExTextView mUseridTv;
-    ExTextView mSignTv;
+    MarqueeTextView mSignTv;
     RelativeLayout mFriends;
     ExTextView mFriendsNumTv;
     RelativeLayout mFans;
@@ -129,7 +130,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
         mShareTv = (ExTextView) mRootView.findViewById(R.id.share_tv);
         mNameTv = (ExTextView) mRootView.findViewById(R.id.name_tv);
         mUseridTv = (ExTextView) mRootView.findViewById(R.id.userid_tv);
-        mSignTv = (ExTextView) mRootView.findViewById(R.id.sign_tv);
+        mSignTv = (MarqueeTextView) mRootView.findViewById(R.id.sign_tv);
         mFriends = (RelativeLayout) mRootView.findViewById(R.id.friends);
         mFriendsNumTv = (ExTextView) mRootView.findViewById(R.id.friends_num_tv);
         mFans = (RelativeLayout) mRootView.findViewById(R.id.fans);

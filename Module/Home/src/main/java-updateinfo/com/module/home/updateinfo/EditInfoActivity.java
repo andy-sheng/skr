@@ -23,6 +23,7 @@ import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
+import com.component.busilib.view.MarqueeTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.RouterConstants;
 import com.respicker.ResPicker;
@@ -56,7 +57,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
     RelativeLayout mEditName;
     ExTextView mNicknameTv;
     RelativeLayout mEditSign;
-    ExTextView mSignTv;
+    MarqueeTextView mSignTv;
     RelativeLayout mEditAge;
     ExTextView mAgeTv;
     RelativeLayout mEditSex;
@@ -84,7 +85,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
 
         mAvatarIv = (SimpleDraweeView) findViewById(R.id.avatar_iv);
         mNicknameTv = (ExTextView) findViewById(R.id.nickname_tv);
-        mSignTv = (ExTextView) findViewById(R.id.sign_tv);
+        mSignTv = (MarqueeTextView) findViewById(R.id.sign_tv);
         mAgeTv = (ExTextView) findViewById(R.id.age_tv);
         mSexTv = (ExTextView) findViewById(R.id.sex_tv);
         mLocationTv = (ExTextView) findViewById(R.id.location_tv);
