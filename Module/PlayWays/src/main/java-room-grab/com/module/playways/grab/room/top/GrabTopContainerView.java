@@ -153,6 +153,10 @@ public class GrabTopContainerView extends RelativeLayout {
         mTopContentRv.setRoomData(roomData);
     }
 
+    public GrabTopView getGrabTopView(){
+        return mGrabTopView;
+    }
+
     void reset() {
     }
 

@@ -36,6 +36,7 @@ import com.module.playways.grab.room.top.GrabTopContainerView;
 import com.module.playways.grab.room.top.GrabSingerTopView;
 import com.module.playways.grab.room.view.GrabGameOverView;
 import com.module.playways.grab.room.view.GrabOpView;
+import com.module.playways.grab.room.view.GrabTopView;
 import com.module.playways.grab.room.view.OthersSingCardView;
 import com.module.playways.grab.room.view.RoundOverCardView;
 import com.module.playways.grab.room.view.SelfSingCardView;
@@ -365,6 +366,13 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         topLayoutParams.topMargin = statusBarHeight + topLayoutParams.topMargin;
         mTopContainerView.setListener(mListener);
         mSingerTopView.setListener(mListener);
+
+        mTopContainerView.getGrabTopView().setOnClickChangeRoomListener(new GrabTopView.OnClickChangeRoomListener() {
+            @Override
+            public void onClick() {
+                // TODO: 2019/3/1 换房间
+            }
+        });
     }
 
     GrabTopContainerView.Listener mListener = new GrabTopContainerView.Listener() {
