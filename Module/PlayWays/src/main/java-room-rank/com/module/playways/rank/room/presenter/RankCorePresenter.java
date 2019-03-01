@@ -1415,6 +1415,11 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         String text = userInfo.getNickname() + "偷偷溜走啦～";
         CommentMsgEvent msgEvent = new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text);
         EventBus.getDefault().post(msgEvent);
+
+        if(event.model.getUserID() == MyUserInfoManager.getInstance().getUid()){
+            MyLog.d(TAG, "本人溜走了，需要关掉当前房间,id是" + event.model.getUserID());
+            mIGameRuleView.finishActivity();
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

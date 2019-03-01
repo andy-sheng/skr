@@ -965,6 +965,13 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     }
 
+    @Override
+    public void finishActivity() {
+        if(getActivity() != null){
+            getActivity().finish();
+        }
+    }
+
     public void showRecordView() {
         MyLog.d(TAG, "showRecordView" + " recordData=" + mRoomData.getRecordData());
         mBottomContainerView.dismissPopWindow();

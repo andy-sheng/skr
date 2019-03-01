@@ -35,4 +35,6 @@ public interface IGameRuleView {
     // 主舞台离开（开始主舞台消失动画）
     void hideMainStage();
 
+    void finishActivity();
+
 }

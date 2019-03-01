@@ -54,5 +54,6 @@ public class RankPlayerInfoModel extends PlayerInfoModel {
         this.isSkrer = playerInfo.getIsSkrer();
         this.resourceInfoList = ResourceInfoModel.parse(playerInfo.getResourceList());
         this.isAI = playerInfo.getIsAIUser();
+        this.setUserID(playerInfo.getUserInfo().getUserID());
     }
 }
