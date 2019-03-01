@@ -47,7 +47,7 @@ public class PlayWaysActivity extends BaseActivity {
         if (!U.getActivityUtils().isAppForeground()
                 // 如果应用刚回到前台500ms，也认为应用在后台。防止某些手机，比如华为Mate P20，
                 // onActivityStarted 会比 onNewIntent 先调用，这里就是前台状态了
-                || ( System.currentTimeMillis() - U.getActivityUtils().getIsAppForegroundChangeTs() < 500)) {
+                || (System.currentTimeMillis() - U.getActivityUtils().getIsAppForegroundChangeTs() < 500)) {
             MyLog.d(TAG, "PlayWaysActivity 在后台，不唤起");
             moveTaskToBack(true);
         }
@@ -68,7 +68,7 @@ public class PlayWaysActivity extends BaseActivity {
         RelativeLayout mainActContainer = (RelativeLayout) findViewById(R.id.main_act_container);
         boolean selectSong = getIntent().getBooleanExtra("selectSong", false);
         int gameType = getIntent().getIntExtra(KEY_GAME_TYPE, GameModeType.GAME_MODE_CLASSIC_RANK);
-        if (gameType == GameModeType.GAME_MODE_CLASSIC_RANK || gameType == GameModeType.GAME_MODE_FUNNY) {
+        if (gameType == GameModeType.GAME_MODE_CLASSIC_RANK) {
             if (selectSong) {
                 Bundle bundle = new Bundle();
                 bundle.putInt(KEY_GAME_TYPE, gameType);
@@ -85,7 +85,11 @@ public class PlayWaysActivity extends BaseActivity {
                     .setAddToBackStack(false)
                     .setHasAnimation(false)
                     .build());
+        } else {
+            U.getToastUtil().showShort("该游戏模式已经下线 mode=" + gameType);
+            finish();
         }
+
     }
 
     @Override
