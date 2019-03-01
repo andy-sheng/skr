@@ -641,9 +641,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
             mCorePresenter.beginSing();
             // 显示歌词
             mSelfSingCardView.setVisibility(View.VISIBLE);
+            mOthersSingCardView.setVisibility(View.GONE);
             mSelfSingCardView.playLyric(mRoomData.getRealRoundInfo().getMusic(), false);
         } else {
             // 显示收音机
+            mSelfSingCardView.setVisibility(View.GONE);
             mOthersSingCardView.setVisibility(View.VISIBLE);
             mOthersSingCardView.bindData(mRoomData.getUserInfo((int) uid).getAvatar());
         }
@@ -666,7 +668,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         msg.arg1 = playNextSongInfoCard ? 1 : 0;
         msg.obj = now;
         mUiHanlder.sendMessageDelayed(msg, 2400);
+        mSingerTopView.setVisibility(View.GONE);
         mSelfSingCardView.setVisibility(View.GONE);
+        mTopContainerView.setVisibility(View.VISIBLE);
         mOthersSingCardView.hide();
         mSongInfoCardView.hide();
         mGrabOpBtn.hide();
