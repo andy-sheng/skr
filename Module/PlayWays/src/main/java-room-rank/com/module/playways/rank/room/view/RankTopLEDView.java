@@ -65,7 +65,12 @@ public class RankTopLEDView extends RelativeLayout {
                 assetsName = "rank_love_right_beat.svga";
                 break;
         }
-        mDengSvga.setLoops(0);
+        if (postion == 1) {
+            mDengSvga.setLoops(1);
+        } else {
+            mDengSvga.setLoops(0);
+        }
+
         SVGAParser parser = new SVGAParser(U.app());
         try {
             parser.parse(assetsName, new SVGAParser.ParseCompletion() {
@@ -83,6 +88,36 @@ public class RankTopLEDView extends RelativeLayout {
             });
         } catch (Exception e) {
             System.out.print(true);
+        }
+
+        if (postion == 1) {
+            mDengSvga.setCallback(new SVGACallback() {
+                @Override
+                public void onPause() {
+
+                }
+
+                @Override
+                public void onFinished() {
+                    if (mDengSvga != null) {
+                        mDengSvga.stopAnimation(false);
+                    }
+
+                    playBaoDengAnimation();
+                }
+
+                @Override
+                public void onRepeat() {
+                    if (mDengSvga != null && mDengSvga.isAnimating()) {
+                        mDengSvga.stopAnimation(false);
+                    }
+                }
+
+                @Override
+                public void onStep(int i, double v) {
+
+                }
+            });
         }
     }
 
