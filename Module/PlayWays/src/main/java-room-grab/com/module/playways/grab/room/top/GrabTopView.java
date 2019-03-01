@@ -4,11 +4,13 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
+
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.module.playways.grab.room.event.GrabMyCoinChangeEvent;
 import com.module.rank.R;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -16,6 +18,7 @@ public class GrabTopView extends RelativeLayout {
     ExTextView mTvChangeRoom;
     ExTextView mTvCoin;
     Listener mOnClickChangeRoomListener;
+
     public GrabTopView(Context context) {
         super(context);
         init();
@@ -48,11 +51,20 @@ public class GrabTopView extends RelativeLayout {
         mTvChangeRoom.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                if(mOnClickChangeRoomListener != null){
+                if (mOnClickChangeRoomListener != null) {
                     mOnClickChangeRoomListener.changeRoom();
                 }
             }
         });
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        EventBus.getDefault().unregister(this);
     }
 
     public interface Listener {
