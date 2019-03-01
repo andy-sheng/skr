@@ -431,7 +431,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
             @Override
             public void clickBurst(int seq) {
-
+                mCorePresenter.lightsBurst();
             }
         });
 
