@@ -201,6 +201,10 @@ public class GrabPlayerRv2 extends RelativeLayout {
     public void setModeSing(int singUid) {
         MyLog.d(TAG, "setModeSing" + " singUid=" + singUid);
         VP vp = mInfoMap.get(singUid);
+        if (vp == null) {
+            MyLog.d(TAG, "not find vp");
+            return;
+        }
         if (vp.grabTopItemView != null) {
             vp.grabTopItemView.setGetSingChance();
         }
@@ -415,7 +419,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
     }
 
     //有人爆灯了，这个时候所有的灯都闪烁
-    public void toBurstState(){
+    public void toBurstState() {
         for (int uId : mInfoMap.keySet()) {
             VP vp = mInfoMap.get(uId);
             if (vp != null && vp.grabTopItemView != null) {

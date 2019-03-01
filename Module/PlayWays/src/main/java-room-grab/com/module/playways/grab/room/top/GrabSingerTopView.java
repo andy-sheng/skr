@@ -106,7 +106,7 @@ public class GrabSingerTopView extends RelativeLayout {
                     public void onNext(Integer integer) {
                         int remainTime = songModel.getTotalMs() / 1000 - integer;
                         if (remainTime < 0) {
-                            mTvCountDown.setText(remainTime);
+                            mTvCountDown.setText(String.valueOf(remainTime));
                         }
                     }
                 });
