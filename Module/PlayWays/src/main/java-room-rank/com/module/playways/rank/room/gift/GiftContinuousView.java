@@ -46,6 +46,7 @@ public class GiftContinuousView extends RelativeLayout {
     ExTextView mGiftNumTv;
     ObjectAnimator mStep1Animator;
     AnimatorSet mStep2Animator;
+    ExTextView mSenderNameTv;
 
     int mCurNum = 1;
 
@@ -91,6 +92,8 @@ public class GiftContinuousView extends RelativeLayout {
         mDescTv = (ExTextView) this.findViewById(R.id.desc_tv);
         mGiftImgIv = (BaseImageView) this.findViewById(R.id.gift_img_iv);
         mGiftNumTv = (ExTextView) this.findViewById(R.id.gift_num_tv);
+        mSenderNameTv = (ExTextView)this.findViewById(R.id.sender_name_tv);
+
 
     }
 
@@ -105,7 +108,8 @@ public class GiftContinuousView extends RelativeLayout {
                 .setBorderColorBySex(model.getSender().getIsMale())
                 .build()
         );
-        mDescTv.setText(model.getSender().getNickname() + model.getAction());
+        mSenderNameTv.setText(model.getSender().getNickname());
+        mDescTv.setText(model.getAction());
         int resId = 0;
         switch (model.getEmojiType()) {
             case SP_EMOJI_TYPE_LIKE:
