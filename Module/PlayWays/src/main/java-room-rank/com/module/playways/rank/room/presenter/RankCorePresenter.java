@@ -1345,19 +1345,25 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 
     //轮次和游戏结束通知，除了已经结束状态，别的任何状态都要变成
     @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onEventMainThread(RoundAndGameOverEvent roundAndGameOverEvent) {
-        MyLog.w(TAG, "收到服务器的游戏结束的push timets 是 " + roundAndGameOverEvent.info.getTimeMs());
+    public void onEventMainThread(RoundAndGameOverEvent event) {
+        MyLog.w(TAG, "收到服务器的游戏结束的push timets 是 " + event.info.getTimeMs());
 
-        MyLog.d(TAG, "onEventMainThread" + " roundAndGameOverEvent mVoteInfoModels =" + roundAndGameOverEvent.mVoteInfoModels);
-        MyLog.d(TAG, "onEventMainThread" + " roundAndGameOverEvent mScoreResultModel =" + roundAndGameOverEvent.mScoreResultModel);
-        MyLog.d(TAG, "onEventMainThread" + " roundAndGameOverEvent mUserGameResultModels =" + roundAndGameOverEvent.mUserGameResultModels);
+        MyLog.d(TAG, "onEventMainThread" + " roundAndGameOverEvent mVoteInfoModels =" + event.mVoteInfoModels);
+        MyLog.d(TAG, "onEventMainThread" + " roundAndGameOverEvent mScoreResultModel =" + event.mScoreResultModel);
+        MyLog.d(TAG, "onEventMainThread" + " roundAndGameOverEvent mUserGameResultModels =" + event.mUserGameResultModels);
+        if (event.mExitUserID != 0) {
+            mRoomData.setOnline(event.mExitUserID, false);
+        }
+        if (RoomDataUtils.isCurrentRound(event.mRankRoundInfoModel.getRoundSeq(), mRoomData)) {
+            mRoomData.getRealRoundInfo().tryUpdateRoundInfoModel(event.mRankRoundInfoModel, true);
+        }
 
-        RecordData recordData = new RecordData(roundAndGameOverEvent.mVoteInfoModels,
-                roundAndGameOverEvent.mScoreResultModel,
-                roundAndGameOverEvent.mUserGameResultModels);
+        RecordData recordData = new RecordData(event.mVoteInfoModels,
+                event.mScoreResultModel,
+                event.mUserGameResultModels);
         mRoomData.setRecordData(recordData);
 
-        recvGameOverFromServer("push", roundAndGameOverEvent.roundOverTimeMs);
+        recvGameOverFromServer("push", event.roundOverTimeMs);
         cancelSyncGameStateTask();
     }
 

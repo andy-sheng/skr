@@ -3,6 +3,7 @@ package com.module.playways.rank.msg.event;
 
 import com.common.core.myinfo.MyUserInfoManager;
 import com.module.playways.rank.msg.BasePushInfo;
+import com.module.playways.rank.room.model.RankRoundInfoModel;
 import com.module.playways.rank.room.model.UserGameResultModel;
 import com.module.playways.rank.room.model.VoteInfoModel;
 import com.module.playways.rank.room.model.score.ScoreResultModel;
@@ -16,11 +17,13 @@ import java.util.List;
 
 public class RoundAndGameOverEvent {
 
-    public long roundOverTimeMs;
     public BasePushInfo info;
+    public long roundOverTimeMs;
     public List<VoteInfoModel> mVoteInfoModels;
     public ScoreResultModel mScoreResultModel;
     public List<UserGameResultModel> mUserGameResultModels;
+    public int mExitUserID;
+    public RankRoundInfoModel mRankRoundInfoModel;
 
     public RoundAndGameOverEvent(BasePushInfo info, RoundAndGameOverMsg roundAndGameOverMsg) {
         List<VoteInfoModel> voteInfoModels = new ArrayList<>();
@@ -47,5 +50,7 @@ public class RoundAndGameOverEvent {
         this.mVoteInfoModels = voteInfoModels;
         this.mScoreResultModel = scoreResultModel;
         this.mUserGameResultModels = userGameResultModels;
+        this.mExitUserID = roundAndGameOverMsg.getExitUserID();
+        this.mRankRoundInfoModel = RankRoundInfoModel.parseFromRoundInfo(roundAndGameOverMsg.getCurrentRound());
     }
 }
