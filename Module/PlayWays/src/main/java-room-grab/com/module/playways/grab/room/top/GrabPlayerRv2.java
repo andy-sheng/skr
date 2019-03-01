@@ -101,7 +101,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
         //为了复用之前的view
         LinkedHashMap<Integer, VP> mTemInfoMap = new LinkedHashMap<>();
         if(mRoomData.getRealRoundInfo() != null && mRoomData.getPlayerInfoList() != null && mRoomData.getPlayerInfoList().size() > 0){
-            MyLog.d(TAG, "initData data error" );
+            MyLog.w(TAG, "initData data error" );
             return;
         }
 
