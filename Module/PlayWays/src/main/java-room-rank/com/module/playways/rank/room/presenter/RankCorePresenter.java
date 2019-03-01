@@ -1404,18 +1404,17 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
             MyLog.d(TAG, "游戏结束了，不关心 PkSomeOneOnlineChangeEvent 事件");
             return;
         }
+
         UserInfoModel userInfo = mRoomData.getUserInfo(event.model.getUserID());
-        BasePushInfo basePushInfo = new BasePushInfo();
-        basePushInfo.setRoomID(mRoomData.getGameId());
-        basePushInfo.setSender(new UserInfo.Builder()
-                .setUserID(BaseRoomData.SYSTEM_ID)
-                .setAvatar(BaseRoomData.SYSTEM_AVATAR)
-                .setNickName("系统消息")
-                .setSex(ESex.fromValue(0))
-                .build());
-        String text = userInfo.getNickname() + "偷偷溜走啦～";
-        CommentMsgEvent msgEvent = new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text);
-        EventBus.getDefault().post(msgEvent);
+        CommentModel commentModel = new CommentModel();
+        commentModel.setCommentType(CommentModel.TYPE_TEXT);
+        commentModel.setUserId(BaseRoomData.SYSTEM_ID);
+        commentModel.setAvatar(BaseRoomData.SYSTEM_AVATAR);
+        commentModel.setUserName("系统消息");
+        commentModel.setAvatarColor(Color.WHITE);
+        commentModel.setTextColor(Color.parseColor("#EF5E85"));
+        commentModel.setContent(userInfo.getNickname() + "偷偷溜走啦～");
+        EventBus.getDefault().post(new PretendCommentMsgEvent(commentModel));
 
         if(event.model.getUserID() == MyUserInfoManager.getInstance().getUid()){
             MyLog.d(TAG, "本人溜走了，需要关掉当前房间,id是" + event.model.getUserID());
