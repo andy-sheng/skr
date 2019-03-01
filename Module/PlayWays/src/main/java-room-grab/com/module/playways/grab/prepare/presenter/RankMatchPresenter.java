@@ -34,7 +34,7 @@ import static com.common.rxretrofit.ApiManager.APPLICATION_JSOIN;
 // 只处理匹配 请求匹配 取消匹配 和 收到加入游戏通知
 public class RankMatchPresenter extends BaseMatchPresenter {
     public final static String TAG = "RankMatchPresenter";
-
+    public static final int CHECK_NUM = 10;
     IRankMatchingView mView;
     MatchServerApi mMatchServerApi;
     Disposable mStartMatchTask;
@@ -252,13 +252,15 @@ public class RankMatchPresenter extends BaseMatchPresenter {
      */
     public void checkCurrentGameData() {
         MyLog.d(TAG, "checkCurrentGameData");
-
+        cancelCheckTask();
         mCheckJoinStateTask = HandlerTaskTimer.newBuilder()
-                .delay(5000)
+                .take(CHECK_NUM)
+                .delay(1000)
+                .interval(1000)
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
-                    public void onNext(Integer integer) {
-                        MyLog.d(TAG, "checkCurrentGameData onNext");
+                    public void onNext(final Integer integer) {
+                        MyLog.d(TAG, "checkCurrentGameData onNext try num is " + integer);
                         mMatchServerApi = ApiManager.getInstance().createService(MatchServerApi.class);
                         ApiMethods.subscribeWith(mMatchServerApi.getCurrentGameData(mJoinActionEvent.gameId), new ApiObserver<ApiResult>() {
                             @Override
@@ -271,19 +273,25 @@ public class RankMatchPresenter extends BaseMatchPresenter {
                                             mMatchState = MatchState.JoinGameSuccess;
                                             mJsonGameInfo = jsonGameInfo;
                                             mView.matchRankSucess(mJoinActionEvent);
+                                            cancelCheckTask();
                                         } else {
-                                            MyLog.w(TAG, "5秒后拉去信息回来发现当前状态不是 JoinRongYunRoomSuccess");
+                                            MyLog.w(TAG, "拉信息回来发现当前状态不是 JoinRongYunRoomSuccess");
                                             //跟下面的更新唯一的区别就是三秒钟之后人还不全就从新match
                                             startLoopMatchTask(mCurrentMusicId, mGameType);
                                             exitGame(mJoinActionEvent.gameId);
+                                            cancelCheckTask();
                                         }
                                     } else {
-                                        MyLog.w(TAG, "5秒后拉完房间信息人数不够3个，需要重新match了");
-                                        startLoopMatchTask(mCurrentMusicId, mGameType);
-                                        exitGame(mJoinActionEvent.gameId);
+                                        MyLog.w(TAG, "拉完房间信息人数不够3个，try num is " + integer);
+                                        if(integer == CHECK_NUM){
+                                            cancelCheckTask();
+                                            startLoopMatchTask(mCurrentMusicId, mGameType);
+                                            exitGame(mJoinActionEvent.gameId);
+                                        }
                                     }
                                 } else {
-                                    MyLog.w(TAG, "5秒钟后拉去的信息返回的resule error code不是 0,是" + result.getErrno());
+                                    MyLog.w(TAG, "拉信息返回的resule error code不是 0,是" + result.getErrno());
+                                    cancelCheckTask();
                                     startLoopMatchTask(mCurrentMusicId, mGameType);
                                     exitGame(mJoinActionEvent.gameId);
                                 }
@@ -298,6 +306,12 @@ public class RankMatchPresenter extends BaseMatchPresenter {
                         }, RankMatchPresenter.this);
                     }
                 });
+    }
+
+    private void cancelCheckTask(){
+        if(mCheckJoinStateTask != null){
+            mCheckJoinStateTask.dispose();
+        }
     }
 
     /**
