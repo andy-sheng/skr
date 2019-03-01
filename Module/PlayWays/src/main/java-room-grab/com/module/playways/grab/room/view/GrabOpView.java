@@ -125,7 +125,7 @@ public class GrabOpView extends RelativeLayout {
                 if (mStatus == STATUS_GRAP) {
                     if (mListener != null) {
                         mListener.clickGrabBtn(mSeq);
-                        mBtnIv.setClickable(false);
+                        mBtnIv.setEnabled(false);
                     }
                 }
             }
@@ -138,7 +138,7 @@ public class GrabOpView extends RelativeLayout {
                 if (mStatus == STATUS_CAN_OP) {
                     if (mListener != null) {
                         mListener.clickBurst(mSeq);
-                        mIvBurst.setClickable(false);
+                        mIvBurst.setEnabled(false);
                     }
                 }
             }
@@ -213,7 +213,6 @@ public class GrabOpView extends RelativeLayout {
                         }
                         // 按钮变成抢唱，且可点击
                         mUiHandler.removeMessages(MSG_HIDE_FROM_END_GUIDE_AUDIO);
-
                         if(waitNum <= 0){
                             MyLog.e(TAG, "等待时间是0");
                             Message msg = mUiHandler.obtainMessage(MSG_HIDE_FROM_END_GUIDE_AUDIO);
@@ -223,7 +222,6 @@ public class GrabOpView extends RelativeLayout {
                             Message msg = mUiHandler.obtainMessage(MSG_HIDE_FROM_END_GUIDE_AUDIO);
                             mUiHandler.sendMessageDelayed(msg, waitNum - 2000);
                         }
-
                         mStatus = STATUS_GRAP;
                         onChangeState();
                     }
@@ -241,7 +239,6 @@ public class GrabOpView extends RelativeLayout {
                 mGrabContainer.setVisibility(VISIBLE);
                 mBtnIv.setEnabled(false);
                 mBtnIv.setBackground(U.getDrawable(R.drawable.xiangchang_bj));
-
                 break;
             case STATUS_GRAP:
                 mGrabContainer.setVisibility(VISIBLE);
@@ -256,15 +253,13 @@ public class GrabOpView extends RelativeLayout {
                         .setUnPressedDrawable(U.getDrawable(R.drawable.xiangchang_daojishi))
                         .build();
                 mBtnIv.setBackground(drawable);
-
                 break;
             case STATUS_CAN_OP:
                 mGrabContainer.setVisibility(GONE);
                 mIvLightOff.setVisibility(VISIBLE);
                 mIvBurst.setVisibility(VISIBLE);
-
                 mIvLightOff.setBackground(U.getDrawable(R.drawable.miedeng_bj));
-                mIvLightOff.setClickable(false);
+                mIvLightOff.setEnabled(false);
                 break;
             case STATUS_HAS_OP:
                 hide();
