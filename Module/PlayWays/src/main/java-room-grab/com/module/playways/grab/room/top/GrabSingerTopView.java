@@ -10,8 +10,10 @@ import android.widget.RelativeLayout;
 
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.module.playways.BaseRoomData;
+import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.SomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.SomeOneLightOffEvent;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
@@ -22,17 +24,17 @@ import com.module.rank.R;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+
 public class GrabSingerTopView extends RelativeLayout {
     ImageView mIvLight;
     ExTextView mTvCurLight;
     ExTextView mTvCountDown;
     ExTextView mTvTotalLight;
-    GrabRoundInfoModel mCurGrabRoundInfoModel;
     AnimationDrawable mFlickerAnim;
     ImageView mMoreBtn;
     MoreOpView mMoreOpView;
     GrabTopContainerView.Listener mListener;
-    BaseRoomData mRoomData;
+    GrabRoomData mRoomData;
 
     HandlerTaskTimer mCountDownTask;
 
@@ -57,11 +59,11 @@ public class GrabSingerTopView extends RelativeLayout {
         mTvCurLight = (ExTextView) findViewById(R.id.tv_cur_light);
         mTvCountDown = (ExTextView) findViewById(R.id.tv_count_down);
         mTvTotalLight = (ExTextView) findViewById(R.id.tv_total_light);
-        mMoreBtn = (ImageView)findViewById(R.id.iv_more);
+        mMoreBtn = (ImageView) findViewById(R.id.iv_more);
 
-        mMoreBtn.setOnClickListener(new OnClickListener() {
+        mMoreBtn.setOnClickListener(new DebounceViewClickListener() {
             @Override
-            public void onClick(View v) {
+            public void clickValid(View v) {
                 if (mMoreOpView == null) {
                     mMoreOpView = new MoreOpView(getContext());
                     mMoreOpView.setListener(new MoreOpView.Listener() {
@@ -91,7 +93,7 @@ public class GrabSingerTopView extends RelativeLayout {
         mListener = l;
     }
 
-    public void setRoomData(BaseRoomData roomData) {
+    public void setRoomData(GrabRoomData roomData) {
         mRoomData = roomData;
     }
 
@@ -113,9 +115,9 @@ public class GrabSingerTopView extends RelativeLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(SomeOneLightOffEvent event) {
-        if (mCurGrabRoundInfoModel != null && mCurGrabRoundInfoModel.getRoundSeq() == event.getRoundInfo().getRoundSeq()) {
-            mTvCurLight.setText(mCurGrabRoundInfoModel.getPlayUsers().size() - mCurGrabRoundInfoModel.getMLightInfos().size());
-        }
+        GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
+        int num = grabRoundInfoModel.getPlayUsers().size() - grabRoundInfoModel.getMLightInfos().size();
+        mTvCurLight.setText(String.valueOf(num));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -150,7 +152,7 @@ public class GrabSingerTopView extends RelativeLayout {
     @Override
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
-        if(visibility == GONE){
+        if (visibility == GONE) {
             cancelCountDownTask();
             stopFlickerAnim();
         }
@@ -163,13 +165,14 @@ public class GrabSingerTopView extends RelativeLayout {
         stopFlickerAnim();
     }
 
-    public void startSelfShow(GrabRoundInfoModel grabRoundInfoModel) {
+    public void startSelfShow() {
         cancelCountDownTask();
         stopFlickerAnim();
         mIvLight.setImageDrawable(U.getDrawable(R.drawable.liangdeng));
-        mCurGrabRoundInfoModel = grabRoundInfoModel;
-        mTvTotalLight.setText("/" + mCurGrabRoundInfoModel.getPlayUsers().size());
-        mTvCurLight.setText(mCurGrabRoundInfoModel.getPlayUsers().size() - grabRoundInfoModel.getMLightInfos().size());
+        GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
+        mTvTotalLight.setText("/" + grabRoundInfoModel.getPlayUsers().size());
+        int num = grabRoundInfoModel.getPlayUsers().size() - grabRoundInfoModel.getMLightInfos().size();
+        mTvCurLight.setText(String.valueOf(num));
         startSing(grabRoundInfoModel.getSongModel());
     }
 }

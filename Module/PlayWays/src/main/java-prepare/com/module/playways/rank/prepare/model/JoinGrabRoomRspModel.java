@@ -4,7 +4,6 @@ import com.module.playways.grab.room.model.GrabConfigModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 
 import java.io.Serializable;
-import java.util.List;
 
 /*
 {
@@ -179,6 +178,7 @@ import java.util.List;
  */
 public class JoinGrabRoomRspModel implements Serializable {
     private int coin; // 金币数目
+    private GrabConfigModel config;//游戏的配置信息
     private GrabRoundInfoModel currentRound; // 目前轮次
     private GrabRoundInfoModel nextRound; // 下个轮次，其实没用
     private int elapsedTimeMs;//代表这个阶段已经经过了多少毫秒，主要用作中途进来的人播放资源
@@ -187,8 +187,8 @@ public class JoinGrabRoomRspModel implements Serializable {
     private int syncStatusTimeMs; // 同步时间
     private int tagID;// 剧本游戏
     private boolean isNewGame;// 是否是一局新游戏
-    private GrabConfigModel config;//游戏的配置信息
-    private long mGameCreateMs;// 游戏创建时间
+
+    private long gameCreateMs;// 游戏创建时间
 
     public JoinGrabRoomRspModel() {
 
@@ -275,10 +275,10 @@ public class JoinGrabRoomRspModel implements Serializable {
     }
 
     public void setGameCreateMs(long gameCreateMs) {
-        mGameCreateMs = gameCreateMs;
+        this.gameCreateMs = gameCreateMs;
     }
 
     public long getGameCreateMs() {
-        return mGameCreateMs;
+        return gameCreateMs;
     }
 }

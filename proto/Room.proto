@@ -329,7 +329,7 @@ message QGameConfig
 message JoinActionMsg
 {
     uint32 gameID                      = 1; //游戏ID
-    sint64 CreateTimeMs                = 2; //创建毫秒时间戳
+    sint64 createTimeMs                = 2; //创建毫秒时间戳
     repeated PlayerInfo players        = 3; //玩家信息
     repeated Common.MusicInfo music = 4; //共同演唱音乐信息
     GameConfig config                  = 5; //配置信息

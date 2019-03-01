@@ -105,7 +105,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     CommentView mCommentView;
 
-    GrabSingerTopView mSingerTopView;
+    GrabSingerTopView mSingerTopView; // 轮到本人演唱时的顶部界面
 
     GrabTopContainerView mTopContainerView;
 
@@ -551,7 +551,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     public void singBySelf() {
         mTopContainerView.setVisibility(View.GONE);
         mSingerTopView.setVisibility(View.VISIBLE);
-        mSingerTopView.startSelfShow(mRoomData.getRealRoundInfo());
+        mSingerTopView.startSelfShow();
         mCorePresenter.stopGuide();
         mTopContainerView.setModeSing((int) MyUserInfoManager.getInstance().getUid());
         mTopContainerView.setSeqIndex(RoomDataUtils.getSeqOfRoundInfo(mRoomData.getRealRoundInfo()), mRoomData.getGrabConfigModel().getTotalGameRoundSeq());
