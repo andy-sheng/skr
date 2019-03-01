@@ -28,7 +28,7 @@
     <string name="rc_conversation_list_popup_cancel_top">取消置顶</string>
     <string name="rc_conversation_List_operation_failure">操作失败</string>
     <string name="rc_conversation_list_default_discussion_name">"讨论组"</string>
-    <string name="rc_conversation_list_empty_prompt">"暂无聊天信息"</string>
+    <string name="rc_conversation_list_empty_prompt">"暂时没有会话\n点击右上角发起聊天"</string>
     <string name="rc_conversation_list_not_connected">"尚未连接!"</string>
 
     <string name="rc_message_content_image">[图片]</string>
