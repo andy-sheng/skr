@@ -5,6 +5,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -24,7 +25,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 
-public class GrabSingerTopView extends RelativeLayout {
+public class GrabSingerTopView extends FrameLayout {
     ImageView mIvLight;
     ExTextView mTvCurLight;
     ExTextView mTvCountDown;
@@ -99,14 +100,14 @@ public class GrabSingerTopView extends RelativeLayout {
     private void startSing(SongModel songModel) {
         cancelCountDownTask();
         mCountDownTask = HandlerTaskTimer.newBuilder()
-                .take(songModel.getTotalMs() / 1000)
+                .take(songModel.getTotalMs() == 0 ? 12000 / 1000 : songModel.getTotalMs())
                 .interval(1000)
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
-                        int remainTime = songModel.getTotalMs() / 1000 - integer;
-                        if (remainTime < 0) {
-                            mTvCountDown.setText(String.valueOf(remainTime));
+                        int remainTime = (songModel.getTotalMs() == 0 ? 12000 : songModel.getTotalMs()) - integer * 1000;
+                        if (remainTime >= 0) {
+                            mTvCountDown.setText(U.getDateTimeUtils().formatTimeStringForDate(remainTime, "mm:ss"));
                         }
                     }
                 });
