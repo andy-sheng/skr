@@ -11,7 +11,6 @@ import com.module.playways.BaseRoomData;
 import com.module.playways.grab.room.event.SomeOneGrabEvent;
 import com.module.playways.grab.room.event.SomeOneLightOffEvent;
 import com.module.playways.grab.room.event.SomeOneOnlineChangeEvent;
-import com.module.playways.grab.room.top.GrabTopView;
 import com.module.playways.rank.room.event.InputBoardEvent;
 import com.module.playways.rank.room.view.MoreOpView;
 import com.module.rank.R;
