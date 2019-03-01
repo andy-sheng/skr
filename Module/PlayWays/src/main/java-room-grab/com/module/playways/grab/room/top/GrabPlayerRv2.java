@@ -17,10 +17,12 @@ import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.module.playways.BaseRoomData;
+import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent;
 import com.module.playways.grab.room.event.LightOffAnimationOverEvent;
 import com.module.playways.grab.room.event.SomeOneOnlineChangeEvent;
 import com.module.playways.grab.room.fragment.GrabRoomFragment;
+import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.MLightInfoModel;
 import com.module.playways.grab.room.model.WantSingerInfo;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
@@ -54,7 +56,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
     public final static String TAG = "GrabPlayerRv2";
 
     private LinkedHashMap<Integer, VP> mInfoMap = new LinkedHashMap<>();
-    private BaseRoomData<GrabRoundInfoModel> mRoomData;
+    private GrabRoomData mRoomData;
     AnimatorSet mAnimatorAllSet;
 
     LinearLayout mContentLl;
@@ -104,17 +106,17 @@ public class GrabPlayerRv2 extends RelativeLayout {
         mContentLl.removeAllViews();
         //为了复用之前的view
         LinkedHashMap<Integer, VP> mTemInfoMap = new LinkedHashMap<>();
-        if(mRoomData.getRealRoundInfo() != null && mRoomData.getPlayerInfoList() != null && mRoomData.getPlayerInfoList().size() > 0){
+        if(mRoomData.getRealRoundInfo() == null || mRoomData.getPlayerInfoList() == null){
             MyLog.w(TAG, "initData data error" );
             return;
         }
 
         GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
-        List<PlayerInfoModel> playerInfoModels = mRoomData.getPlayerInfoList();
+        List<GrabPlayerInfoModel> playerInfoModels = now.getPlayUsers();
 
         MyLog.d(TAG, "initData playerInfoModels.size() is " + playerInfoModels.size());
         int i = 0;
-        for (PlayerInfoModel playerInfoModel : playerInfoModels) {
+        for (GrabPlayerInfoModel playerInfoModel : playerInfoModels) {
             UserInfoModel userInfo = playerInfoModel.getUserInfo();
             VP vp = mInfoMap.get(userInfo.getUserId());
             if (vp == null) {
@@ -561,7 +563,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
     }
 
 
-    public void setRoomData(BaseRoomData roomData) {
+    public void setRoomData(GrabRoomData roomData) {
         mRoomData = roomData;
         initData();
     }

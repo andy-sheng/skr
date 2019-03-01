@@ -62,7 +62,7 @@ public class GrabTopView extends RelativeLayout {
         });
     }
 
-    public void setRoomData(GrabRoomData modelBaseRoomData){
+    public void setRoomData(GrabRoomData modelBaseRoomData) {
         mBaseRoomData = modelBaseRoomData;
         mTvCoin.setText(mBaseRoomData.getCoin() + "");
     }
@@ -78,7 +78,7 @@ public class GrabTopView extends RelativeLayout {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-//        EventBus.getDefault().unregister(this);
+        EventBus.getDefault().unregister(this);
     }
 
     public interface Listener {
