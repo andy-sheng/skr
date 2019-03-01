@@ -11,6 +11,7 @@ import com.module.playways.BaseRoomData;
 import com.module.playways.grab.room.event.SomeOneGrabEvent;
 import com.module.playways.grab.room.event.SomeOneLightOffEvent;
 import com.module.playways.grab.room.event.SomeOneOnlineChangeEvent;
+import com.module.playways.grab.room.view.GrabTopView;
 import com.module.playways.rank.room.event.InputBoardEvent;
 import com.module.playways.rank.room.view.MoreOpView;
 import com.module.rank.R;
@@ -150,6 +151,10 @@ public class GrabTopContainerView extends RelativeLayout {
     public void setRoomData(BaseRoomData roomData) {
         mRoomData = roomData;
         mTopContentRv.setRoomData(roomData);
+    }
+
+    public GrabTopView getGrabTopView(){
+        return mGrabTopView;
     }
 
     void reset() {

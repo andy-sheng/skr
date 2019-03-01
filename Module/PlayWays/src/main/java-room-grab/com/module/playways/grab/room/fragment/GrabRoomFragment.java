@@ -36,9 +36,9 @@ import com.module.playways.grab.room.top.GrabTopContainerView;
 import com.module.playways.grab.room.top.GrabSingerTopView;
 import com.module.playways.grab.room.view.GrabGameOverView;
 import com.module.playways.grab.room.view.GrabOpView;
+import com.module.playways.grab.room.view.GrabTopView;
 import com.module.playways.grab.room.view.OthersSingCardView;
 import com.module.playways.grab.room.view.RoundOverCardView;
-import com.module.playways.grab.room.view.SelfSingCardView;
 import com.module.playways.grab.room.view.SelfSingCardView2;
 import com.module.playways.grab.room.view.SingBeginTipsCardView;
 import com.module.playways.grab.room.view.SongInfoCardView;
@@ -373,6 +373,13 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
         mTopContainerView.setListener(mListener);
         mSingerTopView.setListener(mListener);
+
+        mTopContainerView.getGrabTopView().setListener(new GrabTopView.Listener() {
+            @Override
+            public void changeRoom() {
+                mCorePresenter.switchRoom();
+            }
+        });
     }
 
     GrabTopContainerView.Listener mListener = new GrabTopContainerView.Listener() {
@@ -431,7 +438,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
             @Override
             public void clickBurst(int seq) {
-
+                mCorePresenter.lightsBurst();
             }
         });
 

@@ -329,7 +329,7 @@ public class GrabOpView extends RelativeLayout {
 //                                break;
 //                        }
 
-                        mIvLightOff.setText(num1);
+                        mIvLightOff.setText(String.valueOf(num1));
                     }
 
                     @Override
