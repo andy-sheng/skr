@@ -284,11 +284,11 @@ public class RankTopContainerView2 extends RelativeLayout {
     }
 
     private void setLight(int index, UserLightInfo userLightInfo) {
-        if (isEmpty(mStatusArr)) {
-            mLeftLedView.setVisibility(GONE);
-            mRightLedView.setVisibility(GONE);
-            mMidLedView.setVisibility(GONE);
-        }
+//        if (isEmpty(mStatusArr)) {
+//            mLeftLedView.setVisibility(GONE);
+//            mRightLedView.setVisibility(GONE);
+//            mMidLedView.setVisibility(GONE);
+//        }
         mStatusArr[index] = userLightInfo;
         LightState lightState = userLightInfo.mLightState;
         MyLog.d(TAG, "setLight" + " index=" + index + " lightState=" + lightState);
