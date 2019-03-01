@@ -72,7 +72,7 @@ public class VoiceUserStatusView extends RelativeLayout {
             @Override
             public void clickValid(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(OtherPersonFragment.BUNDLE_USER_MODEL, mModel);
+                bundle.putSerializable(OtherPersonFragment.BUNDLE_USER_MODEL, mModel.getUserInfo());
                 U.getFragmentUtils().addFragment(FragmentUtils
                         .newAddParamsBuilder((FragmentActivity) getContext(), OtherPersonFragment.class)
                         .setUseOldFragmentIfExist(false)
