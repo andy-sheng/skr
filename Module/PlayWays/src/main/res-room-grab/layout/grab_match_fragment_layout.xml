@@ -128,14 +128,20 @@
 
     </RelativeLayout>
 
-    <com.common.view.ex.ExImageView
+    <com.common.view.ex.ExTextView
         android:id="@+id/iv_cancel_match"
         android:layout_width="@dimen/view_206_dp"
         android:layout_height="@dimen/view_54_dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/view_39_dp"
-        android:background="@drawable/btn_kaishipipei_normal1" />
+        android:background="@drawable/img_btn_bg_yellow"
+        android:gravity="center"
+        android:paddingBottom="@dimen/view_5_dp"
+        android:text="取消匹配"
+        android:textColor="#0C2275"
+        android:textSize="@dimen/textsize_20_dp"
+        android:textStyle="bold" />
 
 
     <com.common.view.ex.ExImageView

@@ -2,6 +2,7 @@ package com.module.playways.grab.prepare;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,24 +21,21 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
-import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
 import com.component.busilib.constans.GameModeType;
 import com.component.busilib.manager.BgMusicManager;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.jakewharton.rxbinding2.view.RxView;
+
 import com.module.RouterConstants;
-import com.module.playways.grab.room.fragment.GrabRoomFragment;
 import com.module.playways.rank.prepare.model.GameReadyModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.playways.rank.prepare.model.ReadyInfoModel;
 import com.module.playways.rank.prepare.presenter.MatchSucessPresenter;
 import com.module.playways.rank.prepare.view.IMatchSucessView;
-import com.module.playways.rank.prepare.view.MatchSucessLeftView;
-import com.module.playways.rank.prepare.view.MatchSucessRightView;
+
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGADrawable;
@@ -49,7 +47,6 @@ import com.opensource.svgaplayer.SVGAVideoEntity;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import static android.view.View.VISIBLE;
 
@@ -72,10 +69,7 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
 
     SVGAImageView mTopSvgaView;
     SVGAImageView mVsSvga;
-    ExImageView mIvPrepare;
-
-    View mBgLeftView;
-    View mBgRightView;
+    ExTextView mIvPrepare;
 
     RelativeLayout mBottomContainer;
 
@@ -107,9 +101,7 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
         mSdvIcon5 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon5);
 
         mVsSvga = (SVGAImageView) mRootView.findViewById(R.id.vs_svga);
-        mIvPrepare = (ExImageView) mRootView.findViewById(R.id.iv_prepare);
-        mBgLeftView = (MatchSucessLeftView) mRootView.findViewById(R.id.bg_left_view);
-        mBgRightView = (MatchSucessRightView) mRootView.findViewById(R.id.bg_right_view);
+        mIvPrepare = (ExTextView) mRootView.findViewById(R.id.iv_prepare);
         mBottomContainer = (RelativeLayout) mRootView.findViewById(R.id.bottom_container);
 //        mSvgaMatchSuccessBg = (SVGAImageView)mRootView.findViewById(R.id.svga_match_success_bg);
 
@@ -131,7 +123,9 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
             @Override
             public void clickValid(View v) {
                 U.getSoundUtils().play(TAG, R.raw.pregame_ready);
-                mIvPrepare.setBackground(getResources().getDrawable(R.drawable.btn_pipeichenggong_pressed));
+                mIvPrepare.setBackground(getResources().getDrawable(R.drawable.img_btn_bg_dark_gray));
+                mIvPrepare.setText("已准备");
+                mIvPrepare.setTextColor(Color.parseColor("#BBBDC6"));
                 mIvPrepare.setClickable(false);
                 mMatchSucessPresenter.prepare(!isPrepared);
             }

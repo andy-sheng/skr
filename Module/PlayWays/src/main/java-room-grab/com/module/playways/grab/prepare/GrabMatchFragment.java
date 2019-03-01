@@ -77,7 +77,7 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
     SimpleDraweeView mSdvSubIcon3;
     SimpleDraweeView mSdvIcon2;
     ExTextView mTvTip;
-    ExImageView mIvCancelMatch;
+    ExTextView mIvCancelMatch;
 
     AnimatorSet mIconAnimatorSet;
 
@@ -112,7 +112,7 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
         mSdvIcon3 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon3);
         mSdvIcon2 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon2);
         mTvTip = (ExTextView) mRootView.findViewById(R.id.tv_tip);
-        mIvCancelMatch = (ExImageView) mRootView.findViewById(R.id.iv_cancel_match);
+        mIvCancelMatch = (ExTextView) mRootView.findViewById(R.id.iv_cancel_match);
         mRlIconContainer = (RelativeLayout) mRootView.findViewById(R.id.rl_icon_container);
         mSdvSubIcon1 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_sub_icon1);
         mSdvSubIcon3 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_sub_icon3);
