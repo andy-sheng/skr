@@ -33,15 +33,16 @@ public class GrabAudienceView extends LinearLayout {
 
     public GrabAudienceView(Context context) {
         this(context, null);
+        init();
     }
 
     public GrabAudienceView(Context context, AttributeSet attrs) {
         super(context, attrs, 0);
+        init();
     }
 
     public GrabAudienceView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        setOrientation(HORIZONTAL);
         init();
     }
 
@@ -93,6 +94,7 @@ public class GrabAudienceView extends LinearLayout {
     }
 
     public void init() {
+        setOrientation(HORIZONTAL);
         removeAllViews();
         for (int i = 0; i < 6; i++) {
             BaseImageView baseImageView = new BaseImageView(getContext());
