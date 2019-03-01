@@ -37,7 +37,7 @@ import com.module.playways.grab.room.top.GrabSingerTopView;
 import com.module.playways.grab.room.view.GrabChangeRoomTransitionView;
 import com.module.playways.grab.room.view.GrabGameOverView;
 import com.module.playways.grab.room.view.GrabOpView;
-import com.module.playways.grab.room.view.GrabTopView;
+import com.module.playways.grab.room.top.GrabTopView;
 import com.module.playways.grab.room.view.OthersSingCardView;
 import com.module.playways.grab.room.view.RoundOverCardView;
 import com.module.playways.grab.room.view.SelfSingCardView2;
