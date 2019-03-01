@@ -17,6 +17,7 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
+import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.constans.GameModeType;
 import com.jakewharton.rxbinding2.view.RxView;
@@ -56,8 +57,8 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
 
     ExImageView mSelectBack;
     ExImageView mSelectSelect;
-    ExImageView mSelectBackIv;
-    ExImageView mSelectClickedIv;
+    ExTextView mSelectBackIv;
+    ExTextView mSelectClickedIv;
 
     SongTagDetailsPresenter presenter;
 
@@ -78,8 +79,8 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
         mSwipeView = (SwipeFlingAdapterView) mRootView.findViewById(R.id.swipe_view);
 
         mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
-        mSelectBackIv = (ExImageView) mRootView.findViewById(R.id.select_back_iv);
-        mSelectClickedIv = (ExImageView) mRootView.findViewById(R.id.select_clicked_iv);
+        mSelectBackIv = (ExTextView) mRootView.findViewById(R.id.select_back_iv);
+        mSelectClickedIv = (ExTextView) mRootView.findViewById(R.id.select_clicked_iv);
         mSelectBack = (ExImageView) mRootView.findViewById(R.id.select_back);
         mSelectSelect = (ExImageView) mRootView.findViewById(R.id.select_select);
 
