@@ -158,7 +158,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
                     onBattleBeginPlayOver();
                     break;
                 case MSG_ENSURE_SONGCARD_OVER:
-                    onSongInfoCardPlayOver("MSG_ENSURE_SONGCARD_OVER",(PendingPlaySongCardData) msg.obj);
+                    onSongInfoCardPlayOver("MSG_ENSURE_SONGCARD_OVER", (PendingPlaySongCardData) msg.obj);
                     break;
                 case MSG_ENSURE_SING_BEGIN_TIPS_OVER:
                     onSingBeginTipsPlayOver(msg.arg1);
@@ -516,6 +516,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     public void grabBegin(int seq, SongModel songModel) {
         MyLog.d(TAG, "grabBegin" + " seq=" + seq + " songModel=" + songModel);
         // 播放3秒导唱
+        mTopContainerView.setVisibility(View.VISIBLE);
+        mSingerTopView.setVisibility(View.GONE);
         mTopContainerView.setSeqIndex(seq, mRoomData.getGrabConfigModel().getTotalGameRoundSeq());
         PendingPlaySongCardData pendingPlaySongCardData = new PendingPlaySongCardData(seq, songModel);
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_SONGCARD_OVER);
@@ -537,21 +539,21 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
         if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_GRAB) {
             mTurnInfoCardView.setVisibility(View.GONE);
-            onSongInfoCardPlayOver("中途进来",pendingPlaySongCardData);
+            onSongInfoCardPlayOver("中途进来", pendingPlaySongCardData);
         } else {
             mTurnInfoCardView.setModeSongSeq(seq == 1, new SVGAListener() {
                 @Override
                 public void onFinished() {
                     mTurnInfoCardView.setVisibility(View.GONE);
-                    onSongInfoCardPlayOver("动画结束进来",pendingPlaySongCardData);
+                    onSongInfoCardPlayOver("动画结束进来", pendingPlaySongCardData);
                 }
             });
         }
         mTopContainerView.setModeGrab();
     }
 
-    void onSongInfoCardPlayOver(String from,PendingPlaySongCardData pendingPlaySongCardData) {
-        MyLog.d(TAG, "onSongInfoCardPlayOver" + " pendingPlaySongCardData=" + pendingPlaySongCardData+" from="+from);
+    void onSongInfoCardPlayOver(String from, PendingPlaySongCardData pendingPlaySongCardData) {
+        MyLog.d(TAG, "onSongInfoCardPlayOver" + " pendingPlaySongCardData=" + pendingPlaySongCardData + " from=" + from);
         mUiHanlder.removeMessages(MSG_ENSURE_SONGCARD_OVER);
         mSingBeginTipsCardView.setVisibility(View.GONE);
         GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
