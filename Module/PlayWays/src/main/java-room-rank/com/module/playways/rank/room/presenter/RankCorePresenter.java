@@ -48,6 +48,7 @@ import com.module.playways.rank.msg.filter.PushMsgFilter;
 import com.module.playways.rank.msg.manager.ChatRoomMsgManager;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
+import com.module.playways.rank.room.event.PkSomeOneOnlineChangeEvent;
 import com.module.playways.rank.room.model.RankPlayerInfoModel;
 import com.module.playways.rank.room.model.RankRoundInfoModel;
 import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
@@ -1326,6 +1327,9 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
             return;
         }
 
+        if (event.exitUserID != 0) {
+            mRoomData.setOnline(event.exitUserID, false);
+        }
         if (RoomDataUtils.isCurrentRound(event.currenRound.getRoundSeq(), mRoomData)) {
             // 如果是当前轮次
             mRoomData.getRealRoundInfo().tryUpdateRoundInfoModel(event.currenRound, true);
@@ -1377,16 +1381,23 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(ExitGameEvent exitGameEvent) {
-        MyLog.w(TAG, "收到一个人退出的push了，type是" + exitGameEvent.type + ",timeMs是" + exitGameEvent.info.getTimeMs());
-        if (exitGameEvent.type == EXIT_GAME_AFTER_PLAY) {   //我在唱歌，有一个人退出
+    public void onEventMainThread(ExitGameEvent event) {
+        MyLog.w(TAG, "收到一个人退出的push了，type是" + event.type + ",timeMs是" + event.info.getTimeMs());
+        if (event.type == EXIT_GAME_AFTER_PLAY) {   //我在唱歌，有一个人退出
 //            U.getToastUtil().showShort("游戏结束后，某一个人退出了");
-        } else if (exitGameEvent.type == EXIT_GAME_OUT_ROUND) {   //我是观众，有一个人退出
+        } else if (event.type == EXIT_GAME_OUT_ROUND) {   //我是观众，有一个人退出
 //            U.getToastUtil().showShort("游戏中，某一个人退出了");
         }
+        mRoomData.setOnline(event.exitUserID, false);
+    }
 
-        mRoomData.setOnline(exitGameEvent.exitUserID, false);
-        UserInfoModel userInfo = mRoomData.getUserInfo(exitGameEvent.exitUserID);
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(PkSomeOneOnlineChangeEvent event) {
+        if (mRoomData.isIsGameFinish()) {
+            MyLog.d(TAG, "游戏结束了，不关心 PkSomeOneOnlineChangeEvent 事件");
+            return;
+        }
+        UserInfoModel userInfo = mRoomData.getUserInfo(event.model.getUserID());
         BasePushInfo basePushInfo = new BasePushInfo();
         basePushInfo.setRoomID(mRoomData.getGameId());
         basePushInfo.setSender(new UserInfo.Builder()

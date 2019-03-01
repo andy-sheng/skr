@@ -5,7 +5,9 @@ import com.common.log.MyLog;
 import com.component.busilib.constans.GameModeType;
 import com.module.playways.BaseRoomData;
 import com.module.playways.RoomDataUtils;
+import com.module.playways.rank.msg.event.ExitGameEvent;
 import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
+import com.module.playways.rank.room.event.PkSomeOneOnlineChangeEvent;
 import com.module.playways.rank.room.model.RankGameConfigModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.room.model.RankPlayerInfoModel;
@@ -158,9 +160,12 @@ public class RankRoomData extends BaseRoomData<RankRoundInfoModel> {
 
     public void setOnline(int userID, boolean online) {
         if (mPlayerInfoList != null) {
-            for (PlayerInfoModel playerInfo : mPlayerInfoList) {
+            for (RankPlayerInfoModel playerInfo : mPlayerInfoList) {
                 if (playerInfo.getUserInfo().getUserId() == userID) {
-                    playerInfo.setOnline(online);
+                    if(playerInfo.isOnline() != online){
+                        playerInfo.setOnline(online);
+                            EventBus.getDefault().post(new PkSomeOneOnlineChangeEvent(playerInfo));
+                    }
                 }
             }
         }
