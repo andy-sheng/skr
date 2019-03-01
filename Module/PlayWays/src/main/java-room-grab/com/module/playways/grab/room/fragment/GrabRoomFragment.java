@@ -108,7 +108,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     GrabSingerTopView mSingerTopView; // 轮到本人演唱时的顶部界面
 
-    GrabTopContainerView mTopContainerView;
+    GrabTopContainerView mTopContainerView;// 顶部，抢唱阶段，以及非本人的演唱阶段
 
     GrabCorePresenter mCorePresenter;
 
@@ -353,16 +353,24 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     }
 
     private void initTopView() {
-        mSingerTopView = (GrabSingerTopView)mRootView.findViewById(R.id.singer_top_view);
+        // 加上状态栏的高度
+        int statusBarHeight = U.getStatusBarUtil().getStatusBarHeight(getContext());
+
+        mSingerTopView = (GrabSingerTopView) mRootView.findViewById(R.id.singer_top_view);
         mSingerTopView.setRoomData(mRoomData);
+        {
+            RelativeLayout.LayoutParams topLayoutParams = (RelativeLayout.LayoutParams) mSingerTopView.getLayoutParams();
+            topLayoutParams.topMargin = statusBarHeight + topLayoutParams.topMargin;
+        }
 
         mTopContainerView = mRootView.findViewById(R.id.top_container_view);
         mTopContainerView.setRoomData(mRoomData);
 
-        // 加上状态栏的高度
-        int statusBarHeight = U.getStatusBarUtil().getStatusBarHeight(getContext());
-        RelativeLayout.LayoutParams topLayoutParams = (RelativeLayout.LayoutParams) mTopContainerView.getLayoutParams();
-        topLayoutParams.topMargin = statusBarHeight + topLayoutParams.topMargin;
+        {
+            RelativeLayout.LayoutParams topLayoutParams = (RelativeLayout.LayoutParams) mTopContainerView.getLayoutParams();
+            topLayoutParams.topMargin = statusBarHeight + topLayoutParams.topMargin;
+        }
+
         mTopContainerView.setListener(mListener);
         mSingerTopView.setListener(mListener);
     }
@@ -513,10 +521,10 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         }
 
         GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
-        if(!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() ==GrabRoundInfoModel.STATUS_GRAB){
+        if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_GRAB) {
             mTurnInfoCardView.setVisibility(View.GONE);
             onSongInfoCardPlayOver(pendingPlaySongCardData);
-        }else{
+        } else {
             mTurnInfoCardView.setModeSongSeq(seq == 1, new SVGAListener() {
                 @Override
                 public void onFinished() {
@@ -533,9 +541,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mUiHanlder.removeMessages(MSG_ENSURE_SONGCARD_OVER);
         mSingBeginTipsCardView.setVisibility(View.GONE);
         GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
-        if(!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() ==GrabRoundInfoModel.STATUS_GRAB){
-            MyLog.d(TAG,"这轮刚进来，不播放导唱过场");
-        }else{
+        if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_GRAB) {
+            MyLog.d(TAG, "这轮刚进来，不播放导唱过场");
+        } else {
             mSongInfoCardView.bindSongModel(pendingPlaySongCardData.songModel);
             mGrabOpBtn.playCountDown(pendingPlaySongCardData.getSeq(), 4, pendingPlaySongCardData.songModel.getStandIntroEndT() - pendingPlaySongCardData.songModel.getStandIntroBeginT());
         }
@@ -599,7 +607,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     private void singBeginTipsPlay(int uid, Runnable runnable) {
         GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
         if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_SING) {
-            MyLog.d(TAG," 进入时已经时演唱阶段了，则不用播卡片了");
+            MyLog.d(TAG, " 进入时已经时演唱阶段了，则不用播卡片了");
             runnable.run();
         } else {
             mSingBeginTipsCardView.bindData(mRoomData.getUserInfo(uid), new SVGAListener() {

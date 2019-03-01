@@ -3,11 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:parentTag="android.widget.RelativeLayout">
 
-    <com.module.playways.grab.room.view.GrabTopView
+    <com.module.playways.grab.room.top.GrabTopView
         android:id="@+id/grab_top_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
+
     <com.module.playways.grab.room.top.GrabPlayerRv2
         android:layout_below="@+id/grab_top_view"
         android:id="@+id/top_content_rv"

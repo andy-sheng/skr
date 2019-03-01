@@ -38,4 +38,5 @@ public class GrabTopView extends RelativeLayout {
             }
         });
     }
+
 }
