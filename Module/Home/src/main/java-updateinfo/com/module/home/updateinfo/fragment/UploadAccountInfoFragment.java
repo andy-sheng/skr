@@ -206,40 +206,45 @@ public class UploadAccountInfoFragment extends BaseFragment {
         this.sex = isMale ? ESex.SX_MALE.getValue() : ESex.SX_FEMALE.getValue();
         mMale.setBackground(isMale ? getResources().getDrawable(R.drawable.head_man_xuanzhong) : getResources().getDrawable(R.drawable.head_man_weixuanzhong));
         mFemale.setBackground(isMale ? getResources().getDrawable(R.drawable.head_woman_weixuanzhong) : getResources().getDrawable(R.drawable.head_women_xuanzhong));
-        // 放大动画
-        ObjectAnimator a1 = ObjectAnimator.ofFloat(isMale ? mMale : mFemale, "scaleX", 1f, 1.2f);
-        ObjectAnimator a2 = ObjectAnimator.ofFloat(isMale ? mMale : mFemale, "scaleY", 1f, 1.2f);
-        // 缩小动画
-        ObjectAnimator s1 = ObjectAnimator.ofFloat(isMale ? mFemale : mMale, "scaleX", 1.2f, 1f);
-        ObjectAnimator s2 = ObjectAnimator.ofFloat(isMale ? mFemale : mMale, "scaleY", 1.2f, 1f);
-        AnimatorSet set = new AnimatorSet();
-        set.setDuration(80);
-        set.playTogether(a1, a2, s1, s2);
 
-        set.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animator) {
+        mMale.setClickable(isMale ? false : true);
+        mFemale.setClickable(isMale ? true : false);
 
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animator) {
-                mMale.setClickable(isMale ? false : true);
-                mFemale.setClickable(isMale ? true : false);
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animator) {
-                onAnimationEnd(animator);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animator) {
-
-            }
-        });
-
-        set.start();
+        // TODO: 2019/3/1 去掉动画
+//        // 放大动画
+//        ObjectAnimator a1 = ObjectAnimator.ofFloat(isMale ? mMale : mFemale, "scaleX", 1f, 1.2f);
+//        ObjectAnimator a2 = ObjectAnimator.ofFloat(isMale ? mMale : mFemale, "scaleY", 1f, 1.2f);
+//        // 缩小动画
+//        ObjectAnimator s1 = ObjectAnimator.ofFloat(isMale ? mFemale : mMale, "scaleX", 1.2f, 1f);
+//        ObjectAnimator s2 = ObjectAnimator.ofFloat(isMale ? mFemale : mMale, "scaleY", 1.2f, 1f);
+//        AnimatorSet set = new AnimatorSet();
+//        set.setDuration(80);
+//        set.playTogether(a1, a2, s1, s2);
+//
+//        set.addListener(new Animator.AnimatorListener() {
+//            @Override
+//            public void onAnimationStart(Animator animator) {
+//
+//            }
+//
+//            @Override
+//            public void onAnimationEnd(Animator animator) {
+//                mMale.setClickable(isMale ? false : true);
+//                mFemale.setClickable(isMale ? true : false);
+//            }
+//
+//            @Override
+//            public void onAnimationCancel(Animator animator) {
+//                onAnimationEnd(animator);
+//            }
+//
+//            @Override
+//            public void onAnimationRepeat(Animator animator) {
+//
+//            }
+//        });
+//
+//        set.start();
     }
 
     private void initPublishSubject() {

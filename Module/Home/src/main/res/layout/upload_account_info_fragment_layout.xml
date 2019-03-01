@@ -76,7 +76,7 @@
 
             <LinearLayout
                 android:layout_width="@dimen/view_234_dp"
-                android:layout_height="@dimen/view_92_dp"
+                android:layout_height="@dimen/view_106_dp"
                 android:layout_below="@+id/nickname_et"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/view_54_dp"
@@ -91,9 +91,20 @@
                         android:id="@+id/male"
                         android:layout_width="@dimen/view_76_dp"
                         android:layout_height="@dimen/view_76_dp"
-                        android:layout_centerInParent="true"
+                        android:layout_centerHorizontal="true"
                         android:background="@drawable/head_man_weixuanzhong"
                         android:scaleType="center" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/view_22_dp"
+                        android:layout_below="@+id/male"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/view_8_dp"
+                        android:text="男"
+                        android:textColor="#0F2076"
+                        android:textSize="@dimen/textsize_16_dp"
+                        android:textStyle="bold" />
 
                 </RelativeLayout>
 
@@ -106,9 +117,20 @@
                         android:id="@+id/female"
                         android:layout_width="@dimen/view_76_dp"
                         android:layout_height="@dimen/view_76_dp"
-                        android:layout_centerInParent="true"
+                        android:layout_centerHorizontal="true"
                         android:background="@drawable/head_woman_weixuanzhong"
                         android:scaleType="center" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/view_22_dp"
+                        android:layout_below="@+id/female"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/view_8_dp"
+                        android:text="女"
+                        android:textColor="#0F2076"
+                        android:textSize="@dimen/textsize_16_dp"
+                        android:textStyle="bold" />
 
                 </RelativeLayout>
 
