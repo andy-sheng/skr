@@ -420,7 +420,7 @@ public class FragmentUtils {
          * useOldFragmentIfExist = true
          * 低内存回收时，是否要用原内存中的fragment重建个fragment
          */
-        boolean useOldFragmentIfExist = true;
+        boolean useOldFragmentIfExist = false;
 
         public void setFromFragment(BaseFragment fromFragment) {
             this.fromFragment = fromFragment;

@@ -77,6 +77,7 @@ public class VoiceUserStatusView extends RelativeLayout {
                 bundle.putSerializable(OtherPersonFragment.BUNDLE_USER_MODEL, mUserInfoModel);
                 U.getFragmentUtils().addFragment(FragmentUtils
                         .newAddParamsBuilder((FragmentActivity) getContext(), OtherPersonFragment.class)
+                        .setUseOldFragmentIfExist(false)
                         .setBundle(bundle)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)

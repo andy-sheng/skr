@@ -84,6 +84,7 @@ public class BlackListFragment extends BaseFragment {
                     bundle.putSerializable(OtherPersonFragment.BUNDLE_USER_MODEL, userInfoModel);
                     U.getFragmentUtils().addFragment(FragmentUtils
                             .newAddParamsBuilder((BaseActivity) getContext(), OtherPersonFragment.class)
+                            .setUseOldFragmentIfExist(false)
                             .setBundle(bundle)
                             .setAddToBackStack(true)
                             .setHasAnimation(true)

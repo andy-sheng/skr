@@ -449,6 +449,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         bundle.putSerializable(OtherPersonFragment.BUNDLE_USER_MODEL, userInfoModel);
         U.getFragmentUtils().addFragment(FragmentUtils
                 .newAddParamsBuilder((FragmentActivity) getActivity(), OtherPersonFragment.class)
+                .setUseOldFragmentIfExist(false)
                 .setBundle(bundle)
                 .setAddToBackStack(true)
                 .setHasAnimation(true)

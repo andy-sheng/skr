@@ -90,6 +90,7 @@ public class LeaderBoardAdapter extends DiffAdapter<RankInfoModel, RecyclerView.
                     bundle.putSerializable(OtherPersonFragment.BUNDLE_USER_MODEL, userInfoModel);
                     U.getFragmentUtils().addFragment(FragmentUtils
                             .newAddParamsBuilder((FragmentActivity) itemView.getContext(), OtherPersonFragment.class)
+                            .setUseOldFragmentIfExist(false)
                             .setBundle(bundle)
                             .setAddToBackStack(true)
                             .setHasAnimation(true)
