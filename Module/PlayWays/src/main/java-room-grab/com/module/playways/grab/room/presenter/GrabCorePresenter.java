@@ -336,9 +336,11 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                         wantSingerInfo.setUserID((int) MyUserInfoManager.getInstance().getUid());
                         wantSingerInfo.setTimeMs(System.currentTimeMillis());
                         now.addGrabUid(RoomDataUtils.isCurrentRound(now.getRoundSeq(), mRoomData), wantSingerInfo);
+                    } else {
+                        MyLog.w(TAG, "now != null && now.getRoundSeq() == seq 条件不满足，" + result.getTraceId());
                     }
                 } else {
-
+                    MyLog.w(TAG, "grabThisRound failed, " + result.getTraceId());
                 }
             }
 
