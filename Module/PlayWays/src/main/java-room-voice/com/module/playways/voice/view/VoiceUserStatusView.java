@@ -10,14 +10,12 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.common.core.avatar.AvatarUtils;
-import com.common.core.userinfo.model.UserInfoModel;
 import com.common.image.fresco.BaseImageView;
-import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
-import com.common.view.ex.ExTextView;
+import com.module.playways.rank.room.model.RankPlayerInfoModel;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGAImageView;
@@ -47,7 +45,7 @@ public class VoiceUserStatusView extends RelativeLayout {
         }
     };
 
-    UserInfoModel mUserInfoModel;
+    RankPlayerInfoModel mModel;
 
     public VoiceUserStatusView(Context context) {
         super(context);
@@ -74,7 +72,7 @@ public class VoiceUserStatusView extends RelativeLayout {
             @Override
             public void clickValid(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(OtherPersonFragment.BUNDLE_USER_MODEL, mUserInfoModel);
+                bundle.putSerializable(OtherPersonFragment.BUNDLE_USER_MODEL, mModel);
                 U.getFragmentUtils().addFragment(FragmentUtils
                         .newAddParamsBuilder((FragmentActivity) getContext(), OtherPersonFragment.class)
                         .setUseOldFragmentIfExist(false)
@@ -86,21 +84,22 @@ public class VoiceUserStatusView extends RelativeLayout {
         });
     }
 
-    public void bindData(UserInfoModel model) {
-        mUserInfoModel = model;
-        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(model.getAvatar())
+    public void bindData(RankPlayerInfoModel playerInfoModel) {
+        mModel = playerInfoModel;
+        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mModel.getUserInfo().getAvatar())
                 .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                .setBorderColorBySex(model.getSex() == 1)
+                .setBorderColorBySex(mModel.getUserInfo().getSex() == 1)
                 .setCircle(true)
+                .setGray(!mModel.isOnline())
                 .build()
         );
         mMuteMicIv.setVisibility(VISIBLE);
     }
 
     public void userOffline() {
-        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mUserInfoModel.getAvatar())
+        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mModel.getUserInfo().getAvatar())
                 .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                .setBorderColorBySex(mUserInfoModel.getSex() == 1)
+                .setBorderColorBySex(mModel.getUserInfo().getSex() == 1)
                 .setCircle(true)
                 .setGray(true)
                 .build()
@@ -167,4 +166,6 @@ public class VoiceUserStatusView extends RelativeLayout {
         }
         mUiHanlder.removeCallbacksAndMessages(null);
     }
+
+
 }
