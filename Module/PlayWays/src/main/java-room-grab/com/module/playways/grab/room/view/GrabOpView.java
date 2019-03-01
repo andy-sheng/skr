@@ -35,6 +35,7 @@ import static android.view.animation.Animation.INFINITE;
  */
 public class GrabOpView extends RelativeLayout {
     public final static String TAG = "GrabOpView";
+    public static final long SHOW_BURST_DELAY_TIME = 15000;
 
     public static final int MSG_HIDE_FROM_END_GUIDE_AUDIO = 0;
     public static final int MSG_HIDE = 1;
@@ -358,7 +359,7 @@ public class GrabOpView extends RelativeLayout {
 
         Message msg = Message.obtain();
         msg.what = MSG_SHOW_BRUST_BTN;
-        mUiHandler.sendMessageDelayed(msg, 15000);
+        mUiHandler.sendMessageDelayed(msg, SHOW_BURST_DELAY_TIME);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
