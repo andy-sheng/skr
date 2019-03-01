@@ -23,7 +23,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_3_dp"
+        android:layout_height="@dimen/view_2_dp"
         android:layout_below="@+id/titlebar"
         android:background="#0C2275" />
 
@@ -32,6 +32,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/titlebar"
-        android:layout_marginTop="@dimen/view_3_dp"></RelativeLayout>
+        android:layout_marginTop="@dimen/view_2_dp"></RelativeLayout>
 
 </RelativeLayout>

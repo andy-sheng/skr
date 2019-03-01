@@ -5,20 +5,19 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.common.base.R;
+import com.common.view.ex.ExTextView;
 
 
 public class DialogListViewHolder extends RecyclerView.ViewHolder {
-    TextView titleTv;
-    View mDivider;
+    ExTextView titleTv;
     DialogListItem data;
 
     public DialogListViewHolder(View itemView) {
         super(itemView);
-        if (itemView instanceof TextView) {
-            titleTv = (TextView) itemView;
+        if (itemView instanceof ExTextView) {
+            titleTv = (ExTextView) itemView;
         } else {
-            titleTv = (TextView) itemView.findViewById(R.id.desc_tv);
-            mDivider = (View) itemView.findViewById(R.id.divider);
+            titleTv = (ExTextView) itemView.findViewById(R.id.desc_tv);
         }
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override

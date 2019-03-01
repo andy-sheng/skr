@@ -1,23 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/view_70_dp">
+    android:layout_height="wrap_content">
 
-    <TextView
+    <com.common.view.ex.ExTextView
         android:id="@+id/desc_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:textColor="#0C2275"
-        android:textSize="@dimen/textsize_18_dp" />
-
-    <View
-        android:id="@+id/divider"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_3_dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginLeft="@dimen/view_1_dp"
-        android:layout_marginRight="@dimen/view_1_dp"
-        android:background="#0C2275" />
+        android:layout_height="@dimen/view_48_dp"
+        android:layout_marginBottom="@dimen/view_8_dp"
+        android:gravity="center"
+        android:textColor="#0C2275"
+        android:textSize="@dimen/textsize_18_dp"
+        app:bl_corners_radius="@dimen/view_12_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="@color/white" />
+
 
 </RelativeLayout>

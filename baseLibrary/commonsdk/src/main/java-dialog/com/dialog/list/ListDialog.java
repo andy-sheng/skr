@@ -52,15 +52,6 @@ public class ListDialog {
                 }
                 DialogListViewHolder vh = (DialogListViewHolder) v.getTag();
                 DialogListItem debugData = mDataList.get(position);
-                if ((mDataList.size() - 1) == position) {
-                    if (vh.mDivider != null) {
-                        vh.mDivider.setVisibility(View.GONE);
-                    }
-                } else {
-                    if (vh.mDivider != null) {
-                        vh.mDivider.setVisibility(View.VISIBLE);
-                    }
-                }
                 vh.bindData(debugData);
                 return v;
             }
@@ -69,10 +60,10 @@ public class ListDialog {
         mChannelListDialog = DialogPlus.newDialog(context)
                 .setContentHolder(new ListHolder())
                 .setAdapter(mBaseAdapter)
-                .setGravity(Gravity.CENTER)
+                .setGravity(Gravity.BOTTOM)
                 .setCancelable(true)
-                .setContentBackgroundResource(R.drawable.img_dialog_bg)
-                .setMargin(U.getDisplayUtils().dip2px(45), 0, U.getDisplayUtils().dip2px(45), 0)
+                .setContentBackgroundResource(R.color.transparent)
+                .setMargin(U.getDisplayUtils().dip2px(16), 0, U.getDisplayUtils().dip2px(16), U.getDisplayUtils().dip2px(16))
                 .setOverlayBackgroundResource(R.color.black_trans_60)
                 .setExpanded(false)
                 .create();
