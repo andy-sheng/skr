@@ -283,7 +283,7 @@ public class RankMatchPresenter extends BaseMatchPresenter {
                                         }
                                     } else {
                                         MyLog.w(TAG, "拉完房间信息人数不够3个，try num is " + integer);
-                                        if(integer == CHECK_NUM){
+                                        if(integer >= CHECK_NUM-1){
                                             cancelCheckTask();
                                             startLoopMatchTask(mCurrentMusicId, mGameType);
                                             exitGame(mJoinActionEvent.gameId);
