@@ -64,9 +64,7 @@ public class GrabAudienceView extends LinearLayout {
     public void onEvent(GrabWaitSeatUpdateEvent event) {
         mPlayerInfoModelList.clear();
         if (event.list != null) {
-            for (GrabPlayerInfoModel grabPlayerInfoModel : event.list){
-                mPlayerInfoModelList.add(grabPlayerInfoModel);
-            }
+            mPlayerInfoModelList.addAll(event.list);
         }
         updateAllView();
     }
@@ -80,7 +78,6 @@ public class GrabAudienceView extends LinearLayout {
                 iterator.remove();
             }
         }
-
         updateAllView();
     }
 
@@ -91,7 +88,6 @@ public class GrabAudienceView extends LinearLayout {
                 return;
             }
         }
-
         mPlayerInfoModelList.add(event.getPlayerInfoModel());
         updateAllView();
     }

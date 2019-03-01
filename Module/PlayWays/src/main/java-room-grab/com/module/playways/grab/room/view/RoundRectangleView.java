@@ -200,8 +200,7 @@ public class RoundRectangleView extends View {
         });
 
         mAnimatorSet = new AnimatorSet();
-        mAnimatorSet
-                .playTogether(creditValueAnimator);
+        mAnimatorSet.playTogether(creditValueAnimator);
         mAnimatorSet.start();
     }
 
@@ -210,14 +209,12 @@ public class RoundRectangleView extends View {
         if(mAnimatorSet != null){
             mAnimatorSet.cancel();
         }
-
         invalidate();
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-
         if(mAnimatorSet != null){
             mAnimatorSet.cancel();
         }

@@ -66,10 +66,10 @@ public class GrabOpView extends RelativeLayout {
 
     HandlerTaskTimer mCountDownTask;
 
-    Handler mUiHandler = new Handler(){
+    Handler mUiHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what){
+            switch (msg.what) {
                 case MSG_HIDE_FROM_END_GUIDE_AUDIO:
                     hide();
                     if (mListener != null) {
@@ -82,8 +82,8 @@ public class GrabOpView extends RelativeLayout {
                     mIvBurst.setVisibility(GONE);
                     break;
                 case MSG_SHOW_BRUST_BTN:
-                    TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF,1.0f,Animation.RELATIVE_TO_SELF,0.0f,
-                            Animation.RELATIVE_TO_SELF,0,Animation.RELATIVE_TO_SELF,0);
+                    TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f,
+                            Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0);
                     animation.setDuration(200);
                     animation.setRepeatMode(Animation.REVERSE);
                     animation.setInterpolator(new OvershootInterpolator());
@@ -121,7 +121,7 @@ public class GrabOpView extends RelativeLayout {
         mBtnIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                MyLog.d(TAG,"mStatus ==" + mStatus);
+                MyLog.d(TAG, "mStatus ==" + mStatus);
                 if (mStatus == STATUS_GRAP) {
                     if (mListener != null) {
                         mListener.clickGrabBtn(mSeq);
@@ -134,7 +134,7 @@ public class GrabOpView extends RelativeLayout {
         mIvBurst.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                MyLog.d(TAG,"mStatus ==" + mStatus);
+                MyLog.d(TAG, "mStatus ==" + mStatus);
                 if (mStatus == STATUS_CAN_OP) {
                     if (mListener != null) {
                         mListener.clickBurst(mSeq);
@@ -147,8 +147,8 @@ public class GrabOpView extends RelativeLayout {
         mIvLightOff.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                MyLog.d(TAG,"mStatus ==" + mStatus);
-                if(mStatus == STATUS_CAN_OP){
+                MyLog.d(TAG, "mStatus ==" + mStatus);
+                if (mStatus == STATUS_CAN_OP) {
                     if (mListener != null) {
                         mListener.clickLightOff();
                     }
@@ -162,21 +162,19 @@ public class GrabOpView extends RelativeLayout {
     }
 
     /**
-     *
      * @param num     倒计时时间，倒计时结束后变成想唱
      * @param waitNum 等待想唱时间
      */
     public void playCountDown(int seq, int num, int waitNum) {
         // 播放 3 2 1 导唱倒计时
-        MyLog.d(TAG, "playCountDown");
+        MyLog.d(TAG, "playCountDown" + " seq=" + seq + " num=" + num + " waitNum=" + waitNum);
         mSeq = seq;
-
         mStatus = STATUS_COUNT_DOWN;
         onChangeState();
         mUiHandler.removeCallbacksAndMessages(null);
 
-        TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF,1.0f,Animation.RELATIVE_TO_SELF,0.0f,
-                Animation.RELATIVE_TO_SELF,0,Animation.RELATIVE_TO_SELF,0);
+        TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f,
+                Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0);
         animation.setDuration(200);
         animation.setRepeatMode(Animation.REVERSE);
         animation.setInterpolator(new OvershootInterpolator());
@@ -213,7 +211,7 @@ public class GrabOpView extends RelativeLayout {
                         }
                         // 按钮变成抢唱，且可点击
                         mUiHandler.removeMessages(MSG_HIDE_FROM_END_GUIDE_AUDIO);
-                        if(waitNum <= 0){
+                        if (waitNum <= 0) {
                             MyLog.e(TAG, "等待时间是0");
                             Message msg = mUiHandler.obtainMessage(MSG_HIDE_FROM_END_GUIDE_AUDIO);
                             mUiHandler.sendMessageDelayed(msg, 0);
@@ -231,8 +229,8 @@ public class GrabOpView extends RelativeLayout {
     /**
      * 状态发生变化
      */
-    private void onChangeState(){
-        switch (mStatus){
+    private void onChangeState() {
+        switch (mStatus) {
             case STATUS_COUNT_DOWN:
                 mIvLightOff.setVisibility(GONE);
                 mIvBurst.setVisibility(GONE);
@@ -268,13 +266,13 @@ public class GrabOpView extends RelativeLayout {
 
     }
 
-    public void hide(){
+    public void hide() {
         MyLog.d(TAG, "hide");
         cancelCountDownTask();
         mBtnIv.clearAnimation();
         mRrlProgress.stopCountDown();
-        TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF,0.0f,Animation.RELATIVE_TO_SELF,1.0f,
-                Animation.RELATIVE_TO_SELF,0,Animation.RELATIVE_TO_SELF,0);
+        TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 1.0f,
+                Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0);
         animation.setDuration(200);
         animation.setRepeatMode(Animation.REVERSE);
         animation.setInterpolator(new OvershootInterpolator());
@@ -293,8 +291,8 @@ public class GrabOpView extends RelativeLayout {
     public void toSingState() {
         MyLog.d(TAG, "toSingState");
 
-        TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF,1.0f,Animation.RELATIVE_TO_SELF,0.0f,
-                Animation.RELATIVE_TO_SELF,0,Animation.RELATIVE_TO_SELF,0);
+        TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f,
+                Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0);
         animation.setDuration(200);
         animation.setRepeatMode(Animation.REVERSE);
         animation.setInterpolator(new OvershootInterpolator());
@@ -362,7 +360,7 @@ public class GrabOpView extends RelativeLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(SomeOneLightBurstEvent event) {
-        if(mSeq == event.getRoundInfo().getRoundSeq()){
+        if (mSeq == event.getRoundInfo().getRoundSeq()) {
             mStatus = STATUS_HAS_OP;
             onChangeState();
         }
@@ -370,7 +368,7 @@ public class GrabOpView extends RelativeLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(SomeOneLightOffEvent event) {
-        if(mSeq == event.getRoundInfo().getRoundSeq()){
+        if (mSeq == event.getRoundInfo().getRoundSeq()) {
             mStatus = STATUS_HAS_OP;
             onChangeState();
         }
@@ -384,8 +382,8 @@ public class GrabOpView extends RelativeLayout {
         mUiHandler.removeCallbacksAndMessages(null);
     }
 
-    private void cancelCountDownTask(){
-        if(mCountDownTask != null){
+    private void cancelCountDownTask() {
+        if (mCountDownTask != null) {
             mCountDownTask.dispose();
         }
     }
