@@ -148,7 +148,7 @@ public class GrabTopContainerView extends RelativeLayout {
         mListener = l;
     }
 
-    public void setRoomData(BaseRoomData roomData) {
+    public void setRoomData(GrabRoomData roomData) {
         mRoomData = roomData;
         mTopContentRv.setRoomData(roomData);
         mGrabTopView.setRoomData((GrabRoomData) roomData);
