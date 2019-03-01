@@ -1,5 +1,7 @@
 package com.module.home.updateinfo;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -24,6 +26,7 @@ import com.common.view.titlebar.CommonTitleBar;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.RouterConstants;
 import com.respicker.ResPicker;
+import com.respicker.activity.ResPickerActivity;
 import com.respicker.fragment.ResPickerFragment;
 import com.respicker.model.ImageItem;
 import com.respicker.view.CropImageView;
@@ -155,40 +158,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
                 .setCropStyle(CropImageView.Style.CIRCLE)
                 .build()
         );
-
-        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, ResPickerFragment.class)
-                .setAddToBackStack(true)
-                .setHasAnimation(true)
-                .setFragmentDataListener(new FragmentDataListener() {
-                    @Override
-                    public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object object) {
-                            ImageItem imageItem = ResPicker.getInstance().getSingleSelectedImage();
-                            UploadTask uploadTask = UploadParams.newBuilder(imageItem.getPath())
-                                    .setNeedCompress(true)
-                                    .startUploadAsync(new UploadCallback() {
-                                        @Override
-                                        public void onProgress(long currentSize, long totalSize) {
-
-                                        }
-
-                                        @Override
-                                        public void onSuccess(String url) {
-                                            U.getToastUtil().showShort("上传成功 url:" + url);
-                                            MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager
-                                                    .newMyInfoUpdateParamsBuilder()
-                                                    .setAvatar(url)
-                                                    .build(), false);
-                                        }
-
-                                        @Override
-                                        public void onFailure(String msg) {
-
-                                        }
-
-                                    });
-                        }
-                })
-                .build());
+        ResPickerActivity.open(this);
     }
 
     //修改昵称
@@ -256,5 +226,36 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvnet(MyUserInfoEvent.UserInfoChangeEvent userInfoChangeEvent) {
         initViewData();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ResPickerActivity.REQ_CODE_RES_PICK && resultCode == Activity.RESULT_OK) {
+            ImageItem imageItem = ResPicker.getInstance().getSingleSelectedImage();
+            UploadTask uploadTask = UploadParams.newBuilder(imageItem.getPath())
+                    .setNeedCompress(true)
+                    .startUploadAsync(new UploadCallback() {
+                        @Override
+                        public void onProgress(long currentSize, long totalSize) {
+
+                        }
+
+                        @Override
+                        public void onSuccess(String url) {
+                            U.getToastUtil().showShort("上传成功 url:" + url);
+                            MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager
+                                    .newMyInfoUpdateParamsBuilder()
+                                    .setAvatar(url)
+                                    .build(), false);
+                        }
+
+                        @Override
+                        public void onFailure(String msg) {
+
+                        }
+                    });
+        }
+
     }
 }
