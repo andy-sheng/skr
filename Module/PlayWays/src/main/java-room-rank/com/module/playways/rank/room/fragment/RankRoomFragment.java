@@ -1058,6 +1058,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     public void gameFinish() {
         MyLog.w(TAG, "游戏结束了");
         mUiHanlder.removeMessages(MSG_LYRIC_END_EVENT);
+        mRankOpView.setVisibility(View.GONE);
         if (mPrepareLyricTask != null && !mPrepareLyricTask.isDisposed()) {
             mPrepareLyricTask.dispose();
         }
