@@ -25,6 +25,7 @@
         android:layout_marginTop="@dimen/view_12_dp" />
 
     <com.common.view.ex.ExImageView
+        android:visibility="gone"
         android:id="@+id/flag_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

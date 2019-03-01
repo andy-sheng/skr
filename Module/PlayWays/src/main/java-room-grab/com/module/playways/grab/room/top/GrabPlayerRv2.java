@@ -47,7 +47,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class GrabPlayerRv2 extends RelativeLayout {
-    public final static String TAG = "GrabTopRv";
+    public final static String TAG = "GrabPlayerRv2";
 
     private LinkedHashMap<Integer, VP> mInfoMap = new LinkedHashMap<>();
     private BaseRoomData<GrabRoundInfoModel> mRoomData;
@@ -100,9 +100,15 @@ public class GrabPlayerRv2 extends RelativeLayout {
         mContentLl.removeAllViews();
         //为了复用之前的view
         LinkedHashMap<Integer, VP> mTemInfoMap = new LinkedHashMap<>();
+        if(mRoomData.getRealRoundInfo() != null && mRoomData.getPlayerInfoList() != null && mRoomData.getPlayerInfoList().size() > 0){
+            MyLog.w(TAG, "initData data error" );
+            return;
+        }
+
         GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
         List<PlayerInfoModel> playerInfoModels = mRoomData.getPlayerInfoList();
 
+        MyLog.d(TAG, "initData playerInfoModels.size() is " + playerInfoModels.size());
         int i = 0;
         for (PlayerInfoModel playerInfoModel : playerInfoModels) {
             UserInfoModel userInfo = playerInfoModel.getUserInfo();
@@ -546,7 +552,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
 
     public void setRoomData(BaseRoomData roomData) {
         mRoomData = roomData;
-//        initData();
+        initData();
     }
 
     @Override

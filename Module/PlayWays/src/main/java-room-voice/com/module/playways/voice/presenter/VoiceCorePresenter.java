@@ -1,21 +1,30 @@
 package com.module.playways.voice.presenter;
 
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 
 import com.changba.songstudio.audioeffect.AudioEffectStyleEnum;
 import com.common.core.account.UserAccountManager;
+import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
+import com.common.utils.U;
 import com.engine.EngineEvent;
 import com.engine.EngineManager;
 import com.engine.Params;
+import com.engine.UserStatus;
 import com.module.ModuleServiceManager;
 import com.module.playways.BaseRoomData;
 import com.module.playways.rank.msg.filter.PushMsgFilter;
 import com.module.playways.rank.msg.manager.ChatRoomMsgManager;
+import com.module.playways.rank.room.comment.CommentModel;
+import com.module.playways.rank.room.event.PretendCommentMsgEvent;
 import com.module.playways.voice.inter.IVoiceView;
+import com.module.rank.R;
+import com.zq.live.proto.Common.ESex;
 import com.zq.live.proto.Room.RoomMsg;
 
 import org.greenrobot.eventbus.EventBus;
@@ -126,6 +135,9 @@ public class VoiceCorePresenter extends RxLifeCyclePresenter {
         switch (event.getType()) {
             case EngineEvent.TYPE_USER_LEAVE: {
                 // 用户离开
+                UserStatus userStatus = event.getUserStatus();
+                int userId = userStatus.getUserId();
+                pretentLeaveMsg(userId);
                 break;
             }
             case EngineEvent.TYPE_USER_MUTE_AUDIO: {
@@ -136,6 +148,22 @@ public class VoiceCorePresenter extends RxLifeCyclePresenter {
                 // 有人在说话
                 break;
             }
+        }
+    }
+
+    public void pretentLeaveMsg(int userId) {
+        UserInfoModel userInfo = mRoomData.getUserInfo(userId);
+        if (userInfo != null) {
+            CommentModel commentModel = new CommentModel();
+            commentModel.setCommentType(CommentModel.TYPE_TEXT);
+            commentModel.setUserId(userInfo.getUserId());
+            commentModel.setAvatar(userInfo.getAvatar());
+            commentModel.setUserName(userInfo.getNickname());
+            commentModel.setAvatarColor(userInfo.getSex() == ESex.SX_MALE.getValue() ?
+                    U.getColor(R.color.color_man_stroke_color) : U.getColor(R.color.color_woman_stroke_color));
+            commentModel.setTextColor(U.getColor(R.color.white_trans_80));
+            commentModel.setContent("离开了语音房");
+            EventBus.getDefault().post(new PretendCommentMsgEvent(commentModel));
         }
     }
 }

@@ -9,7 +9,7 @@
     <com.module.playways.grab.room.top.GrabSingerTopView
         android:id="@+id/singer_top_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_92_dp"
+        android:layout_height="@dimen/view_70_dp"
         android:visibility="gone" />
 
     <!--这里面是软键盘弹出时 需要上移的布局-->
