@@ -103,7 +103,7 @@ public class GrabSingerTopView extends FrameLayout {
 
     private void startSing(SongModel songModel) {
         cancelCountDownTask();
-        int total = songModel.getTotalMs();
+        int total = songModel.getTotalMs()/1000;
         if (total == 0) {
             MyLog.d(TAG, "歌曲总时间为0 totoal");
             total = 30;
