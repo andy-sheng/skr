@@ -3,6 +3,7 @@ package com.module.playways.voice.presenter;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
+import android.text.SpannableStringBuilder;
 
 import com.changba.songstudio.audioeffect.AudioEffectStyleEnum;
 import com.common.core.account.UserAccountManager;
@@ -11,6 +12,7 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
+import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.engine.EngineEvent;
 import com.engine.EngineManager;
@@ -155,14 +157,17 @@ public class VoiceCorePresenter extends RxLifeCyclePresenter {
         UserInfoModel userInfo = mRoomData.getUserInfo(userId);
         if (userInfo != null) {
             CommentModel commentModel = new CommentModel();
-            commentModel.setCommentType(CommentModel.TYPE_TEXT);
+            commentModel.setCommentType(CommentModel.TYPE_TRICK);
             commentModel.setUserId(userInfo.getUserId());
             commentModel.setAvatar(userInfo.getAvatar());
             commentModel.setUserName(userInfo.getNickname());
             commentModel.setAvatarColor(userInfo.getSex() == ESex.SX_MALE.getValue() ?
                     U.getColor(R.color.color_man_stroke_color) : U.getColor(R.color.color_woman_stroke_color));
-            commentModel.setTextColor(U.getColor(R.color.white_trans_80));
-            commentModel.setContent("离开了语音房");
+            SpannableStringBuilder stringBuilder = new SpanUtils()
+                    .append(userInfo.getNickname() + " ").setForegroundColor(CommentModel.TEXT_GRAY)
+                    .append("离开了语音房").setForegroundColor(CommentModel.TEXT_GRAY)
+                    .create();
+            commentModel.setStringBuilder(stringBuilder);
             EventBus.getDefault().post(new PretendCommentMsgEvent(commentModel));
         }
     }

@@ -3,6 +3,7 @@ package com.module.playways.rank.room.presenter;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
@@ -249,13 +250,15 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 
     private void pretenSystemMsg() {
         CommentModel commentModel = new CommentModel();
-        commentModel.setCommentType(CommentModel.TYPE_TEXT);
+        commentModel.setCommentType(CommentModel.TYPE_TRICK);
         commentModel.setUserId(BaseRoomData.SYSTEM_ID);
         commentModel.setAvatar(BaseRoomData.SYSTEM_AVATAR);
         commentModel.setUserName("系统消息");
         commentModel.setAvatarColor(Color.WHITE);
-        commentModel.setTextColor(Color.parseColor("#EF5E85"));
-        commentModel.setContent("欢迎进入撕歌排位赛，对局马上开始，比赛过程发现坏蛋请用力举报哦～");
+        SpannableStringBuilder stringBuilder = new SpanUtils()
+                .append("欢迎进入撕歌排位赛，对局马上开始，比赛过程发现坏蛋请用力举报哦～").setForegroundColor(CommentModel.TEXT_RED)
+                .create();
+        commentModel.setStringBuilder(stringBuilder);
         EventBus.getDefault().post(new PretendCommentMsgEvent(commentModel));
     }
 
@@ -263,13 +266,16 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         PlayerInfoModel ai = mRoomData.getAiJudgeInfo();
         if (ai != null) {
             CommentModel commentModel = new CommentModel();
-            commentModel.setCommentType(CommentModel.TYPE_TEXT);
+            commentModel.setCommentType(CommentModel.TYPE_TRICK);
             commentModel.setUserId(BaseRoomData.SYSTEM_ID);
             commentModel.setAvatar(ai.getUserInfo().getAvatar());
             commentModel.setUserName("系统消息");
             commentModel.setAvatarColor(Color.WHITE);
-            commentModel.setTextColor(Color.parseColor("#EF5E85"));
-            commentModel.setContent("AI裁判就位，将参与本局演唱评价，比赛正式开始！");
+            SpannableStringBuilder stringBuilder = new SpanUtils()
+                    .append("AI裁判 ").setForegroundColor(CommentModel.TEXT_YELLOW)
+                    .append("已就位,参与本局演唱评价，比赛正式开始").setForegroundColor(CommentModel.TEXT_WHITE)
+                    .create();
+            commentModel.setStringBuilder(stringBuilder);
             EventBus.getDefault().post(new PretendCommentMsgEvent(commentModel));
         }
     }
@@ -1407,16 +1413,19 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 
         UserInfoModel userInfo = mRoomData.getUserInfo(event.model.getUserID());
         CommentModel commentModel = new CommentModel();
-        commentModel.setCommentType(CommentModel.TYPE_TEXT);
+        commentModel.setCommentType(CommentModel.TYPE_TRICK);
         commentModel.setUserId(BaseRoomData.SYSTEM_ID);
         commentModel.setAvatar(BaseRoomData.SYSTEM_AVATAR);
-        commentModel.setUserName("系统消息");
+        commentModel.setUserName(userInfo.getNickname());
         commentModel.setAvatarColor(Color.WHITE);
-        commentModel.setTextColor(Color.parseColor("#EF5E85"));
-        commentModel.setContent(userInfo.getNickname() + "偷偷溜走啦～");
+        SpannableStringBuilder stringBuilder = new SpanUtils()
+                .append(userInfo.getNickname() + " ").setForegroundColor(CommentModel.TEXT_GRAY)
+                .append("偷偷溜走了").setForegroundColor(CommentModel.TEXT_GRAY)
+                .create();
+        commentModel.setStringBuilder(stringBuilder);
         EventBus.getDefault().post(new PretendCommentMsgEvent(commentModel));
 
-        if(event.model.getUserID() == MyUserInfoManager.getInstance().getUid()){
+        if (event.model.getUserID() == MyUserInfoManager.getInstance().getUid()) {
             MyLog.d(TAG, "本人溜走了，需要关掉当前房间,id是" + event.model.getUserID());
             U.getToastUtil().showShort("您长时间不在对局状态，已自动退出对局啦");
             mIGameRuleView.finishActivity();

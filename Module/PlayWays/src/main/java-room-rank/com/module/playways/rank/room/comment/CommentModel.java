@@ -1,9 +1,11 @@
 package com.module.playways.rank.room.comment;
 
 import android.graphics.Color;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 
 import com.common.core.userinfo.model.UserInfoModel;
+import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.module.playways.rank.msg.event.CommentMsgEvent;
 import com.module.playways.BaseRoomData;
@@ -11,19 +13,22 @@ import com.module.rank.R;
 import com.zq.live.proto.Common.ESex;
 
 public class CommentModel {
+    public static final int TYPE_TRICK = 0;      // 假消息
     public static final int TYPE_TEXT = 101;     // 普通文本消息
-    public static final int TYPE_RANK_MIE = 102; // rank灭灯消息
+
+    public static final int TEXT_WHITE = U.getColor(R.color.white_trans_80);
+    public static final int TEXT_YELLOW = Color.parseColor("#ccFFB100");
+    public static final int TEXT_RED = Color.parseColor("#EF5E85");
+    public static final int TEXT_GRAY = Color.GRAY;
 
     private int commentType = 0;
     private int userId;
-    private String avatar;
-    private String userName;
-    private String content;    // 显示内容
-    private String highlightContent;  // 高亮显示内容
-    private int avatarColor;
-    private int nameColor = Color.parseColor("#ccFFAD00");   // 昵称颜色
-    private int textColor = U.getColor(R.color.white_trans_80);  // 文本内容颜色
+    private String avatar;     // 头像
+    private String userName;   // 昵称
+    private int avatarColor;   // 头像颜色
+    private SpannableStringBuilder mStringBuilder; //需要设置给text的内容
 
+    // 处理真的消息，即聊天消息
     public static CommentModel parseFromEvent(CommentMsgEvent event, BaseRoomData roomData) {
         CommentModel commentModel = new CommentModel();
         commentModel.setUserId(event.info.getSender().getUserID());
@@ -39,9 +44,9 @@ public class CommentModel {
             if (sender != null) {
                 commentModel.setAvatar(sender.getAvatar());
                 if (sender.getSex() == ESex.SX_MALE.getValue()) {
-                    commentModel.setAvatarColor(Color.parseColor("#33A4E1"));
+                    commentModel.setAvatarColor(U.getColor(R.color.color_man_stroke_color));
                 } else if (sender.getSex() == ESex.SX_FEMALE.getValue()) {
-                    commentModel.setAvatarColor(Color.parseColor("#FF75A2"));
+                    commentModel.setAvatarColor(U.getColor(R.color.color_woman_stroke_color));
                 } else {
                     commentModel.setAvatarColor(Color.WHITE);
                 }
@@ -50,13 +55,22 @@ public class CommentModel {
                 commentModel.setAvatarColor(Color.WHITE);
             }
         }
-        if (commentModel.getUserId() == BaseRoomData.SYSTEM_ID) {
-            // 系统消息
-            commentModel.setTextColor(Color.parseColor("#EF5E85"));
-        }
-        commentModel.setContent(event.text);
-        commentModel.setCommentType(CommentModel.TYPE_TEXT);
+
+        SpannableStringBuilder ssb = new SpanUtils()
+                .append(commentModel.getUserName() + " ").setForegroundColor(TEXT_YELLOW)
+                .append(event.text).setForegroundColor(TEXT_WHITE)
+                .create();
+        commentModel.setStringBuilder(ssb);
+        commentModel.setCommentType(TYPE_TEXT);
         return commentModel;
+    }
+
+    public SpannableStringBuilder getStringBuilder() {
+        return mStringBuilder;
+    }
+
+    public void setStringBuilder(SpannableStringBuilder stringBuilder) {
+        mStringBuilder = stringBuilder;
     }
 
     public int getCommentType() {
@@ -79,14 +93,6 @@ public class CommentModel {
         this.userName = userName;
     }
 
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
     public void setUserId(int userId) {
         this.userId = userId;
     }
@@ -99,35 +105,11 @@ public class CommentModel {
         this.avatar = avatar;
     }
 
-    public int getNameColor() {
-        return nameColor;
-    }
-
-    public void setNameColor(int nameColor) {
-        this.nameColor = nameColor;
-    }
-
-    public int getTextColor() {
-        return textColor;
-    }
-
-    public void setTextColor(int textColor) {
-        this.textColor = textColor;
-    }
-
     public int getAvatarColor() {
         return avatarColor;
     }
 
     public void setAvatarColor(int avatarColor) {
         this.avatarColor = avatarColor;
-    }
-
-    public String getHighlightContent() {
-        return highlightContent;
-    }
-
-    public void setHighlightContent(String highlightContent) {
-        this.highlightContent = highlightContent;
     }
 }

@@ -244,7 +244,6 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
 
                         @Override
                         public void onSuccess(String url) {
-                            U.getToastUtil().showShort("上传成功 url:" + url);
                             MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager
                                     .newMyInfoUpdateParamsBuilder()
                                     .setAvatar(url)

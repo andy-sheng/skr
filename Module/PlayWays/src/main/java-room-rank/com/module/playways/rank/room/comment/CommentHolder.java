@@ -50,25 +50,7 @@ public class CommentHolder extends RecyclerView.ViewHolder {
                 .setBorderWidth(U.getDisplayUtils().dip2px(2))
                 .setBorderColor(model.getAvatarColor())
                 .build());
-
-        if (model.getUserId() == BaseRoomData.SYSTEM_ID) {
-            if (model.getCommentType() == CommentModel.TYPE_RANK_MIE) {
-                SpannableStringBuilder ssb = new SpanUtils()
-                        .append("选手").setForegroundColor(model.getTextColor())
-                        .append(model.getHighlightContent()).setForegroundColor(model.getNameColor())
-                        .append(model.getContent()).setForegroundColor(model.getTextColor())
-                        .create();
-                mCommentTv.setText(ssb);
-            } else {
-                mCommentTv.setText(model.getContent());
-                mCommentTv.setTextColor(model.getTextColor());
-            }
-        } else {
-            SpannableStringBuilder ssb = new SpanUtils()
-                    .append(model.getUserName() + "  ").setForegroundColor(model.getNameColor())
-                    .append(model.getContent()).setForegroundColor(model.getTextColor()).create();
-            mCommentTv.setText(ssb);
-        }
+        mCommentTv.setText(model.getStringBuilder());
     }
 
 

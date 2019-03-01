@@ -4,12 +4,14 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.graphics.Color;
+import android.text.SpannableStringBuilder;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.common.log.MyLog;
+import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
@@ -229,20 +231,25 @@ public class RankTopContainerView2 extends RelativeLayout {
      */
     private void pretendMieComment(int currUid, int index) {
         CommentModel commentModel = new CommentModel();
-        commentModel.setCommentType(CommentModel.TYPE_RANK_MIE);
+        commentModel.setCommentType(CommentModel.TYPE_TRICK);
         commentModel.setUserId(BaseRoomData.SYSTEM_ID);
         commentModel.setAvatar(BaseRoomData.SYSTEM_AVATAR);
         commentModel.setUserName("系统消息");
         commentModel.setAvatarColor(Color.WHITE);
-        commentModel.setTextColor(Color.parseColor("#EF5E85"));
         PlayerInfoModel model = RoomDataUtils.getPlayerInfoById(mRoomData, currUid);
         if (model != null) {
+            String text = "";
             if (index != 2) {
-                commentModel.setContent("收到" + (index + 1) + "个“x”");
+                text = "收到" + (index + 1) + "个“x”";
             } else {
-                commentModel.setContent("收到" + (index + 1) + "个“x”，演唱结束");
+                text = "收到" + (index + 1) + "个“x”，演唱结束";
             }
-            commentModel.setHighlightContent(model.getUserInfo().getNickname());
+            SpannableStringBuilder stringBuilder = new SpanUtils()
+                    .append("选手").setForegroundColor(CommentModel.TEXT_WHITE)
+                    .append(model.getUserInfo().getNickname()).setForegroundColor(CommentModel.TEXT_YELLOW)
+                    .append(text).setForegroundColor(CommentModel.TEXT_WHITE)
+                    .create();
+            commentModel.setStringBuilder(stringBuilder);
         }
         EventBus.getDefault().post(new PretendCommentMsgEvent(commentModel));
     }
