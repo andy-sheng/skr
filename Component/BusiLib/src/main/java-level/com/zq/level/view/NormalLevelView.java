@@ -65,6 +65,9 @@ public class NormalLevelView extends RelativeLayout {
     int totalStats; //总星星数
     int selecStats; //亮着的星星
 
+    int starUpSVGASize = U.getDisplayUtils().dip2px(60);
+    int starLossSVGASize = U.getDisplayUtils().dip2px(100);
+
     public NormalLevelView(Context context) {
         super(context);
         init(context, null);
@@ -411,15 +414,20 @@ public class NormalLevelView extends RelativeLayout {
         imageView.getLocationOnScreen(location);
 
         if (totalStats % 2 != 0 && index == totalStats / 2) {
-            RelativeLayout.LayoutParams rl = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(134), U.getDisplayUtils().dip2px(134));
-            rl.setMargins(Math.abs(location[0]) - U.getDisplayUtils().dip2px((134 - 20) / 2),
-                    Math.abs(location[1]) - U.getDisplayUtils().dip2px((134 - 20) / 2), 0, 0);
+            // 大星星
+            int width = starUpSVGASize * largeStar / normalStar;
+            int height = starUpSVGASize * largeStar / normalStar;
+            RelativeLayout.LayoutParams rl = new RelativeLayout.LayoutParams(width, height);
+            rl.setMargins(Math.abs(location[0]) - (width - largeStar) / 2,
+                    Math.abs(location[1]) - (height - largeStar) / 2, 0, 0);
             starUp.setLayoutParams(rl);
         } else {
-            RelativeLayout.LayoutParams rl = new RelativeLayout.LayoutParams((int) (U.getDisplayUtils().dip2px(134) * 0.9),
-                    (int) (U.getDisplayUtils().dip2px(134) * 0.9));
-            rl.setMargins(Math.abs(location[0]) - (int) (0.9 * U.getDisplayUtils().dip2px((int) ((134 - 20) / 2))),
-                    Math.abs(location[1]) - (int) (0.9 * U.getDisplayUtils().dip2px((int) ((134 - 20) / 2))), 0, 0);
+            // 正常星星
+            int width = starUpSVGASize;
+            int height = starUpSVGASize;
+            RelativeLayout.LayoutParams rl = new RelativeLayout.LayoutParams(width, height);
+            rl.setMargins(Math.abs(location[0]) - (width - normalStar) / 2,
+                    Math.abs(location[1]) - (height - normalStar) / 2, 0, 0);
             starUp.setLayoutParams(rl);
         }
 
@@ -487,15 +495,20 @@ public class NormalLevelView extends RelativeLayout {
         imageView.getLocationOnScreen(location);
 
         if (totalStats % 2 != 0 && index == totalStats / 2) {
-            RelativeLayout.LayoutParams rl = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(134), U.getDisplayUtils().dip2px(134));
-            rl.setMargins(Math.abs(location[0]) - U.getDisplayUtils().dip2px((134 - 20) / 2),
-                    Math.abs(location[1]) - U.getDisplayUtils().dip2px((134 - 20) / 2), 0, 0);
+            // 大星星
+            int width = starLossSVGASize * largeStar / normalStar;
+            int height = starLossSVGASize * largeStar / normalStar;
+            RelativeLayout.LayoutParams rl = new RelativeLayout.LayoutParams(width, height);
+            rl.setMargins(Math.abs(location[0]) - (width - largeStar) / 2,
+                    Math.abs(location[1]) - (height - largeStar) / 2, 0, 0);
             starLoss.setLayoutParams(rl);
         } else {
-            RelativeLayout.LayoutParams rl = new RelativeLayout.LayoutParams((int) (U.getDisplayUtils().dip2px(134) * 0.9),
-                    (int) (U.getDisplayUtils().dip2px(134) * 0.9));
-            rl.setMargins(Math.abs(location[0]) - (int) (0.9 * U.getDisplayUtils().dip2px((int) ((134 - 20) / 2))),
-                    Math.abs(location[1]) - (int) (0.9 * U.getDisplayUtils().dip2px((int) ((134 - 20) / 2))), 0, 0);
+            // 正常星星
+            int width = starLossSVGASize;
+            int height = starLossSVGASize;
+            RelativeLayout.LayoutParams rl = new RelativeLayout.LayoutParams(width, height);
+            rl.setMargins(Math.abs(location[0]) - (width - normalStar) / 2,
+                    Math.abs(location[1]) - (height - normalStar) / 2, 0, 0);
             starLoss.setLayoutParams(rl);
         }
 
