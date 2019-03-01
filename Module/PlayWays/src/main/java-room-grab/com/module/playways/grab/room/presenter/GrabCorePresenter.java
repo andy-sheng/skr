@@ -153,7 +153,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             ModuleServiceManager.getInstance().getMsgService().joinChatRoom(String.valueOf(mRoomData.getGameId()), new ICallback() {
                 @Override
                 public void onSucess(Object obj) {
-                    MyLog.d(TAG, "加入融云房间成功，但是状态不是 MatchSucess， 当前状态是 ");
+                    MyLog.d(TAG, "加入融云房间成功");
                 }
 
                 @Override

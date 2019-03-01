@@ -367,4 +367,21 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
     public void setEnterStatus(int enterStatus) {
         this.enterStatus = enterStatus;
     }
+
+    @Override
+    public String toString() {
+        return "GrabRoundInfoModel{" +
+                "status=" + status +
+                ", bLightInfos=" + bLightInfos +
+                ", mLightInfos=" + mLightInfos +
+                ", playUsers=" + playUsers +
+                ", waitUsers=" + waitUsers +
+                ", skrResource=" + skrResource +
+                ", wantSingInfos=" + wantSingInfos +
+                ", resultType=" + resultType +
+                ", isParticipant=" + isParticipant +
+                ", elapsedTimeMs=" + elapsedTimeMs +
+                ", enterStatus=" + enterStatus +
+                '}' + super.toString();
+    }
 }

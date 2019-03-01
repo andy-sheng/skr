@@ -8,6 +8,7 @@ import android.widget.RelativeLayout;
 
 import com.airbnb.lottie.L;
 import com.common.core.avatar.AvatarUtils;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.image.fresco.BaseImageView;
 import com.common.image.model.BaseImage;
 import com.common.utils.U;
@@ -60,7 +61,7 @@ public class GrabAudienceView extends LinearLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabWaitSeatUpdateEvent event) {
-        if(event.list != null){
+        if (event.list != null) {
             mPlayerInfoModelList = event.list;
             updateAllView();
         }
@@ -71,7 +72,7 @@ public class GrabAudienceView extends LinearLayout {
         Iterator<GrabPlayerInfoModel> iterator = mPlayerInfoModelList.iterator();
         while (iterator.hasNext()) {
             GrabPlayerInfoModel grabPlayerInfoModel = iterator.next();
-            if(grabPlayerInfoModel.getUserID() == event.getPlayerInfoModel().getUserID()){
+            if (grabPlayerInfoModel.getUserID() == event.getPlayerInfoModel().getUserID()) {
                 iterator.remove();
             }
         }
@@ -82,7 +83,7 @@ public class GrabAudienceView extends LinearLayout {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(SomeOneJoinWaitSeatEvent event) {
         for (int i = 0; i < mPlayerInfoModelList.size(); i++) {
-            if(event.getPlayerInfoModel().getUserID() == mPlayerInfoModelList.get(i).getUserID()){
+            if (event.getPlayerInfoModel().getUserID() == mPlayerInfoModelList.get(i).getUserID()) {
                 return;
             }
         }
@@ -109,10 +110,12 @@ public class GrabAudienceView extends LinearLayout {
         }
 
         for (int i = 0; i < mPlayerInfoModelList.size(); i++) {
-            AvatarUtils.loadAvatarByUrl(mBaseImageViewList.get(i), AvatarUtils.newParamsBuilder(mPlayerInfoModelList.get(i).getUserInfo().getAvatar())
+            UserInfoModel userInfoModel = mPlayerInfoModelList.get(i).getUserInfo();
+            mBaseImageViewList.get(i).setVisibility(VISIBLE);
+            AvatarUtils.loadAvatarByUrl(mBaseImageViewList.get(i), AvatarUtils.newParamsBuilder(userInfoModel.getAvatar())
                     .setCircle(true)
                     .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                    .setBorderColorBySex(mPlayerInfoModelList.get(i).getUserInfo().getIsMale())
+                    .setBorderColorBySex(userInfoModel.getIsMale())
                     .build());
         }
     }
