@@ -480,10 +480,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(SomeOneLightOffEvent event) {
         U.getSoundUtils().play(TAG, R.raw.dislike);
-        //自己灭了别人的灯成功了
-        if (event.uid == MyUserInfoManager.getInstance().getUid()) {
-            mGrabOpBtn.hasOpLight(false);
-        }
     }
 
     private void onReadyGoOver() {

@@ -19,7 +19,12 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
+import com.module.playways.grab.room.event.SomeOneLightBurstEvent;
+import com.module.playways.grab.room.event.SomeOneLightOffEvent;
 import com.module.rank.R;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import static android.animation.ValueAnimator.REVERSE;
 import static android.view.animation.Animation.INFINITE;
@@ -356,11 +361,17 @@ public class GrabOpView extends RelativeLayout {
         mUiHandler.sendMessageDelayed(msg, 15000);
     }
 
-    /**
-     * 有人操作了等，灭灯或者爆灯
-     */
-    public void hasOpLight(boolean burst){
-        if(mStatus == STATUS_CAN_OP){
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(SomeOneLightBurstEvent event) {
+        if(mSeq == event.getRoundInfo().getRoundSeq()){
+            mStatus = STATUS_HAS_OP;
+            onChangeState();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(SomeOneLightOffEvent event) {
+        if(mSeq == event.getRoundInfo().getRoundSeq()){
             mStatus = STATUS_HAS_OP;
             onChangeState();
         }

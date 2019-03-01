@@ -10,4 +10,8 @@ public class SomeOneLightBurstEvent {
         this.uid = uid;
         roundInfo = newRoundInfo;
     }
+
+    public BaseRoundInfoModel getRoundInfo() {
+        return roundInfo;
+    }
 }
