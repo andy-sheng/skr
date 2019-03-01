@@ -229,18 +229,25 @@ public class TurnChangeCardView extends RelativeLayout {
         textPaint1.setColor(Color.parseColor("#0C2275"));
         textPaint1.setTypeface(Typeface.DEFAULT_BOLD);
         textPaint1.setTextAlign(Paint.Align.LEFT);
-        textPaint1.setTextSize(U.getDisplayUtils().dip2px(24));
+        textPaint1.setTextSize(U.getDisplayUtils().dip2px(18));
 
         TextPaint textPaint2 = new TextPaint();
         textPaint2.setColor(Color.parseColor("#0C2275"));
         textPaint2.setTextAlign(Paint.Align.LEFT);
-        textPaint2.setTextSize(U.getDisplayUtils().dip2px(16));
+        textPaint2.setTextSize(U.getDisplayUtils().dip2px(12));
 
+        String songName = info.getSongList().get(0).getItemName();
         if (info.getUserInfo().getUserId() == MyUserInfoManager.getInstance().getUid()) {
+            if (songName.length() > 14) {
+                songName = songName.substring(0, 11) + "...";
+            }
             dynamicEntity.setDynamicText("轮到你唱啦！", textPaint1, "text1");
-            dynamicEntity.setDynamicText("《" + info.getSongList().get(0).getItemName() + "》", textPaint2, "text2");
+            dynamicEntity.setDynamicText("《" + songName + "》", textPaint2, "text2");
         } else {
-            dynamicEntity.setDynamicText("《" + info.getSongList().get(0).getItemName() + "》", textPaint1, "text1");
+            if (songName.length() > 10) {
+                songName = songName.substring(0, 7) + "...";
+            }
+            dynamicEntity.setDynamicText("《" + songName + "》", textPaint1, "text1");
             dynamicEntity.setDynamicText("演唱：" + info.getUserInfo().getNickname(), textPaint2, "text2");
         }
         return dynamicEntity;
