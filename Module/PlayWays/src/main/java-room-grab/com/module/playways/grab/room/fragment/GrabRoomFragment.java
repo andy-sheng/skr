@@ -34,6 +34,7 @@ import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.presenter.GrabCorePresenter;
 import com.module.playways.grab.room.top.GrabTopContainerView;
 import com.module.playways.grab.room.top.GrabSingerTopView;
+import com.module.playways.grab.room.view.GrabChangeRoomTransitionView;
 import com.module.playways.grab.room.view.GrabGameOverView;
 import com.module.playways.grab.room.view.GrabOpView;
 import com.module.playways.grab.room.view.GrabTopView;
@@ -130,6 +131,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     GrabGameOverView mGrabGameOverView;
 
+    GrabChangeRoomTransitionView mGrabChangeRoomTransitionView;
+
     DialogPlus mQuitTipsDialog;
 
     DialogPlus mDialogPlus;
@@ -198,7 +201,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         initGiftDisplayView();
         initGrabOpView();
         initSingStageView();
-
+        initChangeRoomTransitionView();
         mCorePresenter = new GrabCorePresenter(this, mRoomData);
         addPresent(mCorePresenter);
 
@@ -276,10 +279,13 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
             }
         });
         mCommentView.setRoomData(mRoomData);
-
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mCommentView.getLayoutParams();
         layoutParams.height = U.getDisplayUtils().getPhoneHeight() - U.getDisplayUtils().dip2px(430 + 60);
+    }
 
+    private void initChangeRoomTransitionView() {
+        mGrabChangeRoomTransitionView = mRootView.findViewById(R.id.change_room_transition_view);
+        mGrabChangeRoomTransitionView.setVisibility(View.GONE);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -377,6 +383,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         mTopContainerView.getGrabTopView().setListener(new GrabTopView.Listener() {
             @Override
             public void changeRoom() {
+                mGrabChangeRoomTransitionView.setVisibility(View.VISIBLE);
                 mCorePresenter.switchRoom();
             }
         });
@@ -802,6 +809,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
                 getActivity().finish();
             }
         }
+    }
+
+    @Override
+    public void onChangeRoomResult(boolean success) {
+        mGrabChangeRoomTransitionView.setVisibility(View.GONE);
     }
 
     private void onGrabGameOver(String from) {

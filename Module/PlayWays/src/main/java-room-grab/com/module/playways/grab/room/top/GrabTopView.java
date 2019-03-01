@@ -1,4 +1,4 @@
-package com.module.playways.grab.room.view;
+package com.module.playways.grab.room.top;
 
 import android.content.Context;
 import android.util.AttributeSet;

@@ -10,7 +10,6 @@ import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
-import com.common.player.IPlayerCallback;
 import com.common.player.VideoPlayerAdapter;
 import com.common.player.exoplayer.ExoPlayer;
 import com.common.rxretrofit.ApiManager;
@@ -60,7 +59,6 @@ import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.rank.prepare.model.JoinGrabRoomRspModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
-import com.module.playways.rank.prepare.presenter.GrabMatchPresenter;
 import com.module.playways.rank.room.SwapStatusType;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.room.score.MachineScoreItem;
@@ -722,16 +720,20 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     joinRoomAndInit(false);
                     EventBus.getDefault().post(new GrabSwitchRoomEvent());
                     mRoomData.checkRoundInEachMode();
+                    mIGrabView.onChangeRoomResult(true);
                 } else {
                     U.getToastUtil().showShort("切换失败:" + result.getErrmsg());
+                    mIGrabView.onChangeRoomResult(false);
                 }
                 mSwitchRooming = false;
+
             }
 
             @Override
             public void onNetworkError(ErrorType errorType) {
                 super.onNetworkError(errorType);
                 mSwitchRooming = false;
+                mIGrabView.onChangeRoomResult(false);
             }
         }, this);
     }

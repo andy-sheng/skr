@@ -8,9 +8,9 @@
 
     <com.module.playways.grab.room.top.GrabSingerTopView
         android:id="@+id/singer_top_view"
-        android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_92_dp"/>
+        android:layout_height="@dimen/view_92_dp"
+        android:visibility="gone" />
 
     <!--这里面是软键盘弹出时 需要上移的布局-->
     <com.module.playways.rank.room.view.BottomContainerView
@@ -34,8 +34,8 @@
         android:id="@+id/cover_iv"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_10_dp"
-        android:layout_marginRight="@dimen/view_128_dp"
         android:layout_alignTop="@+id/comment_view"
+        android:layout_marginRight="@dimen/view_128_dp"
         android:background="@drawable/zhengzaiyanchang_duihua_zhezhao" />
 
     <com.module.playways.grab.room.top.GrabTopContainerView
@@ -130,4 +130,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true" />
+
+
+    <com.module.playways.grab.room.view.GrabChangeRoomTransitionView
+        android:id="@+id/change_room_transition_view"
+        android:background="@color/black_trans_80"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </RelativeLayout>
