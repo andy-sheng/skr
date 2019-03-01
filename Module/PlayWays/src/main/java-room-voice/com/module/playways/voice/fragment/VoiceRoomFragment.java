@@ -226,6 +226,9 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
             U.getToastUtil().showShort("网络异常，请检查网络后重试!");
             return;
         }
+        if (userID == 0) {
+            return;
+        }
         mInputContainerView.hideSoftInput();
         PersonInfoDialogView personInfoDialogView = new PersonInfoDialogView(getContext(), userID);
 

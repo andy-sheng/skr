@@ -15,6 +15,7 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
+import com.module.playways.grab.room.event.ShowPersonCardEvent;
 import com.module.playways.rank.room.model.RankPlayerInfoModel;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGADrawable;
@@ -23,6 +24,7 @@ import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.zq.person.fragment.OtherPersonFragment;
 
+import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
 
 public class VoiceUserStatusView extends RelativeLayout {
@@ -71,15 +73,9 @@ public class VoiceUserStatusView extends RelativeLayout {
         mAvatarIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(OtherPersonFragment.BUNDLE_USER_MODEL, mModel.getUserInfo());
-                U.getFragmentUtils().addFragment(FragmentUtils
-                        .newAddParamsBuilder((FragmentActivity) getContext(), OtherPersonFragment.class)
-                        .setUseOldFragmentIfExist(false)
-                        .setBundle(bundle)
-                        .setAddToBackStack(true)
-                        .setHasAnimation(true)
-                        .build());
+                if (mModel != null) {
+                    EventBus.getDefault().post(new ShowPersonCardEvent(mModel.getUserID()));
+                }
             }
         });
     }

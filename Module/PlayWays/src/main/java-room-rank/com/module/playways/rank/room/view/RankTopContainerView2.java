@@ -238,9 +238,9 @@ public class RankTopContainerView2 extends RelativeLayout {
         PlayerInfoModel model = RoomDataUtils.getPlayerInfoById(mRoomData, currUid);
         if (model != null) {
             if (index != 2) {
-                commentModel.setContent("收到" + (index + 1) + "个'x'");
+                commentModel.setContent("收到" + (index + 1) + "个“x”");
             } else {
-                commentModel.setContent("收到" + (index + 1) + "个'x'，演唱结束");
+                commentModel.setContent("收到" + (index + 1) + "个“x”，演唱结束");
             }
             commentModel.setHighlightContent(model.getUserInfo().getNickname());
         }
