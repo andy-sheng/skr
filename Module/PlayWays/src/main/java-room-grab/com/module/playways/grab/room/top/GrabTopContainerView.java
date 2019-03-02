@@ -12,6 +12,7 @@ import com.common.view.ex.ExTextView;
 import com.module.playways.BaseRoomData;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.SomeOneGrabEvent;
+import com.module.playways.grab.room.event.SomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.SomeOneLightOffEvent;
 import com.module.playways.grab.room.event.SomeOneOnlineChangeEvent;
 import com.module.playways.rank.room.event.InputBoardEvent;
@@ -155,6 +156,11 @@ public class GrabTopContainerView extends RelativeLayout {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(SomeOneLightOffEvent event) {
         mTopContentRv.lightOff(event.uid);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(SomeOneLightBurstEvent event) {
+        mTopContentRv.toBurstState();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

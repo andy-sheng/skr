@@ -113,6 +113,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
             vp.grabTopItemView.setVisibility(VISIBLE);
             vp.grabTopItemView.setToPlaceHolder();
             vp.grabTopItemView.setGrap(false);
+            vp.grabTopItemView.stopEvasive();
         }
     }
 
