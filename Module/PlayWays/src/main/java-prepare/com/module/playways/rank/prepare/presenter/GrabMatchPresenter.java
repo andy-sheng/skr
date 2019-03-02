@@ -184,6 +184,9 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
         super.destroy();
         disposeLoopMatchTask();
         disposeMatchTask();
+        if (mCheckJoinStateTask != null) {
+            mCheckJoinStateTask.dispose();
+        }
         EventBus.getDefault().unregister(this);
         if (mMatchState == MatchState.JoinRongYunRoomSuccess) {
             // 只是加入融云成功但是并没有返回进入准备页面
