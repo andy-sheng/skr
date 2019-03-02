@@ -309,10 +309,10 @@ public class RankLevelChangeFragment extends BaseFragment {
             public void run() {
                 Activity activity = getActivity();
                 if (activity != null) {
-                    activity.finish();
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_VOICEROOM)
                             .withSerializable("voice_room_data", mRoomData)
                             .navigation();
+                    activity.finish();
                     StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK),
                             StatConstants.KEY_GAME_FINISH, null);
                 }
