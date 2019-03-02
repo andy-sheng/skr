@@ -17,6 +17,7 @@ import com.common.view.ex.ExRelativeLayout;
 
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.grab.room.event.ShowPersonCardEvent;
+import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 
 import com.common.view.ex.ExTextView;
@@ -103,11 +104,11 @@ public class GrabTopItemView extends RelativeLayout {
         }
         mPlayerInfoModel = userInfoModel;
         AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mPlayerInfoModel.getUserInfo().getAvatar())
-                        .setCircle(true)
-//                .setGray(mPlayerInfoModel.isOnline() ? false : true)
-                        .setBorderColorBySex(mPlayerInfoModel.getUserInfo().getSex() == 1)
-                        .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                        .build()
+                .setCircle(true)
+                .setGray(mPlayerInfoModel.isOnline() ? false : true) // 先加上，方便调试时看出哪个用户离开了
+                .setBorderColorBySex(mPlayerInfoModel.getUserInfo().getSex() == 1)
+                .setBorderWidth(U.getDisplayUtils().dip2px(2))
+                .build()
         );
 
 //        if (mPlayerInfoModel.isOnline()) {

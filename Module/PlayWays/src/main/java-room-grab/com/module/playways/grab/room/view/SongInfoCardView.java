@@ -221,6 +221,9 @@ public class SongInfoCardView extends RelativeLayout {
         if (mAnimatorSet != null) {
             mAnimatorSet.cancel();
         }
+        if (mTranslateAnimation != null) {
+            mTranslateAnimation.cancel();
+        }
     }
 }
 

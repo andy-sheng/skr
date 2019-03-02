@@ -27,6 +27,7 @@ import com.module.playways.grab.room.model.MLightInfoModel;
 import com.module.playways.grab.room.model.WantSingerInfo;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
+import com.module.playways.rank.room.model.RankPlayerInfoModel;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGADrawable;
@@ -197,7 +198,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
         MyLog.d(TAG, "setModeSing" + " singUid=" + singUid);
         VP vp = mInfoMap.get(singUid);
         if (vp == null) {
-            MyLog.d(TAG, "not find vp");
+            MyLog.d(TAG, "没有在选手席位找到 id="+singUid+" 相应ui，return");
             return;
         }
         if (vp.grabTopItemView != null) {
@@ -458,6 +459,10 @@ public class GrabPlayerRv2 extends RelativeLayout {
         }
     }
 
+    /**
+     * 执行灭灯动画
+     * @param vp
+     */
     private void setLightOffAnimation(VP vp) {
         GrabTopItemView grabTopItemView = vp.grabTopItemView;
         grabTopItemView.mFlagIv.setVisibility(GONE);

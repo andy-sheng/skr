@@ -32,9 +32,9 @@ public class GrabTopContainerView extends RelativeLayout {
     ExImageView mMoreBtn;
     ExTextView mSongIndexTv;
     MoreOpView mMoreOpView;
-    GrabTopView mGrabTopView;
+    GrabTopView mGrabTopView;// 切房间按钮，金币
     Listener mListener;
-    BaseRoomData mRoomData;
+    GrabRoomData mRoomData;
 
 
     Handler mUiHandler = new Handler(){
@@ -175,7 +175,7 @@ public class GrabTopContainerView extends RelativeLayout {
     public void setRoomData(GrabRoomData roomData) {
         mRoomData = roomData;
         mTopContentRv.setRoomData(roomData);
-        mGrabTopView.setRoomData((GrabRoomData) roomData);
+        mGrabTopView.setRoomData(roomData);
     }
 
     public void hideWithDelay(long delay){

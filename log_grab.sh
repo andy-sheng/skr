@@ -1,2 +1,2 @@
-adb logcat -v time | grep -e "GrabOpView" -e "GrabCorePresenter" -e "ApiManager" -e "GrabPlayerRv2"
+adb logcat -v time | grep -e "GrabOpView" -e "GrabCorePresenter" -e "ApiManager" -e "GrabPlayerRv2" -e "SongModel"
 
