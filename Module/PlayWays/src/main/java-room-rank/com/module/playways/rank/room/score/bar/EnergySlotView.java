@@ -25,7 +25,7 @@ public class EnergySlotView extends View {
     Drawable mEmptyEnergyDrawable;
 
     AnimatorSet mAnimatorSet;
-
+    AnimatorListenerAdapter mAnimatorListenerAdapter;
     int mCur = 0;
     int mTarget = 100;
 
@@ -94,9 +94,9 @@ public class EnergySlotView extends View {
         postInvalidate();
     }
 
-    public void setTarget(int target, AnimatorListenerAdapter mAnimatorListenerAdapter) {
+    public void setTarget(int target, AnimatorListenerAdapter l) {
         mTarget = target;
-
+        this.mAnimatorListenerAdapter = l;
         if (mAnimatorSet != null && mAnimatorSet.isRunning()) {
             mAnimatorSet.cancel();
         }
