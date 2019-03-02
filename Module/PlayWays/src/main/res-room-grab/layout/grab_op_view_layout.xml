@@ -32,6 +32,8 @@
     </RelativeLayout>
 
     <com.common.view.ex.ExImageView
+        app:bl_pressed_drawable="@drawable/grab_baodeng_anxia"
+        app:bl_unPressed_drawable="@drawable/grab_yanchang_baodeng"
         android:text="2"
         android:layout_alignParentRight="true"
         android:id="@+id/iv_burst"
@@ -51,7 +53,6 @@
         android:layout_height="@dimen/view_60_dp"
         android:layout_below="@+id/iv_burst"
         android:paddingBottom="@dimen/view_25_dp"
-        android:background="@drawable/miedeng_bj"
         android:visibility="visible" />
 
 </merge>

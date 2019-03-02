@@ -82,12 +82,14 @@ public class GrabOpView extends RelativeLayout {
                     mIvBurst.setVisibility(GONE);
                     break;
                 case MSG_SHOW_BRUST_BTN:
+                    MyLog.d(TAG, "handleMessage" + " msg=" + MSG_SHOW_BRUST_BTN);
                     TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f,
                             Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0);
                     animation.setDuration(200);
                     animation.setRepeatMode(Animation.REVERSE);
                     animation.setInterpolator(new OvershootInterpolator());
                     animation.setFillAfter(true);
+                    mIvBurst.setVisibility(VISIBLE);
                     mIvBurst.startAnimation(animation);
                     mIvBurst.setEnabled(true);
                     break;
@@ -125,7 +127,7 @@ public class GrabOpView extends RelativeLayout {
                 if (mStatus == STATUS_GRAP) {
                     if (mListener != null) {
                         mListener.clickGrabBtn(mSeq);
-                        mBtnIv.setEnabled(false);
+//                        mBtnIv.setEnabled(false);
                     }
                 }
             }
@@ -138,7 +140,7 @@ public class GrabOpView extends RelativeLayout {
                 if (mStatus == STATUS_CAN_OP) {
                     if (mListener != null) {
                         mListener.clickBurst(mSeq);
-                        mIvBurst.setEnabled(false);
+//                        mIvBurst.setEnabled(false);
                     }
                 }
             }
@@ -200,6 +202,7 @@ public class GrabOpView extends RelativeLayout {
                                 drawable = U.getDrawable(R.drawable.xiangchang_1);
                                 break;
                         }
+                        mIvBurst.setVisibility(GONE);
                         mBtnIv.setImageDrawable(drawable);
                     }
 
@@ -236,6 +239,7 @@ public class GrabOpView extends RelativeLayout {
                 mIvBurst.setVisibility(GONE);
                 mGrabContainer.setVisibility(VISIBLE);
                 mBtnIv.setEnabled(false);
+                mBtnIv.setImageDrawable(null);
                 mBtnIv.setBackground(U.getDrawable(R.drawable.xiangchang_bj));
                 break;
             case STATUS_GRAP:
@@ -243,8 +247,7 @@ public class GrabOpView extends RelativeLayout {
                 mIvLightOff.setVisibility(GONE);
                 mIvBurst.setVisibility(GONE);
                 mBtnIv.setEnabled(true);
-                mBtnIv.setBackground(null);
-                mBtnIv.setBackground(null);
+                mBtnIv.setImageDrawable(null);
                 Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20))
                         .setShape(DrawableCreator.Shape.Rectangle)
                         .setPressedDrawable(U.getDrawable(R.drawable.xiangchang_anxia))
@@ -255,7 +258,6 @@ public class GrabOpView extends RelativeLayout {
             case STATUS_CAN_OP:
                 mGrabContainer.setVisibility(GONE);
                 mIvLightOff.setVisibility(VISIBLE);
-                mIvBurst.setVisibility(VISIBLE);
                 mIvLightOff.setBackground(U.getDrawable(R.drawable.miedeng_bj));
                 mIvLightOff.setEnabled(false);
                 break;
@@ -278,6 +280,24 @@ public class GrabOpView extends RelativeLayout {
         animation.setInterpolator(new OvershootInterpolator());
         animation.setFillAfter(true);
         startAnimation(animation);
+
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                mIvLightOff.setVisibility(GONE);
+                mIvBurst.setVisibility(GONE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
 
         mUiHandler.removeMessages(MSG_HIDE_FROM_END_GUIDE_AUDIO);
         mUiHandler.removeMessages(MSG_SHOW_BRUST_BTN);
