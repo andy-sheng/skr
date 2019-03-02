@@ -39,6 +39,7 @@ public class NormalLevelView extends RelativeLayout {
     int mainHeight = U.getDisplayUtils().dip2px(86); // 主段位高度
     int subWidth = U.getDisplayUtils().dip2px(15);   // 子段位宽度
     int subHeight = U.getDisplayUtils().dip2px(15);  // 子段位高度
+    int sudBottom = U.getDisplayUtils().dip2px(1);   // 子段位距离主段位底部距离
     int normalStar = U.getDisplayUtils().dip2px(18); // 正常星星的大小
     int largeStar = U.getDisplayUtils().dip2px(20);  // 大星星的大小
     int starDiffH = U.getDisplayUtils().dip2px(6);   // 相邻两颗星星高度差
@@ -90,6 +91,7 @@ public class NormalLevelView extends RelativeLayout {
         mainHeight = typedArray.getDimensionPixelSize(R.styleable.levelView_mainHeight, U.getDisplayUtils().dip2px(86));
         subWidth = typedArray.getDimensionPixelSize(R.styleable.levelView_subWidth, U.getDisplayUtils().dip2px(15));
         subHeight = typedArray.getDimensionPixelSize(R.styleable.levelView_subHeight, U.getDisplayUtils().dip2px(15));
+        sudBottom = typedArray.getDimensionPixelSize(R.styleable.levelView_subBottom, U.getDisplayUtils().dip2px(1));
         normalStar = typedArray.getDimensionPixelSize(R.styleable.levelView_normalStar, U.getDisplayUtils().dip2px(18));
         largeStar = typedArray.getDimensionPixelSize(R.styleable.levelView_largeStar, U.getDisplayUtils().dip2px(20));
         starDiffH = typedArray.getDimensionPixelSize(R.styleable.levelView_starDiffH, U.getDisplayUtils().dip2px(6));
@@ -128,7 +130,7 @@ public class NormalLevelView extends RelativeLayout {
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(subWidth, subHeight);
             params.addRule(RelativeLayout.CENTER_HORIZONTAL);
             params.addRule(RelativeLayout.ALIGN_BOTTOM, mLevelIv.getId());
-            params.setMargins(0, 0, 0, U.getDisplayUtils().dip2px(1));
+            params.setMargins(0, 0, 0, sudBottom);
             mSubLeveIv.setLayoutParams(params);
             mSubLeveIv.setBackground(getResources().getDrawable(LevelConfigUtils.getImageResoucesSubLevel(level, subLevel)));
         }

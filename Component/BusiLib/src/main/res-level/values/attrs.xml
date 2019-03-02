@@ -10,6 +10,8 @@
         <attr name="subWidth" format="dimension" />
         <!--子段位高度-->
         <attr name="subHeight" format="dimension" />
+        <!--子段位距离主段位底部距离-->
+        <attr name="subBottom" format="dimension" />
         <!--正常星星的大小-->
         <attr name="normalStar" format="dimension" />
         <!--大星星的大小-->
