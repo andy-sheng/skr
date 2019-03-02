@@ -5,10 +5,10 @@
 
     <com.module.playways.grab.room.top.CircleAnimationView
         android:id="@+id/circle_animation_view"
-        android:layout_marginTop="@dimen/view_d_9_dp"
-        android:layout_marginRight="@dimen/view_d_9_dp"
-        android:layout_marginLeft="@dimen/view_d_9_dp"
-        android:layout_marginBottom="@dimen/view_d_9_dp"
+        android:layout_marginTop="@dimen/view_d_5_dp"
+        android:layout_marginRight="@dimen/view_d_5_dp"
+        android:layout_marginLeft="@dimen/view_d_5_dp"
+        android:layout_marginBottom="@dimen/view_d_5_dp"
         android:layout_alignTop="@+id/avatar_iv"
         android:layout_alignBottom="@+id/avatar_iv"
         android:layout_alignLeft="@+id/avatar_iv"

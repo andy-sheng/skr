@@ -3,6 +3,8 @@ package com.module.playways.grab.room.top;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -29,7 +31,8 @@ import org.greenrobot.eventbus.ThreadMode;
 
 public class GrabSingerTopView extends FrameLayout {
     public final static String TAG = "GrabSingerTopView";
-
+    public static final int MSG_SHOW = 0;
+    public static final int MSG_HIDE = 1;
     ImageView mIvLight;
     ExTextView mTvCurLight;
     ExTextView mTvCountDown;
@@ -41,6 +44,20 @@ public class GrabSingerTopView extends FrameLayout {
     GrabRoomData mRoomData;
 
     HandlerTaskTimer mCountDownTask;
+
+    Handler mUiHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case MSG_SHOW:
+                    setVisibility(VISIBLE);
+                    break;
+                case MSG_HIDE:
+                    setVisibility(GONE);
+                    break;
+            }
+        }
+    };
 
     public GrabSingerTopView(Context context) {
         super(context);
@@ -161,11 +178,17 @@ public class GrabSingerTopView extends FrameLayout {
 
     @Override
     public void setVisibility(int visibility) {
+        mUiHandler.removeCallbacksAndMessages(null);
         super.setVisibility(visibility);
         if (visibility == GONE) {
             cancelCountDownTask();
             stopFlickerAnim();
         }
+    }
+
+    public void showWithDelay(long delay){
+        mUiHandler.removeCallbacksAndMessages(null);
+        mUiHandler.sendMessageDelayed(mUiHandler.obtainMessage(MSG_SHOW), delay);
     }
 
     @Override

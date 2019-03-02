@@ -1,6 +1,8 @@
 package com.module.playways.grab.room.top;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -23,7 +25,8 @@ import org.greenrobot.eventbus.ThreadMode;
 
 public class GrabTopContainerView extends RelativeLayout {
     public final static String TAG = "GrapTopContainerView";
-
+    public static final int MSG_SHOW = 0;
+    public static final int MSG_HIDE = 1;
     RelativeLayout mRelativeLayoutIconContainer;
     GrabPlayerRv2 mTopContentRv;
     ExImageView mMoreBtn;
@@ -32,6 +35,21 @@ public class GrabTopContainerView extends RelativeLayout {
     GrabTopView mGrabTopView;
     Listener mListener;
     BaseRoomData mRoomData;
+
+
+    Handler mUiHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case MSG_SHOW:
+                    setVisibility(VISIBLE);
+                    break;
+                case MSG_HIDE:
+                    setVisibility(GONE);
+                    break;
+            }
+        }
+    };
 
 //    GrabTopAdapter mGrabTopAdapter;
 
@@ -148,10 +166,21 @@ public class GrabTopContainerView extends RelativeLayout {
         mListener = l;
     }
 
+    @Override
+    public void setVisibility(int visibility) {
+        mUiHandler.removeCallbacksAndMessages(null);
+        super.setVisibility(visibility);
+    }
+
     public void setRoomData(GrabRoomData roomData) {
         mRoomData = roomData;
         mTopContentRv.setRoomData(roomData);
         mGrabTopView.setRoomData((GrabRoomData) roomData);
+    }
+
+    public void hideWithDelay(long delay){
+        mUiHandler.removeCallbacksAndMessages(null);
+        mUiHandler.sendMessageDelayed(mUiHandler.obtainMessage(MSG_HIDE), delay);
     }
 
     public GrabTopView getGrabTopView(){

@@ -575,8 +575,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     @Override
     public void singBySelf() {
         mUiHanlder.removeMessages(MSG_SEND_SELF_SING_END);
-        mTopContainerView.setVisibility(View.GONE);
-        mSingerTopView.setVisibility(View.VISIBLE);
+        mTopContainerView.hideWithDelay(1000);
+        mSingerTopView.showWithDelay(1000);
         mSingerTopView.startSelfShow();
         mCorePresenter.stopGuide();
         mTopContainerView.setModeSing((int) MyUserInfoManager.getInstance().getUid());

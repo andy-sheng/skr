@@ -244,8 +244,8 @@ public class GrabPlayerRv2 extends RelativeLayout {
             });
 
             // 接下来是头像放大一点的动画
-            ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(vp.grabTopItemView.mAvatarIv, View.SCALE_X, 1, 1.2f);
-            ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(vp.grabTopItemView.mAvatarIv, View.SCALE_Y, 1, 1.2f);
+            ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(vp.grabTopItemView.mAvatarIv, View.SCALE_X, 1, 1.08f);
+            ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(vp.grabTopItemView.mAvatarIv, View.SCALE_Y, 1, 1.08f);
             AnimatorSet animatorSet23 = new AnimatorSet();
             animatorSet23.playTogether(objectAnimator2, objectAnimator3);
             animatorSet23.setDuration(4 * 33);
@@ -258,8 +258,8 @@ public class GrabPlayerRv2 extends RelativeLayout {
         {
             // 放大透明度消失
             ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(vp.grabTopItemView, View.ALPHA, 1, 0);
-            ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(vp.grabTopItemView.mAvatarIv, View.SCALE_X, 1.2f, 2f);
-            ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(vp.grabTopItemView.mAvatarIv, View.SCALE_Y, 1.2f, 2f);
+            ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(vp.grabTopItemView.mAvatarIv, View.SCALE_X, 1.0f, 1.08f);
+            ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(vp.grabTopItemView.mAvatarIv, View.SCALE_Y, 1.0f, 1.08f);
 
             ObjectAnimator objectAnimator4 = new ObjectAnimator();
             objectAnimator4.setFloatValues(1, 0);
