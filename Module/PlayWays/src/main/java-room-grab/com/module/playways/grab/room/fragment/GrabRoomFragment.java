@@ -15,6 +15,7 @@ import com.common.base.BaseFragment;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.statistics.StatConstants;
 import com.common.statistics.StatisticsAdapter;
@@ -621,7 +622,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
             public void run() {
                 GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
                 if (grabRoundInfoModel.isParticipant()) {
-                    mGrabOpBtn.toSingState();
+                    mGrabOpBtn.toOtherSingState();
                 } else {
                     MyLog.d(TAG, "中途进来的，不是本局参与者，隐藏按钮");
                 }
@@ -659,7 +660,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
             // 显示收音机
             mSelfSingCardView.setVisibility(View.GONE);
             mOthersSingCardView.setVisibility(View.VISIBLE);
-            mOthersSingCardView.bindData(mRoomData.getUserInfo((int) uid).getAvatar());
+            UserInfoModel userInfoModel = mRoomData.getUserInfo((int) uid);
+            if (userInfoModel != null) {
+                mOthersSingCardView.bindData(userInfoModel.getAvatar());
+            }else{
+                MyLog.d(TAG, "onSingBeginTipsPlayOver" + " userInfoModel==null");
+            }
         }
     }
 

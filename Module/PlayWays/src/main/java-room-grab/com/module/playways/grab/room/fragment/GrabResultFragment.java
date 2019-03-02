@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -36,6 +37,7 @@ import com.module.playways.grab.room.model.GrabResultInfoModel;
 import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.rank.R;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -187,11 +189,18 @@ public class GrabResultFragment extends BaseFragment {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
-                    int status = result.getData().getIntValue("status");
-                    List<GrabResultInfoModel> resultInfoModels = JSON.parseArray(result.getData().getString("resultInfo"), GrabResultInfoModel.class);
-                    if (resultInfoModels != null) {
-                        bindData(resultInfoModels);
+                    String info = result.getData().getString("resultInfo");
+                    if (!TextUtils.isEmpty(info)) {
+                        GrabResultInfoModel resultInfoModel = JSON.parseObject(info, GrabResultInfoModel.class);
+                        List<GrabResultInfoModel> l = new ArrayList<>();
+                        l.add(resultInfoModel);
+                        if (resultInfoModel != null) {
+                            bindData(l);
+                        }
+                    } else {
+                        MyLog.d(TAG,"syncFromServer" + " info=null");
                     }
+
                 }
             }
         }, this);

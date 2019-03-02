@@ -123,7 +123,7 @@ public class GrabOpView extends RelativeLayout {
         mBtnIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                MyLog.d(TAG, "mStatus ==" + mStatus);
+                MyLog.d(TAG, "mBtnIv mStatus ==" + mStatus);
                 if (mStatus == STATUS_GRAP) {
                     if (mListener != null) {
                         mListener.clickGrabBtn(mSeq);
@@ -136,7 +136,7 @@ public class GrabOpView extends RelativeLayout {
         mIvBurst.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                MyLog.d(TAG, "mStatus ==" + mStatus);
+                MyLog.d(TAG, "mIvBurst mStatus ==" + mStatus);
                 if (mStatus == STATUS_CAN_OP) {
                     if (mListener != null) {
                         mListener.clickBurst(mSeq);
@@ -149,7 +149,7 @@ public class GrabOpView extends RelativeLayout {
         mIvLightOff.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                MyLog.d(TAG, "mStatus ==" + mStatus);
+                MyLog.d(TAG, "mIvLightOff mStatus ==" + mStatus);
                 if (mStatus == STATUS_CAN_OP) {
                     if (mListener != null) {
                         mListener.clickLightOff();
@@ -233,9 +233,11 @@ public class GrabOpView extends RelativeLayout {
      * 状态发生变化
      */
     private void onChangeState() {
+        MyLog.d(TAG, "onChangeState mStatus=" + mStatus);
         switch (mStatus) {
             case STATUS_COUNT_DOWN:
                 mIvLightOff.setVisibility(GONE);
+                mIvBurst.clearAnimation();
                 mIvBurst.setVisibility(GONE);
                 mGrabContainer.setVisibility(VISIBLE);
                 mBtnIv.setEnabled(false);
@@ -245,6 +247,7 @@ public class GrabOpView extends RelativeLayout {
             case STATUS_GRAP:
                 mGrabContainer.setVisibility(VISIBLE);
                 mIvLightOff.setVisibility(GONE);
+                mIvBurst.clearAnimation();
                 mIvBurst.setVisibility(GONE);
                 mBtnIv.setEnabled(true);
                 mBtnIv.setImageDrawable(null);
@@ -308,8 +311,8 @@ public class GrabOpView extends RelativeLayout {
     /**
      * 开始演唱
      */
-    public void toSingState() {
-        MyLog.d(TAG, "toSingState");
+    public void toOtherSingState() {
+        MyLog.d(TAG, "toOtherSingState");
 
         TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f,
                 Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0);
@@ -373,6 +376,7 @@ public class GrabOpView extends RelativeLayout {
                     }
                 });
 
+        mUiHandler.removeMessages(MSG_SHOW_BRUST_BTN);
         Message msg = Message.obtain();
         msg.what = MSG_SHOW_BRUST_BTN;
         mUiHandler.sendMessageDelayed(msg, SHOW_BURST_DELAY_TIME);

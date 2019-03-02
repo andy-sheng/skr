@@ -97,6 +97,9 @@ public class OthersSingCardView extends RelativeLayout {
     }
 
     public void bindData(String avatar) {
+        if (avatar == null) {
+            avatar = "";
+        }
         setVisibility(VISIBLE);
         mCountDownStatus = COUNT_DOWN_STATUS_WAIT;
         // 平移动画
@@ -110,10 +113,11 @@ public class OthersSingCardView extends RelativeLayout {
         mOtherBgSvga.setLoops(0);
         SVGAParser parser = new SVGAParser(U.app());
         try {
+            String finalAvatar = avatar;
             parser.parse("grab_other_sing_bg.svga", new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete(@NotNull SVGAVideoEntity videoItem) {
-                    SVGADrawable drawable = new SVGADrawable(videoItem, requestDynamicItem(avatar));
+                    SVGADrawable drawable = new SVGADrawable(videoItem, requestDynamicItem(finalAvatar));
                     mOtherBgSvga.setImageDrawable(drawable);
                     mOtherBgSvga.startAnimation();
                 }
