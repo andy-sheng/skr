@@ -340,8 +340,8 @@ public class GrabOpView extends RelativeLayout {
                         if (mListener != null) {
                             mListener.countDownOver();
                         }
-
-                        mIvLightOff.setClickable(true);
+                        mIvLightOff.setText("");
+                        mIvLightOff.setEnabled(true);
                         Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20))
                                 .setShape(DrawableCreator.Shape.Rectangle)
                                 .setPressedDrawable(U.getDrawable(R.drawable.grab_yanchang_miedeng))
