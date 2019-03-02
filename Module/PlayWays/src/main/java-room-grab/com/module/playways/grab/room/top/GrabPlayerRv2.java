@@ -54,8 +54,9 @@ import okhttp3.Response;
 
 public class GrabPlayerRv2 extends RelativeLayout {
     public final static String TAG = "GrabPlayerRv2";
-
+    public final static int PLAYER_COUNT = 7;
     private LinkedHashMap<Integer, VP> mInfoMap = new LinkedHashMap<>();
+    private ArrayList<VP> mGrabTopItemViewArrayList = new ArrayList<>(PLAYER_COUNT);
     private GrabRoomData mRoomData;
     AnimatorSet mAnimatorAllSet;
 
@@ -63,6 +64,8 @@ public class GrabPlayerRv2 extends RelativeLayout {
     ExImageView mErjiIv;
 
     SVGAParser mSVGAParser;
+
+    int mCurSeq = -1;
 
 
     public GrabPlayerRv2(Context context) {
@@ -85,78 +88,58 @@ public class GrabPlayerRv2 extends RelativeLayout {
         mContentLl = (LinearLayout) this.findViewById(R.id.content_ll);
         mErjiIv = (ExImageView) this.findViewById(R.id.erji_iv);
 
-//        HandlerTaskTimer.newBuilder()
-//                .interval(4000)
-//                .start(new HandlerTaskTimer.ObserverW() {
-//                    @Override
-//                    public void onNext(Integer integer) {
-//                        int i=0;
-//                        for(int id:mInfoMap.keySet()){
-//                            if(i++==2) {
-//                                lightOff(id);
-//                                break;
-//                            }
-//                        }
-//                    }
-//                });
-
+        addChildView();
     }
 
+    private void addChildView(){
+        for (int i = 0; i < PLAYER_COUNT; i++){
+            VP vp = new VP();
+            vp.grabTopItemView = new GrabTopItemView(getContext());
+            vp.grabTopItemView.setGrap(false);
+            vp.grabTopItemView.tryAddParent(mContentLl);
+            vp.grabTopItemView.setToPlaceHolder();
+            vp.SVGAImageView = new SVGAImageView(getContext());
+            LayoutParams lp = new LayoutParams(U.getDisplayUtils().dip2px(100), U.getDisplayUtils().dip2px(100));
+            GrabPlayerRv2.this.addView(vp.SVGAImageView, lp);
+            mGrabTopItemViewArrayList.add(vp);
+        }
+
+        resetAllGrabTopItemView();
+    }
+
+    private void resetAllGrabTopItemView(){
+        for (VP vp : mGrabTopItemViewArrayList){
+            vp.grabTopItemView.setVisibility(VISIBLE);
+            vp.grabTopItemView.setToPlaceHolder();
+            vp.grabTopItemView.setGrap(false);
+        }
+    }
+
+    //只有轮次切换的时候调用
     private void initData() {
-        mContentLl.removeAllViews();
-        //为了复用之前的view
-        LinkedHashMap<Integer, VP> mTemInfoMap = new LinkedHashMap<>();
         if(mRoomData.getRealRoundInfo() == null || mRoomData.getPlayerInfoList() == null){
             MyLog.w(TAG, "initData data error" );
             return;
         }
 
-        GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
-        List<GrabPlayerInfoModel> playerInfoModels = now.getPlayUsers();
-
-        MyLog.d(TAG, "initData playerInfoModels.size() is " + playerInfoModels.size());
-        int i = 0;
-        for (GrabPlayerInfoModel playerInfoModel : playerInfoModels) {
-            UserInfoModel userInfo = playerInfoModel.getUserInfo();
-            VP vp = mInfoMap.get(userInfo.getUserId());
-            if (vp == null) {
-                vp = new VP();
-                mTemInfoMap.put(userInfo.getUserId(), vp);
-            }
-            if (vp.grabTopItemView == null) {
-                vp.grabTopItemView = new GrabTopItemView(getContext());
-            }
-            vp.grabTopItemView.setVisibility(VISIBLE);
-            vp.grabTopItemView.bindData(playerInfoModel);
-            vp.grabTopItemView.setGrap(false);
-            vp.grabTopItemView.tryAddParent(mContentLl);
-            if (vp.SVGAImageView == null) {
-                vp.SVGAImageView = new SVGAImageView(getContext());
-                LayoutParams lp = new LayoutParams(U.getDisplayUtils().dip2px(100), U.getDisplayUtils().dip2px(100));
-                GrabPlayerRv2.this.addView(vp.SVGAImageView, lp);
-            }
-
-//            if (i % 2 == 0) {
-//                grabTopItemView.setBackgroundColor(U.getColor(R.color.yellow));
-//            } else {
-//                grabTopItemView.setBackgroundColor(U.getColor(R.color.blue));
-//            }
-            i++;
+        if(mCurSeq == mRoomData.getRealRoundSeq()){
+            MyLog.w(TAG, "initdata 轮次一样，无需更新" );
+            return;
         }
 
-        mInfoMap.clear();
-        mInfoMap = mTemInfoMap;
+        resetAllGrabTopItemView();
+        mCurSeq = mRoomData.getRealRoundSeq();
 
-        //空位置，补位的
-        if (playerInfoModels != null && playerInfoModels.size() > 0 && playerInfoModels.size() < 7) {
-            //需要补的位置数量
-            int placeHolderSize = 7 - playerInfoModels.size();
-            for (int b = 0; b < placeHolderSize; b++) {
-                GrabTopItemView grabTopItemView = new GrabTopItemView(getContext());
-                grabTopItemView.setVisibility(VISIBLE);
-                grabTopItemView.setToPlaceHolder();
-                grabTopItemView.tryAddParent(mContentLl);
-            }
+        GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
+        List<GrabPlayerInfoModel> playerInfoModels = now.getPlayUsers();
+        mInfoMap.clear();
+
+        MyLog.d(TAG, "initData playerInfoModels.size() is " + playerInfoModels.size());
+
+        for (int i = 0; i < playerInfoModels.size(); i++){
+            VP vp = mGrabTopItemViewArrayList.get(i);
+            mInfoMap.put(playerInfoModels.get(i).getUserInfo().getUserId(), vp);
+            vp.grabTopItemView.bindData(playerInfoModels.get(i));
         }
 
         if (now != null) {
