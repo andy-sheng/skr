@@ -6,6 +6,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.common.log.MyLog;
 
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 
 public class ActivityLeakSolutionUtils {
@@ -21,6 +22,8 @@ public class ActivityLeakSolutionUtils {
     public static void fixInputMethodManagerLeak(Context destContext) {
         if (destContext != null) {
             InputMethodManager imm = (InputMethodManager) destContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+            WeakReference<Context> weakReference = new WeakReference<>(destContext);
+
             if (imm != null) {
                 String[] arr = new String[]{"mCurRootView", "mServedView", "mNextServedView", "mLastSrvView"};
                 Field field = null;
@@ -37,7 +40,7 @@ public class ActivityLeakSolutionUtils {
                         obj_get = field.get(imm);
                         if (obj_get != null && obj_get instanceof View) {
                             View view = (View) obj_get;
-                            if (view.getContext() != destContext) {
+                            if (view.getContext() != weakReference.get()) {
                                 MyLog.d(TAG, "fixInputMethodManagerLeak break, context is not suitable");
                                 break;
                             }
