@@ -172,7 +172,7 @@ public class RankResultView extends RelativeLayout {
                     mSecondImgIv.setBackground(getResources().getDrawable(R.drawable.zhanji_mie));
                     mSecondResultTv.setTextColor(Color.parseColor("#9697A0"));
                 } else if (audienceScoreModel2.getLightType() == ELightType.ELT_X_LIGHT.getValue()) {
-                    mSecondImgIv.setBackground(getResources().getDrawable(R.drawable.zhanji_xiaolian));
+                    mSecondImgIv.setBackground(getResources().getDrawable(R.drawable.zhanji_baodeng));
                     mSecondResultTv.setTextColor(Color.parseColor("#9697A0"));
                 }
                 mSecondResultTv.setText("" + audienceScoreModel2.getScore());
@@ -194,7 +194,7 @@ public class RankResultView extends RelativeLayout {
                     mThirdImgIv.setBackground(getResources().getDrawable(R.drawable.zhanji_mie));
                     mThirdResultTv.setTextColor(Color.parseColor("#9697A0"));
                 } else if (audienceScoreModel3.getLightType() == ELightType.ELT_X_LIGHT.getValue()) {
-                    mThirdImgIv.setBackground(getResources().getDrawable(R.drawable.zhanji_xiaolian));
+                    mThirdImgIv.setBackground(getResources().getDrawable(R.drawable.zhanji_baodeng));
                     mThirdResultTv.setTextColor(Color.parseColor("#9697A0"));
                 }
                 mThirdResultTv.setText("" + audienceScoreModel3.getScore());
