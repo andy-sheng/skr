@@ -123,6 +123,7 @@ public class RankTopLEDView extends RelativeLayout {
 
     // 爆灯或者灭灯
     public void setSVGAMode(boolean isBao) {
+        mDengSvga.setCallback(null);
         mDengSvga.stopAnimation(true);
         setVisibility(VISIBLE);
         String assetsName = isBao ? "rank_love_left.svga" : "rank_fork_left.svga";
@@ -134,7 +135,8 @@ public class RankTopLEDView extends RelativeLayout {
                 assetsName = isBao ? "rank_love_mid.svga" : "rank_fork_mid.svga";
                 break;
             case 2:
-                assetsName = isBao ? "rank_love_right.svga" : "rank_fork_right.svga";
+//                assetsName = isBao ? "rank_love_right.svga" : "rank_fork_right.svga";
+                assetsName = isBao ? "rank_love_right.svga" : "rank_fork_end.svga";
                 break;
         }
         mDengSvga.setVisibility(VISIBLE);
@@ -167,6 +169,7 @@ public class RankTopLEDView extends RelativeLayout {
             @Override
             public void onFinished() {
                 if (mDengSvga != null) {
+                    mDengSvga.setCallback(null);
                     mDengSvga.stopAnimation(false);
                 }
                 if (isBao) {

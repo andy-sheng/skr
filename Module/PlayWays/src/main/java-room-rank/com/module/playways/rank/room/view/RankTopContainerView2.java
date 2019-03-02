@@ -310,6 +310,8 @@ public class RankTopContainerView2 extends RelativeLayout {
                 mMidLedView.setSVGAMode(lightState == LightState.BAO);
                 break;
             case 2:
+                mLeftLedView.setVisibility(GONE);
+                mMidLedView.setVisibility(GONE);
                 mRightLedView.setSVGAMode(lightState == LightState.BAO);
                 break;
         }
