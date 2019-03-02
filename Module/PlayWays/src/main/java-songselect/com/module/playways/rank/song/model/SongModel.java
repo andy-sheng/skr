@@ -212,9 +212,14 @@ public class SongModel implements Serializable {
     }
 
     public int getTotalMs() {
-        if (totalMs == 0) {
-            MyLog.d("SongModel", "totalMs==0 容错，返回30*1000");
-            return 30 * 1000;
+        if (totalMs <= 0) {
+            MyLog.d("SongModel", "totalMs<=0 容错，返回30*1000");
+            int t = standLrcEndT - standLrcBeginT;
+            if (t <= 0) {
+                return 30 * 1000;
+            } else {
+                return t;
+            }
         }
         return totalMs;
     }
