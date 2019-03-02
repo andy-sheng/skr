@@ -75,17 +75,17 @@ public class LevelConfigUtils {
     public static int getImageResoucesLevel(int level) {
         switch (level) {
             case UserLevelType.SKRER_LEVEL_POTENTIAL:
-                return R.drawable.qianlixinxiu_xunzhang;
+                return R.drawable.qianli;
             case UserLevelType.SKRER_LEVEL_SILVER:
-                return R.drawable.baiyingezhe_xunzhang;
+                return R.drawable.baiyin;
             case UserLevelType.SKRER_LEVEL_GOLD:
-                return R.drawable.jinpaigeshou_xunzhang;
+                return R.drawable.jinpai;
             case UserLevelType.SKRER_LEVEL_PLATINUM:
-                return R.drawable.bojinchangjiang_xunzhang;
+                return R.drawable.bojin;
             case UserLevelType.SKRER_LEVEL_DIAMOND:
-                return R.drawable.zuanshijuxing_xunzhang;
+                return R.drawable.zuanshi;
             case UserLevelType.SKRER_LEVEL_KING:
-                return R.drawable.rongyaogewang_xunzhang;
+                return R.drawable.gewang;
             default:
                 MyLog.w(TAG, "getImageResoucesLevel null" + " level = " + level);
                 return 0;
@@ -98,11 +98,11 @@ public class LevelConfigUtils {
             case UserLevelType.SKRER_LEVEL_POTENTIAL: {
                 switch (subLevel) {
                     case 1:
-                        return R.drawable.qianlixinxiu_one;
+                        return R.drawable.qianli_1;
                     case 2:
-                        return R.drawable.qianlixinxiu_two;
+                        return R.drawable.qianli_2;
                     case 3:
-                        return R.drawable.qianlixinxiu_three;
+                        return R.drawable.qianli_3;
                     default:
                         MyLog.w(TAG, "getImageResoucesSubLevel null" + " level = " + level + " subLevel = " + subLevel);
                         return 0;
@@ -112,11 +112,11 @@ public class LevelConfigUtils {
             case UserLevelType.SKRER_LEVEL_SILVER: {
                 switch (subLevel) {
                     case 1:
-                        return R.drawable.baiyingezhe_one;
+                        return R.drawable.baiyin_1;
                     case 2:
-                        return R.drawable.baiyingezhe_two;
+                        return R.drawable.baiyin_2;
                     case 3:
-                        return R.drawable.baiyingezhe_three;
+                        return R.drawable.baiyin_3;
                     default:
                         MyLog.w(TAG, "getImageResoucesSubLevel null" + " level = " + level + " subLevel = " + subLevel);
                         return 0;
@@ -126,11 +126,11 @@ public class LevelConfigUtils {
             case UserLevelType.SKRER_LEVEL_GOLD: {
                 switch (subLevel) {
                     case 1:
-                        return R.drawable.jinpaigeshou_one;
+                        return R.drawable.jinpai_1;
                     case 2:
-                        return R.drawable.jinpaigeshou_two;
+                        return R.drawable.jinpai_2;
                     case 3:
-                        return R.drawable.jinpaigeshou_three;
+                        return R.drawable.jinpai_3;
                     case 4:
                         return R.drawable.jinpaigeshou_four;
                     default:
@@ -143,11 +143,11 @@ public class LevelConfigUtils {
             case UserLevelType.SKRER_LEVEL_PLATINUM: {
                 switch (subLevel) {
                     case 1:
-                        return R.drawable.bojinchangjiang_one;
+                        return R.drawable.bojin_1;
                     case 2:
-                        return R.drawable.bojinchangjiang_two;
+                        return R.drawable.bojin_2;
                     case 3:
-                        return R.drawable.bojinchangjiang_three;
+                        return R.drawable.bojin_3;
                     case 4:
                         return R.drawable.bojinchangjiang_four;
                     default:
@@ -160,11 +160,11 @@ public class LevelConfigUtils {
             case UserLevelType.SKRER_LEVEL_DIAMOND: {
                 switch (subLevel) {
                     case 1:
-                        return R.drawable.zuanshijuxing_one;
+                        return R.drawable.zuanshi_1;
                     case 2:
-                        return R.drawable.zuanshijuxing_two;
+                        return R.drawable.zuanshi_2;
                     case 3:
-                        return R.drawable.zuanshijuxing_three;
+                        return R.drawable.zuanshi_3;
                     case 4:
                         return R.drawable.zuanshijuxing_four;
                     case 5:
@@ -179,11 +179,11 @@ public class LevelConfigUtils {
             case UserLevelType.SKRER_LEVEL_KING: {
                 switch (subLevel) {
                     case 1:
-                        return R.drawable.rongyaogewang_one;
+                        return R.drawable.gewang_1;
                     case 2:
-                        return R.drawable.rongyaogewang_two;
+                        return R.drawable.gewang_2;
                     case 3:
-                        return R.drawable.rongyaogewang_three;
+                        return R.drawable.gewang_3;
                     default:
                         MyLog.w(TAG, "getImageResoucesSubLevel null" + " level = " + level + " subLevel = " + subLevel);
                         return 0;

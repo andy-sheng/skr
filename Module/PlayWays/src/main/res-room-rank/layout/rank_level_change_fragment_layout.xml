@@ -27,14 +27,14 @@
 
     <com.zq.level.view.NormalLevelView
         android:id="@+id/level_view"
-        android:layout_width="@dimen/view_182_dp"
+        android:layout_width="@dimen/view_198_dp"
         android:layout_height="@dimen/view_218_dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_150_dp"
+        android:layout_marginTop="@dimen/view_160_dp"
         android:visibility="gone"
         levelView:largeStar="@dimen/view_22_dp"
-        levelView:mainHeight="@dimen/view_168_dp"
-        levelView:mainWidth="@dimen/view_182_dp"
+        levelView:mainHeight="@dimen/view_172_dp"
+        levelView:mainWidth="@dimen/view_198_dp"
         levelView:normalStar="@dimen/view_22_dp"
         levelView:starDiffH="@dimen/view_12_dp"
         levelView:starTotalWidth="@dimen/view_182_dp"
