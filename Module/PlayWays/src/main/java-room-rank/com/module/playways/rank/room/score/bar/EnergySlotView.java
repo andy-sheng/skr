@@ -98,6 +98,7 @@ public class EnergySlotView extends View {
         mTarget = target;
         this.mAnimatorListenerAdapter = l;
         if (mAnimatorSet != null && mAnimatorSet.isRunning()) {
+            mAnimatorSet.removeAllListeners();
             mAnimatorSet.cancel();
         }
 
