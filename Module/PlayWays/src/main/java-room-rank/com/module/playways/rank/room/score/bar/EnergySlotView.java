@@ -97,7 +97,7 @@ public class EnergySlotView extends View {
     public void setTarget(int target, AnimatorListenerAdapter l) {
         mTarget = target;
         this.mAnimatorListenerAdapter = l;
-        if (mAnimatorSet != null && mAnimatorSet.isRunning()) {
+        if (mAnimatorSet != null) {
             mAnimatorSet.removeAllListeners();
             mAnimatorSet.cancel();
         }
@@ -132,7 +132,7 @@ public class EnergySlotView extends View {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if (mAnimatorSet != null && mAnimatorSet.isRunning()) {
+        if (mAnimatorSet != null) {
             mAnimatorSet.cancel();
         }
     }
