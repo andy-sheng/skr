@@ -24,40 +24,6 @@
         android:layout_marginTop="@dimen/view_28_dp"
         android:background="@drawable/yanchang_xianshiping" />
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_56_dp"
-        android:layout_alignLeft="@+id/iv_led"
-        android:layout_alignTop="@+id/iv_led"
-        android:layout_alignRight="@+id/iv_led"
-        android:layout_marginLeft="@dimen/view_17_dp"
-        android:layout_marginTop="@dimen/view_11_dp"
-        android:layout_marginRight="@dimen/view_11_dp"
-        android:gravity="center_vertical"
-        android:visibility="gone">
-
-        <com.common.view.ex.ExImageView
-
-            android:id="@+id/iv_left"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true" />
-
-        <com.common.view.ex.ExImageView
-
-            android:id="@+id/iv_center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true" />
-
-        <com.common.view.ex.ExImageView
-
-            android:id="@+id/iv_rignt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true" />
-    </RelativeLayout>
-
     <com.module.playways.rank.room.score.bar.EnergySlotView
         android:id="@+id/energy_slot_view"
         android:layout_width="wrap_content"
@@ -103,5 +69,16 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_8_dp"
         rankLED:position="mid"></com.module.playways.rank.room.view.RankTopLEDView>
+
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/energy_fill_svga"
+        android:layout_width="@dimen/view_375_dp"
+        android:layout_height="@dimen/view_149_dp"
+        android:layout_alignTop="@+id/energy_slot_view"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-20dp"
+        android:visibility="gone"
+        app:antiAlias="true"
+        app:autoPlay="false" />
 
 </merge>

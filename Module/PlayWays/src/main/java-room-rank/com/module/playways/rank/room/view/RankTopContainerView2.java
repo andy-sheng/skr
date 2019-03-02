@@ -29,12 +29,18 @@ import com.module.playways.rank.room.score.RobotScoreHelper;
 import com.module.playways.rank.room.score.bar.EnergySlotView;
 import com.module.playways.rank.room.score.bar.ScoreTipsView;
 import com.module.rank.R;
+import com.opensource.svgaplayer.SVGACallback;
+import com.opensource.svgaplayer.SVGADrawable;
+import com.opensource.svgaplayer.SVGAImageView;
+import com.opensource.svgaplayer.SVGAParser;
+import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -44,9 +50,6 @@ public class RankTopContainerView2 extends RelativeLayout {
     ExImageView mMoreBtn;
     MoreOpView mMoreOpView;
     ExImageView mIvLed;
-    ExImageView mIvLeft;
-    ExImageView mIvCenter;
-    ExImageView mIvRignt;
     EnergySlotView mEnergySlotView;
     ExImageView mIvGameRole;
     DialogPlus mGameRoleDialog;
@@ -54,6 +57,8 @@ public class RankTopContainerView2 extends RelativeLayout {
     RankTopLEDView mLeftLedView;
     RankTopLEDView mMidLedView;
     RankTopLEDView mRightLedView;
+
+    SVGAImageView mEnergyFillSvga;   //能量满大动画
 
     RankTopContainerView1.Listener mListener;
 
@@ -97,14 +102,12 @@ public class RankTopContainerView2 extends RelativeLayout {
         inflate(getContext(), R.layout.rank_top_container_view, this);
         mMoreBtn = this.findViewById(R.id.more_btn);
         mIvLed = (ExImageView) findViewById(R.id.iv_led);
-        mIvLeft = (ExImageView) findViewById(R.id.iv_left);
-        mIvCenter = (ExImageView) findViewById(R.id.iv_center);
-        mIvRignt = (ExImageView) findViewById(R.id.iv_rignt);
         mEnergySlotView = (EnergySlotView) findViewById(R.id.energy_slot_view);
         mIvGameRole = (ExImageView) findViewById(R.id.iv_game_role);
         mLeftLedView = (RankTopLEDView) findViewById(R.id.left_led_view);
         mMidLedView = (RankTopLEDView) findViewById(R.id.mid_led_view);
         mRightLedView = (RankTopLEDView) findViewById(R.id.right_led_view);
+        mEnergyFillSvga = (SVGAImageView) findViewById(R.id.energy_fill_svga);
 
         mIvGameRole.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -166,6 +169,10 @@ public class RankTopContainerView2 extends RelativeLayout {
         super.onDetachedFromWindow();
         if (mGameRoleDialog != null && mGameRoleDialog.isShowing()) {
             mGameRoleDialog.dismiss();
+        }
+        if (mEnergyFillSvga != null) {
+            mEnergyFillSvga.setCallback(null);
+            mEnergyFillSvga.stopAnimation(true);
         }
         EventBus.getDefault().unregister(this);
     }
@@ -275,10 +282,6 @@ public class RankTopContainerView2 extends RelativeLayout {
     //轮次结束
     public void roundOver() {
         MyLog.d(TAG, "roundOver");
-        mIvLeft.setImageDrawable(U.getDrawable(R.drawable.yanchang_xiaolian));
-        mIvCenter.setImageDrawable(U.getDrawable(R.drawable.yanchang_xiaolian));
-        mIvRignt.setImageDrawable(U.getDrawable(R.drawable.yanchang_xiaolian));
-
         mLeftLedView.initSVGA();
         mMidLedView.initSVGA();
         mRightLedView.initSVGA();
@@ -301,15 +304,12 @@ public class RankTopContainerView2 extends RelativeLayout {
         MyLog.d(TAG, "setLight" + " index=" + index + " lightState=" + lightState);
         switch (index) {
             case 0:
-                mIvLeft.setImageDrawable(lightState == LightState.BAO ? U.getDrawable(R.drawable.yanchang_bao) : U.getDrawable(R.drawable.yanchang_mie));
                 mLeftLedView.setSVGAMode(lightState == LightState.BAO);
                 break;
             case 1:
-                mIvCenter.setImageDrawable(lightState == LightState.BAO ? U.getDrawable(R.drawable.yanchang_bao) : U.getDrawable(R.drawable.yanchang_mie));
                 mMidLedView.setSVGAMode(lightState == LightState.BAO);
                 break;
             case 2:
-                mIvRignt.setImageDrawable(lightState == LightState.BAO ? U.getDrawable(R.drawable.yanchang_bao) : U.getDrawable(R.drawable.yanchang_mie));
                 mRightLedView.setSVGAMode(lightState == LightState.BAO);
                 break;
         }
@@ -423,6 +423,7 @@ public class RankTopContainerView2 extends RelativeLayout {
             // 能量槽满了,要触发大动画了
             mCurScore = mCurScore % mTotalScore;
             int progress = mCurScore * 100 / mTotalScore;
+            playEnergyFillAnimation();
             mEnergySlotView.setTarget(0, new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
@@ -435,5 +436,63 @@ public class RankTopContainerView2 extends RelativeLayout {
             int progress = mCurScore * 100 / mTotalScore;
             mEnergySlotView.setTarget(progress, null);
         }
+    }
+
+
+    void playEnergyFillAnimation() {
+        MyLog.d(TAG, "playFullEnergyAnimation");
+        mEnergyFillSvga.setCallback(null);
+        mEnergyFillSvga.stopAnimation(true);
+        mEnergyFillSvga.setVisibility(VISIBLE);
+        mEnergyFillSvga.setLoops(1);
+
+        SVGAParser parser = new SVGAParser(U.app());
+        try {
+            parser.parse("rank_fill_energy.svga", new SVGAParser.ParseCompletion() {
+                @Override
+                public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
+                    SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
+                    mEnergyFillSvga.setImageDrawable(drawable);
+                    mEnergyFillSvga.startAnimation();
+                }
+
+                @Override
+                public void onError() {
+
+                }
+            });
+        } catch (Exception e) {
+            System.out.print(true);
+        }
+
+
+        mEnergyFillSvga.setCallback(new SVGACallback() {
+            @Override
+            public void onPause() {
+
+            }
+
+            @Override
+            public void onFinished() {
+                if (mEnergyFillSvga != null) {
+                    mEnergyFillSvga.setCallback(null);
+                    mEnergyFillSvga.stopAnimation(true);
+                    mEnergyFillSvga.setVisibility(GONE);
+                }
+            }
+
+            @Override
+            public void onRepeat() {
+                if (mEnergyFillSvga != null && mEnergyFillSvga.isAnimating()) {
+                    mEnergyFillSvga.stopAnimation(false);
+                }
+            }
+
+            @Override
+            public void onStep(int i, double v) {
+
+            }
+        });
+
     }
 }

@@ -154,7 +154,7 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
         mIvBack.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                U.getSoundUtils().play(TAG, R.raw.general_back);
+                U.getSoundUtils().play(TAG, R.raw.general_back, 500);
                 goBack();
             }
         });
@@ -423,6 +423,10 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
         super.destroy();
         if (mExitDialog != null && mExitDialog.isShowing()) {
             mExitDialog.dismiss();
+        }
+        stopTimeTask();
+        if (mControlTask != null) {
+            mControlTask.dispose();
         }
         U.getSoundUtils().release(TAG);
     }
