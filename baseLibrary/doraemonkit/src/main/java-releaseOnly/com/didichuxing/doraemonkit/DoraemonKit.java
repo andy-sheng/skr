@@ -22,7 +22,7 @@ import com.didichuxing.doraemonkit.ui.UniversalActivity;
 import com.didichuxing.doraemonkit.ui.base.FloatPageManager;
 import com.didichuxing.doraemonkit.ui.base.PageIntent;
 import com.didichuxing.doraemonkit.ui.kit.KitItem;
-import com.didichuxing.doraemonkit.util.PermissionUtil;
+import com.didichuxing.doraemonkit.util.DoraemonPermissionUtil;
 import com.didichuxing.doraemonkit.kit.sysinfo.ExtraInfoProvider;
 import com.didichuxing.doraemonkit.kit.sysinfo.SysInfo;
 
@@ -151,15 +151,15 @@ public class DoraemonKit {
     }
 
     private static void requestPermission(Context context) {
-        if (!PermissionUtil.canDrawOverlays(context) && !sHasRequestPermission) {
+        if (!DoraemonPermissionUtil.canDrawOverlays(context) && !sHasRequestPermission) {
             Toast.makeText(context, context.getText(R.string.dk_float_permission_toast), Toast.LENGTH_LONG).show();
-            PermissionUtil.requestDrawOverlays(context);
+            DoraemonPermissionUtil.requestDrawOverlays(context);
             sHasRequestPermission = true;
         }
     }
 
     public static void tryShowFloatIcon(Context activity) {
-        if (PermissionUtil.canDrawOverlays(activity)) {
+        if (DoraemonPermissionUtil.canDrawOverlays(activity)) {
             showFloatIcon(activity);
         } else {
             requestPermission(activity);
