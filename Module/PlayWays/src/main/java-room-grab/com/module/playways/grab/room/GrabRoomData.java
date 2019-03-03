@@ -20,9 +20,10 @@ import java.util.List;
 
 public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
     protected int mCoin;// 金币数
-    protected List<GrabResultInfoModel> mResultList; // 一唱到底对战结果数据
+    protected List<GrabResultInfoModel> mResultList = new ArrayList<>(); // 一唱到底对战结果数据
     protected int mTagId;//一场到底歌曲分类
-    protected GrabConfigModel mGrabConfigModel;
+    protected GrabConfigModel mGrabConfigModel;// 一唱到底配置
+    protected boolean mHasExitGame = false;// 是否已经正常退出房间
 
     @Override
     public List<GrabPlayerInfoModel> getPlayerInfoList() {
@@ -73,7 +74,8 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
     }
 
     public void setResultList(List<GrabResultInfoModel> resultList) {
-        mResultList = resultList;
+        mResultList.clear();
+        mResultList.addAll(resultList);
     }
 
     public List<GrabResultInfoModel> getResultList() {
@@ -107,6 +109,14 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
         mGrabConfigModel = grabConfigModel;
     }
 
+    public boolean isHasExitGame() {
+        return mHasExitGame;
+    }
+
+    public void setHasExitGame(boolean hasExitGame) {
+        mHasExitGame = hasExitGame;
+    }
+
     public void loadFromRsp(JoinGrabRoomRspModel rsp) {
         this.setGrabConfigModel(rsp.getConfig());
         this.setGameId(rsp.getRoomID());
@@ -130,5 +140,8 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
         if (this.getGameStartTs() == 0) {
             this.setGameStartTs(this.getGameCreateTs());
         }
+        setIsGameFinish(false);
+        setHasExitGame(false);
+        mResultList.clear();
     }
 }

@@ -582,7 +582,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         MyLog.d(TAG, "destroy begin");
         super.destroy();
         mDestroyed = true;
-        exitRoom();
+        if (!mRoomData.isHasExitGame()) {
+            exitRoom();
+        }
         cancelSyncGameStateTask();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
@@ -676,6 +678,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
+                    mRoomData.setHasExitGame(true);
                     String resultStr = result.getData().getString("resultInfo");
                     if (!TextUtils.isEmpty(resultStr)) {
                         GrabResultInfoModel grabResultInfoModel = JSON.parseObject(resultStr, GrabResultInfoModel.class);
