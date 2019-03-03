@@ -22,9 +22,13 @@ import org.jetbrains.annotations.NotNull;
 public class RankTopLEDView extends RelativeLayout {
 
     public final static String TAG = "RankTopLEDView";
+    public static int DEFAULT_MODE = 0;   //默认模式
+    public static int MIE_MODE = 1;    //灭灯模式
+    public static int BAO_MODE = 2;    //爆灯模式
 
     SVGAImageView mDengSvga;
-    int postion;             //view的位置，对应加载什么动画
+    int postion;                       //view的位置，对应加载什么动画
+    int curMode = DEFAULT_MODE;        //保存当前需要播什么动画, 防止动画的异步加载
 
     public RankTopLEDView(Context context) {
         this(context, null);
@@ -52,6 +56,7 @@ public class RankTopLEDView extends RelativeLayout {
     // 初始状态
     public void initSVGA() {
         MyLog.d(TAG, " initSVGA " + " postion = " + postion);
+        curMode = DEFAULT_MODE;
         mDengSvga.setCallback(null);
         mDengSvga.stopAnimation(true);
         setVisibility(VISIBLE);
@@ -80,9 +85,11 @@ public class RankTopLEDView extends RelativeLayout {
             parser.parse(assetsName, new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
-                    SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
-                    mDengSvga.setImageDrawable(drawable);
-                    mDengSvga.startAnimation();
+                    if (curMode == DEFAULT_MODE) {
+                        SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
+                        mDengSvga.setImageDrawable(drawable);
+                        mDengSvga.startAnimation();
+                    }
                 }
 
                 @Override
@@ -107,7 +114,7 @@ public class RankTopLEDView extends RelativeLayout {
                         mDengSvga.stopAnimation(false);
                     }
 
-                    playBaoDengAnimation();
+                    playBaoDengAnimation(false);
                 }
 
                 @Override
@@ -128,6 +135,7 @@ public class RankTopLEDView extends RelativeLayout {
     // 爆灯或者灭灯
     public void setSVGAMode(boolean isBao) {
         MyLog.d(TAG, "setSVGAMode" + " isBao=" + isBao + "postion" + postion);
+        curMode = isBao ? BAO_MODE : MIE_MODE;
         mDengSvga.setCallback(null);
         mDengSvga.stopAnimation(true);
         setVisibility(VISIBLE);
@@ -151,9 +159,11 @@ public class RankTopLEDView extends RelativeLayout {
             parser.parse(assetsName, new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
-                    SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
-                    mDengSvga.setImageDrawable(drawable);
-                    mDengSvga.startAnimation();
+                    if (curMode == BAO_MODE || curMode == MIE_MODE) {
+                        SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
+                        mDengSvga.setImageDrawable(drawable);
+                        mDengSvga.startAnimation();
+                    }
                 }
 
                 @Override
@@ -178,7 +188,7 @@ public class RankTopLEDView extends RelativeLayout {
                     mDengSvga.stopAnimation(false);
                 }
                 if (isBao) {
-                    playBaoDengAnimation();
+                    playBaoDengAnimation(isBao);
                 }
             }
 
@@ -196,7 +206,8 @@ public class RankTopLEDView extends RelativeLayout {
         });
     }
 
-    private void playBaoDengAnimation() {
+    private void playBaoDengAnimation(boolean isBAO) {
+        curMode = isBAO ? BAO_MODE : DEFAULT_MODE;
         String assetsName = "rank_love_left_beat.svga";
         switch (postion) {
             case 0:
@@ -217,9 +228,11 @@ public class RankTopLEDView extends RelativeLayout {
             parser.parse(assetsName, new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
-                    SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
-                    mDengSvga.setImageDrawable(drawable);
-                    mDengSvga.startAnimation();
+                    if (curMode == DEFAULT_MODE || curMode == BAO_MODE) {
+                        SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
+                        mDengSvga.setImageDrawable(drawable);
+                        mDengSvga.startAnimation();
+                    }
                 }
 
                 @Override
