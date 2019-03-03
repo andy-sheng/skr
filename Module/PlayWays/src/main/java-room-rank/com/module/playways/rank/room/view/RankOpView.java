@@ -71,14 +71,21 @@ public class RankOpView extends RelativeLayout {
             }
         });
 
-        mIvTurnOff.setLongClickable(false);
+        mIvTurnOff.setOnLongClickListener(new OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                return true;
+            }
+        });
+
+
         mIvTurnOff.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 if (mRoomData.getLeftLightOffTimes() > 0) {
                     if (mOpListener != null) {
                         if (mHasOpSeq.contains(mSeq)) {
-                            U.getToastUtil().showShort("爆灯之后不能灭灯哦");
+                            U.getToastUtil().showShort("灭灯之后不能再灭灯哦");
                             return;
                         }
                         mOpListener.clickLightOff(mSeq);
