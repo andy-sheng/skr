@@ -403,10 +403,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     BLightInfoModel noPassingInfo = new BLightInfoModel();
                     noPassingInfo.setUserID((int) MyUserInfoManager.getInstance().getUid());
                     now.addLightBurstUid(notify, noPassingInfo);
+                    mRoomData.setCoin(result.getData().getInteger("coin"));
                 } else {
 
                 }
-                mRoomData.setCoin(result.getData().getInteger("coin"));
             }
 
             @Override
