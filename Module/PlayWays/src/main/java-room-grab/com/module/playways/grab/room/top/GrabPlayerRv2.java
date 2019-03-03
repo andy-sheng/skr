@@ -92,8 +92,8 @@ public class GrabPlayerRv2 extends RelativeLayout {
         addChildView();
     }
 
-    private void addChildView(){
-        for (int i = 0; i < PLAYER_COUNT; i++){
+    private void addChildView() {
+        for (int i = 0; i < PLAYER_COUNT; i++) {
             VP vp = new VP();
             vp.grabTopItemView = new GrabTopItemView(getContext());
             vp.grabTopItemView.setGrap(false);
@@ -108,8 +108,8 @@ public class GrabPlayerRv2 extends RelativeLayout {
         resetAllGrabTopItemView();
     }
 
-    private void resetAllGrabTopItemView(){
-        for (VP vp : mGrabTopItemViewArrayList){
+    private void resetAllGrabTopItemView() {
+        for (VP vp : mGrabTopItemViewArrayList) {
             vp.grabTopItemView.setVisibility(VISIBLE);
             vp.grabTopItemView.setToPlaceHolder();
             vp.grabTopItemView.setGrap(false);
@@ -119,13 +119,13 @@ public class GrabPlayerRv2 extends RelativeLayout {
 
     //只有轮次切换的时候调用
     private void initData() {
-        if(mRoomData.getRealRoundInfo() == null || mRoomData.getPlayerInfoList() == null){
-            MyLog.w(TAG, "initData data error" );
+        if (mRoomData.getRealRoundInfo() == null || mRoomData.getPlayerInfoList() == null) {
+            MyLog.w(TAG, "initData data error");
             return;
         }
 
-        if(mCurSeq == mRoomData.getRealRoundSeq()){
-            MyLog.w(TAG, "initdata 轮次一样，无需更新" );
+        if (mCurSeq == mRoomData.getRealRoundSeq()) {
+            MyLog.w(TAG, "initdata 轮次一样，无需更新");
             return;
         }
 
@@ -138,7 +138,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
 
         MyLog.d(TAG, "initData playerInfoModels.size() is " + playerInfoModels.size());
 
-        for (int i = 0; i < playerInfoModels.size(); i++){
+        for (int i = 0; i < playerInfoModels.size(); i++) {
             VP vp = mGrabTopItemViewArrayList.get(i);
             mInfoMap.put(playerInfoModels.get(i).getUserInfo().getUserId(), vp);
             vp.grabTopItemView.bindData(playerInfoModels.get(i));
@@ -199,7 +199,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
         MyLog.d(TAG, "setModeSing" + " singUid=" + singUid);
         VP vp = mInfoMap.get(singUid);
         if (vp == null) {
-            MyLog.d(TAG, "没有在选手席位找到 id="+singUid+" 相应ui，return");
+            MyLog.d(TAG, "没有在选手席位找到 id=" + singUid + " 相应ui，return");
             return;
         }
         if (vp.grabTopItemView != null) {
@@ -462,6 +462,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
 
     /**
      * 执行灭灯动画
+     *
      * @param vp
      */
     private void setLightOffAnimation(VP vp) {
@@ -562,6 +563,15 @@ public class GrabPlayerRv2 extends RelativeLayout {
         super.onDetachedFromWindow();
         if (mAnimatorAllSet != null) {
             mAnimatorAllSet.cancel();
+        }
+        for (int i = 0; i < mGrabTopItemViewArrayList.size(); i++) {
+            VP vp = mGrabTopItemViewArrayList.get(i);
+            if (vp != null) {
+                if (vp.SVGAImageView != null) {
+                    vp.SVGAImageView.setCallback(null);
+                    vp.SVGAImageView.stopAnimation(true);
+                }
+            }
         }
     }
 
