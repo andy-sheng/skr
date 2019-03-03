@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGACallback;
@@ -19,6 +20,8 @@ import org.jetbrains.annotations.NotNull;
  * 顶部动画
  */
 public class RankTopLEDView extends RelativeLayout {
+
+    public final static String TAG = "RankTopLEDView";
 
     SVGAImageView mDengSvga;
     int postion;             //view的位置，对应加载什么动画
@@ -48,6 +51,7 @@ public class RankTopLEDView extends RelativeLayout {
 
     // 初始状态
     public void initSVGA() {
+        MyLog.d(TAG, " initSVGA " + " postion = " + postion);
         mDengSvga.setCallback(null);
         mDengSvga.stopAnimation(true);
         setVisibility(VISIBLE);
@@ -123,6 +127,7 @@ public class RankTopLEDView extends RelativeLayout {
 
     // 爆灯或者灭灯
     public void setSVGAMode(boolean isBao) {
+        MyLog.d(TAG, "setSVGAMode" + " isBao=" + isBao + "postion" + postion);
         mDengSvga.setCallback(null);
         mDengSvga.stopAnimation(true);
         setVisibility(VISIBLE);
