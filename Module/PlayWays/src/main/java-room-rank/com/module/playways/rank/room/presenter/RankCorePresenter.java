@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.text.SpannableStringBuilder;
-import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.common.core.account.UserAccountManager;
@@ -22,7 +21,6 @@ import com.common.upload.UploadParams;
 import com.common.utils.ActivityUtils;
 import com.common.utils.SongResUtils;
 import com.common.utils.SpanUtils;
-import com.common.utils.ToastUtils;
 import com.common.utils.U;
 import com.component.busilib.SkrConfig;
 import com.engine.EngineEvent;
@@ -58,9 +56,8 @@ import com.module.playways.rank.room.RankRoomData;
 import com.module.playways.rank.room.RoomServerApi;
 import com.module.playways.rank.room.SwapStatusType;
 import com.module.playways.rank.room.comment.CommentModel;
-import com.module.playways.rank.room.event.PkSomeOneLightOffEvent;
 import com.module.playways.rank.room.event.PretendCommentMsgEvent;
-import com.module.playways.rank.room.event.RoundInfoChangeEvent;
+import com.module.playways.rank.room.event.RankRoundInfoChangeEvent;
 import com.module.playways.rank.room.model.BLightInfoModel;
 import com.module.playways.rank.room.model.MLightInfoModel;
 import com.module.playways.rank.room.model.RecordData;
@@ -654,7 +651,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
      * 核心事件
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onEvent(RoundInfoChangeEvent event) {
+    public void onEvent(RankRoundInfoChangeEvent event) {
         MyLog.w(TAG, "开始切换唱将 myturn=" + event.myturn);
         estimateOverTsThisRound();
         //以防万一
@@ -671,7 +668,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                 @Override
                 public void run() {
                     // 开始倒计时 3 2 1
-                    mIGameRuleView.startSelfCountdown(new Runnable() {
+                    mIGameRuleView.startSelfCountdown(event.getLastRoundInfoModel(),new Runnable() {
                         @Override
                         public void run() {
                             //再次确认
@@ -720,7 +717,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                         if (playerInfoModel != null) {
                             avatar = playerInfoModel.getUserInfo().getAvatar();
                         }
-                        mIGameRuleView.startRivalCountdown(uid, avatar);
+                        mIGameRuleView.startRivalCountdown(event.getLastRoundInfoModel(),uid, avatar);
                         checkMachineUser(uid);
                         if (mRoomData.getRealRoundInfo() != null) {
                             MyLog.w(TAG, uid + "开始唱了，歌词走起,演唱的时间是：" + U.getDateTimeUtils().formatTimeStringForDate(mRoomData.getGameStartTs() + mRoomData.getRealRoundInfo().getSingBeginMs(), "HH:mm:ss:SSS")

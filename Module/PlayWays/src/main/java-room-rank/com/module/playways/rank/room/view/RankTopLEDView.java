@@ -24,8 +24,7 @@ public class RankTopLEDView extends RelativeLayout {
     public final static String TAG = "RankTopLEDView";
 
     SVGAImageView mDengSvga;
-    int postion;             //view的位置，对应加载什么动画
-
+    int mPostion;             //view的位置，对应加载什么动画
     public RankTopLEDView(Context context) {
         this(context, null);
     }
@@ -41,7 +40,7 @@ public class RankTopLEDView extends RelativeLayout {
 
     private void init(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.rankLED);
-        postion = typedArray.getInt(R.styleable.rankLED_position, 0);
+        mPostion = typedArray.getInt(R.styleable.rankLED_position, 0);
         typedArray.recycle();
 
         inflate(getContext(), R.layout.rank_top_led_view, this);
@@ -51,14 +50,14 @@ public class RankTopLEDView extends RelativeLayout {
 
     // 初始状态
     public void initSVGA() {
-        MyLog.d(TAG, " initSVGA " + " postion = " + postion);
+        MyLog.d(TAG, " initSVGA " + " postion = " + mPostion);
         mDengSvga.setCallback(null);
         mDengSvga.stopAnimation(true);
         setVisibility(VISIBLE);
         mDengSvga.setVisibility(VISIBLE);
 
         String assetsName = "";
-        switch (postion) {
+        switch (mPostion) {
             case 0:
                 assetsName = "rank_love_left_beat.svga";
                 break;
@@ -69,7 +68,7 @@ public class RankTopLEDView extends RelativeLayout {
                 assetsName = "rank_love_right_beat.svga";
                 break;
         }
-        if (postion == 1) {
+        if (mPostion == 1) {
             mDengSvga.setLoops(1);
         } else {
             mDengSvga.setLoops(0);
@@ -94,7 +93,7 @@ public class RankTopLEDView extends RelativeLayout {
             System.out.print(true);
         }
 
-        if (postion == 1) {
+        if (mPostion == 1) {
             mDengSvga.setCallback(new SVGACallback() {
                 @Override
                 public void onPause() {
@@ -127,12 +126,12 @@ public class RankTopLEDView extends RelativeLayout {
 
     // 爆灯或者灭灯
     public void setSVGAMode(boolean isBao) {
-        MyLog.d(TAG, "setSVGAMode" + " isBao=" + isBao + "postion" + postion);
+        MyLog.d(TAG, "setSVGAMode" + " isBao=" + isBao + "postion" + mPostion);
         mDengSvga.setCallback(null);
         mDengSvga.stopAnimation(true);
         setVisibility(VISIBLE);
         String assetsName = isBao ? "rank_love_left.svga" : "rank_fork_left.svga";
-        switch (postion) {
+        switch (mPostion) {
             case 0:
                 assetsName = isBao ? "rank_love_left.svga" : "rank_fork_left.svga";
                 break;
@@ -198,7 +197,7 @@ public class RankTopLEDView extends RelativeLayout {
 
     private void playBaoDengAnimation() {
         String assetsName = "rank_love_left_beat.svga";
-        switch (postion) {
+        switch (mPostion) {
             case 0:
                 assetsName = "rank_love_left_beat.svga";
                 break;

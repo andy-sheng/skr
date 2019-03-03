@@ -1,15 +1,16 @@
 package com.module.playways.rank.room.view;
 
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
+import com.module.playways.rank.room.model.RankRoundInfoModel;
 import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.rank.song.model.SongModel;
 
 import java.util.List;
 
 public interface IGameRuleView {
-    void startSelfCountdown(Runnable countDownOver);
+    void startSelfCountdown(RankRoundInfoModel lastRoundInfo, Runnable countDownOver);
 
-    void startRivalCountdown(int uid,String avatar);
+    void startRivalCountdown(RankRoundInfoModel lastRoundInfo,int uid,String avatar);
 
     void userExit();
 

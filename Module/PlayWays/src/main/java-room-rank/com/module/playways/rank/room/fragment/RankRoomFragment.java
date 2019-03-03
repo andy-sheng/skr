@@ -40,6 +40,7 @@ import com.module.playways.rank.room.event.RankToVoiceTransformDataEvent;
 import com.module.playways.rank.room.gift.GiftBigAnimationViewGroup;
 import com.module.playways.rank.room.gift.GiftContinueViewGroup;
 import com.module.playways.BaseRoomData;
+import com.module.playways.rank.room.model.RankRoundInfoModel;
 import com.module.playways.rank.room.presenter.DownLoadScoreFilePresenter;
 import com.module.playways.rank.room.presenter.RankCorePresenter;
 import com.module.playways.rank.room.view.ArcProgressBar;
@@ -773,12 +774,12 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         MyLog.w(TAG, "onFirstSongGo");
         // 轮到自己演唱了，倒计时因为播放readyGo没播放
         if (mPendingSelfCountDownRunnable != null) {
-            startSelfCountdown(mPendingSelfCountDownRunnable);
+            startSelfCountdown(null,mPendingSelfCountDownRunnable);
             mPendingSelfCountDownRunnable = null;
         }
         // 轮到他人唱了，倒计时因为播放readyGo没播放
         if (mPendingRivalCountdown != null) {
-            startRivalCountdown(mPendingRivalCountdown.uid, mPendingRivalCountdown.avatar);
+            startRivalCountdown(null,mPendingRivalCountdown.uid, mPendingRivalCountdown.avatar);
             mPendingRivalCountdown = null;
         }
     }
@@ -877,9 +878,9 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
      * 保证在主线程
      */
     @Override
-    public void startSelfCountdown(Runnable countDownOver) {
+    public void startSelfCountdown(RankRoundInfoModel lastRoundInfoModel, Runnable countDownOver) {
         MyLog.d(TAG, "startSelfCountdown" + " countDownOver=" + countDownOver);
-        mRankTopContainerView.roundOver();
+        mRankTopContainerView.roundOver(lastRoundInfoModel);
         mRankOpView.setVisibility(View.GONE);
         mManyLyricsView.setVisibility(View.GONE);
         mUiHanlder.removeMessages(MSG_LYRIC_END_EVENT);
@@ -921,10 +922,10 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
      * 保证在主线程
      */
     @Override
-    public void startRivalCountdown(int uid, String avatar) {
+    public void startRivalCountdown(RankRoundInfoModel lastRoundInfoModel,int uid, String avatar) {
         MyLog.d(TAG, "startRivalCountdown" + " uid=" + uid + " avatar=" + avatar);
         mCountDownProcess.restart();
-        mRankTopContainerView.roundOver();
+        mRankTopContainerView.roundOver(lastRoundInfoModel);
         mRankOpView.setVisibility(View.VISIBLE);
         mRankOpView.playCountDown(mRoomData.getRealRoundSeq(), false);
         mVoiceScaleView.setVisibility(View.GONE);

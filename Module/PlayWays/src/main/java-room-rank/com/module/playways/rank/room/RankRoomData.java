@@ -5,7 +5,6 @@ import com.common.log.MyLog;
 import com.component.busilib.constans.GameModeType;
 import com.module.playways.BaseRoomData;
 import com.module.playways.RoomDataUtils;
-import com.module.playways.rank.msg.event.ExitGameEvent;
 import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
 import com.module.playways.rank.room.event.PkSomeOneOnlineChangeEvent;
 import com.module.playways.rank.room.model.RankGameConfigModel;
@@ -14,7 +13,7 @@ import com.module.playways.rank.room.model.RankPlayerInfoModel;
 import com.module.playways.rank.room.model.RankRoundInfoModel;
 import com.module.playways.rank.room.event.PkMyBurstSuccessEvent;
 import com.module.playways.rank.room.event.PkMyLightOffSuccessEvent;
-import com.module.playways.rank.room.event.RoundInfoChangeEvent;
+import com.module.playways.rank.room.event.RankRoundInfoChangeEvent;
 import com.module.playways.rank.room.model.RecordData;
 
 import org.greenrobot.eventbus.EventBus;
@@ -57,7 +56,7 @@ public class RankRoomData extends BaseRoomData<RankRoundInfoModel> {
             if (mRealRoundInfo != null) {
                 RankRoundInfoModel lastRoundInfoModel = mRealRoundInfo;
                 mRealRoundInfo = null;
-                EventBus.getDefault().post(new RoundInfoChangeEvent(false, lastRoundInfoModel));
+                EventBus.getDefault().post(new RankRoundInfoChangeEvent(false, lastRoundInfoModel));
             }
             return;
         }
@@ -67,10 +66,10 @@ public class RankRoomData extends BaseRoomData<RankRoundInfoModel> {
             mRealRoundInfo = mExpectRoundInfo;
             if (mRealRoundInfo.getUserID() == UserAccountManager.getInstance().getUuidAsLong()) {
                 // 轮到自己唱了。开始发心跳，开始倒计时，3秒后 开始开始混伴奏，开始解除引擎mute，
-                EventBus.getDefault().post(new RoundInfoChangeEvent(true, lastRoundInfoModel));
+                EventBus.getDefault().post(new RankRoundInfoChangeEvent(true, lastRoundInfoModel));
             } else {
                 // 别人唱，本人的引擎mute，取消本人心跳。监听他人的引擎是否 unmute,开始混制歌词
-                EventBus.getDefault().post(new RoundInfoChangeEvent(false, lastRoundInfoModel));
+                EventBus.getDefault().post(new RankRoundInfoChangeEvent(false, lastRoundInfoModel));
             }
         }
     }

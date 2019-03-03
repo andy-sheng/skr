@@ -25,6 +25,7 @@ import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.event.PkSomeOneBurstLightEvent;
 import com.module.playways.rank.room.event.PkSomeOneLightOffEvent;
 import com.module.playways.rank.room.event.PretendCommentMsgEvent;
+import com.module.playways.rank.room.model.RankRoundInfoModel;
 import com.module.playways.rank.room.score.RobotScoreHelper;
 import com.module.playways.rank.room.score.bar.EnergySlotView;
 import com.module.playways.rank.room.score.bar.ScoreTipsView;
@@ -280,7 +281,7 @@ public class RankTopContainerView2 extends RelativeLayout {
     }
 
     //轮次结束
-    public void roundOver() {
+    public void roundOver(RankRoundInfoModel lastRoundInfoModel) {
         MyLog.d(TAG, "roundOver");
         mLeftLedView.initSVGA();
         mMidLedView.initSVGA();
