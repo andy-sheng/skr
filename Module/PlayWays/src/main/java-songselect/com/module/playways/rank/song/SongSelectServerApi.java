@@ -63,4 +63,9 @@ public interface SongSelectServerApi {
      */
     @GET("/v1/playbook/search-items")
     Observable<ApiResult> searchMusicItems(@Query("keyword") String keyword);
+
+    @GET("/v1/playbook/report-not-exist-song")
+    Observable<ApiResult> reportNotExistSong(@Query("name") String name,
+                                             @Query("artist") String artist);
 }
+

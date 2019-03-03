@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.common.view.ex.ExRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/view_288_dp"
+    android:layout_marginLeft="@dimen/view_20_dp"
+    android:layout_marginRight="@dimen/view_20_dp"
+    app:bl_corners_radius="@dimen/view_8_dp"
+    app:bl_shape="rectangle"
+    app:bl_solid_color="@color/white"
+    app:bl_stroke_color="#526399"
+    app:bl_stroke_width="@dimen/view_2_dp">
+
+    <com.common.view.ex.NoLeakEditText
+        android:id="@+id/song_name"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_54_dp"
+        android:layout_marginLeft="@dimen/view_28_dp"
+        android:layout_marginTop="@dimen/view_30_dp"
+        android:layout_marginRight="@dimen/view_28_dp"
+        android:gravity="center_vertical"
+        android:hint="歌曲名"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:paddingLeft="@dimen/view_20_dp"
+        android:paddingRight="@dimen/view_20_dp"
+        android:textColor="#0C2275"
+        android:textColorHint="#4c0C2275"
+        android:textCursorDrawable="@drawable/login_edit_cursor_color"
+        android:textSize="@dimen/view_18_dp"
+        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="@color/white"
+        app:bl_stroke_color="#526399"
+        app:bl_stroke_width="@dimen/view_2_dp" />
+
+    <com.common.view.ex.NoLeakEditText
+        android:id="@+id/song_singer"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_54_dp"
+        android:layout_marginLeft="@dimen/view_28_dp"
+        android:layout_marginTop="@dimen/view_100_dp"
+        android:layout_marginRight="@dimen/view_28_dp"
+        android:gravity="center_vertical"
+        android:hint="歌手名"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:paddingLeft="@dimen/view_20_dp"
+        android:paddingRight="@dimen/view_20_dp"
+        android:textColor="#0C2275"
+        android:textColorHint="#4c0C2275"
+        android:textCursorDrawable="@drawable/login_edit_cursor_color"
+        android:textSize="@dimen/view_18_dp"
+        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="@color/white"
+        app:bl_stroke_color="#526399"
+        app:bl_stroke_width="@dimen/view_2_dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="@dimen/view_28_dp"
+        android:layout_marginRight="@dimen/view_28_dp"
+        android:layout_marginBottom="@dimen/view_42_dp"
+        android:orientation="horizontal">
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/cancel_tv"
+            android:layout_width="@dimen/view_0_dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/btn_dialog_cancle"
+            android:gravity="center"
+            android:paddingBottom="@dimen/view_7_dp"
+            android:text="取消"
+            android:textColor="#0C2275"
+            android:textSize="@dimen/textsize_20_dp"
+            android:textStyle="bold" />
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/confirm_tv"
+            android:layout_width="@dimen/view_0_dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/btn_dialog_confirm"
+            android:gravity="center"
+            android:paddingBottom="@dimen/view_7_dp"
+            android:text="提交"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textsize_20_dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+
+</com.common.view.ex.ExRelativeLayout>

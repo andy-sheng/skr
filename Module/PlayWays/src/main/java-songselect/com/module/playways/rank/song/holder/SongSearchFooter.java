@@ -29,8 +29,8 @@ public class SongSearchFooter extends RecyclerView.ViewHolder {
             }
         });
         SpannableStringBuilder stringBuilder = new SpanUtils()
-                .append("搜不到歌\n试试").setForegroundColor(Color.parseColor("#9EA4AC"))
-                .append("搜歌反馈").setForegroundColor(Color.parseColor("#2d62ac"))
+                .append("没有你要的内容？\n试试").setForegroundColor(Color.parseColor("#9EA4AC"))
+                .append("缺歌上报").setForegroundColor(Color.parseColor("#2d62ac"))
                 .append("吧！").setForegroundColor(Color.parseColor("#9EA4AC"))
                 .create();
         mSearchBackTv.setText(stringBuilder);
