@@ -174,7 +174,7 @@
             levelView:starTotalWidth="@dimen/view_125_dp"
             levelView:subBottom="@dimen/view_6_dp"
             levelView:subHeight="@dimen/view_15_dp"
-            levelView:subWidth="@dimen/view_17_dp"
+            levelView:subWidth="@dimen/view_27_dp"
             levelView:txtColor="#0C2275"></com.zq.level.view.NormalLevelView>
 
         <com.common.view.ex.ExTextView

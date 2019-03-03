@@ -37,8 +37,8 @@ public class NormalLevelView extends RelativeLayout {
 
     int mainWidth = U.getDisplayUtils().dip2px(99);  // 主段位宽度
     int mainHeight = U.getDisplayUtils().dip2px(86); // 主段位高度
-    int subWidth = U.getDisplayUtils().dip2px(15);   // 子段位宽度
-    int subHeight = U.getDisplayUtils().dip2px(15);  // 子段位高度
+    int subWidth = U.getDisplayUtils().dip2px(44);   // 子段位宽度
+    int subHeight = U.getDisplayUtils().dip2px(24);  // 子段位高度
     int sudBottom = U.getDisplayUtils().dip2px(1);   // 子段位距离主段位底部距离
     int normalStar = U.getDisplayUtils().dip2px(18); // 正常星星的大小
     int largeStar = U.getDisplayUtils().dip2px(20);  // 大星星的大小

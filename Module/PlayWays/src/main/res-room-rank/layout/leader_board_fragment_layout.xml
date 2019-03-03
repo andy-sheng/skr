@@ -103,8 +103,8 @@
                     levelView:normalStar="@dimen/view_7_dp"
                     levelView:starDiffH="@dimen/view_3_dp"
                     levelView:starTotalWidth="@dimen/view_44_dp"
-                    levelView:subHeight="@dimen/view_9_dp"
-                    levelView:subWidth="@dimen/view_9_dp"
+                    levelView:subHeight="@dimen/view_6_dp"
+                    levelView:subWidth="@dimen/view_11_dp"
                     levelView:txtColor="#0C2275"
                     levelView:txtSize="@dimen/view_10_dp"></com.zq.level.view.NormalLevelView>
 
@@ -170,8 +170,8 @@
                     levelView:normalStar="@dimen/view_7_dp"
                     levelView:starDiffH="@dimen/view_3_dp"
                     levelView:starTotalWidth="@dimen/view_44_dp"
-                    levelView:subHeight="@dimen/view_9_dp"
-                    levelView:subWidth="@dimen/view_9_dp"
+                    levelView:subHeight="@dimen/view_6_dp"
+                    levelView:subWidth="@dimen/view_11_dp"
                     levelView:txtColor="#0C2275"
                     levelView:txtSize="@dimen/view_10_dp"></com.zq.level.view.NormalLevelView>
 
@@ -238,8 +238,8 @@
                 levelView:normalStar="@dimen/view_7_dp"
                 levelView:starDiffH="@dimen/view_3_dp"
                 levelView:starTotalWidth="@dimen/view_44_dp"
-                levelView:subHeight="@dimen/view_9_dp"
-                levelView:subWidth="@dimen/view_9_dp"
+                levelView:subHeight="@dimen/view_6_dp"
+                levelView:subWidth="@dimen/view_11_dp"
                 levelView:txtColor="#0C2275"
                 levelView:txtSize="@dimen/view_10_dp"></com.zq.level.view.NormalLevelView>
 
