@@ -332,20 +332,17 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                 String.valueOf(sysScore) + "|" +
                 String.valueOf(timeMs));
 
-
+        RankRoundInfoModel infoModel = RoomDataUtils.getRoundInfoByUserId(mRoomData, (int) MyUserInfoManager.getInstance().getUid());
+        if (infoModel == null) {
+            return;
+        }
         HashMap<String, Object> map = new HashMap<>();
         map.put("gameID", mRoomData.getGameId());
         map.put("sysScore", sysScore);
         map.put("timeMs", timeMs);
         map.put("sign", sign);
-        map.put("roundSeq", mRoomData.getRealRoundSeq());
-
         // 提前获取roundSeq，如果在result里在获取，可能是下下一个了，如果提前收到轮次变化的push
-        int roundSeq = -1;
-        if (mRoomData.getRealRoundInfo() != null && mRoomData.getRealRoundInfo().getUserID() == UserAccountManager.getInstance().getUuidAsLong()) {
-            roundSeq = mRoomData.getRealRoundInfo().getRoundSeq();
-        }
-        int finalRoundSeq = roundSeq;
+        map.put("roundSeq", infoModel.getRoundSeq());
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.sendRoundOver(body), new ApiObserver<ApiResult>() {
@@ -1537,7 +1534,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         HashMap<String, Object> map = new HashMap<>();
         map.put("gameID", mRoomData.getGameId());
         RankRoundInfoModel infoModel = RoomDataUtils.getRoundInfoByUserId(mRoomData, (int) MyUserInfoManager.getInstance().getUid());
-        if (infoModel != null) {
+        if (infoModel == null) {
             return;
         }
         int itemID = infoModel.getPlaybookID();

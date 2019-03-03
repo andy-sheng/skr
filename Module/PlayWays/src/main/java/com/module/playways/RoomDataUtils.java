@@ -94,22 +94,6 @@ public class RoomDataUtils {
         return infoModel1.getRoundSeq() >= infoModel2.getRoundSeq();
     }
 
-    /**
-     * 找到轮次等于 seq 的RoundInfoModel
-     *
-     * @param jsonRoundInfo
-     * @param seq
-     * @return
-     */
-    public static <T extends BaseRoundInfoModel> T findRoundInfoBySeq(List<T> jsonRoundInfo, int seq) {
-        for (T infoModel : jsonRoundInfo) {
-            if (infoModel.getRoundSeq() == seq) {
-                return infoModel;
-            }
-        }
-        return null;
-    }
-
     public static <T extends BaseRoundInfoModel> int getUidOfRoundInfo(T infoModel) {
         if (infoModel == null) {
             return 0;
