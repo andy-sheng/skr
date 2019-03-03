@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 
 import com.common.log.MyLog;
@@ -224,12 +225,11 @@ public class PermissionUtils {
     }
 
 
-
     /**
      * 跳转到APP权限设置界面
      */
     public void goToPermissionManager(Activity refs) {
-            Intent intent;
+        Intent intent;
 //            if (U.getDeviceUtils().isMiui()) {
 //                PackageManager pm = refs.getPackageManager();
 //                PackageInfo info;
@@ -244,13 +244,15 @@ public class PermissionUtils {
 //                intent.putExtra("extra_pkgname", refs.getPackageName());      // for MIUI 6
 //                intent.putExtra("extra_package_uid", info.applicationInfo.uid);  // for MIUI 5
 //            } else {
-                intent = new Intent();
-                intent.setAction("android.intent.action.MAIN");
-                intent.setClassName("com.android.settings", "com.android.settings.ManageApplications");
+        intent = new Intent();
+        intent.setAction("android.intent.action.MAIN");
+        intent.setClassName("com.android.settings", Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
 //            }
-            if (U.getCommonUtils().isIntentAvailable(refs,intent)) {
-                refs.startActivity(intent);
-            }
+        if (U.getCommonUtils().isIntentAvailable(refs, intent)) {
+            refs.startActivity(intent);
+        } else {
+            U.getToastUtil().showShort("跳转设置页失败，请尝试在系统设置中清除app缓存数据");
+        }
     }
 }
 

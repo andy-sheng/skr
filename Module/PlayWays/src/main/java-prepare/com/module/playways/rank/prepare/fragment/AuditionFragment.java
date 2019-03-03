@@ -632,6 +632,7 @@ public class AuditionFragment extends BaseFragment {
     public void onEvent(LrcEvent.LineEndEvent event) {
         //TODO
         if (MyLog.isDebugLogOpen()) {
+            EngineManager.getInstance().recognizeInManualMode(event.getLineNum());
             int score = EngineManager.getInstance().getLineScore();
             U.getToastUtil().showShort("changba score:" + score);
             MyLog.d(TAG, "changba score:" + score);
