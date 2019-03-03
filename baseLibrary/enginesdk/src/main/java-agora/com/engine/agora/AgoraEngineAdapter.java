@@ -255,7 +255,7 @@ public class AgoraEngineAdapter {
             int a = 3, b = 4;
             switch (mConfig.getScene()) {
                 case rank:
-                    b = 3;
+                    b = 4;
                     mRtcEngine.setParameters("{\"che.audio.enable.aec\":true }");
                     break;
                 case grab:
