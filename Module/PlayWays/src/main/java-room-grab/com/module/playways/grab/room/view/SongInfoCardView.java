@@ -74,6 +74,7 @@ public class SongInfoCardView extends RelativeLayout {
 
     // 该动画需要循环播放
     public void bindSongModel(SongModel songModel) {
+        MyLog.d(TAG,"bindSongModel" + " songModel=" + songModel);
         if (songModel == null || TextUtils.isEmpty(songModel.getCover())) {
             return;
         }
@@ -116,6 +117,7 @@ public class SongInfoCardView extends RelativeLayout {
     }
 
     private void animationGo() {
+        MyLog.d(TAG,"animationGo" );
         if (mAnimatorSet == null) {
             ObjectAnimator animator1 = ObjectAnimator.ofFloat(this, View.ALPHA, 0f, 1f);
             ObjectAnimator animator2 = ObjectAnimator.ofFloat(this, View.SCALE_X, 0.8f, 1f);
@@ -125,8 +127,6 @@ public class SongInfoCardView extends RelativeLayout {
             mAnimatorSet.playTogether(animator1, animator2, animator3, animator4);
             mAnimatorSet.setDuration(200);
         }
-
-        mAnimatorSet.start();
         mAnimatorSet.removeAllListeners();
         mAnimatorSet.addListener(new Animator.AnimatorListener() {
             @Override
@@ -149,6 +149,7 @@ public class SongInfoCardView extends RelativeLayout {
 
             }
         });
+        mAnimatorSet.start();
     }
 
     private SVGADynamicEntity requestDynamicBitmapItem(String cover) {
@@ -206,8 +207,8 @@ public class SongInfoCardView extends RelativeLayout {
             if (mSongCover != null) {
                 mSongCover.stopAnimation(false);
             }
-            setVisibility(GONE);
             clearAnimation();
+            setVisibility(GONE);
         }
     }
 

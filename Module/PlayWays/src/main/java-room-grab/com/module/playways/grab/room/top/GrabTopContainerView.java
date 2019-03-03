@@ -9,7 +9,6 @@ import android.widget.RelativeLayout;
 
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
-import com.module.playways.BaseRoomData;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.SomeOneGrabEvent;
 import com.module.playways.grab.room.event.SomeOneLightBurstEvent;
@@ -183,7 +182,7 @@ public class GrabTopContainerView extends RelativeLayout {
         mRoomData = roomData;
         mTopContentRv.setRoomData(roomData);
         mGrabTopView.setRoomData(roomData);
-        mGrabAudienceView.setGrabRoomData(roomData);
+        mGrabAudienceView.setRoomData(roomData);
     }
 
     public void hideWithDelay(long delay){

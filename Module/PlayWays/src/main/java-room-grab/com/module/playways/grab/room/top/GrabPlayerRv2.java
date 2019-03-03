@@ -119,7 +119,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
 
     //只有轮次切换的时候调用
     private void initData() {
-        if (mRoomData.getRealRoundInfo() == null || mRoomData.getPlayerInfoList() == null) {
+        if (mRoomData.getExpectRoundInfo() == null || mRoomData.getExpectRoundInfo() == null) {
             MyLog.w(TAG, "initData data error");
             return;
         }
@@ -132,7 +132,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
         resetAllGrabTopItemView();
         mCurSeq = mRoomData.getRealRoundSeq();
 
-        GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
+        GrabRoundInfoModel now = mRoomData.getExpectRoundInfo();
         List<GrabPlayerInfoModel> playerInfoModels = now.getPlayUsers();
         mInfoMap.clear();
 
