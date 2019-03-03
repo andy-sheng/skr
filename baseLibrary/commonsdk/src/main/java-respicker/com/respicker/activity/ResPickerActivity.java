@@ -25,6 +25,7 @@ public class ResPickerActivity extends BaseActivity {
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, ResPickerFragment.class)
                 .setHasAnimation(false)
                 .setAddToBackStack(false)
+                .addDataBeforeAdd(11,true)
                 .setFragmentDataListener(new FragmentDataListener() {
                     @Override
                     public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {

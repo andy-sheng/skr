@@ -64,6 +64,8 @@ public class ResPickerFragment extends ImageBaseFragment implements ResPicker.On
 
     ResDataSource mImageDataSource;
 
+    boolean mSelfActivity = false; // 表示这个Fragment 是否使用自己的Activity ResPickerActivity 包裹。会影响退出方法的调用
+
     @Override
     public int initView() {
         return R.layout.fragment_imagepicker_grid_layout;
@@ -117,7 +119,14 @@ public class ResPickerFragment extends ImageBaseFragment implements ResPicker.On
         mTitlebar.getLeftTextView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                U.getFragmentUtils().popFragment(ResPickerFragment.this);
+                if (mSelfActivity) {
+                    Activity activity = getActivity();
+                    if (activity != null) {
+                        activity.finish();
+                    }
+                } else {
+                    U.getFragmentUtils().popFragment(ResPickerFragment.this);
+                }
             }
         });
         mBtnOk.setOnClickListener(new View.OnClickListener() {
@@ -135,7 +144,7 @@ public class ResPickerFragment extends ImageBaseFragment implements ResPicker.On
                         .addDataBeforeAdd(1, new ArrayList<>(mImagePicker.getSelectedResList()))
                         .setFragmentDataListener(new FragmentDataListener() {
                             @Override
-                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle,Object object) {
+                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object object) {
                                 deliverResult(requestCode, resultCode, bundle);
                             }
                         })
@@ -320,7 +329,7 @@ public class ResPickerFragment extends ImageBaseFragment implements ResPicker.On
     @Override
     public void onResItemClick(View view, ResItem resItem, int position) {
         //根据是否有相机按钮确定位置
-        if(resItem instanceof ImageItem) {
+        if (resItem instanceof ImageItem) {
             position = mImagePicker.getParams().isShowCamera() ? position - 1 : position;
             if (mImagePicker.getParams().isMultiMode()) {
                 // 多选就去大图浏览界面
@@ -346,7 +355,7 @@ public class ResPickerFragment extends ImageBaseFragment implements ResPicker.On
                     deliverResult(ResPicker.RESULT_CODE_ITEMS, Activity.RESULT_OK, null);
                 }
             }
-        }else if(resItem instanceof VideoItem){
+        } else if (resItem instanceof VideoItem) {
             int p = mImagePicker.getCurrentResFolderVideoItems().indexOf(resItem);
             Bundle bundle = new Bundle();
             bundle.putInt(VideoPreviewFragment.EXTRA_SELECTED_VIDEO_POSITION, p);
@@ -359,6 +368,13 @@ public class ResPickerFragment extends ImageBaseFragment implements ResPicker.On
                     })
                     .setBundle(bundle)
                     .build());
+        }
+    }
+
+    @Override
+    public void setData(int type, @Nullable Object data) {
+        if (type == 11) {
+            mSelfActivity = (boolean) data;
         }
     }
 
@@ -383,8 +399,10 @@ public class ResPickerFragment extends ImageBaseFragment implements ResPicker.On
         //裁剪完成,直接返回数据，数据存在 mImagePicker 中
         if (mFragmentDataListener != null) {
             // bundle.getParcelableArrayList(ImagePicker.EXTRA_RESULT_ITEMS);
-            mFragmentDataListener.onFragmentResult(requestCode, resultCode, bundle,null);
+            mFragmentDataListener.onFragmentResult(requestCode, resultCode, bundle, null);
         }
-        U.getFragmentUtils().popFragment(ResPickerFragment.this);
+        if (!mSelfActivity) {
+            U.getFragmentUtils().popFragment(ResPickerFragment.this);
+        }
     }
 }
