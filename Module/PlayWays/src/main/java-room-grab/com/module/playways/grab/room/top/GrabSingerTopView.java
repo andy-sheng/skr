@@ -143,7 +143,7 @@ public class GrabSingerTopView extends FrameLayout {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(SomeOneLightOffEvent event) {
         GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
-        int num = grabRoundInfoModel.getPlayUsers().size() - grabRoundInfoModel.getMLightInfos().size();
+        int num = (grabRoundInfoModel.getPlayUsers().size() - 1) - grabRoundInfoModel.getMLightInfos().size();
         mTvCurLight.setText(String.valueOf(num));
     }
 
@@ -212,8 +212,13 @@ public class GrabSingerTopView extends FrameLayout {
         stopFlickerAnim();
         mIvLight.setImageDrawable(U.getDrawable(R.drawable.liangdeng));
         GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
-        mTvTotalLight.setText("/" + grabRoundInfoModel.getPlayUsers().size());
-        int num = grabRoundInfoModel.getPlayUsers().size() - grabRoundInfoModel.getMLightInfos().size();
+        if(grabRoundInfoModel == null || grabRoundInfoModel.getPlayUsers() == null || grabRoundInfoModel.getPlayUsers().size() == 0){
+            MyLog.d(TAG, "startSelfShow grabRoundInfoModel data error");
+            return;
+        }
+
+        mTvTotalLight.setText("/" + (grabRoundInfoModel.getPlayUsers().size() - 1));
+        int num = (grabRoundInfoModel.getPlayUsers().size() - 1)- grabRoundInfoModel.getMLightInfos().size() ;
         mTvCurLight.setText(String.valueOf(num));
         startSing(grabRoundInfoModel.getMusic());
     }
