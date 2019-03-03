@@ -53,6 +53,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="@dimen/view_93_dp"
         android:text="上一页"
+        android:textStyle="bold"
         android:textColor="#FFED61"
         android:padding="@dimen/view_14_dp" />
 
@@ -64,6 +65,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginRight="@dimen/view_80_dp"
         android:text="已唱歌单"
+        android:textStyle="bold"
         android:textColor="#FFED61"
         android:padding="@dimen/view_14_dp"/>
 

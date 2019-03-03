@@ -190,7 +190,7 @@ public class GameFragment extends BaseFragment {
             public void clickValid(View v) {
                 long tag = System.currentTimeMillis();
                 checkGameConf(1, tag, mIvAthleticsPk);
-                clickAnimation(mIvAthleticsPk, tag);
+                clickAnimation(mIvAthleticsPk, mTextAthleticsPk, tag);
                 StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_HOME),
                         StatConstants.KEY_RANK_CLICK, null);
             }
@@ -201,7 +201,7 @@ public class GameFragment extends BaseFragment {
             public void clickValid(View v) {
                 long tag = System.currentTimeMillis();
                 checkGameConf(3, tag, mIvGrabGame);
-                clickAnimation(mIvGrabGame, tag);
+                clickAnimation(mIvGrabGame, mTextGrabGame, tag);
                 StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_HOME),
                         StatConstants.KEY_GRAB_CLICK, null);
             }
@@ -525,19 +525,30 @@ public class GameFragment extends BaseFragment {
     }
 
     // 点击缩放动画
-    public void clickAnimation(View view, final long tag) {
+    public void clickAnimation(View view, View viewcard, final long tag) {
         U.getSoundUtils().play(TAG, R.raw.home_game);
+
+        AnimatorSet set = new AnimatorSet();
 
         ObjectAnimator a1 = ObjectAnimator.ofFloat(view, "scaleX", 1f, 0.95f);
         ObjectAnimator a2 = ObjectAnimator.ofFloat(view, "scaleY", 1f, 0.95f);
         ObjectAnimator a3 = ObjectAnimator.ofFloat(view, "scaleX", 0.95f, 1f);
         ObjectAnimator a4 = ObjectAnimator.ofFloat(view, "scaleY", 0.95f, 1f);
 
-        AnimatorSet set = new AnimatorSet();
+        if (viewcard.getVisibility() == View.VISIBLE) {
+            ObjectAnimator a5 = ObjectAnimator.ofFloat(viewcard, "scaleX", 1f, 0.95f);
+            ObjectAnimator a6 = ObjectAnimator.ofFloat(viewcard, "scaleY", 1f, 0.95f);
+            ObjectAnimator a7 = ObjectAnimator.ofFloat(viewcard, "scaleX", 0.95f, 1f);
+            ObjectAnimator a8 = ObjectAnimator.ofFloat(viewcard, "scaleY", 0.95f, 1f);
+            set.play(a1).with(a2).with(a5).with(a6);
+            set.play(a3).with(a4).with(a7).with(a8).after(a1);
+        } else {
+            set.play(a1).with(a2);
+            set.play(a3).with(a4).after(a1);
+        }
         set.setDuration(80);
-        set.play(a1).with(a2);
-        set.play(a3).with(a4).after(a1);
         set.start();
+
 
         set.addListener(new Animator.AnimatorListener() {
             @Override
