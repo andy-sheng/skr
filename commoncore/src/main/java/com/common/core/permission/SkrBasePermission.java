@@ -23,7 +23,7 @@ public abstract class SkrBasePermission {
     String mGoPermissionManagerTips;
     boolean mCannable = true;
 
-    public SkrBasePermission(String permissionStr, String goPermissionManagerTips,boolean cannable) {
+    public SkrBasePermission(String permissionStr, String goPermissionManagerTips, boolean cannable) {
         mPermissionStr = permissionStr;
         mGoPermissionManagerTips = goPermissionManagerTips;
         mCannable = cannable;
@@ -46,23 +46,30 @@ public abstract class SkrBasePermission {
                 @Override
                 public void onRequestPermissionFailure(List<String> permissions) {
                     MyLog.d(TAG, "onRequestPermissionFailure" + " permissions=" + permissions);
-                    //if (goSettingIfRefuse) {
-                    //onReject("请开启手机信息获取权限，保证应用正常使用");
-                    //}
+                    onRequestPermissionFailure1(goSettingIfRefuse);
                 }
 
                 @Override
                 public void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions) {
                     MyLog.d(TAG, "onRequestPermissionFailureWithAskNeverAgain" + " permissions=" + permissions);
-                    if (goSettingIfRefuse) {
-                        onReject(mGoPermissionManagerTips);
-                    }
+                    onRequestPermissionFailureWithAskNeverAgain1(goSettingIfRefuse);
+
                 }
             }, activity, mPermissionStr);
         } else {
             if (ifAgreeAction != null) {
                 ifAgreeAction.run();
             }
+        }
+    }
+
+    public void onRequestPermissionFailure1(boolean goSettingIfRefuse) {
+
+    }
+
+    public void onRequestPermissionFailureWithAskNeverAgain1(boolean goSettingIfRefuse) {
+        if (goSettingIfRefuse) {
+            onReject(mGoPermissionManagerTips);
         }
     }
 
