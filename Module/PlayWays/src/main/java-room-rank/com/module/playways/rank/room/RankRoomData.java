@@ -36,6 +36,7 @@ public class RankRoomData extends BaseRoomData<RankRoundInfoModel> {
     protected int mCurSongTotalScore; // 歌曲部分演唱的累计总分
     protected long mSingBeginTs;// 本人开始演唱的时间戳
 
+    protected boolean mHasGoVoiceRoom = false; // 是要要去语音房
     @Override
     public int getGameType() {
         return GameModeType.GAME_MODE_CLASSIC_RANK;
@@ -191,5 +192,13 @@ public class RankRoomData extends BaseRoomData<RankRoundInfoModel> {
 
     public void setRoundInfoModelList(List<RankRoundInfoModel> roundInfoModelList) {
         mRoundInfoModelList = roundInfoModelList;
+    }
+
+    public void setHasGoVoiceRoom(boolean hasGoVoiceRoom) {
+        mHasGoVoiceRoom = hasGoVoiceRoom;
+    }
+
+    public boolean hasGoVoiceRoom() {
+        return mHasGoVoiceRoom;
     }
 }

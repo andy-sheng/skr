@@ -303,11 +303,10 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
             mExoPlayer = null;
         }
         ChatRoomMsgManager.getInstance().removeFilter(mPushMsgFilter);
-        if (U.getActivityUtils().getTopActivity() instanceof VoiceRoomActivity) {
-            //  如果顶部是VoiceRoomActivity 就不离开聊天室了
-            MyLog.d(TAG, "顶部是VoiceRoomActivity 就不离开聊天室");
-        } else {
+        if (!mRoomData.hasGoVoiceRoom()) {
             ModuleServiceManager.getInstance().getMsgService().leaveChatRoom(String.valueOf(mRoomData.getGameId()));
+        } else {
+            MyLog.w(TAG, "跳转到语音房，暂时不退出融云聊天室");
         }
     }
 
@@ -668,7 +667,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                 @Override
                 public void run() {
                     // 开始倒计时 3 2 1
-                    mIGameRuleView.startSelfCountdown(event.getLastRoundInfoModel(),new Runnable() {
+                    mIGameRuleView.startSelfCountdown(event.getLastRoundInfoModel(), new Runnable() {
                         @Override
                         public void run() {
                             //再次确认
@@ -717,7 +716,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                         if (playerInfoModel != null) {
                             avatar = playerInfoModel.getUserInfo().getAvatar();
                         }
-                        mIGameRuleView.startRivalCountdown(event.getLastRoundInfoModel(),uid, avatar);
+                        mIGameRuleView.startRivalCountdown(event.getLastRoundInfoModel(), uid, avatar);
                         checkMachineUser(uid);
                         if (mRoomData.getRealRoundInfo() != null) {
                             MyLog.w(TAG, uid + "开始唱了，歌词走起,演唱的时间是：" + U.getDateTimeUtils().formatTimeStringForDate(mRoomData.getGameStartTs() + mRoomData.getRealRoundInfo().getSingBeginMs(), "HH:mm:ss:SSS")

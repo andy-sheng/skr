@@ -309,6 +309,7 @@ public class RankLevelChangeFragment extends BaseFragment {
             public void run() {
                 Activity activity = getActivity();
                 if (activity != null) {
+                    mRoomData.setHasGoVoiceRoom(true);
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_VOICEROOM)
                             .withSerializable("voice_room_data", mRoomData)
                             .navigation();
