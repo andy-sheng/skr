@@ -36,7 +36,7 @@ public class GrabTopContainerView extends RelativeLayout {
     GrabTopView mGrabTopView;// 切房间按钮，金币
     Listener mListener;
     GrabRoomData mRoomData;
-
+    GrabAudienceView mGrabAudienceView;
 
     Handler mUiHandler = new Handler(){
         @Override
@@ -71,6 +71,7 @@ public class GrabTopContainerView extends RelativeLayout {
         mGrabTopView = (GrabTopView) findViewById(R.id.grab_top_view);
         mMoreBtn = (ExImageView) this.findViewById(R.id.more_btn);
         mSongIndexTv = (ExTextView) this.findViewById(R.id.song_index_tv);
+        mGrabAudienceView = (GrabAudienceView) this.findViewById(R.id.grab_audience_view);
 
 //        mTopContentRv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 //        mGrabTopAdapter = new GrabTopAdapter();
@@ -182,6 +183,7 @@ public class GrabTopContainerView extends RelativeLayout {
         mRoomData = roomData;
         mTopContentRv.setRoomData(roomData);
         mGrabTopView.setRoomData(roomData);
+        mGrabAudienceView.setGrabRoomData(roomData);
     }
 
     public void hideWithDelay(long delay){

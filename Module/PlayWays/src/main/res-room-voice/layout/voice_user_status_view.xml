@@ -28,4 +28,14 @@
         android:layout_marginBottom="-10dp"
         android:src="@drawable/jingyin_anxia" />
 
+    <com.common.view.ex.ExImageView
+        android:id="@+id/leave_iv"
+        android:layout_width="@dimen/view_40_dp"
+        android:layout_height="@dimen/view_20_dp"
+        android:layout_alignBottom="@id/avatar_iv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-10dp"
+        android:src="@drawable/voice_room_leave"
+        android:visibility="gone" />
+
 </merge>

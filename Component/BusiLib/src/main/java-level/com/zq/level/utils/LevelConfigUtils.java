@@ -29,7 +29,7 @@ public class LevelConfigUtils {
         }
     }
 
-    public static String getHomePageTopBgColor(int mainLevel){
+    public static String getHomePageTopBgColor(int mainLevel) {
         switch (mainLevel) {
             case UserLevelType.SKRER_LEVEL_POTENTIAL:
                 return "#E5B282";
@@ -49,7 +49,7 @@ public class LevelConfigUtils {
         }
     }
 
-    public static int getAvatarLevelBg(int mainLevel){
+    public static int getAvatarLevelBg(int mainLevel) {
         switch (mainLevel) {
             case UserLevelType.SKRER_LEVEL_POTENTIAL:
                 return R.drawable.touxiang_qianli;
@@ -68,7 +68,6 @@ public class LevelConfigUtils {
                 return 0;
         }
     }
-
 
 
     // 父段位资源
@@ -103,6 +102,20 @@ public class LevelConfigUtils {
                         return R.drawable.qianli_2;
                     case 3:
                         return R.drawable.qianli_3;
+                    case 4:
+                        return R.drawable.qianli_4;
+                    case 5:
+                        return R.drawable.qianli_5;
+                    case 6:
+                        return R.drawable.qianli_6;
+                    case 7:
+                        return R.drawable.qianli_7;
+                    case 8:
+                        return R.drawable.qianli_8;
+                    case 9:
+                        return R.drawable.qianli_9;
+                    case 10:
+                        return R.drawable.qianli_10;
                     default:
                         MyLog.w(TAG, "getImageResoucesSubLevel null" + " level = " + level + " subLevel = " + subLevel);
                         return 0;
@@ -117,6 +130,20 @@ public class LevelConfigUtils {
                         return R.drawable.baiyin_2;
                     case 3:
                         return R.drawable.baiyin_3;
+                    case 4:
+                        return R.drawable.baiyin_4;
+                    case 5:
+                        return R.drawable.baiyin_5;
+                    case 6:
+                        return R.drawable.baiyin_6;
+                    case 7:
+                        return R.drawable.baiyin_7;
+                    case 8:
+                        return R.drawable.baiyin_8;
+                    case 9:
+                        return R.drawable.baiyin_9;
+                    case 10:
+                        return R.drawable.baiyin_10;
                     default:
                         MyLog.w(TAG, "getImageResoucesSubLevel null" + " level = " + level + " subLevel = " + subLevel);
                         return 0;
@@ -132,7 +159,19 @@ public class LevelConfigUtils {
                     case 3:
                         return R.drawable.jinpai_3;
                     case 4:
-                        return R.drawable.jinpaigeshou_four;
+                        return R.drawable.jinpai_4;
+                    case 5:
+                        return R.drawable.jinpai_5;
+                    case 6:
+                        return R.drawable.jinpai_6;
+                    case 7:
+                        return R.drawable.jinpai_7;
+                    case 8:
+                        return R.drawable.jinpai_8;
+                    case 9:
+                        return R.drawable.jinpai_9;
+                    case 10:
+                        return R.drawable.jinpai_10;
                     default:
                         MyLog.w(TAG, "getImageResoucesSubLevel null" + " level = " + level + " subLevel = " + subLevel);
                         return 0;
@@ -149,7 +188,19 @@ public class LevelConfigUtils {
                     case 3:
                         return R.drawable.bojin_3;
                     case 4:
-                        return R.drawable.bojinchangjiang_four;
+                        return R.drawable.bojin_4;
+                    case 5:
+                        return R.drawable.bojin_5;
+                    case 6:
+                        return R.drawable.bojin_6;
+                    case 7:
+                        return R.drawable.bojin_7;
+                    case 8:
+                        return R.drawable.bojin_8;
+                    case 9:
+                        return R.drawable.bojin_9;
+                    case 10:
+                        return R.drawable.bojin_10;
                     default:
                         MyLog.w(TAG, "getImageResoucesSubLevel null" + " level = " + level + " subLevel = " + subLevel);
                         return 0;
@@ -166,9 +217,19 @@ public class LevelConfigUtils {
                     case 3:
                         return R.drawable.zuanshi_3;
                     case 4:
-                        return R.drawable.zuanshijuxing_four;
+                        return R.drawable.zuanshi_4;
                     case 5:
-                        return R.drawable.zuanshijuxing_five;
+                        return R.drawable.zuanshi_5;
+                    case 6:
+                        return R.drawable.zuanshi_6;
+                    case 7:
+                        return R.drawable.zuanshi_7;
+                    case 8:
+                        return R.drawable.zuanshi_8;
+                    case 9:
+                        return R.drawable.zuanshi_9;
+                    case 10:
+                        return R.drawable.zuanshi_10;
                     default:
                         MyLog.w(TAG, "getImageResoucesSubLevel null" + " level = " + level + " subLevel = " + subLevel);
                         return 0;
