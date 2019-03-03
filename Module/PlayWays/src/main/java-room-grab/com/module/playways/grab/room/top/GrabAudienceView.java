@@ -8,15 +8,19 @@ import android.widget.RelativeLayout;
 
 import com.airbnb.lottie.L;
 import com.common.core.avatar.AvatarUtils;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.image.fresco.BaseImageView;
 import com.common.image.model.BaseImage;
+import com.common.log.MyLog;
 import com.common.utils.U;
+import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabWaitSeatUpdateEvent;
 import com.module.playways.grab.room.event.SomeOneGrabEvent;
 import com.module.playways.grab.room.event.SomeOneJoinWaitSeatEvent;
 import com.module.playways.grab.room.event.SomeOneLeaveWaitSeatEvent;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
+import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 
 import org.greenrobot.eventbus.EventBus;
@@ -27,9 +31,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class GrabAudienceView extends LinearLayout {
+public class GrabAudienceView extends RelativeLayout {
+    public final static String TAG = "GrabAudienceView";
     List<BaseImageView> mBaseImageViewList = new ArrayList<>(6);
     List<GrabPlayerInfoModel> mPlayerInfoModelList = new ArrayList<>();
+
+    GrabRoomData mGrabRoomData;
 
     public GrabAudienceView(Context context) {
         this(context, null);
@@ -92,16 +99,30 @@ public class GrabAudienceView extends LinearLayout {
         updateAllView();
     }
 
+    public void setGrabRoomData(GrabRoomData grabRoomData) {
+        if (grabRoomData != null) {
+            mGrabRoomData = grabRoomData;
+            GrabRoundInfoModel grabRoundInfoModel = grabRoomData.getRealRoundInfo();
+
+            if(grabRoundInfoModel != null && grabRoundInfoModel.getWaitUsers() != null){
+                mPlayerInfoModelList.addAll(grabRoundInfoModel.getWaitUsers());
+                updateAllView();
+            }
+        } else {
+            MyLog.d(TAG, "setGrabRoomData" + " grabRoomData error");
+        }
+    }
+
     public void init() {
-        setOrientation(HORIZONTAL);
         removeAllViews();
         for (int i = 0; i < 6; i++) {
             BaseImageView baseImageView = new BaseImageView(getContext());
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(U.getDisplayUtils().dip2px(24), U.getDisplayUtils().dip2px(24));
-            layoutParams.rightMargin = U.getDisplayUtils().dip2px(18);
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(24), U.getDisplayUtils().dip2px(24));
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            layoutParams.rightMargin = U.getDisplayUtils().dip2px(15) * i;
             baseImageView.setVisibility(GONE);
             mBaseImageViewList.add(baseImageView);
-            addView(baseImageView);
+            addView(baseImageView, layoutParams);
         }
     }
 
@@ -115,7 +136,7 @@ public class GrabAudienceView extends LinearLayout {
             mBaseImageViewList.get(i).setVisibility(VISIBLE);
             AvatarUtils.loadAvatarByUrl(mBaseImageViewList.get(i), AvatarUtils.newParamsBuilder(userInfoModel.getAvatar())
                     .setCircle(true)
-                    .setBorderWidth(U.getDisplayUtils().dip2px(3))
+                    .setBorderWidth(U.getDisplayUtils().dip2px(1))
                     .setBorderColorBySex(userInfoModel.getIsMale())
                     .build());
         }
