@@ -54,10 +54,10 @@
 
     <com.module.playways.grab.room.view.SongInfoCardView
         android:id="@+id/turn_change_song_info_card_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/view_335_dp"
+        android:layout_height="@dimen/view_148_dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_107_dp"
+        android:layout_marginTop="@dimen/view_182_dp"
         android:visibility="gone" />
 
     <com.module.playways.grab.room.view.SingBeginTipsCardView
@@ -134,7 +134,7 @@
 
     <com.module.playways.grab.room.view.GrabChangeRoomTransitionView
         android:id="@+id/change_room_transition_view"
-        android:background="@color/black_trans_80"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:background="@color/black_trans_80" />
 </RelativeLayout>
