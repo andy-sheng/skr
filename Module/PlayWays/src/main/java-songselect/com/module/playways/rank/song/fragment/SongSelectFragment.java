@@ -141,6 +141,10 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
                     return;
                 }
 
+                if (model == null) {
+                    return;
+                }
+
                 U.getSoundUtils().play(TAG, R.raw.general_button);
                 SongModel songModel = (SongModel) model;
                 if (getActivity() instanceof AudioRoomActivity) {

@@ -38,6 +38,7 @@ import com.module.playways.rank.prepare.fragment.PrepareResFragment;
 import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.playways.rank.song.SongSelectServerApi;
 import com.module.playways.rank.song.adapter.SongSelectAdapter;
+import com.module.playways.rank.song.holder.SongSearchFooter;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
 
@@ -95,6 +96,10 @@ public class SearchSongFragment extends BaseFragment {
             @Override
             public void onItemClicked(View view, int position, Object model) {
                 U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+                if (model == null) {
+                    // 搜歌反馈
+                    return;
+                }
                 SongModel songModel = (SongModel) model;
                 if (getActivity() instanceof AudioRoomActivity) {
                     U.getToastUtil().showShort("试音房");
@@ -152,7 +157,7 @@ public class SearchSongFragment extends BaseFragment {
                             .build());
                 }
             }
-        });
+        }, SongSelectAdapter.HAS_FOOTER_SEARCH);
         mSearchResult.setAdapter(mSongSelectAdapter);
 
         mTitlebar.setListener(new CommonTitleBar.OnTitleBarListener() {

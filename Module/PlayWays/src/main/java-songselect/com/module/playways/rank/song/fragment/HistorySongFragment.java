@@ -90,6 +90,9 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
             @Override
             public void onItemClicked(View view, int position, Object model) {
                 U.getSoundUtils().play(TAG, R.raw.general_button);
+                if (model == null) {
+                    return;
+                }
                 SongModel songModel = (SongModel) model;
                 if (getActivity() instanceof AudioRoomActivity) {
                     U.getToastUtil().showShort("试音房");
