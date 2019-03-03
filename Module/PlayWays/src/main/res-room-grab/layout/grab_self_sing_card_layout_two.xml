@@ -25,6 +25,6 @@
             android:lineSpacingExtra="7dp"
             android:textColor="#B2B6D6"
             android:textSize="@dimen/textsize_18_dp"
-            android:textStyle="bold" />
+             />
     </ScrollView>
 </merge>
