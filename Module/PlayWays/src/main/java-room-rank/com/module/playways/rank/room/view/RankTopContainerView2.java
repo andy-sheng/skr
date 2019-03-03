@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Handler;
 import android.text.SpannableStringBuilder;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -37,6 +38,7 @@ import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
+import com.zq.live.proto.Room.ERoundOverReason;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -68,6 +70,8 @@ public class RankTopContainerView2 extends RelativeLayout {
     RankRoomData mRoomData;
 
     UserLightInfo mStatusArr[] = new UserLightInfo[MAX_USER_NUM];
+
+    Handler mUiHandler = new Handler();
 
     static class UserLightInfo {
         int mUserId;
@@ -175,6 +179,7 @@ public class RankTopContainerView2 extends RelativeLayout {
             mEnergyFillSvga.setCallback(null);
             mEnergyFillSvga.stopAnimation(true);
         }
+        mUiHandler.removeCallbacksAndMessages(null);
         EventBus.getDefault().unregister(this);
     }
 
@@ -283,9 +288,21 @@ public class RankTopContainerView2 extends RelativeLayout {
     //轮次结束
     public void roundOver(RankRoundInfoModel lastRoundInfoModel) {
         MyLog.d(TAG, "roundOver");
-        mLeftLedView.initSVGA();
-        mMidLedView.initSVGA();
-        mRightLedView.initSVGA();
+        if (lastRoundInfoModel != null && lastRoundInfoModel.getOverReason() == ERoundOverReason.EROR_ENOUGH_M_LIGHT.getValue()) {
+            // 多人灭灯导致演唱结束
+            mUiHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mLeftLedView.initSVGA();
+                    mMidLedView.initSVGA();
+                    mRightLedView.initSVGA();
+                }
+            }, 1500);
+        } else {
+            mLeftLedView.initSVGA();
+            mMidLedView.initSVGA();
+            mRightLedView.initSVGA();
+        }
         mEnergySlotView.setTarget(0, null);
         for (int i = 0; i < mStatusArr.length; i++) {
             mStatusArr[i] = null;
