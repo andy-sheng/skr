@@ -255,17 +255,17 @@ public class AgoraEngineAdapter {
             int a = 3, b = 4;
             switch (mConfig.getScene()) {
                 case rank:
-                    b = 4;
+                    b = 3;
                     mRtcEngine.setParameters("{\"che.audio.enable.aec\":true }");
                     break;
                 case grab:
-                    b = 4;
+                    b = 3;
                     break;
                 case voice:
                     b = 1;
                     break;
                 case audiotest:
-                    b = 4;
+                    b = 3;
                     mRtcEngine.setParameters("{\"che.audio.enable.aec\":true }");
                     break;
             }

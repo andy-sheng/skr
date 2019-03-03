@@ -79,7 +79,7 @@ public class AuditionFragment extends BaseFragment {
 
     static final int MSG_LYRIC_END_EVENT = 10;
 
-    static final boolean RECORD_BY_CALLBACK = true;
+    static final boolean RECORD_BY_CALLBACK = false;
     static final String ACC_SAVE_PATH = new File(U.getAppInfoUtils().getMainDir(), "audition.acc").getAbsolutePath();
     static final String PCM_SAVE_PATH = new File(U.getAppInfoUtils().getMainDir(), "audition.pcm").getAbsolutePath();
 
@@ -143,7 +143,9 @@ public class AuditionFragment extends BaseFragment {
             Params params = Params.getFromPref();
             params.setScene(Params.Scene.audiotest);
             EngineManager.getInstance().init("prepare", params);
-            EngineManager.getInstance().joinRoom("" + System.currentTimeMillis(), (int) UserAccountManager.getInstance().getUuidAsLong(), true);
+//            boolean isAnchor = MyUserInfoManager.getInstance().getUid() == 1705476;
+            boolean isAnchor = true;
+            EngineManager.getInstance().joinRoom("csm"+System.currentTimeMillis(), (int) UserAccountManager.getInstance().getUuidAsLong(), isAnchor);
         } else {
             EngineManager.getInstance().resumeAudioMixing();
         }
