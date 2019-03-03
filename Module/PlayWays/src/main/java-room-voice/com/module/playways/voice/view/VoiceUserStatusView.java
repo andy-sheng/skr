@@ -33,6 +33,7 @@ public class VoiceUserStatusView extends RelativeLayout {
     SVGAImageView mSpeakerSvga;
     BaseImageView mAvatarIv;
     ExImageView mMuteMicIv;
+    ExImageView mLeaveIv;
 
     Handler mUiHanlder = new Handler() {
         @Override
@@ -69,6 +70,7 @@ public class VoiceUserStatusView extends RelativeLayout {
         mSpeakerSvga = (SVGAImageView) this.findViewById(R.id.speaker_svga);
         mAvatarIv = (BaseImageView) this.findViewById(R.id.avatar_iv);
         mMuteMicIv = (ExImageView) this.findViewById(R.id.mute_mic_iv);
+        mLeaveIv = (ExImageView) this.findViewById(R.id.leave_iv);
 
         mAvatarIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -87,9 +89,14 @@ public class VoiceUserStatusView extends RelativeLayout {
                 .setBorderColorBySex(mModel.getUserInfo().getSex() == 1)
                 .setCircle(true)
                 .setGray(!mModel.isOnline())
-                .build()
-        );
-        mMuteMicIv.setVisibility(VISIBLE);
+                .build());
+        if (mModel.isOnline()) {
+            mLeaveIv.setVisibility(GONE);
+            mMuteMicIv.setVisibility(VISIBLE);
+        } else {
+            mLeaveIv.setVisibility(VISIBLE);
+            mMuteMicIv.setVisibility(GONE);
+        }
     }
 
     public void userOffline() {
@@ -98,8 +105,9 @@ public class VoiceUserStatusView extends RelativeLayout {
                 .setBorderColorBySex(mModel.getUserInfo().getSex() == 1)
                 .setCircle(true)
                 .setGray(true)
-                .build()
-        );
+                .build());
+        mLeaveIv.setVisibility(VISIBLE);
+        mMuteMicIv.setVisibility(GONE);
     }
 
     public void userMute(boolean audioMute) {
