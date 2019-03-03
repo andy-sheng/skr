@@ -271,7 +271,7 @@ public class NormalLevelView extends RelativeLayout {
 
         RelativeLayout.LayoutParams rl = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(375), U.getDisplayUtils().dip2px(400));
         rl.addRule(RelativeLayout.CENTER_HORIZONTAL);
-        rl.topMargin = U.getDisplayUtils().dip2px(148) - U.getDisplayUtils().dip2px(400 - 172) / 2;
+        rl.topMargin = U.getDisplayUtils().dip2px(160) - U.getDisplayUtils().dip2px(400 - 172) / 2;
         levelChange.setLayoutParams(rl);
         viewGroup.addView(levelChange);
 
