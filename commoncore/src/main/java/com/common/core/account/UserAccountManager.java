@@ -4,6 +4,7 @@ package com.common.core.account;
 import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.common.core.account.event.AccountEvent;
 import com.common.core.account.event.VerifyCodeErrorEvent;
 import com.common.core.channel.HostChannelManager;
@@ -203,52 +204,14 @@ public class UserAccountManager {
     public void loginByPhoneNum(final String phoneNum, String verifyCode) {
         UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
         // 1 为手机登录
-        userAccountServerApi.login(1, phoneNum, verifyCode)
+        String imei = U.getDeviceUtils().getImei();
+        userAccountServerApi.login(1, phoneNum, verifyCode, U.getChannelUtils().getChannel(), U.getMD5Utils().MD5_32(imei))
                 .subscribeOn(Schedulers.io())
                 .subscribe(new ApiObserver<ApiResult>() {
                     @Override
                     public void process(ApiResult obj) {
                         if (obj.getErrno() == 0) {
-                            String secretToken = obj.getData().getJSONObject("token").getString("T");
-                            String serviceToken = obj.getData().getJSONObject("token").getString("S");
-                            String rongToken = obj.getData().getJSONObject("token").getString("RC");
-                            com.alibaba.fastjson.JSONObject profileJO = obj.getData().getJSONObject("profile");
-                            long userID = profileJO.getLong("userID");
-                            String nickName = profileJO.getString("nickname");
-                            int sex = profileJO.getInteger("sex");
-                            String birthday = profileJO.getString("birthday");
-                            String avatar = profileJO.getString("avatar");
-                            String sign = profileJO.getString("signature");
-                            Location location = JSON.parseObject(profileJO.getString("location"), Location.class);
-
-                            boolean isFirstLogin = obj.getData().getBoolean("isFirstLogin");
-                            if (isFirstLogin) {
-                                U.getPreferenceUtils().setSettingLong("first_login_time", System.currentTimeMillis());
-                            }
-
-                            // 设置个人信息
-                            MyUserInfo myUserInfo = new MyUserInfo();
-                            myUserInfo.setUserId(userID);
-                            myUserInfo.setUserNickname(nickName);
-                            myUserInfo.setSex(sex);
-                            myUserInfo.setBirthday(birthday);
-                            myUserInfo.setAvatar(avatar);
-                            myUserInfo.setSignature(sign);
-                            myUserInfo.setLocation(location);
-                            MyUserInfoLocalApi.insertOrUpdate(myUserInfo);
-
-                            UserAccount userAccount = new UserAccount();
-                            userAccount.setPhoneNum(phoneNum);
-                            userAccount.setServiceToken(serviceToken);
-                            userAccount.setSecretToken(secretToken);
-                            userAccount.setRongToken(rongToken);
-                            userAccount.setUid(String.valueOf(userID));
-                            userAccount.setNickName(nickName);
-                            userAccount.setSex(sex);
-                            userAccount.setBirthday(birthday);
-                            userAccount.setNeedEditUserInfo(isFirstLogin);
-                            userAccount.setChannelId(HostChannelManager.getInstance().getChannelId());
-                            onLoginResult(userAccount);
+                            UserAccount userAccount = parseRsp(obj.getData(), phoneNum);
                             UmengStatistics.onProfileSignIn("phone", userAccount.getUid());
                         } else {
                             EventBus.getDefault().post(new VerifyCodeErrorEvent(obj.getErrno(), obj.getErrmsg()));
@@ -267,52 +230,14 @@ public class UserAccountManager {
      */
     public void loginByThirdPart(final int mode, String accessToken, String openId) {
         UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
-        userAccountServerApi.loginWX(mode, accessToken, openId)
+        String imei = U.getDeviceUtils().getImei();
+        userAccountServerApi.loginWX(mode, accessToken, openId, U.getChannelUtils().getChannel(), U.getMD5Utils().MD5_32(imei))
                 .subscribeOn(Schedulers.io())
                 .subscribe(new ApiObserver<ApiResult>() {
                     @Override
                     public void process(ApiResult obj) {
                         if (obj.getErrno() == 0) {
-                            String secretToken = obj.getData().getJSONObject("token").getString("T");
-                            String serviceToken = obj.getData().getJSONObject("token").getString("S");
-                            String rongToken = obj.getData().getJSONObject("token").getString("RC");
-                            com.alibaba.fastjson.JSONObject profileJO = obj.getData().getJSONObject("profile");
-                            long userID = profileJO.getLong("userID");
-                            String nickName = profileJO.getString("nickname");
-                            int sex = profileJO.getInteger("sex");
-                            String birthday = profileJO.getString("birthday");
-                            String avatar = profileJO.getString("avatar");
-                            String sign = profileJO.getString("signature");
-                            Location location = JSON.parseObject(profileJO.getString("location"), Location.class);
-
-                            boolean isFirstLogin = obj.getData().getBoolean("isFirstLogin");
-                            if (isFirstLogin) {
-                                U.getPreferenceUtils().setSettingLong("first_login_time", System.currentTimeMillis());
-                            }
-
-                            // 设置个人信息
-                            MyUserInfo myUserInfo = new MyUserInfo();
-                            myUserInfo.setUserId(userID);
-                            myUserInfo.setUserNickname(nickName);
-                            myUserInfo.setSex(sex);
-                            myUserInfo.setBirthday(birthday);
-                            myUserInfo.setAvatar(avatar);
-                            myUserInfo.setSignature(sign);
-                            myUserInfo.setLocation(location);
-                            MyUserInfoLocalApi.insertOrUpdate(myUserInfo);
-
-                            UserAccount userAccount = new UserAccount();
-//                            userAccount.setPhoneNum(phoneNum);
-                            userAccount.setServiceToken(serviceToken);
-                            userAccount.setSecretToken(secretToken);
-                            userAccount.setRongToken(rongToken);
-                            userAccount.setUid(String.valueOf(userID));
-                            userAccount.setNickName(nickName);
-                            userAccount.setSex(sex);
-                            userAccount.setBirthday(birthday);
-                            userAccount.setNeedEditUserInfo(isFirstLogin);
-                            userAccount.setChannelId(HostChannelManager.getInstance().getChannelId());
-                            onLoginResult(userAccount);
+                            UserAccount userAccount = parseRsp(obj.getData(), "");
                             if (mode == 3) {
                                 UmengStatistics.onProfileSignIn("wx", userAccount.getUid());
                             } else if (mode == 2) {
@@ -323,6 +248,50 @@ public class UserAccountManager {
                         }
                     }
                 });
+    }
+
+    UserAccount parseRsp(JSONObject jsonObject, String phoneNum) {
+        String secretToken = jsonObject.getJSONObject("token").getString("T");
+        String serviceToken = jsonObject.getJSONObject("token").getString("S");
+        String rongToken = jsonObject.getJSONObject("token").getString("RC");
+        com.alibaba.fastjson.JSONObject profileJO = jsonObject.getJSONObject("profile");
+        long userID = profileJO.getLong("userID");
+        String nickName = profileJO.getString("nickname");
+        int sex = profileJO.getInteger("sex");
+        String birthday = profileJO.getString("birthday");
+        String avatar = profileJO.getString("avatar");
+        String sign = profileJO.getString("signature");
+        Location location = JSON.parseObject(profileJO.getString("location"), Location.class);
+
+        boolean isFirstLogin = jsonObject.getBoolean("isFirstLogin");
+        if (isFirstLogin) {
+            U.getPreferenceUtils().setSettingLong("first_login_time", System.currentTimeMillis());
+        }
+
+        // 设置个人信息
+        MyUserInfo myUserInfo = new MyUserInfo();
+        myUserInfo.setUserId(userID);
+        myUserInfo.setUserNickname(nickName);
+        myUserInfo.setSex(sex);
+        myUserInfo.setBirthday(birthday);
+        myUserInfo.setAvatar(avatar);
+        myUserInfo.setSignature(sign);
+        myUserInfo.setLocation(location);
+        MyUserInfoLocalApi.insertOrUpdate(myUserInfo);
+
+        UserAccount userAccount = new UserAccount();
+        userAccount.setPhoneNum(phoneNum);
+        userAccount.setServiceToken(serviceToken);
+        userAccount.setSecretToken(secretToken);
+        userAccount.setRongToken(rongToken);
+        userAccount.setUid(String.valueOf(userID));
+        userAccount.setNickName(nickName);
+        userAccount.setSex(sex);
+        userAccount.setBirthday(birthday);
+        userAccount.setNeedEditUserInfo(isFirstLogin);
+        userAccount.setChannelId(HostChannelManager.getInstance().getChannelId());
+        onLoginResult(userAccount);
+        return userAccount;
     }
 
     /**

@@ -212,14 +212,14 @@ public class DeviceUtils {
     }
 
 
-    private String getImei() {
+    public String getImei() {
         try {
             TelephonyManager tm = (TelephonyManager) U.app().getSystemService(Context.TELEPHONY_SERVICE);
             @SuppressLint("MissingPermission")
             String imei = tm.getDeviceId();
             return imei;
         } catch (Throwable var6) {
-            return null;
+            return "N/A";
         }
     }
 

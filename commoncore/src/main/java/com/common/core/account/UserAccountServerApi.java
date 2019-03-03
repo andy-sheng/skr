@@ -35,7 +35,9 @@ public interface UserAccountServerApi {
     @GET("v1/passport/login")
     Observable<ApiResult> login(@Query("mode") int loginType,
                                 @Query("sign") String phoneNum,
-                                @Query("code") String verifyCode);
+                                @Query("code") String verifyCode,
+                                @Query("channel") String channel,
+                                @Query("deviceID") String deviceID);
 
     /**
      * 微信登录
@@ -49,7 +51,9 @@ public interface UserAccountServerApi {
     @GET("v1/passport/login")
     Observable<ApiResult> loginWX(@Query("mode") int loginType,
                                   @Query("accessToken") String accessToken,
-                                  @Query("openID") String openID);
+                                  @Query("openID") String openID,
+                                  @Query("channel") String channel,
+                                  @Query("deviceID") String deviceID);
 
     /**
      * 获取IMToken
