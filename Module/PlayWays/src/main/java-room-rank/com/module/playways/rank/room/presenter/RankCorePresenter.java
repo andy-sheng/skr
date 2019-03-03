@@ -1536,7 +1536,11 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     public void sendScoreToServer(int score, int line) {
         HashMap<String, Object> map = new HashMap<>();
         map.put("gameID", mRoomData.getGameId());
-        int itemID = mRoomData.getRealRoundInfo().getPlaybookID();
+        RankRoundInfoModel infoModel = RoomDataUtils.getRoundInfoByUserId(mRoomData, (int) MyUserInfoManager.getInstance().getUid());
+        if (infoModel != null) {
+            return;
+        }
+        int itemID = infoModel.getPlaybookID();
         map.put("itemID", itemID);
         int mainLevel = 0;
         PlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, MyUserInfoManager.getInstance().getUid());
@@ -1545,7 +1549,8 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         }
         map.put("mainLevel", mainLevel);
         map.put("no", line);
-        map.put("roundSeq", mRoomData.getRealRoundSeq());
+        int roundSeq = infoModel.getRoundSeq();
+        map.put("roundSeq", roundSeq);
         map.put("score", score);
         long nowTs = System.currentTimeMillis();
         int singSecond = (int) ((nowTs - mRoomData.getSingBeginTs()) / 1000);
@@ -1561,7 +1566,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                 .append("|").append(mRoomData.getGameId())
                 .append("|").append(mainLevel)
                 .append("|").append(singSecond)
-                .append("|").append(mRoomData.getRealRoundSeq())
+                .append("|").append(roundSeq)
                 .append("|").append(nowTs);
         map.put("sign", U.getMD5Utils().MD5_32(sb.toString()));
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
