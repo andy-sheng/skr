@@ -118,6 +118,13 @@ public class VoiceUserStatusView extends RelativeLayout {
         if (volume > 30) {
             playSpeakSVGA();
         }
+        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mModel.getUserInfo().getAvatar())
+                .setBorderWidth(U.getDisplayUtils().dip2px(2))
+                .setBorderColorBySex(mModel.getUserInfo().getSex() == 1)
+                .setCircle(true)
+                .setGray(false)
+                .build()
+        );
         mUiHanlder.removeMessages(MSG_SPEAK_OVER);
         mUiHanlder.sendEmptyMessageDelayed(MSG_SPEAK_OVER, 2000);
     }
