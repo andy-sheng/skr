@@ -12,6 +12,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
 import com.common.core.account.UserAccountManager;
+import com.common.core.permission.SkrAudioPermission;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -34,6 +35,7 @@ import com.kingja.loadsir.core.LoadSir;
 import com.module.RouterConstants;
 
 import com.module.playways.rank.prepare.model.PrepareData;
+import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -62,6 +64,7 @@ public class SpecialSelectFragment extends BaseFragment {
     int DEFAULT_COUNT = 10;  // 每次拉去列表数目
 
     List<String> musicURLs;  //背景音乐
+    SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
 
     @Override
     public int initView() {
@@ -96,10 +99,16 @@ public class SpecialSelectFragment extends BaseFragment {
         mSpecialSelectAdapter = new SpecialSelectAdapter(new RecyclerOnItemClickListener<SpecialModel>() {
             @Override
             public void onItemClicked(View view, int position, SpecialModel model) {
-                U.getSoundUtils().play(SpecialSelectFragment.TAG, R.raw.general_button, 500);
-                goMatchFragment(model.getTagID());
-                StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-                        StatConstants.KEY_MATCH_START, null);
+                mSkrAudioPermission.ensurePermission(new Runnable() {
+                    @Override
+                    public void run() {
+                        U.getSoundUtils().play(SpecialSelectFragment.TAG, R.raw.general_button, 500);
+                        goMatchFragment(model.getTagID());
+                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
+                                StatConstants.KEY_MATCH_START, null);
+                    }
+                }, true);
+
             }
         });
         mContentRv.setAdapter(mSpecialSelectAdapter);
@@ -157,6 +166,7 @@ public class SpecialSelectFragment extends BaseFragment {
         super.onResume();
         StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
                 StatConstants.KEY_SELECTSONG_EXPOSE, null);
+        mSkrAudioPermission.onBackFromPermisionManagerMaybe();
     }
 
     private void getBackgroundMusic() {

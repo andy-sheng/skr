@@ -1,38 +1,32 @@
 package com.common.core.login.fragment;
 
 import android.animation.Animator;
-import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.Html;
-import android.text.Spannable;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.core.R;
 import com.common.core.account.UserAccountManager;
+import com.common.core.permission.SkrBasePermission;
+import com.common.core.permission.SkrPhoneStatePermission;
 import com.common.core.share.ShareManager;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
-import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Predicate;
 
 public class LoginFragment extends BaseFragment {
 
@@ -49,9 +43,11 @@ public class LoginFragment extends BaseFragment {
 
     LinearLayout mTvUserAgree;
 
-    volatile boolean isWaitOss = false;
+    volatile boolean mIsWaitOss = false;
 
     ObjectAnimator mAnimator;
+
+    SkrBasePermission mSkrPermission = new SkrPhoneStatePermission();
 
     @Override
     public int initView() {
@@ -70,79 +66,83 @@ public class LoginFragment extends BaseFragment {
         mTvUserAgree = (LinearLayout) mRootView.findViewById(R.id.tv_user_agree);
         mProgressBar = (ProgressBar) mRootView.findViewById(R.id.progress_bar);
 
-        RxView.clicks(mPhoneLoginTv)
-                .throttleFirst(300, TimeUnit.MILLISECONDS)
-                .filter(new Predicate<Object>() {
-                    @Override
-                    public boolean test(Object o) {
-                        return !isWaitOss;
-                    }
-                })
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), LoginByPhoneFragment.class)
-                                .setNotifyHideFragment(LoginFragment.class)
-                                .setAddToBackStack(true)
-                                .setHasAnimation(true)
-                                .build());
-                    }
-                });
+        mPhoneLoginTv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mIsWaitOss) {
+                    return;
+                }
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), LoginByPhoneFragment.class)
+                        .setNotifyHideFragment(LoginFragment.class)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(true)
+                        .build());
+            }
+        });
 
-        RxView.clicks(mWeixinLoginTv)
-                .filter(new Predicate<Object>() {
-                    @Override
-                    public boolean test(Object o) {
-                        return !isWaitOss;
-                    }
-                })
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        if (!UMShareAPI.get(getContext()).isInstall(getActivity(), SHARE_MEDIA.WEIXIN)) {
-                            U.getToastUtil().showShort("你没有安装微信");
-                            return;
+        mWeixinLoginTv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mIsWaitOss) {
+                    return;
+                }
+                if (!UMShareAPI.get(getContext()).isInstall(getActivity(), SHARE_MEDIA.WEIXIN)) {
+                    U.getToastUtil().showShort("你没有安装微信");
+                    return;
+                }
+                if (U.getChannelUtils().getChannel().startsWith("MI_SHOP_mimusic")) {
+                    // 小米商店渠道，需要获取读取imei权限
+                    mSkrPermission.ensurePermission(new Runnable() {
+                        @Override
+                        public void run() {
+                            showLoginingBar(true);
+                            UMShareAPI.get(getContext()).doOauthVerify(getActivity(), SHARE_MEDIA.WEIXIN, mAuthListener);
                         }
-                        showLoginingBar(true);
-                        UMShareAPI.get(getContext()).doOauthVerify(getActivity(), SHARE_MEDIA.WEIXIN, authListener);
-                    }
-                });
+                    }, true);
+                } else {
+                    showLoginingBar(true);
+                    UMShareAPI.get(getContext()).doOauthVerify(getActivity(), SHARE_MEDIA.WEIXIN, mAuthListener);
+                }
+            }
+        });
 
-        RxView.clicks(mQqLoginTv)
-                .filter(new Predicate<Object>() {
-                    @Override
-                    public boolean test(Object o) {
-                        return !isWaitOss;
-                    }
-                })
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        if (!UMShareAPI.get(getContext()).isInstall(getActivity(), SHARE_MEDIA.QQ)) {
-                            U.getToastUtil().showShort("你没有安装QQ");
-                            return;
+        mQqLoginTv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mIsWaitOss) {
+                    return;
+                }
+                if (!UMShareAPI.get(getContext()).isInstall(getActivity(), SHARE_MEDIA.QQ)) {
+                    U.getToastUtil().showShort("你没有安装QQ");
+                    return;
+                }
+                if (U.getChannelUtils().getChannel().startsWith("MI_SHOP_mimusic")) {
+                    mSkrPermission.ensurePermission(new Runnable() {
+                        @Override
+                        public void run() {
+                            showLoginingBar(true);
+                            UMShareAPI.get(getContext()).doOauthVerify(getActivity(), SHARE_MEDIA.QQ, mAuthListener);
                         }
-                        showLoginingBar(true);
-                        UMShareAPI.get(getContext()).doOauthVerify(getActivity(), SHARE_MEDIA.QQ, authListener);
-                    }
-                });
+                    }, true);
+                } else {
+                    showLoginingBar(true);
+                    UMShareAPI.get(getContext()).doOauthVerify(getActivity(), SHARE_MEDIA.QQ, mAuthListener);
+                }
 
-        RxView.clicks(mTvUserAgree)
-                .throttleFirst(300, TimeUnit.MILLISECONDS)
-                .filter(new Predicate<Object>() {
-                    @Override
-                    public boolean test(Object o) {
-                        return !isWaitOss;
-                    }
-                })
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                                .withString("url", "https://api.inframe.mobi/user-agreement.html")
-                                .greenChannel().navigation();
-                    }
-                });
+            }
+        });
+
+        mTvUserAgree.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mIsWaitOss) {
+                    return;
+                }
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                        .withString("url", "https://api.inframe.mobi/user-agreement.html")
+                        .greenChannel().navigation();
+            }
+        });
 
         animationGo();
     }
@@ -175,7 +175,7 @@ public class LoginFragment extends BaseFragment {
     }
 
 
-    UMAuthListener authListener = new UMAuthListener() {
+    UMAuthListener mAuthListener = new UMAuthListener() {
         @Override
         public void onStart(SHARE_MEDIA platform) {
         }
@@ -213,12 +213,18 @@ public class LoginFragment extends BaseFragment {
     };
 
     private void showLoginingBar(boolean show) {
-        isWaitOss = show;
-        mProgressBar.setVisibility(isWaitOss ? View.VISIBLE : View.GONE);
+        mIsWaitOss = show;
+        mProgressBar.setVisibility(mIsWaitOss ? View.VISIBLE : View.GONE);
     }
 
     private void loginWithThirdPard(int mode, String accessToken, String openId) {
         UserAccountManager.getInstance().loginByThirdPart(mode, accessToken, openId);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mSkrPermission.onBackFromPermisionManagerMaybe();
     }
 
     @Override

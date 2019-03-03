@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.support.v4.app.FragmentActivity;
 
 import com.common.log.MyLog;
 import com.tbruyelle.rxpermissions2.Permission;
@@ -78,7 +79,7 @@ public class PermissionUtils {
                 return false;
             }
         }
-        return new RxPermissions(activity).isGranted(permission);
+        return new RxPermissions((FragmentActivity) activity).isGranted(permission);
     }
 
     public boolean checkPermission(RxPermissions rxPermissions, String permission) {
@@ -114,7 +115,7 @@ public class PermissionUtils {
                 return;
             }
         }
-        requestPermission(requestPermission, new RxPermissions(activity), permissions);
+        requestPermission(requestPermission, new RxPermissions((FragmentActivity) activity), permissions);
     }
 
     public void requestPermission(final RequestPermission requestPermission, RxPermissions rxPermissions, String... permissions) {
@@ -229,24 +230,24 @@ public class PermissionUtils {
      */
     public void goToPermissionManager(Activity refs) {
             Intent intent;
-            if (U.getDeviceUtils().isMiui()) {
-                PackageManager pm = refs.getPackageManager();
-                PackageInfo info;
-                try {
-                    info = pm.getPackageInfo(refs.getPackageName(), 0);
-                } catch (PackageManager.NameNotFoundException e) {
-                    com.common.log.MyLog.e(e);
-                    return;
-                }
-                intent = new Intent("miui.intent.action.APP_PERM_EDITOR");
-                // i.setClassName("com.android.settings", "com.miui.securitycenter.permission.AppPermissionsEditor");
-                intent.putExtra("extra_pkgname", refs.getPackageName());      // for MIUI 6
-                intent.putExtra("extra_package_uid", info.applicationInfo.uid);  // for MIUI 5
-            } else {
+//            if (U.getDeviceUtils().isMiui()) {
+//                PackageManager pm = refs.getPackageManager();
+//                PackageInfo info;
+//                try {
+//                    info = pm.getPackageInfo(refs.getPackageName(), 0);
+//                } catch (PackageManager.NameNotFoundException e) {
+//                    com.common.log.MyLog.e(e);
+//                    return;
+//                }
+//                intent = new Intent("miui.intent.action.APP_PERM_EDITOR");
+//                // i.setClassName("com.android.settings", "com.miui.securitycenter.permission.AppPermissionsEditor");
+//                intent.putExtra("extra_pkgname", refs.getPackageName());      // for MIUI 6
+//                intent.putExtra("extra_package_uid", info.applicationInfo.uid);  // for MIUI 5
+//            } else {
                 intent = new Intent();
                 intent.setAction("android.intent.action.MAIN");
                 intent.setClassName("com.android.settings", "com.android.settings.ManageApplications");
-            }
+//            }
             if (U.getCommonUtils().isIntentAvailable(refs,intent)) {
                 refs.startActivity(intent);
             }

@@ -14,6 +14,7 @@ import com.common.core.login.LoginActivity;
 import com.common.core.myinfo.Location;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
+import com.common.core.permission.SkrSdcardPermission;
 import com.common.core.upgrade.UpgradeData;
 import com.common.log.MyLog;
 import com.common.utils.LbsUtils;
@@ -48,11 +49,10 @@ public class HomeCorePresenter {
     DialogPlus mPerTipsDialogPlus;
     TipsDialogView mTipsDialogView;
 
-    long mLastCheckTs = 0;
-
     Handler mUiHandler = new Handler();
 
     IHomeActivity mView;
+
 
     private Runnable mNetworkChangeRunnable = new Runnable() {
         @Override
@@ -88,126 +88,6 @@ public class HomeCorePresenter {
         }
         mView = null;
         ModuleServiceManager.getInstance().getMsgService().removeUnReadMessageCountChangedObserver();
-    }
-
-    public void checkPermiss(Activity activity) {
-        MyLog.d(TAG, "checkPermiss");
-        long now = System.currentTimeMillis();
-        if (now - mLastCheckTs > 2000) {
-            /**
-             * 这里  U.getPermissionUtils().requestExternalStorage 会启动
-             * RxPermissionFragment ，RxPermissionFragment结束后出发 Activity的生命周期
-             * 所以这里加个判断，防止onResume 被触发导致不断回调
-             */
-            mLastCheckTs = now;
-            check1(activity);
-        } else {
-            MyLog.d(TAG, "checkPermiss too many times，return");
-        }
-    }
-
-    void check1(Activity activity) {
-        if (!U.getPermissionUtils().checkExternalStorage(activity)) {
-            U.getPermissionUtils().requestExternalStorage(new PermissionUtils.RequestPermission() {
-                @Override
-                public void onRequestPermissionSuccess() {
-                    MyLog.d(TAG, "onRequestPermissionSuccess");
-                    check2(activity);
-                }
-
-                @Override
-                public void onRequestPermissionFailure(List<String> permissions) {
-                    MyLog.d(TAG, "onRequestPermissionFailure" + " permissions=" + permissions);
-                    onReject("请开启存储权限，保证应用正常使用");
-                }
-
-                @Override
-                public void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions) {
-                    MyLog.d(TAG, "onRequestPermissionFailureWithAskNeverAgain" + " permissions=" + permissions);
-                    onReject("请开启存储权限，保证应用正常使用");
-                }
-            }, activity);
-        } else {
-            check2(activity);
-        }
-    }
-
-    void check2(Activity activity) {
-        if (!U.getPermissionUtils().checkRecordAudio(activity)) {
-            U.getPermissionUtils().requestRecordAudio(new PermissionUtils.RequestPermission() {
-                @Override
-                public void onRequestPermissionSuccess() {
-                    MyLog.d(TAG, "onRequestPermissionSuccess");
-                    check3(activity);
-                }
-
-                @Override
-                public void onRequestPermissionFailure(List<String> permissions) {
-                    MyLog.d(TAG, "onRequestPermissionFailure" + " permissions=" + permissions);
-                    onReject("请开启录音权限，保证应用正常使用");
-                }
-
-                @Override
-                public void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions) {
-                    MyLog.d(TAG, "onRequestPermissionFailureWithAskNeverAgain" + " permissions=" + permissions);
-                    onReject("请开启录音权限，保证应用正常使用");
-                }
-            }, activity);
-        } else {
-            check3(activity);
-        }
-    }
-
-    void check3(Activity activity) {
-        if (!U.getPermissionUtils().checkLocation(activity)) {
-            U.getPermissionUtils().requestLocation(new PermissionUtils.RequestPermission() {
-                @Override
-                public void onRequestPermissionSuccess() {
-                    MyLog.d(TAG, "onRequestPermissionSuccess");
-                    onAgree();
-                    check4(activity);
-                }
-
-                @Override
-                public void onRequestPermissionFailure(List<String> permissions) {
-                    MyLog.d(TAG, "onRequestPermissionFailure" + " permissions=" + permissions);
-                    onReject("请开启定位权限，保证应用正常使用");
-                }
-
-                @Override
-                public void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions) {
-                    MyLog.d(TAG, "onRequestPermissionFailure" + " permissions=" + permissions);
-                    onReject("请开启定位权限，保证应用正常使用");
-                }
-            }, activity);
-        } else {
-            onAgree();
-            check4(activity);
-        }
-    }
-
-    void check4(Activity activity) {
-        if (!U.getPermissionUtils().checkReadPhoneState(activity)) {
-            U.getPermissionUtils().requestReadPhonestate(new PermissionUtils.RequestPermission() {
-                @Override
-                public void onRequestPermissionSuccess() {
-                    MyLog.d(TAG, "onRequestPermissionSuccess");
-                    onAgree();
-                }
-
-                @Override
-                public void onRequestPermissionFailure(List<String> permissions) {
-                    MyLog.d(TAG, "onRequestPermissionFailure" + " permissions=" + permissions);
-                }
-
-                @Override
-                public void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions) {
-                    MyLog.d(TAG, "onRequestPermissionFailure" + " permissions=" + permissions);
-                }
-            }, activity);
-        } else {
-            onAgree();
-        }
     }
 
     public void onReject(String text) {

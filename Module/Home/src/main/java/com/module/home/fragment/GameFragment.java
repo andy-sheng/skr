@@ -29,6 +29,7 @@ import com.common.core.account.event.AccountEvent;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
+import com.common.core.permission.SkrLocationPermission;
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.model.UserRankModel;
 import com.common.log.MyLog;
@@ -126,6 +127,8 @@ public class GameFragment extends BaseFragment {
     ClassicsHeader mClassicsHeader;
 
     Vector<Long> mTag = new Vector<>();
+
+    SkrLocationPermission mSkrLocationPermission = new SkrLocationPermission();
 
     @Override
     public int initView() {
@@ -228,18 +231,24 @@ public class GameFragment extends BaseFragment {
         mRankArea.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
-                Class<BaseFragment> baseFragment = (Class<BaseFragment>) iRankingModeService.getLeaderboardFragmentClass();
-                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), baseFragment)
-                        .setAddToBackStack(true)
-                        .setHasAnimation(true)
-                        .setFragmentDataListener(new FragmentDataListener() {
-                            @Override
-                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
+                mSkrLocationPermission.ensurePermission(new Runnable() {
+                    @Override
+                    public void run() {
+                        IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
+                        Class<BaseFragment> baseFragment = (Class<BaseFragment>) iRankingModeService.getLeaderboardFragmentClass();
+                        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), baseFragment)
+                                .setAddToBackStack(true)
+                                .setHasAnimation(true)
+                                .setFragmentDataListener(new FragmentDataListener() {
+                                    @Override
+                                    public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
 
-                            }
-                        })
-                        .build());
+                                    }
+                                })
+                                .build());
+                    }
+                }, true);
+
             }
         });
 
@@ -261,6 +270,12 @@ public class GameFragment extends BaseFragment {
         mNameTv.setText(MyUserInfoManager.getInstance().getNickName());
 
         mUserInfoTitle.showBaseInfo();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mSkrLocationPermission.onBackFromPermisionManagerMaybe();
     }
 
     @Override

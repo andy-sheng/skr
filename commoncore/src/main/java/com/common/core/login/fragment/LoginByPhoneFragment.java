@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.common.base.BaseFragment;
@@ -11,6 +12,8 @@ import com.common.core.R;
 import com.common.core.account.UserAccountManager;
 import com.common.core.account.UserAccountServerApi;
 import com.common.core.account.event.VerifyCodeErrorEvent;
+import com.common.core.permission.SkrBasePermission;
+import com.common.core.permission.SkrPhoneStatePermission;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -19,17 +22,13 @@ import com.common.rxretrofit.ApiResult;
 import com.common.utils.FragmentUtils;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.NoLeakEditText;
-import com.jakewharton.rxbinding2.view.RxView;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.functions.Consumer;
 
 /**
  * 手机方式登陆界面
@@ -49,6 +48,8 @@ public class LoginByPhoneFragment extends BaseFragment {
     String mCode; //验证码
 
     HandlerTaskTimer mTaskTimer; // 倒计时验证码
+
+    SkrBasePermission mSkrPermission = new SkrPhoneStatePermission();
 
     @Override
     public int initView() {
@@ -73,59 +74,74 @@ public class LoginByPhoneFragment extends BaseFragment {
         }
         U.getKeyBoardUtils().showSoftInputKeyBoard(getActivity());
 
-        RxView.clicks(mGetCodeTv)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        mPhoneNumber = mPhoneInputTv.getText().toString().trim();
-                        if (checkPhoneNumber(mPhoneNumber)) {
-                            sendSmsVerifyCode(mPhoneNumber);
-                        }
-                    }
-                });
+        mGetCodeTv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                mPhoneNumber = mPhoneInputTv.getText().toString().trim();
+                if (checkPhoneNumber(mPhoneNumber)) {
+                    sendSmsVerifyCode(mPhoneNumber);
+                }
+            }
+        });
 
-        RxView.clicks(mLoginTv)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-                        mPhoneNumber = mPhoneInputTv.getText().toString().trim();
-                        mCode = mCodeInputTv.getText().toString().trim();
-                        if (checkPhoneNumber(mPhoneNumber)) {
-                            if (!TextUtils.isEmpty(mCode)) {
-                                if (!U.getNetworkUtils().hasNetwork()) {
-                                    U.getToastUtil().showShort("网络异常，请检查网络之后重试！");
-                                } else {
-                                    UserAccountManager.getInstance().loginByPhoneNum(mPhoneNumber, mCode);
-                                }
+        mLoginTv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+                mPhoneNumber = mPhoneInputTv.getText().toString().trim();
+                mCode = mCodeInputTv.getText().toString().trim();
+                if (checkPhoneNumber(mPhoneNumber)) {
+                    if (!TextUtils.isEmpty(mCode)) {
+                        if (!U.getNetworkUtils().hasNetwork()) {
+                            U.getToastUtil().showShort("网络异常，请检查网络之后重试！");
+                        } else {
+                            if (U.getChannelUtils().getChannel().startsWith("MI_SHOP_mimusic")) {
+                                // 小米商店渠道，需要获取读取imei权限
+                                mSkrPermission.ensurePermission(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        UserAccountManager.getInstance().loginByPhoneNum(mPhoneNumber, mCode);
+                                    }
+                                }, true);
                             } else {
-                                U.getToastUtil().showShort("验证码为空");
+                                UserAccountManager.getInstance().loginByPhoneNum(mPhoneNumber, mCode);
                             }
                         }
+                    } else {
+                        U.getToastUtil().showShort("验证码为空");
                     }
-                });
+                }
+            }
+        });
 
-
-        RxView.clicks(mIvBack)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-                        stopTimeTask();
-                        U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
-                                .setPopFragment(LoginByPhoneFragment.this)
-                                .setPopAbove(false)
-                                .setHasAnimation(true)
-                                .setNotifyShowFragment(LoginFragment.class)
-                                .build());
-                    }
-                });
+        mIvBack.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+                stopTimeTask();
+                U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
+                        .setPopFragment(LoginByPhoneFragment.this)
+                        .setPopAbove(false)
+                        .setHasAnimation(true)
+                        .setNotifyShowFragment(LoginFragment.class)
+                        .build());
+            }
+        });
 
         mLoginTv.setClickable(false);
         mLoginTv.setTextColor(Color.parseColor("#660C2275"));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mSkrPermission.onBackFromPermisionManagerMaybe();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -135,7 +151,6 @@ public class LoginByPhoneFragment extends BaseFragment {
             U.getToastUtil().showShort("验证码错误");
         }
     }
-
 
     private void sendSmsVerifyCode(final String phoneNumber) {
         MyLog.d(TAG, "sendSmsVerifyCode" + " phoneNumber=" + phoneNumber);

@@ -204,8 +204,13 @@ public class UserAccountManager {
     public void loginByPhoneNum(final String phoneNum, String verifyCode) {
         UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
         // 1 为手机登录
-        String imei = U.getDeviceUtils().getImei();
-        userAccountServerApi.login(1, phoneNum, verifyCode, U.getChannelUtils().getChannel(), U.getMD5Utils().MD5_32(imei))
+        String deviceId = U.getDeviceUtils().getImei();
+        if(TextUtils.isEmpty(deviceId)){
+            deviceId="";
+        }else{
+            deviceId = U.getMD5Utils().MD5_32(deviceId);
+        }
+        userAccountServerApi.login(1, phoneNum, verifyCode, U.getChannelUtils().getChannel(), deviceId)
                 .subscribeOn(Schedulers.io())
                 .subscribe(new ApiObserver<ApiResult>() {
                     @Override
@@ -230,8 +235,13 @@ public class UserAccountManager {
      */
     public void loginByThirdPart(final int mode, String accessToken, String openId) {
         UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
-        String imei = U.getDeviceUtils().getImei();
-        userAccountServerApi.loginWX(mode, accessToken, openId, U.getChannelUtils().getChannel(), U.getMD5Utils().MD5_32(imei))
+        String deviceId = U.getDeviceUtils().getImei();
+        if(TextUtils.isEmpty(deviceId)){
+            deviceId="";
+        }else{
+            deviceId = U.getMD5Utils().MD5_32(deviceId);
+        }
+        userAccountServerApi.loginWX(mode, accessToken, openId, U.getChannelUtils().getChannel(),deviceId)
                 .subscribeOn(Schedulers.io())
                 .subscribe(new ApiObserver<ApiResult>() {
                     @Override

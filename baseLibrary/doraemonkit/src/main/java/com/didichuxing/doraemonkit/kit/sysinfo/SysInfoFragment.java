@@ -25,8 +25,8 @@ import com.dialog.list.ListDialog;
 import com.didichuxing.doraemonkit.ui.widget.recyclerview.DividerItemDecoration;
 import com.didichuxing.doraemonkit.ui.widget.titlebar.HomeTitleBar;
 import com.didichuxing.doraemonkit.util.DeviceUtils;
+import com.didichuxing.doraemonkit.util.DoraemonPermissionUtil;
 import com.didichuxing.doraemonkit.util.ExecutorUtil;
-import com.didichuxing.doraemonkit.util.PermissionUtil;
 import com.didichuxing.doraemonkit.util.UIUtils;
 
 import java.util.ArrayList;
@@ -161,12 +161,12 @@ public class SysInfoFragment extends BaseFragment {
             public void run() {
                 final List<SysInfoItem> list = new ArrayList<>();
                 list.add(new TitleItem(getString(R.string.dk_sysinfo_permission_info_unreliable)));
-                list.add(new SysInfoItem(getString(R.string.dk_sysinfo_permission_location), PermissionUtil.checkLocationUnreliable(getContext()) ? "YES" : "NO"));
-                list.add(new SysInfoItem(getString(R.string.dk_sysinfo_permission_sdcard), PermissionUtil.checkStorageUnreliable() ? "YES" : "NO"));
-                list.add(new SysInfoItem(getString(R.string.dk_sysinfo_permission_camera), PermissionUtil.checkCameraUnreliable() ? "YES" : "NO"));
-                list.add(new SysInfoItem(getString(R.string.dk_sysinfo_permission_record), PermissionUtil.checkRecordUnreliable() ? "YES" : "NO"));
-                list.add(new SysInfoItem(getString(R.string.dk_sysinfo_permission_read_phone), PermissionUtil.checkReadPhoneUnreliable(getContext()) ? "YES" : "NO"));
-                list.add(new SysInfoItem(getString(R.string.dk_sysinfo_permission_contact), PermissionUtil.checkReadContactUnreliable(getContext()) ? "YES" : "NO"));
+                list.add(new SysInfoItem(getString(R.string.dk_sysinfo_permission_location), DoraemonPermissionUtil.checkLocationUnreliable(getContext()) ? "YES" : "NO"));
+                list.add(new SysInfoItem(getString(R.string.dk_sysinfo_permission_sdcard), DoraemonPermissionUtil.checkStorageUnreliable() ? "YES" : "NO"));
+                list.add(new SysInfoItem(getString(R.string.dk_sysinfo_permission_camera), DoraemonPermissionUtil.checkCameraUnreliable() ? "YES" : "NO"));
+                list.add(new SysInfoItem(getString(R.string.dk_sysinfo_permission_record), DoraemonPermissionUtil.checkRecordUnreliable() ? "YES" : "NO"));
+                list.add(new SysInfoItem(getString(R.string.dk_sysinfo_permission_read_phone), DoraemonPermissionUtil.checkReadPhoneUnreliable(getContext()) ? "YES" : "NO"));
+                list.add(new SysInfoItem(getString(R.string.dk_sysinfo_permission_contact), DoraemonPermissionUtil.checkReadContactUnreliable(getContext()) ? "YES" : "NO"));
                 getView().post(new Runnable() {
                     @Override
                     public void run() {
@@ -212,7 +212,7 @@ public class SysInfoFragment extends BaseFragment {
     }
 
     private String checkPermission(String... perms) {
-        return PermissionUtil.hasPermissions(getContext(), perms) ? "YES" : "NO";
+        return DoraemonPermissionUtil.hasPermissions(getContext(), perms) ? "YES" : "NO";
     }
 
 }

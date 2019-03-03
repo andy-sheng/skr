@@ -1,0 +1,44 @@
+BOARD=sdm845
+CPU_ABI2=armeabi
+HOST=c3-miui-ota-bd123.bj
+versionName=1.1.6
+IS_TREBLE_ENABLED=true
+SUPPORTED_64_BIT_ABIS=[Ljava.lang.String;@deb7309
+CPU_ABI=armeabi-v7a
+PERMISSIONS_REVIEW_REQUIRED=false
+IS_USERDEBUG=false
+DISPLAY=OPM1.171019.026
+SUPPORTED_ABIS=[Ljava.lang.String;@c42e90e
+FINGERPRINT=Xiaomi/dipper/dipper:8.1.0/OPM1.171019.026/V10.0.11.0.OEACNFH:user/release-keys
+PRODUCT=dipper
+ID=OPM1.171019.026
+TYPE=user
+SERIAL=90bf00ba
+IS_CONTAINER=false
+IS_ENG=false
+DEVICE=dipper
+TIME=1541867668000
+IS_USER=true
+MODEL=MI 8
+MANUFACTURER=Xiaomi
+USER=builder
+versionCode=1001006
+BRAND=Xiaomi
+SUPPORTED_32_BIT_ABIS=[Ljava.lang.String;@c764c10
+HARDWARE=qcom
+IS_DEBUGGABLE=false
+BOOTLOADER=unknown
+RADIO=unknown
+TAG=Build
+UNKNOWN=unknown
+IS_EMULATOR=false
+TAGS=release-keys
+java.lang.NullPointerException: Attempt to invoke virtual method 'int com.module.playways.rank.song.model.SongModel.getStandIntroEndT()' on a null object reference
+	at com.module.playways.grab.room.fragment.GrabRoomFragment.onSongInfoCardPlayOver(GrabRoomFragment.java:564)
+	at com.module.playways.grab.room.fragment.GrabRoomFragment$1.handleMessage(GrabRoomFragment.java:163)
+	at android.os.Handler.dispatchMessage(Handler.java:106)
+	at android.os.Looper.loop(Looper.java:164)
+	at android.app.ActivityThread.main(ActivityThread.java:6650)
+	at java.lang.reflect.Method.invoke(Native Method)
+	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:547)
+	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:818)

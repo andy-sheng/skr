@@ -15,6 +15,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 
+import com.common.core.permission.SkrSdcardPermission;
 import com.common.core.upgrade.UpgradeManager;
 import com.common.core.account.UserAccountManager;
 import com.common.core.login.interceptor.JudgeLoginInterceptor;
@@ -63,6 +64,8 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
     HomeCorePresenter mHomePresenter;
     String mPengingSchemeUri; //想要跳转的scheme，但因为没登录被挂起了
     boolean mFromCreate = false;
+
+    SkrSdcardPermission mSkrSdcardPermission = new SkrSdcardPermission();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -238,8 +241,10 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (mFromCreate) {
-            mHomePresenter.checkPermiss(this);
+        if (!mSkrSdcardPermission.onBackFromPermisionManagerMaybe()) {
+            if (mFromCreate) {
+                mSkrSdcardPermission.ensurePermission(null, true);
+            }
         }
         mFromCreate = false;
         UpgradeManager.getInstance().checkUpdate1();
@@ -256,10 +261,10 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ActivityUtils.ForeOrBackgroundChange foreOrBackgroundChange) {
-        if (foreOrBackgroundChange.foreground) {
-            // 后台到前台了
-            mHomePresenter.checkPermiss(this);
-        }
+//        if (foreOrBackgroundChange.foreground) {
+//            // 后台到前台了
+//            mHomePresenter.checkPermiss(this);
+//        }
     }
 
     @Override

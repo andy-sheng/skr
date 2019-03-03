@@ -10,6 +10,7 @@ import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
 import com.common.core.account.UserAccountManager;
+import com.common.core.permission.SkrAudioPermission;
 import com.common.log.MyLog;
 import com.common.statistics.StatConstants;
 import com.common.statistics.StatisticsAdapter;
@@ -67,6 +68,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
     int offset; //当前偏移量
     int mGameType;
     boolean hasMore = true; // 是否还有更多数据标记位
+    SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
 
     @Override
     public int initView() {
@@ -135,87 +137,17 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
         mSongCardSwipAdapter = new SongCardSwipAdapter(new RecyclerOnItemClickListener() {
             @Override
             public void onItemClicked(View view, int position, Object model) {
-
                 if (!U.getNetworkUtils().hasNetwork()) {
                     U.getToastUtil().showShort("无网络连接，请检查网络后重试");
                     return;
                 }
-
-                if (model == null) {
-                    return;
-                }
-
-                U.getSoundUtils().play(TAG, R.raw.general_button);
-                SongModel songModel = (SongModel) model;
-                if (getActivity() instanceof AudioRoomActivity) {
-                    U.getToastUtil().showShort("试音房");
-                    if (songModel.isAllResExist()) {
-                        PrepareData prepareData = new PrepareData();
-                        prepareData.setSongModel(songModel);
-                        prepareData.setBgMusic(songModel.getRankUserVoice());
-
-                        mRootView.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), AuditionFragment.class)
-                                        .setAddToBackStack(true)
-                                        .setHasAnimation(true)
-                                        .addDataBeforeAdd(0, prepareData)
-                                        .setFragmentDataListener(new FragmentDataListener() {
-                                            @Override
-                                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
-
-                                            }
-                                        })
-                                        .build());
-                            }
-                        });
-                    } else {
-                        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), AuditionPrepareResFragment.class)
-                                .setAddToBackStack(false)
-                                .setHasAnimation(true)
-                                .addDataBeforeAdd(0, songModel)
-                                .setFragmentDataListener(new FragmentDataListener() {
-                                    @Override
-                                    public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
-
-                                    }
-                                })
-                                .build());
+                mSkrAudioPermission.ensurePermission(new Runnable() {
+                    @Override
+                    public void run() {
+                        jump((SongModel) model);
                     }
-                    return;
-                }
+                }, true);
 
-                if (getActivity() instanceof PlayWaysActivity) {
-                    if (U.getFragmentUtils().findFragment((BaseActivity) getActivity(), PrepareResFragment.class) != null) {
-                        return;
-                    }
-
-                    U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), PrepareResFragment.class)
-                            .setAddToBackStack(true)
-                            .setHasAnimation(true)
-                            .setNotifyHideFragment(SongSelectFragment.class)
-                            .addDataBeforeAdd(0, songModel)
-                            .addDataBeforeAdd(1, mGameType)
-                            .setFragmentDataListener(new FragmentDataListener() {
-                                @Override
-                                public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
-
-                                }
-                            })
-                            .build());
-                }
-                //测试
-//                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), RankingRecordFragment.class)
-//                        .setAddToBackStack(true)
-//                        .setHasAnimation(true)
-//                        .setFragmentDataListener(new FragmentDataListener() {
-//                            @Override
-//                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
-//
-//                            }
-//                        })
-//                        .build());
             }
         }, DEFAULT_COUNT);
 
@@ -234,6 +166,78 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
 
     }
 
+    void jump(SongModel songModel) {
+        U.getSoundUtils().play(TAG, R.raw.general_button);
+        if (getActivity() instanceof AudioRoomActivity) {
+            U.getToastUtil().showShort("试音房");
+            if (songModel.isAllResExist()) {
+                PrepareData prepareData = new PrepareData();
+                prepareData.setSongModel(songModel);
+                prepareData.setBgMusic(songModel.getRankUserVoice());
+                mRootView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), AuditionFragment.class)
+                                .setAddToBackStack(true)
+                                .setHasAnimation(true)
+                                .addDataBeforeAdd(0, prepareData)
+                                .setFragmentDataListener(new FragmentDataListener() {
+                                    @Override
+                                    public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
+
+                                    }
+                                })
+                                .build());
+                    }
+                });
+            } else {
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), AuditionPrepareResFragment.class)
+                        .setAddToBackStack(false)
+                        .setHasAnimation(true)
+                        .addDataBeforeAdd(0, songModel)
+                        .setFragmentDataListener(new FragmentDataListener() {
+                            @Override
+                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
+
+                            }
+                        })
+                        .build());
+            }
+            return;
+        }
+
+        if (getActivity() instanceof PlayWaysActivity) {
+            if (U.getFragmentUtils().findFragment((BaseActivity) getActivity(), PrepareResFragment.class) != null) {
+                return;
+            }
+
+            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), PrepareResFragment.class)
+                    .setAddToBackStack(true)
+                    .setHasAnimation(true)
+                    .setNotifyHideFragment(SongSelectFragment.class)
+                    .addDataBeforeAdd(0, songModel)
+                    .addDataBeforeAdd(1, mGameType)
+                    .setFragmentDataListener(new FragmentDataListener() {
+                        @Override
+                        public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
+
+                        }
+                    })
+                    .build());
+        }
+        //测试
+//                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), RankingRecordFragment.class)
+//                        .setAddToBackStack(true)
+//                        .setHasAnimation(true)
+//                        .setFragmentDataListener(new FragmentDataListener() {
+//                            @Override
+//                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
+//
+//                            }
+//                        })
+//                        .build());
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -241,6 +245,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
             StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK),
                     StatConstants.KEY_SELECTSONG_EXPOSE, null);
         }
+        mSkrAudioPermission.onBackFromPermisionManagerMaybe();
     }
 
     // 返回上一张选歌卡片
