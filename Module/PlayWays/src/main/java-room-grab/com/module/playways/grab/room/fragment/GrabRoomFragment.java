@@ -432,6 +432,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
 
     private void initGrabOpView() {
         mGrabOpBtn = mRootView.findViewById(R.id.grab_op_btn);
+        mGrabOpBtn.setGrabRoomData(mRoomData);
         mGrabOpBtn.setListener(new GrabOpView.Listener() {
             @Override
             public void clickGrabBtn(int seq) {

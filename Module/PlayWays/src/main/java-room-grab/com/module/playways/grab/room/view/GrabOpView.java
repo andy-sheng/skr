@@ -19,6 +19,7 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
+import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.SomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.SomeOneLightOffEvent;
 import com.module.rank.R;
@@ -36,7 +37,8 @@ import static android.view.animation.Animation.INFINITE;
  */
 public class GrabOpView extends RelativeLayout {
     public final static String TAG = "GrabOpView";
-    public static final long SHOW_BURST_DELAY_TIME = 15000;
+    public static long sShowBurstTime = 15000;
+    public static long sShowLightOffTime = 5000;
 
     public static final int MSG_HIDE_FROM_END_GUIDE_AUDIO = 0;
     public static final int MSG_HIDE = 1;
@@ -66,6 +68,8 @@ public class GrabOpView extends RelativeLayout {
     RelativeLayout mGrabContainer;
 
     HandlerTaskTimer mCountDownTask;
+
+    GrabRoomData mGrabRoomData;
 
     Handler mUiHandler = new Handler() {
         @Override
@@ -158,6 +162,16 @@ public class GrabOpView extends RelativeLayout {
                 }
             }
         });
+    }
+
+    public void setGrabRoomData(GrabRoomData grabRoomData) {
+        mGrabRoomData = grabRoomData;
+        if(mGrabRoomData == null || mGrabRoomData.getGrabConfigModel() == null){
+            MyLog.d(TAG, "setGrabRoomData GrabRoomData error");
+            return;
+        }
+        sShowBurstTime = mGrabRoomData.getGrabConfigModel().getEnableShowBLightWaitTimeMs();
+        sShowLightOffTime = mGrabRoomData.getGrabConfigModel().getEnableShowMLightWaitTimeMs();
     }
 
     public void setListener(Listener listener) {
@@ -332,30 +346,11 @@ public class GrabOpView extends RelativeLayout {
 
         cancelCountDownTask();
         mCountDownTask = HandlerTaskTimer.newBuilder().interval(1000)
-                .take(6)
+                .take((int)(sShowLightOffTime / 1000) + 1)
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
-                        int num1 = 7 - integer - 1;
-//                        Drawable drawable = null;
-//                        switch (num1) {
-//                            case 5:
-//                                drawable = U.getDrawable(R.drawable.mie_5);
-//                                break;
-//                            case 4:
-//                                drawable = U.getDrawable(R.drawable.mie_4);
-//                                break;
-//                            case 3:
-//                                drawable = U.getDrawable(R.drawable.mie_3);
-//                                break;
-//                            case 2:
-//                                drawable = U.getDrawable(R.drawable.mie_2);
-//                                break;
-//                            case 1:
-//                                drawable = U.getDrawable(R.drawable.mie_1);
-//                                break;
-//                        }
-
+                        int num1 = (int)(sShowLightOffTime / 1000) - integer + 1;
                         mIvLightOff.setText(String.valueOf(num1));
                     }
 
@@ -381,7 +376,7 @@ public class GrabOpView extends RelativeLayout {
         mUiHandler.removeMessages(MSG_SHOW_BRUST_BTN);
         Message msg = Message.obtain();
         msg.what = MSG_SHOW_BRUST_BTN;
-        mUiHandler.sendMessageDelayed(msg, SHOW_BURST_DELAY_TIME);
+        mUiHandler.sendMessageDelayed(msg, sShowBurstTime);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
