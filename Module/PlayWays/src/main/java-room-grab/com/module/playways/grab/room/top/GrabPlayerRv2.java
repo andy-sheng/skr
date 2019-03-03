@@ -452,11 +452,13 @@ public class GrabPlayerRv2 extends RelativeLayout {
     }
 
     public void onlineChange(PlayerInfoModel playerInfoModel) {
-        if (playerInfoModel != null) {
+        if (playerInfoModel != null && playerInfoModel.getUserInfo() != null) {
             VP vp = mInfoMap.get(playerInfoModel.getUserInfo().getUserId());
             if (vp != null) {
                 vp.grabTopItemView.bindData(playerInfoModel);
             }
+        } else {
+            MyLog.w(TAG, "onlineChange playerInfoModel error");
         }
     }
 
