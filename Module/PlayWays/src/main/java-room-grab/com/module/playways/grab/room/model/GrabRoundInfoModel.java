@@ -374,7 +374,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
                 "status=" + status +
                 ", userID=" + userID +
                 ", playbookID=" + playbookID +
-                ", songModel=" + songModel +
+                ", songModel=" + songModel==null?"":songModel.toSimpleString() +
                 ", singBeginMs=" + singBeginMs +
                 ", singEndMs=" + singEndMs +
                 ", startTs=" + startTs +

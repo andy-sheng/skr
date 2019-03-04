@@ -331,4 +331,17 @@ public class SongModel implements Serializable {
                 ", rankLrcEndT=" + rankLrcEndT +
                 '}';
     }
+
+    public String toSimpleString() {
+        return "SongModel{" +
+                "itemID=" + itemID +
+                ", itemName='" + itemName + '\'' +
+                ", totalMs=" + totalMs +
+                ", StandIntro='" + StandIntro + '\'' +
+                ", StandIntroBeginT=" + StandIntroBeginT +
+                ", StandIntroEndT=" + StandIntroEndT +
+                ", isblank=" + isblank +
+                ", standLrc='" + standLrc + '\'' +
+                '}';
+    }
 }

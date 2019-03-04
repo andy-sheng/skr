@@ -21,7 +21,7 @@ public class GrabPlayerInfoModel extends PlayerInfoModel {
     @Override
     public String toString() {
         return "PlayerInfo{" +
-                "userInfo=" + userInfo.toString() +
+                "userInfo=" + userInfo==null?"":userInfo.toSimpleString() +
                 ", isSkrer=" + isSkrer +
                 ", role=" + role +
                 '}';
