@@ -179,6 +179,31 @@ public class LyricsReader {
         }
     }
 
+    public String getTwoLineGuideLyric(long guideStart){
+        List<LyricsLineInfo> lyricsLineInfoList = getLyricsLineInfoList();
+        if(lyricsLineInfoList == null || lyricsLineInfoList.size() == 0){
+            MyLog.d(TAG, "getTwoLineGuideLyric lyricsLineInfoList error");
+            return "";
+        }
+
+        int lastGuideLyricLineNum = 0;
+        for (int i = 0; i < lyricsLineInfoList.size(); i++) {
+            LyricsLineInfo info = lyricsLineInfoList.get(i);
+            if(info.getStartTime() == guideStart || (guideStart > info.getStartTime() && guideStart < info.getEndTime())){
+                lastGuideLyricLineNum = i - 1;
+                break;
+            }
+        }
+
+        if(lastGuideLyricLineNum > 0){
+            String lyric = lyricsLineInfoList.get(lastGuideLyricLineNum - 1).getLineLyrics() + "\n"
+                    + lyricsLineInfoList.get(lastGuideLyricLineNum).getLineLyrics();
+            return lyric;
+        }
+
+        return "";
+    }
+
     public List<LyricsLineInfo> getLyricsLineInfoList(){
         ArrayList<LyricsLineInfo> mLyricsLineInfoList = new ArrayList<>();
 
