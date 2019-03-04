@@ -477,7 +477,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         GiftBigAnimationViewGroup giftBigAnimationViewGroup = mRootView.findViewById(R.id.gift_big_animation_vg);
         giftBigAnimationViewGroup.setRoomData(mRoomData);
 
-        mDengBigAnimation = (GrabDengBigAnimationView)mRootView.findViewById(R.id.deng_big_animation);
+        mDengBigAnimation = (GrabDengBigAnimationView) mRootView.findViewById(R.id.deng_big_animation);
     }
 
     private void initGrabOpView() {
@@ -584,6 +584,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         // 播放3秒导唱
         mTopContainerView.setVisibility(View.VISIBLE);
         mSingerTopView.setVisibility(View.GONE);
+        mOthersSingCardView.setVisibility(View.GONE);
         mTopContainerView.setSeqIndex(seq, mRoomData.getGrabConfigModel().getTotalGameRoundSeq());
         PendingPlaySongCardData pendingPlaySongCardData = new PendingPlaySongCardData(seq, songModel);
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_SONGCARD_OVER);
@@ -902,7 +903,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     @Override
     public void onChangeRoomResult(boolean success) {
         long t = System.currentTimeMillis() - mBeginChangeRoomTs;
-        if (t > 1000) {
+        if (t > 1500) {
             mGrabChangeRoomTransitionView.setVisibility(View.GONE);
         } else {
             mUiHanlder.postDelayed(new Runnable() {
@@ -910,7 +911,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                 public void run() {
                     mGrabChangeRoomTransitionView.setVisibility(View.GONE);
                 }
-            }, 1000 - t);
+            }, 1500 - t);
         }
     }
 
