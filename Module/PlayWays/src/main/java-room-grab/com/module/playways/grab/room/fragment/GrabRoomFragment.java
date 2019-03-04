@@ -627,6 +627,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
         if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_GRAB) {
             MyLog.d(TAG, "这轮刚进来，不播放导唱过场");
+            mGrabOpBtn.hide();
         } else {
             mGrabOpBtn.playCountDown(pendingPlaySongCardData.getSeq(), 4, pendingPlaySongCardData.songModel.getStandIntroEndT() - pendingPlaySongCardData.songModel.getStandIntroBeginT());
         }
@@ -684,6 +685,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                 if (grabRoundInfoModel.isParticipant()) {
                     mGrabOpBtn.toOtherSingState();
                 } else {
+                    mGrabOpBtn.hide();
                     MyLog.d(TAG, "中途进来的，不是本局参与者，隐藏按钮");
                 }
                 onSingBeginTipsPlayOver(uid);
