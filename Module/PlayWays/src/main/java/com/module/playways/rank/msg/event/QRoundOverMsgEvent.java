@@ -50,7 +50,9 @@ public final class QRoundOverMsgEvent {
     public String toString() {
         return "QRoundOverMsgEvent{" +
                 "roundOverTimeMs=" + roundOverTimeMs +
-                ", currentRound=" + currentRound +
+                ", currentRoundSeq=" + currentRound.getRoundSeq() +
+                ", currentRoundOverReason=" + currentRound.getOverReason() +
+                ", nextRound=" + nextRound +
                 '}';
     }
 }

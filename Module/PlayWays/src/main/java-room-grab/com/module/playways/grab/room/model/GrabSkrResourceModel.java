@@ -55,10 +55,6 @@ public class GrabSkrResourceModel implements Serializable {
     public String toString() {
         return "GrabSkrResourceModel{" +
                 "audioURL='" + audioURL + '\'' +
-                ", itemID=" + itemID +
-                ", midiURL='" + midiURL + '\'' +
-                ", resourceID=" + resourceID +
-                ", sysScore=" + sysScore +
                 '}';
     }
 

@@ -18,6 +18,15 @@ public class GrabPlayerInfoModel extends PlayerInfoModel {
         this.role = role;
     }
 
+    @Override
+    public String toString() {
+        return "PlayerInfo{" +
+                "userInfo=" + userInfo.toString() +
+                ", isSkrer=" + isSkrer +
+                ", role=" + role +
+                '}';
+    }
+
     public static GrabPlayerInfoModel parse(OnlineInfo info) {
         GrabPlayerInfoModel grabPlayerInfoModel = new GrabPlayerInfoModel();
         grabPlayerInfoModel.setRole(info.getRole().getValue());

@@ -870,7 +870,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             // 没结束 current 不应该为null
             if (newRoundInfo != null) {
                 // 服务下发的轮次已经大于当前轮次了，说明本地信息已经不对了，更新
-                if (RoomDataUtils.roundSeqLarger(newRoundInfo, mRoomData.getRealRoundInfo())) {
+                if (RoomDataUtils.roundSeqLarger(newRoundInfo, mRoomData.getExpectRoundInfo())) {
                     MyLog.w(TAG, "updatePlayerState" + " sync发现本地轮次信息滞后，更新");
                     // 轮次确实比当前的高，可以切换
                     mRoomData.setExpectRoundInfo(newRoundInfo);
@@ -924,7 +924,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     @Subscribe(threadMode = ThreadMode.POSTING, priority = 9)
     public void onEvent(GrabRoundChangeEvent event) {
-        MyLog.d(TAG, "onEvent" + " event=" + event);
+        MyLog.d(TAG, "GrabRoundChangeEvent" + " event=" + event);
         estimateOverTsThisRound();
         closeEngine();
         tryStopRobotPlay();
@@ -971,7 +971,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     @Subscribe(threadMode = ThreadMode.POSTING, priority = 9)
     public void onEvent(GrabRoundStatusChangeEvent event) {
-        MyLog.d(TAG, "onEvent" + " event=" + event);
+        MyLog.d(TAG, "GrabRoundStatusChangeEvent" + " event=" + event);
         estimateOverTsThisRound();
         closeEngine();
         GrabRoundInfoModel now = event.roundInfo;
@@ -1131,11 +1131,14 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             mRoomData.getRealRoundInfo().tryUpdateRoundInfoModel(event.currentRound, true);
         }
         // 游戏轮次结束
-        if (RoomDataUtils.roundSeqLarger(event.nextRound, mRoomData.getRealRoundInfo())) {
+        if (RoomDataUtils.roundSeqLarger(event.nextRound, mRoomData.getExpectRoundInfo())) {
             // 轮次确实比当前的高，可以切换
             MyLog.w(TAG, "轮次确实比当前的高，可以切换");
             mRoomData.setExpectRoundInfo(event.nextRound);
             mRoomData.checkRoundInEachMode();
+        } else {
+            MyLog.w(TAG, "轮次比当前轮次还小,直接忽略 当前轮次:" + mRoomData.getExpectRoundInfo().getRoundSeq()
+                    + " push轮次:" + event.currentRound.getRoundSeq());
         }
     }
 

@@ -43,12 +43,12 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
      */
     @Override
     public void checkRoundInEachMode() {
-        MyLog.d(TAG, "checkRound mExcpectRoundInfo=" + mExpectRoundInfo + " mRealRoundInfo=" + mRealRoundInfo);
         if (mIsGameFinish) {
-            MyLog.d(TAG, "游戏结束了，不需要再check");
+            MyLog.d(TAG, "游戏结束了，不需要再checkRoundInEachMode");
             return;
         }
         if (mExpectRoundInfo == null) {
+            MyLog.d(TAG, "尝试切换轮次 checkRoundInEachMode mExpectRoundInfo == null");
             // 结束状态了
             if (mRealRoundInfo != null) {
                 GrabRoundInfoModel lastRoundInfoModel = (GrabRoundInfoModel) mRealRoundInfo;
@@ -58,6 +58,7 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
             }
             return;
         }
+        MyLog.d(TAG, "尝试切换轮次 checkRoundInEachMode mExpectRoundInfo.roundSeq=" + mExpectRoundInfo.getRoundSeq());
         if (RoomDataUtils.roundSeqLarger(mExpectRoundInfo, mRealRoundInfo) || mRealRoundInfo == null) {
             // 轮次大于，才切换
             GrabRoundInfoModel lastRoundInfoModel = (GrabRoundInfoModel) mRealRoundInfo;

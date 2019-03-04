@@ -261,4 +261,11 @@ public class UserInfoModel implements Serializable, Cloneable {
                 ", mainLevel=" + mainLevel +
                 '}';
     }
+
+    public String toSimpleString() {
+        return "UserInfoModel{" +
+                "userId=" + userId +
+                ", nickname='" + nickname + '\'' +
+                '}';
+    }
 }

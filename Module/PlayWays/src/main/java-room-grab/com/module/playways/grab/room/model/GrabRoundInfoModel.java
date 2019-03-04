@@ -370,7 +370,18 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
     @Override
     public String toString() {
         return "GrabRoundInfoModel{" +
+                ", roundSeq=" + roundSeq +
                 "status=" + status +
+                ", userID=" + userID +
+                ", playbookID=" + playbookID +
+                ", songModel=" + songModel +
+                ", singBeginMs=" + singBeginMs +
+                ", singEndMs=" + singEndMs +
+                ", startTs=" + startTs +
+                ", endTs=" + endTs +
+                ", sysScore=" + sysScore +
+                ", hasSing=" + hasSing +
+                ", overReason=" + overReason +
                 ", bLightInfos=" + bLightInfos +
                 ", mLightInfos=" + mLightInfos +
                 ", playUsers=" + playUsers +
@@ -381,6 +392,6 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
                 ", isParticipant=" + isParticipant +
                 ", elapsedTimeMs=" + elapsedTimeMs +
                 ", enterStatus=" + enterStatus +
-                '}' + super.toString();
+                '}';
     }
 }
