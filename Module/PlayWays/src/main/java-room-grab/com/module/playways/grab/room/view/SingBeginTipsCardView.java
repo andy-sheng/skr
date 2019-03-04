@@ -130,13 +130,13 @@ public class SingBeginTipsCardView extends RelativeLayout {
         textPaint1.setColor(Color.parseColor("#0C2275"));
         textPaint1.setTypeface(Typeface.DEFAULT_BOLD);
         textPaint1.setTextAlign(Paint.Align.LEFT);
-        textPaint1.setTextSize(U.getDisplayUtils().dip2px(24));
+        textPaint1.setTextSize(U.getDisplayUtils().dip2px(22));
 
         TextPaint textPaint2 = new TextPaint();
         textPaint2.setColor(Color.parseColor("#2E3041"));
         textPaint2.setTypeface(Typeface.DEFAULT_BOLD);
         textPaint2.setTextAlign(Paint.Align.LEFT);
-        textPaint2.setTextSize(U.getDisplayUtils().dip2px(16));
+        textPaint2.setTextSize(U.getDisplayUtils().dip2px(14));
 
         String text1 = "";
         String text2 = "";
