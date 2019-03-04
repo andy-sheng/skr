@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.common.utils;
+package com.common.permission;
 
 import android.Manifest;
 import android.app.Activity;
@@ -24,6 +24,7 @@ import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 
 import com.common.log.MyLog;
+import com.common.utils.U;
 import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
@@ -49,7 +50,7 @@ public class PermissionUtils {
     public static final String TAG = "Permission";
 
 
-    PermissionUtils() {
+    public PermissionUtils() {
     }
 
     public boolean checkReadPhoneState(Activity activity) {
@@ -229,30 +230,7 @@ public class PermissionUtils {
      * 跳转到APP权限设置界面
      */
     public void goToPermissionManager(Activity refs) {
-        Intent intent;
-//            if (U.getDeviceUtils().isMiui()) {
-//                PackageManager pm = refs.getPackageManager();
-//                PackageInfo info;
-//                try {
-//                    info = pm.getPackageInfo(refs.getPackageName(), 0);
-//                } catch (PackageManager.NameNotFoundException e) {
-//                    com.common.log.MyLog.e(e);
-//                    return;
-//                }
-//                intent = new Intent("miui.intent.action.APP_PERM_EDITOR");
-//                // i.setClassName("com.android.settings", "com.miui.securitycenter.permission.AppPermissionsEditor");
-//                intent.putExtra("extra_pkgname", refs.getPackageName());      // for MIUI 6
-//                intent.putExtra("extra_package_uid", info.applicationInfo.uid);  // for MIUI 5
-//            } else {
-        intent = new Intent();
-        intent.setAction("android.intent.action.MAIN");
-        intent.setClassName("com.android.settings", Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-//            }
-        if (U.getCommonUtils().isIntentAvailable(refs, intent)) {
-            refs.startActivity(intent);
-        } else {
-            U.getToastUtil().showShort("跳转设置页失败，请尝试在系统设置中清除app缓存数据");
-        }
+        GoSettingPage.toPermissionSetting(refs);
     }
 }
 

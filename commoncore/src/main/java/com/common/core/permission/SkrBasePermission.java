@@ -6,7 +6,7 @@ import android.view.View;
 
 import com.common.core.R;
 import com.common.log.MyLog;
-import com.common.utils.PermissionUtils;
+import com.common.permission.PermissionUtils;
 import com.common.utils.U;
 import com.dialog.view.TipsDialogView;
 import com.orhanobut.dialogplus.DialogPlus;

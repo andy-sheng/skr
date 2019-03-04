@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import com.alibaba.fastjson.JSONObject;
 import com.common.base.BaseFragment;
-import com.common.utils.PermissionUtils;
+import com.common.permission.PermissionUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExButton;
 import com.common.view.ex.ExTextView;

@@ -3,7 +3,6 @@ package com.module.home.persenter;
 import android.app.Activity;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 
@@ -11,15 +10,11 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.core.account.UserAccountManager;
 import com.common.core.account.event.AccountEvent;
 import com.common.core.login.LoginActivity;
-import com.common.core.myinfo.Location;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
-import com.common.core.permission.SkrSdcardPermission;
 import com.common.core.upgrade.UpgradeData;
 import com.common.log.MyLog;
-import com.common.utils.LbsUtils;
 import com.common.utils.NetworkUtils;
-import com.common.utils.PermissionUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.manager.BgMusicManager;
@@ -30,8 +25,6 @@ import com.module.common.ICallback;
 import com.module.home.R;
 import com.module.home.updateinfo.UploadAccountInfoActivity;
 import com.module.home.view.IHomeActivity;
-import com.module.home.view.PermissionTipsView;
-import com.module.msg.IMsgService;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.ViewHolder;
@@ -39,8 +32,6 @@ import com.orhanobut.dialogplus.ViewHolder;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.List;
 
 public class HomeCorePresenter {
 

@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.common.base.BaseFragment;
-import com.common.utils.PermissionUtils;
+import com.common.permission.PermissionUtils;
 import com.common.utils.U;
 import com.wali.live.moduletest.R;
 

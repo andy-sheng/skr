@@ -13,7 +13,7 @@ import android.widget.Toast;
 import com.common.base.R;
 import com.common.image.model.BaseImage;
 import com.common.image.model.ImageFactory;
-import com.common.utils.PermissionUtils;
+import com.common.permission.PermissionUtils;
 import com.common.utils.U;
 import com.imagebrowse.EnhancedImageView;
 import com.respicker.ResPicker;

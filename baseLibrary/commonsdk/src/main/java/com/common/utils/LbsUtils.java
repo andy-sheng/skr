@@ -9,6 +9,7 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.common.log.MyLog;
+import com.common.permission.PermissionUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;

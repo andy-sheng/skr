@@ -3,6 +3,8 @@ package com.common.utils;
 import android.app.Application;
 import android.graphics.drawable.Drawable;
 
+import com.common.permission.PermissionUtils;
+
 /**
  * 每个工具类都必须由U引用来调用，以防止工具类混乱难以管理的问题，
  * 类似好几个ImageUtils

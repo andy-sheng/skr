@@ -22,10 +22,9 @@ import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.userinfo.model.RankInfoModel;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.model.UserRankModel;
-import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.NetworkUtils;
-import com.common.utils.PermissionUtils;
+import com.common.permission.PermissionUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
@@ -47,11 +46,8 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Predicate;
 
 /**
  * 排行榜

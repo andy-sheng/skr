@@ -21,7 +21,7 @@ import com.common.base.FragmentDataListener;
 import com.common.base.R;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
-import com.common.utils.PermissionUtils;
+import com.common.permission.PermissionUtils;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
 import com.respicker.loader.ResDataSource;
