@@ -80,7 +80,7 @@ public class PermissionUtils {
                 return false;
             }
         }
-        return new RxPermissions((FragmentActivity) activity).isGranted(permission);
+        return new RxPermissions(activity).isGranted(permission);
     }
 
     public boolean checkPermission(RxPermissions rxPermissions, String permission) {
