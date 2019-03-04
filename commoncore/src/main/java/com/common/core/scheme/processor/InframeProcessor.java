@@ -1,12 +1,9 @@
 package com.common.core.scheme.processor;
 
-import android.app.Activity;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.common.base.BaseActivity;
 import com.common.core.account.UserAccountManager;
 import com.common.core.scheme.SchemeConstants;
 import com.common.core.scheme.SchemeUtils;
@@ -14,15 +11,6 @@ import com.common.log.MyLog;
 import com.common.utils.U;
 import com.module.RouterConstants;
 import com.module.grab.IGrabModeGameService;
-import com.module.rank.IRankingModeService;
-
-import org.w3c.dom.Text;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * Created by lan on 16/10/26.
@@ -117,7 +105,7 @@ public class InframeProcessor implements ISchemeProcessor {
             } catch (Exception e) {
                 MyLog.e(TAG, e);
             }
-        } else if(SchemeConstants.PATH_GRAb_MATCH.equals(path)){
+        } else if(SchemeConstants.PATH_GRAB_MATCH.equals(path)){
             try {
                 if (!UserAccountManager.getInstance().hasAccount()) {
                     MyLog.w(TAG, "processGameUrl 没有登录");

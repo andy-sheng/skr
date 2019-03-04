@@ -30,7 +30,7 @@ public class SchemeConstants {
     public static final String PATH_JOIN = "/join";
     public static final String PATH_FULL_SCREEN = "/fullScreen";
     public static final String PATH_RANK_CHOOSE_SONG = "/rank/chooseSong";
-    public static final String PATH_GRAb_MATCH = "/grabmatch";
+    public static final String PATH_GRAB_MATCH = "/grabmatch";
 
     //param
     public static final String PARAM_LIST_ID = "id";

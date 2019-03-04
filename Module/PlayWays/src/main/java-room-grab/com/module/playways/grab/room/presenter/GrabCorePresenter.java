@@ -412,8 +412,12 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 } else {
 
                 }
-                int coin = result.getData().getInteger("coin");
-                mRoomData.setCoin(coin);
+                try {
+                    int coin = result.getData().getInteger("coin");
+                    mRoomData.setCoin(coin);
+                } catch (Exception e) {
+                    MyLog.e(e);
+                }
             }
 
             @Override
