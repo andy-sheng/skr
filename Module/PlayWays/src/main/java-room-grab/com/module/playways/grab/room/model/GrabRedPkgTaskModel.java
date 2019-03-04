@@ -78,7 +78,7 @@ public class GrabRedPkgTaskModel implements Serializable {
         this.redbagExtra = redbagExtra;
     }
 
-    public static class RedbagExtraBean {
+    public static class RedbagExtraBean implements Serializable {
         /**
          * cash : 18.8
          */

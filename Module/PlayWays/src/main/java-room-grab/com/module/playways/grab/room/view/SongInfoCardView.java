@@ -108,7 +108,7 @@ public class SongInfoCardView extends RelativeLayout {
         }
         mSongNameTv.setText("《" + songModel.getItemName() + "》");
         mSongSingerTv.setText(songModel.getOwner());
-
+        mSongLyrics.setText("");
         playLyric(songModel);
         // 入场动画
         animationGo();
