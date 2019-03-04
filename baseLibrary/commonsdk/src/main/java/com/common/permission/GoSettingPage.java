@@ -27,7 +27,7 @@ public class GoSettingPage {
         } else if (U.getDeviceUtils().isVivo()) {
             getAppDetailSettingIntent(context);
         } else {
-            commonROMPermissionApplyInternal(context);
+            getAppDetailSettingIntent(context);
         }
     }
 
@@ -65,17 +65,17 @@ public class GoSettingPage {
         context.startActivity(intent);
     }
 
-    public static void commonROMPermissionApplyInternal(Context context) {
-        Class clazz = Settings.class;
-        Field field = null;
-        try {
-            field = clazz.getDeclaredField("ACTION_MANAGE_OVERLAY_PERMISSION");
-            Intent intent = new Intent(field.get(null).toString());
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.setData(Uri.parse("package:" + context.getPackageName()));
-            context.startActivity(intent);
-        } catch (Exception e) {
-
-        }
-    }
+//    public static void commonROMPermissionApplyInternal(Context context) {
+//        Class clazz = Settings.class;
+//        Field field = null;
+//        try {
+//            field = clazz.getDeclaredField("ACTION_MANAGE_OVERLAY_PERMISSION");
+//            Intent intent = new Intent(field.get(null).toString());
+//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            intent.setData(Uri.parse("package:" + context.getPackageName()));
+//            context.startActivity(intent);
+//        } catch (Exception e) {
+//
+//        }
+//    }
 }
