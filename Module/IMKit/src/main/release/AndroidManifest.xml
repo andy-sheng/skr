@@ -33,6 +33,17 @@
             android:name="com.module.msg.RongIMConfiguration"
             android:value="ConfigModule" />
 
+        <receiver
+            android:name="com.module.msg.RongNotifationReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="io.rong.push.intent.MESSAGE_ARRIVED" />
+                <action android:name="io.rong.push.intent.MI_MESSAGE_ARRIVED" />
+                <action android:name="io.rong.push.intent.MESSAGE_CLICKED" />
+                <action android:name="io.rong.push.intent.MI_MESSAGE_CLICKED" />
+            </intent-filter>
+        </receiver>
+
         <!--会话列表-->
 
         <!--会话界面-->
