@@ -61,7 +61,9 @@ public class RankTopContainerView2 extends RelativeLayout {
     RankTopLEDView mMidLedView;
     RankTopLEDView mRightLedView;
 
-    SVGAImageView mEnergyFillSvga;   //能量满大动画
+    SVGAImageView mEnergyFillSvga1;   //能量满大动画
+    SVGAImageView mEnergyFillSvga2;   //能量满大动画
+    SVGAImageView mEnergyFillSvga3;   //能量满大动画
 
     RankTopContainerView1.Listener mListener;
 
@@ -112,7 +114,11 @@ public class RankTopContainerView2 extends RelativeLayout {
         mLeftLedView = (RankTopLEDView) findViewById(R.id.left_led_view);
         mMidLedView = (RankTopLEDView) findViewById(R.id.mid_led_view);
         mRightLedView = (RankTopLEDView) findViewById(R.id.right_led_view);
-        mEnergyFillSvga = (SVGAImageView) findViewById(R.id.energy_fill_svga);
+
+        mEnergyFillSvga1 = (SVGAImageView) findViewById(R.id.energy_fill_svga1);
+        mEnergyFillSvga2 = (SVGAImageView) findViewById(R.id.energy_fill_svga2);
+        mEnergyFillSvga3 = (SVGAImageView) findViewById(R.id.energy_fill_svga3);
+
 
         mIvGameRole.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -175,9 +181,17 @@ public class RankTopContainerView2 extends RelativeLayout {
         if (mGameRoleDialog != null && mGameRoleDialog.isShowing()) {
             mGameRoleDialog.dismiss();
         }
-        if (mEnergyFillSvga != null) {
-            mEnergyFillSvga.setCallback(null);
-            mEnergyFillSvga.stopAnimation(true);
+        if (mEnergyFillSvga1 != null) {
+            mEnergyFillSvga1.setCallback(null);
+            mEnergyFillSvga1.stopAnimation(true);
+        }
+        if (mEnergyFillSvga2 != null) {
+            mEnergyFillSvga2.setCallback(null);
+            mEnergyFillSvga2.stopAnimation(true);
+        }
+        if (mEnergyFillSvga3 != null) {
+            mEnergyFillSvga3.setCallback(null);
+            mEnergyFillSvga3.stopAnimation(true);
         }
         mUiHandler.removeCallbacksAndMessages(null);
         EventBus.getDefault().unregister(this);
@@ -443,7 +457,19 @@ public class RankTopContainerView2 extends RelativeLayout {
             // 能量槽满了,要触发大动画了
             mCurScore = mCurScore % mTotalScore;
             int progress = mCurScore * 100 / mTotalScore;
-            playEnergyFillAnimation();
+            playEnergyFillAnimation(mEnergyFillSvga1, "rank_fill_energy2.svga");
+            mUiHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    playEnergyFillAnimation(mEnergyFillSvga2, "rank_fill_energy1.svga");
+                }
+            }, 200);
+            mUiHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    playEnergyFillAnimation(mEnergyFillSvga3, "rank_fill_energy2.svga");
+                }
+            }, 1000);
             mEnergySlotView.setTarget(0, new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
@@ -459,7 +485,7 @@ public class RankTopContainerView2 extends RelativeLayout {
     }
 
 
-    void playEnergyFillAnimation() {
+    void playEnergyFillAnimation(SVGAImageView mEnergyFillSvga, String assetsName) {
         MyLog.d(TAG, "playFullEnergyAnimation");
         mEnergyFillSvga.setCallback(null);
         mEnergyFillSvga.stopAnimation(true);
@@ -468,7 +494,7 @@ public class RankTopContainerView2 extends RelativeLayout {
 
         SVGAParser parser = new SVGAParser(U.app());
         try {
-            parser.parse("rank_fill_energy.svga", new SVGAParser.ParseCompletion() {
+            parser.parse(assetsName, new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
                     SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);

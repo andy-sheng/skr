@@ -17,7 +17,27 @@
         android:background="@drawable/yanchang_bisaiguize" />
 
     <com.opensource.svgaplayer.SVGAImageView
-        android:id="@+id/energy_fill_svga"
+        android:id="@+id/energy_fill_svga1"
+        android:layout_width="@dimen/view_375_dp"
+        android:layout_height="@dimen/view_200_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_80_dp"
+        android:visibility="gone"
+        app:antiAlias="true"
+        app:autoPlay="false" />
+
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/energy_fill_svga2"
+        android:layout_width="@dimen/view_375_dp"
+        android:layout_height="@dimen/view_200_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_80_dp"
+        android:visibility="gone"
+        app:antiAlias="true"
+        app:autoPlay="false" />
+
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/energy_fill_svga3"
         android:layout_width="@dimen/view_375_dp"
         android:layout_height="@dimen/view_200_dp"
         android:layout_centerHorizontal="true"
