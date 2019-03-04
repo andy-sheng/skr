@@ -65,7 +65,6 @@ import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.room.score.MachineScoreItem;
 import com.module.playways.rank.room.score.RobotScoreHelper;
 import com.module.playways.rank.room.view.IGameRuleView;
-import com.module.playways.voice.activity.VoiceRoomActivity;
 import com.zq.live.proto.Common.ESex;
 import com.zq.live.proto.Common.UserInfo;
 import com.zq.live.proto.Room.EMsgPosType;
@@ -1038,7 +1037,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     //服务器push，某人爆灯了
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(PkBurstLightMsgEvent event) {
-        if (RoomDataUtils.isCurrentRound(event.getpKBLightMsg().getRoundSeq(), mRoomData)) {
+        if (RoomDataUtils.isCurrentRunningRound(event.getpKBLightMsg().getRoundSeq(), mRoomData)) {
             MyLog.w(TAG, "有人爆灯了：userID " + event.getpKBLightMsg().getUserID() + ", seq " + event.getpKBLightMsg().getRoundSeq());
             RankRoundInfoModel roundInfoModel = (RankRoundInfoModel) mRoomData.getRealRoundInfo();
 
@@ -1060,7 +1059,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     //服务器push，某人灭灯了
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(PkLightOffMsgEvent event) {
-        if (RoomDataUtils.isCurrentRound(event.getPKMLightMsg().getRoundSeq(), mRoomData)) {
+        if (RoomDataUtils.isCurrentRunningRound(event.getPKMLightMsg().getRoundSeq(), mRoomData)) {
             MyLog.w(TAG, "有人灭灯了：userID " + event.getPKMLightMsg().getUserID() + ", seq " + event.getPKMLightMsg().getRoundSeq());
             RankRoundInfoModel roundInfoModel = (RankRoundInfoModel) mRoomData.getRealRoundInfo();
 
@@ -1330,7 +1329,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         if (event.exitUserID != 0) {
             mRoomData.setOnline(event.exitUserID, false);
         }
-        if (RoomDataUtils.isCurrentRound(event.currenRound.getRoundSeq(), mRoomData)) {
+        if (RoomDataUtils.isCurrentRunningRound(event.currenRound.getRoundSeq(), mRoomData)) {
             // 如果是当前轮次
             mRoomData.getRealRoundInfo().tryUpdateRoundInfoModel(event.currenRound, true);
         }
@@ -1354,7 +1353,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         if (event.mExitUserID != 0) {
             mRoomData.setOnline(event.mExitUserID, false);
         }
-        if (RoomDataUtils.isCurrentRound(event.mRankRoundInfoModel.getRoundSeq(), mRoomData)) {
+        if (RoomDataUtils.isCurrentRunningRound(event.mRankRoundInfoModel.getRoundSeq(), mRoomData)) {
             mRoomData.getRealRoundInfo().tryUpdateRoundInfoModel(event.mRankRoundInfoModel, true);
         }
 

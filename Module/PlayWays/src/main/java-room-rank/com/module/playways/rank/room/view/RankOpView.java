@@ -10,7 +10,6 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
-import com.module.playways.BaseRoomData;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.room.RankRoomData;
 import com.module.playways.rank.room.event.PkMyBurstSuccessEvent;
@@ -124,7 +123,7 @@ public class RankOpView extends RelativeLayout {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(PkMyBurstSuccessEvent event) {
         mHasOpSeq.add(event.roundInfo.getRoundSeq());
-        if (RoomDataUtils.isCurrentRound(event.roundInfo.getRoundSeq(), mRoomData)) {
+        if (RoomDataUtils.isCurrentRunningRound(event.roundInfo.getRoundSeq(), mRoomData)) {
             // 爆灯成功
             mIvBurst.setEnabled(false);
         }
@@ -133,7 +132,7 @@ public class RankOpView extends RelativeLayout {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(PkMyLightOffSuccessEvent event) {
         mHasOpSeq.add(event.roundInfo.getRoundSeq());
-        if (RoomDataUtils.isCurrentRound(event.roundInfo.getRoundSeq(), mRoomData)) {
+        if (RoomDataUtils.isCurrentRunningRound(event.roundInfo.getRoundSeq(), mRoomData)) {
             // 灭灯成功
             mIvTurnOff.setEnabled(false);
         }

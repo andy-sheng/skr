@@ -238,19 +238,39 @@ public class RoomDataUtils {
     }
 
     /**
-     * 与真实轮次是否一致
+     * 一般与push无关的，想要确定是本轮内的操作用这个判断
+     * 与真实正在运行的轮次是否一致
      *
      * @param eventSeq
      * @param roomData
      * @return
      */
-    public static <T extends BaseRoundInfoModel> boolean isCurrentRound(int eventSeq, BaseRoomData<T> roomData) {
+    public static <T extends BaseRoundInfoModel> boolean isCurrentRunningRound(int eventSeq, BaseRoomData<T> roomData) {
         if (roomData != null) {
             if (roomData.getRealRoundInfo() == null) {
                 return false;
             }
-
             if (roomData.getRealRoundInfo().getRoundSeq() == eventSeq) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 一般push的消息都要用这个判断
+     * 与正在运行的或者是将要运行的轮次是否一致
+     *
+     * @param eventSeq
+     * @param roomData
+     * @return
+     */
+    public static <T extends BaseRoundInfoModel> boolean isCurrentExpectingRound(int eventSeq, BaseRoomData<T> roomData) {
+        if (roomData != null) {
+            if (roomData.getExpectRoundInfo() == null) {
+                return false;
+            }
+            if (roomData.getExpectRoundInfo().getRoundSeq() == eventSeq) {
                 return true;
             }
         }

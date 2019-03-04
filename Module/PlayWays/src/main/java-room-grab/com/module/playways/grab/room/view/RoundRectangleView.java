@@ -78,7 +78,7 @@ public class RoundRectangleView extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        MyLog.d(TAG, "width " + getMeasuredWidth() + " height " + getMeasuredHeight());
+        //MyLog.d(TAG, "width " + getMeasuredWidth() + " height " + getMeasuredHeight());
         mRadio = getMeasuredHeightR() / 2;
 
         mLineWidth = getMeasuredWidthR() - getMeasuredHeight();

@@ -336,12 +336,12 @@ public class SongModel implements Serializable {
         return "SongModel{" +
                 "itemID=" + itemID +
                 ", itemName='" + itemName + '\'' +
-                ", totalMs=" + totalMs +
-                ", StandIntro='" + StandIntro + '\'' +
-                ", StandIntroBeginT=" + StandIntroBeginT +
-                ", StandIntroEndT=" + StandIntroEndT +
-                ", isblank=" + isblank +
-                ", standLrc='" + standLrc + '\'' +
+//                ", totalMs=" + totalMs +
+//                ", StandIntro='" + StandIntro + '\'' +
+//                ", StandIntroBeginT=" + StandIntroBeginT +
+//                ", StandIntroEndT=" + StandIntroEndT +
+//                ", isblank=" + isblank +
+//                ", standLrc='" + standLrc + '\'' +
                 '}';
     }
 }

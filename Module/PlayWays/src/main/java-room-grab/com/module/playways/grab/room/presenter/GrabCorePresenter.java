@@ -335,7 +335,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                         WantSingerInfo wantSingerInfo = new WantSingerInfo();
                         wantSingerInfo.setUserID((int) MyUserInfoManager.getInstance().getUid());
                         wantSingerInfo.setTimeMs(System.currentTimeMillis());
-                        now.addGrabUid(RoomDataUtils.isCurrentRound(now.getRoundSeq(), mRoomData), wantSingerInfo);
+                        now.addGrabUid(true, wantSingerInfo);
                     } else {
                         MyLog.w(TAG, "now != null && now.getRoundSeq() == seq 条件不满足，" + result.getTraceId());
                     }
@@ -357,9 +357,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     public void lightsOff() {
         GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
+        int roundSeq = now.getRoundSeq();
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", mRoomData.getGameId());
-        map.put("roundSeq", mRoomData.getRealRoundSeq());
+        map.put("roundSeq", roundSeq);
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.lightOff(body), new ApiObserver<ApiResult>() {
@@ -367,10 +368,12 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 MyLog.e(TAG, "lightsOff erro code is " + result.getErrno() + ",traceid is " + result.getTraceId());
                 if (result.getErrno() == 0) {
-                    boolean notify = RoomDataUtils.isCurrentRound(now.getRoundSeq(), mRoomData);
-                    MLightInfoModel noPassingInfo = new MLightInfoModel();
-                    noPassingInfo.setUserID((int) MyUserInfoManager.getInstance().getUid());
-                    now.addLightOffUid(notify, noPassingInfo);
+                    GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
+                    if (now != null && now.getRoundSeq() == roundSeq) {
+                        MLightInfoModel noPassingInfo = new MLightInfoModel();
+                        noPassingInfo.setUserID((int) MyUserInfoManager.getInstance().getUid());
+                        now.addLightOffUid(true, noPassingInfo);
+                    }
                 } else {
 
                 }
@@ -391,6 +394,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", mRoomData.getGameId());
+        int roundSeq = now.getRoundSeq();
         map.put("roundSeq", mRoomData.getRealRoundSeq());
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
@@ -399,14 +403,17 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 MyLog.e(TAG, "lightsOff erro code is " + result.getErrno() + ",traceid is " + result.getTraceId());
                 if (result.getErrno() == 0) {
-                    boolean notify = RoomDataUtils.isCurrentRound(now.getRoundSeq(), mRoomData);
-                    BLightInfoModel noPassingInfo = new BLightInfoModel();
-                    noPassingInfo.setUserID((int) MyUserInfoManager.getInstance().getUid());
-                    now.addLightBurstUid(notify, noPassingInfo);
-                    mRoomData.setCoin(result.getData().getInteger("coin"));
+                    GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
+                    if (now != null && now.getRoundSeq() == roundSeq) {
+                        BLightInfoModel noPassingInfo = new BLightInfoModel();
+                        noPassingInfo.setUserID((int) MyUserInfoManager.getInstance().getUid());
+                        now.addLightBurstUid(true, noPassingInfo);
+                    }
                 } else {
 
                 }
+                int coin = result.getData().getInteger("coin");
+                mRoomData.setCoin(coin);
             }
 
             @Override
@@ -875,12 +882,12 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     // 轮次确实比当前的高，可以切换
                     mRoomData.setExpectRoundInfo(newRoundInfo);
                     mRoomData.checkRoundInEachMode();
-                } else if (RoomDataUtils.isCurrentRound(newRoundInfo.getRoundSeq(), mRoomData)) {
+                } else if (RoomDataUtils.isCurrentExpectingRound(newRoundInfo.getRoundSeq(), mRoomData)) {
                     /**
                      * 是当前轮次，最近状态就更新整个轮次
                      */
                     if (syncStatusTimes > mRoomData.getLastSyncTs()) {
-                        mRoomData.getRealRoundInfo().tryUpdateRoundInfoModel(newRoundInfo, true);
+                        mRoomData.getExpectRoundInfo().tryUpdateRoundInfoModel(newRoundInfo, true);
                     }
                 }
             } else {
@@ -1003,15 +1010,15 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QWantSingChanceMsgEvent event) {
-        if (RoomDataUtils.isCurrentRound(event.getRoundSeq(), mRoomData)) {
+        if (RoomDataUtils.isCurrentExpectingRound(event.getRoundSeq(), mRoomData)) {
             MyLog.w(TAG, "有人想唱：userID " + event.getUserID() + ", seq " + event.getRoundSeq());
-            GrabRoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
+            GrabRoundInfoModel roundInfoModel = mRoomData.getExpectRoundInfo();
             WantSingerInfo wantSingerInfo = new WantSingerInfo();
             wantSingerInfo.setUserID(event.getUserID());
             wantSingerInfo.setTimeMs(System.currentTimeMillis());
             roundInfoModel.addGrabUid(true, wantSingerInfo);
         } else {
-            MyLog.w(TAG, "有人想唱,但是不是这个轮次：userID " + event.getUserID() + ", seq " + event.getRoundSeq() + "，当前轮次是 " + mRoomData.getRealRoundSeq());
+            MyLog.w(TAG, "有人想唱,但是不是这个轮次：userID " + event.getUserID() + ", seq " + event.getRoundSeq() + "，当前轮次是 " + mRoomData.getExpectRoundInfo());
         }
     }
 
@@ -1022,14 +1029,14 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QGetSingChanceMsgEvent event) {
-        if (RoomDataUtils.isCurrentRound(event.getRoundSeq(), mRoomData)) {
+        if (RoomDataUtils.isCurrentExpectingRound(event.getRoundSeq(), mRoomData)) {
             MyLog.w(TAG, "抢到唱歌权：userID " + event.getUserID() + ", seq " + event.getRoundSeq());
-            GrabRoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
+            GrabRoundInfoModel roundInfoModel = mRoomData.getExpectRoundInfo();
             roundInfoModel.setHasSing(true);
             roundInfoModel.setUserID(event.getUserID());
             roundInfoModel.updateStatus(true, GrabRoundInfoModel.STATUS_SING);
         } else {
-            MyLog.w(TAG, "抢到唱歌权,但是不是这个轮次：userID " + event.getUserID() + ", seq " + event.getRoundSeq() + "，当前轮次是 " + mRoomData.getRealRoundSeq());
+            MyLog.w(TAG, "抢到唱歌权,但是不是这个轮次：userID " + event.getUserID() + ", seq " + event.getRoundSeq() + "，当前轮次是 " + mRoomData.getExpectRoundInfo());
         }
     }
 
@@ -1040,16 +1047,16 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QLightOffMsgEvent event) {
-        if (RoomDataUtils.isCurrentRound(event.roundSeq, mRoomData)) {
+        if (RoomDataUtils.isCurrentExpectingRound(event.roundSeq, mRoomData)) {
             MyLog.w(TAG, "有人灭灯了：userID " + event.userID + ", seq " + event.roundSeq);
-            GrabRoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
+            GrabRoundInfoModel roundInfoModel = mRoomData.getExpectRoundInfo();
             //都开始灭灯肯定是已经开始唱了
             roundInfoModel.updateStatus(true, GrabRoundInfoModel.STATUS_SING);
             MLightInfoModel noPassingInfo = new MLightInfoModel();
             noPassingInfo.setUserID(event.userID);
             roundInfoModel.addLightOffUid(true, noPassingInfo);
         } else {
-            MyLog.w(TAG, "有人灭灯了,但是不是这个轮次：userID " + event.userID + ", seq " + event.roundSeq + "，当前轮次是 " + mRoomData.getRealRoundSeq());
+            MyLog.w(TAG, "有人灭灯了,但是不是这个轮次：userID " + event.userID + ", seq " + event.roundSeq + "，当前轮次是 " + mRoomData.getExpectRoundInfo());
         }
     }
 
@@ -1060,16 +1067,16 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QLightBurstMsgEvent event) {
-        if (RoomDataUtils.isCurrentRound(event.roundSeq, mRoomData)) {
+        if (RoomDataUtils.isCurrentExpectingRound(event.roundSeq, mRoomData)) {
             MyLog.w(TAG, "有人爆灯了：userID " + event.userID + ", seq " + event.roundSeq);
-            GrabRoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
+            GrabRoundInfoModel roundInfoModel = mRoomData.getExpectRoundInfo();
             //都开始灭灯肯定是已经开始唱了
             roundInfoModel.updateStatus(true, GrabRoundInfoModel.STATUS_SING);
             BLightInfoModel noPassingInfo = new BLightInfoModel();
             noPassingInfo.setUserID(event.userID);
             roundInfoModel.addLightBurstUid(true, noPassingInfo);
         } else {
-            MyLog.w(TAG, "有人爆灯了,但是不是这个轮次：userID " + event.userID + ", seq " + event.roundSeq + "，当前轮次是 " + mRoomData.getRealRoundSeq());
+            MyLog.w(TAG, "有人爆灯了,但是不是这个轮次：userID " + event.userID + ", seq " + event.roundSeq + "，当前轮次是 " + mRoomData.getExpectRoundInfo());
         }
     }
 
@@ -1080,10 +1087,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QJoinNoticeEvent event) {
-        if (RoomDataUtils.isCurrentRound(event.roundSeq, mRoomData)) {
+        if (RoomDataUtils.isCurrentExpectingRound(event.roundSeq, mRoomData)) {
             GrabPlayerInfoModel playerInfoModel = event.infoModel;
             MyLog.d(TAG, "有人加入房间,id=" + playerInfoModel.getUserID() + " name=" + playerInfoModel.getUserInfo().getNickname() + " role=" + playerInfoModel.getRole());
-            GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
+            GrabRoundInfoModel grabRoundInfoModel = mRoomData.getExpectRoundInfo();
             grabRoundInfoModel.addUser(true, playerInfoModel);
             //TODO 加入房间的弹幕
 //        BasePushInfo basePushInfo = new BasePushInfo();
@@ -1102,18 +1109,18 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 //            EventBus.getDefault().post(msgEvent);
 //        }
         } else {
-            MyLog.w(TAG, "有人加入房间了,但是不是这个轮次：userID " + event.infoModel.getUserID() + ", seq " + event.roundSeq + "，当前轮次是 " + mRoomData.getRealRoundSeq());
+            MyLog.w(TAG, "有人加入房间了,但是不是这个轮次：userID " + event.infoModel.getUserID() + ", seq " + event.roundSeq + "，当前轮次是 " + mRoomData.getExpectRoundInfo());
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QExitGameMsgEvent event) {
-        if (RoomDataUtils.isCurrentRound(event.roundSeq, mRoomData)) {
+        if (RoomDataUtils.isCurrentExpectingRound(event.roundSeq, mRoomData)) {
             MyLog.d(TAG, "有人离开房间,id=" + event.userID);
-            GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
+            GrabRoundInfoModel grabRoundInfoModel = mRoomData.getExpectRoundInfo();
             grabRoundInfoModel.removeUser(true, event.userID);
         } else {
-            MyLog.w(TAG, "有人离开房间了,但是不是这个轮次：userID " + event.userID + ", seq " + event.roundSeq + "，当前轮次是 " + mRoomData.getRealRoundSeq());
+            MyLog.w(TAG, "有人离开房间了,但是不是这个轮次：userID " + event.userID + ", seq " + event.roundSeq + "，当前轮次是 " + mRoomData.getExpectRoundInfo());
         }
     }
 
@@ -1126,9 +1133,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             return;
         }
 
-        if (RoomDataUtils.isCurrentRound(event.getCurrentRound().getRoundSeq(), mRoomData)) {
+        if (RoomDataUtils.isCurrentExpectingRound(event.getCurrentRound().getRoundSeq(), mRoomData)) {
             // 如果是当前轮次
-            mRoomData.getRealRoundInfo().tryUpdateRoundInfoModel(event.currentRound, true);
+            mRoomData.getExpectRoundInfo().tryUpdateRoundInfoModel(event.currentRound, true);
         }
         // 游戏轮次结束
         if (RoomDataUtils.roundSeqLarger(event.nextRound, mRoomData.getExpectRoundInfo())) {
@@ -1145,7 +1152,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QRoundAndGameOverMsgEvent event) {
         cancelSyncGameStateTask();
-        if (RoomDataUtils.isCurrentRound(event.roundInfoModel.getRoundSeq(), mRoomData)) {
+        if (RoomDataUtils.isCurrentRunningRound(event.roundInfoModel.getRoundSeq(), mRoomData)) {
             // 如果是当前轮次
             mRoomData.getRealRoundInfo().tryUpdateRoundInfoModel(event.roundInfoModel, true);
         }
