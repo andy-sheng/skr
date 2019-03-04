@@ -109,12 +109,6 @@ public class SongInfoCardView extends RelativeLayout {
         mSongNameTv.setText("《" + songModel.getItemName() + "》");
         mSongSingerTv.setText(songModel.getOwner());
 
-        LyricsManager.getLyricsManager(getContext()).removeLyricsReader(SongResUtils.createLyricFileName(songModel.getLyric()));
-        LyricsManager.getLyricsManager(getContext()).fetchAndLoadLyrics(songModel.getLyric())
-                .subscribe(lyricsReader -> {
-            mSongLyrics.setText(lyricsReader.getTwoLineGuideLyric(songModel.getRankLrcBeginT()));
-        }, throwable -> MyLog.e(TAG, throwable));
-
         playLyric(songModel);
         // 入场动画
         animationGo();
