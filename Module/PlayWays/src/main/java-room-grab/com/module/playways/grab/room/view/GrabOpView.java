@@ -12,6 +12,7 @@ import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
 
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
@@ -389,7 +390,7 @@ public class GrabOpView extends RelativeLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(SomeOneLightOffEvent event) {
-        if (mSeq == event.getRoundInfo().getRoundSeq()) {
+        if (mSeq == event.getRoundInfo().getRoundSeq() && event.uid == MyUserInfoManager.getInstance().getUid()) {
             mStatus = STATUS_HAS_OP;
             onChangeState();
         }
