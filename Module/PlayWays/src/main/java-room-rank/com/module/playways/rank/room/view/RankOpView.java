@@ -3,6 +3,10 @@ package com.module.playways.rank.room.view;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.OvershootInterpolator;
+import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
 
 import com.common.utils.HandlerTaskTimer;
@@ -27,6 +31,7 @@ public class RankOpView extends RelativeLayout {
     public int mLightOffDelayTime = 20;
     ExImageView mIvBurst;
     ExImageView mIvTurnOff;
+    ExImageView mIvCountDown;
     ExTextView mTvCountDown;
 
     int mSeq;
@@ -38,6 +43,8 @@ public class RankOpView extends RelativeLayout {
     RankRoomData mRoomData;
 
     HashSet<Integer> mHasOpSeq = new HashSet<>();
+
+    ScaleAnimation mShakeAnimation; //抖动动画
 
     public RankOpView(Context context) {
         super(context);
@@ -53,6 +60,7 @@ public class RankOpView extends RelativeLayout {
         inflate(getContext(), R.layout.rank_op_view, this);
         mIvBurst = findViewById(R.id.iv_burst);
         mIvTurnOff = findViewById(R.id.iv_turn_off);
+        mIvCountDown = findViewById(R.id.iv_count_down);
         mTvCountDown = findViewById(R.id.tv_count_down);
         mIvBurst.setLongClickable(false);
         mIvBurst.setOnClickListener(new DebounceViewClickListener() {
@@ -155,12 +163,16 @@ public class RankOpView extends RelativeLayout {
 
         if (mRoomData.getLeftLightOffTimes() <= 0) {
             mIvTurnOff.setVisibility(GONE);
+            mIvCountDown.setVisibility(GONE);
             mTvCountDown.setVisibility(GONE);
+            stopShake();
         } else {
             mIvTurnOff.setVisibility(GONE);
+            mIvCountDown.setVisibility(VISIBLE);
             mTvCountDown.setVisibility(VISIBLE);
             mTvCountDown.setText(mLightOffDelayTime + "");
-            if(startCountDown){
+            if (startCountDown) {
+                playShake();
                 mCountDownTask = HandlerTaskTimer.newBuilder()
                         .interval(1000)
                         .take(mLightOffDelayTime)
@@ -178,14 +190,36 @@ public class RankOpView extends RelativeLayout {
                                     }
 
                                     mTvCountDown.setVisibility(GONE);
+                                    mIvCountDown.setVisibility(GONE);
                                     mTvCountDown.setText("");
                                     return;
                                 }
 
                                 mTvCountDown.setText(integer + "");
                             }
+
+                            @Override
+                            public void onComplete() {
+                                super.onComplete();
+                                stopShake();
+                            }
                         });
             }
+        }
+    }
+
+    private void playShake() {
+        mShakeAnimation = new ScaleAnimation(1.0f, 1.2f, 1f, 1.2f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        mShakeAnimation.setInterpolator(new OvershootInterpolator());
+        mShakeAnimation.setDuration(500);
+        mShakeAnimation.setRepeatCount(Animation.INFINITE);
+        mShakeAnimation.setRepeatMode(Animation.REVERSE);
+        mTvCountDown.startAnimation(mShakeAnimation);
+    }
+
+    private void stopShake() {
+        if (mShakeAnimation != null) {
+            mShakeAnimation.cancel();
         }
     }
 
