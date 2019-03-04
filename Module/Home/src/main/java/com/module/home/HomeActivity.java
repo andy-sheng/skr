@@ -196,44 +196,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
         mRedPkgPresenter = new RedPkgPresenter(this);
         addPresent(mRedPkgPresenter);
 
-        RxView.clicks(mGameArea)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        U.getSoundUtils().play(TAG, R.raw.trans_tab);
-                        mMainVp.setCurrentItem(0, false);
-                        mGameBtn.setImageResource(R.drawable.ic_home_selected);
-                        mMessageBtn.setImageResource(R.drawable.ic_chat_normal);
-                        mPersonInfoBtn.setImageResource(R.drawable.ic_me_normal);
-                    }
-                });
-
-        RxView.clicks(mMessageArea)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        U.getSoundUtils().play(TAG, R.raw.trans_tab);
-                        mMainVp.setCurrentItem(1, false);
-                        mGameBtn.setImageResource(R.drawable.ic_home_normal);
-                        mMessageBtn.setImageResource(R.drawable.ic_chat_selected);
-                        mPersonInfoBtn.setImageResource(R.drawable.ic_me_normal);
-                    }
-                });
-
-        RxView.clicks(mPersonArea)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        U.getSoundUtils().play(TAG, R.raw.trans_tab);
-                        mMainVp.setCurrentItem(2, false);
-                        mGameBtn.setImageResource(R.drawable.ic_home_normal);
-                        mMessageBtn.setImageResource(R.drawable.ic_chat_normal);
-                        mPersonInfoBtn.setImageResource(R.drawable.ic_me_selected);
-                    }
-                });
         mMainVp.setCurrentItem(0, false);
         mFromCreate = true;
         U.getSoundUtils().preLoad(TAG, R.raw.trans_tab);

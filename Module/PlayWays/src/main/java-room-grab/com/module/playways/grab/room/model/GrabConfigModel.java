@@ -6,9 +6,9 @@ import java.io.Serializable;
 import java.util.List;
 
 public class GrabConfigModel implements Serializable {
-    int enableShowBLightWaitTimeMs;
-    int enableShowMLightWaitTimeMs;
-    int totalGameRoundSeq;
+    int enableShowBLightWaitTimeMs = 5;
+    int enableShowMLightWaitTimeMs = 2;
+    int totalGameRoundSeq = 100;
 
     public int getEnableShowBLightWaitTimeMs() {
         return enableShowBLightWaitTimeMs;
