@@ -41,6 +41,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -104,8 +105,10 @@ public class SpecialSelectFragment extends BaseFragment {
                     public void run() {
                         U.getSoundUtils().play(SpecialSelectFragment.TAG, R.raw.general_button, 500);
                         goMatchFragment(model.getTagID());
+                        HashMap map = new HashMap();
+                        map.put("tagId",model.getTagID());
                         StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-                                StatConstants.KEY_MATCH_START, null);
+                                StatConstants.KEY_MATCH_START, map);
                     }
                 }, true);
 

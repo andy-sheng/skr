@@ -15,6 +15,7 @@ import com.common.core.account.event.AccountEvent;
 import com.common.core.login.fragment.LoginFragment;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.module.RouterConstants;

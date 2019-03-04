@@ -23,6 +23,7 @@ import com.common.utils.ActivityUtils;
 import com.common.utils.FragmentUtils;
 import com.common.utils.HttpUtils;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.constans.GameModeType;
@@ -40,6 +41,7 @@ import com.module.playways.rank.song.model.SongModel;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -150,24 +152,28 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
             }
         };
 
-        RxView.clicks(mIvStartMatch)
-                .throttleFirst(300, TimeUnit.MILLISECONDS)
-                .subscribe(o -> {
-                    U.getSoundUtils().play(TAG, R.raw.song_pairbutton);
-                    ARouter.getInstance()
-                            .build(RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)
-                            .withSerializable("prepare_data", mPrepareData)
-                            .navigation();
-                    StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK),
-                            StatConstants.KEY_MATCH_START, null);
-                });
+        mIvStartMatch.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                U.getSoundUtils().play(TAG, R.raw.song_pairbutton);
+                ARouter.getInstance()
+                        .build(RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)
+                        .withSerializable("prepare_data", mPrepareData)
+                        .navigation();
+                HashMap map = new HashMap();
+                map.put("songId", mPrepareData.getSongModel().getItemID());
+                StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK),
+                        StatConstants.KEY_MATCH_START, map);
+            }
+        });
 
-        RxView.clicks(mIvBack)
-                .throttleFirst(300, TimeUnit.MILLISECONDS)
-                .subscribe(o -> {
-                    U.getSoundUtils().play(TAG, R.raw.general_back);
-                    onBackPressed();
-                });
+        mIvBack.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                U.getSoundUtils().play(TAG, R.raw.general_back);
+                onBackPressed();
+            }
+        });
 
         mIvStartMatch.setEnabled(false);
 

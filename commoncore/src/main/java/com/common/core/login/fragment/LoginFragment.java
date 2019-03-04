@@ -17,6 +17,7 @@ import com.common.core.account.UserAccountManager;
 import com.common.core.permission.SkrBasePermission;
 import com.common.core.permission.SkrPhoneStatePermission;
 import com.common.core.share.ShareManager;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -145,6 +146,12 @@ public class LoginFragment extends BaseFragment {
         });
 
         animationGo();
+
+        StatisticsAdapter.recordCountEvent("login", "expose", null);
+        if (U.getPreferenceUtils().getSettingBoolean("newinstall", true)) {
+            U.getPreferenceUtils().setSettingBoolean("newinstall", false);
+            StatisticsAdapter.recordCountEvent("signup", "expose", null);
+        }
     }
 
     private void animationGo() {

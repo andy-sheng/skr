@@ -18,6 +18,7 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.statistics.StatisticsAdapter;
 import com.common.statistics.UmengStatistics;
 import com.common.umeng.UmengPush;
 import com.common.umeng.UmengPushRegisterSuccessEvent;

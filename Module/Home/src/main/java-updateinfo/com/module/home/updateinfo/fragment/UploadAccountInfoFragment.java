@@ -24,6 +24,7 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
@@ -149,6 +150,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
                         if (getActivity() != null) {
                             getActivity().finish();
                         }
+                        StatisticsAdapter.recordCountEvent("signup", "success", null);
                     }
 
                     @Override
@@ -187,6 +189,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
         }
 
         initPublishSubject();
+        StatisticsAdapter.recordCountEvent("signup", "nameage_expose", null);
     }
 
     private void setCompleteTv(boolean isClick) {

@@ -246,6 +246,7 @@ public class GameFragment extends BaseFragment {
                                     }
                                 })
                                 .build());
+                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_HOME), "ranklist_click", null);
                     }
                 }, true);
 

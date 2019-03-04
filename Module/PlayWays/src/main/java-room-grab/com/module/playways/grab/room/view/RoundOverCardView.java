@@ -107,7 +107,7 @@ public class RoundOverCardView extends RelativeLayout {
     private void startNoneSing(int songId) {
         U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.nobodywants);
         HashMap map = new HashMap();
-        map.put("song_id", songId);
+        map.put("songId", songId);
         StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
                 StatConstants.KEY_SONG_NO_ONE, map);
         mNoneSingSvga.setVisibility(VISIBLE);
