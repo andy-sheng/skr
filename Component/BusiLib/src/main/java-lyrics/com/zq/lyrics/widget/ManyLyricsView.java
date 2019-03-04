@@ -230,11 +230,11 @@ public class ManyLyricsView extends AbstractLrcView {
      */
     private void init(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.many_line_lrc_view);
-        if(typedArray.hasValue(R.styleable.many_line_lrc_view_ly_eable_scroll)){
+        if (typedArray.hasValue(R.styleable.many_line_lrc_view_ly_eable_scroll)) {
             mTouchAble = typedArray.getBoolean(R.styleable.many_line_lrc_view_ly_eable_scroll, true);
         }
 
-        if(typedArray.hasValue(R.styleable.many_line_lrc_view_ly_top_line_num)){
+        if (typedArray.hasValue(R.styleable.many_line_lrc_view_ly_top_line_num)) {
             int upLineNum = typedArray.getInteger(R.styleable.many_line_lrc_view_ly_top_line_num, 2);
             //上下一样
             mUpLineNum = upLineNum;
@@ -288,10 +288,10 @@ public class ManyLyricsView extends AbstractLrcView {
         mPaintLine.setTextSize(mPlayRectSize);
         mPaintPlay.setTextSize(mPlayRectSize);
 
-        mGestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener(){
+        mGestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onDoubleTap(MotionEvent e) {
-                if(onLyricViewTapListener != null){
+                if (onLyricViewTapListener != null) {
                     onLyricViewTapListener.onDoubleTap();
                 }
                 return super.onDoubleTap(e);
@@ -299,15 +299,15 @@ public class ManyLyricsView extends AbstractLrcView {
 
             @Override
             public boolean onSingleTapConfirmed(MotionEvent e) {
-                if(onLyricViewTapListener != null){
+                if (onLyricViewTapListener != null) {
                     int scrollLrcLineNum = getScrollLrcLineNum(mOffsetY);
                     TreeMap<Integer, LyricsLineInfo> lrcLineInfos = getLrcLineInfos();
                     int startTime = lrcLineInfos.get(scrollLrcLineNum).getStartTime();
 
                     //用户随便点的
-                    if(scrollLrcLineNum == getLyricsLineNum()){
+                    if (scrollLrcLineNum == getLyricsLineNum()) {
                         onLyricViewTapListener.onSigleTap(-1);
-                    }else {
+                    } else {
                         onLyricViewTapListener.onSigleTap(startTime);
                     }
                 }
@@ -367,7 +367,7 @@ public class ManyLyricsView extends AbstractLrcView {
         float lineBottomY = drawDownLyrics(canvas, paint, paintHL, splitLyricsLineInfos, splitLyricsLineNum, splitLyricsWordIndex, spaceLineHeight, lyricsWordHLTime, mCentreY);
 
         //画倒计时圆点
-        if(getNeedCountDownLine().contains(lyricsLineNum)){
+        if (getNeedCountDownLine().contains(lyricsLineNum)) {
             drawCountDownPoint(canvas, lineBottomY);
         }
 
@@ -408,7 +408,7 @@ public class ManyLyricsView extends AbstractLrcView {
         }
     }
 
-    private void drawCountDownPoint(Canvas canvas, float y){
+    private void drawCountDownPoint(Canvas canvas, float y) {
         int lyricsLineNum = getLyricsLineNum();
         LyricsLineInfo currentLine = getLrcLineInfos().get(lyricsLineNum);
         int splitLyricsLineNum = getSplitLyricsLineNum();
@@ -429,33 +429,33 @@ public class ManyLyricsView extends AbstractLrcView {
         circlePaint.setColor(getPaintHLColors()[0]);
 //        MyLog.v(TAG, "degree " + degree);
 
-        if(degree <= 0){
+        if (degree <= 0) {
 //            MyLog.v(TAG, "倒计时 0");
             return;
         }
 
-        if(degree <= 1000){
+        if (degree <= 1000) {
 //            MyLog.v(TAG, "倒计时 1");
             circlePaint.setColor(getPaintHLColors()[0]);
-            canvas.drawCircle( textX , y - textHeight - getSpaceLineHeight() * 2, 10.0f,circlePaint);
+            canvas.drawCircle(textX, y - textHeight - getSpaceLineHeight() * 2, 10.0f, circlePaint);
             return;
         }
 
-        if(degree <= 2000){
+        if (degree <= 2000) {
 //            MyLog.v(TAG, "倒计时 2");
             circlePaint.setColor(getPaintHLColors()[0]);
-            canvas.drawCircle( textX , y - textHeight - getSpaceLineHeight() * 2, 10.0f,circlePaint);
-            canvas.drawCircle( textX + 40, y - textHeight - getSpaceLineHeight() * 2, 10.0f,circlePaint);
+            canvas.drawCircle(textX, y - textHeight - getSpaceLineHeight() * 2, 10.0f, circlePaint);
+            canvas.drawCircle(textX + 40, y - textHeight - getSpaceLineHeight() * 2, 10.0f, circlePaint);
             circlePaint.setColor(getSubPaintHLColor());
             return;
         }
 
-        if(degree <= 3000){
+        if (degree <= 3000) {
 //            MyLog.v(TAG, "倒计时 3");
             circlePaint.setColor(getPaintHLColors()[0]);
-            canvas.drawCircle( textX , y - textHeight - getSpaceLineHeight() * 2, 10.0f,circlePaint);
-            canvas.drawCircle( textX + 40, y - textHeight - getSpaceLineHeight() * 2, 10.0f,circlePaint);
-            canvas.drawCircle( textX+ 80, y - textHeight - getSpaceLineHeight() * 2, 10.0f,circlePaint);
+            canvas.drawCircle(textX, y - textHeight - getSpaceLineHeight() * 2, 10.0f, circlePaint);
+            canvas.drawCircle(textX + 40, y - textHeight - getSpaceLineHeight() * 2, 10.0f, circlePaint);
+            canvas.drawCircle(textX + 80, y - textHeight - getSpaceLineHeight() * 2, 10.0f, circlePaint);
             return;
         }
     }
@@ -804,7 +804,7 @@ public class ManyLyricsView extends AbstractLrcView {
         //获取数据
         LyricsReader lyricsReader = getLyricsReader();
         TreeMap<Integer, LyricsLineInfo> lrcLineInfos = getLrcLineInfos();
-        if(lrcLineInfos == null){
+        if (lrcLineInfos == null) {
             MyLog.d(TAG, "updateManyLrcView " + " lrcLineInfos为null");
             return;
         }
@@ -831,7 +831,7 @@ public class ManyLyricsView extends AbstractLrcView {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         int lrcStatus = getLrcStatus();
-        if (!mTouchAble || lrcStatus != AbstractLrcView.LRCSTATUS_LRC){
+        if (!mTouchAble || lrcStatus != AbstractLrcView.LRCSTATUS_LRC) {
             return true;
         }
 
@@ -1401,6 +1401,7 @@ public class ManyLyricsView extends AbstractLrcView {
 
     /**
      * 是否绘画时间指示器
+     *
      * @param isDrawIndicator
      */
     public void setIsDrawIndicator(boolean isDrawIndicator) {
@@ -1432,10 +1433,17 @@ public class ManyLyricsView extends AbstractLrcView {
 
     OnLyricViewTapListener onLyricViewTapListener;
 
-    public void setOnLyricViewTapListener(OnLyricViewTapListener onLyricViewTapListener){
+    public void setOnLyricViewTapListener(OnLyricViewTapListener onLyricViewTapListener) {
         this.onLyricViewTapListener = onLyricViewTapListener;
     }
 
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (mHandler != null) {
+            mHandler.removeCallbacksAndMessages(null);
+        }
+    }
 
     /**
      * 歌词事件
@@ -1449,7 +1457,7 @@ public class ManyLyricsView extends AbstractLrcView {
         void onLrcPlayClicked(int progress);
     }
 
-    public interface OnLyricViewTapListener{
+    public interface OnLyricViewTapListener {
         void onDoubleTap();
 
         void onSigleTap(int progress);

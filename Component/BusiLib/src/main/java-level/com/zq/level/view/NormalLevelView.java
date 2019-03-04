@@ -69,6 +69,8 @@ public class NormalLevelView extends RelativeLayout {
     int starUpSVGASize = U.getDisplayUtils().dip2px(60);
     int starLossSVGASize = U.getDisplayUtils().dip2px(100);
 
+    List<SVGAImageView> mayLeaksSvgaViews = new ArrayList<>();
+
     public NormalLevelView(Context context) {
         super(context);
         init(context, null);
@@ -262,9 +264,9 @@ public class NormalLevelView extends RelativeLayout {
 
         // 播放段位动画
         final SVGAImageView levelChange = new SVGAImageView(U.app());
+        mayLeaksSvgaViews.add(levelChange);
         levelChange.setClearsAfterStop(false);   // 停在最后一帧
         levelChange.setLoops(1);  // 只播1次
-
         // 先隐藏之前的静态段位
         mLevelIv.setVisibility(GONE);
         mSubLeveIv.setVisibility(GONE);
@@ -409,6 +411,7 @@ public class NormalLevelView extends RelativeLayout {
         }
         U.getSoundUtils().play(TAG, R.raw.result_addstar);
         final SVGAImageView starUp = new SVGAImageView(getContext());
+        mayLeaksSvgaViews.add(starUp);
         starUp.setLoops(1);  // 只播1次
 
         ImageView imageView = starts.get(index);
@@ -486,6 +489,7 @@ public class NormalLevelView extends RelativeLayout {
             return;
         }
         final SVGAImageView starLoss = new SVGAImageView(getContext());
+        mayLeaksSvgaViews.add(starLoss);
         starLoss.setClearsAfterStop(false);
         starLoss.setLoops(1);  // 只播1次
 
@@ -558,6 +562,17 @@ public class NormalLevelView extends RelativeLayout {
 
             }
         });
+    }
+
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        for (int i = 0; i < mayLeaksSvgaViews.size(); i++) {
+            SVGAImageView view = mayLeaksSvgaViews.get(i);
+            view.setCallback(null);
+            view.stopAnimation(true);
+        }
     }
 
     public interface SVGAListener {
