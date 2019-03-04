@@ -86,8 +86,8 @@ public class SongInfoCardView extends RelativeLayout {
     }
 
     // 该动画需要循环播放
-    public void bindSongModel(int curRoundSeq,int totalSeq,SongModel songModel) {
-        MyLog.d(TAG,"bindSongModel" + " songModel=" + songModel);
+    public void bindSongModel(int curRoundSeq, int totalSeq, SongModel songModel) {
+        MyLog.d(TAG, "bindSongModel" + " songModel=" + songModel);
         if (songModel == null || TextUtils.isEmpty(songModel.getCover())) {
             return;
         }
@@ -109,6 +109,7 @@ public class SongInfoCardView extends RelativeLayout {
         mSongNameTv.setText("《" + songModel.getItemName() + "》");
         mSongSingerTv.setText(songModel.getOwner());
         mSongLyrics.setText("");
+        mSongSeqTv.setText(curRoundSeq + "/" + totalSeq);
         playLyric(songModel);
         // 入场动画
         animationGo();
@@ -134,7 +135,7 @@ public class SongInfoCardView extends RelativeLayout {
 
     private void fetchLyricTask(SongModel songModel) {
         MyLog.w(TAG, "fetchLyricTask" + " songModel=" + songModel);
-        if(mDisposable != null){
+        if (mDisposable != null) {
             mDisposable.dispose();
         }
 
@@ -266,7 +267,7 @@ public class SongInfoCardView extends RelativeLayout {
             mLeaveTranslateAnimation.setAnimationListener(null);
             mLeaveTranslateAnimation.cancel();
         }
-        if(mDisposable != null){
+        if (mDisposable != null) {
             mDisposable.dispose();
         }
     }

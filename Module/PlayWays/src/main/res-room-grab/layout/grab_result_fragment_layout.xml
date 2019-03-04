@@ -9,38 +9,42 @@
     <com.common.view.ex.ExRelativeLayout
         android:id="@+id/result_area"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_440_dp"
-        android:layout_marginLeft="@dimen/view_15_dp"
-        android:layout_marginTop="@dimen/view_124_dp"
-        android:layout_marginRight="@dimen/view_15_dp"
-        android:background="@drawable/img_kaishipipei_bg">
+        android:layout_height="@dimen/view_466_dp"
+        android:layout_marginLeft="@dimen/view_25_dp"
+        android:layout_marginTop="@dimen/view_100_dp"
+        android:layout_marginRight="@dimen/view_25_dp"
+        app:bl_corners_radius="@dimen/view_12_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#2E3041"
+        app:bl_stroke_color="#404559"
+        app:bl_stroke_width="@dimen/view_2_dp">
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/avatar_iv"
-            android:layout_width="@dimen/view_64_dp"
-            android:layout_height="@dimen/view_64_dp"
+            android:layout_width="@dimen/view_68_dp"
+            android:layout_height="@dimen/view_68_dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/view_40_dp" />
+            android:layout_marginTop="@dimen/view_66_dp" />
 
         <com.common.view.ex.ExTextView
             android:id="@+id/name_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/avatar_iv"
-            android:layout_marginLeft="@dimen/view_36_dp"
-            android:layout_marginTop="@dimen/view_4_dp"
-            android:layout_marginRight="@dimen/view_36_dp"
+            android:layout_marginLeft="@dimen/view_22_dp"
+            android:layout_marginTop="@dimen/view_5_dp"
+            android:layout_marginRight="@dimen/view_22_dp"
             android:ellipsize="end"
             android:gravity="center"
             android:maxLines="1"
             android:singleLine="true"
-            android:textColor="#0C2275"
+            android:textColor="@color/white"
             android:textSize="@dimen/textsize_20_dp" />
 
         <ImageView
             android:id="@+id/sing_num_bg"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/view_118_dp"
+            android:layout_height="@dimen/view_128_dp"
             android:layout_below="@id/name_tv"
             android:layout_centerHorizontal="true"
             android:src="@drawable/zhanji_bj" />
@@ -52,14 +56,14 @@
             android:layout_below="@id/name_tv"
             android:layout_alignLeft="@+id/sing_num_bg"
             android:layout_marginLeft="@dimen/view_78_dp"
-            android:layout_marginTop="@dimen/view_30_dp"
+            android:layout_marginTop="@dimen/view_40_dp"
             android:src="@drawable/zhanji_2" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/name_tv"
-            android:layout_marginTop="@dimen/view_141_dp"
+            android:layout_marginTop="@dimen/view_140_dp"
             android:orientation="horizontal">
 
             <!--几首想唱的歌-->
@@ -71,21 +75,21 @@
                 <TextView
                     android:id="@+id/sing_want_num"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/view_33_dp"
                     android:layout_centerHorizontal="true"
                     android:gravity="center"
                     android:text="3"
-                    android:textColor="#0C2275"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/textsize_24_dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/view_18_dp"
                     android:layout_below="@id/sing_want_num"
                     android:layout_centerHorizontal="true"
                     android:gravity="center"
                     android:text="首想唱的歌"
-                    android:textColor="#660C2275"
+                    android:textColor="@color/white_trans_40"
                     android:textSize="@dimen/textsize_13_dp" />
 
             </RelativeLayout>
@@ -99,21 +103,21 @@
                 <TextView
                     android:id="@+id/sing_self_num"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/view_33_dp"
                     android:layout_centerHorizontal="true"
                     android:gravity="center"
                     android:text="2"
-                    android:textColor="#0C2275"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/textsize_24_dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/view_18_dp"
                     android:layout_below="@id/sing_self_num"
                     android:layout_centerHorizontal="true"
                     android:gravity="center"
                     android:text="次演唱机会"
-                    android:textColor="#660C2275"
+                    android:textColor="@color/white_trans_40"
                     android:textSize="@dimen/textsize_13_dp" />
 
             </RelativeLayout>
@@ -125,7 +129,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/name_tv"
-            android:layout_marginTop="@dimen/view_212_dp"
+            android:layout_marginTop="@dimen/view_210_dp"
             android:orientation="horizontal">
 
             <!--成功率-->
@@ -137,21 +141,21 @@
                 <TextView
                     android:id="@+id/sing_sucess_tv"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/view_33_dp"
                     android:layout_centerHorizontal="true"
                     android:gravity="center"
                     android:text="50%"
-                    android:textColor="#0C2275"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/textsize_24_dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/view_18_dp"
                     android:layout_below="@id/sing_sucess_tv"
                     android:layout_centerHorizontal="true"
                     android:gravity="center"
                     android:text="一唱到底成功率"
-                    android:textColor="#660C2275"
+                    android:textColor="@color/white_trans_40"
                     android:textSize="@dimen/textsize_13_dp" />
 
             </RelativeLayout>
@@ -165,21 +169,21 @@
                 <TextView
                     android:id="@+id/sing_above_tv"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/view_33_dp"
                     android:layout_centerHorizontal="true"
                     android:gravity="center"
                     android:text="66%"
-                    android:textColor="#0C2275"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/textsize_24_dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/view_18_dp"
                     android:layout_below="@id/sing_above_tv"
                     android:layout_centerHorizontal="true"
                     android:gravity="center"
                     android:text="超过同段位skr人数"
-                    android:textColor="#660C2275"
+                    android:textColor="@color/white_trans_40"
                     android:textSize="@dimen/textsize_13_dp" />
 
             </RelativeLayout>
@@ -219,10 +223,10 @@
             android:textStyle="bold" />
 
         <com.common.view.ex.ExTextView
-            android:layout_marginLeft="@dimen/view_7_dp"
             android:id="@+id/tv_again"
             android:layout_width="@dimen/view_140_dp"
             android:layout_height="@dimen/view_54_dp"
+            android:layout_marginLeft="@dimen/view_7_dp"
             android:background="@drawable/zhanjijieguo_zailai"
             android:gravity="center"
             android:paddingBottom="@dimen/view_7_dp"
@@ -231,10 +235,10 @@
             android:textStyle="bold" />
 
         <com.common.view.ex.ExTextView
-            android:layout_marginLeft="@dimen/view_7_dp"
             android:id="@+id/tv_share"
             android:layout_width="@dimen/view_91_dp"
             android:layout_height="@dimen/view_54_dp"
+            android:layout_marginLeft="@dimen/view_7_dp"
             android:background="@drawable/zhanjijieguo_fenxiang"
             android:gravity="center"
             android:paddingBottom="@dimen/view_7_dp"
