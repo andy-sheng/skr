@@ -18,6 +18,7 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.module.playways.BaseRoomData;
 import com.module.playways.RoomDataUtils;
+import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.rank.room.model.RankGameConfigModel;
 import com.module.playways.rank.room.model.PkScoreTipMsgModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
@@ -307,15 +308,11 @@ public class RankTopContainerView2 extends RelativeLayout {
             mUiHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    mLeftLedView.initSVGA();
-                    mMidLedView.initSVGA();
-                    mRightLedView.initSVGA();
+                    initRankLEDViews();
                 }
             }, 2000);
         } else {
-            mLeftLedView.initSVGA();
-            mMidLedView.initSVGA();
-            mRightLedView.initSVGA();
+            initRankLEDViews();
         }
         mEnergySlotView.setTarget(0, null);
         for (int i = 0; i < mStatusArr.length; i++) {
@@ -323,6 +320,19 @@ public class RankTopContainerView2 extends RelativeLayout {
         }
         mCurScore = 0;
         mTotalScore = -1;
+    }
+
+    private void initRankLEDViews() {
+        mLeftLedView.setVisibility(GONE);
+        mRightLedView.setVisibility(GONE);
+        mMidLedView.playMidSVGA(new SVGAListener() {
+            @Override
+            public void onFinished() {
+                mLeftLedView.initSVGA();
+                mMidLedView.initSVGA();
+                mRightLedView.initSVGA();
+            }
+        });
     }
 
     private void setLight(int index, UserLightInfo userLightInfo) {

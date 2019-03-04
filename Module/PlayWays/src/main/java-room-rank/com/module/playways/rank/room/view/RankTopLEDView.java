@@ -7,6 +7,7 @@ import android.widget.RelativeLayout;
 
 import com.common.log.MyLog;
 import com.common.utils.U;
+import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGADrawable;
@@ -22,9 +23,10 @@ import org.jetbrains.annotations.NotNull;
 public class RankTopLEDView extends RelativeLayout {
 
     public final static String TAG = "RankTopLEDView";
-    public static int DEFAULT_MODE = 0;   //默认模式
-    public static int MIE_MODE = 1;    //灭灯模式
-    public static int BAO_MODE = 2;    //爆灯模式
+    public static int MID_MODE = 0;      //中间跳动一下的动画
+    public static int DEFAULT_MODE = 1;  //默认模式
+    public static int MIE_MODE = 2;      //灭灯模式
+    public static int BAO_MODE = 3;      //爆灯模式
 
     SVGAImageView mDengSvga;
     int mPostion;             //view的位置，对应加载什么动画
@@ -53,14 +55,80 @@ public class RankTopLEDView extends RelativeLayout {
         initSVGA();
     }
 
+    /**
+     * 中间心先跳动一下
+     */
+    public void playMidSVGA(SVGAListener svgaListener) {
+        MyLog.d(TAG, "playMidSVGA" + " svgaListener=" + svgaListener);
+        curMode = MIE_MODE;
+        mDengSvga.setCallback(null);
+        mDengSvga.stopAnimation(true);
+        if (mPostion == 1) {
+            setVisibility(VISIBLE);
+            mDengSvga.setVisibility(VISIBLE);
+            mDengSvga.setLoops(1);
+            SVGAParser parser = new SVGAParser(U.app());
+            try {
+                parser.parse("rank_love_mid.svga", new SVGAParser.ParseCompletion() {
+                    @Override
+                    public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
+                        if (curMode == MIE_MODE) {
+                            SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
+                            mDengSvga.setImageDrawable(drawable);
+                            mDengSvga.startAnimation();
+                        }
+                    }
+
+                    @Override
+                    public void onError() {
+
+                    }
+                });
+            } catch (Exception e) {
+                System.out.print(true);
+            }
+
+
+            mDengSvga.setCallback(new SVGACallback() {
+                @Override
+                public void onPause() {
+
+                }
+
+                @Override
+                public void onFinished() {
+                    if (mDengSvga != null) {
+                        mDengSvga.stopAnimation(false);
+                    }
+
+                    if (svgaListener != null) {
+                        svgaListener.onFinished();
+                    }
+                }
+
+                @Override
+                public void onRepeat() {
+                    if (mDengSvga != null && mDengSvga.isAnimating()) {
+                        mDengSvga.stopAnimation(false);
+                    }
+                }
+
+                @Override
+                public void onStep(int i, double v) {
+
+                }
+            });
+        } else {
+            setVisibility(GONE);
+        }
+    }
+
     // 初始状态
     public void initSVGA() {
         MyLog.d(TAG, " initSVGA " + " postion = " + mPostion);
         curMode = DEFAULT_MODE;
         mDengSvga.setCallback(null);
         mDengSvga.stopAnimation(true);
-        setVisibility(VISIBLE);
-        mDengSvga.setVisibility(VISIBLE);
 
         String assetsName = "";
         switch (mPostion) {
@@ -68,17 +136,15 @@ public class RankTopLEDView extends RelativeLayout {
                 assetsName = "rank_love_left_beat.svga";
                 break;
             case 1:
-                assetsName = "rank_love_mid.svga";
+                assetsName = "rank_love_mid_beat.svga";
                 break;
             case 2:
                 assetsName = "rank_love_right_beat.svga";
                 break;
         }
-        if (mPostion == 1) {
-            mDengSvga.setLoops(1);
-        } else {
-            mDengSvga.setLoops(0);
-        }
+        setVisibility(VISIBLE);
+        mDengSvga.setVisibility(VISIBLE);
+        mDengSvga.setLoops(0);
 
         SVGAParser parser = new SVGAParser(U.app());
         try {
@@ -99,36 +165,6 @@ public class RankTopLEDView extends RelativeLayout {
             });
         } catch (Exception e) {
             System.out.print(true);
-        }
-
-        if (mPostion == 1) {
-            mDengSvga.setCallback(new SVGACallback() {
-                @Override
-                public void onPause() {
-
-                }
-
-                @Override
-                public void onFinished() {
-                    if (mDengSvga != null) {
-                        mDengSvga.stopAnimation(false);
-                    }
-
-                    playBaoDengAnimation(false);
-                }
-
-                @Override
-                public void onRepeat() {
-                    if (mDengSvga != null && mDengSvga.isAnimating()) {
-                        mDengSvga.stopAnimation(false);
-                    }
-                }
-
-                @Override
-                public void onStep(int i, double v) {
-
-                }
-            });
         }
     }
 
