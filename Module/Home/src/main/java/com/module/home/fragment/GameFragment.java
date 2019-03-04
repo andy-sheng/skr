@@ -128,8 +128,6 @@ public class GameFragment extends BaseFragment {
 
     Vector<Long> mTag = new Vector<>();
 
-    SkrLocationPermission mSkrLocationPermission = new SkrLocationPermission();
-
     @Override
     public int initView() {
         return R.layout.game_fragment_layout;
@@ -231,25 +229,19 @@ public class GameFragment extends BaseFragment {
         mRankArea.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                mSkrLocationPermission.ensurePermission(new Runnable() {
-                    @Override
-                    public void run() {
-                        IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
-                        Class<BaseFragment> baseFragment = (Class<BaseFragment>) iRankingModeService.getLeaderboardFragmentClass();
-                        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), baseFragment)
-                                .setAddToBackStack(true)
-                                .setHasAnimation(true)
-                                .setFragmentDataListener(new FragmentDataListener() {
-                                    @Override
-                                    public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
+                IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
+                Class<BaseFragment> baseFragment = (Class<BaseFragment>) iRankingModeService.getLeaderboardFragmentClass();
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), baseFragment)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(true)
+                        .setFragmentDataListener(new FragmentDataListener() {
+                            @Override
+                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
 
-                                    }
-                                })
-                                .build());
-                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_HOME), "ranklist_click", null);
-                    }
-                }, true);
-
+                            }
+                        })
+                        .build());
+                StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_HOME), "ranklist_click", null);
             }
         });
 
@@ -276,7 +268,6 @@ public class GameFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        mSkrLocationPermission.onBackFromPermisionManagerMaybe();
     }
 
     @Override

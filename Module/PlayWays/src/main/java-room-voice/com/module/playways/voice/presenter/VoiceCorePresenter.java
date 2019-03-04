@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.SpannableStringBuilder;
 
+import com.alibaba.fastjson.JSON;
 import com.changba.songstudio.audioeffect.AudioEffectStyleEnum;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfo;
@@ -12,6 +13,8 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
+import com.common.rxretrofit.ApiManager;
+import com.common.rxretrofit.ApiMethods;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.engine.EngineEvent;
@@ -22,6 +25,7 @@ import com.module.ModuleServiceManager;
 import com.module.playways.BaseRoomData;
 import com.module.playways.rank.msg.filter.PushMsgFilter;
 import com.module.playways.rank.msg.manager.ChatRoomMsgManager;
+import com.module.playways.rank.room.RoomServerApi;
 import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.event.PretendCommentMsgEvent;
 import com.module.playways.voice.inter.IVoiceView;
@@ -33,6 +37,11 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.greenrobot.greendao.annotation.NotNull;
+
+import java.util.HashMap;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 public class VoiceCorePresenter extends RxLifeCyclePresenter {
     public String TAG = "VoiceCorePresenter";
@@ -117,6 +126,17 @@ public class VoiceCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
+    /**
+     * 退出游戏
+     */
+    public void exitGame() {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("gameID", mRoomData.getGameId());
+
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        ApiMethods.subscribe(ApiManager.getInstance().createService(RoomServerApi.class).exitGame(body), null);
+    }
+
     @Override
     public void destroy() {
         MyLog.d(TAG, "destroy begin");
@@ -126,6 +146,7 @@ public class VoiceCorePresenter extends RxLifeCyclePresenter {
         EngineManager.getInstance().destroy("voiceroom");
         mUiHanlder.removeCallbacksAndMessages(null);
         ChatRoomMsgManager.getInstance().removeFilter(mPushMsgFilter);
+        exitGame();
         ModuleServiceManager.getInstance().getMsgService().leaveChatRoom(String.valueOf(mRoomData.getGameId()));
         MyLog.d(TAG, "destroy over");
     }

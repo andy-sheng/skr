@@ -289,7 +289,6 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     @Override
     public void destroy() {
         super.destroy();
-        exitGame();
         cancelHeartBeatTask("destroy");
         cancelSyncGameStateTask();
         if (EventBus.getDefault().isRegistered(this)) {
@@ -303,6 +302,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         }
         ChatRoomMsgManager.getInstance().removeFilter(mPushMsgFilter);
         if (!mRoomData.hasGoVoiceRoom()) {
+            exitGame();
             ModuleServiceManager.getInstance().getMsgService().leaveChatRoom(String.valueOf(mRoomData.getGameId()));
         } else {
             MyLog.w(TAG, "跳转到语音房，暂时不退出融云聊天室");
@@ -1402,10 +1402,10 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(PkSomeOneOnlineChangeEvent event) {
-        if (mRoomData.isIsGameFinish()) {
-            MyLog.d(TAG, "游戏结束了，不关心 PkSomeOneOnlineChangeEvent 事件");
-            return;
-        }
+//        if (mRoomData.isIsGameFinish()) {
+//            MyLog.d(TAG, "游戏结束了，不关心 PkSomeOneOnlineChangeEvent 事件");
+//            return;
+//        }
 
         UserInfoModel userInfo = mRoomData.getUserInfo(event.model.getUserID());
         CommentModel commentModel = new CommentModel();
