@@ -43,4 +43,16 @@ public class MD5Utils {
         return MD5_32(passwd).subSequence(8, 24).toString();
     }
 
+
+    //    public static String getMd5Digest(byte[] bytes) {
+//        try {
+//            MessageDigest lDigest = MessageDigest.getInstance("MD5");
+//            lDigest.update(bytes);
+//            BigInteger lHashInt = new BigInteger(1, lDigest.digest());
+//            return String.format(Locale.US, "%1$032X", lHashInt);
+//        } catch (NoSuchAlgorithmException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+
 }

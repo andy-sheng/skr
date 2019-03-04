@@ -31,6 +31,11 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Locale;
+
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -206,9 +211,9 @@ public class UserAccountManager {
         UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
         // 1 为手机登录
         String deviceId = U.getDeviceUtils().getImei();
-        if(TextUtils.isEmpty(deviceId)){
-            deviceId="";
-        }else{
+        if (TextUtils.isEmpty(deviceId)) {
+            deviceId = "";
+        } else {
             deviceId = U.getMD5Utils().MD5_32(deviceId);
         }
         userAccountServerApi.login(1, phoneNum, verifyCode, U.getChannelUtils().getChannel(), deviceId)
@@ -237,12 +242,14 @@ public class UserAccountManager {
     public void loginByThirdPart(final int mode, String accessToken, String openId) {
         UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
         String deviceId = U.getDeviceUtils().getImei();
-        if(TextUtils.isEmpty(deviceId)){
-            deviceId="";
-        }else{
+//        MyLog.d(TAG, "mimusic md5 = " + getMd5Digest(deviceId.getBytes()));
+//        MyLog.d(TAG, "skr md5 = " + U.getMD5Utils().MD5_32(deviceId));
+        if (TextUtils.isEmpty(deviceId)) {
+            deviceId = "";
+        } else {
             deviceId = U.getMD5Utils().MD5_32(deviceId);
         }
-        userAccountServerApi.loginWX(mode, accessToken, openId, U.getChannelUtils().getChannel(),deviceId)
+        userAccountServerApi.loginWX(mode, accessToken, openId, U.getChannelUtils().getChannel(), deviceId)
                 .subscribeOn(Schedulers.io())
                 .subscribe(new ApiObserver<ApiResult>() {
                     @Override
