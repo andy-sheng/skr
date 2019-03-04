@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:id="@+id/rl_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/iv_get_cash"
+        android:background="@drawable/grab_huodehongbao"
+        android:layout_centerInParent="true"
+        android:layout_width="@dimen/view_344_dp"
+        android:layout_height="@dimen/view_360_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:textStyle="bold"
+        android:textSize="@dimen/textsize_20_dp"
+        android:textColor="#FF4D4D"
+        android:gravity="center"
+        android:text="立即入账"
+        android:id="@+id/tv_ruzhang"
+        android:layout_marginBottom="@dimen/view_20_dp"
+        android:layout_alignBottom="@+id/iv_get_cash"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/huodehongbao_ruzhang_btn"
+        android:layout_width="@dimen/view_242_dp"
+        android:layout_height="@dimen/view_54_dp" />
+
+    <TextView
+        android:layout_alignTop="@+id/iv_get_cash"
+        android:textSize="@dimen/view_30_dp"
+        android:textColor="#FF4D4D"
+        android:text="18.01"
+        android:id="@+id/tv_cash"
+        android:layout_marginLeft="@dimen/view_55_dp"
+        android:layout_marginTop="@dimen/view_180_dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_marginBottom="@dimen/view_5_dp"
+        android:textColor="#FF4D4D"
+        android:textSize="@dimen/view_16_dp"
+        android:text="元"
+        android:layout_toRightOf="@+id/tv_cash"
+        android:layout_alignBottom="@+id/tv_cash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:layout_marginTop="@dimen/view_15_dp"
+        android:background="@drawable/guanbitanchuang"
+        android:id="@+id/iv_close"
+        android:layout_below="@+id/iv_get_cash"
+        android:layout_centerHorizontal="true"
+        android:layout_width="@dimen/view_33_dp"
+        android:layout_height="@dimen/view_33_dp" />
+</RelativeLayout>

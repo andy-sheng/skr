@@ -24,4 +24,8 @@ public interface MainPageSlideApi {
     @GET("http://dev.kconf.inframe.mobi/v1/kconf/app")
     Observable<ApiResult> getKConfig();
 
+    //检查要不要显示红包领取
+    @GET("http://dev.api.inframe.mobi/v1/task/list-newbee-task")
+    Observable<ApiResult> checkRedPkg();
+
 }

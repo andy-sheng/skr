@@ -9,8 +9,11 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
@@ -21,9 +24,11 @@ import com.common.statistics.StatConstants;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.manager.BgMusicManager;
 import com.dialog.view.TipsDialogView;
+import com.module.RouterConstants;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.LightOffAnimationOverEvent;
@@ -33,6 +38,7 @@ import com.module.playways.grab.room.inter.IGrabView;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.presenter.GrabCorePresenter;
+import com.module.playways.grab.room.presenter.GrabRedPkgPresenter;
 import com.module.playways.grab.room.top.GrabTopContainerView;
 import com.module.playways.grab.room.top.GrabSingerTopView;
 import com.module.playways.grab.room.top.GrabTopView;
@@ -40,6 +46,7 @@ import com.module.playways.grab.room.view.GrabChangeRoomTransitionView;
 import com.module.playways.grab.room.view.GrabGameOverView;
 import com.module.playways.grab.room.view.GrabOpView;
 
+import com.module.playways.grab.room.view.IRedPkgCountDownView;
 import com.module.playways.grab.room.view.OthersSingCardView;
 import com.module.playways.grab.room.view.RoundOverCardView;
 import com.module.playways.grab.room.view.SelfSingCardView2;
@@ -83,7 +90,7 @@ import static com.zq.report.fragment.ReportFragment.FORM_GAME;
 import static com.zq.report.fragment.ReportFragment.REPORT_FROM_KEY;
 import static com.zq.report.fragment.ReportFragment.REPORT_USER_ID;
 
-public class GrabRoomFragment extends BaseFragment implements IGrabView {
+public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkgCountDownView {
 
     public final static String TAG = "GrabRoomFragment";
 
@@ -117,6 +124,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
     GrabTopContainerView mTopContainerView;// 顶部，抢唱阶段，以及非本人的演唱阶段
 
     GrabCorePresenter mCorePresenter;
+
+    GrabRedPkgPresenter mGrabRedPkgPresenter;
 
 //    DownLoadScoreFilePresenter mDownLoadScoreFilePresenter;
 
@@ -214,7 +223,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         initChangeRoomTransitionView();
         mCorePresenter = new GrabCorePresenter(this, mRoomData);
         addPresent(mCorePresenter);
-
+        mGrabRedPkgPresenter = new GrabRedPkgPresenter(this);
+        addPresent(mGrabRedPkgPresenter);
+        mGrabRedPkgPresenter.checkRedPkg();
 //        mDownLoadScoreFilePresenter = new DownLoadScoreFilePresenter(new HttpUtils.OnDownloadProgress() {
 //            @Override
 //            public void onDownloaded(long downloaded, long totalLength) {
@@ -366,6 +377,28 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
                         .setEnterAnim(com.component.busilib.R.anim.slide_in_bottom)
                         .setExitAnim(com.component.busilib.R.anim.slide_out_bottom)
                         .build());
+    }
+
+    @Override
+    public void getCashSuccess(float cash) {
+        DialogPlus dialogPlus = DialogPlus.newDialog(getContext())
+                .setContentHolder(new ViewHolder(R.layout.congratulation_get_cash_view_layout))
+                .setGravity(Gravity.CENTER)
+                .setContentBackgroundResource(R.color.transparent)
+                .setOverlayBackgroundResource(R.color.black_trans_80)
+                .setExpanded(false)
+                .setCancelable(true)
+                .setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
+                        dialog.dismiss();
+                    }
+                })
+                .create();
+
+        TextView textView = (TextView) dialogPlus.findViewById(R.id.tv_cash);
+        textView.setText(String.valueOf(cash));
+        dialogPlus.show();
     }
 
     private void initTopView() {
@@ -708,6 +741,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
         if (playNextSongInfoCard) {
             grabBegin(now.getRoundSeq(), now.getMusic());
         }
+    }
+
+    @Override
+    public void redPkgCountDown() {
+
     }
 
     @Override

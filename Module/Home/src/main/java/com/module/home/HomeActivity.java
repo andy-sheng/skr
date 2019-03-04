@@ -2,20 +2,27 @@ package com.module.home;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 
 import com.common.core.permission.SkrSdcardPermission;
+
+import com.common.core.scheme.SchemeSdkActivity;
+
 import com.common.core.upgrade.UpgradeManager;
 import com.common.core.account.UserAccountManager;
 import com.common.core.login.interceptor.JudgeLoginInterceptor;
@@ -33,11 +40,20 @@ import com.module.RouterConstants;
 import com.module.home.fragment.GameFragment;
 import com.module.home.fragment.PersonFragment;
 import com.module.home.persenter.HomeCorePresenter;
+import com.module.home.persenter.RedPkgPresenter;
+import com.module.home.setting.fragment.SettingFragment;
+import com.module.home.view.GetRedPkgCashView;
 import com.module.home.view.IHomeActivity;
+import com.module.home.view.IRedPkgView;
 import com.module.msg.IMsgService;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.OnBackPressListener;
+import com.orhanobut.dialogplus.OnClickListener;
+import com.orhanobut.dialogplus.ViewHolder;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.w3c.dom.Text;
 
 import java.util.concurrent.TimeUnit;
 
@@ -45,7 +61,7 @@ import io.reactivex.functions.Consumer;
 
 
 @Route(path = RouterConstants.ACTIVITY_HOME)
-public class HomeActivity extends BaseActivity implements IHomeActivity {
+public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkgView {
 
     public final static String TAG = "HomeActivity";
 
@@ -60,9 +76,11 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
     ExImageView mPersonInfoBtn;
     ExImageView mPersonInfoRedDot;
     NestViewPager mMainVp;
+    DialogPlus mRedPkgView;
 
     IMsgService mMsgService;
     HomeCorePresenter mHomePresenter;
+    RedPkgPresenter mRedPkgPresenter;
     String mPengingSchemeUri; //想要跳转的scheme，但因为没登录被挂起了
     boolean mFromCreate = false;
 
@@ -175,6 +193,47 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
             }
         });
 
+        mRedPkgPresenter = new RedPkgPresenter(this);
+        addPresent(mRedPkgPresenter);
+
+        RxView.clicks(mGameArea)
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        U.getSoundUtils().play(TAG, R.raw.trans_tab);
+                        mMainVp.setCurrentItem(0, false);
+                        mGameBtn.setImageResource(R.drawable.ic_home_selected);
+                        mMessageBtn.setImageResource(R.drawable.ic_chat_normal);
+                        mPersonInfoBtn.setImageResource(R.drawable.ic_me_normal);
+                    }
+                });
+
+        RxView.clicks(mMessageArea)
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        U.getSoundUtils().play(TAG, R.raw.trans_tab);
+                        mMainVp.setCurrentItem(1, false);
+                        mGameBtn.setImageResource(R.drawable.ic_home_normal);
+                        mMessageBtn.setImageResource(R.drawable.ic_chat_selected);
+                        mPersonInfoBtn.setImageResource(R.drawable.ic_me_normal);
+                    }
+                });
+
+        RxView.clicks(mPersonArea)
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        U.getSoundUtils().play(TAG, R.raw.trans_tab);
+                        mMainVp.setCurrentItem(2, false);
+                        mGameBtn.setImageResource(R.drawable.ic_home_normal);
+                        mMessageBtn.setImageResource(R.drawable.ic_chat_normal);
+                        mPersonInfoBtn.setImageResource(R.drawable.ic_me_selected);
+                    }
+                });
         mMainVp.setCurrentItem(0, false);
         mFromCreate = true;
         U.getSoundUtils().preLoad(TAG, R.raw.trans_tab);
@@ -192,6 +251,40 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
                 }
             }
         }
+    }
+
+    @Override
+    public void showGetCashView(float cash, String schema) {
+        if (mRedPkgView != null) {
+            mRedPkgView.dismiss();
+        }
+
+        GetRedPkgCashView getRedPkgCashView = new GetRedPkgCashView(this);
+        TextView tvCash = getRedPkgCashView.findViewById(R.id.tv_cash);
+        tvCash.setText("" + cash);
+
+        mRedPkgView = DialogPlus.newDialog(this)
+                .setContentHolder(new ViewHolder(getRedPkgCashView))
+                .setGravity(Gravity.CENTER)
+                .setContentBackgroundResource(R.color.transparent)
+                .setOverlayBackgroundResource(R.color.black_trans_80)
+                .setExpanded(false)
+                .setCancelable(true)
+                .setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
+                        if (view.getId() == R.id.tv_ruzhang) {
+                            ARouter.getInstance().build(RouterConstants.ACTIVITY_SCHEME)
+                                    .withString("uri", schema)
+                                    .navigation();
+                        }
+
+                        mRedPkgView.dismiss();
+                    }
+                })
+                .create();
+
+        mRedPkgView.show();
     }
 
     @Override
@@ -244,6 +337,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity {
         }
         mFromCreate = false;
         UpgradeManager.getInstance().checkUpdate1();
+        mRedPkgPresenter.checkRedPkg();
     }
 
     @Override

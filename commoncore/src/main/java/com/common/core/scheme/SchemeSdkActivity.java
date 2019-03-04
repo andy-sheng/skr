@@ -72,6 +72,11 @@ public class SchemeSdkActivity extends BaseActivity {
         String uri = intent.getStringExtra("uri");
         if (TextUtils.isEmpty(uri)) {
             uri = getIntent().getDataString();
+            if(TextUtils.isEmpty(uri)){
+                MyLog.w(TAG, "uri is null");
+                finish();
+                return;
+            }
         }
         mUri = Uri.parse(uri);
         ZqSchemeProcessorManager.getInstance().process(mUri,this,true);

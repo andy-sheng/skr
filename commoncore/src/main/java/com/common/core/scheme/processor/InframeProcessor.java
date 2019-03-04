@@ -13,6 +13,8 @@ import com.common.core.scheme.SchemeUtils;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.module.RouterConstants;
+import com.module.grab.IGrabModeGameService;
+import com.module.rank.IRankingModeService;
 
 import org.w3c.dom.Text;
 
@@ -112,6 +114,19 @@ public class InframeProcessor implements ISchemeProcessor {
                         .withInt("key_game_type", Integer.parseInt(gameMode))
                         .withBoolean("selectSong", true)
                         .navigation();
+            } catch (Exception e) {
+                MyLog.e(TAG, e);
+            }
+        } else if(SchemeConstants.PATH_GRAb_MATCH.equals(path)){
+            try {
+                if (!UserAccountManager.getInstance().hasAccount()) {
+                    MyLog.w(TAG, "processGameUrl 没有登录");
+                    return;
+                }
+
+                int tagId = SchemeUtils.getInt(uri, SchemeConstants.PARAM_TAG_ID, 2);
+                IGrabModeGameService iGrabModeGameService = (IGrabModeGameService) ARouter.getInstance().build(RouterConstants.SERVICE_GRAB_SERVICE).navigation();
+                iGrabModeGameService.jump(0, tagId);
             } catch (Exception e) {
                 MyLog.e(TAG, e);
             }

@@ -45,6 +45,7 @@ public interface RouterConstants {
     String SERVICE_HOME = "/home/service1";
     String SERVICE_RANKINGMODE = "/rankingmode/service1";
     String SERVICE_MSG = "/rongmsg/service1";
+    String SERVICE_GRAB_SERVICE = "/game/grab_service1";
 
 
 }

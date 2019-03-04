@@ -146,4 +146,11 @@ public interface GrabRoomServerApi {
     Observable<ApiResult> wangSingChance(@Body RequestBody body);
     /*----------牛逼---------*/
 
+    //检查要不要显示红包领取
+    @GET("http://dev.api.inframe.mobi/v1/task/list-newbee-task")
+    Observable<ApiResult> checkRedPkg();
+
+    //接受红包
+    @PUT("http://dev.api.inframe.mobi/v1/task/trigger-task-reward")
+    Observable<ApiResult> receiveCash(@Body RequestBody body);
 }
