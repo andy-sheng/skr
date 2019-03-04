@@ -41,7 +41,7 @@ public class ArcCloudManager implements IACRCloudListener {
     int mLineNo = 0;
     RecognizeConfig mRecognizeConfig;
 
-    static final boolean DEBUG = true;
+    static final boolean DEBUG = false;
 
     @Override
     public void onResult(ACRCloudResult acrCloudResult) {
