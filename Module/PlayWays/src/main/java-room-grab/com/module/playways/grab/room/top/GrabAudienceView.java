@@ -122,11 +122,13 @@ public class GrabAudienceView extends RelativeLayout {
     }
 
     public void updateAllView() {
+        MyLog.d(TAG,"updateAllView" );
         for (int i = 0; i < mBaseImageViewList.size(); i++) {
             mBaseImageViewList.get(i).setVisibility(GONE);
         }
 
         for (int i = 0; i < mWaitInfoModelList.size(); i++) {
+            MyLog.d(TAG,"i="+i );
             UserInfoModel userInfoModel = mWaitInfoModelList.get(i).getUserInfo();
             mBaseImageViewList.get(i).setVisibility(VISIBLE);
             AvatarUtils.loadAvatarByUrl(mBaseImageViewList.get(i), AvatarUtils.newParamsBuilder(userInfoModel.getAvatar())

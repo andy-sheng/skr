@@ -9,7 +9,8 @@ import com.module.playways.grab.room.model.GrabRoundInfoModel;
 public class GrabRoundChangeEvent {
     public GrabRoundInfoModel lastRoundInfo;
     public GrabRoundInfoModel newRoundInfo;
-    public GrabRoundChangeEvent(GrabRoundInfoModel lastRoundInfo,GrabRoundInfoModel newRoundInfo) {
+
+    public GrabRoundChangeEvent(GrabRoundInfoModel lastRoundInfo, GrabRoundInfoModel newRoundInfo) {
         this.lastRoundInfo = lastRoundInfo;
         this.newRoundInfo = newRoundInfo;
     }
@@ -17,8 +18,10 @@ public class GrabRoundChangeEvent {
     @Override
     public String toString() {
         return "GrabRoundChangeEvent{" +
+                "\n" +
                 "lastRoundInfo=" + lastRoundInfo +
-                ", newRoundInfo=" + newRoundInfo +
+                "\n" +
+                "newRoundInfo=" + newRoundInfo +
                 '}';
     }
 }

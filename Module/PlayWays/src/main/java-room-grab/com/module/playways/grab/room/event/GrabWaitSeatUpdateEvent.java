@@ -11,4 +11,11 @@ public class GrabWaitSeatUpdateEvent {
     public GrabWaitSeatUpdateEvent(List<GrabPlayerInfoModel> list) {
         this.list = list;
     }
+
+    @Override
+    public String toString() {
+        return "GrabWaitSeatUpdateEvent{" +
+                "list=" + list +
+                '}';
+    }
 }
