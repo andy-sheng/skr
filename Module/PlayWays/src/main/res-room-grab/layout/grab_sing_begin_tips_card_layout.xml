@@ -7,8 +7,9 @@
 
     <com.opensource.svgaplayer.SVGAImageView
         android:id="@+id/sing_begin_svga"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_160_dp"
+        android:layout_width="@dimen/view_375_dp"
+        android:layout_height="@dimen/view_181_dp"
+        android:layout_centerHorizontal="true"
         android:visibility="gone"
         app:antiAlias="true"
         app:autoPlay="false"

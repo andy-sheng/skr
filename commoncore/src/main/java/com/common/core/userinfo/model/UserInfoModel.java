@@ -37,7 +37,7 @@ public class UserInfoModel implements Serializable, Cloneable {
     private String signature;
     private Location location;
     private String letter;
-    private int mIsSystem;
+    private boolean mIsSystem;
     private boolean isFriend;
     private boolean isFollow;
     private int mainLevel; // 主段位
@@ -110,11 +110,11 @@ public class UserInfoModel implements Serializable, Cloneable {
         this.letter = letter;
     }
 
-    public void setIsSystem(int isSystem) {
+    public void setIsSystem(boolean isSystem) {
         mIsSystem = isSystem;
     }
 
-    public int getIsSystem() {
+    public boolean getIsSystem() {
         return mIsSystem;
     }
 
@@ -185,7 +185,7 @@ public class UserInfoModel implements Serializable, Cloneable {
             userInfoModel.setSex(model.getSex().getValue());
             userInfoModel.setAvatar(model.getAvatar());
             userInfoModel.setSignature(model.getDescription());
-            userInfoModel.setIsSystem(model.getIsSystem() ? 1 : 0);
+            userInfoModel.setIsSystem(model.getIsSystem());
             userInfoModel.setMainLevel(model.getMainLevel());
         }
         return userInfoModel;
@@ -201,7 +201,7 @@ public class UserInfoModel implements Serializable, Cloneable {
             userInfoDB.setAvatar(userInfModel.getAvatar());
             userInfoDB.setSignature(userInfModel.getSignature());
             userInfoDB.setLetter(userInfModel.getLetter());
-            userInfoDB.setIsSystem(userInfModel.getIsSystem());
+            userInfoDB.setIsSystem(userInfModel.getIsSystem() ? 1 : 0);
 
             if (userInfModel.isFriend()) {
                 userInfoDB.setRelative(INTER_FOLLOW);
@@ -230,7 +230,7 @@ public class UserInfoModel implements Serializable, Cloneable {
             userInfoModel.setAvatar(userInDB.getAvatar());
             userInfoModel.setSignature(userInDB.getSignature());
             userInfoModel.setLetter(userInDB.getLetter());
-            userInfoModel.setIsSystem(userInDB.getIsSystem());
+            userInfoModel.setIsSystem(userInDB.getIsSystem() == 1);
             String extJSon = userInDB.getExt();
             if (!TextUtils.isEmpty(extJSon)) {
                 JSONObject jsonObject = JSON.parseObject(extJSon, JSONObject.class);
