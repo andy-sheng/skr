@@ -17,12 +17,14 @@ import com.common.core.avatar.AvatarUtils;
 import com.common.core.permission.SkrAudioPermission;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
+import com.common.image.model.oss.OssImgFactory;
 import com.common.log.MyLog;
 import com.common.statistics.StatConstants;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.ActivityUtils;
 import com.common.utils.FragmentUtils;
 import com.common.utils.HttpUtils;
+import com.common.utils.ImageUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
@@ -110,6 +112,7 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
                     ImageFactory.newHttpImage(mPrepareData.getSongModel().getCover())
                             .setCornerRadius(U.getDisplayUtils().dip2px(6))
                             .setBorderWidth(U.getDisplayUtils().dip2px(3))
+                            .addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_160.getW()).build())
                             .setBorderColor(Color.parseColor("#0C2275")).build());
         } else {
             FrescoWorker.loadImage(mSongIcon,

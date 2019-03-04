@@ -9,7 +9,10 @@ import android.widget.TextView;
 
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
+import com.common.image.model.oss.IOssParam;
+import com.common.image.model.oss.OssImgFactory;
 import com.common.log.MyLog;
+import com.common.utils.ImageUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
@@ -61,8 +64,13 @@ public class SongInfoHolder extends RecyclerView.ViewHolder {
         mSongOwnerTv.setText(mSongModel.getOwner());
         if (!TextUtils.isEmpty(mSongModel.getCover())) {
             FrescoWorker.loadImage(mSongCoverIv, ImageFactory.newHttpImage(mSongModel.getCover())
-                    .setCornerRadius(U.getDisplayUtils().dip2px(4)).setBorderWidth(U.getDisplayUtils().dip2px(2))
-                    .setBorderColor(Color.parseColor("#0C2275")).build());
+                    .setCornerRadius(U.getDisplayUtils().dip2px(4))
+                    .setBorderWidth(U.getDisplayUtils().dip2px(2))
+                    .setBorderColor(Color.parseColor("#0C2275"))
+                    //压缩一把
+                    .addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_160.getW()).build())
+                    .build()
+            );
         } else {
             FrescoWorker.loadImage(mSongCoverIv, ImageFactory.newResImage(R.drawable.xuanzegequ_wufengmian)
                     .setCornerRadius(U.getDisplayUtils().dip2px(4)).setBorderWidth(U.getDisplayUtils().dip2px(2))
