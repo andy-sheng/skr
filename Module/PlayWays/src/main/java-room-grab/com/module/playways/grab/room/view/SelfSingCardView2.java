@@ -55,6 +55,7 @@ public class SelfSingCardView2 extends RelativeLayout {
     }
 
     public void playLyric(SongModel songModel, boolean play) {
+        mTvLyric.setText("");
         if (songModel == null) {
             MyLog.d(TAG, "songModel 是空的");
             return;
@@ -132,7 +133,7 @@ public class SelfSingCardView2 extends RelativeLayout {
                 .subscribeOn(Schedulers.io()).subscribe(new Consumer<String>() {
             @Override
             public void accept(String o) {
-                mTvLyric.append(o);
+                mTvLyric.setText(o);
             }
         }, throwable -> MyLog.e(TAG, throwable));
     }

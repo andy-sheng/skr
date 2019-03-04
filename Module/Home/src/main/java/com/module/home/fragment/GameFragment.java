@@ -5,6 +5,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Spannable;
@@ -32,6 +33,7 @@ import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.permission.SkrLocationPermission;
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.model.UserRankModel;
+import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -122,6 +124,7 @@ public class GameFragment extends BaseFragment {
     GameConfModel mGameConfModel;
 
     DialogPlus mDialogPlus;
+    BaseImageView mIvOpFirst;
 
     SmartRefreshLayout mSmartRefreshLayout;
     ClassicsHeader mClassicsHeader;
@@ -139,6 +142,7 @@ public class GameFragment extends BaseFragment {
         mUserInfoTitle = (UserInfoTitleView) mRootView.findViewById(R.id.user_info_title);
         mAvatarBg = (ImageView) mRootView.findViewById(R.id.avatar_bg);
         mAvatarIv = (SimpleDraweeView) mRootView.findViewById(R.id.avatar_iv);
+        mIvOpFirst = (BaseImageView) mRootView.findViewById(R.id.iv_op_first);
 
         mNameTv = (ExTextView) mRootView.findViewById(R.id.name_tv);
         mMainRankIv = (ImageView) mRootView.findViewById(R.id.main_rank_iv);
@@ -454,6 +458,30 @@ public class GameFragment extends BaseFragment {
                 if (result.getErrno() == 0) {
                     GameKConfigModel gameKConfigModel = JSON.parseObject(result.getData().getString("common"), GameKConfigModel.class);
                     showGameKConfig(gameKConfigModel);
+
+                    GameKConfigModel.HomepagesitefirstBean homepagesitefirstBean = gameKConfigModel.getHomepagesitefirst();
+                    if (homepagesitefirstBean != null && homepagesitefirstBean.isEnable()) {
+                        AvatarUtils.loadAvatarByUrl(mIvOpFirst,
+                                AvatarUtils.newParamsBuilder(homepagesitefirstBean.getPic())
+                                        .setWidth(U.getDisplayUtils().dip2px(48f))
+                                        .setHeight(U.getDisplayUtils().dip2px(53f))
+                                        .build());
+                        mIvOpFirst.setVisibility(View.VISIBLE);
+                        mIvOpFirst.setOnClickListener(new DebounceViewClickListener() {
+                            @Override
+                            public void clickValid(View v) {
+                                ARouter.getInstance().build(RouterConstants.ACTIVITY_SCHEME)
+                                        .withString("uri", homepagesitefirstBean.getSchema())
+                                        .navigation();
+                            }
+                        });
+                    } else {
+                        MyLog.w(TAG, "initGameKConfig first operation area is empty");
+                        mIvOpFirst.setVisibility(View.GONE);
+                    }
+                } else {
+                    MyLog.w(TAG, "initGameKConfig failed, " + " traceid is " + result.getErrno());
+                    mIvOpFirst.setVisibility(View.GONE);
                 }
             }
 

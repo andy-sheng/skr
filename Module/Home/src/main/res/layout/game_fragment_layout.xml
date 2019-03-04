@@ -55,6 +55,15 @@
                     android:textStyle="bold"
                     android:visibility="gone" />
 
+                <com.common.image.fresco.BaseImageView
+                    android:layout_marginTop="@dimen/view_104_dp"
+                    android:visibility="gone"
+                    android:layout_marginRight="@dimen/view_24_dp"
+                    android:id="@+id/iv_op_first"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="@dimen/view_48_dp"
+                    android:layout_height="@dimen/view_53_dp" />
+
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
