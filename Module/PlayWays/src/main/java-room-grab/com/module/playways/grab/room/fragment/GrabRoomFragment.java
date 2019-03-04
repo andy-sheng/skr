@@ -34,6 +34,7 @@ import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.LightOffAnimationOverEvent;
 import com.module.playways.grab.room.event.ShowPersonCardEvent;
+import com.module.playways.grab.room.event.SomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.SomeOneLightOffEvent;
 import com.module.playways.grab.room.inter.IGrabView;
 import com.module.playways.grab.room.listener.SVGAListener;
@@ -44,6 +45,7 @@ import com.module.playways.grab.room.top.GrabTopContainerView;
 import com.module.playways.grab.room.top.GrabSingerTopView;
 import com.module.playways.grab.room.top.GrabTopView;
 import com.module.playways.grab.room.view.GrabChangeRoomTransitionView;
+import com.module.playways.grab.room.view.GrabDengBigAnimationView;
 import com.module.playways.grab.room.view.GrabGameOverView;
 import com.module.playways.grab.room.view.GrabOpView;
 
@@ -145,6 +147,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     SelfSingCardView2 mSelfSingCardView;
 
     GrabGameOverView mGrabGameOverView;
+
+    GrabDengBigAnimationView mDengBigAnimation;
 
     GrabChangeRoomTransitionView mGrabChangeRoomTransitionView;
 
@@ -472,6 +476,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         giftContinueViewGroup.setRoomData(mRoomData);
         GiftBigAnimationViewGroup giftBigAnimationViewGroup = mRootView.findViewById(R.id.gift_big_animation_vg);
         giftBigAnimationViewGroup.setRoomData(mRoomData);
+
+        mDengBigAnimation = (GrabDengBigAnimationView)mRootView.findViewById(R.id.deng_big_animation);
     }
 
     private void initGrabOpView() {
@@ -542,8 +548,16 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(SomeOneLightOffEvent event) {
+        // 灭灯
         U.getSoundUtils().play(TAG, R.raw.dislike);
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(SomeOneLightBurstEvent event) {
+        // 爆灯
+        mDengBigAnimation.playBurstAnimation();
+    }
+
 
     private void onReadyGoOver() {
         MyLog.w(TAG, "onReadyGoOver");
