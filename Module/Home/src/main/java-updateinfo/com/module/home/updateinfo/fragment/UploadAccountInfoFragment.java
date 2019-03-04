@@ -262,7 +262,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
                         if (isValid) {
                             // 昵称可用
                             mNicknameHintTv.setVisibility(View.VISIBLE);
-                            mNicknameHintTv.setTextColor(Color.parseColor("#7ED321"));
+                            mNicknameHintTv.setTextColor(Color.parseColor("#398A26"));
                             mNicknameHintTv.setText("昵称可用");
                             setCompleteTv(true);
                         } else {
