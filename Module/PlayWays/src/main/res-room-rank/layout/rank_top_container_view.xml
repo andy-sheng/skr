@@ -16,6 +16,16 @@
         android:layout_marginRight="@dimen/view_11_dp"
         android:background="@drawable/yanchang_bisaiguize" />
 
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/energy_fill_svga"
+        android:layout_width="@dimen/view_375_dp"
+        android:layout_height="@dimen/view_200_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_80_dp"
+        android:visibility="gone"
+        app:antiAlias="true"
+        app:autoPlay="false" />
+
     <com.common.view.ex.ExImageView
         android:id="@+id/iv_led"
         android:layout_width="@dimen/view_316_dp"
@@ -69,16 +79,5 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_8_dp"
         rankLED:position="mid"></com.module.playways.rank.room.view.RankTopLEDView>
-
-    <com.opensource.svgaplayer.SVGAImageView
-        android:id="@+id/energy_fill_svga"
-        android:layout_width="@dimen/view_375_dp"
-        android:layout_height="@dimen/view_149_dp"
-        android:layout_alignTop="@+id/energy_slot_view"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="-20dp"
-        android:visibility="gone"
-        app:antiAlias="true"
-        app:autoPlay="false" />
 
 </merge>

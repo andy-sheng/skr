@@ -297,7 +297,7 @@ public class RankTopContainerView2 extends RelativeLayout {
                     mMidLedView.initSVGA();
                     mRightLedView.initSVGA();
                 }
-            }, 1500);
+            }, 2000);
         } else {
             mLeftLedView.initSVGA();
             mMidLedView.initSVGA();
