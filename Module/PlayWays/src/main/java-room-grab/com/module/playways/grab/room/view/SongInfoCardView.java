@@ -128,10 +128,6 @@ public class SongInfoCardView extends RelativeLayout {
 
         File file = SongResUtils.getGrabLyricFileByUrl(songModel.getStandLrc());
 
-        if (mDisposable != null && !mDisposable.isDisposed()) {
-            mDisposable.dispose();
-        }
-
         if (file == null || !file.exists()) {
             MyLog.w(TAG, "playLyric is not in local file");
             fetchLyricTask(songModel);
@@ -144,6 +140,10 @@ public class SongInfoCardView extends RelativeLayout {
 
     private void fetchLyricTask(SongModel songModel) {
         MyLog.w(TAG, "fetchLyricTask" + " songModel=" + songModel);
+        if(mDisposable != null){
+            mDisposable.dispose();
+        }
+
         mDisposable = Observable.create(new ObservableOnSubscribe<File>() {
             @Override
             public void subscribe(ObservableEmitter<File> emitter) {
@@ -170,7 +170,6 @@ public class SongInfoCardView extends RelativeLayout {
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .retryWhen(new RxRetryAssist(5, 1, false))
-//                .compose(bindUntilEvent(FragmentEvent.DESTROY))
                 .subscribe(file -> {
                     final File fileName = SongResUtils.getGrabLyricFileByUrl(songModel.getStandLrc());
                     drawLyric(fileName);
@@ -272,6 +271,9 @@ public class SongInfoCardView extends RelativeLayout {
         if (mLeaveTranslateAnimation != null) {
             mLeaveTranslateAnimation.setAnimationListener(null);
             mLeaveTranslateAnimation.cancel();
+        }
+        if(mDisposable != null){
+            mDisposable.dispose();
         }
     }
 }
