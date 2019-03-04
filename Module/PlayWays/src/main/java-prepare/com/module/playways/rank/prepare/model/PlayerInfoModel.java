@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class PlayerInfoModel implements Serializable {
-    protected boolean isOnline;//是否在线
+    protected boolean isOnline = true;//是否在线
     protected boolean isSkrer;//是否是机器人
     protected int userID;
     protected UserInfoModel userInfo;
