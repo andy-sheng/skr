@@ -6,12 +6,16 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.common.base.BaseFragment;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.titlebar.CommonTitleBar;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.home.IWalletView;
@@ -43,6 +47,8 @@ public class WalletFragment extends BaseFragment implements IWalletView {
 
     int offset = 0; //偏移量
     int DEFAULT_COUNT = 10; //每次拉去的数量
+
+    float balance = 0; //可用余额
 
     @Override
     public int initView() {
@@ -76,33 +82,33 @@ public class WalletFragment extends BaseFragment implements IWalletView {
             }
         });
 
-        RxView.clicks(mTitlebar.getLeftTextView())
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        U.getFragmentUtils().popFragment(WalletFragment.this);
-                    }
-                });
+        mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                U.getFragmentUtils().popFragment(WalletFragment.this);
+            }
+        });
 
-        RxView.clicks(mTitlebar.getRightTextView())
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        U.getToastUtil().showShort("暂无提现记录");
-                    }
-                });
+        mTitlebar.getRightTextView().setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                U.getToastUtil().showShort("暂无提现记录");
+            }
+        });
 
+        mWithdrawTv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (balance < 20) {
+                    U.getToastUtil().showShort("满20元才能提现哦～");
+                } else {
+                    U.getToastUtil().showShort("提现功能下版本开放\n" +
+                            "如有疑问，请添加微信号“skrer1”进行咨询");
+                }
 
-        RxView.clicks(mWithdrawTv)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        U.getToastUtil().showShort("提现功能正在开发哦～");
-                    }
-                });
+            }
+        });
+
     }
 
     private void initPresenter() {
@@ -124,6 +130,9 @@ public class WalletFragment extends BaseFragment implements IWalletView {
 
     @Override
     public void onGetBalanceSucess(String availableBalance, String lockedBalance) {
+        if (!TextUtils.isEmpty(availableBalance)) {
+            balance = Float.parseFloat(availableBalance);
+        }
         SpannableStringBuilder stringBuilder = new SpanUtils()
                 .append(availableBalance).setFontSize(50, true)
                 .append("元").setFontSize(14, true)
