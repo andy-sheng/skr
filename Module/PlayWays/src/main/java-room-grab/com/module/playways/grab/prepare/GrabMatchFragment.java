@@ -428,6 +428,10 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
         if (mControlTask != null) {
             mControlTask.dispose();
         }
+        if (mSvgaMatchBg != null) {
+            mSvgaMatchBg.setCallback(null);
+            mSvgaMatchBg.stopAnimation(true);
+        }
         U.getSoundUtils().release(TAG);
     }
 
