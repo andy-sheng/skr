@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
@@ -361,27 +362,29 @@ public class GrabPlayerRv2 extends RelativeLayout {
                     }
                 });
                 objectAnimator1.setStartDelay(i * 4 * 33);
-                objectAnimator1.addListener(new Animator.AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(Animator animator) {
-                        U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.lightup);
-                    }
+                if(mRoomData.getRealRoundInfo() != null && mRoomData.getRealRoundInfo().getUserID() != MyUserInfoManager.getInstance().getUid()){
+                    objectAnimator1.addListener(new Animator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart(Animator animator) {
+                            U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.lightup);
+                        }
 
-                    @Override
-                    public void onAnimationEnd(Animator animator) {
+                        @Override
+                        public void onAnimationEnd(Animator animator) {
 
-                    }
+                        }
 
-                    @Override
-                    public void onAnimationCancel(Animator animator) {
+                        @Override
+                        public void onAnimationCancel(Animator animator) {
 
-                    }
+                        }
 
-                    @Override
-                    public void onAnimationRepeat(Animator animator) {
+                        @Override
+                        public void onAnimationRepeat(Animator animator) {
 
-                    }
-                });
+                        }
+                    });
+                }
                 i++;
                 liangdengList.add(objectAnimator1);
             }
