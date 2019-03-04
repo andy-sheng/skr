@@ -71,7 +71,7 @@ public class RoundOverCardView extends RelativeLayout {
         mSingResultSvga = (SVGAImageView) findViewById(R.id.sing_result_svga);
     }
 
-    public void bindData(int songId,int reason, int resultType, SVGAListener listener) {
+    public void bindData(int songId, int reason, int resultType, SVGAListener listener) {
         this.mSVGAListener = listener;
         setVisibility(VISIBLE);
         int mode = getRoundOver(reason, resultType);
@@ -86,7 +86,7 @@ public class RoundOverCardView extends RelativeLayout {
             case SING_NO_PASS_END:
             case SING_PASS_END:
             case SING_ENOUGH_END:
-                startFailed(mode,songId);
+                startFailed(mode, songId);
                 break;
             default:
                 if (mSVGAListener != null) {
@@ -107,7 +107,7 @@ public class RoundOverCardView extends RelativeLayout {
     private void startNoneSing(int songId) {
         U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.nobodywants);
         HashMap map = new HashMap();
-        map.put("song_id",songId);
+        map.put("song_id", songId);
         StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
                 StatConstants.KEY_SONG_NO_ONE, map);
         mNoneSingSvga.setVisibility(VISIBLE);
@@ -167,14 +167,14 @@ public class RoundOverCardView extends RelativeLayout {
     private void startPerfect(int songId) {
         U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.success);
         HashMap map = new HashMap();
-        map.put("song_id",songId);
+        map.put("song_id", songId);
         StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
                 StatConstants.KEY_SONG_SUCCESS, map);
         mSingResultSvga.setVisibility(VISIBLE);
         mSingResultSvga.setLoops(1);
         SVGAParser parser = new SVGAParser(U.app());
         try {
-            parser.parse("grab_sing_sucess_end.svga", new SVGAParser.ParseCompletion() {
+            parser.parse("grab_sing_perfect_end.svga", new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete(@NotNull SVGAVideoEntity videoItem) {
                     SVGADrawable drawable = new SVGADrawable(videoItem);
@@ -200,6 +200,7 @@ public class RoundOverCardView extends RelativeLayout {
             @Override
             public void onFinished() {
                 if (mSingResultSvga != null) {
+                    mSingResultSvga.setCallback(null);
                     mSingResultSvga.stopAnimation(true);
                     mSingResultSvga.setVisibility(GONE);
                 }
@@ -224,20 +225,35 @@ public class RoundOverCardView extends RelativeLayout {
     }
 
     // 不够优秀，换字即可，目前缺动画
-    private void startFailed(int model,int songId) {
+    private void startFailed(int model, int songId) {
         U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.lose);
         HashMap map = new HashMap();
-        map.put("song_id",songId);
+        map.put("song_id", songId);
         StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
                 StatConstants.KEY_SONG_FAIL, map);
         mSingResultSvga.setVisibility(VISIBLE);
         mSingResultSvga.setLoops(1);
+        String assetsName = "";
+        switch (model) {
+            case SING_MOMENT_END:
+                assetsName = "grab_sing_moment_end.svga";
+                break;
+            case SING_NO_PASS_END:
+                assetsName = "grab_sing_no_pass_end.svga";
+                break;
+            case SING_PASS_END:
+                assetsName = "grab_sing_pass_end.svga";
+                break;
+            case SING_ENOUGH_END:
+                assetsName = "grab_sing_enough_end.svga";
+                break;
+        }
         SVGAParser parser = new SVGAParser(U.app());
         try {
-            parser.parse("grab_sing_fail_end.svga", new SVGAParser.ParseCompletion() {
+            parser.parse(assetsName, new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete(@NotNull SVGAVideoEntity videoItem) {
-                    SVGADrawable drawable = new SVGADrawable(videoItem, requestDynamicItem(model));
+                    SVGADrawable drawable = new SVGADrawable(videoItem);
                     mSingResultSvga.setImageDrawable(drawable);
                     mSingResultSvga.startAnimation();
                 }
@@ -260,6 +276,7 @@ public class RoundOverCardView extends RelativeLayout {
             @Override
             public void onFinished() {
                 if (mSingResultSvga != null) {
+                    mSingResultSvga.setCallback(null);
                     mSingResultSvga.stopAnimation(true);
                     mSingResultSvga.setVisibility(GONE);
                 }
@@ -283,26 +300,13 @@ public class RoundOverCardView extends RelativeLayout {
         });
     }
 
-    private SVGADynamicEntity requestDynamicItem(int model) {
-        SVGADynamicEntity dynamicEntity = new SVGADynamicEntity();
-        if (model == SING_MOMENT_END) {
-            dynamicEntity.setDynamicImage(BitmapFactory.decodeResource(getResources(), R.drawable.fankuizi_3), "text");
-        } else if (model == SING_NO_PASS_END) {
-            dynamicEntity.setDynamicImage(BitmapFactory.decodeResource(getResources(), R.drawable.fankuizi_1), "text");
-        } else if (model == SING_PASS_END) {
-            dynamicEntity.setDynamicImage(BitmapFactory.decodeResource(getResources(), R.drawable.fankuizi_2), "text");
-        } else if (model == SING_ENOUGH_END) {
-            dynamicEntity.setDynamicImage(BitmapFactory.decodeResource(getResources(), R.drawable.fankuizi_4), "text");
-        }
-        return dynamicEntity;
-    }
-
     @Override
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
         if (visibility == GONE) {
             this.mSVGAListener = null;
             if (mNoneSingSvga != null) {
+                mNoneSingSvga.setCallback(null);
                 mNoneSingSvga.stopAnimation(false);
             }
         }
