@@ -9,12 +9,14 @@ import android.os.Handler;
 import android.os.Process;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 
 import com.common.base.BuildConfig;
+import com.common.engine.ScoreConfig;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.didichuxing.doraemonkit.DoraemonKit;
@@ -121,6 +123,33 @@ public class SysInfoFragment extends BaseFragment {
         } else {
             sysInfoItems.add(new SysInfoItem("子渠道", subChannel));
         }
+        sysInfoItems.add(new SysInfoItem("打分引擎(点击切换)", ScoreConfig.getDesc(), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final List<Pair<String,Integer>> channels = new ArrayList<>();
+                channels.add(new Pair<String, Integer>("ACR+MELP",3));
+                channels.add(new Pair<String, Integer>("仅MELP",1));
+                channels.add(new Pair<String, Integer>("仅ACR",2));
+                List<DialogListItem> listItems = new ArrayList<>();
+                for (final Pair<String, Integer> channel : channels) {
+                    listItems.add(new DialogListItem(channel.first, new Runnable() {
+                        @Override
+                        public void run() {
+                            ScoreConfig.setPrefConfig(channel.second);
+                            U.getToastUtil().showShort("请重启app");
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Process.killProcess(Process.myPid());
+                                }
+                            }, 1000);
+                        }
+                    }));
+                }
+                ListDialog listDialog = new ListDialog(getContext());
+                listDialog.showList(listItems);
+            }
+        }));
         sysInfoItems.add(new SysInfoItem(getString(R.string.dk_sysinfo_package_version_name), pi.versionName));
         sysInfoItems.add(new SysInfoItem(getString(R.string.dk_sysinfo_package_version_code), String.valueOf(pi.versionCode)));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

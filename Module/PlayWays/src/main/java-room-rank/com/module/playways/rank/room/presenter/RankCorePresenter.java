@@ -9,6 +9,7 @@ import com.alibaba.fastjson.JSON;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
+import com.common.engine.ScoreConfig;
 import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.player.exoplayer.ExoPlayer;
@@ -217,30 +218,36 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 //            }
             ChatRoomMsgManager.getInstance().addFilter(mPushMsgFilter);
 
-            EngineManager.getInstance().startRecognize(RecognizeConfig.newBuilder()
-                    .setMode(RecognizeConfig.MODE_MANUAL)
-                    .setSongName(mRoomData.getSongModel().getItemName())
-                    .setArtist(mRoomData.getSongModel().getOwner())
-                    .setMResultListener(new ArcRecognizeListener() {
-                        @Override
-                        public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
-                            mUiHandler.removeMessages(MSG_SHOW_SCORE_EVENT + lineNo * 100);
-                            if (lineNo > mLastLineNum) {
-                                // 使用最新的打分方案做优化
-                                int score = EngineManager.getInstance().getLineScore();
-                                if (targetSongInfo != null) {
-                                    int t = (int) (targetSongInfo.getScore() * 100);
-                                    if (t > score) {
-                                        score = t;
+            if (ScoreConfig.isAcrEnable()) {
+                EngineManager.getInstance().startRecognize(RecognizeConfig.newBuilder()
+                        .setMode(RecognizeConfig.MODE_MANUAL)
+                        .setSongName(mRoomData.getSongModel().getItemName())
+                        .setArtist(mRoomData.getSongModel().getOwner())
+                        .setMResultListener(new ArcRecognizeListener() {
+                            @Override
+                            public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
+                                mUiHandler.removeMessages(MSG_SHOW_SCORE_EVENT + lineNo * 100);
+                                if (lineNo > mLastLineNum) {
+                                    // 使用最新的打分方案做优化
+                                    int score1 = EngineManager.getInstance().getLineScore();
+                                    int score2 = 0;
+                                    if (targetSongInfo != null) {
+                                        score2 = (int) (targetSongInfo.getScore() * 100);
                                     }
-                                } else {
-
+                                    if (ScoreConfig.isMelpEnable()) {
+                                        if (score1 > score2) {
+                                            processScore(score1, lineNo);
+                                        } else {
+                                            processScore(score2, lineNo);
+                                        }
+                                    } else {
+                                        processScore(score2, lineNo);
+                                    }
                                 }
-                                processScore(score, lineNo);
                             }
-                        }
-                    }).build()
-            );
+                        }).build()
+                );
+            }
         }
     }
 
@@ -1452,11 +1459,17 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     public void onEvent(LrcEvent.LineEndEvent event) {
         MyLog.d(TAG, "onEvent LineEndEvent lineno=" + event.getLineNum());
         if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
-            EngineManager.getInstance().recognizeInManualMode(event.getLineNum());
+
+            if (ScoreConfig.isAcrEnable()) {
+                EngineManager.getInstance().recognizeInManualMode(event.getLineNum());
+            } else {
+                if (ScoreConfig.isMelpEnable()) {
+                    int score = EngineManager.getInstance().getLineScore();
+                    processScore(score, event.getLineNum());
+                }
+            }
             Message msg = mUiHandler.obtainMessage(MSG_SHOW_SCORE_EVENT + event.getLineNum() * 100);
             mUiHandler.sendMessageDelayed(msg, 1000);
-//            int score = EngineManager.getInstance().getLineScore();
-//            processScore(score, event.getLineNum());
         } else {
             if (RoomDataUtils.isRobotRound(mRoomData.getRealRoundInfo(), mRoomData.getPlayerInfoList())) {
                 // 尝试算机器人的演唱得分
