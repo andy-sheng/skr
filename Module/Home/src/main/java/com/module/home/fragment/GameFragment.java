@@ -283,6 +283,7 @@ public class GameFragment extends BaseFragment {
         super.onFragmentVisible();
         initRankLevel();
         initOperationArea();
+        initGameKConfig();
         StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_HOME), StatConstants.KEY_EXPOSE, null);
     }
 
@@ -442,6 +443,10 @@ public class GameFragment extends BaseFragment {
     }
 
     private void initGameKConfig() {
+        if (mTextGrabGame.getVisibility() == View.VISIBLE || mTextAthleticsPk.getVisibility() == View.VISIBLE) {
+            return;
+        }
+
         mMainPageSlideApi = ApiManager.getInstance().createService(MainPageSlideApi.class);
         ApiMethods.subscribe(mMainPageSlideApi.getKConfig(), new ApiObserver<ApiResult>() {
             @Override
@@ -663,6 +668,7 @@ public class GameFragment extends BaseFragment {
     public void onEvent(AccountEvent.SetAccountEvent event) {
         initRankLevel();
         initOperationArea();
+        initGameKConfig();
     }
 
 //    @Subscribe(threadMode = ThreadMode.MAIN)
