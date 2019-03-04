@@ -638,7 +638,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
             MyLog.d(TAG, " 进入时已经时演唱阶段了，则不用播卡片了");
             runnable.run();
         } else {
-            mSingBeginTipsCardView.bindData(mRoomData.getUserInfo(uid), new SVGAListener() {
+            mSingBeginTipsCardView.bindData(mRoomData.getUserInfo(uid), grabRoundInfoModel.getMusic(), new SVGAListener() {
                 @Override
                 public void onFinished() {
                     runnable.run();
