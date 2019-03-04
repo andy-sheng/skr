@@ -11,6 +11,7 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
@@ -66,8 +67,8 @@ public class OthersSingCardView extends RelativeLayout {
     BaseImageView mSingAvatarView;
     ArcProgressBar mCountDownProcess;
 
-    ObjectAnimator mEnterAnimation;   // 进场动画
-    ObjectAnimator mLeaveAnimation;   // 出场动画
+    AlphaAnimation mEnterAlphaAnimation;                // 进场动画
+    TranslateAnimation mLeaveTranslateAnimation;   // 出场动画
 
     GrabRoomData mGrabRoomData;
 
@@ -116,11 +117,11 @@ public class OthersSingCardView extends RelativeLayout {
         mCountDownStatus = COUNT_DOWN_STATUS_WAIT;
         mCountDownProcess.setProgress(0);
         // 淡出效果
-        if (mEnterAnimation == null) {
-            mEnterAnimation = ObjectAnimator.ofFloat(this, View.ALPHA, 0f, 1f);
-            mEnterAnimation.setDuration(1000);
+        if (mEnterAlphaAnimation == null) {
+            mEnterAlphaAnimation = new AlphaAnimation(0f, 1f);
+            mEnterAlphaAnimation.setDuration(1000);
         }
-        mEnterAnimation.start();
+        this.startAnimation(mEnterAlphaAnimation);
 
         AvatarUtils.loadAvatarByUrl(mSingAvatarView,
                 AvatarUtils.newParamsBuilder(userInfoModel.getAvatar())
@@ -207,32 +208,27 @@ public class OthersSingCardView extends RelativeLayout {
 
     public void hide() {
         if (this != null && this.getVisibility() == VISIBLE) {
-            if (mLeaveAnimation == null) {
-                mLeaveAnimation = ObjectAnimator.ofFloat(this, View.TRANSLATION_X, 0F, U.getDisplayUtils().getScreenWidth());
-                mLeaveAnimation.setDuration(200);
+            if (mLeaveTranslateAnimation == null) {
+                mLeaveTranslateAnimation = new TranslateAnimation(0.0F, U.getDisplayUtils().getScreenWidth(), 0.0F, 0.0F);
+                mLeaveTranslateAnimation.setDuration(200);
             }
-            mLeaveAnimation.start();
+            this.startAnimation(mLeaveTranslateAnimation);
 
-            mLeaveAnimation.addListener(new Animator.AnimatorListener() {
+            mLeaveTranslateAnimation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
-                public void onAnimationStart(Animator animator) {
+                public void onAnimationStart(Animation animation) {
 
                 }
 
                 @Override
-                public void onAnimationEnd(Animator animator) {
+                public void onAnimationEnd(Animation animation) {
                     clearAnimation();
                     setVisibility(GONE);
                 }
 
                 @Override
-                public void onAnimationCancel(Animator animator) {
+                public void onAnimationRepeat(Animation animation) {
 
-                }
-
-                @Override
-                public void onAnimationRepeat(Animator animator) {
-                    onAnimationEnd(animator);
                 }
             });
         } else {
@@ -245,11 +241,11 @@ public class OthersSingCardView extends RelativeLayout {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if (mEnterAnimation != null) {
-            mEnterAnimation.cancel();
+        if (mEnterAlphaAnimation != null) {
+            mEnterAlphaAnimation.cancel();
         }
-        if (mLeaveAnimation != null) {
-            mLeaveAnimation.cancel();
+        if (mLeaveTranslateAnimation != null) {
+            mLeaveTranslateAnimation.cancel();
         }
     }
 }
