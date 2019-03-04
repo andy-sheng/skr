@@ -18,6 +18,7 @@ import com.common.view.ex.NoLeakEditText;
 import com.common.view.titlebar.CommonTitleBar;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.home.R;
+import com.zq.toast.CommonToastView;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -115,7 +116,10 @@ public class FeedbackFragment extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(LogUploadUtils.UploadLogEvent event) {
         mUploadProgressBar.setVisibility(View.GONE);
-        U.getToastUtil().showShort(event.mIsSuccess ? "反馈成功" : "反馈失败");
+        U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(getContext())
+                .setImage(event.mIsSuccess ? R.drawable.touxiangshezhichenggong_icon : R.drawable.touxiangshezhishibai_icon)
+                .setText(event.mIsSuccess ? "反馈成功" : "反馈失败")
+                .build());
 
         U.getFragmentUtils().popFragment(FeedbackFragment.this);
     }
