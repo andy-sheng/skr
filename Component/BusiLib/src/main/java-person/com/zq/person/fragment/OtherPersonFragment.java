@@ -272,7 +272,7 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
         } else if (countryRankModel != null && countryRankModel.getRankSeq() != 0) {
             mRankTv.setText(countryRankModel.getRegionDesc() + "第" + String.valueOf(countryRankModel.getRankSeq()) + "位");
         } else {
-            mRankTv.setText("暂无排名");
+            mRankTv.setText(getResources().getString(R.string.default_rank_text));
         }
     }
 
