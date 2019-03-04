@@ -4,57 +4,25 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     tools:parentTag="android.widget.RelativeLayout">
-    <com.opensource.svgaplayer.SVGAImageView
-        android:id="@+id/other_bg_svga"
+
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/grab_stage_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_228_dp"
-        app:antiAlias="true"
-        app:autoPlay="false" />
+        android:layout_height="@dimen/view_140_dp"
+        android:layout_marginTop="@dimen/view_182_dp" />
 
-    <RelativeLayout
-        android:layout_marginTop="@dimen/view_15_dp"
-        android:layout_alignParentRight="true"
-        android:layout_width="@dimen/view_110_dp"
-        android:layout_height="@dimen/view_50_dp"
-        >
-        <ImageView
-            android:id="@+id/iv_blue_bg"
-            android:layout_marginRight="@dimen/view_15_dp"
-            android:background="@drawable/daojishi_bj"
-            android:layout_alignParentBottom="true"
-            android:layout_width="@dimen/view_110_dp"
-            android:layout_height="@dimen/view_32_dp" />
+    <com.common.image.fresco.BaseImageView
+        android:id="@+id/sing_avatar_view"
+        android:layout_width="@dimen/view_90_dp"
+        android:layout_height="@dimen/view_90_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_207_dp" />
 
-        <LinearLayout
-            android:layout_alignRight="@+id/iv_blue_bg"
-            android:layout_alignLeft="@+id/iv_blue_bg"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:layout_marginBottom="@dimen/view_10_dp"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
-            <ImageView
-                android:id="@+id/iv_h_stub"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
-
-            <ImageView
-                android:id="@+id/iv_t_stub"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
-
-            <ImageView
-                android:id="@+id/iv_o_stub"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
-
-            <ImageView
-                android:id="@+id/iv_s"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
-        </LinearLayout>
-    </RelativeLayout>
-
-
+    <com.module.playways.rank.room.view.ArcProgressBar
+        android:id="@+id/count_down_process"
+        android:layout_width="@dimen/view_116_dp"
+        android:layout_height="@dimen/view_116_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_194_dp" />
 
 </merge>

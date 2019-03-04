@@ -1,25 +1,40 @@
 package com.module.playways.grab.room.view;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.common.core.avatar.AvatarUtils;
+import com.common.core.userinfo.model.UserInfoModel;
+import com.common.image.fresco.BaseImageView;
 import com.common.image.fresco.FrescoWorker;
+import com.common.image.fresco.IFrescoCallBack;
 import com.common.image.model.HttpImage;
+import com.common.image.model.ImageFactory;
 import com.common.log.MyLog;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
+import com.facebook.fresco.animation.drawable.AnimatedDrawable2;
+import com.facebook.fresco.animation.drawable.AnimationListener;
+import com.facebook.imagepipeline.image.ImageInfo;
+import com.jakewharton.rxbinding2.view.RxView;
+import com.module.playways.BaseRoomData;
 import com.module.playways.grab.room.GrabRoomData;
+import com.module.playways.grab.room.event.ShowPersonCardEvent;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
+import com.module.playways.rank.room.view.ArcProgressBar;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGADrawable;
@@ -28,9 +43,13 @@ import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 
+import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.functions.Consumer;
 
 /**
  * 其他人主场景收音机
@@ -41,32 +60,18 @@ public class OthersSingCardView extends RelativeLayout {
     final static int COUNT_DOWN_STATUS_WAIT = 1;
     final static int COUNT_DOWN_STATUS_PLAYING = 2;
 
-    SVGAImageView mOtherBgSvga;
+    int useId;   // 当前唱歌人的id
 
-    ImageView mIvHStub;
-    ImageView mIvTStub;
-    ImageView mIvOStub;
-    ImageView mIvS;
+    BaseImageView mGrabStageView;
+    BaseImageView mSingAvatarView;
+    ArcProgressBar mCountDownProcess;
 
-    TranslateAnimation mEnterAnimation;   // 进场动画
-    TranslateAnimation mLeaveAnimation;   // 出场动画
-
-    HandlerTaskTimer mCountDownTask;
+    ObjectAnimator mEnterAnimation;   // 进场动画
+    ObjectAnimator mLeaveAnimation;   // 出场动画
 
     GrabRoomData mGrabRoomData;
 
     int mCountDownStatus = COUNT_DOWN_STATUS_WAIT;
-
-    Handler mUiHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if (msg.what == MSG_ENSURE_PLAY) {
-                mCountDownStatus = COUNT_DOWN_STATUS_PLAYING;
-                countDown();
-            }
-        }
-    };
 
     public OthersSingCardView(Context context) {
         super(context);
@@ -85,51 +90,85 @@ public class OthersSingCardView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.grab_others_sing_card_layout, this);
-        mOtherBgSvga = (SVGAImageView) findViewById(R.id.other_bg_svga);
-        mIvHStub = (ImageView) findViewById(R.id.iv_h_stub);
-        mIvTStub = (ImageView) findViewById(R.id.iv_t_stub);
-        mIvOStub = (ImageView) findViewById(R.id.iv_o_stub);
-        mIvS = (ImageView) findViewById(R.id.iv_s);
+        mGrabStageView = (BaseImageView) findViewById(R.id.grab_stage_view);
+        mSingAvatarView = (BaseImageView) findViewById(R.id.sing_avatar_view);
+        mCountDownProcess = (ArcProgressBar) findViewById(R.id.count_down_process);
+
+        RxView.clicks(mSingAvatarView)
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        if (useId != 0) {
+                            EventBus.getDefault().post(new ShowPersonCardEvent(useId));
+                        }
+                    }
+                });
     }
 
     public void setRoomData(GrabRoomData roomData) {
         mGrabRoomData = roomData;
     }
 
-    public void bindData(String avatar) {
-        if (avatar == null) {
-            avatar = "";
-        }
+    public void bindData(UserInfoModel userInfoModel) {
+        this.useId = userInfoModel.getUserId();
         setVisibility(VISIBLE);
         mCountDownStatus = COUNT_DOWN_STATUS_WAIT;
-        // 平移动画
+        mCountDownProcess.setProgress(0);
+        // 淡出效果
         if (mEnterAnimation == null) {
-            mEnterAnimation = new TranslateAnimation(-U.getDisplayUtils().getScreenWidth(), 0F, 0F, 0F);
-            mEnterAnimation.setDuration(200);
+            mEnterAnimation = ObjectAnimator.ofFloat(this, View.ALPHA, 0f, 1f);
+            mEnterAnimation.setDuration(1000);
         }
-        this.startAnimation(mEnterAnimation);
+        mEnterAnimation.start();
 
-        mOtherBgSvga.setVisibility(VISIBLE);
-        mOtherBgSvga.setLoops(0);
-        SVGAParser parser = new SVGAParser(U.app());
-        try {
-            String finalAvatar = avatar;
-            parser.parse("grab_other_sing_bg.svga", new SVGAParser.ParseCompletion() {
-                @Override
-                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
-                    SVGADrawable drawable = new SVGADrawable(videoItem, requestDynamicItem(finalAvatar));
-                    mOtherBgSvga.setImageDrawable(drawable);
-                    mOtherBgSvga.startAnimation();
-                }
+        AvatarUtils.loadAvatarByUrl(mSingAvatarView,
+                AvatarUtils.newParamsBuilder(userInfoModel.getAvatar())
+                        .setCircle(true)
+                        .build());
 
-                @Override
-                public void onError() {
+        FrescoWorker.loadImage(mGrabStageView, ImageFactory.newHttpImage(BaseRoomData.PK_MAIN_STAGE_WEBP)
+                .setCallBack(new IFrescoCallBack() {
+                    @Override
+                    public void processWithInfo(ImageInfo info, Animatable animatable) {
+                        if (animatable != null && animatable instanceof AnimatedDrawable2) {
+                            ((AnimatedDrawable2) animatable).setAnimationListener(new AnimationListener() {
 
-                }
-            });
-        } catch (Exception e) {
-            MyLog.e(e);
-        }
+                                @Override
+                                public void onAnimationStart(AnimatedDrawable2 drawable) {
+                                    MyLog.d(TAG, "onAnimationStart" + " drawable=" + drawable);
+                                }
+
+                                @Override
+                                public void onAnimationStop(AnimatedDrawable2 drawable) {
+                                    MyLog.d(TAG, "onAnimationStop" + " drawable=" + drawable);
+                                }
+
+                                @Override
+                                public void onAnimationReset(AnimatedDrawable2 drawable) {
+                                }
+
+                                @Override
+                                public void onAnimationRepeat(AnimatedDrawable2 drawable) {
+
+                                }
+
+                                @Override
+                                public void onAnimationFrame(AnimatedDrawable2 drawable, int frameNumber) {
+                                }
+                            });
+                            animatable.start();
+                        }
+                    }
+
+                    @Override
+                    public void processWithFailure() {
+                        MyLog.d(TAG, "processWithFailure");
+                    }
+                })
+                .build()
+        );
+
         countDown();
     }
 
@@ -146,146 +185,59 @@ public class OthersSingCardView extends RelativeLayout {
         if (songModel == null) {
             return;
         }
-        mUiHandler.removeMessages(MSG_ENSURE_PLAY);
         if (mCountDownStatus == COUNT_DOWN_STATUS_WAIT) {
             // 不需要播放countdown
-            int num = (songModel.getStandLrcEndT() - songModel.getStandLrcBeginT()) / 1000;
-            setNum(num);
-            mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_PLAY, 3000);
+            mCountDownProcess.startCountDown(0, songModel.getStandLrcEndT() - songModel.getStandLrcBeginT());
             return;
         }
-        cancelCountDownTask();
-        int takeNum;
+
+        int progress;  //当前进度条
+        int leaveTime; //剩余时间
         if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_SING) {
             MyLog.d(TAG, "演唱阶段加入的，倒计时没那么多");
-            takeNum = ((songModel.getStandLrcEndT() - songModel.getStandLrcBeginT()) / 1000) + 1 - grabRoundInfoModel.getElapsedTimeMs() / 1000;
+            progress = grabRoundInfoModel.getElapsedTimeMs() * 100 / (songModel.getStandLrcEndT() - songModel.getStandLrcBeginT());
+            leaveTime = songModel.getStandLrcEndT() - songModel.getStandLrcBeginT() + 1000 - grabRoundInfoModel.getElapsedTimeMs();
         } else {
-            takeNum = ((songModel.getStandLrcEndT() - songModel.getStandLrcBeginT()) / 1000) + 1;
+            progress = 1;
+            leaveTime = songModel.getStandLrcEndT() - songModel.getStandLrcBeginT() + 1000;
         }
-        mCountDownTask = HandlerTaskTimer.newBuilder()
-                .interval(1000)
-                .take(takeNum)
-                .start(new HandlerTaskTimer.ObserverW() {
-                    @Override
-                    public void onNext(Integer integer) {
-                        setNum(takeNum - 1 - integer);
-                    }
-                });
+        mCountDownProcess.startCountDown(progress, leaveTime);
     }
 
-    private void setNum(int num) {
-        mIvOStub.setImageDrawable(null);
-        mIvTStub.setImageDrawable(null);
-        mIvHStub.setImageDrawable(null);
-
-        String s = String.valueOf(num);
-        int[] index_num = new int[s.length()];
-
-        for (int i = 0; i < s.length(); i++) {
-            index_num[i] = Integer.parseInt(getNum(num, i + 1));
-
-            if (i == 0) {
-                mIvOStub.setImageDrawable(getNumDrawable(index_num[0]));
-            } else if (i == 1) {
-                mIvTStub.setImageDrawable(getNumDrawable(index_num[1]));
-            } else if (i == 2) {
-                mIvHStub.setImageDrawable(getNumDrawable(index_num[2]));
-            }
-        }
-
-        mIvS.setImageDrawable(U.getDrawable(R.drawable.daojishizi_s));
-    }
-
-    private void cancelCountDownTask() {
-        if (mCountDownTask != null) {
-            mCountDownTask.dispose();
-        }
-    }
-
-    private Drawable getNumDrawable(int num) {
-        Drawable drawable = null;
-        switch (num) {
-            case 0:
-                drawable = U.getDrawable(R.drawable.daojishizi_0);
-                break;
-            case 1:
-                drawable = U.getDrawable(R.drawable.daojishizi_1);
-                break;
-            case 2:
-                drawable = U.getDrawable(R.drawable.daojishizi_2);
-                break;
-            case 3:
-                drawable = U.getDrawable(R.drawable.daojishizi_3);
-                break;
-            case 4:
-                drawable = U.getDrawable(R.drawable.daojishizi_4);
-                break;
-            case 5:
-                drawable = U.getDrawable(R.drawable.daojishizi_5);
-                break;
-            case 6:
-                drawable = U.getDrawable(R.drawable.daojishizi_6);
-                break;
-            case 7:
-                drawable = U.getDrawable(R.drawable.daojishizi_7);
-                break;
-            case 8:
-                drawable = U.getDrawable(R.drawable.daojishizi_8);
-                break;
-            case 9:
-                drawable = U.getDrawable(R.drawable.daojishizi_9);
-                break;
-        }
-
-        return drawable;
-    }
-
-    public String getNum(long num, int index) {
-        MyLog.d(TAG, "getNum" + " num=" + num + " index=" + index);
-        if (num < 0) {
-            return "0";
-        }
-        String s = String.valueOf(num);
-        if (index > s.length() || index < 0) {
-            return "";
-        }
-        String result = String.valueOf(s.charAt(s.length() - index));
-        return result;
-    }
 
     public void hide() {
         if (this != null && this.getVisibility() == VISIBLE) {
             if (mLeaveAnimation == null) {
-                mLeaveAnimation = new TranslateAnimation(0F, U.getDisplayUtils().getScreenWidth(), 0F, 0F);
+                mLeaveAnimation = ObjectAnimator.ofFloat(this, View.TRANSLATION_X, 0F, U.getDisplayUtils().getScreenWidth());
                 mLeaveAnimation.setDuration(200);
             }
-            this.startAnimation(mLeaveAnimation);
-            mLeaveAnimation.setAnimationListener(new Animation.AnimationListener() {
+            mLeaveAnimation.start();
+
+            mLeaveAnimation.addListener(new Animator.AnimatorListener() {
                 @Override
-                public void onAnimationStart(Animation animation) {
+                public void onAnimationStart(Animator animator) {
 
                 }
 
                 @Override
-                public void onAnimationEnd(Animation animation) {
-                    if (mOtherBgSvga != null) {
-                        mOtherBgSvga.stopAnimation(false);
-                    }
-                    setVisibility(GONE);
+                public void onAnimationEnd(Animator animator) {
                     clearAnimation();
+                    setVisibility(GONE);
                 }
 
                 @Override
-                public void onAnimationRepeat(Animation animation) {
+                public void onAnimationCancel(Animator animator) {
 
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animator) {
+                    onAnimationEnd(animator);
                 }
             });
         } else {
-            if (mOtherBgSvga != null) {
-                mOtherBgSvga.stopAnimation(false);
-            }
-            setVisibility(GONE);
             clearAnimation();
+            setVisibility(GONE);
         }
     }
 
@@ -293,31 +245,11 @@ public class OthersSingCardView extends RelativeLayout {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if (mOtherBgSvga != null) {
-            mOtherBgSvga.setCallback(null);
-            mOtherBgSvga.stopAnimation(true);
+        if (mEnterAnimation != null) {
+            mEnterAnimation.cancel();
         }
-        mUiHandler.removeCallbacksAndMessages(null);
-        cancelCountDownTask();
+        if (mLeaveAnimation != null) {
+            mLeaveAnimation.cancel();
+        }
     }
-
-    private SVGADynamicEntity requestDynamicItem(String avatar) {
-        if (TextUtils.isEmpty(avatar)) {
-            return null;
-        }
-
-        HttpImage image = AvatarUtils.getAvatarUrl(AvatarUtils.newParamsBuilder(avatar)
-                .setWidth(U.getDisplayUtils().dip2px(90))
-                .setHeight(U.getDisplayUtils().dip2px(90))
-                .build());
-        File file = FrescoWorker.getCacheFileFromFrescoDiskCache(image.getUrl());
-        SVGADynamicEntity dynamicEntity = new SVGADynamicEntity();
-        if (file != null && file.exists()) {
-            dynamicEntity.setDynamicImage(BitmapFactory.decodeFile(file.getPath()), "avatar");
-        } else {
-            dynamicEntity.setDynamicImage(image.getUrl(), "avatar");
-        }
-        return dynamicEntity;
-    }
-
 }

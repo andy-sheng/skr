@@ -663,7 +663,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView {
             mOthersSingCardView.setVisibility(View.VISIBLE);
             UserInfoModel userInfoModel = mRoomData.getUserInfo((int) uid);
             if (userInfoModel != null) {
-                mOthersSingCardView.bindData(userInfoModel.getAvatar());
+                mOthersSingCardView.bindData(userInfoModel);
             }else{
                 MyLog.d(TAG, "onSingBeginTipsPlayOver" + " userInfoModel==null");
             }

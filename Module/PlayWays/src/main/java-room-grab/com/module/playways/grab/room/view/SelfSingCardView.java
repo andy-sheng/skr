@@ -51,7 +51,7 @@ import okio.BufferedSource;
 import okio.Okio;
 
 /**
- * 你的主场景歌词
+ * 你的主场景歌词 已弃用
  */
 public class SelfSingCardView extends RelativeLayout {
     public final static String TAG = "SelfSingCardView";
@@ -234,54 +234,16 @@ public class SelfSingCardView extends RelativeLayout {
         for (int i = 0; i < s.length(); i++) {
             index_num[i] = Integer.parseInt(getNum(num, i + 1));
 
-            if (i == 0) {
-                mIvOStub.setImageDrawable(getNumDrawable(index_num[0]));
-            } else if (i == 1) {
-                mIvTStub.setImageDrawable(getNumDrawable(index_num[1]));
-            } else if (i == 2) {
-                mIvHStub.setImageDrawable(getNumDrawable(index_num[2]));
-            }
+//            if (i == 0) {
+//                mIvOStub.setImageDrawable(getNumDrawable(index_num[0]));
+//            } else if (i == 1) {
+//                mIvTStub.setImageDrawable(getNumDrawable(index_num[1]));
+//            } else if (i == 2) {
+//                mIvHStub.setImageDrawable(getNumDrawable(index_num[2]));
+//            }
         }
 
         mIvS.setImageDrawable(U.getDrawable(R.drawable.daojishizi_s));
-    }
-
-    private Drawable getNumDrawable(int num) {
-        Drawable drawable = null;
-        switch (num) {
-            case 0:
-                drawable = U.getDrawable(R.drawable.daojishizi_0);
-                break;
-            case 1:
-                drawable = U.getDrawable(R.drawable.daojishizi_1);
-                break;
-            case 2:
-                drawable = U.getDrawable(R.drawable.daojishizi_2);
-                break;
-            case 3:
-                drawable = U.getDrawable(R.drawable.daojishizi_3);
-                break;
-            case 4:
-                drawable = U.getDrawable(R.drawable.daojishizi_4);
-                break;
-            case 5:
-                drawable = U.getDrawable(R.drawable.daojishizi_5);
-                break;
-            case 6:
-                drawable = U.getDrawable(R.drawable.daojishizi_6);
-                break;
-            case 7:
-                drawable = U.getDrawable(R.drawable.daojishizi_7);
-                break;
-            case 8:
-                drawable = U.getDrawable(R.drawable.daojishizi_8);
-                break;
-            case 9:
-                drawable = U.getDrawable(R.drawable.daojishizi_9);
-                break;
-        }
-
-        return drawable;
     }
 
     public String getNum(long num, int index) {

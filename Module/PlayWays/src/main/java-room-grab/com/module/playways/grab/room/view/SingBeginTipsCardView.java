@@ -16,6 +16,7 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.HttpImage;
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.rank.song.model.SongModel;
@@ -65,6 +66,10 @@ public class SingBeginTipsCardView extends RelativeLayout {
     }
 
     public void bindData(UserInfoModel info, SongModel songModel, SVGAListener listener) {
+        if (info == null || songModel == null) {
+            MyLog.e(TAG, "bindData" + " info=" + info + " songModel=" + songModel + " listener=" + listener);
+            return;
+        }
         this.mSVGAListener = listener;
         setVisibility(VISIBLE);
         SVGAParser parser = new SVGAParser(U.app());

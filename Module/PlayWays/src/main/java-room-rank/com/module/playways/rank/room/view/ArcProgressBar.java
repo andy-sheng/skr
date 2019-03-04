@@ -138,12 +138,18 @@ public class ArcProgressBar extends View {
         postInvalidate();
     }
 
-    public void startCountDown(long duration) {
-        if (mAnimatorSet != null && mAnimatorSet.isRunning()) {
+    /**
+     * @param progress 进度条，从什么地方开始播放
+     * @param duration 剩下歌曲的时长
+     */
+    public void startCountDown(int progress, long duration) {
+        if (mAnimatorSet != null) {
+            mAnimatorSet.removeAllListeners();
             mAnimatorSet.cancel();
         }
+        setProgress(progress);
 
-        ValueAnimator creditValueAnimator = ValueAnimator.ofInt(1, 100);
+        ValueAnimator creditValueAnimator = ValueAnimator.ofInt(progress + 1, 100);
         creditValueAnimator.setInterpolator(new LinearInterpolator());
         creditValueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
