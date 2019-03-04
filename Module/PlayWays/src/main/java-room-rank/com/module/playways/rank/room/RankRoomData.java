@@ -159,10 +159,10 @@ public class RankRoomData extends BaseRoomData<RankRoundInfoModel> {
     }
 
     public void setOnline(int userID, boolean online) {
-        if (mIsGameFinish) {
-            MyLog.w(TAG, "游戏结束了，忽略某人退出房间消息，因为语音房还要复用这里的online状态");
-            return;
-        }
+//        if (mIsGameFinish) {
+//            MyLog.w(TAG, "游戏结束了，忽略某人退出房间消息，因为语音房还要复用这里的online状态");
+//            return;
+//        }
         if (mPlayerInfoList != null) {
             for (RankPlayerInfoModel playerInfo : mPlayerInfoList) {
                 if (playerInfo.getUserInfo().getUserId() == userID) {
