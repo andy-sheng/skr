@@ -623,7 +623,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         MyLog.d(TAG, "onSongInfoCardPlayOver" + " pendingPlaySongCardData=" + pendingPlaySongCardData + " from=" + from);
         mUiHanlder.removeMessages(MSG_ENSURE_SONGCARD_OVER);
         mSingBeginTipsCardView.setVisibility(View.GONE);
-        mSongInfoCardView.bindSongModel(pendingPlaySongCardData.songModel);
+        mSongInfoCardView.bindSongModel(mRoomData.getRealRoundSeq(), mRoomData.getGrabConfigModel().getTotalGameRoundSeq(), pendingPlaySongCardData.songModel);
         GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
         if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_GRAB) {
             MyLog.d(TAG, "这轮刚进来，不播放导唱过场");
