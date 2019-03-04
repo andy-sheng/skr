@@ -32,7 +32,7 @@ import okio.Sink;
 public class ArcCloudManager implements IACRCloudListener {
     public final static String TAG = "ArcCloudManager";
 
-    static final int BUFFER_LEN = 400 * 2048;
+    static final int BUFFER_LEN = 500 * 2048;
 
     byte[] mBuffer = new byte[BUFFER_LEN];
     int mLength = 0;
@@ -41,7 +41,7 @@ public class ArcCloudManager implements IACRCloudListener {
     int mLineNo = 0;
     RecognizeConfig mRecognizeConfig;
 
-    static final boolean DEBUG = false;
+    static final boolean DEBUG = true;
 
     @Override
     public void onResult(ACRCloudResult acrCloudResult) {
@@ -219,7 +219,7 @@ public class ArcCloudManager implements IACRCloudListener {
             System.arraycopy(mBuffer, left, mBuffer, 0, tl - left);
             System.arraycopy(newBuffer, 0, mBuffer, tl - left, newBuffer.length);
             setLen(BUFFER_LEN);
-            if (recognizeConfig.getMode() == RecognizeConfig.MODE_AUTO && recognizeConfig.getAutoTimes()>0) {
+            if (recognizeConfig.getMode() == RecognizeConfig.MODE_AUTO && recognizeConfig.getAutoTimes() > 0) {
                 // 自动识别
                 recognizeInner(mLineNo);
             } else if (recognizeConfig.getMode() == RecognizeConfig.MODE_MANUAL) {
