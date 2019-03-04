@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import com.common.base.BaseFragment;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.permission.SkrAudioPermission;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
@@ -142,6 +143,8 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     DialogPlus mQuitTipsDialog;
 
+    SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
+
     Handler mUiHanlder = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -262,6 +265,18 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         mStageView = (SVGAImageView) mRootView.findViewById(R.id.stage_view);
         mSingAvatarView = (BaseImageView) mRootView.findViewById(R.id.sing_avatar_view);
         mCountDownProcess = (ArcProgressBar) mRootView.findViewById(R.id.count_down_process);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mSkrAudioPermission.ensurePermission(null, true);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mSkrAudioPermission.onBackFromPermisionManagerMaybe();
     }
 
     @Override
@@ -774,12 +789,12 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         MyLog.w(TAG, "onFirstSongGo");
         // 轮到自己演唱了，倒计时因为播放readyGo没播放
         if (mPendingSelfCountDownRunnable != null) {
-            startSelfCountdown(null,mPendingSelfCountDownRunnable);
+            startSelfCountdown(null, mPendingSelfCountDownRunnable);
             mPendingSelfCountDownRunnable = null;
         }
         // 轮到他人唱了，倒计时因为播放readyGo没播放
         if (mPendingRivalCountdown != null) {
-            startRivalCountdown(null,mPendingRivalCountdown.uid, mPendingRivalCountdown.avatar);
+            startRivalCountdown(null, mPendingRivalCountdown.uid, mPendingRivalCountdown.avatar);
             mPendingRivalCountdown = null;
         }
     }
@@ -922,7 +937,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
      * 保证在主线程
      */
     @Override
-    public void startRivalCountdown(RankRoundInfoModel lastRoundInfoModel,int uid, String avatar) {
+    public void startRivalCountdown(RankRoundInfoModel lastRoundInfoModel, int uid, String avatar) {
         MyLog.d(TAG, "startRivalCountdown" + " uid=" + uid + " avatar=" + avatar);
         mCountDownProcess.restart();
         mRankTopContainerView.roundOver(lastRoundInfoModel);
@@ -968,7 +983,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     @Override
     public void finishActivity() {
-        if(getActivity() != null){
+        if (getActivity() != null) {
             getActivity().finish();
         }
     }
@@ -1172,7 +1187,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                     lyricsReader.cut(mPlayingSongModel.getRankLrcBeginT(), mPlayingSongModel.getRankLrcEndT());
                     postLyricEndEvent(lyricsReader, false);
                     mRankOpView.playCountDown(mRoomData.getRealRoundSeq(), true);
-                    mCountDownProcess.startCountDown(0,mPlayingSongModel.getTotalMs());
+                    mCountDownProcess.startCountDown(0, mPlayingSongModel.getTotalMs());
                 }
                 mManyLyricsView.setVisibility(View.GONE);
                 mManyLyricsView.resetData();

@@ -17,6 +17,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.permission.SkrAudioPermission;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
@@ -159,6 +160,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     long mBeginChangeRoomTs;
 
+    SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
+
     Handler mUiHanlder = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -262,11 +265,13 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             }
         }, 500);
         BgMusicManager.getInstance().setRoom(true);
+
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        mSkrAudioPermission.ensurePermission(null, true);
     }
 
     private void initInputView() {
@@ -307,6 +312,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     private void initChangeRoomTransitionView() {
         mGrabChangeRoomTransitionView = mRootView.findViewById(R.id.change_room_transition_view);
         mGrabChangeRoomTransitionView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mSkrAudioPermission.onBackFromPermisionManagerMaybe();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -697,7 +708,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             UserInfoModel userInfoModel = mRoomData.getUserInfo((int) uid);
             if (userInfoModel != null) {
                 mOthersSingCardView.bindData(userInfoModel);
-            }else{
+            } else {
                 MyLog.d(TAG, "onSingBeginTipsPlayOver" + " userInfoModel==null");
             }
         }
