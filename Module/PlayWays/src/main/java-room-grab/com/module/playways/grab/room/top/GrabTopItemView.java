@@ -98,7 +98,7 @@ public class GrabTopItemView extends RelativeLayout {
         }
     }
 
-    public void updateOnLineState(PlayerInfoModel userInfoModel){
+    public void updateOnLineState(PlayerInfoModel userInfoModel) {
         if (userInfoModel == null) {
             return;
         }
@@ -134,6 +134,7 @@ public class GrabTopItemView extends RelativeLayout {
 //        }
         mLeaveIv.setVisibility(GONE);
         mFlagIv.setVisibility(VISIBLE);
+        mCircleAnimationView.setVisibility(GONE);
     }
 
     //占位的View

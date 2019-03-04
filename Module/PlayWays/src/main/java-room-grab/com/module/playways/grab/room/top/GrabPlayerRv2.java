@@ -225,6 +225,12 @@ public class GrabPlayerRv2 extends RelativeLayout {
                     super.onAnimationStart(animation);
                     finalGrabTopItemView.mCircleAnimationView.setVisibility(VISIBLE);
                 }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+                    super.onAnimationCancel(animation);
+                    finalGrabTopItemView.mCircleAnimationView.setVisibility(GONE);
+                }
             });
 
             // 接下来是头像放大一点的动画
