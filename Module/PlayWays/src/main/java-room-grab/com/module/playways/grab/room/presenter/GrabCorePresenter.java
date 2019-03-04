@@ -405,18 +405,18 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 if (result.getErrno() == 0) {
                     GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
                     if (now != null && now.getRoundSeq() == roundSeq) {
-                        BLightInfoModel noPassingInfo = new BLightInfoModel();
-                        noPassingInfo.setUserID((int) MyUserInfoManager.getInstance().getUid());
-                        now.addLightBurstUid(true, noPassingInfo);
+                        int coin = result.getData().getInteger("coin");
+                        mRoomData.setCoin(coin);
+                        if (result.getData().getBoolean("isBLightSuccess")) {
+                            BLightInfoModel noPassingInfo = new BLightInfoModel();
+                            noPassingInfo.setUserID((int) MyUserInfoManager.getInstance().getUid());
+                            now.addLightBurstUid(true, noPassingInfo);
+                        } else {
+                            U.getToastUtil().showShort(result.getData().getString("bLightFailedMsg"));
+                        }
                     }
                 } else {
 
-                }
-                try {
-                    int coin = result.getData().getInteger("coin");
-                    mRoomData.setCoin(coin);
-                } catch (Exception e) {
-                    MyLog.e(e);
                 }
             }
 
