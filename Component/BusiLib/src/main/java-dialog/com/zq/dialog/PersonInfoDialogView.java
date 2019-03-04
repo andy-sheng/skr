@@ -231,10 +231,10 @@ public class PersonInfoDialogView extends RelativeLayout {
             if (reginRankModel.getRankSeq() != 0) {
                 mHashMap.put(RANK_TAG, reginRankModel.getRegionDesc() + "荣耀榜" + String.valueOf(reginRankModel.getRankSeq()) + "位");
             } else {
-                mHashMap.put(RANK_TAG, "暂无排名");
+                mHashMap.put(RANK_TAG, getResources().getString(R.string.default_rank_text));
             }
         } else {
-            mHashMap.put(RANK_TAG, "暂无排名");
+            mHashMap.put(RANK_TAG, getResources().getString(R.string.default_rank_text));
         }
         refreshTag();
     }

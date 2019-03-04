@@ -12,22 +12,18 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
-import com.module.playways.BaseRoomData;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent;
 import com.module.playways.grab.room.event.LightOffAnimationOverEvent;
-import com.module.playways.grab.room.event.SomeOneOnlineChangeEvent;
 import com.module.playways.grab.room.fragment.GrabRoomFragment;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.MLightInfoModel;
 import com.module.playways.grab.room.model.WantSingerInfo;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
-import com.module.playways.rank.room.model.RankPlayerInfoModel;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGADrawable;
@@ -464,7 +460,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
         if (playerInfoModel != null && playerInfoModel.getUserInfo() != null) {
             VP vp = mInfoMap.get(playerInfoModel.getUserInfo().getUserId());
             if (vp != null) {
-                vp.grabTopItemView.bindData(playerInfoModel);
+                vp.grabTopItemView.updateOnLineState(playerInfoModel);
             }
         } else {
             MyLog.w(TAG, "onlineChange playerInfoModel error");

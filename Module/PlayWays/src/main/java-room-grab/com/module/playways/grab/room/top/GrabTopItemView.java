@@ -98,6 +98,20 @@ public class GrabTopItemView extends RelativeLayout {
         }
     }
 
+    public void updateOnLineState(PlayerInfoModel userInfoModel){
+        if (userInfoModel == null) {
+            return;
+        }
+        mPlayerInfoModel = userInfoModel;
+        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mPlayerInfoModel.getUserInfo().getAvatar())
+                .setCircle(true)
+                .setGray(mPlayerInfoModel.isOnline() ? false : true) // 先加上，方便调试时看出哪个用户离开了
+                .setBorderColorBySex(mPlayerInfoModel.getUserInfo().getSex() == 1)
+                .setBorderWidth(U.getDisplayUtils().dip2px(2))
+                .build()
+        );
+    }
+
     public void bindData(PlayerInfoModel userInfoModel) {
         if (userInfoModel == null) {
             return;
@@ -133,6 +147,8 @@ public class GrabTopItemView extends RelativeLayout {
         mFlickerAnim = new AnimationDrawable();
         mFlickerAnim.setOneShot(true);
         Drawable drawable = null;
+        drawable = U.getDrawable(R.drawable.liangdeng);
+        mFlickerAnim.addFrame(drawable, 1800);
         drawable = U.getDrawable(R.drawable.liangdeng_shan);
         mFlickerAnim.addFrame(drawable, 200);
         drawable = U.getDrawable(R.drawable.liangdeng);
