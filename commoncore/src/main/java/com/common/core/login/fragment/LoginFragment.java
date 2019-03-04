@@ -3,6 +3,8 @@ package com.common.core.login.fragment;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -33,6 +35,9 @@ public class LoginFragment extends BaseFragment {
 
     public static final int QQ_MODE = 2;
     public static final int WX_MODE = 3;
+
+    public static final int MSG_HIDE_PORGRESS_BAR = 1;
+
     RelativeLayout mMainActContainer;
     ExTextView mLogoTv;
 
@@ -47,6 +52,16 @@ public class LoginFragment extends BaseFragment {
     volatile boolean mIsWaitOss = false;
 
     ObjectAnimator mAnimator;
+
+    Handler mUiHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == MSG_HIDE_PORGRESS_BAR) {
+                showLoginingBar(false);
+            }
+        }
+    };
 
     SkrBasePermission mSkrPermission = new SkrPhoneStatePermission();
 
@@ -220,6 +235,10 @@ public class LoginFragment extends BaseFragment {
     };
 
     private void showLoginingBar(boolean show) {
+        mUiHandler.removeMessages(MSG_HIDE_PORGRESS_BAR);
+        if (show) {
+            mUiHandler.sendEmptyMessageDelayed(MSG_HIDE_PORGRESS_BAR, 4000);
+        }
         mIsWaitOss = show;
         mProgressBar.setVisibility(mIsWaitOss ? View.VISIBLE : View.GONE);
     }
@@ -244,6 +263,9 @@ public class LoginFragment extends BaseFragment {
         super.destroy();
         if (mAnimator != null) {
             mAnimator.cancel();
+        }
+        if (mUiHandler != null) {
+            mUiHandler.removeCallbacksAndMessages(null);
         }
     }
 }
