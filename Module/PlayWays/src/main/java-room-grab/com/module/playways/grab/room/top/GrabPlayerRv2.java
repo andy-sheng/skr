@@ -447,7 +447,8 @@ public class GrabPlayerRv2 extends RelativeLayout {
     public void lightOff(int uid) {
         VP vp = mInfoMap.get(uid);
         if (vp != null && vp.grabTopItemView != null) {
-            setLightOffAnimation(vp);
+//            setLightOffAnimation(vp);
+            setLightOff(vp);
         }
     }
 
@@ -460,6 +461,11 @@ public class GrabPlayerRv2 extends RelativeLayout {
         } else {
             MyLog.w(TAG, "onlineChange playerInfoModel error");
         }
+    }
+
+    private void setLightOff(VP vp){
+        GrabTopItemView grabTopItemView = vp.grabTopItemView;
+        grabTopItemView.setLight(false);
     }
 
     /**

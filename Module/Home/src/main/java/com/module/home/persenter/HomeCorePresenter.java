@@ -192,7 +192,7 @@ public class HomeCorePresenter {
                                     .greenChannel().navigation();
                         }
                     } else {
-                        MyUserInfoManager.getInstance().trySyncLocation();
+                        //MyUserInfoManager.getInstance().trySyncLocation();
                         //账号正常
                         mView.tryJumpSchemeIfNeed();
                     }

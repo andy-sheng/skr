@@ -14,6 +14,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.core.account.UserAccountManager;
 import com.common.core.avatar.AvatarUtils;
+import com.common.core.permission.SkrAudioPermission;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
 import com.common.log.MyLog;
@@ -72,6 +73,8 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
     Handler mUiHandler;
 
     boolean mSetBackGround = false;
+
+    SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
 
     @Override
     public int initView() {
@@ -156,14 +159,19 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
             @Override
             public void clickValid(View v) {
                 U.getSoundUtils().play(TAG, R.raw.song_pairbutton);
-                ARouter.getInstance()
-                        .build(RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)
-                        .withSerializable("prepare_data", mPrepareData)
-                        .navigation();
-                HashMap map = new HashMap();
-                map.put("songId", mPrepareData.getSongModel().getItemID());
-                StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK),
-                        StatConstants.KEY_MATCH_START, map);
+                mSkrAudioPermission.ensurePermission(new Runnable() {
+                    @Override
+                    public void run() {
+                        ARouter.getInstance()
+                                .build(RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)
+                                .withSerializable("prepare_data", mPrepareData)
+                                .navigation();
+                        HashMap map = new HashMap();
+                        map.put("songId", mPrepareData.getSongModel().getItemID());
+                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK),
+                                StatConstants.KEY_MATCH_START, map);
+                    }
+                },true);
             }
         });
 
@@ -183,6 +191,12 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
 
         U.getSoundUtils().preLoad(TAG, R.raw.general_back, R.raw.song_pairbutton);
         playBackgroundMusic();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mSkrAudioPermission.onBackFromPermisionManagerMaybe();
     }
 
     @Override

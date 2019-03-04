@@ -289,7 +289,6 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     @Override
     public void destroy() {
         super.destroy();
-        exitGame();
         cancelHeartBeatTask("destroy");
         cancelSyncGameStateTask();
         if (EventBus.getDefault().isRegistered(this)) {
@@ -303,6 +302,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         }
         ChatRoomMsgManager.getInstance().removeFilter(mPushMsgFilter);
         if (!mRoomData.hasGoVoiceRoom()) {
+            exitGame();
             ModuleServiceManager.getInstance().getMsgService().leaveChatRoom(String.valueOf(mRoomData.getGameId()));
         } else {
             MyLog.w(TAG, "跳转到语音房，暂时不退出融云聊天室");
@@ -1135,12 +1135,16 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         mUiHandler.post(new Runnable() {
             @Override
             public void run() {
+                RankRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
+                if (infoModel == null || infoModel.getUserID() != MyUserInfoManager.getInstance().getUid()) {
+                    MyLog.d(TAG, "onChangeBroadcastSuccess,但已经不是你的轮次了，cancel");
+                    return;
+                }
                 // 开始开始混伴奏，开始解除引擎mute
                 File accFile = SongResUtils.getAccFileByUrl(mRoomData.getSongModel().getAcc());
                 File midiFile = SongResUtils.getMIDIFileByUrl(mRoomData.getSongModel().getMidi());
 
                 if (accFile != null && accFile.exists()) {
-
 //                                    EngineManager.getInstance().muteLocalAudioStream(false);
                     EngineManager.getInstance().startAudioMixing((int) MyUserInfoManager.getInstance().getUid(), accFile.getAbsolutePath()
                             , midiFile == null ? "" : midiFile.getAbsolutePath(), mRoomData.getSongModel().getBeginMs(), false, false, 1);
@@ -1150,7 +1154,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                     EngineManager.getInstance().setAudioMixingPosition(0);
                     // 还应开始播放歌词
                     mIGameRuleView.playLyric(mRoomData.getSongModel(), true);
-                    mIGameRuleView.showLeftTime(mRoomData.getRealRoundInfo().getSingEndMs() - mRoomData.getRealRoundInfo().getSingBeginMs());
+                    mIGameRuleView.showLeftTime(infoModel.getSingEndMs() - infoModel.getSingBeginMs());
                     MyLog.w(TAG, "本人开始唱了，歌词和伴奏响起");
                     mRoomData.setSingBeginTs(System.currentTimeMillis());
                     //开始录制声音
@@ -1398,10 +1402,10 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(PkSomeOneOnlineChangeEvent event) {
-        if (mRoomData.isIsGameFinish()) {
-            MyLog.d(TAG, "游戏结束了，不关心 PkSomeOneOnlineChangeEvent 事件");
-            return;
-        }
+//        if (mRoomData.isIsGameFinish()) {
+//            MyLog.d(TAG, "游戏结束了，不关心 PkSomeOneOnlineChangeEvent 事件");
+//            return;
+//        }
 
         UserInfoModel userInfo = mRoomData.getUserInfo(event.model.getUserID());
         CommentModel commentModel = new CommentModel();

@@ -67,8 +67,6 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
 
     LoadService mLoadService;
 
-    SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
-
     @Override
     public int initView() {
         return R.layout.history_song_fragment_layout;
@@ -93,12 +91,7 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
             @Override
             public void onItemClicked(View view, int position, Object model) {
                 U.getSoundUtils().play(TAG, R.raw.general_button);
-                mSkrAudioPermission.ensurePermission(new Runnable() {
-                    @Override
-                    public void run() {
-                        jump((SongModel) model);
-                    }
-                }, true);
+                jump((SongModel) model);
             }
         });
         mHistoryRecycle.setAdapter(songSelectAdapter);
@@ -231,9 +224,6 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
     @Override
     public void onResume() {
         super.onResume();
-        if (mSkrAudioPermission != null) {
-            mSkrAudioPermission.onBackFromPermisionManagerMaybe();
-        }
     }
 
     @Override

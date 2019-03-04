@@ -68,7 +68,6 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
     int offset; //当前偏移量
     int mGameType;
     boolean hasMore = true; // 是否还有更多数据标记位
-    SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
 
     @Override
     public int initView() {
@@ -141,13 +140,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
                     U.getToastUtil().showShort("无网络连接，请检查网络后重试");
                     return;
                 }
-                mSkrAudioPermission.ensurePermission(new Runnable() {
-                    @Override
-                    public void run() {
-                        jump((SongModel) model);
-                    }
-                }, true);
-
+                jump((SongModel) model);
             }
         }, DEFAULT_COUNT);
 
@@ -245,7 +238,6 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
             StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK),
                     StatConstants.KEY_SELECTSONG_EXPOSE, null);
         }
-        mSkrAudioPermission.onBackFromPermisionManagerMaybe();
     }
 
     // 返回上一张选歌卡片

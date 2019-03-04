@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.common.base.BaseFragment;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.permission.SkrAudioPermission;
 import com.common.log.MyLog;
 import com.common.player.IPlayer;
 import com.common.player.IPlayerCallback;
@@ -131,6 +132,8 @@ public class AuditionFragment extends BaseFragment {
 
     DialogPlus mQuitTipsDialog;
 
+    SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
+
     @Override
     public int initView() {
         return R.layout.audition_sence_layout;
@@ -145,7 +148,7 @@ public class AuditionFragment extends BaseFragment {
             EngineManager.getInstance().init("prepare", params);
 //            boolean isAnchor = MyUserInfoManager.getInstance().getUid() == 1705476;
             boolean isAnchor = true;
-            EngineManager.getInstance().joinRoom("csm"+System.currentTimeMillis(), (int) UserAccountManager.getInstance().getUuidAsLong(), isAnchor);
+            EngineManager.getInstance().joinRoom("csm" + System.currentTimeMillis(), (int) UserAccountManager.getInstance().getUuidAsLong(), isAnchor);
         } else {
             EngineManager.getInstance().resumeAudioMixing();
         }
@@ -258,7 +261,12 @@ public class AuditionFragment extends BaseFragment {
                     if (isRecord) {
                         stopRecord();
                     } else {
-                        startRecord();
+                        mSkrAudioPermission.ensurePermission(new Runnable() {
+                            @Override
+                            public void run() {
+                                startRecord();
+                            }
+                        }, true);
                     }
                 });
 
@@ -606,6 +614,12 @@ public class AuditionFragment extends BaseFragment {
                 mUiHanlder.sendMessageDelayed(msg, entry.getValue().getEndTime() - mSongModel.getBeginMs());
             }
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mSkrAudioPermission.onBackFromPermisionManagerMaybe();
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)

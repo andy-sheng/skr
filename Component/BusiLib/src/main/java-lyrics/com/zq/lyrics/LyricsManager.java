@@ -1,6 +1,7 @@
 package com.zq.lyrics;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.common.log.MyLog;
@@ -23,9 +24,11 @@ import java.util.Map;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okio.BufferedSink;
 import okio.BufferedSource;
@@ -129,27 +132,35 @@ public class LyricsManager {
         });
     }
 
+    public Observable<LyricsReader> fetchAndLoadLyrics(final String url) {
+        return fetchLyricTask(url)
+                .flatMap(new Function<File, ObservableSource<LyricsReader>>() {
+                    @Override
+                    public ObservableSource<LyricsReader> apply(File lyricsReader) throws Exception {
+                        return loadLyricsObserable(lyricsReader.getAbsolutePath(), lyricsReader.hashCode() + "");
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
     public Observable<File> fetchLyricTask(final String url) {
         MyLog.d(TAG, "fetchLyricTask" + " url =" + url);
         return Observable.create(new ObservableOnSubscribe<File>() {
             @Override
             public void subscribe(ObservableEmitter<File> emitter) {
-                File tempFile = new File(SongResUtils.createTempLyricFileName(url));
+                File newName = new File(SongResUtils.createLyricFileName(url));
+                if(newName.exists() && newName.isFile()){
+                    emitter.onNext(newName);
+                    emitter.onComplete();
+                    return;
+                }
 
+                File tempFile = new File(SongResUtils.createTempLyricFileName(url));
                 boolean isSuccess = U.getHttpUtils().downloadFileSync(url, tempFile, null);
 
-                File oldName = new File(SongResUtils.createTempLyricFileName(url));
-                File newName = new File(SongResUtils.createLyricFileName(url));
-//                if (true) {
-//                    MyLog.d(TAG, "fetchLyricTask 哦哦哦哦哦哦哦哦哦哦哦哦哦哦哦");
-//                    for (int i = 0; i < 308613; i++) {
-//                        MyLog.d(TAG, "i=" + i);
-//                    }
-//                    emitter.onError(new Throwable("下载失败"));
-//                    return;
-//                }
                 if (isSuccess) {
-                    if (oldName != null && oldName.renameTo(newName)) {
+                    if (tempFile != null && tempFile.renameTo(newName)) {
                         System.out.println("已重命名");
                         emitter.onNext(newName);
                         emitter.onComplete();
@@ -200,6 +211,14 @@ public class LyricsManager {
 
     public LyricsReader getLyricsUtil(String hash) {
         return mLyricsUtils.get(hash);
+    }
+
+    public void removeLyricsReader(String fileName){
+        if(TextUtils.isEmpty(fileName)){
+            return;
+        }
+
+        mLyricsUtils.remove(fileName.hashCode() + "");
     }
 
 

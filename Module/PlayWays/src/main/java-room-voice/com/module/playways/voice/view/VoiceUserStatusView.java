@@ -50,6 +50,8 @@ public class VoiceUserStatusView extends RelativeLayout {
 
     RankPlayerInfoModel mModel;
 
+    boolean mMute;
+
     public VoiceUserStatusView(Context context) {
         super(context);
         init();
@@ -111,7 +113,9 @@ public class VoiceUserStatusView extends RelativeLayout {
     }
 
     public void userMute(boolean audioMute) {
-        if (audioMute) {
+        mMute = audioMute;
+        if (mMute) {
+            // 静音
             mMuteMicIv.setVisibility(VISIBLE);
             stopSpeakSVGA();
         } else {
@@ -167,6 +171,12 @@ public class VoiceUserStatusView extends RelativeLayout {
     public void stopSpeakSVGA() {
         mSpeakerSvga.stopAnimation(true);
         mSpeakerSvga.setVisibility(GONE);
+        if (mMute) {
+            // 静音
+            mMuteMicIv.setVisibility(VISIBLE);
+        } else {
+            mMuteMicIv.setVisibility(GONE);
+        }
     }
 
     @Override

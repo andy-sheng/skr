@@ -15,12 +15,29 @@ import android.widget.RelativeLayout;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
 import com.common.log.MyLog;
+import com.common.rx.RxRetryAssist;
+import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
+import com.zq.lyrics.LyricsManager;
+import com.zq.lyrics.LyricsReader;
+
+import java.io.File;
+import java.io.IOException;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+import okio.BufferedSource;
+import okio.Okio;
 
 
 /**
@@ -40,6 +57,8 @@ public class SongInfoCardView extends RelativeLayout {
     RotateAnimation mRotateAnimation;    // cd的旋转
     TranslateAnimation mEnterTranslateAnimation; // 飞入的进场动画
     TranslateAnimation mLeaveTranslateAnimation; // 飞出的离场动画
+
+    Disposable mDisposable;
 
     public SongInfoCardView(Context context) {
         super(context);
@@ -89,8 +108,94 @@ public class SongInfoCardView extends RelativeLayout {
         }
         mSongNameTv.setText("《" + songModel.getItemName() + "》");
         mSongSingerTv.setText(songModel.getOwner());
+
+        playLyric(songModel);
         // 入场动画
         animationGo();
+    }
+
+    public void playLyric(SongModel songModel) {
+        if (songModel == null) {
+            MyLog.d(TAG, "songModel 是空的");
+            return;
+        }
+
+        File file = SongResUtils.getGrabLyricFileByUrl(songModel.getStandLrc());
+
+        if (file == null || !file.exists()) {
+            MyLog.w(TAG, "playLyric is not in local file");
+            fetchLyricTask(songModel);
+        } else {
+            MyLog.w(TAG, "playLyric is exist");
+            final File fileName = SongResUtils.getGrabLyricFileByUrl(songModel.getStandLrc());
+            drawLyric(fileName);
+        }
+    }
+
+    private void fetchLyricTask(SongModel songModel) {
+        MyLog.w(TAG, "fetchLyricTask" + " songModel=" + songModel);
+        if(mDisposable != null){
+            mDisposable.dispose();
+        }
+
+        mDisposable = Observable.create(new ObservableOnSubscribe<File>() {
+            @Override
+            public void subscribe(ObservableEmitter<File> emitter) {
+                File tempFile = new File(SongResUtils.createStandLyricTempFileName(songModel.getStandLrc()));
+
+                boolean isSuccess = U.getHttpUtils().downloadFileSync(songModel.getStandLrc(), tempFile, null);
+
+                File oldName = new File(SongResUtils.createStandLyricTempFileName(songModel.getStandLrc()));
+                File newName = new File(SongResUtils.createStandLyricFileName(songModel.getStandLrc()));
+
+                if (isSuccess) {
+                    if (oldName != null && oldName.renameTo(newName)) {
+                        MyLog.w(TAG, "已重命名");
+                        emitter.onNext(newName);
+                        emitter.onComplete();
+                    } else {
+                        MyLog.w(TAG, "Error");
+                        emitter.onError(new Throwable("重命名错误"));
+                    }
+                } else {
+                    emitter.onError(new Throwable("下载失败"));
+                }
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .retryWhen(new RxRetryAssist(5, 1, false))
+                .subscribe(file -> {
+                    final File fileName = SongResUtils.getGrabLyricFileByUrl(songModel.getStandLrc());
+                    drawLyric(fileName);
+                }, throwable -> {
+                    MyLog.e(TAG, throwable);
+                });
+    }
+
+    private void drawLyric(final File file) {
+        MyLog.w(TAG, "file is " + file);
+        Observable.create(new ObservableOnSubscribe<String>() {
+            @Override
+            public void subscribe(ObservableEmitter<String> emitter) {
+                if (file != null && file.exists() && file.isFile()) {
+                    try (BufferedSource source = Okio.buffer(Okio.source(file))) {
+                        String lyric = source.readUtf8Line();
+                        lyric = lyric + "\n" + source.readUtf8Line();
+                        emitter.onNext(lyric);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                emitter.onComplete();
+            }
+        }).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io()).subscribe(new Consumer<String>() {
+            @Override
+            public void accept(String o) {
+                mSongLyrics.setText(o);
+            }
+        }, throwable -> MyLog.e(TAG, throwable));
     }
 
     private void animationGo() {
@@ -160,6 +265,9 @@ public class SongInfoCardView extends RelativeLayout {
         if (mLeaveTranslateAnimation != null) {
             mLeaveTranslateAnimation.setAnimationListener(null);
             mLeaveTranslateAnimation.cancel();
+        }
+        if(mDisposable != null){
+            mDisposable.dispose();
         }
     }
 }

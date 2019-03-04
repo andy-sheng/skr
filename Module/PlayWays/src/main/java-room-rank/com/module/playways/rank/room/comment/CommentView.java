@@ -188,7 +188,7 @@ public class CommentView extends RelativeLayout {
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(GrabSwitchRoomEvent event) {
         mCommentAdapter.getDataList().clear();
         mCommentAdapter.notifyDataSetChanged();
