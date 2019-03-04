@@ -68,6 +68,8 @@ public class GrabPlayerRv2 extends RelativeLayout {
 
     int mCurSeq = -1;
 
+    volatile boolean mHasBurst = false;
+
 
     public GrabPlayerRv2(Context context) {
         super(context);
@@ -166,6 +168,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
             mAnimatorAllSet.cancel();
         }
         mErjiIv.setVisibility(GONE);
+        mHasBurst = false;
         initData();
         for (int uId : mInfoMap.keySet()) {
             VP vp = mInfoMap.get(uId);
@@ -417,6 +420,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
 
     //有人爆灯了，这个时候所有的灯都闪烁
     public void toBurstState() {
+        mHasBurst = true;
         for (int uId : mInfoMap.keySet()) {
             VP vp = mInfoMap.get(uId);
             if (vp != null && vp.grabTopItemView != null) {
@@ -445,6 +449,10 @@ public class GrabPlayerRv2 extends RelativeLayout {
     }
 
     public void lightOff(int uid) {
+        if(mHasBurst){
+            MyLog.w(TAG, "已经爆灯了，所以灭灯也忽略 uid 是：" + uid);
+            return;
+        }
         VP vp = mInfoMap.get(uid);
         if (vp != null && vp.grabTopItemView != null) {
 //            setLightOffAnimation(vp);
@@ -559,7 +567,6 @@ public class GrabPlayerRv2 extends RelativeLayout {
         MyLog.d(TAG, "onEvent" + " event=" + event);
         initData();
     }
-
 
     public void setRoomData(GrabRoomData roomData) {
         mRoomData = roomData;
