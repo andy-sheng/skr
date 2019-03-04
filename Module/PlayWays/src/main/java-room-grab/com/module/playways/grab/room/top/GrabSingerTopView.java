@@ -155,11 +155,16 @@ public class GrabSingerTopView extends FrameLayout {
     private void playFlickerAnim() {
         stopFlickerAnim();
         mFlickerAnim = new AnimationDrawable();
-        mFlickerAnim.setOneShot(false);
-        Drawable drawable = U.getDrawable(R.drawable.liangdeng_shan);
-        mFlickerAnim.addFrame(drawable, 100);
+        mFlickerAnim.setOneShot(true);
+        Drawable drawable = null;
+        drawable = U.getDrawable(R.drawable.liangdeng_shan);
+        mFlickerAnim.addFrame(drawable, 200);
         drawable = U.getDrawable(R.drawable.liangdeng);
-        mFlickerAnim.addFrame(drawable, 100);
+        mFlickerAnim.addFrame(drawable, 300);
+        drawable = U.getDrawable(R.drawable.liangdeng_shan);
+        mFlickerAnim.addFrame(drawable, 200);
+        drawable = U.getDrawable(R.drawable.liangdeng);
+        mFlickerAnim.addFrame(drawable, 300);
         mIvLight.setImageDrawable(mFlickerAnim);
         mFlickerAnim.start();
     }
