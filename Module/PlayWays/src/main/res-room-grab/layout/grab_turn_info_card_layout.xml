@@ -7,8 +7,9 @@
 
     <com.opensource.svgaplayer.SVGAImageView
         android:id="@+id/first_svga"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/view_375_dp"
         android:layout_height="@dimen/view_355_dp"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_60_dp"
         android:visibility="gone"
         app:antiAlias="true"
@@ -16,8 +17,9 @@
 
     <com.opensource.svgaplayer.SVGAImageView
         android:id="@+id/next_svga"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/view_375_dp"
         android:layout_height="@dimen/view_160_dp"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_176_dp"
         android:visibility="gone"
         app:antiAlias="true"
