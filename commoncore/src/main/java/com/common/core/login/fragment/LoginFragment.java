@@ -259,7 +259,7 @@ public class LoginFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        mSkrPermission.onBackFromPexrmisionManagerMaybe();
+        mSkrPermission.onBackFromPermisionManagerMaybe();
     }
 
     @Override
