@@ -103,7 +103,6 @@ public class GrabPlayerRv2 extends RelativeLayout {
             GrabPlayerRv2.this.addView(vp.SVGAImageView, lp);
             mGrabTopItemViewArrayList.add(vp);
         }
-
         resetAllGrabTopItemView();
     }
 
@@ -201,12 +200,27 @@ public class GrabPlayerRv2 extends RelativeLayout {
             MyLog.d(TAG, "没有在选手席位找到 id=" + singUid + " 相应ui，return");
             return;
         }
+        GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
+        if(now==null){
+            return;
+        }
+        if(!now.isParticipant() && now.getEnterStatus() == GrabRoundInfoModel.STATUS_SING){
+            // 如果是演唱阶段进来的参与者
+            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) vp.grabTopItemView.getLayoutParams();
+            lp.weight = 0;
+            vp.grabTopItemView.setLayoutParams(lp);
+            syncLight();
+            EventBus.getDefault().post(new LightOffAnimationOverEvent());
+            return;
+        }
+
         if (vp.grabTopItemView != null) {
             vp.grabTopItemView.setGetSingChance();
         }
 
         List<Animator> allAnimator = new ArrayList<>();
         GrabTopItemView finalGrabTopItemView = vp.grabTopItemView;
+
         {
             // 这是圈圈动画
             ObjectAnimator objectAnimator1 = new ObjectAnimator();
@@ -268,11 +282,11 @@ public class GrabPlayerRv2 extends RelativeLayout {
                     mContentLl.setLayoutParams(lp2);
                 }
             });
-            AnimatorSet animatorSet123 = new AnimatorSet();
-            animatorSet123.playTogether(objectAnimator1, objectAnimator2, objectAnimator3, objectAnimator4);
-            animatorSet123.setDuration(9 * 33);
-            animatorSet123.setStartDelay(47 * 33);
-            allAnimator.add(animatorSet123);
+            AnimatorSet animatorSet1234 = new AnimatorSet();
+            animatorSet1234.playTogether(objectAnimator1, objectAnimator2, objectAnimator3, objectAnimator4);
+            animatorSet1234.setDuration(9 * 33);
+            animatorSet1234.setStartDelay(47 * 33);
+            allAnimator.add(animatorSet1234);
         }
 
 //        {
