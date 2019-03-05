@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * 一些实在不好分类的 utils 方法,放在这。
  */
 public class CommonUtils {
-    public final int FAST_DOUBLE_CLICK_INTERVAL = 500;
+    public static final int FAST_DOUBLE_CLICK_INTERVAL = 500;
 
     private final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
 

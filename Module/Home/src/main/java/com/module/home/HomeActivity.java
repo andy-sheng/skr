@@ -160,7 +160,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
 
         mHomePresenter.checkUserInfo("HomeActivity onCreate");
 
-        mGameArea.setOnClickListener(new DebounceViewClickListener() {
+        mGameArea.setOnClickListener(new DebounceViewClickListener(100) {
             @Override
             public void clickValid(View v) {
                 U.getSoundUtils().play(TAG, R.raw.trans_tab);
@@ -171,7 +171,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
             }
         });
 
-        mMessageArea.setOnClickListener(new DebounceViewClickListener() {
+        mMessageArea.setOnClickListener(new DebounceViewClickListener(100) {
             @Override
             public void clickValid(View v) {
                 U.getSoundUtils().play(TAG, R.raw.trans_tab);
@@ -182,7 +182,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
             }
         });
 
-        mPersonArea.setOnClickListener(new DebounceViewClickListener() {
+        mPersonArea.setOnClickListener(new DebounceViewClickListener(100) {
             @Override
             public void clickValid(View v) {
                 U.getSoundUtils().play(TAG, R.raw.trans_tab);
