@@ -7,9 +7,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -42,16 +45,25 @@ public class LoginFragment extends BaseFragment {
     public static final int MIN_HEIGHT = U.getDisplayUtils().dip2px(100);
 
     RelativeLayout mMainActContainer;
+    ImageView mPicture;
     RelativeLayout mContainer;
+
+
     LinearLayout mTvUserAgree;
     ExImageView mWeixinLoginTv;
     ExImageView mPhoneLoginTv;
     ExImageView mQqLoginTv;
+
+    LinearLayout mDengluArea;
+    TextView mLogoText;
     ProgressBar mProgressBar;
 
     volatile boolean mIsWaitOss = false;
 
     ObjectAnimator mAnimator;
+
+    ViewTreeObserver observer;
+    boolean isMeasured = false;
 
     Handler mUiHandler = new Handler() {
         @Override
@@ -65,6 +77,25 @@ public class LoginFragment extends BaseFragment {
 
     SkrBasePermission mSkrPermission = new SkrPhoneStatePermission();
 
+    ViewTreeObserver.OnPreDrawListener mOnDrawListener = new ViewTreeObserver.OnPreDrawListener() {
+        @Override
+        public boolean onPreDraw() {
+            if (!isMeasured) {
+                isMeasured = true;
+                int height = mContainer.getMeasuredHeight();
+                if (height < MIN_HEIGHT) {
+                    RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mContainer.getLayoutParams();
+                    layoutParams.height = MIN_HEIGHT;
+                    mContainer.setLayoutParams(layoutParams);
+                    mDengluArea.setTranslationY(height - MIN_HEIGHT);
+                    mLogoText.setTranslationY((height - MIN_HEIGHT) / 2);
+                    mPicture.setTranslationY(height - MIN_HEIGHT);
+                }
+            }
+            return true;
+        }
+    };
+
     @Override
     public int initView() {
         return R.layout.core_login_fragment_layout;
@@ -75,12 +106,19 @@ public class LoginFragment extends BaseFragment {
         ShareManager.init();
 
         mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
+        mPicture = (ImageView) mRootView.findViewById(R.id.picture);
         mContainer = (RelativeLayout) mRootView.findViewById(R.id.container);
-        mTvUserAgree = (LinearLayout) mRootView.findViewById(R.id.tv_user_agree);
+
+        mDengluArea = (LinearLayout) mRootView.findViewById(R.id.denglu_area);
         mWeixinLoginTv = (ExImageView) mRootView.findViewById(R.id.weixin_login_tv);
         mPhoneLoginTv = (ExImageView) mRootView.findViewById(R.id.phone_login_tv);
         mQqLoginTv = (ExImageView) mRootView.findViewById(R.id.qq_login_tv);
+        mLogoText = (TextView) mRootView.findViewById(R.id.logo_text);
+        mTvUserAgree = (LinearLayout) mRootView.findViewById(R.id.tv_user_agree);
         mProgressBar = (ProgressBar) mRootView.findViewById(R.id.progress_bar);
+
+        observer = mContainer.getViewTreeObserver();
+        observer.addOnPreDrawListener(mOnDrawListener);
 
         mPhoneLoginTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -160,40 +198,11 @@ public class LoginFragment extends BaseFragment {
             }
         });
 
-        animationGo();
-
         StatisticsAdapter.recordCountEvent("login", "expose", null);
         if (U.getPreferenceUtils().getSettingBoolean("newinstall", true)) {
             U.getPreferenceUtils().setSettingBoolean("newinstall", false);
             StatisticsAdapter.recordCountEvent("signup", "expose", null);
         }
-    }
-
-    private void animationGo() {
-//        mContainer.setVisibility(View.VISIBLE);
-//        mAnimator = ObjectAnimator.ofFloat(mContainer, View.ALPHA, 0f, 1f);
-//        mAnimator.setDuration(600);
-//        mAnimator.start();
-//        mAnimator.addListener(new Animator.AnimatorListener() {
-//            @Override
-//            public void onAnimationStart(Animator animator) {
-//
-//            }
-//
-//            @Override
-//            public void onAnimationEnd(Animator animator) {
-//            }
-//
-//            @Override
-//            public void onAnimationCancel(Animator animator) {
-//                onAnimationEnd(animator);
-//            }
-//
-//            @Override
-//            public void onAnimationRepeat(Animator animator) {
-//
-//            }
-//        });
     }
 
 
@@ -263,6 +272,9 @@ public class LoginFragment extends BaseFragment {
         super.destroy();
         if (mAnimator != null) {
             mAnimator.cancel();
+        }
+        if (observer != null && mOnDrawListener != null) {
+            observer.removeOnPreDrawListener(mOnDrawListener);
         }
         if (mUiHandler != null) {
             mUiHandler.removeCallbacksAndMessages(null);
