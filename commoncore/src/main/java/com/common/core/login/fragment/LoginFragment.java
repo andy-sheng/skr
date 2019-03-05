@@ -273,7 +273,7 @@ public class LoginFragment extends BaseFragment {
         if (mAnimator != null) {
             mAnimator.cancel();
         }
-        if (observer != null && mOnDrawListener != null) {
+        if (observer != null && observer.isAlive() && mOnDrawListener != null) {
             observer.removeOnPreDrawListener(mOnDrawListener);
         }
         if (mUiHandler != null) {
