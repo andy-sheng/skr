@@ -63,7 +63,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
 
     SVGAParser mSVGAParser;
 
-    int mCurSeq = -1;
+    int mCurSeq = -2;
 
     volatile boolean mHasBurst = false;
 
@@ -118,31 +118,24 @@ public class GrabPlayerRv2 extends RelativeLayout {
 
     //只有轮次切换的时候调用
     private void initData() {
-        if (mRoomData.getExpectRoundInfo() == null || mRoomData.getExpectRoundInfo() == null) {
+        GrabRoundInfoModel now = mRoomData.getExpectRoundInfo();
+        if (now == null) {
             MyLog.w(TAG, "initData data error");
             return;
         }
-
-        if (mCurSeq == mRoomData.getRealRoundSeq()) {
+        if (mCurSeq == now.getRoundSeq()) {
             MyLog.w(TAG, "initdata 轮次一样，无需更新");
             return;
         }
-
+        mCurSeq = now.getRoundSeq();
         for (int i = 0; i < mGrabTopItemViewArrayList.size(); i++) {
             VP vp = mGrabTopItemViewArrayList.get(i);
             vp.grabTopItemView.setVisibility(VISIBLE);
         }
-
-
         resetAllGrabTopItemView();
-        mCurSeq = mRoomData.getRealRoundSeq();
-
-        GrabRoundInfoModel now = mRoomData.getExpectRoundInfo();
         List<GrabPlayerInfoModel> playerInfoModels = now.getPlayUsers();
         mInfoMap.clear();
-
         MyLog.d(TAG, "initData playerInfoModels.size() is " + playerInfoModels.size());
-
         for (int i = 0; i < playerInfoModels.size(); i++) {
             VP vp = mGrabTopItemViewArrayList.get(i);
             mInfoMap.put(playerInfoModels.get(i).getUserInfo().getUserId(), vp);
