@@ -9,8 +9,8 @@ public abstract class BaseRoundInfoModel implements Serializable {
     public static final int TYPE_RANK = 1;
     public static final int TYPE_GRAB = 2;
 
-    protected int userID;
-    protected int roundSeq;
+    protected int userID;// 本人在演唱的人
+    protected int roundSeq;// 本局轮次
     protected int playbookID;   //songModelId
     protected SongModel music;//本轮次要唱的歌儿的详细信息
     protected int singBeginMs; // 轮次开始时间
@@ -18,7 +18,7 @@ public abstract class BaseRoundInfoModel implements Serializable {
     protected long startTs;// 开始时间，服务器的
     protected long endTs;// 结束时间，服务器的
     protected int sysScore;//本轮系统打分，先搞个默认60分
-    protected boolean hasSing = false;
+    protected boolean hasSing = false;// 是否已经在演唱，依据时引擎等回调，不是作为是否演唱阶段的依据
 
     /**
      * 一唱到底 结束原因
@@ -154,7 +154,7 @@ public abstract class BaseRoundInfoModel implements Serializable {
         return result;
     }
 
-    public abstract void  tryUpdateRoundInfoModel(BaseRoundInfoModel round, boolean notify);
+    public abstract void tryUpdateRoundInfoModel(BaseRoundInfoModel round, boolean notify);
 
     @Override
     public String toString() {

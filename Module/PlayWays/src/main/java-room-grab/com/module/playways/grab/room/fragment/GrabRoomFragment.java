@@ -156,6 +156,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     DialogPlus mDialogPlus;
 
+    DialogPlus mGameRoleDialog;
+
     SVGAParser mSVGAParser;
 
     List<Animator> mAnimatorList = new ArrayList<>();  //存放所有需要尝试取消的动画
@@ -461,6 +463,23 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         @Override
         public void onVoiceChange(boolean voiceOpen) {
             mCorePresenter.muteAllRemoteAudioStreams(!voiceOpen, true);
+        }
+
+        @Override
+        public void onClickGameRule() {
+            if (mGameRoleDialog != null) {
+                mGameRoleDialog.dismiss();
+            }
+
+            mGameRoleDialog = DialogPlus.newDialog(getContext())
+                    .setContentHolder(new ViewHolder(R.layout.grab_game_role_view_layout))
+                    .setContentBackgroundResource(R.color.transparent)
+                    .setOverlayBackgroundResource(R.color.black_trans_50)
+                    .setExpanded(false)
+                    .setGravity(Gravity.CENTER)
+                    .create();
+
+            mGameRoleDialog.show();
         }
     };
 
@@ -810,6 +829,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                 }
             }
             mAnimatorList.clear();
+        }
+        if(mGameRoleDialog != null){
+            mGameRoleDialog.dismiss();
         }
         U.getSoundUtils().release(TAG);
         BgMusicManager.getInstance().setRoom(false);
