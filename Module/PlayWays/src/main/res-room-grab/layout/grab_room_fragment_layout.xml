@@ -42,7 +42,7 @@
         android:id="@+id/top_container_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_200_dp"
-        android:layout_marginTop="@dimen/view_5_dp" />
+        android:layout_marginTop="0dp" />
 
     <!-- 转场的一些卡片-->
     <com.module.playways.grab.room.view.TurnInfoCardView
