@@ -102,14 +102,29 @@ public class GrabTopItemView extends RelativeLayout {
         if (userInfoModel == null) {
             return;
         }
-        mPlayerInfoModel = userInfoModel;
-        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mPlayerInfoModel.getUserInfo().getAvatar())
-                .setCircle(true)
-                .setGray(mPlayerInfoModel.isOnline() ? false : true) // 先加上，方便调试时看出哪个用户离开了
-                .setBorderColorBySex(mPlayerInfoModel.getUserInfo().getSex() == 1)
-                .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                .build()
-        );
+        boolean hasUpdate = false;
+        if (mPlayerInfoModel == null) {
+            mPlayerInfoModel = userInfoModel;
+            hasUpdate = true;
+        } else {
+            if (userInfoModel.getUserInfo().getSex() == mPlayerInfoModel.getUserInfo().getSex()
+                    && userInfoModel.isOnline() == mPlayerInfoModel.isOnline()
+                    && userInfoModel.getUserInfo().getAvatar().equals(mPlayerInfoModel.getUserInfo().getAvatar())) {
+                hasUpdate = false;
+            } else {
+                mPlayerInfoModel = userInfoModel;
+                hasUpdate = true;
+            }
+        }
+        if (hasUpdate) {
+            AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mPlayerInfoModel.getUserInfo().getAvatar())
+                    .setCircle(true)
+                    .setGray(mPlayerInfoModel.isOnline() ? false : true) // 先加上，方便调试时看出哪个用户离开了
+                    .setBorderColorBySex(mPlayerInfoModel.getUserInfo().getSex() == 1)
+                    .setBorderWidth(U.getDisplayUtils().dip2px(2))
+                    .build()
+            );
+        }
     }
 
     public void bindData(PlayerInfoModel userInfoModel) {
