@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.OvershootInterpolator;
@@ -237,6 +238,7 @@ public class GrabOpView extends RelativeLayout {
                             Message msg = mUiHandler.obtainMessage(MSG_HIDE_FROM_END_GUIDE_AUDIO);
                             mUiHandler.sendMessageDelayed(msg, 0);
                         } else {
+                            mRrlProgress.setVisibility(VISIBLE);
                             mRrlProgress.startCountDown(waitNum - 2000);
                             Message msg = mUiHandler.obtainMessage(MSG_HIDE_FROM_END_GUIDE_AUDIO);
                             mUiHandler.sendMessageDelayed(msg, waitNum - 2000);
@@ -275,6 +277,19 @@ public class GrabOpView extends RelativeLayout {
                         .setUnPressedDrawable(U.getDrawable(R.drawable.xiangchang_daojishi))
                         .build();
                 mBtnIv.setBackground(drawable);
+
+                mBtnIv.setOnTouchListener(new OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        MyLog.d(TAG, "onTouch" + " v=" + v + " event=" + event);
+                        if(event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE){
+                            mRrlProgress.setVisibility(GONE);
+                        }else {
+                            mRrlProgress.setVisibility(VISIBLE);
+                        }
+                        return false;
+                    }
+                });
                 break;
             case STATUS_CAN_OP:
                 mGrabContainer.setVisibility(GONE);
