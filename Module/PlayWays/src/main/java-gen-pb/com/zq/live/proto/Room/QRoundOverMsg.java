@@ -15,6 +15,7 @@ import java.lang.Object;
 import java.lang.Override;
 import java.lang.String;
 import java.lang.StringBuilder;
+import java.util.List;
 import okio.ByteString;
 
 public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Builder> {
@@ -51,16 +52,28 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
   )
   private final QRoundInfo nextRound;
 
-  public QRoundOverMsg(Long roundOverTimeMs, QRoundInfo currentRound, QRoundInfo nextRound) {
-    this(roundOverTimeMs, currentRound, nextRound, ByteString.EMPTY);
+  /**
+   * 有金币变化的用户列表
+   */
+  @WireField(
+      tag = 4,
+      adapter = "com.zq.live.proto.Room.QUserCoin#ADAPTER",
+      label = WireField.Label.REPEATED
+  )
+  private final List<QUserCoin> qUserCoin;
+
+  public QRoundOverMsg(Long roundOverTimeMs, QRoundInfo currentRound, QRoundInfo nextRound,
+      List<QUserCoin> qUserCoin) {
+    this(roundOverTimeMs, currentRound, nextRound, qUserCoin, ByteString.EMPTY);
   }
 
   public QRoundOverMsg(Long roundOverTimeMs, QRoundInfo currentRound, QRoundInfo nextRound,
-      ByteString unknownFields) {
+      List<QUserCoin> qUserCoin, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.roundOverTimeMs = roundOverTimeMs;
     this.currentRound = currentRound;
     this.nextRound = nextRound;
+    this.qUserCoin = Internal.immutableCopyOf("qUserCoin", qUserCoin);
   }
 
   @Override
@@ -69,6 +82,7 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
     builder.roundOverTimeMs = roundOverTimeMs;
     builder.currentRound = currentRound;
     builder.nextRound = nextRound;
+    builder.qUserCoin = Internal.copyOf("qUserCoin", qUserCoin);
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -81,7 +95,8 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(roundOverTimeMs, o.roundOverTimeMs)
         && Internal.equals(currentRound, o.currentRound)
-        && Internal.equals(nextRound, o.nextRound);
+        && Internal.equals(nextRound, o.nextRound)
+        && qUserCoin.equals(o.qUserCoin);
   }
 
   @Override
@@ -92,6 +107,7 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
       result = result * 37 + (roundOverTimeMs != null ? roundOverTimeMs.hashCode() : 0);
       result = result * 37 + (currentRound != null ? currentRound.hashCode() : 0);
       result = result * 37 + (nextRound != null ? nextRound.hashCode() : 0);
+      result = result * 37 + qUserCoin.hashCode();
       super.hashCode = result;
     }
     return result;
@@ -103,6 +119,7 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
     if (roundOverTimeMs != null) builder.append(", roundOverTimeMs=").append(roundOverTimeMs);
     if (currentRound != null) builder.append(", currentRound=").append(currentRound);
     if (nextRound != null) builder.append(", nextRound=").append(nextRound);
+    if (!qUserCoin.isEmpty()) builder.append(", qUserCoin=").append(qUserCoin);
     return builder.replace(0, 2, "QRoundOverMsg{").append('}').toString();
   }
 
@@ -147,6 +164,16 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
   }
 
   /**
+   * 有金币变化的用户列表
+   */
+  public List<QUserCoin> getQUserCoinList() {
+    if(qUserCoin==null){
+        return new java.util.ArrayList<QUserCoin>();
+    }
+    return qUserCoin;
+  }
+
+  /**
    * 本轮次结束的毫秒时间戳
    */
   public boolean hasRoundOverTimeMs() {
@@ -167,6 +194,13 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
     return nextRound!=null;
   }
 
+  /**
+   * 有金币变化的用户列表
+   */
+  public boolean hasQUserCoinList() {
+    return qUserCoin!=null;
+  }
+
   public static final class Builder extends Message.Builder<QRoundOverMsg, Builder> {
     private Long roundOverTimeMs;
 
@@ -174,7 +208,10 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
 
     private QRoundInfo nextRound;
 
+    private List<QUserCoin> qUserCoin;
+
     public Builder() {
+      qUserCoin = Internal.newMutableList();
     }
 
     /**
@@ -201,9 +238,18 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
       return this;
     }
 
+    /**
+     * 有金币变化的用户列表
+     */
+    public Builder addAllQUserCoin(List<QUserCoin> qUserCoin) {
+      Internal.checkElementsNotNull(qUserCoin);
+      this.qUserCoin = qUserCoin;
+      return this;
+    }
+
     @Override
     public QRoundOverMsg build() {
-      return new QRoundOverMsg(roundOverTimeMs, currentRound, nextRound, super.buildUnknownFields());
+      return new QRoundOverMsg(roundOverTimeMs, currentRound, nextRound, qUserCoin, super.buildUnknownFields());
     }
   }
 
@@ -217,6 +263,7 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
       return ProtoAdapter.SINT64.encodedSizeWithTag(1, value.roundOverTimeMs)
           + QRoundInfo.ADAPTER.encodedSizeWithTag(2, value.currentRound)
           + QRoundInfo.ADAPTER.encodedSizeWithTag(3, value.nextRound)
+          + QUserCoin.ADAPTER.asRepeated().encodedSizeWithTag(4, value.qUserCoin)
           + value.unknownFields().size();
     }
 
@@ -225,6 +272,7 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
       ProtoAdapter.SINT64.encodeWithTag(writer, 1, value.roundOverTimeMs);
       QRoundInfo.ADAPTER.encodeWithTag(writer, 2, value.currentRound);
       QRoundInfo.ADAPTER.encodeWithTag(writer, 3, value.nextRound);
+      QUserCoin.ADAPTER.asRepeated().encodeWithTag(writer, 4, value.qUserCoin);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -237,6 +285,7 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
           case 1: builder.setRoundOverTimeMs(ProtoAdapter.SINT64.decode(reader)); break;
           case 2: builder.setCurrentRound(QRoundInfo.ADAPTER.decode(reader)); break;
           case 3: builder.setNextRound(QRoundInfo.ADAPTER.decode(reader)); break;
+          case 4: builder.qUserCoin.add(QUserCoin.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -253,6 +302,7 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
       Builder builder = value.newBuilder();
       if (builder.currentRound != null) builder.currentRound = QRoundInfo.ADAPTER.redact(builder.currentRound);
       if (builder.nextRound != null) builder.nextRound = QRoundInfo.ADAPTER.redact(builder.nextRound);
+      Internal.redactElements(builder.qUserCoin, QUserCoin.ADAPTER);
       builder.clearUnknownFields();
       return builder.build();
     }

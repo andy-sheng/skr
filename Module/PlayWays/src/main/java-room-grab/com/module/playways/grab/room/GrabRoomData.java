@@ -56,12 +56,12 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
                 GrabRoundInfoModel lastRoundInfoModel = (GrabRoundInfoModel) mRealRoundInfo;
                 lastRoundInfoModel.updateStatus(false, GrabRoundInfoModel.STATUS_OVER);
                 mRealRoundInfo = null;
-                if (lastRoundInfoModel != null
-                        && lastRoundInfoModel.getOverReason() == EQRoundOverReason.ROR_LAST_ROUND_OVER.getValue()
-                        && lastRoundInfoModel.getResultType() == EQRoundResultType.ROT_TYPE_1.getValue()) {
-                    // 一唱到底自动加金币
-                    setCoin(getCoin() + 1);
-                }
+//                if (lastRoundInfoModel != null
+//                        && lastRoundInfoModel.getOverReason() == EQRoundOverReason.ROR_LAST_ROUND_OVER.getValue()
+//                        && lastRoundInfoModel.getResultType() == EQRoundResultType.ROT_TYPE_1.getValue()) {
+//                    // 一唱到底自动加金币
+//                    setCoin(getCoin() + 1);
+//                }
                 EventBus.getDefault().post(new GrabGameOverEvent(lastRoundInfoModel));
             }
             return;
@@ -78,12 +78,12 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
                 ((GrabRoundInfoModel) mRealRoundInfo).updateStatus(false, GrabRoundInfoModel.STATUS_GRAB);
             }
             // 告知切换到新的轮次了
-            if (lastRoundInfoModel != null
-                    && lastRoundInfoModel.getOverReason() == EQRoundOverReason.ROR_LAST_ROUND_OVER.getValue()
-                    && lastRoundInfoModel.getResultType() == EQRoundResultType.ROT_TYPE_1.getValue()) {
-                // 一唱到底自动加金币
-                setCoin(getCoin() + 1);
-            }
+//            if (lastRoundInfoModel != null
+//                    && lastRoundInfoModel.getOverReason() == EQRoundOverReason.ROR_LAST_ROUND_OVER.getValue()
+//                    && lastRoundInfoModel.getResultType() == EQRoundResultType.ROT_TYPE_1.getValue()) {
+//                // 一唱到底自动加金币
+//                setCoin(getCoin() + 1);
+//            }
             EventBus.getDefault().post(new GrabRoundChangeEvent(lastRoundInfoModel, (GrabRoundInfoModel) mRealRoundInfo));
         }
     }

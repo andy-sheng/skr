@@ -1202,6 +1202,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         if (RoomDataUtils.isCurrentRunningRound(event.getCurrentRound().getRoundSeq(), mRoomData)) {
             // 如果是当前轮次
             mRoomData.getRealRoundInfo().tryUpdateRoundInfoModel(event.currentRound, true);
+            if(event.myCoin >=0){
+                mRoomData.setCoin(event.myCoin);
+            }
         }
         // 游戏轮次结束
         if (RoomDataUtils.roundSeqLarger(event.nextRound, mRoomData.getExpectRoundInfo())) {
@@ -1221,6 +1224,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         if (RoomDataUtils.isCurrentRunningRound(event.roundInfoModel.getRoundSeq(), mRoomData)) {
             // 如果是当前轮次
             mRoomData.getRealRoundInfo().tryUpdateRoundInfoModel(event.roundInfoModel, true);
+            if(event.myCoin >=0){
+                mRoomData.setCoin(event.myCoin);
+            }
         }
         onGameOver("QRoundAndGameOverMsgEvent", event.roundOverTimeMs, event.resultInfo);
     }

@@ -48,7 +48,7 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
       tag = 2,
       adapter = "com.squareup.wire.ProtoAdapter#SINT64"
   )
-  private final Long CreateTimeMs;
+  private final Long createTimeMs;
 
   /**
    * 玩家信息
@@ -79,16 +79,16 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
   )
   private final GameConfig config;
 
-  public JoinActionMsg(Integer gameID, Long CreateTimeMs, List<PlayerInfo> players,
+  public JoinActionMsg(Integer gameID, Long createTimeMs, List<PlayerInfo> players,
       List<MusicInfo> music, GameConfig config) {
-    this(gameID, CreateTimeMs, players, music, config, ByteString.EMPTY);
+    this(gameID, createTimeMs, players, music, config, ByteString.EMPTY);
   }
 
-  public JoinActionMsg(Integer gameID, Long CreateTimeMs, List<PlayerInfo> players,
+  public JoinActionMsg(Integer gameID, Long createTimeMs, List<PlayerInfo> players,
       List<MusicInfo> music, GameConfig config, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.gameID = gameID;
-    this.CreateTimeMs = CreateTimeMs;
+    this.createTimeMs = createTimeMs;
     this.players = Internal.immutableCopyOf("players", players);
     this.music = Internal.immutableCopyOf("music", music);
     this.config = config;
@@ -98,7 +98,7 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
   public Builder newBuilder() {
     Builder builder = new Builder();
     builder.gameID = gameID;
-    builder.CreateTimeMs = CreateTimeMs;
+    builder.createTimeMs = createTimeMs;
     builder.players = Internal.copyOf("players", players);
     builder.music = Internal.copyOf("music", music);
     builder.config = config;
@@ -113,7 +113,7 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
     JoinActionMsg o = (JoinActionMsg) other;
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(gameID, o.gameID)
-        && Internal.equals(CreateTimeMs, o.CreateTimeMs)
+        && Internal.equals(createTimeMs, o.createTimeMs)
         && players.equals(o.players)
         && music.equals(o.music)
         && Internal.equals(config, o.config);
@@ -125,7 +125,7 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
     if (result == 0) {
       result = unknownFields().hashCode();
       result = result * 37 + (gameID != null ? gameID.hashCode() : 0);
-      result = result * 37 + (CreateTimeMs != null ? CreateTimeMs.hashCode() : 0);
+      result = result * 37 + (createTimeMs != null ? createTimeMs.hashCode() : 0);
       result = result * 37 + players.hashCode();
       result = result * 37 + music.hashCode();
       result = result * 37 + (config != null ? config.hashCode() : 0);
@@ -138,7 +138,7 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
   public String toString() {
     StringBuilder builder = new StringBuilder();
     if (gameID != null) builder.append(", gameID=").append(gameID);
-    if (CreateTimeMs != null) builder.append(", CreateTimeMs=").append(CreateTimeMs);
+    if (createTimeMs != null) builder.append(", createTimeMs=").append(createTimeMs);
     if (!players.isEmpty()) builder.append(", players=").append(players);
     if (!music.isEmpty()) builder.append(", music=").append(music);
     if (config != null) builder.append(", config=").append(config);
@@ -169,10 +169,10 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
    * 创建毫秒时间戳
    */
   public Long getCreateTimeMs() {
-    if(CreateTimeMs==null){
+    if(createTimeMs==null){
         return DEFAULT_CREATETIMEMS;
     }
-    return CreateTimeMs;
+    return createTimeMs;
   }
 
   /**
@@ -216,7 +216,7 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
    * 创建毫秒时间戳
    */
   public boolean hasCreateTimeMs() {
-    return CreateTimeMs!=null;
+    return createTimeMs!=null;
   }
 
   /**
@@ -243,7 +243,7 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
   public static final class Builder extends Message.Builder<JoinActionMsg, Builder> {
     private Integer gameID;
 
-    private Long CreateTimeMs;
+    private Long createTimeMs;
 
     private List<PlayerInfo> players;
 
@@ -267,8 +267,8 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
     /**
      * 创建毫秒时间戳
      */
-    public Builder setCreateTimeMs(Long CreateTimeMs) {
-      this.CreateTimeMs = CreateTimeMs;
+    public Builder setCreateTimeMs(Long createTimeMs) {
+      this.createTimeMs = createTimeMs;
       return this;
     }
 
@@ -300,7 +300,7 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
 
     @Override
     public JoinActionMsg build() {
-      return new JoinActionMsg(gameID, CreateTimeMs, players, music, config, super.buildUnknownFields());
+      return new JoinActionMsg(gameID, createTimeMs, players, music, config, super.buildUnknownFields());
     }
   }
 
@@ -312,7 +312,7 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
     @Override
     public int encodedSize(JoinActionMsg value) {
       return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.gameID)
-          + ProtoAdapter.SINT64.encodedSizeWithTag(2, value.CreateTimeMs)
+          + ProtoAdapter.SINT64.encodedSizeWithTag(2, value.createTimeMs)
           + PlayerInfo.ADAPTER.asRepeated().encodedSizeWithTag(3, value.players)
           + MusicInfo.ADAPTER.asRepeated().encodedSizeWithTag(4, value.music)
           + GameConfig.ADAPTER.encodedSizeWithTag(5, value.config)
@@ -322,7 +322,7 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
     @Override
     public void encode(ProtoWriter writer, JoinActionMsg value) throws IOException {
       ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.gameID);
-      ProtoAdapter.SINT64.encodeWithTag(writer, 2, value.CreateTimeMs);
+      ProtoAdapter.SINT64.encodeWithTag(writer, 2, value.createTimeMs);
       PlayerInfo.ADAPTER.asRepeated().encodeWithTag(writer, 3, value.players);
       MusicInfo.ADAPTER.asRepeated().encodeWithTag(writer, 4, value.music);
       GameConfig.ADAPTER.encodeWithTag(writer, 5, value.config);

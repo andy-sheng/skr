@@ -2,12 +2,14 @@
 // Source file: Room.proto
 package com.module.playways.rank.msg.event;
 
+import com.common.core.myinfo.MyUserInfoManager;
 import com.module.playways.grab.room.model.GrabResultInfoModel;
 import com.module.playways.rank.msg.BasePushInfo;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
 import com.zq.live.proto.Room.QResultInfo;
 import com.zq.live.proto.Room.QRoundAndGameOverMsg;
+import com.zq.live.proto.Room.QUserCoin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +33,8 @@ public final class QRoundAndGameOverMsgEvent {
      */
     public List<GrabResultInfoModel> resultInfo;
 
+    public int myCoin = -1;
+
     public QRoundAndGameOverMsgEvent(BasePushInfo info, QRoundAndGameOverMsg qRoundAndGameOverMsg) {
         this.info = info;
         this.roundOverTimeMs = qRoundAndGameOverMsg.getRoundOverTimeMs();
@@ -38,6 +42,12 @@ public final class QRoundAndGameOverMsgEvent {
         resultInfo = new ArrayList<>();
         for(QResultInfo qResultInfo:qRoundAndGameOverMsg.getResultInfoList()){
             resultInfo.add(GrabResultInfoModel.parse(qResultInfo));
+        }
+        for(QUserCoin c :qRoundAndGameOverMsg.getQUserCoinList()){
+            if(c.getUserID()== MyUserInfoManager.getInstance().getUid()){
+                long a = c.getCoin();
+                myCoin = (int) a;
+            }
         }
     }
 
