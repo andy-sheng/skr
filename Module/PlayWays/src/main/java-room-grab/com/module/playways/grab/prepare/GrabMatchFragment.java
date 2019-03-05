@@ -547,6 +547,7 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
         //结束当前Activity
         if (getActivity() != null) {
             getActivity().finish();
+            getActivity().overridePendingTransition(0,0);
         }
     }
 

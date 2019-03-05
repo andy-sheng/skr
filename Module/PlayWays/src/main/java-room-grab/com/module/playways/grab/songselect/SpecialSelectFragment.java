@@ -218,12 +218,14 @@ public class SpecialSelectFragment extends BaseFragment {
         if (musicURLs != null && musicURLs.size() > 0) {
             prepareData.setBgMusic(musicURLs.get(0));
         }
-        if (getActivity() != null) {
-            getActivity().finish();
-        }
+
         ARouter.getInstance()
                 .build(RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)
                 .withSerializable("prepare_data", prepareData)
                 .navigation();
+        if (getActivity() != null) {
+            getActivity().finish();
+            getActivity().overridePendingTransition(0,0);
+        }
     }
 }

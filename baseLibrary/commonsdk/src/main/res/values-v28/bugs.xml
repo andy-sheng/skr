@@ -1,10 +1,21 @@
 <resources>
     <bool name="translucent_no_bug">true</bool>
+
     <style name="Activity_Animation" parent="@android:style/Animation.Translucent">
+
+        <!--A 启动 B-->
+        <!-- B 的进场-->
         <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
-        <item name="android:activityOpenExitAnimation">@anim/slide_left_out</item>
+        <!-- A 的退场-->
+        <item name="android:activityOpenExitAnimation">@null</item>
+
+        <!-- B finish()-->
+        <!--A 进入的动画-->
         <item name="android:activityCloseEnterAnimation">@null</item>
+        <!-- B 退出的动画-->
         <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
+
+
         <item name="android:taskOpenEnterAnimation">@anim/slide_in_right</item>
         <item name="android:taskOpenExitAnimation">@null</item>
         <item name="android:taskCloseEnterAnimation">@null</item>

@@ -941,7 +941,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         U.getFragmentUtils().popFragment(FragmentUtils.newPopParamsBuilder()
                 .setPopFragment(GrabRoomFragment.this)
                 .setPopAbove(false)
-                .setHasAnimation(true)
+                .setHasAnimation(false)
                 .build());
 
         StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
