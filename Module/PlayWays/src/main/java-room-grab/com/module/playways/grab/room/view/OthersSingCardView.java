@@ -27,6 +27,7 @@ import com.common.image.model.ImageFactory;
 import com.common.log.MyLog;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
+import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.fresco.animation.drawable.AnimatedDrawable2;
 import com.facebook.fresco.animation.drawable.AnimationListener;
 import com.facebook.imagepipeline.image.ImageInfo;
