@@ -10,7 +10,7 @@
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:centerText="小黑屋"
+        app:centerText="黑名单管理"
         app:centerTextColor="@color/white"
         app:centerTextSize="@dimen/textsize_20_dp"
         app:centerType="textView"
