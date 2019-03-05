@@ -1,7 +1,5 @@
 package com.module.playways.rank.room.view;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -10,8 +8,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.animation.AnimationSet;
-import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 
 import com.common.utils.U;
@@ -25,11 +21,11 @@ public class ArcProgressBar extends View {
     /**
      * 虚线默认颜色
      */
-    private int mDottedDefaultColor = Color.parseColor("#767995");
+    private int mDottedDefaultColor = Color.parseColor("#E08B10");
     /**
      * 虚线变动颜色
      */
-    private int mDottedRunColor = Color.parseColor("#E08B10");
+    private int mDottedRunColor = Color.parseColor("#767995");
     /**
      * 线条数
      */
