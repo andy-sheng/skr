@@ -183,24 +183,28 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         }
     }
 
-    public void addWaitUser(boolean notify, GrabPlayerInfoModel grabPlayerInfoModel) {
+    public boolean addWaitUser(boolean notify, GrabPlayerInfoModel grabPlayerInfoModel) {
         if (!waitUsers.contains(grabPlayerInfoModel)) {
             waitUsers.add(grabPlayerInfoModel);
             if (notify) {
                 SomeOneJoinWaitSeatEvent event = new SomeOneJoinWaitSeatEvent(grabPlayerInfoModel);
                 EventBus.getDefault().post(event);
             }
+            return true;
         }
+        return false;
     }
 
-    public void addPlayUser(boolean notify, GrabPlayerInfoModel grabPlayerInfoModel) {
+    public boolean addPlayUser(boolean notify, GrabPlayerInfoModel grabPlayerInfoModel) {
         if (!playUsers.contains(grabPlayerInfoModel)) {
             playUsers.add(grabPlayerInfoModel);
             if (notify) {
                 SomeOneJoinPlaySeatEvent event = new SomeOneJoinPlaySeatEvent(grabPlayerInfoModel);
                 EventBus.getDefault().post(event);
             }
+            return true;
         }
+        return false;
     }
 
     public void updateWaitUsers(List<GrabPlayerInfoModel> l) {
@@ -345,12 +349,13 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         this.status = status;
     }
 
-    public void addUser(boolean b, GrabPlayerInfoModel playerInfoModel) {
+    public boolean addUser(boolean b, GrabPlayerInfoModel playerInfoModel) {
         if (playerInfoModel.getRole() == GrabPlayerInfoModel.ROLE_PLAY) {
-            addPlayUser(b, playerInfoModel);
+            return addPlayUser(b, playerInfoModel);
         } else if (playerInfoModel.getRole() == GrabPlayerInfoModel.ROLE_WAIT) {
-            addWaitUser(b, playerInfoModel);
+            return addWaitUser(b, playerInfoModel);
         }
+        return false;
     }
 
     public void removeUser(boolean notify, int uid) {
