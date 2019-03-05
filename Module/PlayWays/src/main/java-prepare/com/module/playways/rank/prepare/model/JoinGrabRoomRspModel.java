@@ -281,4 +281,19 @@ public class JoinGrabRoomRspModel implements Serializable {
     public long getGameCreateMs() {
         return gameCreateMs;
     }
+
+    @Override
+    public String toString() {
+        return "JoinGrabRoomRspModel{" +
+                "coin=" + coin +
+                ", config=" + config +
+                ", elapsedTimeMs=" + elapsedTimeMs +
+                ", gameOverTimeMs=" + gameOverTimeMs +
+                ", roomID=" + roomID +
+                ", syncStatusTimeMs=" + syncStatusTimeMs +
+                ", tagID=" + tagID +
+                ", isNewGame=" + isNewGame +
+                ", gameCreateMs=" + gameCreateMs +
+                '}';
+    }
 }

@@ -260,7 +260,8 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
         ApiMethods.subscribe(mMatchServerApi.joinGrabRoom(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
-                MyLog.w(TAG, "sendIntoRoomReq 请求加入房间 result =  " + result.getErrno() + " traceId = " + result.getTraceId());
+                StringBuilder sb = new StringBuilder();
+                MyLog.w(TAG, "sendIntoRoomReq 请求加入房间 result =  " + result.getErrno() + " traceId = " + result.getTraceId()+ " ");
                 if (result.getErrno() == 0) {
                     if (mMatchState == MatchState.JoinRongYunRoomSuccess) {
                         mMatchState = MatchState.JoinGameSuccess;
