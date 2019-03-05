@@ -6,11 +6,11 @@
     android:layout_height="match_parent"
     android:background="#2E3041">
 
-    <com.module.playways.grab.room.top.GrabSingerTopView
-        android:id="@+id/singer_top_view"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_70_dp"
-        android:visibility="gone" />
+    <!--<com.module.playways.grab.room.top.GrabSingerTopView-->
+        <!--android:id="@+id/singer_top_view"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="@dimen/view_70_dp"-->
+        <!--android:visibility="gone" />-->
 
     <!--这里面是软键盘弹出时 需要上移的布局-->
     <com.module.playways.rank.room.view.BottomContainerView
