@@ -21,6 +21,8 @@ import io.reactivex.functions.Consumer;
  * Handler 定时器 用于倒计时 、延迟执行、循环执行 任务
  */
 public final class HandlerTaskTimer {
+    public final static String TAG = "HandlerTaskTimer";
+
     public static final int MSG_EXECUTE = 100;
     long initialDelay = 0;
     // 发送的间隔 -1为不循环发送
@@ -109,7 +111,9 @@ public final class HandlerTaskTimer {
     public void subscribe(Observer<Integer> consumer) {
         this.consumer = consumer;
         if (mHandler == null) {
-            throw new IllegalStateException("HandlerTaskTimer can not subscibe after dispose");
+            MyLog.d(TAG, "mHandler == null");
+            return;
+//            throw new IllegalStateException("HandlerTaskTimer can not subscibe after dispose");
         }
         mHandler.removeMessages(MSG_EXECUTE);
         mHandler.sendEmptyMessageDelayed(MSG_EXECUTE, initialDelay);
