@@ -177,6 +177,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
 
         if (!TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName())) {
             mNicknameEt.setText(MyUserInfoManager.getInstance().getNickName());
+            mNicknameEt.setSelection(MyUserInfoManager.getInstance().getNickName().length());
             setCompleteTv(true);
         } else {
             setCompleteTv(false);
