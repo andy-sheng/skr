@@ -5,11 +5,18 @@
     android:layout_height="wrap_content"
     tools:parentTag="android.widget.RelativeLayout">
 
+    <com.module.playways.rank.room.view.ArcProgressBar
+        android:id="@+id/count_down_process"
+        android:layout_width="@dimen/view_116_dp"
+        android:layout_height="@dimen/view_116_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_194_dp" />
+
     <com.common.image.fresco.BaseImageView
         android:id="@+id/grab_stage_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_140_dp"
-        android:layout_marginTop="@dimen/view_182_dp" />
+        android:layout_height="@dimen/view_160_dp"
+        android:layout_marginTop="@dimen/view_172_dp" />
 
     <com.common.image.fresco.BaseImageView
         android:id="@+id/sing_avatar_view"
@@ -17,12 +24,5 @@
         android:layout_height="@dimen/view_90_dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_207_dp" />
-
-    <com.module.playways.rank.room.view.ArcProgressBar
-        android:id="@+id/count_down_process"
-        android:layout_width="@dimen/view_116_dp"
-        android:layout_height="@dimen/view_116_dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_194_dp" />
 
 </merge>
