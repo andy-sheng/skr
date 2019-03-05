@@ -164,8 +164,20 @@ public class ArcProgressBar extends View {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if (mAnimatorSet != null && mAnimatorSet.isRunning()) {
+        if (mAnimatorSet != null) {
+            mAnimatorSet.removeAllListeners();
             mAnimatorSet.cancel();
+        }
+    }
+
+    @Override
+    public void setVisibility(int visibility) {
+        super.setVisibility(visibility);
+        if (visibility == GONE) {
+            if (mAnimatorSet != null) {
+                mAnimatorSet.removeAllListeners();
+                mAnimatorSet.cancel();
+            }
         }
     }
 

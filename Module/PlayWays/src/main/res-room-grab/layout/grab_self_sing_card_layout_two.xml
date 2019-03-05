@@ -6,34 +6,63 @@
     tools:parentTag="android.widget.RelativeLayout">
 
     <ScrollView
-        android:layout_marginRight="@dimen/view_18_dp"
-        android:layout_marginLeft="@dimen/view_18_dp"
-        android:background="@drawable/self_lyric_bg"
-        android:layout_marginTop="@dimen/view_48_dp"
-        android:paddingTop="@dimen/view_48_dp"
-        android:paddingBottom="@dimen/view_19_dp"
-        android:paddingLeft="@dimen/view_60_dp"
-        android:paddingRight="@dimen/view_60_dp"
         android:id="@+id/sv_lyric"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_212_dp">
+        android:layout_height="@dimen/view_212_dp"
+        android:layout_marginLeft="@dimen/view_18_dp"
+        android:layout_marginTop="@dimen/view_140_dp"
+        android:layout_marginRight="@dimen/view_18_dp"
+        android:background="@drawable/self_lyric_bg"
+        android:paddingLeft="@dimen/view_60_dp"
+        android:paddingTop="@dimen/view_24_dp"
+        android:paddingRight="@dimen/view_60_dp"
+        android:paddingBottom="@dimen/view_24_dp">
+
         <TextView
-            android:alpha="0.6"
             android:id="@+id/tv_lyric"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:alpha="0.6"
             android:gravity="center"
             android:lineSpacingExtra="7dp"
             android:textColor="@color/black"
-            android:textSize="@dimen/textsize_18_dp"
-             />
+            android:textSize="@dimen/textsize_18_dp" />
     </ScrollView>
 
     <ImageView
-        android:layout_marginTop="@dimen/view_22_dp"
-        android:layout_marginLeft="@dimen/view_10_dp"
-        android:background="@drawable/self_sing_biaoqian"
         android:layout_width="@dimen/view_120_dp"
         android:layout_height="@dimen/view_64_dp"
-        />
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginTop="@dimen/view_22_dp"
+        android:background="@drawable/self_sing_biaoqian" />
+
+    <com.common.view.ex.ExRelativeLayout
+        android:layout_width="@dimen/view_80_dp"
+        android:layout_height="@dimen/view_80_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_100_dp"
+        app:bl_shape="oval"
+        app:bl_solid_color="#2E3041"
+        app:bl_stroke_color="#202239"
+        app:bl_stroke_width="@dimen/view_2_dp">
+
+        <com.module.playways.rank.room.view.ArcProgressBar
+            android:id="@+id/count_down_process"
+            android:layout_width="@dimen/view_70_dp"
+            android:layout_height="@dimen/view_70_dp"
+            android:layout_centerInParent="true" />
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/count_down_tv"
+            android:layout_width="@dimen/view_50_dp"
+            android:layout_height="@dimen/view_40_dp"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:textColor="#FFED3F"
+            android:textSize="@dimen/textsize_32_dp"
+            android:textStyle="bold" />
+
+    </com.common.view.ex.ExRelativeLayout>
+
+
 </merge>

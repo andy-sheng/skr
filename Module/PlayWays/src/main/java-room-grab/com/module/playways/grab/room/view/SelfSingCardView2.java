@@ -5,10 +5,18 @@ import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.log.MyLog;
 import com.common.rx.RxRetryAssist;
+import com.common.utils.HandlerTaskTimer;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
+import com.common.view.ex.ExTextView;
+import com.component.busilib.constans.GameModeType;
+import com.component.busilib.manager.BgMusicManager;
+import com.module.RouterConstants;
+import com.module.playways.grab.room.model.GrabRoundInfoModel;
+import com.module.playways.rank.room.view.ArcProgressBar;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
 
@@ -30,9 +38,13 @@ import okio.Okio;
  */
 public class SelfSingCardView2 extends RelativeLayout {
     public final static String TAG = "SelfSingCardView";
+
     TextView mTvLyric;
+    ArcProgressBar mCountDownProcess;
+    ExTextView mCountDownTv;
 
     Disposable mDisposable;
+    HandlerTaskTimer mCounDownTask;
 
     public SelfSingCardView2(Context context) {
         super(context);
@@ -52,6 +64,9 @@ public class SelfSingCardView2 extends RelativeLayout {
     private void init() {
         inflate(getContext(), R.layout.grab_self_sing_card_layout_two, this);
         mTvLyric = findViewById(R.id.tv_lyric);
+        mCountDownProcess = (ArcProgressBar) findViewById(R.id.count_down_process);
+        mCountDownTv = (ExTextView) findViewById(R.id.count_down_tv);
+
     }
 
     public void playLyric(SongModel songModel, boolean play) {
@@ -74,6 +89,48 @@ public class SelfSingCardView2 extends RelativeLayout {
             MyLog.w(TAG, "playLyric is exist");
             final File fileName = SongResUtils.getGrabLyricFileByUrl(songModel.getStandLrc());
             drawLyric(fileName);
+        }
+
+        starCounDown(songModel);
+    }
+
+    private void starCounDown(SongModel songModel) {
+        mCountDownProcess.startCountDown(0, songModel.getTotalMs());
+        int counDown = songModel.getTotalMs() / 1000;
+        mCounDownTask = HandlerTaskTimer.newBuilder()
+                .interval(1000)
+                .take(counDown)
+                .start(new HandlerTaskTimer.ObserverW() {
+                    @Override
+                    public void onNext(Integer integer) {
+                        mCountDownTv.setText((counDown - integer) + "");
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+                        stopCounDown();
+                    }
+                });
+    }
+
+    private void stopCounDown() {
+        if (mCounDownTask != null) {
+            mCounDownTask.dispose();
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        stopCounDown();
+    }
+
+    @Override
+    public void setVisibility(int visibility) {
+        super.setVisibility(visibility);
+        if (visibility == GONE) {
+            stopCounDown();
         }
     }
 
