@@ -3,74 +3,29 @@
     android:id="@+id/main_act_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:background="#F1EBE6"
+    android:clipChildren="false"
+    android:clipToPadding="false">
 
-    <com.common.view.ex.ExTextView
-        android:id="@+id/logo_tv"
-        android:layout_width="@dimen/view_183_dp"
-        android:layout_height="@dimen/view_115_dp"
-        android:layout_centerInParent="true"
-        android:background="@drawable/skrer_logo"
-        android:visibility="gone" />
+    <ImageView
+        android:id="@+id/picture"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_515_dp"
+        android:background="@color/white" />
 
     <RelativeLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/picture">
 
-        <com.common.view.ex.ExImageView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/view_133_dp"
-            android:background="@drawable/denglu_logo" />
-
-        <com.common.view.ex.ExTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/view_245_dp"
-            android:text="- 选择以下方式登录 —"
-            android:textColor="@color/black_trans_80"
-            android:textSize="@dimen/textsize_16_dp"
-            android:visibility="gone" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/view_102_dp"
-            android:orientation="horizontal">
-
-            <com.common.view.ex.ExTextView
-                android:id="@+id/weixin_login_tv"
-                android:layout_width="@dimen/view_64_dp"
-                android:layout_height="@dimen/view_64_dp"
-                android:background="@drawable/weixin"
-                android:gravity="center"
-                android:textColor="@color/black" />
-
-            <com.common.view.ex.ExTextView
-                android:id="@+id/phone_login_tv"
-                android:layout_width="@dimen/view_64_dp"
-                android:layout_height="@dimen/view_64_dp"
-                android:layout_marginLeft="@dimen/view_25_dp"
-                android:background="@drawable/denglu_iphone"
-                android:gravity="center"
-                android:textColor="@color/black" />
-
-            <com.common.view.ex.ExTextView
-                android:id="@+id/qq_login_tv"
-                android:layout_width="@dimen/view_64_dp"
-                android:layout_height="@dimen/view_64_dp"
-                android:layout_marginLeft="@dimen/view_25_dp"
-                android:background="@drawable/denglu_qq"
-                android:gravity="center"
-                android:textColor="@color/black" />
-
-        </LinearLayout>
+            android:layout_centerInParent="true"
+            android:text="撕歌 | 很高兴，用歌声认识你"
+            android:textColor="#514C46"
+            android:textSize="@dimen/textsize_16_dp" />
 
         <LinearLayout
             android:id="@+id/tv_user_agree"
@@ -92,16 +47,49 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/denglu_agree_img"/>
-
+                android:src="@drawable/denglu_agree_img" />
         </LinearLayout>
 
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:visibility="invisible" />
-
     </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/container"
+        android:layout_marginTop="-32dp"
+        android:orientation="horizontal">
+
+        <com.common.view.ex.ExImageView
+            android:id="@+id/weixin_login_tv"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/view_64_dp"
+            android:layout_weight="1"
+            android:src="@drawable/weixin" />
+
+        <com.common.view.ex.ExImageView
+            android:id="@+id/phone_login_tv"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/view_64_dp"
+            android:layout_marginLeft="@dimen/view_25_dp"
+            android:layout_weight="1"
+            android:src="@drawable/denglu_iphone" />
+
+        <com.common.view.ex.ExImageView
+            android:id="@+id/qq_login_tv"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/view_64_dp"
+            android:layout_marginLeft="@dimen/view_25_dp"
+            android:layout_weight="1"
+            android:src="@drawable/denglu_qq" />
+
+    </LinearLayout>
+
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="invisible" />
+
 </RelativeLayout>

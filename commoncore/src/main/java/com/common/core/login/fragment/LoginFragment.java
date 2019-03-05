@@ -23,6 +23,7 @@ import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
+import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.module.RouterConstants;
 import com.umeng.socialize.UMAuthListener;
@@ -39,15 +40,11 @@ public class LoginFragment extends BaseFragment {
     public static final int MSG_HIDE_PORGRESS_BAR = 1;
 
     RelativeLayout mMainActContainer;
-    ExTextView mLogoTv;
-
-    RelativeLayout mContainer;
-    ExTextView mWeixinLoginTv;
-    ExTextView mPhoneLoginTv;
-    ExTextView mQqLoginTv;
-    ProgressBar mProgressBar;
-
     LinearLayout mTvUserAgree;
+    ExImageView mWeixinLoginTv;
+    ExImageView mPhoneLoginTv;
+    ExImageView mQqLoginTv;
+    ProgressBar mProgressBar;
 
     volatile boolean mIsWaitOss = false;
 
@@ -73,14 +70,13 @@ public class LoginFragment extends BaseFragment {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         ShareManager.init();
-        mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
-        mLogoTv = (ExTextView) mRootView.findViewById(R.id.logo_tv);
-        mContainer = (RelativeLayout) mRootView.findViewById(R.id.container);
-        mWeixinLoginTv = (ExTextView) mRootView.findViewById(R.id.weixin_login_tv);
-        mPhoneLoginTv = (ExTextView) mRootView.findViewById(R.id.phone_login_tv);
-        mQqLoginTv = (ExTextView) mRootView.findViewById(R.id.qq_login_tv);
-        mTvUserAgree = (LinearLayout) mRootView.findViewById(R.id.tv_user_agree);
-        mProgressBar = (ProgressBar) mRootView.findViewById(R.id.progress_bar);
+
+        mMainActContainer = (RelativeLayout)mRootView.findViewById(R.id.main_act_container);
+        mTvUserAgree = (LinearLayout)mRootView.findViewById(R.id.tv_user_agree);
+        mWeixinLoginTv = (ExImageView)mRootView.findViewById(R.id.weixin_login_tv);
+        mPhoneLoginTv = (ExImageView)mRootView.findViewById(R.id.phone_login_tv);
+        mQqLoginTv = (ExImageView)mRootView.findViewById(R.id.qq_login_tv);
+        mProgressBar = (ProgressBar)mRootView.findViewById(R.id.progress_bar);
 
         mPhoneLoginTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -170,30 +166,30 @@ public class LoginFragment extends BaseFragment {
     }
 
     private void animationGo() {
-        mContainer.setVisibility(View.VISIBLE);
-        mAnimator = ObjectAnimator.ofFloat(mContainer, View.ALPHA, 0f, 1f);
-        mAnimator.setDuration(600);
-        mAnimator.start();
-        mAnimator.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animator) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animator) {
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animator) {
-                onAnimationEnd(animator);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animator) {
-
-            }
-        });
+//        mContainer.setVisibility(View.VISIBLE);
+//        mAnimator = ObjectAnimator.ofFloat(mContainer, View.ALPHA, 0f, 1f);
+//        mAnimator.setDuration(600);
+//        mAnimator.start();
+//        mAnimator.addListener(new Animator.AnimatorListener() {
+//            @Override
+//            public void onAnimationStart(Animator animator) {
+//
+//            }
+//
+//            @Override
+//            public void onAnimationEnd(Animator animator) {
+//            }
+//
+//            @Override
+//            public void onAnimationCancel(Animator animator) {
+//                onAnimationEnd(animator);
+//            }
+//
+//            @Override
+//            public void onAnimationRepeat(Animator animator) {
+//
+//            }
+//        });
     }
 
 
