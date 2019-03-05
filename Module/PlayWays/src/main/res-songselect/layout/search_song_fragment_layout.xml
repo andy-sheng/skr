@@ -12,6 +12,7 @@
         app:centerSearchBg="@drawable/search_song_edit_shape"
         app:centerSearchEditable="true"
         app:centerSearchHint="请输入歌曲名称或歌手名字"
+        app:centerSearchMaxLength="20"
         app:centerSearchRightType="delete"
         app:centerType="searchView"
         app:rightText="取消"

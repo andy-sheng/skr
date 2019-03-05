@@ -6,6 +6,8 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Build;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
@@ -157,6 +159,7 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
     private int centerSearchBgResource;                 // 搜索框背景图片
     private int centerSearchRightType;                  // 搜索框右边按钮类型  0: voice 1: delete
     private String centerSearchHintText;                // 搜索框中间提示的字
+    private int centerSearchMaxLength;                  // 搜索框可输入内容长度
     private int centerCustomViewRes;                    // 中间自定义布局资源
 
     private int PADDING_5;
@@ -247,6 +250,7 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
             centerSearchBgResource = array.getResourceId(R.styleable.CommonTitleBar_centerSearchBg, R.drawable.comm_titlebar_search_gray_shape);
             centerSearchRightType = array.getInt(R.styleable.CommonTitleBar_centerSearchRightType, TYPE_CENTER_SEARCH_RIGHT_VOICE);
             centerSearchHintText = array.getString(R.styleable.CommonTitleBar_centerSearchHint);
+            centerSearchMaxLength = array.getInt(R.styleable.CommonTitleBar_centerSearchMaxLength, 0);
         } else if (centerType == TYPE_CENTER_CUSTOM_VIEW) {
             centerCustomViewRes = array.getResourceId(R.styleable.CommonTitleBar_centerCustomView, 0);
         }
@@ -577,6 +581,9 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
             } else {
                 etSearchHint.setHint(centerSearchHintText);
             }
+            if (centerSearchMaxLength != 0) {
+                etSearchHint.setFilters(new InputFilter[]{new InputFilter.LengthFilter(centerSearchMaxLength)});
+            }
             etSearchHint.setTextColor(Color.parseColor("#0C2275"));
             etSearchHint.setHintTextColor(Color.parseColor("#800C2275"));
             etSearchHint.setTextSize(TypedValue.COMPLEX_UNIT_PX, U.getDisplayUtils().dip2px(context, 14));
@@ -590,6 +597,7 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
             etSearchHint.setCursorVisible(false);
             etSearchHint.setSingleLine(true);
             changeCursor(etSearchHint);
+            etSearchHint.setFilters(new InputFilter[]{new InputFilter.LengthFilter(20)});
             etSearchHint.setEllipsize(TextUtils.TruncateAt.END);
             etSearchHint.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
             etSearchHint.addTextChangedListener(centerSearchWatcher);
@@ -702,7 +710,7 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
     @Override
     public void onClick(View v) {
         if (listener == null) return;
-        if(U.getCommonUtils().isFastDoubleClick()){
+        if (U.getCommonUtils().isFastDoubleClick()) {
             return;
         }
         if (v.equals(llMainCenter) && doubleClickListener != null) {

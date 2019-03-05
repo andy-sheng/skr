@@ -89,6 +89,8 @@
         <attr name="centerSearchBg" format="reference" />
         <!-- 搜索框提示文字 -->
         <attr name="centerSearchHint" format="string" />
+        <!-- 搜索框输入内容长度 -->
+        <attr name="centerSearchMaxLength" format="integer" />
         <!-- 中间自定义布局, 对应centerType_CustomView -->
         <attr name="centerCustomView" format="reference" />
 
