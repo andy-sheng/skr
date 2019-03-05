@@ -245,8 +245,43 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
             addLightBurstUid(notify, m);
         }
         // 观众席与玩家席更新，以最新的为准
-        updateWaitUsers(roundInfo.getWaitUsers());
-        updatePlayUsers(roundInfo.getPlayUsers());
+        {
+            boolean needUpdate = false;
+            if (playUsers.size() == roundInfo.getPlayUsers().size()) {
+                for (int i = 0; i < roundInfo.getPlayUsers().size() && i < playUsers.size(); i++) {
+                    GrabPlayerInfoModel infoModel1 = playUsers.get(i);
+                    GrabPlayerInfoModel infoModel2 = roundInfo.getPlayUsers().get(i);
+                    if (!infoModel1.equals(infoModel2)) {
+                        needUpdate = true;
+                        break;
+                    }
+                }
+            } else {
+                needUpdate = true;
+            }
+            if (needUpdate) {
+                updatePlayUsers(roundInfo.getPlayUsers());
+            }
+        }
+
+        {
+            boolean needUpdate = false;
+            if (waitUsers.size() == roundInfo.getWaitUsers().size()) {
+                for (int i = 0; i < roundInfo.getWaitUsers().size() && i < waitUsers.size(); i++) {
+                    GrabPlayerInfoModel infoModel1 = waitUsers.get(i);
+                    GrabPlayerInfoModel infoModel2 = roundInfo.getWaitUsers().get(i);
+                    if (!infoModel1.equals(infoModel2)) {
+                        needUpdate = true;
+                        break;
+                    }
+                }
+            } else {
+                needUpdate = true;
+            }
+            if (needUpdate) {
+                updateWaitUsers(roundInfo.getWaitUsers());
+            }
+        }
 
         if (roundInfo.getOverReason() > 0) {
             this.setOverReason(roundInfo.getOverReason());
@@ -372,7 +407,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
                 ", status=" + status +
                 ", userID=" + userID +
                 ", playbookID=" + playbookID +
-                ", songModel=" + (music == null? "" : music.toSimpleString()) +
+                ", songModel=" + (music == null ? "" : music.toSimpleString()) +
 //                ", singBeginMs=" + singBeginMs +
 //                ", singEndMs=" + singEndMs +
 //                ", startTs=" + startTs +

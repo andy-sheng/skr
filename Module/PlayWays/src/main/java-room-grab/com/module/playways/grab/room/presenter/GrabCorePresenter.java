@@ -36,9 +36,11 @@ import com.module.playways.BaseRoomData;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.event.GrabGameOverEvent;
+import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent;
 import com.module.playways.grab.room.event.GrabRoundChangeEvent;
 import com.module.playways.grab.room.event.GrabRoundStatusChangeEvent;
 import com.module.playways.grab.room.event.GrabSwitchRoomEvent;
+import com.module.playways.grab.room.event.GrabWaitSeatUpdateEvent;
 import com.module.playways.grab.room.inter.IGrabView;
 import com.module.playways.grab.room.model.BLightInfoModel;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
@@ -951,11 +953,14 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.POSTING, priority = 9)
     public void onEvent(GrabRoundChangeEvent event) {
         MyLog.d(TAG, "GrabRoundChangeEvent" + " event=" + event);
+        // 轮次变化尝试更新头像
         estimateOverTsThisRound();
         closeEngine();
         tryStopRobotPlay();
         EngineManager.getInstance().stopRecognize();
         GrabRoundInfoModel now = event.newRoundInfo;
+        EventBus.getDefault().post(new GrabPlaySeatUpdateEvent(now.getPlayUsers()));
+        EventBus.getDefault().post(new GrabWaitSeatUpdateEvent(now.getWaitUsers()));
         if (now.getStatus() == GrabRoundInfoModel.STATUS_GRAB) {
             //抢唱阶段，播抢唱卡片
             if (event.lastRoundInfo != null && event.lastRoundInfo.getStatus() >= GrabRoundInfoModel.STATUS_SING) {
@@ -1152,8 +1157,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 SpannableStringBuilder stringBuilder = new SpanUtils()
                         .append(playerInfoModel.getUserInfo().getNickname() + " ").setForegroundColor(CommentModel.TEXT_YELLOW)
                         .append("加入了房间").setForegroundColor(CommentModel.TEXT_WHITE)
+                        .append(" 角色为" + playerInfoModel.getRole())
+                        .append(" 在线状态为" + playerInfoModel.isOnline())
                         .create();
-                if (playerInfoModel.getUserInfo().getUserId() == BaseRoomData.SYSTEM_GRAB_ID){
+                if (playerInfoModel.getUserInfo().getUserId() == BaseRoomData.SYSTEM_GRAB_ID) {
                     stringBuilder = new SpanUtils()
                             .append(playerInfoModel.getUserInfo().getNickname() + " ").setForegroundColor(CommentModel.TEXT_YELLOW)
                             .append("我是撕歌最傲娇小助手多音，来和你们一起唱歌卖萌~").setForegroundColor(CommentModel.TEXT_WHITE)
@@ -1187,9 +1194,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             return;
         }
 
-        if (RoomDataUtils.isCurrentExpectingRound(event.getCurrentRound().getRoundSeq(), mRoomData)) {
+        if (RoomDataUtils.isCurrentRunningRound(event.getCurrentRound().getRoundSeq(), mRoomData)) {
             // 如果是当前轮次
-            mRoomData.getExpectRoundInfo().tryUpdateRoundInfoModel(event.currentRound, true);
+            mRoomData.getRealRoundInfo().tryUpdateRoundInfoModel(event.currentRound, true);
         }
         // 游戏轮次结束
         if (RoomDataUtils.roundSeqLarger(event.nextRound, mRoomData.getExpectRoundInfo())) {
