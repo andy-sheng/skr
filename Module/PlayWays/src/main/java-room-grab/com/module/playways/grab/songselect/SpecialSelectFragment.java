@@ -225,7 +225,6 @@ public class SpecialSelectFragment extends BaseFragment {
                 .navigation();
         if (getActivity() != null) {
             getActivity().finish();
-            getActivity().overridePendingTransition(0,0);
         }
     }
 }
