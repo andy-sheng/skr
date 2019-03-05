@@ -24,6 +24,7 @@ import com.common.log.MyLog;
 import com.common.statistics.StatConstants;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
+import com.common.utils.ToastUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
@@ -39,6 +40,7 @@ import com.module.playways.grab.room.event.SomeOneLightOffEvent;
 import com.module.playways.grab.room.inter.IGrabView;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
+import com.module.playways.grab.room.model.WantSingerInfo;
 import com.module.playways.grab.room.presenter.GrabCorePresenter;
 import com.module.playways.grab.room.presenter.GrabRedPkgPresenter;
 import com.module.playways.grab.room.top.GrabTopContainerView;
@@ -441,6 +443,17 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         mTopContainerView.getGrabTopView().setListener(new GrabTopView.Listener() {
             @Override
             public void changeRoom() {
+                GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
+                if(grabRoundInfoModel != null){
+                    for (WantSingerInfo wantSingerInfo :
+                            grabRoundInfoModel.getWantSingInfos()) {
+                        if (wantSingerInfo.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                            U.getToastUtil().showShort("演唱时不能切换房间哦～");
+                            return;
+                        }
+                    }
+                }
+
                 mBeginChangeRoomTs = System.currentTimeMillis();
                 mGrabChangeRoomTransitionView.setVisibility(View.VISIBLE);
                 mCorePresenter.switchRoom();

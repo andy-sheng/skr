@@ -408,7 +408,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         ApiMethods.subscribe(mRoomServerApi.lightBurst(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
-                MyLog.e(TAG, "lightsOff erro code is " + result.getErrno() + ",traceid is " + result.getTraceId());
+                MyLog.e(TAG, "lightsBurst erro code is " + result.getErrno() + ",traceid is " + result.getTraceId());
                 if (result.getErrno() == 0) {
                     GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
                     if (now != null && now.getRoundSeq() == roundSeq) {
