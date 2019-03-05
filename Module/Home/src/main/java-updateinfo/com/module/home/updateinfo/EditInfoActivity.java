@@ -243,7 +243,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ResPickerActivity.REQ_CODE_RES_PICK && resultCode == Activity.RESULT_OK) {
             ImageItem imageItem = ResPicker.getInstance().getSingleSelectedImage();
-            if (mProgressDialog != null) {
+            if (mProgressDialog == null) {
                 ProgressDialogView progressDialogView = new ProgressDialogView(EditInfoActivity.this);
                 mProgressDialog = DialogPlus.newDialog(this)
                         .setContentHolder(new ViewHolder(progressDialogView))
