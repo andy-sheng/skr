@@ -141,8 +141,4 @@ public class ConversationActivity extends BaseActivity {
     public boolean useEventBus() {
         return false;
     }
-
-    public boolean resizeLayoutSelfWhenKeybordShow() {
-        return true;
-    }
 }
