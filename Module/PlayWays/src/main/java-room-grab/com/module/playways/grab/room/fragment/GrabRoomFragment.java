@@ -917,18 +917,10 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     private void onGrabGameOver(String from) {
         MyLog.d(TAG, "onGrabGameOver " + from);
-        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), GrabResultFragment.class)
-                .setAddToBackStack(true)
-                .setHasAnimation(true)
-                .addDataBeforeAdd(0, mRoomData)
-                .build());
-
-        U.getFragmentUtils().popFragment(FragmentUtils.newPopParamsBuilder()
-                .setPopFragment(GrabRoomFragment.this)
-                .setPopAbove(false)
-                .setHasAnimation(false)
-                .build());
-
+        ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_RESULT)
+                .withSerializable("room_data",mRoomData)
+                .navigation();
+        getActivity().finish();
         StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
                 StatConstants.KEY_GAME_FINISH, null);
     }
