@@ -8,4 +8,9 @@
             <enum name="right" value="2" />
         </attr>
     </declare-styleable>
+
+    <declare-styleable name="arcProgress">
+        <!--位置-->
+        <attr name="linesnum" format="integer" />
+    </declare-styleable>
 </resources>

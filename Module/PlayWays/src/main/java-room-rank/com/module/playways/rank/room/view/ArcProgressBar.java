@@ -3,6 +3,7 @@ package com.module.playways.rank.room.view;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.animation.LinearInterpolator;
 
 import com.common.utils.U;
+import com.module.rank.R;
 
 /**
  * Created by youzehong on 16/4/19.
@@ -66,10 +68,14 @@ public class ArcProgressBar extends View {
 
     public ArcProgressBar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        initView();
+        initView(context, attrs);
     }
 
-    private void initView() {
+    private void initView(Context context, AttributeSet attrs) {
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.arcProgress);
+        mDottedLineCount = typedArray.getInt(R.styleable.arcProgress_linesnum, 80);
+        typedArray.recycle();
+
         // 内测虚线的画笔
         mDottedLinePaint = new Paint();
         mDottedLinePaint.setAntiAlias(true);
