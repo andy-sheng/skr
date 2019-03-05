@@ -186,7 +186,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                         .setSex(ESex.fromValue(playerInfoModel.getUserInfo().getSex()))
                         .build());
                 String text = String.format("加入了房间");
-                if (playerInfoModel.getUserInfo().getUserId() == BaseRoomData.SYSTEM_GRAB_ID) {
+                if (playerInfoModel.getUserInfo().getUserId() == UserAccountManager.SYSTEM_GRAB_ID) {
                     text = "我是撕歌最傲娇小助手多音，来和你们一起唱歌卖萌~";
                 }
                 CommentMsgEvent msgEvent = new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text);
@@ -199,8 +199,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     private void pretenSystemMsg() {
         CommentModel commentModel = new CommentModel();
         commentModel.setCommentType(CommentModel.TYPE_TRICK);
-        commentModel.setUserId(BaseRoomData.SYSTEM_ID);
-        commentModel.setAvatar(BaseRoomData.SYSTEM_AVATAR);
+        commentModel.setUserId(UserAccountManager.SYSTEM_ID);
+        commentModel.setAvatar(UserAccountManager.SYSTEM_AVATAR);
         commentModel.setUserName("系统消息");
         commentModel.setAvatarColor(Color.WHITE);
         SpannableStringBuilder stringBuilder = new SpanUtils()
@@ -1118,8 +1118,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     private void pretendLightMsgComment(int singerId, int uid, boolean isBao) {
         CommentModel commentModel = new CommentModel();
         commentModel.setCommentType(CommentModel.TYPE_TRICK);
-        commentModel.setUserId(BaseRoomData.SYSTEM_ID);
-        commentModel.setAvatar(BaseRoomData.SYSTEM_AVATAR);
+        commentModel.setUserId(UserAccountManager.SYSTEM_ID);
+        commentModel.setAvatar(UserAccountManager.SYSTEM_AVATAR);
         commentModel.setUserName("系统消息");
         commentModel.setAvatarColor(Color.WHITE);
         PlayerInfoModel singerModel = RoomDataUtils.getPlayerInfoById(mRoomData, singerId);
@@ -1156,7 +1156,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 commentModel.setAvatarColor(playerInfoModel.getUserInfo().getSex() == ESex.SX_MALE.getValue() ?
                         U.getColor(R.color.color_man_stroke_color) : U.getColor(R.color.color_woman_stroke_color));
                 SpannableStringBuilder stringBuilder;
-                if (playerInfoModel.getUserInfo().getUserId() == BaseRoomData.SYSTEM_GRAB_ID) {
+                if (playerInfoModel.getUserInfo().getUserId() == UserAccountManager.SYSTEM_GRAB_ID) {
                     stringBuilder = new SpanUtils()
                             .append(playerInfoModel.getUserInfo().getNickname() + " ").setForegroundColor(CommentModel.TEXT_YELLOW)
                             .append("我是撕歌最傲娇小助手多音，来和你们一起唱歌卖萌~").setForegroundColor(CommentModel.TEXT_WHITE)

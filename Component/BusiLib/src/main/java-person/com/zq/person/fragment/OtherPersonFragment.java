@@ -106,8 +106,6 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-
-
         mPersonMainContainner = (RelativeLayout) mRootView.findViewById(R.id.person_main_containner);
         mAvatarIv = (BaseImageView) mRootView.findViewById(R.id.avatar_iv);
         mBackIv = (ExImageView) mRootView.findViewById(R.id.back_iv);

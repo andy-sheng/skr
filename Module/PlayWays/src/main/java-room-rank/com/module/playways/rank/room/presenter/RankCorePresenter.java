@@ -254,8 +254,8 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     private void pretenSystemMsg() {
         CommentModel commentModel = new CommentModel();
         commentModel.setCommentType(CommentModel.TYPE_TRICK);
-        commentModel.setUserId(BaseRoomData.SYSTEM_ID);
-        commentModel.setAvatar(BaseRoomData.SYSTEM_AVATAR);
+        commentModel.setUserId(UserAccountManager.SYSTEM_ID);
+        commentModel.setAvatar(UserAccountManager.SYSTEM_AVATAR);
         commentModel.setUserName("系统消息");
         commentModel.setAvatarColor(Color.WHITE);
         SpannableStringBuilder stringBuilder = new SpanUtils()
@@ -270,7 +270,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         if (ai != null) {
             CommentModel commentModel = new CommentModel();
             commentModel.setCommentType(CommentModel.TYPE_TRICK);
-            commentModel.setUserId(BaseRoomData.SYSTEM_ID);
+            commentModel.setUserId(UserAccountManager.SYSTEM_RANK_AI);
             commentModel.setAvatar(ai.getUserInfo().getAvatar());
             commentModel.setUserName("系统消息");
             commentModel.setAvatarColor(Color.WHITE);
@@ -1417,8 +1417,8 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         UserInfoModel userInfo = mRoomData.getUserInfo(event.model.getUserID());
         CommentModel commentModel = new CommentModel();
         commentModel.setCommentType(CommentModel.TYPE_TRICK);
-        commentModel.setUserId(BaseRoomData.SYSTEM_ID);
-        commentModel.setAvatar(BaseRoomData.SYSTEM_AVATAR);
+        commentModel.setUserId(UserAccountManager.SYSTEM_ID);
+        commentModel.setAvatar(UserAccountManager.SYSTEM_AVATAR);
         commentModel.setUserName(userInfo.getNickname());
         commentModel.setAvatarColor(Color.WHITE);
         SpannableStringBuilder stringBuilder = new SpanUtils()

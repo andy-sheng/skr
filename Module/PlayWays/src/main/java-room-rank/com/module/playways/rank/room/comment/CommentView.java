@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.RelativeLayout;
 
+import com.common.core.account.UserAccountManager;
 import com.common.log.MyLog;
 import com.common.mvp.PresenterEvent;
 import com.common.utils.U;
@@ -132,7 +133,7 @@ public class CommentView extends RelativeLayout {
             @Override
             public void onItemClicked(View view, int position, CommentModel model) {
                 if (mClickListener != null) {
-                    if (model.getUserId() != BaseRoomData.SYSTEM_ID) {
+                    if (model.getUserId() != UserAccountManager.SYSTEM_ID) {
                         mClickListener.onItemClicked(view, position, model);
                     }
                 }

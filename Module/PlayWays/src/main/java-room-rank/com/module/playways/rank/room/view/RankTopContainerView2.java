@@ -11,6 +11,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.common.core.account.UserAccountManager;
 import com.common.log.MyLog;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
@@ -265,8 +266,8 @@ public class RankTopContainerView2 extends RelativeLayout {
     private void pretendMieComment(int currUid, int index) {
         CommentModel commentModel = new CommentModel();
         commentModel.setCommentType(CommentModel.TYPE_TRICK);
-        commentModel.setUserId(BaseRoomData.SYSTEM_ID);
-        commentModel.setAvatar(BaseRoomData.SYSTEM_AVATAR);
+        commentModel.setUserId(UserAccountManager.SYSTEM_ID);
+        commentModel.setAvatar(UserAccountManager.SYSTEM_AVATAR);
         commentModel.setUserName("系统消息");
         commentModel.setAvatarColor(Color.WHITE);
         PlayerInfoModel model = RoomDataUtils.getPlayerInfoById(mRoomData, currUid);

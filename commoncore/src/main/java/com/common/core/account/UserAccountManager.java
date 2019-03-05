@@ -52,6 +52,11 @@ import retrofit2.Response;
 public class UserAccountManager {
     private static final String TAG = UserAccountManager.class.getSimpleName();
 
+    public static final int SYSTEM_ID = 1;       //系统id
+    public static final int SYSTEM_GRAB_ID = 2;  //一唱到底多音
+    public static final int SYSTEM_RANK_AI = 3;  //AI裁判
+    public static final String SYSTEM_AVATAR ="http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/common/system_default.png"; //系统头像
+
     private UserAccount mAccount;
 
     private boolean mHasTryConnentRM = false;//有没有尝试过登录过融云
