@@ -2,6 +2,7 @@ package com.module.playways.grab.room.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -42,6 +43,7 @@ public class SelfSingCardView2 extends RelativeLayout {
     TextView mTvLyric;
     ArcProgressBar mCountDownProcess;
     ExTextView mCountDownTv;
+    ImageView mCountIv;
 
     Disposable mDisposable;
     HandlerTaskTimer mCounDownTask;
@@ -66,7 +68,7 @@ public class SelfSingCardView2 extends RelativeLayout {
         mTvLyric = findViewById(R.id.tv_lyric);
         mCountDownProcess = (ArcProgressBar) findViewById(R.id.count_down_process);
         mCountDownTv = (ExTextView) findViewById(R.id.count_down_tv);
-
+        mCountIv = (ImageView) findViewById(R.id.count_iv);
     }
 
     public void playLyric(SongModel songModel, boolean play) {
@@ -95,6 +97,8 @@ public class SelfSingCardView2 extends RelativeLayout {
     }
 
     private void starCounDown(SongModel songModel) {
+        mCountIv.setVisibility(GONE);
+        mCountDownTv.setVisibility(VISIBLE);
         mCountDownProcess.startCountDown(0, songModel.getTotalMs());
         int counDown = songModel.getTotalMs() / 1000;
         mCounDownTask = HandlerTaskTimer.newBuilder()
@@ -110,6 +114,8 @@ public class SelfSingCardView2 extends RelativeLayout {
                     public void onComplete() {
                         super.onComplete();
                         stopCounDown();
+                        mCountIv.setVisibility(VISIBLE);
+                        mCountDownTv.setVisibility(GONE);
                     }
                 });
     }
