@@ -120,19 +120,14 @@ public class GrabSingerTopView extends FrameLayout {
 
     private void startSing(SongModel songModel) {
         cancelCountDownTask();
-        int total = songModel.getTotalMs()/1000;
-        if (total == 0) {
-            MyLog.d(TAG, "歌曲总时间为0 totoal");
-            total = 30;
-        }
-        int finalTotal = total;
+        int total = (songModel.getTotalMs()/1000);
         mCountDownTask = HandlerTaskTimer.newBuilder()
                 .take(total)
                 .interval(1000)
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
-                        int remainTime = (finalTotal - integer) * 1000;
+                        int remainTime = (total - integer) * 1000;
                         if (remainTime >= 0) {
                             mTvCountDown.setText(U.getDateTimeUtils().formatTimeStringForDate(remainTime, "mm:ss"));
                         }

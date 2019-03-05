@@ -46,8 +46,6 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
 
     private HashSet<WantSingerInfo> wantSingInfos = new HashSet<>(); //已经抢了的人
 
-    protected SongModel music;//本轮次要唱的歌儿的详细信息
-
     //0未知
     //1有种优秀叫一唱到底（全部唱完）
     //2有种结束叫刚刚开始（t<30%）
@@ -374,7 +372,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
                 ", status=" + status +
                 ", userID=" + userID +
                 ", playbookID=" + playbookID +
-                ", songModel=" + (songModel == null? "" : songModel.toSimpleString()) +
+                ", songModel=" + (music == null? "" : music.toSimpleString()) +
 //                ", singBeginMs=" + singBeginMs +
 //                ", singEndMs=" + singEndMs +
 //                ", startTs=" + startTs +

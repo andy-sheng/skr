@@ -187,21 +187,23 @@ public class OthersSingCardView extends RelativeLayout {
         if (songModel == null) {
             return;
         }
+        int totalMs = songModel.getTotalMs();
         if (mCountDownStatus == COUNT_DOWN_STATUS_WAIT) {
             // 不需要播放countdown
-            mCountDownProcess.startCountDown(0, songModel.getStandLrcEndT() - songModel.getStandLrcBeginT());
+            mCountDownProcess.startCountDown(0, totalMs);
             return;
         }
 
         int progress;  //当前进度条
         int leaveTime; //剩余时间
+
         if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_SING) {
             MyLog.d(TAG, "演唱阶段加入的，倒计时没那么多");
-            progress = grabRoundInfoModel.getElapsedTimeMs() * 100 / (songModel.getStandLrcEndT() - songModel.getStandLrcBeginT());
-            leaveTime = songModel.getStandLrcEndT() - songModel.getStandLrcBeginT() + 1000 - grabRoundInfoModel.getElapsedTimeMs();
+            progress = grabRoundInfoModel.getElapsedTimeMs() * 100 / totalMs;
+            leaveTime = totalMs + 1000 - grabRoundInfoModel.getElapsedTimeMs();
         } else {
             progress = 1;
-            leaveTime = songModel.getStandLrcEndT() - songModel.getStandLrcBeginT() + 1000;
+            leaveTime = totalMs + 1000;
         }
         mCountDownProcess.startCountDown(progress, leaveTime);
     }

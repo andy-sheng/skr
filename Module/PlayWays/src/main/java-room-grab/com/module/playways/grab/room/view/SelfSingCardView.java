@@ -187,9 +187,10 @@ public class SelfSingCardView extends RelativeLayout {
             return;
         }
         mUiHandler.removeMessages(MSG_ENSURE_PLAY);
+        int totalMs = mSongModel.getTotalMs();
         if (mCountDownStatus == COUNT_DOWN_STATUS_WAIT) {
             // 不需要播放countdown
-            int num = (mSongModel.getStandLrcEndT() - mSongModel.getStandLrcBeginT()) / 1000;
+            int num = totalMs / 1000;
             setNum(num);
             mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_PLAY, 3000);
             return;
@@ -197,11 +198,11 @@ public class SelfSingCardView extends RelativeLayout {
         cancelCountDownTask();
         mCountDownTask = HandlerTaskTimer.newBuilder()
                 .interval(1000)
-                .take(((mSongModel.getStandLrcEndT() - mSongModel.getStandLrcBeginT()) / 1000 + 1))
+                .take(totalMs / 1000 + 1)
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
-                        int num = ((mSongModel.getStandLrcEndT() - mSongModel.getStandLrcBeginT()) / 1000) - integer;
+                        int num = totalMs / 1000 - integer;
                         setNum(num);
                         if (num == 0) {
                             if (mListener != null) {

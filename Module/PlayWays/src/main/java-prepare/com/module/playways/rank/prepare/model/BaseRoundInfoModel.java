@@ -12,9 +12,9 @@ public abstract class BaseRoundInfoModel implements Serializable {
     protected int userID;
     protected int roundSeq;
     protected int playbookID;   //songModelId
-    protected SongModel songModel;//本轮次要唱的歌儿的详细信息
-    protected int singBeginMs;
-    protected int singEndMs;
+    protected SongModel music;//本轮次要唱的歌儿的详细信息
+    protected int singBeginMs; // 轮次开始时间
+    protected int singEndMs; // 轮次结束时间
     protected long startTs;// 开始时间，服务器的
     protected long endTs;// 结束时间，服务器的
     protected int sysScore;//本轮系统打分，先搞个默认60分
@@ -51,11 +51,11 @@ public abstract class BaseRoundInfoModel implements Serializable {
     }
 
     public SongModel getMusic() {
-        return songModel;
+        return music;
     }
 
     public void setMusic(SongModel songModel) {
-        this.songModel = songModel;
+        this.music = songModel;
     }
 
     public int getUserID() {
@@ -162,7 +162,7 @@ public abstract class BaseRoundInfoModel implements Serializable {
                 "type=" + getType() +
                 ", userID=" + userID +
                 ", playbookID=" + playbookID +
-                ", songModel=" + songModel +
+                ", songModel=" + music +
                 ", roundSeq=" + roundSeq +
                 ", singBeginMs=" + singBeginMs +
                 ", singEndMs=" + singEndMs +
@@ -174,4 +174,7 @@ public abstract class BaseRoundInfoModel implements Serializable {
                 '}';
     }
 
+    public int getDuration() {
+        return singEndMs - singBeginMs;
+    }
 }

@@ -636,7 +636,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     @Override
     public void singBySelf() {
-        mUiHanlder.removeMessages(MSG_SEND_SELF_SING_END);
         mTopContainerView.hideWithDelay(1000);
         mSingerTopView.showWithDelay(1000);
         mSingerTopView.startSelfShow();
@@ -651,6 +650,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         msg.arg1 = (int) MyUserInfoManager.getInstance().getUid();
         mUiHanlder.sendMessageDelayed(msg, 4000);
 
+        mUiHanlder.removeMessages(MSG_SEND_SELF_SING_END);
         mUiHanlder.sendMessageDelayed(mUiHanlder.obtainMessage(MSG_SEND_SELF_SING_END), mRoomData.getRealRoundInfo().getMusic().getTotalMs());
 
         singBeginTipsPlay((int) MyUserInfoManager.getInstance().getUid(), new Runnable() {
