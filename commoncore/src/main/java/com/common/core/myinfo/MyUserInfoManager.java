@@ -256,8 +256,12 @@ public class MyUserInfoManager {
 
     //是否需要完善资料
     public boolean isNeedCompleteInfo() {
-        if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName())
-                || MyUserInfoManager.getInstance().getSex() == 0) {
+        if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getNickName())) {
+            MyLog.d(TAG, "isNeedCompleteInfo nickName is null");
+            return true;
+        }
+        if (MyUserInfoManager.getInstance().getSex() == 0) {
+            MyLog.d(TAG, "isNeedCompleteInfo sex == 0");
             return true;
         }
 
