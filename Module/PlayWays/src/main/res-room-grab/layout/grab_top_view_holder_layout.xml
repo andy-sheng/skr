@@ -22,7 +22,7 @@
         android:layout_width="@dimen/view_36_dp"
         android:layout_height="@dimen/view_36_dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_12_dp" />
+        android:layout_marginTop="@dimen/view_10_dp" />
 
     <com.common.view.ex.ExImageView
         android:visibility="gone"
