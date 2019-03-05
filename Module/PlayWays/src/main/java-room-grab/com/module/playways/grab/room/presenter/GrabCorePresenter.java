@@ -1,7 +1,9 @@
 package com.module.playways.grab.room.presenter;
 
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
@@ -20,6 +22,7 @@ import com.common.upload.UploadCallback;
 import com.common.upload.UploadParams;
 import com.common.utils.ActivityUtils;
 import com.common.utils.HandlerTaskTimer;
+import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.component.busilib.SkrConfig;
 import com.engine.EngineManager;
@@ -29,6 +32,7 @@ import com.engine.arccloud.RecognizeConfig;
 import com.engine.arccloud.SongInfo;
 import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
+import com.module.playways.BaseRoomData;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.event.GrabGameOverEvent;
@@ -61,6 +65,8 @@ import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
 import com.module.playways.rank.room.SwapStatusType;
 import com.module.playways.RoomDataUtils;
+import com.module.playways.rank.room.comment.CommentModel;
+import com.module.playways.rank.room.event.PretendCommentMsgEvent;
 import com.module.playways.rank.room.score.MachineScoreItem;
 import com.module.playways.rank.room.score.RobotScoreHelper;
 import com.zq.live.proto.Common.ESex;
@@ -1061,6 +1067,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             MLightInfoModel noPassingInfo = new MLightInfoModel();
             noPassingInfo.setUserID(event.userID);
             roundInfoModel.addLightOffUid(true, noPassingInfo);
+            pretendLightMsgComment(roundInfoModel.getUserID(), event.userID, false);
         } else {
             MyLog.w(TAG, "有人灭灯了,但是不是这个轮次：userID " + event.userID + ", seq " + event.roundSeq + "，当前轮次是 " + mRoomData.getExpectRoundInfo());
         }
@@ -1081,8 +1088,36 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             BLightInfoModel noPassingInfo = new BLightInfoModel();
             noPassingInfo.setUserID(event.userID);
             roundInfoModel.addLightBurstUid(true, noPassingInfo);
+            pretendLightMsgComment(roundInfoModel.getUserID(), event.userID, true);
         } else {
             MyLog.w(TAG, "有人爆灯了,但是不是这个轮次：userID " + event.userID + ", seq " + event.roundSeq + "，当前轮次是 " + mRoomData.getExpectRoundInfo());
+        }
+    }
+
+    /**
+     * 伪装爆灭灯消息
+     *
+     * @param singerId 被灭灯演唱者
+     * @param uid      灭灯操作者
+     */
+    private void pretendLightMsgComment(int singerId, int uid, boolean isBao) {
+        CommentModel commentModel = new CommentModel();
+        commentModel.setCommentType(CommentModel.TYPE_TRICK);
+        commentModel.setUserId(BaseRoomData.SYSTEM_ID);
+        commentModel.setAvatar(BaseRoomData.SYSTEM_AVATAR);
+        commentModel.setUserName("系统消息");
+        commentModel.setAvatarColor(Color.WHITE);
+        PlayerInfoModel singerModel = RoomDataUtils.getPlayerInfoById(mRoomData, singerId);
+        PlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, uid);
+        if (singerModel != null && playerInfoModel != null) {
+            SpannableStringBuilder stringBuilder = new SpanUtils()
+                    .append(playerInfoModel.getUserInfo().getNickname() + " ").setForegroundColor(CommentModel.TEXT_YELLOW)
+                    .append("对").setForegroundColor(CommentModel.TEXT_WHITE)
+                    .append(singerModel.getUserInfo().getNickname()).setForegroundColor(CommentModel.TEXT_YELLOW)
+                    .append(isBao ? "爆灯啦" : "灭了盏灯").setForegroundColor(CommentModel.TEXT_WHITE)
+                    .create();
+            commentModel.setStringBuilder(stringBuilder);
+            EventBus.getDefault().post(new PretendCommentMsgEvent(commentModel));
         }
     }
 
