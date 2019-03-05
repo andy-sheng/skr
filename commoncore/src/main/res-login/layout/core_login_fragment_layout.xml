@@ -11,15 +11,14 @@
         android:id="@+id/picture"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/meinv_launch"
         android:adjustViewBounds="true"
-        />
+        android:src="@drawable/meinv_launch" />
 
     <RelativeLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/picture">
+        android:layout_height="@dimen/view_152_dp"
+        android:layout_alignParentBottom="true">
 
         <TextView
             android:layout_width="wrap_content"
