@@ -103,7 +103,7 @@ public class RankResultFragment extends BaseFragment {
                 }
 
                 mGameRoleDialog = DialogPlus.newDialog(getContext())
-                        .setContentHolder(new ViewHolder(R.layout.game_role_view_layout))
+                        .setContentHolder(new ViewHolder(R.layout.game_judge_role_view_layout))
                         .setContentBackgroundResource(R.color.transparent)
                         .setOverlayBackgroundResource(R.color.black_trans_50)
                         .setExpanded(false)
