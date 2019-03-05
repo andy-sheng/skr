@@ -12,6 +12,7 @@ import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
 
+import com.common.base.BaseActivity;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.HandlerTaskTimer;
@@ -202,6 +203,7 @@ public class GrabOpView extends RelativeLayout {
         cancelCountDownTask();
         mCountDownTask = HandlerTaskTimer.newBuilder().interval(1000)
                 .take(num)
+                .compose((BaseActivity) getContext())
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
