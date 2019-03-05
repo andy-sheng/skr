@@ -55,7 +55,7 @@ public class SelfSingCardView2 extends RelativeLayout {
     }
 
     public void playLyric(SongModel songModel, boolean play) {
-        mTvLyric.setText("");
+        mTvLyric.setText("歌词加载中...");
         if (songModel == null) {
             MyLog.d(TAG, "songModel 是空的");
             return;

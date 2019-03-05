@@ -128,6 +128,12 @@ public class GrabPlayerRv2 extends RelativeLayout {
             return;
         }
 
+        for (int i = 0; i < mGrabTopItemViewArrayList.size(); i++) {
+            VP vp = mGrabTopItemViewArrayList.get(i);
+            vp.grabTopItemView.setVisibility(VISIBLE);
+        }
+
+
         resetAllGrabTopItemView();
         mCurSeq = mRoomData.getRealRoundSeq();
 
