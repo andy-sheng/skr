@@ -299,12 +299,18 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
         mUserInfoModel.setFollow(isFollow);
         if (isFriend) {
             mFollowTv.setText("互关");
+            mFollowTv.setTextColor(Color.WHITE);
+            mFollowTv.setBackgroundResource(R.drawable.img_btn_bg_dark_gray);
             mFollowTv.setTag(RELATION_FOLLOWED);
         } else if (isFollow) {
             mFollowTv.setText("已关注");
+            mFollowTv.setTextColor(Color.parseColor("#0C2275"));
+            mFollowTv.setBackgroundResource(R.drawable.img_btn_bg_yellow);
             mFollowTv.setTag(RELATION_FOLLOWED);
         } else {
             mFollowTv.setText("关注TA");
+            mFollowTv.setTextColor(Color.WHITE);
+            mFollowTv.setBackgroundResource(R.drawable.img_btn_bg_red);
             mFollowTv.setTag(RELATION_UN_FOLLOW);
         }
     }
@@ -333,12 +339,18 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
             if (event.type == RelationChangeEvent.FOLLOW_TYPE) {
                 if (event.isFriend) {
                     mFollowTv.setText("互关");
+                    mFollowTv.setTextColor(Color.WHITE);
+                    mFollowTv.setBackgroundResource(R.drawable.img_btn_bg_dark_gray);
                 } else if (event.isFollow) {
                     mFollowTv.setText("已关注");
+                    mFollowTv.setTextColor(Color.parseColor("#0C2275"));
+                    mFollowTv.setBackgroundResource(R.drawable.img_btn_bg_yellow);
                 }
                 mFollowTv.setTag(RELATION_FOLLOWED);
             } else if (event.type == RelationChangeEvent.UNFOLLOW_TYPE) {
                 mFollowTv.setText("关注TA");
+                mFollowTv.setTextColor(Color.WHITE);
+                mFollowTv.setBackgroundResource(R.drawable.img_btn_bg_red);
                 mFollowTv.setTag(RELATION_UN_FOLLOW);
 
             }

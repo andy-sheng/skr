@@ -209,9 +209,15 @@ public class PersonInfoDialogView extends RelativeLayout {
 
         if (isFriend) {
             mFollowTv.setText("互关");
+            mFollowTv.setTextColor(Color.WHITE);
+            mFollowTv.setBackgroundResource(R.drawable.img_btn_bg_dark_gray);
         } else if (isFollow) {
+            mFollowTv.setBackgroundResource(R.drawable.img_btn_bg_yellow);
+            mFollowTv.setTextColor(Color.parseColor("#0C2275"));
             mFollowTv.setText("已关注");
         } else {
+            mFollowTv.setBackgroundResource(R.drawable.img_btn_bg_red);
+            mFollowTv.setTextColor(Color.WHITE);
             mFollowTv.setText("关注");
         }
     }
@@ -289,10 +295,16 @@ public class PersonInfoDialogView extends RelativeLayout {
             if (event.type == RelationChangeEvent.FOLLOW_TYPE) {
                 if (event.isFriend) {
                     mFollowTv.setText("互关");
+                    mFollowTv.setTextColor(Color.WHITE);
+                    mFollowTv.setBackgroundResource(R.drawable.img_btn_bg_dark_gray);
                 } else if (event.isFollow) {
                     mFollowTv.setText("已关注");
+                    mFollowTv.setTextColor(Color.parseColor("#0C2275"));
+                    mFollowTv.setBackgroundResource(R.drawable.img_btn_bg_yellow);
                 }
             } else if (event.type == RelationChangeEvent.UNFOLLOW_TYPE) {
+                mFollowTv.setBackgroundResource(R.drawable.img_btn_bg_red);
+                mFollowTv.setTextColor(Color.WHITE);
                 mFollowTv.setText("关注TA");
             }
         }
