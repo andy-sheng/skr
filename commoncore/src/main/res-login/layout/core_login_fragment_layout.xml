@@ -60,6 +60,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/container"
+        android:layout_marginLeft="@dimen/view_40_dp"
+        android:layout_marginRight="@dimen/view_40_dp"
         android:layout_marginTop="-32dp"
         android:orientation="horizontal">
 
@@ -74,7 +76,6 @@
             android:id="@+id/phone_login_tv"
             android:layout_width="0dp"
             android:layout_height="@dimen/view_64_dp"
-            android:layout_marginLeft="@dimen/view_25_dp"
             android:layout_weight="1"
             android:src="@drawable/denglu_iphone" />
 
@@ -82,7 +83,6 @@
             android:id="@+id/qq_login_tv"
             android:layout_width="0dp"
             android:layout_height="@dimen/view_64_dp"
-            android:layout_marginLeft="@dimen/view_25_dp"
             android:layout_weight="1"
             android:src="@drawable/denglu_qq" />
 
