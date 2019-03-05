@@ -8,6 +8,8 @@ import com.module.playways.rank.song.model.SongModel;
 import java.io.Serializable;
 import java.util.List;
 
+import io.reactivex.subjects.PublishSubject;
+
 
 /**
  * 房间内所有数据的聚合类
@@ -16,7 +18,9 @@ import java.util.List;
 public abstract class BaseRoomData<T extends BaseRoundInfoModel> implements Serializable {
     public final static String TAG = "RoomData";
 
-    public static final int SYSTEM_ID = 1;
+    public static final int SYSTEM_ID = 1;       //系统id
+    public static final int SYSTEM_GRAB_ID = 2;  //一唱到底多音
+    public static final int SYSTEM_RANK_AI = 3;  //AI裁判
     public static final String SYSTEM_AVATAR ="http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/common/system_default.png"; //系统头像
 
     public final static String PK_MAIN_STAGE_WEBP = "http://res-static.inframe.mobi/app/pk_main_stage.webp";
