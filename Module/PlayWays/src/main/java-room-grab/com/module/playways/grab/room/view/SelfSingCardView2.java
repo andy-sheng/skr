@@ -99,7 +99,7 @@ public class SelfSingCardView2 extends RelativeLayout {
                         emitter.onError(new Throwable("重命名错误"));
                     }
                 } else {
-                    emitter.onError(new Throwable("下载失败"));
+                    emitter.onError(new Throwable("下载失败, 文件地址是" + songModel.getStandLrc()));
                 }
             }
         }).subscribeOn(Schedulers.io())

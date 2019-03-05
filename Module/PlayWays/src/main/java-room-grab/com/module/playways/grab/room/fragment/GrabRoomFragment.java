@@ -451,7 +451,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     GrabTopContainerView.Listener mListener = new GrabTopContainerView.Listener() {
         @Override
         public void closeBtnClick() {
-            quitGame();
+            mCorePresenter.exitRoom();
         }
 
         @Override
