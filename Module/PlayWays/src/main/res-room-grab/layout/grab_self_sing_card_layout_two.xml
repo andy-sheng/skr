@@ -10,8 +10,8 @@
         android:layout_marginLeft="@dimen/view_18_dp"
         android:background="@drawable/self_lyric_bg"
         android:layout_marginTop="@dimen/view_48_dp"
-        android:paddingBottom="@dimen/view_24_dp"
-        android:paddingTop="@dimen/view_24_dp"
+        android:paddingTop="@dimen/view_48_dp"
+        android:paddingBottom="@dimen/view_19_dp"
         android:paddingLeft="@dimen/view_60_dp"
         android:paddingRight="@dimen/view_60_dp"
         android:id="@+id/sv_lyric"
@@ -24,13 +24,13 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:lineSpacingExtra="7dp"
-            android:textColor="#B2B6D6"
+            android:textColor="@color/black"
             android:textSize="@dimen/textsize_18_dp"
              />
     </ScrollView>
 
     <ImageView
-        android:layout_marginTop="@dimen/view_24_dp"
+        android:layout_marginTop="@dimen/view_22_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
         android:background="@drawable/self_sing_biaoqian"
         android:layout_width="@dimen/view_120_dp"

@@ -368,29 +368,27 @@ public class GrabPlayerRv2 extends RelativeLayout {
                     }
                 });
                 objectAnimator1.setStartDelay(i * 4 * 33);
-                if(mRoomData.getRealRoundInfo() != null && mRoomData.getRealRoundInfo().getUserID() != MyUserInfoManager.getInstance().getUid()){
-                    objectAnimator1.addListener(new Animator.AnimatorListener() {
-                        @Override
-                        public void onAnimationStart(Animator animator) {
-                            U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.lightup);
-                        }
+                objectAnimator1.addListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animator) {
+                        U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.lightup);
+                    }
 
-                        @Override
-                        public void onAnimationEnd(Animator animator) {
+                    @Override
+                    public void onAnimationEnd(Animator animator) {
 
-                        }
+                    }
 
-                        @Override
-                        public void onAnimationCancel(Animator animator) {
+                    @Override
+                    public void onAnimationCancel(Animator animator) {
 
-                        }
+                    }
 
-                        @Override
-                        public void onAnimationRepeat(Animator animator) {
+                    @Override
+                    public void onAnimationRepeat(Animator animator) {
 
-                        }
-                    });
-                }
+                    }
+                });
                 i++;
                 liangdengList.add(objectAnimator1);
             }
@@ -460,7 +458,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
     }
 
     public void lightOff(int uid) {
-        if(mHasBurst){
+        if (mHasBurst) {
             MyLog.w(TAG, "已经爆灯了，所以灭灯也忽略 uid 是：" + uid);
             return;
         }
@@ -482,7 +480,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
         }
     }
 
-    private void setLightOff(VP vp){
+    private void setLightOff(VP vp) {
         GrabTopItemView grabTopItemView = vp.grabTopItemView;
         grabTopItemView.setLight(false);
     }

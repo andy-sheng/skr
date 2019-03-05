@@ -124,8 +124,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     CommentView mCommentView;
 
-    GrabSingerTopView mSingerTopView; // 轮到本人演唱时的顶部界面
-
     GrabTopContainerView mTopContainerView;// 顶部，抢唱阶段，以及非本人的演唱阶段
 
     GrabCorePresenter mCorePresenter;
@@ -423,13 +421,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         // 加上状态栏的高度
         int statusBarHeight = U.getStatusBarUtil().getStatusBarHeight(getContext());
 
-        mSingerTopView = (GrabSingerTopView) mRootView.findViewById(R.id.singer_top_view);
-        mSingerTopView.setRoomData(mRoomData);
-        {
-            RelativeLayout.LayoutParams topLayoutParams = (RelativeLayout.LayoutParams) mSingerTopView.getLayoutParams();
-            topLayoutParams.topMargin = statusBarHeight + topLayoutParams.topMargin;
-        }
-
         mTopContainerView = mRootView.findViewById(R.id.top_container_view);
         mTopContainerView.setRoomData(mRoomData);
 
@@ -439,7 +430,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         }
 
         mTopContainerView.setListener(mListener);
-        mSingerTopView.setListener(mListener);
 
         mTopContainerView.getGrabTopView().setListener(new GrabTopView.Listener() {
             @Override
@@ -597,7 +587,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         MyLog.d(TAG, "grabBegin" + " seq=" + seq + " songModel=" + songModel);
         // 播放3秒导唱
         mTopContainerView.setVisibility(View.VISIBLE);
-        mSingerTopView.setVisibility(View.GONE);
         mOthersSingCardView.setVisibility(View.GONE);
         mTopContainerView.setSeqIndex(seq, mRoomData.getGrabConfigModel().getTotalGameRoundSeq());
         PendingPlaySongCardData pendingPlaySongCardData = new PendingPlaySongCardData(seq, songModel);
@@ -650,9 +639,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     @Override
     public void singBySelf() {
-        mTopContainerView.hideWithDelay(1000);
-        mSingerTopView.showWithDelay(1000);
-        mSingerTopView.startSelfShow();
         mCorePresenter.stopGuide();
         mTopContainerView.setModeSing((int) MyUserInfoManager.getInstance().getUid());
         mTopContainerView.setSeqIndex(RoomDataUtils.getSeqOfRoundInfo(mRoomData.getRealRoundInfo()), mRoomData.getGrabConfigModel().getTotalGameRoundSeq());
@@ -678,7 +664,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     @Override
     public void singByOthers(long uid) {
         mTopContainerView.setVisibility(View.VISIBLE);
-        mSingerTopView.setVisibility(View.GONE);
         mCorePresenter.stopGuide();
         mTopContainerView.setModeSing(uid);
         mTopContainerView.setSeqIndex(RoomDataUtils.getSeqOfRoundInfo(mRoomData.getRealRoundInfo()), mRoomData.getGrabConfigModel().getTotalGameRoundSeq());
@@ -763,7 +748,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         msg.arg1 = playNextSongInfoCard ? 1 : 0;
         msg.obj = now;
         mUiHanlder.sendMessageDelayed(msg, 2400);
-        mSingerTopView.setVisibility(View.GONE);
         mSelfSingCardView.setVisibility(View.GONE);
         mTopContainerView.setVisibility(View.VISIBLE);
         mOthersSingCardView.hide();

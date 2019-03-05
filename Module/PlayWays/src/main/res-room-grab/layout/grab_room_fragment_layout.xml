@@ -90,7 +90,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_92_dp"
+        android:layout_marginTop="@dimen/view_102_dp"
         android:visibility="gone" />
 
     <com.module.playways.grab.room.view.GrabGameOverView
