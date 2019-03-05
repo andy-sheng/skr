@@ -1,6 +1,5 @@
 package com.common.core.login.fragment;
 
-import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,13 +21,11 @@ import com.common.core.account.UserAccountManager;
 import com.common.core.permission.SkrBasePermission;
 import com.common.core.permission.SkrPhoneStatePermission;
 import com.common.core.share.ShareManager;
-import com.common.log.MyLog;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
-import com.common.view.ex.ExTextView;
 import com.module.RouterConstants;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
@@ -62,7 +59,7 @@ public class LoginFragment extends BaseFragment {
 
     ObjectAnimator mAnimator;
 
-    ViewTreeObserver observer;
+    ViewTreeObserver mObserver;
     boolean isMeasured = false;
 
     Handler mUiHandler = new Handler() {
@@ -117,8 +114,8 @@ public class LoginFragment extends BaseFragment {
         mTvUserAgree = (LinearLayout) mRootView.findViewById(R.id.tv_user_agree);
         mProgressBar = (ProgressBar) mRootView.findViewById(R.id.progress_bar);
 
-        observer = mContainer.getViewTreeObserver();
-        observer.addOnPreDrawListener(mOnDrawListener);
+        mObserver = mContainer.getViewTreeObserver();
+        mObserver.addOnPreDrawListener(mOnDrawListener);
 
         mPhoneLoginTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -273,8 +270,8 @@ public class LoginFragment extends BaseFragment {
         if (mAnimator != null) {
             mAnimator.cancel();
         }
-        if (observer != null && observer.isAlive() && mOnDrawListener != null) {
-            observer.removeOnPreDrawListener(mOnDrawListener);
+        if (mObserver != null && mObserver.isAlive() && mOnDrawListener != null) {
+            mObserver.removeOnPreDrawListener(mOnDrawListener);
         }
         if (mUiHandler != null) {
             mUiHandler.removeCallbacksAndMessages(null);
