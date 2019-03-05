@@ -69,6 +69,7 @@ import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.event.PretendCommentMsgEvent;
 import com.module.playways.rank.room.score.MachineScoreItem;
 import com.module.playways.rank.room.score.RobotScoreHelper;
+import com.module.rank.R;
 import com.zq.live.proto.Common.ESex;
 import com.zq.live.proto.Common.UserInfo;
 import com.zq.live.proto.Room.EQRoundOverReason;
@@ -169,6 +170,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             });
         }
         if (mRoomData.getGameId() > 0) {
+            pretenSystemMsg();
             for (PlayerInfoModel playerInfoModel : mRoomData.getPlayerInfoList()) {
                 BasePushInfo basePushInfo = new BasePushInfo();
                 basePushInfo.setRoomID(mRoomData.getGameId());
@@ -178,24 +180,29 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                         .setNickName(playerInfoModel.getUserInfo().getNickname())
                         .setSex(ESex.fromValue(playerInfoModel.getUserInfo().getSex()))
                         .build());
-                String text = String.format("加入房间", playerInfoModel.getUserInfo().getNickname());
+                String text = String.format("加入了房间");
+                if (playerInfoModel.getUserInfo().getUserId() == BaseRoomData.SYSTEM_GRAB_ID) {
+                    text = "我是撕歌最傲娇小助手多音，来和你们一起唱歌卖萌~";
+                }
                 CommentMsgEvent msgEvent = new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text);
                 EventBus.getDefault().post(msgEvent);
             }
-
-            BasePushInfo basePushInfo = new BasePushInfo();
-            basePushInfo.setRoomID(mRoomData.getGameId());
-            basePushInfo.setSender(new UserInfo.Builder()
-                    .setUserID(1)
-                    .setAvatar("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/common/system_default.png")
-                    .setNickName("系统消息")
-                    .setSex(ESex.fromValue(0))
-                    .build());
-            String text = "撕哥一声吼：请文明参赛，发现坏蛋请用力举报！";
-            CommentMsgEvent msgEvent = new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text);
-            EventBus.getDefault().post(msgEvent);
         }
         startSyncGameStateTask(sSyncStateTaskInterval);
+    }
+
+    private void pretenSystemMsg() {
+        CommentModel commentModel = new CommentModel();
+        commentModel.setCommentType(CommentModel.TYPE_TRICK);
+        commentModel.setUserId(BaseRoomData.SYSTEM_ID);
+        commentModel.setAvatar(BaseRoomData.SYSTEM_AVATAR);
+        commentModel.setUserName("系统消息");
+        commentModel.setAvatarColor(Color.WHITE);
+        SpannableStringBuilder stringBuilder = new SpanUtils()
+                .append("欢迎进入撕歌一唱到底，对局马上开始，比赛过程发现坏蛋请用力举报哦～").setForegroundColor(CommentModel.TEXT_RED)
+                .create();
+        commentModel.setStringBuilder(stringBuilder);
+        EventBus.getDefault().post(new PretendCommentMsgEvent(commentModel));
     }
 
     @Override
@@ -1134,21 +1141,27 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             GrabRoundInfoModel grabRoundInfoModel = mRoomData.getExpectRoundInfo();
             grabRoundInfoModel.addUser(true, playerInfoModel);
             //TODO 加入房间的弹幕
-//        BasePushInfo basePushInfo = new BasePushInfo();
-//        basePushInfo.setRoomID(mRoomData.getGameId());
-//        basePushInfo.setSender(new UserInfo.Builder()
-//                .setUserID(1)
-//                .setAvatar("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/common/system_default.png")
-//                .setNickName("系统消息")
-//                .setSex(ESex.fromValue(0))
-//                .build());
-//        PlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, event.getUserID());
-//        if (playerInfoModel != null) {
-//            String text = playerInfoModel.getUserInfo().getNickname() + "偷偷溜走啦～";
-//            MyLog.d(TAG, "onEvent" + " event.getInfo().getSender:" + event.getInfo().getSender());
-//            CommentMsgEvent msgEvent = new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text);
-//            EventBus.getDefault().post(msgEvent);
-//        }
+            if (playerInfoModel != null) {
+                CommentModel commentModel = new CommentModel();
+                commentModel.setCommentType(CommentModel.TYPE_TRICK);
+                commentModel.setUserId(playerInfoModel.getUserInfo().getUserId());
+                commentModel.setAvatar(playerInfoModel.getUserInfo().getAvatar());
+                commentModel.setUserName(playerInfoModel.getUserInfo().getNickname());
+                commentModel.setAvatarColor(playerInfoModel.getUserInfo().getSex() == ESex.SX_MALE.getValue() ?
+                        U.getColor(R.color.color_man_stroke_color) : U.getColor(R.color.color_woman_stroke_color));
+                SpannableStringBuilder stringBuilder = new SpanUtils()
+                        .append(playerInfoModel.getUserInfo().getNickname() + " ").setForegroundColor(CommentModel.TEXT_YELLOW)
+                        .append("加入了房间").setForegroundColor(CommentModel.TEXT_WHITE)
+                        .create();
+                if (playerInfoModel.getUserInfo().getUserId() == BaseRoomData.SYSTEM_GRAB_ID){
+                    stringBuilder = new SpanUtils()
+                            .append(playerInfoModel.getUserInfo().getNickname() + " ").setForegroundColor(CommentModel.TEXT_YELLOW)
+                            .append("我是撕歌最傲娇小助手多音，来和你们一起唱歌卖萌~").setForegroundColor(CommentModel.TEXT_WHITE)
+                            .create();
+                }
+                commentModel.setStringBuilder(stringBuilder);
+                EventBus.getDefault().post(new PretendCommentMsgEvent(commentModel));
+            }
         } else {
             MyLog.w(TAG, "有人加入房间了,但是不是这个轮次：userID " + event.infoModel.getUserID() + ", seq " + event.roundSeq + "，当前轮次是 " + mRoomData.getExpectRoundInfo());
         }
