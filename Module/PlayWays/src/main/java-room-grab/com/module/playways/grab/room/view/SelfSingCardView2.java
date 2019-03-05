@@ -109,6 +109,9 @@ public class SelfSingCardView2 extends RelativeLayout {
                     @Override
                     public void onComplete() {
                         super.onComplete();
+                        if (mListener != null) {
+                            mListener.onSelfSingOver();
+                        }
                         stopCounDown();
                     }
                 });
@@ -183,7 +186,6 @@ public class SelfSingCardView2 extends RelativeLayout {
                         e.printStackTrace();
                     }
                 }
-
                 emitter.onComplete();
             }
         }).observeOn(AndroidSchedulers.mainThread())
@@ -193,5 +195,15 @@ public class SelfSingCardView2 extends RelativeLayout {
                 mTvLyric.setText(o);
             }
         }, throwable -> MyLog.e(TAG, throwable));
+    }
+
+    Listener mListener;
+
+    public void setListener(Listener l){
+        mListener = l;
+    }
+
+    public static interface Listener{
+        void onSelfSingOver();
     }
 }
