@@ -33,4 +33,13 @@ public class GrabConfigModel implements Serializable {
     public void setTotalGameRoundSeq(int totalGameRoundSeq) {
         this.totalGameRoundSeq = totalGameRoundSeq;
     }
+
+    @Override
+    public String toString() {
+        return "GrabConfigModel{" +
+                "enableShowBLightWaitTimeMs=" + enableShowBLightWaitTimeMs +
+                ", enableShowMLightWaitTimeMs=" + enableShowMLightWaitTimeMs +
+                ", totalGameRoundSeq=" + totalGameRoundSeq +
+                '}';
+    }
 }
