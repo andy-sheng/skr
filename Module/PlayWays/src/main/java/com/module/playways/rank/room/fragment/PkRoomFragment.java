@@ -91,7 +91,7 @@ public class PkRoomFragment extends BaseFragment {
         mManyLineLyricsView.setLrcStatus(AbstractLrcView.LRCSTATUS_LOADING);
 
         String fileName = "shamoluotuo";
-        LyricsManager.getLyricsManager(getActivity()).loadLyricsUtil(fileName, "沙漠骆驼", fileName.hashCode() + "");
+        LyricsManager.getLyricsManager(U.app()).loadLyricsUtil(fileName, "沙漠骆驼", fileName.hashCode() + "");
 
         mRootView.findViewById(R.id.capture_btn).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -182,7 +182,7 @@ public class PkRoomFragment extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(LrcEvent.FinishLoadLrcEvent finishLoadLrcEvent) {
-        LyricsReader lyricsReader = LyricsManager.getLyricsManager(getActivity()).getLyricsUtil(finishLoadLrcEvent.hash);
+        LyricsReader lyricsReader = LyricsManager.getLyricsManager(U.app()).getLyricsUtil(finishLoadLrcEvent.hash);
         if (lyricsReader != null) {
             lyricsReader.setHash(finishLoadLrcEvent.hash);
             mManyLineLyricsView.initLrcData();

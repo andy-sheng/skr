@@ -49,7 +49,7 @@ public class LyricsManager {
 
     private static LyricsManager _LyricsManager;
 
-    public LyricsManager(Context context) {
+    private LyricsManager(Context context) {
         mContext = context;
     }
 

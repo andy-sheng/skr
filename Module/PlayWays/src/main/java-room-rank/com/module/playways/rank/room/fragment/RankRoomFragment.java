@@ -1142,7 +1142,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     private void parseLyrics(String fileName, boolean play) {
         MyLog.w(TAG, "parseLyrics" + " fileName=" + fileName);
-        mPrepareLyricTask = LyricsManager.getLyricsManager(getActivity()).loadLyricsObserable(fileName, fileName.hashCode() + "")
+        mPrepareLyricTask = LyricsManager.getLyricsManager(U.app()).loadLyricsObserable(fileName, fileName.hashCode() + "")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .retry(10)
