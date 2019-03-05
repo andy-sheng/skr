@@ -213,23 +213,26 @@
 
         <com.common.view.ex.ExTextView
             android:id="@+id/tv_back"
-            android:layout_width="@dimen/view_91_dp"
-            android:layout_height="@dimen/view_54_dp"
-            android:background="@drawable/zhanjijieguo_back"
+            android:layout_width="@dimen/view_0_dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/btn_dialog_cancle"
             android:gravity="center"
             android:paddingBottom="@dimen/view_7_dp"
+            android:text="返回大厅"
             android:textColor="#0C2275"
             android:textSize="@dimen/textsize_20_dp"
             android:textStyle="bold" />
 
         <com.common.view.ex.ExTextView
             android:id="@+id/tv_again"
-            android:layout_width="@dimen/view_140_dp"
-            android:layout_height="@dimen/view_54_dp"
-            android:layout_marginLeft="@dimen/view_7_dp"
-            android:background="@drawable/zhanjijieguo_zailai"
+            android:layout_width="@dimen/view_0_dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/btn_dialog_confirm"
             android:gravity="center"
             android:paddingBottom="@dimen/view_7_dp"
+            android:text="再来一局"
             android:textColor="@color/white"
             android:textSize="@dimen/textsize_20_dp"
             android:textStyle="bold" />
@@ -244,6 +247,7 @@
             android:paddingBottom="@dimen/view_7_dp"
             android:textColor="@color/white"
             android:textSize="@dimen/textsize_20_dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="gone" />
     </LinearLayout>
 </RelativeLayout>
