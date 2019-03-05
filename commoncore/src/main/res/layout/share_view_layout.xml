@@ -12,7 +12,7 @@
     android:layout_height="@dimen/view_127_dp">
 
     <TextView
-        android:drawableTop="@drawable/weixin"
+        android:drawableTop="@drawable/denglu_weixin"
         android:gravity="center_horizontal|bottom"
         android:textSize="@dimen/textsize_12_dp"
         android:text="微信好友"
