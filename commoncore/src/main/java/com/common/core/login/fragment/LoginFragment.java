@@ -21,6 +21,7 @@ import com.common.core.account.UserAccountManager;
 import com.common.core.permission.SkrBasePermission;
 import com.common.core.permission.SkrPhoneStatePermission;
 import com.common.core.share.ShareManager;
+import com.common.log.MyLog;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
@@ -210,6 +211,7 @@ public class LoginFragment extends BaseFragment {
 
         @Override
         public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
+            MyLog.d(TAG,"onComplete" + " platform=" + platform + " action=" + action + " data=" + data);
             showLoginingBar(false);
             if (platform == SHARE_MEDIA.WEIXIN) {
                 Toast.makeText(getContext(), "微信授权成功", Toast.LENGTH_LONG).show();
@@ -226,6 +228,7 @@ public class LoginFragment extends BaseFragment {
 
         @Override
         public void onError(SHARE_MEDIA platform, int action, Throwable t) {
+            MyLog.d(TAG,"onError" + " platform=" + platform + " action=" + action + " t=" + t);
             showLoginingBar(false);
             if (platform == SHARE_MEDIA.WEIXIN) {
                 Toast.makeText(getContext(), "微信授权失败：" + t.getMessage(), Toast.LENGTH_LONG).show();

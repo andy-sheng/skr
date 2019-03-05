@@ -19,6 +19,7 @@ import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.module.RouterConstants;
+import com.module.home.IHomeService;
 import com.umeng.socialize.UMShareAPI;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -69,7 +70,6 @@ public class LoginActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(AccountEvent.SetAccountEvent setAccountEvent) {
         //登陆成功
-
         if (mReason == REASON_LOGOFF) {
             // 因为是因为退出登录 或者 被踢 才到这个登录页面的，所以要清除除了 LoginActivity 外的所有 Activity
             // 所以这里还要跳到 HomeActivity
@@ -84,11 +84,27 @@ public class LoginActivity extends BaseActivity {
                 ARouter.getInstance().build(originPath)
                         .with(intent.getExtras())
                         .navigation();
+            } else {
+                // 必须放在这，防止当前栈中没有activity导致底部露出
+                if (!isHomeActivityExist()) {
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_HOME)
+                            .navigation();
+                } else {
+                }
             }
         }
-
-        // 必须放在这，防止当前栈中没有activity导致底部露出
         finish();
+    }
+
+    private boolean isHomeActivityExist() {
+        IHomeService channelService = (IHomeService) ARouter.getInstance().build(RouterConstants.SERVICE_HOME).navigation();
+        String homeActivityName = (String) channelService.getData(1, "");
+        for (Activity activity : U.getActivityUtils().getActivityList()) {
+            if (activity.getClass().getSimpleName().equals(homeActivityName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 
