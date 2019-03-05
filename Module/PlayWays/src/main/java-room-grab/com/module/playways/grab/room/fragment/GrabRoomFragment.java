@@ -850,35 +850,35 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     }
 
     private void quitGame() {
-        mCorePresenter.exitRoom();
-//        if (mQuitTipsDialog == null) {
-//            TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
-//                    .setMessageTip("提前退出会破坏其他玩家的对局体验\n确定退出么？")
-//                    .setConfirmTip("确定")
-//                    .setCancelTip("取消")
-//                    .setConfirmBtnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            mQuitTipsDialog.dismiss(false);
-//                        }
-//                    })
-//                    .setCancelBtnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            mQuitTipsDialog.dismiss(false);
-//                        }
-//                    })
-//                    .build();
-//
-//            mQuitTipsDialog = DialogPlus.newDialog(getContext())
-//                    .setContentHolder(new ViewHolder(tipsDialogView))
-//                    .setGravity(Gravity.BOTTOM)
-//                    .setContentBackgroundResource(R.color.transparent)
-//                    .setOverlayBackgroundResource(R.color.black_trans_80)
-//                    .setExpanded(false)
-//                    .create();
-//        }
-//        mQuitTipsDialog.show();
+        if (mQuitTipsDialog == null) {
+            TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
+                    .setMessageTip("提前退出会破坏其他玩家的对局体验\n确定退出么？")
+                    .setConfirmTip("确定")
+                    .setCancelTip("取消")
+                    .setConfirmBtnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mQuitTipsDialog.dismiss(false);
+                            mCorePresenter.exitRoom();
+                        }
+                    })
+                    .setCancelBtnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mQuitTipsDialog.dismiss(false);
+                        }
+                    })
+                    .build();
+
+            mQuitTipsDialog = DialogPlus.newDialog(getContext())
+                    .setContentHolder(new ViewHolder(tipsDialogView))
+                    .setGravity(Gravity.BOTTOM)
+                    .setContentBackgroundResource(R.color.transparent)
+                    .setOverlayBackgroundResource(R.color.black_trans_80)
+                    .setExpanded(false)
+                    .create();
+        }
+        mQuitTipsDialog.show();
     }
 
     @Override
