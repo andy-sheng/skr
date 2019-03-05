@@ -82,7 +82,7 @@ public class GrabRedPkgPresenter extends RxLifeCyclePresenter {
     private void getRedPkg() {
         MyLog.d(TAG, "getRedPkg");
         HashMap<String, Object> map = new HashMap<>();
-        map.put("taskID", 1);
+        map.put("taskID", "1");
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
 
         ApiMethods.subscribe(mGrabRoomServerApi.receiveCash(body), new ApiObserver<ApiResult>() {
