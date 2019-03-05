@@ -188,6 +188,8 @@ public class RoundRectangleView extends View {
 
         mDuration = duration;
 
+        stopCountDown();
+
         ValueAnimator creditValueAnimator = ValueAnimator.ofInt(totalLenght, 0);
         creditValueAnimator.setDuration(mDuration);
         creditValueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {

@@ -31,6 +31,8 @@ public class ConversationActivity extends BaseActivity {
 
     IMsgService msgService;
 
+    ListDialog listDialog;
+
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
         return R.layout.conversation_activity;
@@ -87,6 +89,8 @@ public class ConversationActivity extends BaseActivity {
     }
 
     private void showConfirmOptions(boolean isBlack) {
+        U.getKeyBoardUtils().hideSoftInputKeyBoard(this);
+
         final List<String> channels = new ArrayList<>();
         if (isBlack) {
             channels.add(getString(R.string.remove_from_black_list));
@@ -94,7 +98,7 @@ public class ConversationActivity extends BaseActivity {
             channels.add(getString(R.string.add_to_black_list));
         }
         channels.add(getString(R.string.cancel));
-        ListDialog listDialog = new ListDialog(this);
+        listDialog = new ListDialog(this);
         List<DialogListItem> listItems = new ArrayList<>();
         for (final String channel : channels) {
             listItems.add(new DialogListItem(channel, new Runnable() {
@@ -136,5 +140,9 @@ public class ConversationActivity extends BaseActivity {
     @Override
     public boolean useEventBus() {
         return false;
+    }
+
+    public boolean resizeLayoutSelfWhenKeybordShow() {
+        return true;
     }
 }
