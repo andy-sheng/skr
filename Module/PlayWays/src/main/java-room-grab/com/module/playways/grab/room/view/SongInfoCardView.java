@@ -12,6 +12,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.common.base.BaseActivity;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
 import com.common.image.model.oss.OssImgFactory;
@@ -25,6 +26,7 @@ import com.common.view.ex.ExTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
+import com.trello.rxlifecycle2.android.ActivityEvent;
 import com.zq.lyrics.LyricsManager;
 import com.zq.lyrics.LyricsReader;
 
@@ -167,6 +169,7 @@ public class SongInfoCardView extends RelativeLayout {
                 }
             }
         }).subscribeOn(Schedulers.io())
+                .compose(((BaseActivity)getContext()).bindUntilEvent(ActivityEvent.DESTROY))
                 .observeOn(AndroidSchedulers.mainThread())
                 .retryWhen(new RxRetryAssist(5, 1, false))
                 .subscribe(file -> {
@@ -194,7 +197,8 @@ public class SongInfoCardView extends RelativeLayout {
 
                 emitter.onComplete();
             }
-        }).observeOn(AndroidSchedulers.mainThread())
+        }).compose(((BaseActivity)getContext()).bindUntilEvent(ActivityEvent.DESTROY))
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io()).subscribe(new Consumer<String>() {
             @Override
             public void accept(String o) {
