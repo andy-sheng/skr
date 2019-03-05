@@ -19,10 +19,12 @@ import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.Location;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
+import com.common.core.permission.SkrLocationPermission;
 import com.common.core.userinfo.model.RankInfoModel;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.model.UserRankModel;
 import com.common.utils.FragmentUtils;
+import com.common.utils.LbsUtils;
 import com.common.utils.NetworkUtils;
 import com.common.permission.PermissionUtils;
 import com.common.utils.U;
@@ -92,6 +94,8 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
     View mOwnInfoItem;
 
     int mRankMode = UserRankModel.COUNTRY;
+
+    SkrLocationPermission mSkrLocationPermission = new SkrLocationPermission();
 
     @Override
     public int initView() {
@@ -222,9 +226,25 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
                     mLeaderboardPresenter.setRankMode(UserRankModel.COUNTRY);
                     mRankMode = UserRankModel.COUNTRY;
                 } else if (mRankMode == UserRankModel.COUNTRY) {
-                    mTvArea.setText(getAreaFromLocation(MyUserInfoManager.getInstance().getLocation()));
-                    mLeaderboardPresenter.setRankMode(UserRankModel.REGION);
-                    mRankMode = UserRankModel.REGION;
+                    if (MyUserInfoManager.getInstance().hasLocation()) {
+                        mTvArea.setText(getAreaFromLocation(MyUserInfoManager.getInstance().getLocation()));
+                        mLeaderboardPresenter.setRankMode(UserRankModel.REGION);
+                        mRankMode = UserRankModel.REGION;
+                    } else {
+                        mSkrLocationPermission.ensurePermission(new Runnable() {
+                            @Override
+                            public void run() {
+                                MyUserInfoManager.getInstance().uploadLocation(new LbsUtils.Callback() {
+                                    @Override
+                                    public void onReceive(LbsUtils.Location location) {
+                                        mTvArea.setText(getAreaFromLocation(MyUserInfoManager.getInstance().getLocation()));
+                                        mLeaderboardPresenter.setRankMode(UserRankModel.REGION);
+                                        mRankMode = UserRankModel.REGION;
+                                    }
+                                });
+                            }
+                        }, true);
+                    }
                 }
             }
         });
@@ -238,7 +258,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         });
 
         setRankMode();
-        if (!MyUserInfoManager.getInstance().hasLocation()) {
+        if (!MyUserInfoManager.getInstance().hasLocation() && U.getPreferenceUtils().getSettingBoolean("tips_location_permission_in_rank", false)) {
             tryGetLocation();
         }
     }
@@ -289,6 +309,12 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         } else {
             MyUserInfoManager.getInstance().uploadLocation();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mSkrLocationPermission.onBackFromPermisionManagerMaybe();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
