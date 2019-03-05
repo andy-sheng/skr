@@ -71,7 +71,7 @@
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="@dimen/view_10_dp"
                 android:layout_marginRight="@dimen/view_10_dp"
-                android:drawableLeft="@drawable/soundoff"
+                android:drawableLeft="@drawable/grab_game_role"
                 android:drawablePadding="@dimen/view_5_dp"
                 android:gravity="center"
                 android:text="比赛规则"
