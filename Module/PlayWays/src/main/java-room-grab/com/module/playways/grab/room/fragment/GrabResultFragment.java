@@ -167,8 +167,8 @@ public class GrabResultFragment extends BaseFragment {
             AvatarUtils.loadAvatarByUrl(mAvatarIv,
                     AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
                             .setCircle(true)
-                            .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                            .setBorderColor(Color.parseColor("#0C2275"))
+                            .setBorderWidth(U.getDisplayUtils().dip2px(2))
+                            .setBorderColor(U.getColor(R.color.white))
                             .build());
             mNameTv.setText(MyUserInfoManager.getInstance().getNickName());
             Drawable drawable = getNumDrawable(mGrabResultInfoModel.getWholeTimeSingCnt());

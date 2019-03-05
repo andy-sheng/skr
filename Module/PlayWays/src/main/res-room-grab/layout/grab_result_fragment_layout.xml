@@ -56,7 +56,7 @@
             android:layout_below="@id/name_tv"
             android:layout_alignLeft="@+id/sing_num_bg"
             android:layout_marginLeft="@dimen/view_78_dp"
-            android:layout_marginTop="@dimen/view_40_dp"
+            android:layout_marginTop="@dimen/view_35_dp"
             android:src="@drawable/zhanji_2" />
 
         <LinearLayout

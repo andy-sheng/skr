@@ -59,6 +59,7 @@
         android:layout_marginTop="@dimen/view_9_dp"
         android:text="每3个月才能更改一次昵称喔～"
         android:textColor="#800C2275"
-        android:textSize="@dimen/textsize_16_dp" />
+        android:textSize="@dimen/textsize_16_dp"
+        android:visibility="gone"/>
 
 </RelativeLayout>
