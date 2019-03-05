@@ -14,12 +14,14 @@
         android:layout_marginTop="@dimen/view_140_dp"
         android:layout_marginRight="@dimen/view_18_dp"
         android:background="@drawable/self_lyric_bg"
-        android:paddingLeft="@dimen/view_60_dp"
-        android:paddingTop="@dimen/view_24_dp"
-        android:paddingRight="@dimen/view_60_dp"
+
+        android:paddingTop="@dimen/view_45_dp"
+
         android:paddingBottom="@dimen/view_24_dp">
 
         <TextView
+            android:paddingRight="@dimen/view_40_dp"
+            android:paddingLeft="@dimen/view_40_dp"
             android:id="@+id/tv_lyric"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

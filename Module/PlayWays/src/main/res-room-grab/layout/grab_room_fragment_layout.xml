@@ -86,6 +86,7 @@
         android:visibility="gone" />
 
     <com.module.playways.grab.room.view.SelfSingCardView2
+        android:layout_marginTop="@dimen/view_40_dp"
         android:id="@+id/self_sing_card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
