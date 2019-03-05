@@ -65,6 +65,7 @@ import com.module.playways.rank.room.score.MachineScoreItem;
 import com.module.playways.rank.room.score.RobotScoreHelper;
 import com.zq.live.proto.Common.ESex;
 import com.zq.live.proto.Common.UserInfo;
+import com.zq.live.proto.Room.EQRoundOverReason;
 import com.zq.live.proto.Room.EQRoundResultType;
 import com.zq.live.proto.Room.RoomMsg;
 
@@ -490,7 +491,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      *
      * @param roundInfoModel
      */
-    private void onSelfRoundOver(BaseRoundInfoModel roundInfoModel) {
+    private void onSelfRoundOver(GrabRoundInfoModel roundInfoModel) {
         // 上一轮演唱是自己，开始上传资源
         if (SkrConfig.getInstance().isNeedUploadAudioForAI()) {
             //属于需要上传音频文件的状态
@@ -501,7 +502,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             // 上传打分
             if (mRobotScoreHelper != null) {
                 if (mRobotScoreHelper.isScoreEnough()) {
-                    if (roundInfoModel.getOverReason() == EQRoundResultType.ROT_TYPE_1.getValue()) {
+                    if (roundInfoModel.getOverReason() == EQRoundOverReason.ROR_LAST_ROUND_OVER.getValue()
+                            && roundInfoModel.getResultType() == EQRoundResultType.ROT_TYPE_1.getValue()) {
                         // 是一唱到底的才上传
                         roundInfoModel.setSysScore(mRobotScoreHelper.getAverageScore());
                         uploadRes1ForAi(roundInfoModel);
