@@ -55,5 +55,28 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/textsize_16_dp" />
         </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/game_guide_rl"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_50_dp">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_1_dp"
+                android:background="#2E3041" />
+            <com.common.view.ex.ExTextView
+                android:id="@+id/game_guide_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="@dimen/view_10_dp"
+                android:layout_marginRight="@dimen/view_10_dp"
+                android:drawableLeft="@drawable/soundoff"
+                android:drawablePadding="@dimen/view_5_dp"
+                android:gravity="center"
+                android:text="比赛规则"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textsize_16_dp" />
+        </RelativeLayout>
     </LinearLayout>
 </merge>

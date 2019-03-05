@@ -102,6 +102,11 @@ public class GrabSingerTopView extends FrameLayout {
                                 mListener.onVoiceChange(voiceOpen);
                             }
                         }
+
+                        @Override
+                        public void onClickGameRule() {
+
+                        }
                     });
                     mMoreOpView.setRoomData(mRoomData);
                 }

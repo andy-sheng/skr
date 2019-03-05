@@ -10,7 +10,9 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
+import com.component.busilib.constans.GameModeType;
 import com.module.playways.BaseRoomData;
 import com.module.playways.RoomDataUtils;
 import com.module.rank.R;
@@ -25,6 +27,8 @@ public class MoreOpView extends RelativeLayout {
     View mDivideLine;
     PopupWindow mPopupWindow;
 
+    RelativeLayout mGameGuideRl;
+    ExTextView mGameGuideBtn;
     Listener mListener;
 
     BaseRoomData mRoomData;
@@ -46,6 +50,10 @@ public class MoreOpView extends RelativeLayout {
         mVoiceControlBtnContainer = (RelativeLayout) this.findViewById(R.id.voice_control_btn_container);
         mVoiceControlBtn = (ExTextView) this.findViewById(R.id.voice_control_btn);
         mDivideLine = this.findViewById(R.id.divide_line);
+
+        mGameGuideRl = (RelativeLayout) findViewById(R.id.game_guide_rl);
+        mGameGuideBtn = (ExTextView) findViewById(R.id.game_guide_btn);
+
 
         mQuitBtnContainer.setOnClickListener(new OnClickListener() {
             @Override
@@ -112,11 +120,27 @@ public class MoreOpView extends RelativeLayout {
 
     public void setRoomData(BaseRoomData roomData) {
         mRoomData = roomData;
+        if(roomData.getGameType() == GameModeType.GAME_MODE_GRAB){
+            mGameGuideRl.setVisibility(VISIBLE);
+            mGameGuideBtn.setOnClickListener(new DebounceViewClickListener() {
+                @Override
+                public void clickValid(View v) {
+                    if(mListener != null){
+                        mListener.onClickGameRule();
+                    }
+                    mPopupWindow.dismiss();
+                }
+            });
+        }else {
+            mGameGuideRl.setVisibility(GONE);
+        }
     }
 
     public interface Listener {
         void onClostBtnClick();
 
         void onVoiceChange(boolean voiceOpen);
+
+        void onClickGameRule();
     }
 }
