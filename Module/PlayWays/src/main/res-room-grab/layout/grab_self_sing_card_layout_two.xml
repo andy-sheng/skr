@@ -18,6 +18,7 @@
         android:paddingBottom="@dimen/view_10_dp">
 
         <TextView
+            android:textStyle="bold"
             android:paddingRight="@dimen/view_40_dp"
             android:paddingLeft="@dimen/view_40_dp"
             android:id="@+id/tv_lyric"
