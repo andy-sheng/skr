@@ -87,7 +87,7 @@
         android:layout_below="@id/middle_area"
         android:layout_alignParentBottom="true"
         android:layout_marginTop="@dimen/view_35_dp"
-        android:layout_marginRight="@dimen/view_128_dp"
+        android:layout_marginRight="@dimen/view_100_dp"
         android:layout_marginBottom="@dimen/view_63_dp"
         android:paddingLeft="@dimen/view_18_dp" />
 
