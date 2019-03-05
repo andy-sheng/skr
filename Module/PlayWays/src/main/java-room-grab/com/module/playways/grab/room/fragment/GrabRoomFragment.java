@@ -403,6 +403,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                 .setGravity(Gravity.CENTER)
                 .setContentBackgroundResource(R.color.transparent)
                 .setOverlayBackgroundResource(R.color.black_trans_80)
+                .setMargin(0,0,0,0)
                 .setExpanded(false)
                 .setCancelable(true)
                 .setOnClickListener(new OnClickListener() {
