@@ -3,6 +3,7 @@ package com.module.msg;
 import android.app.Application;
 import android.content.Context;
 import android.net.Uri;
+import android.os.Handler;
 import android.util.Pair;
 
 import com.alibaba.fastjson.JSONObject;
@@ -35,6 +36,8 @@ import static com.module.msg.CustomMsgType.MSG_TYPE_ROOM;
 
 public class RongMsgManager implements RongIM.UserInfoProvider {
 
+    public static final int MSG_RECONNECT = 11;
+
     public final static String TAG = "RongMsgManager";
 
     private static class RongMsgAdapterHolder {
@@ -49,6 +52,18 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
         return RongMsgAdapterHolder.INSTANCE;
     }
 
+
+    Handler mUiHanlder = new Handler() {
+        @Override
+        public void handleMessage(android.os.Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == MSG_RECONNECT) {
+                // 重连
+                mUiHanlder.removeMessages(MSG_RECONNECT);
+                UserAccountManager.getInstance().tryConnectRongIM(true);
+            }
+        }
+    };
 
     private RongIMClient.OperationCallback mOperationCallback = new RongIMClient.OperationCallback() {
         @Override
@@ -141,8 +156,24 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                 public void onChanged(ConnectionStatus connectionStatus) {
                     MyLog.w(TAG, "onChanged" + " connectionStatus=" + connectionStatus);
                     mConnectionStatus = connectionStatus;
-                    if (connectionStatus == ConnectionStatus.KICKED_OFFLINE_BY_OTHER_CLIENT) {
-                        UserAccountManager.getInstance().rcKickedByOthers(0);
+                    switch (connectionStatus) {
+                        case CONNECTED://连接成功。
+
+                            break;
+                        case DISCONNECTED://断开连接。
+                            MyLog.d(TAG, "融云链接为断开状态，15s后尝试重连");
+                            mUiHanlder.sendEmptyMessageDelayed(MSG_RECONNECT, 15 * 1000);
+                            break;
+                        case CONNECTING://连接中。
+
+                            break;
+                        case NETWORK_UNAVAILABLE://网络不可用。
+                            MyLog.d(TAG, "融云链接为网络不可用，15s后尝试重连");
+                            mUiHanlder.sendEmptyMessageDelayed(MSG_RECONNECT, 15 * 1000);
+                            break;
+                        case KICKED_OFFLINE_BY_OTHER_CLIENT://用户账户在其他设备登录，本机会被踢掉线
+                            UserAccountManager.getInstance().rcKickedByOthers(0);
+                            break;
                     }
                 }
             });
@@ -224,7 +255,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
              */
             @Override
             public void onError(RongIMClient.ErrorCode errorCode) {
-                MyLog.w(TAG, "ConnectCallback " + "onError" + " errorCode=" + errorCode);
+                MyLog.w(TAG, "ConnectCallback " + "onError errorMsg=" + errorCode.getMessage() + " code=" + errorCode.getValue());
                 if (callback != null) {
                     callback.onFailed(true, errorCode.getValue(), errorCode.getMessage());
                 }

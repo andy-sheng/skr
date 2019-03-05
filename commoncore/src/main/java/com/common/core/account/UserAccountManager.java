@@ -331,7 +331,7 @@ public class UserAccountManager {
      */
     public void accountValidFromServer() {
         // 认证有效时，再连融云，防止无效的账号将有效账号的融云踢下线
-        tryConnectRongIM();
+        tryConnectRongIM(false);
     }
 
     /**
@@ -401,9 +401,12 @@ public class UserAccountManager {
         });
     }
 
-    public void tryConnectRongIM() {
-        if (mHasTryConnentRM) {
+    public void tryConnectRongIM(boolean force) {
+        if (mHasTryConnentRM && !force) {
             return;
+        }
+        if(force){
+            MyLog.d(TAG,"强制重连融云");
         }
         if (mAccount != null) {
             String token = mAccount.getRongToken();

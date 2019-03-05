@@ -39,8 +39,7 @@ public abstract class ApiObserver<T> implements Observer<T> {
             // TODO: 2018/12/24 身份解析失败，需要调到登陆页面
             if (result.errno == 107) {
                 UserAccountManager.getInstance().notifyAccountExpired();
-            }
-            if(result.errno == 0){
+            } else if (result.errno == 0) {
                 UserAccountManager.getInstance().accountValidFromServer();
             }
         }
@@ -61,9 +60,9 @@ public abstract class ApiObserver<T> implements Observer<T> {
             }
         }
         MyLog.e(API_TAG, log);
-        if(e instanceof UnknownHostException){
+        if (e instanceof UnknownHostException) {
             onNetworkError(ErrorType.unknownHost);
-        }else if(e instanceof SocketTimeoutException){
+        } else if (e instanceof SocketTimeoutException) {
             onNetworkError(ErrorType.socketTimeout);
         }
     }
@@ -76,13 +75,14 @@ public abstract class ApiObserver<T> implements Observer<T> {
 
     /**
      * 业务方想处理超时逻辑，请覆盖这个方法
+     *
      * @param errorType
      */
     public void onNetworkError(ErrorType errorType) {
 
     }
 
-    public enum ErrorType{
+    public enum ErrorType {
         unknownHost,// 解析域名失败，一般无网络情况会有这个
         socketTimeout // 超时，弱网络情况下容易触发这个
     }
