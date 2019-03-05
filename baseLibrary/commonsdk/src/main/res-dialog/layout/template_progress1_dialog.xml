@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.common.view.ex.ExRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/view_350_dp"
+    android:layout_height="@dimen/view_350_dp"
+    app:bl_corners_radius="@dimen/view_50_dp"
+    app:bl_shape="rectangle"
+    app:bl_solid_color="@color/black_trans_80">
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@android:style/Widget.ProgressBar.Large"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:max="100"
+        android:progress="20" />
+
+</com.common.view.ex.ExRelativeLayout>
