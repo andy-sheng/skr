@@ -19,6 +19,7 @@ import com.common.core.account.UserAccountManager;
 import com.common.core.permission.SkrBasePermission;
 import com.common.core.permission.SkrPhoneStatePermission;
 import com.common.core.share.ShareManager;
+import com.common.log.MyLog;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
@@ -38,8 +39,10 @@ public class LoginFragment extends BaseFragment {
     public static final int WX_MODE = 3;
 
     public static final int MSG_HIDE_PORGRESS_BAR = 1;
+    public static final int MIN_HEIGHT = U.getDisplayUtils().dip2px(100);
 
     RelativeLayout mMainActContainer;
+    RelativeLayout mContainer;
     LinearLayout mTvUserAgree;
     ExImageView mWeixinLoginTv;
     ExImageView mPhoneLoginTv;
@@ -71,12 +74,13 @@ public class LoginFragment extends BaseFragment {
     public void initData(@Nullable Bundle savedInstanceState) {
         ShareManager.init();
 
-        mMainActContainer = (RelativeLayout)mRootView.findViewById(R.id.main_act_container);
-        mTvUserAgree = (LinearLayout)mRootView.findViewById(R.id.tv_user_agree);
-        mWeixinLoginTv = (ExImageView)mRootView.findViewById(R.id.weixin_login_tv);
-        mPhoneLoginTv = (ExImageView)mRootView.findViewById(R.id.phone_login_tv);
-        mQqLoginTv = (ExImageView)mRootView.findViewById(R.id.qq_login_tv);
-        mProgressBar = (ProgressBar)mRootView.findViewById(R.id.progress_bar);
+        mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
+        mContainer = (RelativeLayout) mRootView.findViewById(R.id.container);
+        mTvUserAgree = (LinearLayout) mRootView.findViewById(R.id.tv_user_agree);
+        mWeixinLoginTv = (ExImageView) mRootView.findViewById(R.id.weixin_login_tv);
+        mPhoneLoginTv = (ExImageView) mRootView.findViewById(R.id.phone_login_tv);
+        mQqLoginTv = (ExImageView) mRootView.findViewById(R.id.qq_login_tv);
+        mProgressBar = (ProgressBar) mRootView.findViewById(R.id.progress_bar);
 
         mPhoneLoginTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
