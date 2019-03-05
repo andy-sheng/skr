@@ -142,7 +142,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
         }
 
         MyLog.d(TAG, "initData + now.getStatus() " + now.getStatus());
-        if (now != null && now.getStatus() == GrabRoundInfoModel.STATUS_GRAB) {
+        if (now.getStatus() == GrabRoundInfoModel.STATUS_GRAB) {
             for (WantSingerInfo wantSingerInfo : now.getWantSingInfos()) {
                 VP vp = mInfoMap.get(wantSingerInfo.getUserID());
                 if (vp != null && vp.grabTopItemView != null) {
