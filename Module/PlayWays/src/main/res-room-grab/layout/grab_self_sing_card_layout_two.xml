@@ -7,6 +7,8 @@
     tools:parentTag="android.widget.RelativeLayout">
 
     <ScrollView
+        android:fadeScrollbars="false"
+        android:scrollbarThumbVertical="@drawable/jindutiao"
         android:id="@+id/sv_lyric"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_180_dp"
