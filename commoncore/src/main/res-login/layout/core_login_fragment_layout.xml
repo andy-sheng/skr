@@ -10,8 +10,10 @@
     <ImageView
         android:id="@+id/picture"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_515_dp"
-        android:background="@color/white" />
+        android:layout_height="wrap_content"
+        android:src="@drawable/meinv_launch"
+        android:adjustViewBounds="true"
+        />
 
     <RelativeLayout
         android:id="@+id/container"
