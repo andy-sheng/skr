@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.image.fresco.BaseImageView;
+import com.common.log.MyLog;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
@@ -44,6 +45,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class GrabTopItemView extends RelativeLayout {
+    public final static String TAG = "GrabTopItemView";
     public static final int MODE_GRAB = 1;
     public static final int MODE_SING = 2;
 
@@ -148,7 +150,7 @@ public class GrabTopItemView extends RelativeLayout {
 //            mFlagIv.setVisibility(GONE);
 //        }
         mLeaveIv.setVisibility(GONE);
-        mFlagIv.setVisibility(VISIBLE);
+        mFlagIv.setVisibility(GONE);
         mCircleAnimationView.setVisibility(GONE);
     }
 
@@ -213,6 +215,7 @@ public class GrabTopItemView extends RelativeLayout {
     }
 
     public void setGrap(boolean grap) {
+        MyLog.d(TAG, "setGrap" + " grap=" + grap);
 //        if (!mPlayerInfoModel.isOnline()) {
 //            mLeaveIv.setVisibility(VISIBLE);
 //            mFlagIv.setVisibility(GONE);
@@ -240,6 +243,7 @@ public class GrabTopItemView extends RelativeLayout {
     }
 
     public void setLight(boolean on) {
+        MyLog.d(TAG, "setLight" + " on=" + on);
 //        if (!mPlayerInfoModel.isOnline()) {
 //            mLeaveIv.setVisibility(VISIBLE);
 //            mFlagIv.setVisibility(GONE);
