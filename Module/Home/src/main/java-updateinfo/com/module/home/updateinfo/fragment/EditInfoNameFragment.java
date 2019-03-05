@@ -123,7 +123,10 @@ public class EditInfoNameFragment extends BaseFragment {
                         boolean isValid = result.getData().getBoolean("isValid");
                         String unValidReason = result.getData().getString("unValidReason");
                         if (isValid) {
-                            showConfirmDialog(nickName);
+                            MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
+                                    .setNickName(nickName)
+                                    .build(), false);
+                            U.getFragmentUtils().popFragment(EditInfoNameFragment.this);
                         } else {
                             U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(getContext())
                                     .setImage(R.drawable.touxiangshezhishibai_icon)
