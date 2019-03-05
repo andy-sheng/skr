@@ -4,18 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:parentTag="android.widget.RelativeLayout">
-    <ScrollView
 
+    <ScrollView
+        android:layout_marginRight="@dimen/view_18_dp"
+        android:layout_marginLeft="@dimen/view_18_dp"
+        android:background="@drawable/self_lyric_bg"
+        android:layout_marginTop="@dimen/view_48_dp"
         android:paddingBottom="@dimen/view_24_dp"
         android:paddingTop="@dimen/view_24_dp"
         android:paddingLeft="@dimen/view_60_dp"
         android:paddingRight="@dimen/view_60_dp"
-        android:background="#272938"
         android:id="@+id/sv_lyric"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_252_dp"
-        >
-
+        android:layout_height="@dimen/view_212_dp">
         <TextView
             android:alpha="0.6"
             android:id="@+id/tv_lyric"
@@ -27,4 +28,12 @@
             android:textSize="@dimen/textsize_18_dp"
              />
     </ScrollView>
+
+    <ImageView
+        android:layout_marginTop="@dimen/view_24_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:background="@drawable/self_sing_biaoqian"
+        android:layout_width="@dimen/view_120_dp"
+        android:layout_height="@dimen/view_64_dp"
+        />
 </merge>
