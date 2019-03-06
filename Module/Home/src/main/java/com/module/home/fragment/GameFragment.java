@@ -710,4 +710,9 @@ public class GameFragment extends BaseFragment {
     public boolean useEventBus() {
         return true;
     }
+
+    @Override
+    public boolean isInViewPager() {
+        return true;
+    }
 }

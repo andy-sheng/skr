@@ -99,4 +99,8 @@ public class MessageFragment extends BaseFragment implements IMessageFragment {
         }
     }
 
+    @Override
+    public boolean isInViewPager() {
+        return true;
+    }
 }

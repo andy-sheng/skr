@@ -505,4 +505,9 @@ public class PersonFragment extends BaseFragment implements IPersonView {
             }
         }
     }
+
+    @Override
+    public boolean isInViewPager() {
+        return true;
+    }
 }

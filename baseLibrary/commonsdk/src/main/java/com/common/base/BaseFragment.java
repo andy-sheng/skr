@@ -245,18 +245,38 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
 
     @Override
     public void onResume() {
-        MyLog.d(TAG, "onResume fragmentVisible=" + fragmentVisible + " isHidden()" + isHidden());
+        MyLog.d(TAG, "onResume fragmentVisible=" + fragmentVisible
+                + " isHidden()" + isHidden()
+                + " getUserVisibleHint=" + getUserVisibleHint()
+                + " isVisible=" + isVisible()
+        );
         super.onResume();
         for (Presenter presenter : mPresenterSet) {
             presenter.resume();
         }
 
+        /**
+         * 区分几种情况
+         * A B C Fragment 在 viewpager 里
+         * 返回时 getTopFragment 为C 其实是A可见，这就要将
+         * BaseFragment baseFragment = U.getFragmentUtils().getTopFragment(getActivity()); 去掉
+         *
+         * 如果去掉
+         * 还有一种是 A B C 正常的叠在 Activity 中，返回时
+         * A B C onResume 都会触发
+         * 所以需要标示出 这个是否在 viewpager里
+         * {@link isInViewPager()}
+         */
         if (fragmentVisible) {
-            BaseFragment baseFragment = U.getFragmentUtils().getTopFragment(getActivity());
-            if (baseFragment == this) {
+            if (isInViewPager()) {
                 onFragmentVisible();
             } else {
-                MyLog.d(TAG, "onResume 不在顶部");
+                BaseFragment baseFragment = U.getFragmentUtils().getTopFragment(getActivity());
+                if (baseFragment == this) {
+                    onFragmentVisible();
+                } else {
+                    MyLog.d(TAG, "onResume 不在顶部");
+                }
             }
         }
     }
@@ -445,5 +465,9 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
 
     @Override
     public void onHiddenChanged(boolean hidden) {
+    }
+
+    public boolean isInViewPager() {
+        return false;
     }
 }
