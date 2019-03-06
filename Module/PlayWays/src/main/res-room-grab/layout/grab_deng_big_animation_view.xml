@@ -10,9 +10,8 @@
         android:id="@+id/deng_svga"
         android:layout_width="@dimen/view_375_dp"
         android:layout_height="@dimen/view_400_dp"
-        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/view_150_dp"
+        android:layout_marginTop="@dimen/view_50_dp"
         app:antiAlias="true"
         app:autoPlay="false" />
 

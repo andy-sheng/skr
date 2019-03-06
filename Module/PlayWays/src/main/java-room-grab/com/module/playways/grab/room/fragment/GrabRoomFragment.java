@@ -584,7 +584,13 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(SomeOneLightBurstEvent event) {
         // 爆灯
-        mDengBigAnimation.playBurstAnimation();
+        if (MyUserInfoManager.getInstance().getUid() == mRoomData.getRealRoundInfo().getUserID()) {
+            // 当前我是演唱者
+            mDengBigAnimation.setTranslationY(U.getDisplayUtils().dip2px(200));
+            mDengBigAnimation.playBurstAnimation();
+        } else {
+            mDengBigAnimation.playBurstAnimation();
+        }
     }
 
     private void removeAllEnsureMsg() {
