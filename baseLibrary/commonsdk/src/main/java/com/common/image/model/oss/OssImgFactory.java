@@ -95,7 +95,7 @@ public class OssImgFactory {
                     String p2 = url.substring(index+f.length(),url.length());
                     url = p1+paramsSb.toString()+p2;
                 }else{
-                    url = url + "&" + paramsSb.toString();
+//                    url = url + "&" + paramsSb.toString();
                 }
             }
             return url;
