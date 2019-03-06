@@ -1119,15 +1119,16 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      * @param uid      灭灯操作者
      */
     private void pretendLightMsgComment(int singerId, int uid, boolean isBao) {
-        CommentModel commentModel = new CommentModel();
-        commentModel.setCommentType(CommentModel.TYPE_TRICK);
-        commentModel.setUserId(UserAccountManager.SYSTEM_ID);
-        commentModel.setAvatar(UserAccountManager.SYSTEM_AVATAR);
-        commentModel.setUserName("系统消息");
-        commentModel.setAvatarColor(Color.WHITE);
         PlayerInfoModel singerModel = RoomDataUtils.getPlayerInfoById(mRoomData, singerId);
         PlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, uid);
         if (singerModel != null && playerInfoModel != null) {
+            CommentModel commentModel = new CommentModel();
+            commentModel.setCommentType(CommentModel.TYPE_TRICK);
+            commentModel.setUserId(playerInfoModel.getUserID());
+            commentModel.setAvatar(playerInfoModel.getUserInfo().getAvatar());
+            commentModel.setUserName(playerInfoModel.getUserInfo().getNickname());
+            commentModel.setAvatarColor(playerInfoModel.getUserInfo().getSex() == ESex.SX_MALE.getValue() ?
+                    U.getColor(R.color.color_man_stroke_color) : U.getColor(R.color.color_woman_stroke_color));
             SpannableStringBuilder stringBuilder = new SpanUtils()
                     .append(playerInfoModel.getUserInfo().getNickname() + " ").setForegroundColor(CommentModel.TEXT_YELLOW)
                     .append("对").setForegroundColor(CommentModel.TEXT_WHITE)
