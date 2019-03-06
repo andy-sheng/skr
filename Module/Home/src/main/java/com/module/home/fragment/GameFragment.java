@@ -194,6 +194,7 @@ public class GameFragment extends BaseFragment {
         mIvAthleticsPk.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+                U.getSoundUtils().play(TAG, R.raw.home_rank, 500);
                 long tag = System.currentTimeMillis();
                 checkGameConf(1, tag, mIvAthleticsPk);
                 clickAnimation(mIvAthleticsPk, mTextAthleticsPk, tag);
@@ -205,6 +206,7 @@ public class GameFragment extends BaseFragment {
         mIvGrabGame.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+                U.getSoundUtils().play(TAG, R.raw.home_grab, 500);
                 long tag = System.currentTimeMillis();
                 checkGameConf(3, tag, mIvGrabGame);
                 clickAnimation(mIvGrabGame, mTextGrabGame, tag);
@@ -253,7 +255,7 @@ public class GameFragment extends BaseFragment {
             }
         });
 
-        U.getSoundUtils().preLoad(TAG, R.raw.home_game, R.raw.general_button);
+        U.getSoundUtils().preLoad(TAG, R.raw.home_grab, R.raw.home_rank);
 
         initBaseInfo();
         initRankLevel(true);
@@ -564,7 +566,6 @@ public class GameFragment extends BaseFragment {
 
     // 点击缩放动画
     public void clickAnimation(View view, View viewcard, final long tag) {
-        U.getSoundUtils().play(TAG, R.raw.home_game);
 
         AnimatorSet set = new AnimatorSet();
 
