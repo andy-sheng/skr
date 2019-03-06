@@ -112,6 +112,8 @@ public class GrabPlayerRv2 extends RelativeLayout {
             vp.grabTopItemView.setToPlaceHolder();
             vp.grabTopItemView.setGrap(false);
             vp.grabTopItemView.stopEvasive();
+            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) vp.grabTopItemView.getLayoutParams();
+            lp.weight = 1;
         }
     }
 
