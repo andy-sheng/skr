@@ -74,11 +74,11 @@ public class FeedbackFragment extends BaseFragment {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
+                        U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
                         U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
                         U.getFragmentUtils().popFragment(FeedbackFragment.this);
                     }
                 });
-
 
         mFeedbackContent.addTextChangedListener(new TextWatcher() {
             @Override
@@ -116,6 +116,13 @@ public class FeedbackFragment extends BaseFragment {
                     }
                 });
 
+        U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        U.getSoundUtils().release(TAG);
     }
 
     @Override

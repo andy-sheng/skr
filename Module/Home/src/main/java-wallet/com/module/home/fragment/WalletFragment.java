@@ -85,6 +85,7 @@ public class WalletFragment extends BaseFragment implements IWalletView {
         mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+                U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
                 U.getFragmentUtils().popFragment(WalletFragment.this);
             }
         });
@@ -109,6 +110,8 @@ public class WalletFragment extends BaseFragment implements IWalletView {
             }
         });
 
+        U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
+
     }
 
     private void initPresenter() {
@@ -121,6 +124,12 @@ public class WalletFragment extends BaseFragment implements IWalletView {
 
         mWalletRecordPresenter.getBalance();
         mWalletRecordPresenter.getWalletIncrRecords(offset, DEFAULT_COUNT);
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        U.getSoundUtils().release(TAG);
     }
 
     @Override

@@ -196,9 +196,11 @@ public class AuditionFragment extends BaseFragment {
         mTvRecordTip = (TextView) mRootView.findViewById(R.id.tv_record_tip);
         mRlControlContainer.setVisibility(View.GONE);
 
+        U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
 
         RxView.clicks(mIvBack).throttleFirst(500, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
+                    U.getSoundUtils().play(TAG, R.raw.normal_back);
                     onBackPressed();
 //                    EngineManager.getInstance().recognizeInManualMode();
                 });
@@ -735,5 +737,7 @@ public class AuditionFragment extends BaseFragment {
             recordFile.delete();
         }
         mUiHanlder.removeCallbacksAndMessages(null);
+
+        U.getSoundUtils().release(TAG);
     }
 }

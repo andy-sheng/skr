@@ -41,6 +41,7 @@ public class MusicTestFragment extends BaseFragment {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
+                        U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
                         U.getFragmentUtils().popFragment(MusicTestFragment.this);
                     }
                 });
@@ -65,6 +66,8 @@ public class MusicTestFragment extends BaseFragment {
                 });
 
         initStart();
+
+        U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
     }
 
     private void initStart() {
@@ -83,6 +86,12 @@ public class MusicTestFragment extends BaseFragment {
                 }
             }
         }, this);
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        U.getSoundUtils().release(TAG);
     }
 
     @Override

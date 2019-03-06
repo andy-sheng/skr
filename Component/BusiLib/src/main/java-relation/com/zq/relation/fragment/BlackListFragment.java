@@ -72,6 +72,7 @@ public class BlackListFragment extends BaseFragment {
         mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+                U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
                 U.getFragmentUtils().popFragment(BlackListFragment.this);
             }
         });
@@ -129,6 +130,8 @@ public class BlackListFragment extends BaseFragment {
         });
 
         loadData();
+
+        U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
     }
 
     private void loadData() {
@@ -182,5 +185,11 @@ public class BlackListFragment extends BaseFragment {
     @Override
     public boolean useEventBus() {
         return false;
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        U.getSoundUtils().release(TAG);
     }
 }

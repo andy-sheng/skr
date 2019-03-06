@@ -63,6 +63,7 @@ public class MusicQuestionFragment extends BaseFragment implements IQuestionView
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
+                        U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
                         U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
                                 .setPopFragment(MusicQuestionFragment.this)
                                 .setPopAbove(false)
@@ -88,6 +89,14 @@ public class MusicQuestionFragment extends BaseFragment implements IQuestionView
                 mMusicTestPresenter.getQuestionList();
             }
         });
+
+        U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        U.getSoundUtils().release(TAG);
     }
 
     @Override
