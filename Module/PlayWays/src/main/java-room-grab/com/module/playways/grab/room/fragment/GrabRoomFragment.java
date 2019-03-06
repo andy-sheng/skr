@@ -467,7 +467,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         @Override
         public void onVoiceChange(boolean voiceOpen) {
             mCorePresenter.muteAllRemoteAudioStreams(!voiceOpen, true);
-            if(!voiceOpen){
+            if (!voiceOpen) {
                 StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
                         "game_muteon", null);
             }
@@ -953,12 +953,16 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         long t = System.currentTimeMillis() - mBeginChangeRoomTs;
         if (t > 1500) {
             mGrabChangeRoomTransitionView.setVisibility(View.GONE);
-            U.getToastUtil().showShort(errMsg);
+            if (!success) {
+                U.getToastUtil().showShort(errMsg);
+            }
         } else {
             mUiHanlder.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    U.getToastUtil().showShort(errMsg);
+                    if (!success) {
+                        U.getToastUtil().showShort(errMsg);
+                    }
                     mGrabChangeRoomTransitionView.setVisibility(View.GONE);
                 }
             }, 1500 - t);
