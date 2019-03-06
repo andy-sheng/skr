@@ -39,9 +39,9 @@ public class JsRegister {
         mBridgeWebView.registerHandler("callNative", new BridgeHandler() {
             @Override
             public void handler(String data, CallBackFunction function) {
-                if(BuildConfig.DEBUG){
-                    U.getToastUtil().showShort("callNative data is:" + data);
-                }
+//                if(BuildConfig.DEBUG){
+//                    U.getToastUtil().showShort("callNative data is:" + data);
+//                }
                 processOpt(data, function);
             }
         });

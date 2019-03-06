@@ -167,7 +167,7 @@ public class AgentWebActivity extends BaseActivity {
                 CookieManager cookieManager = CookieManager.getInstance();
                 cookieManager.setAcceptCookie(true);
                 for(Cookie cookie : cookies){
-                    cookieManager.setCookie(url, cookie.value());//cookies是在HttpClient中获得的cookie
+                    cookieManager.setCookie("inframe.mobi", cookie.toString());//cookies是在HttpClient中获得的cookie
                 }
                 CookieSyncManager.getInstance().sync();
             }
