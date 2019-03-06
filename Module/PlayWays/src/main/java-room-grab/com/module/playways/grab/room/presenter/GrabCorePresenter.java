@@ -238,6 +238,11 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         if (now != null) {
             if (mExoPlayer == null) {
                 mExoPlayer = new ExoPlayer();
+                if (mRoomData.isMute()) {
+                    mExoPlayer.setVolume(0);
+                } else {
+                    mExoPlayer.setVolume(1);
+                }
             }
             mExoPlayer.setCallback(new VideoPlayerAdapter.PlayerCallbackAdapter() {
                 @Override
@@ -274,30 +279,32 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 // 需要上传音频伪装成机器人
                 EngineManager.getInstance().startAudioRecording(RoomDataUtils.getSaveAudioForAiFilePath(), Constants.AUDIO_RECORDING_QUALITY_HIGH);
                 BaseRoundInfoModel now = mRoomData.getRealRoundInfo();
-                if (mRobotScoreHelper == null) {
-                    mRobotScoreHelper = new RobotScoreHelper();
-                }
-                mRobotScoreHelper.reset();
-                EngineManager.getInstance().startRecognize(RecognizeConfig.newBuilder()
-                        .setSongName(now.getMusic().getItemName())
-                        .setArtist(now.getMusic().getOwner())
-                        .setMode(RecognizeConfig.MODE_AUTO)
-                        .setAutoTimes(8)
-                        .setMResultListener(new ArcRecognizeListener() {
-                            @Override
-                            public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
-                                int score = 0;
-                                if (targetSongInfo != null) {
-                                    score = (int) (targetSongInfo.getScore() * 100);
+                if (now != null) {
+                    if (mRobotScoreHelper == null) {
+                        mRobotScoreHelper = new RobotScoreHelper();
+                    }
+                    mRobotScoreHelper.reset();
+                    EngineManager.getInstance().startRecognize(RecognizeConfig.newBuilder()
+                            .setSongName(now.getMusic().getItemName())
+                            .setArtist(now.getMusic().getOwner())
+                            .setMode(RecognizeConfig.MODE_AUTO)
+                            .setAutoTimes(8)
+                            .setMResultListener(new ArcRecognizeListener() {
+                                @Override
+                                public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
+                                    int score = 0;
+                                    if (targetSongInfo != null) {
+                                        score = (int) (targetSongInfo.getScore() * 100);
+                                    }
+                                    MachineScoreItem machineScoreItem = new MachineScoreItem();
+                                    machineScoreItem.setNo(lineNo);
+                                    machineScoreItem.setTs(System.currentTimeMillis() - mRobotScoreHelper.getBeginRecordTs());
+                                    machineScoreItem.setScore(score);
+                                    mRobotScoreHelper.add(machineScoreItem);
                                 }
-                                MachineScoreItem machineScoreItem = new MachineScoreItem();
-                                machineScoreItem.setNo(lineNo);
-                                machineScoreItem.setTs(System.currentTimeMillis() - mRobotScoreHelper.getBeginRecordTs());
-                                machineScoreItem.setScore(score);
-                                mRobotScoreHelper.add(machineScoreItem);
-                            }
-                        })
-                        .build());
+                            })
+                            .build());
+                }
             }
         }
     }
