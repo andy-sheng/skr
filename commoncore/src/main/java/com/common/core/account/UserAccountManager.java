@@ -1,6 +1,8 @@
 package com.common.core.account;
 
 
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
@@ -18,7 +20,6 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
-import com.common.statistics.StatisticsAdapter;
 import com.common.statistics.UmengStatistics;
 import com.common.umeng.UmengPush;
 import com.common.umeng.UmengPushRegisterSuccessEvent;
@@ -30,11 +31,6 @@ import com.module.common.ICallback;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Locale;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -55,7 +51,7 @@ public class UserAccountManager {
     public static final int SYSTEM_ID = 1;       //系统id
     public static final int SYSTEM_GRAB_ID = 2;  //一唱到底多音
     public static final int SYSTEM_RANK_AI = 3;  //AI裁判
-    public static final String SYSTEM_AVATAR ="http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/common/system_default.png"; //系统头像
+    public static final String SYSTEM_AVATAR = "http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/common/system_default.png"; //系统头像
 
     private UserAccount mAccount;
 
@@ -64,6 +60,18 @@ public class UserAccountManager {
     private boolean mHasloadAccountFromDB = false;//有没有尝试load过账号
 
     private int mOldOrNewAccount = 0;
+
+    public static final int MSG_DELAY_GET_RC_TOKEN = 10 * 1000;
+
+    Handler mUiHanlder = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == MSG_DELAY_GET_RC_TOKEN) {
+                getIMToken();
+            }
+        }
+    };
 
     private static class UserAccountManagerHolder {
         private static final UserAccountManager INSTANCE = new UserAccountManager();
@@ -116,7 +124,7 @@ public class UserAccountManager {
                 connectRongIM(account.getRongToken());
             } else {
                 // 账号不是从服务器取的，至少一个服务器请求成功后，才登录融云
-
+                mHasTryConnentRM = false;
             }
 
             trySetUmengPushAlias();
@@ -322,6 +330,7 @@ public class UserAccountManager {
      */
     public void logoff() {
         logoff(false, AccountEvent.LogoffAccountEvent.REASON_SELF_QUIT, true);
+        mUiHanlder.removeCallbacksAndMessages(null);
     }
 
     /**
@@ -410,15 +419,17 @@ public class UserAccountManager {
         if (mHasTryConnentRM && !force) {
             return;
         }
-        if(force){
-            MyLog.d(TAG,"强制重连融云");
+        if (force) {
+            MyLog.d(TAG, "强制重连融云");
         }
+        MyLog.d(TAG, "tryConnectRongIM" + " force=" + force);
         if (mAccount != null) {
             String token = mAccount.getRongToken();
-            if (!TextUtils.isEmpty(token)) {
-                mHasTryConnentRM = true;
-                connectRongIM(token);
-            }
+            MyLog.d(TAG, "tryConnectRongIM token=" + token);
+            mHasTryConnentRM = true;
+            connectRongIM(token);
+        } else {
+            MyLog.d(TAG, "tryConnectRongIM" + " mAccount==null");
         }
     }
 
@@ -476,8 +487,9 @@ public class UserAccountManager {
         ApiMethods.subscribe(userAccountServerApi.getIMToken(), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
+                String token = null;
                 if (result.getErrno() == 0) {
-                    String token = result.getData().getString("RC");
+                    token = result.getData().getString("RC");
                     if (!TextUtils.isEmpty(token)) {
                         // 更新数据库中融云token
                         mAccount.setRongToken(token);
@@ -485,9 +497,17 @@ public class UserAccountManager {
                         // 连接融云
                         connectRongIM(token);
                     } else {
+                        if (MyLog.isDebugLogOpen()) {
+                            U.getToastUtil().showShort("服务器返回的融云token为空，检查是否触发了测试环境100用户上线");
+                        }
                         MyLog.e(TAG, "getIMToken from Server is null");
                     }
-
+                } else {
+                    U.getToastUtil().showShort("GET融云token error=" + result.getErrno());
+                }
+                if (TextUtils.isEmpty(token)) {
+                    mUiHanlder.removeMessages(MSG_DELAY_GET_RC_TOKEN);
+                    mUiHanlder.sendEmptyMessageDelayed(MSG_DELAY_GET_RC_TOKEN, 10 * 1000);
                 }
             }
         });
@@ -503,6 +523,7 @@ public class UserAccountManager {
                 public void onSucess(Object obj) {
 //                    U.getToastUtil().showShort("与服务器连接成功");
                     MyLog.e(TAG, "与融云服务器连接成功");
+                    mUiHanlder.removeMessages(MSG_DELAY_GET_RC_TOKEN);
                 }
 
                 @Override
