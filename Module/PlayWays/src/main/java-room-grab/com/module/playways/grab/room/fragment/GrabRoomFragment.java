@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -24,9 +23,7 @@ import com.common.log.MyLog;
 import com.common.statistics.StatConstants;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
-import com.common.utils.ToastUtils;
 import com.common.utils.U;
-import com.common.view.DebounceViewClickListener;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.manager.BgMusicManager;
 import com.dialog.view.TipsDialogView;
@@ -35,8 +32,8 @@ import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.LightOffAnimationOverEvent;
 import com.module.playways.grab.room.event.ShowPersonCardEvent;
-import com.module.playways.grab.room.event.SomeOneLightBurstEvent;
-import com.module.playways.grab.room.event.SomeOneLightOffEvent;
+import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
+import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
 import com.module.playways.grab.room.inter.IGrabView;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
@@ -44,7 +41,6 @@ import com.module.playways.grab.room.model.WantSingerInfo;
 import com.module.playways.grab.room.presenter.GrabCorePresenter;
 import com.module.playways.grab.room.presenter.GrabRedPkgPresenter;
 import com.module.playways.grab.room.top.GrabTopContainerView;
-import com.module.playways.grab.room.top.GrabSingerTopView;
 import com.module.playways.grab.room.top.GrabTopView;
 import com.module.playways.grab.room.view.GrabChangeRoomTransitionView;
 import com.module.playways.grab.room.view.GrabDengBigAnimationView;
@@ -478,7 +474,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             if (mGameRoleDialog != null) {
                 mGameRoleDialog.dismiss();
             }
-
             mGameRoleDialog = DialogPlus.newDialog(getContext())
                     .setContentHolder(new ViewHolder(R.layout.grab_game_role_view_layout))
                     .setContentBackgroundResource(R.color.transparent)
@@ -486,7 +481,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                     .setExpanded(false)
                     .setGravity(Gravity.CENTER)
                     .create();
-
             mGameRoleDialog.show();
         }
     };
@@ -584,13 +578,13 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(SomeOneLightOffEvent event) {
+    public void onEvent(GrabSomeOneLightOffEvent event) {
         // 灭灯
         U.getSoundUtils().play(TAG, R.raw.dislike);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(SomeOneLightBurstEvent event) {
+    public void onEvent(GrabSomeOneLightBurstEvent event) {
         // 爆灯
         if (MyUserInfoManager.getInstance().getUid() == mRoomData.getRealRoundInfo().getUserID()) {
             // 当前我是演唱者

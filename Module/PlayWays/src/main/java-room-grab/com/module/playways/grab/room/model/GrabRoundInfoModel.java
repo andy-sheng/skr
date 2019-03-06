@@ -9,8 +9,8 @@ import com.module.playways.grab.room.event.SomeOneJoinPlaySeatEvent;
 import com.module.playways.grab.room.event.SomeOneJoinWaitSeatEvent;
 import com.module.playways.grab.room.event.SomeOneLeavePlaySeatEvent;
 import com.module.playways.grab.room.event.SomeOneLeaveWaitSeatEvent;
-import com.module.playways.grab.room.event.SomeOneLightBurstEvent;
-import com.module.playways.grab.room.event.SomeOneLightOffEvent;
+import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
+import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
 import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
 import com.module.playways.rank.song.model.SongModel;
 import com.zq.live.proto.Room.OnlineInfo;
@@ -160,27 +160,31 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
     /**
      * 一唱到底使用 灭灯
      */
-    public void addLightOffUid(boolean notify, MLightInfoModel noPassingInfo) {
+    public boolean addLightOffUid(boolean notify, MLightInfoModel noPassingInfo) {
         if (!mLightInfos.contains(noPassingInfo)) {
             mLightInfos.add(noPassingInfo);
             if (notify) {
-                SomeOneLightOffEvent event = new SomeOneLightOffEvent(noPassingInfo.getUserID(), this);
+                GrabSomeOneLightOffEvent event = new GrabSomeOneLightOffEvent(noPassingInfo.getUserID(), this);
                 EventBus.getDefault().post(event);
             }
+            return true;
         }
+        return false;
     }
 
     /**
      * 一唱到底使用 爆灯
      */
-    public void addLightBurstUid(boolean notify, BLightInfoModel bLightInfoModel) {
+    public boolean addLightBurstUid(boolean notify, BLightInfoModel bLightInfoModel) {
         if (!bLightInfos.contains(bLightInfoModel)) {
             bLightInfos.add(bLightInfoModel);
             if (notify) {
-                SomeOneLightBurstEvent event = new SomeOneLightBurstEvent(bLightInfoModel.getUserID(), this);
+                GrabSomeOneLightBurstEvent event = new GrabSomeOneLightBurstEvent(bLightInfoModel.getUserID(), this);
                 EventBus.getDefault().post(event);
             }
+            return true;
         }
+        return false;
     }
 
     public boolean addWaitUser(boolean notify, GrabPlayerInfoModel grabPlayerInfoModel) {

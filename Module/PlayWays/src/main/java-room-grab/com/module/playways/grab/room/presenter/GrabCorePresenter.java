@@ -32,7 +32,6 @@ import com.engine.arccloud.RecognizeConfig;
 import com.engine.arccloud.SongInfo;
 import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
-import com.module.playways.BaseRoomData;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.event.GrabGameOverEvent;
@@ -41,6 +40,8 @@ import com.module.playways.grab.room.event.GrabRoundChangeEvent;
 import com.module.playways.grab.room.event.GrabRoundStatusChangeEvent;
 import com.module.playways.grab.room.event.GrabSwitchRoomEvent;
 import com.module.playways.grab.room.event.GrabWaitSeatUpdateEvent;
+import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
+import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
 import com.module.playways.grab.room.inter.IGrabView;
 import com.module.playways.grab.room.model.BLightInfoModel;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
@@ -1096,7 +1097,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             MLightInfoModel noPassingInfo = new MLightInfoModel();
             noPassingInfo.setUserID(event.userID);
             roundInfoModel.addLightOffUid(true, noPassingInfo);
-            pretendLightMsgComment(roundInfoModel.getUserID(), event.userID, false);
         } else {
             MyLog.w(TAG, "有人灭灯了,但是不是这个轮次：userID " + event.userID + ", seq " + event.roundSeq + "，当前轮次是 " + mRoomData.getExpectRoundInfo());
         }
@@ -1117,10 +1117,24 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             BLightInfoModel noPassingInfo = new BLightInfoModel();
             noPassingInfo.setUserID(event.userID);
             roundInfoModel.addLightBurstUid(true, noPassingInfo);
-            pretendLightMsgComment(roundInfoModel.getUserID(), event.userID, true);
         } else {
             MyLog.w(TAG, "有人爆灯了,但是不是这个轮次：userID " + event.userID + ", seq " + event.roundSeq + "，当前轮次是 " + mRoomData.getExpectRoundInfo());
         }
+    }
+
+    /**
+     * 这里来伪装弹幕的好处，是sych下来的爆灭灯变化也会触发这个时间
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(GrabSomeOneLightOffEvent event) {
+        pretendLightMsgComment(event.roundInfo.getUserID(), event.uid, false);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(GrabSomeOneLightBurstEvent event) {
+        pretendLightMsgComment(event.roundInfo.getUserID(), event.uid, true);
     }
 
     /**

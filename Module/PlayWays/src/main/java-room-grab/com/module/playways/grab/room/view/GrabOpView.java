@@ -9,7 +9,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.OvershootInterpolator;
-import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
 
@@ -23,16 +22,13 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
 import com.module.playways.grab.room.GrabRoomData;
-import com.module.playways.grab.room.event.SomeOneLightBurstEvent;
-import com.module.playways.grab.room.event.SomeOneLightOffEvent;
+import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
+import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
 import com.module.rank.R;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import static android.animation.ValueAnimator.REVERSE;
-import static android.view.animation.Animation.INFINITE;
 
 /**
  * 抢唱模式操作面板
@@ -398,7 +394,7 @@ public class GrabOpView extends RelativeLayout {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(SomeOneLightBurstEvent event) {
+    public void onEvent(GrabSomeOneLightBurstEvent event) {
         if (mSeq == event.getRoundInfo().getRoundSeq()) {
             mStatus = STATUS_HAS_OP;
             onChangeState();
@@ -406,7 +402,7 @@ public class GrabOpView extends RelativeLayout {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(SomeOneLightOffEvent event) {
+    public void onEvent(GrabSomeOneLightOffEvent event) {
         if (mSeq == event.getRoundInfo().getRoundSeq() && event.uid == MyUserInfoManager.getInstance().getUid()) {
             mStatus = STATUS_HAS_OP;
             onChangeState();

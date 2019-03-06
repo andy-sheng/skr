@@ -9,7 +9,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import com.common.log.MyLog;
 import com.common.utils.HandlerTaskTimer;
@@ -17,8 +16,8 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.module.playways.grab.room.GrabRoomData;
-import com.module.playways.grab.room.event.SomeOneLightBurstEvent;
-import com.module.playways.grab.room.event.SomeOneLightOffEvent;
+import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
+import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.rank.room.view.MoreOpView;
 import com.module.playways.rank.song.model.SongModel;
@@ -141,14 +140,14 @@ public class GrabSingerTopView extends FrameLayout {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(SomeOneLightOffEvent event) {
+    public void onEvent(GrabSomeOneLightOffEvent event) {
         GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
         int num = (grabRoundInfoModel.getPlayUsers().size() - 1) - grabRoundInfoModel.getMLightInfos().size();
         mTvCurLight.setText(String.valueOf(num));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(SomeOneLightBurstEvent event) {
+    public void onEvent(GrabSomeOneLightBurstEvent event) {
         playFlickerAnim();
     }
 

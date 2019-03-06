@@ -11,8 +11,8 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.SomeOneGrabEvent;
-import com.module.playways.grab.room.event.SomeOneLightBurstEvent;
-import com.module.playways.grab.room.event.SomeOneLightOffEvent;
+import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
+import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
 import com.module.playways.grab.room.event.SomeOneOnlineChangeEvent;
 import com.module.playways.rank.room.event.InputBoardEvent;
 import com.module.playways.rank.room.view.MoreOpView;
@@ -163,12 +163,12 @@ public class GrabTopContainerView extends RelativeLayout {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(SomeOneLightOffEvent event) {
+    public void onEvent(GrabSomeOneLightOffEvent event) {
         mTopContentRv.lightOff(event.uid);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(SomeOneLightBurstEvent event) {
+    public void onEvent(GrabSomeOneLightBurstEvent event) {
         mTopContentRv.toBurstState();
     }
 
