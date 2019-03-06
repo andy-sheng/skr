@@ -352,21 +352,27 @@ public class RankTopContainerView2 extends RelativeLayout {
 //        }
         mStatusArr[index] = userLightInfo;
         LightState lightState = userLightInfo.mLightState;
-        if (lightState == LightState.MIE) {
-            U.getSoundUtils().play(TAG, R.raw.rank_xlight);
-        }
         MyLog.d(TAG, "setLight" + " index=" + index + " lightState=" + lightState);
         switch (index) {
             case 0:
                 mLeftLedView.setSVGAMode(lightState == LightState.BAO);
+                if (lightState == LightState.MIE) {
+                    U.getSoundUtils().play(TAG, R.raw.rank_xlight);
+                }
                 break;
             case 1:
                 mMidLedView.setSVGAMode(lightState == LightState.BAO);
+                if (lightState == LightState.MIE) {
+                    U.getSoundUtils().play(TAG, R.raw.rank_xlight);
+                }
                 break;
             case 2:
                 mLeftLedView.setVisibility(GONE);
                 mMidLedView.setVisibility(GONE);
                 mRightLedView.setSVGAMode(lightState == LightState.BAO);
+                if (lightState == LightState.MIE) {
+                    U.getSoundUtils().play(TAG, R.raw.rank_xxxstop);
+                }
                 break;
         }
     }

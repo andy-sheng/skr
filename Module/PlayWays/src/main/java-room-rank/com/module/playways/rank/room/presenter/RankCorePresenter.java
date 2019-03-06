@@ -181,8 +181,6 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         mRoomData = roomData;
         TAG += hashCode();
 
-        U.getSoundUtils().preLoad(TAG, R.raw.rank_xxxstop);
-
         MyLog.w(TAG, "player info is " + mRoomData.toString());
 
         if (mRoomData.getGameId() > 0) {
@@ -663,7 +661,6 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     public void onEvent(RankRoundInfoChangeEvent event) {
         MyLog.w(TAG, "开始切换唱将 myturn=" + event.myturn);
         estimateOverTsThisRound();
-        U.getSoundUtils().play(TAG, R.raw.rank_xxxstop);
         //以防万一
         tryStopRobotPlay();
         mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS);
