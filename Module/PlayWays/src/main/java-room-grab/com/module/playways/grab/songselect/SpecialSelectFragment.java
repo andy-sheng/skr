@@ -20,6 +20,7 @@ import com.common.rxretrofit.ApiResult;
 import com.common.statistics.StatConstants;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.common.view.titlebar.CommonTitleBar;
@@ -35,7 +36,6 @@ import com.kingja.loadsir.core.LoadSir;
 import com.module.RouterConstants;
 
 import com.module.playways.rank.prepare.model.PrepareData;
-import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -52,8 +52,7 @@ public class SpecialSelectFragment extends BaseFragment {
     public final static String TAG = "SpecialSelectFragment";
 
     RelativeLayout mMainActContainer;
-    CommonTitleBar mTitleView;
-    ExImageView mSelectLogoIv;
+    ExImageView mIvBack;
 
     SmartRefreshLayout mRefreshLayout;
     RecyclerView mContentRv;
@@ -75,10 +74,9 @@ public class SpecialSelectFragment extends BaseFragment {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
-        mTitleView = (CommonTitleBar) mRootView.findViewById(R.id.title_view);
-        mSelectLogoIv = (ExImageView) mRootView.findViewById(R.id.select_logo_iv);
         mRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.refreshLayout);
         mContentRv = (RecyclerView) mRootView.findViewById(R.id.content_rv);
+        mIvBack = (ExImageView)mRootView.findViewById(R.id.iv_back);
 
         mRefreshLayout.setEnableRefresh(false);
         mRefreshLayout.setEnableLoadMore(true);
@@ -118,17 +116,15 @@ public class SpecialSelectFragment extends BaseFragment {
         loadData(offset, DEFAULT_COUNT);
         getBackgroundMusic();
 
-        RxView.clicks(mTitleView.getLeftImageButton())
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        U.getSoundUtils().play(SpecialSelectFragment.TAG, R.raw.general_back, 500);
-                        if (getActivity() != null) {
-                            getActivity().finish();
-                        }
-                    }
-                });
+        mIvBack.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                U.getSoundUtils().play(SpecialSelectFragment.TAG, R.raw.general_back, 500);
+                if (getActivity() != null) {
+                    getActivity().finish();
+                }
+            }
+        });
 
 
         LoadSir mLoadSir = new LoadSir.Builder()
