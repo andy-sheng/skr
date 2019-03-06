@@ -22,6 +22,7 @@ import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.room.RankRoomData;
 import com.module.playways.rank.room.event.PkMyBurstSuccessEvent;
 import com.module.playways.rank.room.event.PkMyLightOffSuccessEvent;
+import com.module.playways.rank.room.fragment.RankRecordFragment;
 import com.module.rank.R;
 
 import java.util.HashSet;
@@ -62,6 +63,7 @@ public class RankOpView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.rank_op_view, this);
+        U.getSoundUtils().preLoad(TAG, R.raw.rank_xlight);
         mIvBurst = findViewById(R.id.iv_burst);
         mIvTurnOff = findViewById(R.id.iv_turn_off);
         mIvCountDown = findViewById(R.id.iv_count_down);
@@ -99,6 +101,7 @@ public class RankOpView extends RelativeLayout {
                             U.getToastUtil().showShort("灭灯之后不能再灭灯哦");
                             return;
                         }
+                        U.getSoundUtils().play(RankRecordFragment.TAG, R.raw.rank_xlight);
                         MyLog.w(TAG, "clickValid LightOff " + " seq=" + mSeq);
                         mOpListener.clickLightOff(mSeq);
                         StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK), "game_x", null);

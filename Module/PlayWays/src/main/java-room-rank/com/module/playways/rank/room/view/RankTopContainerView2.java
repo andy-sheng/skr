@@ -20,6 +20,7 @@ import com.common.view.ex.ExImageView;
 import com.module.playways.BaseRoomData;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.listener.SVGAListener;
+import com.module.playways.rank.room.fragment.RankRecordFragment;
 import com.module.playways.rank.room.model.RankGameConfigModel;
 import com.module.playways.rank.room.model.PkScoreTipMsgModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
@@ -109,6 +110,7 @@ public class RankTopContainerView2 extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.rank_top_container_view, this);
+        U.getSoundUtils().preLoad(TAG, R.raw.rank_energyexplosion);
         mMoreBtn = this.findViewById(R.id.more_btn);
         mIvLed = (ExImageView) findViewById(R.id.iv_led);
         mEnergySlotView = (EnergySlotView) findViewById(R.id.energy_slot_view);
@@ -507,6 +509,8 @@ public class RankTopContainerView2 extends RelativeLayout {
         mEnergyFillSvga.stopAnimation(true);
         mEnergyFillSvga.setVisibility(VISIBLE);
         mEnergyFillSvga.setLoops(1);
+
+        U.getSoundUtils().play(RankRecordFragment.TAG, R.raw.rank_energyexplosion);
 
         SVGAParser parser = new SVGAParser(U.app());
         try {

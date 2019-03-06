@@ -50,6 +50,7 @@ import com.module.playways.rank.msg.manager.ChatRoomMsgManager;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.room.event.PkSomeOneOnlineChangeEvent;
+import com.module.playways.rank.room.fragment.RankRecordFragment;
 import com.module.playways.rank.room.model.RankPlayerInfoModel;
 import com.module.playways.rank.room.model.RankRoundInfoModel;
 import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
@@ -66,6 +67,7 @@ import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.room.score.MachineScoreItem;
 import com.module.playways.rank.room.score.RobotScoreHelper;
 import com.module.playways.rank.room.view.IGameRuleView;
+import com.module.rank.R;
 import com.zq.live.proto.Common.ESex;
 import com.zq.live.proto.Common.UserInfo;
 import com.zq.live.proto.Room.EMsgPosType;
@@ -178,6 +180,8 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         mIGameRuleView = iGameRuleView;
         mRoomData = roomData;
         TAG += hashCode();
+
+        U.getSoundUtils().preLoad(TAG, R.raw.rank_xxxstop);
 
         MyLog.w(TAG, "player info is " + mRoomData.toString());
 
@@ -659,6 +663,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     public void onEvent(RankRoundInfoChangeEvent event) {
         MyLog.w(TAG, "开始切换唱将 myturn=" + event.myturn);
         estimateOverTsThisRound();
+        U.getSoundUtils().play(TAG, R.raw.rank_xxxstop);
         //以防万一
         tryStopRobotPlay();
         mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS);

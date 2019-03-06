@@ -28,6 +28,7 @@ import com.module.playways.rank.prepare.fragment.AuditionFragment;
 import com.module.playways.rank.prepare.fragment.AuditionPrepareResFragment;
 import com.module.playways.rank.prepare.fragment.PrepareResFragment;
 import com.module.playways.rank.prepare.model.PrepareData;
+import com.module.playways.rank.room.fragment.RankRecordFragment;
 import com.module.playways.rank.song.adapter.SongCardSwipAdapter;
 import com.module.playways.rank.song.flingswipe.SwipeFlingAdapterView;
 import com.module.playways.rank.song.model.SongCardModel;
@@ -262,6 +263,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
     private void switchToClicked() {
         Bundle bundle = new Bundle();
         bundle.putInt(KEY_GAME_TYPE, mGameType);
+        U.getSoundUtils().play(RankRecordFragment.TAG, R.raw.normal_click);
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), HistorySongFragment.class)
                 .setAddToBackStack(true)
                 .setHasAnimation(true)
