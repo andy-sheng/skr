@@ -247,7 +247,14 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
             mSongCardSwipAdapter.addData(0, mDeleteList.remove(0));
             mSwipeView.swipeBack();
         } else {
-            U.getToastUtil().showShort("没有更多返回了");
+            if (mSongCardSwipAdapter.getSongCardHolderArrayList() != null && mSongCardSwipAdapter.getSongCardHolderArrayList().size() > 0 && !hasMore) {
+                U.getSoundUtils().play(TAG, R.raw.general_back);
+                int size = mSongCardSwipAdapter.getSongCardHolderArrayList().size();
+                mSongCardSwipAdapter.addData(0, mSongCardSwipAdapter.getSongCardHolderArrayList().remove(size - 1));
+                mSwipeView.swipeBack();
+            } else {
+                U.getToastUtil().showShort("没有更多返回了");
+            }
         }
     }
 

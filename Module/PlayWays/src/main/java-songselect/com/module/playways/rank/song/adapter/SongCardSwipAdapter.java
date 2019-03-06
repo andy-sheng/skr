@@ -44,6 +44,14 @@ public class SongCardSwipAdapter extends BaseAdapter {
         mSongCardHolderArrayList.add(talent);
     }
 
+    public ArrayList<SongCardModel> getSongCardHolderArrayList() {
+        return mSongCardHolderArrayList;
+    }
+
+    public void setSongCardHolderArrayList(ArrayList<SongCardModel> songCardHolderArrayList) {
+        mSongCardHolderArrayList = songCardHolderArrayList;
+    }
+
     public void remove(int position) {
         if (position > -1 && position < mSongCardHolderArrayList.size()) {
             mSongCardHolderArrayList.remove(position);
