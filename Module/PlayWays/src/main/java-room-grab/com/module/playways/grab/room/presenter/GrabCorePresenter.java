@@ -427,11 +427,14 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                         int coin = result.getData().getInteger("coin");
                         mRoomData.setCoin(coin);
                         if (result.getData().getBoolean("isBLightSuccess")) {
-                            BLightInfoModel noPassingInfo = new BLightInfoModel();
-                            noPassingInfo.setUserID((int) MyUserInfoManager.getInstance().getUid());
-                            now.addLightBurstUid(true, noPassingInfo);
+                            BLightInfoModel m = new BLightInfoModel();
+                            m.setUserID((int) MyUserInfoManager.getInstance().getUid());
+                            now.addLightBurstUid(true, m);
                         } else {
-                            U.getToastUtil().showShort(result.getData().getString("bLightFailedMsg"));
+                            String reason = result.getData().getString("bLightFailedMsg");
+                            if (!TextUtils.isEmpty(reason)) {
+                                U.getToastUtil().showShort(reason);
+                            }
                         }
                     }
                 } else {
@@ -1202,7 +1205,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         if (RoomDataUtils.isCurrentRunningRound(event.getCurrentRound().getRoundSeq(), mRoomData)) {
             // 如果是当前轮次
             mRoomData.getRealRoundInfo().tryUpdateRoundInfoModel(event.currentRound, true);
-            if(event.myCoin >=0){
+            if (event.myCoin >= 0) {
                 mRoomData.setCoin(event.myCoin);
             }
         }
@@ -1224,7 +1227,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         if (RoomDataUtils.isCurrentRunningRound(event.roundInfoModel.getRoundSeq(), mRoomData)) {
             // 如果是当前轮次
             mRoomData.getRealRoundInfo().tryUpdateRoundInfoModel(event.roundInfoModel, true);
-            if(event.myCoin >=0){
+            if (event.myCoin >= 0) {
                 mRoomData.setCoin(event.myCoin);
             }
         }
