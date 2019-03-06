@@ -211,7 +211,6 @@ public class GrabTopItemView extends RelativeLayout {
         mAvatarIv.setScaleX(1);
         mAvatarIv.setScaleY(1);
         mCircleAnimationView.setVisibility(GONE);
-        setToPlaceHolder();
         stopEvasive();
     }
 

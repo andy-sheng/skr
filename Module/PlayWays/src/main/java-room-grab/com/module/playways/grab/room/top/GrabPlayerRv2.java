@@ -109,6 +109,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
     private void resetAllGrabTopItemView() {
         for (VP vp : mGrabTopItemViewArrayList) {
             vp.grabTopItemView.reset();
+            vp.grabTopItemView.setToPlaceHolder();
         }
     }
 
@@ -146,11 +147,11 @@ public class GrabPlayerRv2 extends RelativeLayout {
                     vp.grabTopItemView.setGrap(true);
                 }
             }
-        }else {
-            MyLog.d(TAG, "initData else" );
+        } else {
+            MyLog.d(TAG, "initData else");
             for (VP vp : mGrabTopItemViewArrayList) {
                 if (vp != null && vp.grabTopItemView != null) {
-                    MyLog.d(TAG, "initData else 2" );
+                    MyLog.d(TAG, "initData else 2");
                     vp.grabTopItemView.setGrap(false);
                 }
             }
@@ -207,10 +208,10 @@ public class GrabPlayerRv2 extends RelativeLayout {
             return;
         }
         GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
-        if(now==null){
+        if (now == null) {
             return;
         }
-        if(!now.isParticipant() && now.getEnterStatus() == GrabRoundInfoModel.STATUS_SING){
+        if (!now.isParticipant() && now.getEnterStatus() == GrabRoundInfoModel.STATUS_SING) {
             // 如果是演唱阶段进来的参与者
             LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) vp.grabTopItemView.getLayoutParams();
             lp.weight = 0;
