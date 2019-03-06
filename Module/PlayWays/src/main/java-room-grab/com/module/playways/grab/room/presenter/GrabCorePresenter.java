@@ -759,20 +759,23 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         map.put("tagID", mRoomData.getTagId());
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.switchRoom(body), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
+
+            public void onNext(ApiResult result) {
                 if (result.getErrno() == 0) {
                     EventBus.getDefault().post(new GrabSwitchRoomEvent());
                     JoinGrabRoomRspModel joinGrabRoomRspModel = JSON.parseObject(result.getData().toJSONString(), JoinGrabRoomRspModel.class);
                     mRoomData.loadFromRsp(joinGrabRoomRspModel);
                     joinRoomAndInit(false);
                     mRoomData.checkRoundInEachMode();
-                    mIGrabView.onChangeRoomResult(true);
+                    mIGrabView.onChangeRoomResult(true, null);
                 } else {
-                    U.getToastUtil().showShort("切换失败:" + result.getErrmsg());
-                    mIGrabView.onChangeRoomResult(false);
+                    mIGrabView.onChangeRoomResult(false, result.getErrmsg());
                 }
                 mSwitchRooming = false;
+            }
+
+            @Override
+            public void process(ApiResult obj) {
 
             }
 
@@ -780,7 +783,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             public void onNetworkError(ErrorType errorType) {
                 super.onNetworkError(errorType);
                 mSwitchRooming = false;
-                mIGrabView.onChangeRoomResult(false);
+                mIGrabView.onChangeRoomResult(false, "网络错误");
             }
         }, this);
     }

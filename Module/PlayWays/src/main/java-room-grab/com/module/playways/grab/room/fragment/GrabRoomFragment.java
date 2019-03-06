@@ -284,8 +284,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         mSkrAudioPermission.ensurePermission(null, true);
     }
 
-    private void initCountDownView(){
-        mRedPkgView = (RedPkgCountDownView)mRootView.findViewById(R.id.red_pkg_view);
+    private void initCountDownView() {
+        mRedPkgView = (RedPkgCountDownView) mRootView.findViewById(R.id.red_pkg_view);
     }
 
     private void initInputView() {
@@ -949,14 +949,16 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     }
 
     @Override
-    public void onChangeRoomResult(boolean success) {
+    public void onChangeRoomResult(boolean success, String errMsg) {
         long t = System.currentTimeMillis() - mBeginChangeRoomTs;
         if (t > 1500) {
             mGrabChangeRoomTransitionView.setVisibility(View.GONE);
+            U.getToastUtil().showShort(errMsg);
         } else {
             mUiHanlder.postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    U.getToastUtil().showShort(errMsg);
                     mGrabChangeRoomTransitionView.setVisibility(View.GONE);
                 }
             }, 1500 - t);
