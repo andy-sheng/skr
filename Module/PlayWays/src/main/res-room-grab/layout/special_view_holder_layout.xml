@@ -1,5 +1,4 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main_act_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/view_15_dp">
@@ -8,8 +7,7 @@
         android:id="@+id/background"
         android:layout_width="@dimen/view_310_dp"
         android:layout_height="@dimen/view_108_dp"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/xuanzezhuanchang_bj" />
+        android:layout_centerHorizontal="true" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/special_tv"
@@ -29,8 +27,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/special_tv"
+        android:layout_alignRight="@+id/background"
         android:layout_alignBottom="@+id/background"
+        android:layout_marginRight="@dimen/view_50_dp"
         android:layout_marginBottom="@dimen/view_16_dp"
+        android:gravity="right"
         android:textColor="@color/white"
         android:textSize="@dimen/textsize_14_dp" />
 
