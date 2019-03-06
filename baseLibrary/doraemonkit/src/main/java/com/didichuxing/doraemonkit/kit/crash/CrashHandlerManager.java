@@ -10,6 +10,7 @@ import android.os.HandlerThread;
 import android.os.Message;
 import android.widget.Toast;
 
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.didichuxing.doraemonkit.R;
 
@@ -87,7 +88,9 @@ public class CrashHandlerManager implements Thread.UncaughtExceptionHandler {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(mContext, R.string.dk_crash_capture_tips, Toast.LENGTH_LONG).show();
+                    if (MyLog.isDebugLogOpen()) {
+                        Toast.makeText(mContext, R.string.dk_crash_capture_tips, Toast.LENGTH_LONG).show();
+                    }
                 }
             });
         }
@@ -226,7 +229,9 @@ public class CrashHandlerManager implements Thread.UncaughtExceptionHandler {
         @Override
         public boolean handleMessage(Message msg) {
             if (msg.what == CRASH) {
-                Toast.makeText(mContext, R.string.dk_crash_capture_tips, Toast.LENGTH_LONG).show();
+                if (MyLog.isDebugLogOpen()) {
+                    Toast.makeText(mContext, R.string.dk_crash_capture_tips, Toast.LENGTH_LONG).show();
+                }
             }
             return true;
         }

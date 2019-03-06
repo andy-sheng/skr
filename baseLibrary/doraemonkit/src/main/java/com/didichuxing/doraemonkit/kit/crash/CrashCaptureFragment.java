@@ -15,6 +15,9 @@ import com.didichuxing.doraemonkit.ui.crash.CrashCaptureAdapter;
 import com.didichuxing.doraemonkit.ui.widget.titlebar.TitleBar;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class CrashCaptureFragment extends BaseFragment {
 
@@ -47,6 +50,17 @@ public class CrashCaptureFragment extends BaseFragment {
         if (file.exists()) {
             ListView crash = findViewById(R.id.lv_crash);
             final File[] listFiles = file.listFiles();
+            Arrays.sort(listFiles, new Comparator<File>() {
+                @Override
+                public int compare(File f1, File f2) {
+                    if (f1.lastModified() > f2.lastModified()) {
+                        return -1;
+                    } else if (f1.lastModified() < f2.lastModified()) {
+                        return 1;
+                    }
+                    return 0;
+                }
+            });
             if (listFiles != null && listFiles.length != 0) {
                 crash.setAdapter(new CrashCaptureAdapter(listFiles));
             } else {
