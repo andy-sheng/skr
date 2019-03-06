@@ -60,6 +60,30 @@ android {
             resValue("string", "channel_desc", '华为应用商店')
         }
 
+        channel_baidu {
+            flavorDimensions("channel")
+            buildConfigField("String", "CHANNEL_NAME", '\"BAIDU_SHOP\"')
+            resValue("string", "channel_desc", '百度应用商店')
+        }
+
+        channel_kuaishou {
+            flavorDimensions("channel")
+            buildConfigField("String", "CHANNEL_NAME", '\"KUAISHOU_SHOP\"')
+            resValue("string", "channel_desc", '快手应用商店')
+        }
+
+        channel_toutiao {
+            flavorDimensions("channel")
+            buildConfigField("String", "CHANNEL_NAME", '\"TOUTIAO_SHOP\"')
+            resValue("string", "channel_desc", '头条应用商店')
+        }
+
+        channel_douyin {
+            flavorDimensions("channel")
+            buildConfigField("String", "CHANNEL_NAME", '\"DOUYIN_SHOP\"')
+            resValue("string", "channel_desc", '抖音应用商店')
+        }
+
         channel_market1 {
             flavorDimensions("channel")
             buildConfigField("String", "CHANNEL_NAME", '\"MARKET1\"')
@@ -166,9 +190,9 @@ android {
             if (isBuildModule.toBoolean()) {
                 manifest.srcFile 'src/main/debug/AndroidManifest.xml'
             } else {
-                if(compileModuleTest.toBoolean()) {
+                if (compileModuleTest.toBoolean()) {
                     manifest.srcFile 'src/main/release/AndroidManifestWithTestModule.xml'
-                }else{
+                } else {
                     manifest.srcFile 'src/main/release/AndroidManifest.xml'
                 }
 
@@ -189,11 +213,11 @@ dependencies {
     if (isBuildModule.toBoolean()) {
         // 要区分，否则 build 编译会提示不能implementation application 的project
     } else {
-        if(compileModuleTest.toBoolean()) {
+        if (compileModuleTest.toBoolean()) {
             implementation project(":moduletest")
         }
 //        implementation project(":modulechannel")
-  //      implementation project(":modulewatch")
+        //      implementation project(":modulewatch")
         implementation project(":Module:Home")
         implementation project(":Module:PlayWays")
         implementation project(":Module:IMKit")
