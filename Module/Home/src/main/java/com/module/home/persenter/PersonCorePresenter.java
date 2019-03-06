@@ -5,7 +5,6 @@ import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.model.GameStatisModel;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.model.UserRankModel;
-import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -24,7 +23,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
 
     UserInfoServerApi userInfoServerApi;
     IPersonView view;
-    long lastUpdateTime = 0;
+    long mLastUpdateTime = 0;
 
     public PersonCorePresenter(IPersonView view) {
         this.view = view;
@@ -38,7 +37,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
     public void getHomePage(int userID, boolean flag) {
         long now = System.currentTimeMillis();
         if (!flag) {
-            if ((now - lastUpdateTime) < 60 * 1000) {
+            if ((now - mLastUpdateTime) < 60 * 1000) {
                 return;
             }
         }
@@ -51,7 +50,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
-                    lastUpdateTime = System.currentTimeMillis();
+                    mLastUpdateTime = System.currentTimeMillis();
                     UserInfoModel userInfoModel = JSON.parseObject(result.getData().getString("userBaseInfo"), UserInfoModel.class);
                     List<UserRankModel> userRankModels = JSON.parseArray(result.getData().getJSONObject("userRankInfo").getString("seqInfo"), UserRankModel.class);
                     List<RelationNumModel> relationNumModes = JSON.parseArray(result.getData().getJSONObject("userRelationCntInfo").getString("cnt"), RelationNumModel.class);
