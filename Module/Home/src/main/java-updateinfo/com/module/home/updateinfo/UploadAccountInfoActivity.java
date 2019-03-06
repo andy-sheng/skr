@@ -2,18 +2,14 @@ package com.module.home.updateinfo;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.common.base.BaseActivity;
-import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.module.RouterConstants;
 import com.module.home.R;
-import com.module.home.updateinfo.fragment.EditInfoAgeFragment;
-import com.module.home.updateinfo.fragment.EditInfoSexFragment;
 import com.module.home.updateinfo.fragment.UploadAccountInfoFragment;
 
 

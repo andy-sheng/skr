@@ -13,9 +13,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.common.base.BaseFragment;
-import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
-import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
@@ -31,9 +29,6 @@ import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.live.proto.Common.ESex;
 
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.functions.Consumer;
@@ -47,9 +42,7 @@ public class EditInfoSexFragment extends BaseFragment {
     RelativeLayout mMainActContainer;
     CommonTitleBar mTitlebar;
     ExImageView mMale;
-    ExImageView mMaleTaoxin;
     ExImageView mFemale;
-    ExImageView mFemaleTaoxin;
     ExTextView mNextTv;
 
     int sex = 0;// 未知、非法参数
@@ -61,14 +54,11 @@ public class EditInfoSexFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
-
-        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
-        mMale = (ExImageView) mRootView.findViewById(R.id.male);
-        mMaleTaoxin = (ExImageView) mRootView.findViewById(R.id.male_taoxin);
-        mFemale = (ExImageView) mRootView.findViewById(R.id.female);
-        mFemaleTaoxin = (ExImageView) mRootView.findViewById(R.id.female_taoxin);
-        mNextTv = (ExTextView) mRootView.findViewById(R.id.next_tv);
+        mMainActContainer = (RelativeLayout)mRootView.findViewById(R.id.main_act_container);
+        mTitlebar = (CommonTitleBar)mRootView.findViewById(R.id.titlebar);
+        mMale = (ExImageView)mRootView.findViewById(R.id.male);
+        mFemale = (ExImageView)mRootView.findViewById(R.id.female);
+        mNextTv = (ExTextView)mRootView.findViewById(R.id.next_tv);
 
 
         RxView.clicks(mTitlebar.getLeftTextView())
@@ -219,59 +209,65 @@ public class EditInfoSexFragment extends BaseFragment {
     // 选一个，另一个需要缩放动画
     private void selectSex(boolean isMale) {
         this.sex = isMale ? ESex.SX_MALE.getValue() : ESex.SX_FEMALE.getValue();
-        boolean needAnimation = false; //另一个性别是否需要缩放动画
-        if (mMaleTaoxin.getVisibility() == View.VISIBLE || mFemaleTaoxin.getVisibility() == View.VISIBLE) {
-            // 当前已有被选中的，需要一个缩放动画
-            needAnimation = true;
-        }
+        mMale.setBackground(isMale ? getResources().getDrawable(R.drawable.head_man_xuanzhong) : getResources().getDrawable(R.drawable.head_man_weixuanzhong));
+        mFemale.setBackground(isMale ? getResources().getDrawable(R.drawable.head_woman_weixuanzhong) : getResources().getDrawable(R.drawable.head_women_xuanzhong));
 
-        // 放大动画
-        ObjectAnimator a1 = ObjectAnimator.ofFloat(isMale ? mMale : mFemale, "scaleX", 1f, 1.2f);
-        ObjectAnimator a2 = ObjectAnimator.ofFloat(isMale ? mMale : mFemale, "scaleY", 1f, 1.2f);
-        ObjectAnimator a3 = ObjectAnimator.ofFloat(isMale ? mMaleTaoxin : mFemaleTaoxin, "scaleX", 0f, 1f);
-        ObjectAnimator a4 = ObjectAnimator.ofFloat(isMale ? mMaleTaoxin : mFemaleTaoxin, "scaleY", 0f, 1f);
-
-        AnimatorSet set = new AnimatorSet();
-        set.setDuration(80);
-
-        if (needAnimation) {
-            // 缩小动画
-            ObjectAnimator s1 = ObjectAnimator.ofFloat(isMale ? mFemale : mMale, "scaleX", 1.2f, 1f);
-            ObjectAnimator s2 = ObjectAnimator.ofFloat(isMale ? mFemale : mMale, "scaleY", 1.2f, 1f);
-            ObjectAnimator s3 = ObjectAnimator.ofFloat(isMale ? mFemaleTaoxin : mMaleTaoxin, "scaleX", 1f, 0f);
-            ObjectAnimator s4 = ObjectAnimator.ofFloat(isMale ? mFemaleTaoxin : mMaleTaoxin, "scaleY", 1f, 0f);
-            set.playTogether(a1, a2, a3, a4, s1, s2, s3, s4);
-        } else {
-            set.playTogether(a1, a2, a3, a4);
-        }
-
-        set.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animator) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animator) {
-                mMaleTaoxin.setVisibility(isMale ? View.VISIBLE : View.GONE);
-                mFemaleTaoxin.setVisibility(isMale ? View.GONE : View.VISIBLE);
-
-                mMale.setClickable(isMale ? false : true);
-                mMaleTaoxin.setClickable(isMale ? true : false);
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animator) {
-                onAnimationEnd(animator);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animator) {
-
-            }
-        });
-
-        set.start();
+        mMale.setClickable(isMale ? false : true);
+        mFemale.setClickable(isMale ? true : false);
+        // TODO: 2019/3/6  去掉动画
+//        boolean needAnimation = false; //另一个性别是否需要缩放动画
+//        if (mMaleTaoxin.getVisibility() == View.VISIBLE || mFemaleTaoxin.getVisibility() == View.VISIBLE) {
+//            // 当前已有被选中的，需要一个缩放动画
+//            needAnimation = true;
+//        }
+//
+//        // 放大动画
+//        ObjectAnimator a1 = ObjectAnimator.ofFloat(isMale ? mMale : mFemale, "scaleX", 1f, 1.2f);
+//        ObjectAnimator a2 = ObjectAnimator.ofFloat(isMale ? mMale : mFemale, "scaleY", 1f, 1.2f);
+//        ObjectAnimator a3 = ObjectAnimator.ofFloat(isMale ? mMaleTaoxin : mFemaleTaoxin, "scaleX", 0f, 1f);
+//        ObjectAnimator a4 = ObjectAnimator.ofFloat(isMale ? mMaleTaoxin : mFemaleTaoxin, "scaleY", 0f, 1f);
+//
+//        AnimatorSet set = new AnimatorSet();
+//        set.setDuration(80);
+//
+//        if (needAnimation) {
+//            // 缩小动画
+//            ObjectAnimator s1 = ObjectAnimator.ofFloat(isMale ? mFemale : mMale, "scaleX", 1.2f, 1f);
+//            ObjectAnimator s2 = ObjectAnimator.ofFloat(isMale ? mFemale : mMale, "scaleY", 1.2f, 1f);
+//            ObjectAnimator s3 = ObjectAnimator.ofFloat(isMale ? mFemaleTaoxin : mMaleTaoxin, "scaleX", 1f, 0f);
+//            ObjectAnimator s4 = ObjectAnimator.ofFloat(isMale ? mFemaleTaoxin : mMaleTaoxin, "scaleY", 1f, 0f);
+//            set.playTogether(a1, a2, a3, a4, s1, s2, s3, s4);
+//        } else {
+//            set.playTogether(a1, a2, a3, a4);
+//        }
+//
+//        set.addListener(new Animator.AnimatorListener() {
+//            @Override
+//            public void onAnimationStart(Animator animator) {
+//
+//            }
+//
+//            @Override
+//            public void onAnimationEnd(Animator animator) {
+//                mMaleTaoxin.setVisibility(isMale ? View.VISIBLE : View.GONE);
+//                mFemaleTaoxin.setVisibility(isMale ? View.GONE : View.VISIBLE);
+//
+//                mMale.setClickable(isMale ? false : true);
+//                mMaleTaoxin.setClickable(isMale ? true : false);
+//            }
+//
+//            @Override
+//            public void onAnimationCancel(Animator animator) {
+//                onAnimationEnd(animator);
+//            }
+//
+//            @Override
+//            public void onAnimationRepeat(Animator animator) {
+//
+//            }
+//        });
+//
+//        set.start();
     }
 
     @Override

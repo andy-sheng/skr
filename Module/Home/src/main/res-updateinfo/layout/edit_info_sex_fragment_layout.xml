@@ -31,9 +31,11 @@
         android:background="#0C2275" />
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_138_dp"
-        android:layout_marginTop="@dimen/view_206_dp"
+        android:layout_width="@dimen/view_234_dp"
+        android:layout_height="@dimen/view_106_dp"
+        android:layout_below="@+id/nickname_et"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_156_dp"
         android:orientation="horizontal">
 
         <RelativeLayout
@@ -43,30 +45,22 @@
 
             <com.common.view.ex.ExImageView
                 android:id="@+id/male"
-                android:layout_width="@dimen/view_110_dp"
-                android:layout_height="@dimen/view_110_dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/view_18_dp"
-                android:scaleType="center"
-                android:src="@drawable/nan_dianjifangda"
-                app:bl_shape="oval"
-                app:bl_size_height="@dimen/view_110_dp"
-                app:bl_size_width="@dimen/view_110_dp"
-                app:bl_solid_color="#0288D0"
-                app:bl_stroke_color="#0C2275"
-                app:bl_stroke_width="@dimen/view_3_dp" />
+                android:layout_width="@dimen/view_76_dp"
+                android:layout_height="@dimen/view_76_dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/head_man_weixuanzhong"
+                android:scaleType="center" />
 
-            <com.common.view.ex.ExImageView
-                android:id="@+id/male_taoxin"
+            <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/male"
-                android:layout_alignRight="@+id/male"
-                android:layout_marginTop="@dimen/view_25_dp"
-                android:layout_marginRight="@dimen/view_25_dp"
-                android:src="@drawable/nan_taoxin"
-                android:visibility="gone" />
+                android:layout_height="@dimen/view_22_dp"
+                android:layout_below="@+id/male"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_8_dp"
+                android:text="男"
+                android:textColor="#0F2076"
+                android:textSize="@dimen/textsize_16_dp"
+                android:textStyle="bold" />
 
         </RelativeLayout>
 
@@ -77,30 +71,22 @@
 
             <com.common.view.ex.ExImageView
                 android:id="@+id/female"
-                android:layout_width="@dimen/view_110_dp"
-                android:layout_height="@dimen/view_110_dp"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/view_18_dp"
-                android:scaleType="center"
-                android:src="@drawable/nv_dianjifangda"
-                app:bl_shape="oval"
-                app:bl_size_height="@dimen/view_110_dp"
-                app:bl_size_width="@dimen/view_110_dp"
-                app:bl_solid_color="#CA2C60"
-                app:bl_stroke_color="#0C2275"
-                app:bl_stroke_width="@dimen/view_3_dp" />
+                android:layout_width="@dimen/view_76_dp"
+                android:layout_height="@dimen/view_76_dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/head_woman_weixuanzhong"
+                android:scaleType="center" />
 
-            <com.common.view.ex.ExImageView
-                android:id="@+id/female_taoxin"
+            <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/female"
-                android:layout_alignRight="@+id/female"
-                android:layout_marginTop="@dimen/view_25_dp"
-                android:layout_marginRight="@dimen/view_25_dp"
-                android:src="@drawable/nv_taoxin"
-                android:visibility="gone" />
+                android:layout_height="@dimen/view_22_dp"
+                android:layout_below="@+id/female"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_8_dp"
+                android:text="女"
+                android:textColor="#0F2076"
+                android:textSize="@dimen/textsize_16_dp"
+                android:textStyle="bold" />
 
         </RelativeLayout>
 
@@ -110,7 +96,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_358_dp"
+        android:layout_marginTop="@dimen/view_300_dp"
         android:gravity="center"
         android:text="性别是一个很重要的信息，只能修改一次喔\n敢不敢谨慎一些"
         android:textColor="#800C2275"
@@ -130,6 +116,6 @@
         android:textColor="#0C2275"
         android:textSize="@dimen/textsize_20_dp"
         android:textStyle="bold"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
 </RelativeLayout>
