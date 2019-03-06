@@ -161,7 +161,7 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
         mIvStartMatch.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                U.getSoundUtils().play(TAG, R.raw.song_pairbutton);
+                U.getSoundUtils().play(TAG, R.raw.rank_startmatching);
                 mSkrAudioPermission.ensurePermission(new Runnable() {
                     @Override
                     public void run() {
@@ -192,7 +192,7 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
         addPresent(mPrepareSongPresenter);
         mPrepareSongPresenter.prepareRes();
 
-        U.getSoundUtils().preLoad(TAG, R.raw.general_back, R.raw.song_pairbutton);
+        U.getSoundUtils().preLoad(TAG, R.raw.general_back, R.raw.rank_startmatching);
         playBackgroundMusic();
     }
 

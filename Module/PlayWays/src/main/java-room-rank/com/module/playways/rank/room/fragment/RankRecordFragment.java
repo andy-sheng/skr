@@ -140,9 +140,9 @@ public class RankRecordFragment extends BaseFragment implements IVoteView {
         } else {
             bindData(mRecordData);
         }
-        U.getSoundUtils().preLoad(TAG, R.raw.result_win, R.raw.result_lose);
-        U.getSoundUtils().preLoad(NormalLevelView.TAG, R.raw.result_addstar,
-                R.raw.result_deductstar, R.raw.song_pairbutton);
+        U.getSoundUtils().preLoad(TAG, R.raw.rank_win, R.raw.rank_lose);
+        U.getSoundUtils().preLoad(NormalLevelView.TAG, R.raw.rank_addstar,
+                R.raw.rank_deductstar, R.raw.rank_startmatching);
     }
 
     void bindData(RecordData recordData) {

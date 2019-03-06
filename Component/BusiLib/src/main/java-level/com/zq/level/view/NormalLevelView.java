@@ -254,6 +254,7 @@ public class NormalLevelView extends RelativeLayout {
                             final SVGAListener listener) {
         // 播放音效
         U.getSoundUtils().play(TAG, R.raw.rank_levelchange);
+
         if (totalStatsNow == 0 || totalStatsNow > 6) {
             // 星星超过限制，不用动
         } else {

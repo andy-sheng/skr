@@ -94,7 +94,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
         DEFAULT_COUNT = songCardHeight / U.getDisplayUtils().dip2px(72);
         DEFAULT_FIRST_COUNT = DEFAULT_COUNT * 5;
 
-        U.getSoundUtils().preLoad(TAG, R.raw.general_button, R.raw.general_back, R.raw.musiclist_nextpage);
+        U.getSoundUtils().preLoad(TAG, R.raw.normal_click, R.raw.general_back, R.raw.rank_flipsonglist);
 
         mSelectBackIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -116,7 +116,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
         mSelectClickedIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                U.getSoundUtils().play(SongSelectFragment.TAG, R.raw.general_button, 500);
+                U.getSoundUtils().play(SongSelectFragment.TAG, R.raw.normal_click, 500);
                 switchToClicked();
             }
         });
@@ -160,7 +160,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
     }
 
     void jump(SongModel songModel) {
-        U.getSoundUtils().play(TAG, R.raw.general_button);
+        U.getSoundUtils().play(TAG, R.raw.normal_click);
         if (getActivity() instanceof AudioRoomActivity) {
             U.getToastUtil().showShort("试音房");
             if (songModel.isAllResExist()) {
@@ -352,7 +352,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
 
     @Override
     public void onLeftCardExit(Object dataObject) {
-        U.getSoundUtils().play(TAG, R.raw.musiclist_nextpage);
+        U.getSoundUtils().play(TAG, R.raw.rank_flipsonglist);
         MyLog.d(TAG, "onLeftCardExit" + " dataObject=" + dataObject);
         if (dataObject instanceof SongCardModel) {
             mDeleteList.add(0, (SongCardModel) dataObject);
@@ -361,7 +361,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
 
     @Override
     public void onRightCardExit(Object dataObject) {
-        U.getSoundUtils().play(TAG, R.raw.musiclist_nextpage);
+        U.getSoundUtils().play(TAG, R.raw.rank_flipsonglist);
         MyLog.d(TAG, "onRightCardExit" + " dataObject=" + dataObject);
         if (dataObject instanceof SongCardModel) {
             mDeleteList.add(0, (SongCardModel) dataObject);

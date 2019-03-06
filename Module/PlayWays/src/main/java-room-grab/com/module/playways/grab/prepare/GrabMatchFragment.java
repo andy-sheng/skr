@@ -122,7 +122,7 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
         mSvgaMatchBg = (SVGAImageView) mRootView.findViewById(R.id.svga_match_bg);
 
         U.getSoundUtils().preLoad(TAG, R.raw.allclick, R.raw.general_back);
-        U.getSoundUtils().preLoad(GrabMatchSuccessFragment.TAG, R.raw.pregame_animation, R.raw.pregame_ready, R.raw.general_countdown);
+        U.getSoundUtils().preLoad(GrabMatchSuccessFragment.TAG, R.raw.rank_matchpeople, R.raw.rank_matchready, R.raw.normal_countdown);
 
         AvatarUtils.loadAvatarByUrl(mSdvOwnIcon,
                 AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())

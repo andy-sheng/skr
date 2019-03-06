@@ -255,7 +255,8 @@ public class GameFragment extends BaseFragment {
             }
         });
 
-        U.getSoundUtils().preLoad(TAG, R.raw.home_grab, R.raw.home_rank);
+
+        U.getSoundUtils().preLoad(TAG, R.raw.home_game, R.raw.normal_click);
 
         initBaseInfo();
         initRankLevel(true);

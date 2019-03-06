@@ -101,7 +101,7 @@ public class SpecialSelectFragment extends BaseFragment {
                 mSkrAudioPermission.ensurePermission(new Runnable() {
                     @Override
                     public void run() {
-                        U.getSoundUtils().play(SpecialSelectFragment.TAG, R.raw.general_button, 500);
+                        U.getSoundUtils().play(SpecialSelectFragment.TAG, R.raw.normal_click, 500);
                         goMatchFragment(model.getTagID());
                         HashMap map = new HashMap();
                         map.put("tagId",model.getTagID());
@@ -140,7 +140,7 @@ public class SpecialSelectFragment extends BaseFragment {
             }
         });
 
-        U.getSoundUtils().preLoad(TAG, R.raw.general_back, R.raw.general_button);
+        U.getSoundUtils().preLoad(TAG, R.raw.general_back, R.raw.normal_click);
 
     }
 

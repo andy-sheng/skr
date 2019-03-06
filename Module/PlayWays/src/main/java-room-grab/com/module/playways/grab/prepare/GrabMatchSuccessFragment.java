@@ -122,7 +122,7 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
         mIvPrepare.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                U.getSoundUtils().play(TAG, R.raw.pregame_ready);
+                U.getSoundUtils().play(TAG, R.raw.rank_matchready);
                 mIvPrepare.setBackground(getResources().getDrawable(R.drawable.img_btn_bg_dark_gray));
                 mIvPrepare.setText("已准备");
                 mIvPrepare.setTextColor(Color.parseColor("#BBBDC6"));
@@ -161,7 +161,7 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
     }
 
     private void animationGo() {
-        U.getSoundUtils().play(TAG, R.raw.pregame_animation);
+        U.getSoundUtils().play(TAG, R.raw.rank_matchpeople);
 
         playScaleAnim(mRlIcon1Root, 0);
         playScaleAnim(mRlIcon2Root, 50);
@@ -254,7 +254,7 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
-                        U.getSoundUtils().play(TAG, R.raw.general_countdown);
+                        U.getSoundUtils().play(TAG, R.raw.normal_countdown);
                         if (10 - integer < 0) {
                             return;
                         }

@@ -155,9 +155,9 @@ public class RecordItemView extends RelativeLayout {
         //这里需要判读是娱乐还是竞技
         if (voteInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
             if (voteInfoModel.getVoter() != null && voteInfoModel.getVoter().size() > 0) {
-                U.getSoundUtils().play(RankRecordFragment.TAG, R.raw.result_win);
+                U.getSoundUtils().play(RankRecordFragment.TAG, R.raw.rank_win);
             } else {
-                U.getSoundUtils().play(RankRecordFragment.TAG, R.raw.result_lose);
+                U.getSoundUtils().play(RankRecordFragment.TAG, R.raw.rank_lose);
             }
         }
 

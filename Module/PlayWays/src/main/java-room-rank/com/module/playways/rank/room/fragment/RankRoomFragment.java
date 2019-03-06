@@ -257,7 +257,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         }, mRoomData.getPlayerInfoList());
         addPresent(mDownLoadScoreFilePresenter);
         mDownLoadScoreFilePresenter.prepareRes();
-        U.getSoundUtils().preLoad(TAG, R.raw.stage_readygo, R.raw.general_countdown, R.raw.endgame);
+        U.getSoundUtils().preLoad(TAG, R.raw.rank_readygo, R.raw.normal_countdown, R.raw.rank_gameover);
         BgMusicManager.getInstance().setRoom(true);
         MyLog.w(TAG, "gameid 是 " + mRoomData.getGameId() + " userid 是 " + MyUserInfoManager.getInstance().getUid());
 
@@ -920,7 +920,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             mUiHanlder.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    U.getSoundUtils().play(TAG, R.raw.stage_readygo);
+                    U.getSoundUtils().play(TAG, R.raw.rank_readygo);
                 }
             }, 500);
         }
@@ -963,7 +963,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             mUiHanlder.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    U.getSoundUtils().play(TAG, R.raw.stage_readygo);
+                    U.getSoundUtils().play(TAG, R.raw.rank_readygo);
                 }
             }, 500);
         }
@@ -1019,7 +1019,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         isGameEndAniamtionShow = true;
 
         destroyAnimation();
-        U.getSoundUtils().play(TAG, R.raw.endgame);
+        U.getSoundUtils().play(TAG, R.raw.rank_gameover);
         // 对战结束动画
         mEndGameIv.setVisibility(View.VISIBLE);
         if (mGameEndAnimation == null) {
