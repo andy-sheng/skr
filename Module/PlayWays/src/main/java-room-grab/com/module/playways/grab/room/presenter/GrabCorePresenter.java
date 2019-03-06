@@ -239,7 +239,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         if (now != null) {
             if (mExoPlayer == null) {
                 mExoPlayer = new ExoPlayer();
-                if (mRoomData.isMute()) {
+                if (mRoomData.isMute() || !U.getActivityUtils().isAppForeground()) {
                     mExoPlayer.setVolume(0);
                 } else {
                     mExoPlayer.setVolume(1);
@@ -483,10 +483,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 }
             }
         });
-        if (!EngineManager.getInstance().getParams().isAllRemoteAudioStreamsMute()) {
-            mExoPlayer.setVolume(1);
-        } else {
+        if (mRoomData.isMute() || !U.getActivityUtils().isAppForeground()) {
             mExoPlayer.setVolume(0);
+        } else {
+            mExoPlayer.setVolume(1);
         }
     }
 
