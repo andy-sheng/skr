@@ -119,6 +119,7 @@ public class ResPickerFragment extends ImageBaseFragment implements ResPicker.On
         mTitlebar.getLeftTextView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
                 if (mSelfActivity) {
                     Activity activity = getActivity();
                     if (activity != null) {
@@ -212,6 +213,8 @@ public class ResPickerFragment extends ImageBaseFragment implements ResPicker.On
         } else {
             mImageDataSource.loadRes();
         }
+
+        U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
     }
 
     /**
@@ -275,6 +278,7 @@ public class ResPickerFragment extends ImageBaseFragment implements ResPicker.On
     @Override
     public void destroy() {
         super.destroy();
+        U.getSoundUtils().release(TAG);
         mImagePicker.removeOnResSelectedListener(this);
         if (mImageDataSource != null) {
             mImageDataSource.destroy();
