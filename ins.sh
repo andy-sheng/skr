@@ -166,10 +166,19 @@ if [[ $1 = "app" ]]; then
 
 
     elif [[ $2 = "sandbox" ]]; then
-        echo "./gradlew :app:assemblechannel_sandboxDebug"
-        echo "只编译test debug渠道"
-        ./gradlew :app:assemblechannel_sandboxDebug
-        installApkForAllDevices app/build/outputs/apk/channel_sandbox/debug/app-channel_sandbox-debug.apk
+        if [[ $3 = "release" ]]; then
+        	        echo "./gradlew :app:assemblechannel_sandboxRelease"
+                    echo "只编译sandbox release渠道"
+                    ./gradlew :app:assemblechannel_sandboxRelease
+                    installApkForAllDevices app/build/outputs/apk/channel_sandbox/release/app-channel_sandbox-release.apk
+                    myandroidlog.sh  com.zq.live
+        else
+            echo "./gradlew :app:assemblechannel_sandboxDebug"
+            echo "只编译sandbox debug渠道"
+            ./gradlew :app:assemblechannel_sandboxDebug
+            installApkForAllDevices app/build/outputs/apk/channel_sandbox/debug/app-channel_sandbox-debug.apk
+        fi
+
 	else
 		echo "./gradlew :app:assemblechannel_defaultDebug"
 		echo "只编译default debug渠道"
