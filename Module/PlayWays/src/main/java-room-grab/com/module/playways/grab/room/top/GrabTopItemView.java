@@ -165,8 +165,6 @@ public class GrabTopItemView extends RelativeLayout {
         mFlickerAnim = new AnimationDrawable();
         mFlickerAnim.setOneShot(false);
         Drawable drawable = null;
-        drawable = U.getDrawable(R.drawable.liangdeng);
-        mFlickerAnim.addFrame(drawable, 1800);
         drawable = U.getDrawable(R.drawable.liangdeng_shan);
         mFlickerAnim.addFrame(drawable, 200);
         drawable = U.getDrawable(R.drawable.liangdeng);
