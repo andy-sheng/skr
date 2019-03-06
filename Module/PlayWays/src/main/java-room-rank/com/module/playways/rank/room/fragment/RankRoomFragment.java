@@ -1013,6 +1013,8 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     }
 
     private void startGameEndAniamtion() {
+        // 提前加载音效
+        U.getSoundUtils().preLoad(RankLevelChangeFragment.TAG, R.raw.rank_win, R.raw.rank_lose);
         if (isGameEndAniamtionShow) {
             return;
         }

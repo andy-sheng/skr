@@ -51,6 +51,8 @@ import java.util.List;
 import static android.view.View.VISIBLE;
 
 public class RankLevelChangeFragment extends BaseFragment {
+    
+    public final static String TAG = "RankLevelChangeFragment";
 
     RelativeLayout mMainActContainer;
     ImageView mBackgroundIv;
@@ -89,8 +91,6 @@ public class RankLevelChangeFragment extends BaseFragment {
         }
         U.getSoundUtils().preLoad(NormalLevelView.TAG, R.raw.rank_addstar,
                 R.raw.rank_deductstar, R.raw.rank_levelchange);
-        U.getSoundUtils().preLoad(TAG, R.raw.rank_win, R.raw.rank_lose);
-
     }
 
     private void BgAnimationGo() {
