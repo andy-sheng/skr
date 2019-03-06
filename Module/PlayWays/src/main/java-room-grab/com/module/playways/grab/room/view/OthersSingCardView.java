@@ -113,8 +113,16 @@ public class OthersSingCardView extends RelativeLayout {
     }
 
     public void bindData(UserInfoModel userInfoModel) {
-        this.useId = userInfoModel.getUserId();
         setVisibility(VISIBLE);
+        if (userInfoModel != null) {
+            this.useId = userInfoModel.getUserId();
+            AvatarUtils.loadAvatarByUrl(mSingAvatarView,
+                    AvatarUtils.newParamsBuilder(userInfoModel.getAvatar())
+                            .setCircle(true)
+                            .build());
+        } else {
+            MyLog.w(TAG, "userInfoModel==null 加载选手信息失败");
+        }
         mCountDownStatus = COUNT_DOWN_STATUS_WAIT;
         mCountDownProcess.setProgress(0);
         // 淡出效果
@@ -123,12 +131,6 @@ public class OthersSingCardView extends RelativeLayout {
             mEnterAlphaAnimation.setDuration(1000);
         }
         this.startAnimation(mEnterAlphaAnimation);
-
-        AvatarUtils.loadAvatarByUrl(mSingAvatarView,
-                AvatarUtils.newParamsBuilder(userInfoModel.getAvatar())
-                        .setCircle(true)
-                        .build());
-
         FrescoWorker.loadImage(mGrabStageView, ImageFactory.newHttpImage(BaseRoomData.PK_MAIN_STAGE_WEBP)
                 .setCallBack(new IFrescoCallBack() {
                     @Override
@@ -170,7 +172,6 @@ public class OthersSingCardView extends RelativeLayout {
                 })
                 .build()
         );
-
         countDown();
     }
 

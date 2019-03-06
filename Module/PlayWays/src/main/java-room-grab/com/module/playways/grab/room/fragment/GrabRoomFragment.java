@@ -587,7 +587,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         mDengBigAnimation.playBurstAnimation();
     }
 
-    private void removeAllEnsureMsg(){
+    private void removeAllEnsureMsg() {
         mUiHanlder.removeMessages(MSG_ENSURE_SONGCARD_OVER);
         mUiHanlder.removeMessages(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
         mUiHanlder.removeMessages(MSG_ENSURE_ROUND_OVER_PLAY_OVER);
@@ -751,11 +751,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             mSelfSingCardView.setVisibility(View.GONE);
             mOthersSingCardView.setVisibility(View.VISIBLE);
             UserInfoModel userInfoModel = mRoomData.getUserInfo((int) uid);
-            if (userInfoModel != null) {
-                mOthersSingCardView.bindData(userInfoModel);
-            } else {
-                MyLog.d(TAG, "onSingBeginTipsPlayOver" + " userInfoModel==null");
-            }
+            mOthersSingCardView.bindData(userInfoModel);
         }
     }
 
