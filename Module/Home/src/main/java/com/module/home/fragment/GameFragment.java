@@ -50,6 +50,7 @@ import com.component.busilib.constans.GameModeType;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
+import com.module.home.BuildConfig;
 import com.module.home.MainPageSlideApi;
 import com.module.home.R;
 import com.module.home.model.GameConfModel;
@@ -209,7 +210,7 @@ public class GameFragment extends BaseFragment {
             }
         });
 
-        if (MyLog.isDebugLogOpen()) {
+        if (BuildConfig.DEBUG) {
             mIvAthleticsPk.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -220,7 +221,7 @@ public class GameFragment extends BaseFragment {
             });
         }
 
-        if (MyLog.isDebugLogOpen()) {
+        if (BuildConfig.DEBUG) {
             mIvGrabGame.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
