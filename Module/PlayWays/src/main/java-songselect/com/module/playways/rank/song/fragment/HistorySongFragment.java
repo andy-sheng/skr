@@ -119,6 +119,7 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
         mHistoryBack.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+                U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
                 U.getFragmentUtils().popFragment(HistorySongFragment.this);
             }
         });
