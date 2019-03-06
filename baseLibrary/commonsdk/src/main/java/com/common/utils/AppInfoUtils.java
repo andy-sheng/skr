@@ -65,6 +65,9 @@ public class AppInfoUtils {
         return getMainDir().getAbsolutePath()+File.separator+dirName+File.separator;
     }
 
+    public File getSubDirFile(String dirName){
+        return new File(getMainDir().getAbsolutePath()+File.separator+dirName+File.separator);
+    }
     /**
      * 返回 类似 /ZQ_Live/logs/aaa.png
      * @param dirName

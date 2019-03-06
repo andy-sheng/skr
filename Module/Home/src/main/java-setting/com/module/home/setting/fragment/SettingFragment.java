@@ -282,7 +282,6 @@ public class SettingFragment extends BaseFragment {
         }
     }
 
-
     private void exitLogin() {
         TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
                 .setMessageTip("确定退出当前账号么？")

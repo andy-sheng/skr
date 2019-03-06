@@ -5,11 +5,9 @@ import com.common.upload.UploadCallback;
 import com.common.upload.UploadParams;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.greendao.annotation.NotNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.ref.Reference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -57,7 +55,10 @@ public class LogUploadUtils {
 
                 boolean success = false;
                 try {
-                    success = U.getZipUtils().zip(getLastThreeFile(), filez.getAbsolutePath());
+                    List<String> list = new ArrayList<>();
+                    list.addAll(getLogsLastXXXFile(U.getAppInfoUtils().getSubDirFile("logs"), 3));
+                    list.addAll(getLogsLastXXXFile(U.getAppInfoUtils().getSubDirFile("Crash_Doraemon"), 3));
+                    success = U.getZipUtils().zip(list, filez.getAbsolutePath());
                 } catch (IOException e) {
                     emitter.onError(new Throwable("文件压缩失败:" + e.getMessage()));
                     return;
@@ -87,32 +88,31 @@ public class LogUploadUtils {
                             public void onSuccess(String url) {
                                 MyLog.w(TAG, "日志上传成功");
                                 file.delete();
-                                EventBus.getDefault().post(new UploadLogEvent(true));
+                                EventBus.getDefault().post(new UploadLogEvent(url, true));
                             }
 
                             @Override
                             public void onFailure(String msg) {
                                 MyLog.e(TAG, msg);
                                 file.delete();
-                                EventBus.getDefault().post(new UploadLogEvent(false));
+                                EventBus.getDefault().post(new UploadLogEvent(null, false));
                             }
                         });
             }
         }, new Consumer<Throwable>() {
             @Override
             public void accept(Throwable throwable) throws Exception {
-                EventBus.getDefault().post(new UploadLogEvent(false));
+                EventBus.getDefault().post(new UploadLogEvent(null, false));
                 MyLog.e(TAG, throwable);
             }
         });
     }
 
-    public List<String> getLastThreeFile() {
-        File logDir = new File(U.getAppInfoUtils().getMainDir() + File.separator + "logs/");
+    public List<String> getLogsLastXXXFile(File logDir, int lastNum) {
         ArrayList<String> lastThreeFiles = new ArrayList<>();
         if (logDir.exists() && logDir.isDirectory()) {
             File[] fileList = logDir.listFiles();
-            if(fileList == null || fileList.length == 0){
+            if (fileList == null || fileList.length == 0) {
                 return lastThreeFiles;
             }
             // 文件修改时间排序
@@ -128,10 +128,13 @@ public class LogUploadUtils {
                 }
             });
             for (int i = fileList.length - 1; i >= 0; i--) {
-                if (fileList[i].isFile() && fileList[i].getName().endsWith(".log")) {
-                    lastThreeFiles.add(fileList[i].getAbsolutePath());
-                    if (lastThreeFiles.size() == 4) {
-                        break;
+                if (fileList[i].isFile()) {
+                    if (fileList[i].getName().endsWith(".log")
+                            || fileList[i].getName().endsWith(".txt")) {
+                        lastThreeFiles.add(fileList[i].getAbsolutePath());
+                        if (lastThreeFiles.size() >= lastNum) {
+                            break;
+                        }
                     }
                 }
             }
@@ -139,11 +142,13 @@ public class LogUploadUtils {
         return lastThreeFiles;
     }
 
-    public static class UploadLogEvent{
+    public static class UploadLogEvent {
+        public String mUrl;
         public boolean mIsSuccess = false;
 
-        public UploadLogEvent(boolean isSuccess) {
-            mIsSuccess = isSuccess;
+        public UploadLogEvent(String url, boolean isSuccess) {
+            this.mUrl = url;
+            this.mIsSuccess = isSuccess;
         }
     }
 }
