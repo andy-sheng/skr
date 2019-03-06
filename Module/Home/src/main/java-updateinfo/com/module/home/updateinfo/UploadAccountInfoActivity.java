@@ -16,6 +16,8 @@ import com.module.home.updateinfo.fragment.UploadAccountInfoFragment;
 @Route(path = RouterConstants.ACTIVITY_UPLOAD)
 public class UploadAccountInfoActivity extends BaseActivity {
 
+    public final static String TAG = "UploadAccountInfoActivity";
+
     public static final String BUNDLE_IS_UPLOAD = "bundle_is_upload";
     public static final String BUNDLE_UPLOAD_NICKNAME = "upload_nickname";
     public static final String BUNDLE_UPLOAD_SEX = "upload_sex";
@@ -41,6 +43,14 @@ public class UploadAccountInfoActivity extends BaseActivity {
         }else{
             finish();
         }
+
+        U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
+    }
+
+    @Override
+    protected void destroy() {
+        super.destroy();
+        U.getSoundUtils().release(TAG);
     }
 
     @Override

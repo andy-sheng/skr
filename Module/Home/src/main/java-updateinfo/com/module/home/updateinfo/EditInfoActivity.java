@@ -59,6 +59,8 @@ import io.reactivex.functions.Consumer;
 @Route(path = RouterConstants.ACTIVITY_EDIT_INFO)
 public class EditInfoActivity extends BaseActivity implements View.OnClickListener {
 
+    public final static String TAG = "EditInfoActivity";
+
     RelativeLayout mMainActContainer;
     CommonTitleBar mTitlebar;
     RelativeLayout mEditAvatar;
@@ -115,10 +117,18 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
+                        U.getSoundUtils().play(EditInfoActivity.TAG, R.raw.normal_back, 500);
                         finish();
                     }
                 });
 
+        U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
+    }
+
+    @Override
+    protected void destroy() {
+        super.destroy();
+        U.getSoundUtils().release(TAG);
     }
 
     private void initViewData() {

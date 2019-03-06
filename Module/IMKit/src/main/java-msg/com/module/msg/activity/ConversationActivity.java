@@ -54,6 +54,7 @@ public class ConversationActivity extends BaseActivity {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
+                        U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
                         finish();
                     }
                 });
@@ -67,6 +68,8 @@ public class ConversationActivity extends BaseActivity {
                         showConfirmOptions();
                     }
                 });
+
+        U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
     }
 
 
@@ -140,5 +143,11 @@ public class ConversationActivity extends BaseActivity {
     @Override
     public boolean useEventBus() {
         return false;
+    }
+
+    @Override
+    protected void destroy() {
+        super.destroy();
+        U.getSoundUtils().release(TAG);
     }
 }

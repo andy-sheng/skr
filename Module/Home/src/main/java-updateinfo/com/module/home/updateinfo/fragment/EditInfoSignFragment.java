@@ -16,6 +16,7 @@ import com.common.view.ex.NoLeakEditText;
 import com.common.view.titlebar.CommonTitleBar;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.home.R;
+import com.module.home.updateinfo.EditInfoActivity;
 
 import java.util.concurrent.TimeUnit;
 
@@ -50,6 +51,7 @@ public class EditInfoSignFragment extends BaseFragment {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
+                        U.getSoundUtils().play(EditInfoActivity.TAG, R.raw.normal_back, 500);
                         U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
                         U.getFragmentUtils().popFragment(EditInfoSignFragment.this);
                     }

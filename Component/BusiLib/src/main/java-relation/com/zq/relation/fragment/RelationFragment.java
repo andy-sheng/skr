@@ -68,6 +68,7 @@ public class RelationFragment extends BaseFragment {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
+                        U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
                         U.getFragmentUtils().popFragment(RelationFragment.this);
                     }
                 });
@@ -138,6 +139,8 @@ public class RelationFragment extends BaseFragment {
             int from = bundle.getInt(FROM_PAGE_KEY);
             mRelationVp.setCurrentItem(from);
         }
+
+        U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
     }
 
     @Override
@@ -153,5 +156,7 @@ public class RelationFragment extends BaseFragment {
                 view.destroy();
             }
         }
+
+        U.getSoundUtils().release(TAG);
     }
 }

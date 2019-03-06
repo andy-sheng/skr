@@ -129,6 +129,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
         mBackIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+                U.getSoundUtils().play(UploadAccountInfoActivity.TAG, R.raw.normal_back, 500);
                 if (getActivity() != null) {
                     getActivity().finish();
                 }
