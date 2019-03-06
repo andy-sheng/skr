@@ -41,14 +41,10 @@ public class VoiceTopContainerView extends RelativeLayout {
             @Override
             public void clickValid(View v) {
                 if (getContext() instanceof Activity) {
-                    EventBus.getDefault().post(new FinishPlayWayActivityEvent());
                     Activity activity = (Activity) getContext();
                     if (activity != null) {
                         activity.finish();
                     }
-
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_HOME)
-                            .navigation();
                 }
             }
         });
