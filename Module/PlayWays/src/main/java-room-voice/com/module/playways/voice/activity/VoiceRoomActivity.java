@@ -7,6 +7,7 @@ import android.view.WindowManager;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.common.base.ActivityLeakSolutionUtils;
 import com.common.base.BaseActivity;
+import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
@@ -73,7 +74,7 @@ public class VoiceRoomActivity extends BaseActivity {
                         userInfoModel.setUserId((int) MyUserInfoManager.getInstance().getUid());
                         userInfoModel.setNickname("用户：" + i);
                     } else if (i == 1) {
-                        userInfoModel.setAvatar("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/common/system_default.png");
+                        userInfoModel.setAvatar(UserAccountManager.SYSTEM_AVATAR);
                         if (MyUserInfoManager.getInstance().getUid() == 1156569) {
                             userInfoModel.setUserId(1738030);
                         } else if (MyUserInfoManager.getInstance().getUid() == 1738030) {
@@ -83,7 +84,7 @@ public class VoiceRoomActivity extends BaseActivity {
                         }
                         userInfoModel.setNickname("用户：" + i);
                     } else {
-                        userInfoModel.setAvatar("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/common/system_default.png");
+                        userInfoModel.setAvatar(UserAccountManager.SYSTEM_AVATAR);
                         userInfoModel.setUserId(1 + i * 2);
                         userInfoModel.setNickname("用户：" + i);
                     }

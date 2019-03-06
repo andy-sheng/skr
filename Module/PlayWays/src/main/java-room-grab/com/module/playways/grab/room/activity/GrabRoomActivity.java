@@ -56,7 +56,7 @@ public class GrabRoomActivity extends BaseActivity {
                     userInfoModel.setUserId((int) MyUserInfoManager.getInstance().getUid());
                     userInfoModel.setNickname("用户：" + i);
                 } else {
-                    userInfoModel.setAvatar("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/common/system_default.png");
+                    userInfoModel.setAvatar(UserAccountManager.SYSTEM_AVATAR);
                     userInfoModel.setUserId(1 + i * 2);
                     userInfoModel.setNickname("用户：" + i);
                 }
