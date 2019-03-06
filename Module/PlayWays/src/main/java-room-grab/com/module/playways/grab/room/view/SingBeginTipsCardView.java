@@ -16,8 +16,12 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.HttpImage;
+import com.common.image.model.ImageFactory;
+import com.common.image.model.oss.OssImgFactory;
 import com.common.log.MyLog;
+import com.common.utils.ImageUtils;
 import com.common.utils.U;
+import com.didichuxing.doraemonkit.util.ImageUtil;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
@@ -151,10 +155,15 @@ public class SingBeginTipsCardView extends RelativeLayout {
 
         if (!TextUtils.isEmpty(userInfoModel.getAvatar())) {
             // 填入头像和背景框
-            HttpImage image = AvatarUtils.getAvatarUrl(AvatarUtils.newParamsBuilder(userInfoModel.getAvatar())
-                    .setWidth(U.getDisplayUtils().dip2px(90))
-                    .setHeight(U.getDisplayUtils().dip2px(90))
-                    .build());
+            HttpImage image = ImageFactory.newHttpImage(userInfoModel.getAvatar())
+                    .addOssProcessors(OssImgFactory.newResizeBuilder()
+                                    .setW(ImageUtils.SIZE.SIZE_160.getW())
+                                    .build()
+                            , OssImgFactory.newCircleBuilder()
+                                    .setR(500)
+                                    .build()
+                    )
+                    .build();
             File file = FrescoWorker.getCacheFileFromFrescoDiskCache(image.getUrl());
             if (file != null) {
                 dynamicEntity.setDynamicImage(BitmapFactory.decodeFile(file.getPath()), "avatar_128");
