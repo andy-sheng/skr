@@ -27,20 +27,22 @@ public class GrabTopContainerView extends RelativeLayout {
     public final static String TAG = "GrapTopContainerView";
     public static final int MSG_SHOW = 0;
     public static final int MSG_HIDE = 1;
+
+    GrabTopView mGrabTopView;// 切房间按钮，金币
     RelativeLayout mRelativeLayoutIconContainer;
+    MoreOpView mMoreOpView;
     GrabPlayerRv2 mTopContentRv;
     ExImageView mMoreBtn;
     ExTextView mSongIndexTv;
-    MoreOpView mMoreOpView;
-    GrabTopView mGrabTopView;// 切房间按钮，金币
+
     Listener mListener;
     GrabRoomData mRoomData;
     GrabAudienceView mGrabAudienceView;
 
-    Handler mUiHandler = new Handler(){
+    Handler mUiHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what){
+            switch (msg.what) {
                 case MSG_SHOW:
                     setVisibility(VISIBLE);
                     break;
@@ -112,7 +114,7 @@ public class GrabTopContainerView extends RelativeLayout {
     }
 
     public void setSeqIndex(int seq, int size) {
-        String text = String.format("%s/%s",seq,size);
+        String text = String.format("%s/%s", seq, size);
         mSongIndexTv.setText(text);
     }
 
@@ -192,12 +194,12 @@ public class GrabTopContainerView extends RelativeLayout {
         mGrabAudienceView.setRoomData(roomData);
     }
 
-    public void hideWithDelay(long delay){
+    public void hideWithDelay(long delay) {
         mUiHandler.removeCallbacksAndMessages(null);
         mUiHandler.sendMessageDelayed(mUiHandler.obtainMessage(MSG_HIDE), delay);
     }
 
-    public GrabTopView getGrabTopView(){
+    public GrabTopView getGrabTopView() {
         return mGrabTopView;
     }
 

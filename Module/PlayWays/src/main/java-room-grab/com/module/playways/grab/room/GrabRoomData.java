@@ -111,8 +111,8 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
 
     public void setCoin(int coin) {
         if (this.mCoin != coin) {
+            EventBus.getDefault().post(new GrabMyCoinChangeEvent(coin, coin - this.mCoin));
             this.mCoin = coin;
-            EventBus.getDefault().post(new GrabMyCoinChangeEvent(coin));
         }
     }
 

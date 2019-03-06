@@ -1,43 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:parentTag="android.widget.RelativeLayout"
-    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="@dimen/view_32_dp"
     android:layout_marginTop="@dimen/view_34_dp"
-    android:layout_height="@dimen/view_32_dp">
+    android:orientation="vertical"
+    tools:parentTag="android.widget.RelativeLayout">
+
     <com.common.view.ex.ExTextView
-        android:textColor="#B2B6D6"
-        android:textSize="@dimen/textsize_14_dp"
-        android:text="换房间"
+        android:id="@+id/tv_change_room"
+        android:layout_width="@dimen/view_80_dp"
+        android:layout_height="@dimen/view_32_dp"
+        android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/view_16_dp"
         android:gravity="center"
-        android:layout_centerVertical="true"
-        android:id="@+id/tv_change_room"
-        app:bl_solid_color="#3C3F57"
-        app:bl_stroke_width="@dimen/view_2_dp"
-        app:bl_stroke_color="#202239"
+        android:text="换房间"
+        android:textColor="#B2B6D6"
+        android:textSize="@dimen/textsize_14_dp"
         app:bl_corners_radius="@dimen/view_16_dp"
-        android:layout_height="@dimen/view_32_dp"
-        android:layout_width="@dimen/view_80_dp"
-        />
+        app:bl_solid_color="#3C3F57"
+        app:bl_stroke_color="#202239"
+        app:bl_stroke_width="@dimen/view_2_dp" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/tv_coin"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_30_dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_toRightOf="@+id/tv_change_room"
+        android:drawableLeft="@drawable/money"
+        android:drawablePadding="@dimen/view_10_dp"
+        android:gravity="center_vertical"
         android:paddingLeft="@dimen/view_5_dp"
         android:paddingRight="@dimen/view_12_dp"
-        android:drawablePadding="@dimen/view_10_dp"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/tv_change_room"
-        android:layout_marginLeft="@dimen/view_10_dp"
-        android:gravity="center_vertical"
         android:textColor="#B2B6D6"
         android:textSize="@dimen/textsize_16_dp"
-        android:drawableLeft="@drawable/money"
-        app:bl_solid_color="#202239"
         app:bl_corners_radius="@dimen/view_15_dp"
-        android:layout_height="@dimen/view_30_dp"
+        app:bl_solid_color="#202239" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/tv_coin_change"
         android:layout_width="wrap_content"
-        />
+        android:layout_height="@dimen/view_22_dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_toRightOf="@id/tv_coin"
+        android:gravity="center"
+        android:textColor="#B2B6D6"
+        android:textSize="@dimen/textsize_16_dp"
+        android:visibility="gone" />
 </merge>
