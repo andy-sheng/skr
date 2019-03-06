@@ -108,12 +108,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
 
     private void resetAllGrabTopItemView() {
         for (VP vp : mGrabTopItemViewArrayList) {
-            vp.grabTopItemView.setVisibility(VISIBLE);
-            vp.grabTopItemView.setToPlaceHolder();
-            vp.grabTopItemView.setGrap(false);
-            vp.grabTopItemView.stopEvasive();
-            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) vp.grabTopItemView.getLayoutParams();
-            lp.weight = 1;
+            vp.grabTopItemView.reset();
         }
     }
 

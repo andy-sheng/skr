@@ -587,6 +587,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         mDengBigAnimation.playBurstAnimation();
     }
 
+    private void removeAllEnsureMsg(){
+        mUiHanlder.removeMessages(MSG_ENSURE_SONGCARD_OVER);
+        mUiHanlder.removeMessages(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
+        mUiHanlder.removeMessages(MSG_ENSURE_ROUND_OVER_PLAY_OVER);
+        mUiHanlder.removeMessages(MSG_ENSURE_BATTLE_BEGIN_OVER);
+    }
 
     private void onReadyGoOver() {
         MyLog.w(TAG, "onReadyGoOver");
@@ -610,6 +616,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     @Override
     public void grabBegin(int seq, SongModel songModel) {
         MyLog.d(TAG, "grabBegin" + " seq=" + seq + " songModel=" + songModel);
+        removeAllEnsureMsg();
         // 播放3秒导唱
         mTopContainerView.setVisibility(View.VISIBLE);
         mOthersSingCardView.setVisibility(View.GONE);
@@ -617,7 +624,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         PendingPlaySongCardData pendingPlaySongCardData = new PendingPlaySongCardData(seq, songModel);
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_SONGCARD_OVER);
         msg.obj = pendingPlaySongCardData;
-        mUiHanlder.removeMessages(MSG_ENSURE_SONGCARD_OVER);
         if (seq == 1) {
             mUiHanlder.sendMessageDelayed(msg, 4000);
             mUiHanlder.postDelayed(new Runnable() {
@@ -626,7 +632,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                     U.getSoundUtils().play(TAG, R.raw.startgame);
                 }
             }, 100);
-
         } else {
             mUiHanlder.sendMessageDelayed(msg, 1200);
         }
@@ -664,13 +669,13 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     @Override
     public void singBySelf() {
+        removeAllEnsureMsg();
         mCorePresenter.stopGuide();
         mTopContainerView.setModeSing((int) MyUserInfoManager.getInstance().getUid());
         mTopContainerView.setSeqIndex(RoomDataUtils.getSeqOfRoundInfo(mRoomData.getRealRoundInfo()), mRoomData.getGrabConfigModel().getTotalGameRoundSeq());
         mSongInfoCardView.hide();
         mSingBeginTipsCardView.setVisibility(View.VISIBLE);
         mGrabOpBtn.hide();
-        mUiHanlder.removeMessages(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
         msg.arg1 = (int) MyUserInfoManager.getInstance().getUid();
         mUiHanlder.sendMessageDelayed(msg, 4000);
@@ -688,6 +693,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     @Override
     public void singByOthers(long uid) {
+        removeAllEnsureMsg();
         mTopContainerView.setVisibility(View.VISIBLE);
         mCorePresenter.stopGuide();
         mTopContainerView.setModeSing(uid);
@@ -696,8 +702,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         mGrabOpBtn.hide();
         mSingBeginTipsCardView.setVisibility(View.VISIBLE);
 
-        mUiHanlder.removeMessages(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
-//        mUiHanlder.removeMessages(MSG_SEND_SELF_SING_END);
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
         msg.arg1 = (int) uid;
         mUiHanlder.sendMessageDelayed(msg, 2600);
@@ -767,8 +771,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     @Override
     public void roundOver(int songId, int reason, int resultType, boolean playNextSongInfoCard, BaseRoundInfoModel now) {
-        mUiHanlder.removeMessages(MSG_ENSURE_ROUND_OVER_PLAY_OVER);
-//        mUiHanlder.removeMessages(MSG_SEND_SELF_SING_END);
+        removeAllEnsureMsg();
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_ROUND_OVER_PLAY_OVER);
         msg.arg1 = playNextSongInfoCard ? 1 : 0;
         msg.obj = now;
