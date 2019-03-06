@@ -20,6 +20,7 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.NoLeakEditText;
 import com.module.rank.R;
 import com.module.playways.rank.msg.event.EventHelper;
@@ -109,9 +110,9 @@ public class InputContainerView extends RelativeLayout {
 
         initEmotionKeyboard();
 
-        mSendMsgBtn.setOnClickListener(new OnClickListener() {
+        mSendMsgBtn.setOnClickListener(new DebounceViewClickListener() {
             @Override
-            public void onClick(View v) {
+            public void clickValid(View v) {
                 String content = mEtContent.getText().toString();
                 RoomServerApi roomServerApi = ApiManager.getInstance().createService(RoomServerApi.class);
 
