@@ -272,7 +272,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         } else {
             mLeaderboardPresenter.setRankMode(UserRankModel.COUNTRY);
             mRankMode = UserRankModel.COUNTRY;
-            mTvArea.setCompoundDrawables(null, null, null, null);
+//            mTvArea.setCompoundDrawables(null, null, null, null);
             mTvArea.setText("全国榜");
             mTvOtherArea.setText("地域榜");
         }
