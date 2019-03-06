@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.text.SpannableStringBuilder;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
@@ -24,6 +25,7 @@ import com.common.core.share.ShareManager;
 import com.common.log.MyLog;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
+import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
@@ -118,6 +120,13 @@ public class LoginFragment extends BaseFragment {
         mObserver = mContainer.getViewTreeObserver();
         mObserver.addOnPreDrawListener(mOnDrawListener);
 
+        SpannableStringBuilder stringBuilder = new SpanUtils()
+                .append("撕歌").setBold()
+                .append(" | 很高兴，用歌声认识你")
+                .create();
+        mLogoText.setText(stringBuilder);
+
+
         mPhoneLoginTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
@@ -211,7 +220,7 @@ public class LoginFragment extends BaseFragment {
 
         @Override
         public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
-            MyLog.d(TAG,"onComplete" + " platform=" + platform + " action=" + action + " data=" + data);
+            MyLog.d(TAG, "onComplete" + " platform=" + platform + " action=" + action + " data=" + data);
             showLoginingBar(false);
             if (platform == SHARE_MEDIA.WEIXIN) {
                 Toast.makeText(getContext(), "微信授权成功", Toast.LENGTH_LONG).show();
@@ -228,7 +237,7 @@ public class LoginFragment extends BaseFragment {
 
         @Override
         public void onError(SHARE_MEDIA platform, int action, Throwable t) {
-            MyLog.d(TAG,"onError" + " platform=" + platform + " action=" + action + " t=" + t);
+            MyLog.d(TAG, "onError" + " platform=" + platform + " action=" + action + " t=" + t);
             showLoginingBar(false);
             if (platform == SHARE_MEDIA.WEIXIN) {
                 Toast.makeText(getContext(), "微信授权失败：" + t.getMessage(), Toast.LENGTH_LONG).show();

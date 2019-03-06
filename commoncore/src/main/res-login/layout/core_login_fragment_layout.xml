@@ -27,6 +27,8 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="撕歌 | 很高兴，用歌声认识你"
+            android:gravity="center"
+            android:letterSpacing="0.1"
             android:textColor="#514C46"
             android:textSize="@dimen/textsize_16_dp" />
 
