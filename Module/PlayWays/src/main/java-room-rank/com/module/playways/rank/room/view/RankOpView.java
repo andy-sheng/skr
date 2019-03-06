@@ -9,6 +9,7 @@ import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
 
+import com.common.log.MyLog;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -95,6 +96,7 @@ public class RankOpView extends RelativeLayout {
                             U.getToastUtil().showShort("灭灯之后不能再灭灯哦");
                             return;
                         }
+                        MyLog.w(TAG, "clickValid LightOff " + " seq=" + mSeq);
                         mOpListener.clickLightOff(mSeq);
                     }
                 }
@@ -130,6 +132,7 @@ public class RankOpView extends RelativeLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(PkMyBurstSuccessEvent event) {
+        MyLog.w(TAG, "onEvent PkMyBurstSuccessEvent " + " seq is " + event.roundInfo.getRoundSeq());
         mHasOpSeq.add(event.roundInfo.getRoundSeq());
         if (RoomDataUtils.isCurrentRunningRound(event.roundInfo.getRoundSeq(), mRoomData)) {
             // 爆灯成功
@@ -140,6 +143,7 @@ public class RankOpView extends RelativeLayout {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(PkMyLightOffSuccessEvent event) {
         mHasOpSeq.add(event.roundInfo.getRoundSeq());
+        MyLog.w(TAG, "onEvent PkMyLightOffSuccessEvent " + " seq is " + event.roundInfo.getRoundSeq());
         if (RoomDataUtils.isCurrentRunningRound(event.roundInfo.getRoundSeq(), mRoomData)) {
             // 灭灯成功
             mIvTurnOff.setEnabled(false);
