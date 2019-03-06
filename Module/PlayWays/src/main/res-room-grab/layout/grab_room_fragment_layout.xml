@@ -128,10 +128,9 @@
     <!--爆灭等大礼物区域-->
     <com.module.playways.grab.room.view.GrabDengBigAnimationView
         android:id="@+id/deng_big_animation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone">
-    </com.module.playways.grab.room.view.GrabDengBigAnimationView>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
 
     <com.module.playways.rank.room.view.InputContainerView
         android:id="@+id/input_container_view"
