@@ -53,6 +53,7 @@ import com.module.playways.grab.room.view.GrabOpView;
 
 import com.module.playways.grab.room.view.IRedPkgCountDownView;
 import com.module.playways.grab.room.view.OthersSingCardView;
+import com.module.playways.grab.room.view.RedPkgCountDownView;
 import com.module.playways.grab.room.view.RoundOverCardView;
 import com.module.playways.grab.room.view.SelfSingCardView2;
 import com.module.playways.grab.room.view.SingBeginTipsCardView;
@@ -121,6 +122,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     InputContainerView mInputContainerView;
 
     BottomContainerView mBottomContainerView;
+
+    RedPkgCountDownView mRedPkgView;
 
     CommentView mCommentView;
 
@@ -230,6 +233,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         initGrabOpView();
         initSingStageView();
         initChangeRoomTransitionView();
+        initCountDownView();
         mCorePresenter = new GrabCorePresenter(this, mRoomData);
         addPresent(mCorePresenter);
         mGrabRedPkgPresenter = new GrabRedPkgPresenter(this);
@@ -278,6 +282,10 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     public void onStart() {
         super.onStart();
         mSkrAudioPermission.ensurePermission(null, true);
+    }
+
+    private void initCountDownView(){
+        mRedPkgView = (RedPkgCountDownView)mRootView.findViewById(R.id.red_pkg_view);
     }
 
     private void initInputView() {
@@ -800,8 +808,15 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     }
 
     @Override
-    public void redPkgCountDown() {
-
+    public void redPkgCountDown(long duration) {
+        mRedPkgView.setVisibility(View.VISIBLE);
+        mRedPkgView.startCountDown(duration);
+        mUiHanlder.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mRedPkgView.setVisibility(View.GONE);
+            }
+        }, duration);
     }
 
     @Override

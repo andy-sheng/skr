@@ -1,0 +1,27 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.common.view.ex.ExTextView
+        android:gravity="center"
+        app:bl_stroke_color="#181B2B"
+        app:bl_stroke_width="@dimen/view_7_dp"
+        app:bl_corners_radius="@dimen/view_25_dp"
+        android:layout_centerInParent="true"
+        android:layout_width="@dimen/view_54_dp"
+        android:layout_height="@dimen/view_54_dp" />
+
+    <com.module.playways.grab.room.view.RedCircleProgressView
+        android:layout_centerInParent="true"
+        android:id="@+id/red_circle_count_down_view"
+        android:layout_width="@dimen/view_49_dp"
+        android:layout_height="@dimen/view_49_dp" />
+
+    <com.common.view.ex.ExImageView
+        android:layout_centerInParent="true"
+        android:background="@drawable/count_down_hongbao"
+        android:layout_width="@dimen/view_24_dp"
+        android:layout_height="@dimen/view_27_dp" />
+
+</RelativeLayout>

@@ -23,6 +23,7 @@ import okhttp3.RequestBody;
 
 public class GrabRedPkgPresenter extends RxLifeCyclePresenter {
     public final static String TAG = "GrabRedPkgPresenter";
+    public static final int RED_PKG_COUNT_DOWN_TIME = 15000;
     GrabRoomServerApi mGrabRoomServerApi;
     IRedPkgCountDownView view;
     boolean mIsHasShow = false;
@@ -53,8 +54,9 @@ public class GrabRedPkgPresenter extends RxLifeCyclePresenter {
                         for (GrabRedPkgTaskModel model :
                                 redPkgTaskModelList) {
                             if ("1".equals(model.getTaskID()) && !model.isDone()) {
+                                view.redPkgCountDown(RED_PKG_COUNT_DOWN_TIME);
                                 HandlerTaskTimer.newBuilder()
-                                        .delay(15000)
+                                        .delay(RED_PKG_COUNT_DOWN_TIME)
                                         .compose(GrabRedPkgPresenter.this)
                                         .start(new HandlerTaskTimer.ObserverW() {
                                             @Override

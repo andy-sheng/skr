@@ -132,6 +132,16 @@
         android:layout_height="match_parent"
         android:visibility="gone"/>
 
+    <com.module.playways.grab.room.view.RedPkgCountDownView
+        android:id="@+id/red_pkg_view"
+        android:visibility="gone"
+        android:layout_marginBottom="@dimen/view_79_dp"
+        android:layout_marginRight="@dimen/view_26_dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="@dimen/view_54_dp"
+        android:layout_height="@dimen/view_54_dp"/>
+
     <com.module.playways.rank.room.view.InputContainerView
         android:id="@+id/input_container_view"
         android:layout_width="match_parent"

@@ -20,8 +20,8 @@ import com.module.rank.R;
 public class RedCircleProgressView extends ProgressBar {
 
     private Paint mPaint;
-    private int mRadius = U.getDisplayUtils().dip2px(32.33f);//半径
-    private int strokeWidth = U.getDisplayUtils().dip2px(4.67f);//画笔画线的宽度
+    private int mRadius = U.getDisplayUtils().dip2px(23.33f);//半径
+    private int strokeWidth = U.getDisplayUtils().dip2px(3.0f);//画笔画线的宽度
     private String str;//时间的字符串
 
     private RectF rect;
@@ -58,10 +58,10 @@ public class RedCircleProgressView extends ProgressBar {
         int[] colors = {Color.RED, Color.GREEN, Color.BLUE};
 
         Shader mShader = new SweepGradient(getWidth() / 2, getHeight() / 2,
-                new int[]{U.app().getResources().getColor(R.color.yellow),
-                        U.app().getResources().getColor(R.color.yellow),
-                        U.app().getResources().getColor(R.color.yellow),
-                        U.app().getResources().getColor(R.color.yellow)
+                new int[]{Color.parseColor("#E9AC1A"),
+                        Color.parseColor("#E9AC1A"),
+                        Color.parseColor("#E9AC1A"),
+                        Color.parseColor("#E9AC1A")
                 }, null);
 
         mPaint.setStrokeJoin(Paint.Join.ROUND);
@@ -86,10 +86,11 @@ public class RedCircleProgressView extends ProgressBar {
 
     }
 
-    public void go(){
+    public void go(long duration){
         cancelAnim();
+        setMax(360);
         mRecordAnimator = ValueAnimator.ofInt(0, 360);
-        mRecordAnimator.setDuration(15000);
+        mRecordAnimator.setDuration(duration);
         mRecordAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -97,6 +98,7 @@ public class RedCircleProgressView extends ProgressBar {
                 setProgress(value);
             }
         });
+        mRecordAnimator.start();
     }
 
     public void cancelAnim(){
@@ -104,6 +106,12 @@ public class RedCircleProgressView extends ProgressBar {
             mRecordAnimator.removeAllUpdateListeners();
             mRecordAnimator.cancel();
         }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        cancelAnim();
     }
 
     @Override

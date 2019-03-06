@@ -1,7 +1,7 @@
 package com.module.playways.grab.room.view;
 
 public interface IRedPkgCountDownView {
-    void redPkgCountDown();
+    void redPkgCountDown(long duration);
 
     void getCashSuccess(float cash);
 }
