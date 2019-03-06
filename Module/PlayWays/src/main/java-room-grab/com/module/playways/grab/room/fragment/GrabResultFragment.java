@@ -136,12 +136,12 @@ public class GrabResultFragment extends BaseFragment {
                     }
                 });
 
-//        U.getSoundUtils().preLoad(TAG, R.raw.result);
+        U.getSoundUtils().preLoad(TAG, R.raw.grab_gameover);
 
         mUiHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-//                U.getSoundUtils().play(GrabResultFragment.TAG, R.raw.result, 500);
+                U.getSoundUtils().play(GrabResultFragment.TAG, R.raw.grab_gameover, 500);
             }
         }, 500);
     }
@@ -198,7 +198,7 @@ public class GrabResultFragment extends BaseFragment {
                             bindData(l);
                         }
                     } else {
-                        MyLog.d(TAG,"syncFromServer" + " info=null");
+                        MyLog.d(TAG, "syncFromServer" + " info=null");
                     }
 
                 }
