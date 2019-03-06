@@ -161,7 +161,7 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
         mIvStartMatch.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                U.getSoundUtils().play(TAG, R.raw.rank_startmatching);
+                U.getSoundUtils().play(TAG, R.raw.rank_startmatching, 500);
                 mSkrAudioPermission.ensurePermission(new Runnable() {
                     @Override
                     public void run() {
@@ -174,14 +174,14 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
                         StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK),
                                 StatConstants.KEY_MATCH_START, map);
                     }
-                },true);
+                }, true);
             }
         });
 
         mIvBack.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                U.getSoundUtils().play(TAG, R.raw.general_back);
+                U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
                 onBackPressed();
             }
         });
@@ -192,7 +192,7 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
         addPresent(mPrepareSongPresenter);
         mPrepareSongPresenter.prepareRes();
 
-        U.getSoundUtils().preLoad(TAG, R.raw.general_back, R.raw.rank_startmatching);
+        U.getSoundUtils().preLoad(TAG, R.raw.normal_back, R.raw.rank_startmatching);
         playBackgroundMusic();
     }
 

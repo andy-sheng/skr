@@ -121,7 +121,7 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
         mRlIcon1Root = (ExRelativeLayout) mRootView.findViewById(R.id.rl_icon1_root);
         mSvgaMatchBg = (SVGAImageView) mRootView.findViewById(R.id.svga_match_bg);
 
-        U.getSoundUtils().preLoad(TAG, R.raw.allclick, R.raw.general_back);
+        U.getSoundUtils().preLoad(TAG, R.raw.normal_back, R.raw.normal_click);
         U.getSoundUtils().preLoad(GrabMatchSuccessFragment.TAG, R.raw.rank_matchpeople, R.raw.rank_matchready, R.raw.normal_countdown);
 
         AvatarUtils.loadAvatarByUrl(mSdvOwnIcon,
@@ -146,7 +146,7 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
         mIvCancelMatch.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                U.getSoundUtils().play(TAG, R.raw.allclick);
+                U.getSoundUtils().play(TAG, R.raw.normal_click, 500);
                 goBack();
             }
         });
@@ -154,7 +154,7 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
         mIvBack.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                U.getSoundUtils().play(TAG, R.raw.general_back, 500);
+                U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
                 goBack();
             }
         });
@@ -470,12 +470,10 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
                             if (view.getId() == R.id.confirm_tv) {
                                 // 继续匹配
                                 dialog.dismiss();
-                                U.getSoundUtils().play(TAG, R.raw.allclick);
                             }
 
                             if (view.getId() == R.id.cancel_tv) {
                                 dialog.dismiss();
-                                U.getSoundUtils().play(GrabMatchFragment.TAG, R.raw.general_back, 500);
                                 U.getSoundUtils().release(GrabMatchSuccessFragment.TAG);
                                 mMatchPresenter.cancelMatch();
                                 if (mPrepareData.getGameType() == GameModeType.GAME_MODE_GRAB) {

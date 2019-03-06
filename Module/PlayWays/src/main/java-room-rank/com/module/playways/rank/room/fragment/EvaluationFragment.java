@@ -182,12 +182,9 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
             @Override
             public void onNext(Integer integer) {
                 mRootView.setVisibility(View.VISIBLE);
-                U.getSoundUtils().play(TAG, R.raw.select_animation);
                 animationGo();
             }
         });
-
-        U.getSoundUtils().preLoad(TAG, R.raw.select_animation, R.raw.select_dislikebutton, R.raw.normal_countdown);
     }
 
     private void animationGo() {
@@ -371,7 +368,6 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
             mLeftVoteAnimationSet.cancel();
         }
 
-        U.getSoundUtils().play(EvaluationFragment.TAG, R.raw.select_dislikebutton, 500);
         HandlerTaskTimer.newBuilder().delay(250).start(new HandlerTaskTimer.ObserverW() {
             @Override
             public void onNext(Integer integer) {

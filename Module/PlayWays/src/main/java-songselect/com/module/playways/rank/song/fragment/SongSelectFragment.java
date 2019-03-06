@@ -94,7 +94,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
         DEFAULT_COUNT = songCardHeight / U.getDisplayUtils().dip2px(72);
         DEFAULT_FIRST_COUNT = DEFAULT_COUNT * 5;
 
-        U.getSoundUtils().preLoad(TAG, R.raw.normal_click, R.raw.general_back, R.raw.rank_flipsonglist);
+        U.getSoundUtils().preLoad(TAG, R.raw.normal_click, R.raw.normal_back, R.raw.rank_flipsonglist);
 
         mSelectBackIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -124,7 +124,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
         mSelectBack.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                U.getSoundUtils().play(SongSelectFragment.TAG, R.raw.general_back, 500);
+                U.getSoundUtils().play(SongSelectFragment.TAG, R.raw.normal_back, 500);
                 if (getActivity() != null) {
                     getActivity().finish();
                 }
@@ -243,12 +243,12 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
     // 返回上一张选歌卡片
     private void backToLastCard() {
         if (mDeleteList != null && mDeleteList.size() != 0) {
-            U.getSoundUtils().play(TAG, R.raw.general_back);
+            U.getSoundUtils().play(TAG, R.raw.rank_flipsonglist);
             mSongCardSwipAdapter.addData(0, mDeleteList.remove(0));
             mSwipeView.swipeBack();
         } else {
             if (mSongCardSwipAdapter.getSongCardHolderArrayList() != null && mSongCardSwipAdapter.getSongCardHolderArrayList().size() > 0 && !hasMore) {
-                U.getSoundUtils().play(TAG, R.raw.general_back);
+                U.getSoundUtils().play(TAG, R.raw.rank_flipsonglist);
                 int size = mSongCardSwipAdapter.getSongCardHolderArrayList().size();
                 mSongCardSwipAdapter.addData(0, mSongCardSwipAdapter.getSongCardHolderArrayList().remove(size - 1));
                 mSwipeView.swipeBack();
