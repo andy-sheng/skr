@@ -260,7 +260,10 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 //        addPresent(mDownLoadScoreFilePresenter);
 //        mDownLoadScoreFilePresenter.prepareRes();
 
-        U.getSoundUtils().preLoad(TAG, R.raw.startgame, R.raw.dislike, R.raw.iwannasing, R.raw.nobodywants, R.raw.success, R.raw.lose, R.raw.lightup);
+        U.getSoundUtils().preLoad(TAG, R.raw.grab_challengelose, R.raw.grab_challengewin,
+                R.raw.grab_gameover, R.raw.grab_iwannasingworks,
+                R.raw.grab_nobodywants, R.raw.grab_olight,
+                R.raw.grab_readygo, R.raw.grab_xlight, R.raw.grab_lightup);
 
         MyLog.w(TAG, "gameid 是 " + mRoomData.getGameId() + " userid 是 " + MyUserInfoManager.getInstance().getUid());
 
@@ -515,7 +518,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         mGrabOpBtn.setListener(new GrabOpView.Listener() {
             @Override
             public void clickGrabBtn(int seq) {
-                U.getSoundUtils().play(TAG, R.raw.iwannasing);
+//                U.getSoundUtils().play(TAG, R.raw.iwannasing);
                 mCorePresenter.grabThisRound(seq);
             }
 
@@ -584,12 +587,13 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabSomeOneLightOffEvent event) {
         // 灭灯
-        U.getSoundUtils().play(TAG, R.raw.dislike);
+        U.getSoundUtils().play(TAG, R.raw.grab_xlight);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabSomeOneLightBurstEvent event) {
         // 爆灯
+        U.getSoundUtils().play(TAG, R.raw.grab_olight);
         if (MyUserInfoManager.getInstance().getUid() == mRoomData.getRealRoundInfo().getUserID()) {
             // 当前我是演唱者
             mDengBigAnimation.setTranslationY(U.getDisplayUtils().dip2px(200));
@@ -641,7 +645,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             mUiHanlder.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    U.getSoundUtils().play(TAG, R.raw.startgame);
+                    U.getSoundUtils().play(TAG, R.raw.grab_readygo);
                 }
             }, 100);
         } else {

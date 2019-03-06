@@ -105,7 +105,7 @@ public class RoundOverCardView extends RelativeLayout {
     }
 
     private void startNoneSing(int songId) {
-        U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.nobodywants);
+        U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.grab_nobodywants);
         HashMap map = new HashMap();
         map.put("songId", songId);
         StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
@@ -165,7 +165,7 @@ public class RoundOverCardView extends RelativeLayout {
 
     // 优秀, 目前缺动画
     private void startPerfect(int songId) {
-        U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.success);
+        U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.grab_challengewin);
         HashMap map = new HashMap();
         map.put("song_id", songId);
         StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
@@ -226,7 +226,7 @@ public class RoundOverCardView extends RelativeLayout {
 
     // 不够优秀，换字即可，目前缺动画
     private void startFailed(int model, int songId) {
-        U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.lose);
+        U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.grab_challengelose);
         HashMap map = new HashMap();
         map.put("song_id", songId);
         StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
