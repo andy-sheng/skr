@@ -144,7 +144,7 @@ public class NormalLevelView extends RelativeLayout {
         MyLog.d(TAG, "bindStarData" + " totalStats=" + totalStats + " selecStats=" + selecStats);
         this.totalStats = totalStats;
         this.selecStats = selecStats;
-        starTotalHeight = totalStats * U.getDisplayUtils().dip2px(6);
+        starTotalHeight = totalStats * starDiffH;
 
         initStart();
     }
