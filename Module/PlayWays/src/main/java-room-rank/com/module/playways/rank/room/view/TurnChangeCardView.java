@@ -14,6 +14,9 @@ import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.HttpImage;
+import com.common.image.model.ImageFactory;
+import com.common.image.model.oss.OssImgFactory;
+import com.common.utils.ImageUtils;
 import com.common.utils.U;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.rank.room.RankRoomData;
@@ -214,10 +217,15 @@ public class TurnChangeCardView extends RelativeLayout {
         bitmap.eraseColor(info.getUserInfo().getSex() == ESex.SX_MALE.getValue() ? U.getColor(com.common.core.R.color.color_man_stroke_color) : U.getColor(com.common.core.R.color.color_woman_stroke_color));
         dynamicEntity.setDynamicImage(bitmap, "border");
 
-        HttpImage image = AvatarUtils.getAvatarUrl(AvatarUtils.newParamsBuilder(info.getUserInfo().getAvatar())
-                .setWidth(U.getDisplayUtils().dip2px(64))
-                .setHeight(U.getDisplayUtils().dip2px(64))
-                .build());
+        HttpImage image = ImageFactory.newHttpImage(info.getUserInfo().getAvatar())
+                .addOssProcessors(OssImgFactory.newResizeBuilder()
+                                .setW(ImageUtils.SIZE.SIZE_160.getW())
+                                .build()
+                        , OssImgFactory.newCircleBuilder()
+                                .setR(500)
+                                .build()
+                )
+                .build();
         File file = FrescoWorker.getCacheFileFromFrescoDiskCache(image.getUrl());
         if (file != null && file.exists()) {
             dynamicEntity.setDynamicImage(BitmapFactory.decodeFile(file.getPath()), "avatar128");
