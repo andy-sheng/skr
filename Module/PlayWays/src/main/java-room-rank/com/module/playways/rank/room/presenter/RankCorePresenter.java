@@ -301,7 +301,6 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
-        EngineManager.getInstance().destroy("rankingroom");
         mUiHandler.removeCallbacksAndMessages(null);
         if (mExoPlayer != null) {
             mExoPlayer.release();
@@ -311,6 +310,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         if (!mRoomData.hasGoVoiceRoom()) {
             exitGame();
             ModuleServiceManager.getInstance().getMsgService().leaveChatRoom(String.valueOf(mRoomData.getGameId()));
+            EngineManager.getInstance().destroy("rankingroom");
         } else {
             MyLog.w(TAG, "跳转到语音房，暂时不退出融云聊天室");
         }

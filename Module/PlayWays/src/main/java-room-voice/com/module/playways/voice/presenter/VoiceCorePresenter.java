@@ -25,9 +25,12 @@ import com.module.ModuleServiceManager;
 import com.module.playways.BaseRoomData;
 import com.module.playways.rank.msg.filter.PushMsgFilter;
 import com.module.playways.rank.msg.manager.ChatRoomMsgManager;
+import com.module.playways.rank.prepare.model.PlayerInfoModel;
+import com.module.playways.rank.room.RankRoomData;
 import com.module.playways.rank.room.RoomServerApi;
 import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.event.PretendCommentMsgEvent;
+import com.module.playways.rank.room.model.RankPlayerInfoModel;
 import com.module.playways.voice.inter.IVoiceView;
 import com.module.rank.R;
 import com.zq.live.proto.Common.ESex;
@@ -46,7 +49,7 @@ import okhttp3.RequestBody;
 public class VoiceCorePresenter extends RxLifeCyclePresenter {
     public String TAG = "VoiceCorePresenter";
 
-    BaseRoomData mRoomData;
+    RankRoomData mRoomData;
 
     IVoiceView mIVoiceView;
 
@@ -71,7 +74,7 @@ public class VoiceCorePresenter extends RxLifeCyclePresenter {
         }
     };
 
-    public VoiceCorePresenter(@NotNull IVoiceView iVoiceView, @NotNull BaseRoomData roomData) {
+    public VoiceCorePresenter(@NotNull IVoiceView iVoiceView, @NotNull RankRoomData roomData) {
         mIVoiceView = iVoiceView;
         mRoomData = roomData;
         TAG = "VoiceCorePresenter";
@@ -85,35 +88,22 @@ public class VoiceCorePresenter extends RxLifeCyclePresenter {
             EngineManager.getInstance().muteLocalAudioStream(true);
         }
         if (mRoomData.getGameId() > 0) {
-//            for (PlayerInfoModel playerInfoModel : mRoomData.getPlayerInfoList()) {
-//                BasePushInfo basePushInfo = new BasePushInfo();
-//                basePushInfo.setRoomID(mRoomData.getGameId());
-//                basePushInfo.setSender(new UserInfo.Builder()
-//                        .setUserID(playerInfoModel.getUserInfo().getUserId())
-//                        .setAvatar(playerInfoModel.getUserInfo().getAvatar())
-//                        .setNickName(playerInfoModel.getUserInfo().getNickname())
-//                        .setSex(ESex.fromValue(playerInfoModel.getUserInfo().getSex()))
-//                        .build());
-//                String text = String.format("加入房间", playerInfoModel.getUserInfo().getNickname());
-//                CommentMsgEvent msgEvent = new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text);
-//                EventBus.getDefault().post(msgEvent);
-//            }
-//
-//            BasePushInfo basePushInfo = new BasePushInfo();
-//            basePushInfo.setRoomID(mRoomData.getGameId());
-//            basePushInfo.setSender(new UserInfo.Builder()
-//                    .setUserID(1)
-//                    .setAvatar("http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/common/system_default.png")
-//                    .setNickName("系统消息")
-//                    .setSex(ESex.fromValue(0))
-//                    .build());
-//            String text = "撕哥一声吼：请文明参赛，发现坏蛋请用力举报！";
-//            CommentMsgEvent msgEvent = new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text);
-//            EventBus.getDefault().post(msgEvent);
-//            IMsgService msgService = ModuleServiceManager.getInstance().getMsgService();
-//            if (msgService != null) {
-//                msgService.syncHistoryFromChatRoom(String.valueOf(mRoomData.getGameId()), 10, true, null);
-//            }
+            for (RankPlayerInfoModel playerInfoModel : mRoomData.getPlayerInfoList()) {
+                if (playerInfoModel.isSkrer() && playerInfoModel.isOnline()) {
+                    // 是机器人
+                    mUiHanlder.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            playerInfoModel.setOnline(false);
+                            EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_USER_LEAVE);
+                            UserStatus userStatus = new UserStatus(playerInfoModel.getUserID());
+                            engineEvent.setUserStatus(userStatus);
+                            EventBus.getDefault().post(engineEvent);
+                        }
+                    }, (long) (Math.random() * 3000) + 1000);
+                }
+            }
+
             ChatRoomMsgManager.getInstance().addFilter(mPushMsgFilter);
         }
     }

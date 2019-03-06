@@ -20,7 +20,6 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.manager.BgMusicManager;
-import com.module.playways.BaseRoomData;
 import com.module.playways.grab.room.event.ShowPersonCardEvent;
 import com.module.playways.rank.room.RankRoomData;
 import com.module.playways.rank.room.comment.CommentModel;
@@ -87,9 +86,9 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
 
     SVGAParser mSVGAParser;
 
-    boolean isGameEndAniamtionShow = false; // 标记对战结束动画是否播放
+    boolean mIsGameEndAniamtionShow = false; // 标记对战结束动画是否播放
 
-    Handler mUiHanlder = new Handler() {
+    Handler mUiHanlder =  new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -336,7 +335,7 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
         }
         mUiHanlder.removeCallbacksAndMessages(null);
 
-        isGameEndAniamtionShow = false;
+        mIsGameEndAniamtionShow = false;
         U.getSoundUtils().release(TAG);
         BgMusicManager.getInstance().setRoom(false);
     }

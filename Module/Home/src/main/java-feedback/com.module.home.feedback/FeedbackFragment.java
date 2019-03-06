@@ -139,7 +139,7 @@ public class FeedbackFragment extends BaseFragment {
             StringBuilder sb = new StringBuilder();
             sb.append("userID=").append(UserAccountManager.getInstance().getUuid());
             sb.append(" name=").append(MyUserInfoManager.getInstance().getNickName());
-            sb.append(" ts=").append(U.getDateTimeUtils().formatTimeStringForDate(System.currentTimeMillis())).append("\n");
+            sb.append(" ts=").append(U.getDateTimeUtils().formatTimeStringForDate(System.currentTimeMillis()));
 //            sb.append("屏宽:").append(U.getDisplayUtils().getScreenWidth())
 //                    .append(" 屏高:").append(U.getDisplayUtils().getScreenHeight())
 //                    .append(" 手机高:").append(U.getDisplayUtils().getPhoneHeight())
@@ -152,11 +152,12 @@ public class FeedbackFragment extends BaseFragment {
 //            sb.append("最小宽度为 px/(dpi/160)=").append((U.getDisplayUtils().getPhoneWidth() / (U.getDisplayUtils().getDensityDpi() / 160))).append("dp").append("\n");
 //            sb.append("当前手机适用的资源文件夹是").append(U.app().getResources().getString(R.string.values_from)).append("\n");
 //            sb.append("android.os.Build.VERSION.SDK_INT:").append(android.os.Build.VERSION.SDK_INT).append("\n");
-            sb.append("手机型号:").append(U.getDeviceUtils().getProductModel()).append("\n");
-            sb.append("手机厂商:").append(U.getDeviceUtils().getProductBrand()).append("\n");
-            sb.append("渠道号:").append(U.getChannelUtils().getChannel()).append(" debug:").append(BuildConfig.DEBUG).append("\n");
+            sb.append(" 渠道号:").append(U.getChannelUtils().getChannel()).append(" debug:").append(BuildConfig.DEBUG).append("\n");
+            sb.append(" 手机型号:").append(U.getDeviceUtils().getProductModel());
+            sb.append(" 手机厂商:").append(U.getDeviceUtils().getProductBrand());
+
 //            sb.append("deviceId(参考miui唯一设备号的方法):").append(U.getDeviceUtils().getDeviceID()).append("\n");
-            sb.append("agora sdk version:").append(RtcEngine.getSdkVersion()).append("\n");
+            sb.append("agora sdk version:").append(RtcEngine.getSdkVersion());
             sharePanel.setShareContent(MyUserInfoManager.getInstance().getAvatar(), "请将url分享给研发(只在调试模式开启)", sb.toString(), event.mUrl);
             sharePanel.share(SharePlatform.WEIXIN, ShareType.URL);
         }

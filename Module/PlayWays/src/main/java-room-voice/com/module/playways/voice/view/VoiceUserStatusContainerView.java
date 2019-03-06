@@ -81,16 +81,6 @@ public class VoiceUserStatusContainerView extends RelativeLayout {
             mUserStatusContainer.addView(voiceUserStatusView, lp);
             voiceUserStatusView.bindData(playerInfoModel);
             mViewMap.put(playerInfoModel.getUserInfo().getUserId(), voiceUserStatusView);
-            if (playerInfoModel.isSkrer() && playerInfoModel.isOnline()) {
-                // 是机器人
-                mUiHanlder.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        playerInfoModel.setOnline(false);
-                        voiceUserStatusView.userOffline();
-                    }
-                }, (long) (Math.random() * 3000) + 1000);
-            }
         }
     }
 
