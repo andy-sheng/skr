@@ -31,13 +31,24 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
         userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
     }
 
-    public void getHomePage(int userID) {
+    /**
+     *
+     * @param userID
+     * @param flag   是否立即更新
+     */
+    public void getHomePage(int userID, boolean flag) {
         long now = System.currentTimeMillis();
-        if ((now - lastUpdateTime) < 60 * 1000) {
-            return;
+        if (!flag) {
+            if ((now - lastUpdateTime) < 60 * 1000) {
+                return;
+            }
         }
 
         lastUpdateTime = now;
+        getHomePage(userID);
+    }
+
+    private void getHomePage(int userID) {
         ApiMethods.subscribe(userInfoServerApi.getHomePage(userID), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {

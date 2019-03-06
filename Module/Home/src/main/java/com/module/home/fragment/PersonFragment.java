@@ -1,6 +1,7 @@
 package com.module.home.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.SpannableStringBuilder;
 import android.view.View;
@@ -43,6 +44,9 @@ import com.module.home.R;
 import com.module.home.persenter.PersonCorePresenter;
 import com.module.home.view.IPersonView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.header.ClassicsHeader;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.zq.level.view.NormalLevelView;
 import com.zq.relation.fragment.RelationFragment;
 
@@ -115,16 +119,11 @@ public class PersonFragment extends BaseFragment implements IPersonView {
 
         mPersonCorePresenter = new PersonCorePresenter(this);
         addPresent(mPersonCorePresenter);
-        mPersonCorePresenter.getHomePage((int) MyUserInfoManager.getInstance().getUid());
+        mPersonCorePresenter.getHomePage((int) MyUserInfoManager.getInstance().getUid(), true);
     }
 
     private void initTopView() {
         mRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.refreshLayout);
-
-        mRefreshLayout.setEnableRefresh(false);
-        mRefreshLayout.setEnableLoadMore(false);
-        mRefreshLayout.setEnableOverScrollDrag(true);
-        mRefreshLayout.setEnablePureScrollMode(true);
 
         mAvatarIv = (BaseImageView) mRootView.findViewById(R.id.avatar_iv);
         mShareTv = (ExTextView) mRootView.findViewById(R.id.share_tv);
@@ -137,6 +136,23 @@ public class PersonFragment extends BaseFragment implements IPersonView {
         mFansNumTv = (ExTextView) mRootView.findViewById(R.id.fans_num_tv);
         mFollows = (RelativeLayout) mRootView.findViewById(R.id.follows);
         mFollowsNumTv = (ExTextView) mRootView.findViewById(R.id.follows_num_tv);
+
+        mRefreshLayout.setEnableRefresh(true);
+        mRefreshLayout.setEnableLoadMore(false);
+        mRefreshLayout.setEnableLoadMoreWhenContentNotFull(true);
+        mRefreshLayout.setEnableOverScrollDrag(true);
+        mRefreshLayout.setRefreshHeader(new ClassicsHeader(getContext()));
+        mRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+
+            }
+
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                mPersonCorePresenter.getHomePage((int) MyUserInfoManager.getInstance().getUid(), true);
+            }
+        });
 
         RxView.clicks(mShareTv)
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
@@ -357,7 +373,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
     @Override
     protected void onFragmentVisible() {
         super.onFragmentVisible();
-        mPersonCorePresenter.getHomePage((int) MyUserInfoManager.getInstance().getUid());
+        mPersonCorePresenter.getHomePage((int) MyUserInfoManager.getInstance().getUid(), false);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -401,11 +417,12 @@ public class PersonFragment extends BaseFragment implements IPersonView {
 
     @Override
     public void showUserInfo(UserInfoModel userInfoModel) {
-
+        mRefreshLayout.finishRefresh();
     }
 
     @Override
     public void showRelationNum(List<RelationNumModel> list) {
+        mRefreshLayout.finishRefresh();
         for (RelationNumModel mode : list) {
             if (mode.getRelation() == UserInfoManager.RELATION_FRIENDS) {
                 mFriendNum = mode.getCnt();
@@ -428,6 +445,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
 
     @Override
     public void showReginRank(List<UserRankModel> list) {
+        mRefreshLayout.finishRefresh();
         UserRankModel reginRankModel = new UserRankModel();
         UserRankModel countryRankModel = new UserRankModel();
         if (list != null && list.size() > 0) {
@@ -452,6 +470,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
 
     @Override
     public void showUserLevel(List<UserLevelModel> list) {
+        mRefreshLayout.finishRefresh();
         // 展示段位信息
         for (UserLevelModel userLevelModel : list) {
             if (userLevelModel.getType() == UserLevelModel.RANKING_TYPE) {
@@ -469,6 +488,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
 
     @Override
     public void showGameStatic(List<GameStatisModel> list) {
+        mRefreshLayout.finishRefresh();
         for (GameStatisModel gameStatisModel : list) {
             if (gameStatisModel.getMode() == GameModeType.GAME_MODE_CLASSIC_RANK) {
                 SpannableStringBuilder stringBuilder = new SpanUtils()
