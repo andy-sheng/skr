@@ -10,12 +10,16 @@ import android.view.View;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
+import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
+import com.common.statistics.StatConstants;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
+import com.component.busilib.constans.GameModeType;
 import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
 import com.module.msg.CustomMsgType;
@@ -38,6 +42,8 @@ import com.zq.live.proto.Room.SpecialEmojiMsgType;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.HashMap;
 
 public class BottomContainerView extends RelativeLayout {
 
@@ -135,6 +141,13 @@ public class BottomContainerView extends RelativeLayout {
             public void clickValid(View v) {
                 // 发送动态表情，爱心
                 sendSpecialEmojiMsg(SpecialEmojiMsgType.SP_EMOJI_TYPE_UNLIKE, "扔了粑粑");
+                HashMap map = new HashMap();
+                map.put("expressionId", SpecialEmojiMsgType.SP_EMOJI_TYPE_UNLIKE);
+                if(mRoomData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK){
+                    StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK), "game_expression", map);
+                }else if(mRoomData.getGameType() == GameModeType.GAME_MODE_GRAB){
+                    StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB), "game_expression", map);
+                }
             }
         });
         mEmoji2Btn.setOnClickListener(new DebounceViewClickListener() {
@@ -142,6 +155,13 @@ public class BottomContainerView extends RelativeLayout {
             public void clickValid(View v) {
                 // 发送动态表情，爱心
                 sendSpecialEmojiMsg(SpecialEmojiMsgType.SP_EMOJI_TYPE_LIKE, "送出爱心");
+                HashMap map = new HashMap();
+                map.put("expressionId", SpecialEmojiMsgType.SP_EMOJI_TYPE_LIKE);
+                if(mRoomData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK){
+                    StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK), "game_expression", map);
+                }else if(mRoomData.getGameType() == GameModeType.GAME_MODE_GRAB){
+                    StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB), "game_expression", map);
+                }
             }
         });
     }

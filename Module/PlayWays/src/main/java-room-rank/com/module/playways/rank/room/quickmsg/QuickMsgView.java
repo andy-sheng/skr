@@ -8,13 +8,17 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.alibaba.fastjson.JSON;
+import com.common.core.account.UserAccountManager;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.statistics.StatConstants;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.constans.GameModeType;
+import com.module.playways.voice.activity.VoiceRoomActivity;
 import com.module.rank.R;
 import com.module.playways.rank.msg.event.EventHelper;
 import com.module.playways.rank.room.RoomServerApi;
@@ -56,6 +60,16 @@ public class QuickMsgView extends RelativeLayout {
         mQuickMsgAdapter = new QuickMsgAdapter(new RecyclerOnItemClickListener<QuickMsgModel>() {
             @Override
             public void onItemClicked(View view, int position, QuickMsgModel model) {
+                if (mRoomData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK) {
+                    if (getContext() instanceof VoiceRoomActivity) {
+                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK), "chatroom_expresschat", null);
+                    }else {
+                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK), "game_expresschat", null);
+                    }
+                } else if (mRoomData.getGameType() == GameModeType.GAME_MODE_GRAB) {
+                    StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB), "game_expresschat", null);
+                }
+
                 String content = model.getText();
                 RoomServerApi roomServerApi = ApiManager.getInstance().createService(RoomServerApi.class);
 

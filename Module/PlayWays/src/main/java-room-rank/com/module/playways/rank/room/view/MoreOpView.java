@@ -9,6 +9,9 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
+import com.common.core.account.UserAccountManager;
+import com.common.statistics.StatConstants;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
@@ -78,6 +81,7 @@ public class MoreOpView extends RelativeLayout {
                         mVoiceControlBtn.setCompoundDrawablesWithIntrinsicBounds(drawableLeft,
                                 null, null, null);
                     } else {
+                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK), "game_muteon", null);
                         mVoiceControlBtn.setText("打开声音");
                         Drawable drawableLeft = getResources().getDrawable(
                                 R.drawable.soundon);

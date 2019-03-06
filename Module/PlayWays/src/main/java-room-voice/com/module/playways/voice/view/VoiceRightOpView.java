@@ -8,6 +8,8 @@ import android.widget.RelativeLayout;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
+import com.common.statistics.StatConstants;
+import com.common.statistics.StatisticsAdapter;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
@@ -53,6 +55,7 @@ public class VoiceRightOpView extends RelativeLayout {
                 if (params != null) {
                     if (params.isLocalAudioStreamMute()) {
                         mMicIv.setImageResource(R.drawable.jingyin_changtai);
+                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK), "chatroom_micon", null);
                     } else {
                         mMicIv.setImageResource(R.drawable.jingyin_anxia);
                     }

@@ -9,7 +9,10 @@ import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
 
+import com.common.core.account.UserAccountManager;
 import com.common.log.MyLog;
+import com.common.statistics.StatConstants;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -98,6 +101,7 @@ public class RankOpView extends RelativeLayout {
                         }
                         MyLog.w(TAG, "clickValid LightOff " + " seq=" + mSeq);
                         mOpListener.clickLightOff(mSeq);
+                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK), "game_x", null);
                     }
                 }
             }

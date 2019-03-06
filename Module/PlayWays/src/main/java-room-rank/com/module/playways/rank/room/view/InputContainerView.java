@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.alibaba.fastjson.JSON;
+import com.common.core.account.UserAccountManager;
 import com.common.emoji.EmotionKeyboard;
 import com.common.emoji.EmotionLayout;
 import com.common.emoji.IEmotionExtClickListener;
@@ -19,9 +20,13 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.statistics.StatConstants;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.NoLeakEditText;
+import com.component.busilib.constans.GameModeType;
+import com.module.playways.voice.activity.VoiceRoomActivity;
 import com.module.rank.R;
 import com.module.playways.rank.msg.event.EventHelper;
 import com.module.playways.rank.room.RoomServerApi;
@@ -113,6 +118,15 @@ public class InputContainerView extends RelativeLayout {
         mSendMsgBtn.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+                if (mRoomData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK) {
+                    if (getContext() instanceof VoiceRoomActivity) {
+                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK), "chatroom_chat", null);
+                    } else {
+                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK), "game_chat", null);
+                    }
+                } else if (mRoomData.getGameType() == GameModeType.GAME_MODE_GRAB) {
+                    StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB), "game_chat", null);
+                }
                 String content = mEtContent.getText().toString();
                 RoomServerApi roomServerApi = ApiManager.getInstance().createService(RoomServerApi.class);
 

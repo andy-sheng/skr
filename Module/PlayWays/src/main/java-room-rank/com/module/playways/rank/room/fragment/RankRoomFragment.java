@@ -16,12 +16,15 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.common.base.BaseFragment;
+import com.common.core.account.UserAccountManager;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrAudioPermission;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
+import com.common.statistics.StatConstants;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.HttpUtils;
 import com.common.utils.SongResUtils;
@@ -867,6 +870,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                             if (getActivity() != null) {
                                 getActivity().finish();
                             }
+                            StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK), "game_exit", null);
                         }
                     })
                     .setCancelBtnClickListener(new View.OnClickListener() {
