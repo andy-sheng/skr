@@ -99,8 +99,8 @@ public class WalletFragment extends BaseFragment implements IWalletView {
         mWithdrawTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                if (balance < 20) {
-                    U.getToastUtil().showShort("满20元才能提现哦～");
+                if (balance < 10) {
+                    U.getToastUtil().showShort("满10元才能提现哦～");
                 } else {
                     U.getToastUtil().showShort("提现功能下版本开放\n" +
                             "如有疑问，请添加微信号“skrer1”进行咨询");
