@@ -186,8 +186,6 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
                 animationGo();
             }
         });
-        U.getSoundUtils().preLoad(TAG, R.raw.select_animation, R.raw.select_dislikebutton, R.raw.general_countdown);
-
     }
 
     private void animationGo() {
@@ -318,7 +316,6 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
-                        U.getSoundUtils().play(TAG, R.raw.general_countdown);
                         mVoteDownTv.setText(String.format(U.app().getString(R.string.evaluation_time_info), 12 - integer));
                     }
 
@@ -518,7 +515,6 @@ public class EvaluationFragment extends BaseFragment implements IVoteView {
         if (mUiHanlder != null) {
             mUiHanlder.removeCallbacksAndMessages(null);
         }
-        U.getSoundUtils().release(TAG);
     }
 
     @Override

@@ -135,7 +135,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         mLlAreaContainer = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.area_select_popup_window_layout, null);
         mTvOtherArea = (ExTextView) mLlAreaContainer.findViewById(R.id.tv_other_area);
 
-        U.getSoundUtils().preLoad(TAG, R.raw.general_back);
+        U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
 
         mPopupWindow = new PopupWindow(mLlAreaContainer);
         mPopupWindow.setOutsideTouchable(true);
@@ -252,7 +252,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         mIvBack.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                U.getSoundUtils().play(LeaderboardFragment.TAG, R.raw.general_back, 500);
+                U.getSoundUtils().play(LeaderboardFragment.TAG, R.raw.normal_back, 500);
                 finish();
             }
         });

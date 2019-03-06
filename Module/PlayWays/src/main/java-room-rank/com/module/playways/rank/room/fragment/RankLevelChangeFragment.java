@@ -87,8 +87,8 @@ public class RankLevelChangeFragment extends BaseFragment {
         } else {
             getGameResult();
         }
-        U.getSoundUtils().preLoad(NormalLevelView.TAG, R.raw.result_addstar,
-                R.raw.result_deductstar, R.raw.song_pairbutton);
+        U.getSoundUtils().preLoad(NormalLevelView.TAG, R.raw.rank_addstar,
+                R.raw.rank_deductstar, R.raw.rank_levelchange);
 
     }
 
