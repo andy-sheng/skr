@@ -13,4 +13,11 @@ public class GrabSomeOneLightOffEvent {
     public BaseRoundInfoModel getRoundInfo() {
         return roundInfo;
     }
+
+    @Override
+    public String toString() {
+        return "GrabSomeOneLightOffEvent{" +
+                "uid=" + uid +
+                '}';
+    }
 }
