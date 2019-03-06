@@ -7,7 +7,10 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.common.core.account.UserAccountManager;
 import com.common.log.MyLog;
+import com.common.statistics.StatConstants;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
@@ -87,6 +90,8 @@ public class GrabTopView extends RelativeLayout {
             public void clickValid(View v) {
                 if (mOnClickChangeRoomListener != null) {
                     mOnClickChangeRoomListener.changeRoom();
+                    StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
+                            "game_changeroom", null);
                 }
             }
         });

@@ -13,8 +13,11 @@ import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
 
 import com.common.base.BaseActivity;
+import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
+import com.common.statistics.StatConstants;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -131,6 +134,8 @@ public class GrabOpView extends RelativeLayout {
                 if (mStatus == STATUS_GRAP) {
                     if (mListener != null) {
                         mListener.clickGrabBtn(mSeq);
+                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
+                                "game_grab", null);
 //                        mBtnIv.setEnabled(false);
                     }
                 }
@@ -144,6 +149,8 @@ public class GrabOpView extends RelativeLayout {
                 if (mStatus == STATUS_CAN_OP) {
                     if (mListener != null) {
                         mListener.clickBurst(mSeq);
+                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
+                                "game_like", null);
 //                        mIvBurst.setEnabled(false);
                     }
                 }
@@ -157,6 +164,8 @@ public class GrabOpView extends RelativeLayout {
                 if (mStatus == STATUS_CAN_OP) {
                     if (mListener != null) {
                         mListener.clickLightOff();
+                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
+                                "game_dislike", null);
                     }
                 }
             }
