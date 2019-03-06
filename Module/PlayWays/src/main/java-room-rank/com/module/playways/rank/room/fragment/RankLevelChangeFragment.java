@@ -89,6 +89,7 @@ public class RankLevelChangeFragment extends BaseFragment {
         }
         U.getSoundUtils().preLoad(NormalLevelView.TAG, R.raw.rank_addstar,
                 R.raw.rank_deductstar, R.raw.rank_levelchange);
+        U.getSoundUtils().preLoad(TAG, R.raw.rank_win, R.raw.rank_lose);
 
     }
 
@@ -160,6 +161,7 @@ public class RankLevelChangeFragment extends BaseFragment {
             mResultSvga.stopAnimation(true);
         }
         U.getSoundUtils().release(NormalLevelView.TAG);
+        U.getSoundUtils().release(TAG);
     }
 
     @Override
@@ -168,28 +170,38 @@ public class RankLevelChangeFragment extends BaseFragment {
     }
 
     private void animationGo() {
+        boolean isWin = false;
         String assetsName = "";
         if (mRoomData.getRecordData().getSelfWinType() == EWinType.Win.getValue()) {
             mBackgroundIv.setBackground(getResources().getDrawable(R.drawable.zhanji_win_guangquan));
             assetsName = "rank_result_win.svga";
+            isWin = true;
         } else if (mRoomData.getRecordData().getSelfWinType() == EWinType.Draw.getValue()) {
             mBackgroundIv.setBackground(getResources().getDrawable(R.drawable.zhanji_draw_guangquan));
             assetsName = "rank_result_draw.svga";
+            isWin = false;
         } else if (mRoomData.getRecordData().getSelfWinType() == EWinType.Lose.getValue()) {
             mBackgroundIv.setBackground(getResources().getDrawable(R.drawable.zhanji_lose_guangquan));
             assetsName = "rank_result_lose.svga";
+            isWin = false;
         }
 
         mResultSvga.setVisibility(VISIBLE);
         mResultSvga.setLoops(1);
         SVGAParser parser = new SVGAParser(U.app());
         try {
+            final boolean finalIsWin = isWin;
             parser.parse(assetsName, new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
                     SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
                     mResultSvga.setImageDrawable(drawable);
                     mResultSvga.startAnimation();
+                    if (finalIsWin) {
+                        U.getSoundUtils().play(TAG, R.raw.rank_win);
+                    } else {
+                        U.getSoundUtils().play(TAG, R.raw.rank_lose);
+                    }
                 }
 
                 @Override
