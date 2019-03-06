@@ -1058,7 +1058,12 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             WantSingerInfo wantSingerInfo = new WantSingerInfo();
             wantSingerInfo.setUserID(event.getUserID());
             wantSingerInfo.setTimeMs(System.currentTimeMillis());
-            roundInfoModel.addGrabUid(true, wantSingerInfo);
+            if (roundInfoModel.getStatus() == GrabRoundInfoModel.STATUS_GRAB) {
+                roundInfoModel.addGrabUid(true, wantSingerInfo);
+            } else {
+                MyLog.d(TAG, "但不是抢唱阶段，不发通知");
+                roundInfoModel.addGrabUid(false, wantSingerInfo);
+            }
         } else {
             MyLog.w(TAG, "有人想唱,但是不是这个轮次：userID " + event.getUserID() + ", seq " + event.getRoundSeq() + "，当前轮次是 " + mRoomData.getExpectRoundInfo());
         }
@@ -1129,7 +1134,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabSomeOneLightOffEvent event) {
-         MyLog.d(TAG,"onEvent" + " event=" + event);
+        MyLog.d(TAG, "onEvent" + " event=" + event);
         pretendLightMsgComment(event.roundInfo.getUserID(), event.uid, false);
     }
 
@@ -1147,7 +1152,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     private void pretendLightMsgComment(int singerId, int uid, boolean isBao) {
         PlayerInfoModel singerModel = RoomDataUtils.getPlayerInfoById(mRoomData, singerId);
         PlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, uid);
-        MyLog.d(TAG,"pretendLightMsgComment" + " singerId=" + singerModel + " uid=" + playerInfoModel + " isBao=" + isBao);
+        MyLog.d(TAG, "pretendLightMsgComment" + " singerId=" + singerModel + " uid=" + playerInfoModel + " isBao=" + isBao);
         if (singerModel != null && playerInfoModel != null) {
             CommentModel commentModel = new CommentModel();
             commentModel.setCommentType(CommentModel.TYPE_TRICK);
