@@ -237,9 +237,9 @@ public class RankLevelChangeFragment extends BaseFragment {
         mUiHanlder.postDelayed(new Runnable() {
             @Override
             public void run() {
-                goVoiceRoom();
+                goVoiceRoom("proctec");
             }
-        }, 5000);
+        }, 10000);
     }
 
 
@@ -297,13 +297,13 @@ public class RankLevelChangeFragment extends BaseFragment {
                 new ScoreAnimationHelp.AnimationListener() {
                     @Override
                     public void onFinish() {
-                        goVoiceRoom();
+                        goVoiceRoom("animation");
                     }
                 });
     }
 
-    private void goVoiceRoom() {
-        MyLog.d(TAG, "goVoiceRoom" + mRoomData);
+    private void goVoiceRoom(String from) {
+        MyLog.d(TAG, "goVoiceRoom" + " from=" + from);
         if (mUiHanlder != null) {
             mUiHanlder.removeCallbacksAndMessages(null);
         }

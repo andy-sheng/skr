@@ -198,14 +198,13 @@ public class NormalLevelView extends RelativeLayout {
             int bottom = Math.abs(starTotalHeight / 2 - (int) (highDis * i));
             if (totalStats % 2 != 0 && i == totalStats / 2) {
                 rl1 = new RelativeLayout.LayoutParams(largeStar, largeStar);
-                left = left - (largeStar - normalStar) / 2;
-                rl1.setMargins(left, 0, 0, bottom);
+                rl1.addRule(RelativeLayout.CENTER_HORIZONTAL);
             } else {
                 rl1 = new RelativeLayout.LayoutParams(normalStar, normalStar);
                 rl1.setMargins(left, 0, 0, bottom);
+                rl1.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
             }
             rl1.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-            rl1.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
             imageView1.setLayoutParams(rl1);
             if (i < selecStats) {
                 imageView1.setBackground(ContextCompat.getDrawable(U.app(), R.drawable.zhanji_daxingxing_dianliang));
