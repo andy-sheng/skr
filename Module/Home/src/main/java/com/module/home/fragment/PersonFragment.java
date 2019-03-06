@@ -12,7 +12,7 @@ import com.common.base.BaseFragment;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
-import com.common.core.myinfo.event.ScoreDetailChangeEvent;
+
 import com.common.core.share.SharePanel;
 import com.common.core.share.ShareType;
 import com.common.core.upgrade.UpgradeData;
@@ -354,16 +354,15 @@ public class PersonFragment extends BaseFragment implements IPersonView {
         mSignTv.setText(MyUserInfoManager.getInstance().getSignature());
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvnet(MyUserInfoEvent.UserInfoChangeEvent userInfoChangeEvent) {
+    @Override
+    protected void onFragmentVisible() {
+        super.onFragmentVisible();
         mPersonCorePresenter.getHomePage((int) MyUserInfoManager.getInstance().getUid());
-        initViewData();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvnet(ScoreDetailChangeEvent scoreDetailChangeEvent) {
-        mLevelView.bindData(scoreDetailChangeEvent.level, scoreDetailChangeEvent.subLevel,
-                scoreDetailChangeEvent.totalStats, scoreDetailChangeEvent.selecStats);
+    public void onEvnet(MyUserInfoEvent.UserInfoChangeEvent userInfoChangeEvent) {
+        initViewData();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

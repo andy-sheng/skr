@@ -124,6 +124,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
 
         mMsgService = ModuleServiceManager.getInstance().getMsgService();
         mMainVp.setViewPagerCanScroll(false);
+        mMainVp.setOffscreenPageLimit(2);
         checkIfFromSchema();
 
         FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {

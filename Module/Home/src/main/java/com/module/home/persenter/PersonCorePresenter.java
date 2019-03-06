@@ -5,6 +5,7 @@ import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.model.GameStatisModel;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.model.UserRankModel;
+import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -23,6 +24,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
 
     UserInfoServerApi userInfoServerApi;
     IPersonView view;
+    long lastUpdateTime = 0;
 
     public PersonCorePresenter(IPersonView view) {
         this.view = view;
@@ -30,6 +32,12 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
     }
 
     public void getHomePage(int userID) {
+        long now = System.currentTimeMillis();
+        if ((now - lastUpdateTime) < 60 * 1000) {
+            return;
+        }
+
+        lastUpdateTime = now;
         ApiMethods.subscribe(userInfoServerApi.getHomePage(userID), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
