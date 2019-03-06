@@ -110,7 +110,7 @@ public class RankTopContainerView2 extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.rank_top_container_view, this);
-        U.getSoundUtils().preLoad(TAG, R.raw.rank_energyexplosion);
+        U.getSoundUtils().preLoad(TAG, R.raw.rank_energyexplosion, R.raw.rank_xlight);
         mMoreBtn = this.findViewById(R.id.more_btn);
         mIvLed = (ExImageView) findViewById(R.id.iv_led);
         mEnergySlotView = (EnergySlotView) findViewById(R.id.energy_slot_view);
@@ -204,6 +204,7 @@ public class RankTopContainerView2 extends RelativeLayout {
         }
         mUiHandler.removeCallbacksAndMessages(null);
         EventBus.getDefault().unregister(this);
+        U.getSoundUtils().release(TAG);
     }
 
 //    @Subscribe(threadMode = ThreadMode.MAIN)
@@ -351,6 +352,9 @@ public class RankTopContainerView2 extends RelativeLayout {
 //        }
         mStatusArr[index] = userLightInfo;
         LightState lightState = userLightInfo.mLightState;
+        if (lightState == LightState.MIE) {
+            U.getSoundUtils().play(TAG, R.raw.rank_xlight);
+        }
         MyLog.d(TAG, "setLight" + " index=" + index + " lightState=" + lightState);
         switch (index) {
             case 0:

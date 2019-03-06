@@ -32,7 +32,6 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
     }
 
     /**
-     *
      * @param userID
      * @param flag   是否立即更新
      */
@@ -44,7 +43,6 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
             }
         }
 
-        lastUpdateTime = now;
         getHomePage(userID);
     }
 
@@ -53,6 +51,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
+                    lastUpdateTime = System.currentTimeMillis();
                     UserInfoModel userInfoModel = JSON.parseObject(result.getData().getString("userBaseInfo"), UserInfoModel.class);
                     List<UserRankModel> userRankModels = JSON.parseArray(result.getData().getJSONObject("userRankInfo").getString("seqInfo"), UserRankModel.class);
                     List<RelationNumModel> relationNumModes = JSON.parseArray(result.getData().getJSONObject("userRelationCntInfo").getString("cnt"), RelationNumModel.class);
