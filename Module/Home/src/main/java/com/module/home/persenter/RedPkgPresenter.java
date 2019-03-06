@@ -43,12 +43,12 @@ public class RedPkgPresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 MyLog.d(TAG, "process" + " result=" + result.getErrno());
                 if (result.getErrno() == 0) {
+                    mIsHasShow = true;
                     List<RedPkgTaskModel> redPkgTaskModelList = JSONArray.parseArray(result.getData().getString("tasks"), RedPkgTaskModel.class);
                     if (redPkgTaskModelList != null) {
                         for (RedPkgTaskModel model :
                                 redPkgTaskModelList) {
                             if (RED_PKG_TASK_ID.equals(model.getTaskID()) && !model.isDone()) {
-                                mIsHasShow = true;
                                 view.showGetCashView(Float.parseFloat(model.getRedbagExtra().getCash()), model.getDeepLink());
                             }
                         }
