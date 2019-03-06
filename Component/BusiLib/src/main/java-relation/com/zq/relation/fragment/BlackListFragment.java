@@ -56,6 +56,8 @@ public class BlackListFragment extends BaseFragment {
 
     RelationAdapter mRelationAdapter;
 
+    LoadService mLoadService;
+
     @Override
     public int initView() {
         return R.layout.relation_black_fragment_layout;
@@ -113,6 +115,19 @@ public class BlackListFragment extends BaseFragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mRelationAdapter);
 
+        LoadSir mLoadSir = new LoadSir.Builder()
+                .addCallback(new LoadingCallback(R.drawable.wuhaoyou, "数据真的在加载中..."))
+                .addCallback(new EmptyCallback(R.drawable.wuhaoyou, "黑名单为空"))
+                .addCallback(new ErrorCallback(R.drawable.wuhaoyou, "请求出错了"))
+                .setDefaultCallback(LoadingCallback.class)
+                .build();
+        mLoadService = mLoadSir.register(mRecyclerView, new Callback.OnReloadListener() {
+            @Override
+            public void onReload(View v) {
+                loadData();
+            }
+        });
+
         loadData();
     }
 
@@ -123,7 +138,7 @@ public class BlackListFragment extends BaseFragment {
             public void onSucess(Object obj) {
                 if (obj != null) {
                     String[] strings = (String[]) obj;
-                    List<Integer> useIDs = new ArrayList<>();
+                    final List<Integer> useIDs = new ArrayList<>();
                     for (String string : strings) {
                         useIDs.add(Integer.valueOf(string));
                     }
@@ -138,12 +153,21 @@ public class BlackListFragment extends BaseFragment {
                         public void process(ApiResult result) {
                             if (result.getErrno() == 0) {
                                 List<UserInfoModel> userInfoModels = JSON.parseArray(result.getData().getString("profiles"), UserInfoModel.class);
-                                mRelationAdapter.addData(userInfoModels);
-                                mRelationAdapter.notifyDataSetChanged();
+                                if (userInfoModels != null && userInfoModels.size() > 0) {
+                                    mLoadService.showSuccess();
+                                    mRelationAdapter.addData(userInfoModels);
+                                    mRelationAdapter.notifyDataSetChanged();
+                                } else {
+                                    mLoadService.showCallback(EmptyCallback.class);
+                                }
+                            } else {
+                                mLoadService.showCallback(ErrorCallback.class);
                             }
 
                         }
                     }, BlackListFragment.this);
+                } else {
+                    mLoadService.showCallback(EmptyCallback.class);
                 }
 
             }
