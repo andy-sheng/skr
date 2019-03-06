@@ -64,6 +64,12 @@
         android:layout_marginRight="@dimen/view_40_dp"
         android:layout_marginTop="-32dp"
         android:orientation="horizontal">
+        <com.common.view.ex.ExImageView
+            android:id="@+id/phone_login_tv"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/view_64_dp"
+            android:layout_weight="1"
+            android:src="@drawable/denglu_iphone" />
 
         <com.common.view.ex.ExImageView
             android:id="@+id/weixin_login_tv"
@@ -71,13 +77,6 @@
             android:layout_height="@dimen/view_64_dp"
             android:layout_weight="1"
             android:src="@drawable/denglu_weixin" />
-
-        <com.common.view.ex.ExImageView
-            android:id="@+id/phone_login_tv"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/view_64_dp"
-            android:layout_weight="1"
-            android:src="@drawable/denglu_iphone" />
 
         <com.common.view.ex.ExImageView
             android:id="@+id/qq_login_tv"
