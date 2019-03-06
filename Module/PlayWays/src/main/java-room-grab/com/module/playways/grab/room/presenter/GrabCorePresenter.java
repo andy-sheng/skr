@@ -71,6 +71,7 @@ import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.event.PretendCommentMsgEvent;
 import com.module.playways.rank.room.score.MachineScoreItem;
 import com.module.playways.rank.room.score.RobotScoreHelper;
+import com.module.rank.BuildConfig;
 import com.module.rank.R;
 import com.zq.live.proto.Common.ESex;
 import com.zq.live.proto.Common.UserInfo;
@@ -1176,7 +1177,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     SpanUtils spanUtils = new SpanUtils()
                             .append(playerInfoModel.getUserInfo().getNickname() + " ").setForegroundColor(CommentModel.TEXT_YELLOW)
                             .append("加入了房间").setForegroundColor(CommentModel.TEXT_WHITE);
-                    if (MyLog.isDebugLogOpen()) {
+                    if (BuildConfig.DEBUG) {
                         spanUtils.append(" 角色为" + playerInfoModel.getRole())
                                 .append(" 在线状态为" + playerInfoModel.isOnline());
                     }
