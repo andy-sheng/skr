@@ -107,7 +107,6 @@ public class PersonFragment extends BaseFragment implements IPersonView {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         MyLog.d(TAG, "initData" + " savedInstanceState=" + savedInstanceState);
-        U.getSoundUtils().preLoad(TAG, R.raw.allclick);
         initTopView();
         initMedalView();
         initAudioView();
@@ -225,7 +224,6 @@ public class PersonFragment extends BaseFragment implements IPersonView {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        U.getSoundUtils().play(TAG, R.raw.allclick);
                         // 好友，双向关注
                         Bundle bundle = new Bundle();
                         bundle.putInt(RelationFragment.FROM_PAGE_KEY, RelationFragment.FROM_FRIENDS);
@@ -244,7 +242,6 @@ public class PersonFragment extends BaseFragment implements IPersonView {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        U.getSoundUtils().play(TAG, R.raw.allclick);
                         // 粉丝，我关注的
                         Bundle bundle = new Bundle();
                         bundle.putInt(RelationFragment.FROM_PAGE_KEY, RelationFragment.FROM_FANS);
@@ -262,7 +259,6 @@ public class PersonFragment extends BaseFragment implements IPersonView {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        U.getSoundUtils().play(TAG, R.raw.allclick);
                         // 关注, 关注我的
                         Bundle bundle = new Bundle();
                         bundle.putInt(RelationFragment.FROM_PAGE_KEY, RelationFragment.FROM_FOLLOW);
@@ -291,7 +287,6 @@ public class PersonFragment extends BaseFragment implements IPersonView {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        U.getSoundUtils().play(PersonFragment.TAG, R.raw.allclick, 500);
                         ARouter.getInstance().build(RouterConstants.ACTIVITY_AUDIOROOM)
                                 .withBoolean("selectSong", true)
                                 .navigation();
@@ -306,7 +301,6 @@ public class PersonFragment extends BaseFragment implements IPersonView {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        U.getSoundUtils().play(PersonFragment.TAG, R.raw.allclick, 500);
                         U.getFragmentUtils().addFragment(
                                 FragmentUtils.newAddParamsBuilder(getActivity(), MusicTestFragment.class)
                                         .setAddToBackStack(true)
@@ -323,7 +317,6 @@ public class PersonFragment extends BaseFragment implements IPersonView {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        U.getSoundUtils().play(PersonFragment.TAG, R.raw.allclick, 500);
                         U.getFragmentUtils().addFragment(
                                 FragmentUtils.newAddParamsBuilder(getActivity(), WalletFragment.class)
                                         .setAddToBackStack(true)
@@ -338,7 +331,6 @@ public class PersonFragment extends BaseFragment implements IPersonView {
         mSettingArea.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                U.getSoundUtils().play(PersonFragment.TAG, R.raw.allclick, 500);
                 U.getFragmentUtils().addFragment(
                         FragmentUtils.newAddParamsBuilder(getActivity(), SettingFragment.class)
                                 .setAddToBackStack(true)

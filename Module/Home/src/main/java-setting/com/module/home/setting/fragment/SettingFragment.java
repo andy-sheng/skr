@@ -115,7 +115,7 @@ public class SettingFragment extends BaseFragment {
         mServiceAgreen = (RelativeLayout) mRootView.findViewById(R.id.service_agreen);
         mExitLogin = (ExTextView) mRootView.findViewById(R.id.exit_login);
 
-        U.getSoundUtils().preLoad(TAG, R.raw.general_back, R.raw.allclick);
+        U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
 
         initCache();
         initVersion();
@@ -125,7 +125,7 @@ public class SettingFragment extends BaseFragment {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        U.getSoundUtils().play(TAG, R.raw.general_back);
+                        U.getSoundUtils().play(TAG, R.raw.normal_back);
                         U.getFragmentUtils().popFragment(SettingFragment.this);
                     }
                 });
@@ -301,13 +301,11 @@ public class SettingFragment extends BaseFragment {
                         if (view instanceof ExTextView) {
                             if (view.getId() == R.id.confirm_tv) {
                                 dialog.dismiss();
-                                U.getSoundUtils().play(TAG, R.raw.allclick);
                                 U.getFragmentUtils().popFragment(SettingFragment.this);
                                 UserAccountManager.getInstance().logoff();
                             }
 
                             if (view.getId() == R.id.cancel_tv) {
-                                U.getSoundUtils().play(TAG, R.raw.general_back);
                                 dialog.dismiss();
                             }
                         }
