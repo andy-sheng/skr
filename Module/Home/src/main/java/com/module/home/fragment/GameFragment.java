@@ -132,6 +132,9 @@ public class GameFragment extends BaseFragment {
 
     Vector<Long> mTag = new Vector<>();
 
+    boolean mIsKConfig = false;  //标记是否拉到过游戏配置信息
+    long mLastRankUpdate = 0; //最后一次更新请求
+
     @Override
     public int initView() {
         return R.layout.game_fragment_layout;
@@ -182,7 +185,7 @@ public class GameFragment extends BaseFragment {
 
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                initRankLevel();
+                initRankLevel(true);
                 initOperationArea();
             }
         });
@@ -253,7 +256,7 @@ public class GameFragment extends BaseFragment {
         U.getSoundUtils().preLoad(TAG, R.raw.home_game, R.raw.general_button);
 
         initBaseInfo();
-        initRankLevel();
+        initRankLevel(true);
         initOperationArea();
         initGameKConfig();
     }
@@ -286,13 +289,22 @@ public class GameFragment extends BaseFragment {
     @Override
     protected void onFragmentVisible() {
         super.onFragmentVisible();
-        initRankLevel();
+        initRankLevel(false);
         initOperationArea();
         initGameKConfig();
         StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_HOME), StatConstants.KEY_EXPOSE, null);
     }
 
-    private void initRankLevel() {
+    private void initRankLevel(boolean isFlag) {
+        long now = System.currentTimeMillis();
+        if (!isFlag) {
+            // 距离上次拉去已经超过10秒了
+            if ((now - mLastRankUpdate) < 10 * 1000) {
+                return;
+            }
+        }
+
+        mLastRankUpdate = now;
         if (mUserInfoServerApi == null) {
             mUserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
         }
@@ -448,15 +460,15 @@ public class GameFragment extends BaseFragment {
     }
 
     private void initGameKConfig() {
-        if (mTextGrabGame.getVisibility() == View.VISIBLE || mTextAthleticsPk.getVisibility() == View.VISIBLE) {
+        if (mIsKConfig) {
             return;
         }
-
         mMainPageSlideApi = ApiManager.getInstance().createService(MainPageSlideApi.class);
         ApiMethods.subscribe(mMainPageSlideApi.getKConfig(), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
+                    mIsKConfig = true;
                     GameKConfigModel gameKConfigModel = JSON.parseObject(result.getData().getString("common"), GameKConfigModel.class);
                     showGameKConfig(gameKConfigModel);
 
@@ -695,7 +707,7 @@ public class GameFragment extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(AccountEvent.SetAccountEvent event) {
-        initRankLevel();
+        initRankLevel(true);
         initOperationArea();
         initGameKConfig();
     }
