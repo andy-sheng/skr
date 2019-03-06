@@ -40,7 +40,7 @@ public class LoginFragment extends BaseFragment {
     public static final int WX_MODE = 3;
 
     public static final int MSG_HIDE_PORGRESS_BAR = 1;
-    public static final int MIN_HEIGHT = U.getDisplayUtils().dip2px(100);
+    public static final int MIN_HEIGHT = U.getDisplayUtils().dip2px(140);
 
     RelativeLayout mMainActContainer;
     ImageView mPicture;
