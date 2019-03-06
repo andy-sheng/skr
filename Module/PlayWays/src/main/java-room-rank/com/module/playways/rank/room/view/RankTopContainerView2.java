@@ -510,7 +510,7 @@ public class RankTopContainerView2 extends RelativeLayout {
         mEnergyFillSvga.setVisibility(VISIBLE);
         mEnergyFillSvga.setLoops(1);
 
-        U.getSoundUtils().play(RankRecordFragment.TAG, R.raw.rank_energyexplosion);
+        U.getSoundUtils().play(TAG, R.raw.rank_energyexplosion);
 
         SVGAParser parser = new SVGAParser(U.app());
         try {

@@ -101,7 +101,7 @@ public class RankOpView extends RelativeLayout {
                             U.getToastUtil().showShort("灭灯之后不能再灭灯哦");
                             return;
                         }
-                        U.getSoundUtils().play(RankRecordFragment.TAG, R.raw.rank_xlight);
+                        U.getSoundUtils().play(TAG, R.raw.rank_xlight);
                         MyLog.w(TAG, "clickValid LightOff " + " seq=" + mSeq);
                         mOpListener.clickLightOff(mSeq);
                         StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK), "game_x", null);
