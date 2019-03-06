@@ -152,7 +152,9 @@ public class FeedbackFragment extends BaseFragment {
 //            sb.append("最小宽度为 px/(dpi/160)=").append((U.getDisplayUtils().getPhoneWidth() / (U.getDisplayUtils().getDensityDpi() / 160))).append("dp").append("\n");
 //            sb.append("当前手机适用的资源文件夹是").append(U.app().getResources().getString(R.string.values_from)).append("\n");
 //            sb.append("android.os.Build.VERSION.SDK_INT:").append(android.os.Build.VERSION.SDK_INT).append("\n");
-            sb.append(" 渠道号:").append(U.getChannelUtils().getChannel()).append(" debug:").append(BuildConfig.DEBUG).append("\n");
+            sb.append(" version:").append(U.getAppInfoUtils().getVersionName())
+                    .append(" 渠道号:").append(U.getChannelUtils().getChannel())
+                    .append(" Mylog.debugOpen:").append(MyLog.isDebugLogOpen());
             sb.append(" 手机型号:").append(U.getDeviceUtils().getProductModel());
             sb.append(" 手机厂商:").append(U.getDeviceUtils().getProductBrand());
 
