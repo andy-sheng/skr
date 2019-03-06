@@ -7,8 +7,6 @@
     tools:parentTag="android.widget.RelativeLayout">
 
     <ScrollView
-        android:fadeScrollbars="false"
-        android:scrollbarThumbVertical="@drawable/jindutiao"
         android:id="@+id/sv_lyric"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_180_dp"
@@ -16,8 +14,12 @@
         android:layout_marginTop="@dimen/view_125_dp"
         android:layout_marginRight="@dimen/view_18_dp"
         android:background="@drawable/self_lyric_bg"
+        android:fadeScrollbars="false"
+        android:fadingEdge="none"
+        android:overScrollMode="never"
         android:paddingTop="@dimen/view_45_dp"
-        android:paddingBottom="@dimen/view_10_dp">
+        android:paddingBottom="@dimen/view_10_dp"
+        android:scrollbarThumbVertical="@drawable/jindutiao">
 
         <TextView
             android:id="@+id/tv_lyric"
