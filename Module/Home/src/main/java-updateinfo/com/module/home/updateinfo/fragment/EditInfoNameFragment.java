@@ -191,4 +191,10 @@ public class EditInfoNameFragment extends BaseFragment {
     public boolean useEventBus() {
         return false;
     }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+    }
 }
