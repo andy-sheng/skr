@@ -81,7 +81,7 @@ function walk()
 	  fi
     fi  
   done  
-}  
+} 
 
 #移动apk
 movePackage(){
@@ -93,15 +93,41 @@ movePackage(){
 	ext=${path##*.}
 	echo name:$name ext:$ext date1:$date1
 	echo mv $path ${name}_${date1}.${ext}
-	mv $path ./publish/${name}_${date1}.${ext}
+	#mv $path ./publish/${name}_${date1}.${ext}
+	mv $path ./publish/${name}.${ext}
 }
 
+
+function findChannel()  
+{  
+  for file in `ls app/build/outputs/channels`  
+  do  
+    local path=app/build/outputs/channels/$file  
+    if [ -d $path ]  
+     then  
+      echo "DIR $path"  
+      walk $path  
+    else  
+      echo "FILE $path"
+	  #echo "filename: ${path%.*}"
+	  ext=${path##*.}
+	  echo $ext
+	  if [[ $ext = "apk" ]]; then
+	  	if [[ $path == *"-$1-"* ]]; then
+	  		if [[ $path == *"-$2-"* ]]; then
+	  			installApkPath=$path
+	  		fi
+		fi
+	  fi
+    fi  
+  done  
+}
 
 echo "运行示例 ./ins.sh app release all  或 ./ins.sh modulechannel 编译组件module"
 if [ $# -le 0 ] ; then 
 	echo "输入需要编译的模块名" 
 	exit 1; 
-fi 
+fi
 
 getBuildModule
 
@@ -115,6 +141,9 @@ getDeviceId
 
 echo ${devices[@]}
 
+echo rm -rf app/build/outputs/channels
+rm -rf app/build/outputs/channels
+
 if [[ $1 = "app" ]]; then
 	if [[ $isBuildModule = false ]]; then
 		#如果是app 并且 之前的 isBuildModule 为false，则直接编译
@@ -127,58 +156,59 @@ if [[ $1 = "app" ]]; then
 	if [[ $2 = "release" ]]; then
 		echo "编译app release  加 --profile 会输出耗时报表"
 		./gradlew clean
-		#./gradlew :app:assembleRelease --profile
 		if [[ $3 = "all" ]];then
 		    echo "编译release所有渠道"
-		    echo rm -rf app/build/outputs/apk
-		    rm -rf app/build/outputs/apk
-		    ./gradlew :app:assembleRelease
+		    ./gradlew :app:assembleReleaseChannels
             #拷贝所有包到主目录
             rm -rf ./publish
             mkdir ./publish
-			walk app/build/outputs/apk
+			walk app/build/outputs/channels
 			echo "拷贝完毕"
 		else
 		    echo "只编译release default渠道"
-		    ./gradlew :app:assemblechannel_defaultRelease --stacktrace
-		    installApkForAllDevices app/build/outputs/apk/channel_default/release/app-channel_default-release.apk
+		    ./gradlew :app:assembleReleaseChannels --stacktrace
+		    findChannel DEFAULT release
+		    installApkForAllDevices $installApkPath
             myandroidlog.sh  com.zq.live
 		fi
 	elif [[ $2 = "dev" ]]; then
         echo "./gradlew :app:assemblechannel_devDebug"
         echo "只编译test debug渠道"
-        ./gradlew :app:assemblechannel_devDebug
-        installApkForAllDevices app/build/outputs/apk/channel_dev/debug/app-channel_dev-debug.apk
+        ./gradlew :app:assembleDebugChannels
+        findChannel DEV debug
+		installApkForAllDevices $installApkPath
 	elif [[ $2 = "test" ]]; then
 	    if [[ $3 = "release" ]];then
 	                echo "./gradlew :app:assemblechannel_testRelease"
                 	echo "只编译test release渠道"
-                    ./gradlew :app:assemblechannel_testRelease
-                    installApkForAllDevices app/build/outputs/apk/channel_test/release/app-channel_test-release.apk
+                    ./gradlew :app:assembleReleaseChannels
+                    findChannel TEST release
+					installApkForAllDevices $installApkPath
                     myandroidlog.sh  com.zq.live
 	    else
 	        echo "./gradlew :app:assemblechannel_testDebug"
         	echo "只编译test debug渠道"
-            ./gradlew :app:assemblechannel_testDebug
-            installApkForAllDevices app/build/outputs/apk/channel_test/debug/app-channel_test-debug.apk
+            ./gradlew :app:assembleDebugChannels
+            findChannel TEST debug
+			installApkForAllDevices $installApkPath
             myandroidlog.sh  com.zq.live
 	    fi
-
-
     elif [[ $2 = "sandbox" ]]; then
         if [[ $3 = "release" ]]; then
         	        echo "./gradlew :app:assemblechannel_sandboxRelease"
                     echo "只编译sandbox release渠道"
-                    ./gradlew :app:assemblechannel_sandboxRelease
-                    installApkForAllDevices app/build/outputs/apk/channel_sandbox/release/app-channel_sandbox-release.apk
+                    ./gradlew :app:assembleReleaseChannels
+                    findChannel SANDBOX release
+					installApkForAllDevices $installApkPath
                     myandroidlog.sh  com.zq.live
         else
             echo "./gradlew :app:assemblechannel_sandboxDebug"
             echo "只编译sandbox debug渠道"
-            ./gradlew :app:assemblechannel_sandboxDebug
+            ./gradlew :app:assembleDebugChannels
+			findChannel SANDBOX debug
+			installApkForAllDevices $installApkPath
             installApkForAllDevices app/build/outputs/apk/channel_sandbox/debug/app-channel_sandbox-debug.apk
         fi
-
 	else
 		echo "./gradlew :app:assemblechannel_defaultDebug"
 		echo "只编译default debug渠道"
@@ -186,8 +216,9 @@ if [[ $1 = "app" ]]; then
 		    echo "clean一下"
 		    ./gradlew :app:clean
 		fi
-		./gradlew :app:assemblechannel_defaultDebug --stacktrace
-		installApkForAllDevices app/build/outputs/apk/channel_default/debug/app-channel_default-debug.apk
+		./gradlew :app:assembleDebugChannels --stacktrace
+		findChannel DEFAULT debug
+		installApkForAllDevices $installApkPath
 		myandroidlog.sh  com.zq.live
 	fi
 else

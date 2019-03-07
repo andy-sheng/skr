@@ -54,7 +54,6 @@ public class MainConfiguration implements ConfigModule {
 
             @Override
             public void attachBaseContext(@NonNull Context base) {
-                Log.w(TAG, "com.zq.live.BuildConfig.CHANNEL_NAME:" + com.zq.live.BuildConfig.CHANNEL_NAME);
             }
 
             @Override

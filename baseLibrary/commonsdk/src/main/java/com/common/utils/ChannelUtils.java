@@ -8,6 +8,7 @@ import android.text.TextUtils;
 
 import com.common.log.MyLog;
 import com.common.statistics.StatisticsAdapter;
+import com.meituan.android.walle.WalleChannelReader;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -24,9 +25,13 @@ public class ChannelUtils {
     ChannelUtils() {
         try {
             mSubChannel = U.getPreferenceUtils().getSettingString(PREF_KEY_SUB_CHANNEL, "");
-            Class ct = Class.forName(U.getAppInfoUtils().getPackageName() + ".BuildConfig");
-            Field field = ct.getField("CHANNEL_NAME");
-            channelNameFromBuildConfig = (String) field.get(null);
+//            Class ct = Class.forName(U.getAppInfoUtils().getPackageName() + ".BuildConfig");
+//            Field field = ct.getField("CHANNEL_NAME");
+//            channelNameFromBuildConfig = (String) field.get(null);
+            String walleChannel = WalleChannelReader.getChannel(U.app());
+            if(!TextUtils.isEmpty(walleChannel)){
+                channelNameFromBuildConfig = walleChannel;
+            }
             channelNameFromBuildConfig = U.getPreferenceUtils().getSettingString(PREF_KEY_DEBUG_CHANNEL, channelNameFromBuildConfig);
         } catch (Exception e) {
             MyLog.e(e);

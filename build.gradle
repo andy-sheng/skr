@@ -57,6 +57,10 @@ buildscript {
         if (selfPluginOpenForCompile.toBoolean()) {
             classpath "com.csm.gradleutils:manyutils:1.1"
         }
+        if (walleEnable.toBoolean()) {
+            classpath 'com.meituan.android.walle:plugin:1.1.6'
+        }
+
 //        if (aliFeedback.toBoolean()) {
 //            classpath 'com.aliyun.ams:emas-services:1.0.1'
 //        }

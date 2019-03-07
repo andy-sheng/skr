@@ -2,9 +2,9 @@ apply plugin: 'com.android.application'
 if (virtualApkEnable.toBoolean()) {
     apply plugin: 'com.didi.virtualapk.host'
 }
-//if (aliFeedback.toBoolean()) {
-//    apply plugin: 'com.aliyun.ams.emas-services'
-//}
+if (walleEnable.toBoolean()) {
+    apply plugin: 'walle'
+}
 
 android {
     compileSdkVersion rootProject.ext.android["compileSdkVersion"]
@@ -17,99 +17,105 @@ android {
 
     flavorDimensions("channel")
 
-    productFlavors {
-        channel_default {
-            flavorDimensions("channel")
-            buildConfigField("String", "CHANNEL_NAME", '\"DEFAULT\"')
-            resValue("string", "channel_desc", '自升级渠道')
-        }
+    if (walleEnable.toBoolean()) {
+        // 开启了美团的渠道打包，就不需要 productFlavors 了
+        // 渠道信息在 app/channel里添加
+    } else {
+        // 弃用了
+        productFlavors {
+            channel_default {
+                flavorDimensions("channel")
+                buildConfigField("String", "CHANNEL_NAME", '\"DEFAULT\"')
+                resValue("string", "channel_desc", '自升级渠道')
+            }
 
-        channel_mi {
-            flavorDimensions("channel")
-            buildConfigField("String", "CHANNEL_NAME", '\"MI_SHOP\"')
-            resValue("string", "channel_desc", '小米应用商店')
-        }
+            channel_mi {
+                flavorDimensions("channel")
+                buildConfigField("String", "CHANNEL_NAME", '\"MI_SHOP\"')
+                resValue("string", "channel_desc", '小米应用商店')
+            }
 
-        channel_yyb {
-            flavorDimensions("channel")
-            buildConfigField("String", "CHANNEL_NAME", '\"YYB_SHOP\"')
-            resValue("string", "channel_desc", '应用宝')
-        }
+            channel_yyb {
+                flavorDimensions("channel")
+                buildConfigField("String", "CHANNEL_NAME", '\"YYB_SHOP\"')
+                resValue("string", "channel_desc", '应用宝')
+            }
 
-        channel_360 {
-            flavorDimensions("channel")
-            buildConfigField("String", "CHANNEL_NAME", '\"360_SHOP\"')
-            resValue("string", "channel_desc", '360应用商店')
-        }
+            channel_360 {
+                flavorDimensions("channel")
+                buildConfigField("String", "CHANNEL_NAME", '\"360_SHOP\"')
+                resValue("string", "channel_desc", '360应用商店')
+            }
 
-        channel_oppo {
-            flavorDimensions("channel")
-            buildConfigField("String", "CHANNEL_NAME", '\"OPPO_SHOP\"')
-            resValue("string", "channel_desc", 'oppo应用商店')
-        }
+            channel_oppo {
+                flavorDimensions("channel")
+                buildConfigField("String", "CHANNEL_NAME", '\"OPPO_SHOP\"')
+                resValue("string", "channel_desc", 'oppo应用商店')
+            }
 
-        channel_vivo {
-            flavorDimensions("channel")
-            buildConfigField("String", "CHANNEL_NAME", '\"VIVO_SHOP\"')
-            resValue("string", "channel_desc", 'vivo应用商店')
-        }
+            channel_vivo {
+                flavorDimensions("channel")
+                buildConfigField("String", "CHANNEL_NAME", '\"VIVO_SHOP\"')
+                resValue("string", "channel_desc", 'vivo应用商店')
+            }
 
-        channel_huawei {
-            flavorDimensions("channel")
-            buildConfigField("String", "CHANNEL_NAME", '\"HUAWEI_SHOP\"')
-            resValue("string", "channel_desc", '华为应用商店')
-        }
+            channel_huawei {
+                flavorDimensions("channel")
+                buildConfigField("String", "CHANNEL_NAME", '\"HUAWEI_SHOP\"')
+                resValue("string", "channel_desc", '华为应用商店')
+            }
 
-        channel_baidu {
-            flavorDimensions("channel")
-            buildConfigField("String", "CHANNEL_NAME", '\"BAIDU_SHOP\"')
-            resValue("string", "channel_desc", '百度应用商店')
-        }
+            channel_baidu {
+                flavorDimensions("channel")
+                buildConfigField("String", "CHANNEL_NAME", '\"BAIDU_SHOP\"')
+                resValue("string", "channel_desc", '百度应用商店')
+            }
 
-        channel_kuaishou {
-            flavorDimensions("channel")
-            buildConfigField("String", "CHANNEL_NAME", '\"KUAISHOU_SHOP\"')
-            resValue("string", "channel_desc", '快手应用商店')
-        }
+            channel_kuaishou {
+                flavorDimensions("channel")
+                buildConfigField("String", "CHANNEL_NAME", '\"KUAISHOU_SHOP\"')
+                resValue("string", "channel_desc", '快手应用商店')
+            }
 
-        channel_toutiao {
-            flavorDimensions("channel")
-            buildConfigField("String", "CHANNEL_NAME", '\"TOUTIAO_SHOP\"')
-            resValue("string", "channel_desc", '头条应用商店')
-        }
+            channel_toutiao {
+                flavorDimensions("channel")
+                buildConfigField("String", "CHANNEL_NAME", '\"TOUTIAO_SHOP\"')
+                resValue("string", "channel_desc", '头条应用商店')
+            }
 
-        channel_douyin {
-            flavorDimensions("channel")
-            buildConfigField("String", "CHANNEL_NAME", '\"DOUYIN_SHOP\"')
-            resValue("string", "channel_desc", '抖音应用商店')
-        }
+            channel_douyin {
+                flavorDimensions("channel")
+                buildConfigField("String", "CHANNEL_NAME", '\"DOUYIN_SHOP\"')
+                resValue("string", "channel_desc", '抖音应用商店')
+            }
 
-        channel_market2 {
-            flavorDimensions("channel")
-            buildConfigField("String", "CHANNEL_NAME", '\"MARKET2\"')
-            resValue("string", "channel_desc", '自定义渠道2')
-        }
+            channel_market2 {
+                flavorDimensions("channel")
+                buildConfigField("String", "CHANNEL_NAME", '\"MARKET2\"')
+                resValue("string", "channel_desc", '自定义渠道2')
+            }
 
-        channel_dev {
-            flavorDimensions("channel")
-            buildConfigField("String", "CHANNEL_NAME", '\"DEV\"')
-            resValue("string", "channel_desc", '测试环境dev')
-        }
+            channel_dev {
+                flavorDimensions("channel")
+                buildConfigField("String", "CHANNEL_NAME", '\"DEV\"')
+                resValue("string", "channel_desc", '测试环境dev')
+            }
 
-        channel_test {
-            flavorDimensions("channel")
-            buildConfigField("String", "CHANNEL_NAME", '\"TEST\"')
-            resValue("string", "channel_desc", '测试环境test')
+            channel_test {
+                flavorDimensions("channel")
+                buildConfigField("String", "CHANNEL_NAME", '\"TEST\"')
+                resValue("string", "channel_desc", '测试环境test')
 
 //          applicationId "com.littlejie.multichannel.release "
 //          可以替换androidmanifest文件中的标签，可作为快速渠道打包替换渠道名的一种方式，也可以自定义标签用来替换需要的文本
 //          manifestPlaceholders = [UMENG_CHANNEL: "release "]
-        }
+            }
 
-        channel_sandbox {
-            flavorDimensions("channel")
-            buildConfigField("String", "CHANNEL_NAME", '\"SANDBOX\"')
-            resValue("string", "channel_desc", '测试环境sandbox')
+            channel_sandbox {
+                flavorDimensions("channel")
+                buildConfigField("String", "CHANNEL_NAME", '\"SANDBOX\"')
+                resValue("string", "channel_desc", '测试环境sandbox')
+            }
         }
     }
 
@@ -143,7 +149,11 @@ android {
             storePassword "zq123456"
             keyAlias "zq_android_key"
             keyPassword "zq123456"
-            v2SigningEnabled false
+            if (walleEnable.toBoolean()) {
+                v2SigningEnabled true
+            } else {
+                v2SigningEnabled false
+            }
         }
     }
 
@@ -239,5 +249,17 @@ if (selfPluginOpenForCompile.toBoolean()) {
         injectMethodStatictis = false
         // 是否开启gif ARGB_4444注入修改
         injectGIf = false
+    }
+}
+
+if (walleEnable.toBoolean()) {
+    walle {
+        // 指定渠道包的输出路径
+        apkOutputFolder = new File("${project.buildDir}/outputs/channels");
+        // 定制渠道包的APK的文件名称
+        //apkFileNameFormat = '${appName}-${packageName}-${channel}-${buildType}-v${versionName}-${buildTime}.apk';
+        apkFileNameFormat = '${appName}-${channel}-${buildType}-v${versionCode}-${buildTime}.apk';
+        // 渠道配置文件
+        channelFile = new File("${project.getProjectDir()}/channel")
     }
 }

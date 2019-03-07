@@ -165,6 +165,8 @@ dependencies {
     // 检查fragment 泄露的 暂时关掉
     //debugImplementation(rootProject.ext.dependencies["canary-debug-fragment"])
 
+    // 美团walle 多渠道打包，读取渠道信息
+    implementation 'com.meituan.android.walle:library:1.1.6'
     // 导入ARouter库
     api(rootProject.ext.dependencies["arouter"])
     // eventbus 事件总线

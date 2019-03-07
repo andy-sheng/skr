@@ -61,6 +61,42 @@ installApkForAllDevices(){
 	done  
 }
 
+#遍历文件夹
+function walk()  
+{  
+  for file in `ls $1`  
+  do  
+    local path=$1"/"$file  
+    if [ -d $path ]  
+     then  
+      echo "DIR $path"  
+      walk $path  
+    else  
+      echo "FILE $path"
+	  #echo "filename: ${path%.*}"
+	  ext=${path##*.}
+	  echo $ext
+	  if [[ $ext = "apk" ]]; then
+	  		movePackage $path
+	  fi
+    fi  
+  done  
+}  
+
+#移动apk
+movePackage(){
+	echo "movePackage $1"
+	path=$1
+	date1=`date +%m_%d_%H_%M`
+	pre=${path%.*}
+	name=${pre##*/}
+	ext=${path##*.}
+	echo name:$name ext:$ext date1:$date1
+	echo mv $path ${name}_${date1}.${ext}
+	mv $path ./publish/${name}_${date1}.${ext}
+}
+
+
 echo "运行示例 ./ins.sh app release all  或 ./ins.sh modulechannel 编译组件module"
 if [ $# -le 0 ] ; then 
 	echo "输入需要编译的模块名" 
@@ -86,39 +122,63 @@ if [[ $1 = "app" ]]; then
 	else
 		echo "先clean再编译"
 		changeBuildModule false
-		#./gradlew clean
+		./gradlew clean
 	fi
 	if [[ $2 = "release" ]]; then
 		echo "编译app release  加 --profile 会输出耗时报表"
-		#./gradlew clean
+		./gradlew clean
 		#./gradlew :app:assembleRelease --profile
 		if [[ $3 = "all" ]];then
 		    echo "编译release所有渠道"
-		    #./gradlew :app:assembleRelease
-		    installApkForAllDevices app/build/outputs/apk/channel_mishop/release/app-channel_mishop-release.apk
-            myandroidlog.sh  com.zq.live
+		    echo rm -rf app/build/outputs/apk
+		    rm -rf app/build/outputs/apk
+		    ./gradlew :app:assembleRelease
+            #拷贝所有包到主目录
+            rm -rf ./publish
+            mkdir ./publish
+			walk app/build/outputs/apk
+			echo "拷贝完毕"
 		else
 		    echo "只编译release default渠道"
-		    #./gradlew :app:assemblechannel_defaultRelease --stacktrace
+		    ./gradlew :app:assemblechannel_defaultRelease --stacktrace
 		    installApkForAllDevices app/build/outputs/apk/channel_default/release/app-channel_default-release.apk
             myandroidlog.sh  com.zq.live
 		fi
 	elif [[ $2 = "dev" ]]; then
         echo "./gradlew :app:assemblechannel_devDebug"
         echo "只编译test debug渠道"
-        #./gradlew :app:assemblechannel_devDebug
+        ./gradlew :app:assemblechannel_devDebug
         installApkForAllDevices app/build/outputs/apk/channel_dev/debug/app-channel_dev-debug.apk
 	elif [[ $2 = "test" ]]; then
-	   echo "./gradlew :app:assemblechannel_testDebug"
-	   echo "只编译test debug渠道"
-       	#./gradlew :app:assemblechannel_testDebug
-       	installApkForAllDevices app/build/outputs/apk/channel_test/debug/app-channel_test-debug.apk
-       	myandroidlog.sh  com.zq.live
+	    if [[ $3 = "release" ]];then
+	                echo "./gradlew :app:assemblechannel_testRelease"
+                	echo "只编译test release渠道"
+                    ./gradlew :app:assemblechannel_testRelease
+                    installApkForAllDevices app/build/outputs/apk/channel_test/release/app-channel_test-release.apk
+                    myandroidlog.sh  com.zq.live
+	    else
+	        echo "./gradlew :app:assemblechannel_testDebug"
+        	echo "只编译test debug渠道"
+            ./gradlew :app:assemblechannel_testDebug
+            installApkForAllDevices app/build/outputs/apk/channel_test/debug/app-channel_test-debug.apk
+            myandroidlog.sh  com.zq.live
+	    fi
+
+
     elif [[ $2 = "sandbox" ]]; then
-        echo "./gradlew :app:assemblechannel_sandboxDebug"
-        echo "只编译test debug渠道"
-        #./gradlew :app:assemblechannel_sandboxDebug
-        installApkForAllDevices app/build/outputs/apk/channel_sandbox/debug/app-channel_sandbox-debug.apk
+        if [[ $3 = "release" ]]; then
+        	        echo "./gradlew :app:assemblechannel_sandboxRelease"
+                    echo "只编译sandbox release渠道"
+                    ./gradlew :app:assemblechannel_sandboxRelease
+                    installApkForAllDevices app/build/outputs/apk/channel_sandbox/release/app-channel_sandbox-release.apk
+                    myandroidlog.sh  com.zq.live
+        else
+            echo "./gradlew :app:assemblechannel_sandboxDebug"
+            echo "只编译sandbox debug渠道"
+            ./gradlew :app:assemblechannel_sandboxDebug
+            installApkForAllDevices app/build/outputs/apk/channel_sandbox/debug/app-channel_sandbox-debug.apk
+        fi
+
 	else
 		echo "./gradlew :app:assemblechannel_defaultDebug"
 		echo "只编译default debug渠道"
@@ -126,7 +186,7 @@ if [[ $1 = "app" ]]; then
 		    echo "clean一下"
 		    ./gradlew :app:clean
 		fi
-		#./gradlew :app:assemblechannel_defaultDebug --stacktrace
+		./gradlew :app:assemblechannel_defaultDebug --stacktrace
 		installApkForAllDevices app/build/outputs/apk/channel_default/debug/app-channel_default-debug.apk
 		myandroidlog.sh  com.zq.live
 	fi
@@ -135,7 +195,7 @@ else
 		#如果是其他module 并且 之前的 isBuildModule 为false，则clean在编译
 		echo "先clean再编译"
 		changeBuildModule true
-		#./gradlew clean
+		./gradlew clean
 	else
 		echo "直接编译"
 	fi
