@@ -43,6 +43,7 @@ public class LoginByPhoneFragment extends BaseFragment {
     NoLeakEditText mCodeInputTv;
     ExTextView mGetCodeTv;
     ExTextView mLoginTv;
+    ExTextView mErrorHint;
 
     String mPhoneNumber; //发送验证码的电话号码
     String mCode; //验证码
@@ -63,6 +64,7 @@ public class LoginByPhoneFragment extends BaseFragment {
         mPhoneInputTv = (NoLeakEditText) mRootView.findViewById(R.id.phone_input_tv);
         mCodeInputTv = (NoLeakEditText) mRootView.findViewById(R.id.code_input_tv);
         mGetCodeTv = (ExTextView) mRootView.findViewById(R.id.get_code_tv);
+        mErrorHint = (ExTextView) mRootView.findViewById(R.id.error_hint);
         mLoginTv = (ExTextView) mRootView.findViewById(R.id.login_tv);
 
         mPhoneInputTv.setText(U.getPreferenceUtils().getSettingString(PREF_KEY_PHONE_NUM, ""));
@@ -93,7 +95,7 @@ public class LoginByPhoneFragment extends BaseFragment {
                 if (checkPhoneNumber(mPhoneNumber)) {
                     if (!TextUtils.isEmpty(mCode)) {
                         if (!U.getNetworkUtils().hasNetwork()) {
-                            U.getToastUtil().showShort("网络异常，请检查网络之后重试！");
+                            setHintText("网络异常，请检查网络之后重试！", true);
                         } else {
                             if (U.getChannelUtils().getChannel().startsWith("MI_SHOP_mimusic")) {
                                 // 小米商店渠道，需要获取读取imei权限
@@ -108,7 +110,7 @@ public class LoginByPhoneFragment extends BaseFragment {
                             }
                         }
                     } else {
-                        U.getToastUtil().showShort("验证码为空");
+                        setHintText("验证码为空", true);
                     }
                 }
             }
@@ -144,21 +146,27 @@ public class LoginByPhoneFragment extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
-
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(VerifyCodeErrorEvent event) {
         MyLog.d(TAG, "onEventMainThread" + " event=" + event);
-        if (event.getErrno() == 101) {
-            U.getToastUtil().showShort("验证码错误");
+        setHintText(event.getErrmsg(), true);
+    }
+
+    private void setHintText(String text, boolean isError) {
+        if (isError) {
+            mErrorHint.setTextColor(Color.parseColor("#EF5E85"));
+        } else {
+            mErrorHint.setTextColor(Color.parseColor("#398A26"));
         }
+        mErrorHint.setText(text);
     }
 
     private void sendSmsVerifyCode(final String phoneNumber) {
         MyLog.d(TAG, "sendSmsVerifyCode" + " phoneNumber=" + phoneNumber);
         if (!U.getNetworkUtils().hasNetwork()) {
-            U.getToastUtil().showShort("网络异常，请检查网络后重试!");
+            setHintText("网络异常，请检查网络后重试!", true);
             return;
         }
 
@@ -178,7 +186,7 @@ public class LoginByPhoneFragment extends BaseFragment {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     // 发送验证码成功
-                    U.getToastUtil().showShort("验证码发送成功");
+                    setHintText("验证码发送成功", false);
                     U.getPreferenceUtils().setSettingString(PREF_KEY_PHONE_NUM, phoneNumber);
                     mGetCodeTv.setSelected(true);
                     mGetCodeTv.setClickable(false);
@@ -190,7 +198,7 @@ public class LoginByPhoneFragment extends BaseFragment {
                     mLoginTv.setBackgroundResource(R.drawable.img_btn_bg_yellow);
                     startTimeTask();
                 } else {
-                    U.getToastUtil().showShort(result.getErrmsg());
+                    setHintText(result.getErrmsg(), true);
                 }
             }
         }, this);
@@ -236,9 +244,9 @@ public class LoginByPhoneFragment extends BaseFragment {
                 && phoneNumber.length() == 11 && phoneNumber.startsWith("1")) {
             return true;
         } else if (TextUtils.isEmpty(phoneNumber)) {
-            U.getToastUtil().showShort("手机号为空");
+            setHintText("手机号为空", true);
         } else {
-            U.getToastUtil().showShort("手机号有误");
+            setHintText("手机号有误", true);
         }
 
         return false;
