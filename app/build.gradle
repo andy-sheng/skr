@@ -84,10 +84,10 @@ android {
             resValue("string", "channel_desc", '抖音应用商店')
         }
 
-        channel_market1 {
+        channel_market2 {
             flavorDimensions("channel")
-            buildConfigField("String", "CHANNEL_NAME", '\"MARKET1\"')
-            resValue("string", "channel_desc", '自定义渠道1')
+            buildConfigField("String", "CHANNEL_NAME", '\"MARKET2\"')
+            resValue("string", "channel_desc", '自定义渠道2')
         }
 
         channel_dev {
