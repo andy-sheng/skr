@@ -276,8 +276,8 @@ public class UpgradeManager {
                 mForceUpgradeView = new ForceUpgradeView(activity);
                 mForceUpgradeView.setListener(new ForceUpgradeView.Listener() {
                     @Override
-                    public void onUpdateBtnClick() {
-                        forceDownloadBegin();
+                    public boolean onUpdateBtnClick() {
+                        return forceDownloadBegin();
                     }
 
                     @Override
@@ -314,14 +314,16 @@ public class UpgradeManager {
         mForceUpgradeDialog.show();
     }
 
-    private void forceDownloadBegin() {
+    private boolean forceDownloadBegin() {
         int localVersionCode = tryGetSaveFileApkVersion();
         if (localVersionCode == mUpgradeData.getUpgradeInfoModel().getLatestVersionCode()) {
             // 本地包有效，直接安装吧
             mUpgradeData.setStatus(UpgradeData.STATUS_DOWNLOWNED);
             install();
+            return false;
         } else {
             downloadApk(false);
+            return true;
         }
     }
 
@@ -387,8 +389,6 @@ public class UpgradeManager {
             saveFile.delete();
         }
         UpgradeInfoModel updateInfoModel = mUpgradeData.getUpgradeInfoModel();
-
-
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(updateInfoModel.getDownloadURL()));
         request.setMimeType("application/vnd.android.package-archive");
         if (!mUpgradeData.isMute()) {

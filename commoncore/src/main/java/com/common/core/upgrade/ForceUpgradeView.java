@@ -57,10 +57,11 @@ public class ForceUpgradeView extends RelativeLayout {
             @Override
             public void onClick(View v) {
                 if (mListener != null) {
-                    mListener.onUpdateBtnClick();
+                    if(mListener.onUpdateBtnClick()){
+                        mOpContainer.setVisibility(GONE);
+                        mDownloadContainer.setVisibility(VISIBLE);
+                    }
                 }
-                mOpContainer.setVisibility(GONE);
-                mDownloadContainer.setVisibility(VISIBLE);
             }
         });
         mQuitBtn.setOnClickListener(new OnClickListener() {
@@ -126,7 +127,7 @@ public class ForceUpgradeView extends RelativeLayout {
     }
 
     public interface Listener {
-        void onUpdateBtnClick();
+        boolean onUpdateBtnClick();
 
         void onQuitBtnClick();
 
