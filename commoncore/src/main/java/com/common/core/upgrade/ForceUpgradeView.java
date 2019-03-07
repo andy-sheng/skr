@@ -59,6 +59,8 @@ public class ForceUpgradeView extends RelativeLayout {
                 if (mListener != null) {
                     mListener.onUpdateBtnClick();
                 }
+                mOpContainer.setVisibility(GONE);
+                mDownloadContainer.setVisibility(VISIBLE);
             }
         });
         mQuitBtn.setOnClickListener(new OnClickListener() {
@@ -78,8 +80,12 @@ public class ForceUpgradeView extends RelativeLayout {
                 if (mListener != null) {
                     mListener.onCancelBtnClick(mProgress);
                 }
-                mOpContainer.setVisibility(VISIBLE);
-                mDownloadContainer.setVisibility(GONE);
+                if (mProgress < 100) {
+                    mOpContainer.setVisibility(VISIBLE);
+                    mDownloadContainer.setVisibility(GONE);
+                } else if (mProgress >= 100) {
+
+                }
             }
         });
         mOldVersionTv = (ExTextView) this.findViewById(R.id.old_version_tv);

@@ -26,6 +26,7 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.permission.PermissionUtils;
+import com.common.utils.HttpUtils;
 import com.common.utils.U;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
@@ -40,6 +41,8 @@ public class UpgradeManager {
     public static final int MSG_UPDATE_PROGRESS = 1;
     //    public static final int MSG_INSTALL = 2;
     private static final int MSG_RESET_INSTALL_FLAG = 3;
+
+    private static final int MSG_ENSURE_DOWNLOADMANAGER_WORK = 4;
 
     UpgradeData mUpgradeData = new UpgradeData();
 
@@ -92,6 +95,9 @@ public class UpgradeManager {
                     if (mUpgradeData.getStatus() == UpgradeData.STATUS_INSTALLING) {
                         mUpgradeData.setStatus(UpgradeData.STATUS_DOWNLOWNED);
                     }
+                    break;
+                case MSG_ENSURE_DOWNLOADMANAGER_WORK:
+                    downloadApkInner2();
                     break;
                 default:
                     break;
@@ -356,7 +362,7 @@ public class UpgradeManager {
             U.getPermissionUtils().requestExternalStorage(new PermissionUtils.RequestPermission() {
                 @Override
                 public void onRequestPermissionSuccess() {
-                    downloadApkInner();
+                    downloadApkInner1();
                 }
 
                 @Override
@@ -370,16 +376,19 @@ public class UpgradeManager {
                 }
             }, topActivity);
         } else {
-            downloadApkInner();
+            downloadApkInner1();
         }
     }
 
-    private void downloadApkInner() {
+    private void downloadApkInner1() {
+        cancelDownload2();
         File saveFile = getSaveFile();
         if (saveFile.exists()) {
             saveFile.delete();
         }
         UpgradeInfoModel updateInfoModel = mUpgradeData.getUpgradeInfoModel();
+
+
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(updateInfoModel.getDownloadURL()));
         request.setMimeType("application/vnd.android.package-archive");
         if (!mUpgradeData.isMute()) {
@@ -406,7 +415,63 @@ public class UpgradeManager {
         //执行下载任务时注册广播监听下载成功状态
         registerObserver();
         registerReceiver();
+        mUiHandler.removeMessages(MSG_ENSURE_DOWNLOADMANAGER_WORK);
+        mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_DOWNLOADMANAGER_WORK, 6000);
     }
+
+    private void downloadApkInner2() {
+        mUiHandler.removeMessages(MSG_ENSURE_DOWNLOADMANAGER_WORK);
+        cancelDownload1();
+        File saveFile = getSaveFile();
+        if (saveFile.exists()) {
+            saveFile.delete();
+        }
+        UpgradeInfoModel updateInfoModel = mUpgradeData.getUpgradeInfoModel();
+        U.getHttpUtils().downloadFileAsync(updateInfoModel.getDownloadURL(), saveFile, new HttpUtils.OnDownloadProgress() {
+            @Override
+            public void onDownloaded(long downloaded, long totalLength) {
+                DS ds = new DS();
+                ds.progress = (int) (downloaded * 100 / totalLength);
+                ds.status = DS.STATUS_DOWNLOADING;
+                if (mUpgradeData.getStatus() < UpgradeData.STATUS_DOWNLOWNING) {
+                    mUpgradeData.setStatus(UpgradeData.STATUS_DOWNLOWNING);
+                }
+                MyLog.d(TAG, "updateProgress " + ds);
+                Message msg = mUiHandler.obtainMessage(MSG_UPDATE_PROGRESS);
+                msg.obj = ds;
+                mUiHandler.sendMessage(msg);
+
+                // 加通知栏
+            }
+
+            @Override
+            public void onCompleted(String localPath) {
+                DS ds = new DS();
+                ds.progress = 100;
+                ds.status = DS.STATUS_SUCCESS;
+                if (mUpgradeData.getStatus() < UpgradeData.STATUS_DOWNLOWNED) {
+                    mUpgradeData.setStatus(UpgradeData.STATUS_DOWNLOWNED);
+                }
+                MyLog.d(TAG, "updateProgress " + ds);
+                Message msg = mUiHandler.obtainMessage(MSG_UPDATE_PROGRESS);
+                msg.obj = ds;
+                mUiHandler.sendMessage(msg);
+
+                // 加通知栏
+            }
+
+            @Override
+            public void onCanceled() {
+
+            }
+
+            @Override
+            public void onFailed() {
+
+            }
+        });
+    }
+
 
     private void registerObserver() {
         if (mDownloadChangeObserver == null) {
@@ -441,8 +506,20 @@ public class UpgradeManager {
     }
 
     private void cancelDownload() {
-        unregister();
+        cancelDownload1();
+        cancelDownload2();
         mUpgradeData.setStatus(UpgradeData.STATUS_LOAD_DATA_FROM_SERVER);
+    }
+
+    private void cancelDownload1() {
+        unregister();
+    }
+
+    private void cancelDownload2() {
+        UpgradeInfoModel upgradeInfoModel = mUpgradeData.getUpgradeInfoModel();
+        if (upgradeInfoModel != null) {
+            U.getHttpUtils().cancelDownload(upgradeInfoModel.getDownloadURL());
+        }
     }
 
     /**
@@ -459,9 +536,10 @@ public class UpgradeManager {
             cursor = mDownloadManager.query(query);
             if (cursor != null && cursor.moveToFirst()) {
                 //已经下载文件大小
-                ds.downloaded = cursor.getInt(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
+                int downloaded = cursor.getInt(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
                 //下载文件的总大小
-                ds.total = cursor.getInt(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
+                int total = cursor.getInt(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
+                ds.progress = downloaded * 100 / total;
                 //下载状态
                 ds.status = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
             }
@@ -485,6 +563,9 @@ public class UpgradeManager {
             }
         } else {
             mUpgradeData.setStatus(UpgradeData.STATUS_LOAD_DATA_FROM_SERVER);
+        }
+        if (ds.progress > 0) {
+            mUiHandler.removeMessages(MSG_ENSURE_DOWNLOADMANAGER_WORK);
         }
         MyLog.d(TAG, "updateProgress " + ds);
         Message msg = mUiHandler.obtainMessage(MSG_UPDATE_PROGRESS);
@@ -558,19 +639,17 @@ public class UpgradeManager {
     static class DS {
         public static final int STATUS_DOWNLOADING = 2;
         public static final int STATUS_SUCCESS = 8;
-        int downloaded;
-        int total = -1;
+        int progress;
         int status;
 
         public int getProgress() {
-            return (int) (downloaded / (total * 0.01));
+            return progress;
         }
 
         @Override
         public String toString() {
             return "DS{" +
-                    "downloaded=" + downloaded +
-                    ", total=" + total +
+                    "progress=" + progress +
                     ", status=" + status +
                     '}';
         }

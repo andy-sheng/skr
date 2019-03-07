@@ -29,7 +29,7 @@ public class DownloadApkProgressBar extends View {
     }
 
     Paint mPaint;
-    int mProgress = 50;
+    int mProgress = 0;
     int mStrokeWitdh = U.getDisplayUtils().dip2px(2);
     int mR = U.getDisplayUtils().dip2px(17);
 
