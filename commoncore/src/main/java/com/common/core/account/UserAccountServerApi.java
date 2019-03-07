@@ -36,6 +36,7 @@ public interface UserAccountServerApi {
     Observable<ApiResult> login(@Query("mode") int loginType,
                                 @Query("sign") String phoneNum,
                                 @Query("code") String verifyCode,
+                                @Query("platform") int platform,
                                 @Query("channel") String channel,
                                 @Query("deviceID") String deviceID);
 
@@ -52,6 +53,7 @@ public interface UserAccountServerApi {
     Observable<ApiResult> loginWX(@Query("mode") int loginType,
                                   @Query("accessToken") String accessToken,
                                   @Query("openID") String openID,
+                                  @Query("platform") int platform,
                                   @Query("channel") String channel,
                                   @Query("deviceID") String deviceID);
 

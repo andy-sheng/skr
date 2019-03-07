@@ -229,7 +229,7 @@ public class UserAccountManager {
         } else {
             deviceId = U.getMD5Utils().MD5_32(deviceId);
         }
-        userAccountServerApi.login(1, phoneNum, verifyCode, U.getChannelUtils().getChannel(), deviceId)
+        userAccountServerApi.login(1, phoneNum, verifyCode, 20, U.getChannelUtils().getChannel(), deviceId)
                 .subscribeOn(Schedulers.io())
                 .subscribe(new ApiObserver<ApiResult>() {
                     @Override
@@ -262,7 +262,7 @@ public class UserAccountManager {
         } else {
             deviceId = U.getMD5Utils().MD5_32(deviceId);
         }
-        userAccountServerApi.loginWX(mode, accessToken, openId, U.getChannelUtils().getChannel(), deviceId)
+        userAccountServerApi.loginWX(mode, accessToken, openId, 20, U.getChannelUtils().getChannel(), deviceId)
                 .subscribeOn(Schedulers.io())
                 .subscribe(new ApiObserver<ApiResult>() {
                     @Override
