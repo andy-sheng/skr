@@ -15,8 +15,8 @@
 
         <ImageView
             android:id="@+id/sub_leve_iv"
-            android:layout_width="@dimen/view_4_dp"
-            android:layout_height="@dimen/view_4_dp"
+            android:layout_width="@dimen/view_6_dp"
+            android:layout_height="@dimen/view_5_dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/view_1_dp" />
