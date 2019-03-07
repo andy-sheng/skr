@@ -3,6 +3,7 @@ Crash_Doraemon/
 guard-res-apk/
 local_maven/
 build/
+publish.zip
 .DS_Store
 .gradle
 .idea/*
