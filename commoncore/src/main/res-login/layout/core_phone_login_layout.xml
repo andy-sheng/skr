@@ -66,6 +66,16 @@
                 app:bl_stroke_color="#526399"
                 app:bl_stroke_width="@dimen/view_2_dp" />
 
+            <com.common.view.ex.ExTextView
+                android:id="@+id/error_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/code_input_tv"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_14_dp"
+                android:textColor="#EF5E85"
+                android:textSize="@dimen/textsize_14_dp" />
+
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/get_code_tv"
