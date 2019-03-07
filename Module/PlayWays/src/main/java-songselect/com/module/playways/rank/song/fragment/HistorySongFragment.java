@@ -90,7 +90,7 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
         songSelectAdapter = new SongSelectAdapter(new RecyclerOnItemClickListener() {
             @Override
             public void onItemClicked(View view, int position, Object model) {
-                U.getSoundUtils().play(TAG, R.raw.normal_click);
+                U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
                 jump((SongModel) model);
             }
         });
@@ -147,7 +147,7 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
             }
         });
 
-        U.getSoundUtils().preLoad(TAG, R.raw.normal_click);
+        U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
     }
 
     void jump(SongModel songModel) {
