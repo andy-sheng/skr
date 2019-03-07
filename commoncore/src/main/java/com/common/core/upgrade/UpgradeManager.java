@@ -280,8 +280,12 @@ public class UpgradeManager {
                     }
 
                     @Override
-                    public void onCancelBtnClick() {
-                        cancelDownload();
+                    public void onCancelBtnClick(int progress) {
+                        if (progress == 100) {
+                            install();
+                        } else {
+                            cancelDownload();
+                        }
                     }
                 });
                 mForceUpgradeDialog = DialogPlus.newDialog(activity)
@@ -520,7 +524,9 @@ public class UpgradeManager {
         // 防止卡死，做个保护
         mUiHandler.removeMessages(MSG_RESET_INSTALL_FLAG);
         mUiHandler.sendEmptyMessageDelayed(MSG_RESET_INSTALL_FLAG, 4000);
-        dimissDialog();
+        if (!mUpgradeData.getUpgradeInfoModel().isForceUpdate()) {
+            dimissDialog();
+        }
         if (Build.VERSION.SDK_INT >= 24) {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             // 由于没有在Activity环境下启动Activity,设置下面的标签
@@ -545,6 +551,7 @@ public class UpgradeManager {
         MyLog.d(TAG, "onInstallOk");
         unregister();
         mUpgradeData.setStatus(UpgradeData.STATUS_FINISH);
+        dimissDialog();
         U.getToastUtil().showShort("安装成功");
     }
 

@@ -26,6 +26,7 @@ public class ForceUpgradeView extends RelativeLayout {
     ExTextView mNewVersionTv;
 
     Listener mListener;
+    int mProgress;
 
     public ForceUpgradeView(Context context) {
         super(context);
@@ -46,12 +47,12 @@ public class ForceUpgradeView extends RelativeLayout {
     private void init() {
         inflate(getContext(), R.layout.force_upgrade_view_layout, this);
 
-        mContentTv = (ExTextView)this.findViewById(R.id.content_tv);
+        mContentTv = (ExTextView) this.findViewById(R.id.content_tv);
         mVersionTipsTv = this.findViewById(R.id.version_tips_tv);
-        mSizeTipsTv = (ExTextView)this.findViewById(R.id.size_tips_tv);
-        mOpContainer = (LinearLayout)this.findViewById(R.id.op_container);
-        mQuitBtn = (ExTextView)this.findViewById(R.id.quit_btn);
-        mUpdateBtn = (ExTextView)this.findViewById(R.id.update_btn);
+        mSizeTipsTv = (ExTextView) this.findViewById(R.id.size_tips_tv);
+        mOpContainer = (LinearLayout) this.findViewById(R.id.op_container);
+        mQuitBtn = (ExTextView) this.findViewById(R.id.quit_btn);
+        mUpdateBtn = (ExTextView) this.findViewById(R.id.update_btn);
         mUpdateBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,32 +69,38 @@ public class ForceUpgradeView extends RelativeLayout {
                 }
             }
         });
-        mDownloadContainer = (RelativeLayout)this.findViewById(R.id.download_container);
-        mDownloadApkProgressbar = (DownloadApkProgressBar)this.findViewById(R.id.download_apk_progressbar);
-        mCancelBtn = (ExTextView)this.findViewById(R.id.cancel_btn);
+        mDownloadContainer = (RelativeLayout) this.findViewById(R.id.download_container);
+        mDownloadApkProgressbar = (DownloadApkProgressBar) this.findViewById(R.id.download_apk_progressbar);
+        mCancelBtn = (ExTextView) this.findViewById(R.id.cancel_btn);
         mCancelBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mListener != null) {
-                    mListener.onCancelBtnClick();
+                    mListener.onCancelBtnClick(mProgress);
                 }
                 mOpContainer.setVisibility(VISIBLE);
                 mDownloadContainer.setVisibility(GONE);
             }
         });
-        mOldVersionTv = (ExTextView)this.findViewById(R.id.old_version_tv);
-        mNewVersionTv = (ExTextView)this.findViewById(R.id.new_version_tv);
+        mOldVersionTv = (ExTextView) this.findViewById(R.id.old_version_tv);
+        mNewVersionTv = (ExTextView) this.findViewById(R.id.new_version_tv);
     }
 
 
-    void setListener(Listener l){
+    void setListener(Listener l) {
         mListener = l;
     }
 
-    public void updateProgress(int arg1) {
+    public void updateProgress(int progress) {
+        mProgress = progress;
         mOpContainer.setVisibility(GONE);
         mDownloadContainer.setVisibility(VISIBLE);
-        mDownloadApkProgressbar.setProgress(arg1);
+        mDownloadApkProgressbar.setProgress(progress);
+        if (progress == 100) {
+            mCancelBtn.setText("安装");
+        } else {
+            mCancelBtn.setText("取消");
+        }
     }
 
     public void bindData(UpgradeInfoModel upgradeInfoModel) {
@@ -101,10 +108,10 @@ public class ForceUpgradeView extends RelativeLayout {
         mDownloadContainer.setVisibility(GONE);
         mContentTv.setText(upgradeInfoModel.getUpdateContent());
         mVersionTipsTv.setText(upgradeInfoModel.getVersionName());
-        mSizeTipsTv.setText("更新包"+upgradeInfoModel.getPackageSizeStr()+",建议在wifi环境下载更新");
+        mSizeTipsTv.setText("更新包" + upgradeInfoModel.getPackageSizeStr() + ",建议在wifi环境下载更新");
         mUpdateBtn.setText("更新");
-        mOldVersionTv.setText("v"+U.getAppInfoUtils().getVersionName());
-        mNewVersionTv.setText("v"+upgradeInfoModel.getVersionName());
+        mOldVersionTv.setText("v" + U.getAppInfoUtils().getVersionName());
+        mNewVersionTv.setText("v" + upgradeInfoModel.getVersionName());
     }
 
     public void setAlreadyDownloadTips() {
@@ -112,9 +119,11 @@ public class ForceUpgradeView extends RelativeLayout {
         mSizeTipsTv.setText("更新包已在wifi环境下加载完毕");
     }
 
-    public interface Listener{
+    public interface Listener {
         void onUpdateBtnClick();
+
         void onQuitBtnClick();
-        void onCancelBtnClick();
+
+        void onCancelBtnClick(int progress);
     }
 }
