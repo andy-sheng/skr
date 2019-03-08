@@ -1038,7 +1038,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                                 .append(singerModel.getUserInfo().getNickname() + " ").setForegroundColor(CommentModel.TEXT_YELLOW)
 //                                .append("对").setForegroundColor(CommentModel.TEXT_WHITE)
 //                                .append(singerModel.getUserInfo().getNickname()).setForegroundColor(CommentModel.TEXT_YELLOW)
-                                .append("我放弃了演唱").setForegroundColor(CommentModel.TEXT_WHITE)
+                                .append("不唱了").setForegroundColor(CommentModel.TEXT_WHITE)
                                 .create();
                         commentModel.setStringBuilder(stringBuilder);
                         EventBus.getDefault().post(new PretendCommentMsgEvent(commentModel));
