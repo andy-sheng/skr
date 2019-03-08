@@ -104,7 +104,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/view_8_dp"
-            android:text="逃跑用户自动"
+            android:text="逃跑用户自动判负，当局不计分"
             android:textColor="#B2B6D6"
             android:textSize="@dimen/textsize_14_dp" />
     </LinearLayout>
