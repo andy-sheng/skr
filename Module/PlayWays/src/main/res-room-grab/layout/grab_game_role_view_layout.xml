@@ -148,7 +148,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/view_8_dp"
-            android:text="一唱到底+1金币，给别人爆灯-2金币"
+            android:text="一唱到底加金币，给别人爆灯减金币"
             android:textColor="#B2B6D6"
             android:textSize="@dimen/textsize_14_dp" />
     </LinearLayout>
