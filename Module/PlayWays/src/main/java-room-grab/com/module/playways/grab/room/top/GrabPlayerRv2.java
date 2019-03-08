@@ -88,8 +88,10 @@ public class GrabPlayerRv2 extends RelativeLayout {
         inflate(getContext(), R.layout.grab_top_content_view_layout, this);
         mContentLl = (LinearLayout) this.findViewById(R.id.content_ll);
         mErjiIv = (ExImageView) this.findViewById(R.id.erji_iv);
-
         addChildView();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 
     private void addChildView() {
@@ -580,13 +582,6 @@ public class GrabPlayerRv2 extends RelativeLayout {
         initData();
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(GrabSwitchRoomEvent event) {
-        MyLog.d(TAG, "onEvent" + " event=" + event);
-        mCurSeq = -2;
-        initData();
-    }
-
     public void setRoomData(GrabRoomData roomData) {
         mRoomData = roomData;
         initData();
@@ -607,6 +602,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
                 }
             }
         }
+        EventBus.getDefault().unregister(this);
     }
 
     static class VP {
