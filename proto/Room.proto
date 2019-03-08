@@ -163,6 +163,7 @@ enum EQRoundOverReason {
     ROR_NO_ONE_SING = 2; //没人抢唱
     ROR_IN_ROUND_PLAYER_EXIT = 3; //当前玩家退出
     ROR_MULTI_NO_PASS = 4; //多人灭灯
+    ROR_SELF_GIVE_UP         = 5; //自己放弃演唱
 }
 
 message QResultInfo {

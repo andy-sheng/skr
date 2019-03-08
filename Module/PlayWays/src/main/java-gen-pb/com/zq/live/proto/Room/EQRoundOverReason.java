@@ -31,7 +31,12 @@ public enum EQRoundOverReason implements WireEnum {
   /**
    * 多人灭灯
    */
-  ROR_MULTI_NO_PASS(4);
+  ROR_MULTI_NO_PASS(4),
+
+  /**
+   * 自己放弃演唱
+   */
+  ROR_SELF_GIVE_UP(5);
 
   public static final ProtoAdapter<EQRoundOverReason> ADAPTER = new ProtoAdapter_EQRoundOverReason();
 
@@ -51,6 +56,7 @@ public enum EQRoundOverReason implements WireEnum {
       case 2: return ROR_NO_ONE_SING;
       case 3: return ROR_IN_ROUND_PLAYER_EXIT;
       case 4: return ROR_MULTI_NO_PASS;
+      case 5: return ROR_SELF_GIVE_UP;
       default: return null;
     }
   }

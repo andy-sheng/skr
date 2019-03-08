@@ -144,6 +144,11 @@ public interface GrabRoomServerApi {
      */
     @PUT("http://dev.stand.inframe.mobi/v1/stand/want-sing-chance")
     Observable<ApiResult> wangSingChance(@Body RequestBody body);
+
+    //放弃演唱
+    @PUT("http://dev.stand.inframe.mobi/v1/stand/give-up")
+    Observable<ApiResult> giveUpSing(@Body RequestBody body);
+
     /*----------牛逼---------*/
 
     //检查要不要显示红包领取
@@ -153,4 +158,7 @@ public interface GrabRoomServerApi {
     //接受红包
     @PUT("http://dev.api.inframe.mobi/v1/task/trigger-task-reward")
     Observable<ApiResult> receiveCash(@Body RequestBody body);
+
+
+
 }

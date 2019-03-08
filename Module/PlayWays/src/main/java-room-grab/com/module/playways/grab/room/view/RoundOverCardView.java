@@ -100,6 +100,7 @@ public class RoundOverCardView extends RelativeLayout {
         if (reason == EQRoundOverReason.ROR_NO_ONE_SING.getValue()) {
             return NONE_SING_END;
         } else {
+            // 放弃不用单独处理，看在哪个阶段点击放弃的
             return resultType;
         }
     }

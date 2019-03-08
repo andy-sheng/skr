@@ -709,6 +709,40 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }, this);
     }
 
+
+    /**
+     * 放弃演唱接口
+     */
+    public void giveUpSing() {
+        MyLog.w(TAG, "我放弃演唱");
+        estimateOverTsThisRound();
+
+        BaseRoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
+        if (roundInfoModel == null || roundInfoModel.getUserID() != MyUserInfoManager.getInstance().getUid()) {
+            return;
+        }
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("roomID", mRoomData.getGameId());
+        map.put("roundSeq", roundInfoModel.getRoundSeq());
+
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        ApiMethods.subscribe(mRoomServerApi.giveUpSing(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    MyLog.w(TAG, "放弃演唱上报成功 traceid is " + result.getTraceId());
+                } else {
+                    MyLog.w(TAG, "放弃演唱上报失败 traceid is " + result.getTraceId());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                MyLog.w(TAG, "giveUpSing" + " error " + e);
+            }
+        }, this);
+    }
+
     /**
      * 退出房间
      */
