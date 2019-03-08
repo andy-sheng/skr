@@ -133,7 +133,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
         List<GrabPlayerInfoModel> playerInfoModels = now.getPlayUsers();
         mInfoMap.clear();
         MyLog.d(TAG, "initData playerInfoModels.size() is " + playerInfoModels.size());
-        for (int i = 0; i < playerInfoModels.size(); i++) {
+        for (int i = 0; i < playerInfoModels.size() && i < mGrabTopItemViewArrayList.size(); i++) {
             VP vp = mGrabTopItemViewArrayList.get(i);
             mInfoMap.put(playerInfoModels.get(i).getUserInfo().getUserId(), vp);
             vp.grabTopItemView.bindData(playerInfoModels.get(i));
