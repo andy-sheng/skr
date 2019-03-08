@@ -81,6 +81,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import kotlin.Unit;
@@ -550,10 +551,17 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
         mGrabOpBtn.hide();
 
-        mGrabPassView = (GrabPassView)mRootView.findViewById(R.id.grab_pass_view);
+        mGrabPassView = (GrabPassView) mRootView.findViewById(R.id.grab_pass_view);
         mGrabPassView.setListener(new GrabPassView.Listener() {
             @Override
             public void giveUp() {
+                GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
+                if (infoModel != null) {
+                    HashMap map = new HashMap();
+                    map.put("songID", infoModel.getMusic().getItemID());
+                    StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
+                            "give_up_sing", map);
+                }
                 mCorePresenter.giveUpSing();
             }
         });

@@ -368,7 +368,16 @@ public class GrabPlayerRv2 extends RelativeLayout {
                 ObjectAnimator objectAnimator1 = new ObjectAnimator();
                 objectAnimator1.setIntValues(0, 0);
                 objectAnimator1.setDuration(1);
+                final int tti = i;
                 objectAnimator1.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+                        super.onAnimationStart(animation);
+                        if (tti == 0) {
+                            U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.grab_lightup);
+                        }
+                    }
+
                     @Override
                     public void onAnimationCancel(Animator animation) {
                         super.onAnimationCancel(animation);
@@ -382,27 +391,6 @@ public class GrabPlayerRv2 extends RelativeLayout {
                     }
                 });
                 objectAnimator1.setStartDelay(i * 4 * 33);
-                objectAnimator1.addListener(new Animator.AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(Animator animator) {
-
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animator animator) {
-
-                    }
-
-                    @Override
-                    public void onAnimationCancel(Animator animator) {
-
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animator animator) {
-
-                    }
-                });
                 i++;
                 liangdengList.add(objectAnimator1);
             }
@@ -412,7 +400,6 @@ public class GrabPlayerRv2 extends RelativeLayout {
                 @Override
                 public void onAnimationStart(Animator animation) {
                     super.onAnimationStart(animation);
-                    U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.grab_lightup);
                 }
             });
             animatorSet1s.setStartDelay(20 * 33);
