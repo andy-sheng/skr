@@ -120,9 +120,7 @@ public class RankLevelChangeFragment extends BaseFragment {
                                 myScoreResultModel = scoreResultModel;
                             }
                         }
-                        MyLog.d(TAG, " getVoteResult " + " voteInfoModelList " + voteInfoModelList.toString());
-                        MyLog.d(TAG, " getVoteResult " + " scoreResultModel " + myScoreResultModel.toString());
-                        MyLog.d(TAG, " getVoteResult " + " UserGameResultModel " + userGameResults.toString());
+                        
                         mRoomData.setRecordData(new RecordData(voteInfoModelList, myScoreResultModel, userGameResults));
                         animationGo();
                     }
