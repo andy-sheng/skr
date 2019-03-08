@@ -551,7 +551,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         mGrabPassView = (GrabPassView)mRootView.findViewById(R.id.grab_pass_view);
         mGrabPassView.setListener(new GrabPassView.Listener() {
             @Override
-            public void pass() {
+            public void giveUp() {
                 mCorePresenter.giveUpSing();
             }
         });
@@ -769,7 +769,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         MyLog.d(TAG, "onSingBeginTipsPlayOver" + " uid=" + uid);
         mUiHanlder.removeMessages(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
         mSingBeginTipsCardView.setVisibility(View.GONE);
-        mGrabPassView.delayShowPassView(mRoomData.getRealRoundSeq());
+        mGrabPassView.delayShowPassView();
         if (uid == MyUserInfoManager.getInstance().getUid()) {
             mCorePresenter.beginSing();
             // 显示歌词
@@ -989,8 +989,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     @Override
     public void giveUpSuccess(int seq) {
-        mGrabPassView.passSuccess(seq
-        );
+        mGrabPassView.passSuccess();
     }
 
     private void onGrabGameOver(String from) {
