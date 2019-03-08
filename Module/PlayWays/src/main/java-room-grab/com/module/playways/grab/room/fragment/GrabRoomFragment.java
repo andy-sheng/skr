@@ -460,6 +460,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                 mBeginChangeRoomTs = System.currentTimeMillis();
                 mGrabChangeRoomTransitionView.setVisibility(View.VISIBLE);
                 mCorePresenter.switchRoom();
+                mGrabPassView.hideWithAnimation(false);
             }
         });
     }
@@ -533,6 +534,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             @Override
             public void grabCountDownOver() {
                 mCorePresenter.sendMyGrabOver();
+                mGrabPassView.hideWithAnimation(false);
             }
 
             @Override
@@ -555,6 +557,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                 mCorePresenter.giveUpSing();
             }
         });
+        mGrabPassView.hideWithAnimation(false);
     }
 
     private void initSingStageView() {
@@ -807,6 +810,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         mOthersSingCardView.hide();
         mSongInfoCardView.hide();
         mGrabOpBtn.hide();
+        mGrabPassView.hideWithAnimation(false);
         mRoundOverCardView.bindData(songId, reason, resultType, new SVGAListener() {
             @Override
             public void onFinished() {

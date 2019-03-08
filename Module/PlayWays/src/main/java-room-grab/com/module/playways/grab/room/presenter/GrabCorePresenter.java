@@ -730,6 +730,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
+                    mIGrabView.giveUpSuccess(roundInfoModel.getRoundSeq());
                     MyLog.w(TAG, "放弃演唱上报成功 traceid is " + result.getTraceId());
                 } else {
                     MyLog.w(TAG, "放弃演唱上报失败 traceid is " + result.getTraceId());

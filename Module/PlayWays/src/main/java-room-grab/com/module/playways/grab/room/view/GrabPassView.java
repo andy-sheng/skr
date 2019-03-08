@@ -10,6 +10,7 @@ import android.view.animation.OvershootInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
 
+import com.common.log.MyLog;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.module.rank.R;
@@ -18,6 +19,7 @@ import com.module.rank.R;
  * 不唱了界面
  */
 public class GrabPassView extends RelativeLayout {
+    public final static String TAG = "GrabPassView";
     public static final int MSG_ANIMATION_SHOW = 1;
     ExImageView mIvPass;
 
@@ -34,7 +36,9 @@ public class GrabPassView extends RelativeLayout {
                 animation.setInterpolator(new OvershootInterpolator());
                 animation.setFillAfter(true);
                 startAnimation(animation);
+                setVisibility(VISIBLE);
             }
+
         }
     };
 
@@ -82,13 +86,17 @@ public class GrabPassView extends RelativeLayout {
     }
 
     public void hideWithAnimation(boolean needAnim) {
-        TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 1.0f,
-                Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0);
-        animation.setDuration(needAnim ? 200 : 0);
-        animation.setRepeatMode(Animation.REVERSE);
-        animation.setInterpolator(new OvershootInterpolator());
-        animation.setFillAfter(true);
-        startAnimation(animation);
+        MyLog.d(TAG, "hideWithAnimation" + " needAnim=" + needAnim);
+        mUiHandler.removeMessages(MSG_ANIMATION_SHOW);
+        clearAnimation();
+        setVisibility(GONE);
+//        TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 1.0f,
+//                Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0);
+//        animation.setDuration(needAnim ? 200 : 0);
+//        animation.setRepeatMode(Animation.REVERSE);
+//        animation.setInterpolator(new OvershootInterpolator());
+//        animation.setFillAfter(true);
+//        startAnimation(animation);
     }
 
     @Override
