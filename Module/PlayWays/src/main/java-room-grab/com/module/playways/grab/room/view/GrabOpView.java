@@ -237,7 +237,6 @@ public class GrabOpView extends RelativeLayout {
                         if (mListener != null) {
                             mListener.countDownOver();
                         }
-                        U.getSoundUtils().play(GrabRoomFragment.TAG,R.raw.grab_iwannasingworks);
                         // 按钮变成抢唱，且可点击
                         mUiHandler.removeMessages(MSG_HIDE_FROM_END_GUIDE_AUDIO);
                         if (waitNum <= 0) {
