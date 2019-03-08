@@ -201,10 +201,10 @@ public class OthersSingCardView extends RelativeLayout {
         if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_SING) {
             MyLog.d(TAG, "演唱阶段加入的，倒计时没那么多");
             progress = grabRoundInfoModel.getElapsedTimeMs() * 100 / totalMs;
-            leaveTime = totalMs + 1000 - grabRoundInfoModel.getElapsedTimeMs();
+            leaveTime = totalMs - grabRoundInfoModel.getElapsedTimeMs();
         } else {
             progress = 1;
-            leaveTime = totalMs + 1000;
+            leaveTime = totalMs;
         }
         mCountDownProcess.startCountDown(progress, leaveTime);
     }

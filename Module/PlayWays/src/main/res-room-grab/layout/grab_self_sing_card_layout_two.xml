@@ -41,7 +41,7 @@
         android:layout_marginLeft="@dimen/view_10_dp"
         android:layout_marginTop="@dimen/view_98_dp"
         android:background="@drawable/self_sing_biaoqian" />
-    xz
+    
 
     <com.common.view.ex.ExRelativeLayout
         android:layout_width="@dimen/view_80_dp"
