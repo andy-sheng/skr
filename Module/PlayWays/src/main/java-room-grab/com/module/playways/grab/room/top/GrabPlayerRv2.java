@@ -385,7 +385,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
                 objectAnimator1.addListener(new Animator.AnimatorListener() {
                     @Override
                     public void onAnimationStart(Animator animator) {
-                        U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.grab_lightup);
+
                     }
 
                     @Override
@@ -412,6 +412,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
                 @Override
                 public void onAnimationStart(Animator animation) {
                     super.onAnimationStart(animation);
+                    U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.grab_lightup);
                 }
             });
             animatorSet1s.setStartDelay(20 * 33);
