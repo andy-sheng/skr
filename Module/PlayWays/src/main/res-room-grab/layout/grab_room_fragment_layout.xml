@@ -110,6 +110,14 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/view_165_dp" />
+    
+    <com.module.playways.grab.room.view.GrabPassView
+        android:id="@+id/grab_pass_view"
+        android:layout_marginBottom="@dimen/view_130_dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_width="@dimen/view_97_dp"
+        android:layout_height="@dimen/view_60_dp"/>
 
     <com.module.playways.rank.room.gift.GiftContinueViewGroup
         android:id="@+id/gift_continue_vg"

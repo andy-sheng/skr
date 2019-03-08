@@ -47,6 +47,7 @@ import com.module.playways.grab.room.view.GrabDengBigAnimationView;
 import com.module.playways.grab.room.view.GrabGameOverView;
 import com.module.playways.grab.room.view.GrabOpView;
 
+import com.module.playways.grab.room.view.GrabPassView;
 import com.module.playways.grab.room.view.IRedPkgCountDownView;
 import com.module.playways.grab.room.view.OthersSingCardView;
 import com.module.playways.grab.room.view.RedPkgCountDownView;
@@ -140,6 +141,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     RoundOverCardView mRoundOverCardView; // 轮次结束的卡片
 
     GrabOpView mGrabOpBtn; // 抢 倒计时 灭 等按钮
+
+    GrabPassView mGrabPassView;
 
     OthersSingCardView mOthersSingCardView;
 
@@ -544,6 +547,14 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         });
 
         mGrabOpBtn.hide();
+
+        mGrabPassView = (GrabPassView)mRootView.findViewById(R.id.grab_pass_view);
+        mGrabPassView.setListener(new GrabPassView.Listener() {
+            @Override
+            public void pass() {
+                mCorePresenter.giveUpSing();
+            }
+        });
     }
 
     private void initSingStageView() {
@@ -674,6 +685,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         mSingBeginTipsCardView.setVisibility(View.GONE);
         mSongInfoCardView.bindSongModel(mRoomData.getRealRoundSeq(), mRoomData.getGrabConfigModel().getTotalGameRoundSeq(), pendingPlaySongCardData.songModel);
         GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
+        mGrabPassView.hideWithAnimation(false);
         if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_GRAB) {
             MyLog.d(TAG, "这轮刚进来，不播放导唱过场");
             mGrabOpBtn.hide();
@@ -716,6 +728,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         mTopContainerView.setSeqIndex(RoomDataUtils.getSeqOfRoundInfo(mRoomData.getRealRoundInfo()), mRoomData.getGrabConfigModel().getTotalGameRoundSeq());
         mSongInfoCardView.hide();
         mGrabOpBtn.hide();
+        mGrabPassView.hideWithAnimation(false);
         mSingBeginTipsCardView.setVisibility(View.VISIBLE);
 
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
@@ -756,6 +769,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         MyLog.d(TAG, "onSingBeginTipsPlayOver" + " uid=" + uid);
         mUiHanlder.removeMessages(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
         mSingBeginTipsCardView.setVisibility(View.GONE);
+        mGrabPassView.delayShowPassView(mRoomData.getRealRoundSeq());
         if (uid == MyUserInfoManager.getInstance().getUid()) {
             mCorePresenter.beginSing();
             // 显示歌词
@@ -971,6 +985,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                 }
             }, 1500 - t);
         }
+    }
+
+    @Override
+    public void giveUpSuccess(int seq) {
+        mGrabPassView.passSuccess(seq
+        );
     }
 
     private void onGrabGameOver(String from) {

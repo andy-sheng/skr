@@ -1,0 +1,17 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:parentTag="android.widget.RelativeLayout">
+
+    <com.common.view.ex.ExImageView
+        app:bl_pressed_drawable="@drawable/buchangle_anxia"
+        app:bl_unPressed_drawable="@drawable/buchangle"
+        android:layout_alignParentRight="true"
+        android:id="@+id/iv_pass"
+        android:layout_width="@dimen/view_102_dp"
+        android:layout_height="@dimen/view_74_dp"
+        />
+
+</merge>

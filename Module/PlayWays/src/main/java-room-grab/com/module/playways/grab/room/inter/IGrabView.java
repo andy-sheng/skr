@@ -50,4 +50,6 @@ public interface IGrabView {
     void onGetGameResult(boolean success);
 
     void onChangeRoomResult(boolean success,String errorMsg);
+
+    void giveUpSuccess(int seq);
 }
