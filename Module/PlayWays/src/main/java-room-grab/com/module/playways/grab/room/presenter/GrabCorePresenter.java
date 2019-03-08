@@ -385,6 +385,13 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     public void lightsOff() {
         GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
+        if (now == null) {
+            return;
+        }
+        if (now.getStatus() != GrabRoundInfoModel.STATUS_SING) {
+            MyLog.d(TAG, "lightsOff 不在演唱状态，cancel status=" + now.getStatus() + " roundSeq=" + now.getRoundSeq());
+            return;
+        }
         int roundSeq = now.getRoundSeq();
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", mRoomData.getGameId());
@@ -420,6 +427,13 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     public void lightsBurst() {
         GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
+        if (now == null) {
+            return;
+        }
+        if (now.getStatus() != GrabRoundInfoModel.STATUS_SING) {
+            MyLog.d(TAG, "lightsBurst 不在演唱状态，cancel status=" + now.getStatus() + " roundSeq=" + now.getRoundSeq());
+            return;
+        }
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", mRoomData.getGameId());
         int roundSeq = now.getRoundSeq();
@@ -650,7 +664,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     public void sendMyGrabOver() {
         MyLog.d(TAG, "上报我的抢唱结束 ");
-        BaseRoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
+        GrabRoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
         if (roundInfoModel == null) {
             return;
         }
