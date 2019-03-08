@@ -8,41 +8,22 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.common.core.avatar.AvatarUtils;
-import com.common.core.userinfo.model.UserInfoModel;
 import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
-import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
-import com.common.view.ex.ExRelativeLayout;
 
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.grab.room.event.ShowPersonCardEvent;
-import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 
 import com.common.view.ex.ExTextView;
 
 import com.module.rank.R;
-import com.opensource.svgaplayer.SVGACallback;
-import com.opensource.svgaplayer.SVGADrawable;
-import com.opensource.svgaplayer.SVGAImageView;
-import com.opensource.svgaplayer.SVGAParser;
-import com.opensource.svgaplayer.SVGAVideoEntity;
 
 import org.greenrobot.eventbus.EventBus;
-import org.jetbrains.annotations.NotNull;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 
 import io.reactivex.functions.Consumer;
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class GrabTopItemView extends RelativeLayout {
     public final static String TAG = "GrabTopItemView";
@@ -56,6 +37,8 @@ public class GrabTopItemView extends RelativeLayout {
     AnimationDrawable mFlickerAnim;
 
     public ExTextView mLeaveIv;
+
+    public boolean mShowEmptySeat = false;
 
     int mMode = MODE_GRAB;
 
@@ -86,7 +69,9 @@ public class GrabTopItemView extends RelativeLayout {
                     @Override
                     public void accept(Object o) {
                         if (mPlayerInfoModel != null && mPlayerInfoModel.getUserInfo() != null) {
-                            EventBus.getDefault().post(new ShowPersonCardEvent(mPlayerInfoModel.getUserInfo().getUserId()));
+                            if (!mShowEmptySeat) {
+                                EventBus.getDefault().post(new ShowPersonCardEvent(mPlayerInfoModel.getUserInfo().getUserId()));
+                            }
                         }
                     }
                 });
@@ -126,6 +111,7 @@ public class GrabTopItemView extends RelativeLayout {
                     .setBorderWidth(U.getDisplayUtils().dip2px(2))
                     .build()
             );
+            mShowEmptySeat = false;
         }
     }
 
@@ -141,6 +127,7 @@ public class GrabTopItemView extends RelativeLayout {
                 .setBorderWidth(U.getDisplayUtils().dip2px(2))
                 .build()
         );
+        mShowEmptySeat = false;
 
 //        if (mPlayerInfoModel.isOnline()) {
 //            mLeaveIv.setVisibility(GONE);
@@ -157,6 +144,7 @@ public class GrabTopItemView extends RelativeLayout {
     //占位的View
     public void setToPlaceHolder() {
         mAvatarIv.setImageDrawable(U.getDrawable(R.drawable.guanzhong_kongwei));
+        mShowEmptySeat = true;
     }
 
     //开始闪烁，有人爆灯的时候

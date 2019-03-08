@@ -26,9 +26,9 @@ function findChannel()
 
 function findChannel2()
 {
-  for file in `ls app/publish`
+  for file in `ls ./publish`
   do
-    local path=app/publish/$file
+    local path=./publish/$file
     if [ -d $path ]
      then
       echo "DIR $path"
