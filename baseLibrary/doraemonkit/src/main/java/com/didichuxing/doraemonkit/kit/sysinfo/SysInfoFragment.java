@@ -126,26 +126,28 @@ public class SysInfoFragment extends BaseFragment {
         sysInfoItems.add(new SysInfoItem("打分引擎(点击切换)", ScoreConfig.getDesc(), new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final List<Pair<String,Integer>> channels = new ArrayList<>();
-                channels.add(new Pair<String, Integer>("ACR+MELP",3));
-                channels.add(new Pair<String, Integer>("仅MELP",1));
-                channels.add(new Pair<String, Integer>("仅ACR",2));
                 List<DialogListItem> listItems = new ArrayList<>();
-                for (final Pair<String, Integer> channel : channels) {
-                    listItems.add(new DialogListItem(channel.first, new Runnable() {
-                        @Override
-                        public void run() {
-                            ScoreConfig.setPrefConfig(channel.second);
-                            U.getToastUtil().showShort("请重启app");
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Process.killProcess(Process.myPid());
-                                }
-                            }, 1000);
-                        }
-                    }));
-                }
+                listItems.add(new DialogListItem(ScoreConfig.isMelpEnable() ? "关闭MELP" : "打开MELP", new Runnable() {
+                    @Override
+                    public void run() {
+                        ScoreConfig.setMelpEnable(!ScoreConfig.isMelpEnable());
+                        initData();
+                    }
+                }));
+                listItems.add(new DialogListItem(ScoreConfig.isAcrEnable() ? "关闭ACR" : "打开ACR", new Runnable() {
+                    @Override
+                    public void run() {
+                        ScoreConfig.setAcrEnable(!ScoreConfig.isAcrEnable());
+                        initData();
+                    }
+                }));
+                listItems.add(new DialogListItem(ScoreConfig.isMelpServerEnable() ? "关闭MELP_SERVER" : "打开MELP_SERVER", new Runnable() {
+                    @Override
+                    public void run() {
+                        ScoreConfig.setMelpServerEnable(!ScoreConfig.isMelpServerEnable());
+                        initData();
+                    }
+                }));
                 ListDialog listDialog = new ListDialog(getContext());
                 listDialog.showList(listItems);
             }

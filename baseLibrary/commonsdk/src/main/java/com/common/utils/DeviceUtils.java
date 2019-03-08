@@ -211,7 +211,6 @@ public class DeviceUtils {
         return packageInfo != null;
     }
 
-
     public String getImei() {
         try {
             TelephonyManager tm = (TelephonyManager) U.app().getSystemService(Context.TELEPHONY_SERVICE);

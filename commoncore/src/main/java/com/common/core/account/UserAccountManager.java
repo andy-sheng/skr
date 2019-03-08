@@ -531,7 +531,9 @@ public class UserAccountManager {
                     boolean result = (boolean) obj;
                     if (result) {
                         // todo 连接融云失败
-                        U.getToastUtil().showShort("服务连接不可用");
+                        if (U.getActivityUtils().isAppForeground()) {
+                            U.getToastUtil().showShort("融云连接不可用");
+                        }
                     } else {
                         // todo token有问题, 重试一次(可能过期或者appkey不一致等)
                         getIMToken();
