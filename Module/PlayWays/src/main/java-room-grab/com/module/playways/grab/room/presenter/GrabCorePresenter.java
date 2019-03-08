@@ -1023,7 +1023,27 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                         mIGrabView.roundOver(event.lastRoundInfo.getMusic().getItemID(), event.lastRoundInfo.getOverReason(), event.lastRoundInfo.getResultType(), true, now);
                     }
                 });
-
+                if (event.lastRoundInfo.getOverReason() == EQRoundOverReason.ROR_SELF_GIVE_UP.getValue()) {
+                    // 自己放弃，飘个弹幕
+                    PlayerInfoModel singerModel = RoomDataUtils.getPlayerInfoById(mRoomData, event.lastRoundInfo.getUserID());
+                    if (singerModel != null) {
+                        CommentModel commentModel = new CommentModel();
+                        commentModel.setCommentType(CommentModel.TYPE_TRICK);
+                        commentModel.setUserId(singerModel.getUserID());
+                        commentModel.setAvatar(singerModel.getUserInfo().getAvatar());
+                        commentModel.setUserName(singerModel.getUserInfo().getNickname());
+                        commentModel.setAvatarColor(singerModel.getUserInfo().getSex() == ESex.SX_MALE.getValue() ?
+                                U.getColor(R.color.color_man_stroke_color) : U.getColor(R.color.color_woman_stroke_color));
+                        SpannableStringBuilder stringBuilder = new SpanUtils()
+//                                .append(playerInfoModel.getUserInfo().getNickname() + " ").setForegroundColor(CommentModel.TEXT_YELLOW)
+//                                .append("对").setForegroundColor(CommentModel.TEXT_WHITE)
+//                                .append(singerModel.getUserInfo().getNickname()).setForegroundColor(CommentModel.TEXT_YELLOW)
+                                .append("我放弃了演唱").setForegroundColor(CommentModel.TEXT_WHITE)
+                                .create();
+                        commentModel.setStringBuilder(stringBuilder);
+                        EventBus.getDefault().post(new PretendCommentMsgEvent(commentModel));
+                    }
+                }
                 if (event.lastRoundInfo.getUserID() == MyUserInfoManager.getInstance().getUid()) {
                     onSelfRoundOver(event.lastRoundInfo);
                 }
@@ -1259,7 +1279,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             MyLog.w(TAG, "有人离开房间了,但是不是这个轮次：userID " + event.userID + ", seq " + event.roundSeq + "，当前轮次是 " + mRoomData.getExpectRoundInfo());
         }
     }
-
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QRoundOverMsgEvent event) {

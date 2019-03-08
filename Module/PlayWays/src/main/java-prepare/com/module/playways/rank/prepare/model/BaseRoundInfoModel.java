@@ -27,12 +27,14 @@ public abstract class BaseRoundInfoModel implements Serializable {
      * 2没人抢唱
      * 3当前玩家退出
      * 4多人灭灯
+     * 5自己放弃演唱
      * <p>
      * 排位赛 结束原因
      * 0 未知
      * 1 正常
      * 2 玩家退出
      * 3 多人灭灯
+     * 4
      */
     protected int overReason; // 结束的原因
 
