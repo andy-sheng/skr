@@ -24,9 +24,38 @@ function findChannel()
   done  
 }
 
+function findChannel2()
+{
+  for file in `ls app/publish`
+  do
+    local path=app/publish/$file
+    if [ -d $path ]
+     then
+      echo "DIR $path"
+      walk $path
+    else
+      echo "FILE $path"
+	  #echo "filename: ${path%.*}"
+	  ext=${path##*.}
+	  echo $ext
+	  if [[ $ext = "apk" ]]; then
+	  	if [[ $path == *"-$1-"* ]]; then
+	  		if [[ $path == *"-release-"* ]]; then
+	  			echo 找到$path
+	  			uploadFile=$path
+	  		fi
+		fi
+	  fi
+    fi
+  done
+}
+
 findChannel $1
 if [[ x$uploadFile = x"" ]]; then
-	echo "请选择某个渠道的release包，输入如 ./upload.sh TEST"
+    findChannel2 $1
+fi
+if [[ x$uploadFile = x"" ]]; then
+    echo "请选择某个渠道的release包，输入如 ./upload.sh TEST"
 fi
 time=$(date "+%Y%m%d-%H:%M:%S")
 apiKey=3dd7d2a8ab6591ca44fb8cbbe1333785
