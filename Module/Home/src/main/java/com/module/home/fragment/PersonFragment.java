@@ -225,15 +225,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
                     @Override
                     public void accept(Object o) {
                         // 好友，双向关注
-                        Bundle bundle = new Bundle();
-                        bundle.putInt(RelationFragment.FROM_PAGE_KEY, RelationFragment.FROM_FRIENDS);
-                        U.getFragmentUtils().addFragment(
-                                FragmentUtils.newAddParamsBuilder(getActivity(), RelationFragment.class)
-                                        .setBundle(bundle)
-                                        .setAddToBackStack(true)
-                                        .setHasAnimation(true)
-                                        .build());
-
+                        openRelationFragment(RelationFragment.FROM_FRIENDS);
                     }
                 });
 
@@ -243,14 +235,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
                     @Override
                     public void accept(Object o) {
                         // 粉丝，我关注的
-                        Bundle bundle = new Bundle();
-                        bundle.putInt(RelationFragment.FROM_PAGE_KEY, RelationFragment.FROM_FANS);
-                        U.getFragmentUtils().addFragment(
-                                FragmentUtils.newAddParamsBuilder(getActivity(), RelationFragment.class)
-                                        .setBundle(bundle)
-                                        .setAddToBackStack(true)
-                                        .setHasAnimation(true)
-                                        .build());
+                        openRelationFragment(RelationFragment.FROM_FANS);
                     }
                 });
 
@@ -260,16 +245,23 @@ public class PersonFragment extends BaseFragment implements IPersonView {
                     @Override
                     public void accept(Object o) {
                         // 关注, 关注我的
-                        Bundle bundle = new Bundle();
-                        bundle.putInt(RelationFragment.FROM_PAGE_KEY, RelationFragment.FROM_FOLLOW);
-                        U.getFragmentUtils().addFragment(
-                                FragmentUtils.newAddParamsBuilder(getActivity(), RelationFragment.class)
-                                        .setBundle(bundle)
-                                        .setAddToBackStack(true)
-                                        .setHasAnimation(true)
-                                        .build());
+                        openRelationFragment(RelationFragment.FROM_FOLLOW);
                     }
                 });
+    }
+
+    private void openRelationFragment(int mode) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(RelationFragment.FROM_PAGE_KEY, mode);
+        bundle.putInt(RelationFragment.FRIEND_NUM_KEY, mFriendNum);
+        bundle.putInt(RelationFragment.FOLLOW_NUM_KEY, mFocusNum);
+        bundle.putInt(RelationFragment.FANS_NUM_KEY, mFansNum);
+        U.getFragmentUtils().addFragment(
+                FragmentUtils.newAddParamsBuilder(getActivity(), RelationFragment.class)
+                        .setBundle(bundle)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(true)
+                        .build());
     }
 
     private void initMedalView() {
