@@ -812,10 +812,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
             public void onNext(ApiResult result) {
                 if (result.getErrno() == 0) {
+                    EventBus.getDefault().post(new GrabSwitchRoomEvent());
                     JoinGrabRoomRspModel joinGrabRoomRspModel = JSON.parseObject(result.getData().toJSONString(), JoinGrabRoomRspModel.class);
                     mRoomData.loadFromRsp(joinGrabRoomRspModel);
                     joinRoomAndInit(false);
-                    EventBus.getDefault().post(new GrabSwitchRoomEvent());
                     mRoomData.checkRoundInEachMode();
                     mIGrabView.onChangeRoomResult(true, null);
                 } else {
