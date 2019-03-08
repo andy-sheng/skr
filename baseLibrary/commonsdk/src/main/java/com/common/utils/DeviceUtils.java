@@ -219,7 +219,7 @@ public class DeviceUtils {
             String imei = tm.getDeviceId();
             return imei;
         } catch (Throwable var6) {
-            return "N/A";
+            return "";
         }
     }
 
