@@ -174,6 +174,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
     //修改头像
     private void onClickAvatarContainer() {
         ResPicker.getInstance().setParams(ResPicker.newParamsBuilder()
+                .setMultiMode(false)
                 .setSelectLimit(1)
                 .setCropStyle(CropImageView.Style.CIRCLE)
                 .build()
