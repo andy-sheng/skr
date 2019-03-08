@@ -126,12 +126,14 @@ public class SysInfoFragment extends BaseFragment {
         sysInfoItems.add(new SysInfoItem("打分引擎(点击切换)", ScoreConfig.getDesc(), new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final ListDialog listDialog = new ListDialog(getContext());
                 List<DialogListItem> listItems = new ArrayList<>();
                 listItems.add(new DialogListItem(ScoreConfig.isMelpEnable() ? "关闭MELP" : "打开MELP", new Runnable() {
                     @Override
                     public void run() {
                         ScoreConfig.setMelpEnable(!ScoreConfig.isMelpEnable());
                         initData();
+                        listDialog.dissmiss();
                     }
                 }));
                 listItems.add(new DialogListItem(ScoreConfig.isAcrEnable() ? "关闭ACR" : "打开ACR", new Runnable() {
@@ -139,6 +141,7 @@ public class SysInfoFragment extends BaseFragment {
                     public void run() {
                         ScoreConfig.setAcrEnable(!ScoreConfig.isAcrEnable());
                         initData();
+                        listDialog.dissmiss();
                     }
                 }));
                 listItems.add(new DialogListItem(ScoreConfig.isMelpServerEnable() ? "关闭MELP_SERVER" : "打开MELP_SERVER", new Runnable() {
@@ -146,9 +149,9 @@ public class SysInfoFragment extends BaseFragment {
                     public void run() {
                         ScoreConfig.setMelpServerEnable(!ScoreConfig.isMelpServerEnable());
                         initData();
+                        listDialog.dissmiss();
                     }
                 }));
-                ListDialog listDialog = new ListDialog(getContext());
                 listDialog.showList(listItems);
             }
         }));
