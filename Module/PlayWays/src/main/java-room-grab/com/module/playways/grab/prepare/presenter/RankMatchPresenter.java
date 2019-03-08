@@ -86,7 +86,7 @@ public class RankMatchPresenter extends BaseMatchPresenter {
     }
 
     public void disposeMatchTask() {
-        if (mStartMatchTask != null && !mStartMatchTask.isDisposed()) {
+        if (mStartMatchTask != null) {
             mStartMatchTask.dispose();
         }
     }
@@ -186,6 +186,7 @@ public class RankMatchPresenter extends BaseMatchPresenter {
         super.destroy();
         disposeLoopMatchTask();
         disposeMatchTask();
+        cancelCheckTask();
         EventBus.getDefault().unregister(this);
         if(mMatchState== MatchState.JoinRongYunRoomSuccess ){
             // 只是加入融云成功但是并没有返回进入准备页面
