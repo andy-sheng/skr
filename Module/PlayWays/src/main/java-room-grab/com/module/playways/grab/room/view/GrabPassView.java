@@ -73,7 +73,7 @@ public class GrabPassView extends RelativeLayout {
     public void delayShowPassView() {
         hideWithAnimation(false);
         mUiHandler.removeMessages(MSG_ANIMATION_SHOW);
-        mUiHandler.sendEmptyMessageDelayed(MSG_ANIMATION_SHOW,500);
+        mUiHandler.sendEmptyMessageDelayed(MSG_ANIMATION_SHOW,5000);
     }
 
     public void passSuccess() {
