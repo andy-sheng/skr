@@ -5,16 +5,25 @@ import android.text.TextUtils;
 
 import java.io.Serializable;
 
+/**
+ * 几个典型的CASE
+ * 1. 服务器配置的升级条目有
+ * 1.7.0 不强升
+ * 1.5.0 强升
+ * 这时用户的版本为
+ * a. 1.4.0 希望返回 1.7.0 强升
+ * b. 1.6.0 希望返回 1.7.0 不强升
+ */
 public class UpgradeInfoModel implements Serializable {
-    String downloadURL;
-    long updateTimeMs;
-    int latestVersionCode;
-    boolean forceUpdate;
-    long packageSize;
-    String updateTitle;
-    String updateContent;
-    String mVersionName;
-    String mPackageSizeStr;
+    String downloadURL; // 下载url
+    long updateTimeMs; // 更新时间
+    int latestVersionCode;// url的包对应的版本号
+    boolean forceUpdate;// 是否强制升级
+    long packageSize;// 包大小
+    String updateTitle;// 更新文本标题
+    String updateContent;// 更新文本内容
+    String mVersionName;// 版本name 客户端自用
+    String mPackageSizeStr;// 包大小文本描述自用
 
     public String getDownloadURL() {
         return downloadURL;
