@@ -1035,7 +1035,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                         commentModel.setAvatarColor(singerModel.getUserInfo().getSex() == ESex.SX_MALE.getValue() ?
                                 U.getColor(R.color.color_man_stroke_color) : U.getColor(R.color.color_woman_stroke_color));
                         SpannableStringBuilder stringBuilder = new SpanUtils()
-//                                .append(playerInfoModel.getUserInfo().getNickname() + " ").setForegroundColor(CommentModel.TEXT_YELLOW)
+                                .append(singerModel.getUserInfo().getNickname() + " ").setForegroundColor(CommentModel.TEXT_YELLOW)
 //                                .append("对").setForegroundColor(CommentModel.TEXT_WHITE)
 //                                .append(singerModel.getUserInfo().getNickname()).setForegroundColor(CommentModel.TEXT_YELLOW)
                                 .append("我放弃了演唱").setForegroundColor(CommentModel.TEXT_WHITE)
