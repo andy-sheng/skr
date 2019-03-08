@@ -18,6 +18,7 @@ import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent;
+import com.module.playways.grab.room.event.GrabSwitchRoomEvent;
 import com.module.playways.grab.room.event.LightOffAnimationOverEvent;
 import com.module.playways.grab.room.fragment.GrabRoomFragment;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
@@ -576,6 +577,13 @@ public class GrabPlayerRv2 extends RelativeLayout {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabPlaySeatUpdateEvent event) {
         MyLog.d(TAG, "onEvent" + " event=" + event);
+        initData();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(GrabSwitchRoomEvent event) {
+        MyLog.d(TAG, "onEvent" + " event=" + event);
+        mCurSeq = -2;
         initData();
     }
 
