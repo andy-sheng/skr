@@ -29,7 +29,7 @@ public class ChannelUtils {
 //            Field field = ct.getField("CHANNEL_NAME");
 //            channelNameFromBuildConfig = (String) field.get(null);
             String walleChannel = WalleChannelReader.getChannel(U.app());
-            if(!TextUtils.isEmpty(walleChannel)){
+            if (!TextUtils.isEmpty(walleChannel)) {
                 channelNameFromBuildConfig = walleChannel;
             }
             channelNameFromBuildConfig = U.getPreferenceUtils().getSettingString(PREF_KEY_DEBUG_CHANNEL, channelNameFromBuildConfig);
@@ -89,7 +89,7 @@ public class ChannelUtils {
         if (TextUtils.isEmpty(mSubChannel)) {
             return channelNameFromPref;
         }
-        return channelNameFromPref + mSubChannel;
+        return channelNameFromPref + "_" + mSubChannel;
     }
 
     public boolean isStaging() {

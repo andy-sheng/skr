@@ -8,6 +8,7 @@ import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
@@ -178,4 +179,9 @@ public interface RoomServerApi {
         */
     @PUT("http://dev.game.inframe.mobi/v1/game/pk-commit-segment-result")
     Observable<ApiResult> sendPkPerSegmentResult(@Body RequestBody body);
+
+
+    @POST("http://dev.grade.inframe.mobi/v1/grade/sings")
+    Observable<ApiResult> requestMelpScore(@Body RequestBody body);
+
 }
