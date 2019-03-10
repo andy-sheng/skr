@@ -186,7 +186,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
 
         if (MyUserInfoManager.getInstance().getSex() == ESex.SX_MALE.getValue()) {
             selectSex(true);
-        } else {
+        } else if (MyUserInfoManager.getInstance().getSex() == ESex.SX_FEMALE.getValue()) {
             selectSex(false);
         }
 
