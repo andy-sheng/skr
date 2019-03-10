@@ -74,7 +74,7 @@ public class StatisticsAdapter {
      * @param key      主key
      * @param params   参数 可为null
      */
-    public static void recordCountEvent(String category, String key, HashMap params) {
+    public static void recordCountEvent(String category, String key, HashMap<String,String> params) {
         if (useXiaomi) {
             MiStatInterface.recordCountEvent(category, key, params);
         }

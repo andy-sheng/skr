@@ -205,11 +205,6 @@ public class LoginFragment extends BaseFragment {
             }
         });
 
-        StatisticsAdapter.recordCountEvent("login", "expose", null);
-        if (U.getPreferenceUtils().getSettingBoolean("newinstall", true)) {
-            U.getPreferenceUtils().setSettingBoolean("newinstall", false);
-            StatisticsAdapter.recordCountEvent("signup", "expose", null);
-        }
     }
 
 
@@ -269,6 +264,16 @@ public class LoginFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         mSkrPermission.onBackFromPermisionManagerMaybe();
+    }
+
+    @Override
+    protected void onFragmentVisible() {
+        super.onFragmentVisible();
+        StatisticsAdapter.recordCountEvent("login", "expose", null);
+        if (U.getPreferenceUtils().getSettingBoolean("newinstall", true)) {
+            U.getPreferenceUtils().setSettingBoolean("newinstall", false);
+            StatisticsAdapter.recordCountEvent("signup", "expose", null);
+        }
     }
 
     @Override

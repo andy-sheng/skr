@@ -20,16 +20,6 @@ public class CommonToastView extends RelativeLayout {
         init();
     }
 
-    private CommonToastView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
-    }
-
-    private CommonToastView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init();
-    }
-
     private void init() {
         inflate(getContext(), R.layout.common_toast_view, this);
 

@@ -108,27 +108,11 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
     @Override
     public void onActivityResumed(Activity activity) {
         U.getActivityUtils().setCurrentActivity(activity);
-        StatisticsAdapter.recordSessionStart(activity, activity.getClass().getSimpleName());
     }
 
     @Override
     public void onActivityPaused(Activity activity) {
-        /**
-         * 02-22 21:39:58.831 D/PlayWaysActivity(20945): onPause137180481
-         * 02-22 21:39:58.831 D/UmengStatistics(20945): recordSessionEnd key=PlayWaysActivity
-         * 02-22 21:39:58.832 D/SongSelectFragment(20945): onPause
-         * 02-22 21:39:58.832 D/SongSelectFragment(20945): onFragmentInvisible
-         * 02-22 21:39:58.832 D/UmengStatistics(20945): recordPageEnd pageName=SongSelectFragment
-         *
-         * 这么改因为先调用 Activity 的onPause 在调用 Fragment 的 onPause
-         * 导致统计顺序可能有问题
-         */
-        mUiHanlder.post(new Runnable() {
-            @Override
-            public void run() {
-                StatisticsAdapter.recordSessionEnd(activity, activity.getClass().getSimpleName());
-            }
-        });
+
     }
 
     @Override

@@ -114,7 +114,7 @@ public class ChannelUtils {
         if (!TextUtils.isEmpty(subChannel)) {
             HashMap map = new HashMap();
             map.put("from", subChannel);
-            StatisticsAdapter.recordCountEvent(U.getChannelUtils().getChannel(), "sub_channel", map);
+            StatisticsAdapter.recordCountEvent("", "sub_channel", map);
             U.getPreferenceUtils().setSettingString(PREF_KEY_SUB_CHANNEL, subChannel);
         } else {
             U.getPreferenceUtils().setSettingString(PREF_KEY_SUB_CHANNEL, "");

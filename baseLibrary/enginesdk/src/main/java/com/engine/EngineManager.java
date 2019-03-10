@@ -416,7 +416,7 @@ public class EngineManager implements AgoraOutCallback {
         int retCode = AgoraEngineAdapter.getInstance().joinChannel(null, roomid, "Extra Optional Data", userId);
         if (retCode < 0) {
             HashMap map = new HashMap();
-            map.put("reason", retCode);
+            map.put("reason", ""+retCode);
             StatisticsAdapter.recordCountEvent("agora", "join_failed", map);
             Message msg = mCustomHandlerThread.obtainMessage();
             msg.what = MSG_JOIN_ROOM_AGAIN;

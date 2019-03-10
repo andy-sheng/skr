@@ -25,6 +25,10 @@ public class UmengInit {
     public final static String TAG = "UmengInit";
     private static boolean hasInited = false;
 
+    /**
+     * 需要保证线性不交叉
+     * 每个 onPageStart 都有一个 onPageEnd 配对。这样才能保证每个页面统计的正确。
+     */
     public static void init() {
         if (hasInited) {
             return;

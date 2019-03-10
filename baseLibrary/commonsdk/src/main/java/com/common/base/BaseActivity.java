@@ -39,6 +39,7 @@ import com.common.lifecycle.ActivityLifecycleForRxLifecycle;
 import com.common.lifecycle.ActivityLifecycleable;
 import com.common.log.MyLog;
 import com.common.mvp.Presenter;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.AndroidBug5497WorkaroundSupportingTranslucentStatus;
 import com.common.utils.U;
 import com.jude.swipbackhelper.SwipeBackHelper;
@@ -262,6 +263,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
     protected void onResume() {
         MyLog.d(TAG, "onResume" + hashCode());
         super.onResume();
+        StatisticsAdapter.recordSessionStart(this, this.getClass().getSimpleName());
         for (Presenter presenter : mPresenterSet) {
             presenter.resume();
         }
@@ -271,6 +273,23 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
     protected void onPause() {
         MyLog.d(TAG, "onPause" + hashCode());
         super.onPause();
+        /**
+         * 02-22 21:39:58.831 D/PlayWaysActivity(20945): onPause137180481
+         * 02-22 21:39:58.831 D/UmengStatistics(20945): recordSessionEnd key=PlayWaysActivity
+         * 02-22 21:39:58.832 D/SongSelectFragment(20945): onPause
+         * 02-22 21:39:58.832 D/SongSelectFragment(20945): onFragmentInvisible
+         * 02-22 21:39:58.832 D/UmengStatistics(20945): recordPageEnd pageName=SongSelectFragment
+         *
+         * 这么改因为先调用 Activity 的onPause 在调用 Fragment 的 onPause
+         * 导致统计顺序可能有问题
+         */
+//        mUiHanlder.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                StatisticsAdapter.recordSessionEnd(activity, activity.getClass().getSimpleName());
+//            }
+//        });
+        StatisticsAdapter.recordSessionEnd(this, this.getClass().getSimpleName());
         for (Presenter presenter : mPresenterSet) {
             presenter.pause();
         }
@@ -314,7 +333,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
     }
 
     protected void destroy() {
-        MyLog.d(TAG,"destroy" );
+        MyLog.d(TAG, "destroy");
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
