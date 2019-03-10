@@ -298,7 +298,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
         MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager
                 .newMyInfoUpdateParamsBuilder()
                 .setAvatar(url)
-                .build(), false, new MyUserInfoManager.ServerCallback() {
+                .build(), false, false, new MyUserInfoManager.ServerCallback() {
             @Override
             public void onSucess() {
                 U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(EditInfoActivity.this)

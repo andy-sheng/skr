@@ -17,6 +17,7 @@ import com.common.rxretrofit.ApiResult;
 import com.common.utils.LbsUtils;
 import com.common.utils.U;
 import com.module.ModuleServiceManager;
+import com.zq.live.proto.Common.UserInfo;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -147,14 +148,14 @@ public class MyUserInfoManager {
      * 更新用户信息
      */
     public void updateInfo(final MyInfoUpdateParams updateParams, final boolean updateLocalIfServerFailed) {
-        updateInfo(updateParams, updateLocalIfServerFailed, null);
+        updateInfo(updateParams, updateLocalIfServerFailed, false, null);
     }
 
 
     /**
      * 更新用户信息
      */
-    public void updateInfo(final MyInfoUpdateParams updateParams, final boolean updateLocalIfServerFailed, final ServerCallback callback) {
+    public void updateInfo(final MyInfoUpdateParams updateParams, final boolean updateLocalIfServerFailed, final boolean isCompleteInfo, final ServerCallback callback) {
 
         HashMap<String, Object> map = new HashMap<>();
         if (updateParams.nickName != null) {
@@ -199,7 +200,7 @@ public class MyUserInfoManager {
         Observable<ApiResult> apiResultObservable = myUserAccountServerApi.updateInfo(body);
         ApiMethods.subscribe(apiResultObservable.retryWhen(new RxRetryAssist(2, 5, true)), new ApiObserver<ApiResult>() {
             @Override
-            public void process(ApiResult obj) {
+            public void process(final ApiResult obj) {
                 if (obj.getErrno() == 0) {
                     U.getToastUtil().showShort("个人信息更新成功");
                     //写入数据库
@@ -224,6 +225,18 @@ public class MyUserInfoManager {
                                 }
                                 if (updateParams.location != null) {
                                     mUser.setLocation(updateParams.location);
+                                }
+                            }
+
+                            if (isCompleteInfo) {
+                                // 是否在上传资料过程中
+                                UserInfoModel userInfoModel = JSON.parseObject(obj.getData().toString(), UserInfoModel.class);
+                                if (userInfoModel != null) {
+                                    // TODO: 2019/3/10  这么解析是因为目前服务器只返回这几个字段
+                                    mUser.setUserNickname(userInfoModel.getNickname());
+                                    mUser.setAvatar(userInfoModel.getAvatar());
+                                    mUser.setSex(userInfoModel.getSex());
+                                    mUser.setBirthday(userInfoModel.getBirthday());
                                 }
                             }
                             MyUserInfoLocalApi.insertOrUpdate(mUser);
