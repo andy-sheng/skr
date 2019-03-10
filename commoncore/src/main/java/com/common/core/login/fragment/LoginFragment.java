@@ -204,9 +204,7 @@ public class LoginFragment extends BaseFragment {
                         .greenChannel().navigation();
             }
         });
-
     }
-
 
     UMAuthListener mAuthListener = new UMAuthListener() {
         @Override

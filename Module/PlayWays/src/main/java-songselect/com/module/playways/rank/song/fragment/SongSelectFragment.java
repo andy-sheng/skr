@@ -233,8 +233,8 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    protected void onFragmentVisible() {
+        super.onFragmentVisible();
         if (mGameType == GameModeType.GAME_MODE_CLASSIC_RANK) {
             StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK),
                     StatConstants.KEY_SELECTSONG_EXPOSE, null);

@@ -163,9 +163,15 @@ public class SpecialSelectFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        mSkrAudioPermission.onBackFromPermisionManagerMaybe();
+    }
+
+    @Override
+    protected void onFragmentVisible() {
+        super.onFragmentVisible();
         StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
                 StatConstants.KEY_SELECTSONG_EXPOSE, null);
-        mSkrAudioPermission.onBackFromPermisionManagerMaybe();
+
     }
 
     private void getBackgroundMusic() {

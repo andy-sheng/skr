@@ -92,8 +92,6 @@ public class GrabRoomActivity extends BaseActivity {
                         .setAddToBackStack(false)
                         .addDataBeforeAdd(0, mRoomData)
                         .build());
-        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-                StatConstants.KEY_GAME_START, null);
     }
 
     @Override
@@ -104,6 +102,8 @@ public class GrabRoomActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
+                StatConstants.KEY_GAME_START, null);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 

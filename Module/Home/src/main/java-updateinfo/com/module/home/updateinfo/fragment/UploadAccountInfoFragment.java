@@ -191,7 +191,6 @@ public class UploadAccountInfoFragment extends BaseFragment {
         }
 
         initPublishSubject();
-        StatisticsAdapter.recordCountEvent("signup", "nameage_expose", null);
     }
 
     private void setCompleteTv(boolean isClick) {
@@ -309,6 +308,12 @@ public class UploadAccountInfoFragment extends BaseFragment {
     @Override
     public boolean useEventBus() {
         return false;
+    }
+
+    @Override
+    protected void onFragmentVisible() {
+        super.onFragmentVisible();
+        StatisticsAdapter.recordCountEvent("signup", "nameage_expose", null);
     }
 
     @Override
