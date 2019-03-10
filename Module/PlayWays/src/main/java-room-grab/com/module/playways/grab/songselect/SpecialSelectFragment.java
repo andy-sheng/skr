@@ -76,7 +76,7 @@ public class SpecialSelectFragment extends BaseFragment {
         mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
         mRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.refreshLayout);
         mContentRv = (RecyclerView) mRootView.findViewById(R.id.content_rv);
-        mIvBack = (ExImageView)mRootView.findViewById(R.id.iv_back);
+        mIvBack = (ExImageView) mRootView.findViewById(R.id.iv_back);
 
         mRefreshLayout.setEnableRefresh(false);
         mRefreshLayout.setEnableLoadMore(true);
@@ -104,7 +104,7 @@ public class SpecialSelectFragment extends BaseFragment {
                         U.getSoundUtils().play(SpecialSelectFragment.TAG, R.raw.normal_click, 500);
                         goMatchFragment(model.getTagID());
                         HashMap map = new HashMap();
-                        map.put("tagId",model.getTagID());
+                        map.put("tagId", String.valueOf(model.getTagID()));
                         StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
                                 StatConstants.KEY_MATCH_START, map);
                     }

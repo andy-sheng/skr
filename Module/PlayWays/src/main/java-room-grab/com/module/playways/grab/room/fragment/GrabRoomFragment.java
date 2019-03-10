@@ -558,7 +558,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                 GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
                 if (infoModel != null) {
                     HashMap map = new HashMap();
-                    map.put("songID", infoModel.getMusic().getItemID());
+                    map.put("songID", String.valueOf(infoModel.getMusic().getItemID()));
                     StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
                             "give_up_sing", map);
                 }
