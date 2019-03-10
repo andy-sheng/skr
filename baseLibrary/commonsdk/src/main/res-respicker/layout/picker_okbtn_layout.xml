@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/btn_ok"
     android:layout_width="wrap_content"
-    android:layout_height="@dimen/view_dimen_100"
-    android:background="@drawable/selector_top_ok"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
     android:gravity="center"
     android:layout_marginRight="@dimen/view_dimen_30"
     android:paddingLeft="@dimen/view_dimen_48"
@@ -14,4 +12,4 @@
     android:paddingBottom="@dimen/view_dimen_13"
     android:text="完成(0/3)"
     android:textColor="#ffffff"
-    android:textSize="@dimen/view_dimen_45" />
+    android:textSize="@dimen/textsize_16_dp" />

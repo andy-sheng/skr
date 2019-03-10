@@ -16,16 +16,17 @@
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        titlebar:bottomLineColor="#0C2275"
         titlebar:centerTextColor="@color/white"
-        titlebar:centerTextSize="@dimen/view_dimen_50"
+        titlebar:centerTextSize="@dimen/textsize_20_dp"
         titlebar:centerType="textView"
         titlebar:fillStatusBar="true"
         titlebar:leftImageResource="@drawable/ic_arrow_back"
         titlebar:leftType="imageButton"
         titlebar:rightCustomView="@layout/picker_okbtn_layout"
         titlebar:rightType="customView"
-        titlebar:statusBarColor="@color/colorPrimary"
-        titlebar:titleBarColor="@color/colorPrimary" />
+        titlebar:statusBarColor="#0288D0"
+        titlebar:titleBarColor="#0288D0" />
 
     <LinearLayout
         android:id="@+id/bottom_bar"

@@ -12,15 +12,16 @@
         android:layout_height="wrap_content"
         titlebar:fillStatusBar="true"
         titlebar:leftDrawable="@drawable/ic_arrow_back"
-        titlebar:leftDrawablePadding="@dimen/view_dimen_12"
-        titlebar:leftText="图片"
-        titlebar:leftTextColor="@color/white"
-        titlebar:leftTextSize="@dimen/view_dimen_50"
         titlebar:leftType="textView"
+        titlebar:centerText="图片"
+        titlebar:centerTextColor="@color/white"
+        titlebar:centerTextSize="@dimen/textsize_20_dp"
+        titlebar:centerType="textView"
         titlebar:rightCustomView="@layout/picker_okbtn_layout"
         titlebar:rightType="customView"
-        titlebar:statusBarColor="@color/colorPrimary"
-        titlebar:titleBarColor="@color/colorPrimary" />
+        titlebar:bottomLineColor="#0C2275"
+        titlebar:statusBarColor="#0288D0"
+        titlebar:titleBarColor="#0288D0"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
