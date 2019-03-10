@@ -19,7 +19,7 @@ public class CbEngineAdapter {
     private CbEngineAdapter() {
         MyLog.d(TAG, "CbEngineAdapter");
         try {
-            System.loadLibrary("native-lib");
+            System.loadLibrary("native-lib1");
         } catch (Exception e) {
             e.printStackTrace();
             MyLog.e(TAG, e);
