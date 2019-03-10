@@ -1,8 +1,5 @@
 package com.module.home.updateinfo.fragment;
 
-import android.animation.Animator;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,36 +10,33 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
 import com.common.core.account.UserAccountManager;
 import com.common.core.account.event.AccountEvent;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.MyUserInfoServerApi;
-import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.statistics.StatisticsAdapter;
+import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.NoLeakEditText;
-import com.jakewharton.rxbinding2.view.RxView;
+import com.common.view.titlebar.CommonTitleBar;
 import com.module.RouterConstants;
 import com.module.home.R;
 import com.module.home.updateinfo.UploadAccountInfoActivity;
 import com.zq.live.proto.Common.ESex;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 import io.reactivex.observers.DisposableObserver;
@@ -54,15 +48,16 @@ public class UploadAccountInfoFragment extends BaseFragment {
 
     boolean isUpload = false; //当前是否是完善个人资料
 
+    CommonTitleBar mTitlebar;
+
     RelativeLayout mMainActContainer;
-    ExImageView mBackIv;
     NoLeakEditText mNicknameEt;
     ExTextView mNicknameHintTv;
 
     ExImageView mMale;
     ExImageView mFemale;
 
-    ExTextView mCompleteTv;
+    ExTextView mNextTv;
 
     int sex = 0;// 未知、非法参数
     String mNickName = "";
@@ -80,12 +75,13 @@ public class UploadAccountInfoFragment extends BaseFragment {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
-        mBackIv = (ExImageView) mRootView.findViewById(R.id.back_iv);
+        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
         mNicknameEt = (NoLeakEditText) mRootView.findViewById(R.id.nickname_et);
         mNicknameHintTv = (ExTextView) mRootView.findViewById(R.id.nickname_hint_tv);
         mMale = (ExImageView) mRootView.findViewById(R.id.male);
         mFemale = (ExImageView) mRootView.findViewById(R.id.female);
-        mCompleteTv = (ExTextView) mRootView.findViewById(R.id.complete_tv);
+        mNextTv = (ExTextView) mRootView.findViewById(R.id.next_tv);
+
 
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -108,14 +104,10 @@ public class UploadAccountInfoFragment extends BaseFragment {
                 String str = editable.toString();
                 int length = U.getStringUtils().getStringLength(str);
                 if (length > 14) {
-                    mNicknameHintTv.setVisibility(View.VISIBLE);
-                    mNicknameHintTv.setTextColor(Color.parseColor("#EF5E85"));
-                    mNicknameHintTv.setText("昵称不能超过7个汉字或14个英文");
+                    setNicknameHintText("昵称不能超过7个汉字或14个英文", true);
                     setCompleteTv(false);
                 } else if (length == 0) {
-                    mNicknameHintTv.setVisibility(View.VISIBLE);
-                    mNicknameHintTv.setTextColor(Color.parseColor("#EF5E85"));
-                    mNicknameHintTv.setText("昵称不能为空哦～");
+                    setNicknameHintText("昵称不能为空哦～", true);
                     setCompleteTv(false);
                 } else {
                     mNicknameHintTv.setVisibility(View.GONE);
@@ -126,7 +118,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
             }
         });
 
-        mBackIv.setOnClickListener(new DebounceViewClickListener() {
+        mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 U.getSoundUtils().play(UploadAccountInfoActivity.TAG, R.raw.normal_back, 500);
@@ -139,26 +131,27 @@ public class UploadAccountInfoFragment extends BaseFragment {
             }
         });
 
-        mCompleteTv.setOnClickListener(new DebounceViewClickListener() {
+        mNextTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 mNickName = mNicknameEt.getText().toString().trim();
-                MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
-                        .setNickName(mNickName).setSex(sex)
-                        .build(), true, false, new MyUserInfoManager.ServerCallback() {
-                    @Override
-                    public void onSucess() {
-                        if (getActivity() != null) {
-                            getActivity().finish();
-                        }
-                        StatisticsAdapter.recordCountEvent("signup", "success", null);
-                    }
-
-                    @Override
-                    public void onFail() {
-
-                    }
-                });
+                checkNameAndSex(mNickName, sex);
+//                MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
+//                        .setNickName(mNickName).setSex(sex)
+//                        .build(), true, false, new MyUserInfoManager.ServerCallback() {
+//                    @Override
+//                    public void onSucess() {
+//                        if (getActivity() != null) {
+//                            getActivity().finish();
+//                        }
+//                        StatisticsAdapter.recordCountEvent("signup", "success", null);
+//                    }
+//
+//                    @Override
+//                    public void onFail() {
+//
+//                    }
+//                });
             }
         });
 
@@ -193,15 +186,65 @@ public class UploadAccountInfoFragment extends BaseFragment {
         initPublishSubject();
     }
 
+    private void checkNameAndSex(String nickName, int sex) {
+        if (TextUtils.isEmpty(nickName)) {
+            setNicknameHintText("昵称不能为空哦～", true);
+            setCompleteTv(false);
+            return;
+        }
+
+        if (sex == 0) {
+            U.getToastUtil().showShort("请选择性别");
+            return;
+        }
+
+        MyUserInfoServerApi myUserInfoServerApi = ApiManager.getInstance().createService(MyUserInfoServerApi.class);
+        ApiMethods.subscribe(myUserInfoServerApi.checkNickName(nickName), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    boolean isValid = result.getData().getBoolean("isValid");
+                    String unValidReason = result.getData().getString("unValidReason");
+                    if (isValid) {
+                        // 昵称可用
+                        Bundle bundle = new Bundle();
+                        bundle.putBoolean(UploadAccountInfoActivity.BUNDLE_IS_UPLOAD, isUpload);
+                        bundle.putString(UploadAccountInfoActivity.BUNDLE_UPLOAD_NICKNAME, nickName);
+                        bundle.putInt(UploadAccountInfoActivity.BUNDLE_UPLOAD_SEX, sex);
+                        U.getFragmentUtils().addFragment(FragmentUtils
+                                .newAddParamsBuilder(getActivity(), EditInfoAgeFragment.class)
+                                .setBundle(bundle)
+                                .setAddToBackStack(true)
+                                .setHasAnimation(true)
+                                .build());
+                    } else {
+                        // 昵称不可用
+                        setNicknameHintText(unValidReason, true);
+                    }
+                }
+            }
+        });
+    }
+
+    private void setNicknameHintText(String text, boolean isError) {
+        if (isError) {
+            mNicknameHintTv.setTextColor(Color.parseColor("#EF5E85"));
+        } else {
+            mNicknameHintTv.setTextColor(Color.parseColor("#398A26"));
+        }
+        mNicknameHintTv.setVisibility(View.VISIBLE);
+        mNicknameHintTv.setText(text);
+    }
+
     private void setCompleteTv(boolean isClick) {
         if (isClick) {
-            mCompleteTv.setClickable(true);
-            mCompleteTv.setTextColor(Color.parseColor("#0C2275"));
-            mCompleteTv.setBackgroundResource(com.common.core.R.drawable.img_btn_bg_yellow);
+            mNextTv.setClickable(true);
+            mNextTv.setTextColor(Color.parseColor("#0C2275"));
+            mNextTv.setBackgroundResource(com.common.core.R.drawable.img_btn_bg_yellow);
         } else {
-            mCompleteTv.setClickable(false);
-            mCompleteTv.setTextColor(Color.parseColor("#660C2275"));
-            mCompleteTv.setBackgroundResource(com.common.core.R.drawable.img_btn_bg_gray);
+            mNextTv.setClickable(false);
+            mNextTv.setTextColor(Color.parseColor("#660C2275"));
+            mNextTv.setBackgroundResource(com.common.core.R.drawable.img_btn_bg_gray);
         }
     }
 
@@ -262,15 +305,11 @@ public class UploadAccountInfoFragment extends BaseFragment {
                     if (!TextUtils.isEmpty(mLastName) && mLastName.equals(mNickName)) {
                         if (isValid) {
                             // 昵称可用
-                            mNicknameHintTv.setVisibility(View.VISIBLE);
-                            mNicknameHintTv.setTextColor(Color.parseColor("#398A26"));
-                            mNicknameHintTv.setText("昵称可用");
+                            setNicknameHintText("昵称可用", false);
                             setCompleteTv(true);
                         } else {
                             // 昵称不可用
-                            mNicknameHintTv.setVisibility(View.VISIBLE);
-                            mNicknameHintTv.setTextColor(Color.parseColor("#EF5E85"));
-                            mNicknameHintTv.setText(unValidReason);
+                            setNicknameHintText(unValidReason, true);
                             setCompleteTv(false);
                         }
                     }

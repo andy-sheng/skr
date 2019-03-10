@@ -1,6 +1,7 @@
 package com.common.core.myinfo;
 
 import android.text.TextUtils;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.common.core.account.UserAccountManager;
@@ -275,6 +276,11 @@ public class MyUserInfoManager {
         }
         if (MyUserInfoManager.getInstance().getSex() == 0) {
             MyLog.d(TAG, "isNeedCompleteInfo sex == 0");
+            return true;
+        }
+
+        if (TextUtils.isEmpty(MyUserInfoManager.getInstance().getBirthday())) {
+            MyLog.d(TAG, "isNeedCompleteInfo birthday == 0");
             return true;
         }
 

@@ -14,26 +14,24 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.common.view.ex.ExImageView
-                android:id="@+id/back_iv"
-                android:layout_width="wrap_content"
+            <com.common.view.titlebar.CommonTitleBar
+                android:id="@+id/titlebar"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="@dimen/view_30_dp"
-                android:padding="@dimen/view_16_dp"
-                android:src="@drawable/img_back" />
-
-            <com.common.view.ex.ExTextView
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/view_25_dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/view_45_dp"
-                android:gravity="center_vertical"
-                android:text="完善个人信息"
-                android:textColor="#0C2275"
-                android:textSize="@dimen/textsize_18_dp"
-                android:textStyle="bold" />
+                app:centerText="完善个人资料"
+                app:centerTextColor="#0C2275"
+                app:centerTextSize="@dimen/textsize_20_dp"
+                app:centerType="textView"
+                app:leftDrawable="@drawable/img_back"
+                app:leftType="textView"
+                app:rightText="1/2"
+                app:rightTextColor="#0C2275"
+                app:rightTextSize="@dimen/textsize_16_dp"
+                app:rightType="textView"
+                app:showBottomLine="false"
+                app:statusBarColor="#F9F4F1"
+                app:titleBarColor="#F9F4F1">
+            </com.common.view.titlebar.CommonTitleBar>
 
 
             <com.common.view.ex.NoLeakEditText
@@ -138,7 +136,7 @@
 
 
             <com.common.view.ex.ExTextView
-                android:id="@+id/complete_tv"
+                android:id="@+id/next_tv"
                 android:layout_width="@dimen/view_206_dp"
                 android:layout_height="@dimen/view_54_dp"
                 android:layout_below="@+id/nickname_et"
@@ -148,7 +146,7 @@
                 android:gravity="center"
                 android:paddingRight="@dimen/view_6_dp"
                 android:paddingBottom="@dimen/view_6_dp"
-                android:text="完成"
+                android:text="下一步"
                 android:textColor="#0C2275"
                 android:textSize="@dimen/textsize_20_dp"
                 android:textStyle="bold" />

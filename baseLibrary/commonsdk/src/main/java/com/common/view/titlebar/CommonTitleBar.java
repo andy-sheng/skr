@@ -765,6 +765,12 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
         }
     }
 
+    public void setTitleBarColor(int color) {
+        if (rlMain != null) {
+            rlMain.setBackgroundColor(color);
+        }
+    }
+
     /**
      * 是否填充状态栏
      *
