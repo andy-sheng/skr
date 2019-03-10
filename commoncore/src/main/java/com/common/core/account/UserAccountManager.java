@@ -316,9 +316,6 @@ public class UserAccountManager {
         userAccount.setSecretToken(secretToken);
         userAccount.setRongToken(rongToken);
         userAccount.setUid(String.valueOf(userID));
-        userAccount.setNickName(nickName);
-        userAccount.setSex(sex);
-        userAccount.setBirthday(birthday);
         userAccount.setNeedEditUserInfo(isFirstLogin);
         userAccount.setChannelId(HostChannelManager.getInstance().getChannelId());
         onLoginResult(userAccount);

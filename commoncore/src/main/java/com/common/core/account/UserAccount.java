@@ -23,10 +23,8 @@ public class UserAccount {
     private long id;
     @NotNull
     private String uid;
-    private String nickName;
-    private String avatar;
     private String password;
-    private boolean isLogOff;
+    private Boolean isLogOff;
     private String thirdId;
     private String phoneNum;
     @NotNull
@@ -35,19 +33,14 @@ public class UserAccount {
     private String serviceToken;
     private String secretToken;
     private String rongToken;
-    private int sex;
-    private String birthday;
     private String ext;
 
-    @Generated(hash = 1117352047)
-    public UserAccount(long id, @NotNull String uid, String nickName, String avatar,
-            String password, boolean isLogOff, String thirdId, String phoneNum, int channelId,
-            boolean needEditUserInfo, String serviceToken, String secretToken,
-            String rongToken, int sex, String birthday, String ext) {
+    @Generated(hash = 733193947)
+    public UserAccount(long id, @NotNull String uid, String password, Boolean isLogOff,
+            String thirdId, String phoneNum, int channelId, boolean needEditUserInfo,
+            String serviceToken, String secretToken, String rongToken, String ext) {
         this.id = id;
         this.uid = uid;
-        this.nickName = nickName;
-        this.avatar = avatar;
         this.password = password;
         this.isLogOff = isLogOff;
         this.thirdId = thirdId;
@@ -57,8 +50,6 @@ public class UserAccount {
         this.serviceToken = serviceToken;
         this.secretToken = secretToken;
         this.rongToken = rongToken;
-        this.sex = sex;
-        this.birthday = birthday;
         this.ext = ext;
     }
 
@@ -66,11 +57,11 @@ public class UserAccount {
     public UserAccount() {
     }
 
-    public Long getId() {
+    public long getId() {
         return this.id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -80,22 +71,6 @@ public class UserAccount {
 
     public void setUid(String uid) {
         this.uid = uid;
-    }
-
-    public String getNickName() {
-        return this.nickName;
-    }
-
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
-    }
-
-    public String getAvatar() {
-        return this.avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
     }
 
     public String getPassword() {
@@ -122,19 +97,27 @@ public class UserAccount {
         this.thirdId = thirdId;
     }
 
-    public Integer getChannelId() {
+    public String getPhoneNum() {
+        return this.phoneNum;
+    }
+
+    public void setPhoneNum(String phoneNum) {
+        this.phoneNum = phoneNum;
+    }
+
+    public int getChannelId() {
         return this.channelId;
     }
 
-    public void setChannelId(Integer channelId) {
+    public void setChannelId(int channelId) {
         this.channelId = channelId;
     }
 
-    public Boolean getNeedEditUserInfo() {
+    public boolean getNeedEditUserInfo() {
         return this.needEditUserInfo;
     }
 
-    public void setNeedEditUserInfo(Boolean needEditUserInfo) {
+    public void setNeedEditUserInfo(boolean needEditUserInfo) {
         this.needEditUserInfo = needEditUserInfo;
     }
 
@@ -169,49 +152,4 @@ public class UserAccount {
     public void setExt(String ext) {
         this.ext = ext;
     }
-
-    public Integer getSex() {
-        return this.sex;
-    }
-
-    public void setSex(Integer sex) {
-        this.sex = sex;
-    }
-
-    public String getBirthday() {
-        return this.birthday;
-    }
-
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
-    }
-
-    public void setChannelId(int channelId) {
-        this.channelId = channelId;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public void setIsLogOff(boolean isLogOff) {
-        this.isLogOff = isLogOff;
-    }
-
-    public void setNeedEditUserInfo(boolean needEditUserInfo) {
-        this.needEditUserInfo = needEditUserInfo;
-    }
-
-    public void setSex(int sex) {
-        this.sex = sex;
-    }
-
-    public String getPhoneNum() {
-        return this.phoneNum;
-    }
-
-    public void setPhoneNum(String phoneNum) {
-        this.phoneNum = phoneNum;
-    }
-
 }

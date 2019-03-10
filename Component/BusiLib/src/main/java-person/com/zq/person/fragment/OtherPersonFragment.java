@@ -126,6 +126,8 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
         mOtherPersonPresenter = new OtherPersonPresenter(this);
         addPresent(mOtherPersonPresenter);
 
+        U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
+
         Bundle bundle = getArguments();
         if (bundle != null) {
             mUserInfoModel = (UserInfoModel) bundle.getSerializable(BUNDLE_USER_MODEL);
@@ -160,6 +162,7 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
         mBackIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+                U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
                 U.getFragmentUtils().popFragment(OtherPersonFragment.this);
             }
         });
@@ -388,4 +391,9 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
         mTagAdapter.notifyDataChanged();
     }
 
+    @Override
+    public void destroy() {
+        super.destroy();
+        U.getSoundUtils().release(TAG);
+    }
 }
