@@ -39,6 +39,7 @@ import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.dialog.PersonInfoDialogView;
+import com.zq.person.fragment.ImageBigPreviewFragment;
 import com.zq.report.fragment.ReportFragment;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -88,7 +89,7 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
 
     boolean mIsGameEndAniamtionShow = false; // 标记对战结束动画是否播放
 
-    Handler mUiHanlder =  new Handler() {
+    Handler mUiHanlder = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -254,6 +255,16 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
                                         UserInfoManager.RA_BUILD, personInfoDialogView.getUserInfoModel().isFriend());
                             }
 
+                        } else if (view.getId() == R.id.avatar_iv) {
+                            dialog.dismiss();
+                            Bundle bundle = new Bundle();
+                            bundle.putString(ImageBigPreviewFragment.BIG_IMAGE_PATH, personInfoDialogView.getUserInfoModel().getAvatar());
+                            U.getFragmentUtils().addFragment(
+                                    FragmentUtils.newAddParamsBuilder(getActivity(), ImageBigPreviewFragment.class)
+                                            .setAddToBackStack(true)
+                                            .setHasAnimation(true)
+                                            .setBundle(bundle)
+                                            .build());
                         }
                     }
                 })

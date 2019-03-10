@@ -48,6 +48,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.zq.level.view.NormalLevelView;
+import com.zq.person.fragment.ImageBigPreviewFragment;
 import com.zq.relation.fragment.RelationFragment;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -214,8 +215,16 @@ public class PersonFragment extends BaseFragment implements IPersonView {
         mAvatarIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_EDIT_INFO)
-                        .navigation();
+//                ARouter.getInstance().build(RouterConstants.ACTIVITY_EDIT_INFO)
+//                        .navigation();
+                Bundle bundle = new Bundle();
+                bundle.putString(ImageBigPreviewFragment.BIG_IMAGE_PATH, MyUserInfoManager.getInstance().getAvatar());
+                U.getFragmentUtils().addFragment(
+                        FragmentUtils.newAddParamsBuilder(getActivity(), ImageBigPreviewFragment.class)
+                                .setAddToBackStack(true)
+                                .setHasAnimation(true)
+                                .setBundle(bundle)
+                                .build());
             }
         });
 

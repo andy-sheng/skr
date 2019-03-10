@@ -143,6 +143,20 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
         };
         mFlowlayout.setAdapter(mTagAdapter);
 
+        mAvatarIv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putString(ImageBigPreviewFragment.BIG_IMAGE_PATH, mUserInfoModel.getAvatar());
+                U.getFragmentUtils().addFragment(
+                        FragmentUtils.newAddParamsBuilder(getActivity(), ImageBigPreviewFragment.class)
+                                .setAddToBackStack(true)
+                                .setHasAnimation(true)
+                                .setBundle(bundle)
+                                .build());
+            }
+        });
+
         mBackIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {

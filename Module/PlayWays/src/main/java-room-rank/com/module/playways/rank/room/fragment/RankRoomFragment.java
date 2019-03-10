@@ -74,6 +74,7 @@ import com.zq.lyrics.model.LyricsLineInfo;
 import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.ManyLyricsView;
 import com.zq.lyrics.widget.VoiceScaleView;
+import com.zq.person.fragment.ImageBigPreviewFragment;
 import com.zq.report.fragment.ReportFragment;
 
 import org.greenrobot.eventbus.EventBus;
@@ -679,6 +680,16 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                                         UserInfoManager.RA_BUILD, personInfoDialogView.getUserInfoModel().isFriend());
                             }
 
+                        } else if (view.getId() == R.id.avatar_iv) {
+                            dialog.dismiss();
+                            Bundle bundle = new Bundle();
+                            bundle.putString(ImageBigPreviewFragment.BIG_IMAGE_PATH, personInfoDialogView.getUserInfoModel().getAvatar());
+                            U.getFragmentUtils().addFragment(
+                                    FragmentUtils.newAddParamsBuilder(getActivity(), ImageBigPreviewFragment.class)
+                                            .setAddToBackStack(true)
+                                            .setHasAnimation(true)
+                                            .setBundle(bundle)
+                                            .build());
                         }
                     }
                 })
