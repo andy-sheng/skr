@@ -22,10 +22,21 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <!--只是做一下刘海屏幕的适配-->
+            <com.common.view.titlebar.CommonTitleBar
+                android:id="@+id/titlebar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:showBottomLine="false"
+                app:statusBarColor="@color/transparent"
+                app:titleBarHeight="@dimen/view_0_dp">
+            </com.common.view.titlebar.CommonTitleBar>
+
             <RelativeLayout
                 android:id="@+id/top_area"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titlebar">
 
                 <ImageView
                     android:id="@+id/avatar_bg"
@@ -56,13 +67,13 @@
                     android:visibility="gone" />
 
                 <com.common.image.fresco.BaseImageView
-                    android:layout_marginTop="@dimen/view_104_dp"
-                    android:visibility="gone"
-                    android:layout_marginRight="@dimen/view_24_dp"
                     android:id="@+id/iv_op_first"
-                    android:layout_alignParentRight="true"
                     android:layout_width="@dimen/view_48_dp"
-                    android:layout_height="@dimen/view_53_dp" />
+                    android:layout_height="@dimen/view_53_dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/view_104_dp"
+                    android:layout_marginRight="@dimen/view_24_dp"
+                    android:visibility="gone" />
 
                 <RelativeLayout
                     android:layout_width="wrap_content"

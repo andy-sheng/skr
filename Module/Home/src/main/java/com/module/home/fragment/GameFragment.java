@@ -46,6 +46,7 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
+import com.common.view.titlebar.CommonTitleBar;
 import com.component.busilib.constans.GameModeType;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jakewharton.rxbinding2.view.RxView;
@@ -93,6 +94,7 @@ public class GameFragment extends BaseFragment {
     public static final int TOP_BADGE = 2;
     public static final int SHANDIAN_BADGE = 3;
 
+    CommonTitleBar mTitlebar; //用来做适配使用
     RelativeLayout mTopArea;
     UserInfoTitleView mUserInfoTitle;
 
@@ -142,6 +144,10 @@ public class GameFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        mSmartRefreshLayout = mRootView.findViewById(R.id.smart_refresh_layout);
+        mClassicsHeader = (ClassicsHeader) mRootView.findViewById(R.id.classics_header);
+
+        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
         mTopArea = (RelativeLayout) mRootView.findViewById(R.id.top_area);
         mUserInfoTitle = (UserInfoTitleView) mRootView.findViewById(R.id.user_info_title);
         mAvatarBg = (ImageView) mRootView.findViewById(R.id.avatar_bg);
@@ -167,8 +173,13 @@ public class GameFragment extends BaseFragment {
         mPopArea = (LinearLayout) linearLayout.findViewById(R.id.pop_area);
         mRankDiffIcon = (ImageView) linearLayout.findViewById(R.id.rank_diff_icon);
         mRankDiffTv = (ExTextView) linearLayout.findViewById(R.id.rank_diff_tv);
-        mSmartRefreshLayout = mRootView.findViewById(R.id.smart_refresh_layout);
-        mClassicsHeader = (ClassicsHeader) mRootView.findViewById(R.id.classics_header);
+
+        if (U.getDeviceUtils().hasNotch(getContext())) {
+            mTitlebar.setVisibility(View.VISIBLE);
+        } else {
+            mTitlebar.setVisibility(View.GONE);
+        }
+
         mPopupWindow = new PopupWindow(linearLayout);
         mPopupWindow.setOutsideTouchable(true);
 
@@ -339,6 +350,7 @@ public class GameFragment extends BaseFragment {
         MyLog.d(TAG, "showRankView" + " userRankModel=" + userRankModel);
         mUserInfoTitle.showRankView(userRankModel);
         mClassicsHeader.setBackgroundColor(Color.parseColor(LevelConfigUtils.getHomePageTopBgColor(userRankModel.getMainRanking())));
+        mTitlebar.setStatusBarColor(Color.parseColor(LevelConfigUtils.getHomePageTopBgColor(userRankModel.getMainRanking())));
         mMainRankIv.setImageResource(LevelConfigUtils.getImageResoucesLevel(userRankModel.getMainRanking()));
         mSubRankIv.setImageResource(LevelConfigUtils.getImageResoucesSubLevel(userRankModel.getMainRanking(), userRankModel.getSubRanking()));
 

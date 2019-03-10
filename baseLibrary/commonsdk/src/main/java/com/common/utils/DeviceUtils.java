@@ -61,6 +61,8 @@ public class DeviceUtils {
     private String romName;
     private String romVersion;
 
+    private NotchPhoneUtils mNotchPhoneUtils;
+
     /**
      * 唯一设备号，计算方法与miui相同
      */
@@ -77,7 +79,7 @@ public class DeviceUtils {
     private int mBlueToothHeadsetPlugOn = 0;
 
     DeviceUtils() {
-
+        mNotchPhoneUtils = new NotchPhoneUtils();
     }
 
     /**
@@ -328,16 +330,16 @@ public class DeviceUtils {
 
     // 该方法需要在View完全被绘制出来之后调用，否则判断不了
     //在比如 onWindowFocusChanged（）方法中可以得到正确的结果
-    public static  boolean hasNavigationBar(){
+    public static boolean hasNavigationBar() {
         Activity activity = U.getActivityUtils().getTopActivity();
-        if(activity==null){
+        if (activity == null) {
             return false;
         }
         ViewGroup vp = (ViewGroup) activity.getWindow().getDecorView();
         if (vp != null) {
             for (int i = 0; i < vp.getChildCount(); i++) {
                 vp.getChildAt(i).getContext().getPackageName();
-                if (vp.getChildAt(i).getId()!= View.NO_ID && "navigationBarBackground".equals(activity.getResources().getResourceEntryName(vp.getChildAt(i).getId()))) {
+                if (vp.getChildAt(i).getId() != View.NO_ID && "navigationBarBackground".equals(activity.getResources().getResourceEntryName(vp.getChildAt(i).getId()))) {
                     return true;
                 }
             }
@@ -374,6 +376,43 @@ public class DeviceUtils {
             headsetPlugEvent.bluetoothStatus = mBlueToothHeadsetPlugOn;
             EventBus.getDefault().post(headsetPlugEvent);
         }
+    }
+
+    /**
+     * 是否有刘海屏幕
+     *
+     * @return
+     */
+    public boolean hasNotch(Context context) {
+        if (isEmui()) {
+            return mNotchPhoneUtils.hasNotchInHuawei(context);
+        } else if (isOppo()) {
+            return mNotchPhoneUtils.hasNotchInOppo(context);
+        } else if (isVivo()) {
+            return mNotchPhoneUtils.hasNotchInVivo(context);
+        } else if (isMiui()) {
+            return mNotchPhoneUtils.hasNotchMiui(context);
+        }
+        return false;
+    }
+
+    /**
+     * 因为一般而言，刘海的高度都会比状态栏高度低，可直接使用状态栏高度做适配
+     * @param context
+     * @return
+     */
+    public int getNotchHight(Context context) {
+//        if (isEmui()) {
+//            return mNotchPhoneUtils.getNotchHightHuawei(context);
+//        } else if (isOppo()) {
+//            return mNotchPhoneUtils.getNotchHightOppo(context);
+//        } else if (isVivo()) {
+//            return mNotchPhoneUtils.getNotchHightVivo(context);
+//        } else if (isMiui()) {
+//            return mNotchPhoneUtils.getNotchHightMiui(context);
+//        }
+//        return 0;
+        return U.getStatusBarUtil().getStatusBarHeight(context);
     }
 
     /**
