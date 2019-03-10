@@ -8,7 +8,6 @@ import android.view.SurfaceView;
 import android.view.TextureView;
 import android.view.ViewGroup;
 
-import com.changba.songstudio.CbEngineAdapter;
 import com.changba.songstudio.audioeffect.AudioEffectStyleEnum;
 import com.common.log.MyLog;
 import com.common.utils.U;
@@ -17,6 +16,7 @@ import com.engine.agora.effect.EffectModel;
 import com.engine.agora.source.PrivateTextureHelper;
 import com.engine.arccloud.ArcCloudManager;
 import com.engine.arccloud.RecognizeConfig;
+import com.engine.effect.ITbEffectProcessor;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -72,7 +72,7 @@ public class AgoraEngineAdapter {
     private AgoraOutCallback mOutCallback;
     private List<EffectModel> mEffectModels = new ArrayList<>();
     private ArcCloudManager mArcCloudManager;// ArcClound的打分和识别
-
+    private ITbEffectProcessor mTbEffectProcessor = new ITbEffectProcessor();// 天宝提供的音效处理类
     /**
      * 所有的回调都在这
      * 注意回调的运行线程，一般都不会在主线程
@@ -324,6 +324,8 @@ public class AgoraEngineAdapter {
                     true        // true为使用推送模式；false为拉取模式，但目前不支持
             );
         }
+
+        mTbEffectProcessor.init();
     }
 
     /**
@@ -367,6 +369,9 @@ public class AgoraEngineAdapter {
             //该方法为同步调用。在等待 RtcEngine 对象资源释放后再返回。APP 不应该在 SDK 产生的回调中调用该接口，否则由于 SDK 要等待回调返回才能回收相关的对象资源，会造成死锁。
             RtcEngine.destroy();
             mRtcEngine = null;
+        }
+        if (mTbEffectProcessor != null) {
+            mTbEffectProcessor.destroyEffectProcessor();
         }
     }
 
@@ -970,11 +975,6 @@ public class AgoraEngineAdapter {
                 if (++mLogtag % 500 == 0) {
                     MyLog.d(TAG, "onRecordFrame" + " samples=" + samples + " numOfSamples=" + numOfSamples + " bytesPerSample=" + bytesPerSample + " channels=" + channels + " samplesPerSec=" + samplesPerSec);
                 }
-                if (!TextUtils.isEmpty(mConfig.getRecordingFromCallbackSavePath())) {
-                    if (mOutCallback != null) {
-                        mOutCallback.onRecordingBuffer(samples);
-                    }
-                }
                 if (mArcCloudManager != null) {
                     mArcCloudManager.putPool(samples, samplesPerSec, channels);
                 }
@@ -982,13 +982,21 @@ public class AgoraEngineAdapter {
                 if (mConfig != null && mConfig.isMixMusicPlaying() && mConfig.getLrcHasStart()) {
                     ts = mConfig.getCurrentMusicTs() + mConfig.getMixMusicBeginOffset() + (System.currentTimeMillis() - mConfig.getRecordCurrentMusicTsTs());
                 }
-                CbEngineAdapter.getInstance().processAudioFrames(samples,
-                        numOfSamples,
-                        bytesPerSample,
-                        channels,
-                        samplesPerSec,
-                        ts,
-                        mConfig.getMidiPath());
+//                CbEngineAdapter.getInstance().processAudioFrames(samples,
+//                        numOfSamples,
+//                        bytesPerSample,
+//                        channels,
+//                        samplesPerSec,
+//                        ts,
+//                        mConfig.getMidiPath());
+                //MyLog.d(TAG, "step1:" + testIn(samples));
+                mTbEffectProcessor.process2(samples, samples.length, channels, samplesPerSec);
+                //MyLog.d(TAG, "step2:" + testIn(samples));
+                if (!TextUtils.isEmpty(mConfig.getRecordingFromCallbackSavePath())) {
+                    if (mOutCallback != null) {
+                        mOutCallback.onRecordingBuffer(samples);
+                    }
+                }
                 return true;
             }
 
@@ -1001,9 +1009,15 @@ public class AgoraEngineAdapter {
                 return true;
             }
         });
-//        }
     }
 
+    int testIn(byte[] samples) {
+        int a = 0;
+        for (int i = 0; i < samples.length; i++) {
+            a += samples[i];
+        }
+        return a;
+    }
 
     /**
      * 开始客户端录音。

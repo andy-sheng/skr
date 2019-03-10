@@ -3,8 +3,8 @@
 #include <math.h>
 #include <stdio.h>
 #include "CovReverb_control.h"
-#include "two/common/functions.h"
-#include "two/common/defines.h"
+#include "common/functions.h"
+#include "common/defines.h"
 #include "smallhamon.h"
 #include "jucam.h"
 #include "lowshower.h"

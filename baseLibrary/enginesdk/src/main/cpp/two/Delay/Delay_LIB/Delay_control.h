@@ -1,7 +1,7 @@
 #ifndef SKR_DELAY_CONTROL_H
 #define SKR_DELAY_CONTROL_H
 
-#include "two/common/defines.h"
+#include "common/defines.h"
 
 #define MAXDELAY (SKR_MAX_FRAME_SAMPLE_STEREO*5)//100ms
 #define BUFFLEN (SKR_MAX_FRAME_SAMPLE_STEREO*50)//1000ms

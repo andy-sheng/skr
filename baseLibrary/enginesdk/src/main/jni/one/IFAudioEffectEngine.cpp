@@ -62,7 +62,7 @@ JNIEXPORT void JNICALL Java_media_ushow_audio_1effect_IFAudioEffectEngine_proces
         }
 
         //3:送入音效处理器
-        effectProcessor->process(samples, length, 0, 0);
+        //effectProcessor->process(samples, length, 0, 0);
         env->SetByteArrayRegion(samplesJni, 0, numOfSamples, (jbyte *) samples);
         env->ReleaseByteArrayElements(samplesJni, (jbyte *) data, 0);
     }

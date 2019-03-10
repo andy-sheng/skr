@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "Delay_control.h"
 #include <assert.h>
-#include "two/common/functions.h"
+#include "common/functions.h"
 #include <math.h>
 
 void BufresetAPI(Buf16_s *buf16)

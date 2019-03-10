@@ -1,7 +1,7 @@
 #ifndef COVREVERB_CONTROL_H
 #define COVREVERB_CONTROL_H
 
-#include "two/filter/Filter_LIB/Filter_SDK_API.h"
+#include "filter/Filter_LIB/Filter_SDK_API.h"
 #include "../../Delay/Delay_LIB/Delay_SDK_API.h"
 
 #ifdef __cplusplus

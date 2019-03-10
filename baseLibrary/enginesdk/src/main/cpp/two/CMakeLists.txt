@@ -1,83 +1,49 @@
 cmake_minimum_required(VERSION 3.4.1)
 
-set(PATH_TO_MEDIACORE ${CMAKE_SOURCE_DIR}/src/main/cpp)
-set(PATH_TO_JNI_LAYER ${CMAKE_SOURCE_DIR}/src/main/jni)
-set(PATH_TO_THIRDPARTY ${PATH_TO_MEDIACORE}/thirdparty)
-set(PATH_TO_PRE_BUILT ${PATH_TO_THIRDPARTY}/prebuilt/${ANDROID_ABI})
+set(PATH_TO_MEDIACORE2 ${CMAKE_SOURCE_DIR}/src/main/cpp/two)
+set(PATH_TO_JNI_LAYER2 ${CMAKE_SOURCE_DIR}/src/main/jni/two)
+
+#set(PATH_TO_THIRDPARTY ${PATH_TO_MEDIACORE}/thirdparty)
+#set(PATH_TO_PRE_BUILT ${PATH_TO_THIRDPARTY}/prebuilt/${ANDROID_ABI})
 
 add_definitions("
 -DGL_GLEXT_PROTOTYPES
 -DEGL_EGLEXT_PROTOTYPES
 ")
 
-include_directories(${PATH_TO_MEDIACORE}/)
-include_directories(${PATH_TO_MEDIACORE}/common/)
-include_directories(${PATH_TO_MEDIACORE}/score_processor/)
-include_directories(${PATH_TO_MEDIACORE}/score_processor/score/)
-include_directories(${PATH_TO_MEDIACORE}/score_processor/f0_cal/)
-include_directories(${PATH_TO_MEDIACORE}/score_processor/fft_wrapper/)
-include_directories(${PATH_TO_MEDIACORE}/score_processor/mel/)
-include_directories(${PATH_TO_MEDIACORE}/audio_effect/)
-include_directories(${PATH_TO_MEDIACORE}/audio_effect/sox_effect_param)
-include_directories(${PATH_TO_MEDIACORE}/audio_effect_filter/)
-include_directories(${PATH_TO_MEDIACORE}/audio_effect_filter_impl/)
-include_directories(${PATH_TO_MEDIACORE}/audio_effect_impl/)
-include_directories(${PATH_TO_MEDIACORE}/audio_effect_processor/)
-include_directories(${PATH_TO_MEDIACORE}/audio_effect_processor/live/)
-# External AudioEffect File
-include_directories(${PATH_TO_MEDIACORE}/external_audio_effect/)
-include_directories(${PATH_TO_MEDIACORE}/external_audio_effect/reverb_inc/)
+include_directories(${PATH_TO_MEDIACORE2}/)
+include_directories(${PATH_TO_MEDIACORE2}/common/)
+include_directories(${PATH_TO_MEDIACORE2}/Delay/)
+include_directories(${PATH_TO_MEDIACORE2}/Delay/Delay_LIB/)
+include_directories(${PATH_TO_MEDIACORE2}/effect/)
+include_directories(${PATH_TO_MEDIACORE2}/effect/effect_LIB/)
+include_directories(${PATH_TO_MEDIACORE2}/effect/Plugin_conv_reverb/)
+include_directories(${PATH_TO_MEDIACORE2}/filter/)
+include_directories(${PATH_TO_MEDIACORE2}/filter/Filter_LIB/)
 
-file(GLOB FILES_JNI_LAYER "${PATH_TO_JNI_LAYER}/*.cpp")
-file(GLOB FILES_LIB_COMMON "${PATH_TO_MEDIACORE}/common/*.cpp")
-file(GLOB FILES_SCORE_PROCESSOR "${PATH_TO_MEDIACORE}/score_processor/score/*.cpp")
-file(GLOB FILES_SCORE_F0_CAL "${PATH_TO_MEDIACORE}/score_processor/f0_cal/*.cpp")
-file(GLOB FILES_SCORE_FFT_WRAPPER "${PATH_TO_MEDIACORE}/score_processor/fft_wrapper/*.cpp")
-file(GLOB FILES_SCORE_MEL "${PATH_TO_MEDIACORE}/score_processor/mel/*.cpp")
-file(GLOB FILES_AUDIO_EFFECT_MODEL "${PATH_TO_MEDIACORE}/audio_effect/*.cpp")
-file(GLOB FILES_AUDIO_EFFECT_SOX_PARAM_MODEL "${PATH_TO_MEDIACORE}/audio_effect/sox_effect_param/*.cpp")
-file(GLOB FILES_AUDIO_EFFECT_FILTER "${PATH_TO_MEDIACORE}/audio_effect_filter/*.cpp")
-file(GLOB FILES_AUDIO_EFFECT_FILTER_FADE_IMPL "${PATH_TO_MEDIACORE}/audio_effect_filter_impl/fade/*.cpp")
-file(GLOB FILES_AUDIO_EFFECT_FILTER_SOX_EFFECT_IMPL "${PATH_TO_MEDIACORE}/audio_effect_filter_impl/sox_effect/*.cpp")
-file(GLOB FILES_AUDIO_EFFECT_FILTER_SPECIFIC_IMPL "${PATH_TO_MEDIACORE}/audio_effect_filter_impl/specific/*.cpp")
-file(GLOB FILES_AUDIO_EFFECT_FILTER_VOLUME_ADJUST_IMPL "${PATH_TO_MEDIACORE}/audio_effect_filter_impl/volume_adjust/*.cpp")
-file(GLOB FILES_AUDIO_EFFECT_PROCESSOR "${PATH_TO_MEDIACORE}/audio_effect_processor/*.cpp")
-file(GLOB FILES_AUDIO_EFFECT_PROCESSOR_LIVE "${PATH_TO_MEDIACORE}/audio_effect_processor/live/*.cpp")
-file(GLOB FILES_AUDIO_EFFECT_PROCESSOR_POST "${PATH_TO_MEDIACORE}/audio_effect_processor/post/*.cpp")
-# External AudioEffect File
-file(GLOB CPP_FILES_IN_REVERB        "${PATH_TO_MEDIACORE}/external_audio_effect/*.cpp")
-file(GLOB CPP_FILES_IN_REVERB_SRC        "${PATH_TO_MEDIACORE}/external_audio_effect/reverb_src/*.cpp")
-file(GLOB CPP_FILES_IN_BIQUAD_FILTERS    "${PATH_TO_MEDIACORE}/external_audio_effect/reverb_src/BiquadFilters/*.cpp")
-file(GLOB CPP_FILES_OPENAL_IN_OPENAL     "${PATH_TO_MEDIACORE}/external_audio_effect/reverb_src/openal/*.cpp")
-file(GLOB CPP_FILES_IN_VERB              "${PATH_TO_MEDIACORE}/external_audio_effect/reverb_src/verb/*.cpp")
 
-add_library(native-lib SHARED
-        ${FILES_JNI_LAYER}
-        ${FILES_LIB_COMMON}
-        ${FILES_SCORE_PROCESSOR}
-        ${FILES_SCORE_F0_CAL}
-        ${FILES_SCORE_FFT_WRAPPER}
-        ${FILES_SCORE_MEL}
-        ${FILES_AUDIO_EFFECT_MODEL}
-        ${FILES_AUDIO_EFFECT_SOX_PARAM_MODEL}
-        ${FILES_AUDIO_EFFECT_FILTER}
-        ${FILES_AUDIO_EFFECT_FILTER_FADE_IMPL}
-        ${FILES_AUDIO_EFFECT_FILTER_SOX_EFFECT_IMPL}
-        ${FILES_AUDIO_EFFECT_FILTER_SPECIFIC_IMPL}
-        ${FILES_AUDIO_EFFECT_FILTER_VOLUME_ADJUST_IMPL}
-        ${FILES_AUDIO_EFFECT_PROCESSOR}
-        ${FILES_AUDIO_EFFECT_PROCESSOR_POST}
-        ${FILES_AUDIO_EFFECT_PROCESSOR_LIVE}
-        ${CPP_FILES_IN_REVERB}
-        ${CPP_FILES_IN_REVERB_SRC}
-        ${CPP_FILES_IN_BIQUAD_FILTERS}
-        ${CPP_FILES_OPENAL_IN_OPENAL}
-        ${CPP_FILES_IN_VERB}
+file(GLOB FILES_JNI_LAYER2 "${PATH_TO_JNI_LAYER2}/*.c")
+file(GLOB FILES_JNI_LAYER2 "${PATH_TO_JNI_LAYER2}/*.cpp")
+file(GLOB FILES_LIB_COMMON2 "${PATH_TO_MEDIACORE2}/common/*.c")
+file(GLOB FILES_LIB_DELAY2 "${PATH_TO_MEDIACORE2}/Delay/Delay_LIB/*.c")
+file(GLOB FILES_LIB_EFFECT12 "${PATH_TO_MEDIACORE2}/effect/effect_LIB/*.c")
+file(GLOB FILES_LIB_EFFECT22 "${PATH_TO_MEDIACORE2}/effect/Plugin_conv_reverb/*.c")
+file(GLOB FILES_LIB_FILTER2 "${PATH_TO_MEDIACORE2}/filter/Filter_LIB/*.c")
+
+
+#该指令的主要作用就是将指定的源文件生成链接文件，然后添加到工程中去。该指令常用的语法如下：
+add_library(native-lib2 SHARED
+        ${FILES_JNI_LAYER2}
+        ${FILES_LIB_COMMON2}
+        ${FILES_LIB_DELAY2}
+        ${FILES_LIB_EFFECT12}
+        ${FILES_LIB_EFFECT22}
+        ${FILES_LIB_FILTER2}
         )
 
 target_link_libraries( # Specifies the target library.
-        native-lib
+        native-lib2
         android
-        ${PATH_TO_PRE_BUILT}/libsox.a
+        #${PATH_TO_PRE_BUILT}/libsox.a
         z
         log )

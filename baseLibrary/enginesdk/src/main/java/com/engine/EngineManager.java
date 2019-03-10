@@ -1179,7 +1179,7 @@ public class EngineManager implements AgoraOutCallback {
             Sink sink = Okio.appendingSink(file);
             bufferedSink = Okio.buffer(sink);
             bufferedSink.write(newBuffer);
-            MyLog.d(TAG, "写入文件 path:" + file.getAbsolutePath());
+            //MyLog.d(TAG, "写入文件 path:" + file.getAbsolutePath());
         } catch (IOException e) {
             e.printStackTrace();
         }

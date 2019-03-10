@@ -1,8 +1,8 @@
 #ifndef FILTER_CONTROL_H
 #define FILTER_CONTROL_H
-#include "two/common/defines.h"
-#include "two/Delay/Delay_LIB/Delay_SDK_API.h"
-#include "two/common/DFTs.h"
+#include "common/defines.h"
+#include "Delay/Delay_LIB/Delay_SDK_API.h"
+#include "common/DFTs.h"
 
 
 
