@@ -99,7 +99,12 @@ public class UmengStatistics {
             return;
         }
         init();
-        MobclickAgent.onEvent(U.app().getApplicationContext(), eventId, param);
+
+        if(param == null || param.isEmpty()){
+            MobclickAgent.onEvent(U.app().getApplicationContext(), eventId);
+        }else {
+            MobclickAgent.onEvent(U.app().getApplicationContext(), eventId, param);
+        }
     }
 
     /**
