@@ -17,6 +17,7 @@ import com.engine.agora.source.PrivateTextureHelper;
 import com.engine.arccloud.ArcCloudManager;
 import com.engine.arccloud.RecognizeConfig;
 import com.engine.effect.ITbEffectProcessor;
+import com.engine.score.ICbScoreProcessor;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -65,6 +66,7 @@ public class AgoraEngineAdapter {
         return AgoraEngineAdapterHolder.INSTANCE;
     }
 
+    static final boolean DEBUG = false;
     private Params mConfig;
     private RtcEngine mRtcEngine;
     private Handler mUiHandler = new Handler();
@@ -73,6 +75,7 @@ public class AgoraEngineAdapter {
     private List<EffectModel> mEffectModels = new ArrayList<>();
     private ArcCloudManager mArcCloudManager;// ArcClound的打分和识别
     private ITbEffectProcessor mTbEffectProcessor = new ITbEffectProcessor();// 天宝提供的音效处理类
+    private ICbScoreProcessor mICbScoreProcessor = new ICbScoreProcessor();// 唱吧打分系统
     /**
      * 所有的回调都在这
      * 注意回调的运行线程，一般都不会在主线程
@@ -372,6 +375,9 @@ public class AgoraEngineAdapter {
         }
         if (mTbEffectProcessor != null) {
             mTbEffectProcessor.destroyEffectProcessor();
+        }
+        if (mICbScoreProcessor != null) {
+            mICbScoreProcessor.destroy();
         }
     }
 
@@ -872,10 +878,11 @@ public class AgoraEngineAdapter {
      *                 正整数：循环的次数
      *                 -1：无限循环
      */
-    public void startAudioMixing(String filePath, boolean loopback, boolean replace, int cycle) {
+    public void startAudioMixing(String filePath, String melPath, boolean loopback, boolean replace, int cycle) {
         if (mRtcEngine == null) {
             return;
         }
+        mICbScoreProcessor.init();
         mRtcEngine.startAudioMixing(filePath, loopback, replace, cycle);
     }
 
@@ -965,6 +972,15 @@ public class AgoraEngineAdapter {
 //        } else {
         // 注册这玩意怎么会导致没有声音,return false 就会丢弃
         mRtcEngine.registerAudioFrameObserver(new IAudioFrameObserver() {
+            /**
+             * 10ms 回调一次 , 里面不能做耗时操作，不然声音会有问题
+             * @param samples
+             * @param numOfSamples
+             * @param bytesPerSample
+             * @param channels
+             * @param samplesPerSec
+             * @return
+             */
             @Override
             public boolean onRecordFrame(byte[] samples, // 2048
                                          int numOfSamples, // 512
@@ -975,27 +991,47 @@ public class AgoraEngineAdapter {
                 if (++mLogtag % 500 == 0) {
                     MyLog.d(TAG, "onRecordFrame" + " samples=" + samples + " numOfSamples=" + numOfSamples + " bytesPerSample=" + bytesPerSample + " channels=" + channels + " samplesPerSec=" + samplesPerSec);
                 }
+                if(DEBUG) {
+                    MyLog.d(TAG, "step0:" + testIn(samples));
+                }
                 if (mArcCloudManager != null) {
-                    mArcCloudManager.putPool(samples, samplesPerSec, channels);
+                    if (mConfig != null) {
+                        switch (mConfig.getScene()) {
+                            case grab:
+                                break;
+                            case voice:
+                                break;
+                            case rank:
+                            case audiotest:
+                                if (mConfig.isMixMusicPlaying() && mConfig.getLrcHasStart()) {
+                                    mArcCloudManager.putPool(samples, samplesPerSec, channels);
+                                }
+                                break;
+                        }
+                    }
                 }
                 long ts = 0;
                 if (mConfig != null && mConfig.isMixMusicPlaying() && mConfig.getLrcHasStart()) {
                     ts = mConfig.getCurrentMusicTs() + mConfig.getMixMusicBeginOffset() + (System.currentTimeMillis() - mConfig.getRecordCurrentMusicTsTs());
                 }
-//                CbEngineAdapter.getInstance().processAudioFrames(samples,
-//                        numOfSamples,
-//                        bytesPerSample,
-//                        channels,
-//                        samplesPerSec,
-//                        ts,
-//                        mConfig.getMidiPath());
-                //MyLog.d(TAG, "step1:" + testIn(samples));
-                mTbEffectProcessor.process2(samples, samples.length, channels, samplesPerSec);
-                //MyLog.d(TAG, "step2:" + testIn(samples));
+                if (DEBUG) {
+                    MyLog.d(TAG, "step1:" + testIn(samples));
+                }
+                mICbScoreProcessor.process(samples, samples.length, channels, samplesPerSec, ts, mConfig.getMidiPath());
+                if (DEBUG) {
+                    MyLog.d(TAG, "step2:" + testIn(samples));
+                }
+                mTbEffectProcessor.process(2, samples, samples.length, channels, samplesPerSec);
+                if (DEBUG) {
+                    MyLog.d(TAG, "step3:" + testIn(samples));
+                }
                 if (!TextUtils.isEmpty(mConfig.getRecordingFromCallbackSavePath())) {
                     if (mOutCallback != null) {
                         mOutCallback.onRecordingBuffer(samples);
                     }
+                }
+                if (DEBUG) {
+                    MyLog.d(TAG, "step4:" + testIn(samples));
                 }
                 return true;
             }
@@ -1017,6 +1053,10 @@ public class AgoraEngineAdapter {
             a += samples[i];
         }
         return a;
+    }
+
+    public int getScore() {
+        return mICbScoreProcessor.getScore();
     }
 
     /**

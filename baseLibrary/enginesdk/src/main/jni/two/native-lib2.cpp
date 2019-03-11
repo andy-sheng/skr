@@ -18,17 +18,7 @@ CovReverbV2_s *mcovreverb = NULL;
 
 #define LOG_TAG "ITBEffectEngine"
 
-#define FILEOPEN 1
-
-extern "C"
-JNIEXPORT jstring
-JNICALL
-Java_com_engine_effect_TbEffectProcessor_stringFromJNI(
-        JNIEnv *env,
-        jobject /* this */) {
-    std::string hello = "Hello from C++";
-    return env->NewStringUTF(hello.c_str());
-}
+#define FILEOPEN 0
 
 extern "C"
 JNIEXPORT jint JNICALL
@@ -42,7 +32,9 @@ JNIEXPORT jint JNICALL
 Java_com_engine_effect_ITbEffectProcessor_process1(JNIEnv *env, jobject ins, jbyteArray samplesJni,
                                                    jint len,
                                                    jint channels, jint sampleRate) {
-    LOGI("Java_com_engine_effect_ITbEffectProcessor_process1 flag=%d", flag);
+    if (FILEOPEN) {
+        LOGI("Java_com_engine_effect_ITbEffectProcessor_process1 flag=%d", flag);
+    }
     if (flag == -1) {
         return flag;
     }
@@ -68,7 +60,16 @@ Java_com_engine_effect_ITbEffectProcessor_process1(JNIEnv *env, jobject ins, jby
         outputFile = fopen("/mnt/sdcard/tb_output.pcm", "wb+");
     }
 
+    //无符号整型，加起来和testIn不一定对得上
     unsigned char *data = (unsigned char *) env->GetByteArrayElements(samplesJni, 0);
+
+    if (FILEOPEN) {
+        int t = 0;
+        for (int i = 0; i < len; i++) {
+            t += data[i];
+        }
+        LOGI("Java_com_engine_effect_ITbEffectProcessor_process1 total=%d", t);
+    }
     // 2048 512 下来
     short *samples = (short *) data; // 长度只有1024了
 
@@ -76,7 +77,14 @@ Java_com_engine_effect_ITbEffectProcessor_process1(JNIEnv *env, jobject ins, jby
         fwrite(samples, sizeof(short), len / 2, inputFile);
     }
 
+    if (FILEOPEN) {
+        LOGI("begin EchoRun_API");
+    }
     EchoRun_API(&echo_s, samples, len / 2, samples);
+
+    if (FILEOPEN) {
+        LOGI("after EchoRun_API");
+    }
 
     if (FILEOPEN) {
         fwrite(samples, sizeof(short), len / 2, outputFile);
@@ -102,34 +110,49 @@ JNIEXPORT jint JNICALL
 Java_com_engine_effect_ITbEffectProcessor_process2(JNIEnv *env, jobject ins, jbyteArray samplesJni,
                                                    jint len,
                                                    jint channels, jint sampleRate) {
-    LOGI("Java_com_engine_effect_ITbEffectProcessor_process2 flag=%d", flag);
+    if (FILEOPEN) {
+        LOGI("Java_com_engine_effect_ITbEffectProcessor_process2 flag=%d", flag);
+    }
     if (flag == -1) {
         return flag;
     }
     if (flag != 2) {
-        LOGI("11");
-        if (mcovreverb) {
-            LOGI("12");
-            free(mcovreverb);
-            LOGI("13");
+        if (FILEOPEN) {
+            LOGI("11");
         }
-        LOGI("14");
+        if (mcovreverb) {
+            if (FILEOPEN) {
+                LOGI("12");
+            }
+            free(mcovreverb);
+            if (FILEOPEN) {
+                LOGI("13");
+            }
+        }
+        if (FILEOPEN) {
+            LOGI("14");
+        }
         mcovreverb = (CovReverbV2_s *) malloc(sizeof(CovReverbV2_s));
         mcovreverb->channelin = channels;
         mcovreverb->channelout = channels;
         mcovreverb->samplerate = sampleRate;
-        mcovreverb->reverbkind = 11;//----------------CD 11
-        mcovreverb->xsame = 0;
+        mcovreverb->reverbkind = 3;//----------------CD 11
+        mcovreverb->xsame = 1;
         mcovreverb->wet = 1;
         mcovreverb->xframelen = len / 2 / channels;
-        LOGI("15");
+        if (FILEOPEN) {
+            LOGI("15");
+        }
         CovReverbV2Reset_API(mcovreverb);
         CovReverbV2Calcu_API(mcovreverb);
         flag = 2;
-        LOGI("16");
+        if (FILEOPEN) {
+            LOGI("16");
+        }
     }
-
-    LOGI("17");
+    if (FILEOPEN) {
+        LOGI("17");
+    }
     if (inputFile == NULL && FILEOPEN) {
         inputFile = fopen("/mnt/sdcard/tb_input.pcm", "wb+");
     }
@@ -138,16 +161,27 @@ Java_com_engine_effect_ITbEffectProcessor_process2(JNIEnv *env, jobject ins, jby
         outputFile = fopen("/mnt/sdcard/tb_output.pcm", "wb+");
     }
 
-    char *data = (char *) env->GetByteArrayElements(samplesJni, 0);
+    unsigned char *data = (unsigned char *) env->GetByteArrayElements(samplesJni, 0);
+    if (FILEOPEN) {
+        int t = 0;
+        for (int i = 0; i < len; i++) {
+            t += data[i];
+        }
+        LOGI("Java_com_engine_effect_ITbEffectProcessor_process2 total=%d", t);
+    }
     // 2048 512 下来
     short *samples = (short *) data; // 长度只有1024了
 
     if (FILEOPEN) {
         fwrite(samples, sizeof(short), len / 2, inputFile);
     }
-
+    if (FILEOPEN) {
+        LOGI("begin CovReverbV2Run_API");
+    }
     CovReverbV2Run_API(mcovreverb, samples, len / 2, samples);
-
+    if (FILEOPEN) {
+        LOGI("after CovReverbV2Run_API");
+    }
     if (FILEOPEN) {
         fwrite(samples, sizeof(short), len / 2, outputFile);
     }
@@ -163,6 +197,9 @@ Java_com_engine_effect_ITbEffectProcessor_process2(JNIEnv *env, jobject ins, jby
     //
     //JNI_ABORT：对Java的数组不进行更新,释放C/C++的数组
     env->ReleaseByteArrayElements(samplesJni, reinterpret_cast<jbyte *>(data), 0);
+    if (FILEOPEN) {
+        LOGI("19");
+    }
     return flag;
 }
 
@@ -170,23 +207,31 @@ extern "C"
 JNIEXPORT jint JNICALL
 Java_com_engine_effect_ITbEffectProcessor_destroyEffectProcessor(JNIEnv *env, jobject instance) {
     flag = -1;
-    LOGI("1");
+    if (FILEOPEN) {
+        LOGI("1");
+    }
     if (inputFile) {
         fclose(inputFile);
         inputFile = NULL;
     }
-    LOGI("2");
+    if (FILEOPEN) {
+        LOGI("2");
+    }
     if (outputFile) {
         fclose(outputFile);
         outputFile = NULL;
     }
-    LOGI("3");
+    if (FILEOPEN) {
+        LOGI("3");
+    }
     EchoReset_API(&echo_s);
     if (mcovreverb) {
         CovReverbV2Reset_API(mcovreverb);
         free(mcovreverb);
         mcovreverb = NULL;
     }
-    LOGI("4");
+    if (FILEOPEN) {
+        LOGI("4");
+    }
     return flag;
 }

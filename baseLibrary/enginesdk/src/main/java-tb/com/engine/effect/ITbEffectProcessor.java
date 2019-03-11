@@ -15,11 +15,24 @@ public class ITbEffectProcessor {
             e.printStackTrace();
         }
     }
+
     public native int init();
+
+    public int process(int type, byte[] samples, int length, int channels, int samplesPerSec) {
+        if (type == 1) {
+            int r = process1(samples, length, channels, samplesPerSec);
+            return r;
+        } else {
+            int r = process2(samples, length, channels, samplesPerSec);
+            return r;
+        }
+    }
 
     public native int process1(byte[] samples, int length, int channels, int samplesPerSec);
 
     public native int process2(byte[] samples, int length, int channels, int samplesPerSec);
 
     public native int destroyEffectProcessor();
+
+
 }

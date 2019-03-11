@@ -1,154 +1,106 @@
 #include <jni.h>
 #include <string>
-#include "audio_effect_adapter.h"
-#include "audio_effect_live_processor.h"
-#include "audio_effect_processor_factory.h"
-#include "SMAudioEffectProcessor.h"
-#include "CommonTools.h"
+#include "com_engine_score_ICbScoreProcessor.h"
+#include <score_processor/score/base_scoring.h>
+#include <score_processor/score/pitch_scoring.h>
 
-extern "C"
-JNIEXPORT jstring
-JNICALL
-Java_media_ushow_audio_1effect_MainActivity_stringFromJNI(
-        JNIEnv *env,
-        jobject /* this */) {
-    std::string hello = "Hello from C++";
-    return env->NewStringUTF(hello.c_str());
-}
+#define LOG_TAG "ICbScoreProcessor"
+
+#define FILEOPEN 0
+
+FILE *scoreFile = NULL;
+BaseScoring *scoring = NULL;
 
 extern "C"
 JNIEXPORT jint JNICALL
-Java_media_ushow_audio_1effect_AudioEffectProcessor_process(JNIEnv *env, jclass type,
-                                                            jstring inputFilePath_,
-                                                            jstring outputFilePath_) {
-    const char *inputFilePath = env->GetStringUTFChars(inputFilePath_, 0);
-    const char *outputFilePath = env->GetStringUTFChars(outputFilePath_, 0);
-    int channels = 1;
-    int audioSampleRate = 44100;
-    bool isUnAccom = true;
-    long long startTimeMills = currentTimeMills();
-    AudioEffect* audioEffect = AudioEffectAdapter::GetInstance()->buildDefaultAudioEffect(channels, audioSampleRate, isUnAccom);
-    AudioEffectProcessor* effectProcessor = AudioEffectProcessorFactory::GetInstance()->buildLiveAudioEffectProcessor();
-    effectProcessor->init(audioEffect);
-    FILE* inputFile = fopen(inputFilePath, "rb+");
-    FILE* outputFile = fopen(outputFilePath, "wb+");
-    if(inputFile && outputFile) {
-        int bufferSize = 1024 * 10;
-        SInt16* buffer = new SInt16[bufferSize];
-        int actualSize = 0;
-        while((actualSize = fread(buffer, sizeof(SInt16), bufferSize, inputFile)) > 0) {
-            //process
-//            memset(buffer, 0, sizeof(SInt16) * bufferSize);
-            for(int i = 0; i < actualSize / 2; i++) {
-                buffer[i] = buffer[i * 2];
+Java_com_engine_score_ICbScoreProcessor_process1(JNIEnv *env, jobject instance, jboolean needScore,
+                                                 jboolean needRestart,
+                                                 jbyteArray samplesJni,
+                                                 jint length, jint channels, jint samplesPerSec,
+                                                 jlong currentTimeMills,
+                                                 jstring melFile_) {
+    if (FILEOPEN) {
+        LOGI("needScore=%d,needRestart=%d,currentTimeMills=%lld", needScore, needRestart,
+             currentTimeMills);
+    }
+    if (!needScore) {
+        if (FILEOPEN && scoreFile != NULL) {
+            fclose(scoreFile);
+            scoreFile = NULL;
+        }
+        return -1;
+    }
+    if (needRestart) {
+        if (scoring != NULL) {
+            scoring->destroy();
+            delete scoring;
+            scoring = NULL;
+        }
+        if (FILEOPEN && scoreFile != NULL) {
+            fclose(scoreFile);
+            scoreFile = NULL;
+        }
+    }
+    if (scoring == NULL) {
+        const char *melFilePath = env->GetStringUTFChars(melFile_, 0);
+        scoring = new PitchScoring();
+
+        scoring->getMinBufferSize(samplesPerSec,
+                                  1, 2 * 8, length / 2 / channels);
+        scoring->init(samplesPerSec, 1,
+                      2 * 8, (char *) melFilePath);
+        env->ReleaseStringUTFChars(melFile_, melFilePath
+        );
+    }
+
+    byte *data = (byte *) env->GetByteArrayElements(samplesJni, 0);
+// 2048 512 下来
+    short *samples = (short *) data; // 长度只有1024了
+
+//2:送入打分处理器
+    if (NULL != scoring) {
+        if (channels == 2) {
+            for (int i = 0; i < length / 2 / channels; i++) {
+                samples[i] = samples[i * 2];// 0123456-->0246
             }
-            effectProcessor->process(buffer, actualSize, 0, 0);
-            fwrite(buffer, sizeof(SInt16), actualSize, outputFile);
-        }
-        if(buffer) {
-            delete[] buffer;
-        }
-        fclose(inputFile);
-        fclose(outputFile);
-    }
-
-    if (NULL != effectProcessor) {
-        effectProcessor->destroy();
-        delete effectProcessor;
-        effectProcessor = NULL;
-    }
-    env->ReleaseStringUTFChars(inputFilePath_, inputFilePath);
-    env->ReleaseStringUTFChars(outputFilePath_, outputFilePath);
-    int wasteTimeMills = currentTimeMills() - startTimeMills;
-    return wasteTimeMills;
-}
-
-extern "C"
-JNIEXPORT jint JNICALL
-Java_media_ushow_audio_1effect_AudioEffectProcessor_processWithEffect(JNIEnv *env, jclass type,
-                                                                      jobject audioEffectJNI,
-                                                                      jstring inputFilePath_,
-                                                                      jstring outputFilePath_) {
-    const char *inputFilePath = env->GetStringUTFChars(inputFilePath_, 0);
-    const char *outputFilePath = env->GetStringUTFChars(outputFilePath_, 0);
-    long long startTimeMills = currentTimeMills();
-    AudioEffect* audioEffect = AudioEffectAdapter::GetInstance()->buildAudioEffect(audioEffectJNI, env);
-    AudioEffectProcessor* effectProcessor = AudioEffectProcessorFactory::GetInstance()->buildLiveAudioEffectProcessor();
-    effectProcessor->init(audioEffect);
-    FILE* inputFile = fopen(inputFilePath, "rb+");
-    FILE* outputFile = fopen(outputFilePath, "wb+");
-    if(inputFile && outputFile) {
-        int bufferSize = 1024 * 10;
-        SInt16* buffer = new SInt16[bufferSize];
-        int actualSize = 0;
-        while((actualSize = fread(buffer, sizeof(SInt16), bufferSize, inputFile)) > 0) {
-            //process
-//            memset(buffer, 0, sizeof(SInt16) * bufferSize);
-            for(int i = 0; i < actualSize / 2; i++) {
-                buffer[i] = buffer[i * 2];
+// 512个 short 类型
+            if (FILEOPEN && scoreFile == NULL) {
+                scoreFile = fopen("/mnt/sdcard/score_input.pcm", "wb+");
             }
-            effectProcessor->process(buffer, actualSize, 0, 0);
-            fwrite(buffer, sizeof(SInt16), actualSize, outputFile);
+            if (FILEOPEN && scoreFile != NULL) {
+                fwrite(samples, sizeof(short), length / 2 / channels, scoreFile);
+            }
+            scoring->doScoring(samples, length / 2 / channels, currentTimeMills);
+        } else if (channels == 1) {
+//2:送入打分处理器
+// 512个 short 类型
+            scoring->doScoring(samples, length / 2, currentTimeMills);
         }
-        if(buffer) {
-            delete[] buffer;
-        }
-        fclose(inputFile);
-        fclose(outputFile);
     }
-
-    if (NULL != effectProcessor) {
-        effectProcessor->destroy();
-        delete effectProcessor;
-        effectProcessor = NULL;
-    }
-    env->ReleaseStringUTFChars(inputFilePath_, inputFilePath);
-    env->ReleaseStringUTFChars(outputFilePath_, outputFilePath);
-    int wasteTimeMills = currentTimeMills() - startTimeMills;
-    return wasteTimeMills;
+    env->ReleaseByteArrayElements(samplesJni, (jbyte *) data, JNI_ABORT);
+    return 0;
 }
 
 extern "C"
 JNIEXPORT jint JNICALL
-Java_media_ushow_audio_1effect_AudioEffectProcessor_processWithExternalEffect(JNIEnv *env,
-                                                                              jclass type,
-                                                                              jobject audioEffectJNI,
-                                                                              jstring inputFilePath_,
-                                                                              jstring outputFilePath_) {
-    const char *inputFilePath = env->GetStringUTFChars(inputFilePath_, 0);
-    const char *outputFilePath = env->GetStringUTFChars(outputFilePath_, 0);
-    int channels = 2;
-    int audioSampleRate = 44100;
-    long long startTimeMills = currentTimeMills();
-    int bufferSize = 1024 * 5;
-    SMAudioEffectProcessor* effectProcessor = new SMAudioEffectProcessor();
-    effectProcessor->initEffect(audioSampleRate, channels, bufferSize);
-    effectProcessor->onEffectSelect(EFFECT_WARM);
-    FILE* inputFile = fopen(inputFilePath, "rb+");
-    FILE* outputFile = fopen(outputFilePath, "wb+");
-    if(inputFile && outputFile) {
-        SInt16* buffer = new SInt16[bufferSize];
-        float* bufferInFloat = new float[bufferSize];
-        int actualSize = 0;
-        while((actualSize = fread(buffer, sizeof(SInt16), bufferSize, inputFile)) > 0) {
-            short_to_float(buffer, bufferInFloat, actualSize);
-            effectProcessor->Process(bufferInFloat, actualSize, 0);
-            float_to_short(bufferInFloat, buffer, actualSize);
-            fwrite(buffer, sizeof(SInt16), actualSize, outputFile);
-        }
-        if(buffer) {
-            delete[] buffer;
-        }
-        fclose(inputFile);
-        fclose(outputFile);
+Java_com_engine_score_ICbScoreProcessor_getScore1(JNIEnv *env, jobject instance) {
+    if (NULL != scoring) {
+        return scoring->getScore();
     }
-
-    if (NULL != effectProcessor) {
-        delete effectProcessor;
-        effectProcessor = NULL;
-    }
-    env->ReleaseStringUTFChars(inputFilePath_, inputFilePath);
-    env->ReleaseStringUTFChars(outputFilePath_, outputFilePath);
-    int wasteTimeMills = currentTimeMills() - startTimeMills;
-    return wasteTimeMills;
+    return -1;
 }
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_engine_score_ICbScoreProcessor_destroyScoreProcessor(JNIEnv *env, jobject instance) {
+    if (NULL != scoring) {
+        scoring->destroy();
+        delete scoring;
+        scoring = NULL;
+    }
+    if (FILEOPEN && scoreFile != NULL) {
+        fclose(scoreFile);
+        scoreFile = NULL;
+    }
+}
+

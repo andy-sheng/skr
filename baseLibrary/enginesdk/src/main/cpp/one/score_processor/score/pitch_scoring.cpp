@@ -4,8 +4,9 @@
 
 #define RECORD_WAVY_LINE_DELAY          150     //为了打分点更准确。延迟一段时间
 
+#define LOGOPEN 1
+
 PitchScoring::PitchScoring() {
-    UNIT_LEN_IN_MS = 40;
     calBasebandUtil = new CCalcBaseband();
     isInitialization = false;
     mNotesMaxLen = 0;
@@ -62,11 +63,11 @@ PitchScoring::onInit(int sampleRateParam, int channelNumParam, int bitParam, cha
     melChordAna.InitByMelFile(melFilePath, 0);
     mNotesMaxLen = melChordAna.GetToneScoreTempl(mMelodyNotes);
     //3:对每个音符的开始和结束时间进行修正
-    for (int i = 0; i < mMelodyNotes.size(); i++) {
-        MelodyNote &melodyNote = mMelodyNotes.at(i);
-        melodyNote.beginTimeMs += RECORD_WAVY_LINE_DELAY;
-        melodyNote.endTimeMs += RECORD_WAVY_LINE_DELAY;
-    }
+//    for (int i = 0; i < mMelodyNotes.size(); i++) {
+//        MelodyNote &melodyNote = mMelodyNotes.at(i);
+//        melodyNote.beginTimeMs += RECORD_WAVY_LINE_DELAY;
+//        melodyNote.endTimeMs += RECORD_WAVY_LINE_DELAY;
+//    }
     //4:开启新的线程初始化基频处理器
     pthread_create(&initBasebandThread, NULL, startInitBasebandThread, this);
 }
@@ -93,14 +94,21 @@ void PitchScoring::processRecordLevel(RecordLevel *recordLevel) {
     }
     //1:找出对应的音符位置
     long currentTimeMills = recordLevel->getTimeMills();
-    int f = 0;
-    int singingIndex = getSingingIndex(currentTimeMills,&f);
+    int flag = 0;
+    int singingIndex = getSingingIndex(currentTimeMills, &flag);
+    if (LOGOPEN) {
+        LOGI("processRecordLevel singingIndex=%d currentTimeMills=%ld", singingIndex,
+             currentTimeMills);
+    }
     if (singingIndex < 0) {
         //没找到这句对应的音符位置，直接返回
-        mCurScore = 0;
-        LOGI("没找到这句对应的音符位置，直接返回");
+        //    mCurScore = 0;
         return;
     }
+    MelodyNote melodyNote = mMelodyNotes.at(singingIndex);
+    // 取出目标音高
+    short targetNote = melodyNote.note_org;
+
     float conf = 0.0;
     float f0 = 0.0;
     //2:计算基频
@@ -110,40 +118,64 @@ void PitchScoring::processRecordLevel(RecordLevel *recordLevel) {
                                         AUDIO_DATA_SAMPLE_FOR_SCORE, &f0, &conf);
     }
     float note = -1;
-    float targetNote = -1;
     //3:根据基频计算note
     if (conf > 0.8) {
         note = (float) (69000.5 + 12000 * (log10(f0 / 440.0) / log10(2)));
         note = float((int) note % 12000) / 1000.0;
     }
-    //LOGI("conf is : %.3f note is %.2f", conf, note);
+    if (LOGOPEN) {
+        LOGI("processRecordLevel conf=%.3f,note=%.2f,targetNote=%hd", conf, note, targetNote);
+    }
     //4:根据note计算score
     if (note > -0.5) {
-        MelodyNote melodyNote = mMelodyNotes.at(singingIndex);
-        targetNote = melodyNote.note_org;
         float diffnote = noteDiff(note, targetNote);
-        if (fabs(diffnote) <= 1.0)diffnote = diffnote * fabs(diffnote);
+        if (LOGOPEN) {
+            LOGI("processRecordLevel diffnote=%.2f ", fabs(diffnote));
+        }
         if (fabs(diffnote) <= 1.0) {
-            mCurScore = 100 - 100 * (fabs(diffnote) - 0.0);
+            diffnote = diffnote * fabs(diffnote);
+        }
+        int a = 100 - 100 * (fabs(diffnote) - 0.0);
+        int b = mLastScore * 0.4;
+        if (a > b) {
+            mCurScore = a;
         } else {
-            mCurScore = mLastScore * 0.4;
+            mCurScore = b;
+            if (mCurScore == 0) {
+                // 声音够大，也给他一个分
+                mCurScore = note * 10;
+            }
         }
+//        if (fabs(diffnote) <= 1.0) {
+//            mCurScore = 100 - 100 * (fabs(diffnote) - 0.0);
+//        } else {
+//            mCurScore = mLastScore * 0.4;
+//        }
     } else {
-        if(f>=2){
-            LOGI("因为歌曲的位置是有点偏移的，就不衰减了");
-            return;
-        }
         mCurScore = mLastScore * 0.2;
     }
+
     if (mCurScore > 100) {
-        mCurScore = 60;
+        if (LOGOPEN) {
+            LOGI("processRecordLevel mCurScore >100");
+        }
+        mCurScore = 100;
+    }
+    if (mCurScore < 0) {
+        mCurScore = 0;
     }
     mLastScore = mCurScore;
-//	LOGI("mCurScore is : %d",mCurScore);
+    if (LOGOPEN) {
+        LOGI("processRecordLevel mCurScore=%d targetNote=%hd", mCurScore, targetNote);
+    }
     //5:根据score进行计算统计数据
-    if (targetNote != -1) {
+    if (targetNote != -1 && mCurScore > 0) {
         mCurrentLineLevelSum += mCurScore;
         mCurrentLineSampleCount++;
+        if (LOGOPEN) {
+            LOGI("processRecordLevel 得分有效 mCurrentLineLevelSum=%d mCurrentLineSampleCount=%d",
+                 mCurrentLineLevelSum, mCurrentLineSampleCount);
+        }
     }
 }
 
@@ -153,8 +185,8 @@ int PitchScoring::getScore() {
     if (mCurrentLineSampleCount > 0) {
         lineScore = mCurrentLineLevelSum / mCurrentLineSampleCount;
     }
-    if (mLogOpen) {
-        LOGI("mCurrentLineSampleCount:%d mCurrentLineLevelSum:%d lineScore:%d",
+    if (LOGOPEN) {
+        LOGI("getScore mCurrentLineSampleCount:%d mCurrentLineLevelSum:%d lineScore:%d",
              mCurrentLineSampleCount, mCurrentLineLevelSum, lineScore);
     }
     float x = (float) lineScore * 0.01;
@@ -166,30 +198,34 @@ int PitchScoring::getScore() {
     return lineScore;
 }
 
-int PitchScoring::getSingingIndex(long currentTimeMills,int *ff) {
+int PitchScoring::getSingingIndex(long currentTimeMills, int *flag) {
     //LOGI("currentTimeMills=%ld", currentTimeMills);
     int singingIndex = -1;
     int f = 100;// 宽松一点
     bool find = false;
-    for (int j = 0; j < 5 && !find; j++) {
-        f = j * 50;// 不停地提高容忍度，确保能找到对应的音符，允许前后差最多250ms
+    for (int j = 0; j < 1 && !find; j++) {
+        f = j * UNIT_LEN_IN_MS / 5;// 不停地提高容忍度，确保能找到对应的音符，允许前后差最多250ms
         for (int i = 0; i < mMelodyNotes.size(); i++) {
             MelodyNote melodyNote = mMelodyNotes.at(i);
             int beginTimeMs = melodyNote.beginTimeMs;
             int endTimeMs = melodyNote.endTimeMs;
-            if (beginTimeMs - f <= currentTimeMills - 20 && currentTimeMills < endTimeMs + f) {
+            if (beginTimeMs - f <= currentTimeMills && currentTimeMills < endTimeMs + f) {
                 singingIndex = i;
                 find = true;
+                if (LOGOPEN) {
+                    LOGI("getSingingIndex i=%d beginTimeMs=%d endTimeMs=%d currentTimeMills=%ld note=%hd f=%d",
+                         i, beginTimeMs, endTimeMs, currentTimeMills, melodyNote.note_org, f);
+                }
                 break;
             }
         }
-        *ff=j;
+        *flag = j;
     }
 
     return singingIndex;
 }
 
-float PitchScoring::noteDiff(float curNote, float targetNote) {
+float PitchScoring::noteDiff(float curNote, short targetNote) {
     float diff = curNote - targetNote;
     diff = diff > 6 ? (diff - 12) : diff;
     diff = diff < -6 ? (diff + 12) : diff;

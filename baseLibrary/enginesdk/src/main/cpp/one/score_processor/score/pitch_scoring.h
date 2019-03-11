@@ -25,9 +25,8 @@ private:
 	int 					mLastScore;
 	int 					mCurrentLineLevelSum;
 	int 					mCurrentLineSampleCount;
-	int 					getSingingIndex(long currentTimeMills,int *f);
-	float 					noteDiff(float curNote, float targetNote);
-	int                     mLogOpen = 1;
+	int 					getSingingIndex(long currentTimeMills,int *flag);
+	float 					noteDiff(float curNote, short targetNote);
 public:
 	PitchScoring();
 	virtual ~PitchScoring();
