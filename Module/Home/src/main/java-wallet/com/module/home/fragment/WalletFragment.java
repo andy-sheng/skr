@@ -8,17 +8,17 @@ import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.titlebar.CommonTitleBar;
-import com.jakewharton.rxbinding2.view.RxView;
-import com.module.home.IWalletView;
+import com.module.RouterConstants;
+import com.module.home.inter.IWalletView;
 import com.module.home.R;
 import com.module.home.adapter.WalletRecordAdapter;
 import com.module.home.model.WalletRecordModel;
@@ -28,9 +28,6 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.functions.Consumer;
 
 public class WalletFragment extends BaseFragment implements IWalletView {
 
@@ -105,7 +102,11 @@ public class WalletFragment extends BaseFragment implements IWalletView {
                 } else {
                     U.getToastUtil().showShort("提现功能下版本开放\n" +
                             "如有疑问，请添加微信号“skrer1”进行咨询");
+//                    ARouter.getInstance()
+//                            .build(RouterConstants.ACTIVITY_WITH_DRAW)
+//                            .navigation();
                 }
+
 
             }
         });

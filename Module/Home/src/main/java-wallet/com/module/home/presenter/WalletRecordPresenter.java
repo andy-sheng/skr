@@ -6,7 +6,7 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
-import com.module.home.IWalletView;
+import com.module.home.inter.IWalletView;
 import com.module.home.WalletServerApi;
 import com.module.home.model.WalletRecordModel;
 

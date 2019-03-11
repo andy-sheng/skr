@@ -20,6 +20,7 @@ public interface RouterConstants {
     String ACTIVITY_GRAB_RESULT = "/rankingmode/GrabResultActivity";
     String ACTIVITY_SHARE_WEB = "/rankingmode/ShareWebActivity";
     String ACTIVITY_GRAB_MATCH_ROOM = "/rankingmode/GrabMatchActivity";
+    String ACTIVITY_WITH_DRAW = "/home/WithDrawActivity";
 
     String ACTIVITY_DEVICE_INFO = "/test/DeviceInfoActivity";
     String ACTIVITY_EMOJI = "/test/EmojiActivity";

@@ -25,12 +25,14 @@ public class SchemeConstants {
     public static final String HOST_SHARE = "share";
     public static final String HOST_GAME = "game";
     public static final String HOST_CHANNEL = "channel";
+    public static final String HOST_WALLET = "wallet";
 
     //path
     public static final String PATH_JOIN = "/join";
     public static final String PATH_FULL_SCREEN = "/fullScreen";
     public static final String PATH_RANK_CHOOSE_SONG = "/rank/chooseSong";
     public static final String PATH_GRAB_MATCH = "/grabmatch";
+    public static final String PATH_WITH_DRAW = "/withdraw";
 
     //param
     public static final String PARAM_LIST_ID = "id";
@@ -39,6 +41,7 @@ public class SchemeConstants {
     public static final String PARAM_GRAB_MODE = "mode";
     public static final String PARAM_SHOW_SHARE = "showShare";
     public static final String PARAM_TAG_ID = "tagId";
+    public static final String PARAM_FROM = "from";
 
 
     /**

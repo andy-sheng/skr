@@ -286,6 +286,8 @@ dependencies {
 
     api files('libs/BaiduLBS_Android.jar')
 
+    api files('libs/alipay-sdk-java-3.6.0.ALL.jar')
+
     compileOnly files("libs/alipaySdk-20170922.jar")
 }
 

@@ -56,6 +56,9 @@ public class InframeProcessor implements ISchemeProcessor {
                     case SchemeConstants.HOST_GAME:
                         processGameUrl(uri);
                         return ProcessResult.AcceptedAndReturn;
+                    case SchemeConstants.HOST_WALLET:
+                        processWalletUrl(uri);
+                        return ProcessResult.AcceptedAndReturn;
                 }
             }
         }
@@ -83,6 +86,31 @@ public class InframeProcessor implements ISchemeProcessor {
         U.getChannelUtils().setSubChannel(sb.toString());
     }
 
+    private void processWalletUrl(Uri uri) {
+        String path = uri.getPath();
+        if (TextUtils.isEmpty(path)) {
+            MyLog.w(TAG, "processWalletUrl path is empty");
+            return;
+        }
+
+        if (SchemeConstants.PATH_WITH_DRAW.equals(path)) {
+            if (!UserAccountManager.getInstance().hasAccount()) {
+                MyLog.w(TAG, "processWalletUrl 没有登录");
+                return;
+            }
+
+            try {
+                String from = SchemeUtils.getString(uri, SchemeConstants.PARAM_FROM);
+
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_WITH_DRAW)
+                        .withString("from", from)
+                        .navigation();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private void processGameUrl(Uri uri) {
         String path = uri.getPath();
         if (TextUtils.isEmpty(path)) {
@@ -105,7 +133,7 @@ public class InframeProcessor implements ISchemeProcessor {
             } catch (Exception e) {
                 MyLog.e(TAG, e);
             }
-        } else if(SchemeConstants.PATH_GRAB_MATCH.equals(path)){
+        } else if (SchemeConstants.PATH_GRAB_MATCH.equals(path)) {
             try {
                 if (!UserAccountManager.getInstance().hasAccount()) {
                     MyLog.w(TAG, "processGameUrl 没有登录");
