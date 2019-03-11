@@ -63,7 +63,6 @@ public class WithdrawFragment extends BaseFragment implements IWithDrawView {
     @Override
     public void destroy() {
         super.destroy();
-        U.getSoundUtils().release(TAG);
     }
 
     @Override
