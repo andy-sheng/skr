@@ -1206,7 +1206,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                     mVoiceScaleView.startWithData(lyricsReader.getLyricsLineInfoList(), mPlayingSongModel.getBeginMs());
                 }
             } else {
-                if (play) {
+                if (play && RoomDataUtils.isRobotRound(mRoomData.getRealRoundInfo(), mRoomData.getPlayerInfoList())) {
                     lyricsReader.cut(mPlayingSongModel.getRankLrcBeginT(), mPlayingSongModel.getRankLrcEndT());
                     postLyricEndEvent(lyricsReader, false);
                 }
