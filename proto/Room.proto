@@ -155,6 +155,7 @@ enum EQRoundResultType {
     ROT_TYPE_3 = 3; //有份悲伤叫都没及格(30%<=t <60%)
     ROT_TYPE_4 = 4; //有种遗憾叫明明可以（60%<=t<90%）
     ROT_TYPE_5 = 5; //有种可惜叫我觉得你行（90%<=t<=100%)
+    ROT_TYPE_6 = 6; //自己放弃演唱
 }
 
 enum EQRoundOverReason {
@@ -308,6 +309,7 @@ message QGameConfig {
     uint32 TotalGameRoundSeq = 1; //轮次总数
     uint32 EnableShowBLightWaitTimeMs = 2; //爆灯等待时间(毫秒)
     uint32 EnableShowMLightWaitTimeMs = 3; //灭灯等待时间(毫秒)
+    uint32 WantSingDelayTimeMs = 4;  //想唱延迟时间(毫秒)
 }
 // 加入指令
 message JoinActionMsg {

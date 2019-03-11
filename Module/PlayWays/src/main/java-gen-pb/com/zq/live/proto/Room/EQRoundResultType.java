@@ -36,7 +36,12 @@ public enum EQRoundResultType implements WireEnum {
   /**
    * 有种可惜叫我觉得你行（90%<=t<=100%)
    */
-  ROT_TYPE_5(5);
+  ROT_TYPE_5(5),
+
+  /**
+   * 自己放弃演唱
+   */
+  ROT_TYPE_6(6);
 
   public static final ProtoAdapter<EQRoundResultType> ADAPTER = new ProtoAdapter_EQRoundResultType();
 
@@ -57,6 +62,7 @@ public enum EQRoundResultType implements WireEnum {
       case 3: return ROT_TYPE_3;
       case 4: return ROT_TYPE_4;
       case 5: return ROT_TYPE_5;
+      case 6: return ROT_TYPE_6;
       default: return null;
     }
   }

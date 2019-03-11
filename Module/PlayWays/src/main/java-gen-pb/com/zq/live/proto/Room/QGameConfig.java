@@ -28,6 +28,8 @@ public final class QGameConfig extends Message<QGameConfig, QGameConfig.Builder>
 
   public static final Integer DEFAULT_ENABLESHOWMLIGHTWAITTIMEMS = 0;
 
+  public static final Integer DEFAULT_WANTSINGDELAYTIMEMS = 0;
+
   /**
    * 轮次总数
    */
@@ -55,17 +57,27 @@ public final class QGameConfig extends Message<QGameConfig, QGameConfig.Builder>
   )
   private final Integer EnableShowMLightWaitTimeMs;
 
+  /**
+   * 想唱延迟时间(毫秒)
+   */
+  @WireField(
+      tag = 4,
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+  )
+  private final Integer WantSingDelayTimeMs;
+
   public QGameConfig(Integer TotalGameRoundSeq, Integer EnableShowBLightWaitTimeMs,
-      Integer EnableShowMLightWaitTimeMs) {
-    this(TotalGameRoundSeq, EnableShowBLightWaitTimeMs, EnableShowMLightWaitTimeMs, ByteString.EMPTY);
+      Integer EnableShowMLightWaitTimeMs, Integer WantSingDelayTimeMs) {
+    this(TotalGameRoundSeq, EnableShowBLightWaitTimeMs, EnableShowMLightWaitTimeMs, WantSingDelayTimeMs, ByteString.EMPTY);
   }
 
   public QGameConfig(Integer TotalGameRoundSeq, Integer EnableShowBLightWaitTimeMs,
-      Integer EnableShowMLightWaitTimeMs, ByteString unknownFields) {
+      Integer EnableShowMLightWaitTimeMs, Integer WantSingDelayTimeMs, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.TotalGameRoundSeq = TotalGameRoundSeq;
     this.EnableShowBLightWaitTimeMs = EnableShowBLightWaitTimeMs;
     this.EnableShowMLightWaitTimeMs = EnableShowMLightWaitTimeMs;
+    this.WantSingDelayTimeMs = WantSingDelayTimeMs;
   }
 
   @Override
@@ -74,6 +86,7 @@ public final class QGameConfig extends Message<QGameConfig, QGameConfig.Builder>
     builder.TotalGameRoundSeq = TotalGameRoundSeq;
     builder.EnableShowBLightWaitTimeMs = EnableShowBLightWaitTimeMs;
     builder.EnableShowMLightWaitTimeMs = EnableShowMLightWaitTimeMs;
+    builder.WantSingDelayTimeMs = WantSingDelayTimeMs;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -86,7 +99,8 @@ public final class QGameConfig extends Message<QGameConfig, QGameConfig.Builder>
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(TotalGameRoundSeq, o.TotalGameRoundSeq)
         && Internal.equals(EnableShowBLightWaitTimeMs, o.EnableShowBLightWaitTimeMs)
-        && Internal.equals(EnableShowMLightWaitTimeMs, o.EnableShowMLightWaitTimeMs);
+        && Internal.equals(EnableShowMLightWaitTimeMs, o.EnableShowMLightWaitTimeMs)
+        && Internal.equals(WantSingDelayTimeMs, o.WantSingDelayTimeMs);
   }
 
   @Override
@@ -97,6 +111,7 @@ public final class QGameConfig extends Message<QGameConfig, QGameConfig.Builder>
       result = result * 37 + (TotalGameRoundSeq != null ? TotalGameRoundSeq.hashCode() : 0);
       result = result * 37 + (EnableShowBLightWaitTimeMs != null ? EnableShowBLightWaitTimeMs.hashCode() : 0);
       result = result * 37 + (EnableShowMLightWaitTimeMs != null ? EnableShowMLightWaitTimeMs.hashCode() : 0);
+      result = result * 37 + (WantSingDelayTimeMs != null ? WantSingDelayTimeMs.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -108,6 +123,7 @@ public final class QGameConfig extends Message<QGameConfig, QGameConfig.Builder>
     if (TotalGameRoundSeq != null) builder.append(", TotalGameRoundSeq=").append(TotalGameRoundSeq);
     if (EnableShowBLightWaitTimeMs != null) builder.append(", EnableShowBLightWaitTimeMs=").append(EnableShowBLightWaitTimeMs);
     if (EnableShowMLightWaitTimeMs != null) builder.append(", EnableShowMLightWaitTimeMs=").append(EnableShowMLightWaitTimeMs);
+    if (WantSingDelayTimeMs != null) builder.append(", WantSingDelayTimeMs=").append(WantSingDelayTimeMs);
     return builder.replace(0, 2, "QGameConfig{").append('}').toString();
   }
 
@@ -152,6 +168,16 @@ public final class QGameConfig extends Message<QGameConfig, QGameConfig.Builder>
   }
 
   /**
+   * 想唱延迟时间(毫秒)
+   */
+  public Integer getWantSingDelayTimeMs() {
+    if(WantSingDelayTimeMs==null){
+        return DEFAULT_WANTSINGDELAYTIMEMS;
+    }
+    return WantSingDelayTimeMs;
+  }
+
+  /**
    * 轮次总数
    */
   public boolean hasTotalGameRoundSeq() {
@@ -172,12 +198,21 @@ public final class QGameConfig extends Message<QGameConfig, QGameConfig.Builder>
     return EnableShowMLightWaitTimeMs!=null;
   }
 
+  /**
+   * 想唱延迟时间(毫秒)
+   */
+  public boolean hasWantSingDelayTimeMs() {
+    return WantSingDelayTimeMs!=null;
+  }
+
   public static final class Builder extends Message.Builder<QGameConfig, Builder> {
     private Integer TotalGameRoundSeq;
 
     private Integer EnableShowBLightWaitTimeMs;
 
     private Integer EnableShowMLightWaitTimeMs;
+
+    private Integer WantSingDelayTimeMs;
 
     public Builder() {
     }
@@ -206,9 +241,17 @@ public final class QGameConfig extends Message<QGameConfig, QGameConfig.Builder>
       return this;
     }
 
+    /**
+     * 想唱延迟时间(毫秒)
+     */
+    public Builder setWantSingDelayTimeMs(Integer WantSingDelayTimeMs) {
+      this.WantSingDelayTimeMs = WantSingDelayTimeMs;
+      return this;
+    }
+
     @Override
     public QGameConfig build() {
-      return new QGameConfig(TotalGameRoundSeq, EnableShowBLightWaitTimeMs, EnableShowMLightWaitTimeMs, super.buildUnknownFields());
+      return new QGameConfig(TotalGameRoundSeq, EnableShowBLightWaitTimeMs, EnableShowMLightWaitTimeMs, WantSingDelayTimeMs, super.buildUnknownFields());
     }
   }
 
@@ -222,6 +265,7 @@ public final class QGameConfig extends Message<QGameConfig, QGameConfig.Builder>
       return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.TotalGameRoundSeq)
           + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.EnableShowBLightWaitTimeMs)
           + ProtoAdapter.UINT32.encodedSizeWithTag(3, value.EnableShowMLightWaitTimeMs)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(4, value.WantSingDelayTimeMs)
           + value.unknownFields().size();
     }
 
@@ -230,6 +274,7 @@ public final class QGameConfig extends Message<QGameConfig, QGameConfig.Builder>
       ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.TotalGameRoundSeq);
       ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.EnableShowBLightWaitTimeMs);
       ProtoAdapter.UINT32.encodeWithTag(writer, 3, value.EnableShowMLightWaitTimeMs);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 4, value.WantSingDelayTimeMs);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -242,6 +287,7 @@ public final class QGameConfig extends Message<QGameConfig, QGameConfig.Builder>
           case 1: builder.setTotalGameRoundSeq(ProtoAdapter.UINT32.decode(reader)); break;
           case 2: builder.setEnableShowBLightWaitTimeMs(ProtoAdapter.UINT32.decode(reader)); break;
           case 3: builder.setEnableShowMLightWaitTimeMs(ProtoAdapter.UINT32.decode(reader)); break;
+          case 4: builder.setWantSingDelayTimeMs(ProtoAdapter.UINT32.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
