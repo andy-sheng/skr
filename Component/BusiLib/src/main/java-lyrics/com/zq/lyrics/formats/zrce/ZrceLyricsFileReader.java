@@ -3,6 +3,7 @@ package com.zq.lyrics.formats.zrce;
 import android.text.TextUtils;
 import android.util.Base64;
 
+import com.common.log.MyLog;
 import com.zq.lyrics.formats.LyricsFileReader;
 import com.zq.lyrics.model.LyricsInfo;
 import com.zq.lyrics.model.LyricsLineInfo;
@@ -179,7 +180,9 @@ public class ZrceLyricsFileReader extends LyricsFileReader {
 
                     //验证
                     if (index >= wordsDisInterval.length) {
-                        throw new Exception("字标签个数与字时间标签个数不相符");
+//                        throw new Exception("字标签个数与字时间标签个数不相符");
+                        MyLog.e("ZrceLyricsFileReader", "字标签个数与字时间标签个数不相符");
+                        continue;
                     }
 
                     //
