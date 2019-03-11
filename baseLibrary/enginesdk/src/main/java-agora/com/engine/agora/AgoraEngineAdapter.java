@@ -17,6 +17,7 @@ import com.engine.agora.effect.EffectModel;
 import com.engine.agora.source.PrivateTextureHelper;
 import com.engine.arccloud.ArcCloudManager;
 import com.engine.arccloud.RecognizeConfig;
+import com.engine.melp.MelpManager;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -982,6 +983,10 @@ public class AgoraEngineAdapter {
                 if (mConfig != null && mConfig.isMixMusicPlaying() && mConfig.getLrcHasStart()) {
                     ts = mConfig.getCurrentMusicTs() + mConfig.getMixMusicBeginOffset() + (System.currentTimeMillis() - mConfig.getRecordCurrentMusicTsTs());
                 }
+                // TODO: 2019/3/11
+//                if (mMelpManager != null) {
+//                    mMelpManager.putPool(samples, samplesPerSec, channels, ts);
+//                }
                 CbEngineAdapter.getInstance().processAudioFrames(samples,
                         numOfSamples,
                         bytesPerSample,
@@ -1222,6 +1227,7 @@ public class AgoraEngineAdapter {
             mArcCloudManager.recognizeInManualMode(lineNo);
         }
     }
+
 
     /*打分相关结束*/
 }

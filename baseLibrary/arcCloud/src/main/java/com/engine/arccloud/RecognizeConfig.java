@@ -1,5 +1,7 @@
 package com.engine.arccloud;
 
+import com.engine.melp.MelpRecognizeListener;
+
 public class RecognizeConfig {
     /**
      * 模式自动
@@ -11,6 +13,7 @@ public class RecognizeConfig {
     public static final int MODE_MANUAL = 2;
 
     int mode = MODE_MANUAL;
+    int songId;
     String songName;
     String artist;
     int autoTimes = 1;
@@ -19,12 +22,22 @@ public class RecognizeConfig {
 
     ArcRecognizeListener resultListener;
 
+    MelpRecognizeListener mMelpRecognizeListener;
+
     public String getSongName() {
         return songName;
     }
 
     public void setSongName(String songName) {
         this.songName = songName;
+    }
+
+    public int getSongId() {
+        return songId;
+    }
+
+    public void setSongId(int songId) {
+        this.songId = songId;
     }
 
     public String getArtist() {
@@ -67,7 +80,15 @@ public class RecognizeConfig {
         this.resultListener = resultListener;
     }
 
-    public static Builder newBuilder(){
+    public MelpRecognizeListener getMelpRecognizeListener() {
+        return mMelpRecognizeListener;
+    }
+
+    public void setMelpRecognizeListener(MelpRecognizeListener melpRecognizeListener) {
+        mMelpRecognizeListener = melpRecognizeListener;
+    }
+
+    public static Builder newBuilder() {
         return new Builder();
     }
 
@@ -79,6 +100,11 @@ public class RecognizeConfig {
 
         public Builder setSongName(String songName) {
             mParams.setSongName(songName);
+            return this;
+        }
+
+        public Builder setSongId(int songId) {
+            mParams.setSongId(songId);
             return this;
         }
 
@@ -101,6 +127,7 @@ public class RecognizeConfig {
             mParams.setResultListener(mResultListener);
             return this;
         }
+
         public RecognizeConfig build() {
             return mParams;
         }
