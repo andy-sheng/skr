@@ -28,7 +28,8 @@ import java.util.List;
 
 public class GrabAudienceView extends RelativeLayout {
     public final static String TAG = "GrabAudienceView";
-    List<VH> mBaseImageViewList = new ArrayList<>(6);
+    public static final int MAX_COUNT = 7;
+    List<VH> mBaseImageViewList = new ArrayList<>(MAX_COUNT);
     List<GrabPlayerInfoModel> mWaitInfoModelList = new ArrayList<>();
 
     GrabRoomData mGrabRoomData;
@@ -112,7 +113,7 @@ public class GrabAudienceView extends RelativeLayout {
 
     public void init() {
         removeAllViews();
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < MAX_COUNT; i++) {
             BaseImageView baseImageView = new BaseImageView(getContext());
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(24), U.getDisplayUtils().dip2px(24));
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
@@ -132,6 +133,11 @@ public class GrabAudienceView extends RelativeLayout {
 
         for (int i = 0; i < mWaitInfoModelList.size(); i++) {
             MyLog.d(TAG, "i=" + i);
+            if(i >= mBaseImageViewList.size()){
+                MyLog.w(TAG, "updateAllView waitinfomodellist size is error, size is " + mWaitInfoModelList.size() );
+                break;
+            }
+
             UserInfoModel userInfoModel = mWaitInfoModelList.get(i).getUserInfo();
             VH vp = mBaseImageViewList.get(i);
             vp.mGrabPlayerInfoModel = userInfoModel;
