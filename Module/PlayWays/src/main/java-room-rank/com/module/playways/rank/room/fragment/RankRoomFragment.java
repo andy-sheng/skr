@@ -948,6 +948,12 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         mUiHanlder.removeMessages(SHOW_RIVAL_LYRIC);
     }
 
+    @Override
+    public void onOtherStartSing(SongModel songModel) {
+        mRankOpView.playCountDown(mRoomData.getRealRoundSeq(), true);
+        mCountDownProcess.startCountDown(0, mPlayingSongModel.getTotalMs());
+    }
+
     /**
      * 保证在主线程
      */
@@ -1203,8 +1209,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                 if (play) {
                     lyricsReader.cut(mPlayingSongModel.getRankLrcBeginT(), mPlayingSongModel.getRankLrcEndT());
                     postLyricEndEvent(lyricsReader, false);
-                    mRankOpView.playCountDown(mRoomData.getRealRoundSeq(), true);
-                    mCountDownProcess.startCountDown(0, mPlayingSongModel.getTotalMs());
                 }
                 mManyLyricsView.setVisibility(View.GONE);
                 mManyLyricsView.resetData();

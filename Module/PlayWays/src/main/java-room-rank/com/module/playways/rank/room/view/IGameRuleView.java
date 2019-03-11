@@ -38,4 +38,6 @@ public interface IGameRuleView {
 
     void finishActivity();
 
+    void onOtherStartSing(SongModel songModel);
+
 }
