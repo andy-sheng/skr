@@ -30,11 +30,21 @@ public final class QSyncStatusMsgEvent {
    */
   public GrabRoundInfoModel currentRound;
 
+  /**
+   * 下一个轮次
+   */
+  public GrabRoundInfoModel mNextRound;
+
   public QSyncStatusMsgEvent(BasePushInfo info, QSyncStatusMsg qSyncStatusMsg) {
     this.info = info;
     this.syncStatusTimeMs = qSyncStatusMsg.getSyncStatusTimeMs();
     this.gameOverTimeMs = qSyncStatusMsg.getGameOverTimeMs();
     this.currentRound = GrabRoundInfoModel.parseFromRoundInfo(qSyncStatusMsg.getCurrentRound());
+    this.mNextRound = GrabRoundInfoModel.parseFromRoundInfo(qSyncStatusMsg.getNextRound());
+  }
+
+  public GrabRoundInfoModel getNextRound() {
+    return mNextRound;
   }
 
   public BasePushInfo getInfo() {

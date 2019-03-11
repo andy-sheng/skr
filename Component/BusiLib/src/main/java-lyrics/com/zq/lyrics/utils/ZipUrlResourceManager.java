@@ -101,6 +101,20 @@ public class ZipUrlResourceManager {
                     }
                 });
     }
+    
+    public boolean containUrl(String url){
+        if(taskQueue == null){
+            return false;
+        }
+
+        for (UrlRes urlRes : taskQueue) {
+            if(urlRes.getResUrl().equals(url)){
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     private void startQueue() {
         if(mIsCancel){

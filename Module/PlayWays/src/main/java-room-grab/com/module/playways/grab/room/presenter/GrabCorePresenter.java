@@ -22,6 +22,7 @@ import com.common.upload.UploadCallback;
 import com.common.upload.UploadParams;
 import com.common.utils.ActivityUtils;
 import com.common.utils.HandlerTaskTimer;
+import com.common.utils.SongResUtils;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.component.busilib.SkrConfig;
@@ -79,6 +80,8 @@ import com.zq.live.proto.Common.UserInfo;
 import com.zq.live.proto.Room.EQRoundOverReason;
 import com.zq.live.proto.Room.EQRoundResultType;
 import com.zq.live.proto.Room.RoomMsg;
+import com.zq.lyrics.model.UrlRes;
+import com.zq.lyrics.utils.ZipUrlResourceManager;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -87,6 +90,7 @@ import org.greenrobot.greendao.annotation.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import io.agora.rtc.Constants;
@@ -114,6 +118,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     ExoPlayer mExoPlayer;
 
     boolean mSwitchRooming = false;
+
+    ZipUrlResourceManager mZipUrlResourceManager;
 
     Handler mUiHanlder = new Handler() {
         @Override
@@ -592,6 +598,41 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     }
 
     /**
+     * 下载伴奏下一首的伴奏
+     * @param grabRoundInfoModel
+     */
+    public void fetchAcc(GrabRoundInfoModel grabRoundInfoModel){
+        if(grabRoundInfoModel == null || grabRoundInfoModel.getMusic() == null
+                || TextUtils.isEmpty(grabRoundInfoModel.getMusic().getAcc())){
+            MyLog.d(TAG, "fetchAcc" + " grabRoundInfoModel data error");
+            return;
+        }
+
+        String accUrl = grabRoundInfoModel.getMusic().getAcc();
+        UrlRes accRes = new UrlRes(accUrl, SongResUtils.getACCDir(), U.getFileUtils().getSuffixFromUrl(accUrl,SongResUtils.SUFF_ACC));
+        if(accRes.isExist()){
+            MyLog.d(TAG, "fetchAcc" + " acc file is exist");
+            return;
+        }
+
+        if(mZipUrlResourceManager != null){
+            if(mZipUrlResourceManager.containUrl(accUrl)){
+                MyLog.d(TAG, "fetchAcc" + " file is downloading");
+                return;
+            }
+
+            mZipUrlResourceManager.cancelAllTask();
+            mZipUrlResourceManager = null;
+        }
+
+        LinkedList<UrlRes> songResList = new LinkedList<>();
+        songResList.add(accRes);
+
+        mZipUrlResourceManager = new ZipUrlResourceManager(songResList, null);
+        mZipUrlResourceManager.go();
+    }
+
+    /**
      * 上传机器人资源相关文件到服务器
      *
      * @param roundInfoModel
@@ -654,6 +695,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             mExoPlayer.release();
         } else {
             MyLog.d(TAG, "mExoPlayer == null ");
+        }
+
+        if(mZipUrlResourceManager != null){
+            mZipUrlResourceManager.cancelAllTask();
         }
         ModuleServiceManager.getInstance().getMsgService().leaveChatRoom(String.valueOf(mRoomData.getGameId()));
         MyLog.d(TAG, "destroy over");
@@ -915,6 +960,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     long syncStatusTimes = result.getData().getLong("syncStatusTimeMs");  //状态同步时的毫秒时间戳
                     long gameOverTimeMs = result.getData().getLong("gameOverTimeMs");  //游戏结束时间
                     GrabRoundInfoModel currentInfo = JSON.parseObject(result.getData().getString("currentRound"), GrabRoundInfoModel.class); //当前轮次信息
+                    GrabRoundInfoModel nextInfo = JSON.parseObject(result.getData().getString("nextRound"), GrabRoundInfoModel.class); //当前轮次信息
+
                     String msg = "";
                     if (currentInfo != null) {
                         msg = "syncGameStatus成功了, currentRound 是 " + currentInfo;
@@ -931,6 +978,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     }
 
                     updatePlayerState(gameOverTimeMs, syncStatusTimes, currentInfo);
+//                    fetchAcc(nextInfo);
                 } else {
                     MyLog.w(TAG, "syncGameStatus失败 traceid is " + result.getTraceId());
                     estimateOverTsThisRound();
@@ -1340,6 +1388,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         MyLog.w(TAG, "收到服务器push更新状态,event.currentRound是" + event.getCurrentRound().getRoundSeq() + ", timeMs 是" + event.info.getTimeMs());
         startSyncGameStateTask(sSyncStateTaskInterval);
         updatePlayerState(event.getGameOverTimeMs(), event.getSyncStatusTimeMs(), event.getCurrentRound());
+//        fetchAcc(event.getNextRound());
     }
 
     private void onGameOver(String from, long gameOverTs, List<GrabResultInfoModel> grabResultInfoModels) {
