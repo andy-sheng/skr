@@ -47,7 +47,7 @@ import com.module.playways.grab.room.view.GrabDengBigAnimationView;
 import com.module.playways.grab.room.view.GrabGameOverView;
 import com.module.playways.grab.room.view.GrabOpView;
 
-import com.module.playways.grab.room.view.GrabPassView;
+import com.module.playways.grab.room.view.GrabGiveupView;
 import com.module.playways.grab.room.view.IRedPkgCountDownView;
 import com.module.playways.grab.room.view.OthersSingCardView;
 import com.module.playways.grab.room.view.RedPkgCountDownView;
@@ -144,7 +144,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     GrabOpView mGrabOpBtn; // 抢 倒计时 灭 等按钮
 
-    GrabPassView mGrabPassView;
+    GrabGiveupView mGrabGiveupView;
 
     OthersSingCardView mOthersSingCardView;
 
@@ -472,7 +472,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                 mBeginChangeRoomTs = System.currentTimeMillis();
                 mGrabChangeRoomTransitionView.setVisibility(View.VISIBLE);
                 mCorePresenter.switchRoom();
-                mGrabPassView.hideWithAnimation(false);
+                mGrabGiveupView.hideWithAnimation(false);
             }
         });
     }
@@ -546,7 +546,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             @Override
             public void grabCountDownOver() {
                 mCorePresenter.sendMyGrabOver();
-                mGrabPassView.hideWithAnimation(false);
+                mGrabGiveupView.hideWithAnimation(false);
             }
 
             @Override
@@ -562,8 +562,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
         mGrabOpBtn.hide();
 
-        mGrabPassView = (GrabPassView) mRootView.findViewById(R.id.grab_pass_view);
-        mGrabPassView.setListener(new GrabPassView.Listener() {
+        mGrabGiveupView = (GrabGiveupView) mRootView.findViewById(R.id.grab_pass_view);
+        mGrabGiveupView.setListener(new GrabGiveupView.Listener() {
             @Override
             public void giveUp() {
                 GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
@@ -576,7 +576,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                 mCorePresenter.giveUpSing();
             }
         });
-        mGrabPassView.hideWithAnimation(false);
+        mGrabGiveupView.hideWithAnimation(false);
     }
 
     private void initSingStageView() {
@@ -707,7 +707,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         mSingBeginTipsCardView.setVisibility(View.GONE);
         mSongInfoCardView.bindSongModel(mRoomData.getRealRoundSeq(), mRoomData.getGrabConfigModel().getTotalGameRoundSeq(), pendingPlaySongCardData.songModel);
         GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
-        mGrabPassView.hideWithAnimation(false);
+        mGrabGiveupView.hideWithAnimation(false);
         if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_GRAB) {
             MyLog.d(TAG, "这轮刚进来，不播放导唱过场");
             mGrabOpBtn.hide();
@@ -750,7 +750,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         mTopContainerView.setSeqIndex(RoomDataUtils.getSeqOfRoundInfo(mRoomData.getRealRoundInfo()), mRoomData.getGrabConfigModel().getTotalGameRoundSeq());
         mSongInfoCardView.hide();
         mGrabOpBtn.hide();
-        mGrabPassView.hideWithAnimation(false);
+        mGrabGiveupView.hideWithAnimation(false);
         mSingBeginTipsCardView.setVisibility(View.VISIBLE);
 
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
@@ -792,7 +792,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         mUiHanlder.removeMessages(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
         mSingBeginTipsCardView.setVisibility(View.GONE);
         if (uid == MyUserInfoManager.getInstance().getUid()) {
-            mGrabPassView.delayShowPassView();
+            mGrabGiveupView.delayShowPassView();
             mCorePresenter.beginSing();
             // 显示歌词
             mSelfSingCardView.setVisibility(View.VISIBLE);
@@ -829,7 +829,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         mOthersSingCardView.hide();
         mSongInfoCardView.hide();
         mGrabOpBtn.hide();
-        mGrabPassView.hideWithAnimation(false);
+        mGrabGiveupView.hideWithAnimation(false);
         mRoundOverCardView.bindData(songId, reason, resultType, new SVGAListener() {
             @Override
             public void onFinished() {
@@ -1012,7 +1012,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     @Override
     public void giveUpSuccess(int seq) {
-        mGrabPassView.passSuccess();
+        mGrabGiveupView.passSuccess();
     }
 
     private void onGrabGameOver(String from) {

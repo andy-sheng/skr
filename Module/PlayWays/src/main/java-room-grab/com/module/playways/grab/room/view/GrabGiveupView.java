@@ -23,7 +23,7 @@ import java.util.HashMap;
 /**
  * 不唱了界面
  */
-public class GrabPassView extends RelativeLayout {
+public class GrabGiveupView extends RelativeLayout {
     public final static String TAG = "GrabPassView";
     public static final int MSG_ANIMATION_SHOW = 1;
     ExImageView mIvPass;
@@ -47,17 +47,17 @@ public class GrabPassView extends RelativeLayout {
         }
     };
 
-    public GrabPassView(Context context) {
+    public GrabGiveupView(Context context) {
         super(context);
         init();
     }
 
-    public GrabPassView(Context context, AttributeSet attrs) {
+    public GrabGiveupView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public GrabPassView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public GrabGiveupView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }

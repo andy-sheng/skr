@@ -9,6 +9,7 @@ public class GrabConfigModel implements Serializable {
     int enableShowBLightWaitTimeMs = 5;
     int enableShowMLightWaitTimeMs = 2;
     int totalGameRoundSeq = 100;
+    int wantSingDelayTimeMs = 500;
 
     public int getEnableShowBLightWaitTimeMs() {
         return enableShowBLightWaitTimeMs;
@@ -32,6 +33,14 @@ public class GrabConfigModel implements Serializable {
 
     public void setTotalGameRoundSeq(int totalGameRoundSeq) {
         this.totalGameRoundSeq = totalGameRoundSeq;
+    }
+
+    public int getWantSingDelayTimeMs() {
+        return wantSingDelayTimeMs;
+    }
+
+    public void setWantSingDelayTimeMs(int wantSingDelayTimeMs) {
+        this.wantSingDelayTimeMs = wantSingDelayTimeMs;
     }
 
     @Override
