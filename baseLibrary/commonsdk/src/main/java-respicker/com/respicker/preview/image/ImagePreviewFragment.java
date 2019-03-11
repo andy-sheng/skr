@@ -95,6 +95,7 @@ public class ImagePreviewFragment extends ImageBaseFragment implements ResPicker
         mTitleBar.getLeftImageButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                U.getSoundUtils().play(TAG, R.raw.normal_back);
                 onBackPressed();
             }
         });
@@ -177,12 +178,15 @@ public class ImagePreviewFragment extends ImageBaseFragment implements ResPicker
                 }
             });
         }
+
+        U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
     }
 
     @Override
     public void destroy() {
         super.destroy();
         mImagePicker.removeOnResSelectedListener(this);
+        U.getSoundUtils().release(TAG);
     }
 
     /**
@@ -217,6 +221,7 @@ public class ImagePreviewFragment extends ImageBaseFragment implements ResPicker
 
     /**
      * 可以从这里设置数据进去
+     *
      * @param type
      * @param data
      */
@@ -267,7 +272,7 @@ public class ImagePreviewFragment extends ImageBaseFragment implements ResPicker
         //裁剪完成,直接返回数据，数据存在 mImagePicker 中
         if (mFragmentDataListener != null) {
             // bundle.getParcelableArrayList(ImagePicker.EXTRA_RESULT_ITEMS);
-            mFragmentDataListener.onFragmentResult(requestCode, resultCode, bundle,null);
+            mFragmentDataListener.onFragmentResult(requestCode, resultCode, bundle, null);
         }
         U.getFragmentUtils().popFragment(this);
     }

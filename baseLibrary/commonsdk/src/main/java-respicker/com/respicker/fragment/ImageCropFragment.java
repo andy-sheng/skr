@@ -56,6 +56,7 @@ public class ImageCropFragment extends ImageBaseFragment {
         mTitleBar.getLeftImageButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
                 U.getFragmentUtils().popFragment(ImageCropFragment.this);
             }
         });
@@ -85,7 +86,7 @@ public class ImageCropFragment extends ImageBaseFragment {
                 /**
                  * 数据从这里返回
                  */
-                deliverResult(ResPicker.RESULT_CODE_ITEMS,Activity.RESULT_OK,null);
+                deliverResult(ResPicker.RESULT_CODE_ITEMS, Activity.RESULT_OK, null);
             }
 
             @Override
@@ -115,6 +116,8 @@ public class ImageCropFragment extends ImageBaseFragment {
         mBitmap = BitmapFactory.decodeFile(imagePath, options);
 
         mCropImageView.setImageBitmap(mCropImageView.rotate(mBitmap, U.getBitmapUtils().getBitmapDegree(imagePath)));
+
+        U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
     }
 
     private int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
@@ -144,6 +147,7 @@ public class ImageCropFragment extends ImageBaseFragment {
             mBitmap.recycle();
             mBitmap = null;
         }
+        U.getSoundUtils().release(TAG);
     }
 
     /**
@@ -153,7 +157,7 @@ public class ImageCropFragment extends ImageBaseFragment {
         //裁剪完成,直接返回数据，数据存在 mImagePicker 中
         if (mFragmentDataListener != null) {
             // bundle.getParcelableArrayList(ImagePicker.EXTRA_RESULT_ITEMS);
-            mFragmentDataListener.onFragmentResult(requestCode, resultCode, bundle,null);
+            mFragmentDataListener.onFragmentResult(requestCode, resultCode, bundle, null);
         }
         U.getFragmentUtils().popFragment(this);
     }
