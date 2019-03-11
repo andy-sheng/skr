@@ -5,11 +5,9 @@ import android.support.annotation.Nullable;
 import android.view.WindowManager;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.common.base.ActivityLeakSolutionUtils;
 import com.common.base.BaseActivity;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
-import com.component.busilib.constans.GameModeType;
 import com.module.RouterConstants;
 import com.module.playways.grab.prepare.GrabMatchFragment;
 import com.module.playways.rank.prepare.model.PrepareData;
@@ -54,7 +52,6 @@ public class GrabMatchActivity extends BaseActivity {
     @Override
     protected void destroy() {
         super.destroy();
-        ActivityLeakSolutionUtils.fixInputMethodManagerLeak(this);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 

@@ -17,23 +17,25 @@ package com.common.lifecycle;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.common.base.BaseFragment;
 import com.common.base.ConfigModule;
 import com.common.base.delegate.IActivity;
-import com.common.statistics.StatisticsAdapter;
 import com.common.utils.ActivityUtils;
 import com.common.utils.U;
 import com.umeng.message.PushAgent;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import anet.channel.util.Utils;
 
 
 /**
@@ -133,6 +135,7 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
     @Override
     public void onActivityDestroyed(Activity activity) {
         U.getActivityUtils().removeActivity(activity);
+        fixSoftInputLeaks(activity);
     }
 
     /**
@@ -162,6 +165,29 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
             for (FragmentManager.FragmentLifecycleCallbacks fragmentLifecycle : getExtraFragmentLifecycles()) {
                 ((FragmentActivity) activity).getSupportFragmentManager().registerFragmentLifecycleCallbacks(fragmentLifecycle, true);
             }
+        }
+    }
+
+    private static void fixSoftInputLeaks(final Activity activity) {
+        if (activity == null) return;
+        InputMethodManager imm =
+                (InputMethodManager) U.app().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm == null) return;
+        String[] leakViews = new String[]{"mLastSrvView", "mCurRootView", "mServedView", "mNextServedView"};
+        for (String leakView : leakViews) {
+            try {
+                Field leakViewField = InputMethodManager.class.getDeclaredField(leakView);
+                if (leakViewField == null) continue;
+                if (!leakViewField.isAccessible()) {
+                    leakViewField.setAccessible(true);
+                }
+                Object obj = leakViewField.get(imm);
+                if (!(obj instanceof View)) continue;
+                View view = (View) obj;
+                if (view.getRootView() == activity.getWindow().getDecorView().getRootView()) {
+                    leakViewField.set(imm, null);
+                }
+            } catch (Throwable ignore) { /**/ }
         }
     }
 
