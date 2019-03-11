@@ -301,7 +301,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
                 .build(), false, false, new MyUserInfoManager.ServerCallback() {
             @Override
             public void onSucess() {
-                U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(EditInfoActivity.this)
+                U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
                         .setImage(R.drawable.touxiangshezhichenggong_icon)
                         .setText("设置成功")
                         .build());

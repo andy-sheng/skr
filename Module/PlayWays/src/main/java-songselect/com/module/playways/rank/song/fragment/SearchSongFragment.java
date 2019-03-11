@@ -257,12 +257,12 @@ public class SearchSongFragment extends BaseFragment {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
-                    U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(getContext())
+                    U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
                             .setImage(R.drawable.touxiangshezhichenggong_icon)
                             .setText("提交成功\n审核通过马上就会上架了")
                             .build());
                 } else {
-                    U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(getContext())
+                    U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
                             .setImage(R.drawable.touxiangshezhishibai_icon)
                             .setText("提交缺歌上报失败了")
                             .build());

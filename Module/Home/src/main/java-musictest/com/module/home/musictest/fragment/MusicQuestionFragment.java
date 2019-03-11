@@ -164,7 +164,7 @@ public class MusicQuestionFragment extends BaseFragment implements IQuestionView
 
     @Override
     public void onComplete() {
-        U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(getContext())
+        U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
                 .setImage(R.drawable.touxiangshezhichenggong_icon)
                 .setText("提交成功")
                 .build());

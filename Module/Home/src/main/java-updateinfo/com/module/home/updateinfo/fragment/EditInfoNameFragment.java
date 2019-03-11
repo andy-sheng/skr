@@ -130,7 +130,7 @@ public class EditInfoNameFragment extends BaseFragment {
                                     .build(), false);
                             U.getFragmentUtils().popFragment(EditInfoNameFragment.this);
                         } else {
-                            U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(getContext())
+                            U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
                                     .setImage(R.drawable.touxiangshezhishibai_icon)
                                     .setText(unValidReason)
                                     .build());

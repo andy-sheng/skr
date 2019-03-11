@@ -149,13 +149,13 @@ public class ReportFragment extends BaseFragment {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
-                    U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(getContext())
+                    U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
                             .setImage(R.drawable.touxiangshezhichenggong_icon)
                             .setText("举报成功")
                             .build());
                     U.getFragmentUtils().popFragment(ReportFragment.this);
                 } else {
-                    U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(getContext())
+                    U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
                             .setImage(R.drawable.touxiangshezhishibai_icon)
                             .setText("举报失败")
                             .build());

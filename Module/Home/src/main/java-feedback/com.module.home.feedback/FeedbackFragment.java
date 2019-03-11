@@ -133,7 +133,7 @@ public class FeedbackFragment extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(LogUploadUtils.UploadLogEvent event) {
         mUploadProgressBar.setVisibility(View.GONE);
-        U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(getContext())
+        U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
                 .setImage(event.mIsSuccess ? R.drawable.touxiangshezhichenggong_icon : R.drawable.touxiangshezhishibai_icon)
                 .setText(event.mIsSuccess ? "反馈成功" : "反馈失败")
                 .build());

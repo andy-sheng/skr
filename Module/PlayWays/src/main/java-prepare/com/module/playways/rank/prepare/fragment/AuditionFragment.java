@@ -245,7 +245,7 @@ public class AuditionFragment extends BaseFragment {
                 .subscribe(o -> {
                     // 要保存
                     Params.save2Pref(EngineManager.getInstance().getParams());
-                    U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(getContext())
+                    U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
                             .setImage(R.drawable.touxiangshezhichenggong_icon)
                             .setText("保存设置成功\n已应用到所有对局")
                             .build());
@@ -395,7 +395,7 @@ public class AuditionFragment extends BaseFragment {
         mUiHanlder.removeMessages(MSG_LYRIC_END_EVENT);
 
         if (System.currentTimeMillis() - mStartRecordTs < 5000) {
-            U.getToastUtil().showSkrCustomShort(new NoImageCommonToastView.Builder(getContext())
+            U.getToastUtil().showSkrCustomShort(new NoImageCommonToastView.Builder(U.app())
                     .setText("太短啦\n再唱几句吧~")
                     .build());
             return;
@@ -677,7 +677,7 @@ public class AuditionFragment extends BaseFragment {
                                 mQuitTipsDialog.dismiss(false);
                                 // 要保存
                                 Params.save2Pref(EngineManager.getInstance().getParams());
-                                U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(getContext())
+                                U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
                                         .setImage(R.drawable.touxiangshezhichenggong_icon)
                                         .setText("保存设置成功\n已应用到所有对局")
                                         .build());

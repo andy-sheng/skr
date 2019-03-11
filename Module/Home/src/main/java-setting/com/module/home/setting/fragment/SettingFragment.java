@@ -382,7 +382,7 @@ public class SettingFragment extends BaseFragment {
                         U.getPreferenceUtils().setSettingLong("key_cache_size", 0);
                         U.getPreferenceUtils().setSettingLong("key_cache_update_ts", System.currentTimeMillis());
                         setCacheSize(0);
-                        U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(getContext())
+                        U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
                                 .setImage(R.drawable.qingchuhuancun)
                                 .setText("清除缓存成功")
                                 .build());
