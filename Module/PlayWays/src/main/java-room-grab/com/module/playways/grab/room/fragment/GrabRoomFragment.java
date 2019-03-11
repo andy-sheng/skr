@@ -726,6 +726,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         mSongInfoCardView.hide();
         mSingBeginTipsCardView.setVisibility(View.VISIBLE);
         mGrabOpBtn.hide();
+        mGrabOpBtn.setGrabPreRound(true);
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
         msg.arg1 = (int) MyUserInfoManager.getInstance().getUid();
         mUiHanlder.sendMessageDelayed(msg, 4000);
@@ -750,6 +751,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         mTopContainerView.setSeqIndex(RoomDataUtils.getSeqOfRoundInfo(mRoomData.getRealRoundInfo()), mRoomData.getGrabConfigModel().getTotalGameRoundSeq());
         mSongInfoCardView.hide();
         mGrabOpBtn.hide();
+        mGrabOpBtn.setGrabPreRound(false);
         mGrabGiveupView.hideWithAnimation(false);
         mSingBeginTipsCardView.setVisibility(View.VISIBLE);
 

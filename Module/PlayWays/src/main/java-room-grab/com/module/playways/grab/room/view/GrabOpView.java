@@ -74,6 +74,8 @@ public class GrabOpView extends RelativeLayout {
 
     GrabRoomData mGrabRoomData;
 
+    boolean mGrabPreRound = false;
+
     Handler mUiHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -208,7 +210,9 @@ public class GrabOpView extends RelativeLayout {
         startAnimation(animation);
 
         cancelCountDownTask();
-        mCountDownTask = HandlerTaskTimer.newBuilder().interval(1000)
+        long interval = mGrabPreRound ? 1167 : 1000;
+        MyLog.d(TAG, "playCountDown" + " interval=" + interval);
+        mCountDownTask = HandlerTaskTimer.newBuilder().interval(interval)
                 .take(num)
                 .compose((BaseActivity) getContext())
                 .start(new HandlerTaskTimer.ObserverW() {
@@ -308,6 +312,10 @@ public class GrabOpView extends RelativeLayout {
                 break;
         }
 
+    }
+
+    public void setGrabPreRound(boolean grabPreRound) {
+        mGrabPreRound = grabPreRound;
     }
 
     public void hide() {
