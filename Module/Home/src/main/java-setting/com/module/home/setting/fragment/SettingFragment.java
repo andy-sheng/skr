@@ -377,7 +377,6 @@ public class SettingFragment extends BaseFragment {
                 }, new Action() {
                     @Override
                     public void run() throws Exception {
-                        U.getToastUtil().showShort("缓存已清除");
                         // 做个假的无所谓，不管清没清干净，都给设置成0
                         U.getPreferenceUtils().setSettingLong("key_cache_size", 0);
                         U.getPreferenceUtils().setSettingLong("key_cache_update_ts", System.currentTimeMillis());

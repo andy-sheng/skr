@@ -11,8 +11,13 @@ import com.common.log.MyLog;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class ActivityUtils {
     public final static String TAG = "ActivityUtils";
@@ -20,6 +25,8 @@ public class ActivityUtils {
     ActivityUtils() {
 
     }
+
+    final Map<Activity, Set<OnActivityDestroyedListener>> mDestroyedListenerMap = new HashMap<>();
 
     //    //true 为不需要加入到 Activity 容器进行统一管理,默认为 false
     public static final String IS_NOT_ADD_ACTIVITY_LIST = "is_not_add_activity_list";
@@ -255,6 +262,47 @@ public class ActivityUtils {
                 mActivityList.remove(activity);
             }
         }
+        consumeOnActivityDestroyedListener(activity);
+    }
+
+
+    /**
+     * 监听activity的destroy
+     *
+     * @param activity
+     * @param listener
+     */
+    public void addOnActivityDestroyedListener(final Activity activity,
+                                               final OnActivityDestroyedListener listener) {
+        if (activity == null || listener == null) return;
+        Set<OnActivityDestroyedListener> listeners;
+        if (!mDestroyedListenerMap.containsKey(activity)) {
+            listeners = new HashSet<>();
+            mDestroyedListenerMap.put(activity, listeners);
+        } else {
+            listeners = mDestroyedListenerMap.get(activity);
+            if (listeners.contains(listener)) return;
+        }
+        listeners.add(listener);
+    }
+
+    /**
+     * 移除activity的监听
+     * @param activity
+     */
+    private void consumeOnActivityDestroyedListener(Activity activity) {
+        Iterator<Map.Entry<Activity, Set<OnActivityDestroyedListener>>> iterator
+                = mDestroyedListenerMap.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<Activity, Set<OnActivityDestroyedListener>> entry = iterator.next();
+            if (entry.getKey() == activity) {
+                Set<OnActivityDestroyedListener> value = entry.getValue();
+                for (OnActivityDestroyedListener listener : value) {
+                    listener.onActivityDestroyed(activity);
+                }
+                iterator.remove();
+            }
+        }
     }
 
 
@@ -265,7 +313,7 @@ public class ActivityUtils {
      */
     public void setAppForeground(boolean isAppForeground) {
         if (this.mIsAppForeground != isAppForeground) {
-            MyLog.d(TAG,"发生前后台切换" + " isAppForeground=" + isAppForeground);
+            MyLog.d(TAG, "发生前后台切换" + " isAppForeground=" + isAppForeground);
             this.mIsAppForeground = isAppForeground;
             mIsAppForegroundChangeTs = System.currentTimeMillis();
             EventBus.getDefault().post(new ForeOrBackgroundChange(mIsAppForeground));
@@ -293,5 +341,9 @@ public class ActivityUtils {
         public ForeOrBackgroundChange(boolean foreground) {
             this.foreground = foreground;
         }
+    }
+
+    public interface OnActivityDestroyedListener {
+        void onActivityDestroyed(Activity activity);
     }
 }
