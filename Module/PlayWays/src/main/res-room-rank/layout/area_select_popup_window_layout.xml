@@ -16,5 +16,5 @@
         android:textSize="@dimen/textsize_18_dp"
         app:bl_corners_radius="@dimen/view_6_dp"
         app:bl_selected_drawable="#B51A4D"
-        app:bl_unSelected_drawable="#F36588" />
+        app:bl_unSelected_drawable="#6868A1" />
 </LinearLayout>
