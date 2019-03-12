@@ -41,6 +41,7 @@ import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
+import com.zq.live.proto.Common.ESex;
 import com.zq.live.proto.Room.ERoundOverReason;
 
 import org.greenrobot.eventbus.EventBus;
@@ -253,14 +254,14 @@ public class RankTopContainerView2 extends RelativeLayout {
         ul.mLightState = LightState.MIE;
         if (mStatusArr[0] == null) {
             setLight(0, ul);
-            pretendMieComment(currUid, 0);
+            pretendMieComment(currUid, uid, 0);
         } else {
             if (mStatusArr[1] == null) {
                 setLight(1, ul);
-                pretendMieComment(currUid, 1);
+                pretendMieComment(currUid, uid, 1);
             } else if (mStatusArr[2] == null) {
                 setLight(2, ul);
-                pretendMieComment(currUid, 2);
+                pretendMieComment(currUid, uid, 2);
             }
         }
         mCurScore -= mRoomData.getGameConfigModel().getpKBLightEnergyPercentage() * mTotalScore;
@@ -269,27 +270,31 @@ public class RankTopContainerView2 extends RelativeLayout {
 
     /**
      * @param currUid 被投票者
+     * @param uid     投票者
      * @param index
      */
-    private void pretendMieComment(int currUid, int index) {
+    private void pretendMieComment(int currUid, int uid, int index) {
         CommentModel commentModel = new CommentModel();
+        PlayerInfoModel voter = RoomDataUtils.getPlayerInfoById(mRoomData, uid);
         commentModel.setCommentType(CommentModel.TYPE_TRICK);
-        commentModel.setUserId(UserAccountManager.SYSTEM_ID);
-        commentModel.setAvatar(UserAccountManager.SYSTEM_AVATAR);
-        commentModel.setUserName("系统消息");
-        commentModel.setAvatarColor(Color.WHITE);
+        commentModel.setUserId(voter.getUserID());
+        commentModel.setAvatar(voter.getUserInfo().getAvatar());
+        commentModel.setUserName(voter.getUserInfo().getNickname());
+        commentModel.setAvatarColor(voter.getUserInfo().getSex() == ESex.SX_MALE.getValue() ?
+                U.getColor(R.color.color_man_stroke_color) : U.getColor(R.color.color_woman_stroke_color));
         PlayerInfoModel model = RoomDataUtils.getPlayerInfoById(mRoomData, currUid);
         if (model != null) {
-            String text = "";
-            if (index != 2) {
-                text = "收到" + (index + 1) + "个“x”";
-            } else {
-                text = "收到" + (index + 1) + "个“x”，演唱结束";
-            }
+//            String text = "";
+//            if (index != 2) {
+//                text = "按了“x”";
+//            } else {
+//                text = "收到" + (index + 1) + "个“x”，演唱结束";
+//            }
             SpannableStringBuilder stringBuilder = new SpanUtils()
-                    .append("选手").setForegroundColor(CommentModel.TEXT_WHITE)
+                    .append(voter.getUserInfo().getNickname() + " ").setForegroundColor(CommentModel.TEXT_YELLOW)
+                    .append("对").setForegroundColor(CommentModel.TEXT_WHITE)
                     .append(model.getUserInfo().getNickname()).setForegroundColor(CommentModel.TEXT_YELLOW)
-                    .append(text).setForegroundColor(CommentModel.TEXT_WHITE)
+                    .append("按了“x”").setForegroundColor(CommentModel.TEXT_WHITE)
                     .create();
             commentModel.setStringBuilder(stringBuilder);
         }
