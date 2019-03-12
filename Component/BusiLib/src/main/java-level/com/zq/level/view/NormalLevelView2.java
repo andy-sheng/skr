@@ -13,7 +13,7 @@ import com.zq.level.utils.LevelConfigUtils;
 /**
  * 新的段位视图
  */
-public class NormalLeveView2 extends RelativeLayout {
+public class NormalLevelView2 extends RelativeLayout {
 
     public final static String TAG = "NormalLeveView2";
 
@@ -27,17 +27,17 @@ public class NormalLeveView2 extends RelativeLayout {
     int sudBottom = U.getDisplayUtils().dip2px(1);   // 子段位距离主段位底部距离
 
 
-    public NormalLeveView2(Context context) {
+    public NormalLevelView2(Context context) {
         super(context);
         init(context, null);
     }
 
-    public NormalLeveView2(Context context, AttributeSet attrs) {
+    public NormalLevelView2(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
     }
 
-    public NormalLeveView2(Context context, AttributeSet attrs, int defStyleAttr) {
+    public NormalLevelView2(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs);
     }

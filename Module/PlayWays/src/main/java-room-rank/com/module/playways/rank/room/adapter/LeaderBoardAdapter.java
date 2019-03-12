@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.common.core.avatar.AvatarUtils;
-import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.RankInfoModel;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.utils.FragmentUtils;
@@ -18,7 +17,7 @@ import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.DiffAdapter;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.rank.R;
-import com.zq.level.view.NormalLevelView;
+import com.zq.level.view.NormalLevelView2;
 import com.zq.live.proto.Common.ESex;
 import com.zq.person.fragment.OtherPersonFragment;
 
@@ -66,7 +65,7 @@ public class LeaderBoardAdapter extends DiffAdapter<RankInfoModel, RecyclerView.
         SimpleDraweeView mSdvIcon;
         ExTextView mTvName;
         ExTextView mTvSegment;
-        NormalLevelView mLevelView;
+        NormalLevelView2 mLevelView;
 
         RankInfoModel mRankInfoModel;
 
@@ -76,7 +75,7 @@ public class LeaderBoardAdapter extends DiffAdapter<RankInfoModel, RecyclerView.
             mSdvIcon = (SimpleDraweeView) itemView.findViewById(R.id.sdv_icon);
             mTvName = (ExTextView) itemView.findViewById(R.id.tv_name);
             mTvSegment = (ExTextView) itemView.findViewById(R.id.tv_segment);
-            mLevelView = (NormalLevelView) itemView.findViewById(R.id.level_view);
+            mLevelView = (NormalLevelView2) itemView.findViewById(R.id.level_view);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -104,7 +103,7 @@ public class LeaderBoardAdapter extends DiffAdapter<RankInfoModel, RecyclerView.
             mTvRank.setText(rankInfoModel.getRankSeq() + "");
             mTvName.setText(rankInfoModel.getNickname());
             mTvSegment.setText(rankInfoModel.getLevelDesc());
-            mLevelView.bindData(rankInfoModel.getMainRanking(), rankInfoModel.getSubRanking(), rankInfoModel.getMaxStar(), rankInfoModel.getStarCnt());
+            mLevelView.bindData(rankInfoModel.getMainRanking(), rankInfoModel.getSubRanking());
             AvatarUtils.loadAvatarByUrl(mSdvIcon,
                     AvatarUtils.newParamsBuilder(rankInfoModel.getAvatar())
                             .setCircle(true)

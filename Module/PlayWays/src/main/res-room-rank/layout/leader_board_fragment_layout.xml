@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:levelView="http://schemas.android.com/apk/res-auto"
-
+    xmlns:levelView2="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -87,23 +86,29 @@
                 android:textColor="#0C2275"
                 android:textStyle="bold" />
 
-            <com.zq.level.view.NormalLevelView
+            <com.zq.level.view.NormalLevelView2
                 android:id="@+id/right_chanpain_level_view"
-                android:layout_width="@dimen/view_44_dp"
-                android:layout_height="@dimen/view_50_dp"
+                android:layout_width="@dimen/view_60_dp"
+                android:layout_height="@dimen/view_53_dp"
                 android:layout_below="@id/tv_right_chanpain_name"
                 android:layout_centerHorizontal="true"
-                levelView:horizonStar="@dimen/view_10_dp"
-                levelView:largeStar="@dimen/view_8_dp"
-                levelView:mainHeight="@dimen/view_38_dp"
-                levelView:mainWidth="@dimen/view_44_dp"
-                levelView:normalStar="@dimen/view_7_dp"
-                levelView:starDiffH="@dimen/view_3_dp"
-                levelView:starTotalWidth="@dimen/view_44_dp"
-                levelView:subHeight="@dimen/view_6_dp"
-                levelView:subWidth="@dimen/view_11_dp"
-                levelView:txtColor="#0C2275"
-                levelView:txtSize="@dimen/view_10_dp"></com.zq.level.view.NormalLevelView>
+                levelView2:mainHeight2="@dimen/view_53_dp"
+                levelView2:mainWidth2="@dimen/view_60_dp"
+                levelView2:subBottom2="@dimen/view_3_dp"
+                levelView2:subHeight2="@dimen/view_6_dp"
+                levelView2:subWidth2="@dimen/view_11_dp"></com.zq.level.view.NormalLevelView2>
+
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/right_chanpain_level_tv"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_20_dp"
+                android:layout_below="@id/right_chanpain_level_view"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_6_dp"
+                android:gravity="center"
+                android:textColor="@color/black_trans_50"
+                android:textSize="@dimen/textsize_14_dp" />
 
         </com.common.view.ex.ExRelativeLayout>
 
@@ -148,23 +153,28 @@
                 android:textColor="#0C2275"
                 android:textStyle="bold" />
 
-            <com.zq.level.view.NormalLevelView
+            <com.zq.level.view.NormalLevelView2
                 android:id="@+id/left_chanpain_level_view"
-                android:layout_width="@dimen/view_44_dp"
-                android:layout_height="@dimen/view_50_dp"
+                android:layout_width="@dimen/view_60_dp"
+                android:layout_height="@dimen/view_53_dp"
                 android:layout_below="@id/tv_left_chanpain_name"
                 android:layout_centerHorizontal="true"
-                levelView:horizonStar="@dimen/view_10_dp"
-                levelView:largeStar="@dimen/view_8_dp"
-                levelView:mainHeight="@dimen/view_38_dp"
-                levelView:mainWidth="@dimen/view_44_dp"
-                levelView:normalStar="@dimen/view_7_dp"
-                levelView:starDiffH="@dimen/view_3_dp"
-                levelView:starTotalWidth="@dimen/view_44_dp"
-                levelView:subHeight="@dimen/view_6_dp"
-                levelView:subWidth="@dimen/view_11_dp"
-                levelView:txtColor="#0C2275"
-                levelView:txtSize="@dimen/view_10_dp"></com.zq.level.view.NormalLevelView>
+                levelView2:mainHeight2="@dimen/view_53_dp"
+                levelView2:mainWidth2="@dimen/view_60_dp"
+                levelView2:subBottom2="@dimen/view_3_dp"
+                levelView2:subHeight2="@dimen/view_6_dp"
+                levelView2:subWidth2="@dimen/view_11_dp"></com.zq.level.view.NormalLevelView2>
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/left_chanpain_level_tv"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_20_dp"
+                android:layout_below="@id/left_chanpain_level_view"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_6_dp"
+                android:gravity="center"
+                android:textColor="@color/black_trans_50"
+                android:textSize="@dimen/textsize_14_dp" />
 
         </com.common.view.ex.ExRelativeLayout>
 
@@ -215,23 +225,28 @@
                 android:textColor="#0C2275"
                 android:textStyle="bold" />
 
-            <com.zq.level.view.NormalLevelView
+            <com.zq.level.view.NormalLevelView2
                 android:id="@+id/chanpain_level_view"
-                android:layout_width="@dimen/view_44_dp"
-                android:layout_height="@dimen/view_50_dp"
+                android:layout_width="@dimen/view_60_dp"
+                android:layout_height="@dimen/view_53_dp"
                 android:layout_below="@id/tv_chanpain_name"
                 android:layout_centerHorizontal="true"
-                levelView:horizonStar="@dimen/view_10_dp"
-                levelView:largeStar="@dimen/view_8_dp"
-                levelView:mainHeight="@dimen/view_38_dp"
-                levelView:mainWidth="@dimen/view_44_dp"
-                levelView:normalStar="@dimen/view_7_dp"
-                levelView:starDiffH="@dimen/view_3_dp"
-                levelView:starTotalWidth="@dimen/view_44_dp"
-                levelView:subHeight="@dimen/view_6_dp"
-                levelView:subWidth="@dimen/view_11_dp"
-                levelView:txtColor="#0C2275"
-                levelView:txtSize="@dimen/view_10_dp"></com.zq.level.view.NormalLevelView>
+                levelView2:mainHeight2="@dimen/view_53_dp"
+                levelView2:mainWidth2="@dimen/view_60_dp"
+                levelView2:subBottom2="@dimen/view_3_dp"
+                levelView2:subHeight2="@dimen/view_6_dp"
+                levelView2:subWidth2="@dimen/view_11_dp"></com.zq.level.view.NormalLevelView2>
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/chanpain_level_tv"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_20_dp"
+                android:layout_below="@id/chanpain_level_view"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_6_dp"
+                android:gravity="center"
+                android:textColor="@color/black_trans_50"
+                android:textSize="@dimen/textsize_14_dp" />
 
         </com.common.view.ex.ExRelativeLayout>
 
