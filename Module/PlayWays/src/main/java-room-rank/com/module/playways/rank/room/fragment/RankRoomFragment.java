@@ -483,10 +483,9 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 //    }
 
     // 播放主舞台动画,入场、循环的离场
-    private void playShowMainStageAnimator() {
+    private void playShowMainStageAnimator(int userId) {
         MyLog.d(TAG, "playShowMainStageAnimator");
         mStageView.setVisibility(View.VISIBLE);
-        int userId = mRoomData.getRealRoundInfo().getUserID();
         String avatar = mRoomData.getUserInfo(userId).getAvatar();
 
         mStageView.setLoops(0);
@@ -987,7 +986,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         mTurnChangeView.setData(mRoomData, new SVGAListener() {
             @Override
             public void onFinished() {
-                playShowMainStageAnimator();
+                playShowMainStageAnimator(uid);
             }
         });
 
