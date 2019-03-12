@@ -25,13 +25,13 @@ public class VoiceControlPanelView extends ScrollView {
     ScenesSelectBtn mKonglingSbtn;
 
     // 记录值用来标记是否改变
-    Params.AudioEffect beforeMode;
-    int beforePeopleVoice;
-    int beforeMusicVoice;
+    Params.AudioEffect mBeforeMode;
+    int mBeforePeopleVoice;
+    int mBeforeMusicVoice;
 
-    Params.AudioEffect afterMode;
-    int afterPeopleVoice;
-    int afterMusicVoice;
+    Params.AudioEffect mAfterMode;
+    int mAfterPeopleVoice;
+    int mAfterMusicVoice;
 
     public VoiceControlPanelView(Context context) {
         super(context);
@@ -70,7 +70,7 @@ public class VoiceControlPanelView extends ScrollView {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 //                EngineManager.getInstance().adjustPlaybackSignalVolume(progress);
-                afterPeopleVoice = progress;
+                mAfterPeopleVoice = progress;
                 EngineManager.getInstance().adjustRecordingSignalVolume(progress);
             }
 
@@ -88,7 +88,7 @@ public class VoiceControlPanelView extends ScrollView {
         mMusicVoiceSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                afterMusicVoice = progress;
+                mAfterMusicVoice = progress;
                 EngineManager.getInstance().adjustAudioMixingVolume(progress);
             }
 
@@ -109,20 +109,20 @@ public class VoiceControlPanelView extends ScrollView {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 MyLog.d(TAG, "onCheckedChanged" + " group=" + group + " checkedId=" + checkedId);
                 if (checkedId == R.id.default_sbtn) {
-                    afterMode = Params.AudioEffect.none;
+                    mAfterMode = Params.AudioEffect.none;
                     EngineManager.getInstance().setAudioEffectStyle(Params.AudioEffect.none);
-                } else if (checkedId == R.id.dianyin_sbtn) {
-                    afterMode = Params.AudioEffect.tb1;
-                    EngineManager.getInstance().setAudioEffectStyle(Params.AudioEffect.tb1);
-                } else if (checkedId == R.id.kongling_sbtn) {
-                    afterMode = Params.AudioEffect.tb2;
-                    EngineManager.getInstance().setAudioEffectStyle(Params.AudioEffect.tb2);
                 } else if (checkedId == R.id.ktv_sbtn) {
-                    afterMode = Params.AudioEffect.cb1;
-                    EngineManager.getInstance().setAudioEffectStyle(Params.AudioEffect.cb1);
+                    mAfterMode = Params.AudioEffect.ktv;
+                    EngineManager.getInstance().setAudioEffectStyle(Params.AudioEffect.ktv);
                 } else if (checkedId == R.id.rock_sbtn) {
-                    afterMode = Params.AudioEffect.cb2;
-                    EngineManager.getInstance().setAudioEffectStyle(Params.AudioEffect.cb2);
+                    mAfterMode = Params.AudioEffect.rock;
+                    EngineManager.getInstance().setAudioEffectStyle(Params.AudioEffect.rock);
+                } else if (checkedId == R.id.dianyin_sbtn) {
+                    mAfterMode = Params.AudioEffect.dianyin;
+                    EngineManager.getInstance().setAudioEffectStyle(Params.AudioEffect.dianyin);
+                } else if (checkedId == R.id.kongling_sbtn) {
+                    mAfterMode = Params.AudioEffect.kongling;
+                    EngineManager.getInstance().setAudioEffectStyle(Params.AudioEffect.kongling);
                 }
             }
         });
@@ -139,13 +139,13 @@ public class VoiceControlPanelView extends ScrollView {
             styleEnum = EngineManager.getInstance().getParams().getStyleEnum();
         }
 
-        if (styleEnum == Params.AudioEffect.tb1) {
+        if (styleEnum == Params.AudioEffect.dianyin) {
             mScenesBtnGroup.check(R.id.dianyin_sbtn);
-        } else if (styleEnum == Params.AudioEffect.tb2) {
+        } else if (styleEnum == Params.AudioEffect.kongling) {
             mScenesBtnGroup.check(R.id.kongling_sbtn);
-        } else if (styleEnum == Params.AudioEffect.cb1) {
+        } else if (styleEnum == Params.AudioEffect.ktv) {
             mScenesBtnGroup.check(R.id.ktv_sbtn);
-        } else if (styleEnum == Params.AudioEffect.cb2) {
+        } else if (styleEnum == Params.AudioEffect.rock) {
             mScenesBtnGroup.check(R.id.rock_sbtn);
         } else {
             mScenesBtnGroup.check(R.id.default_sbtn);
@@ -153,17 +153,17 @@ public class VoiceControlPanelView extends ScrollView {
         mPeopleVoiceSeekbar.setProgress(EngineManager.getInstance().getParams().getRecordingSignalVolume());
         mMusicVoiceSeekbar.setProgress(EngineManager.getInstance().getParams().getAudioMixingVolume());
 
-        beforeMode = styleEnum;
-        beforePeopleVoice = EngineManager.getInstance().getParams().getRecordingSignalVolume();
-        beforeMusicVoice = EngineManager.getInstance().getParams().getAudioMixingVolume();
+        mBeforeMode = styleEnum;
+        mBeforePeopleVoice = EngineManager.getInstance().getParams().getRecordingSignalVolume();
+        mBeforeMusicVoice = EngineManager.getInstance().getParams().getAudioMixingVolume();
 
-        afterMode = styleEnum;
-        afterPeopleVoice = EngineManager.getInstance().getParams().getRecordingSignalVolume();
-        afterMusicVoice = EngineManager.getInstance().getParams().getAudioMixingVolume();
+        mAfterMode = styleEnum;
+        mAfterPeopleVoice = EngineManager.getInstance().getParams().getRecordingSignalVolume();
+        mAfterMusicVoice = EngineManager.getInstance().getParams().getAudioMixingVolume();
     }
 
     public boolean isChange() {
-        if (beforeMode == afterMode && beforeMusicVoice == afterMusicVoice && beforePeopleVoice == afterPeopleVoice) {
+        if (mBeforeMode == mAfterMode && mBeforeMusicVoice == mAfterMusicVoice && mBeforePeopleVoice == mAfterPeopleVoice) {
             return false;
         }
 

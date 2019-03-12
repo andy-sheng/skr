@@ -1,6 +1,5 @@
 package com.engine.agora;
 
-import android.app.usage.ExternalStorageStats;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -1068,14 +1067,16 @@ public class AgoraEngineAdapter {
                 if (DEBUG) {
                     MyLog.d(TAG, "step2:" + testIn(samples));
                 }
-                if (styleEnum == Params.AudioEffect.tb1) {
-                    mTbEffectProcessor.process(1, samples, samples.length, channels, samplesPerSec);
-                } else if (styleEnum == Params.AudioEffect.tb2) {
-                    mTbEffectProcessor.process(2, samples, samples.length, channels, samplesPerSec);
-                } else if (styleEnum == Params.AudioEffect.cb1) {
-                    mCbEffectProcessor.process(1, samples, samples.length, channels, samplesPerSec);
-                } else if (styleEnum == Params.AudioEffect.cb2) {
+                if (styleEnum == Params.AudioEffect.ktv) {
+                    mCbEffectProcessor.process(8, samples, samples.length, channels, samplesPerSec);
+                } else if (styleEnum == Params.AudioEffect.rock) {
                     mCbEffectProcessor.process(2, samples, samples.length, channels, samplesPerSec);
+                } else if (styleEnum == Params.AudioEffect.dianyin) {
+//                    mTbEffectProcessor.process(1, samples, samples.length, channels, samplesPerSec);
+                    mCbEffectProcessor.process(5, samples, samples.length, channels, samplesPerSec);
+                } else if (styleEnum == Params.AudioEffect.kongling) {
+                    mTbEffectProcessor.process(1, samples, samples.length, channels, samplesPerSec);
+//                    mCbEffectProcessor.process(4, samples, samples.length, channels, samplesPerSec);
                 } else {
                     mCbEffectProcessor.destroy();
                     mTbEffectProcessor.destroyEffectProcessor();

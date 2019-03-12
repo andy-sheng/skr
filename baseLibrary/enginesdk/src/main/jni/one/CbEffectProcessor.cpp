@@ -7,7 +7,7 @@
 
 #define LOG_TAG "IFAudioEffectEngine"
 
-#define FILEOPEN 1
+#define FILEOPEN 0
 
 FILE *effectFile1 = NULL;
 AudioEffectProcessor *effectProcessor = NULL;

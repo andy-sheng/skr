@@ -650,6 +650,6 @@ public class Params implements Serializable {
     }
 
     public enum AudioEffect {
-        none,tb1,tb2,cb1,cb2
+        none, dianyin, kongling, ktv, rock
     }
 }

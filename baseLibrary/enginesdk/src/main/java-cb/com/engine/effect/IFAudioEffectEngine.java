@@ -38,34 +38,43 @@ public class IFAudioEffectEngine {
     public void load(int type) {
         AudioEffectParamController.getInstance().loadParamFromResource(U.app());
         AudioEffect audioEffect;
+        // 打印出处理耗时
         if (type == 1) {
+
             audioEffect = AudioEffectParamController.getInstance().extractParam(AudioEffectStyleEnum.RNB,
                     AudioEffectEQEnum.STANDARD);
         } else if (type == 2) {
             audioEffect = AudioEffectParamController.getInstance().extractParam(AudioEffectStyleEnum.ROCK,
                     AudioEffectEQEnum.STANDARD);
         } else if (type == 3) {
+            //2
             audioEffect = AudioEffectParamController.getInstance().extractParam(AudioEffectStyleEnum.POPULAR,
                     AudioEffectEQEnum.STANDARD);
         } else if (type == 4) {
+            //2
             audioEffect = AudioEffectParamController.getInstance().extractParam(AudioEffectStyleEnum.DANCE,
                     AudioEffectEQEnum.STANDARD);
         } else if (type == 5) {
+            //2 有感觉
             audioEffect = AudioEffectParamController.getInstance().extractParam(AudioEffectStyleEnum.NEW_CENT,
                     AudioEffectEQEnum.STANDARD);
         } else if (type == 6) {
+            // 几乎为原声
             audioEffect = AudioEffectParamController.getInstance().extractParam(AudioEffectStyleEnum.LIVE_ORIGINAL,
                     AudioEffectEQEnum.STANDARD);
         } else if (type == 7) {
             audioEffect = AudioEffectParamController.getInstance().extractParam(AudioEffectStyleEnum.LIVE_MAGIC,
                     AudioEffectEQEnum.STANDARD);
         } else if (type == 8) {
+            // 比较有感觉
             audioEffect = AudioEffectParamController.getInstance().extractParam(AudioEffectStyleEnum.LIVE_SIGNER,
                     AudioEffectEQEnum.STANDARD);
         } else if (type == 9) {
+            // 都有点效果
             audioEffect = AudioEffectParamController.getInstance().extractParam(AudioEffectStyleEnum.LIVE_PROFFESSION,
                     AudioEffectEQEnum.STANDARD);
         } else if (type == 10) {
+            // 都有点效果，但听不出差别
             audioEffect = AudioEffectParamController.getInstance().extractParam(AudioEffectStyleEnum.LIVE_GOD,
                     AudioEffectEQEnum.STANDARD);
         } else {
@@ -87,11 +96,7 @@ public class IFAudioEffectEngine {
     public int process(int type, byte[] samples, int length, int channels, int samplesPerSec) {
         if (type != mType) {
             mType = type;
-            if (type == 1) {
-                load(3);
-            } else if (type == 2) {
-                load(4);
-            }
+            load(type);
         }
         processAudioEffect(samples, length, channels, samplesPerSec);
         return 0;
