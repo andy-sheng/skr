@@ -1,6 +1,7 @@
 package com.zq.lyrics.event;
 
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 
 import com.zq.lyrics.LyricsReader;
@@ -17,7 +18,7 @@ public class LyricEventLauncher {
     static final int MSG_LYRIC_LINE_START_EVENT = 12;//某行开始
     static final int MSG_LYRIC_START_EVENT = 13;//倒计时结束，开始走动的事件
 
-    Handler mUiHandler = new Handler() {
+    Handler mUiHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
