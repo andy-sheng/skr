@@ -7,10 +7,10 @@
     android:background="#2E3041">
 
     <!--<com.module.playways.grab.room.top.GrabSingerTopView-->
-        <!--android:id="@+id/singer_top_view"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="@dimen/view_70_dp"-->
-        <!--android:visibility="gone" />-->
+    <!--android:id="@+id/singer_top_view"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="@dimen/view_70_dp"-->
+    <!--android:visibility="gone" />-->
 
     <!--这里面是软键盘弹出时 需要上移的布局-->
     <com.module.playways.rank.room.view.BottomContainerView
@@ -86,12 +86,12 @@
         android:visibility="gone" />
 
     <com.module.playways.grab.room.view.SelfSingCardView2
-        android:layout_marginTop="@dimen/view_d_185_dp"
-        android:layout_below="@+id/top_container_view"
         android:id="@+id/self_sing_card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/top_container_view"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_d_185_dp"
         android:visibility="gone" />
 
     <com.module.playways.grab.room.view.GrabGameOverView
@@ -110,14 +110,14 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/view_165_dp" />
-    
+
     <com.module.playways.grab.room.view.GrabGiveupView
         android:id="@+id/grab_pass_view"
-        android:layout_marginBottom="@dimen/view_130_dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
         android:layout_width="@dimen/view_97_dp"
-        android:layout_height="@dimen/view_60_dp"/>
+        android:layout_height="@dimen/view_60_dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/view_130_dp" />
 
     <com.module.playways.rank.room.gift.GiftContinueViewGroup
         android:id="@+id/gift_continue_vg"
@@ -138,17 +138,30 @@
         android:id="@+id/deng_big_animation"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <com.module.playways.grab.room.view.RedPkgCountDownView
         android:id="@+id/red_pkg_view"
-        android:visibility="gone"
-        android:layout_marginBottom="@dimen/view_79_dp"
-        android:layout_marginRight="@dimen/view_26_dp"
+        android:layout_width="@dimen/view_54_dp"
+        android:layout_height="@dimen/view_54_dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_width="@dimen/view_54_dp"
-        android:layout_height="@dimen/view_54_dp"/>
+        android:layout_marginRight="@dimen/view_26_dp"
+        android:layout_marginBottom="@dimen/view_79_dp"
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/voice_control_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+    <com.module.playways.rank.prepare.view.VoiceControlPanelView
+        android:id="@+id/voice_control_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone" />
 
     <com.module.playways.rank.room.view.InputContainerView
         android:id="@+id/input_container_view"

@@ -23,11 +23,12 @@ import com.module.rank.R;
 public class MoreOpView extends RelativeLayout {
 
     LinearLayout mMenuContainer;
+    RelativeLayout mVoiceAudition;
+    ExTextView mVoiceAuditionBt;
     RelativeLayout mQuitBtnContainer;
     ExTextView mQuitBtn;
     RelativeLayout mVoiceControlBtnContainer;
     ExTextView mVoiceControlBtn;
-    View mDivideLine;
     PopupWindow mPopupWindow;
 
     RelativeLayout mGameGuideRl;
@@ -48,19 +49,18 @@ public class MoreOpView extends RelativeLayout {
         setBackgroundResource(R.drawable.tuichufangjian);
 
         mMenuContainer = (LinearLayout) this.findViewById(R.id.menu_container);
-        mQuitBtnContainer = (RelativeLayout) this.findViewById(R.id.quit_btn_container);
-        mQuitBtn = (ExTextView) this.findViewById(R.id.quit_btn);
+        mVoiceAudition = (RelativeLayout) this.findViewById(R.id.voice_audition);
+        mVoiceAuditionBt = (ExTextView) this.findViewById(R.id.voice_audition_bt);
         mVoiceControlBtnContainer = (RelativeLayout) this.findViewById(R.id.voice_control_btn_container);
         mVoiceControlBtn = (ExTextView) this.findViewById(R.id.voice_control_btn);
-        mDivideLine = this.findViewById(R.id.divide_line);
-
         mGameGuideRl = (RelativeLayout) findViewById(R.id.game_guide_rl);
         mGameGuideBtn = (ExTextView) findViewById(R.id.game_guide_btn);
+        mQuitBtnContainer = (RelativeLayout) this.findViewById(R.id.quit_btn_container);
+        mQuitBtn = (ExTextView) this.findViewById(R.id.quit_btn);
 
-
-        mQuitBtnContainer.setOnClickListener(new OnClickListener() {
+        mQuitBtnContainer.setOnClickListener(new DebounceViewClickListener() {
             @Override
-            public void onClick(View v) {
+            public void clickValid(View v) {
                 if (mListener != null) {
                     mListener.onClostBtnClick();
                 }
@@ -68,9 +68,9 @@ public class MoreOpView extends RelativeLayout {
             }
         });
 
-        mVoiceControlBtnContainer.setOnClickListener(new OnClickListener() {
+        mVoiceControlBtnContainer.setOnClickListener(new DebounceViewClickListener() {
             @Override
-            public void onClick(View v) {
+            public void clickValid(View v) {
                 if (mListener != null) {
                     mVoiceOpen = !mVoiceOpen;
                     mListener.onVoiceChange(mVoiceOpen);
@@ -92,6 +92,16 @@ public class MoreOpView extends RelativeLayout {
                 mPopupWindow.dismiss();
             }
         });
+
+        mVoiceAudition.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mListener != null) {
+                    mListener.onClickVoiceAudition();
+                }
+                mPopupWindow.dismiss();
+            }
+        });
     }
 
     public void showAt(View view) {
@@ -105,10 +115,10 @@ public class MoreOpView extends RelativeLayout {
         }
         if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
             mVoiceControlBtnContainer.setVisibility(GONE);
-            mDivideLine.setVisibility(GONE);
+            mVoiceAudition.setVisibility(VISIBLE);
         } else {
             mVoiceControlBtnContainer.setVisibility(VISIBLE);
-            mDivideLine.setVisibility(VISIBLE);
+            mVoiceAudition.setVisibility(GONE);
         }
     }
 
@@ -124,18 +134,18 @@ public class MoreOpView extends RelativeLayout {
 
     public void setRoomData(BaseRoomData roomData) {
         mRoomData = roomData;
-        if(roomData.getGameType() == GameModeType.GAME_MODE_GRAB){
+        if (roomData.getGameType() == GameModeType.GAME_MODE_GRAB) {
             mGameGuideRl.setVisibility(VISIBLE);
             mGameGuideBtn.setOnClickListener(new DebounceViewClickListener() {
                 @Override
                 public void clickValid(View v) {
-                    if(mListener != null){
+                    if (mListener != null) {
                         mListener.onClickGameRule();
                     }
                     mPopupWindow.dismiss();
                 }
             });
-        }else {
+        } else {
             mGameGuideRl.setVisibility(GONE);
         }
     }
@@ -146,5 +156,7 @@ public class MoreOpView extends RelativeLayout {
         void onVoiceChange(boolean voiceOpen);
 
         void onClickGameRule();
+
+        void onClickVoiceAudition();
     }
 }

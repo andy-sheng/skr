@@ -24,6 +24,7 @@ import com.common.statistics.StatConstants;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.manager.BgMusicManager;
 import com.dialog.view.TipsDialogView;
@@ -58,6 +59,7 @@ import com.module.playways.grab.room.view.SongInfoCardView;
 import com.module.playways.grab.room.view.TurnInfoCardView;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
+import com.module.playways.rank.prepare.view.VoiceControlPanelView;
 import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.comment.CommentView;
 import com.module.playways.rank.room.gift.GiftBigAnimationViewGroup;
@@ -121,6 +123,10 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     InputContainerView mInputContainerView;
 
     BottomContainerView mBottomContainerView;
+
+    View mVoiceControlBg;
+
+    VoiceControlPanelView mVoiceControlView;
 
     RedPkgCountDownView mRedPkgView;
 
@@ -298,6 +304,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     }
 
     private void initBottomView() {
+        mVoiceControlBg = (View) mRootView.findViewById(R.id.voice_control_bg);
+        mVoiceControlView = (VoiceControlPanelView) mRootView.findViewById(R.id.voice_control_view);
         mBottomContainerView = (BottomContainerView) mRootView.findViewById(R.id.bottom_container_view);
         mBottomContainerView.setListener(new BottomContainerView.Listener() {
             @Override
@@ -309,6 +317,14 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             }
         });
         mBottomContainerView.setRoomData(mRoomData);
+
+        mVoiceControlBg.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                mVoiceControlView.setVisibility(View.GONE);
+                mVoiceControlBg.setVisibility(View.GONE);
+            }
+        });
     }
 
     private void initCommentView() {
@@ -497,6 +513,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             if (mGameRoleDialog != null) {
                 mGameRoleDialog.dismiss();
             }
+            U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
             mGameRoleDialog = DialogPlus.newDialog(getContext())
                     .setContentHolder(new ViewHolder(R.layout.grab_game_role_view_layout))
                     .setContentBackgroundResource(R.color.transparent)
@@ -505,6 +522,13 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                     .setGravity(Gravity.CENTER)
                     .create();
             mGameRoleDialog.show();
+        }
+
+        @Override
+        public void onClickVoiceVoiceAudition() {
+            U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+            mVoiceControlBg.setVisibility(View.VISIBLE);
+            mVoiceControlView.setVisibility(View.VISIBLE);
         }
     };
 
@@ -932,7 +956,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                     .setConfirmBtnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            if(mQuitTipsDialog != null){
+                            if (mQuitTipsDialog != null) {
                                 mQuitTipsDialog.dismiss(false);
                             }
                             mCorePresenter.exitRoom();

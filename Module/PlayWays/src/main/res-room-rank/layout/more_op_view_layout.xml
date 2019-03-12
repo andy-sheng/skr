@@ -10,31 +10,30 @@
         android:orientation="vertical">
 
         <RelativeLayout
-            android:id="@+id/quit_btn_container"
+            android:id="@+id/voice_audition"
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_50_dp">
 
             <com.common.view.ex.ExTextView
-                android:id="@+id/quit_btn"
+                android:id="@+id/voice_audition_bt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="@dimen/view_10_dp"
                 android:layout_marginRight="@dimen/view_10_dp"
-                android:drawableLeft="@drawable/quitroom"
+                android:drawableLeft="@drawable/tiaojieyinliang"
                 android:drawablePadding="@dimen/view_5_dp"
                 android:gravity="center"
-                android:text="退出游戏"
+                android:text="音量调节"
                 android:textColor="@color/white"
                 android:textSize="@dimen/textsize_16_dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_1_dp"
+                android:layout_alignParentBottom="true"
+                android:background="#2E3041" />
         </RelativeLayout>
-
-
-        <View
-            android:id="@+id/divide_line"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/view_1_dp"
-            android:background="#2E3041" />
 
         <RelativeLayout
             android:id="@+id/voice_control_btn_container"
@@ -54,16 +53,19 @@
                 android:text="关闭声音"
                 android:textColor="@color/white"
                 android:textSize="@dimen/textsize_16_dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_1_dp"
+                android:layout_alignParentBottom="true"
+                android:background="#2E3041" />
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/game_guide_rl"
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_50_dp">
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/view_1_dp"
-                android:background="#2E3041" />
+
             <com.common.view.ex.ExTextView
                 android:id="@+id/game_guide_btn"
                 android:layout_width="match_parent"
@@ -77,6 +79,36 @@
                 android:text="比赛规则"
                 android:textColor="@color/white"
                 android:textSize="@dimen/textsize_16_dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_1_dp"
+                android:layout_alignParentBottom="true"
+                android:background="#2E3041" />
         </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/quit_btn_container"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_50_dp">
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/quit_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="@dimen/view_10_dp"
+                android:layout_marginRight="@dimen/view_10_dp"
+                android:drawableLeft="@drawable/quitroom"
+                android:drawablePadding="@dimen/view_5_dp"
+                android:gravity="center"
+                android:text="退出游戏"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textsize_16_dp" />
+
+
+        </RelativeLayout>
+
+
     </LinearLayout>
 </merge>
