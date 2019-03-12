@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:levelView="http://schemas.android.com/apk/res-auto"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -10,7 +11,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_292_dp"
-        android:background="@drawable/paihangbang_beijing">
+        android:background="@drawable/paihangbang_beijing"
+        android:clipChildren="false">
 
         <com.common.view.ex.ExImageView
             android:id="@+id/iv_back"
@@ -42,143 +44,132 @@
             android:textColor="@color/white"
             android:textSize="@dimen/textsize_20_dp"
             app:bl_corners_radius="@dimen/view_6_dp"
-            app:bl_solid_color="#B51A4D" />
+            app:bl_solid_color="@color/black_trans_30" />
 
-        <com.common.view.ex.ExFrameLayout
+        <com.common.view.ex.ExRelativeLayout
             android:layout_width="@dimen/view_112_dp"
-            android:layout_height="@dimen/view_192_dp"
+            android:layout_height="@dimen/view_184_dp"
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="1.3dp"
             android:layout_marginTop="1.5dp"
             android:layout_marginRight="-12dp"
             android:layout_toLeftOf="@+id/rl_center_container"
-            android:background="@drawable/disanming_beijing">
+            android:background="@drawable/dierming_beijing"
+            android:clipChildren="false">
 
-            <com.common.view.ex.ExRelativeLayout
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/sdv_right_champain_icon"
+                android:layout_width="@dimen/view_58_dp"
+                android:layout_height="@dimen/view_58_dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_7_dp" />
 
-                android:layout_width="match_parent"
+            <ImageView
+                android:id="@+id/iv_rank_left"
+                android:layout_width="@dimen/view_26_dp"
+                android:layout_height="@dimen/view_26_dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_d_10_dp"
+                android:background="@drawable/dierming_huizhang" />
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/tv_right_chanpain_name"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center">
+                android:layout_below="@+id/sdv_right_champain_icon"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_11_dp"
+                android:alpha="0.8"
+                android:ellipsize="end"
+                android:maxWidth="@dimen/view_90_dp"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textColor="#0C2275"
+                android:textStyle="bold" />
 
-                <com.facebook.drawee.view.SimpleDraweeView
-                    android:id="@+id/sdv_right_champain_icon"
-                    android:layout_width="@dimen/view_58_dp"
-                    android:layout_height="@dimen/view_58_dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/view_28_dp" />
+            <com.zq.level.view.NormalLevelView
+                android:id="@+id/right_chanpain_level_view"
+                android:layout_width="@dimen/view_44_dp"
+                android:layout_height="@dimen/view_50_dp"
+                android:layout_below="@id/tv_right_chanpain_name"
+                android:layout_centerHorizontal="true"
+                levelView:horizonStar="@dimen/view_10_dp"
+                levelView:largeStar="@dimen/view_8_dp"
+                levelView:mainHeight="@dimen/view_38_dp"
+                levelView:mainWidth="@dimen/view_44_dp"
+                levelView:normalStar="@dimen/view_7_dp"
+                levelView:starDiffH="@dimen/view_3_dp"
+                levelView:starTotalWidth="@dimen/view_44_dp"
+                levelView:subHeight="@dimen/view_6_dp"
+                levelView:subWidth="@dimen/view_11_dp"
+                levelView:txtColor="#0C2275"
+                levelView:txtSize="@dimen/view_10_dp"></com.zq.level.view.NormalLevelView>
 
-                <ImageView
-                    android:id="@+id/iv_rank_left"
-                    android:layout_width="@dimen/view_26_dp"
-                    android:layout_height="@dimen/view_26_dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/view_12_dp"
-                    android:background="@drawable/dierming_huizhang" />
+        </com.common.view.ex.ExRelativeLayout>
 
-                <com.common.view.ex.ExTextView
-                    android:id="@+id/tv_right_chanpain_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/sdv_right_champain_icon"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/view_11_dp"
-                    android:alpha="0.8"
-                    android:ellipsize="end"
-                    android:maxWidth="@dimen/view_90_dp"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:textColor="#0C2275"
-                    android:textStyle="bold" />
-
-                <com.zq.level.view.NormalLevelView
-                    android:id="@+id/right_chanpain_level_view"
-                    android:layout_width="@dimen/view_44_dp"
-                    android:layout_height="@dimen/view_50_dp"
-                    android:layout_below="@id/tv_right_chanpain_name"
-                    android:layout_centerHorizontal="true"
-                    levelView:horizonStar="@dimen/view_10_dp"
-                    levelView:largeStar="@dimen/view_8_dp"
-                    levelView:mainHeight="@dimen/view_38_dp"
-                    levelView:mainWidth="@dimen/view_44_dp"
-                    levelView:normalStar="@dimen/view_7_dp"
-                    levelView:starDiffH="@dimen/view_3_dp"
-                    levelView:starTotalWidth="@dimen/view_44_dp"
-                    levelView:subHeight="@dimen/view_6_dp"
-                    levelView:subWidth="@dimen/view_11_dp"
-                    levelView:txtColor="#0C2275"
-                    levelView:txtSize="@dimen/view_10_dp"></com.zq.level.view.NormalLevelView>
-
-            </com.common.view.ex.ExRelativeLayout>
-
-        </com.common.view.ex.ExFrameLayout>
-
-        <com.common.view.ex.ExFrameLayout
-            android:layout_width="@dimen/view_112_dp"
-            android:layout_height="@dimen/view_192_dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="-12dp"
-            android:layout_toRightOf="@+id/rl_center_container"
-            android:background="@drawable/dierming_beijing">
-
-            <com.common.view.ex.ExRelativeLayout
-
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center">
-
-
-                <com.facebook.drawee.view.SimpleDraweeView
-                    android:id="@+id/sdv_left_champain_icon"
-                    android:layout_width="@dimen/view_58_dp"
-                    android:layout_height="@dimen/view_58_dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/view_28_dp" />
-
-                <ImageView
-                    android:id="@+id/iv_rank_right"
-                    android:layout_width="@dimen/view_26_dp"
-                    android:layout_height="@dimen/view_26_dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/view_12_dp"
-                    android:background="@drawable/disanming_huizhang" />
-
-                <com.common.view.ex.ExTextView
-                    android:id="@+id/tv_left_chanpain_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/sdv_left_champain_icon"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/view_11_dp"
-                    android:alpha="0.8"
-                    android:ellipsize="end"
-                    android:maxWidth="@dimen/view_90_dp"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:textColor="#0C2275"
-                    android:textStyle="bold" />
-
-                <com.zq.level.view.NormalLevelView
-                    android:id="@+id/left_chanpain_level_view"
-                    android:layout_width="@dimen/view_44_dp"
-                    android:layout_height="@dimen/view_50_dp"
-                    android:layout_below="@id/tv_left_chanpain_name"
-                    android:layout_centerHorizontal="true"
-                    levelView:horizonStar="@dimen/view_10_dp"
-                    levelView:largeStar="@dimen/view_8_dp"
-                    levelView:mainHeight="@dimen/view_38_dp"
-                    levelView:mainWidth="@dimen/view_44_dp"
-                    levelView:normalStar="@dimen/view_7_dp"
-                    levelView:starDiffH="@dimen/view_3_dp"
-                    levelView:starTotalWidth="@dimen/view_44_dp"
-                    levelView:subHeight="@dimen/view_6_dp"
-                    levelView:subWidth="@dimen/view_11_dp"
-                    levelView:txtColor="#0C2275"
-                    levelView:txtSize="@dimen/view_10_dp"></com.zq.level.view.NormalLevelView>
-
-            </com.common.view.ex.ExRelativeLayout>
-        </com.common.view.ex.ExFrameLayout>
 
         <com.common.view.ex.ExRelativeLayout
+            android:layout_width="@dimen/view_112_dp"
+            android:layout_height="@dimen/view_184_dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="@dimen/view_d_10_dp"
+            android:layout_toRightOf="@+id/rl_center_container"
+            android:background="@drawable/disanming_beijing"
+            android:clipChildren="false">
+
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/sdv_left_champain_icon"
+                android:layout_width="@dimen/view_58_dp"
+                android:layout_height="@dimen/view_58_dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_7_dp" />
+
+            <ImageView
+                android:id="@+id/iv_rank_right"
+                android:layout_width="@dimen/view_26_dp"
+                android:layout_height="@dimen/view_26_dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_d_10_dp"
+                android:background="@drawable/disanming_huizhang" />
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/tv_left_chanpain_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/sdv_left_champain_icon"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_11_dp"
+                android:alpha="0.8"
+                android:ellipsize="end"
+                android:maxWidth="@dimen/view_90_dp"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textColor="#0C2275"
+                android:textStyle="bold" />
+
+            <com.zq.level.view.NormalLevelView
+                android:id="@+id/left_chanpain_level_view"
+                android:layout_width="@dimen/view_44_dp"
+                android:layout_height="@dimen/view_50_dp"
+                android:layout_below="@id/tv_left_chanpain_name"
+                android:layout_centerHorizontal="true"
+                levelView:horizonStar="@dimen/view_10_dp"
+                levelView:largeStar="@dimen/view_8_dp"
+                levelView:mainHeight="@dimen/view_38_dp"
+                levelView:mainWidth="@dimen/view_44_dp"
+                levelView:normalStar="@dimen/view_7_dp"
+                levelView:starDiffH="@dimen/view_3_dp"
+                levelView:starTotalWidth="@dimen/view_44_dp"
+                levelView:subHeight="@dimen/view_6_dp"
+                levelView:subWidth="@dimen/view_11_dp"
+                levelView:txtColor="#0C2275"
+                levelView:txtSize="@dimen/view_10_dp"></com.zq.level.view.NormalLevelView>
+
+        </com.common.view.ex.ExRelativeLayout>
+
+        <com.common.view.ex.ExRelativeLayout
+
             android:id="@+id/rl_center_container"
             android:layout_width="@dimen/view_135_dp"
             android:layout_height="@dimen/view_206_dp"
@@ -192,23 +183,22 @@
                 android:layout_width="@dimen/view_77_dp"
                 android:layout_height="@dimen/view_77_dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/view_34_dp" />
+                android:layout_marginTop="@dimen/view_13_dp" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/view_100_dp"
                 android:layout_marginLeft="@dimen/view_12_dp"
-                android:layout_marginTop="@dimen/view_20_dp"
                 android:layout_marginRight="@dimen/view_12_dp"
                 android:background="@drawable/guanjun_xingxing" />
 
             <ImageView
                 android:id="@+id/iv_rank"
-                android:layout_width="@dimen/view_32_dp"
-                android:layout_height="@dimen/view_32_dp"
+                android:layout_width="@dimen/view_38_dp"
+                android:layout_height="@dimen/view_34_dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/view_12_dp"
-                android:background="@drawable/diyiming_huizhang" />
+                android:layout_marginTop="@dimen/view_d_15_dp"
+                android:background="@drawable/diyiming_huangguan" />
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/tv_chanpain_name"
@@ -247,12 +237,16 @@
 
     </RelativeLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#26264A" />
+
     <include
         android:id="@+id/own_info_item"
         layout="@layout/board_item_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_80_dp"
-        android:layout_marginTop="@dimen/view_d_3_dp" />
+        android:layout_height="@dimen/view_80_dp" />
 
     <View
         android:layout_width="wrap_content"

@@ -1,5 +1,6 @@
 package com.module.playways.rank.room.fragment;
 
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -112,6 +113,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         mOwnInfoItem = mRootView.findViewById(R.id.own_info_item);
+        mOwnInfoItem.setBackgroundColor(Color.parseColor("#6868A1"));
 
         mSdvRightChampainIcon = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_right_champain_icon);
         mTvRightChanpainName = (ExTextView) mRootView.findViewById(R.id.tv_right_chanpain_name);
@@ -343,11 +345,12 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
 
     @Override
     public void showOwnRankInfo(UserRankModel userRankModel) {
-        ExTextView tvRank = (ExTextView) mRootView.findViewById(R.id.tv_rank);
-        SimpleDraweeView sdvIcon = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon);
-        ExTextView tvName = (ExTextView) mRootView.findViewById(R.id.tv_name);
-        ExTextView tvSegment = (ExTextView) mRootView.findViewById(R.id.tv_segment);
-        NormalLevelView normalLevelView = (NormalLevelView) mRootView.findViewById(R.id.level_view);
+        ExTextView tvRank = (ExTextView) mOwnInfoItem.findViewById(R.id.tv_rank);
+        tvRank.setTextColor(U.getColor(R.color.white_trans_70));
+        SimpleDraweeView sdvIcon = (SimpleDraweeView) mOwnInfoItem.findViewById(R.id.sdv_icon);
+        ExTextView tvName = (ExTextView) mOwnInfoItem.findViewById(R.id.tv_name);
+        ExTextView tvSegment = (ExTextView) mOwnInfoItem.findViewById(R.id.tv_segment);
+        NormalLevelView normalLevelView = (NormalLevelView) mOwnInfoItem.findViewById(R.id.level_view);
 
         if (userRankModel.getRankSeq() == 0) {
             tvRank.setVisibility(View.GONE);

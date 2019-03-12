@@ -8,13 +8,14 @@
     android:orientation="vertical">
 
     <com.common.view.ex.ExTextView
+        android:textStyle="bold"
         android:id="@+id/tv_rank"
         android:layout_width="@dimen/view_40_dp"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/view_18_dp"
         android:gravity="center"
-        android:textColor="#b30C2275"
+        android:textColor="#6868A1"
         android:textSize="@dimen/textsize_16_dp" />
 
     <com.facebook.drawee.view.SimpleDraweeView
