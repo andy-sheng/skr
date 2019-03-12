@@ -13,6 +13,7 @@ import com.common.rxretrofit.ApiResult;
 
 import model.RelationNumModel;
 
+import com.common.utils.U;
 import com.module.home.view.IPersonView;
 
 import java.util.List;
@@ -23,7 +24,8 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
 
     UserInfoServerApi userInfoServerApi;
     IPersonView view;
-    long mLastUpdateTime = 0;
+    long mLastUpdateTime = 0;  // 主页刷新时间
+    long mLastRankUpdateTime = 0;  //排名刷新时间
 
     public PersonCorePresenter(IPersonView view) {
         this.view = view;
@@ -68,4 +70,41 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
             }
         }, this);
     }
+
+    public void getRankLevel(boolean flag) {
+        long now = System.currentTimeMillis();
+        if (!flag) {
+            if ((now - mLastRankUpdateTime) < 30 * 1000) {
+                return;
+            }
+        }
+
+        getRankLevel();
+    }
+
+
+    public void getRankLevel() {
+        ApiMethods.subscribe(userInfoServerApi.getReginDiff(), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    mLastRankUpdateTime = System.currentTimeMillis();
+                    UserRankModel userRankModel = JSON.parseObject(result.getData().getString("diff"), UserRankModel.class);
+                    view.showRankView(userRankModel);
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                U.getToastUtil().showShort("网络异常");
+            }
+
+            @Override
+            public void onNetworkError(ErrorType errorType) {
+                U.getToastUtil().showShort("网络超时");
+            }
+        });
+    }
+
+
 }

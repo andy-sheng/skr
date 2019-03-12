@@ -1,11 +1,17 @@
 package com.module.home.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -31,6 +37,7 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
+import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.constans.GameModeType;
@@ -47,7 +54,8 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
-import com.zq.level.view.NormalLevelView;
+import com.zq.level.utils.LevelConfigUtils;
+import com.zq.level.view.NormalLevelView2;
 import com.zq.person.fragment.ImageBigPreviewFragment;
 import com.zq.relation.fragment.RelationFragment;
 
@@ -56,9 +64,15 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import io.reactivex.functions.Consumer;
 import model.RelationNumModel;
+
+import static com.module.home.fragment.GameFragment.SHANDIAN_BADGE;
+import static com.module.home.fragment.GameFragment.STAR_BADGE;
+import static com.module.home.fragment.GameFragment.TOP_BADGE;
 
 public class PersonFragment extends BaseFragment implements IPersonView {
 
@@ -80,8 +94,13 @@ public class PersonFragment extends BaseFragment implements IPersonView {
     ExRelativeLayout mMedalLayout;
     ExTextView mRankNumTv;
     ExTextView mSingendNumTv;
-    NormalLevelView mLevelView;
-    ExTextView mRankTv;
+    NormalLevelView2 mLevelView;
+    ExTextView mLevelTv;
+    RelativeLayout mRankArea;
+    ExTextView mRankText;
+    ExImageView mRankDiffIv;
+    ExImageView mMedalIv;
+
 
     RelativeLayout mWalletArea;
     RelativeLayout mAuditionArea;
@@ -89,12 +108,18 @@ public class PersonFragment extends BaseFragment implements IPersonView {
     RelativeLayout mSettingArea;
     ImageView mSettingRedDot;
 
+    PopupWindow mPopupWindow;  // 显示上升或者下降的标识
+    LinearLayout mPopArea;
+    ExTextView mRankDiffTv;
+    ImageView mRankDiffIcon;
+
     PersonCorePresenter mPersonCorePresenter;
 
     int rank = 0;           //当前父段位
     int subRank = 0;        //当前子段位
     int starNum = 0;        //当前星星
     int starLimit = 0;      //当前星星上限
+    String levelDesc;
 
     int mFriendNum = 0;  // 好友数
     int mFansNum = 0;    // 粉丝数
@@ -120,6 +145,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
         mPersonCorePresenter = new PersonCorePresenter(this);
         addPresent(mPersonCorePresenter);
         mPersonCorePresenter.getHomePage((int) MyUserInfoManager.getInstance().getUid(), true);
+        mPersonCorePresenter.getRankLevel(true);
     }
 
     private void initTopView() {
@@ -277,8 +303,20 @@ public class PersonFragment extends BaseFragment implements IPersonView {
         mMedalLayout = (ExRelativeLayout) mRootView.findViewById(R.id.medal_layout);
         mRankNumTv = (ExTextView) mRootView.findViewById(R.id.rank_num_tv);
         mSingendNumTv = (ExTextView) mRootView.findViewById(R.id.singend_num_tv);
-        mLevelView = (NormalLevelView) mRootView.findViewById(R.id.level_view);
-        mRankTv = (ExTextView) mRootView.findViewById(R.id.rank_tv);
+        mLevelView = (NormalLevelView2) mRootView.findViewById(R.id.level_view);
+        mLevelTv = (ExTextView) mRootView.findViewById(R.id.level_tv);
+
+        mRankArea = (RelativeLayout) mRootView.findViewById(R.id.rank_area);
+        mRankText = (ExTextView) mRootView.findViewById(R.id.rank_text);
+        mRankDiffIv = (ExImageView) mRootView.findViewById(R.id.rank_diff_iv);
+        mMedalIv = (ExImageView) mRootView.findViewById(R.id.medal_iv);
+
+        LinearLayout linearLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.area_diff_popup_window_layout, null);
+        mPopArea = (LinearLayout) linearLayout.findViewById(R.id.pop_area);
+        mRankDiffIcon = (ImageView) linearLayout.findViewById(R.id.rank_diff_icon);
+        mRankDiffTv = (ExTextView) linearLayout.findViewById(R.id.rank_diff_tv);
+        mPopupWindow = new PopupWindow(linearLayout);
+        mPopupWindow.setOutsideTouchable(true);
     }
 
     private void initAudioView() {
@@ -367,6 +405,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
     protected void onFragmentVisible() {
         super.onFragmentVisible();
         mPersonCorePresenter.getHomePage((int) MyUserInfoManager.getInstance().getUid(), false);
+        mPersonCorePresenter.getRankLevel(false);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -405,6 +444,93 @@ public class PersonFragment extends BaseFragment implements IPersonView {
     @Override
     public boolean useEventBus() {
         return true;
+    }
+
+    @Override
+    public void showRankView(UserRankModel userRankModel) {
+        MyLog.d(TAG, "showRankView" + " userRankModel=" + userRankModel);
+
+        if (userRankModel.getDiff() == 0) {
+            // 默认按照上升显示
+            mRankDiffIv.setVisibility(View.GONE);
+            mRankText.setText(highlight(userRankModel.getText(), userRankModel.getHighlight(), true));
+        } else if (userRankModel.getDiff() > 0) {
+            mRankDiffIv.setVisibility(View.VISIBLE);
+            mRankDiffIv.setImageResource(R.drawable.shangsheng_ic);
+            mRankText.setText(highlight(userRankModel.getText(), userRankModel.getHighlight(), true));
+        } else if (userRankModel.getDiff() < 0) {
+            mRankDiffIv.setVisibility(View.VISIBLE);
+            mRankDiffIv.setImageResource(R.drawable.xiajiang_ic);
+            mRankText.setText(highlight(userRankModel.getText(), userRankModel.getHighlight(), false));
+        }
+
+        showPopWindow(userRankModel.getDiff());
+
+        if (userRankModel.getBadge() == STAR_BADGE) {
+            mMedalIv.setBackground(getResources().getDrawable(R.drawable.paiming));
+        } else if (userRankModel.getBadge() == TOP_BADGE) {
+            mMedalIv.setBackground(getResources().getDrawable(R.drawable.paihang));
+        } else if (userRankModel.getBadge() == SHANDIAN_BADGE) {
+            mMedalIv.setBackground(getResources().getDrawable(R.drawable.dabai));
+        }
+    }
+
+    private void showPopWindow(int diff) {
+        if (mPopupWindow.isShowing()) {
+            mPopupWindow.dismiss();
+        }
+
+        if (diff == 0) {
+            return;
+        }
+
+        String content = "";
+        if (diff > 0) {
+            content = "上升" + diff + "名";
+            mRankDiffTv.setText(content);
+            mPopArea.setBackground(getResources().getDrawable(R.drawable.shangsheng_bj));
+            mRankDiffIcon.setImageResource(R.drawable.shangsheng_smail);
+
+            mPopupWindow.setWidth(U.getDisplayUtils().dip2px(36) + content.length() * U.getDisplayUtils().dip2px(10));
+            mPopupWindow.setHeight(U.getDisplayUtils().dip2px(31));
+            mRankText.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (PersonFragment.this.fragmentVisible) {
+                        mPopupWindow.showAsDropDown(mRankText);
+                    }
+                }
+            });
+        } else {
+            content = "下降" + Math.abs(diff) + "名";
+            mRankDiffTv.setText(content);
+            mPopArea.setBackground(getResources().getDrawable(R.drawable.xiajiang_bj));
+            mRankDiffIcon.setImageResource(R.drawable.xiajiang_cry);
+
+            mPopupWindow.setWidth(U.getDisplayUtils().dip2px(36) + content.length() * U.getDisplayUtils().dip2px(10));
+            mPopupWindow.setHeight(U.getDisplayUtils().dip2px(31));
+            mRankText.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (PersonFragment.this.fragmentVisible) {
+                        mPopupWindow.showAsDropDown(mRankText);
+                    }
+                }
+            });
+        }
+
+    }
+
+    private SpannableString highlight(String text, String target, boolean isUp) {
+        SpannableString spannableString = new SpannableString(text);
+        Pattern pattern = Pattern.compile(target);
+        Matcher matcher = pattern.matcher(text);
+        while (matcher.find()) {
+            ForegroundColorSpan span = new ForegroundColorSpan(Color.parseColor("#FF3B3C"));
+            spannableString.setSpan(span, matcher.start(), matcher.end(),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        return spannableString;
     }
 
 
@@ -452,13 +578,13 @@ public class PersonFragment extends BaseFragment implements IPersonView {
             }
         }
 
-        if (reginRankModel != null && reginRankModel.getRankSeq() != 0) {
-            mRankTv.setText(reginRankModel.getRegionDesc() + "第" + String.valueOf(reginRankModel.getRankSeq()) + "位");
-        } else if (countryRankModel != null && countryRankModel.getRankSeq() != 0) {
-            mRankTv.setText(countryRankModel.getRegionDesc() + "第" + String.valueOf(countryRankModel.getRankSeq()) + "位");
-        } else {
-            mRankTv.setText(getResources().getString(R.string.default_rank_text));
-        }
+//        if (reginRankModel != null && reginRankModel.getRankSeq() != 0) {
+//            mRankTv.setText(reginRankModel.getRegionDesc() + "第" + String.valueOf(reginRankModel.getRankSeq()) + "位");
+//        } else if (countryRankModel != null && countryRankModel.getRankSeq() != 0) {
+//            mRankTv.setText(countryRankModel.getRegionDesc() + "第" + String.valueOf(countryRankModel.getRankSeq()) + "位");
+//        } else {
+//            mRankTv.setText(getResources().getString(R.string.default_rank_text));
+//        }
     }
 
     @Override
@@ -470,13 +596,15 @@ public class PersonFragment extends BaseFragment implements IPersonView {
                 rank = userLevelModel.getScore();
             } else if (userLevelModel.getType() == UserLevelModel.SUB_RANKING_TYPE) {
                 subRank = userLevelModel.getScore();
+                levelDesc = userLevelModel.getDesc();
             } else if (userLevelModel.getType() == UserLevelModel.TOTAL_RANKING_STAR_TYPE) {
                 starNum = userLevelModel.getScore();
             } else if (userLevelModel.getType() == UserLevelModel.REAL_RANKING_STAR_TYPE) {
                 starLimit = userLevelModel.getScore();
             }
         }
-        mLevelView.bindData(rank, subRank, starLimit, starNum);
+        mLevelView.bindData(rank, subRank);
+        mLevelTv.setText(levelDesc);
     }
 
     @Override

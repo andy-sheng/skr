@@ -25,4 +25,7 @@ public interface IPersonView {
 
     // 展示游戏数据
     void showGameStatic(List<GameStatisModel> list);
+
+    // 展示排行数据
+    void showRankView(UserRankModel userRankModel);
 }

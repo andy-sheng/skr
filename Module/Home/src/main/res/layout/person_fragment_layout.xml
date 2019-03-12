@@ -1,6 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:levelView="http://schemas.android.com/apk/res-auto"
+    xmlns:levelView2="http://schemas.android.com/apk/res-auto"
     android:id="@+id/person_main_containner"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -306,23 +306,22 @@
                 </com.common.view.ex.ExRelativeLayout>
 
 
-                <com.zq.level.view.NormalLevelView
+                <com.zq.level.view.NormalLevelView2
                     android:id="@+id/level_view"
                     android:layout_width="@dimen/view_125_dp"
-                    android:layout_height="@dimen/view_134_dp"
+                    android:layout_height="@dimen/view_109_dp"
                     android:layout_below="@+id/avatar_iv"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/view_77_dp"
-                    levelView:mainHeight="@dimen/view_109_dp"
-                    levelView:mainWidth="@dimen/view_125_dp"
-                    levelView:starTotalWidth="@dimen/view_125_dp"
-                    levelView:subBottom="@dimen/view_6_dp"
-                    levelView:subHeight="@dimen/view_13_dp"
-                    levelView:subWidth="@dimen/view_24_dp"
-                    levelView:txtColor="#0C2275"></com.zq.level.view.NormalLevelView>
+                    levelView2:mainHeight2="@dimen/view_109_dp"
+                    levelView2:mainWidth2="@dimen/view_125_dp"
+                    levelView2:subBottom2="@dimen/view_6_dp"
+                    levelView2:subHeight2="@dimen/view_13_dp"
+                    levelView2:subWidth2="@dimen/view_24_dp">
+                </com.zq.level.view.NormalLevelView2>
 
                 <com.common.view.ex.ExTextView
-                    android:id="@+id/rank_tv"
+                    android:id="@+id/level_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/level_view"
@@ -334,6 +333,56 @@
                     android:textColor="#0C2275"
                     android:textSize="@dimen/textsize_14_dp"
                     android:textStyle="bold" />
+
+                <RelativeLayout
+                    android:id="@+id/rank_area"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/view_24_dp"
+                    android:layout_below="@id/level_tv"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/view_5_dp"
+                    android:background="@drawable/shouye_paiming"
+                    android:paddingLeft="@dimen/view_42_dp"
+                    android:paddingRight="@dimen/view_12_dp">
+
+                    <com.common.view.ex.ExTextView
+                        android:id="@+id/rank_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/view_20_dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/view_6_dp"
+                        android:gravity="center_vertical"
+                        android:textColor="#0C2275"
+                        android:textSize="@dimen/textsize_14_dp" />
+
+                    <com.common.view.ex.ExImageView
+                        android:id="@+id/rank_diff_iv"
+                        android:layout_width="@dimen/view_8_dp"
+                        android:layout_height="@dimen/view_10_dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/view_3_dp"
+                        android:layout_toRightOf="@id/rank_text" />
+
+                    <com.common.view.ex.ExImageView
+                        android:layout_width="@dimen/view_7_dp"
+                        android:layout_height="@dimen/view_8_dp"
+                        android:layout_marginLeft="@dimen/view_9_dp"
+                        android:layout_marginTop="@dimen/view_16_dp"
+                        android:layout_marginRight="@dimen/view_24_dp"
+                        android:layout_toRightOf="@id/rank_diff_iv"
+                        android:background="@drawable/gengduo_btn"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
+
+                <com.common.view.ex.ExImageView
+                    android:id="@+id/medal_iv"
+                    android:layout_width="@dimen/view_30_dp"
+                    android:layout_height="@dimen/view_30_dp"
+                    android:layout_alignLeft="@+id/rank_area"
+                    android:layout_alignTop="@+id/rank_area"
+                    android:layout_marginLeft="@dimen/view_12_dp"
+                    android:layout_marginTop="-1dp" />
 
 
                 <com.common.view.ex.ExRelativeLayout

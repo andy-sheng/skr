@@ -98,13 +98,6 @@ public class GameFragment extends BaseFragment {
     RelativeLayout mTopArea;
     UserInfoTitleView mUserInfoTitle;
 
-    ImageView mAvatarBg;
-    SimpleDraweeView mAvatarIv;
-    ExTextView mNameTv;
-
-    ImageView mMainRankIv;    // 主段位
-    ImageView mSubRankIv;     // 子段位
-
     RelativeLayout mRankArea;
     ExImageView mMedalIv;     // 排名的勋章
     ExTextView mRankText;     // 显示的文本
@@ -150,13 +143,7 @@ public class GameFragment extends BaseFragment {
         mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
         mTopArea = (RelativeLayout) mRootView.findViewById(R.id.top_area);
         mUserInfoTitle = (UserInfoTitleView) mRootView.findViewById(R.id.user_info_title);
-        mAvatarBg = (ImageView) mRootView.findViewById(R.id.avatar_bg);
-        mAvatarIv = (SimpleDraweeView) mRootView.findViewById(R.id.avatar_iv);
         mIvOpFirst = (BaseImageView) mRootView.findViewById(R.id.iv_op_first);
-
-        mNameTv = (ExTextView) mRootView.findViewById(R.id.name_tv);
-        mMainRankIv = (ImageView) mRootView.findViewById(R.id.main_rank_iv);
-        mSubRankIv = (ImageView) mRootView.findViewById(R.id.sub_rank_iv);
 
         mRankArea = (RelativeLayout) mRootView.findViewById(R.id.rank_area);
         mMedalIv = (ExImageView) mRootView.findViewById(R.id.medal_iv);
@@ -276,14 +263,6 @@ public class GameFragment extends BaseFragment {
     }
 
     private void initBaseInfo() {
-        AvatarUtils.loadAvatarByUrl(mAvatarIv,
-                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
-                        .setCircle(true)
-                        .setBorderColor(Color.parseColor("#0C2275"))
-                        .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                        .build());
-        mNameTv.setText(MyUserInfoManager.getInstance().getNickName());
-
         mUserInfoTitle.showBaseInfo();
     }
 
@@ -312,8 +291,8 @@ public class GameFragment extends BaseFragment {
     private void initRankLevel(boolean isFlag) {
         long now = System.currentTimeMillis();
         if (!isFlag) {
-            // 距离上次拉去已经超过10秒了
-            if ((now - mLastRankUpdate) < 10 * 1000) {
+            // 距离上次拉去已经超过30秒了
+            if ((now - mLastRankUpdate) < 30 * 1000) {
                 return;
             }
         }
@@ -351,8 +330,6 @@ public class GameFragment extends BaseFragment {
         mUserInfoTitle.showRankView(userRankModel);
         mClassicsHeader.setBackgroundColor(Color.parseColor(LevelConfigUtils.getHomePageTopBgColor(userRankModel.getMainRanking())));
         mTitlebar.setStatusBarColor(Color.parseColor(LevelConfigUtils.getHomePageTopBgColor(userRankModel.getMainRanking())));
-        mMainRankIv.setImageResource(LevelConfigUtils.getImageResoucesLevel(userRankModel.getMainRanking()));
-        mSubRankIv.setImageResource(LevelConfigUtils.getImageResoucesSubLevel(userRankModel.getMainRanking(), userRankModel.getSubRanking()));
 
         if (userRankModel.getDiff() == 0) {
             // 默认按照上升显示
