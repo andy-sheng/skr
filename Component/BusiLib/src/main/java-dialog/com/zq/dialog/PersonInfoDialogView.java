@@ -195,7 +195,7 @@ public class PersonInfoDialogView extends RelativeLayout {
             mReport.setVisibility(GONE);
         }
 
-        if (!TextUtils.isEmpty(userInfo.getLocation().getCity())) {
+        if (userInfo.getLocation() != null && !TextUtils.isEmpty(userInfo.getLocation().getCity())) {
             mHashMap.put(LOCATION_TAG, userInfo.getLocation().getCity());
         } else {
             mHashMap.put(LOCATION_TAG, "未知星球");
