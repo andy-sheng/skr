@@ -110,7 +110,7 @@ public class EditInfoAgeFragment extends BaseFragment {
         if (bundle != null) {
             mMainActContainer.setBackgroundColor(Color.parseColor("#F9F4F1"));
 
-            mTitlebar.getRightTextView().setText("1/2");
+            mTitlebar.getRightTextView().setText("2/2");
             mTitlebar.getCenterTextView().setText("完善个人信息");
             mTitlebar.setStatusBarColor(Color.parseColor("#F9F4F1"));
             mTitlebar.setTitleBarColor(Color.parseColor("#F9F4F1"));
