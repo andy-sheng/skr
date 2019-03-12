@@ -1,5 +1,7 @@
 package com.engine.agora;
 
+import android.app.usage.ExternalStorageStats;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.text.TextUtils;
@@ -19,6 +21,9 @@ import com.engine.effect.ITbEffectProcessor;
 import com.engine.score.ICbScoreProcessor;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,6 +71,8 @@ public class AgoraEngineAdapter {
     }
 
     static final boolean DEBUG = false;
+    static final boolean SCORE_DEBUG = false;
+
     private Params mConfig;
     private RtcEngine mRtcEngine;
     private Handler mUiHandler = new Handler();
@@ -887,6 +894,14 @@ public class AgoraEngineAdapter {
         }
         mICbScoreProcessor.init();
         mRtcEngine.startAudioMixing(filePath, loopback, replace, cycle);
+        if (mDebugScoreIS != null) {
+            try {
+                mDebugScoreIS.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            mDebugScoreIS = null;
+        }
     }
 
     /**
@@ -965,6 +980,8 @@ public class AgoraEngineAdapter {
         mRtcEngine.setAudioMixingPosition(posMs);
     }
 
+    FileInputStream mDebugScoreIS;
+
     int mLogtag = 0;
 
     public void setIFAudioEffectEngine(final Params.AudioEffect styleEnum) {
@@ -991,6 +1008,7 @@ public class AgoraEngineAdapter {
                                          int channels,// 2
                                          int samplesPerSec//44100
             ) {
+
                 if (++mLogtag % 500 == 0) {
                     MyLog.d(TAG, "onRecordFrame" + " samples=" + samples + " numOfSamples=" + numOfSamples + " bytesPerSample=" + bytesPerSample + " channels=" + channels + " samplesPerSec=" + samplesPerSec);
                 }
@@ -1020,7 +1038,29 @@ public class AgoraEngineAdapter {
                 if (DEBUG) {
                     MyLog.d(TAG, "step1:" + testIn(samples));
                 }
-                mICbScoreProcessor.process(samples, samples.length, channels, samplesPerSec, ts, mConfig.getMidiPath());
+                if (SCORE_DEBUG) {
+                    if (mDebugScoreIS == null) {
+                        try {
+                            mDebugScoreIS = new FileInputStream(new File(Environment.getExternalStorageDirectory(), "tongzhuodeni.pcm"));
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (ts > 0) {
+                        // 取本地数据，本地数据为44100 单声道
+                        byte[] data = new byte[1024];
+                        try {
+                            if (mDebugScoreIS.read(data) != -1) {
+                                mICbScoreProcessor.process(data, data.length, 1, samplesPerSec, ts, mConfig.getMidiPath());
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                } else {
+                    mICbScoreProcessor.process(samples, samples.length, channels, samplesPerSec, ts, mConfig.getMidiPath());
+                }
+
                 if (DEBUG) {
                     MyLog.d(TAG, "step2:" + testIn(samples));
                 }
@@ -1028,7 +1068,7 @@ public class AgoraEngineAdapter {
                     mTbEffectProcessor.process(1, samples, samples.length, channels, samplesPerSec);
                 } else if (styleEnum == Params.AudioEffect.tb2) {
                     mTbEffectProcessor.process(2, samples, samples.length, channels, samplesPerSec);
-                }else{
+                } else {
                     mTbEffectProcessor.destroyEffectProcessor();
                 }
                 if (DEBUG) {

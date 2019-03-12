@@ -79,6 +79,12 @@ Java_com_engine_score_ICbScoreProcessor_process1(JNIEnv *env, jobject instance, 
         } else if (channels == 1) {
 //2:送入打分处理器
 // 512个 short 类型
+            if (FILEOPEN && scoreFile == NULL) {
+                scoreFile = fopen("/mnt/sdcard/score_input.pcm", "wb+");
+            }
+            if (FILEOPEN && scoreFile != NULL) {
+                fwrite(samples, sizeof(short), length / 2 / channels, scoreFile);
+            }
             scoring->doScoring(samples, length / 2, currentTimeMills);
         }
     }
