@@ -49,6 +49,7 @@ import com.module.playways.grab.room.view.GrabGameOverView;
 import com.module.playways.grab.room.view.GrabOpView;
 
 import com.module.playways.grab.room.view.GrabGiveupView;
+import com.module.playways.grab.room.view.GrabScoreTipsView;
 import com.module.playways.grab.room.view.IRedPkgCountDownView;
 import com.module.playways.grab.room.view.OthersSingCardView;
 import com.module.playways.grab.room.view.RedPkgCountDownView;
@@ -162,6 +163,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     GrabChangeRoomTransitionView mGrabChangeRoomTransitionView;
 
+    GrabScoreTipsView mGrabScoreTipsView;
+
     DialogPlus mQuitTipsDialog;
 
     DialogPlus mDialogPlus;
@@ -241,6 +244,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         initSingStageView();
         initChangeRoomTransitionView();
         initCountDownView();
+        initScoreView();
         mCorePresenter = new GrabCorePresenter(this, mRoomData);
         addPresent(mCorePresenter);
         mGrabRedPkgPresenter = new GrabRedPkgPresenter(this);
@@ -552,6 +556,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         mDengBigAnimation = (GrabDengBigAnimationView) mRootView.findViewById(R.id.deng_big_animation);
     }
 
+    private void initScoreView() {
+        mGrabScoreTipsView = mRootView.findViewById(R.id.grab_score_tips_view);
+        mGrabScoreTipsView.setRoomData(mRoomData);
+    }
+
     private void initGrabOpView() {
         mGrabOpBtn = mRootView.findViewById(R.id.grab_op_btn);
         mGrabOpBtn.setGrabRoomData(mRoomData);
@@ -607,6 +616,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         mOthersSingCardView = mRootView.findViewById(R.id.other_sing_card_view);
         mOthersSingCardView.setRoomData(mRoomData);
         mSelfSingCardView = mRootView.findViewById(R.id.self_sing_card_view);
+        mSelfSingCardView.setRoomData(mRoomData);
         mSelfSingCardView.setListener(new SelfSingCardView2.Listener() {
             @Override
             public void onSelfSingOver() {
@@ -823,8 +833,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             // 显示歌词
             mSelfSingCardView.setVisibility(View.VISIBLE);
             mOthersSingCardView.setVisibility(View.GONE);
-            mSelfSingCardView.playLyric(mRoomData.getRealRoundInfo().getMusic(), SelfSingCardView2.LyricPlayMode.NoAcc);
-//            mCorePresenter.playAcc();
+            mSelfSingCardView.playLyric(mRoomData.getRealRoundInfo().getMusic(), mRoomData.isAccEnable());
         } else {
             // 显示收音机
             mSelfSingCardView.setVisibility(View.GONE);
@@ -910,7 +919,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             mQuitTipsDialog.dismiss();
             mQuitTipsDialog = null;
         }
-        if(mSelfSingCardView != null){
+        if (mSelfSingCardView != null) {
             mSelfSingCardView.destroy();
         }
         mUiHanlder.removeCallbacksAndMessages(null);
@@ -1045,6 +1054,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     @Override
     public void giveUpSuccess(int seq) {
         mGrabGiveupView.passSuccess();
+    }
+
+    @Override
+    public void updateScrollBarProgress(int score, int songLineNum) {
+        mGrabScoreTipsView.updateScore(score, songLineNum);
     }
 
     private void onGrabGameOver(String from) {

@@ -107,8 +107,6 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 
     static final int MSG_START_LAST_TWO_SECONDS_TASK = 30;
 
-    static final int MSG_LYRIC_END_EVENT = 31;
-
     static final int MSG_SHOW_SCORE_EVENT = 32;
 
 

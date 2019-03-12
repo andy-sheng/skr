@@ -27,6 +27,7 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
     protected GrabConfigModel mGrabConfigModel = new GrabConfigModel();// 一唱到底配置
     protected boolean mHasExitGame = false;// 是否已经正常退出房间
     private boolean mIsAccEnable = false;// 是否开启伴奏
+    private Integer mSongLineNum;
 
     @Override
     public List<GrabPlayerInfoModel> getPlayerInfoList() {
@@ -171,5 +172,13 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
         setIsGameFinish(false);
         setHasExitGame(false);
         mResultList.clear();
+    }
+
+    public Integer getSongLineNum() {
+        return mSongLineNum;
+    }
+
+    public void setSongLineNum(Integer songLineNum) {
+        mSongLineNum = songLineNum;
     }
 }

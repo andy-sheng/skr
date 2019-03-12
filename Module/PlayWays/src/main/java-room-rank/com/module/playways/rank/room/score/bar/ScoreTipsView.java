@@ -156,6 +156,10 @@ public class ScoreTipsView extends RelativeLayout {
     }
 
     public static void play(RelativeLayout parent, Item item) {
+        play(parent,item,1);
+    }
+
+    public static void play(RelativeLayout parent, Item item,int postion) {
         if (item == null) {
             return;
         }
@@ -166,7 +170,11 @@ public class ScoreTipsView extends RelativeLayout {
         ScoreTipsView scoreTipsView = new ScoreTipsView(parent.getContext());
         scoreTipsView.bindData(item);
         RelativeLayout.LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        lp.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        if(postion==1){
+            lp.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        }else if(postion==2){
+            lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        }
         lp.topMargin = U.getDisplayUtils().dip2px(135);
         parent.addView(scoreTipsView, lp);
         scoreTipsView.startPlay();

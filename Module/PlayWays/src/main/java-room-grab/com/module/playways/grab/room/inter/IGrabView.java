@@ -52,4 +52,6 @@ public interface IGrabView {
     void onChangeRoomResult(boolean success,String errorMsg);
 
     void giveUpSuccess(int seq);
+
+    void updateScrollBarProgress(int score, int songLineNum);
 }

@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import com.alibaba.fastjson.JSON;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.engine.ScoreConfig;
 import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.player.VideoPlayerAdapter;
@@ -25,6 +26,7 @@ import com.common.utils.SongResUtils;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.component.busilib.SkrConfig;
+import com.engine.EngineEvent;
 import com.engine.EngineManager;
 import com.engine.Params;
 import com.engine.arccloud.ArcRecognizeListener;
@@ -32,6 +34,8 @@ import com.engine.arccloud.RecognizeConfig;
 import com.engine.arccloud.SongInfo;
 import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
+import com.module.msg.CustomMsgType;
+import com.module.msg.IMsgService;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.event.GrabGameOverEvent;
@@ -51,6 +55,7 @@ import com.module.playways.grab.room.model.MLightInfoModel;
 import com.module.playways.grab.room.model.WantSingerInfo;
 import com.module.playways.rank.msg.BasePushInfo;
 import com.module.playways.rank.msg.event.CommentMsgEvent;
+import com.module.playways.rank.msg.event.MachineScoreEvent;
 import com.module.playways.rank.msg.event.QExitGameMsgEvent;
 import com.module.playways.rank.msg.event.QGetSingChanceMsgEvent;
 import com.module.playways.rank.msg.event.QJoinNoticeEvent;
@@ -77,9 +82,13 @@ import com.module.rank.BuildConfig;
 import com.module.rank.R;
 import com.zq.live.proto.Common.ESex;
 import com.zq.live.proto.Common.UserInfo;
+import com.zq.live.proto.Room.EMsgPosType;
 import com.zq.live.proto.Room.EQRoundOverReason;
 import com.zq.live.proto.Room.EQRoundResultType;
+import com.zq.live.proto.Room.ERoomMsgType;
+import com.zq.live.proto.Room.MachineScore;
 import com.zq.live.proto.Room.RoomMsg;
+import com.zq.lyrics.event.LrcEvent;
 import com.zq.lyrics.model.UrlRes;
 import com.zq.lyrics.utils.ZipUrlResourceManager;
 
@@ -102,7 +111,12 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     public String TAG = "GrabCorePresenter";
 
     private static long sSyncStateTaskInterval = 5000;
+
     static final int MSG_ROBOT_SING_BEGIN = 10;
+
+    static final int MSG_SHOW_SCORE_EVENT = 32;
+
+    static final int MSG_ENSURE_SWITCH_BROADCAST_SUCCESS = 21; // 确保用户切换成主播成功，防止引擎不回调的保护
 
     GrabRoomData mRoomData;
 
@@ -122,7 +136,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     ZipUrlResourceManager mZipUrlResourceManager;
 
-    Handler mUiHanlder = new Handler() {
+    int mLastLineNum = -1;
+
+    Handler mUiHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -130,6 +146,17 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 case MSG_ROBOT_SING_BEGIN:
                     robotSingBegin();
                     break;
+                case MSG_ENSURE_SWITCH_BROADCAST_SUCCESS:
+                    onChangeBroadcastSuccess();
+                    break;
+                default:
+                    int lineNo = (msg.what - MSG_SHOW_SCORE_EVENT) / 100;
+                    MyLog.d(TAG, "handleMessage" + " lineNo=" + lineNo);
+                    if (lineNo > mLastLineNum) {
+                        int score = EngineManager.getInstance().getLineScore();
+                        MyLog.d(TAG, "handleMessage acr超时 本地获取得分:" + score);
+                        processScore(score, lineNo);
+                    }
             }
         }
     };
@@ -237,33 +264,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     }
 
     /**
-     * 播放伴奏
-     */
-    public void playAcc() {
-        if (mRoomData.getRealRoundInfo() == null
-                || mRoomData.getRealRoundInfo().getMusic() == null
-                || TextUtils.isEmpty(mRoomData.getRealRoundInfo().getMusic().getAcc())) {
-            MyLog.w(TAG, "playAcc data error");
-            return;
-        }
-
-        if (!mRoomData.isAccEnable()) {
-            MyLog.d(TAG, "playAcc acc is disable");
-            return;
-        }
-
-        SongModel songModel = mRoomData.getRealRoundInfo().getMusic();
-        File accFile = SongResUtils.getAccFileByUrl(songModel.getAcc());
-        if (accFile != null && accFile.isFile() && accFile.exists()) {
-            EngineManager.getInstance().startAudioMixing((int) MyUserInfoManager.getInstance().getUid(), accFile.getAbsolutePath()
-                    , null, 0, false, false, 1);
-            EngineManager.getInstance().setAudioMixingPosition(0);
-        } else {
-            // TODO: 2019/3/12 播放网络资源
-        }
-    }
-
-    /**
      * 播放导唱
      */
     public void playGuide() {
@@ -304,43 +304,77 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     }
 
     /**
-     * 开始演唱
+     * 预先可以做的操作，如果确定是自己唱了
+     */
+    void preOpWhenSelfRound() {
+        if (mRoomData.isAccEnable()) {
+            // 1. 开启伴奏的，预先下载 melp 资源
+            GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
+            if (now != null) {
+                File midiFile = SongResUtils.getMIDIFileByUrl(now.getMusic().getMidi());
+                if (midiFile != null && !midiFile.exists()) {
+                    U.getHttpUtils().downloadFileAsync(now.getMusic().getMidi(), midiFile, null);
+                }
+            }
+
+        }
+    }
+
+    /**
+     * 真正打开引擎开始演唱
      */
     public void beginSing() {
         // 打开引擎，变为主播
         if (mRoomData.getGameId() > 0) {
             EngineManager.getInstance().setClientRole(true);
+            BaseRoundInfoModel now = mRoomData.getRealRoundInfo();
             //开始录制声音
             if (SkrConfig.getInstance().isNeedUploadAudioForAI()) {
                 // 需要上传音频伪装成机器人
                 EngineManager.getInstance().startAudioRecording(RoomDataUtils.getSaveAudioForAiFilePath(), Constants.AUDIO_RECORDING_QUALITY_HIGH);
-                BaseRoundInfoModel now = mRoomData.getRealRoundInfo();
                 if (now != null) {
                     if (mRobotScoreHelper == null) {
                         mRobotScoreHelper = new RobotScoreHelper();
                     }
                     mRobotScoreHelper.reset();
-                    EngineManager.getInstance().startRecognize(RecognizeConfig.newBuilder()
-                            .setSongName(now.getMusic().getItemName())
-                            .setArtist(now.getMusic().getOwner())
-                            .setMode(RecognizeConfig.MODE_AUTO)
-                            .setAutoTimes(8)
-                            .setMResultListener(new ArcRecognizeListener() {
-                                @Override
-                                public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
-                                    int score = 0;
-                                    if (targetSongInfo != null) {
-                                        score = (int) (targetSongInfo.getScore() * 100);
-                                    }
-                                    MachineScoreItem machineScoreItem = new MachineScoreItem();
-                                    machineScoreItem.setNo(lineNo);
-                                    machineScoreItem.setTs(System.currentTimeMillis() - mRobotScoreHelper.getBeginRecordTs());
-                                    machineScoreItem.setScore(score);
-                                    mRobotScoreHelper.add(machineScoreItem);
-                                }
-                            })
-                            .build());
                 }
+            }
+            // 开始acr打分
+            if (ScoreConfig.isAcrEnable() && now != null && now.getMusic() != null) {
+                EngineManager.getInstance().startRecognize(RecognizeConfig.newBuilder()
+                        .setSongName(now.getMusic().getItemName())
+                        .setArtist(now.getMusic().getOwner())
+                        .setMode(RecognizeConfig.MODE_MANUAL)
+                        .setMResultListener(new ArcRecognizeListener() {
+                            @Override
+                            public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
+                                mUiHandler.removeMessages(MSG_SHOW_SCORE_EVENT + lineNo * 100);
+                                if (lineNo > mLastLineNum) {
+                                    // 使用最新的打分方案做优化
+                                    int score1 = EngineManager.getInstance().getLineScore();
+                                    int score2 = 0;
+                                    if (targetSongInfo != null) {
+                                        score2 = (int) (targetSongInfo.getScore() * 100);
+                                    }
+                                    if (ScoreConfig.isMelpEnable()) {
+                                        if (score1 > score2) {
+                                            processScore(score1, lineNo);
+                                        } else {
+                                            processScore(score2, lineNo);
+                                        }
+                                    } else {
+                                        processScore(score2, lineNo);
+                                    }
+                                }
+                            }
+                        })
+                        .build());
+            }
+
+            if (mRoomData.isAccEnable()) {
+                // 如果需要播放伴奏，一定要在角色切换成功才能播
+                mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS);
+                mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS, 200);
             }
         }
     }
@@ -349,38 +383,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      * 抢唱歌权
      */
     public void grabThisRound(int seq) {
-//        RoundInfoModel now = mRoomData.getRealRoundInfo();
-        //TEST
-//        if (true && MyLog.isDebugLogOpen()) {
-//            U.getToastUtil().showShort("执行测试抢代码");
-//            now.addGrabUid(RoomDataUtils.isCurrentRound(now.getRoundSeq(), mRoomData), (int) MyUserInfoManager.getInstance().getUid());
-//            mUiHanlder.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    now.setUserID((int) MyUserInfoManager.getInstance().getUid());
-//                    now.updateStatus(true, GrabRoundInfoModel.STATUS_SING);
-//                }
-//            }, 3000);
-//
-//            HandlerTaskTimer.newBuilder()
-//                    .interval(4000)
-//                    .start(new HandlerTaskTimer.ObserverW() {
-//                        @Override
-//                        public void onNext(Integer integer) {
-//                            SomeOneLightOffEvent event = new SomeOneLightOffEvent(5, now);
-//                            EventBus.getDefault().post(event);
-//                            mUiHanlder.postDelayed(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    SomeOneLightOffEvent event2 = new SomeOneLightOffEvent(3, now);
-//                                    EventBus.getDefault().post(event2);
-//                                }
-//                            },1000);
-//                        }
-//                    });
-//            return;
-//        }
-
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", mRoomData.getGameId());
         map.put("roundSeq", seq);
@@ -626,42 +628,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     }
 
     /**
-     * 下载伴奏下一首的伴奏
-     *
-     * @param grabRoundInfoModel
-     */
-    public void fetchAcc(GrabRoundInfoModel grabRoundInfoModel) {
-        if (grabRoundInfoModel == null || grabRoundInfoModel.getMusic() == null
-                || TextUtils.isEmpty(grabRoundInfoModel.getMusic().getAcc())) {
-            MyLog.d(TAG, "fetchAcc" + " grabRoundInfoModel data error");
-            return;
-        }
-
-        String accUrl = grabRoundInfoModel.getMusic().getAcc();
-        UrlRes accRes = new UrlRes(accUrl, SongResUtils.getACCDir(), U.getFileUtils().getSuffixFromUrl(accUrl, SongResUtils.SUFF_ACC));
-        if (accRes.isExist()) {
-            MyLog.d(TAG, "fetchAcc" + " acc file is exist");
-            return;
-        }
-
-        if (mZipUrlResourceManager != null) {
-            if (mZipUrlResourceManager.containUrl(accUrl)) {
-                MyLog.d(TAG, "fetchAcc" + " file is downloading");
-                return;
-            }
-
-            mZipUrlResourceManager.cancelAllTask();
-            mZipUrlResourceManager = null;
-        }
-
-        LinkedList<UrlRes> songResList = new LinkedList<>();
-        songResList.add(accRes);
-
-        mZipUrlResourceManager = new ZipUrlResourceManager(songResList, null);
-        mZipUrlResourceManager.go();
-    }
-
-    /**
      * 上传机器人资源相关文件到服务器
      *
      * @param roundInfoModel
@@ -716,9 +682,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
-        stopAudioMixing();
         EngineManager.getInstance().destroy("grabroom");
-        mUiHanlder.removeCallbacksAndMessages(null);
+        mUiHandler.removeCallbacksAndMessages(null);
         ChatRoomMsgManager.getInstance().removeFilter(mPushMsgFilter);
         if (mExoPlayer != null) {
             mExoPlayer.release();
@@ -927,7 +892,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         } else if (in) {
             map.put("status", SwapStatusType.SS_SWAP_IN);
         }
-
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.swap(body), new ApiObserver<ApiResult>() {
             @Override
@@ -1075,7 +1039,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         mRoomData.setIsGameFinish(true);
         cancelSyncGameStateTask();
         // 游戏结束了,处理相应的ui逻辑
-        mUiHanlder.post(new Runnable() {
+        mUiHandler.post(new Runnable() {
             @Override
             public void run() {
                 mIGrabView.roundOver(event.lastRoundInfo.getMusic().getItemID(), event.lastRoundInfo.getOverReason(), event.lastRoundInfo.getResultType(), false, null);
@@ -1083,7 +1047,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         });
         // 销毁引擎，减小成本
         EngineManager.getInstance().destroy("grabroom");
-        mUiHanlder.postDelayed(new Runnable() {
+        mUiHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 mIGrabView.gameFinish();
@@ -1099,7 +1063,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         MyLog.d(TAG, "GrabRoundChangeEvent" + " event=" + event);
         // 轮次变化尝试更新头像
         estimateOverTsThisRound();
-        stopAudioMixing();
+        mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS);
         closeEngine();
         tryStopRobotPlay();
         EngineManager.getInstance().stopRecognize();
@@ -1110,7 +1074,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             //抢唱阶段，播抢唱卡片
             if (event.lastRoundInfo != null && event.lastRoundInfo.getStatus() >= GrabRoundInfoModel.STATUS_SING) {
                 // 新一轮的抢唱阶段，得告诉上一轮演唱结束了啊，上一轮演唱结束卡片播完，才播歌曲卡片
-                mUiHanlder.post(new Runnable() {
+                mUiHandler.post(new Runnable() {
                     @Override
                     public void run() {
                         mIGrabView.roundOver(event.lastRoundInfo.getMusic().getItemID(), event.lastRoundInfo.getOverReason(), event.lastRoundInfo.getResultType(), true, now);
@@ -1147,6 +1111,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             // 演唱阶段
             if (now.getUserID() == MyUserInfoManager.getInstance().getUid()) {
                 mIGrabView.singBySelf();
+                preOpWhenSelfRound();
             } else {
                 mIGrabView.singByOthers(now.getUserID());
                 checkMachineUser(now.getUserID());
@@ -1169,7 +1134,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     public void onEvent(GrabRoundStatusChangeEvent event) {
         MyLog.d(TAG, "GrabRoundStatusChangeEvent" + " event=" + event);
         estimateOverTsThisRound();
-        stopAudioMixing();
+        mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS);
         closeEngine();
         GrabRoundInfoModel now = event.roundInfo;
         tryStopRobotPlay();
@@ -1180,6 +1145,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             // 演唱阶段
             if (now.getUserID() == MyUserInfoManager.getInstance().getUid()) {
                 mIGrabView.singBySelf();
+                preOpWhenSelfRound();
             } else {
                 mIGrabView.singByOthers(now.getUserID());
                 checkMachineUser(now.getUserID());
@@ -1187,14 +1153,58 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
-    private void stopAudioMixing() {
-        EngineManager.getInstance().stopAudioMixing();
-    }
-
     private void closeEngine() {
         if (mRoomData.getGameId() > 0) {
+            EngineManager.getInstance().stopAudioMixing();
             EngineManager.getInstance().setClientRole(false);
         }
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onEvent(EngineEvent event) {
+        if (event.getType() == EngineEvent.TYPE_USER_ROLE_CHANGE) {
+            EngineEvent.RoleChangeInfo roleChangeInfo = event.getObj();
+            if (roleChangeInfo.getNewRole() == 1) {
+                onChangeBroadcastSuccess();
+            }
+        }
+    }
+
+    /**
+     * 成功切换为主播
+     */
+    private void onChangeBroadcastSuccess() {
+        MyLog.d(TAG, "onChangeBroadcastSuccess");
+        mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS);
+        mUiHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
+                if (infoModel == null || infoModel.getUserID() != MyUserInfoManager.getInstance().getUid()) {
+                    MyLog.d(TAG, "onChangeBroadcastSuccess,但已经不是你的轮次了，cancel");
+                    return;
+                }
+                SongModel songModel = infoModel.getMusic();
+                if (songModel == null) {
+                    return;
+                }
+                // 开始开始混伴奏，开始解除引擎mute
+                File accFile = SongResUtils.getAccFileByUrl(infoModel.getMusic().getAcc());
+                // midi不需要在这下，只要下好，native就会解析，打分就能恢复
+                File midiFile = SongResUtils.getMIDIFileByUrl(infoModel.getMusic().getMidi());
+                if (mRoomData.isAccEnable()) {
+                    if (accFile != null && accFile.exists()) {
+                        // 伴奏文件存在
+                        EngineManager.getInstance().startAudioMixing((int) MyUserInfoManager.getInstance().getUid(), accFile.getAbsolutePath()
+                                , midiFile.getAbsolutePath(), songModel.getBeginMs(), false, false, 1);
+                    } else {
+                        EngineManager.getInstance().startAudioMixing((int) MyUserInfoManager.getInstance().getUid(), songModel.getAcc()
+                                , midiFile.getAbsolutePath(), songModel.getBeginMs(), false, false, 1);
+                    }
+                }
+            }
+        });
     }
 
     /**
@@ -1454,9 +1464,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             MyLog.d(TAG, "checkMachineUser" + " uid=" + uid + " is machine");
             //这个时间现在待定
             //移除之前的要发生的机器人演唱
-            mUiHanlder.removeMessages(MSG_ROBOT_SING_BEGIN);
-            Message message = mUiHanlder.obtainMessage(MSG_ROBOT_SING_BEGIN);
-            mUiHanlder.sendMessage(message);
+            mUiHandler.removeMessages(MSG_ROBOT_SING_BEGIN);
+            Message message = mUiHandler.obtainMessage(MSG_ROBOT_SING_BEGIN);
+            mUiHandler.sendMessage(message);
         }
     }
 
@@ -1478,4 +1488,173 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     }
 
 
+    /*打分相关*/
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(MachineScoreEvent event) {
+        //收到其他人的机器打分消息，比较复杂，暂时简单点，轮次正确就直接展示
+        if (RoomDataUtils.isThisUserRound(mRoomData.getRealRoundInfo(), event.userId)) {
+            mIGrabView.updateScrollBarProgress(event.score, event.lineNum);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onEvent(LrcEvent.LineLineEndEvent event) {
+        MyLog.d(TAG, "onEvent LineEndEvent lineno=" + event.lineNum);
+        if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
+            if (ScoreConfig.isAcrEnable()) {
+                EngineManager.getInstance().recognizeInManualMode(event.lineNum);
+            } else {
+                if (ScoreConfig.isMelpEnable()) {
+                    int score = EngineManager.getInstance().getLineScore();
+                    processScore(score, event.lineNum);
+                }
+            }
+            Message msg = mUiHandler.obtainMessage(MSG_SHOW_SCORE_EVENT + event.lineNum * 100);
+            mUiHandler.sendMessageDelayed(msg, 1000);
+        } else {
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(LrcEvent.LyricStartEvent event) {
+        MyLog.d(TAG, "onEvent LineStartEvent");
+        Params params = EngineManager.getInstance().getParams();
+        if (params != null) {
+            params.setLrcHasStart(true);
+        }
+    }
+
+    void processScore(int score, int line) {
+        if (line <= mLastLineNum) {
+            return;
+        }
+        mLastLineNum = line;
+        if (ScoreConfig.isMelpEnable() && ScoreConfig.isAcrEnable()) {
+
+        } else {
+            U.getToastUtil().showShort("score:" + score);
+        }
+        MyLog.d(TAG, "onEvent" + " 得分=" + score);
+        MachineScoreItem machineScoreItem = new MachineScoreItem();
+        machineScoreItem.setScore(score);
+        long ts = EngineManager.getInstance().getAudioMixingCurrentPosition();
+        machineScoreItem.setTs(ts);
+        machineScoreItem.setNo(line);
+        // 打分信息传输给其他人
+        sendScoreToOthers(machineScoreItem);
+        if (mRobotScoreHelper != null) {
+            mRobotScoreHelper.add(machineScoreItem);
+        }
+        mUiHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                mIGrabView.updateScrollBarProgress(score, mRoomData.getSongLineNum());
+            }
+        });
+        //打分传给服务器
+        sendScoreToServer(score, line);
+    }
+
+    /**
+     * 将自己的分数传给其他人
+     *
+     * @param machineScoreItem
+     */
+    private void sendScoreToOthers(MachineScoreItem machineScoreItem) {
+        // 后续加个优化，如果房间里两人都是机器人就不加了
+        IMsgService msgService = ModuleServiceManager.getInstance().getMsgService();
+        if (msgService != null) {
+            long ts = System.currentTimeMillis();
+            UserInfo senderInfo = new UserInfo.Builder()
+                    .setUserID((int) MyUserInfoManager.getInstance().getUid())
+                    .setNickName(MyUserInfoManager.getInstance().getNickName())
+                    .setAvatar(MyUserInfoManager.getInstance().getAvatar())
+                    .setSex(ESex.fromValue(MyUserInfoManager.getInstance().getSex()))
+                    .setDescription("")
+                    .setIsSystem(false)
+                    .build();
+
+            RoomMsg roomMsg = new RoomMsg.Builder()
+                    .setTimeMs(ts)
+                    .setMsgType(ERoomMsgType.RM_ROUND_MACHINE_SCORE)
+                    .setRoomID(mRoomData.getGameId())
+                    .setNo(ts)
+                    .setPosType(EMsgPosType.EPT_UNKNOWN)
+                    .setSender(senderInfo)
+                    .setMachineScore(new MachineScore.Builder()
+                            .setUserID((int) MyUserInfoManager.getInstance().getUid())
+                            .setNo(machineScoreItem.getNo())
+                            .setScore(machineScoreItem.getScore())
+                            .setItemID(mRoomData.getSongModel().getItemID())
+                            .setLineNum(mRoomData.getSongLineNum())
+                            .build()
+                    )
+                    .build();
+            String contnet = U.getBase64Utils().encode(roomMsg.toByteArray());
+            msgService.sendChatRoomMessage(String.valueOf(mRoomData.getGameId()), CustomMsgType.MSG_TYPE_ROOM, contnet, null);
+        }
+    }
+
+
+    /**
+     * 单句打分上报
+     *
+     * @param score
+     * @param line
+     */
+    public void sendScoreToServer(int score, int line) {
+//        HashMap<String, Object> map = new HashMap<>();
+//        map.put("gameID", mRoomData.getGameId());
+//        RankRoundInfoModel infoModel = RoomDataUtils.getRoundInfoByUserId(mRoomData, (int) MyUserInfoManager.getInstance().getUid());
+//        if (infoModel == null) {
+//            return;
+//        }
+//        int itemID = infoModel.getPlaybookID();
+//        map.put("itemID", itemID);
+//        int mainLevel = 0;
+//        PlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, MyUserInfoManager.getInstance().getUid());
+//        if (playerInfoModel != null) {
+//            mainLevel = playerInfoModel.getUserInfo().getMainLevel();
+//        }
+//        map.put("mainLevel", mainLevel);
+//        map.put("no", line);
+//        int roundSeq = infoModel.getRoundSeq();
+//        map.put("roundSeq", roundSeq);
+//        map.put("score", score);
+//        long nowTs = System.currentTimeMillis();
+//        int singSecond = (int) ((nowTs - mRoomData.getSingBeginTs()) / 1000);
+//        map.put("singSecond", singSecond);
+//        map.put("timeMs", nowTs);
+//        map.put("userID", MyUserInfoManager.getInstance().getUid());
+//        StringBuilder sb = new StringBuilder();
+//        sb.append("skrer")
+//                .append("|").append(MyUserInfoManager.getInstance().getUid())
+//                .append("|").append(itemID)
+//                .append("|").append(score)
+//                .append("|").append(line)
+//                .append("|").append(mRoomData.getGameId())
+//                .append("|").append(mainLevel)
+//                .append("|").append(singSecond)
+//                .append("|").append(roundSeq)
+//                .append("|").append(nowTs);
+//        map.put("sign", U.getMD5Utils().MD5_32(sb.toString()));
+//        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+//        ApiMethods.subscribe(mRoomServerApi.sendPkPerSegmentResult(body), new ApiObserver<ApiResult>() {
+//            @Override
+//            public void process(ApiResult result) {
+//                if (result.getErrno() == 0) {
+//                    // TODO: 2018/12/13  当前postman返回的为空 待补充
+//                    MyLog.w(TAG, "单句打分上报成功");
+//                } else {
+//                    MyLog.w(TAG, "单句打分上报失败" + result.getErrno());
+//                }
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                MyLog.e(e);
+//            }
+//        }, this);
+    }
 }

@@ -18,6 +18,7 @@ import com.common.view.ex.ExTextView;
 import com.component.busilib.constans.GameModeType;
 import com.component.busilib.manager.BgMusicManager;
 import com.module.RouterConstants;
+import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.rank.room.view.ArcProgressBar;
 import com.module.playways.rank.song.model.SongModel;
@@ -60,6 +61,8 @@ public class SelfSingCardView2 extends RelativeLayout {
     Disposable mDisposable;
     HandlerTaskTimer mCounDownTask;
 
+    GrabRoomData mRoomData;
+
     LyricEventLauncher mLyricEventLauncher = new LyricEventLauncher();
 
     public SelfSingCardView2(Context context) {
@@ -87,7 +90,7 @@ public class SelfSingCardView2 extends RelativeLayout {
     }
 
 
-    public void playLyric(SongModel songModel, LyricPlayMode lyricPlayMode) {
+    public void playLyric(SongModel songModel, boolean hasAcc) {
         mTvLyric.setText("歌词加载中...");
         mTvLyric.setVisibility(VISIBLE);
         mManyLyricsView.setVisibility(GONE);
@@ -97,9 +100,9 @@ public class SelfSingCardView2 extends RelativeLayout {
             return;
         }
 
-        if (lyricPlayMode == LyricPlayMode.NoAcc) {
+        if (!hasAcc) {
             playWithNoAcc(songModel);
-        } else if (lyricPlayMode == LyricPlayMode.Acc) {
+        } else {
             playWithAcc(songModel);
         }
 
@@ -148,7 +151,8 @@ public class SelfSingCardView2 extends RelativeLayout {
                                 && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {
                             mManyLyricsView.play(songModel.getBeginMs());
                             mManyLyricsView.seekto(songModel.getBeginMs());
-                            mLyricEventLauncher.postLyricEvent(lyricsReader,songModel.getBeginMs(),songModel.getEndMs(),null);
+                            int lineNum = mLyricEventLauncher.postLyricEvent(lyricsReader, songModel.getBeginMs(), songModel.getEndMs(), null);
+                            mRoomData.setSongLineNum(lineNum);
                         }
                     }
                 }, throwable -> MyLog.e(TAG, throwable));
@@ -280,6 +284,10 @@ public class SelfSingCardView2 extends RelativeLayout {
         }, throwable -> MyLog.e(TAG, throwable));
     }
 
+    public void setRoomData(GrabRoomData roomData) {
+        mRoomData = roomData;
+    }
+
     Listener mListener;
 
     public void setListener(Listener l) {
@@ -290,7 +298,4 @@ public class SelfSingCardView2 extends RelativeLayout {
         void onSelfSingOver();
     }
 
-    public enum LyricPlayMode {
-        Acc, NoAcc
-    }
 }

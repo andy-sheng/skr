@@ -1021,10 +1021,9 @@ public class AgoraEngineAdapter {
                 if (mArcCloudManager != null) {
                     if (mConfig != null) {
                         switch (mConfig.getScene()) {
-                            case grab:
-                                break;
                             case voice:
                                 break;
+                            case grab:
                             case rank:
                             case audiotest:
                                 if (mConfig.isMixMusicPlaying() && mConfig.getLrcHasStart()) {
