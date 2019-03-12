@@ -823,7 +823,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             // 显示歌词
             mSelfSingCardView.setVisibility(View.VISIBLE);
             mOthersSingCardView.setVisibility(View.GONE);
-            mSelfSingCardView.playLyric(mRoomData.getRealRoundInfo().getMusic());
+            mSelfSingCardView.playLyric(mRoomData.getRealRoundInfo().getMusic(), SelfSingCardView2.LyricPlayMode.NoAcc);
 //            mCorePresenter.playAcc();
         } else {
             // 显示收音机

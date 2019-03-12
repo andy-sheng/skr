@@ -1,7 +1,9 @@
 package com.module.playways.grab.room.view;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -20,9 +22,15 @@ import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.rank.room.view.ArcProgressBar;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
+import com.zq.lyrics.LyricsManager;
+import com.zq.lyrics.LyricsReader;
+import com.zq.lyrics.widget.AbstractLrcView;
+import com.zq.lyrics.widget.ManyLyricsView;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -34,6 +42,8 @@ import io.reactivex.schedulers.Schedulers;
 import okio.BufferedSource;
 import okio.Okio;
 
+import static com.zq.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
+
 /**
  * 你的主场景歌词
  */
@@ -44,6 +54,7 @@ public class SelfSingCardView2 extends RelativeLayout {
     ArcProgressBar mCountDownProcess;
     ExTextView mCountDownTv;
     ImageView mCountIv;
+    ManyLyricsView mManyLyricsView;
 
     Disposable mDisposable;
     HandlerTaskTimer mCounDownTask;
@@ -69,15 +80,30 @@ public class SelfSingCardView2 extends RelativeLayout {
         mCountDownProcess = (ArcProgressBar) findViewById(R.id.count_down_process);
         mCountDownTv = (ExTextView) findViewById(R.id.count_down_tv);
         mCountIv = (ImageView) findViewById(R.id.count_iv);
+        mManyLyricsView = (ManyLyricsView) findViewById(R.id.many_lyrics_view);
     }
 
-    public void playLyric(SongModel songModel) {
+    public void playLyric(SongModel songModel, LyricPlayMode lyricPlayMode) {
         mTvLyric.setText("歌词加载中...");
+        mTvLyric.setVisibility(GONE);
+        mManyLyricsView.setVisibility(GONE);
+        mManyLyricsView.initLrcData();
         if (songModel == null) {
             MyLog.d(TAG, "songModel 是空的");
             return;
         }
 
+        if(lyricPlayMode == LyricPlayMode.NoAcc){
+            playWithNoAcc(songModel);
+        }else if(lyricPlayMode == LyricPlayMode.Acc){
+            playWithAcc(songModel);
+        }
+
+        starCounDown(songModel);
+    }
+
+    private void playWithNoAcc(SongModel songModel){
+        mTvLyric.setVisibility(VISIBLE);
         File file = SongResUtils.getGrabLyricFileByUrl(songModel.getStandLrc());
 
         if (mDisposable != null && !mDisposable.isDisposed()) {
@@ -92,8 +118,37 @@ public class SelfSingCardView2 extends RelativeLayout {
             final File fileName = SongResUtils.getGrabLyricFileByUrl(songModel.getStandLrc());
             drawLyric(fileName);
         }
+    }
 
-        starCounDown(songModel);
+    private void playWithAcc(SongModel songModel){
+        if(songModel==null || TextUtils.isEmpty(songModel.getAcc())){
+            MyLog.d(TAG, "playWithAcc" + " songModel data is error, " + songModel);
+            return;
+        }
+
+        mDisposable = LyricsManager.getLyricsManager(U.app())
+                .fetchAndLoadLyrics(songModel.getLyric())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<LyricsReader>() {
+            @Override
+            public void accept(LyricsReader lyricsReader) throws Exception {
+                if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {
+                    MyLog.w(TAG, "onEventMainThread " + "play");
+                    mManyLyricsView.initLrcData();
+                    lyricsReader.cut(songModel.getRankLrcBeginT(), songModel.getRankLrcEndT());
+                    mManyLyricsView.setLyricsReader(lyricsReader);
+                    mManyLyricsView.setVisibility(VISIBLE);
+
+                    Set<Integer> set = new HashSet<>();
+                    set.add(lyricsReader.getLineInfoIdByStartTs(songModel.getRankLrcBeginT()));
+                    mManyLyricsView.setNeedCountDownLine(set);
+
+                    mManyLyricsView.play(songModel.getBeginMs());
+                    mManyLyricsView.seekto(songModel.getBeginMs());
+                }
+            }
+        }, throwable -> MyLog.e(TAG, throwable));
     }
 
     private void starCounDown(SongModel songModel) {
@@ -133,6 +188,9 @@ public class SelfSingCardView2 extends RelativeLayout {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         stopCounDown();
+        if (mDisposable != null && !mDisposable.isDisposed()) {
+            mDisposable.dispose();
+        }
     }
 
     @Override
@@ -205,11 +263,15 @@ public class SelfSingCardView2 extends RelativeLayout {
 
     Listener mListener;
 
-    public void setListener(Listener l){
+    public void setListener(Listener l) {
         mListener = l;
     }
 
-    public static interface Listener{
+    public static interface Listener {
         void onSelfSingOver();
+    }
+
+    public enum LyricPlayMode {
+        Acc, NoAcc
     }
 }
