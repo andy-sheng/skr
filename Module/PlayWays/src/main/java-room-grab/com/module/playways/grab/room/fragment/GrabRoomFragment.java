@@ -910,6 +910,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             mQuitTipsDialog.dismiss();
             mQuitTipsDialog = null;
         }
+        if(mSelfSingCardView != null){
+            mSelfSingCardView.destroy();
+        }
         mUiHanlder.removeCallbacksAndMessages(null);
 
         mIsGameEndAniamtionShow = false;

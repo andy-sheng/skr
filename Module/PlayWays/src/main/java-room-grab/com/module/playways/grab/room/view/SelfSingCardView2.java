@@ -238,6 +238,12 @@ public class SelfSingCardView2 extends RelativeLayout {
                 });
     }
 
+    public void destroy(){
+        if (mManyLyricsView != null) {
+            mManyLyricsView.release();
+        }
+    }
+
     private void drawLyric(final File file) {
         MyLog.w(TAG, "file is " + file);
         Observable.create(new ObservableOnSubscribe<String>() {
