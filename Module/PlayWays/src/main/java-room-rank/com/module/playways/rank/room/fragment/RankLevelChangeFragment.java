@@ -89,6 +89,14 @@ public class RankLevelChangeFragment extends BaseFragment {
         } else {
             getGameResult();
         }
+        // 加入保护，最多
+        mUiHanlder.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                goVoiceRoom("proctec");
+            }
+        }, 10000);
+
         U.getSoundUtils().preLoad(NormalLevelView.TAG, R.raw.rank_addstar,
                 R.raw.rank_deductstar, R.raw.rank_levelchange);
     }
@@ -242,14 +250,6 @@ public class RankLevelChangeFragment extends BaseFragment {
 
             }
         });
-
-        // 加入保护，最多
-        mUiHanlder.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                goVoiceRoom("proctec");
-            }
-        }, 10000);
     }
 
 
