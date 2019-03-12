@@ -2,34 +2,43 @@ package com.zq.lyrics.event;
 
 public class LrcEvent {
 
-    public static class FinishLoadLrcEvent{
-        public  String hash = "";
-        public FinishLoadLrcEvent(String hash){
+    public static class FinishLoadLrcEvent {
+        public String hash = "";
+
+        public FinishLoadLrcEvent(String hash) {
             this.hash = hash;
         }
     }
 
-    public static class LineEndEvent{
-        int lineNum;
-
-        public LineEndEvent(int lineNum) {
-            this.lineNum = lineNum;
-        }
-
-        public int getLineNum() {
-            return lineNum;
+    /**
+     * 行开始
+     */
+    public static class LyricLineStartEvent {
+        public int lineNum;
+        public Object extra;
+        public LyricLineStartEvent() {
         }
     }
 
-    public static class LineStartEvent{
-        int lineNum;
-
-        public LineStartEvent(int lineNum) {
-            this.lineNum = lineNum;
+    /**
+     * 行结束
+     */
+    public static class LineLineEndEvent {
+        public int lineNum;
+        public Object extra;
+        public LineLineEndEvent() {
         }
 
-        public int getLineNum() {
-            return lineNum;
+    }
+
+    /**
+     * 歌词开始
+     */
+    public static class LyricStartEvent {
+        public int lineNum;
+        public Object extra;
+        public LyricStartEvent() {
         }
+
     }
 }

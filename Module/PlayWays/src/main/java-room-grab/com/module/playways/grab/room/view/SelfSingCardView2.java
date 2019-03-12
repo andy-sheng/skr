@@ -24,6 +24,7 @@ import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
 import com.zq.lyrics.LyricsManager;
 import com.zq.lyrics.LyricsReader;
+import com.zq.lyrics.event.LyricEventLauncher;
 import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.ManyLyricsView;
 
@@ -59,6 +60,8 @@ public class SelfSingCardView2 extends RelativeLayout {
     Disposable mDisposable;
     HandlerTaskTimer mCounDownTask;
 
+    LyricEventLauncher mLyricEventLauncher = new LyricEventLauncher();
+
     public SelfSingCardView2(Context context) {
         super(context);
         init();
@@ -77,15 +80,16 @@ public class SelfSingCardView2 extends RelativeLayout {
     private void init() {
         inflate(getContext(), R.layout.grab_self_sing_card_layout_two, this);
         mTvLyric = findViewById(R.id.tv_lyric);
+        mManyLyricsView = (ManyLyricsView) findViewById(R.id.many_lyrics_view);
         mCountDownProcess = (ArcProgressBar) findViewById(R.id.count_down_process);
         mCountDownTv = (ExTextView) findViewById(R.id.count_down_tv);
         mCountIv = (ImageView) findViewById(R.id.count_iv);
-        mManyLyricsView = (ManyLyricsView) findViewById(R.id.many_lyrics_view);
     }
+
 
     public void playLyric(SongModel songModel, LyricPlayMode lyricPlayMode) {
         mTvLyric.setText("歌词加载中...");
-        mTvLyric.setVisibility(GONE);
+        mTvLyric.setVisibility(VISIBLE);
         mManyLyricsView.setVisibility(GONE);
         mManyLyricsView.initLrcData();
         if (songModel == null) {
@@ -93,62 +97,61 @@ public class SelfSingCardView2 extends RelativeLayout {
             return;
         }
 
-        if(lyricPlayMode == LyricPlayMode.NoAcc){
+        if (lyricPlayMode == LyricPlayMode.NoAcc) {
             playWithNoAcc(songModel);
-        }else if(lyricPlayMode == LyricPlayMode.Acc){
+        } else if (lyricPlayMode == LyricPlayMode.Acc) {
             playWithAcc(songModel);
         }
 
         starCounDown(songModel);
     }
 
-    private void playWithNoAcc(SongModel songModel){
+    private void playWithNoAcc(SongModel songModel) {
         mTvLyric.setVisibility(VISIBLE);
-        File file = SongResUtils.getGrabLyricFileByUrl(songModel.getStandLrc());
-
         if (mDisposable != null && !mDisposable.isDisposed()) {
             mDisposable.dispose();
         }
-
+        File file = SongResUtils.getGrabLyricFileByUrl(songModel.getStandLrc());
         if (file == null || !file.exists()) {
             MyLog.w(TAG, "playLyric is not in local file");
             fetchLyricTask(songModel);
         } else {
             MyLog.w(TAG, "playLyric is exist");
-            final File fileName = SongResUtils.getGrabLyricFileByUrl(songModel.getStandLrc());
-            drawLyric(fileName);
+            drawLyric(file);
         }
     }
 
-    private void playWithAcc(SongModel songModel){
-        if(songModel==null || TextUtils.isEmpty(songModel.getAcc())){
+    private void playWithAcc(SongModel songModel) {
+        if (songModel == null || TextUtils.isEmpty(songModel.getAcc())) {
             MyLog.d(TAG, "playWithAcc" + " songModel data is error, " + songModel);
             return;
         }
-
         mDisposable = LyricsManager.getLyricsManager(U.app())
                 .fetchAndLoadLyrics(songModel.getLyric())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<LyricsReader>() {
-            @Override
-            public void accept(LyricsReader lyricsReader) throws Exception {
-                if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {
-                    MyLog.w(TAG, "onEventMainThread " + "play");
-                    mManyLyricsView.initLrcData();
-                    lyricsReader.cut(songModel.getRankLrcBeginT(), songModel.getRankLrcEndT());
-                    mManyLyricsView.setLyricsReader(lyricsReader);
-                    mManyLyricsView.setVisibility(VISIBLE);
+                    @Override
+                    public void accept(LyricsReader lyricsReader) throws Exception {
+                        MyLog.w(TAG, "onEventMainThread " + "play");
+                        mTvLyric.setVisibility(GONE);
+                        mManyLyricsView.setVisibility(VISIBLE);
+                        mManyLyricsView.initLrcData();
+                        lyricsReader.cut(songModel.getRankLrcBeginT(), songModel.getRankLrcEndT());
+                        mManyLyricsView.setLyricsReader(lyricsReader);
 
-                    Set<Integer> set = new HashSet<>();
-                    set.add(lyricsReader.getLineInfoIdByStartTs(songModel.getRankLrcBeginT()));
-                    mManyLyricsView.setNeedCountDownLine(set);
+                        Set<Integer> set = new HashSet<>();
+                        set.add(lyricsReader.getLineInfoIdByStartTs(songModel.getRankLrcBeginT()));
+                        mManyLyricsView.setNeedCountDownLine(set);
 
-                    mManyLyricsView.play(songModel.getBeginMs());
-                    mManyLyricsView.seekto(songModel.getBeginMs());
-                }
-            }
-        }, throwable -> MyLog.e(TAG, throwable));
+                        if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC
+                                && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {
+                            mManyLyricsView.play(songModel.getBeginMs());
+                            mManyLyricsView.seekto(songModel.getBeginMs());
+                            mLyricEventLauncher.postLyricEvent(lyricsReader,songModel.getBeginMs(),songModel.getEndMs(),null);
+                        }
+                    }
+                }, throwable -> MyLog.e(TAG, throwable));
     }
 
     private void starCounDown(SongModel songModel) {
@@ -191,6 +194,9 @@ public class SelfSingCardView2 extends RelativeLayout {
         if (mDisposable != null && !mDisposable.isDisposed()) {
             mDisposable.dispose();
         }
+        if (mLyricEventLauncher != null) {
+            mLyricEventLauncher.destroy();
+        }
     }
 
     @Override
@@ -201,18 +207,20 @@ public class SelfSingCardView2 extends RelativeLayout {
         }
     }
 
+    /**
+     * 拉取一唱到底的歌词字符串
+     *
+     * @param songModel
+     */
     private void fetchLyricTask(SongModel songModel) {
         MyLog.w(TAG, "fetchLyricTask" + " songModel=" + songModel);
         mDisposable = Observable.create(new ObservableOnSubscribe<File>() {
             @Override
             public void subscribe(ObservableEmitter<File> emitter) {
                 File tempFile = new File(SongResUtils.createStandLyricTempFileName(songModel.getStandLrc()));
-
                 boolean isSuccess = U.getHttpUtils().downloadFileSync(songModel.getStandLrc(), tempFile, null);
-
                 File oldName = new File(SongResUtils.createStandLyricTempFileName(songModel.getStandLrc()));
                 File newName = new File(SongResUtils.createStandLyricFileName(songModel.getStandLrc()));
-
                 if (isSuccess) {
                     if (oldName != null && oldName.renameTo(newName)) {
                         MyLog.w(TAG, "已重命名");
@@ -238,12 +246,17 @@ public class SelfSingCardView2 extends RelativeLayout {
                 });
     }
 
-    public void destroy(){
+    public void destroy() {
         if (mManyLyricsView != null) {
             mManyLyricsView.release();
         }
     }
 
+    /**
+     * 画出一唱到底歌词字符串
+     *
+     * @param file
+     */
     private void drawLyric(final File file) {
         MyLog.w(TAG, "file is " + file);
         Observable.create(new ObservableOnSubscribe<String>() {
@@ -273,7 +286,7 @@ public class SelfSingCardView2 extends RelativeLayout {
         mListener = l;
     }
 
-    public static interface Listener {
+    public interface Listener {
         void onSelfSingOver();
     }
 

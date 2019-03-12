@@ -48,6 +48,7 @@ import com.trello.rxlifecycle2.android.FragmentEvent;
 import com.zq.lyrics.LyricsManager;
 import com.zq.lyrics.LyricsReader;
 import com.zq.lyrics.event.LrcEvent;
+import com.zq.lyrics.event.LyricEventLauncher;
 import com.zq.lyrics.model.LyricsLineInfo;
 import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.ManyLyricsView;
@@ -78,8 +79,6 @@ public class AuditionFragment extends BaseFragment {
     public static final String TAG = "AuditionFragment";
 
     static final int MSG_AUTO_LEAVE_CHANNEL = 9;
-
-    static final int MSG_LYRIC_END_EVENT = 10;
 
     static final boolean RECORD_BY_CALLBACK = false;
     static final String ACC_SAVE_PATH = new File(U.getAppInfoUtils().getMainDir(), "audition.acc").getAbsolutePath();
@@ -135,6 +134,8 @@ public class AuditionFragment extends BaseFragment {
 
     List<Integer> mCbScoreList = new ArrayList<>();
 
+    LyricEventLauncher mLyricEventLauncher = new LyricEventLauncher();
+
     @Override
     public int initView() {
         return R.layout.audition_sence_layout;
@@ -162,15 +163,6 @@ public class AuditionFragment extends BaseFragment {
                     // 为了省钱，因为引擎每多在试音房一分钟都是消耗，防止用户挂机
                     U.getFragmentUtils().popFragment(AuditionFragment.this);
                     return;
-                } else if (MSG_LYRIC_END_EVENT == msg.what) {
-                    MyLog.d(TAG, "handleMessage" + ", msg.arg1" + msg.arg1 + ", msg.arg2=" + msg.arg2);
-                    if (msg.arg2 == 1) {
-                        if (msg.arg1 == 0) {
-                            EventBus.getDefault().post(new LrcEvent.LineStartEvent(msg.arg1));
-                        }
-                    } else {
-                        EventBus.getDefault().post(new LrcEvent.LineEndEvent(msg.arg1));
-                    }
                 }
             }
         };
@@ -311,7 +303,7 @@ public class AuditionFragment extends BaseFragment {
         playLyrics(mSongModel, true);
         playMusic(mSongModel);
         if (MyLog.isDebugLogOpen()) {
-            postLyricEndEvent(mLyricsReader);
+            mLyricEventLauncher.postLyricEvent(mLyricsReader,mSongModel.getBeginMs(),mSongModel.getEndMs(),null);
         }
 
         mStartRecordTs = System.currentTimeMillis();
@@ -387,7 +379,7 @@ public class AuditionFragment extends BaseFragment {
             return;
         }
 
-        mUiHanlder.removeMessages(MSG_LYRIC_END_EVENT);
+        mLyricEventLauncher.destroy();
 
         if (System.currentTimeMillis() - mStartRecordTs < 5000) {
             U.getToastUtil().showSkrCustomShort(new NoImageCommonToastView.Builder(U.app())
@@ -588,35 +580,6 @@ public class AuditionFragment extends BaseFragment {
         }
     }
 
-    private void postLyricEndEvent(LyricsReader lyricsReader) {
-        if (lyricsReader == null) {
-            return;
-        }
-        Map<Integer, LyricsLineInfo> lyricsLineInfos = lyricsReader.getLrcLineInfos();
-        Iterator<Map.Entry<Integer, LyricsLineInfo>> it = lyricsLineInfos.entrySet().iterator();
-        mUiHanlder.removeMessages(MSG_LYRIC_END_EVENT);
-        int lastDuration = 0;
-        while (it.hasNext()) {
-            Map.Entry<Integer, LyricsLineInfo> entry = it.next();
-            Message msg = mUiHanlder.obtainMessage(MSG_LYRIC_END_EVENT);
-            msg.arg1 = entry.getKey();
-
-            if (entry.getKey() == 0) {
-                //暂定   1为开始，0为结束
-                Message message = mUiHanlder.obtainMessage(MSG_LYRIC_END_EVENT);
-                message.arg1 = entry.getKey();
-                message.arg2 = 1;
-                mUiHanlder.sendMessageDelayed(message, entry.getValue().getStartTime() - mSongModel.getBeginMs());
-            }
-            if (entry.getValue().getEndTime() > mSongModel.getEndMs()) {
-                lastDuration = mSongModel.getEndMs() - mSongModel.getBeginMs();
-            } else {
-                lastDuration = entry.getValue().getEndTime() - mSongModel.getBeginMs();
-            }
-            mUiHanlder.sendMessageDelayed(msg, lastDuration);
-        }
-    }
-
     @Override
     public void onResume() {
         super.onResume();
@@ -644,10 +607,10 @@ public class AuditionFragment extends BaseFragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(LrcEvent.LineEndEvent event) {
+    public void onEvent(LrcEvent.LineLineEndEvent event) {
         //TODO
         if (MyLog.isDebugLogOpen()) {
-            EngineManager.getInstance().recognizeInManualMode(event.getLineNum());
+            EngineManager.getInstance().recognizeInManualMode(event.lineNum);
             int score = EngineManager.getInstance().getLineScore();
             mCbScoreList.add(score);
             U.getToastUtil().showShort("cb打分:" + score);
@@ -674,7 +637,7 @@ public class AuditionFragment extends BaseFragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(LrcEvent.LineStartEvent event) {
+    public void onEvent(LrcEvent.LyricStartEvent event) {
         Params params = EngineManager.getInstance().getParams();
         if (params != null) {
             params.setLrcHasStart(true);
@@ -740,7 +703,7 @@ public class AuditionFragment extends BaseFragment {
     public void destroy() {
         super.destroy();
 
-        mUiHanlder.removeMessages(MSG_LYRIC_END_EVENT);
+        mLyricEventLauncher.destroy();
         mManyLyricsView.release();
         if (mExoPlayer != null) {
             mExoPlayer.release();

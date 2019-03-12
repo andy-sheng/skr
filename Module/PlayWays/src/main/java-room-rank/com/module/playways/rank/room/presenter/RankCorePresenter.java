@@ -33,7 +33,6 @@ import com.engine.arccloud.SongInfo;
 import com.module.ModuleServiceManager;
 import com.module.msg.CustomMsgType;
 import com.module.msg.IMsgService;
-import com.module.playways.BaseRoomData;
 import com.module.playways.rank.msg.BasePushInfo;
 import com.module.playways.rank.msg.event.AccBeginEvent;
 import com.module.playways.rank.msg.event.AppSwapEvent;
@@ -50,7 +49,6 @@ import com.module.playways.rank.msg.manager.ChatRoomMsgManager;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.room.event.PkSomeOneOnlineChangeEvent;
-import com.module.playways.rank.room.fragment.RankRecordFragment;
 import com.module.playways.rank.room.model.RankPlayerInfoModel;
 import com.module.playways.rank.room.model.RankRoundInfoModel;
 import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
@@ -67,7 +65,6 @@ import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.room.score.MachineScoreItem;
 import com.module.playways.rank.room.score.RobotScoreHelper;
 import com.module.playways.rank.room.view.IGameRuleView;
-import com.module.rank.R;
 import com.zq.live.proto.Common.ESex;
 import com.zq.live.proto.Common.UserInfo;
 import com.zq.live.proto.Room.EMsgPosType;
@@ -1459,31 +1456,31 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onEvent(LrcEvent.LineEndEvent event) {
-        MyLog.d(TAG, "onEvent LineEndEvent lineno=" + event.getLineNum());
+    public void onEvent(LrcEvent.LineLineEndEvent event) {
+        MyLog.d(TAG, "onEvent LineEndEvent lineno=" + event.lineNum);
         if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
 
             if (ScoreConfig.isAcrEnable()) {
-                EngineManager.getInstance().recognizeInManualMode(event.getLineNum());
+                EngineManager.getInstance().recognizeInManualMode(event.lineNum);
             } else {
                 if (ScoreConfig.isMelpEnable()) {
                     int score = EngineManager.getInstance().getLineScore();
-                    processScore(score, event.getLineNum());
+                    processScore(score, event.lineNum);
                 }
             }
-            Message msg = mUiHandler.obtainMessage(MSG_SHOW_SCORE_EVENT + event.getLineNum() * 100);
+            Message msg = mUiHandler.obtainMessage(MSG_SHOW_SCORE_EVENT + event.lineNum * 100);
             mUiHandler.sendMessageDelayed(msg, 1000);
         } else {
             if (RoomDataUtils.isRobotRound(mRoomData.getRealRoundInfo(), mRoomData.getPlayerInfoList())) {
                 // 尝试算机器人的演唱得分
                 if (mRobotScoreHelper != null) {
-                    int score = mRobotScoreHelper.tryGetScoreByLine(event.getLineNum());
+                    int score = mRobotScoreHelper.tryGetScoreByLine(event.lineNum);
                     if (score >= 0) {
 //                        U.getToastUtil().showShort("score:" + score);
                         mUiHandler.post(new Runnable() {
                             @Override
                             public void run() {
-                                mIGameRuleView.updateScrollBarProgress(score, mRobotScoreHelper.tryGetTotalScoreByLine(event.getLineNum()), mRobotScoreHelper.tryGetScoreLineNum());
+                                mIGameRuleView.updateScrollBarProgress(score, mRobotScoreHelper.tryGetTotalScoreByLine(event.lineNum), mRobotScoreHelper.tryGetScoreLineNum());
                             }
                         });
                     }
@@ -1495,7 +1492,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(LrcEvent.LineStartEvent event) {
+    public void onEvent(LrcEvent.LyricStartEvent event) {
         MyLog.d(TAG, "onEvent LineStartEvent");
         Params params = EngineManager.getInstance().getParams();
         if (params != null) {

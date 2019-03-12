@@ -43,7 +43,6 @@ import com.module.playways.rank.room.comment.CommentView;
 import com.module.playways.rank.room.event.RankToVoiceTransformDataEvent;
 import com.module.playways.rank.room.gift.GiftBigAnimationViewGroup;
 import com.module.playways.rank.room.gift.GiftContinueViewGroup;
-import com.module.playways.BaseRoomData;
 import com.module.playways.rank.room.model.RankRoundInfoModel;
 import com.module.playways.rank.room.presenter.DownLoadScoreFilePresenter;
 import com.module.playways.rank.room.presenter.RankCorePresenter;
@@ -70,6 +69,7 @@ import com.zq.dialog.PersonInfoDialogView;
 import com.zq.lyrics.LyricsManager;
 import com.zq.lyrics.LyricsReader;
 import com.zq.lyrics.event.LrcEvent;
+import com.zq.lyrics.event.LyricEventLauncher;
 import com.zq.lyrics.model.LyricsLineInfo;
 import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.ManyLyricsView;
@@ -118,9 +118,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     static final int SHOW_RIVAL_LYRIC = 10;
 
-    //模拟机器人打分事件
-    static final int MSG_LYRIC_END_EVENT = 11;
-
     RankRoomData mRoomData;
 
     RelativeLayout mRankingContainer;
@@ -149,6 +146,8 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
 
+    LyricEventLauncher mLyricEventLauncher = new LyricEventLauncher();
+
     Handler mUiHanlder = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -162,17 +161,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                 onFirstSongGo();
             } else if (SHOW_RIVAL_LYRIC == msg.what) {
 
-            } else if (MSG_LYRIC_END_EVENT == msg.what) {
-                MyLog.d(TAG, "handleMessage MSG_LYRIC_END_EVENT " + " msg.arg1=" + msg.arg1 + " msg.arg2=" + msg.arg2);
-                if (RoomDataUtils.getUidOfRoundInfo(mRoomData.getRealRoundInfo()) == ((BaseRoundInfoModel) msg.obj).getUserID()) {
-                    if (msg.arg2 == 1 && msg.arg1 == 0) {
-                        MyLog.d(TAG, "handleMessage MSG_LYRIC_END_EVENT " + " start");
-                        EventBus.getDefault().post(new LrcEvent.LineStartEvent(msg.arg1));
-                    } else {
-                        MyLog.d(TAG, "handleMessage MSG_LYRIC_END_EVENT " + " end");
-                        EventBus.getDefault().post(new LrcEvent.LineEndEvent(msg.arg1));
-                    }
-                }
             }
         }
     };
@@ -912,7 +900,8 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         mRankTopContainerView.roundOver(lastRoundInfoModel);
         mRankOpView.setVisibility(View.GONE);
         mManyLyricsView.setVisibility(View.GONE);
-        mUiHanlder.removeMessages(MSG_LYRIC_END_EVENT);
+
+        mLyricEventLauncher.destroy();
         // 加保护，确保当前主舞台一定被移除
         mStageView.setVisibility(View.GONE);
         mSingAvatarView.setVisibility(View.GONE);
@@ -968,7 +957,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         mRankOpView.playCountDown(mRoomData.getRealRoundSeq(), false);
         mVoiceScaleView.setVisibility(View.GONE);
         mManyLyricsView.setVisibility(View.GONE);
-        mUiHanlder.removeMessages(MSG_LYRIC_END_EVENT);
+        mLyricEventLauncher.destroy();
         // 加保护，确保当前主舞台一定被移除
         mStageView.setVisibility(View.GONE);
         mSingAvatarView.setVisibility(View.GONE);
@@ -1114,7 +1103,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     @Override
     public void gameFinish() {
         MyLog.w(TAG, "游戏结束了");
-        mUiHanlder.removeMessages(MSG_LYRIC_END_EVENT);
+        mLyricEventLauncher.destroy();
         mRankOpView.setVisibility(View.GONE);
         if (mPrepareLyricTask != null && !mPrepareLyricTask.isDisposed()) {
             mPrepareLyricTask.dispose();
@@ -1176,7 +1165,8 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     private void parseLyrics(String fileName, boolean play) {
         MyLog.w(TAG, "parseLyrics" + " fileName=" + fileName);
-        mPrepareLyricTask = LyricsManager.getLyricsManager(U.app()).loadLyricsObserable(fileName, fileName.hashCode() + "")
+        mPrepareLyricTask = LyricsManager.getLyricsManager(U.app())
+                .loadLyricsObserable(fileName, fileName.hashCode() + "")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .retry(10)
@@ -1212,14 +1202,18 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                 if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY && play) {
                     MyLog.w(TAG, "onEventMainThread " + "play");
                     mManyLyricsView.play(mPlayingSongModel.getBeginMs());
-                    postLyricEndEvent(lyricsReader, true);
+                    int eventNum = mLyricEventLauncher.postLyricEvent(lyricsReader,mPlayingSongModel.getBeginMs(),mPlayingSongModel.getEndMs(),mRoomData.getRealRoundInfo());
+                    mRoomData.setSongLineNum(eventNum);
+                    mCorePresenter.sendTotalScoreToOthers(eventNum);
                     mVoiceScaleView.setVisibility(View.VISIBLE);
                     mVoiceScaleView.startWithData(lyricsReader.getLyricsLineInfoList(), mPlayingSongModel.getBeginMs());
                 }
             } else {
                 if (play && RoomDataUtils.isRobotRound(mRoomData.getRealRoundInfo(), mRoomData.getPlayerInfoList())) {
                     lyricsReader.cut(mPlayingSongModel.getRankLrcBeginT(), mPlayingSongModel.getRankLrcEndT());
-                    postLyricEndEvent(lyricsReader, false);
+                    int eventNum = mLyricEventLauncher.postLyricEvent(lyricsReader,mPlayingSongModel.getBeginMs(),mPlayingSongModel.getEndMs(),mRoomData.getRealRoundInfo());
+                    mRoomData.setSongLineNum(eventNum);
+                    mCorePresenter.sendTotalScoreToOthers(eventNum);
                 }
                 mManyLyricsView.setVisibility(View.GONE);
                 mManyLyricsView.resetData();
@@ -1227,41 +1221,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         }
     }
 
-    private void postLyricEndEvent(LyricsReader lyricsReader, boolean isSelf) {
-        BaseRoundInfoModel now = mRoomData.getRealRoundInfo();
-        if (now == null) {
-            return;
-        }
-        Map<Integer, LyricsLineInfo> lyricsLineInfos = lyricsReader.getLrcLineInfos();
-        Iterator<Map.Entry<Integer, LyricsLineInfo>> it = lyricsLineInfos.entrySet().iterator();
-        mUiHanlder.removeMessages(MSG_LYRIC_END_EVENT);
-        int eventNum = 0;
-        while (it.hasNext()) {
-            Map.Entry<Integer, LyricsLineInfo> entry = it.next();
-            if (entry.getKey() == 0) {
-                //暂定   1为开始，0为结束
-                Message message = mUiHanlder.obtainMessage(MSG_LYRIC_END_EVENT);
-                message.arg1 = entry.getKey();
-                message.arg2 = 1;
-                message.obj = now;
-                mUiHanlder.sendMessageDelayed(message, entry.getValue().getStartTime() - mPlayingSongModel.getBeginMs());
-            }
-
-            Message msg = mUiHanlder.obtainMessage(MSG_LYRIC_END_EVENT);
-            msg.arg1 = entry.getKey();
-            msg.arg2 = 0;
-            msg.obj = now;
-            if (entry.getValue().getEndTime() > mPlayingSongModel.getEndMs()) {
-                //dev 环境会一下把所有都发出来
-                mUiHanlder.sendMessageDelayed(msg, mPlayingSongModel.getEndMs() - mPlayingSongModel.getBeginMs());
-            } else {
-                mUiHanlder.sendMessageDelayed(msg, entry.getValue().getEndTime() - mPlayingSongModel.getBeginMs());
-            }
-            eventNum++;
-        }
-        mRoomData.setSongLineNum(eventNum);
-        mCorePresenter.sendTotalScoreToOthers(eventNum);
-    }
 
     private void fetchLyricTask(SongModel songModel, boolean play) {
         MyLog.w(TAG, "fetchLyricTask" + " songModel=" + songModel);

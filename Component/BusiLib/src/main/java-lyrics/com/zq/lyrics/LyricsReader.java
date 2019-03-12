@@ -69,7 +69,6 @@ public class LyricsReader {
 
     }
 
-
     /**
      * 加载歌词数据
      *
@@ -225,7 +224,6 @@ public class LyricsReader {
                 return entry.getKey();
             }
         }
-
         return -1;
     }
 
