@@ -932,7 +932,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                     .setConfirmBtnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            mQuitTipsDialog.dismiss(false);
+                            if(mQuitTipsDialog != null){
+                                mQuitTipsDialog.dismiss(false);
+                            }
                             mCorePresenter.exitRoom();
                             StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
                                     "game_exit", null);
