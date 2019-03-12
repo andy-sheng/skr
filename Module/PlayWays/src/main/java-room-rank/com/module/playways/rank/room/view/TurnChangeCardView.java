@@ -244,7 +244,10 @@ public class TurnChangeCardView extends RelativeLayout {
         textPaint2.setTextAlign(Paint.Align.LEFT);
         textPaint2.setTextSize(U.getDisplayUtils().dip2px(12));
 
-        String songName = info.getSongList().get(0).getItemName();
+        String songName = "";
+        if (info != null && info.getSongList() != null && info.getSongList().size() > 0) {
+            songName = info.getSongList().get(0).getItemName();
+        }
         if (info.getUserInfo().getUserId() == MyUserInfoManager.getInstance().getUid()) {
             if (songName.length() > 14) {
                 songName = songName.substring(0, 11) + "...";
