@@ -89,8 +89,6 @@ public class AuditionFragment extends BaseFragment {
 
     ManyLyricsView mManyLyricsView;
 
-    ExTextView mTvDown;
-
     ExTextView mTvUp;
     TextView mTvRecordTip;
 
@@ -176,7 +174,6 @@ public class AuditionFragment extends BaseFragment {
         mIvBack = (ExImageView) mRootView.findViewById(R.id.iv_back);
         mTvSongName = (ExTextView) mRootView.findViewById(R.id.tv_song_name);
 
-        mTvDown = mRootView.findViewById(R.id.tv_down);
         mTvUp = mRootView.findViewById(R.id.tv_up);
         mVoiceControlPanelView = mRootView.findViewById(R.id.voice_control_view);
         mVoiceControlPanelView.bindData();
@@ -204,12 +201,6 @@ public class AuditionFragment extends BaseFragment {
                     onBackPressed();
 //                    EngineManager.getInstance().recognizeInManualMode();
                 });
-
-//        RxView.clicks(mTvDown).throttleFirst(500, TimeUnit.MILLISECONDS)
-//                .subscribe(o -> {
-//                    resendAutoLeaveChannelMsg();
-//                    showVoicePanelView(false);
-//                });
 
         RxView.clicks(mTvUp).throttleFirst(500, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
