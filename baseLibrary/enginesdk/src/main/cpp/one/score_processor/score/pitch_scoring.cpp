@@ -4,7 +4,7 @@
 
 #define RECORD_WAVY_LINE_DELAY          150     //为了打分点更准确。延迟一段时间
 
-#define LOGOPEN 1
+#define LOGOPEN 0
 
 PitchScoring::PitchScoring() {
     calBasebandUtil = new CCalcBaseband();
@@ -131,10 +131,11 @@ void PitchScoring::processRecordLevel(RecordLevel *recordLevel) {
     if (note > -0.5) {
         noteValid = true;
         float diffnote = noteDiff(note, targetNote);
-        diffnote = diffnote / 2.0;
+
         if (LOGOPEN) {
             LOGI("processRecordLevel diffnote=%.2f ", fabs(diffnote));
         }
+        //diffnote = diffnote / 2.0;
         if (fabs(diffnote) <= 1.0) {
             diffnote = diffnote * fabs(diffnote);
         }
@@ -188,13 +189,13 @@ int PitchScoring::getScore() {
     if (mCurrentLineSampleCount > 0) {
         lineScore = mCurrentLineLevelSum / mCurrentLineSampleCount;
     }
+    float x = (float) lineScore * 0.01;
+    x = (x * (1 - x) + x) * 0.2 + 0.8 * x;
+    lineScore = 100 * (x * (1 - x) + x);
     if (LOGOPEN) {
         LOGI("getScore mCurrentLineSampleCount:%d mCurrentLineLevelSum:%d lineScore:%d",
              mCurrentLineSampleCount, mCurrentLineLevelSum, lineScore);
     }
-    float x = (float) lineScore * 0.01;
-    x = (x * (1 - x) + x) * 0.2 + 0.8 * x;
-    lineScore = 100 * (x * (1 - x) + x);
     //2:清空统计数据
     mCurrentLineSampleCount = 0;
     mCurrentLineLevelSum = 0;
@@ -216,6 +217,7 @@ int PitchScoring::getSingingIndex(long currentTimeMills, int *flag) {
                 singingIndex = i;
                 find = true;
                 if (LOGOPEN) {
+                    LOGI("");
                     LOGI("getSingingIndex i=%d beginTimeMs=%d endTimeMs=%d currentTimeMills=%ld note=%hd f=%d",
                          i, beginTimeMs, endTimeMs, currentTimeMills, melodyNote.note_org, f);
                 }

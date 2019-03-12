@@ -59,6 +59,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -132,6 +133,8 @@ public class AuditionFragment extends BaseFragment {
 
     SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
 
+    List<Integer> mCbScoreList = new ArrayList<>();
+
     @Override
     public int initView() {
         return R.layout.audition_sence_layout;
@@ -146,7 +149,7 @@ public class AuditionFragment extends BaseFragment {
             EngineManager.getInstance().init("prepare", params);
 //            boolean isAnchor = MyUserInfoManager.getInstance().getUid() == 1705476;
             boolean isAnchor = true;
-            EngineManager.getInstance().joinRoom("csm"+System.currentTimeMillis() , (int) UserAccountManager.getInstance().getUuidAsLong(), isAnchor);
+            EngineManager.getInstance().joinRoom("csm" + System.currentTimeMillis(), (int) UserAccountManager.getInstance().getUuidAsLong(), isAnchor);
         } else {
             EngineManager.getInstance().resumeAudioMixing();
         }
@@ -334,8 +337,8 @@ public class AuditionFragment extends BaseFragment {
                             int score = 0;
                             if (targetSongInfo != null) {
                                 score = (int) (targetSongInfo.getScore() * 100);
-                                U.getToastUtil().showShort("acrscore:" + targetSongInfo.getScore());
-                                MyLog.d(TAG, "acrscore=" + score);
+                                U.getToastUtil().showShort("acr打分:" + score);
+                                MyLog.d(TAG, "acr打分=" + score * 100);
                             } else {
 //                                score = EngineManager.getInstance().getLineScore();
 //                                MyLog.d(TAG, "changba score=" + score);
@@ -412,6 +415,9 @@ public class AuditionFragment extends BaseFragment {
         mIvPlay.setEnabled(false);
 
         playRecord();
+        if (MyLog.isDebugLogOpen()) {
+            jisuanScore();
+        }
     }
 
     /**
@@ -588,6 +594,7 @@ public class AuditionFragment extends BaseFragment {
         Map<Integer, LyricsLineInfo> lyricsLineInfos = lyricsReader.getLrcLineInfos();
         Iterator<Map.Entry<Integer, LyricsLineInfo>> it = lyricsLineInfos.entrySet().iterator();
         mUiHanlder.removeMessages(MSG_LYRIC_END_EVENT);
+        int lastDuration = 0;
         while (it.hasNext()) {
             Map.Entry<Integer, LyricsLineInfo> entry = it.next();
             Message msg = mUiHanlder.obtainMessage(MSG_LYRIC_END_EVENT);
@@ -600,12 +607,12 @@ public class AuditionFragment extends BaseFragment {
                 message.arg2 = 1;
                 mUiHanlder.sendMessageDelayed(message, entry.getValue().getStartTime() - mSongModel.getBeginMs());
             }
-
             if (entry.getValue().getEndTime() > mSongModel.getEndMs()) {
-                mUiHanlder.sendMessageDelayed(msg, mSongModel.getEndMs() - mSongModel.getBeginMs());
+                lastDuration = mSongModel.getEndMs() - mSongModel.getBeginMs();
             } else {
-                mUiHanlder.sendMessageDelayed(msg, entry.getValue().getEndTime() - mSongModel.getBeginMs());
+                lastDuration = entry.getValue().getEndTime() - mSongModel.getBeginMs();
             }
+            mUiHanlder.sendMessageDelayed(msg, lastDuration);
         }
     }
 
@@ -641,9 +648,25 @@ public class AuditionFragment extends BaseFragment {
         if (MyLog.isDebugLogOpen()) {
             EngineManager.getInstance().recognizeInManualMode(event.getLineNum());
             int score = EngineManager.getInstance().getLineScore();
-            U.getToastUtil().showShort("changba score:" + score);
+            mCbScoreList.add(score);
+            U.getToastUtil().showShort("cb打分:" + score);
             MyLog.d(TAG, "changba score:" + score);
         }
+    }
+
+    void jisuanScore() {
+        int total = 0;
+        for (int i = 0; i < mCbScoreList.size(); i++) {
+            total += mCbScoreList.get(i);
+        }
+        int pj = total / mCbScoreList.size();
+        int fc = 0;
+        for (int i = 0; i < mCbScoreList.size(); i++) {
+            int t = mCbScoreList.get(i) - pj;
+            fc += (t * t);
+        }
+        U.getToastUtil().showShort("平均分:" + pj + " 方差:" + fc);
+        MyLog.d(TAG, "平均分:" + pj + " 方差:" + fc);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
