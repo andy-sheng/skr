@@ -8,8 +8,6 @@ import android.view.SurfaceView;
 import android.view.TextureView;
 import android.view.ViewGroup;
 
-import com.changba.songstudio.CbEngineAdapter;
-import com.changba.songstudio.audioeffect.AudioEffectStyleEnum;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.engine.Params;
@@ -17,7 +15,8 @@ import com.engine.agora.effect.EffectModel;
 import com.engine.agora.source.PrivateTextureHelper;
 import com.engine.arccloud.ArcCloudManager;
 import com.engine.arccloud.RecognizeConfig;
-import com.engine.melp.MelpManager;
+import com.engine.effect.ITbEffectProcessor;
+import com.engine.score.ICbScoreProcessor;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -66,6 +65,7 @@ public class AgoraEngineAdapter {
         return AgoraEngineAdapterHolder.INSTANCE;
     }
 
+    static final boolean DEBUG = false;
     private Params mConfig;
     private RtcEngine mRtcEngine;
     private Handler mUiHandler = new Handler();
@@ -73,7 +73,8 @@ public class AgoraEngineAdapter {
     private AgoraOutCallback mOutCallback;
     private List<EffectModel> mEffectModels = new ArrayList<>();
     private ArcCloudManager mArcCloudManager;// ArcClound的打分和识别
-
+    private ITbEffectProcessor mTbEffectProcessor = new ITbEffectProcessor();// 天宝提供的音效处理类
+    private ICbScoreProcessor mICbScoreProcessor = new ICbScoreProcessor();// 唱吧打分系统
     /**
      * 所有的回调都在这
      * 注意回调的运行线程，一般都不会在主线程
@@ -254,13 +255,17 @@ public class AgoraEngineAdapter {
             mRtcEngine.enableAudio();
 
             int a = 3, b = 4;
+            /**
+             * 如果b==3 ，onRecordFrame 里是人声，但是stopMixMusic后数据会有问题
+             * 如果b==4 ，onRecordFrame 是伴奏+人声
+             */
             switch (mConfig.getScene()) {
                 case rank:
-                    b = 4;
+                    b = 3;
                     mRtcEngine.setParameters("{\"che.audio.enable.aec\":true }");
                     break;
                 case grab:
-                    b = 3;
+                    b = 4;
                     break;
                 case voice:
                     b = 1;
@@ -325,6 +330,8 @@ public class AgoraEngineAdapter {
                     true        // true为使用推送模式；false为拉取模式，但目前不支持
             );
         }
+
+        mTbEffectProcessor.init();
     }
 
     /**
@@ -368,6 +375,12 @@ public class AgoraEngineAdapter {
             //该方法为同步调用。在等待 RtcEngine 对象资源释放后再返回。APP 不应该在 SDK 产生的回调中调用该接口，否则由于 SDK 要等待回调返回才能回收相关的对象资源，会造成死锁。
             RtcEngine.destroy();
             mRtcEngine = null;
+        }
+        if (mTbEffectProcessor != null) {
+            mTbEffectProcessor.destroyEffectProcessor();
+        }
+        if (mICbScoreProcessor != null) {
+            mICbScoreProcessor.destroy();
         }
     }
 
@@ -868,10 +881,11 @@ public class AgoraEngineAdapter {
      *                 正整数：循环的次数
      *                 -1：无限循环
      */
-    public void startAudioMixing(String filePath, boolean loopback, boolean replace, int cycle) {
+    public void startAudioMixing(String filePath, String melPath, boolean loopback, boolean replace, int cycle) {
         if (mRtcEngine == null) {
             return;
         }
+        mICbScoreProcessor.init();
         mRtcEngine.startAudioMixing(filePath, loopback, replace, cycle);
     }
 
@@ -953,7 +967,7 @@ public class AgoraEngineAdapter {
 
     int mLogtag = 0;
 
-    public void setIFAudioEffectEngine(final AudioEffectStyleEnum styleEnum) {
+    public void setIFAudioEffectEngine(final Params.AudioEffect styleEnum) {
         MyLog.d(TAG, "setIFAudioEffectEngine" + " styleEnum=" + styleEnum);
         tryInitRtcEngine();
 //        if (styleEnum == null) {
@@ -961,6 +975,15 @@ public class AgoraEngineAdapter {
 //        } else {
         // 注册这玩意怎么会导致没有声音,return false 就会丢弃
         mRtcEngine.registerAudioFrameObserver(new IAudioFrameObserver() {
+            /**
+             * 10ms 回调一次 , 里面不能做耗时操作，不然声音会有问题
+             * @param samples
+             * @param numOfSamples
+             * @param bytesPerSample
+             * @param channels
+             * @param samplesPerSec
+             * @return
+             */
             @Override
             public boolean onRecordFrame(byte[] samples, // 2048
                                          int numOfSamples, // 512
@@ -971,29 +994,54 @@ public class AgoraEngineAdapter {
                 if (++mLogtag % 500 == 0) {
                     MyLog.d(TAG, "onRecordFrame" + " samples=" + samples + " numOfSamples=" + numOfSamples + " bytesPerSample=" + bytesPerSample + " channels=" + channels + " samplesPerSec=" + samplesPerSec);
                 }
-                if (!TextUtils.isEmpty(mConfig.getRecordingFromCallbackSavePath())) {
-                    if (mOutCallback != null) {
-                        mOutCallback.onRecordingBuffer(samples);
-                    }
+                if (DEBUG) {
+                    MyLog.d(TAG, "step0:" + testIn(samples));
                 }
                 if (mArcCloudManager != null) {
-                    mArcCloudManager.putPool(samples, samplesPerSec, channels);
+                    if (mConfig != null) {
+                        switch (mConfig.getScene()) {
+                            case grab:
+                                break;
+                            case voice:
+                                break;
+                            case rank:
+                            case audiotest:
+                                if (mConfig.isMixMusicPlaying() && mConfig.getLrcHasStart()) {
+                                    mArcCloudManager.putPool(samples, samplesPerSec, channels);
+                                }
+                                break;
+                        }
+                    }
                 }
                 long ts = 0;
                 if (mConfig != null && mConfig.isMixMusicPlaying() && mConfig.getLrcHasStart()) {
                     ts = mConfig.getCurrentMusicTs() + mConfig.getMixMusicBeginOffset() + (System.currentTimeMillis() - mConfig.getRecordCurrentMusicTsTs());
                 }
-                // TODO: 2019/3/11
-//                if (mMelpManager != null) {
-//                    mMelpManager.putPool(samples, samplesPerSec, channels, ts);
-//                }
-                CbEngineAdapter.getInstance().processAudioFrames(samples,
-                        numOfSamples,
-                        bytesPerSample,
-                        channels,
-                        samplesPerSec,
-                        ts,
-                        mConfig.getMidiPath());
+                if (DEBUG) {
+                    MyLog.d(TAG, "step1:" + testIn(samples));
+                }
+                mICbScoreProcessor.process(samples, samples.length, channels, samplesPerSec, ts, mConfig.getMidiPath());
+                if (DEBUG) {
+                    MyLog.d(TAG, "step2:" + testIn(samples));
+                }
+                if (styleEnum == Params.AudioEffect.tb1) {
+                    mTbEffectProcessor.process(1, samples, samples.length, channels, samplesPerSec);
+                } else if (styleEnum == Params.AudioEffect.tb2) {
+                    mTbEffectProcessor.process(2, samples, samples.length, channels, samplesPerSec);
+                }else{
+                    mTbEffectProcessor.destroyEffectProcessor();
+                }
+                if (DEBUG) {
+                    MyLog.d(TAG, "step3:" + testIn(samples));
+                }
+                if (!TextUtils.isEmpty(mConfig.getRecordingFromCallbackSavePath())) {
+                    if (mOutCallback != null) {
+                        mOutCallback.onRecordingBuffer(samples);
+                    }
+                }
+                if (DEBUG) {
+                    MyLog.d(TAG, "step4:" + testIn(samples));
+                }
                 return true;
             }
 
@@ -1006,9 +1054,19 @@ public class AgoraEngineAdapter {
                 return true;
             }
         });
-//        }
     }
 
+    int testIn(byte[] samples) {
+        int a = 0;
+        for (int i = 0; i < samples.length; i++) {
+            a += samples[i];
+        }
+        return a;
+    }
+
+    public int getScore() {
+        return mICbScoreProcessor.getScore();
+    }
 
     /**
      * 开始客户端录音。

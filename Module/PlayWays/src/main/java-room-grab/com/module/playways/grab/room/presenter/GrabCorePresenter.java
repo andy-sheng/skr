@@ -160,7 +160,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         MyLog.d(TAG, "joinRoomAndInit" + " first=" + first);
         if (mRoomData.getGameId() > 0) {
             Params params = Params.getFromPref();
-            params.setStyleEnum(AudioEffectStyleEnum.ORIGINAL);
+            params.setStyleEnum(Params.AudioEffect.none);
             params.setScene(Params.Scene.grab);
             EngineManager.getInstance().init("grabroom", params);
             EngineManager.getInstance().joinRoom(String.valueOf(mRoomData.getGameId()), (int) UserAccountManager.getInstance().getUuidAsLong(), false);

@@ -9,7 +9,6 @@ import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.changba.songstudio.CbEngineAdapter;
 import com.changba.songstudio.audioeffect.AudioEffectStyleEnum;
 import com.common.log.MyLog;
 import com.common.statistics.StatisticsAdapter;
@@ -19,9 +18,7 @@ import com.common.utils.U;
 import com.engine.agora.AgoraEngineAdapter;
 import com.engine.agora.AgoraOutCallback;
 import com.engine.agora.effect.EffectModel;
-import com.engine.arccloud.ArcCloudManager;
 import com.engine.arccloud.RecognizeConfig;
-import com.engine.option.Option;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -269,7 +266,7 @@ public class EngineManager implements AgoraOutCallback {
                     mLock.notifyAll();
                 }
                 AgoraEngineAdapter.getInstance().init(mConfig);
-                CbEngineAdapter.getInstance().init(mConfig);
+//                CbEngineAdapter.getInstance().init(mConfig);
                 setAudioEffectStyle(mConfig.getStyleEnum());
                 if (!EventBus.getDefault().isRegistered(EngineManager.this)) {
                     EventBus.getDefault().register(EngineManager.this);
@@ -346,7 +343,7 @@ public class EngineManager implements AgoraOutCallback {
                 mMusicTimePlayTimeListener.dispose();
             }
             AgoraEngineAdapter.getInstance().destroy(true);
-            CbEngineAdapter.getInstance().destroy();
+//            CbEngineAdapter.getInstance().destroy();
             mUserStatusMap.clear();
             mRemoteViewCache.clear();
             mUiHandler.removeCallbacksAndMessages(null);
@@ -819,12 +816,12 @@ public class EngineManager implements AgoraOutCallback {
 
     /*音频高级扩展开始*/
 
-    public void setAudioEffectStyle(final AudioEffectStyleEnum styleEnum) {
+    public void setAudioEffectStyle(final Params.AudioEffect styleEnum) {
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {
                 mConfig.setStyleEnum(styleEnum);
-                CbEngineAdapter.getInstance().setIFAudioEffectEngine(styleEnum);
+//                CbEngineAdapter.getInstance().setIFAudioEffectEngine(styleEnum);
                 AgoraEngineAdapter.getInstance().setIFAudioEffectEngine(styleEnum);
             }
         });
@@ -936,7 +933,7 @@ public class EngineManager implements AgoraOutCallback {
                     startMusicPlayTimeListener();
                     EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_START);
                     EventBus.getDefault().post(engineEvent);
-                    AgoraEngineAdapter.getInstance().startAudioMixing(filePath, loopback, replace, cycle);
+                    AgoraEngineAdapter.getInstance().startAudioMixing(filePath,midiPath, loopback, replace, cycle);
                 } else {
                     mPendingStartMixAudioParams = new PendingStartMixAudioParams();
                     mPendingStartMixAudioParams.uid = uid;
@@ -1215,15 +1212,17 @@ public class EngineManager implements AgoraOutCallback {
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {
-                mConfig.setRecordingFromCallbackSavePath(null);
-                AgoraEngineAdapter.getInstance().stopAudioRecording();
+                if(TextUtils.isEmpty(mConfig.getRecordingFromCallbackSavePath())){
+                    AgoraEngineAdapter.getInstance().stopAudioRecording();
+                }else{
+                    mConfig.setRecordingFromCallbackSavePath(null);
+                }
             }
         });
     }
 
     public int getLineScore() {
-        int score = CbEngineAdapter.getInstance().getLineScore();
-        return score;
+        return AgoraEngineAdapter.getInstance().getScore();
     }
     /*音频高级扩展结束*/
 
