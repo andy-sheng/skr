@@ -28,6 +28,7 @@ import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
 import com.module.playways.grab.room.fragment.GrabRoomFragment;
+import com.module.playways.grab.room.model.GrabConfigModel;
 import com.module.rank.R;
 
 import org.greenrobot.eventbus.EventBus;
@@ -74,7 +75,7 @@ public class GrabOpView extends RelativeLayout {
 
     GrabRoomData mGrabRoomData;
 
-    boolean mGrabPreRound = false;
+    boolean mGrabPreRound = false; // 标记上一轮是否抢了
 
     Handler mUiHandler = new Handler() {
         @Override
@@ -177,7 +178,7 @@ public class GrabOpView extends RelativeLayout {
 
     public void setGrabRoomData(GrabRoomData grabRoomData) {
         mGrabRoomData = grabRoomData;
-        if(mGrabRoomData == null || mGrabRoomData.getGrabConfigModel() == null){
+        if (mGrabRoomData == null || mGrabRoomData.getGrabConfigModel() == null) {
             MyLog.d(TAG, "setGrabRoomData GrabRoomData error");
             return;
         }
@@ -210,7 +211,16 @@ public class GrabOpView extends RelativeLayout {
         startAnimation(animation);
 
         cancelCountDownTask();
-        long interval = mGrabPreRound ? 1167 : 1000;
+        long interval = 1000;
+        if (mGrabPreRound) {
+            GrabConfigModel grabConfigModel = mGrabRoomData.getGrabConfigModel();
+            if (grabConfigModel != null) {
+                int delay = grabConfigModel.getWantSingDelayTimeMs() / 3;
+                if (delay > 0) {
+                    interval += delay;
+                }
+            }
+        }
         MyLog.d(TAG, "playCountDown" + " interval=" + interval);
         mCountDownTask = HandlerTaskTimer.newBuilder().interval(interval)
                 .take(num)
@@ -292,9 +302,9 @@ public class GrabOpView extends RelativeLayout {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
                         MyLog.d(TAG, "onTouch" + " v=" + v + " event=" + event);
-                        if(event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE){
+                        if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE) {
                             mRrlProgress.setVisibility(GONE);
-                        }else {
+                        } else {
                             mRrlProgress.setVisibility(VISIBLE);
                         }
                         return false;
@@ -311,7 +321,6 @@ public class GrabOpView extends RelativeLayout {
                 hide();
                 break;
         }
-
     }
 
     public void setGrabPreRound(boolean grabPreRound) {
@@ -378,11 +387,11 @@ public class GrabOpView extends RelativeLayout {
 
         cancelCountDownTask();
         mCountDownTask = HandlerTaskTimer.newBuilder().interval(1000)
-                .take((int)(sShowLightOffTime / 1000) + 1)
+                .take((int) (sShowLightOffTime / 1000) + 1)
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
-                        int num1 = (int)(sShowLightOffTime / 1000) - integer + 1;
+                        int num1 = (int) (sShowLightOffTime / 1000) - integer + 1;
                         mIvLightOff.setText(String.valueOf(num1));
                     }
 
@@ -430,7 +439,7 @@ public class GrabOpView extends RelativeLayout {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        if(!EventBus.getDefault().isRegistered(this)){
+        if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
     }

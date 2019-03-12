@@ -1070,7 +1070,7 @@ public class AgoraEngineAdapter {
                 if (styleEnum == Params.AudioEffect.ktv) {
                     mCbEffectProcessor.process(8, samples, samples.length, channels, samplesPerSec);
                 } else if (styleEnum == Params.AudioEffect.rock) {
-                    mCbEffectProcessor.process(2, samples, samples.length, channels, samplesPerSec);
+                    mCbEffectProcessor.process(1, samples, samples.length, channels, samplesPerSec);
                 } else if (styleEnum == Params.AudioEffect.dianyin) {
 //                    mTbEffectProcessor.process(1, samples, samples.length, channels, samplesPerSec);
                     mCbEffectProcessor.process(5, samples, samples.length, channels, samplesPerSec);
