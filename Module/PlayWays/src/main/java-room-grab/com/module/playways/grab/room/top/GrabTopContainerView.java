@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.module.playways.grab.room.GrabRoomData;
@@ -128,13 +129,17 @@ public class GrabTopContainerView extends RelativeLayout {
     public void setModeGrab() {
         // 抢唱模式
         mTopContentRv.setModeGrab();
-        mGrabTopView.onGrab();
+        mGrabTopView.setAccSwitchBtnStatus(true);
     }
 
     public void setModeSing(long singUid) {
         // 演唱模式
         mTopContentRv.setModeSing((int) singUid);
-        mGrabTopView.onSing();
+        if (singUid == MyUserInfoManager.getInstance().getUid()) {
+            mGrabTopView.setAccSwitchBtnStatus(false);
+        } else {
+            mGrabTopView.setAccSwitchBtnStatus(true);
+        }
     }
 
     public void onGameFinish() {

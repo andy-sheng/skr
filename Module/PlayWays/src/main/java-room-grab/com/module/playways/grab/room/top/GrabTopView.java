@@ -115,14 +115,18 @@ public class GrabTopView extends RelativeLayout {
         });
     }
 
-    public void onSing(){
-        mTvAcc.setVisibility(GONE);
-        mIvAccDisable.setVisibility(GONE);
-    }
-
-    public void onGrab(){
-        mTvAcc.setVisibility(VISIBLE);
-        mIvAccDisable.setVisibility(VISIBLE);
+    public void setAccSwitchBtnStatus(boolean visibale){
+        if(visibale){
+            mTvAcc.setVisibility(VISIBLE);
+            if(mBaseRoomData.isAccEnable()){
+                mIvAccDisable.setVisibility(GONE);
+            }else{
+                mIvAccDisable.setVisibility(VISIBLE);
+            }
+        }else{
+            mTvAcc.setVisibility(GONE);
+            mIvAccDisable.setVisibility(GONE);
+        }
     }
 
     public void setRoomData(GrabRoomData modelBaseRoomData) {

@@ -26,7 +26,7 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
     protected int mTagId;//一场到底歌曲分类
     protected GrabConfigModel mGrabConfigModel = new GrabConfigModel();// 一唱到底配置
     protected boolean mHasExitGame = false;// 是否已经正常退出房间
-    private boolean mIsAccEnable = false;
+    private boolean mIsAccEnable = false;// 是否开启伴奏
 
     @Override
     public List<GrabPlayerInfoModel> getPlayerInfoList() {
