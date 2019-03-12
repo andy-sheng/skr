@@ -128,11 +128,13 @@ public class GrabTopContainerView extends RelativeLayout {
     public void setModeGrab() {
         // 抢唱模式
         mTopContentRv.setModeGrab();
+        mGrabTopView.onGrab();
     }
 
     public void setModeSing(long singUid) {
         // 演唱模式
         mTopContentRv.setModeSing((int) singUid);
+        mGrabTopView.onSing();
     }
 
     public void onGameFinish() {

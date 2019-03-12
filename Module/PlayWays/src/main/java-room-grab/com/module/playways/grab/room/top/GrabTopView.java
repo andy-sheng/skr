@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.common.core.account.UserAccountManager;
@@ -29,6 +30,8 @@ public class GrabTopView extends RelativeLayout {
     ExTextView mTvChangeRoom;
     ExTextView mTvCoin;
     ExTextView mTvCoinChange;
+    ExTextView mTvAcc;
+    ImageView mIvAccDisable;
 
     Listener mOnClickChangeRoomListener;
     GrabRoomData mBaseRoomData;
@@ -84,6 +87,8 @@ public class GrabTopView extends RelativeLayout {
         mTvChangeRoom = (ExTextView) findViewById(R.id.tv_change_room);
         mTvCoin = (ExTextView) findViewById(R.id.tv_coin);
         mTvCoinChange = (ExTextView) findViewById(R.id.tv_coin_change);
+        mTvAcc = (ExTextView) findViewById(R.id.tv_acc);
+        mIvAccDisable = (ImageView) findViewById(R.id.iv_acc_disable);
 
         mTvChangeRoom.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -95,6 +100,31 @@ public class GrabTopView extends RelativeLayout {
                 }
             }
         });
+
+        mTvAcc.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mIvAccDisable.getVisibility() == VISIBLE) {
+                    mIvAccDisable.setVisibility(GONE);
+                    mBaseRoomData.setAccEnable(true);
+                } else {
+                    mIvAccDisable.setVisibility(VISIBLE);
+                    mBaseRoomData.setAccEnable(false);
+                }
+            }
+        });
+    }
+
+    public void onSing(){
+        mTvAcc.setVisibility(GONE);
+        mIvAccDisable.setVisibility(GONE);
+    }
+
+    public void onGrab(){
+//        mTvAcc.setVisibility(VISIBLE);
+//        mIvAccDisable.setVisibility(VISIBLE);
+        mTvAcc.setVisibility(GONE);
+        mIvAccDisable.setVisibility(GONE);
     }
 
     public void setRoomData(GrabRoomData modelBaseRoomData) {

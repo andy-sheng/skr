@@ -41,6 +41,32 @@
         app:bl_solid_color="#202239" />
 
     <com.common.view.ex.ExTextView
+        android:visibility="gone"
+        android:layout_marginRight="@dimen/view_58_dp"
+        android:layout_alignParentRight="true"
+        android:id="@+id/tv_acc"
+        android:layout_width="@dimen/view_56_dp"
+        android:layout_height="@dimen/view_32_dp"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:text="伴奏"
+        android:textColor="#B2B6D6"
+        android:textSize="@dimen/textsize_14_dp"
+        app:bl_corners_radius="@dimen/view_16_dp"
+        app:bl_solid_color="#3C3F57"
+        app:bl_stroke_color="#202239"
+        app:bl_stroke_width="@dimen/view_2_dp" />
+
+    <ImageView
+        android:visibility="gone"
+        android:id="@+id/iv_acc_disable"
+        android:background="@drawable/wubanzou"
+        android:layout_alignLeft="@+id/tv_acc"
+        android:layout_alignBottom="@+id/tv_acc"
+        android:layout_width="@dimen/view_12_dp"
+        android:layout_height="@dimen/view_12_dp"/>
+
+    <com.common.view.ex.ExTextView
         android:id="@+id/tv_coin_change"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_22_dp"

@@ -73,6 +73,7 @@ import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.event.PretendCommentMsgEvent;
 import com.module.playways.rank.room.score.MachineScoreItem;
 import com.module.playways.rank.room.score.RobotScoreHelper;
+import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.BuildConfig;
 import com.module.rank.R;
 import com.zq.live.proto.Common.ESex;
@@ -88,6 +89,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.greenrobot.greendao.annotation.NotNull;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -233,6 +235,33 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     public void onOpeningAnimationOver() {
         // 开始触发触发轮次变化
         mRoomData.checkRoundInEachMode();
+    }
+
+    /**
+     * 播放伴奏
+     */
+    public void playAcc() {
+        if (mRoomData.getRealRoundInfo() == null
+                || mRoomData.getRealRoundInfo().getMusic() == null
+                || TextUtils.isEmpty(mRoomData.getRealRoundInfo().getMusic().getAcc())) {
+            MyLog.w(TAG, "playAcc data error");
+            return;
+        }
+
+        if (!mRoomData.isAccEnable()) {
+            MyLog.d(TAG, "playAcc acc is disable");
+            return;
+        }
+
+        SongModel songModel = mRoomData.getRealRoundInfo().getMusic();
+        File accFile = SongResUtils.getAccFileByUrl(songModel.getAcc());
+        if (accFile != null && accFile.isFile() && accFile.exists()) {
+            EngineManager.getInstance().startAudioMixing((int) MyUserInfoManager.getInstance().getUid(), accFile.getAbsolutePath()
+                    , null, 0, false, false, 1);
+            EngineManager.getInstance().setAudioMixingPosition(0);
+        } else {
+            // TODO: 2019/3/12 播放网络资源
+        }
     }
 
     /**
@@ -599,24 +628,25 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     /**
      * 下载伴奏下一首的伴奏
+     *
      * @param grabRoundInfoModel
      */
-    public void fetchAcc(GrabRoundInfoModel grabRoundInfoModel){
-        if(grabRoundInfoModel == null || grabRoundInfoModel.getMusic() == null
-                || TextUtils.isEmpty(grabRoundInfoModel.getMusic().getAcc())){
+    public void fetchAcc(GrabRoundInfoModel grabRoundInfoModel) {
+        if (grabRoundInfoModel == null || grabRoundInfoModel.getMusic() == null
+                || TextUtils.isEmpty(grabRoundInfoModel.getMusic().getAcc())) {
             MyLog.d(TAG, "fetchAcc" + " grabRoundInfoModel data error");
             return;
         }
 
         String accUrl = grabRoundInfoModel.getMusic().getAcc();
-        UrlRes accRes = new UrlRes(accUrl, SongResUtils.getACCDir(), U.getFileUtils().getSuffixFromUrl(accUrl,SongResUtils.SUFF_ACC));
-        if(accRes.isExist()){
+        UrlRes accRes = new UrlRes(accUrl, SongResUtils.getACCDir(), U.getFileUtils().getSuffixFromUrl(accUrl, SongResUtils.SUFF_ACC));
+        if (accRes.isExist()) {
             MyLog.d(TAG, "fetchAcc" + " acc file is exist");
             return;
         }
 
-        if(mZipUrlResourceManager != null){
-            if(mZipUrlResourceManager.containUrl(accUrl)){
+        if (mZipUrlResourceManager != null) {
+            if (mZipUrlResourceManager.containUrl(accUrl)) {
                 MyLog.d(TAG, "fetchAcc" + " file is downloading");
                 return;
             }
@@ -687,7 +717,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
-
+        stopAudioMixing();
         EngineManager.getInstance().destroy("grabroom");
         mUiHanlder.removeCallbacksAndMessages(null);
         ChatRoomMsgManager.getInstance().removeFilter(mPushMsgFilter);
@@ -697,7 +727,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             MyLog.d(TAG, "mExoPlayer == null ");
         }
 
-        if(mZipUrlResourceManager != null){
+        if (mZipUrlResourceManager != null) {
             mZipUrlResourceManager.cancelAllTask();
         }
         ModuleServiceManager.getInstance().getMsgService().leaveChatRoom(String.valueOf(mRoomData.getGameId()));
@@ -1070,6 +1100,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         MyLog.d(TAG, "GrabRoundChangeEvent" + " event=" + event);
         // 轮次变化尝试更新头像
         estimateOverTsThisRound();
+        stopAudioMixing();
         closeEngine();
         tryStopRobotPlay();
         EngineManager.getInstance().stopRecognize();
@@ -1139,6 +1170,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     public void onEvent(GrabRoundStatusChangeEvent event) {
         MyLog.d(TAG, "GrabRoundStatusChangeEvent" + " event=" + event);
         estimateOverTsThisRound();
+        stopAudioMixing();
         closeEngine();
         GrabRoundInfoModel now = event.roundInfo;
         tryStopRobotPlay();
@@ -1154,6 +1186,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 checkMachineUser(now.getUserID());
             }
         }
+    }
+
+    private void stopAudioMixing() {
+        EngineManager.getInstance().stopAudioMixing();
     }
 
     private void closeEngine() {

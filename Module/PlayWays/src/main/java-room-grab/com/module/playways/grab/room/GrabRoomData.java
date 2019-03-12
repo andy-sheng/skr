@@ -26,6 +26,7 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
     protected int mTagId;//一场到底歌曲分类
     protected GrabConfigModel mGrabConfigModel = new GrabConfigModel();// 一唱到底配置
     protected boolean mHasExitGame = false;// 是否已经正常退出房间
+    private boolean mIsAccEnable = false;
 
     @Override
     public List<GrabPlayerInfoModel> getPlayerInfoList() {
@@ -114,6 +115,14 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
             EventBus.getDefault().post(new GrabMyCoinChangeEvent(coin, coin - this.mCoin));
             this.mCoin = coin;
         }
+    }
+
+    public boolean isAccEnable() {
+        return mIsAccEnable;
+    }
+
+    public void setAccEnable(boolean accEnable) {
+        mIsAccEnable = accEnable;
     }
 
     public GrabConfigModel getGrabConfigModel() {
