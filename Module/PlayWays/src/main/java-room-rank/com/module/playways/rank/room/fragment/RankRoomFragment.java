@@ -301,7 +301,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             mUiHanlder.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    startGameEndAniamtion();
+                    startGameEndAniamtion(false);
                 }
             }, 2000);
         }
@@ -1031,10 +1031,15 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         );
     }
 
-    private void startGameEndAniamtion() {
+    private void startGameEndAniamtion(boolean isGameOver) {
         // 提前加载音效
         U.getSoundUtils().preLoad(RankLevelChangeFragment.TAG, R.raw.rank_win, R.raw.rank_lose);
         if (isGameEndAniamtionShow) {
+            // 动画已经在播放
+            if (isGameOver) {
+                // 游戏结束了
+                showRankLevelChange();
+            }
             return;
         }
         isGameEndAniamtionShow = true;
@@ -1067,17 +1072,8 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                             mDialogPlus.dismiss();
                         }
 
-                        if (true) {
-                            RankToVoiceTransformDataEvent event = new RankToVoiceTransformDataEvent();
-                            event.mCommentModelList = mCommentView.getComments();
-                            EventBus.getDefault().removeStickyEvent(RankToVoiceTransformDataEvent.class);
-                            EventBus.getDefault().postSticky(event);
-                            // 先播放段位动画
-                            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankLevelChangeFragment.class)
-                                    .setAddToBackStack(true)
-                                    .setHasAnimation(false)
-                                    .addDataBeforeAdd(1, mRoomData)
-                                    .build());
+                        if (isGameOver) {
+                            showRankLevelChange();
                             return;
                         }
                     }
@@ -1085,6 +1081,19 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             }
         });
         mGameEndAnimation.start();
+    }
+
+    private void showRankLevelChange() {
+        RankToVoiceTransformDataEvent event = new RankToVoiceTransformDataEvent();
+        event.mCommentModelList = mCommentView.getComments();
+        EventBus.getDefault().removeStickyEvent(RankToVoiceTransformDataEvent.class);
+        EventBus.getDefault().postSticky(event);
+        // 先播放段位动画
+        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankLevelChangeFragment.class)
+                .setAddToBackStack(true)
+                .setHasAnimation(false)
+                .addDataBeforeAdd(1, mRoomData)
+                .build());
     }
 
     private void destroyAnimation() {
@@ -1114,7 +1123,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         mManyLyricsView.release();
         mVoiceScaleView.setVisibility(View.GONE);
         mRankTopContainerView.onGameFinish();
-        startGameEndAniamtion();
+        startGameEndAniamtion(true);
     }
 
     @Override
