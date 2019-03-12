@@ -310,6 +310,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     private void initBottomView() {
         mVoiceControlBg = (View) mRootView.findViewById(R.id.voice_control_bg);
         mVoiceControlView = (VoiceControlPanelView) mRootView.findViewById(R.id.voice_control_view);
+        mUiHanlder.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mVoiceControlView.bindData();
+            }
+        }, 300);
         mBottomContainerView = (BottomContainerView) mRootView.findViewById(R.id.bottom_container_view);
         mBottomContainerView.setListener(new BottomContainerView.Listener() {
             @Override
