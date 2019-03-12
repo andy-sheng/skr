@@ -102,7 +102,7 @@ void PitchScoring::processRecordLevel(RecordLevel *recordLevel) {
     }
     if (singingIndex < 0) {
         //没找到这句对应的音符位置，直接返回
-        //    mCurScore = 0;
+        mCurScore = 0;
         return;
     }
     MelodyNote melodyNote = mMelodyNotes.at(singingIndex);
@@ -126,9 +126,12 @@ void PitchScoring::processRecordLevel(RecordLevel *recordLevel) {
     if (LOGOPEN) {
         LOGI("processRecordLevel conf=%.3f,note=%.2f,targetNote=%hd", conf, note, targetNote);
     }
+    bool noteValid = false;
     //4:根据note计算score
     if (note > -0.5) {
+        noteValid = true;
         float diffnote = noteDiff(note, targetNote);
+        diffnote = diffnote / 2.0;
         if (LOGOPEN) {
             LOGI("processRecordLevel diffnote=%.2f ", fabs(diffnote));
         }
@@ -141,10 +144,10 @@ void PitchScoring::processRecordLevel(RecordLevel *recordLevel) {
             mCurScore = a;
         } else {
             mCurScore = b;
-            if (mCurScore == 0) {
-                // 声音够大，也给他一个分
-                mCurScore = note * 10;
-            }
+//            if (mCurScore == 0) {
+//                // 声音够大，也给他一个分
+//                mCurScore = note * 10;
+//            }
         }
 //        if (fabs(diffnote) <= 1.0) {
 //            mCurScore = 100 - 100 * (fabs(diffnote) - 0.0);
@@ -169,7 +172,7 @@ void PitchScoring::processRecordLevel(RecordLevel *recordLevel) {
         LOGI("processRecordLevel mCurScore=%d targetNote=%hd", mCurScore, targetNote);
     }
     //5:根据score进行计算统计数据
-    if (targetNote != -1 && mCurScore > 0) {
+    if (noteValid) {
         mCurrentLineLevelSum += mCurScore;
         mCurrentLineSampleCount++;
         if (LOGOPEN) {

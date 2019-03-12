@@ -8,7 +8,6 @@ import android.view.SurfaceView;
 import android.view.TextureView;
 import android.view.ViewGroup;
 
-import com.changba.songstudio.audioeffect.AudioEffectStyleEnum;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.engine.Params;
@@ -256,13 +255,17 @@ public class AgoraEngineAdapter {
             mRtcEngine.enableAudio();
 
             int a = 3, b = 4;
+            /**
+             * 如果b==3 ，onRecordFrame 里是人声，但是stopMixMusic后数据会有问题
+             * 如果b==4 ，onRecordFrame 是伴奏+人声
+             */
             switch (mConfig.getScene()) {
                 case rank:
-                    b = 4;
+                    b = 3;
                     mRtcEngine.setParameters("{\"che.audio.enable.aec\":true }");
                     break;
                 case grab:
-                    b = 3;
+                    b = 4;
                     break;
                 case voice:
                     b = 1;
@@ -964,7 +967,7 @@ public class AgoraEngineAdapter {
 
     int mLogtag = 0;
 
-    public void setIFAudioEffectEngine(final AudioEffectStyleEnum styleEnum) {
+    public void setIFAudioEffectEngine(final Params.AudioEffect styleEnum) {
         MyLog.d(TAG, "setIFAudioEffectEngine" + " styleEnum=" + styleEnum);
         tryInitRtcEngine();
 //        if (styleEnum == null) {
@@ -991,7 +994,7 @@ public class AgoraEngineAdapter {
                 if (++mLogtag % 500 == 0) {
                     MyLog.d(TAG, "onRecordFrame" + " samples=" + samples + " numOfSamples=" + numOfSamples + " bytesPerSample=" + bytesPerSample + " channels=" + channels + " samplesPerSec=" + samplesPerSec);
                 }
-                if(DEBUG) {
+                if (DEBUG) {
                     MyLog.d(TAG, "step0:" + testIn(samples));
                 }
                 if (mArcCloudManager != null) {
@@ -1021,7 +1024,13 @@ public class AgoraEngineAdapter {
                 if (DEBUG) {
                     MyLog.d(TAG, "step2:" + testIn(samples));
                 }
-                mTbEffectProcessor.process(2, samples, samples.length, channels, samplesPerSec);
+                if (styleEnum == Params.AudioEffect.tb1) {
+                    mTbEffectProcessor.process(1, samples, samples.length, channels, samplesPerSec);
+                } else if (styleEnum == Params.AudioEffect.tb2) {
+                    mTbEffectProcessor.process(2, samples, samples.length, channels, samplesPerSec);
+                }else{
+                    mTbEffectProcessor.destroyEffectProcessor();
+                }
                 if (DEBUG) {
                     MyLog.d(TAG, "step3:" + testIn(samples));
                 }

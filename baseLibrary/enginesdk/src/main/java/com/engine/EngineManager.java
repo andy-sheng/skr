@@ -816,7 +816,7 @@ public class EngineManager implements AgoraOutCallback {
 
     /*音频高级扩展开始*/
 
-    public void setAudioEffectStyle(final AudioEffectStyleEnum styleEnum) {
+    public void setAudioEffectStyle(final Params.AudioEffect styleEnum) {
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {
@@ -1176,7 +1176,7 @@ public class EngineManager implements AgoraOutCallback {
             Sink sink = Okio.appendingSink(file);
             bufferedSink = Okio.buffer(sink);
             bufferedSink.write(newBuffer);
-            //MyLog.d(TAG, "写入文件 path:" + file.getAbsolutePath());
+            MyLog.d(TAG, "写入文件 path:" + file.getAbsolutePath());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -1212,8 +1212,11 @@ public class EngineManager implements AgoraOutCallback {
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {
-                mConfig.setRecordingFromCallbackSavePath(null);
-                AgoraEngineAdapter.getInstance().stopAudioRecording();
+                if(TextUtils.isEmpty(mConfig.getRecordingFromCallbackSavePath())){
+                    AgoraEngineAdapter.getInstance().stopAudioRecording();
+                }else{
+                    mConfig.setRecordingFromCallbackSavePath(null);
+                }
             }
         });
     }

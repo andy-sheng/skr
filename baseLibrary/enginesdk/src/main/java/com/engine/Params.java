@@ -90,7 +90,7 @@ public class Params implements Serializable {
     private int playbackSignalVolume = 100;// 0-400 默认100，最多放大4倍
     private int recordingSignalVolume = 200;// 0-400 默认100，最多放大4倍
     private int selfUid; // 本人在引擎中的id
-    private AudioEffectStyleEnum styleEnum = null;// 混响style
+    private AudioEffect styleEnum = AudioEffect.none;// 混响style
     private boolean enableSpeakerphone = false;// 开启扬声器
 
     @JSONField(serialize=false)
@@ -350,11 +350,11 @@ public class Params implements Serializable {
         return selfUid;
     }
 
-    public AudioEffectStyleEnum getStyleEnum() {
+    public AudioEffect getStyleEnum() {
         return styleEnum;
     }
 
-    public void setStyleEnum(AudioEffectStyleEnum styleEnum) {
+    public void setStyleEnum(AudioEffect styleEnum) {
         this.styleEnum = styleEnum;
     }
 
@@ -597,7 +597,7 @@ public class Params implements Serializable {
             return this;
         }
 
-        public Builder setStyleEnum(AudioEffectStyleEnum styleEnum) {
+        public Builder setStyleEnum(AudioEffect styleEnum) {
             mParams.setStyleEnum(styleEnum);
             return this;
         }
@@ -621,7 +621,7 @@ public class Params implements Serializable {
         if (params != null) {
             String s = JSON.toJSONString(params);
             MyLog.w(EngineManager.TAG, "save2Pref " + s);
-            U.getPreferenceUtils().setSettingString("engine_pref_params", s);
+            U.getPreferenceUtils().setSettingString("engine_pref_params1", s);
         }
     }
 
@@ -631,7 +631,7 @@ public class Params implements Serializable {
      * @return
      */
     public static Params getFromPref() {
-        String s = U.getPreferenceUtils().getSettingString("engine_pref_params", "");
+        String s = U.getPreferenceUtils().getSettingString("engine_pref_params1", "");
         MyLog.w(EngineManager.TAG, "getFromPref " + s);
         Params params;
         if (!TextUtils.isEmpty(s)) {
@@ -641,7 +641,7 @@ public class Params implements Serializable {
                     .setEnableVideo(false)
                     .setEnableAudio(true)
                     .setUseCbEngine(false)
-                    .setStyleEnum(AudioEffectStyleEnum.ORIGINAL)
+                    .setStyleEnum(AudioEffect.none)
                     .build();
         }
 //        params.setAudioMixingVolume(0);
@@ -650,5 +650,9 @@ public class Params implements Serializable {
 
     public enum Scene {
         rank, grab, voice, audiotest
+    }
+
+    public enum AudioEffect {
+        none,tb1,tb2
     }
 }

@@ -24,6 +24,11 @@ Java_com_engine_score_ICbScoreProcessor_process1(JNIEnv *env, jobject instance, 
              currentTimeMills);
     }
     if (!needScore) {
+        if (scoring != NULL) {
+            scoring->destroy();
+            delete scoring;
+            scoring = NULL;
+        }
         if (FILEOPEN && scoreFile != NULL) {
             fclose(scoreFile);
             scoreFile = NULL;

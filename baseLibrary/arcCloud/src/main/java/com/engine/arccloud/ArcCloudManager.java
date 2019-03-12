@@ -41,7 +41,7 @@ public class ArcCloudManager implements IACRCloudListener {
     int mLineNo = 0;
     RecognizeConfig mRecognizeConfig;
 
-    static final boolean DEBUG = true;
+    static final boolean DEBUG = false;
 
     @Override
     public void onResult(ACRCloudResult acrCloudResult) {
@@ -126,9 +126,7 @@ public class ArcCloudManager implements IACRCloudListener {
         setLen(0);
         if (DEBUG) {
             File file = new File(U.getAppInfoUtils().getSubDirPath("acr"));
-            if (file.exists()) {
-                file.delete();
-            }
+            U.getFileUtils().deleteAllFiles(file);
         }
     }
 

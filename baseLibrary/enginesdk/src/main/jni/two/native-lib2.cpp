@@ -206,6 +206,9 @@ Java_com_engine_effect_ITbEffectProcessor_process2(JNIEnv *env, jobject ins, jby
 extern "C"
 JNIEXPORT jint JNICALL
 Java_com_engine_effect_ITbEffectProcessor_destroyEffectProcessor(JNIEnv *env, jobject instance) {
+    if (flag == -1) {
+        return flag;
+    }
     flag = -1;
     if (FILEOPEN) {
         LOGI("1");
