@@ -4,9 +4,6 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
-import com.alibaba.fastjson.serializer.SerializeConfig;
-import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.changba.songstudio.audioeffect.AudioEffectStyleEnum;
 import com.common.log.MyLog;
 import com.common.utils.U;
 
@@ -653,6 +650,6 @@ public class Params implements Serializable {
     }
 
     public enum AudioEffect {
-        none,tb1,tb2
+        none,tb1,tb2,cb1,cb2
     }
 }

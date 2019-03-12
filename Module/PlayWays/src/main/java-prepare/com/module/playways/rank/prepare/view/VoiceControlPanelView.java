@@ -6,7 +6,6 @@ import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 
-import com.changba.songstudio.audioeffect.AudioEffectStyleEnum;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.engine.EngineManager;
@@ -118,12 +117,12 @@ public class VoiceControlPanelView extends ScrollView {
                 } else if (checkedId == R.id.kongling_sbtn) {
                     afterMode = Params.AudioEffect.tb2;
                     EngineManager.getInstance().setAudioEffectStyle(Params.AudioEffect.tb2);
-//                } else if (checkedId == R.id.ktv_sbtn) {
-//                    afterMode = AudioEffectStyleEnum.DANCE;
-//                    EngineManager.getInstance().setAudioEffectStyle(AudioEffectStyleEnum.DANCE);
-//                } else if (checkedId == R.id.rock_sbtn) {
-//                    afterMode = AudioEffectStyleEnum.ROCK;
-//                    EngineManager.getInstance().setAudioEffectStyle(AudioEffectStyleEnum.ROCK);
+                } else if (checkedId == R.id.ktv_sbtn) {
+                    afterMode = Params.AudioEffect.cb1;
+                    EngineManager.getInstance().setAudioEffectStyle(Params.AudioEffect.cb1);
+                } else if (checkedId == R.id.rock_sbtn) {
+                    afterMode = Params.AudioEffect.cb2;
+                    EngineManager.getInstance().setAudioEffectStyle(Params.AudioEffect.cb2);
                 }
             }
         });
@@ -144,13 +143,11 @@ public class VoiceControlPanelView extends ScrollView {
             mScenesBtnGroup.check(R.id.dianyin_sbtn);
         } else if (styleEnum == Params.AudioEffect.tb2) {
             mScenesBtnGroup.check(R.id.kongling_sbtn);
-        }
-//        else if (styleEnum == AudioEffectStyleEnum.DANCE) {
-//            mScenesBtnGroup.check(R.id.ktv_sbtn);
-//        } else if (styleEnum == AudioEffectStyleEnum.ROCK) {
-//            mScenesBtnGroup.check(R.id.rock_sbtn);
-//        }
-        else {
+        } else if (styleEnum == Params.AudioEffect.cb1) {
+            mScenesBtnGroup.check(R.id.ktv_sbtn);
+        } else if (styleEnum == Params.AudioEffect.cb2) {
+            mScenesBtnGroup.check(R.id.rock_sbtn);
+        } else {
             mScenesBtnGroup.check(R.id.default_sbtn);
         }
         mPeopleVoiceSeekbar.setProgress(EngineManager.getInstance().getParams().getRecordingSignalVolume());

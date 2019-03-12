@@ -25,6 +25,7 @@ extern "C"
 JNIEXPORT jint JNICALL
 Java_com_engine_score_ICbScoreProcessor_getScore1(JNIEnv *env, jobject instance);
 
+
 #ifdef __cplusplus
 }
 #endif

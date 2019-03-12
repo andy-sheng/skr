@@ -17,6 +17,7 @@ import com.engine.agora.effect.EffectModel;
 import com.engine.agora.source.PrivateTextureHelper;
 import com.engine.arccloud.ArcCloudManager;
 import com.engine.arccloud.RecognizeConfig;
+import com.engine.effect.IFAudioEffectEngine;
 import com.engine.effect.ITbEffectProcessor;
 import com.engine.score.ICbScoreProcessor;
 
@@ -70,8 +71,8 @@ public class AgoraEngineAdapter {
         return AgoraEngineAdapterHolder.INSTANCE;
     }
 
-    static final boolean DEBUG = false;
-    static final boolean SCORE_DEBUG = false;
+    static final boolean DEBUG = false && MyLog.isDebugLogOpen();
+    static final boolean SCORE_DEBUG = false && MyLog.isDebugLogOpen();
 
     private Params mConfig;
     private RtcEngine mRtcEngine;
@@ -81,7 +82,10 @@ public class AgoraEngineAdapter {
     private List<EffectModel> mEffectModels = new ArrayList<>();
     private ArcCloudManager mArcCloudManager;// ArcClound的打分和识别
     private ITbEffectProcessor mTbEffectProcessor = new ITbEffectProcessor();// 天宝提供的音效处理类
+    private IFAudioEffectEngine mCbEffectProcessor = new IFAudioEffectEngine();// 唱吧提供的音效处理类
+
     private ICbScoreProcessor mICbScoreProcessor = new ICbScoreProcessor();// 唱吧打分系统
+
     /**
      * 所有的回调都在这
      * 注意回调的运行线程，一般都不会在主线程
@@ -1068,7 +1072,12 @@ public class AgoraEngineAdapter {
                     mTbEffectProcessor.process(1, samples, samples.length, channels, samplesPerSec);
                 } else if (styleEnum == Params.AudioEffect.tb2) {
                     mTbEffectProcessor.process(2, samples, samples.length, channels, samplesPerSec);
+                } else if (styleEnum == Params.AudioEffect.cb1) {
+                    mCbEffectProcessor.process(1, samples, samples.length, channels, samplesPerSec);
+                } else if (styleEnum == Params.AudioEffect.cb2) {
+                    mCbEffectProcessor.process(2, samples, samples.length, channels, samplesPerSec);
                 } else {
+                    mCbEffectProcessor.destroy();
                     mTbEffectProcessor.destroyEffectProcessor();
                 }
                 if (DEBUG) {
