@@ -12,7 +12,8 @@
         <RelativeLayout
             android:id="@+id/voice_audition"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/view_50_dp">
+            android:layout_height="@dimen/view_50_dp"
+            android:visibility="gone">
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/voice_audition_bt"

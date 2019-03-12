@@ -115,7 +115,9 @@ public class MoreOpView extends RelativeLayout {
         }
         if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
             mVoiceControlBtnContainer.setVisibility(GONE);
-            mVoiceAudition.setVisibility(VISIBLE);
+            if (mRoomData.getGameType() == GameModeType.GAME_MODE_GRAB) {
+                mVoiceAudition.setVisibility(VISIBLE);
+            }
         } else {
             mVoiceControlBtnContainer.setVisibility(VISIBLE);
             mVoiceAudition.setVisibility(GONE);

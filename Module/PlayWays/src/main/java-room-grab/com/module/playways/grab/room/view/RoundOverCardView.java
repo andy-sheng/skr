@@ -37,7 +37,7 @@ public class RoundOverCardView extends RelativeLayout {
     public final static int SING_NO_PASS_END = 3;          // 有种悲伤叫都没及格
     public final static int SING_PASS_END = 4;             // 有种遗憾叫明明可以
     public final static int SING_ENOUGH_END = 5;           // 有种可惜叫觉得你行
-    public final static int SING_ABANDON_END = 6;          // 自己放弃演唱
+    public final static int SING_ABANDON_END = 6;          // 有种装x叫抢了不唱
 
     //0未知
     //1有种优秀叫一唱到底（全部唱完）
@@ -251,8 +251,7 @@ public class RoundOverCardView extends RelativeLayout {
                 assetsName = "grab_sing_enough_end.svga";
                 break;
             case SING_ABANDON_END:
-                // TODO: 2019/3/11 等新的不想唱动效到了替换
-                assetsName = "grab_sing_pass_end.svga";
+                assetsName = "grab_sing_abandon_end.svga";
                 break;
         }
         SVGAParser parser = new SVGAParser(U.app());
