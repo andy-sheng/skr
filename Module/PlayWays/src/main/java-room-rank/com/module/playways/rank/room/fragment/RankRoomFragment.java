@@ -925,7 +925,10 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         mUiHanlder.removeMessages(ENSURE_RUN);
         mUiHanlder.sendMessageDelayed(msg, 5000);
 
-        int seq = mRoomData.getRealRoundInfo().getRoundSeq();
+        int seq = 0;
+        if (mRoomData.getRealRoundInfo() != null) {
+            seq = mRoomData.getRealRoundInfo().getRoundSeq();
+        }
         if (seq == 1) {
             mUiHanlder.postDelayed(new Runnable() {
                 @Override
