@@ -121,10 +121,8 @@ public class GrabTopView extends RelativeLayout {
     }
 
     public void onGrab(){
-//        mTvAcc.setVisibility(VISIBLE);
-//        mIvAccDisable.setVisibility(VISIBLE);
-        mTvAcc.setVisibility(GONE);
-        mIvAccDisable.setVisibility(GONE);
+        mTvAcc.setVisibility(VISIBLE);
+        mIvAccDisable.setVisibility(VISIBLE);
     }
 
     public void setRoomData(GrabRoomData modelBaseRoomData) {
