@@ -30,15 +30,32 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/view_10_dp"
         android:layout_toRightOf="@+id/tv_change_room"
-        android:drawableLeft="@drawable/money"
         android:drawablePadding="@dimen/view_10_dp"
         android:gravity="center_vertical"
-        android:paddingLeft="@dimen/view_5_dp"
+        android:paddingLeft="@dimen/view_30_dp"
         android:paddingRight="@dimen/view_12_dp"
         android:textColor="#B2B6D6"
         android:textSize="@dimen/textsize_16_dp"
         app:bl_corners_radius="@dimen/view_15_dp"
         app:bl_solid_color="#202239" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/conin_change_iv"
+        android:layout_width="@dimen/view_38_dp"
+        android:layout_height="@dimen/view_38_dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/view_7_dp"
+        android:layout_toRightOf="@+id/tv_change_room"
+        android:background="@drawable/jb_guangmang"
+        android:visibility="gone"/>
+
+    <com.common.view.ex.ExImageView
+        android:layout_width="@dimen/view_20_dp"
+        android:layout_height="@dimen/view_20_dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/view_5_dp"
+        android:layout_alignLeft="@id/tv_coin"
+        android:src="@drawable/money"/>
 
     <com.common.view.ex.ExTextView
         android:id="@+id/tv_acc"

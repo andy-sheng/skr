@@ -6,7 +6,7 @@
     <com.module.playways.grab.room.top.GrabTopView
         android:id="@+id/grab_top_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/view_38_dp"
         />
 
     <com.module.playways.grab.room.top.GrabPlayerRv2

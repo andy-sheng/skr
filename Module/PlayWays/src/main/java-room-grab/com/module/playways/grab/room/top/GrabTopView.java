@@ -1,5 +1,6 @@
 package com.module.playways.grab.room.top;
 
+import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
@@ -14,6 +15,7 @@ import com.common.statistics.StatConstants;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
+import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.module.playways.BaseRoomData;
 import com.module.playways.grab.room.GrabRoomData;
@@ -29,6 +31,7 @@ public class GrabTopView extends RelativeLayout {
 
     ExTextView mTvChangeRoom;
     ExTextView mTvCoin;
+    ExImageView mConinChangeIv;
     ExTextView mTvCoinChange;
     ExTextView mTvAcc;
     ImageView mIvAccDisable;
@@ -65,6 +68,7 @@ public class GrabTopView extends RelativeLayout {
 
     private void playCoinChangeAnimation(int coinChange) {
         mTvCoinChange.setVisibility(VISIBLE);
+        mConinChangeIv.setVisibility(VISIBLE);
         if (coinChange > 0) {
             mTvCoinChange.setText("+ " + Math.abs(coinChange));
         } else {
@@ -76,16 +80,46 @@ public class GrabTopView extends RelativeLayout {
             ObjectAnimator translateAnimation = ObjectAnimator.ofFloat(mTvCoinChange, TRANSLATION_Y, 0f, -U.getDisplayUtils().dip2px(30));
             ObjectAnimator alphAnimation = ObjectAnimator.ofFloat(mTvCoinChange, View.ALPHA, 1f, 0f);
 
+            ObjectAnimator rotateAnimation = ObjectAnimator.ofFloat(mConinChangeIv, ROTATION, 0f, 360f);
+            // 高度确定，直接写死中心点
+            mConinChangeIv.setPivotX(U.getDisplayUtils().dip2px(19));
+            mConinChangeIv.setPivotY(U.getDisplayUtils().dip2px(19));
+
             mAnimatorSet.setDuration(1000);
-            mAnimatorSet.playTogether(translateAnimation, alphAnimation);
+            mAnimatorSet.playTogether(translateAnimation, alphAnimation, rotateAnimation);
         }
+
+        mAnimatorSet.removeAllListeners();
+        mAnimatorSet.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mConinChangeIv.setVisibility(GONE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                onAnimationEnd(animation);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
         mAnimatorSet.start();
+
     }
 
     public void init() {
         inflate(getContext(), R.layout.grab_top_view, this);
         mTvChangeRoom = (ExTextView) findViewById(R.id.tv_change_room);
         mTvCoin = (ExTextView) findViewById(R.id.tv_coin);
+        mConinChangeIv = (ExImageView) findViewById(R.id.conin_change_iv);
         mTvCoinChange = (ExTextView) findViewById(R.id.tv_coin_change);
         mTvAcc = (ExTextView) findViewById(R.id.tv_acc);
         mIvAccDisable = (ImageView) findViewById(R.id.iv_acc_disable);
@@ -115,15 +149,15 @@ public class GrabTopView extends RelativeLayout {
         });
     }
 
-    public void setAccSwitchBtnStatus(boolean visibale){
-        if(visibale){
+    public void setAccSwitchBtnStatus(boolean visibale) {
+        if (visibale) {
             mTvAcc.setVisibility(VISIBLE);
-            if(mBaseRoomData.isAccEnable()){
+            if (mBaseRoomData.isAccEnable()) {
                 mIvAccDisable.setVisibility(GONE);
-            }else{
+            } else {
                 mIvAccDisable.setVisibility(VISIBLE);
             }
-        }else{
+        } else {
             mTvAcc.setVisibility(GONE);
             mIvAccDisable.setVisibility(GONE);
         }
