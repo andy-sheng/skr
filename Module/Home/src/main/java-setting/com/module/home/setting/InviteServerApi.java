@@ -33,4 +33,8 @@ public interface InviteServerApi {
      */
     @PUT("http://dev.api.inframe.mobi/v1/event/invite-record")
     Observable<ApiResult> submitInviteCode(@Body RequestBody body);
+
+
+    @GET("http://dev.api.inframe.mobi/v1/config/list")
+    Observable<ApiResult> checkTuiguang();
 }

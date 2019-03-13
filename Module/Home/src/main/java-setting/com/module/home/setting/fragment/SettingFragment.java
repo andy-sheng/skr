@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
 import com.common.core.account.UserAccountManager;
 import com.common.core.upgrade.UpgradeManager;
@@ -24,14 +25,18 @@ import com.common.rxretrofit.ApiResult;
 import com.common.utils.FragmentUtils;
 import com.common.utils.RomUtils;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
 import com.dialog.view.TipsDialogView;
+import com.huawei.android.hms.agent.common.ApiClientMgr;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
 import com.module.home.R;
 import com.module.home.feedback.FeedbackFragment;
+import com.module.home.setting.InviteServerApi;
+import com.module.home.setting.Model.TuiGuangConfig;
 import com.module.home.updateinfo.EditInfoActivity;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
@@ -41,6 +46,7 @@ import com.zq.relation.fragment.BlackListFragment;
 import com.zq.toast.CommonToastView;
 
 import java.io.File;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -60,6 +66,7 @@ public class SettingFragment extends BaseFragment {
     CommonTitleBar mTitlebar;
 
     RelativeLayout mEditPerson;
+    RelativeLayout mTuiguang;
     RelativeLayout mVolumeSet;
 
     RelativeLayout mClearCache;
@@ -81,6 +88,8 @@ public class SettingFragment extends BaseFragment {
 
     boolean hasNewVersion = false; // 判断是否有新版本
 
+    TuiGuangConfig mTuiGuangConfig;
+
     static final String[] CACHE_CAN_DELETE = {
             "fresco", "gif", "upload"
     };
@@ -96,6 +105,7 @@ public class SettingFragment extends BaseFragment {
         mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
 
         mEditPerson = (RelativeLayout) mRootView.findViewById(R.id.edit_person);
+        mTuiguang = (RelativeLayout) mRootView.findViewById(R.id.tuiguang);
         mVolumeSet = (RelativeLayout) mRootView.findViewById(R.id.volume_set);
 
         mClearCache = (RelativeLayout) mRootView.findViewById(R.id.clear_cache);
@@ -119,6 +129,7 @@ public class SettingFragment extends BaseFragment {
 
         initCache();
         initVersion();
+        checkTuiGuang();
 
         RxView.clicks(mTitlebar.getLeftTextView())
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
@@ -248,6 +259,35 @@ public class SettingFragment extends BaseFragment {
                                 .build());
                     }
                 });
+
+
+        mTuiguang.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                // TODO: 2019/3/13  补全推广跳转信息
+
+            }
+        });
+    }
+
+    private void checkTuiGuang() {
+        InviteServerApi inviteServerApi = ApiManager.getInstance().createService(InviteServerApi.class);
+        ApiMethods.subscribe(inviteServerApi.checkTuiguang(), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    List<TuiGuangConfig> configList = JSON.parseArray(result.getData().getString("configList"), TuiGuangConfig.class);
+                    if (configList != null && configList.size() > 0) {
+                        mTuiGuangConfig = configList.get(0);
+                        mTuiguang.setVisibility(View.VISIBLE);
+                        mTuiguang.setClickable(true);
+                    } else {
+                        mTuiguang.setVisibility(View.GONE);
+                        mTuiguang.setClickable(false);
+                    }
+                }
+            }
+        }, this);
     }
 
     private void initVersion() {
@@ -269,7 +309,7 @@ public class SettingFragment extends BaseFragment {
                             }
                         }
                     }
-                });
+                }, this);
     }
 
     private void initCache() {
@@ -347,6 +387,7 @@ public class SettingFragment extends BaseFragment {
                     }
                 });
     }
+
 
     void clearCache() {
         Observable.create(new ObservableOnSubscribe<Long>() {
