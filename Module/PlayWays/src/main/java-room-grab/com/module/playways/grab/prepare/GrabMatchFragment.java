@@ -71,17 +71,10 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
     ExImageView mIvBack;
     ExImageView mIvTop;
     ExTextView mTvMatchedTime;
-    SimpleDraweeView mSdvIcon1;
-    SimpleDraweeView mSdvSubIcon1;
-    SimpleDraweeView mSdvIcon3;
-    SimpleDraweeView mSdvSubIcon3;
-    SimpleDraweeView mSdvIcon2;
     ExTextView mTvTip;
     ExTextView mIvCancelMatch;
 
     AnimatorSet mIconAnimatorSet;
-
-    RelativeLayout mRlIconContainer;
 
     BaseMatchPresenter mMatchPresenter;
     PrepareData mPrepareData;
@@ -108,15 +101,8 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
         mIvBack = (ExImageView) mRootView.findViewById(R.id.iv_back);
         mIvTop = (ExImageView) mRootView.findViewById(R.id.iv_top);
         mTvMatchedTime = (ExTextView) mRootView.findViewById(R.id.tv_matched_time);
-        mSdvIcon1 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon1);
-        mSdvIcon3 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon3);
-        mSdvIcon2 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_icon2);
         mTvTip = (ExTextView) mRootView.findViewById(R.id.tv_tip);
         mIvCancelMatch = (ExTextView) mRootView.findViewById(R.id.iv_cancel_match);
-        mRlIconContainer = (RelativeLayout) mRootView.findViewById(R.id.rl_icon_container);
-        mSdvSubIcon1 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_sub_icon1);
-        mSdvSubIcon3 = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_sub_icon3);
-//        mWaveView = (WaveView)mRootView.findViewById(R.id.wave_view);
         mSdvOwnIcon = (SimpleDraweeView) mRootView.findViewById(R.id.sdv_own_icon);
         mRlIcon1Root = (ExRelativeLayout) mRootView.findViewById(R.id.rl_icon1_root);
         mSvgaMatchBg = (SVGAImageView) mRootView.findViewById(R.id.svga_match_bg);
@@ -158,13 +144,6 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
                 goBack();
             }
         });
-
-//        AvatarUtils.loadAvatarByUrl(mSdvIcon2,
-//                AvatarUtils.newParamsBuilder(mPrepareData.getSongModel().getCover())
-//                        .setCircle(true)
-//                        .setBorderWidth(U.getDisplayUtils().dip2px(3))
-//                        .setBorderColor(Color.WHITE)
-//                        .build());
 
         if (mPrepareData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK) {
             mMatchPresenter = new RankMatchPresenter(this);
@@ -216,90 +195,9 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
-                        doAnimation(integer);
                         changeQuotation(integer);
                     }
                 });
-    }
-
-    private void doAnimation(final Integer integer) {
-        if (mIconAnimatorSet != null && mIconAnimatorSet.isRunning()) {
-            mIconAnimatorSet.cancel();
-        }
-
-        mIconAnimatorSet = new AnimatorSet();
-        ObjectAnimator anim1 = ObjectAnimator.ofFloat(mSdvIcon1, "translationX", 0, mRlIconContainer.getMeasuredWidth() - mSdvIcon1.getMeasuredWidth());
-        ObjectAnimator anim2 = ObjectAnimator.ofFloat(mSdvIcon1, "translationX", mRlIconContainer.getMeasuredWidth() - mSdvIcon1.getMeasuredWidth(), 0);
-        ObjectAnimator sub_anim1 = ObjectAnimator.ofFloat(mSdvSubIcon1, "translationX", 0, mRlIconContainer.getMeasuredWidth() - mSdvIcon1.getMeasuredWidth());
-        ObjectAnimator sub_anim2 = ObjectAnimator.ofFloat(mSdvSubIcon1, "translationX", mRlIconContainer.getMeasuredWidth() - mSdvIcon1.getMeasuredWidth(), 0);
-
-        ObjectAnimator anim3 = ObjectAnimator.ofFloat(mSdvIcon3, "translationX", 0, -(mRlIconContainer.getMeasuredWidth() - mSdvIcon1.getMeasuredWidth()));
-        ObjectAnimator anim4 = ObjectAnimator.ofFloat(mSdvIcon3, "translationX", -(mRlIconContainer.getMeasuredWidth() - mSdvIcon1.getMeasuredWidth()), 0);
-        ObjectAnimator sub_anim3 = ObjectAnimator.ofFloat(mSdvSubIcon3, "translationX", 0, -(mRlIconContainer.getMeasuredWidth() - mSdvIcon1.getMeasuredWidth()));
-        ObjectAnimator sub_anim4 = ObjectAnimator.ofFloat(mSdvSubIcon3, "translationX", -(mRlIconContainer.getMeasuredWidth() - mSdvIcon1.getMeasuredWidth()), 0);
-
-        final float[] preDegree = new float[]{0.0f};
-
-        //1号在上面
-        anim1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float f = (float) animation.getAnimatedValue();
-                float p = mRlIconContainer.getMeasuredWidth() / 2 - (float) mSdvIcon1.getMeasuredWidth() / 2;
-                float degree = f - p;
-
-                if (degree * preDegree[0] < 0) {
-                    MyLog.d(TAG, "is good 1");
-                    changeIcons(1);
-                }
-
-                preDegree[0] = degree;
-            }
-        });
-
-        anim1.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                preDegree[0] = 0.0f;
-                mSdvIcon1.setVisibility(View.INVISIBLE);
-                mSdvIcon3.setVisibility(View.INVISIBLE);
-                mSdvSubIcon1.setVisibility(View.VISIBLE);
-                mSdvSubIcon3.setVisibility(View.VISIBLE);
-            }
-        });
-
-        anim2.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                mSdvSubIcon1.setVisibility(View.INVISIBLE);
-                mSdvSubIcon3.setVisibility(View.INVISIBLE);
-                mSdvIcon1.setVisibility(View.VISIBLE);
-                mSdvIcon3.setVisibility(View.VISIBLE);
-            }
-        });
-
-        //3号在上面
-        anim2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float f = (float) animation.getAnimatedValue();
-                float p = mRlIconContainer.getMeasuredWidth() / 2 - (float) mSdvIcon1.getMeasuredWidth() / 2;
-                float degree = f - p;
-
-                if (degree * preDegree[0] < 0) {
-                    MyLog.d(TAG, "is good 2");
-                    changeIcons(3);
-                }
-
-                preDegree[0] = degree;
-            }
-        });
-
-        mIconAnimatorSet.setDuration(ANIMATION_DURATION);
-        mIconAnimatorSet.play(anim1).with(sub_anim1).with(anim3).with(sub_anim3).before(anim2);
-        mIconAnimatorSet.play(anim2).with(sub_anim2).with(anim4).with(sub_anim4);
-
-        mIconAnimatorSet.start();
     }
 
     private void changeQuotation(Integer integer) {
@@ -318,41 +216,6 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
 
         rString = rString + string;
         mTvTip.setText(rString);
-    }
-
-
-    private void changeIcons(Integer num) {
-        if (mAvatarURL == null || mAvatarURL.size() == 0) {
-            return;
-        }
-
-
-        if (num != 1) {
-            mIconListIndex += 1;
-            int index1 = mIconListIndex % (mAvatarURL.size() - 1);
-            loadIconInImage(mAvatarURL.get(index1).getAvatarURL(), mSdvIcon1, mAvatarURL.get(index1).getSex() == ESex.SX_MALE.getValue());
-            loadIconInImage(mAvatarURL.get(index1).getAvatarURL(), mSdvSubIcon1, mAvatarURL.get(index1).getSex() == ESex.SX_MALE.getValue());
-        }
-
-        mIconListIndex += 1;
-        int index2 = mIconListIndex % (mAvatarURL.size() - 1);
-        loadIconInImage(mAvatarURL.get(index2).getAvatarURL(), mSdvIcon2, mAvatarURL.get(index2).getSex() == ESex.SX_MALE.getValue());
-
-        if (num != 3) {
-            mIconListIndex += 1;
-            int index3 = mIconListIndex % (mAvatarURL.size() - 1);
-            loadIconInImage(mAvatarURL.get(index3).getAvatarURL(), mSdvIcon3, mAvatarURL.get(index3).getSex() == ESex.SX_MALE.getValue());
-            loadIconInImage(mAvatarURL.get(index3).getAvatarURL(), mSdvSubIcon3, mAvatarURL.get(index3).getSex() == ESex.SX_MALE.getValue());
-        }
-    }
-
-    private void loadIconInImage(String url, SimpleDraweeView simpleDraweeView, boolean isMale) {
-        AvatarUtils.loadAvatarByUrl(simpleDraweeView,
-                AvatarUtils.newParamsBuilder(url)
-                        .setCircle(true)
-                        .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                        .setBorderColorBySex(isMale)
-                        .build());
     }
 
     /**
@@ -483,10 +346,6 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
                                 if (getActivity() != null) {
                                     getActivity().finish();
                                 }
-//                                ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
-//                                        .withInt("key_game_type", mPrepareData.getGameType())
-//                                        .withBoolean("selectSong", true)
-//                                        .navigation();
                             }
                         }
                     }
@@ -547,10 +406,6 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
             getActivity().finish();
         }
     }
-
-    private int mIconListIndex = 0;
-
-    List<MatchIconModel> mAvatarURL = null;
 
     @Override
     protected boolean onBackPressed() {
