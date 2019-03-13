@@ -20,6 +20,7 @@ import com.common.log.MyLog;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;
@@ -152,6 +153,24 @@ public class RelationView extends RelativeLayout {
                 .setMessageTip("是否取消关注")
                 .setConfirmTip("取消关注")
                 .setCancelTip("不了")
+                .setConfirmBtnClickListener(new DebounceViewClickListener() {
+
+                    @Override
+                    public void clickValid(View v) {
+                        if (mDialogPlus != null) {
+                            mDialogPlus.dismiss();
+                        }
+                        UserInfoManager.getInstance().mateRelation(userInfoModel.getUserId(), UserInfoManager.RA_UNBUILD, userInfoModel.isFriend());
+                    }
+                })
+                .setCancelBtnClickListener(new DebounceViewClickListener() {
+                    @Override
+                    public void clickValid(View v) {
+                        if (mDialogPlus != null) {
+                            mDialogPlus.dismiss();
+                        }
+                    }
+                })
                 .build();
 
         mDialogPlus = DialogPlus.newDialog(getContext())
@@ -160,21 +179,6 @@ public class RelationView extends RelativeLayout {
                 .setContentBackgroundResource(R.color.transparent)
                 .setOverlayBackgroundResource(R.color.black_trans_80)
                 .setExpanded(false)
-                .setOnClickListener(new com.orhanobut.dialogplus.OnClickListener() {
-                    @Override
-                    public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
-                        if (view instanceof ExTextView) {
-                            if (view.getId() == R.id.confirm_tv) {
-                                dialog.dismiss();
-                                UserInfoManager.getInstance().mateRelation(userInfoModel.getUserId(), UserInfoManager.RA_UNBUILD, userInfoModel.isFriend());
-                            }
-
-                            if (view.getId() == R.id.cancel_tv) {
-                                dialog.dismiss();
-                            }
-                        }
-                    }
-                })
                 .setOnDismissListener(new OnDismissListener() {
                     @Override
                     public void onDismiss(@NonNull DialogPlus dialog) {
