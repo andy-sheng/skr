@@ -20,7 +20,7 @@ public interface StatConstants {
     String CATEGORY_RANK = "rank";
     String CATEGORY_GRAB = "grab";
     String KEY_SELECTSONG_EXPOSE = "selectsong_expose";
-    String KEY_MATCH_START = "match_start";
+    String KEY_MATCH_START = "match_start2";
     String KEY_GAME_START = "game_start";
     String KEY_GAME_FINISH = "game_finish";
     String KEY_SONG_NO_ONE = "song_noone";

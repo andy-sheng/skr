@@ -610,7 +610,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                     HashMap map = new HashMap();
                     map.put("songID", String.valueOf(infoModel.getMusic().getItemID()));
                     StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-                            "give_up_sing", map);
+                            "give_up_sing2", map);
                 }
                 mCorePresenter.giveUpSing();
             }

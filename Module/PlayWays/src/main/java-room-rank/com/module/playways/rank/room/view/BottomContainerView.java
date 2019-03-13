@@ -144,9 +144,9 @@ public class BottomContainerView extends RelativeLayout {
                 HashMap map = new HashMap();
                 map.put("expressionId", String.valueOf(SpecialEmojiMsgType.SP_EMOJI_TYPE_UNLIKE.getValue()));
                 if (mRoomData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK) {
-                    StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK), "game_expression", map);
+                    StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK), "game_expression2", map);
                 } else if (mRoomData.getGameType() == GameModeType.GAME_MODE_GRAB) {
-                    StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB), "game_expression", map);
+                    StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB), "game_expression2", map);
                 }
             }
         });
@@ -158,9 +158,9 @@ public class BottomContainerView extends RelativeLayout {
                 HashMap map = new HashMap();
                 map.put("expressionId", String.valueOf(SpecialEmojiMsgType.SP_EMOJI_TYPE_LIKE.getValue()));
                 if (mRoomData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK) {
-                    StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK), "game_expression", map);
+                    StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK), "game_expression2", map);
                 } else if (mRoomData.getGameType() == GameModeType.GAME_MODE_GRAB) {
-                    StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB), "game_expression", map);
+                    StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB), "game_expression2", map);
                 }
             }
         });
