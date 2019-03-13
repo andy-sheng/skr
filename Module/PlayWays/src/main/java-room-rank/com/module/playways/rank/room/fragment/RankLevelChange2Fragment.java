@@ -1,5 +1,6 @@
 package com.module.playways.rank.room.fragment;
 
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -57,6 +58,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.util.List;
 
+import static android.view.View.ALPHA;
 import static android.view.View.VISIBLE;
 
 public class RankLevelChange2Fragment extends BaseFragment {
@@ -66,18 +68,18 @@ public class RankLevelChange2Fragment extends BaseFragment {
     RelativeLayout mMainActContainer;
     ImageView mBackgroundIv;
     SVGAImageView mResultSvga;
+    RelativeLayout mRankArea;
     ExTextView mLevelDescTv;
     LevelStarProgressBar mLevelProgress;
-    RelativeLayout mResultArea;
     ExTextView mResultText;
     ExTextView mResultNum;
-    RelativeLayout mExperArea;
     ExTextView mExperTextTv;
     ExTextView mExperNumTv;
 
     RankRoomData mRoomData;
 
-    RotateAnimation mBgAnimation;    //背景转动
+    RotateAnimation mBgAnimation;    //背景转动动画
+    ObjectAnimator mAlphAnimation;   //文字和进度条出现动画
 
     Handler mUiHanlder;
 
@@ -95,12 +97,11 @@ public class RankLevelChange2Fragment extends BaseFragment {
         mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
         mBackgroundIv = (ImageView) mRootView.findViewById(R.id.background_iv);
         mResultSvga = (SVGAImageView) mRootView.findViewById(R.id.result_svga);
+        mRankArea = (RelativeLayout) mRootView.findViewById(R.id.rank_area);
         mLevelDescTv = (ExTextView) mRootView.findViewById(R.id.level_desc_tv);
         mLevelProgress = (LevelStarProgressBar) mRootView.findViewById(R.id.level_progress);
-        mResultArea = (RelativeLayout) mRootView.findViewById(R.id.result_area);
         mResultText = (ExTextView) mRootView.findViewById(R.id.result_text);
         mResultNum = (ExTextView) mRootView.findViewById(R.id.result_num);
-        mExperArea = (RelativeLayout) mRootView.findViewById(R.id.exper_area);
         mExperTextTv = (ExTextView) mRootView.findViewById(R.id.exper_text_tv);
         mExperNumTv = (ExTextView) mRootView.findViewById(R.id.exper_num_tv);
 
@@ -204,6 +205,7 @@ public class RankLevelChange2Fragment extends BaseFragment {
                             showOtherViews();
                         }
                     }, 1000);
+
                 }
 
                 @Override
@@ -284,30 +286,41 @@ public class RankLevelChange2Fragment extends BaseFragment {
 
     private void showOtherViews() {
         MyLog.d(TAG, "showOtherViews" + mScoreStateModel);
-        mLevelDescTv.setVisibility(VISIBLE);
+        mRankArea.setVisibility(VISIBLE);
         mLevelDescTv.setText(mScoreStateModel.getRankingDesc());
-        mLevelProgress.setVisibility(VISIBLE);
         int progress = 0;
         if (mScoreStateModel.getMaxStar() != 0) {
             progress = mScoreStateModel.getCurrExp() * 100 / mScoreStateModel.getMaxExp();
         }
         mLevelProgress.setCurProgress(progress);
-
-        mResultArea.setVisibility(VISIBLE);
-        mExperArea.setVisibility(VISIBLE);
-
         for (ScoreItemModel scoreItemModel : scoreResultModel.getExpChange()) {
             if (scoreItemModel.getIndex() == EExpWhy.GameWin.getValue()) {
-                mResultText.setText("胜利");
-                mResultNum.setText("" + scoreItemModel.getScore());
+                mResultText.setText("胜利:");
+                if (scoreItemModel.getScore() >= 0) {
+                    mResultNum.setText("+" + scoreItemModel.getScore());
+                } else {
+                    mResultNum.setText("" + scoreItemModel.getScore());
+                }
             } else if (scoreItemModel.getIndex() == EExpWhy.GameLose.getValue()) {
-                mResultText.setText("失败");
-                mResultNum.setText("" + scoreItemModel.getScore());
+                mResultText.setText("失败:");
+                if (scoreItemModel.getScore() >= 0) {
+                    mResultNum.setText("+" + scoreItemModel.getScore());
+                } else {
+                    mResultNum.setText("" + scoreItemModel.getScore());
+                }
             } else if (scoreItemModel.getIndex() == EExpWhy.GameBonus.getValue()) {
-                mExperNumTv.setText("" + scoreItemModel.getScore());
+                if (scoreItemModel.getScore() >= 0) {
+                    mExperNumTv.setText("+" + scoreItemModel.getScore());
+                } else {
+                    mExperNumTv.setText("" + scoreItemModel.getScore());
+                }
+
             }
         }
 
+        mAlphAnimation = ObjectAnimator.ofFloat(mRankArea, ALPHA, 0f, 1f);
+        mAlphAnimation.setDuration(1000);
+        mAlphAnimation.start();
     }
 
     private void goVoiceRoom(String from) {
@@ -342,6 +355,9 @@ public class RankLevelChange2Fragment extends BaseFragment {
         }
         if (mBgAnimation != null) {
             mBgAnimation.cancel();
+        }
+        if (mAlphAnimation != null) {
+            mAlphAnimation.cancel();
         }
         U.getSoundUtils().release(TAG);
     }

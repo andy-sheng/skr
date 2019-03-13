@@ -1502,6 +1502,10 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         if (line <= mLastLineNum) {
             return;
         }
+
+        if (score < 0) {
+            return;
+        }
         mLastLineNum = line;
         if (ScoreConfig.isMelpEnable() && ScoreConfig.isAcrEnable()) {
 
