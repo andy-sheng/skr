@@ -772,7 +772,7 @@ public abstract class AbstractLrcView extends View {
         }
     }
 
-    protected long getCurPlayingTime() {
+    public long getCurPlayingTime() {
         return mCurPlayingTime;
     }
 

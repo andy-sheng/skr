@@ -23,7 +23,7 @@ import com.module.rank.R;
 public class MoreOpView extends RelativeLayout {
 
     LinearLayout mMenuContainer;
-    RelativeLayout mVoiceAudition;
+    RelativeLayout mVoiceAudition;// 调音板
     ExTextView mVoiceAuditionBt;
     RelativeLayout mQuitBtnContainer;
     ExTextView mQuitBtn;
@@ -115,11 +115,12 @@ public class MoreOpView extends RelativeLayout {
         }
         if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
             mVoiceControlBtnContainer.setVisibility(GONE);
-            if (mRoomData.getGameType() == GameModeType.GAME_MODE_GRAB) {
-                mVoiceAudition.setVisibility(VISIBLE);
-            }
         } else {
             mVoiceControlBtnContainer.setVisibility(VISIBLE);
+        }
+        if (mRoomData.getGameType() == GameModeType.GAME_MODE_GRAB) {
+            mVoiceAudition.setVisibility(VISIBLE);
+        } else {
             mVoiceAudition.setVisibility(GONE);
         }
     }
