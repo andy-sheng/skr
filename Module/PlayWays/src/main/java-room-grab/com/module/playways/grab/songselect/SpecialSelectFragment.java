@@ -104,7 +104,7 @@ public class SpecialSelectFragment extends BaseFragment {
                         U.getSoundUtils().play(SpecialSelectFragment.TAG, R.raw.normal_click, 500);
                         goMatchFragment(model.getTagID());
                         HashMap map = new HashMap();
-                        map.put("tagId", String.valueOf(model.getTagID()));
+                        map.put("tagId2", String.valueOf(model.getTagID()));
                         StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
                                 StatConstants.KEY_MATCH_START, map);
                     }

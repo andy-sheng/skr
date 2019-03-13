@@ -170,7 +170,7 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
                                 .withSerializable("prepare_data", mPrepareData)
                                 .navigation();
                         HashMap map = new HashMap();
-                        map.put("songId", String.valueOf(mPrepareData.getSongModel().getItemID()));
+                        map.put("songId2", String.valueOf(mPrepareData.getSongModel().getItemID()));
                         StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK),
                                 StatConstants.KEY_MATCH_START, map);
                     }

@@ -112,7 +112,7 @@ public class RoundOverCardView extends RelativeLayout {
     private void startNoneSing(int songId) {
 //        U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.grab_nobodywants);
         HashMap map = new HashMap();
-        map.put("songId", String.valueOf(songId));
+        map.put("songId2", String.valueOf(songId));
         StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
                 StatConstants.KEY_SONG_NO_ONE, map);
         mNoneSingSvga.setVisibility(VISIBLE);
@@ -172,7 +172,7 @@ public class RoundOverCardView extends RelativeLayout {
     private void startPerfect(int songId) {
         U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.grab_challengewin);
         HashMap map = new HashMap();
-        map.put("song_id", String.valueOf(songId));
+        map.put("song_id2", String.valueOf(songId));
         StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
                 StatConstants.KEY_SONG_SUCCESS, map);
         mSingResultSvga.setVisibility(VISIBLE);
@@ -233,7 +233,7 @@ public class RoundOverCardView extends RelativeLayout {
     private void startFailed(int model, int songId) {
         U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.grab_challengelose);
         HashMap map = new HashMap();
-        map.put("song_id", String.valueOf(songId));
+        map.put("song_id2", String.valueOf(songId));
         StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
                 StatConstants.KEY_SONG_FAIL, map);
         mSingResultSvga.setVisibility(VISIBLE);
