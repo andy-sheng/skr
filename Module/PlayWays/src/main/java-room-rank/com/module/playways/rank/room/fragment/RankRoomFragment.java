@@ -997,7 +997,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     private void startGameEndAniamtion(boolean isGameOver) {
         // 提前加载音效
-        U.getSoundUtils().preLoad(RankLevelChangeFragment.TAG, R.raw.rank_win, R.raw.rank_lose);
+        U.getSoundUtils().preLoad(RankLevelChange2Fragment.TAG, R.raw.rank_win, R.raw.rank_lose);
         if (isGameEndAniamtionShow) {
             // 动画已经在播放
             if (isGameOver) {
@@ -1053,7 +1053,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         EventBus.getDefault().removeStickyEvent(RankToVoiceTransformDataEvent.class);
         EventBus.getDefault().postSticky(event);
         // 先播放段位动画
-        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankLevelChangeFragment.class)
+        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankLevelChange2Fragment.class)
                 .setAddToBackStack(true)
                 .setHasAnimation(false)
                 .addDataBeforeAdd(1, mRoomData)

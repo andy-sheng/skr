@@ -208,6 +208,7 @@ message UserScoreResult {
     repeated ScoreItem battleIndexChange = 4; //战力值变动详情，累加可以判断是增加还是减少
     EWinType winType = 5; //胜负平等等
     uint32 sss = 6; //战斗评价, sss or ss or s or a...
+    repeated ScoreItem expChange         = 7; //经验值变动详情
 }
 
 // 某个时刻的分值状态
@@ -222,6 +223,9 @@ message ScoreState {
     int64 currBattleIndex = 8; //当前战力分值
     int64 maxBattleIndex = 9; //战力分值上限
     int64 totalScore = 10; //用在段位排行榜中的总分值
+    int64 currExp            = 11; //子段位当前经验值
+    int64 maxExp             = 12; //子段位经验值上限
+    string rankingDesc       = 13; //白银歌者2段
 }
 
 enum EWinType {
@@ -230,6 +234,15 @@ enum EWinType {
     Draw = 2;
     Lose = 3;
 }
+
+enum EExpWhy
+{
+    InvalidEExpWhy = 0;
+    GameWin = 1; // 赢
+    GameLose = 2; // 输
+    GameBonus = 3; // 玩一局加经验值
+}
+
 
 // 分值变动条目
 message ScoreItem {

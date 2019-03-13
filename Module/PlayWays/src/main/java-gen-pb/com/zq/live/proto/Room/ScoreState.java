@@ -46,6 +46,12 @@ public final class ScoreState extends Message<ScoreState, ScoreState.Builder> {
 
   public static final Long DEFAULT_TOTALSCORE = 0L;
 
+  public static final Long DEFAULT_CURREXP = 0L;
+
+  public static final Long DEFAULT_MAXEXP = 0L;
+
+  public static final String DEFAULT_RANKINGDESC = "";
+
   @WireField(
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#UINT32"
@@ -133,15 +139,42 @@ public final class ScoreState extends Message<ScoreState, ScoreState.Builder> {
   )
   private final Long totalScore;
 
+  /**
+   * 子段位当前经验值
+   */
+  @WireField(
+      tag = 11,
+      adapter = "com.squareup.wire.ProtoAdapter#INT64"
+  )
+  private final Long currExp;
+
+  /**
+   * 子段位经验值上限
+   */
+  @WireField(
+      tag = 12,
+      adapter = "com.squareup.wire.ProtoAdapter#INT64"
+  )
+  private final Long maxExp;
+
+  /**
+   * 白银歌者2段
+   */
+  @WireField(
+      tag = 13,
+      adapter = "com.squareup.wire.ProtoAdapter#STRING"
+  )
+  private final String rankingDesc;
+
   public ScoreState(Integer userID, Integer seq, Long mainRanking, Long subRanking, Long currStar,
       Long maxStar, Long protectBattleIndex, Long currBattleIndex, Long maxBattleIndex,
-      Long totalScore) {
-    this(userID, seq, mainRanking, subRanking, currStar, maxStar, protectBattleIndex, currBattleIndex, maxBattleIndex, totalScore, ByteString.EMPTY);
+      Long totalScore, Long currExp, Long maxExp, String rankingDesc) {
+    this(userID, seq, mainRanking, subRanking, currStar, maxStar, protectBattleIndex, currBattleIndex, maxBattleIndex, totalScore, currExp, maxExp, rankingDesc, ByteString.EMPTY);
   }
 
   public ScoreState(Integer userID, Integer seq, Long mainRanking, Long subRanking, Long currStar,
       Long maxStar, Long protectBattleIndex, Long currBattleIndex, Long maxBattleIndex,
-      Long totalScore, ByteString unknownFields) {
+      Long totalScore, Long currExp, Long maxExp, String rankingDesc, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
     this.seq = seq;
@@ -153,6 +186,9 @@ public final class ScoreState extends Message<ScoreState, ScoreState.Builder> {
     this.currBattleIndex = currBattleIndex;
     this.maxBattleIndex = maxBattleIndex;
     this.totalScore = totalScore;
+    this.currExp = currExp;
+    this.maxExp = maxExp;
+    this.rankingDesc = rankingDesc;
   }
 
   @Override
@@ -168,6 +204,9 @@ public final class ScoreState extends Message<ScoreState, ScoreState.Builder> {
     builder.currBattleIndex = currBattleIndex;
     builder.maxBattleIndex = maxBattleIndex;
     builder.totalScore = totalScore;
+    builder.currExp = currExp;
+    builder.maxExp = maxExp;
+    builder.rankingDesc = rankingDesc;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -187,7 +226,10 @@ public final class ScoreState extends Message<ScoreState, ScoreState.Builder> {
         && Internal.equals(protectBattleIndex, o.protectBattleIndex)
         && Internal.equals(currBattleIndex, o.currBattleIndex)
         && Internal.equals(maxBattleIndex, o.maxBattleIndex)
-        && Internal.equals(totalScore, o.totalScore);
+        && Internal.equals(totalScore, o.totalScore)
+        && Internal.equals(currExp, o.currExp)
+        && Internal.equals(maxExp, o.maxExp)
+        && Internal.equals(rankingDesc, o.rankingDesc);
   }
 
   @Override
@@ -205,6 +247,9 @@ public final class ScoreState extends Message<ScoreState, ScoreState.Builder> {
       result = result * 37 + (currBattleIndex != null ? currBattleIndex.hashCode() : 0);
       result = result * 37 + (maxBattleIndex != null ? maxBattleIndex.hashCode() : 0);
       result = result * 37 + (totalScore != null ? totalScore.hashCode() : 0);
+      result = result * 37 + (currExp != null ? currExp.hashCode() : 0);
+      result = result * 37 + (maxExp != null ? maxExp.hashCode() : 0);
+      result = result * 37 + (rankingDesc != null ? rankingDesc.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -223,6 +268,9 @@ public final class ScoreState extends Message<ScoreState, ScoreState.Builder> {
     if (currBattleIndex != null) builder.append(", currBattleIndex=").append(currBattleIndex);
     if (maxBattleIndex != null) builder.append(", maxBattleIndex=").append(maxBattleIndex);
     if (totalScore != null) builder.append(", totalScore=").append(totalScore);
+    if (currExp != null) builder.append(", currExp=").append(currExp);
+    if (maxExp != null) builder.append(", maxExp=").append(maxExp);
+    if (rankingDesc != null) builder.append(", rankingDesc=").append(rankingDesc);
     return builder.replace(0, 2, "ScoreState{").append('}').toString();
   }
 
@@ -333,6 +381,36 @@ public final class ScoreState extends Message<ScoreState, ScoreState.Builder> {
     return totalScore;
   }
 
+  /**
+   * 子段位当前经验值
+   */
+  public Long getCurrExp() {
+    if(currExp==null){
+        return DEFAULT_CURREXP;
+    }
+    return currExp;
+  }
+
+  /**
+   * 子段位经验值上限
+   */
+  public Long getMaxExp() {
+    if(maxExp==null){
+        return DEFAULT_MAXEXP;
+    }
+    return maxExp;
+  }
+
+  /**
+   * 白银歌者2段
+   */
+  public String getRankingDesc() {
+    if(rankingDesc==null){
+        return DEFAULT_RANKINGDESC;
+    }
+    return rankingDesc;
+  }
+
   public boolean hasUserID() {
     return userID!=null;
   }
@@ -400,6 +478,27 @@ public final class ScoreState extends Message<ScoreState, ScoreState.Builder> {
     return totalScore!=null;
   }
 
+  /**
+   * 子段位当前经验值
+   */
+  public boolean hasCurrExp() {
+    return currExp!=null;
+  }
+
+  /**
+   * 子段位经验值上限
+   */
+  public boolean hasMaxExp() {
+    return maxExp!=null;
+  }
+
+  /**
+   * 白银歌者2段
+   */
+  public boolean hasRankingDesc() {
+    return rankingDesc!=null;
+  }
+
   public static final class Builder extends Message.Builder<ScoreState, Builder> {
     private Integer userID;
 
@@ -420,6 +519,12 @@ public final class ScoreState extends Message<ScoreState, ScoreState.Builder> {
     private Long maxBattleIndex;
 
     private Long totalScore;
+
+    private Long currExp;
+
+    private Long maxExp;
+
+    private String rankingDesc;
 
     public Builder() {
     }
@@ -501,9 +606,33 @@ public final class ScoreState extends Message<ScoreState, ScoreState.Builder> {
       return this;
     }
 
+    /**
+     * 子段位当前经验值
+     */
+    public Builder setCurrExp(Long currExp) {
+      this.currExp = currExp;
+      return this;
+    }
+
+    /**
+     * 子段位经验值上限
+     */
+    public Builder setMaxExp(Long maxExp) {
+      this.maxExp = maxExp;
+      return this;
+    }
+
+    /**
+     * 白银歌者2段
+     */
+    public Builder setRankingDesc(String rankingDesc) {
+      this.rankingDesc = rankingDesc;
+      return this;
+    }
+
     @Override
     public ScoreState build() {
-      return new ScoreState(userID, seq, mainRanking, subRanking, currStar, maxStar, protectBattleIndex, currBattleIndex, maxBattleIndex, totalScore, super.buildUnknownFields());
+      return new ScoreState(userID, seq, mainRanking, subRanking, currStar, maxStar, protectBattleIndex, currBattleIndex, maxBattleIndex, totalScore, currExp, maxExp, rankingDesc, super.buildUnknownFields());
     }
   }
 
@@ -524,6 +653,9 @@ public final class ScoreState extends Message<ScoreState, ScoreState.Builder> {
           + ProtoAdapter.INT64.encodedSizeWithTag(8, value.currBattleIndex)
           + ProtoAdapter.INT64.encodedSizeWithTag(9, value.maxBattleIndex)
           + ProtoAdapter.INT64.encodedSizeWithTag(10, value.totalScore)
+          + ProtoAdapter.INT64.encodedSizeWithTag(11, value.currExp)
+          + ProtoAdapter.INT64.encodedSizeWithTag(12, value.maxExp)
+          + ProtoAdapter.STRING.encodedSizeWithTag(13, value.rankingDesc)
           + value.unknownFields().size();
     }
 
@@ -539,6 +671,9 @@ public final class ScoreState extends Message<ScoreState, ScoreState.Builder> {
       ProtoAdapter.INT64.encodeWithTag(writer, 8, value.currBattleIndex);
       ProtoAdapter.INT64.encodeWithTag(writer, 9, value.maxBattleIndex);
       ProtoAdapter.INT64.encodeWithTag(writer, 10, value.totalScore);
+      ProtoAdapter.INT64.encodeWithTag(writer, 11, value.currExp);
+      ProtoAdapter.INT64.encodeWithTag(writer, 12, value.maxExp);
+      ProtoAdapter.STRING.encodeWithTag(writer, 13, value.rankingDesc);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -558,6 +693,9 @@ public final class ScoreState extends Message<ScoreState, ScoreState.Builder> {
           case 8: builder.setCurrBattleIndex(ProtoAdapter.INT64.decode(reader)); break;
           case 9: builder.setMaxBattleIndex(ProtoAdapter.INT64.decode(reader)); break;
           case 10: builder.setTotalScore(ProtoAdapter.INT64.decode(reader)); break;
+          case 11: builder.setCurrExp(ProtoAdapter.INT64.decode(reader)); break;
+          case 12: builder.setMaxExp(ProtoAdapter.INT64.decode(reader)); break;
+          case 13: builder.setRankingDesc(ProtoAdapter.STRING.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

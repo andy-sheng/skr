@@ -37,6 +37,7 @@ import com.module.playways.rank.room.RoomServerApi;
 import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.rank.room.model.UserGameResultModel;
 import com.module.playways.rank.room.model.VoteInfoModel;
+import com.module.playways.rank.room.model.score.ScoreItemModel;
 import com.module.playways.rank.room.model.score.ScoreResultModel;
 import com.module.playways.rank.room.model.score.ScoreStateModel;
 import com.module.rank.R;
@@ -48,6 +49,7 @@ import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.zq.level.utils.LevelConfigUtils;
 import com.zq.level.view.LevelStarProgressBar;
+import com.zq.live.proto.Room.EExpWhy;
 import com.zq.live.proto.Room.EWinType;
 
 import org.jetbrains.annotations.NotNull;
@@ -58,6 +60,8 @@ import java.util.List;
 import static android.view.View.VISIBLE;
 
 public class RankLevelChange2Fragment extends BaseFragment {
+
+    public final static String TAG = "RankLevelChange2Fragment";
 
     RelativeLayout mMainActContainer;
     ImageView mBackgroundIv;
@@ -78,6 +82,8 @@ public class RankLevelChange2Fragment extends BaseFragment {
     Handler mUiHanlder;
 
     ScoreStateModel mScoreStateModel;
+
+    ScoreResultModel scoreResultModel;
 
     @Override
     public int initView() {
@@ -105,6 +111,14 @@ public class RankLevelChange2Fragment extends BaseFragment {
         } else {
             getGameResult();
         }
+
+        // 加入保护，最多
+        mUiHanlder.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                goVoiceRoom("proctec");
+            }
+        }, 6000);
     }
 
     @Override
@@ -150,6 +164,7 @@ public class RankLevelChange2Fragment extends BaseFragment {
     private void animationGo() {
         boolean isWin = false;
         String assetsName = "";
+        scoreResultModel = mRoomData.getRecordData().mScoreResultModel;
         mScoreStateModel = mRoomData.getRecordData().mScoreResultModel.getSeq(3);
         if (mRoomData.getRecordData().getSelfWinType() == EWinType.Win.getValue()) {
             mBackgroundIv.setBackground(getResources().getDrawable(R.drawable.zhanji_win_guangquan));
@@ -182,6 +197,13 @@ public class RankLevelChange2Fragment extends BaseFragment {
                     } else {
                         U.getSoundUtils().play(TAG, R.raw.rank_lose);
                     }
+
+                    mUiHanlder.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            showOtherViews();
+                        }
+                    }, 1000);
                 }
 
                 @Override
@@ -206,7 +228,7 @@ public class RankLevelChange2Fragment extends BaseFragment {
                     mResultSvga.stopAnimation(false);
                 }
 
-                showOtherViews();
+                goVoiceRoom("endAnimation");
             }
 
             @Override
@@ -261,14 +283,31 @@ public class RankLevelChange2Fragment extends BaseFragment {
     }
 
     private void showOtherViews() {
-        // TODO: 2019/3/13 段位描述，待补充
+        MyLog.d(TAG, "showOtherViews" + mScoreStateModel);
         mLevelDescTv.setVisibility(VISIBLE);
-        // TODO: 2019/3/13 进度条描述，待补充
+        mLevelDescTv.setText(mScoreStateModel.getRankingDesc());
         mLevelProgress.setVisibility(VISIBLE);
-        mLevelProgress.setCurProgress(40);
+        int progress = 0;
+        if (mScoreStateModel.getMaxStar() != 0) {
+            progress = mScoreStateModel.getCurrExp() * 100 / mScoreStateModel.getMaxExp();
+        }
+        mLevelProgress.setCurProgress(progress);
 
         mResultArea.setVisibility(VISIBLE);
         mExperArea.setVisibility(VISIBLE);
+
+        for (ScoreItemModel scoreItemModel : scoreResultModel.getExpChange()) {
+            if (scoreItemModel.getIndex() == EExpWhy.GameWin.getValue()) {
+                mResultText.setText("胜利");
+                mResultNum.setText("" + scoreItemModel.getScore());
+            } else if (scoreItemModel.getIndex() == EExpWhy.GameLose.getValue()) {
+                mResultText.setText("失败");
+                mResultNum.setText("" + scoreItemModel.getScore());
+            } else if (scoreItemModel.getIndex() == EExpWhy.GameBonus.getValue()) {
+                mExperNumTv.setText("" + scoreItemModel.getScore());
+            }
+        }
+
     }
 
     private void goVoiceRoom(String from) {
@@ -290,7 +329,21 @@ public class RankLevelChange2Fragment extends BaseFragment {
                             StatConstants.KEY_GAME_FINISH, null);
                 }
             }
-        }, 3000);
+        }, 1000);
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        mUiHanlder.removeCallbacksAndMessages(null);
+        if (mResultSvga != null) {
+            mResultSvga.setCallback(null);
+            mResultSvga.stopAnimation(false);
+        }
+        if (mBgAnimation != null) {
+            mBgAnimation.cancel();
+        }
+        U.getSoundUtils().release(TAG);
     }
 
     @Override

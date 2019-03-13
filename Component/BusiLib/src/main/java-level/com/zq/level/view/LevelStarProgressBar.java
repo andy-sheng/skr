@@ -38,6 +38,8 @@ public class LevelStarProgressBar extends View {
     float extendX = 0;// 如果到100% ，斜边矩形是会往外延伸的
     int mCurProgress = 0;// 当前进度
 
+    int offset = 0;
+
     double arc = Math.PI; // 角度
 
     public LevelStarProgressBar(Context context) {
@@ -69,6 +71,8 @@ public class LevelStarProgressBar extends View {
         w4 = mStarDrawable.getIntrinsicWidth();
         h4 = mStarDrawable.getIntrinsicHeight();
 
+        offset = w4 / 2;
+
         ty = (h1 - h2) / 2;
         tx = (w1 - w2) / 2;
         tStar = (h1 - h4) / 2;
@@ -85,29 +89,29 @@ public class LevelStarProgressBar extends View {
         super.onDraw(canvas);
 
         // 底部背景
-        mBgDrawable.setBounds(0, (h3 - h1) / 2, w1, h1 + (h3 - h1) / 2);
+        mBgDrawable.setBounds(offset, (h3 - h1) / 2, w1 + offset, h1 + (h3 - h1) / 2);
         mBgDrawable.draw(canvas);
         canvas.save();
 
         // 进度条
         float temp = mCurProgress * (w1 + extendX - sx) / 100.0f;
         Path path = new Path();
-        path.lineTo(temp + sx, 0);
-        path.lineTo(temp + sx - px, h1 + (h3 - h1) / 2);
-        path.lineTo(0, h1 + (h3 - h1) / 2);
+        path.lineTo(temp + sx + offset, 0);
+        path.lineTo(temp + sx - px + offset, h1 + (h3 - h1) / 2);
+        path.lineTo(0 + offset, h1 + (h3 - h1) / 2);
         path.close();
         canvas.clipPath(path);
-        mPrDrawable.setBounds(tx, ty + (h3 - h1) / 2, w2 + tx, h2 + ty + (h3 - h1) / 2);
+        mPrDrawable.setBounds(tx + offset, ty + (h3 - h1) / 2, w2 + tx + offset, h2 + ty + (h3 - h1) / 2);
         mPrDrawable.draw(canvas);
         canvas.restore();
 
         // 光圈用图替换，发光点
         float cx = temp + sx - px / 2;
-        mLightDrawable.setBounds((int) (cx - w3 / 2), 0, w3 + (int) (cx - w3 / 2), h3);
+        mLightDrawable.setBounds((int) (cx - w3 / 2) + offset, 0, w3 + (int) (cx - w3 / 2) + offset, h3);
         mLightDrawable.draw(canvas);
 
         // 星星
-        mStarDrawable.setBounds(tStar, (h3 - h4) / 2, tStar + w4, h4 + (h3 - h4) / 2);
+        mStarDrawable.setBounds(tStar + offset, (h3 - h4) / 2, tStar + w4 + offset, h4 + (h3 - h4) / 2);
         mStarDrawable.draw(canvas);
     }
 
