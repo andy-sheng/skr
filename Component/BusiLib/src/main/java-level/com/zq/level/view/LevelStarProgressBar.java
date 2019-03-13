@@ -113,5 +113,6 @@ public class LevelStarProgressBar extends View {
 
     public void setCurProgress(int curProgress) {
         mCurProgress = curProgress;
+        invalidate();
     }
 }
