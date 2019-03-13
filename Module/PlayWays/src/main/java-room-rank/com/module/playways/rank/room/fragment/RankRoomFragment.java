@@ -1000,26 +1000,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         }
     }
 
-    public void showRecordView() {
-        MyLog.d(TAG, "showRecordView" + " recordData=" + mRoomData.getRecordData());
-        mBottomContainerView.dismissPopWindow();
-        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankRecordFragment.class)
-                .setAddToBackStack(true)
-                .addDataBeforeAdd(1, mRoomData)
-                .build()
-        );
-    }
-
-    public void showVoteView() {
-        MyLog.d(TAG, "showVoteView");
-        mBottomContainerView.dismissPopWindow();
-        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), EvaluationFragment.class)
-                .setAddToBackStack(true)
-                .addDataBeforeAdd(0, mRoomData)
-                .build()
-        );
-    }
-
     private void startGameEndAniamtion(boolean isGameOver) {
         // 提前加载音效
         U.getSoundUtils().preLoad(RankLevelChangeFragment.TAG, R.raw.rank_win, R.raw.rank_lose);

@@ -21,14 +21,12 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.constans.GameModeType;
-import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.audioroom.AudioRoomActivity;
 import com.module.playways.PlayWaysActivity;
 import com.module.playways.rank.prepare.fragment.AuditionFragment;
 import com.module.playways.rank.prepare.fragment.AuditionPrepareResFragment;
 import com.module.playways.rank.prepare.fragment.PrepareResFragment;
 import com.module.playways.rank.prepare.model.PrepareData;
-import com.module.playways.rank.room.fragment.RankRecordFragment;
 import com.module.playways.rank.song.adapter.SongCardSwipAdapter;
 import com.module.playways.rank.song.flingswipe.SwipeFlingAdapterView;
 import com.module.playways.rank.song.model.SongCardModel;
@@ -36,11 +34,9 @@ import com.module.playways.rank.song.model.SongModel;
 import com.module.playways.rank.song.presenter.SongTagDetailsPresenter;
 import com.module.playways.rank.song.view.ISongTagDetailView;
 import com.module.rank.R;
-import com.umeng.socialize.media.Base;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import static com.module.playways.PlayWaysActivity.KEY_GAME_TYPE;
 
@@ -263,7 +259,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
     private void switchToClicked() {
         Bundle bundle = new Bundle();
         bundle.putInt(KEY_GAME_TYPE, mGameType);
-        U.getSoundUtils().play(RankRecordFragment.TAG, R.raw.normal_click);
+        U.getSoundUtils().play(SongSelectFragment.TAG, R.raw.normal_click);
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), HistorySongFragment.class)
                 .setAddToBackStack(true)
                 .setHasAnimation(true)

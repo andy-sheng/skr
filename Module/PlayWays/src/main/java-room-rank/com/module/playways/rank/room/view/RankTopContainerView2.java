@@ -11,16 +11,13 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.common.core.account.UserAccountManager;
 import com.common.log.MyLog;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
-import com.module.playways.BaseRoomData;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.listener.SVGAListener;
-import com.module.playways.rank.room.fragment.RankRecordFragment;
 import com.module.playways.rank.room.model.RankGameConfigModel;
 import com.module.playways.rank.room.model.PkScoreTipMsgModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;

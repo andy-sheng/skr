@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.ScaleAnimation;
-import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
 
 import com.common.core.account.UserAccountManager;
@@ -22,7 +21,6 @@ import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.room.RankRoomData;
 import com.module.playways.rank.room.event.PkMyBurstSuccessEvent;
 import com.module.playways.rank.room.event.PkMyLightOffSuccessEvent;
-import com.module.playways.rank.room.fragment.RankRecordFragment;
 import com.module.rank.R;
 
 import java.util.HashSet;
