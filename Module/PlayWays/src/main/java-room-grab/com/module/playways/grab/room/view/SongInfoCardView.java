@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.common.base.BaseActivity;
+import com.common.core.crash.IgnoreException;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
 import com.common.image.model.oss.OssImgFactory;
@@ -162,14 +163,14 @@ public class SongInfoCardView extends RelativeLayout {
                         emitter.onComplete();
                     } else {
                         MyLog.w(TAG, "Error");
-                        emitter.onError(new Throwable("重命名错误"));
+                        emitter.onError(new IgnoreException("重命名错误"));
                     }
                 } else {
-                    emitter.onError(new Throwable("下载失败"+TAG));
+                    emitter.onError(new IgnoreException("下载失败" + TAG));
                 }
             }
         }).subscribeOn(Schedulers.io())
-                .compose(((BaseActivity)getContext()).bindUntilEvent(ActivityEvent.DESTROY))
+                .compose(((BaseActivity) getContext()).bindUntilEvent(ActivityEvent.DESTROY))
                 .observeOn(AndroidSchedulers.mainThread())
                 .retryWhen(new RxRetryAssist(5, 1, false))
                 .subscribe(file -> {
@@ -197,7 +198,7 @@ public class SongInfoCardView extends RelativeLayout {
 
                 emitter.onComplete();
             }
-        }).compose(((BaseActivity)getContext()).bindUntilEvent(ActivityEvent.DESTROY))
+        }).compose(((BaseActivity) getContext()).bindUntilEvent(ActivityEvent.DESTROY))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io()).subscribe(new Consumer<String>() {
             @Override
