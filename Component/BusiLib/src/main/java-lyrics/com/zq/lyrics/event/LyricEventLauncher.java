@@ -58,14 +58,24 @@ public class LyricEventLauncher {
                     Message msg = mUiHandler.obtainMessage(MSG_LYRIC_START_EVENT);
                     msg.arg1 = lineNum;
                     msg.obj = extra;
-                    mUiHandler.sendMessageDelayed(msg, entry.getValue().getStartTime() - accBeginTs);
+                    int t = entry.getValue().getStartTime() - accBeginTs;
+                    if (t > 0) {
+                        mUiHandler.sendMessageDelayed(msg, t);
+                    } else {
+                        mUiHandler.sendMessage(msg);
+                    }
                 }
             }
             {
                 Message msg = mUiHandler.obtainMessage(MSG_LYRIC_LINE_START_EVENT);
                 msg.arg1 = lineNum;
                 msg.obj = extra;
-                mUiHandler.sendMessageDelayed(msg, entry.getValue().getStartTime() - accBeginTs);
+                int t = entry.getValue().getStartTime() - accBeginTs;
+                if (t > 0) {
+                    mUiHandler.sendMessageDelayed(msg, t);
+                } else {
+//                    mUiHandler.sendMessage(msg);
+                }
             }
             {
                 Message msg = mUiHandler.obtainMessage(MSG_LYRIC_LINE_END_EVENT);
@@ -75,7 +85,12 @@ public class LyricEventLauncher {
                     //dev 环境会一下把所有都发出来
                     mUiHandler.sendMessageDelayed(msg, accEndTs - accBeginTs);
                 } else {
-                    mUiHandler.sendMessageDelayed(msg, entry.getValue().getEndTime() - accBeginTs);
+                    int t = entry.getValue().getEndTime() - accBeginTs;
+                    if (t > 0) {
+                        mUiHandler.sendMessageDelayed(msg, t);
+                    } else {
+//                    mUiHandler.sendMessage(msg);
+                    }
                 }
             }
             eventNum++;

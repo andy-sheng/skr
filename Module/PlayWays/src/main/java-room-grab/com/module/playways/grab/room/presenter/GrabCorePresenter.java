@@ -338,10 +338,11 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                             if (lineNo > mLastLineNum) {
                                 // 使用最新的打分方案做优化
                                 int score1 = EngineManager.getInstance().getLineScore();
-                                int score2 = 0;
+                                int score2 = -1;
                                 if (targetSongInfo != null) {
                                     score2 = (int) (targetSongInfo.getScore() * 100);
                                 }
+                                MyLog.d(TAG, "lineNo=" + lineNo + " melp打分=" + score1 + " acr打分=" + score2);
                                 if (ScoreConfig.isMelpEnable()) {
                                     if (score1 > score2) {
                                         processScore(score1, lineNo);
@@ -1525,6 +1526,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     }
 
     void processScore(int score, int line) {
+        if (score < 0) {
+            return;
+        }
         if (line <= mLastLineNum) {
             return;
         }
