@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
+import com.common.log.MyLog;
 import com.zq.lyrics.LyricsReader;
 import com.zq.lyrics.model.LyricsLineInfo;
 
@@ -13,6 +14,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class LyricEventLauncher {
+    public final static String TAG = "LyricEventLauncher";
     //模拟机器人打分事件
     static final int MSG_LYRIC_LINE_END_EVENT = 11;//某行结束
     static final int MSG_LYRIC_LINE_START_EVENT = 12;//某行开始
@@ -95,8 +97,13 @@ public class LyricEventLauncher {
             }
             eventNum++;
         }
+        MyLog.d(TAG, "postLyricEvent 一共" + eventNum + "行");
         return eventNum;
     }
 
+    public static class LyricInfo {
+        String lyricString;
+        Object extra;
+    }
 
 }

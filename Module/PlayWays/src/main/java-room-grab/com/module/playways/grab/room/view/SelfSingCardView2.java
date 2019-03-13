@@ -72,6 +72,7 @@ public class SelfSingCardView2 extends RelativeLayout {
 
     LyricEventLauncher mLyricEventLauncher = new LyricEventLauncher();
     LyricsReader mLyricsReader;
+    // 按理 歌词 和 伴奏 都ok了 才抛出歌词end事件，但事件的时间戳要做矫正
     boolean mAccLoadOk = false;
     boolean mLryLoadOk = false;
 

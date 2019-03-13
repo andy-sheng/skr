@@ -242,6 +242,7 @@ public class ArcCloudManager implements IACRCloudListener {
         if (this.mClient != null) {
             if (mLength >= BUFFER_LEN) {
                 if (!mProcessing) {
+                    mProcessing = true;
                     int len = mLength;
                     final byte[] arr = new byte[len];
                     System.arraycopy(mBuffer, 0, arr, 0, len);
@@ -327,6 +328,7 @@ public class ArcCloudManager implements IACRCloudListener {
                                 }
                                 process(result, lineNo);
                             }
+                            mProcessing = false;
                             long duration = System.currentTimeMillis() - beginTs;
                             // 打点统计acr的耗时
                             StatisticsAdapter.recordCalculateEvent("acr", "recognize_haoshi", duration, null);
