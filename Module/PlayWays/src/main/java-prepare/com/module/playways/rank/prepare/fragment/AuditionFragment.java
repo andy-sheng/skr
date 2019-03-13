@@ -209,7 +209,6 @@ public class AuditionFragment extends BaseFragment {
                     mPrgressBar.setMax(360);
                     mPrgressBar.setProgress(0);
                     mFlProgressRoot.setVisibility(View.VISIBLE);
-                    mVoiceControlPanelView.setVisibility(View.VISIBLE);
                     mRlControlContainer.setVisibility(View.GONE);
                     mIvRecordStart.setVisibility(View.VISIBLE);
                     mTvRecordStop.setVisibility(View.GONE);
@@ -404,7 +403,6 @@ public class AuditionFragment extends BaseFragment {
         mTvRecordStop.setVisibility(View.GONE);
         mRlControlContainer.setVisibility(View.VISIBLE);
         mFlProgressRoot.setVisibility(View.GONE);
-        mVoiceControlPanelView.setVisibility(View.GONE);
         mIvPlay.setEnabled(false);
 
         playRecord();
