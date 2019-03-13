@@ -16,6 +16,7 @@ import com.common.core.avatar.AvatarUtils;
 import com.common.image.fresco.BaseImageView;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
@@ -92,9 +93,7 @@ public class GiftContinuousView extends RelativeLayout {
         mDescTv = (ExTextView) this.findViewById(R.id.desc_tv);
         mGiftImgIv = (BaseImageView) this.findViewById(R.id.gift_img_iv);
         mGiftNumTv = (ExTextView) this.findViewById(R.id.gift_num_tv);
-        mSenderNameTv = (ExTextView)this.findViewById(R.id.sender_name_tv);
-
-
+        mSenderNameTv = (ExTextView) this.findViewById(R.id.sender_name_tv);
     }
 
     public boolean play(GiftPlayModel model) {
@@ -190,7 +189,6 @@ public class GiftContinuousView extends RelativeLayout {
 
     private void onPlayOver() {
         mCurStatus = STATUS_IDLE;
-
         this.setVisibility(GONE);
         if (mListener != null) {
             mListener.onPlayOver(this, mCurGiftPlayModel);
@@ -199,6 +197,7 @@ public class GiftContinuousView extends RelativeLayout {
     }
 
     public boolean isIdle() {
+        MyLog.d(TAG + hashCode(), "isIdle mCurStatus=" + mCurStatus);
         return mCurStatus == STATUS_IDLE;
     }
 
@@ -234,6 +233,10 @@ public class GiftContinuousView extends RelativeLayout {
         if (mStep1Animator != null) {
             mStep1Animator.cancel();
         }
+        if (mStep2Animator != null) {
+            mStep2Animator.cancel();
+        }
+        mCurStatus = STATUS_IDLE;
         if (mUiHandler != null) {
             mUiHandler.removeCallbacksAndMessages(null);
         }

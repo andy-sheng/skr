@@ -231,8 +231,6 @@ public class SongInfoCardView extends RelativeLayout {
                 mLeaveTranslateAnimation = new TranslateAnimation(0.0F, U.getDisplayUtils().getScreenWidth(), 0.0F, 0.0F);
                 mLeaveTranslateAnimation.setDuration(200);
             }
-
-            this.startAnimation(mLeaveTranslateAnimation);
             mLeaveTranslateAnimation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
@@ -253,6 +251,7 @@ public class SongInfoCardView extends RelativeLayout {
 
                 }
             });
+            this.startAnimation(mLeaveTranslateAnimation);
         } else {
             if (mRotateAnimation != null) {
                 mRotateAnimation.cancel();
