@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_act_container"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F9F4F1">
@@ -22,13 +23,146 @@
         app:rightType="textView"
         app:showBottomLine="false"
         app:statusBarColor="#0288D0"
-        app:titleBarColor="#0288D0"></com.common.view.titlebar.CommonTitleBar>
+        app:titleBarColor="#0288D0"/>
 
-    <TextView
-        android:id="@+id/tv_certification"
+    <RelativeLayout
         android:layout_below="@+id/titlebar"
-        android:text="认证"
-        android:textSize="@dimen/view_60_dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-</RelativeLayout>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <View
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_154_dp"/>
+
+        <TextView
+            android:textSize="@dimen/view_18_dp"
+            android:id="@+id/tv_withdraw_cash"
+            android:layout_marginTop="@dimen/view_20_dp"
+            android:textColor="#0C2275"
+            android:layout_marginLeft="@dimen/view_16_dp"
+            android:text="提现金额"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/iv_attention"
+            android:layout_marginRight="@dimen/view_20_dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/tv_withdraw_cash"
+            android:background="@drawable/tixian_guizeshuoming"
+            android:layout_width="@dimen/view_20_dp"
+            android:layout_height="@dimen/view_20_dp" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/ll_input"
+            android:layout_marginLeft="@dimen/view_16_dp"
+            android:layout_marginTop="@dimen/view_22_dp"
+            android:layout_below="@+id/tv_withdraw_cash"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_42_dp">
+
+            <TextView
+                android:textColor="#0C2275"
+                android:textSize="@dimen/view_30_dp"
+                android:text="¥"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            
+            <com.common.view.ex.NoLeakEditText
+                android:inputType="numberDecimal|numberSigned"
+                android:hint="请输入提现金额"
+                android:id="@+id/edit_cash_num"
+                android:layout_marginLeft="@dimen/view_3_dp"
+                android:background="@null"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+        <View
+            android:layout_marginTop="@dimen/view_6_dp"
+            android:id="@+id/divider"
+            android:background="#D8D8D8"
+            android:layout_below="@+id/ll_input"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_1_dp"/>
+
+        <TextView
+            android:id="@+id/tv_tip"
+            android:text=""
+            android:textSize="@dimen/textsize_12_dp"
+            android:textColor="#B7BED5"
+            android:layout_marginLeft="@dimen/view_20_dp"
+            android:gravity="center_vertical"
+            android:layout_below="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_37_dp" />
+        
+        <LinearLayout
+            android:id="@+id/ll_channel"
+            android:layout_marginTop="@dimen/view_16_dp"
+            android:background="@color/white"
+            android:paddingRight="@dimen/view_20_dp"
+            android:paddingLeft="@dimen/view_20_dp"
+            android:layout_below="@+id/tv_tip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_57_dp">
+                <ImageView
+                    android:background="@drawable/shimingrenzheng_weixin"
+                    android:id="@+id/wx_icon"
+                    android:layout_centerVertical="true"
+                    android:layout_width="@dimen/view_36_dp"
+                    android:layout_height="@dimen/view_36_dp" />
+
+                <TextView
+                    android:textColor="#0C2275"
+                    android:textSize="@dimen/textsize_16_dp"
+                    android:layout_marginLeft="@dimen/view_8_dp"
+                    android:layout_toRightOf="@+id/wx_icon"
+                    android:layout_centerVertical="true"
+                    android:text="微信"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/tv_has_not_bind_tip"
+                    android:layout_marginLeft="@dimen/view_45_dp"
+                    android:layout_toRightOf="@+id/wx_icon"
+                    android:layout_centerVertical="true"
+                    android:text="(未绑定)"
+                    android:textColor="#EF5E85"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <com.common.view.ex.ExTextView
+                    android:id="@+id/tv_wx_select"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    app:bl_selected_drawable="@drawable/shimingrenzheng_xuanze"
+                    app:bl_unSelected_drawable="@drawable/tixian_weixuanzhong"
+                    android:layout_width="@dimen/view_20_dp"
+                    android:layout_height="@dimen/view_20_dp" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <com.common.view.ex.ExTextView
+            android:paddingBottom="@dimen/view_7_dp"
+            android:textSize="@dimen/textsize_20_dp"
+            android:gravity="center"
+            android:text="立即提现"
+            app:bl_enabled_textColor="#0C2275"
+            app:bl_unEnabled_textColor="#8F98BE"
+            android:id="@+id/tv_withdraw_btn"
+            app:bl_enabled_drawable="@drawable/img_btn_bg_yellow"
+            app:bl_unEnabled_drawable="@drawable/img_btn_bg_gray"
+            android:layout_marginTop="@dimen/view_28_dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/ll_channel"
+            android:layout_width="@dimen/view_206_dp"
+            android:layout_height="@dimen/view_54_dp" />
+    </RelativeLayout>
+</LinearLayout>

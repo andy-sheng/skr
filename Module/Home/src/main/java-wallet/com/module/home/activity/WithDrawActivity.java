@@ -41,7 +41,7 @@ public class WithDrawActivity extends BaseActivity {
 //        inframesker://wallet/withdraw?from=alipay
         U.getFragmentUtils().addFragment(
                 FragmentUtils.newAddParamsBuilder(this, WithdrawFragment.class)
-                        .setAddToBackStack(true)
+                        .setAddToBackStack(false)
                         .setHasAnimation(false)
                         .build());
     }
