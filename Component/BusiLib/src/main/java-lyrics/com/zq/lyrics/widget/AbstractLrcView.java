@@ -1052,7 +1052,6 @@ public abstract class AbstractLrcView extends View {
                 MyLog.w(TAG, "seekto" + " mLyricsReader=null");
                 return;
             }
-
             mCurEndLineNum = mLyricsReader.getLineInfoIdByStartTs(playProgress);
             mCurSplitLyricsEndLineNum = 0;
             if (mLrcPlayerStatus == LRCPLAYERSTATUS_PLAY) {
