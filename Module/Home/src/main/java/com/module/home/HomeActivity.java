@@ -19,6 +19,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 
+import com.common.core.permission.SkrLocationPermission;
 import com.common.core.permission.SkrSdcardPermission;
 
 import com.common.core.scheme.SchemeSdkActivity;
@@ -85,6 +86,8 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
     boolean mFromCreate = false;
 
     SkrSdcardPermission mSkrSdcardPermission = new SkrSdcardPermission();
+
+    SkrLocationPermission mSkrLocationPermission = new SkrLocationPermission();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -297,6 +300,10 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
             if (mFromCreate) {
                 mSkrSdcardPermission.ensurePermission(null, true);
             }
+        }
+        if (mFromCreate) {
+            // 获取地理位置权限
+            mSkrLocationPermission.ensurePermission(null, false);
         }
         mFromCreate = false;
         UpgradeManager.getInstance().checkUpdate1();
