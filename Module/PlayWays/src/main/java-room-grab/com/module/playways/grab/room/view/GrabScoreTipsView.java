@@ -90,4 +90,8 @@ public class GrabScoreTipsView extends RelativeLayout {
             }
         }
     }
+
+    public void reset(){
+        mLastItem = null;
+    }
 }

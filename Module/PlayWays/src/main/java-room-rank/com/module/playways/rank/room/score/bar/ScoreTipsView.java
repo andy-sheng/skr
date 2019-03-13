@@ -27,6 +27,7 @@ public class ScoreTipsView extends RelativeLayout {
     ImageView mLevelIv;
     ImageView mJihaoIv;
     ImageView mNumIv;
+    AnimatorSet mAnimatorSet;
 
     public ScoreTipsView(Context context) {
         super(context);
@@ -54,6 +55,14 @@ public class ScoreTipsView extends RelativeLayout {
     private void bindData(Item item) {
         mLevelIv.setImageResource(item.level.mDrawableId);
         mNumIv.setImageResource(getNum(item.num));
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (mAnimatorSet != null) {
+            mAnimatorSet.cancel();
+        }
     }
 
     private int getNum(int num) {
@@ -133,9 +142,12 @@ public class ScoreTipsView extends RelativeLayout {
             animatorSetList.add(animatorSet1);
         }
 
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playSequentially(animatorSetList);
-        animatorSet.addListener(new AnimatorListenerAdapter() {
+        if (mAnimatorSet != null) {
+            mAnimatorSet.cancel();
+        }
+        mAnimatorSet = new AnimatorSet();
+        mAnimatorSet.playSequentially(animatorSetList);
+        mAnimatorSet.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationCancel(Animator animation) {
                 super.onAnimationCancel(animation);
@@ -151,15 +163,15 @@ public class ScoreTipsView extends RelativeLayout {
                 }
             }
         });
-        animatorSet.start();
+        mAnimatorSet.start();
 
     }
 
     public static void play(RelativeLayout parent, Item item) {
-        play(parent,item,1);
+        play(parent, item, 1);
     }
 
-    public static void play(RelativeLayout parent, Item item,int postion) {
+    public static void play(RelativeLayout parent, Item item, int postion) {
         if (item == null) {
             return;
         }
@@ -170,9 +182,9 @@ public class ScoreTipsView extends RelativeLayout {
         ScoreTipsView scoreTipsView = new ScoreTipsView(parent.getContext());
         scoreTipsView.bindData(item);
         RelativeLayout.LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        if(postion==1){
+        if (postion == 1) {
             lp.addRule(RelativeLayout.CENTER_HORIZONTAL);
-        }else if(postion==2){
+        } else if (postion == 2) {
             lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         }
         lp.topMargin = U.getDisplayUtils().dip2px(135);

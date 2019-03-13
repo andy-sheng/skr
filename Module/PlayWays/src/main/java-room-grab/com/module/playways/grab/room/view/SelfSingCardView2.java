@@ -229,6 +229,9 @@ public class SelfSingCardView2 extends RelativeLayout {
         super.setVisibility(visibility);
         if (visibility == GONE) {
             stopCounDown();
+            if (mManyLyricsView != null) {
+                mManyLyricsView.setLyricsReader(null);
+            }
         }
     }
 
@@ -309,10 +312,10 @@ public class SelfSingCardView2 extends RelativeLayout {
     public void onEvent(EngineEvent event) {
         if (event.getType() == EngineEvent.TYPE_MUSIC_PLAY_TIME_FLY_LISTENER) {
             EngineEvent.MixMusicTimeInfo in = event.getObj();
-            MyLog.d(TAG,"伴奏 ts="+in.getCurrent());
+            MyLog.d(TAG, "伴奏 ts=" + in.getCurrent());
             if (in != null && in.getCurrent() > 0) {
                 if (mManyLyricsView.getVisibility() == VISIBLE && mSongModel != null) {
-                    long ts1 = mManyLyricsView.getCurPlayingTime()+mManyLyricsView.getPlayerSpendTime();
+                    long ts1 = mManyLyricsView.getCurPlayingTime() + mManyLyricsView.getPlayerSpendTime();
                     long ts2 = in.getCurrent() + mSongModel.getStandLrcBeginT() - GrabRoomData.ACC_OFFSET_BY_LYRIC;
                     if (Math.abs(ts1 - ts2) > 500) {
                         MyLog.d(TAG, "伴奏与歌词的时间戳差距较大时,矫正一下,歌词ts=" + ts1 + " 伴奏ts=" + ts2);

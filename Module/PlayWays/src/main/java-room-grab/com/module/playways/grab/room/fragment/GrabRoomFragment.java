@@ -833,6 +833,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         MyLog.d(TAG, "onSingBeginTipsPlayOver" + " uid=" + uid);
         mUiHanlder.removeMessages(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
         mSingBeginTipsCardView.setVisibility(View.GONE);
+        mGrabScoreTipsView.reset();
         if (uid == MyUserInfoManager.getInstance().getUid()) {
             mGrabGiveupView.delayShowPassView();
             mCorePresenter.beginSing();

@@ -304,10 +304,11 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     }
 
     /**
-     * 预先可以做的操作，如果确定是自己唱了
+     * 如果确定是自己唱了,预先可以做的操作
      */
     void preOpWhenSelfRound() {
         if (mRoomData.isAccEnable()) {
+            mLastLineNum = -1;
             // 1. 开启伴奏的，预先下载 melp 资源
             GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
             if (now != null) {
@@ -316,7 +317,44 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     U.getHttpUtils().downloadFileAsync(now.getMusic().getMidi(), midiFile, null);
                 }
             }
-
+        }
+        EngineManager.getInstance().setClientRole(true);
+        if (mRoomData.isAccEnable()) {
+            // 如果需要播放伴奏，一定要在角色切换成功才能播
+            mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS);
+            mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS, 2000);
+        }
+        // 开始acr打分
+        BaseRoundInfoModel now = mRoomData.getRealRoundInfo();
+        if (ScoreConfig.isAcrEnable() && now != null && now.getMusic() != null) {
+            EngineManager.getInstance().startRecognize(RecognizeConfig.newBuilder()
+                    .setSongName(now.getMusic().getItemName())
+                    .setArtist(now.getMusic().getOwner())
+                    .setMode(RecognizeConfig.MODE_MANUAL)
+                    .setMResultListener(new ArcRecognizeListener() {
+                        @Override
+                        public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
+                            mUiHandler.removeMessages(MSG_SHOW_SCORE_EVENT + lineNo * 100);
+                            if (lineNo > mLastLineNum) {
+                                // 使用最新的打分方案做优化
+                                int score1 = EngineManager.getInstance().getLineScore();
+                                int score2 = 0;
+                                if (targetSongInfo != null) {
+                                    score2 = (int) (targetSongInfo.getScore() * 100);
+                                }
+                                if (ScoreConfig.isMelpEnable()) {
+                                    if (score1 > score2) {
+                                        processScore(score1, lineNo);
+                                    } else {
+                                        processScore(score2, lineNo);
+                                    }
+                                } else {
+                                    processScore(score2, lineNo);
+                                }
+                            }
+                        }
+                    })
+                    .build());
         }
     }
 
@@ -325,56 +363,16 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     public void beginSing() {
         // 打开引擎，变为主播
-        if (mRoomData.getGameId() > 0) {
-            EngineManager.getInstance().setClientRole(true);
-            BaseRoundInfoModel now = mRoomData.getRealRoundInfo();
-            //开始录制声音
-            if (SkrConfig.getInstance().isNeedUploadAudioForAI()) {
-                // 需要上传音频伪装成机器人
-                EngineManager.getInstance().startAudioRecording(RoomDataUtils.getSaveAudioForAiFilePath(), Constants.AUDIO_RECORDING_QUALITY_HIGH);
-                if (now != null) {
-                    if (mRobotScoreHelper == null) {
-                        mRobotScoreHelper = new RobotScoreHelper();
-                    }
-                    mRobotScoreHelper.reset();
+        BaseRoundInfoModel now = mRoomData.getRealRoundInfo();
+        //开始录制声音
+        if (SkrConfig.getInstance().isNeedUploadAudioForAI()) {
+            // 需要上传音频伪装成机器人
+            EngineManager.getInstance().startAudioRecording(RoomDataUtils.getSaveAudioForAiFilePath(), Constants.AUDIO_RECORDING_QUALITY_HIGH);
+            if (now != null) {
+                if (mRobotScoreHelper == null) {
+                    mRobotScoreHelper = new RobotScoreHelper();
                 }
-            }
-            // 开始acr打分
-            if (ScoreConfig.isAcrEnable() && now != null && now.getMusic() != null) {
-                EngineManager.getInstance().startRecognize(RecognizeConfig.newBuilder()
-                        .setSongName(now.getMusic().getItemName())
-                        .setArtist(now.getMusic().getOwner())
-                        .setMode(RecognizeConfig.MODE_MANUAL)
-                        .setMResultListener(new ArcRecognizeListener() {
-                            @Override
-                            public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
-                                mUiHandler.removeMessages(MSG_SHOW_SCORE_EVENT + lineNo * 100);
-                                if (lineNo > mLastLineNum) {
-                                    // 使用最新的打分方案做优化
-                                    int score1 = EngineManager.getInstance().getLineScore();
-                                    int score2 = 0;
-                                    if (targetSongInfo != null) {
-                                        score2 = (int) (targetSongInfo.getScore() * 100);
-                                    }
-                                    if (ScoreConfig.isMelpEnable()) {
-                                        if (score1 > score2) {
-                                            processScore(score1, lineNo);
-                                        } else {
-                                            processScore(score2, lineNo);
-                                        }
-                                    } else {
-                                        processScore(score2, lineNo);
-                                    }
-                                }
-                            }
-                        })
-                        .build());
-            }
-
-            if (mRoomData.isAccEnable()) {
-                // 如果需要播放伴奏，一定要在角色切换成功才能播
-                mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS);
-                mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS, 200);
+                mRobotScoreHelper.reset();
             }
         }
     }

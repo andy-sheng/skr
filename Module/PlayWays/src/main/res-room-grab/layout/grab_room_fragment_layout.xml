@@ -85,11 +85,6 @@
         android:layout_centerHorizontal="true"
         android:visibility="gone" />
 
-    <com.module.playways.grab.room.view.GrabScoreTipsView
-        android:id="@+id/grab_score_tips_view"
-        android:layout_marginTop="@dimen/view_200_dp"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"/>
 
     <com.module.playways.grab.room.view.SelfSingCardView2
         android:id="@+id/self_sing_card_view"
@@ -99,6 +94,12 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_d_185_dp"
         android:visibility="gone" />
+
+    <com.module.playways.grab.room.view.GrabScoreTipsView
+        android:id="@+id/grab_score_tips_view"
+        android:layout_marginTop="@dimen/view_30_dp"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"/>
 
     <com.module.playways.grab.room.view.GrabGameOverView
         android:id="@+id/grab_game_over_view"
