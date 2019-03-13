@@ -543,7 +543,8 @@ public class AuditionFragment extends BaseFragment {
         final String lyricFile = SongResUtils.getFileNameWithMD5(songModel.getLyric());
 
         if (lyricFile != null) {
-            LyricsManager.getLyricsManager(U.app()).loadLyricsObserable(lyricFile, lyricFile.hashCode() + "")
+            LyricsManager.getLyricsManager(U.app())
+                    .loadLyricsObserable(lyricFile, lyricFile.hashCode() + "")
                     .subscribeOn(Schedulers.io())
                     .retry(10)
                     .observeOn(AndroidSchedulers.mainThread())

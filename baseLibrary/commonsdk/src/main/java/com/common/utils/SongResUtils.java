@@ -51,7 +51,7 @@ public class SongResUtils {
         return GRAB_LYRIC_DIR;
     }
 
-    public static final File getZRCELyricFileByUrl(String resUrl) {
+    public static final File getLyricFileByUrl(String resUrl) {
 
         return getFile(LYRIC_DIR, resUrl, U.getFileUtils().getSuffixFromUrl(resUrl, SUFF_ZRCE));
     }
@@ -111,11 +111,11 @@ public class SongResUtils {
     }
 
     public static String createLyricFileName(String url) {
-        return SongResUtils.getLyricDir() + File.separator + SongResUtils.getFileNameWithMD5(url) + "." + SUFF_ZRCE;
+        return SongResUtils.getLyricDir() + File.separator + SongResUtils.getFileNameWithMD5(url) + "." + U.getFileUtils().getSuffixFromUrl(url, SUFF_ZRCE);
     }
 
     public static String createTempLyricFileName(String url) {
-        return SongResUtils.getLyricDir() + File.separator + SongResUtils.getFileNameWithMD5(url) + "temp" + "." + SUFF_ZRCE;
+        return SongResUtils.getLyricDir() + File.separator + SongResUtils.getFileNameWithMD5(url) + "temp" + "." + U.getFileUtils().getSuffixFromUrl(url, SUFF_ZRCE);
     }
 
     public static String createStandLyricTempFileName(String url){

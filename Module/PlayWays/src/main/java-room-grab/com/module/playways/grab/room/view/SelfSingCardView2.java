@@ -50,7 +50,7 @@ import static com.zq.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
  * 你的主场景歌词
  */
 public class SelfSingCardView2 extends RelativeLayout {
-    public final static String TAG = "SelfSingCardView";
+    public final static String TAG = "SelfSingCardView2";
 
     TextView mTvLyric;
     ArcProgressBar mCountDownProcess;
@@ -140,11 +140,11 @@ public class SelfSingCardView2 extends RelativeLayout {
                         mTvLyric.setVisibility(GONE);
                         mManyLyricsView.setVisibility(VISIBLE);
                         mManyLyricsView.initLrcData();
-                        lyricsReader.cut(songModel.getRankLrcBeginT(), songModel.getRankLrcEndT());
+                        lyricsReader.cut(songModel.getStandLrcBeginT(), songModel.getStandLrcEndT());
                         mManyLyricsView.setLyricsReader(lyricsReader);
 
                         Set<Integer> set = new HashSet<>();
-                        set.add(lyricsReader.getLineInfoIdByStartTs(songModel.getRankLrcBeginT()));
+                        set.add(lyricsReader.getLineInfoIdByStartTs(songModel.getStandLrcBeginT()));
                         mManyLyricsView.setNeedCountDownLine(set);
 
                         if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC

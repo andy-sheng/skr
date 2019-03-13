@@ -276,7 +276,7 @@ public class SongModel implements Serializable {
     }
 
     public boolean isAllResExist() {
-        File lyricFile = SongResUtils.getZRCELyricFileByUrl(getLyric());
+        File lyricFile = SongResUtils.getLyricFileByUrl(getLyric());
 
         if (lyricFile == null || !lyricFile.exists()) {
             return false;

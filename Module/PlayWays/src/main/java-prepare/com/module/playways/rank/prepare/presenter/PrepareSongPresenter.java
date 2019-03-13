@@ -77,7 +77,7 @@ public class PrepareSongPresenter extends RxLifeCyclePresenter {
     }
 
     private void fetchLyric(){
-        File lyricFile = SongResUtils.getZRCELyricFileByUrl(mSongModel.getLyric());
+        File lyricFile = SongResUtils.getLyricFileByUrl(mSongModel.getLyric());
         if(lyricFile == null || !lyricFile.exists()){
             LyricsManager.getLyricsManager(U.app())
                     .fetchLyricTask(mSongModel.getLyric())
@@ -100,7 +100,8 @@ public class PrepareSongPresenter extends RxLifeCyclePresenter {
 
     private void showLyric(){
         final String fileName = SongResUtils.getFileNameWithMD5(mSongModel.getLyric());
-        LyricsManager.getLyricsManager(U.app()).loadLyricsObserable(fileName, fileName.hashCode() + "")
+        LyricsManager.getLyricsManager(U.app())
+                .loadLyricsObserable(fileName, fileName.hashCode() + "")
                 .subscribeOn(Schedulers.computation())
                 .retry(10)
                 .observeOn(AndroidSchedulers.mainThread())

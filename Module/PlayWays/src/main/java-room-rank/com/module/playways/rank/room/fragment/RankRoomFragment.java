@@ -36,7 +36,6 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
-import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
 import com.module.playways.rank.room.RankRoomData;
 import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.comment.CommentView;
@@ -68,9 +67,7 @@ import com.trello.rxlifecycle2.android.FragmentEvent;
 import com.zq.dialog.PersonInfoDialogView;
 import com.zq.lyrics.LyricsManager;
 import com.zq.lyrics.LyricsReader;
-import com.zq.lyrics.event.LrcEvent;
 import com.zq.lyrics.event.LyricEventLauncher;
-import com.zq.lyrics.model.LyricsLineInfo;
 import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.ManyLyricsView;
 import com.zq.lyrics.widget.VoiceScaleView;
@@ -86,9 +83,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -1130,7 +1125,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             mPrepareLyricTask.dispose();
         }
 
-        File file = SongResUtils.getZRCELyricFileByUrl(songModel.getLyric());
+        File file = SongResUtils.getLyricFileByUrl(songModel.getLyric());
 
         if (file == null || !file.exists()) {
             MyLog.w(TAG, "playLyric is not in local file");

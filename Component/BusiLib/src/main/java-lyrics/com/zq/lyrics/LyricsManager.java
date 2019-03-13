@@ -56,49 +56,10 @@ public class LyricsManager {
     public static LyricsManager getLyricsManager(Context context) {
         if (_LyricsManager == null) {
             _LyricsManager = new LyricsManager(context);
-            copyLrcFileInfo();
         }
         return _LyricsManager;
     }
 
-    private static void copyLrcFileInfo() {
-        Observable.create(new ObservableOnSubscribe<Object>() {
-
-            @Override
-            public void subscribe(ObservableEmitter<Object> emitter) {
-                BufferedSource bufferedSource = null;
-                BufferedSink sink = null;
-                try {
-                    String originalName = "shamoluotuo.zrce";
-
-                    File dirFile = new File(ResourceConstants.PATH_LYRICS);
-                    if (!dirFile.exists()) {
-                        dirFile.mkdirs();
-                    }
-
-                    File file = new File(ResourceConstants.PATH_LYRICS + File.separator + originalName);
-
-                    if (!file.exists()) {
-                        InputStream is = U.app().getAssets().open(originalName);
-                        bufferedSource = Okio.buffer(Okio.source(is));
-                        file.createNewFile();
-                        sink = Okio.buffer(Okio.sink(file));
-                        sink.writeAll(bufferedSource);
-                    }
-
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    closeQuietly(bufferedSource);
-                    closeQuietly(sink);
-                    emitter.onComplete();
-                }
-            }
-        }).subscribeOn(Schedulers.io())
-                .subscribe();
-    }
 
     public Observable<LyricsReader> loadLyricsObserable(final String fileName, final String hash) {
         return Observable.create(new ObservableOnSubscribe<LyricsReader>() {
@@ -137,7 +98,8 @@ public class LyricsManager {
                 .flatMap(new Function<File, ObservableSource<LyricsReader>>() {
                     @Override
                     public ObservableSource<LyricsReader> apply(File lyricsReader) throws Exception {
-                        return loadLyricsObserable(lyricsReader.getAbsolutePath(), lyricsReader.hashCode() + "");
+                        String fileName = SongResUtils.getFileNameWithMD5(url);
+                        return loadLyricsObserable(fileName, lyricsReader.hashCode() + "");
                     }
                 })
                 .subscribeOn(Schedulers.io())
@@ -150,7 +112,7 @@ public class LyricsManager {
             @Override
             public void subscribe(ObservableEmitter<File> emitter) {
                 File newName = new File(SongResUtils.createLyricFileName(url));
-                if(newName.exists() && newName.isFile()){
+                if (newName.exists() && newName.isFile()) {
                     emitter.onNext(newName);
                     emitter.onComplete();
                     return;
@@ -169,7 +131,7 @@ public class LyricsManager {
                         emitter.onError(new Throwable("重命名错误"));
                     }
                 } else {
-                    emitter.onError(new Throwable("下载失败"+TAG));
+                    emitter.onError(new Throwable("下载失败" + TAG));
                 }
             }
         }).subscribeOn(Schedulers.io())
@@ -213,8 +175,8 @@ public class LyricsManager {
         return mLyricsUtils.get(hash);
     }
 
-    public void removeLyricsReader(String fileName){
-        if(TextUtils.isEmpty(fileName)){
+    public void removeLyricsReader(String fileName) {
+        if (TextUtils.isEmpty(fileName)) {
             return;
         }
 
