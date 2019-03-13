@@ -12,7 +12,15 @@ import com.umeng.commonsdk.UMConfigure;
 import java.util.Map;
 
 /**
- * 使用StatisticsAdapter
+ * 在仅有Activity的应用中，SDK自动帮助开发者调用了 2 中的onPageStart/onPageEnd方法，并把Activity 类名作为页面名称统计。但是在包含fragment的程序中我们希望统计更详细的页面，所以需要自己调用onPageStart/onPageEnd方法做更详细的统计。
+ *
+ * 首先，需要在程序入口处，调用 MobclickAgent.openActivityDurationTrack(false) 禁止默认的页面统计功能，这样将不会再自动统计Activity页面。
+ *
+ * 然后需要手动添加以下代码：
+ *
+ * 使用 MobclickAgent.onResume 和 MobclickAgent.onPause方法统计时长, 这和基本统计中的情况一样(针对Activity)。
+ *
+ * 使用 MobclickAgent.onPageStart 和 MobclickAgent.onPageEnd 方法统计页面(针对页面,页面可能是Activity 也可能是Fragment或View)
  */
 public class UmengStatistics {
     public static final String TAG = "UmengStatistics";

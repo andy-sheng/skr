@@ -72,6 +72,8 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
     // 想加入activity生命周期管理的presenter放在这里
     private HashSet<Presenter> mPresenterSet = new HashSet<>();
 
+    //protected boolean mOnlyForFragmentContainer = true; // 是否只是fragment 的容器，会影响打点统计，如果只是容器，不统计Activity的session
+
     protected boolean mIsDestroyed = false;
 
     /*用来控制是否采用沉浸式*/
@@ -262,8 +264,8 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
     @Override
     protected void onResume() {
         MyLog.d(TAG, "onResume" + hashCode());
-        super.onResume();
         StatisticsAdapter.recordSessionStart(this, this.getClass().getSimpleName());
+        super.onResume();
         for (Presenter presenter : mPresenterSet) {
             presenter.resume();
         }
