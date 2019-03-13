@@ -60,7 +60,7 @@ import static com.zq.report.fragment.ReportFragment.REPORT_USER_ID;
 
 public class OtherPersonFragment extends BaseFragment implements IOtherPersonView {
 
-    public static final String BUNDLE_USER_MODEL = "budle_user_model";
+    public static final String BUNDLE_USER_ID = "bundle_user_id";
 
     public static final int RELATION_FOLLOWED = 1; // 已关注关系
     public static final int RELATION_UN_FOLLOW = 2; // 未关注关系
@@ -93,6 +93,7 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
     OtherPersonPresenter mOtherPersonPresenter;
 
     UserInfoModel mUserInfoModel;
+    int mUserId;
 
     int rank = 0;           //当前父段位
     int subRank = 0;        //当前子段位
@@ -130,8 +131,8 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            mUserInfoModel = (UserInfoModel) bundle.getSerializable(BUNDLE_USER_MODEL);
-            mOtherPersonPresenter.getHomePage(mUserInfoModel.getUserId());
+            mUserId = bundle.getInt(BUNDLE_USER_ID);
+            mOtherPersonPresenter.getHomePage(mUserId);
         }
 
         mTagAdapter = new TagAdapter<String>(mTags) {
@@ -207,7 +208,7 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
             }
         });
 
-        if (mUserInfoModel.getUserId() == MyUserInfoManager.getInstance().getUid()) {
+        if (mUserId == MyUserInfoManager.getInstance().getUid()) {
             mLlBottomContainer.setVisibility(View.GONE);
             mReport.setVisibility(View.GONE);
         }

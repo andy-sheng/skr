@@ -90,7 +90,7 @@ public class RelationView extends RelativeLayout {
                 if (view.getId() == R.id.content) {
                     // 跳到他人的个人主页
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable(OtherPersonFragment.BUNDLE_USER_MODEL, userInfoModel);
+                    bundle.putSerializable(OtherPersonFragment.BUNDLE_USER_ID, userInfoModel.getUserId());
                     U.getFragmentUtils().addFragment(FragmentUtils
                             .newAddParamsBuilder((BaseActivity) getContext(), OtherPersonFragment.class)
                             .setUseOldFragmentIfExist(false)

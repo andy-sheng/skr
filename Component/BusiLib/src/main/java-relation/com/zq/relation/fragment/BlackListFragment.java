@@ -10,8 +10,6 @@ import android.widget.RelativeLayout;
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
-import com.common.core.myinfo.MyUserInfo;
-import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.model.UserInfoModel;
@@ -34,7 +32,6 @@ import com.kingja.loadsir.core.LoadSir;
 import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
 import com.module.msg.IMsgService;
-import com.zq.live.proto.Common.ESex;
 import com.zq.person.fragment.OtherPersonFragment;
 import com.zq.relation.adapter.RelationAdapter;
 
@@ -84,7 +81,7 @@ public class BlackListFragment extends BaseFragment {
                 if (view.getId() == R.id.content) {
                     // 跳到他人的个人主页
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable(OtherPersonFragment.BUNDLE_USER_MODEL, userInfoModel);
+                    bundle.putSerializable(OtherPersonFragment.BUNDLE_USER_ID, userInfoModel.getUserId());
                     U.getFragmentUtils().addFragment(FragmentUtils
                             .newAddParamsBuilder((BaseActivity) getContext(), OtherPersonFragment.class)
                             .setUseOldFragmentIfExist(false)

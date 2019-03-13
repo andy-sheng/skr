@@ -81,12 +81,8 @@ public class LeaderBoardAdapter extends DiffAdapter<RankInfoModel, RecyclerView.
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    UserInfoModel userInfoModel = new UserInfoModel();
-                    userInfoModel.setUserId(mRankInfoModel.getUserID());
-                    userInfoModel.setNickname(mRankInfoModel.getNickname());
-                    userInfoModel.setAvatar(mRankInfoModel.getAvatar());
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable(OtherPersonFragment.BUNDLE_USER_MODEL, userInfoModel);
+                    bundle.putSerializable(OtherPersonFragment.BUNDLE_USER_ID, mRankInfoModel.getUserID());
                     U.getFragmentUtils().addFragment(FragmentUtils
                             .newAddParamsBuilder((FragmentActivity) itemView.getContext(), OtherPersonFragment.class)
                             .setUseOldFragmentIfExist(false)

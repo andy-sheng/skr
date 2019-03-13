@@ -171,7 +171,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         mOwnInfoItem.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                gotoPersonFragment((int) MyUserInfoManager.getInstance().getUid(), MyUserInfoManager.getInstance().getNickName(), MyUserInfoManager.getInstance().getAvatar());
+                gotoPersonFragment((int) MyUserInfoManager.getInstance().getUid());
             }
         });
 
@@ -432,7 +432,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
             RxView.clicks(mSdvChampainIcon).subscribe(new Consumer<Object>() {
                 @Override
                 public void accept(Object o) {
-                    gotoPersonFragment(rankInfoModel.getUserID(), rankInfoModel.getNickname(), rankInfoModel.getAvatar());
+                    gotoPersonFragment(rankInfoModel.getUserID());
                 }
             });
             mTvChanpainName.setText(rankInfoModel.getNickname());
@@ -449,7 +449,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
             RxView.clicks(mSdvRightChampainIcon).subscribe(new Consumer<Object>() {
                 @Override
                 public void accept(Object o) {
-                    gotoPersonFragment(rankInfoModel.getUserID(), rankInfoModel.getNickname(), rankInfoModel.getAvatar());
+                    gotoPersonFragment(rankInfoModel.getUserID());
                 }
             });
             mTvRightChanpainName.setText(rankInfoModel.getNickname());
@@ -467,7 +467,7 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
             RxView.clicks(mSdvLeftChampainIcon).subscribe(new Consumer<Object>() {
                 @Override
                 public void accept(Object o) {
-                    gotoPersonFragment(rankInfoModel.getUserID(), rankInfoModel.getNickname(), rankInfoModel.getAvatar());
+                    gotoPersonFragment(rankInfoModel.getUserID());
                 }
             });
             mTvLeftChanpainName.setText(rankInfoModel.getNickname());
@@ -477,12 +477,9 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         }
     }
 
-    public void gotoPersonFragment(int uid, String nickName, String avatar) {
-        UserInfoModel userInfoModel = new UserInfoModel();
-        userInfoModel.setUserId(uid);
-        userInfoModel.setNickname(nickName);
+    public void gotoPersonFragment(int uid) {
         Bundle bundle = new Bundle();
-        bundle.putSerializable(OtherPersonFragment.BUNDLE_USER_MODEL, userInfoModel);
+        bundle.putSerializable(OtherPersonFragment.BUNDLE_USER_ID, uid);
         U.getFragmentUtils().addFragment(FragmentUtils
                 .newAddParamsBuilder((FragmentActivity) getActivity(), OtherPersonFragment.class)
                 .setUseOldFragmentIfExist(false)
