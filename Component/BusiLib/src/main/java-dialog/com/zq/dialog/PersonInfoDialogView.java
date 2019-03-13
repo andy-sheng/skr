@@ -260,16 +260,16 @@ public class PersonInfoDialogView extends RelativeLayout {
         for (UserLevelModel userLevelModel : list) {
             if (userLevelModel.getType() == UserLevelModel.RANKING_TYPE) {
                 rank = userLevelModel.getScore();
-                rankDesc = userLevelModel.getDesc();
             } else if (userLevelModel.getType() == UserLevelModel.SUB_RANKING_TYPE) {
                 subRank = userLevelModel.getScore();
+                rankDesc = userLevelModel.getDesc();
             } else if (userLevelModel.getType() == UserLevelModel.TOTAL_RANKING_STAR_TYPE) {
                 starNum = userLevelModel.getScore();
             } else if (userLevelModel.getType() == UserLevelModel.REAL_RANKING_STAR_TYPE) {
                 starLimit = userLevelModel.getScore();
             }
         }
-        mHorizLevelView.bindData(rank, subRank, rankDesc, starLimit, starNum);
+        mHorizLevelView.bindData(rank, subRank, rankDesc);
     }
 
     private void refreshTag() {

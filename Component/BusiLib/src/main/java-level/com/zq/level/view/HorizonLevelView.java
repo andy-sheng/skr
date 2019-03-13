@@ -22,7 +22,6 @@ public class HorizonLevelView extends LinearLayout {
     ImageView mLevelIv;
     ImageView mSubLeveIv;
     ExTextView mLevelTv;
-    ExTextView mStarTv;
 
     public HorizonLevelView(Context context) {
         super(context);
@@ -47,10 +46,9 @@ public class HorizonLevelView extends LinearLayout {
         mLevelIv = (ImageView) this.findViewById(R.id.level_iv);
         mSubLeveIv = (ImageView) this.findViewById(R.id.sub_leve_iv);
         mLevelTv = (ExTextView) this.findViewById(R.id.level_tv);
-        mStarTv = (ExTextView) this.findViewById(R.id.star_tv);
     }
 
-    public void bindData(int level, int subLevel, String leveDesc, int totalStar, int selectStar) {
+    public void bindData(int level, int subLevel, String leveDesc) {
         // 主段位
         if (LevelConfigUtils.getImageResoucesLevel(level) != 0) {
             mLevelIv.setImageResource(LevelConfigUtils.getImageResoucesLevel(level));
@@ -62,27 +60,6 @@ public class HorizonLevelView extends LinearLayout {
         }
 
         mLevelTv.setText(leveDesc + "");
-
-        if (totalStar == 0 || totalStar > 6) {
-            mStarTv.setVisibility(VISIBLE);
-            mStarTv.setText("x" + selectStar);
-            mStarTv.setCompoundDrawables(ContextCompat.getDrawable(U.app(), R.drawable.yonghuxinxika_xingxing_liang), null, null, null);
-            return;
-        }
-
-        for (int i = 0; i < totalStar; i++) {
-            // 左边的星星
-            ImageView imageView = new ImageView(getContext());
-            RelativeLayout.LayoutParams rl = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(14), U.getDisplayUtils().dip2px(14));
-            rl.setMargins(U.getDisplayUtils().dip2px(6), 0, 0, 0);
-            if (i < selectStar) {
-                imageView.setBackground(ContextCompat.getDrawable(U.app(), R.drawable.yonghuxinxika_xingxing_liang));
-            } else {
-                imageView.setBackground(ContextCompat.getDrawable(U.app(), R.drawable.yonghuxinxika_xingxing_an));
-            }
-            imageView.setLayoutParams(rl);
-            addView(imageView);
-        }
     }
 
 }
