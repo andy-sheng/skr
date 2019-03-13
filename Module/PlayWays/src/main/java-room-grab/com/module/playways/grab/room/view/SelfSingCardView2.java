@@ -140,18 +140,21 @@ public class SelfSingCardView2 extends RelativeLayout {
                         mTvLyric.setVisibility(GONE);
                         mManyLyricsView.setVisibility(VISIBLE);
                         mManyLyricsView.initLrcData();
-                        lyricsReader.cut(songModel.getStandLrcBeginT(), songModel.getStandLrcEndT());
+                        int lrcBeginTs = songModel.getStandLrcBeginT();
+                        int totalMs = songModel.getTotalMs();
+                        int preAccTs = 5000;// 播放歌词前5秒的伴奏
+                        lyricsReader.cut(lrcBeginTs,lrcBeginTs+totalMs-preAccTs);
                         mManyLyricsView.setLyricsReader(lyricsReader);
 
                         Set<Integer> set = new HashSet<>();
-                        set.add(lyricsReader.getLineInfoIdByStartTs(songModel.getStandLrcBeginT()));
+                        set.add(lyricsReader.getLineInfoIdByStartTs(lrcBeginTs));
                         mManyLyricsView.setNeedCountDownLine(set);
 
                         if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC
                                 && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {
-                            mManyLyricsView.play(songModel.getBeginMs());
-                            mManyLyricsView.seekto(songModel.getBeginMs());
-                            int lineNum = mLyricEventLauncher.postLyricEvent(lyricsReader, songModel.getBeginMs(), songModel.getEndMs(), null);
+                            mManyLyricsView.play(lrcBeginTs-preAccTs);
+                            mManyLyricsView.seekto(lrcBeginTs-preAccTs);
+                            int lineNum = mLyricEventLauncher.postLyricEvent(lyricsReader,lrcBeginTs-preAccTs, lrcBeginTs+totalMs-preAccTs, null);
                             mRoomData.setSongLineNum(lineNum);
                         }
                     }

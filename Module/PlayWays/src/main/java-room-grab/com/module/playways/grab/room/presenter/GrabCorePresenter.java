@@ -1575,24 +1575,28 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     .setIsSystem(false)
                     .build();
 
-            RoomMsg roomMsg = new RoomMsg.Builder()
-                    .setTimeMs(ts)
-                    .setMsgType(ERoomMsgType.RM_ROUND_MACHINE_SCORE)
-                    .setRoomID(mRoomData.getGameId())
-                    .setNo(ts)
-                    .setPosType(EMsgPosType.EPT_UNKNOWN)
-                    .setSender(senderInfo)
-                    .setMachineScore(new MachineScore.Builder()
-                            .setUserID((int) MyUserInfoManager.getInstance().getUid())
-                            .setNo(machineScoreItem.getNo())
-                            .setScore(machineScoreItem.getScore())
-                            .setItemID(mRoomData.getSongModel().getItemID())
-                            .setLineNum(mRoomData.getSongLineNum())
-                            .build()
-                    )
-                    .build();
-            String contnet = U.getBase64Utils().encode(roomMsg.toByteArray());
-            msgService.sendChatRoomMessage(String.valueOf(mRoomData.getGameId()), CustomMsgType.MSG_TYPE_ROOM, contnet, null);
+            GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
+            if (now != null && now.getMusic() != null) {
+                RoomMsg roomMsg = new RoomMsg.Builder()
+                        .setTimeMs(ts)
+                        .setMsgType(ERoomMsgType.RM_ROUND_MACHINE_SCORE)
+                        .setRoomID(mRoomData.getGameId())
+                        .setNo(ts)
+                        .setPosType(EMsgPosType.EPT_UNKNOWN)
+                        .setSender(senderInfo)
+                        .setMachineScore(new MachineScore.Builder()
+                                .setUserID((int) MyUserInfoManager.getInstance().getUid())
+                                .setNo(machineScoreItem.getNo())
+                                .setScore(machineScoreItem.getScore())
+                                .setItemID(now.getMusic().getItemID())
+                                .setLineNum(mRoomData.getSongLineNum())
+                                .build()
+                        )
+                        .build();
+                String contnet = U.getBase64Utils().encode(roomMsg.toByteArray());
+                msgService.sendChatRoomMessage(String.valueOf(mRoomData.getGameId()), CustomMsgType.MSG_TYPE_ROOM, contnet, null);
+            }
+
         }
     }
 
