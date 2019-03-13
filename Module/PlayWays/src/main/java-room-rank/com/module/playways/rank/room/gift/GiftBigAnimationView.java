@@ -32,7 +32,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class GiftBigAnimationView {
-    static final int MSG_FINISH = 91;
+    static final int MSG_ENSURE_FINISH = 91;
 
     static final int STATUS_IDLE = 1;
     static final int STATUS_PLAYING = 2;
@@ -43,19 +43,13 @@ public class GiftBigAnimationView {
     SVGAImageView mSVGAImageView;
     GiftPlayModel mGiftPlayModel;
 
-//    static SLocation[] mSLocations = new SLocation[]{
-//            new SLocation(0.8f, U.getDisplayUtils().dip2px(50), -U.getDisplayUtils().dip2px(50)),
-//            new SLocation(0.8f, -U.getDisplayUtils().dip2px(50), -U.getDisplayUtils().dip2px(50)),
-//            new SLocation(1f, 0, 0),
-//    };
-
     Random mRandom = new Random();
 
     Handler mUiHanlder = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if (msg.what == MSG_FINISH) {
+            if (msg.what == MSG_ENSURE_FINISH) {
                 onFinish();
             }
         }
@@ -117,8 +111,8 @@ public class GiftBigAnimationView {
                 break;
         }
         load(url);
-        mUiHanlder.removeMessages(MSG_FINISH);
-        mUiHanlder.sendEmptyMessageDelayed(MSG_FINISH, 5000);
+        mUiHanlder.removeMessages(MSG_ENSURE_FINISH);
+        mUiHanlder.sendEmptyMessageDelayed(MSG_ENSURE_FINISH, 5000);
     }
 
     private void load(String url) {
@@ -183,7 +177,7 @@ public class GiftBigAnimationView {
                     if (vg != null) {
                         vg.removeView(mSVGAImageView);
                     }
-                    mUiHanlder.removeCallbacksAndMessages(MSG_FINISH);
+                    mUiHanlder.removeCallbacksAndMessages(MSG_ENSURE_FINISH);
                 }
             });
         }
@@ -202,7 +196,9 @@ public class GiftBigAnimationView {
             mSVGAImageView.setCallback(null);
             mSVGAImageView.stopAnimation(true);
         }
+        mUiHanlder.removeCallbacksAndMessages(null);
     }
+
 
     public interface Listener {
         void onFinished(GiftBigAnimationView animationView, GiftPlayModel giftPlayModel);
