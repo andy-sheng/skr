@@ -8,21 +8,21 @@
     android:orientation="vertical">
 
     <TextView
-        android:layout_centerHorizontal="true"
-        android:text="《世上》"
-        android:layout_marginTop="@dimen/view_40_dp"
-        android:textColor="@color/white_trans_80"
-        android:textSize="@dimen/textsize_18_dp"
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_40_dp"
+        android:text="《世上》"
+        android:textColor="@color/white_trans_80"
+        android:textSize="@dimen/textsize_18_dp" />
 
     <LinearLayout
         android:id="@+id/bottom_container"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_50_dp"
+        android:layout_height="@dimen/view_55_dp"
         android:layout_alignParentBottom="true"
-        android:background="#F9F4F1"
+        android:background="#2A2C3E"
         android:orientation="horizontal">
 
         <!--返回-->
@@ -37,28 +37,35 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="返回" />
+                android:drawableTop="@drawable/audition_back"
+                android:text="返回"
+                android:textColor="#99B2B6D6"
+                android:textSize="@dimen/textsize_12_dp" />
         </RelativeLayout>
 
-        <!--调音间-->
+        <!--播放暂停-->
         <RelativeLayout
-            android:id="@+id/rl_pause"
+            android:id="@+id/opt_area"
             android:layout_width="@dimen/view_0_dp"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:layout_weight="1">
 
             <com.common.view.ex.ExTextView
+                android:id="@+id/opt_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="暂停" />
+                android:drawableTop="@drawable/audition_zanting"
+                android:text="暂停"
+                android:textColor="#99B2B6D6"
+                android:textSize="@dimen/textsize_12_dp" />
 
         </RelativeLayout>
 
         <!--完成-->
         <RelativeLayout
-            android:id="@+id/rl_resing"
+            android:id="@+id/reset_area"
             android:layout_width="@dimen/view_0_dp"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
@@ -68,18 +75,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="重唱" />
+                android:drawableTop="@drawable/audition_chongchang"
+                android:text="重唱"
+                android:textColor="#99B2B6D6"
+                android:textSize="@dimen/textsize_12_dp" />
         </RelativeLayout>
 
     </LinearLayout>
 
     <!--正在唱的人的歌词-->
     <com.zq.lyrics.widget.ManyLyricsView
-        android:layout_marginTop="@dimen/view_100_dp"
-        android:layout_below="@+id/tv_name"
         android:id="@+id/many_lyrics_view"
         android:layout_width="match_parent"
         android:layout_height="280dp"
+        android:layout_below="@+id/tv_name"
+        android:layout_marginTop="@dimen/view_100_dp"
         app:ly_eable_scroll="false"
         app:ly_eable_verbatim="true"
         app:ly_high_light_paint_color_from="#EF5E85"

@@ -12,25 +12,20 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.common.base.BaseFragment;
+import com.common.base.FragmentDataListener;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrAudioPermission;
 import com.common.log.MyLog;
-import com.common.player.IPlayer;
-import com.common.player.IPlayerCallback;
-import com.common.player.exoplayer.ExoPlayer;
-import com.common.player.mediaplayer.AndroidMediaPlayer;
+import com.common.utils.FragmentUtils;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
-import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.dialog.view.TipsDialogView;
 import com.engine.EngineEvent;
@@ -39,9 +34,7 @@ import com.engine.Params;
 import com.engine.arccloud.ArcRecognizeListener;
 import com.engine.arccloud.RecognizeConfig;
 import com.engine.arccloud.SongInfo;
-import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.rank.prepare.model.PrepareData;
-import com.module.playways.rank.prepare.view.SendGiftCircleCountDownView;
 import com.module.playways.rank.prepare.view.VoiceControlPanelView;
 import com.module.playways.rank.room.view.RankTopContainerView2;
 import com.module.playways.rank.song.model.SongModel;
@@ -60,18 +53,14 @@ import com.zq.lyrics.widget.VoiceScaleView;
 import com.zq.toast.CommonToastView;
 import com.zq.toast.NoImageCommonToastView;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 import io.agora.rtc.Constants;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -109,8 +98,6 @@ public class AuditionFragment extends BaseFragment {
     private boolean mIsVoiceShow = true;
 
     private volatile boolean isRecord = false;
-
-    IPlayer mExoPlayer;
 
     Handler mUiHanlder;
 
@@ -191,9 +178,6 @@ public class AuditionFragment extends BaseFragment {
         mResArea.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                if (mExoPlayer != null) {
-                    mExoPlayer.stop();
-                }
                 startRecord();
             }
         });
@@ -342,84 +326,34 @@ public class AuditionFragment extends BaseFragment {
         }
 
         mVoiceScaleView.setVisibility(View.GONE);
-        mAuditionArea.setVisibility(View.GONE);
-        showVoicePanelView(false);
 
         isRecord = false;
 
         EngineManager.getInstance().stopAudioRecording();
         EngineManager.getInstance().stopAudioMixing();
 
-        playLyrics(mSongModel, true, false);
-//        mManyLyricsView.seekto(mSongModel.getBeginMs());
-//        mUiHanlder.postDelayed(() -> {
-//            mManyLyricsView.pause();
-//        }, 100);
+        // TODO: 2019/3/14 原来会自动播放，现在该为跳到PlayRecordFragment中去
+//        playLyrics(mSongModel, true, false);
+//
+//        playRecord();
 
-        playRecord();
+        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), PlayRecordFragment.class)
+                .setAddToBackStack(true)
+                .setHasAnimation(true)
+                .addDataBeforeAdd(0, mSongModel)
+                .setFragmentDataListener(new FragmentDataListener() {
+                    @Override
+                    public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
+                        if (requestCode == 0 && resultCode == 0) {
+                            stopRecord();
+                        }
+                    }
+                })
+                .build());
+
         if (MyLog.isDebugLogOpen()) {
             jisuanScore();
         }
-    }
-
-    /**
-     * 播放录音
-     */
-    private void playRecord() {
-        if (mExoPlayer != null) {
-            mExoPlayer.reset();
-        }
-        if (mExoPlayer == null) {
-            if (RECORD_BY_CALLBACK) {
-                mExoPlayer = new AndroidMediaPlayer();
-            } else {
-                mExoPlayer = new ExoPlayer();
-            }
-
-            mExoPlayer.setCallback(new IPlayerCallback() {
-                @Override
-                public void onPrepared() {
-
-                }
-
-                @Override
-                public void onCompletion() {
-                    mManyLyricsView.seekto(mSongModel.getBeginMs());
-                    mUiHanlder.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            mManyLyricsView.pause();
-                        }
-                    }, 100);
-                }
-
-                @Override
-                public void onSeekComplete() {
-
-                }
-
-                @Override
-                public void onVideoSizeChanged(int width, int height) {
-
-                }
-
-                @Override
-                public void onError(int what, int extra) {
-
-                }
-
-                @Override
-                public void onInfo(int what, int extra) {
-
-                }
-            });
-        }
-        if (RECORD_BY_CALLBACK) {
-            mExoPlayer.startPlayPcm(PCM_SAVE_PATH, 2, 44100, 44100 * 2);
-        } else {
-            mExoPlayer.startPlay(ACC_SAVE_PATH);
-        }
-
     }
 
     private void resendAutoLeaveChannelMsg() {
@@ -666,9 +600,6 @@ public class AuditionFragment extends BaseFragment {
 
         mLyricEventLauncher.destroy();
         mManyLyricsView.release();
-        if (mExoPlayer != null) {
-            mExoPlayer.release();
-        }
 
         EngineManager.getInstance().destroy("prepare");
         File recordFile = new File(PCM_SAVE_PATH);

@@ -1,24 +1,15 @@
 package com.module.playways.rank.prepare.fragment;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.ValueAnimator;
-import android.app.Activity;
+
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.common.base.BaseFragment;
-import com.common.core.account.UserAccountManager;
-import com.common.core.myinfo.MyUserInfoManager;
-import com.common.core.permission.SkrAudioPermission;
 import com.common.log.MyLog;
 import com.common.player.IPlayer;
 import com.common.player.IPlayerCallback;
@@ -28,58 +19,38 @@ import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
-import com.dialog.view.TipsDialogView;
-import com.engine.EngineEvent;
 import com.engine.EngineManager;
-import com.engine.Params;
-import com.engine.arccloud.ArcRecognizeListener;
-import com.engine.arccloud.RecognizeConfig;
-import com.engine.arccloud.SongInfo;
-import com.module.playways.rank.prepare.model.PrepareData;
-import com.module.playways.rank.prepare.view.VoiceControlPanelView;
-import com.module.playways.rank.room.view.RankTopContainerView2;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
-import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.ViewHolder;
 import com.trello.rxlifecycle2.android.FragmentEvent;
 import com.zq.lyrics.LyricsManager;
 import com.zq.lyrics.LyricsReader;
-import com.zq.lyrics.event.LrcEvent;
-import com.zq.lyrics.event.LyricEventLauncher;
 import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.ManyLyricsView;
-import com.zq.lyrics.widget.VoiceScaleView;
-import com.zq.toast.CommonToastView;
-import com.zq.toast.NoImageCommonToastView;
-
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
-import io.agora.rtc.Constants;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-import static com.engine.EngineEvent.TYPE_MUSIC_PLAY_FINISH;
 import static com.zq.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
 
 public class PlayRecordFragment extends BaseFragment {
     TextView mTvName;
     LinearLayout mBottomContainer;
     RelativeLayout mBackArea;
-    RelativeLayout mRlPause;
-    RelativeLayout mRlResing;
+    RelativeLayout mOptArea;
+    ExTextView mOptTv;
+    RelativeLayout mResetArea;
     ManyLyricsView mManyLyricsView;
 
     SongModel mSongModel;
 
-    File mFile;
+    Handler mUiHanlder;
+
+    IPlayer mExoPlayer;
+
+    boolean mIsPlay = false;
 
     @Override
     public int initView() {
@@ -91,11 +62,54 @@ public class PlayRecordFragment extends BaseFragment {
         mTvName = (TextView) mRootView.findViewById(R.id.tv_name);
         mBottomContainer = (LinearLayout) mRootView.findViewById(R.id.bottom_container);
         mBackArea = (RelativeLayout) mRootView.findViewById(R.id.back_area);
-        mRlPause = (RelativeLayout) mRootView.findViewById(R.id.rl_pause);
-        mRlResing = (RelativeLayout) mRootView.findViewById(R.id.rl_resing);
+        mOptArea = (RelativeLayout) mRootView.findViewById(R.id.opt_area);
+        mOptTv = (ExTextView) mRootView.findViewById(R.id.opt_tv);
+        mResetArea = (RelativeLayout) mRootView.findViewById(R.id.reset_area);
         mManyLyricsView = (ManyLyricsView) mRootView.findViewById(R.id.many_lyrics_view);
 
-//        playLyrics(mSongModel);
+        mUiHanlder = new Handler();
+
+        playLyrics(mSongModel);
+        playRecord();
+
+        mBackArea.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                // 返回选歌页面
+            }
+        });
+
+        mResetArea.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mFragmentDataListener != null) {
+                    mFragmentDataListener.onFragmentResult(0, 0, null, null);
+                }
+                U.getFragmentUtils().popFragment(PlayRecordFragment.this);
+            }
+        });
+
+        mOptArea.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mIsPlay) {
+                    // 暂停
+                    if (mExoPlayer != null) {
+                        mExoPlayer.stop();
+                        mIsPlay = false;
+                    }
+                    mManyLyricsView.pause();
+                    mOptTv.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.audition_bofang), null, null);
+                    mOptTv.setText("播放");
+                } else {
+                    // 播放
+                    playLyrics(mSongModel);
+                    playRecord();
+                    mOptTv.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.audition_zanting), null, null);
+                    mOptTv.setText("暂停");
+                }
+            }
+        });
     }
 
     /**
@@ -106,13 +120,7 @@ public class PlayRecordFragment extends BaseFragment {
         super.setData(type, data);
         if (type == 0) {
             mSongModel = (SongModel) data;
-        } else if (type == 1) {
-            mFile = (File) data;
         }
-    }
-
-    private void playMusic(SongModel songModel) {
-
     }
 
     LyricsReader mLyricsReader;
@@ -145,14 +153,87 @@ public class PlayRecordFragment extends BaseFragment {
         }
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
     }
 
+
     @Override
     public void destroy() {
         super.destroy();
         mManyLyricsView.release();
+        if (mExoPlayer != null) {
+            mExoPlayer.release();
+        }
+        mUiHanlder.removeCallbacksAndMessages(null);
+    }
+
+    @Override
+    public boolean useEventBus() {
+        return false;
+    }
+
+    /**
+     * 播放录音
+     */
+    private void playRecord() {
+        if (mExoPlayer != null) {
+            mExoPlayer.reset();
+        }
+        if (mExoPlayer == null) {
+            if (AuditionFragment.RECORD_BY_CALLBACK) {
+                mExoPlayer = new AndroidMediaPlayer();
+            } else {
+                mExoPlayer = new ExoPlayer();
+            }
+
+            mExoPlayer.setCallback(new IPlayerCallback() {
+                @Override
+                public void onPrepared() {
+
+                }
+
+                @Override
+                public void onCompletion() {
+                    mManyLyricsView.seekto(mSongModel.getBeginMs());
+                    mUiHanlder.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mManyLyricsView.pause();
+                        }
+                    }, 100);
+                }
+
+                @Override
+                public void onSeekComplete() {
+
+                }
+
+                @Override
+                public void onVideoSizeChanged(int width, int height) {
+
+                }
+
+                @Override
+                public void onError(int what, int extra) {
+
+                }
+
+                @Override
+                public void onInfo(int what, int extra) {
+
+                }
+            });
+        }
+
+        mIsPlay = true;
+        if (AuditionFragment.RECORD_BY_CALLBACK) {
+            mExoPlayer.startPlayPcm(AuditionFragment.PCM_SAVE_PATH, 2, 44100, 44100 * 2);
+        } else {
+            mExoPlayer.startPlay(AuditionFragment.ACC_SAVE_PATH);
+        }
+
     }
 }
