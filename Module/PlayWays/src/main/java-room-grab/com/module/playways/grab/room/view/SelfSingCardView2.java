@@ -349,6 +349,10 @@ public class SelfSingCardView2 extends RelativeLayout {
         }, throwable -> MyLog.e(TAG, throwable));
     }
 
+    /**
+     * 会偶现播伴奏失败，即没有这个调整事件
+     * @param event
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EngineEvent event) {
         if (event.getType() == EngineEvent.TYPE_MUSIC_PLAY_TIME_FLY_LISTENER) {
