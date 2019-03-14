@@ -4,19 +4,16 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.view.Gravity;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.common.base.BaseActivity;
-import com.common.base.FragmentDataListener;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
-import com.common.core.userinfo.UserInfoManager;
 import com.common.upload.UploadCallback;
 import com.common.upload.UploadParams;
 import com.common.upload.UploadTask;
@@ -27,24 +24,18 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
 import com.component.busilib.view.MarqueeTextView;
-import com.dialog.view.ProgressDialogView;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.module.RouterConstants;
-import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.OnClickListener;
-import com.orhanobut.dialogplus.OnDismissListener;
-import com.orhanobut.dialogplus.ViewHolder;
-import com.respicker.ResPicker;
-import com.respicker.activity.ResPickerActivity;
-import com.respicker.fragment.ResPickerFragment;
-import com.respicker.model.ImageItem;
-import com.respicker.view.CropImageView;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.module.RouterConstants;
 import com.module.home.R;
 import com.module.home.updateinfo.fragment.EditInfoAgeFragment;
 import com.module.home.updateinfo.fragment.EditInfoNameFragment;
 import com.module.home.updateinfo.fragment.EditInfoSexFragment;
 import com.module.home.updateinfo.fragment.EditInfoSignFragment;
+import com.respicker.ResPicker;
+import com.respicker.activity.ResPickerActivity;
+import com.respicker.model.ImageItem;
+import com.respicker.view.CropImageView;
 import com.zq.toast.CommonToastView;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -76,7 +67,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
     RelativeLayout mEditLocation;
     ExTextView mLocationTv;
     ExImageView mLocationRefreshBtn;
-    DialogPlus mProgressDialog;
+    ProgressBar mProgressBar;
 
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
@@ -101,6 +92,8 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
         mSexTv = (ExTextView) findViewById(R.id.sex_tv);
         mLocationTv = (ExTextView) findViewById(R.id.location_tv);
         mLocationRefreshBtn = (ExImageView) findViewById(R.id.location_refresh_btn);
+
+        mProgressBar = findViewById(R.id.progress_bar);
 
         initViewData();
 
@@ -254,17 +247,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ResPickerActivity.REQ_CODE_RES_PICK && resultCode == Activity.RESULT_OK) {
             ImageItem imageItem = ResPicker.getInstance().getSingleSelectedImage();
-            if (mProgressDialog == null) {
-                ProgressDialogView progressDialogView = new ProgressDialogView(EditInfoActivity.this);
-                mProgressDialog = DialogPlus.newDialog(this)
-                        .setContentHolder(new ViewHolder(progressDialogView))
-                        .setGravity(Gravity.CENTER)
-                        .setContentBackgroundResource(R.color.transparent)
-                        .setOverlayBackgroundResource(R.color.black_trans_60)
-                        .setExpanded(false)
-                        .create();
-            }
-            mProgressDialog.show();
+            mProgressBar.setVisibility(View.VISIBLE);
             UploadTask uploadTask = UploadParams.newBuilder(imageItem.getPath())
                     .setNeedCompress(true)
                     .startUploadAsync(new UploadCallback() {
@@ -275,16 +258,16 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
 
                         @Override
                         public void onSuccess(String url) {
-                            if (mProgressDialog != null) {
-                                mProgressDialog.dismiss();
+                            if (mProgressBar != null) {
+                                mProgressBar.setVisibility(View.GONE);
                             }
                             uploadAvatarSuccess(url);
                         }
 
                         @Override
                         public void onFailure(String msg) {
-                            if (mProgressDialog != null) {
-                                mProgressDialog.dismiss();
+                            if (mProgressBar != null) {
+                                mProgressBar.setVisibility(View.GONE);
                             }
                         }
                     });
@@ -292,8 +275,8 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
     }
 
     protected void uploadAvatarSuccess(String url) {
-        if (mProgressDialog != null) {
-            mProgressDialog.dismiss();
+        if (mProgressBar != null) {
+            mProgressBar.setVisibility(View.GONE);
         }
         MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager
                 .newMyInfoUpdateParamsBuilder()
