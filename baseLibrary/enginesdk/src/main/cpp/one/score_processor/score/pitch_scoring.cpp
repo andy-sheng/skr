@@ -4,16 +4,20 @@
 
 #define RECORD_WAVY_LINE_DELAY          150     //为了打分点更准确。延迟一段时间
 
-#define LOGOPEN 0
+#define LOGOPEN 1
 
+#define MODE 1
 PitchScoring::PitchScoring() {
     calBasebandUtil = new CCalcBaseband();
     isInitialization = false;
     mNotesMaxLen = 0;
-    mCurScore = 0;
     mLastScore = 0;
     mCurrentLineLevelSum = 0;
     mCurrentLineSampleCount = 0;
+    mIndex = -1;
+    mIndexMaxScore = -1;
+    mPcmTotal = 0;
+    mPcmBufferSize = 0;
 }
 
 PitchScoring::~PitchScoring() {
@@ -72,6 +76,40 @@ PitchScoring::onInit(int sampleRateParam, int channelNumParam, int bitParam, cha
     pthread_create(&initBasebandThread, NULL, startInitBasebandThread, this);
 }
 
+/**
+ * 按普通人的听觉
+    0 －2 0 分贝 很静、几乎感觉不到；
+    2 0 －4 0 分贝安静、犹如轻声絮语；
+    4 0 －6 0 分贝一般。普通室内谈话；
+    6 0 －7 0 分贝吵闹、有损神经；
+    7 0 －9 0 分贝很吵、神经细胞受到破坏。
+    9 0 －1 0 0 分贝 吵闹加剧、听力受损；
+    1 0 0 －1 2 0 分贝难以忍受、呆一分钟即暂时致聋。
+ * @param buffer
+ * @param bufferSize
+ * @return
+ */
+int PitchScoring::getPcmDB(short *buffer, int bufferSize) {
+    int db = 0;
+    double sum = 0;
+
+    for (int i = 0; i < bufferSize; i++) {
+        short v = buffer[i];
+        sum += abs(v); //绝对值求和
+    }
+    if (LOGOPEN) {
+        //LOGI("getPcmDB sum=%f", sum);
+    }
+    mPcmTotal += sum;
+    mPcmBufferSize += bufferSize;
+    sum = sum / bufferSize; //求平均值（2个字节表示一个振幅，所以振幅个数为：size/2个）
+
+    if (sum > 0) {
+        db = (int) (20.0 * log10(sum));
+    }
+    return db;
+}
+
 void *PitchScoring::startInitBasebandThread(void *ptr) {
     PitchScoring *scoring = (PitchScoring *) ptr;
     if (scoring->calBasebandUtil) {
@@ -92,23 +130,26 @@ void PitchScoring::processRecordLevel(RecordLevel *recordLevel) {
     if (isNeedDestroy) {
         return;
     }
+    int pcmDb = getPcmDB(recordLevel->getSamples(), AUDIO_DATA_SAMPLE_FOR_SCORE);
+
     //1:找出对应的音符位置
     long currentTimeMills = recordLevel->getTimeMills();
+    int curIndex = 0;
     int flag = 0;
-    int singingIndex = getSingingIndex(currentTimeMills, &flag);
-    if (LOGOPEN) {
-        LOGI("processRecordLevel singingIndex=%d currentTimeMills=%ld", singingIndex,
-             currentTimeMills);
-    }
-    if (singingIndex < 0) {
-        //没找到这句对应的音符位置，直接返回
-        mCurScore = 0;
+    MelodyNote *melodyNote = getSingingIndex(currentTimeMills, &flag, &curIndex);
+
+    if (melodyNote == NULL) {
+        if (LOGOPEN) {
+            LOGI("没找到这句对应的音符位置，直接返回");
+        }
+        mLastScore = 0;
         return;
     }
-    MelodyNote melodyNote = mMelodyNotes.at(singingIndex);
+    float tsF = (currentTimeMills - melodyNote->beginTimeMs) /
+                ((melodyNote->endTimeMs - melodyNote->beginTimeMs) * 1.0f);
+    tsF = -2.0f * fabs(tsF - 0.5) + 0.5;
     // 取出目标音高
-    short targetNote = melodyNote.note_org;
-
+    short targetNote = melodyNote->note_org;
     float conf = 0.0;
     float f0 = 0.0;
     //2:计算基频
@@ -118,70 +159,225 @@ void PitchScoring::processRecordLevel(RecordLevel *recordLevel) {
                                         AUDIO_DATA_SAMPLE_FOR_SCORE, &f0, &conf);
     }
     float note = -1;
-    //3:根据基频计算note
-    if (conf > 0.8) {
-        note = (float) (69000.5 + 12000 * (log10(f0 / 440.0) / log10(2)));
-        note = float((int) note % 12000) / 1000.0;
-    }
+    // 十二平均律 ，不说话，按理 conf 会很低 ，如果置信度一致很低，考虑给低分
+    // https://www.zhihu.com/question/282562547 计算 midi number
+    /*
+        人声：男：低音82～392Hz，基准音区64～523Hz；
+        男中音123～493Hz，男高音164～698Hz；
+        女：低音82～392Hz，基准音区160～1200Hz；
+        女中音123～493Hz，女高音220～1.1KHz。
+     */
+    note = (float) (69000.5 + 12000 * (log10(f0 / 440.0) / log10(2)));
+    note = float((int) note % 12000) / 1000.0;
+
+
+    float pcmF = (-1) * (pcmDb - 60) * (pcmDb - 60) / 625.0 + 1;
+
+    // 先算出 note 的diff
+    float diffnote = noteDiff(note, targetNote);
+    diffnote = fabs(diffnote);
+
+    float confF = 10 * conf / 6.0 - 1 / 3.0;
     if (LOGOPEN) {
-        LOGI("processRecordLevel conf=%.3f,note=%.2f,targetNote=%hd", conf, note, targetNote);
+        LOGI("processRecordLevel conf=%.3f f0=%.2f confF=%.2f note=%.2f targetNote=%hd diffnote=%.2f pcmDb=%d pcmF=%f lastScore=%d tsF=%.2f",
+             conf, f0, confF,
+             note, targetNote, diffnote,
+             pcmDb, pcmF,
+             mLastScore, tsF);
     }
+    if (confF < 0) {
+        confF = 0;
+    }
+    float curScore = 0;
     bool noteValid = false;
-    //4:根据note计算score
-    if (note > -0.5) {
-        noteValid = true;
-        float diffnote = noteDiff(note, targetNote);
-
-        if (LOGOPEN) {
-            LOGI("processRecordLevel diffnote=%.2f ", fabs(diffnote));
-        }
-        //diffnote = diffnote / 2.0;
-        if (fabs(diffnote) <= 1.0) {
-            diffnote = diffnote * fabs(diffnote);
-        }
-        int a = 100 - 100 * (fabs(diffnote) - 0.0);
-        int b = mLastScore * 0.4;
-        if (a > b) {
-            mCurScore = a;
+    if (conf > 0.8) {
+        if (diffnote <= 1.0) {
+            curScore = 100 - 100 * diffnote * diffnote;
+            // 得到了一个分，置信度也高 conf = 10/6 * a - 1/3
+            // curScore = curScore * confF;
         } else {
-            mCurScore = b;
-//            if (mCurScore == 0) {
-//                // 声音够大，也给他一个分
-//                mCurScore = note * 10;
-//            }
+            curScore = mLastScore * 0.4f;
         }
-//        if (fabs(diffnote) <= 1.0) {
-//            mCurScore = 100 - 100 * (fabs(diffnote) - 0.0);
-//        } else {
-//            mCurScore = mLastScore * 0.4;
-//        }
+        noteValid = true;
     } else {
-        mCurScore = mLastScore * 0.2;
+        curScore = mLastScore * 0.2f;
     }
 
-    if (mCurScore > 100) {
-        if (LOGOPEN) {
-            LOGI("processRecordLevel mCurScore >100");
-        }
-        mCurScore = 100;
-    }
-    if (mCurScore < 0) {
-        mCurScore = 0;
-    }
-    mLastScore = mCurScore;
+//    if (diffnote <= 1.0) {
+//        curScore = 100 - 100 * diffnote * diffnote;
+//        // 得到了一个分，置信度也高 conf = 10/6 * a - 1/3
+//        curScore = curScore * confF;
+//    } else {
+//        if(conf>0.8){
+//            curScore = mLastScore - mLastScore * (diffnote * confF / 10.0);
+//        }else{
+//            // 唱得不准，考虑做衰减，衰减的程度由 置信度 和 diffNote共同确定
+//            curScore = mLastScore - mLastScore * (diffnote * confF / 10.0);
+//        }
+//    }
+
     if (LOGOPEN) {
-        LOGI("processRecordLevel mCurScore=%d targetNote=%hd", mCurScore, targetNote);
+        LOGI("processRecordLevel 加分呗前 curScore=%.2f", curScore);
+    }
+    curScore = curScore + pcmF * 3;
+//    if (LOGOPEN) {
+//        LOGI("processRecordLevel 加演唱偏移因子前 curScore=%.2f", curScore);
+//    }
+//    curScore = curScore + tsF * curScore / 5.0f;
+    if (LOGOPEN) {
+        LOGI("processRecordLevel 最终 curScore=%.2f", curScore);
+    }
+    mLastScore = (int) curScore;
+
+    if (curIndex > mIndex) {
+        // 分数放入
+        mIndex = curIndex;
+        if (LOGOPEN) {
+            LOGI("processRecordLevel 索引增加 分数放入 mPcmTotal=%d mPcmBufferSize=%d ", mPcmTotal,
+                 mPcmBufferSize);
+        }
+        int sum = mPcmTotal / mPcmBufferSize; //求平均值（2个字节表示一个振幅，所以振幅个数为：size/2个）
+        int db = 0;
+        if (sum > 0) {
+            db = (int) (20.0 * log10(sum));
+        }
+        float pcmF = (-1) * (db - 60) * (db - 60) / 625.0 + 1;
+        if (LOGOPEN) {
+            LOGI("processRecordLevel 索引增加 分数放入 mIndexMaxScore=%d mCurrentLineLevelSum=%d mCurrentLineSampleCount=%d db=%d pcmF=%.2f",
+                 mIndexMaxScore, mCurrentLineLevelSum, mCurrentLineSampleCount, db, pcmF);
+        }
+        mCurrentLineLevelSum += mIndexMaxScore;
+        mCurrentLineLevelSum += (pcmF * 12);
+        mPcmTotal = 0;
+        mPcmBufferSize = 0;
+        mCurrentLineSampleCount++;
+        mIndexMaxScore = curScore;
+    } else if (curIndex == mIndex) {
+        if (curScore > mIndexMaxScore) {
+            mIndexMaxScore = curScore;
+        }
     }
     //5:根据score进行计算统计数据
-    if (noteValid) {
-        mCurrentLineLevelSum += mCurScore;
-        mCurrentLineSampleCount++;
-        if (LOGOPEN) {
-            LOGI("processRecordLevel 得分有效 mCurrentLineLevelSum=%d mCurrentLineSampleCount=%d",
-                 mCurrentLineLevelSum, mCurrentLineSampleCount);
-        }
-    }
+//    if (noteValid) {
+//        mCurrentLineLevelSum += curScore;
+//        mCurrentLineSampleCount++;
+//        if (LOGOPEN) {
+//            LOGI("processRecordLevel 得分有效 mCurrentLineLevelSum=%d mCurrentLineSampleCount=%d",
+//                 mCurrentLineLevelSum, mCurrentLineSampleCount);
+//        }
+//    }
 }
+
+//void PitchScoring::processRecordLevel(RecordLevel *recordLevel) {
+//    if (isNeedDestroy) {
+//        return;
+//    }
+//    //1:找出对应的音符位置
+//    long currentTimeMills = recordLevel->getTimeMills();
+//    int curIndex = 0;
+//    int flag = 0;
+//    MelodyNote *melodyNote = getSingingIndex(currentTimeMills, &flag,&curIndex);
+//
+//    if (melodyNote == NULL) {
+//        if (LOGOPEN) {
+//            LOGI("没找到这句对应的音符位置，直接返回");
+//        }
+//        mLastScore = 0;
+//        return;
+//    }
+//    float tsF = (currentTimeMills - melodyNote->beginTimeMs) /
+//                ((melodyNote->endTimeMs - melodyNote->beginTimeMs) * 1.0f);
+//    tsF = -2.0f * fabs(tsF - 0.5) + 0.5;
+//    // 取出目标音高
+//    short targetNote = melodyNote->note_org;
+//    float conf = 0.0;
+//    float f0 = 0.0;
+//    //2:计算基频
+//    if (calBasebandUtil) {
+////		fwrite(recordLevel->getSamples(), 2, AUDIO_DATA_SAMPLE_FOR_SCORE, pcmFile);
+//        calBasebandUtil->getFreqAndConf(recordLevel->getSamples(),
+//                                        AUDIO_DATA_SAMPLE_FOR_SCORE, &f0, &conf);
+//    }
+//    float note = -1;
+//    // 十二平均律 ，不说话，按理 conf 会很低 ，如果置信度一致很低，考虑给低分
+//    // https://www.zhihu.com/question/282562547 计算 midi number
+//    /*
+//        人声：男：低音82～392Hz，基准音区64～523Hz；
+//        男中音123～493Hz，男高音164～698Hz；
+//        女：低音82～392Hz，基准音区160～1200Hz；
+//        女中音123～493Hz，女高音220～1.1KHz。
+//     */
+//    note = (float) (69000.5 + 12000 * (log10(f0 / 440.0) / log10(2)));
+//    note = float((int) note % 12000) / 1000.0;
+//
+//    int pcmDb = getPcmDB(recordLevel->getSamples(), AUDIO_DATA_SAMPLE_FOR_SCORE);
+//    float pcmF = (-1) * (pcmDb - 60) * (pcmDb - 60) / 625.0 + 1;
+//
+//    // 先算出 note 的diff
+//    float diffnote = noteDiff(note, targetNote);
+//    diffnote = fabs(diffnote);
+//
+//    float confF = 10 * conf / 6.0 - 1 / 3.0;
+//    if (LOGOPEN) {
+//        LOGI("processRecordLevel conf=%.3f f0=%.2f confF=%.2f note=%.2f targetNote=%hd diffnote=%.2f pcmDb=%d pcmF=%f lastScore=%d tsF=%.2f",
+//             conf, f0, confF,
+//             note, targetNote, diffnote,
+//             pcmDb, pcmF,
+//             mLastScore, tsF);
+//    }
+//    if (confF < 0) {
+//        confF = 0;
+//    }
+//    float curScore = 0;
+//    bool noteValid = false;
+//    if (conf > 0.8) {
+//        if (diffnote <= 1.0) {
+//            curScore = 100 - 100 * diffnote * diffnote;
+//            // 得到了一个分，置信度也高 conf = 10/6 * a - 1/3
+//            // curScore = curScore * confF;
+//        } else {
+//            curScore = mLastScore * 0.4f;
+//        }
+//        noteValid = true;
+//    } else {
+//        curScore = mLastScore * 0.2f;
+//    }
+//
+////    if (diffnote <= 1.0) {
+////        curScore = 100 - 100 * diffnote * diffnote;
+////        // 得到了一个分，置信度也高 conf = 10/6 * a - 1/3
+////        curScore = curScore * confF;
+////    } else {
+////        if(conf>0.8){
+////            curScore = mLastScore - mLastScore * (diffnote * confF / 10.0);
+////        }else{
+////            // 唱得不准，考虑做衰减，衰减的程度由 置信度 和 diffNote共同确定
+////            curScore = mLastScore - mLastScore * (diffnote * confF / 10.0);
+////        }
+////    }
+//
+//    if (LOGOPEN) {
+//        LOGI("processRecordLevel 加分呗前 curScore=%.2f", curScore);
+//    }
+//    curScore = curScore + pcmF * 15;
+////    if (LOGOPEN) {
+////        LOGI("processRecordLevel 加演唱偏移因子前 curScore=%.2f", curScore);
+////    }
+////    curScore = curScore + tsF * curScore / 5.0f;
+//    if (LOGOPEN) {
+//        LOGI("processRecordLevel 最终 curScore=%.2f", curScore);
+//    }
+//    mLastScore = (int) curScore;
+//    //5:根据score进行计算统计数据
+//    if (noteValid) {
+//        mCurrentLineLevelSum += curScore;
+//        mCurrentLineSampleCount++;
+//        if (LOGOPEN) {
+//            LOGI("processRecordLevel 得分有效 mCurrentLineLevelSum=%d mCurrentLineSampleCount=%d",
+//                 mCurrentLineLevelSum, mCurrentLineSampleCount);
+//        }
+//    }
+//}
 
 int PitchScoring::getScore() {
     int lineScore = 0;
@@ -189,11 +385,17 @@ int PitchScoring::getScore() {
     if (mCurrentLineSampleCount > 0) {
         lineScore = mCurrentLineLevelSum / mCurrentLineSampleCount;
     }
-    float x = (float) lineScore * 0.01;
-    x = (x * (1 - x) + x) * 0.2 + 0.8 * x;
-    lineScore = 100 * (x * (1 - x) + x);
+    if (lineScore < 0) {
+        lineScore = 0;
+    } else if (lineScore > 100) {
+        lineScore = 100;
+    }
+    // 50 - 79   90 - 99 加权了
+//    float x = (float) lineScore * 0.01;
+//    x = (x * (1 - x) + x) * 0.2 + 0.8 * x;
+//    lineScore = 100 * (x * (1 - x) + x);
     if (LOGOPEN) {
-        LOGI("getScore mCurrentLineSampleCount:%d mCurrentLineLevelSum:%d lineScore:%d",
+        LOGI("获取得分 mCurrentLineSampleCount:%d mCurrentLineLevelSum:%d lineScore:%d",
              mCurrentLineSampleCount, mCurrentLineLevelSum, lineScore);
     }
     //2:清空统计数据
@@ -202,9 +404,8 @@ int PitchScoring::getScore() {
     return lineScore;
 }
 
-int PitchScoring::getSingingIndex(long currentTimeMills, int *flag) {
+MelodyNote *PitchScoring::getSingingIndex(long currentTimeMills, int *flag, int *index) {
     //LOGI("currentTimeMills=%ld", currentTimeMills);
-    int singingIndex = -1;
     int f = 100;// 宽松一点
     bool find = false;
     for (int j = 0; j < 1 && !find; j++) {
@@ -214,20 +415,19 @@ int PitchScoring::getSingingIndex(long currentTimeMills, int *flag) {
             int beginTimeMs = melodyNote.beginTimeMs;
             int endTimeMs = melodyNote.endTimeMs;
             if (beginTimeMs - f <= currentTimeMills && currentTimeMills < endTimeMs + f) {
-                singingIndex = i;
+                *index = i;
                 find = true;
                 if (LOGOPEN) {
                     LOGI("");
                     LOGI("getSingingIndex i=%d beginTimeMs=%d endTimeMs=%d currentTimeMills=%ld note=%hd f=%d",
                          i, beginTimeMs, endTimeMs, currentTimeMills, melodyNote.note_org, f);
                 }
-                break;
+                return &melodyNote;
             }
         }
         *flag = j;
     }
-
-    return singingIndex;
+    return NULL;
 }
 
 float PitchScoring::noteDiff(float curNote, short targetNote) {

@@ -21,11 +21,13 @@ private:
 	//打分相关
 	std::vector<MelodyNote> mMelodyNotes;
 	int 					mNotesMaxLen;
-	int 					mCurScore;
+	int 					mIndex;
+    int 					mIndexMaxScore;
+	int 					mPcmTotal;
+	int 					mPcmBufferSize;
 	int 					mLastScore;
 	int 					mCurrentLineLevelSum;
 	int 					mCurrentLineSampleCount;
-	int 					getSingingIndex(long currentTimeMills,int *flag);
 	float 					noteDiff(float curNote, short targetNote);
 public:
 	PitchScoring();
@@ -38,6 +40,10 @@ public:
 
 	/** 弃用 **/
 	void getRenderData(long currentTimeMills, float* meta);
+
+	int getPcmDB(short *buffer, int bufferSize);
+
+	MelodyNote *getSingingIndex(long currentTimeMills, int *flag, int *index);
 };
 
 #endif /* PITCH_SCORING_H_ */
