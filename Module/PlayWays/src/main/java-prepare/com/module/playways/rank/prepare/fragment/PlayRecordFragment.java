@@ -75,6 +75,9 @@ public class PlayRecordFragment extends BaseFragment {
             @Override
             public void clickValid(View v) {
                 // 返回选歌页面
+                if (getActivity() != null) {
+                    getActivity().finish();
+                }
             }
         });
 
