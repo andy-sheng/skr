@@ -96,6 +96,21 @@ public class WithdrawFragment extends BaseFragment implements IWithDrawView {
         mWithDrawPresenter = new WithDrawPresenter(this);
         addPresent(mWithDrawPresenter);
 
+        mLlChannel.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mTvWxSelect.isSelected()) {
+                    updateChannleState(NO_CHANNEL);
+                } else {
+                    if (mWithDrawInfoModel.getByChannel(WX_CHANNEL).isIsBind()) {
+                        updateChannleState(WX_CHANNEL);
+                    } else {
+                        authWX();
+                    }
+                }
+            }
+        });
+
         mTvWxSelect.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
