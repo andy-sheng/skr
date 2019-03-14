@@ -71,7 +71,7 @@ public class AgoraEngineAdapter {
     }
 
     static final boolean DEBUG = false && MyLog.isDebugLogOpen();
-    static final boolean SCORE_DEBUG = false && MyLog.isDebugLogOpen();
+    static final boolean SCORE_DEBUG = true && MyLog.isDebugLogOpen();
 
     private Params mConfig;
     private RtcEngine mRtcEngine;
@@ -1043,7 +1043,16 @@ public class AgoraEngineAdapter {
                 if (SCORE_DEBUG) {
                     if (mDebugScoreIS == null) {
                         try {
-                            mDebugScoreIS = new FileInputStream(new File(Environment.getExternalStorageDirectory(), "tongzhuodeni.pcm"));
+                            if (mConfig.getStyleEnum() == Params.AudioEffect.none) {
+                                MyLog.d(TAG, "读取none");
+                                mDebugScoreIS = new FileInputStream(new File(Environment.getExternalStorageDirectory(), "none.pcm"));
+                            } else if (mConfig.getStyleEnum() == Params.AudioEffect.kongling) {
+                                MyLog.d(TAG, "读取dangnigudan");
+                                mDebugScoreIS = new FileInputStream(new File(Environment.getExternalStorageDirectory(), "dangnigudan.pcm"));
+                            } else {
+                                MyLog.d(TAG, "读取tongzhuodeni");
+                                mDebugScoreIS = new FileInputStream(new File(Environment.getExternalStorageDirectory(), "tongzhuodeni.pcm"));
+                            }
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
                         }
