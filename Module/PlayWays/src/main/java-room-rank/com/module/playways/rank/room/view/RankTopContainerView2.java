@@ -428,7 +428,7 @@ public class RankTopContainerView2 extends RelativeLayout {
             score = (int) (Math.sqrt(score) * 10);
         }
 
-        RankGameConfigModel gameConfigModel = new RankGameConfigModel();
+        RankGameConfigModel gameConfigModel = null;
         if (mRoomData != null) {
             gameConfigModel = mRoomData.getGameConfigModel();
         }
