@@ -30,6 +30,7 @@ import com.zq.lyrics.LyricsReader;
 import com.zq.lyrics.event.LyricEventLauncher;
 import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.ManyLyricsView;
+import com.zq.lyrics.widget.VoiceScaleView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -72,6 +73,8 @@ public class SelfSingCardView2 extends RelativeLayout {
 
     ImageView mIvTag;
 
+    VoiceScaleView mVoiceScaleView;
+
     LyricEventLauncher mLyricEventLauncher = new LyricEventLauncher();
     LyricsReader mLyricsReader;
     // 按理 歌词 和 伴奏 都ok了 才抛出歌词end事件，但事件的时间戳要做矫正
@@ -101,6 +104,8 @@ public class SelfSingCardView2 extends RelativeLayout {
         mCountDownTv = (ExTextView) findViewById(R.id.count_down_tv);
         mCountIv = (ImageView) findViewById(R.id.count_iv);
         mIvTag = (ImageView) findViewById(R.id.iv_tag);
+        mVoiceScaleView = (VoiceScaleView) findViewById(R.id.voice_scale_view);
+
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -113,10 +118,13 @@ public class SelfSingCardView2 extends RelativeLayout {
         mTvLyric.setVisibility(VISIBLE);
         mManyLyricsView.setVisibility(GONE);
         mManyLyricsView.initLrcData();
+        mVoiceScaleView.setVisibility(View.GONE);
         if (songModel == null) {
             MyLog.d(TAG, "songModel 是空的");
             return;
         }
+
+
 
         if (!hasAcc) {
             playWithNoAcc(songModel);
@@ -181,6 +189,7 @@ public class SelfSingCardView2 extends RelativeLayout {
                             mLyricsReader = lyricsReader;
                             if(mAccLoadOk){
                                 launchLyricEvent(EngineManager.getInstance().getAudioMixingCurrentPosition());
+
                             }
                             mAccLoadOk = true;
                             // 这里是假设 伴奏 和 歌词一起初始化完毕的， 实际两者会有偏差优化下
@@ -362,6 +371,8 @@ public class SelfSingCardView2 extends RelativeLayout {
         int totalMs = mSongModel.getTotalMs();
         int lineNum = mLyricEventLauncher.postLyricEvent(mLyricsReader, lrcBeginTs - GrabRoomData.ACC_OFFSET_BY_LYRIC+accPlayTs, lrcBeginTs + totalMs - GrabRoomData.ACC_OFFSET_BY_LYRIC, null);
         mRoomData.setSongLineNum(lineNum);
+        mVoiceScaleView.setVisibility(View.VISIBLE);
+        mVoiceScaleView.startWithData(mLyricsReader.getLyricsLineInfoList(), lrcBeginTs - GrabRoomData.ACC_OFFSET_BY_LYRIC + accPlayTs );
     }
 
     public void setRoomData(GrabRoomData roomData) {

@@ -68,14 +68,14 @@ public class VoiceScaleView extends View {
 
     private void init(Context context, AttributeSet attrs) {
 
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.voiceScaleView);
-        mLeftBgPaintColor = typedArray.getColor(R.styleable.voiceScaleView_leftBgPaintColor, mLeftBgPaintColor);
-        mRightBgPaintColor = typedArray.getColor(R.styleable.voiceScaleView_rightBgPaintColor, mRightBgPaintColor);
-        mRedLinePaintColor = typedArray.getColor(R.styleable.voiceScaleView_redLinePaintColor, mRedLinePaintColor);
-        mRedOutpaintColor = typedArray.getColor(R.styleable.voiceScaleView_redOutpaintColor, mRedOutpaintColor);
-        mRedInnerpaintColor = typedArray.getColor(R.styleable.voiceScaleView_redInnerpaintColor, mRedInnerpaintColor);
-        mLeftPaintColor = typedArray.getColor(R.styleable.voiceScaleView_leftPaintColor, mLeftPaintColor);
-        mRightPaintColor = typedArray.getColor(R.styleable.voiceScaleView_rightPaintColor, mRightPaintColor);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.VoiceScaleView);
+        mLeftBgPaintColor = typedArray.getColor(R.styleable.VoiceScaleView_leftBgPaintColor, mLeftBgPaintColor);
+        mRightBgPaintColor = typedArray.getColor(R.styleable.VoiceScaleView_rightBgPaintColor, mRightBgPaintColor);
+        mRedLinePaintColor = typedArray.getColor(R.styleable.VoiceScaleView_redLinePaintColor, mRedLinePaintColor);
+        mRedOutpaintColor = typedArray.getColor(R.styleable.VoiceScaleView_redOutpaintColor, mRedOutpaintColor);
+        mRedInnerpaintColor = typedArray.getColor(R.styleable.VoiceScaleView_redInnerpaintColor, mRedInnerpaintColor);
+        mLeftPaintColor = typedArray.getColor(R.styleable.VoiceScaleView_leftPaintColor, mLeftPaintColor);
+        mRightPaintColor = typedArray.getColor(R.styleable.VoiceScaleView_rightPaintColor, mRightPaintColor);
         typedArray.recycle();
 
         setLayerType(LAYER_TYPE_SOFTWARE, null);

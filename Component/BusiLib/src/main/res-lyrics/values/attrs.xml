@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="voiceScaleView">
+    <declare-styleable name="VoiceScaleView">
         <!--左边音阶的颜色-->
         <attr name="leftPaintColor" format="color" />
         <!--右边音阶的颜色-->
