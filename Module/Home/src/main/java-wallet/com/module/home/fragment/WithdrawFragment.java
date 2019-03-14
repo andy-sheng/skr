@@ -211,7 +211,7 @@ public class WithdrawFragment extends BaseFragment implements IWithDrawView {
         mTvWxSelect.setSelected(false);
     }
 
-    private void showRuleView(){
+    private void showRuleView() {
         if (mRedPkgView != null) {
             mRedPkgView.dismiss();
         }
@@ -233,6 +233,7 @@ public class WithdrawFragment extends BaseFragment implements IWithDrawView {
 
     /**
      * 检查输入的数字是否合法
+     *
      * @param editString
      * @return
      */
@@ -322,10 +323,14 @@ public class WithdrawFragment extends BaseFragment implements IWithDrawView {
             if (cfgBean.getChannel() == WX_CHANNEL) {
                 if (cfgBean.isIsBind()) {
                     updateChannleState(WX_CHANNEL);
-                    mTvHasNotBindTip.setVisibility(View.GONE);
+
+                    mTvHasNotBindTip.setText("(已绑定)");
+                    mTvHasNotBindTip.setTextColor(Color.parseColor("#0C2275"));
                 } else {
                     updateChannleState(NO_CHANNEL);
-                    mTvHasNotBindTip.setVisibility(View.VISIBLE);
+
+                    mTvHasNotBindTip.setText("(未绑定)");
+                    mTvHasNotBindTip.setTextColor(Color.parseColor("#EF5E85"));
                 }
             }
         }
@@ -335,11 +340,15 @@ public class WithdrawFragment extends BaseFragment implements IWithDrawView {
     public void bindWxResult(boolean success) {
         if (success) {
             updateChannleState(WX_CHANNEL);
-            mTvHasNotBindTip.setVisibility(View.GONE);
+
+            mTvHasNotBindTip.setText("(已绑定)");
+            mTvHasNotBindTip.setTextColor(Color.parseColor("#0C2275"));
             checkWithdrawBtnEable();
         } else {
             updateChannleState(NO_CHANNEL);
-            mTvHasNotBindTip.setVisibility(View.VISIBLE);
+
+            mTvHasNotBindTip.setText("(未绑定)");
+            mTvHasNotBindTip.setTextColor(Color.parseColor("#EF5E85"));
             checkWithdrawBtnEable();
         }
     }
@@ -383,7 +392,7 @@ public class WithdrawFragment extends BaseFragment implements IWithDrawView {
 
     @Override
     public void withDraw(boolean success) {
-        if(success){
+        if (success) {
             U.getToastUtil().showShort("提现成功");
             if (getActivity() != null) {
                 getActivity().finish();
