@@ -2,6 +2,7 @@ package com.module.home.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -68,6 +69,8 @@ public class WithdrawFragment extends BaseFragment implements IWithDrawView {
     WithDrawPresenter mWithDrawPresenter;
 
     int mSelectedChannel = NO_CHANNEL;
+
+    Handler mUiHandler = new Handler();
 
     @Override
     public int initView() {
@@ -179,6 +182,15 @@ public class WithdrawFragment extends BaseFragment implements IWithDrawView {
             }
         });
 
+        mUiHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mEditCashNum.setFocusable(true);
+                mEditCashNum.requestFocus();
+                U.getKeyBoardUtils().showSoftInputKeyBoard(getActivity(), mEditCashNum);
+            }
+        }, 500);
+
         mWithDrawPresenter.getWithDrawInfo();
         mTvWithdrawBtn.setEnabled(false);
         mTvWxSelect.setSelected(false);
@@ -247,6 +259,8 @@ public class WithdrawFragment extends BaseFragment implements IWithDrawView {
         if (mRedPkgView != null) {
             mRedPkgView.dismiss();
         }
+
+        U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
     }
 
     private int stringToHaoFen(String floatString) {
@@ -365,6 +379,7 @@ public class WithdrawFragment extends BaseFragment implements IWithDrawView {
     @Override
     public void destroy() {
         super.destroy();
+        mUiHandler.removeCallbacksAndMessages(null);
     }
 
     @Override
