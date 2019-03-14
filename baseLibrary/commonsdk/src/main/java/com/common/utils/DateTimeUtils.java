@@ -80,12 +80,24 @@ public class DateTimeUtils {
 
     /**
      * 格式化日期
+     *
      * @param date 日期
      * @return 年-月-日
      */
     public String formatDateString(Date date) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         return format.format(date);
+    }
+
+    /**
+     * 特殊的格式化日期，将日变为00
+     *
+     * @param date 日期
+     * @return 年-月-00
+     */
+    public String formatSpecailDateString(Date date) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
+        return format.format(date) + "-00";
     }
 
 
