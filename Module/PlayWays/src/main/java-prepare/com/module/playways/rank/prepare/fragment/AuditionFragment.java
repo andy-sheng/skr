@@ -121,7 +121,7 @@ public class AuditionFragment extends BaseFragment {
                     MyLog.d(TAG, "handleMessage" + " lineNo=" + lineNo);
                     if (lineNo > mLastLineNum) {
                         int score = EngineManager.getInstance().getLineScore();
-                        if(MyLog.isDebugLogOpen()) {
+                        if (MyLog.isDebugLogOpen()) {
                             U.getToastUtil().showShort("melp得分:" + score);
                         }
                         MyLog.d(TAG, "handleMessage acr超时 本地获取得分:" + score);
@@ -279,12 +279,15 @@ public class AuditionFragment extends BaseFragment {
                         if (lineNo > mLastLineNum) {
                             // 使用最新的打分方案做优化
                             int score1 = EngineManager.getInstance().getLineScore();
-                            if(MyLog.isDebugLogOpen()) {
+                            if (MyLog.isDebugLogOpen()) {
                                 U.getToastUtil().showShort("melp得分:" + score1);
                             }
                             int score2 = 0;
                             if (targetSongInfo != null) {
                                 score2 = (int) (targetSongInfo.getScore() * 100);
+                                if (MyLog.isDebugLogOpen()) {
+                                    U.getToastUtil().showShort("acr得分:" + score2);
+                                }
                             }
                             if (ScoreConfig.isMelpEnable()) {
                                 if (score1 > score2) {
@@ -589,8 +592,14 @@ public class AuditionFragment extends BaseFragment {
         if (score < 0) {
             return;
         }
+        mCbScoreList.add(score);
         mLastLineNum = line;
-        mRankTopView.setScoreProgress(score, 0, mTotalLineNum);
+        mUiHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                mRankTopView.setScoreProgress(score, 0, mTotalLineNum);
+            }
+        });
     }
 
     @Override

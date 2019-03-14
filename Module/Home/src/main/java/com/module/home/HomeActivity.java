@@ -292,14 +292,14 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
     @Override
     protected void onResume() {
         super.onResume();
+        if (mFromCreate) {
+            // 获取地理位置权限
+            mSkrLocationPermission.ensurePermission(null, false);
+        }
         if (!mSkrSdcardPermission.onBackFromPermisionManagerMaybe()) {
             if (mFromCreate) {
                 mSkrSdcardPermission.ensurePermission(null, true);
             }
-        }
-        if (mFromCreate) {
-            // 获取地理位置权限
-            mSkrLocationPermission.ensurePermission(null, false);
         }
         mFromCreate = false;
         UpgradeManager.getInstance().checkUpdate1();
