@@ -175,6 +175,15 @@
                         android:adjustViewBounds="true"
                         android:src="@drawable/shouye_paiweisai" />
 
+                    <com.common.view.ex.ExImageView
+                        android:id="@+id/iv_audition_room"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/iv_athletics_pk"
+                        android:layout_marginTop="@dimen/view_14_dp"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/shouye_liangefang" />
+
                     <com.common.view.ex.ExTextView
                         android:id="@+id/text_athletics_pk"
                         android:layout_width="@dimen/view_118_dp"

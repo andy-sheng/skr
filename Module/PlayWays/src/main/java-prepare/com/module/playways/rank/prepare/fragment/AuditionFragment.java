@@ -180,7 +180,7 @@ public class AuditionFragment extends BaseFragment {
         mBackArea.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                U.getSoundUtils().play(TAG, R.raw.normal_back);
+//                U.getSoundUtils().play(TAG, R.raw.normal_back);
                 onBackPressed();
             }
         });

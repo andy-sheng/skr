@@ -109,6 +109,8 @@ public class GameFragment extends BaseFragment {
     ExImageView mIvAthleticsPk;
     ExTextView mTextAthleticsPk;
 
+    ExImageView mIvAuditionRoom;
+
     PopupWindow mPopupWindow;  // 显示上升或者下降的标识
     LinearLayout mPopArea;
     ExTextView mRankDiffTv;
@@ -155,6 +157,8 @@ public class GameFragment extends BaseFragment {
         mTextGrabGame = (ExTextView) mRootView.findViewById(R.id.text_grab_game);
         mIvAthleticsPk = (ExImageView) mRootView.findViewById(R.id.iv_athletics_pk);
         mTextAthleticsPk = (ExTextView) mRootView.findViewById(R.id.text_athletics_pk);
+
+        mIvAuditionRoom = (ExImageView) mRootView.findViewById(R.id.iv_audition_room);
 
         LinearLayout linearLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.area_diff_popup_window_layout, null);
         mPopArea = (LinearLayout) linearLayout.findViewById(R.id.pop_area);
@@ -210,6 +214,14 @@ public class GameFragment extends BaseFragment {
                 clickAnimation(mIvGrabGame, mTextGrabGame, tag);
                 StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_HOME),
                         StatConstants.KEY_GRAB_CLICK, null);
+            }
+        });
+
+        mIvAuditionRoom.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                long tag = System.currentTimeMillis();
+                clickAnimation(mIvAuditionRoom, null, tag);
             }
         });
 
@@ -511,10 +523,10 @@ public class GameFragment extends BaseFragment {
             }
         }
 
-        if (!TextUtils.isEmpty(pkTags)) {
-            mTextAthleticsPk.setVisibility(View.VISIBLE);
-            mTextAthleticsPk.setText(pkTags);
-        }
+//        if (!TextUtils.isEmpty(pkTags)) {
+//            mTextAthleticsPk.setVisibility(View.VISIBLE);
+//            mTextAthleticsPk.setText(pkTags);
+//        }
 
         if (!TextUtils.isEmpty(standTags)) {
             mTextGrabGame.setVisibility(View.VISIBLE);
@@ -564,7 +576,7 @@ public class GameFragment extends BaseFragment {
         ObjectAnimator a3 = ObjectAnimator.ofFloat(view, "scaleX", 0.95f, 1f);
         ObjectAnimator a4 = ObjectAnimator.ofFloat(view, "scaleY", 0.95f, 1f);
 
-        if (viewcard.getVisibility() == View.VISIBLE) {
+        if (viewcard != null && viewcard.getVisibility() == View.VISIBLE) {
             ObjectAnimator a5 = ObjectAnimator.ofFloat(viewcard, "scaleX", 1f, 0.95f);
             ObjectAnimator a6 = ObjectAnimator.ofFloat(viewcard, "scaleY", 1f, 0.95f);
             ObjectAnimator a7 = ObjectAnimator.ofFloat(viewcard, "scaleX", 0.95f, 1f);
@@ -587,6 +599,13 @@ public class GameFragment extends BaseFragment {
 
             @Override
             public void onAnimationEnd(Animator animator) {
+                if (view.getId() == R.id.iv_audition_room) {
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_AUDIOROOM)
+                            .withBoolean("selectSong", true)
+                            .navigation();
+                    return;
+                }
+
                 if (!mTag.contains(tag)) {
                     mTag.add(tag);
                     //U.getToastUtil().showShort("您的网络有延迟");

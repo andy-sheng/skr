@@ -51,7 +51,7 @@ public class EditInfoSignFragment extends BaseFragment {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        U.getSoundUtils().play(EditInfoActivity.TAG, R.raw.normal_back, 500);
+//                        U.getSoundUtils().play(EditInfoActivity.TAG, R.raw.normal_back, 500);
                         U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
                         U.getFragmentUtils().popFragment(EditInfoSignFragment.this);
                     }

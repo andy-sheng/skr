@@ -121,7 +121,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
         mSelectBack.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                U.getSoundUtils().play(SongSelectFragment.TAG, R.raw.normal_back, 500);
+//                U.getSoundUtils().play(SongSelectFragment.TAG, R.raw.normal_back, 500);
                 if (getActivity() != null) {
                     getActivity().finish();
                 }
