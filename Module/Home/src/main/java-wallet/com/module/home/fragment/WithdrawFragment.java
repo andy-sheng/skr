@@ -166,9 +166,10 @@ public class WithdrawFragment extends BaseFragment implements IWithDrawView {
         });
 
         mEditCashNum.addTextChangedListener(new TextWatcher() {
+            String beforeTextChanged = "";
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                beforeTextChanged = s.toString();
             }
 
             @Override
@@ -182,6 +183,12 @@ public class WithdrawFragment extends BaseFragment implements IWithDrawView {
 
                 if (checkInputNum(editString)) {
                     int cash = stringToHaoFen(editString);
+                    if(cash >= 10000 * HF){
+                        mEditCashNum.setText(beforeTextChanged);
+                        mEditCashNum.setSelection(beforeTextChanged.length() - 1);
+                        return;
+                    }
+
                     if (TextUtils.isEmpty(mEditCashNum.getText().toString())) {
                         mTvTip.setText(String.format("可提现余额%s元", mWithDrawInfoModel.getAvailable()));
                         mTvTip.setTextColor(Color.parseColor("#B7BED5"));
