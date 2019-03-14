@@ -121,6 +121,9 @@ public class AuditionFragment extends BaseFragment {
                     MyLog.d(TAG, "handleMessage" + " lineNo=" + lineNo);
                     if (lineNo > mLastLineNum) {
                         int score = EngineManager.getInstance().getLineScore();
+                        if(MyLog.isDebugLogOpen()) {
+                            U.getToastUtil().showShort("melp得分:" + score);
+                        }
                         MyLog.d(TAG, "handleMessage acr超时 本地获取得分:" + score);
                         processScore(score, lineNo);
                     }
@@ -270,9 +273,13 @@ public class AuditionFragment extends BaseFragment {
                 .setMResultListener(new ArcRecognizeListener() {
                     @Override
                     public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
+                        mUiHandler.removeMessages(MSG_SHOW_SCORE_EVENT + lineNo * 100);
                         if (lineNo > mLastLineNum) {
                             // 使用最新的打分方案做优化
                             int score1 = EngineManager.getInstance().getLineScore();
+                            if(MyLog.isDebugLogOpen()) {
+                                U.getToastUtil().showShort("melp得分:" + score1);
+                            }
                             int score2 = 0;
                             if (targetSongInfo != null) {
                                 score2 = (int) (targetSongInfo.getScore() * 100);
