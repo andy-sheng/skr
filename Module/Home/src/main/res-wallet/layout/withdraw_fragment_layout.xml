@@ -25,8 +25,14 @@
         app:statusBarColor="#0288D0"
         app:titleBarColor="#0288D0"/>
 
+    <View
+        android:id="@+id/top_divider"
+        android:background="#0C2275"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_3_dp"/>
+
     <RelativeLayout
-        android:layout_below="@+id/titlebar"
+        android:layout_below="@+id/top_divider"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <View

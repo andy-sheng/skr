@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
+import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
@@ -92,10 +93,13 @@ public class WalletFragment extends BaseFragment implements IWalletView {
         mTitlebar.getRightTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-//                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), WithDrawHistoryFragment.class)
-//                        .setAddToBackStack(true)
-//                        .setHasAnimation(true)
-//                        .build());
+                if(MyLog.isDebugLogOpen()){
+                    U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), WithDrawHistoryFragment.class)
+                            .setAddToBackStack(true)
+                            .setHasAnimation(true)
+                            .build());
+                }
+
                 U.getToastUtil().showShort("暂无提现记录");
             }
         });
@@ -108,10 +112,13 @@ public class WalletFragment extends BaseFragment implements IWalletView {
                 } else {
                     U.getToastUtil().showShort("提现功能下版本开放\n" +
                             "如有疑问，请添加微信号“skrer1”进行咨询");
+
+                    if(MyLog.isDebugLogOpen()){
+                        ARouter.getInstance()
+                                .build(RouterConstants.ACTIVITY_WITH_DRAW)
+                                .navigation();
+                    }
                 }
-//                    ARouter.getInstance()
-//                            .build(RouterConstants.ACTIVITY_WITH_DRAW)
-//                            .navigation();
             }
         });
 

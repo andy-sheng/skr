@@ -10,7 +10,7 @@
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:centerText="我的钱包"
+        app:centerText="提现记录"
         app:centerTextColor="@color/white"
         app:centerTextSize="@dimen/textsize_20_dp"
         app:centerType="textView"
@@ -23,11 +23,18 @@
         app:statusBarColor="#0288D0"
         app:titleBarColor="#0288D0"></com.common.view.titlebar.CommonTitleBar>
 
+    <View
+        android:layout_below="@+id/titlebar"
+        android:id="@+id/divider"
+        android:background="#0C2275"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_3_dp"/>
+
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/titlebar">
+        android:layout_below="@+id/divider">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
