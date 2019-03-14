@@ -129,6 +129,7 @@ public class WithdrawFragment extends BaseFragment implements IWithDrawView {
                                 public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
                                     if (requestCode == 0 && resultCode == 0) {
                                         mWithDrawInfoModel.setIsRealAuth(true);
+                                        U.getToastUtil().showShort("验证成功");
                                     }
                                 }
                             })
