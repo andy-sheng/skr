@@ -241,16 +241,16 @@ public class PersonFragment extends BaseFragment implements IPersonView {
         mAvatarIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-//                ARouter.getInstance().build(RouterConstants.ACTIVITY_EDIT_INFO)
-//                        .navigation();
-                Bundle bundle = new Bundle();
-                bundle.putString(ImageBigPreviewFragment.BIG_IMAGE_PATH, MyUserInfoManager.getInstance().getAvatar());
-                U.getFragmentUtils().addFragment(
-                        FragmentUtils.newAddParamsBuilder(getActivity(), ImageBigPreviewFragment.class)
-                                .setAddToBackStack(true)
-                                .setHasAnimation(true)
-                                .setBundle(bundle)
-                                .build());
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_EDIT_INFO)
+                        .navigation();
+//                Bundle bundle = new Bundle();
+//                bundle.putString(ImageBigPreviewFragment.BIG_IMAGE_PATH, MyUserInfoManager.getInstance().getAvatar());
+//                U.getFragmentUtils().addFragment(
+//                        FragmentUtils.newAddParamsBuilder(getActivity(), ImageBigPreviewFragment.class)
+//                                .setAddToBackStack(true)
+//                                .setHasAnimation(true)
+//                                .setBundle(bundle)
+//                                .build());
             }
         });
 

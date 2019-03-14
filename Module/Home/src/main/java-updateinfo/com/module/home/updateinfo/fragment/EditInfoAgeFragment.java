@@ -157,7 +157,7 @@ public class EditInfoAgeFragment extends BaseFragment {
                     String bir = U.getDateTimeUtils().formatDateString(date);
                     MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
                             .setNickName(uploadNickname).setSex(uploadSex).setBirthday(bir)
-                            .build(), true, false, new MyUserInfoManager.ServerCallback() {
+                            .build(), true, true, new MyUserInfoManager.ServerCallback() {
                         @Override
                         public void onSucess() {
                             if (getActivity() != null) {
