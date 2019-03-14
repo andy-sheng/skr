@@ -24,6 +24,7 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrAudioPermission;
 import com.common.engine.ScoreConfig;
 import com.common.log.MyLog;
+import com.common.utils.ActivityUtils;
 import com.common.utils.FragmentUtils;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
@@ -253,18 +254,13 @@ public class AuditionFragment extends BaseFragment {
     }
 
     private void startRecord1() {
-        isRecord = true;
-        mRankTopView.reset();
-        mLastLineNum = -1;
+        resetView();
 
-        mAuditionArea.setVisibility(View.VISIBLE);
-        showVoicePanelView(true);
-        mVoiceScaleView.setVisibility(View.VISIBLE);
         mVoiceScaleView.startWithData(mLyricsReader.getLyricsLineInfoList(), mSongModel.getBeginMs());
         playLyrics(mSongModel, true, false);
         playMusic(mSongModel);
-        mTotalLineNum = mLyricEventLauncher.postLyricEvent(mLyricsReader, mSongModel.getBeginMs(), mSongModel.getEndMs(), null);
 
+        mTotalLineNum = mLyricEventLauncher.postLyricEvent(mLyricsReader, mSongModel.getBeginMs(), mSongModel.getEndMs(), null);
         mStartRecordTs = System.currentTimeMillis();
 //        mIvRecordStart.setVisibility(View.GONE);
 //        mTvRecordStop.setVisibility(View.VISIBLE);
@@ -311,6 +307,16 @@ public class AuditionFragment extends BaseFragment {
                         }
                     }
                 }).build());
+    }
+
+    private void resetView() {
+        isRecord = true;
+        mRankTopView.reset();
+        mLastLineNum = -1;
+
+        mAuditionArea.setVisibility(View.VISIBLE);
+        showVoicePanelView(true);
+        mVoiceScaleView.setVisibility(View.VISIBLE);
     }
 
     private void stopRecord() {
@@ -528,7 +534,7 @@ public class AuditionFragment extends BaseFragment {
             int t = mCbScoreList.get(i) - pj;
             fc += (t * t);
         }
-        if(MyLog.isDebugLogOpen()){
+        if (MyLog.isDebugLogOpen()) {
             U.getToastUtil().showShort("平均分:" + pj + " 方差:" + fc);
         }
         MyLog.d(TAG, "平均分:" + pj + " 方差:" + fc);
@@ -539,6 +545,19 @@ public class AuditionFragment extends BaseFragment {
         Params params = EngineManager.getInstance().getParams();
         if (params != null) {
             params.setLrcHasStart(true);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ActivityUtils.ForeOrBackgroundChange event) {
+        MyLog.w(TAG, event.foreground ? "切换到前台" : "切换到后台");
+        if (!event.foreground) {
+            EngineManager.getInstance().stopAudioRecording();
+            EngineManager.getInstance().stopAudioMixing();
+        } else {
+            resetView();
+            mVoiceScaleView.setVisibility(View.GONE);
+            playLyrics(mSongModel, false, false);
         }
     }
 

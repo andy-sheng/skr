@@ -15,6 +15,7 @@ import com.common.player.IPlayer;
 import com.common.player.IPlayerCallback;
 import com.common.player.exoplayer.ExoPlayer;
 import com.common.player.mediaplayer.AndroidMediaPlayer;
+import com.common.utils.ActivityUtils;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -26,6 +27,9 @@ import com.zq.lyrics.LyricsManager;
 import com.zq.lyrics.LyricsReader;
 import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.ManyLyricsView;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -154,6 +158,21 @@ public class PlayRecordFragment extends BaseFragment {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ActivityUtils.ForeOrBackgroundChange event) {
+        MyLog.w(TAG, event.foreground ? "切换到前台" : "切换到后台");
+        if (!event.foreground && mIsPlay) {
+            // 暂停
+            if (mPlayer != null) {
+                mPlayer.pause();
+                mIsPlay = false;
+            }
+            mManyLyricsView.pause();
+            mOptTv.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.audition_bofang), null, null);
+            mOptTv.setText("播放");
+        }
+    }
+
 
     @Override
     public void onResume() {
@@ -173,7 +192,7 @@ public class PlayRecordFragment extends BaseFragment {
 
     @Override
     public boolean useEventBus() {
-        return false;
+        return true;
     }
 
     /**
