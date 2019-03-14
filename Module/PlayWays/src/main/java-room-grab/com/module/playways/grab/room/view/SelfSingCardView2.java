@@ -70,6 +70,8 @@ public class SelfSingCardView2 extends RelativeLayout {
     GrabRoomData mRoomData;
     SongModel mSongModel;
 
+    ImageView mIvTag;
+
     LyricEventLauncher mLyricEventLauncher = new LyricEventLauncher();
     LyricsReader mLyricsReader;
     // 按理 歌词 和 伴奏 都ok了 才抛出歌词end事件，但事件的时间戳要做矫正
@@ -98,6 +100,7 @@ public class SelfSingCardView2 extends RelativeLayout {
         mCountDownProcess = (ArcProgressBar) findViewById(R.id.count_down_process);
         mCountDownTv = (ExTextView) findViewById(R.id.count_down_tv);
         mCountIv = (ImageView) findViewById(R.id.count_iv);
+        mIvTag = (ImageView) findViewById(R.id.iv_tag);
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -117,7 +120,9 @@ public class SelfSingCardView2 extends RelativeLayout {
 
         if (!hasAcc) {
             playWithNoAcc(songModel);
+            mIvTag.setBackground(U.getDrawable(R.drawable.self_sing_biaoqian));
         } else {
+            mIvTag.setBackground(U.getDrawable(R.drawable.biaoqian_haichang));
             playWithAcc(songModel);
         }
 
