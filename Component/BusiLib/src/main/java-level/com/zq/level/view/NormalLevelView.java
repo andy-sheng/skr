@@ -253,7 +253,7 @@ public class NormalLevelView extends RelativeLayout {
                             int totalStatsNow,
                             final SVGAListener listener) {
         // 播放音效
-        U.getSoundUtils().play(TAG, R.raw.rank_levelchange);
+//        U.getSoundUtils().play(TAG, R.raw.rank_levelchange);
 
         if (totalStatsNow == 0 || totalStatsNow > 6) {
             // 星星超过限制，不用动
@@ -409,7 +409,7 @@ public class NormalLevelView extends RelativeLayout {
         if (index < 0 || index >= totalStats) {
             return;
         }
-        U.getSoundUtils().play(TAG, R.raw.rank_addstar);
+//        U.getSoundUtils().play(TAG, R.raw.rank_addstar);
         final SVGAImageView starUp = new SVGAImageView(getContext());
         mayLeaksSvgaViews.add(starUp);
         starUp.setLoops(1);  // 只播1次
@@ -494,7 +494,7 @@ public class NormalLevelView extends RelativeLayout {
         starLoss.setLoops(1);  // 只播1次
 
         // 音效
-        U.getSoundUtils().play(TAG, R.raw.rank_deductstar);
+//        U.getSoundUtils().play(TAG, R.raw.rank_deductstar);
 
         final ImageView imageView = starts.get(index);
         int[] location = new int[2];

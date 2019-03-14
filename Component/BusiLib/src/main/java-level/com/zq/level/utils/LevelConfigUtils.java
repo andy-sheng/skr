@@ -245,6 +245,20 @@ public class LevelConfigUtils {
                         return R.drawable.gewang_2;
                     case 3:
                         return R.drawable.gewang_3;
+                    case 4:
+                        return R.drawable.gewang_4;
+                    case 5:
+                        return R.drawable.gewang_5;
+                    case 6:
+                        return R.drawable.gewang_6;
+                    case 7:
+                        return R.drawable.gewang_7;
+                    case 8:
+                        return R.drawable.gewang_8;
+                    case 9:
+                        return R.drawable.gewang_9;
+                    case 10:
+                        return R.drawable.gewang_10;
                     default:
                         MyLog.w(TAG, "getImageResoucesSubLevel null" + " level = " + level + " subLevel = " + subLevel);
                         return 0;
