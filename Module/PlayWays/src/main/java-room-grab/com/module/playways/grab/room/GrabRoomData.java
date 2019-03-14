@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
-    public static final int ACC_OFFSET_BY_LYRIC = 5000;// 伴奏是比歌词提前 5 秒的
+//    public static final int ACC_OFFSET_BY_LYRIC = 5000;// 伴奏是比歌词提前 5 秒的
     protected int mCoin;// 金币数
     protected List<GrabResultInfoModel> mResultList = new ArrayList<>(); // 一唱到底对战结果数据
     protected int mTagId;//一场到底歌曲分类

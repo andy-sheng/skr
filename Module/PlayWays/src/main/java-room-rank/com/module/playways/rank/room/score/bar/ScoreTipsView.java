@@ -184,6 +184,7 @@ public class ScoreTipsView extends RelativeLayout {
             lp.addRule(RelativeLayout.CENTER_HORIZONTAL);
         } else if (postion == 2) {
             lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            lp.rightMargin = U.getDisplayUtils().dip2px(20);
         }
         lp.topMargin = U.getDisplayUtils().dip2px(135);
         parent.addView(scoreTipsView, lp);

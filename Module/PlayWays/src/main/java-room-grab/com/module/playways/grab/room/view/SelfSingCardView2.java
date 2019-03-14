@@ -183,7 +183,7 @@ public class SelfSingCardView2 extends RelativeLayout {
                         int lrcBeginTs = songModel.getStandLrcBeginT();
                         int totalMs = songModel.getTotalMs();
 
-                        lyricsReader.cut(lrcBeginTs, lrcBeginTs + totalMs - GrabRoomData.ACC_OFFSET_BY_LYRIC);
+                        lyricsReader.cut(lrcBeginTs, songModel.getBeginMs() + totalMs);
                         mManyLyricsView.setLyricsReader(lyricsReader);
 
                         Set<Integer> set = new HashSet<>();
@@ -192,8 +192,8 @@ public class SelfSingCardView2 extends RelativeLayout {
 
                         if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC
                                 && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {
-                            mManyLyricsView.play(lrcBeginTs - GrabRoomData.ACC_OFFSET_BY_LYRIC);
-                            mManyLyricsView.seekto(lrcBeginTs - GrabRoomData.ACC_OFFSET_BY_LYRIC);
+                            mManyLyricsView.play(songModel.getBeginMs());
+                            mManyLyricsView.seekto(songModel.getBeginMs());
                             mLyricsReader = lyricsReader;
                             if (mAccLoadOk) {
                                 launchLyricEvent(EngineManager.getInstance().getAudioMixingCurrentPosition());
@@ -367,7 +367,7 @@ public class SelfSingCardView2 extends RelativeLayout {
                 mAccLoadOk = true;
                 if (mManyLyricsView.getVisibility() == VISIBLE && mSongModel != null) {
                     long ts1 = mManyLyricsView.getCurPlayingTime() + mManyLyricsView.getPlayerSpendTime();
-                    long ts2 = in.getCurrent() + mSongModel.getStandLrcBeginT() - GrabRoomData.ACC_OFFSET_BY_LYRIC;
+                    long ts2 = in.getCurrent() + mSongModel.getBeginMs();
                     if (Math.abs(ts1 - ts2) > 500) {
                         MyLog.d(TAG, "伴奏与歌词的时间戳差距较大时,矫正一下,歌词ts=" + ts1 + " 伴奏ts=" + ts2);
                         mManyLyricsView.seekto((int) ts2);
@@ -385,10 +385,10 @@ public class SelfSingCardView2 extends RelativeLayout {
         }
         int lrcBeginTs = mSongModel.getStandLrcBeginT();
         int totalMs = mSongModel.getTotalMs();
-        int lineNum = mLyricEventLauncher.postLyricEvent(mLyricsReader, lrcBeginTs - GrabRoomData.ACC_OFFSET_BY_LYRIC + accPlayTs, lrcBeginTs + totalMs - GrabRoomData.ACC_OFFSET_BY_LYRIC, null);
+        int lineNum = mLyricEventLauncher.postLyricEvent(mLyricsReader, mSongModel.getBeginMs()+ accPlayTs, mSongModel.getBeginMs() + totalMs, null);
         mRoomData.setSongLineNum(lineNum);
         mVoiceScaleView.setVisibility(View.VISIBLE);
-        mVoiceScaleView.startWithData(mLyricsReader.getLyricsLineInfoList(), lrcBeginTs - GrabRoomData.ACC_OFFSET_BY_LYRIC + accPlayTs);
+        mVoiceScaleView.startWithData(mLyricsReader.getLyricsLineInfoList(), mSongModel.getBeginMs() + accPlayTs);
     }
 
     public void setRoomData(GrabRoomData roomData) {
