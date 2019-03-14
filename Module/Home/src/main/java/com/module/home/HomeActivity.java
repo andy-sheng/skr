@@ -87,7 +87,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
 
     SkrSdcardPermission mSkrSdcardPermission = new SkrSdcardPermission();
 
-    SkrLocationPermission mSkrLocationPermission = new SkrLocationPermission();
+    //SkrLocationPermission mSkrLocationPermission = new SkrLocationPermission();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -294,7 +294,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
         super.onResume();
         if (mFromCreate) {
             // 获取地理位置权限
-            mSkrLocationPermission.ensurePermission(null, false);
+            //mSkrLocationPermission.ensurePermission(null, false);
         }
         if (!mSkrSdcardPermission.onBackFromPermisionManagerMaybe()) {
             if (mFromCreate) {

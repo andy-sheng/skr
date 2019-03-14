@@ -288,7 +288,7 @@ public class AuditionFragment extends BaseFragment {
                             if (MyLog.isDebugLogOpen()) {
                                 U.getToastUtil().showShort("melp得分:" + score1);
                             }
-                            int score2 = 0;
+                            int score2 = -1;
                             if (targetSongInfo != null) {
                                 score2 = (int) (targetSongInfo.getScore() * 100);
                                 if (MyLog.isDebugLogOpen()) {
