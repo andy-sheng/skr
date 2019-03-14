@@ -1,6 +1,7 @@
 package com.zq.lyrics.widget;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -11,6 +12,7 @@ import android.view.View;
 
 import com.common.log.MyLog;
 import com.common.utils.U;
+import com.component.busilib.R;
 import com.zq.lyrics.model.LyricsLineInfo;
 
 import java.util.ArrayList;
@@ -36,51 +38,71 @@ public class VoiceScaleView extends View {
     Paint mLeftBgPaint;
     Paint mRightBgPaint;
     Paint mRedLinePaint;
-    Paint mLeftPaint;
-    Paint mRightPaint;
     Paint mRedOutpaint;
     Paint mRedInnerpaint;
+    Paint mLeftPaint;
+    Paint mRightPaint;
+
+    int mLeftBgPaintColor = Color.parseColor("#252736");
+    int mRightBgPaintColor = Color.parseColor("#292B3A");
+    int mRedLinePaintColor = Color.parseColor("#494C62");
+    int mRedOutpaintColor = Color.parseColor("#EF5E85");
+    int mRedInnerpaintColor = Color.parseColor("#CA2C60");
+    int mLeftPaintColor = Color.parseColor("#F5A623");
+    int mRightPaintColor = Color.parseColor("#474A5F");
 
     public VoiceScaleView(Context context) {
         this(context, null);
-        init();
+        init(context, null);
     }
 
     public VoiceScaleView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
-        init();
+        init(context, attrs);
     }
 
     public VoiceScaleView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
+        init(context, attrs);
     }
 
-    private void init() {
-        setLayerType(LAYER_TYPE_SOFTWARE, null);
-        mLeftPaint = new Paint();
-        mLeftPaint.setMaskFilter(new BlurMaskFilter(U.getDisplayUtils().dip2px(5), BlurMaskFilter.Blur.SOLID));
-        mLeftPaint.setColor(Color.parseColor("#F5A623"));
+    private void init(Context context, AttributeSet attrs) {
 
-        mRightPaint = new Paint();
-        mRightPaint.setColor(Color.parseColor("#474A5F"));
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.voiceScaleView);
+        mLeftBgPaintColor = typedArray.getColor(R.styleable.voiceScaleView_leftBgPaintColor, mLeftBgPaintColor);
+        mRightBgPaintColor = typedArray.getColor(R.styleable.voiceScaleView_rightBgPaintColor, mRightBgPaintColor);
+        mRedLinePaintColor = typedArray.getColor(R.styleable.voiceScaleView_redLinePaintColor, mRedLinePaintColor);
+        mRedOutpaintColor = typedArray.getColor(R.styleable.voiceScaleView_redOutpaintColor, mRedOutpaintColor);
+        mRedInnerpaintColor = typedArray.getColor(R.styleable.voiceScaleView_redInnerpaintColor, mRedInnerpaintColor);
+        mLeftPaintColor = typedArray.getColor(R.styleable.voiceScaleView_leftPaintColor, mLeftPaintColor);
+        mRightPaintColor = typedArray.getColor(R.styleable.voiceScaleView_rightPaintColor, mRightPaintColor);
+        typedArray.recycle();
+
+        setLayerType(LAYER_TYPE_SOFTWARE, null);
 
         mLeftBgPaint = new Paint();
-        mLeftBgPaint.setColor(Color.parseColor("#252736"));
-
-        mRedLinePaint = new Paint();
-        mRedLinePaint.setColor(Color.parseColor("#494C62"));
+        mLeftBgPaint.setColor(mLeftBgPaintColor);
 
         mRightBgPaint = new Paint();
-        mRightBgPaint.setColor(Color.parseColor("#292B3A"));
+        mRightBgPaint.setColor(mRightBgPaintColor);
+
+        mRedLinePaint = new Paint();
+        mRedLinePaint.setColor(mRedLinePaintColor);
 
         mRedOutpaint = new Paint(); //外圈
-        mRedOutpaint.setColor(Color.parseColor("#EF5E85"));
+        mRedOutpaint.setColor(mRedOutpaintColor);
         mRedOutpaint.setAntiAlias(true);
 
         mRedInnerpaint = new Paint(); //内圈
-        mRedInnerpaint.setColor(Color.parseColor("#CA2C60"));
+        mRedInnerpaint.setColor(mRedInnerpaintColor);
         mRedInnerpaint.setAntiAlias(true);
+
+        mLeftPaint = new Paint();
+        mLeftPaint.setMaskFilter(new BlurMaskFilter(U.getDisplayUtils().dip2px(5), BlurMaskFilter.Blur.SOLID));
+        mLeftPaint.setColor(mLeftPaintColor);
+
+        mRightPaint = new Paint();
+        mRightPaint.setColor(mRightPaintColor);
     }
 
     /**
