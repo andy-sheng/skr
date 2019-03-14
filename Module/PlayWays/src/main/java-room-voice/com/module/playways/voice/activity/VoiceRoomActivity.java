@@ -1,5 +1,6 @@
 package com.module.playways.voice.activity;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.WindowManager;
@@ -13,6 +14,7 @@ import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.module.RouterConstants;
+import com.module.playways.PlayWaysActivity;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.room.model.RankPlayerInfoModel;
 import com.module.playways.rank.room.model.RankRoundInfoModel;
@@ -102,6 +104,17 @@ public class VoiceRoomActivity extends BaseActivity {
                 .addDataBeforeAdd(0, roomData)
                 .build()
         );
+    }
+
+    @Override
+    public boolean onBackPressedForActivity() {
+        for(Activity activity : U.getActivityUtils().getActivityList()){
+            if(activity instanceof PlayWaysActivity){
+                activity.finish();
+                break;
+            }
+        }
+        return super.onBackPressedForActivity();
     }
 
     @Override
