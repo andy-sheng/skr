@@ -99,6 +99,10 @@ public class WithdrawFragment extends BaseFragment implements IWithDrawView {
         mLlChannel.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+                if(mWithDrawInfoModel == null){
+                    return;
+                }
+
                 if (mTvWxSelect.isSelected()) {
                     updateChannleState(NO_CHANNEL);
                 } else {
@@ -114,6 +118,10 @@ public class WithdrawFragment extends BaseFragment implements IWithDrawView {
         mTvWxSelect.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+                if(mWithDrawInfoModel == null){
+                    return;
+                }
+
                 if (mTvWxSelect.isSelected()) {
                     updateChannleState(NO_CHANNEL);
                 } else {
@@ -138,6 +146,10 @@ public class WithdrawFragment extends BaseFragment implements IWithDrawView {
         mTvWithdrawBtn.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+                if(mWithDrawInfoModel == null){
+                    return;
+                }
+
                 if (!mWithDrawInfoModel.isIsRealAuth()) {
                     U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), SmsAuthFragment.class)
                             .setAddToBackStack(true)
