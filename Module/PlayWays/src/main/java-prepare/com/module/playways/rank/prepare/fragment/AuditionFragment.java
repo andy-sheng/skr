@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
@@ -106,7 +107,7 @@ public class AuditionFragment extends BaseFragment {
 
     private int mTotalLineNum = -1;
 
-    Handler mUiHandler = new Handler() {
+    Handler mUiHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
