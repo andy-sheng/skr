@@ -65,6 +65,7 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/view_58_dp"
         android:gravity="center"
+        android:visibility="gone"
         android:text="清唱模式"
         android:textColor="#B2B6D6"
         android:textSize="@dimen/textsize_14_dp"
