@@ -65,7 +65,7 @@ public class PlayRecordFragment extends BaseFragment {
         mOptTv = (ExTextView) mRootView.findViewById(R.id.opt_tv);
         mResetArea = (RelativeLayout) mRootView.findViewById(R.id.reset_area);
         mManyLyricsView = (ManyLyricsView) mRootView.findViewById(R.id.many_lyrics_view);
-
+        mTvName.setText("《" + mSongModel.getItemName() + "》");
         mUiHanlder = new Handler();
 
         playLyrics(mSongModel);
@@ -94,7 +94,7 @@ public class PlayRecordFragment extends BaseFragment {
                 if (mIsPlay) {
                     // 暂停
                     if (mExoPlayer != null) {
-                        mExoPlayer.stop();
+                        mExoPlayer.pause();
                         mIsPlay = false;
                     }
                     mManyLyricsView.pause();
@@ -102,8 +102,9 @@ public class PlayRecordFragment extends BaseFragment {
                     mOptTv.setText("播放");
                 } else {
                     // 播放
-                    playLyrics(mSongModel);
-                    playRecord();
+                    mManyLyricsView.resume();
+                    mExoPlayer.resume();
+                    mIsPlay = true;
                     mOptTv.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.audition_zanting), null, null);
                     mOptTv.setText("暂停");
                 }
@@ -201,8 +202,14 @@ public class PlayRecordFragment extends BaseFragment {
                         @Override
                         public void run() {
                             mManyLyricsView.pause();
+                            mExoPlayer.pause();
                         }
-                    }, 100);
+                    }, 30);
+
+                    mIsPlay = false;
+                    mExoPlayer.seekTo(0);
+                    mOptTv.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.audition_bofang), null, null);
+                    mOptTv.setText("播放");
                 }
 
                 @Override

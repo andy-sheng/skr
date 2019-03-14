@@ -34,6 +34,7 @@
             android:layout_weight="1">
 
             <com.common.view.ex.ExTextView
+                android:drawablePadding="@dimen/view_3_dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -52,6 +53,7 @@
             android:layout_weight="1">
 
             <com.common.view.ex.ExTextView
+                android:drawablePadding="@dimen/view_3_dp"
                 android:id="@+id/opt_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -72,6 +74,7 @@
             android:layout_weight="1">
 
             <com.common.view.ex.ExTextView
+                android:drawablePadding="@dimen/view_3_dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -89,7 +92,7 @@
         android:layout_width="match_parent"
         android:layout_height="280dp"
         android:layout_below="@+id/tv_name"
-        android:layout_marginTop="@dimen/view_100_dp"
+        android:layout_marginTop="@dimen/view_70_dp"
         app:ly_eable_scroll="false"
         app:ly_eable_verbatim="true"
         app:ly_high_light_paint_color_from="#EF5E85"
@@ -99,5 +102,5 @@
         app:ly_outline_paint_color="@color/black"
         app:ly_paint_color_from="@color/white_trans_50"
         app:ly_paint_color_to="@color/white_trans_50"
-        app:ly_paint_text_size="@dimen/textsize_dimen_16" />
+        app:ly_paint_text_size="@dimen/textsize_dimen_20" />
 </RelativeLayout>
