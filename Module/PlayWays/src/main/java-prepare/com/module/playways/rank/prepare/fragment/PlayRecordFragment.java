@@ -15,12 +15,10 @@ import com.common.player.IPlayer;
 import com.common.player.IPlayerCallback;
 import com.common.player.exoplayer.ExoPlayer;
 import com.common.player.mediaplayer.AndroidMediaPlayer;
-import com.common.utils.FragmentUtils;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
-import com.module.playways.grab.prepare.GrabMatchSuccessFragment;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
 import com.trello.rxlifecycle2.android.FragmentEvent;
@@ -47,7 +45,7 @@ public class PlayRecordFragment extends BaseFragment {
 
     Handler mUiHanlder;
 
-    IPlayer mExoPlayer;
+    IPlayer mPlayer;
 
     boolean mIsPlay = false;
 
@@ -65,7 +63,7 @@ public class PlayRecordFragment extends BaseFragment {
         mOptTv = (ExTextView) mRootView.findViewById(R.id.opt_tv);
         mResetArea = (RelativeLayout) mRootView.findViewById(R.id.reset_area);
         mManyLyricsView = (ManyLyricsView) mRootView.findViewById(R.id.many_lyrics_view);
-
+        mTvName.setText("《" + mSongModel.getItemName() + "》");
         mUiHanlder = new Handler();
 
         playLyrics(mSongModel);
@@ -75,6 +73,9 @@ public class PlayRecordFragment extends BaseFragment {
             @Override
             public void clickValid(View v) {
                 // 返回选歌页面
+                if (getActivity() != null) {
+                    getActivity().finish();
+                }
             }
         });
 
@@ -93,8 +94,8 @@ public class PlayRecordFragment extends BaseFragment {
             public void clickValid(View v) {
                 if (mIsPlay) {
                     // 暂停
-                    if (mExoPlayer != null) {
-                        mExoPlayer.stop();
+                    if (mPlayer != null) {
+                        mPlayer.pause();
                         mIsPlay = false;
                     }
                     mManyLyricsView.pause();
@@ -102,8 +103,9 @@ public class PlayRecordFragment extends BaseFragment {
                     mOptTv.setText("播放");
                 } else {
                     // 播放
-                    playLyrics(mSongModel);
-                    playRecord();
+                    mManyLyricsView.resume();
+                    mPlayer.resume();
+                    mIsPlay = true;
                     mOptTv.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.audition_zanting), null, null);
                     mOptTv.setText("暂停");
                 }
@@ -163,8 +165,8 @@ public class PlayRecordFragment extends BaseFragment {
     public void destroy() {
         super.destroy();
         mManyLyricsView.release();
-        if (mExoPlayer != null) {
-            mExoPlayer.release();
+        if (mPlayer != null) {
+            mPlayer.release();
         }
         mUiHanlder.removeCallbacksAndMessages(null);
     }
@@ -178,17 +180,17 @@ public class PlayRecordFragment extends BaseFragment {
      * 播放录音
      */
     private void playRecord() {
-        if (mExoPlayer != null) {
-            mExoPlayer.reset();
+        if (mPlayer != null) {
+            mPlayer.reset();
         }
-        if (mExoPlayer == null) {
+        if (mPlayer == null) {
             if (AuditionFragment.RECORD_BY_CALLBACK) {
-                mExoPlayer = new AndroidMediaPlayer();
+                mPlayer = new AndroidMediaPlayer();
             } else {
-                mExoPlayer = new ExoPlayer();
+                mPlayer = new ExoPlayer();
             }
 
-            mExoPlayer.setCallback(new IPlayerCallback() {
+            mPlayer.setCallback(new IPlayerCallback() {
                 @Override
                 public void onPrepared() {
 
@@ -201,8 +203,14 @@ public class PlayRecordFragment extends BaseFragment {
                         @Override
                         public void run() {
                             mManyLyricsView.pause();
+                            mPlayer.pause();
                         }
-                    }, 100);
+                    }, 30);
+
+                    mIsPlay = false;
+                    mPlayer.seekTo(0);
+                    mOptTv.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.audition_bofang), null, null);
+                    mOptTv.setText("播放");
                 }
 
                 @Override
@@ -229,9 +237,9 @@ public class PlayRecordFragment extends BaseFragment {
 
         mIsPlay = true;
         if (AuditionFragment.RECORD_BY_CALLBACK) {
-            mExoPlayer.startPlayPcm(AuditionFragment.PCM_SAVE_PATH, 2, 44100, 44100 * 2);
+            mPlayer.startPlayPcm(AuditionFragment.PCM_SAVE_PATH, 2, 44100, 44100 * 2);
         } else {
-            mExoPlayer.startPlay(AuditionFragment.ACC_SAVE_PATH);
+            mPlayer.startPlay(AuditionFragment.ACC_SAVE_PATH);
         }
 
     }

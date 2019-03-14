@@ -59,7 +59,7 @@ public class WithDrawHistoryAdapter extends DiffAdapter<WithDrawHistoryModel, Re
             mTvState.setText(model.getStatusDesc());
             int state = model.getStatus();
 
-            String result = String.format("%.2f", (float) (model.getAmount() / 100000) * -1);
+            String result = String.format("%.2f", ((float)model.getAmount() / 100000f) * -1);
             mTvCash.setText(result);
 
             /**

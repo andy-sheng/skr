@@ -89,7 +89,7 @@ public class RankTopContainerView2 extends RelativeLayout {
     }
 
     int mTotalScore = -1;
-    int mCurScore;
+    int mCurScore = 0;
 
     public RankTopContainerView2(Context context) {
         super(context);
@@ -116,6 +116,7 @@ public class RankTopContainerView2 extends RelativeLayout {
 
         inflate(getContext(), R.layout.rank_top_container_view, this);
         U.getSoundUtils().preLoad(TAG, R.raw.rank_xlight, R.raw.rank_xxxstop);
+
         mMoreBtn = this.findViewById(R.id.more_btn);
         mIvLed = (ExImageView) findViewById(R.id.iv_led);
         mEnergySlotView = (EnergySlotView) findViewById(R.id.energy_slot_view);
@@ -426,7 +427,12 @@ public class RankTopContainerView2 extends RelativeLayout {
         for (int i = 0; i < 1; i++) {
             score = (int) (Math.sqrt(score) * 10);
         }
-        RankGameConfigModel gameConfigModel = mRoomData.getGameConfigModel();
+
+        RankGameConfigModel gameConfigModel = new RankGameConfigModel();
+        if (mRoomData != null) {
+            gameConfigModel = mRoomData.getGameConfigModel();
+        }
+
         ScoreTipsView.Item item = new ScoreTipsView.Item();
 
         if (gameConfigModel != null) {
@@ -475,6 +481,15 @@ public class RankTopContainerView2 extends RelativeLayout {
             mCurScore += score;
             tryPlayProgressAnimation();
         } else {
+            if (mTotalScore <= 0 && mMode == 1) {
+                mTotalScore = (int) (lineNum * 100 * 0.6);
+            }
+
+            if (mMode == 1) {
+                mCurScore += score;
+                tryPlayProgressAnimation();
+            }
+
             if (score >= 95) {
                 item.setLevel(ScoreTipsView.Level.Perfect);
             } else if (score >= 90) {
@@ -485,6 +500,7 @@ public class RankTopContainerView2 extends RelativeLayout {
                 item.setLevel(ScoreTipsView.Level.Bad);
             }
         }
+
         if (item.getLevel() != null) {
             if (mLastItem != null && item.getLevel() == mLastItem.getLevel()) {
                 item.setNum(mLastItem.getNum() + 1);
@@ -586,6 +602,13 @@ public class RankTopContainerView2 extends RelativeLayout {
 
             }
         });
-
     }
+
+    public void reset() {
+        mTotalScore = -1;
+        mCurScore = 0;
+        tryPlayProgressAnimation();
+    }
+
+
 }

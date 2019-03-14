@@ -37,6 +37,7 @@ import com.engine.arccloud.RecognizeConfig;
 import com.engine.arccloud.SongInfo;
 import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.playways.rank.prepare.view.VoiceControlPanelView;
+import com.module.playways.rank.room.score.MachineScoreItem;
 import com.module.playways.rank.room.view.RankTopContainerView2;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
@@ -92,7 +93,7 @@ public class AuditionFragment extends BaseFragment {
     ManyLyricsView mManyLyricsView;
     VoiceControlPanelView mVoiceControlView;
     VoiceScaleView mVoiceScaleView;
-
+    LyricsReader mLyricsReader;
     PrepareData mPrepareData;
 
     SongModel mSongModel;
@@ -126,7 +127,6 @@ public class AuditionFragment extends BaseFragment {
             }
         }
     };
-    ;
 
     long mStartRecordTs = 0;
 
@@ -240,6 +240,7 @@ public class AuditionFragment extends BaseFragment {
 
     private void startRecord() {
         isRecord = true;
+        mRankTopView.reset();
         mAuditionArea.setVisibility(View.VISIBLE);
         showVoicePanelView(true);
         mVoiceScaleView.setVisibility(View.VISIBLE);
@@ -268,18 +269,25 @@ public class AuditionFragment extends BaseFragment {
                 .setMResultListener(new ArcRecognizeListener() {
                     @Override
                     public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
-                        int score = 0;
-                        if (targetSongInfo != null) {
-                            score = (int) (targetSongInfo.getScore() * 100);
-                            U.getToastUtil().showShort("acr打分:" + score);
-                            MyLog.d(TAG, "acr打分=" + score * 100);
-                        } else {
-//                                score = EngineManager.getInstance().getLineScore();
-//                                MyLog.d(TAG, "changba score=" + score);
+                        if (lineNo > mLastLineNum) {
+                            // 使用最新的打分方案做优化
+                            int score1 = EngineManager.getInstance().getLineScore();
+                            int score2 = 0;
+                            if (targetSongInfo != null) {
+                                score2 = (int) (targetSongInfo.getScore() * 100);
+                            }
+                            if (ScoreConfig.isMelpEnable()) {
+                                if (score1 > score2) {
+                                    processScore(score1, lineNo);
+                                } else {
+                                    processScore(score2, lineNo);
+                                }
+                            } else {
+                                processScore(score2, lineNo);
+                            }
                         }
                     }
                 }).build());
-
     }
 
     private void stopRecord() {
@@ -400,8 +408,6 @@ public class AuditionFragment extends BaseFragment {
         }
     }
 
-    LyricsReader mLyricsReader;
-
     private void playLyrics(SongModel songModel, boolean play, boolean isFirst) {
         final String lyricFile = SongResUtils.getFileNameWithMD5(songModel.getLyric());
 
@@ -455,7 +461,6 @@ public class AuditionFragment extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEventMainThread(EngineEvent event) {
 //        MyLog.d(TAG, "restartLrcEvent type is " + restartLrcEvent.getType());
-
         if (event.getType() == TYPE_MUSIC_PLAY_FINISH) {
             mUiHandler.post(() -> {
                 stopRecord();
