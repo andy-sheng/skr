@@ -93,14 +93,15 @@ public class WalletFragment extends BaseFragment implements IWalletView {
         mTitlebar.getRightTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                if(MyLog.isDebugLogOpen()){
+                if (MyLog.isDebugLogOpen()) {
                     U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), WithDrawHistoryFragment.class)
                             .setAddToBackStack(true)
                             .setHasAnimation(true)
                             .build());
+                } else {
+                    U.getToastUtil().showShort("暂无提现记录");
                 }
 
-                U.getToastUtil().showShort("暂无提现记录");
             }
         });
 
@@ -110,13 +111,13 @@ public class WalletFragment extends BaseFragment implements IWalletView {
                 if (balance < 10) {
                     U.getToastUtil().showShort("满10元才能提现哦～");
                 } else {
-                    U.getToastUtil().showShort("提现功能下版本开放\n" +
-                            "如有疑问，请添加微信号“skrer1”进行咨询");
-
-                    if(MyLog.isDebugLogOpen()){
+                    if (MyLog.isDebugLogOpen()) {
                         ARouter.getInstance()
                                 .build(RouterConstants.ACTIVITY_WITH_DRAW)
                                 .navigation();
+                    } else {
+                        U.getToastUtil().showShort("提现功能下版本开放\n" +
+                                "如有疑问，请添加微信号“skrer1”进行咨询");
                     }
                 }
             }

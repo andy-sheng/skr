@@ -44,9 +44,18 @@ public class WithDrawHistoryPresenter extends RxLifeCyclePresenter {
                 if (result.getErrno() == 0) {
                     List<WithDrawHistoryModel> withDrawHistoryModelList = JSON.parseArray(result.getData().getString("withdraws")
                             , WithDrawHistoryModel.class);
+
+                    //没有数据
+                    if(withDrawHistoryModelList == null){
+                        mIWalletView.update(mWithDrawHistoryModels);
+                        mIWalletView.hasMore(false);
+                        return;
+                    }
+
                     if (mOffset == 0) {
                         mWithDrawHistoryModels.clear();
                     }
+
 
                     mWithDrawHistoryModels.addAll(withDrawHistoryModelList);
                     mOffset = result.getData().getInteger("offset");
