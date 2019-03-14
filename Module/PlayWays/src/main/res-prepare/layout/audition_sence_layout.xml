@@ -108,9 +108,9 @@
         <com.zq.lyrics.widget.ManyLyricsView
             android:id="@+id/many_lyrics_view"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="150dp"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="@dimen/view_80_dp"
+            android:layout_marginTop="@dimen/view_105_dp"
             app:ly_eable_scroll="false"
             app:ly_eable_verbatim="true"
             app:ly_high_light_paint_color_from="#EF5E85"
