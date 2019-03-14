@@ -485,10 +485,8 @@ public class RankTopContainerView2 extends RelativeLayout {
                 mTotalScore = (int) (lineNum * 100 * 0.6);
             }
 
-            if (mMode == 1) {
-                mCurScore += score;
-                tryPlayProgressAnimation();
-            }
+            mCurScore += score;
+            tryPlayProgressAnimation();
 
             if (score >= 95) {
                 item.setLevel(ScoreTipsView.Level.Perfect);
