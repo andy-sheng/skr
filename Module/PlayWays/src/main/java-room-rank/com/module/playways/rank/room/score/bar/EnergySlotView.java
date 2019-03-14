@@ -97,7 +97,6 @@ public class EnergySlotView extends View {
     }
 
     public void setTarget(int target, AnimatorListenerAdapter l) {
-        MyLog.d(TAG, "setTarget" + " target=" + target + " l=" + l);
         mTarget = target;
         this.mAnimatorListenerAdapter = l;
         if (mAnimatorSet != null) {
@@ -111,7 +110,6 @@ public class EnergySlotView extends View {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 mCur = (int) animation.getAnimatedValue();
-                MyLog.d(TAG, "onAnimationUpdate: " + mCur);
                 postInvalidate();
             }
         });
@@ -141,7 +139,6 @@ public class EnergySlotView extends View {
     }
 
     private RectF getLeftClipRect() {
-        MyLog.d(TAG, "getLeftClipRect " + mCur);
         int width = mWidth * mCur / 100;
         return new RectF(0, 0, width, mHeight);
     }

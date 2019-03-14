@@ -544,6 +544,7 @@ public class AuditionFragment extends BaseFragment {
 
     @Override
     protected boolean onBackPressed() {
+        Params.save2Pref(EngineManager.getInstance().getParams());
         Activity activity = getActivity();
         if (activity != null) {
             activity.finish();

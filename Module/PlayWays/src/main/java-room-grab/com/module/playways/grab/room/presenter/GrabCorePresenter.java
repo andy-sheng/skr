@@ -674,6 +674,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         MyLog.d(TAG, "destroy begin");
         super.destroy();
         mDestroyed = true;
+        Params.save2Pref(EngineManager.getInstance().getParams());
         if (!mRoomData.isHasExitGame()) {
             exitRoom();
         }

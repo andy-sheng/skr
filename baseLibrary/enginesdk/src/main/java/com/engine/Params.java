@@ -27,7 +27,7 @@ public class Params implements Serializable {
     private Scene scene = Scene.audiotest;
     // 是否使用唱吧的引擎
     private boolean useCbEngine = false;
-    private boolean enableVideo = true;
+    private boolean enableVideo = false;
     private boolean enableAudio = true;
     private int localVideoWidth = 360; //本地视频的分辨率，会影响对端获取的流大小，确保是2的倍数
     private int localVideoHeight = 640;
@@ -618,7 +618,7 @@ public class Params implements Serializable {
         if (params != null) {
             String s = JSON.toJSONString(params);
             MyLog.w(EngineManager.TAG, "save2Pref " + s);
-            U.getPreferenceUtils().setSettingString("engine_pref_params1", s);
+            U.getPreferenceUtils().setSettingString("engine_pref_params2", s);
         }
     }
 
@@ -628,7 +628,7 @@ public class Params implements Serializable {
      * @return
      */
     public static Params getFromPref() {
-        String s = U.getPreferenceUtils().getSettingString("engine_pref_params1", "");
+        String s = U.getPreferenceUtils().getSettingString("engine_pref_params2", "");
         MyLog.w(EngineManager.TAG, "getFromPref " + s);
         Params params;
         if (!TextUtils.isEmpty(s)) {
