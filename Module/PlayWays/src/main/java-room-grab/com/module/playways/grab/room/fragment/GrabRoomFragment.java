@@ -411,6 +411,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                             U.getFragmentUtils().addFragment(
                                     FragmentUtils.newAddParamsBuilder(getActivity(), ImageBigPreviewFragment.class)
                                             .setAddToBackStack(true)
+                                            .setEnterAnim(R.anim.fade_in_center)
+                                            .setExitAnim(R.anim.fade_out_center)
                                             .setHasAnimation(true)
                                             .setBundle(bundle)
                                             .build());

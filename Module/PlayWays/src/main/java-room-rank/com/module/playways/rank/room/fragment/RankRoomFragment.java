@@ -670,6 +670,8 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                                     FragmentUtils.newAddParamsBuilder(getActivity(), ImageBigPreviewFragment.class)
                                             .setAddToBackStack(true)
                                             .setHasAnimation(true)
+                                            .setEnterAnim(R.anim.fade_in_center)
+                                            .setExitAnim(R.anim.fade_out_center)
                                             .setBundle(bundle)
                                             .build());
                         }
@@ -1177,7 +1179,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                 if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY && play) {
                     MyLog.w(TAG, "onEventMainThread " + "play");
                     mManyLyricsView.play(mPlayingSongModel.getBeginMs());
-                    int eventNum = mLyricEventLauncher.postLyricEvent(lyricsReader,mPlayingSongModel.getBeginMs(),mPlayingSongModel.getEndMs(),mRoomData.getRealRoundInfo());
+                    int eventNum = mLyricEventLauncher.postLyricEvent(lyricsReader, mPlayingSongModel.getBeginMs(), mPlayingSongModel.getEndMs(), mRoomData.getRealRoundInfo());
                     mRoomData.setSongLineNum(eventNum);
                     mCorePresenter.sendTotalScoreToOthers(eventNum);
                     mVoiceScaleView.setVisibility(View.VISIBLE);
@@ -1186,7 +1188,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             } else {
                 if (play && RoomDataUtils.isRobotRound(mRoomData.getRealRoundInfo(), mRoomData.getPlayerInfoList())) {
                     lyricsReader.cut(mPlayingSongModel.getRankLrcBeginT(), mPlayingSongModel.getRankLrcEndT());
-                    int eventNum = mLyricEventLauncher.postLyricEvent(lyricsReader,mPlayingSongModel.getBeginMs(),mPlayingSongModel.getEndMs(),mRoomData.getRealRoundInfo());
+                    int eventNum = mLyricEventLauncher.postLyricEvent(lyricsReader, mPlayingSongModel.getBeginMs(), mPlayingSongModel.getEndMs(), mRoomData.getRealRoundInfo());
                     mRoomData.setSongLineNum(eventNum);
                     mCorePresenter.sendTotalScoreToOthers(eventNum);
                 }
@@ -1219,7 +1221,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                         emitter.onError(new Throwable("重命名错误"));
                     }
                 } else {
-                    emitter.onError(new Throwable("下载失败"+TAG));
+                    emitter.onError(new Throwable("下载失败" + TAG));
                 }
             }
         }).subscribeOn(Schedulers.io())

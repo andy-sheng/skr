@@ -155,6 +155,8 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
                         FragmentUtils.newAddParamsBuilder(getActivity(), ImageBigPreviewFragment.class)
                                 .setAddToBackStack(true)
                                 .setHasAnimation(true)
+                                .setEnterAnim(R.anim.fade_in_center)
+                                .setExitAnim(R.anim.fade_out_center)
                                 .setBundle(bundle)
                                 .build());
             }
