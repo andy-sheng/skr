@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,6 +13,7 @@ import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -91,6 +93,8 @@ public class AuditionFragment extends BaseFragment {
     LinearLayout mBottomContainer;
     RelativeLayout mBackArea;
     RelativeLayout mAuditionArea;
+    ImageView mTiaoyinIv;
+    ExTextView mTiaoyinTv;
     RelativeLayout mResArea;
     RelativeLayout mCompleArea;
     ExTextView mTvSongName;
@@ -143,6 +147,8 @@ public class AuditionFragment extends BaseFragment {
         mBottomContainer = (LinearLayout) mRootView.findViewById(R.id.bottom_container);
         mBackArea = (RelativeLayout) mRootView.findViewById(R.id.back_area);
         mAuditionArea = (RelativeLayout) mRootView.findViewById(R.id.audition_area);
+        mTiaoyinIv = (ImageView) mRootView.findViewById(R.id.tiaoyin_iv);
+        mTiaoyinTv = (ExTextView) mRootView.findViewById(R.id.tiaoyin_tv);
         mResArea = (RelativeLayout) mRootView.findViewById(R.id.res_area);
         mCompleArea = (RelativeLayout) mRootView.findViewById(R.id.comple_area);
         mTvSongName = (ExTextView) mRootView.findViewById(R.id.tv_song_name);
@@ -429,6 +435,13 @@ public class AuditionFragment extends BaseFragment {
         mVoiceControlView.setTranslationY(show ? mVoiceControlView.getMeasuredHeight() + U.getDisplayUtils().dip2px(20) : 0);
 
         mIsVoiceShow = show;
+        if (mIsVoiceShow) {
+            mTiaoyinIv.setImageResource(R.drawable.audition_tiaoyin_anxia);
+            mTiaoyinTv.setTextColor(Color.parseColor("#99EF5E85"));
+        } else {
+            mTiaoyinIv.setImageResource(R.drawable.audition_tiaoyin);
+            mTiaoyinTv.setTextColor(Color.parseColor("#99B2B6D6"));
+        }
         int startY = show ? mVoiceControlView.getMeasuredHeight() + U.getDisplayUtils().dip2px(20) : 0;
         int endY = show ? 0 : mVoiceControlView.getMeasuredHeight() + U.getDisplayUtils().dip2px(20);
 

@@ -10,9 +10,9 @@
     <LinearLayout
         android:id="@+id/bottom_container"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_50_dp"
+        android:layout_height="@dimen/view_55_dp"
         android:layout_alignParentBottom="true"
-        android:background="#F9F4F1"
+        android:background="#2A2C3E"
         android:orientation="horizontal">
 
         <!--返回-->
@@ -27,7 +27,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="返回" />
+                android:drawableTop="@drawable/audition_back"
+                android:text="返回"
+                android:textColor="#99B2B6D6"
+                android:textSize="@dimen/textsize_12_dp" />
         </RelativeLayout>
 
         <!--调音间-->
@@ -38,11 +41,23 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1">
 
+            <ImageView
+                android:id="@+id/tiaoyin_iv"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="@dimen/view_8_dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/audition_tiaoyin_anxia" />
+
             <com.common.view.ex.ExTextView
+                android:id="@+id/tiaoyin_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="调音" />
+                android:layout_below="@+id/tiaoyin_iv"
+                android:layout_centerHorizontal="true"
+                android:text="调音"
+                android:textColor="#99EF5E85"
+                android:textSize="@dimen/textsize_12_dp" />
 
         </RelativeLayout>
 
@@ -58,7 +73,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="重唱" />
+                android:drawableTop="@drawable/audition_chongchang"
+                android:text="重唱"
+                android:textColor="#99B2B6D6"
+                android:textSize="@dimen/textsize_12_dp" />
         </RelativeLayout>
 
         <!--完成-->
@@ -73,7 +91,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="完成" />
+                android:drawableTop="@drawable/audition_complete"
+                android:text="完成"
+                android:textColor="#99B2B6D6"
+                android:textSize="@dimen/textsize_12_dp" />
         </RelativeLayout>
 
     </LinearLayout>
@@ -127,6 +148,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:layout_marginBottom="-2dp"
             android:visibility="visible" />
 
         <com.zq.lyrics.widget.VoiceScaleView
