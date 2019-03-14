@@ -193,7 +193,9 @@ public class VoiceControlPanelView extends ScrollView {
         super.onDetachedFromWindow();
         // 停止播放混音
 //        EngineManager.getInstance().pauseAudioMixing();
-
+        if (isChange()) {
+            Params.save2Pref(EngineManager.getInstance().getParams());
+        }
     }
 
     @Override
