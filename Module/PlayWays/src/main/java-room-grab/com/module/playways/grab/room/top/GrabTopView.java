@@ -150,7 +150,7 @@ public class GrabTopView extends RelativeLayout {
 
     public void setAccSwitchBtnStatus(boolean visibale) {
         if (visibale) {
-            mTvAccSwitch.setVisibility(VISIBLE);
+            mTvAccSwitch.setVisibility(GONE);
         } else {
             mTvAccSwitch.setVisibility(GONE);
         }
