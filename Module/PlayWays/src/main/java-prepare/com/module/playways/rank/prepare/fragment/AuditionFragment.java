@@ -243,6 +243,16 @@ public class AuditionFragment extends BaseFragment {
     }
 
     private void startRecord() {
+        mSkrAudioPermission.ensurePermission(new Runnable() {
+            @Override
+            public void run() {
+                startRecord1();
+            }
+        }, true);
+
+    }
+
+    private void startRecord1() {
         isRecord = true;
         mRankTopView.reset();
         mLastLineNum = -1;
