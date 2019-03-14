@@ -30,6 +30,8 @@ public class GrabScoreTipsView extends RelativeLayout {
 
     GrabRoomData mRoomData;
 
+    ScoreTipsView.Item mLastItem;
+
     public GrabScoreTipsView(Context context) {
         super(context);
         init();
@@ -58,8 +60,6 @@ public class GrabScoreTipsView extends RelativeLayout {
         mRoomData = roomData;
     }
 
-    ScoreTipsView.Item mLastItem;
-
     public void updateScore(int score1, int songLineNum) {
         MyLog.d(TAG, "updateScore" + " score1=" + score1 + " songLineNum=" + songLineNum);
         int score = score1;
@@ -68,11 +68,11 @@ public class GrabScoreTipsView extends RelativeLayout {
         }
         ScoreTipsView.Item item = new ScoreTipsView.Item();
 
-        if (score >= 95) {
+        if (score >= 80) {
             item.setLevel(ScoreTipsView.Level.Perfect);
-        } else if (score >= 90) {
+        } else if (score >= 50) {
             item.setLevel(ScoreTipsView.Level.Good);
-        } else if (score >= 70) {
+        } else if (score >= 20) {
             item.setLevel(ScoreTipsView.Level.Ok);
         } else if (score < 20) {
             item.setLevel(ScoreTipsView.Level.Bad);
@@ -91,7 +91,7 @@ public class GrabScoreTipsView extends RelativeLayout {
         }
     }
 
-    public void reset(){
+    public void reset() {
         mLastItem = null;
     }
 }

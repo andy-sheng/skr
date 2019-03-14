@@ -61,6 +61,7 @@ public class ScoreTipsView extends RelativeLayout {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         if (mAnimatorSet != null && mAnimatorSet.isRunning()) {
+            mAnimatorSet.removeAllListeners();
             mAnimatorSet.cancel();
         }
     }
@@ -143,6 +144,7 @@ public class ScoreTipsView extends RelativeLayout {
         }
 
         if (mAnimatorSet != null) {
+            mAnimatorSet.removeAllListeners();
             mAnimatorSet.cancel();
         }
         mAnimatorSet = new AnimatorSet();
