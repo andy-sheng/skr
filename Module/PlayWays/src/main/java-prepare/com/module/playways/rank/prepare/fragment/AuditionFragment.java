@@ -21,6 +21,7 @@ import com.common.base.FragmentDataListener;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrAudioPermission;
+import com.common.engine.ScoreConfig;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.SongResUtils;
@@ -46,7 +47,6 @@ import com.zq.lyrics.LyricsManager;
 import com.zq.lyrics.LyricsReader;
 import com.zq.lyrics.event.LrcEvent;
 import com.zq.lyrics.event.LyricEventLauncher;
-import com.zq.lyrics.model.LyricsLineInfo;
 import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.ManyLyricsView;
 import com.zq.lyrics.widget.VoiceScaleView;
@@ -74,6 +74,8 @@ public class AuditionFragment extends BaseFragment {
 
     static final int MSG_AUTO_LEAVE_CHANNEL = 9;
 
+    static final int MSG_SHOW_SCORE_EVENT = 32;
+
     static final boolean RECORD_BY_CALLBACK = false;
     static final String ACC_SAVE_PATH = new File(U.getAppInfoUtils().getMainDir(), "audition.acc").getAbsolutePath();
     static final String PCM_SAVE_PATH = new File(U.getAppInfoUtils().getMainDir(), "audition.pcm").getAbsolutePath();
@@ -99,7 +101,32 @@ public class AuditionFragment extends BaseFragment {
 
     private volatile boolean isRecord = false;
 
-    Handler mUiHanlder;
+    private int mLastLineNum = -1;
+
+    private int mTotalLineNum = -1;
+
+    Handler mUiHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case MSG_AUTO_LEAVE_CHANNEL:
+                    // 为了省钱，因为引擎每多在试音房一分钟都是消耗，防止用户挂机
+                    U.getFragmentUtils().popFragment(AuditionFragment.this);
+                    break;
+                default:
+                    int lineNo = (msg.what - MSG_SHOW_SCORE_EVENT) / 100;
+                    MyLog.d(TAG, "handleMessage" + " lineNo=" + lineNo);
+                    if (lineNo > mLastLineNum) {
+                        int score = EngineManager.getInstance().getLineScore();
+                        MyLog.d(TAG, "handleMessage acr超时 本地获取得分:" + score);
+                        processScore(score, lineNo);
+                    }
+                    break;
+            }
+        }
+    };
+    ;
 
     long mStartRecordTs = 0;
 
@@ -144,19 +171,6 @@ public class AuditionFragment extends BaseFragment {
         mVoiceControlView.bindData();
         mVoiceScaleView = (VoiceScaleView) mRootView.findViewById(R.id.voice_scale_view);
 
-        mUiHanlder = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                if (msg.what == MSG_AUTO_LEAVE_CHANNEL) {
-                    // 为了省钱，因为引擎每多在试音房一分钟都是消耗，防止用户挂机
-                    U.getFragmentUtils().popFragment(AuditionFragment.this);
-                    return;
-                }
-            }
-        };
-
-
         U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
 
         mBackArea.setOnClickListener(new DebounceViewClickListener() {
@@ -188,44 +202,6 @@ public class AuditionFragment extends BaseFragment {
                 stopRecord();
             }
         });
-//
-//        RxView.clicks(mIvPlay).throttleFirst(500, TimeUnit.MILLISECONDS)
-//                .subscribe(o -> {
-//                    playRecord();
-//                    playLyrics(mSongModel, true);
-//                });
-
-//        RxView.clicks(mIvSave).throttleFirst(500, TimeUnit.MILLISECONDS)
-//                .subscribe(o -> {
-//                    // 要保存
-//                    Params.save2Pref(EngineManager.getInstance().getParams());
-//                    U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
-//                            .setImage(R.drawable.touxiangshezhichenggong_icon)
-//                            .setText("保存设置成功\n已应用到所有对局")
-//                            .build());
-//
-//                    mUiHanlder.postDelayed(() -> {
-//                        if (getActivity() != null) {
-//                            getActivity().finish();
-//                        }
-//                    }, 2000);
-////                    U.getFragmentUtils().popFragment(AuditionFragment.this);
-//                });
-
-//        RxView.clicks(mFlProgressContainer).throttleFirst(500, TimeUnit.MILLISECONDS)
-//                .subscribe(o -> {
-//                    if (isRecord) {
-//                        stopRecord();
-//                        mVoiceScaleView.setVisibility(View.GONE);
-//                    } else {
-//                        mSkrAudioPermission.ensurePermission(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                startRecord();
-//                            }
-//                        }, true);
-//                    }
-//                });
 
         mManyLyricsView.setOnLyricViewTapListener(new ManyLyricsView.OnLyricViewTapListener() {
             @Override
@@ -233,7 +209,6 @@ public class AuditionFragment extends BaseFragment {
                 if (EngineManager.getInstance().getParams().isMixMusicPlaying()) {
                     EngineManager.getInstance().pauseAudioMixing();
                 }
-
                 mManyLyricsView.pause();
             }
 
@@ -271,9 +246,7 @@ public class AuditionFragment extends BaseFragment {
         mVoiceScaleView.startWithData(mLyricsReader.getLyricsLineInfoList(), mSongModel.getBeginMs());
         playLyrics(mSongModel, true, false);
         playMusic(mSongModel);
-        if (MyLog.isDebugLogOpen()) {
-            mLyricEventLauncher.postLyricEvent(mLyricsReader, mSongModel.getBeginMs(), mSongModel.getEndMs(), null);
-        }
+        mTotalLineNum = mLyricEventLauncher.postLyricEvent(mLyricsReader, mSongModel.getBeginMs(), mSongModel.getEndMs(), null);
 
         mStartRecordTs = System.currentTimeMillis();
 //        mIvRecordStart.setVisibility(View.GONE);
@@ -287,27 +260,25 @@ public class AuditionFragment extends BaseFragment {
             EngineManager.getInstance().startAudioRecording(ACC_SAVE_PATH, Constants.AUDIO_RECORDING_QUALITY_HIGH, false);
         }
 
-        if (MyLog.isDebugLogOpen()) {
-            mCbScoreList.clear();
-            EngineManager.getInstance().startRecognize(RecognizeConfig.newBuilder()
-                    .setMode(RecognizeConfig.MODE_MANUAL)
-                    .setSongName(mSongModel.getItemName())
-                    .setArtist(mSongModel.getOwner())
-                    .setMResultListener(new ArcRecognizeListener() {
-                        @Override
-                        public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
-                            int score = 0;
-                            if (targetSongInfo != null) {
-                                score = (int) (targetSongInfo.getScore() * 100);
-                                U.getToastUtil().showShort("acr打分:" + score);
-                                MyLog.d(TAG, "acr打分=" + score * 100);
-                            } else {
+        mCbScoreList.clear();
+        EngineManager.getInstance().startRecognize(RecognizeConfig.newBuilder()
+                .setMode(RecognizeConfig.MODE_MANUAL)
+                .setSongName(mSongModel.getItemName())
+                .setArtist(mSongModel.getOwner())
+                .setMResultListener(new ArcRecognizeListener() {
+                    @Override
+                    public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
+                        int score = 0;
+                        if (targetSongInfo != null) {
+                            score = (int) (targetSongInfo.getScore() * 100);
+                            U.getToastUtil().showShort("acr打分:" + score);
+                            MyLog.d(TAG, "acr打分=" + score * 100);
+                        } else {
 //                                score = EngineManager.getInstance().getLineScore();
 //                                MyLog.d(TAG, "changba score=" + score);
-                            }
                         }
-                    }).build());
-        }
+                    }
+                }).build());
 
     }
 
@@ -357,8 +328,8 @@ public class AuditionFragment extends BaseFragment {
     }
 
     private void resendAutoLeaveChannelMsg() {
-        mUiHanlder.removeMessages(MSG_AUTO_LEAVE_CHANNEL);
-        mUiHanlder.sendEmptyMessageDelayed(MSG_AUTO_LEAVE_CHANNEL, 60 * 1000 * 10);
+        mUiHandler.removeMessages(MSG_AUTO_LEAVE_CHANNEL);
+        mUiHandler.sendEmptyMessageDelayed(MSG_AUTO_LEAVE_CHANNEL, 60 * 1000 * 10);
     }
 
     private void showVoicePanelView(boolean show) {
@@ -486,7 +457,7 @@ public class AuditionFragment extends BaseFragment {
 //        MyLog.d(TAG, "restartLrcEvent type is " + restartLrcEvent.getType());
 
         if (event.getType() == TYPE_MUSIC_PLAY_FINISH) {
-            mUiHanlder.post(() -> {
+            mUiHandler.post(() -> {
                 stopRecord();
             });
         } else if (event.getType() == EngineEvent.TYPE_USER_AUDIO_VOLUME_INDICATION) {
@@ -503,14 +474,16 @@ public class AuditionFragment extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(LrcEvent.LineLineEndEvent event) {
-        //TODO
-        if (MyLog.isDebugLogOpen()) {
+        if (ScoreConfig.isAcrEnable()) {
             EngineManager.getInstance().recognizeInManualMode(event.lineNum);
-            int score = EngineManager.getInstance().getLineScore();
-            mCbScoreList.add(score);
-            U.getToastUtil().showShort("cb打分:" + score);
-            MyLog.d(TAG, "changba score:" + score);
+        } else {
+            if (ScoreConfig.isMelpEnable()) {
+                int score = EngineManager.getInstance().getLineScore();
+                processScore(score, event.lineNum);
+            }
         }
+        Message msg = mUiHandler.obtainMessage(MSG_SHOW_SCORE_EVENT + event.lineNum * 100);
+        mUiHandler.sendMessageDelayed(msg, 1000);
     }
 
     void jisuanScore() {
@@ -558,7 +531,7 @@ public class AuditionFragment extends BaseFragment {
                                         .setText("保存设置成功\n已应用到所有对局")
                                         .build());
 
-                                mUiHanlder.postDelayed(() -> {
+                                mUiHandler.postDelayed(() -> {
                                     Activity activity = getActivity();
                                     if (activity != null) {
                                         activity.finish();
@@ -594,20 +567,28 @@ public class AuditionFragment extends BaseFragment {
         }
     }
 
+    private void processScore(int score, int line) {
+        if (line <= mLastLineNum) {
+            return;
+        }
+        if (score < 0) {
+            return;
+        }
+        mLastLineNum = line;
+        mRankTopView.setScoreProgress(score, 0, mTotalLineNum);
+    }
+
     @Override
     public void destroy() {
         super.destroy();
-
         mLyricEventLauncher.destroy();
         mManyLyricsView.release();
-
         EngineManager.getInstance().destroy("prepare");
         File recordFile = new File(PCM_SAVE_PATH);
         if (recordFile != null && recordFile.exists()) {
             recordFile.delete();
         }
-        mUiHanlder.removeCallbacksAndMessages(null);
-
+        mUiHandler.removeCallbacksAndMessages(null);
         U.getSoundUtils().release(TAG);
     }
 }
