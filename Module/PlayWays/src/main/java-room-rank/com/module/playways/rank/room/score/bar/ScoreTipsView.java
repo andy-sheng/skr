@@ -192,10 +192,10 @@ public class ScoreTipsView extends RelativeLayout {
     }
 
     public enum Level {
-        Perfect(R.drawable.yanchangjiemian_perfect),
-        Good(R.drawable.yanchangjiemian_goood),
-        Ok(R.drawable.yanchangjiemian_ok),
-        Bad(R.drawable.yanchangjiemian_bad),
+        Perfect(R.drawable.level_chaowanmei),
+        Good(R.drawable.level_bucuoo),
+        Ok(R.drawable.level_haikeyi),
+        Bad(R.drawable.level_renzhendian),
 
         Grab_renzhen(R.drawable.level_renzhendian),
         Grab_jiayou(R.drawable.level_jiayouo),
