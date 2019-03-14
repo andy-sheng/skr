@@ -60,7 +60,7 @@ public class ScoreTipsView extends RelativeLayout {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if (mAnimatorSet != null) {
+        if (mAnimatorSet != null && mAnimatorSet.isRunning()) {
             mAnimatorSet.cancel();
         }
     }
@@ -150,13 +150,11 @@ public class ScoreTipsView extends RelativeLayout {
         mAnimatorSet.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationCancel(Animator animation) {
-                super.onAnimationCancel(animation);
                 onAnimationEnd(animation);
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
                 if (ScoreTipsView.this.getParent() != null) {
                     ViewGroup vg = (ViewGroup) ScoreTipsView.this.getParent();
                     vg.removeView(ScoreTipsView.this);
@@ -164,7 +162,6 @@ public class ScoreTipsView extends RelativeLayout {
             }
         });
         mAnimatorSet.start();
-
     }
 
     public static void play(RelativeLayout parent, Item item) {
