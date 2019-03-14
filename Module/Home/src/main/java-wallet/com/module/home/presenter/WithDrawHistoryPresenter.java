@@ -47,7 +47,6 @@ public class WithDrawHistoryPresenter extends RxLifeCyclePresenter {
 
                     //没有数据
                     if(withDrawHistoryModelList == null){
-                        mIWalletView.update(mWithDrawHistoryModels);
                         mIWalletView.hasMore(false);
                         return;
                     }
@@ -60,7 +59,7 @@ public class WithDrawHistoryPresenter extends RxLifeCyclePresenter {
                     mWithDrawHistoryModels.addAll(withDrawHistoryModelList);
                     mOffset = result.getData().getInteger("offset");
                     mIWalletView.update(mWithDrawHistoryModels);
-                    mIWalletView.hasMore(withDrawHistoryModelList.size() == mLimit);
+                    mIWalletView.hasMore(true);
                 } else {
                     U.getToastUtil().showShort(result.getErrmsg());
                     mIWalletView.update(mWithDrawHistoryModels);
