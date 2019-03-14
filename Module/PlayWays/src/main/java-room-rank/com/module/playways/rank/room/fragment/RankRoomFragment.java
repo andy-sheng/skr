@@ -241,7 +241,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         }, mRoomData.getPlayerInfoList());
         addPresent(mDownLoadScoreFilePresenter);
         mDownLoadScoreFilePresenter.prepareRes();
-        U.getSoundUtils().preLoad(TAG, R.raw.rank_readygo, R.raw.normal_countdown, R.raw.rank_gameover);
+        U.getSoundUtils().preLoad(TAG, R.raw.rank_readygo, R.raw.rank_gameover);
         BgMusicManager.getInstance().setRoom(true);
         MyLog.w(TAG, "gameid 是 " + mRoomData.getGameId() + " userid 是 " + MyUserInfoManager.getInstance().getUid());
 

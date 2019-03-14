@@ -157,7 +157,6 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
     }
 
     void jump(SongModel songModel) {
-        U.getSoundUtils().play(TAG, R.raw.normal_click);
         if (getActivity() instanceof AudioRoomActivity) {
             U.getToastUtil().showShort("试音房");
             if (songModel.isAllResExist()) {

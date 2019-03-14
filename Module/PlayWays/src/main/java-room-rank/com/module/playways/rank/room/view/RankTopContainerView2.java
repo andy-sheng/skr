@@ -116,6 +116,7 @@ public class RankTopContainerView2 extends RelativeLayout {
 
         inflate(getContext(), R.layout.rank_top_container_view, this);
         U.getSoundUtils().preLoad(TAG, R.raw.rank_xlight, R.raw.rank_xxxstop);
+
         mMoreBtn = this.findViewById(R.id.more_btn);
         mIvLed = (ExImageView) findViewById(R.id.iv_led);
         mEnergySlotView = (EnergySlotView) findViewById(R.id.energy_slot_view);

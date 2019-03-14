@@ -132,7 +132,6 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
         mIvCancelMatch.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                U.getSoundUtils().play(TAG, R.raw.normal_click, 500);
                 goBack();
             }
         });
