@@ -518,7 +518,9 @@ public class AuditionFragment extends BaseFragment {
             int t = mCbScoreList.get(i) - pj;
             fc += (t * t);
         }
-        U.getToastUtil().showShort("平均分:" + pj + " 方差:" + fc);
+        if(MyLog.isDebugLogOpen()){
+            U.getToastUtil().showShort("平均分:" + pj + " 方差:" + fc);
+        }
         MyLog.d(TAG, "平均分:" + pj + " 方差:" + fc);
     }
 
