@@ -412,7 +412,7 @@ public class EngineManager implements AgoraOutCallback {
         int retCode = AgoraEngineAdapter.getInstance().joinChannel(null, roomid, "Extra Optional Data", userId);
         if (retCode < 0) {
             HashMap map = new HashMap();
-            map.put("reason", ""+retCode);
+            map.put("reason", "" + retCode);
             StatisticsAdapter.recordCountEvent("agora", "join_failed", map);
             Message msg = mCustomHandlerThread.obtainMessage();
             msg.what = MSG_JOIN_ROOM_AGAIN;
@@ -932,7 +932,7 @@ public class EngineManager implements AgoraOutCallback {
                     startMusicPlayTimeListener();
                     EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_START);
                     EventBus.getDefault().post(engineEvent);
-                    AgoraEngineAdapter.getInstance().startAudioMixing(filePath,midiPath, loopback, replace, cycle);
+                    AgoraEngineAdapter.getInstance().startAudioMixing(filePath, midiPath, loopback, replace, cycle);
                 } else {
                     mPendingStartMixAudioParams = new PendingStartMixAudioParams();
                     mPendingStartMixAudioParams.uid = uid;
@@ -1067,9 +1067,13 @@ public class EngineManager implements AgoraOutCallback {
                         if (duration < 0) {
                             duration = getAudioMixingDuration();
                         }
-                        EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_TIME_FLY_LISTENER);
-                        engineEvent.obj = new EngineEvent.MixMusicTimeInfo(currentPostion, duration);
-                        EventBus.getDefault().post(engineEvent);
+                        if (currentPostion < duration) {
+                            EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_TIME_FLY_LISTENER);
+                            engineEvent.obj = new EngineEvent.MixMusicTimeInfo(currentPostion, duration);
+                            EventBus.getDefault().post(engineEvent);
+                        } else {
+                            MyLog.d(TAG, "playtime不合法,currentPostion=" + currentPostion + " duration=" + duration);
+                        }
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -1211,9 +1215,9 @@ public class EngineManager implements AgoraOutCallback {
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {
-                if(TextUtils.isEmpty(mConfig.getRecordingFromCallbackSavePath())){
+                if (TextUtils.isEmpty(mConfig.getRecordingFromCallbackSavePath())) {
                     AgoraEngineAdapter.getInstance().stopAudioRecording();
-                }else{
+                } else {
                     mConfig.setRecordingFromCallbackSavePath(null);
                 }
             }
