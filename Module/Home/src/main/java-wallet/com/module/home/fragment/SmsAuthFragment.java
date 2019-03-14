@@ -86,6 +86,13 @@ public class SmsAuthFragment extends BaseFragment {
         }
         U.getKeyBoardUtils().showSoftInputKeyBoard(getActivity());
 
+        mIvBack.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                finish();
+            }
+        });
+
         mGetCodeTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
@@ -286,7 +293,6 @@ public class SmsAuthFragment extends BaseFragment {
                 .setPopFragment(SmsAuthFragment.this)
                 .setPopAbove(false)
                 .setHasAnimation(true)
-                .setNotifyShowFragment(LoginFragment.class)
                 .build());
         return true;
     }
