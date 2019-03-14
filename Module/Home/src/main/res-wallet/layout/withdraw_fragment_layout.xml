@@ -79,7 +79,7 @@
             <com.common.view.ex.NoLeakEditText
                 android:textColor="#0C2275"
                 android:textSize="@dimen/textsize_30_dp"
-                android:inputType="numberDecimal|numberSigned"
+                android:inputType="numberDecimal"
                 android:hint="请输入提现金额"
                 android:id="@+id/edit_cash_num"
                 android:layout_marginLeft="@dimen/view_3_dp"
