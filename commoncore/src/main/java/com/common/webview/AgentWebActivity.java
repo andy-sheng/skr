@@ -33,6 +33,7 @@ import com.just.agentweb.AgentWebUIControllerImplBase;
 import com.just.agentweb.MiddlewareWebChromeBase;
 import com.just.agentweb.MiddlewareWebClientBase;
 import com.module.RouterConstants;
+import com.umeng.socialize.UMShareAPI;
 
 import java.util.List;
 
@@ -238,6 +239,7 @@ public class AgentWebActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 
     protected @NonNull
