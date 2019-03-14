@@ -494,7 +494,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
             mRankText.post(new Runnable() {
                 @Override
                 public void run() {
-                    if (PersonFragment.this.fragmentVisible) {
+                    if (PersonFragment.this.fragmentVisible && U.getFragmentUtils().getTopFragment(getActivity()) == PersonFragment.this) {
                         mPopupWindow.showAsDropDown(mRankText);
                     }
                 }
@@ -510,7 +510,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
             mRankText.post(new Runnable() {
                 @Override
                 public void run() {
-                    if (PersonFragment.this.fragmentVisible) {
+                    if (PersonFragment.this.fragmentVisible && U.getFragmentUtils().getTopFragment(getActivity()) == PersonFragment.this) {
                         mPopupWindow.showAsDropDown(mRankText);
                     }
                 }
