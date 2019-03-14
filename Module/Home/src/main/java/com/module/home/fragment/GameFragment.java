@@ -220,6 +220,7 @@ public class GameFragment extends BaseFragment {
         mIvAuditionRoom.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+                U.getSoundUtils().play(TAG, R.raw.home_practice, 500);
                 long tag = System.currentTimeMillis();
                 clickAnimation(mIvAuditionRoom, null, tag);
             }
@@ -266,7 +267,7 @@ public class GameFragment extends BaseFragment {
         });
 
 
-        U.getSoundUtils().preLoad(TAG, R.raw.home_grab, R.raw.home_rank);
+        U.getSoundUtils().preLoad(TAG, R.raw.home_grab, R.raw.home_rank, R.raw.home_practice);
 
         initBaseInfo();
         initRankLevel(true);
