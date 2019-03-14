@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -69,6 +71,8 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
     ExImageView mLocationRefreshBtn;
     ProgressBar mProgressBar;
 
+    Handler mUiHandler = new Handler(Looper.getMainLooper());
+
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
         return R.layout.edit_info_activity_layout;
@@ -122,6 +126,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
     protected void destroy() {
         super.destroy();
         U.getSoundUtils().release(TAG);
+        mUiHandler.removeCallbacksAndMessages(null);
     }
 
     private void initViewData() {
@@ -258,17 +263,25 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
 
                         @Override
                         public void onSuccess(String url) {
-                            if (mProgressBar != null) {
-                                mProgressBar.setVisibility(View.GONE);
-                            }
-                            uploadAvatarSuccess(url);
+                            mUiHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    uploadAvatarSuccess(url);
+                                }
+                            });
+
                         }
 
                         @Override
                         public void onFailure(String msg) {
-                            if (mProgressBar != null) {
-                                mProgressBar.setVisibility(View.GONE);
-                            }
+                            mUiHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (mProgressBar != null) {
+                                        mProgressBar.setVisibility(View.GONE);
+                                    }
+                                }
+                            });
                         }
                     });
         }

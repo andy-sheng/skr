@@ -291,13 +291,11 @@
     </RelativeLayout>
 
     <ProgressBar
-        android:id="@+id/progressBar"
-        style="@android:style/Widget.Holo.ProgressBar.Large"
-        android:layout_width="@dimen/view_100_dp"
-        android:layout_height="@dimen/view_100_dp"
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="gone"
-        android:max="100"
-        android:progress="20" />
+        android:visibility="gone" />
+    
 </RelativeLayout>
 
