@@ -54,7 +54,7 @@ public class ConversationActivity extends BaseActivity {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
+                        //U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
                         finish();
                     }
                 });

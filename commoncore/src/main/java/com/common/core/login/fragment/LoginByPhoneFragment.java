@@ -119,7 +119,7 @@ public class LoginByPhoneFragment extends BaseFragment {
         mIvBack.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
+                //U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
                 U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
                 stopTimeTask();
                 U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
