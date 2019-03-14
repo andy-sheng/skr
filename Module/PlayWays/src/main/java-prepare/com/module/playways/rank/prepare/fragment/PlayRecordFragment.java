@@ -15,11 +15,12 @@ import com.common.player.IPlayer;
 import com.common.player.IPlayerCallback;
 import com.common.player.exoplayer.ExoPlayer;
 import com.common.player.mediaplayer.AndroidMediaPlayer;
+import com.common.utils.FragmentUtils;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
-import com.engine.EngineManager;
+import com.module.playways.grab.prepare.GrabMatchSuccessFragment;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
 import com.trello.rxlifecycle2.android.FragmentEvent;
@@ -27,8 +28,6 @@ import com.zq.lyrics.LyricsManager;
 import com.zq.lyrics.LyricsReader;
 import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.ManyLyricsView;
-
-import java.io.File;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;

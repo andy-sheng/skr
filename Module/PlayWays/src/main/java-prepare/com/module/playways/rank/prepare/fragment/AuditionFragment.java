@@ -345,7 +345,7 @@ public class AuditionFragment extends BaseFragment {
                     @Override
                     public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
                         if (requestCode == 0 && resultCode == 0) {
-                            stopRecord();
+                            startRecord();
                         }
                     }
                 })
