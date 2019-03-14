@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
-import android.view.animation.AnticipateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -25,7 +24,7 @@ import java.util.List;
 public class ScoreTipsView extends RelativeLayout {
 
     ImageView mLevelIv;
-    ImageView mJihaoIv;
+    ImageView mJiahaoIv;
     ImageView mNumIv;
     AnimatorSet mAnimatorSet;
 
@@ -48,7 +47,7 @@ public class ScoreTipsView extends RelativeLayout {
         inflate(getContext(), R.layout.score_tips_view_layout, this);
 
         mLevelIv = (ImageView) this.findViewById(R.id.level_iv);
-        mJihaoIv = (ImageView) this.findViewById(R.id.jihao_iv);
+        mJiahaoIv = (ImageView) this.findViewById(R.id.jihao_iv);
         mNumIv = (ImageView) this.findViewById(R.id.num_iv);
     }
 
@@ -195,7 +194,14 @@ public class ScoreTipsView extends RelativeLayout {
         Perfect(R.drawable.yanchangjiemian_perfect),
         Good(R.drawable.yanchangjiemian_goood),
         Ok(R.drawable.yanchangjiemian_ok),
-        Bad(R.drawable.yanchangjiemian_bad);
+        Bad(R.drawable.yanchangjiemian_bad),
+
+        Grab_renzhen(R.drawable.level_renzhendian),
+        Grab_jiayou(R.drawable.level_jiayouo),
+        Grab_bucuo(R.drawable.level_bucuoo),
+        Grab_wanmei(R.drawable.level_chaowanmei),
+        Grab_keyi(R.drawable.level_haikeyi),
+        Grab_taibang(R.drawable.level_taibangle);
 
         int mDrawableId;
 

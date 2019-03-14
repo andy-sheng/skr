@@ -3,6 +3,7 @@ package com.module.playways.grab.room.model;
 import com.module.playways.rank.room.model.PkScoreTipMsgModel;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GrabConfigModel implements Serializable {
@@ -10,6 +11,7 @@ public class GrabConfigModel implements Serializable {
     int enableShowMLightWaitTimeMs = 2;
     int totalGameRoundSeq = 100;
     int wantSingDelayTimeMs = 500;
+    List <GrabScoreTipMsgModel> qScoreTipMsg = new ArrayList<>();
 
     public int getEnableShowBLightWaitTimeMs() {
         return enableShowBLightWaitTimeMs;
@@ -41,6 +43,14 @@ public class GrabConfigModel implements Serializable {
 
     public void setWantSingDelayTimeMs(int wantSingDelayTimeMs) {
         this.wantSingDelayTimeMs = wantSingDelayTimeMs;
+    }
+
+    public List<GrabScoreTipMsgModel> getQScoreTipMsg() {
+        return qScoreTipMsg;
+    }
+
+    public void setQScoreTipMsg(List<GrabScoreTipMsgModel> qScoreTipMsg) {
+        this.qScoreTipMsg = qScoreTipMsg;
     }
 
     @Override
