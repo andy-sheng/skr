@@ -105,10 +105,13 @@ public class SharePanel {
 
         @Override
         public void onCancel(SHARE_MEDIA share_media) {
-            U.getToastUtil().showShort("分享取消");
-            if(mOUMShareListener != null){
-                mOUMShareListener.onCancel(share_media);
+            if(share_media != SHARE_MEDIA.QQ){
+                U.getToastUtil().showShort("分享取消");
+                if(mOUMShareListener != null){
+                    mOUMShareListener.onCancel(share_media);
+                }
             }
+
         }
     };
 
