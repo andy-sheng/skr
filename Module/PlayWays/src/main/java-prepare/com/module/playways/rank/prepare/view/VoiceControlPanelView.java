@@ -1,6 +1,7 @@
 package com.module.playways.rank.prepare.view;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
@@ -8,6 +9,7 @@ import android.widget.SeekBar;
 
 import com.common.log.MyLog;
 import com.common.utils.U;
+import com.common.view.ex.ExTextView;
 import com.engine.EngineManager;
 import com.engine.Params;
 import com.module.rank.R;
@@ -15,8 +17,11 @@ import com.module.rank.R;
 public class VoiceControlPanelView extends ScrollView {
     public final static String TAG = "VoiceControlPanelView";
 
+    ExTextView mPeopleVoice;
     SeekBar mPeopleVoiceSeekbar;
+    ExTextView mAccVoice;
     SeekBar mMusicVoiceSeekbar;
+
     RadioGroup mScenesBtnGroup;
     ScenesSelectBtn mDefaultSbtn;
     ScenesSelectBtn mKtvSbtn;
@@ -33,20 +38,28 @@ public class VoiceControlPanelView extends ScrollView {
     int mAfterPeopleVoice;
     int mAfterMusicVoice;
 
+    boolean isShowACC = true;  //是否显示伴奏
+
     public VoiceControlPanelView(Context context) {
         super(context);
-        init();
+        init(context, null);
     }
 
     public VoiceControlPanelView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(context, attrs);
     }
 
-    void init() {
+    void init(Context context, AttributeSet attrs) {
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.VoiceControlPanelView);
+        isShowACC = typedArray.getBoolean(R.styleable.VoiceControlPanelView_isShowACC, true);
+        typedArray.recycle();
+
         inflate(getContext(), R.layout.voice_control_panel_layout, this);
 
+        mPeopleVoice = (ExTextView) this.findViewById(R.id.people_voice);
         mPeopleVoiceSeekbar = (SeekBar) this.findViewById(R.id.people_voice_seekbar);
+        mAccVoice = (ExTextView) this.findViewById(R.id.acc_voice);
         mMusicVoiceSeekbar = (SeekBar) this.findViewById(R.id.music_voice_seekbar);
 
         mDefaultSbtn = (ScenesSelectBtn) this.findViewById(R.id.default_sbtn);
@@ -57,6 +70,11 @@ public class VoiceControlPanelView extends ScrollView {
 
         int marginLeft = U.getDisplayUtils().getScreenWidth() - U.getDisplayUtils().dip2px(30 + 24) - U.getDisplayUtils().dip2px(53 * 5);
         marginLeft = marginLeft / 6;
+
+        if (!isShowACC) {
+            mAccVoice.setVisibility(GONE);
+            mMusicVoiceSeekbar.setVisibility(GONE);
+        }
 
         setMarginLeft(mKtvSbtn, marginLeft);
         setMarginLeft(mRockSbtn, marginLeft);
