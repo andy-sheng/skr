@@ -69,6 +69,8 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
 
     LoadService mLoadService;
 
+    SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
+
     @Override
     public int initView() {
         return R.layout.history_song_fragment_layout;
@@ -157,9 +159,14 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
             return;
         }
         if (getActivity() instanceof AudioRoomActivity) {
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_AUDITION_ROOM)
-                    .withSerializable("songModel", songModel)
-                    .navigation();
+            mSkrAudioPermission.ensurePermission(new Runnable() {
+                @Override
+                public void run() {
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_AUDITION_ROOM)
+                            .withSerializable("songModel", songModel)
+                            .navigation();
+                }
+            }, true);
             return;
         }
 
@@ -195,6 +202,7 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
     @Override
     public void onResume() {
         super.onResume();
+        mSkrAudioPermission.onBackFromPermisionManagerMaybe();
     }
 
     @Override
