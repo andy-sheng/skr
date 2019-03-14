@@ -32,7 +32,7 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
     private Integer mSongLineNum;
 
     public GrabRoomData() {
-        mIsAccEnable = U.getPreferenceUtils().getSettingBoolean("grab_acc_enable", false);
+        mIsAccEnable = U.getPreferenceUtils().getSettingBoolean("grab_acc_enable1", false);
     }
 
     @Override
@@ -130,7 +130,7 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
 
     public void setAccEnable(boolean accEnable) {
         mIsAccEnable = accEnable;
-        U.getPreferenceUtils().setSettingBoolean("grab_acc_enable", mIsAccEnable);
+        U.getPreferenceUtils().setSettingBoolean("grab_acc_enable1", mIsAccEnable);
     }
 
     public GrabConfigModel getGrabConfigModel() {

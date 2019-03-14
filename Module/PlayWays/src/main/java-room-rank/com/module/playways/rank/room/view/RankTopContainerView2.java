@@ -547,7 +547,6 @@ public class RankTopContainerView2 extends RelativeLayout {
         }
     }
 
-
     void playEnergyFillAnimation(SVGAImageView mEnergyFillSvga, String assetsName) {
         MyLog.d(TAG, "playFullEnergyAnimation");
         mEnergyFillSvga.setCallback(null);

@@ -245,6 +245,8 @@ public class AuditionFragment extends BaseFragment {
     private void startRecord() {
         isRecord = true;
         mRankTopView.reset();
+        mLastLineNum = -1;
+
         mAuditionArea.setVisibility(View.VISIBLE);
         showVoicePanelView(true);
         mVoiceScaleView.setVisibility(View.VISIBLE);
