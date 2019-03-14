@@ -119,7 +119,7 @@ public class ResPickerFragment extends ImageBaseFragment implements ResPicker.On
         mTitlebar.getLeftTextView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
+                //U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
                 if (mSelfActivity) {
                     Activity activity = getActivity();
                     if (activity != null) {

@@ -56,7 +56,7 @@ public class ImageCropFragment extends ImageBaseFragment {
         mTitleBar.getLeftImageButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
+                //U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
                 U.getFragmentUtils().popFragment(ImageCropFragment.this);
             }
         });

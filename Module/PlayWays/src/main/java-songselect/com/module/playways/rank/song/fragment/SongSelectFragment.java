@@ -91,7 +91,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
         DEFAULT_COUNT = songCardHeight / U.getDisplayUtils().dip2px(72);
         DEFAULT_FIRST_COUNT = DEFAULT_COUNT * 5;
 
-        U.getSoundUtils().preLoad(TAG, R.raw.normal_click, R.raw.normal_back, R.raw.rank_flipsonglist);
+//        U.getSoundUtils().preLoad(TAG, R.raw.normal_click, R.raw.normal_back, R.raw.rank_flipsonglist);
 
         mSelectBackIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -113,7 +113,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
         mSelectClickedIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                U.getSoundUtils().play(SongSelectFragment.TAG, R.raw.normal_click, 500);
+//                U.getSoundUtils().play(SongSelectFragment.TAG, R.raw.normal_click, 500);
                 switchToClicked();
             }
         });
@@ -258,7 +258,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
     private void switchToClicked() {
         Bundle bundle = new Bundle();
         bundle.putInt(KEY_GAME_TYPE, mGameType);
-        U.getSoundUtils().play(SongSelectFragment.TAG, R.raw.normal_click);
+//        U.getSoundUtils().play(SongSelectFragment.TAG, R.raw.normal_click);
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), HistorySongFragment.class)
                 .setAddToBackStack(true)
                 .setHasAnimation(true)

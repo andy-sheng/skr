@@ -74,7 +74,7 @@ public class FeedbackFragment extends BaseFragment {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
+                        //U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
                         U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
                         U.getFragmentUtils().popFragment(FeedbackFragment.this);
                     }
