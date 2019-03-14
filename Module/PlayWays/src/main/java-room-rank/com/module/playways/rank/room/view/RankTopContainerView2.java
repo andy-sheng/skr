@@ -426,7 +426,12 @@ public class RankTopContainerView2 extends RelativeLayout {
         for (int i = 0; i < 1; i++) {
             score = (int) (Math.sqrt(score) * 10);
         }
-        RankGameConfigModel gameConfigModel = mRoomData.getGameConfigModel();
+
+        RankGameConfigModel gameConfigModel = new RankGameConfigModel();
+        if (mRoomData != null) {
+            gameConfigModel = mRoomData.getGameConfigModel();
+        }
+
         ScoreTipsView.Item item = new ScoreTipsView.Item();
 
         if (gameConfigModel != null) {
@@ -475,6 +480,15 @@ public class RankTopContainerView2 extends RelativeLayout {
             mCurScore += score;
             tryPlayProgressAnimation();
         } else {
+            if (mTotalScore <= 0 && mMode == 1) {
+                mTotalScore = (int) (lineNum * 100 * 0.6);
+            }
+
+            if (mMode == 1) {
+                mCurScore += score;
+                tryPlayProgressAnimation();
+            }
+
             if (score >= 95) {
                 item.setLevel(ScoreTipsView.Level.Perfect);
             } else if (score >= 90) {
@@ -485,6 +499,7 @@ public class RankTopContainerView2 extends RelativeLayout {
                 item.setLevel(ScoreTipsView.Level.Bad);
             }
         }
+
         if (item.getLevel() != null) {
             if (mLastItem != null && item.getLevel() == mLastItem.getLevel()) {
                 item.setNum(mLastItem.getNum() + 1);

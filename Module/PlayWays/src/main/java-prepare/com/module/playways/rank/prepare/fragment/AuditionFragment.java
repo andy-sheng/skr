@@ -21,6 +21,7 @@ import com.common.base.FragmentDataListener;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrAudioPermission;
+import com.common.engine.ScoreConfig;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.SongResUtils;
@@ -36,6 +37,7 @@ import com.engine.arccloud.RecognizeConfig;
 import com.engine.arccloud.SongInfo;
 import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.playways.rank.prepare.view.VoiceControlPanelView;
+import com.module.playways.rank.room.score.MachineScoreItem;
 import com.module.playways.rank.room.view.RankTopContainerView2;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
@@ -110,6 +112,12 @@ public class AuditionFragment extends BaseFragment {
     List<Integer> mCbScoreList = new ArrayList<>();
 
     LyricEventLauncher mLyricEventLauncher = new LyricEventLauncher();
+
+    int mLastLineNum = -1;
+
+    int curTotalScore = 0;
+
+    int lineNum = 0;
 
     @Override
     public int initView() {
@@ -271,9 +279,9 @@ public class AuditionFragment extends BaseFragment {
         mVoiceScaleView.startWithData(mLyricsReader.getLyricsLineInfoList(), mSongModel.getBeginMs());
         playLyrics(mSongModel, true, false);
         playMusic(mSongModel);
-        if (MyLog.isDebugLogOpen()) {
-            mLyricEventLauncher.postLyricEvent(mLyricsReader, mSongModel.getBeginMs(), mSongModel.getEndMs(), null);
-        }
+        lineNum = mLyricEventLauncher.postLyricEvent(mLyricsReader, mSongModel.getBeginMs(), mSongModel.getEndMs(), null);
+
+        // TODO: 2019/3/14 清空能量条
 
         mStartRecordTs = System.currentTimeMillis();
 //        mIvRecordStart.setVisibility(View.GONE);
@@ -287,28 +295,71 @@ public class AuditionFragment extends BaseFragment {
             EngineManager.getInstance().startAudioRecording(ACC_SAVE_PATH, Constants.AUDIO_RECORDING_QUALITY_HIGH, false);
         }
 
-        if (MyLog.isDebugLogOpen()) {
-            mCbScoreList.clear();
-            EngineManager.getInstance().startRecognize(RecognizeConfig.newBuilder()
-                    .setMode(RecognizeConfig.MODE_MANUAL)
-                    .setSongName(mSongModel.getItemName())
-                    .setArtist(mSongModel.getOwner())
-                    .setMResultListener(new ArcRecognizeListener() {
-                        @Override
-                        public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
-                            int score = 0;
+        mCbScoreList.clear();
+        EngineManager.getInstance().startRecognize(RecognizeConfig.newBuilder()
+                .setMode(RecognizeConfig.MODE_MANUAL)
+                .setSongName(mSongModel.getItemName())
+                .setArtist(mSongModel.getOwner())
+                .setMResultListener(new ArcRecognizeListener() {
+                    @Override
+                    public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
+                        if (lineNo > mLastLineNum) {
+                            // 使用最新的打分方案做优化
+                            int score1 = EngineManager.getInstance().getLineScore();
+                            int score2 = 0;
                             if (targetSongInfo != null) {
-                                score = (int) (targetSongInfo.getScore() * 100);
-                                U.getToastUtil().showShort("acr打分:" + score);
-                                MyLog.d(TAG, "acr打分=" + score * 100);
+                                score2 = (int) (targetSongInfo.getScore() * 100);
+                            }
+                            if (ScoreConfig.isMelpEnable()) {
+                                if (score1 > score2) {
+                                    processScore(score1, lineNo);
+                                } else {
+                                    processScore(score2, lineNo);
+                                }
                             } else {
-//                                score = EngineManager.getInstance().getLineScore();
-//                                MyLog.d(TAG, "changba score=" + score);
+                                processScore(score2, lineNo);
                             }
                         }
-                    }).build());
+//                        int score = 0;
+//                        if (targetSongInfo != null) {
+//                            score = (int) (targetSongInfo.getScore() * 100);
+//                            U.getToastUtil().showShort("acr打分:" + score);
+//                            MyLog.d(TAG, "acr打分=" + score * 100);
+//                        } else {
+////                                score = EngineManager.getInstance().getLineScore();
+////                                MyLog.d(TAG, "changba score=" + score);
+//                        }
+                    }
+                }).build());
+    }
+
+    void processScore(int score, int line) {
+        if (line <= mLastLineNum) {
+            return;
         }
 
+        if (score < 0) {
+            return;
+        }
+        mLastLineNum = line;
+        if (ScoreConfig.isMelpEnable() && ScoreConfig.isAcrEnable()) {
+
+        } else {
+            U.getToastUtil().showShort("score:" + score);
+        }
+        MyLog.d(TAG, "onEvent" + " 得分=" + score);
+        MachineScoreItem machineScoreItem = new MachineScoreItem();
+        machineScoreItem.setScore(score);
+        curTotalScore = curTotalScore + score;
+        long ts = EngineManager.getInstance().getAudioMixingCurrentPosition();
+        machineScoreItem.setTs(ts);
+        machineScoreItem.setNo(line);
+        mUiHanlder.post(new Runnable() {
+            @Override
+            public void run() {
+                mRankTopView.setScoreProgress(score, curTotalScore, lineNum);
+            }
+        });
     }
 
     private void stopRecord() {
@@ -504,13 +555,12 @@ public class AuditionFragment extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(LrcEvent.LineLineEndEvent event) {
         //TODO
-        if (MyLog.isDebugLogOpen()) {
-            EngineManager.getInstance().recognizeInManualMode(event.lineNum);
-            int score = EngineManager.getInstance().getLineScore();
-            mCbScoreList.add(score);
-            U.getToastUtil().showShort("cb打分:" + score);
-            MyLog.d(TAG, "changba score:" + score);
-        }
+        EngineManager.getInstance().recognizeInManualMode(event.lineNum);
+        int score = EngineManager.getInstance().getLineScore();
+        mCbScoreList.add(score);
+        U.getToastUtil().showShort("cb打分:" + score);
+        MyLog.d(TAG, "changba score:" + score);
+
     }
 
     void jisuanScore() {
