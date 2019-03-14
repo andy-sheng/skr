@@ -262,4 +262,9 @@ public class PlayRecordFragment extends BaseFragment {
         }
 
     }
+
+    @Override
+    protected boolean onBackPressed() {
+        return true;
+    }
 }
