@@ -13,4 +13,14 @@
         <!--位置-->
         <attr name="linesnum" format="integer" />
     </declare-styleable>
+
+    <!--RankTopContainerView2的配置-->
+    <declare-styleable name="topContainer">
+        <!--模式-->
+        <attr name="mode" format="enum">
+            <enum name="rank" value="0" />
+            <enum name="audition" value="1" />
+        </attr>
+    </declare-styleable>
+
 </resources>

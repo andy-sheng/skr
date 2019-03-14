@@ -3,7 +3,7 @@ package com.module.playways.rank.room.view;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
-import android.graphics.Color;
+import android.content.res.TypedArray;
 import android.os.Handler;
 import android.text.SpannableStringBuilder;
 import android.util.AttributeSet;
@@ -51,6 +51,9 @@ import java.util.List;
 public class RankTopContainerView2 extends RelativeLayout {
     public final static String TAG = "RankTopContainerView";
     static final int MAX_USER_NUM = 3;
+
+    private int mMode = 0; // 模式默认为0，即rank模式  1为调音间
+
     ExImageView mMoreBtn;
     MoreOpView mMoreOpView;
     ExImageView mIvLed;
@@ -90,12 +93,12 @@ public class RankTopContainerView2 extends RelativeLayout {
 
     public RankTopContainerView2(Context context) {
         super(context);
-        init();
+        init(context, null);
     }
 
     public RankTopContainerView2(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(context, attrs);
     }
 
     public void setListener(RankTopContainerView1.Listener l) {
@@ -106,7 +109,11 @@ public class RankTopContainerView2 extends RelativeLayout {
         mRoomData = roomData;
     }
 
-    private void init() {
+    private void init(Context context, AttributeSet attrs) {
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.topContainer);
+        mMode = typedArray.getInt(R.styleable.topContainer_mode, 0);
+        typedArray.recycle();
+
         inflate(getContext(), R.layout.rank_top_container_view, this);
         U.getSoundUtils().preLoad(TAG, R.raw.rank_xlight, R.raw.rank_xxxstop);
         mMoreBtn = this.findViewById(R.id.more_btn);
@@ -121,6 +128,11 @@ public class RankTopContainerView2 extends RelativeLayout {
         mEnergyFillSvga2 = (SVGAImageView) findViewById(R.id.energy_fill_svga2);
         mEnergyFillSvga3 = (SVGAImageView) findViewById(R.id.energy_fill_svga3);
 
+        if (mMode == 1) {
+            mMoreBtn.setVisibility(GONE);
+            mIvGameRole.setVisibility(GONE);
+            initRankLEDViews();
+        }
 
         mIvGameRole.setOnClickListener(new DebounceViewClickListener() {
             @Override

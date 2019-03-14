@@ -27,6 +27,7 @@ import com.common.player.exoplayer.ExoPlayer;
 import com.common.player.mediaplayer.AndroidMediaPlayer;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.dialog.view.TipsDialogView;
@@ -40,6 +41,7 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.playways.rank.prepare.view.SendGiftCircleCountDownView;
 import com.module.playways.rank.prepare.view.VoiceControlPanelView;
+import com.module.playways.rank.room.view.RankTopContainerView2;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
 import com.orhanobut.dialogplus.DialogPlus;
@@ -52,6 +54,7 @@ import com.zq.lyrics.event.LyricEventLauncher;
 import com.zq.lyrics.model.LyricsLineInfo;
 import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.ManyLyricsView;
+import com.zq.lyrics.widget.VoiceScaleView;
 import com.zq.toast.CommonToastView;
 import com.zq.toast.NoImageCommonToastView;
 
@@ -84,37 +87,20 @@ public class AuditionFragment extends BaseFragment {
     static final String ACC_SAVE_PATH = new File(U.getAppInfoUtils().getMainDir(), "audition.acc").getAbsolutePath();
     static final String PCM_SAVE_PATH = new File(U.getAppInfoUtils().getMainDir(), "audition.pcm").getAbsolutePath();
 
-    ExImageView mIvBack;
+    RankTopContainerView2 mRankTopView;
+    LinearLayout mBottomContainer;
+    RelativeLayout mBackArea;
+    RelativeLayout mAuditionArea;
+    RelativeLayout mResArea;
+    RelativeLayout mCompleArea;
     ExTextView mTvSongName;
-
     ManyLyricsView mManyLyricsView;
-
-    ExTextView mTvUp;
-    TextView mTvRecordTip;
-
-    SendGiftCircleCountDownView mPrgressBar;
-    ExTextView mTvRecordStop;
-    ExImageView mIvRecordStart;
-
-    LinearLayout mLlResing;
-    LinearLayout mLlPlay;
-    LinearLayout mLlSave;
-
-    ExImageView mIvResing;
-    ExImageView mIvPlay;
-    ExImageView mIvSave;
-
-    RelativeLayout mRlControlContainer;
-
-    FrameLayout mFlProgressRoot;
+    VoiceControlPanelView mVoiceControlView;
+    VoiceScaleView mVoiceScaleView;
 
     PrepareData mPrepareData;
 
     SongModel mSongModel;
-
-    VoiceControlPanelView mVoiceControlPanelView;
-
-    FrameLayout mFlProgressContainer;
 
     private boolean mIsVoiceShow = true;
 
@@ -125,8 +111,6 @@ public class AuditionFragment extends BaseFragment {
     Handler mUiHanlder;
 
     long mStartRecordTs = 0;
-
-    ValueAnimator mRecordAnimator;
 
     DialogPlus mQuitTipsDialog;
 
@@ -155,6 +139,18 @@ public class AuditionFragment extends BaseFragment {
             EngineManager.getInstance().resumeAudioMixing();
         }
 
+        mRankTopView = (RankTopContainerView2) mRootView.findViewById(R.id.rank_top_view);
+        mBottomContainer = (LinearLayout) mRootView.findViewById(R.id.bottom_container);
+        mBackArea = (RelativeLayout) mRootView.findViewById(R.id.back_area);
+        mAuditionArea = (RelativeLayout) mRootView.findViewById(R.id.audition_area);
+        mResArea = (RelativeLayout) mRootView.findViewById(R.id.res_area);
+        mCompleArea = (RelativeLayout) mRootView.findViewById(R.id.comple_area);
+        mTvSongName = (ExTextView) mRootView.findViewById(R.id.tv_song_name);
+        mManyLyricsView = (ManyLyricsView) mRootView.findViewById(R.id.many_lyrics_view);
+        mVoiceControlView = (VoiceControlPanelView) mRootView.findViewById(R.id.voice_control_view);
+        mVoiceControlView.bindData();
+        mVoiceScaleView = (VoiceScaleView) mRootView.findViewById(R.id.voice_scale_view);
+
         mUiHanlder = new Handler() {
             @Override
             public void handleMessage(Message msg) {
@@ -166,96 +162,80 @@ public class AuditionFragment extends BaseFragment {
                 }
             }
         };
-        mIvBack = (ExImageView) mRootView.findViewById(R.id.iv_back);
-        mTvSongName = (ExTextView) mRootView.findViewById(R.id.tv_song_name);
 
-        mTvUp = mRootView.findViewById(R.id.tv_up);
-        mVoiceControlPanelView = mRootView.findViewById(R.id.voice_control_view);
-        mVoiceControlPanelView.bindData();
-        mFlProgressRoot = (FrameLayout) mRootView.findViewById(R.id.fl_progress_root);
-        mPrgressBar = mRootView.findViewById(R.id.prgress_bar);
-        mTvRecordStop = (ExTextView) mRootView.findViewById(R.id.tv_record_stop);
-        mIvRecordStart = (ExImageView) mRootView.findViewById(R.id.iv_record_start);
-        mRlControlContainer = (RelativeLayout) mRootView.findViewById(R.id.rl_control_container);
-        mFlProgressContainer = (FrameLayout) mRootView.findViewById(R.id.fl_progress_container);
-        mLlResing = (LinearLayout) mRootView.findViewById(R.id.ll_resing);
-        mIvResing = (ExImageView) mRootView.findViewById(R.id.iv_resing);
-        mLlPlay = (LinearLayout) mRootView.findViewById(R.id.ll_play);
-        mIvPlay = (ExImageView) mRootView.findViewById(R.id.iv_play);
-        mLlSave = (LinearLayout) mRootView.findViewById(R.id.ll_save);
-        mIvSave = (ExImageView) mRootView.findViewById(R.id.iv_save);
-        mManyLyricsView = mRootView.findViewById(R.id.many_lyrics_view);
-        mTvRecordTip = (TextView) mRootView.findViewById(R.id.tv_record_tip);
-        mRlControlContainer.setVisibility(View.GONE);
 
         U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
 
-        RxView.clicks(mIvBack).throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(o -> {
-                    U.getSoundUtils().play(TAG, R.raw.normal_back);
-                    onBackPressed();
-//                    EngineManager.getInstance().recognizeInManualMode();
-                });
+        mBackArea.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                U.getSoundUtils().play(TAG, R.raw.normal_back);
+                onBackPressed();
+            }
+        });
 
-        RxView.clicks(mTvUp).throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(o -> {
-                    resendAutoLeaveChannelMsg();
-                    showVoicePanelView(true);
-                });
+        mAuditionArea.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                resendAutoLeaveChannelMsg();
+                showVoicePanelView(!mIsVoiceShow);
+            }
+        });
 
+        mResArea.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mExoPlayer != null) {
+                    mExoPlayer.stop();
+                }
+                startRecord();
+            }
+        });
 
-        RxView.clicks(mIvResing).throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(o -> {
-                    mPrgressBar.setMax(360);
-                    mPrgressBar.setProgress(0);
-                    mFlProgressRoot.setVisibility(View.VISIBLE);
-                    mRlControlContainer.setVisibility(View.GONE);
-                    mIvRecordStart.setVisibility(View.VISIBLE);
-                    mTvRecordStop.setVisibility(View.GONE);
+        mCompleArea.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                stopRecord();
+            }
+        });
+//
+//        RxView.clicks(mIvPlay).throttleFirst(500, TimeUnit.MILLISECONDS)
+//                .subscribe(o -> {
+//                    playRecord();
+//                    playLyrics(mSongModel, true);
+//                });
 
-                    if (mExoPlayer != null) {
-                        mExoPlayer.stop();
-                    }
+//        RxView.clicks(mIvSave).throttleFirst(500, TimeUnit.MILLISECONDS)
+//                .subscribe(o -> {
+//                    // 要保存
+//                    Params.save2Pref(EngineManager.getInstance().getParams());
+//                    U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
+//                            .setImage(R.drawable.touxiangshezhichenggong_icon)
+//                            .setText("保存设置成功\n已应用到所有对局")
+//                            .build());
+//
+//                    mUiHanlder.postDelayed(() -> {
+//                        if (getActivity() != null) {
+//                            getActivity().finish();
+//                        }
+//                    }, 2000);
+////                    U.getFragmentUtils().popFragment(AuditionFragment.this);
+//                });
 
-                    startRecord();
-                });
-
-        RxView.clicks(mIvPlay).throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(o -> {
-                    playRecord();
-                    playLyrics(mSongModel, true);
-                });
-
-        RxView.clicks(mIvSave).throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(o -> {
-                    // 要保存
-                    Params.save2Pref(EngineManager.getInstance().getParams());
-                    U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
-                            .setImage(R.drawable.touxiangshezhichenggong_icon)
-                            .setText("保存设置成功\n已应用到所有对局")
-                            .build());
-
-                    mUiHanlder.postDelayed(() -> {
-                        if (getActivity() != null) {
-                            getActivity().finish();
-                        }
-                    }, 2000);
-//                    U.getFragmentUtils().popFragment(AuditionFragment.this);
-                });
-
-        RxView.clicks(mFlProgressContainer).throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(o -> {
-                    if (isRecord) {
-                        stopRecord();
-                    } else {
-                        mSkrAudioPermission.ensurePermission(new Runnable() {
-                            @Override
-                            public void run() {
-                                startRecord();
-                            }
-                        }, true);
-                    }
-                });
+//        RxView.clicks(mFlProgressContainer).throttleFirst(500, TimeUnit.MILLISECONDS)
+//                .subscribe(o -> {
+//                    if (isRecord) {
+//                        stopRecord();
+//                        mVoiceScaleView.setVisibility(View.GONE);
+//                    } else {
+//                        mSkrAudioPermission.ensurePermission(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                startRecord();
+//                            }
+//                        }, true);
+//                    }
+//                });
 
         mManyLyricsView.setOnLyricViewTapListener(new ManyLyricsView.OnLyricViewTapListener() {
             @Override
@@ -288,29 +268,29 @@ public class AuditionFragment extends BaseFragment {
 
         mSongModel = mPrepareData.getSongModel();
         mTvSongName.setText("《" + mSongModel.getItemName() + "》");
-        playLyrics(mSongModel, false);
-
-        mPrgressBar.setMax(360);
-        mPrgressBar.setProgress(0);
+        playLyrics(mSongModel, false, true);
 
         resendAutoLeaveChannelMsg();
     }
 
     private void startRecord() {
         isRecord = true;
-
-        playLyrics(mSongModel, true);
+        mAuditionArea.setVisibility(View.VISIBLE);
+        showVoicePanelView(true);
+        mVoiceScaleView.setVisibility(View.VISIBLE);
+        mVoiceScaleView.startWithData(mLyricsReader.getLyricsLineInfoList(), mSongModel.getBeginMs());
+        playLyrics(mSongModel, true, false);
         playMusic(mSongModel);
         if (MyLog.isDebugLogOpen()) {
-            mLyricEventLauncher.postLyricEvent(mLyricsReader,mSongModel.getBeginMs(),mSongModel.getEndMs(),null);
+            mLyricEventLauncher.postLyricEvent(mLyricsReader, mSongModel.getBeginMs(), mSongModel.getEndMs(), null);
         }
 
         mStartRecordTs = System.currentTimeMillis();
-        mIvRecordStart.setVisibility(View.GONE);
-        mTvRecordStop.setVisibility(View.VISIBLE);
-        mRlControlContainer.setVisibility(View.GONE);
-        mTvRecordTip.setText("点击结束试音演唱");
-        mIvPlay.setEnabled(true);
+//        mIvRecordStart.setVisibility(View.GONE);
+//        mTvRecordStop.setVisibility(View.VISIBLE);
+//        mRlControlContainer.setVisibility(View.GONE);
+//        mTvRecordTip.setText("点击结束试音演唱");
+//        mIvPlay.setEnabled(true);
         if (RECORD_BY_CALLBACK) {
             EngineManager.getInstance().startAudioRecording(PCM_SAVE_PATH, Constants.AUDIO_RECORDING_QUALITY_HIGH, true);
         } else {
@@ -339,38 +319,6 @@ public class AuditionFragment extends BaseFragment {
                     }).build());
         }
 
-
-        if (mRecordAnimator != null) {
-            mRecordAnimator.cancel();
-        }
-
-//        mPrgressBar.setMax(mSongModel.getTotalMs());
-        mRecordAnimator = ValueAnimator.ofInt(0, 360);
-        mRecordAnimator.setDuration(mSongModel.getTotalMs());
-        mRecordAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-//                MyLog.d(TAG, "onAnimationUpdate" + " animation=" + animation);
-                int value = (Integer) animation.getAnimatedValue();
-                mPrgressBar.setProgress(value);
-            }
-        });
-
-        mRecordAnimator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                mUiHanlder.post(() -> {
-                    stopRecord();
-                });
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-//                onAnimationEnd(animation);
-            }
-        });
-
-        mRecordAnimator.start();
     }
 
     private void stopRecord() {
@@ -387,23 +335,20 @@ public class AuditionFragment extends BaseFragment {
             return;
         }
 
+        mVoiceScaleView.setVisibility(View.GONE);
+        mAuditionArea.setVisibility(View.GONE);
+        showVoicePanelView(false);
+
         isRecord = false;
 
         EngineManager.getInstance().stopAudioRecording();
         EngineManager.getInstance().stopAudioMixing();
 
-        playLyrics(mSongModel, true);
+        playLyrics(mSongModel, true, false);
 //        mManyLyricsView.seekto(mSongModel.getBeginMs());
 //        mUiHanlder.postDelayed(() -> {
 //            mManyLyricsView.pause();
 //        }, 100);
-
-        mRecordAnimator.cancel();
-        mIvRecordStart.setVisibility(View.VISIBLE);
-        mTvRecordStop.setVisibility(View.GONE);
-        mRlControlContainer.setVisibility(View.VISIBLE);
-        mFlProgressRoot.setVisibility(View.GONE);
-        mIvPlay.setEnabled(false);
 
         playRecord();
         if (MyLog.isDebugLogOpen()) {
@@ -433,7 +378,6 @@ public class AuditionFragment extends BaseFragment {
 
                 @Override
                 public void onCompletion() {
-                    mIvPlay.setEnabled(true);
                     mManyLyricsView.seekto(mSongModel.getBeginMs());
                     mUiHanlder.postDelayed(new Runnable() {
                         @Override
@@ -470,7 +414,6 @@ public class AuditionFragment extends BaseFragment {
             mExoPlayer.startPlay(ACC_SAVE_PATH);
         }
 
-        mIvPlay.setEnabled(false);
     }
 
     private void resendAutoLeaveChannelMsg() {
@@ -479,18 +422,21 @@ public class AuditionFragment extends BaseFragment {
     }
 
     private void showVoicePanelView(boolean show) {
-        mVoiceControlPanelView.clearAnimation();
-        mVoiceControlPanelView.setTranslationY(show ? mVoiceControlPanelView.getMeasuredHeight() + U.getDisplayUtils().dip2px(20) : 0);
+        if (mIsVoiceShow == show) {
+            return;
+        }
+        mVoiceControlView.clearAnimation();
+        mVoiceControlView.setTranslationY(show ? mVoiceControlView.getMeasuredHeight() + U.getDisplayUtils().dip2px(20) : 0);
 
         mIsVoiceShow = show;
-        int startY = show ? mVoiceControlPanelView.getMeasuredHeight() + U.getDisplayUtils().dip2px(20) : 0;
-        int endY = show ? 0 : mVoiceControlPanelView.getMeasuredHeight() + U.getDisplayUtils().dip2px(20);
+        int startY = show ? mVoiceControlView.getMeasuredHeight() + U.getDisplayUtils().dip2px(20) : 0;
+        int endY = show ? 0 : mVoiceControlView.getMeasuredHeight() + U.getDisplayUtils().dip2px(20);
 
         ValueAnimator creditValueAnimator = ValueAnimator.ofInt(startY, endY);
         creditValueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                mVoiceControlPanelView.setTranslationY((int) animation.getAnimatedValue());
+                mVoiceControlView.setTranslationY((int) animation.getAnimatedValue());
             }
         });
 
@@ -506,7 +452,6 @@ public class AuditionFragment extends BaseFragment {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                mTvUp.setVisibility(show ? View.GONE : View.VISIBLE);
             }
         });
         animatorSet.start();
@@ -539,7 +484,7 @@ public class AuditionFragment extends BaseFragment {
 
     LyricsReader mLyricsReader;
 
-    private void playLyrics(SongModel songModel, boolean play) {
+    private void playLyrics(SongModel songModel, boolean play, boolean isFirst) {
         final String lyricFile = SongResUtils.getFileNameWithMD5(songModel.getLyric());
 
         if (lyricFile != null) {
@@ -572,6 +517,10 @@ public class AuditionFragment extends BaseFragment {
 
                         if (!play) {
                             mManyLyricsView.pause();
+                        }
+
+                        if (isFirst) {
+                            startRecord();
                         }
                     }, throwable -> MyLog.e(throwable));
         } else {
@@ -645,7 +594,7 @@ public class AuditionFragment extends BaseFragment {
 
     @Override
     protected boolean onBackPressed() {
-        if (mVoiceControlPanelView.isChange()) {
+        if (mVoiceControlView.isChange()) {
             if (mQuitTipsDialog == null) {
                 TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
                         .setMessageTip("直接返回你的设置变动\n将不会被保存哦～")
@@ -708,9 +657,6 @@ public class AuditionFragment extends BaseFragment {
             mExoPlayer.release();
         }
 
-        if (mRecordAnimator != null) {
-            mRecordAnimator.cancel();
-        }
         EngineManager.getInstance().destroy("prepare");
         File recordFile = new File(PCM_SAVE_PATH);
         if (recordFile != null && recordFile.exists()) {
