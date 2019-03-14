@@ -86,13 +86,6 @@ public class SmsAuthFragment extends BaseFragment {
         }
         U.getKeyBoardUtils().showSoftInputKeyBoard(getActivity());
 
-        mIvBack.setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                finish();
-            }
-        });
-
         mGetCodeTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
@@ -146,6 +139,7 @@ public class SmsAuthFragment extends BaseFragment {
                 U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
                 U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
                 stopTimeTask();
+                finish();
             }
         });
 
@@ -284,16 +278,5 @@ public class SmsAuthFragment extends BaseFragment {
         super.destroy();
         stopTimeTask();
         U.getSoundUtils().release(TAG);
-    }
-
-    @Override
-    protected boolean onBackPressed() {
-        stopTimeTask();
-        U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
-                .setPopFragment(SmsAuthFragment.this)
-                .setPopAbove(false)
-                .setHasAnimation(true)
-                .build());
-        return true;
     }
 }
