@@ -68,6 +68,8 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
     int mGameType;
     boolean hasMore = true; // 是否还有更多数据标记位
 
+    SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
+
     @Override
     public int initView() {
         return R.layout.song_select_fragment_layout;
@@ -160,9 +162,14 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
 
     void jump(SongModel songModel) {
         if (getActivity() instanceof AudioRoomActivity) {
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_AUDITION_ROOM)
-                    .withSerializable("songModel", songModel)
-                    .navigation();
+            mSkrAudioPermission.ensurePermission(new Runnable() {
+                @Override
+                public void run() {
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_AUDITION_ROOM)
+                            .withSerializable("songModel", songModel)
+                            .navigation();
+                }
+            },true);
             return;
         }
 
@@ -196,6 +203,12 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
 //                            }
 //                        })
 //                        .build());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mSkrAudioPermission.onBackFromPermisionManagerMaybe();
     }
 
     @Override
