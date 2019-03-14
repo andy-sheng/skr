@@ -10,6 +10,7 @@ import com.common.core.share.SharePanel;
 import com.common.core.share.SharePlatform;
 import com.common.core.share.ShareType;
 import com.common.log.MyLog;
+import com.common.utils.U;
 import com.jsbridge.CallBackFunction;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
@@ -109,7 +110,7 @@ public class JsBridgeImpl {
 
     public void bindWeChat(String data, final CallBackFunction function) {
         MyLog.w(TAG, "bindWeChat" + " data=" + data);
-        UMShareAPI.get(mBaseActivity).doOauthVerify(mBaseActivity, SHARE_MEDIA.WEIXIN, new UMAuthListener() {
+        UMShareAPI.get(mBaseActivity).getPlatformInfo(mBaseActivity, SHARE_MEDIA.WEIXIN, new UMAuthListener() {
             @Override
             public void onStart(SHARE_MEDIA share_media) {
 
@@ -135,6 +136,45 @@ public class JsBridgeImpl {
                         new Pair("data", getJsonObj(new Pair("access_token", ""), new Pair("open_id", "")))).toJSONString());
             }
         });
+    }
+
+    public void bindQqChat(String data, final CallBackFunction function) {
+        MyLog.w(TAG, "bindQQ" + " data=" + data);
+        UMShareAPI.get(mBaseActivity).getPlatformInfo(mBaseActivity, SHARE_MEDIA.QQ, new UMAuthListener() {
+            @Override
+            public void onStart(SHARE_MEDIA share_media) {
+
+            }
+
+            @Override
+            public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> data) {
+                String accessToken = data.get("accessToken");
+                String openid = data.get("openid");
+                function.onCallBack(getJsonObj(new Pair("errcode", "0"), new Pair("errmsg", ""),
+                        new Pair("data", getJsonObj(new Pair("access_token", accessToken), new Pair("open_id", openid)))).toJSONString());
+            }
+
+            @Override
+            public void onCancel(SHARE_MEDIA share_media, int i) {
+                function.onCallBack(getJsonObj(new Pair("errcode", "1"), new Pair("errmsg", "取消授权"),
+                        new Pair("data", getJsonObj(new Pair("access_token", ""), new Pair("open_id", "")))).toJSONString());
+            }
+
+            @Override
+            public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
+                function.onCallBack(getJsonObj(new Pair("errcode", "2"), new Pair("errmsg", throwable.getMessage()),
+                        new Pair("data", getJsonObj(new Pair("access_token", ""), new Pair("open_id", "")))).toJSONString());
+            }
+        });
+    }
+
+    public void getAppVersion(String data, final CallBackFunction function){
+        function.onCallBack(getJsonObj(new Pair("errcode", "0"), new Pair("errmsg", ""),
+                new Pair("data", getJsonObj(new Pair("version", U.getAppInfoUtils().getVersionCode())))).toJSONString());
+    }
+
+    public void noMethed(final CallBackFunction function){
+        function.onCallBack(getJsonObj(new Pair("errcode", "-1"), new Pair("errmsg", "方法不存在")).toJSONString());
     }
 
     public static JSONObject getJsonObj(Pair<String, Object>... pairArray) {

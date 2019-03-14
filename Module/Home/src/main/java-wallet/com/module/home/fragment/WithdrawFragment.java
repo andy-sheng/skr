@@ -257,7 +257,7 @@ public class WithdrawFragment extends BaseFragment implements IWithDrawView {
     }
 
     private void authWX() {
-        UMShareAPI.get(U.app()).doOauthVerify(getActivity(), SHARE_MEDIA.WEIXIN, new UMAuthListener() {
+        UMShareAPI.get(U.app()).getPlatformInfo(getActivity(), SHARE_MEDIA.WEIXIN, new UMAuthListener() {
             @Override
             public void onStart(SHARE_MEDIA share_media) {
 

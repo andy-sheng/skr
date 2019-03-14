@@ -160,7 +160,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
 
         mMainVp.setAdapter(fragmentPagerAdapter);
 
-        mHomePresenter = new HomeCorePresenter(this);
+        mHomePresenter = new HomeCorePresenter(this,this);
 
         mHomePresenter.checkUserInfo("HomeActivity onCreate");
 

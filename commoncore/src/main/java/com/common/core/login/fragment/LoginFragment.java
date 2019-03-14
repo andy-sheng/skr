@@ -157,12 +157,12 @@ public class LoginFragment extends BaseFragment {
                         @Override
                         public void run() {
                             showLoginingBar(true);
-                            UMShareAPI.get(getContext()).doOauthVerify(getActivity(), SHARE_MEDIA.WEIXIN, mAuthListener);
+                            UMShareAPI.get(getContext()).getPlatformInfo(getActivity(), SHARE_MEDIA.WEIXIN, mAuthListener);
                         }
                     }, true);
                 } else {
                     showLoginingBar(true);
-                    UMShareAPI.get(getContext()).doOauthVerify(getActivity(), SHARE_MEDIA.WEIXIN, mAuthListener);
+                    UMShareAPI.get(getContext()).getPlatformInfo(getActivity(), SHARE_MEDIA.WEIXIN, mAuthListener);
                 }
             }
         });
@@ -182,12 +182,12 @@ public class LoginFragment extends BaseFragment {
                         @Override
                         public void run() {
                             showLoginingBar(true);
-                            UMShareAPI.get(getContext()).doOauthVerify(getActivity(), SHARE_MEDIA.QQ, mAuthListener);
+                            UMShareAPI.get(getContext()).getPlatformInfo(getActivity(), SHARE_MEDIA.QQ, mAuthListener);
                         }
                     }, true);
                 } else {
                     showLoginingBar(true);
-                    UMShareAPI.get(getContext()).doOauthVerify(getActivity(), SHARE_MEDIA.QQ, mAuthListener);
+                    UMShareAPI.get(getContext()).getPlatformInfo(getActivity(), SHARE_MEDIA.QQ, mAuthListener);
                 }
 
             }
