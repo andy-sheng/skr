@@ -41,7 +41,7 @@ public:
 	/** 弃用 **/
 	void getRenderData(long currentTimeMills, float* meta);
 
-	int getPcmDB(short *buffer, int bufferSize);
+	int computePcmDB(short *buffer, int bufferSize);
 
 	MelodyNote *getSingingIndex(long currentTimeMills, int *flag, int *index);
 };

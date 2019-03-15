@@ -490,9 +490,9 @@ public class RankTopContainerView2 extends RelativeLayout {
 
             if (score >= 95) {
                 item.setLevel(ScoreTipsView.Level.Perfect);
-            } else if (score >= 90) {
+            } else if (score >= 85) {
                 item.setLevel(ScoreTipsView.Level.Good);
-            } else if (score >= 70) {
+            } else if (score >= 60) {
                 item.setLevel(ScoreTipsView.Level.Ok);
             } else if (score < 20) {
                 item.setLevel(ScoreTipsView.Level.Bad);
