@@ -282,7 +282,7 @@ int PitchScoring::getScore() {
         float pcmF = (-1) * (db - 60) * (db - 60) / 625.0 + 1;
         mPcmTotal = 0;
         mPcmBufferSize = 0;
-        int c = 7;
+        int c = 10;
         if (db > 70) {
             lineScore = lineScore + c;
         } else {
