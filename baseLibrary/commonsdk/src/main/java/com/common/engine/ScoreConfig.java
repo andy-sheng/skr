@@ -17,6 +17,7 @@ public class ScoreConfig {
         } else {
             mConfig = (mConfig ^ 0x0001);
         }
+        U.getPreferenceUtils().setSettingInt("score_config", mConfig);
     }
 
     public static void setAcrEnable(boolean enable) {
@@ -25,6 +26,7 @@ public class ScoreConfig {
         } else {
             mConfig = (mConfig ^ 0x0002);
         }
+        U.getPreferenceUtils().setSettingInt("score_config", mConfig);
     }
 
     public static void setMelpServerEnable(boolean enable) {
@@ -33,6 +35,7 @@ public class ScoreConfig {
         } else {
             mConfig = (mConfig ^ 0x0004);
         }
+        U.getPreferenceUtils().setSettingInt("score_config", mConfig);
     }
 
     public static boolean isAcrEnable() {

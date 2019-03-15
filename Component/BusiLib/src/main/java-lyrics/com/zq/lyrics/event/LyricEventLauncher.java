@@ -48,6 +48,7 @@ public class LyricEventLauncher {
     }
 
     public int postLyricEvent(LyricsReader lyricsReader, int accBeginTs, int accEndTs, Object extra) {
+        MyLog.d(TAG,"postLyricEvent" + " lyricsReader=" + lyricsReader + " accBeginTs=" + accBeginTs + " accEndTs=" + accEndTs + " extra=" + extra);
         Map<Integer, LyricsLineInfo> lyricsLineInfos = lyricsReader.getLrcLineInfos();
         Iterator<Map.Entry<Integer, LyricsLineInfo>> it = lyricsLineInfos.entrySet().iterator();
         mUiHandler.removeCallbacksAndMessages(null);
