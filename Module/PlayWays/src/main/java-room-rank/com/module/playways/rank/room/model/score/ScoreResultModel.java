@@ -20,6 +20,7 @@ public class ScoreResultModel implements Serializable {
     private List<ScoreItemModel> battleIndexChange;   //战力值变动详情，累加可以判断是增加还是减少
     private int winType;                              //结果
     private int sss;  //战斗评价, sss or ss or s or a...
+    private List<ScoreItemModel> expChange;           //经验值变动详情
 
     public int getUserID() {
         return userID;
@@ -69,6 +70,14 @@ public class ScoreResultModel implements Serializable {
         this.sss = sss;
     }
 
+    public List<ScoreItemModel> getExpChange() {
+        return expChange;
+    }
+
+    public void setExpChange(List<ScoreItemModel> expChange) {
+        this.expChange = expChange;
+    }
+
     public void parse(UserScoreResult userScoreResult) {
         if (userScoreResult == null) {
             MyLog.d(TAG, "parse" + " userScoreResult=null ");
@@ -103,6 +112,14 @@ public class ScoreResultModel implements Serializable {
 
         this.setWinType(userScoreResult.getWinType().getValue());
         this.setSss(userScoreResult.getSss());
+
+        List<ScoreItemModel> expChangeModels = new ArrayList<>();
+        for (ScoreItem scoreItem : userScoreResult.getExpChangeList()) {
+            ScoreItemModel scoreItemModel = new ScoreItemModel();
+            scoreItemModel.parse(scoreItem);
+            expChangeModels.add(scoreItemModel);
+        }
+        this.setExpChange(expChangeModels);
     }
 
     // 是否战力值满，兑换星星（表示战力变化才有）

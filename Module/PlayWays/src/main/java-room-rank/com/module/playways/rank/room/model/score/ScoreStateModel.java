@@ -17,7 +17,10 @@ public class ScoreStateModel implements Serializable {
     private int protectBattleIndex; // 掉段保护所需战力分值
     private int currBattleIndex;    // 当前战力分值
     private int maxBattleIndex;     // 战力分值上限
-    private int totalScore;         //用在段位排行榜中的总分值
+    private int totalScore;         // 用在段位排行榜中的总分值
+    private int currExp;            // 子段位当前经验值
+    private int maxExp;             // 子段位经验值上限
+    private String rankingDesc;     // 描述段位
 
     public int getUserID() {
         return userID;
@@ -99,6 +102,30 @@ public class ScoreStateModel implements Serializable {
         this.totalScore = totalScore;
     }
 
+    public int getCurrExp() {
+        return currExp;
+    }
+
+    public void setCurrExp(int currExp) {
+        this.currExp = currExp;
+    }
+
+    public int getMaxExp() {
+        return maxExp;
+    }
+
+    public void setMaxExp(int maxExp) {
+        this.maxExp = maxExp;
+    }
+
+    public String getRankingDesc() {
+        return rankingDesc;
+    }
+
+    public void setRankingDesc(String rankingDesc) {
+        this.rankingDesc = rankingDesc;
+    }
+
     public void parse(ScoreState scoreState) {
         if (scoreState == null) {
             MyLog.e("VoteInfoModel VoteInfo == null");
@@ -115,6 +142,9 @@ public class ScoreStateModel implements Serializable {
         this.setCurrBattleIndex(scoreState.getCurrBattleIndex().intValue());
         this.setMaxBattleIndex(scoreState.getMaxBattleIndex().intValue());
         this.setTotalScore(scoreState.getTotalScore().intValue());
+        this.setCurrExp(scoreState.getCurrExp().intValue());
+        this.setMaxExp(scoreState.getMaxExp().intValue());
+        this.setRankingDesc(scoreState.getRankingDesc());
     }
 
     @Override
@@ -130,6 +160,9 @@ public class ScoreStateModel implements Serializable {
                 ", currBattleIndex=" + currBattleIndex +
                 ", maxBattleIndex=" + maxBattleIndex +
                 ", totalScore=" + totalScore +
+                ", currExp=" + currExp +
+                ", maxExp=" + maxExp +
+                ", rankingDesc='" + rankingDesc + '\'' +
                 '}';
     }
 }

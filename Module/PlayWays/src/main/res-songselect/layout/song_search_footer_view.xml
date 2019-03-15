@@ -6,12 +6,40 @@
     <TextView
         android:id="@+id/search_back_tv"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_40_dp"
+        android:layout_height="@dimen/view_20_dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_25_dp"
-        android:layout_marginBottom="@dimen/view_20_dp"
+        android:layout_marginTop="@dimen/view_20_dp"
         android:gravity="center"
-        android:text="收不到歌，试试搜索反馈吧"
+        android:letterSpacing="0.4"
+        android:text="搜不到歌,试试"
         android:textSize="@dimen/textsize_14_dp" />
+
+    <LinearLayout
+        android:id="@+id/feedback_area"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_5_dp"
+        android:layout_marginBottom="@dimen/view_20_dp"
+        android:layout_below="@+id/search_back_tv"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="搜歌反馈"
+            android:textColor="#3B77C6"
+            android:textSize="@dimen/textsize_16_dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_5_dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/search_feedbcak" />
+    </LinearLayout>
+
+
 
 </RelativeLayout>

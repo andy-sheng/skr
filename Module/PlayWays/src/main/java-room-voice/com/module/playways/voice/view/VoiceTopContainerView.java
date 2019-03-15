@@ -7,9 +7,11 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.module.RouterConstants;
+import com.module.playways.PlayWaysActivity;
 import com.module.playways.event.FinishPlayWayActivityEvent;
 import com.module.playways.rank.room.event.InputBoardEvent;
 import com.module.rank.R;
@@ -40,6 +42,13 @@ public class VoiceTopContainerView extends RelativeLayout {
         mBackTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+                for(Activity activity : U.getActivityUtils().getActivityList()){
+                    if(activity instanceof PlayWaysActivity){
+                        activity.finish();
+                        break;
+                    }
+                }
+
                 if (getContext() instanceof Activity) {
                     Activity activity = (Activity) getContext();
                     if (activity != null) {

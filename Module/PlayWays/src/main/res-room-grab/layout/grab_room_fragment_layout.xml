@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:VoiceControlPanelView="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ranking_container"
     android:layout_width="match_parent"
@@ -97,9 +98,9 @@
 
     <com.module.playways.grab.room.view.GrabScoreTipsView
         android:id="@+id/grab_score_tips_view"
-        android:layout_marginTop="@dimen/view_30_dp"
         android:layout_width="match_parent"
-        android:layout_height="150dp"/>
+        android:layout_height="150dp"
+        android:layout_marginTop="@dimen/view_30_dp" />
 
     <com.module.playways.grab.room.view.GrabGameOverView
         android:id="@+id/grab_game_over_view"
@@ -168,7 +169,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:visibility="gone" />
+        android:visibility="gone"
+        VoiceControlPanelView:isShowACC="false" />
 
     <com.module.playways.rank.room.view.InputContainerView
         android:id="@+id/input_container_view"

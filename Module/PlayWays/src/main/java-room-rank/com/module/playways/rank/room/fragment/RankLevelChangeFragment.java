@@ -96,9 +96,6 @@ public class RankLevelChangeFragment extends BaseFragment {
                 goVoiceRoom("proctec");
             }
         }, 10000);
-
-        U.getSoundUtils().preLoad(NormalLevelView.TAG, R.raw.rank_addstar,
-                R.raw.rank_deductstar, R.raw.rank_levelchange);
     }
 
     private void BgAnimationGo() {
@@ -166,7 +163,6 @@ public class RankLevelChangeFragment extends BaseFragment {
             mResultSvga.setCallback(null);
             mResultSvga.stopAnimation(true);
         }
-        U.getSoundUtils().release(NormalLevelView.TAG);
         U.getSoundUtils().release(TAG);
     }
 

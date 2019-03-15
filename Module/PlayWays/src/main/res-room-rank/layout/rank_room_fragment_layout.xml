@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:topContainer="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ranking_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,8 +10,8 @@
     <com.module.playways.rank.room.view.RankTopContainerView2
         android:id="@+id/rank_top_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
+        android:layout_height="wrap_content"
+        topContainer:mode="rank" />
 
     <RelativeLayout
         android:id="@+id/middle_area"

@@ -29,6 +29,7 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
+import com.common.webview.AgentWebActivity;
 import com.dialog.view.TipsDialogView;
 import com.huawei.android.hms.agent.common.ApiClientMgr;
 import com.jakewharton.rxbinding2.view.RxView;
@@ -136,7 +137,7 @@ public class SettingFragment extends BaseFragment {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
+                        //U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
                         U.getFragmentUtils().popFragment(SettingFragment.this);
                     }
                 });
@@ -259,15 +260,6 @@ public class SettingFragment extends BaseFragment {
                                 .build());
                     }
                 });
-
-
-        mTuiguang.setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                // TODO: 2019/3/13  补全推广跳转信息
-
-            }
-        });
     }
 
     private void checkTuiGuang() {
@@ -281,6 +273,16 @@ public class SettingFragment extends BaseFragment {
                         mTuiGuangConfig = configList.get(0);
                         mTuiguang.setVisibility(View.VISIBLE);
                         mTuiguang.setClickable(true);
+                        if(mTuiGuangConfig != null){
+                            mTuiguang.setOnClickListener(new DebounceViewClickListener() {
+                                @Override
+                                public void clickValid(View v) {
+                                    ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                                            .withString("url", mTuiGuangConfig.getUrl())
+                                            .greenChannel().navigation();
+                                }
+                            });
+                        }
                     } else {
                         mTuiguang.setVisibility(View.GONE);
                         mTuiguang.setClickable(false);

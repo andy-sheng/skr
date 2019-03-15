@@ -1,234 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:topContainer="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#2E3041"
     android:orientation="vertical">
 
-    <com.common.view.ex.ExImageView
-        android:id="@+id/iv_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/view_22_dp"
-        android:layout_marginTop="@dimen/view_34_dp"
-        android:padding="@dimen/view_5_dp"
-        android:src="@drawable/img_back" />
-
-    <com.common.view.ex.ExTextView
-        android:id="@+id/tv_song_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_36_dp"
-        android:gravity="center"
-        android:maxWidth="@dimen/view_260_dp"
-        android:maxLines="1"
-        android:singleLine="true"
-        android:text=""
-        android:textColor="@color/white"
-        android:textSize="@dimen/textsize_20_dp" />
-
-    <!--正在唱的人的歌词-->
-    <com.zq.lyrics.widget.ManyLyricsView
-        android:id="@+id/many_lyrics_view"
+    <LinearLayout
+        android:id="@+id/bottom_container"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="@dimen/view_80_dp"
-        app:ly_eable_scroll="false"
-        app:ly_eable_verbatim="true"
-        app:ly_high_light_paint_color_from="#EF5E85"
-        app:ly_high_light_paint_color_to="#EF5E85"
-        app:ly_high_light_paint_text_size="@dimen/textsize_dimen_20"
-        app:ly_high_light_sub_paint_color="#EF5E85"
-        app:ly_outline_paint_color="@color/black"
-        app:ly_paint_color_from="@color/white_trans_50"
-        app:ly_paint_color_to="@color/white_trans_50"
-        app:ly_paint_text_size="@dimen/textsize_dimen_16" />
-
-
-    <com.module.playways.rank.prepare.view.VoiceControlPanelView
-        android:id="@+id/voice_control_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/view_55_dp"
         android:layout_alignParentBottom="true"
-        android:visibility="visible" />
+        android:background="#2A2C3E"
+        android:orientation="horizontal">
 
-    <com.common.view.ex.ExTextView
-        android:id="@+id/tv_up"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/view_20_dp"
-        android:drawableBottom="@drawable/dakaishiyinmianban"
-        android:text="调音"
-        android:textColor="#FFED61"
-        android:textSize="@dimen/textsize_20_dp"
-        android:visibility="gone" />
+        <!--返回-->
+        <RelativeLayout
+            android:id="@+id/back_area"
+            android:layout_width="@dimen/view_0_dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1">
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:drawableTop="@drawable/audition_back"
+                android:text="返回"
+                android:textColor="#99B2B6D6"
+                android:textSize="@dimen/textsize_12_dp" />
+        </RelativeLayout>
+
+        <!--调音间-->
+        <RelativeLayout
+            android:id="@+id/audition_area"
+            android:layout_width="@dimen/view_0_dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/tiaoyin_iv"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="@dimen/view_8_dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/audition_tiaoyin_anxia" />
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/tiaoyin_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tiaoyin_iv"
+                android:layout_centerHorizontal="true"
+                android:text="调音"
+                android:textColor="#99EF5E85"
+                android:textSize="@dimen/textsize_12_dp" />
+
+        </RelativeLayout>
+
+        <!--重唱-->
+        <RelativeLayout
+            android:id="@+id/res_area"
+            android:layout_width="@dimen/view_0_dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1">
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:drawableTop="@drawable/audition_chongchang"
+                android:text="重唱"
+                android:textColor="#99B2B6D6"
+                android:textSize="@dimen/textsize_12_dp" />
+        </RelativeLayout>
+
+        <!--完成-->
+        <RelativeLayout
+            android:id="@+id/comple_area"
+            android:layout_width="@dimen/view_0_dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1">
+
+            <com.common.view.ex.ExTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:drawableTop="@drawable/audition_complete"
+                android:text="完成"
+                android:textColor="#99B2B6D6"
+                android:textSize="@dimen/textsize_12_dp" />
+        </RelativeLayout>
+
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/voice_control_view"
-        android:layout_below="@+id/many_lyrics_view">
+        android:layout_above="@+id/bottom_container">
 
-        <FrameLayout
-            android:id="@+id/fl_progress_root"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/view_100_dp"
-            android:layout_centerInParent="true">
-
-            <FrameLayout
-                android:id="@+id/fl_progress_container"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal">
-
-                <com.module.playways.rank.prepare.view.SendGiftCircleCountDownView
-                    android:id="@+id/prgress_bar"
-                    android:layout_width="@dimen/view_82_dp"
-                    android:layout_height="@dimen/view_82_dp" />
-
-                <com.common.view.ex.ExTextView
-                    android:layout_width="@dimen/view_62_dp"
-                    android:layout_height="@dimen/view_62_dp"
-                    android:layout_gravity="center"
-                    app:bl_corners_radius="@dimen/view_31_dp"
-                    app:bl_solid_color="#0C2275" />
-
-                <com.common.view.ex.ExTextView
-                    android:layout_width="@dimen/view_54_dp"
-                    android:layout_height="@dimen/view_54_dp"
-                    android:layout_gravity="center"
-                    app:bl_corners_radius="@dimen/view_27_dp"
-                    app:bl_solid_color="#CA2C60" />
-
-                <com.common.view.ex.ExTextView
-                    android:id="@+id/tv_record_stop"
-                    android:layout_width="@dimen/view_15_dp"
-                    android:layout_height="@dimen/view_15_dp"
-                    android:layout_gravity="center"
-                    android:visibility="gone"
-                    app:bl_corners_radius="@dimen/view_2_dp"
-                    app:bl_solid_color="#FFFFFF" />
-
-                <com.common.view.ex.ExImageView
-                    android:id="@+id/iv_record_start"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="@drawable/shiyinfang_kaishiyanchang_huatong" />
-            </FrameLayout>
-
-            <TextView
-                android:id="@+id/tv_record_tip"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:text="点击开始试音演唱"
-                android:textColor="@color/white"
-                android:textSize="@dimen/textsize_14_dp" />
-        </FrameLayout>
-    </RelativeLayout>
-
-
-    <RelativeLayout
-        android:id="@+id/rl_control_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/voice_control_view"
-        android:layout_below="@+id/many_lyrics_view"
-        android:layout_marginLeft="@dimen/view_35_dp"
-        android:layout_marginRight="@dimen/view_35_dp"
-        android:visibility="visible">
-
-        <LinearLayout
-            android:id="@+id/ll_resing"
+        <com.module.playways.rank.room.view.RankTopContainerView2
+            android:id="@+id/rank_top_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:orientation="vertical">
+            topContainer:mode="audition" />
 
-            <com.common.view.ex.ExImageView
-                android:id="@+id/iv_resing"
-                android:layout_width="@dimen/view_50_dp"
-                android:layout_height="@dimen/view_50_dp"
-                android:scaleType="center"
-                android:src="@drawable/yanchangwanbi_chongchang"
-                app:bl_corners_radius="@dimen/view_25_dp"
-                app:bl_solid_color="@color/white"
-                app:bl_stroke_color="#0C2275"
-                app:bl_stroke_width="@dimen/view_3_dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/view_7_dp"
-                android:drawablePadding="@dimen/view_7_dp"
-                android:text="重唱"
-                android:textColor="@color/white_trans_50" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_play"
+        <com.common.view.ex.ExTextView
+            android:id="@+id/tv_song_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:orientation="vertical">
+            android:layout_marginTop="@dimen/view_36_dp"
+            android:gravity="center"
+            android:maxWidth="@dimen/view_260_dp"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="@dimen/textsize_20_dp"
+            android:visibility="gone" />
 
-            <com.common.view.ex.ExImageView
-                android:id="@+id/iv_play"
-                android:layout_width="@dimen/view_50_dp"
-                android:layout_height="@dimen/view_50_dp"
-                android:scaleType="center"
-                app:bl_corners_radius="@dimen/view_25_dp"
-                app:bl_enabled_drawable="@color/white"
-                app:bl_stroke_color="#0C2275"
-                app:bl_stroke_width="@dimen/view_3_dp"
-                app:bl_unEnabled_drawable="#8C8D97"
-                app:src_enabled_drawable="@drawable/yanchangwanbi_bofang"
-                app:src_unEnabled_drawable="@drawable/yanchangwanbi_bofang" />
+        <!--正在唱的人的歌词-->
+        <com.zq.lyrics.widget.ManyLyricsView
+            android:id="@+id/many_lyrics_view"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="@dimen/view_105_dp"
+            app:ly_eable_scroll="false"
+            app:ly_eable_verbatim="true"
+            app:ly_high_light_paint_color_from="#EF5E85"
+            app:ly_high_light_paint_color_to="#EF5E85"
+            app:ly_high_light_paint_text_size="@dimen/textsize_dimen_20"
+            app:ly_high_light_sub_paint_color="@color/white"
+            app:ly_outline_paint_color="@color/white"
+            app:ly_paint_color_from="@color/white_trans_50"
+            app:ly_paint_color_to="@color/white_trans_50"
+            app:ly_paint_text_size="@dimen/textsize_dimen_16" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/view_7_dp"
-                android:drawablePadding="@dimen/view_7_dp"
-                android:text="播放"
-                android:textColor="@color/white_trans_50" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_save"
-            android:layout_width="wrap_content"
+        <com.module.playways.rank.prepare.view.VoiceControlPanelView
+            android:id="@+id/voice_control_view"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:orientation="vertical">
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="-2dp"
+            android:visibility="visible" />
 
-            <com.common.view.ex.ExImageView
-                android:id="@+id/iv_save"
-                android:layout_width="@dimen/view_50_dp"
-                android:layout_height="@dimen/view_50_dp"
-                android:scaleType="center"
-                android:src="@drawable/yanchangwanbi_baocun"
-                app:bl_corners_radius="@dimen/view_25_dp"
-                app:bl_solid_color="#FFED61"
-                app:bl_stroke_color="#0C2275"
-                app:bl_stroke_width="@dimen/view_3_dp" />
+        <com.zq.lyrics.widget.VoiceScaleView
+            android:id="@+id/voice_scale_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_61_dp"
+            android:layout_below="@+id/many_lyrics_view"
+            android:visibility="gone" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/view_7_dp"
-                android:text="保存"
-                android:textColor="@color/white_trans_50" />
-        </LinearLayout>
     </RelativeLayout>
+
 </RelativeLayout>

@@ -87,7 +87,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
 
     SkrSdcardPermission mSkrSdcardPermission = new SkrSdcardPermission();
 
-    SkrLocationPermission mSkrLocationPermission = new SkrLocationPermission();
+    //SkrLocationPermission mSkrLocationPermission = new SkrLocationPermission();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -160,14 +160,13 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
 
         mMainVp.setAdapter(fragmentPagerAdapter);
 
-        mHomePresenter = new HomeCorePresenter(this);
+        mHomePresenter = new HomeCorePresenter(this,this);
 
         mHomePresenter.checkUserInfo("HomeActivity onCreate");
 
         mGameArea.setOnClickListener(new DebounceViewClickListener(100) {
             @Override
             public void clickValid(View v) {
-                U.getSoundUtils().play(TAG, R.raw.home_tabclick);
                 mMainVp.setCurrentItem(0, false);
                 mGameBtn.setImageResource(R.drawable.ic_home_selected);
                 mMessageBtn.setImageResource(R.drawable.ic_chat_normal);
@@ -178,7 +177,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
         mMessageArea.setOnClickListener(new DebounceViewClickListener(100) {
             @Override
             public void clickValid(View v) {
-                U.getSoundUtils().play(TAG, R.raw.home_tabclick);
                 mMainVp.setCurrentItem(1, false);
                 mGameBtn.setImageResource(R.drawable.ic_home_normal);
                 mMessageBtn.setImageResource(R.drawable.ic_chat_selected);
@@ -189,7 +187,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
         mPersonArea.setOnClickListener(new DebounceViewClickListener(100) {
             @Override
             public void clickValid(View v) {
-                U.getSoundUtils().play(TAG, R.raw.home_tabclick);
                 mMainVp.setCurrentItem(2, false);
                 mGameBtn.setImageResource(R.drawable.ic_home_normal);
                 mMessageBtn.setImageResource(R.drawable.ic_chat_normal);
@@ -202,7 +199,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
 
         mMainVp.setCurrentItem(0, false);
         mFromCreate = true;
-        U.getSoundUtils().preLoad(TAG, R.raw.home_tabclick);
     }
 
     private void checkIfFromSchema() {
@@ -296,14 +292,14 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
     @Override
     protected void onResume() {
         super.onResume();
+        if (mFromCreate) {
+            // 获取地理位置权限
+            //mSkrLocationPermission.ensurePermission(null, false);
+        }
         if (!mSkrSdcardPermission.onBackFromPermisionManagerMaybe()) {
             if (mFromCreate) {
                 mSkrSdcardPermission.ensurePermission(null, true);
             }
-        }
-        if (mFromCreate) {
-            // 获取地理位置权限
-            mSkrLocationPermission.ensurePermission(null, false);
         }
         mFromCreate = false;
         UpgradeManager.getInstance().checkUpdate1();
@@ -316,7 +312,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
         if (mHomePresenter != null) {
             mHomePresenter.destroy();
         }
-        U.getSoundUtils().release(TAG);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -10,17 +10,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.common.core.account.UserAccountManager;
-import com.common.log.MyLog;
 import com.common.statistics.StatConstants;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
-import com.module.playways.BaseRoomData;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabMyCoinChangeEvent;
-import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.rank.R;
 
 import org.greenrobot.eventbus.EventBus;
@@ -33,8 +30,8 @@ public class GrabTopView extends RelativeLayout {
     ExTextView mTvCoin;
     ExImageView mConinChangeIv;
     ExTextView mTvCoinChange;
-    ExTextView mTvAcc;
-    ImageView mIvAccDisable;
+    ExTextView mTvAccSwitch;
+//    ImageView mIvAccDisable;
 
     Listener mOnClickChangeRoomListener;
     GrabRoomData mBaseRoomData;
@@ -121,8 +118,8 @@ public class GrabTopView extends RelativeLayout {
         mTvCoin = (ExTextView) findViewById(R.id.tv_coin);
         mConinChangeIv = (ExImageView) findViewById(R.id.conin_change_iv);
         mTvCoinChange = (ExTextView) findViewById(R.id.tv_coin_change);
-        mTvAcc = (ExTextView) findViewById(R.id.tv_acc);
-        mIvAccDisable = (ImageView) findViewById(R.id.iv_acc_disable);
+        mTvAccSwitch = (ExTextView) findViewById(R.id.tv_acc_switch);
+//        mIvAccDisable = (ImageView) findViewById(R.id.iv_acc_disable);
 
         mTvChangeRoom.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -135,15 +132,17 @@ public class GrabTopView extends RelativeLayout {
             }
         });
 
-        mTvAcc.setOnClickListener(new DebounceViewClickListener() {
+        mTvAccSwitch.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                if (mIvAccDisable.getVisibility() == VISIBLE) {
-                    mIvAccDisable.setVisibility(GONE);
-                    mBaseRoomData.setAccEnable(true);
-                } else {
-                    mIvAccDisable.setVisibility(VISIBLE);
+                if (mBaseRoomData.isAccEnable()) {
                     mBaseRoomData.setAccEnable(false);
+                    mTvAccSwitch.setText("清唱模式");
+                    U.getToastUtil().showShort("已关闭伴奏");
+                } else {
+                    mBaseRoomData.setAccEnable(true);
+                    mTvAccSwitch.setText("伴奏模式");
+                    U.getToastUtil().showShort("已打开伴奏");
                 }
             }
         });
@@ -151,21 +150,20 @@ public class GrabTopView extends RelativeLayout {
 
     public void setAccSwitchBtnStatus(boolean visibale) {
         if (visibale) {
-            mTvAcc.setVisibility(VISIBLE);
-            if (mBaseRoomData.isAccEnable()) {
-                mIvAccDisable.setVisibility(GONE);
-            } else {
-                mIvAccDisable.setVisibility(VISIBLE);
-            }
+            mTvAccSwitch.setVisibility(GONE);
         } else {
-            mTvAcc.setVisibility(GONE);
-            mIvAccDisable.setVisibility(GONE);
+            mTvAccSwitch.setVisibility(GONE);
         }
     }
 
     public void setRoomData(GrabRoomData modelBaseRoomData) {
         mBaseRoomData = modelBaseRoomData;
         mTvCoin.setText(mBaseRoomData.getCoin() + "");
+        if (mBaseRoomData.isAccEnable()) {
+            mTvAccSwitch.setText("伴奏模式");
+        } else {
+            mTvAccSwitch.setText("清唱模式");
+        }
     }
 
     @Override

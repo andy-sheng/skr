@@ -83,13 +83,24 @@ public final class UserScoreResult extends Message<UserScoreResult, UserScoreRes
   )
   private final Integer sss;
 
+  /**
+   * 经验值变动详情
+   */
+  @WireField(
+      tag = 7,
+      adapter = "com.zq.live.proto.Room.ScoreItem#ADAPTER",
+      label = WireField.Label.REPEATED
+  )
+  private final List<ScoreItem> expChange;
+
   public UserScoreResult(Integer userID, List<ScoreState> states, List<ScoreItem> starChange,
-      List<ScoreItem> battleIndexChange, EWinType winType, Integer sss) {
-    this(userID, states, starChange, battleIndexChange, winType, sss, ByteString.EMPTY);
+      List<ScoreItem> battleIndexChange, EWinType winType, Integer sss, List<ScoreItem> expChange) {
+    this(userID, states, starChange, battleIndexChange, winType, sss, expChange, ByteString.EMPTY);
   }
 
   public UserScoreResult(Integer userID, List<ScoreState> states, List<ScoreItem> starChange,
-      List<ScoreItem> battleIndexChange, EWinType winType, Integer sss, ByteString unknownFields) {
+      List<ScoreItem> battleIndexChange, EWinType winType, Integer sss, List<ScoreItem> expChange,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
     this.states = Internal.immutableCopyOf("states", states);
@@ -97,6 +108,7 @@ public final class UserScoreResult extends Message<UserScoreResult, UserScoreRes
     this.battleIndexChange = Internal.immutableCopyOf("battleIndexChange", battleIndexChange);
     this.winType = winType;
     this.sss = sss;
+    this.expChange = Internal.immutableCopyOf("expChange", expChange);
   }
 
   @Override
@@ -108,6 +120,7 @@ public final class UserScoreResult extends Message<UserScoreResult, UserScoreRes
     builder.battleIndexChange = Internal.copyOf("battleIndexChange", battleIndexChange);
     builder.winType = winType;
     builder.sss = sss;
+    builder.expChange = Internal.copyOf("expChange", expChange);
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -123,7 +136,8 @@ public final class UserScoreResult extends Message<UserScoreResult, UserScoreRes
         && starChange.equals(o.starChange)
         && battleIndexChange.equals(o.battleIndexChange)
         && Internal.equals(winType, o.winType)
-        && Internal.equals(sss, o.sss);
+        && Internal.equals(sss, o.sss)
+        && expChange.equals(o.expChange);
   }
 
   @Override
@@ -137,6 +151,7 @@ public final class UserScoreResult extends Message<UserScoreResult, UserScoreRes
       result = result * 37 + battleIndexChange.hashCode();
       result = result * 37 + (winType != null ? winType.hashCode() : 0);
       result = result * 37 + (sss != null ? sss.hashCode() : 0);
+      result = result * 37 + expChange.hashCode();
       super.hashCode = result;
     }
     return result;
@@ -151,6 +166,7 @@ public final class UserScoreResult extends Message<UserScoreResult, UserScoreRes
     if (!battleIndexChange.isEmpty()) builder.append(", battleIndexChange=").append(battleIndexChange);
     if (winType != null) builder.append(", winType=").append(winType);
     if (sss != null) builder.append(", sss=").append(sss);
+    if (!expChange.isEmpty()) builder.append(", expChange=").append(expChange);
     return builder.replace(0, 2, "UserScoreResult{").append('}').toString();
   }
 
@@ -221,6 +237,16 @@ public final class UserScoreResult extends Message<UserScoreResult, UserScoreRes
     return sss;
   }
 
+  /**
+   * 经验值变动详情
+   */
+  public List<ScoreItem> getExpChangeList() {
+    if(expChange==null){
+        return new java.util.ArrayList<ScoreItem>();
+    }
+    return expChange;
+  }
+
   public boolean hasUserID() {
     return userID!=null;
   }
@@ -260,6 +286,13 @@ public final class UserScoreResult extends Message<UserScoreResult, UserScoreRes
     return sss!=null;
   }
 
+  /**
+   * 经验值变动详情
+   */
+  public boolean hasExpChangeList() {
+    return expChange!=null;
+  }
+
   public static final class Builder extends Message.Builder<UserScoreResult, Builder> {
     private Integer userID;
 
@@ -273,10 +306,13 @@ public final class UserScoreResult extends Message<UserScoreResult, UserScoreRes
 
     private Integer sss;
 
+    private List<ScoreItem> expChange;
+
     public Builder() {
       states = Internal.newMutableList();
       starChange = Internal.newMutableList();
       battleIndexChange = Internal.newMutableList();
+      expChange = Internal.newMutableList();
     }
 
     public Builder setUserID(Integer userID) {
@@ -327,9 +363,18 @@ public final class UserScoreResult extends Message<UserScoreResult, UserScoreRes
       return this;
     }
 
+    /**
+     * 经验值变动详情
+     */
+    public Builder addAllExpChange(List<ScoreItem> expChange) {
+      Internal.checkElementsNotNull(expChange);
+      this.expChange = expChange;
+      return this;
+    }
+
     @Override
     public UserScoreResult build() {
-      return new UserScoreResult(userID, states, starChange, battleIndexChange, winType, sss, super.buildUnknownFields());
+      return new UserScoreResult(userID, states, starChange, battleIndexChange, winType, sss, expChange, super.buildUnknownFields());
     }
   }
 
@@ -346,6 +391,7 @@ public final class UserScoreResult extends Message<UserScoreResult, UserScoreRes
           + ScoreItem.ADAPTER.asRepeated().encodedSizeWithTag(4, value.battleIndexChange)
           + EWinType.ADAPTER.encodedSizeWithTag(5, value.winType)
           + ProtoAdapter.UINT32.encodedSizeWithTag(6, value.sss)
+          + ScoreItem.ADAPTER.asRepeated().encodedSizeWithTag(7, value.expChange)
           + value.unknownFields().size();
     }
 
@@ -357,6 +403,7 @@ public final class UserScoreResult extends Message<UserScoreResult, UserScoreRes
       ScoreItem.ADAPTER.asRepeated().encodeWithTag(writer, 4, value.battleIndexChange);
       EWinType.ADAPTER.encodeWithTag(writer, 5, value.winType);
       ProtoAdapter.UINT32.encodeWithTag(writer, 6, value.sss);
+      ScoreItem.ADAPTER.asRepeated().encodeWithTag(writer, 7, value.expChange);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -379,6 +426,7 @@ public final class UserScoreResult extends Message<UserScoreResult, UserScoreRes
             break;
           }
           case 6: builder.setSss(ProtoAdapter.UINT32.decode(reader)); break;
+          case 7: builder.expChange.add(ScoreItem.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -396,6 +444,7 @@ public final class UserScoreResult extends Message<UserScoreResult, UserScoreRes
       Internal.redactElements(builder.states, ScoreState.ADAPTER);
       Internal.redactElements(builder.starChange, ScoreItem.ADAPTER);
       Internal.redactElements(builder.battleIndexChange, ScoreItem.ADAPTER);
+      Internal.redactElements(builder.expChange, ScoreItem.ADAPTER);
       builder.clearUnknownFields();
       return builder.build();
     }

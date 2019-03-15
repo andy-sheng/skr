@@ -6,6 +6,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
@@ -21,6 +22,7 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.constans.GameModeType;
+import com.module.RouterConstants;
 import com.module.playways.audioroom.AudioRoomActivity;
 import com.module.playways.PlayWaysActivity;
 import com.module.playways.rank.prepare.fragment.AuditionFragment;
@@ -66,6 +68,8 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
     int mGameType;
     boolean hasMore = true; // 是否还有更多数据标记位
 
+    SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
+
     @Override
     public int initView() {
         return R.layout.song_select_fragment_layout;
@@ -91,7 +95,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
         DEFAULT_COUNT = songCardHeight / U.getDisplayUtils().dip2px(72);
         DEFAULT_FIRST_COUNT = DEFAULT_COUNT * 5;
 
-        U.getSoundUtils().preLoad(TAG, R.raw.normal_click, R.raw.normal_back, R.raw.rank_flipsonglist);
+//        U.getSoundUtils().preLoad(TAG, R.raw.normal_click, R.raw.normal_back, R.raw.rank_flipsonglist);
 
         mSelectBackIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -113,7 +117,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
         mSelectClickedIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                U.getSoundUtils().play(SongSelectFragment.TAG, R.raw.normal_click, 500);
+//                U.getSoundUtils().play(SongSelectFragment.TAG, R.raw.normal_click, 500);
                 switchToClicked();
             }
         });
@@ -121,7 +125,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
         mSelectBack.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                U.getSoundUtils().play(SongSelectFragment.TAG, R.raw.normal_back, 500);
+//                U.getSoundUtils().play(SongSelectFragment.TAG, R.raw.normal_back, 500);
                 if (getActivity() != null) {
                     getActivity().finish();
                 }
@@ -157,42 +161,15 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
     }
 
     void jump(SongModel songModel) {
-        U.getSoundUtils().play(TAG, R.raw.normal_click);
         if (getActivity() instanceof AudioRoomActivity) {
-            U.getToastUtil().showShort("试音房");
-            if (songModel.isAllResExist()) {
-                PrepareData prepareData = new PrepareData();
-                prepareData.setSongModel(songModel);
-                prepareData.setBgMusic(songModel.getRankUserVoice());
-                mRootView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), AuditionFragment.class)
-                                .setAddToBackStack(true)
-                                .setHasAnimation(true)
-                                .addDataBeforeAdd(0, prepareData)
-                                .setFragmentDataListener(new FragmentDataListener() {
-                                    @Override
-                                    public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
-
-                                    }
-                                })
-                                .build());
-                    }
-                });
-            } else {
-                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), AuditionPrepareResFragment.class)
-                        .setAddToBackStack(false)
-                        .setHasAnimation(true)
-                        .addDataBeforeAdd(0, songModel)
-                        .setFragmentDataListener(new FragmentDataListener() {
-                            @Override
-                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
-
-                            }
-                        })
-                        .build());
-            }
+            mSkrAudioPermission.ensurePermission(new Runnable() {
+                @Override
+                public void run() {
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_AUDITION_ROOM)
+                            .withSerializable("songModel", songModel)
+                            .navigation();
+                }
+            },true);
             return;
         }
 
@@ -229,6 +206,12 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mSkrAudioPermission.onBackFromPermisionManagerMaybe();
+    }
+
+    @Override
     protected void onFragmentVisible() {
         super.onFragmentVisible();
         if (mGameType == GameModeType.GAME_MODE_CLASSIC_RANK) {
@@ -259,7 +242,7 @@ public class SongSelectFragment extends BaseFragment implements ISongTagDetailVi
     private void switchToClicked() {
         Bundle bundle = new Bundle();
         bundle.putInt(KEY_GAME_TYPE, mGameType);
-        U.getSoundUtils().play(SongSelectFragment.TAG, R.raw.normal_click);
+//        U.getSoundUtils().play(SongSelectFragment.TAG, R.raw.normal_click);
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), HistorySongFragment.class)
                 .setAddToBackStack(true)
                 .setHasAnimation(true)

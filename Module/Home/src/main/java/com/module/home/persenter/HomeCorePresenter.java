@@ -7,6 +7,7 @@ import android.view.Gravity;
 import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.common.base.BaseActivity;
 import com.common.core.account.UserAccountManager;
 import com.common.core.account.event.AccountEvent;
 import com.common.core.login.LoginActivity;
@@ -28,6 +29,8 @@ import com.module.home.view.IHomeActivity;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.ViewHolder;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -43,6 +46,7 @@ public class HomeCorePresenter {
     Handler mUiHandler = new Handler();
 
     IHomeActivity mView;
+    BaseActivity mBaseActivity;
 
 
     private Runnable mNetworkChangeRunnable = new Runnable() {
@@ -64,8 +68,9 @@ public class HomeCorePresenter {
         }
     };
 
-    public HomeCorePresenter(IHomeActivity view) {
+    public HomeCorePresenter(BaseActivity baseActivity, IHomeActivity view) {
         mView = view;
+        mBaseActivity = baseActivity;
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -172,6 +177,9 @@ public class HomeCorePresenter {
                     .navigation();
             mView.onLogoff();
         }
+
+        UMShareAPI.get(U.app()).deleteOauth(mBaseActivity, SHARE_MEDIA.WEIXIN, null);
+        UMShareAPI.get(U.app()).deleteOauth(mBaseActivity, SHARE_MEDIA.QQ, null);
         BgMusicManager.getInstance().destory();
     }
 

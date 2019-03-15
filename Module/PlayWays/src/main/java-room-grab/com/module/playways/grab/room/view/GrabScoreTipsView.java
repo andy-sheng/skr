@@ -6,21 +6,12 @@ import android.widget.RelativeLayout;
 
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
-import com.common.utils.U;
 import com.module.playways.grab.room.GrabRoomData;
-import com.module.playways.grab.room.listener.SVGAListener;
+import com.module.playways.grab.room.model.GrabConfigModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.module.playways.rank.room.model.PkScoreTipMsgModel;
-import com.module.playways.rank.room.model.RankGameConfigModel;
+import com.module.playways.grab.room.model.GrabScoreTipMsgModel;
 import com.module.playways.rank.room.score.bar.ScoreTipsView;
 import com.module.rank.R;
-import com.opensource.svgaplayer.SVGACallback;
-import com.opensource.svgaplayer.SVGADrawable;
-import com.opensource.svgaplayer.SVGAImageView;
-import com.opensource.svgaplayer.SVGAParser;
-import com.opensource.svgaplayer.SVGAVideoEntity;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -29,6 +20,8 @@ public class GrabScoreTipsView extends RelativeLayout {
     public final static String TAG = "GrabScoreTipsView";
 
     GrabRoomData mRoomData;
+
+    ScoreTipsView.Item mLastItem;
 
     public GrabScoreTipsView(Context context) {
         super(context);
@@ -58,24 +51,58 @@ public class GrabScoreTipsView extends RelativeLayout {
         mRoomData = roomData;
     }
 
-    ScoreTipsView.Item mLastItem;
-
     public void updateScore(int score1, int songLineNum) {
         MyLog.d(TAG, "updateScore" + " score1=" + score1 + " songLineNum=" + songLineNum);
         int score = score1;
-        for (int i = 0; i < 1; i++) {
-            score = (int) (Math.sqrt(score) * 10);
-        }
+//        for (int i = 0; i < 1; i++) {
+//            score = (int) (Math.sqrt(score) * 10);
+//        }
+
+        GrabConfigModel gameConfigModel = mRoomData.getGrabConfigModel();
         ScoreTipsView.Item item = new ScoreTipsView.Item();
 
-        if (score >= 95) {
-            item.setLevel(ScoreTipsView.Level.Perfect);
-        } else if (score >= 90) {
-            item.setLevel(ScoreTipsView.Level.Good);
-        } else if (score >= 70) {
-            item.setLevel(ScoreTipsView.Level.Ok);
-        } else if (score < 20) {
-            item.setLevel(ScoreTipsView.Level.Bad);
+        if (gameConfigModel != null) {
+            // 总分是这个肯定没错
+            List<GrabScoreTipMsgModel> scoreTipMsgModelList = gameConfigModel.getQScoreTipMsg();
+            if (scoreTipMsgModelList != null) {
+                for (GrabScoreTipMsgModel m : scoreTipMsgModelList) {
+                    if (score >= m.getFromScore() && score < m.getToScore()) {
+                        // 命中
+                        switch (m.getTipType()) {
+                            case 0:
+                                break;
+                            case 1:
+                                item.setLevel(ScoreTipsView.Level.Grab_renzhen);
+                                break;
+                            case 2:
+                                item.setLevel(ScoreTipsView.Level.Grab_jiayou);
+                                break;
+                            case 3:
+                                item.setLevel(ScoreTipsView.Level.Grab_bucuo);
+                                break;
+                            case 4:
+                                item.setLevel(ScoreTipsView.Level.Grab_taibang);
+                                break;
+                            case 5:
+                                item.setLevel(ScoreTipsView.Level.Grab_wanmei);
+                                break;
+                        }
+                        break;
+                    }
+                }
+            }
+        } else {
+            if (score >= 85) {
+                item.setLevel(ScoreTipsView.Level.Grab_wanmei);
+            } else if (score >= 60) {
+                item.setLevel(ScoreTipsView.Level.Grab_taibang);
+            } else if (score >= 36) {
+                item.setLevel(ScoreTipsView.Level.Grab_bucuo);
+            } else if (score < 7) {
+                item.setLevel(ScoreTipsView.Level.Grab_jiayou);
+            } else if (score >= 0) {
+                item.setLevel(ScoreTipsView.Level.Grab_renzhen);
+            }
         }
         if (item.getLevel() != null) {
             if (mLastItem != null && item.getLevel() == mLastItem.getLevel()) {
@@ -91,7 +118,7 @@ public class GrabScoreTipsView extends RelativeLayout {
         }
     }
 
-    public void reset(){
+    public void reset() {
         mLastItem = null;
     }
 }

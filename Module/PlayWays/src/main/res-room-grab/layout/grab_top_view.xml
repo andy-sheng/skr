@@ -47,25 +47,26 @@
         android:layout_marginLeft="@dimen/view_7_dp"
         android:layout_toRightOf="@+id/tv_change_room"
         android:background="@drawable/jb_guangmang"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <com.common.view.ex.ExImageView
         android:layout_width="@dimen/view_20_dp"
         android:layout_height="@dimen/view_20_dp"
+        android:layout_alignLeft="@id/tv_coin"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/view_5_dp"
-        android:layout_alignLeft="@id/tv_coin"
-        android:src="@drawable/money"/>
+        android:src="@drawable/money" />
 
     <com.common.view.ex.ExTextView
-        android:id="@+id/tv_acc"
-        android:layout_width="@dimen/view_56_dp"
+        android:id="@+id/tv_acc_switch"
+        android:layout_width="@dimen/view_80_dp"
         android:layout_height="@dimen/view_32_dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/view_58_dp"
         android:gravity="center"
-        android:text="伴奏"
+        android:visibility="gone"
+        android:text="清唱模式"
         android:textColor="#B2B6D6"
         android:textSize="@dimen/textsize_14_dp"
         app:bl_corners_radius="@dimen/view_16_dp"
@@ -73,13 +74,13 @@
         app:bl_stroke_color="#202239"
         app:bl_stroke_width="@dimen/view_2_dp" />
 
-    <ImageView
-        android:id="@+id/iv_acc_disable"
-        android:layout_width="@dimen/view_12_dp"
-        android:layout_height="@dimen/view_12_dp"
-        android:layout_alignLeft="@+id/tv_acc"
-        android:layout_alignBottom="@+id/tv_acc"
-        android:background="@drawable/wubanzou" />
+    <!--<ImageView-->
+    <!--android:id="@+id/iv_acc_disable"-->
+    <!--android:layout_width="@dimen/view_12_dp"-->
+    <!--android:layout_height="@dimen/view_12_dp"-->
+    <!--android:layout_alignLeft="@+id/tv_acc"-->
+    <!--android:layout_alignBottom="@+id/tv_acc"-->
+    <!--android:background="@drawable/wubanzou" />-->
 
     <com.common.view.ex.ExTextView
         android:id="@+id/tv_coin_change"

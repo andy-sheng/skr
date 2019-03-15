@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
@@ -26,6 +27,7 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
+import com.module.RouterConstants;
 import com.module.playways.audioroom.AudioRoomActivity;
 import com.module.playways.PlayWaysActivity;
 import com.module.playways.rank.prepare.fragment.AuditionFragment;
@@ -67,6 +69,8 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
 
     LoadService mLoadService;
 
+    SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
+
     @Override
     public int initView() {
         return R.layout.history_song_fragment_layout;
@@ -90,7 +94,7 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
         songSelectAdapter = new SongSelectAdapter(new RecyclerOnItemClickListener() {
             @Override
             public void onItemClicked(View view, int position, Object model) {
-                U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
+                //U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
                 jump((SongModel) model);
             }
         });
@@ -119,7 +123,7 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
         mHistoryBack.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
+                //U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
                 U.getFragmentUtils().popFragment(HistorySongFragment.this);
             }
         });
@@ -155,41 +159,14 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
             return;
         }
         if (getActivity() instanceof AudioRoomActivity) {
-            U.getToastUtil().showShort("试音房");
-            if (songModel.isAllResExist()) {
-                PrepareData prepareData = new PrepareData();
-                prepareData.setSongModel(songModel);
-                prepareData.setBgMusic(songModel.getRankUserVoice());
-
-                mRootView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), AuditionFragment.class)
-                                .setAddToBackStack(true)
-                                .setHasAnimation(true)
-                                .addDataBeforeAdd(0, prepareData)
-                                .setFragmentDataListener(new FragmentDataListener() {
-                                    @Override
-                                    public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
-
-                                    }
-                                })
-                                .build());
-                    }
-                });
-            } else {
-                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), AuditionPrepareResFragment.class)
-                        .setAddToBackStack(false)
-                        .setHasAnimation(true)
-                        .addDataBeforeAdd(0, songModel)
-                        .setFragmentDataListener(new FragmentDataListener() {
-                            @Override
-                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
-
-                            }
-                        })
-                        .build());
-            }
+            mSkrAudioPermission.ensurePermission(new Runnable() {
+                @Override
+                public void run() {
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_AUDITION_ROOM)
+                            .withSerializable("songModel", songModel)
+                            .navigation();
+                }
+            }, true);
             return;
         }
 
@@ -225,6 +202,7 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
     @Override
     public void onResume() {
         super.onResume();
+        mSkrAudioPermission.onBackFromPermisionManagerMaybe();
     }
 
     @Override

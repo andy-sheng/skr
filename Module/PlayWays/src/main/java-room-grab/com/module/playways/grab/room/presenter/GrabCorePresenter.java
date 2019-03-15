@@ -674,6 +674,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         MyLog.d(TAG, "destroy begin");
         super.destroy();
         mDestroyed = true;
+        Params.save2Pref(EngineManager.getInstance().getParams());
         if (!mRoomData.isHasExitGame()) {
             exitRoom();
         }
@@ -1079,27 +1080,27 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                         mIGrabView.roundOver(event.lastRoundInfo.getMusic().getItemID(), event.lastRoundInfo.getOverReason(), event.lastRoundInfo.getResultType(), true, now);
                     }
                 });
-                if (event.lastRoundInfo.getOverReason() == EQRoundOverReason.ROR_SELF_GIVE_UP.getValue()) {
-                    // 自己放弃，飘个弹幕
-                    PlayerInfoModel singerModel = RoomDataUtils.getPlayerInfoById(mRoomData, event.lastRoundInfo.getUserID());
-                    if (singerModel != null) {
-                        CommentModel commentModel = new CommentModel();
-                        commentModel.setCommentType(CommentModel.TYPE_TRICK);
-                        commentModel.setUserId(singerModel.getUserID());
-                        commentModel.setAvatar(singerModel.getUserInfo().getAvatar());
-                        commentModel.setUserName(singerModel.getUserInfo().getNickname());
-                        commentModel.setAvatarColor(singerModel.getUserInfo().getSex() == ESex.SX_MALE.getValue() ?
-                                U.getColor(R.color.color_man_stroke_color) : U.getColor(R.color.color_woman_stroke_color));
-                        SpannableStringBuilder stringBuilder = new SpanUtils()
-                                .append(singerModel.getUserInfo().getNickname() + " ").setForegroundColor(CommentModel.TEXT_YELLOW)
-//                                .append("对").setForegroundColor(CommentModel.TEXT_WHITE)
-//                                .append(singerModel.getUserInfo().getNickname()).setForegroundColor(CommentModel.TEXT_YELLOW)
-                                .append("不唱了").setForegroundColor(CommentModel.TEXT_WHITE)
-                                .create();
-                        commentModel.setStringBuilder(stringBuilder);
-                        EventBus.getDefault().post(new PretendCommentMsgEvent(commentModel));
-                    }
-                }
+//                if (event.lastRoundInfo.getOverReason() == EQRoundOverReason.ROR_SELF_GIVE_UP.getValue()) {
+//                    // 自己放弃，飘个弹幕
+//                    PlayerInfoModel singerModel = RoomDataUtils.getPlayerInfoById(mRoomData, event.lastRoundInfo.getUserID());
+//                    if (singerModel != null) {
+//                        CommentModel commentModel = new CommentModel();
+//                        commentModel.setCommentType(CommentModel.TYPE_TRICK);
+//                        commentModel.setUserId(singerModel.getUserID());
+//                        commentModel.setAvatar(singerModel.getUserInfo().getAvatar());
+//                        commentModel.setUserName(singerModel.getUserInfo().getNickname());
+//                        commentModel.setAvatarColor(singerModel.getUserInfo().getSex() == ESex.SX_MALE.getValue() ?
+//                                U.getColor(R.color.color_man_stroke_color) : U.getColor(R.color.color_woman_stroke_color));
+//                        SpannableStringBuilder stringBuilder = new SpanUtils()
+//                                .append(singerModel.getUserInfo().getNickname() + " ").setForegroundColor(CommentModel.TEXT_YELLOW)
+////                                .append("对").setForegroundColor(CommentModel.TEXT_WHITE)
+////                                .append(singerModel.getUserInfo().getNickname()).setForegroundColor(CommentModel.TEXT_YELLOW)
+//                                .append("不唱了").setForegroundColor(CommentModel.TEXT_WHITE)
+//                                .create();
+//                        commentModel.setStringBuilder(stringBuilder);
+//                        EventBus.getDefault().post(new PretendCommentMsgEvent(commentModel));
+//                    }
+//                }
                 if (event.lastRoundInfo.getUserID() == MyUserInfoManager.getInstance().getUid()) {
                     onSelfRoundOver(event.lastRoundInfo);
                 }
@@ -1193,7 +1194,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 // midi不需要在这下，只要下好，native就会解析，打分就能恢复
                 File midiFile = SongResUtils.getMIDIFileByUrl(infoModel.getMusic().getMidi());
                 if (mRoomData.isAccEnable()) {
-                    int songBeginTs = songModel.getStandLrcBeginT() - GrabRoomData.ACC_OFFSET_BY_LYRIC;
+                    int songBeginTs = songModel.getBeginMs();
                     if (accFile != null && accFile.exists()) {
                         // 伴奏文件存在
                         EngineManager.getInstance().startAudioMixing((int) MyUserInfoManager.getInstance().getUid(), accFile.getAbsolutePath()

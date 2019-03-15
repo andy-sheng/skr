@@ -21,6 +21,8 @@ public class JsRegister {
 
     public static final String SHARE = "share";
     public static final String BIND_WE_CHAT = "bindWeChat";
+    public static final String BIND_QQ = "bindQqChat";
+    public static final String BIND_GET_VERSION = "getAppVersion";
 
     BridgeWebView mBridgeWebView;
 
@@ -34,42 +36,32 @@ public class JsRegister {
         mJsBridgeImpl = new JsBridgeImpl(baseActivity);
     }
 
-    public void register(){
+    public void register() {
         //所有H5来的需要跳转的都从这里
         mBridgeWebView.registerHandler("callNative", new BridgeHandler() {
             @Override
             public void handler(String data, CallBackFunction function) {
-//                if(BuildConfig.DEBUG){
-//                    U.getToastUtil().showShort("callNative data is:" + data);
-//                }
                 processOpt(data, function);
             }
         });
-
-//        Observable.timer(5000, TimeUnit.MILLISECONDS).subscribe(new Consumer<Long>() {
-//            @Override
-//            public void accept(Long aLong) throws Exception {
-//                mBridgeWebView.callHandler("callJs", "你好，js", new CallBackFunction() {
-//                    @Override
-//                    public void onCallBack(String data) {
-////                Log.i(TAG,"data:"+data);
-//                        U.getToastUtil().showShort("callJs onCallBack data is:" + data);
-//                    }
-//                });
-//            }
-//        });
     }
 
-    private void processOpt(String data, CallBackFunction callBackFunction){
+    private void processOpt(String data, CallBackFunction callBackFunction) {
         MyLog.w(TAG, "processOpt" + " data is =" + data);
         JSONObject jsonObject = JSONObject.parseObject(data);
         String opt = jsonObject.getString(OPT);
         String paramData = jsonObject.getString(DATA);
 
-        if(SHARE.equals(opt)){
+        if (SHARE.equals(opt)) {
             mJsBridgeImpl.share(paramData, callBackFunction);
-        }else if(BIND_WE_CHAT.equals(opt)){
+        } else if (BIND_WE_CHAT.equals(opt)) {
             mJsBridgeImpl.bindWeChat(paramData, callBackFunction);
+        } else if (BIND_QQ.equals(opt)) {
+            mJsBridgeImpl.bindQqChat(paramData, callBackFunction);
+        } else if (BIND_GET_VERSION.equals(opt)) {
+            mJsBridgeImpl.getAppVersion(paramData, callBackFunction);
+        } else {
+            mJsBridgeImpl.noMethed(callBackFunction);
         }
     }
 }

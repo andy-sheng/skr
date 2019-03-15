@@ -155,6 +155,8 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
                         FragmentUtils.newAddParamsBuilder(getActivity(), ImageBigPreviewFragment.class)
                                 .setAddToBackStack(true)
                                 .setHasAnimation(true)
+                                .setEnterAnim(R.anim.fade_in_center)
+                                .setExitAnim(R.anim.fade_out_center)
                                 .setBundle(bundle)
                                 .build());
             }
@@ -163,7 +165,7 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
         mBackIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
+                //U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
                 U.getFragmentUtils().popFragment(OtherPersonFragment.this);
             }
         });

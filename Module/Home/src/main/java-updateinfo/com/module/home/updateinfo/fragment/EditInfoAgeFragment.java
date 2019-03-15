@@ -82,7 +82,7 @@ public class EditInfoAgeFragment extends BaseFragment {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        U.getSoundUtils().play(EditInfoActivity.TAG, R.raw.normal_back, 500);
+//                        U.getSoundUtils().play(EditInfoActivity.TAG, R.raw.normal_back, 500);
                         U.getFragmentUtils().popFragment(EditInfoAgeFragment.this);
                     }
                 });
@@ -131,7 +131,7 @@ public class EditInfoAgeFragment extends BaseFragment {
         String birthday = MyUserInfoManager.getInstance().getMyUserInfo().getBirthday();
         Calendar selectedDate = Calendar.getInstance();//系统当前时间
         if (TextUtils.isEmpty(birthday)) {
-            selectedDate.set(2000, 11, 12);
+            selectedDate.set(2000, 11,00);
         } else {
             String[] strings = birthday.split("-");
             int year = Integer.valueOf(strings[0]);
@@ -140,7 +140,7 @@ public class EditInfoAgeFragment extends BaseFragment {
             selectedDate.set(year, month - 1, date);
         }
         Calendar startDate = Calendar.getInstance();
-        startDate.set(1900, 0, 1);
+        startDate.set(1900, 0, 00);
         Calendar endDate = Calendar.getInstance();
 
         //时间选择器 ，自定义布局
@@ -154,10 +154,10 @@ public class EditInfoAgeFragment extends BaseFragment {
                 }
                 if (isUpload) {
                     // 上传个人信息
-                    String bir = U.getDateTimeUtils().formatDateString(date);
+                    String bir = U.getDateTimeUtils().formatSpecailDateString(date);
                     MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
                             .setNickName(uploadNickname).setSex(uploadSex).setBirthday(bir)
-                            .build(), true, false, new MyUserInfoManager.ServerCallback() {
+                            .build(), true, true, new MyUserInfoManager.ServerCallback() {
                         @Override
                         public void onSucess() {
                             if (getActivity() != null) {
@@ -172,7 +172,7 @@ public class EditInfoAgeFragment extends BaseFragment {
                     });
                 } else {
                     // 修改个人信息
-                    String bir = U.getDateTimeUtils().formatDateString(date);
+                    String bir = U.getDateTimeUtils().formatSpecailDateString(date);
                     if (bir.equals(MyUserInfoManager.getInstance().getBirthday())) {
                         // 无任何变化
                         U.getFragmentUtils().popFragment(EditInfoAgeFragment.this);
@@ -231,7 +231,7 @@ public class EditInfoAgeFragment extends BaseFragment {
                         }
                     }
                 })
-                .setType(new boolean[]{true, true, true, false, false, false})
+                .setType(new boolean[]{true, true, false, false, false, false})
                 .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
                 .setDividerColor(Color.GRAY)
                 .setDecorView(mFrameLayout) //非dialog模式下,设置ViewGroup, pickerView将会添加到这个ViewGroup中

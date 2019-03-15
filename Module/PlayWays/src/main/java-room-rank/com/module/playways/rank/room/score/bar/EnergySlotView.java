@@ -13,11 +13,13 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.module.rank.R;
 
 
 public class EnergySlotView extends View {
+    public final static String TAG = "EnergySlotView";
     int mWidth = -1;// view的宽度
     int mHeight = -1;// view的高度
 
@@ -111,7 +113,6 @@ public class EnergySlotView extends View {
                 postInvalidate();
             }
         });
-
 
         mAnimatorSet = new AnimatorSet();
         mAnimatorSet.addListener(new AnimatorListenerAdapter() {

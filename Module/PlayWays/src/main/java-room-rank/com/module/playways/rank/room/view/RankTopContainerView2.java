@@ -3,7 +3,7 @@ package com.module.playways.rank.room.view;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
-import android.graphics.Color;
+import android.content.res.TypedArray;
 import android.os.Handler;
 import android.text.SpannableStringBuilder;
 import android.util.AttributeSet;
@@ -51,6 +51,9 @@ import java.util.List;
 public class RankTopContainerView2 extends RelativeLayout {
     public final static String TAG = "RankTopContainerView";
     static final int MAX_USER_NUM = 3;
+
+    private int mMode = 0; // 模式默认为0，即rank模式  1为调音间
+
     ExImageView mMoreBtn;
     MoreOpView mMoreOpView;
     ExImageView mIvLed;
@@ -86,16 +89,16 @@ public class RankTopContainerView2 extends RelativeLayout {
     }
 
     int mTotalScore = -1;
-    int mCurScore;
+    int mCurScore = 0;
 
     public RankTopContainerView2(Context context) {
         super(context);
-        init();
+        init(context, null);
     }
 
     public RankTopContainerView2(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(context, attrs);
     }
 
     public void setListener(RankTopContainerView1.Listener l) {
@@ -106,9 +109,14 @@ public class RankTopContainerView2 extends RelativeLayout {
         mRoomData = roomData;
     }
 
-    private void init() {
+    private void init(Context context, AttributeSet attrs) {
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.topContainer);
+        mMode = typedArray.getInt(R.styleable.topContainer_mode, 0);
+        typedArray.recycle();
+
         inflate(getContext(), R.layout.rank_top_container_view, this);
         U.getSoundUtils().preLoad(TAG, R.raw.rank_xlight, R.raw.rank_xxxstop);
+
         mMoreBtn = this.findViewById(R.id.more_btn);
         mIvLed = (ExImageView) findViewById(R.id.iv_led);
         mEnergySlotView = (EnergySlotView) findViewById(R.id.energy_slot_view);
@@ -121,6 +129,11 @@ public class RankTopContainerView2 extends RelativeLayout {
         mEnergyFillSvga2 = (SVGAImageView) findViewById(R.id.energy_fill_svga2);
         mEnergyFillSvga3 = (SVGAImageView) findViewById(R.id.energy_fill_svga3);
 
+        if (mMode == 1) {
+            mMoreBtn.setVisibility(GONE);
+            mIvGameRole.setVisibility(GONE);
+            initRankLEDViews();
+        }
 
         mIvGameRole.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -414,7 +427,12 @@ public class RankTopContainerView2 extends RelativeLayout {
         for (int i = 0; i < 1; i++) {
             score = (int) (Math.sqrt(score) * 10);
         }
-        RankGameConfigModel gameConfigModel = mRoomData.getGameConfigModel();
+
+        RankGameConfigModel gameConfigModel = null;
+        if (mRoomData != null) {
+            gameConfigModel = mRoomData.getGameConfigModel();
+        }
+
         ScoreTipsView.Item item = new ScoreTipsView.Item();
 
         if (gameConfigModel != null) {
@@ -463,6 +481,13 @@ public class RankTopContainerView2 extends RelativeLayout {
             mCurScore += score;
             tryPlayProgressAnimation();
         } else {
+            if (mTotalScore <= 0 && mMode == 1) {
+                mTotalScore = (int) (lineNum * 100 * 0.6);
+            }
+
+            mCurScore += score;
+            tryPlayProgressAnimation();
+
             if (score >= 95) {
                 item.setLevel(ScoreTipsView.Level.Perfect);
             } else if (score >= 90) {
@@ -473,6 +498,7 @@ public class RankTopContainerView2 extends RelativeLayout {
                 item.setLevel(ScoreTipsView.Level.Bad);
             }
         }
+
         if (item.getLevel() != null) {
             if (mLastItem != null && item.getLevel() == mLastItem.getLevel()) {
                 item.setNum(mLastItem.getNum() + 1);
@@ -518,7 +544,6 @@ public class RankTopContainerView2 extends RelativeLayout {
             mEnergySlotView.setTarget(progress, null);
         }
     }
-
 
     void playEnergyFillAnimation(SVGAImageView mEnergyFillSvga, String assetsName) {
         MyLog.d(TAG, "playFullEnergyAnimation");
@@ -574,6 +599,13 @@ public class RankTopContainerView2 extends RelativeLayout {
 
             }
         });
-
     }
+
+    public void reset() {
+        mTotalScore = -1;
+        mCurScore = 0;
+        tryPlayProgressAnimation();
+    }
+
+
 }

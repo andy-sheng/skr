@@ -5,29 +5,30 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.common.base.BaseFragment;
+import com.common.base.FragmentDataListener;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrAudioPermission;
+import com.common.engine.ScoreConfig;
 import com.common.log.MyLog;
-import com.common.player.IPlayer;
-import com.common.player.IPlayerCallback;
-import com.common.player.exoplayer.ExoPlayer;
-import com.common.player.mediaplayer.AndroidMediaPlayer;
+import com.common.utils.ActivityUtils;
+import com.common.utils.FragmentUtils;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
-import com.common.view.ex.ExImageView;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.dialog.view.TipsDialogView;
 import com.engine.EngineEvent;
@@ -36,10 +37,10 @@ import com.engine.Params;
 import com.engine.arccloud.ArcRecognizeListener;
 import com.engine.arccloud.RecognizeConfig;
 import com.engine.arccloud.SongInfo;
-import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.rank.prepare.model.PrepareData;
-import com.module.playways.rank.prepare.view.SendGiftCircleCountDownView;
 import com.module.playways.rank.prepare.view.VoiceControlPanelView;
+import com.module.playways.rank.room.score.MachineScoreItem;
+import com.module.playways.rank.room.view.RankTopContainerView2;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
 import com.orhanobut.dialogplus.DialogPlus;
@@ -49,24 +50,20 @@ import com.zq.lyrics.LyricsManager;
 import com.zq.lyrics.LyricsReader;
 import com.zq.lyrics.event.LrcEvent;
 import com.zq.lyrics.event.LyricEventLauncher;
-import com.zq.lyrics.model.LyricsLineInfo;
 import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.ManyLyricsView;
+import com.zq.lyrics.widget.VoiceScaleView;
 import com.zq.toast.CommonToastView;
 import com.zq.toast.NoImageCommonToastView;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 import io.agora.rtc.Constants;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -80,55 +77,65 @@ public class AuditionFragment extends BaseFragment {
 
     static final int MSG_AUTO_LEAVE_CHANNEL = 9;
 
+    static final int MSG_SHOW_SCORE_EVENT = 32;
+
     static final boolean RECORD_BY_CALLBACK = false;
     static final String ACC_SAVE_PATH = new File(U.getAppInfoUtils().getMainDir(), "audition.acc").getAbsolutePath();
     static final String PCM_SAVE_PATH = new File(U.getAppInfoUtils().getMainDir(), "audition.pcm").getAbsolutePath();
 
-    ExImageView mIvBack;
+    RankTopContainerView2 mRankTopView;
+    LinearLayout mBottomContainer;
+    RelativeLayout mBackArea;
+    RelativeLayout mAuditionArea;
+    ImageView mTiaoyinIv;
+    ExTextView mTiaoyinTv;
+    RelativeLayout mResArea;
+    RelativeLayout mCompleArea;
     ExTextView mTvSongName;
-
     ManyLyricsView mManyLyricsView;
-
-    ExTextView mTvUp;
-    TextView mTvRecordTip;
-
-    SendGiftCircleCountDownView mPrgressBar;
-    ExTextView mTvRecordStop;
-    ExImageView mIvRecordStart;
-
-    LinearLayout mLlResing;
-    LinearLayout mLlPlay;
-    LinearLayout mLlSave;
-
-    ExImageView mIvResing;
-    ExImageView mIvPlay;
-    ExImageView mIvSave;
-
-    RelativeLayout mRlControlContainer;
-
-    FrameLayout mFlProgressRoot;
-
+    VoiceControlPanelView mVoiceControlView;
+    VoiceScaleView mVoiceScaleView;
+    LyricsReader mLyricsReader;
     PrepareData mPrepareData;
 
     SongModel mSongModel;
-
-    VoiceControlPanelView mVoiceControlPanelView;
-
-    FrameLayout mFlProgressContainer;
 
     private boolean mIsVoiceShow = true;
 
     private volatile boolean isRecord = false;
 
-    IPlayer mExoPlayer;
+    private int mLastLineNum = -1;
 
-    Handler mUiHanlder;
+    private int mTotalLineNum = -1;
+
+    Handler mUiHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case MSG_AUTO_LEAVE_CHANNEL:
+                    // 为了省钱，因为引擎每多在试音房一分钟都是消耗，防止用户挂机
+                    U.getFragmentUtils().popFragment(AuditionFragment.this);
+                    break;
+                default:
+                    int lineNo = (msg.what - MSG_SHOW_SCORE_EVENT) / 100;
+                    MyLog.d(TAG, "handleMessage" + " lineNo=" + lineNo);
+                    if (lineNo > mLastLineNum) {
+                        int score = EngineManager.getInstance().getLineScore();
+                        if (MyLog.isDebugLogOpen()) {
+                            U.getToastUtil().showShort("melp得分:" + score);
+                        }
+                        MyLog.d(TAG, "handleMessage acr超时 本地获取得分:" + score);
+                        processScore(score, lineNo);
+                    }
+                    break;
+            }
+        }
+    };
 
     long mStartRecordTs = 0;
 
-    ValueAnimator mRecordAnimator;
-
-    DialogPlus mQuitTipsDialog;
+//    DialogPlus mQuitTipsDialog;
 
     SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
 
@@ -155,107 +162,51 @@ public class AuditionFragment extends BaseFragment {
             EngineManager.getInstance().resumeAudioMixing();
         }
 
-        mUiHanlder = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                if (msg.what == MSG_AUTO_LEAVE_CHANNEL) {
-                    // 为了省钱，因为引擎每多在试音房一分钟都是消耗，防止用户挂机
-                    U.getFragmentUtils().popFragment(AuditionFragment.this);
-                    return;
-                }
-            }
-        };
-        mIvBack = (ExImageView) mRootView.findViewById(R.id.iv_back);
+        mRankTopView = (RankTopContainerView2) mRootView.findViewById(R.id.rank_top_view);
+        mBottomContainer = (LinearLayout) mRootView.findViewById(R.id.bottom_container);
+        mBackArea = (RelativeLayout) mRootView.findViewById(R.id.back_area);
+        mAuditionArea = (RelativeLayout) mRootView.findViewById(R.id.audition_area);
+        mTiaoyinIv = (ImageView) mRootView.findViewById(R.id.tiaoyin_iv);
+        mTiaoyinTv = (ExTextView) mRootView.findViewById(R.id.tiaoyin_tv);
+        mResArea = (RelativeLayout) mRootView.findViewById(R.id.res_area);
+        mCompleArea = (RelativeLayout) mRootView.findViewById(R.id.comple_area);
         mTvSongName = (ExTextView) mRootView.findViewById(R.id.tv_song_name);
-
-        mTvUp = mRootView.findViewById(R.id.tv_up);
-        mVoiceControlPanelView = mRootView.findViewById(R.id.voice_control_view);
-        mVoiceControlPanelView.bindData();
-        mFlProgressRoot = (FrameLayout) mRootView.findViewById(R.id.fl_progress_root);
-        mPrgressBar = mRootView.findViewById(R.id.prgress_bar);
-        mTvRecordStop = (ExTextView) mRootView.findViewById(R.id.tv_record_stop);
-        mIvRecordStart = (ExImageView) mRootView.findViewById(R.id.iv_record_start);
-        mRlControlContainer = (RelativeLayout) mRootView.findViewById(R.id.rl_control_container);
-        mFlProgressContainer = (FrameLayout) mRootView.findViewById(R.id.fl_progress_container);
-        mLlResing = (LinearLayout) mRootView.findViewById(R.id.ll_resing);
-        mIvResing = (ExImageView) mRootView.findViewById(R.id.iv_resing);
-        mLlPlay = (LinearLayout) mRootView.findViewById(R.id.ll_play);
-        mIvPlay = (ExImageView) mRootView.findViewById(R.id.iv_play);
-        mLlSave = (LinearLayout) mRootView.findViewById(R.id.ll_save);
-        mIvSave = (ExImageView) mRootView.findViewById(R.id.iv_save);
-        mManyLyricsView = mRootView.findViewById(R.id.many_lyrics_view);
-        mTvRecordTip = (TextView) mRootView.findViewById(R.id.tv_record_tip);
-        mRlControlContainer.setVisibility(View.GONE);
+        mManyLyricsView = (ManyLyricsView) mRootView.findViewById(R.id.many_lyrics_view);
+        mVoiceControlView = (VoiceControlPanelView) mRootView.findViewById(R.id.voice_control_view);
+        mVoiceControlView.bindData();
+        mVoiceScaleView = (VoiceScaleView) mRootView.findViewById(R.id.voice_scale_view);
 
         U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
 
-        RxView.clicks(mIvBack).throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(o -> {
-                    U.getSoundUtils().play(TAG, R.raw.normal_back);
-                    onBackPressed();
-//                    EngineManager.getInstance().recognizeInManualMode();
-                });
+        mBackArea.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+//                U.getSoundUtils().play(TAG, R.raw.normal_back);
+                onBackPressed();
+            }
+        });
 
-        RxView.clicks(mTvUp).throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(o -> {
-                    resendAutoLeaveChannelMsg();
-                    showVoicePanelView(true);
-                });
+        mAuditionArea.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                resendAutoLeaveChannelMsg();
+                showVoicePanelView(!mIsVoiceShow);
+            }
+        });
 
+        mResArea.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                startRecord();
+            }
+        });
 
-        RxView.clicks(mIvResing).throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(o -> {
-                    mPrgressBar.setMax(360);
-                    mPrgressBar.setProgress(0);
-                    mFlProgressRoot.setVisibility(View.VISIBLE);
-                    mRlControlContainer.setVisibility(View.GONE);
-                    mIvRecordStart.setVisibility(View.VISIBLE);
-                    mTvRecordStop.setVisibility(View.GONE);
-
-                    if (mExoPlayer != null) {
-                        mExoPlayer.stop();
-                    }
-
-                    startRecord();
-                });
-
-        RxView.clicks(mIvPlay).throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(o -> {
-                    playRecord();
-                    playLyrics(mSongModel, true);
-                });
-
-        RxView.clicks(mIvSave).throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(o -> {
-                    // 要保存
-                    Params.save2Pref(EngineManager.getInstance().getParams());
-                    U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
-                            .setImage(R.drawable.touxiangshezhichenggong_icon)
-                            .setText("保存设置成功\n已应用到所有对局")
-                            .build());
-
-                    mUiHanlder.postDelayed(() -> {
-                        if (getActivity() != null) {
-                            getActivity().finish();
-                        }
-                    }, 2000);
-//                    U.getFragmentUtils().popFragment(AuditionFragment.this);
-                });
-
-        RxView.clicks(mFlProgressContainer).throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(o -> {
-                    if (isRecord) {
-                        stopRecord();
-                    } else {
-                        mSkrAudioPermission.ensurePermission(new Runnable() {
-                            @Override
-                            public void run() {
-                                startRecord();
-                            }
-                        }, true);
-                    }
-                });
+        mCompleArea.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                stopRecord();
+            }
+        });
 
         mManyLyricsView.setOnLyricViewTapListener(new ManyLyricsView.OnLyricViewTapListener() {
             @Override
@@ -263,7 +214,6 @@ public class AuditionFragment extends BaseFragment {
                 if (EngineManager.getInstance().getParams().isMixMusicPlaying()) {
                     EngineManager.getInstance().pauseAudioMixing();
                 }
-
                 mManyLyricsView.pause();
             }
 
@@ -288,89 +238,85 @@ public class AuditionFragment extends BaseFragment {
 
         mSongModel = mPrepareData.getSongModel();
         mTvSongName.setText("《" + mSongModel.getItemName() + "》");
-        playLyrics(mSongModel, false);
-
-        mPrgressBar.setMax(360);
-        mPrgressBar.setProgress(0);
+        playLyrics(mSongModel, false, true);
 
         resendAutoLeaveChannelMsg();
     }
 
     private void startRecord() {
-        isRecord = true;
+        mSkrAudioPermission.ensurePermission(new Runnable() {
+            @Override
+            public void run() {
+                startRecord1();
+            }
+        }, true);
 
-        playLyrics(mSongModel, true);
+    }
+
+    private void startRecord1() {
+        resetView();
+
+        mVoiceScaleView.startWithData(mLyricsReader.getLyricsLineInfoList(), mSongModel.getBeginMs());
+        playLyrics(mSongModel, true, false);
         playMusic(mSongModel);
-        if (MyLog.isDebugLogOpen()) {
-            mLyricEventLauncher.postLyricEvent(mLyricsReader,mSongModel.getBeginMs(),mSongModel.getEndMs(),null);
-        }
 
+        mTotalLineNum = mLyricEventLauncher.postLyricEvent(mLyricsReader, mSongModel.getBeginMs(), mSongModel.getEndMs(), null);
         mStartRecordTs = System.currentTimeMillis();
-        mIvRecordStart.setVisibility(View.GONE);
-        mTvRecordStop.setVisibility(View.VISIBLE);
-        mRlControlContainer.setVisibility(View.GONE);
-        mTvRecordTip.setText("点击结束试音演唱");
-        mIvPlay.setEnabled(true);
+//        mIvRecordStart.setVisibility(View.GONE);
+//        mTvRecordStop.setVisibility(View.VISIBLE);
+//        mRlControlContainer.setVisibility(View.GONE);
+//        mTvRecordTip.setText("点击结束试音演唱");
+//        mIvPlay.setEnabled(true);
         if (RECORD_BY_CALLBACK) {
             EngineManager.getInstance().startAudioRecording(PCM_SAVE_PATH, Constants.AUDIO_RECORDING_QUALITY_HIGH, true);
         } else {
             EngineManager.getInstance().startAudioRecording(ACC_SAVE_PATH, Constants.AUDIO_RECORDING_QUALITY_HIGH, false);
         }
 
-        if (MyLog.isDebugLogOpen()) {
-            mCbScoreList.clear();
-            EngineManager.getInstance().startRecognize(RecognizeConfig.newBuilder()
-                    .setMode(RecognizeConfig.MODE_MANUAL)
-                    .setSongName(mSongModel.getItemName())
-                    .setArtist(mSongModel.getOwner())
-                    .setMResultListener(new ArcRecognizeListener() {
-                        @Override
-                        public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
-                            int score = 0;
+        mCbScoreList.clear();
+        EngineManager.getInstance().startRecognize(RecognizeConfig.newBuilder()
+                .setMode(RecognizeConfig.MODE_MANUAL)
+                .setSongName(mSongModel.getItemName())
+                .setArtist(mSongModel.getOwner())
+                .setMResultListener(new ArcRecognizeListener() {
+                    @Override
+                    public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
+                        mUiHandler.removeMessages(MSG_SHOW_SCORE_EVENT + lineNo * 100);
+                        if (lineNo > mLastLineNum) {
+                            // 使用最新的打分方案做优化
+                            int score1 = EngineManager.getInstance().getLineScore();
+                            if (MyLog.isDebugLogOpen()) {
+                                U.getToastUtil().showShort("melp得分:" + score1);
+                            }
+                            int score2 = -1;
                             if (targetSongInfo != null) {
-                                score = (int) (targetSongInfo.getScore() * 100);
-                                U.getToastUtil().showShort("acr打分:" + score);
-                                MyLog.d(TAG, "acr打分=" + score * 100);
+                                score2 = (int) (targetSongInfo.getScore() * 100);
+                                if (MyLog.isDebugLogOpen()) {
+                                    U.getToastUtil().showShort("acr得分:" + score2);
+                                }
+                            }
+                            if (ScoreConfig.isMelpEnable()) {
+                                if (score1 > score2) {
+                                    processScore(score1, lineNo);
+                                } else {
+                                    processScore(score2, lineNo);
+                                }
                             } else {
-//                                score = EngineManager.getInstance().getLineScore();
-//                                MyLog.d(TAG, "changba score=" + score);
+                                processScore(score2, lineNo);
                             }
                         }
-                    }).build());
-        }
+                    }
+                }).build());
+    }
 
+    private void resetView() {
+        isRecord = true;
+        mRankTopView.reset();
+        mLastLineNum = -1;
 
-        if (mRecordAnimator != null) {
-            mRecordAnimator.cancel();
-        }
-
-//        mPrgressBar.setMax(mSongModel.getTotalMs());
-        mRecordAnimator = ValueAnimator.ofInt(0, 360);
-        mRecordAnimator.setDuration(mSongModel.getTotalMs());
-        mRecordAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-//                MyLog.d(TAG, "onAnimationUpdate" + " animation=" + animation);
-                int value = (Integer) animation.getAnimatedValue();
-                mPrgressBar.setProgress(value);
-            }
-        });
-
-        mRecordAnimator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                mUiHanlder.post(() -> {
-                    stopRecord();
-                });
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-//                onAnimationEnd(animation);
-            }
-        });
-
-        mRecordAnimator.start();
+        mAuditionArea.setVisibility(View.VISIBLE);
+        showVoicePanelView(true);
+        mVoiceScaleView.setVisibility(View.VISIBLE);
     }
 
     private void stopRecord() {
@@ -387,110 +333,65 @@ public class AuditionFragment extends BaseFragment {
             return;
         }
 
+        mVoiceScaleView.setVisibility(View.GONE);
+
         isRecord = false;
 
         EngineManager.getInstance().stopAudioRecording();
         EngineManager.getInstance().stopAudioMixing();
 
-        playLyrics(mSongModel, true);
-//        mManyLyricsView.seekto(mSongModel.getBeginMs());
-//        mUiHanlder.postDelayed(() -> {
-//            mManyLyricsView.pause();
-//        }, 100);
+        // TODO: 2019/3/14 原来会自动播放，现在该为跳到PlayRecordFragment中去
+//        playLyrics(mSongModel, true, false);
+//
+//        playRecord();
 
-        mRecordAnimator.cancel();
-        mIvRecordStart.setVisibility(View.VISIBLE);
-        mTvRecordStop.setVisibility(View.GONE);
-        mRlControlContainer.setVisibility(View.VISIBLE);
-        mFlProgressRoot.setVisibility(View.GONE);
-        mIvPlay.setEnabled(false);
+        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), PlayRecordFragment.class)
+                .setAddToBackStack(true)
+                .setHasAnimation(true)
+                .addDataBeforeAdd(0, mSongModel)
+                .setFragmentDataListener(new FragmentDataListener() {
+                    @Override
+                    public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
+                        if (requestCode == 0 && resultCode == 0) {
+                            startRecord();
+                        }
+                    }
+                })
+                .build());
 
-        playRecord();
         if (MyLog.isDebugLogOpen()) {
             jisuanScore();
         }
     }
 
-    /**
-     * 播放录音
-     */
-    private void playRecord() {
-        if (mExoPlayer != null) {
-            mExoPlayer.reset();
-        }
-        if (mExoPlayer == null) {
-            if (RECORD_BY_CALLBACK) {
-                mExoPlayer = new AndroidMediaPlayer();
-            } else {
-                mExoPlayer = new ExoPlayer();
-            }
-
-            mExoPlayer.setCallback(new IPlayerCallback() {
-                @Override
-                public void onPrepared() {
-
-                }
-
-                @Override
-                public void onCompletion() {
-                    mIvPlay.setEnabled(true);
-                    mManyLyricsView.seekto(mSongModel.getBeginMs());
-                    mUiHanlder.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            mManyLyricsView.pause();
-                        }
-                    }, 100);
-                }
-
-                @Override
-                public void onSeekComplete() {
-
-                }
-
-                @Override
-                public void onVideoSizeChanged(int width, int height) {
-
-                }
-
-                @Override
-                public void onError(int what, int extra) {
-
-                }
-
-                @Override
-                public void onInfo(int what, int extra) {
-
-                }
-            });
-        }
-        if (RECORD_BY_CALLBACK) {
-            mExoPlayer.startPlayPcm(PCM_SAVE_PATH, 2, 44100, 44100 * 2);
-        } else {
-            mExoPlayer.startPlay(ACC_SAVE_PATH);
-        }
-
-        mIvPlay.setEnabled(false);
-    }
-
     private void resendAutoLeaveChannelMsg() {
-        mUiHanlder.removeMessages(MSG_AUTO_LEAVE_CHANNEL);
-        mUiHanlder.sendEmptyMessageDelayed(MSG_AUTO_LEAVE_CHANNEL, 60 * 1000 * 10);
+        mUiHandler.removeMessages(MSG_AUTO_LEAVE_CHANNEL);
+        mUiHandler.sendEmptyMessageDelayed(MSG_AUTO_LEAVE_CHANNEL, 60 * 1000 * 10);
     }
 
     private void showVoicePanelView(boolean show) {
-        mVoiceControlPanelView.clearAnimation();
-        mVoiceControlPanelView.setTranslationY(show ? mVoiceControlPanelView.getMeasuredHeight() + U.getDisplayUtils().dip2px(20) : 0);
+        if (mIsVoiceShow == show) {
+            return;
+        }
+        mVoiceControlView.clearAnimation();
+        mVoiceControlView.setTranslationY(show ? mVoiceControlView.getMeasuredHeight() + U.getDisplayUtils().dip2px(20) : 0);
 
         mIsVoiceShow = show;
-        int startY = show ? mVoiceControlPanelView.getMeasuredHeight() + U.getDisplayUtils().dip2px(20) : 0;
-        int endY = show ? 0 : mVoiceControlPanelView.getMeasuredHeight() + U.getDisplayUtils().dip2px(20);
+        if (mIsVoiceShow) {
+            mTiaoyinIv.setImageResource(R.drawable.audition_tiaoyin_anxia);
+            mTiaoyinTv.setTextColor(Color.parseColor("#99EF5E85"));
+        } else {
+            mTiaoyinIv.setImageResource(R.drawable.audition_tiaoyin);
+            mTiaoyinTv.setTextColor(Color.parseColor("#99B2B6D6"));
+        }
+        int startY = show ? mVoiceControlView.getMeasuredHeight() + U.getDisplayUtils().dip2px(20) : 0;
+        int endY = show ? 0 : mVoiceControlView.getMeasuredHeight() + U.getDisplayUtils().dip2px(20);
 
         ValueAnimator creditValueAnimator = ValueAnimator.ofInt(startY, endY);
         creditValueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                mVoiceControlPanelView.setTranslationY((int) animation.getAnimatedValue());
+                mVoiceControlView.setTranslationY((int) animation.getAnimatedValue());
             }
         });
 
@@ -506,7 +407,6 @@ public class AuditionFragment extends BaseFragment {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                mTvUp.setVisibility(show ? View.GONE : View.VISIBLE);
             }
         });
         animatorSet.start();
@@ -537,9 +437,7 @@ public class AuditionFragment extends BaseFragment {
         }
     }
 
-    LyricsReader mLyricsReader;
-
-    private void playLyrics(SongModel songModel, boolean play) {
+    private void playLyrics(SongModel songModel, boolean play, boolean isFirst) {
         final String lyricFile = SongResUtils.getFileNameWithMD5(songModel.getLyric());
 
         if (lyricFile != null) {
@@ -573,6 +471,10 @@ public class AuditionFragment extends BaseFragment {
                         if (!play) {
                             mManyLyricsView.pause();
                         }
+
+                        if (isFirst) {
+                            startRecord();
+                        }
                     }, throwable -> MyLog.e(throwable));
         } else {
             MyLog.e(TAG, "没有歌词文件，不应该，进界面前已经下载好了");
@@ -588,9 +490,8 @@ public class AuditionFragment extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEventMainThread(EngineEvent event) {
 //        MyLog.d(TAG, "restartLrcEvent type is " + restartLrcEvent.getType());
-
         if (event.getType() == TYPE_MUSIC_PLAY_FINISH) {
-            mUiHanlder.post(() -> {
+            mUiHandler.post(() -> {
                 stopRecord();
             });
         } else if (event.getType() == EngineEvent.TYPE_USER_AUDIO_VOLUME_INDICATION) {
@@ -607,14 +508,16 @@ public class AuditionFragment extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(LrcEvent.LineLineEndEvent event) {
-        //TODO
-        if (MyLog.isDebugLogOpen()) {
+        if (ScoreConfig.isAcrEnable()) {
             EngineManager.getInstance().recognizeInManualMode(event.lineNum);
-            int score = EngineManager.getInstance().getLineScore();
-            mCbScoreList.add(score);
-            U.getToastUtil().showShort("cb打分:" + score);
-            MyLog.d(TAG, "changba score:" + score);
+        } else {
+            if (ScoreConfig.isMelpEnable()) {
+                int score = EngineManager.getInstance().getLineScore();
+                processScore(score, event.lineNum);
+            }
         }
+        Message msg = mUiHandler.obtainMessage(MSG_SHOW_SCORE_EVENT + event.lineNum * 100);
+        mUiHandler.sendMessageDelayed(msg, 1000);
     }
 
     void jisuanScore() {
@@ -631,7 +534,9 @@ public class AuditionFragment extends BaseFragment {
             int t = mCbScoreList.get(i) - pj;
             fc += (t * t);
         }
-        U.getToastUtil().showShort("平均分:" + pj + " 方差:" + fc);
+        if (MyLog.isDebugLogOpen()) {
+            U.getToastUtil().showShort("平均分:" + pj + " 方差:" + fc);
+        }
         MyLog.d(TAG, "平均分:" + pj + " 方差:" + fc);
     }
 
@@ -643,81 +548,100 @@ public class AuditionFragment extends BaseFragment {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ActivityUtils.ForeOrBackgroundChange event) {
+        MyLog.w(TAG, event.foreground ? "切换到前台" : "切换到后台");
+        if (!event.foreground) {
+            EngineManager.getInstance().stopAudioRecording();
+            EngineManager.getInstance().stopAudioMixing();
+        } else {
+            resetView();
+            mVoiceScaleView.setVisibility(View.GONE);
+            playLyrics(mSongModel, false, false);
+        }
+    }
+
     @Override
     protected boolean onBackPressed() {
-        if (mVoiceControlPanelView.isChange()) {
-            if (mQuitTipsDialog == null) {
-                TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
-                        .setMessageTip("直接返回你的设置变动\n将不会被保存哦～")
-                        .setConfirmTip("保存")
-                        .setCancelTip("取消")
-                        .setConfirmBtnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                mQuitTipsDialog.dismiss(false);
-                                // 要保存
-                                Params.save2Pref(EngineManager.getInstance().getParams());
-                                U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
-                                        .setImage(R.drawable.touxiangshezhichenggong_icon)
-                                        .setText("保存设置成功\n已应用到所有对局")
-                                        .build());
-
-                                mUiHanlder.postDelayed(() -> {
-                                    Activity activity = getActivity();
-                                    if (activity != null) {
-                                        activity.finish();
-                                    }
-                                }, 2000);
-
-                            }
-                        })
-                        .setCancelBtnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                mQuitTipsDialog.dismiss(false);
-                                U.getFragmentUtils().popFragment(AuditionFragment.this);
-                            }
-                        })
-                        .build();
-
-                mQuitTipsDialog = DialogPlus.newDialog(getContext())
-                        .setContentHolder(new ViewHolder(tipsDialogView))
-                        .setGravity(Gravity.BOTTOM)
-                        .setContentBackgroundResource(R.color.transparent)
-                        .setOverlayBackgroundResource(R.color.black_trans_80)
-                        .setExpanded(false)
-                        .create();
-            }
-            mQuitTipsDialog.show();
-            return true;
-        } else {
-            if (getActivity() != null) {
-                getActivity().finish();
-            }
-            return true;
+        Params.save2Pref(EngineManager.getInstance().getParams());
+        Activity activity = getActivity();
+        if (activity != null) {
+            activity.finish();
         }
+//            if (mQuitTipsDialog == null) {
+//                TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
+//                        .setMessageTip("直接返回你的设置变动\n将不会被保存哦～")
+//                        .setConfirmTip("保存")
+//                        .setCancelTip("取消")
+//                        .setConfirmBtnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//                                mQuitTipsDialog.dismiss(false);
+//                                // 要保存
+//                                Params.save2Pref(EngineManager.getInstance().getParams());
+//                                U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
+//                                        .setImage(R.drawable.touxiangshezhichenggong_icon)
+//                                        .setText("保存设置成功\n已应用到所有对局")
+//                                        .build());
+//
+//                                mUiHandler.postDelayed(() -> {
+//                                    Activity activity = getActivity();
+//                                    if (activity != null) {
+//                                        activity.finish();
+//                                    }
+//                                }, 2000);
+//
+//                            }
+//                        })
+//                        .setCancelBtnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//                                mQuitTipsDialog.dismiss(false);
+//                                U.getFragmentUtils().popFragment(AuditionFragment.this);
+//                            }
+//                        })
+//                        .build();
+//
+//                mQuitTipsDialog = DialogPlus.newDialog(getContext())
+//                        .setContentHolder(new ViewHolder(tipsDialogView))
+//                        .setGravity(Gravity.BOTTOM)
+//                        .setContentBackgroundResource(R.color.transparent)
+//                        .setOverlayBackgroundResource(R.color.black_trans_80)
+//                        .setExpanded(false)
+//                        .create();
+//            }
+//            mQuitTipsDialog.show();
+        return true;
+    }
+
+    private void processScore(int score, int line) {
+        if (line <= mLastLineNum) {
+            return;
+        }
+        if (score < 0) {
+            return;
+        }
+        mCbScoreList.add(score);
+        mLastLineNum = line;
+        mUiHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                mRankTopView.setScoreProgress(score, 0, mTotalLineNum);
+            }
+        });
     }
 
     @Override
     public void destroy() {
         super.destroy();
-
         mLyricEventLauncher.destroy();
         mManyLyricsView.release();
-        if (mExoPlayer != null) {
-            mExoPlayer.release();
-        }
-
-        if (mRecordAnimator != null) {
-            mRecordAnimator.cancel();
-        }
         EngineManager.getInstance().destroy("prepare");
         File recordFile = new File(PCM_SAVE_PATH);
         if (recordFile != null && recordFile.exists()) {
             recordFile.delete();
         }
-        mUiHanlder.removeCallbacksAndMessages(null);
-
+        mUiHandler.removeCallbacksAndMessages(null);
         U.getSoundUtils().release(TAG);
     }
 }

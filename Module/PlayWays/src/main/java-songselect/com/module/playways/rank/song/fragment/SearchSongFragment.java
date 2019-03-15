@@ -12,6 +12,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
@@ -34,6 +35,7 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
+import com.module.RouterConstants;
 import com.module.playways.PlayWaysActivity;
 import com.module.playways.audioroom.AudioRoomActivity;
 import com.module.playways.rank.prepare.fragment.AuditionFragment;
@@ -112,41 +114,9 @@ public class SearchSongFragment extends BaseFragment {
                 }
                 SongModel songModel = (SongModel) model;
                 if (getActivity() instanceof AudioRoomActivity) {
-                    U.getToastUtil().showShort("试音房");
-                    if (songModel.isAllResExist()) {
-                        PrepareData prepareData = new PrepareData();
-                        prepareData.setSongModel(songModel);
-                        prepareData.setBgMusic(songModel.getRankUserVoice());
-
-                        mRootView.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), AuditionFragment.class)
-                                        .setAddToBackStack(true)
-                                        .setHasAnimation(true)
-                                        .addDataBeforeAdd(0, prepareData)
-                                        .setFragmentDataListener(new FragmentDataListener() {
-                                            @Override
-                                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
-
-                                            }
-                                        })
-                                        .build());
-                            }
-                        });
-                    } else {
-                        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), AuditionPrepareResFragment.class)
-                                .setAddToBackStack(false)
-                                .setHasAnimation(true)
-                                .addDataBeforeAdd(0, songModel)
-                                .setFragmentDataListener(new FragmentDataListener() {
-                                    @Override
-                                    public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
-
-                                    }
-                                })
-                                .build());
-                    }
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_AUDITION_ROOM)
+                            .withSerializable("songModel", songModel)
+                            .navigation();
                     return;
                 }
 

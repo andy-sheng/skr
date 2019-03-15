@@ -54,9 +54,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
-import com.zq.level.utils.LevelConfigUtils;
 import com.zq.level.view.NormalLevelView2;
-import com.zq.person.fragment.ImageBigPreviewFragment;
 import com.zq.relation.fragment.RelationFragment;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -241,16 +239,16 @@ public class PersonFragment extends BaseFragment implements IPersonView {
         mAvatarIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-//                ARouter.getInstance().build(RouterConstants.ACTIVITY_EDIT_INFO)
-//                        .navigation();
-                Bundle bundle = new Bundle();
-                bundle.putString(ImageBigPreviewFragment.BIG_IMAGE_PATH, MyUserInfoManager.getInstance().getAvatar());
-                U.getFragmentUtils().addFragment(
-                        FragmentUtils.newAddParamsBuilder(getActivity(), ImageBigPreviewFragment.class)
-                                .setAddToBackStack(true)
-                                .setHasAnimation(true)
-                                .setBundle(bundle)
-                                .build());
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_EDIT_INFO)
+                        .navigation();
+//                Bundle bundle = new Bundle();
+//                bundle.putString(ImageBigPreviewFragment.BIG_IMAGE_PATH, MyUserInfoManager.getInstance().getAvatar());
+//                U.getFragmentUtils().addFragment(
+//                        FragmentUtils.newAddParamsBuilder(getActivity(), ImageBigPreviewFragment.class)
+//                                .setAddToBackStack(true)
+//                                .setHasAnimation(true)
+//                                .setBundle(bundle)
+//                                .build());
             }
         });
 
@@ -496,7 +494,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
             mRankText.post(new Runnable() {
                 @Override
                 public void run() {
-                    if (PersonFragment.this.fragmentVisible) {
+                    if (PersonFragment.this.fragmentVisible && U.getFragmentUtils().getTopFragment(getActivity()) == PersonFragment.this) {
                         mPopupWindow.showAsDropDown(mRankText);
                     }
                 }
@@ -512,7 +510,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
             mRankText.post(new Runnable() {
                 @Override
                 public void run() {
-                    if (PersonFragment.this.fragmentVisible) {
+                    if (PersonFragment.this.fragmentVisible && U.getFragmentUtils().getTopFragment(getActivity()) == PersonFragment.this) {
                         mPopupWindow.showAsDropDown(mRankText);
                     }
                 }

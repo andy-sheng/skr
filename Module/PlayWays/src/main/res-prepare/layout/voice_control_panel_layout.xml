@@ -19,6 +19,7 @@
         android:orientation="horizontal">
 
         <com.common.view.ex.ExTextView
+            android:id="@+id/people_voice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="人声"
@@ -50,6 +51,7 @@
         android:orientation="horizontal">
 
         <com.common.view.ex.ExTextView
+            android:id="@+id/acc_voice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="伴奏"
@@ -88,7 +90,7 @@
             android:button="@null"
             android:checked="true"
             android:gravity="center"
-            android:text="默认"
+            android:text="原声"
             app:fillColor="#19CA2C60"
             app:fillColor_checked="#CA2C60"
             app:strokeColor="#CA2C60"
@@ -103,7 +105,7 @@
             android:button="@null"
             android:checked="false"
             android:gravity="center"
-            android:text="KTV"
+            android:text="舞曲"
             app:fillColor="#19FF8D45"
             app:fillColor_checked="#FF8D45"
             app:strokeColor="#FF8D45"
@@ -118,7 +120,7 @@
             android:button="@null"
             android:checked="false"
             android:gravity="center"
-            android:text="摇滚"
+            android:text="流行"
             app:fillColor="#1981CB40"
             app:fillColor_checked="#81CB40"
             app:strokeColor="#81CB40"
@@ -133,7 +135,7 @@
             android:button="@null"
             android:checked="false"
             android:gravity="center"
-            android:text="电音"
+            android:text="KTV"
             app:fillColor="#1968ABD3"
             app:fillColor_checked="#68ABD3"
             app:strokeColor="#68ABD3"
