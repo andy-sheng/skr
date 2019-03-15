@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
@@ -168,17 +167,14 @@ public class RankLevelChange2Fragment extends BaseFragment {
         scoreResultModel = mRoomData.getRecordData().mScoreResultModel;
         mScoreStateModel = mRoomData.getRecordData().mScoreResultModel.getSeq(3);
         if (mRoomData.getRecordData().getSelfWinType() == EWinType.Win.getValue()) {
-            mBackgroundIv.setBackground(getResources().getDrawable(R.drawable.zhanji_win_guangquan));
             BgAnimationGo();
-            assetsName = "rank_result2_win.svga";
+            assetsName = "rank_result_win.svga";
             isWin = true;
         } else if (mRoomData.getRecordData().getSelfWinType() == EWinType.Draw.getValue()) {
-            mBackgroundIv.setBackground(getResources().getDrawable(R.drawable.zhanji_draw_guangquan));
-            assetsName = "rank_result2_draw.svga";
+            assetsName = "rank_result_draw.svga";
             isWin = false;
         } else if (mRoomData.getRecordData().getSelfWinType() == EWinType.Lose.getValue()) {
-            mBackgroundIv.setBackground(getResources().getDrawable(R.drawable.zhanji_lose_guangquan));
-            assetsName = "rank_result2_lose.svga";
+            assetsName = "rank_result_lose.svga";
             isWin = false;
         }
 
