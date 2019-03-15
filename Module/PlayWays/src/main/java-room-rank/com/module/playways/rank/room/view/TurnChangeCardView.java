@@ -35,6 +35,7 @@ import com.zq.live.proto.Common.ESex;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.net.URL;
 
 public class TurnChangeCardView extends RelativeLayout {
 
@@ -106,7 +107,7 @@ public class TurnChangeCardView extends RelativeLayout {
         mFirstSvga.setLoops(1);
         SVGAParser parser = new SVGAParser(U.app());
         try {
-            parser.parse("rank_battle_start.svga", new SVGAParser.ParseCompletion() {
+            parser.parse(new URL(BaseRoomData.RANK_BATTLE_START_SVGA), new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete(@NotNull SVGAVideoEntity videoItem) {
                     SVGADrawable drawable = new SVGADrawable(videoItem, requestDynamicItem(info));

@@ -18,6 +18,12 @@ import io.reactivex.subjects.PublishSubject;
 public abstract class BaseRoomData<T extends BaseRoundInfoModel> implements Serializable {
     public final static String TAG = "RoomData";
 
+    public final static String RANK_BATTLE_START_SVGA = "http://res-static.inframe.mobi/app/rank_battle_start.svga";
+    public final static String RANK_RESULT_WIN_SVGA = "http://res-static.inframe.mobi/app/rank_result_win.svga";
+    public final static String RANK_RESULT_LOSE_SVGA ="http://res-static.inframe.mobi/app/rank_result_lose.svga";
+    public final static String RANK_RESULT_DRAW_SVGA ="http://res-static.inframe.mobi/app/rank_result_draw.svga";
+    public final static String GRAB_BURST_BIG_SVGA = "http://res-static.inframe.mobi/app/grab_burst_big_animation.svga";
+
     public final static String PK_MAIN_STAGE_WEBP = "http://res-static.inframe.mobi/app/pk_main_stage.webp";
     public final static String READY_GO_SVGA_URL = "http://res-static.inframe.mobi/app/sige_go.svga";
     public final static String ROOM_STAGE_SVGA = "http://res-static.inframe.mobi/app/main_stage_people.svga";

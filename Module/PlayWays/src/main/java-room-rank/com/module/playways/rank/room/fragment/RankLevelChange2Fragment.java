@@ -32,6 +32,7 @@ import com.common.utils.ImageUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.module.RouterConstants;
+import com.module.playways.BaseRoomData;
 import com.module.playways.rank.room.RankRoomData;
 import com.module.playways.rank.room.RoomServerApi;
 import com.module.playways.rank.room.model.RecordData;
@@ -55,6 +56,7 @@ import com.zq.live.proto.Room.EWinType;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.net.URL;
 import java.util.List;
 
 import static android.view.View.ALPHA;
@@ -163,18 +165,18 @@ public class RankLevelChange2Fragment extends BaseFragment {
 
     private void animationGo() {
         boolean isWin = false;
-        String assetsName = "";
+        String url = "";
         scoreResultModel = mRoomData.getRecordData().mScoreResultModel;
         mScoreStateModel = mRoomData.getRecordData().mScoreResultModel.getSeq(3);
         if (mRoomData.getRecordData().getSelfWinType() == EWinType.Win.getValue()) {
             BgAnimationGo();
-            assetsName = "rank_result_win.svga";
+            url = BaseRoomData.RANK_RESULT_WIN_SVGA;
             isWin = true;
         } else if (mRoomData.getRecordData().getSelfWinType() == EWinType.Draw.getValue()) {
-            assetsName = "rank_result_draw.svga";
+            url = BaseRoomData.RANK_RESULT_DRAW_SVGA;
             isWin = false;
         } else if (mRoomData.getRecordData().getSelfWinType() == EWinType.Lose.getValue()) {
-            assetsName = "rank_result_lose.svga";
+            url = BaseRoomData.RANK_RESULT_LOSE_SVGA;
             isWin = false;
         }
 
@@ -183,7 +185,7 @@ public class RankLevelChange2Fragment extends BaseFragment {
         SVGAParser parser = new SVGAParser(U.app());
         try {
             final boolean finalIsWin = isWin;
-            parser.parse(assetsName, new SVGAParser.ParseCompletion() {
+            parser.parse(new URL(url), new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
                     SVGADrawable drawable = new SVGADrawable(svgaVideoEntity, requestDynamicItem());

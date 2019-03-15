@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 import com.common.utils.U;
+import com.module.playways.BaseRoomData;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGADrawable;
@@ -13,6 +14,8 @@ import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.net.URL;
 
 /**
  * 灯的全屏效果
@@ -51,7 +54,7 @@ public class GrabDengBigAnimationView extends RelativeLayout {
         mDengSvga.setLoops(1);
         SVGAParser parser = new SVGAParser(U.app());
         try {
-            parser.parse("grab_burst_big_animation.svga", new SVGAParser.ParseCompletion() {
+            parser.parse(new URL(BaseRoomData.GRAB_BURST_BIG_SVGA), new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete(@NotNull SVGAVideoEntity videoItem) {
                     SVGADrawable drawable = new SVGADrawable(videoItem);
