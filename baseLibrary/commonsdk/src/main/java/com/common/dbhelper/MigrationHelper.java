@@ -97,6 +97,7 @@ public final class MigrationHelper {
                 StringBuilder insertTableStringBuilder = new StringBuilder();
                 insertTableStringBuilder.append("CREATE TEMPORARY TABLE ").append(tempTableName);
                 insertTableStringBuilder.append(" AS SELECT * FROM ").append(tableName).append(";");
+                printLog("generateTempTables insertTableString="+insertTableStringBuilder);
                 db.execSQL(insertTableStringBuilder.toString());
                 printLog("【Table】" + tableName + "\n ---Columns-->" + getColumnsStr(daoConfig));
                 printLog("【Generate temp table】" + tempTableName);
@@ -207,6 +208,7 @@ public final class MigrationHelper {
                     insertTableStringBuilder.append(columnSQL);
                     insertTableStringBuilder.append(" FROM ").append(tempTableName).append(";");
                     db.execSQL(insertTableStringBuilder.toString());
+                    printLog("restoreData insertTableString="+insertTableStringBuilder.toString());
                     printLog("【Restore data】 to " + tableName);
                 }
                 StringBuilder dropTableStringBuilder = new StringBuilder();
@@ -239,9 +241,9 @@ public final class MigrationHelper {
     }
 
     private static void printLog(String info) {
-        if (BuildConfig.DEBUG) {
+//        if (BuildConfig.DEBUG) {
             MyLog.d(TAG, info);
-        }
+//        }
     }
 
 }
