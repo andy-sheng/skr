@@ -24,17 +24,28 @@ public class GreenOpenHelper extends DaoMaster.OpenHelper {
 
     @Override
     public void onUpgrade(Database db, int oldVersion, int newVersion) {
-//        if (oldVersion < 2 && newVersion >= 2) {
-//            try {
-//                String sql = "alter table '" + UserAccountDao.TABLENAME + "' add COLUMN 'BUSI_KEY' STRING DEFAULT ''";
-//                db.execSQL(sql);
-//            } catch (Exception e) {
-//                UserAccountDao.dropTable(db, true);
-//                UserAccountDao.createTable(db, false);
-//            }
-//        }
 
-        MigrationHelper.migrate(db,UserAccountDao.class);
-        MigrationHelper.migrate(db,UserInfoDBDao.class);
+        MigrationHelper.migrate(db, new MigrationHelper.ReCreateAllTableListener() {
+            @Override
+            public void onCreateAllTables(Database db, boolean ifNotExists) {
+                UserAccountDao.createTable(db, ifNotExists);
+            }
+
+            @Override
+            public void onDropAllTables(Database db, boolean ifExists) {
+                UserAccountDao.dropTable(db, ifExists);
+            }
+        }, UserAccountDao.class);
+        MigrationHelper.migrate(db, new MigrationHelper.ReCreateAllTableListener() {
+            @Override
+            public void onCreateAllTables(Database db, boolean ifNotExists) {
+                UserInfoDBDao.createTable(db, ifNotExists);
+            }
+
+            @Override
+            public void onDropAllTables(Database db, boolean ifExists) {
+                UserInfoDBDao.dropTable(db, ifExists);
+            }
+        }, UserInfoDBDao.class);
     }
 }

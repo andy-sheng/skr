@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 
 rm -rf guard-res-apk
 apkPath=app/build/outputs/apk/channel_default/release/app-channel_default-release.apk
