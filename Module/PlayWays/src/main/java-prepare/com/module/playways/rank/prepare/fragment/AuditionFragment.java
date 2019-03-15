@@ -244,6 +244,8 @@ public class AuditionFragment extends BaseFragment {
     }
 
     private void startRecord() {
+        EngineManager.getInstance().stopAudioRecording();
+        EngineManager.getInstance().stopAudioMixing();
         mSkrAudioPermission.ensurePermission(new Runnable() {
             @Override
             public void run() {
