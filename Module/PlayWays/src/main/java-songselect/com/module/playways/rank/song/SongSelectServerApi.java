@@ -3,7 +3,10 @@ package com.module.playways.rank.song;
 import com.common.rxretrofit.ApiResult;
 
 import io.reactivex.Observable;
+import okhttp3.RequestBody;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 public interface SongSelectServerApi {
@@ -67,5 +70,8 @@ public interface SongSelectServerApi {
     @GET("/v1/playbook/report-not-exist-song")
     Observable<ApiResult> reportNotExistSong(@Query("name") String name,
                                              @Query("artist") String artist);
+
+    @PUT("http://dev.game.inframe.mobi/v1/game/practice-room/enter")
+    Observable<ApiResult> reportAuditionSong(@Body RequestBody body);
 }
 
