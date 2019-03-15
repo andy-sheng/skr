@@ -33,7 +33,10 @@ public class GreenOpenHelper extends DaoMaster.OpenHelper {
 //                UserAccountDao.createTable(db, false);
 //            }
 //        }
-
+        if(oldVersion <= 5 && newVersion==6){
+            UserAccountDao.dropTable(db, true);
+            UserAccountDao.createTable(db, false);
+        }
         MigrationHelper.migrate(db,UserAccountDao.class);
         MigrationHelper.migrate(db,UserInfoDBDao.class);
     }
