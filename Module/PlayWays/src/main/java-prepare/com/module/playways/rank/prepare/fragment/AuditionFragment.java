@@ -515,6 +515,7 @@ public class AuditionFragment extends BaseFragment {
         } else {
             if (ScoreConfig.isMelpEnable()) {
                 int score = EngineManager.getInstance().getLineScore();
+                U.getToastUtil().showShort("melp得分:"+score);
                 processScore(score, event.lineNum);
             }
         }

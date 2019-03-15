@@ -4,7 +4,7 @@
 
 #define RECORD_WAVY_LINE_DELAY          150     //为了打分点更准确。延迟一段时间
 
-#define LOGOPEN 0
+#define LOGOPEN 1
 
 #define MODE 1
 
