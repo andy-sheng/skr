@@ -4,7 +4,7 @@
 
 #define RECORD_WAVY_LINE_DELAY          150     //为了打分点更准确。延迟一段时间
 
-#define LOGOPEN 1
+#define LOGOPEN 0
 
 #define MODE 1
 
@@ -263,6 +263,14 @@ int PitchScoring::getScore() {
         LOGI("获取得分 mCurrentLineSampleCount:%d mCurrentLineLevelSum:%d lineScore:%d",
              mCurrentLineSampleCount, mCurrentLineLevelSum, lineScore);
     }
+
+    // 50 - 79   90 - 99 加权了
+    float x = (float) lineScore * 0.01;
+    x = (x * (1 - x) + x) * 0.2 + 0.8 * x;
+    lineScore = 100 * (x * (1 - x) + x);
+    if (LOGOPEN) {
+        LOGI("获取得分 lineScore1:%d", lineScore);
+    }
     if (mPcmBufferSize > 0) {
         int average = mPcmTotal / mPcmBufferSize;
         int db = (int) (20.0 * log10(average));
@@ -274,21 +282,22 @@ int PitchScoring::getScore() {
         float pcmF = (-1) * (db - 60) * (db - 60) / 625.0 + 1;
         mPcmTotal = 0;
         mPcmBufferSize = 0;
+        int c = 7;
         if (db > 70) {
-            lineScore = lineScore + 5;
+            lineScore = lineScore + c;
         } else {
-            lineScore = lineScore + (db / 4.0 - 12.5);
+            lineScore = lineScore + (db * c / 10 - 5 * c);
         }
+    }
+    if (LOGOPEN) {
+        LOGI("获取得分 lineScore2:%d", lineScore);
     }
     if (lineScore < 0) {
         lineScore = 0;
     } else if (lineScore > 100) {
         lineScore = 100;
     }
-    // 50 - 79   90 - 99 加权了
-//    float x = (float) lineScore * 0.01;
-//    x = (x * (1 - x) + x) * 0.2 + 0.8 * x;
-//    lineScore = 100 * (x * (1 - x) + x);
+
 
     //2:清空统计数据
     mCurrentLineSampleCount = 0;
