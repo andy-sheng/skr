@@ -326,19 +326,15 @@ public class AuditionFragment extends BaseFragment {
             return;
         }
 
-        mLyricEventLauncher.destroy();
-
         if (System.currentTimeMillis() - mStartRecordTs < 5000) {
             U.getToastUtil().showSkrCustomShort(new NoImageCommonToastView.Builder(U.app())
                     .setText("太短啦\n再唱几句吧~")
                     .build());
             return;
         }
-
+        mLyricEventLauncher.destroy();
         mVoiceScaleView.setVisibility(View.GONE);
-
         isRecord = false;
-
         EngineManager.getInstance().stopAudioRecording();
         EngineManager.getInstance().stopAudioMixing();
 
