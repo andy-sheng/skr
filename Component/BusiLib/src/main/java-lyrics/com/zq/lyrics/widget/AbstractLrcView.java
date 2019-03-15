@@ -1361,6 +1361,7 @@ public abstract class AbstractLrcView extends View {
         if (mWorkerHandler != null) {
             mWorkerHandler.removeCallbacksAndMessages(null);
         }
+        mHandlerThread.quit();
         mLrcPlayerStatus = LRCPLAYERSTATUS_INIT;
     }
 
