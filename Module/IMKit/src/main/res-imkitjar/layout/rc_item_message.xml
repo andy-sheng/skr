@@ -26,8 +26,8 @@
         android:id="@+id/ll_message_check"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:layout_below="@id/rc_time"
         android:layout_alignParentLeft="true"
+        android:layout_below="@id/rc_time"
         android:gravity="center_vertical"
         android:visibility="gone">
 
@@ -151,10 +151,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
-                android:layout_marginTop="13dp"
                 android:layout_marginRight="4dp"
-                android:drawableStart="@drawable/rc_read_receipt_request_button"
+                android:layout_marginTop="13dp"
                 android:drawableLeft="@drawable/rc_read_receipt_request_button"
+                android:drawableStart="@drawable/rc_read_receipt_request_button"
                 android:textColor="@color/rc_read_receipt_status"
                 android:textSize="12sp"
                 android:visibility="gone" />
@@ -164,8 +164,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:layout_marginRight="4dp"
                 android:layout_marginBottom="5dp"
+                android:layout_marginRight="4dp"
                 android:text="@string/rc_read_receipt_status"
                 android:textColor="@color/rc_read_receipt_status"
                 android:textSize="12sp"
@@ -182,11 +182,11 @@
                 android:id="@+id/countdown_time_receive"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="4dp"
+                android:layout_gravity="bottom"
                 android:textColor="#A4A4A4"
-                android:textSize="12sp" />
+                android:textSize="12sp"/>
 
         </LinearLayout>
 
