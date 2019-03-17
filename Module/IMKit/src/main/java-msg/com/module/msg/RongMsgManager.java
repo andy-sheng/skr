@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.util.Pair;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
@@ -13,10 +14,15 @@ import com.common.core.userinfo.cache.BuddyCache;
 import com.common.log.MyLog;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.HandlerTaskTimer;
+import com.common.utils.LogUploadUtils;
 import com.common.utils.U;
 import com.module.common.ICallback;
 import com.module.msg.model.CustomChatRoomMsg;
+import com.module.msg.model.SpecailOpMsg;
 
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -128,6 +134,47 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                     }
                 }
                 return true;
+            } else if (message.getContent() instanceof SpecailOpMsg) {
+                SpecailOpMsg specailOpMsg = (SpecailOpMsg) message.getContent();
+                if (specailOpMsg.getMessageType() == 1) {
+                    U.getLogUploadUtils().upload(MyUserInfoManager.getInstance().getUid(), new LogUploadUtils.Callback() {
+                        @Override
+                        public void onSuccess(String url) {
+                            //上传日志成功
+                            JSONObject jsonObject = new JSONObject();
+                            jsonObject.put("uploaderId", MyUserInfoManager.getInstance().getUid());
+                            jsonObject.put("uploaderName", MyUserInfoManager.getInstance().getNickName());
+                            jsonObject.put("uploaderAvatar", MyUserInfoManager.getInstance().getAvatar());
+                            jsonObject.put("url", url);
+                            jsonObject.put("date", U.getDateTimeUtils().formatDateString(new Date()));
+
+                            StringBuilder sb = new StringBuilder();
+                            sb.append(" version:").append(U.getAppInfoUtils().getVersionName())
+                                    .append(" 渠道号:").append(U.getChannelUtils().getChannel())
+                                    .append(" Mylog.debugOpen:").append(MyLog.isDebugLogOpen());
+                            sb.append(" 手机型号:").append(U.getDeviceUtils().getProductModel());
+                            sb.append(" 手机厂商:").append(U.getDeviceUtils().getProductBrand());
+                            jsonObject.put("extra", sb.toString());
+                            MyLog.d(TAG, "上传日志 " + jsonObject.toJSONString());
+                            sendSpecialDebugMessage(message.getSenderUserId(), 2, jsonObject.toJSONString(), null);
+                        }
+
+                        @Override
+                        public void onFailed() {
+
+                        }
+                    });
+                } else if (specailOpMsg.getMessageType() == 2) {
+                    JSONObject jsonObject = JSON.parseObject(specailOpMsg.getContentJsonStr());
+                    LogUploadUtils.RequestOthersUploadLogSuccess event = new LogUploadUtils.RequestOthersUploadLogSuccess();
+                    event.uploaderId = jsonObject.getString("uploaderId");
+                    event.uploaderName = jsonObject.getString("uploaderName");
+                    event.uploaderAvatar = jsonObject.getString("uploaderAvatar");
+                    event.mLogUrl = jsonObject.getString("url");
+                    event.date = jsonObject.getString("date");
+                    event.extra = jsonObject.getString("extra");
+                    EventBus.getDefault().post(event);
+                }
             }
             return false;
         }
@@ -151,6 +198,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             RongIM.setUserInfoProvider(this, true);
             mIsInit = true;
             RongIM.registerMessageType(CustomChatRoomMsg.class);
+            RongIM.registerMessageType(SpecailOpMsg.class);
             RongIM.setConnectionStatusListener(new RongIMClient.ConnectionStatusListener() {
                 @Override
                 public void onChanged(ConnectionStatus connectionStatus) {
@@ -367,6 +415,35 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             }
         });
     }
+
+    public void sendSpecialDebugMessage(String targetId, int messageType, String content, ICallback callback) {
+        SpecailOpMsg customChatRoomMsg = new SpecailOpMsg();
+        customChatRoomMsg.setMessageType(messageType);
+        customChatRoomMsg.setContentJsonStr(content);
+        Message msg = Message.obtain(targetId, Conversation.ConversationType.NONE, customChatRoomMsg);
+        RongIM.getInstance().sendMessage(msg, "pushContent", "pushData", new IRongCallback.ISendMessageCallback() {
+            @Override
+            public void onAttached(Message message) {
+
+            }
+
+            @Override
+            public void onSuccess(Message message) {
+                if (callback != null) {
+                    callback.onSucess(message);
+                }
+            }
+
+            @Override
+            public void onError(Message message, RongIMClient.ErrorCode errorCode) {
+                MyLog.d(TAG, "send msg onError errorCode=" + errorCode);
+                if (callback != null) {
+                    callback.onFailed(message, errorCode.getValue(), errorCode.getMessage());
+                }
+            }
+        });
+    }
+
 
     public void syncHistoryFromChatRoom(String roomId, int count, boolean reverse, ICallback callback) {
         RongIM.getInstance().getHistoryMessages(Conversation.ConversationType.CHATROOM, roomId, Integer.MAX_VALUE, count, new RongIMClient.ResultCallback<List<Message>>() {

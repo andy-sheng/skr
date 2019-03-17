@@ -59,6 +59,8 @@ public interface IMsgService extends IProvider {
 
     void sendChatRoomMessage(String roomId, int messageType, String content, ICallback callback);
 
+    void sendSpecialDebugMessage(String targetId, int messageType,String content, ICallback callback);
+
     void syncHistoryFromChatRoom(String roomId, int count, boolean reverse, ICallback callback);
 
     /**

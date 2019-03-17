@@ -89,7 +89,6 @@ import com.zq.live.proto.Room.ERoomMsgType;
 import com.zq.live.proto.Room.MachineScore;
 import com.zq.live.proto.Room.RoomMsg;
 import com.zq.lyrics.event.LrcEvent;
-import com.zq.lyrics.model.UrlRes;
 import com.zq.lyrics.utils.ZipUrlResourceManager;
 
 import org.greenrobot.eventbus.EventBus;
@@ -100,7 +99,6 @@ import org.greenrobot.greendao.annotation.NotNull;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 
 import io.agora.rtc.Constants;
@@ -1600,7 +1598,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 String contnet = U.getBase64Utils().encode(roomMsg.toByteArray());
                 msgService.sendChatRoomMessage(String.valueOf(mRoomData.getGameId()), CustomMsgType.MSG_TYPE_ROOM, contnet, null);
             }
-
         }
     }
 

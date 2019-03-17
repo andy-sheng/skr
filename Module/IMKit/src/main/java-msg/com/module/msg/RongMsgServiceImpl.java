@@ -75,6 +75,11 @@ public class RongMsgServiceImpl implements IMsgService {
     }
 
     @Override
+    public void sendSpecialDebugMessage(String targetId, int messageType,String content, ICallback callback) {
+        RongMsgManager.getInstance().sendSpecialDebugMessage(targetId, messageType,content, callback);
+    }
+
+    @Override
     public void syncHistoryFromChatRoom(String roomId, int count, boolean reverse, ICallback callback) {
         RongMsgManager.getInstance().syncHistoryFromChatRoom(roomId, count, reverse, callback);
     }

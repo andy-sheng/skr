@@ -112,7 +112,7 @@ public class FeedbackFragment extends BaseFragment {
                     public void accept(Object o) {
                         U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
                         mUploadProgressBar.setVisibility(View.VISIBLE);
-                        U.getLogUploadUtils().upload(MyUserInfoManager.getInstance().getUid());
+                        U.getLogUploadUtils().upload(MyUserInfoManager.getInstance().getUid(),null);
                     }
                 });
 

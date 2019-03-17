@@ -24,7 +24,7 @@ public class LogUploadUtils {
     public final static String TAG = "LogUploadUtils";
     Disposable mUploadLogTask;
 
-    public void upload(final long uid) {
+    public void upload(final long uid, Callback callback) {
 
         if (mUploadLogTask != null && !mUploadLogTask.isDisposed()) {
             U.getToastUtil().showShort("正在上传日志");
@@ -89,6 +89,9 @@ public class LogUploadUtils {
                                 MyLog.w(TAG, "日志上传成功");
                                 file.delete();
                                 EventBus.getDefault().post(new UploadLogEvent(url, true));
+                                if (callback != null) {
+                                    callback.onSuccess(url);
+                                }
                             }
 
                             @Override
@@ -96,6 +99,9 @@ public class LogUploadUtils {
                                 MyLog.e(TAG, msg);
                                 file.delete();
                                 EventBus.getDefault().post(new UploadLogEvent(null, false));
+                                if (callback != null) {
+                                    callback.onFailed();
+                                }
                             }
                         });
             }
@@ -150,5 +156,19 @@ public class LogUploadUtils {
             this.mUrl = url;
             this.mIsSuccess = isSuccess;
         }
+    }
+
+    public static class RequestOthersUploadLogSuccess {
+        public String uploaderId;
+        public String uploaderName;
+        public String uploaderAvatar;
+        public String mLogUrl;
+        public String date;
+        public String extra;
+    }
+
+    public interface Callback{
+        void onSuccess(String url);
+        void onFailed();
     }
 }

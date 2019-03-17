@@ -30,16 +30,30 @@
         android:textSize="@dimen/textsize_12_dp" />
 
     <com.common.view.ex.ExTextView
+        android:id="@+id/request_log_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/report"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/view_14_dp"
+        android:layout_marginRight="@dimen/view_32_dp"
+        android:gravity="center"
+        android:text="请上传日志"
+        android:textColor="#800C2275"
+        android:visibility="gone"
+        android:textSize="@dimen/textsize_12_dp" />
+
+    <com.common.view.ex.ExTextView
         android:id="@+id/name_tv"
         android:layout_width="wrap_content"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:maxLines="1"
         android:layout_height="@dimen/view_33_dp"
         android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginTop="@dimen/view_20_dp"
-        android:layout_toRightOf="@+id/avatar_iv"
         android:layout_toLeftOf="@id/report"
+        android:layout_toRightOf="@+id/avatar_iv"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:singleLine="true"
         android:textColor="#0C2275"
         android:textSize="@dimen/textsize_24_dp"
         android:textStyle="bold" />

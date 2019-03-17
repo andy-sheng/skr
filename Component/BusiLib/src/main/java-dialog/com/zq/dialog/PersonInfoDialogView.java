@@ -3,14 +3,12 @@ package com.zq.dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.text.TextUtils;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseActivity;
-import com.common.base.BaseFragment;
 import com.common.core.account.UserAccountManager;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
@@ -29,13 +27,15 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
 import com.component.busilib.view.MarqueeTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.module.ModuleServiceManager;
+import com.module.common.ICallback;
+import com.module.msg.IMsgService;
 import com.zq.level.view.HorizonLevelView;
-
-import junit.framework.Test;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -69,6 +69,8 @@ public class PersonInfoDialogView extends RelativeLayout {
     ExTextView mReport;
     TagFlowLayout mFlowlayout;
     ExTextView mFollowTv;
+    ExTextView mRequestLogBtn;
+    int mTargetUserId;
 
     public PersonInfoDialogView(Context context, int userID) {
         super(context);
@@ -96,6 +98,39 @@ public class PersonInfoDialogView extends RelativeLayout {
 
         mAvatarIv = (SimpleDraweeView) this.findViewById(R.id.avatar_iv);
         mNameTv = (ExTextView) this.findViewById(R.id.name_tv);
+        mRequestLogBtn = this.findViewById(R.id.request_log_btn);
+
+        mNameTv.setOnLongClickListener(new OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (MyLog.isDebugLogOpen()) {
+                    mRequestLogBtn.setVisibility(VISIBLE);
+                } else {
+                    mRequestLogBtn.setVisibility(GONE);
+                }
+                return false;
+            }
+        });
+
+        mRequestLogBtn.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                IMsgService msgService = ModuleServiceManager.getInstance().getMsgService();
+                if (msgService != null) {
+                    msgService.sendSpecialDebugMessage(String.valueOf(mTargetUserId), 1,"请求上传日志", new ICallback() {
+                        @Override
+                        public void onSucess(Object obj) {
+                            U.getToastUtil().showShort("请求成功,稍等看该用户是否有返回");
+                        }
+
+                        @Override
+                        public void onFailed(Object obj, int errcode, String message) {
+
+                        }
+                    });
+                }
+            }
+        });
         mHorizLevelView = (HorizonLevelView) this.findViewById(R.id.horiz_level_view);
         mSignTv = (MarqueeTextView) this.findViewById(R.id.sign_tv);
         mReport = (ExTextView) this.findViewById(R.id.report);
@@ -115,6 +150,7 @@ public class PersonInfoDialogView extends RelativeLayout {
     }
 
     private void initData(Context context, int userID) {
+        mTargetUserId = userID;
         if (userID == UserAccountManager.SYSTEM_GRAB_ID || userID == UserAccountManager.SYSTEM_RANK_AI) {
             mReport.setVisibility(GONE);
         }

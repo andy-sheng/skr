@@ -10,7 +10,6 @@ import com.common.rxretrofit.ApiResult;
 import com.common.utils.HandlerTaskTimer;
 import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
-import com.module.playways.rank.msg.event.JoinActionEvent;
 import com.module.playways.rank.msg.event.QJoinActionEvent;
 import com.module.playways.rank.prepare.MatchServerApi;
 import com.module.playways.rank.prepare.model.GameInfoModel;
