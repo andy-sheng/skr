@@ -993,7 +993,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                     .setCancelBtnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            mQuitTipsDialog.dismiss(false);
+                            if(mQuitTipsDialog != null){
+                                mQuitTipsDialog.dismiss(false);
+                            }
                         }
                     })
                     .build();
