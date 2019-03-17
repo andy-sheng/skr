@@ -557,7 +557,7 @@ public class EngineManager implements AgoraOutCallback {
                         && !userStatus.hasBindView()
                         && !userStatus.isVideoMute()
                         && userStatus.isFirstVideoDecoded()
-                ) {
+                        ) {
                     // 这个用户有资格消费一个 surfaceview
                     if (view instanceof TextureView) {
                         canRemoveViews.add(view);
@@ -787,13 +787,15 @@ public class EngineManager implements AgoraOutCallback {
      * @param volume
      */
     public void adjustRecordingSignalVolume(final int volume) {
-        mCustomHandlerThread.post(new Runnable() {
-            @Override
-            public void run() {
-                mConfig.setRecordingSignalVolume(volume);
-                AgoraEngineAdapter.getInstance().adjustRecordingSignalVolume(volume);
-            }
-        });
+        if (mCustomHandlerThread != null) {
+            mCustomHandlerThread.post(new Runnable() {
+                @Override
+                public void run() {
+                    mConfig.setRecordingSignalVolume(volume);
+                    AgoraEngineAdapter.getInstance().adjustRecordingSignalVolume(volume);
+                }
+            });
+        }
     }
 
     /**
