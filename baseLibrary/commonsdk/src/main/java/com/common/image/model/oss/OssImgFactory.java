@@ -70,6 +70,10 @@ public class OssImgFactory {
      * @return
      */
     public static String addOssParams(String url, IOssParam[] ossProcessors) {
+        if(TextUtils.isEmpty(url)){
+            return url;
+        }
+        
         Uri uri = Uri.parse(url);
         if (uri != null) {
             StringBuilder paramsSb = new StringBuilder();
