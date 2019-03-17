@@ -267,7 +267,9 @@ public class AuditionFragment extends BaseFragment {
     private void startRecord1() {
         resetView();
 
-        mVoiceScaleView.startWithData(mLyricsReader.getLyricsLineInfoList(), mSongModel.getBeginMs());
+        if(mLyricsReader != null){
+            mVoiceScaleView.startWithData(mLyricsReader.getLyricsLineInfoList(), mSongModel.getBeginMs());
+        }
         playLyrics(mSongModel, true, false);
         playMusic(mSongModel);
 
