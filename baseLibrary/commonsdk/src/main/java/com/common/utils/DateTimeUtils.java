@@ -132,6 +132,11 @@ public class DateTimeUtils {
         return simpleDateFormat.format(new Date(rowTime));
     }
 
+    public String formatDetailTimeStringNow() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return simpleDateFormat.format(new Date(System.currentTimeMillis()));
+    }
+
     /**
      * 12:03:23.122
      *

@@ -112,15 +112,16 @@ public class PersonInfoDialogView extends RelativeLayout {
             }
         });
 
-        mRequestLogBtn.setOnClickListener(new DebounceViewClickListener() {
+        mRequestLogBtn.setOnLongClickListener(new OnLongClickListener() {
             @Override
-            public void clickValid(View v) {
+            public boolean onLongClick(View v) {
+                MyLog.d(TAG, "clickValid" + " v=" + v);
                 IMsgService msgService = ModuleServiceManager.getInstance().getMsgService();
                 if (msgService != null) {
-                    msgService.sendSpecialDebugMessage(String.valueOf(mTargetUserId), 1,"请求上传日志", new ICallback() {
+                    msgService.sendSpecialDebugMessage(String.valueOf(mTargetUserId), 1, "请求上传日志", new ICallback() {
                         @Override
                         public void onSucess(Object obj) {
-                            U.getToastUtil().showShort("请求成功,稍等看该用户是否有返回");
+                            U.getToastUtil().showLong("请求成功,稍等看该用户是否有返回");
                         }
 
                         @Override
@@ -129,6 +130,7 @@ public class PersonInfoDialogView extends RelativeLayout {
                         }
                     });
                 }
+                return false;
             }
         });
         mHorizLevelView = (HorizonLevelView) this.findViewById(R.id.horiz_level_view);

@@ -56,5 +56,6 @@ public class GlobalEventReceiver {
         String title = String.format("日志 id=%s,name=%s,date=%s", event.uploaderId, event.uploaderName, event.date);
         sharePanel.setShareContent(event.uploaderAvatar, title, event.extra, event.mLogUrl);
         sharePanel.share(SharePlatform.WEIXIN, ShareType.URL);
+        U.getToastUtil().showLong(title + "拉取成功，请将其分享给研发同学");
     }
 }

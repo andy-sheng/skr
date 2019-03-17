@@ -146,12 +146,11 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                             jsonObject.put("uploaderName", MyUserInfoManager.getInstance().getNickName());
                             jsonObject.put("uploaderAvatar", MyUserInfoManager.getInstance().getAvatar());
                             jsonObject.put("url", url);
-                            jsonObject.put("date", U.getDateTimeUtils().formatDateString(new Date()));
+                            jsonObject.put("date", U.getDateTimeUtils().formatDetailTimeStringNow());
 
                             StringBuilder sb = new StringBuilder();
                             sb.append(" version:").append(U.getAppInfoUtils().getVersionName())
-                                    .append(" 渠道号:").append(U.getChannelUtils().getChannel())
-                                    .append(" Mylog.debugOpen:").append(MyLog.isDebugLogOpen());
+                                    .append(" 渠道号:").append(U.getChannelUtils().getChannel());
                             sb.append(" 手机型号:").append(U.getDeviceUtils().getProductModel());
                             sb.append(" 手机厂商:").append(U.getDeviceUtils().getProductBrand());
                             jsonObject.put("extra", sb.toString());
@@ -163,7 +162,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                         public void onFailed() {
 
                         }
-                    });
+                    }, false);
                 } else if (specailOpMsg.getMessageType() == 2) {
                     JSONObject jsonObject = JSON.parseObject(specailOpMsg.getContentJsonStr());
                     LogUploadUtils.RequestOthersUploadLogSuccess event = new LogUploadUtils.RequestOthersUploadLogSuccess();

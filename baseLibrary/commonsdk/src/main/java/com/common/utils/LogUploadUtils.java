@@ -24,10 +24,12 @@ public class LogUploadUtils {
     public final static String TAG = "LogUploadUtils";
     Disposable mUploadLogTask;
 
-    public void upload(final long uid, Callback callback) {
+    public void upload(final long uid, Callback callback,boolean fromSelf) {
 
         if (mUploadLogTask != null && !mUploadLogTask.isDisposed()) {
-            U.getToastUtil().showShort("正在上传日志");
+            if(fromSelf) {
+                U.getToastUtil().showShort("正在上传日志");
+            }
             return;
         }
 

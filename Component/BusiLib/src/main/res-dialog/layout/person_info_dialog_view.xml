@@ -38,10 +38,10 @@
         android:layout_marginTop="@dimen/view_14_dp"
         android:layout_marginRight="@dimen/view_32_dp"
         android:gravity="center"
-        android:text="请上传日志"
+        android:text="长按要求该用户上传日志"
         android:textColor="#800C2275"
-        android:visibility="gone"
-        android:textSize="@dimen/textsize_12_dp" />
+        android:textSize="@dimen/textsize_12_dp"
+        android:visibility="gone" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/name_tv"

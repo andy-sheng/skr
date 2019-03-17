@@ -80,7 +80,7 @@ public class MyCrashHandler implements UncaughtExceptionHandler {
                 public void accept(Throwable throwable) throws Exception {
                     MyLog.d(TAG, throwable);
                     if (BuildConfig.DEBUG) {
-                        if (throwable instanceof IgnoreException) {
+                        if (throwable instanceof IgnoreException || throwable.getCause() instanceof IgnoreException) {
 
                         } else {
                             uncaught(new Throwable("来自的rx的异常,不会导致崩溃，但要分析下原因是否合理", throwable));
