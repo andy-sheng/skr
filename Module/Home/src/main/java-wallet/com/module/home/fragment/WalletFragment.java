@@ -73,7 +73,8 @@ public class WalletFragment extends BaseFragment implements IWalletView {
         mRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                mWalletRecordPresenter.getWalletIncrRecords(offset, DEFAULT_COUNT);
+//                mWalletRecordPresenter.getWalletIncrRecords(offset, DEFAULT_COUNT);
+                mWalletRecordPresenter.getAllWalletRecords(offset, DEFAULT_COUNT);
             }
 
             @Override
@@ -136,7 +137,8 @@ public class WalletFragment extends BaseFragment implements IWalletView {
         mRecyclerView.setAdapter(mWalletRecordAdapter);
 
         mWalletRecordPresenter.getBalance();
-        mWalletRecordPresenter.getWalletIncrRecords(offset, DEFAULT_COUNT);
+//        mWalletRecordPresenter.getWalletIncrRecords(offset, DEFAULT_COUNT);
+        mWalletRecordPresenter.getAllWalletRecords(offset, DEFAULT_COUNT);
     }
 
     @Override
@@ -164,6 +166,18 @@ public class WalletFragment extends BaseFragment implements IWalletView {
 
     @Override
     public void onGetIncrRecords(int offset, List<WalletRecordModel> list) {
+        this.offset = offset;
+        if (list == null || list.size() <= 0) {
+            mRefreshLayout.finishLoadMoreWithNoMoreData();
+            return;
+        }
+        mRefreshLayout.finishLoadMore();
+        mWalletRecordAdapter.insertListLast(list);
+        mWalletRecordAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onGetAllRecords(int offset, List<WalletRecordModel> list) {
         this.offset = offset;
         if (list == null || list.size() <= 0) {
             mRefreshLayout.finishLoadMoreWithNoMoreData();
