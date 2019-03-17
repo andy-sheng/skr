@@ -46,7 +46,11 @@ public class ExpendWebActivity extends AgentWebActivity {
             @Override
             public void onClicked(View v, int action, String extra) {
                 if (action == ACTION_LEFT_TEXT) {
-                    finish();
+                    if (mBridgeWebView != null && mBridgeWebView.canGoBack()) {
+                        mBridgeWebView.goBack();
+                    } else {
+                        finish();
+                    }
                 } else if (action == ACTION_RIGHT_BUTTON) {
                     SharePanel sharePanel = new SharePanel(ExpendWebActivity.this);
                     sharePanel.setShareContent(mIcon, mTitle, mDes, mUrl);
