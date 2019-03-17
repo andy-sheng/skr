@@ -619,7 +619,9 @@ public class AgoraEngineAdapter {
      * @param enable
      */
     public void enableLocalVideo(boolean enable) {
-        mRtcEngine.enableLocalVideo(enable);
+        if (mRtcEngine != null) {
+            mRtcEngine.enableLocalVideo(enable);
+        }
     }
 
     /**
@@ -630,7 +632,9 @@ public class AgoraEngineAdapter {
      * @param muted
      */
     public void muteLocalVideoStream(boolean muted) {
-        mRtcEngine.muteLocalVideoStream(muted);
+        if (mRtcEngine != null) {
+            mRtcEngine.muteLocalVideoStream(muted);
+        }
     }
 
     /**
@@ -643,7 +647,9 @@ public class AgoraEngineAdapter {
      * @param muted
      */
     public void muteRemoteVideoStream(int uid, boolean muted) {
-        mRtcEngine.muteRemoteVideoStream(uid, muted);
+        if (mRtcEngine != null) {
+            mRtcEngine.muteRemoteVideoStream(uid, muted);
+        }
     }
 
     /**
@@ -652,7 +658,9 @@ public class AgoraEngineAdapter {
      * @param muted
      */
     public void muteAllRemoteVideoStreams(boolean muted) {
-        mRtcEngine.muteAllRemoteVideoStreams(muted);
+        if (mRtcEngine != null) {
+            mRtcEngine.muteAllRemoteVideoStreams(muted);
+        }
     }
 
     /*视频渲染相关结束*/
@@ -666,7 +674,9 @@ public class AgoraEngineAdapter {
      * 回调 onMicrophoneEnabled
      */
     public void enableLocalAudio(boolean enable) {
-        mRtcEngine.enableLocalAudio(enable);
+        if (mRtcEngine != null) {
+            mRtcEngine.enableLocalAudio(enable);
+        }
     }
 
     /**
@@ -678,7 +688,9 @@ public class AgoraEngineAdapter {
      */
     public void muteLocalAudioStream(boolean muted) {
         MyLog.d(TAG, "muteLocalAudioStream" + " muted=" + muted);
-        mRtcEngine.muteLocalAudioStream(muted);
+        if (mRtcEngine != null) {
+            mRtcEngine.muteLocalAudioStream(muted);
+        }
     }
 
     /**
@@ -687,7 +699,9 @@ public class AgoraEngineAdapter {
      * @param muted
      */
     public void muteRemoteAudioStream(int uid, boolean muted) {
-        mRtcEngine.muteRemoteAudioStream(uid, muted);
+        if (mRtcEngine != null) {
+            mRtcEngine.muteRemoteAudioStream(uid, muted);
+        }
     }
 
     /**
@@ -695,7 +709,9 @@ public class AgoraEngineAdapter {
      * 适用于 A 在唱歌，B C 能互相聊天，但不能打扰到 A 的场景
      */
     public void muteAllRemoteAudioStreams(boolean muted) {
-        mRtcEngine.muteAllRemoteAudioStreams(muted);
+        if (mRtcEngine != null) {
+            mRtcEngine.muteAllRemoteAudioStreams(muted);
+        }
     }
 
     /**
@@ -733,7 +749,9 @@ public class AgoraEngineAdapter {
      * 一旦启用，onAudioQuality 将被定期触发
      */
     public void enableAudioQualityIndication(boolean enable) {
-        mRtcEngine.enableAudioQualityIndication(enable);
+        if (mRtcEngine != null) {
+            mRtcEngine.enableAudioQualityIndication(enable);
+        }
     }
 
     /**
@@ -743,7 +761,9 @@ public class AgoraEngineAdapter {
      * @param smooth   [0,10] 建议3
      */
     public void enableAudioVolumeIndication(int interval, int smooth) {
-        mRtcEngine.enableAudioVolumeIndication(interval, smooth);
+        if (mRtcEngine != null) {
+            mRtcEngine.enableAudioVolumeIndication(interval, smooth);
+        }
     }
 
     /**
@@ -763,7 +783,9 @@ public class AgoraEngineAdapter {
      */
     public void setEnableSpeakerphone(boolean fromSpeaker) {
         MyLog.d(TAG, "setEnableSpeakerphone" + " fromSpeaker=" + fromSpeaker);
-        mRtcEngine.setEnableSpeakerphone(fromSpeaker);
+        if (mRtcEngine != null) {
+            mRtcEngine.setEnableSpeakerphone(fromSpeaker);
+        }
     }
 
     /**
@@ -781,7 +803,9 @@ public class AgoraEngineAdapter {
      */
     public void enableInEarMonitoring(boolean enable) {
         MyLog.d(TAG, "enableInEarMonitoring" + " enable=" + enable);
-        mRtcEngine.enableInEarMonitoring(enable);
+        if (mRtcEngine != null) {
+            mRtcEngine.enableInEarMonitoring(enable);
+        }
     }
 
     /**
@@ -790,7 +814,9 @@ public class AgoraEngineAdapter {
      * @param volume 默认100
      */
     public void setInEarMonitoringVolume(int volume) {
-        mRtcEngine.setInEarMonitoringVolume(volume);
+        if (mRtcEngine != null) {
+            mRtcEngine.setInEarMonitoringVolume(volume);
+        }
     }
 
     /**
@@ -842,7 +868,9 @@ public class AgoraEngineAdapter {
      * @param pitch
      */
     public void setLocalVoicePitch(double pitch) {
-        mRtcEngine.setLocalVoicePitch(pitch);
+        if (mRtcEngine != null) {
+            mRtcEngine.setLocalVoicePitch(pitch);
+        }
     }
 
     /**
