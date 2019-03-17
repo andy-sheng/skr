@@ -9,4 +9,6 @@ public interface IWalletView {
     void onGetBalanceSucess(String availableBalance, String lockedBalance);
 
     void onGetIncrRecords(int offset, List<WalletRecordModel> list);
+
+    void onGetAllRecords(int offset, List<WalletRecordModel> list);
 }

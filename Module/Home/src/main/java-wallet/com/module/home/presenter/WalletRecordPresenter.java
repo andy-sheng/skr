@@ -38,6 +38,34 @@ public class WalletRecordPresenter extends RxLifeCyclePresenter {
         }, this);
     }
 
+
+    /**
+     * 获取全部流水
+     *
+     * @param offset
+     * @param limit
+     */
+    public void getAllWalletRecords(int offset, int limit) {
+        ApiMethods.subscribe(mWalletServerApi.getWalletRecord(offset, limit, 0), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    List<WalletRecordModel> walletRecordModels = JSON.parseArray(result.getData().getString("records"), WalletRecordModel.class);
+                    int newOffset = result.getData().getIntValue("offset");
+                    if (mIWalletView != null) {
+                        mIWalletView.onGetAllRecords(newOffset, walletRecordModels);
+                    }
+                }
+            }
+        }, this);
+    }
+
+    /**
+     * 获取收入流水
+     *
+     * @param offset
+     * @param limit
+     */
     public void getWalletIncrRecords(int offset, int limit) {
         ApiMethods.subscribe(mWalletServerApi.getWalletRecord(offset, limit, 1), new ApiObserver<ApiResult>() {
             @Override
@@ -53,6 +81,12 @@ public class WalletRecordPresenter extends RxLifeCyclePresenter {
         }, this);
     }
 
+    /**
+     * 获取提现流水
+     *
+     * @param offset
+     * @param limit
+     */
     public void getWalletDecrRecords(int offset, int limit) {
         ApiMethods.subscribe(mWalletServerApi.getWalletRecord(offset, limit, 2), new ApiObserver<ApiResult>() {
             @Override
@@ -63,5 +97,4 @@ public class WalletRecordPresenter extends RxLifeCyclePresenter {
             }
         }, this);
     }
-
 }
