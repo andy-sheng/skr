@@ -18,6 +18,9 @@ public class KeyBoardUtils {
     }
 
     public void hideSoftInputKeyBoard(Context context, View focusView) {
+        if(context == null){
+            return;
+        }
         if (focusView != null) {
             IBinder binder = focusView.getWindowToken();
             if (binder != null) {
@@ -28,6 +31,9 @@ public class KeyBoardUtils {
     }
 
     public void hideSoftInputKeyBoard(Activity context) {
+        if(context == null){
+            return;
+        }
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
 //        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
         if (context.getCurrentFocus() != null) {
@@ -36,11 +42,17 @@ public class KeyBoardUtils {
     }
 
     public void showSoftInputKeyBoard(Context context, View focusView) {
+        if(context == null){
+            return;
+        }
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(focusView, InputMethodManager.SHOW_FORCED);
     }
 
     public void showSoftInputKeyBoard(Context context) {
+        if(context == null){
+            return;
+        }
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.SHOW_FORCED);
     }
