@@ -69,7 +69,6 @@ public class PersonInfoDialogView extends RelativeLayout {
     ExTextView mReport;
     TagFlowLayout mFlowlayout;
     ExTextView mFollowTv;
-    ExTextView mRequestLogBtn;
     int mTargetUserId;
 
     public PersonInfoDialogView(Context context, int userID) {
@@ -98,41 +97,32 @@ public class PersonInfoDialogView extends RelativeLayout {
 
         mAvatarIv = (SimpleDraweeView) this.findViewById(R.id.avatar_iv);
         mNameTv = (ExTextView) this.findViewById(R.id.name_tv);
-        mRequestLogBtn = this.findViewById(R.id.request_log_btn);
 
         mNameTv.setOnLongClickListener(new OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 if (MyLog.isDebugLogOpen()) {
-                    mRequestLogBtn.setVisibility(VISIBLE);
+                    MyLog.d(TAG, "clickValid" + " v=" + v);
+                    IMsgService msgService = ModuleServiceManager.getInstance().getMsgService();
+                    if (msgService != null) {
+                        msgService.sendSpecialDebugMessage(String.valueOf(mTargetUserId), 1, "请求上传日志", new ICallback() {
+                            @Override
+                            public void onSucess(Object obj) {
+                                U.getToastUtil().showLong("请求成功,稍等看该用户是否有返回");
+                            }
+
+                            @Override
+                            public void onFailed(Object obj, int errcode, String message) {
+
+                            }
+                        });
+                    }
                 } else {
-                    mRequestLogBtn.setVisibility(GONE);
                 }
                 return false;
             }
         });
 
-        mRequestLogBtn.setOnLongClickListener(new OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                MyLog.d(TAG, "clickValid" + " v=" + v);
-                IMsgService msgService = ModuleServiceManager.getInstance().getMsgService();
-                if (msgService != null) {
-                    msgService.sendSpecialDebugMessage(String.valueOf(mTargetUserId), 1, "请求上传日志", new ICallback() {
-                        @Override
-                        public void onSucess(Object obj) {
-                            U.getToastUtil().showLong("请求成功,稍等看该用户是否有返回");
-                        }
-
-                        @Override
-                        public void onFailed(Object obj, int errcode, String message) {
-
-                        }
-                    });
-                }
-                return false;
-            }
-        });
         mHorizLevelView = (HorizonLevelView) this.findViewById(R.id.horiz_level_view);
         mSignTv = (MarqueeTextView) this.findViewById(R.id.sign_tv);
         mReport = (ExTextView) this.findViewById(R.id.report);
