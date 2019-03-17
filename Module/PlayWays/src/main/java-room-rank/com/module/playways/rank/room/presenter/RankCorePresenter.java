@@ -197,6 +197,10 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
             for (int i = 0; i < mRoomData.getRoundInfoModelList().size(); i++) {
                 RankRoundInfoModel roundInfoModel = mRoomData.getRoundInfoModelList().get(i);
                 PlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, roundInfoModel.getUserID());
+                if(playerInfoModel == null){
+                    MyLog.e(TAG, "RankCorePresenter constractor playerInfoModel is null, id is " + roundInfoModel.getUserID());
+                    continue;
+                }
                 BasePushInfo basePushInfo = new BasePushInfo();
                 basePushInfo.setRoomID(mRoomData.getGameId());
                 basePushInfo.setSender(new UserInfo.Builder()
