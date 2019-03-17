@@ -262,6 +262,9 @@ public class AgoraEngineAdapter {
         if (mConfig.isEnableAudio()) {
             MyLog.d(TAG, "initRtcEngineInner enableAudio");
             //该方法需要在 joinChannel 之前设置好，joinChannel 后设置不生效。
+            if(mRtcEngine == null){
+                tryInitRtcEngine();
+            }
             mRtcEngine.enableAudio();
 
             int a = 3, b = 4;
