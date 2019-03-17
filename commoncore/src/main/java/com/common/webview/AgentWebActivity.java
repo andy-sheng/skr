@@ -87,15 +87,6 @@ public class AgentWebActivity extends BaseActivity {
         mTitlebar = (CommonTitleBar) this.findViewById(R.id.titlebar);
         mContentContainer = (RelativeLayout) this.findViewById(R.id.content_container);
         buildAgentWeb();
-
-        mTitlebar.setListener(new CommonTitleBar.OnTitleBarListener() {
-            @Override
-            public void onClicked(View v, int action, String extra) {
-                if (action == ACTION_LEFT_TEXT) {
-                    finish();
-                }
-            }
-        });
     }
 
     protected void pageFinished(WebView view, String url) {
