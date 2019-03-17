@@ -44,9 +44,9 @@
             <ImageView
                 android:id="@+id/tiaoyin_iv"
                 android:layout_width="wrap_content"
-                android:layout_marginTop="@dimen/view_8_dp"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_8_dp"
                 android:src="@drawable/audition_tiaoyin_anxia" />
 
             <com.common.view.ex.ExTextView
@@ -159,5 +159,20 @@
             android:visibility="gone" />
 
     </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/log_view_scroll_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_20_dp"
+        android:layout_marginTop="@dimen/view_50_dp">
+
+        <TextView
+            android:id="@+id/log_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+             />
+    </ScrollView>
 
 </RelativeLayout>

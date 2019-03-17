@@ -18,7 +18,7 @@ CovReverbV2_s *mcovreverb = NULL;
 
 #define LOG_TAG "ITBEffectEngine"
 
-#define FILEOPEN 1
+#define FILEOPEN 0
 
 extern "C"
 JNIEXPORT jint JNICALL
