@@ -39,6 +39,7 @@ public class InframeProcessor implements ISchemeProcessor {
             return ProcessResult.NotAccepted;
         }
         if (SchemeConstants.SCHEME_INFRAMESKER.equals(scheme)) {
+            // beforeHomeExistJudge 表示 HomeActivity 不存在时允不允许执行这个scheme
             if (beforeHomeExistJudge) {
                 switch (authority) {
                     case SchemeConstants.HOST_CHANNEL:

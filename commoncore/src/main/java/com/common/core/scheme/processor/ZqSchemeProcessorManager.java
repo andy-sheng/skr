@@ -22,13 +22,14 @@ public class ZqSchemeProcessorManager {
         mISchemeProcessors.add(new DefaultProcessor());
     }
 
-    public void process(final Uri uri, @NonNull Activity activity,boolean beforeHomeExistJudge) {
+    public ProcessResult process(final Uri uri, @NonNull Activity activity,boolean beforeHomeExistJudge) {
         for (ISchemeProcessor processor : mISchemeProcessors) {
             ProcessResult processResult = processor.process(uri,beforeHomeExistJudge);
             if(processResult == ProcessResult.AcceptedAndReturn){
-                return;
+                return processResult;
             }
         }
+        return ProcessResult.NotAccepted;
     }
 
 }

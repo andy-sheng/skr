@@ -541,10 +541,11 @@ public class StringUtils {
 
     /**
      * 获取string的长度 中文算2哥字符
+     *
      * @param value
      * @return
      */
-    public int getStringLength(String value){
+    public int getStringLength(String value) {
         int valueLength = 0;
         String chinese = "[\u4e00-\u9fa5]";
         for (int i = 0; i < value.length(); i++) {
@@ -556,5 +557,50 @@ public class StringUtils {
             }
         }
         return valueLength;
+    }
+
+    /**
+     * 输入的是一个普通文本，但文本里面包含了一个base64的子串
+     * 找到这个子串并返回，常用于口令
+     *
+     * @param input
+     * @return
+     */
+    public String getLongestBase64SubString(String input) {
+        if (input == null) {
+            return null;
+        }
+        // flag 代表以 i 为结尾 最长 base64 子串的长度。
+        int max = 0;
+        int maxIndex = -1;
+        int flag[] = new int[input.length()];
+        for (int i = 0; i < input.length(); i++) {
+            char c = input.charAt(i);
+            if (c >= 'a' && c <= 'z'
+                    || c >= 'A' && c <= 'Z'
+                    || c >= '0' && c <= '9'
+                    || c == '+'
+                    || c == '/'
+                    || c == '='
+            ) {
+                if (i > 0) {
+                    flag[i] = flag[i - 1] + 1;
+                } else {
+                    flag[i] = 1;
+                }
+                if (flag[i] > max) {
+                    max = flag[i];
+                    maxIndex = i;
+                }
+            } else {
+                flag[i] = 0;
+            }
+        }
+        if (maxIndex >= 0) {
+            String r = input.substring(maxIndex - max+1, maxIndex+1);
+            return r;
+        } else {
+            return "";
+        }
     }
 }

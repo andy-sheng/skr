@@ -26,6 +26,7 @@ import com.common.base.GlobalParams;
 import com.common.base.delegate.AppLifecycles;
 import com.common.core.account.UserAccountManager;
 import com.common.core.crash.MyCrashHandler;
+import com.common.core.global.GlobalEventReceiver;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.interceptor.CoreInfoInterceptor;
 import com.doraemon.DoraemonManager;
@@ -70,6 +71,7 @@ public class CoreConfiguration implements ConfigModule {
                 ModuleServiceManager.getInstance().getMsgService().initRongIM(application);
                 UserAccountManager.getInstance().init();
                 DoraemonManager.init();
+                GlobalEventReceiver.getInstance().register();
             }
 
             @Override
