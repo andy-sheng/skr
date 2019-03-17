@@ -135,6 +135,9 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                 }
                 return true;
             } else if (message.getContent() instanceof SpecailOpMsg) {
+                /**
+                 * 要求别人上传日志，并将结果返回
+                 */
                 SpecailOpMsg specailOpMsg = (SpecailOpMsg) message.getContent();
                 if (specailOpMsg.getMessageType() == 1) {
                     U.getLogUploadUtils().upload(MyUserInfoManager.getInstance().getUid(), new LogUploadUtils.Callback() {

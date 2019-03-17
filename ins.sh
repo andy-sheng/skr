@@ -207,7 +207,6 @@ if [[ $1 = "app" ]]; then
             ./gradlew :app:assembleDebugChannels
 			findChannel SANDBOX debug
 			installApkForAllDevices $installApkPath
-            installApkForAllDevices app/build/outputs/apk/channel_sandbox/debug/app-channel_sandbox-debug.apk
         fi
 	else
 		echo "./gradlew :app:assemblechannel_defaultDebug"

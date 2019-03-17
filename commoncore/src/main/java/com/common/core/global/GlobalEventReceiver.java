@@ -20,6 +20,8 @@ import org.greenrobot.eventbus.Subscribe;
 import io.agora.rtc.RtcEngine;
 
 public class GlobalEventReceiver {
+    public final static String TAG = "GlobalEventReceiver";
+
     private static class GlobalEventReceiverHolder {
         private static final GlobalEventReceiver INSTANCE = new GlobalEventReceiver();
     }
@@ -56,6 +58,7 @@ public class GlobalEventReceiver {
         String title = String.format("日志 id=%s,name=%s,date=%s", event.uploaderId, event.uploaderName, event.date);
         sharePanel.setShareContent(event.uploaderAvatar, title, event.extra, event.mLogUrl);
         sharePanel.share(SharePlatform.WEIXIN, ShareType.URL);
+        MyLog.w(TAG, title + " url:" + event.mLogUrl);
         U.getToastUtil().showLong(title + "拉取成功，请将其分享给研发同学");
     }
 }
