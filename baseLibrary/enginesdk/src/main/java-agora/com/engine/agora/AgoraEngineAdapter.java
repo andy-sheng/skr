@@ -340,7 +340,6 @@ public class AgoraEngineAdapter {
                     true        // true为使用推送模式；false为拉取模式，但目前不支持
             );
         }
-
         mTbEffectProcessor.init();
     }
 
@@ -1081,13 +1080,13 @@ public class AgoraEngineAdapter {
                     mCbEffectProcessor.process(1, samples, samples.length, channels, samplesPerSec);
                 } else if (styleEnum == Params.AudioEffect.dianyin) {
 //                    mTbEffectProcessor.process(1, samples, samples.length, channels, samplesPerSec);
-                    mCbEffectProcessor.process(5, samples, samples.length, channels, samplesPerSec);
+                    mTbEffectProcessor.process(2, samples, samples.length, channels, samplesPerSec);
                 } else if (styleEnum == Params.AudioEffect.kongling) {
                     mTbEffectProcessor.process(1, samples, samples.length, channels, samplesPerSec);
 //                    mCbEffectProcessor.process(4, samples, samples.length, channels, samplesPerSec);
                 } else {
                     mCbEffectProcessor.destroy();
-                    mTbEffectProcessor.destroyEffectProcessor();
+//                    mTbEffectProcessor.destroyEffectProcessor();
                 }
                 if (DEBUG) {
                     MyLog.d(TAG, "step3:" + testIn(samples));

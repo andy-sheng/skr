@@ -18,7 +18,7 @@ CovReverbV2_s *mcovreverb = NULL;
 
 #define LOG_TAG "ITBEffectEngine"
 
-#define FILEOPEN 0
+#define FILEOPEN 1
 
 extern "C"
 JNIEXPORT jint JNICALL
@@ -136,7 +136,7 @@ Java_com_engine_effect_ITbEffectProcessor_process2(JNIEnv *env, jobject ins, jby
         mcovreverb->channelin = channels;
         mcovreverb->channelout = channels;
         mcovreverb->samplerate = sampleRate;
-        mcovreverb->reverbkind = 3;//----------------CD 11
+        mcovreverb->reverbkind = 11;//----------------CD 11
         mcovreverb->xsame = 1;
         mcovreverb->wet = 1;
         mcovreverb->xframelen = len / 2 / channels;

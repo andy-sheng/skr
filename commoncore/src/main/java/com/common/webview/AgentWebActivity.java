@@ -91,18 +91,18 @@ public class AgentWebActivity extends BaseActivity {
         mTitlebar.setListener(new CommonTitleBar.OnTitleBarListener() {
             @Override
             public void onClicked(View v, int action, String extra) {
-                if(action == ACTION_LEFT_TEXT){
+                if (action == ACTION_LEFT_TEXT) {
                     finish();
                 }
             }
         });
     }
 
-    protected void pageFinished(WebView view, String url){
+    protected void pageFinished(WebView view, String url) {
 
     }
 
-    protected void receivedTitle(WebView view, String title){
+    protected void receivedTitle(WebView view, String title) {
 
     }
 
@@ -113,8 +113,8 @@ public class AgentWebActivity extends BaseActivity {
         ErrorLayoutEntity mErrorLayoutEntity = getErrorLayoutEntity();
         String url = getIntent().getStringExtra("url");
 
-        mBridgeWebView=new BridgeWebView(this);
-        BridgeWebViewClient mBridgeWebViewClient = new BridgeWebViewClient(mBridgeWebView){
+        mBridgeWebView = new BridgeWebView(this);
+        BridgeWebViewClient mBridgeWebViewClient = new BridgeWebViewClient(mBridgeWebView) {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
@@ -154,20 +154,20 @@ public class AgentWebActivity extends BaseActivity {
         String userAgentString = settings.getUserAgentString();
         mBridgeWebView.getSettings().setUserAgentString(userAgentString + " pid/" + U.getDeviceUtils().getDeviceID());
 
-        mJsRegister = new JsRegister(mBridgeWebView,this);
+        mJsRegister = new JsRegister(mBridgeWebView, this);
         mJsRegister.register();
     }
 
-    private void setCookie(String url){
+    private void setCookie(String url) {
         //种cookie，先注释掉
-        if(!TextUtils.isEmpty(url) && url.contains("inframe.mobi")){
+        if (!TextUtils.isEmpty(url) && url.contains("inframe.mobi")) {
             mSharedPrefsCookiePersistor = new SharedPrefsCookiePersistor(this);
             List<Cookie> cookies = mSharedPrefsCookiePersistor.loadAll();
-            if(cookies != null && cookies.size() > 0){
+            if (cookies != null && cookies.size() > 0) {
                 CookieSyncManager.createInstance(this);
                 CookieManager cookieManager = CookieManager.getInstance();
                 cookieManager.setAcceptCookie(true);
-                for(Cookie cookie : cookies){
+                for (Cookie cookie : cookies) {
                     cookieManager.setCookie("inframe.mobi", cookie.toString());//cookies是在HttpClient中获得的cookie
                 }
                 CookieSyncManager.getInstance().sync();
@@ -234,6 +234,11 @@ public class AgentWebActivity extends BaseActivity {
             mAgentWeb.getWebLifeCycle().onDestroy();
         }
         super.destroy();
+    }
+
+    @Override
+    public boolean canSlide() {
+        return false;
     }
 
     @Override

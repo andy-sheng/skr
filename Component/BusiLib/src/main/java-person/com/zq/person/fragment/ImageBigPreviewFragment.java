@@ -2,18 +2,23 @@ package com.zq.person.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.image.fresco.processor.BlurPostprocessor;
+import com.common.image.fresco.processor.GrayPostprocessor;
 import com.common.image.model.HttpImage;
 import com.common.image.model.ImageFactory;
 import com.common.image.model.oss.OssImgFactory;
+import com.common.image.model.oss.format.OssImgFormat;
 import com.common.utils.ImageUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.titlebar.CommonTitleBar;
 import com.component.busilib.R;
+import com.facebook.drawee.drawable.ScalingUtils;
 import com.imagebrowse.ImageBrowseView;
 
 /**
@@ -37,7 +42,6 @@ public class ImageBigPreviewFragment extends BaseFragment {
 
         mImageIv = (ImageBrowseView) mRootView.findViewById(R.id.image_iv);
         mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
-
 
         mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -64,7 +68,7 @@ public class ImageBigPreviewFragment extends BaseFragment {
 
     private void loadImage(String path) {
         HttpImage image = ImageFactory.newHttpImage(path)
-                .addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_640.getW()).build())
+                //.addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_640.getW()).build())
                 .build();
         mImageIv.load(image);
     }
