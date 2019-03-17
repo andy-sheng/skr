@@ -963,6 +963,11 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
 //        mTopContainerView.cancelShowLastedTimeTask();
         MyLog.w(TAG, "用户" + uid + "的演唱开始了");
+        if(mRoomData == null){
+            MyLog.w(TAG, "mRoomData为null");
+            return;
+        }
+
         int seq = mRoomData.getRealRoundInfo().getRoundSeq();
         if (seq == 1) {
             mUiHanlder.postDelayed(new Runnable() {
