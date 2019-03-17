@@ -218,7 +218,9 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
     @Override
     public void onDetach() {
         super.onDetach();
-        mPrepareSongPresenter.cancelTask();
+        if(mPrepareSongPresenter != null){
+            mPrepareSongPresenter.cancelTask();
+        }
     }
 
     @Override
