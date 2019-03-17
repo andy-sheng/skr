@@ -190,8 +190,10 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
         mMessageTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                ModuleServiceManager.getInstance().getMsgService().startPrivateChat(getContext(),
-                        String.valueOf(mUserInfoModel.getUserId()), mUserInfoModel.getNickname());
+                if (mUserInfoModel != null) {
+                    ModuleServiceManager.getInstance().getMsgService().startPrivateChat(getContext(),
+                            String.valueOf(mUserInfoModel.getUserId()), mUserInfoModel.getNickname());
+                }
             }
         });
 
@@ -202,10 +204,12 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
                     U.getToastUtil().showShort("网络异常，请检查网络后重试!");
                     return;
                 }
-                if ((int) mFollowTv.getTag() == RELATION_FOLLOWED) {
-                    UserInfoManager.getInstance().mateRelation(mUserInfoModel.getUserId(), UserInfoManager.RA_UNBUILD, mUserInfoModel.isFriend());
-                } else if ((int) mFollowTv.getTag() == RELATION_UN_FOLLOW) {
-                    UserInfoManager.getInstance().mateRelation(mUserInfoModel.getUserId(), UserInfoManager.RA_BUILD, mUserInfoModel.isFriend());
+                if (mUserInfoModel != null) {
+                    if ((int) mFollowTv.getTag() == RELATION_FOLLOWED) {
+                        UserInfoManager.getInstance().mateRelation(mUserInfoModel.getUserId(), UserInfoManager.RA_UNBUILD, mUserInfoModel.isFriend());
+                    } else if ((int) mFollowTv.getTag() == RELATION_UN_FOLLOW) {
+                        UserInfoManager.getInstance().mateRelation(mUserInfoModel.getUserId(), UserInfoManager.RA_BUILD, mUserInfoModel.isFriend());
+                    }
                 }
             }
         });
