@@ -1,7 +1,7 @@
 #ifndef COVREVERB_CONTROL_H
 #define COVREVERB_CONTROL_H
 
-#include "filter/Filter_LIB/Filter_SDK_API.h"
+#include "../../filter/Filter_LIB/Filter_SDK_API.h"
 #include "../../Delay/Delay_LIB/Delay_SDK_API.h"
 
 #ifdef __cplusplus
@@ -43,10 +43,14 @@ extern "C"
 	typedef struct CovReverbV2_channel_memory{//framelen can't change even recalcu
 		FastCovVerylongh_s mfir;
 		FastCovVerylongh_s mfir2;
+		Buf16_s mDelay;
 		Filterf_s iirf;
 
 		int have;
 		float dry;
+		int fstdelay_n;//
+		float h0;
+		float h0R;
 
 		int samplerate;
 		int channelin;

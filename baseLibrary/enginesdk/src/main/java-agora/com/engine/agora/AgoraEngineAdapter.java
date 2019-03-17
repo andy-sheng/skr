@@ -1075,14 +1075,16 @@ public class AgoraEngineAdapter {
                     MyLog.d(TAG, "step2:" + testIn(samples));
                 }
                 if (styleEnum == Params.AudioEffect.ktv) {
-                    mCbEffectProcessor.process(8, samples, samples.length, channels, samplesPerSec);
+                    mTbEffectProcessor.process(2, samples, samples.length, channels, samplesPerSec);
+
                 } else if (styleEnum == Params.AudioEffect.rock) {
+                    mTbEffectProcessor.process(1, samples, samples.length, channels, samplesPerSec);
                     mCbEffectProcessor.process(1, samples, samples.length, channels, samplesPerSec);
                 } else if (styleEnum == Params.AudioEffect.dianyin) {
 //                    mTbEffectProcessor.process(1, samples, samples.length, channels, samplesPerSec);
-                    mTbEffectProcessor.process(2, samples, samples.length, channels, samplesPerSec);
+                    mCbEffectProcessor.process(8, samples, samples.length, channels, samplesPerSec);
                 } else if (styleEnum == Params.AudioEffect.kongling) {
-                    mTbEffectProcessor.process(1, samples, samples.length, channels, samplesPerSec);
+
 //                    mCbEffectProcessor.process(4, samples, samples.length, channels, samplesPerSec);
                 } else {
                     mCbEffectProcessor.destroy();
