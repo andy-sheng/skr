@@ -113,6 +113,11 @@ public class WalletFragment extends BaseFragment implements IWalletView {
                 if (balance < 10) {
                     U.getToastUtil().showShort("满10元才能提现哦～");
                 } else {
+                    if(!U.getNetworkUtils().hasNetwork()){
+                        U.getToastUtil().showShort("您网络异常！");
+                        return;
+                    }
+
                     ARouter.getInstance()
                             .build(RouterConstants.ACTIVITY_WITH_DRAW)
                             .navigation();
