@@ -233,7 +233,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
 
         {
             // 这是圈圈动画
-            ObjectAnimator objectAnimator1 = new ObjectAnimator();
+            ValueAnimator objectAnimator1 = new ValueAnimator();
             objectAnimator1.setIntValues(0, 100);
             objectAnimator1.setDuration(495);
             objectAnimator1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -275,7 +275,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
             ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(vp.grabTopItemView.mAvatarIv, View.SCALE_X, 1.0f, 1.08f);
             ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(vp.grabTopItemView.mAvatarIv, View.SCALE_Y, 1.0f, 1.08f);
 
-            ObjectAnimator objectAnimator4 = new ObjectAnimator();
+            ValueAnimator objectAnimator4 = new ValueAnimator();
             objectAnimator4.setFloatValues(1, 0);
             objectAnimator4.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
@@ -368,7 +368,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
 //                if (!itemView.getPlayerInfoModel().isOnline()) {
 //                    continue;
 //                }
-                ObjectAnimator objectAnimator1 = new ObjectAnimator();
+                ValueAnimator objectAnimator1 = new ValueAnimator();
                 objectAnimator1.setIntValues(0, 0);
                 objectAnimator1.setDuration(1);
                 final int tti = i;
