@@ -72,7 +72,7 @@ public class RankOpView extends RelativeLayout {
                 if (mRoomData.getLeftBurstLightTimes() > 0) {
                     if (mOpListener != null) {
                         if (mHasOpSeq.contains(mSeq)) {
-                            U.getToastUtil().showShort("爆灯之后不能爆灯哦");
+                            U.getToastUtil().showShort("灭灯之后不能爆灯哦");
                             return;
                         }
                     }
@@ -178,40 +178,40 @@ public class RankOpView extends RelativeLayout {
             mIvCountDown.setVisibility(VISIBLE);
             mTvCountDown.setVisibility(VISIBLE);
             mTvCountDown.setText(mLightOffDelayTime + "");
-//            if (startCountDown) {
-//                playShake();
-//                mCountDownTask = HandlerTaskTimer.newBuilder()
-//                        .interval(1000)
-//                        .take(mLightOffDelayTime)
-//                        .start(new HandlerTaskTimer.ObserverW() {
-//                            @Override
-//                            public void onNext(Integer integer) {
-//                                integer = mLightOffDelayTime - integer;
-//                                if (integer == 0) {
-//                                    if (mRoomData.getLeftLightOffTimes() > 0) {
-//                                        mIvTurnOff.setVisibility(VISIBLE);
-//                                        mIvTurnOff.setEnabled(true);
-//                                    } else {
-//                                        mIvTurnOff.setVisibility(GONE);
-//                                        mIvTurnOff.setEnabled(false);
-//                                    }
-//
-//                                    mTvCountDown.setVisibility(GONE);
-//                                    mIvCountDown.setVisibility(GONE);
-//                                    mTvCountDown.setText("");
-//                                    return;
-//                                }
-//
-//                                mTvCountDown.setText(integer + "");
-//                            }
-//
-//                            @Override
-//                            public void onComplete() {
-//                                super.onComplete();
-//                                stopShake();
-//                            }
-//                        });
-//            }
+            if (startCountDown) {
+                playShake();
+                mCountDownTask = HandlerTaskTimer.newBuilder()
+                        .interval(1000)
+                        .take(mLightOffDelayTime)
+                        .start(new HandlerTaskTimer.ObserverW() {
+                            @Override
+                            public void onNext(Integer integer) {
+                                integer = mLightOffDelayTime - integer;
+                                if (integer == 0) {
+                                    if (mRoomData.getLeftLightOffTimes() > 0) {
+                                        mIvTurnOff.setVisibility(VISIBLE);
+                                        mIvTurnOff.setEnabled(true);
+                                    } else {
+                                        mIvTurnOff.setVisibility(GONE);
+                                        mIvTurnOff.setEnabled(false);
+                                    }
+
+                                    mTvCountDown.setVisibility(GONE);
+                                    mIvCountDown.setVisibility(GONE);
+                                    mTvCountDown.setText("");
+                                    return;
+                                }
+
+                                mTvCountDown.setText(integer + "");
+                            }
+
+                            @Override
+                            public void onComplete() {
+                                super.onComplete();
+                                stopShake();
+                            }
+                        });
+            }
         }
     }
 

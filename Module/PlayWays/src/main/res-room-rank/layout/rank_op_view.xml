@@ -9,8 +9,8 @@
 
     <com.common.view.ex.ExImageView
         android:id="@+id/iv_burst"
-        android:layout_width="@dimen/view_50_dp"
-        android:layout_height="@dimen/view_53_dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_alignParentRight="true"
         android:layout_marginTop="@dimen/view_52_dp"
         android:layout_marginRight="@dimen/view_16_dp"
@@ -20,8 +20,8 @@
 
     <com.common.view.ex.ExImageView
         android:id="@+id/iv_turn_off"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="@dimen/view_104_dp"
+        android:layout_height="@dimen/view_112_dp"
         android:layout_below="@+id/iv_burst"
         android:layout_alignParentRight="true"
         app:src_pressed_drawable="@drawable/guanzhong_miedeng"
@@ -30,8 +30,8 @@
 
     <com.common.view.ex.ExImageView
         android:id="@+id/iv_count_down"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="@dimen/view_104_dp"
+        android:layout_height="@dimen/view_112_dp"
         android:layout_below="@+id/iv_burst"
         android:layout_alignParentRight="true"
         android:background="@drawable/yanchang_miedeng"
@@ -39,8 +39,8 @@
 
     <com.common.view.ex.ExTextView
         android:id="@+id/tv_count_down"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="@dimen/view_90_dp"
+        android:layout_height="@dimen/view_90_dp"
         android:layout_alignRight="@+id/iv_count_down"
         android:layout_alignTop="@+id/iv_count_down"
         android:layout_marginTop="@dimen/view_12_dp"
