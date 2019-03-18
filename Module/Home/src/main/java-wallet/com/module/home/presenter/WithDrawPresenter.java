@@ -1,6 +1,7 @@
 package com.module.home.presenter;
 
 import com.alibaba.fastjson.JSON;
+import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -28,19 +29,37 @@ public class WithDrawPresenter extends RxLifeCyclePresenter {
         mWalletServerApi = ApiManager.getInstance().createService(WalletServerApi.class);
     }
 
-    // TODO: 2019/3/13  重试逻辑
+    int i = 0;
+
     public void getWithDrawInfo() {
-        ApiMethods.subscribe(mWalletServerApi.getWithdrawInfo(), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    mWithDrawInfoModel = JSON.parseObject(result.getData().toString(), WithDrawInfoModel.class);
-                    mWithDrawView.showWithDrawInfo(mWithDrawInfoModel);
-                } else {
-                    U.getToastUtil().showShort(result.getErrmsg());
+        if (i < 10) {
+            ApiMethods.subscribe(mWalletServerApi.getWithdrawInfo(), new ApiObserver<ApiResult>() {
+                @Override
+                public void process(ApiResult result) {
+                    if (result.getErrno() == 0) {
+                        mWithDrawInfoModel = JSON.parseObject(result.getData().toString(), WithDrawInfoModel.class);
+                        mWithDrawView.showWithDrawInfo(mWithDrawInfoModel);
+                    } else {
+                        U.getToastUtil().showShort(result.getErrmsg());
+                    }
                 }
-            }
-        }, this);
+
+                @Override
+                public void onError(Throwable e) {
+                    i++;
+                    getWithDrawInfo();
+                }
+
+                @Override
+                public void onNetworkError(ErrorType errorType) {
+                    i++;
+                    getWithDrawInfo();
+                }
+            }, this);
+        } else {
+            MyLog.e(TAG, "10次都没拉到数据");
+            U.getToastUtil().showShort("您网络异常，请退出重进");
+        }
     }
 
     public void bindWxChannel(String openId, String accessToken) {
