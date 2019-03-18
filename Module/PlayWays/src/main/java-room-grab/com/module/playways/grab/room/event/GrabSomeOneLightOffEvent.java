@@ -10,6 +10,10 @@ public class GrabSomeOneLightOffEvent {
         this.roundInfo = newRoundInfo;
     }
 
+    public int getUid() {
+        return uid;
+    }
+
     public BaseRoundInfoModel getRoundInfo() {
         return roundInfo;
     }

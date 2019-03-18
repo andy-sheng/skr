@@ -589,7 +589,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabSomeOneLightOffEvent event) {
         // 灭灯
-        if (!RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
+        if (event.getUid() == MyUserInfoManager.getInstance().getUid()) {
             U.getSoundUtils().play(TAG, R.raw.grab_xlight);
         }
     }
