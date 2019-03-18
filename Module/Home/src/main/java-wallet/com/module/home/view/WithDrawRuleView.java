@@ -10,12 +10,14 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.module.home.R;
 
 import java.util.List;
 
 public class WithDrawRuleView extends FrameLayout {
+    public final static String TAG = "WithDrawRuleView";
     LinearLayout mLlRuleContainer;
 
     public WithDrawRuleView(Context context) {
@@ -37,6 +39,11 @@ public class WithDrawRuleView extends FrameLayout {
     }
 
     public void bindData(List<String> ruleList) {
+        if(ruleList == null || ruleList.size() == 0){
+            MyLog.w(TAG, "bindData " + " ruleList is empty");
+            return;
+        }
+
         LayoutInflater layoutInflater = LayoutInflater.from(getContext());
         int i = 0;
         for(String rule : ruleList){

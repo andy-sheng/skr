@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
+import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
@@ -336,7 +337,10 @@ public class WithdrawFragment extends BaseFragment implements IWithDrawView {
     public void showWithDrawInfo(WithDrawInfoModel withDrawInfoModel) {
         mWithDrawInfoModel = withDrawInfoModel;
         mTvTip.setText(String.format("可提现余额%s元", withDrawInfoModel.getAvailable()));
-        mIvAttention.setVisibility(View.VISIBLE);
+        if(mWithDrawInfoModel.getRule() != null && mWithDrawInfoModel.getRule().size() > 0){
+            mIvAttention.setVisibility(View.VISIBLE);
+        }
+
         for (WithDrawInfoModel.CfgBean cfgBean :
                 withDrawInfoModel.getCfg()) {
             if (cfgBean.getChannel() == WX_CHANNEL) {
