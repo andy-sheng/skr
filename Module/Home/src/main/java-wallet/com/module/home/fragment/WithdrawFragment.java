@@ -208,17 +208,24 @@ public class WithdrawFragment extends BaseFragment implements IWithDrawView {
                         return;
                     }
 
-                    if (TextUtils.isEmpty(mEditCashNum.getText().toString())) {
-                        mTvTip.setText(String.format("可提现余额%s元", mWithDrawInfoModel.getAvailable()));
-                        mTvTip.setTextColor(Color.parseColor("#B7BED5"));
-                    } else if (cash > mWithDrawInfoModel.getAvailableInt()) {
-                        mTvTip.setText("账户余额不足～");
-                        mTvTip.setTextColor(Color.parseColor("#EF5E85"));
-                    } else {
-                        mTvTip.setText(String.format("可提现余额%s元", mWithDrawInfoModel.getAvailable()));
-                        mTvTip.setTextColor(Color.parseColor("#B7BED5"));
+                    if(mWithDrawInfoModel == null && !TextUtils.isEmpty(editString)){
+                        mEditCashNum.setText("");
+                        return;
                     }
-                    checkWithdrawBtnEable();
+
+                    if(mWithDrawInfoModel != null){
+                        if (TextUtils.isEmpty(mEditCashNum.getText().toString())) {
+                            mTvTip.setText(String.format("可提现余额%s元", mWithDrawInfoModel.getAvailable()));
+                            mTvTip.setTextColor(Color.parseColor("#B7BED5"));
+                        } else if (cash > mWithDrawInfoModel.getAvailableInt()) {
+                            mTvTip.setText("账户余额不足～");
+                            mTvTip.setTextColor(Color.parseColor("#EF5E85"));
+                        } else {
+                            mTvTip.setText(String.format("可提现余额%s元", mWithDrawInfoModel.getAvailable()));
+                            mTvTip.setTextColor(Color.parseColor("#B7BED5"));
+                        }
+                        checkWithdrawBtnEable();
+                    }
                 }
             }
         });
