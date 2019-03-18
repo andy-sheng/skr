@@ -1,6 +1,5 @@
 package com.common.core.login.fragment;
 
-import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -59,8 +58,6 @@ public class LoginFragment extends BaseFragment {
     ProgressBar mProgressBar;
 
     volatile boolean mIsWaitOss = false;
-
-    ObjectAnimator mAnimator;
 
     ViewTreeObserver mObserver;
     boolean isMeasured = false;
@@ -282,9 +279,6 @@ public class LoginFragment extends BaseFragment {
     @Override
     public void destroy() {
         super.destroy();
-        if (mAnimator != null) {
-            mAnimator.cancel();
-        }
         if (mObserver != null && mObserver.isAlive() && mOnDrawListener != null) {
             mObserver.removeOnPreDrawListener(mOnDrawListener);
         }
