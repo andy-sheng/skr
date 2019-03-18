@@ -46,7 +46,7 @@ public class WithDrawHistoryPresenter extends RxLifeCyclePresenter {
                             , WithDrawHistoryModel.class);
 
                     //没有数据
-                    if(withDrawHistoryModelList == null){
+                    if(withDrawHistoryModelList == null || withDrawHistoryModelList.size() == 0){
                         mIWalletView.hasMore(false);
                         return;
                     }
