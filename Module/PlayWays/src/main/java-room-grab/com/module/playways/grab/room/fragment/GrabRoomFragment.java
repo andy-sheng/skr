@@ -17,12 +17,10 @@ import com.common.base.BaseFragment;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrAudioPermission;
-import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.statistics.StatConstants;
 import com.common.statistics.StatisticsAdapter;
-import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
@@ -72,11 +70,8 @@ import com.module.rank.R;
 import com.opensource.svgaplayer.SVGAParser;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
-import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
-import com.zq.dialog.PersonInfoDialogView;
-import com.zq.person.fragment.ImageBigPreviewFragment;
-import com.zq.report.fragment.ReportFragment;
+import com.zq.dialog.PersonInfoDialog;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -93,10 +88,6 @@ import kotlin.jvm.functions.Function1;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-
-import static com.zq.report.fragment.ReportFragment.FORM_GAME;
-import static com.zq.report.fragment.ReportFragment.REPORT_FROM_KEY;
-import static com.zq.report.fragment.ReportFragment.REPORT_USER_ID;
 
 public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkgCountDownView {
 
@@ -167,7 +158,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     DialogPlus mQuitTipsDialog;
 
-    DialogPlus mDialogPlus;
+    PersonInfoDialog mPersonInfoDialog;
 
     DialogPlus mGameRoleDialog;
 
@@ -320,8 +311,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         mBottomContainerView.setListener(new BottomContainerView.Listener() {
             @Override
             public void showInputBtnClick() {
-                if (mDialogPlus != null && mDialogPlus.isShowing()) {
-                    mDialogPlus.dismiss();
+                if (mPersonInfoDialog != null && mPersonInfoDialog.isShowing()) {
+                    mPersonInfoDialog.dismiss();
                 }
                 mInputContainerView.showSoftInput();
             }
@@ -371,79 +362,15 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         }
     }
 
-    boolean isReport = false;
-
     private void showPersonInfoView(int userID) {
         if (!U.getNetworkUtils().hasNetwork()) {
             U.getToastUtil().showShort("网络异常，请检查网络后重试!");
             return;
         }
         mInputContainerView.hideSoftInput();
-        PersonInfoDialogView personInfoDialogView = new PersonInfoDialogView(getContext(), userID);
 
-        mDialogPlus = DialogPlus.newDialog(getContext())
-                .setContentHolder(new ViewHolder(personInfoDialogView))
-                .setGravity(Gravity.BOTTOM)
-                .setContentBackgroundResource(R.color.transparent)
-                .setOverlayBackgroundResource(R.color.black_trans_60)
-                .setExpanded(false)
-                .setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
-                        if (view.getId() == R.id.report) {
-                            // 举报
-                            dialog.dismiss();
-                            isReport = true;
-                        } else if (view.getId() == R.id.follow_tv) {
-                            // 关注
-                            if (personInfoDialogView.getUserInfoModel().isFollow() || personInfoDialogView.getUserInfoModel().isFriend()) {
-                                UserInfoManager.getInstance().mateRelation(personInfoDialogView.getUserInfoModel().getUserId(),
-                                        UserInfoManager.RA_UNBUILD, personInfoDialogView.getUserInfoModel().isFriend());
-                            } else {
-                                UserInfoManager.getInstance().mateRelation(personInfoDialogView.getUserInfoModel().getUserId(),
-                                        UserInfoManager.RA_BUILD, personInfoDialogView.getUserInfoModel().isFriend());
-                            }
-
-                        } else if (view.getId() == R.id.avatar_iv) {
-                            dialog.dismiss();
-                            Bundle bundle = new Bundle();
-                            bundle.putString(ImageBigPreviewFragment.BIG_IMAGE_PATH, personInfoDialogView.getUserInfoModel().getAvatar());
-                            U.getFragmentUtils().addFragment(
-                                    FragmentUtils.newAddParamsBuilder(getActivity(), ImageBigPreviewFragment.class)
-                                            .setAddToBackStack(true)
-                                            .setEnterAnim(R.anim.fade_in_center)
-                                            .setExitAnim(R.anim.fade_out_center)
-                                            .setHasAnimation(true)
-                                            .setBundle(bundle)
-                                            .build());
-                        }
-                    }
-                })
-                .setOnDismissListener(new OnDismissListener() {
-                    @Override
-                    public void onDismiss(@NonNull DialogPlus dialog) {
-                        if (isReport) {
-                            showReportView(userID);
-                        }
-                        isReport = false;
-                    }
-                })
-                .create();
-        mDialogPlus.show();
-    }
-
-    private void showReportView(int userID) {
-        Bundle bundle = new Bundle();
-        bundle.putInt(REPORT_FROM_KEY, FORM_GAME);
-        bundle.putInt(REPORT_USER_ID, userID);
-        U.getFragmentUtils().addFragment(
-                FragmentUtils.newAddParamsBuilder(getActivity(), ReportFragment.class)
-                        .setBundle(bundle)
-                        .setAddToBackStack(true)
-                        .setHasAnimation(true)
-                        .setEnterAnim(com.component.busilib.R.anim.slide_in_bottom)
-                        .setExitAnim(com.component.busilib.R.anim.slide_out_bottom)
-                        .build());
+        mPersonInfoDialog = new PersonInfoDialog(getActivity(), userID);
+        mPersonInfoDialog.show();
     }
 
     @Override
@@ -924,9 +851,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     public void destroy() {
         super.destroy();
         MyLog.d(TAG, "destroy");
-        if (mDialogPlus != null && mDialogPlus.isShowing()) {
-            mDialogPlus.dismiss();
-            mDialogPlus = null;
+        if (mPersonInfoDialog != null && mPersonInfoDialog.isShowing()) {
+            mPersonInfoDialog.dismiss();
+            mPersonInfoDialog = null;
         }
         if (mQuitTipsDialog != null && mQuitTipsDialog.isShowing()) {
             mQuitTipsDialog.dismiss();
@@ -993,7 +920,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                     .setCancelBtnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            if(mQuitTipsDialog != null){
+                            if (mQuitTipsDialog != null) {
                                 mQuitTipsDialog.dismiss(false);
                             }
                         }

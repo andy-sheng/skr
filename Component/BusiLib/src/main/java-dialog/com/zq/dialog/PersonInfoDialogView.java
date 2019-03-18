@@ -71,7 +71,7 @@ public class PersonInfoDialogView extends RelativeLayout {
     ExTextView mFollowTv;
     int mTargetUserId;
 
-    public PersonInfoDialogView(Context context, int userID) {
+    PersonInfoDialogView(Context context, int userID) {
         super(context);
         initView();
         initData(context, userID);

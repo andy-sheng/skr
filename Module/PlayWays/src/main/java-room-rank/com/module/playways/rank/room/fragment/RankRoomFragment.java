@@ -60,19 +60,15 @@ import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.OnClickListener;
-import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.trello.rxlifecycle2.android.FragmentEvent;
-import com.zq.dialog.PersonInfoDialogView;
+import com.zq.dialog.PersonInfoDialog;
 import com.zq.lyrics.LyricsManager;
 import com.zq.lyrics.LyricsReader;
 import com.zq.lyrics.event.LyricEventLauncher;
 import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.ManyLyricsView;
 import com.zq.lyrics.widget.VoiceScaleView;
-import com.zq.person.fragment.ImageBigPreviewFragment;
-import com.zq.report.fragment.ReportFragment;
 
 import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
@@ -101,9 +97,6 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 import static com.zq.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
-import static com.zq.report.fragment.ReportFragment.FORM_GAME;
-import static com.zq.report.fragment.ReportFragment.REPORT_FROM_KEY;
-import static com.zq.report.fragment.ReportFragment.REPORT_USER_ID;
 
 public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
@@ -164,7 +157,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     TurnChangeCardView mTurnChangeView;
 
-    DialogPlus mDialogPlus;
+    PersonInfoDialog mPersonInfoDialog;
 
     SongModel mPlayingSongModel;
 
@@ -602,8 +595,8 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         mBottomContainerView.setListener(new BottomContainerView.Listener() {
             @Override
             public void showInputBtnClick() {
-                if (mDialogPlus != null && mDialogPlus.isShowing()) {
-                    mDialogPlus.dismiss();
+                if (mPersonInfoDialog != null && mPersonInfoDialog.isShowing()) {
+                    mPersonInfoDialog.dismiss();
                 }
                 mInputContainerView.showSoftInput();
             }
@@ -629,7 +622,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     }
 
-    boolean isReport = false;
 
     private void showPersonInfoView(int userID) {
         if (!U.getNetworkUtils().hasNetwork()) {
@@ -637,72 +629,9 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             return;
         }
         mInputContainerView.hideSoftInput();
-        PersonInfoDialogView personInfoDialogView = new PersonInfoDialogView(getContext(), userID);
 
-        mDialogPlus = DialogPlus.newDialog(getContext())
-                .setContentHolder(new ViewHolder(personInfoDialogView))
-                .setGravity(Gravity.BOTTOM)
-                .setContentBackgroundResource(R.color.transparent)
-                .setOverlayBackgroundResource(R.color.black_trans_60)
-                .setExpanded(false)
-                .setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
-                        if (view.getId() == R.id.report) {
-                            // 举报
-                            dialog.dismiss();
-                            isReport = true;
-                        } else if (view.getId() == R.id.follow_tv) {
-                            // 关注
-                            if (personInfoDialogView.getUserInfoModel().isFollow() || personInfoDialogView.getUserInfoModel().isFriend()) {
-                                UserInfoManager.getInstance().mateRelation(personInfoDialogView.getUserInfoModel().getUserId(),
-                                        UserInfoManager.RA_UNBUILD, personInfoDialogView.getUserInfoModel().isFriend());
-                            } else {
-                                UserInfoManager.getInstance().mateRelation(personInfoDialogView.getUserInfoModel().getUserId(),
-                                        UserInfoManager.RA_BUILD, personInfoDialogView.getUserInfoModel().isFriend());
-                            }
-
-                        } else if (view.getId() == R.id.avatar_iv) {
-                            dialog.dismiss();
-                            Bundle bundle = new Bundle();
-                            bundle.putString(ImageBigPreviewFragment.BIG_IMAGE_PATH, personInfoDialogView.getUserInfoModel().getAvatar());
-                            U.getFragmentUtils().addFragment(
-                                    FragmentUtils.newAddParamsBuilder(getActivity(), ImageBigPreviewFragment.class)
-                                            .setAddToBackStack(true)
-                                            .setHasAnimation(true)
-                                            .setEnterAnim(R.anim.fade_in_center)
-                                            .setExitAnim(R.anim.fade_out_center)
-                                            .setBundle(bundle)
-                                            .build());
-                        }
-                    }
-                })
-                .setOnDismissListener(new OnDismissListener() {
-                    @Override
-                    public void onDismiss(@NonNull DialogPlus dialog) {
-                        if (isReport) {
-                            showReportView(userID);
-                        }
-                        isReport = false;
-                    }
-                })
-                .create();
-        mDialogPlus.show();
-    }
-
-    private void showReportView(int userID) {
-        Bundle bundle = new Bundle();
-        bundle.putInt(REPORT_FROM_KEY, FORM_GAME);
-        bundle.putInt(REPORT_USER_ID, userID);
-        U.getFragmentUtils().addFragment(
-                FragmentUtils.newAddParamsBuilder(getActivity(), ReportFragment.class)
-                        .setBundle(bundle)
-                        .setAddToBackStack(true)
-                        .setHasAnimation(true)
-                        .setEnterAnim(com.component.busilib.R.anim.slide_in_bottom)
-                        .setExitAnim(com.component.busilib.R.anim.slide_out_bottom)
-                        .build());
-
+        mPersonInfoDialog = new PersonInfoDialog(getActivity(), userID);
+        mPersonInfoDialog.show();
     }
 
     private void initTopView() {
@@ -815,9 +744,9 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         super.destroy();
         MyLog.d(TAG, "destroy");
         destroyAnimation();
-        if (mDialogPlus != null && mDialogPlus.isShowing()) {
-            mDialogPlus.dismiss();
-            mDialogPlus = null;
+        if (mPersonInfoDialog != null && mPersonInfoDialog.isShowing()) {
+            mPersonInfoDialog.dismiss();
+            mPersonInfoDialog = null;
         }
         mUiHanlder.removeCallbacksAndMessages(null);
         if (mManyLyricsView != null) {
@@ -963,7 +892,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
 //        mTopContainerView.cancelShowLastedTimeTask();
         MyLog.w(TAG, "用户" + uid + "的演唱开始了");
-        if(mRoomData == null){
+        if (mRoomData == null) {
             MyLog.w(TAG, "mRoomData为null");
             return;
         }
@@ -1039,8 +968,8 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                 mUiHanlder.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if (mDialogPlus != null && mDialogPlus.isShowing()) {
-                            mDialogPlus.dismiss();
+                        if (mPersonInfoDialog != null && mPersonInfoDialog.isShowing()) {
+                            mPersonInfoDialog.dismiss();
                         }
 
                         if (isGameOver) {
