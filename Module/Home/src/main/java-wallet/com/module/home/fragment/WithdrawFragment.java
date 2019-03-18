@@ -202,7 +202,7 @@ public class WithdrawFragment extends BaseFragment implements IWithDrawView {
                 String editString = s.toString();
 
                 if (checkInputNum(editString)) {
-                    int cash = stringToHaoFen(editString);
+                    long cash = stringToHaoFen(editString);
                     if (cash >= 10000 * HF) {
                         mEditCashNum.setText(beforeTextChanged);
                         mEditCashNum.setSelection(beforeTextChanged.length() - 1);
@@ -313,12 +313,12 @@ public class WithdrawFragment extends BaseFragment implements IWithDrawView {
         U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
     }
 
-    private int stringToHaoFen(String floatString) {
+    private long stringToHaoFen(String floatString) {
         if (TextUtils.isEmpty(floatString)) {
             return 0;
         }
 
-        return (int) (Float.parseFloat(floatString) * HF);
+        return (long) (Float.parseFloat(floatString) * HF);
     }
 
     private void authWX() {
@@ -413,7 +413,7 @@ public class WithdrawFragment extends BaseFragment implements IWithDrawView {
     private void checkWithdrawBtnEable() {
         if (mSelectedChannel != NO_CHANNEL) {
             String text = mEditCashNum.getText().toString();
-            int cash = stringToHaoFen(text);
+            long cash = stringToHaoFen(text);
             if (cash == 0) {
                 mTvTip.setText(String.format("可提现余额%s元", mWithDrawInfoModel.getAvailable()));
                 mTvTip.setTextColor(Color.parseColor("#B7BED5"));
