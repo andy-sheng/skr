@@ -88,7 +88,7 @@ public class EngineManager implements AgoraOutCallback {
     private CustomHandlerThread mCustomHandlerThread;
 
     private boolean mTokenEnable = false; // 是否开启token校验
-
+    private String mLastJoinChannelToken; // 上一次加入房间用的token
     private String mRoomId = ""; // 房间id
 
     @Override
@@ -232,7 +232,25 @@ public class EngineManager implements AgoraOutCallback {
     @Override
     public void onError(int error) {
         if (error == Constants.ERR_JOIN_CHANNEL_REJECTED) {
-            // 进入channel 失败
+            // 加入 channel 失败，在不要token时，传入token也会触发这个
+            if (mCustomHandlerThread != null) {
+                mCustomHandlerThread.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mStatus == STATUS_INITED) {
+                            if (TextUtils.isEmpty(mLastJoinChannelToken)) {
+                                MyLog.w(TAG, "上一次加入房间没有token，加入失败，那这次使用token");
+                                AgoraEngineAdapter.getInstance().leaveChannel();
+                                joinRoomInner2(mRoomId, mConfig.getSelfUid(), getToken(mRoomId));
+                            } else {
+                                MyLog.w(TAG, "上一次加入房间有token，加入失败，那这次不用了");
+                                AgoraEngineAdapter.getInstance().leaveChannel();
+                                joinRoomInner2(mRoomId, mConfig.getSelfUid(), null);
+                            }
+                        }
+                    }
+                });
+            }
         } else if (error == Constants.ERR_INVALID_TOKEN) {
             // token验证失败
             if (mCustomHandlerThread != null) {
@@ -241,7 +259,7 @@ public class EngineManager implements AgoraOutCallback {
                     public void run() {
                         if (mStatus == STATUS_INITED) {
                             String token = getToken(mRoomId);
-                            joinRoomInner(mRoomId, mConfig.getSelfUid(), token);
+                            joinRoomInner2(mRoomId, mConfig.getSelfUid(), token);
                         }
                     }
                 });
@@ -491,7 +509,13 @@ public class EngineManager implements AgoraOutCallback {
                 // 但是已经有token了
             }
         }
-        int retCode = AgoraEngineAdapter.getInstance().joinChannel(token2, roomid, "Extra Optional Data", userId);
+        joinRoomInner2(roomid, userId, token2);
+    }
+
+    private void joinRoomInner2(final String roomid, final int userId, final String token) {
+        MyLog.d(TAG, "joinRoomInner2" + " roomid=" + roomid + " userId=" + userId + " token=" + token);
+        mLastJoinChannelToken = token;
+        int retCode = AgoraEngineAdapter.getInstance().joinChannel(token, roomid, "Extra Optional Data", userId);
         if (retCode < 0) {
             HashMap map = new HashMap();
             map.put("reason", "" + retCode);

@@ -368,6 +368,7 @@ public class AgoraEngineAdapter {
      * 离开房间
      */
     public void leaveChannel() {
+        MyLog.d(TAG,"leaveChannel" );
         if (mRtcEngine != null) {
             mRtcEngine.leaveChannel();
         }

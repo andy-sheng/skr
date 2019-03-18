@@ -8,6 +8,6 @@ import retrofit2.http.Query;
 
 public interface AgoraTokenApi {
 
-    @GET("http://dev.game.inframe.mobi/v1/messenger/agora-token")
+    @GET("http://dev.api.inframe.mobi/v1/messenger/agora-token")
     Call<ApiResult> getToken(@Query("channelName") String channelName);
 }
