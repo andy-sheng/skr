@@ -54,7 +54,7 @@ public class SharePanel {
 
     UMShareListener mOUMShareListener;
 
-    public void setUMShareListener(UMShareListener umShareListener){
+    public void setUMShareListener(UMShareListener umShareListener) {
         mOUMShareListener = umShareListener;
     }
 
@@ -81,7 +81,7 @@ public class SharePanel {
     UMShareListener mUMShareListener = new UMShareListener() {
         @Override
         public void onStart(SHARE_MEDIA share_media) {
-            if(mOUMShareListener != null){
+            if (mOUMShareListener != null) {
                 mOUMShareListener.onStart(share_media);
             }
         }
@@ -89,7 +89,7 @@ public class SharePanel {
         @Override
         public void onResult(SHARE_MEDIA share_media) {
             U.getToastUtil().showShort("分享成功");
-            if(mOUMShareListener != null){
+            if (mOUMShareListener != null) {
                 mOUMShareListener.onResult(share_media);
             }
         }
@@ -97,7 +97,7 @@ public class SharePanel {
         @Override
         public void onError(SHARE_MEDIA share_media, Throwable throwable) {
             MyLog.e(TAG, throwable);
-            if(mOUMShareListener != null){
+            if (mOUMShareListener != null) {
                 mOUMShareListener.onError(share_media, throwable);
             }
             U.getToastUtil().showShort("分享失败, " + throwable.getMessage());
@@ -105,9 +105,9 @@ public class SharePanel {
 
         @Override
         public void onCancel(SHARE_MEDIA share_media) {
-            if(share_media != SHARE_MEDIA.QQ){
+            if (share_media != SHARE_MEDIA.QQ) {
                 U.getToastUtil().showShort("分享取消");
-                if(mOUMShareListener != null){
+                if (mOUMShareListener != null) {
                     mOUMShareListener.onCancel(share_media);
                 }
             }
@@ -116,23 +116,51 @@ public class SharePanel {
     };
 
     public void share(SharePlatform sharePlatform, ShareType type) {
-        switch (type){
+        switch (type) {
             case URL:
                 shareUrl(sharePlatform);
                 break;
             case IMAGE_RUL:
                 shareImageUrl(sharePlatform);
                 break;
+            case TEXT:
+                shareText(sharePlatform);
+                break;
         }
 
     }
 
-    public void shareUrl(SharePlatform sharePlatform){
+    private void shareText(SharePlatform sharePlatform) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(mTitle).append("\n")
+                .append(mUrl).append("\n")
+                .append(mDes);
+
+        switch (sharePlatform) {
+            case WEIXIN:
+                new ShareAction(mActivity).withText(sb.toString())
+                        .setPlatform(SHARE_MEDIA.WEIXIN)
+                        .setCallback(mUMShareListener).share();
+                break;
+            case QQ:
+                new ShareAction(mActivity).withText(sb.toString())
+                        .setPlatform(SHARE_MEDIA.QQ)
+                        .setCallback(mUMShareListener).share();
+                break;
+            case WEIXIN_CIRCLE:
+                new ShareAction(mActivity).withText(sb.toString())
+                        .setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
+                        .setCallback(mUMShareListener).share();
+                break;
+        }
+    }
+
+    public void shareUrl(SharePlatform sharePlatform) {
         UMWeb web = new UMWeb(mUrl);
         web.setTitle(mTitle);
-        if(!TextUtils.isEmpty(mShareImage)){
+        if (!TextUtils.isEmpty(mShareImage)) {
             web.setThumb(new UMImage(mActivity, mShareImage));
-        }else {
+        } else {
             web.setThumb(new UMImage(mActivity, R.drawable.share_app_icon));
         }
         web.setDescription(mDes);
@@ -156,9 +184,9 @@ public class SharePanel {
         }
     }
 
-    public void shareImageUrl(SharePlatform sharePlatform){
+    public void shareImageUrl(SharePlatform sharePlatform) {
         UMImage imageurl = new UMImage(mActivity, mUrl);
-        imageurl.setThumb(new UMImage(mActivity , mUrl));
+        imageurl.setThumb(new UMImage(mActivity, mUrl));
         switch (sharePlatform) {
             case WEIXIN:
                 new ShareAction(mActivity).withMedia(imageurl)
