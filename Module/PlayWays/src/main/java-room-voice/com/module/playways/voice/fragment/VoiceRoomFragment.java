@@ -34,13 +34,7 @@ import com.module.playways.voice.view.VoiceTopContainerView;
 import com.module.playways.voice.view.VoiceUserStatusContainerView;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGAParser;
-import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.OnClickListener;
-import com.orhanobut.dialogplus.OnDismissListener;
-import com.orhanobut.dialogplus.ViewHolder;
-import com.zq.dialog.PersonInfoDialogView;
-import com.zq.person.fragment.ImageBigPreviewFragment;
-import com.zq.report.fragment.ReportFragment;
+import com.zq.dialog.PersonInfoDialog;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -54,10 +48,6 @@ import kotlin.jvm.functions.Function1;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-
-import static com.zq.report.fragment.ReportFragment.FORM_GAME;
-import static com.zq.report.fragment.ReportFragment.REPORT_FROM_KEY;
-import static com.zq.report.fragment.ReportFragment.REPORT_USER_ID;
 
 public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
 
@@ -83,7 +73,7 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
 
     VoiceCorePresenter mCorePresenter;
 
-    DialogPlus mShowPersonInfoDialogPlus;
+    PersonInfoDialog mPersonInfoDialog;
 
     SVGAParser mSVGAParser;
 
@@ -142,8 +132,8 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
         mBottomContainerView.setListener(new VoiceBottomContainerView.Listener() {
             @Override
             public void showInputBtnClick() {
-                if (mShowPersonInfoDialogPlus != null && mShowPersonInfoDialogPlus.isShowing()) {
-                    mShowPersonInfoDialogPlus.dismiss();
+                if (mPersonInfoDialog != null && mPersonInfoDialog.isShowing()) {
+                    mPersonInfoDialog.dismiss();
                 }
                 mInputContainerView.showSoftInput();
             }
@@ -219,8 +209,6 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
         }
     }
 
-    boolean isReport = false;
-
     private void showPersonInfoView(int userID) {
         if (!U.getNetworkUtils().hasNetwork()) {
             U.getToastUtil().showShort("网络异常，请检查网络后重试!");
@@ -230,71 +218,9 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
             return;
         }
         mInputContainerView.hideSoftInput();
-        PersonInfoDialogView personInfoDialogView = new PersonInfoDialogView(getContext(), userID);
 
-        mShowPersonInfoDialogPlus = DialogPlus.newDialog(getContext())
-                .setContentHolder(new ViewHolder(personInfoDialogView))
-                .setGravity(Gravity.BOTTOM)
-                .setContentBackgroundResource(R.color.transparent)
-                .setOverlayBackgroundResource(R.color.black_trans_60)
-                .setExpanded(false)
-                .setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
-                        if (view.getId() == R.id.report) {
-                            // 举报
-                            dialog.dismiss();
-                            isReport = true;
-                        } else if (view.getId() == R.id.follow_tv) {
-                            // 关注
-                            if (personInfoDialogView.getUserInfoModel().isFollow() || personInfoDialogView.getUserInfoModel().isFriend()) {
-                                UserInfoManager.getInstance().mateRelation(personInfoDialogView.getUserInfoModel().getUserId(),
-                                        UserInfoManager.RA_UNBUILD, personInfoDialogView.getUserInfoModel().isFriend());
-                            } else {
-                                UserInfoManager.getInstance().mateRelation(personInfoDialogView.getUserInfoModel().getUserId(),
-                                        UserInfoManager.RA_BUILD, personInfoDialogView.getUserInfoModel().isFriend());
-                            }
-
-                        } else if (view.getId() == R.id.avatar_iv) {
-                            dialog.dismiss();
-                            Bundle bundle = new Bundle();
-                            bundle.putString(ImageBigPreviewFragment.BIG_IMAGE_PATH, personInfoDialogView.getUserInfoModel().getAvatar());
-                            U.getFragmentUtils().addFragment(
-                                    FragmentUtils.newAddParamsBuilder(getActivity(), ImageBigPreviewFragment.class)
-                                            .setAddToBackStack(true)
-                                            .setEnterAnim(R.anim.fade_in_center)
-                                            .setExitAnim(R.anim.fade_out_center)
-                                            .setHasAnimation(true)
-                                            .setBundle(bundle)
-                                            .build());
-                        }
-                    }
-                })
-                .setOnDismissListener(new OnDismissListener() {
-                    @Override
-                    public void onDismiss(@NonNull DialogPlus dialog) {
-                        if (isReport) {
-                            showReportView(userID);
-                        }
-                        isReport = false;
-                    }
-                })
-                .create();
-        mShowPersonInfoDialogPlus.show();
-    }
-
-    private void showReportView(int userID) {
-        Bundle bundle = new Bundle();
-        bundle.putInt(REPORT_FROM_KEY, FORM_GAME);
-        bundle.putInt(REPORT_USER_ID, userID);
-        U.getFragmentUtils().addFragment(
-                FragmentUtils.newAddParamsBuilder(getActivity(), ReportFragment.class)
-                        .setBundle(bundle)
-                        .setAddToBackStack(true)
-                        .setHasAnimation(true)
-                        .setEnterAnim(com.component.busilib.R.anim.slide_in_bottom)
-                        .setExitAnim(com.component.busilib.R.anim.slide_out_bottom)
-                        .build());
+        mPersonInfoDialog = new PersonInfoDialog(getActivity(), userID);
+        mPersonInfoDialog.show();
     }
 
 
@@ -342,9 +268,9 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
     public void destroy() {
         super.destroy();
         MyLog.d(TAG, "destroy");
-        if (mShowPersonInfoDialogPlus != null && mShowPersonInfoDialogPlus.isShowing()) {
-            mShowPersonInfoDialogPlus.dismiss();
-            mShowPersonInfoDialogPlus = null;
+        if (mPersonInfoDialog != null && mPersonInfoDialog.isShowing()) {
+            mPersonInfoDialog.dismiss();
+            mPersonInfoDialog = null;
         }
         mUiHanlder.removeCallbacksAndMessages(null);
 
