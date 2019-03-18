@@ -156,6 +156,7 @@ public class WithdrawFragment extends BaseFragment implements IWithDrawView {
                     return;
                 }
 
+                U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity(), mEditCashNum);
                 if (!mWithDrawInfoModel.isIsRealAuth()) {
                     U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), SmsAuthFragment.class)
                             .setAddToBackStack(true)
