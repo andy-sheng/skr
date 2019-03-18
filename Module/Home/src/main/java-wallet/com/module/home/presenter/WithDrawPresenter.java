@@ -99,7 +99,7 @@ public class WithDrawPresenter extends RxLifeCyclePresenter {
      * @param amount
      * @param action
      */
-    public void withDraw(int amount, int action) {
+    public void withDraw(long amount, int action) {
         HashMap<String, Object> map = new HashMap<>();
         map.put("amount", amount);
         map.put("action", action);
