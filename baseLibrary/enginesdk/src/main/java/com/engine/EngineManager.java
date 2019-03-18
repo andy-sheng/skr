@@ -259,6 +259,7 @@ public class EngineManager implements AgoraOutCallback {
                     public void run() {
                         if (mStatus == STATUS_INITED) {
                             String token = getToken(mRoomId);
+                            AgoraEngineAdapter.getInstance().leaveChannel();
                             joinRoomInner2(mRoomId, mConfig.getSelfUid(), token);
                         }
                     }
