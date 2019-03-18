@@ -25,7 +25,7 @@ public class KeyBoardUtils {
             IBinder binder = focusView.getWindowToken();
             if (binder != null) {
                 InputMethodManager imd = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-                imd.hideSoftInputFromWindow(binder, InputMethodManager.HIDE_IMPLICIT_ONLY);
+                imd.hideSoftInputFromWindow(binder, 0);
             }
         }
     }

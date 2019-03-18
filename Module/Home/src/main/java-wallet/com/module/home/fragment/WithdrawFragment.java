@@ -1,5 +1,6 @@
 package com.module.home.fragment;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,6 +11,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -102,7 +104,7 @@ public class WithdrawFragment extends BaseFragment implements IWithDrawView {
         mLlChannel.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                if(mWithDrawInfoModel == null){
+                if (mWithDrawInfoModel == null) {
                     return;
                 }
 
@@ -121,7 +123,7 @@ public class WithdrawFragment extends BaseFragment implements IWithDrawView {
         mTvWxSelect.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                if(mWithDrawInfoModel == null){
+                if (mWithDrawInfoModel == null) {
                     return;
                 }
 
@@ -140,6 +142,7 @@ public class WithdrawFragment extends BaseFragment implements IWithDrawView {
         mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+                U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity(), mEditCashNum);
                 if (getActivity() != null) {
                     getActivity().finish();
                 }
@@ -149,7 +152,7 @@ public class WithdrawFragment extends BaseFragment implements IWithDrawView {
         mTvWithdrawBtn.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                if(mWithDrawInfoModel == null){
+                if (mWithDrawInfoModel == null) {
                     return;
                 }
 
@@ -182,6 +185,7 @@ public class WithdrawFragment extends BaseFragment implements IWithDrawView {
 
         mEditCashNum.addTextChangedListener(new TextWatcher() {
             String beforeTextChanged = "";
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 beforeTextChanged = s.toString();
@@ -198,7 +202,7 @@ public class WithdrawFragment extends BaseFragment implements IWithDrawView {
 
                 if (checkInputNum(editString)) {
                     int cash = stringToHaoFen(editString);
-                    if(cash >= 10000 * HF){
+                    if (cash >= 10000 * HF) {
                         mEditCashNum.setText(beforeTextChanged);
                         mEditCashNum.setSelection(beforeTextChanged.length() - 1);
                         return;
@@ -339,7 +343,7 @@ public class WithdrawFragment extends BaseFragment implements IWithDrawView {
     public void showWithDrawInfo(WithDrawInfoModel withDrawInfoModel) {
         mWithDrawInfoModel = withDrawInfoModel;
         mTvTip.setText(String.format("可提现余额%s元", withDrawInfoModel.getAvailable()));
-        if(mWithDrawInfoModel.getRule() != null && mWithDrawInfoModel.getRule().size() > 0){
+        if (mWithDrawInfoModel.getRule() != null && mWithDrawInfoModel.getRule().size() > 0) {
             mIvAttention.setVisibility(View.VISIBLE);
         }
 
@@ -422,9 +426,16 @@ public class WithdrawFragment extends BaseFragment implements IWithDrawView {
     public void withDraw(boolean success) {
         if (success) {
             U.getToastUtil().showShort("提现成功");
-            if (getActivity() != null) {
-                getActivity().finish();
-            }
+            U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+            mUiHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (getActivity() != null) {
+                        getActivity().finish();
+                    }
+                }
+            }, 200);
+
             EventBus.getDefault().post(new WithDrawSuccessEvent());
         }
     }
