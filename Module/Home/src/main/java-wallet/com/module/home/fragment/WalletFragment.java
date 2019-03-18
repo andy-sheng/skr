@@ -110,8 +110,8 @@ public class WalletFragment extends BaseFragment implements IWalletView {
         mWithdrawTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                if (balance < 10) {
-                    U.getToastUtil().showShort("满10元才能提现哦～");
+                if (balance <= 0) {
+                    U.getToastUtil().showShort("暂无可提现余额");
                 } else {
                     if(!U.getNetworkUtils().hasNetwork()){
                         U.getToastUtil().showShort("您网络异常！");
