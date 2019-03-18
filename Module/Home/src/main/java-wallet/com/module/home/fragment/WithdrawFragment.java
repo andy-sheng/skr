@@ -383,6 +383,9 @@ public class WithdrawFragment extends BaseFragment implements IWithDrawView {
             mSelectedChannel = NO_CHANNEL;
         } else {
             mTvWxSelect.setSelected(true);
+            mTvWxSelect.setVisibility(View.GONE);
+            mLlChannel.setOnClickListener(null);
+            mTvWxSelect.setOnClickListener(null);
             if (TextUtils.isEmpty(mEditCashNum.getText().toString())) {
                 mTvWithdrawBtn.setEnabled(false);
             } else if (stringToHaoFen(mEditCashNum.getText().toString()) <= mWithDrawInfoModel.getAvailableInt()) {
