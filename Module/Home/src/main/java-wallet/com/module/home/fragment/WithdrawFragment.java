@@ -28,6 +28,7 @@ import com.common.view.titlebar.CommonTitleBar;
 import com.module.RouterConstants;
 import com.module.home.R;
 import com.module.home.WalletServerApi;
+import com.module.home.event.WithDrawSuccessEvent;
 import com.module.home.inter.IWithDrawView;
 import com.module.home.model.WithDrawInfoModel;
 import com.module.home.presenter.WithDrawPresenter;
@@ -40,6 +41,7 @@ import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
+import org.greenrobot.eventbus.EventBus;
 import org.w3c.dom.Text;
 
 import java.util.Map;
@@ -423,6 +425,7 @@ public class WithdrawFragment extends BaseFragment implements IWithDrawView {
             if (getActivity() != null) {
                 getActivity().finish();
             }
+            EventBus.getDefault().post(new WithDrawSuccessEvent());
         }
     }
 

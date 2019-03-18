@@ -1,5 +1,6 @@
 package com.module.home.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
+import com.common.core.userinfo.event.RelationChangeEvent;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.SpanUtils;
@@ -21,6 +23,7 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.titlebar.CommonTitleBar;
 import com.module.RouterConstants;
+import com.module.home.event.WithDrawSuccessEvent;
 import com.module.home.inter.IWalletView;
 import com.module.home.R;
 import com.module.home.adapter.WalletRecordAdapter;
@@ -29,6 +32,9 @@ import com.module.home.presenter.WalletRecordPresenter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -139,7 +145,13 @@ public class WalletFragment extends BaseFragment implements IWalletView {
 
     @Override
     public boolean useEventBus() {
-        return false;
+        return true;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(WithDrawSuccessEvent event) {
+        mWalletRecordPresenter.getBalance();
+        mWalletRecordPresenter.getAllWalletRecords(offset, DEFAULT_COUNT);
     }
 
     @Override
