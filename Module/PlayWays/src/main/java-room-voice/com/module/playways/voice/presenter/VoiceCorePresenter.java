@@ -83,7 +83,7 @@ public class VoiceCorePresenter extends RxLifeCyclePresenter {
             params.setStyleEnum(Params.AudioEffect.none);
             params.setSelfUid((int) MyUserInfoManager.getInstance().getUid());
             EngineManager.getInstance().init("voiceroom", params);
-            EngineManager.getInstance().joinRoom(mRoomData.getGameId() + "_chat", (int) UserAccountManager.getInstance().getUuidAsLong(), true);
+            EngineManager.getInstance().joinRoom(mRoomData.getGameId() + "_chat", (int) UserAccountManager.getInstance().getUuidAsLong(), true,null);
             EngineManager.getInstance().muteLocalAudioStream(true);
         }
         if (mRoomData.getGameId() > 0) {

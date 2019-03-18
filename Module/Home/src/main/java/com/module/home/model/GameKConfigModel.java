@@ -6,13 +6,13 @@ import java.io.Serializable;
 import java.util.List;
 
 public class GameKConfigModel implements Serializable {
-
     /**
      * homepage-site-first : {"enable":true,"pic":"http://res-static.inframe.mobi/app/skr-redpacket-20190304.png","schema":"inframeskr://web/fullScreen?url=https://www.baidu.com&showShare=1"}
      * pk-tags : ["K歌·3人赛"]
      * stand-tags : ["抢麦·挑战30s"]
      */
-
+    @JSONField(name = "agora-token")
+    private boolean agoraTokenEnable;
     @JSONField(name = "homepage-site-first")
     private HomepagesitefirstBean homepagesitefirst;
     @JSONField(name = "pk-tags")
@@ -42,6 +42,14 @@ public class GameKConfigModel implements Serializable {
 
     public void setStandtags(List<String> standtags) {
         this.standtags = standtags;
+    }
+
+    public boolean isAgoraTokenEnable() {
+        return agoraTokenEnable;
+    }
+
+    public void setAgoraTokenEnable(boolean agoraTokenEnable) {
+        this.agoraTokenEnable = agoraTokenEnable;
     }
 
     public static class HomepagesitefirstBean implements Serializable{

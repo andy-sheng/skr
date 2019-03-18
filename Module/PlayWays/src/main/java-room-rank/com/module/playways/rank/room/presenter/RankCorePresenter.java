@@ -186,7 +186,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 //            if(RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())){
 //                isAnchor = true;
 //            }
-            EngineManager.getInstance().joinRoom(String.valueOf(mRoomData.getGameId()), (int) UserAccountManager.getInstance().getUuidAsLong(), isAnchor);
+            EngineManager.getInstance().joinRoom(String.valueOf(mRoomData.getGameId()), (int) UserAccountManager.getInstance().getUuidAsLong(), isAnchor,null);
             // 不发送本地音频
 //            EngineManager.getInstance().muteLocalAudioStream(true);
             // 系统提示

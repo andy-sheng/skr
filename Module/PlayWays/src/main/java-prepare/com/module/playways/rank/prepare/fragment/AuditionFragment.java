@@ -160,7 +160,7 @@ public class AuditionFragment extends BaseFragment {
             EngineManager.getInstance().init("prepare", params);
 //            boolean isAnchor = MyUserInfoManager.getInstance().getUid() == 1705476;
             boolean isAnchor = true;
-            EngineManager.getInstance().joinRoom("csm" + System.currentTimeMillis(), (int) UserAccountManager.getInstance().getUuidAsLong(), isAnchor);
+            EngineManager.getInstance().joinRoom("csm" + System.currentTimeMillis(), (int) UserAccountManager.getInstance().getUuidAsLong(), isAnchor,null);
         } else {
             EngineManager.getInstance().resumeAudioMixing();
         }

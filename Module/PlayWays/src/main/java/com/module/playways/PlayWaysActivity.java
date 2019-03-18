@@ -18,9 +18,7 @@ import com.engine.EngineManager;
 import com.module.RouterConstants;
 import com.module.playways.event.FinishPlayWayActivityEvent;
 import com.module.playways.grab.songselect.SpecialSelectFragment;
-import com.module.playways.rank.room.event.InputBoardEvent;
 import com.module.rank.R;
-import com.module.playways.rank.room.fragment.PkRoomFragment;
 import com.module.playways.rank.song.fragment.SongSelectFragment;
 
 import org.greenrobot.eventbus.Subscribe;

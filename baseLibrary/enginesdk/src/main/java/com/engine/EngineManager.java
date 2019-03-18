@@ -10,14 +10,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.common.log.MyLog;
+import com.common.rxretrofit.ApiManager;
+import com.common.rxretrofit.ApiResult;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.CustomHandlerThread;
 import com.common.utils.DeviceUtils;
+import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.engine.agora.AgoraEngineAdapter;
 import com.engine.agora.AgoraOutCallback;
 import com.engine.agora.effect.EffectModel;
 import com.engine.arccloud.RecognizeConfig;
+import com.engine.token.AgoraTokenApi;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -30,6 +34,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import io.agora.rtc.Constants;
 import io.agora.rtc.IRtcEngineEventHandler;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
@@ -38,6 +43,8 @@ import io.reactivex.schedulers.Schedulers;
 import okio.BufferedSink;
 import okio.Okio;
 import okio.Sink;
+import retrofit2.Call;
+import retrofit2.Response;
 
 /**
  * 关于音视频引擎的都放在这个类里
@@ -45,6 +52,7 @@ import okio.Sink;
 public class EngineManager implements AgoraOutCallback {
 
     public final static String TAG = "EngineManager";
+    public static final String PREF_KEY_TOKEN_ENABLE = "key_agora_token_enable";
     static final int STATUS_UNINIT = 0;
     static final int STATUS_INITING = 1;
     static final int STATUS_INITED = 2;
@@ -68,7 +76,8 @@ public class EngineManager implements AgoraOutCallback {
             if (msg.what == MSG_JOIN_ROOM_TIMEOUT) {
                 // 加入房间超时
                 StatisticsAdapter.recordCountEvent("agora", "join_timeout", null);
-                joinRoomInner((String) msg.obj, msg.arg1);
+                JoinParams joinParams = (JoinParams) msg.obj;
+                joinRoomInner(joinParams.roomID, joinParams.userId, joinParams.token);
             }
         }
     };
@@ -77,6 +86,10 @@ public class EngineManager implements AgoraOutCallback {
     private String mInitFrom;
 
     private CustomHandlerThread mCustomHandlerThread;
+
+    private boolean mTokenEnable = false; // 是否开启token校验
+
+    private String mRoomId = ""; // 房间id
 
     @Override
     public void onUserJoined(int uid, int elapsed) {
@@ -216,6 +229,26 @@ public class EngineManager implements AgoraOutCallback {
         });
     }
 
+    @Override
+    public void onError(int error) {
+        if (error == Constants.ERR_JOIN_CHANNEL_REJECTED) {
+            // 进入channel 失败
+        } else if (error == Constants.ERR_INVALID_TOKEN) {
+            // token验证失败
+            if (mCustomHandlerThread != null) {
+                mCustomHandlerThread.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mStatus == STATUS_INITED) {
+                            String token = getToken(mRoomId);
+                            joinRoomInner(mRoomId, mConfig.getSelfUid(), token);
+                        }
+                    }
+                });
+            }
+        }
+    }
+
     private UserStatus ensureJoin(int uid) {
         if (!mUserStatusMap.containsKey(uid)) {
             UserStatus userStatus = new UserStatus(uid);
@@ -233,6 +266,7 @@ public class EngineManager implements AgoraOutCallback {
 
     private EngineManager() {
         AgoraEngineAdapter.getInstance().setOutCallback(this);
+        mTokenEnable = U.getPreferenceUtils().getSettingBoolean(PREF_KEY_TOKEN_ENABLE, false);
     }
 
     public static final EngineManager getInstance() {
@@ -247,7 +281,8 @@ public class EngineManager implements AgoraOutCallback {
             @Override
             protected void processMessage(Message msg) {
                 if (msg.what == MSG_JOIN_ROOM_AGAIN) {
-                    joinRoomInner((String) msg.obj, msg.arg1);
+                    JoinParams joinParams = (JoinParams) msg.obj;
+                    joinRoomInner(joinParams.roomID, joinParams.userId, joinParams.token);
                 }
             }
         };
@@ -363,6 +398,34 @@ public class EngineManager implements AgoraOutCallback {
         }
     }
 
+    private String getToken(String roomId) {
+        MyLog.d(TAG, "getToken" + " roomId=" + roomId);
+        AgoraTokenApi agoraTokenApi = ApiManager.getInstance().createService(AgoraTokenApi.class);
+        if (agoraTokenApi != null) {
+            Call<ApiResult> apiResultCall = agoraTokenApi.getToken(roomId);
+            if (apiResultCall != null) {
+                try {
+                    Response<ApiResult> resultResponse = apiResultCall.execute();
+                    if (resultResponse != null) {
+                        ApiResult obj = resultResponse.body();
+                        if (obj != null) {
+                            if (obj.getErrno() == 0) {
+                                String token = obj.getData().getString("token");
+                                MyLog.d(TAG, "getToken 成功 token=" + token);
+                                return token;
+                            }
+                        } else {
+                            MyLog.w(TAG, "syncMyInfoFromServer obj==null");
+                        }
+                    }
+                } catch (Exception e) {
+                    MyLog.d(e);
+                }
+            }
+        }
+        return null;
+    }
+
     /**
      * 加入agora的房间
      *
@@ -371,11 +434,12 @@ public class EngineManager implements AgoraOutCallback {
      * @param isAnchor 是否以主播的身份
      *                 不是主播只看不能说
      */
-    public void joinRoom(final String roomid, final int userId, final boolean isAnchor) {
+    public void joinRoom(final String roomid, final int userId, final boolean isAnchor, final String token) {
         mCustomHandlerThread.post(new Runnable() {
             @Override
             public void run() {
                 MyLog.w(TAG, "joinRoom" + " roomid=" + roomid + " userId=" + userId + " isAnchor=" + isAnchor);
+                mConfig.setSelfUid(userId);
                 if (mConfig.getChannelProfile() == Params.CHANNEL_TYPE_LIVE_BROADCASTING) {
                     if (isAnchor) {
                         AgoraEngineAdapter.getInstance().setClientRole(isAnchor);
@@ -383,7 +447,7 @@ public class EngineManager implements AgoraOutCallback {
                         AgoraEngineAdapter.getInstance().setClientRole(isAnchor);
                     }
                 }
-                joinRoomInner(roomid, userId);
+                joinRoomInner(roomid, userId, token);
                 //TODO 临时关闭耳返
 //                if (U.getDeviceUtils().getHeadsetPlugOn()) {
 //                    setEnableSpeakerphone(false);
@@ -397,27 +461,48 @@ public class EngineManager implements AgoraOutCallback {
     }
 
 
-    private void joinRoomInner(final String roomid, final int userId) {
-        MyLog.w(TAG, "joinRoomInner" + " roomid=" + roomid + " userId=" + userId);
+    private void joinRoomInner(final String roomid, final int userId, final String token) {
+        MyLog.w(TAG, "joinRoomInner" + " roomid=" + roomid + " userId=" + userId + " token=" + token);
         if (Looper.myLooper() != mCustomHandlerThread.getLooper()) {
             MyLog.d(TAG, "joinRoomInner not looper");
             mCustomHandlerThread.post(new Runnable() {
                 @Override
                 public void run() {
-                    joinRoomInner(roomid, userId);
+                    joinRoomInner(roomid, userId, token);
                 }
             });
             return;
         }
-        int retCode = AgoraEngineAdapter.getInstance().joinChannel(null, roomid, "Extra Optional Data", userId);
+        mRoomId = roomid;
+        String token2 = token;
+        if (mTokenEnable) {
+            MyLog.d(TAG, "joinRoomInner 明确告知已经启用token了");
+            if (TextUtils.isEmpty(token2)) {
+                // 但是token2还为空，短链接要个token
+                token2 = getToken(roomid);
+            } else {
+                // token不为空，继续使用
+            }
+        } else {
+            MyLog.d(TAG, "joinRoomInner 未启用token，一是真的未启用，二是启用了不知道");
+            if (TextUtils.isEmpty(token)) {
+                // 没有token
+            } else {
+                // 但是已经有token了
+            }
+        }
+        int retCode = AgoraEngineAdapter.getInstance().joinChannel(token2, roomid, "Extra Optional Data", userId);
         if (retCode < 0) {
             HashMap map = new HashMap();
             map.put("reason", "" + retCode);
             StatisticsAdapter.recordCountEvent("agora", "join_failed", map);
             Message msg = mCustomHandlerThread.obtainMessage();
             msg.what = MSG_JOIN_ROOM_AGAIN;
-            msg.obj = roomid;
-            msg.arg1 = userId;
+            JoinParams joinParams = new JoinParams();
+            joinParams.roomID = roomid;
+            joinParams.token = token;
+            joinParams.userId = userId;
+            msg.obj = joinParams;
             mCustomHandlerThread.removeMessage(MSG_JOIN_ROOM_AGAIN);
             mCustomHandlerThread.sendMessageDelayed(msg, 2000);
         } else {
@@ -425,8 +510,11 @@ public class EngineManager implements AgoraOutCallback {
             mConfig.setJoinRoomBeginTs(System.currentTimeMillis());
             Message msg = mUiHandler.obtainMessage();
             msg.what = MSG_JOIN_ROOM_TIMEOUT;
-            msg.obj = roomid;
-            msg.arg1 = userId;
+            JoinParams joinParams = new JoinParams();
+            joinParams.roomID = roomid;
+            joinParams.token = token;
+            joinParams.userId = userId;
+            msg.obj = joinParams;
             mUiHandler.removeMessages(MSG_JOIN_ROOM_TIMEOUT);
             mUiHandler.sendMessageDelayed(msg, 4000);
         }
@@ -557,7 +645,7 @@ public class EngineManager implements AgoraOutCallback {
                         && !userStatus.hasBindView()
                         && !userStatus.isVideoMute()
                         && userStatus.isFirstVideoDecoded()
-                        ) {
+                ) {
                     // 这个用户有资格消费一个 surfaceview
                     if (view instanceof TextureView) {
                         canRemoveViews.add(view);
@@ -1246,4 +1334,10 @@ public class EngineManager implements AgoraOutCallback {
     }
 
     /*打分相关结束*/
+
+    public static class JoinParams {
+        public int userId;
+        public String roomID;
+        public String token;
+    }
 }

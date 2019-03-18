@@ -209,6 +209,14 @@ public class AgoraEngineAdapter {
                 mOutCallback.onAudioRouteChanged(routing);
             }
         }
+
+        @Override
+        public void onError(int error) {
+            super.onError(error);
+            if (mOutCallback != null) {
+                mOutCallback.onError(error);
+            }
+        }
     };
 
     public void setOutCallback(AgoraOutCallback outCallback) {
@@ -423,7 +431,11 @@ public class AgoraEngineAdapter {
         tryInitRtcEngine();
         MyLog.d(TAG, "joinChannel" + " token=" + token + " channelId=" + channelId + " extra=" + extra + " uid=" + uid);
         // 一定要设置一个角色
-        int retCode = mRtcEngine.joinChannel(token, channelId, extra, uid);
+        String t = null;
+        if(!TextUtils.isEmpty(token)){
+            t = token;
+        }
+        int retCode = mRtcEngine.joinChannel(t, channelId, extra, uid);
         return retCode;
     }
 

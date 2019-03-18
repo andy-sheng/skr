@@ -37,4 +37,6 @@ public interface AgoraOutCallback {
     void onAudioRouteChanged(int routing);
 
     void onRecordingBuffer(byte[] samples);
+
+    void onError(int error);
 }
