@@ -19,9 +19,9 @@ public class WithDrawInfoModel implements Serializable {
 
     private String available;
     private String locked;
-    private int availableInt;
-    private int lockedInt;
-    private int maxWihtrawAmount;
+    private long availableInt;
+    private long lockedInt;
+    private long maxWihtrawAmount;
     private boolean isRealAuth;
     private List<String> rule;
     private List<CfgBean> cfg;
@@ -42,27 +42,27 @@ public class WithDrawInfoModel implements Serializable {
         this.locked = locked;
     }
 
-    public int getAvailableInt() {
+    public long getAvailableInt() {
         return availableInt;
     }
 
-    public void setAvailableInt(int availableInt) {
+    public void setAvailableInt(long availableInt) {
         this.availableInt = availableInt;
     }
 
-    public int getLockedInt() {
+    public long getLockedInt() {
         return lockedInt;
     }
 
-    public void setLockedInt(int lockedInt) {
+    public void setLockedInt(long lockedInt) {
         this.lockedInt = lockedInt;
     }
 
-    public int getMaxWihtrawAmount() {
+    public long getMaxWihtrawAmount() {
         return maxWihtrawAmount;
     }
 
-    public void setMaxWihtrawAmount(int maxWihtrawAmount) {
+    public void setMaxWihtrawAmount(long maxWihtrawAmount) {
         this.maxWihtrawAmount = maxWihtrawAmount;
     }
 
