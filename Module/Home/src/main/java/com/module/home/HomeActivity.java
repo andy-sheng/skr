@@ -10,7 +10,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.ImageView;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -18,15 +18,11 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
-
-import com.common.core.permission.SkrLocationPermission;
 import com.common.core.permission.SkrSdcardPermission;
-
-import com.common.core.scheme.SchemeSdkActivity;
 
 import com.common.core.upgrade.UpgradeManager;
 import com.common.core.account.UserAccountManager;
-import com.common.core.login.interceptor.JudgeLoginInterceptor;
+import com.common.floatwindow.FloatWindow;
 import com.common.log.MyLog;
 import com.common.utils.ActivityUtils;
 import com.common.utils.U;
@@ -35,31 +31,23 @@ import com.common.view.ex.ExImageView;
 
 import com.common.view.ex.ExTextView;
 import com.common.view.viewpager.NestViewPager;
-import com.jakewharton.rxbinding2.view.RxView;
 import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
 import com.module.home.fragment.GameFragment;
 import com.module.home.fragment.PersonFragment;
 import com.module.home.persenter.HomeCorePresenter;
 import com.module.home.persenter.RedPkgPresenter;
-import com.module.home.setting.fragment.SettingFragment;
 import com.module.home.view.GetRedPkgCashView;
 import com.module.home.view.IHomeActivity;
 import com.module.home.view.IRedPkgView;
 import com.module.msg.IMsgService;
 import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.OnBackPressListener;
 import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.ViewHolder;
+import com.zq.notification.RelationNotifationView;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.w3c.dom.Text;
-
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.functions.Consumer;
-
 
 @Route(path = RouterConstants.ACTIVITY_HOME)
 public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkgView {
@@ -199,6 +187,18 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
 
         mMainVp.setCurrentItem(0, false);
         mFromCreate = true;
+
+        // TODO: 2019/3/18 测试代码 显示通知
+//        mPersonArea.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                FloatWindow.with(U.app())
+//                        .setWidth(ViewGroup.LayoutParams.MATCH_PARENT)
+//                        .setHeight(ViewGroup.LayoutParams.WRAP_CONTENT)
+//                        .setView(new RelationNotifationView(U.app()))
+//                        .build();
+//            }
+//        },3000);
     }
 
     private void checkIfFromSchema() {
