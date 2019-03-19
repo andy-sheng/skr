@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.common.base.BaseActivity;
 import com.common.core.userinfo.UserInfoManager;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.component.busilib.R;
@@ -26,13 +27,16 @@ import static com.zq.report.fragment.ReportFragment.REPORT_USER_ID;
 public class PersonInfoDialog {
 
     boolean isReport = false;
+    boolean isKick = false;
 
     Context mContext;
     DialogPlus mDialogPlus;
 
-    public PersonInfoDialog(Context context, final int userId) {
+    KickListener mKickListener;
+
+    public PersonInfoDialog(Context context, final int userId, boolean showReport, boolean showKick) {
         mContext = context;
-        final PersonInfoDialogView personInfoDialogView = new PersonInfoDialogView(context, userId);
+        final PersonInfoDialogView personInfoDialogView = new PersonInfoDialogView(context, userId, showReport, showKick);
 
         mDialogPlus = DialogPlus.newDialog(mContext)
                 .setContentHolder(new ViewHolder(personInfoDialogView))
@@ -47,7 +51,11 @@ public class PersonInfoDialog {
                             // 举报
                             dialog.dismiss();
                             isReport = true;
-                        } else if (view.getId() == R.id.follow_tv) {
+                        } else if (view.getId() == R.id.kick) {
+                            // 踢人
+                            dialog.dismiss();
+                            isKick = true;
+                        } else if (view.getId() == R.id.follow_area || view.getId() == R.id.follow_tv) {
                             // 关注
                             if (personInfoDialogView.getUserInfoModel().isFollow() || personInfoDialogView.getUserInfoModel().isFriend()) {
                                 UserInfoManager.getInstance().mateRelation(personInfoDialogView.getUserInfoModel().getUserId(),
@@ -77,11 +85,22 @@ public class PersonInfoDialog {
                     public void onDismiss(@NonNull DialogPlus dialog) {
                         if (isReport) {
                             showReportView(userId);
+                            isReport = false;
                         }
-                        isReport = false;
+                        if (isKick) {
+                            if (mKickListener != null) {
+                                mKickListener.onClickKick(personInfoDialogView.getUserInfoModel());
+                            }
+                            isKick = false;
+                        }
+
                     }
                 })
                 .create();
+    }
+
+    public void setListener(KickListener kickListener) {
+        this.mKickListener = kickListener;
     }
 
     public void show() {
@@ -101,6 +120,7 @@ public class PersonInfoDialog {
         if (mDialogPlus != null) {
             mDialogPlus.dismiss();
         }
+        mKickListener = null;
     }
 
     private void showReportView(int userID) {
@@ -115,6 +135,10 @@ public class PersonInfoDialog {
                         .setEnterAnim(com.component.busilib.R.anim.slide_in_bottom)
                         .setExitAnim(com.component.busilib.R.anim.slide_out_bottom)
                         .build());
+    }
+
+   public interface KickListener {
+        void onClickKick(UserInfoModel userInfoModel);
     }
 
 }

@@ -28,8 +28,10 @@ import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
+import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
+import com.component.busilib.constans.GameModeType;
 import com.component.busilib.view.MarqueeTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.ModuleServiceManager;
@@ -62,19 +64,24 @@ public class PersonInfoDialogView extends RelativeLayout {
 
     TagAdapter<String> mTagAdapter;
 
-    SimpleDraweeView mAvatarIv;
+
+    int mTargetUserId;
+
+    ExRelativeLayout mContentArea;
     ExTextView mNameTv;
     HorizonLevelView mHorizLevelView;
     MarqueeTextView mSignTv;
-    ExTextView mReport;
     TagFlowLayout mFlowlayout;
+    RelativeLayout mFollowArea;
     ExTextView mFollowTv;
-    int mTargetUserId;
+    SimpleDraweeView mAvatarIv;
+    ExTextView mReport;
+    ExTextView mKick;
 
-    PersonInfoDialogView(Context context, int userID) {
+    PersonInfoDialogView(Context context, int userID, boolean showReport, boolean showKick) {
         super(context);
         initView();
-        initData(context, userID);
+        initData(context, userID, showReport, showKick);
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -95,8 +102,16 @@ public class PersonInfoDialogView extends RelativeLayout {
     private void initView() {
         inflate(getContext(), R.layout.person_info_dialog_view, this);
 
-        mAvatarIv = (SimpleDraweeView) this.findViewById(R.id.avatar_iv);
+        mContentArea = (ExRelativeLayout) this.findViewById(R.id.content_area);
         mNameTv = (ExTextView) this.findViewById(R.id.name_tv);
+        mHorizLevelView = (HorizonLevelView) this.findViewById(R.id.horiz_level_view);
+        mSignTv = (MarqueeTextView) this.findViewById(R.id.sign_tv);
+        mFlowlayout = (TagFlowLayout) this.findViewById(R.id.flowlayout);
+        mFollowArea = (RelativeLayout) this.findViewById(R.id.follow_area);
+        mFollowTv = (ExTextView) this.findViewById(R.id.follow_tv);
+        mAvatarIv = (SimpleDraweeView) this.findViewById(R.id.avatar_iv);
+        mReport = (ExTextView) this.findViewById(R.id.report);
+        mKick = (ExTextView) this.findViewById(R.id.kick);
 
         mNameTv.setOnLongClickListener(new OnLongClickListener() {
             @Override
@@ -123,12 +138,6 @@ public class PersonInfoDialogView extends RelativeLayout {
             }
         });
 
-        mHorizLevelView = (HorizonLevelView) this.findViewById(R.id.horiz_level_view);
-        mSignTv = (MarqueeTextView) this.findViewById(R.id.sign_tv);
-        mReport = (ExTextView) this.findViewById(R.id.report);
-        mFlowlayout = (TagFlowLayout) this.findViewById(R.id.flowlayout);
-        mFollowTv = (ExTextView) this.findViewById(R.id.follow_tv);
-
         mTagAdapter = new TagAdapter<String>(mTags) {
             @Override
             public View getView(FlowLayout parent, int position, String o) {
@@ -141,10 +150,24 @@ public class PersonInfoDialogView extends RelativeLayout {
         mFlowlayout.setAdapter(mTagAdapter);
     }
 
-    private void initData(Context context, int userID) {
+    private void initData(Context context, int userID, boolean showReport, boolean showKick) {
         mTargetUserId = userID;
+
+        mReport.setVisibility(showReport ? VISIBLE : GONE);
+        mKick.setVisibility(showKick ? VISIBLE : GONE);
+
+        // 多音和ai裁判
         if (userID == UserAccountManager.SYSTEM_GRAB_ID || userID == UserAccountManager.SYSTEM_RANK_AI) {
             mReport.setVisibility(GONE);
+            mKick.setVisibility(GONE);
+        }
+
+        // 自己卡片的处理
+        if (userID == MyUserInfoManager.getInstance().getUid()) {
+            mFollowArea.setVisibility(GONE);
+            mFollowTv.setVisibility(GONE);
+            mReport.setVisibility(GONE);
+            mKick.setVisibility(GONE);
         }
 
         mUserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
@@ -218,11 +241,6 @@ public class PersonInfoDialogView extends RelativeLayout {
         mNameTv.setText(userInfo.getNickname());
         mSignTv.setText(userInfo.getSignature());
 
-        if (userInfo.getUserId() == MyUserInfoManager.getInstance().getUid()) {
-            mFollowTv.setVisibility(GONE);
-            mReport.setVisibility(GONE);
-        }
-
         if (userInfo.getLocation() != null && !TextUtils.isEmpty(userInfo.getLocation().getCity())) {
             mHashMap.put(LOCATION_TAG, userInfo.getLocation().getCity());
         } else {
@@ -242,15 +260,12 @@ public class PersonInfoDialogView extends RelativeLayout {
 
         if (isFriend) {
             mFollowTv.setText("互关");
-            mFollowTv.setTextColor(Color.WHITE);
-            mFollowTv.setBackgroundResource(R.drawable.img_btn_bg_dark_gray);
+            mFollowArea.setBackgroundResource(R.drawable.img_follow_dark_bg);
         } else if (isFollow) {
-            mFollowTv.setBackgroundResource(R.drawable.img_btn_bg_yellow);
-            mFollowTv.setTextColor(Color.parseColor("#0C2275"));
+            mFollowArea.setBackgroundResource(R.drawable.img_follow_dark_bg);
             mFollowTv.setText("已关注");
         } else {
-            mFollowTv.setBackgroundResource(R.drawable.img_btn_bg_red);
-            mFollowTv.setTextColor(Color.WHITE);
+            mFollowArea.setBackgroundResource(R.drawable.img_follow_orange_bg);
             mFollowTv.setText("关注");
         }
     }
@@ -268,7 +283,7 @@ public class PersonInfoDialogView extends RelativeLayout {
         // TODO: 2019/1/6 必须加上策略，比如没有位置信息
         if (reginRankModel != null) {
             if (reginRankModel.getRankSeq() != 0) {
-                mHashMap.put(RANK_TAG, reginRankModel.getRegionDesc() + "荣耀榜" + String.valueOf(reginRankModel.getRankSeq()) + "位");
+                mHashMap.put(RANK_TAG, reginRankModel.getRegionDesc() + "第" + String.valueOf(reginRankModel.getRankSeq()) + "位");
             } else {
                 mHashMap.put(RANK_TAG, getResources().getString(R.string.default_rank_text));
             }
@@ -328,17 +343,14 @@ public class PersonInfoDialogView extends RelativeLayout {
             if (event.type == RelationChangeEvent.FOLLOW_TYPE) {
                 if (event.isFriend) {
                     mFollowTv.setText("互关");
-                    mFollowTv.setTextColor(Color.WHITE);
-                    mFollowTv.setBackgroundResource(R.drawable.img_btn_bg_dark_gray);
+                    mFollowArea.setBackgroundResource(R.drawable.img_follow_dark_bg);
                 } else if (event.isFollow) {
                     mFollowTv.setText("已关注");
-                    mFollowTv.setTextColor(Color.parseColor("#0C2275"));
-                    mFollowTv.setBackgroundResource(R.drawable.img_btn_bg_yellow);
+                    mFollowArea.setBackgroundResource(R.drawable.img_follow_dark_bg);
                 }
             } else if (event.type == RelationChangeEvent.UNFOLLOW_TYPE) {
-                mFollowTv.setBackgroundResource(R.drawable.img_btn_bg_red);
-                mFollowTv.setTextColor(Color.WHITE);
-                mFollowTv.setText("关注TA");
+                mFollowArea.setBackgroundResource(R.drawable.img_follow_orange_bg);
+                mFollowTv.setText("关注ta");
             }
         }
     }

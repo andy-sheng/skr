@@ -219,7 +219,7 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
         }
         mInputContainerView.hideSoftInput();
 
-        mPersonInfoDialog = new PersonInfoDialog(getActivity(), userID);
+        mPersonInfoDialog = new PersonInfoDialog(getActivity(), userID, true, false);
         mPersonInfoDialog.show();
     }
 
