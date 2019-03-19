@@ -52,7 +52,7 @@ public class UpgradeManager {
     DialogPlus mForceUpgradeDialog;
 
     NormalUpgradeView mNormalUpgradeView;
-    DialogPlus mNarmalUpgradeDialog;
+    DialogPlus mNormalUpgradeDialog;
 
     FinishReceiver mFinishReceiver;
     DownloadChangeObserver mDownloadChangeObserver;
@@ -227,7 +227,7 @@ public class UpgradeManager {
     }
 
     private void showNormalUpgradeDialog() {
-        if (mNarmalUpgradeDialog == null) {
+        if (mNormalUpgradeDialog == null) {
             Activity activity = U.getActivityUtils().getTopActivity();
             if (activity != null) {
                 mNormalUpgradeView = new NormalUpgradeView(activity);
@@ -249,7 +249,7 @@ public class UpgradeManager {
                         dimissDialog();
                     }
                 });
-                mNarmalUpgradeDialog = DialogPlus.newDialog(activity)
+                mNormalUpgradeDialog = DialogPlus.newDialog(activity)
                         .setContentHolder(new ViewHolder(mNormalUpgradeView))
                         .setGravity(Gravity.CENTER)
                         .setCancelable(true)
@@ -266,7 +266,7 @@ public class UpgradeManager {
             mUpgradeData.setStatus(UpgradeData.STATUS_DOWNLOWNED);
             mNormalUpgradeView.setAlreadyDownloadTips();
         }
-        mNarmalUpgradeDialog.show();
+        mNormalUpgradeDialog.show();
     }
 
     private void showForceUpgradeDialog() {
@@ -581,9 +581,13 @@ public class UpgradeManager {
     private void dimissDialog() {
         if (mForceUpgradeDialog != null) {
             mForceUpgradeDialog.dismiss();
+            mForceUpgradeDialog = null;
+            mForceUpgradeView = null;
         }
-        if (mNarmalUpgradeDialog != null) {
-            mNarmalUpgradeDialog.dismiss();
+        if (mNormalUpgradeDialog != null) {
+            mNormalUpgradeDialog.dismiss();
+            mNormalUpgradeDialog = null;
+            mNormalUpgradeView = null;
         }
     }
 

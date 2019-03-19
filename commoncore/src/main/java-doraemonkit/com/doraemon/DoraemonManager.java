@@ -6,6 +6,9 @@ import com.common.utils.U;
 import com.didichuxing.doraemonkit.DoraemonKit;
 import com.didichuxing.doraemonkit.kit.sysinfo.ExtraInfoProvider;
 import com.didichuxing.doraemonkit.kit.sysinfo.SysInfoItem;
+import com.module.ModuleServiceManager;
+import com.module.common.ICallback;
+import com.module.msg.IMsgService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +32,32 @@ public class DoraemonManager {
             public List<SysInfoItem> getExtraInfo() {
                 List<SysInfoItem> extras = new ArrayList<>();
                 extras.add(new SysInfoItem("友盟push DeviceToken", UmengPush.getDeviceToken()));
-                extras.add(new SysInfoItem("translucent_no_bug", U.app().getResources().getBoolean(R.bool.translucent_no_bug)+""));
+                extras.add(new SysInfoItem("translucent_no_bug", U.app().getResources().getBoolean(R.bool.translucent_no_bug) + ""));
                 return extras;
+            }
+
+            @Override
+            public void pullLog(String userIdStr) {
+                try {
+                    int userId = Integer.parseInt(userIdStr);
+                    IMsgService msgService = ModuleServiceManager.getInstance().getMsgService();
+                    if (msgService != null) {
+                        msgService.sendSpecialDebugMessage(String.valueOf(userId), 1, "请求上传日志", new ICallback() {
+                            @Override
+                            public void onSucess(Object obj) {
+                                U.getToastUtil().showLong("请求成功,稍等看该用户是否有返回");
+                            }
+
+                            @Override
+                            public void onFailed(Object obj, int errcode, String message) {
+                                U.getToastUtil().showLong("请求失败");
+                            }
+                        });
+                    }
+                } catch (Exception e) {
+                    U.getToastUtil().showShort("id不对");
+                }
+
             }
         });
     }
