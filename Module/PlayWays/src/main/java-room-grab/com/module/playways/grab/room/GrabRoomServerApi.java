@@ -149,6 +149,29 @@ public interface GrabRoomServerApi {
     @PUT("http://dev.stand.inframe.mobi/v1/stand/give-up")
     Observable<ApiResult> giveUpSing(@Body RequestBody body);
 
+    /**
+     *
+     * @param body
+     *   "kickUserID": 0,
+     *   "roomID": 0,
+     *   "roundSeq": 0
+     * @return
+     */
+    @PUT("http://dev.stand.inframe.mobi/v1/stand/req-kick-user")
+    Observable<ApiResult> reqKickUser(@Body RequestBody body);
+
+    /**
+     * 回应踢人请求
+     * @param body
+     *   "agree": true,
+     *   "kickUserID": 0,
+     *   "roomID": 0,
+     *   "sourceUserID": 0
+     * @return
+     */
+    @PUT("http://dev.stand.inframe.mobi/v1/stand/agree-kick-user")
+    Observable<ApiResult> repKickUser(@Body RequestBody body);
+
     /*----------牛逼---------*/
 
     //检查要不要显示红包领取
@@ -158,7 +181,5 @@ public interface GrabRoomServerApi {
     //接受红包
     @PUT("http://dev.api.inframe.mobi/v1/task/trigger-task-reward")
     Observable<ApiResult> receiveCash(@Body RequestBody body);
-
-
 
 }
