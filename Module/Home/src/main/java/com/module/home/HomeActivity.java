@@ -22,7 +22,6 @@ import com.common.core.permission.SkrSdcardPermission;
 
 import com.common.core.upgrade.UpgradeManager;
 import com.common.core.account.UserAccountManager;
-import com.common.floatwindow.FloatWindow;
 import com.common.log.MyLog;
 import com.common.utils.ActivityUtils;
 import com.common.utils.U;
@@ -186,18 +185,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
 
         mMainVp.setCurrentItem(0, false);
         mFromCreate = true;
-
-        // TODO: 2019/3/18 测试代码 显示通知
-//        mPersonArea.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                FloatWindow.with(U.app())
-//                        .setWidth(ViewGroup.LayoutParams.MATCH_PARENT)
-//                        .setHeight(ViewGroup.LayoutParams.WRAP_CONTENT)
-//                        .setView(new RelationNotifationView(U.app()))
-//                        .build();
-//            }
-//        },3000);
     }
 
     private void checkIfFromSchema() {

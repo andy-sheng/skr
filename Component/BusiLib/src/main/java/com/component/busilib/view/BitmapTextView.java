@@ -1,15 +1,18 @@
 package com.component.busilib.view;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.component.busilib.R;
 
@@ -18,21 +21,34 @@ import java.util.List;
 
 public class BitmapTextView extends View {
 
+    public final static String TAG = "BitmapTextView";
+
     List<Bitmap> mBitmapList = new ArrayList<>();
     int diff = U.getDisplayUtils().dip2px(5);  //两张图片的偏移量重合部分
     int mWidth = 0;// view的宽度
     int mHeight = 0;// view的高度
 
+    float scale; //图片放缩
+
     public BitmapTextView(Context context) {
         super(context);
+        init(context, null);
     }
 
     public BitmapTextView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        init(context, attrs);
     }
 
     public BitmapTextView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init(context, attrs);
+    }
+
+    private void init(Context context, AttributeSet attrs) {
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BitmapTextView);
+        scale = typedArray.getFloat(R.styleable.BitmapTextView_scale, 1.0f);
+        typedArray.recycle();
     }
 
     @Override
@@ -56,7 +72,7 @@ public class BitmapTextView extends View {
         float left = 0;
         for (Bitmap bitmap : bitmaps) {
             canvas.drawBitmap(bitmap, left, 0, new Paint());
-            left = left + bitmap.getWidth() - diff;
+            left = left + bitmap.getWidth() - diff * scale;
         }
     }
 
@@ -97,13 +113,35 @@ public class BitmapTextView extends View {
             char[] chars = text.toCharArray();
             for (int i = 0; i < chars.length; i++) {
                 Bitmap bitmap = getBitmap(chars[i]);
-                mWidth = mWidth + bitmap.getWidth();
-                if (mHeight < bitmap.getHeight()) {
-                    mHeight = bitmap.getHeight();
+                if (scale != 1) {
+                    int height = bitmap.getHeight();
+                    int width = bitmap.getWidth();
+                    Matrix matrix = new Matrix();
+                    matrix.postScale(scale, scale);
+                    Bitmap newBM = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+                    if (!bitmap.isRecycled()) {
+                        bitmap.recycle();
+                    }
+                    if (newBM != null) {
+                        mWidth = mWidth + newBM.getWidth();
+                        if (mHeight < newBM.getHeight()) {
+                            mHeight = newBM.getHeight();
+                        }
+                        mBitmapList.add(newBM);
+                    } else {
+                        MyLog.w(TAG, "setText" + " text=" + text + "newBM is null");
+                        MyLog.w(TAG, "scale = " + scale);
+                    }
+                } else {
+                    mWidth = mWidth + bitmap.getWidth();
+                    if (mHeight < bitmap.getHeight()) {
+                        mHeight = bitmap.getHeight();
+                    }
+                    mBitmapList.add(bitmap);
                 }
-                mBitmapList.add(bitmap);
+
             }
-            mWidth = mWidth - diff * (chars.length - 1);
+            mWidth = mWidth - (int) (diff * (chars.length - 1) * scale);
             invalidate();
         }
     }
