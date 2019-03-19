@@ -419,7 +419,7 @@ public class WithdrawFragment extends BaseFragment implements IWithDrawView {
                 mTvTip.setTextColor(Color.parseColor("#B7BED5"));
                 mTvWithdrawBtn.setEnabled(false);
             } else if (cash > mWithDrawInfoModel.getAvailableInt()) {
-                mTvTip.setText("账户余额不足～");
+                mTvTip.setText("金额已超过可提现余额");
                 mTvTip.setTextColor(Color.parseColor("#EF5E85"));
                 mTvWithdrawBtn.setEnabled(false);
             } else {
