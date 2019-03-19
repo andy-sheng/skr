@@ -187,8 +187,8 @@ public class JoinGrabRoomRspModel implements Serializable {
     private int syncStatusTimeMs; // 同步时间
     private int tagID;// 剧本游戏
     private boolean isNewGame;// 是否是一局新游戏
-
     private long gameCreateMs;// 游戏创建时间
+    private String agoraToken;// 声网token
 
     public JoinGrabRoomRspModel() {
 
@@ -280,6 +280,14 @@ public class JoinGrabRoomRspModel implements Serializable {
 
     public long getGameCreateMs() {
         return gameCreateMs;
+    }
+
+    public String getAgoraToken() {
+        return agoraToken;
+    }
+
+    public void setAgoraToken(String agoraToken) {
+        this.agoraToken = agoraToken;
     }
 
     @Override

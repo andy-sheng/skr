@@ -179,6 +179,7 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
         setIsGameFinish(false);
         setHasExitGame(false);
         mResultList.clear();
+        this.setAgoraToken(rsp.getAgoraToken());
     }
 
     public Integer getSongLineNum() {
