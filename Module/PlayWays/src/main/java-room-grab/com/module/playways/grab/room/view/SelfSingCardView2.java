@@ -105,9 +105,6 @@ public class SelfSingCardView2 extends RelativeLayout {
         mCountIv = (ImageView) findViewById(R.id.count_iv);
         mIvTag = (ImageView) findViewById(R.id.iv_tag);
         mVoiceScaleView = (VoiceScaleView) findViewById(R.id.voice_scale_view);
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
-        }
     }
 
     public void playLyric(SongModel songModel, boolean hasAcc) {
@@ -215,7 +212,6 @@ public class SelfSingCardView2 extends RelativeLayout {
         if (mLyricAndAccMatchManager != null) {
             mLyricAndAccMatchManager.stop();
         }
-        EventBus.getDefault().unregister(this);
     }
 
     @Override
