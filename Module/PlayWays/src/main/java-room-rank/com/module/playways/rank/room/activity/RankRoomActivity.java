@@ -47,6 +47,7 @@ public class RankRoomActivity extends BaseActivity {
             MyLog.d(TAG, "" + prepareData.getPlayerInfoList());
             mRoomData.setPlayerInfoList(prepareData.getPlayerInfoList());
             mRoomData.setSongModel(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), MyUserInfoManager.getInstance().getUid()));
+            mRoomData.setAgoraToken(prepareData.getAgoraToken());
         } else {
 
         }

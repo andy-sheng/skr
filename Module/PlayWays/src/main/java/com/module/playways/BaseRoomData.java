@@ -62,6 +62,7 @@ public abstract class BaseRoomData<T extends BaseRoundInfoModel> implements Seri
     protected boolean mIsGameFinish = false; // 游戏开始了
 
     protected boolean mMute = false;//是否mute
+    private String mAgoraToken;
 
 
     public abstract int getGameType();
@@ -210,4 +211,11 @@ public abstract class BaseRoomData<T extends BaseRoundInfoModel> implements Seri
         return null;
     }
 
+    public void setAgoraToken(String agoraToken) {
+        mAgoraToken = agoraToken;
+    }
+
+    public String getAgoraToken() {
+        return mAgoraToken;
+    }
 }

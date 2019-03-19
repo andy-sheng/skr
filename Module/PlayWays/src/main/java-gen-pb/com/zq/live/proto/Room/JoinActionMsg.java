@@ -79,19 +79,31 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
   )
   private final GameConfig config;
 
+  /**
+   * 声网token
+   */
+  @WireField(
+      tag = 6,
+      adapter = "com.zq.live.proto.Room.AgoraTokenInfo#ADAPTER",
+      label = WireField.Label.REPEATED
+  )
+  private final List<AgoraTokenInfo> tokens;
+
   public JoinActionMsg(Integer gameID, Long createTimeMs, List<PlayerInfo> players,
-      List<MusicInfo> music, GameConfig config) {
-    this(gameID, createTimeMs, players, music, config, ByteString.EMPTY);
+      List<MusicInfo> music, GameConfig config, List<AgoraTokenInfo> tokens) {
+    this(gameID, createTimeMs, players, music, config, tokens, ByteString.EMPTY);
   }
 
   public JoinActionMsg(Integer gameID, Long createTimeMs, List<PlayerInfo> players,
-      List<MusicInfo> music, GameConfig config, ByteString unknownFields) {
+      List<MusicInfo> music, GameConfig config, List<AgoraTokenInfo> tokens,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.gameID = gameID;
     this.createTimeMs = createTimeMs;
     this.players = Internal.immutableCopyOf("players", players);
     this.music = Internal.immutableCopyOf("music", music);
     this.config = config;
+    this.tokens = Internal.immutableCopyOf("tokens", tokens);
   }
 
   @Override
@@ -102,6 +114,7 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
     builder.players = Internal.copyOf("players", players);
     builder.music = Internal.copyOf("music", music);
     builder.config = config;
+    builder.tokens = Internal.copyOf("tokens", tokens);
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -116,7 +129,8 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
         && Internal.equals(createTimeMs, o.createTimeMs)
         && players.equals(o.players)
         && music.equals(o.music)
-        && Internal.equals(config, o.config);
+        && Internal.equals(config, o.config)
+        && tokens.equals(o.tokens);
   }
 
   @Override
@@ -129,6 +143,7 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
       result = result * 37 + players.hashCode();
       result = result * 37 + music.hashCode();
       result = result * 37 + (config != null ? config.hashCode() : 0);
+      result = result * 37 + tokens.hashCode();
       super.hashCode = result;
     }
     return result;
@@ -142,6 +157,7 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
     if (!players.isEmpty()) builder.append(", players=").append(players);
     if (!music.isEmpty()) builder.append(", music=").append(music);
     if (config != null) builder.append(", config=").append(config);
+    if (!tokens.isEmpty()) builder.append(", tokens=").append(tokens);
     return builder.replace(0, 2, "JoinActionMsg{").append('}').toString();
   }
 
@@ -206,6 +222,16 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
   }
 
   /**
+   * 声网token
+   */
+  public List<AgoraTokenInfo> getTokensList() {
+    if(tokens==null){
+        return new java.util.ArrayList<AgoraTokenInfo>();
+    }
+    return tokens;
+  }
+
+  /**
    * 游戏ID
    */
   public boolean hasGameID() {
@@ -240,6 +266,13 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
     return config!=null;
   }
 
+  /**
+   * 声网token
+   */
+  public boolean hasTokensList() {
+    return tokens!=null;
+  }
+
   public static final class Builder extends Message.Builder<JoinActionMsg, Builder> {
     private Integer gameID;
 
@@ -251,9 +284,12 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
 
     private GameConfig config;
 
+    private List<AgoraTokenInfo> tokens;
+
     public Builder() {
       players = Internal.newMutableList();
       music = Internal.newMutableList();
+      tokens = Internal.newMutableList();
     }
 
     /**
@@ -298,9 +334,18 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
       return this;
     }
 
+    /**
+     * 声网token
+     */
+    public Builder addAllTokens(List<AgoraTokenInfo> tokens) {
+      Internal.checkElementsNotNull(tokens);
+      this.tokens = tokens;
+      return this;
+    }
+
     @Override
     public JoinActionMsg build() {
-      return new JoinActionMsg(gameID, createTimeMs, players, music, config, super.buildUnknownFields());
+      return new JoinActionMsg(gameID, createTimeMs, players, music, config, tokens, super.buildUnknownFields());
     }
   }
 
@@ -316,6 +361,7 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
           + PlayerInfo.ADAPTER.asRepeated().encodedSizeWithTag(3, value.players)
           + MusicInfo.ADAPTER.asRepeated().encodedSizeWithTag(4, value.music)
           + GameConfig.ADAPTER.encodedSizeWithTag(5, value.config)
+          + AgoraTokenInfo.ADAPTER.asRepeated().encodedSizeWithTag(6, value.tokens)
           + value.unknownFields().size();
     }
 
@@ -326,6 +372,7 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
       PlayerInfo.ADAPTER.asRepeated().encodeWithTag(writer, 3, value.players);
       MusicInfo.ADAPTER.asRepeated().encodeWithTag(writer, 4, value.music);
       GameConfig.ADAPTER.encodeWithTag(writer, 5, value.config);
+      AgoraTokenInfo.ADAPTER.asRepeated().encodeWithTag(writer, 6, value.tokens);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -340,6 +387,7 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
           case 3: builder.players.add(PlayerInfo.ADAPTER.decode(reader)); break;
           case 4: builder.music.add(MusicInfo.ADAPTER.decode(reader)); break;
           case 5: builder.setConfig(GameConfig.ADAPTER.decode(reader)); break;
+          case 6: builder.tokens.add(AgoraTokenInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -357,6 +405,7 @@ public final class JoinActionMsg extends Message<JoinActionMsg, JoinActionMsg.Bu
       Internal.redactElements(builder.players, PlayerInfo.ADAPTER);
       Internal.redactElements(builder.music, MusicInfo.ADAPTER);
       if (builder.config != null) builder.config = GameConfig.ADAPTER.redact(builder.config);
+      Internal.redactElements(builder.tokens, AgoraTokenInfo.ADAPTER);
       builder.clearUnknownFields();
       return builder.build();
     }

@@ -364,6 +364,7 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
         mPrepareData.setPlayerInfoList(event.playerInfoList);
         mPrepareData.setSongModelList(event.songModelList);
         mPrepareData.setGameConfigModel(event.gameConfigModel);
+        mPrepareData.setAgoraToken(event.agoraToken);
         stopTimeTask();
 
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), GrabMatchSuccessFragment.class)

@@ -1,10 +1,12 @@
 package com.module.playways.rank.msg.event;
 
+import com.common.core.myinfo.MyUserInfoManager;
 import com.module.playways.rank.msg.BasePushInfo;
 import com.module.playways.rank.room.model.RankGameConfigModel;
 import com.module.playways.rank.room.model.RankPlayerInfoModel;
 import com.module.playways.rank.song.model.SongModel;
 import com.zq.live.proto.Common.MusicInfo;
+import com.zq.live.proto.Room.AgoraTokenInfo;
 import com.zq.live.proto.Room.JoinActionMsg;
 
 import java.util.ArrayList;
@@ -17,6 +19,7 @@ public class JoinActionEvent {
     public List<RankPlayerInfoModel> playerInfoList;
     public List<SongModel> songModelList;
     public RankGameConfigModel gameConfigModel;
+    public String agoraToken;
 
     public JoinActionEvent(BasePushInfo info, JoinActionMsg joinActionMsg) {
         List<RankPlayerInfoModel> playerInfos = new ArrayList<>();
@@ -44,6 +47,12 @@ public class JoinActionEvent {
         this.playerInfoList = playerInfos;
         this.songModelList = songModels;
         this.gameConfigModel = gameConfigModel;
+        for (AgoraTokenInfo tokenInfo : joinActionMsg.getTokensList()) {
+            if (tokenInfo.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                this.agoraToken = tokenInfo.getToken();
+                break;
+            }
+        }
     }
 
     @Override

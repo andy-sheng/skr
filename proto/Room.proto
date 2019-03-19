@@ -331,6 +331,13 @@ message JoinActionMsg {
     repeated PlayerInfo players = 3; //玩家信息
     repeated Common.MusicInfo music = 4; //共同演唱音乐信息
     GameConfig config = 5; //配置信息
+    repeated AgoraTokenInfo tokens     = 6; //声网token
+}
+
+message AgoraTokenInfo
+{
+    uint32 userID = 1; //用户id
+    string token  = 2; //声网token
 }
 
 message GameConfig {
