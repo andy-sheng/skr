@@ -8,10 +8,10 @@
     android:paddingTop="@dimen/view_5_dp"
     android:paddingRight="@dimen/view_14_dp"
     android:paddingBottom="@dimen/view_5_dp"
-    android:textColor="#0C2275"
+    android:textColor="@color/black_trans_50"
     android:textSize="@dimen/view_16_dp"
     app:bl_corners_radius="@dimen/view_8_dp"
     app:bl_shape="rectangle"
-    app:bl_solid_color="#F4CA4E">
+    app:bl_solid_color="#80F4CA4E">
 
 </com.common.view.ex.ExTextView>

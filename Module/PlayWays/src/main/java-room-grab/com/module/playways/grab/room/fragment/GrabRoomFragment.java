@@ -369,8 +369,20 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         }
         mInputContainerView.hideSoftInput();
 
-        mPersonInfoDialog = new PersonInfoDialog(getActivity(), userID);
+        mPersonInfoDialog = new PersonInfoDialog(getActivity(), userID, false, true);
+        mPersonInfoDialog.setListener(new PersonInfoDialog.KickListener() {
+            
+            @Override
+            public void onClickKick(UserInfoModel userInfoModel) {
+                showConfirmDialog(userInfoModel);
+            }
+        });
         mPersonInfoDialog.show();
+    }
+
+    // 确认踢人弹窗
+    private void showConfirmDialog(UserInfoModel userInfoModel) {
+        MyLog.d(TAG, "showConfirmDialog" + " userInfoModel=" + userInfoModel);
     }
 
     @Override

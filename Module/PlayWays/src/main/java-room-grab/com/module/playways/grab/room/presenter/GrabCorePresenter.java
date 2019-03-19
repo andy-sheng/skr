@@ -796,6 +796,73 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     }
 
     /**
+     * 请求踢人
+     *
+     * @param userId 被踢人id
+     */
+    public void reqKickUser(int userId) {
+        GrabRoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
+        if (roundInfoModel == null) {
+            return;
+        }
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("kickUserID", userId);
+        map.put("roomID", mRoomData.getGameId());
+        map.put("roundSeq", roundInfoModel.getRoundSeq());
+
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        ApiMethods.subscribe(mRoomServerApi.reqKickUser(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+
+                } else {
+
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+        }, this);
+    }
+
+
+    /**
+     * 回应踢人请求
+     *
+     * @param isAgree      是否同意
+     * @param userId       被踢人ID
+     * @param sourceUserId 发起人ID
+     */
+    public void repKickUser(boolean isAgree, int userId, int sourceUserId) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("agree", isAgree);
+        map.put("kickUserID", userId);
+        map.put("roomID", mRoomData.getGameId());
+        map.put("sourceUserID", sourceUserId);
+
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        ApiMethods.subscribe(mRoomServerApi.repKickUser(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+
+                } else {
+
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+        }, this);
+
+    }
+
+    /**
      * 退出房间
      */
     public void exitRoom() {

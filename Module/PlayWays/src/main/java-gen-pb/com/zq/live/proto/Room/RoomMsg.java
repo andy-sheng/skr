@@ -345,6 +345,24 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
   )
   private final QJoinActionMsg qJoinActionMsg;
 
+  /**
+   * 一唱到底：踢人请求信令消息
+   */
+  @WireField(
+      tag = 125,
+      adapter = "com.zq.live.proto.Room.QKickUserRequestMsg#ADAPTER"
+  )
+  private final QKickUserRequestMsg qKickUserRequestMsg;
+
+  /**
+   * 一唱到底：踢人结果信令消息
+   */
+  @WireField(
+      tag = 126,
+      adapter = "com.zq.live.proto.Room.QKickUserSuccessMsg#ADAPTER"
+  )
+  private final QKickUserSuccessMsg qKickUserSuccessMsg;
+
   public RoomMsg(Long timeMs, ERoomMsgType msgType, Integer roomID, Long no, EMsgPosType posType,
       UserInfo sender, CommentMsg commentMsg, SpecialEmojiMsg specialEmojiMsg,
       DynamicEmojiMsg dynamicemojiMsg, JoinActionMsg joinActionMsg, JoinNoticeMsg joinNoticeMsg,
@@ -357,8 +375,9 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       QRoundOverMsg qRoundOverMsg, QRoundAndGameOverMsg qRoundAndGameOverMsg,
       QNoPassSingMsg qNoPassSingMsg, QExitGameMsg qExitGameMsg, PKBLightMsg pkBLightMsg,
       PKMLightMsg pkMLightMsg, QBLightMsg qBLightMsg, QMLightMsg qMLightMsg,
-      QJoinNoticeMsg qJoinNoticeMsg, QJoinActionMsg qJoinActionMsg) {
-    this(timeMs, msgType, roomID, no, posType, sender, commentMsg, specialEmojiMsg, dynamicemojiMsg, joinActionMsg, joinNoticeMsg, readyNoticeMsg, roundOverMsg, roundAndGameOverMsg, appSwapMsg, syncStatusMsg, exitGameBeforePlayMsg, exitGameAfterPlayMsg, exitGameOutRoundMsg, voteResultMsg, machineScore, qWantSingChanceMsg, qGetSingChanceMsg, qSyncStatusMsg, qRoundOverMsg, qRoundAndGameOverMsg, qNoPassSingMsg, qExitGameMsg, pkBLightMsg, pkMLightMsg, qBLightMsg, qMLightMsg, qJoinNoticeMsg, qJoinActionMsg, ByteString.EMPTY);
+      QJoinNoticeMsg qJoinNoticeMsg, QJoinActionMsg qJoinActionMsg,
+      QKickUserRequestMsg qKickUserRequestMsg, QKickUserSuccessMsg qKickUserSuccessMsg) {
+    this(timeMs, msgType, roomID, no, posType, sender, commentMsg, specialEmojiMsg, dynamicemojiMsg, joinActionMsg, joinNoticeMsg, readyNoticeMsg, roundOverMsg, roundAndGameOverMsg, appSwapMsg, syncStatusMsg, exitGameBeforePlayMsg, exitGameAfterPlayMsg, exitGameOutRoundMsg, voteResultMsg, machineScore, qWantSingChanceMsg, qGetSingChanceMsg, qSyncStatusMsg, qRoundOverMsg, qRoundAndGameOverMsg, qNoPassSingMsg, qExitGameMsg, pkBLightMsg, pkMLightMsg, qBLightMsg, qMLightMsg, qJoinNoticeMsg, qJoinActionMsg, qKickUserRequestMsg, qKickUserSuccessMsg, ByteString.EMPTY);
   }
 
   public RoomMsg(Long timeMs, ERoomMsgType msgType, Integer roomID, Long no, EMsgPosType posType,
@@ -373,7 +392,9 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       QRoundOverMsg qRoundOverMsg, QRoundAndGameOverMsg qRoundAndGameOverMsg,
       QNoPassSingMsg qNoPassSingMsg, QExitGameMsg qExitGameMsg, PKBLightMsg pkBLightMsg,
       PKMLightMsg pkMLightMsg, QBLightMsg qBLightMsg, QMLightMsg qMLightMsg,
-      QJoinNoticeMsg qJoinNoticeMsg, QJoinActionMsg qJoinActionMsg, ByteString unknownFields) {
+      QJoinNoticeMsg qJoinNoticeMsg, QJoinActionMsg qJoinActionMsg,
+      QKickUserRequestMsg qKickUserRequestMsg, QKickUserSuccessMsg qKickUserSuccessMsg,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.timeMs = timeMs;
     this.msgType = msgType;
@@ -409,6 +430,8 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
     this.qMLightMsg = qMLightMsg;
     this.qJoinNoticeMsg = qJoinNoticeMsg;
     this.qJoinActionMsg = qJoinActionMsg;
+    this.qKickUserRequestMsg = qKickUserRequestMsg;
+    this.qKickUserSuccessMsg = qKickUserSuccessMsg;
   }
 
   @Override
@@ -448,6 +471,8 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
     builder.qMLightMsg = qMLightMsg;
     builder.qJoinNoticeMsg = qJoinNoticeMsg;
     builder.qJoinActionMsg = qJoinActionMsg;
+    builder.qKickUserRequestMsg = qKickUserRequestMsg;
+    builder.qKickUserSuccessMsg = qKickUserSuccessMsg;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -491,7 +516,9 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
         && Internal.equals(qBLightMsg, o.qBLightMsg)
         && Internal.equals(qMLightMsg, o.qMLightMsg)
         && Internal.equals(qJoinNoticeMsg, o.qJoinNoticeMsg)
-        && Internal.equals(qJoinActionMsg, o.qJoinActionMsg);
+        && Internal.equals(qJoinActionMsg, o.qJoinActionMsg)
+        && Internal.equals(qKickUserRequestMsg, o.qKickUserRequestMsg)
+        && Internal.equals(qKickUserSuccessMsg, o.qKickUserSuccessMsg);
   }
 
   @Override
@@ -533,6 +560,8 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       result = result * 37 + (qMLightMsg != null ? qMLightMsg.hashCode() : 0);
       result = result * 37 + (qJoinNoticeMsg != null ? qJoinNoticeMsg.hashCode() : 0);
       result = result * 37 + (qJoinActionMsg != null ? qJoinActionMsg.hashCode() : 0);
+      result = result * 37 + (qKickUserRequestMsg != null ? qKickUserRequestMsg.hashCode() : 0);
+      result = result * 37 + (qKickUserSuccessMsg != null ? qKickUserSuccessMsg.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -575,6 +604,8 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
     if (qMLightMsg != null) builder.append(", qMLightMsg=").append(qMLightMsg);
     if (qJoinNoticeMsg != null) builder.append(", qJoinNoticeMsg=").append(qJoinNoticeMsg);
     if (qJoinActionMsg != null) builder.append(", qJoinActionMsg=").append(qJoinActionMsg);
+    if (qKickUserRequestMsg != null) builder.append(", qKickUserRequestMsg=").append(qKickUserRequestMsg);
+    if (qKickUserSuccessMsg != null) builder.append(", qKickUserSuccessMsg=").append(qKickUserSuccessMsg);
     return builder.replace(0, 2, "RoomMsg{").append('}').toString();
   }
 
@@ -929,6 +960,26 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
   }
 
   /**
+   * 一唱到底：踢人请求信令消息
+   */
+  public QKickUserRequestMsg getQKickUserRequestMsg() {
+    if(qKickUserRequestMsg==null){
+        return new QKickUserRequestMsg.Builder().build();
+    }
+    return qKickUserRequestMsg;
+  }
+
+  /**
+   * 一唱到底：踢人结果信令消息
+   */
+  public QKickUserSuccessMsg getQKickUserSuccessMsg() {
+    if(qKickUserSuccessMsg==null){
+        return new QKickUserSuccessMsg.Builder().build();
+    }
+    return qKickUserSuccessMsg;
+  }
+
+  /**
    * 房间消息产生时间，单位毫秒
    */
   public boolean hasTimeMs() {
@@ -1166,6 +1217,20 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
     return qJoinActionMsg!=null;
   }
 
+  /**
+   * 一唱到底：踢人请求信令消息
+   */
+  public boolean hasQKickUserRequestMsg() {
+    return qKickUserRequestMsg!=null;
+  }
+
+  /**
+   * 一唱到底：踢人结果信令消息
+   */
+  public boolean hasQKickUserSuccessMsg() {
+    return qKickUserSuccessMsg!=null;
+  }
+
   public static final class Builder extends Message.Builder<RoomMsg, Builder> {
     private Long timeMs;
 
@@ -1234,6 +1299,10 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
     private QJoinNoticeMsg qJoinNoticeMsg;
 
     private QJoinActionMsg qJoinActionMsg;
+
+    private QKickUserRequestMsg qKickUserRequestMsg;
+
+    private QKickUserSuccessMsg qKickUserSuccessMsg;
 
     public Builder() {
     }
@@ -1510,9 +1579,25 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       return this;
     }
 
+    /**
+     * 一唱到底：踢人请求信令消息
+     */
+    public Builder setQKickUserRequestMsg(QKickUserRequestMsg qKickUserRequestMsg) {
+      this.qKickUserRequestMsg = qKickUserRequestMsg;
+      return this;
+    }
+
+    /**
+     * 一唱到底：踢人结果信令消息
+     */
+    public Builder setQKickUserSuccessMsg(QKickUserSuccessMsg qKickUserSuccessMsg) {
+      this.qKickUserSuccessMsg = qKickUserSuccessMsg;
+      return this;
+    }
+
     @Override
     public RoomMsg build() {
-      return new RoomMsg(timeMs, msgType, roomID, no, posType, sender, commentMsg, specialEmojiMsg, dynamicemojiMsg, joinActionMsg, joinNoticeMsg, readyNoticeMsg, roundOverMsg, roundAndGameOverMsg, appSwapMsg, syncStatusMsg, exitGameBeforePlayMsg, exitGameAfterPlayMsg, exitGameOutRoundMsg, voteResultMsg, machineScore, qWantSingChanceMsg, qGetSingChanceMsg, qSyncStatusMsg, qRoundOverMsg, qRoundAndGameOverMsg, qNoPassSingMsg, qExitGameMsg, pkBLightMsg, pkMLightMsg, qBLightMsg, qMLightMsg, qJoinNoticeMsg, qJoinActionMsg, super.buildUnknownFields());
+      return new RoomMsg(timeMs, msgType, roomID, no, posType, sender, commentMsg, specialEmojiMsg, dynamicemojiMsg, joinActionMsg, joinNoticeMsg, readyNoticeMsg, roundOverMsg, roundAndGameOverMsg, appSwapMsg, syncStatusMsg, exitGameBeforePlayMsg, exitGameAfterPlayMsg, exitGameOutRoundMsg, voteResultMsg, machineScore, qWantSingChanceMsg, qGetSingChanceMsg, qSyncStatusMsg, qRoundOverMsg, qRoundAndGameOverMsg, qNoPassSingMsg, qExitGameMsg, pkBLightMsg, pkMLightMsg, qBLightMsg, qMLightMsg, qJoinNoticeMsg, qJoinActionMsg, qKickUserRequestMsg, qKickUserSuccessMsg, super.buildUnknownFields());
     }
   }
 
@@ -1557,6 +1642,8 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
           + QMLightMsg.ADAPTER.encodedSizeWithTag(122, value.qMLightMsg)
           + QJoinNoticeMsg.ADAPTER.encodedSizeWithTag(123, value.qJoinNoticeMsg)
           + QJoinActionMsg.ADAPTER.encodedSizeWithTag(124, value.qJoinActionMsg)
+          + QKickUserRequestMsg.ADAPTER.encodedSizeWithTag(125, value.qKickUserRequestMsg)
+          + QKickUserSuccessMsg.ADAPTER.encodedSizeWithTag(126, value.qKickUserSuccessMsg)
           + value.unknownFields().size();
     }
 
@@ -1596,6 +1683,8 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       QMLightMsg.ADAPTER.encodeWithTag(writer, 122, value.qMLightMsg);
       QJoinNoticeMsg.ADAPTER.encodeWithTag(writer, 123, value.qJoinNoticeMsg);
       QJoinActionMsg.ADAPTER.encodeWithTag(writer, 124, value.qJoinActionMsg);
+      QKickUserRequestMsg.ADAPTER.encodeWithTag(writer, 125, value.qKickUserRequestMsg);
+      QKickUserSuccessMsg.ADAPTER.encodeWithTag(writer, 126, value.qKickUserSuccessMsg);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -1653,6 +1742,8 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
           case 122: builder.setQMLightMsg(QMLightMsg.ADAPTER.decode(reader)); break;
           case 123: builder.setQJoinNoticeMsg(QJoinNoticeMsg.ADAPTER.decode(reader)); break;
           case 124: builder.setQJoinActionMsg(QJoinActionMsg.ADAPTER.decode(reader)); break;
+          case 125: builder.setQKickUserRequestMsg(QKickUserRequestMsg.ADAPTER.decode(reader)); break;
+          case 126: builder.setQKickUserSuccessMsg(QKickUserSuccessMsg.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -1696,6 +1787,8 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       if (builder.qMLightMsg != null) builder.qMLightMsg = QMLightMsg.ADAPTER.redact(builder.qMLightMsg);
       if (builder.qJoinNoticeMsg != null) builder.qJoinNoticeMsg = QJoinNoticeMsg.ADAPTER.redact(builder.qJoinNoticeMsg);
       if (builder.qJoinActionMsg != null) builder.qJoinActionMsg = QJoinActionMsg.ADAPTER.redact(builder.qJoinActionMsg);
+      if (builder.qKickUserRequestMsg != null) builder.qKickUserRequestMsg = QKickUserRequestMsg.ADAPTER.redact(builder.qKickUserRequestMsg);
+      if (builder.qKickUserSuccessMsg != null) builder.qKickUserSuccessMsg = QKickUserSuccessMsg.ADAPTER.redact(builder.qKickUserSuccessMsg);
       builder.clearUnknownFields();
       return builder.build();
     }

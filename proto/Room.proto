@@ -52,6 +52,9 @@ message RoomMsg {
     QMLightMsg qMLightMsg = 122; //一唱到底：灭灯通知
     QJoinNoticeMsg qJoinNoticeMsg = 123; //加入游戏通知消息 msgType == RM_JOIN_NOTICE
     QJoinActionMsg qJoinActionMsg = 124; //一唱到底：加入游戏指令消息
+
+    QKickUserRequestMsg qKickUserRequestMsg = 125; //一唱到底：踢人请求信令消息
+    QKickUserSuccessMsg qKickUserSuccessMsg = 126; //一唱到底：踢人结果信令消息
 }
 
 // ERoomMsgType 房间消息类型
@@ -91,7 +94,25 @@ enum ERoomMsgType {
     RM_Q_JOIN_NOTICE = 123; //一唱到底：加入游戏通知消息
     RM_Q_JOIN_ACTION = 124; //一唱到底：加入游戏指令消息
 
+    RM_Q_KICK_USER_REQUEST = 125; //一唱到底：踢人请求信令消息
+    RM_Q_KICK_USER_SUCCESS = 126; //一唱到底：踢人结果信令消息
+
     RM_ROUND_ACC_BEGIN = 190; //告知伴奏开始
+}
+
+message QKickUserRequestMsg
+{
+    uint32 sourceUserID                = 1; //发起者id
+    uint32 kickUserID                  = 2; //被踢者id
+    repeated uint32 otherOnlineUserIDs = 3; //其他在线用户id
+}
+
+message QKickUserSuccessMsg
+{
+    uint32 sourceUserID         = 1; //发起者id
+    uint32 kickUserID           = 2; //被踢者id
+    repeated uint32 voteUserIDs = 3; //投赞成票用户id
+    string kickSuccessMsg       = 4; //踢人成功的信息内容
 }
 
 message QJoinNoticeMsg {

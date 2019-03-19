@@ -14,6 +14,8 @@ import com.module.playways.rank.msg.event.QExitGameMsgEvent;
 import com.module.playways.rank.msg.event.QGetSingChanceMsgEvent;
 import com.module.playways.rank.msg.event.QJoinActionEvent;
 import com.module.playways.rank.msg.event.QJoinNoticeEvent;
+import com.module.playways.rank.msg.event.QKickUserReqEvent;
+import com.module.playways.rank.msg.event.QKickUserResultEvent;
 import com.module.playways.rank.msg.event.QLightBurstMsgEvent;
 import com.module.playways.rank.msg.event.QLightOffMsgEvent;
 import com.module.playways.rank.msg.event.QNoPassSingMsgEvent;
@@ -41,6 +43,8 @@ import com.zq.live.proto.Room.QExitGameMsg;
 import com.zq.live.proto.Room.QGetSingChanceMsg;
 import com.zq.live.proto.Room.QJoinActionMsg;
 import com.zq.live.proto.Room.QJoinNoticeMsg;
+import com.zq.live.proto.Room.QKickUserRequestMsg;
+import com.zq.live.proto.Room.QKickUserSuccessMsg;
 import com.zq.live.proto.Room.QMLightMsg;
 import com.zq.live.proto.Room.QNoPassSingMsg;
 import com.zq.live.proto.Room.QRoundAndGameOverMsg;
@@ -119,6 +123,10 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
             processGrabJoinNoticeMsg(basePushInfo, msg.getQJoinNoticeMsg());
         } else if (msg.getMsgType() == ERoomMsgType.RM_Q_JOIN_ACTION) {
             processGrabJoinActionMsg(basePushInfo, msg.getQJoinActionMsg());
+        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_KICK_USER_REQUEST) {
+            processGrabKickRequest(basePushInfo, msg.getQKickUserRequestMsg());
+        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_KICK_USER_SUCCESS) {
+            processGrabKickResult(basePushInfo, msg.getQKickUserSuccessMsg());
         }
     }
 
@@ -136,7 +144,8 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
                 ERoomMsgType.RM_Q_ROUND_OVER, ERoomMsgType.RM_Q_ROUND_AND_GAME_OVER,
                 ERoomMsgType.RM_Q_NO_PASS_SING, ERoomMsgType.RM_Q_EXIT_GAME,
                 ERoomMsgType.RM_PK_BLIGHT, ERoomMsgType.RM_PK_MLIGHT,
-                ERoomMsgType.RM_Q_BLIGHT, ERoomMsgType.RM_Q_MLIGHT, ERoomMsgType.RM_Q_JOIN_NOTICE,ERoomMsgType.RM_Q_JOIN_ACTION
+                ERoomMsgType.RM_Q_BLIGHT, ERoomMsgType.RM_Q_MLIGHT, ERoomMsgType.RM_Q_JOIN_NOTICE, ERoomMsgType.RM_Q_JOIN_ACTION,
+                ERoomMsgType.RM_Q_KICK_USER_REQUEST, ERoomMsgType.RM_Q_KICK_USER_SUCCESS
         };
     }
 
@@ -395,13 +404,30 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
         }
     }
 
-
     private void processAccBeigin(BasePushInfo basePushInfo) {
         if (basePushInfo != null) {
             AccBeginEvent machineScoreEvent = new AccBeginEvent(basePushInfo, basePushInfo.getSender().getUserID());
             EventBus.getDefault().post(machineScoreEvent);
         } else {
             MyLog.w(TAG, "processAccBeigin" + " basePushInfo = null ");
+        }
+    }
+
+    private void processGrabKickResult(BasePushInfo basePushInfo, QKickUserSuccessMsg qKickUserSuccessMsg) {
+        if (basePushInfo != null) {
+            QKickUserResultEvent qKickUserResultEvent = new QKickUserResultEvent(basePushInfo, qKickUserSuccessMsg);
+            EventBus.getDefault().post(qKickUserResultEvent);
+        } else {
+            MyLog.w(TAG, "processGrabKickResult" + " basePushInfo = null");
+        }
+    }
+
+    private void processGrabKickRequest(BasePushInfo basePushInfo, QKickUserRequestMsg qKickUserRequestMsg) {
+        if (basePushInfo != null) {
+            QKickUserReqEvent qKickUserReqEvent = new QKickUserReqEvent(basePushInfo, qKickUserRequestMsg);
+            EventBus.getDefault().post(qKickUserReqEvent);
+        } else {
+            MyLog.w(TAG, "processGrabKickRequest" + " basePushInfo = null ");
         }
     }
 }
