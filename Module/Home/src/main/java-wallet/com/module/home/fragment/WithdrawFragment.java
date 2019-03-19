@@ -433,7 +433,7 @@ public class WithdrawFragment extends BaseFragment implements IWithDrawView {
     @Override
     public void withDraw(boolean success) {
         if (success) {
-            U.getToastUtil().showShort("提现成功");
+            U.getToastUtil().showShort("提现申请提交成功");
             U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
             mUiHandler.postDelayed(new Runnable() {
                 @Override
