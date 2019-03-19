@@ -62,31 +62,29 @@ public class AuditionPrepareResFragment extends BaseFragment {
             public void onCompleted(String localPath) {
                 mHandler.post(() -> {
                     mTvResProgress.setText("100%歌曲加载中");
+                    HandlerTaskTimer.newBuilder().delay(500).start(new HandlerTaskTimer.ObserverW() {
+                        @Override
+                        public void onNext(Integer integer) {
+                            U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
+                                    .setPopFragment(AuditionPrepareResFragment.this)
+                                    .setPopAbove(false)
+                                    .setHasAnimation(false)
+                                    .build());
+                        }
+                    });
+
+                    U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), AuditionFragment.class)
+                            .setAddToBackStack(true)
+                            .setHasAnimation(true)
+                            .addDataBeforeAdd(0, mPrepareData)
+                            .setFragmentDataListener(new FragmentDataListener() {
+                                @Override
+                                public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
+
+                                }
+                            })
+                            .build());
                 });
-
-
-                HandlerTaskTimer.newBuilder().delay(500).start(new HandlerTaskTimer.ObserverW() {
-                    @Override
-                    public void onNext(Integer integer) {
-                        U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
-                                .setPopFragment(AuditionPrepareResFragment.this)
-                                .setPopAbove(false)
-                                .setHasAnimation(false)
-                                .build());
-                    }
-                });
-
-                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), AuditionFragment.class)
-                        .setAddToBackStack(true)
-                        .setHasAnimation(true)
-                        .addDataBeforeAdd(0, mPrepareData)
-                        .setFragmentDataListener(new FragmentDataListener() {
-                            @Override
-                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
-
-                            }
-                        })
-                        .build());
             }
 
             @Override
@@ -129,6 +127,14 @@ public class AuditionPrepareResFragment extends BaseFragment {
 
         if (type == 1) {
             mPrepareData.setGameType((int) data);
+        }
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        if (mHandler != null) {
+            mHandler.removeCallbacksAndMessages(null);
         }
     }
 
