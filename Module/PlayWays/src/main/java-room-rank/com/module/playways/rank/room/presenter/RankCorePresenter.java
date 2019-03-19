@@ -733,7 +733,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                         } else {
                             MyLog.w(TAG, "mRoomData.getRealRoundInfo() 为空啊！！！！");
                         }
-                        mIGameRuleView.playLyric(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), uid), false);
+                        //mIGameRuleView.playLyric(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), uid), false);
                     }
                 });
             } else if (mRoomData.getRealRoundInfo() == null) {
@@ -1163,7 +1163,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                      */
                     EngineManager.getInstance().setAudioMixingPosition(0);
                     // 还应开始播放歌词
-                    mIGameRuleView.playLyric(mRoomData.getSongModel(), true);
+                    mIGameRuleView.playLyric(mRoomData.getSongModel());
                     mIGameRuleView.showLeftTime(infoModel.getSingEndMs() - infoModel.getSingBeginMs());
                     MyLog.w(TAG, "本人开始唱了，歌词和伴奏响起");
                     mRoomData.setSingBeginTs(System.currentTimeMillis());
@@ -1259,7 +1259,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         if (infoModel != null && !infoModel.isHasSing()) {
             infoModel.setHasSing(true);
             mIGameRuleView.showLeftTime(infoModel.getSingEndMs() - infoModel.getSingBeginMs());
-            mIGameRuleView.playLyric(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), infoModel.getUserID()), true);
+            //mIGameRuleView.playLyric(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), infoModel.getUserID()), true);
             mIGameRuleView.onOtherStartSing(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), infoModel.getUserID()));
             startLastTwoSecondTask();
         }

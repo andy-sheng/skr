@@ -246,6 +246,7 @@ public class AgoraEngineAdapter {
             synchronized (this) {
                 try {
                     if (mRtcEngine == null) {
+                        MyLog.d(TAG,"InitRtcEngine" );
                         mRtcEngine = RtcEngine.create(U.app(), APP_ID, mCallback);
                         //mRtcEngine.setParameters("{\"rtc.log_filter\": 65535}");
 

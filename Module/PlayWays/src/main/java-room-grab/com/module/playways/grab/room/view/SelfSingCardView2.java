@@ -24,6 +24,7 @@ import com.engine.EngineManager;
 import com.module.RouterConstants;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
+import com.module.playways.rank.others.LyricAndAccMatchManager;
 import com.module.playways.rank.room.view.ArcProgressBar;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
@@ -60,8 +61,7 @@ import static com.zq.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
  */
 public class SelfSingCardView2 extends RelativeLayout {
     public final static String TAG = "SelfSingCardView2";
-    static final int MSG_ENSURE_LAUNCHER = 1;
-    static final int LAUNCHER_DELAY = 3000;
+
     TextView mTvLyric;
     ArcProgressBar mCountDownProcess;
     ExTextView mCountDownTv;
@@ -78,21 +78,8 @@ public class SelfSingCardView2 extends RelativeLayout {
 
     VoiceScaleView mVoiceScaleView;
 
-    LyricEventLauncher mLyricEventLauncher = new LyricEventLauncher();
-    LyricsReader mLyricsReader;
-    // 按理 歌词 和 伴奏 都ok了 才抛出歌词end事件，但事件的时间戳要做矫正
-    boolean mAccLoadOk = false;
-    boolean mLryLoadOk = false;
+    LyricAndAccMatchManager mLyricAndAccMatchManager = new LyricAndAccMatchManager();
 
-    Handler mUiHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if (msg.what == MSG_ENSURE_LAUNCHER) {
-                launchLyricEvent(LAUNCHER_DELAY);
-            }
-        }
-    };
 
     public SelfSingCardView2(Context context) {
         super(context);
@@ -137,9 +124,29 @@ public class SelfSingCardView2 extends RelativeLayout {
         if (!hasAcc) {
             playWithNoAcc(songModel);
             mIvTag.setBackground(U.getDrawable(R.drawable.self_sing_biaoqian));
+            mLyricAndAccMatchManager.stop();
         } else {
             mIvTag.setBackground(U.getDrawable(R.drawable.biaoqian_haichang));
-            playWithAcc(songModel);
+            mLyricAndAccMatchManager.setArgs(mManyLyricsView, mVoiceScaleView,
+                    songModel.getLyric(),
+                    songModel.getStandLrcBeginT(), songModel.getStandLrcBeginT() + songModel.getTotalMs(),
+                    songModel.getBeginMs(), songModel.getBeginMs() + songModel.getTotalMs());
+            mLyricAndAccMatchManager.start(new LyricAndAccMatchManager.Listener() {
+                @Override
+                public void onLyricParseSuccess() {
+                    mTvLyric.setVisibility(GONE);
+                }
+
+                @Override
+                public void onLyricParseFailed() {
+                    playWithNoAcc(mSongModel);
+                }
+
+                @Override
+                public void onLyricEventPost(int lineNum) {
+                    mRoomData.setSongLineNum(lineNum);
+                }
+            });
         }
 
         starCounDown(songModel);
@@ -164,54 +171,6 @@ public class SelfSingCardView2 extends RelativeLayout {
         }
     }
 
-    private void playWithAcc(SongModel songModel) {
-        if (songModel == null || TextUtils.isEmpty(songModel.getAcc())) {
-            MyLog.d(TAG, "playWithAcc" + " songModel data is error, " + songModel);
-            return;
-        }
-        mDisposable = LyricsManager.getLyricsManager(U.app())
-                .fetchAndLoadLyrics(songModel.getLyric())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<LyricsReader>() {
-                    @Override
-                    public void accept(LyricsReader lyricsReader) throws Exception {
-                        MyLog.w(TAG, "onEventMainThread " + "play");
-                        mTvLyric.setVisibility(GONE);
-                        mManyLyricsView.setVisibility(VISIBLE);
-                        mManyLyricsView.initLrcData();
-                        int lrcBeginTs = songModel.getStandLrcBeginT();
-                        int totalMs = songModel.getTotalMs();
-
-                        lyricsReader.cut(lrcBeginTs, songModel.getBeginMs() + totalMs);
-                        mManyLyricsView.setLyricsReader(lyricsReader);
-
-                        Set<Integer> set = new HashSet<>();
-                        set.add(lyricsReader.getLineInfoIdByStartTs(lrcBeginTs));
-                        mManyLyricsView.setNeedCountDownLine(set);
-
-                        if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC
-                                && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {
-                            mManyLyricsView.play(songModel.getBeginMs());
-                            mManyLyricsView.seekto(songModel.getBeginMs());
-                            mLyricsReader = lyricsReader;
-                            if (mAccLoadOk) {
-                                launchLyricEvent(EngineManager.getInstance().getAudioMixingCurrentPosition());
-                            } else {
-                                mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_LAUNCHER, LAUNCHER_DELAY);
-                            }
-                            mLryLoadOk = true;
-                            // 这里是假设 伴奏 和 歌词一起初始化完毕的， 实际两者会有偏差优化下
-//                            int lineNum = mLyricEventLauncher.postLyricEvent(lyricsReader, lrcBeginTs - GrabRoomData.ACC_OFFSET_BY_LYRIC, lrcBeginTs + totalMs - GrabRoomData.ACC_OFFSET_BY_LYRIC, null);
-//                            mRoomData.setSongLineNum(lineNum);
-                        }
-                    }
-                }, throwable -> {
-                    MyLog.e(TAG, throwable);
-                    MyLog.d(TAG, "歌词下载失败，采用不滚动方式播放歌词");
-                    playWithNoAcc(mSongModel);
-                });
-    }
 
     private void starCounDown(SongModel songModel) {
         mCountIv.setVisibility(GONE);
@@ -253,11 +212,8 @@ public class SelfSingCardView2 extends RelativeLayout {
         if (mDisposable != null && !mDisposable.isDisposed()) {
             mDisposable.dispose();
         }
-        if (mLyricEventLauncher != null) {
-            mLyricEventLauncher.destroy();
-        }
-        if (mUiHandler != null) {
-            mUiHandler.removeCallbacksAndMessages(null);
+        if (mLyricAndAccMatchManager != null) {
+            mLyricAndAccMatchManager.stop();
         }
         EventBus.getDefault().unregister(this);
     }
@@ -267,12 +223,12 @@ public class SelfSingCardView2 extends RelativeLayout {
         super.setVisibility(visibility);
         if (visibility == GONE) {
             stopCounDown();
-            mLyricsReader = null;
             if (mManyLyricsView != null) {
                 mManyLyricsView.setLyricsReader(null);
             }
-            mAccLoadOk = false;
-            mLryLoadOk = false;
+            if (mLyricAndAccMatchManager != null) {
+                mLyricAndAccMatchManager.stop();
+            }
         }
     }
 
@@ -347,48 +303,6 @@ public class SelfSingCardView2 extends RelativeLayout {
                 mTvLyric.setText(o);
             }
         }, throwable -> MyLog.e(TAG, throwable));
-    }
-
-    /**
-     * 会偶现播伴奏失败，即没有这个调整事件
-     * @param event
-     */
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(EngineEvent event) {
-        if (event.getType() == EngineEvent.TYPE_MUSIC_PLAY_TIME_FLY_LISTENER) {
-            EngineEvent.MixMusicTimeInfo in = event.getObj();
-            MyLog.d(TAG, "伴奏 ts=" + in.getCurrent());
-            if (in != null && in.getCurrent() > 0) {
-                if (!mAccLoadOk) {
-                    if (mLryLoadOk) {
-                        launchLyricEvent(in.getCurrent());
-                    }
-                }
-                mAccLoadOk = true;
-                if (mManyLyricsView.getVisibility() == VISIBLE && mSongModel != null) {
-                    long ts1 = mManyLyricsView.getCurPlayingTime() + mManyLyricsView.getPlayerSpendTime();
-                    long ts2 = in.getCurrent() + mSongModel.getBeginMs();
-                    if (Math.abs(ts1 - ts2) > 500) {
-                        MyLog.d(TAG, "伴奏与歌词的时间戳差距较大时,矫正一下,歌词ts=" + ts1 + " 伴奏ts=" + ts2);
-                        mManyLyricsView.seekto((int) ts2);
-                    }
-                }
-            }
-        }
-    }
-
-    //发射歌词事件
-    void launchLyricEvent(int accPlayTs) {
-        MyLog.d(TAG, "歌词和伴奏都load ok launchLyricEvent" + " accPlayTs=" + accPlayTs);
-        if (mLyricsReader == null || mSongModel == null) {
-            return;
-        }
-        int lrcBeginTs = mSongModel.getStandLrcBeginT();
-        int totalMs = mSongModel.getTotalMs();
-        int lineNum = mLyricEventLauncher.postLyricEvent(mLyricsReader, mSongModel.getBeginMs()+ accPlayTs, mSongModel.getBeginMs() + totalMs, null);
-        mRoomData.setSongLineNum(lineNum);
-        mVoiceScaleView.setVisibility(View.VISIBLE);
-        mVoiceScaleView.startWithData(mLyricsReader.getLyricsLineInfoList(), mSongModel.getBeginMs() + accPlayTs);
     }
 
     public void setRoomData(GrabRoomData roomData) {

@@ -26,7 +26,7 @@ public interface IGameRuleView {
     void updateUserState(List<OnlineInfoModel> jsonOnLineInfoList);
 
     //先显示，然后再播放
-    void playLyric(SongModel songModel, boolean play);
+    void playLyric(SongModel songModel);
 
     void updateScrollBarProgress(int score,int curTotalScore,int lineNum);
 

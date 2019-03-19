@@ -11,7 +11,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,30 +30,25 @@ import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
-import com.dialog.view.TipsDialogView;
 import com.engine.EngineEvent;
 import com.engine.EngineManager;
 import com.engine.Params;
 import com.engine.arccloud.ArcRecognizeListener;
 import com.engine.arccloud.RecognizeConfig;
 import com.engine.arccloud.SongInfo;
+import com.module.playways.rank.others.LyricAndAccMatchManager;
 import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.playways.rank.prepare.view.VoiceControlPanelView;
-import com.module.playways.rank.room.score.MachineScoreItem;
 import com.module.playways.rank.room.view.RankTopContainerView2;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
-import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.ViewHolder;
 import com.trello.rxlifecycle2.android.FragmentEvent;
 import com.zq.lyrics.LyricsManager;
 import com.zq.lyrics.LyricsReader;
 import com.zq.lyrics.event.LrcEvent;
-import com.zq.lyrics.event.LyricEventLauncher;
 import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.ManyLyricsView;
 import com.zq.lyrics.widget.VoiceScaleView;
-import com.zq.toast.CommonToastView;
 import com.zq.toast.NoImageCommonToastView;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -110,6 +104,8 @@ public class AuditionFragment extends BaseFragment {
 
     private int mTotalLineNum = -1;
 
+    LyricAndAccMatchManager mLyricAndAccMatchManager = new LyricAndAccMatchManager();
+
     Handler mUiHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
@@ -144,8 +140,6 @@ public class AuditionFragment extends BaseFragment {
 
     List<Integer> mCbScoreList = new ArrayList<>();
 
-    LyricEventLauncher mLyricEventLauncher = new LyricEventLauncher();
-
     @Override
     public int initView() {
         return R.layout.audition_sence_layout;
@@ -160,7 +154,7 @@ public class AuditionFragment extends BaseFragment {
             EngineManager.getInstance().init("prepare", params);
 //            boolean isAnchor = MyUserInfoManager.getInstance().getUid() == 1705476;
             boolean isAnchor = true;
-            EngineManager.getInstance().joinRoom("csm" + System.currentTimeMillis(), (int) UserAccountManager.getInstance().getUuidAsLong(), isAnchor,null);
+            EngineManager.getInstance().joinRoom("csm" + System.currentTimeMillis(), (int) UserAccountManager.getInstance().getUuidAsLong(), isAnchor, null);
         } else {
             EngineManager.getInstance().resumeAudioMixing();
         }
@@ -247,9 +241,8 @@ public class AuditionFragment extends BaseFragment {
 
         mSongModel = mPrepareData.getSongModel();
         mTvSongName.setText("《" + mSongModel.getItemName() + "》");
-        playLyrics(mSongModel, false, true);
-
         resendAutoLeaveChannelMsg();
+        startRecord();
     }
 
     private void startRecord() {
@@ -265,28 +258,42 @@ public class AuditionFragment extends BaseFragment {
     }
 
     private void startRecord1() {
-        resetView();
-
-        if(mLyricsReader != null){
+        reset();
+        if (mLyricsReader != null) {
             mVoiceScaleView.startWithData(mLyricsReader.getLyricsLineInfoList(), mSongModel.getBeginMs());
         }
-        playLyrics(mSongModel, true, false);
+
+        mLyricAndAccMatchManager.setArgs(mManyLyricsView, mVoiceScaleView, mSongModel.getLyric(),
+                mSongModel.getRankLrcBeginT(), mSongModel.getRankLrcEndT(),
+                mSongModel.getBeginMs(), mSongModel.getEndMs());
+        mLyricAndAccMatchManager.start(new LyricAndAccMatchManager.Listener() {
+            @Override
+            public void onLyricParseSuccess() {
+
+            }
+
+            @Override
+            public void onLyricParseFailed() {
+
+            }
+
+            @Override
+            public void onLyricEventPost(int lineNum) {
+                mTotalLineNum = lineNum;
+                mStartRecordTs = System.currentTimeMillis();
+                mCbScoreList.clear();
+                if (RECORD_BY_CALLBACK) {
+                    EngineManager.getInstance().startAudioRecording(PCM_SAVE_PATH, Constants.AUDIO_RECORDING_QUALITY_HIGH, true);
+                } else {
+                    EngineManager.getInstance().startAudioRecording(ACC_SAVE_PATH, Constants.AUDIO_RECORDING_QUALITY_HIGH, false);
+                }
+
+            }
+        });
+//        playLyrics(mSongModel, true, false);
         playMusic(mSongModel);
-
-        mTotalLineNum = mLyricEventLauncher.postLyricEvent(mLyricsReader, mSongModel.getBeginMs(), mSongModel.getEndMs(), null);
         mStartRecordTs = System.currentTimeMillis();
-//        mIvRecordStart.setVisibility(View.GONE);
-//        mTvRecordStop.setVisibility(View.VISIBLE);
-//        mRlControlContainer.setVisibility(View.GONE);
-//        mTvRecordTip.setText("点击结束试音演唱");
-//        mIvPlay.setEnabled(true);
-        if (RECORD_BY_CALLBACK) {
-            EngineManager.getInstance().startAudioRecording(PCM_SAVE_PATH, Constants.AUDIO_RECORDING_QUALITY_HIGH, true);
-        } else {
-            EngineManager.getInstance().startAudioRecording(ACC_SAVE_PATH, Constants.AUDIO_RECORDING_QUALITY_HIGH, false);
-        }
 
-        mCbScoreList.clear();
         EngineManager.getInstance().startRecognize(RecognizeConfig.newBuilder()
                 .setMode(RecognizeConfig.MODE_MANUAL)
                 .setSongName(mSongModel.getItemName())
@@ -326,7 +333,7 @@ public class AuditionFragment extends BaseFragment {
                 }).build());
     }
 
-    private void resetView() {
+    private void reset() {
         isRecord = true;
         mRankTopView.reset();
         mLastLineNum = -1;
@@ -357,7 +364,7 @@ public class AuditionFragment extends BaseFragment {
                     .build());
             return;
         }
-        mLyricEventLauncher.destroy();
+        mLyricAndAccMatchManager.stop();
         mVoiceScaleView.setVisibility(View.GONE);
         isRecord = false;
         EngineManager.getInstance().stopAudioRecording();
@@ -460,49 +467,49 @@ public class AuditionFragment extends BaseFragment {
         }
     }
 
-    private void playLyrics(SongModel songModel, boolean play, boolean isFirst) {
-        final String lyricFile = SongResUtils.getFileNameWithMD5(songModel.getLyric());
-
-        if (lyricFile != null) {
-            LyricsManager.getLyricsManager(U.app())
-                    .loadLyricsObserable(lyricFile, lyricFile.hashCode() + "")
-                    .subscribeOn(Schedulers.io())
-                    .retry(10)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .compose(bindUntilEvent(FragmentEvent.DESTROY))
-                    .subscribe(lyricsReader -> {
-                        MyLog.d(TAG, "playMusic, start play lyric");
-                        mManyLyricsView.resetData();
-                        mManyLyricsView.initLrcData();
-                        lyricsReader.cut(songModel.getRankLrcBeginT(), songModel.getRankLrcEndT());
-                        if (isRecord) {
-                            Set<Integer> set = new HashSet<>();
-                            set.add(lyricsReader.getLineInfoIdByStartTs(songModel.getRankLrcBeginT()));
-                            mManyLyricsView.setNeedCountDownLine(set);
-                        } else {
-                            Set<Integer> set = new HashSet<>();
-                            mManyLyricsView.setNeedCountDownLine(set);
-                        }
-                        MyLog.d(TAG, "getRankLrcBeginT : " + songModel.getRankLrcBeginT());
-                        mManyLyricsView.setLyricsReader(lyricsReader);
-                        mLyricsReader = lyricsReader;
-                        if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {
-                            mManyLyricsView.play(songModel.getBeginMs());
-                            MyLog.d(TAG, "songModel.getBeginMs() : " + songModel.getBeginMs());
-                        }
-
-                        if (!play) {
-                            mManyLyricsView.pause();
-                        }
-
-                        if (isFirst) {
-                            startRecord();
-                        }
-                    }, throwable -> MyLog.e(throwable));
-        } else {
-            MyLog.e(TAG, "没有歌词文件，不应该，进界面前已经下载好了");
-        }
-    }
+//    private void playLyrics(SongModel songModel, boolean play, boolean isFirst) {
+//        final String lyricFile = SongResUtils.getFileNameWithMD5(songModel.getLyric());
+//
+//        if (lyricFile != null) {
+//            LyricsManager.getLyricsManager(U.app())
+//                    .loadLyricsObserable(lyricFile, lyricFile.hashCode() + "")
+//                    .subscribeOn(Schedulers.io())
+//                    .retry(10)
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .compose(bindUntilEvent(FragmentEvent.DESTROY))
+//                    .subscribe(lyricsReader -> {
+//                        MyLog.d(TAG, "playMusic, start play lyric");
+//                        mManyLyricsView.resetData();
+//                        mManyLyricsView.initLrcData();
+//                        lyricsReader.cut(songModel.getRankLrcBeginT(), songModel.getRankLrcEndT());
+//                        if (isRecord) {
+//                            Set<Integer> set = new HashSet<>();
+//                            set.add(lyricsReader.getLineInfoIdByStartTs(songModel.getRankLrcBeginT()));
+//                            mManyLyricsView.setNeedCountDownLine(set);
+//                        } else {
+//                            Set<Integer> set = new HashSet<>();
+//                            mManyLyricsView.setNeedCountDownLine(set);
+//                        }
+//                        MyLog.d(TAG, "getRankLrcBeginT : " + songModel.getRankLrcBeginT());
+//                        mManyLyricsView.setLyricsReader(lyricsReader);
+//                        mLyricsReader = lyricsReader;
+//                        if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {
+//                            mManyLyricsView.play(songModel.getBeginMs());
+//                            MyLog.d(TAG, "songModel.getBeginMs() : " + songModel.getBeginMs());
+//                        }
+//
+//                        if (!play) {
+//                            mManyLyricsView.pause();
+//                        }
+//
+//                        if (isFirst) {
+//                            startRecord();
+//                        }
+//                    }, throwable -> MyLog.e(throwable));
+//        } else {
+//            MyLog.e(TAG, "没有歌词文件，不应该，进界面前已经下载好了");
+//        }
+//    }
 
     @Override
     public void onResume() {
@@ -581,9 +588,9 @@ public class AuditionFragment extends BaseFragment {
             EngineManager.getInstance().stopAudioRecording();
             EngineManager.getInstance().stopAudioMixing();
         } else {
-            resetView();
+            reset();
             mVoiceScaleView.setVisibility(View.GONE);
-            playLyrics(mSongModel, false, false);
+            mManyLyricsView.pause();
         }
     }
 
@@ -660,7 +667,7 @@ public class AuditionFragment extends BaseFragment {
     @Override
     public void destroy() {
         super.destroy();
-        mLyricEventLauncher.destroy();
+        mLyricAndAccMatchManager.stop();
         mManyLyricsView.release();
         EngineManager.getInstance().destroy("prepare");
         File recordFile = new File(PCM_SAVE_PATH);

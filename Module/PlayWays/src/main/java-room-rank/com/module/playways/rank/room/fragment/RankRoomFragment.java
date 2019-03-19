@@ -35,6 +35,7 @@ import com.dialog.view.TipsDialogView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.listener.SVGAListener;
+import com.module.playways.rank.others.LyricAndAccMatchManager;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.room.RankRoomData;
 import com.module.playways.rank.room.comment.CommentModel;
@@ -134,8 +135,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
 
-    LyricEventLauncher mLyricEventLauncher = new LyricEventLauncher();
-
     Handler mUiHanlder = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -153,13 +152,9 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         }
     };
 
-    Disposable mPrepareLyricTask;
-
     TurnChangeCardView mTurnChangeView;
 
     PersonInfoDialog mPersonInfoDialog;
-
-    SongModel mPlayingSongModel;
 
     Runnable mPendingSelfCountDownRunnable;
 
@@ -176,6 +171,8 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     List<Animator> mAnimatorList = new ArrayList<>();  //存放所有需要尝试取消的动画
 
     boolean isGameEndAniamtionShow = false; // 标记对战结束动画是否播放
+
+    LyricAndAccMatchManager mLyricAndAccMatchManager = new LyricAndAccMatchManager();
 
     @Override
     public int initView() {
@@ -827,7 +824,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         mRankOpView.setVisibility(View.GONE);
         mManyLyricsView.setVisibility(View.GONE);
 
-        mLyricEventLauncher.destroy();
+        mLyricAndAccMatchManager.stop();
         // 加保护，确保当前主舞台一定被移除
         mStageView.setVisibility(View.GONE);
         mSingAvatarView.setVisibility(View.GONE);
@@ -868,7 +865,10 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     @Override
     public void onOtherStartSing(SongModel songModel) {
         mRankOpView.playCountDown(mRoomData.getRealRoundSeq(), true);
-        mCountDownProcess.startCountDown(0, mPlayingSongModel.getTotalMs());
+        mCountDownProcess.startCountDown(0, songModel.getTotalMs());
+        if (mManyLyricsView != null) {
+            mManyLyricsView.setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -883,7 +883,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         mRankOpView.playCountDown(mRoomData.getRealRoundSeq(), false);
         mVoiceScaleView.setVisibility(View.GONE);
         mManyLyricsView.setVisibility(View.GONE);
-        mLyricEventLauncher.destroy();
+        mLyricAndAccMatchManager.stop();
         // 加保护，确保当前主舞台一定被移除
         mStageView.setVisibility(View.GONE);
         mSingAvatarView.setVisibility(View.GONE);
@@ -1014,11 +1014,8 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     @Override
     public void gameFinish() {
         MyLog.w(TAG, "游戏结束了");
-        mLyricEventLauncher.destroy();
+        mLyricAndAccMatchManager.stop();
         mRankOpView.setVisibility(View.GONE);
-        if (mPrepareLyricTask != null && !mPrepareLyricTask.isDisposed()) {
-            mPrepareLyricTask.dispose();
-        }
         mManyLyricsView.setVisibility(View.GONE);
         mManyLyricsView.release();
         mVoiceScaleView.setVisibility(View.GONE);
@@ -1049,126 +1046,36 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     }
 
     @Override
-    public void playLyric(SongModel songModel, boolean play) {
+    public void playLyric(SongModel songModel) {
         if (songModel == null) {
             MyLog.d(TAG, "songModel 是空的");
             return;
         }
         MyLog.w(TAG, "开始播放歌词 songId=" + songModel.getItemID());
-        mPlayingSongModel = songModel;
 
-        if (mPrepareLyricTask != null && !mPrepareLyricTask.isDisposed()) {
-            mPrepareLyricTask.dispose();
-        }
-
-        File file = SongResUtils.getLyricFileByUrl(songModel.getLyric());
-
-        if (file == null || !file.exists()) {
-            MyLog.w(TAG, "playLyric is not in local file");
-            fetchLyricTask(songModel, play);
-        } else {
-            MyLog.w(TAG, "playLyric is exist");
-            final String fileName = SongResUtils.getFileNameWithMD5(songModel.getLyric());
-            parseLyrics(fileName, play);
-        }
-    }
-
-
-    private void parseLyrics(String fileName, boolean play) {
-        MyLog.w(TAG, "parseLyrics" + " fileName=" + fileName);
-        mPrepareLyricTask = LyricsManager.getLyricsManager(U.app())
-                .loadLyricsObserable(fileName, fileName.hashCode() + "")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .retry(10)
-                .compose(bindUntilEvent(FragmentEvent.DESTROY))
-                .subscribe(lyricsReader -> {
-                    drawLyric(fileName.hashCode() + "", lyricsReader, play);
-                }, throwable -> {
-                    MyLog.e(TAG, throwable);
-                });
-    }
-
-
-    private void drawLyric(String fileNameHash, LyricsReader lyricsReader, boolean play) {
-        MyLog.w(TAG, "drawLyric" + " fileNameHash=" + fileNameHash + " lyricsReader=" + lyricsReader);
-        if (lyricsReader != null) {
-            lyricsReader.setHash(fileNameHash);
-            //自己
-            if (mRoomData.getRealRoundInfo().getUserID()
-                    == MyUserInfoManager.getInstance().getUid()) {
-                mManyLyricsView.setVisibility(View.VISIBLE);
-                mManyLyricsView.initLrcData();
-                lyricsReader.cut(mPlayingSongModel.getRankLrcBeginT(), mPlayingSongModel.getRankLrcEndT());
-                mManyLyricsView.setLyricsReader(lyricsReader);
-
-                Set<Integer> set = new HashSet<>();
-                set.add(lyricsReader.getLineInfoIdByStartTs(mPlayingSongModel.getRankLrcBeginT()));
-                mManyLyricsView.setNeedCountDownLine(set);
-
-                if (!play) {
-                    mManyLyricsView.seekto(mPlayingSongModel.getBeginMs());
-                    mManyLyricsView.pause();
-                }
-                if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY && play) {
-                    MyLog.w(TAG, "onEventMainThread " + "play");
-                    mManyLyricsView.play(mPlayingSongModel.getBeginMs());
-                    int eventNum = mLyricEventLauncher.postLyricEvent(lyricsReader, mPlayingSongModel.getBeginMs(), mPlayingSongModel.getEndMs(), mRoomData.getRealRoundInfo());
-                    mRoomData.setSongLineNum(eventNum);
-                    mCorePresenter.sendTotalScoreToOthers(eventNum);
-                    mVoiceScaleView.setVisibility(View.VISIBLE);
-                    mVoiceScaleView.startWithData(lyricsReader.getLyricsLineInfoList(), mPlayingSongModel.getBeginMs());
-                }
-            } else {
-                if (play && RoomDataUtils.isRobotRound(mRoomData.getRealRoundInfo(), mRoomData.getPlayerInfoList())) {
-                    lyricsReader.cut(mPlayingSongModel.getRankLrcBeginT(), mPlayingSongModel.getRankLrcEndT());
-                    int eventNum = mLyricEventLauncher.postLyricEvent(lyricsReader, mPlayingSongModel.getBeginMs(), mPlayingSongModel.getEndMs(), mRoomData.getRealRoundInfo());
-                    mRoomData.setSongLineNum(eventNum);
-                    mCorePresenter.sendTotalScoreToOthers(eventNum);
-                }
-                mManyLyricsView.setVisibility(View.GONE);
-                mManyLyricsView.resetData();
-            }
-        }
-    }
-
-
-    private void fetchLyricTask(SongModel songModel, boolean play) {
-        MyLog.w(TAG, "fetchLyricTask" + " songModel=" + songModel);
-        mPrepareLyricTask = Observable.create(new ObservableOnSubscribe<File>() {
+        mLyricAndAccMatchManager.setArgs(mManyLyricsView,mVoiceScaleView,
+                songModel.getLyric(),songModel.getRankLrcBeginT(),songModel.getRankLrcEndT(),
+                songModel.getBeginMs(),songModel.getEndMs());
+        mLyricAndAccMatchManager.start(new LyricAndAccMatchManager.Listener() {
             @Override
-            public void subscribe(ObservableEmitter<File> emitter) {
-                File tempFile = new File(SongResUtils.createTempLyricFileName(songModel.getLyric()));
+            public void onLyricParseSuccess() {
 
-                boolean isSuccess = U.getHttpUtils().downloadFileSync(songModel.getLyric(), tempFile, null);
-
-                File oldName = new File(SongResUtils.createTempLyricFileName(songModel.getLyric()));
-                File newName = new File(SongResUtils.createLyricFileName(songModel.getLyric()));
-
-                if (isSuccess) {
-                    if (oldName.renameTo(newName)) {
-                        MyLog.w(TAG, "已重命名");
-                        emitter.onNext(newName);
-                        emitter.onComplete();
-                    } else {
-                        MyLog.w(TAG, "Error");
-                        emitter.onError(new Throwable("重命名错误"));
-                    }
-                } else {
-                    emitter.onError(new Throwable("下载失败" + TAG));
-                }
             }
-        }).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .retry(1000)
-                .compose(bindUntilEvent(FragmentEvent.DESTROY))
-                .subscribe(file -> {
-                    final String fileName = SongResUtils.getFileNameWithMD5(songModel.getLyric());
-                    parseLyrics(fileName, play);
-                }, throwable -> {
-                    MyLog.e(TAG, throwable);
-                });
+
+            @Override
+            public void onLyricParseFailed() {
+
+            }
+
+            @Override
+            public void onLyricEventPost(int eventNum) {
+                mRoomData.setSongLineNum(eventNum);
+                mCorePresenter.sendTotalScoreToOthers(eventNum);
+            }
+        });
+
     }
+
 
     static class PendingRivalData {
         int uid;
