@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.common.view.ex.ExRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/view_240_dp"
+    android:layout_height="@dimen/view_145_dp"
+    android:layout_centerHorizontal="true"
+    app:bl_corners_radius="@dimen/view_8_dp"
+    app:bl_shape="rectangle"
+    app:bl_solid_color="#ffebebeb"
+    app:bl_stroke_color="#ffacacac"
+    app:bl_stroke_width="@dimen/view_1_dp">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/avatar_iv"
+        android:layout_width="@dimen/view_44_dp"
+        android:layout_height="@dimen/view_44_dp"
+        android:layout_marginLeft="@dimen/view_18_dp"
+        android:layout_marginTop="@dimen/view_28_dp" />
+
+    <ImageView
+        android:layout_width="@dimen/view_44_dp"
+        android:layout_height="@dimen/view_44_dp"
+        android:layout_alignLeft="@id/avatar_iv"
+        android:layout_alignTop="@id/avatar_iv"
+        android:background="@drawable/jb_jingzhi" />
+
+    <TextView
+        android:id="@+id/content_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/avatar_iv"
+        android:layout_marginLeft="@dimen/view_8_dp"
+        android:layout_marginRight="@dimen/view_18_dp"
+        android:layout_toRightOf="@id/avatar_iv"
+        android:text="是否同意将KTV酒彪子移除房间 4s"
+        android:textSize="@dimen/textsize_14_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/cancle_tv"
+        android:layout_width="@dimen/view_120_dp"
+        android:layout_height="@dimen/view_48_dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:gravity="center"
+        android:text="取消"
+        android:textColor="@color/black_trans_50"
+        android:textSize="@dimen/textsize_16_dp"
+        app:bl_corners_bottomLeftRadius="@dimen/view_8_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="@color/white" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/confirm_tv"
+        android:layout_width="@dimen/view_120_dp"
+        android:layout_height="@dimen/view_48_dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:text="确定"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_16_dp"
+        app:bl_corners_bottomRightRadius="@dimen/view_8_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#F5A623" />
+
+
+</com.common.view.ex.ExRelativeLayout>
