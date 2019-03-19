@@ -240,7 +240,7 @@ public class WithdrawFragment extends BaseFragment implements IWithDrawView {
             }
         }, 500);
 
-        mWithDrawPresenter.getWithDrawInfo();
+        mWithDrawPresenter.getWithDrawInfo(0);
         mTvWithdrawBtn.setEnabled(false);
         mTvWxSelect.setSelected(false);
     }

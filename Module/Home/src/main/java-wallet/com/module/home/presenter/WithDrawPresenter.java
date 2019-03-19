@@ -29,10 +29,9 @@ public class WithDrawPresenter extends RxLifeCyclePresenter {
         mWalletServerApi = ApiManager.getInstance().createService(WalletServerApi.class);
     }
 
-    int i = 0;
 
-    public void getWithDrawInfo() {
-        if (i < 10) {
+    public void getWithDrawInfo(int deep) {
+        if (deep < 10) {
             ApiMethods.subscribe(mWalletServerApi.getWithdrawInfo(), new ApiObserver<ApiResult>() {
                 @Override
                 public void process(ApiResult result) {
@@ -46,14 +45,12 @@ public class WithDrawPresenter extends RxLifeCyclePresenter {
 
                 @Override
                 public void onError(Throwable e) {
-                    i++;
-                    getWithDrawInfo();
+                    getWithDrawInfo(deep+1);
                 }
 
                 @Override
                 public void onNetworkError(ErrorType errorType) {
-                    i++;
-                    getWithDrawInfo();
+                    getWithDrawInfo(deep+1);
                 }
             }, this);
         } else {

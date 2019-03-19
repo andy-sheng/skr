@@ -189,6 +189,7 @@ public class RankOpView extends RelativeLayout {
 
         mIvBurst.setVisibility(GONE);
         if (mRoomData.getLeftBurstLightTimes() > 0 && startCountDown) {
+            mUiHandler.removeMessages(MSG_SHOW_BURST);
             Message msg = mUiHandler.obtainMessage(MSG_SHOW_BURST);
             mUiHandler.sendMessageDelayed(msg, mLightBurstDelayTime * 1000);
         }
