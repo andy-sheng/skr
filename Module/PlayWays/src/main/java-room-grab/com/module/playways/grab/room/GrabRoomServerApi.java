@@ -12,6 +12,16 @@ import retrofit2.http.Query;
 public interface GrabRoomServerApi {
 
     /**
+     * 创建房间
+     * @param body
+     *   "roomType": "RT_UNKNOWN",
+     *   "tagID": 0
+     * @return
+     */
+    @PUT("http://dev.room.inframe.mobi/v2/room/create-room")
+    Observable<ApiResult> createRoom(@Body RequestBody body);
+
+    /**
      * {
      * "roomID" : 111
      * }

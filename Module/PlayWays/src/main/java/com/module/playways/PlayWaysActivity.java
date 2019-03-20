@@ -14,7 +14,7 @@ import com.component.busilib.constans.GameModeType;
 import com.engine.EngineManager;
 import com.module.RouterConstants;
 import com.module.playways.event.FinishPlayWayActivityEvent;
-import com.module.playways.grab.songselect.fragment.SpecialSelectFragment;
+import com.module.playways.grab.songselect.fragment.GrabSelectFragment;
 import com.module.rank.R;
 import com.module.playways.rank.song.fragment.SongSelectFragment;
 
@@ -76,7 +76,7 @@ public class PlayWaysActivity extends BaseActivity {
         } else if (gameType == GameModeType.GAME_MODE_GRAB) {
             mainActContainer.setBackground(null);
             // 一唱到底抢唱模式,
-            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, SpecialSelectFragment.class)
+            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, GrabSelectFragment.class)
                     .setAddToBackStack(false)
                     .setHasAnimation(false)
                     .build());

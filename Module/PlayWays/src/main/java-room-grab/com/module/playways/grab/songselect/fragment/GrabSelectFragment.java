@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.utils.FragmentUtils;
@@ -15,9 +16,13 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
+import com.component.busilib.constans.GameModeType;
+import com.module.RouterConstants;
 import com.module.playways.grab.songselect.adapter.FriendRoomAdapter;
 import com.module.playways.grab.songselect.model.FriendRoomModel;
+import com.module.playways.grab.songselect.model.SpecialModel;
 import com.module.playways.grab.songselect.view.SpecialSelectView;
+import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.rank.R;
 
 import java.util.ArrayList;
@@ -56,7 +61,6 @@ public class GrabSelectFragment extends BaseFragment {
         mFastBeginTv = (ExTextView) mRootView.findViewById(R.id.fast_begin_tv);
         mSpecialView = (SpecialSelectView) mRootView.findViewById(R.id.special_view);
 
-
         mSelectBack.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
@@ -73,6 +77,13 @@ public class GrabSelectFragment extends BaseFragment {
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
                         .build());
+            }
+        });
+
+        mSpecialView.setSpecialSelectListner(new SpecialSelectView.SpecialSelectListner() {
+            @Override
+            public void onClickSpecial(SpecialModel model, List<String> music) {
+                goMatchFragment(model.getTagID(), music);
             }
         });
 
@@ -95,6 +106,24 @@ public class GrabSelectFragment extends BaseFragment {
 
         mFriendRoomAdapter.setDataList(list);
         mFriendRoomAdapter.notifyDataSetChanged();
+    }
+
+    public void goMatchFragment(int specialId, List<String> musicURLs) {
+        PrepareData prepareData = new PrepareData();
+        prepareData.setGameType(GameModeType.GAME_MODE_GRAB);
+        prepareData.setTagId(specialId);
+
+        if (musicURLs != null && musicURLs.size() > 0) {
+            prepareData.setBgMusic(musicURLs.get(0));
+        }
+
+        ARouter.getInstance()
+                .build(RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)
+                .withSerializable("prepare_data", prepareData)
+                .navigation();
+        if (getActivity() != null) {
+            getActivity().finish();
+        }
     }
 
     @Override

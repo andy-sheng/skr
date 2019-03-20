@@ -9,11 +9,14 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.alibaba.fastjson.JSON;
+import com.common.core.account.UserAccountManager;
 import com.common.core.permission.SkrAudioPermission;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.statistics.StatConstants;
+import com.common.statistics.StatisticsAdapter;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.callback.EmptyCallback;
 import com.component.busilib.callback.ErrorCallback;
@@ -29,6 +32,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -48,6 +52,8 @@ public class SpecialSelectView extends RelativeLayout {
     List<String> musicURLs;  //背景音乐
     SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
 
+    SpecialSelectListner mSpecialSelectListner;
+
     public SpecialSelectView(Context context) {
         super(context);
         initView();
@@ -61,6 +67,10 @@ public class SpecialSelectView extends RelativeLayout {
     public SpecialSelectView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initView();
+    }
+
+    public void setSpecialSelectListner(SpecialSelectListner specialSelectListner) {
+        mSpecialSelectListner = specialSelectListner;
     }
 
     private void initView() {
@@ -92,11 +102,13 @@ public class SpecialSelectView extends RelativeLayout {
                 mSkrAudioPermission.ensurePermission(new Runnable() {
                     @Override
                     public void run() {
-//                        goMatchFragment(model.getTagID());
-//                        HashMap map = new HashMap();
-//                        map.put("tagId2", String.valueOf(model.getTagID()));
-//                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-//                                StatConstants.KEY_MATCH_START, map);
+                        HashMap map = new HashMap();
+                        map.put("tagId2", String.valueOf(model.getTagID()));
+                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
+                                StatConstants.KEY_MATCH_START, map);
+                        if (mSpecialSelectListner != null) {
+                            mSpecialSelectListner.onClickSpecial(model, musicURLs);
+                        }
                     }
                 }, true);
 
@@ -118,6 +130,19 @@ public class SpecialSelectView extends RelativeLayout {
         });
 
         loadData(offset, DEFAULT_COUNT);
+        getBackgroundMusic();
+    }
+
+    private void getBackgroundMusic() {
+        GrabSongApi grabSongApi = ApiManager.getInstance().createService(GrabSongApi.class);
+        ApiMethods.subscribe(grabSongApi.getSepcialBgVoice(), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    musicURLs = JSON.parseArray(result.getData().getString("musicURL"), String.class);
+                }
+            }
+        });
     }
 
     private void loadData(int offset, int count) {
@@ -149,5 +174,10 @@ public class SpecialSelectView extends RelativeLayout {
         } else {
             mLoadService.showCallback(EmptyCallback.class);
         }
+    }
+
+    // 选择专场回调
+    public interface SpecialSelectListner {
+        void onClickSpecial(SpecialModel model, List<String> music);
     }
 }

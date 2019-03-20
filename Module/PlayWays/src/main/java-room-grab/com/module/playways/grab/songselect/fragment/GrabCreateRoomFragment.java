@@ -10,12 +10,15 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
+import com.component.busilib.constans.GrabRoomType;
 import com.module.rank.R;
 
 /**
  * 一唱到底，创建房间页面
  */
 public class GrabCreateRoomFragment extends BaseFragment {
+
+    public static final String KEY_ROOM_TYPE = "key_room_type";
 
     ExImageView mIvBack;
     ExRelativeLayout mFriendsRoom;
@@ -45,9 +48,12 @@ public class GrabCreateRoomFragment extends BaseFragment {
         mFriendsRoom.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putInt(KEY_ROOM_TYPE, GrabRoomType.ROOM_TYPE_FRIEND);
                 U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), GrabCreateSpecialFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
+                        .setBundle(bundle)
                         .build());
             }
         });
@@ -55,9 +61,12 @@ public class GrabCreateRoomFragment extends BaseFragment {
         mSecretRoom.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putInt(KEY_ROOM_TYPE, GrabRoomType.ROOM_TYPE_SECRET);
                 U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), GrabCreateSpecialFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
+                        .setBundle(bundle)
                         .build());
             }
         });
@@ -65,9 +74,12 @@ public class GrabCreateRoomFragment extends BaseFragment {
         mPublicRoom.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putInt(KEY_ROOM_TYPE, GrabRoomType.ROOM_TYPE_PUBLIC);
                 U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), GrabCreateSpecialFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
+                        .setBundle(bundle)
                         .build());
             }
         });
