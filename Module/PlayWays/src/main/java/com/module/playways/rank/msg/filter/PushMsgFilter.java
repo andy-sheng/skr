@@ -1,9 +1,6 @@
 package com.module.playways.rank.msg.filter;
 
-import com.zq.live.proto.Room.ERoomMsgType;
 import com.zq.live.proto.Room.RoomMsg;
-
-import java.util.List;
 
 /**
  * 过滤器,按需求添加

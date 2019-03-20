@@ -1,13 +1,11 @@
 package com.module.playways.voice.presenter;
 
-import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.text.SpannableStringBuilder;
 
 import com.alibaba.fastjson.JSON;
 import com.common.core.account.UserAccountManager;
-import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
@@ -21,10 +19,8 @@ import com.engine.EngineManager;
 import com.engine.Params;
 import com.engine.UserStatus;
 import com.module.ModuleServiceManager;
-import com.module.playways.BaseRoomData;
 import com.module.playways.rank.msg.filter.PushMsgFilter;
 import com.module.playways.rank.msg.manager.ChatRoomMsgManager;
-import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.room.RankRoomData;
 import com.module.playways.rank.room.RoomServerApi;
 import com.module.playways.rank.room.comment.CommentModel;

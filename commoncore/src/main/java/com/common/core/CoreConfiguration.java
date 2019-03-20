@@ -27,10 +27,13 @@ import com.common.base.delegate.AppLifecycles;
 import com.common.core.account.UserAccountManager;
 import com.common.core.crash.MyCrashHandler;
 import com.common.core.global.GlobalEventReceiver;
+import com.common.notification.NotificationManager;
+import com.common.notification.NotificationMsgProcess;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.interceptor.CoreInfoInterceptor;
 import com.doraemon.DoraemonManager;
 import com.module.ModuleServiceManager;
+import com.module.msg.IMsgService;
 
 import java.util.List;
 
@@ -72,6 +75,11 @@ public class CoreConfiguration implements ConfigModule {
                 UserAccountManager.getInstance().init();
                 DoraemonManager.init();
                 GlobalEventReceiver.getInstance().register();
+
+                IMsgService msgService = ModuleServiceManager.getInstance().getMsgService();
+                if (msgService != null) {
+                    msgService.addMsgProcessor(new NotificationMsgProcess());
+                }
             }
 
             @Override

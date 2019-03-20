@@ -35,6 +35,7 @@ import com.module.RouterConstants;
 import com.module.home.fragment.GameFragment;
 import com.module.home.fragment.PersonFragment;
 import com.module.home.persenter.HomeCorePresenter;
+import com.module.home.persenter.NotifyCorePresenter;
 import com.module.home.persenter.RedPkgPresenter;
 import com.module.home.view.GetRedPkgCashView;
 import com.module.home.view.IHomeActivity;
@@ -67,7 +68,9 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
 
     IMsgService mMsgService;
     HomeCorePresenter mHomePresenter;
+    NotifyCorePresenter mNotifyCorePresenter;
     RedPkgPresenter mRedPkgPresenter;
+
     String mPengingSchemeUri; //想要跳转的scheme，但因为没登录被挂起了
     boolean mFromCreate = false;
 
@@ -147,7 +150,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
         mMainVp.setAdapter(fragmentPagerAdapter);
 
         mHomePresenter = new HomeCorePresenter(this,this);
-
         mHomePresenter.checkUserInfo("HomeActivity onCreate");
 
         mGameArea.setOnClickListener(new DebounceViewClickListener(100) {
@@ -182,6 +184,9 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
 
         mRedPkgPresenter = new RedPkgPresenter(this);
         addPresent(mRedPkgPresenter);
+
+        mNotifyCorePresenter = new NotifyCorePresenter();
+        addPresent(mNotifyCorePresenter);
 
         mMainVp.setCurrentItem(0, false);
         mFromCreate = true;

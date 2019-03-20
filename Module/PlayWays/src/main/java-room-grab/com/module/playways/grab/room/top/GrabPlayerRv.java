@@ -78,7 +78,6 @@ public class GrabPlayerRv extends RelativeLayout {
     private void init() {
         inflate(getContext(), R.layout.grab_top_content_view_layout, this);
         mContentLl = (LinearLayout) this.findViewById(R.id.content_ll);
-        mErjiIv = (ExImageView) this.findViewById(R.id.erji_iv);
 
 //        HandlerTaskTimer.newBuilder()
 //                .interval(4000)
