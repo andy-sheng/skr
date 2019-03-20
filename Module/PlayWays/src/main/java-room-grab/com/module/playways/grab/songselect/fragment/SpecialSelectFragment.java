@@ -1,4 +1,4 @@
-package com.module.playways.grab.songselect;
+package com.module.playways.grab.songselect.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -23,18 +23,19 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
-import com.common.view.titlebar.CommonTitleBar;
 import com.component.busilib.callback.EmptyCallback;
 import com.component.busilib.callback.ErrorCallback;
 import com.component.busilib.callback.LoadingCallback;
 import com.component.busilib.constans.GameModeType;
-import com.jakewharton.rxbinding2.view.RxView;
 
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
 import com.module.RouterConstants;
 
+import com.module.playways.grab.songselect.GrabSongApi;
+import com.module.playways.grab.songselect.model.SpecialModel;
+import com.module.playways.grab.songselect.adapter.SpecialSelectAdapter;
 import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.rank.R;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -43,9 +44,6 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.functions.Consumer;
 
 public class SpecialSelectFragment extends BaseFragment {
 

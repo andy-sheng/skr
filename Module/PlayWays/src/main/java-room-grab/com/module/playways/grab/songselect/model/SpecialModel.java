@@ -1,4 +1,4 @@
-package com.module.playways.grab.songselect;
+package com.module.playways.grab.songselect.model;
 
 import java.io.Serializable;
 

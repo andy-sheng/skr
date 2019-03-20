@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/view_10_dp"
+    android:layout_marginRight="@dimen/view_10_dp">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/avatar_iv"
+        android:layout_width="@dimen/view_54_dp"
+        android:layout_height="@dimen/view_54_dp"
+        android:layout_marginTop="@dimen/view_32_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/nickname_tv"
+        android:layout_width="@dimen/view_54_dp"
+        android:layout_height="@dimen/view_18_dp"
+        android:layout_below="@id/avatar_iv"
+        android:layout_alignLeft="@id/avatar_iv"
+        android:layout_marginTop="@dimen/view_8_dp"
+        android:text="KTV酒彪子"
+        android:textColor="@color/white_trans_80"
+        android:textSize="@dimen/textsize_12_dp" />
+
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/owner_iv"
+        android:layout_width="@dimen/view_16_dp"
+        android:layout_height="@dimen/view_16_dp"
+        android:layout_alignRight="@+id/avatar_iv"
+        android:layout_alignBottom="@+id/avatar_iv"
+        android:background="@drawable/grab_friend_room_owner" />
+
+</RelativeLayout>

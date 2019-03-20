@@ -1,19 +1,26 @@
-package com.module.playways.grab.songselect;
+package com.module.playways.grab.songselect.viewholder;
 
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
+import com.common.utils.U;
+import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
+import com.module.playways.grab.songselect.model.SpecialModel;
 import com.module.rank.R;
 
 public class SpecialCardViewHolder extends RecyclerView.ViewHolder {
 
-    ImageView mBackground;
+
+    RelativeLayout mBackground;
     ExTextView mSpecialTv;
     ExTextView mIntroductionTv;
-
+    ExImageView mSpecialIv;
 
     SpecialModel mSpecialModel;
     int mPosition;
@@ -21,9 +28,11 @@ public class SpecialCardViewHolder extends RecyclerView.ViewHolder {
 
     public SpecialCardViewHolder(View itemView) {
         super(itemView);
-        mBackground = (ImageView) itemView.findViewById(R.id.background);
-        mSpecialTv = (ExTextView) itemView.findViewById(R.id.special_tv);
-        mIntroductionTv = (ExTextView) itemView.findViewById(R.id.introduction_tv);
+
+        mBackground = (RelativeLayout)itemView.findViewById(R.id.background);
+        mSpecialTv = (ExTextView)itemView.findViewById(R.id.special_tv);
+        mIntroductionTv = (ExTextView)itemView.findViewById(R.id.introduction_tv);
+        mSpecialIv = (ExImageView)itemView.findViewById(R.id.special_iv);
 
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,11 +48,14 @@ public class SpecialCardViewHolder extends RecyclerView.ViewHolder {
         this.mSpecialModel = specialModel;
         this.mPosition = postion;
         if (postion % 3 == 0) {
-            mBackground.setBackgroundResource(R.drawable.zhuanchang_blue);
+            mBackground.setBackground(getShapeDrawable(Color.parseColor("#9B6C43")));
+            mSpecialIv.setBackground(U.getDrawable(R.drawable.grab_special_1));
         }else if (postion % 3 == 1){
-            mBackground.setBackgroundResource(R.drawable.zhuanchang_red);
+            mBackground.setBackground(getShapeDrawable(Color.parseColor("#D04774")));
+            mSpecialIv.setBackground(U.getDrawable(R.drawable.grab_special_2));
         }else if (postion % 3 == 2){
-            mBackground.setBackgroundResource(R.drawable.zhuanchang_yellow);
+            mBackground.setBackground(getShapeDrawable(Color.parseColor("#68ABD3")));
+            mSpecialIv.setBackground(U.getDrawable(R.drawable.grab_special_3));
         }
         mSpecialTv.setText(this.mSpecialModel.getTagName());
         mIntroductionTv.setText(this.mSpecialModel.getIntroduction());
@@ -55,5 +67,13 @@ public class SpecialCardViewHolder extends RecyclerView.ViewHolder {
 
     public RecyclerOnItemClickListener<SpecialModel> getItemClickListener() {
         return mItemClickListener;
+    }
+
+    public Drawable getShapeDrawable(int color) {
+        GradientDrawable drawable = new GradientDrawable();
+        drawable.setShape(GradientDrawable.RECTANGLE);
+        drawable.setCornerRadius(U.getDisplayUtils().dip2px(10));
+        drawable.setColor(color);
+        return drawable;
     }
 }

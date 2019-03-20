@@ -6,18 +6,15 @@ import android.support.annotation.Nullable;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
-import com.common.base.FragmentDataListener;
 import com.common.log.MyLog;
-import com.common.mvp.Presenter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.component.busilib.constans.GameModeType;
 import com.engine.EngineManager;
 import com.module.RouterConstants;
 import com.module.playways.event.FinishPlayWayActivityEvent;
-import com.module.playways.grab.songselect.SpecialSelectFragment;
+import com.module.playways.grab.songselect.fragment.SpecialSelectFragment;
 import com.module.rank.R;
 import com.module.playways.rank.song.fragment.SongSelectFragment;
 
