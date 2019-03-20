@@ -59,6 +59,8 @@ import com.module.playways.rank.msg.event.MachineScoreEvent;
 import com.module.playways.rank.msg.event.QExitGameMsgEvent;
 import com.module.playways.rank.msg.event.QGetSingChanceMsgEvent;
 import com.module.playways.rank.msg.event.QJoinNoticeEvent;
+import com.module.playways.rank.msg.event.QKickUserReqEvent;
+import com.module.playways.rank.msg.event.QKickUserResultEvent;
 import com.module.playways.rank.msg.event.QLightBurstMsgEvent;
 import com.module.playways.rank.msg.event.QLightOffMsgEvent;
 import com.module.playways.rank.msg.event.QRoundAndGameOverMsgEvent;
@@ -836,7 +838,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      * @param userId       被踢人ID
      * @param sourceUserId 发起人ID
      */
-    public void repKickUser(boolean isAgree, int userId, int sourceUserId) {
+    public void voteKickUser(boolean isAgree, int userId, int sourceUserId) {
         HashMap<String, Object> map = new HashMap<>();
         map.put("agree", isAgree);
         map.put("kickUserID", userId);
@@ -1728,5 +1730,29 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 //                MyLog.e(e);
 //            }
 //        }, this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onEvent(QKickUserReqEvent qKickUserReqEvent) {
+        // 踢人请求
+        mUiHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                mIGrabView.showKickVoteDialog(qKickUserReqEvent.kickUserID, qKickUserReqEvent.sourceUserID);
+            }
+        });
+
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onEvent(QKickUserResultEvent qKickUserResultEvent) {
+        // 踢人的结果
+        if (qKickUserResultEvent.kickUserID == MyUserInfoManager.getInstance().getUid()) {
+            // 自己被踢出去
+            // TODO: 2019/3/19 补充逻辑
+        } else {
+            // 别人被踢出去
+            // TODO: 2019/3/19 补充逻辑
+        }
     }
 }

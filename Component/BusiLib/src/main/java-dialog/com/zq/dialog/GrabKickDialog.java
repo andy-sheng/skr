@@ -19,12 +19,12 @@ public class GrabKickDialog {
     DialogPlus mDialogPlus;
     UserInfoModel mUserInfoModel;
 
-    GrabClickListener mGrabClickListener;
+    Listener mGrabClickListener;
 
     public GrabKickDialog(Context context, final UserInfoModel userInfoModel, int type, int num) {
         this.mUserInfoModel = userInfoModel;
         GrabKickDialogView grabKickDialogView = new GrabKickDialogView(context, userInfoModel, type, num);
-        grabKickDialogView.setListener(new GrabKickDialogView.GrabKickViewListener() {
+        grabKickDialogView.setListener(new GrabKickDialogView.Listener() {
             @Override
             public void onTimeOut() {
                 if (mDialogPlus != null && mDialogPlus.isShowing()) {
@@ -55,7 +55,7 @@ public class GrabKickDialog {
                 .create();
     }
 
-    public void setGrabClickListener(GrabClickListener grabClickListener) {
+    public void setListener(Listener grabClickListener) {
         this.mGrabClickListener = grabClickListener;
     }
 
@@ -79,7 +79,7 @@ public class GrabKickDialog {
         mGrabClickListener = null;
     }
 
-    public interface GrabClickListener {
+    public interface Listener {
         void onClickConfirm(UserInfoModel userInfoModel);
     }
 }

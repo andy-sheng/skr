@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.userinfo.model.UserInfoModel;
+import com.common.log.MyLog;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
@@ -16,6 +17,7 @@ import com.component.busilib.R;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 public class GrabKickDialogView extends RelativeLayout {
+    public final static String TAG = "GrabKickDialogView";
 
     SimpleDraweeView mAvatarIv;
     TextView mContentTv;
@@ -27,7 +29,7 @@ public class GrabKickDialogView extends RelativeLayout {
     int num;      // 确认金币作金币数目，踢人弹窗时作倒计时用
 
     HandlerTaskTimer mCounDownTimer;
-    GrabKickViewListener mGrabKickViewListener;
+    Listener mGrabKickViewListener;
 
     GrabKickDialogView(Context context, UserInfoModel userInfoModel, int type, int num) {
         super(context);
@@ -49,6 +51,10 @@ public class GrabKickDialogView extends RelativeLayout {
     }
 
     private void initData() {
+        if (mUserInfoModel == null) {
+            MyLog.d(TAG, "未找到该用户相关信息");
+            return;
+        }
         AvatarUtils.loadAvatarByUrl(mAvatarIv,
                 AvatarUtils.newParamsBuilder(mUserInfoModel.getAvatar())
                         .setCircle(true)
@@ -74,7 +80,7 @@ public class GrabKickDialogView extends RelativeLayout {
         }
     }
 
-    public void setListener(GrabKickViewListener mGrabKickViewListener) {
+    public void setListener(Listener mGrabKickViewListener) {
         this.mGrabKickViewListener = mGrabKickViewListener;
     }
 
@@ -119,7 +125,7 @@ public class GrabKickDialogView extends RelativeLayout {
         mGrabKickViewListener = null;
     }
 
-    public interface GrabKickViewListener {
+    public interface Listener {
         void onTimeOut();
     }
 }

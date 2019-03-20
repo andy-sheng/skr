@@ -45,8 +45,8 @@ public class AuditionActivity extends BaseActivity {
                 prepareData.setSongModel(songModel);
                 prepareData.setBgMusic(songModel.getRankUserVoice());
                 U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, AuditionFragment.class)
-                        .setAddToBackStack(true)
-                        .setHasAnimation(true)
+                        .setAddToBackStack(false)
+                        .setHasAnimation(false)
                         .addDataBeforeAdd(0, prepareData)
                         .setFragmentDataListener(new FragmentDataListener() {
                             @Override
@@ -58,7 +58,7 @@ public class AuditionActivity extends BaseActivity {
             } else {
                 U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, AuditionPrepareResFragment.class)
                         .setAddToBackStack(false)
-                        .setHasAnimation(true)
+                        .setHasAnimation(false)
                         .addDataBeforeAdd(0, songModel)
                         .setFragmentDataListener(new FragmentDataListener() {
                             @Override

@@ -592,8 +592,6 @@ public class GameFragment extends BaseFragment {
         }
         set.setDuration(80);
         set.start();
-
-
         set.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {

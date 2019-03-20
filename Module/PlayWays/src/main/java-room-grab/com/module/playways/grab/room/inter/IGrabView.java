@@ -54,4 +54,6 @@ public interface IGrabView {
     void giveUpSuccess(int seq);
 
     void updateScrollBarProgress(int score, int songLineNum);
+
+    void showKickVoteDialog(int kickUserID, int sourceUserID);
 }

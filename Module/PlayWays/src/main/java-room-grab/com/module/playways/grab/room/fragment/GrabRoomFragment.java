@@ -35,6 +35,7 @@ import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
 import com.module.playways.grab.room.inter.IGrabView;
 import com.module.playways.grab.room.listener.SVGAListener;
+import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.WantSingerInfo;
 import com.module.playways.grab.room.presenter.GrabCorePresenter;
@@ -56,8 +57,6 @@ import com.module.playways.grab.room.view.SelfSingCardView2;
 import com.module.playways.grab.room.view.SingBeginTipsCardView;
 import com.module.playways.grab.room.view.SongInfoCardView;
 import com.module.playways.grab.room.view.TurnInfoCardView;
-import com.module.playways.rank.msg.event.QKickUserReqEvent;
-import com.module.playways.rank.msg.event.QKickUserResultEvent;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
 import com.module.playways.rank.prepare.view.VoiceControlPanelView;
@@ -75,8 +74,6 @@ import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.dialog.GrabKickDialog;
 import com.zq.dialog.PersonInfoDialog;
-import com.zq.live.proto.Common.UserInfo;
-import com.zq.live.proto.Room.QKickUserRequestMsg;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -381,7 +378,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
             @Override
             public void onClickKick(UserInfoModel userInfoModel) {
-                showConfirmDialog(userInfoModel);
+                showKickConfirmDialog(userInfoModel);
             }
         });
         mPersonInfoDialog.show();
@@ -622,30 +619,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             mDengBigAnimation.playBurstAnimation();
         }
     }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(QKickUserReqEvent qKickUserReqEvent) {
-        // 踢人请求
-        showKickReqDialog(qKickUserReqEvent.kickUserID, qKickUserReqEvent.sourceUserID);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(QKickUserResultEvent qKickUserResultEvent) {
-        // 踢人的结果
-        if (mGrabKickDialog != null) {
-            mGrabKickDialog.dismiss();
-        }
-
-        if (qKickUserResultEvent.kickUserID == MyUserInfoManager.getInstance().getUid()) {
-            // 自己被踢出去
-            // TODO: 2019/3/19 补充逻辑
-        } else {
-            // 别人被踢出去
-            // TODO: 2019/3/19 补充逻辑
-        }
-
-    }
-
 
     private void removeAllEnsureMsg() {
         mUiHanlder.removeMessages(MSG_ENSURE_SONGCARD_OVER);
@@ -1056,7 +1029,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     }
 
     // 确认踢人弹窗
-    private void showConfirmDialog(UserInfoModel userInfoModel) {
+    private void showKickConfirmDialog(UserInfoModel userInfoModel) {
         MyLog.d(TAG, "showConfirmDialog" + " userInfoModel=" + userInfoModel);
         if (mGrabKickDialog != null) {
             mGrabKickDialog.dismiss();
@@ -1064,7 +1037,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
 
         mGrabKickDialog = new GrabKickDialog(getActivity(), userInfoModel, GrabKickDialog.KICK_TYPE_CONFIRM, 2);
-        mGrabKickDialog.setGrabClickListener(new GrabKickDialog.GrabClickListener() {
+        mGrabKickDialog.setListener(new GrabKickDialog.Listener() {
             @Override
             public void onClickConfirm(UserInfoModel userInfoModel) {
                 // 发起踢人请求
@@ -1075,23 +1048,27 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     }
 
     // 请求踢人弹窗
-    private void showKickReqDialog(int userId, int sourceUserId) {
+    @Override
+    public void showKickVoteDialog(int userId, int sourceUserId) {
         MyLog.d(TAG, "showKickReqDialog" + " userId=" + userId + " sourceUserId=" + sourceUserId);
         if (mGrabKickDialog != null) {
             mGrabKickDialog.dismiss();
         }
         U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
 
-        UserInfoModel userInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, userId).getUserInfo();
-        mGrabKickDialog = new GrabKickDialog(getActivity(), userInfoModel, GrabKickDialog.KICK_TYPE_REQUEST, 5);
-        mGrabKickDialog.setGrabClickListener(new GrabKickDialog.GrabClickListener() {
-            @Override
-            public void onClickConfirm(UserInfoModel userInfoModel) {
-                // 同意踢人
-                mCorePresenter.repKickUser(true, userId, sourceUserId);
-            }
-        });
-        mGrabKickDialog.show();
+        GrabPlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, userId);
+        if (playerInfoModel != null) {
+            UserInfoModel userInfoModel = playerInfoModel.getUserInfo();
+            mGrabKickDialog = new GrabKickDialog(getActivity(), userInfoModel, GrabKickDialog.KICK_TYPE_REQUEST, 5);
+            mGrabKickDialog.setListener(new GrabKickDialog.Listener() {
+                @Override
+                public void onClickConfirm(UserInfoModel userInfoModel) {
+                    // 同意踢人
+                    mCorePresenter.voteKickUser(true, userId, sourceUserId);
+                }
+            });
+            mGrabKickDialog.show();
+        }
     }
 
     static class PendingPlaySongCardData {

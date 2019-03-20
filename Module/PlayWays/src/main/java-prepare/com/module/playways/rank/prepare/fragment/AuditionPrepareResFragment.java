@@ -1,5 +1,6 @@
 package com.module.playways.rank.prepare.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -109,13 +110,11 @@ public class AuditionPrepareResFragment extends BaseFragment {
         return true;
     }
 
-    private void onBack(){
-        U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
-                .setPopFragment(AuditionPrepareResFragment.this)
-                .setPopAbove(false)
-                .setHasAnimation(true)
-                .setNotifyShowFragment(PrepareResFragment.class)
-                .build());
+    private void onBack() {
+        Activity activity = getActivity();
+        if (activity != null) {
+            activity.finish();
+        }
     }
 
     @Override
