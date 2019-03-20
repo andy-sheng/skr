@@ -29,7 +29,7 @@
         android:src="@drawable/jingyin_anxia" />
 
     <com.common.view.ex.ExImageView
-        android:id="@+id/leave_iv"
+        android:id="@+id/invite_tv"
         android:layout_width="@dimen/view_40_dp"
         android:layout_height="@dimen/view_20_dp"
         android:layout_alignBottom="@id/avatar_iv"

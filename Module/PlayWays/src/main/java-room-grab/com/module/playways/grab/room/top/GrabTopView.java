@@ -6,7 +6,6 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.common.core.account.UserAccountManager;
@@ -16,6 +15,7 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
+import com.component.busilib.constans.GrabRoomType;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabMyCoinChangeEvent;
 import com.module.rank.R;
@@ -34,7 +34,7 @@ public class GrabTopView extends RelativeLayout {
 //    ImageView mIvAccDisable;
 
     Listener mOnClickChangeRoomListener;
-    GrabRoomData mBaseRoomData;
+    GrabRoomData mGrabRoomData;
 
     AnimatorSet mAnimatorSet;  //金币加减的动画
 
@@ -135,12 +135,12 @@ public class GrabTopView extends RelativeLayout {
         mTvAccSwitch.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                if (mBaseRoomData.isAccEnable()) {
-                    mBaseRoomData.setAccEnable(false);
+                if (mGrabRoomData.isAccEnable()) {
+                    mGrabRoomData.setAccEnable(false);
                     mTvAccSwitch.setText("清唱模式");
                     U.getToastUtil().showShort("已关闭伴奏");
                 } else {
-                    mBaseRoomData.setAccEnable(true);
+                    mGrabRoomData.setAccEnable(true);
                     mTvAccSwitch.setText("伴奏模式");
                     U.getToastUtil().showShort("已打开伴奏");
                 }
@@ -157,12 +157,24 @@ public class GrabTopView extends RelativeLayout {
     }
 
     public void setRoomData(GrabRoomData modelBaseRoomData) {
-        mBaseRoomData = modelBaseRoomData;
-        mTvCoin.setText(mBaseRoomData.getCoin() + "");
-        if (mBaseRoomData.isAccEnable()) {
+        mGrabRoomData = modelBaseRoomData;
+        mTvCoin.setText(mGrabRoomData.getCoin() + "");
+        if (mGrabRoomData.isAccEnable()) {
             mTvAccSwitch.setText("伴奏模式");
         } else {
             mTvAccSwitch.setText("清唱模式");
+        }
+        if (mGrabRoomData.isOwnerId()) {
+            // 是房主，肯定不能切换房间
+            mTvChangeRoom.setVisibility(GONE);
+        } else {
+            // 观众的话，私密房间也不能切
+            if (mGrabRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_SECRET ||
+                    mGrabRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_FRIEND) {
+                mTvChangeRoom.setVisibility(GONE);
+            } else {
+                mTvChangeRoom.setVisibility(VISIBLE);
+            }
         }
     }
 

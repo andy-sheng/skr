@@ -1,7 +1,6 @@
 package com.module.playways.voice.view;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
@@ -70,7 +69,7 @@ public class VoiceUserStatusView extends RelativeLayout {
         mSpeakerSvga = (SVGAImageView) this.findViewById(R.id.speaker_svga);
         mAvatarIv = (BaseImageView) this.findViewById(R.id.avatar_iv);
         mMuteMicIv = (ExImageView) this.findViewById(R.id.mute_mic_iv);
-        mLeaveIv = (ExImageView) this.findViewById(R.id.leave_iv);
+        mLeaveIv = (ExImageView) this.findViewById(R.id.invite_tv);
 
         mAvatarIv.setOnClickListener(new DebounceViewClickListener() {
             @Override

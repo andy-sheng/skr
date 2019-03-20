@@ -12,13 +12,10 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.U;
-import com.common.view.ex.ExImageView;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent;
-import com.module.playways.grab.room.event.GrabSwitchRoomEvent;
 import com.module.playways.grab.room.event.LightOffAnimationOverEvent;
 import com.module.playways.grab.room.fragment.GrabRoomFragment;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
@@ -60,8 +57,6 @@ public class GrabPlayerRv2 extends RelativeLayout {
     AnimatorSet mAnimatorAllSet;
 
     LinearLayout mContentLl;
-    ExImageView mErjiIv;
-
     SVGAParser mSVGAParser;
 
     int mCurSeq = -2;
@@ -87,7 +82,6 @@ public class GrabPlayerRv2 extends RelativeLayout {
     private void init() {
         inflate(getContext(), R.layout.grab_top_content_view_layout, this);
         mContentLl = (LinearLayout) this.findViewById(R.id.content_ll);
-        mErjiIv = (ExImageView) this.findViewById(R.id.erji_iv);
         addChildView();
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
@@ -98,6 +92,11 @@ public class GrabPlayerRv2 extends RelativeLayout {
         for (int i = 0; i < PLAYER_COUNT; i++) {
             VP vp = new VP();
             vp.grabTopItemView = new GrabTopItemView(getContext());
+            if (i == PLAYER_COUNT - 1) {
+                vp.grabTopItemView.setCanShowInviteWhenEmpty(true);
+            } else {
+                vp.grabTopItemView.setCanShowInviteWhenEmpty(false);
+            }
             vp.grabTopItemView.setGrap(false);
             vp.grabTopItemView.tryAddParent(mContentLl);
             vp.grabTopItemView.setToPlaceHolder();
@@ -172,7 +171,6 @@ public class GrabPlayerRv2 extends RelativeLayout {
         if (mAnimatorAllSet != null) {
             mAnimatorAllSet.cancel();
         }
-        mErjiIv.setVisibility(GONE);
         mHasBurst = false;
         initData();
         for (int uId : mInfoMap.keySet()) {
@@ -584,6 +582,12 @@ public class GrabPlayerRv2 extends RelativeLayout {
 
     public void setRoomData(GrabRoomData roomData) {
         mRoomData = roomData;
+        if (mRoomData.isOwnerId()) {
+            if (mGrabTopItemViewArrayList.size() != 0) {
+                VP vp = mGrabTopItemViewArrayList.get(mGrabTopItemViewArrayList.size() - 1);
+                vp.grabTopItemView.setCanShowInviteWhenEmpty(true);
+            }
+        }
         initData();
     }
 

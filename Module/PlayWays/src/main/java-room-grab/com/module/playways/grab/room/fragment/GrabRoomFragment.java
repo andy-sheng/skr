@@ -29,6 +29,7 @@ import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.GrabRoomData;
+import com.module.playways.grab.room.event.GrabWantInviteEvent;
 import com.module.playways.grab.room.event.LightOffAnimationOverEvent;
 import com.module.playways.grab.room.event.ShowPersonCardEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
@@ -364,6 +365,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         if (event.getUid() != MyUserInfoManager.getInstance().getUid()) {
             showPersonInfoView(event.getUid());
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(GrabWantInviteEvent event) {
+        // 房主想要邀请别人加入游戏
     }
 
     private void showPersonInfoView(int userID) {
@@ -874,9 +880,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             mSelfSingCardView.destroy();
         }
         mUiHanlder.removeCallbacksAndMessages(null);
-
         mIsGameEndAniamtionShow = false;
-
         if (mAnimatorList != null) {
             for (Animator animator : mAnimatorList) {
                 if (animator != null) {
@@ -1035,7 +1039,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             mGrabKickDialog.dismiss();
         }
         U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-
         mGrabKickDialog = new GrabKickDialog(getActivity(), userInfoModel, GrabKickDialog.KICK_TYPE_CONFIRM, 2);
         mGrabKickDialog.setListener(new GrabKickDialog.Listener() {
             @Override
