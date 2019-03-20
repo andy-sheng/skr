@@ -21,24 +21,50 @@
         app:bl_stroke_color="#ffacacac"
         app:bl_stroke_width="@dimen/view_1_dp">
 
-        <com.common.view.ex.ExTextView
-            android:id="@+id/name_tv"
+        <RelativeLayout
+            android:id="@+id/name_area"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/view_33_dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/view_55_dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:textColor="@color/black"
-            android:textSize="@dimen/textsize_24_dp"
-            android:textStyle="bold" />
+            android:layout_marginTop="@dimen/view_55_dp">
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/name_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/view_33_dp"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="@dimen/textsize_24_dp"
+                android:textStyle="bold" />
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/kick"
+                android:layout_width="@dimen/view_42_dp"
+                android:layout_height="@dimen/view_22_dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/name_tv"
+                android:gravity="center"
+                android:text="踢人"
+                android:textColor="@color/white"
+                android:layout_marginLeft="@dimen/view_8_dp"
+                android:textSize="@dimen/textsize_14_dp"
+                android:visibility="gone"
+                app:bl_corners_radius="@dimen/view_4_dp"
+                app:bl_shape="rectangle"
+                app:bl_solid_color="#F5A623" />
+
+        </RelativeLayout>
+
 
         <com.zq.level.view.HorizonLevelView
             android:id="@+id/horiz_level_view"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/view_26_dp"
-            android:layout_below="@+id/name_tv"
+            android:layout_below="@+id/name_area"
             android:layout_centerHorizontal="true"></com.zq.level.view.HorizonLevelView>
 
         <com.component.busilib.view.MarqueeTextView
@@ -110,21 +136,6 @@
         android:drawableTop="@drawable/ic_report_normal"
         android:gravity="center"
         android:text="举报"
-        android:textColor="#800C2275"
-        android:textSize="@dimen/textsize_12_dp"
-        android:visibility="gone" />
-
-    <com.common.view.ex.ExTextView
-        android:id="@+id/kick"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/content_area"
-        android:layout_alignRight="@+id/content_area"
-        android:layout_marginTop="@dimen/view_12_dp"
-        android:layout_marginRight="@dimen/view_12_dp"
-        android:drawableTop="@drawable/ic_report_normal"
-        android:gravity="center"
-        android:text="踢人"
         android:textColor="#800C2275"
         android:textSize="@dimen/textsize_12_dp"
         android:visibility="gone" />
