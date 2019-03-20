@@ -9,9 +9,12 @@ import android.widget.RelativeLayout;
 
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.utils.FragmentUtils;
+import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
+import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.playways.grab.songselect.adapter.FriendRoomAdapter;
 import com.module.playways.grab.songselect.model.FriendRoomModel;
 import com.module.playways.grab.songselect.view.SpecialSelectView;
@@ -20,7 +23,10 @@ import com.module.rank.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GrabSelectRoomFragment extends BaseFragment {
+/**
+ * 一唱到底选择页面
+ */
+public class GrabSelectFragment extends BaseFragment {
 
     ExImageView mGameCreate;
     ExImageView mSelectBack;
@@ -35,7 +41,7 @@ public class GrabSelectRoomFragment extends BaseFragment {
 
     @Override
     public int initView() {
-        return R.layout.grab_create_room_fragment_layout;
+        return R.layout.grab_select_fragment_layout;
     }
 
     @Override
@@ -60,8 +66,23 @@ public class GrabSelectRoomFragment extends BaseFragment {
             }
         });
 
+        mGameCreate.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), GrabCreateRoomFragment.class)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(true)
+                        .build());
+            }
+        });
+
         mFriendsRecycle.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        mFriendRoomAdapter = new FriendRoomAdapter();
+        mFriendRoomAdapter = new FriendRoomAdapter(new RecyclerOnItemClickListener() {
+            @Override
+            public void onItemClicked(View view, int position, Object model) {
+                // TODO: 2019/3/20 点击事件处理
+            }
+        });
         mFriendsRecycle.setAdapter(mFriendRoomAdapter);
 
         // TODO: 2019/3/20 测试数据

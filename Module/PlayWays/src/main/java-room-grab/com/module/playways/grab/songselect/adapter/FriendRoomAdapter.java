@@ -6,11 +6,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.common.view.recyclerview.DiffAdapter;
+import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.playways.grab.songselect.model.FriendRoomModel;
 import com.module.playways.grab.songselect.viewholder.FriendRoomViewHolder;
 import com.module.rank.R;
 
 public class FriendRoomAdapter extends DiffAdapter<FriendRoomModel, FriendRoomViewHolder> {
+
+    RecyclerOnItemClickListener<FriendRoomModel> mOnItemClickListener;
+
+    public FriendRoomAdapter(RecyclerOnItemClickListener mOnItemClickListener){
+        this.mOnItemClickListener = mOnItemClickListener;
+    }
 
     @NonNull
     @Override

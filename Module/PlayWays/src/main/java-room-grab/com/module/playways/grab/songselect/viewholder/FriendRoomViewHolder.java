@@ -8,12 +8,15 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
+import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.grab.songselect.model.FriendRoomModel;
 import com.module.rank.R;
 import com.zq.live.proto.Common.ESex;
 
 public class FriendRoomViewHolder extends RecyclerView.ViewHolder {
+
+    RecyclerOnItemClickListener<FriendRoomModel> mOnItemClickListener;
 
     SimpleDraweeView mAvatarIv;
     ExTextView mNicknameTv;

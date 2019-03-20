@@ -31,6 +31,9 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
 import java.util.List;
 
+/**
+ * 歌曲专场选择
+ */
 public class SpecialSelectView extends RelativeLayout {
 
     SmartRefreshLayout mRefreshLayout;
@@ -61,7 +64,7 @@ public class SpecialSelectView extends RelativeLayout {
     }
 
     private void initView() {
-        inflate(getContext(), R.layout.grab_special_view_layout, this);
+        inflate(getContext(), R.layout.grab_select_view_layout, this);
 
         mRefreshLayout = (SmartRefreshLayout) this.findViewById(R.id.refreshLayout);
         mContentRv = (RecyclerView) this.findViewById(R.id.content_rv);
