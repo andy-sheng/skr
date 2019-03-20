@@ -24,6 +24,10 @@ public interface GrabRoomServerApi {
     @PUT("http://dev.room.inframe.mobi/v2/room/create-room")
     Observable<ApiResult> createRoom(@Body RequestBody body);
 
+    //检查公开房间有没有权限
+    @GET("http://dev.room.inframe.mobi/v2/room/permission")
+    Observable<ApiResult> checkCreatePublicRoomPermission();
+
     /**
      * {
      * "roomID" : 111

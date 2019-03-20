@@ -5,12 +5,17 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.common.base.BaseFragment;
+import com.common.rxretrofit.ApiManager;
+import com.common.rxretrofit.ApiMethods;
+import com.common.rxretrofit.ApiObserver;
+import com.common.rxretrofit.ApiResult;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
 import com.component.busilib.constans.GrabRoomType;
+import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.rank.R;
 
 /**
@@ -61,7 +66,21 @@ public class GrabCreateRoomFragment extends BaseFragment {
         mPublicRoom.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                goGrabCreateSpecialFragment(GrabRoomType.ROOM_TYPE_PUBLIC);
+                GrabRoomServerApi roomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
+                ApiMethods.subscribe(roomServerApi.checkCreatePublicRoomPermission(), new ApiObserver<ApiResult>() {
+                    @Override
+                    public void process(ApiResult result) {
+                        if (result.getErrno() == 0) {
+                            if (result.getData().getBoolean("has")) {
+                                goGrabCreateSpecialFragment(GrabRoomType.ROOM_TYPE_PUBLIC);
+                            } else {
+                                U.getToastUtil().showShort("您还没有权限创建公开房间");
+                            }
+                        } else {
+                            U.getToastUtil().showShort("" + result.getErrmsg());
+                        }
+                    }
+                });
             }
         });
     }
