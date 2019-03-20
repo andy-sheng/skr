@@ -11,20 +11,25 @@ import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.ViewHolder;
 
-public class GrabKickDialog {
+public class ConfirmDialog {
 
-    public static final int KICK_TYPE_CONFIRM = 1;
-    public static final int KICK_TYPE_REQUEST = 2;
+    public static final int TYPE_KICK_CONFIRM = 1;
+    public static final int TYPE_KICK_REQUEST = 2;
+    public static final int TYPE_INVITE_CONFIRM = 3;
 
     DialogPlus mDialogPlus;
     UserInfoModel mUserInfoModel;
 
-    Listener mGrabClickListener;
+    Listener mListener;
 
-    public GrabKickDialog(Context context, final UserInfoModel userInfoModel, int type, int num) {
+    public ConfirmDialog(Context context, final UserInfoModel userInfoModel, int type) {
+        this(context, userInfoModel, type, 0);
+    }
+
+    public ConfirmDialog(Context context, final UserInfoModel userInfoModel, int type, int num) {
         this.mUserInfoModel = userInfoModel;
-        GrabKickDialogView grabKickDialogView = new GrabKickDialogView(context, userInfoModel, type, num);
-        grabKickDialogView.setListener(new GrabKickDialogView.Listener() {
+        ConfirmDialogView dialogView = new ConfirmDialogView(context, userInfoModel, type, num);
+        dialogView.setListener(new ConfirmDialogView.Listener() {
             @Override
             public void onTimeOut() {
                 if (mDialogPlus != null && mDialogPlus.isShowing()) {
@@ -34,7 +39,7 @@ public class GrabKickDialog {
         });
 
         mDialogPlus = DialogPlus.newDialog(context)
-                .setContentHolder(new ViewHolder(grabKickDialogView))
+                .setContentHolder(new ViewHolder(dialogView))
                 .setContentBackgroundResource(R.color.transparent)
                 .setOverlayBackgroundResource(R.color.black_trans_50)
                 .setExpanded(false)
@@ -45,8 +50,8 @@ public class GrabKickDialog {
                             dialog.dismiss();
                         } else if (view.getId() == R.id.confirm_tv) {
                             dialog.dismiss();
-                            if (mGrabClickListener != null) {
-                                mGrabClickListener.onClickConfirm(userInfoModel);
+                            if (mListener != null) {
+                                mListener.onClickConfirm(userInfoModel);
                             }
                         }
                     }
@@ -56,7 +61,7 @@ public class GrabKickDialog {
     }
 
     public void setListener(Listener grabClickListener) {
-        this.mGrabClickListener = grabClickListener;
+        this.mListener = grabClickListener;
     }
 
     public void show() {
@@ -76,7 +81,7 @@ public class GrabKickDialog {
         if (mDialogPlus != null) {
             mDialogPlus.dismiss();
         }
-        mGrabClickListener = null;
+        mListener = null;
     }
 
     public interface Listener {

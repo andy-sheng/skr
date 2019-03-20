@@ -18,6 +18,7 @@
         android:layout_marginTop="@dimen/view_28_dp" />
 
     <ImageView
+        android:id="@+id/kick_mask_iv"
         android:layout_width="@dimen/view_44_dp"
         android:layout_height="@dimen/view_44_dp"
         android:layout_alignLeft="@id/avatar_iv"
@@ -39,8 +40,8 @@
         android:id="@+id/cancle_tv"
         android:layout_width="@dimen/view_120_dp"
         android:layout_height="@dimen/view_48_dp"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
         android:gravity="center"
         android:text="取消"
         android:textColor="@color/black_trans_50"
@@ -53,8 +54,8 @@
         android:id="@+id/confirm_tv"
         android:layout_width="@dimen/view_120_dp"
         android:layout_height="@dimen/view_48_dp"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
         android:gravity="center"
         android:text="确定"
         android:textColor="@color/white"

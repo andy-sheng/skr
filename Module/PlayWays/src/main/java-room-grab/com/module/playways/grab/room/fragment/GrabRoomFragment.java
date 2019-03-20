@@ -73,7 +73,7 @@ import com.opensource.svgaplayer.SVGAParser;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.ViewHolder;
-import com.zq.dialog.GrabKickDialog;
+import com.zq.dialog.ConfirmDialog;
 import com.zq.dialog.PersonInfoDialog;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -165,7 +165,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     DialogPlus mGameRoleDialog;
 
-    GrabKickDialog mGrabKickDialog;
+    ConfirmDialog mGrabKickDialog;
 
     SVGAParser mSVGAParser;
 
@@ -1039,8 +1039,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             mGrabKickDialog.dismiss();
         }
         U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-        mGrabKickDialog = new GrabKickDialog(getActivity(), userInfoModel, GrabKickDialog.KICK_TYPE_CONFIRM, 2);
-        mGrabKickDialog.setListener(new GrabKickDialog.Listener() {
+        mGrabKickDialog = new ConfirmDialog(getActivity(), userInfoModel, ConfirmDialog.TYPE_KICK_CONFIRM, 2);
+        mGrabKickDialog.setListener(new ConfirmDialog.Listener() {
             @Override
             public void onClickConfirm(UserInfoModel userInfoModel) {
                 // 发起踢人请求
@@ -1062,8 +1062,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         GrabPlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, userId);
         if (playerInfoModel != null) {
             UserInfoModel userInfoModel = playerInfoModel.getUserInfo();
-            mGrabKickDialog = new GrabKickDialog(getActivity(), userInfoModel, GrabKickDialog.KICK_TYPE_REQUEST, 5);
-            mGrabKickDialog.setListener(new GrabKickDialog.Listener() {
+            mGrabKickDialog = new ConfirmDialog(getActivity(), userInfoModel, ConfirmDialog.TYPE_KICK_REQUEST, 5);
+            mGrabKickDialog.setListener(new ConfirmDialog.Listener() {
                 @Override
                 public void onClickConfirm(UserInfoModel userInfoModel) {
                     // 同意踢人
