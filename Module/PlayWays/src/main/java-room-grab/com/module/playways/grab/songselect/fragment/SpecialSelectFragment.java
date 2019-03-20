@@ -45,6 +45,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import java.util.HashMap;
 import java.util.List;
 
+@Deprecated
 public class SpecialSelectFragment extends BaseFragment {
 
     public final static String TAG = "SpecialSelectFragment";

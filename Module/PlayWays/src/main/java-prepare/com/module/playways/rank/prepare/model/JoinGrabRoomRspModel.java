@@ -189,6 +189,8 @@ public class JoinGrabRoomRspModel implements Serializable {
     private boolean isNewGame;// 是否是一局新游戏
     private long gameCreateMs;// 游戏创建时间
     private String agoraToken;// 声网token
+    private int roomType;// 一唱到底房间类型，公开，好友，私密，普通
+    private int ownerID;// 房主id
 
     public JoinGrabRoomRspModel() {
 
@@ -288,6 +290,22 @@ public class JoinGrabRoomRspModel implements Serializable {
 
     public void setAgoraToken(String agoraToken) {
         this.agoraToken = agoraToken;
+    }
+
+    public int getRoomType() {
+        return roomType;
+    }
+
+    public void setRoomType(int roomType) {
+        this.roomType = roomType;
+    }
+
+    public int getOwnerID() {
+        return ownerID;
+    }
+
+    public void setOwnerID(int ownerID) {
+        this.ownerID = ownerID;
     }
 
     @Override

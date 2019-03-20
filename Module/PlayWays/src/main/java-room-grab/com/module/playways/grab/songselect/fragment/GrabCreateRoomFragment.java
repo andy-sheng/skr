@@ -37,7 +37,6 @@ public class GrabCreateRoomFragment extends BaseFragment {
         mSecretRoom = (ExRelativeLayout) mRootView.findViewById(R.id.secret_room);
         mPublicRoom = (ExRelativeLayout) mRootView.findViewById(R.id.public_room);
 
-
         mIvBack.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
@@ -48,41 +47,34 @@ public class GrabCreateRoomFragment extends BaseFragment {
         mFriendsRoom.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putInt(KEY_ROOM_TYPE, GrabRoomType.ROOM_TYPE_FRIEND);
-                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), GrabCreateSpecialFragment.class)
-                        .setAddToBackStack(true)
-                        .setHasAnimation(true)
-                        .setBundle(bundle)
-                        .build());
+                goGrabCreateSpecialFragment(GrabRoomType.ROOM_TYPE_FRIEND);
             }
         });
 
         mSecretRoom.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putInt(KEY_ROOM_TYPE, GrabRoomType.ROOM_TYPE_SECRET);
-                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), GrabCreateSpecialFragment.class)
-                        .setAddToBackStack(true)
-                        .setHasAnimation(true)
-                        .setBundle(bundle)
-                        .build());
+                goGrabCreateSpecialFragment(GrabRoomType.ROOM_TYPE_SECRET);
             }
         });
 
         mPublicRoom.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putInt(KEY_ROOM_TYPE, GrabRoomType.ROOM_TYPE_PUBLIC);
-                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), GrabCreateSpecialFragment.class)
-                        .setAddToBackStack(true)
-                        .setHasAnimation(true)
-                        .setBundle(bundle)
-                        .build());
+                goGrabCreateSpecialFragment(GrabRoomType.ROOM_TYPE_PUBLIC);
             }
         });
+    }
+
+
+    void goGrabCreateSpecialFragment(int roomType) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(KEY_ROOM_TYPE, roomType);
+        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), GrabCreateSpecialFragment.class)
+                .setAddToBackStack(true)
+                .setHasAnimation(true)
+                .setBundle(bundle)
+                .build());
     }
 
     @Override

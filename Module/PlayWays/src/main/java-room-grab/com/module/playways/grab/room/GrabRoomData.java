@@ -13,8 +13,6 @@ import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.GrabResultInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.rank.prepare.model.JoinGrabRoomRspModel;
-import com.zq.live.proto.Room.EQRoundOverReason;
-import com.zq.live.proto.Room.EQRoundResultType;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -29,7 +27,9 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
     protected GrabConfigModel mGrabConfigModel = new GrabConfigModel();// 一唱到底配置
     protected boolean mHasExitGame = false;// 是否已经正常退出房间
     private boolean mIsAccEnable = false;// 是否开启伴奏
-    private Integer mSongLineNum;
+    private Integer mSongLineNum;// 歌词总行数
+    private int roomType;// 一唱到底房间类型，公开，好友，私密，普通
+    private int ownerId;// 房主id
 
     public GrabRoomData() {
         mIsAccEnable = U.getPreferenceUtils().getSettingBoolean("grab_acc_enable1", false);
@@ -149,6 +149,22 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
         mHasExitGame = hasExitGame;
     }
 
+    public int getRoomType() {
+        return roomType;
+    }
+
+    public void setRoomType(int roomType) {
+        this.roomType = roomType;
+    }
+
+    public int getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(int ownerId) {
+        this.ownerId = ownerId;
+    }
+
     public void loadFromRsp(JoinGrabRoomRspModel rsp) {
         this.setGameId(rsp.getRoomID());
         this.setCoin(rsp.getCoin());
@@ -180,6 +196,8 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
         setHasExitGame(false);
         mResultList.clear();
         this.setAgoraToken(rsp.getAgoraToken());
+        this.setRoomType(rsp.getRoomType());
+        this.setOwnerId(rsp.getOwnerID());
     }
 
     public Integer getSongLineNum() {

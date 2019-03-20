@@ -11,13 +11,16 @@ import retrofit2.http.Query;
 
 public interface GrabRoomServerApi {
 
+    /** room 相关 **/
     /**
-     * 创建房间
-     * @param body
+     * {
      *   "roomType": "RT_UNKNOWN",
      *   "tagID": 0
+     * }
+     * @param body
      * @return
      */
+    //创建房间
     @PUT("http://dev.room.inframe.mobi/v2/room/create-room")
     Observable<ApiResult> createRoom(@Body RequestBody body);
 
@@ -29,7 +32,7 @@ public interface GrabRoomServerApi {
      * @param body
      * @return
      */
-    @PUT("http://dev.room.inframe.mobi/v1/room/exit-room")
+    @PUT("http://dev.room.inframe.mobi/v2/room/exit-room")
     Observable<ApiResult> exitRoom(@Body RequestBody body);
 
     /**
@@ -41,9 +44,11 @@ public interface GrabRoomServerApi {
      * @param body
      * @return
      */
-    @PUT("http://dev.room.inframe.mobi/v1/room/change-room")
+    @PUT("http://dev.room.inframe.mobi/v2/room/change-room")
     Observable<ApiResult> switchRoom(@Body RequestBody body);
 
+
+    /** stand 相关 **/
     /**
      * {
      * "roomID" : 111,
@@ -182,7 +187,8 @@ public interface GrabRoomServerApi {
     @PUT("http://dev.stand.inframe.mobi/v1/stand/agree-kick-user")
     Observable<ApiResult> repKickUser(@Body RequestBody body);
 
-    /*----------牛逼---------*/
+
+    /** 其余模块接口 **/
 
     //检查要不要显示红包领取
     @GET("http://dev.api.inframe.mobi/v1/task/list-newbee-task")
@@ -192,48 +198,4 @@ public interface GrabRoomServerApi {
     @PUT("http://dev.api.inframe.mobi/v1/task/trigger-task-reward")
     Observable<ApiResult> receiveCash(@Body RequestBody body);
 
-    /**
-     * 获取房间内的歌曲
-     * @param roomID
-     * @param offset
-     * @param limit
-     * @return
-     */
-    @GET("http://dev.stand.inframe.mobi/v2/room/playbook")
-    Observable<ApiResult> getPlaybook(@Query("roomID") int roomID, @Query("offset") long offset, @Query("limit") int limit);
-
-    /**
-     * 房主改变当前房间的tag
-     * {
-     *   "newTagID": 0,
-     *   "roomID": 0
-     * }
-     * @param body
-     * @return
-     */
-    @PUT("http://dev.api.inframe.mobi/v2/room/change-music-tag")
-    Observable<ApiResult> changeMusicTag(@Body RequestBody body);
-
-    /**
-     * 房主添加歌曲
-     * {
-     *   "playbookItemID": 0
-     * }
-     * @param body
-     * @return
-     */
-    @PUT("http://dev.api.inframe.mobi/v2/room/add-music")
-    Observable<ApiResult> addMusic(@Body RequestBody body);
-
-    /**
-     * 房主闪促歌曲
-     * {
-     *   "playbookItemID": 0,
-     *   "roundReq": 0
-     * }
-     * @param body
-     * @return
-     */
-    @PUT("http://dev.api.inframe.mobi/v2/room/del-music")
-    Observable<ApiResult> delMusic(@Body RequestBody body);
 }

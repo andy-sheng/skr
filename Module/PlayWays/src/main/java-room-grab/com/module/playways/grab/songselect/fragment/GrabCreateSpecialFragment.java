@@ -4,8 +4,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
+import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -13,9 +15,12 @@ import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
+import com.module.RouterConstants;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.songselect.model.SpecialModel;
 import com.module.playways.grab.songselect.view.SpecialSelectView;
+import com.module.playways.rank.prepare.model.JoinGrabRoomRspModel;
+import com.module.playways.rank.prepare.presenter.GrabMatchPresenter;
 import com.module.rank.R;
 
 import java.util.HashMap;
@@ -23,6 +28,8 @@ import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
+
+import static com.common.rxretrofit.ApiManager.APPLICATION_JSOIN;
 
 /**
  * 选择房间属性
@@ -80,7 +87,16 @@ public class GrabCreateSpecialFragment extends BaseFragment {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
-                    // TODO: 2019/3/20  房间创建完成
+                    JoinGrabRoomRspModel grabCurGameStateModel = JSON.parseObject(result.getData().toString(), JoinGrabRoomRspModel.class);
+                    grabCurGameStateModel.setGameCreateMs(System.currentTimeMillis());
+                    //先跳转
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_ROOM)
+                            .withSerializable("prepare_data", grabCurGameStateModel)
+                            .navigation();
+                    //结束当前Activity
+                    if (getActivity() != null) {
+                        getActivity().finish();
+                    }
                 } else {
                     // 房间创建失败
                     U.getToastUtil().showShort("" + result.getErrmsg());
