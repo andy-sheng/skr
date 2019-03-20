@@ -164,7 +164,7 @@ public enum ERoomMsgType implements WireEnum {
   /**
    * 一唱到底：踢人结果信令消息
    */
-  RM_Q_KICK_USER_SUCCESS(126),
+  RM_Q_KICK_USER_RESULT(126),
 
   /**
    * 告知伴奏开始
@@ -214,7 +214,7 @@ public enum ERoomMsgType implements WireEnum {
       case 123: return RM_Q_JOIN_NOTICE;
       case 124: return RM_Q_JOIN_ACTION;
       case 125: return RM_Q_KICK_USER_REQUEST;
-      case 126: return RM_Q_KICK_USER_SUCCESS;
+      case 126: return RM_Q_KICK_USER_RESULT;
       case 190: return RM_ROUND_ACC_BEGIN;
       default: return null;
     }

@@ -45,7 +45,7 @@ import com.zq.live.proto.Room.QGetSingChanceMsg;
 import com.zq.live.proto.Room.QJoinActionMsg;
 import com.zq.live.proto.Room.QJoinNoticeMsg;
 import com.zq.live.proto.Room.QKickUserRequestMsg;
-import com.zq.live.proto.Room.QKickUserSuccessMsg;
+import com.zq.live.proto.Room.QKickUserResultMsg;
 import com.zq.live.proto.Room.QMLightMsg;
 import com.zq.live.proto.Room.QNoPassSingMsg;
 import com.zq.live.proto.Room.QRoundAndGameOverMsg;
@@ -126,8 +126,8 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
             processGrabJoinActionMsg(basePushInfo, msg.getQJoinActionMsg());
         } else if (msg.getMsgType() == ERoomMsgType.RM_Q_KICK_USER_REQUEST) {
             processGrabKickRequest(basePushInfo, msg.getQKickUserRequestMsg());
-        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_KICK_USER_SUCCESS) {
-            processGrabKickResult(basePushInfo, msg.getQKickUserSuccessMsg());
+        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_KICK_USER_RESULT) {
+            processGrabKickResult(basePushInfo, msg.getQKickUserResultMsg());
         }
     }
 
@@ -146,7 +146,7 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
                 ERoomMsgType.RM_Q_NO_PASS_SING, ERoomMsgType.RM_Q_EXIT_GAME,
                 ERoomMsgType.RM_PK_BLIGHT, ERoomMsgType.RM_PK_MLIGHT,
                 ERoomMsgType.RM_Q_BLIGHT, ERoomMsgType.RM_Q_MLIGHT, ERoomMsgType.RM_Q_JOIN_NOTICE, ERoomMsgType.RM_Q_JOIN_ACTION,
-                ERoomMsgType.RM_Q_KICK_USER_REQUEST, ERoomMsgType.RM_Q_KICK_USER_SUCCESS
+                ERoomMsgType.RM_Q_KICK_USER_REQUEST, ERoomMsgType.RM_Q_KICK_USER_RESULT
         };
     }
 
@@ -414,20 +414,44 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
         }
     }
 
-    private void processGrabKickResult(BasePushInfo basePushInfo, QKickUserSuccessMsg qKickUserSuccessMsg) {
-        if (basePushInfo != null && qKickUserSuccessMsg != null) {
-            // 过滤，被踢人
-            if (MyUserInfoManager.getInstance().getUid() == qKickUserSuccessMsg.getKickUserID()) {
-                QKickUserResultEvent qKickUserResultEvent = new QKickUserResultEvent(basePushInfo, qKickUserSuccessMsg);
+    private void processGrabKickResult(BasePushInfo basePushInfo, QKickUserResultMsg qKickUserResultMsg) {
+        if (basePushInfo != null && qKickUserResultMsg != null) {
+            // 过滤，被踢人 也可以放在收事件的地方，但是觉得没有必要
+            if (MyUserInfoManager.getInstance().getUid() == qKickUserResultMsg.getKickUserID()) {
+                QKickUserResultEvent qKickUserResultEvent = new QKickUserResultEvent(basePushInfo, qKickUserResultMsg);
                 EventBus.getDefault().post(qKickUserResultEvent);
                 return;
             }
-            // 过滤下, 所有投票者
-            for (Integer integer : qKickUserSuccessMsg.getVoteUserIDsList()) {
-                if (integer == MyUserInfoManager.getInstance().getUid()) {
-                    QKickUserResultEvent qKickUserResultEvent = new QKickUserResultEvent(basePushInfo, qKickUserSuccessMsg);
-                    EventBus.getDefault().post(qKickUserResultEvent);
-                    return;
+            // 过滤下, 所有投同意票
+            if (qKickUserResultMsg.getGiveYesVoteUserIDsList() != null) {
+                for (Integer integer : qKickUserResultMsg.getGiveYesVoteUserIDsList()) {
+                    if (integer == MyUserInfoManager.getInstance().getUid()) {
+                        QKickUserResultEvent qKickUserResultEvent = new QKickUserResultEvent(basePushInfo, qKickUserResultMsg);
+                        EventBus.getDefault().post(qKickUserResultEvent);
+                        return;
+                    }
+                }
+            }
+
+            // 过滤下, 所有投不同意票
+            if (qKickUserResultMsg.getGiveNoVoteUserIDsList() != null) {
+                for (Integer integer : qKickUserResultMsg.getGiveNoVoteUserIDsList()) {
+                    if (integer == MyUserInfoManager.getInstance().getUid()) {
+                        QKickUserResultEvent qKickUserResultEvent = new QKickUserResultEvent(basePushInfo, qKickUserResultMsg);
+                        EventBus.getDefault().post(qKickUserResultEvent);
+                        return;
+                    }
+                }
+            }
+
+            // 过滤下, 所有未知票
+            if (qKickUserResultMsg.getGiveUnknownVoteUserIDsList() != null) {
+                for (Integer integer : qKickUserResultMsg.getGiveUnknownVoteUserIDsList()) {
+                    if (integer == MyUserInfoManager.getInstance().getUid()) {
+                        QKickUserResultEvent qKickUserResultEvent = new QKickUserResultEvent(basePushInfo, qKickUserResultMsg);
+                        EventBus.getDefault().post(qKickUserResultEvent);
+                        return;
+                    }
                 }
             }
         } else {

@@ -75,6 +75,7 @@ import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.dialog.ConfirmDialog;
 import com.zq.dialog.PersonInfoDialog;
+import com.zq.toast.CommonToastView;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -1071,6 +1072,26 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                 }
             });
             mGrabKickDialog.show();
+        }
+    }
+
+    @Override
+    public void kickBySomeOne() {
+        MyLog.d(TAG, "kickBySomeOne");
+        if (getActivity() != null) {
+            getActivity().finish();
+        }
+
+        U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
+                .setImage(R.drawable.touxiangshezhishibai_icon)
+                .setText("超过半数玩家请你出房间，要友好文明游戏哦~")
+                .build());
+    }
+
+    @Override
+    public void kickSomeOne() {
+        if (mGrabKickDialog != null) {
+            mGrabKickDialog.dismiss();
         }
     }
 
