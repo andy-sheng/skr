@@ -12,6 +12,16 @@ import retrofit2.http.Query;
 public interface GrabRoomServerApi {
 
     /** room 相关 **/
+
+    /**
+     *  请求发JoinNotice的push
+     *
+     * @param body 游戏标识 gameID (必选)
+     * @return
+     */
+    @PUT("http://dev.room.inframe.mobi/v2/room/join-room")
+    Observable<ApiResult> joinGrabRoom(@Body RequestBody body);
+
     /**
      * {
      *   "roomType": "RT_UNKNOWN",

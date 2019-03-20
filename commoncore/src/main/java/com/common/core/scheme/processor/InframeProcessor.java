@@ -7,10 +7,13 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.core.account.UserAccountManager;
 import com.common.core.scheme.SchemeConstants;
 import com.common.core.scheme.SchemeUtils;
+import com.common.core.scheme.event.GrabInviteFromSchemeEvent;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.module.RouterConstants;
 import com.module.grab.IGrabModeGameService;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by lan on 16/10/26.
@@ -168,15 +171,15 @@ public class InframeProcessor implements ISchemeProcessor {
                     MyLog.w(TAG, "processGameUrl 没有登录");
                     return;
                 }
-                int ownerId = SchemeUtils.getInt(uri, "owner",0);
-                int roomId = SchemeUtils.getInt(uri, "gameId",0);
-                int ask = SchemeUtils.getInt(uri, "ask",0);
-                if(ownerId>0 && roomId>0){
-                    if(ask==1){
-
-                    }else{
-
-                    }
+                int ownerId = SchemeUtils.getInt(uri, "owner", 0);
+                int roomId = SchemeUtils.getInt(uri, "gameId", 0);
+                int ask = SchemeUtils.getInt(uri, "ask", 0);
+                if (ownerId > 0 && roomId > 0) {
+                    GrabInviteFromSchemeEvent event = new GrabInviteFromSchemeEvent();
+                    event.ask = ask;
+                    event.ownerId = ownerId;
+                    event.roomId = roomId;
+                    EventBus.getDefault().post(event);
                 }
             } catch (Exception e) {
                 MyLog.e(TAG, e);
