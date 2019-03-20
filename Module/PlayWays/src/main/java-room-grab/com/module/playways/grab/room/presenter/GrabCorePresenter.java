@@ -208,7 +208,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             });
         }
         if (mRoomData.getGameId() > 0) {
-            pretenSystemMsg();
+            pretenSystemMsg("欢迎进入撕歌一唱到底，对局马上开始，比赛过程发现坏蛋请用力举报哦～");
             for (PlayerInfoModel playerInfoModel : mRoomData.getPlayerInfoList()) {
                 if (!playerInfoModel.isOnline()) {
                     continue;
@@ -232,7 +232,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         startSyncGameStateTask(sSyncStateTaskInterval);
     }
 
-    private void pretenSystemMsg() {
+    private void pretenSystemMsg(String text) {
         CommentModel commentModel = new CommentModel();
         commentModel.setCommentType(CommentModel.TYPE_TRICK);
         commentModel.setUserId(UserAccountManager.SYSTEM_ID);
@@ -240,7 +240,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         commentModel.setUserName("系统消息");
         commentModel.setAvatarColor(Color.WHITE);
         SpannableStringBuilder stringBuilder = new SpanUtils()
-                .append("欢迎进入撕歌一唱到底，对局马上开始，比赛过程发现坏蛋请用力举报哦～").setForegroundColor(CommentModel.TEXT_RED)
+                .append(text).setForegroundColor(CommentModel.TEXT_RED)
                 .create();
         commentModel.setStringBuilder(stringBuilder);
         EventBus.getDefault().post(new PretendCommentMsgEvent(commentModel));
@@ -1749,10 +1749,11 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         // 踢人的结果
         if (qKickUserResultEvent.kickUserID == MyUserInfoManager.getInstance().getUid()) {
             // 自己被踢出去
-            // TODO: 2019/3/19 补充逻辑
+            mIGrabView.kickBySomeOne();
         } else {
             // 别人被踢出去
-            // TODO: 2019/3/19 补充逻辑
+            mIGrabView.kickSomeOne();
+            pretenSystemMsg(qKickUserResultEvent.kickResultContent);
         }
     }
 }

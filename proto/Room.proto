@@ -54,7 +54,7 @@ message RoomMsg {
     QJoinActionMsg qJoinActionMsg = 124; //一唱到底：加入游戏指令消息
 
     QKickUserRequestMsg qKickUserRequestMsg = 125; //一唱到底：踢人请求信令消息
-    QKickUserSuccessMsg qKickUserSuccessMsg = 126; //一唱到底：踢人结果信令消息
+    QKickUserResultMsg qKickUserResultMsg = 126; //一唱到底：踢人结果信令消息
 }
 
 // ERoomMsgType 房间消息类型
@@ -95,7 +95,7 @@ enum ERoomMsgType {
     RM_Q_JOIN_ACTION = 124; //一唱到底：加入游戏指令消息
 
     RM_Q_KICK_USER_REQUEST = 125; //一唱到底：踢人请求信令消息
-    RM_Q_KICK_USER_SUCCESS = 126; //一唱到底：踢人结果信令消息
+    RM_Q_KICK_USER_RESULT = 126; //一唱到底：踢人结果信令消息
 
     RM_ROUND_ACC_BEGIN = 190; //告知伴奏开始
 }
@@ -107,13 +107,24 @@ message QKickUserRequestMsg
     repeated uint32 otherOnlineUserIDs = 3; //其他在线用户id
 }
 
-message QKickUserSuccessMsg
+message QKickUserResultMsg
 {
-    uint32 sourceUserID         = 1; //发起者id
-    uint32 kickUserID           = 2; //被踢者id
-    repeated uint32 voteUserIDs = 3; //投赞成票用户id
-    string kickSuccessMsg       = 4; //踢人成功的信息内容
+    uint32 sourceUserID                    = 1; //发起者id
+    uint32 kickUserID                      = 2; //被踢者id
+    repeated uint32 giveYesVoteUserIDs     = 3; //投同意票用户id
+    repeated uint32 giveNoVoteUserIDs      = 4; //投不同意票用户id
+    repeated uint32 giveUnknownVoteUserIDs = 5; //未知票用户id
+    bool isKickSuccess                     = 6; //踢人是否成功
+    EQKickFailedReason kickFailedReason    = 7; //踢人失败原因
+    string kickResultContent               = 8; //踢人结果信息内容
 }
+
+enum EQKickFailedReason {
+    KFR_UNKNOWN               = 0; //未知
+    KFR_KICK_USER_NOT_IN_ROOM = 1; //被踢用户不在房间内
+    KFR_MOST_USER_NOT_AGREE   = 2; //多数人不同意
+}
+
 
 message QJoinNoticeMsg {
     Common.UserInfo user = 1; //加入游戏的信息
