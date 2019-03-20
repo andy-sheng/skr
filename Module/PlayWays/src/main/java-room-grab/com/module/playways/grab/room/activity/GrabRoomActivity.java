@@ -1,5 +1,6 @@
 package com.module.playways.grab.room.activity;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.WindowManager;
@@ -58,11 +59,7 @@ public class GrabRoomActivity extends BaseActivity {
         JoinGrabRoomRspModel rsp = (JoinGrabRoomRspModel) getIntent().getSerializableExtra("prepare_data");
         if (rsp != null) {
             mRoomData.loadFromRsp(rsp);
-            U.getFragmentUtils().addFragment(
-                    FragmentUtils.newAddParamsBuilder(this, GrabRoomFragment.class)
-                            .setAddToBackStack(false)
-                            .addDataBeforeAdd(0, mRoomData)
-                            .build());
+            go();
         } else {
             int roomID = getIntent().getIntExtra("roomID", 0);
             if (roomID > 0) {
@@ -76,11 +73,7 @@ public class GrabRoomActivity extends BaseActivity {
                         if (result.getErrno() == 0) {
                             JoinGrabRoomRspModel grabCurGameStateModel = JSON.parseObject(result.getData().toString(), JoinGrabRoomRspModel.class);
                             mRoomData.loadFromRsp(grabCurGameStateModel);
-                            U.getFragmentUtils().addFragment(
-                                    FragmentUtils.newAddParamsBuilder(GrabRoomActivity.this, GrabRoomFragment.class)
-                                            .setAddToBackStack(false)
-                                            .addDataBeforeAdd(0, mRoomData)
-                                            .build());
+                            go();
                         } else {
                             U.getToastUtil().showShort(result.getErrmsg());
                             GrabRoomActivity.this.finish();
@@ -132,14 +125,26 @@ public class GrabRoomActivity extends BaseActivity {
                 grabRoundInfoModel.setMusic(songModel);
                 grabRoundInfoModel.setEnterStatus(grabRoundInfoModel.getStatus());
                 mRoomData.setExpectRoundInfo(grabRoundInfoModel);
-                U.getFragmentUtils().addFragment(
-                        FragmentUtils.newAddParamsBuilder(this, GrabRoomFragment.class)
-                                .setAddToBackStack(false)
-                                .addDataBeforeAdd(0, mRoomData)
-                                .build());
+
             }
         }
         U.getStatusBarUtil().setTransparentBar(this, false);
+    }
+
+    void go() {
+        U.getFragmentUtils().addFragment(
+                FragmentUtils.newAddParamsBuilder(this, GrabRoomFragment.class)
+                        .setAddToBackStack(false)
+                        .addDataBeforeAdd(0, mRoomData)
+                        .build());
+        // 销毁其他的一唱到底页面
+        for (Activity activity : U.getActivityUtils().getActivityList()) {
+            if (activity instanceof GrabRoomActivity) {
+                if (activity != this) {
+                    activity.finish();
+                }
+            }
+        }
     }
 
     @Override
