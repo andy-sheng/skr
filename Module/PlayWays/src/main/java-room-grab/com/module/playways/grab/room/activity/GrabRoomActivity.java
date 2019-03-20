@@ -29,6 +29,7 @@ import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.rank.prepare.model.JoinGrabRoomRspModel;
 
 import com.module.playways.rank.prepare.presenter.GrabMatchPresenter;
+import com.module.playways.rank.room.activity.RankRoomActivity;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
 import com.module.playways.grab.room.fragment.GrabRoomFragment;
@@ -83,6 +84,12 @@ public class GrabRoomActivity extends BaseActivity {
                     @Override
                     public void onNetworkError(ErrorType errorType) {
                         super.onNetworkError(errorType);
+                        GrabRoomActivity.this.finish();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
                         GrabRoomActivity.this.finish();
                     }
                 });
@@ -140,9 +147,10 @@ public class GrabRoomActivity extends BaseActivity {
         // 销毁其他的一唱到底页面
         for (Activity activity : U.getActivityUtils().getActivityList()) {
             if (activity instanceof GrabRoomActivity) {
-                if (activity != this) {
-                    activity.finish();
-                }
+                activity.finish();
+            }
+            if (activity instanceof RankRoomActivity) {
+                activity.finish();
             }
         }
     }

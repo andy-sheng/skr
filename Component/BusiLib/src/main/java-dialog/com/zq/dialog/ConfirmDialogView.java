@@ -81,6 +81,13 @@ public class ConfirmDialogView extends RelativeLayout {
             mConfirmTv.setText("同意");
         } else if (type == ConfirmDialog.TYPE_INVITE_CONFIRM) {
             mKickMaskIv.setVisibility(GONE);
+            SpannableStringBuilder stringBuilder = new SpanUtils()
+                    .append(" " + mUserInfoModel.getNickname() + " ").setForegroundColor(Color.parseColor("#F5A623"))
+                    .append("\n")
+                    .append("邀请我加入一唱到底").setForegroundColor(U.getColor(R.color.black_trans_50))
+                    .create();
+            mContentTv.setText(stringBuilder);
+
             mCancleTv.setText("不同意");
             mConfirmTv.setText("同意");
         }

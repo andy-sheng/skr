@@ -13,6 +13,7 @@ import java.net.UnknownHostException;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+import retrofit2.adapter.rxjava2.HttpException;
 
 /**
  * 自定义的订阅者，加一层适配来处理各种常见问题
@@ -64,6 +65,8 @@ public abstract class ApiObserver<T> implements Observer<T> {
             onNetworkError(ErrorType.unknownHost);
         } else if (e instanceof SocketTimeoutException) {
             onNetworkError(ErrorType.socketTimeout);
+        }else if(e instanceof HttpException){
+
         }
     }
 
@@ -84,6 +87,7 @@ public abstract class ApiObserver<T> implements Observer<T> {
 
     public enum ErrorType {
         unknownHost,// 解析域名失败，一般无网络情况会有这个
-        socketTimeout // 超时，弱网络情况下容易触发这个
+        socketTimeout,// 超时，弱网络情况下容易触发这个
+        http404,// 接口不存在
     }
 }

@@ -1,7 +1,12 @@
 package com.module.home.persenter;
 
+import android.os.Bundle;
+
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
+import com.common.base.BaseActivity;
+import com.common.base.BaseFragment;
+import com.common.base.FragmentDataListener;
 import com.common.core.scheme.event.GrabInviteFromSchemeEvent;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
@@ -13,9 +18,11 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.component.busilib.constans.GrabRoomType;
 import com.module.RouterConstants;
+import com.module.rank.IRankingModeService;
 import com.zq.dialog.ConfirmDialog;
 
 import org.greenrobot.eventbus.EventBus;
@@ -47,7 +54,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(FollowNotifyEvent event) {
-        // TODO: 2019/3/20   关注提醒
+        // TODO: 2019/3/20 SkrKouLingUtils.  关注提醒
 
     }
 
@@ -75,9 +82,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                         confirmDialog.setListener(new ConfirmDialog.Listener() {
                             @Override
                             public void onClickConfirm(UserInfoModel userInfoModel) {
-                                ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_ROOM)
-                                        .withInt("roomID", event.roomId)
-                                        .navigation();
+                                tryGoGrabRoom(event.roomId);
                             }
                         });
                         confirmDialog.show();
@@ -87,9 +92,14 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
             });
         } else {
             // 不需要直接进
-            ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_ROOM)
-                    .withInt("roomID", event.roomId)
-                    .navigation();
+            tryGoGrabRoom(event.roomId);
+        }
+    }
+
+    void tryGoGrabRoom(int roomID) {
+        IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
+        if (iRankingModeService != null) {
+            iRankingModeService.tryGoGrabRoom(roomID);
         }
     }
 

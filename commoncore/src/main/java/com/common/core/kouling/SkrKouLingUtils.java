@@ -97,7 +97,7 @@ public class SkrKouLingUtils {
                     }
                 }
                 if (!TextUtils.isEmpty(userId) && !TextUtils.isEmpty(roomId)) {
-                    return String.format("inframeskr://room/grabjoin?owner=%d&gameId=%d&ask=1", userId, roomId);
+                    return String.format("inframeskr://room/grabjoin?owner=%s&gameId=%s&ask=1", userId, roomId);
                 }
             }
         }
