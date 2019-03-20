@@ -60,6 +60,9 @@ public class InframeProcessor implements ISchemeProcessor {
                     case SchemeConstants.HOST_WALLET:
                         processWalletUrl(uri);
                         return ProcessResult.AcceptedAndReturn;
+                    case SchemeConstants.HOST_ROOM:
+                        processRoomUrl(uri);
+                        return ProcessResult.AcceptedAndReturn;
                 }
             }
         }
@@ -144,6 +147,37 @@ public class InframeProcessor implements ISchemeProcessor {
                 int tagId = SchemeUtils.getInt(uri, SchemeConstants.PARAM_TAG_ID, 2);
                 IGrabModeGameService iGrabModeGameService = (IGrabModeGameService) ARouter.getInstance().build(RouterConstants.SERVICE_GRAB_SERVICE).navigation();
                 iGrabModeGameService.jump(0, tagId);
+            } catch (Exception e) {
+                MyLog.e(TAG, e);
+            }
+        } else {
+
+        }
+    }
+
+    private void processRoomUrl(Uri uri) {
+        String path = uri.getPath();
+        if (TextUtils.isEmpty(path)) {
+            MyLog.w(TAG, "processGameUrl path is empty");
+            return;
+        }
+
+        if ("/grabjoin".equals(path)) {
+            try {
+                if (!UserAccountManager.getInstance().hasAccount()) {
+                    MyLog.w(TAG, "processGameUrl 没有登录");
+                    return;
+                }
+                int ownerId = SchemeUtils.getInt(uri, "owner",0);
+                int roomId = SchemeUtils.getInt(uri, "gameId",0);
+                int ask = SchemeUtils.getInt(uri, "ask",0);
+                if(ownerId>0 && roomId>0){
+                    if(ask==1){
+
+                    }else{
+
+                    }
+                }
             } catch (Exception e) {
                 MyLog.e(TAG, e);
             }
