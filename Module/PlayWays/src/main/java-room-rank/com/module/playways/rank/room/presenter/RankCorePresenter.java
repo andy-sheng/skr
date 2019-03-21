@@ -373,6 +373,55 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     }
 
     /**
+     * 上报我的轮次得分信息
+     */
+    public void sendRoundScoreInfo(int myRoundSeq) {
+        MyLog.w(TAG, "上报我的轮次得分");
+        estimateOverTsThisRound();
+        long timeMs = System.currentTimeMillis();
+        int sysScore = 0;
+        if (mRobotScoreHelper != null) {
+            sysScore = mRobotScoreHelper.getAverageScore();
+        }
+        String sign = U.getMD5Utils().MD5_32("skrer|" +
+                String.valueOf(mRoomData.getGameId()) + "|" +
+                String.valueOf(sysScore) + "|" +
+                String.valueOf(timeMs));
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("gameID", mRoomData.getGameId());
+        map.put("sysScore", sysScore);
+        map.put("timeMs", timeMs);
+        map.put("sign", sign);
+        // 提前获取roundSeq，如果在result里在获取，可能是下下一个了，如果提前收到轮次变化的push
+        map.put("roundSeq", myRoundSeq);
+
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        ApiMethods.subscribe(mRoomServerApi.sendRoundScore(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    MyLog.w(TAG, "演唱结束上报总分成功 traceid is " + result.getTraceId());
+                    // TODO: 2019/1/22  可能带回来游戏结束的信息，后期优化
+                    // 尝试自己切换到下一个轮次
+//                    if (finalRoundSeq >= 0) {
+//                        RoundInfoModel roundInfoModel = RoomDataUtils.findRoundInfoBySeq(mRoomData.getRoundInfoModelList(), finalRoundSeq + 1);
+//                        mRoomData.setExpectRoundInfo(roundInfoModel);
+//                        mRoomData.checkRound();
+//                    }
+                } else {
+                    MyLog.w(TAG, "演唱结束上报总分失败 traceid is " + result.getTraceId());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                MyLog.w(TAG, "sendRoundScoreInfo error " + e);
+            }
+        }, this);
+    }
+
+    /**
      * 退出游戏
      */
     public void exitGame() {
@@ -708,6 +757,8 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                         uploadRes1ForAi(myRoundInfoModel);
                     }
                 }
+                // 上报分数
+                sendRoundScoreInfo(event.getLastRoundInfoModel().getRoundSeq();
             }
 
             EngineManager.getInstance().stopAudioMixing();

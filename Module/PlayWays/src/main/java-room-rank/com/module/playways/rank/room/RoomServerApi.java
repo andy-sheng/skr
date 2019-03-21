@@ -23,6 +23,21 @@ public interface RoomServerApi {
     Observable<ApiResult> sendMsg(@Body RequestBody body);
 
     /**
+     * {
+     *   "gameID": 0,
+     *   "roundSeq": 0,
+     *   "sign": "string",
+     *   "sysScore": 0,
+     *   "timeMs": 0
+     * }
+     * @return 当前轮次结束时间戳roundOverTimeMs
+     * 当前轮次信息currentRound
+     * 下个轮次信息nextRound
+     */
+    @PUT("http://dev.game.inframe.mobi/v1/game/round/score")
+    Observable<ApiResult> sendRoundScore(@Body RequestBody body);
+
+    /**
      * 上报结束一轮游戏
      *
      * @param body 游戏标识 gameID (必选)

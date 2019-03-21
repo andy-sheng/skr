@@ -26,7 +26,7 @@ import java.util.List;
 class FloatPhone extends FloatView {
     public final static String TAG = "FloatPhone";
     private FloatWindow.B mB;
-    private  WindowManager mWindowManager;
+    private WindowManager mWindowManager;
     private final WindowManager.LayoutParams mLayoutParams;
     private boolean isRemove = true;
 
@@ -50,8 +50,12 @@ class FloatPhone extends FloatView {
 
     @Override
     public void init() {
+        initInner(mB.reqPermissionIfNeed);
+    }
+
+    void initInner(boolean reqPermissionIfNeed) {
         boolean hasFloatWindowPermission = U.getPermissionUtils().checkFloatWindow(mB.mApplicationContext);
-        MyLog.d(TAG, "init hasFloatWindowPermission=" + hasFloatWindowPermission);
+        MyLog.d(TAG, "init hasFloatWindowPermission=" + hasFloatWindowPermission + " reqPermissionIfNeed=" + reqPermissionIfNeed);
         if (hasFloatWindowPermission) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 mLayoutParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
@@ -60,16 +64,18 @@ class FloatPhone extends FloatView {
             }
             addView();
         } else {
-            if (mB.reqPermissionIfNeed) {
+            if (reqPermissionIfNeed) {
                 U.getPermissionUtils().requestFloatWindow(new PermissionUtils.RequestPermission() {
                     @Override
                     public void onRequestPermissionSuccess() {
                         MyLog.d(TAG, "onRequestPermissionSuccess");
+                        initInner(mB.reqPermissionIfNeed);
                     }
 
                     @Override
                     public void onRequestPermissionFailure(List<String> permissions) {
                         MyLog.d(TAG, "onRequestPermissionFailure" + " permissions=" + permissions);
+                        initInner(false);
                     }
 
                     @Override
@@ -134,7 +140,7 @@ class FloatPhone extends FloatView {
 
     public void addView() {
         if (isRemove) {
-            MyLog.d(TAG, "addView type" + mLayoutParams.type);
+            MyLog.d(TAG, "addView type=" + mLayoutParams.type);
             mWindowManager.addView(mB.mView, mLayoutParams);
             isRemove = false;
         }

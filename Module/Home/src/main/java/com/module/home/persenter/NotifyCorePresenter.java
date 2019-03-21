@@ -166,7 +166,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
 //                                .setY(Screen.height,0.3f)
                 .setDesktopShow(false)                        //桌面显示
                 .setCancelIfExist(false)
-                .setReqPermissionIfNeed(false)
+                .setReqPermissionIfNeed(true)
                 .setViewStateListener(null)    //监听悬浮控件状态改变
                 .setTag(TAG_RELATION_FOALT_WINDOW)
                 .build();
