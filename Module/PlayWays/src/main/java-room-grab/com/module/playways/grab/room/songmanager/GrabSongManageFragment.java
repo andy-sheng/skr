@@ -1,4 +1,4 @@
-package com.module.playways.grab.room.fragment;
+package com.module.playways.grab.room.songmanager;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,11 +17,8 @@ import com.common.view.ex.ExFrameLayout;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.module.playways.grab.room.GrabRoomData;
-import com.module.playways.grab.room.adapter.ManageSongAdapter;
 import com.module.playways.grab.room.inter.IGrabSongManageView;
-import com.module.playways.grab.room.model.GrabRoomSongModel;
-import com.module.playways.grab.room.presenter.GrabSongManagePresenter;
-import com.module.playways.grab.room.view.GrabSongTagsView;
+import com.module.playways.grab.room.songmanager.tags.GrabSongTagsView;
 import com.module.playways.grab.songselect.model.SpecialModel;
 import com.module.rank.R;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;

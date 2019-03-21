@@ -1,4 +1,4 @@
-package com.module.playways.grab.room.model;
+package com.module.playways.grab.room.songmanager;
 
 import java.io.Serializable;
 

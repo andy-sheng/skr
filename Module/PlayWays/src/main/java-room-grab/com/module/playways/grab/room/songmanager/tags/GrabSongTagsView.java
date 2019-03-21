@@ -1,4 +1,4 @@
-package com.module.playways.grab.room.view;
+package com.module.playways.grab.room.songmanager.tags;
 
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
@@ -6,8 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
-import com.module.playways.grab.room.adapter.GrabTagsAdapter;
-import com.module.playways.grab.room.model.GrabRoomSongModel;
 import com.module.playways.grab.songselect.model.SpecialModel;
 import com.module.rank.R;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;

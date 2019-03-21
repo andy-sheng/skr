@@ -1,4 +1,4 @@
-package com.module.playways.grab.room.fragment;
+package com.module.playways.grab.room.invite;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,16 +12,9 @@ import android.widget.TextView;
 
 import com.common.base.BaseFragment;
 import com.common.view.DebounceViewClickListener;
-import com.common.view.ex.ExFrameLayout;
-import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
-import com.common.view.titlebar.CommonTitleBar;
 import com.module.playways.grab.room.GrabRoomData;
-import com.module.playways.grab.room.adapter.InviteFirendAdapter;
 import com.module.playways.grab.room.inter.IGrabInviteView;
-import com.module.playways.grab.room.inter.IGrabSongManageView;
-import com.module.playways.grab.room.presenter.GrabInvitePresenter;
-import com.module.playways.grab.room.presenter.GrabSongManagePresenter;
 import com.module.rank.R;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;

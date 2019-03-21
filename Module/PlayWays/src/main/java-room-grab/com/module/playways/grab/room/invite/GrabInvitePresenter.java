@@ -1,4 +1,4 @@
-package com.module.playways.grab.room.presenter;
+package com.module.playways.grab.room.invite;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;

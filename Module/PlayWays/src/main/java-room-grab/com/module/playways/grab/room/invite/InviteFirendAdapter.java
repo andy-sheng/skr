@@ -1,4 +1,4 @@
-package com.module.playways.grab.room.adapter;
+package com.module.playways.grab.room.invite;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -7,33 +7,28 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.common.image.fresco.BaseImageView;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.DiffAdapter;
-import com.module.playways.grab.songselect.model.SpecialModel;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
 
-public class GrabTagsAdapter extends DiffAdapter<SpecialModel, RecyclerView.ViewHolder> {
-    OnTagClickListener mOnTagClickListener;
+public class InviteFirendAdapter extends DiffAdapter<SongModel, RecyclerView.ViewHolder> {
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grab_song_tag_item_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.invite_friend_item_layout, parent, false);
         ItemHolder viewHolder = new ItemHolder(view);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        SpecialModel model = mDataList.get(position);
+        SongModel model = mDataList.get(position);
 
         ItemHolder reportItemHolder = (ItemHolder) holder;
         reportItemHolder.bind(model);
-    }
-
-    public void setOnTagClickListener(OnTagClickListener onTagClickListener) {
-        mOnTagClickListener = onTagClickListener;
     }
 
     @Override
@@ -47,7 +42,7 @@ public class GrabTagsAdapter extends DiffAdapter<SpecialModel, RecyclerView.View
         ExTextView mTvState;
         ExTextView mTvInvite;
 
-        SpecialModel mWalletRecordModel;
+        SongModel mWalletRecordModel;
 
         public ItemHolder(View itemView) {
             super(itemView);
@@ -57,7 +52,7 @@ public class GrabTagsAdapter extends DiffAdapter<SpecialModel, RecyclerView.View
             mTvInvite = (ExTextView) itemView.findViewById(R.id.tv_invite);
         }
 
-        public void bind(SpecialModel model) {
+        public void bind(SongModel model) {
             this.mWalletRecordModel = model;
 
 
@@ -75,9 +70,5 @@ public class GrabTagsAdapter extends DiffAdapter<SpecialModel, RecyclerView.View
 //                mTvState.setTextColor(Color.parseColor("#EF5E85"));
 //            }
         }
-    }
-
-    public interface OnTagClickListener {
-        void onClick(SpecialModel specialModel);
     }
 }

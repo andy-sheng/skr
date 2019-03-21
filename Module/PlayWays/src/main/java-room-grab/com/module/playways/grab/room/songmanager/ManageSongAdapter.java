@@ -1,4 +1,4 @@
-package com.module.playways.grab.room.adapter;
+package com.module.playways.grab.room.songmanager;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -10,9 +10,6 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.DiffAdapter;
 
-import com.module.playways.grab.room.model.GrabRoomSongModel;
-import com.module.playways.grab.songselect.model.SpecialModel;
-import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
 
 public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerView.ViewHolder> {
@@ -43,7 +40,7 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
         return mDataList.size();
     }
 
-    private class ItemHolder extends RecyclerView.ViewHolder {
+    private static class ItemHolder extends RecyclerView.ViewHolder {
         ExTextView mTvSongName;
         ExTextView mTvAuther;
         ExTextView mTvManage;

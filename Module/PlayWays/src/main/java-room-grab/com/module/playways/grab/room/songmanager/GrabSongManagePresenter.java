@@ -1,4 +1,4 @@
-package com.module.playways.grab.room.presenter;
+package com.module.playways.grab.room.songmanager;
 
 import com.alibaba.fastjson.JSON;
 import com.common.log.MyLog;
@@ -10,8 +10,6 @@ import com.common.rxretrofit.ApiResult;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.inter.IGrabSongManageView;
-import com.module.playways.grab.room.model.GrabRoomSongModel;
-import com.module.playways.grab.songselect.GrabSongApi;
 import com.module.playways.grab.songselect.model.SpecialModel;
 
 import java.util.ArrayList;
