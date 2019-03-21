@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.common.floatwindow.PermissionListener;
 
 /**
  * 用于在内部自动申请权限

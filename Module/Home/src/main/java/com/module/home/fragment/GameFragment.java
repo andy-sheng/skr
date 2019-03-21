@@ -32,10 +32,13 @@ import com.common.core.kouling.SkrKouLingUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.permission.SkrLocationPermission;
+import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.model.UserRankModel;
 import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
+import com.common.notification.event.GrabInviteNotifyEvent;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -76,6 +79,7 @@ import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
 import com.zq.level.utils.LevelConfigUtils;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -222,6 +226,24 @@ public class GameFragment extends BaseFragment {
         mIvAuditionRoom.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+//                if (true) {
+//                    UserInfoManager.getInstance().getUserInfoByUuid(1343088, new UserInfoManager.ResultCallback<UserInfoModel>() {
+//                        @Override
+//                        public boolean onGetLocalDB(UserInfoModel o) {
+//                            return false;
+//                        }
+//
+//                        @Override
+//                        public boolean onGetServer(UserInfoModel o) {
+//                            GrabInviteNotifyEvent event = new GrabInviteNotifyEvent();
+//                            event.mUserInfoModel = o;
+//                            event.roomID = 1000;
+//                            EventBus.getDefault().post(event);
+//                            return false;
+//                        }
+//                    });
+//                    return;
+//                }
                 U.getSoundUtils().play(TAG, R.raw.home_practice, 500);
                 long tag = System.currentTimeMillis();
                 clickAnimation(mIvAuditionRoom, null, tag);
@@ -478,7 +500,7 @@ public class GameFragment extends BaseFragment {
                     mIsKConfig = true;
                     GameKConfigModel gameKConfigModel = JSON.parseObject(result.getData().getString("common"), GameKConfigModel.class);
                     showGameKConfig(gameKConfigModel);
-                    U.getPreferenceUtils().setSettingBoolean(EngineManager.PREF_KEY_TOKEN_ENABLE,gameKConfigModel.isAgoraTokenEnable());
+                    U.getPreferenceUtils().setSettingBoolean(EngineManager.PREF_KEY_TOKEN_ENABLE, gameKConfigModel.isAgoraTokenEnable());
                     GameKConfigModel.HomepagesitefirstBean homepagesitefirstBean = gameKConfigModel.getHomepagesitefirst();
                     if (homepagesitefirstBean != null && homepagesitefirstBean.isEnable()) {
                         AvatarUtils.loadAvatarByUrl(mIvOpFirst,

@@ -8,9 +8,9 @@ import android.view.View;
  */
 
 public abstract class IFloatWindow {
-    public abstract void show();
+    public abstract void show(String from);
 
-    public abstract void hide();
+    public abstract void hide(String from);
 
     public abstract boolean isShowing();
 

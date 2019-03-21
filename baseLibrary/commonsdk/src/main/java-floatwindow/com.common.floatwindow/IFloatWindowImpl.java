@@ -14,7 +14,11 @@ import android.view.ViewConfiguration;
 import android.view.animation.DecelerateInterpolator;
 
 import com.common.log.MyLog;
+import com.common.utils.ActivityUtils;
 import com.common.utils.U;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 /**
  * Created by yhao on 2017/12/22.
@@ -27,7 +31,7 @@ public class IFloatWindowImpl extends IFloatWindow {
     private FloatView mFloatView;
     private FloatLifecycle mFloatLifecycle;
     private boolean isShow;
-    private boolean once = true;
+    private boolean mFirst = true;
     private ValueAnimator mAnimator;
     private TimeInterpolator mDecelerateInterpolator;
     private float downX;
@@ -36,7 +40,6 @@ public class IFloatWindowImpl extends IFloatWindow {
     private float upY;
     private boolean mClick = false;
     private int mSlop;
-
 
     private IFloatWindowImpl() {
 
@@ -56,35 +59,44 @@ public class IFloatWindowImpl extends IFloatWindow {
         }
         mFloatLifecycle = new FloatLifecycle(mB.mApplicationContext, mB.mShow, mB.mActivities, new LifecycleListener() {
             @Override
-            public void onShow() {
+            public void onShow(String from) {
                 // Activity 的 onResume 中响应
-                show();
+                show(from);
             }
 
             @Override
-            public void onHide() {
-                hide();
+            public void onHide(String from) {
+                hide(from);
             }
 
-            @Override
-            public void onBackToDesktop() {
-                if (!mB.mDesktopShow) {
-                    hide();
-                }
-                if (mB.mViewStateListener != null) {
-                    mB.mViewStateListener.onBackToDesktop();
-                }
-            }
         });
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Subscribe
+    public void onEvent(ActivityUtils.ForeOrBackgroundChange event) {
+        if (!event.foreground) {
+            if (!mB.mDesktopShow) {
+                hide("回到桌面");
+            }
+            if (mB.mViewStateListener != null) {
+                mB.mViewStateListener.onBackToDesktop();
+            }
+        } else {
+            if (mFloatLifecycle.needShow(U.getActivityUtils().getTopActivity())) {
+                show("从桌面返回");
+            }
+        }
     }
 
     @Override
-    public void show() {
-        MyLog.d(TAG, "show once=" + once + " isShow=" + isShow);
-
-        if (once) {
+    public void show(String from) {
+        MyLog.d(TAG, "show mFirst=" + mFirst + " isShow=" + isShow + " from=" + from);
+        if (mFirst) {
             mFloatView.init();
-            once = false;
+            mFirst = false;
             isShow = true;
         } else {
             if (isShow) {
@@ -99,8 +111,9 @@ public class IFloatWindowImpl extends IFloatWindow {
     }
 
     @Override
-    public void hide() {
-        if (once || !isShow) {
+    public void hide(String from) {
+        MyLog.d(TAG, "hide once=" + mFirst + " isShow=" + isShow + " from=" + from);
+        if (mFirst || !isShow) {
             return;
         }
         getView().setVisibility(View.INVISIBLE);
@@ -117,11 +130,13 @@ public class IFloatWindowImpl extends IFloatWindow {
 
     @Override
     void dismiss() {
+        MyLog.d(TAG, "dismiss");
         mFloatView.dismiss();
         isShow = false;
         if (mB.mViewStateListener != null) {
             mB.mViewStateListener.onDismiss();
         }
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -268,7 +283,6 @@ public class IFloatWindowImpl extends IFloatWindow {
                 });
         }
     }
-
 
     private void startAnimator() {
         if (mB.mInterpolator == null) {

@@ -7,9 +7,8 @@ package com.common.floatwindow;
 
 interface LifecycleListener {
 
-    void onShow();
+    void onShow(String from);
 
-    void onHide();
+    void onHide(String from);
 
-    void onBackToDesktop();
 }

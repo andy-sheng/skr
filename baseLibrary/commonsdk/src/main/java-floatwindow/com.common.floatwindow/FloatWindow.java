@@ -80,7 +80,6 @@ public class FloatWindow {
         TimeInterpolator mInterpolator;
         private String mTag = mDefaultTag;
         boolean mDesktopShow;
-        PermissionListener mPermissionListener;
         ViewStateListener mViewStateListener;
         boolean cancelIfExist = false;// true 取消，如果该tag的window以及存在了。false会销毁之前的再新建
         boolean reqPermissionIfNeed = true;// true 如果没有权限则会申请权限，false 没有权限不会申请就用别的方式兼容
@@ -201,11 +200,6 @@ public class FloatWindow {
             return this;
         }
 
-        public B setPermissionListener(PermissionListener listener) {
-            mPermissionListener = listener;
-            return this;
-        }
-
         public B setViewStateListener(ViewStateListener listener) {
             mViewStateListener = listener;
             return this;
@@ -243,7 +237,7 @@ public class FloatWindow {
                 mView = inflate.inflate(mLayoutId, null);
             }
             IFloatWindow floatWindowImpl = new IFloatWindowImpl(this);
-            floatWindowImpl.show();
+            floatWindowImpl.show("build");
             mFloatWindowMap.put(mTag, floatWindowImpl);
         }
 

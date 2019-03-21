@@ -62,36 +62,11 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabInviteNotifyEvent event) {
-        // TODO: 2019/3/20   一场到底邀请 端内
+        showGrabInviteFloatWindow(event.mUserInfoModel, event.roomID);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabInviteFromSchemeEvent event) {
-        if (true) {
-            UserInfoManager.getInstance().getUserInfoByUuid(event.ownerId, new UserInfoManager.ResultCallback<UserInfoModel>() {
-                @Override
-                public boolean onGetLocalDB(UserInfoModel o) {
-                    return false;
-                }
-
-                @Override
-                public boolean onGetServer(UserInfoModel userInfoModel) {
-                    if (userInfoModel != null) {
-                        mUiHandler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                showGrabInviteFloatWindow(userInfoModel);
-                            }
-                        },3000);
-
-                    }
-                    return false;
-                }
-            });
-
-            return;
-        }
-
         // TODO: 2019/3/20   一场到底邀请 口令
         if (event.ask == 1) {
             // 需要再次确认弹窗
@@ -130,7 +105,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
-    void showGrabInviteFloatWindow(UserInfoModel userInfoModel) {
+    void showGrabInviteFloatWindow(UserInfoModel userInfoModel, int roomID) {
         mUiHandler.removeMessages(MSG_DISMISS_INVITE_FLOAT_WINDOW);
         mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_INVITE_FLOAT_WINDOW, 50000);
         GrabInviteNotifyView grabInviteNotifyView = new GrabInviteNotifyView(U.app());
@@ -144,13 +119,12 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
 
             @Override
             public void onAgree() {
-                tryGoGrabRoom(100);
+                tryGoGrabRoom(roomID);
                 mUiHandler.removeMessages(MSG_DISMISS_INVITE_FLOAT_WINDOW);
                 FloatWindow.destroy(TAG_INVITE_FOALT_WINDOW);
             }
         });
-        FloatWindow
-                .with(U.app())
+        FloatWindow.with(U.app())
                 .setView(grabInviteNotifyView)
                 .setMoveType(MoveType.inactive)
                 .setWidth(Screen.width, 1f)                               //设置控件宽高
@@ -158,10 +132,9 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
 //                                .setX(100)                                   //设置控件初始位置
 //                                .setY(Screen.height,0.3f)
                 .setDesktopShow(false)                        //桌面显示
-                .setCancelIfExist(true)
+                .setCancelIfExist(false)
                 .setReqPermissionIfNeed(false)
                 .setViewStateListener(null)    //监听悬浮控件状态改变
-                .setPermissionListener(null)  //监听权限申请结果
                 .setTag(TAG_INVITE_FOALT_WINDOW)
                 .build();
     }
