@@ -5,9 +5,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -22,10 +25,12 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.titlebar.CommonTitleBar;
 import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
 import com.component.busilib.R;
+import com.component.busilib.constans.GrabRoomType;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.zq.relation.view.RelationView;
 
@@ -63,6 +68,10 @@ public class RelationFragment extends BaseFragment {
     TextView mFans;
     TextView mFollow;
 
+    PopupWindow mPopupWindow;  // 弹窗
+    RelativeLayout mSearchArea;
+    RelativeLayout mInviteArea;
+
     PagerAdapter mTabPagerAdapter;
 
     int mFriendNum = 0;  // 好友数
@@ -89,15 +98,44 @@ public class RelationFragment extends BaseFragment {
         mFollow = (TextView) mRootView.findViewById(R.id.follow);
 
 
-        RxView.clicks(mTitlebar.getLeftTextView())
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        //U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
-                        U.getFragmentUtils().popFragment(RelationFragment.this);
-                    }
-                });
+        LinearLayout linearLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.add_friend_pop_window_layout, null);
+        mSearchArea = (RelativeLayout) linearLayout.findViewById(R.id.search_area);
+        mInviteArea = (RelativeLayout) linearLayout.findViewById(R.id.invite_area);
+        mPopupWindow = new PopupWindow(linearLayout);
+        mPopupWindow.setOutsideTouchable(true);
+
+        mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                U.getFragmentUtils().popFragment(RelationFragment.this);
+            }
+        });
+
+        mTitlebar.getRightImageButton().setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mPopupWindow != null && mPopupWindow.isShowing()) {
+                    mPopupWindow.dismiss();
+                }
+                mPopupWindow.setWidth(U.getDisplayUtils().dip2px(118));
+                mPopupWindow.setHeight(U.getDisplayUtils().dip2px(130));
+                mPopupWindow.showAsDropDown(mTitlebar.getRightImageButton(), -U.getDisplayUtils().dip2px(80), -U.getDisplayUtils().dip2px(5));
+            }
+        });
+
+        mSearchArea.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+
+            }
+        });
+
+        mInviteArea.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+
+            }
+        });
 
         mTitleAndViewMap.put(0, new RelationView(getContext(), UserInfoManager.RELATION_FRIENDS));
         mTitleAndViewMap.put(1, new RelationView(getContext(), UserInfoManager.RELATION_FANS));

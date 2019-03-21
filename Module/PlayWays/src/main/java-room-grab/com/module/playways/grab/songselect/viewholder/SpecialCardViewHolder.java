@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -29,10 +30,10 @@ public class SpecialCardViewHolder extends RecyclerView.ViewHolder {
     public SpecialCardViewHolder(View itemView) {
         super(itemView);
 
-        mBackground = (RelativeLayout)itemView.findViewById(R.id.background);
-        mSpecialTv = (ExTextView)itemView.findViewById(R.id.special_tv);
-        mIntroductionTv = (ExTextView)itemView.findViewById(R.id.introduction_tv);
-        mSpecialIv = (ExImageView)itemView.findViewById(R.id.special_iv);
+        mBackground = (RelativeLayout) itemView.findViewById(R.id.background);
+        mSpecialTv = (ExTextView) itemView.findViewById(R.id.special_tv);
+        mIntroductionTv = (ExTextView) itemView.findViewById(R.id.introduction_tv);
+        mSpecialIv = (ExImageView) itemView.findViewById(R.id.special_iv);
 
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,12 +50,16 @@ public class SpecialCardViewHolder extends RecyclerView.ViewHolder {
         this.mPosition = postion;
         if (postion % 3 == 0) {
             mSpecialIv.setBackground(U.getDrawable(R.drawable.grab_special_1));
-        }else if (postion % 3 == 1){
+        } else if (postion % 3 == 1) {
             mSpecialIv.setBackground(U.getDrawable(R.drawable.grab_special_2));
-        }else if (postion % 3 == 2){
+        } else if (postion % 3 == 2) {
             mSpecialIv.setBackground(U.getDrawable(R.drawable.grab_special_3));
         }
-        mBackground.setBackground(getShapeDrawable(Color.parseColor(specialModel.getBgColor())));
+        if (!TextUtils.isEmpty(specialModel.getBgColor())) {
+            mBackground.setBackground(getShapeDrawable(Color.parseColor(specialModel.getBgColor())));
+        } else {
+            mBackground.setBackground(getShapeDrawable(Color.parseColor("#68ABD3")));
+        }
         mSpecialTv.setText(this.mSpecialModel.getTagName());
         mIntroductionTv.setText(this.mSpecialModel.getIntroduction());
     }

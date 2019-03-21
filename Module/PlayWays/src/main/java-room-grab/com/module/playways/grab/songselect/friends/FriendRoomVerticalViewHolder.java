@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -61,8 +62,15 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
         this.mFriendRoomModel = friendRoomModel;
         this.position = position;
 
-        mBackground.setBackground(getShapeDrawable(Color.parseColor(friendRoomModel.getPlayTag().getBgColor())));
-        mTagNameTv.setText(friendRoomModel.getPlayTag().getTagName());
+        if (friendRoomModel.getPlayTag() != null && !TextUtils.isEmpty(friendRoomModel.getPlayTag().getBgColor())) {
+            mBackground.setBackground(getShapeDrawable(Color.parseColor(friendRoomModel.getPlayTag().getBgColor())));
+        } else {
+            mBackground.setBackground(getShapeDrawable(Color.parseColor("#68ABD3")));
+        }
+
+        if (friendRoomModel.getPlayTag() != null) {
+            mTagNameTv.setText(friendRoomModel.getPlayTag().getTagName());
+        }
 
         AvatarUtils.loadAvatarByUrl(mAvatarIv,
                 AvatarUtils.newParamsBuilder(friendRoomModel.getInfo().getAvatar())
