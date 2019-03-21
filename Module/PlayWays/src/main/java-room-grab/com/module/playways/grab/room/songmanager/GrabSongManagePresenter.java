@@ -21,16 +21,20 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import io.reactivex.disposables.Disposable;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
 public class GrabSongManagePresenter extends RxLifeCyclePresenter {
     public final static String TAG = "GrabSongManagePresenter";
+
     IGrabSongManageView mIGrabSongManageView;
 
     GrabRoomServerApi mGrabRoomServerApi;
 
     GrabRoomData mGrabRoomData;
+
+    Disposable mGetTagsTask;
 
     List<SpecialModel> mSpecialModelList;
 
@@ -51,12 +55,20 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
             return;
         }
 
-        ApiMethods.subscribe(mGrabRoomServerApi.getSepcialList(0, 20), new ApiObserver<ApiResult>() {
+        if (mGetTagsTask != null && !mGetTagsTask.isDisposed()) {
+            MyLog.w(TAG, "已经加载中了...");
+            return;
+        }
+
+        mGetTagsTask = ApiMethods.subscribeWith(mGrabRoomServerApi.getSepcialList(0, 20), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult obj) {
                 if (obj.getErrno() == 0) {
                     mSpecialModelList = JSON.parseArray(obj.getData().getString("tags"), SpecialModel.class);
-                    mIGrabSongManageView.showTagList(mSpecialModelList);
+                    if (mSpecialModelList != null && mSpecialModelList.size() > 0) {
+
+                        mIGrabSongManageView.showTagList(mSpecialModelList);
+                    }
                 } else {
                     MyLog.d(TAG, "getTagList failed, " + "result is " + obj.toString());
                 }

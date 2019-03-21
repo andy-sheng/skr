@@ -1,13 +1,17 @@
 package com.module.playways.grab.room.songmanager.tags;
 
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.common.image.fresco.BaseImageView;
+import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
+import com.common.view.ex.drawable.DrawableCreator;
 import com.common.view.recyclerview.DiffAdapter;
 import com.module.playways.grab.songselect.model.SpecialModel;
 import com.module.rank.R;
@@ -40,39 +44,33 @@ public class GrabTagsAdapter extends DiffAdapter<SpecialModel, RecyclerView.View
         return mDataList.size();
     }
 
-    private static class ItemHolder extends RecyclerView.ViewHolder {
-        BaseImageView mIvFriendIcon;
-        ExTextView mIvFriendName;
-        ExTextView mTvState;
-        ExTextView mTvInvite;
-
-        SpecialModel mWalletRecordModel;
+    private class ItemHolder extends RecyclerView.ViewHolder {
+        ExTextView mTvSelectedTag;
+        SpecialModel mSpecialModel;
 
         public ItemHolder(View itemView) {
             super(itemView);
-            mIvFriendIcon = (BaseImageView) itemView.findViewById(R.id.iv_friend_icon);
-            mIvFriendName = (ExTextView) itemView.findViewById(R.id.iv_friend_name);
-            mTvState = (ExTextView) itemView.findViewById(R.id.tv_state);
-            mTvInvite = (ExTextView) itemView.findViewById(R.id.tv_invite);
+            mTvSelectedTag = (ExTextView) itemView.findViewById(R.id.tv_selected_tag);
+            mTvSelectedTag.setOnClickListener(new DebounceViewClickListener() {
+                @Override
+                public void clickValid(View v) {
+                    if(mOnTagClickListener != null){
+                        mOnTagClickListener.onClick(mSpecialModel);
+                    }
+                }
+            });
         }
 
         public void bind(SpecialModel model) {
-            this.mWalletRecordModel = model;
-
-
-            /**
-             * WFS_UNKNOWN = 0; //未知
-             *     WFS_AUDIT = 1;//审核中
-             *     WFS_SUCCESS =2; //提现成功
-             *     WFS_FAIL =3; //提现失败
-             */
-//            if (1 == state) {
-//                mTvState.setTextColor(Color.parseColor("#EF5E85"));
-//            } else if (2 == state) {
-//                mTvState.setTextColor(Color.parseColor("#B7BED5"));
-//            } else if (3 == state) {
-//                mTvState.setTextColor(Color.parseColor("#EF5E85"));
-//            }
+            this.mSpecialModel = model;
+            Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(45))
+                    .setStrokeColor(Color.parseColor("#202239"))
+                    .setStrokeWidth(U.getDisplayUtils().dip2px(2))
+                    .setSolidColor(Color.parseColor("#9B6C43"))
+                    .setCornersRadius(U.getDisplayUtils().dip2px(8))
+                    .build();
+            itemView.setBackground(drawable);
+            mTvSelectedTag.setText(model.getTagName());
         }
     }
 

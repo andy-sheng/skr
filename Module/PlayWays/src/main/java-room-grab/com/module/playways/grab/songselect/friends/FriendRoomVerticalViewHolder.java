@@ -61,13 +61,8 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
         this.mFriendRoomModel = friendRoomModel;
         this.position = position;
 
-        if (position % 3 == 0) {
-            mBackground.setBackground(getShapeDrawable(Color.parseColor("#9B6C43")));
-        } else if (position % 3 == 1) {
-            mBackground.setBackground(getShapeDrawable(Color.parseColor("#D04774")));
-        } else if (position % 3 == 2) {
-            mBackground.setBackground(getShapeDrawable(Color.parseColor("#68ABD3")));
-        }
+        mBackground.setBackground(getShapeDrawable(Color.parseColor(friendRoomModel.getPlayTag().getBgColor())));
+        mTagNameTv.setText(friendRoomModel.getPlayTag().getTagName());
 
         AvatarUtils.loadAvatarByUrl(mAvatarIv,
                 AvatarUtils.newParamsBuilder(friendRoomModel.getInfo().getAvatar())
@@ -77,7 +72,6 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
                         .build());
 
         mNameTv.setText(friendRoomModel.getInfo().getNickname());
-        mTagNameTv.setText(friendRoomModel.getTagName());
         mRoomNumTv.setText(friendRoomModel.getCurrNum() + "/" + friendRoomModel.getPlaysNum());
         if (friendRoomModel.isIsOwner()) {
             mOwnerTv.setVisibility(View.VISIBLE);

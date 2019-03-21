@@ -3,16 +3,17 @@ package com.module.playways.grab.songselect.model;
 import java.io.Serializable;
 
 public class SpecialModel implements Serializable {
-
     /**
-     * tagID : 2
-     * tagName : 流行
-     * introduction :
+     * tagID : 8
+     * tagName : 疯狂00后
+     * introduction : 请开始你的表演
+     * bgColor : #9B6C43
      */
 
     private int tagID;
     private String tagName;
     private String introduction;
+    private String bgColor;
 
     public int getTagID() {
         return tagID;
@@ -38,12 +39,11 @@ public class SpecialModel implements Serializable {
         this.introduction = introduction;
     }
 
-    @Override
-    public String toString() {
-        return "SpecialModel{" +
-                "tagID=" + tagID +
-                ", tagName='" + tagName + '\'' +
-                ", introduction='" + introduction + '\'' +
-                '}';
+    public String getBgColor() {
+        return bgColor;
+    }
+
+    public void setBgColor(String bgColor) {
+        this.bgColor = bgColor;
     }
 }

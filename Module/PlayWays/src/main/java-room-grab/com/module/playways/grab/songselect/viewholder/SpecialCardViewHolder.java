@@ -48,15 +48,13 @@ public class SpecialCardViewHolder extends RecyclerView.ViewHolder {
         this.mSpecialModel = specialModel;
         this.mPosition = postion;
         if (postion % 3 == 0) {
-            mBackground.setBackground(getShapeDrawable(Color.parseColor("#9B6C43")));
             mSpecialIv.setBackground(U.getDrawable(R.drawable.grab_special_1));
         }else if (postion % 3 == 1){
-            mBackground.setBackground(getShapeDrawable(Color.parseColor("#D04774")));
             mSpecialIv.setBackground(U.getDrawable(R.drawable.grab_special_2));
         }else if (postion % 3 == 2){
-            mBackground.setBackground(getShapeDrawable(Color.parseColor("#68ABD3")));
             mSpecialIv.setBackground(U.getDrawable(R.drawable.grab_special_3));
         }
+        mBackground.setBackground(getShapeDrawable(Color.parseColor(specialModel.getBgColor())));
         mSpecialTv.setText(this.mSpecialModel.getTagName());
         mIntroductionTv.setText(this.mSpecialModel.getIntroduction());
     }

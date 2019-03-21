@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.common.core.avatar.AvatarUtils;
-import com.common.core.myinfo.MyUserInfoManager;
 import com.common.image.fresco.BaseImageView;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -18,7 +17,6 @@ import com.common.view.ex.drawable.DrawableCreator;
 import com.common.view.recyclerview.DiffAdapter;
 import com.module.playways.grab.room.model.GrabFriendModel;
 import com.module.rank.R;
-import com.zq.live.proto.Common.ESex;
 
 public class InviteFirendAdapter extends DiffAdapter<GrabFriendModel, RecyclerView.ViewHolder> {
     OnInviteClickListener mOnInviteClickListener;
@@ -55,7 +53,12 @@ public class InviteFirendAdapter extends DiffAdapter<GrabFriendModel, RecyclerVi
         ExTextView mTvInvite;
         ExTextView mTvCircleState;
 
-        GrabFriendModel mWalletRecordModel;
+        GrabFriendModel mGrabFriendModel;
+
+        Drawable mBusyCircleDrawable;
+        Drawable mAIDLCircleDrawable;
+        Drawable mCanInviteBtnDrawable;
+        Drawable mCannotInviteDrawable;
 
         public ItemHolder(View itemView) {
             super(itemView);
@@ -69,14 +72,38 @@ public class InviteFirendAdapter extends DiffAdapter<GrabFriendModel, RecyclerVi
                 @Override
                 public void clickValid(View v) {
                     if (mOnInviteClickListener != null) {
-                        mOnInviteClickListener.onClick(mWalletRecordModel);
+                        mOnInviteClickListener.onClick(mGrabFriendModel);
                     }
                 }
             });
+
+            mBusyCircleDrawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(45))
+                    .setSolidColor(Color.parseColor("#FFC300"))
+                    .setCornersRadius(U.getDisplayUtils().dip2px(4))
+                    .build();
+
+            mAIDLCircleDrawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(45))
+                    .setSolidColor(Color.parseColor("#7ED321"))
+                    .setCornersRadius(U.getDisplayUtils().dip2px(4))
+                    .build();
+
+            mCanInviteBtnDrawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(45))
+                    .setStrokeColor(Color.parseColor("#202239"))
+                    .setStrokeWidth(U.getDisplayUtils().dip2px(2))
+                    .setSolidColor(Color.parseColor("#484B63"))
+                    .setCornersRadius(U.getDisplayUtils().dip2px(8))
+                    .build();
+
+            mCannotInviteDrawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(45))
+                    .setStrokeColor(Color.parseColor("#202239"))
+                    .setStrokeWidth(U.getDisplayUtils().dip2px(2))
+                    .setSolidColor(Color.parseColor("#D36060"))
+                    .setCornersRadius(U.getDisplayUtils().dip2px(8))
+                    .build();
         }
 
         public void bind(GrabFriendModel model) {
-            this.mWalletRecordModel = model;
+            this.mGrabFriendModel = model;
             AvatarUtils.loadAvatarByUrl(mIvFriendIcon,
                     AvatarUtils.newParamsBuilder(model.getAvatar())
                             .setCircle(true)
@@ -89,41 +116,19 @@ public class InviteFirendAdapter extends DiffAdapter<GrabFriendModel, RecyclerVi
             if (model.getStatus() == 1) {
                 mTvState.setText("忙碌中");
                 mTvInvite.setVisibility(View.GONE);
-                Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(45))
-                        .setSolidColor(Color.parseColor("#FFC300"))
-                        .setCornersRadius(U.getDisplayUtils().dip2px(4))
-                        .build();
-                mTvCircleState.setBackground(drawable);
+                mTvCircleState.setBackground(mBusyCircleDrawable);
             } else if (model.getStatus() == 2) {
                 mTvState.setText("可邀请");
                 mTvInvite.setVisibility(View.VISIBLE);
-                Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(45))
-                        .setSolidColor(Color.parseColor("#7ED321"))
-                        .setCornersRadius(U.getDisplayUtils().dip2px(4))
-                        .build();
-                mTvCircleState.setBackground(drawable);
+                mTvCircleState.setBackground(mAIDLCircleDrawable);
             }
 
             if (model.isInvited()) {
-                Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(45))
-                        .setStrokeColor(Color.parseColor("#202239"))
-                        .setStrokeWidth(U.getDisplayUtils().dip2px(2))
-                        .setSolidColor(Color.parseColor("#484B63"))
-                        .setCornersRadius(U.getDisplayUtils().dip2px(8))
-                        .build();
-
-                mTvInvite.setBackground(drawable);
+                mTvInvite.setBackground(mCanInviteBtnDrawable);
                 mTvInvite.setTextColor(U.getColor(R.color.white_trans_70));
                 mTvInvite.setEnabled(false);
             } else {
-                Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(45))
-                        .setStrokeColor(Color.parseColor("#202239"))
-                        .setStrokeWidth(U.getDisplayUtils().dip2px(2))
-                        .setSolidColor(Color.parseColor("#D36060"))
-                        .setCornersRadius(U.getDisplayUtils().dip2px(8))
-                        .build();
-
-                mTvInvite.setBackground(drawable);
+                mTvInvite.setBackground(mCannotInviteDrawable);
                 mTvInvite.setTextColor(U.getColor(R.color.white));
                 mTvInvite.setEnabled(true);
             }
