@@ -1,4 +1,4 @@
-package com.module.playways.grab.songselect.model;
+package com.module.playways.grab.songselect.friends;
 
 import com.common.core.userinfo.model.UserInfoModel;
 

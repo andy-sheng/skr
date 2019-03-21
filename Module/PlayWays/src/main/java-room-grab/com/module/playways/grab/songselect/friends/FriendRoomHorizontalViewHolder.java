@@ -1,21 +1,19 @@
-package com.module.playways.grab.songselect.viewholder;
+package com.module.playways.grab.songselect.friends;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.common.core.avatar.AvatarUtils;
-import com.common.core.myinfo.MyUserInfoManager;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.module.playways.grab.songselect.model.FriendRoomModel;
 import com.module.rank.R;
 import com.zq.live.proto.Common.ESex;
 
-public class FriendRoomHorizViewHolder extends RecyclerView.ViewHolder {
+public class FriendRoomHorizontalViewHolder extends RecyclerView.ViewHolder {
 
     RecyclerOnItemClickListener<FriendRoomModel> mOnItemClickListener;
 
@@ -26,7 +24,7 @@ public class FriendRoomHorizViewHolder extends RecyclerView.ViewHolder {
     FriendRoomModel mFriendRoomModel;
     int position;
 
-    public FriendRoomHorizViewHolder(View itemView) {
+    public FriendRoomHorizontalViewHolder(View itemView) {
         super(itemView);
 
         mAvatarIv = (SimpleDraweeView) itemView.findViewById(R.id.avatar_iv);

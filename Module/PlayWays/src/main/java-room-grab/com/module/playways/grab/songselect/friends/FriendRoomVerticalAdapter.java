@@ -1,4 +1,4 @@
-package com.module.playways.grab.songselect.adapter;
+package com.module.playways.grab.songselect.friends;
 
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -7,29 +7,27 @@ import android.view.ViewGroup;
 
 import com.common.view.recyclerview.DiffAdapter;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
-import com.module.playways.grab.songselect.model.FriendRoomModel;
-import com.module.playways.grab.songselect.viewholder.FriendRoomVeritViewHolder;
 import com.module.rank.R;
 
-public class FriendRoomVeritAdapter extends DiffAdapter<FriendRoomModel, FriendRoomVeritViewHolder> {
+public class FriendRoomVerticalAdapter extends DiffAdapter<FriendRoomModel, FriendRoomVerticalViewHolder> {
 
     RecyclerOnItemClickListener<FriendRoomModel> mOnItemClickListener;
 
-    public FriendRoomVeritAdapter(RecyclerOnItemClickListener mOnItemClickListener) {
+    public FriendRoomVerticalAdapter(RecyclerOnItemClickListener mOnItemClickListener) {
         this.mOnItemClickListener = mOnItemClickListener;
     }
 
     @NonNull
     @Override
-    public FriendRoomVeritViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public FriendRoomVerticalViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.friend_room_verit_item_layout, parent, false);
-        FriendRoomVeritViewHolder itemHolder = new FriendRoomVeritViewHolder(view);
+        FriendRoomVerticalViewHolder itemHolder = new FriendRoomVerticalViewHolder(view);
         itemHolder.setOnItemClickListener(mOnItemClickListener);
         return itemHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FriendRoomVeritViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FriendRoomVerticalViewHolder holder, int position) {
         FriendRoomModel friendRoomModel = mDataList.get(position);
         holder.bindData(friendRoomModel, position);
     }

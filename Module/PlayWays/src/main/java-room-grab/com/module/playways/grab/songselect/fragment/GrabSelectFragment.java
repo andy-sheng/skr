@@ -23,8 +23,9 @@ import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.constans.GameModeType;
 import com.module.RouterConstants;
 import com.module.playways.grab.songselect.GrabSongApi;
-import com.module.playways.grab.songselect.adapter.FriendRoomHorizAdapter;
-import com.module.playways.grab.songselect.model.FriendRoomModel;
+import com.module.playways.grab.songselect.friends.FriendRoomHorizontalAdapter;
+import com.module.playways.grab.songselect.friends.FriendRoomModel;
+import com.module.playways.grab.songselect.friends.GrabFriendsRoomFragment;
 import com.module.playways.grab.songselect.model.SpecialModel;
 import com.module.playways.grab.songselect.view.SpecialSelectView;
 import com.module.playways.rank.prepare.model.PrepareData;
@@ -46,7 +47,7 @@ public class GrabSelectFragment extends BaseFragment {
     ExTextView mFastBeginTv;
     SpecialSelectView mSpecialView;
 
-    FriendRoomHorizAdapter mFriendRoomAdapter;
+    FriendRoomHorizontalAdapter mFriendRoomAdapter;
 
     int offset = 0;          //偏移量
     int DEFAULT_COUNT = 10;  // 每次拉去列表数目
@@ -105,7 +106,7 @@ public class GrabSelectFragment extends BaseFragment {
         });
 
         mFriendsRecycle.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        mFriendRoomAdapter = new FriendRoomHorizAdapter(new RecyclerOnItemClickListener() {
+        mFriendRoomAdapter = new FriendRoomHorizontalAdapter(new RecyclerOnItemClickListener() {
             @Override
             public void onItemClicked(View view, int position, Object model) {
                 // TODO: 2019/3/20 点击事件处理

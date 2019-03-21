@@ -1,4 +1,4 @@
-package com.module.playways.grab.songselect.viewholder;
+package com.module.playways.grab.songselect.friends;
 
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -13,11 +13,10 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.module.playways.grab.songselect.model.FriendRoomModel;
 import com.module.rank.R;
 import com.zq.live.proto.Common.ESex;
 
-public class FriendRoomVeritViewHolder extends RecyclerView.ViewHolder {
+public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
 
     RecyclerOnItemClickListener<FriendRoomModel> mOnItemClickListener;
 
@@ -32,7 +31,7 @@ public class FriendRoomVeritViewHolder extends RecyclerView.ViewHolder {
     ExTextView mRoomNumTv;
     ExTextView mTagNameTv;
 
-    public FriendRoomVeritViewHolder(View itemView) {
+    public FriendRoomVerticalViewHolder(View itemView) {
         super(itemView);
 
         mBackground = (RelativeLayout) itemView.findViewById(R.id.background);

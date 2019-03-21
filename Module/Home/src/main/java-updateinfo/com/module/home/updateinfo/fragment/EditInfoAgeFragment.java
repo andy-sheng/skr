@@ -41,8 +41,8 @@ import io.reactivex.functions.Consumer;
 public class EditInfoAgeFragment extends BaseFragment {
 
     boolean mIsUpload = false; //当前是否是完善个人资料
-    String uploadNickname;    //完善资料的昵称
-    int uploadSex;            // 未知、非法参数
+    String mUploadNickname;    //完善资料的昵称
+    int mUploadSex;            // 未知、非法参数
 
 
     RelativeLayout mMainActContainer;
@@ -115,8 +115,8 @@ public class EditInfoAgeFragment extends BaseFragment {
 
             mCompleteTv.setVisibility(View.VISIBLE);
             mIsUpload = bundle.getBoolean(UploadAccountInfoActivity.BUNDLE_IS_UPLOAD);
-            uploadNickname = bundle.getString(UploadAccountInfoActivity.BUNDLE_UPLOAD_NICKNAME);
-            uploadSex = bundle.getInt(UploadAccountInfoActivity.BUNDLE_UPLOAD_SEX);
+            mUploadNickname = bundle.getString(UploadAccountInfoActivity.BUNDLE_UPLOAD_NICKNAME);
+            mUploadSex = bundle.getInt(UploadAccountInfoActivity.BUNDLE_UPLOAD_SEX);
         }
     }
 
@@ -149,7 +149,7 @@ public class EditInfoAgeFragment extends BaseFragment {
                     // 上传个人信息
                     String bir = U.getDateTimeUtils().formatSpecailDateString(date);
                     MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
-                            .setNickName(uploadNickname).setSex(uploadSex).setBirthday(bir)
+                            .setNickName(mUploadNickname).setSex(mUploadSex).setBirthday(bir)
                             .build(), true, true, new MyUserInfoManager.ServerCallback() {
                         @Override
                         public void onSucess() {

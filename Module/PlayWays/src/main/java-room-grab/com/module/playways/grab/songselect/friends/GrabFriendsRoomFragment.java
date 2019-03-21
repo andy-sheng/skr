@@ -1,4 +1,4 @@
-package com.module.playways.grab.songselect.fragment;
+package com.module.playways.grab.songselect.friends;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,8 +18,6 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.playways.grab.songselect.GrabSongApi;
-import com.module.playways.grab.songselect.adapter.FriendRoomVeritAdapter;
-import com.module.playways.grab.songselect.model.FriendRoomModel;
 import com.module.rank.R;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -36,7 +34,7 @@ public class GrabFriendsRoomFragment extends BaseFragment {
     int offset = 0;          //偏移量
     int DEFAULT_COUNT = 10;  // 每次拉去列表数目
 
-    FriendRoomVeritAdapter mFriendRoomVeritAdapter;
+    FriendRoomVerticalAdapter mFriendRoomVeritAdapter;
 
     @Override
     public int initView() {
@@ -73,7 +71,7 @@ public class GrabFriendsRoomFragment extends BaseFragment {
         });
         mContentRv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
-        mFriendRoomVeritAdapter = new FriendRoomVeritAdapter(new RecyclerOnItemClickListener() {
+        mFriendRoomVeritAdapter = new FriendRoomVerticalAdapter(new RecyclerOnItemClickListener() {
             @Override
             public void onItemClicked(View view, int position, Object model) {
                 // TODO: 2019/3/21 进入房间

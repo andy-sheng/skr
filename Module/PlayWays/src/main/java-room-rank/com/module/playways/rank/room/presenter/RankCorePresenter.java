@@ -1559,6 +1559,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         map.put("gameID", mRoomData.getGameId());
         RankRoundInfoModel infoModel = RoomDataUtils.getRoundInfoByUserId(mRoomData, (int) MyUserInfoManager.getInstance().getUid());
         if (infoModel == null) {
+            MyLog.d(TAG,"sendScoreToServer 但不是自己的轮次");
             return;
         }
         int itemID = infoModel.getPlaybookID();
