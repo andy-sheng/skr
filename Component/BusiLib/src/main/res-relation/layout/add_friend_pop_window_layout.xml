@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/view_118_dp"
+    android:layout_height="@dimen/view_130_dp"
+    android:orientation="vertical"
+    android:background="@drawable/tianjia_xialacaidan">
+
+    <RelativeLayout
+        android:id="@+id/search_area"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_59_dp">
+
+        <ImageView
+            android:layout_width="@dimen/view_22_dp"
+            android:layout_height="@dimen/view_22_dp"
+            android:layout_marginLeft="@dimen/view_14_dp"
+            android:layout_centerVertical="true"
+            android:background="@drawable/tianjia_sousuo"/>
+
+        <com.common.view.ex.ExTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/view_14_dp"
+            android:text="搜索好友"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textsize_16_dp"/>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_2_dp"
+        android:background="@color/white_trans_30" />
+
+    <RelativeLayout
+        android:id="@+id/invite_area"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_59_dp">
+
+        <ImageView
+            android:layout_width="@dimen/view_22_dp"
+            android:layout_height="@dimen/view_22_dp"
+            android:layout_marginLeft="@dimen/view_14_dp"
+            android:layout_centerVertical="true"
+            android:background="@drawable/tianjia_yaoqing"/>
+
+        <com.common.view.ex.ExTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/view_14_dp"
+            android:text="邀请好友"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textsize_16_dp"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

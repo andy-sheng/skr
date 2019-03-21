@@ -15,6 +15,8 @@
         app:centerType="textView"
         app:leftDrawable="@drawable/img_back"
         app:leftType="textView"
+        app:rightType="imageButton"
+        app:rightImageResource="@drawable/tianjia_friend_icon"
         app:showBottomLine="false"
         app:statusBarColor="#0288D0"
         app:titleBarColor="#0288D0"></com.common.view.titlebar.CommonTitleBar>
