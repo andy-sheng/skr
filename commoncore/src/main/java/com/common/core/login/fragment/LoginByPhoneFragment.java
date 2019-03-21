@@ -253,6 +253,11 @@ public class LoginByPhoneFragment extends BaseFragment {
     }
 
     @Override
+    protected void onFragmentVisible() {
+        super.onFragmentVisible();
+    }
+
+    @Override
     public boolean useEventBus() {
         return true;
     }

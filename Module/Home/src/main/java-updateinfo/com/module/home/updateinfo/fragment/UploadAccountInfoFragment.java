@@ -352,7 +352,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
     @Override
     protected void onFragmentVisible() {
         super.onFragmentVisible();
-        StatisticsAdapter.recordCountEvent("signup", "nameage_expose", null);
+        StatisticsAdapter.recordCountEvent("signup", "namesex_expose", null);
     }
 
     @Override

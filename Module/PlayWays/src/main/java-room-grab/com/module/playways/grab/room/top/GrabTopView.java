@@ -164,7 +164,7 @@ public class GrabTopView extends RelativeLayout {
         } else {
             mTvAccSwitch.setText("清唱模式");
         }
-        if (mGrabRoomData.isOwnerId()) {
+        if (mGrabRoomData.isOwner()) {
             // 是房主，肯定不能切换房间
             mTvChangeRoom.setVisibility(GONE);
         } else {

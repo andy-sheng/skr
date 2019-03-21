@@ -171,7 +171,7 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
      *
      * @return
      */
-    public boolean isOwnerId() {
+    public boolean isOwner() {
         return this.ownerId == MyUserInfoManager.getInstance().getUid();
     }
 

@@ -18,25 +18,18 @@ import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
-import com.common.core.myinfo.event.MyUserInfoEvent;
-import com.common.core.userinfo.UserInfoManager;
 import com.common.log.MyLog;
-import com.common.utils.FragmentUtils;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
 import com.dialog.view.TipsDialogView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.home.R;
-import com.module.home.updateinfo.EditInfoActivity;
 import com.module.home.updateinfo.UploadAccountInfoActivity;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
-import com.zq.live.proto.Common.ESex;
-
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -47,7 +40,7 @@ import io.reactivex.functions.Consumer;
 
 public class EditInfoAgeFragment extends BaseFragment {
 
-    boolean isUpload = false; //当前是否是完善个人资料
+    boolean mIsUpload = false; //当前是否是完善个人资料
     String uploadNickname;    //完善资料的昵称
     int uploadSex;            // 未知、非法参数
 
@@ -121,7 +114,7 @@ public class EditInfoAgeFragment extends BaseFragment {
             mTitlebar.getRightTextView().setClickable(false);
 
             mCompleteTv.setVisibility(View.VISIBLE);
-            isUpload = bundle.getBoolean(UploadAccountInfoActivity.BUNDLE_IS_UPLOAD);
+            mIsUpload = bundle.getBoolean(UploadAccountInfoActivity.BUNDLE_IS_UPLOAD);
             uploadNickname = bundle.getString(UploadAccountInfoActivity.BUNDLE_UPLOAD_NICKNAME);
             uploadSex = bundle.getInt(UploadAccountInfoActivity.BUNDLE_UPLOAD_SEX);
         }
@@ -131,7 +124,7 @@ public class EditInfoAgeFragment extends BaseFragment {
         String birthday = MyUserInfoManager.getInstance().getMyUserInfo().getBirthday();
         Calendar selectedDate = Calendar.getInstance();//系统当前时间
         if (TextUtils.isEmpty(birthday)) {
-            selectedDate.set(2000, 11,00);
+            selectedDate.set(2000, 11, 00);
         } else {
             String[] strings = birthday.split("-");
             int year = Integer.valueOf(strings[0]);
@@ -152,7 +145,7 @@ public class EditInfoAgeFragment extends BaseFragment {
                     U.getToastUtil().showShort("当前选择的出生年月无效");
                     return;
                 }
-                if (isUpload) {
+                if (mIsUpload) {
                     // 上传个人信息
                     String bir = U.getDateTimeUtils().formatSpecailDateString(date);
                     MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
@@ -163,6 +156,7 @@ public class EditInfoAgeFragment extends BaseFragment {
                             if (getActivity() != null) {
                                 getActivity().finish();
                             }
+                            StatisticsAdapter.recordCountEvent("signup", "success", null);
                         }
 
                         @Override
@@ -293,6 +287,12 @@ public class EditInfoAgeFragment extends BaseFragment {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        StatisticsAdapter.recordCountEvent("signup", "age_expose", null);
     }
 
     @Override

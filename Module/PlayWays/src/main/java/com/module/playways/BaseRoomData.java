@@ -20,8 +20,8 @@ public abstract class BaseRoomData<T extends BaseRoundInfoModel> implements Seri
 
     public final static String RANK_BATTLE_START_SVGA = "http://res-static.inframe.mobi/app/rank_battle_start.svga";
     public final static String RANK_RESULT_WIN_SVGA = "http://res-static.inframe.mobi/app/rank_result_win.svga";
-    public final static String RANK_RESULT_LOSE_SVGA ="http://res-static.inframe.mobi/app/rank_result_lose.svga";
-    public final static String RANK_RESULT_DRAW_SVGA ="http://res-static.inframe.mobi/app/rank_result_draw.svga";
+    public final static String RANK_RESULT_LOSE_SVGA = "http://res-static.inframe.mobi/app/rank_result_lose.svga";
+    public final static String RANK_RESULT_DRAW_SVGA = "http://res-static.inframe.mobi/app/rank_result_draw.svga";
     public final static String GRAB_BURST_BIG_SVGA = "http://res-static.inframe.mobi/app/grab_burst_big_animation.svga";
 
     public final static String PK_MAIN_STAGE_WEBP = "http://res-static.inframe.mobi/app/pk_main_stage.webp";
@@ -62,8 +62,8 @@ public abstract class BaseRoomData<T extends BaseRoundInfoModel> implements Seri
     protected boolean mIsGameFinish = false; // 游戏开始了
 
     protected boolean mMute = false;//是否mute
-    private String mAgoraToken;
 
+    private String mAgoraToken;
 
     public abstract int getGameType();
 
