@@ -27,9 +27,10 @@ public interface UserInfoServerApi {
 
     /**
      * 拿到某些人的信息
-     * @param body  body: {
-     *  "userIDs": [1982416,1156569]
-     * }
+     *
+     * @param body body: {
+     *             "userIDs": [1982416,1156569]
+     *             }
      * @return
      */
     @POST("/v1/query/uprofiles")
@@ -74,6 +75,20 @@ public interface UserInfoServerApi {
     Observable<ApiResult> getRelationList(@Query("relation") int relation,
                                           @Query("offset") int offset,
                                           @Query("limit") int limit);
+
+
+    /**
+     * 搜索好友列表
+     *
+     * @param searchContent  搜索好友
+     * @param offset     [必选]偏移
+     * @param limit      [必选]限制数量,最大50
+     * @return
+     */
+    @GET("/v1/user/search-users")
+    Observable<ApiResult> searchFriendsList(@Query("searchContent") String searchContent,
+                                            @Query("offset") int offset,
+                                            @Query("limit") int limit);
 
     /**
      * 获取指定用户的关系数量

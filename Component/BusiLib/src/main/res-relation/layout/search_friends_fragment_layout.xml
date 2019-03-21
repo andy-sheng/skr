@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:background="#EFEFEF">
 
     <com.common.view.titlebar.CommonTitleBar
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:bottomLineColor="#0C2275"
         app:centerSearchBg="@drawable/search_edit_shape"
         app:centerSearchEditable="true"
-        app:centerSearchHint=""
+        app:centerSearchHint="请输入撕歌号或好友昵称"
         app:centerSearchMaxLength="20"
         app:centerSearchRightType="delete"
         app:centerType="searchView"
@@ -18,7 +20,6 @@
         app:rightTextColor="@color/white"
         app:rightType="textView"
         app:showBottomLine="true"
-        app:bottomLineColor="#0C2275"
         app:statusBarColor="#0288D0"
         app:titleBarColor="#0288D0"></com.common.view.titlebar.CommonTitleBar>
 
