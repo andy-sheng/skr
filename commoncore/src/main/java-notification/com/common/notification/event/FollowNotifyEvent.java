@@ -9,13 +9,11 @@ public class FollowNotifyEvent {
     public BaseNotiInfo mBaseNotiInfo;
 
     public UserInfoModel mUserInfoModel;
-    public boolean isFriend;
-    public boolean isFollow;
 
     public FollowNotifyEvent(BaseNotiInfo baseNotiInfo, FollowMsg followMsg){
         this.mBaseNotiInfo = baseNotiInfo;
-        this.isFollow = followMsg.getIsFollow();
-        this.isFriend = followMsg.getIsFriend();
         this.mUserInfoModel = UserInfoModel.parseFromPB(followMsg.getUser());
+        this.mUserInfoModel.setFollow(followMsg.getIsFollow());
+        this.mUserInfoModel.setFriend(followMsg.getIsFriend());
     }
 }
