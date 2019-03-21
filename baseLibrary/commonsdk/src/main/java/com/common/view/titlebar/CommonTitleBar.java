@@ -302,7 +302,7 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
             // 已设置显示标题栏分隔线,5.0以下机型,显示分隔线
             viewBottomLine = new View(context);
             viewBottomLine.setBackgroundColor(bottomLineColor);
-            LayoutParams bottomLineParams = new LayoutParams(MATCH_PARENT, Math.max(1, U.getDisplayUtils().dip2px(context, 0.4f)));
+            LayoutParams bottomLineParams = new LayoutParams(MATCH_PARENT, Math.max(1, U.getDisplayUtils().dip2px(context, 2f)));
             bottomLineParams.addRule(RelativeLayout.BELOW, rlMain.getId());
 
             addView(viewBottomLine, bottomLineParams);

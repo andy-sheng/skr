@@ -9,7 +9,7 @@
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:centerSearchBg="@drawable/search_song_edit_shape"
+        app:centerSearchBg="@drawable/search_edit_shape"
         app:centerSearchEditable="true"
         app:centerSearchHint="请输入歌曲名称或歌手名字"
         app:centerSearchMaxLength="20"

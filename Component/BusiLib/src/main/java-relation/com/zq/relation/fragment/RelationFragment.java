@@ -97,7 +97,6 @@ public class RelationFragment extends BaseFragment {
         mFans = (TextView) mRootView.findViewById(R.id.fans);
         mFollow = (TextView) mRootView.findViewById(R.id.follow);
 
-
         LinearLayout linearLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.add_friend_pop_window_layout, null);
         mSearchArea = (RelativeLayout) linearLayout.findViewById(R.id.search_area);
         mInviteArea = (RelativeLayout) linearLayout.findViewById(R.id.invite_area);
@@ -118,7 +117,7 @@ public class RelationFragment extends BaseFragment {
                     mPopupWindow.dismiss();
                 }
                 mPopupWindow.setWidth(U.getDisplayUtils().dip2px(118));
-                mPopupWindow.setHeight(U.getDisplayUtils().dip2px(130));
+                mPopupWindow.setHeight(U.getDisplayUtils().dip2px(115));
                 mPopupWindow.showAsDropDown(mTitlebar.getRightImageButton(), -U.getDisplayUtils().dip2px(80), -U.getDisplayUtils().dip2px(5));
             }
         });

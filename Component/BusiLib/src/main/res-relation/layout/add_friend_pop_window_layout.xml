@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/view_118_dp"
-    android:layout_height="@dimen/view_130_dp"
+    android:layout_height="@dimen/view_115_dp"
     android:orientation="vertical"
     android:background="@drawable/tianjia_xialacaidan">
 
     <RelativeLayout
         android:id="@+id/search_area"
-        android:layout_marginTop="@dimen/view_10_dp"
+        android:layout_marginTop="@dimen/view_11_dp"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_59_dp">
+        android:layout_height="@dimen/view_52_dp">
 
         <ImageView
             android:layout_width="@dimen/view_22_dp"
@@ -30,15 +30,11 @@
 
     </RelativeLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_2_dp"
-        android:background="@color/white_trans_30" />
 
     <RelativeLayout
         android:id="@+id/invite_area"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_59_dp">
+        android:layout_height="@dimen/view_52_dp">
 
         <ImageView
             android:layout_width="@dimen/view_22_dp"

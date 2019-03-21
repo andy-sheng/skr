@@ -84,7 +84,7 @@ public class RelationView extends RelativeLayout {
         mRecyclerView = (RecyclerView) this.findViewById(R.id.recycler_view);
         mRefreshLayout = (SmartRefreshLayout) this.findViewById(R.id.refreshLayout);
 
-        mRelationAdapter = new RelationAdapter(mode, new RecyclerOnItemClickListener() {
+        mRelationAdapter = new RelationAdapter(false, new RecyclerOnItemClickListener() {
             @Override
             public void onItemClicked(View view, int position, Object model) {
                 UserInfoModel userInfoModel = (UserInfoModel) model;
