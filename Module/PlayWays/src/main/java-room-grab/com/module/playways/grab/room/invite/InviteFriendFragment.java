@@ -37,7 +37,7 @@ public class InviteFriendFragment extends BaseFragment implements IGrabInviteVie
 
     InviteFirendAdapter mInviteFirendAdapter;
 
-    GrabInvitePresenter mGrabSongManagePresenter;
+    GrabInvitePresenter mGrabInvitePresenter;
 
     @Override
     public int initView() {
@@ -46,8 +46,8 @@ public class InviteFriendFragment extends BaseFragment implements IGrabInviteVie
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mGrabSongManagePresenter = new GrabInvitePresenter(this, mRoomData);
-        addPresent(mGrabSongManagePresenter);
+        mGrabInvitePresenter = new GrabInvitePresenter(this, mRoomData);
+        addPresent(mGrabInvitePresenter);
 
         mRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.refreshLayout);
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
