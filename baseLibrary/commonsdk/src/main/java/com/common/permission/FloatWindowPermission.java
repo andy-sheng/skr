@@ -47,7 +47,8 @@ class FloatWindowPermission {
 
     public static boolean requestPermission(Activity context) {
         if (U.getDeviceUtils().isMiui()) {
-            return manageDrawOverlaysForMiui(context);
+            return manageDrawOverlays(context);
+//            return manageDrawOverlaysForMiui(context);
         }
         if (U.getDeviceUtils().isEmui()) {
             return manageDrawOverlaysForEmui(context);
@@ -185,7 +186,7 @@ class FloatWindowPermission {
     private static boolean startSafely(Activity context, Intent intent) {
         if (context.getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY).size() > 0) {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivityForResult(intent,756232212);
+            context.startActivity(intent);
             return true;
         } else {
             MyLog.e(TAG, "Intent is not available! " + intent);

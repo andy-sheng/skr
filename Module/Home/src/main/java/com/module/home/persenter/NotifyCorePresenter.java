@@ -112,7 +112,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
 
     void showGrabInviteFloatWindow(UserInfoModel userInfoModel, int roomID) {
         mUiHandler.removeMessages(MSG_DISMISS_INVITE_FLOAT_WINDOW);
-        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_INVITE_FLOAT_WINDOW, 10000);
+        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_INVITE_FLOAT_WINDOW, 5000);
         GrabInviteNotifyView grabInviteNotifyView = new GrabInviteNotifyView(U.app());
         grabInviteNotifyView.bindData(userInfoModel);
         grabInviteNotifyView.setListener(new GrabInviteNotifyView.Listener() {
@@ -147,7 +147,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
 
     void showFollowFloatWindow(UserInfoModel userInfoModel) {
         mUiHandler.removeMessages(MSG_DISMISS_RELATION_FLOAT_WINDOW);
-        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_RELATION_FLOAT_WINDOW, 10000);
+        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_RELATION_FLOAT_WINDOW, 5000);
         FollowNotifyView relationNotifyView = new FollowNotifyView(U.app());
         relationNotifyView.bindData(userInfoModel);
         relationNotifyView.setListener(new FollowNotifyView.Listener() {
