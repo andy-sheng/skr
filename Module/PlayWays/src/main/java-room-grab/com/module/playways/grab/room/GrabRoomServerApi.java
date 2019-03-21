@@ -212,4 +212,61 @@ public interface GrabRoomServerApi {
     @PUT("http://dev.api.inframe.mobi/v1/task/trigger-task-reward")
     Observable<ApiResult> receiveCash(@Body RequestBody body);
 
+    /**
+     * 获取房间内的歌曲
+     *
+     * @param roomID
+     * @param offset
+     * @param limit
+     * @return
+     */
+    @GET("http://dev.stand.inframe.mobi/v2/room/playbook")
+    Observable<ApiResult> getPlaybook(@Query("roomID") int roomID, @Query("offset") long offset, @Query("limit") int limit);
+
+    /**
+     * 房主改变当前房间的tag
+     * {
+     * "newTagID": 0,
+     * "roomID": 0
+     * }
+     *
+     * @param body
+     * @return
+     */
+    @PUT("http://dev.api.inframe.mobi/v2/room/change-music-tag")
+    Observable<ApiResult> changeMusicTag(@Body RequestBody body);
+
+    /**
+     * 房主添加歌曲
+     * {
+     * "playbookItemID": 0
+     * }
+     *
+     * @param body
+     * @return
+     */
+    @PUT("http://dev.api.inframe.mobi/v2/room/add-music")
+    Observable<ApiResult> addMusic(@Body RequestBody body);
+
+    /**
+     * 房主闪促歌曲
+     * {
+     * "playbookItemID": 0,
+     * "roundReq": 0
+     * }
+     *
+     * @param body
+     * @return
+     */
+    @PUT("http://dev.api.inframe.mobi/v2/room/del-music")
+    Observable<ApiResult> delMusic(@Body RequestBody body);
+
+    /**
+     * 得到专场列表
+     *
+     * @param offset
+     * @param count
+     */
+    @GET("http://dev.api.inframe.mobi/v1/playbook/list-stand-tags")
+    Observable<ApiResult> getSepcialList(@Query("offset") int offset, @Query("cnt") int count);
 }

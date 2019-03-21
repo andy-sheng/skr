@@ -23,6 +23,7 @@ import com.common.statistics.StatConstants;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
+import com.common.view.ex.ExImageView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.manager.BgMusicManager;
 import com.dialog.view.TipsDialogView;
@@ -167,6 +168,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     DialogPlus mGameRoleDialog;
 
     ConfirmDialog mGrabKickDialog;
+
+    ExImageView mIvRoomManage;
 
     SVGAParser mSVGAParser;
 
@@ -447,6 +450,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                 mCorePresenter.switchRoom();
                 mGrabGiveupView.hideWithAnimation(false);
             }
+
+            @Override
+            public void addFirend() {
+
+            }
         });
     }
 
@@ -512,6 +520,10 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     private void initScoreView() {
         mGrabScoreTipsView = mRootView.findViewById(R.id.grab_score_tips_view);
         mGrabScoreTipsView.setRoomData(mRoomData);
+    }
+
+    private void initManageView() {
+        mIvRoomManage = (ExImageView)mRootView.findViewById(R.id.iv_room_manage);
     }
 
     private void initGrabOpView() {

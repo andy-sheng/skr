@@ -198,5 +198,7 @@ public class GrabTopView extends RelativeLayout {
 
     public interface Listener {
         void changeRoom();
+
+        void addFirend();
     }
 }
