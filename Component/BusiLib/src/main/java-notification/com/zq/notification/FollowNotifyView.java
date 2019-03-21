@@ -18,7 +18,7 @@ import com.zq.live.proto.Common.ESex;
 /**
  * 关注弹窗通知
  */
-public class RelationNotifyView extends RelativeLayout {
+public class FollowNotifyView extends RelativeLayout {
 
     SimpleDraweeView mAvatarIv;
     ExTextView mNameTv;
@@ -27,17 +27,17 @@ public class RelationNotifyView extends RelativeLayout {
 
     UserInfoModel mUserInfoModel;
 
-    public RelationNotifyView(Context context) {
+    public FollowNotifyView(Context context) {
         super(context);
         init();
     }
 
-    public RelationNotifyView(Context context, AttributeSet attrs) {
+    public FollowNotifyView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public RelationNotifyView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public FollowNotifyView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
@@ -59,6 +59,9 @@ public class RelationNotifyView extends RelativeLayout {
                 } else {
                     UserInfoManager.getInstance().mateRelation(mUserInfoModel.getUserId(),
                             UserInfoManager.RA_BUILD, mUserInfoModel.isFriend());
+                }
+                if (mListener != null) {
+                    mListener.onFollowBtnClick();
                 }
             }
         });
@@ -82,5 +85,15 @@ public class RelationNotifyView extends RelativeLayout {
         } else {
             // 又不是好友，又没有关注
         }
+    }
+
+    Listener mListener;
+
+    public void setListener(Listener l) {
+        mListener = l;
+    }
+
+    public interface Listener {
+        void onFollowBtnClick();
     }
 }

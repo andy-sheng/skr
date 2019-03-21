@@ -18,6 +18,7 @@ import com.module.RouterConstants;
 import com.module.rank.IRankingModeService;
 import com.zq.dialog.ConfirmDialog;
 import com.zq.notification.GrabInviteNotifyView;
+import com.zq.notification.FollowNotifyView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -26,7 +27,9 @@ import org.greenrobot.eventbus.ThreadMode;
 public class NotifyCorePresenter extends RxLifeCyclePresenter {
 
     static final String TAG_INVITE_FOALT_WINDOW = "TAG_INVITE_FOALT_WINDOW";
+    static final String TAG_RELATION_FOALT_WINDOW = "TAG_RELATION_FOALT_WINDOW";
     static final int MSG_DISMISS_INVITE_FLOAT_WINDOW = 2;
+    static final int MSG_DISMISS_RELATION_FLOAT_WINDOW = 3;
 
     Handler mUiHandler = new Handler() {
         @Override
@@ -35,6 +38,9 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
             switch (msg.what) {
                 case MSG_DISMISS_INVITE_FLOAT_WINDOW:
                     FloatWindow.destroy(TAG_INVITE_FOALT_WINDOW);
+                    break;
+                case MSG_DISMISS_RELATION_FLOAT_WINDOW:
+                    FloatWindow.destroy(TAG_RELATION_FOALT_WINDOW);
                     break;
             }
         }
@@ -56,8 +62,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(FollowNotifyEvent event) {
-        // TODO: 2019/3/20 SkrKouLingUtils.  关注提醒
-
+        showFollowFloatWindow(event.mUserInfoModel);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -107,7 +112,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
 
     void showGrabInviteFloatWindow(UserInfoModel userInfoModel, int roomID) {
         mUiHandler.removeMessages(MSG_DISMISS_INVITE_FLOAT_WINDOW);
-        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_INVITE_FLOAT_WINDOW, 50000);
+        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_INVITE_FLOAT_WINDOW, 10000);
         GrabInviteNotifyView grabInviteNotifyView = new GrabInviteNotifyView(U.app());
         grabInviteNotifyView.bindData(userInfoModel);
         grabInviteNotifyView.setListener(new GrabInviteNotifyView.Listener() {
@@ -136,6 +141,34 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                 .setReqPermissionIfNeed(false)
                 .setViewStateListener(null)    //监听悬浮控件状态改变
                 .setTag(TAG_INVITE_FOALT_WINDOW)
+                .build();
+    }
+
+
+    void showFollowFloatWindow(UserInfoModel userInfoModel) {
+        mUiHandler.removeMessages(MSG_DISMISS_RELATION_FLOAT_WINDOW);
+        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_RELATION_FLOAT_WINDOW, 10000);
+        FollowNotifyView relationNotifyView = new FollowNotifyView(U.app());
+        relationNotifyView.bindData(userInfoModel);
+        relationNotifyView.setListener(new FollowNotifyView.Listener() {
+            @Override
+            public void onFollowBtnClick() {
+                mUiHandler.removeMessages(MSG_DISMISS_RELATION_FLOAT_WINDOW);
+                FloatWindow.destroy(TAG_RELATION_FOALT_WINDOW);
+            }
+        });
+        FloatWindow.with(U.app())
+                .setView(relationNotifyView)
+                .setMoveType(MoveType.inactive)
+                .setWidth(Screen.width, 1f)                               //设置控件宽高
+                .setHeight(Screen.height, 0.2f)
+//                                .setX(100)                                   //设置控件初始位置
+//                                .setY(Screen.height,0.3f)
+                .setDesktopShow(false)                        //桌面显示
+                .setCancelIfExist(false)
+                .setReqPermissionIfNeed(false)
+                .setViewStateListener(null)    //监听悬浮控件状态改变
+                .setTag(TAG_RELATION_FOALT_WINDOW)
                 .build();
     }
 

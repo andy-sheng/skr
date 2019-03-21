@@ -10,6 +10,9 @@ public class FollowNotifyEvent {
 
     public UserInfoModel mUserInfoModel;
 
+    public FollowNotifyEvent() {
+    }
+
     public FollowNotifyEvent(BaseNotiInfo baseNotiInfo, FollowMsg followMsg){
         this.mBaseNotiInfo = baseNotiInfo;
         this.mUserInfoModel = UserInfoModel.parseFromPB(followMsg.getUser());

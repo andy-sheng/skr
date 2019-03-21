@@ -38,6 +38,7 @@ import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.model.UserRankModel;
 import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
+import com.common.notification.event.FollowNotifyEvent;
 import com.common.notification.event.GrabInviteNotifyEvent;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -226,24 +227,6 @@ public class GameFragment extends BaseFragment {
         mIvAuditionRoom.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-//                if (true) {
-//                    UserInfoManager.getInstance().getUserInfoByUuid(1343088, new UserInfoManager.ResultCallback<UserInfoModel>() {
-//                        @Override
-//                        public boolean onGetLocalDB(UserInfoModel o) {
-//                            return false;
-//                        }
-//
-//                        @Override
-//                        public boolean onGetServer(UserInfoModel o) {
-//                            GrabInviteNotifyEvent event = new GrabInviteNotifyEvent();
-//                            event.mUserInfoModel = o;
-//                            event.roomID = 1000;
-//                            EventBus.getDefault().post(event);
-//                            return false;
-//                        }
-//                    });
-//                    return;
-//                }
                 U.getSoundUtils().play(TAG, R.raw.home_practice, 500);
                 long tag = System.currentTimeMillis();
                 clickAnimation(mIvAuditionRoom, null, tag);
@@ -254,6 +237,24 @@ public class GameFragment extends BaseFragment {
             mIvAthleticsPk.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
+                    if (true) {
+                        UserInfoManager.getInstance().getUserInfoByUuid(1343088, new UserInfoManager.ResultCallback<UserInfoModel>() {
+                            @Override
+                            public boolean onGetLocalDB(UserInfoModel o) {
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onGetServer(UserInfoModel o) {
+                                GrabInviteNotifyEvent event = new GrabInviteNotifyEvent();
+                                event.mUserInfoModel = o;
+                                event.roomID = 1000;
+                                EventBus.getDefault().post(event);
+                                return false;
+                            }
+                        });
+                        return false;
+                    }
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_VOICEROOM)
                             .navigation();
                     return false;
@@ -265,6 +266,23 @@ public class GameFragment extends BaseFragment {
             mIvGrabGame.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
+                    if (true) {
+                        UserInfoManager.getInstance().getUserInfoByUuid(1343088, new UserInfoManager.ResultCallback<UserInfoModel>() {
+                            @Override
+                            public boolean onGetLocalDB(UserInfoModel o) {
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onGetServer(UserInfoModel o) {
+                                FollowNotifyEvent event = new FollowNotifyEvent();
+                                event.mUserInfoModel = o;
+                                EventBus.getDefault().post(event);
+                                return false;
+                            }
+                        });
+                        return false;
+                    }
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_ROOM)
                             .navigation();
                     return false;

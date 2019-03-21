@@ -300,6 +300,14 @@ public final class ToastUtils {
         show(view, Toast.LENGTH_LONG);
     }
 
+    public IToast createToast(View view) {
+        IToast iToast = ToastFactory.newToast(U.app());
+        iToast.setView(view);
+        iToast.setDuration(-1);
+        iToast.setGravity(Gravity.CENTER, 0, 0);
+        return iToast;
+    }
+
     private static void setBg() {
         if (sBgResource != -1) {
             final View toastView = iToast.getView();
@@ -502,7 +510,6 @@ public final class ToastUtils {
                     mWM.addView(mView, mParams);
                 }
             } catch (Exception ignored) { /**/ }
-
             HANDLER.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -563,7 +570,7 @@ public final class ToastUtils {
         }
     }
 
-    interface IToast {
+    public interface IToast {
 
         void show();
 

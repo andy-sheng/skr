@@ -1,10 +1,15 @@
 package com.common.floatwindow;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.os.Build;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.common.log.MyLog;
 import com.common.permission.FloatWindowPermissionActivity;
@@ -21,7 +26,7 @@ import java.util.List;
 class FloatPhone extends FloatView {
     public final static String TAG = "FloatPhone";
     private FloatWindow.B mB;
-    private final WindowManager mWindowManager;
+    private  WindowManager mWindowManager;
     private final WindowManager.LayoutParams mLayoutParams;
     private boolean isRemove = true;
 
@@ -74,6 +79,54 @@ class FloatPhone extends FloatView {
                 }, U.getActivityUtils().getTopActivity());
             } else {
                 mLayoutParams.type = WindowManager.LayoutParams.TYPE_TOAST;
+                mLayoutParams.packageName = U.app().getPackageName();
+
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N_MR1) {
+                    mLayoutParams.type = WindowManager.LayoutParams.TYPE_TOAST;
+                } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.N_MR1) {
+                    Context topActivityOrApp = U.getActivityUtils().getTopActivity();
+                    if (!(topActivityOrApp instanceof Activity)) {
+                        Log.e("ToastUtils", "Couldn't get top Activity.");
+                        return;
+                    }
+                    Activity topActivity = (Activity) topActivityOrApp;
+                    if (topActivity.isFinishing() || topActivity.isDestroyed()) {
+                        Log.e("ToastUtils", topActivity + " is useless");
+                        return;
+                    }
+                    mWindowManager = topActivity.getWindowManager();
+                    mLayoutParams.type = WindowManager.LayoutParams.LAST_APPLICATION_WINDOW;
+                    //U.getActivityUtils().addOnActivityDestroyedListener(topActivity, LISTENER);
+                } else {
+                    //mWM = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+                    mLayoutParams.type = WindowManager.LayoutParams.FIRST_SYSTEM_WINDOW + 37;
+                }
+
+                final Configuration config = U.app().getResources().getConfiguration();
+                final int gravity = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1
+                        ? Gravity.getAbsoluteGravity(mB.gravity, config.getLayoutDirection())
+                        : mB.gravity;
+
+                mLayoutParams.y = mB.yOffset;
+                mLayoutParams.height = mB.mHeight;
+                mLayoutParams.width = mB.mWidth;
+                mLayoutParams.format = PixelFormat.TRANSLUCENT;
+                mLayoutParams.windowAnimations = android.R.style.Animation_Toast;
+
+                mLayoutParams.setTitle("ToastWithoutNotification");
+//                mLayoutParams.flags = WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+//                        | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+//                        | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
+                mLayoutParams.gravity = gravity;
+                if ((gravity & Gravity.HORIZONTAL_GRAVITY_MASK) == Gravity.FILL_HORIZONTAL) {
+                    mLayoutParams.horizontalWeight = 1.0f;
+                }
+                if ((gravity & Gravity.VERTICAL_GRAVITY_MASK) == Gravity.FILL_VERTICAL) {
+                    mLayoutParams.verticalWeight = 1.0f;
+                }
+                mLayoutParams.x = mB.xOffset;
+                mLayoutParams.packageName = U.app().getPackageName();
+
                 addView();
             }
         }
