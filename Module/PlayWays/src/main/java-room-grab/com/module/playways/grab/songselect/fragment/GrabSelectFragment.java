@@ -8,8 +8,12 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
-import com.common.core.myinfo.MyUserInfoManager;
+import com.common.rxretrofit.ApiManager;
+import com.common.rxretrofit.ApiMethods;
+import com.common.rxretrofit.ApiObserver;
+import com.common.rxretrofit.ApiResult;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -18,14 +22,14 @@ import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.constans.GameModeType;
 import com.module.RouterConstants;
-import com.module.playways.grab.songselect.adapter.FriendRoomAdapter;
+import com.module.playways.grab.songselect.GrabSongApi;
+import com.module.playways.grab.songselect.adapter.FriendRoomHorizAdapter;
 import com.module.playways.grab.songselect.model.FriendRoomModel;
 import com.module.playways.grab.songselect.model.SpecialModel;
 import com.module.playways.grab.songselect.view.SpecialSelectView;
 import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.rank.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,7 +46,10 @@ public class GrabSelectFragment extends BaseFragment {
     ExTextView mFastBeginTv;
     SpecialSelectView mSpecialView;
 
-    FriendRoomAdapter mFriendRoomAdapter;
+    FriendRoomHorizAdapter mFriendRoomAdapter;
+
+    int offset = 0;          //偏移量
+    int DEFAULT_COUNT = 10;  // 每次拉去列表数目
 
     @Override
     public int initView() {
@@ -87,25 +94,54 @@ public class GrabSelectFragment extends BaseFragment {
             }
         });
 
+        mMoreTv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), GrabFriendsRoomFragment.class)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(true)
+                        .build());
+            }
+        });
+
         mFriendsRecycle.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        mFriendRoomAdapter = new FriendRoomAdapter(new RecyclerOnItemClickListener() {
+        mFriendRoomAdapter = new FriendRoomHorizAdapter(new RecyclerOnItemClickListener() {
             @Override
             public void onItemClicked(View view, int position, Object model) {
                 // TODO: 2019/3/20 点击事件处理
             }
         });
         mFriendsRecycle.setAdapter(mFriendRoomAdapter);
+        loadData(offset, DEFAULT_COUNT);
+    }
 
-        // TODO: 2019/3/20 测试数据
-        FriendRoomModel friendRoomModel = new FriendRoomModel(MyUserInfoManager.getInstance().getAvatar(), MyUserInfoManager.getInstance().getNickName());
+    private void loadData(int offset, int count) {
+        GrabSongApi grabSongApi = ApiManager.getInstance().createService(GrabSongApi.class);
+        ApiMethods.subscribe(grabSongApi.getOnlineFriendsRoom(offset, count), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult obj) {
+                if (obj.getErrno() == 0) {
+                    List<FriendRoomModel> list = JSON.parseArray(obj.getData().getString("friends"), FriendRoomModel.class);
+                    int offset = obj.getData().getIntValue("offset");
+                    int totalNum = obj.getData().getIntValue("cnt");
+                    refreshView(list, offset, totalNum);
+                }
+            }
+        });
+    }
 
-        List<FriendRoomModel> list = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            list.add(friendRoomModel);
+    private void refreshView(List<FriendRoomModel> list, int offset, int totalNum) {
+        this.offset = offset;
+        if (totalNum == 0) {
+            mFriendsArea.setVisibility(View.GONE);
+            return;
         }
 
-        mFriendRoomAdapter.setDataList(list);
-        mFriendRoomAdapter.notifyDataSetChanged();
+        if (list != null) {
+            mFriendRoomAdapter.getDataList().addAll(list);
+            mFriendRoomAdapter.notifyDataSetChanged();
+        }
+        mFriendsTv.setText("好友在线（" + totalNum + ")");
     }
 
     public void goMatchFragment(int specialId, List<String> musicURLs) {

@@ -8,27 +8,28 @@ import android.view.ViewGroup;
 import com.common.view.recyclerview.DiffAdapter;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.playways.grab.songselect.model.FriendRoomModel;
-import com.module.playways.grab.songselect.viewholder.FriendRoomViewHolder;
+import com.module.playways.grab.songselect.viewholder.FriendRoomVeritViewHolder;
 import com.module.rank.R;
 
-public class FriendRoomAdapter extends DiffAdapter<FriendRoomModel, FriendRoomViewHolder> {
+public class FriendRoomVeritAdapter extends DiffAdapter<FriendRoomModel, FriendRoomVeritViewHolder> {
 
     RecyclerOnItemClickListener<FriendRoomModel> mOnItemClickListener;
 
-    public FriendRoomAdapter(RecyclerOnItemClickListener mOnItemClickListener){
+    public FriendRoomVeritAdapter(RecyclerOnItemClickListener mOnItemClickListener) {
         this.mOnItemClickListener = mOnItemClickListener;
     }
 
     @NonNull
     @Override
-    public FriendRoomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.friend_room_view_holder_layout, parent, false);
-        FriendRoomViewHolder itemHolder = new FriendRoomViewHolder(view);
+    public FriendRoomVeritViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.friend_room_verit_item_layout, parent, false);
+        FriendRoomVeritViewHolder itemHolder = new FriendRoomVeritViewHolder(view);
+        itemHolder.setOnItemClickListener(mOnItemClickListener);
         return itemHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FriendRoomViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FriendRoomVeritViewHolder holder, int position) {
         FriendRoomModel friendRoomModel = mDataList.get(position);
         holder.bindData(friendRoomModel, position);
     }
@@ -37,5 +38,4 @@ public class FriendRoomAdapter extends DiffAdapter<FriendRoomModel, FriendRoomVi
     public int getItemCount() {
         return mDataList.size();
     }
-
 }

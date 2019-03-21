@@ -4,6 +4,7 @@ import com.common.rxretrofit.ApiResult;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface GrabSongApi {
@@ -42,4 +43,13 @@ public interface GrabSongApi {
      */
     @GET("http://dev.game.inframe.mobi/v1/game/on-match-player-music")
     Observable<ApiResult> getSepcialBgVoice();
+
+    /**
+     * 获取在线好友房间
+     * @param offset
+     * @param count
+     * @return
+     */
+    @GET("http://dev.api.inframe.mobi/v1/mate/room-online-friends")
+    Observable<ApiResult> getOnlineFriendsRoom(@Query("offset") int offset,@Query("cnt") int count);
 }
