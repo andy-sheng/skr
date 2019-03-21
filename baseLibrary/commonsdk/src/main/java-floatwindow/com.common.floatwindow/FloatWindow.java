@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.common.log.MyLog;
 import com.common.utils.U;
 
 import java.util.HashMap;
@@ -18,12 +19,14 @@ import java.util.Map;
 
 /**
  * Created by yhao on 2017/12/22.
- *
+ * <p>
  * 问题可查看
  * https://github.com/yhaolpz/FloatWindow
  */
 
 public class FloatWindow {
+
+    public final static String TAG = "FloatWindow";
 
     private FloatWindow() {
 
@@ -79,6 +82,8 @@ public class FloatWindow {
         boolean mDesktopShow;
         PermissionListener mPermissionListener;
         ViewStateListener mViewStateListener;
+        boolean cancelIfExist = false;// true 取消，如果该tag的window以及存在了。false会销毁之前的再新建
+        boolean reqPermissionIfNeed = true;// true 如果没有权限则会申请权限，false 没有权限不会申请就用别的方式兼容
 
         private B() {
 
@@ -206,21 +211,39 @@ public class FloatWindow {
             return this;
         }
 
+        public B setCancelIfExist(boolean cancelIfExist) {
+            this.cancelIfExist = cancelIfExist;
+            return this;
+        }
+
+        public B setReqPermissionIfNeed(boolean reqPermissionIfNeed) {
+            this.reqPermissionIfNeed = reqPermissionIfNeed;
+            return this;
+        }
+
         public void build() {
             if (mFloatWindowMap == null) {
                 mFloatWindowMap = new HashMap<>();
             }
             if (mFloatWindowMap.containsKey(mTag)) {
-                throw new IllegalArgumentException("FloatWindow of this tag has been added, Please set a new tag for the new FloatWindow");
+                if (cancelIfExist) {
+                    MyLog.w(TAG, "FloatWindow of this tag has been added,cancel");
+                    return;
+                } else {
+                    MyLog.w(TAG, "FloatWindow of this tag has been added,remove first");
+                    destroy(mTag);
+                }
             }
             if (mView == null && mLayoutId == 0) {
-                throw new IllegalArgumentException("View has not been set!");
+                MyLog.w(TAG, "View has not been set!");
+                return;
             }
             if (mView == null) {
                 LayoutInflater inflate = (LayoutInflater) mApplicationContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 mView = inflate.inflate(mLayoutId, null);
             }
             IFloatWindow floatWindowImpl = new IFloatWindowImpl(this);
+            floatWindowImpl.show();
             mFloatWindowMap.put(mTag, floatWindowImpl);
         }
 

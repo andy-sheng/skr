@@ -17,9 +17,11 @@ package com.common.permission;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 
@@ -51,6 +53,10 @@ public class PermissionUtils {
 
 
     public PermissionUtils() {
+    }
+
+    public boolean checkFloatWindow(Context context) {
+        return  FloatWindowPermission.checkFloatWindow(context);
     }
 
     public boolean checkReadPhoneState(Activity activity) {
@@ -217,7 +223,6 @@ public class PermissionUtils {
         requestPermission(requestPermission, activity, Manifest.permission.CALL_PHONE);
     }
 
-
     /**
      * 请求获取手机状态的权限
      */
@@ -225,6 +230,12 @@ public class PermissionUtils {
         requestPermission(requestPermission, activity, Manifest.permission.READ_PHONE_STATE);
     }
 
+    /**
+     * 请求悬浮窗权限
+     */
+    public void requestFloatWindow(RequestPermission requestPermission, Activity activity) {
+        FloatWindowPermissionActivity.request(activity,requestPermission);
+    }
 
     /**
      * 跳转到APP权限设置界面

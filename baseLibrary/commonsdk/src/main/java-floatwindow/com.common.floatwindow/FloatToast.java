@@ -15,37 +15,20 @@ import java.lang.reflect.Method;
 
 class FloatToast extends FloatView {
 
-
+    FloatWindow.B mB;
     private Toast toast;
 
     private Object mTN;
     private Method show;
     private Method hide;
 
-    private int mWidth;
-    private int mHeight;
 
-
-    FloatToast(Context applicationContext) {
-        toast = new Toast(applicationContext);
-    }
-
-
-    @Override
-    public void setSize(int width, int height) {
-        mWidth = width;
-        mHeight = height;
-    }
-
-    @Override
-    public void setView(View view) {
-        toast.setView(view);
+    FloatToast(FloatWindow.B b) {
+        this.mB = b;
+        toast = new Toast(mB.mApplicationContext);
+        toast.setView(mB.mView);
+        toast.setGravity(mB.gravity, mB.xOffset, mB.yOffset);
         initTN();
-    }
-
-    @Override
-    public void setGravity(int gravity, int xOffset, int yOffset) {
-        toast.setGravity(gravity, xOffset, yOffset);
     }
 
     @Override
@@ -79,8 +62,8 @@ class FloatToast extends FloatView {
             WindowManager.LayoutParams params = (WindowManager.LayoutParams) tnParamsField.get(mTN);
             params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
                     | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
-            params.width = mWidth;
-            params.height = mHeight;
+            params.width = mB.mWidth;
+            params.height = mB.mHeight;
             params.windowAnimations = 0;
             Field tnNextViewField = mTN.getClass().getDeclaredField("mNextView");
             tnNextViewField.setAccessible(true);

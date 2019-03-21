@@ -9,11 +9,6 @@ import android.view.View;
 
 abstract class FloatView {
 
-    abstract void setSize(int width, int height);
-
-    abstract void setView(View view);
-
-    abstract void setGravity(int gravity, int xOffset, int yOffset);
 
     abstract void init();
 

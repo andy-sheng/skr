@@ -25,7 +25,6 @@ public class GrabInviteNotifyView extends RelativeLayout {
     ExTextView mIgnoreTv;
 
     UserInfoModel mUserInfoModel;
-    int mRoomID;
 
     public GrabInviteNotifyView(Context context) {
         super(context);
@@ -53,21 +52,24 @@ public class GrabInviteNotifyView extends RelativeLayout {
         mAgreeTv.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: 2019/3/21 同意加入一场到底房间
+                if (mListener != null) {
+                    mListener.onAgree();
+                }
             }
         });
 
         mIgnoreTv.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: 2019/3/21 忽略该消息
+                if (mListener != null) {
+                    mListener.onIgnore();
+                }
             }
         });
     }
 
-    public void bindData(UserInfoModel userInfoModel, int roomID){
+    public void bindData(UserInfoModel userInfoModel){
         this.mUserInfoModel = userInfoModel;
-        this.mRoomID = roomID;
 
         AvatarUtils.loadAvatarByUrl(mAvatarIv,
                 AvatarUtils.newParamsBuilder(mUserInfoModel.getAvatar())
@@ -78,5 +80,17 @@ public class GrabInviteNotifyView extends RelativeLayout {
         mNameTv.setText(mUserInfoModel.getNickname());
     }
 
+    Listener mListener;
+
+    public void setListener(Listener l){
+        mListener = l;
+    }
+
+    public interface Listener{
+
+        void onIgnore();
+
+        void onAgree();
+    }
 
 }

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.animation.DecelerateInterpolator;
 
+import com.common.log.MyLog;
 import com.common.utils.U;
 
 /**
@@ -21,8 +22,7 @@ import com.common.utils.U;
  */
 
 public class IFloatWindowImpl extends IFloatWindow {
-
-
+    public final static String TAG = "IFloatWindowImpl";
     private FloatWindow.B mB;
     private FloatView mFloatView;
     private FloatLifecycle mFloatLifecycle;
@@ -46,20 +46,18 @@ public class IFloatWindowImpl extends IFloatWindow {
         mB = b;
         if (mB.mMoveType == MoveType.fixed) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
-                mFloatView = new FloatPhone(b.mApplicationContext, mB.mPermissionListener);
+                mFloatView = new FloatPhone(mB);
             } else {
-                mFloatView = new FloatToast(b.mApplicationContext);
+                mFloatView = new FloatToast(mB);
             }
         } else {
-            mFloatView = new FloatPhone(b.mApplicationContext, mB.mPermissionListener);
+            mFloatView = new FloatPhone(mB);
             initTouchEvent();
         }
-        mFloatView.setSize(mB.mWidth, mB.mHeight);
-        mFloatView.setGravity(mB.gravity, mB.xOffset, mB.yOffset);
-        mFloatView.setView(mB.mView);
         mFloatLifecycle = new FloatLifecycle(mB.mApplicationContext, mB.mShow, mB.mActivities, new LifecycleListener() {
             @Override
             public void onShow() {
+                // Activity 的 onResume 中响应
                 show();
             }
 
@@ -82,6 +80,8 @@ public class IFloatWindowImpl extends IFloatWindow {
 
     @Override
     public void show() {
+        MyLog.d(TAG, "show once=" + once + " isShow=" + isShow);
+
         if (once) {
             mFloatView.init();
             once = false;

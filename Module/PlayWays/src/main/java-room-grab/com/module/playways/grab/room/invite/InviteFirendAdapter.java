@@ -48,7 +48,7 @@ public class InviteFirendAdapter extends DiffAdapter<GrabFriendModel, RecyclerVi
         return mDataList.size();
     }
 
-    private static class ItemHolder extends RecyclerView.ViewHolder {
+    private class ItemHolder extends RecyclerView.ViewHolder {
         BaseImageView mIvFriendIcon;
         ExTextView mIvFriendName;
         ExTextView mTvState;

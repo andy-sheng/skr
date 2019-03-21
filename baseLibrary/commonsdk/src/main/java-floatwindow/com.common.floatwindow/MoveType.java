@@ -11,6 +11,15 @@ import java.lang.annotation.RetentionPolicy;
  */
 
 public class MoveType {
+    /**
+     * MoveType.slide : 可拖动，释放后自动贴边 （默认）
+     *
+     * MoveType.back : 可拖动，释放后自动回到原位置
+     *
+     * MoveType.active : 可拖动
+     *
+     * MoveType.inactive : 不可拖动
+     */
     static final int fixed = 0;
     public static final int inactive = 1;
     public static final int active = 2;

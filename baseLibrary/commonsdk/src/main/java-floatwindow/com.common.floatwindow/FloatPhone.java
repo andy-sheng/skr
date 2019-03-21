@@ -7,7 +7,11 @@ import android.view.View;
 import android.view.WindowManager;
 
 import com.common.log.MyLog;
+import com.common.permission.FloatWindowPermissionActivity;
+import com.common.permission.PermissionUtils;
 import com.common.utils.U;
+
+import java.util.List;
 
 /**
  * Created by yhao on 17-11-14.
@@ -15,145 +19,115 @@ import com.common.utils.U;
  */
 
 class FloatPhone extends FloatView {
-
-    private final Context mContext;
-
+    public final static String TAG = "FloatPhone";
+    private FloatWindow.B mB;
     private final WindowManager mWindowManager;
     private final WindowManager.LayoutParams mLayoutParams;
-    private View mView;
-    private int mX, mY;
-    private boolean isRemove = false;
-    private PermissionListener mPermissionListener;
+    private boolean isRemove = true;
 
-    FloatPhone(Context applicationContext, PermissionListener permissionListener) {
-        mContext = applicationContext;
-        mPermissionListener = permissionListener;
-        mWindowManager = (WindowManager) applicationContext.getSystemService(Context.WINDOW_SERVICE);
+    FloatPhone(FloatWindow.B b) {
+        mB = b;
+
+        mWindowManager = (WindowManager) mB.mApplicationContext.getSystemService(Context.WINDOW_SERVICE);
         mLayoutParams = new WindowManager.LayoutParams();
         mLayoutParams.format = PixelFormat.RGBA_8888;
         mLayoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
                 | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                 | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS;
         mLayoutParams.windowAnimations = 0;
-    }
 
-    @Override
-    public void setSize(int width, int height) {
-        mLayoutParams.width = width;
-        mLayoutParams.height = height;
+        mLayoutParams.gravity = mB.gravity;
+        mLayoutParams.x = mB.xOffset;
+        mLayoutParams.y = mB.yOffset;
+        mLayoutParams.width = mB.mWidth;
+        mLayoutParams.height = mB.mHeight;
     }
-
-    @Override
-    public void setView(View view) {
-        mView = view;
-    }
-
-    @Override
-    public void setGravity(int gravity, int xOffset, int yOffset) {
-        mLayoutParams.gravity = gravity;
-        mLayoutParams.x = mX = xOffset;
-        mLayoutParams.y = mY = yOffset;
-    }
-
 
     @Override
     public void init() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
-            req();
-        } else if (Miui.rom()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                req();
+        boolean hasFloatWindowPermission = U.getPermissionUtils().checkFloatWindow(mB.mApplicationContext);
+        MyLog.d(TAG, "init hasFloatWindowPermission=" + hasFloatWindowPermission);
+        if (hasFloatWindowPermission) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                mLayoutParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
             } else {
                 mLayoutParams.type = WindowManager.LayoutParams.TYPE_PHONE;
-                Miui.req(mContext, new PermissionListener() {
+            }
+            addView();
+        } else {
+            if (mB.reqPermissionIfNeed) {
+                U.getPermissionUtils().requestFloatWindow(new PermissionUtils.RequestPermission() {
                     @Override
-                    public void onSuccess() {
-                        mWindowManager.addView(mView, mLayoutParams);
-                        if (mPermissionListener != null) {
-                            mPermissionListener.onSuccess();
-                        }
+                    public void onRequestPermissionSuccess() {
+                        MyLog.d(TAG, "onRequestPermissionSuccess");
                     }
 
                     @Override
-                    public void onFail() {
-                        if (mPermissionListener != null) {
-                            mPermissionListener.onFail();
-                        }
+                    public void onRequestPermissionFailure(List<String> permissions) {
+                        MyLog.d(TAG, "onRequestPermissionFailure" + " permissions=" + permissions);
                     }
-                });
-            }
-        } else {
-            try {
+
+                    @Override
+                    public void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions) {
+
+                    }
+                }, U.getActivityUtils().getTopActivity());
+            } else {
                 mLayoutParams.type = WindowManager.LayoutParams.TYPE_TOAST;
-                mWindowManager.addView(mView, mLayoutParams);
-            } catch (Exception e) {
-                mWindowManager.removeView(mView);
-                MyLog.e("TYPE_TOAST 失败");
-                req();
+                addView();
             }
         }
     }
 
-    private void req() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            mLayoutParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
-        } else {
-            mLayoutParams.type = WindowManager.LayoutParams.TYPE_PHONE;
+    public void addView() {
+        if (isRemove) {
+            MyLog.d(TAG, "addView type" + mLayoutParams.type);
+            mWindowManager.addView(mB.mView, mLayoutParams);
+            isRemove = false;
         }
-        FloatActivity.request(mContext, new PermissionListener() {
-            @Override
-            public void onSuccess() {
-                mWindowManager.addView(mView, mLayoutParams);
-                if (mPermissionListener != null) {
-                    mPermissionListener.onSuccess();
-                }
-            }
-
-            @Override
-            public void onFail() {
-                if (mPermissionListener != null) {
-                    mPermissionListener.onFail();
-                }
-            }
-        });
     }
 
     @Override
     public void dismiss() {
-        isRemove = true;
-        mWindowManager.removeView(mView);
+        MyLog.d(TAG, "dismiss isRemove=" + isRemove);
+        if (!isRemove) {
+            isRemove = true;
+            mWindowManager.removeView(mB.mView);
+        }
     }
 
     @Override
     public void updateXY(int x, int y) {
         if (isRemove) return;
-        mLayoutParams.x = mX = x;
-        mLayoutParams.y = mY = y;
-        mWindowManager.updateViewLayout(mView, mLayoutParams);
+        mLayoutParams.x = x;
+        mLayoutParams.y = y;
+        mWindowManager.updateViewLayout(mB.mView, mLayoutParams);
     }
 
     @Override
     void updateX(int x) {
         if (isRemove) return;
-        mLayoutParams.x = mX = x;
-        mWindowManager.updateViewLayout(mView, mLayoutParams);
+        mB.xOffset = x;
+        mLayoutParams.x = x;
+        mWindowManager.updateViewLayout(mB.mView, mLayoutParams);
     }
 
     @Override
     void updateY(int y) {
         if (isRemove) return;
-        mLayoutParams.y = mY = y;
-        mWindowManager.updateViewLayout(mView, mLayoutParams);
+        mB.yOffset = y;
+        mLayoutParams.y = y;
+        mWindowManager.updateViewLayout(mB.mView, mLayoutParams);
     }
 
     @Override
     int getX() {
-        return mX;
+        return mB.xOffset;
     }
 
     @Override
     int getY() {
-        return mY;
+        return mB.yOffset;
     }
 
 

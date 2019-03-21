@@ -156,7 +156,7 @@
             android:screenOrientation="portrait"/>
 
         <activity
-            android:name="com.common.floatwindow.FloatActivity"
+            android:name="com.common.permission.FloatWindowPermissionActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="standard"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden"/>
