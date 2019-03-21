@@ -7,16 +7,10 @@ import android.graphics.PixelFormat;
 import android.os.Build;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.common.log.MyLog;
-import com.common.permission.FloatWindowPermissionActivity;
-import com.common.permission.PermissionUtils;
 import com.common.utils.U;
-
-import java.util.List;
 
 /**
  * Created by yhao on 17-11-14.
@@ -65,24 +59,8 @@ class FloatPhone extends FloatView {
             addView();
         } else {
             if (reqPermissionIfNeed) {
-                U.getPermissionUtils().requestFloatWindow(new PermissionUtils.RequestPermission() {
-                    @Override
-                    public void onRequestPermissionSuccess() {
-                        MyLog.d(TAG, "onRequestPermissionSuccess");
-                        initInner(mB.reqPermissionIfNeed);
-                    }
-
-                    @Override
-                    public void onRequestPermissionFailure(List<String> permissions) {
-                        MyLog.d(TAG, "onRequestPermissionFailure" + " permissions=" + permissions);
-                        initInner(false);
-                    }
-
-                    @Override
-                    public void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions) {
-
-                    }
-                }, U.getActivityUtils().getTopActivity());
+                //TODO 这里不好加悬浮窗权限是否获得成功的回调
+                U.getPermissionUtils().requestFloatWindow(U.getActivityUtils().getTopActivity());
             } else {
                 mLayoutParams.type = WindowManager.LayoutParams.TYPE_TOAST;
                 mLayoutParams.packageName = U.app().getPackageName();

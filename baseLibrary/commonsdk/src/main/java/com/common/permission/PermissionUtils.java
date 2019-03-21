@@ -233,8 +233,8 @@ public class PermissionUtils {
     /**
      * 请求悬浮窗权限
      */
-    public void requestFloatWindow(RequestPermission requestPermission, Activity activity) {
-        FloatWindowPermissionActivity.request(activity,requestPermission);
+    public void requestFloatWindow(Activity activity) {
+        FloatWindowPermission.requestPermission(activity);
     }
 
     /**

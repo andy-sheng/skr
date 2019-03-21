@@ -758,7 +758,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                     }
                 }
                 // 上报分数
-                sendRoundScoreInfo(event.getLastRoundInfoModel().getRoundSeq();
+                sendRoundScoreInfo(event.getLastRoundInfoModel().getRoundSeq());
             }
 
             EngineManager.getInstance().stopAudioMixing();
