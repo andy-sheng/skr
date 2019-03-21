@@ -1,7 +1,5 @@
 package com.module.playways.grab.room.model;
 
-import com.module.playways.rank.room.model.PkScoreTipMsgModel;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
