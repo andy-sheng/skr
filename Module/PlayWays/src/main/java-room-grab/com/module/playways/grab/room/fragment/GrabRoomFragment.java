@@ -44,6 +44,7 @@ import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.WantSingerInfo;
 import com.module.playways.grab.room.presenter.GrabCorePresenter;
 import com.module.playways.grab.room.presenter.GrabRedPkgPresenter;
+import com.module.playways.grab.room.songmanager.GrabSongManageFragment;
 import com.module.playways.grab.room.top.GrabTopContainerView;
 import com.module.playways.grab.room.top.GrabTopView;
 import com.module.playways.grab.room.view.GrabChangeRoomTransitionView;
@@ -247,6 +248,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         initChangeRoomTransitionView();
         initCountDownView();
         initScoreView();
+        initManageView();
         mCorePresenter = new GrabCorePresenter(this, mRoomData);
         addPresent(mCorePresenter);
         mGrabRedPkgPresenter = new GrabRedPkgPresenter(this);
@@ -533,7 +535,20 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     }
 
     private void initManageView() {
-        mIvRoomManage = (ExImageView)mRootView.findViewById(R.id.iv_room_manage);
+        mIvRoomManage = (ExImageView) mRootView.findViewById(R.id.iv_room_manage);
+        if (true) {
+            mIvRoomManage.setVisibility(View.VISIBLE);
+            mIvRoomManage.setOnClickListener(new DebounceViewClickListener() {
+                @Override
+                public void clickValid(View v) {
+                    U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(GrabRoomFragment.this.getActivity(), GrabSongManageFragment.class)
+                            .setAddToBackStack(true)
+                            .setHasAnimation(true)
+                            .addDataBeforeAdd(0, mRoomData)
+                            .build());
+                }
+            });
+        }
     }
 
     private void initGrabOpView() {

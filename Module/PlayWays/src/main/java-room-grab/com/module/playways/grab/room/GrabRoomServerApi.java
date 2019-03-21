@@ -269,4 +269,25 @@ public interface GrabRoomServerApi {
      */
     @GET("http://dev.api.inframe.mobi/v1/playbook/list-stand-tags")
     Observable<ApiResult> getSepcialList(@Query("offset") int offset, @Query("cnt") int count);
+
+    /**
+     * 获取好友列表
+     * @param offset
+     * @param count
+     * @return
+     */
+    @GET("http://dev.api.inframe.mobi/v1/mate/room-friends")
+    Observable<ApiResult> getRoomFriendList(@Query("offset") int offset, @Query("cnt") int count);
+
+    /**
+     * 邀请好友
+     * {
+     *   "roomID": 0,
+     *   "userID": 0
+     * }
+     * @param body
+     * @return
+     */
+    @PUT("http://dev.api.inframe.mobi/v1/mate/room-invite")
+    Observable<ApiResult> inviteFriend(@Body RequestBody body);
 }

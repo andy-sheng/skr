@@ -9,8 +9,12 @@ import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
+import com.module.playways.grab.room.event.GrabRoundChangeEvent;
 import com.module.playways.grab.room.inter.IGrabSongManageView;
 import com.module.playways.grab.songselect.model.SpecialModel;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -129,6 +133,11 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
                 MyLog.e(TAG, e);
             }
         }, this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(GrabRoundChangeEvent event) {
+        updateSongList();
     }
 
     public void updateSongList() {

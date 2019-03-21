@@ -11,16 +11,26 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.common.base.BaseFragment;
+import com.common.core.kouling.SkrKouLingUtils;
+import com.common.core.myinfo.MyUserInfoManager;
+import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.inter.IGrabInviteView;
+
+import com.module.playways.grab.room.model.GrabFriendModel;
+
 import com.module.rank.R;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+
+import java.util.List;
 
 public class InviteFriendFragment extends BaseFragment implements IGrabInviteView {
     public final static String TAG = "InviteFriendFragment";
@@ -57,6 +67,12 @@ public class InviteFriendFragment extends BaseFragment implements IGrabInviteVie
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mInviteFirendAdapter = new InviteFirendAdapter();
         mRecyclerView.setAdapter(mInviteFirendAdapter);
+        mInviteFirendAdapter.setOnInviteClickListener(new InviteFirendAdapter.OnInviteClickListener() {
+            @Override
+            public void onClick(GrabFriendModel model) {
+                mGrabInvitePresenter.inviteFriend(mRoomData.getGameId(), model);
+            }
+        });
 
         mRefreshLayout.setEnableRefresh(false);
         mRefreshLayout.setEnableLoadMore(true);
@@ -65,7 +81,7 @@ public class InviteFriendFragment extends BaseFragment implements IGrabInviteVie
         mRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-
+                mGrabInvitePresenter.getPlayBookList();
             }
 
             @Override
@@ -108,14 +124,20 @@ public class InviteFriendFragment extends BaseFragment implements IGrabInviteVie
             mTvWeixinShare.setOnClickListener(new DebounceViewClickListener() {
                 @Override
                 public void clickValid(View v) {
-
+                    SkrKouLingUtils.genJoinGameKouling((int) MyUserInfoManager.getInstance().getUid(), mRoomData.getGameId());
+                    new ShareAction(getActivity()).withText("")
+                            .setPlatform(SHARE_MEDIA.WEIXIN)
+                            .share();
                 }
             });
 
             mTvQqShare.setOnClickListener(new DebounceViewClickListener() {
                 @Override
                 public void clickValid(View v) {
-
+                    SkrKouLingUtils.genJoinGameKouling((int) MyUserInfoManager.getInstance().getUid(), mRoomData.getGameId());
+                    new ShareAction(getActivity()).withText("")
+                            .setPlatform(SHARE_MEDIA.QQ)
+                            .share();
                 }
             });
         }
@@ -129,6 +151,21 @@ public class InviteFriendFragment extends BaseFragment implements IGrabInviteVie
         if (mShareDialog != null) {
             mShareDialog.dismiss();
         }
+    }
+
+    @Override
+    public void updateFriendList(List<GrabFriendModel> grabFriendModelList) {
+        mInviteFirendAdapter.setDataList(grabFriendModelList);
+    }
+
+    @Override
+    public void hasMore(boolean hasMore) {
+        mRefreshLayout.setEnableLoadMore(true);
+    }
+
+    @Override
+    public void finishRefresh() {
+        mRefreshLayout.finishRefresh();
     }
 
     @Override
