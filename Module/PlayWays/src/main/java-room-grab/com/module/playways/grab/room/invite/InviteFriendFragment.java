@@ -23,7 +23,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
 public class InviteFriendFragment extends BaseFragment implements IGrabInviteView {
-    public final static String TAG = "GrabSongManageFragment";
+    public final static String TAG = "InviteFriendFragment";
 
     GrabRoomData mRoomData;
     SmartRefreshLayout mRefreshLayout;

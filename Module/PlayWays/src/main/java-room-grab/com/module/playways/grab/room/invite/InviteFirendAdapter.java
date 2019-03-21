@@ -36,7 +36,7 @@ public class InviteFirendAdapter extends DiffAdapter<SongModel, RecyclerView.Vie
         return mDataList.size();
     }
 
-    private class ItemHolder extends RecyclerView.ViewHolder {
+    private static class ItemHolder extends RecyclerView.ViewHolder {
         BaseImageView mIvFriendIcon;
         ExTextView mIvFriendName;
         ExTextView mTvState;

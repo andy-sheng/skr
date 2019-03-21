@@ -21,6 +21,7 @@ import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.statistics.StatConstants;
 import com.common.statistics.StatisticsAdapter;
+import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
@@ -36,6 +37,7 @@ import com.module.playways.grab.room.event.ShowPersonCardEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
 import com.module.playways.grab.room.inter.IGrabView;
+import com.module.playways.grab.room.invite.InviteFriendFragment;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
@@ -374,6 +376,14 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabWantInviteEvent event) {
         // 房主想要邀请别人加入游戏
+        // 打开邀请面板
+        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), InviteFriendFragment.class)
+                .setAddToBackStack(true)
+                .setHasAnimation(true)
+                .setEnterAnim(R.anim.slide_in_bottom)
+                .setExitAnim(R.anim.slide_out_bottom)
+                .build()
+        );
     }
 
     private void showPersonInfoView(int userID) {
