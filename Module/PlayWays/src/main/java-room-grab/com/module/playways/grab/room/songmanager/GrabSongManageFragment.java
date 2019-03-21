@@ -1,5 +1,7 @@
 package com.module.playways.grab.room.songmanager;
 
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,6 +18,7 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExFrameLayout;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
+import com.common.view.ex.drawable.DrawableCreator;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.inter.IGrabSongManageView;
 import com.module.playways.grab.room.songmanager.tags.GrabSongTagsView;
@@ -103,6 +106,14 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
     public void changeTagSuccess(SpecialModel specialModel) {
         mTvSelectedTag.setText(specialModel.getTagName());
         mSpecialModelId = specialModel.getTagID();
+        Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(45))
+                .setStrokeColor(Color.parseColor("#202239"))
+                .setStrokeWidth(U.getDisplayUtils().dip2px(2))
+                .setSolidColor(Color.parseColor("#9B6C43"))
+                .setCornersRadius(U.getDisplayUtils().dip2px(8))
+                .build();
+
+        mTvSelectedTag.setBackground(drawable);
         if (mPopupWindow != null) {
             mPopupWindow.dismiss();
         }

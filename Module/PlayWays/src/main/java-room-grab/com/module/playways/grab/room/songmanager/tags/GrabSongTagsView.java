@@ -18,7 +18,7 @@ public class GrabSongTagsView extends RelativeLayout {
     public final static String TAG = "GrabSongTagsView";
     SmartRefreshLayout mRefreshLayout;
     RecyclerView mRecyclerView;
-    GrabTagsAdapter mManageSongAdapter;
+    GrabTagsAdapter mGrabTagsAdapter;
     int mCurSpecialModelId;
 
     public GrabSongTagsView(Context context) {
@@ -37,7 +37,7 @@ public class GrabSongTagsView extends RelativeLayout {
     }
 
     public void setOnTagClickListener(GrabTagsAdapter.OnTagClickListener onTagClickListener) {
-        mManageSongAdapter.setOnTagClickListener(onTagClickListener);
+        mGrabTagsAdapter.setOnTagClickListener(onTagClickListener);
     }
 
     public void setCurSpecialModel(int specialModelId) {
@@ -50,8 +50,8 @@ public class GrabSongTagsView extends RelativeLayout {
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mManageSongAdapter = new GrabTagsAdapter();
-        mRecyclerView.setAdapter(mManageSongAdapter);
+        mGrabTagsAdapter = new GrabTagsAdapter();
+        mRecyclerView.setAdapter(mGrabTagsAdapter);
 
         mRefreshLayout.setEnableRefresh(false);
         mRefreshLayout.setEnableLoadMore(false);
@@ -70,7 +70,7 @@ public class GrabSongTagsView extends RelativeLayout {
                 }
             }
 
-            mManageSongAdapter.setDataList(models);
+            mGrabTagsAdapter.setDataList(models);
         }
     }
 }
