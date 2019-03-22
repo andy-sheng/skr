@@ -14,6 +14,7 @@ import com.common.base.BaseFragment;
 import com.common.core.share.SharePanel;
 import com.common.core.share.ShareType;
 import com.common.player.IPlayer;
+import com.common.player.VideoPlayerAdapter;
 import com.common.player.exoplayer.ExoPlayer;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -182,6 +183,15 @@ public class RankResultFragment extends BaseFragment {
             public void onPlayBtnClick() {
                 if (mIPlayer == null) {
                     mIPlayer = new ExoPlayer();
+                    // 播放完毕
+                    mIPlayer.setCallback(new VideoPlayerAdapter.PlayerCallbackAdapter(){
+                        @Override
+                        public void onCompletion() {
+                            super.onCompletion();
+                            mIPlayer.seekTo(0);
+                            view.playComplete();
+                        }
+                    });
                 }
                 mIPlayer.startPlay(RoomDataUtils.getSaveAudioForAiFilePath());
             }
@@ -189,7 +199,7 @@ public class RankResultFragment extends BaseFragment {
             @Override
             public void onPauseBtnClick() {
                 if (mIPlayer != null) {
-                    mIPlayer.stop();
+                    mIPlayer.pause();
                 }
             }
         });

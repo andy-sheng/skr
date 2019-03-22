@@ -167,6 +167,12 @@ public class RankResultView2 extends RelativeLayout {
         this.mListener = l;
     }
 
+    public void playComplete() {
+        // TODO: 2019/3/22 暂停播放
+        mIsPlay = false;
+        mPlaybackIv.setBackground(getResources().getDrawable(R.drawable.rank_play));
+    }
+
     public interface Listener {
         void onPlayBtnClick();
 
