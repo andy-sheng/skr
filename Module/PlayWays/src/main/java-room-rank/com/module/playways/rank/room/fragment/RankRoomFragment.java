@@ -7,7 +7,6 @@ import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.Gravity;
@@ -20,14 +19,12 @@ import com.common.core.account.UserAccountManager;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrAudioPermission;
-import com.common.core.userinfo.UserInfoManager;
 import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
 import com.common.statistics.StatConstants;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.HttpUtils;
-import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.manager.BgMusicManager;
@@ -35,11 +32,13 @@ import com.dialog.view.TipsDialogView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.listener.SVGAListener;
+import com.module.playways.grab.room.view.GrabDengBigAnimationView;
 import com.module.playways.rank.others.LyricAndAccMatchManager;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.room.RankRoomData;
 import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.comment.CommentView;
+import com.module.playways.rank.room.event.PkSomeOneBurstLightEvent;
 import com.module.playways.rank.room.event.RankToVoiceTransformDataEvent;
 import com.module.playways.rank.room.gift.GiftBigAnimationViewGroup;
 import com.module.playways.rank.room.gift.GiftContinueViewGroup;
@@ -51,8 +50,8 @@ import com.module.playways.rank.room.view.BottomContainerView;
 import com.module.playways.rank.room.view.IGameRuleView;
 import com.module.playways.rank.room.view.InputContainerView;
 import com.module.playways.rank.room.view.RankOpView;
-import com.module.playways.rank.room.view.RankTopContainerView2;
 import com.module.playways.rank.room.view.RankTopContainerView1;
+import com.module.playways.rank.room.view.RankTopContainerView2;
 import com.module.playways.rank.room.view.TurnChangeCardView;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
@@ -62,42 +61,29 @@ import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
-import com.trello.rxlifecycle2.android.FragmentEvent;
 import com.zq.dialog.PersonInfoDialog;
-import com.zq.lyrics.LyricsManager;
-import com.zq.lyrics.LyricsReader;
-import com.zq.lyrics.event.LyricEventLauncher;
 import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.ManyLyricsView;
 import com.zq.lyrics.widget.VoiceScaleView;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-
-import static com.zq.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
 
 public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
@@ -167,6 +153,8 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     AnimatorSet mGameEndAnimation;
 
     VoiceScaleView mVoiceScaleView;
+
+    GrabDengBigAnimationView mDengBigAnimation;
 
     List<Animator> mAnimatorList = new ArrayList<>();  //存放所有需要尝试取消的动画
 
@@ -665,6 +653,8 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         giftContinueViewGroup.setRoomData(mRoomData);
         GiftBigAnimationViewGroup giftBigAnimationViewGroup = mRootView.findViewById(R.id.gift_big_animation_vg);
         giftBigAnimationViewGroup.setRoomData(mRoomData);
+
+        mDengBigAnimation = (GrabDengBigAnimationView)mRootView.findViewById(R.id.deng_big_animation);
     }
 
     private void initOpView() {
@@ -725,7 +715,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     @Override
     public boolean useEventBus() {
-        return false;
+        return true;
     }
 
     @Override
@@ -1032,6 +1022,18 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             if (!onLineInfoModel.isIsOnline()) {
                 MyLog.w(TAG, "用户" + onLineInfoModel.getUserID() + "处于离线状态");
             }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(PkSomeOneBurstLightEvent event) {
+        MyLog.d(TAG, "PkSomeOneBurstLightEvent onEvent uid " + event.uid);
+        if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
+            // 当前我是演唱者
+            mDengBigAnimation.setTranslationY(U.getDisplayUtils().dip2px(200));
+            mDengBigAnimation.playBurstAnimation();
+        } else {
+            mDengBigAnimation.playBurstAnimation();
         }
     }
 

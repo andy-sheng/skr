@@ -1,10 +1,12 @@
 package com.module.playways.rank.room.model;
 
+import com.common.utils.U;
 import com.zq.live.proto.Room.BLightInfo;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class BLightInfoModel implements Serializable {
     /**
@@ -51,14 +53,17 @@ public class BLightInfoModel implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-        return 0;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BLightInfoModel that = (BLightInfoModel) o;
+        return userID == that.userID &&
+                seq == that.seq;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        BLightInfoModel bLightInfoModel = (BLightInfoModel) obj;
-        return bLightInfoModel.getUserID() == getUserID() && bLightInfoModel.getSeq() == getSeq();
+    public int hashCode() {
+        return userID * 10 + seq;
     }
 
     public static List<BLightInfoModel> parse(List<BLightInfo> bLightInfoList, int seq) {
@@ -81,5 +86,13 @@ public class BLightInfoModel implements Serializable {
         return bLightInfoModel;
     }
 
-
+    @Override
+    public String toString() {
+        return "BLightInfoModel{" +
+                "score=" + score +
+                ", timeMs=" + timeMs +
+                ", userID=" + userID +
+                ", seq=" + seq +
+                '}';
+    }
 }
