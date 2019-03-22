@@ -176,7 +176,6 @@ public class RankResultFragment extends BaseFragment {
         });
     }
 
-
     void bindListener(RankResultView2 view) {
         view.setListener(new RankResultView2.Listener() {
             @Override
@@ -184,11 +183,11 @@ public class RankResultFragment extends BaseFragment {
                 if (mIPlayer == null) {
                     mIPlayer = new ExoPlayer();
                     // 播放完毕
-                    mIPlayer.setCallback(new VideoPlayerAdapter.PlayerCallbackAdapter(){
+                    mIPlayer.setCallback(new VideoPlayerAdapter.PlayerCallbackAdapter() {
                         @Override
                         public void onCompletion() {
                             super.onCompletion();
-                            mIPlayer.seekTo(0);
+                            mIPlayer.stop();
                             view.playComplete();
                         }
                     });
