@@ -51,8 +51,8 @@ public class CoreInfoInterceptor implements Interceptor {
         }
         // todo 标识设备的唯一ID
         request = request.newBuilder()
-//                .addHeader("Inframe-Client-ID", U.getDeviceUtils().getDeviceID())
-                .addHeader("Inframe-App-Version", U.getAppInfoUtils().getVersionCode()+"")
+                .addHeader("Inframe-Client-ID", U.getDeviceUtils().getDeviceID())
+                .addHeader("Inframe-App-Version", U.getAppInfoUtils().getVersionCode() + "")
                 .build();
         // 如果是测试环境的话
         HttpUrl httpUrl = request.url();
@@ -79,14 +79,14 @@ public class CoreInfoInterceptor implements Interceptor {
             long beginTs = System.currentTimeMillis();
             response = chain.proceed(request);
             long duration = System.currentTimeMillis() - beginTs;
-            StatisticsAdapter.recordCalculateEvent("api", "duration", duration,null);
+            StatisticsAdapter.recordCalculateEvent("api", "duration", duration, null);
         } catch (Exception e) {
             //TODO 增加异常打点
             if (e instanceof SocketTimeoutException) {
                 HashMap map = new HashMap();
                 map.put("url", httpUrl.toString());
                 StatisticsAdapter.recordCountEvent("api", "timeout", map);
-            }else if(e instanceof UnknownHostException){
+            } else if (e instanceof UnknownHostException) {
                 HashMap map = new HashMap();
                 map.put("url", httpUrl.toString());
                 StatisticsAdapter.recordCountEvent("api", "unknownHost", map);
