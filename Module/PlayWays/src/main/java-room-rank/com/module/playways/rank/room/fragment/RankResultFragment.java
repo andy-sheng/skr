@@ -13,12 +13,15 @@ import android.widget.RelativeLayout;
 import com.common.base.BaseFragment;
 import com.common.core.share.SharePanel;
 import com.common.core.share.ShareType;
+import com.common.player.IPlayer;
+import com.common.player.exoplayer.ExoPlayer;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.BaseRoomData;
+import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.room.RankRoomData;
 import com.module.playways.rank.room.view.RankResultView;
 import com.module.playways.rank.room.view.RankResultView2;
@@ -48,6 +51,7 @@ public class RankResultFragment extends BaseFragment {
     RankRoomData mRoomData;
 
     DialogPlus mGameRoleDialog;
+    IPlayer mIPlayer;
 
     @Override
     public int initView() {
@@ -56,11 +60,15 @@ public class RankResultFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mResultInfoArea = (RelativeLayout)mRootView.findViewById(R.id.result_info_area);
+        mResultInfoArea = (RelativeLayout) mRootView.findViewById(R.id.result_info_area);
         mResultArea = (ExRelativeLayout) mRootView.findViewById(R.id.result_area);
+
         mFirstResult = (RankResultView2) mRootView.findViewById(R.id.first_result);
         mSecondResult = (RankResultView2) mRootView.findViewById(R.id.second_result);
         mThirdResult = (RankResultView2) mRootView.findViewById(R.id.third_result);
+        bindListener(mFirstResult);
+        bindListener(mSecondResult);
+        bindListener(mThirdResult);
         mResultTop = (ExImageView) mRootView.findViewById(R.id.result_top);
         mResultExit = (ExImageView) mRootView.findViewById(R.id.result_exit);
         mShareIv = (ExImageView) mRootView.findViewById(R.id.share_iv);
@@ -168,11 +176,34 @@ public class RankResultFragment extends BaseFragment {
     }
 
 
+    void bindListener(RankResultView2 view) {
+        view.setListener(new RankResultView2.Listener() {
+            @Override
+            public void onPlayBtnClick() {
+                if (mIPlayer == null) {
+                    mIPlayer = new ExoPlayer();
+                }
+                mIPlayer.startPlay(RoomDataUtils.getSaveAudioForAiFilePath());
+            }
+
+            @Override
+            public void onPauseBtnClick() {
+                if (mIPlayer != null) {
+                    mIPlayer.stop();
+                }
+            }
+        });
+    }
+
+
     @Override
     public void destroy() {
         super.destroy();
         if (mGameRoleDialog != null && mGameRoleDialog.isShowing()) {
             mGameRoleDialog.dismiss();
+        }
+        if (mIPlayer != null) {
+            mIPlayer.release();
         }
     }
 

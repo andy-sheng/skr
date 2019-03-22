@@ -2,12 +2,14 @@ package com.module.playways.rank.room.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.common.core.account.UserAccountManager;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
@@ -20,6 +22,8 @@ import com.module.playways.rank.room.model.RankPlayerInfoModel;
 import com.module.playways.rank.room.model.UserGameResultModel;
 import com.module.rank.R;
 import com.zq.live.proto.Room.EWinType;
+
+import java.io.File;
 
 public class RankResultView2 extends RelativeLayout {
 
@@ -68,6 +72,14 @@ public class RankResultView2 extends RelativeLayout {
         mPkScore = (BitmapTextView) this.findViewById(R.id.pk_score);
         mPlaybackIv = (ExImageView) this.findViewById(R.id.playback_iv);
         mIsEscapeArea = (ExRelativeLayout) this.findViewById(R.id.is_escape_area);
+        mPlaybackIv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mListener != null) {
+                    mListener.onPlayBtnClick();
+                }
+            }
+        });
     }
 
     /**
@@ -91,8 +103,10 @@ public class RankResultView2 extends RelativeLayout {
                             .setBorderColorBySex(playerInfoModel.getUserInfo().getIsMale())
                             .setBorderWidth(U.getDisplayUtils().dip2px(2))
                             .build());
-            if (MyUserInfoManager.getInstance().getUid() == playerInfoModel.getUserInfo().getUserId()) {
+            if (MyUserInfoManager.getInstance().getUid() == playerInfoModel.getUserInfo().getUserId() && new File(RoomDataUtils.getSaveAudioForAiFilePath()).exists()) {
                 mPlaybackIv.setVisibility(VISIBLE);
+            } else {
+                mPlaybackIv.setVisibility(GONE);
             }
             mNameTv.setText(playerInfoModel.getUserInfo().getNickname());
             mSongTv.setText("《" + playerInfoModel.getSongList().get(0).getItemName() + "》");
@@ -128,5 +142,17 @@ public class RankResultView2 extends RelativeLayout {
         }
 
         mPkScore.setText(userGameResultModel.getTotalScore() + "");
+    }
+
+    Listener mListener;
+
+    public void setListener(Listener l) {
+        this.mListener = l;
+    }
+
+    public interface Listener {
+        void onPlayBtnClick();
+
+        void onPauseBtnClick();
     }
 }
