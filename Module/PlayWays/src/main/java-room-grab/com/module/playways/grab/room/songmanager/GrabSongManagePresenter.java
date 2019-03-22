@@ -115,7 +115,7 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
         map.put("playbookItemID", playbookItemId);
         map.put("roundReq", roundReq);
 
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
 
         ApiMethods.subscribe(mGrabRoomServerApi.delMusic(body), new ApiObserver<ApiResult>() {
             @Override
@@ -171,7 +171,7 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
         HashMap<String, Object> map = new HashMap<>();
         map.put("playbookItemID", playbookItemId);
 
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
 
         ApiMethods.subscribe(mGrabRoomServerApi.addMusic(body), new ApiObserver<ApiResult>() {
             @Override
@@ -206,7 +206,7 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
         map.put("newTagID", specialModel.getTagID());
         map.put("roomID", roomID);
 
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
 
         ApiMethods.subscribe(mGrabRoomServerApi.changeMusicTag(body), new ApiObserver<ApiResult>() {
             @Override

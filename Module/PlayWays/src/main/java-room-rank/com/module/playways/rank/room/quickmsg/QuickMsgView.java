@@ -21,7 +21,7 @@ import com.component.busilib.constans.GameModeType;
 import com.module.playways.voice.activity.VoiceRoomActivity;
 import com.module.rank.R;
 import com.module.playways.rank.msg.event.EventHelper;
-import com.module.playways.rank.room.RoomServerApi;
+import com.module.playways.rank.room.RankRoomServerApi;
 import com.module.playways.BaseRoomData;
 
 import java.util.ArrayList;
@@ -71,13 +71,13 @@ public class QuickMsgView extends RelativeLayout {
                 }
 
                 String content = model.getText();
-                RoomServerApi roomServerApi = ApiManager.getInstance().createService(RoomServerApi.class);
+                RankRoomServerApi roomServerApi = ApiManager.getInstance().createService(RankRoomServerApi.class);
 
                 HashMap<String, Object> map = new HashMap<>();
                 map.put("gameID", mRoomData.getGameId());
                 map.put("content", content);
 
-                RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+                RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
                 ApiMethods.subscribe(roomServerApi.sendMsg(body), new ApiObserver<ApiResult>() {
                     @Override
                     public void process(ApiResult obj) {

@@ -6,7 +6,6 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
-import com.common.utils.U;
 import com.module.home.musictest.MusicTestServerApi;
 import com.module.home.musictest.model.Answer;
 import com.module.home.musictest.model.Question;
@@ -54,7 +53,7 @@ public class MusicQuestionPresenter extends RxLifeCyclePresenter {
         HashMap<String, Object> map = new HashMap<>();
         map.put("answers", JSON.toJSON(result));
 
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mMusicTestServerApi.reportAnswer(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {

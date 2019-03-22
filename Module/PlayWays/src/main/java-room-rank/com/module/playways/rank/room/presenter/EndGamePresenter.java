@@ -14,7 +14,7 @@ import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
 import com.module.playways.rank.msg.event.VoteResultEvent;
-import com.module.playways.rank.room.RoomServerApi;
+import com.module.playways.rank.room.RankRoomServerApi;
 import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.rank.room.model.UserGameResultModel;
 import com.module.playways.rank.room.model.score.ScoreResultModel;
@@ -37,7 +37,7 @@ public class EndGamePresenter extends RxLifeCyclePresenter {
 
     final static int MSG_GET_VOTE = 1;
 
-    RoomServerApi mRoomServerApi = ApiManager.getInstance().createService(RoomServerApi.class);
+    RankRoomServerApi mRoomServerApi = ApiManager.getInstance().createService(RankRoomServerApi.class);
 
     IVoteView mView;
 
@@ -86,7 +86,7 @@ public class EndGamePresenter extends RxLifeCyclePresenter {
         map.put("gameID", gameID);
         map.put("pickUserID", pickUserID);
 
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.vote(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {

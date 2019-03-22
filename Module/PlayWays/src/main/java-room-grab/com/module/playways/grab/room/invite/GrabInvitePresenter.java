@@ -74,7 +74,7 @@ public class GrabInvitePresenter extends RxLifeCyclePresenter {
         map.put("roomID", roomID);
         map.put("userID", grabFriendModel.getUserID());
 
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
 
         ApiMethods.subscribe(mGrabRoomServerApi.inviteFriend(body), new ApiObserver<ApiResult>() {
             @Override

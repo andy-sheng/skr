@@ -63,7 +63,7 @@ public class WithDrawPresenter extends RxLifeCyclePresenter {
         HashMap<String, Object> map = new HashMap<>();
         map.put("openID", openId);
         map.put("accessToken", accessToken);
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
 
         ApiMethods.subscribe(mWalletServerApi.authBindWX(body), new ApiObserver<ApiResult>() {
             @Override
@@ -100,7 +100,7 @@ public class WithDrawPresenter extends RxLifeCyclePresenter {
         HashMap<String, Object> map = new HashMap<>();
         map.put("amount", amount);
         map.put("action", action);
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
 
         ApiMethods.subscribe(mWalletServerApi.decr(body), new ApiObserver<ApiResult>() {
             @Override

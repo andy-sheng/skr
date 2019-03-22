@@ -124,8 +124,8 @@ public class InviteFriendFragment extends BaseFragment implements IGrabInviteVie
             mTvWeixinShare.setOnClickListener(new DebounceViewClickListener() {
                 @Override
                 public void clickValid(View v) {
-                    SkrKouLingUtils.genJoinGameKouling((int) MyUserInfoManager.getInstance().getUid(), mRoomData.getGameId());
-                    new ShareAction(getActivity()).withText("")
+                    String kouling = SkrKouLingUtils.genJoinGameKouling((int) MyUserInfoManager.getInstance().getUid(), mRoomData.getGameId());
+                    new ShareAction(getActivity()).withText(kouling)
                             .setPlatform(SHARE_MEDIA.WEIXIN)
                             .share();
                 }
@@ -134,15 +134,15 @@ public class InviteFriendFragment extends BaseFragment implements IGrabInviteVie
             mTvQqShare.setOnClickListener(new DebounceViewClickListener() {
                 @Override
                 public void clickValid(View v) {
-                    SkrKouLingUtils.genJoinGameKouling((int) MyUserInfoManager.getInstance().getUid(), mRoomData.getGameId());
-                    new ShareAction(getActivity()).withText("")
+                    String kouling = SkrKouLingUtils.genJoinGameKouling((int) MyUserInfoManager.getInstance().getUid(), mRoomData.getGameId());
+                    new ShareAction(getActivity()).withText(kouling)
                             .setPlatform(SHARE_MEDIA.QQ)
                             .share();
                 }
             });
         }
 
-        if(!mShareDialog.isShowing()){
+        if (!mShareDialog.isShowing()) {
             mShareDialog.show();
         }
     }

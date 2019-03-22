@@ -386,7 +386,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         map.put("roomID", mRoomData.getGameId());
         map.put("roundSeq", seq);
 
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.wangSingChance(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -432,7 +432,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         map.put("roomID", mRoomData.getGameId());
         map.put("roundSeq", roundSeq);
 
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.lightOff(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -474,7 +474,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         int roundSeq = now.getRoundSeq();
         map.put("roundSeq", mRoomData.getRealRoundSeq());
 
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.lightBurst(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -651,7 +651,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 .append("|").append(timeMs);
         String sign = U.getMD5Utils().MD5_32(sb.toString());
         map.put("sign", sign);
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.saveRes(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -711,7 +711,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         map.put("roomID", mRoomData.getGameId());
         map.put("roundSeq", roundInfoModel.getRoundSeq());
 
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.sendGrapOver(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -744,7 +744,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         map.put("roomID", mRoomData.getGameId());
         map.put("roundSeq", roundInfoModel.getRoundSeq());
 
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.sendRoundOver(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -778,7 +778,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         map.put("roomID", mRoomData.getGameId());
         map.put("roundSeq", roundInfoModel.getRoundSeq());
 
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.giveUpSing(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -812,7 +812,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         map.put("roomID", mRoomData.getGameId());
         map.put("roundSeq", roundInfoModel.getRoundSeq());
 
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.reqKickUser(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -845,7 +845,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         map.put("roomID", mRoomData.getGameId());
         map.put("sourceUserID", sourceUserId);
 
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.repKickUser(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -871,7 +871,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", mRoomData.getGameId());
 
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.exitRoom(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -913,7 +913,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", mRoomData.getGameId());
         map.put("tagID", mRoomData.getTagId());
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.switchRoom(body), new ApiObserver<ApiResult>() {
 
             public void onNext(ApiResult result) {
@@ -959,7 +959,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         } else if (in) {
             map.put("status", SwapStatusType.SS_SWAP_IN);
         }
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.swap(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {

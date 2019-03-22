@@ -34,7 +34,7 @@ import com.common.view.ex.ExTextView;
 import com.module.RouterConstants;
 import com.module.playways.BaseRoomData;
 import com.module.playways.rank.room.RankRoomData;
-import com.module.playways.rank.room.RoomServerApi;
+import com.module.playways.rank.room.RankRoomServerApi;
 import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.rank.room.model.UserGameResultModel;
 import com.module.playways.rank.room.model.VoteInfoModel;
@@ -132,7 +132,7 @@ public class RankLevelChange2Fragment extends BaseFragment {
     }
 
     private void getGameResult() {
-        RoomServerApi roomServerApi = ApiManager.getInstance().createService(RoomServerApi.class);
+        RankRoomServerApi roomServerApi = ApiManager.getInstance().createService(RankRoomServerApi.class);
         ApiMethods.subscribe(roomServerApi.getVoteResult(mRoomData.getGameId()), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {

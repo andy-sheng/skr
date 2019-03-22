@@ -175,7 +175,7 @@ public class UserInfoManager {
         map.put("toUserID", userId);
         map.put("action", action);
 
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         Observable<ApiResult> apiResultObservable = userInfoServerApi.mateRelation(body);
         ApiMethods.subscribe(apiResultObservable, new ApiObserver<ApiResult>() {
             @Override

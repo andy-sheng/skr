@@ -29,7 +29,7 @@ import io.reactivex.disposables.Disposable;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
-import static com.common.rxretrofit.ApiManager.APPLICATION_JSOIN;
+import static com.common.rxretrofit.ApiManager.APPLICATION_JSON;
 
 // 只处理匹配 请求匹配 取消匹配 和 收到加入游戏通知
 public class RankMatchPresenter extends BaseMatchPresenter {
@@ -109,7 +109,7 @@ public class RankMatchPresenter extends BaseMatchPresenter {
             map.put("playbookItemID", playbookItemID);
         }
         map.put("platform", 20);   // 代表是android平台
-        RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSON), JSON.toJSONString(map));
         mStartMatchTask = ApiMethods.subscribeWith(mMatchServerApi.startMatch(body).retryWhen(new RxRetryAssist(1, 5, false)), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -140,7 +140,7 @@ public class RankMatchPresenter extends BaseMatchPresenter {
         HashMap<String, Object> map = new HashMap<>();
         map.put("mode", mGameType);
 
-        RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mMatchServerApi.cancleMatch(body).retry(3), null);
     }
 
@@ -224,7 +224,7 @@ public class RankMatchPresenter extends BaseMatchPresenter {
         HashMap<String, Object> map = new HashMap<>();
         map.put("gameID", mJoinActionEvent.gameId);
 
-        RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mMatchServerApi.joinGame(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -327,7 +327,7 @@ public class RankMatchPresenter extends BaseMatchPresenter {
         HashMap<String, Object> map = new HashMap<>();
         map.put("gameID", gameId);
 
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mMatchServerApi.exitGame(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {

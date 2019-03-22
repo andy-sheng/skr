@@ -53,7 +53,7 @@ import com.module.playways.rank.room.model.RankPlayerInfoModel;
 import com.module.playways.rank.room.model.RankRoundInfoModel;
 import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
 import com.module.playways.rank.room.RankRoomData;
-import com.module.playways.rank.room.RoomServerApi;
+import com.module.playways.rank.room.RankRoomServerApi;
 import com.module.playways.rank.room.SwapStatusType;
 import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.event.PretendCommentMsgEvent;
@@ -115,7 +115,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 
     RankRoomData mRoomData;
 
-    RoomServerApi mRoomServerApi = ApiManager.getInstance().createService(RoomServerApi.class);
+    RankRoomServerApi mRoomServerApi = ApiManager.getInstance().createService(RankRoomServerApi.class);
 
     Disposable mHeartBeatTask;
 
@@ -347,7 +347,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         // 提前获取roundSeq，如果在result里在获取，可能是下下一个了，如果提前收到轮次变化的push
         map.put("roundSeq", infoModel.getRoundSeq());
 
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.sendRoundOver(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -396,7 +396,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         // 提前获取roundSeq，如果在result里在获取，可能是下下一个了，如果提前收到轮次变化的push
         map.put("roundSeq", myRoundSeq);
 
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.sendRoundScore(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -428,7 +428,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         HashMap<String, Object> map = new HashMap<>();
         map.put("gameID", mRoomData.getGameId());
 
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.exitGame(body), null);
     }
 
@@ -449,7 +449,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         }
 
 
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.swap(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -497,7 +497,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         map.put("gameID", mRoomData.getGameId());
         map.put("userID", MyUserInfoManager.getInstance().getUid());
 
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.sendHeartBeat(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -614,7 +614,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         map.put("gameID", mRoomData.getGameId());
         map.put("roundSeq", mRoomData.getRealRoundSeq());
 
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.pklightOff(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -639,7 +639,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         map.put("gameID", mRoomData.getGameId());
         map.put("roundSeq", mRoomData.getRealRoundSeq());
 
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.pkburst(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -846,7 +846,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
             HashMap<String, Object> map = new HashMap<>();
             map.put("gameID", mRoomData.getGameId());
             map.put("roundSeq", roundInfoModel.getRoundSeq());
-            RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+            RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
             ApiMethods.subscribe(mRoomServerApi.pkburst(body), new ApiObserver<ApiResult>() {
                 @Override
                 public void process(ApiResult result) {
@@ -879,7 +879,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
             HashMap<String, Object> map = new HashMap<>();
             map.put("gameID", mRoomData.getGameId());
             map.put("roundSeq", roundInfoModel.getRoundSeq());
-            RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+            RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
             ApiMethods.subscribe(mRoomServerApi.pklightOff(body), new ApiObserver<ApiResult>() {
 
                 @Override
@@ -1066,7 +1066,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                 .append("|").append(timeMs);
         String sign = U.getMD5Utils().MD5_32(sb.toString());
         map.put("sign", sign);
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.putGameResource(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -1642,7 +1642,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                 .append("|").append(roundSeq)
                 .append("|").append(nowTs);
         map.put("sign", U.getMD5Utils().MD5_32(sb.toString()));
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.sendPkPerSegmentResult(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {

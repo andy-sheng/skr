@@ -22,7 +22,7 @@ import com.module.ModuleServiceManager;
 import com.module.playways.rank.msg.filter.PushMsgFilter;
 import com.module.playways.rank.msg.manager.ChatRoomMsgManager;
 import com.module.playways.rank.room.RankRoomData;
-import com.module.playways.rank.room.RoomServerApi;
+import com.module.playways.rank.room.RankRoomServerApi;
 import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.event.PretendCommentMsgEvent;
 import com.module.playways.rank.room.model.RankPlayerInfoModel;
@@ -118,8 +118,8 @@ public class VoiceCorePresenter extends RxLifeCyclePresenter {
         HashMap<String, Object> map = new HashMap<>();
         map.put("gameID", mRoomData.getGameId());
 
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
-        ApiMethods.subscribe(ApiManager.getInstance().createService(RoomServerApi.class).exitGame(body), null);
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+        ApiMethods.subscribe(ApiManager.getInstance().createService(RankRoomServerApi.class).exitGame(body), null);
     }
 
     @Override

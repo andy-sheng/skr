@@ -12,7 +12,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
-public interface RoomServerApi {
+public interface RankRoomServerApi {
     /**
      * "{\n\t\"gameID\" : 20000220,\n\t\"content\" : \"hello xxx\"\n}")
      *

@@ -12,7 +12,6 @@ import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
 import com.module.RouterConstants;
 import com.module.playways.grab.room.GrabRoomServerApi;
-import com.module.playways.grab.room.activity.GrabRoomActivity;
 import com.module.playways.rank.prepare.model.JoinGrabRoomRspModel;
 import com.module.playways.rank.room.fragment.LeaderboardFragment;
 import com.module.rank.IRankingModeService;
@@ -22,7 +21,7 @@ import java.util.HashMap;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
-import static com.common.rxretrofit.ApiManager.APPLICATION_JSOIN;
+import static com.common.rxretrofit.ApiManager.APPLICATION_JSON;
 
 @Route(path = RouterConstants.SERVICE_RANKINGMODE, name = "测试服务")
 public class PlayWaysServiceImpl implements IRankingModeService {
@@ -48,7 +47,7 @@ public class PlayWaysServiceImpl implements IRankingModeService {
         GrabRoomServerApi roomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", roomID);
-        RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(roomServerApi.joinGrabRoom(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {

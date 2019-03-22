@@ -11,7 +11,6 @@ import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
 
 import com.common.core.account.event.VerifyCodeErrorEvent;
-import com.common.core.login.fragment.LoginFragment;
 import com.common.core.permission.SkrBasePermission;
 import com.common.core.permission.SkrPhoneStatePermission;
 import com.common.log.MyLog;
@@ -19,7 +18,6 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
-import com.common.utils.FragmentUtils;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -110,7 +108,7 @@ public class SmsAuthFragment extends BaseFragment {
                             HashMap<String, Object> map = new HashMap<>();
                             map.put("phone", mPhoneNumber);
                             map.put("code", mCode);
-                            RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+                            RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
 
                             ApiMethods.subscribe(mWalletServerApi.checkSMSCode(body), new ApiObserver<ApiResult>() {
                                 @Override
@@ -195,7 +193,7 @@ public class SmsAuthFragment extends BaseFragment {
         map.put("phone", phoneNumber);
         map.put("sign", sign);
         map.put("timeMs", timeMs);
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
 
         ApiMethods.subscribe(mWalletServerApi.sendSMSCode(body), new ApiObserver<ApiResult>() {
             @Override

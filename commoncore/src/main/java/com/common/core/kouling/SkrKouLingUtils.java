@@ -24,7 +24,7 @@ public class SkrKouLingUtils {
      * @param inviterId
      * @param gameId
      */
-    public static void genJoinGameKouling(int inviterId, int gameId) {
+    public static String genJoinGameKouling(int inviterId, int gameId) {
         StringBuilder sb = new StringBuilder();
         sb.append("复制整段信息，打开【撕歌Skr】查看。");
         sb.append("我开了个房间，一起来撕歌吧。");
@@ -38,8 +38,9 @@ public class SkrKouLingUtils {
         sb.append("我开了个房间，一起来撕歌吧。");
         sb.append("还没安装【撕歌Skr】？点击安装");
         sb.append("http://a.app.qq.com/o/simple.jsp?pkgname=com.zq.live");
-        ClipboardUtils.setCopy(sb.toString());
-        U.getToastUtil().showLong("已复制到粘贴板，快去微信或QQ发送给好友吧");
+//        ClipboardUtils.setCopy(sb.toString());
+//        U.getToastUtil().showLong("已复制到粘贴板，快去微信或QQ发送给好友吧");
+        return sb.toString();
     }
 
     public static boolean tryParseScheme(String str) {

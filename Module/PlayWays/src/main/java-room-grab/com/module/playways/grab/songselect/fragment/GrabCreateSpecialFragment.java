@@ -7,7 +7,6 @@ import android.view.View;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
-import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -20,7 +19,6 @@ import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.songselect.model.SpecialModel;
 import com.module.playways.grab.songselect.view.SpecialSelectView;
 import com.module.playways.rank.prepare.model.JoinGrabRoomRspModel;
-import com.module.playways.rank.prepare.presenter.GrabMatchPresenter;
 import com.module.rank.R;
 
 import java.util.HashMap;
@@ -28,8 +26,6 @@ import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
-
-import static com.common.rxretrofit.ApiManager.APPLICATION_JSOIN;
 
 /**
  * 选择房间属性
@@ -82,7 +78,7 @@ public class GrabCreateSpecialFragment extends BaseFragment {
         map.put("roomType", mRoomType);
         map.put("tagID", tagID);
 
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(grabRoomServerApi.createRoom(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {

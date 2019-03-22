@@ -21,7 +21,6 @@ import okhttp3.Protocol;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
-import okio.BufferedSource;
 
 public class CoreInfoInterceptor implements Interceptor {
     public final static String TAG = "CoreInfoInterceptor";
@@ -39,7 +38,7 @@ public class CoreInfoInterceptor implements Interceptor {
                 HashMap hashMap = new HashMap<>();
                 hashMap.put("errno", 102);
                 hashMap.put("errmsg", "未登录不能发送该请求-->" + request.url());
-                ResponseBody responseBody = ResponseBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(hashMap));
+                ResponseBody responseBody = ResponseBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(hashMap));
                 Response response = new Response.Builder()
                         .request(request)
                         .code(200)

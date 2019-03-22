@@ -11,7 +11,6 @@ import com.common.base.BaseActivity;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
-import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -28,7 +27,6 @@ import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.rank.prepare.model.JoinGrabRoomRspModel;
 
-import com.module.playways.rank.prepare.presenter.GrabMatchPresenter;
 import com.module.playways.rank.room.activity.RankRoomActivity;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
@@ -41,7 +39,7 @@ import java.util.List;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
-import static com.common.rxretrofit.ApiManager.APPLICATION_JSOIN;
+import static com.common.rxretrofit.ApiManager.APPLICATION_JSON;
 
 @Route(path = RouterConstants.ACTIVITY_GRAB_ROOM)
 public class GrabRoomActivity extends BaseActivity {
@@ -67,7 +65,7 @@ public class GrabRoomActivity extends BaseActivity {
                 GrabRoomServerApi roomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
                 HashMap<String, Object> map = new HashMap<>();
                 map.put("roomID", roomID);
-                RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSOIN), JSON.toJSONString(map));
+                RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSON), JSON.toJSONString(map));
                 ApiMethods.subscribe(roomServerApi.joinGrabRoom(body), new ApiObserver<ApiResult>() {
                     @Override
                     public void process(ApiResult result) {

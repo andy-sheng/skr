@@ -27,7 +27,7 @@ public class ApiManager {
      */
     private static final String mBaseUrl = "http://dev.api.inframe.mobi/";
 
-    public static final String APPLICATION_JSOIN = "application/json; charset=utf-8";
+    public static final String APPLICATION_JSON = "application/json; charset=utf-8";
 
     /**
      * 会影响 {@link HttpLoggingInterceptor 中的日志打印}
