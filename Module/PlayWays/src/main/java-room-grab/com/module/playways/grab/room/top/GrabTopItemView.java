@@ -206,7 +206,7 @@ public class GrabTopItemView extends RelativeLayout {
     }
 
     public void setGrap(boolean grap) {
-        MyLog.d(TAG, "setGrap" + " grap=" + grap);
+//        MyLog.d(TAG, "setGrap" + " grap=" + grap);
         if (grap) {
             mFlagIv.setVisibility(VISIBLE);
             LayoutParams lp = (LayoutParams) mFlagIv.getLayoutParams();

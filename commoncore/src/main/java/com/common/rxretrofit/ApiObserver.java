@@ -65,8 +65,10 @@ public abstract class ApiObserver<T> implements Observer<T> {
             onNetworkError(ErrorType.unknownHost);
         } else if (e instanceof SocketTimeoutException) {
             onNetworkError(ErrorType.socketTimeout);
-        }else if(e instanceof HttpException){
-
+        } else if (e instanceof HttpException) {
+            if (((HttpException) e).code() == 404) {
+                onNetworkError(ErrorType.http404);
+            }
         }
     }
 

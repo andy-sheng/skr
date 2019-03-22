@@ -348,6 +348,10 @@ public class DeviceUtils {
     }
 
     public int getVirtualNavBarHeight() {
+        if (U.getDeviceUtils().getProductModel().equals("SM-G9600")) {
+            // 适配三星 G9600
+            return U.getDisplayUtils().getPhoneHeight() - U.getDisplayUtils().getScreenHeight();
+        }
         Resources resources = U.app().getResources();
         int resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
         if (resourceId > 0) {
@@ -398,6 +402,7 @@ public class DeviceUtils {
 
     /**
      * 因为一般而言，刘海的高度都会比状态栏高度低，可直接使用状态栏高度做适配
+     *
      * @param context
      * @return
      */

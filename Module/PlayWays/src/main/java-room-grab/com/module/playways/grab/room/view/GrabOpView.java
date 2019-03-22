@@ -301,7 +301,7 @@ public class GrabOpView extends RelativeLayout {
                 mBtnIv.setOnTouchListener(new OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
-                        MyLog.d(TAG, "onTouch" + " v=" + v + " event=" + event);
+                        //MyLog.d(TAG, "onTouch" + " v=" + v + " event=" + event);
                         if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE) {
                             mRrlProgress.setVisibility(GONE);
                         } else {
