@@ -3,7 +3,10 @@ package com.module.home;
 import com.common.rxretrofit.ApiResult;
 
 import io.reactivex.Observable;
+import okhttp3.RequestBody;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 /**
@@ -27,5 +30,13 @@ public interface MainPageSlideApi {
     //检查要不要显示红包领取
     @GET("http://dev.api.inframe.mobi/v1/task/list-newbee-task")
     Observable<ApiResult> checkRedPkg();
+
+    //检查每日签到
+    @GET("http://dev.api.inframe.mobi/v1/event/app-home-signin-info")
+    Observable<ApiResult> checkInInfo();
+
+    //领取
+    @POST("http://dev.api.inframe.mobi/v1/event/app-home-signin")
+    Observable<ApiResult> signIn(@Body RequestBody body);
 
 }

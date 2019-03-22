@@ -33,6 +33,8 @@ import com.module.RouterConstants;
 import com.module.home.dialogmanager.HomeDialogManager;
 import com.module.home.fragment.GameFragment;
 import com.module.home.fragment.PersonFragment;
+import com.module.home.model.HomeGoldModel;
+import com.module.home.persenter.CheckInPresenter;
 import com.module.home.persenter.HomeCorePresenter;
 import com.module.home.persenter.NotifyCorePresenter;
 import com.module.home.persenter.RedPkgPresenter;
@@ -70,6 +72,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
     HomeCorePresenter mHomePresenter;
     NotifyCorePresenter mNotifyCorePresenter;
     RedPkgPresenter mRedPkgPresenter;
+    CheckInPresenter mCheckInPresenter;
 
     String mPengingSchemeUri; //想要跳转的scheme，但因为没登录被挂起了
     boolean mFromCreate = false;
@@ -153,6 +156,9 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
 
         mHomePresenter = new HomeCorePresenter(this, this);
         mHomePresenter.checkUserInfo("HomeActivity onCreate");
+        mCheckInPresenter = new CheckInPresenter(this);
+        addPresent(mCheckInPresenter);
+        mCheckInPresenter.check();
 
         mGameArea.setOnClickListener(new DebounceViewClickListener(100) {
             @Override
@@ -350,6 +356,4 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
         mMessageBtn.setImageResource(R.drawable.ic_chat_normal);
         mPersonInfoBtn.setImageResource(R.drawable.ic_me_normal);
     }
-
-
 }

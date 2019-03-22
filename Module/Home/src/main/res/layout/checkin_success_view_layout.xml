@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:parentTag="android.widget.RelativeLayout">
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/iv_animate"
+        android:layout_width="@dimen/view_375_dp"
+        android:layout_height="@dimen/view_375_dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/queding_bj" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <com.common.view.ex.ExLinearLayout
+            android:layout_width="@dimen/view_257_dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:layout_marginTop="-35dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/view_46_dp"
+            app:bl_corners_radius="@dimen/view_12_dp"
+            app:bl_solid_color="@color/white">
+
+            <com.common.view.ex.ExRelativeLayout
+                android:id="@+id/rl_gold_content"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/view_97_dp"
+                android:layout_below="@+id/iv_title"
+                app:bl_corners_radius="@dimen/view_20_dp"
+                app:bl_solid_color="@color/white">
+
+                <ImageView
+                    android:layout_width="@dimen/view_174_dp"
+                    android:layout_height="@dimen/view_97_dp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/queding_moren" />
+
+                <ImageView
+                    android:scaleType="center"
+                    android:id="@+id/iv_gold"
+                    android:layout_width="@dimen/view_174_dp"
+                    android:layout_height="@dimen/view_78_dp" />
+
+                <TextView
+                    android:id="@+id/tv_gold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/view_20_dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/view_76_dp"
+                    android:text=""
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/textsize_14_dp" />
+            </com.common.view.ex.ExRelativeLayout>
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/iv_confirm"
+                android:layout_width="@dimen/view_155_dp"
+                android:layout_height="@dimen/view_47_dp"
+                android:layout_below="@+id/rl_gold_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_19_dp"
+                android:layout_marginBottom="@dimen/view_20_dp"
+                android:background="@drawable/qiandao_anniu"
+                android:gravity="center"
+                android:paddingBottom="@dimen/view_5_dp"
+                android:text="确定"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textsize_21_dp" />
+        </com.common.view.ex.ExLinearLayout>
+
+        <ImageView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/queding_biaoti" />
+    </RelativeLayout>
+
+
+</merge>

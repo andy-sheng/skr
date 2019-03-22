@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:parentTag="android.widget.RelativeLayout">
+
+    <com.common.view.ex.ExLinearLayout
+        android:id="@+id/ll_content"
+        android:layout_width="@dimen/view_306_dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-40dp"
+        android:orientation="vertical"
+        app:bl_corners_radius="@dimen/view_12_dp"
+        app:bl_solid_color="@color/white">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="@dimen/view_292_dp"
+            android:layout_height="@dimen/view_184_dp"
+            android:layout_marginLeft="@dimen/view_12_dp"
+            android:layout_marginTop="@dimen/view_48_dp">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <RelativeLayout
+            android:id="@+id/rl_sevenday_bj"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/view_87_dp"
+            android:layout_marginLeft="@dimen/view_14_dp"
+            android:layout_marginTop="@dimen/view_10_dp"
+            android:layout_marginRight="@dimen/view_14_dp"
+            android:background="@drawable/qiandao_diqitianbj">
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/tv_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/view_5_dp"
+                android:text="07"
+                android:textColor="#CEE6FF"
+                android:textSize="@dimen/textsize_29_dp" />
+
+            <ImageView
+                android:id="@+id/iv_seven_gold_bj"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_2_dp"
+                android:background="@drawable/sanshijinbi_moren" />
+
+            <TextView
+                android:id="@+id/tv_gold"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/view_20_dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:text="30金币"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textsize_14_dp" />
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/tv_seven_cover"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:bl_corners_radius="@dimen/view_5_dp"
+                app:bl_solid_color="@color/black_trans_25" />
+        </RelativeLayout>
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/iv_receive"
+            android:layout_width="@dimen/view_225_dp"
+            android:layout_height="@dimen/view_47_dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/view_19_dp"
+            android:layout_marginBottom="@dimen/view_20_dp"
+            android:background="@drawable/qiandao_anniu"
+            android:gravity="center"
+            android:paddingBottom="@dimen/view_5_dp"
+            android:text="领取"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textsize_21_dp"
+
+            />
+    </com.common.view.ex.ExLinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/qiandao_biaoti" />
+</merge>
