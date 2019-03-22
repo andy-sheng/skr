@@ -128,7 +128,7 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
     public void showTagList(List<SpecialModel> specialModelList) {
         if (mGrabSongTagsView == null) {
             mGrabSongTagsView.setSpecialModelList(specialModelList);
-            mPopupWindow.setHeight(U.getDisplayUtils().dip2px(136));
+            mPopupWindow.setHeight(U.getDisplayUtils().dip2px(specialModelList.size() > 4 ? 145 : 136));
             if (!mPopupWindow.isShowing()) {
                 mPopupWindow.showAtLocation(mRootView, Gravity.TOP, 0, 0);
             }

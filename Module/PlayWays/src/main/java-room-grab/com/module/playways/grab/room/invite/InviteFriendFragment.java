@@ -142,7 +142,9 @@ public class InviteFriendFragment extends BaseFragment implements IGrabInviteVie
             });
         }
 
-        mShareDialog.show();
+        if(!mShareDialog.isShowing()){
+            mShareDialog.show();
+        }
     }
 
     @Override
