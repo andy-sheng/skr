@@ -155,7 +155,7 @@ public class SpecialSelectFragment extends BaseFragment {
                     mLoadService.showCallback(ErrorCallback.class);
                 }
             }
-        });
+        }, this);
     }
 
     @Override

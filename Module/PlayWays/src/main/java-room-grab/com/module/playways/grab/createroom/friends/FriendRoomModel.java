@@ -1,71 +1,44 @@
 package com.module.playways.grab.createroom.friends;
 
+
 import com.common.core.userinfo.model.UserInfoModel;
 import com.module.playways.grab.createroom.model.SpecialModel;
 
-public class FriendRoomModel {
+import java.io.Serializable;
 
+
+public class FriendRoomModel implements Serializable {
     /**
-     * currNum : 0
-     * info : {"avatar":"string","nickName":"string","sex":"unknown","userID":0}
-     * isOwner : true
-     * playTag : {"bgColor":"string","introduction":"string","tagID":0,"tagName":"string"}
-     * playsNum : 0
-     * roomID : 0
+     * roomInfo : {"inPlayersNum":0,"isOwner":true,"roomID":0,"roomTag":"URT_UNKNOWN","roomType":"RT_UNKNOWN","tagID":0,"totalPlayersNum":0,"userID":0}
+     * tagInfo : {"bgColor":"string","introduction":"string","tagID":0,"tagName":"string"}
+     * userInfo : {"avatar":"string","nickname":"string","sex":"unknown","userID":0}
      */
 
-    private int currNum;
-    private UserInfoModel info;
-    private boolean isOwner;
-    private SpecialModel playTag;
-    private int playsNum;
-    private int roomID;
+    private SimpleRoomInfo roomInfo;
+    private SpecialModel tagInfo;
+    private UserInfoModel userInfo;
 
-    public int getCurrNum() {
-        return currNum;
+    public SimpleRoomInfo getRoomInfo() {
+        return roomInfo;
     }
 
-    public void setCurrNum(int currNum) {
-        this.currNum = currNum;
+    public void setRoomInfo(SimpleRoomInfo roomInfo) {
+        this.roomInfo = roomInfo;
     }
 
-    public UserInfoModel getInfo() {
-        return info;
+    public SpecialModel getTagInfo() {
+        return tagInfo;
     }
 
-    public void setInfo(UserInfoModel info) {
-        this.info = info;
+    public void setTagInfo(SpecialModel tagInfo) {
+        this.tagInfo = tagInfo;
     }
 
-    public boolean isIsOwner() {
-        return isOwner;
+    public UserInfoModel getUserInfo() {
+        return userInfo;
     }
 
-    public void setIsOwner(boolean isOwner) {
-        this.isOwner = isOwner;
-    }
-
-    public SpecialModel getPlayTag() {
-        return playTag;
-    }
-
-    public void setPlayTag(SpecialModel playTag) {
-        this.playTag = playTag;
-    }
-
-    public int getPlaysNum() {
-        return playsNum;
-    }
-
-    public void setPlaysNum(int playsNum) {
-        this.playsNum = playsNum;
-    }
-
-    public int getRoomID() {
-        return roomID;
-    }
-
-    public void setRoomID(int roomID) {
-        this.roomID = roomID;
+    public void setUserInfo(UserInfoModel userInfo) {
+        this.userInfo = userInfo;
     }
 }

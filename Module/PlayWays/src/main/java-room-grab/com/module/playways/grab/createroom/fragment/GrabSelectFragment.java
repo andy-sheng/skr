@@ -124,11 +124,11 @@ public class GrabSelectFragment extends BaseFragment {
                 if (obj.getErrno() == 0) {
                     List<FriendRoomModel> list = JSON.parseArray(obj.getData().getString("friends"), FriendRoomModel.class);
                     int offset = obj.getData().getIntValue("offset");
-                    int totalNum = obj.getData().getIntValue("cnt");
+                    int totalNum = obj.getData().getIntValue("totalRoomsNum");
                     refreshView(list, offset, totalNum);
                 }
             }
-        });
+        }, this);
     }
 
     private void refreshView(List<FriendRoomModel> list, int offset, int totalNum) {

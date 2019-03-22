@@ -62,26 +62,26 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
         this.mFriendRoomModel = friendRoomModel;
         this.position = position;
 
-        if (friendRoomModel.getPlayTag() != null && !TextUtils.isEmpty(friendRoomModel.getPlayTag().getBgColor())) {
-            mBackground.setBackground(getShapeDrawable(Color.parseColor(friendRoomModel.getPlayTag().getBgColor())));
+        if (friendRoomModel.getTagInfo() != null && !TextUtils.isEmpty(friendRoomModel.getTagInfo().getBgColor())) {
+            mBackground.setBackground(getShapeDrawable(Color.parseColor(friendRoomModel.getTagInfo().getBgColor())));
         } else {
             mBackground.setBackground(getShapeDrawable(Color.parseColor("#68ABD3")));
         }
 
-        if (friendRoomModel.getPlayTag() != null) {
-            mTagNameTv.setText(friendRoomModel.getPlayTag().getTagName());
+        if (friendRoomModel.getTagInfo() != null) {
+            mTagNameTv.setText(friendRoomModel.getTagInfo().getTagName());
         }
 
         AvatarUtils.loadAvatarByUrl(mAvatarIv,
-                AvatarUtils.newParamsBuilder(friendRoomModel.getInfo().getAvatar())
-                        .setBorderColorBySex(friendRoomModel.getInfo().getSex() == ESex.SX_MALE.getValue())
+                AvatarUtils.newParamsBuilder(friendRoomModel.getUserInfo().getAvatar())
+                        .setBorderColorBySex(friendRoomModel.getUserInfo().getSex() == ESex.SX_MALE.getValue())
                         .setBorderWidth(U.getDisplayUtils().dip2px(2))
                         .setCircle(true)
                         .build());
 
-        mNameTv.setText(friendRoomModel.getInfo().getNickname());
-        mRoomNumTv.setText(friendRoomModel.getCurrNum() + "/" + friendRoomModel.getPlaysNum());
-        if (friendRoomModel.isIsOwner()) {
+        mNameTv.setText(friendRoomModel.getUserInfo().getNickname());
+        mRoomNumTv.setText(friendRoomModel.getRoomInfo().getInPlayersNum() + "/" + friendRoomModel.getRoomInfo().getTotalPlayersNum());
+        if (friendRoomModel.getRoomInfo().isIsOwner()) {
             mOwnerTv.setVisibility(View.VISIBLE);
         }
     }

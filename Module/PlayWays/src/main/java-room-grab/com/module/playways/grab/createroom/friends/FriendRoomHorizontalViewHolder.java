@@ -51,12 +51,12 @@ public class FriendRoomHorizontalViewHolder extends RecyclerView.ViewHolder {
         this.position = position;
 
         AvatarUtils.loadAvatarByUrl(mAvatarIv,
-                AvatarUtils.newParamsBuilder(friendRoomModel.getInfo().getAvatar())
-                        .setBorderColorBySex(friendRoomModel.getInfo().getSex() == ESex.SX_MALE.getValue())
+                AvatarUtils.newParamsBuilder(friendRoomModel.getUserInfo().getAvatar())
+                        .setBorderColorBySex(friendRoomModel.getUserInfo().getSex() == ESex.SX_MALE.getValue())
                         .setBorderWidth(U.getDisplayUtils().dip2px(2))
                         .setCircle(true)
                         .build());
-        mNicknameTv.setText(friendRoomModel.getInfo().getNickname());
+        mNicknameTv.setText(friendRoomModel.getUserInfo().getNickname());
 
     }
 }

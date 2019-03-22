@@ -16,6 +16,7 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
 import com.component.busilib.constans.GrabRoomType;
 import com.module.playways.grab.room.GrabRoomServerApi;
+import com.module.playways.rank.song.fragment.GrabSearchSongFragment;
 import com.module.rank.R;
 
 /**
@@ -80,7 +81,7 @@ public class GrabCreateRoomFragment extends BaseFragment {
                             U.getToastUtil().showShort("" + result.getErrmsg());
                         }
                     }
-                });
+                }, GrabCreateRoomFragment.this);
             }
         });
     }
