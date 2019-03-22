@@ -266,23 +266,23 @@ public class GameFragment extends BaseFragment {
             mIvGrabGame.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    if (true) {
-                        UserInfoManager.getInstance().getUserInfoByUuid(1343088, new UserInfoManager.ResultCallback<UserInfoModel>() {
-                            @Override
-                            public boolean onGetLocalDB(UserInfoModel o) {
-                                return false;
-                            }
-
-                            @Override
-                            public boolean onGetServer(UserInfoModel o) {
-                                FollowNotifyEvent event = new FollowNotifyEvent();
-                                event.mUserInfoModel = o;
-                                EventBus.getDefault().post(event);
-                                return false;
-                            }
-                        });
-                        return false;
-                    }
+//                    if (true) {
+//                        UserInfoManager.getInstance().getUserInfoByUuid(1343088, new UserInfoManager.ResultCallback<UserInfoModel>() {
+//                            @Override
+//                            public boolean onGetLocalDB(UserInfoModel o) {
+//                                return false;
+//                            }
+//
+//                            @Override
+//                            public boolean onGetServer(UserInfoModel o) {
+//                                FollowNotifyEvent event = new FollowNotifyEvent();
+//                                event.mUserInfoModel = o;
+//                                EventBus.getDefault().post(event);
+//                                return false;
+//                            }
+//                        });
+//                        return false;
+//                    }
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_ROOM)
                             .navigation();
                     return false;

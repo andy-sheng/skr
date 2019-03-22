@@ -47,6 +47,7 @@ public class SkrKouLingUtils {
         if (!TextUtils.isEmpty(str)) {
             // 跳到 是否需要跳一个activity
             String base64Scheme = U.getStringUtils().getLongestBase64SubString(str);
+            // TODO 可能需要去服务端解析口令，解析口令的接口不做身份验证
             MyLog.d(TAG, "tryParseScheme" + " base64Scheme=" + base64Scheme);
             byte[] bytes = U.getBase64Utils().decode(base64Scheme);
             try {
@@ -55,6 +56,7 @@ public class SkrKouLingUtils {
                 MyLog.d(TAG, "tryParseScheme" + " scheme=" + scheme);
                 if (!TextUtils.isEmpty(scheme)) {
                     Uri uri = Uri.parse(scheme);
+                    // TODO这里要考虑下如果没登录怎么办，走SchemeActivity
                     ProcessResult processResult = ZqSchemeProcessorManager.getInstance().process(uri, U.getActivityUtils().getTopActivity(), false);
                     if (processResult != ProcessResult.NotAccepted) {
                         return true;
