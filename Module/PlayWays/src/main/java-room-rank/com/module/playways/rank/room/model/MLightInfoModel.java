@@ -53,13 +53,16 @@ public class MLightInfoModel implements Serializable {
 
     @Override
     public int hashCode() {
-        return 0;
+        return userID * 10 + seq;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        MLightInfoModel mLightInfoModel = (MLightInfoModel) obj;
-        return mLightInfoModel.getUserID() == getUserID() && mLightInfoModel.getSeq() == getSeq();
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MLightInfoModel that = (MLightInfoModel) o;
+        return userID == that.userID &&
+                seq == that.seq;
     }
 
     public static List<MLightInfoModel> parse(List<MLightInfo> mLightInfoList, int seq) {
