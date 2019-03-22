@@ -2,12 +2,14 @@ package com.module.playways.rank.room.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.common.core.account.UserAccountManager;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
@@ -36,6 +38,8 @@ public class RankResultView2 extends RelativeLayout {
     BitmapTextView mPkScore;
     ExImageView mPlaybackIv;
     ExRelativeLayout mIsEscapeArea;
+
+    boolean mIsPlay = false;  //标记是否播放
 
     public RankResultView2(Context context) {
         super(context);
@@ -68,6 +72,21 @@ public class RankResultView2 extends RelativeLayout {
         mPkScore = (BitmapTextView) this.findViewById(R.id.pk_score);
         mPlaybackIv = (ExImageView) this.findViewById(R.id.playback_iv);
         mIsEscapeArea = (ExRelativeLayout) this.findViewById(R.id.is_escape_area);
+
+        mPlaybackIv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mIsPlay) {
+                    // TODO: 2019/3/22 暂停播放
+                    mIsPlay = false;
+                    mPlaybackIv.setBackground(getResources().getDrawable(R.drawable.rank_play));
+                } else {
+                    // TODO: 2019/3/22 开始播放
+                    mIsPlay = true;
+                    mPlaybackIv.setBackground(getResources().getDrawable(R.drawable.rank_stop));
+                }
+            }
+        });
     }
 
     /**
@@ -116,13 +135,15 @@ public class RankResultView2 extends RelativeLayout {
                     // Ai机器人
                     mAiScoreBtv.setText(audienceScoreModel.getScore() + "");
                 } else {
-                    manScore = audienceScoreModel.getScore();
+                    manScore = manScore + audienceScoreModel.getScore();
                 }
             }
 
             if (manScore == 0) {
+                mRankManIv.setBackground(getResources().getDrawable(R.drawable.paiwei_baodeng_m));
                 mManScoreBtv.setText("0.0");
             } else {
+                mRankManIv.setBackground(getResources().getDrawable(R.drawable.paiwei_baodeng_l));
                 mManScoreBtv.setText(manScore + "");
             }
         }
