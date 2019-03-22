@@ -16,12 +16,15 @@ import com.module.rank.R;
 public class SongSelectAdapter extends DiffAdapter<SongModel, RecyclerView.ViewHolder> {
 
     public static int DEFAULT_MODE = 0;          //默认模式，不带底部
-    public static int HAS_FOOTER_SEARCH = 1;     //含底部搜索
+    public static int GRAB_MODE = 1;             //一唱到底搜索
+
+    Boolean mHasFooterBack = false;     //是否含底部搜索反馈
+
 
     RecyclerOnItemClickListener mRecyclerOnItemClickListener;
 
-    public static int NORMAL_ITEM_TYPE = 0;
-    public static int SEARCH_ITEM_TYPE = 1;
+    public static int NORMAL_ITEM_TYPE = 0;      // 正常view
+    public static int SEARCH_ITEM_TYPE = 1;      // 底部搜索反馈
 
     int mode = DEFAULT_MODE;
 
@@ -29,21 +32,27 @@ public class SongSelectAdapter extends DiffAdapter<SongModel, RecyclerView.ViewH
         this.mRecyclerOnItemClickListener = onItemClickListener;
     }
 
-    public SongSelectAdapter(RecyclerOnItemClickListener onItemClickListener, int mode) {
+    public SongSelectAdapter(RecyclerOnItemClickListener onItemClickListener, boolean mHasFooterBack) {
         this.mRecyclerOnItemClickListener = onItemClickListener;
+        this.mHasFooterBack = mHasFooterBack;
+    }
+
+    public SongSelectAdapter(RecyclerOnItemClickListener onItemClickListener, boolean mHasFooterBack, int mode) {
+        this.mRecyclerOnItemClickListener = onItemClickListener;
+        this.mHasFooterBack = mHasFooterBack;
         this.mode = mode;
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (viewType == HAS_FOOTER_SEARCH) {
+        if (viewType == SEARCH_ITEM_TYPE) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.song_search_footer_view, parent, false);
             SongSearchFooter songSearchFooter = new SongSearchFooter(view, mRecyclerOnItemClickListener);
             return songSearchFooter;
         } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.song_view_holder_item, parent, false);
-            SongInfoHolder viewHolder = new SongInfoHolder(view, mRecyclerOnItemClickListener);
+            SongInfoHolder viewHolder = new SongInfoHolder(view, mode, mRecyclerOnItemClickListener);
             return viewHolder;
         }
     }
@@ -54,7 +63,7 @@ public class SongSelectAdapter extends DiffAdapter<SongModel, RecyclerView.ViewH
             SongInfoHolder songInfoHolder = (SongInfoHolder) holder;
             SongModel songModel = mDataList.get(position);
             songInfoHolder.bind(position, songModel);
-        }else if (holder instanceof SongSearchFooter){
+        } else if (holder instanceof SongSearchFooter) {
             SongSearchFooter songSearchFooter = (SongSearchFooter) holder;
             songSearchFooter.bind(position);
 
@@ -63,7 +72,7 @@ public class SongSelectAdapter extends DiffAdapter<SongModel, RecyclerView.ViewH
 
     @Override
     public int getItemCount() {
-        if (mode == HAS_FOOTER_SEARCH) {
+        if (mHasFooterBack) {
             if (mDataList == null) {
                 return 1;
             }
@@ -78,7 +87,7 @@ public class SongSelectAdapter extends DiffAdapter<SongModel, RecyclerView.ViewH
 
     @Override
     public int getItemViewType(int position) {
-        if (mode == HAS_FOOTER_SEARCH) {
+        if (mHasFooterBack) {
             int counts = getItemCount();
             if (position == counts - 1) {
                 return SEARCH_ITEM_TYPE;

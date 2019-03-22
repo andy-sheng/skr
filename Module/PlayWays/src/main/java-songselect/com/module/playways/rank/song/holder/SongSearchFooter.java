@@ -1,13 +1,10 @@
 package com.module.playways.rank.song.holder;
 
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
-import android.text.SpannableStringBuilder;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.common.utils.SpanUtils;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.rank.R;
