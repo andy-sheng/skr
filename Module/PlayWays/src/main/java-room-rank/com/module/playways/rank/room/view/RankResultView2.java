@@ -41,6 +41,8 @@ public class RankResultView2 extends RelativeLayout {
     ExImageView mPlaybackIv;
     ExRelativeLayout mIsEscapeArea;
 
+    boolean mIsPlay = false;  //标记是否播放
+
     public RankResultView2(Context context) {
         super(context);
         init();
@@ -72,11 +74,24 @@ public class RankResultView2 extends RelativeLayout {
         mPkScore = (BitmapTextView) this.findViewById(R.id.pk_score);
         mPlaybackIv = (ExImageView) this.findViewById(R.id.playback_iv);
         mIsEscapeArea = (ExRelativeLayout) this.findViewById(R.id.is_escape_area);
+
         mPlaybackIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                if (mListener != null) {
-                    mListener.onPlayBtnClick();
+                if (mIsPlay) {
+                    // TODO: 2019/3/22 暂停播放
+                    mIsPlay = false;
+                    mPlaybackIv.setBackground(getResources().getDrawable(R.drawable.rank_play));
+                    if (mListener != null) {
+                        mListener.onPauseBtnClick();
+                    }
+                } else {
+                    // TODO: 2019/3/22 开始播放
+                    mIsPlay = true;
+                    mPlaybackIv.setBackground(getResources().getDrawable(R.drawable.rank_stop));
+                    if (mListener != null) {
+                        mListener.onPlayBtnClick();
+                    }
                 }
             }
         });
@@ -130,13 +145,15 @@ public class RankResultView2 extends RelativeLayout {
                     // Ai机器人
                     mAiScoreBtv.setText(audienceScoreModel.getScore() + "");
                 } else {
-                    manScore = audienceScoreModel.getScore();
+                    manScore = manScore + audienceScoreModel.getScore();
                 }
             }
 
             if (manScore == 0) {
+                mRankManIv.setBackground(getResources().getDrawable(R.drawable.paiwei_baodeng_m));
                 mManScoreBtv.setText("0.0");
             } else {
+                mRankManIv.setBackground(getResources().getDrawable(R.drawable.paiwei_baodeng_l));
                 mManScoreBtv.setText(manScore + "");
             }
         }
