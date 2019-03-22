@@ -79,7 +79,7 @@ public class EngineManager implements AgoraOutCallback {
     private boolean mTokenEnable = false; // 是否开启token校验
     private String mLastJoinChannelToken; // 上一次加入房间用的token
     private String mRoomId = ""; // 房间id
-
+    private boolean mInChannel = false; // 是否已经在频道中
     @Override
     public void onUserJoined(int uid, int elapsed) {
         // 用户加入了
@@ -136,6 +136,8 @@ public class EngineManager implements AgoraOutCallback {
             mCustomHandlerThread.removeMessage(MSG_JOIN_ROOM_TIMEOUT);
             mCustomHandlerThread.removeMessage(MSG_JOIN_ROOM_AGAIN);
         }
+        mInChannel = true;
+        onSelfJoinChannelSuccess();
     }
 
     @Override
@@ -143,11 +145,12 @@ public class EngineManager implements AgoraOutCallback {
         UserStatus userStatus = ensureJoin(uid);
         userStatus.setIsSelf(true);
         EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_REJOIN, userStatus));
+        mInChannel = true;
     }
 
     @Override
     public void onLeaveChannel(IRtcEngineEventHandler.RtcStats stats) {
-
+        mInChannel = false;
     }
 
     @Override
@@ -397,6 +400,7 @@ public class EngineManager implements AgoraOutCallback {
             if (mMusicTimePlayTimeListener != null && !mMusicTimePlayTimeListener.isDisposed()) {
                 mMusicTimePlayTimeListener.dispose();
             }
+            mInChannel = false;
             AgoraEngineAdapter.getInstance().destroy(true);
 //            CbEngineAdapter.getInstance().destroy();
             mUserStatusMap.clear();
@@ -1075,27 +1079,19 @@ public class EngineManager implements AgoraOutCallback {
         int cycle;
     }
 
-    /**
-     * 监听耳机插拔
-     *
-     * @param event
-     */
-    @Subscribe
-    public void onEvent(EngineEvent event) {
-        if (event.getType() == EngineEvent.TYPE_USER_JOIN) {
-            if (mPendingStartMixAudioParams != null) {
-                if (event.getUserStatus().getUserId() == mPendingStartMixAudioParams.uid) {
-                    MyLog.w(TAG, "播放之前挂起的伴奏 uid=" + mPendingStartMixAudioParams.uid);
-                    startAudioMixing(mPendingStartMixAudioParams.uid,
-                            mPendingStartMixAudioParams.filePath,
-                            mPendingStartMixAudioParams.midiPath,
-                            mPendingStartMixAudioParams.mixMusicBeginOffset,
-                            mPendingStartMixAudioParams.loopback,
-                            mPendingStartMixAudioParams.replace,
-                            mPendingStartMixAudioParams.cycle);
-                }
-            }
+    private void onSelfJoinChannelSuccess() {
+        if (mPendingStartMixAudioParams != null) {
+            MyLog.w(TAG, "播放之前挂起的伴奏 uid=" + mPendingStartMixAudioParams.uid);
+            startAudioMixing(mPendingStartMixAudioParams.uid,
+                    mPendingStartMixAudioParams.filePath,
+                    mPendingStartMixAudioParams.midiPath,
+                    mPendingStartMixAudioParams.mixMusicBeginOffset,
+                    mPendingStartMixAudioParams.loopback,
+                    mPendingStartMixAudioParams.replace,
+                    mPendingStartMixAudioParams.cycle);
         }
+        EngineManager.getInstance().muteLocalAudioStream(mConfig.isLocalAudioStreamMute());
+        EngineManager.getInstance().muteLocalAudioStream(mConfig.isAllRemoteAudioStreamsMute());
     }
 
     /**
