@@ -55,20 +55,22 @@ public abstract class ApiObserver<T> implements Observer<T> {
         if (TextUtils.isEmpty(log)) {
             log = e.getMessage();
         }
+        MyLog.e(API_TAG, log);
+        if (e instanceof HttpException) {
+            if (((HttpException) e).code() == 404) {
+                onNetworkError(ErrorType.http404);
+                return;
+            }
+        }
         if (MyLog.isDebugLogOpen()) {
             if (!TextUtils.isEmpty(log)) {
                 U.getToastUtil().showShort(log);
             }
         }
-        MyLog.e(API_TAG, log);
         if (e instanceof UnknownHostException) {
             onNetworkError(ErrorType.unknownHost);
         } else if (e instanceof SocketTimeoutException) {
             onNetworkError(ErrorType.socketTimeout);
-        } else if (e instanceof HttpException) {
-            if (((HttpException) e).code() == 404) {
-                onNetworkError(ErrorType.http404);
-            }
         }
     }
 

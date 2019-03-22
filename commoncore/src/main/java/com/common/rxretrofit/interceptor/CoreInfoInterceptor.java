@@ -21,6 +21,7 @@ import okhttp3.Protocol;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import retrofit2.adapter.rxjava2.HttpException;
 
 public class CoreInfoInterceptor implements Interceptor {
     public final static String TAG = "CoreInfoInterceptor";
@@ -80,6 +81,9 @@ public class CoreInfoInterceptor implements Interceptor {
             response = chain.proceed(request);
             long duration = System.currentTimeMillis() - beginTs;
             StatisticsAdapter.recordCalculateEvent("api", "duration", duration, null);
+            if (response != null && response.code() == 404) {
+                U.getToastUtil().showShort(httpUrl.toString() + " 服务HTTP404");
+            }
         } catch (Exception e) {
             //TODO 增加异常打点
             if (e instanceof SocketTimeoutException) {
@@ -90,6 +94,10 @@ public class CoreInfoInterceptor implements Interceptor {
                 HashMap map = new HashMap();
                 map.put("url", httpUrl.toString());
                 StatisticsAdapter.recordCountEvent("api", "unknownHost", map);
+            } else if (e instanceof HttpException) {
+                if (((HttpException) e).code() == 404) {
+                    U.getToastUtil().showShort(httpUrl.toString() + " 404");
+                }
             }
             throw e;
         }
