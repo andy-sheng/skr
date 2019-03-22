@@ -14,18 +14,14 @@ import java.util.LinkedList;
  * 循环播放动画时的控制模板类，封装点亮、背景、大礼物等播放的基本队列逻辑
  * Created by chengsimin on 16/6/17.
  */
-public abstract class AnimationPlayControlTemplate<MODEL, CONSUMER> {
+public abstract class ObjectPlayControlTemplate<MODEL, CONSUMER> {
     public static final String MODELAG = "AnimationPlayControlMODELemplate";
 
-    static final int MSG_SMODELARMODEL = 80;
+    static final int MSG_START_ON_UI = 80;
 
-    static final int MSG_END = 81;
+    static final int MSG_END_ON_UI = 81;
 
     public static final int SIZE = 100;//生产者池子里最多多少个
-
-    private int mMaxConsumerNumber = 1;//消费者的最大个数
-
-    private int mCurConsumerNumber = 0;//当前消费者的个数
 
     /**
      * 播放动画队列
@@ -37,8 +33,7 @@ public abstract class AnimationPlayControlTemplate<MODEL, CONSUMER> {
     Handler mUiHandler;
 
 
-    public AnimationPlayControlTemplate(int maxConsumerNumber) {
-        this.mMaxConsumerNumber = maxConsumerNumber;
+    public ObjectPlayControlTemplate() {
         mHandlerMODELhread = new CustomHandlerThread("my-queue-thread") {
             @Override
             protected void processMessage(Message var1) {
@@ -49,11 +44,11 @@ public abstract class AnimationPlayControlTemplate<MODEL, CONSUMER> {
             @Override
             public void handleMessage(Message msg) {
                 switch (msg.what) {
-                    case MSG_SMODELARMODEL:
+                    case MSG_START_ON_UI:
                         Pair<MODEL, CONSUMER> pair = (Pair<MODEL, CONSUMER>) msg.obj;
                         onStart(pair.first, pair.second);
                         break;
-                    case MSG_END:
+                    case MSG_END_ON_UI:
                         onEnd((MODEL) msg.obj);
                         break;
                 }
@@ -74,21 +69,20 @@ public abstract class AnimationPlayControlTemplate<MODEL, CONSUMER> {
     }
 
     private void play() {
-        if (mCurConsumerNumber >= mMaxConsumerNumber) {
-            MyLog.d(MODELAG, "no idle consumer");
-            return;
-        }
         MODEL cur = mQueue.peekFirst();
-        CONSUMER consumer = accept(cur);
-        if (consumer != null) {
-            // 肯定有消费者，才会走到这
-            cur = mQueue.poll();
-            if (cur != null) {
-                //取出来一个
-                processInBackGround(cur);
-                onStartInside(cur, consumer);
+        if(cur!=null){
+            CONSUMER consumer = accept(cur);
+            if (consumer != null) {
+                // 肯定有消费者，才会走到这
+                cur = mQueue.poll();
+                if (cur != null) {
+                    //取出来一个
+                    processInBackGround(cur);
+                    onStartInside(cur, consumer);
+                }
             }
         }
+
     }
 
     /**
@@ -98,12 +92,7 @@ public abstract class AnimationPlayControlTemplate<MODEL, CONSUMER> {
      */
     private void onStartInside(MODEL model, CONSUMER consumer) {
         MyLog.d(MODELAG, "onStartInside model:" + model);
-        if (++mCurConsumerNumber > mMaxConsumerNumber) {
-            mCurConsumerNumber = mMaxConsumerNumber;
-            mQueue.offerFirst(model);
-            return;
-        }
-        Message msg = mUiHandler.obtainMessage(MSG_SMODELARMODEL);
+        Message msg = mUiHandler.obtainMessage(MSG_START_ON_UI);
         msg.obj = new Pair<>(model, consumer);
         mUiHandler.sendMessage(msg);
     }
@@ -115,7 +104,7 @@ public abstract class AnimationPlayControlTemplate<MODEL, CONSUMER> {
      * @param model
      */
     public void endCurrent(MODEL model) {
-        Message msg = mUiHandler.obtainMessage(MSG_END);
+        Message msg = mUiHandler.obtainMessage(MSG_END_ON_UI);
         msg.obj = model;
         mUiHandler.sendMessage(msg);
 
@@ -129,9 +118,6 @@ public abstract class AnimationPlayControlTemplate<MODEL, CONSUMER> {
 
     private void onEndInSide(MODEL model) {
         MyLog.d(MODELAG, "onEndInSide model:" + model);
-        if (--mCurConsumerNumber < 0) {
-            mCurConsumerNumber = 0;
-        }
         play();
     }
 
@@ -139,7 +125,6 @@ public abstract class AnimationPlayControlTemplate<MODEL, CONSUMER> {
      * 复位
      */
     public synchronized void reset() {
-        mCurConsumerNumber = 0;
         mQueue.clear();
     }
 
@@ -147,7 +132,6 @@ public abstract class AnimationPlayControlTemplate<MODEL, CONSUMER> {
      * 复位
      */
     public synchronized void destroy() {
-        mCurConsumerNumber = 0;
         mQueue.clear();
         if (mUiHandler != null) {
             mUiHandler.removeCallbacksAndMessages(null);
@@ -191,14 +175,6 @@ public abstract class AnimationPlayControlTemplate<MODEL, CONSUMER> {
         return !mQueue.isEmpty();
     }
 
-    /**
-     * 是否空闲的消费者
-     *
-     * @return
-     */
-    public boolean hasIdleConsumer() {
-        return mCurConsumerNumber < mMaxConsumerNumber;
-    }
 
 
 }

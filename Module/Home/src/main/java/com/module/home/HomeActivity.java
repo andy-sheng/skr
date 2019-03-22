@@ -2,7 +2,6 @@ package com.module.home;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,7 +9,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -32,6 +30,7 @@ import com.common.view.ex.ExTextView;
 import com.common.view.viewpager.NestViewPager;
 import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
+import com.module.home.dialogmanager.HomeDialogManager;
 import com.module.home.fragment.GameFragment;
 import com.module.home.fragment.PersonFragment;
 import com.module.home.persenter.HomeCorePresenter;
@@ -44,7 +43,9 @@ import com.module.msg.IMsgService;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.ViewHolder;
+import com.zq.dialog.event.ShowDialogInHomeEvent;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -65,7 +66,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
     ExImageView mPersonInfoRedDot;
     NestViewPager mMainVp;
     DialogPlus mRedPkgView;
-
     IMsgService mMsgService;
     HomeCorePresenter mHomePresenter;
     NotifyCorePresenter mNotifyCorePresenter;
@@ -77,6 +77,8 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
     SkrSdcardPermission mSkrSdcardPermission = new SkrSdcardPermission();
 
     //SkrLocationPermission mSkrLocationPermission = new SkrLocationPermission();
+
+    HomeDialogManager mHomeDialogManager = new HomeDialogManager();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -149,7 +151,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
 
         mMainVp.setAdapter(fragmentPagerAdapter);
 
-        mHomePresenter = new HomeCorePresenter(this,this);
+        mHomePresenter = new HomeCorePresenter(this, this);
         mHomePresenter.checkUserInfo("HomeActivity onCreate");
 
         mGameArea.setOnClickListener(new DebounceViewClickListener(100) {
@@ -189,6 +191,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
         addPresent(mNotifyCorePresenter);
 
         mMainVp.setCurrentItem(0, false);
+        mHomeDialogManager.register();
         mFromCreate = true;
     }
 
@@ -207,7 +210,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
     }
 
     @Override
-    public void showGetCashView(float cash, String schema) {
+    public void showGetCashView(float cash, String scheme) {
         if (mRedPkgView != null) {
             mRedPkgView.dismiss();
         }
@@ -228,7 +231,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
                     public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
                         if (view.getId() == R.id.tv_ruzhang) {
                             ARouter.getInstance().build(RouterConstants.ACTIVITY_SCHEME)
-                                    .withString("uri", schema)
+                                    .withString("uri", scheme)
                                     .navigation();
                         }
 
@@ -236,8 +239,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
                     }
                 })
                 .create();
-
-        mRedPkgView.show();
+        EventBus.getDefault().post(new ShowDialogInHomeEvent(mRedPkgView,30));
     }
 
     @Override
@@ -302,6 +304,9 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
         super.destroy();
         if (mHomePresenter != null) {
             mHomePresenter.destroy();
+        }
+        if (mHomeDialogManager != null) {
+            mHomeDialogManager.destroy();
         }
     }
 

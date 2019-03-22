@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
-import com.common.anim.AnimationPlayControlTemplate;
+import com.common.anim.ObjectPlayControlTemplate;
 import com.module.playways.rank.msg.event.SpecialEmojiMsgEvent;
 import com.module.playways.rank.room.gift.model.GiftPlayModel;
 import com.module.playways.BaseRoomData;
@@ -46,7 +46,7 @@ public class GiftBigAnimationViewGroup extends RelativeLayout {
         init(context);
     }
 
-    AnimationPlayControlTemplate<GiftPlayModel, GiftBigAnimationView> mGiftPlayControlTemplate = new AnimationPlayControlTemplate<GiftPlayModel, GiftBigAnimationView>(MAX_CONSUMER_NUM) {
+    ObjectPlayControlTemplate<GiftPlayModel, GiftBigAnimationView> mGiftPlayControlTemplate = new ObjectPlayControlTemplate<GiftPlayModel, GiftBigAnimationView>() {
 
         @Override
         protected GiftBigAnimationView accept(GiftPlayModel cur) {

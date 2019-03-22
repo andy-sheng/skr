@@ -50,7 +50,7 @@ public class DialogPlus {
     /**
      * Listener to notify the user that dialog has been dismissed
      */
-    private final OnDismissListener onDismissListener;
+    public  OnDismissListener onDismissListener;
 
     /**
      * Listener to notify the user that dialog has been canceled

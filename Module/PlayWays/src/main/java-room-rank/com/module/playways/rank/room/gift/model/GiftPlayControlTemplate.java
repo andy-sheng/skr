@@ -101,17 +101,16 @@ public abstract class GiftPlayControlTemplate {
 
     private void play() {
         GiftPlayModel cur = peek();
-        if (cur == null) {
-            return;
-        }
-        GiftContinuousView consumer = accept(cur);
-        if (consumer != null) {
-            // 肯定有消费者，才会走到这
-            mQueueMap.remove(getKey(cur));
-            if (cur != null) {
-                //取出来一个
-                processInBackGround(cur);
-                onStartInside(cur, consumer);
+        if (cur != null) {
+            GiftContinuousView consumer = accept(cur);
+            if (consumer != null) {
+                // 肯定有消费者，才会走到这
+                mQueueMap.remove(getKey(cur));
+                if (cur != null) {
+                    //取出来一个
+                    processInBackGround(cur);
+                    onStartInside(cur, consumer);
+                }
             }
         }
     }

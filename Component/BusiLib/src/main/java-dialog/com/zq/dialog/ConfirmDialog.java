@@ -6,10 +6,14 @@ import android.view.Gravity;
 import android.view.View;
 
 import com.common.core.userinfo.model.UserInfoModel;
+import com.common.utils.U;
 import com.component.busilib.R;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.ViewHolder;
+import com.zq.dialog.event.ShowDialogInHomeEvent;
+
+import org.greenrobot.eventbus.EventBus;
 
 public class ConfirmDialog {
 
@@ -66,7 +70,11 @@ public class ConfirmDialog {
 
     public void show() {
         if (mDialogPlus != null) {
-            mDialogPlus.show();
+            if(U.getActivityUtils().getTopActivity().getClass().getSimpleName().equals("HomeActivity")){
+                EventBus.getDefault().post(new ShowDialogInHomeEvent(mDialogPlus,20));
+            }else{
+                mDialogPlus.show();
+            }
         }
     }
 
