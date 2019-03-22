@@ -121,7 +121,7 @@ public class SearchSongFragment extends BaseFragment {
                             .build());
                 }
             }
-        }, SongSelectAdapter.HAS_FOOTER_SEARCH);
+        }, true);
         mSearchResult.setAdapter(mSongSelectAdapter);
 
         mTitlebar.setListener(new CommonTitleBar.OnTitleBarListener() {

@@ -60,12 +60,21 @@ public interface SongSelectServerApi {
     Observable<ApiResult> getClickedMusicItmes(@Query("offset") int offset,
                                                @Query("cnt") int cnt);
 
-
     /**
-     * 搜索条目
+     * 普通搜索
+     * @param keyword
+     * @return
      */
     @GET("/v1/playbook/search-items")
     Observable<ApiResult> searchMusicItems(@Query("keyword") String keyword);
+
+    /**
+     * 一唱到底搜索
+     * @param keyword
+     * @return
+     */
+    @GET("/v1/playbook/search-stand-intro")
+    Observable<ApiResult> searchGrabMusicItems(@Query("keyword") String keyword);
 
     @GET("/v1/playbook/report-not-exist-song")
     Observable<ApiResult> reportNotExistSong(@Query("name") String name,

@@ -158,6 +158,8 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
     private boolean centerSearchEdiable;                // 搜索框是否可输入
     private int centerSearchBgResource;                 // 搜索框背景图片
     private int centerSearchRightType;                  // 搜索框右边按钮类型  0: voice 1: delete
+    private int centerSearchHintColor;                  // 搜索框提示文字颜色
+    private int centerSearchTextColor;                  // 搜索框输入文字颜色
     private String centerSearchHintText;                // 搜索框中间提示的字
     private int centerSearchMaxLength;                  // 搜索框可输入内容长度
     private int centerCustomViewRes;                    // 中间自定义布局资源
@@ -250,6 +252,8 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
             centerSearchBgResource = array.getResourceId(R.styleable.CommonTitleBar_centerSearchBg, R.drawable.comm_titlebar_search_gray_shape);
             centerSearchRightType = array.getInt(R.styleable.CommonTitleBar_centerSearchRightType, TYPE_CENTER_SEARCH_RIGHT_VOICE);
             centerSearchHintText = array.getString(R.styleable.CommonTitleBar_centerSearchHint);
+            centerSearchHintColor = array.getColor(R.styleable.CommonTitleBar_centerSearchHintColor, Color.parseColor("#800C2275"));
+            centerSearchTextColor = array.getColor(R.styleable.CommonTitleBar_centerSearchTextColor, Color.parseColor("#0C2275"));
             centerSearchMaxLength = array.getInt(R.styleable.CommonTitleBar_centerSearchMaxLength, 0);
         } else if (centerType == TYPE_CENTER_CUSTOM_VIEW) {
             centerCustomViewRes = array.getResourceId(R.styleable.CommonTitleBar_centerCustomView, 0);
@@ -584,8 +588,8 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
             if (centerSearchMaxLength != 0) {
                 etSearchHint.setFilters(new InputFilter[]{new InputFilter.LengthFilter(centerSearchMaxLength)});
             }
-            etSearchHint.setTextColor(Color.parseColor("#0C2275"));
-            etSearchHint.setHintTextColor(Color.parseColor("#800C2275"));
+            etSearchHint.setTextColor(centerSearchTextColor);
+            etSearchHint.setHintTextColor(centerSearchHintColor);
             etSearchHint.setTextSize(TypedValue.COMPLEX_UNIT_PX, U.getDisplayUtils().dip2px(context, 14));
             etSearchHint.setPadding(PADDING_5, 0, PADDING_5, 0);
             if (!centerSearchEdiable) {
