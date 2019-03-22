@@ -75,8 +75,6 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
 
     PersonInfoDialog mPersonInfoDialog;
 
-    SVGAParser mSVGAParser;
-
     boolean mIsGameEndAniamtionShow = false; // 标记对战结束动画是否播放
 
     Handler mUiHanlder = new Handler() {
@@ -222,34 +220,6 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
         mPersonInfoDialog = new PersonInfoDialog(getActivity(), userID, true, false);
         mPersonInfoDialog.show();
     }
-
-
-    private SVGAParser getSVGAParser() {
-        if (mSVGAParser == null) {
-            mSVGAParser = new SVGAParser(U.app());
-            mSVGAParser.setFileDownloader(new SVGAParser.FileDownloader() {
-                @Override
-                public void resume(final URL url, final Function1<? super InputStream, Unit> complete, final Function1<? super Exception, Unit> failure) {
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            OkHttpClient client = new OkHttpClient();
-                            Request request = new Request.Builder().url(url).get().build();
-                            try {
-                                Response response = client.newCall(request).execute();
-                                complete.invoke(response.body().byteStream());
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                                failure.invoke(e);
-                            }
-                        }
-                    }).start();
-                }
-            });
-        }
-        return mSVGAParser;
-    }
-
 
     @Override
     public boolean useEventBus() {
