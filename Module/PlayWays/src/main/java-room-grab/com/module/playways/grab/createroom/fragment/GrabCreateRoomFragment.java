@@ -1,4 +1,4 @@
-package com.module.playways.grab.songselect.fragment;
+package com.module.playways.grab.createroom.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

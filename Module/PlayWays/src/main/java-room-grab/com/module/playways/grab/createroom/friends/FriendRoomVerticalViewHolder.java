@@ -1,4 +1,4 @@
-package com.module.playways.grab.songselect.friends;
+package com.module.playways.grab.createroom.friends;
 
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;

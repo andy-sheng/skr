@@ -6,7 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
-import com.module.playways.grab.songselect.model.SpecialModel;
+import com.module.playways.grab.createroom.model.SpecialModel;
 import com.module.rank.R;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 

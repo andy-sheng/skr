@@ -1,4 +1,4 @@
-package com.module.playways.grab.songselect.model;
+package com.module.playways.grab.createroom.model;
 
 import java.io.Serializable;
 

@@ -1,4 +1,4 @@
-package com.module.playways.grab.songselect.fragment;
+package com.module.playways.grab.createroom.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,8 +16,8 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.module.RouterConstants;
 import com.module.playways.grab.room.GrabRoomServerApi;
-import com.module.playways.grab.songselect.model.SpecialModel;
-import com.module.playways.grab.songselect.view.SpecialSelectView;
+import com.module.playways.grab.createroom.model.SpecialModel;
+import com.module.playways.grab.createroom.view.SpecialSelectView;
 import com.module.playways.rank.prepare.model.JoinGrabRoomRspModel;
 import com.module.rank.R;
 

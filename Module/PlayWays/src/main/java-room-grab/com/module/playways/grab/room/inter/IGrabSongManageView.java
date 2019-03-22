@@ -1,7 +1,7 @@
 package com.module.playways.grab.room.inter;
 
 import com.module.playways.grab.room.songmanager.GrabRoomSongModel;
-import com.module.playways.grab.songselect.model.SpecialModel;
+import com.module.playways.grab.createroom.model.SpecialModel;
 
 import java.util.List;
 

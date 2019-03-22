@@ -1,7 +1,7 @@
-package com.module.playways.grab.songselect.friends;
+package com.module.playways.grab.createroom.friends;
 
 import com.common.core.userinfo.model.UserInfoModel;
-import com.module.playways.grab.songselect.model.SpecialModel;
+import com.module.playways.grab.createroom.model.SpecialModel;
 
 public class FriendRoomModel {
 

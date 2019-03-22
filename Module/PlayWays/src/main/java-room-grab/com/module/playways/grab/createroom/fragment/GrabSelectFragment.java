@@ -1,4 +1,4 @@
-package com.module.playways.grab.songselect.fragment;
+package com.module.playways.grab.createroom.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -22,12 +22,12 @@ import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.constans.GameModeType;
 import com.module.RouterConstants;
-import com.module.playways.grab.songselect.GrabSongApi;
-import com.module.playways.grab.songselect.friends.FriendRoomHorizontalAdapter;
-import com.module.playways.grab.songselect.friends.FriendRoomModel;
-import com.module.playways.grab.songselect.friends.GrabFriendsRoomFragment;
-import com.module.playways.grab.songselect.model.SpecialModel;
-import com.module.playways.grab.songselect.view.SpecialSelectView;
+import com.module.playways.grab.createroom.GrabSongApi;
+import com.module.playways.grab.createroom.friends.FriendRoomHorizontalAdapter;
+import com.module.playways.grab.createroom.friends.FriendRoomModel;
+import com.module.playways.grab.createroom.friends.GrabFriendsRoomFragment;
+import com.module.playways.grab.createroom.model.SpecialModel;
+import com.module.playways.grab.createroom.view.SpecialSelectView;
 import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.rank.R;
 

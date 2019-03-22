@@ -1,14 +1,16 @@
-package com.module.playways.grab.songselect.view;
+package com.module.playways.grab.createroom.fragment;
 
-import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
+import com.common.base.BaseFragment;
 import com.common.core.account.UserAccountManager;
 import com.common.core.permission.SkrAudioPermission;
 import com.common.rxretrofit.ApiManager;
@@ -17,16 +19,24 @@ import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.statistics.StatConstants;
 import com.common.statistics.StatisticsAdapter;
+import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
+import com.common.view.ex.ExImageView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.callback.EmptyCallback;
 import com.component.busilib.callback.ErrorCallback;
 import com.component.busilib.callback.LoadingCallback;
+import com.component.busilib.constans.GameModeType;
+
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
-import com.module.playways.grab.songselect.GrabSongApi;
-import com.module.playways.grab.songselect.model.SpecialModel;
-import com.module.playways.grab.songselect.adapter.SpecialSelectAdapter;
+import com.module.RouterConstants;
+
+import com.module.playways.grab.createroom.GrabSongApi;
+import com.module.playways.grab.createroom.model.SpecialModel;
+import com.module.playways.grab.createroom.adapter.SpecialSelectAdapter;
+import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.rank.R;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -35,10 +45,13 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * 歌曲专场选择
- */
-public class SpecialSelectView extends RelativeLayout {
+@Deprecated
+public class SpecialSelectFragment extends BaseFragment {
+
+    public final static String TAG = "SpecialSelectFragment";
+
+    RelativeLayout mMainActContainer;
+    ExImageView mIvBack;
 
     SmartRefreshLayout mRefreshLayout;
     RecyclerView mContentRv;
@@ -52,36 +65,21 @@ public class SpecialSelectView extends RelativeLayout {
     List<String> musicURLs;  //背景音乐
     SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
 
-    SpecialSelectListner mSpecialSelectListner;
-
-    public SpecialSelectView(Context context) {
-        super(context);
-        initView();
+    @Override
+    public int initView() {
+        return R.layout.special_select_fragment_layout;
     }
 
-    public SpecialSelectView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        initView();
-    }
-
-    public SpecialSelectView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        initView();
-    }
-
-    public void setSpecialSelectListner(SpecialSelectListner specialSelectListner) {
-        mSpecialSelectListner = specialSelectListner;
-    }
-
-    private void initView() {
-        inflate(getContext(), R.layout.grab_select_view_layout, this);
-
-        mRefreshLayout = (SmartRefreshLayout) this.findViewById(R.id.refreshLayout);
-        mContentRv = (RecyclerView) this.findViewById(R.id.content_rv);
+    @Override
+    public void initData(@Nullable Bundle savedInstanceState) {
+        mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
+        mRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.refreshLayout);
+        mContentRv = (RecyclerView) mRootView.findViewById(R.id.content_rv);
+        mIvBack = (ExImageView) mRootView.findViewById(R.id.iv_back);
 
         mRefreshLayout.setEnableRefresh(false);
         mRefreshLayout.setEnableLoadMore(true);
-        mRefreshLayout.setEnableLoadMoreWhenContentNotFull(false);
+        mRefreshLayout.setEnableLoadMoreWhenContentNotFull(true);
         mRefreshLayout.setEnableOverScrollDrag(false);
         mRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
@@ -94,7 +92,7 @@ public class SpecialSelectView extends RelativeLayout {
                 mRefreshLayout.finishRefresh();
             }
         });
-        mContentRv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        mContentRv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
         mSpecialSelectAdapter = new SpecialSelectAdapter(new RecyclerOnItemClickListener<SpecialModel>() {
             @Override
@@ -102,19 +100,30 @@ public class SpecialSelectView extends RelativeLayout {
                 mSkrAudioPermission.ensurePermission(new Runnable() {
                     @Override
                     public void run() {
+                        goMatchFragment(model.getTagID());
                         HashMap map = new HashMap();
                         map.put("tagId2", String.valueOf(model.getTagID()));
                         StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
                                 StatConstants.KEY_MATCH_START, map);
-                        if (mSpecialSelectListner != null) {
-                            mSpecialSelectListner.onClickSpecial(model, musicURLs);
-                        }
                     }
                 }, true);
 
             }
         });
         mContentRv.setAdapter(mSpecialSelectAdapter);
+        loadData(offset, DEFAULT_COUNT);
+        getBackgroundMusic();
+
+        mIvBack.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+//                U.getSoundUtils().play(SpecialSelectFragment.TAG, R.raw.normal_back, 500);
+                if (getActivity() != null) {
+                    getActivity().finish();
+                }
+            }
+        });
+
 
         LoadSir mLoadSir = new LoadSir.Builder()
                 .addCallback(new LoadingCallback(R.drawable.wulishigedan, "数据正在努力加载中..."))
@@ -129,20 +138,8 @@ public class SpecialSelectView extends RelativeLayout {
             }
         });
 
-        loadData(offset, DEFAULT_COUNT);
-        getBackgroundMusic();
-    }
+        U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
 
-    private void getBackgroundMusic() {
-        GrabSongApi grabSongApi = ApiManager.getInstance().createService(GrabSongApi.class);
-        ApiMethods.subscribe(grabSongApi.getSepcialBgVoice(), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    musicURLs = JSON.parseArray(result.getData().getString("musicURL"), String.class);
-                }
-            }
-        });
     }
 
     private void loadData(int offset, int count) {
@@ -156,6 +153,32 @@ public class SpecialSelectView extends RelativeLayout {
                     refreshView(list, offset);
                 } else {
                     mLoadService.showCallback(ErrorCallback.class);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mSkrAudioPermission.onBackFromPermisionManagerMaybe();
+    }
+
+    @Override
+    protected void onFragmentVisible() {
+        super.onFragmentVisible();
+        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
+                StatConstants.KEY_SELECTSONG_EXPOSE, null);
+
+    }
+
+    private void getBackgroundMusic() {
+        GrabSongApi grabSongApi = ApiManager.getInstance().createService(GrabSongApi.class);
+        ApiMethods.subscribe(grabSongApi.getSepcialBgVoice(), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    musicURLs = JSON.parseArray(result.getData().getString("musicURL"), String.class);
                 }
             }
         });
@@ -176,8 +199,32 @@ public class SpecialSelectView extends RelativeLayout {
         }
     }
 
-    // 选择专场回调
-    public interface SpecialSelectListner {
-        void onClickSpecial(SpecialModel model, List<String> music);
+    @Override
+    public void destroy() {
+        super.destroy();
+        U.getSoundUtils().release(TAG);
+    }
+
+    @Override
+    public boolean useEventBus() {
+        return false;
+    }
+
+    public void goMatchFragment(int specialId) {
+        PrepareData prepareData = new PrepareData();
+        prepareData.setGameType(GameModeType.GAME_MODE_GRAB);
+        prepareData.setTagId(specialId);
+
+        if (musicURLs != null && musicURLs.size() > 0) {
+            prepareData.setBgMusic(musicURLs.get(0));
+        }
+
+        ARouter.getInstance()
+                .build(RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)
+                .withSerializable("prepare_data", prepareData)
+                .navigation();
+        if (getActivity() != null) {
+            getActivity().finish();
+        }
     }
 }

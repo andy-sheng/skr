@@ -88,7 +88,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/rank_ai_iv"
                 android:layout_toRightOf="@+id/rank_ai_iv"
-                android:layout_marginTop="@dimen/view_7_dp"
+                android:layout_marginTop="@dimen/view_6_dp"
                 BitmapTextView:scale="0.5" />
 
             <com.common.view.ex.ExImageView
@@ -104,7 +104,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/rank_man_iv"
                 android:layout_toRightOf="@+id/rank_man_iv"
-                android:layout_marginTop="@dimen/view_7_dp"
+                android:layout_marginTop="@dimen/view_6_dp"
                 BitmapTextView:scale="0.5" />
 
         </RelativeLayout>

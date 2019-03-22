@@ -120,12 +120,12 @@
         android:layout_toRightOf="@+id/fast_begin_tv"
         android:background="@color/white_trans_10" />
 
-    <com.module.playways.grab.songselect.view.SpecialSelectView
+    <com.module.playways.grab.createroom.view.SpecialSelectView
         android:id="@+id/special_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/fast_begin_tv"
         android:layout_marginLeft="@dimen/view_16_dp"
-        android:layout_marginRight="@dimen/view_16_dp"></com.module.playways.grab.songselect.view.SpecialSelectView>
+        android:layout_marginRight="@dimen/view_16_dp"></com.module.playways.grab.createroom.view.SpecialSelectView>
 
 </RelativeLayout>

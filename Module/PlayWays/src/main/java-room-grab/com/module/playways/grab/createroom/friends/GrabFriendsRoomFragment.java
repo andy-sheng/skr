@@ -1,4 +1,4 @@
-package com.module.playways.grab.songselect.friends;
+package com.module.playways.grab.createroom.friends;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,7 +17,7 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
-import com.module.playways.grab.songselect.GrabSongApi;
+import com.module.playways.grab.createroom.GrabSongApi;
 import com.module.rank.R;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;

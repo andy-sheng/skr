@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EFEFEF">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#2E3040">
 
     <com.common.view.titlebar.CommonTitleBar
         android:id="@+id/titlebar"
@@ -20,8 +20,8 @@
         app:rightType="textView"
         app:showBottomLine="true"
         app:bottomLineColor="#202239"
-        app:statusBarColor="#0288D0"
-        app:titleBarColor="#0288D0"></com.common.view.titlebar.CommonTitleBar>
+        app:statusBarColor="#373a4b"
+        app:titleBarColor="#373a4b"></com.common.view.titlebar.CommonTitleBar>
 
 
     <android.support.v7.widget.RecyclerView

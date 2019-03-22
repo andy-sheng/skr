@@ -26,12 +26,12 @@
         android:textSize="@dimen/textsize_18_dp"
         android:textStyle="bold" />
 
-    <com.module.playways.grab.songselect.view.SpecialSelectView
+    <com.module.playways.grab.createroom.view.SpecialSelectView
         android:id="@+id/special_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/view_100_dp"
         android:layout_marginLeft="@dimen/view_16_dp"
-        android:layout_marginRight="@dimen/view_16_dp"></com.module.playways.grab.songselect.view.SpecialSelectView>
+        android:layout_marginRight="@dimen/view_16_dp"></com.module.playways.grab.createroom.view.SpecialSelectView>
 
 </RelativeLayout>

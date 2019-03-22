@@ -13,7 +13,7 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
 import com.common.view.recyclerview.DiffAdapter;
-import com.module.playways.grab.songselect.model.SpecialModel;
+import com.module.playways.grab.createroom.model.SpecialModel;
 import com.module.rank.R;
 
 public class GrabTagsAdapter extends DiffAdapter<SpecialModel, RecyclerView.ViewHolder> {

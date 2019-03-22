@@ -22,7 +22,7 @@ import com.common.view.ex.drawable.DrawableCreator;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.inter.IGrabSongManageView;
 import com.module.playways.grab.room.songmanager.tags.GrabSongTagsView;
-import com.module.playways.grab.songselect.model.SpecialModel;
+import com.module.playways.grab.createroom.model.SpecialModel;
 import com.module.rank.R;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;

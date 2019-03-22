@@ -1,4 +1,4 @@
-package com.module.playways.grab.songselect.viewholder;
+package com.module.playways.grab.createroom.viewholder;
 
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -12,7 +12,7 @@ import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
-import com.module.playways.grab.songselect.model.SpecialModel;
+import com.module.playways.grab.createroom.model.SpecialModel;
 import com.module.rank.R;
 
 public class SpecialCardViewHolder extends RecyclerView.ViewHolder {
