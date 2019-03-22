@@ -274,6 +274,10 @@ public class RelationFragment extends BaseFragment {
             }
         }
 
+        if (mPopupWindow != null && mPopupWindow.isShowing()) {
+            mPopupWindow.dismiss();
+        }
+
         U.getSoundUtils().release(TAG);
     }
 }

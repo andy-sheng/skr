@@ -14,7 +14,7 @@
         android:orientation="vertical">
 
         <com.common.view.ex.ExImageView
-            android:id="@+id/iv_add_song"
+            android:id="@+id/search_song_iv"
             android:layout_width="@dimen/view_22_dp"
             android:layout_height="@dimen/view_22_dp"
             android:layout_alignLeft="@+id/fl_song_list_container"

@@ -12,7 +12,11 @@ import android.view.View;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
+import com.common.base.FragmentDataListener;
+import com.common.log.MyLog;
+import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExFrameLayout;
@@ -23,6 +27,10 @@ import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.inter.IGrabSongManageView;
 import com.module.playways.grab.room.songmanager.tags.GrabSongTagsView;
 import com.module.playways.grab.createroom.model.SpecialModel;
+import com.module.playways.rank.prepare.fragment.PrepareResFragment;
+import com.module.playways.rank.song.fragment.GrabSearchSongFragment;
+import com.module.playways.rank.song.fragment.SongSelectFragment;
+import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -35,7 +43,7 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
 
     GrabRoomData mRoomData;
 
-    ExImageView mIvAddSong;
+    ExImageView mSearchSongIv;
 
     ExTextView mTvSelectedSong;
 
@@ -69,7 +77,7 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
         mGrabSongManagePresenter = new GrabSongManagePresenter(this, mRoomData);
         addPresent(mGrabSongManagePresenter);
 
-        mIvAddSong = (ExImageView) mRootView.findViewById(R.id.iv_add_song);
+        mSearchSongIv = (ExImageView) mRootView.findViewById(R.id.search_song_iv);
         mTvSelectedSong = (ExTextView) mRootView.findViewById(R.id.tv_selected_song);
         mFlSongListContainer = (ExFrameLayout) mRootView.findViewById(R.id.fl_song_list_container);
         mRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.refreshLayout);
@@ -141,10 +149,23 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
     }
 
     private void initListener() {
-        mIvAddSong.setOnClickListener(new DebounceViewClickListener() {
+        mSearchSongIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), GrabSearchSongFragment.class)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(true)
+                        .setFragmentDataListener(new FragmentDataListener() {
+                            @Override
+                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
+                                if (requestCode == 0 && resultCode == 0 && obj != null) {
+                                    SongModel model = (SongModel) obj;
+                                    MyLog.d(TAG, "onFragmentResult" + " model=" + model);
+                                    // TODO: 2019/3/22 添加歌曲
+                                }
+                            }
+                        })
+                        .build());
             }
         });
 

@@ -26,6 +26,7 @@ import com.common.view.titlebar.CommonTitleBar;
 import com.module.RouterConstants;
 import com.module.playways.PlayWaysActivity;
 import com.module.playways.audioroom.AudioRoomActivity;
+import com.module.playways.rank.prepare.fragment.PlayRecordFragment;
 import com.module.playways.rank.prepare.fragment.PrepareResFragment;
 import com.module.playways.rank.song.SongSelectServerApi;
 import com.module.playways.rank.song.adapter.SongSelectAdapter;
@@ -86,7 +87,10 @@ public class GrabSearchSongFragment extends BaseFragment {
             public void onItemClicked(View view, int position, Object model) {
                 U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
                 SongModel songModel = (SongModel) model;
-                // TODO: 2019/3/22 选到歌了
+                if (mFragmentDataListener != null) {
+                    mFragmentDataListener.onFragmentResult(0, 0, null, songModel);
+                }
+                U.getFragmentUtils().popFragment(GrabSearchSongFragment.this);
             }
         }, false, SongSelectAdapter.GRAB_MODE);
         mSearchResult.setAdapter(mSongSelectAdapter);
