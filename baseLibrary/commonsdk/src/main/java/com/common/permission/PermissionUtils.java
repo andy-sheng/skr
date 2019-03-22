@@ -207,14 +207,12 @@ public class PermissionUtils {
         requestPermission(requestPermission, activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
     }
 
-
     /**
      * 请求发送短信权限
      */
     public void requestSendSms(RequestPermission requestPermission, Activity activity) {
         requestPermission(requestPermission, activity, Manifest.permission.SEND_SMS);
     }
-
 
     /**
      * 请求打电话权限
