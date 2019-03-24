@@ -102,10 +102,12 @@ public class GrabAudienceView extends RelativeLayout {
         if (grabRoomData != null) {
             mGrabRoomData = grabRoomData;
             GrabRoundInfoModel grabRoundInfoModel = grabRoomData.getExpectRoundInfo();
-            List<GrabPlayerInfoModel> l = grabRoundInfoModel.getWaitUsers();
-            mWaitInfoModelList.clear();
-            mWaitInfoModelList.addAll(l);
-            updateAllView();
+            if (grabRoundInfoModel != null) {
+                List<GrabPlayerInfoModel> l = grabRoundInfoModel.getWaitUsers();
+                mWaitInfoModelList.clear();
+                mWaitInfoModelList.addAll(l);
+                updateAllView();
+            }
         } else {
             MyLog.d(TAG, "setGrabRoomData" + " grabRoomData error");
         }
@@ -133,8 +135,8 @@ public class GrabAudienceView extends RelativeLayout {
 
         for (int i = 0; i < mWaitInfoModelList.size(); i++) {
             MyLog.d(TAG, "i=" + i);
-            if(i >= mBaseImageViewList.size()){
-                MyLog.w(TAG, "updateAllView waitinfomodellist size is error, size is " + mWaitInfoModelList.size() );
+            if (i >= mBaseImageViewList.size()) {
+                MyLog.w(TAG, "updateAllView waitinfomodellist size is error, size is " + mWaitInfoModelList.size());
                 break;
             }
 

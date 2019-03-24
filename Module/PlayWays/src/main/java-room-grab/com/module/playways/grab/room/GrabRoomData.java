@@ -1,6 +1,7 @@
 package com.module.playways.grab.room;
 
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.component.busilib.constans.GameModeType;
@@ -40,8 +41,22 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
     @Override
     public List<GrabPlayerInfoModel> getPlayerInfoList() {
         List<GrabPlayerInfoModel> l = new ArrayList<>();
-        l.addAll(mExpectRoundInfo.getPlayUsers());
-        l.addAll(mExpectRoundInfo.getWaitUsers());
+        if (mExpectRoundInfo != null) {
+            l.addAll(mExpectRoundInfo.getPlayUsers());
+            l.addAll(mExpectRoundInfo.getWaitUsers());
+        } else {
+            GrabPlayerInfoModel p = new GrabPlayerInfoModel();
+            p.setSkrer(false);
+            p.setOnline(true);
+            p.setRole(GrabPlayerInfoModel.ROLE_PLAY);
+            p.setUserID((int) MyUserInfoManager.getInstance().getUid());
+            UserInfoModel userInfoModel = new UserInfoModel();
+            userInfoModel.setUserId((int) MyUserInfoManager.getInstance().getUid());
+            userInfoModel.setAvatar(MyUserInfoManager.getInstance().getAvatar());
+            userInfoModel.setNickname(MyUserInfoManager.getInstance().getNickName());
+            p.setUserInfo(userInfoModel);
+            l.add(p);
+        }
         return l;
     }
 
