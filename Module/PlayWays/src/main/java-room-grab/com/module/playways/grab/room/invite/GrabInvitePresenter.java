@@ -34,7 +34,7 @@ public class GrabInvitePresenter extends RxLifeCyclePresenter {
         mGrabRoomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
     }
 
-    public void getPlayBookList() {
+    public void getFriendList() {
         ApiMethods.subscribe(mGrabRoomServerApi.getRoomFriendList(mOffset, mLimit), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -51,7 +51,7 @@ public class GrabInvitePresenter extends RxLifeCyclePresenter {
                     mIGrabInviteView.finishRefresh();
                     mOffset = Integer.parseInt(result.getData().getString("offset"));
                 } else {
-                    MyLog.w(TAG, "getPlayBookList failed, " + result.getErrmsg() + ", traceid is " + result.getTraceId());
+                    MyLog.w(TAG, "getFriendList failed, " + result.getErrmsg() + ", traceid is " + result.getTraceId());
                 }
             }
 

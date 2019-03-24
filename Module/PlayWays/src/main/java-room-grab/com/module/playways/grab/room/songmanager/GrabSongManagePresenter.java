@@ -94,13 +94,13 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
                     mOffset = mGrabRoomSongModelList.size();
                     mIGrabSongManageView.updateSongList(mGrabRoomSongModelList);
                 } else {
-                    MyLog.w(TAG, "getPlayBookList failed, " + result.getErrmsg() + ", traceid is " + result.getTraceId());
+                    MyLog.w(TAG, "getFriendList failed, " + result.getErrmsg() + ", traceid is " + result.getTraceId());
                 }
             }
 
             @Override
             public void onNetworkError(ErrorType errorType) {
-                MyLog.e(TAG, "getPlayBookList 网络延迟");
+                MyLog.e(TAG, "getFriendList 网络延迟");
             }
 
             @Override

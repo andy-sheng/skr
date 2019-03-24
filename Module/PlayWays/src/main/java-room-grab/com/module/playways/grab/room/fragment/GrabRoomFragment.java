@@ -382,6 +382,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), InviteFriendFragment.class)
                 .setAddToBackStack(true)
                 .setHasAnimation(true)
+                .addDataBeforeAdd(0, mRoomData)
                 .setEnterAnim(R.anim.slide_in_bottom)
                 .setExitAnim(R.anim.slide_out_bottom)
                 .build()

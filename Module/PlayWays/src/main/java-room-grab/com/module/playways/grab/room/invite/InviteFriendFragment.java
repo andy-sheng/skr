@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.common.base.BaseFragment;
 import com.common.core.kouling.SkrKouLingUtils;
 import com.common.core.myinfo.MyUserInfoManager;
-import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.module.playways.grab.room.GrabRoomData;
@@ -81,7 +80,7 @@ public class InviteFriendFragment extends BaseFragment implements IGrabInviteVie
         mRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                mGrabInvitePresenter.getPlayBookList();
+                mGrabInvitePresenter.getFriendList();
             }
 
             @Override
@@ -91,6 +90,7 @@ public class InviteFriendFragment extends BaseFragment implements IGrabInviteVie
         });
 
         initListener();
+        mGrabInvitePresenter.getFriendList();
     }
 
     private void initListener() {
@@ -176,14 +176,6 @@ public class InviteFriendFragment extends BaseFragment implements IGrabInviteVie
         if (type == 0) {
             mRoomData = (GrabRoomData) data;
         }
-    }
-
-    @Override
-    protected boolean onBackPressed() {
-        if (getActivity() != null) {
-            getActivity().finish();
-        }
-        return super.onBackPressed();
     }
 
     @Override
