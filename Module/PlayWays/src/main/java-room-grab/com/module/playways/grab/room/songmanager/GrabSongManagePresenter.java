@@ -38,6 +38,8 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
 
     Disposable mGetTagsTask;
 
+    Disposable mGetSongModelListTask;
+
     List<SpecialModel> mSpecialModelList;
 
     List<GrabRoomSongModel> mGrabRoomSongModelList = new ArrayList<>();
@@ -80,7 +82,11 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
     }
 
     public void getPlayBookList() {
-        ApiMethods.subscribe(mGrabRoomServerApi.getPlaybook(mGrabRoomData.getGameId(), mOffset, mLimit), new ApiObserver<ApiResult>() {
+        if (mGetSongModelListTask != null) {
+            mGetSongModelListTask.dispose();
+        }
+
+        mGetSongModelListTask = ApiMethods.subscribeWith(mGrabRoomServerApi.getPlaybook(mGrabRoomData.getGameId(), mGrabRoomSongModelList.size(), mLimit), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
@@ -93,7 +99,6 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
 
                     mIGrabSongManageView.hasMoreSongList(true);
                     mGrabRoomSongModelList.addAll(grabRoomSongModels);
-                    mOffset = mGrabRoomSongModelList.size();
                     mIGrabSongManageView.updateSongList(mGrabRoomSongModelList);
                 } else {
                     MyLog.w(TAG, "getFriendList failed, " + result.getErrmsg() + ", traceid is " + result.getTraceId());
