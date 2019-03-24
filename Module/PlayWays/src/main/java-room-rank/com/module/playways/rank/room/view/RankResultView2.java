@@ -8,6 +8,7 @@ import android.widget.RelativeLayout;
 import com.common.core.account.UserAccountManager;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
@@ -26,6 +27,8 @@ import com.zq.live.proto.Room.EWinType;
 import java.io.File;
 
 public class RankResultView2 extends RelativeLayout {
+
+    public final static String TAG = "RankResultView2";
 
     RelativeLayout mResultArea;
     SimpleDraweeView mAvatarIv;
@@ -78,6 +81,7 @@ public class RankResultView2 extends RelativeLayout {
         mPlaybackIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+                MyLog.d(TAG,"clickValid mIsPlay=" + mIsPlay+" mListener="+mListener);
                 if (mIsPlay) {
                     // TODO: 2019/3/22 暂停播放
                     mIsPlay = false;
