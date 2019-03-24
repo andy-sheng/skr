@@ -265,7 +265,7 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
                     if (mMatchState == MatchState.JoinRongYunRoomSuccess) {
                         mMatchState = MatchState.JoinGameSuccess;
                         JoinGrabRoomRspModel grabCurGameStateModel = JSON.parseObject(result.getData().toString(), JoinGrabRoomRspModel.class);
-                        grabCurGameStateModel.setGameCreateMs(GrabMatchPresenter.this.mJoinActionEvent.gameCreateMs);
+                        grabCurGameStateModel.setGameStartTimeMs(GrabMatchPresenter.this.mJoinActionEvent.gameCreateMs);
                         mView.matchGrabSucess(grabCurGameStateModel);
                         if (mCheckJoinStateTask != null) {
                             mCheckJoinStateTask.dispose();

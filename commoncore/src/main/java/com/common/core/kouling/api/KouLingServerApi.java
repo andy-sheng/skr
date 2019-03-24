@@ -13,7 +13,7 @@ public interface KouLingServerApi {
     Observable<ApiResult> getCodeByToken(@Query("token")String token);
 
     // 保存code
-    @GET("http://dev.api.inframe.mobi/v1/event/set-code")
+    @GET("http://dev.api.inframe.mobi/v1/event/set-token")
     Observable<ApiResult> setTokenByCode(@Query("code")String code);
 
 }

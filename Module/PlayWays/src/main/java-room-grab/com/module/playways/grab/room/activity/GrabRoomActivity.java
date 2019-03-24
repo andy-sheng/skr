@@ -20,6 +20,7 @@ import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.module.RouterConstants;
+import com.module.playways.grab.createroom.model.SpecialModel;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.model.GrabConfigModel;
@@ -56,8 +57,10 @@ public class GrabRoomActivity extends BaseActivity {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         JoinGrabRoomRspModel rsp = (JoinGrabRoomRspModel) getIntent().getSerializableExtra("prepare_data");
+        SpecialModel specialModel = (SpecialModel) getIntent().getSerializableExtra("special_model");
         if (rsp != null) {
             mRoomData.loadFromRsp(rsp);
+            mRoomData.setSpecialModel(specialModel);
             go();
         } else {
             int roomID = getIntent().getIntExtra("roomID", 0);

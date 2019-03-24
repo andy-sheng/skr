@@ -7,6 +7,7 @@ import com.common.utils.U;
 import com.component.busilib.constans.GameModeType;
 import com.module.playways.BaseRoomData;
 import com.module.playways.RoomDataUtils;
+import com.module.playways.grab.createroom.model.SpecialModel;
 import com.module.playways.grab.room.event.GrabGameOverEvent;
 import com.module.playways.grab.room.event.GrabMyCoinChangeEvent;
 import com.module.playways.grab.room.event.GrabRoundChangeEvent;
@@ -33,6 +34,7 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
     private int roomType;// 一唱到底房间类型，公开，好友，私密，普通
     private int ownerId;// 房主id
     private boolean hasGameBegin = true;// 游戏是否已经开始
+    SpecialModel mSpecialModel;
 
     public GrabRoomData() {
         mIsAccEnable = U.getPreferenceUtils().getSettingBoolean("grab_acc_enable1", false);
@@ -58,6 +60,14 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
             l.add(p);
         }
         return l;
+    }
+
+    public SpecialModel getSpecialModel() {
+        return mSpecialModel;
+    }
+
+    public void setSpecialModel(SpecialModel specialModel) {
+        mSpecialModel = specialModel;
     }
 
     @Override

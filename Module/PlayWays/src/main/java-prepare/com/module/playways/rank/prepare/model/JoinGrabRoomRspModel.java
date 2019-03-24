@@ -190,7 +190,7 @@ public class JoinGrabRoomRspModel implements Serializable {
     private String agoraToken;// 声网token
     private int roomType;// 一唱到底房间类型，公开，好友，私密，普通
     private int ownerID;// 房主id
-    private long gameCreateMs;// 游戏创建时间,<=0 代表游戏未创建
+    private long gameStartTimeMs;// 游戏创建时间,<=0 代表游戏未创建
     private boolean hasGameBegin = true;// 游戏是否已经开始
 
     public JoinGrabRoomRspModel() {
@@ -277,12 +277,12 @@ public class JoinGrabRoomRspModel implements Serializable {
         this.config = config;
     }
 
-    public void setGameCreateMs(long gameCreateMs) {
-        this.gameCreateMs = gameCreateMs;
+    public void setGameStartTimeMs(long gameStartTimeMs) {
+        this.gameStartTimeMs = gameStartTimeMs;
     }
 
-    public long getGameCreateMs() {
-        return gameCreateMs;
+    public long getGameStartTimeMs() {
+        return gameStartTimeMs;
     }
 
     public String getAgoraToken() {
@@ -328,7 +328,7 @@ public class JoinGrabRoomRspModel implements Serializable {
                 ", syncStatusTimeMs=" + syncStatusTimeMs +
                 ", tagID=" + tagID +
                 ", isNewGame=" + isNewGame +
-                ", gameCreateMs=" + gameCreateMs +
+                ", gameCreateMs=" + gameStartTimeMs +
                 '}';
     }
 }

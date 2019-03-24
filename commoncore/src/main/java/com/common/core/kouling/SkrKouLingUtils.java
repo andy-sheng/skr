@@ -4,10 +4,12 @@ import android.net.Uri;
 import android.text.TextUtils;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.common.clipboard.ClipboardUtils;
 import com.common.core.account.UserAccountManager;
 import com.common.core.kouling.api.KouLingServerApi;
 import com.common.core.scheme.processor.ProcessResult;
 import com.common.core.scheme.processor.ZqSchemeProcessorManager;
+import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -81,7 +83,7 @@ public class SkrKouLingUtils {
         });
     }
 
-    public static boolean tryParseScheme(String str) {
+    public static void tryParseScheme(String str) {
         if (!TextUtils.isEmpty(str)) {
 
 
@@ -93,6 +95,7 @@ public class SkrKouLingUtils {
 //            try {
 //                String kouling = new String(bytes, "utf-8");
             String kouling = getKoulingByStr(str);
+            MyLog.d(TAG,"tryParseScheme kouling=" + kouling);
             if (!TextUtils.isEmpty(kouling)) {
                 KouLingServerApi kouLingServerApi = ApiManager.getInstance().createService(KouLingServerApi.class);
                 ApiMethods.subscribe(kouLingServerApi.getCodeByToken(kouling), new ApiObserver<ApiResult>() {
@@ -111,27 +114,14 @@ public class SkrKouLingUtils {
                                             .navigation();
                                 }
                             }
+                            ClipboardUtils.clear();
                         } else {
                         }
                     }
                 });
             }
         }
-//                String scheme = parseKouling2Scheme(kouling);
-//                MyLog.d(TAG, "tryParseScheme" + " scheme=" + scheme);
-//                if (!TextUtils.isEmpty(scheme)) {
-//                    Uri uri = Uri.parse(scheme);
-//                    // TODO这里要考虑下如果没登录怎么办，走SchemeActivity
-//                    ProcessResult processResult = ZqSchemeProcessorManager.getInstance().process(uri, U.getActivityUtils().getTopActivity(), false);
-//                    if (processResult != ProcessResult.NotAccepted) {
-//                        return true;
-//                    } else {
-//                        return false;
-//                    }
-//                }
-//            } catch (UnsupportedEncodingException e) {
-//            }
-        return false;
+        return ;
     }
 
     private static String parseKouling2Scheme(String kouling) {
@@ -173,10 +163,10 @@ public class SkrKouLingUtils {
     private static String getKoulingByStr(String str) {
         if (!TextUtils.isEmpty(str)) {
             int b = str.indexOf("$");
-            if (b > 0) {
-                str = str.substring(b);
+            if (b >= 0) {
+                str = str.substring(b+1);
                 int e = str.indexOf("$");
-                if (e > 0) {
+                if (e >= 0) {
                     str = str.substring(0, e);
                     return str;
                 }
