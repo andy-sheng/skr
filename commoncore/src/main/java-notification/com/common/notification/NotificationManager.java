@@ -3,6 +3,7 @@ package com.common.notification;
 import com.common.log.MyLog;
 import com.common.notification.event.FollowNotifyEvent;
 import com.common.notification.event.GrabInviteNotifyEvent;
+import com.common.utils.U;
 import com.zq.live.proto.Notification.ENotificationMsgType;
 import com.zq.live.proto.Notification.FollowMsg;
 import com.zq.live.proto.Notification.InviteStandMsg;
@@ -16,6 +17,9 @@ import org.greenrobot.eventbus.EventBus;
 public class NotificationManager {
 
     public final static String TAG = "NotificationManager";
+
+    public final static String SP_KEY_NEW_FRIEND = "SP_KEY_NEW_FRIEND";  //从外到内 消息3 好友图标2 好友1
+    public final static String SP_KEY_NEW_FANS = "SP_KEY_NEW_FANS";    //从外到内 消息3 好友图标2 粉丝1
 
     private static class NotificationAdapterHolder {
         private static final NotificationManager INSTANCE = new NotificationManager();
@@ -50,6 +54,12 @@ public class NotificationManager {
         if (baseNotiInfo != null) {
             FollowNotifyEvent followNotifyEvent = new FollowNotifyEvent(baseNotiInfo, followMsg);
             EventBus.getDefault().post(followNotifyEvent);
+            if (followMsg.getIsFriend()) {
+                U.getPreferenceUtils().setSettingInt(SP_KEY_NEW_FRIEND, 3);
+            }
+            if (followMsg.getIsFollow()) {
+                U.getPreferenceUtils().setSettingInt(SP_KEY_NEW_FANS, 3);
+            }
         }
     }
 

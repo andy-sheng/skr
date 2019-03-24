@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.event.RelationChangeEvent;
 import com.common.log.MyLog;
+import com.common.notification.NotificationManager;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -27,6 +29,7 @@ import com.common.rxretrofit.ApiResult;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
+import com.common.view.ex.ExImageView;
 import com.common.view.titlebar.CommonTitleBar;
 import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
@@ -65,8 +68,13 @@ public class RelationFragment extends BaseFragment {
     View mSplitLine;
     NestViewPager mRelationVp;
 
+    RelativeLayout mFriendArea;
     TextView mFriend;
+    ExImageView mFriendRedDot;
+    RelativeLayout mFansArea;
     TextView mFans;
+    ExImageView mFansRedDot;
+    RelativeLayout mFollowArea;
     TextView mFollow;
 
     PopupWindow mPopupWindow;  // 弹窗
@@ -94,8 +102,13 @@ public class RelationFragment extends BaseFragment {
         mSplitLine = (View) mRootView.findViewById(R.id.split_line);
         mRelationVp = (NestViewPager) mRootView.findViewById(R.id.relation_vp);
 
+        mFriendArea = (RelativeLayout) mRootView.findViewById(R.id.friend_area);
         mFriend = (TextView) mRootView.findViewById(R.id.friend);
+        mFriendRedDot = (ExImageView) mRootView.findViewById(R.id.friend_red_dot);
+        mFansArea = (RelativeLayout) mRootView.findViewById(R.id.fans_area);
         mFans = (TextView) mRootView.findViewById(R.id.fans);
+        mFansRedDot = (ExImageView) mRootView.findViewById(R.id.fans_red_dot);
+        mFollowArea = (RelativeLayout) mRootView.findViewById(R.id.follow_area);
         mFollow = (TextView) mRootView.findViewById(R.id.follow);
 
         LinearLayout linearLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.add_friend_pop_window_layout, null);
@@ -156,7 +169,6 @@ public class RelationFragment extends BaseFragment {
         mRelationTab.setSelectedIndicatorThickness(U.getDisplayUtils().dip2px(4));
         mRelationTab.setIndicatorCornorRadius(U.getDisplayUtils().dip2px(2));
 
-
         mTabPagerAdapter = new PagerAdapter() {
 
             @Override
@@ -191,6 +203,33 @@ public class RelationFragment extends BaseFragment {
                 return view == (object);
             }
         };
+
+        mRelationTab.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 0) {
+                    mFriendRedDot.setVisibility(View.GONE);
+                    if (U.getPreferenceUtils().getSettingInt(NotificationManager.SP_KEY_NEW_FRIEND, 0) >= 1) {
+                        U.getPreferenceUtils().setSettingInt(NotificationManager.SP_KEY_NEW_FRIEND, 0);
+                    }
+                } else if (position == 1) {
+                    mFansRedDot.setVisibility(View.GONE);
+                    if (U.getPreferenceUtils().getSettingInt(NotificationManager.SP_KEY_NEW_FANS, 0) >= 1) {
+                        U.getPreferenceUtils().setSettingInt(NotificationManager.SP_KEY_NEW_FANS, 0);
+                    }
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
         mRelationVp.setAdapter(mTabPagerAdapter);
         mRelationTab.setViewPager(mRelationVp);
@@ -237,6 +276,14 @@ public class RelationFragment extends BaseFragment {
     }
 
     public void refreshRelationNums() {
+        if (U.getPreferenceUtils().getSettingInt(NotificationManager.SP_KEY_NEW_FRIEND, 0) >= 1) {
+            // 好友红点
+            mFriendRedDot.setVisibility(View.VISIBLE);
+        }
+        if (U.getPreferenceUtils().getSettingInt(NotificationManager.SP_KEY_NEW_FANS, 0) >= 1) {
+            // 粉丝红点
+            mFansRedDot.setVisibility(View.VISIBLE);
+        }
         mFriend.setText(String.format(getString(R.string.friends_num), mFriendNum));
         mFollow.setText(String.format(getString(R.string.follows_num), mFocusNum));
         mFans.setText(String.format(getString(R.string.fans_num), mFansNum));

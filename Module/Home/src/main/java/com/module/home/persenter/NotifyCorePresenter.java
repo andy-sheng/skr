@@ -15,6 +15,7 @@ import com.common.notification.event.FollowNotifyEvent;
 import com.common.notification.event.GrabInviteNotifyEvent;
 import com.common.utils.U;
 import com.module.RouterConstants;
+import com.module.home.view.INotifyView;
 import com.module.rank.IRankingModeService;
 import com.zq.dialog.ConfirmDialog;
 import com.zq.notification.GrabInviteNotifyView;
@@ -46,7 +47,10 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         }
     };
 
-    public NotifyCorePresenter() {
+    INotifyView iNotifyView;
+
+    public NotifyCorePresenter(INotifyView iNotifyView) {
+        this.iNotifyView = iNotifyView;
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -62,6 +66,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(FollowNotifyEvent event) {
+        iNotifyView.showMessageRedDot();
         showFollowFloatWindow(event.mUserInfoModel);
     }
 

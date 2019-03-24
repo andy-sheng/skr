@@ -14,8 +14,8 @@
         app:centerTextColor="@color/white"
         app:centerTextSize="@dimen/textsize_20_dp"
         app:centerType="textView"
-        app:rightCustomView="@layout/conversation_right_view"
-        app:rightType="customView"
+        app:rightImageResource="@drawable/friend_book_icon"
+        app:rightType="imageButton"
         app:showBottomLine="false"
         app:statusBarColor="#0288D0"
         app:titleBarColor="#0288D0">

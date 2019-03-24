@@ -11,6 +11,7 @@ import android.view.View;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
+import com.common.notification.NotificationManager;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
@@ -51,9 +52,18 @@ public class MessageFragment extends BaseFragment implements IMessageFragment {
         transaction.replace(R.id.content, mConversationListFragment);
         transaction.commit();
 
-        commonTitleBar.getRightCustomView().setOnClickListener(new View.OnClickListener() {
+        commonTitleBar.getRightImageButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                commonTitleBar.getRightImageButton().setImageResource(R.drawable.friend_book_icon);
+
+                if (U.getPreferenceUtils().getSettingInt(NotificationManager.SP_KEY_NEW_FANS, 0) >= 2) {
+                    U.getPreferenceUtils().setSettingInt(NotificationManager.SP_KEY_NEW_FANS, 1);
+                }
+                if (U.getPreferenceUtils().getSettingInt(NotificationManager.SP_KEY_NEW_FRIEND, 0) >= 2) {
+                    U.getPreferenceUtils().setSettingInt(NotificationManager.SP_KEY_NEW_FRIEND, 1);
+                }
+
                 U.getFragmentUtils().addFragment(
                         FragmentUtils.newAddParamsBuilder(getActivity(), RelationFragment.class)
                                 .setAddToBackStack(true)
@@ -61,6 +71,11 @@ public class MessageFragment extends BaseFragment implements IMessageFragment {
                                 .build());
             }
         });
+
+        if (U.getPreferenceUtils().getSettingInt(NotificationManager.SP_KEY_NEW_FANS, 0) >= 2
+                || U.getPreferenceUtils().getSettingInt(NotificationManager.SP_KEY_NEW_FRIEND, 0) >= 2) {
+            commonTitleBar.getRightImageButton().setImageResource(R.drawable.friend_book_red_icon);
+        }
 
         // TODO: 2019/1/3 暂时屏蔽搜索
 //        commonTitleBar.getLeftTextView().setOnClickListener(new View.OnClickListener() {

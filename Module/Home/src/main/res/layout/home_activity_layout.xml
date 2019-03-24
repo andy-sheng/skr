@@ -62,6 +62,15 @@
                 app:bl_shape="rectangle"
                 app:bl_solid_color="#FB5151" />
 
+            <com.common.view.ex.ExImageView
+                android:id="@+id/message_red_dot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@+id/message_btn"
+                android:layout_alignTop="@id/message_btn"
+                android:src="@drawable/reddot"
+                android:visibility="gone" />
+
         </RelativeLayout>
 
         <!--个人-->

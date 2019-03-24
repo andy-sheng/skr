@@ -21,6 +21,7 @@ import com.common.core.permission.SkrSdcardPermission;
 import com.common.core.upgrade.UpgradeManager;
 import com.common.core.account.UserAccountManager;
 import com.common.log.MyLog;
+import com.common.notification.NotificationManager;
 import com.common.utils.ActivityUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -33,13 +34,13 @@ import com.module.RouterConstants;
 import com.module.home.dialogmanager.HomeDialogManager;
 import com.module.home.fragment.GameFragment;
 import com.module.home.fragment.PersonFragment;
-import com.module.home.model.HomeGoldModel;
 import com.module.home.persenter.CheckInPresenter;
 import com.module.home.persenter.HomeCorePresenter;
 import com.module.home.persenter.NotifyCorePresenter;
 import com.module.home.persenter.RedPkgPresenter;
 import com.module.home.view.GetRedPkgCashView;
 import com.module.home.view.IHomeActivity;
+import com.module.home.view.INotifyView;
 import com.module.home.view.IRedPkgView;
 import com.module.msg.IMsgService;
 import com.orhanobut.dialogplus.DialogPlus;
@@ -52,7 +53,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 @Route(path = RouterConstants.ACTIVITY_HOME)
-public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkgView {
+public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkgView, INotifyView {
 
     public final static String TAG = "HomeActivity";
 
@@ -63,6 +64,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
     RelativeLayout mMessageArea;
     ExImageView mMessageBtn;
     ExTextView mUnreadNumTv;
+    ExImageView mMessageRedDot;
     RelativeLayout mPersonArea;
     ExImageView mPersonInfoBtn;
     ExImageView mPersonInfoRedDot;
@@ -114,6 +116,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
         mMessageArea = (RelativeLayout) findViewById(R.id.message_area);
         mMessageBtn = (ExImageView) findViewById(R.id.message_btn);
         mUnreadNumTv = (ExTextView) findViewById(R.id.unread_num_tv);
+        mMessageRedDot = (ExImageView) findViewById(R.id.message_red_dot);
         mPersonArea = (RelativeLayout) findViewById(R.id.person_area);
         mPersonInfoBtn = (ExImageView) findViewById(R.id.person_info_btn);
         mPersonInfoRedDot = (ExImageView) findViewById(R.id.person_info_red_dot);
@@ -177,6 +180,15 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
                 mGameBtn.setImageResource(R.drawable.ic_home_normal);
                 mMessageBtn.setImageResource(R.drawable.ic_chat_selected);
                 mPersonInfoBtn.setImageResource(R.drawable.ic_me_normal);
+
+                mMessageRedDot.setVisibility(View.GONE);
+                if (U.getPreferenceUtils().getSettingInt(NotificationManager.SP_KEY_NEW_FANS, 0) >= 3) {
+                    U.getPreferenceUtils().setSettingInt(NotificationManager.SP_KEY_NEW_FANS, 2);
+                }
+
+                if (U.getPreferenceUtils().getSettingInt(NotificationManager.SP_KEY_NEW_FRIEND, 0) >= 3) {
+                    U.getPreferenceUtils().setSettingInt(NotificationManager.SP_KEY_NEW_FRIEND, 2);
+                }
             }
         });
 
@@ -193,7 +205,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
         mRedPkgPresenter = new RedPkgPresenter(this);
         addPresent(mRedPkgPresenter);
 
-        mNotifyCorePresenter = new NotifyCorePresenter();
+        mNotifyCorePresenter = new NotifyCorePresenter(this);
         addPresent(mNotifyCorePresenter);
 
         mMainVp.setCurrentItem(0, false);
@@ -245,7 +257,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
                     }
                 })
                 .create();
-        EventBus.getDefault().post(new ShowDialogInHomeEvent(mRedPkgView,30));
+        EventBus.getDefault().post(new ShowDialogInHomeEvent(mRedPkgView, 30));
     }
 
     @Override
@@ -262,11 +274,20 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
             mUnreadNumTv.setVisibility(View.GONE);
         } else {
             mUnreadNumTv.setVisibility(View.VISIBLE);
+            mMessageRedDot.setVisibility(View.GONE);
             if (unReadNum > 99) {
                 mUnreadNumTv.setText("99+");
             } else {
                 mUnreadNumTv.setText("" + unReadNum);
             }
+        }
+    }
+
+    @Override
+    public void showMessageRedDot() {
+        // 关注消息红点
+        if (mUnreadNumTv.getVisibility() == View.GONE) {
+            mMessageRedDot.setVisibility(View.VISIBLE);
         }
     }
 
@@ -356,4 +377,5 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
         mMessageBtn.setImageResource(R.drawable.ic_chat_normal);
         mPersonInfoBtn.setImageResource(R.drawable.ic_me_normal);
     }
+
 }
