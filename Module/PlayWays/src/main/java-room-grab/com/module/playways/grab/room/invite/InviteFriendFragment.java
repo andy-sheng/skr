@@ -197,7 +197,7 @@ public class InviteFriendFragment extends BaseFragment implements IGrabInviteVie
 
     @Override
     public void finishRefresh() {
-        mRefreshLayout.finishRefresh();
+        mRefreshLayout.finishLoadMore();
     }
 
     @Override
