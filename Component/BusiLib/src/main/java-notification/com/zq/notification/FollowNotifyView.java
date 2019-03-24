@@ -8,6 +8,7 @@ import android.widget.RelativeLayout;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
@@ -19,6 +20,8 @@ import com.zq.live.proto.Common.ESex;
  * 关注弹窗通知
  */
 public class FollowNotifyView extends RelativeLayout {
+
+    public final static String TAG = "FollowNotifyView";
 
     SimpleDraweeView mAvatarIv;
     ExTextView mNameTv;
@@ -54,8 +57,8 @@ public class FollowNotifyView extends RelativeLayout {
             public void clickValid(View v) {
                 // TODO: 2019/3/21  处理关注请求
                 if (mUserInfoModel.isFollow() || mUserInfoModel.isFriend()) {
-                    UserInfoManager.getInstance().mateRelation(mUserInfoModel.getUserId(),
-                            UserInfoManager.RA_UNBUILD, mUserInfoModel.isFriend());
+//                    UserInfoManager.getInstance().mateRelation(mUserInfoModel.getUserId(),
+//                            UserInfoManager.RA_UNBUILD, mUserInfoModel.isFriend());
                 } else {
                     UserInfoManager.getInstance().mateRelation(mUserInfoModel.getUserId(),
                             UserInfoManager.RA_BUILD, mUserInfoModel.isFriend());
@@ -80,9 +83,13 @@ public class FollowNotifyView extends RelativeLayout {
 
         if (mUserInfoModel.isFriend()) {
             // 好友怎么展示
+            mFollowTv.setText("已互关");
+            mFollowTv.setClickable(false);
         } else if (mUserInfoModel.isFollow()) {
             // 只是关注消息
+            mFollowTv.setText("关注ta");
         } else {
+            MyLog.w(TAG, "即不是好友，又不是关注，缺收到关注信息");
             // 又不是好友，又没有关注
         }
     }

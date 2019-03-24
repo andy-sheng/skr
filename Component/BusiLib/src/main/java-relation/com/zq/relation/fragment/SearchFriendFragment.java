@@ -151,6 +151,7 @@ public class SearchFriendFragment extends BaseFragment {
         }
 
         U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+        mRelationAdapter.getData().clear();
         mRelationAdapter.getData().addAll(userInfoModels);
         mRelationAdapter.notifyDataSetChanged();
     }
@@ -169,7 +170,7 @@ public class SearchFriendFragment extends BaseFragment {
             for (UserInfoModel userInfoModel : mRelationAdapter.getData()) {
                 if (userInfoModel.getUserId() == event.useId) {
                     // TODO: 2019/3/21 更新关系
-                    
+
                 }
             }
         }
