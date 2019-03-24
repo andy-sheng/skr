@@ -1447,7 +1447,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QJoinNoticeEvent event) {
-        if (RoomDataUtils.isCurrentExpectingRound(event.roundSeq, mRoomData)) {
+        if (!mRoomData.hasGameBegin() || RoomDataUtils.isCurrentExpectingRound(event.roundSeq, mRoomData)) {
             GrabPlayerInfoModel playerInfoModel = event.infoModel;
             MyLog.d(TAG, "有人加入房间,id=" + playerInfoModel.getUserID() + " name=" + playerInfoModel.getUserInfo().getNickname() + " role=" + playerInfoModel.getRole() + " roundSeq=" + event.roundSeq);
             GrabRoundInfoModel grabRoundInfoModel = mRoomData.getExpectRoundInfo();
