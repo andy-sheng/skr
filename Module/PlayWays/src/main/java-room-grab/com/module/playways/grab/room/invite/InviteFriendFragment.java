@@ -13,8 +13,10 @@ import android.widget.TextView;
 import com.common.base.BaseFragment;
 import com.common.core.kouling.SkrKouLingUtils;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
+import com.module.common.ICallback;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.inter.IGrabInviteView;
 
@@ -59,7 +61,7 @@ public class InviteFriendFragment extends BaseFragment implements IGrabInviteVie
         mGrabInvitePresenter = new GrabInvitePresenter(this, mRoomData);
         addPresent(mGrabInvitePresenter);
 
-        mEmptyView = (View)mRootView.findViewById(R.id.empty_view);
+        mEmptyView = (View) mRootView.findViewById(R.id.empty_view);
         mRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.refreshLayout);
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
         mTvShare = (ExTextView) mRootView.findViewById(R.id.tv_share);
@@ -133,20 +135,39 @@ public class InviteFriendFragment extends BaseFragment implements IGrabInviteVie
             mTvWeixinShare.setOnClickListener(new DebounceViewClickListener() {
                 @Override
                 public void clickValid(View v) {
-                    String kouling = SkrKouLingUtils.genJoinGameKouling((int) MyUserInfoManager.getInstance().getUid(), mRoomData.getGameId());
-                    new ShareAction(getActivity()).withText(kouling)
-                            .setPlatform(SHARE_MEDIA.WEIXIN)
-                            .share();
+                    SkrKouLingUtils.genJoinGameKouling((int) MyUserInfoManager.getInstance().getUid(), mRoomData.getGameId(), new ICallback() {
+                        @Override
+                        public void onSucess(Object obj) {
+                            new ShareAction(getActivity()).withText((String) obj)
+                                    .setPlatform(SHARE_MEDIA.WEIXIN)
+                                    .share();
+                        }
+
+                        @Override
+                        public void onFailed(Object obj, int errcode, String message) {
+                            U.getToastUtil().showShort("口令生成失败");
+                        }
+                    });
+
                 }
             });
 
             mTvQqShare.setOnClickListener(new DebounceViewClickListener() {
                 @Override
                 public void clickValid(View v) {
-                    String kouling = SkrKouLingUtils.genJoinGameKouling((int) MyUserInfoManager.getInstance().getUid(), mRoomData.getGameId());
-                    new ShareAction(getActivity()).withText(kouling)
-                            .setPlatform(SHARE_MEDIA.QQ)
-                            .share();
+                    SkrKouLingUtils.genJoinGameKouling((int) MyUserInfoManager.getInstance().getUid(), mRoomData.getGameId(), new ICallback() {
+                        @Override
+                        public void onSucess(Object obj) {
+                            new ShareAction(getActivity()).withText((String) obj)
+                                    .setPlatform(SHARE_MEDIA.QQ)
+                                    .share();
+                        }
+
+                        @Override
+                        public void onFailed(Object obj, int errcode, String message) {
+                            U.getToastUtil().showShort("口令生成失败");
+                        }
+                    });
                 }
             });
         }

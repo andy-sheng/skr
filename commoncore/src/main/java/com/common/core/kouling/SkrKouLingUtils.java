@@ -3,13 +3,18 @@ package com.common.core.kouling;
 import android.net.Uri;
 import android.text.TextUtils;
 
-import com.common.clipboard.ClipboardUtils;
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.common.core.account.UserAccountManager;
+import com.common.core.kouling.api.KouLingServerApi;
 import com.common.core.scheme.processor.ProcessResult;
 import com.common.core.scheme.processor.ZqSchemeProcessorManager;
-import com.common.log.MyLog;
+import com.common.rxretrofit.ApiManager;
+import com.common.rxretrofit.ApiMethods;
+import com.common.rxretrofit.ApiObserver;
+import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
-
-import java.io.UnsupportedEncodingException;
+import com.module.RouterConstants;
+import com.module.common.ICallback;
 
 public class SkrKouLingUtils {
     public final static String TAG = "SkrKouLingUtils";
@@ -24,50 +29,82 @@ public class SkrKouLingUtils {
      * @param inviterId
      * @param gameId
      */
-    public static String genJoinGameKouling(int inviterId, int gameId) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("复制整段信息，打开【撕歌Skr】查看。");
-        sb.append("我开了个房间，一起来撕歌吧。");
-        String info = String.format("t=1&u=%d&r=%d", inviterId, gameId);
-        try {
-            info = U.getBase64Utils().encode(info.getBytes("utf-8"));
-            sb.append(info);
-        } catch (UnsupportedEncodingException e) {
-            sb.append(info);
-        }
-        sb.append("我开了个房间，一起来撕歌吧。");
-        sb.append("还没安装【撕歌Skr】？点击安装");
-        sb.append("http://a.app.qq.com/o/simple.jsp?pkgname=com.zq.live");
-//        ClipboardUtils.setCopy(sb.toString());
-//        U.getToastUtil().showLong("已复制到粘贴板，快去微信或QQ发送给好友吧");
-        return sb.toString();
+    public static void genJoinGameKouling(final int inviterId, final int gameId, final ICallback callback) {
+        String code = String.format("inframeskr://room/grabjoin?owner=%s&gameId=%s&ask=1", inviterId, gameId);
+        KouLingServerApi kouLingServerApi = ApiManager.getInstance().createService(KouLingServerApi.class);
+
+        ApiMethods.subscribe(kouLingServerApi.setTokenByCode(code), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult obj) {
+                if (obj.getErrno() == 0) {
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("复制整段信息，打开【撕歌Skr】查看。");
+                    sb.append("我开了个房间，一起来撕歌吧。");
+                    sb.append("$").append(obj.getData().getString("token")).append("$");
+                    sb.append("还没安装【撕歌Skr】？点击安装");
+                    sb.append("http://a.app.qq.com/o/simple.jsp?pkgname=com.zq.live");
+                    if (callback != null) {
+                        callback.onSucess(sb.toString());
+                    }
+                } else {
+                    if (callback != null) {
+                        callback.onFailed("", obj.getErrno(), "口令生成失败");
+                    }
+                }
+            }
+        });
     }
 
     public static boolean tryParseScheme(String str) {
         if (!TextUtils.isEmpty(str)) {
-            // 跳到 是否需要跳一个activity
-            String base64Scheme = U.getStringUtils().getLongestBase64SubString(str);
-            // TODO 可能需要去服务端解析口令，解析口令的接口不做身份验证
-            MyLog.d(TAG, "tryParseScheme" + " base64Scheme=" + base64Scheme);
-            byte[] bytes = U.getBase64Utils().decode(base64Scheme);
-            try {
-                String kouling = new String(bytes, "utf-8");
-                String scheme = parseKouling2Scheme(kouling);
-                MyLog.d(TAG, "tryParseScheme" + " scheme=" + scheme);
-                if (!TextUtils.isEmpty(scheme)) {
-                    Uri uri = Uri.parse(scheme);
-                    // TODO这里要考虑下如果没登录怎么办，走SchemeActivity
-                    ProcessResult processResult = ZqSchemeProcessorManager.getInstance().process(uri, U.getActivityUtils().getTopActivity(), false);
-                    if (processResult != ProcessResult.NotAccepted) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                }
-            } catch (UnsupportedEncodingException e) {
 
+
+            // 跳到 是否需要跳一个activity
+//            String base64Scheme = U.getStringUtils().getLongestBase64SubString(str);
+            // TODO 可能需要去服务端解析口令，解析口令的接口不做身份验证
+//            MyLog.d(TAG, "tryParseScheme" + " base64Scheme=" + base64Scheme);
+//            byte[] bytes = U.getBase64Utils().decode(base64Scheme);
+//            try {
+//                String kouling = new String(bytes, "utf-8");
+            String kouling = getKoulingByStr(str);
+            if (!TextUtils.isEmpty(kouling)) {
+                KouLingServerApi kouLingServerApi = ApiManager.getInstance().createService(KouLingServerApi.class);
+                ApiMethods.subscribe(kouLingServerApi.getCodeByToken(kouling), new ApiObserver<ApiResult>() {
+                    @Override
+                    public void process(ApiResult obj) {
+                        if (obj.getErrno() == 0) {
+                            String scheme = obj.getData().getString("code");
+                            if (!TextUtils.isEmpty(scheme)) {
+                                // TODO这里要考虑下如果没登录怎么办，走SchemeActivity
+                                if (UserAccountManager.getInstance().hasAccount()) {
+                                    Uri uri = Uri.parse(scheme);
+                                    ProcessResult processResult = ZqSchemeProcessorManager.getInstance().process(uri, U.getActivityUtils().getTopActivity(), false);
+                                } else {
+                                    ARouter.getInstance().build(RouterConstants.ACTIVITY_SCHEME)
+                                            .withString("uri", scheme)
+                                            .navigation();
+                                }
+                            }
+                        } else {
+                        }
+                    }
+                });
             }
         }
+//                String scheme = parseKouling2Scheme(kouling);
+//                MyLog.d(TAG, "tryParseScheme" + " scheme=" + scheme);
+//                if (!TextUtils.isEmpty(scheme)) {
+//                    Uri uri = Uri.parse(scheme);
+//                    // TODO这里要考虑下如果没登录怎么办，走SchemeActivity
+//                    ProcessResult processResult = ZqSchemeProcessorManager.getInstance().process(uri, U.getActivityUtils().getTopActivity(), false);
+//                    if (processResult != ProcessResult.NotAccepted) {
+//                        return true;
+//                    } else {
+//                        return false;
+//                    }
+//                }
+//            } catch (UnsupportedEncodingException e) {
+//            }
         return false;
     }
 
@@ -101,6 +138,21 @@ public class SkrKouLingUtils {
                 }
                 if (!TextUtils.isEmpty(userId) && !TextUtils.isEmpty(roomId)) {
                     return String.format("inframeskr://room/grabjoin?owner=%s&gameId=%s&ask=1", userId, roomId);
+                }
+            }
+        }
+        return null;
+    }
+
+    private static String getKoulingByStr(String str) {
+        if (!TextUtils.isEmpty(str)) {
+            int b = str.indexOf("$");
+            if (b > 0) {
+                str = str.substring(b);
+                int e = str.indexOf("$");
+                if (e > 0) {
+                    str = str.substring(0, e);
+                    return str;
                 }
             }
         }
