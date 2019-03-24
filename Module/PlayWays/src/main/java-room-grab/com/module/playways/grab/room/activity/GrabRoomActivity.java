@@ -145,7 +145,9 @@ public class GrabRoomActivity extends BaseActivity {
         // 销毁其他的一唱到底页面
         for (Activity activity : U.getActivityUtils().getActivityList()) {
             if (activity instanceof GrabRoomActivity) {
-                activity.finish();
+                if (activity != this) {
+                    activity.finish();
+                }
             }
             if (activity instanceof RankRoomActivity) {
                 activity.finish();
