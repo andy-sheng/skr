@@ -1,5 +1,7 @@
 package com.common.webview;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.text.TextUtils;
 import android.util.Pair;
 
@@ -17,6 +19,8 @@ import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import java.util.Map;
+
+import static android.content.Context.CLIPBOARD_SERVICE;
 
 
 public class JsBridgeImpl {
@@ -86,15 +90,15 @@ public class JsBridgeImpl {
             }
 
             if ("wx".equals(param)) {
-                if("wx_friend_circle".equals(channel)){
+                if ("wx_friend_circle".equals(channel)) {
                     sharePanel.share(SharePlatform.WEIXIN_CIRCLE, shareType);
-                } else if("wx_friend".equals(channel)){
+                } else if ("wx_friend".equals(channel)) {
                     sharePanel.share(SharePlatform.WEIXIN, shareType);
                 } else {
                     MyLog.w(TAG, "share not find channel, " + " channel is " + channel);
                 }
             } else if ("qq".equals(param)) {
-                if("qq_friend".equals(channel)){
+                if ("qq_friend".equals(channel)) {
                     sharePanel.share(SharePlatform.QQ, shareType);
                 } else {
                     MyLog.w(TAG, "share not find channel, " + " channel is " + channel);
@@ -168,12 +172,22 @@ public class JsBridgeImpl {
         });
     }
 
-    public void getAppVersion(String data, final CallBackFunction function){
+    public void getAppVersion(String data, final CallBackFunction function) {
         function.onCallBack(getJsonObj(new Pair("errcode", "0"), new Pair("errmsg", ""),
                 new Pair("data", getJsonObj(new Pair("version", U.getAppInfoUtils().getVersionCode())))).toJSONString());
     }
 
-    public void noMethed(final CallBackFunction function){
+    public void getClipboard(final CallBackFunction function) {
+        ClipboardManager cm = (ClipboardManager) mBaseActivity.getSystemService(CLIPBOARD_SERVICE);
+        ClipData data = cm.getPrimaryClip();
+        ClipData.Item item = data.getItemAt(0);
+        String content = item.getText().toString();
+
+        function.onCallBack(getJsonObj(new Pair("errcode", "0"), new Pair("errmsg", ""),
+                new Pair("data", getJsonObj(new Pair("content", content)))).toJSONString());
+    }
+
+    public void noMethed(final CallBackFunction function) {
         function.onCallBack(getJsonObj(new Pair("errcode", "-1"), new Pair("errmsg", "方法不存在")).toJSONString());
     }
 
