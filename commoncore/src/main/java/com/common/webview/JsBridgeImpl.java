@@ -8,6 +8,7 @@ import android.util.Pair;
 import com.alibaba.fastjson.JSONObject;
 import com.common.base.BaseActivity;
 
+import com.common.clipboard.ClipboardUtils;
 import com.common.core.share.SharePanel;
 import com.common.core.share.SharePlatform;
 import com.common.core.share.ShareType;
@@ -178,13 +179,9 @@ public class JsBridgeImpl {
     }
 
     public void getClipboard(final CallBackFunction function) {
-        ClipboardManager cm = (ClipboardManager) mBaseActivity.getSystemService(CLIPBOARD_SERVICE);
-        ClipData data = cm.getPrimaryClip();
-        ClipData.Item item = data.getItemAt(0);
-        String content = item.getText().toString();
 
         function.onCallBack(getJsonObj(new Pair("errcode", "0"), new Pair("errmsg", ""),
-                new Pair("data", getJsonObj(new Pair("content", content)))).toJSONString());
+                new Pair("data", getJsonObj(new Pair("content", ClipboardUtils.getPaste())))).toJSONString());
     }
 
     public void noMethed(final CallBackFunction function) {
