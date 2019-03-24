@@ -10,10 +10,13 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.DiffAdapter;
 
+import com.module.playways.grab.room.GrabRoomData;
 import com.module.rank.R;
 
 public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerView.ViewHolder> {
     OnClickDeleteListener mOnClickDeleteListener;
+
+    GrabRoomData mGrabRoomData;
 
     @NonNull
     @Override
@@ -29,6 +32,10 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
 
         ItemHolder reportItemHolder = (ItemHolder) holder;
         reportItemHolder.bind(model, position);
+    }
+
+    public void setGrabRoomData(GrabRoomData grabRoomData) {
+        mGrabRoomData = grabRoomData;
     }
 
     public void setOnClickDeleteListener(OnClickDeleteListener onClickDeleteListener) {
@@ -68,7 +75,7 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
 
             if (position == 0) {
                 mTvManage.setEnabled(false);
-                mTvManage.setText("演唱中");
+                mTvManage.setText(mGrabRoomData.hasGameBegin() ? "演唱中" : "下发中");
             } else if (position == 1) {
                 mTvManage.setEnabled(false);
                 mTvManage.setText("下发中");

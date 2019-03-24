@@ -241,6 +241,8 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
         mManageSongAdapter.setOnClickDeleteListener(grabRoomSongModel -> {
             mGrabSongManagePresenter.deleteSong(grabRoomSongModel.getItemID(), grabRoomSongModel.getRoundSeq());
         });
+
+        mManageSongAdapter.setGrabRoomData(mRoomData);
     }
 
     @Override
