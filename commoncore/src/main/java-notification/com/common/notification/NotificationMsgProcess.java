@@ -16,7 +16,7 @@ public class NotificationMsgProcess implements IPushMsgProcess {
     public void process(int messageType, byte[] data) {
         MyLog.d(TAG, "process" + " messageType=" + messageType + " data=" + data);
         switch (messageType) {
-            case CustomMsgType.MSG_TYPE_ROOM:
+            case CustomMsgType.MSG_TYPE_NOTIFICATION:
                 processNotificationMsg(data);
                 break;
         }
