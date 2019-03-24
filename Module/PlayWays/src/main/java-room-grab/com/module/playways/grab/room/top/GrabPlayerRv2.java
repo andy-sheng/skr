@@ -595,10 +595,12 @@ public class GrabPlayerRv2 extends RelativeLayout {
 
     public void setRoomData(GrabRoomData roomData) {
         mRoomData = roomData;
-        if (mRoomData.isOwner()) {
-            if (mGrabTopItemViewArrayList.size() != 0) {
-                VP vp = mGrabTopItemViewArrayList.get(mGrabTopItemViewArrayList.size() - 1);
+        if (mGrabTopItemViewArrayList.size() != 0) {
+            VP vp = mGrabTopItemViewArrayList.get(mGrabTopItemViewArrayList.size() - 1);
+            if (mRoomData.isOwner()) {
                 vp.grabTopItemView.setCanShowInviteWhenEmpty(true);
+            } else {
+                vp.grabTopItemView.setCanShowInviteWhenEmpty(false);
             }
         }
         initData();
