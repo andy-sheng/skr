@@ -63,7 +63,7 @@ public abstract class BaseRoomData<T extends BaseRoundInfoModel> implements Seri
 
     protected boolean mMute = false;//是否mute
 
-    private String mAgoraToken;
+    private String mAgoraToken; // 声网token
 
     public abstract int getGameType();
 

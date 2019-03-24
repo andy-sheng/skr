@@ -55,6 +55,8 @@ message RoomMsg {
 
     QKickUserRequestMsg qKickUserRequestMsg = 125; //一唱到底：踢人请求信令消息
     QKickUserResultMsg qKickUserResultMsg = 126; //一唱到底：踢人结果信令消息
+
+    QGameBeginMsg qGameBeginMsg = 127; //一唱到底：通知房间用户游戏开始
 }
 
 // ERoomMsgType 房间消息类型
@@ -97,7 +99,15 @@ enum ERoomMsgType {
     RM_Q_KICK_USER_REQUEST = 125; //一唱到底：踢人请求信令消息
     RM_Q_KICK_USER_RESULT = 126; //一唱到底：踢人结果信令消息
 
+    RM_Q_GAME_BEGIN = 127; //一唱到底：通知房间用户游戏开始
+
     RM_ROUND_ACC_BEGIN = 190; //告知伴奏开始
+}
+
+message QGameBeginMsg
+{
+    uint32 roomID           = 1; // 房间id
+    QRoundInfo currentRound = 2; //当前轮次信息
 }
 
 message QKickUserRequestMsg

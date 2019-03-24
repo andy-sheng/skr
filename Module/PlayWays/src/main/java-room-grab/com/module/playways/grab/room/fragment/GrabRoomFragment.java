@@ -101,7 +101,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     public final static String TAG = "GrabRoomFragment";
 
-    public static final int MSG_ENSURE_READYGO_OVER = 1;
+//    public static final int MSG_ENSURE_READYGO_OVER = 1;
 
     public static final int MSG_ENSURE_SONGCARD_OVER = 2;
 
@@ -189,9 +189,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
-                case MSG_ENSURE_READYGO_OVER:
-                    onReadyGoOver();
-                    break;
+//                case MSG_ENSURE_READYGO_OVER:
+//                    onReadyGoOver();
+//                    break;
                 case MSG_ENSURE_BATTLE_BEGIN_OVER:
                     onBattleBeginPlayOver();
                     break;
@@ -671,11 +671,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         mUiHanlder.removeMessages(MSG_ENSURE_BATTLE_BEGIN_OVER);
     }
 
-    private void onReadyGoOver() {
-        MyLog.w(TAG, "onReadyGoOver");
-        mUiHanlder.removeMessages(MSG_ENSURE_READYGO_OVER);
-        mCorePresenter.onOpeningAnimationOver();
-    }
+//    private void onReadyGoOver() {
+//        MyLog.w(TAG, "onReadyGoOver");
+//        mUiHanlder.removeMessages(MSG_ENSURE_READYGO_OVER);
+//        mCorePresenter.onOpeningAnimationOver();
+//    }
 
     private void onBattleBeginPlayOver() {
         mUiHanlder.removeMessages(MSG_ENSURE_BATTLE_BEGIN_OVER);

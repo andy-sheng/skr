@@ -31,6 +31,7 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
     private Integer mSongLineNum;// 歌词总行数
     private int roomType;// 一唱到底房间类型，公开，好友，私密，普通
     private int ownerId;// 房主id
+    private boolean hasGameBegin = true;// 游戏是否已经开始
 
     public GrabRoomData() {
         mIsAccEnable = U.getPreferenceUtils().getSettingBoolean("grab_acc_enable1", false);
@@ -175,6 +176,14 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
         return this.ownerId == MyUserInfoManager.getInstance().getUid();
     }
 
+    public boolean hasGameBegin() {
+        return hasGameBegin;
+    }
+
+    public void setHasGameBegin(boolean hasGameBegin) {
+        this.hasGameBegin = hasGameBegin;
+    }
+
     public void loadFromRsp(JoinGrabRoomRspModel rsp) {
         this.setGameId(rsp.getRoomID());
         this.setCoin(rsp.getCoin());
@@ -184,30 +193,35 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
             MyLog.w(TAG, "JoinGrabRoomRspModel rsp==null");
         }
         GrabRoundInfoModel grabRoundInfoModel = rsp.getCurrentRound();
-        if (rsp.isNewGame()) {
-            grabRoundInfoModel.setParticipant(true);
-        } else {
-            grabRoundInfoModel.setParticipant(false);
-            grabRoundInfoModel.setEnterStatus(grabRoundInfoModel.getStatus());
+        if (grabRoundInfoModel != null) {
+            if (rsp.isNewGame()) {
+                grabRoundInfoModel.setParticipant(true);
+            } else {
+                grabRoundInfoModel.setParticipant(false);
+                grabRoundInfoModel.setEnterStatus(grabRoundInfoModel.getStatus());
+            }
+            grabRoundInfoModel.setElapsedTimeMs(rsp.getElapsedTimeMs());
         }
-        grabRoundInfoModel.setElapsedTimeMs(rsp.getElapsedTimeMs());
         this.setExpectRoundInfo(grabRoundInfoModel);
         this.setRealRoundInfo(null);
 //            mRoomData.setRealRoundInfo(rsp.getCurrentRound());
         this.setTagId(rsp.getTagID());
-        this.setGameCreateTs(rsp.getGameCreateMs());
-        if (this.getGameCreateTs() == 0) {
-            this.setGameCreateTs(System.currentTimeMillis());
-        }
-        if (this.getGameStartTs() == 0) {
-            this.setGameStartTs(this.getGameCreateTs());
-        }
+
         setIsGameFinish(false);
         setHasExitGame(false);
         mResultList.clear();
         this.setAgoraToken(rsp.getAgoraToken());
         this.setRoomType(rsp.getRoomType());
         this.setOwnerId(rsp.getOwnerID());
+
+        if (this.getGameCreateTs() == 0) {
+            this.setGameCreateTs(System.currentTimeMillis());
+        }
+        if (this.getGameStartTs() == 0) {
+            this.setGameStartTs(this.getGameCreateTs());
+        }
+        // 游戏未开始
+        this.setHasGameBegin(rsp.hasGameBegin());
     }
 
     public Integer getSongLineNum() {

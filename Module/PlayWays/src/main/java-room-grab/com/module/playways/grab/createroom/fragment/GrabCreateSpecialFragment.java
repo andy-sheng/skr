@@ -84,7 +84,7 @@ public class GrabCreateSpecialFragment extends BaseFragment {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     JoinGrabRoomRspModel grabCurGameStateModel = JSON.parseObject(result.getData().toString(), JoinGrabRoomRspModel.class);
-                    grabCurGameStateModel.setGameCreateMs(System.currentTimeMillis());
+                    grabCurGameStateModel.setHasGameBegin(false);
                     //先跳转
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_ROOM)
                             .withSerializable("prepare_data", grabCurGameStateModel)

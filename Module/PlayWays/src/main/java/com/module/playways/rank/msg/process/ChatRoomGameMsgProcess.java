@@ -12,6 +12,7 @@ import com.module.playways.rank.msg.event.MachineScoreEvent;
 import com.module.playways.rank.msg.event.PkBurstLightMsgEvent;
 import com.module.playways.rank.msg.event.PkLightOffMsgEvent;
 import com.module.playways.rank.msg.event.QExitGameMsgEvent;
+import com.module.playways.rank.msg.event.QGameBeginEvent;
 import com.module.playways.rank.msg.event.QGetSingChanceMsgEvent;
 import com.module.playways.rank.msg.event.QJoinActionEvent;
 import com.module.playways.rank.msg.event.QJoinNoticeEvent;
@@ -41,6 +42,7 @@ import com.zq.live.proto.Room.PKBLightMsg;
 import com.zq.live.proto.Room.PKMLightMsg;
 import com.zq.live.proto.Room.QBLightMsg;
 import com.zq.live.proto.Room.QExitGameMsg;
+import com.zq.live.proto.Room.QGameBeginMsg;
 import com.zq.live.proto.Room.QGetSingChanceMsg;
 import com.zq.live.proto.Room.QJoinActionMsg;
 import com.zq.live.proto.Room.QJoinNoticeMsg;
@@ -128,6 +130,8 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
             processGrabKickRequest(basePushInfo, msg.getQKickUserRequestMsg());
         } else if (msg.getMsgType() == ERoomMsgType.RM_Q_KICK_USER_RESULT) {
             processGrabKickResult(basePushInfo, msg.getQKickUserResultMsg());
+        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_GAME_BEGIN) {
+            processGrabGameBegin(basePushInfo, msg.getQGameBeginMsg());
         }
     }
 
@@ -473,4 +477,15 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
             MyLog.w(TAG, "processGrabKickRequest" + " basePushInfo = null or qKickUserRequestMsg = null");
         }
     }
+
+    private void processGrabGameBegin(BasePushInfo basePushInfo, QGameBeginMsg qGameBeginMsg) {
+        if (basePushInfo != null && qGameBeginMsg != null) {
+            // 过滤下,所有投票者
+                    QGameBeginEvent event = new QGameBeginEvent(basePushInfo, qGameBeginMsg);
+                    EventBus.getDefault().post(event);
+        } else {
+            MyLog.w(TAG, "processGrabKickRequest" + " basePushInfo = null or qKickUserRequestMsg = null");
+        }
+    }
+
 }

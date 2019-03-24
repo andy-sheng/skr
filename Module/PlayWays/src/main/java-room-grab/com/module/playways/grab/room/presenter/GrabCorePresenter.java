@@ -57,6 +57,7 @@ import com.module.playways.rank.msg.BasePushInfo;
 import com.module.playways.rank.msg.event.CommentMsgEvent;
 import com.module.playways.rank.msg.event.MachineScoreEvent;
 import com.module.playways.rank.msg.event.QExitGameMsgEvent;
+import com.module.playways.rank.msg.event.QGameBeginEvent;
 import com.module.playways.rank.msg.event.QGetSingChanceMsgEvent;
 import com.module.playways.rank.msg.event.QJoinNoticeEvent;
 import com.module.playways.rank.msg.event.QKickUserReqEvent;
@@ -260,7 +261,11 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     public void onOpeningAnimationOver() {
         // 开始触发触发轮次变化
-        mRoomData.checkRoundInEachMode();
+        if (mRoomData.hasGameBegin()) {
+            mRoomData.checkRoundInEachMode();
+        } else {
+            MyLog.d(TAG, "onOpeningAnimationOver 游戏未开始");
+        }
     }
 
     /**
@@ -509,7 +514,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     }
 
     private void robotSingBegin() {
-
         GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
         GrabSkrResourceModel grabSkrResourceModel = grabRoundInfoModel.getSkrResource();
         String skrerUrl = null;
@@ -1073,7 +1077,13 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             // 没结束 current 不应该为null
             if (newRoundInfo != null) {
                 // 服务下发的轮次已经大于当前轮次了，说明本地信息已经不对了，更新
-                if (RoomDataUtils.roundSeqLarger(newRoundInfo, mRoomData.getExpectRoundInfo())) {
+                if (!mRoomData.hasGameBegin()) {
+                    MyLog.w(TAG, "updatePlayerState 游戏未开始，但同步到轮次信息，更新");
+                    // 轮次确实比当前的高，可以切换
+                    mRoomData.setHasGameBegin(true);
+                    mRoomData.setExpectRoundInfo(newRoundInfo);
+                    mRoomData.checkRoundInEachMode();
+                } else if (RoomDataUtils.roundSeqLarger(newRoundInfo, mRoomData.getExpectRoundInfo())) {
                     MyLog.w(TAG, "updatePlayerState" + " sync发现本地轮次信息滞后，更新");
                     // 轮次确实比当前的高，可以切换
                     mRoomData.setExpectRoundInfo(newRoundInfo);
@@ -1471,8 +1481,13 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 mRoomData.setCoin(event.myCoin);
             }
         }
-        // 游戏轮次结束
-        if (RoomDataUtils.roundSeqLarger(event.nextRound, mRoomData.getExpectRoundInfo())) {
+        if (!mRoomData.hasGameBegin()) {
+            MyLog.w(TAG, "收到 QRoundOverMsgEvent，游戏未开始？将游戏设置为开始状态");
+            mRoomData.setHasGameBegin(true);
+            mRoomData.setExpectRoundInfo(event.nextRound);
+            mRoomData.checkRoundInEachMode();
+        } else if (RoomDataUtils.roundSeqLarger(event.nextRound, mRoomData.getExpectRoundInfo())) {
+            // 游戏轮次结束
             // 轮次确实比当前的高，可以切换
             MyLog.w(TAG, "轮次确实比当前的高，可以切换");
             mRoomData.setExpectRoundInfo(event.nextRound);
@@ -1536,6 +1551,14 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             Message message = mUiHandler.obtainMessage(MSG_ROBOT_SING_BEGIN);
             mUiHandler.sendMessage(message);
         }
+    }
+
+    @Subscribe
+    public void onEvent(QGameBeginEvent event) {
+        MyLog.d(TAG, "收到游戏开始的push " + event);
+        mRoomData.setHasGameBegin(true);
+        mRoomData.setExpectRoundInfo(event.mInfoModel);
+        mRoomData.checkRoundInEachMode();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
