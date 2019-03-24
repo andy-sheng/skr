@@ -1,36 +1,46 @@
 package com.module.msg.fragment;
 
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.common.base.BaseFragment;
-import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.notification.NotificationManager;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
+import com.common.view.viewpager.NestViewPager;
+import com.common.view.viewpager.SlidingTabLayout;
 import com.module.msg.IMessageFragment;
 import com.zq.relation.fragment.RelationFragment;
 
+import java.util.HashMap;
+
 import io.rong.imkit.R;
-import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationListFragment;
 import io.rong.imlib.model.Conversation;
-import io.rong.imlib.model.UserInfo;
 
 public class MessageFragment extends BaseFragment implements IMessageFragment {
 
     public final static String TAG = "MessageFragment";
 
-    CommonTitleBar commonTitleBar;
+    RelativeLayout mMainActContainer;
+    CommonTitleBar mTitlebar;
+    LinearLayout mContainer;
+    SlidingTabLayout mMessageTab;
+    View mSplitLine;
+    NestViewPager mMessageVp;
 
     Fragment mConversationListFragment; //获取融云的会话列表对象
+
+    HashMap<Integer, String> mTitleList = new HashMap<>();
 
     @Override
     public int initView() {
@@ -44,18 +54,18 @@ public class MessageFragment extends BaseFragment implements IMessageFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        commonTitleBar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
 
-        mConversationListFragment = initConversationList();
-        FragmentManager fragmentManager = getChildFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.content, mConversationListFragment);
-        transaction.commit();
+        mMainActContainer = (RelativeLayout)mRootView.findViewById(R.id.main_act_container);
+        mTitlebar = (CommonTitleBar)mRootView.findViewById(R.id.titlebar);
+        mContainer = (LinearLayout)mRootView.findViewById(R.id.container);
+        mMessageTab = (SlidingTabLayout)mRootView.findViewById(R.id.message_tab);
+        mSplitLine = (View)mRootView.findViewById(R.id.split_line);
+        mMessageVp = (NestViewPager)mRootView.findViewById(R.id.message_vp);
 
-        commonTitleBar.getRightImageButton().setOnClickListener(new View.OnClickListener() {
+        mTitlebar.getRightImageButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                commonTitleBar.getRightImageButton().setImageResource(R.drawable.friend_book_icon);
+                mTitlebar.getRightImageButton().setImageResource(R.drawable.friend_book_icon);
 
                 if (U.getPreferenceUtils().getSettingInt(NotificationManager.SP_KEY_NEW_FANS, 0) >= 2) {
                     U.getPreferenceUtils().setSettingInt(NotificationManager.SP_KEY_NEW_FANS, 1);
@@ -74,20 +84,47 @@ public class MessageFragment extends BaseFragment implements IMessageFragment {
 
         if (U.getPreferenceUtils().getSettingInt(NotificationManager.SP_KEY_NEW_FANS, 0) >= 2
                 || U.getPreferenceUtils().getSettingInt(NotificationManager.SP_KEY_NEW_FRIEND, 0) >= 2) {
-            commonTitleBar.getRightImageButton().setImageResource(R.drawable.friend_book_red_icon);
+            mTitlebar.getRightImageButton().setImageResource(R.drawable.friend_book_red_icon);
         }
 
-        // TODO: 2019/1/3 暂时屏蔽搜索
-//        commonTitleBar.getLeftTextView().setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                U.getFragmentUtils().addFragment(
-//                        FragmentUtils.newParamsBuilder(MessageActivity.this, SearchFragment.class)
-//                                .setAddToBackStack(true)
-//                                .setHasAnimation(true)
-//                                .build());
-//            }
-//        });
+        mTitleList.put(0, "消息");
+        mTitleList.put(1, "好友");
+
+        mMessageTab.setCustomTabView(R.layout.relation_tab_view, R.id.tab_tv);
+        mMessageTab.setSelectedIndicatorColors(Color.parseColor("#FE8400"));
+        mMessageTab.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_TAB_IN_SECTION_CENTER);
+        mMessageTab.setIndicatorWidth(U.getDisplayUtils().dip2px(27));
+        mMessageTab.setIndicatorBottomMargin(U.getDisplayUtils().dip2px(5));
+        mMessageTab.setSelectedIndicatorThickness(U.getDisplayUtils().dip2px(4));
+        mMessageTab.setIndicatorCornorRadius(U.getDisplayUtils().dip2px(2));
+
+        FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getActivity().getSupportFragmentManager()) {
+            @Override
+            public Fragment getItem(int position) {
+                MyLog.d(TAG, "getItem" + " position=" + position);
+                if (position == 0) {
+                    return initConversationList();
+                } else if (position == 1) {
+                    return initConversationList();
+                }
+                return null;
+            }
+
+            @Override
+            public int getCount() {
+                return mTitleList.size();
+            }
+
+            @Nullable
+            @Override
+            public CharSequence getPageTitle(int position) {
+                return mTitleList.get(position);
+            }
+        };
+
+        mMessageVp.setAdapter(fragmentPagerAdapter);
+        mMessageTab.setViewPager(mMessageVp);
+
     }
 
     @Override

@@ -370,6 +370,10 @@ public class RelationFragment extends BaseFragment {
             mPopupWindow.dismiss();
         }
 
+        if (mShareDialog != null) {
+            mShareDialog.dismiss();
+        }
+
         U.getSoundUtils().release(TAG);
     }
 }
