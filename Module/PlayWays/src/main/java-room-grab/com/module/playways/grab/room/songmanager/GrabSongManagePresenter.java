@@ -14,6 +14,7 @@ import com.module.playways.grab.room.inter.IGrabSongManageView;
 import com.module.playways.grab.createroom.model.SpecialModel;
 import com.module.playways.rank.song.model.SongModel;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -48,6 +49,7 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
         this.mIGrabSongManageView = view;
         mGrabRoomData = grabRoomData;
         mGrabRoomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
+        EventBus.getDefault().register(this);
     }
 
     public void getTagList() {
@@ -257,5 +259,11 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
                 MyLog.e(TAG, e);
             }
         }, this);
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        EventBus.getDefault().unregister(this);
     }
 }
