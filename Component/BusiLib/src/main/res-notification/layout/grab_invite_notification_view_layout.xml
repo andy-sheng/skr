@@ -8,6 +8,7 @@
     app:bl_shape="rectangle"
     app:bl_solid_color="#EBEBEB"
     app:bl_stroke_color="#ACACAC"
+    app:bl_corners_radius="@dimen/view_8_dp"
     app:bl_stroke_width="@dimen/view_1_dp">
 
     <com.facebook.drawee.view.SimpleDraweeView
@@ -69,6 +70,6 @@
         app:bl_corners_bottomLeftRadius="@dimen/view_6_dp"
         app:bl_corners_topLeftRadius="@dimen/view_6_dp"
         app:bl_shape="rectangle"
-        app:bl_solid_color="#F5A623" />
+        app:bl_solid_color="@color/white" />
 
 </com.common.view.ex.ExRelativeLayout>
