@@ -219,7 +219,11 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 EventBus.getDefault().post(msgEvent);
             }
         }
-        startSyncGameStateTask(sSyncStateTaskInterval);
+        if (mRoomData.hasGameBegin()) {
+            startSyncGameStateTask(sSyncStateTaskInterval);
+        } else {
+            cancelSyncGameStateTask();
+        }
     }
 
     private void joinRcRoom(int deep) {
@@ -1569,6 +1573,11 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         mRoomData.setHasGameBegin(true);
         mRoomData.setExpectRoundInfo(event.mInfoModel);
         mRoomData.checkRoundInEachMode();
+        if (mRoomData.hasGameBegin()) {
+            startSyncGameStateTask(sSyncStateTaskInterval);
+        } else {
+            cancelSyncGameStateTask();
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

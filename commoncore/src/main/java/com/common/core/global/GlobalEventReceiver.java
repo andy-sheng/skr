@@ -46,9 +46,7 @@ public class GlobalEventReceiver {
             String str = ClipboardUtils.getPaste();
 //            str = "dD0xJnU9MTM0MzA4OCZyPTEwMA==";
             if (!TextUtils.isEmpty(str)) {
-                if (SkrKouLingUtils.tryParseScheme(str)) {
-                    ClipboardUtils.clear();
-                }
+                SkrKouLingUtils.tryParseScheme(str);
             }
         }
     }
