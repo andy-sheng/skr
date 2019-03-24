@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.common.view.ex.ExRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:bl_corners_topRightRadius="@dimen/view_10_dp"
+    android:layout_marginLeft="@dimen/view_16_dp"
+    android:layout_marginRight="@dimen/view_16_dp"
+    android:orientation="vertical"
     app:bl_corners_topLeftRadius="@dimen/view_10_dp"
+    app:bl_corners_topRightRadius="@dimen/view_10_dp"
     app:bl_solid_color="#EBEBEB"
     app:bl_stroke_color="#ACACAC"
-    app:bl_stroke_width="@dimen/view_1_dp"
-    android:orientation="vertical">
+    app:bl_stroke_width="@dimen/view_1_dp">
 
     <com.common.view.ex.ExTextView
         android:id="@+id/tv_text"
@@ -17,21 +19,32 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_26_dp"
         android:gravity="center"
+        android:drawablePadding="@dimen/view_7_dp"
+        android:drawableRight="@drawable/yaoqingkouling_btn"
         android:lineSpacingExtra="@dimen/textsize_6_dp"
-        android:text="邀请口令已经生成
-快去粘贴到对话框发送给好友吧～"
+        android:text="邀请口令已经生成"
         android:textColor="@color/black_trans_60"
-        android:textSize="@dimen/textsize_16_dp"
-        android:textStyle="bold" />
+        android:textSize="@dimen/textsize_16_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_5_dp"
+        android:lineSpacingExtra="@dimen/textsize_6_dp"
+        android:text="快去粘贴到对话框发送给好友吧～"
+        android:textColor="@color/black_trans_60"
+        android:textSize="@dimen/textsize_16_dp" />
 
     <RelativeLayout
-        android:layout_marginBottom="@dimen/view_24_dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_text"
         android:layout_marginLeft="@dimen/view_80_dp"
-        android:layout_marginTop="@dimen/view_30_dp"
-        android:layout_marginRight="@dimen/view_80_dp">
+        android:layout_marginTop="@dimen/view_60_dp"
+        android:layout_marginRight="@dimen/view_80_dp"
+        android:layout_marginBottom="@dimen/view_24_dp">
 
         <TextView
             android:id="@+id/tv_weixin_share"

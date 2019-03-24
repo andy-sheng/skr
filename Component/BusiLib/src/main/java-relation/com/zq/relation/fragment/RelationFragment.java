@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
+import com.common.core.kouling.SkrKouLingUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
@@ -36,6 +37,10 @@ import com.common.view.viewpager.SlidingTabLayout;
 import com.component.busilib.R;
 import com.component.busilib.constans.GrabRoomType;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.ViewHolder;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.zq.relation.view.RelationView;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -86,6 +91,10 @@ public class RelationFragment extends BaseFragment {
     int mFriendNum = 0;  // 好友数
     int mFansNum = 0;    // 粉丝数
     int mFocusNum = 0;   // 关注数
+
+    DialogPlus mShareDialog;
+    TextView mTvWeixinShare;
+    TextView mTvQqShare;
 
     HashMap<Integer, RelationView> mTitleAndViewMap = new HashMap<>();
 
@@ -153,7 +162,10 @@ public class RelationFragment extends BaseFragment {
         mInviteArea.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                // TODO: 2019/3/21 生成邀请码和弹窗
+                if (mPopupWindow != null && mPopupWindow.isShowing()) {
+                    mPopupWindow.dismiss();
+                }
+                showShareDialog();
             }
         });
 
@@ -248,6 +260,39 @@ public class RelationFragment extends BaseFragment {
         }
 
         U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
+    }
+
+
+    private void showShareDialog() {
+        if (mShareDialog == null) {
+            mShareDialog = DialogPlus.newDialog(getContext())
+                    .setContentHolder(new ViewHolder(R.layout.invite_friend_panel))
+                    .setContentBackgroundResource(R.color.transparent)
+                    .setOverlayBackgroundResource(R.color.black_trans_50)
+                    .setExpanded(false)
+                    .setGravity(Gravity.BOTTOM)
+                    .create();
+
+            mTvWeixinShare = (TextView) mShareDialog.findViewById(R.id.tv_weixin_share);
+            mTvQqShare = (TextView) mShareDialog.findViewById(R.id.tv_qq_share);
+            mTvWeixinShare.setOnClickListener(new DebounceViewClickListener() {
+                @Override
+                public void clickValid(View v) {
+                    // TODO: 2019/3/24 邀请好友
+                }
+            });
+
+            mTvQqShare.setOnClickListener(new DebounceViewClickListener() {
+                @Override
+                public void clickValid(View v) {
+                    // TODO: 2019/3/24 邀请好友
+                }
+            });
+        }
+
+        if (!mShareDialog.isShowing()) {
+            mShareDialog.show();
+        }
     }
 
     private void getRelationNums() {
