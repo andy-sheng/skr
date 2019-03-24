@@ -166,15 +166,36 @@ public class GrabTopView extends RelativeLayout {
         }
         if (mGrabRoomData.isOwner()) {
             // 是房主，肯定不能切换房间
-            mTvChangeRoom.setVisibility(GONE);
+            setChangeRoomBtnVisiable(false);
         } else {
             // 观众的话，私密房间也不能切
             if (mGrabRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_SECRET ||
                     mGrabRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_FRIEND) {
-                mTvChangeRoom.setVisibility(GONE);
+                setChangeRoomBtnVisiable(false);
             } else {
-                mTvChangeRoom.setVisibility(VISIBLE);
+                setChangeRoomBtnVisiable(true);
             }
+        }
+    }
+
+    /**
+     * 切换房间按钮是否可见
+     *
+     * @param visiable
+     */
+    void setChangeRoomBtnVisiable(boolean visiable) {
+        if (visiable) {
+            mTvChangeRoom.setVisibility(VISIBLE);
+            LayoutParams lp = (LayoutParams) mTvCoin.getLayoutParams();
+            lp.addRule(RelativeLayout.RIGHT_OF, mTvChangeRoom.getId());
+            lp.leftMargin = U.getDisplayUtils().dip2px(10);
+            mTvCoin.setLayoutParams(lp);
+        } else {
+            mTvChangeRoom.setVisibility(GONE);
+            LayoutParams lp = (LayoutParams) mTvCoin.getLayoutParams();
+            lp.addRule(RelativeLayout.RIGHT_OF, -1);
+            lp.leftMargin = U.getDisplayUtils().dip2px(16);
+            mTvCoin.setLayoutParams(lp);
         }
     }
 

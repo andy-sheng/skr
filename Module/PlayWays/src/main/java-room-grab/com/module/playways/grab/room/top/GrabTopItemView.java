@@ -35,9 +35,9 @@ public class GrabTopItemView extends RelativeLayout {
     public BaseImageView mAvatarIv;
     public ExImageView mFlagIv;
     public PlayerInfoModel mPlayerInfoModel;
-    AnimationDrawable mFlickerAnim;
-
+    public AnimationDrawable mFlickerAnim;
     public ExTextView mInviteTv;
+    public ExImageView mOwnerIconIv;
 
     public boolean mShowEmptySeat = false;
 
@@ -65,6 +65,7 @@ public class GrabTopItemView extends RelativeLayout {
         mAvatarIv = (BaseImageView) this.findViewById(R.id.avatar_iv);
         mFlagIv = (ExImageView) this.findViewById(R.id.flag_iv);
         mInviteTv = (ExTextView) findViewById(R.id.invite_tv);
+        mOwnerIconIv = findViewById(R.id.owner_icon_iv);
 
         RxView.clicks(mAvatarIv)
                 .subscribe(new Consumer<Object>() {
@@ -121,7 +122,7 @@ public class GrabTopItemView extends RelativeLayout {
         }
     }
 
-    public void bindData(PlayerInfoModel userInfoModel) {
+    public void bindData(PlayerInfoModel userInfoModel, boolean isOwner) {
         if (userInfoModel == null) {
             return;
         }
@@ -138,6 +139,11 @@ public class GrabTopItemView extends RelativeLayout {
         mInviteTv.setVisibility(GONE);
         mFlagIv.setVisibility(GONE);
         mCircleAnimationView.setVisibility(GONE);
+        if (isOwner) {
+            mOwnerIconIv.setVisibility(VISIBLE);
+        } else {
+            mOwnerIconIv.setVisibility(GONE);
+        }
     }
 
     //占位的View
@@ -149,6 +155,7 @@ public class GrabTopItemView extends RelativeLayout {
             mAvatarIv.setImageDrawable(U.getDrawable(R.drawable.guanzhong_kongwei));
             mInviteTv.setVisibility(GONE);
         }
+        mOwnerIconIv.setVisibility(GONE);
         mShowEmptySeat = true;
     }
 

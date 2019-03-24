@@ -196,18 +196,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             // 不发送本地音频
             EngineManager.getInstance().muteLocalAudioStream(true);
         }
-        if (mRoomData.getGameId() > 0) {
-            ModuleServiceManager.getInstance().getMsgService().joinChatRoom(String.valueOf(mRoomData.getGameId()), new ICallback() {
-                @Override
-                public void onSucess(Object obj) {
-                    MyLog.d(TAG, "加入融云房间成功");
-                }
-
-                @Override
-                public void onFailed(Object obj, int errcode, String message) {
-                }
-            });
-        }
+        joinRcRoom(0);
         if (mRoomData.getGameId() > 0) {
             pretenSystemMsg("欢迎进入撕歌一唱到底，对局马上开始，比赛过程发现坏蛋请用力举报哦～");
             for (PlayerInfoModel playerInfoModel : mRoomData.getPlayerInfoList()) {
@@ -231,6 +220,27 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             }
         }
         startSyncGameStateTask(sSyncStateTaskInterval);
+    }
+
+    private void joinRcRoom(int deep) {
+        if (deep > 5) {
+            MyLog.d(TAG, "加入融云房间，重试5次仍然失败，放弃");
+            return;
+        }
+        if (mRoomData.getGameId() > 0) {
+            ModuleServiceManager.getInstance().getMsgService().joinChatRoom(String.valueOf(mRoomData.getGameId()), new ICallback() {
+                @Override
+                public void onSucess(Object obj) {
+                    MyLog.d(TAG, "加入融云房间成功");
+                }
+
+                @Override
+                public void onFailed(Object obj, int errcode, String message) {
+                    MyLog.d(TAG, "加入融云房间失败");
+                    joinRcRoom(deep + 1);
+                }
+            });
+        }
     }
 
     private void pretenSystemMsg(String text) {

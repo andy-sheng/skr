@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.module.playways.grab.room.GrabRoomData;
@@ -117,48 +118,60 @@ public class GrabPlayerRv2 extends RelativeLayout {
 
     //只有轮次切换的时候调用
     private void initData() {
-        GrabRoundInfoModel now = mRoomData.getExpectRoundInfo();
-        if (now == null) {
-            MyLog.w(TAG, "initData data error");
-            return;
-        }
-        if (mCurSeq == now.getRoundSeq()) {
-            MyLog.w(TAG, "initdata 轮次一样，无需更新");
-            return;
-        }
-        mCurSeq = now.getRoundSeq();
-        for (int i = 0; i < mGrabTopItemViewArrayList.size(); i++) {
-            VP vp = mGrabTopItemViewArrayList.get(i);
-            vp.grabTopItemView.setVisibility(VISIBLE);
-        }
-        resetAllGrabTopItemView();
-        List<GrabPlayerInfoModel> playerInfoModels = now.getPlayUsers();
-        mInfoMap.clear();
-        MyLog.d(TAG, "initData playerInfoModels.size() is " + playerInfoModels.size());
-        for (int i = 0; i < playerInfoModels.size() && i < mGrabTopItemViewArrayList.size(); i++) {
-            VP vp = mGrabTopItemViewArrayList.get(i);
-            mInfoMap.put(playerInfoModels.get(i).getUserInfo().getUserId(), vp);
-            vp.grabTopItemView.bindData(playerInfoModels.get(i));
-        }
-
-        MyLog.d(TAG, "initData + now.getStatus() " + now.getStatus());
-        if (now.getStatus() == GrabRoundInfoModel.STATUS_GRAB) {
-            for (WantSingerInfo wantSingerInfo : now.getWantSingInfos()) {
-                VP vp = mInfoMap.get(wantSingerInfo.getUserID());
-                if (vp != null && vp.grabTopItemView != null) {
-                    vp.grabTopItemView.setGrap(true);
-                }
+        if (!mRoomData.hasGameBegin()) {
+            MyLog.d(TAG, "游戏未开始，不能用轮次信息里更新头像");
+            resetAllGrabTopItemView();
+            List<GrabPlayerInfoModel> list = mRoomData.getPlayerInfoList();
+            for (int i = 0; i < list.size() && i < mGrabTopItemViewArrayList.size(); i++) {
+                VP vp = mGrabTopItemViewArrayList.get(i);
+                GrabPlayerInfoModel playerInfoModel = list.get(i);
+                mInfoMap.put(playerInfoModel.getUserID(), vp);
+                vp.grabTopItemView.bindData(playerInfoModel, mRoomData.getOwnerId() == playerInfoModel.getUserID());
             }
         } else {
-            MyLog.d(TAG, "initData else");
-            for (VP vp : mGrabTopItemViewArrayList) {
-                if (vp != null && vp.grabTopItemView != null) {
-                    MyLog.d(TAG, "initData else 2");
-                    vp.grabTopItemView.setGrap(false);
+            GrabRoundInfoModel now = mRoomData.getExpectRoundInfo();
+            if (now == null) {
+                MyLog.w(TAG, "initData data error");
+                return;
+            }
+            if (mCurSeq == now.getRoundSeq()) {
+                MyLog.w(TAG, "initdata 轮次一样，无需更新");
+                return;
+            }
+            mCurSeq = now.getRoundSeq();
+            for (int i = 0; i < mGrabTopItemViewArrayList.size(); i++) {
+                VP vp = mGrabTopItemViewArrayList.get(i);
+                vp.grabTopItemView.setVisibility(VISIBLE);
+            }
+            resetAllGrabTopItemView();
+            List<GrabPlayerInfoModel> playerInfoModels = now.getPlayUsers();
+            mInfoMap.clear();
+            MyLog.d(TAG, "initData playerInfoModels.size() is " + playerInfoModels.size());
+            for (int i = 0; i < playerInfoModels.size() && i < mGrabTopItemViewArrayList.size(); i++) {
+                VP vp = mGrabTopItemViewArrayList.get(i);
+                GrabPlayerInfoModel playerInfoModel = playerInfoModels.get(i);
+                mInfoMap.put(playerInfoModel.getUserID(), vp);
+                vp.grabTopItemView.bindData(playerInfoModel, mRoomData.getOwnerId() == playerInfoModel.getUserID());
+            }
+
+            MyLog.d(TAG, "initData + now.getStatus() " + now.getStatus());
+            if (now.getStatus() == GrabRoundInfoModel.STATUS_GRAB) {
+                for (WantSingerInfo wantSingerInfo : now.getWantSingInfos()) {
+                    VP vp = mInfoMap.get(wantSingerInfo.getUserID());
+                    if (vp != null && vp.grabTopItemView != null) {
+                        vp.grabTopItemView.setGrap(true);
+                    }
+                }
+            } else {
+                MyLog.d(TAG, "initData else");
+                for (VP vp : mGrabTopItemViewArrayList) {
+                    if (vp != null && vp.grabTopItemView != null) {
+                        MyLog.d(TAG, "initData else 2");
+                        vp.grabTopItemView.setGrap(false);
+                    }
                 }
             }
         }
-
         RelativeLayout.LayoutParams lp = (LayoutParams) mContentLl.getLayoutParams();
         lp.leftMargin = U.getDisplayUtils().dip2px(15);
         lp.rightMargin = U.getDisplayUtils().dip2px(15);
@@ -182,7 +195,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
                 wantSingerInfo.setUserID(uId);
                 GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
                 // TODO: 2019/2/26 判空
-                if (grabRoundInfoModel.getWantSingInfos().contains(wantSingerInfo)) {
+                if (grabRoundInfoModel != null && grabRoundInfoModel.getWantSingInfos().contains(wantSingerInfo)) {
                     vp.grabTopItemView.setGrap(true);
                 } else {
 //                    if (vp.grabTopItemView.getPlayerInfoModel().isOnline()) {

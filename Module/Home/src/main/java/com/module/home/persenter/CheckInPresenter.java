@@ -186,7 +186,7 @@ public class CheckInPresenter extends RxLifeCyclePresenter {
                 })
                 .create();
 
-        mCheckInSuccessDialog.show();
+        EventBus.getDefault().post(new ShowDialogInHomeEvent(mCheckInSuccessDialog, 9));
     }
 
     @Override
