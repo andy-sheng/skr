@@ -12,7 +12,7 @@ public class GrabRoomSongModel implements Serializable {
 
     private String itemName;
     private String owner;
-    private int playbookItemID;
+    private int itemID;
     private int roundSeq;
 
     public String getItemName() {
@@ -31,12 +31,12 @@ public class GrabRoomSongModel implements Serializable {
         this.owner = owner;
     }
 
-    public int getPlaybookItemID() {
-        return playbookItemID;
+    public int getItemID() {
+        return itemID;
     }
 
-    public void setPlaybookItemID(int playbookItemID) {
-        this.playbookItemID = playbookItemID;
+    public void setItemID(int itemID) {
+        this.itemID = itemID;
     }
 
     public int getRoundSeq() {

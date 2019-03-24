@@ -110,16 +110,16 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
         }, this);
     }
 
-    public void deleteSong(int playbookItemId, int roundReq) {
+    public void deleteSong(int playbookItemId, int roundSeq) {
         MyLog.d(TAG, "deleteSong");
-        if (roundReq < 0) {
-            MyLog.d(TAG, "deleteSong but roundReq is " + roundReq);
+        if (roundSeq < 0) {
+            MyLog.d(TAG, "deleteSong but roundReq is " + roundSeq);
             return;
         }
         HashMap<String, Object> map = new HashMap<>();
         map.put("itemID", playbookItemId);
         map.put("roomID", mGrabRoomData.getGameId());
-        map.put("roundReq", roundReq);
+        map.put("roundSeq", roundSeq);
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
 
@@ -132,9 +132,9 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
                         Iterator<GrabRoomSongModel> iterator = mGrabRoomSongModelList.iterator();
                         while (iterator.hasNext()) {
                             GrabRoomSongModel grabRoomSongModel = iterator.next();
-                            if (grabRoomSongModel.getRoundSeq() == roundReq) {
+                            if (grabRoomSongModel.getRoundSeq() == roundSeq) {
                                 iterator.remove();
-                            } else if (grabRoomSongModel.getRoundSeq() > roundReq) {
+                            } else if (grabRoomSongModel.getRoundSeq() > roundSeq) {
                                 grabRoomSongModel.setRoundSeq(grabRoomSongModel.getRoundSeq() - 1);
                             }
                         }
@@ -197,7 +197,7 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
                         GrabRoomSongModel grabRoomSongModel = new GrabRoomSongModel();
                         grabRoomSongModel.setOwner(songModel.getOwner());
                         grabRoomSongModel.setItemName(songModel.getItemName());
-                        grabRoomSongModel.setPlaybookItemID(songModel.getItemID());
+                        grabRoomSongModel.setItemID(songModel.getItemID());
 
                         if (mGrabRoomSongModelList.size() <= 2) {
                             grabRoomSongModel.setRoundSeq(mGrabRoomSongModelList.get(mGrabRoomSongModelList.size() - 1).getRoundSeq() + 1);
