@@ -19,6 +19,7 @@ import com.common.view.titlebar.CommonTitleBar;
 import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
 import com.module.msg.IMessageFragment;
+import com.module.msg.friend.FriendFragment;
 import com.zq.relation.fragment.RelationFragment;
 
 import java.util.HashMap;
@@ -105,7 +106,7 @@ public class MessageFragment extends BaseFragment implements IMessageFragment {
                 if (position == 0) {
                     return initConversationList();
                 } else if (position == 1) {
-                    return initConversationList();
+                    return new FriendFragment();
                 }
                 return null;
             }

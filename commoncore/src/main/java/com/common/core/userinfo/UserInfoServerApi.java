@@ -90,6 +90,10 @@ public interface UserInfoServerApi {
                                             @Query("offset") int offset,
                                             @Query("limit") int limit);
 
+    @GET("/v1/mate/contacts")
+    Observable<ApiResult> getFriendStatusList( @Query("offset") int offset,
+                                               @Query("limit") int limit);
+
     /**
      * 获取指定用户的关系数量
      *
