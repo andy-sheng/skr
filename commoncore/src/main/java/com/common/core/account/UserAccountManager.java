@@ -500,7 +500,12 @@ public class UserAccountManager {
                         MyLog.e(TAG, "getIMToken from Server is null");
                     }
                 } else {
-                    U.getToastUtil().showShort("GET融云token error=" + result.getErrno());
+                    if (result.getErrno() == 8302102) {
+                        U.getToastUtil().showShort("GET融云token失败，测试用户账号超过100限度");
+                    } else {
+                        U.getToastUtil().showShort("GET融云token error=" + result.getErrno());
+                    }
+
                 }
                 if (TextUtils.isEmpty(token)) {
                     mUiHanlder.removeMessages(MSG_DELAY_GET_RC_TOKEN);
