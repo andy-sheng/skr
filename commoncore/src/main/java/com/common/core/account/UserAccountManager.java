@@ -10,11 +10,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.common.core.account.event.AccountEvent;
 import com.common.core.account.event.VerifyCodeErrorEvent;
 import com.common.core.channel.HostChannelManager;
+import com.common.core.db.UserInfoDBDao;
 import com.common.core.myinfo.Location;
 import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoLocalApi;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.MyUserInfoServerApi;
+import com.common.core.userinfo.UserInfoLocalApi;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -381,6 +383,9 @@ public class UserAccountManager {
                     }
                     mAccount = null;
                     ApiManager.getInstance().clearCookies();
+                    // 清除pref 清除数据库
+                    U.getPreferenceUtils().clearPreference();
+                    UserInfoLocalApi.deleteAll();
                     UmengStatistics.onProfileSignOff();
                     UmengPush.clearAlias(userId);
                     MyUserInfoManager.getInstance().logoff();

@@ -119,6 +119,12 @@ public class PreferenceUtils {
         editor.apply();
     }
 
+    public void clearPreference() {
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(U.app()).edit();
+        editor.clear();
+        editor.apply();
+    }
+
     public void dumpDefaultPreference() {
         dumpPreference(PreferenceManager.getDefaultSharedPreferences(U.app()), "default preference");
     }
