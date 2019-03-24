@@ -62,21 +62,19 @@ public class GrabCreateSpecialFragment extends BaseFragment {
         mSpecialView.setSpecialSelectListner(new SpecialSelectView.SpecialSelectListner() {
             @Override
             public void onClickSpecial(SpecialModel model, List<String> music) {
-                createRoom(model.getTagID());
+                createRoom(model);
             }
         });
     }
 
     /**
      * 创建房间
-     *
-     * @param tagID 专场id
      */
-    private void createRoom(int tagID) {
+    private void createRoom(SpecialModel model) {
         GrabRoomServerApi grabRoomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomType", mRoomType);
-        map.put("tagID", tagID);
+        map.put("tagID", model.getTagID());
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(grabRoomServerApi.createRoom(body), new ApiObserver<ApiResult>() {
@@ -88,6 +86,7 @@ public class GrabCreateSpecialFragment extends BaseFragment {
                     //先跳转
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_ROOM)
                             .withSerializable("prepare_data", grabCurGameStateModel)
+                            .withSerializable("special_model", model)
                             .navigation();
                     //结束当前Activity
                     if (getActivity() != null) {

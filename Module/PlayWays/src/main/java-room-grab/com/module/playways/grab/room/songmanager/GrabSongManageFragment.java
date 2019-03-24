@@ -1,12 +1,14 @@
 package com.module.playways.grab.room.songmanager;
 
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.PopupWindow;
@@ -87,7 +89,7 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
         mTvSelectedTag = (ExTextView) mRootView.findViewById(R.id.selected_tag);
         mTvFinish = (TextView) mRootView.findViewById(R.id.tv_finish);
-        mRlContent = (RelativeLayout)mRootView.findViewById(R.id.rl_content);
+        mRlContent = (RelativeLayout) mRootView.findViewById(R.id.rl_content);
         mSpecialModelId = mRoomData.getTagId();
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -112,20 +114,33 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
 
         initListener();
         mGrabSongManagePresenter.getPlayBookList();
+
+        if (mRoomData.getSpecialModel() != null) {
+            setTagTv(mRoomData.getSpecialModel());
+        }
     }
 
-    @Override
-    public void changeTagSuccess(SpecialModel specialModel) {
-        mTvSelectedTag.setText(specialModel.getTagName());
-        mSpecialModelId = specialModel.getTagID();
+    private void setTagTv(SpecialModel specialModel) {
+        int color = Color.parseColor("#68ABD3");
+        if (!TextUtils.isEmpty(specialModel.getBgColor())) {
+            color = Color.parseColor(specialModel.getBgColor());
+        }
+
+        mTvSelectedTag.setText(mRoomData.getSpecialModel().getTagName());
+        mSpecialModelId = mRoomData.getSpecialModel().getTagID();
         Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(45))
                 .setStrokeColor(Color.parseColor("#202239"))
                 .setStrokeWidth(U.getDisplayUtils().dip2px(2))
-                .setSolidColor(Color.parseColor("#9B6C43"))
+                .setSolidColor(color)
                 .setCornersRadius(U.getDisplayUtils().dip2px(8))
                 .build();
 
         mTvSelectedTag.setBackground(drawable);
+    }
+
+    @Override
+    public void changeTagSuccess(SpecialModel specialModel) {
+        setTagTv(specialModel);
         if (mPopupWindow != null) {
             mPopupWindow.dismiss();
         }
@@ -144,7 +159,12 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
             mPopupWindow.setHeight(U.getDisplayUtils().dip2px(specialModelList.size() > 4 ? 150 : 136));
         }
 
-        mPopupWindow.showAsDropDown(mTvSelectedTag);
+        mPopupWindow.showAsDropDown(mTvSelectedTag, 0, U.getDisplayUtils().dip2px(-6));
+
+        Drawable drawable = U.getDrawable(R.drawable.zhuanchang_shouqi_up);
+        drawable.setBounds(new Rect(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight()));
+        mTvSelectedTag.setCompoundDrawables(null, null,
+                drawable, null);
     }
 
     @Override
@@ -182,12 +202,28 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
                 });
 
                 mPopupWindow = new PopupWindow(mGrabSongTagsView);
-                mPopupWindow.setBackgroundDrawable(U.getDrawable(R.drawable.liangdeng));
                 mPopupWindow.setWidth(mTvSelectedTag.getWidth());
+                mPopupWindow.setOutsideTouchable(true);
+                mPopupWindow.setFocusable(true);
+
+                mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                    @Override
+                    public void onDismiss() {
+                        Drawable drawable = U.getDrawable(R.drawable.zhuanchang_shouqi);
+                        drawable.setBounds(new Rect(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight()));
+                        mTvSelectedTag.setCompoundDrawables(null, null,
+                                drawable, null);
+                    }
+                });
             }
 
             mGrabSongTagsView.setCurSpecialModel(mRoomData.getTagId());
-            mGrabSongManagePresenter.getTagList();
+
+            if (mPopupWindow.isShowing()) {
+                mPopupWindow.dismiss();
+            } else {
+                mGrabSongManagePresenter.getTagList();
+            }
         });
 
         mTvFinish.setOnClickListener(v -> {
