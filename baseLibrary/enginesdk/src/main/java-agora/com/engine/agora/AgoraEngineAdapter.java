@@ -71,7 +71,7 @@ public class AgoraEngineAdapter {
     }
 
     static final boolean DEBUG = false && MyLog.isDebugLogOpen();
-    static final boolean SCORE_DEBUG = true && MyLog.isDebugLogOpen();
+    static final boolean SCORE_DEBUG = false && MyLog.isDebugLogOpen();
 
     private Params mConfig;
     private RtcEngine mRtcEngine;
