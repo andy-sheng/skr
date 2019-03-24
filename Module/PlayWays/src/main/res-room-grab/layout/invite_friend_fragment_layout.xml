@@ -5,6 +5,10 @@
     android:layout_height="match_parent"
     android:background="@color/black_trans_30"
     android:orientation="vertical">
+    <View
+        android:id="@+id/empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_60_dp"/>
 
     <com.common.view.ex.ExRelativeLayout
         android:id="@+id/top_container"

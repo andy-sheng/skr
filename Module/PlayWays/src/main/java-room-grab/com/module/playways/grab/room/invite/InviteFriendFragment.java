@@ -42,6 +42,7 @@ public class InviteFriendFragment extends BaseFragment implements IGrabInviteVie
     TextView mTvWeixinShare;
     TextView mTvQqShare;
 
+    View mEmptyView;
     DialogPlus mShareDialog;
 
     InviteFirendAdapter mInviteFirendAdapter;
@@ -58,6 +59,7 @@ public class InviteFriendFragment extends BaseFragment implements IGrabInviteVie
         mGrabInvitePresenter = new GrabInvitePresenter(this, mRoomData);
         addPresent(mGrabInvitePresenter);
 
+        mEmptyView = (View)mRootView.findViewById(R.id.empty_view);
         mRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.refreshLayout);
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
         mTvShare = (ExTextView) mRootView.findViewById(R.id.tv_share);
@@ -105,6 +107,13 @@ public class InviteFriendFragment extends BaseFragment implements IGrabInviteVie
             @Override
             public void clickValid(View v) {
                 showShareDialog();
+            }
+        });
+
+        mEmptyView.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                finish();
             }
         });
     }
