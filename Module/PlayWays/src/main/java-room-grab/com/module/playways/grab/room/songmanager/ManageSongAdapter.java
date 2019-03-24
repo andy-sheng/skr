@@ -40,7 +40,7 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
         return mDataList.size();
     }
 
-    private static class ItemHolder extends RecyclerView.ViewHolder {
+    private class ItemHolder extends RecyclerView.ViewHolder {
         ExTextView mTvSongName;
         ExTextView mTvAuther;
         ExTextView mTvManage;
@@ -56,13 +56,15 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
             mTvManage.setOnClickListener(new DebounceViewClickListener() {
                 @Override
                 public void clickValid(View v) {
-
+                    mOnClickDeleteListener.onClick(mSongModel);
                 }
             });
         }
 
         public void bind(GrabRoomSongModel model, int position) {
             this.mSongModel = model;
+            mTvSongName.setText(model.getItemName());
+            mTvAuther.setText(model.getOwner());
 
             if (position == 0) {
                 mTvManage.setEnabled(false);

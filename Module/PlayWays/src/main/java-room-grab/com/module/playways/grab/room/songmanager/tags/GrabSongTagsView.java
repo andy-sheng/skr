@@ -16,7 +16,6 @@ import java.util.List;
 
 public class GrabSongTagsView extends RelativeLayout {
     public final static String TAG = "GrabSongTagsView";
-    SmartRefreshLayout mRefreshLayout;
     RecyclerView mRecyclerView;
     GrabTagsAdapter mGrabTagsAdapter;
     int mCurSpecialModelId;
@@ -46,17 +45,10 @@ public class GrabSongTagsView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.grab_song_tags_view_layout, this);
-        mRefreshLayout = (SmartRefreshLayout) findViewById(R.id.refreshLayout);
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mGrabTagsAdapter = new GrabTagsAdapter();
         mRecyclerView.setAdapter(mGrabTagsAdapter);
-
-        mRefreshLayout.setEnableRefresh(false);
-        mRefreshLayout.setEnableLoadMore(false);
-        mRefreshLayout.setEnableLoadMoreWhenContentNotFull(true);
-        mRefreshLayout.setEnableOverScrollDrag(false);
     }
 
     public void setSpecialModelList(List<SpecialModel> specialModelList) {

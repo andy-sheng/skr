@@ -12,6 +12,7 @@ import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.event.GrabRoundChangeEvent;
 import com.module.playways.grab.room.inter.IGrabSongManageView;
 import com.module.playways.grab.createroom.model.SpecialModel;
+import com.module.playways.rank.song.model.SongModel;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -99,7 +100,7 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
 
             @Override
             public void onNetworkError(ErrorType errorType) {
-
+                MyLog.e(TAG, "getPlayBookList 网络延迟");
             }
 
             @Override
@@ -111,8 +112,13 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
 
     public void deleteSong(int playbookItemId, int roundReq) {
         MyLog.d(TAG, "deleteSong");
+        if (roundReq < 0) {
+            MyLog.d(TAG, "deleteSong but roundReq is " + roundReq);
+            return;
+        }
         HashMap<String, Object> map = new HashMap<>();
-        map.put("playbookItemID", playbookItemId);
+        map.put("itemID", playbookItemId);
+        map.put("roomID", mGrabRoomData.getGameId());
         map.put("roundReq", roundReq);
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
@@ -166,10 +172,11 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
         mIGrabSongManageView.updateSongList(mGrabRoomSongModelList);
     }
 
-    public void addSong(int playbookItemId) {
+    public void addSong(SongModel songModel) {
         MyLog.d(TAG, "addSong");
         HashMap<String, Object> map = new HashMap<>();
-        map.put("playbookItemID", playbookItemId);
+        map.put("itemID", songModel.getItemID());
+        map.put("roomID", mGrabRoomData.getGameId());
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
 
@@ -180,10 +187,16 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
                 if (result.getErrno() == 0) {
                     if (mGrabRoomSongModelList != null) {
                         //加一个保护
+                        GrabRoomSongModel grabRoomSongModel = new GrabRoomSongModel();
+                        grabRoomSongModel.setOwner(songModel.getOwner());
+                        grabRoomSongModel.setItemName(songModel.getItemName());
+                        grabRoomSongModel.setRoundSeq(mGrabRoomData.getRealRoundSeq());
+                        grabRoomSongModel.setPlaybookItemID(songModel.getItemID());
                         if (mGrabRoomSongModelList.size() <= 2) {
-                            mGrabRoomSongModelList.add(null);
+
+                            mGrabRoomSongModelList.add(grabRoomSongModel);
                         } else {
-                            mGrabRoomSongModelList.add(2, null);
+                            mGrabRoomSongModelList.add(2, grabRoomSongModel);
                         }
 
                         updateSongList();
@@ -214,6 +227,18 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
                 MyLog.d(TAG, "addSong process" + " result=" + result.getErrno());
                 if (result.getErrno() == 0) {
                     mIGrabSongManageView.changeTagSuccess(specialModel);
+                    List<GrabRoomSongModel> grabRoomSongModels = JSON.parseArray(result.getData().getString("playbook"), GrabRoomSongModel.class);
+                    if (grabRoomSongModels == null || grabRoomSongModels.size() == 0) {
+                        //没有更多了
+                        mIGrabSongManageView.hasMoreSongList(false);
+                        return;
+                    }
+
+                    mIGrabSongManageView.hasMoreSongList(true);
+                    mGrabRoomSongModelList.clear();
+                    mGrabRoomSongModelList.addAll(grabRoomSongModels);
+                    mOffset = mGrabRoomSongModelList.size();
+                    mIGrabSongManageView.updateSongList(mGrabRoomSongModelList);
                 } else {
                     MyLog.w(TAG, "addSong failed, " + " traceid is " + result.getTraceId());
                 }

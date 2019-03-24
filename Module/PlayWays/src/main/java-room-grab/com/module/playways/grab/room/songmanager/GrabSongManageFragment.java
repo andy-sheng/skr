@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.common.base.BaseActivity;
@@ -65,6 +66,8 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
 
     PopupWindow mPopupWindow;
 
+    RelativeLayout mRlContent;
+
     int mSpecialModelId;
 
     @Override
@@ -82,9 +85,9 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
         mFlSongListContainer = (ExFrameLayout) mRootView.findViewById(R.id.fl_song_list_container);
         mRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.refreshLayout);
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
-        mTvSelectedTag = (ExTextView) mRootView.findViewById(R.id.tv_selected_tag);
+        mTvSelectedTag = (ExTextView) mRootView.findViewById(R.id.selected_tag);
         mTvFinish = (TextView) mRootView.findViewById(R.id.tv_finish);
-
+        mRlContent = (RelativeLayout)mRootView.findViewById(R.id.rl_content);
         mSpecialModelId = mRoomData.getTagId();
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -108,6 +111,7 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
         });
 
         initListener();
+        mGrabSongManagePresenter.getPlayBookList();
     }
 
     @Override
@@ -130,17 +134,17 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
     @Override
     public void hasMoreSongList(boolean hasMore) {
         mRefreshLayout.setEnableLoadMore(hasMore);
+        mRefreshLayout.finishLoadMore();
     }
 
     @Override
     public void showTagList(List<SpecialModel> specialModelList) {
-        if (mGrabSongTagsView == null) {
+        if (mGrabSongTagsView != null) {
             mGrabSongTagsView.setSpecialModelList(specialModelList);
-            mPopupWindow.setHeight(U.getDisplayUtils().dip2px(specialModelList.size() > 4 ? 145 : 136));
-            if (!mPopupWindow.isShowing()) {
-                mPopupWindow.showAtLocation(mRootView, Gravity.TOP, 0, 0);
-            }
+            mPopupWindow.setHeight(U.getDisplayUtils().dip2px(specialModelList.size() > 4 ? 150 : 136));
         }
+
+        mPopupWindow.showAsDropDown(mTvSelectedTag);
     }
 
     @Override
@@ -161,7 +165,7 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
                                 if (requestCode == 0 && resultCode == 0 && obj != null) {
                                     SongModel model = (SongModel) obj;
                                     MyLog.d(TAG, "onFragmentResult" + " model=" + model);
-                                    // TODO: 2019/3/22 添加歌曲
+                                    mGrabSongManagePresenter.addSong(model);
                                 }
                             }
                         })
@@ -172,12 +176,14 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
         mTvSelectedTag.setOnClickListener(v -> {
             if (mGrabSongTagsView == null) {
                 mGrabSongTagsView = new GrabSongTagsView(getContext());
+
                 mGrabSongTagsView.setOnTagClickListener(specialModel -> {
                     mGrabSongManagePresenter.changeMusicTag(specialModel, mRoomData.getGameId());
                 });
 
                 mPopupWindow = new PopupWindow(mGrabSongTagsView);
-                mPopupWindow.setWidth(mTvSelectedTag.getMeasuredWidth());
+                mPopupWindow.setBackgroundDrawable(U.getDrawable(R.drawable.liangdeng));
+                mPopupWindow.setWidth(mTvSelectedTag.getWidth());
             }
 
             mGrabSongTagsView.setCurSpecialModel(mRoomData.getTagId());
@@ -185,9 +191,15 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
         });
 
         mTvFinish.setOnClickListener(v -> {
-            if (getActivity() != null) {
-                getActivity().finish();
-            }
+            finish();
+        });
+
+        mRootView.setOnClickListener(v -> {
+            finish();
+        });
+
+        mRlContent.setOnClickListener(v -> {
+
         });
 
         mManageSongAdapter.setOnClickDeleteListener(grabRoomSongModel -> {
@@ -210,9 +222,6 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
 
     @Override
     protected boolean onBackPressed() {
-        if (getActivity() != null) {
-            getActivity().finish();
-        }
         return super.onBackPressed();
     }
 

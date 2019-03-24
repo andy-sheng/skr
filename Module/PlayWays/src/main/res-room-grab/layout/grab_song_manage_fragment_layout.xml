@@ -5,8 +5,8 @@
     android:layout_height="match_parent"
     android:background="@color/black_trans_30"
     android:orientation="vertical">
-
     <RelativeLayout
+        android:id="@+id/rl_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/view_63_dp"
@@ -59,7 +59,7 @@
         <com.common.view.ex.ExTextView
             android:paddingRight="@dimen/view_15_dp"
             android:drawableRight="@drawable/zhuanchang_shouqi"
-            android:id="@+id/tv_selected_tag"
+            android:id="@+id/selected_tag"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/view_42_dp"
             android:layout_alignLeft="@+id/fl_song_list_container"
@@ -80,7 +80,7 @@
             android:layout_height="@dimen/view_60_dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginRight="@dimen/view_42_dp"
+            android:layout_marginRight="@dimen/view_18_dp"
             android:layout_marginBottom="@dimen/view_71_dp"
             android:background="@drawable/fangzhu_shezhi_shouqi" />
     </RelativeLayout>

@@ -220,7 +220,7 @@ public interface GrabRoomServerApi {
      * @param limit
      * @return
      */
-    @GET("http://dev.stand.inframe.mobi/v2/room/playbook")
+    @GET("http://dev.room.inframe.mobi/v2/room/playbook")
     Observable<ApiResult> getPlaybook(@Query("roomID") int roomID, @Query("offset") long offset, @Query("limit") int limit);
 
     /**
@@ -233,7 +233,7 @@ public interface GrabRoomServerApi {
      * @param body
      * @return
      */
-    @PUT("http://dev.api.inframe.mobi/v2/room/change-music-tag")
+    @PUT("http://dev.room.inframe.mobi/v2/room/change-music-tag")
     Observable<ApiResult> changeMusicTag(@Body RequestBody body);
 
     /**
@@ -245,7 +245,7 @@ public interface GrabRoomServerApi {
      * @param body
      * @return
      */
-    @PUT("http://dev.api.inframe.mobi/v2/room/add-music")
+    @PUT("http://dev.room.inframe.mobi/v2/room/add-music")
     Observable<ApiResult> addMusic(@Body RequestBody body);
 
     /**
@@ -258,7 +258,7 @@ public interface GrabRoomServerApi {
      * @param body
      * @return
      */
-    @PUT("http://dev.api.inframe.mobi/v2/room/del-music")
+    @PUT("http://dev.room.inframe.mobi/v2/room/del-music")
     Observable<ApiResult> delMusic(@Body RequestBody body);
 
     /**

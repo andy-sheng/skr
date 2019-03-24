@@ -536,7 +536,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     private void initManageView() {
         mIvRoomManage = (ExImageView) mRootView.findViewById(R.id.iv_room_manage);
-        if (true) {
+        if (mRoomData.isOwner()) {
             mIvRoomManage.setVisibility(View.VISIBLE);
             mIvRoomManage.setOnClickListener(new DebounceViewClickListener() {
                 @Override

@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +55,7 @@ public class GrabTagsAdapter extends DiffAdapter<SpecialModel, RecyclerView.View
             mTvSelectedTag.setOnClickListener(new DebounceViewClickListener() {
                 @Override
                 public void clickValid(View v) {
-                    if(mOnTagClickListener != null){
+                    if (mOnTagClickListener != null) {
                         mOnTagClickListener.onClick(mSpecialModel);
                     }
                 }
@@ -63,13 +64,19 @@ public class GrabTagsAdapter extends DiffAdapter<SpecialModel, RecyclerView.View
 
         public void bind(SpecialModel model) {
             this.mSpecialModel = model;
+
+            int color = Color.parseColor("#68ABD3");
+            if (!TextUtils.isEmpty(model.getBgColor())) {
+                color = Color.parseColor(model.getBgColor());
+            }
+
             Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(45))
                     .setStrokeColor(Color.parseColor("#202239"))
                     .setStrokeWidth(U.getDisplayUtils().dip2px(2))
-                    .setSolidColor(Color.parseColor("#9B6C43"))
+                    .setSolidColor(color)
                     .setCornersRadius(U.getDisplayUtils().dip2px(8))
                     .build();
-            itemView.setBackground(drawable);
+            mTvSelectedTag.setBackground(drawable);
             mTvSelectedTag.setText(model.getTagName());
         }
     }

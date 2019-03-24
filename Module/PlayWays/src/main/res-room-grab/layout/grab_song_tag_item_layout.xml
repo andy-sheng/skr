@@ -2,14 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/view_48_dp"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/view_5_dp"
     >
     <com.common.view.ex.ExTextView
         android:id="@+id/tv_selected_tag"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_42_dp"
-        android:layout_marginRight="@dimen/view_20_dp"
-        android:layout_marginBottom="@dimen/view_79_dp"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/view_16_dp"
         android:text="经典回忆杀"
