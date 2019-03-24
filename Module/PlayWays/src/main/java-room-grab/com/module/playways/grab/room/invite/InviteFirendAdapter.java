@@ -127,10 +127,12 @@ public class InviteFirendAdapter extends DiffAdapter<GrabFriendModel, RecyclerVi
                 mTvInvite.setBackground(mCanInviteBtnDrawable);
                 mTvInvite.setTextColor(U.getColor(R.color.white_trans_70));
                 mTvInvite.setEnabled(false);
+                mTvInvite.setText("已邀请");
             } else {
                 mTvInvite.setBackground(mCannotInviteDrawable);
                 mTvInvite.setTextColor(U.getColor(R.color.white));
                 mTvInvite.setEnabled(true);
+                mTvInvite.setText("邀请");
             }
         }
     }
