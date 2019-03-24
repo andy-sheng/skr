@@ -135,7 +135,7 @@ public class InviteFriendFragment extends BaseFragment implements IGrabInviteVie
             mTvWeixinShare.setOnClickListener(new DebounceViewClickListener() {
                 @Override
                 public void clickValid(View v) {
-                    SkrKouLingUtils.genJoinGameKouling((int) MyUserInfoManager.getInstance().getUid(), mRoomData.getGameId(), new ICallback() {
+                    SkrKouLingUtils.genJoinGrabGameKouling((int) MyUserInfoManager.getInstance().getUid(), mRoomData.getGameId(), new ICallback() {
                         @Override
                         public void onSucess(Object obj) {
                             new ShareAction(getActivity()).withText((String) obj)
@@ -155,7 +155,7 @@ public class InviteFriendFragment extends BaseFragment implements IGrabInviteVie
             mTvQqShare.setOnClickListener(new DebounceViewClickListener() {
                 @Override
                 public void clickValid(View v) {
-                    SkrKouLingUtils.genJoinGameKouling((int) MyUserInfoManager.getInstance().getUid(), mRoomData.getGameId(), new ICallback() {
+                    SkrKouLingUtils.genJoinGrabGameKouling((int) MyUserInfoManager.getInstance().getUid(), mRoomData.getGameId(), new ICallback() {
                         @Override
                         public void onSucess(Object obj) {
                             new ShareAction(getActivity()).withText((String) obj)

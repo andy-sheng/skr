@@ -37,6 +37,7 @@ import com.common.view.viewpager.SlidingTabLayout;
 import com.component.busilib.R;
 import com.component.busilib.constans.GrabRoomType;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.module.common.ICallback;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.umeng.socialize.ShareAction;
@@ -278,7 +279,19 @@ public class RelationFragment extends BaseFragment {
             mTvWeixinShare.setOnClickListener(new DebounceViewClickListener() {
                 @Override
                 public void clickValid(View v) {
-                    // TODO: 2019/3/24 邀请好友
+                    SkrKouLingUtils.genReqFollowKouling((int) MyUserInfoManager.getInstance().getUid(), MyUserInfoManager.getInstance().getNickName(), new ICallback() {
+                        @Override
+                        public void onSucess(Object obj) {
+                            new ShareAction(getActivity()).withText((String) obj)
+                                    .setPlatform(SHARE_MEDIA.WEIXIN)
+                                    .share();
+                        }
+
+                        @Override
+                        public void onFailed(Object obj, int errcode, String message) {
+                            U.getToastUtil().showShort("口令生成失败");
+                        }
+                    });
                 }
             });
 
@@ -286,6 +299,19 @@ public class RelationFragment extends BaseFragment {
                 @Override
                 public void clickValid(View v) {
                     // TODO: 2019/3/24 邀请好友
+                    SkrKouLingUtils.genReqFollowKouling((int) MyUserInfoManager.getInstance().getUid(), MyUserInfoManager.getInstance().getNickName(), new ICallback() {
+                        @Override
+                        public void onSucess(Object obj) {
+                            new ShareAction(getActivity()).withText((String) obj)
+                                    .setPlatform(SHARE_MEDIA.QQ)
+                                    .share();
+                        }
+
+                        @Override
+                        public void onFailed(Object obj, int errcode, String message) {
+                            U.getToastUtil().showShort("口令生成失败");
+                        }
+                    });
                 }
             });
         }

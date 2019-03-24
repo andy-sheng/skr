@@ -29,7 +29,7 @@ public class SkrKouLingUtils {
      * @param inviterId
      * @param gameId
      */
-    public static void genJoinGameKouling(final int inviterId, final int gameId, final ICallback callback) {
+    public static void genJoinGrabGameKouling(final int inviterId, final int gameId, final ICallback callback) {
         String code = String.format("inframeskr://room/grabjoin?owner=%s&gameId=%s&ask=1", inviterId, gameId);
         KouLingServerApi kouLingServerApi = ApiManager.getInstance().createService(KouLingServerApi.class);
 
@@ -40,6 +40,32 @@ public class SkrKouLingUtils {
                     StringBuilder sb = new StringBuilder();
                     sb.append("复制整段信息，打开【撕歌Skr】查看。");
                     sb.append("我开了个房间，一起来撕歌吧。");
+                    sb.append("$").append(obj.getData().getString("token")).append("$");
+                    sb.append("还没安装【撕歌Skr】？点击安装");
+                    sb.append("http://a.app.qq.com/o/simple.jsp?pkgname=com.zq.live");
+                    if (callback != null) {
+                        callback.onSucess(sb.toString());
+                    }
+                } else {
+                    if (callback != null) {
+                        callback.onFailed("", obj.getErrno(), "口令生成失败");
+                    }
+                }
+            }
+        });
+    }
+
+    public static void genReqFollowKouling(final int inviterId, final String name, final ICallback callback) {
+        String code = String.format("inframeskr://relation/bothfollow?inviterId=%s", inviterId);
+        KouLingServerApi kouLingServerApi = ApiManager.getInstance().createService(KouLingServerApi.class);
+
+        ApiMethods.subscribe(kouLingServerApi.setTokenByCode(code), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult obj) {
+                if (obj.getErrno() == 0) {
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("复制整段信息，打开【撕歌Skr】查看。");
+                    sb.append("快来撕歌关注我,我是").append(name);
                     sb.append("$").append(obj.getData().getString("token")).append("$");
                     sb.append("还没安装【撕歌Skr】？点击安装");
                     sb.append("http://a.app.qq.com/o/simple.jsp?pkgname=com.zq.live");
