@@ -185,17 +185,25 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 MyLog.d(TAG, "addSong process" + " result=" + result.getErrno());
                 if (result.getErrno() == 0) {
-                    if (mGrabRoomSongModelList != null) {
+                    if (mGrabRoomSongModelList != null && mGrabRoomSongModelList.size() > 0) {
+                        if (mGrabRoomSongModelList.size() > 2) {
+                            for (int i = 2; i < mGrabRoomSongModelList.size(); i++) {
+                                GrabRoomSongModel grabRoomSongModel = mGrabRoomSongModelList.get(i);
+                                grabRoomSongModel.setRoundSeq(grabRoomSongModel.getRoundSeq() + 1);
+                            }
+                        }
+
                         //加一个保护
                         GrabRoomSongModel grabRoomSongModel = new GrabRoomSongModel();
                         grabRoomSongModel.setOwner(songModel.getOwner());
                         grabRoomSongModel.setItemName(songModel.getItemName());
-                        grabRoomSongModel.setRoundSeq(mGrabRoomData.getRealRoundSeq());
                         grabRoomSongModel.setPlaybookItemID(songModel.getItemID());
-                        if (mGrabRoomSongModelList.size() <= 2) {
 
+                        if (mGrabRoomSongModelList.size() <= 2) {
+                            grabRoomSongModel.setRoundSeq(mGrabRoomSongModelList.get(mGrabRoomSongModelList.size() - 1).getRoundSeq() + 1);
                             mGrabRoomSongModelList.add(grabRoomSongModel);
                         } else {
+                            grabRoomSongModel.setRoundSeq(mGrabRoomSongModelList.get(1).getRoundSeq() + 1);
                             mGrabRoomSongModelList.add(2, grabRoomSongModel);
                         }
 
