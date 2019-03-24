@@ -113,6 +113,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     private static long sSyncStateTaskInterval = 5000;
 
+    static final int MSG_ENSURE_IN_RC_ROOM = 9;// 确保在融云的聊天室，保证融云的长链接
+
     static final int MSG_ROBOT_SING_BEGIN = 10;
 
     static final int MSG_SHOW_SCORE_EVENT = 32;
@@ -144,6 +146,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
+                case MSG_ENSURE_IN_RC_ROOM:
+                    MyLog.d(TAG, "handleMessage 长时间没收到push，重新进入融云房间容错");
+                    joinRcRoom(0);
+                    break;
                 case MSG_ROBOT_SING_BEGIN:
                     robotSingBegin();
                     break;
@@ -227,7 +233,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     }
 
     private void joinRcRoom(int deep) {
-        if (deep > 5) {
+        if (deep > 4) {
             MyLog.d(TAG, "加入融云房间，重试5次仍然失败，放弃");
             return;
         }
@@ -245,6 +251,11 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 }
             });
         }
+    }
+
+    private void ensureInRcRoom() {
+        mUiHandler.removeMessages(MSG_ENSURE_IN_RC_ROOM);
+        mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_IN_RC_ROOM, 60 * 1000);
     }
 
     private void pretenSystemMsg(String text) {
@@ -277,6 +288,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         // 开始触发触发轮次变化
         if (mRoomData.hasGameBegin()) {
             mRoomData.checkRoundInEachMode();
+            ensureInRcRoom();
         } else {
             MyLog.d(TAG, "onOpeningAnimationOver 游戏未开始");
         }
@@ -1330,6 +1342,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QGetSingChanceMsgEvent event) {
+        ensureInRcRoom();
         if (RoomDataUtils.isCurrentExpectingRound(event.getRoundSeq(), mRoomData)) {
             MyLog.w(TAG, "抢到唱歌权：userID " + event.getUserID() + ", seq " + event.getRoundSeq());
             GrabRoundInfoModel roundInfoModel = mRoomData.getExpectRoundInfo();
@@ -1483,6 +1496,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QRoundOverMsgEvent event) {
         MyLog.w(TAG, "收到服务器的某一个人轮次结束的push event:" + event);
+        ensureInRcRoom();
         if (mRoomData.getLastSyncTs() >= event.getInfo().getTimeMs()) {
             MyLog.w(TAG, "但是是个旧数据");
             return;
@@ -1527,6 +1541,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QSyncStatusMsgEvent event) {
+        ensureInRcRoom();
         MyLog.w(TAG, "收到服务器push更新状态,event.currentRound是" + event.getCurrentRound().getRoundSeq() + ", timeMs 是" + event.info.getTimeMs());
         startSyncGameStateTask(sSyncStateTaskInterval);
         updatePlayerState(event.getGameOverTimeMs(), event.getSyncStatusTimeMs(), event.getCurrentRound());
@@ -1578,6 +1593,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         } else {
             cancelSyncGameStateTask();
         }
+        ensureInRcRoom();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
