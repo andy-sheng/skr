@@ -141,6 +141,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             } else if (message.getContent() instanceof CustomNotificationMsg) {
                 CustomNotificationMsg notificationMsg = (CustomNotificationMsg) message.getContent();
                 byte[] data = U.getBase64Utils().decode(notificationMsg.getContentJsonStr());
+
                 HashSet<IPushMsgProcess> processors = mProcessorMap.get(MSG_TYPE_NOTIFICATION);
                 if (processors != null) {
                     for (IPushMsgProcess process : processors) {

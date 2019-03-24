@@ -64,7 +64,6 @@ public class EditInfoAgeFragment extends BaseFragment {
     public void initData(@Nullable Bundle savedInstanceState) {
         mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
         mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
-        mDivider = (View) mRootView.findViewById(R.id.divider);
         mFrameLayout = (FrameLayout) mRootView.findViewById(R.id.frame_layout);
         mCompleteTv = (ExTextView) mRootView.findViewById(R.id.complete_tv);
 
@@ -107,7 +106,6 @@ public class EditInfoAgeFragment extends BaseFragment {
             mTitlebar.getCenterTextView().setText("完善个人信息");
             mTitlebar.setStatusBarColor(Color.parseColor("#F9F4F1"));
             mTitlebar.setTitleBarColor(Color.parseColor("#F9F4F1"));
-            mDivider.setBackgroundColor(Color.parseColor("#F9F4F1"));
             mTitlebar.getCenterTextView().setTextColor(Color.parseColor("#0C2275"));
             mTitlebar.getRightTextView().setTextSize(16);
             mTitlebar.getRightTextView().setTextColor(Color.parseColor("#0C2275"));
