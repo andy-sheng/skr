@@ -161,7 +161,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
         mHomePresenter.checkUserInfo("HomeActivity onCreate");
         mCheckInPresenter = new CheckInPresenter(this);
         addPresent(mCheckInPresenter);
-        mCheckInPresenter.check();
 
         mGameArea.setOnClickListener(new DebounceViewClickListener(100) {
             @Override
@@ -324,6 +323,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
         mFromCreate = false;
         UpgradeManager.getInstance().checkUpdate1();
         mRedPkgPresenter.checkRedPkg();
+        mCheckInPresenter.check();
     }
 
     @Override

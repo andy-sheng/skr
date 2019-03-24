@@ -56,6 +56,8 @@ public class CheckInPresenter extends RxLifeCyclePresenter {
 
     Handler mUiHandler;
 
+    boolean mHasShow = false;
+
     public CheckInPresenter(BaseActivity baseActivity) {
         mBaseActivity = baseActivity;
         mMainPageSlideApi = ApiManager.getInstance().createService(MainPageSlideApi.class);
@@ -68,12 +70,18 @@ public class CheckInPresenter extends RxLifeCyclePresenter {
             return;
         }
 
+        if (mHasShow) {
+            MyLog.d(TAG, "checkin mHasShow=" + mHasShow);
+            return;
+        }
+
         long dayDiff = U.getDateTimeUtils().getDayDiff(
                 U.getPreferenceUtils().getSettingLong(PREF_KEY_SHOW_CHECKIN, 0)
                 , System.currentTimeMillis());
 
         if (dayDiff == 0) {
             MyLog.d(TAG, "今天展示过了");
+            mHasShow = true;
             return;
         }
 
@@ -83,6 +91,7 @@ public class CheckInPresenter extends RxLifeCyclePresenter {
                 MyLog.d(TAG, "process" + " result=" + result.getErrno());
                 if (result.getErrno() == 0) {
                     U.getPreferenceUtils().setSettingLong(PREF_KEY_SHOW_CHECKIN, System.currentTimeMillis());
+                    mHasShow = true;
                     List<HomeGoldModel> homeGoldModelList = JSONArray.parseArray(result.getData().getString("items"), HomeGoldModel.class);
                     if (homeGoldModelList != null && homeGoldModelList.size() > 0) {
                         showCheckInView(homeGoldModelList);
