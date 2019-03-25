@@ -1231,15 +1231,30 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     onSelfRoundOver(event.lastRoundInfo);
                 }
             } else {
-                mIGrabView.grabBegin(now.getRoundSeq(), now.getMusic());
+                mUiHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mIGrabView.grabBegin(now.getRoundSeq(), now.getMusic());
+                    }
+                });
             }
         } else if (now.getStatus() == GrabRoundInfoModel.STATUS_SING) {
             // 演唱阶段
             if (now.getUserID() == MyUserInfoManager.getInstance().getUid()) {
-                mIGrabView.singBySelf();
+                mUiHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mIGrabView.singBySelf();
+                    }
+                });
                 preOpWhenSelfRound();
             } else {
-                mIGrabView.singByOthers(now.getUserID());
+                mUiHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mIGrabView.singByOthers(now.getUserID());
+                    }
+                });
                 checkMachineUser(now.getUserID());
             }
         } else if (now.getStatus() == GrabRoundInfoModel.STATUS_OVER) {
@@ -1266,14 +1281,29 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         tryStopRobotPlay();
         if (now.getStatus() == GrabRoundInfoModel.STATUS_GRAB) {
             //抢唱阶段，播抢唱卡片
-            mIGrabView.grabBegin(now.getRoundSeq(), now.getMusic());
+            mUiHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    mIGrabView.grabBegin(now.getRoundSeq(), now.getMusic());
+                }
+            });
         } else if (now.getStatus() == GrabRoundInfoModel.STATUS_SING) {
             // 演唱阶段
             if (now.getUserID() == MyUserInfoManager.getInstance().getUid()) {
-                mIGrabView.singBySelf();
+                mUiHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mIGrabView.singBySelf();
+                    }
+                });
                 preOpWhenSelfRound();
             } else {
-                mIGrabView.singByOthers(now.getUserID());
+                mUiHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mIGrabView.singByOthers(now.getUserID());
+                    }
+                });
                 checkMachineUser(now.getUserID());
             }
         }
@@ -1851,19 +1881,13 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 //        }, this);
     }
 
-    @Subscribe(threadMode = ThreadMode.POSTING)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QKickUserReqEvent qKickUserReqEvent) {
         // 踢人请求
-        mUiHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                mIGrabView.showKickVoteDialog(qKickUserReqEvent.kickUserID, qKickUserReqEvent.sourceUserID);
-            }
-        });
-
+        mIGrabView.showKickVoteDialog(qKickUserReqEvent.kickUserID, qKickUserReqEvent.sourceUserID);
     }
 
-    @Subscribe(threadMode = ThreadMode.POSTING)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QKickUserResultEvent qKickUserResultEvent) {
         // 踢人的结果
         if (qKickUserResultEvent.kickUserID == MyUserInfoManager.getInstance().getUid()) {
