@@ -81,7 +81,7 @@ public class SpecialSelectView extends RelativeLayout {
 
         mRefreshLayout.setEnableRefresh(false);
         mRefreshLayout.setEnableLoadMore(true);
-        mRefreshLayout.setEnableLoadMoreWhenContentNotFull(false);
+        mRefreshLayout.setEnableLoadMoreWhenContentNotFull(true);
         mRefreshLayout.setEnableOverScrollDrag(false);
         mRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
@@ -163,10 +163,12 @@ public class SpecialSelectView extends RelativeLayout {
 
     private void refreshView(List<SpecialModel> list, int offset) {
         this.offset = offset;
-        mRefreshLayout.finishLoadMore();
         if (list != null) {
+            mRefreshLayout.finishLoadMore();
             mSpecialSelectAdapter.getDataList().addAll(list);
             mSpecialSelectAdapter.notifyDataSetChanged();
+        } else {
+            mRefreshLayout.finishLoadMoreWithNoMoreData();
         }
 
         if (mSpecialSelectAdapter.getDataList() != null && mSpecialSelectAdapter.getDataList().size() > 0) {

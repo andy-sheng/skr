@@ -263,11 +263,14 @@ public class RankLevelChange2Fragment extends BaseFragment {
         } else {
             dynamicEntity.setDynamicImage(image.getUrl(), "avatar");
         }
-        dynamicEntity.setDynamicImage(BitmapFactory.decodeResource(U.app().getResources(), LevelConfigUtils.getImageResoucesLevel(mScoreStateModel.getMainRanking())), "keyMedalNew");
-        dynamicEntity.setDynamicImage(BitmapFactory.decodeResource(U.app().getResources(),
-                LevelConfigUtils.getImageResoucesSubLevel(mScoreStateModel.getMainRanking(), mScoreStateModel.getSubRanking())),
-                "keyLevelNew");
-
+        if (LevelConfigUtils.getImageResoucesLevel(mScoreStateModel.getMainRanking()) != 0) {
+            dynamicEntity.setDynamicImage(BitmapFactory.decodeResource(U.app().getResources(), LevelConfigUtils.getImageResoucesLevel(mScoreStateModel.getMainRanking())), "keyMedalNew");
+        }
+        if (LevelConfigUtils.getImageResoucesSubLevel(mScoreStateModel.getMainRanking(), mScoreStateModel.getSubRanking()) != 0) {
+            dynamicEntity.setDynamicImage(BitmapFactory.decodeResource(U.app().getResources(),
+                    LevelConfigUtils.getImageResoucesSubLevel(mScoreStateModel.getMainRanking(), mScoreStateModel.getSubRanking())),
+                    "keyLevelNew");
+        }
 
         return dynamicEntity;
     }
