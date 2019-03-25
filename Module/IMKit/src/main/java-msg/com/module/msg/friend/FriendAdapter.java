@@ -84,6 +84,9 @@ public class FriendAdapter extends DiffAdapter<FriendStatusModel, FriendAdapter.
             if (mFriendStatusModel.getStatus() == FriendStatusModel.EF_OnLine) {
                 mStatusTv.setCompoundDrawablePadding(U.getDisplayUtils().dip2px(3));
                 mStatusTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.greendot, 0, 0, 0);
+            } else {
+                mStatusTv.setCompoundDrawablePadding(U.getDisplayUtils().dip2px(3));
+                mStatusTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.graydot, 0, 0, 0);
             }
             mStatusTv.setText(mFriendStatusModel.getStatusDesc());
         }
