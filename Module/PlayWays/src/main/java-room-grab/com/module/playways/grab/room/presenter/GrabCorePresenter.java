@@ -92,6 +92,7 @@ import com.module.rank.R;
 import com.zq.live.proto.Common.ESex;
 import com.zq.live.proto.Common.UserInfo;
 import com.zq.live.proto.Room.EMsgPosType;
+import com.zq.live.proto.Room.EQGameOverReason;
 import com.zq.live.proto.Room.EQRoundOverReason;
 import com.zq.live.proto.Room.EQRoundResultType;
 import com.zq.live.proto.Room.ERoomMsgType;
@@ -1580,6 +1581,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             }
         }
         onGameOver("QRoundAndGameOverMsgEvent", event.roundOverTimeMs, event.resultInfo);
+        if (event.mOverReason == EQGameOverReason.GOR_OWNER_EXIT) {
+            U.getToastUtil().showLong("房主离开了游戏，房间解散");
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
