@@ -25,6 +25,8 @@ public final class QRoundAndGameOverMsg extends Message<QRoundAndGameOverMsg, QR
 
   public static final Long DEFAULT_ROUNDOVERTIMEMS = 0L;
 
+  public static final EQGameOverReason DEFAULT_OVERREASON = EQGameOverReason.GOR_UNKNOWN;
+
   /**
    * 本轮次结束的毫秒时间戳
    */
@@ -63,18 +65,29 @@ public final class QRoundAndGameOverMsg extends Message<QRoundAndGameOverMsg, QR
   )
   private final List<QUserCoin> qUserCoin;
 
+  /**
+   * 游戏结束原因
+   */
+  @WireField(
+      tag = 5,
+      adapter = "com.zq.live.proto.Room.EQGameOverReason#ADAPTER"
+  )
+  private final EQGameOverReason overReason;
+
   public QRoundAndGameOverMsg(Long roundOverTimeMs, QRoundInfo currentRound,
-      List<QResultInfo> resultInfo, List<QUserCoin> qUserCoin) {
-    this(roundOverTimeMs, currentRound, resultInfo, qUserCoin, ByteString.EMPTY);
+      List<QResultInfo> resultInfo, List<QUserCoin> qUserCoin, EQGameOverReason overReason) {
+    this(roundOverTimeMs, currentRound, resultInfo, qUserCoin, overReason, ByteString.EMPTY);
   }
 
   public QRoundAndGameOverMsg(Long roundOverTimeMs, QRoundInfo currentRound,
-      List<QResultInfo> resultInfo, List<QUserCoin> qUserCoin, ByteString unknownFields) {
+      List<QResultInfo> resultInfo, List<QUserCoin> qUserCoin, EQGameOverReason overReason,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.roundOverTimeMs = roundOverTimeMs;
     this.currentRound = currentRound;
     this.resultInfo = Internal.immutableCopyOf("resultInfo", resultInfo);
     this.qUserCoin = Internal.immutableCopyOf("qUserCoin", qUserCoin);
+    this.overReason = overReason;
   }
 
   @Override
@@ -84,6 +97,7 @@ public final class QRoundAndGameOverMsg extends Message<QRoundAndGameOverMsg, QR
     builder.currentRound = currentRound;
     builder.resultInfo = Internal.copyOf("resultInfo", resultInfo);
     builder.qUserCoin = Internal.copyOf("qUserCoin", qUserCoin);
+    builder.overReason = overReason;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -97,7 +111,8 @@ public final class QRoundAndGameOverMsg extends Message<QRoundAndGameOverMsg, QR
         && Internal.equals(roundOverTimeMs, o.roundOverTimeMs)
         && Internal.equals(currentRound, o.currentRound)
         && resultInfo.equals(o.resultInfo)
-        && qUserCoin.equals(o.qUserCoin);
+        && qUserCoin.equals(o.qUserCoin)
+        && Internal.equals(overReason, o.overReason);
   }
 
   @Override
@@ -109,6 +124,7 @@ public final class QRoundAndGameOverMsg extends Message<QRoundAndGameOverMsg, QR
       result = result * 37 + (currentRound != null ? currentRound.hashCode() : 0);
       result = result * 37 + resultInfo.hashCode();
       result = result * 37 + qUserCoin.hashCode();
+      result = result * 37 + (overReason != null ? overReason.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -121,6 +137,7 @@ public final class QRoundAndGameOverMsg extends Message<QRoundAndGameOverMsg, QR
     if (currentRound != null) builder.append(", currentRound=").append(currentRound);
     if (!resultInfo.isEmpty()) builder.append(", resultInfo=").append(resultInfo);
     if (!qUserCoin.isEmpty()) builder.append(", qUserCoin=").append(qUserCoin);
+    if (overReason != null) builder.append(", overReason=").append(overReason);
     return builder.replace(0, 2, "QRoundAndGameOverMsg{").append('}').toString();
   }
 
@@ -175,6 +192,16 @@ public final class QRoundAndGameOverMsg extends Message<QRoundAndGameOverMsg, QR
   }
 
   /**
+   * 游戏结束原因
+   */
+  public EQGameOverReason getOverReason() {
+    if(overReason==null){
+        return new EQGameOverReason.Builder().build();
+    }
+    return overReason;
+  }
+
+  /**
    * 本轮次结束的毫秒时间戳
    */
   public boolean hasRoundOverTimeMs() {
@@ -202,6 +229,13 @@ public final class QRoundAndGameOverMsg extends Message<QRoundAndGameOverMsg, QR
     return qUserCoin!=null;
   }
 
+  /**
+   * 游戏结束原因
+   */
+  public boolean hasOverReason() {
+    return overReason!=null;
+  }
+
   public static final class Builder extends Message.Builder<QRoundAndGameOverMsg, Builder> {
     private Long roundOverTimeMs;
 
@@ -210,6 +244,8 @@ public final class QRoundAndGameOverMsg extends Message<QRoundAndGameOverMsg, QR
     private List<QResultInfo> resultInfo;
 
     private List<QUserCoin> qUserCoin;
+
+    private EQGameOverReason overReason;
 
     public Builder() {
       resultInfo = Internal.newMutableList();
@@ -250,9 +286,17 @@ public final class QRoundAndGameOverMsg extends Message<QRoundAndGameOverMsg, QR
       return this;
     }
 
+    /**
+     * 游戏结束原因
+     */
+    public Builder setOverReason(EQGameOverReason overReason) {
+      this.overReason = overReason;
+      return this;
+    }
+
     @Override
     public QRoundAndGameOverMsg build() {
-      return new QRoundAndGameOverMsg(roundOverTimeMs, currentRound, resultInfo, qUserCoin, super.buildUnknownFields());
+      return new QRoundAndGameOverMsg(roundOverTimeMs, currentRound, resultInfo, qUserCoin, overReason, super.buildUnknownFields());
     }
   }
 
@@ -267,6 +311,7 @@ public final class QRoundAndGameOverMsg extends Message<QRoundAndGameOverMsg, QR
           + QRoundInfo.ADAPTER.encodedSizeWithTag(2, value.currentRound)
           + QResultInfo.ADAPTER.asRepeated().encodedSizeWithTag(3, value.resultInfo)
           + QUserCoin.ADAPTER.asRepeated().encodedSizeWithTag(4, value.qUserCoin)
+          + EQGameOverReason.ADAPTER.encodedSizeWithTag(5, value.overReason)
           + value.unknownFields().size();
     }
 
@@ -276,6 +321,7 @@ public final class QRoundAndGameOverMsg extends Message<QRoundAndGameOverMsg, QR
       QRoundInfo.ADAPTER.encodeWithTag(writer, 2, value.currentRound);
       QResultInfo.ADAPTER.asRepeated().encodeWithTag(writer, 3, value.resultInfo);
       QUserCoin.ADAPTER.asRepeated().encodeWithTag(writer, 4, value.qUserCoin);
+      EQGameOverReason.ADAPTER.encodeWithTag(writer, 5, value.overReason);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -289,6 +335,14 @@ public final class QRoundAndGameOverMsg extends Message<QRoundAndGameOverMsg, QR
           case 2: builder.setCurrentRound(QRoundInfo.ADAPTER.decode(reader)); break;
           case 3: builder.resultInfo.add(QResultInfo.ADAPTER.decode(reader)); break;
           case 4: builder.qUserCoin.add(QUserCoin.ADAPTER.decode(reader)); break;
+          case 5: {
+            try {
+              builder.setOverReason(EQGameOverReason.ADAPTER.decode(reader));
+            } catch (ProtoAdapter.EnumConstantNotFoundException e) {
+              builder.addUnknownField(tag, FieldEncoding.VARINT, (long) e.value);
+            }
+            break;
+          }
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
