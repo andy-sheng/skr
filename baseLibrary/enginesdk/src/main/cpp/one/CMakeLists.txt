@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.4.1)
 
+add_definitions(-DPERFORMANCE_TEST)
+
+
 set(PATH_TO_MEDIACORE ${CMAKE_SOURCE_DIR}/src/main/cpp/one)
 set(PATH_TO_JNI_LAYER ${CMAKE_SOURCE_DIR}/src/main/jni/one)
 set(PATH_TO_THIRDPARTY ${PATH_TO_MEDIACORE}/thirdparty)
@@ -16,7 +19,12 @@ include_directories(${PATH_TO_MEDIACORE}/)
 include_directories(${PATH_TO_MEDIACORE}/common/)
 include_directories(${PATH_TO_MEDIACORE}/score_processor/)
 include_directories(${PATH_TO_MEDIACORE}/score_processor/score/)
-include_directories(${PATH_TO_MEDIACORE}/score_processor/f0_cal/)
+include_directories(${PATH_TO_MEDIACORE}/score_processor/score2/)
+include_directories(${PATH_TO_MEDIACORE}/score_processor/score2/math/)
+include_directories(${PATH_TO_MEDIACORE}/score_processor/score2/profiler/)
+include_directories(${PATH_TO_MEDIACORE}/score_processor/score2/ne10/inc)
+include_directories(${PATH_TO_MEDIACORE}/score_processor/f0_cal/baseband/)
+include_directories(${PATH_TO_MEDIACORE}/score_processor/f0_cal/PYin/)
 include_directories(${PATH_TO_MEDIACORE}/score_processor/fft_wrapper/)
 include_directories(${PATH_TO_MEDIACORE}/score_processor/mel/)
 include_directories(${PATH_TO_MEDIACORE}/audio_effect/)
@@ -30,10 +38,15 @@ include_directories(${PATH_TO_MEDIACORE}/audio_effect_processor/live/)
 include_directories(${PATH_TO_MEDIACORE}/external_audio_effect/)
 include_directories(${PATH_TO_MEDIACORE}/external_audio_effect/reverb_inc/)
 
+
 file(GLOB FILES_JNI_LAYER "${PATH_TO_JNI_LAYER}/*.cpp")
 file(GLOB FILES_LIB_COMMON "${PATH_TO_MEDIACORE}/common/*.cpp")
 file(GLOB FILES_SCORE_PROCESSOR "${PATH_TO_MEDIACORE}/score_processor/score/*.cpp")
-file(GLOB FILES_SCORE_F0_CAL "${PATH_TO_MEDIACORE}/score_processor/f0_cal/*.cpp")
+file(GLOB FILES_SCORE_PROCESSOR2 "${PATH_TO_MEDIACORE}/score_processor/score2/*.cpp")
+file(GLOB FILES_SCORE_PROCESSOR2_MATH "${PATH_TO_MEDIACORE}/score_processor/score2/math/*.cpp")
+file(GLOB FILES_SCORE_PROCESSOR2_PROFILER "${PATH_TO_MEDIACORE}/score_processor/score2/profiler/*.cpp")
+file(GLOB FILES_SCORE_F0_CAL_BASEBAND "${PATH_TO_MEDIACORE}/score_processor/f0_cal/baseband/*.cpp")
+file(GLOB FILES_SCORE_F0_CAL_PYIN "${PATH_TO_MEDIACORE}/score_processor/f0_cal/PYin/*.cpp")
 file(GLOB FILES_SCORE_FFT_WRAPPER "${PATH_TO_MEDIACORE}/score_processor/fft_wrapper/*.cpp")
 file(GLOB FILES_SCORE_MEL "${PATH_TO_MEDIACORE}/score_processor/mel/*.cpp")
 file(GLOB FILES_AUDIO_EFFECT_MODEL "${PATH_TO_MEDIACORE}/audio_effect/*.cpp")
@@ -57,7 +70,11 @@ add_library(native-lib1 SHARED
         ${FILES_JNI_LAYER}
         ${FILES_LIB_COMMON}
         ${FILES_SCORE_PROCESSOR}
-        ${FILES_SCORE_F0_CAL}
+        ${FILES_SCORE_PROCESSOR2}
+        ${FILES_SCORE_PROCESSOR2_MATH}
+        ${FILES_SCORE_PROCESSOR2_PROFILER}
+        ${FILES_SCORE_F0_CAL_BASEBAND}
+        ${FILES_SCORE_F0_CAL_PYIN}
         ${FILES_SCORE_FFT_WRAPPER}
         ${FILES_SCORE_MEL}
         ${FILES_AUDIO_EFFECT_MODEL}
@@ -81,5 +98,12 @@ target_link_libraries( # Specifies the target library.
         native-lib1
         android
         ${PATH_TO_PRE_BUILT}/libsox.a
+        log
+        NE10
+        m
         z
-        log )
+        )
+
+
+
+
