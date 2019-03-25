@@ -1,6 +1,7 @@
 package com.module.playways.grab.room.fragment;
 
 import android.animation.Animator;
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -1076,7 +1077,10 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_RESULT)
                 .withSerializable("room_data", mRoomData)
                 .navigation();
-        getActivity().finish();
+        Activity activity = getActivity();
+        if (activity != null) {
+            activity.finish();
+        }
         StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
                 StatConstants.KEY_GAME_FINISH, null);
     }
