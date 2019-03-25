@@ -91,7 +91,6 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
         mTvSelectedTag = (ExTextView) mRootView.findViewById(R.id.selected_tag);
         mTvFinish = (TextView) mRootView.findViewById(R.id.tv_finish);
         mRlContent = (RelativeLayout) mRootView.findViewById(R.id.rl_content);
-        mSpecialModelId = mRoomData.getTagId();
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mManageSongAdapter = new ManageSongAdapter();
