@@ -168,7 +168,8 @@ public class SpecialSelectView extends RelativeLayout {
             mSpecialSelectAdapter.getDataList().addAll(list);
             mSpecialSelectAdapter.notifyDataSetChanged();
         } else {
-            mRefreshLayout.finishLoadMoreWithNoMoreData();
+            mRefreshLayout.setEnableLoadMore(false);
+            mRefreshLayout.finishLoadMore();
         }
 
         if (mSpecialSelectAdapter.getDataList() != null && mSpecialSelectAdapter.getDataList().size() > 0) {

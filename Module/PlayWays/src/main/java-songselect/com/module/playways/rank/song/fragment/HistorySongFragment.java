@@ -221,7 +221,8 @@ public class HistorySongFragment extends BaseFragment implements ISongTagDetailV
         this.offset = offset;
         this.hasMore = hasMore;
         if (!hasMore) {
-            mRefreshLayout.finishLoadMoreWithNoMoreData();
+            mRefreshLayout.setEnableLoadMore(false);
+            mRefreshLayout.finishLoadMore();
             if (datas == null || datas.size() == 0) {
                 mLoadService.showCallback(EmptyCallback.class);
             }

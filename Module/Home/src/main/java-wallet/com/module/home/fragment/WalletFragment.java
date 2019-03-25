@@ -175,7 +175,7 @@ public class WalletFragment extends BaseFragment implements IWalletView {
     public void onGetIncrRecords(int offset, List<WalletRecordModel> list) {
         this.offset = offset;
         if (list == null || list.size() <= 0) {
-            mRefreshLayout.finishLoadMoreWithNoMoreData();
+            mRefreshLayout.setEnableLoadMore(false);
             return;
         }
         mRefreshLayout.finishLoadMore();
@@ -187,7 +187,8 @@ public class WalletFragment extends BaseFragment implements IWalletView {
     public void onGetAllRecords(int offset, List<WalletRecordModel> list) {
         this.offset = offset;
         if (list == null || list.size() <= 0) {
-            mRefreshLayout.finishLoadMoreWithNoMoreData();
+            mRefreshLayout.setEnableLoadMore(false);
+            mRefreshLayout.finishLoadMore();
             return;
         }
         mRefreshLayout.finishLoadMore();

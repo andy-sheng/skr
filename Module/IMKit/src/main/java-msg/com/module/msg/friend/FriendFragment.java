@@ -155,8 +155,8 @@ public class FriendFragment extends BaseFragment {
             hasMore = true;
         } else {
             hasMore = false;
+            mRefreshLayout.setEnableLoadMore(false);
             mRefreshLayout.finishRefresh();
-            mRefreshLayout.finishLoadMoreWithNoMoreData();
             if (mOffset == 0) {
                 mLoadService.showCallback(FriendsEmptyCallback.class);
             }

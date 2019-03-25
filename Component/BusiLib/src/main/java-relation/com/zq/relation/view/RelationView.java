@@ -204,7 +204,8 @@ public class RelationView extends RelativeLayout {
                 hasMore = true;
             } else {
                 hasMore = false;
-                mRefreshLayout.finishLoadMoreWithNoMoreData();
+                mRefreshLayout.setEnableLoadMore(false);
+                mRefreshLayout.finishLoadMore();
                 if (mOffset == 0) {
                     // 第一次拉数据
                     if (mMode == UserInfoManager.RELATION_FRIENDS) {
