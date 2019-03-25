@@ -11,7 +11,11 @@ import com.module.playways.rank.msg.event.JoinNoticeEvent;
 import com.module.playways.rank.msg.event.MachineScoreEvent;
 import com.module.playways.rank.msg.event.PkBurstLightMsgEvent;
 import com.module.playways.rank.msg.event.PkLightOffMsgEvent;
+
 import com.module.playways.rank.msg.event.QCoinChangeEvent;
+
+import com.module.playways.rank.msg.event.QChangeMusicTagEvent;
+
 import com.module.playways.rank.msg.event.QExitGameMsgEvent;
 import com.module.playways.rank.msg.event.QGameBeginEvent;
 import com.module.playways.rank.msg.event.QGetSingChanceMsgEvent;
@@ -42,7 +46,11 @@ import com.zq.live.proto.Room.MachineScore;
 import com.zq.live.proto.Room.PKBLightMsg;
 import com.zq.live.proto.Room.PKMLightMsg;
 import com.zq.live.proto.Room.QBLightMsg;
+
 import com.zq.live.proto.Room.QCoinChangeMsg;
+
+import com.zq.live.proto.Room.QChangeMusicTag;
+
 import com.zq.live.proto.Room.QExitGameMsg;
 import com.zq.live.proto.Room.QGameBeginMsg;
 import com.zq.live.proto.Room.QGetSingChanceMsg;
@@ -136,6 +144,8 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
             processGrabGameBegin(basePushInfo, msg.getQGameBeginMsg());
         } else if (msg.getMsgType() == ERoomMsgType.RM_Q_COIN_CHANGE) {
             processGrabCoinChange(basePushInfo, msg.getQCoinChangeMsg());
+        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_CHANGE_MUSIC_TAG) {
+            processChangeMusicTag(basePushInfo, msg.getQChangeMusicTag());
         }
     }
 
@@ -500,6 +510,15 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
             EventBus.getDefault().post(event);
         } else {
             MyLog.w(TAG, "processGrabKickRequest" + " basePushInfo = null or qKickUserRequestMsg = null");
+        }
+    }
+
+    private void processChangeMusicTag(BasePushInfo basePushInfo, QChangeMusicTag qChangeMusicTag) {
+        if (basePushInfo != null && qChangeMusicTag != null) {
+            QChangeMusicTagEvent event = new QChangeMusicTagEvent(basePushInfo, qChangeMusicTag);
+            EventBus.getDefault().post(event);
+        } else {
+            MyLog.w(TAG, "processChangeMusicTag" + " basePushInfo = null or QChangeMusicTag = null");
         }
     }
 }

@@ -57,7 +57,11 @@ import com.module.playways.grab.room.model.WantSingerInfo;
 import com.module.playways.rank.msg.BasePushInfo;
 import com.module.playways.rank.msg.event.CommentMsgEvent;
 import com.module.playways.rank.msg.event.MachineScoreEvent;
+
 import com.module.playways.rank.msg.event.QCoinChangeEvent;
+
+import com.module.playways.rank.msg.event.QChangeMusicTagEvent;
+
 import com.module.playways.rank.msg.event.QExitGameMsgEvent;
 import com.module.playways.rank.msg.event.QGameBeginEvent;
 import com.module.playways.rank.msg.event.QGetSingChanceMsgEvent;
@@ -1639,6 +1643,14 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             cancelSyncGameStateTask();
         }
         ensureInRcRoom();
+    }
+
+    @Subscribe
+    public void onEvent(QChangeMusicTagEvent event) {
+        MyLog.d(TAG, "onEvent QChangeMusicTagEvent !!切换专场 " + event);
+        if (mRoomData.getGameId() == event.info.getRoomID()) {
+            pretenSystemMsg(String.format("房主已将歌单切换为 %s 专场", event.getTagName()));
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
