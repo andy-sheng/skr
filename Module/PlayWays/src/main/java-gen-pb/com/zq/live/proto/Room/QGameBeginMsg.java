@@ -42,14 +42,25 @@ public final class QGameBeginMsg extends Message<QGameBeginMsg, QGameBeginMsg.Bu
   )
   private final QRoundInfo currentRound;
 
-  public QGameBeginMsg(Integer roomID, QRoundInfo currentRound) {
-    this(roomID, currentRound, ByteString.EMPTY);
+  /**
+   * 配置信息
+   */
+  @WireField(
+      tag = 3,
+      adapter = "com.zq.live.proto.Room.QGameConfig#ADAPTER"
+  )
+  private final QGameConfig config;
+
+  public QGameBeginMsg(Integer roomID, QRoundInfo currentRound, QGameConfig config) {
+    this(roomID, currentRound, config, ByteString.EMPTY);
   }
 
-  public QGameBeginMsg(Integer roomID, QRoundInfo currentRound, ByteString unknownFields) {
+  public QGameBeginMsg(Integer roomID, QRoundInfo currentRound, QGameConfig config,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.roomID = roomID;
     this.currentRound = currentRound;
+    this.config = config;
   }
 
   @Override
@@ -57,6 +68,7 @@ public final class QGameBeginMsg extends Message<QGameBeginMsg, QGameBeginMsg.Bu
     Builder builder = new Builder();
     builder.roomID = roomID;
     builder.currentRound = currentRound;
+    builder.config = config;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -68,7 +80,8 @@ public final class QGameBeginMsg extends Message<QGameBeginMsg, QGameBeginMsg.Bu
     QGameBeginMsg o = (QGameBeginMsg) other;
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(roomID, o.roomID)
-        && Internal.equals(currentRound, o.currentRound);
+        && Internal.equals(currentRound, o.currentRound)
+        && Internal.equals(config, o.config);
   }
 
   @Override
@@ -78,6 +91,7 @@ public final class QGameBeginMsg extends Message<QGameBeginMsg, QGameBeginMsg.Bu
       result = unknownFields().hashCode();
       result = result * 37 + (roomID != null ? roomID.hashCode() : 0);
       result = result * 37 + (currentRound != null ? currentRound.hashCode() : 0);
+      result = result * 37 + (config != null ? config.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -88,6 +102,7 @@ public final class QGameBeginMsg extends Message<QGameBeginMsg, QGameBeginMsg.Bu
     StringBuilder builder = new StringBuilder();
     if (roomID != null) builder.append(", roomID=").append(roomID);
     if (currentRound != null) builder.append(", currentRound=").append(currentRound);
+    if (config != null) builder.append(", config=").append(config);
     return builder.replace(0, 2, "QGameBeginMsg{").append('}').toString();
   }
 
@@ -122,6 +137,16 @@ public final class QGameBeginMsg extends Message<QGameBeginMsg, QGameBeginMsg.Bu
   }
 
   /**
+   * 配置信息
+   */
+  public QGameConfig getConfig() {
+    if(config==null){
+        return new QGameConfig.Builder().build();
+    }
+    return config;
+  }
+
+  /**
    * 房间id
    */
   public boolean hasRoomID() {
@@ -135,10 +160,19 @@ public final class QGameBeginMsg extends Message<QGameBeginMsg, QGameBeginMsg.Bu
     return currentRound!=null;
   }
 
+  /**
+   * 配置信息
+   */
+  public boolean hasConfig() {
+    return config!=null;
+  }
+
   public static final class Builder extends Message.Builder<QGameBeginMsg, Builder> {
     private Integer roomID;
 
     private QRoundInfo currentRound;
+
+    private QGameConfig config;
 
     public Builder() {
     }
@@ -159,9 +193,17 @@ public final class QGameBeginMsg extends Message<QGameBeginMsg, QGameBeginMsg.Bu
       return this;
     }
 
+    /**
+     * 配置信息
+     */
+    public Builder setConfig(QGameConfig config) {
+      this.config = config;
+      return this;
+    }
+
     @Override
     public QGameBeginMsg build() {
-      return new QGameBeginMsg(roomID, currentRound, super.buildUnknownFields());
+      return new QGameBeginMsg(roomID, currentRound, config, super.buildUnknownFields());
     }
   }
 
@@ -174,6 +216,7 @@ public final class QGameBeginMsg extends Message<QGameBeginMsg, QGameBeginMsg.Bu
     public int encodedSize(QGameBeginMsg value) {
       return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.roomID)
           + QRoundInfo.ADAPTER.encodedSizeWithTag(2, value.currentRound)
+          + QGameConfig.ADAPTER.encodedSizeWithTag(3, value.config)
           + value.unknownFields().size();
     }
 
@@ -181,6 +224,7 @@ public final class QGameBeginMsg extends Message<QGameBeginMsg, QGameBeginMsg.Bu
     public void encode(ProtoWriter writer, QGameBeginMsg value) throws IOException {
       ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.roomID);
       QRoundInfo.ADAPTER.encodeWithTag(writer, 2, value.currentRound);
+      QGameConfig.ADAPTER.encodeWithTag(writer, 3, value.config);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -192,6 +236,7 @@ public final class QGameBeginMsg extends Message<QGameBeginMsg, QGameBeginMsg.Bu
         switch (tag) {
           case 1: builder.setRoomID(ProtoAdapter.UINT32.decode(reader)); break;
           case 2: builder.setCurrentRound(QRoundInfo.ADAPTER.decode(reader)); break;
+          case 3: builder.setConfig(QGameConfig.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -207,6 +252,7 @@ public final class QGameBeginMsg extends Message<QGameBeginMsg, QGameBeginMsg.Bu
     public QGameBeginMsg redact(QGameBeginMsg value) {
       Builder builder = value.newBuilder();
       if (builder.currentRound != null) builder.currentRound = QRoundInfo.ADAPTER.redact(builder.currentRound);
+      if (builder.config != null) builder.config = QGameConfig.ADAPTER.redact(builder.config);
       builder.clearUnknownFields();
       return builder.build();
     }

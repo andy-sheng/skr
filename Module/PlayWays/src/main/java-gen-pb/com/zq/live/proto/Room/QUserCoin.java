@@ -11,7 +11,6 @@ import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
 import java.io.IOException;
 import java.lang.Integer;
-import java.lang.Long;
 import java.lang.Object;
 import java.lang.Override;
 import java.lang.String;
@@ -25,7 +24,7 @@ public final class QUserCoin extends Message<QUserCoin, QUserCoin.Builder> {
 
   public static final Integer DEFAULT_USERID = 0;
 
-  public static final Long DEFAULT_COIN = 0L;
+  public static final Integer DEFAULT_COIN = 0;
 
   /**
    * 用户ID
@@ -41,15 +40,15 @@ public final class QUserCoin extends Message<QUserCoin, QUserCoin.Builder> {
    */
   @WireField(
       tag = 2,
-      adapter = "com.squareup.wire.ProtoAdapter#SINT64"
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
   )
-  private final Long coin;
+  private final Integer coin;
 
-  public QUserCoin(Integer userID, Long coin) {
+  public QUserCoin(Integer userID, Integer coin) {
     this(userID, coin, ByteString.EMPTY);
   }
 
-  public QUserCoin(Integer userID, Long coin, ByteString unknownFields) {
+  public QUserCoin(Integer userID, Integer coin, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
     this.coin = coin;
@@ -117,7 +116,7 @@ public final class QUserCoin extends Message<QUserCoin, QUserCoin.Builder> {
   /**
    * 金币数量
    */
-  public Long getCoin() {
+  public Integer getCoin() {
     if(coin==null){
         return DEFAULT_COIN;
     }
@@ -141,7 +140,7 @@ public final class QUserCoin extends Message<QUserCoin, QUserCoin.Builder> {
   public static final class Builder extends Message.Builder<QUserCoin, Builder> {
     private Integer userID;
 
-    private Long coin;
+    private Integer coin;
 
     public Builder() {
     }
@@ -157,7 +156,7 @@ public final class QUserCoin extends Message<QUserCoin, QUserCoin.Builder> {
     /**
      * 金币数量
      */
-    public Builder setCoin(Long coin) {
+    public Builder setCoin(Integer coin) {
       this.coin = coin;
       return this;
     }
@@ -176,14 +175,14 @@ public final class QUserCoin extends Message<QUserCoin, QUserCoin.Builder> {
     @Override
     public int encodedSize(QUserCoin value) {
       return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.userID)
-          + ProtoAdapter.SINT64.encodedSizeWithTag(2, value.coin)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.coin)
           + value.unknownFields().size();
     }
 
     @Override
     public void encode(ProtoWriter writer, QUserCoin value) throws IOException {
       ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.userID);
-      ProtoAdapter.SINT64.encodeWithTag(writer, 2, value.coin);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.coin);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -194,7 +193,7 @@ public final class QUserCoin extends Message<QUserCoin, QUserCoin.Builder> {
       for (int tag; (tag = reader.nextTag()) != -1;) {
         switch (tag) {
           case 1: builder.setUserID(ProtoAdapter.UINT32.decode(reader)); break;
-          case 2: builder.setCoin(ProtoAdapter.SINT64.decode(reader)); break;
+          case 2: builder.setCoin(ProtoAdapter.UINT32.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

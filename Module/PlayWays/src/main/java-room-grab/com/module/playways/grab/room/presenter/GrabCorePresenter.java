@@ -1509,6 +1509,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             if (event.myCoin >= 0) {
                 mRoomData.setCoin(event.myCoin);
             }
+            if (event.totalRoundNum > 0) {
+                mRoomData.getGrabConfigModel().setTotalGameRoundSeq(event.totalRoundNum);
+            }
         }
         if (!mRoomData.hasGameBegin()) {
             MyLog.w(TAG, "收到 QRoundOverMsgEvent，游戏未开始？将游戏设置为开始状态");
@@ -1587,6 +1590,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     public void onEvent(QGameBeginEvent event) {
         MyLog.d(TAG, "收到游戏开始的push " + event);
         mRoomData.setHasGameBegin(true);
+        mRoomData.setGrabConfigModel(event.mGrabConfigModel);
         mRoomData.setExpectRoundInfo(event.mInfoModel);
         mRoomData.checkRoundInEachMode();
         if (mRoomData.hasGameBegin()) {

@@ -27,6 +27,8 @@ public final class QRoundOverMsgEvent {
 
     public int myCoin = -1;
 
+    public int totalRoundNum;
+
     public QRoundOverMsgEvent(BasePushInfo info, QRoundOverMsg qRoundOverMsg) {
         this.info = info;
         this.roundOverTimeMs = qRoundOverMsg.getRoundOverTimeMs();
@@ -38,6 +40,7 @@ public final class QRoundOverMsgEvent {
                 myCoin = (int) a;
             }
         }
+        this.totalRoundNum = qRoundOverMsg.getTotalGameRoundSeq();
     }
 
     public BasePushInfo getInfo() {

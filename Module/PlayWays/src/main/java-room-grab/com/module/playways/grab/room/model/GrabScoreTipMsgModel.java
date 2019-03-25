@@ -2,6 +2,7 @@ package com.module.playways.grab.room.model;
 
 import com.module.playways.rank.room.model.ScoreTipTypeModel;
 import com.zq.live.proto.Room.PKScoreTipMsg;
+import com.zq.live.proto.Room.QScoreTipMsg;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,6 +13,15 @@ public class GrabScoreTipMsgModel implements Serializable {
     String tipDesc;
     int fromScore;
     int toScore;
+
+    public static GrabScoreTipMsgModel parse(QScoreTipMsg scoreTipMsg) {
+        GrabScoreTipMsgModel grabScoreTipMsgModel = new GrabScoreTipMsgModel();
+        grabScoreTipMsgModel.setFromScore(scoreTipMsg.getFromScore());
+        grabScoreTipMsgModel.setToScore(scoreTipMsg.getToScore());
+        grabScoreTipMsgModel.setTipDesc(scoreTipMsg.getTipDesc());
+        grabScoreTipMsgModel.setTipType(scoreTipMsg.getTipType().getValue());
+        return grabScoreTipMsgModel;
+    }
 
 
     public int getTipType() {

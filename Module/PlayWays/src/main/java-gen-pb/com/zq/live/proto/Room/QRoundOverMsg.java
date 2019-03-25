@@ -10,6 +10,7 @@ import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
 import java.io.IOException;
+import java.lang.Integer;
 import java.lang.Long;
 import java.lang.Object;
 import java.lang.Override;
@@ -24,6 +25,8 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
   private static final long serialVersionUID = 0L;
 
   public static final Long DEFAULT_ROUNDOVERTIMEMS = 0L;
+
+  public static final Integer DEFAULT_TOTALGAMEROUNDSEQ = 0;
 
   /**
    * 本轮次结束的毫秒时间戳
@@ -62,18 +65,28 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
   )
   private final List<QUserCoin> qUserCoin;
 
+  /**
+   * 轮次总数
+   */
+  @WireField(
+      tag = 5,
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+  )
+  private final Integer totalGameRoundSeq;
+
   public QRoundOverMsg(Long roundOverTimeMs, QRoundInfo currentRound, QRoundInfo nextRound,
-      List<QUserCoin> qUserCoin) {
-    this(roundOverTimeMs, currentRound, nextRound, qUserCoin, ByteString.EMPTY);
+      List<QUserCoin> qUserCoin, Integer totalGameRoundSeq) {
+    this(roundOverTimeMs, currentRound, nextRound, qUserCoin, totalGameRoundSeq, ByteString.EMPTY);
   }
 
   public QRoundOverMsg(Long roundOverTimeMs, QRoundInfo currentRound, QRoundInfo nextRound,
-      List<QUserCoin> qUserCoin, ByteString unknownFields) {
+      List<QUserCoin> qUserCoin, Integer totalGameRoundSeq, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.roundOverTimeMs = roundOverTimeMs;
     this.currentRound = currentRound;
     this.nextRound = nextRound;
     this.qUserCoin = Internal.immutableCopyOf("qUserCoin", qUserCoin);
+    this.totalGameRoundSeq = totalGameRoundSeq;
   }
 
   @Override
@@ -83,6 +96,7 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
     builder.currentRound = currentRound;
     builder.nextRound = nextRound;
     builder.qUserCoin = Internal.copyOf("qUserCoin", qUserCoin);
+    builder.totalGameRoundSeq = totalGameRoundSeq;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -96,7 +110,8 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
         && Internal.equals(roundOverTimeMs, o.roundOverTimeMs)
         && Internal.equals(currentRound, o.currentRound)
         && Internal.equals(nextRound, o.nextRound)
-        && qUserCoin.equals(o.qUserCoin);
+        && qUserCoin.equals(o.qUserCoin)
+        && Internal.equals(totalGameRoundSeq, o.totalGameRoundSeq);
   }
 
   @Override
@@ -108,6 +123,7 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
       result = result * 37 + (currentRound != null ? currentRound.hashCode() : 0);
       result = result * 37 + (nextRound != null ? nextRound.hashCode() : 0);
       result = result * 37 + qUserCoin.hashCode();
+      result = result * 37 + (totalGameRoundSeq != null ? totalGameRoundSeq.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -120,6 +136,7 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
     if (currentRound != null) builder.append(", currentRound=").append(currentRound);
     if (nextRound != null) builder.append(", nextRound=").append(nextRound);
     if (!qUserCoin.isEmpty()) builder.append(", qUserCoin=").append(qUserCoin);
+    if (totalGameRoundSeq != null) builder.append(", totalGameRoundSeq=").append(totalGameRoundSeq);
     return builder.replace(0, 2, "QRoundOverMsg{").append('}').toString();
   }
 
@@ -174,6 +191,16 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
   }
 
   /**
+   * 轮次总数
+   */
+  public Integer getTotalGameRoundSeq() {
+    if(totalGameRoundSeq==null){
+        return DEFAULT_TOTALGAMEROUNDSEQ;
+    }
+    return totalGameRoundSeq;
+  }
+
+  /**
    * 本轮次结束的毫秒时间戳
    */
   public boolean hasRoundOverTimeMs() {
@@ -201,6 +228,13 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
     return qUserCoin!=null;
   }
 
+  /**
+   * 轮次总数
+   */
+  public boolean hasTotalGameRoundSeq() {
+    return totalGameRoundSeq!=null;
+  }
+
   public static final class Builder extends Message.Builder<QRoundOverMsg, Builder> {
     private Long roundOverTimeMs;
 
@@ -209,6 +243,8 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
     private QRoundInfo nextRound;
 
     private List<QUserCoin> qUserCoin;
+
+    private Integer totalGameRoundSeq;
 
     public Builder() {
       qUserCoin = Internal.newMutableList();
@@ -247,9 +283,17 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
       return this;
     }
 
+    /**
+     * 轮次总数
+     */
+    public Builder setTotalGameRoundSeq(Integer totalGameRoundSeq) {
+      this.totalGameRoundSeq = totalGameRoundSeq;
+      return this;
+    }
+
     @Override
     public QRoundOverMsg build() {
-      return new QRoundOverMsg(roundOverTimeMs, currentRound, nextRound, qUserCoin, super.buildUnknownFields());
+      return new QRoundOverMsg(roundOverTimeMs, currentRound, nextRound, qUserCoin, totalGameRoundSeq, super.buildUnknownFields());
     }
   }
 
@@ -264,6 +308,7 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
           + QRoundInfo.ADAPTER.encodedSizeWithTag(2, value.currentRound)
           + QRoundInfo.ADAPTER.encodedSizeWithTag(3, value.nextRound)
           + QUserCoin.ADAPTER.asRepeated().encodedSizeWithTag(4, value.qUserCoin)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(5, value.totalGameRoundSeq)
           + value.unknownFields().size();
     }
 
@@ -273,6 +318,7 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
       QRoundInfo.ADAPTER.encodeWithTag(writer, 2, value.currentRound);
       QRoundInfo.ADAPTER.encodeWithTag(writer, 3, value.nextRound);
       QUserCoin.ADAPTER.asRepeated().encodeWithTag(writer, 4, value.qUserCoin);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 5, value.totalGameRoundSeq);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -286,6 +332,7 @@ public final class QRoundOverMsg extends Message<QRoundOverMsg, QRoundOverMsg.Bu
           case 2: builder.setCurrentRound(QRoundInfo.ADAPTER.decode(reader)); break;
           case 3: builder.setNextRound(QRoundInfo.ADAPTER.decode(reader)); break;
           case 4: builder.qUserCoin.add(QUserCoin.ADAPTER.decode(reader)); break;
+          case 5: builder.setTotalGameRoundSeq(ProtoAdapter.UINT32.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
