@@ -36,6 +36,7 @@ import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
 import com.module.msg.CustomMsgType;
 import com.module.msg.IMsgService;
+import com.module.playways.event.GrabChangeRoomEvent;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.event.GrabGameOverEvent;
@@ -937,7 +938,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     /**
      * 切换房间
      */
-    public void switchRoom() {
+    public void changeRoom() {
         if (mSwitchRooming) {
             U.getToastUtil().showShort("切换中");
             return;
@@ -947,16 +948,13 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         map.put("roomID", mRoomData.getGameId());
         map.put("tagID", mRoomData.getTagId());
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
-        ApiMethods.subscribe(mRoomServerApi.switchRoom(body), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mRoomServerApi.changeRoom(body), new ApiObserver<ApiResult>() {
 
             public void onNext(ApiResult result) {
                 if (result.getErrno() == 0) {
                     EventBus.getDefault().post(new GrabSwitchRoomEvent());
                     JoinGrabRoomRspModel joinGrabRoomRspModel = JSON.parseObject(result.getData().toJSONString(), JoinGrabRoomRspModel.class);
-                    mRoomData.loadFromRsp(joinGrabRoomRspModel);
-                    joinRoomAndInit(false);
-                    mRoomData.checkRoundInEachMode();
-                    mIGrabView.onChangeRoomResult(true, null);
+                    onChangeRoomSuccess(joinGrabRoomRspModel);
                 } else {
                     mIGrabView.onChangeRoomResult(false, result.getErrmsg());
                 }
@@ -975,6 +973,21 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 mIGrabView.onChangeRoomResult(false, "网络错误");
             }
         }, this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(GrabChangeRoomEvent event) {
+        onChangeRoomSuccess(event.mJoinGrabRoomRspModel);
+    }
+
+    public void onChangeRoomSuccess(JoinGrabRoomRspModel joinGrabRoomRspModel) {
+        MyLog.d(TAG,"onChangeRoomSuccess" + " joinGrabRoomRspModel=" + joinGrabRoomRspModel);
+        if (joinGrabRoomRspModel != null) {
+            mRoomData.loadFromRsp(joinGrabRoomRspModel);
+            joinRoomAndInit(false);
+            mRoomData.checkRoundInEachMode();
+            mIGrabView.onChangeRoomResult(true, null);
+        }
     }
 
     /**
@@ -1598,10 +1611,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     @Subscribe
     public void onEvent(QGameBeginEvent event) {
         MyLog.d(TAG, "onEvent QGameBeginEvent !!收到游戏开始的push " + event);
-        if(mRoomData.hasGameBegin()){
-            MyLog.d(TAG,"onEvent 游戏开始的标记为已经为true" + " event=" + event);
+        if (mRoomData.hasGameBegin()) {
+            MyLog.d(TAG, "onEvent 游戏开始的标记为已经为true" + " event=" + event);
             mRoomData.setGrabConfigModel(event.mGrabConfigModel);
-        }else{
+        } else {
             mRoomData.setHasGameBegin(true);
             mRoomData.setGrabConfigModel(event.mGrabConfigModel);
             mRoomData.setExpectRoundInfo(event.mInfoModel);

@@ -466,7 +466,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
                 mBeginChangeRoomTs = System.currentTimeMillis();
                 mGrabChangeRoomTransitionView.setVisibility(View.VISIBLE);
-                mCorePresenter.switchRoom();
+                mCorePresenter.changeRoom();
                 mGrabGiveupView.hideWithAnimation(false);
             }
 

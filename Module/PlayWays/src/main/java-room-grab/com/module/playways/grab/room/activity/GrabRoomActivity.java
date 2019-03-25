@@ -133,7 +133,6 @@ public class GrabRoomActivity extends BaseActivity {
                 grabRoundInfoModel.setMusic(songModel);
                 grabRoundInfoModel.setEnterStatus(grabRoundInfoModel.getStatus());
                 mRoomData.setExpectRoundInfo(grabRoundInfoModel);
-
             }
         }
         U.getStatusBarUtil().setTransparentBar(this, false);

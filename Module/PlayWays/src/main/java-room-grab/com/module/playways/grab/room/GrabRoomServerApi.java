@@ -59,7 +59,7 @@ public interface GrabRoomServerApi {
      * @return
      */
     @PUT("http://dev.room.inframe.mobi/v2/room/change-room")
-    Observable<ApiResult> switchRoom(@Body RequestBody body);
+    Observable<ApiResult> changeRoom(@Body RequestBody body);
 
 
     /** stand 相关 **/

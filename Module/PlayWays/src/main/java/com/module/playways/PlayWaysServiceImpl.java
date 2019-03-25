@@ -1,20 +1,26 @@
 package com.module.playways;
 
+import android.app.Activity;
 import android.content.Context;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
+import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
 import com.module.RouterConstants;
+import com.module.playways.event.GrabChangeRoomEvent;
 import com.module.playways.grab.room.GrabRoomServerApi;
+import com.module.playways.grab.room.activity.GrabRoomActivity;
 import com.module.playways.rank.prepare.model.JoinGrabRoomRspModel;
 import com.module.playways.rank.room.fragment.LeaderboardFragment;
 import com.module.rank.IRankingModeService;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 
@@ -53,7 +59,14 @@ public class PlayWaysServiceImpl implements IRankingModeService {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     JoinGrabRoomRspModel grabCurGameStateModel = JSON.parseObject(result.getData().toString(), JoinGrabRoomRspModel.class);
-                    //先跳转
+                    for (Activity activity : U.getActivityUtils().getActivityList()) {
+                        if (activity instanceof GrabRoomActivity) {
+                            MyLog.d(TAG, " 存在一唱到底主页面了，发event刷新view");
+                            EventBus.getDefault().post(new GrabChangeRoomEvent(grabCurGameStateModel));
+                            return;
+                        }
+                    }
+                    // 页面不存在 跳转 到一唱到底页面
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_ROOM)
                             .withSerializable("prepare_data", grabCurGameStateModel)
                             .navigation();
