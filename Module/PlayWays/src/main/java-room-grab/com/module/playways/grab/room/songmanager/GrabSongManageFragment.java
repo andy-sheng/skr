@@ -126,6 +126,9 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
             color = Color.parseColor(specialModel.getBgColor());
         }
 
+        mRoomData.setSpecialModel(specialModel);
+        mRoomData.setTagId(specialModel.getTagID());
+
         mTvSelectedTag.setText(specialModel.getTagName());
         mSpecialModelId = specialModel.getTagID();
         Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(45))
