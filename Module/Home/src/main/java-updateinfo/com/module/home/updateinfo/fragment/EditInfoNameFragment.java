@@ -20,6 +20,7 @@ import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.NoLeakEditText;
 import com.common.view.titlebar.CommonTitleBar;
@@ -55,25 +56,21 @@ public class EditInfoNameFragment extends BaseFragment {
 
         mNicknameEt.setText(MyUserInfoManager.getInstance().getNickName());
 
-        RxView.clicks(mTitlebar.getLeftTextView())
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-//                        U.getSoundUtils().play(EditInfoActivity.TAG, R.raw.normal_back, 500);
-                        U.getFragmentUtils().popFragment(EditInfoNameFragment.this);
-                    }
-                });
+        mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+//                U.getSoundUtils().play(EditInfoActivity.TAG, R.raw.normal_back, 500);
+                U.getFragmentUtils().popFragment(EditInfoNameFragment.this);
+            }
+        });
 
-        RxView.clicks(mTitlebar.getRightTextView())
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        // 完成
-                        clickComplete();
-                    }
-                });
+        mTitlebar.getRightTextView().setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                // 完成
+                clickComplete();
+            }
+        });
 
         mNicknameEt.addTextChangedListener(new TextWatcher() {
             @Override

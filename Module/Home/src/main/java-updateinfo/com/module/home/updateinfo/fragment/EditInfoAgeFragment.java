@@ -21,6 +21,7 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
 import com.dialog.view.TipsDialogView;
@@ -69,34 +70,27 @@ public class EditInfoAgeFragment extends BaseFragment {
 
         initTimePicker();
 
-        RxView.clicks(mTitlebar.getLeftTextView())
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-//                        U.getSoundUtils().play(EditInfoActivity.TAG, R.raw.normal_back, 500);
-                        U.getFragmentUtils().popFragment(EditInfoAgeFragment.this);
-                    }
-                });
+        mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+//                U.getSoundUtils().play(EditInfoActivity.TAG, R.raw.normal_back, 500);
+                U.getFragmentUtils().popFragment(EditInfoAgeFragment.this);
+            }
+        });
 
-        RxView.clicks(mTitlebar.getRightTextView())
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        pvCustomLunar.returnData();
-                    }
-                });
+        mTitlebar.getRightTextView().setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                pvCustomLunar.returnData();
+            }
+        });
 
-        RxView.clicks(mCompleteTv)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        pvCustomLunar.returnData();
-                    }
-                });
-
+        mCompleteTv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                pvCustomLunar.returnData();
+            }
+        });
 
         Bundle bundle = getArguments();
         if (bundle != null) {
