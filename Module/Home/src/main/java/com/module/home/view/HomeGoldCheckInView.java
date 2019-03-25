@@ -87,6 +87,7 @@ public class HomeGoldCheckInView extends RelativeLayout {
             mRlSevendayBj.setBackground(U.getDrawable(R.drawable.qiandao_diqitianbj));
         }
 
+        //1 可签到。 2 已签到。3 过期。4 时候未到
         if (homeGoldModel.getState() == 1) {
             mTvSevenCover.setVisibility(GONE);
         } else if (homeGoldModel.getState() == 2) {

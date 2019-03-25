@@ -14,6 +14,7 @@ public class HomeGoldModel implements Serializable {
 
     private String title;
     private int timeStamp;
+    //1 可签到。 2 已签到。3 过期。4 时候未到
     private int state;
     private List<BonusesBean> bonuses;
     private int seq;

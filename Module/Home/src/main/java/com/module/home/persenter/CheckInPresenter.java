@@ -92,6 +92,12 @@ public class CheckInPresenter extends RxLifeCyclePresenter {
                 if (result.getErrno() == 0) {
                     U.getPreferenceUtils().setSettingLong(PREF_KEY_SHOW_CHECKIN, System.currentTimeMillis());
                     mHasShow = true;
+                    HomeGoldModel cur = JSON.parseObject(result.getData().getString("curr"), HomeGoldModel.class);
+                    if (cur != null && cur.getState() == 2) {
+                        MyLog.d(TAG, "check " + "已经签到过了");
+                        return;
+                    }
+
                     List<HomeGoldModel> homeGoldModelList = JSONArray.parseArray(result.getData().getString("items"), HomeGoldModel.class);
                     if (homeGoldModelList != null && homeGoldModelList.size() > 0) {
                         showCheckInView(homeGoldModelList);
