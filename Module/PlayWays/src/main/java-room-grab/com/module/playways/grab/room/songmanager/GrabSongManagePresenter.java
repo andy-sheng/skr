@@ -190,6 +190,9 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabRoundChangeEvent event) {
+        if(event.newRoundInfo != null && event.newRoundInfo.getRoundSeq() != 1){
+            mIGrabSongManageView.showNum(--totalNum);
+        }
         updateSongList();
     }
 
