@@ -1448,39 +1448,45 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QJoinNoticeEvent event) {
-        if (!mRoomData.hasGameBegin() || RoomDataUtils.isCurrentExpectingRound(event.roundSeq, mRoomData)) {
-            GrabPlayerInfoModel playerInfoModel = event.infoModel;
-            MyLog.d(TAG, "有人加入房间,id=" + playerInfoModel.getUserID() + " name=" + playerInfoModel.getUserInfo().getNickname() + " role=" + playerInfoModel.getRole() + " roundSeq=" + event.roundSeq);
+        boolean canAdd = false;
+        GrabPlayerInfoModel playerInfoModel = event.infoModel;
+        MyLog.d(TAG, "有人加入房间,id=" + playerInfoModel.getUserID() + " name=" + playerInfoModel.getUserInfo().getNickname() + " role=" + playerInfoModel.getRole() + " roundSeq=" + event.roundSeq);
+        if (RoomDataUtils.isCurrentExpectingRound(event.roundSeq, mRoomData)) {
             GrabRoundInfoModel grabRoundInfoModel = mRoomData.getExpectRoundInfo();
-            if (grabRoundInfoModel.addUser(true, playerInfoModel)) {
-                CommentModel commentModel = new CommentModel();
-                commentModel.setCommentType(CommentModel.TYPE_TRICK);
-                commentModel.setUserId(playerInfoModel.getUserInfo().getUserId());
-                commentModel.setAvatar(playerInfoModel.getUserInfo().getAvatar());
-                commentModel.setUserName(playerInfoModel.getUserInfo().getNickname());
-                commentModel.setAvatarColor(playerInfoModel.getUserInfo().getSex() == ESex.SX_MALE.getValue() ?
-                        U.getColor(R.color.color_man_stroke_color) : U.getColor(R.color.color_woman_stroke_color));
-                SpannableStringBuilder stringBuilder;
-                if (playerInfoModel.getUserInfo().getUserId() == UserAccountManager.SYSTEM_GRAB_ID) {
-                    stringBuilder = new SpanUtils()
-                            .append(playerInfoModel.getUserInfo().getNickname() + " ").setForegroundColor(CommentModel.TEXT_YELLOW)
-                            .append("我是撕歌最傲娇小助手多音，来和你们一起唱歌卖萌~").setForegroundColor(CommentModel.TEXT_WHITE)
-                            .create();
-                } else {
-                    SpanUtils spanUtils = new SpanUtils()
-                            .append(playerInfoModel.getUserInfo().getNickname() + " ").setForegroundColor(CommentModel.TEXT_YELLOW)
-                            .append("加入了房间").setForegroundColor(CommentModel.TEXT_WHITE);
-                    if (BuildConfig.DEBUG) {
-                        spanUtils.append(" 角色为" + playerInfoModel.getRole())
-                                .append(" 在线状态为" + playerInfoModel.isOnline());
-                    }
-                    stringBuilder = spanUtils.create();
-                }
-                commentModel.setStringBuilder(stringBuilder);
-                EventBus.getDefault().post(new PretendCommentMsgEvent(commentModel));
+            if (grabRoundInfoModel != null && grabRoundInfoModel.addUser(true, playerInfoModel)) {
+                canAdd = true;
             }
+        } else if (!mRoomData.hasGameBegin()) {
+            canAdd = true;
         } else {
             MyLog.w(TAG, "有人加入房间了,但是不是这个轮次：userID " + event.infoModel.getUserID() + ", seq " + event.roundSeq + "，当前轮次是 " + mRoomData.getExpectRoundInfo());
+        }
+        if (canAdd) {
+            CommentModel commentModel = new CommentModel();
+            commentModel.setCommentType(CommentModel.TYPE_TRICK);
+            commentModel.setUserId(playerInfoModel.getUserInfo().getUserId());
+            commentModel.setAvatar(playerInfoModel.getUserInfo().getAvatar());
+            commentModel.setUserName(playerInfoModel.getUserInfo().getNickname());
+            commentModel.setAvatarColor(playerInfoModel.getUserInfo().getSex() == ESex.SX_MALE.getValue() ?
+                    U.getColor(R.color.color_man_stroke_color) : U.getColor(R.color.color_woman_stroke_color));
+            SpannableStringBuilder stringBuilder;
+            if (playerInfoModel.getUserInfo().getUserId() == UserAccountManager.SYSTEM_GRAB_ID) {
+                stringBuilder = new SpanUtils()
+                        .append(playerInfoModel.getUserInfo().getNickname() + " ").setForegroundColor(CommentModel.TEXT_YELLOW)
+                        .append("我是撕歌最傲娇小助手多音，来和你们一起唱歌卖萌~").setForegroundColor(CommentModel.TEXT_WHITE)
+                        .create();
+            } else {
+                SpanUtils spanUtils = new SpanUtils()
+                        .append(playerInfoModel.getUserInfo().getNickname() + " ").setForegroundColor(CommentModel.TEXT_YELLOW)
+                        .append("加入了房间").setForegroundColor(CommentModel.TEXT_WHITE);
+                if (BuildConfig.DEBUG) {
+                    spanUtils.append(" 角色为" + playerInfoModel.getRole())
+                            .append(" 在线状态为" + playerInfoModel.isOnline());
+                }
+                stringBuilder = spanUtils.create();
+            }
+            commentModel.setStringBuilder(stringBuilder);
+            EventBus.getDefault().post(new PretendCommentMsgEvent(commentModel));
         }
     }
 
