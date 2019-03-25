@@ -60,19 +60,19 @@ public class FriendFragment extends BaseFragment {
         mRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.refreshLayout);
         mContentRv = (RecyclerView) mRootView.findViewById(R.id.content_rv);
 
-        mRefreshLayout.setEnableRefresh(false);
+        mRefreshLayout.setEnableRefresh(true);
         mRefreshLayout.setEnableLoadMore(true);
         mRefreshLayout.setEnableLoadMoreWhenContentNotFull(false);
         mRefreshLayout.setEnableOverScrollDrag(false);
         mRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                loadData(mOffset, DEFAULT_COUNT);
+                loadData(mOffset, DEFAULT_COUNT, true);
             }
 
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                mRefreshLayout.finishRefresh();
+                loadData(0, DEFAULT_COUNT, false);
             }
         });
 
@@ -92,22 +92,22 @@ public class FriendFragment extends BaseFragment {
         mLoadService = mLoadSir.register(mRefreshLayout, new Callback.OnReloadListener() {
             @Override
             public void onReload(View v) {
-                loadData(mOffset, DEFAULT_COUNT);
+                loadData(mOffset, DEFAULT_COUNT, false);
             }
         });
 
-        loadData(mOffset, DEFAULT_COUNT);
+        loadData(mOffset, DEFAULT_COUNT, false);
     }
 
-    private void loadData(int offset, int limit) {
+    private void loadData(int offset, int limit, boolean isLoadMore) {
         UserInfoServerApi userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
         ApiMethods.subscribe(userInfoServerApi.getFriendStatusList(offset, limit), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     List<FriendStatusModel> list = JSON.parseArray(result.getData().getString("contacts"), FriendStatusModel.class);
-                    int offset = result.getData().getIntValue("offset");
-                    refreshView(list, offset);
+                    int newOffset = result.getData().getIntValue("offset");
+                    refreshView(list, newOffset, isLoadMore);
 
                     if (list != null && list.size() > 0) {
                         updateDBAndCache(list);
@@ -141,9 +141,13 @@ public class FriendFragment extends BaseFragment {
 
     }
 
-    private void refreshView(List<FriendStatusModel> list, int offset) {
-        this.mOffset = offset;
+    private void refreshView(List<FriendStatusModel> list, int newOffset, boolean isLoadMore) {
+        this.mOffset = newOffset;
         if (list != null && list.size() != 0) {
+            if (!isLoadMore) {
+                mFriendAdapter.getDataList().clear();
+            }
+            mRefreshLayout.finishRefresh();
             mRefreshLayout.finishLoadMore();
             mLoadService.showSuccess();
             mFriendAdapter.getDataList().addAll(list);
@@ -151,6 +155,7 @@ public class FriendFragment extends BaseFragment {
             hasMore = true;
         } else {
             hasMore = false;
+            mRefreshLayout.finishRefresh();
             mRefreshLayout.finishLoadMoreWithNoMoreData();
             if (mOffset == 0) {
                 mLoadService.showCallback(FriendsEmptyCallback.class);
