@@ -38,6 +38,8 @@ public class GrabInvitePresenter extends RxLifeCyclePresenter {
         ApiMethods.subscribe(mGrabRoomServerApi.getRoomFriendList(mOffset, mLimit), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
+                mIGrabInviteView.finishRefresh();
+
                 if (result.getErrno() == 0) {
                     List<GrabFriendModel> grabFriendModelList = JSON.parseArray(result.getData().getString("friends"), GrabFriendModel.class);
                     if (grabFriendModelList == null || grabFriendModelList.size() == 0) {
@@ -48,7 +50,6 @@ public class GrabInvitePresenter extends RxLifeCyclePresenter {
 
                     mGrabFriendModelList.addAll(grabFriendModelList);
                     mIGrabInviteView.updateFriendList(mGrabFriendModelList);
-                    mIGrabInviteView.finishRefresh();
                     mOffset = Integer.parseInt(result.getData().getString("offset"));
                 } else {
                     MyLog.w(TAG, "getFriendList failed, " + result.getErrmsg() + ", traceid is " + result.getTraceId());

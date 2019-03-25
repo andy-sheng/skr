@@ -192,7 +192,7 @@ public class InviteFriendFragment extends BaseFragment implements IGrabInviteVie
 
     @Override
     public void hasMore(boolean hasMore) {
-        mRefreshLayout.setEnableLoadMore(true);
+        mRefreshLayout.setEnableLoadMore(hasMore);
     }
 
     @Override
