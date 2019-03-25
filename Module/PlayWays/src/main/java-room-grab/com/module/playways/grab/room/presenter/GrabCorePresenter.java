@@ -1595,11 +1595,16 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     @Subscribe
     public void onEvent(QGameBeginEvent event) {
-        MyLog.d(TAG, "!!收到游戏开始的push " + event);
-        mRoomData.setHasGameBegin(true);
-        mRoomData.setGrabConfigModel(event.mGrabConfigModel);
-        mRoomData.setExpectRoundInfo(event.mInfoModel);
-        mRoomData.checkRoundInEachMode();
+        MyLog.d(TAG, "onEvent QGameBeginEvent !!收到游戏开始的push " + event);
+        if(mRoomData.hasGameBegin()){
+            MyLog.d(TAG,"onEvent 游戏开始的标记为已经为true" + " event=" + event);
+            mRoomData.setGrabConfigModel(event.mGrabConfigModel);
+        }else{
+            mRoomData.setHasGameBegin(true);
+            mRoomData.setGrabConfigModel(event.mGrabConfigModel);
+            mRoomData.setExpectRoundInfo(event.mInfoModel);
+            mRoomData.checkRoundInEachMode();
+        }
         if (mRoomData.hasGameBegin()) {
             startSyncGameStateTask(sSyncStateTaskInterval);
         } else {
