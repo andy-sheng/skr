@@ -92,11 +92,6 @@ public class PlayWaysActivity extends BaseActivity {
         EngineManager.getInstance().destroy("prepare");
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(FinishPlayWayActivityEvent event) {
-        finish();
-    }
-
     @Override
     public boolean useEventBus() {
         return true;
