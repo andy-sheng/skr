@@ -1209,14 +1209,15 @@ public class EngineManager implements AgoraOutCallback {
      * @param volume 1-100 默认100
      */
     public void adjustAudioMixingVolume(final int volume) {
-        mCustomHandlerThread.post(new Runnable() {
-            @Override
-            public void run() {
-                mConfig.setAudioMixingVolume(volume);
-                AgoraEngineAdapter.getInstance().adjustAudioMixingVolume(volume);
-            }
-        });
-
+        if (mCustomHandlerThread != null) {
+            mCustomHandlerThread.post(new Runnable() {
+                @Override
+                public void run() {
+                    mConfig.setAudioMixingVolume(volume);
+                    AgoraEngineAdapter.getInstance().adjustAudioMixingVolume(volume);
+                }
+            });
+        }
     }
 
     /**
