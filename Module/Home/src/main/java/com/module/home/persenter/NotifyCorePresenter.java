@@ -4,12 +4,14 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.common.core.scheme.event.BothRelationFromSchemeEvent;
 import com.common.core.scheme.event.GrabInviteFromSchemeEvent;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.floatwindow.FloatWindow;
 import com.common.floatwindow.MoveType;
 import com.common.floatwindow.Screen;
+import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.notification.event.FollowNotifyEvent;
 import com.common.notification.event.GrabInviteNotifyEvent;
@@ -107,6 +109,13 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
             tryGoGrabRoom(event.roomId);
         }
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(BothRelationFromSchemeEvent event) {
+        // TODO: 2019/3/25 成为好友的的口令
+        MyLog.d(TAG, "onEvent" + " event=" + event);
+    }
+
 
     void tryGoGrabRoom(int roomID) {
         IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();

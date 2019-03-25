@@ -26,6 +26,7 @@ public class SchemeConstants {
     public static final String HOST_GAME = "game";
     public static final String HOST_CHANNEL = "channel";
     public static final String HOST_WALLET = "wallet";
+    public static final String HOST_RELATION = "relation";
 
     //path
     public static final String PATH_JOIN = "/join";

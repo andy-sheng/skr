@@ -5,8 +5,10 @@ import android.text.TextUtils;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.core.account.UserAccountManager;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.scheme.SchemeConstants;
 import com.common.core.scheme.SchemeUtils;
+import com.common.core.scheme.event.BothRelationFromSchemeEvent;
 import com.common.core.scheme.event.GrabInviteFromSchemeEvent;
 import com.common.log.MyLog;
 import com.common.utils.U;
@@ -65,6 +67,9 @@ public class InframeProcessor implements ISchemeProcessor {
                         return ProcessResult.AcceptedAndReturn;
                     case SchemeConstants.HOST_ROOM:
                         processRoomUrl(uri);
+                        return ProcessResult.AcceptedAndReturn;
+                    case SchemeConstants.HOST_RELATION:
+                        processRelationUrl(uri);
                         return ProcessResult.AcceptedAndReturn;
                 }
             }
@@ -187,6 +192,34 @@ public class InframeProcessor implements ISchemeProcessor {
         } else {
 
         }
+    }
+
+    private void processRelationUrl(Uri uri) {
+        String path = uri.getPath();
+        if (TextUtils.isEmpty(path)) {
+            MyLog.w(TAG, "processRelationUrl path is empty");
+            return;
+        }
+
+        if ("/bothfollow".equals(path)) {
+            try {
+                if (!UserAccountManager.getInstance().hasAccount()) {
+                    MyLog.w(TAG, "processGameUrl 没有登录");
+                    return;
+                }
+                int inviterId = SchemeUtils.getInt(uri, "inviterId", 0);
+                if (inviterId > 0 && inviterId != MyUserInfoManager.getInstance().getUid()) {
+                    BothRelationFromSchemeEvent event = new BothRelationFromSchemeEvent();
+                    event.useId = inviterId;
+                    EventBus.getDefault().post(event);
+                }
+            } catch (Exception e) {
+                MyLog.e(TAG, e);
+            }
+        } else {
+
+        }
+
     }
 
     private void processShareUrl(Uri uri) {
