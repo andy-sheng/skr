@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/black_trans_30"
     android:orientation="vertical">
+
     <RelativeLayout
         android:id="@+id/rl_content"
         android:layout_width="match_parent"
@@ -27,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_alignRight="@+id/fl_song_list_container"
             android:layout_marginTop="@dimen/view_50_dp"
-            android:text="已点100首"
+            android:text=""
             android:textColor="#3cB2B6D6"
             android:textSize="@dimen/textsize_14_dp" />
 
@@ -57,8 +58,6 @@
         </com.common.view.ex.ExFrameLayout>
 
         <com.common.view.ex.ExTextView
-            android:paddingRight="@dimen/view_15_dp"
-            android:drawableRight="@drawable/zhuanchang_shouqi"
             android:id="@+id/selected_tag"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/view_42_dp"
@@ -67,8 +66,10 @@
             android:layout_marginRight="@dimen/view_20_dp"
             android:layout_marginBottom="@dimen/view_79_dp"
             android:layout_toLeftOf="@+id/tv_finish"
+            android:drawableRight="@drawable/zhuanchang_shouqi"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/view_16_dp"
+            android:paddingRight="@dimen/view_15_dp"
             android:text="经典回忆杀"
             android:textColor="@color/black_trans_70"
             android:textSize="@dimen/textsize_16_dp"

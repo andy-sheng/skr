@@ -148,6 +148,11 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
     }
 
     @Override
+    public void showNum(int num) {
+        mTvSelectedSong.setText(String.format("已点%d首", num));
+    }
+
+    @Override
     public void hasMoreSongList(boolean hasMore) {
         mRefreshLayout.setEnableLoadMore(hasMore);
         mRefreshLayout.finishLoadMore();

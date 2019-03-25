@@ -13,4 +13,6 @@ public interface IGrabSongManageView {
     void hasMoreSongList(boolean hasMore);
 
     void changeTagSuccess(SpecialModel specialModel);
+
+    void showNum(int num);
 }

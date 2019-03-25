@@ -44,6 +44,8 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
 
     List<GrabRoomSongModel> mGrabRoomSongModelList = new ArrayList<>();
 
+    int totalNum = 0;
+
     int mOffset = 0;
     int mLimit = 20;
 
@@ -78,6 +80,11 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
                     MyLog.d(TAG, "getTagList failed, " + "result is " + obj.toString());
                 }
             }
+
+            @Override
+            public void onError(Throwable e) {
+                MyLog.e(TAG, e);
+            }
         }, this);
     }
 
@@ -100,6 +107,10 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
                     mIGrabSongManageView.hasMoreSongList(true);
                     mGrabRoomSongModelList.addAll(grabRoomSongModels);
                     mIGrabSongManageView.updateSongList(mGrabRoomSongModelList);
+
+                    int total = Integer.parseInt(result.getData().getString("total"));
+                    totalNum = total;
+                    mIGrabSongManageView.showNum(total);
                 } else {
                     MyLog.w(TAG, "getFriendList failed, " + result.getErrmsg() + ", traceid is " + result.getTraceId());
                 }
@@ -146,6 +157,7 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
                             }
                         }
 
+                        mIGrabSongManageView.showNum(--totalNum);
                         updateSongList();
                     }
                 } else {
@@ -214,6 +226,7 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
                             mGrabRoomSongModelList.add(2, grabRoomSongModel);
                         }
 
+                        mIGrabSongManageView.showNum(++totalNum);
                         updateSongList();
                     }
                 } else {
