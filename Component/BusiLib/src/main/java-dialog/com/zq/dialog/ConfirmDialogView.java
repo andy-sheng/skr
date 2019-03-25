@@ -64,16 +64,25 @@ public class ConfirmDialogView extends RelativeLayout {
 
         if (type == ConfirmDialog.TYPE_KICK_CONFIRM) {
             // 金币确认
-            SpannableStringBuilder stringBuilder = new SpanUtils()
-                    .append("将").setForegroundColor(U.getColor(R.color.black_trans_50))
-                    .append(" " + mUserInfoModel.getNickname() + " ").setForegroundColor(Color.parseColor("#F5A623"))
-                    .append("移除房间需要消耗").setForegroundColor(U.getColor(R.color.black_trans_50))
-                    .append("" + num).setForegroundColor(Color.parseColor("#F5A623"))
-                    .append("金币").setForegroundColor(U.getColor(R.color.black_trans_50))
-                    .create();
-            mContentTv.setText(stringBuilder);
+            if (num != 0) {
+                SpannableStringBuilder stringBuilder = new SpanUtils()
+                        .append("将").setForegroundColor(U.getColor(R.color.black_trans_50))
+                        .append(" " + mUserInfoModel.getNickname() + " ").setForegroundColor(Color.parseColor("#F5A623"))
+                        .append("移除房间需要消耗").setForegroundColor(U.getColor(R.color.black_trans_50))
+                        .append("" + num).setForegroundColor(Color.parseColor("#F5A623"))
+                        .append("金币").setForegroundColor(U.getColor(R.color.black_trans_50))
+                        .create();
+                mContentTv.setText(stringBuilder);
+            } else {
+                SpannableStringBuilder stringBuilder = new SpanUtils()
+                        .append("是否发起投票将").setForegroundColor(U.getColor(R.color.black_trans_50))
+                        .append(" " + mUserInfoModel.getNickname() + " ").setForegroundColor(Color.parseColor("#F5A623"))
+                        .append("踢出房间").setForegroundColor(U.getColor(R.color.black_trans_50))
+                        .create();
+                mContentTv.setText(stringBuilder);
+            }
             mCancleTv.setText("取消");
-            mConfirmTv.setText("确认");
+            mConfirmTv.setText("发起投票");
         } else if (type == ConfirmDialog.TYPE_KICK_REQUEST) {
             // 是否同意踢人
             starCounDown(num);

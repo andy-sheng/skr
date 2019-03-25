@@ -26,6 +26,7 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
+import com.component.busilib.constans.GrabRoomType;
 import com.component.busilib.manager.BgMusicManager;
 import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
@@ -396,7 +397,17 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         }
         mInputContainerView.hideSoftInput();
 
-        mPersonInfoDialog = new PersonInfoDialog(getActivity(), userID, false, true);
+        if (mRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_COMMON) {
+            // 普通房
+            mPersonInfoDialog = new PersonInfoDialog(getActivity(), userID, true, true);
+        } else {
+            if (mRoomData.isOwner()) {
+                mPersonInfoDialog = new PersonInfoDialog(getActivity(), userID, true, true);
+            } else {
+                mPersonInfoDialog = new PersonInfoDialog(getActivity(), userID, true, false);
+            }
+        }
+
         mPersonInfoDialog.setListener(new PersonInfoDialog.KickListener() {
 
             @Override
@@ -1078,7 +1089,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             mGrabKickDialog.dismiss();
         }
         U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-        mGrabKickDialog = new ConfirmDialog(getActivity(), userInfoModel, ConfirmDialog.TYPE_KICK_CONFIRM, 2);
+        mGrabKickDialog = new ConfirmDialog(getActivity(), userInfoModel, ConfirmDialog.TYPE_KICK_CONFIRM, mRoomData.getGrabConfigModel().getKickUserConsumCoinCnt());
         mGrabKickDialog.setListener(new ConfirmDialog.Listener() {
             @Override
             public void onClickConfirm(UserInfoModel userInfoModel) {

@@ -164,6 +164,8 @@ public class GrabSelectFragment extends BaseFragment {
                     int offset = obj.getData().getIntValue("offset");
                     int totalNum = obj.getData().getIntValue("totalRoomsNum");
                     refreshView(list, offset, totalNum);
+                } else {
+                    mFriendsArea.setVisibility(View.GONE);
                 }
             }
         }, this);
