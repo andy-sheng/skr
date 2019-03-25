@@ -1092,6 +1092,7 @@ public class EngineManager implements AgoraOutCallback {
         }
         EngineManager.getInstance().muteLocalAudioStream(mConfig.isLocalAudioStreamMute());
         EngineManager.getInstance().muteLocalAudioStream(mConfig.isAllRemoteAudioStreamsMute());
+        EventBus.getDefault().post(new EngineEvent(EngineEvent.TYPE_USER_SELF_JOIN_SUCCESS));
     }
 
     /**
