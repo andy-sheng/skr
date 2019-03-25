@@ -92,14 +92,19 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
             mGetSongModelListTask.dispose();
         }
 
-        int offset = mGrabRoomData.getRealRoundSeq();
-        if(offset < 0){
+        int offset;
+
+        if(!mGrabRoomData.hasGameBegin()){
             offset = 0;
+        } else {
+            offset = mGrabRoomData.getRealRoundSeq() - 1;
         }
 
         if(mGrabRoomSongModelList != null && mGrabRoomSongModelList.size() > 0){
             offset = mGrabRoomSongModelList.get(mGrabRoomSongModelList.size() - 1).getRoundSeq();
         }
+
+        MyLog.d(TAG, "getPlayBookList offset is " + offset);
 
         mGetSongModelListTask = ApiMethods.subscribeWith(mGrabRoomServerApi.getPlaybook(mGrabRoomData.getGameId(), offset, mLimit), new ApiObserver<ApiResult>() {
             @Override
@@ -109,12 +114,15 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
                     if (grabRoomSongModels == null || grabRoomSongModels.size() == 0) {
                         //没有更多了
                         mIGrabSongManageView.hasMoreSongList(false);
+                        MyLog.d(TAG, "process grabRoomSongModels size is 0");
                         return;
                     }
 
+                    MyLog.d(TAG, "process grabRoomSongModels size is is " + grabRoomSongModels.size());
+
                     mIGrabSongManageView.hasMoreSongList(true);
                     mGrabRoomSongModelList.addAll(grabRoomSongModels);
-                    mIGrabSongManageView.updateSongList(mGrabRoomSongModelList);
+                    updateSongList();
 
                     int total = Integer.parseInt(result.getData().getString("total"));
                     totalNum = total;
@@ -273,7 +281,7 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
                     mIGrabSongManageView.hasMoreSongList(true);
                     mGrabRoomSongModelList.clear();
                     mGrabRoomSongModelList.addAll(grabRoomSongModels);
-                    mIGrabSongManageView.updateSongList(mGrabRoomSongModelList);
+                    updateSongList();
                 } else {
                     MyLog.w(TAG, "addSong failed, " + " traceid is " + result.getTraceId());
                 }
