@@ -73,16 +73,30 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
             mTvSongName.setText(model.getItemName());
             mTvAuther.setText(model.getOwner());
 
-            if (position == 0) {
-                mTvManage.setEnabled(false);
-                mTvManage.setText(mGrabRoomData.hasGameBegin() ? "演唱中" : "下发中");
-            } else if (position == 1) {
-                mTvManage.setEnabled(false);
-                mTvManage.setText("下发中");
+            if (mGrabRoomData.hasGameBegin()) {
+                if (mGrabRoomData.getRealRoundSeq() == model.getRoundSeq()) {
+                    mTvManage.setEnabled(false);
+                    mTvManage.setText("演唱中");
+                } else if (mGrabRoomData.getRealRoundSeq() + 1 == model.getRoundSeq()) {
+                    mTvManage.setEnabled(false);
+                    mTvManage.setText("下发中");
+                } else {
+                    mTvManage.setEnabled(true);
+                    mTvManage.setText("删除");
+                }
             } else {
-                mTvManage.setEnabled(true);
-                mTvManage.setText("删除");
+                if (position == 0) {
+                    mTvManage.setEnabled(false);
+                    mTvManage.setText("下发中");
+                } else if (position == 1) {
+                    mTvManage.setEnabled(false);
+                    mTvManage.setText("下发中");
+                } else {
+                    mTvManage.setEnabled(true);
+                    mTvManage.setText("删除");
+                }
             }
+
         }
     }
 
