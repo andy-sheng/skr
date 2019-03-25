@@ -164,16 +164,17 @@ public class SearchFriendFragment extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(RelationChangeEvent event) {
         MyLog.d(TAG, "RelationChangeEvent" + " event type = " + event.type + " isFriend = " + event.isFriend);
-
         if (mRelationAdapter.getData() != null) {
-
-            for (UserInfoModel userInfoModel : mRelationAdapter.getData()) {
-                if (userInfoModel.getUserId() == event.useId) {
-                    // TODO: 2019/3/21 更新关系
-
+            for (int i = 0; i < mRelationAdapter.getData().size(); i++) {
+                if (mRelationAdapter.getData().get(i).getUserId() == event.useId) {
+                    UserInfoModel model = mRelationAdapter.getData().get(i);
+                    model.setFriend(event.isFriend);
+                    model.setFollow(event.isFollow);
+                    mRelationAdapter.getData().set(i, model);
+                    mRelationAdapter.notifyItemChanged(i);
+                    return;
                 }
             }
         }
-
     }
 }
