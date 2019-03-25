@@ -23,6 +23,7 @@ import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.event.RelationChangeEvent;
 import com.common.log.MyLog;
 import com.common.notification.NotificationManager;
+import com.common.notification.event.FollowNotifyEvent;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -342,7 +343,7 @@ public class RelationFragment extends BaseFragment {
                     refreshRelationNums();
                 }
             }
-        });
+        }, this);
 
     }
 
@@ -382,6 +383,23 @@ public class RelationFragment extends BaseFragment {
 
         refreshRelationNums();
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(FollowNotifyEvent event) {
+        if (event.mUserInfoModel.isFriend()) {
+            // 新增好友
+            mFriendNum = mFriendNum + 1;
+            mFansNum = mFansNum + 1;
+        } else if (event.mUserInfoModel.isFollow()) {
+            MyLog.w(TAG, "FollowNotifyEvent error 为什么消息是他关注我，我关注");
+        } else {
+            // 粉丝增加
+            mFansNum = mFansNum + 1;
+        }
+
+        refreshRelationNums();
+    }
+
 
     @Override
     public void destroy() {

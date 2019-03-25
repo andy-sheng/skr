@@ -2,6 +2,7 @@ package com.zq.relation.view;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.UserManager;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +18,7 @@ import com.common.core.userinfo.cache.BuddyCache;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.event.RelationChangeEvent;
 import com.common.log.MyLog;
+import com.common.notification.event.FollowNotifyEvent;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
@@ -243,6 +245,44 @@ public class RelationView extends RelativeLayout {
         }
     }
 
+    /**
+     * 别人关注的事件,所有的关系都是从我出发
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(FollowNotifyEvent event) {
+
+        for (UserInfoModel userInfoModel : mRelationAdapter.getData()) {
+            if (userInfoModel.getUserId() == event.mUserInfoModel.getUserId()) {
+                // 已经包含
+                mRelationAdapter.getData().remove(userInfoModel);
+                break;
+            }
+        }
+
+        if (event.mUserInfoModel.isFriend()) {
+            //好友
+            mLoadService.showSuccess();
+            mRelationAdapter.getData().add(0, event.mUserInfoModel);
+            mRelationAdapter.notifyDataSetChanged();
+        } else if (event.mUserInfoModel.isFollow()) {
+            MyLog.w(TAG, "FollowNotifyEvent 啥玩意，又不是好友，只有我关注了他？ ");
+        } else {
+            // 粉丝
+            if (mMode == UserInfoManager.RELATION_FANS) {
+                mLoadService.showSuccess();
+                mRelationAdapter.getData().add(0, event.mUserInfoModel);
+                mRelationAdapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+    /**
+     * 自己主动关注或取关事件
+     *
+     * @param event
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(RelationChangeEvent event) {
         MyLog.d(TAG, "RelationChangeEvent" + " event type = " + event.type + " isFriend = " + event.isFriend);

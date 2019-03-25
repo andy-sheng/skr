@@ -16,7 +16,7 @@ import java.util.List;
 
 public class RelationAdapter extends RecyclerView.Adapter {
 
-    List<UserInfoModel> mUserInfos = new ArrayList<>();
+    List<UserInfoModel> mUserInfos;
 
     boolean isBlack;
     RecyclerOnItemClickListener mRecyclerOnItemClickListener;
@@ -24,6 +24,7 @@ public class RelationAdapter extends RecyclerView.Adapter {
     public RelationAdapter(boolean isBlack, RecyclerOnItemClickListener mRecyclerOnItemClickListener) {
         this.isBlack = isBlack;
         this.mRecyclerOnItemClickListener = mRecyclerOnItemClickListener;
+        mUserInfos = new ArrayList<>();
     }
 
     public void addData(List<UserInfoModel> list) {

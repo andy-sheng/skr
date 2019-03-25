@@ -86,12 +86,12 @@ public class FollowNotifyView extends RelativeLayout {
             mFollowTv.setText("已互关");
             mFollowTv.setClickable(false);
         } else if (mUserInfoModel.isFollow()) {
-            // 只是关注消息
+            MyLog.w(TAG, "error 他关注我，为什么我能收到我关注他，但是我们不是好友？？？");
+        } else {
+            // 粉丝
             mFollowTv.setClickable(true);
             mFollowTv.setText("关注ta");
-        } else {
-            MyLog.w(TAG, "即不是好友，又不是关注，缺收到关注信息");
-            // 又不是好友，又没有关注
+
         }
     }
 

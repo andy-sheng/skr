@@ -33,6 +33,7 @@ import com.common.core.userinfo.model.UserRankModel;
 import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
 
+import com.common.notification.event.FollowNotifyEvent;
 import com.common.utils.FragmentUtils;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
@@ -429,6 +430,23 @@ public class PersonFragment extends BaseFragment implements IPersonView {
             if (event.isOldFriend) {
                 mFriendNum = mFriendNum - 1;
             }
+        }
+
+        refreshRelationNum();
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(FollowNotifyEvent event) {
+        if (event.mUserInfoModel.isFriend()) {
+            // 新增好友
+            mFriendNum = mFriendNum + 1;
+            mFansNum = mFansNum + 1;
+        } else if (event.mUserInfoModel.isFollow()) {
+            MyLog.w(TAG, "FollowNotifyEvent error 为什么消息是他关注我，我关注");
+        } else {
+            // 粉丝增加
+            mFansNum = mFansNum + 1;
         }
 
         refreshRelationNum();
