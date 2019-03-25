@@ -127,8 +127,8 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
             color = Color.parseColor(specialModel.getBgColor());
         }
 
-        mTvSelectedTag.setText(mRoomData.getSpecialModel().getTagName());
-        mSpecialModelId = mRoomData.getSpecialModel().getTagID();
+        mTvSelectedTag.setText(specialModel.getTagName());
+        mSpecialModelId = specialModel.getTagID();
         Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(45))
                 .setStrokeColor(Color.parseColor("#202239"))
                 .setStrokeWidth(U.getDisplayUtils().dip2px(2))
@@ -226,7 +226,7 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
                 });
             }
 
-            mGrabSongTagsView.setCurSpecialModel(mRoomData.getTagId());
+            mGrabSongTagsView.setCurSpecialModel(mSpecialModelId);
 
             if (mPopupWindow.isShowing()) {
                 mPopupWindow.dismiss();

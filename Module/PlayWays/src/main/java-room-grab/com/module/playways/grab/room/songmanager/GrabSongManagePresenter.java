@@ -268,7 +268,7 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
         ApiMethods.subscribe(mGrabRoomServerApi.changeMusicTag(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
-                MyLog.d(TAG, "addSong process" + " result=" + result.getErrno());
+                MyLog.d(TAG, "changeMusicTag process" + " result=" + result.getErrno());
                 if (result.getErrno() == 0) {
                     mIGrabSongManageView.changeTagSuccess(specialModel);
                     List<GrabRoomSongModel> grabRoomSongModels = JSON.parseArray(result.getData().getString("playbook"), GrabRoomSongModel.class);
@@ -283,7 +283,7 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
                     mGrabRoomSongModelList.addAll(grabRoomSongModels);
                     updateSongList();
                 } else {
-                    MyLog.w(TAG, "addSong failed, " + " traceid is " + result.getTraceId());
+                    MyLog.w(TAG, "changeMusicTag failed, " + " traceid is " + result.getTraceId());
                 }
             }
 
