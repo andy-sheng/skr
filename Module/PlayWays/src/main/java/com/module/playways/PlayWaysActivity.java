@@ -14,11 +14,8 @@ import com.component.busilib.constans.GameModeType;
 import com.engine.EngineManager;
 import com.module.RouterConstants;
 import com.module.playways.grab.createroom.fragment.GrabSelectFragment;
-import com.module.rank.R;
 import com.module.playways.rank.song.fragment.SongSelectFragment;
-
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
+import com.module.rank.R;
 
 @Route(path = RouterConstants.ACTIVITY_PLAY_WAYS)
 public class PlayWaysActivity extends BaseActivity {
