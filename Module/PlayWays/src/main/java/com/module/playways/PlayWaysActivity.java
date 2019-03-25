@@ -94,7 +94,7 @@ public class PlayWaysActivity extends BaseActivity {
 
     @Override
     public boolean useEventBus() {
-        return true;
+        return false;
     }
 
     @Override
