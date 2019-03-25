@@ -46,7 +46,6 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
 
     int totalNum = 0;
 
-    int mOffset = 0;
     int mLimit = 20;
 
     public GrabSongManagePresenter(IGrabSongManageView view, GrabRoomData grabRoomData) {
@@ -93,7 +92,16 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
             mGetSongModelListTask.dispose();
         }
 
-        mGetSongModelListTask = ApiMethods.subscribeWith(mGrabRoomServerApi.getPlaybook(mGrabRoomData.getGameId(), mGrabRoomSongModelList.size(), mLimit), new ApiObserver<ApiResult>() {
+        int offset = mGrabRoomData.getRealRoundSeq();
+        if(offset < 0){
+            offset = 0;
+        }
+
+        if(mGrabRoomSongModelList != null && mGrabRoomSongModelList.size() > 0){
+            offset = mGrabRoomSongModelList.get(mGrabRoomSongModelList.size() - 1).getRoundSeq();
+        }
+
+        mGetSongModelListTask = ApiMethods.subscribeWith(mGrabRoomServerApi.getPlaybook(mGrabRoomData.getGameId(), offset, mLimit), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
@@ -265,7 +273,6 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
                     mIGrabSongManageView.hasMoreSongList(true);
                     mGrabRoomSongModelList.clear();
                     mGrabRoomSongModelList.addAll(grabRoomSongModels);
-                    mOffset = mGrabRoomSongModelList.size();
                     mIGrabSongManageView.updateSongList(mGrabRoomSongModelList);
                 } else {
                     MyLog.w(TAG, "addSong failed, " + " traceid is " + result.getTraceId());
