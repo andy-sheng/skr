@@ -1111,7 +1111,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     mRoomData.setExpectRoundInfo(newRoundInfo);
                     mRoomData.checkRoundInEachMode();
                 } else if (RoomDataUtils.roundSeqLarger(newRoundInfo, mRoomData.getExpectRoundInfo())) {
-                    MyLog.w(TAG, "updatePlayerState" + " sync发现本地轮次信息滞后，更新");
+                    MyLog.w(TAG, "updatePlayerState sync 发现本地轮次信息滞后，更新");
                     // 轮次确实比当前的高，可以切换
                     mRoomData.setExpectRoundInfo(newRoundInfo);
                     mRoomData.checkRoundInEachMode();
@@ -1119,7 +1119,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     /**
                      * 是当前轮次，最近状态就更新整个轮次
                      */
-                    if (syncStatusTimes > mRoomData.getLastSyncTs()) {
+                    if (syncStatusTimes >= mRoomData.getLastSyncTs()) {
+                        MyLog.w(TAG, "updatePlayerState sync 更新当前轮次");
                         mRoomData.getExpectRoundInfo().tryUpdateRoundInfoModel(newRoundInfo, true);
                     }
                 }
@@ -1588,7 +1589,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     @Subscribe
     public void onEvent(QGameBeginEvent event) {
-        MyLog.d(TAG, "收到游戏开始的push " + event);
+        MyLog.d(TAG, "!!收到游戏开始的push " + event);
         mRoomData.setHasGameBegin(true);
         mRoomData.setGrabConfigModel(event.mGrabConfigModel);
         mRoomData.setExpectRoundInfo(event.mInfoModel);
