@@ -541,11 +541,13 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     }
 
     private void robotSingBegin() {
-        GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
-        GrabSkrResourceModel grabSkrResourceModel = grabRoundInfoModel.getSkrResource();
         String skrerUrl = null;
-        if (grabSkrResourceModel != null) {
-            skrerUrl = grabSkrResourceModel.getAudioURL();
+        GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
+        if (grabRoundInfoModel != null) {
+            GrabSkrResourceModel grabSkrResourceModel = grabRoundInfoModel.getSkrResource();
+            if (grabSkrResourceModel != null) {
+                skrerUrl = grabSkrResourceModel.getAudioURL();
+            }
         }
         if (mRobotScoreHelper == null) {
             mRobotScoreHelper = new RobotScoreHelper();

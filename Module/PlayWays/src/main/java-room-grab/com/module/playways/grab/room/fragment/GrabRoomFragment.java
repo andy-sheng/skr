@@ -720,7 +720,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         }
 
         GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
-        if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_GRAB) {
+        if (grabRoundInfoModel!=null && !grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_GRAB) {
             mTurnInfoCardView.setVisibility(View.GONE);
             onSongInfoCardPlayOver("中途进来", pendingPlaySongCardData);
         } else {
@@ -740,13 +740,15 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         mUiHanlder.removeMessages(MSG_ENSURE_SONGCARD_OVER);
         mSingBeginTipsCardView.setVisibility(View.GONE);
         mSongInfoCardView.bindSongModel(mRoomData.getRealRoundSeq(), mRoomData.getGrabConfigModel().getTotalGameRoundSeq(), pendingPlaySongCardData.songModel);
-        GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
+
         mGrabGiveupView.hideWithAnimation(false);
-        if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_GRAB) {
+        GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
+        if (grabRoundInfoModel!=null && !grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_GRAB) {
             MyLog.d(TAG, "这轮刚进来，不播放导唱过场");
             mGrabOpBtn.hide();
         } else {
-            mGrabOpBtn.playCountDown(pendingPlaySongCardData.getSeq(), 4, pendingPlaySongCardData.songModel.getStandIntroEndT() - pendingPlaySongCardData.songModel.getStandIntroBeginT());
+            mGrabOpBtn.playCountDown(pendingPlaySongCardData.getSeq(), 4
+                    , pendingPlaySongCardData.songModel.getStandIntroEndT() - pendingPlaySongCardData.songModel.getStandIntroBeginT());
         }
         mCorePresenter.playGuide();
     }
@@ -797,7 +799,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             @Override
             public void run() {
                 GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
-                if (grabRoundInfoModel.isParticipant()) {
+                if (grabRoundInfoModel!=null && grabRoundInfoModel.isParticipant()) {
                     mGrabOpBtn.toOtherSingState();
                 } else {
                     mGrabOpBtn.hide();
@@ -810,7 +812,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     private void singBeginTipsPlay(int uid, Runnable runnable) {
         GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
-        if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_SING) {
+        if (grabRoundInfoModel!=null && !grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_SING) {
             MyLog.d(TAG, " 进入时已经时演唱阶段了，则不用播卡片了");
             runnable.run();
         } else {
@@ -834,7 +836,10 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             // 显示歌词
             mSelfSingCardView.setVisibility(View.VISIBLE);
             mOthersSingCardView.setVisibility(View.GONE);
-            mSelfSingCardView.playLyric(mRoomData.getRealRoundInfo().getMusic(), mRoomData.isAccEnable());
+            GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
+            if (infoModel != null) {
+                mSelfSingCardView.playLyric(infoModel.getMusic(), mRoomData.isAccEnable());
+            }
         } else {
             // 显示收音机
             mSelfSingCardView.setVisibility(View.GONE);

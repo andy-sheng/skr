@@ -147,8 +147,10 @@ public class GrabSingerTopView extends FrameLayout {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabSomeOneLightOffEvent event) {
         GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
-        int num = (grabRoundInfoModel.getPlayUsers().size() - 1) - grabRoundInfoModel.getMLightInfos().size();
-        mTvCurLight.setText(String.valueOf(num));
+        if (grabRoundInfoModel != null) {
+            int num = (grabRoundInfoModel.getPlayUsers().size() - 1) - grabRoundInfoModel.getMLightInfos().size();
+            mTvCurLight.setText(String.valueOf(num));
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

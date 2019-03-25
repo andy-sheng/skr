@@ -256,8 +256,8 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                 mManyLyricsView.setVisibility(View.GONE);
             }
         }, 800);
-
-        if (mRoomData.getRealRoundInfo().getRoundSeq() == 3) {
+        RankRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
+        if (infoModel!=null && infoModel.getRoundSeq() == 3) {
             // 最后一轮
             mUiHanlder.postDelayed(new Runnable() {
                 @Override

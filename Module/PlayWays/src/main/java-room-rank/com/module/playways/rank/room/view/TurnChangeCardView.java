@@ -21,6 +21,7 @@ import com.common.utils.U;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.rank.room.RankRoomData;
 import com.module.playways.rank.room.model.RankPlayerInfoModel;
+import com.module.playways.rank.room.model.RankRoundInfoModel;
 import com.module.rank.R;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.BaseRoomData;
@@ -71,12 +72,13 @@ public class TurnChangeCardView extends RelativeLayout {
         this.mRoomData = data;
         this.mSVGAListener = listener;
 
-        if (mRoomData.getRealRoundInfo() == null) {
+        RankRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
+        if ( infoModel == null) {
             return false;
         }
 
-        int curUid = mRoomData.getRealRoundInfo().getUserID();
-        int seq = mRoomData.getRealRoundInfo().getRoundSeq();
+        int curUid = infoModel.getUserID();
+        int seq = infoModel.getRoundSeq();
 
         RankPlayerInfoModel curInfo = mRoomData.getPlayerInfoModel(curUid);
 
