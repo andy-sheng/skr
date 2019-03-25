@@ -52,7 +52,7 @@ public class PlayWaysServiceImpl implements IRankingModeService {
     public void tryGoGrabRoom(int roomID) {
         GrabRoomServerApi roomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
         HashMap<String, Object> map = new HashMap<>();
-        map.put("roomID", roomID);/Users/chengsimin/dev/livesdk/livesdk/Module/PlayWays/src/main/java/com/module/playways/PlayWaysActivity.java
+        map.put("roomID", roomID);
         RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(roomServerApi.joinGrabRoom(body), new ApiObserver<ApiResult>() {
             @Override
