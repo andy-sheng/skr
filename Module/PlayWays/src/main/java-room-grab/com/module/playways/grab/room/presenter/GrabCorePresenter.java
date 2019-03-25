@@ -57,6 +57,7 @@ import com.module.playways.grab.room.model.WantSingerInfo;
 import com.module.playways.rank.msg.BasePushInfo;
 import com.module.playways.rank.msg.event.CommentMsgEvent;
 import com.module.playways.rank.msg.event.MachineScoreEvent;
+import com.module.playways.rank.msg.event.QCoinChangeEvent;
 import com.module.playways.rank.msg.event.QExitGameMsgEvent;
 import com.module.playways.rank.msg.event.QGameBeginEvent;
 import com.module.playways.rank.msg.event.QGetSingChanceMsgEvent;
@@ -981,7 +982,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     }
 
     public void onChangeRoomSuccess(JoinGrabRoomRspModel joinGrabRoomRspModel) {
-        MyLog.d(TAG,"onChangeRoomSuccess" + " joinGrabRoomRspModel=" + joinGrabRoomRspModel);
+        MyLog.d(TAG, "onChangeRoomSuccess" + " joinGrabRoomRspModel=" + joinGrabRoomRspModel);
         if (joinGrabRoomRspModel != null) {
             mRoomData.loadFromRsp(joinGrabRoomRspModel);
             joinRoomAndInit(false);
@@ -1513,6 +1514,18 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             grabRoundInfoModel.removeUser(true, event.userID);
         } else {
             MyLog.w(TAG, "有人离开房间了,但是不是这个轮次：userID " + event.userID + ", seq " + event.roundSeq + "，当前轮次是 " + mRoomData.getExpectRoundInfo());
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(QCoinChangeEvent event) {
+        if (event.userID == MyUserInfoManager.getInstance().getUid()) {
+            if (event.remainCoin > 0) {
+                mRoomData.setCoin(event.remainCoin);
+            }
+            if (event.reason.getValue() == 1) {
+                pretenSystemMsg("你获取了" + event.changeCoin + "金币奖励");
+            }
         }
     }
 

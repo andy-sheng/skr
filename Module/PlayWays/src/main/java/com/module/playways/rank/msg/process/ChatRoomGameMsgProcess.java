@@ -11,6 +11,7 @@ import com.module.playways.rank.msg.event.JoinNoticeEvent;
 import com.module.playways.rank.msg.event.MachineScoreEvent;
 import com.module.playways.rank.msg.event.PkBurstLightMsgEvent;
 import com.module.playways.rank.msg.event.PkLightOffMsgEvent;
+import com.module.playways.rank.msg.event.QCoinChangeEvent;
 import com.module.playways.rank.msg.event.QExitGameMsgEvent;
 import com.module.playways.rank.msg.event.QGameBeginEvent;
 import com.module.playways.rank.msg.event.QGetSingChanceMsgEvent;
@@ -41,6 +42,7 @@ import com.zq.live.proto.Room.MachineScore;
 import com.zq.live.proto.Room.PKBLightMsg;
 import com.zq.live.proto.Room.PKMLightMsg;
 import com.zq.live.proto.Room.QBLightMsg;
+import com.zq.live.proto.Room.QCoinChangeMsg;
 import com.zq.live.proto.Room.QExitGameMsg;
 import com.zq.live.proto.Room.QGameBeginMsg;
 import com.zq.live.proto.Room.QGetSingChanceMsg;
@@ -132,6 +134,8 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
             processGrabKickResult(basePushInfo, msg.getQKickUserResultMsg());
         } else if (msg.getMsgType() == ERoomMsgType.RM_Q_GAME_BEGIN) {
             processGrabGameBegin(basePushInfo, msg.getQGameBeginMsg());
+        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_COIN_CHANGE) {
+            processGrabCoinChange(basePushInfo, msg.getQCoinChangeMsg());
         }
     }
 
@@ -149,8 +153,10 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
                 ERoomMsgType.RM_Q_ROUND_OVER, ERoomMsgType.RM_Q_ROUND_AND_GAME_OVER,
                 ERoomMsgType.RM_Q_NO_PASS_SING, ERoomMsgType.RM_Q_EXIT_GAME,
                 ERoomMsgType.RM_PK_BLIGHT, ERoomMsgType.RM_PK_MLIGHT,
-                ERoomMsgType.RM_Q_BLIGHT, ERoomMsgType.RM_Q_MLIGHT, ERoomMsgType.RM_Q_JOIN_NOTICE, ERoomMsgType.RM_Q_JOIN_ACTION,
-                ERoomMsgType.RM_Q_KICK_USER_REQUEST, ERoomMsgType.RM_Q_KICK_USER_RESULT
+                ERoomMsgType.RM_Q_BLIGHT, ERoomMsgType.RM_Q_MLIGHT,
+                ERoomMsgType.RM_Q_JOIN_NOTICE, ERoomMsgType.RM_Q_JOIN_ACTION,
+                ERoomMsgType.RM_Q_KICK_USER_REQUEST, ERoomMsgType.RM_Q_KICK_USER_RESULT,
+                ERoomMsgType.RM_Q_GAME_BEGIN, ERoomMsgType.RM_Q_COIN_CHANGE
         };
     }
 
@@ -481,11 +487,19 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
     private void processGrabGameBegin(BasePushInfo basePushInfo, QGameBeginMsg qGameBeginMsg) {
         if (basePushInfo != null && qGameBeginMsg != null) {
             // 过滤下,所有投票者
-                    QGameBeginEvent event = new QGameBeginEvent(basePushInfo, qGameBeginMsg);
-                    EventBus.getDefault().post(event);
+            QGameBeginEvent event = new QGameBeginEvent(basePushInfo, qGameBeginMsg);
+            EventBus.getDefault().post(event);
         } else {
             MyLog.w(TAG, "processGrabKickRequest" + " basePushInfo = null or qKickUserRequestMsg = null");
         }
     }
 
+    private void processGrabCoinChange(BasePushInfo basePushInfo, QCoinChangeMsg qCoinChangeMsg) {
+        if (basePushInfo != null && qCoinChangeMsg != null) {
+            QCoinChangeEvent event = new QCoinChangeEvent(basePushInfo, qCoinChangeMsg);
+            EventBus.getDefault().post(event);
+        } else {
+            MyLog.w(TAG, "processGrabKickRequest" + " basePushInfo = null or qKickUserRequestMsg = null");
+        }
+    }
 }
