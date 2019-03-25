@@ -170,7 +170,6 @@ public class AuditionFragment extends BaseFragment {
         mTvSongName = (ExTextView) mRootView.findViewById(R.id.tv_song_name);
         mManyLyricsView = (ManyLyricsView) mRootView.findViewById(R.id.many_lyrics_view);
         mVoiceControlView = (VoiceControlPanelView) mRootView.findViewById(R.id.voice_control_view);
-        mVoiceControlView.bindData();
         mVoiceScaleView = (VoiceScaleView) mRootView.findViewById(R.id.voice_scale_view);
         mLogView = mRootView.findViewById(R.id.log_view);
         View mLogViewScrollContainer = mRootView.findViewById(R.id.log_view_scroll_container);
