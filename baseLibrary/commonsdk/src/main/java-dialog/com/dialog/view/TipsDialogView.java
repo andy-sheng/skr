@@ -14,8 +14,6 @@ public class TipsDialogView extends RelativeLayout {
     public ExTextView mConfirmTv;
     public ExTextView mCancelTv;
 
-
-
     private TipsDialogView(Context context) {
         super(context);
         init();
