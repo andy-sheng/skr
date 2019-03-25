@@ -86,6 +86,7 @@ public class SettingFragment extends BaseFragment {
     RelativeLayout mUserFeedback;
     RelativeLayout mComment;
     RelativeLayout mServiceAgreen;
+    RelativeLayout mRlExchange;
     ExTextView mExitLogin;
 
     boolean hasNewVersion = false; // 判断是否有新版本
@@ -126,6 +127,8 @@ public class SettingFragment extends BaseFragment {
         mComment = (RelativeLayout) mRootView.findViewById(R.id.comment);
         mServiceAgreen = (RelativeLayout) mRootView.findViewById(R.id.service_agreen);
         mExitLogin = (ExTextView) mRootView.findViewById(R.id.exit_login);
+
+        mRlExchange = (RelativeLayout) mRootView.findViewById(R.id.Rl_exchange);
 
         U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
 
@@ -183,6 +186,17 @@ public class SettingFragment extends BaseFragment {
                                 .setAddToBackStack(true)
                                 .setHasAnimation(true)
                                 .build());
+                    }
+                });
+
+        RxView.clicks(mRlExchange)
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) {
+                        ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                                .withString("url", "http://test.app.inframe.mobi/extend/exchangeGold")
+                                .greenChannel().navigation();
                     }
                 });
 
@@ -274,7 +288,7 @@ public class SettingFragment extends BaseFragment {
                         mTuiGuangConfig = configList.get(0);
                         mTuiguang.setVisibility(View.VISIBLE);
                         mTuiguang.setClickable(true);
-                        if(mTuiGuangConfig != null){
+                        if (mTuiGuangConfig != null) {
                             mTuiguang.setOnClickListener(new DebounceViewClickListener() {
                                 @Override
                                 public void clickValid(View v) {
