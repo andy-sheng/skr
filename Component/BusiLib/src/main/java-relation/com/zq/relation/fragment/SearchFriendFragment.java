@@ -15,6 +15,7 @@ import com.common.core.userinfo.cache.BuddyCache;
 import com.common.core.userinfo.event.RelationChangeEvent;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
+import com.common.notification.event.FollowNotifyEvent;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
@@ -164,13 +165,29 @@ public class SearchFriendFragment extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(RelationChangeEvent event) {
         MyLog.d(TAG, "RelationChangeEvent" + " event type = " + event.type + " isFriend = " + event.isFriend);
-        if (mRelationAdapter.getData() != null) {
+        // 只更新此页面上的数据
+        if (mRelationAdapter.getData() != null && mRelationAdapter.getData().size() != 0) {
             for (int i = 0; i < mRelationAdapter.getData().size(); i++) {
                 if (mRelationAdapter.getData().get(i).getUserId() == event.useId) {
                     UserInfoModel model = mRelationAdapter.getData().get(i);
                     model.setFriend(event.isFriend);
                     model.setFollow(event.isFollow);
                     mRelationAdapter.getData().set(i, model);
+                    mRelationAdapter.notifyItemChanged(i);
+                    return;
+                }
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(FollowNotifyEvent event) {
+        MyLog.d(TAG, "FollowNotifyEvent" + " event=" + event);
+        // 只更新此页面上的数据
+        if (mRelationAdapter.getData() != null && mRelationAdapter.getData().size() != 0) {
+            for (int i = 0; i < mRelationAdapter.getData().size(); i++) {
+                if (mRelationAdapter.getData().get(i).getUserId() == event.mUserInfoModel.getUserId()) {
+                    mRelationAdapter.getData().set(i, event.mUserInfoModel);
                     mRelationAdapter.notifyItemChanged(i);
                     return;
                 }
