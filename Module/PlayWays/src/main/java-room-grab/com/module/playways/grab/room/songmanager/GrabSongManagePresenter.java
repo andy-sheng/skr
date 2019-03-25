@@ -281,6 +281,10 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
                         return;
                     }
 
+                    int total = Integer.parseInt(result.getData().getString("total"));
+                    totalNum = total;
+                    mIGrabSongManageView.showNum(totalNum);
+
                     mIGrabSongManageView.hasMoreSongList(true);
                     mGrabRoomSongModelList.clear();
                     mGrabRoomSongModelList.addAll(grabRoomSongModels);
