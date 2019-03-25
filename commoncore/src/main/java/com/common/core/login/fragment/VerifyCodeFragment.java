@@ -33,6 +33,7 @@ import io.reactivex.disposables.Disposable;
 /**
  * 验证码验证界面
  */
+@Deprecated
 public class VerifyCodeFragment extends BaseFragment {
 
     public final static String TAG = "VerifyCodeFragment";

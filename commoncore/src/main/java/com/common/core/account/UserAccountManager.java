@@ -277,7 +277,7 @@ public class UserAccountManager {
                                 UmengStatistics.onProfileSignIn("qq", userAccount.getUid());
                             }
                         } else {
-                            EventBus.getDefault().post(new VerifyCodeErrorEvent(obj.getErrno(), obj.getErrmsg()));
+                            U.getToastUtil().showShort(obj.getErrmsg());
                         }
                     }
                 });
