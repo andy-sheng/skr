@@ -39,7 +39,7 @@
             android:layout_marginLeft="@dimen/view_20_dp"
             android:layout_marginRight="@dimen/view_20_dp"
             android:gravity="center"
-            android:text="好友在玩(12)"
+            android:text="好友在玩"
             android:textColor="@color/white_trans_40"
             android:textSize="@dimen/textsize_14_dp" />
 

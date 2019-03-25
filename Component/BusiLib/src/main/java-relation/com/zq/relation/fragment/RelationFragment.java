@@ -356,9 +356,9 @@ public class RelationFragment extends BaseFragment {
             // 粉丝红点
             mFansRedDot.setVisibility(View.VISIBLE);
         }
-        mFriend.setText(String.format(getString(R.string.friends_num), mFriendNum));
-        mFollow.setText(String.format(getString(R.string.follows_num), mFocusNum));
-        mFans.setText(String.format(getString(R.string.fans_num), mFansNum));
+        mFriend.setText(String.format(U.app().getResources().getString(R.string.friends_num), mFriendNum));
+        mFollow.setText(String.format(U.app().getResources().getString(R.string.follows_num), mFocusNum));
+        mFans.setText(String.format(U.app().getResources().getString(R.string.fans_num), mFansNum));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
