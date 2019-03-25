@@ -39,6 +39,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GrabSongManageFragment extends BaseFragment implements IGrabSongManageView {
@@ -154,12 +155,15 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
 
     @Override
     public void showTagList(List<SpecialModel> specialModelList) {
+        int height = U.getDisplayUtils().dip2px(specialModelList.size() > 4 ? 150 : (47 * (specialModelList.size() - 1)));
         if (mGrabSongTagsView != null) {
             mGrabSongTagsView.setSpecialModelList(specialModelList);
-            mPopupWindow.setHeight(U.getDisplayUtils().dip2px(specialModelList.size() > 4 ? 150 : (47 * (specialModelList.size() - 1))));
+            mPopupWindow.setHeight(height);
         }
 
-        mPopupWindow.showAsDropDown(mTvSelectedTag, 0, U.getDisplayUtils().dip2px(-6));
+        int[] location = new int[2];
+        mTvSelectedTag.getLocationOnScreen(location);
+        mPopupWindow.showAtLocation(mTvSelectedTag, Gravity.NO_GRAVITY, location[0], location[1] - height - U.getDisplayUtils().dip2px(5));
 
         Drawable drawable = U.getDrawable(R.drawable.zhuanchang_shouqi_up);
         drawable.setBounds(new Rect(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight()));
