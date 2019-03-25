@@ -5,11 +5,11 @@
     android:layout_height="@dimen/view_72_dp"
     android:layout_marginLeft="@dimen/view_16_dp"
     android:layout_marginRight="@dimen/view_16_dp"
-    app:bl_corners_radius="@dimen/view_8_dp"
     app:bl_shape="rectangle"
-    app:bl_solid_color="#484B63"
-    app:bl_stroke_color="#202239"
-    app:bl_stroke_width="@dimen/view_2_dp">
+    app:bl_solid_color="#EBEBEB"
+    app:bl_stroke_color="#ACACAC"
+    app:bl_corners_radius="@dimen/view_8_dp"
+    app:bl_stroke_width="@dimen/view_1_dp">
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/avatar_iv"

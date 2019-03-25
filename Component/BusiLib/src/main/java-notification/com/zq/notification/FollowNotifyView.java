@@ -87,6 +87,7 @@ public class FollowNotifyView extends RelativeLayout {
             mFollowTv.setClickable(false);
         } else if (mUserInfoModel.isFollow()) {
             // 只是关注消息
+            mFollowTv.setClickable(true);
             mFollowTv.setText("关注ta");
         } else {
             MyLog.w(TAG, "即不是好友，又不是关注，缺收到关注信息");
