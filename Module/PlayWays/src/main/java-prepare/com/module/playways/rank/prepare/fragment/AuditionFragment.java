@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
+import com.common.clipboard.ClipboardUtils;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrAudioPermission;
@@ -36,17 +37,15 @@ import com.engine.Params;
 import com.engine.arccloud.ArcRecognizeListener;
 import com.engine.arccloud.RecognizeConfig;
 import com.engine.arccloud.SongInfo;
+import com.engine.score.Score2Callback;
 import com.module.playways.rank.others.LyricAndAccMatchManager;
 import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.playways.rank.prepare.view.VoiceControlPanelView;
 import com.module.playways.rank.room.view.RankTopContainerView2;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
-import com.trello.rxlifecycle2.android.FragmentEvent;
-import com.zq.lyrics.LyricsManager;
 import com.zq.lyrics.LyricsReader;
 import com.zq.lyrics.event.LrcEvent;
-import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.ManyLyricsView;
 import com.zq.lyrics.widget.VoiceScaleView;
 import com.zq.toast.NoImageCommonToastView;
@@ -56,13 +55,9 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import io.agora.rtc.Constants;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 import static com.engine.EngineEvent.TYPE_MUSIC_PLAY_FINISH;
 import static com.zq.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
@@ -118,14 +113,30 @@ public class AuditionFragment extends BaseFragment {
                 default:
                     int lineNo = (msg.what - MSG_SHOW_SCORE_EVENT) / 100;
                     MyLog.d(TAG, "handleMessage" + " lineNo=" + lineNo);
-                    if (lineNo > mLastLineNum && ScoreConfig.isMelpEnable()) {
-                        int score = EngineManager.getInstance().getLineScore();
+                    if (lineNo > mLastLineNum) {
+                        if (ScoreConfig.isMelpEnable()) {
+                            int score = EngineManager.getInstance().getLineScore1();
+                            if (MyLog.isDebugLogOpen()) {
+                                addLogText("第" + lineNo + "行,melp1得分:" + score);
+                            }
+                            MyLog.d(TAG, "handleMessage acr超时 本地获取得分:" + score);
+                            processScore(score, lineNo);
+                        }
+
+                        if (ScoreConfig.isMelp2Enable()) {
+                            EngineManager.getInstance().getLineScore2(lineNo, new Score2Callback() {
+                                @Override
+                                public void onGetScore(int lineNum, int score) {
+                                    if (MyLog.isDebugLogOpen()) {
+                                        addLogText("第" + lineNo + "行 melp2得分:" + score);
+                                    }
+                                }
+                            });
+                        }
+
                         if (MyLog.isDebugLogOpen()) {
-                            addLogText("第" + lineNo + "行,melp得分:" + score);
                             addLogText("第" + lineNo + "行,acr请求未及时返回");
                         }
-                        MyLog.d(TAG, "handleMessage acr超时 本地获取得分:" + score);
-                        processScore(score, lineNo);
                     }
                     break;
             }
@@ -304,9 +315,19 @@ public class AuditionFragment extends BaseFragment {
                         mUiHandler.removeMessages(MSG_SHOW_SCORE_EVENT + lineNo * 100);
                         if (lineNo > mLastLineNum) {
                             // 使用最新的打分方案做优化
-                            int score1 = EngineManager.getInstance().getLineScore();
+                            int score1 = EngineManager.getInstance().getLineScore1();
                             if (MyLog.isDebugLogOpen()) {
-                                addLogText("第" + lineNo + "行 melp得分:" + score1);
+                                addLogText("第" + lineNo + "行 melp1得分:" + score1);
+                            }
+                            if (ScoreConfig.isMelp2Enable()) {
+                                EngineManager.getInstance().getLineScore2(lineNo, new Score2Callback() {
+                                    @Override
+                                    public void onGetScore(int lineNum, int score) {
+                                        if (MyLog.isDebugLogOpen()) {
+                                            addLogText("第" + lineNo + "行 melp2得分:" + score);
+                                        }
+                                    }
+                                });
                             }
                             int score2 = -1;
                             if (targetSongInfo != null) {
@@ -542,11 +563,21 @@ public class AuditionFragment extends BaseFragment {
             EngineManager.getInstance().recognizeInManualMode(event.lineNum);
         } else {
             if (ScoreConfig.isMelpEnable()) {
-                int score = EngineManager.getInstance().getLineScore();
+                int score = EngineManager.getInstance().getLineScore1();
                 if (MyLog.isDebugLogOpen()) {
                     addLogText("第" + event.lineNum + "行 melp得分:" + score);
                 }
                 processScore(score, event.lineNum);
+            }
+            if (ScoreConfig.isMelp2Enable()) {
+                EngineManager.getInstance().getLineScore2(event.lineNum, new Score2Callback() {
+                    @Override
+                    public void onGetScore(int lineNum, int score) {
+                        if (MyLog.isDebugLogOpen()) {
+                            addLogText("第" + lineNum + "行 melp2得分:" + score);
+                        }
+                    }
+                });
             }
         }
         Message msg = mUiHandler.obtainMessage(MSG_SHOW_SCORE_EVENT + event.lineNum * 100);
@@ -568,7 +599,8 @@ public class AuditionFragment extends BaseFragment {
             fc += (t * t);
         }
         if (MyLog.isDebugLogOpen()) {
-            U.getToastUtil().showShort("平均分:" + pj + " 方差:" + fc);
+            ClipboardUtils.setCopy(mLogView.getText().toString());
+            U.getToastUtil().showShort("平均分:" + pj + " 方差:" + fc + "得分记录已在剪贴板中");
         }
         MyLog.d(TAG, "平均分:" + pj + " 方差:" + fc);
     }

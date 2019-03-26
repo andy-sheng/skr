@@ -11,7 +11,7 @@ extern "C" {
 extern "C"
 JNIEXPORT jint JNICALL
 Java_com_engine_score_ICbScoreProcessor_process1(JNIEnv *env, jobject instance,
-                                                 jboolean needScore,jboolean needRestart,
+                                                 jboolean needScore, jboolean needRestart,
                                                  jbyteArray samplesJni,
                                                  jint length, jint channels, jint samplesPerSec,
                                                  jlong currentTimeMills,
@@ -25,6 +25,19 @@ extern "C"
 JNIEXPORT jint JNICALL
 Java_com_engine_score_ICbScoreProcessor_getScore1(JNIEnv *env, jobject instance);
 
+
+extern "C"
+JNIEXPORT jint JNICALL
+Java_com_engine_score_ICbScoreProcessor_process2(JNIEnv *env, jobject instance,
+                                                 jboolean needScore, jboolean needRestart,
+                                                 jbyteArray samplesJni,
+                                                 jint length, jint channels, jint samplesPerSec,
+                                                 jlong currentTimeMills,
+                                                 jstring melFile_);
+
+extern "C"
+JNIEXPORT jint JNICALL
+Java_com_engine_score_ICbScoreProcessor_getScore2(JNIEnv *env, jobject instance);
 
 #ifdef __cplusplus
 }

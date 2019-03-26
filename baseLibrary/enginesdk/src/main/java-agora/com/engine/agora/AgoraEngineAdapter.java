@@ -19,6 +19,7 @@ import com.engine.arccloud.RecognizeConfig;
 import com.engine.effect.IFAudioEffectEngine;
 import com.engine.effect.ITbEffectProcessor;
 import com.engine.score.ICbScoreProcessor;
+import com.engine.score.Score2Callback;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -246,7 +247,7 @@ public class AgoraEngineAdapter {
             synchronized (this) {
                 try {
                     if (mRtcEngine == null) {
-                        MyLog.d(TAG,"InitRtcEngine" );
+                        MyLog.d(TAG, "InitRtcEngine");
                         mRtcEngine = RtcEngine.create(U.app(), APP_ID, mCallback);
                         //mRtcEngine.setParameters("{\"rtc.log_filter\": 65535}");
 
@@ -271,7 +272,7 @@ public class AgoraEngineAdapter {
         if (mConfig.isEnableAudio()) {
             MyLog.d(TAG, "initRtcEngineInner enableAudio");
             //该方法需要在 joinChannel 之前设置好，joinChannel 后设置不生效。
-            if(mRtcEngine == null){
+            if (mRtcEngine == null) {
                 tryInitRtcEngine();
             }
             mRtcEngine.enableAudio();
@@ -369,7 +370,7 @@ public class AgoraEngineAdapter {
      * 离开房间
      */
     public void leaveChannel() {
-        MyLog.d(TAG,"leaveChannel" );
+        MyLog.d(TAG, "leaveChannel");
         if (mRtcEngine != null) {
             mRtcEngine.leaveChannel();
         }
@@ -434,7 +435,7 @@ public class AgoraEngineAdapter {
         MyLog.d(TAG, "joinChannel" + " token=" + token + " channelId=" + channelId + " extra=" + extra + " uid=" + uid);
         // 一定要设置一个角色
         String t = null;
-        if(!TextUtils.isEmpty(token)){
+        if (!TextUtils.isEmpty(token)) {
             t = token;
         }
         int retCode = mRtcEngine.joinChannel(t, channelId, extra, uid);
@@ -1062,21 +1063,6 @@ public class AgoraEngineAdapter {
                 if (DEBUG) {
                     MyLog.d(TAG, "step0:" + testIn(samples));
                 }
-                if (mArcCloudManager != null) {
-                    if (mConfig != null) {
-                        switch (mConfig.getScene()) {
-                            case voice:
-                                break;
-                            case grab:
-                            case rank:
-                            case audiotest:
-                                if (mConfig.isMixMusicPlaying() && mConfig.getLrcHasStart()) {
-                                    mArcCloudManager.putPool(samples, samplesPerSec, channels);
-                                }
-                                break;
-                        }
-                    }
-                }
                 long ts = 0;
                 if (mConfig != null && mConfig.isMixMusicPlaying() && mConfig.getLrcHasStart()) {
                     ts = mConfig.getCurrentMusicTs() + mConfig.getMixMusicBeginOffset() + (System.currentTimeMillis() - mConfig.getRecordCurrentMusicTsTs());
@@ -1108,12 +1094,25 @@ public class AgoraEngineAdapter {
                             if (mDebugScoreIS.read(data) != -1) {
                                 mICbScoreProcessor.process(data, data.length, 1, samplesPerSec, ts, mConfig.getMidiPath());
                             }
+                            if (mArcCloudManager != null) {
+                                if (mConfig != null) {
+                                    mArcCloudManager.putPool(data, samplesPerSec, 1);
+                                }
+                            }
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
+
                     }
                 } else {
                     mICbScoreProcessor.process(samples, samples.length, channels, samplesPerSec, ts, mConfig.getMidiPath());
+                    if (mArcCloudManager != null) {
+                        if (mConfig != null) {
+                            if (mConfig.isMixMusicPlaying() && mConfig.getLrcHasStart()) {
+                                mArcCloudManager.putPool(samples, samplesPerSec, channels);
+                            }
+                        }
+                    }
                 }
 
                 if (DEBUG) {
@@ -1163,8 +1162,12 @@ public class AgoraEngineAdapter {
         return a;
     }
 
-    public int getScore() {
-        return mICbScoreProcessor.getScore();
+    public int getScoreV1() {
+        return mICbScoreProcessor.getScoreV1();
+    }
+
+    public void getScoreV2(int lineNum, Score2Callback callback) {
+        mICbScoreProcessor.getScoreV2(lineNum, callback);
     }
 
     /**

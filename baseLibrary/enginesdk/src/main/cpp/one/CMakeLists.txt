@@ -99,7 +99,7 @@ target_link_libraries( # Specifies the target library.
         android
         ${PATH_TO_PRE_BUILT}/libsox.a
         log
-        NE10
+        ${PATH_TO_PRE_BUILT}/libNE10.a
         m
         z
         )

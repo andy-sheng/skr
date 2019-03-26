@@ -161,7 +161,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     int lineNo = (msg.what - MSG_SHOW_SCORE_EVENT) / 100;
                     MyLog.d(TAG, "handleMessage" + " lineNo=" + lineNo);
                     if (lineNo > mLastLineNum) {
-                        int score = EngineManager.getInstance().getLineScore();
+                        int score = EngineManager.getInstance().getLineScore1();
                         MyLog.d(TAG, "handleMessage acr超时 本地获取得分:" + score);
                         processScore(score, lineNo);
                     }
@@ -369,7 +369,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                             mUiHandler.removeMessages(MSG_SHOW_SCORE_EVENT + lineNo * 100);
                             if (lineNo > mLastLineNum) {
                                 // 使用最新的打分方案做优化
-                                int score1 = EngineManager.getInstance().getLineScore();
+                                int score1 = EngineManager.getInstance().getLineScore1();
                                 int score2 = -1;
                                 if (targetSongInfo != null) {
                                     score2 = (int) (targetSongInfo.getScore() * 100);
@@ -1633,7 +1633,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 EngineManager.getInstance().recognizeInManualMode(event.lineNum);
             } else {
                 if (ScoreConfig.isMelpEnable()) {
-                    int score = EngineManager.getInstance().getLineScore();
+                    int score = EngineManager.getInstance().getLineScore1();
                     processScore(score, event.lineNum);
                 }
             }
