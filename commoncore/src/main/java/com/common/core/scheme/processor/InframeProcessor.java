@@ -166,20 +166,24 @@ public class InframeProcessor implements ISchemeProcessor {
     private void processRoomUrl(Uri uri) {
         String path = uri.getPath();
         if (TextUtils.isEmpty(path)) {
-            MyLog.w(TAG, "processGameUrl path is empty");
+            MyLog.w(TAG, "processRoomUrl path is empty");
             return;
         }
 
         if ("/grabjoin".equals(path)) {
             try {
                 if (!UserAccountManager.getInstance().hasAccount()) {
-                    MyLog.w(TAG, "processGameUrl 没有登录");
+                    MyLog.w(TAG, "processRoomUrl 没有登录");
                     return;
                 }
                 int ownerId = SchemeUtils.getInt(uri, "owner", 0);
                 int roomId = SchemeUtils.getInt(uri, "gameId", 0);
                 int ask = SchemeUtils.getInt(uri, "ask", 0);
                 if (ownerId > 0 && roomId > 0) {
+                    if (ownerId == MyUserInfoManager.getInstance().getUid()) {
+                        MyLog.d(TAG, "processRoomUrl 房主id是自己，可能从口令粘贴板过来的，忽略");
+                        return;
+                    }
                     GrabInviteFromSchemeEvent event = new GrabInviteFromSchemeEvent();
                     event.ask = ask;
                     event.ownerId = ownerId;
@@ -204,7 +208,7 @@ public class InframeProcessor implements ISchemeProcessor {
         if ("/bothfollow".equals(path)) {
             try {
                 if (!UserAccountManager.getInstance().hasAccount()) {
-                    MyLog.w(TAG, "processGameUrl 没有登录");
+                    MyLog.w(TAG, "processRelationUrl 没有登录");
                     return;
                 }
                 int inviterId = SchemeUtils.getInt(uri, "inviterId", 0);

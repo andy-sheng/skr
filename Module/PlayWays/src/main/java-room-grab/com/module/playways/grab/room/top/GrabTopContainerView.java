@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.module.playways.grab.room.GrabRoomData;
@@ -189,6 +190,17 @@ public class GrabTopContainerView extends RelativeLayout {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(SomeOneOnlineChangeEvent event) {
         mTopContentRv.onlineChange(event.playerInfoModel);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(GrabTopItemView.InviteBtnVisibleEvent event) {
+//        LayoutParams lp = (LayoutParams) mGrabAudienceView.getLayoutParams();
+//        if (event.visiable) {
+//            lp.rightMargin = U.getDisplayUtils().dip2px(60);
+//        } else {
+//            lp.rightMargin = U.getDisplayUtils().dip2px(24);
+//        }
+//        mGrabAudienceView.setLayoutParams(lp);
     }
 
     public void setListener(Listener l) {

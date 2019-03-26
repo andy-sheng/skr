@@ -44,6 +44,8 @@ public class GrabTopItemView extends RelativeLayout {
     int mMode = MODE_GRAB;
     private boolean mCanShowInviteWhenEmpty = false; // 能否显示邀请按钮
 
+    private boolean mLast = false; // 是否是最后一个
+
     public GrabTopItemView(Context context) {
         super(context);
         init();
@@ -151,9 +153,15 @@ public class GrabTopItemView extends RelativeLayout {
         if (mCanShowInviteWhenEmpty) {
             mAvatarIv.setImageDrawable(U.getDrawable(R.drawable.grab_fangzhu_yaoqing));
             mInviteTv.setVisibility(VISIBLE);
+            if (mLast) {
+                EventBus.getDefault().post(new InviteBtnVisibleEvent(true));
+            }
         } else {
             mAvatarIv.setImageDrawable(U.getDrawable(R.drawable.guanzhong_kongwei));
             mInviteTv.setVisibility(GONE);
+            if (mLast) {
+                EventBus.getDefault().post(new InviteBtnVisibleEvent(false));
+            }
         }
         mOwnerIconIv.setVisibility(GONE);
         mShowEmptySeat = true;
@@ -250,4 +258,15 @@ public class GrabTopItemView extends RelativeLayout {
         mCanShowInviteWhenEmpty = canShowInviteWhenEmpty;
     }
 
+    public void setLast(boolean last) {
+        mLast = last;
+    }
+
+    public static class InviteBtnVisibleEvent {
+        boolean visiable;
+
+        public InviteBtnVisibleEvent(boolean visiable) {
+            this.visiable = visiable;
+        }
+    }
 }

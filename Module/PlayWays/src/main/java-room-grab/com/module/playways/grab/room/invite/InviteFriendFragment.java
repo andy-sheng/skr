@@ -1,16 +1,19 @@
 package com.module.playways.grab.room.invite;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.common.base.BaseFragment;
+import com.common.clipboard.ClipboardUtils;
 import com.common.core.kouling.SkrKouLingUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.utils.U;
@@ -29,7 +32,10 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 
 import java.util.List;
 
@@ -138,6 +144,7 @@ public class InviteFriendFragment extends BaseFragment implements IGrabInviteVie
                     SkrKouLingUtils.genJoinGrabGameKouling((int) MyUserInfoManager.getInstance().getUid(), mRoomData.getGameId(), new ICallback() {
                         @Override
                         public void onSucess(Object obj) {
+                            mShareDialog.dismiss();
                             new ShareAction(getActivity()).withText((String) obj)
                                     .setPlatform(SHARE_MEDIA.WEIXIN)
                                     .share();
@@ -158,9 +165,19 @@ public class InviteFriendFragment extends BaseFragment implements IGrabInviteVie
                     SkrKouLingUtils.genJoinGrabGameKouling((int) MyUserInfoManager.getInstance().getUid(), mRoomData.getGameId(), new ICallback() {
                         @Override
                         public void onSucess(Object obj) {
-                            new ShareAction(getActivity()).withText((String) obj)
-                                    .setPlatform(SHARE_MEDIA.QQ)
-                                    .share();
+                            mShareDialog.dismiss();
+                            ClipboardUtils.setCopy((String) obj);
+                            Intent intent = U.getActivityUtils().getLaunchIntentForPackage("com.tencent.mobileqq");
+                            if (null != intent.resolveActivity(U.app().getPackageManager())) {
+                                startActivity(intent);
+                            }
+                            U.getToastUtil().showLong("请将口令粘贴给你的好友");
+                            //TODO QQ 不支持纯文本分享
+//                            new ShareAction(getActivity())
+//                                    .withMedia(new UMImage(getActivity(),obj))
+//                                    .setPlatform(SHARE_MEDIA.QQ)
+//                                    .withText((String) obj)
+//                                    .share();
                         }
 
                         @Override
@@ -175,6 +192,11 @@ public class InviteFriendFragment extends BaseFragment implements IGrabInviteVie
         if (!mShareDialog.isShowing()) {
             mShareDialog.show();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     @Override

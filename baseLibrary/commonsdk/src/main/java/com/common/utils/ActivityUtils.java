@@ -332,6 +332,11 @@ public class ActivityUtils {
         return mIsAppForegroundChangeTs;
     }
 
+    public Intent getLaunchIntentForPackage(String s) {
+        Intent intent = U.app().getPackageManager().getLaunchIntentForPackage(s);
+        return intent;
+    }
+
     /**
      * 是否在后台回调
      */
