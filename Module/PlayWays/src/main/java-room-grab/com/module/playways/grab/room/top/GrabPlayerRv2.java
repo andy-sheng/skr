@@ -140,6 +140,12 @@ public class GrabPlayerRv2 extends RelativeLayout {
             VP vp = mGrabTopItemViewArrayList.get(i);
             mInfoMap.put(playerInfoModels.get(i).getUserInfo().getUserId(), vp);
             vp.grabTopItemView.bindData(playerInfoModels.get(i));
+            if(playerInfoModels.get(i).getUserID() == now.getUserID()
+                    && now.getStatus() == GrabRoundInfoModel.STATUS_SING){
+                LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) vp.grabTopItemView.getLayoutParams();
+                lp.weight = 0;
+                vp.grabTopItemView.setLayoutParams(lp);
+            }
         }
 
         MyLog.d(TAG, "initData + now.getStatus() " + now.getStatus());
