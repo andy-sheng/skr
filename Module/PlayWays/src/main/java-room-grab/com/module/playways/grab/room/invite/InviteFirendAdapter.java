@@ -57,6 +57,7 @@ public class InviteFirendAdapter extends DiffAdapter<GrabFriendModel, RecyclerVi
 
         Drawable mBusyCircleDrawable;
         Drawable mAIDLCircleDrawable;
+        Drawable mGameCircleDrawable;
         Drawable mCanInviteBtnDrawable;
         Drawable mCannotInviteDrawable;
 
@@ -84,6 +85,11 @@ public class InviteFirendAdapter extends DiffAdapter<GrabFriendModel, RecyclerVi
 
             mAIDLCircleDrawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(45))
                     .setSolidColor(Color.parseColor("#7ED321"))
+                    .setCornersRadius(U.getDisplayUtils().dip2px(4))
+                    .build();
+
+            mGameCircleDrawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(45))
+                    .setSolidColor(Color.parseColor("#FF8C9A"))
                     .setCornersRadius(U.getDisplayUtils().dip2px(4))
                     .build();
 
@@ -121,6 +127,10 @@ public class InviteFirendAdapter extends DiffAdapter<GrabFriendModel, RecyclerVi
                 mTvState.setText("可邀请");
                 mTvInvite.setVisibility(View.VISIBLE);
                 mTvCircleState.setBackground(mAIDLCircleDrawable);
+            } else if (model.getStatus() == 3) {
+                mTvState.setText("已加入游戏");
+                mTvInvite.setVisibility(View.GONE);
+                mTvCircleState.setBackground(mGameCircleDrawable);
             }
 
             if (model.isInvited()) {

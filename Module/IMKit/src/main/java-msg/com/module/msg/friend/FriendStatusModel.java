@@ -2,7 +2,9 @@ package com.module.msg.friend;
 
 import com.common.core.userinfo.model.UserInfoModel;
 
-public class FriendStatusModel {
+import java.io.Serializable;
+
+public class FriendStatusModel implements Serializable {
     public static final int EF_OnLine = 1; //在线
     public static final int EF_OffLine = 2; //离线
 
