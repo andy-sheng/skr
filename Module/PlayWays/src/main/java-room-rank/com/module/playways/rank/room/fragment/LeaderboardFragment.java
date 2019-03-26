@@ -402,13 +402,17 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         switch (seq) {
             case 1:
                 mTvRightChanpainName.setText("虚位以待");
-                mSdvRightChampainIcon.setBackground(U.getDrawable(R.drawable.zanwu_dierming));
+                mSdvRightChampainIcon.setImageResource(R.drawable.zanwu_dierming);
                 mRightChanpainLevelView.setVisibility(View.GONE);
+                mRightChanpainLevelTv.setText("");
+                mSdvRightChampainIcon.setOnClickListener(null);
                 break;
             case 2:
                 mTvLeftChanpainName.setText("虚位以待");
-                mSdvLeftChampainIcon.setBackground(U.getDrawable(R.drawable.zanwu_disanming));
+                mSdvLeftChampainIcon.setImageResource(R.drawable.zanwu_disanming);
                 mLeftChanpainLevelView.setVisibility(View.GONE);
+                mLeftChanpainLevelTv.setText("");
+                mSdvLeftChampainIcon.setOnClickListener(null);
                 break;
         }
     }
