@@ -8,7 +8,6 @@ import android.view.Gravity;
 import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.common.core.account.UserAccountManager;
 import com.common.core.scheme.event.BothRelationFromSchemeEvent;
 import com.common.core.scheme.event.GrabInviteFromSchemeEvent;
 import com.common.core.userinfo.UserInfoManager;
@@ -20,14 +19,12 @@ import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.notification.event.FollowNotifyEvent;
 import com.common.notification.event.GrabInviteNotifyEvent;
-import com.common.statistics.StatConstants;
-import com.common.statistics.StatisticsAdapter;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
+import com.component.busilib.manager.WeakRedDotManager;
 import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
 import com.module.home.R;
-import com.module.home.view.INotifyView;
 import com.module.rank.IRankingModeService;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
@@ -62,10 +59,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         }
     };
 
-    INotifyView iNotifyView;
-
-    public NotifyCorePresenter(INotifyView iNotifyView) {
-        this.iNotifyView = iNotifyView;
+    public NotifyCorePresenter() {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -81,8 +75,15 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(FollowNotifyEvent event) {
-        iNotifyView.showMessageRedDot();
         showFollowFloatWindow(event.mUserInfoModel);
+        if (event.mUserInfoModel.isFriend()) {
+            U.getPreferenceUtils().setSettingInt(WeakRedDotManager.SP_KEY_NEW_FRIEND, 3);
+            WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FRIEND_RED_ROD_TYPE, 3);
+        }
+        if (event.mUserInfoModel.isFollow()) {
+            U.getPreferenceUtils().setSettingInt(WeakRedDotManager.SP_KEY_NEW_FANS, 3);
+            WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FANS_RED_ROD_TYPE, 3);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -37,6 +37,7 @@ import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
 import com.component.busilib.R;
 import com.component.busilib.constans.GrabRoomType;
+import com.component.busilib.manager.WeakRedDotManager;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.common.ICallback;
 import com.orhanobut.dialogplus.DialogPlus;
@@ -58,7 +59,7 @@ import model.RelationNumModel;
 /**
  * 关系列表
  */
-public class RelationFragment extends BaseFragment {
+public class RelationFragment extends BaseFragment implements WeakRedDotManager.WeakRedDotListener {
 
     public static final int FROM_FRIENDS = 0;
     public static final int FROM_FANS = 1;
@@ -97,6 +98,9 @@ public class RelationFragment extends BaseFragment {
     DialogPlus mShareDialog;
     TextView mTvWeixinShare;
     TextView mTvQqShare;
+
+    int mFansRedDotValue = 0;
+    int mFriendRedDotValue = 0;
 
     HashMap<Integer, RelationView> mTitleAndViewMap = new HashMap<>();
 
@@ -228,14 +232,10 @@ public class RelationFragment extends BaseFragment {
             public void onPageSelected(int position) {
                 if (position == 0) {
                     mFriendRedDot.setVisibility(View.GONE);
-                    if (U.getPreferenceUtils().getSettingInt(NotificationManager.SP_KEY_NEW_FRIEND, 0) >= 1) {
-                        U.getPreferenceUtils().setSettingInt(NotificationManager.SP_KEY_NEW_FRIEND, 0);
-                    }
+                    WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FRIEND_RED_ROD_TYPE, 0);
                 } else if (position == 1) {
                     mFansRedDot.setVisibility(View.GONE);
-                    if (U.getPreferenceUtils().getSettingInt(NotificationManager.SP_KEY_NEW_FANS, 0) >= 1) {
-                        U.getPreferenceUtils().setSettingInt(NotificationManager.SP_KEY_NEW_FANS, 0);
-                    }
+                    WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FANS_RED_ROD_TYPE, 0);
                 }
             }
 
@@ -262,8 +262,12 @@ public class RelationFragment extends BaseFragment {
         }
 
         U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
-    }
 
+        mFansRedDotValue = U.getPreferenceUtils().getSettingInt(WeakRedDotManager.SP_KEY_NEW_FANS, 0);
+        mFriendRedDotValue = U.getPreferenceUtils().getSettingInt(WeakRedDotManager.SP_KEY_NEW_FRIEND, 0);
+        refreshMessageRedDot();
+        WeakRedDotManager.getInstance().addListener(this);
+    }
 
     private void showShareDialog() {
         if (mShareDialog == null) {
@@ -348,14 +352,6 @@ public class RelationFragment extends BaseFragment {
     }
 
     public void refreshRelationNums() {
-        if (U.getPreferenceUtils().getSettingInt(NotificationManager.SP_KEY_NEW_FRIEND, 0) >= 1) {
-            // 好友红点
-            mFriendRedDot.setVisibility(View.VISIBLE);
-        }
-        if (U.getPreferenceUtils().getSettingInt(NotificationManager.SP_KEY_NEW_FANS, 0) >= 1) {
-            // 粉丝红点
-            mFansRedDot.setVisibility(View.VISIBLE);
-        }
         mFriend.setText(String.format(U.app().getResources().getString(R.string.friends_num), mFriendNum));
         mFollow.setText(String.format(U.app().getResources().getString(R.string.follows_num), mFocusNum));
         mFans.setText(String.format(U.app().getResources().getString(R.string.fans_num), mFansNum));
@@ -419,5 +415,39 @@ public class RelationFragment extends BaseFragment {
         }
 
         U.getSoundUtils().release(TAG);
+    }
+
+    @Override
+    public int[] acceptType() {
+        return new int[]{
+                WeakRedDotManager.FANS_RED_ROD_TYPE,
+                WeakRedDotManager.FRIEND_RED_ROD_TYPE};
+    }
+
+    @Override
+    public void onWeakRedDotChange(int type, int value) {
+        if (type == WeakRedDotManager.FANS_RED_ROD_TYPE) {
+            mFansRedDotValue = value;
+        } else if (type == WeakRedDotManager.FRIEND_RED_ROD_TYPE) {
+            mFriendRedDotValue = value;
+        }
+
+        refreshMessageRedDot();
+    }
+
+    private void refreshMessageRedDot() {
+        if (mFansRedDotValue >= 1) {
+            // 粉丝红点
+            mFansRedDot.setVisibility(View.VISIBLE);
+        } else {
+            mFansRedDot.setVisibility(View.GONE);
+        }
+
+        if (mFriendRedDotValue >= 1) {
+            // 好友红点
+            mFriendRedDot.setVisibility(View.VISIBLE);
+        } else {
+            mFriendRedDot.setVisibility(View.GONE);
+        }
     }
 }

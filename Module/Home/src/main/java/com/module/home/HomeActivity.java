@@ -21,7 +21,6 @@ import com.common.core.permission.SkrSdcardPermission;
 import com.common.core.upgrade.UpgradeManager;
 import com.common.core.account.UserAccountManager;
 import com.common.log.MyLog;
-import com.common.notification.NotificationManager;
 import com.common.utils.ActivityUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -29,6 +28,7 @@ import com.common.view.ex.ExImageView;
 
 import com.common.view.ex.ExTextView;
 import com.common.view.viewpager.NestViewPager;
+import com.component.busilib.manager.WeakRedDotManager;
 import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
 import com.module.home.dialogmanager.HomeDialogManager;
@@ -40,7 +40,6 @@ import com.module.home.persenter.NotifyCorePresenter;
 import com.module.home.persenter.RedPkgPresenter;
 import com.module.home.view.GetRedPkgCashView;
 import com.module.home.view.IHomeActivity;
-import com.module.home.view.INotifyView;
 import com.module.home.view.IRedPkgView;
 import com.module.msg.IMsgService;
 import com.orhanobut.dialogplus.DialogPlus;
@@ -53,7 +52,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 @Route(path = RouterConstants.ACTIVITY_HOME)
-public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkgView, INotifyView {
+public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkgView, WeakRedDotManager.WeakRedDotListener {
 
     public final static String TAG = "HomeActivity";
 
@@ -78,6 +77,9 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
 
     String mPengingSchemeUri; //想要跳转的scheme，但因为没登录被挂起了
     boolean mFromCreate = false;
+
+    int mFansRedDotValue = 0;
+    int mFriendRedDotValue = 0;
 
     SkrSdcardPermission mSkrSdcardPermission = new SkrSdcardPermission();
 
@@ -181,13 +183,8 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
                 mPersonInfoBtn.setImageResource(R.drawable.ic_me_normal);
 
                 mMessageRedDot.setVisibility(View.GONE);
-                if (U.getPreferenceUtils().getSettingInt(NotificationManager.SP_KEY_NEW_FANS, 0) >= 3) {
-                    U.getPreferenceUtils().setSettingInt(NotificationManager.SP_KEY_NEW_FANS, 2);
-                }
-
-                if (U.getPreferenceUtils().getSettingInt(NotificationManager.SP_KEY_NEW_FRIEND, 0) >= 3) {
-                    U.getPreferenceUtils().setSettingInt(NotificationManager.SP_KEY_NEW_FRIEND, 2);
-                }
+                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FANS_RED_ROD_TYPE, 2);
+                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FRIEND_RED_ROD_TYPE, 2);
             }
         });
 
@@ -204,12 +201,14 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
         mRedPkgPresenter = new RedPkgPresenter(this);
         addPresent(mRedPkgPresenter);
 
-        mNotifyCorePresenter = new NotifyCorePresenter(this);
+        mNotifyCorePresenter = new NotifyCorePresenter();
         addPresent(mNotifyCorePresenter);
 
         mMainVp.setCurrentItem(0, false);
         mHomeDialogManager.register();
         mFromCreate = true;
+
+        WeakRedDotManager.getInstance().addListener(this);
     }
 
     private void checkIfFromSchema() {
@@ -279,14 +278,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
             } else {
                 mUnreadNumTv.setText("" + unReadNum);
             }
-        }
-    }
-
-    @Override
-    public void showMessageRedDot() {
-        // 关注消息红点
-        if (mUnreadNumTv.getVisibility() == View.GONE) {
-            mMessageRedDot.setVisibility(View.VISIBLE);
         }
     }
 
@@ -378,4 +369,33 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
         mPersonInfoBtn.setImageResource(R.drawable.ic_me_normal);
     }
 
+    @Override
+    public int[] acceptType() {
+        return new int[]{
+                WeakRedDotManager.FANS_RED_ROD_TYPE,
+                WeakRedDotManager.FRIEND_RED_ROD_TYPE};
+    }
+
+    @Override
+    public void onWeakRedDotChange(int type, int value) {
+        if (type == WeakRedDotManager.FANS_RED_ROD_TYPE) {
+            mFansRedDotValue = value;
+        } else if (type == WeakRedDotManager.FRIEND_RED_ROD_TYPE) {
+            mFriendRedDotValue = value;
+        }
+
+        refreshMessageRedDot();
+    }
+
+    private void refreshMessageRedDot() {
+        if (mFansRedDotValue < 3 && mFriendRedDotValue < 3) {
+            mMessageRedDot.setVisibility(View.GONE);
+        } else {
+            if (mUnreadNumTv.getVisibility() == View.GONE) {
+                mMessageRedDot.setVisibility(View.VISIBLE);
+            } else {
+                mMessageRedDot.setVisibility(View.GONE);
+            }
+        }
+    }
 }

@@ -18,6 +18,7 @@ import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
 import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
+import com.component.busilib.manager.WeakRedDotManager;
 import com.module.msg.IMessageFragment;
 import com.module.msg.friend.FriendFragment;
 import com.zq.relation.fragment.RelationFragment;
@@ -28,7 +29,7 @@ import io.rong.imkit.R;
 import io.rong.imkit.fragment.ConversationListFragment;
 import io.rong.imlib.model.Conversation;
 
-public class MessageFragment extends BaseFragment implements IMessageFragment {
+public class MessageFragment extends BaseFragment implements IMessageFragment, WeakRedDotManager.WeakRedDotListener {
 
     public final static String TAG = "MessageFragment";
 
@@ -43,6 +44,9 @@ public class MessageFragment extends BaseFragment implements IMessageFragment {
 
     HashMap<Integer, String> mTitleList = new HashMap<>();
 
+    int mFansRedDotValue = 0;
+    int mFriendRedDotValue = 0;
+
     @Override
     public int initView() {
         return R.layout.conversation_list_fragment;
@@ -56,24 +60,19 @@ public class MessageFragment extends BaseFragment implements IMessageFragment {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
 
-        mMainActContainer = (RelativeLayout)mRootView.findViewById(R.id.main_act_container);
-        mTitlebar = (CommonTitleBar)mRootView.findViewById(R.id.titlebar);
-        mContainer = (LinearLayout)mRootView.findViewById(R.id.container);
-        mMessageTab = (SlidingTabLayout)mRootView.findViewById(R.id.message_tab);
-        mSplitLine = (View)mRootView.findViewById(R.id.split_line);
-        mMessageVp = (NestViewPager)mRootView.findViewById(R.id.message_vp);
+        mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
+        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
+        mContainer = (LinearLayout) mRootView.findViewById(R.id.container);
+        mMessageTab = (SlidingTabLayout) mRootView.findViewById(R.id.message_tab);
+        mSplitLine = (View) mRootView.findViewById(R.id.split_line);
+        mMessageVp = (NestViewPager) mRootView.findViewById(R.id.message_vp);
 
         mTitlebar.getRightImageButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mTitlebar.getRightImageButton().setImageResource(R.drawable.friend_book_icon);
-
-                if (U.getPreferenceUtils().getSettingInt(NotificationManager.SP_KEY_NEW_FANS, 0) >= 2) {
-                    U.getPreferenceUtils().setSettingInt(NotificationManager.SP_KEY_NEW_FANS, 1);
-                }
-                if (U.getPreferenceUtils().getSettingInt(NotificationManager.SP_KEY_NEW_FRIEND, 0) >= 2) {
-                    U.getPreferenceUtils().setSettingInt(NotificationManager.SP_KEY_NEW_FRIEND, 1);
-                }
+                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FANS_RED_ROD_TYPE, 1);
+                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FRIEND_RED_ROD_TYPE, 1);
 
                 U.getFragmentUtils().addFragment(
                         FragmentUtils.newAddParamsBuilder(getActivity(), RelationFragment.class)
@@ -82,11 +81,6 @@ public class MessageFragment extends BaseFragment implements IMessageFragment {
                                 .build());
             }
         });
-
-        if (U.getPreferenceUtils().getSettingInt(NotificationManager.SP_KEY_NEW_FANS, 0) >= 2
-                || U.getPreferenceUtils().getSettingInt(NotificationManager.SP_KEY_NEW_FRIEND, 0) >= 2) {
-            mTitlebar.getRightImageButton().setImageResource(R.drawable.friend_book_red_icon);
-        }
 
         mTitleList.put(0, "消息");
         mTitleList.put(1, "好友");
@@ -126,6 +120,11 @@ public class MessageFragment extends BaseFragment implements IMessageFragment {
         mMessageVp.setAdapter(fragmentPagerAdapter);
         mMessageTab.setViewPager(mMessageVp);
 
+        WeakRedDotManager.getInstance().addListener(this);
+
+        mFansRedDotValue = U.getPreferenceUtils().getSettingInt(WeakRedDotManager.SP_KEY_NEW_FANS, 0);
+        mFriendRedDotValue = U.getPreferenceUtils().getSettingInt(WeakRedDotManager.SP_KEY_NEW_FRIEND, 0);
+        refreshMessageRedDot();
     }
 
     @Override
@@ -151,5 +150,31 @@ public class MessageFragment extends BaseFragment implements IMessageFragment {
     @Override
     public boolean isInViewPager() {
         return true;
+    }
+
+    @Override
+    public int[] acceptType() {
+        return new int[]{
+                WeakRedDotManager.FRIEND_RED_ROD_TYPE,
+                WeakRedDotManager.FANS_RED_ROD_TYPE};
+    }
+
+    @Override
+    public void onWeakRedDotChange(int type, int value) {
+        if (type == WeakRedDotManager.FANS_RED_ROD_TYPE) {
+            mFansRedDotValue = value;
+        } else if (type == WeakRedDotManager.FRIEND_RED_ROD_TYPE) {
+            mFriendRedDotValue = value;
+        }
+
+        refreshMessageRedDot();
+    }
+
+    private void refreshMessageRedDot() {
+        if (mFansRedDotValue < 2 && mFriendRedDotValue < 2) {
+            mTitlebar.getRightImageButton().setImageResource(R.drawable.friend_book_icon);
+        } else {
+            mTitlebar.getRightImageButton().setImageResource(R.drawable.friend_book_red_icon);
+        }
     }
 }
