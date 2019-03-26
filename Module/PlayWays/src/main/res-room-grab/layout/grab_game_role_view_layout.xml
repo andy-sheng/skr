@@ -92,7 +92,8 @@
         android:layout_marginLeft="@dimen/view_13_dp"
         android:layout_marginTop="@dimen/view_12_dp"
         android:layout_marginRight="@dimen/view_13_dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/view_30_dp">
 
         <com.common.view.ex.ExImageView
             android:layout_width="@dimen/view_26_dp"
