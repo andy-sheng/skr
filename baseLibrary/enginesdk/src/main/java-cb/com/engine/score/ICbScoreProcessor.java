@@ -109,6 +109,10 @@ public class ICbScoreProcessor {
     public int destroy() {
         melPath = null;
         destroyScoreProcessor();
+        if (mCustomHandlerThread != null) {
+            mCustomHandlerThread.destroy();
+            mCustomHandlerThread = null;
+        }
         return 0;
     }
 
