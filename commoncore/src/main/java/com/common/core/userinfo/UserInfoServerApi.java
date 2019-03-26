@@ -1,5 +1,7 @@
 package com.common.core.userinfo;
 
+import android.support.v7.widget.RecyclerView;
+
 import com.common.rxretrofit.ApiResult;
 
 import io.reactivex.Observable;
@@ -59,6 +61,14 @@ public interface UserInfoServerApi {
      */
     @PUT("/v1/mate/relation")
     Observable<ApiResult> mateRelation(@Body RequestBody body);
+
+    /**
+     * 成为好友
+     * @param body  "toUserID" : 关系被动接受者id
+     * @return
+     */
+    @PUT("/v1/mate/mutual-follow")
+    Observable<ApiResult> beFriend(@Body RequestBody body);
 
     /**
      * 获取指定关系列表

@@ -205,6 +205,28 @@ public class UserInfoManager {
     }
 
     /**
+     * 成为好友
+     * @param userId
+     */
+    public void beFriend(int userId) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("toUserID", userId);
+
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+        Observable<ApiResult> apiResultObservable = userInfoServerApi.beFriend(body);
+        ApiMethods.subscribe(apiResultObservable, new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult obj) {
+                if (obj.getErrno() == 0) {
+                    U.getToastUtil().showShort("成为好友");
+                } else {
+                    U.getToastUtil().showShort("" + obj.getErrmsg());
+                }
+            }
+        });
+    }
+
+    /**
      * 获取关系列表
      *
      * @param relation

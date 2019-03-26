@@ -1,9 +1,14 @@
 package com.module.home.persenter;
 
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
+import android.text.SpannableStringBuilder;
+import android.view.Gravity;
+import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.common.core.account.UserAccountManager;
 import com.common.core.scheme.event.BothRelationFromSchemeEvent;
 import com.common.core.scheme.event.GrabInviteFromSchemeEvent;
 import com.common.core.userinfo.UserInfoManager;
@@ -15,11 +20,19 @@ import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.notification.event.FollowNotifyEvent;
 import com.common.notification.event.GrabInviteNotifyEvent;
+import com.common.statistics.StatConstants;
+import com.common.statistics.StatisticsAdapter;
+import com.common.utils.SpanUtils;
 import com.common.utils.U;
+import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
+import com.module.home.R;
 import com.module.home.view.INotifyView;
 import com.module.rank.IRankingModeService;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.dialog.ConfirmDialog;
+import com.zq.dialog.event.ShowDialogInHomeEvent;
 import com.zq.notification.GrabInviteNotifyView;
 import com.zq.notification.FollowNotifyView;
 
@@ -110,12 +123,68 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
+    DialogPlus mBeFriendDialog;
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(BothRelationFromSchemeEvent event) {
         // TODO: 2019/3/25 成为好友的的口令
         MyLog.d(TAG, "onEvent" + " event=" + event);
+        UserInfoManager.getInstance().getUserInfoByUuid(event.useId, new UserInfoManager.ResultCallback<UserInfoModel>() {
+            @Override
+            public boolean onGetLocalDB(UserInfoModel o) {
+                return false;
+            }
+
+            @Override
+            public boolean onGetServer(UserInfoModel userInfoModel) {
+                if (userInfoModel != null) {
+                    SpannableStringBuilder stringBuilder = new SpanUtils()
+                            .append("是否确定与").setForegroundColor(Color.parseColor("#7F7F7F"))
+                            .append("" + userInfoModel.getNickname()).setForegroundColor(Color.parseColor("#F5A623"))
+                            .append("成为好友？").setForegroundColor(Color.parseColor("#7F7F7F"))
+                            .create();
+                    TipsDialogView tipsDialogView = new TipsDialogView.Builder(U.getActivityUtils().getTopActivity())
+                            .setMessageTip(stringBuilder)
+                            .setConfirmTip("确定")
+                            .setCancelTip("取消")
+                            .setConfirmBtnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if (mBeFriendDialog != null) {
+                                        mBeFriendDialog.dismiss(false);
+                                    }
+                                    beFriend(userInfoModel.getUserId());
+                                }
+                            })
+                            .setCancelBtnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if (mBeFriendDialog != null) {
+                                        mBeFriendDialog.dismiss(false);
+                                    }
+                                }
+                            })
+                            .build();
+
+                    mBeFriendDialog = DialogPlus.newDialog(U.getActivityUtils().getTopActivity())
+                            .setContentHolder(new ViewHolder(tipsDialogView))
+                            .setGravity(Gravity.BOTTOM)
+                            .setContentBackgroundResource(R.color.transparent)
+                            .setOverlayBackgroundResource(R.color.black_trans_80)
+                            .setExpanded(false)
+                            .create();
+
+                    EventBus.getDefault().post(new ShowDialogInHomeEvent(mBeFriendDialog, 30));
+                }
+                return false;
+            }
+        });
+
     }
 
+    private void beFriend(int userId) {
+        UserInfoManager.getInstance().beFriend(userId);
+    }
 
     void tryGoGrabRoom(int roomID) {
         IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
