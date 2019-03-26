@@ -251,16 +251,17 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
      */
     private void joinGrabRoom() {
         HashMap<String, Object> map = new HashMap<>();
-        map.put("modeID", mGameType);
-        map.put("platform", PLAT_FORM);
+//        map.put("modeID", mGameType);
+//        map.put("platform", PLAT_FORM);
         map.put("roomID", mJoinActionEvent.gameId);
+        map.put("matchEnter", true);
 
         RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mMatchServerApi.joinGrabRoom(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 StringBuilder sb = new StringBuilder();
-                MyLog.w(TAG, "sendIntoRoomReq 请求加入房间 result =  " + result.getErrno() + " traceId = " + result.getTraceId()+ " ");
+                MyLog.w(TAG, "sendIntoRoomReq 请求加入房间 result =  " + result.getErrno() + " traceId = " + result.getTraceId() + " ");
                 if (result.getErrno() == 0) {
                     if (mMatchState == MatchState.JoinRongYunRoomSuccess) {
                         mMatchState = MatchState.JoinGameSuccess;
