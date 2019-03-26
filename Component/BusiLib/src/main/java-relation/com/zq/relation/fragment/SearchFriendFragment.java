@@ -61,6 +61,7 @@ public class SearchFriendFragment extends BaseFragment {
 
 
     String lastSearchContent;  // 上次搜索内容
+    String lastAutoSearchContent; // 自动搜索的内容
     int offset = 0;          //偏移量
     int DEFAULT_COUNT = 20;  // 每次拉去列表数目
 
@@ -185,6 +186,7 @@ public class SearchFriendFragment extends BaseFragment {
                 if (result.getErrno() == 0) {
                     List<UserInfoModel> userInfoModels = JSON.parseArray(result.getData().getString("accounts"), UserInfoModel.class);
                     int offset = result.getData().getIntValue("offset");
+                    lastSearchContent = lastAutoSearchContent;
                     refreshView(userInfoModels, offset, false, false);
                 }
             }
@@ -208,7 +210,7 @@ public class SearchFriendFragment extends BaseFragment {
             @Override
             public ObservableSource<ApiResult> apply(String string) throws Exception {
                 UserInfoServerApi userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
-                lastSearchContent = string;
+                lastAutoSearchContent = string;
                 return userInfoServerApi.searchFriendsList(string, 0, DEFAULT_COUNT).subscribeOn(Schedulers.io());
             }
         }).observeOn(AndroidSchedulers.mainThread()).subscribe(mDisposableObserver);
