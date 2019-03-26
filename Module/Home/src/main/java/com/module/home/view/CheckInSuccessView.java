@@ -90,6 +90,9 @@ public class CheckInSuccessView extends RelativeLayout {
             case 6:
                 mIvGold.setImageDrawable(U.getDrawable(R.drawable.ershijinbi_moren));
                 break;
+            case 7:
+                mIvGold.setImageDrawable(U.getDrawable(R.drawable.sanshijinbi_moren));
+                break;
         }
     }
 
