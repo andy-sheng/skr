@@ -359,41 +359,12 @@ public class RelationFragment extends BaseFragment implements WeakRedDotManager.
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(RelationChangeEvent event) {
-        if (event.type == RelationChangeEvent.FOLLOW_TYPE) {
-            if (event.isFriend) {
-                // 新增好友,好友数加1
-                mFriendNum = mFriendNum + 1;
-                mFocusNum = mFocusNum + 1;
-            } else if (event.isFollow) {
-                // 新增关注,关注数加1
-                mFocusNum = mFocusNum + 1;
-            }
-        } else if (event.type == RelationChangeEvent.UNFOLLOW_TYPE) {
-            // 关注数减1
-            mFocusNum = mFocusNum - 1;
-            // TODO: 2019/1/17 怎么判断之前也是好友
-            if (event.isOldFriend) {
-                mFriendNum = mFriendNum - 1;
-            }
-        }
-
-        refreshRelationNums();
+        getRelationNums();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(FollowNotifyEvent event) {
-        if (event.mUserInfoModel.isFriend()) {
-            // 新增好友
-            mFriendNum = mFriendNum + 1;
-            mFansNum = mFansNum + 1;
-        } else if (event.mUserInfoModel.isFollow()) {
-            MyLog.w(TAG, "FollowNotifyEvent error 为什么消息是他关注我，我关注");
-        } else {
-            // 粉丝增加
-            mFansNum = mFansNum + 1;
-        }
-
-        refreshRelationNums();
+        getRelationNums();
     }
 
 

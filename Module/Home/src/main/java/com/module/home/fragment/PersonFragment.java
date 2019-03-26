@@ -15,6 +15,7 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
@@ -25,6 +26,7 @@ import com.common.core.share.ShareType;
 import com.common.core.upgrade.UpgradeData;
 import com.common.core.upgrade.UpgradeManager;
 import com.common.core.userinfo.UserInfoManager;
+import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.event.RelationChangeEvent;
 import com.common.core.userinfo.model.GameStatisModel;
 import com.common.core.userinfo.model.UserInfoModel;
@@ -34,6 +36,10 @@ import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
 
 import com.common.notification.event.FollowNotifyEvent;
+import com.common.rxretrofit.ApiManager;
+import com.common.rxretrofit.ApiMethods;
+import com.common.rxretrofit.ApiObserver;
+import com.common.rxretrofit.ApiResult;
 import com.common.utils.FragmentUtils;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
@@ -414,42 +420,38 @@ public class PersonFragment extends BaseFragment implements IPersonView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(RelationChangeEvent event) {
-        if (event.type == RelationChangeEvent.FOLLOW_TYPE) {
-            if (event.isFriend) {
-                // 新增好友,好友数加1
-                mFriendNum = mFriendNum + 1;
-                mFocusNum = mFocusNum + 1;
-            } else if (event.isFollow) {
-                // 新增关注,关注数加1
-                mFocusNum = mFocusNum + 1;
-            }
-        } else if (event.type == RelationChangeEvent.UNFOLLOW_TYPE) {
-            // 关注数减1
-            mFocusNum = mFocusNum - 1;
-            // TODO: 2019/1/17 怎么判断之前也是好友
-            if (event.isOldFriend) {
-                mFriendNum = mFriendNum - 1;
-            }
-        }
-
-        refreshRelationNum();
+        getRelationNums();
     }
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(FollowNotifyEvent event) {
-        if (event.mUserInfoModel.isFriend()) {
-            // 新增好友
-            mFriendNum = mFriendNum + 1;
-            mFansNum = mFansNum + 1;
-        } else if (event.mUserInfoModel.isFollow()) {
-            MyLog.w(TAG, "FollowNotifyEvent error 为什么消息是他关注我，我关注");
-        } else {
-            // 粉丝增加
-            mFansNum = mFansNum + 1;
-        }
+        getRelationNums();
+    }
 
-        refreshRelationNum();
+    private void getRelationNums() {
+        UserInfoServerApi userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
+        ApiMethods.subscribe(userInfoServerApi.getRelationNum((int) MyUserInfoManager.getInstance().getUid()), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    List<RelationNumModel> relationNumModels = JSON.parseArray(result.getData().getString("cnt"), RelationNumModel.class);
+                    if (relationNumModels != null && relationNumModels.size() > 0) {
+                        for (RelationNumModel mode : relationNumModels) {
+                            if (mode.getRelation() == UserInfoManager.RELATION_FRIENDS) {
+                                mFriendNum = mode.getCnt();
+                            } else if (mode.getRelation() == UserInfoManager.RELATION_FANS) {
+                                mFansNum = mode.getCnt();
+                            } else if (mode.getRelation() == UserInfoManager.RELATION_FOLLOW) {
+                                mFocusNum = mode.getCnt();
+                            }
+                        }
+                    }
+                    refreshRelationNum();
+                }
+            }
+        }, this);
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
