@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.common.core.CoreConfiguration;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
@@ -76,6 +77,8 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
             if (userInfoModel.getUserId() == MyUserInfoManager.getInstance().getUid()) {
                 mFollowTv.setVisibility(View.GONE);
                 return;
+            }else {
+                mFollowTv.setVisibility(View.VISIBLE);
             }
             if (userInfoModel.isFriend()) {
                 mFollowTv.setText("互关");
@@ -90,6 +93,7 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
             } else {
                 mFollowTv.setText("关注");
                 mFollowTv.setWidth(U.getDisplayUtils().dip2px(72));
+                mFollowTv.setTextColor(Color.parseColor("#0C2275"));
                 mFollowTv.setBackground(ContextCompat.getDrawable(U.app(), R.drawable.unfollow_bg));
             }
 
