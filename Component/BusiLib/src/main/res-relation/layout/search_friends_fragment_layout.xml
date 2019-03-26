@@ -23,11 +23,17 @@
         app:statusBarColor="#0288D0"
         app:titleBarColor="#0288D0"></com.common.view.titlebar.CommonTitleBar>
 
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/search_result"
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/titlebar"></android.support.v7.widget.RecyclerView>
+        android:layout_below="@+id/titlebar">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/search_result"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 </RelativeLayout>
