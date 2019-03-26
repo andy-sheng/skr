@@ -152,6 +152,7 @@ public class RelationView extends RelativeLayout {
 
     private void unFollow(final UserInfoModel userInfoModel) {
         TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
+                .setTitleTip("取消关注")
                 .setMessageTip("是否取消关注")
                 .setConfirmTip("取消关注")
                 .setCancelTip("不了")

@@ -67,7 +67,7 @@ public class ConfirmDialogView extends RelativeLayout {
             if (num != 0) {
                 SpannableStringBuilder stringBuilder = new SpanUtils()
                         .append("将").setForegroundColor(U.getColor(R.color.black_trans_50))
-                        .append(" " + mUserInfoModel.getNickname() + " ").setForegroundColor(Color.parseColor("#F5A623"))
+                        .append(" " + mUserInfoModel.getNickname() + " \n").setForegroundColor(Color.parseColor("#F5A623"))
                         .append("移除房间需要消耗").setForegroundColor(U.getColor(R.color.black_trans_50))
                         .append("" + num).setForegroundColor(Color.parseColor("#F5A623"))
                         .append("金币").setForegroundColor(U.getColor(R.color.black_trans_50))
@@ -116,7 +116,7 @@ public class ConfirmDialogView extends RelativeLayout {
                     public void onNext(Integer integer) {
                         SpannableStringBuilder stringBuilder = new SpanUtils()
                                 .append("是否同意将").setForegroundColor(U.getColor(R.color.black_trans_50))
-                                .append("" + mUserInfoModel.getNickname()).setForegroundColor(Color.parseColor("#F5A623"))
+                                .append("" + mUserInfoModel.getNickname()+"\n").setForegroundColor(Color.parseColor("#F5A623"))
                                 .append("移出房间").setForegroundColor(U.getColor(R.color.black_trans_50))
                                 .append((counDown - integer) + "s").setForegroundColor(Color.parseColor("#F5A623"))
                                 .create();
