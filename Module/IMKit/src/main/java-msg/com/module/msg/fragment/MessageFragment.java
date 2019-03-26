@@ -130,6 +130,7 @@ public class MessageFragment extends BaseFragment implements IMessageFragment, W
     @Override
     public void destroy() {
         super.destroy();
+        WeakRedDotManager.getInstance().removeListener(this);
     }
 
     // 会话列表的Fragment

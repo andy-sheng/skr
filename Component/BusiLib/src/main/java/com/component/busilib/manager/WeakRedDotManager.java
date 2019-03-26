@@ -45,6 +45,16 @@ public class WeakRedDotManager {
         }
     }
 
+    public synchronized void removeListener(WeakRedDotListener listener) {
+        MyLog.d(TAG, "removeListener" + " listener=" + listener);
+        for (int msgType : listener.acceptType()) {
+            HashSet<WeakRedDotListener> listenerSet = mMap.get(msgType);
+            if (listenerSet != null) {
+                listenerSet.remove(listener);
+            }
+        }
+    }
+
     /**
      * 更新红点
      *

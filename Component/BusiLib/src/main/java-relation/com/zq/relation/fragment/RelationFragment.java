@@ -386,6 +386,7 @@ public class RelationFragment extends BaseFragment implements WeakRedDotManager.
         }
 
         U.getSoundUtils().release(TAG);
+        WeakRedDotManager.getInstance().removeListener(this);
     }
 
     @Override

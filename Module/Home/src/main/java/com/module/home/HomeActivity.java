@@ -326,6 +326,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
         if (mHomeDialogManager != null) {
             mHomeDialogManager.destroy();
         }
+        WeakRedDotManager.getInstance().removeListener(this);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
