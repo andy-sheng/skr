@@ -105,6 +105,7 @@ public class SearchFriendFragment extends BaseFragment {
                 UserInfoModel userInfoModel = (UserInfoModel) model;
                 if (view.getId() == R.id.content) {
                     // 跳到他人的个人主页
+                    U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
                     Bundle bundle = new Bundle();
                     bundle.putSerializable(OtherPersonFragment.BUNDLE_USER_ID, userInfoModel.getUserId());
                     U.getFragmentUtils().addFragment(FragmentUtils

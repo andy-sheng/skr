@@ -50,7 +50,7 @@ public class GrabInvitePresenter extends RxLifeCyclePresenter {
 
                     mGrabFriendModelList.addAll(grabFriendModelList);
                     mIGrabInviteView.updateFriendList(mGrabFriendModelList);
-                    mOffset = Integer.parseInt(result.getData().getString("offset"));
+                    mOffset = result.getData().getIntValue("offset");
                 } else {
                     MyLog.w(TAG, "getFriendList failed, " + result.getErrmsg() + ", traceid is " + result.getTraceId());
                 }
