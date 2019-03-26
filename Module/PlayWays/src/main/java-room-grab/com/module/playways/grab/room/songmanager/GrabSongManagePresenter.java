@@ -44,7 +44,9 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
 
     List<GrabRoomSongModel> mGrabRoomSongModelList = new ArrayList<>();
 
-    int totalNum = 0;
+    boolean mHasMore = false;
+
+    int mTotalNum = 0;
 
     int mLimit = 20;
 
@@ -94,13 +96,13 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
 
         int offset;
 
-        if(!mGrabRoomData.hasGameBegin()){
+        if (!mGrabRoomData.hasGameBegin()) {
             offset = 0;
         } else {
             offset = mGrabRoomData.getRealRoundSeq() - 1;
         }
 
-        if(mGrabRoomSongModelList != null && mGrabRoomSongModelList.size() > 0){
+        if (mGrabRoomSongModelList != null && mGrabRoomSongModelList.size() > 0) {
             offset = mGrabRoomSongModelList.get(mGrabRoomSongModelList.size() - 1).getRoundSeq();
         }
 
@@ -114,6 +116,7 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
                     if (grabRoomSongModels == null || grabRoomSongModels.size() == 0) {
                         //没有更多了
                         mIGrabSongManageView.hasMoreSongList(false);
+                        mHasMore = false;
                         MyLog.d(TAG, "process grabRoomSongModels size is 0");
                         return;
                     }
@@ -121,11 +124,12 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
                     MyLog.d(TAG, "process grabRoomSongModels size is is " + grabRoomSongModels.size());
 
                     mIGrabSongManageView.hasMoreSongList(true);
+                    mHasMore = true;
                     mGrabRoomSongModelList.addAll(grabRoomSongModels);
                     updateSongList();
 
                     int total = Integer.parseInt(result.getData().getString("total"));
-                    totalNum = total;
+                    mTotalNum = total;
                     mIGrabSongManageView.showNum(total);
                 } else {
                     MyLog.w(TAG, "getFriendList failed, " + result.getErrmsg() + ", traceid is " + result.getTraceId());
@@ -173,7 +177,7 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
                             }
                         }
 
-                        mIGrabSongManageView.showNum(--totalNum);
+                        mIGrabSongManageView.showNum(--mTotalNum);
                         updateSongList();
                     }
                 } else {
@@ -190,8 +194,8 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabRoundChangeEvent event) {
-        if(event.newRoundInfo != null && event.newRoundInfo.getRoundSeq() != 1){
-            mIGrabSongManageView.showNum(--totalNum);
+        if (event.newRoundInfo != null && event.newRoundInfo.getRoundSeq() != 1) {
+            mIGrabSongManageView.showNum(--mTotalNum);
         }
         updateSongList();
     }
@@ -208,6 +212,10 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
         }
 
         mIGrabSongManageView.updateSongList(mGrabRoomSongModelList);
+
+        if (mGrabRoomSongModelList.size() < 5 && mHasMore) {
+            getPlayBookList();
+        }
     }
 
     public void addSong(SongModel songModel) {
@@ -245,7 +253,7 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
                             mGrabRoomSongModelList.add(2, grabRoomSongModel);
                         }
 
-                        mIGrabSongManageView.showNum(++totalNum);
+                        mIGrabSongManageView.showNum(++mTotalNum);
                         updateSongList();
                     }
                 } else {
@@ -282,8 +290,8 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
                     }
 
                     int total = Integer.parseInt(result.getData().getString("total"));
-                    totalNum = total;
-                    mIGrabSongManageView.showNum(totalNum);
+                    mTotalNum = total;
+                    mIGrabSongManageView.showNum(mTotalNum);
 
                     mIGrabSongManageView.hasMoreSongList(true);
                     mGrabRoomSongModelList.clear();
