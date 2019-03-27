@@ -144,7 +144,9 @@ public class UserInfoManager {
                                     BuddyCache.getInstance().putBuddy(new BuddyCache.BuddyCacheEntry(userInfo));
                                 }
 
-                                emitter.onNext(userInfo);
+                                if (userInfo != null) {
+                                    emitter.onNext(userInfo);
+                                }
                                 emitter.onComplete();
                             }
                         })
@@ -206,6 +208,7 @@ public class UserInfoManager {
 
     /**
      * 成为好友
+     *
      * @param userId
      */
     public void beFriend(int userId) {
