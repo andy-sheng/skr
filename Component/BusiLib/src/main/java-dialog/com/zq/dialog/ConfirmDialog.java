@@ -60,7 +60,7 @@ public class ConfirmDialog {
                         }
                     }
                 })
-                .setGravity(Gravity.CENTER)
+                .setGravity(Gravity.BOTTOM)
                 .create();
     }
 
