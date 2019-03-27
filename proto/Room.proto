@@ -244,6 +244,7 @@ message QResultInfo {
     uint32 wholeTimeSingCnt = 4; //一唱到底数量
     float wholeTimeSingRatio = 5; //一唱到底成功率
     float beyondSkrerRatio = 6; //超过同段位
+    uint32 otherBlightCntTotal = 7; //其他人给予爆灯的数量
 }
 
 message QNoPassSingMsg {

@@ -21,6 +21,7 @@ public class GrabResultInfoModel implements Serializable {
         grabResultInfoModel.setWholeTimeSingCnt(info.getWholeTimeSingCnt());
         grabResultInfoModel.setWholeTimeSingRatio(info.getWholeTimeSingRatio());
         grabResultInfoModel.setBeyondSkrerRatio(info.getBeyondSkrerRatio());
+        grabResultInfoModel.setOtherBlightCntTotal(info.getOtherBlightCntTotal());
         return null;
     }
 
