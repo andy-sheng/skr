@@ -964,7 +964,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     JoinGrabRoomRspModel joinGrabRoomRspModel = JSON.parseObject(result.getData().toJSONString(), JoinGrabRoomRspModel.class);
                     onChangeRoomSuccess(joinGrabRoomRspModel);
                 } else {
-                    joinRoomAndInit(false);
                     mIGrabView.onChangeRoomResult(false, result.getErrmsg());
                 }
                 mSwitchRooming = false;
