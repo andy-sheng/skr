@@ -24,6 +24,7 @@ public class JsRegister {
     public static final String BIND_QQ = "bindQqChat";
     public static final String BIND_GET_VERSION = "getAppVersion";
     public static final String GET_CLIP_BOARD = "getClipboard";
+    public static final String AUTH_SUCCESS = "authSuccess";
 
     BridgeWebView mBridgeWebView;
 
@@ -63,6 +64,8 @@ public class JsRegister {
             mJsBridgeImpl.getAppVersion(paramData, callBackFunction);
         } else if (GET_CLIP_BOARD.equals(opt)) {
             mJsBridgeImpl.getClipboard(callBackFunction);
+        } else if (AUTH_SUCCESS.equals(opt)) {
+            mJsBridgeImpl.authSuccess(callBackFunction);
         } else {
             mJsBridgeImpl.noMethed(callBackFunction);
         }

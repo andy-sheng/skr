@@ -7,4 +7,5 @@ import com.alibaba.android.arouter.facade.template.IProvider;
  */
 public interface IHomeService extends IProvider {
     Object getData(int type, Object object);
+    void authSuccess();
 }
