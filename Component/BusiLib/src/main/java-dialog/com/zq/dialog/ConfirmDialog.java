@@ -41,27 +41,28 @@ public class ConfirmDialog {
                 }
             }
         });
-
-        mDialogPlus = DialogPlus.newDialog(context)
-                .setContentHolder(new ViewHolder(dialogView))
-                .setContentBackgroundResource(R.color.transparent)
-                .setOverlayBackgroundResource(R.color.black_trans_50)
-                .setExpanded(false)
-                .setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
-                        if (view.getId() == R.id.cancle_tv) {
-                            dialog.dismiss();
-                        } else if (view.getId() == R.id.confirm_tv) {
-                            dialog.dismiss();
-                            if (mListener != null) {
-                                mListener.onClickConfirm(userInfoModel);
+        if (mDialogPlus == null) {
+            mDialogPlus = DialogPlus.newDialog(context)
+                    .setContentHolder(new ViewHolder(dialogView))
+                    .setContentBackgroundResource(R.color.transparent)
+                    .setOverlayBackgroundResource(R.color.black_trans_50)
+                    .setExpanded(false)
+                    .setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
+                            if (view.getId() == R.id.cancle_tv) {
+                                dialog.dismiss();
+                            } else if (view.getId() == R.id.confirm_tv) {
+                                dialog.dismiss();
+                                if (mListener != null) {
+                                    mListener.onClickConfirm(userInfoModel);
+                                }
                             }
                         }
-                    }
-                })
-                .setGravity(Gravity.BOTTOM)
-                .create();
+                    })
+                    .setGravity(Gravity.BOTTOM)
+                    .create();
+        }
     }
 
     public void setListener(Listener grabClickListener) {

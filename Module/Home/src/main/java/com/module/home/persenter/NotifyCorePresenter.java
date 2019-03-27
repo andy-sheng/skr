@@ -166,14 +166,15 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                                 }
                             })
                             .build();
-
-                    mBeFriendDialog = DialogPlus.newDialog(U.getActivityUtils().getTopActivity())
-                            .setContentHolder(new ViewHolder(tipsDialogView))
-                            .setGravity(Gravity.BOTTOM)
-                            .setContentBackgroundResource(R.color.transparent)
-                            .setOverlayBackgroundResource(R.color.black_trans_80)
-                            .setExpanded(false)
-                            .create();
+                    if(mBeFriendDialog==null) {
+                        mBeFriendDialog = DialogPlus.newDialog(U.getActivityUtils().getTopActivity())
+                                .setContentHolder(new ViewHolder(tipsDialogView))
+                                .setGravity(Gravity.BOTTOM)
+                                .setContentBackgroundResource(R.color.transparent)
+                                .setOverlayBackgroundResource(R.color.black_trans_80)
+                                .setExpanded(false)
+                                .create();
+                    }
 
                     EventBus.getDefault().post(new ShowDialogInHomeEvent(mBeFriendDialog, 30));
                 }
