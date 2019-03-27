@@ -125,6 +125,17 @@ public class UpgradeManager {
         if (mUpgradeData.getStatus() == UpgradeData.STATUS_INIT) {
             mUpgradeData.setNeedShowDialog(false);
             loadDataFromServer();
+        } else if (mUpgradeData.getStatus() == UpgradeData.STATUS_LOAD_DATA_FROM_SERVER) {
+            UpgradeInfoModel upgradeInfoModel = mUpgradeData.getUpgradeInfoModel();
+            if (upgradeInfoModel != null) {
+                if (upgradeInfoModel.isForceUpdate()) {
+                    if (mForceUpgradeDialog != null) {
+                        if (!mForceUpgradeDialog.isShowing()) {
+                            mForceUpgradeDialog.show();
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -269,9 +280,9 @@ public class UpgradeManager {
             mUpgradeData.setStatus(UpgradeData.STATUS_DOWNLOWNED);
             mNormalUpgradeView.setAlreadyDownloadTips();
         }
-        if(U.getActivityUtils().isHomeActivity(U.getActivityUtils().getTopActivity())){
-            EventBus.getDefault().post(new ShowDialogInHomeEvent(mNormalUpgradeDialog,1));
-        }else{
+        if (U.getActivityUtils().isHomeActivity(U.getActivityUtils().getTopActivity())) {
+            EventBus.getDefault().post(new ShowDialogInHomeEvent(mNormalUpgradeDialog, 1));
+        } else {
             mNormalUpgradeDialog.show();
         }
     }
@@ -318,9 +329,9 @@ public class UpgradeManager {
             mUpgradeData.setStatus(UpgradeData.STATUS_DOWNLOWNED);
             mForceUpgradeView.setAlreadyDownloadTips();
         }
-        if(U.getActivityUtils().isHomeActivity(U.getActivityUtils().getTopActivity())){
-            EventBus.getDefault().post(new ShowDialogInHomeEvent(mForceUpgradeDialog,1));
-        }else{
+        if (U.getActivityUtils().isHomeActivity(U.getActivityUtils().getTopActivity())) {
+            EventBus.getDefault().post(new ShowDialogInHomeEvent(mForceUpgradeDialog, 1));
+        } else {
             mForceUpgradeDialog.show();
         }
     }

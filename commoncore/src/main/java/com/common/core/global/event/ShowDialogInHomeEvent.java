@@ -9,4 +9,12 @@ public class ShowDialogInHomeEvent {
         this.mDialogPlus = dialogPlus;
         this.mSeq = seq;
     }
+
+    @Override
+    public String toString() {
+        return "ShowDialogInHomeEvent{" +
+                "mDialogPlus=" + mDialogPlus +
+                ", mSeq=" + mSeq +
+                '}';
+    }
 }

@@ -3,6 +3,7 @@ package com.module.home.dialogmanager;
 import android.support.annotation.NonNull;
 
 import com.common.anim.ObjectPlayControlTemplate;
+import com.common.log.MyLog;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnDismissListener;
 import com.common.core.global.event.ShowDialogInHomeEvent;
@@ -15,6 +16,8 @@ import org.greenrobot.eventbus.ThreadMode;
  * 首页弹窗管理，保证首页有N个弹窗要显示时，能有序显示
  */
 public class HomeDialogManager {
+    public final static String TAG = "HomeDialogManager";
+
     private boolean mHasShowDialog = false;
     ObjectPlayControlTemplate<ExDialogData, HomeDialogManager> mObjectPlayControlTemplate;
 
@@ -32,6 +35,7 @@ public class HomeDialogManager {
                         dialogPlus.onDismissListener = new OnDismissListener() {
                             @Override
                             public void onDismiss(@NonNull DialogPlus dialog) {
+                                MyLog.d(TAG,"onDismiss" + " dialog=" + dialog);
                                 if (oriListener != null) {
                                     oriListener.onDismiss(dialog);
                                 }
@@ -74,6 +78,7 @@ public class HomeDialogManager {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ShowDialogInHomeEvent event) {
+        MyLog.d(TAG, "onEvent" + " event=" + event);
         mObjectPlayControlTemplate.add(new ExDialogData(event.mDialogPlus), true);
     }
 }
