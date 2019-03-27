@@ -28,7 +28,7 @@ import java.util.List;
 
 public class GrabAudienceView extends RelativeLayout {
     public final static String TAG = "GrabAudienceView";
-    public static final int MAX_COUNT = 7;
+    public static final int MAX_COUNT = 12;
     List<VH> mBaseImageViewList = new ArrayList<>(MAX_COUNT);
     List<GrabPlayerInfoModel> mWaitInfoModelList = new ArrayList<>();
 
@@ -133,12 +133,8 @@ public class GrabAudienceView extends RelativeLayout {
             mBaseImageViewList.get(i).mBaseImageView.setVisibility(GONE);
         }
 
-        for (int i = 0; i < mWaitInfoModelList.size(); i++) {
+        for (int i = 0; i < mWaitInfoModelList.size() && i<mBaseImageViewList.size(); i++) {
             MyLog.d(TAG, "i=" + i);
-            if (i >= mBaseImageViewList.size()) {
-                MyLog.w(TAG, "updateAllView waitinfomodellist size is error, size is " + mWaitInfoModelList.size());
-                break;
-            }
 
             UserInfoModel userInfoModel = mWaitInfoModelList.get(i).getUserInfo();
             VH vp = mBaseImageViewList.get(i);
