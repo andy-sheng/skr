@@ -81,6 +81,7 @@ public class EngineManager implements AgoraOutCallback {
     private String mLastJoinChannelToken; // 上一次加入房间用的token
     private String mRoomId = ""; // 房间id
     private boolean mInChannel = false; // 是否已经在频道中
+
     @Override
     public void onUserJoined(int uid, int elapsed) {
         // 用户加入了
@@ -237,11 +238,9 @@ public class EngineManager implements AgoraOutCallback {
                         if (mStatus == STATUS_INITED) {
                             if (TextUtils.isEmpty(mLastJoinChannelToken)) {
                                 MyLog.w(TAG, "上一次加入房间没有token，加入失败，那这次使用token");
-                                AgoraEngineAdapter.getInstance().leaveChannel();
                                 joinRoomInner2(mRoomId, mConfig.getSelfUid(), getToken(mRoomId));
                             } else {
                                 MyLog.w(TAG, "上一次加入房间有token，加入失败，那这次不用了");
-                                AgoraEngineAdapter.getInstance().leaveChannel();
                                 joinRoomInner2(mRoomId, mConfig.getSelfUid(), null);
                             }
                         }
@@ -259,7 +258,6 @@ public class EngineManager implements AgoraOutCallback {
                     public void run() {
                         if (mStatus == STATUS_INITED) {
                             String token = getToken(mRoomId);
-                            AgoraEngineAdapter.getInstance().leaveChannel();
                             joinRoomInner2(mRoomId, mConfig.getSelfUid(), token);
                         }
                     }
@@ -325,7 +323,6 @@ public class EngineManager implements AgoraOutCallback {
                     mLock.notifyAll();
                 }
                 AgoraEngineAdapter.getInstance().init(mConfig);
-//                CbEngineAdapter.getInstance().init(mConfig);
                 setAudioEffectStyle(mConfig.getStyleEnum());
                 if (!EventBus.getDefault().isRegistered(EngineManager.this)) {
                     EventBus.getDefault().register(EngineManager.this);
@@ -523,6 +520,7 @@ public class EngineManager implements AgoraOutCallback {
     private void joinRoomInner2(final String roomid, final int userId, final String token) {
         MyLog.d(TAG, "joinRoomInner2" + " roomid=" + roomid + " userId=" + userId + " token=" + token);
         mLastJoinChannelToken = token;
+        AgoraEngineAdapter.getInstance().leaveChannel();
         int retCode = AgoraEngineAdapter.getInstance().joinChannel(token, roomid, "Extra Optional Data", userId);
         MyLog.d(TAG, "joinRoomInner2" + " retCode=" + retCode);
         if (retCode < 0) {
@@ -1345,7 +1343,7 @@ public class EngineManager implements AgoraOutCallback {
     }
 
     public void getLineScore2(int lineNum, Score2Callback callback) {
-         AgoraEngineAdapter.getInstance().getScoreV2(lineNum,callback);
+        AgoraEngineAdapter.getInstance().getScoreV2(lineNum, callback);
     }
 
     /*音频高级扩展结束*/
