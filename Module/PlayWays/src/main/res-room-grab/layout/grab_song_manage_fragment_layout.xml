@@ -40,6 +40,7 @@
             android:layout_marginTop="@dimen/view_81_dp"
             android:layout_marginRight="@dimen/view_20_dp"
             android:layout_marginBottom="@dimen/view_148_dp"
+            android:padding="@dimen/view_2_dp"
             app:bl_corners_radius="@dimen/view_8_dp"
             app:bl_solid_color="#3F4153"
             app:bl_stroke_color="#202239"
