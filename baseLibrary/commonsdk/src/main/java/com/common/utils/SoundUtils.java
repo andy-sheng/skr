@@ -125,6 +125,10 @@ public class SoundUtils {
             MyLog.d("SoundUtils", "starPlay" + " isPlay = false ");
             return;
         }
+        if (!U.getActivityUtils().isAppForeground()) {
+            MyLog.d("SoundUtils", "在后台不播放音效，cancel");
+            return;
+        }
         Holder holder = mSoundPoolMap.get(key);
         if (holder != null) {
             for (Item item : holder.mItemList) {
