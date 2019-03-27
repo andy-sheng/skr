@@ -28,13 +28,13 @@ public abstract class ObjectPlayControlTemplate<MODEL, CONSUMER> {
      */
     private LinkedList<MODEL> mQueue = new LinkedList<>();
 
-    CustomHandlerThread mHandlerMODELhread;// 保证++ --  都在后台线程操作
+    CustomHandlerThread mHandlerThread;// 保证++ --  都在后台线程操作
 
     Handler mUiHandler;
 
 
     public ObjectPlayControlTemplate() {
-        mHandlerMODELhread = new CustomHandlerThread("my-queue-thread") {
+        mHandlerThread = new CustomHandlerThread("my-queue-thread") {
             @Override
             protected void processMessage(Message var1) {
 
@@ -57,7 +57,7 @@ public abstract class ObjectPlayControlTemplate<MODEL, CONSUMER> {
     }
 
     public void add(MODEL model, boolean must) {
-        mHandlerMODELhread.post(new Runnable() {
+        mHandlerThread.post(new Runnable() {
             @Override
             public void run() {
                 if (mQueue.size() < SIZE || must) {
@@ -108,7 +108,7 @@ public abstract class ObjectPlayControlTemplate<MODEL, CONSUMER> {
         msg.obj = model;
         mUiHandler.sendMessage(msg);
 
-        mHandlerMODELhread.post(new Runnable() {
+        mHandlerThread.post(new Runnable() {
             @Override
             public void run() {
                 onEndInSide(model);
@@ -136,7 +136,7 @@ public abstract class ObjectPlayControlTemplate<MODEL, CONSUMER> {
         if (mUiHandler != null) {
             mUiHandler.removeCallbacksAndMessages(null);
         }
-        mHandlerMODELhread.destroy();
+        mHandlerThread.destroy();
     }
 
 

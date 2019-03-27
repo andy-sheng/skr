@@ -6,13 +6,5 @@
     android:layout_height="wrap_content"
     tools:parentTag="android.widget.RelativeLayout">
 
-    <com.opensource.svgaplayer.SVGAImageView
-        android:id="@+id/deng_svga"
-        android:layout_width="@dimen/view_375_dp"
-        android:layout_height="@dimen/view_400_dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_50_dp"
-        app:antiAlias="true"
-        app:autoPlay="false" />
 
 </merge>
