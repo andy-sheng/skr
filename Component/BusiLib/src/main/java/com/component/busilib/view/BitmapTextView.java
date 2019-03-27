@@ -113,33 +113,36 @@ public class BitmapTextView extends View {
             char[] chars = text.toCharArray();
             for (int i = 0; i < chars.length; i++) {
                 Bitmap bitmap = getBitmap(chars[i]);
-                if (scale != 1) {
-                    int height = bitmap.getHeight();
-                    int width = bitmap.getWidth();
-                    Matrix matrix = new Matrix();
-                    matrix.postScale(scale, scale);
-                    Bitmap newBM = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
-                    if (!bitmap.isRecycled()) {
-                        bitmap.recycle();
-                    }
-                    if (newBM != null) {
-                        mWidth = mWidth + newBM.getWidth();
-                        if (mHeight < newBM.getHeight()) {
-                            mHeight = newBM.getHeight();
+                if (bitmap != null) {
+                    if (scale != 1) {
+                        int height = bitmap.getHeight();
+                        int width = bitmap.getWidth();
+                        Matrix matrix = new Matrix();
+                        matrix.postScale(scale, scale);
+                        Bitmap newBM = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+                        if (!bitmap.isRecycled()) {
+                            bitmap.recycle();
                         }
-                        mBitmapList.add(newBM);
+                        if (newBM != null) {
+                            mWidth = mWidth + newBM.getWidth();
+                            if (mHeight < newBM.getHeight()) {
+                                mHeight = newBM.getHeight();
+                            }
+                            mBitmapList.add(newBM);
+                        } else {
+                            MyLog.w(TAG, "setText" + " text=" + text + "newBM is null");
+                            MyLog.w(TAG, "scale = " + scale);
+                        }
                     } else {
-                        MyLog.w(TAG, "setText" + " text=" + text + "newBM is null");
-                        MyLog.w(TAG, "scale = " + scale);
+                        mWidth = mWidth + bitmap.getWidth();
+                        if (mHeight < bitmap.getHeight()) {
+                            mHeight = bitmap.getHeight();
+                        }
+                        mBitmapList.add(bitmap);
                     }
                 } else {
-                    mWidth = mWidth + bitmap.getWidth();
-                    if (mHeight < bitmap.getHeight()) {
-                        mHeight = bitmap.getHeight();
-                    }
-                    mBitmapList.add(bitmap);
+                    MyLog.w(TAG, " setText error text=" + text);
                 }
-
             }
             mWidth = mWidth - (int) (diff * (chars.length - 1) * scale);
             invalidate();
