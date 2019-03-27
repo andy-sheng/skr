@@ -5,6 +5,7 @@ import android.content.ClipboardManager;
 import android.text.TextUtils;
 import android.util.Pair;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSONObject;
 import com.common.base.BaseActivity;
 
@@ -15,6 +16,8 @@ import com.common.core.share.ShareType;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.jsbridge.CallBackFunction;
+import com.module.RouterConstants;
+import com.module.home.IHomeService;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -182,6 +185,12 @@ public class JsBridgeImpl {
 
         function.onCallBack(getJsonObj(new Pair("errcode", "0"), new Pair("errmsg", ""),
                 new Pair("data", getJsonObj(new Pair("content", ClipboardUtils.getPaste())))).toJSONString());
+    }
+
+    public void authSuccess(final CallBackFunction function) {
+        IHomeService channelService = (IHomeService) ARouter.getInstance().build(RouterConstants.SERVICE_HOME).navigation();
+        channelService.authSuccess();
+        function.onCallBack(getJsonObj(new Pair("errcode", "0"), new Pair("errmsg", "")).toJSONString());
     }
 
     public void noMethed(final CallBackFunction function) {
