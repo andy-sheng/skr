@@ -1,8 +1,11 @@
 package com.engine.score;
 
+import android.os.Message;
 import android.text.TextUtils;
 
+import com.common.engine.ScoreConfig;
 import com.common.log.MyLog;
+import com.common.utils.CustomHandlerThread;
 
 import java.io.File;
 
@@ -21,6 +24,8 @@ public class ICbScoreProcessor {
     }
 
     private String melPath;
+
+    CustomHandlerThread mCustomHandlerThread;
 
     public int init() {
         melPath = null;
@@ -59,23 +64,87 @@ public class ICbScoreProcessor {
                 }
             }
         }
-        int r = process1(needScore, restartEngine, samples, length, channels, samplesPerSec, currentTimeMills, melPath);
-        return r;
+        int r1 = process1(needScore, restartEngine, samples, length, channels, samplesPerSec, currentTimeMills, melPath);
+        if (ScoreConfig.isMelp2Enable()) {
+            if (mCustomHandlerThread == null) {
+                mCustomHandlerThread = new CustomHandlerThread("getScore2") {
+                    @Override
+                    protected void processMessage(Message var1) {
+                        if (var1.what == 1) {
+                            Holder holder = (Holder) var1.obj;
+                            process2(holder.needScore, holder.restartEngine, holder.samples, holder.length, holder.channels, holder.samplesPerSec, holder.currentTimeMills, holder.melPath);
+                        } else if (var1.what == 2) {
+                            Score2Callback score2Callback = (Score2Callback) var1.obj;
+                            if (score2Callback != null) {
+                                int score2 = getScore2();
+                                score2Callback.onGetScore(var1.arg1, score2);
+                            }
+                        }
+                    }
+                };
+            }
+            Message msg = mCustomHandlerThread.obtainMessage();
+            msg.what = 1;
+            msg.obj = new Holder(needScore, restartEngine, samples, length, channels, samplesPerSec, currentTimeMills, melPath);
+            mCustomHandlerThread.sendMessage(msg);
+        }
+
+        return r1;
     }
 
-    public int getScore() {
+    public int getScoreV1() {
         return getScore1();
+    }
+
+    public void getScoreV2(int lineNum, Score2Callback score2Callback) {
+        if (mCustomHandlerThread != null) {
+            Message msg = mCustomHandlerThread.obtainMessage();
+            msg.what = 2;
+            msg.arg1 = lineNum;
+            msg.obj = score2Callback;
+            mCustomHandlerThread.sendMessage(msg);
+        }
     }
 
     public int destroy() {
         melPath = null;
         destroyScoreProcessor();
+        if (mCustomHandlerThread != null) {
+            mCustomHandlerThread.destroy();
+            mCustomHandlerThread = null;
+        }
         return 0;
     }
 
     public native int process1(boolean needScore, boolean restartEngine, byte[] samples, int length, int channels, int samplesPerSec, long currentTimeMills, String melPath);
 
+    public native int getScore1();
+
+    public native int process2(boolean needScore, boolean restartEngine, byte[] samples, int length, int channels, int samplesPerSec, long currentTimeMills, String melPath);
+
+    public native int getScore2();
+
     public native void destroyScoreProcessor();
 
-    public native int getScore1();
+    public static class Holder {
+        boolean needScore;
+        boolean restartEngine;
+        byte[] samples;
+        int length;
+        int channels;
+        int samplesPerSec;
+        long currentTimeMills;
+        String melPath;
+
+        public Holder(boolean needScore, boolean restartEngine, byte[] samples, int length, int channels, int samplesPerSec, long currentTimeMills, String melPath) {
+            this.needScore = needScore;
+            this.restartEngine = restartEngine;
+            this.samples = samples;
+            this.length = length;
+            this.channels = channels;
+            this.samplesPerSec = samplesPerSec;
+            this.currentTimeMills = currentTimeMills;
+            this.melPath = melPath;
+        }
+    }
 }

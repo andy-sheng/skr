@@ -9,7 +9,6 @@ import android.os.Handler;
 import android.os.Process;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -144,10 +143,10 @@ public class SysInfoFragment extends BaseFragment {
                         listDialog.dissmiss();
                     }
                 }));
-                listItems.add(new DialogListItem(ScoreConfig.isMelpServerEnable() ? "关闭MELP_SERVER" : "打开MELP_SERVER", new Runnable() {
+                listItems.add(new DialogListItem(ScoreConfig.isMelp2Enable() ? "关闭MELP2" : "打开MELP2", new Runnable() {
                     @Override
                     public void run() {
-                        ScoreConfig.setMelpServerEnable(!ScoreConfig.isMelpServerEnable());
+                        ScoreConfig.setMelp2Enable(!ScoreConfig.isMelp2Enable());
                         initData();
                         listDialog.dissmiss();
                     }

@@ -21,6 +21,7 @@ import com.engine.agora.AgoraEngineAdapter;
 import com.engine.agora.AgoraOutCallback;
 import com.engine.agora.effect.EffectModel;
 import com.engine.arccloud.RecognizeConfig;
+import com.engine.score.Score2Callback;
 import com.engine.token.AgoraTokenApi;
 
 import org.greenrobot.eventbus.EventBus;
@@ -1339,9 +1340,14 @@ public class EngineManager implements AgoraOutCallback {
         });
     }
 
-    public int getLineScore() {
-        return AgoraEngineAdapter.getInstance().getScore();
+    public int getLineScore1() {
+        return AgoraEngineAdapter.getInstance().getScoreV1();
     }
+
+    public void getLineScore2(int lineNum, Score2Callback callback) {
+         AgoraEngineAdapter.getInstance().getScoreV2(lineNum,callback);
+    }
+
     /*音频高级扩展结束*/
 
     /*打分相关开始*/
@@ -1365,4 +1371,6 @@ public class EngineManager implements AgoraOutCallback {
         public String roomID;
         public String token;
     }
+
+
 }

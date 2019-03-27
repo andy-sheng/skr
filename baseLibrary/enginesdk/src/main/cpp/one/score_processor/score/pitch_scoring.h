@@ -2,7 +2,7 @@
 #define PITCH_SCORING_H_
 
 #include "base_scoring.h"
-#include "f0_cal/CCalcBaseband.h"
+#include "score_processor/f0_cal/baseband/CCalcBaseband.h"
 #include "mel_chord_ana.h"
 
 class PitchScoring: public BaseScoring {
