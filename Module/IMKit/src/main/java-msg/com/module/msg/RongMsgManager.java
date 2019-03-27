@@ -342,25 +342,25 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
         });
     }
 
-    ICallback mUnreadCallback;
+    HashSet<ICallback> mUnreadCallbacks = new HashSet<>();
 
     IUnReadMessageObserver mIUnReadMessageObserver = new IUnReadMessageObserver() {
         @Override
         public void onCountChanged(int unReadNum) {
             MyLog.d(TAG, "onCountChanged" + " unReadNum=" + unReadNum);
-            if (mUnreadCallback != null) {
-                mUnreadCallback.onSucess(unReadNum);
+            for(ICallback callback:mUnreadCallbacks){
+                callback.onSucess(unReadNum);
             }
         }
     };
 
     public void addUnReadMessageCountChangedObserver(ICallback callback) {
-        this.mUnreadCallback = callback;
+        mUnreadCallbacks.add(callback);
         RongIM.getInstance().addUnReadMessageCountChangedObserver(mIUnReadMessageObserver, Conversation.ConversationType.PRIVATE);
     }
 
-    public void removeUnReadMessageCountChangedObserver() {
-        this.mUnreadCallback = null;
+    public void removeUnReadMessageCountChangedObserver(ICallback callback) {
+        mUnreadCallbacks.remove(callback);
         RongIM.getInstance().removeUnReadMessageCountChangedObserver(mIUnReadMessageObserver);
     }
 
