@@ -73,6 +73,17 @@ public class ApiMethods {
     }
 
     /**
+     * 订阅数据，自己处理生命周期
+     * @param observable
+     * @param apiObserver
+     * @param <T>
+     * @return
+     */
+    public static <T> Disposable subscribeWith(Observable<T> observable, ApiObserver<T> apiObserver) {
+        return innerSubscribeWith(observable, apiObserver, null);
+    }
+
+    /**
      * 订阅数据，并绑定BaseFragment的生命周期
      *
      * @param observable

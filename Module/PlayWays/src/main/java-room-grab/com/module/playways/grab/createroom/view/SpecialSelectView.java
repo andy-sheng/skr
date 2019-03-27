@@ -35,6 +35,8 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import java.util.HashMap;
 import java.util.List;
 
+import io.reactivex.disposables.Disposable;
+
 /**
  * 歌曲专场选择
  */
@@ -48,6 +50,8 @@ public class SpecialSelectView extends RelativeLayout {
 
     int offset = 0;          //偏移量
     int DEFAULT_COUNT = 10;  // 每次拉去列表数目
+
+    Disposable mDisposable;
 
     List<String> musicURLs;  //背景音乐
     SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
@@ -86,7 +90,7 @@ public class SpecialSelectView extends RelativeLayout {
         mRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                loadData(offset, DEFAULT_COUNT);
+                loadData(offset, DEFAULT_COUNT, true);
             }
 
             @Override
@@ -125,11 +129,11 @@ public class SpecialSelectView extends RelativeLayout {
         mLoadService = mLoadSir.register(mRefreshLayout, new Callback.OnReloadListener() {
             @Override
             public void onReload(View v) {
-                loadData(offset, DEFAULT_COUNT);
+                loadData(0, DEFAULT_COUNT, false);
             }
         });
 
-        loadData(offset, DEFAULT_COUNT);
+        loadData(0, DEFAULT_COUNT, false);
         getBackgroundMusic();
     }
 
@@ -145,15 +149,15 @@ public class SpecialSelectView extends RelativeLayout {
         });
     }
 
-    private void loadData(int offset, int count) {
+    private void loadData(int offset, int count, boolean isLoadMore) {
         GrabSongApi grabSongApi = ApiManager.getInstance().createService(GrabSongApi.class);
-        ApiMethods.subscribe(grabSongApi.getSepcialList(offset, count), new ApiObserver<ApiResult>() {
+        mDisposable = ApiMethods.subscribeWith(grabSongApi.getSepcialList(offset, count), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult obj) {
                 if (obj.getErrno() == 0) {
                     List<SpecialModel> list = JSON.parseArray(obj.getData().getString("tags"), SpecialModel.class);
                     int offset = obj.getData().getIntValue("offset");
-                    refreshView(list, offset);
+                    refreshView(list, offset, isLoadMore);
                 } else {
                     mLoadService.showCallback(ErrorCallback.class);
                 }
@@ -161,10 +165,13 @@ public class SpecialSelectView extends RelativeLayout {
         });
     }
 
-    private void refreshView(List<SpecialModel> list, int offset) {
+    private void refreshView(List<SpecialModel> list, int offset, boolean isLoadMore) {
         this.offset = offset;
         if (list != null) {
             mRefreshLayout.finishLoadMore();
+            if (!isLoadMore) {
+                mSpecialSelectAdapter.getDataList().clear();
+            }
             mSpecialSelectAdapter.getDataList().addAll(list);
             mSpecialSelectAdapter.notifyDataSetChanged();
         } else {
@@ -176,6 +183,14 @@ public class SpecialSelectView extends RelativeLayout {
             mLoadService.showSuccess();
         } else {
             mLoadService.showCallback(EmptyCallback.class);
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (mDisposable != null) {
+            mDisposable.dispose();
         }
     }
 
