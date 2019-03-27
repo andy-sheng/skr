@@ -13,7 +13,6 @@ import com.module.playways.grab.room.event.GrabMyCoinChangeEvent;
 import com.module.playways.grab.room.event.GrabRoundChangeEvent;
 import com.module.playways.grab.room.model.GrabConfigModel;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
-import com.module.playways.grab.room.model.GrabResultInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.rank.prepare.model.JoinGrabRoomRspModel;
 
@@ -25,7 +24,6 @@ import java.util.List;
 public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
     //    public static final int ACC_OFFSET_BY_LYRIC = 5000;// 伴奏是比歌词提前 5 秒的
     protected int mCoin;// 金币数
-    protected List<GrabResultInfoModel> mResultList = new ArrayList<>(); // 一唱到底对战结果数据
     protected int mTagId;//一场到底歌曲分类
     protected GrabConfigModel mGrabConfigModel = new GrabConfigModel();// 一唱到底配置
     protected boolean mHasExitGame = false;// 是否已经正常退出房间
@@ -35,6 +33,8 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
     private int ownerId;// 房主id
     private boolean hasGameBegin = true;// 游戏是否已经开始
     SpecialModel mSpecialModel;
+
+    GrabResultData mGrabResultData;    // 游戏结果
 
     public GrabRoomData() {
         mIsAccEnable = U.getPreferenceUtils().getSettingBoolean("grab_acc_enable1", false);
@@ -123,15 +123,6 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
         }
     }
 
-    public void setResultList(List<GrabResultInfoModel> resultList) {
-        mResultList.clear();
-        mResultList.addAll(resultList);
-    }
-
-    public List<GrabResultInfoModel> getResultList() {
-        return mResultList;
-    }
-
     public int getTagId() {
         return mTagId;
     }
@@ -184,6 +175,14 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
         this.roomType = roomType;
     }
 
+    public GrabResultData getGrabResultData() {
+        return mGrabResultData;
+    }
+
+    public void setGrabResultData(GrabResultData grabResultData) {
+        mGrabResultData = grabResultData;
+    }
+
     public int getOwnerId() {
         return ownerId;
     }
@@ -234,7 +233,6 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
 
         setIsGameFinish(false);
         setHasExitGame(false);
-        mResultList.clear();
         this.setAgoraToken(rsp.getAgoraToken());
         this.setRoomType(rsp.getRoomType());
         this.setOwnerId(rsp.getOwnerID());
