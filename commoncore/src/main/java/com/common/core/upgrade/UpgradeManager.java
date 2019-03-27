@@ -19,6 +19,7 @@ import android.view.Gravity;
 
 import com.alibaba.fastjson.JSON;
 import com.common.core.R;
+import com.common.core.global.event.ShowDialogInHomeEvent;
 import com.common.log.MyLog;
 import com.common.provideer.MyFileProvider;
 import com.common.rxretrofit.ApiManager;
@@ -30,6 +31,8 @@ import com.common.utils.HttpUtils;
 import com.common.utils.U;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.List;
@@ -266,7 +269,11 @@ public class UpgradeManager {
             mUpgradeData.setStatus(UpgradeData.STATUS_DOWNLOWNED);
             mNormalUpgradeView.setAlreadyDownloadTips();
         }
-        mNormalUpgradeDialog.show();
+        if(U.getActivityUtils().isHomeActivity(U.getActivityUtils().getTopActivity())){
+            EventBus.getDefault().post(new ShowDialogInHomeEvent(mNormalUpgradeDialog,1));
+        }else{
+            mNormalUpgradeDialog.show();
+        }
     }
 
     private void showForceUpgradeDialog() {
@@ -311,7 +318,11 @@ public class UpgradeManager {
             mUpgradeData.setStatus(UpgradeData.STATUS_DOWNLOWNED);
             mForceUpgradeView.setAlreadyDownloadTips();
         }
-        mForceUpgradeDialog.show();
+        if(U.getActivityUtils().isHomeActivity(U.getActivityUtils().getTopActivity())){
+            EventBus.getDefault().post(new ShowDialogInHomeEvent(mForceUpgradeDialog,1));
+        }else{
+            mForceUpgradeDialog.show();
+        }
     }
 
     private boolean forceDownloadBegin() {

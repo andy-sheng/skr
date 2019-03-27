@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import com.common.anim.ObjectPlayControlTemplate;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnDismissListener;
-import com.zq.dialog.event.ShowDialogInHomeEvent;
+import com.common.core.global.event.ShowDialogInHomeEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

@@ -6,7 +6,7 @@ public class ScoreConfig {
     static int mConfig;
 
     static {
-        mConfig = U.getPreferenceUtils().getSettingInt("score_config", 0x0001 | 0x0002 | 0x0004);
+        mConfig = U.getPreferenceUtils().getSettingInt("score_config", 0x0001 | 0x0002 );
     }
 
     public static void setMelpEnable(boolean enable) {

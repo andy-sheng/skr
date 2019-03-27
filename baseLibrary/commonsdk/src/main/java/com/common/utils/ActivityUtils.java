@@ -288,6 +288,7 @@ public class ActivityUtils {
 
     /**
      * 移除activity的监听
+     *
      * @param activity
      */
     private void consumeOnActivityDestroyedListener(Activity activity) {
@@ -335,6 +336,13 @@ public class ActivityUtils {
     public Intent getLaunchIntentForPackage(String s) {
         Intent intent = U.app().getPackageManager().getLaunchIntentForPackage(s);
         return intent;
+    }
+
+    public boolean isHomeActivity(Activity topActivity) {
+        if (topActivity != null && topActivity.getClass().getSimpleName().equals("HomeActivity")) {
+            return true;
+        }
+        return false;
     }
 
     /**

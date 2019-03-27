@@ -45,7 +45,7 @@ import com.module.msg.IMsgService;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.ViewHolder;
-import com.zq.dialog.event.ShowDialogInHomeEvent;
+import com.common.core.global.event.ShowDialogInHomeEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

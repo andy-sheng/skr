@@ -97,10 +97,8 @@ public class LoginActivity extends BaseActivity {
     }
 
     private boolean isHomeActivityExist() {
-        IHomeService channelService = (IHomeService) ARouter.getInstance().build(RouterConstants.SERVICE_HOME).navigation();
-        String homeActivityName = (String) channelService.getData(1, "");
         for (Activity activity : U.getActivityUtils().getActivityList()) {
-            if (activity.getClass().getSimpleName().equals(homeActivityName)) {
+            if(U.getActivityUtils().isHomeActivity(activity)){
                 return true;
             }
         }

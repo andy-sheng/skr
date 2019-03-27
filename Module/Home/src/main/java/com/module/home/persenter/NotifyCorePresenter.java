@@ -29,7 +29,7 @@ import com.module.rank.IRankingModeService;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.dialog.ConfirmDialog;
-import com.zq.dialog.event.ShowDialogInHomeEvent;
+import com.common.core.global.event.ShowDialogInHomeEvent;
 import com.zq.notification.GrabInviteNotifyView;
 import com.zq.notification.FollowNotifyView;
 

@@ -11,7 +11,7 @@ import com.component.busilib.R;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.ViewHolder;
-import com.zq.dialog.event.ShowDialogInHomeEvent;
+import com.common.core.global.event.ShowDialogInHomeEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -70,7 +70,7 @@ public class ConfirmDialog {
 
     public void show() {
         if (mDialogPlus != null) {
-            if(U.getActivityUtils().getTopActivity().getClass().getSimpleName().equals("HomeActivity")){
+            if(U.getActivityUtils().isHomeActivity(U.getActivityUtils().getTopActivity())){
                 EventBus.getDefault().post(new ShowDialogInHomeEvent(mDialogPlus,20));
             }else{
                 mDialogPlus.show();

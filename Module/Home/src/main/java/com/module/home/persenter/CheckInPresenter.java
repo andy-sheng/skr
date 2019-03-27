@@ -4,9 +4,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.TextView;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.common.base.BaseActivity;
@@ -27,7 +25,7 @@ import com.module.home.view.HomeGoldCheckInView;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.ViewHolder;
-import com.zq.dialog.event.ShowDialogInHomeEvent;
+import com.common.core.global.event.ShowDialogInHomeEvent;
 
 import org.greenrobot.eventbus.EventBus;
 

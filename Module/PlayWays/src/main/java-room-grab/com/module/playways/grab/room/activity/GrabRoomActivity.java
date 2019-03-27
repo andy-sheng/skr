@@ -149,7 +149,7 @@ public class GrabRoomActivity extends BaseActivity {
             if (activity == this) {
                 continue;
             }
-            if (activity.getClass().getSimpleName().equals("HomeActivity")) {
+            if (U.getActivityUtils().isHomeActivity(U.getActivityUtils().getTopActivity())) {
                 continue;
             }
             activity.finish();

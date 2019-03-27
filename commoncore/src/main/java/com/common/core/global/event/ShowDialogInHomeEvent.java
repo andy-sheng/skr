@@ -1,4 +1,4 @@
-package com.zq.dialog.event;
+package com.common.core.global.event;
 
 import com.orhanobut.dialogplus.DialogPlus;
 
