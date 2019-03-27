@@ -114,6 +114,10 @@ public class CheckInPresenter extends RxLifeCyclePresenter {
     }
 
     public void showCheckInView(List<HomeGoldModel> homeGoldModelList) {
+        if (mCheckInDialog != null) {
+            mCheckInDialog.dismiss();
+        }
+
         HomeGoldCheckInView checkInView = new HomeGoldCheckInView(mBaseActivity);
         if (homeGoldModelList.size() == 7) {
             HomeGoldModel sevenDayModel = homeGoldModelList.remove(6);
