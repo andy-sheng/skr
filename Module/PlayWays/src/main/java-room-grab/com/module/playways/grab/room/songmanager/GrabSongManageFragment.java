@@ -30,6 +30,7 @@ import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.inter.IGrabSongManageView;
 import com.module.playways.grab.room.songmanager.tags.GrabSongTagsView;
 import com.module.playways.grab.createroom.model.SpecialModel;
+import com.module.playways.grab.room.songmanager.tags.GrabTagsAdapter;
 import com.module.playways.rank.prepare.fragment.PrepareResFragment;
 import com.module.playways.rank.song.fragment.GrabSearchSongFragment;
 import com.module.playways.rank.song.fragment.SongSelectFragment;
@@ -208,10 +209,19 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
             if (mGrabSongTagsView == null) {
                 mGrabSongTagsView = new GrabSongTagsView(getContext());
 
-                mGrabSongTagsView.setOnTagClickListener(specialModel -> {
-                    mGrabSongManagePresenter.changeMusicTag(specialModel, mRoomData.getGameId());
-                });
+                mGrabSongTagsView.setOnTagClickListener(new GrabTagsAdapter.OnTagClickListener() {
+                    @Override
+                    public void onClick(SpecialModel specialModel) {
+                        mGrabSongManagePresenter.changeMusicTag(specialModel, mRoomData.getGameId());
+                    }
 
+                    @Override
+                    public void dismissDialog() {
+                        if(mPopupWindow != null){
+                            mPopupWindow.dismiss();
+                        }
+                    }
+                });
                 mPopupWindow = new PopupWindow(mGrabSongTagsView);
                 mPopupWindow.setWidth(mTvSelectedTag.getWidth());
                 mPopupWindow.setOutsideTouchable(true);
