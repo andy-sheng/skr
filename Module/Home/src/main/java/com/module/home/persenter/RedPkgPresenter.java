@@ -47,6 +47,7 @@ public class RedPkgPresenter extends RxLifeCyclePresenter {
     }
 
     public void checkRedPkg() {
+        //showGetCashView(1,"ssss");
         if (mIsHasReq) {
             MyLog.d(TAG, "has checkRedPkg");
             return;
@@ -102,32 +103,35 @@ public class RedPkgPresenter extends RxLifeCyclePresenter {
         TextView tvCash = getRedPkgCashView.findViewById(R.id.tv_cash);
         tvCash.setText("" + cash);
 
-        mRedPkgView = DialogPlus.newDialog(activity)
-                .setContentHolder(new ViewHolder(getRedPkgCashView))
-                .setGravity(Gravity.CENTER)
-                .setContentBackgroundResource(R.color.transparent)
-                .setOverlayBackgroundResource(R.color.black_trans_80)
-                .setExpanded(false)
-                .setCancelable(true)
-                .setOnDismissListener(new OnDismissListener() {
-                    @Override
-                    public void onDismiss(@NonNull DialogPlus dialog) {
-                        U.getPreferenceUtils().setSettingBoolean(PREF_KEY_RED_PKG_SHOW, true);
-                    }
-                })
-                .setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
-                        if (view.getId() == R.id.tv_ruzhang) {
-                            ARouter.getInstance().build(RouterConstants.ACTIVITY_SCHEME)
-                                    .withString("uri", scheme)
-                                    .navigation();
+        if (mRedPkgView == null) {
+            mRedPkgView = DialogPlus.newDialog(activity)
+                    .setContentHolder(new ViewHolder(getRedPkgCashView))
+                    .setGravity(Gravity.CENTER)
+                    .setContentBackgroundResource(R.color.transparent)
+                    .setOverlayBackgroundResource(R.color.black_trans_80)
+                    .setExpanded(false)
+                    .setCancelable(true)
+                    .setOnDismissListener(new OnDismissListener() {
+                        @Override
+                        public void onDismiss(@NonNull DialogPlus dialog) {
+                            U.getPreferenceUtils().setSettingBoolean(PREF_KEY_RED_PKG_SHOW, true);
                         }
+                    })
+                    .setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
+                            if (view.getId() == R.id.tv_ruzhang) {
+                                ARouter.getInstance().build(RouterConstants.ACTIVITY_SCHEME)
+                                        .withString("uri", scheme)
+                                        .navigation();
+                            }
 
-                        mRedPkgView.dismiss();
-                    }
-                })
-                .create();
+                            mRedPkgView.dismiss();
+                        }
+                    })
+                    .create();
+        }
+
         EventBus.getDefault().post(new ShowDialogInHomeEvent(mRedPkgView, 30));
     }
 

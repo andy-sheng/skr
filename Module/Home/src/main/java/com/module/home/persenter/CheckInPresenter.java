@@ -135,23 +135,25 @@ public class CheckInPresenter extends RxLifeCyclePresenter {
             }
         });
 
-        mCheckInDialog = DialogPlus.newDialog(mBaseActivity)
-                .setContentHolder(new ViewHolder(checkInView))
-                .setGravity(Gravity.CENTER)
-                .setContentBackgroundResource(R.color.transparent)
-                .setOverlayBackgroundResource(R.color.black_trans_80)
-                .setExpanded(false)
-                .setCancelable(true)
-                .setOnDismissListener(new OnDismissListener() {
-                    @Override
-                    public void onDismiss(@NonNull DialogPlus dialog) {
-                        // 不放在api里，因为到api那层不代表已经展示了
-                        U.getPreferenceUtils().setSettingLong(PREF_KEY_SHOW_CHECKIN, System.currentTimeMillis());
-                        mHasShow = true;
-                    }
-                })
-                .create();
-
+        if (mCheckInDialog == null) {
+            mCheckInDialog = DialogPlus.newDialog(mBaseActivity)
+                    .setContentHolder(new ViewHolder(checkInView))
+                    .setGravity(Gravity.CENTER)
+                    .setContentBackgroundResource(R.color.transparent)
+                    .setOverlayBackgroundResource(R.color.black_trans_80)
+                    .setExpanded(false)
+                    .setCancelable(true)
+                    .setOnDismissListener(new OnDismissListener() {
+                        @Override
+                        public void onDismiss(@NonNull DialogPlus dialog) {
+                            // 不放在api里，因为到api那层不代表已经展示了
+                            MyLog.d(TAG,"onDismiss" + " dialog=" + dialog);
+                            U.getPreferenceUtils().setSettingLong(PREF_KEY_SHOW_CHECKIN, System.currentTimeMillis());
+                            mHasShow = true;
+                        }
+                    })
+                    .create();
+        }
         EventBus.getDefault().post(new ShowDialogInHomeEvent(mCheckInDialog, 10));
     }
 
@@ -163,13 +165,7 @@ public class CheckInPresenter extends RxLifeCyclePresenter {
                 MyLog.d(TAG, "process" + " result=" + result.getErrno());
                 if (result.getErrno() == 0) {
                     HomeGoldModel homeGoldModel = JSON.parseObject(result.getData().getString("curr"), HomeGoldModel.class);
-
-                    mUiHandler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            showCheckInSuccessView(homeGoldModel);
-                        }
-                    }, 500);
+                    showCheckInSuccessView(homeGoldModel);
                 } else {
                     MyLog.w(TAG, "signIn failed, " + " result=" + result.getTraceId());
                 }
@@ -194,22 +190,23 @@ public class CheckInPresenter extends RxLifeCyclePresenter {
                 }
             }
         });
-
-        mCheckInSuccessDialog = DialogPlus.newDialog(mBaseActivity)
-                .setContentHolder(new ViewHolder(getRedPkgCashView))
-                .setGravity(Gravity.CENTER)
-                .setContentBackgroundResource(R.color.transparent)
-                .setOverlayBackgroundResource(R.color.black_trans_80)
-                .setExpanded(false)
-                .setCancelable(true)
-                .setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
-                        mCheckInSuccessDialog.dismiss();
-                    }
-                })
-                .create();
-
+        if (mCheckInSuccessDialog == null) {
+            mCheckInSuccessDialog = DialogPlus.newDialog(mBaseActivity)
+                    .setContentHolder(new ViewHolder(getRedPkgCashView))
+                    .setGravity(Gravity.CENTER)
+                    .setContentBackgroundResource(R.color.transparent)
+                    .setOverlayBackgroundResource(R.color.black_trans_80)
+                    .setExpanded(false)
+                    .setCancelable(true)
+                    .setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
+                            MyLog.d(TAG,"onClick" + " dialog=" + dialog + " view=" + view);
+                            mCheckInSuccessDialog.dismiss();
+                        }
+                    })
+                    .create();
+        }
         EventBus.getDefault().post(new ShowDialogInHomeEvent(mCheckInSuccessDialog, 9));
     }
 
