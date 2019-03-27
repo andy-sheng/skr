@@ -184,7 +184,7 @@ public class OthersSingCardView extends RelativeLayout {
 
     private void countDown() {
         GrabRoundInfoModel grabRoundInfoModel = mGrabRoomData.getRealRoundInfo();
-        if (grabRoundInfoModel != null) {
+        if (grabRoundInfoModel == null) {
             return;
         }
         SongModel songModel = grabRoundInfoModel.getMusic();
