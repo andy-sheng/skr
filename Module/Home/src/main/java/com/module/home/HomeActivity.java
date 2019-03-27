@@ -2,30 +2,25 @@ package com.module.home;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
-import com.common.core.permission.SkrSdcardPermission;
-
-import com.common.core.upgrade.UpgradeManager;
 import com.common.core.account.UserAccountManager;
+import com.common.core.permission.SkrSdcardPermission;
+import com.common.core.upgrade.UpgradeManager;
 import com.common.log.MyLog;
 import com.common.utils.ActivityUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
-
 import com.common.view.ex.ExTextView;
 import com.common.view.viewpager.NestViewPager;
 import com.component.busilib.manager.WeakRedDotManager;
@@ -38,21 +33,14 @@ import com.module.home.persenter.CheckInPresenter;
 import com.module.home.persenter.HomeCorePresenter;
 import com.module.home.persenter.NotifyCorePresenter;
 import com.module.home.persenter.RedPkgPresenter;
-import com.module.home.view.GetRedPkgCashView;
 import com.module.home.view.IHomeActivity;
-import com.module.home.view.IRedPkgView;
 import com.module.msg.IMsgService;
-import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.OnClickListener;
-import com.orhanobut.dialogplus.ViewHolder;
-import com.common.core.global.event.ShowDialogInHomeEvent;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 @Route(path = RouterConstants.ACTIVITY_HOME)
-public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkgView, WeakRedDotManager.WeakRedDotListener {
+public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRedDotManager.WeakRedDotListener {
 
     public final static String TAG = "HomeActivity";
 
@@ -68,7 +56,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
     ExImageView mPersonInfoBtn;
     ExImageView mPersonInfoRedDot;
     NestViewPager mMainVp;
-    DialogPlus mRedPkgView;
     IMsgService mMsgService;
     HomeCorePresenter mHomePresenter;
     NotifyCorePresenter mNotifyCorePresenter;
@@ -198,7 +185,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
             }
         });
 
-        mRedPkgPresenter = new RedPkgPresenter(this);
+        mRedPkgPresenter = new RedPkgPresenter();
         addPresent(mRedPkgPresenter);
 
         mNotifyCorePresenter = new NotifyCorePresenter();
@@ -225,38 +212,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, IRedPkg
         }
     }
 
-    @Override
-    public void showGetCashView(float cash, String scheme) {
-        if (mRedPkgView != null) {
-            mRedPkgView.dismiss();
-        }
 
-        GetRedPkgCashView getRedPkgCashView = new GetRedPkgCashView(this);
-        TextView tvCash = getRedPkgCashView.findViewById(R.id.tv_cash);
-        tvCash.setText("" + cash);
-
-        mRedPkgView = DialogPlus.newDialog(this)
-                .setContentHolder(new ViewHolder(getRedPkgCashView))
-                .setGravity(Gravity.CENTER)
-                .setContentBackgroundResource(R.color.transparent)
-                .setOverlayBackgroundResource(R.color.black_trans_80)
-                .setExpanded(false)
-                .setCancelable(true)
-                .setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
-                        if (view.getId() == R.id.tv_ruzhang) {
-                            ARouter.getInstance().build(RouterConstants.ACTIVITY_SCHEME)
-                                    .withString("uri", scheme)
-                                    .navigation();
-                        }
-
-                        mRedPkgView.dismiss();
-                    }
-                })
-                .create();
-        EventBus.getDefault().post(new ShowDialogInHomeEvent(mRedPkgView, 30));
-    }
 
     @Override
     public void tryJumpSchemeIfNeed() {

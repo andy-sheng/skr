@@ -24,6 +24,7 @@ import com.module.home.view.CheckInSuccessView;
 import com.module.home.view.HomeGoldCheckInView;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
+import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.common.core.global.event.ShowDialogInHomeEvent;
 
@@ -73,12 +74,12 @@ public class CheckInPresenter extends RxLifeCyclePresenter {
             return;
         }
 
-        long dayDiff = U.getDateTimeUtils().getDayDiff(
-                U.getPreferenceUtils().getSettingLong(PREF_KEY_SHOW_CHECKIN, 0)
-                , System.currentTimeMillis());
+        long lastTs = U.getPreferenceUtils().getSettingLong(PREF_KEY_SHOW_CHECKIN, 0);
+        long now = System.currentTimeMillis();
+        long dayDiff = U.getDateTimeUtils().getDayDiff(lastTs, now);
 
         if (dayDiff == 0) {
-            MyLog.d(TAG, "今天展示过了");
+            MyLog.d(TAG, "今天展示过了 lastTs=" + lastTs + " now=" + now);
             mHasShow = true;
             return;
         }
@@ -88,8 +89,6 @@ public class CheckInPresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 MyLog.d(TAG, "process" + " result=" + result.getErrno());
                 if (result.getErrno() == 0) {
-                    U.getPreferenceUtils().setSettingLong(PREF_KEY_SHOW_CHECKIN, System.currentTimeMillis());
-                    mHasShow = true;
                     HomeGoldModel cur = JSON.parseObject(result.getData().getString("curr"), HomeGoldModel.class);
                     if (cur != null && cur.getState() == 2) {
                         MyLog.d(TAG, "check " + "已经签到过了");
@@ -115,14 +114,14 @@ public class CheckInPresenter extends RxLifeCyclePresenter {
     }
 
     public void showCheckInView(List<HomeGoldModel> homeGoldModelList) {
-        HomeGoldCheckInView getRedPkgCashView = new HomeGoldCheckInView(mBaseActivity);
+        HomeGoldCheckInView checkInView = new HomeGoldCheckInView(mBaseActivity);
         if (homeGoldModelList.size() == 7) {
             HomeGoldModel sevenDayModel = homeGoldModelList.remove(6);
-            getRedPkgCashView.setSevenDayInfo(sevenDayModel);
+            checkInView.setSevenDayInfo(sevenDayModel);
         }
 
-        getRedPkgCashView.setData(homeGoldModelList);
-        getRedPkgCashView.getIvReceive().setOnClickListener(new DebounceViewClickListener() {
+        checkInView.setData(homeGoldModelList);
+        checkInView.getIvReceive().setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 signIn();
@@ -133,12 +132,20 @@ public class CheckInPresenter extends RxLifeCyclePresenter {
         });
 
         mCheckInDialog = DialogPlus.newDialog(mBaseActivity)
-                .setContentHolder(new ViewHolder(getRedPkgCashView))
+                .setContentHolder(new ViewHolder(checkInView))
                 .setGravity(Gravity.CENTER)
                 .setContentBackgroundResource(R.color.transparent)
                 .setOverlayBackgroundResource(R.color.black_trans_80)
                 .setExpanded(false)
                 .setCancelable(true)
+                .setOnDismissListener(new OnDismissListener() {
+                    @Override
+                    public void onDismiss(@NonNull DialogPlus dialog) {
+                        // 不放在api里，因为到api那层不代表已经展示了
+                        U.getPreferenceUtils().setSettingLong(PREF_KEY_SHOW_CHECKIN, System.currentTimeMillis());
+                        mHasShow = true;
+                    }
+                })
                 .create();
 
         EventBus.getDefault().post(new ShowDialogInHomeEvent(mCheckInDialog, 10));

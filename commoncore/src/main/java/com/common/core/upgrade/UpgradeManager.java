@@ -125,7 +125,8 @@ public class UpgradeManager {
         if (mUpgradeData.getStatus() == UpgradeData.STATUS_INIT) {
             mUpgradeData.setNeedShowDialog(false);
             loadDataFromServer();
-        } else if (mUpgradeData.getStatus() == UpgradeData.STATUS_LOAD_DATA_FROM_SERVER) {
+        } else if (mUpgradeData.getStatus() == UpgradeData.STATUS_LOAD_DATA_FROM_SERVER
+                || mUpgradeData.getStatus() == UpgradeData.STATUS_DOWNLOWNED) {
             UpgradeInfoModel upgradeInfoModel = mUpgradeData.getUpgradeInfoModel();
             if (upgradeInfoModel != null) {
                 if (upgradeInfoModel.isForceUpdate()) {
