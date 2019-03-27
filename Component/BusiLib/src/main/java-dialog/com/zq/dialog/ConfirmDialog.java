@@ -42,6 +42,10 @@ public class ConfirmDialog {
             }
         });
         if (mDialogPlus == null) {
+            boolean cancelable = true;
+            if (type == TYPE_INVITE_CONFIRM) {
+                cancelable = false;
+            }
             mDialogPlus = DialogPlus.newDialog(context)
                     .setContentHolder(new ViewHolder(dialogView))
                     .setContentBackgroundResource(R.color.transparent)
@@ -60,6 +64,7 @@ public class ConfirmDialog {
                             }
                         }
                     })
+                    .setCancelable(cancelable)
                     .setGravity(Gravity.BOTTOM)
                     .create();
         }
@@ -71,9 +76,9 @@ public class ConfirmDialog {
 
     public void show() {
         if (mDialogPlus != null) {
-            if(U.getActivityUtils().isHomeActivity(U.getActivityUtils().getTopActivity())){
-                EventBus.getDefault().post(new ShowDialogInHomeEvent(mDialogPlus,20));
-            }else{
+            if (U.getActivityUtils().isHomeActivity(U.getActivityUtils().getTopActivity())) {
+                EventBus.getDefault().post(new ShowDialogInHomeEvent(mDialogPlus, 20));
+            } else {
                 mDialogPlus.show();
             }
         }

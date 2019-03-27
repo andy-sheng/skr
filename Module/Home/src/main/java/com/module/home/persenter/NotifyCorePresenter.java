@@ -110,6 +110,12 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                         confirmDialog.setListener(new ConfirmDialog.Listener() {
                             @Override
                             public void onClickConfirm(UserInfoModel userInfoModel) {
+                                if (userInfoModel != null) {
+                                    if (!userInfoModel.isFriend()) {
+                                        MyLog.d(TAG,"同意邀请，强制成为好友" + userInfoModel);
+                                        UserInfoManager.getInstance().beFriend(userInfoModel.getUserId());
+                                    }
+                                }
                                 tryGoGrabRoom(event.roomId);
                             }
                         });
@@ -166,7 +172,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                                 }
                             })
                             .build();
-                    if(mBeFriendDialog==null) {
+                    if (mBeFriendDialog == null) {
                         mBeFriendDialog = DialogPlus.newDialog(U.getActivityUtils().getTopActivity())
                                 .setContentHolder(new ViewHolder(tipsDialogView))
                                 .setGravity(Gravity.BOTTOM)
@@ -209,6 +215,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
 
             @Override
             public void onAgree() {
+
                 tryGoGrabRoom(roomID);
                 mUiHandler.removeMessages(MSG_DISMISS_INVITE_FLOAT_WINDOW);
                 FloatWindow.destroy(TAG_INVITE_FOALT_WINDOW);

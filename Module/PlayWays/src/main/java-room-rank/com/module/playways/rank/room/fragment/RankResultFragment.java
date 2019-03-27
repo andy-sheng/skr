@@ -16,6 +16,7 @@ import com.common.core.share.ShareType;
 import com.common.player.IPlayer;
 import com.common.player.VideoPlayerAdapter;
 import com.common.player.exoplayer.ExoPlayer;
+import com.common.utils.ActivityUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
@@ -31,6 +32,9 @@ import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.live.proto.Room.EWinType;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -44,6 +48,8 @@ public class RankResultFragment extends BaseFragment {
     RankResultView2 mFirstResult;
     RankResultView2 mSecondResult;
     RankResultView2 mThirdResult;
+    RankResultView2 mMyRankResult;
+
     ExImageView mResultTop;
     ExImageView mResultExit;
     ExImageView mShareIv;
@@ -180,6 +186,7 @@ public class RankResultFragment extends BaseFragment {
         view.setListener(new RankResultView2.Listener() {
             @Override
             public void onPlayBtnClick() {
+                mMyRankResult = view;
                 if (mIPlayer == null) {
                     mIPlayer = new ExoPlayer();
                     // 播放完毕
@@ -223,8 +230,22 @@ public class RankResultFragment extends BaseFragment {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ActivityUtils.ForeOrBackgroundChange event) {
+        if (event.foreground) {
+
+        } else {
+            if (mIPlayer != null) {
+                mIPlayer.stop();
+                if (mMyRankResult != null) {
+                    mMyRankResult.playComplete();
+                }
+            }
+        }
+    }
+
     @Override
     public boolean useEventBus() {
-        return false;
+        return true;
     }
 }

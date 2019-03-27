@@ -93,11 +93,11 @@ public class ConfirmDialogView extends RelativeLayout {
             SpannableStringBuilder stringBuilder = new SpanUtils()
                     .append(" " + mUserInfoModel.getNickname() + " ").setForegroundColor(Color.parseColor("#F5A623"))
                     .append("\n")
-                    .append("邀请我加入一唱到底").setForegroundColor(U.getColor(R.color.black_trans_50))
+                    .append("邀请你加入一唱到底").setForegroundColor(U.getColor(R.color.black_trans_50))
                     .create();
             mContentTv.setText(stringBuilder);
 
-            mCancleTv.setText("不同意");
+            mCancleTv.setText("忽略");
             mConfirmTv.setText("同意");
         }
     }
