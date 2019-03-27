@@ -14,11 +14,15 @@ public class QKickUserResultEvent {
     public List<Integer> giveNoVoteUserIDs;
     public List<Integer> giveUnknownVoteUserIDs;
     public String kickResultContent;
+    public boolean isKickSuccess;
+    public int kickFailedReason;
 
     public QKickUserResultEvent(BasePushInfo info, QKickUserResultMsg qKickUserResultMsg) {
         this.mBasePushInfo = info;
         this.sourceUserID = qKickUserResultMsg.getSourceUserID();
         this.kickUserID = qKickUserResultMsg.getKickUserID();
+        this.isKickSuccess = qKickUserResultMsg.getIsKickSuccess();
+        this.kickFailedReason = qKickUserResultMsg.getKickFailedReason().getValue();
         this.giveYesVoteUserIDs = qKickUserResultMsg.getGiveYesVoteUserIDsList();
         this.giveNoVoteUserIDs = qKickUserResultMsg.getGiveNoVoteUserIDsList();
         this.giveUnknownVoteUserIDs = qKickUserResultMsg.getGiveUnknownVoteUserIDsList();

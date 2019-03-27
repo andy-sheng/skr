@@ -1894,7 +1894,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         // 踢人的结果
         if (qKickUserResultEvent.kickUserID == MyUserInfoManager.getInstance().getUid()) {
             // 自己被踢出去
-            mIGrabView.kickBySomeOne();
+            if (qKickUserResultEvent.isKickSuccess) {
+                mIGrabView.kickBySomeOne();
+            }
         } else {
             // 别人被踢出去
             mIGrabView.kickSomeOne();
