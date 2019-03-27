@@ -3,6 +3,8 @@ package com.module.playways.rank.room.view;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.common.core.account.UserAccountManager;
@@ -26,7 +28,7 @@ import com.zq.live.proto.Room.EWinType;
 
 import java.io.File;
 
-public class RankResultView2 extends RelativeLayout {
+public class RankResultView2 extends FrameLayout {
 
     public final static String TAG = "RankResultView2";
 
@@ -42,7 +44,8 @@ public class RankResultView2 extends RelativeLayout {
     RelativeLayout mScoreArea;
     BitmapTextView mPkScore;
     ExImageView mPlaybackIv;
-    ExRelativeLayout mIsEscapeArea;
+    ExTextView mIsEscapeArea;
+    ImageView mIvEscape;
 
     boolean mIsPlay = false;  //标记是否播放
 
@@ -76,7 +79,8 @@ public class RankResultView2 extends RelativeLayout {
         mScoreArea = (RelativeLayout) this.findViewById(R.id.score_area);
         mPkScore = (BitmapTextView) this.findViewById(R.id.pk_score);
         mPlaybackIv = (ExImageView) this.findViewById(R.id.playback_iv);
-        mIsEscapeArea = (ExRelativeLayout) this.findViewById(R.id.is_escape_area);
+        mIsEscapeArea = (ExTextView) this.findViewById(R.id.is_escape_area);
+        mIvEscape = (ImageView) this.findViewById(R.id.iv_escape);
 
         mPlaybackIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -139,6 +143,7 @@ public class RankResultView2 extends RelativeLayout {
 
             if (userGameResultModel.isIsEscape()) {
                 mIsEscapeArea.setVisibility(VISIBLE);
+                mIvEscape.setVisibility(VISIBLE);
             }
         }
 

@@ -25,7 +25,7 @@
             <com.module.playways.rank.room.view.RankResultView2
                 android:id="@+id/first_result"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/view_100_dp"
+                android:layout_height="@dimen/view_112_dp"
                 android:layout_marginTop="@dimen/view_70_dp">
 
             </com.module.playways.rank.room.view.RankResultView2>
@@ -33,18 +33,18 @@
             <com.module.playways.rank.room.view.RankResultView2
                 android:id="@+id/second_result"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/view_100_dp"
+                android:layout_height="@dimen/view_112_dp"
                 android:layout_below="@id/first_result"
-                android:layout_marginTop="@dimen/view_20_dp">
+                android:layout_marginTop="@dimen/view_8_dp">
 
             </com.module.playways.rank.room.view.RankResultView2>
 
             <com.module.playways.rank.room.view.RankResultView2
                 android:id="@+id/third_result"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/view_100_dp"
+                android:layout_height="@dimen/view_112_dp"
                 android:layout_below="@id/second_result"
-                android:layout_marginTop="@dimen/view_20_dp"></com.module.playways.rank.room.view.RankResultView2>
+                android:layout_marginTop="@dimen/view_8_dp"></com.module.playways.rank.room.view.RankResultView2>
 
         </com.common.view.ex.ExRelativeLayout>
 
