@@ -98,7 +98,7 @@ Java_com_engine_score_ICbScoreProcessor_getScore1(JNIEnv *env, jobject instance)
     if (NULL != scoring) {
         return scoring->getScore();
     }
-    return -1;
+    return 0;
 }
 
 extern "C"
