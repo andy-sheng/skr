@@ -212,6 +212,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             } else {
                 rongKey = "e5t4ouvpec57a";
             }
+            RongIM.getInstance().disconnect();
             RongIM.init(application, rongKey);
             RongIM.setUserInfoProvider(this, true);
             mIsInit = true;

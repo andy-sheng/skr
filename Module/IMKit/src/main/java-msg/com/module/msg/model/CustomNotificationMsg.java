@@ -21,7 +21,7 @@ import io.rong.imlib.model.MessageContent;
  * <p>
  * MessageTag.NONE 表示不落存储
  */
-@MessageTag(value = "SKR:NotificationMsg", flag = MessageTag.NONE)
+@MessageTag(value = "SKR:NotificationMsg", flag = MessageTag.STATUS)
 public class CustomNotificationMsg extends MessageContent {
     public final static String TAG = "CustomChatRoomMsg";
 
