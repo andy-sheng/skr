@@ -58,8 +58,9 @@ public class PersonInfoDialog {
                         } else if (view.getId() == R.id.follow_area || view.getId() == R.id.follow_tv) {
                             // 关注
                             if (personInfoDialogView.getUserInfoModel().isFollow() || personInfoDialogView.getUserInfoModel().isFriend()) {
-                                UserInfoManager.getInstance().mateRelation(personInfoDialogView.getUserInfoModel().getUserId(),
-                                        UserInfoManager.RA_UNBUILD, personInfoDialogView.getUserInfoModel().isFriend());
+                                // TODO: 2019/3/28 个人信息卡片不让取关 
+//                                UserInfoManager.getInstance().mateRelation(personInfoDialogView.getUserInfoModel().getUserId(),
+//                                        UserInfoManager.RA_UNBUILD, personInfoDialogView.getUserInfoModel().isFriend());
                             } else {
                                 UserInfoManager.getInstance().mateRelation(personInfoDialogView.getUserInfoModel().getUserId(),
                                         UserInfoManager.RA_BUILD, personInfoDialogView.getUserInfoModel().isFriend());
