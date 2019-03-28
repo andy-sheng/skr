@@ -42,6 +42,23 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
         mOnClickDeleteListener = onClickDeleteListener;
     }
 
+    public void deleteSong(GrabRoomSongModel grabRoomSongModel) {
+        int position = -1;
+        for (int i = 0; i < mDataList.size(); i++) {
+            if (mDataList.get(i) == grabRoomSongModel) {
+                position = i;
+            }
+        }
+
+        if (position >= 0) {
+            mDataList.remove(position);
+            notifyItemRemoved(position);//注意这里
+            if (position != mDataList.size()) {
+                notifyItemRangeChanged(position, mDataList.size() - position);
+            }
+        }
+    }
+
     @Override
     public int getItemCount() {
         return mDataList.size();
@@ -53,6 +70,7 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
         ExTextView mTvManage;
 
         GrabRoomSongModel mSongModel;
+        int mPosition;
 
         public ItemHolder(View itemView) {
             super(itemView);
@@ -70,6 +88,7 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
 
         public void bind(GrabRoomSongModel model, int position) {
             this.mSongModel = model;
+            mPosition = position;
             mTvSongName.setText(model.getItemName());
             mTvAuther.setText(model.getOwner());
 

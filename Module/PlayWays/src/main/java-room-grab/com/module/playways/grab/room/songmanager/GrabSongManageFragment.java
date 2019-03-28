@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -113,6 +114,11 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
             }
         });
 
+        DefaultItemAnimator defaultItemAnimator = new DefaultItemAnimator();
+        defaultItemAnimator.setAddDuration(50);
+        defaultItemAnimator.setRemoveDuration(50);
+        mRecyclerView.setItemAnimator(defaultItemAnimator);
+
         initListener();
         mGrabSongManagePresenter.getPlayBookList();
 
@@ -153,6 +159,11 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
     @Override
     public void showNum(int num) {
         mTvSelectedSong.setText(String.format("已点%d首", num));
+    }
+
+    @Override
+    public void deleteSong(GrabRoomSongModel grabRoomSongModel) {
+        mManageSongAdapter.deleteSong(grabRoomSongModel);
     }
 
     @Override
@@ -260,7 +271,7 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
         });
 
         mManageSongAdapter.setOnClickDeleteListener(grabRoomSongModel -> {
-            mGrabSongManagePresenter.deleteSong(grabRoomSongModel.getItemID(), grabRoomSongModel.getRoundSeq());
+            mGrabSongManagePresenter.deleteSong(grabRoomSongModel);
         });
 
         mManageSongAdapter.setGrabRoomData(mRoomData);

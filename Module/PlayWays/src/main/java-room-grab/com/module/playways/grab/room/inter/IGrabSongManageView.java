@@ -15,4 +15,6 @@ public interface IGrabSongManageView {
     void changeTagSuccess(SpecialModel specialModel);
 
     void showNum(int num);
+
+    void deleteSong(GrabRoomSongModel grabRoomSongModel);
 }
