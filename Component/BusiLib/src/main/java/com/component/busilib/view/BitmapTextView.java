@@ -145,7 +145,7 @@ public class BitmapTextView extends View {
                 }
             }
             mWidth = mWidth - (int) (diff * (chars.length - 1) * scale);
-            invalidate();
+            requestLayout();
         }
     }
 
