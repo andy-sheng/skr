@@ -180,8 +180,7 @@ public class GrabResultFragment extends BaseFragment {
                 mBaodengNum.setText(String.valueOf(mGrabResultData.getGrabResultInfoModel().getOtherBlightCntTotal()) + "");
             }
         } else {
-            MyLog.d(TAG, "还去同步了一次");
-            syncFromServer();
+            MyLog.w(TAG, "bindData 数据为空了");
         }
     }
 
