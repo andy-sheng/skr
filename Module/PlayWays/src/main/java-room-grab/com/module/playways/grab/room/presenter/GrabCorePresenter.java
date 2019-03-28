@@ -216,7 +216,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
         joinRcRoom(0);
         if (mRoomData.getGameId() > 0) {
-            pretenSystemMsg("欢迎进入撕歌一唱到底，对局马上开始，比赛过程发现坏蛋请用力举报哦～");
+            pretenSystemMsg("撕歌倡导文明游戏，遇到恶意玩家，可以发起投票将ta踢出房间哦～");
             for (PlayerInfoModel playerInfoModel : mRoomData.getPlayerInfoList()) {
                 if (!playerInfoModel.isOnline()) {
                     continue;
