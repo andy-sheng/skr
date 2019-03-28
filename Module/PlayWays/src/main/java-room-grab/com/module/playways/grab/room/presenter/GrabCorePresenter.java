@@ -862,6 +862,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     U.getToastUtil().showShort("发起踢人请求成功");
+                    int coin = result.getData().getIntValue("coin");
+                    mRoomData.setCoin(coin);
                 } else {
                     U.getToastUtil().showShort("" + result.getErrmsg());
                 }
