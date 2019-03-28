@@ -42,21 +42,39 @@
                 android:textSize="@dimen/textsize_24_dp"
                 android:textStyle="bold" />
 
-            <com.common.view.ex.ExTextView
+            <com.common.view.ex.ExRelativeLayout
                 android:id="@+id/kick"
-                android:layout_width="@dimen/view_42_dp"
+                android:layout_width="@dimen/view_58_dp"
                 android:layout_height="@dimen/view_22_dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/view_8_dp"
                 android:layout_toRightOf="@+id/name_tv"
-                android:gravity="center"
-                android:text="踢人"
-                android:textColor="@color/white"
-                android:textSize="@dimen/textsize_14_dp"
                 android:visibility="gone"
-                app:bl_corners_radius="@dimen/view_4_dp"
+                app:bl_corners_radius="@dimen/view_11_dp"
                 app:bl_shape="rectangle"
-                app:bl_solid_color="#F5A623" />
+                app:bl_solid_color="#F5A623">
+
+                <ImageView
+                    android:layout_width="@dimen/textsize_14_dp"
+                    android:layout_height="@dimen/textsize_14_dp"
+                    android:layout_marginLeft="@dimen/view_6_dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/jb_jingzhi"/>
+
+                <com.common.view.ex.ExTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/view_20_dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/view_6_dp"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:text="踢人"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/textsize_14_dp" />
+
+
+            </com.common.view.ex.ExRelativeLayout>
 
         </RelativeLayout>
 

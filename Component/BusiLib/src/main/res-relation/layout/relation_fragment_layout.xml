@@ -57,6 +57,23 @@
 
         </RelativeLayout>
 
+        <RelativeLayout
+            android:id="@+id/follow_area"
+            android:layout_width="@dimen/view_0_dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/follow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="关注"
+                android:textColor="#800C2275"
+                android:textSize="@dimen/textsize_15_dp" />
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/fans_area"
@@ -83,24 +100,6 @@
                 android:layout_alignRight="@+id/fans"
                 android:src="@drawable/reddot"
                 android:visibility="gone" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/follow_area"
-            android:layout_width="@dimen/view_0_dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/follow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:singleLine="true"
-                android:text="关注"
-                android:textColor="#800C2275"
-                android:textSize="@dimen/textsize_15_dp" />
         </RelativeLayout>
     </LinearLayout>
 

@@ -76,7 +76,7 @@ public class PersonInfoDialogView extends RelativeLayout {
     ExTextView mFollowTv;
     SimpleDraweeView mAvatarIv;
     ExTextView mReport;
-    ExTextView mKick;
+    ExRelativeLayout mKick;
 
     PersonInfoDialogView(Context context, int userID, boolean showReport, boolean showKick) {
         super(context);
@@ -111,7 +111,7 @@ public class PersonInfoDialogView extends RelativeLayout {
         mFollowTv = (ExTextView) this.findViewById(R.id.follow_tv);
         mAvatarIv = (SimpleDraweeView) this.findViewById(R.id.avatar_iv);
         mReport = (ExTextView) this.findViewById(R.id.report);
-        mKick = (ExTextView) this.findViewById(R.id.kick);
+        mKick = (ExRelativeLayout) this.findViewById(R.id.kick);
 
         mNameTv.setOnLongClickListener(new OnLongClickListener() {
             @Override

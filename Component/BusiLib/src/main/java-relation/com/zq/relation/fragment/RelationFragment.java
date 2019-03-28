@@ -64,8 +64,8 @@ import model.RelationNumModel;
 public class RelationFragment extends BaseFragment implements WeakRedDotManager.WeakRedDotListener {
 
     public static final int FROM_FRIENDS = 0;
-    public static final int FROM_FANS = 1;
-    public static final int FROM_FOLLOW = 2;
+    public static final int FROM_FOLLOW = 1;
+    public static final int FROM_FANS = 2;
 
     public static final String FROM_PAGE_KEY = "from_page_key";
     public static final String FRIEND_NUM_KEY = "friend_num_key";
@@ -178,8 +178,8 @@ public class RelationFragment extends BaseFragment implements WeakRedDotManager.
         });
 
         mTitleAndViewMap.put(0, new RelationView(getContext(), UserInfoManager.RELATION_FRIENDS));
-        mTitleAndViewMap.put(1, new RelationView(getContext(), UserInfoManager.RELATION_FANS));
-        mTitleAndViewMap.put(2, new RelationView(getContext(), UserInfoManager.RELATION_FOLLOW));
+        mTitleAndViewMap.put(1, new RelationView(getContext(), UserInfoManager.RELATION_FOLLOW));
+        mTitleAndViewMap.put(2, new RelationView(getContext(), UserInfoManager.RELATION_FANS));
 
         mRelationTab.setCustomTabView(R.layout.relation_tab_view, R.id.tab_tv);
         mRelationTab.setSelectedIndicatorColors(Color.parseColor("#FE8400"));

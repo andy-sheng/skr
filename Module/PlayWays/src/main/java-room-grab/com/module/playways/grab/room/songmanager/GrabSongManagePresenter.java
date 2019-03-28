@@ -1,5 +1,7 @@
 package com.module.playways.grab.room.songmanager;
 
+import android.os.Handler;
+
 import com.alibaba.fastjson.JSON;
 import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
@@ -44,6 +46,8 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
 
     List<GrabRoomSongModel> mGrabRoomSongModelList = new ArrayList<>();
 
+    Handler mUiHandler;
+
     boolean mHasMore = false;
 
     int mTotalNum = 0;
@@ -54,6 +58,7 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
         this.mIGrabSongManageView = view;
         mGrabRoomData = grabRoomData;
         mGrabRoomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
+        mUiHandler = new Handler();
         EventBus.getDefault().register(this);
     }
 
@@ -148,16 +153,20 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
         }, this);
     }
 
-    public void deleteSong(int playbookItemId, int roundSeq) {
+    public void deleteSong(GrabRoomSongModel grabRoomSongModel) {
         MyLog.d(TAG, "deleteSong");
+        int playbookItemId = grabRoomSongModel.getItemID();
+        int roundSeq = grabRoomSongModel.getRoundSeq();
+
         if (roundSeq < 0) {
             MyLog.d(TAG, "deleteSong but roundReq is " + roundSeq);
             return;
         }
+
         HashMap<String, Object> map = new HashMap<>();
         map.put("itemID", playbookItemId);
         map.put("roomID", mGrabRoomData.getGameId());
-        map.put("roundSeq", roundSeq);
+        map.put("roundSeq", grabRoomSongModel.getRoundSeq());
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
 
@@ -178,7 +187,17 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
                         }
 
                         mIGrabSongManageView.showNum(--mTotalNum);
-                        updateSongList();
+                        mIGrabSongManageView.deleteSong(grabRoomSongModel);
+
+                        mUiHandler.removeCallbacksAndMessages(null);
+                        mUiHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (mGrabRoomSongModelList.size() < 10 && mHasMore) {
+                                    getPlayBookList();
+                                }
+                            }
+                        }, 300);
                     }
                 } else {
                     MyLog.w(TAG, "deleteSong failed, " + " traceid is " + result.getTraceId());
@@ -312,6 +331,7 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
     @Override
     public void destroy() {
         super.destroy();
+        mUiHandler.removeCallbacksAndMessages(null);
         EventBus.getDefault().unregister(this);
     }
 }

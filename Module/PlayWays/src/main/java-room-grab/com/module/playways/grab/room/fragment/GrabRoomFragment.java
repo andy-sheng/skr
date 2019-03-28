@@ -922,10 +922,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     public void destroy() {
         super.destroy();
         MyLog.d(TAG, "destroy");
-        if (mPersonInfoDialog != null && mPersonInfoDialog.isShowing()) {
-            mPersonInfoDialog.dismiss();
-            mPersonInfoDialog = null;
-        }
+        dismissDialog();
         if (mQuitTipsDialog != null && mQuitTipsDialog.isShowing()) {
             mQuitTipsDialog.dismiss();
             mQuitTipsDialog = null;
@@ -943,13 +940,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             }
             mAnimatorList.clear();
         }
-        if (mGameRoleDialog != null) {
-            mGameRoleDialog.dismiss();
-        }
 
-        if (mGrabKickDialog != null) {
-            mGrabKickDialog.dismiss();
-        }
         U.getSoundUtils().release(TAG);
         BgMusicManager.getInstance().setRoom(false);
     }
@@ -1092,9 +1083,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     // 确认踢人弹窗
     private void showKickConfirmDialog(UserInfoModel userInfoModel) {
         MyLog.d(TAG, "showConfirmDialog" + " userInfoModel=" + userInfoModel);
-        if (mGrabKickDialog != null) {
-            mGrabKickDialog.dismiss();
-        }
+        dismissDialog();
         U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
         mGrabKickDialog = new ConfirmDialog(getActivity(), userInfoModel, ConfirmDialog.TYPE_KICK_CONFIRM, mRoomData.getGrabConfigModel().getKickUserConsumCoinCnt());
         mGrabKickDialog.setListener(new ConfirmDialog.Listener() {
@@ -1107,13 +1096,24 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         mGrabKickDialog.show();
     }
 
+    private void dismissDialog() {
+        if (mGameRoleDialog != null) {
+            mGameRoleDialog.dismiss();
+        }
+        if (mPersonInfoDialog != null) {
+            mPersonInfoDialog.dismiss();
+        }
+        mVoiceControlView.setVisibility(View.GONE);
+        if (mGrabKickDialog != null) {
+            mGrabKickDialog.dismiss();
+        }
+    }
+
     // 请求踢人弹窗
     @Override
     public void showKickVoteDialog(int userId, int sourceUserId) {
         MyLog.d(TAG, "showKickReqDialog" + " userId=" + userId + " sourceUserId=" + sourceUserId);
-        if (mGrabKickDialog != null) {
-            mGrabKickDialog.dismiss();
-        }
+        dismissDialog();
         U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
 
         GrabPlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, userId);
@@ -1138,7 +1138,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             getActivity().finish();
         }
 
-        U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
+        U.getToastUtil().showSkrCustomLong(new CommonToastView.Builder(U.app())
                 .setImage(R.drawable.touxiangshezhishibai_icon)
                 .setText("超过半数玩家请你出房间，要友好文明游戏哦~")
                 .build());

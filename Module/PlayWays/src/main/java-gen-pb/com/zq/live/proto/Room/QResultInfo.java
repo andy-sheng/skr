@@ -35,6 +35,8 @@ public final class QResultInfo extends Message<QResultInfo, QResultInfo.Builder>
 
   public static final Float DEFAULT_BEYONDSKRERRATIO = 0.0f;
 
+  public static final Integer DEFAULT_OTHERBLIGHTCNTTOTAL = 0;
+
   /**
    * 用户标识
    */
@@ -89,14 +91,24 @@ public final class QResultInfo extends Message<QResultInfo, QResultInfo.Builder>
   )
   private final Float beyondSkrerRatio;
 
+  /**
+   * 其他人给予爆灯的数量
+   */
+  @WireField(
+      tag = 7,
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+  )
+  private final Integer otherBlightCntTotal;
+
   public QResultInfo(Integer userID, Integer wantSingChanceCnt, Integer getSingChanceCnt,
-      Integer wholeTimeSingCnt, Float wholeTimeSingRatio, Float beyondSkrerRatio) {
-    this(userID, wantSingChanceCnt, getSingChanceCnt, wholeTimeSingCnt, wholeTimeSingRatio, beyondSkrerRatio, ByteString.EMPTY);
+      Integer wholeTimeSingCnt, Float wholeTimeSingRatio, Float beyondSkrerRatio,
+      Integer otherBlightCntTotal) {
+    this(userID, wantSingChanceCnt, getSingChanceCnt, wholeTimeSingCnt, wholeTimeSingRatio, beyondSkrerRatio, otherBlightCntTotal, ByteString.EMPTY);
   }
 
   public QResultInfo(Integer userID, Integer wantSingChanceCnt, Integer getSingChanceCnt,
       Integer wholeTimeSingCnt, Float wholeTimeSingRatio, Float beyondSkrerRatio,
-      ByteString unknownFields) {
+      Integer otherBlightCntTotal, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
     this.wantSingChanceCnt = wantSingChanceCnt;
@@ -104,6 +116,7 @@ public final class QResultInfo extends Message<QResultInfo, QResultInfo.Builder>
     this.wholeTimeSingCnt = wholeTimeSingCnt;
     this.wholeTimeSingRatio = wholeTimeSingRatio;
     this.beyondSkrerRatio = beyondSkrerRatio;
+    this.otherBlightCntTotal = otherBlightCntTotal;
   }
 
   @Override
@@ -115,6 +128,7 @@ public final class QResultInfo extends Message<QResultInfo, QResultInfo.Builder>
     builder.wholeTimeSingCnt = wholeTimeSingCnt;
     builder.wholeTimeSingRatio = wholeTimeSingRatio;
     builder.beyondSkrerRatio = beyondSkrerRatio;
+    builder.otherBlightCntTotal = otherBlightCntTotal;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -130,7 +144,8 @@ public final class QResultInfo extends Message<QResultInfo, QResultInfo.Builder>
         && Internal.equals(getSingChanceCnt, o.getSingChanceCnt)
         && Internal.equals(wholeTimeSingCnt, o.wholeTimeSingCnt)
         && Internal.equals(wholeTimeSingRatio, o.wholeTimeSingRatio)
-        && Internal.equals(beyondSkrerRatio, o.beyondSkrerRatio);
+        && Internal.equals(beyondSkrerRatio, o.beyondSkrerRatio)
+        && Internal.equals(otherBlightCntTotal, o.otherBlightCntTotal);
   }
 
   @Override
@@ -144,6 +159,7 @@ public final class QResultInfo extends Message<QResultInfo, QResultInfo.Builder>
       result = result * 37 + (wholeTimeSingCnt != null ? wholeTimeSingCnt.hashCode() : 0);
       result = result * 37 + (wholeTimeSingRatio != null ? wholeTimeSingRatio.hashCode() : 0);
       result = result * 37 + (beyondSkrerRatio != null ? beyondSkrerRatio.hashCode() : 0);
+      result = result * 37 + (otherBlightCntTotal != null ? otherBlightCntTotal.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -158,6 +174,7 @@ public final class QResultInfo extends Message<QResultInfo, QResultInfo.Builder>
     if (wholeTimeSingCnt != null) builder.append(", wholeTimeSingCnt=").append(wholeTimeSingCnt);
     if (wholeTimeSingRatio != null) builder.append(", wholeTimeSingRatio=").append(wholeTimeSingRatio);
     if (beyondSkrerRatio != null) builder.append(", beyondSkrerRatio=").append(beyondSkrerRatio);
+    if (otherBlightCntTotal != null) builder.append(", otherBlightCntTotal=").append(otherBlightCntTotal);
     return builder.replace(0, 2, "QResultInfo{").append('}').toString();
   }
 
@@ -232,6 +249,16 @@ public final class QResultInfo extends Message<QResultInfo, QResultInfo.Builder>
   }
 
   /**
+   * 其他人给予爆灯的数量
+   */
+  public Integer getOtherBlightCntTotal() {
+    if(otherBlightCntTotal==null){
+        return DEFAULT_OTHERBLIGHTCNTTOTAL;
+    }
+    return otherBlightCntTotal;
+  }
+
+  /**
    * 用户标识
    */
   public boolean hasUserID() {
@@ -273,6 +300,13 @@ public final class QResultInfo extends Message<QResultInfo, QResultInfo.Builder>
     return beyondSkrerRatio!=null;
   }
 
+  /**
+   * 其他人给予爆灯的数量
+   */
+  public boolean hasOtherBlightCntTotal() {
+    return otherBlightCntTotal!=null;
+  }
+
   public static final class Builder extends Message.Builder<QResultInfo, Builder> {
     private Integer userID;
 
@@ -285,6 +319,8 @@ public final class QResultInfo extends Message<QResultInfo, QResultInfo.Builder>
     private Float wholeTimeSingRatio;
 
     private Float beyondSkrerRatio;
+
+    private Integer otherBlightCntTotal;
 
     public Builder() {
     }
@@ -337,9 +373,17 @@ public final class QResultInfo extends Message<QResultInfo, QResultInfo.Builder>
       return this;
     }
 
+    /**
+     * 其他人给予爆灯的数量
+     */
+    public Builder setOtherBlightCntTotal(Integer otherBlightCntTotal) {
+      this.otherBlightCntTotal = otherBlightCntTotal;
+      return this;
+    }
+
     @Override
     public QResultInfo build() {
-      return new QResultInfo(userID, wantSingChanceCnt, getSingChanceCnt, wholeTimeSingCnt, wholeTimeSingRatio, beyondSkrerRatio, super.buildUnknownFields());
+      return new QResultInfo(userID, wantSingChanceCnt, getSingChanceCnt, wholeTimeSingCnt, wholeTimeSingRatio, beyondSkrerRatio, otherBlightCntTotal, super.buildUnknownFields());
     }
   }
 
@@ -356,6 +400,7 @@ public final class QResultInfo extends Message<QResultInfo, QResultInfo.Builder>
           + ProtoAdapter.UINT32.encodedSizeWithTag(4, value.wholeTimeSingCnt)
           + ProtoAdapter.FLOAT.encodedSizeWithTag(5, value.wholeTimeSingRatio)
           + ProtoAdapter.FLOAT.encodedSizeWithTag(6, value.beyondSkrerRatio)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(7, value.otherBlightCntTotal)
           + value.unknownFields().size();
     }
 
@@ -367,6 +412,7 @@ public final class QResultInfo extends Message<QResultInfo, QResultInfo.Builder>
       ProtoAdapter.UINT32.encodeWithTag(writer, 4, value.wholeTimeSingCnt);
       ProtoAdapter.FLOAT.encodeWithTag(writer, 5, value.wholeTimeSingRatio);
       ProtoAdapter.FLOAT.encodeWithTag(writer, 6, value.beyondSkrerRatio);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 7, value.otherBlightCntTotal);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -382,6 +428,7 @@ public final class QResultInfo extends Message<QResultInfo, QResultInfo.Builder>
           case 4: builder.setWholeTimeSingCnt(ProtoAdapter.UINT32.decode(reader)); break;
           case 5: builder.setWholeTimeSingRatio(ProtoAdapter.FLOAT.decode(reader)); break;
           case 6: builder.setBeyondSkrerRatio(ProtoAdapter.FLOAT.decode(reader)); break;
+          case 7: builder.setOtherBlightCntTotal(ProtoAdapter.UINT32.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

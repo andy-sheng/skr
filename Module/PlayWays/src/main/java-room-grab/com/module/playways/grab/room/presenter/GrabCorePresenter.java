@@ -37,6 +37,7 @@ import com.module.common.ICallback;
 import com.module.msg.CustomMsgType;
 import com.module.msg.IMsgService;
 import com.module.playways.event.GrabChangeRoomEvent;
+import com.module.playways.grab.room.GrabResultData;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.event.GrabGameOverEvent;
@@ -84,6 +85,8 @@ import com.module.playways.rank.room.SwapStatusType;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.event.PretendCommentMsgEvent;
+import com.module.playways.rank.room.model.score.ScoreResultModel;
+
 import com.module.playways.rank.room.score.MachineScoreItem;
 import com.module.playways.rank.room.score.RobotScoreHelper;
 import com.module.playways.rank.song.model.SongModel;
@@ -107,7 +110,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.greenrobot.greendao.annotation.NotNull;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -214,7 +216,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
         joinRcRoom(0);
         if (mRoomData.getGameId() > 0) {
-            pretenSystemMsg("欢迎进入撕歌一唱到底，对局马上开始，比赛过程发现坏蛋请用力举报哦～");
+            pretenSystemMsg("撕歌倡导文明游戏，遇到恶意玩家，可以发起投票将ta踢出房间哦～");
             for (PlayerInfoModel playerInfoModel : mRoomData.getPlayerInfoList()) {
                 if (!playerInfoModel.isOnline()) {
                     continue;
@@ -861,7 +863,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 if (result.getErrno() == 0) {
                     U.getToastUtil().showShort("发起踢人请求成功");
                 } else {
-                    U.getToastUtil().showShort(" errno = " + result.getErrno() + result.getErrmsg());
+                    U.getToastUtil().showShort("" + result.getErrmsg());
                 }
             }
 
@@ -919,13 +921,11 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     mRoomData.setHasExitGame(true);
-                    String resultStr = result.getData().getString("resultInfo");
-                    if (!TextUtils.isEmpty(resultStr)) {
-                        GrabResultInfoModel grabResultInfoModel = JSON.parseObject(resultStr, GrabResultInfoModel.class);
-                        List<GrabResultInfoModel> l = new ArrayList<>();
-                        l.add(grabResultInfoModel);
+                    GrabResultInfoModel grabResultInfoModel = JSON.parseObject(result.getData().getString("resultInfo"), GrabResultInfoModel.class);
+                    List<ScoreResultModel> scoreResultModel = JSON.parseArray(result.getData().getString("userScoreResult"), ScoreResultModel.class);
+                    if (grabResultInfoModel != null && scoreResultModel != null) {
                         // 得到结果
-                        mRoomData.setResultList(l);
+                        mRoomData.setGrabResultData(new GrabResultData(grabResultInfoModel, scoreResultModel));
                         mIGrabView.onGetGameResult(true);
                     } else {
                         mIGrabView.onGetGameResult(false);
@@ -1087,7 +1087,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     MyLog.w(TAG, msg);
 
                     if (currentInfo == null) {
-                        onGameOver("syncGameStatus", gameOverTimeMs, null);
+                        onGameOver("syncGameStatus", gameOverTimeMs);
                         return;
                     }
 
@@ -1119,7 +1119,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             if (gameOverTimeMs > mRoomData.getGameStartTs()) {
                 MyLog.w(TAG, "gameOverTimeMs ！= 0 游戏应该结束了");
                 // 游戏结束了
-                onGameOver("sync", gameOverTimeMs, null);
+                onGameOver("sync", gameOverTimeMs);
             } else {
                 MyLog.w(TAG, "服务器结束时间不合法 startTs:" + mRoomData.getGameStartTs() + " overTs:" + gameOverTimeMs);
             }
@@ -1608,7 +1608,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 mRoomData.setCoin(event.myCoin);
             }
         }
-        onGameOver("QRoundAndGameOverMsgEvent", event.roundOverTimeMs, event.resultInfo);
+        onGameOver("QRoundAndGameOverMsgEvent", event.roundOverTimeMs);
         if (event.mOverReason == EQGameOverReason.GOR_OWNER_EXIT) {
             U.getToastUtil().showLong("房主离开了游戏，房间解散");
         }
@@ -1623,13 +1623,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 //        fetchAcc(event.getNextRound());
     }
 
-    private void onGameOver(String from, long gameOverTs, List<GrabResultInfoModel> grabResultInfoModels) {
+    private void onGameOver(String from, long gameOverTs) {
         MyLog.w(TAG, "游戏结束 gameOverTs=" + gameOverTs + " from:" + from);
         if (gameOverTs > mRoomData.getGameStartTs() && gameOverTs > mRoomData.getGameOverTs()) {
             cancelSyncGameStateTask();
-            if (grabResultInfoModels != null && grabResultInfoModels.size() > 0) {
-                mRoomData.setResultList(grabResultInfoModels);
-            }
             mRoomData.setGameOverTs(gameOverTs);
             mRoomData.setExpectRoundInfo(null);
             mRoomData.checkRoundInEachMode();

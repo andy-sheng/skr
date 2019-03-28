@@ -11,6 +11,7 @@ public class GrabResultInfoModel implements Serializable {
     int wholeTimeSingCnt; //一唱到底数量
     float wholeTimeSingRatio; //一唱到底成功率
     float beyondSkrerRatio; //超过同段位
+    int otherBlightCntTotal; //别人送了多少爆灯
 
     public static GrabResultInfoModel parse(QResultInfo info) {
         GrabResultInfoModel grabResultInfoModel = new GrabResultInfoModel();
@@ -20,6 +21,7 @@ public class GrabResultInfoModel implements Serializable {
         grabResultInfoModel.setWholeTimeSingCnt(info.getWholeTimeSingCnt());
         grabResultInfoModel.setWholeTimeSingRatio(info.getWholeTimeSingRatio());
         grabResultInfoModel.setBeyondSkrerRatio(info.getBeyondSkrerRatio());
+        grabResultInfoModel.setOtherBlightCntTotal(info.getOtherBlightCntTotal());
         return null;
     }
 
@@ -69,5 +71,26 @@ public class GrabResultInfoModel implements Serializable {
 
     public void setBeyondSkrerRatio(float beyondSkrerRatio) {
         this.beyondSkrerRatio = beyondSkrerRatio;
+    }
+
+    public int getOtherBlightCntTotal() {
+        return otherBlightCntTotal;
+    }
+
+    public void setOtherBlightCntTotal(int otherBlightCntTotal) {
+        this.otherBlightCntTotal = otherBlightCntTotal;
+    }
+
+    @Override
+    public String toString() {
+        return "GrabResultInfoModel{" +
+                "userID=" + userID +
+                ", wantSingChanceCnt=" + wantSingChanceCnt +
+                ", getSingChanceCnt=" + getSingChanceCnt +
+                ", wholeTimeSingCnt=" + wholeTimeSingCnt +
+                ", wholeTimeSingRatio=" + wholeTimeSingRatio +
+                ", beyondSkrerRatio=" + beyondSkrerRatio +
+                ", otherBlightCntTotal=" + otherBlightCntTotal +
+                '}';
     }
 }
