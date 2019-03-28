@@ -23,11 +23,13 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.titlebar.CommonTitleBar;
 import com.module.RouterConstants;
+import com.module.home.event.AuthSuccessEvent;
 import com.module.home.event.WithDrawSuccessEvent;
 import com.module.home.inter.IWalletView;
 import com.module.home.R;
 import com.module.home.adapter.WalletRecordAdapter;
 import com.module.home.model.WalletRecordModel;
+import com.module.home.model.WithDrawInfoModel;
 import com.module.home.presenter.WalletRecordPresenter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -46,6 +48,8 @@ public class WalletFragment extends BaseFragment implements IWalletView {
     TextView mWithdrawTv;
     SmartRefreshLayout mRefreshLayout;
     RecyclerView mRecyclerView;
+
+    WithDrawInfoModel mWithDrawInfoModel;
 
     WalletRecordAdapter mWalletRecordAdapter;
 
@@ -110,8 +114,29 @@ public class WalletFragment extends BaseFragment implements IWalletView {
         mWithdrawTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                if (balance <= 0) {
-                    U.getToastUtil().showShort("暂无可提现余额");
+                if (balance < 0.1) {
+                    U.getToastUtil().showShort("满10元才能提现哦～");
+                } else if(mWithDrawInfoModel == null){
+                    U.getToastUtil().showShort("正在加载数据");
+                    mWalletRecordPresenter.getWithDrawInfo(0);
+                } else if(!mWithDrawInfoModel.isIsPhoneAuth()){
+                    U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), SmsAuthFragment.class)
+                            .setAddToBackStack(false)
+                            .setHasAnimation(true)
+                            .setFragmentDataListener(new FragmentDataListener() {
+                                @Override
+                                public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
+                                    if (requestCode == 0 && resultCode == 0) {
+                                        mWithDrawInfoModel.setIsPhoneAuth(true);
+                                    }
+                                }
+                            })
+                            .build());
+                } else if(!mWithDrawInfoModel.isIsRealAuth()){
+                    mWithDrawInfoModel = null;
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                            .withString(RouterConstants.KEY_WEB_URL, "http://test.app.inframe.mobi/face/faceauth")
+                            .navigation();
                 } else {
                     if(!U.getNetworkUtils().hasNetwork()){
                         U.getToastUtil().showShort("您网络异常！");
@@ -126,7 +151,14 @@ public class WalletFragment extends BaseFragment implements IWalletView {
         });
 
         U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(mWithDrawInfoModel == null){
+            mWalletRecordPresenter.getWithDrawInfo(0);
+        }
     }
 
     private void initPresenter() {
@@ -194,5 +226,10 @@ public class WalletFragment extends BaseFragment implements IWalletView {
         mRefreshLayout.finishLoadMore();
         mWalletRecordAdapter.insertListLast(list);
         mWalletRecordAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showWithDrawInfo(WithDrawInfoModel withDrawInfoModel) {
+        mWithDrawInfoModel = withDrawInfoModel;
     }
 }

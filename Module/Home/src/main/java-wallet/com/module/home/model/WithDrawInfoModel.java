@@ -23,6 +23,7 @@ public class WithDrawInfoModel implements Serializable {
     private long lockedInt;
     private long maxWihtrawAmount;
     private boolean isRealAuth;
+    private boolean isPhoneAuth;
     private List<String> rule;
     private List<CfgBean> cfg;
 
@@ -72,6 +73,14 @@ public class WithDrawInfoModel implements Serializable {
 
     public void setIsRealAuth(boolean isRealAuth) {
         this.isRealAuth = isRealAuth;
+    }
+
+    public boolean isIsPhoneAuth() {
+        return isPhoneAuth;
+    }
+
+    public void setIsPhoneAuth(boolean phoneAuth) {
+        isPhoneAuth = phoneAuth;
     }
 
     public List<String> getRule() {

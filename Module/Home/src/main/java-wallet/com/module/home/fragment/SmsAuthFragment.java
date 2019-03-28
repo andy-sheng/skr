@@ -2,11 +2,13 @@ package com.module.home.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
 
@@ -18,12 +20,14 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.utils.FragmentUtils;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.NoLeakEditText;
+import com.module.RouterConstants;
 import com.module.home.R;
 import com.module.home.WalletServerApi;
 
@@ -53,6 +57,8 @@ public class SmsAuthFragment extends BaseFragment {
 
     String mPhoneNumber; //发送验证码的电话号码
     String mCode; //验证码
+
+    Handler mUiHandler = new Handler();
 
     HandlerTaskTimer mTaskTimer; // 倒计时验证码
 
@@ -114,10 +120,21 @@ public class SmsAuthFragment extends BaseFragment {
                                 @Override
                                 public void process(ApiResult result) {
                                     if (result.getErrno() == 0) {
-                                        SmsAuthFragment.this.finish();
+                                        mUiHandler.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                finish();
+                                            }
+                                        }, 300);
+
                                         if (mFragmentDataListener != null) {
                                             mFragmentDataListener.onFragmentResult(0, 0, null, null);
                                         }
+
+                                        //短信验证完实人认证
+                                        ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                                                .withString(RouterConstants.KEY_WEB_URL, "http://test.app.inframe.mobi/face/faceauth")
+                                                .navigation();
                                     } else {
                                         U.getToastUtil().showShort(result.getErrmsg());
                                     }
@@ -218,6 +235,21 @@ public class SmsAuthFragment extends BaseFragment {
         }, this);
     }
 
+    @Override
+    public void finish() {
+        U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
+                .setActivity(getActivity())
+                .setPopFragment(SmsAuthFragment.this)
+                .setPopAbove(false)
+                .setHasAnimation(true)
+                .build());
+    }
+
+    @Override
+    protected boolean onBackPressed() {
+        finish();
+        return true;
+    }
 
     /**
      * 更新准备时间倒计时
@@ -276,5 +308,6 @@ public class SmsAuthFragment extends BaseFragment {
         super.destroy();
         stopTimeTask();
         U.getSoundUtils().release(TAG);
+        mUiHandler.removeCallbacksAndMessages(null);
     }
 }
