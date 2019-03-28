@@ -1,0 +1,198 @@
+<com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/smart_refresh_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#c0F9F4F1"
+    app:srlEnablePreviewInEditMode="true">
+
+    <com.scwang.smartrefresh.layout.header.ClassicsHeader
+        android:id="@+id/classics_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></com.scwang.smartrefresh.layout.header.ClassicsHeader>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fadingEdge="none"
+        android:overScrollMode="never"
+        android:scrollbars="none">
+
+        <RelativeLayout
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/tv_bg"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_332_dp"
+                app:bl_gradient_angle="45"
+                app:bl_gradient_endColor="#6E42C3"
+                app:bl_gradient_startColor="#EB83CA" />
+
+            <com.common.image.fresco.BaseImageView
+                android:id="@+id/iv_user_icon"
+                android:layout_width="@dimen/view_80_dp"
+                android:layout_height="@dimen/view_80_dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_42_dp" />
+
+            <TextView
+                android:id="@+id/tv_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iv_user_icon"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_13_dp"
+                android:text="KTV酒彪子"
+                android:textColor="@color/white_trans_90"
+                android:textSize="@dimen/textsize_18_dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_user_name"
+                android:layout_marginTop="@dimen/view_10_dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:id="@+id/ll_num_container"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="26"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/textsize_42_dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@+id/tv_num"
+                            android:layout_marginBottom="@dimen/view_10_dp"
+                            android:layout_toRightOf="@+id/tv_num"
+                            android:text="名"
+                            android:textColor="@color/white_trans_80"
+                            android:textSize="@dimen/view_16_dp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_area"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/ll_num_container"
+                        android:layout_centerHorizontal="true"
+                        android:text="千岛"
+                        android:textColor="@color/white_trans_50"
+                        android:textSize="@dimen/textsize_12_dp" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_marginTop="@dimen/view_16_dp"
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/view_29_dp"
+                    android:background="@color/white_trans_10" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:id="@+id/ll_country"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_num_country"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="26"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/textsize_42_dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@+id/tv_num"
+                            android:layout_marginBottom="@dimen/view_10_dp"
+                            android:layout_toRightOf="@+id/tv_num"
+                            android:text="名"
+                            android:textColor="@color/white_trans_80"
+                            android:textSize="@dimen/view_16_dp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_country"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/ll_country"
+                        android:layout_centerHorizontal="true"
+                        android:text="全国榜"
+                        android:textColor="@color/white_trans_50"
+                        android:textSize="@dimen/textsize_12_dp" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/bottom_bg"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_80_dp"
+                android:layout_marginTop="@dimen/view_289_dp"
+                app:bl_corners_topLeftRadius="@dimen/view_20_dp"
+                app:bl_corners_topRightRadius="@dimen/view_20_dp"
+                app:bl_solid_color="@color/white" />
+
+            <com.common.view.ex.ExTextView
+                android:textSize="@dimen/textsize_14_dp"
+                android:id="@+id/tv_to_leader_board"
+                android:layout_width="@dimen/view_240_dp"
+                android:layout_height="@dimen/view_48_dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_265_dp"
+                android:gravity="center"
+                android:text="查看完整榜单"
+                android:textColor="#7638A6"
+                app:bl_corners_radius="@dimen/view_24_dp"
+                app:bl_solid_color="#FFC484" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/bottom_bg"
+                android:layout_marginLeft="@dimen/view_16_dp"
+                android:layout_marginTop="@dimen/view_42_dp"
+                android:layout_marginRight="@dimen/view_16_dp">
+
+                <com.common.view.ex.ExImageView
+                    android:id="@+id/iv_athletics_pk"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/shouye_yichangdaodi" />
+
+                <com.common.view.ex.ExImageView
+                    android:id="@+id/iv_voice_room"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/view_15_dp"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/shouye_yichangdaodi" />
+            </LinearLayout>
+        </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
+</com.scwang.smartrefresh.layout.SmartRefreshLayout>
