@@ -238,7 +238,7 @@ public class GameFragment extends BaseFragment {
                 @Override
                 public boolean onLongClick(View v) {
                     if (true) {
-                        UserInfoManager.getInstance().getUserInfoByUuid(1343088, new UserInfoManager.ResultCallback<UserInfoModel>() {
+                        UserInfoManager.getInstance().getUserInfoByUuid(1604769, new UserInfoManager.ResultCallback<UserInfoModel>() {
                             @Override
                             public boolean onGetLocalDB(UserInfoModel o) {
                                 return false;

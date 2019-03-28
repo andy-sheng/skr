@@ -135,7 +135,10 @@ class FloatPhone extends FloatView {
 
     @Override
     public void updateXY(int x, int y) {
+        MyLog.d(TAG,"updateXY" + " x=" + x + " y=" + y);
         if (isRemove) return;
+        mB.xOffset = x;
+        mB.yOffset = y;
         mLayoutParams.x = x;
         mLayoutParams.y = y;
         mWindowManager.updateViewLayout(mB.mView, mLayoutParams);

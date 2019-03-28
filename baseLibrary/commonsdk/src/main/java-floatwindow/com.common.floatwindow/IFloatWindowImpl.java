@@ -11,6 +11,7 @@ import android.os.Build;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
 import com.common.log.MyLog;
@@ -204,8 +205,8 @@ public class IFloatWindowImpl extends IFloatWindow {
                 break;
             default:
                 getView().setOnTouchListener(new View.OnTouchListener() {
-                    float lastX, lastY, changeX, changeY;
-                    int newX, newY;
+                    float lastX, lastY;
+                    int originVX, originVY;
 
                     @SuppressLint("ClickableViewAccessibility")
                     @Override
@@ -217,19 +218,27 @@ public class IFloatWindowImpl extends IFloatWindow {
                                 downY = event.getRawY();
                                 lastX = event.getRawX();
                                 lastY = event.getRawY();
+                                originVX = mFloatView.getX();
+                                originVY = mFloatView.getY();
                                 cancelAnimator();
                                 break;
                             case MotionEvent.ACTION_MOVE:
-                                changeX = event.getRawX() - lastX;
-                                changeY = event.getRawY() - lastY;
-                                newX = (int) (mFloatView.getX() + changeX);
-                                newY = (int) (mFloatView.getY() + changeY);
-                                mFloatView.updateXY(newX, newY);
-                                if (mB.mViewStateListener != null) {
-                                    mB.mViewStateListener.onPositionUpdate(newX, newY);
+                                float rx = event.getRawX();
+                                float ry = event.getRawY();
+                                MyLog.d(TAG, "onTouch rx=" + rx + " ry=" + ry);
+
+                                float changeX = rx - lastX;
+                                float changeY = ry - lastY;
+                                if (mB.mMoveType == MoveType.canRemove) {
+                                    mFloatView.updateX((int) (mFloatView.getX()+changeX));
+                                } else {
+                                    mFloatView.updateXY((int) (mFloatView.getX()+changeX), (int) (mFloatView.getY()+changeY));
                                 }
-                                lastX = event.getRawX();
-                                lastY = event.getRawY();
+                                if (mB.mViewStateListener != null) {
+                                    mB.mViewStateListener.onPositionUpdate(mFloatView.getX(), mFloatView.getY());
+                                }
+                                lastX = rx;
+                                lastY = ry;
                                 break;
                             case MotionEvent.ACTION_UP:
                                 upX = event.getRawX();
@@ -254,9 +263,9 @@ public class IFloatWindowImpl extends IFloatWindow {
                                         });
                                         startAnimator();
                                         break;
-                                    case MoveType.back:
-                                        PropertyValuesHolder pvhX = PropertyValuesHolder.ofInt("x", mFloatView.getX(), mB.xOffset);
-                                        PropertyValuesHolder pvhY = PropertyValuesHolder.ofInt("y", mFloatView.getY(), mB.yOffset);
+                                    case MoveType.back: {
+                                        PropertyValuesHolder pvhX = PropertyValuesHolder.ofInt("x", mFloatView.getX(), originVX);
+                                        PropertyValuesHolder pvhY = PropertyValuesHolder.ofInt("y", mFloatView.getY(), originVY);
                                         mAnimator = ObjectAnimator.ofPropertyValuesHolder(pvhX, pvhY);
                                         mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                                             @Override
@@ -270,7 +279,55 @@ public class IFloatWindowImpl extends IFloatWindow {
                                             }
                                         });
                                         startAnimator();
+                                    }
+                                    break;
+                                    case MoveType.canRemove: {
+                                        if (upX - downX > U.getDisplayUtils().getScreenWidth() * 0.2) {
+                                            MyLog.d(TAG, "onTouchUp 划走消失");
+                                            PropertyValuesHolder pvhX = PropertyValuesHolder.ofInt("x", mFloatView.getX(), U.getDisplayUtils().getScreenWidth());
+                                            mAnimator = ObjectAnimator.ofPropertyValuesHolder(pvhX);
+                                            mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                                                @Override
+                                                public void onAnimationUpdate(ValueAnimator animation) {
+                                                    int x = (int) animation.getAnimatedValue("x");
+                                                    mFloatView.updateX(x);
+                                                    if (mB.mViewStateListener != null) {
+                                                        mB.mViewStateListener.onPositionUpdate(mFloatView.getX(), mFloatView.getY());
+                                                    }
+                                                }
+                                            });
+                                            mAnimator.setInterpolator(new AccelerateInterpolator());
+                                            mAnimator.addListener(new AnimatorListenerAdapter() {
+                                                @Override
+                                                public void onAnimationCancel(Animator animation) {
+                                                    super.onAnimationCancel(animation);
+                                                }
+
+                                                @Override
+                                                public void onAnimationEnd(Animator animation) {
+                                                    super.onAnimationEnd(animation);
+                                                    dismiss();
+                                                }
+                                            });
+                                            startAnimator();
+                                        } else {
+                                            MyLog.d(TAG, "onTouchUp back");
+                                            PropertyValuesHolder pvhX = PropertyValuesHolder.ofInt("x", mFloatView.getX(), originVX);
+                                            mAnimator = ObjectAnimator.ofPropertyValuesHolder(pvhX);
+                                            mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                                                @Override
+                                                public void onAnimationUpdate(ValueAnimator animation) {
+                                                    int x = (int) animation.getAnimatedValue("x");
+                                                    mFloatView.updateX(x);
+                                                    if (mB.mViewStateListener != null) {
+                                                        mB.mViewStateListener.onPositionUpdate(mFloatView.getX(), mFloatView.getY());
+                                                    }
+                                                }
+                                            });
+                                            startAnimator();
+                                        }
                                         break;
+                                    }
                                     default:
                                         break;
                                 }

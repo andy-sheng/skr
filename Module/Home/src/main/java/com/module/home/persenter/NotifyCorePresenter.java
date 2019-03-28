@@ -15,6 +15,8 @@ import com.common.core.userinfo.model.UserInfoModel;
 import com.common.floatwindow.FloatWindow;
 import com.common.floatwindow.MoveType;
 import com.common.floatwindow.Screen;
+import com.common.floatwindow.ViewStateListener;
+import com.common.floatwindow.ViewStateListenerAdapter;
 import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.notification.event.FollowNotifyEvent;
@@ -112,7 +114,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                             public void onClickConfirm(UserInfoModel userInfoModel) {
                                 if (userInfoModel != null) {
                                     if (!userInfoModel.isFriend()) {
-                                        MyLog.d(TAG,"同意邀请，强制成为好友" + userInfoModel);
+                                        MyLog.d(TAG, "同意邀请，强制成为好友" + userInfoModel);
                                         UserInfoManager.getInstance().beFriend(userInfoModel.getUserId());
                                     }
                                 }
@@ -215,7 +217,6 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
 
             @Override
             public void onAgree() {
-
                 tryGoGrabRoom(roomID);
                 mUiHandler.removeMessages(MSG_DISMISS_INVITE_FLOAT_WINDOW);
                 FloatWindow.destroy(TAG_INVITE_FOALT_WINDOW);
@@ -223,11 +224,15 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         });
         FloatWindow.with(U.app())
                 .setView(grabInviteNotifyView)
-                .setMoveType(MoveType.inactive)
+                .setMoveType(MoveType.canRemove)
                 .setWidth(Screen.width, 1f)                               //设置控件宽高
                 .setHeight(Screen.height, 0.2f)
-//                                .setX(100)                                   //设置控件初始位置
-//                                .setY(Screen.height,0.3f)
+                .setViewStateListener(new ViewStateListenerAdapter() {
+                    @Override
+                    public void onDismiss() {
+                        mUiHandler.removeMessages(MSG_DISMISS_INVITE_FLOAT_WINDOW);
+                    }
+                })
                 .setDesktopShow(false)                        //桌面显示
                 .setCancelIfExist(false)
                 .setReqPermissionIfNeed(false)
@@ -251,11 +256,15 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         });
         FloatWindow.with(U.app())
                 .setView(relationNotifyView)
-                .setMoveType(MoveType.inactive)
+                .setMoveType(MoveType.canRemove)
                 .setWidth(Screen.width, 1f)                               //设置控件宽高
                 .setHeight(Screen.height, 0.2f)
-//                                .setX(100)                                   //设置控件初始位置
-//                                .setY(Screen.height,0.3f)
+                .setViewStateListener(new ViewStateListenerAdapter() {
+                    @Override
+                    public void onDismiss() {
+                        mUiHandler.removeMessages(MSG_DISMISS_RELATION_FLOAT_WINDOW);
+                    }
+                })
                 .setDesktopShow(false)                        //桌面显示
                 .setCancelIfExist(false)
                 .setReqPermissionIfNeed(true)
