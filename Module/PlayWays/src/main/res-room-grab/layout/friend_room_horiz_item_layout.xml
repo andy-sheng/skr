@@ -18,6 +18,9 @@
         android:layout_below="@id/avatar_iv"
         android:layout_alignLeft="@id/avatar_iv"
         android:layout_marginTop="@dimen/view_8_dp"
+        android:singleLine="true"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:text="KTV酒彪子"
         android:textColor="@color/white_trans_80"
         android:textSize="@dimen/textsize_12_dp" />
