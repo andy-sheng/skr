@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
+import com.common.core.permission.SkrAudioPermission;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -60,6 +61,8 @@ public class GrabSelectFragment extends BaseFragment {
 
     int offset = 0;          //偏移量
     int DEFAULT_COUNT = 10;  // 每次拉去列表数目
+
+    SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
 
     @Override
     public int initView() {
@@ -119,35 +122,41 @@ public class GrabSelectFragment extends BaseFragment {
             @Override
             public void onItemClicked(View view, int position, Object model) {
                 if (model != null) {
-                    FriendRoomModel model1 = (FriendRoomModel) model;
-                    GrabRoomServerApi roomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
-                    HashMap<String, Object> map = new HashMap<>();
-                    map.put("roomID", model1.getRoomInfo().getRoomID());
-                    RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSON), JSON.toJSONString(map));
-                    ApiMethods.subscribe(roomServerApi.joinGrabRoom(body), new ApiObserver<ApiResult>() {
+                    mSkrAudioPermission.ensurePermission(new Runnable() {
                         @Override
-                        public void process(ApiResult result) {
-                            if (result.getErrno() == 0) {
-                                JoinGrabRoomRspModel grabCurGameStateModel = JSON.parseObject(result.getData().toString(), JoinGrabRoomRspModel.class);
-                                //先跳转
-                                ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_ROOM)
-                                        .withSerializable("prepare_data", grabCurGameStateModel)
-                                        .navigation();
-                                Activity activity = getActivity();
-                                if (activity != null) {
-                                    activity.finish();
+                        public void run() {
+                            FriendRoomModel model1 = (FriendRoomModel) model;
+                            GrabRoomServerApi roomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
+                            HashMap<String, Object> map = new HashMap<>();
+                            map.put("roomID", model1.getRoomInfo().getRoomID());
+                            RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSON), JSON.toJSONString(map));
+                            ApiMethods.subscribe(roomServerApi.joinGrabRoom(body), new ApiObserver<ApiResult>() {
+                                @Override
+                                public void process(ApiResult result) {
+                                    if (result.getErrno() == 0) {
+                                        JoinGrabRoomRspModel grabCurGameStateModel = JSON.parseObject(result.getData().toString(), JoinGrabRoomRspModel.class);
+                                        //先跳转
+                                        ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_ROOM)
+                                                .withSerializable("prepare_data", grabCurGameStateModel)
+                                                .navigation();
+                                        Activity activity = getActivity();
+                                        if (activity != null) {
+                                            activity.finish();
+                                        }
+                                    } else {
+                                        U.getToastUtil().showShort(result.getErrmsg());
+                                    }
                                 }
-                            } else {
-                                U.getToastUtil().showShort(result.getErrmsg());
-                            }
-                        }
 
-                        @Override
-                        public void onNetworkError(ErrorType errorType) {
-                            super.onNetworkError(errorType);
+                                @Override
+                                public void onNetworkError(ErrorType errorType) {
+                                    super.onNetworkError(errorType);
+                                }
+                            });
                         }
-                    });
+                    }, true);
                 }
+
             }
         });
         mFriendsRecycle.setAdapter(mFriendRoomAdapter);
@@ -201,6 +210,12 @@ public class GrabSelectFragment extends BaseFragment {
         if (getActivity() != null) {
             getActivity().finish();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mSkrAudioPermission.onBackFromPermisionManagerMaybe();
     }
 
     @Override
