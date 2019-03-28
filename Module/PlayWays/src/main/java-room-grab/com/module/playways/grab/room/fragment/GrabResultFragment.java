@@ -171,13 +171,13 @@ public class GrabResultFragment extends BaseFragment {
                 mLevelView.bindData(mScoreStateModel.getMainRanking(), mScoreStateModel.getSubRanking());
                 mLevelDescTv.setText(mScoreStateModel.getRankingDesc());
                 int progress = 0;
-                if (mScoreStateModel.getMaxStar() != 0) {
+                if (mScoreStateModel.getMaxExp() != 0) {
                     progress = mScoreStateModel.getCurrExp() * 100 / mScoreStateModel.getMaxExp();
                 }
                 mLevelProgress.setCurProgress(progress);
-                mSongNum.setText("" + mGrabResultData.getGrabResultInfoModel().getWholeTimeSingCnt());
-                mSongEndPer.setText("" + 100 * mGrabResultData.getGrabResultInfoModel().getWholeTimeSingRatio());
-                mBaodengNum.setText("" + mGrabResultData.getGrabResultInfoModel().getOtherBlightCntTotal());
+                mSongNum.setText(String.valueOf(mGrabResultData.getGrabResultInfoModel().getWholeTimeSingCnt()) + "");
+                mSongEndPer.setText(String.valueOf(100 * mGrabResultData.getGrabResultInfoModel().getWholeTimeSingRatio()) + "");
+                mBaodengNum.setText(String.valueOf(mGrabResultData.getGrabResultInfoModel().getOtherBlightCntTotal()) + "");
             }
         } else {
             MyLog.d(TAG, "还去同步了一次");

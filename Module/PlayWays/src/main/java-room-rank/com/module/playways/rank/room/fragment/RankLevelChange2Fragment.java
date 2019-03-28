@@ -290,7 +290,7 @@ public class RankLevelChange2Fragment extends BaseFragment {
         mRankArea.setVisibility(VISIBLE);
         mLevelDescTv.setText(mScoreStateModel.getRankingDesc());
         int progress = 0;
-        if (mScoreStateModel.getMaxStar() != 0) {
+        if (mScoreStateModel.getMaxExp() != 0) {
             progress = mScoreStateModel.getCurrExp() * 100 / mScoreStateModel.getMaxExp();
         }
         mLevelProgress.setCurProgress(progress);
