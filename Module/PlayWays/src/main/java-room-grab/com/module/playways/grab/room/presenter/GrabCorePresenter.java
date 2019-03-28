@@ -863,7 +863,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 if (result.getErrno() == 0) {
                     U.getToastUtil().showShort("发起踢人请求成功");
                 } else {
-                    U.getToastUtil().showShort(" errno = " + result.getErrno() + result.getErrmsg());
+                    U.getToastUtil().showShort("" + result.getErrmsg());
                 }
             }
 

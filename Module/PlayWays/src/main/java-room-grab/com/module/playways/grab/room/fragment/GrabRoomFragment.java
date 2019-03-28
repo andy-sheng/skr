@@ -1135,7 +1135,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             getActivity().finish();
         }
 
-        U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
+        U.getToastUtil().showSkrCustomLong(new CommonToastView.Builder(U.app())
                 .setImage(R.drawable.touxiangshezhishibai_icon)
                 .setText("超过半数玩家请你出房间，要友好文明游戏哦~")
                 .build());
