@@ -203,9 +203,13 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
-    void showGrabInviteFloatWindow(UserInfoModel userInfoModel, int roomID) {
+    void resendGrabInviterFloatWindowDismissMsg() {
         mUiHandler.removeMessages(MSG_DISMISS_INVITE_FLOAT_WINDOW);
         mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_INVITE_FLOAT_WINDOW, 5000);
+    }
+
+    void showGrabInviteFloatWindow(UserInfoModel userInfoModel, int roomID) {
+        resendGrabInviterFloatWindowDismissMsg();
         GrabInviteNotifyView grabInviteNotifyView = new GrabInviteNotifyView(U.app());
         grabInviteNotifyView.bindData(userInfoModel);
         grabInviteNotifyView.setListener(new GrabInviteNotifyView.Listener() {
@@ -232,19 +236,27 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                     public void onDismiss() {
                         mUiHandler.removeMessages(MSG_DISMISS_INVITE_FLOAT_WINDOW);
                     }
+
+                    @Override
+                    public void onPositionUpdate(int x, int y) {
+                        super.onPositionUpdate(x, y);
+                        resendGrabInviterFloatWindowDismissMsg();
+                    }
                 })
                 .setDesktopShow(false)                        //桌面显示
                 .setCancelIfExist(false)
                 .setReqPermissionIfNeed(false)
-                .setViewStateListener(null)    //监听悬浮控件状态改变
                 .setTag(TAG_INVITE_FOALT_WINDOW)
                 .build();
     }
 
+    void resendFollowFloatWindowDismissMsg() {
+        mUiHandler.removeMessages(MSG_DISMISS_INVITE_FLOAT_WINDOW);
+        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_INVITE_FLOAT_WINDOW, 5000);
+    }
 
     void showFollowFloatWindow(UserInfoModel userInfoModel) {
-        mUiHandler.removeMessages(MSG_DISMISS_RELATION_FLOAT_WINDOW);
-        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_RELATION_FLOAT_WINDOW, 5000);
+        resendFollowFloatWindowDismissMsg();
         FollowNotifyView relationNotifyView = new FollowNotifyView(U.app());
         relationNotifyView.bindData(userInfoModel);
         relationNotifyView.setListener(new FollowNotifyView.Listener() {
@@ -264,11 +276,16 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                     public void onDismiss() {
                         mUiHandler.removeMessages(MSG_DISMISS_RELATION_FLOAT_WINDOW);
                     }
+
+                    @Override
+                    public void onPositionUpdate(int x, int y) {
+                        super.onPositionUpdate(x, y);
+                        resendFollowFloatWindowDismissMsg();
+                    }
                 })
                 .setDesktopShow(false)                        //桌面显示
                 .setCancelIfExist(false)
                 .setReqPermissionIfNeed(true)
-                .setViewStateListener(null)    //监听悬浮控件状态改变
                 .setTag(TAG_RELATION_FOALT_WINDOW)
                 .build();
     }
