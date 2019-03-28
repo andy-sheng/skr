@@ -722,7 +722,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         }
 
         GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
-        if (grabRoundInfoModel!=null && !grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_GRAB) {
+        if (grabRoundInfoModel != null && !grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_GRAB) {
             mTurnInfoCardView.setVisibility(View.GONE);
             onSongInfoCardPlayOver("中途进来", pendingPlaySongCardData);
         } else {
@@ -745,7 +745,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
         mGrabGiveupView.hideWithAnimation(false);
         GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
-        if (grabRoundInfoModel!=null && !grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_GRAB) {
+        if (grabRoundInfoModel != null && !grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_GRAB) {
             MyLog.d(TAG, "这轮刚进来，不播放导唱过场");
             mGrabOpBtn.hide();
         } else {
@@ -801,7 +801,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             @Override
             public void run() {
                 GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
-                if (grabRoundInfoModel!=null && grabRoundInfoModel.isParticipant()) {
+                if (grabRoundInfoModel != null && grabRoundInfoModel.isParticipant()) {
                     mGrabOpBtn.toOtherSingState();
                 } else {
                     mGrabOpBtn.hide();
@@ -814,7 +814,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     private void singBeginTipsPlay(int uid, Runnable runnable) {
         GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
-        if (grabRoundInfoModel!=null && !grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_SING) {
+        if (grabRoundInfoModel != null && !grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_SING) {
             MyLog.d(TAG, " 进入时已经时演唱阶段了，则不用播卡片了");
             runnable.run();
         } else {
@@ -919,10 +919,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     public void destroy() {
         super.destroy();
         MyLog.d(TAG, "destroy");
-        if (mPersonInfoDialog != null && mPersonInfoDialog.isShowing()) {
-            mPersonInfoDialog.dismiss();
-            mPersonInfoDialog = null;
-        }
+        dismissDialog();
         if (mQuitTipsDialog != null && mQuitTipsDialog.isShowing()) {
             mQuitTipsDialog.dismiss();
             mQuitTipsDialog = null;
@@ -940,13 +937,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             }
             mAnimatorList.clear();
         }
-        if (mGameRoleDialog != null) {
-            mGameRoleDialog.dismiss();
-        }
 
-        if (mGrabKickDialog != null) {
-            mGrabKickDialog.dismiss();
-        }
         U.getSoundUtils().release(TAG);
         BgMusicManager.getInstance().setRoom(false);
     }
@@ -1089,9 +1080,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     // 确认踢人弹窗
     private void showKickConfirmDialog(UserInfoModel userInfoModel) {
         MyLog.d(TAG, "showConfirmDialog" + " userInfoModel=" + userInfoModel);
-        if (mGrabKickDialog != null) {
-            mGrabKickDialog.dismiss();
-        }
+        dismissDialog();
         U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
         mGrabKickDialog = new ConfirmDialog(getActivity(), userInfoModel, ConfirmDialog.TYPE_KICK_CONFIRM, mRoomData.getGrabConfigModel().getKickUserConsumCoinCnt());
         mGrabKickDialog.setListener(new ConfirmDialog.Listener() {
@@ -1104,13 +1093,24 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         mGrabKickDialog.show();
     }
 
+    private void dismissDialog() {
+        if (mGameRoleDialog != null) {
+            mGameRoleDialog.dismiss();
+        }
+        if (mPersonInfoDialog != null) {
+            mPersonInfoDialog.dismiss();
+        }
+        mVoiceControlView.setVisibility(View.GONE);
+        if (mGrabKickDialog != null) {
+            mGrabKickDialog.dismiss();
+        }
+    }
+
     // 请求踢人弹窗
     @Override
     public void showKickVoteDialog(int userId, int sourceUserId) {
         MyLog.d(TAG, "showKickReqDialog" + " userId=" + userId + " sourceUserId=" + sourceUserId);
-        if (mGrabKickDialog != null) {
-            mGrabKickDialog.dismiss();
-        }
+        dismissDialog();
         U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
 
         GrabPlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, userId);
