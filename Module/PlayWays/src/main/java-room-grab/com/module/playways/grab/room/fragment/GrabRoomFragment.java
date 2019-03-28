@@ -1072,12 +1072,18 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_RESULT)
                 .withSerializable("room_data", mRoomData)
                 .navigation();
-        Activity activity = getActivity();
-        if (activity != null) {
-            activity.finish();
-        }
-        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-                StatConstants.KEY_GAME_FINISH, null);
+        // 延迟一点finish，以防漏底
+        mUiHanlder.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Activity activity = getActivity();
+                if (activity != null) {
+                    activity.finish();
+                }
+                StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
+                        StatConstants.KEY_GAME_FINISH, null);
+            }
+        }, 500);
     }
 
     // 确认踢人弹窗

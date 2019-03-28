@@ -152,6 +152,7 @@ public class GrabResultFragment extends BaseFragment {
     public void destroy() {
         super.destroy();
 //        U.getSoundUtils().release(TAG);
+        mUiHandler.removeCallbacksAndMessages(null);
     }
 
     private void bindData() {
@@ -218,7 +219,7 @@ public class GrabResultFragment extends BaseFragment {
         if (getActivity() != null) {
             getActivity().finish();
         }
-        return super.onBackPressed();
+        return true;
     }
 
     @Override
