@@ -137,6 +137,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     GrabTopContainerView mTopContainerView;// 顶部，抢唱阶段，以及非本人的演唱阶段
 
+    ExImageView mPracticeFlagIv; // 练习中
+
     GrabCorePresenter mCorePresenter;
 
     GrabRedPkgPresenter mGrabRedPkgPresenter;
@@ -450,7 +452,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         }
 
         mTopContainerView.setListener(mListener);
-
         mTopContainerView.getGrabTopView().setListener(new GrabTopView.Listener() {
             @Override
             public void changeRoom() {
@@ -476,6 +477,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
             }
         });
+
+        mPracticeFlagIv = mRootView.findViewById(R.id.practice_flag_iv);
     }
 
     GrabTopContainerView.Listener mListener = new GrabTopContainerView.Listener() {
@@ -722,7 +725,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         }
 
         GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
-        if (grabRoundInfoModel!=null && !grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_GRAB) {
+        if (grabRoundInfoModel != null && !grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_GRAB) {
             mTurnInfoCardView.setVisibility(View.GONE);
             onSongInfoCardPlayOver("中途进来", pendingPlaySongCardData);
         } else {
@@ -745,7 +748,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
         mGrabGiveupView.hideWithAnimation(false);
         GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
-        if (grabRoundInfoModel!=null && !grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_GRAB) {
+        if (grabRoundInfoModel != null && !grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_GRAB) {
             MyLog.d(TAG, "这轮刚进来，不播放导唱过场");
             mGrabOpBtn.hide();
         } else {
@@ -801,7 +804,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             @Override
             public void run() {
                 GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
-                if (grabRoundInfoModel!=null && grabRoundInfoModel.isParticipant()) {
+                if (grabRoundInfoModel != null && grabRoundInfoModel.isParticipant()) {
                     mGrabOpBtn.toOtherSingState();
                 } else {
                     mGrabOpBtn.hide();
@@ -814,7 +817,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     private void singBeginTipsPlay(int uid, Runnable runnable) {
         GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
-        if (grabRoundInfoModel!=null && !grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_SING) {
+        if (grabRoundInfoModel != null && !grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_SING) {
             MyLog.d(TAG, " 进入时已经时演唱阶段了，则不用播卡片了");
             runnable.run();
         } else {
@@ -1145,6 +1148,15 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     public void kickSomeOne() {
         if (mGrabKickDialog != null) {
             mGrabKickDialog.dismiss();
+        }
+    }
+
+    @Override
+    public void showPracticeFlag(boolean flag) {
+        if (flag) {
+            mPracticeFlagIv.setVisibility(View.VISIBLE);
+        } else {
+            mPracticeFlagIv.setVisibility(View.GONE);
         }
     }
 

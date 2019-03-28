@@ -66,4 +66,6 @@ public interface IGrabView {
      * 把别人踢出去
      */
     void kickSomeOne();
+
+    void showPracticeFlag(boolean flag);
 }

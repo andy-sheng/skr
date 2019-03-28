@@ -1196,8 +1196,27 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         tryStopRobotPlay();
         EngineManager.getInstance().stopRecognize();
         GrabRoundInfoModel now = event.newRoundInfo;
-        EventBus.getDefault().post(new GrabPlaySeatUpdateEvent(now.getPlayUsers()));
-        EventBus.getDefault().post(new GrabWaitSeatUpdateEvent(now.getWaitUsers()));
+        if (now != null) {
+            EventBus.getDefault().post(new GrabPlaySeatUpdateEvent(now.getPlayUsers()));
+            EventBus.getDefault().post(new GrabWaitSeatUpdateEvent(now.getWaitUsers()));
+            if (now.getPlayUsers().size() <= 2) {
+                mUiHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mIGrabView.showPracticeFlag(true);
+                    }
+                });
+
+            } else {
+                mUiHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mIGrabView.showPracticeFlag(false);
+                    }
+                });
+            }
+        }
+
         if (now.getStatus() == GrabRoundInfoModel.STATUS_GRAB) {
             //抢唱阶段，播抢唱卡片
             if (event.lastRoundInfo != null && event.lastRoundInfo.getStatus() >= GrabRoundInfoModel.STATUS_SING) {
@@ -1208,27 +1227,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                         mIGrabView.roundOver(event.lastRoundInfo.getMusic().getItemID(), event.lastRoundInfo.getOverReason(), event.lastRoundInfo.getResultType(), true, now);
                     }
                 });
-//                if (event.lastRoundInfo.getOverReason() == EQRoundOverReason.ROR_SELF_GIVE_UP.getValue()) {
-//                    // 自己放弃，飘个弹幕
-//                    PlayerInfoModel singerModel = RoomDataUtils.getPlayerInfoById(mRoomData, event.lastRoundInfo.getUserID());
-//                    if (singerModel != null) {
-//                        CommentModel commentModel = new CommentModel();
-//                        commentModel.setCommentType(CommentModel.TYPE_TRICK);
-//                        commentModel.setUserId(singerModel.getUserID());
-//                        commentModel.setAvatar(singerModel.getUserInfo().getAvatar());
-//                        commentModel.setUserName(singerModel.getUserInfo().getNickname());
-//                        commentModel.setAvatarColor(singerModel.getUserInfo().getSex() == ESex.SX_MALE.getValue() ?
-//                                U.getColor(R.color.color_man_stroke_color) : U.getColor(R.color.color_woman_stroke_color));
-//                        SpannableStringBuilder stringBuilder = new SpanUtils()
-//                                .append(singerModel.getUserInfo().getNickname() + " ").setForegroundColor(CommentModel.TEXT_YELLOW)
-////                                .append("对").setForegroundColor(CommentModel.TEXT_WHITE)
-////                                .append(singerModel.getUserInfo().getNickname()).setForegroundColor(CommentModel.TEXT_YELLOW)
-//                                .append("不唱了").setForegroundColor(CommentModel.TEXT_WHITE)
-//                                .create();
-//                        commentModel.setStringBuilder(stringBuilder);
-//                        EventBus.getDefault().post(new PretendCommentMsgEvent(commentModel));
-//                    }
-//                }
                 if (event.lastRoundInfo.getUserID() == MyUserInfoManager.getInstance().getUid()) {
                     onSelfRoundOver(event.lastRoundInfo);
                 }
@@ -1262,9 +1260,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         } else if (now.getStatus() == GrabRoundInfoModel.STATUS_OVER) {
             MyLog.w(TAG, "GrabRoundChangeEvent 刚切换到该轮次就告诉我轮次结束？？？roundSeq:" + now.getRoundSeq());
             MyLog.w(TAG, "自动切换到下个轮次");
-//            GrabRoundInfoModel roundInfoModel = RoomDataUtils.findRoundInfoBySeq(mRoomData.getRoundInfoModelList(), now.getRoundSeq() + 1);
-//            mRoomData.setExpectRoundInfo(roundInfoModel);
-//            mRoomData.checkRoundInEachMode();
         }
     }
 
@@ -1514,6 +1509,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         } else {
             MyLog.w(TAG, "有人加入房间了,但是不是这个轮次：userID " + event.infoModel.getUserID() + ", seq " + event.roundSeq + "，当前轮次是 " + mRoomData.getExpectRoundInfo());
         }
+        //TODO 如果加入房间提示有遗漏，可以考虑接受 SomeOne 事件，一担用户有变化都会回调
         if (canAdd) {
             CommentModel commentModel = new CommentModel();
             commentModel.setCommentType(CommentModel.TYPE_TRICK);
