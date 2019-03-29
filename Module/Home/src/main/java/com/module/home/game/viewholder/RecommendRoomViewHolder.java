@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.common.log.MyLog;
 import com.common.view.DebounceViewClickListener;
+import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.friends.FriendRoomHorizontalAdapter;
@@ -20,7 +21,7 @@ public class RecommendRoomViewHolder extends RecyclerView.ViewHolder {
     public final static String TAG = "RecommendRoomViewHolder";
 
     ExTextView mFriendsTv;
-    ExTextView mMoreTv;
+    ExRelativeLayout mMoreArea;
     SmartRefreshLayout mRefreshLayout;
     RecyclerView mFriendsRecycle;
 
@@ -33,8 +34,8 @@ public class RecommendRoomViewHolder extends RecyclerView.ViewHolder {
         this.mListener = listener;
 
         mFriendsTv = (ExTextView) itemView.findViewById(R.id.friends_tv);
-        mMoreTv = (ExTextView) itemView.findViewById(R.id.more_tv);
         mRefreshLayout = (SmartRefreshLayout) itemView.findViewById(R.id.refreshLayout);
+        mMoreArea = (ExRelativeLayout) itemView.findViewById(R.id.more_area);
         mFriendsRecycle = (RecyclerView) itemView.findViewById(R.id.friends_recycle);
         mFriendsRecycle.setFocusableInTouchMode(false);
         mFriendsRecycle.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
@@ -52,7 +53,7 @@ public class RecommendRoomViewHolder extends RecyclerView.ViewHolder {
             }
         });
 
-        mMoreTv.setOnClickListener(new DebounceViewClickListener() {
+        mMoreArea.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 if (mListener != null) {

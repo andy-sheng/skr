@@ -177,7 +177,7 @@ public class GrabResultFragment extends BaseFragment {
                 }
                 mLevelProgress.setCurProgress(progress);
                 mSongNum.setText(String.valueOf(mGrabResultData.getGrabResultInfoModel().getWholeTimeSingCnt()) + "");
-                mSongEndPer.setText(String.valueOf(100 * mGrabResultData.getGrabResultInfoModel().getWholeTimeSingRatio()) + "");
+                mSongEndPer.setText(String.valueOf(mGrabResultData.getGrabResultInfoModel().getWholeTimeSingRatio()) + "");
                 mBaodengNum.setText(String.valueOf(mGrabResultData.getGrabResultInfoModel().getOtherBlightCntTotal()) + "");
             }
         } else {

@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.common.view.ex.ExRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#2E3041">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:bl_shape="rectangle"
+    app:bl_gradient_startColor="#EB83CA"
+    app:bl_gradient_endColor="#6E42C3">
 
     <com.common.view.ex.ExImageView
         android:id="@+id/iv_back"
@@ -14,7 +17,7 @@
         android:layout_marginTop="@dimen/view_30_dp"
         android:layout_marginBottom="@dimen/view_4_dp"
         android:padding="@dimen/view_16_dp"
-        android:src="@drawable/img_back" />
+        android:src="@drawable/grab_back" />
 
     <com.common.view.ex.ExTextView
         android:layout_width="wrap_content"
@@ -43,4 +46,4 @@
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 
-</RelativeLayout>
+</com.common.view.ex.ExRelativeLayout>

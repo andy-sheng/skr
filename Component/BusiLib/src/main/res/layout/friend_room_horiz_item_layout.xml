@@ -33,7 +33,7 @@
         android:layout_height="@dimen/view_16_dp"
         android:layout_alignBottom="@+id/avatar_iv"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="-16dp"
+        android:layout_marginBottom="-8dp"
         android:background="@drawable/grab_friend_room_owner"
         android:visibility="gone" />
 
