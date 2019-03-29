@@ -1,6 +1,11 @@
 package com.zq.level.utils;
 
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+
 import com.common.log.MyLog;
+import com.common.utils.U;
+import com.common.view.ex.drawable.DrawableCreator;
 import com.component.busilib.R;
 import com.common.core.userinfo.model.UserLevelType;
 
@@ -28,6 +33,44 @@ public class LevelConfigUtils {
                 return 0;
         }
     }
+
+    public static Drawable getHomePageTopBg(int mainLevel) {
+        switch (mainLevel) {
+            case UserLevelType.SKRER_LEVEL_POTENTIAL:
+                return new DrawableCreator.Builder()
+                        .setGradientColor(Color.parseColor("#85dcff"), Color.parseColor("#4d42c3"))
+                        .setGradientAngle(0)
+                        .build();
+            case UserLevelType.SKRER_LEVEL_SILVER:
+                return new DrawableCreator.Builder()
+                        .setGradientColor(Color.parseColor("#85dcff"), Color.parseColor("#4d42c3"))
+                        .setGradientAngle(0)
+                        .build();
+            case UserLevelType.SKRER_LEVEL_GOLD:
+                return new DrawableCreator.Builder()
+                        .setGradientColor(Color.parseColor("#85dcff"), Color.parseColor("#4d42c3"))
+                        .setGradientAngle(0)
+                        .build();
+            case UserLevelType.SKRER_LEVEL_PLATINUM:
+                return new DrawableCreator.Builder()
+                        .setGradientColor(Color.parseColor("#85dcff"), Color.parseColor("#4d42c3"))
+                        .setGradientAngle(0)
+                        .build();
+            case UserLevelType.SKRER_LEVEL_DIAMOND:
+                return new DrawableCreator.Builder()
+                        .setGradientColor(Color.parseColor("#85dcff"), Color.parseColor("#4d42c3"))
+                        .setGradientAngle(0)
+                        .build();
+            case UserLevelType.SKRER_LEVEL_KING:
+                return new DrawableCreator.Builder()
+                        .setGradientColor(Color.parseColor("#85dcff"), Color.parseColor("#4d42c3"))
+                        .setGradientAngle(0)
+                        .build();
+            default:
+                return null;
+        }
+    }
+
 
     public static String getHomePageTopBgColor(int mainLevel) {
         switch (mainLevel) {

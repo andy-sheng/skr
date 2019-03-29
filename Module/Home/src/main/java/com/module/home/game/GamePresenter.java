@@ -3,7 +3,10 @@ package com.module.home.game;
 import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
+import com.common.core.userinfo.model.UserLevelModel;
+import com.common.core.userinfo.model.UserRankModel;
 import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.rxretrofit.ApiManager;
@@ -25,14 +28,20 @@ public class GamePresenter extends RxLifeCyclePresenter {
     UserInfoServerApi mUserInfoServerApi;
     GrabSongApi mGrabSongApi;
 
-    long mLastUpdateOperaArea = 0;
-    long mLastUpdateRoomInfo = 0;
-    long mLastupdateQuickInfo = 0;
+    long mLastUpdateOperaArea = 0;    //广告位上次更新成功时间
+    long mLastUpdateRoomInfo = 0;     //好友或推荐房更新成功时间
+    long mLastUpdateQuickInfo = 0;    //快速加入房间更新成功时间
+    long mLastUpdateRankInfo = 0;     //排名信息上次更新成功时间
+    long mLastUpdateScoreInfo = 0;    //段位信息上次更新成功时间
 
     IGameView mIGameView;
 
     public GamePresenter(IGameView iGameView) {
         this.mIGameView = iGameView;
+
+        mMainPageSlideApi = ApiManager.getInstance().createService(MainPageSlideApi.class);
+        mGrabSongApi = ApiManager.getInstance().createService(GrabSongApi.class);
+        mUserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
     }
 
     public void initOperationArea(boolean isFlag) {
@@ -54,7 +63,7 @@ public class GamePresenter extends RxLifeCyclePresenter {
             }
         }
 
-        mMainPageSlideApi = ApiManager.getInstance().createService(MainPageSlideApi.class);
+
         ApiMethods.subscribe(mMainPageSlideApi.getSlideList(), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -83,19 +92,16 @@ public class GamePresenter extends RxLifeCyclePresenter {
         long now = System.currentTimeMillis();
         if (!isFlag) {
             // 半个小时更新一次吧
-            if ((now - mLastupdateQuickInfo) < 30 * 60 * 1000) {
+            if ((now - mLastUpdateQuickInfo) < 30 * 60 * 1000) {
                 return;
             }
         }
 
-        if (mGrabSongApi == null) {
-            mGrabSongApi = ApiManager.getInstance().createService(GrabSongApi.class);
-        }
         ApiMethods.subscribe(mGrabSongApi.getSepcialList(0, 10), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult obj) {
                 if (obj.getErrno() == 0) {
-                    mLastupdateQuickInfo = System.currentTimeMillis();
+                    mLastUpdateQuickInfo = System.currentTimeMillis();
                     List<SpecialModel> list = JSON.parseArray(obj.getData().getString("tags"), SpecialModel.class);
                     int offset = obj.getData().getIntValue("offset");
                     mIGameView.setQuickRoom(list, offset);
@@ -113,9 +119,6 @@ public class GamePresenter extends RxLifeCyclePresenter {
             }
         }
 
-        if (mGrabSongApi == null) {
-            mGrabSongApi = ApiManager.getInstance().createService(GrabSongApi.class);
-        }
         ApiMethods.subscribe(mGrabSongApi.getOnlineFriendsRoom(0, 10), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult obj) {
@@ -129,6 +132,60 @@ public class GamePresenter extends RxLifeCyclePresenter {
             }
         }, this);
 
+    }
+
+    public void initScoreDetail(boolean isFlag) {
+        long now = System.currentTimeMillis();
+        if (!isFlag) {
+            // 半个小时更新一次吧
+            if ((now - mLastUpdateScoreInfo) < 30 * 60 * 1000) {
+                return;
+            }
+        }
+
+        ApiMethods.subscribe(mUserInfoServerApi.getScoreDetail((int) MyUserInfoManager.getInstance().getUid()), new ApiObserver<ApiResult>() {
+
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    mLastUpdateScoreInfo = System.currentTimeMillis();
+                    List<UserLevelModel> userLevelModels = JSON.parseArray(result.getData().getString("userScore"), UserLevelModel.class);
+                    mIGameView.setScoreInfo(userLevelModels);
+                }
+            }
+
+        }, this);
+    }
+
+    public void initRankInfo(boolean isFlag) {
+        long now = System.currentTimeMillis();
+        if (!isFlag) {
+            // 距离上次拉去已经超过30秒了
+            if ((now - mLastUpdateRankInfo) < 30 * 1000) {
+                return;
+            }
+        }
+
+        ApiMethods.subscribe(mUserInfoServerApi.getReginDiff(), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    mLastUpdateRankInfo = System.currentTimeMillis();
+                    UserRankModel userRankModel = JSON.parseObject(result.getData().getString("diff"), UserRankModel.class);
+                    mIGameView.setRankInfo(userRankModel);
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                U.getToastUtil().showShort("网络异常");
+            }
+
+            @Override
+            public void onNetworkError(ErrorType errorType) {
+                U.getToastUtil().showShort("网络超时");
+            }
+        }, this);
     }
 
 

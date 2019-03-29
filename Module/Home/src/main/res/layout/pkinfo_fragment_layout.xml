@@ -156,6 +156,7 @@
                 app:bl_solid_color="@color/white" />
 
             <com.common.view.ex.ExTextView
+                android:paddingRight="@dimen/view_20_dp"
                 android:textSize="@dimen/textsize_14_dp"
                 android:id="@+id/tv_to_leader_board"
                 android:layout_width="@dimen/view_240_dp"
@@ -167,6 +168,15 @@
                 android:textColor="#7638A6"
                 app:bl_corners_radius="@dimen/view_24_dp"
                 app:bl_solid_color="#FFC484" />
+
+            <ImageView
+                android:layout_marginRight="@dimen/view_58_dp"
+                android:layout_marginTop="@dimen/view_13_dp"
+                android:layout_alignRight="@+id/tv_to_leader_board"
+                android:layout_alignTop="@+id/tv_to_leader_board"
+                android:background="@drawable/rank_board_more"
+                android:layout_width="@dimen/view_20_dp"
+                android:layout_height="@dimen/view_20_dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"

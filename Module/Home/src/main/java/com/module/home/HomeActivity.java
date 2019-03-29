@@ -1,6 +1,8 @@
 package com.module.home;
 
 import android.app.Activity;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -27,9 +29,9 @@ import com.component.busilib.manager.WeakRedDotManager;
 import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
 import com.module.home.dialogmanager.HomeDialogManager;
-import com.module.home.fragment.GameFragment;
 import com.module.home.fragment.PersonFragment;
 import com.module.home.game.GameFragment2;
+import com.module.home.fragment.PkInfoFragment;
 import com.module.home.persenter.CheckInPresenter;
 import com.module.home.persenter.HomeCorePresenter;
 import com.module.home.persenter.NotifyCorePresenter;
@@ -48,14 +50,16 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
     RelativeLayout mMainActContainer;
     LinearLayout mBottomContainer;
     RelativeLayout mGameArea;
-    ExImageView mGameBtn;
+    ExTextView mGameBtn;
     RelativeLayout mMessageArea;
-    ExImageView mMessageBtn;
+    ExTextView mMessageBtn;
     ExTextView mUnreadNumTv;
     ExImageView mMessageRedDot;
     RelativeLayout mPersonArea;
-    ExImageView mPersonInfoBtn;
+    ExTextView mPersonInfoBtn;
     ExImageView mPersonInfoRedDot;
+    RelativeLayout mRankArea;
+    ExTextView mRankBtn;
     NestViewPager mMainVp;
     IMsgService mMsgService;
     HomeCorePresenter mHomePresenter;
@@ -102,19 +106,21 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mMainActContainer = (RelativeLayout) findViewById(R.id.main_act_container);
         mBottomContainer = (LinearLayout) findViewById(R.id.bottom_container);
         mGameArea = (RelativeLayout) findViewById(R.id.game_area);
-        mGameBtn = (ExImageView) findViewById(R.id.game_btn);
+        mGameBtn = findViewById(R.id.game_btn);
+        mRankArea = (RelativeLayout) findViewById(R.id.rank_area);
+        mRankBtn = findViewById(R.id.rank_btn);
         mMessageArea = (RelativeLayout) findViewById(R.id.message_area);
-        mMessageBtn = (ExImageView) findViewById(R.id.message_btn);
+        mMessageBtn = findViewById(R.id.message_btn);
         mUnreadNumTv = (ExTextView) findViewById(R.id.unread_num_tv);
         mMessageRedDot = (ExImageView) findViewById(R.id.message_red_dot);
         mPersonArea = (RelativeLayout) findViewById(R.id.person_area);
-        mPersonInfoBtn = (ExImageView) findViewById(R.id.person_info_btn);
+        mPersonInfoBtn = findViewById(R.id.person_info_btn);
         mPersonInfoRedDot = (ExImageView) findViewById(R.id.person_info_red_dot);
         mMainVp = (NestViewPager) findViewById(R.id.main_vp);
 
         mMsgService = ModuleServiceManager.getInstance().getMsgService();
         mMainVp.setViewPagerCanScroll(false);
-        mMainVp.setOffscreenPageLimit(2);
+        mMainVp.setOffscreenPageLimit(3);
         checkIfFromSchema();
 
         FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
@@ -124,12 +130,14 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
                 if (position == 0) {
                     return new GameFragment2();
                 } else if (position == 1) {
+                    return new PkInfoFragment();
+                } else if (position == 2) {
                     if (mMsgService == null) {
                         return new PersonFragment();
                     } else {
                         return (Fragment) mMsgService.getMessageFragment();
                     }
-                } else if (position == 2) {
+                } else if (position == 3) {
                     return new PersonFragment();
                 }
                 return null;
@@ -138,9 +146,9 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             @Override
             public int getCount() {
                 if (mMsgService == null) {
-                    return 2;
-                } else {
                     return 3;
+                } else {
+                    return 4;
                 }
             }
         };
@@ -156,19 +164,23 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             @Override
             public void clickValid(View v) {
                 mMainVp.setCurrentItem(0, false);
-                mGameBtn.setImageResource(R.drawable.ic_home_selected);
-                mMessageBtn.setImageResource(R.drawable.ic_chat_normal);
-                mPersonInfoBtn.setImageResource(R.drawable.ic_me_normal);
+                selectTab(0);
+            }
+        });
+
+        mRankArea.setOnClickListener(new DebounceViewClickListener(100) {
+            @Override
+            public void clickValid(View v) {
+                mMainVp.setCurrentItem(1, false);
+                selectTab(1);
             }
         });
 
         mMessageArea.setOnClickListener(new DebounceViewClickListener(100) {
             @Override
             public void clickValid(View v) {
-                mMainVp.setCurrentItem(1, false);
-                mGameBtn.setImageResource(R.drawable.ic_home_normal);
-                mMessageBtn.setImageResource(R.drawable.ic_chat_selected);
-                mPersonInfoBtn.setImageResource(R.drawable.ic_me_normal);
+                mMainVp.setCurrentItem(2, false);
+                selectTab(2);
 
                 mMessageRedDot.setVisibility(View.GONE);
                 WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FANS_RED_ROD_TYPE, 2);
@@ -179,10 +191,8 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mPersonArea.setOnClickListener(new DebounceViewClickListener(100) {
             @Override
             public void clickValid(View v) {
-                mMainVp.setCurrentItem(2, false);
-                mGameBtn.setImageResource(R.drawable.ic_home_normal);
-                mMessageBtn.setImageResource(R.drawable.ic_chat_normal);
-                mPersonInfoBtn.setImageResource(R.drawable.ic_me_selected);
+                mMainVp.setCurrentItem(3, false);
+                selectTab(3);
             }
         });
 
@@ -193,10 +203,53 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         addPresent(mNotifyCorePresenter);
 
         mMainVp.setCurrentItem(0, false);
+        selectTab(0);
         mHomeDialogManager.register();
         mFromCreate = true;
 
         WeakRedDotManager.getInstance().addListener(this);
+    }
+
+    private void selectTab(int tabSeq) {
+        Drawable drawable0 = U.getDrawable(R.drawable.ic_home_normal);
+        Drawable drawable1 = U.getDrawable(R.drawable.ic_rank_normal);
+        Drawable drawable2 = U.getDrawable(R.drawable.ic_chat_normal);
+        Drawable drawable3 = U.getDrawable(R.drawable.ic_me_normal);
+
+        mGameBtn.setSelected(false);
+        mRankBtn.setSelected(false);
+        mMessageBtn.setSelected(false);
+        mPersonInfoBtn.setSelected(false);
+
+        switch (tabSeq) {
+            case 0:
+                drawable0 = U.getDrawable(R.drawable.ic_home_selected);
+                mGameBtn.setSelected(true);
+                break;
+            case 1:
+                drawable1 = U.getDrawable(R.drawable.ic_rank_selected);
+                mRankBtn.setSelected(true);
+                break;
+            case 2:
+                drawable2 = U.getDrawable(R.drawable.ic_chat_selected);
+                mMessageBtn.setSelected(true);
+                break;
+            case 3:
+                drawable3 = U.getDrawable(R.drawable.ic_me_selected);
+                mPersonInfoBtn.setSelected(true);
+                break;
+        }
+
+        setTabDrawable(mGameBtn, drawable0);
+        setTabDrawable(mRankBtn, drawable1);
+        setTabDrawable(mMessageBtn, drawable2);
+        setTabDrawable(mPersonInfoBtn, drawable3);
+    }
+
+    private void setTabDrawable(ExTextView textView, Drawable drawable) {
+        drawable.setBounds(new Rect(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight()));
+        textView.setCompoundDrawables(null, drawable,
+                null, null);
     }
 
     private void checkIfFromSchema() {
@@ -212,7 +265,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             }
         }
     }
-
 
 
     @Override
@@ -321,10 +373,8 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
 
     @Override
     public void onLogoff() {
-        mMainVp.setCurrentItem(1, false);
-        mGameBtn.setImageResource(R.drawable.ic_home_selected);
-        mMessageBtn.setImageResource(R.drawable.ic_chat_normal);
-        mPersonInfoBtn.setImageResource(R.drawable.ic_me_normal);
+        mMainVp.setCurrentItem(0, false);
+        selectTab(0);
     }
 
     @Override

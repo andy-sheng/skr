@@ -1,13 +1,24 @@
 package com.module.home.widget;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.common.core.avatar.AvatarUtils;
+import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.userinfo.model.UserRankModel;
 import com.common.view.ex.ExTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.home.R;
+import com.zq.level.utils.LevelConfigUtils;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class UserInfoTileView2 extends RelativeLayout {
 
@@ -17,7 +28,7 @@ public class UserInfoTileView2 extends RelativeLayout {
     ExTextView mUserLevelTv;
     ExTextView mNameTv;
     ExTextView mRankInfo;
-    
+
     public UserInfoTileView2(Context context) {
         super(context);
         init();
@@ -33,14 +44,50 @@ public class UserInfoTileView2 extends RelativeLayout {
         init();
     }
 
-    private void init(){
+    private void init() {
         inflate(getContext(), R.layout.user_info_title2_layout, this);
 
-        mContentArea = (RelativeLayout)this.findViewById(R.id.content_area);
-        mIvUserIcon = (SimpleDraweeView)this.findViewById(R.id.iv_user_icon);
-        mLevelBg = (ImageView)this.findViewById(R.id.level_bg);
-        mUserLevelTv = (ExTextView)this.findViewById(R.id.user_level_tv);
-        mNameTv = (ExTextView)this.findViewById(R.id.name_tv);
-        mRankInfo = (ExTextView)this.findViewById(R.id.rank_info);
+        mContentArea = (RelativeLayout) this.findViewById(R.id.content_area);
+        mIvUserIcon = (SimpleDraweeView) this.findViewById(R.id.iv_user_icon);
+        mLevelBg = (ImageView) this.findViewById(R.id.level_bg);
+        mUserLevelTv = (ExTextView) this.findViewById(R.id.user_level_tv);
+        mNameTv = (ExTextView) this.findViewById(R.id.name_tv);
+        mRankInfo = (ExTextView) this.findViewById(R.id.rank_info);
     }
+
+    public void showBaseInfo() {
+        AvatarUtils.loadAvatarByUrl(mIvUserIcon,
+                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
+                        .setCircle(true)
+                        .build());
+        mNameTv.setText(MyUserInfoManager.getInstance().getNickName());
+    }
+
+    public void showRankView(UserRankModel userRankModel) {
+        mRankInfo.setText(highlight(userRankModel.getText(), userRankModel.getHighlight()));
+    }
+
+    public void showScoreView(int level, int subLevel, String levelDesc) {
+        if (LevelConfigUtils.getAvatarLevelBg(level) != 0) {
+            mLevelBg.setBackground(getResources().getDrawable(LevelConfigUtils.getAvatarLevelBg(level)));
+        }
+
+        if (LevelConfigUtils.getHomePageTopBg(level) != null) {
+            mContentArea.setBackground(LevelConfigUtils.getHomePageTopBg(level));
+        }
+        mUserLevelTv.setText(levelDesc);
+    }
+
+    private SpannableString highlight(String text, String target) {
+        SpannableString spannableString = new SpannableString(text);
+        Pattern pattern = Pattern.compile(target);
+        Matcher matcher = pattern.matcher(text);
+        while (matcher.find()) {
+            ForegroundColorSpan span = new ForegroundColorSpan(Color.parseColor("#FFC484"));
+            spannableString.setSpan(span, matcher.start(), matcher.end(),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        return spannableString;
+    }
+
 }

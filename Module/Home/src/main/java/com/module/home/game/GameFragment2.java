@@ -6,6 +6,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.common.base.BaseFragment;
+import com.common.core.account.event.AccountEvent;
+import com.common.core.myinfo.event.MyUserInfoEvent;
+import com.common.core.userinfo.model.UserLevelModel;
+import com.common.core.userinfo.model.UserRankModel;
 import com.common.log.MyLog;
 import com.component.busilib.friends.FriendRoomModel;
 import com.component.busilib.friends.SpecialModel;
@@ -17,10 +21,12 @@ import com.module.home.game.model.RecommendRoomModel;
 import com.module.home.model.SlideShowModel;
 import com.module.home.widget.UserInfoTileView2;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.List;
 
 public class GameFragment2 extends BaseFragment implements IGameView {
-    
     public final static String TAG = "Game2Fragment";
 
     UserInfoTileView2 mUserInfoTitle;
@@ -43,7 +49,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mGameAdapter = new GameAdapter(getContext(), new GameAdapter.GameAdapterListener() {
             @Override
             public void createRoom() {
-                MyLog.d(TAG, "createRoom" );
+                MyLog.d(TAG, "createRoom");
                 // TODO: 2019/3/29 创建房间
             }
 
@@ -96,9 +102,9 @@ public class GameFragment2 extends BaseFragment implements IGameView {
 
             @Override
             public void moreRoom() {
-                MyLog.d(TAG, "moreRoom" );
+                MyLog.d(TAG, "moreRoom");
                 // TODO: 2019/3/29 更多房间 
-                
+
             }
         });
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
@@ -110,11 +116,13 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mGamePresenter.initOperationArea(true);
         mGamePresenter.initFriendRoom(true);
         mGamePresenter.initQuickRoom(true);
+        mGamePresenter.initRankInfo(true);
+        mGamePresenter.initScoreDetail(true);
     }
 
     @Override
     public boolean useEventBus() {
-        return false;
+        return true;
     }
 
 
@@ -124,6 +132,20 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mGamePresenter.initOperationArea(false);
         mGamePresenter.initFriendRoom(false);
         mGamePresenter.initQuickRoom(false);
+        mGamePresenter.initRankInfo(false);
+        mGamePresenter.initScoreDetail(false);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(MyUserInfoEvent.UserInfoChangeEvent userInfoChangeEvent) {
+        mUserInfoTitle.showBaseInfo();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(AccountEvent.SetAccountEvent event) {
+        mGamePresenter.initFriendRoom(true);
+        mGamePresenter.initOperationArea(true);
+        mGamePresenter.initQuickRoom(true);
     }
 
     public void setQuickRoom(List<SpecialModel> list, int offset) {
@@ -141,15 +163,40 @@ public class GameFragment2 extends BaseFragment implements IGameView {
 
     }
 
+    @Override
+    public void setRankInfo(UserRankModel userRankModel) {
+        if (userRankModel != null) {
+            mUserInfoTitle.showRankView(userRankModel);
+        } else {
+
+        }
+    }
+
+    @Override
+    public void setScoreInfo(List<UserLevelModel> userLevelModels) {
+        if (userLevelModels != null) {
+            int level = 0;           //当前父段位
+            int subLevel = 0;        //当前子段位
+            String levelDesc = "";   //父段位描述
+            for (UserLevelModel userLevelModel : userLevelModels) {
+                if (userLevelModel.getType() == UserLevelModel.RANKING_TYPE) {
+                    level = userLevelModel.getScore();
+                    levelDesc = userLevelModel.getDesc();
+                } else if (userLevelModel.getType() == UserLevelModel.SUB_RANKING_TYPE) {
+                    subLevel = userLevelModel.getScore();
+                }
+            }
+            mUserInfoTitle.showScoreView(level, subLevel, levelDesc);
+        } else {
+
+        }
+
+    }
+
     public void setFriendRoom(List<FriendRoomModel> list, int offset, int totalNum) {
         if (list == null || list.size() == 0) {
             MyLog.w(TAG, "initFriendRoom 为null");
             return;
-        }
-
-        // TODO: 2019/3/28 测试一下
-        for (int i = 0; i < 5; i++) {
-            list.addAll(list);
         }
 
         RecommendRoomModel recommendRoomModel = new RecommendRoomModel(list, offset, totalNum);

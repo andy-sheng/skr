@@ -20,13 +20,40 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1">
 
-            <com.common.view.ex.ExImageView
+            <com.common.view.ex.ExTextView
+                app:bl_unSelected_textColor="@color/black_trans_40"
+                app:bl_selected_textColor="#7646C3"
+                android:textSize="@dimen/textsize_10_dp"
+                android:text="抢唱"
                 android:id="@+id/game_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:scaleType="center"
-                android:src="@drawable/ic_home_selected" />
+                android:gravity="center_horizontal"
+                android:drawableTop="@drawable/ic_home_selected" />
+        </RelativeLayout>
+
+        <!--排位赛-->
+        <RelativeLayout
+            android:id="@+id/rank_area"
+            android:layout_width="@dimen/view_0_dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1">
+
+            <com.common.view.ex.ExTextView
+                android:gravity="center_horizontal"
+                app:bl_unSelected_textColor="@color/black_trans_40"
+                app:bl_selected_textColor="#7646C3"
+                android:textSize="@dimen/textsize_10_dp"
+                android:text="排位"
+                android:id="@+id/rank_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:scaleType="center"
+                android:drawableTop="@drawable/ic_rank_normal" />
         </RelativeLayout>
 
         <!--消息-->
@@ -37,12 +64,17 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1">
 
-            <com.common.view.ex.ExImageView
+            <com.common.view.ex.ExTextView
+                android:gravity="center_horizontal"
+                app:bl_unSelected_textColor="@color/black_trans_40"
+                app:bl_selected_textColor="#7646C3"
+                android:textSize="@dimen/textsize_10_dp"
+                android:text="消息"
                 android:id="@+id/message_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:src="@drawable/ic_chat_normal" />
+                android:drawableTop="@drawable/ic_chat_normal" />
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/unread_num_tv"
@@ -81,13 +113,18 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1">
 
-            <com.common.view.ex.ExImageView
+            <com.common.view.ex.ExTextView
+                android:gravity="center_horizontal"
+                app:bl_unSelected_textColor="@color/black_trans_40"
+                app:bl_selected_textColor="#7646C3"
+                android:textSize="@dimen/textsize_10_dp"
+                android:text="我的"
                 android:id="@+id/person_info_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:scaleType="center"
-                android:src="@drawable/ic_me_normal" />
+                android:drawableTop="@drawable/ic_me_normal" />
 
             <com.common.view.ex.ExImageView
                 android:id="@+id/person_info_red_dot"
