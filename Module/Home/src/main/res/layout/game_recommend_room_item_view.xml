@@ -35,7 +35,7 @@
             android:layout_marginLeft="@dimen/view_12_dp"
             android:gravity="center"
             android:text="更多"
-            android:textColor="#7638A6"
+            android:textColor="@color/white"
             android:textSize="@dimen/textsize_14_dp" />
 
         <ImageView

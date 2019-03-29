@@ -119,7 +119,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/view_45_dp"
             android:text="进入房间"
-            android:textColor="#7638A6"
+            android:textColor="@color/white"
             android:textSize="@dimen/textsize_14_dp" />
 
 
