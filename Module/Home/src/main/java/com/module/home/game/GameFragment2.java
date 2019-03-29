@@ -4,35 +4,25 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
 import com.common.core.account.event.AccountEvent;
-import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.permission.SkrAudioPermission;
-import com.common.core.userinfo.model.UserLevelModel;
 import com.common.core.userinfo.model.UserRankModel;
-import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
-import com.common.rxretrofit.ApiManager;
-import com.common.rxretrofit.ApiMethods;
-import com.common.rxretrofit.ApiObserver;
-import com.common.rxretrofit.ApiResult;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
-import com.common.view.DebounceViewClickListener;
 import com.component.busilib.friends.RecommendModel;
 import com.component.busilib.friends.GrabFriendsRoomFragment;
 import com.component.busilib.friends.SpecialModel;
 import com.module.RouterConstants;
-import com.module.home.MainPageSlideApi;
 import com.module.home.R;
 import com.module.home.game.adapter.GameAdapter;
 import com.module.home.game.model.BannerModel;
 import com.module.home.game.model.QuickJoinRoomModel;
+import com.module.home.game.model.RecommendRoomModel;
 import com.module.home.model.GameKConfigModel;
 import com.module.home.model.SlideShowModel;
 import com.module.home.widget.UserInfoTileView2;
@@ -54,6 +44,8 @@ public class GameFragment2 extends BaseFragment implements IGameView {
     GamePresenter mGamePresenter;
 
     SkrAudioPermission mSkrAudioPermission;
+
+    int mRecommendInterval = 0;
 
     @Override
     public int initView() {
@@ -138,7 +130,8 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mGamePresenter.initOperationArea(true);
         mGamePresenter.initQuickRoom(true);
         mGamePresenter.initRankInfo(true);
-        mGamePresenter.initRecommendRoom(true);
+        mGamePresenter.initRecommendRoom(true, mRecommendInterval);
+        mGamePresenter.initGameKConfig();
     }
 
     @Override
@@ -153,7 +146,14 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mGamePresenter.initOperationArea(false);
         mGamePresenter.initQuickRoom(false);
         mGamePresenter.initRankInfo(false);
-        mGamePresenter.initRecommendRoom(false);
+        mGamePresenter.initRecommendRoom(false, mRecommendInterval);
+        mGamePresenter.initGameKConfig();
+    }
+
+    @Override
+    protected void onFragmentInvisible() {
+        super.onFragmentInvisible();
+        mGamePresenter.stopTimer();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -166,7 +166,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mGamePresenter.initOperationArea(true);
         mGamePresenter.initQuickRoom(true);
         mGamePresenter.initRankInfo(true);
-        mGamePresenter.initRecommendRoom(true);
+        mGamePresenter.initRecommendRoom(true, mRecommendInterval);
     }
 
     public void setQuickRoom(List<SpecialModel> list, int offset) {
@@ -193,13 +193,19 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         }
     }
 
+    @Override
+    public void setGameConfig(GameKConfigModel gameKConfigModel) {
+        mRecommendInterval = gameKConfigModel.getHomepagetickerinterval();
+        mGamePresenter.initRecommendRoom(false, mRecommendInterval);
+    }
+
     public void setRecommendInfo(List<RecommendModel> list, int offset, int totalNum) {
         if (list == null || list.size() == 0) {
             MyLog.w(TAG, "initFriendRoom 为null");
             return;
         }
 
-        com.module.home.game.model.RecommendRoomModel recommendRoomModel = new com.module.home.game.model.RecommendRoomModel(list, offset, totalNum);
+        RecommendRoomModel recommendRoomModel = new RecommendRoomModel(list, offset, totalNum);
         if (mGameAdapter.getPositionObject(1) != null && mGameAdapter.getPositionObject(1) instanceof com.module.home.game.model.RecommendRoomModel) {
             mGameAdapter.getDataList().remove(mGameAdapter.getPositionObject(1));
         }
@@ -220,28 +226,5 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mGameAdapter.getDataList().add(0, bannerModel);
         mGameAdapter.notifyDataSetChanged();
     }
-
-//    private void initGameKConfig() {
-//        if (mIsKConfig) {
-//            return;
-//        }
-//        mMainPageSlideApi = ApiManager.getInstance().createService(MainPageSlideApi.class);
-//        ApiMethods.subscribe(mMainPageSlideApi.getKConfig(), new ApiObserver<ApiResult>() {
-//            @Override
-//            public void process(ApiResult result) {
-//                if (result.getErrno() == 0) {
-//                    mIsKConfig = true;
-//
-//                } else {
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onError(Throwable e) {
-//                U.getToastUtil().showShort("网络异常");
-//            }
-//        });
-//    }
 
 }

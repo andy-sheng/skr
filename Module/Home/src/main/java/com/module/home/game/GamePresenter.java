@@ -5,10 +5,7 @@ import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
-import com.common.core.avatar.AvatarUtils;
-import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
-import com.common.core.userinfo.model.UserLevelModel;
 import com.common.core.userinfo.model.UserRankModel;
 import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
@@ -16,12 +13,11 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
-import com.common.view.DebounceViewClickListener;
 import com.component.busilib.friends.RecommendModel;
 import com.component.busilib.friends.GrabSongApi;
 import com.component.busilib.friends.SpecialModel;
-import com.module.RouterConstants;
 import com.module.home.MainPageSlideApi;
 import com.module.home.model.GameKConfigModel;
 import com.module.home.model.SlideShowModel;
@@ -41,6 +37,8 @@ public class GamePresenter extends RxLifeCyclePresenter {
 
     boolean mIsKConfig = false;  //标记是否拉到过游戏配置信息
 
+    HandlerTaskTimer mRecommendTimer;
+
     IGameView mIGameView;
 
     public GamePresenter(IGameView iGameView) {
@@ -49,6 +47,30 @@ public class GamePresenter extends RxLifeCyclePresenter {
         mMainPageSlideApi = ApiManager.getInstance().createService(MainPageSlideApi.class);
         mGrabSongApi = ApiManager.getInstance().createService(GrabSongApi.class);
         mUserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
+    }
+
+    public void initGameKConfig() {
+        if (mIsKConfig) {
+            return;
+        }
+        mMainPageSlideApi = ApiManager.getInstance().createService(MainPageSlideApi.class);
+        ApiMethods.subscribe(mMainPageSlideApi.getKConfig(), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    mIsKConfig = true;
+                    GameKConfigModel gameKConfigModel = JSON.parseObject(result.getData().toString(), GameKConfigModel.class);
+                    mIGameView.setGameConfig(gameKConfigModel);
+                } else {
+                    mIsKConfig = false;
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                U.getToastUtil().showShort("网络异常");
+            }
+        });
     }
 
     public void initOperationArea(boolean isFlag) {
@@ -116,15 +138,38 @@ public class GamePresenter extends RxLifeCyclePresenter {
         }, this);
     }
 
-    public void initRecommendRoom(boolean isFlag) {
+    public void initRecommendRoom(boolean isFlag, int interval) {
         long now = System.currentTimeMillis();
-        if (!isFlag) {
-            // 距离上次拉去已经超过30秒了
-            if ((now - mLastUpdateRecommendInfo) < 30 * 1000) {
-                return;
+        if (interval <= 0) {
+            if (!isFlag) {
+                // 距离上次拉去已经超过30秒了
+                if ((now - mLastUpdateRecommendInfo) < 30 * 1000) {
+                    return;
+                }
             }
+            loadRecommendRoomData();
+        } else {
+            stopTimer();
+            mRecommendTimer = HandlerTaskTimer.newBuilder()
+                    .take(-1)
+                    .interval(interval * 1000)
+                    .start(new HandlerTaskTimer.ObserverW() {
+                        @Override
+                        public void onNext(Integer integer) {
+                            loadRecommendRoomData();
+                        }
+                    });
         }
+    }
 
+    public void stopTimer() {
+        if (mRecommendTimer != null) {
+            mRecommendTimer.dispose();
+        }
+    }
+
+
+    private void loadRecommendRoomData() {
         ApiMethods.subscribe(mGrabSongApi.getRecommendRoomList(0, 10), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult obj) {
@@ -137,7 +182,6 @@ public class GamePresenter extends RxLifeCyclePresenter {
                 }
             }
         }, this);
-
     }
 
     public void initRankInfo(boolean isFlag) {
@@ -171,5 +215,9 @@ public class GamePresenter extends RxLifeCyclePresenter {
         }, this);
     }
 
-
+    @Override
+    public void destroy() {
+        super.destroy();
+        stopTimer();
+    }
 }

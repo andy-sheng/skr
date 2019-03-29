@@ -19,6 +19,8 @@ public class GameKConfigModel implements Serializable {
     private List<String> pktags;
     @JSONField(name = "stand-tags")
     private List<String> standtags;
+    @JSONField(name = "homepage-ticker-interval")
+    private int homepagetickerinterval;
 
     public HomepagesitefirstBean getHomepagesitefirst() {
         return homepagesitefirst;
@@ -50,6 +52,14 @@ public class GameKConfigModel implements Serializable {
 
     public void setAgoraTokenEnable(boolean agoraTokenEnable) {
         this.agoraTokenEnable = agoraTokenEnable;
+    }
+
+    public int getHomepagetickerinterval() {
+        return homepagetickerinterval;
+    }
+
+    public void setHomepagetickerinterval(int homepagetickerinterval) {
+        this.homepagetickerinterval = homepagetickerinterval;
     }
 
     public static class HomepagesitefirstBean implements Serializable{
@@ -86,5 +96,16 @@ public class GameKConfigModel implements Serializable {
         public void setSchema(String schema) {
             this.schema = schema;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "GameKConfigModel{" +
+                "agoraTokenEnable=" + agoraTokenEnable +
+                ", homepagesitefirst=" + homepagesitefirst +
+                ", pktags=" + pktags +
+                ", standtags=" + standtags +
+                ", homepagetickerinterval=" + homepagetickerinterval +
+                '}';
     }
 }
