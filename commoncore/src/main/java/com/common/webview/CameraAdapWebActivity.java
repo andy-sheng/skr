@@ -23,6 +23,8 @@ import android.webkit.WebView;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.common.base.BaseActivity;
 import com.common.core.BuildConfig;
+import com.common.core.permission.SkrCameraPermission;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -39,6 +41,8 @@ public abstract class CameraAdapWebActivity extends BaseActivity {
     public static final int INPUT_VIDEO_CODE = 2;
     public Uri photoURI;
 
+    SkrCameraPermission mSkrCameraPermission;
+
     public File createImageFile() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINA).format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
@@ -50,6 +54,22 @@ public abstract class CameraAdapWebActivity extends BaseActivity {
         );
         mCameraPhotoPath = image.getAbsolutePath();
         return image;
+    }
+
+    public SkrCameraPermission getSkrCameraPermission(){
+        return mSkrCameraPermission;
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mSkrCameraPermission = new SkrCameraPermission();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mSkrCameraPermission.onBackFromPermisionManagerMaybe();
     }
 
     @Override

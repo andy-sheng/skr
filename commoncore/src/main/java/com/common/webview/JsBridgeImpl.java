@@ -205,6 +205,7 @@ public class JsBridgeImpl {
             function.onCallBack(getJsonObj(new Pair("errcode", "0"), new Pair("errmsg", ""),
                     new Pair<String, Object>("data", getJsonObj(new Pair<String, Object>("camera_perm", true)))).toJSONString());
         } else {
+
             U.getPermissionUtils().requestCamera(new PermissionUtils.RequestPermission() {
                 @Override
                 public void onRequestPermissionSuccess() {
@@ -225,8 +226,6 @@ public class JsBridgeImpl {
                 }
             }, mBaseActivity);
         }
-
-        function.onCallBack(getJsonObj(new Pair("errcode", "0"), new Pair("errmsg", "")).toJSONString());
     }
 
     public void noMethed(final CallBackFunction function) {

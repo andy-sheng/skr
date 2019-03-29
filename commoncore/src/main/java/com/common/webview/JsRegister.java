@@ -1,5 +1,7 @@
 package com.common.webview;
 
+import android.util.Pair;
+
 import com.alibaba.fastjson.JSONObject;
 import com.common.base.BaseActivity;
 import com.common.base.BuildConfig;
@@ -32,9 +34,9 @@ public class JsRegister {
 
     JsBridgeImpl mJsBridgeImpl;
 
-    BaseActivity mBaseActivity;
+    CameraAdapWebActivity mBaseActivity;
 
-    public JsRegister(BridgeWebView bridgeWebView, BaseActivity baseActivity) {
+    public JsRegister(BridgeWebView bridgeWebView, CameraAdapWebActivity baseActivity) {
         mBridgeWebView = bridgeWebView;
         mBaseActivity = baseActivity;
         mJsBridgeImpl = new JsBridgeImpl(baseActivity);
@@ -50,7 +52,7 @@ public class JsRegister {
         });
     }
 
-    private void processOpt(String data, CallBackFunction callBackFunction) {
+    private void processOpt(String data, final CallBackFunction callBackFunction) {
         MyLog.w(TAG, "processOpt" + " data is =" + data);
         JSONObject jsonObject = JSONObject.parseObject(data);
         String opt = jsonObject.getString(OPT);
@@ -71,7 +73,14 @@ public class JsRegister {
         } else if (FINISH.equals(opt)) {
             mJsBridgeImpl.finish(callBackFunction);
         } else if (CHECK_CAMERA_PERM.equals(opt)) {
-            mJsBridgeImpl.checkCameraPerm(callBackFunction);
+//            mJsBridgeImpl.checkCameraPerm(callBackFunction);
+             mBaseActivity.getSkrCameraPermission().ensurePermission(new Runnable() {
+                 @Override
+                 public void run() {
+                     callBackFunction.onCallBack(mJsBridgeImpl.getJsonObj(new Pair("errcode", "0"), new Pair("errmsg", ""),
+                             new Pair<String, Object>("data", mJsBridgeImpl.getJsonObj(new Pair<String, Object>("camera_perm", true)))).toJSONString());
+                 }
+             }, true);
         } else {
             mJsBridgeImpl.noMethed(callBackFunction);
         }
