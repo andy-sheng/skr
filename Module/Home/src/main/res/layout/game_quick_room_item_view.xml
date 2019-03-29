@@ -44,6 +44,8 @@
         android:id="@+id/friends_recycle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/quick_enter"></android.support.v7.widget.RecyclerView>
+        android:layout_below="@id/quick_enter"
+        android:layout_marginLeft="@dimen/view_8_dp"
+        android:layout_marginRight="@dimen/view_8_dp"></android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>

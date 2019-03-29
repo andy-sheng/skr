@@ -13,6 +13,7 @@ import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
 import com.component.busilib.constans.GameModeType;
+import com.component.busilib.friends.GrabSongApi;
 import com.module.RouterConstants;
 import com.module.playways.event.GrabChangeRoomEvent;
 import com.module.playways.grab.room.GrabRoomServerApi;
@@ -25,6 +26,7 @@ import com.module.rank.IRankingModeService;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -92,13 +94,34 @@ public class PlayWaysServiceImpl implements IRankingModeService {
 
     @Override
     public void tryGoGrabMatch(int tagId) {
+        GrabSongApi grabSongApi = ApiManager.getInstance().createService(GrabSongApi.class);
+        ApiMethods.subscribe(grabSongApi.getSepcialBgVoice(), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    List<String> musicURLs = JSON.parseArray(result.getData().getString("musicURL"), String.class);
+                    goGrabMatch(tagId, musicURLs);
+                } else {
+                    goGrabMatch(tagId, null);
+                }
+            }
+
+            @Override
+            public void onNetworkError(ErrorType errorType) {
+                super.onNetworkError(errorType);
+            }
+        });
+
+    }
+
+    private void goGrabMatch(int tagId, List<String> musicURLs) {
         PrepareData prepareData = new PrepareData();
         prepareData.setGameType(GameModeType.GAME_MODE_GRAB);
         prepareData.setTagId(tagId);
 
-//        if (musicURLs != null && musicURLs.size() > 0) {
-//            prepareData.setBgMusic(musicURLs.get(0));
-//        }
+        if (musicURLs != null && musicURLs.size() > 0) {
+            prepareData.setBgMusic(musicURLs.get(0));
+        }
 
         ARouter.getInstance()
                 .build(RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)

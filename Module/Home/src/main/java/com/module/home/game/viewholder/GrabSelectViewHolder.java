@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 
 import com.common.log.MyLog;
 import com.common.utils.U;
+import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
@@ -37,11 +38,11 @@ public class GrabSelectViewHolder extends RecyclerView.ViewHolder {
         mIntroductionTv = (ExTextView) itemView.findViewById(R.id.introduction_tv);
         mSpecialIv = (ExImageView) itemView.findViewById(R.id.special_iv);
 
-        itemView.setOnClickListener(new DebounceViewClickListener() {
+        itemView.setOnClickListener(new AnimateClickListener() {
             @Override
-            public void clickValid(View v) {
+            public void click(View view) {
                 if (mItemClickListener != null) {
-                    mItemClickListener.onItemClicked(v, mPosition, mSpecialModel);
+                    mItemClickListener.onItemClicked(view, mPosition, mSpecialModel);
                 }
             }
         });

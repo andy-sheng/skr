@@ -28,7 +28,7 @@ public abstract class AnimateClickListener extends DebounceViewClickListener {
 
             @Override
             public void onAnimationEnd(Animator animator) {
-                click();
+                click(view);
             }
 
             @Override
@@ -43,5 +43,5 @@ public abstract class AnimateClickListener extends DebounceViewClickListener {
         });
     }
 
-    public abstract void click();
+    public abstract void click(View view);
 }

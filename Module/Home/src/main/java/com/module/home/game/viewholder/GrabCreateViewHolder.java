@@ -3,18 +3,19 @@ package com.module.home.game.viewholder;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.common.view.DebounceViewClickListener;
+import com.common.view.AnimateClickListener;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 
 public class GrabCreateViewHolder extends RecyclerView.ViewHolder {
     int position;
+
     public GrabCreateViewHolder(View itemView, RecyclerOnItemClickListener mItemClickListener) {
         super(itemView);
-        itemView.setOnClickListener(new DebounceViewClickListener() {
+        itemView.setOnClickListener(new AnimateClickListener() {
             @Override
-            public void clickValid(View v) {
+            public void click(View view) {
                 if (mItemClickListener != null) {
-                    mItemClickListener.onItemClicked(v, position, null);
+                    mItemClickListener.onItemClicked(view, position, null);
                 }
             }
         });

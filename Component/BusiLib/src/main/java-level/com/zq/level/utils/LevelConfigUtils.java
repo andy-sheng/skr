@@ -38,32 +38,32 @@ public class LevelConfigUtils {
         switch (mainLevel) {
             case UserLevelType.SKRER_LEVEL_POTENTIAL:
                 return new DrawableCreator.Builder()
-                        .setGradientColor(Color.parseColor("#85dcff"), Color.parseColor("#4d42c3"))
+                        .setGradientColor(Color.parseColor("#E3B081"), Color.parseColor("#856054"))
                         .setGradientAngle(0)
                         .build();
             case UserLevelType.SKRER_LEVEL_SILVER:
                 return new DrawableCreator.Builder()
-                        .setGradientColor(Color.parseColor("#85dcff"), Color.parseColor("#4d42c3"))
+                        .setGradientColor(Color.parseColor("#D1E1F1"), Color.parseColor("#727CA0"))
                         .setGradientAngle(0)
                         .build();
             case UserLevelType.SKRER_LEVEL_GOLD:
                 return new DrawableCreator.Builder()
-                        .setGradientColor(Color.parseColor("#85dcff"), Color.parseColor("#4d42c3"))
+                        .setGradientColor(Color.parseColor("#ECB246"), Color.parseColor("#BE6B2F"))
                         .setGradientAngle(0)
                         .build();
             case UserLevelType.SKRER_LEVEL_PLATINUM:
                 return new DrawableCreator.Builder()
-                        .setGradientColor(Color.parseColor("#85dcff"), Color.parseColor("#4d42c3"))
+                        .setGradientColor(Color.parseColor("#85DCFF"), Color.parseColor("#4D42C3"))
                         .setGradientAngle(0)
                         .build();
             case UserLevelType.SKRER_LEVEL_DIAMOND:
                 return new DrawableCreator.Builder()
-                        .setGradientColor(Color.parseColor("#85dcff"), Color.parseColor("#4d42c3"))
+                        .setGradientColor(Color.parseColor("#C37823"), Color.parseColor("#445AFF"))
                         .setGradientAngle(0)
                         .build();
             case UserLevelType.SKRER_LEVEL_KING:
                 return new DrawableCreator.Builder()
-                        .setGradientColor(Color.parseColor("#85dcff"), Color.parseColor("#4d42c3"))
+                        .setGradientColor(Color.parseColor("#FF616B"), Color.parseColor("#4D42C3"))
                         .setGradientAngle(0)
                         .build();
             default:

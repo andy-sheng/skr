@@ -10,6 +10,7 @@
         android:layout_height="@dimen/view_24_dp"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginBottom="@dimen/view_2_dp"
         android:gravity="center"
         android:paddingLeft="@dimen/view_8_dp"
         android:paddingRight="@dimen/view_8_dp"
@@ -60,7 +61,7 @@
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_120_dp"
+        android:layout_height="@dimen/view_100_dp"
         android:layout_below="@id/friends_tv">
 
         <android.support.v7.widget.RecyclerView
