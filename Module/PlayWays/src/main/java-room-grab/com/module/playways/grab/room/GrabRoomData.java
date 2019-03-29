@@ -7,7 +7,7 @@ import com.common.utils.U;
 import com.component.busilib.constans.GameModeType;
 import com.module.playways.BaseRoomData;
 import com.module.playways.RoomDataUtils;
-import com.module.playways.grab.createroom.model.SpecialModel;
+import com.component.busilib.friends.SpecialModel;
 import com.module.playways.grab.room.event.GrabGameOverEvent;
 import com.module.playways.grab.room.event.GrabMyCoinChangeEvent;
 import com.module.playways.grab.room.event.GrabRoundChangeEvent;

@@ -1,4 +1,4 @@
-package com.module.playways.grab.createroom.friends;
+package com.component.busilib.friends;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -19,22 +19,11 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
-import com.module.RouterConstants;
-import com.module.playways.grab.createroom.GrabSongApi;
-import com.module.playways.grab.room.GrabRoomServerApi;
-import com.module.playways.rank.prepare.model.JoinGrabRoomRspModel;
-import com.module.rank.R;
+import com.component.busilib.R;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
-
-import java.util.HashMap;
 import java.util.List;
-
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
-
-import static com.common.rxretrofit.ApiManager.APPLICATION_JSON;
 
 public class GrabFriendsRoomFragment extends BaseFragment {
 
@@ -86,34 +75,35 @@ public class GrabFriendsRoomFragment extends BaseFragment {
             @Override
             public void onItemClicked(View view, int position, Object model) {
                 if (model != null) {
-                    FriendRoomModel model1 = (FriendRoomModel) model;
-                    GrabRoomServerApi roomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
-                    HashMap<String, Object> map = new HashMap<>();
-                    map.put("roomID", model1.getRoomInfo().getRoomID());
-                    RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSON), JSON.toJSONString(map));
-                    ApiMethods.subscribe(roomServerApi.joinGrabRoom(body), new ApiObserver<ApiResult>() {
-                        @Override
-                        public void process(ApiResult result) {
-                            if (result.getErrno() == 0) {
-                                JoinGrabRoomRspModel grabCurGameStateModel = JSON.parseObject(result.getData().toString(), JoinGrabRoomRspModel.class);
-                                //先跳转
-                                ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_ROOM)
-                                        .withSerializable("prepare_data", grabCurGameStateModel)
-                                        .navigation();
-                                Activity activity = getActivity();
-                                if (activity != null) {
-                                    activity.finish();
-                                }
-                            } else {
-                                U.getToastUtil().showShort(result.getErrmsg());
-                            }
-                        }
-
-                        @Override
-                        public void onNetworkError(ErrorType errorType) {
-                            super.onNetworkError(errorType);
-                        }
-                    });
+                    // TODO: 2019/3/29 跳到房间里面
+//                    FriendRoomModel model1 = (FriendRoomModel) model;
+//                    GrabRoomServerApi roomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
+//                    HashMap<String, Object> map = new HashMap<>();
+//                    map.put("roomID", model1.getRoomInfo().getRoomID());
+//                    RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSON), JSON.toJSONString(map));
+//                    ApiMethods.subscribe(roomServerApi.joinGrabRoom(body), new ApiObserver<ApiResult>() {
+//                        @Override
+//                        public void process(ApiResult result) {
+//                            if (result.getErrno() == 0) {
+//                                JoinGrabRoomRspModel grabCurGameStateModel = JSON.parseObject(result.getData().toString(), JoinGrabRoomRspModel.class);
+//                                //先跳转
+//                                ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_ROOM)
+//                                        .withSerializable("prepare_data", grabCurGameStateModel)
+//                                        .navigation();
+//                                Activity activity = getActivity();
+//                                if (activity != null) {
+//                                    activity.finish();
+//                                }
+//                            } else {
+//                                U.getToastUtil().showShort(result.getErrmsg());
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onNetworkError(ErrorType errorType) {
+//                            super.onNetworkError(errorType);
+//                        }
+//                    });
                 }
 
             }

@@ -29,6 +29,7 @@ import com.module.RouterConstants;
 import com.module.home.dialogmanager.HomeDialogManager;
 import com.module.home.fragment.GameFragment;
 import com.module.home.fragment.PersonFragment;
+import com.module.home.game.Game2Fragment;
 import com.module.home.persenter.CheckInPresenter;
 import com.module.home.persenter.HomeCorePresenter;
 import com.module.home.persenter.NotifyCorePresenter;
@@ -121,7 +122,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             public Fragment getItem(int position) {
                 MyLog.d(TAG, "getItem" + " position=" + position);
                 if (position == 0) {
-                    return new GameFragment();
+                    return new Game2Fragment();
                 } else if (position == 1) {
                     if (mMsgService == null) {
                         return new PersonFragment();

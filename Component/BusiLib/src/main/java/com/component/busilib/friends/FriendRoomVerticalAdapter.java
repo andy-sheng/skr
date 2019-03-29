@@ -1,4 +1,4 @@
-package com.module.playways.grab.createroom.friends;
+package com.component.busilib.friends;
 
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -7,30 +7,27 @@ import android.view.ViewGroup;
 
 import com.common.view.recyclerview.DiffAdapter;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
-import com.module.rank.R;
+import com.component.busilib.R;
 
-/**
- * 横向好友在线适配器
- */
-public class FriendRoomHorizontalAdapter extends DiffAdapter<FriendRoomModel, FriendRoomHorizontalViewHolder> {
+public class FriendRoomVerticalAdapter extends DiffAdapter<FriendRoomModel, FriendRoomVerticalViewHolder> {
 
     RecyclerOnItemClickListener<FriendRoomModel> mOnItemClickListener;
 
-    public FriendRoomHorizontalAdapter(RecyclerOnItemClickListener mOnItemClickListener){
+    public FriendRoomVerticalAdapter(RecyclerOnItemClickListener mOnItemClickListener) {
         this.mOnItemClickListener = mOnItemClickListener;
     }
 
     @NonNull
     @Override
-    public FriendRoomHorizontalViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.friend_room_horiz_item_layout, parent, false);
-        FriendRoomHorizontalViewHolder itemHolder = new FriendRoomHorizontalViewHolder(view);
+    public FriendRoomVerticalViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.friend_room_verit_item_layout, parent, false);
+        FriendRoomVerticalViewHolder itemHolder = new FriendRoomVerticalViewHolder(view);
         itemHolder.setOnItemClickListener(mOnItemClickListener);
         return itemHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FriendRoomHorizontalViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FriendRoomVerticalViewHolder holder, int position) {
         FriendRoomModel friendRoomModel = mDataList.get(position);
         holder.bindData(friendRoomModel, position);
     }
@@ -39,5 +36,4 @@ public class FriendRoomHorizontalAdapter extends DiffAdapter<FriendRoomModel, Fr
     public int getItemCount() {
         return mDataList.size();
     }
-
 }

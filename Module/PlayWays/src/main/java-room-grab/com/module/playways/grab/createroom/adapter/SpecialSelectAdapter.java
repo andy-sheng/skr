@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import com.common.view.recyclerview.DiffAdapter;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.playways.grab.createroom.viewholder.SpecialCardViewHolder;
-import com.module.playways.grab.createroom.model.SpecialModel;
+import com.component.busilib.friends.SpecialModel;
 import com.module.rank.R;
 
 public class SpecialSelectAdapter extends DiffAdapter<SpecialModel, SpecialCardViewHolder> {

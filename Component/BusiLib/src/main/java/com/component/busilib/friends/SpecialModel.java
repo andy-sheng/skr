@@ -1,4 +1,4 @@
-package com.module.playways.grab.createroom.model;
+package com.component.busilib.friends;
 
 import java.io.Serializable;
 
@@ -45,5 +45,15 @@ public class SpecialModel implements Serializable {
 
     public void setBgColor(String bgColor) {
         this.bgColor = bgColor;
+    }
+
+    @Override
+    public String toString() {
+        return "SpecialModel{" +
+                "tagID=" + tagID +
+                ", tagName='" + tagName + '\'' +
+                ", introduction='" + introduction + '\'' +
+                ", bgColor='" + bgColor + '\'' +
+                '}';
     }
 }

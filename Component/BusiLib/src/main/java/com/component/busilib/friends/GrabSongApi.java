@@ -1,4 +1,4 @@
-package com.module.playways.grab.createroom;
+package com.component.busilib.friends;
 
 import com.common.rxretrofit.ApiResult;
 

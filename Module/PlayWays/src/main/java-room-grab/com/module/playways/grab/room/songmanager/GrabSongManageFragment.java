@@ -30,18 +30,15 @@ import com.common.view.ex.drawable.DrawableCreator;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.inter.IGrabSongManageView;
 import com.module.playways.grab.room.songmanager.tags.GrabSongTagsView;
-import com.module.playways.grab.createroom.model.SpecialModel;
+import com.component.busilib.friends.SpecialModel;
 import com.module.playways.grab.room.songmanager.tags.GrabTagsAdapter;
-import com.module.playways.rank.prepare.fragment.PrepareResFragment;
 import com.module.playways.rank.song.fragment.GrabSearchSongFragment;
-import com.module.playways.rank.song.fragment.SongSelectFragment;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GrabSongManageFragment extends BaseFragment implements IGrabSongManageView {
