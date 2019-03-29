@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -63,6 +64,7 @@ public class PkInfoFragment extends BaseFragment {
     ExTextView mTvToLeaderBoard;
     ExImageView mIvVoiceRoom;
     ExImageView mIvAthleticsPk;
+    RelativeLayout mRlAreaContainer;
     ClassicsHeader mClassicsHeader;
 
     UserInfoServerApi mUserInfoServerApi;
@@ -89,6 +91,7 @@ public class PkInfoFragment extends BaseFragment {
         mTvToLeaderBoard = (ExTextView) mRootView.findViewById(R.id.tv_to_leader_board);
         mIvVoiceRoom = (ExImageView) mRootView.findViewById(R.id.iv_voice_room);
         mIvAthleticsPk = (ExImageView) mRootView.findViewById(R.id.iv_athletics_pk);
+        mRlAreaContainer = (RelativeLayout)mRootView.findViewById(R.id.rl_area_container);
 
         mSmartRefreshLayout.setEnableRefresh(true);
         mSmartRefreshLayout.setEnableLoadMore(false);
@@ -236,8 +239,13 @@ public class PkInfoFragment extends BaseFragment {
             if(userRankModel.getCategory() == 1){
                 mTvNumCountry.setText(userRankModel.getRankSeq() == 0 ? "**" : userRankModel.getRankSeq() + "");
             }else if(userRankModel.getCategory() == 4){
-                mTvNum.setText(userRankModel.getRankSeq() == 0 ? "**" : userRankModel.getRankSeq() + "");
-                mTvArea.setText(TextUtils.isEmpty(userRankModel.getRegionDesc()) ? "地域榜" : userRankModel.getRegionDesc());
+                if(userRankModel.getRankSeq() == 0){
+                    mRlAreaContainer.setVisibility(View.GONE);
+                }else {
+                    mRlAreaContainer.setVisibility(View.VISIBLE);
+                    mTvNum.setText(userRankModel.getRankSeq() + "");
+                    mTvArea.setText(userRankModel.getRegionDesc());
+                }
             }
         }
     }
