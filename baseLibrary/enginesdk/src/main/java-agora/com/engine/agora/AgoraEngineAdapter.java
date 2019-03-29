@@ -355,6 +355,7 @@ public class AgoraEngineAdapter {
             );
         }
         mTbEffectProcessor.init();
+        mITbAgcProcessor.init();
     }
 
     /**
@@ -405,6 +406,9 @@ public class AgoraEngineAdapter {
         }
         if (mICbScoreProcessor != null) {
             mICbScoreProcessor.destroy();
+        }
+        if (mITbAgcProcessor != null) {
+            mITbAgcProcessor.destroyAgcProcessor();
         }
     }
 
@@ -1133,14 +1137,14 @@ public class AgoraEngineAdapter {
                 if (DEBUG) {
                     MyLog.d(TAG, "step3:" + testIn(samples));
                 }
-                //mITbAgcProcessor.process(samples,samples.length,channels,samplesPerSec);
+                //mITbAgcProcessor.processV1(samples,samples.length,channels,samplesPerSec);
+                if (DEBUG) {
+                    MyLog.d(TAG, "step4:" + testIn(samples));
+                }
                 if (!TextUtils.isEmpty(mConfig.getRecordingFromCallbackSavePath())) {
                     if (mOutCallback != null) {
                         mOutCallback.onRecordingBuffer(samples);
                     }
-                }
-                if (DEBUG) {
-                    MyLog.d(TAG, "step4:" + testIn(samples));
                 }
                 return true;
             }

@@ -1,86 +1,67 @@
 #include <jni.h>
 #include <string>
 #include "../../cpp/two/amplitude/libvoln/libvoln.h"
+#include "../../cpp/one/common/CommonTools.h"
 
-FILE *inputFile = NULL;
+FILE *inputFile2 = NULL;
 
-FILE *outputFile = NULL;
+FILE *outputFile2 = NULL;
 
-int flag = -1;
+int flag2 = -1;
 
-#define LOG_TAG "ITBEffectEngine"
+void *pvoln;
+
+#define LOG_TAG "ITBAgcEngine"
 
 #define FILEOPEN 1
 
 extern "C"
 JNIEXPORT jint JNICALL
 Java_com_engine_effect_ITbAgcProcessor_init(JNIEnv *env, jobject ins) {
-    flag = 0;
-    return flag;
+    flag2 = 0;
+    return flag2;
 }
 
 extern "C"
 JNIEXPORT jint JNICALL
 Java_com_engine_effect_ITbAgcProcessor_process(JNIEnv *env, jobject ins, jbyteArray samplesJni,
-                                                   jint len,
-                                                   jint channels, jint sampleRate) {
-    void *pvoln;
-    FILE *frx,*fwy;
-    int frame;
-    int framelen;
+                                               jint len,
+                                               jint channels, jint sampleRate) {
+    if (flag2 == -1) {
+        return flag2;
+    }
+    if (flag2 <= 0) {
+        SKR_agc_create(&pvoln);
+        SKR_agc_reset(pvoln);
 
-    int samplerate;
-    int channel;
-    float maxgaindB;
-    float fstgaindB;
-    int needDC;
-    int dykind;
-
-    short y[6000];
-    short x[6000];
-
-    frx = fopen("input.pcm", "rb");
-    fwy = fopen("output.pcm","wb");
-
-
-    samplerate = 16000;
-    channel = 1;
-
-    maxgaindB = 20.f;
-    fstgaindB = 15.f;
-    needDC = 1;
-    dykind = 0;
-
-    framelen = (int)(samplerate*0.02);
-
-    SKR_agc_create(&pvoln);
-    SKR_agc_reset(pvoln);
-    SKR_agc_config(pvoln,samplerate,channel,dykind,maxgaindB,fstgaindB,needDC);
-
-    for(frame=0;;frame++)
-    {
-        if(fread(x, sizeof(short), framelen, frx) != framelen) break;
-
-        SKR_agc_proc(pvoln, x, framelen,y);
-
-        fwrite(y, sizeof(short), framelen, fwy);
-
-        printf("Doing volume normalization...frame%d\r",frame);
-
+        int dykind = 0;
+        float maxgaindB = 20.f;
+        float fstgaindB = 15.f;
+        int needDC = 1;
+        SKR_agc_config(pvoln, sampleRate, channels, dykind, maxgaindB, fstgaindB, needDC);
+        flag2 = 1;
     }
 
-    printf("\nFininsh!\n\n\n");
+    //无符号整型，加起来和testIn不一定对得上
+    unsigned char *data = (unsigned char *) env->GetByteArrayElements(samplesJni, 0);
 
-    fclose(frx);
-    fclose(fwy);
-
-    SKR_agc_free(pvoln);
-
-    return flag;
+    // 2048 512 下来
+    short *samples = (short *) data; // 长度只有1024了
+    if (FILEOPEN) {
+        LOGI("before SKR_agc_proc");
+    }
+    SKR_agc_proc(pvoln, samples, len / 2, samples);
+    if (FILEOPEN) {
+        LOGI("after SKR_agc_proc");
+    }
+    env->ReleaseByteArrayElements(samplesJni, reinterpret_cast<jbyte *>(data), 0);
+    return flag2;
 }
 
 extern "C"
 JNIEXPORT jint JNICALL
 Java_com_engine_effect_ITbAgcProcessor_destroyAgcProcessor(JNIEnv *env, jobject instance) {
-    return flag;
+    flag2 = -1;
+    SKR_agc_free(pvoln);
+    return flag2;
 }

@@ -18,7 +18,7 @@ public class ITbAgcProcessor {
 
     public native int init();
 
-    public int processV1(int type, byte[] samples, int length, int channels, int samplesPerSec) {
+    public int processV1( byte[] samples, int length, int channels, int samplesPerSec) {
          process(samples,length,channels,samplesPerSec);
          return 0;
     }

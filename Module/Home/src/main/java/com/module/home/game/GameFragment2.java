@@ -19,7 +19,7 @@ import com.module.home.widget.UserInfoTileView2;
 
 import java.util.List;
 
-public class Game2Fragment extends BaseFragment implements IGameView {
+public class GameFragment2 extends BaseFragment implements IGameView {
     
     public final static String TAG = "Game2Fragment";
 
