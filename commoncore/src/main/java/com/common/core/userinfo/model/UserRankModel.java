@@ -30,7 +30,7 @@ public class UserRankModel implements Serializable {
     private int maxStar;       // 最大星星数
     private int mainRanking;   // 主段位
     private int subRanking;    // 子段位
-    private String levelDesc;// 段位描述
+    private String levelDesc;  // 段位描述
     private String text;       // 排行描述
     private String highlight;  // 排行描述中高亮部分
     private int diff;          // 上升和下降

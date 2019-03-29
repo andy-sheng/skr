@@ -298,18 +298,12 @@ public class PersonInfoDialogView extends RelativeLayout {
         int rank = 0;           //当前父段位
         String rankDesc = "";   //父段位描述
         int subRank = 0;        //当前子段位
-        int starNum = 0;        //当前星星
-        int starLimit = 0;      //当前星星上限
         for (UserLevelModel userLevelModel : list) {
             if (userLevelModel.getType() == UserLevelModel.RANKING_TYPE) {
                 rank = userLevelModel.getScore();
             } else if (userLevelModel.getType() == UserLevelModel.SUB_RANKING_TYPE) {
                 subRank = userLevelModel.getScore();
                 rankDesc = userLevelModel.getDesc();
-            } else if (userLevelModel.getType() == UserLevelModel.TOTAL_RANKING_STAR_TYPE) {
-                starNum = userLevelModel.getScore();
-            } else if (userLevelModel.getType() == UserLevelModel.REAL_RANKING_STAR_TYPE) {
-                starLimit = userLevelModel.getScore();
             }
         }
         mHorizLevelView.bindData(rank, subRank, rankDesc);
