@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "Delay_control.h"
 #include <assert.h>
-#include "common/functions.h"
+#include "../../common/functions.h"
 #include <math.h>
 
 void BufresetAPI(Buf16_s *buf16)
@@ -33,7 +33,7 @@ void putinAPI_loop(Buf16_s *buf16,short *input,int inlen)
 	int i;
 	for (i = 0;i<inlen;i++)
 	{
-		if((buf16->rear+1)%BUFFLEN == buf16->front)//ÔøΩÔøΩÔøΩÔøΩÔøΩ≈ªÔøΩ»•ÔøΩÔøΩÔøΩÔøΩÔøΩifÔøΩÔøΩÔøΩ–∂ÔøΩ“ªÔøΩŒ≤ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ
+		if((buf16->rear+1)%BUFFLEN == buf16->front)//ø…“‘”≈ªØ»•µÙ’‚∏ˆif£¨≈–∂œ“ª¥Œ≤ªª·¬˙º¥ø…
 		{
 			//break;
 			assert(0);
@@ -48,7 +48,7 @@ void putinAPI_loop_onlychannelLin(Buf16_s *buf16,short *input,int inlen)
 	int i;
 	for (i = 0;i<inlen;i+=2)
 	{
-		if((buf16->rear+1)%BUFFLEN == buf16->front)//ÔøΩÔøΩÔøΩÔøΩÔøΩ≈ªÔøΩ»•ÔøΩÔøΩÔøΩÔøΩÔøΩifÔøΩÔøΩÔøΩ–∂ÔøΩ“ªÔøΩŒ≤ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ
+		if((buf16->rear+1)%BUFFLEN == buf16->front)//ø…“‘”≈ªØ»•µÙ’‚∏ˆif£¨≈–∂œ“ª¥Œ≤ªª·¬˙º¥ø…
 		{
 			//break;
 			assert(0);
@@ -124,7 +124,7 @@ int putoutAPI_loop(Buf16_s *buf16,short *output,int outlen)//if no data output 0
 	int zero = 0;
 	for (i = 0;i<outlen;i++)
 	{
-		if (buf16->front != buf16->rear)//ÔøΩÔøΩÔøΩÔøΩÔøΩ≈ªÔøΩ»•ÔøΩÔøΩÔøΩÔøΩÔøΩifÔøΩÔøΩÔøΩÔøΩÔøΩ“ªÔøΩÔøΩ ºÔøΩÔøΩÔøΩ–∂œ≤ÔøΩÔøΩ·±ª»°ÔøΩ’µƒªÔøΩ
+		if (buf16->front != buf16->rear)//ø…“‘”≈ªØ»•µÙ’‚∏ˆif£¨»Áπ˚“ªø™ ºæÕ≈–∂œ≤ªª·±ª»°ø’µƒª∞
 		{
 			buf16->front = (buf16->front + 1)%BUFFLEN;
 			output[i] = buf16->membuf[buf16->front];

@@ -29,7 +29,14 @@ public class ClipboardUtils {
     public static String getPaste() {
         // 得到剪贴板管理器
         ClipboardManager cmb = (ClipboardManager) U.app().getSystemService(Context.CLIPBOARD_SERVICE);
-        return cmb.getText().toString().trim();
+        CharSequence cs = cmb.getText();
+        if (cs != null) {
+            String str = cs.toString();
+            if (str != null) {
+                return str.trim();
+            }
+        }
+        return "";
     }
 
     public static void clear() {

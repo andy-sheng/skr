@@ -2,7 +2,7 @@
 #define SKR_EFFECT_CONTROL_H
 
 #include <stdio.h>
-#include "common/defines.h"
+#include "../../common/defines.h"
 
 
 #ifdef __cplusplus

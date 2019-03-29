@@ -61,6 +61,7 @@ void ChanelConvert(int inchanel,int outchanel,int len,short *in1,short *in2,shor
 void ChanelConvert_f(int inchanel,int outchanel,int len,float *in1,float *in2,float *out1,float *out2);
 void ChannelSplit(short *in, int inlen, short *out[], int outchannel);
 void ChannelMerge(short *in, int inlen, short *out[], int outchannel);
+void ChebyII_Lowpassc(int Order,float f1,float f2,float dB,float *b,float *a);
 
 
 void rfftmut2(float *y,float *x1,float *x2,int n);

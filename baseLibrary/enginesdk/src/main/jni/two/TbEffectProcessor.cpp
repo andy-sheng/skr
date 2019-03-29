@@ -3,6 +3,7 @@
 #include <effect/Plugin_conv_reverb/CovReverb_control.h>
 #include <effect/Plugin_conv_reverb/CovReverb_SDK_API.h>
 #include <malloc.h>
+#include <amplitude/libvoln/libvoln.h>
 #include "com_engine_effect_ITbEffectProcessor.h"
 #include "../../cpp/two/effect/effect_LIB/effect_control.h"
 #include "../../cpp/two/effect/effect_LIB/effect_SDK_API.h"
@@ -18,7 +19,7 @@ CovReverbV2_s *mcovreverb = NULL;
 
 #define LOG_TAG "ITBEffectEngine"
 
-#define FILEOPEN 1
+#define FILEOPEN 0
 
 extern "C"
 JNIEXPORT jint JNICALL

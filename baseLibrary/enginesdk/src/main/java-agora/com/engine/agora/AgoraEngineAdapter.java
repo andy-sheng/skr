@@ -17,6 +17,7 @@ import com.engine.agora.source.PrivateTextureHelper;
 import com.engine.arccloud.ArcCloudManager;
 import com.engine.arccloud.RecognizeConfig;
 import com.engine.effect.IFAudioEffectEngine;
+import com.engine.effect.ITbAgcProcessor;
 import com.engine.effect.ITbEffectProcessor;
 import com.engine.score.ICbScoreProcessor;
 import com.engine.score.Score2Callback;
@@ -81,9 +82,9 @@ public class AgoraEngineAdapter {
     private AgoraOutCallback mOutCallback;
     private List<EffectModel> mEffectModels = new ArrayList<>();
     private ArcCloudManager mArcCloudManager;// ArcClound的打分和识别
-    private ITbEffectProcessor mTbEffectProcessor = new ITbEffectProcessor();// 天宝提供的音效处理类
+    private ITbEffectProcessor mTbEffectProcessor = new ITbEffectProcessor();// 提供的音效处理类
+    private ITbAgcProcessor mITbAgcProcessor = new ITbAgcProcessor();// 提供的Agc处理算法
     private IFAudioEffectEngine mCbEffectProcessor = new IFAudioEffectEngine();// 唱吧提供的音效处理类
-
     private ICbScoreProcessor mICbScoreProcessor = new ICbScoreProcessor();// 唱吧打分系统
 
     /**
@@ -1132,6 +1133,7 @@ public class AgoraEngineAdapter {
                 if (DEBUG) {
                     MyLog.d(TAG, "step3:" + testIn(samples));
                 }
+                //mITbAgcProcessor.process(samples,samples.length,channels,samplesPerSec);
                 if (!TextUtils.isEmpty(mConfig.getRecordingFromCallbackSavePath())) {
                     if (mOutCallback != null) {
                         mOutCallback.onRecordingBuffer(samples);

@@ -1,8 +1,8 @@
 #ifndef FILTER_CONTROL_H
 #define FILTER_CONTROL_H
-#include "common/defines.h"
-#include "Delay/Delay_LIB/Delay_SDK_API.h"
-#include "common/DFTs.h"
+#include "../../common/defines.h"
+#include "../../Delay/Delay_LIB/Delay_SDK_API.h"
+#include "../../common/DFTs.h"
 
 
 
@@ -15,6 +15,46 @@
 extern "C"
 {
 #endif
+
+	typedef struct Filter_mem{
+		/*直接I型*/
+		short meminput[SKR_MAX_FRAME_SAMPLE_MONO + MAXORDER];
+		int memi;
+		int memsumin;
+		float memoutput[SKR_MAX_FRAME_SAMPLE_MONO + MAXORDER];
+		/*四阶节级联*/
+		float mempx[MAX_NS*(4+1)];
+		float mempy[MAX_NS*(4+1)];
+	}FilterIOMEM;
+	
+	
+	typedef struct Filter_memory{
+		FilterIOMEM memL;
+		FilterIOMEM memR;
+
+		float b[MAX_NS*(4+1)];//j
+		float bR[MAX_NS*(4 + 1)];
+		float a[MAX_NS*(4+1)];//j
+		float aR[MAX_NS*(4 + 1)];
+		
+		/*len = Rlen...*/
+		int blen;
+		int bRlen;
+		int alen;
+		int aRlen;
+		int Order;//no use...
+		int ns;
+		int nsR;
+		int n;
+		int nR;
+		
+		/*指向matlab给出的表中的数组*/
+		
+		int chanel;
+		//int samplerate;//未使用
+		//int Bypass;//未使用
+		int filtertype;//-1:fir,0:iir,1:nsSec,
+	}Filter_s;
 
 	typedef struct Filter_memf{
 		float meminput[MAXORDER_F+SKR_MAX_FRAME_SAMPLE_MONO];
@@ -51,12 +91,12 @@ extern "C"
 #define MAX_skrBIG 250
 
 	typedef struct bFilter_mem{
-		/*直锟斤拷I锟斤拷*/
+		/*直接I型*/
 		short meminput[SKR_MAX_FRAME_SAMPLE_MONO + MAXORDER_BIG];
 		int memi;
 		int memsumin;
 		float memoutput[SKR_MAX_FRAME_SAMPLE_MONO + MAXORDER];
-		/*锟侥阶节硷拷锟斤拷*/
+		/*四阶节级联*/
 		float mempx[MAX_NS*(4+1)];
 		float mempy[MAX_NS*(4+1)];
 	}BIGFilterIOMEM;
@@ -120,11 +160,11 @@ extern "C"
 
 
 
-		/*指锟斤拷matlab锟斤拷锟斤拷锟侥憋拷锟叫碉拷锟斤拷锟斤拷*/
+		/*指向matlab给出的表中的数组*/
 		
 		int chanel;
-		//int samplerate;//未使锟斤拷
-		//int Bypass;//未使锟斤拷
+		//int samplerate;//未使用
+		//int Bypass;//未使用
 		int filtertype;//-1:fir,0:iir,1:nsSec,
 	}Filterlongfir_s;
 

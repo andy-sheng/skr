@@ -1,5 +1,5 @@
 #include "Filter_control.h"
-#include "common/functions.h"
+#include "../../common/functions.h"
 
 //#include "SKR_Filter_functions.h"
 #include <stdlib.h>
@@ -27,6 +27,36 @@ static void SKRfir(short *output, short *input, int inlen, short *mem_input, flo
 		output[i]=stoshort(sum);
 	}
 	for (i = 0; i<border; i++)mem_input[i] = mem_input[i + inlen];
+}
+static void SKR_shuzhi2(short *output, short *input, int inlen, short *mem_input, short len,int *memsum,int *memi)
+{
+	short i,j;
+	short *x;
+	float sum;
+	int border;
+	float n_1;
+
+	//memsum += xx - mVWLevel->memframeTMPLEVEL[mVWLevel->memframeTMP_i];
+	//mVWLevel->memframeTMPLEVEL[mVWLevel->memframeTMP_i] = xx;
+
+	//mVWLevel->memframeTMP_i ++;
+	//mVWLevel->memframeTMP_i %= mVWLevel->WindowLen;
+
+	//RMS_db = db(sqrt(mVWLevel->memTMPLEVEL/(mVWLevel->WindowLen*xlen)),U0) + 3;//sine wave is 3dB larger than square wave
+
+	n_1 = 1.0/len;
+	for(i=0;i<inlen;i++)
+	{
+		//memsum[0] += input[i] - mem_input[*memi];
+		memsum[0] -= mem_input[*memi];
+		memsum[0] += input[i];
+		mem_input[*memi] = input[i];
+		memi[0] ++;
+		memi[0] %= len;
+		output[i] = n_1*memsum[0];
+	}
+	//free(memx);
+
 }
 static void SKRiir(short *output, short *input, int inlen,float *mem_output, short *mem_input, float *b, short blen, float *a, short alen)
 {
@@ -159,7 +189,172 @@ static void filterNOrNsSec(float *b,float *a,int n,int ns,float *x,int len,float
 
 }
 
+void FilterReset_API(Filter_s *mFilter)
+{
+	int i;
+	for (i=0;i<MAXORDER+SKR_MAX_FRAME_SAMPLE_MONO;i++)
+	{
+		mFilter->memL.meminput[i]=0;
+		mFilter->memR.meminput[i]=0;
+		mFilter->memL.memoutput[i]=0;
+		mFilter->memR.memoutput[i]=0;
 
+	}
+	for (i=0;i<MAX_NS*(2+1);i++)
+	{
+		mFilter->memL.mempx[i] = 0;
+		mFilter->memR.mempx[i] = 0;
+		mFilter->memL.mempy[i] = 0;
+		mFilter->memR.mempy[i] = 0;
+	}
+	mFilter->memL.memi = 0;
+	mFilter->memR.memi = 0;
+	mFilter->memL.memsumin = 0;
+	mFilter->memR.memsumin = 0;
+}
+
+void FilterCalcu_API_FromMatlabTable(Filter_s *mFilter,float *num,float *den,int Order,int type)
+{
+	int i;
+	mFilter->Order = Order;
+	mFilter->blen = Order + 1;
+	mFilter->alen = Order + 1;
+	mFilter->ns = (Order + 1)/2;
+	mFilter->n = 2;//matlab give 2order 
+	mFilter->filtertype = type;
+	if (mFilter->filtertype <= 0)
+	{
+		for (i=0;i<mFilter->Order+1;i++)
+		{
+			mFilter->b[i] = num[i];
+			mFilter->a[i] = den[i];
+		}
+	} 
+	else
+	{
+		SecOrSecMatlab(mFilter->b,mFilter->a,num,den,mFilter->ns);
+	}
+}
+
+void FilterRun_API(Filter_s *mFilter,short *input,int inLen,short *output)
+{
+	int i;
+	int inRlen;
+
+	short x16L[SKR_MAX_FRAME_SAMPLE_MONO];
+	short x16R[SKR_MAX_FRAME_SAMPLE_MONO];
+	float xL[SKR_MAX_FRAME_SAMPLE_MONO];
+	float xR[SKR_MAX_FRAME_SAMPLE_MONO];
+
+	if (mFilter->chanel == 2)
+	{	
+		inRlen = inLen/2;
+		ChanelConvert(1,2,inLen,input,NULL,x16L,x16R);
+		switch (mFilter->filtertype)
+		{
+		case -1:
+			SKRfir(x16L, x16L, inRlen,mFilter->memL.meminput, mFilter->b, mFilter->blen);
+			SKRfir(x16R, x16R, inRlen,mFilter->memR.meminput, mFilter->b, mFilter->blen);
+			ChanelConvert(2,1,inRlen,x16L,x16R,output,NULL);
+			break;
+		case 0:
+			SKRiir(x16L, x16L, inRlen,mFilter->memL.memoutput, mFilter->memL.meminput, mFilter->b, mFilter->blen, mFilter->a, mFilter->alen);
+			SKRiir(x16R, x16R, inRlen,mFilter->memR.memoutput, mFilter->memR.meminput, mFilter->b, mFilter->blen, mFilter->a, mFilter->alen);
+			ChanelConvert(2,1,inRlen,x16L,x16R,output,NULL);
+			break;
+		case 1:
+			for (i = 0;i<inRlen;i++)
+			{
+				xL[i] = x16L[i];
+			}
+			filterNOrNsSec(mFilter->b,mFilter->a,mFilter->n,mFilter->ns,xL,inRlen,mFilter->memL.mempx,mFilter->memL.mempy);
+			for (i = 0;i<inRlen;i++)
+			{
+				x16L[i] = stoshort(xL[i]) ;
+			}
+			for (i = 0;i<inRlen;i++)
+			{
+				xR[i] = x16R[i];
+			}
+			filterNOrNsSec(mFilter->b,mFilter->a,mFilter->n,mFilter->ns,xR,inRlen,mFilter->memR.mempx,mFilter->memR.mempy);
+			for (i = 0;i<inRlen;i++)
+			{
+				x16R[i] = stoshort(xR[i]) ;
+			}
+			ChanelConvert(2,1,inRlen,x16L,x16R,output,NULL);
+			break;
+		case 2:
+			SKRfir(x16L, x16L, inRlen, mFilter->memL.meminput, mFilter->b, mFilter->blen);
+			SKRfir(x16R, x16R, inRlen, mFilter->memR.meminput, mFilter->bR, mFilter->bRlen);
+			ChanelConvert(2, 1, inRlen, x16L, x16R, output, NULL);
+			break;
+		case 3:
+			SKRiir(x16L, x16L, inRlen, mFilter->memL.memoutput, mFilter->memL.meminput, mFilter->b, mFilter->blen, mFilter->a, mFilter->alen);
+			SKRiir(x16R, x16R, inRlen, mFilter->memR.memoutput, mFilter->memR.meminput, mFilter->bR, mFilter->bRlen, mFilter->aR, mFilter->aRlen);
+			ChanelConvert(2, 1, inRlen, x16L, x16R, output, NULL);
+			break;
+		case 4:
+			for (i = 0; i < inRlen; i++)
+			{
+				xL[i] = x16L[i];
+			}
+			filterNOrNsSec(mFilter->b, mFilter->a, mFilter->n, mFilter->ns, xL, inRlen, mFilter->memL.mempx, mFilter->memL.mempy);
+			for (i = 0; i < inRlen; i++)
+			{
+				x16L[i] = stoshort(xL[i]);
+			}
+			for (i = 0; i < inRlen; i++)
+			{
+				xR[i] = x16R[i];
+			}
+			filterNOrNsSec(mFilter->bR, mFilter->aR, mFilter->nR, mFilter->nsR, xR, inRlen, mFilter->memR.mempx, mFilter->memR.mempy);
+			for (i = 0; i < inRlen; i++)
+			{
+				x16R[i] = stoshort(xR[i]);
+			}
+			ChanelConvert(2, 1, inRlen, x16L, x16R, output, NULL);
+			break;
+		default:assert(0);
+			break;
+		}
+	}
+	else if (mFilter->chanel == 1)
+	{
+		switch (mFilter->filtertype)
+		{
+		case -1:
+			SKRfir(output, input, inLen,mFilter->memL.meminput, mFilter->b, mFilter->blen);
+			break;
+		case 0:
+			SKRiir(output, input, inLen,mFilter->memL.memoutput, mFilter->memL.meminput, mFilter->b, mFilter->blen, mFilter->a, mFilter->alen);
+			break;
+		case 1:
+			for (i = 0;i<inLen;i++)
+			{
+				xL[i] = input[i];
+			}
+			filterNOrNsSec(mFilter->b,mFilter->a,mFilter->n,mFilter->ns,xL,inLen,mFilter->memL.mempx,mFilter->memL.mempy);
+			for (i = 0;i<inLen;i++)
+			{
+				output[i] = stoshort(xL[i]) ;
+			}
+			break;
+		case 2:
+			//SKR_shuzhi(output, input, inLen,mFilter->memL.meminput, mFilter->blen);
+			SKR_shuzhi2(output, input, inLen,mFilter->memL.meminput, mFilter->blen,&mFilter->memL.memsumin,&mFilter->memL.memi);
+			//assert(0);
+			break;
+		default:assert(0);
+			break;
+
+		}
+		
+	}
+	else
+	{
+		assert(0);
+	}
+}
 void FilterfReset_API(Filterf_s *mFilter)
 {
 	int i;
@@ -744,7 +939,7 @@ void FilterlongfirRun_API(Filterlongfir_s *mFilter,short *input,int inLen,short 
 				for (i = mFilter->blen-1;i<mFilter->fftN;i++)
 				{
 					/*//we know inlen<<offset...
-					if((mFilter->mBufout.rear+1)%BUFFLEN == mFilter->mBufout.front)//ÔøΩÔøΩÔøΩÔøΩÔøΩ≈ªÔøΩ»•ÔøΩÔøΩÔøΩÔøΩÔøΩifÔøΩÔøΩÔøΩ–∂ÔøΩ“ªÔøΩŒ≤ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ
+					if((mFilter->mBufout.rear+1)%BUFFLEN == mFilter->mBufout.front)//ø…“‘”≈ªØ»•µÙ’‚∏ˆif£¨≈–∂œ“ª¥Œ≤ªª·¬˙º¥ø…
 					{
 						//break;
 						assert(0);

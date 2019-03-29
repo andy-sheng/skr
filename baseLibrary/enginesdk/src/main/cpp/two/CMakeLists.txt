@@ -12,6 +12,8 @@ add_definitions("
 ")
 
 include_directories(${PATH_TO_MEDIACORE2}/)
+include_directories(${PATH_TO_MEDIACORE2}/*/)
+include_directories(${PATH_TO_MEDIACORE2}/*/*/)
 include_directories(${PATH_TO_MEDIACORE2}/common/)
 include_directories(${PATH_TO_MEDIACORE2}/Delay/)
 include_directories(${PATH_TO_MEDIACORE2}/Delay/Delay_LIB/)
@@ -22,8 +24,11 @@ include_directories(${PATH_TO_MEDIACORE2}/filter/)
 include_directories(${PATH_TO_MEDIACORE2}/filter/Filter_LIB/)
 
 
-file(GLOB FILES_JNI_LAYER2 "${PATH_TO_JNI_LAYER2}/*.c")
 file(GLOB FILES_JNI_LAYER2 "${PATH_TO_JNI_LAYER2}/*.cpp")
+
+file(GLOB FILES_LIB_ALL1 "${PATH_TO_MEDIACORE2}/*/*.c")
+file(GLOB FILES_LIB_ALL2 "${PATH_TO_MEDIACORE2}/*/*/*.c")
+
 file(GLOB FILES_LIB_COMMON2 "${PATH_TO_MEDIACORE2}/common/*.c")
 file(GLOB FILES_LIB_DELAY2 "${PATH_TO_MEDIACORE2}/Delay/Delay_LIB/*.c")
 file(GLOB FILES_LIB_EFFECT12 "${PATH_TO_MEDIACORE2}/effect/effect_LIB/*.c")
@@ -34,6 +39,10 @@ file(GLOB FILES_LIB_FILTER2 "${PATH_TO_MEDIACORE2}/filter/Filter_LIB/*.c")
 #该指令的主要作用就是将指定的源文件生成链接文件，然后添加到工程中去。该指令常用的语法如下：
 add_library(native-lib2 SHARED
         ${FILES_JNI_LAYER2}
+
+        ${FILES_LIB_ALL1}
+        ${FILES_LIB_ALL2}
+
         ${FILES_LIB_COMMON2}
         ${FILES_LIB_DELAY2}
         ${FILES_LIB_EFFECT12}
