@@ -1,27 +1,40 @@
 package com.module.msg.fragment;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.common.base.BaseFragment;
+import com.common.clipboard.ClipboardUtils;
+import com.common.core.kouling.SkrKouLingUtils;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
-import com.common.notification.NotificationManager;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.titlebar.CommonTitleBar;
 import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
 import com.component.busilib.manager.WeakRedDotManager;
+import com.module.common.ICallback;
 import com.module.msg.IMessageFragment;
 import com.module.msg.friend.FriendFragment;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.ViewHolder;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.zq.relation.fragment.RelationFragment;
+import com.zq.relation.fragment.SearchFriendFragment;
 
 import java.util.HashMap;
 
@@ -29,7 +42,7 @@ import io.rong.imkit.R;
 import io.rong.imkit.fragment.ConversationListFragment;
 import io.rong.imlib.model.Conversation;
 
-public class MessageFragment extends BaseFragment implements IMessageFragment, WeakRedDotManager.WeakRedDotListener {
+public class MessageFragment extends BaseFragment implements IMessageFragment {
 
     public final static String TAG = "MessageFragment";
 
@@ -40,12 +53,17 @@ public class MessageFragment extends BaseFragment implements IMessageFragment, W
     View mSplitLine;
     NestViewPager mMessageVp;
 
+    PopupWindow mPopupWindow;  // 弹窗
+    RelativeLayout mSearchArea;
+    RelativeLayout mInviteArea;
+
+    DialogPlus mShareDialog;
+    TextView mTvWeixinShare;
+    TextView mTvQqShare;
+
     Fragment mConversationListFragment; //获取融云的会话列表对象
 
     HashMap<Integer, String> mTitleList = new HashMap<>();
-
-    int mFansRedDotValue = 0;
-    int mFriendRedDotValue = 0;
 
     @Override
     public int initView() {
@@ -67,18 +85,45 @@ public class MessageFragment extends BaseFragment implements IMessageFragment, W
         mSplitLine = (View) mRootView.findViewById(R.id.split_line);
         mMessageVp = (NestViewPager) mRootView.findViewById(R.id.message_vp);
 
-        mTitlebar.getRightImageButton().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mTitlebar.getRightImageButton().setImageResource(R.drawable.friend_book_icon);
-                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FANS_RED_ROD_TYPE, 1);
-                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FRIEND_RED_ROD_TYPE, 1);
+        LinearLayout linearLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(com.component.busilib.R.layout.add_friend_pop_window_layout, null);
+        mSearchArea = (RelativeLayout) linearLayout.findViewById(com.component.busilib.R.id.search_area);
+        mInviteArea = (RelativeLayout) linearLayout.findViewById(com.component.busilib.R.id.invite_area);
+        mPopupWindow = new PopupWindow(linearLayout);
+        mPopupWindow.setOutsideTouchable(true);
 
+        mSearchArea.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mPopupWindow != null && mPopupWindow.isShowing()) {
+                    mPopupWindow.dismiss();
+                }
                 U.getFragmentUtils().addFragment(
-                        FragmentUtils.newAddParamsBuilder(getActivity(), RelationFragment.class)
+                        FragmentUtils.newAddParamsBuilder(getActivity(), SearchFriendFragment.class)
                                 .setAddToBackStack(true)
                                 .setHasAnimation(true)
                                 .build());
+            }
+        });
+
+        mInviteArea.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mPopupWindow != null && mPopupWindow.isShowing()) {
+                    mPopupWindow.dismiss();
+                }
+                showShareDialog();
+            }
+        });
+
+        mTitlebar.getRightImageButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mPopupWindow != null && mPopupWindow.isShowing()) {
+                    mPopupWindow.dismiss();
+                }
+                mPopupWindow.setWidth(U.getDisplayUtils().dip2px(118));
+                mPopupWindow.setHeight(U.getDisplayUtils().dip2px(115));
+                mPopupWindow.showAsDropDown(mTitlebar.getRightImageButton(), -U.getDisplayUtils().dip2px(80), -U.getDisplayUtils().dip2px(5));
             }
         });
 
@@ -119,18 +164,92 @@ public class MessageFragment extends BaseFragment implements IMessageFragment, W
 
         mMessageVp.setAdapter(fragmentPagerAdapter);
         mMessageTab.setViewPager(mMessageVp);
+    }
 
-        WeakRedDotManager.getInstance().addListener(this);
+    private void showShareDialog() {
+        if (mShareDialog == null) {
+            mShareDialog = DialogPlus.newDialog(getContext())
+                    .setContentHolder(new ViewHolder(com.component.busilib.R.layout.invite_friend_panel))
+                    .setContentBackgroundResource(com.component.busilib.R.color.transparent)
+                    .setOverlayBackgroundResource(com.component.busilib.R.color.black_trans_50)
+                    .setExpanded(false)
+                    .setGravity(Gravity.BOTTOM)
+                    .create();
 
-        mFansRedDotValue = U.getPreferenceUtils().getSettingInt(WeakRedDotManager.SP_KEY_NEW_FANS, 0);
-        mFriendRedDotValue = U.getPreferenceUtils().getSettingInt(WeakRedDotManager.SP_KEY_NEW_FRIEND, 0);
-        refreshMessageRedDot();
+            mTvWeixinShare = (TextView) mShareDialog.findViewById(com.component.busilib.R.id.tv_weixin_share);
+            mTvQqShare = (TextView) mShareDialog.findViewById(com.component.busilib.R.id.tv_qq_share);
+            mTvWeixinShare.setOnClickListener(new DebounceViewClickListener() {
+                @Override
+                public void clickValid(View v) {
+                    SkrKouLingUtils.genReqFollowKouling((int) MyUserInfoManager.getInstance().getUid(), MyUserInfoManager.getInstance().getNickName(), new ICallback() {
+                        @Override
+                        public void onSucess(Object obj) {
+                            mShareDialog.dismiss();
+                            new ShareAction(getActivity()).withText((String) obj)
+                                    .setPlatform(SHARE_MEDIA.WEIXIN)
+                                    .share();
+                        }
+
+                        @Override
+                        public void onFailed(Object obj, int errcode, String message) {
+                            U.getToastUtil().showShort("口令生成失败");
+                        }
+                    });
+                }
+            });
+
+            mTvQqShare.setOnClickListener(new DebounceViewClickListener() {
+                @Override
+                public void clickValid(View v) {
+                    // TODO: 2019/3/24 邀请好友
+                    SkrKouLingUtils.genReqFollowKouling((int) MyUserInfoManager.getInstance().getUid(), MyUserInfoManager.getInstance().getNickName(), new ICallback() {
+                        @Override
+                        public void onSucess(Object obj) {
+                            mShareDialog.dismiss();
+                            ClipboardUtils.setCopy((String) obj);
+                            Intent intent = U.getActivityUtils().getLaunchIntentForPackage("com.tencent.mobileqq");
+                            if (null != intent.resolveActivity(U.app().getPackageManager())) {
+                                startActivity(intent);
+                            }
+                            U.getToastUtil().showLong("请将口令粘贴给你的好友");
+                        }
+
+                        @Override
+                        public void onFailed(Object obj, int errcode, String message) {
+                            U.getToastUtil().showShort("口令生成失败");
+                        }
+                    });
+                }
+            });
+        }
+
+        if (!mShareDialog.isShowing()) {
+            mShareDialog.show();
+        }
     }
 
     @Override
     public void destroy() {
         super.destroy();
-        WeakRedDotManager.getInstance().removeListener(this);
+        if (mPopupWindow != null) {
+            mPopupWindow.dismiss();
+        }
+
+        if (mShareDialog != null) {
+            mShareDialog.dismiss();
+        }
+    }
+
+    @Override
+    protected void onFragmentInvisible() {
+        super.onFragmentInvisible();
+        if (mPopupWindow != null) {
+            mPopupWindow.dismiss();
+        }
+
+        if (mShareDialog != null) {
+            mShareDialog.dismiss();
+        }
     }
 
     // 会话列表的Fragment
@@ -151,31 +270,5 @@ public class MessageFragment extends BaseFragment implements IMessageFragment, W
     @Override
     public boolean isInViewPager() {
         return true;
-    }
-
-    @Override
-    public int[] acceptType() {
-        return new int[]{
-                WeakRedDotManager.FRIEND_RED_ROD_TYPE,
-                WeakRedDotManager.FANS_RED_ROD_TYPE};
-    }
-
-    @Override
-    public void onWeakRedDotChange(int type, int value) {
-        if (type == WeakRedDotManager.FANS_RED_ROD_TYPE) {
-            mFansRedDotValue = value;
-        } else if (type == WeakRedDotManager.FRIEND_RED_ROD_TYPE) {
-            mFriendRedDotValue = value;
-        }
-
-        refreshMessageRedDot();
-    }
-
-    private void refreshMessageRedDot() {
-        if (mFansRedDotValue < 2 && mFriendRedDotValue < 2) {
-            mTitlebar.getRightImageButton().setImageResource(R.drawable.friend_book_icon);
-        } else {
-            mTitlebar.getRightImageButton().setImageResource(R.drawable.friend_book_red_icon);
-        }
     }
 }

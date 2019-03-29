@@ -14,7 +14,7 @@
         app:centerTextColor="@color/white"
         app:centerTextSize="@dimen/textsize_20_dp"
         app:centerType="textView"
-        app:rightImageResource="@drawable/friend_book_icon"
+        app:rightImageResource="@drawable/tianjia_friend_icon"
         app:rightType="imageButton"
         app:showBottomLine="true"
         app:bottomLineColor="#0C2275"
