@@ -15,6 +15,8 @@ public class SimpleRoomInfo implements Serializable {
      * tagID : 0
      * totalPlayersNum : 0
      * userID : 0
+     * currentRoundSeq : 0
+     * totalGameRoundSeq : 0
      */
 
     private int inPlayersNum;
@@ -25,6 +27,8 @@ public class SimpleRoomInfo implements Serializable {
     private int tagID;
     private int totalPlayersNum;
     private int userID;
+    private int currentRoundSeq;
+    private int totalGameRoundSeq;
 
     public int getInPlayersNum() {
         return inPlayersNum;
@@ -88,5 +92,37 @@ public class SimpleRoomInfo implements Serializable {
 
     public void setUserID(int userID) {
         this.userID = userID;
+    }
+
+    public int getCurrentRoundSeq() {
+        return currentRoundSeq;
+    }
+
+    public void setCurrentRoundSeq(int currentRoundSeq) {
+        this.currentRoundSeq = currentRoundSeq;
+    }
+
+    public int getTotalGameRoundSeq() {
+        return totalGameRoundSeq;
+    }
+
+    public void setTotalGameRoundSeq(int totalGameRoundSeq) {
+        this.totalGameRoundSeq = totalGameRoundSeq;
+    }
+
+    @Override
+    public String toString() {
+        return "SimpleRoomInfo{" +
+                "inPlayersNum=" + inPlayersNum +
+                ", isOwner=" + isOwner +
+                ", roomID=" + roomID +
+                ", roomTag=" + roomTag +
+                ", roomType=" + roomType +
+                ", tagID=" + tagID +
+                ", totalPlayersNum=" + totalPlayersNum +
+                ", userID=" + userID +
+                ", currentRoundSeq=" + currentRoundSeq +
+                ", totalGameRoundSeq=" + totalGameRoundSeq +
+                '}';
     }
 }

@@ -9,18 +9,19 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.common.core.avatar.AvatarUtils;
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
-import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.zq.live.proto.Common.ESex;
 
 public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
+
+    public final static String TAG = "FriendRoomVerticalViewHolder";
 
     RecyclerOnItemClickListener<RecommendModel> mOnItemClickListener;
 
@@ -70,24 +71,27 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
         this.mFriendRoomModel = friendRoomModel;
         this.position = position;
 
-        AvatarUtils.loadAvatarByUrl(mAvatarIv,
-                AvatarUtils.newParamsBuilder(friendRoomModel.getUserInfo().getAvatar())
-                        .setBorderColor(U.getColor(R.color.white))
-                        .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                        .setCircle(true)
-                        .build());
+        if (mFriendRoomModel != null && mFriendRoomModel.getUserInfo() != null && mFriendRoomModel.getRoomInfo() != null) {
+            AvatarUtils.loadAvatarByUrl(mAvatarIv,
+                    AvatarUtils.newParamsBuilder(mFriendRoomModel.getUserInfo().getAvatar())
+                            .setBorderColor(U.getColor(R.color.white))
+                            .setBorderWidth(U.getDisplayUtils().dip2px(2))
+                            .setCircle(true)
+                            .build());
 
-
-        mNameTv.setText(friendRoomModel.getUserInfo().getNickname());
-        if (friendRoomModel.getCategory() == RecommendModel.TYPE_FRIEND_ROOM) {
-            mFriendTv.setVisibility(View.VISIBLE);
-            mRecommendTv.setVisibility(View.GONE);
+            mNameTv.setText(mFriendRoomModel.getUserInfo().getNickname());
+            if (friendRoomModel.getCategory() == RecommendModel.TYPE_FRIEND_ROOM) {
+                mFriendTv.setVisibility(View.VISIBLE);
+                mRecommendTv.setVisibility(View.GONE);
+            } else {
+                mFriendTv.setVisibility(View.GONE);
+                mRecommendTv.setVisibility(View.VISIBLE);
+            }
+            mRoomSongTv.setText(mFriendRoomModel.getRoomInfo().getCurrentRoundSeq() + " / " + mFriendRoomModel.getRoomInfo().getTotalGameRoundSeq());
+            mRoomInfoTv.setText(mFriendRoomModel.getTagInfo().getTagName() + " / " + mFriendRoomModel.getRoomInfo().getInPlayersNum());
         } else {
-            mFriendTv.setVisibility(View.GONE);
-            mRecommendTv.setVisibility(View.VISIBLE);
+            MyLog.w(TAG, "bindData" + " friendRoomModel=" + friendRoomModel + " position=" + position);
         }
-        // TODO: 2019/3/29  等服务器完善
-        mRoomSongTv.setText("20/100");
-        mRoomInfoTv.setText(friendRoomModel.getTagInfo().getTagName() + " / " + friendRoomModel.getRoomInfo().getInPlayersNum());
+
     }
 }
