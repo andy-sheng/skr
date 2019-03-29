@@ -37,7 +37,7 @@ public class RecommendRoomViewHolder extends RecyclerView.ViewHolder {
         mMoreTv = (ExTextView) itemView.findViewById(R.id.more_tv);
         mRefreshLayout = (SmartRefreshLayout) itemView.findViewById(R.id.refreshLayout);
         mFriendsRecycle = (RecyclerView) itemView.findViewById(R.id.friends_recycle);
-
+        mFriendsRecycle.setFocusableInTouchMode(false);
         mFriendsRecycle.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
         mFriendRoomAdapter = new FriendRoomHorizontalAdapter(new RecyclerOnItemClickListener() {
             @Override

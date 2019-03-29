@@ -31,7 +31,7 @@ public class QuickRoomViewHolder extends RecyclerView.ViewHolder {
 
         mQuickEnter = (ExTextView) itemView.findViewById(R.id.quick_enter);
         mFriendsRecycle = (RecyclerView) itemView.findViewById(R.id.friends_recycle);
-
+        mFriendsRecycle.setFocusableInTouchMode(false);
         mFriendsRecycle.setLayoutManager(new GridLayoutManager(context, 2));
         mGrabSelectAdapter = new GrabSelectAdapter(new RecyclerOnItemClickListener() {
             @Override
