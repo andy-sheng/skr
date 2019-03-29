@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.common.view.ex.ExRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#2E3041">
+    app:bl_shape="rectangle"
+    app:bl_gradient_startColor="#EB83CA"
+    app:bl_gradient_endColor="#6E42C3">
 
     <com.common.view.ex.ExImageView
         android:id="@+id/iv_back"
@@ -142,4 +144,4 @@
 
     </com.common.view.ex.ExRelativeLayout>
 
-</RelativeLayout>
+</com.common.view.ex.ExRelativeLayout>
