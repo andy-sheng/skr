@@ -61,7 +61,7 @@ import model.RelationNumModel;
 /**
  * 关系列表
  */
-public class RelationFragment extends BaseFragment implements WeakRedDotManager.WeakRedDotListener {
+public class RelationFragment extends BaseFragment {
 
     public static final int FROM_FRIENDS = 0;
     public static final int FROM_FOLLOW = 1;
@@ -100,9 +100,6 @@ public class RelationFragment extends BaseFragment implements WeakRedDotManager.
     DialogPlus mShareDialog;
     TextView mTvWeixinShare;
     TextView mTvQqShare;
-
-    int mFansRedDotValue = 0;
-    int mFriendRedDotValue = 0;
 
     HashMap<Integer, RelationView> mTitleAndViewMap = new HashMap<>();
 
@@ -234,10 +231,8 @@ public class RelationFragment extends BaseFragment implements WeakRedDotManager.
             public void onPageSelected(int position) {
                 if (position == 0) {
                     mFriendRedDot.setVisibility(View.GONE);
-                    WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FRIEND_RED_ROD_TYPE, 0);
                 } else if (position == 1) {
                     mFansRedDot.setVisibility(View.GONE);
-                    WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FANS_RED_ROD_TYPE, 0);
                 }
             }
 
@@ -264,11 +259,6 @@ public class RelationFragment extends BaseFragment implements WeakRedDotManager.
         }
 
         U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
-
-        mFansRedDotValue = U.getPreferenceUtils().getSettingInt(WeakRedDotManager.SP_KEY_NEW_FANS, 0);
-        mFriendRedDotValue = U.getPreferenceUtils().getSettingInt(WeakRedDotManager.SP_KEY_NEW_FRIEND, 0);
-        refreshMessageRedDot();
-        WeakRedDotManager.getInstance().addListener(this);
     }
 
     private void showShareDialog() {
@@ -393,40 +383,5 @@ public class RelationFragment extends BaseFragment implements WeakRedDotManager.
         }
 
         U.getSoundUtils().release(TAG);
-        WeakRedDotManager.getInstance().removeListener(this);
-    }
-
-    @Override
-    public int[] acceptType() {
-        return new int[]{
-                WeakRedDotManager.FANS_RED_ROD_TYPE,
-                WeakRedDotManager.FRIEND_RED_ROD_TYPE};
-    }
-
-    @Override
-    public void onWeakRedDotChange(int type, int value) {
-        if (type == WeakRedDotManager.FANS_RED_ROD_TYPE) {
-            mFansRedDotValue = value;
-        } else if (type == WeakRedDotManager.FRIEND_RED_ROD_TYPE) {
-            mFriendRedDotValue = value;
-        }
-
-        refreshMessageRedDot();
-    }
-
-    private void refreshMessageRedDot() {
-        if (mFansRedDotValue >= 1) {
-            // 粉丝红点
-            mFansRedDot.setVisibility(View.VISIBLE);
-        } else {
-            mFansRedDot.setVisibility(View.GONE);
-        }
-
-        if (mFriendRedDotValue >= 1) {
-            // 好友红点
-            mFriendRedDot.setVisibility(View.VISIBLE);
-        } else {
-            mFriendRedDot.setVisibility(View.GONE);
-        }
     }
 }

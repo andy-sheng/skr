@@ -79,12 +79,13 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
     public void onEvent(FollowNotifyEvent event) {
         showFollowFloatWindow(event.mUserInfoModel);
         if (event.mUserInfoModel.isFriend()) {
-            U.getPreferenceUtils().setSettingInt(WeakRedDotManager.SP_KEY_NEW_FRIEND, 3);
-            WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FRIEND_RED_ROD_TYPE, 3);
-        }
-        if (event.mUserInfoModel.isFollow()) {
-            U.getPreferenceUtils().setSettingInt(WeakRedDotManager.SP_KEY_NEW_FANS, 3);
-            WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FANS_RED_ROD_TYPE, 3);
+            // 好友
+            U.getPreferenceUtils().setSettingInt(WeakRedDotManager.SP_KEY_NEW_FRIEND, 2);
+            WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FRIEND_RED_ROD_TYPE, 2);
+        } else {
+            // 粉丝
+            U.getPreferenceUtils().setSettingInt(WeakRedDotManager.SP_KEY_NEW_FANS, 2);
+            WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FANS_RED_ROD_TYPE, 2);
         }
     }
 

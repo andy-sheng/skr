@@ -48,6 +48,7 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.constans.GameModeType;
+import com.component.busilib.manager.WeakRedDotManager;
 import com.component.busilib.view.MarqueeTextView;
 import com.module.home.musictest.fragment.MusicTestFragment;
 import com.module.home.setting.fragment.SettingFragment;
@@ -79,7 +80,7 @@ import static com.module.home.fragment.GameFragment.SHANDIAN_BADGE;
 import static com.module.home.fragment.GameFragment.STAR_BADGE;
 import static com.module.home.fragment.GameFragment.TOP_BADGE;
 
-public class PersonFragment extends BaseFragment implements IPersonView {
+public class PersonFragment extends BaseFragment implements IPersonView, WeakRedDotManager.WeakRedDotListener {
 
     public final static String TAG = "PersonFragment";
 
@@ -91,8 +92,10 @@ public class PersonFragment extends BaseFragment implements IPersonView {
     MarqueeTextView mSignTv;
     RelativeLayout mFriends;
     ExTextView mFriendsNumTv;
+    ExImageView mFriendRedDot;
     RelativeLayout mFans;
     ExTextView mFansNumTv;
+    ExImageView mFansRedDot;
     RelativeLayout mFollows;
     ExTextView mFollowsNumTv;
 
@@ -130,6 +133,9 @@ public class PersonFragment extends BaseFragment implements IPersonView {
     int mFansNum = 0;    // 粉丝数
     int mFocusNum = 0;   // 关注数
 
+    int mFansRedDotValue = 0;
+    int mFriendRedDotValue = 0;
+
     @Override
     public int initView() {
         return R.layout.person_fragment_layout;
@@ -151,6 +157,11 @@ public class PersonFragment extends BaseFragment implements IPersonView {
         addPresent(mPersonCorePresenter);
         mPersonCorePresenter.getHomePage((int) MyUserInfoManager.getInstance().getUid(), true);
         mPersonCorePresenter.getRankLevel(true);
+
+        WeakRedDotManager.getInstance().addListener(this);
+        mFansRedDotValue = U.getPreferenceUtils().getSettingInt(WeakRedDotManager.SP_KEY_NEW_FANS, 0);
+        mFriendRedDotValue = U.getPreferenceUtils().getSettingInt(WeakRedDotManager.SP_KEY_NEW_FRIEND, 0);
+        refreshPersonRedDot();
     }
 
     private void initTopView() {
@@ -163,8 +174,10 @@ public class PersonFragment extends BaseFragment implements IPersonView {
         mSignTv = (MarqueeTextView) mRootView.findViewById(R.id.sign_tv);
         mFriends = (RelativeLayout) mRootView.findViewById(R.id.friends);
         mFriendsNumTv = (ExTextView) mRootView.findViewById(R.id.friends_num_tv);
+        mFriendRedDot = (ExImageView) mRootView.findViewById(R.id.friend_red_dot);
         mFans = (RelativeLayout) mRootView.findViewById(R.id.fans);
         mFansNumTv = (ExTextView) mRootView.findViewById(R.id.fans_num_tv);
+        mFansRedDot = (ExImageView) mRootView.findViewById(R.id.fans_red_dot);
         mFollows = (RelativeLayout) mRootView.findViewById(R.id.follows);
         mFollowsNumTv = (ExTextView) mRootView.findViewById(R.id.follows_num_tv);
 
@@ -259,35 +272,31 @@ public class PersonFragment extends BaseFragment implements IPersonView {
             }
         });
 
-        RxView.clicks(mFriends)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        // 好友，双向关注
-                        openRelationFragment(RelationFragment.FROM_FRIENDS);
-                    }
-                });
+        mFriends.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FRIEND_RED_ROD_TYPE, 0);
+                // 好友，双向关注
+                openRelationFragment(RelationFragment.FROM_FRIENDS);
+            }
+        });
 
-        RxView.clicks(mFans)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        // 粉丝，我关注的
-                        openRelationFragment(RelationFragment.FROM_FANS);
-                    }
-                });
+        mFans.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FANS_RED_ROD_TYPE, 0);
+                // 粉丝，我关注的
+                openRelationFragment(RelationFragment.FROM_FANS);
+            }
+        });
 
-        RxView.clicks(mFollows)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        // 关注, 关注我的
-                        openRelationFragment(RelationFragment.FROM_FOLLOW);
-                    }
-                });
+        mFollows.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                // 关注, 关注我的
+                openRelationFragment(RelationFragment.FROM_FOLLOW);
+            }
+        });
     }
 
     private void openRelationFragment(int mode) {
@@ -457,6 +466,12 @@ public class PersonFragment extends BaseFragment implements IPersonView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(UpgradeData.RedDotStatusEvent event) {
         updateSettingRedDot();
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        WeakRedDotManager.getInstance().removeListener(this);
     }
 
     @Override
@@ -649,4 +664,39 @@ public class PersonFragment extends BaseFragment implements IPersonView {
     public boolean isInViewPager() {
         return true;
     }
+
+    @Override
+    public int[] acceptType() {
+        return new int[]{
+                WeakRedDotManager.FANS_RED_ROD_TYPE,
+                WeakRedDotManager.FRIEND_RED_ROD_TYPE
+        };
+    }
+
+    @Override
+    public void onWeakRedDotChange(int type, int value) {
+        if (type == WeakRedDotManager.FANS_RED_ROD_TYPE) {
+            mFansRedDotValue = value;
+        } else if (type == WeakRedDotManager.FRIEND_RED_ROD_TYPE) {
+            mFriendRedDotValue = value;
+        }
+
+        refreshPersonRedDot();
+    }
+
+    private void refreshPersonRedDot() {
+        // 关注和粉丝红点
+        if (mFansRedDotValue < 1) {
+            mFansRedDot.setVisibility(View.GONE);
+        } else {
+            mFansRedDot.setVisibility(View.VISIBLE);
+        }
+
+        if (mFriendRedDotValue < 1) {
+            mFriendRedDot.setVisibility(View.GONE);
+        } else {
+            mFriendRedDot.setVisibility(View.VISIBLE);
+        }
+    }
+
 }

@@ -54,7 +54,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
     RelativeLayout mMessageArea;
     ExTextView mMessageBtn;
     ExTextView mUnreadNumTv;
-    ExImageView mMessageRedDot;
     RelativeLayout mPersonArea;
     ExTextView mPersonInfoBtn;
     ExImageView mPersonInfoRedDot;
@@ -112,7 +111,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mMessageArea = (RelativeLayout) findViewById(R.id.message_area);
         mMessageBtn = findViewById(R.id.message_btn);
         mUnreadNumTv = (ExTextView) findViewById(R.id.unread_num_tv);
-        mMessageRedDot = (ExImageView) findViewById(R.id.message_red_dot);
         mPersonArea = (RelativeLayout) findViewById(R.id.person_area);
         mPersonInfoBtn = findViewById(R.id.person_info_btn);
         mPersonInfoRedDot = (ExImageView) findViewById(R.id.person_info_red_dot);
@@ -181,10 +179,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             public void clickValid(View v) {
                 mMainVp.setCurrentItem(2, false);
                 selectTab(2);
-
-                mMessageRedDot.setVisibility(View.GONE);
-                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FANS_RED_ROD_TYPE, 2);
-                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FRIEND_RED_ROD_TYPE, 2);
             }
         });
 
@@ -193,6 +187,9 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             public void clickValid(View v) {
                 mMainVp.setCurrentItem(3, false);
                 selectTab(3);
+
+                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FANS_RED_ROD_TYPE, 1);
+                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FRIEND_RED_ROD_TYPE, 1);
             }
         });
 
@@ -208,6 +205,9 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mFromCreate = true;
 
         WeakRedDotManager.getInstance().addListener(this);
+        mFansRedDotValue = U.getPreferenceUtils().getSettingInt(WeakRedDotManager.SP_KEY_NEW_FANS, 0);
+        mFriendRedDotValue = U.getPreferenceUtils().getSettingInt(WeakRedDotManager.SP_KEY_NEW_FRIEND, 0);
+        refreshPersonRedDot();
     }
 
     private void selectTab(int tabSeq) {
@@ -281,7 +281,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             mUnreadNumTv.setVisibility(View.GONE);
         } else {
             mUnreadNumTv.setVisibility(View.VISIBLE);
-            mMessageRedDot.setVisibility(View.GONE);
             if (unReadNum > 99) {
                 mUnreadNumTv.setText("99+");
             } else {
@@ -300,11 +299,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
 
     @Override
     public void updatePersonIconRedDot() {
-        if (UpgradeManager.getInstance().needShowRedDotTips()) {
-            mPersonInfoRedDot.setVisibility(View.VISIBLE);
-        } else {
-            mPersonInfoRedDot.setVisibility(View.GONE);
-        }
+        refreshPersonRedDot();
     }
 
 
@@ -392,18 +387,22 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             mFriendRedDotValue = value;
         }
 
-        refreshMessageRedDot();
+        refreshPersonRedDot();
     }
 
-    private void refreshMessageRedDot() {
-        if (mFansRedDotValue < 3 && mFriendRedDotValue < 3) {
-            mMessageRedDot.setVisibility(View.GONE);
+    private void refreshPersonRedDot() {
+        // 更新红点
+        if (UpgradeManager.getInstance().needShowRedDotTips()) {
+            mPersonInfoRedDot.setVisibility(View.VISIBLE);
         } else {
-            if (mUnreadNumTv.getVisibility() == View.GONE) {
-                mMessageRedDot.setVisibility(View.VISIBLE);
-            } else {
-                mMessageRedDot.setVisibility(View.GONE);
-            }
+            mPersonInfoRedDot.setVisibility(View.GONE);
+        }
+
+        // 关注和粉丝红点
+        if (mFansRedDotValue < 2 && mFriendRedDotValue < 2) {
+            mPersonInfoRedDot.setVisibility(View.GONE);
+        } else {
+            mPersonInfoRedDot.setVisibility(View.VISIBLE);
         }
     }
 }

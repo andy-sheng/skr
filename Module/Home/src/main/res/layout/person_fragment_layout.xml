@@ -147,6 +147,7 @@
                             android:textSize="@dimen/textsize_26_dp" />
 
                         <com.common.view.ex.ExTextView
+                            android:id="@+id/friend_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/view_16_dp"
                             android:layout_below="@+id/friends_num_tv"
@@ -155,6 +156,15 @@
                             android:text="好友"
                             android:textColor="#0C2275"
                             android:textSize="@dimen/textsize_12_dp" />
+
+                        <com.common.view.ex.ExImageView
+                            android:id="@+id/friend_red_dot"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/friend_tv"
+                            android:layout_alignTop="@id/friend_tv"
+                            android:src="@drawable/reddot"
+                            android:visibility="gone" />
 
                     </RelativeLayout>
 
@@ -203,6 +213,7 @@
                             android:textSize="@dimen/textsize_26_dp" />
 
                         <com.common.view.ex.ExTextView
+                            android:id="@+id/fans_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/view_16_dp"
                             android:layout_below="@+id/fans_num_tv"
@@ -211,9 +222,16 @@
                             android:textColor="#0C2275"
                             android:textSize="@dimen/textsize_12_dp" />
 
+                        <com.common.view.ex.ExImageView
+                            android:id="@+id/fans_red_dot"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/fans_tv"
+                            android:layout_alignTop="@id/fans_tv"
+                            android:src="@drawable/reddot"
+                            android:visibility="gone" />
+
                     </RelativeLayout>
-
-
                 </LinearLayout>
 
 
