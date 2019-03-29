@@ -64,11 +64,11 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
 
 
     public boolean isContainMe() {
-        List<GrabPlayerInfoModel> getPlayerInfoList = getPlayerInfoList();
-        if (getPlayerInfoList == null) {
+        if(mExpectRoundInfo == null || mExpectRoundInfo.getPlayUsers() == null){
             return false;
         }
 
+        List<GrabPlayerInfoModel> getPlayerInfoList = mExpectRoundInfo.getPlayUsers();
         for (GrabPlayerInfoModel model :
                 getPlayerInfoList) {
             if (model.getUserID() == MyUserInfoManager.getInstance().getUid()) {
