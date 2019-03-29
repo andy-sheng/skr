@@ -71,7 +71,7 @@
                             android:id="@+id/tv_num"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="26"
+                            android:text="**"
                             android:textColor="@color/white"
                             android:textSize="@dimen/textsize_42_dp" />
 
@@ -92,7 +92,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/ll_num_container"
                         android:layout_centerHorizontal="true"
-                        android:text="千岛"
+                        android:text="地域榜"
                         android:textColor="@color/white_trans_50"
                         android:textSize="@dimen/textsize_12_dp" />
                 </RelativeLayout>
@@ -119,7 +119,7 @@
                             android:id="@+id/tv_num_country"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="26"
+                            android:text="**"
                             android:textColor="@color/white"
                             android:textSize="@dimen/textsize_42_dp" />
 
