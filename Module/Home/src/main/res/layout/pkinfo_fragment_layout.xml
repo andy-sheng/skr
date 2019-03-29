@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"></com.scwang.smartrefresh.layout.header.ClassicsHeader>
 
     <android.support.v4.widget.NestedScrollView
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fadingEdge="none"
@@ -19,7 +20,6 @@
         android:scrollbars="none">
 
         <RelativeLayout
-            android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -196,7 +196,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:adjustViewBounds="true"
-                    android:src="@drawable/shouye_yichangdaodi" />
+                    android:src="@drawable/paiweisai" />
 
                 <com.common.view.ex.ExImageView
                     android:id="@+id/iv_voice_room"
@@ -205,7 +205,7 @@
                     android:layout_marginLeft="@dimen/view_15_dp"
                     android:layout_weight="1"
                     android:adjustViewBounds="true"
-                    android:src="@drawable/shouye_yichangdaodi" />
+                    android:src="@drawable/liangefang" />
             </LinearLayout>
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
