@@ -21,6 +21,7 @@ public class UserRankModel implements Serializable {
      * text : 全国第4名
      * highlight : 4
      * diff : 0
+     * mainDesc : 铂金唱将
      */
 
     private int category;      // 类别
@@ -31,6 +32,7 @@ public class UserRankModel implements Serializable {
     private int mainRanking;   // 主段位
     private int subRanking;    // 子段位
     private String levelDesc;  // 段位描述
+    private String mainDesc;   // 主段位描述
     private String text;       // 排行描述
     private String highlight;  // 排行描述中高亮部分
     private int diff;          // 上升和下降
@@ -100,6 +102,15 @@ public class UserRankModel implements Serializable {
         this.levelDesc = levelDesc;
     }
 
+
+    public String getMainDesc() {
+        return mainDesc;
+    }
+
+    public void setMainDesc(String mainDesc) {
+        this.mainDesc = mainDesc;
+    }
+
     public String getText() {
         return text;
     }
@@ -143,6 +154,7 @@ public class UserRankModel implements Serializable {
                 ", mainRanking=" + mainRanking +
                 ", subRanking=" + subRanking +
                 ", levelDesc='" + levelDesc + '\'' +
+                ", mainDesc='" + mainDesc + '\'' +
                 ", text='" + text + '\'' +
                 ", highlight='" + highlight + '\'' +
                 ", diff=" + diff +

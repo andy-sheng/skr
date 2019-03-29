@@ -60,22 +60,23 @@ public class UserInfoTileView2 extends RelativeLayout {
                 AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
                         .setCircle(true)
                         .build());
-        mNameTv.setText(MyUserInfoManager.getInstance().getNickName());
     }
 
     public void showRankView(UserRankModel userRankModel) {
         mRankInfo.setText(highlight(userRankModel.getText(), userRankModel.getHighlight()));
-    }
-
-    public void showScoreView(int level, int subLevel, String levelDesc) {
-        if (LevelConfigUtils.getAvatarLevelBg(level) != 0) {
-            mLevelBg.setBackground(getResources().getDrawable(LevelConfigUtils.getAvatarLevelBg(level)));
+        if (LevelConfigUtils.getAvatarLevelBg(userRankModel.getMainRanking()) != 0) {
+            mLevelBg.setBackground(getResources().getDrawable(LevelConfigUtils.getAvatarLevelBg(userRankModel.getMainRanking())));
         }
 
-        if (LevelConfigUtils.getHomePageTopBg(level) != null) {
-            mContentArea.setBackground(LevelConfigUtils.getHomePageTopBg(level));
+        if (LevelConfigUtils.getHomePageTopBg(userRankModel.getMainRanking()) != null) {
+            mContentArea.setBackground(LevelConfigUtils.getHomePageTopBg(userRankModel.getMainRanking()));
         }
-        mUserLevelTv.setText(levelDesc);
+        if (userRankModel.getSubRanking() == 0) {
+            mNameTv.setText(userRankModel.getMainDesc());
+        } else {
+            mNameTv.setText(userRankModel.getMainDesc() + " " + userRankModel.getSubRanking() + "段");
+        }
+        mUserLevelTv.setText(userRankModel.getMainDesc());
     }
 
     private SpannableString highlight(String text, String target) {

@@ -29,11 +29,9 @@ public class GamePresenter extends RxLifeCyclePresenter {
     GrabSongApi mGrabSongApi;
 
     long mLastUpdateOperaArea = 0;    //广告位上次更新成功时间
-    long mLastUpdateRoomInfo = 0;     //好友或推荐房更新成功时间
     long mLastUpdateRecommendInfo = 0;//房间推荐上次更新成功时间
     long mLastUpdateQuickInfo = 0;    //快速加入房间更新成功时间
     long mLastUpdateRankInfo = 0;     //排名信息上次更新成功时间
-    long mLastUpdateScoreInfo = 0;    //段位信息上次更新成功时间
 
     IGameView mIGameView;
 
@@ -124,7 +122,7 @@ public class GamePresenter extends RxLifeCyclePresenter {
             @Override
             public void process(ApiResult obj) {
                 if (obj.getErrno() == 0) {
-                    mLastUpdateRoomInfo = System.currentTimeMillis();
+                    mLastUpdateRecommendInfo = System.currentTimeMillis();
                     List<RecommendModel> list = JSON.parseArray(obj.getData().getString("rooms"), RecommendModel.class);
                     int offset = obj.getData().getIntValue("offset");
                     int totalNum = obj.getData().getIntValue("totalRoomsNum");
@@ -133,29 +131,6 @@ public class GamePresenter extends RxLifeCyclePresenter {
             }
         }, this);
 
-    }
-
-    public void initScoreDetail(boolean isFlag) {
-        long now = System.currentTimeMillis();
-        if (!isFlag) {
-            // 半个小时更新一次吧
-            if ((now - mLastUpdateScoreInfo) < 30 * 60 * 1000) {
-                return;
-            }
-        }
-
-        ApiMethods.subscribe(mUserInfoServerApi.getScoreDetail((int) MyUserInfoManager.getInstance().getUid()), new ApiObserver<ApiResult>() {
-
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    mLastUpdateScoreInfo = System.currentTimeMillis();
-                    List<UserLevelModel> userLevelModels = JSON.parseArray(result.getData().getString("userScore"), UserLevelModel.class);
-                    mIGameView.setScoreInfo(userLevelModels);
-                }
-            }
-
-        }, this);
     }
 
     public void initRankInfo(boolean isFlag) {

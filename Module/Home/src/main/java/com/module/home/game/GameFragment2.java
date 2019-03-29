@@ -128,7 +128,6 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mGamePresenter.initOperationArea(true);
         mGamePresenter.initQuickRoom(true);
         mGamePresenter.initRankInfo(true);
-        mGamePresenter.initScoreDetail(true);
         mGamePresenter.initRecommendRoom(true);
     }
 
@@ -144,7 +143,6 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mGamePresenter.initOperationArea(false);
         mGamePresenter.initQuickRoom(false);
         mGamePresenter.initRankInfo(false);
-        mGamePresenter.initScoreDetail(false);
         mGamePresenter.initRecommendRoom(false);
     }
 
@@ -158,7 +156,6 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mGamePresenter.initOperationArea(true);
         mGamePresenter.initQuickRoom(true);
         mGamePresenter.initRankInfo(true);
-        mGamePresenter.initScoreDetail(true);
         mGamePresenter.initRecommendRoom(true);
     }
 
@@ -182,29 +179,8 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         if (userRankModel != null) {
             mUserInfoTitle.showRankView(userRankModel);
         } else {
-
+            MyLog.w(TAG, "setRankInfo" + " userRankModel = null");
         }
-    }
-
-    @Override
-    public void setScoreInfo(List<UserLevelModel> userLevelModels) {
-        if (userLevelModels != null) {
-            int level = 0;           //当前父段位
-            int subLevel = 0;        //当前子段位
-            String levelDesc = "";   //父段位描述
-            for (UserLevelModel userLevelModel : userLevelModels) {
-                if (userLevelModel.getType() == UserLevelModel.RANKING_TYPE) {
-                    level = userLevelModel.getScore();
-                    levelDesc = userLevelModel.getDesc();
-                } else if (userLevelModel.getType() == UserLevelModel.SUB_RANKING_TYPE) {
-                    subLevel = userLevelModel.getScore();
-                }
-            }
-            mUserInfoTitle.showScoreView(level, subLevel, levelDesc);
-        } else {
-
-        }
-
     }
 
     public void setRecommendInfo(List<RecommendModel> list, int offset, int totalNum) {
