@@ -94,30 +94,6 @@ public class GamePresenter extends RxLifeCyclePresenter {
         });
     }
 
-    public void getGameKConfig() {
-        if (mIsKConfig) {
-            return;
-        }
-
-        ApiMethods.subscribe(mMainPageSlideApi.getKConfig(), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    mIsKConfig = true;
-                    GameKConfigModel gameKConfigModel = JSON.parseObject(result.getData().getString("common"), GameKConfigModel.class);
-                    mIGameView.showOp(gameKConfigModel);
-                } else {
-                    MyLog.w(TAG, "initGameKConfig failed, " + " traceid is " + result.getErrno());
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                U.getToastUtil().showShort("网络异常");
-            }
-        });
-    }
-
     public void initQuickRoom(boolean isFlag) {
         long now = System.currentTimeMillis();
         if (!isFlag) {

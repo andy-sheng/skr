@@ -48,7 +48,6 @@ public class GameFragment2 extends BaseFragment implements IGameView {
 
     UserInfoTileView2 mUserInfoTitle;
     RecyclerView mRecyclerView;
-    BaseImageView mIvOpFirst;
 
     GameAdapter mGameAdapter;
 
@@ -65,7 +64,6 @@ public class GameFragment2 extends BaseFragment implements IGameView {
     public void initData(@Nullable Bundle savedInstanceState) {
         mUserInfoTitle = (UserInfoTileView2) mRootView.findViewById(R.id.user_info_title);
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
-        mIvOpFirst = (BaseImageView) mRootView.findViewById(R.id.iv_op_first);
         mSkrAudioPermission = new SkrAudioPermission();
 
         mGameAdapter = new GameAdapter(getContext(), new GameAdapter.GameAdapterListener() {
@@ -144,34 +142,6 @@ public class GameFragment2 extends BaseFragment implements IGameView {
     }
 
     @Override
-    public void showOp(GameKConfigModel gameKConfigModel) {
-        if(gameKConfigModel == null){
-            return;
-        }
-
-        GameKConfigModel.HomepagesitefirstBean homepagesitefirstBean = gameKConfigModel.getHomepagesitefirst();
-        if (homepagesitefirstBean != null && homepagesitefirstBean.isEnable()) {
-            AvatarUtils.loadAvatarByUrl(mIvOpFirst,
-                    AvatarUtils.newParamsBuilder(homepagesitefirstBean.getPic())
-                            .setWidth(U.getDisplayUtils().dip2px(48f))
-                            .setHeight(U.getDisplayUtils().dip2px(53f))
-                            .build());
-            mIvOpFirst.setVisibility(View.VISIBLE);
-            mIvOpFirst.setOnClickListener(new DebounceViewClickListener() {
-                @Override
-                public void clickValid(View v) {
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_SCHEME)
-                            .withString("uri", homepagesitefirstBean.getSchema())
-                            .navigation();
-                }
-            });
-        } else {
-            MyLog.w(TAG, "initGameKConfig first operation area is empty");
-            mIvOpFirst.setVisibility(View.GONE);
-        }
-    }
-
-    @Override
     public boolean useEventBus() {
         return true;
     }
@@ -184,7 +154,6 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mGamePresenter.initQuickRoom(false);
         mGamePresenter.initRankInfo(false);
         mGamePresenter.initRecommendRoom(false);
-        mGamePresenter.getGameKConfig();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -18,7 +18,4 @@ public interface IGameView {
     void setQuickRoom(List<SpecialModel> list, int offset);
 
     void setRankInfo(UserRankModel userRankModel);
-
-    void showOp(GameKConfigModel gameKConfigModel);
-
 }
