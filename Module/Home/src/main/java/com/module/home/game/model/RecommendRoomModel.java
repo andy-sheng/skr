@@ -1,26 +1,26 @@
 package com.module.home.game.model;
 
-import com.component.busilib.friends.FriendRoomModel;
+import com.component.busilib.friends.RecommendModel;
 
 import java.util.List;
 
 public class RecommendRoomModel {
 
-    List<FriendRoomModel> mRoomModels;
+    List<RecommendModel> mRoomModels;
     int offset;
     int totalNum;
 
-    public RecommendRoomModel(List<FriendRoomModel> list, int offset, int totalNum) {
+    public RecommendRoomModel(List<RecommendModel> list, int offset, int totalNum) {
         this.mRoomModels = list;
         this.offset = offset;
         this.totalNum = totalNum;
     }
 
-    public List<FriendRoomModel> getRoomModels() {
+    public List<RecommendModel> getRoomModels() {
         return mRoomModels;
     }
 
-    public void setRoomModels(List<FriendRoomModel> roomModels) {
+    public void setRoomModels(List<RecommendModel> roomModels) {
         mRoomModels = roomModels;
     }
 

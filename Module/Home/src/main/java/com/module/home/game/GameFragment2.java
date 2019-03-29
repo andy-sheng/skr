@@ -15,7 +15,7 @@ import com.common.core.userinfo.model.UserRankModel;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
-import com.component.busilib.friends.FriendRoomModel;
+import com.component.busilib.friends.RecommendModel;
 import com.component.busilib.friends.GrabFriendsRoomFragment;
 import com.component.busilib.friends.SpecialModel;
 import com.module.RouterConstants;
@@ -23,7 +23,6 @@ import com.module.home.R;
 import com.module.home.game.adapter.GameAdapter;
 import com.module.home.game.model.BannerModel;
 import com.module.home.game.model.QuickJoinRoomModel;
-import com.module.home.game.model.RecommendRoomModel;
 import com.module.home.model.SlideShowModel;
 import com.module.home.widget.UserInfoTileView2;
 import com.module.rank.IRankingModeService;
@@ -93,7 +92,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
             }
 
             @Override
-            public void enterRoom(FriendRoomModel friendRoomModel) {
+            public void enterRoom(RecommendModel friendRoomModel) {
                 MyLog.d(TAG, "enterRoom" + " friendRoomModel=" + friendRoomModel);
                 if (friendRoomModel != null) {
                     mSkrAudioPermission.ensurePermission(new Runnable() {
@@ -127,10 +126,10 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         addPresent(mGamePresenter);
 
         mGamePresenter.initOperationArea(true);
-        mGamePresenter.initFriendRoom(true);
         mGamePresenter.initQuickRoom(true);
         mGamePresenter.initRankInfo(true);
         mGamePresenter.initScoreDetail(true);
+        mGamePresenter.initRecommendRoom(true);
     }
 
     @Override
@@ -143,10 +142,10 @@ public class GameFragment2 extends BaseFragment implements IGameView {
     protected void onFragmentVisible() {
         super.onFragmentVisible();
         mGamePresenter.initOperationArea(false);
-        mGamePresenter.initFriendRoom(false);
         mGamePresenter.initQuickRoom(false);
         mGamePresenter.initRankInfo(false);
         mGamePresenter.initScoreDetail(false);
+        mGamePresenter.initRecommendRoom(false);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -156,9 +155,11 @@ public class GameFragment2 extends BaseFragment implements IGameView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(AccountEvent.SetAccountEvent event) {
-        mGamePresenter.initFriendRoom(true);
         mGamePresenter.initOperationArea(true);
         mGamePresenter.initQuickRoom(true);
+        mGamePresenter.initRankInfo(true);
+        mGamePresenter.initScoreDetail(true);
+        mGamePresenter.initRecommendRoom(true);
     }
 
     public void setQuickRoom(List<SpecialModel> list, int offset) {
@@ -168,7 +169,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         }
 
         QuickJoinRoomModel quickJoinRoomModel = new QuickJoinRoomModel(list, offset);
-        if (mGameAdapter.getPositionObject(2) != null && mGameAdapter.getPositionObject(2) instanceof RecommendRoomModel) {
+        if (mGameAdapter.getPositionObject(2) != null && mGameAdapter.getPositionObject(2) instanceof com.module.home.game.model.RecommendRoomModel) {
             mGameAdapter.getDataList().remove(mGameAdapter.getPositionObject(2));
         }
         mGameAdapter.getDataList().add(quickJoinRoomModel);
@@ -206,14 +207,14 @@ public class GameFragment2 extends BaseFragment implements IGameView {
 
     }
 
-    public void setFriendRoom(List<FriendRoomModel> list, int offset, int totalNum) {
+    public void setRecommendInfo(List<RecommendModel> list, int offset, int totalNum) {
         if (list == null || list.size() == 0) {
             MyLog.w(TAG, "initFriendRoom 为null");
             return;
         }
 
-        RecommendRoomModel recommendRoomModel = new RecommendRoomModel(list, offset, totalNum);
-        if (mGameAdapter.getPositionObject(1) != null && mGameAdapter.getPositionObject(1) instanceof RecommendRoomModel) {
+        com.module.home.game.model.RecommendRoomModel recommendRoomModel = new com.module.home.game.model.RecommendRoomModel(list, offset, totalNum);
+        if (mGameAdapter.getPositionObject(1) != null && mGameAdapter.getPositionObject(1) instanceof com.module.home.game.model.RecommendRoomModel) {
             mGameAdapter.getDataList().remove(mGameAdapter.getPositionObject(1));
         }
         mGameAdapter.getDataList().add(1, recommendRoomModel);

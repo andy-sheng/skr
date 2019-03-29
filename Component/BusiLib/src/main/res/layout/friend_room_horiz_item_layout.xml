@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:layout_marginLeft="@dimen/view_10_dp"
@@ -17,10 +18,10 @@
         android:layout_height="@dimen/view_18_dp"
         android:layout_below="@id/avatar_iv"
         android:layout_alignLeft="@id/avatar_iv"
-        android:layout_marginTop="@dimen/view_8_dp"
-        android:singleLine="true"
-        android:maxLines="1"
+        android:layout_marginTop="@dimen/view_14_dp"
         android:ellipsize="end"
+        android:maxLines="1"
+        android:singleLine="true"
         android:text="KTV酒彪子"
         android:textColor="#CC5A5A5A"
         android:textSize="@dimen/textsize_12_dp" />
@@ -30,8 +31,28 @@
         android:id="@+id/owner_iv"
         android:layout_width="@dimen/view_16_dp"
         android:layout_height="@dimen/view_16_dp"
-        android:layout_alignRight="@+id/avatar_iv"
         android:layout_alignBottom="@+id/avatar_iv"
-        android:background="@drawable/grab_friend_room_owner" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-16dp"
+        android:background="@drawable/grab_friend_room_owner"
+        android:visibility="gone" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/recommend_iv"
+        android:layout_width="@dimen/view_34_dp"
+        android:layout_height="@dimen/view_16_dp"
+        android:layout_alignBottom="@+id/avatar_iv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-8dp"
+        android:gravity="center"
+        android:text="推荐"
+        android:textColor="@color/white"
+        android:textSize="@dimen/view_10_dp"
+        android:visibility="gone"
+        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#82C43B"
+        app:bl_stroke_color="@color/white"
+        app:bl_stroke_width="@dimen/view_1_dp" />
 
 </RelativeLayout>

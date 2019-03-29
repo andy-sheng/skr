@@ -11,34 +11,30 @@
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="@dimen/view_16_dp"
         android:gravity="center"
-        android:paddingLeft="@dimen/view_8_dp"
-        android:paddingRight="@dimen/view_8_dp"
+        android:textStyle="bold"
         android:text="快速进入"
-        android:textColor="#43508E"
-        android:textSize="@dimen/textsize_14_dp"
-        app:bl_corners_radius="@dimen/view_12_dp"
-        app:bl_shape="rectangle"
-        app:bl_solid_color="#EDEDED" />
+        android:textColor="#7638A6"
+        android:textSize="@dimen/textsize_14_dp" />
 
-    <com.common.view.ex.ExImageView
-        android:layout_width="@dimen/view_14_dp"
-        android:layout_height="@dimen/view_14_dp"
-        android:layout_alignTop="@+id/quick_enter"
-        android:layout_marginLeft="@dimen/view_5_dp"
-        android:layout_marginTop="@dimen/view_5_dp"
-        android:layout_toRightOf="@id/quick_enter"
-        app:bl_shape="oval"
-        app:bl_solid_color="#EDEDED" />
+    <!--<com.common.view.ex.ExImageView-->
+        <!--android:layout_width="@dimen/view_14_dp"-->
+        <!--android:layout_height="@dimen/view_14_dp"-->
+        <!--android:layout_alignTop="@+id/quick_enter"-->
+        <!--android:layout_marginLeft="@dimen/view_5_dp"-->
+        <!--android:layout_marginTop="@dimen/view_5_dp"-->
+        <!--android:layout_toRightOf="@id/quick_enter"-->
+        <!--app:bl_shape="oval"-->
+        <!--app:bl_solid_color="#EDEDED" />-->
 
-    <com.common.view.ex.ExImageView
-        android:layout_width="@dimen/view_10_dp"
-        android:layout_height="@dimen/view_10_dp"
-        android:layout_alignTop="@+id/quick_enter"
-        android:layout_marginLeft="@dimen/view_23_dp"
-        android:layout_marginTop="@dimen/view_7_dp"
-        android:layout_toRightOf="@id/quick_enter"
-        app:bl_shape="oval"
-        app:bl_solid_color="#EDEDED" />
+    <!--<com.common.view.ex.ExImageView-->
+        <!--android:layout_width="@dimen/view_10_dp"-->
+        <!--android:layout_height="@dimen/view_10_dp"-->
+        <!--android:layout_alignTop="@+id/quick_enter"-->
+        <!--android:layout_marginLeft="@dimen/view_23_dp"-->
+        <!--android:layout_marginTop="@dimen/view_7_dp"-->
+        <!--android:layout_toRightOf="@id/quick_enter"-->
+        <!--app:bl_shape="oval"-->
+        <!--app:bl_solid_color="#EDEDED" />-->
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/friends_recycle"

@@ -19,9 +19,9 @@ import com.zq.live.proto.Common.ESex;
 
 public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
 
-    RecyclerOnItemClickListener<FriendRoomModel> mOnItemClickListener;
+    RecyclerOnItemClickListener<RecommendModel> mOnItemClickListener;
 
-    FriendRoomModel mFriendRoomModel;
+    RecommendModel mFriendRoomModel;
     int position;
 
     RelativeLayout mBackground;
@@ -54,11 +54,11 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
 
     }
 
-    public void setOnItemClickListener(RecyclerOnItemClickListener<FriendRoomModel> onItemClickListener) {
+    public void setOnItemClickListener(RecyclerOnItemClickListener<RecommendModel> onItemClickListener) {
         mOnItemClickListener = onItemClickListener;
     }
 
-    public void bindData(FriendRoomModel friendRoomModel, int position) {
+    public void bindData(RecommendModel friendRoomModel, int position) {
         this.mFriendRoomModel = friendRoomModel;
         this.position = position;
 

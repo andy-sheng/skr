@@ -14,7 +14,7 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
-import com.component.busilib.friends.FriendRoomModel;
+import com.component.busilib.friends.RecommendModel;
 import com.component.busilib.friends.GrabSongApi;
 import com.component.busilib.friends.SpecialModel;
 import com.module.home.MainPageSlideApi;
@@ -30,6 +30,7 @@ public class GamePresenter extends RxLifeCyclePresenter {
 
     long mLastUpdateOperaArea = 0;    //广告位上次更新成功时间
     long mLastUpdateRoomInfo = 0;     //好友或推荐房更新成功时间
+    long mLastUpdateRecommendInfo = 0;//房间推荐上次更新成功时间
     long mLastUpdateQuickInfo = 0;    //快速加入房间更新成功时间
     long mLastUpdateRankInfo = 0;     //排名信息上次更新成功时间
     long mLastUpdateScoreInfo = 0;    //段位信息上次更新成功时间
@@ -110,24 +111,24 @@ public class GamePresenter extends RxLifeCyclePresenter {
         }, this);
     }
 
-    public void initFriendRoom(boolean isFlag) {
+    public void initRecommendRoom(boolean isFlag) {
         long now = System.currentTimeMillis();
         if (!isFlag) {
             // 距离上次拉去已经超过30秒了
-            if ((now - mLastUpdateRoomInfo) < 30 * 1000) {
+            if ((now - mLastUpdateRecommendInfo) < 30 * 1000) {
                 return;
             }
         }
 
-        ApiMethods.subscribe(mGrabSongApi.getOnlineFriendsRoom(0, 10), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mGrabSongApi.getRecommendRoomList(0, 10), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult obj) {
                 if (obj.getErrno() == 0) {
                     mLastUpdateRoomInfo = System.currentTimeMillis();
-                    List<FriendRoomModel> list = JSON.parseArray(obj.getData().getString("friends"), FriendRoomModel.class);
+                    List<RecommendModel> list = JSON.parseArray(obj.getData().getString("rooms"), RecommendModel.class);
                     int offset = obj.getData().getIntValue("offset");
                     int totalNum = obj.getData().getIntValue("totalRoomsNum");
-                    mIGameView.setFriendRoom(list, offset, totalNum);
+                    mIGameView.setRecommendInfo(list, offset, totalNum);
                 }
             }
         }, this);

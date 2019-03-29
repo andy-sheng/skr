@@ -15,13 +15,14 @@ import com.zq.live.proto.Common.ESex;
 
 public class FriendRoomHorizontalViewHolder extends RecyclerView.ViewHolder {
 
-    RecyclerOnItemClickListener<FriendRoomModel> mOnItemClickListener;
+    RecyclerOnItemClickListener<RecommendModel> mOnItemClickListener;
 
     SimpleDraweeView mAvatarIv;
     ExTextView mNicknameTv;
     ExImageView mOwnerIv;
+    ExTextView mRecommendIv;
 
-    FriendRoomModel mFriendRoomModel;
+    RecommendModel mFriendRoomModel;
     int position;
 
     public FriendRoomHorizontalViewHolder(View itemView) {
@@ -30,6 +31,8 @@ public class FriendRoomHorizontalViewHolder extends RecyclerView.ViewHolder {
         mAvatarIv = (SimpleDraweeView) itemView.findViewById(R.id.avatar_iv);
         mNicknameTv = (ExTextView) itemView.findViewById(R.id.nickname_tv);
         mOwnerIv = (ExImageView) itemView.findViewById(R.id.owner_iv);
+        mRecommendIv = (ExTextView) itemView.findViewById(R.id.recommend_iv);
+
 
         itemView.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -41,22 +44,32 @@ public class FriendRoomHorizontalViewHolder extends RecyclerView.ViewHolder {
         });
     }
 
-    public void setOnItemClickListener(RecyclerOnItemClickListener<FriendRoomModel> onItemClickListener) {
+    public void setOnItemClickListener(RecyclerOnItemClickListener<RecommendModel> onItemClickListener) {
         mOnItemClickListener = onItemClickListener;
     }
 
 
-    public void bindData(FriendRoomModel friendRoomModel, int position) {
+    public void bindData(RecommendModel friendRoomModel, int position) {
         this.mFriendRoomModel = friendRoomModel;
         this.position = position;
 
         AvatarUtils.loadAvatarByUrl(mAvatarIv,
                 AvatarUtils.newParamsBuilder(friendRoomModel.getUserInfo().getAvatar())
-                        .setBorderColorBySex(friendRoomModel.getUserInfo().getSex() == ESex.SX_MALE.getValue())
-                        .setBorderWidth(U.getDisplayUtils().dip2px(2))
                         .setCircle(true)
                         .build());
         mNicknameTv.setText(friendRoomModel.getUserInfo().getNickname());
 
+        if (friendRoomModel.getCategory() == RecommendModel.TYPE_RECOMMEND_ROOM) {
+            mRecommendIv.setVisibility(View.VISIBLE);
+            mOwnerIv.setVisibility(View.GONE);
+        } else {
+            if (friendRoomModel.getRoomInfo().isIsOwner()) {
+                mRecommendIv.setVisibility(View.GONE);
+                mOwnerIv.setVisibility(View.VISIBLE);
+            } else {
+                mRecommendIv.setVisibility(View.GONE);
+                mOwnerIv.setVisibility(View.GONE);
+            }
+        }
     }
 }

@@ -1,6 +1,5 @@
 package com.component.busilib.friends;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -83,8 +82,8 @@ public class GrabFriendsRoomFragment extends BaseFragment {
         mFriendRoomVeritAdapter = new FriendRoomVerticalAdapter(new RecyclerOnItemClickListener() {
             @Override
             public void onItemClicked(View view, int position, Object model) {
-                if (model != null && model instanceof FriendRoomModel) {
-                    FriendRoomModel friendRoomModel = (FriendRoomModel) model;
+                if (model != null && model instanceof RecommendModel) {
+                    RecommendModel friendRoomModel = (RecommendModel) model;
                     if (friendRoomModel != null && friendRoomModel.getRoomInfo() != null) {
                         final int roomID = friendRoomModel.getRoomInfo().getRoomID();
                         mSkrAudioPermission.ensurePermission(new Runnable() {
@@ -116,11 +115,11 @@ public class GrabFriendsRoomFragment extends BaseFragment {
 
     private void loadData(int offset, int count) {
         GrabSongApi grabSongApi = ApiManager.getInstance().createService(GrabSongApi.class);
-        ApiMethods.subscribe(grabSongApi.getOnlineFriendsRoom(offset, count), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(grabSongApi.getRecommendRoomList(offset, count), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult obj) {
                 if (obj.getErrno() == 0) {
-                    List<FriendRoomModel> list = JSON.parseArray(obj.getData().getString("friends"), FriendRoomModel.class);
+                    List<RecommendModel> list = JSON.parseArray(obj.getData().getString("rooms"), RecommendModel.class);
                     int offset = obj.getData().getIntValue("offset");
                     int totalNum = obj.getData().getIntValue("cnt");
                     refreshView(list, offset);
@@ -129,7 +128,7 @@ public class GrabFriendsRoomFragment extends BaseFragment {
         }, this);
     }
 
-    private void refreshView(List<FriendRoomModel> list, int offset) {
+    private void refreshView(List<RecommendModel> list, int offset) {
         this.offset = offset;
         if (list != null) {
             mFriendRoomVeritAdapter.getDataList().addAll(list);

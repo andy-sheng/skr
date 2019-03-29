@@ -26,7 +26,7 @@ import com.component.busilib.constans.GameModeType;
 import com.module.RouterConstants;
 import com.component.busilib.friends.GrabSongApi;
 import com.component.busilib.friends.FriendRoomHorizontalAdapter;
-import com.component.busilib.friends.FriendRoomModel;
+import com.component.busilib.friends.RecommendModel;
 import com.component.busilib.friends.GrabFriendsRoomFragment;
 import com.component.busilib.friends.SpecialModel;
 import com.module.playways.grab.createroom.view.SpecialSelectView;
@@ -125,7 +125,7 @@ public class GrabSelectFragment extends BaseFragment {
                     mSkrAudioPermission.ensurePermission(new Runnable() {
                         @Override
                         public void run() {
-                            FriendRoomModel model1 = (FriendRoomModel) model;
+                            RecommendModel model1 = (RecommendModel) model;
                             GrabRoomServerApi roomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
                             HashMap<String, Object> map = new HashMap<>();
                             map.put("roomID", model1.getRoomInfo().getRoomID());
@@ -169,7 +169,7 @@ public class GrabSelectFragment extends BaseFragment {
             @Override
             public void process(ApiResult obj) {
                 if (obj.getErrno() == 0) {
-                    List<FriendRoomModel> list = JSON.parseArray(obj.getData().getString("friends"), FriendRoomModel.class);
+                    List<RecommendModel> list = JSON.parseArray(obj.getData().getString("friends"), RecommendModel.class);
                     int offset = obj.getData().getIntValue("offset");
                     int totalNum = obj.getData().getIntValue("totalRoomsNum");
                     refreshView(list, offset, totalNum);
@@ -180,7 +180,7 @@ public class GrabSelectFragment extends BaseFragment {
         }, this);
     }
 
-    private void refreshView(List<FriendRoomModel> list, int offset, int totalNum) {
+    private void refreshView(List<RecommendModel> list, int offset, int totalNum) {
         this.offset = offset;
         if (totalNum == 0) {
             mFriendsArea.setVisibility(View.GONE);

@@ -10,10 +10,9 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.friends.FriendRoomHorizontalAdapter;
-import com.component.busilib.friends.FriendRoomModel;
+import com.component.busilib.friends.RecommendModel;
 import com.module.home.R;
 import com.module.home.game.adapter.GameAdapter;
-import com.module.home.game.model.RecommendRoomModel;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 public class RecommendRoomViewHolder extends RecyclerView.ViewHolder {
@@ -43,7 +42,7 @@ public class RecommendRoomViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onItemClicked(View view, int position, Object model) {
                 if (model != null) {
-                    FriendRoomModel friendRoomModel = (FriendRoomModel) model;
+                    RecommendModel friendRoomModel = (RecommendModel) model;
                     if (mListener != null) {
                         mListener.enterRoom(friendRoomModel);
                     }
@@ -66,7 +65,7 @@ public class RecommendRoomViewHolder extends RecyclerView.ViewHolder {
 
     }
 
-    public void bindData(RecommendRoomModel recommendRoomModel) {
+    public void bindData(com.module.home.game.model.RecommendRoomModel recommendRoomModel) {
         mFriendRoomAdapter.setDataList(recommendRoomModel.getRoomModels());
     }
 }

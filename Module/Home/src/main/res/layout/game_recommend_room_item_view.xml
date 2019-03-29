@@ -12,34 +12,30 @@
         android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginBottom="@dimen/view_2_dp"
         android:gravity="center"
-        android:paddingLeft="@dimen/view_8_dp"
-        android:paddingRight="@dimen/view_8_dp"
+        android:textStyle="bold"
         android:text="好友派对"
-        android:textColor="#43508E"
-        android:textSize="@dimen/textsize_14_dp"
-        app:bl_corners_radius="@dimen/view_12_dp"
-        app:bl_shape="rectangle"
-        app:bl_solid_color="#EDEDED" />
+        android:textColor="#7638A6"
+        android:textSize="@dimen/textsize_14_dp" />
 
-    <com.common.view.ex.ExImageView
-        android:layout_width="@dimen/view_14_dp"
-        android:layout_height="@dimen/view_14_dp"
-        android:layout_alignTop="@+id/friends_tv"
-        android:layout_marginLeft="@dimen/view_5_dp"
-        android:layout_marginTop="@dimen/view_5_dp"
-        android:layout_toRightOf="@id/friends_tv"
-        app:bl_shape="oval"
-        app:bl_solid_color="#EDEDED" />
+    <!--<com.common.view.ex.ExImageView-->
+        <!--android:layout_width="@dimen/view_14_dp"-->
+        <!--android:layout_height="@dimen/view_14_dp"-->
+        <!--android:layout_alignTop="@+id/friends_tv"-->
+        <!--android:layout_marginLeft="@dimen/view_5_dp"-->
+        <!--android:layout_marginTop="@dimen/view_5_dp"-->
+        <!--android:layout_toRightOf="@id/friends_tv"-->
+        <!--app:bl_shape="oval"-->
+        <!--app:bl_solid_color="#EDEDED" />-->
 
-    <com.common.view.ex.ExImageView
-        android:layout_width="@dimen/view_10_dp"
-        android:layout_height="@dimen/view_10_dp"
-        android:layout_alignTop="@+id/friends_tv"
-        android:layout_marginLeft="@dimen/view_23_dp"
-        android:layout_marginTop="@dimen/view_7_dp"
-        android:layout_toRightOf="@id/friends_tv"
-        app:bl_shape="oval"
-        app:bl_solid_color="#EDEDED" />
+    <!--<com.common.view.ex.ExImageView-->
+        <!--android:layout_width="@dimen/view_10_dp"-->
+        <!--android:layout_height="@dimen/view_10_dp"-->
+        <!--android:layout_alignTop="@+id/friends_tv"-->
+        <!--android:layout_marginLeft="@dimen/view_23_dp"-->
+        <!--android:layout_marginTop="@dimen/view_7_dp"-->
+        <!--android:layout_toRightOf="@id/friends_tv"-->
+        <!--app:bl_shape="oval"-->
+        <!--app:bl_solid_color="#EDEDED" />-->
 
     <com.common.view.ex.ExTextView
         android:id="@+id/more_tv"
@@ -52,16 +48,16 @@
         android:paddingLeft="@dimen/view_12_dp"
         android:paddingRight="@dimen/view_12_dp"
         android:text="更多"
-        android:textColor="#43508E"
+        android:textColor="#7638A6"
         android:textSize="@dimen/textsize_14_dp"
         app:bl_corners_radius="@dimen/view_12_dp"
         app:bl_shape="rectangle"
-        app:bl_solid_color="#EDEDED" />
+        app:bl_solid_color="#FFC484" />
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_100_dp"
+        android:layout_height="@dimen/view_120_dp"
         android:layout_below="@id/friends_tv">
 
         <android.support.v7.widget.RecyclerView

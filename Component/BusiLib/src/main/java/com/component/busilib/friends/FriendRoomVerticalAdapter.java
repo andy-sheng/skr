@@ -9,9 +9,9 @@ import com.common.view.recyclerview.DiffAdapter;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;
 
-public class FriendRoomVerticalAdapter extends DiffAdapter<FriendRoomModel, FriendRoomVerticalViewHolder> {
+public class FriendRoomVerticalAdapter extends DiffAdapter<RecommendModel, FriendRoomVerticalViewHolder> {
 
-    RecyclerOnItemClickListener<FriendRoomModel> mOnItemClickListener;
+    RecyclerOnItemClickListener<RecommendModel> mOnItemClickListener;
 
     public FriendRoomVerticalAdapter(RecyclerOnItemClickListener mOnItemClickListener) {
         this.mOnItemClickListener = mOnItemClickListener;
@@ -28,7 +28,7 @@ public class FriendRoomVerticalAdapter extends DiffAdapter<FriendRoomModel, Frie
 
     @Override
     public void onBindViewHolder(@NonNull FriendRoomVerticalViewHolder holder, int position) {
-        FriendRoomModel friendRoomModel = mDataList.get(position);
+        RecommendModel friendRoomModel = mDataList.get(position);
         holder.bindData(friendRoomModel, position);
     }
 

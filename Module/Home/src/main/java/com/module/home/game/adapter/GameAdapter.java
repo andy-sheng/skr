@@ -7,12 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.component.busilib.friends.FriendRoomModel;
+import com.component.busilib.friends.RecommendModel;
 import com.component.busilib.friends.SpecialModel;
 import com.module.home.R;
 import com.module.home.game.model.BannerModel;
 import com.module.home.game.model.QuickJoinRoomModel;
-import com.module.home.game.model.RecommendRoomModel;
 import com.module.home.game.viewholder.BannerViewHolder;
 import com.module.home.game.viewholder.QuickRoomViewHolder;
 import com.module.home.game.viewholder.RecommendRoomViewHolder;
@@ -77,8 +76,8 @@ public class GameAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (mDataList.get(position) instanceof BannerModel) {
             ((BannerViewHolder) holder).bindData((BannerModel) (mDataList.get(position)));
-        } else if (mDataList.get(position) instanceof RecommendRoomModel) {
-            ((RecommendRoomViewHolder) holder).bindData((RecommendRoomModel) (mDataList.get(position)));
+        } else if (mDataList.get(position) instanceof com.module.home.game.model.RecommendRoomModel) {
+            ((RecommendRoomViewHolder) holder).bindData((com.module.home.game.model.RecommendRoomModel) (mDataList.get(position)));
         } else if (mDataList.get(position) instanceof QuickJoinRoomModel) {
             ((QuickRoomViewHolder) holder).bindData((QuickJoinRoomModel) (mDataList.get(position)));
         }
@@ -94,7 +93,7 @@ public class GameAdapter extends RecyclerView.Adapter {
     public int getItemViewType(int position) {
         if (mDataList.get(position) instanceof BannerModel) {
             return TYPE_BANNER_HOLDER;
-        } else if (mDataList.get(position) instanceof RecommendRoomModel) {
+        } else if (mDataList.get(position) instanceof com.module.home.game.model.RecommendRoomModel) {
             return TYPE_RECOMMEND_HOLDER;
         } else if (mDataList.get(position) instanceof QuickJoinRoomModel) {
             return TYPE_QUICK_ROOM_HOLDER;
@@ -107,7 +106,7 @@ public class GameAdapter extends RecyclerView.Adapter {
 
         void selectSpecial(SpecialModel specialModel);   //选择专场
 
-        void enterRoom(FriendRoomModel friendRoomModel);   //进入房间
+        void enterRoom(RecommendModel friendRoomModel);   //进入房间
 
         void moreRoom();  //更多房间
     }

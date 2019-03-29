@@ -12,9 +12,9 @@ import com.component.busilib.R;
 /**
  * 横向好友在线适配器
  */
-public class FriendRoomHorizontalAdapter extends DiffAdapter<FriendRoomModel, FriendRoomHorizontalViewHolder> {
+public class FriendRoomHorizontalAdapter extends DiffAdapter<RecommendModel, FriendRoomHorizontalViewHolder> {
 
-    RecyclerOnItemClickListener<FriendRoomModel> mOnItemClickListener;
+    RecyclerOnItemClickListener<RecommendModel> mOnItemClickListener;
 
     public FriendRoomHorizontalAdapter(RecyclerOnItemClickListener mOnItemClickListener){
         this.mOnItemClickListener = mOnItemClickListener;
@@ -31,7 +31,7 @@ public class FriendRoomHorizontalAdapter extends DiffAdapter<FriendRoomModel, Fr
 
     @Override
     public void onBindViewHolder(@NonNull FriendRoomHorizontalViewHolder holder, int position) {
-        FriendRoomModel friendRoomModel = mDataList.get(position);
+        RecommendModel friendRoomModel = mDataList.get(position);
         holder.bindData(friendRoomModel, position);
     }
 
