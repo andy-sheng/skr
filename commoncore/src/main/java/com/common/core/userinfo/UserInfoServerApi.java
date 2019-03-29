@@ -174,7 +174,7 @@ public interface UserInfoServerApi {
      * @return
      */
     @GET("/v1/rank/region-seq")
-    Observable<ApiResult> getReginRank(@Query("userID") int userID);
+    Observable<ApiResult> getReginRank(@Query("userID") long userID);
 
 
     /**

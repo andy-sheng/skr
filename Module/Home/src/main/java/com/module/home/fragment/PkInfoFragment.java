@@ -6,6 +6,7 @@ import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -42,6 +43,8 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+
+import java.util.List;
 
 public class PkInfoFragment extends BaseFragment {
     public final static String TAG = "PkInfoFragment";
@@ -202,13 +205,13 @@ public class PkInfoFragment extends BaseFragment {
             mUserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
         }
 
-        ApiMethods.subscribe(mUserInfoServerApi.getReginDiff(), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mUserInfoServerApi.getReginRank(MyUserInfoManager.getInstance().getUid()), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 mSmartRefreshLayout.finishRefresh();
                 if (result.getErrno() == 0) {
-                    UserRankModel userRankModel = JSON.parseObject(result.getData().getString("diff"), UserRankModel.class);
-                    showRankView(userRankModel);
+                    List<UserRankModel> userRankModels = JSON.parseArray(result.getData().getString("seqInfo"), UserRankModel.class);
+                    showRankView(userRankModels);
                 } else {
                     MyLog.d(TAG, "showRankInfo" + " result=" + result);
                 }
@@ -228,10 +231,15 @@ public class PkInfoFragment extends BaseFragment {
         }, this);
     }
 
-    private void showRankView(UserRankModel userRankModel) {
-        mTvNum.setText(userRankModel.getSubRanking() + "");
-        mTvArea.setText(userRankModel.getRegionDesc());
-        mTvNumCountry.setText(userRankModel.getRankSeq() + "");
+    private void showRankView(List<UserRankModel> userRankModelList) {
+        for (UserRankModel userRankModel : userRankModelList){
+            if(userRankModel.getCategory() == 1){
+                mTvNumCountry.setText(userRankModel.getRankSeq() == 0 ? "**" : userRankModel.getRankSeq() + "");
+            }else if(userRankModel.getCategory() == 4){
+                mTvNum.setText(userRankModel.getRankSeq() == 0 ? "**" : userRankModel.getRankSeq() + "");
+                mTvArea.setText(TextUtils.isEmpty(userRankModel.getRegionDesc()) ? "地域榜" : userRankModel.getRegionDesc());
+            }
+        }
     }
 
     @Override
