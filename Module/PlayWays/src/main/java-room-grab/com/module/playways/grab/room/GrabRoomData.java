@@ -62,6 +62,23 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
         return l;
     }
 
+
+    public boolean isContainMe() {
+        List<GrabPlayerInfoModel> getPlayerInfoList = getPlayerInfoList();
+        if (getPlayerInfoList == null) {
+            return false;
+        }
+
+        for (GrabPlayerInfoModel model :
+                getPlayerInfoList) {
+            if (model.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public SpecialModel getSpecialModel() {
         return mSpecialModel;
     }
