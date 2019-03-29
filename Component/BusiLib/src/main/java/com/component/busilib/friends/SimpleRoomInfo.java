@@ -1,4 +1,4 @@
-package com.module.playways.grab.createroom.friends;
+package com.component.busilib.friends;
 
 import java.io.Serializable;
 

@@ -1,8 +1,7 @@
-package com.module.playways.grab.createroom.friends;
+package com.component.busilib.friends;
 
 
 import com.common.core.userinfo.model.UserInfoModel;
-import com.module.playways.grab.createroom.model.SpecialModel;
 
 import java.io.Serializable;
 

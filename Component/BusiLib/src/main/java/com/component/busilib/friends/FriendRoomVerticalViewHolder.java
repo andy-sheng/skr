@@ -1,4 +1,4 @@
-package com.module.playways.grab.createroom.friends;
+package com.component.busilib.friends;
 
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -13,8 +13,8 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
+import com.component.busilib.R;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.module.rank.R;
 import com.zq.live.proto.Common.ESex;
 
 public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {

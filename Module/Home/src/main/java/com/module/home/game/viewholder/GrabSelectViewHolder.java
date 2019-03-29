@@ -1,4 +1,4 @@
-package com.module.playways.grab.createroom.viewholder;
+package com.module.home.game.viewholder;
 
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -8,15 +8,18 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.common.log.MyLog;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.friends.SpecialModel;
-import com.module.rank.R;
+import com.module.home.R;
 
-public class SpecialCardViewHolder extends RecyclerView.ViewHolder {
+public class GrabSelectViewHolder extends RecyclerView.ViewHolder {
 
+    public final static String TAG = "GrabSelectViewHolder";
 
     RelativeLayout mBackground;
     ExTextView mSpecialTv;
@@ -25,19 +28,20 @@ public class SpecialCardViewHolder extends RecyclerView.ViewHolder {
 
     SpecialModel mSpecialModel;
     int mPosition;
-    private RecyclerOnItemClickListener<SpecialModel> mItemClickListener;
+    RecyclerOnItemClickListener mItemClickListener;
 
-    public SpecialCardViewHolder(View itemView) {
+    public GrabSelectViewHolder(View itemView, RecyclerOnItemClickListener recyclerOnItemClickListener) {
         super(itemView);
+        this.mItemClickListener = recyclerOnItemClickListener;
 
         mBackground = (RelativeLayout) itemView.findViewById(R.id.background);
         mSpecialTv = (ExTextView) itemView.findViewById(R.id.special_tv);
         mIntroductionTv = (ExTextView) itemView.findViewById(R.id.introduction_tv);
         mSpecialIv = (ExImageView) itemView.findViewById(R.id.special_iv);
 
-        itemView.setOnClickListener(new View.OnClickListener() {
+        itemView.setOnClickListener(new DebounceViewClickListener() {
             @Override
-            public void onClick(View v) {
+            public void clickValid(View v) {
                 if (mItemClickListener != null) {
                     mItemClickListener.onItemClicked(v, mPosition, mSpecialModel);
                 }
@@ -62,14 +66,6 @@ public class SpecialCardViewHolder extends RecyclerView.ViewHolder {
         }
         mSpecialTv.setText(this.mSpecialModel.getTagName());
         mIntroductionTv.setText(this.mSpecialModel.getIntroduction());
-    }
-
-    public void setItemClickListener(RecyclerOnItemClickListener<SpecialModel> itemClickListener) {
-        mItemClickListener = itemClickListener;
-    }
-
-    public RecyclerOnItemClickListener<SpecialModel> getItemClickListener() {
-        return mItemClickListener;
     }
 
     public Drawable getShapeDrawable(int color) {

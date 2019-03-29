@@ -20,7 +20,7 @@ import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.module.RouterConstants;
-import com.module.playways.grab.createroom.model.SpecialModel;
+import com.component.busilib.friends.SpecialModel;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.model.GrabConfigModel;
@@ -28,7 +28,6 @@ import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.rank.prepare.model.JoinGrabRoomRspModel;
 
-import com.module.playways.rank.room.activity.RankRoomActivity;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
 import com.module.playways.grab.room.fragment.GrabRoomFragment;

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/content_area"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/iv_user_icon"
+        android:layout_width="@dimen/view_46_dp"
+        android:layout_height="@dimen/view_46_dp"
+        android:layout_marginLeft="@dimen/view_36_dp"
+        android:layout_marginTop="@dimen/view_32_dp" />
+
+    <ImageView
+        android:id="@+id/level_bg"
+        android:layout_width="@dimen/view_82_dp"
+        android:layout_height="@dimen/view_56_dp"
+        android:layout_alignLeft="@+id/iv_user_icon"
+        android:layout_alignTop="@+id/iv_user_icon"
+        android:layout_marginLeft="-18dp"
+        android:layout_marginTop="-5dp"
+        android:background="@drawable/touxiang_baiyin"/>
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/user_level_tv"
+        android:layout_width="@dimen/view_50_dp"
+        android:layout_height="@dimen/view_11_dp"
+        android:layout_alignLeft="@+id/level_bg"
+        android:layout_alignBottom="@+id/level_bg"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginBottom="@dimen/view_1_dp"
+        android:gravity="center"
+        android:text="白银歌者"
+        android:textColor="#3A66B6"
+        android:textSize="@dimen/textsize_10_dp"
+        android:textStyle="bold" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_25_dp"
+        android:layout_alignTop="@+id/iv_user_icon"
+        android:layout_marginLeft="@dimen/view_20_dp"
+        android:layout_marginTop="@dimen/view_4_dp"
+        android:layout_toRightOf="@+id/iv_user_icon"
+        android:gravity="center"
+        android:text="KTV酒彪子"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_18_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/rank_info"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_18_dp"
+        android:layout_below="@+id/name_tv"
+        android:layout_alignLeft="@id/name_tv"
+        android:gravity="center"
+        android:text="朝阳区排名"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_12_dp" />
+</RelativeLayout>

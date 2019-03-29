@@ -6,9 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
-import com.module.playways.grab.createroom.model.SpecialModel;
+import com.component.busilib.friends.SpecialModel;
 import com.module.rank.R;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import java.util.ArrayList;
 import java.util.Iterator;

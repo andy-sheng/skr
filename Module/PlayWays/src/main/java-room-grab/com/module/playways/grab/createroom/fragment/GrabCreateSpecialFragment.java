@@ -16,7 +16,7 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.module.RouterConstants;
 import com.module.playways.grab.room.GrabRoomServerApi;
-import com.module.playways.grab.createroom.model.SpecialModel;
+import com.component.busilib.friends.SpecialModel;
 import com.module.playways.grab.createroom.view.SpecialSelectView;
 import com.module.playways.rank.prepare.model.JoinGrabRoomRspModel;
 import com.module.rank.R;
