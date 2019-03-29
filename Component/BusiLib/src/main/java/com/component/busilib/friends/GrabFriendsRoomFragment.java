@@ -11,6 +11,8 @@ import android.view.View;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
+import com.common.core.permission.SkrAudioPermission;
+import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -20,9 +22,12 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;
+import com.module.RouterConstants;
+import com.module.rank.IRankingModeService;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+
 import java.util.List;
 
 public class GrabFriendsRoomFragment extends BaseFragment {
@@ -36,6 +41,8 @@ public class GrabFriendsRoomFragment extends BaseFragment {
 
     FriendRoomVerticalAdapter mFriendRoomVeritAdapter;
 
+    SkrAudioPermission mSkrAudioPermission;
+
     @Override
     public int initView() {
         return R.layout.grab_friends_room_fragment_layout;
@@ -46,6 +53,8 @@ public class GrabFriendsRoomFragment extends BaseFragment {
         mIvBack = (ExImageView) mRootView.findViewById(R.id.iv_back);
         mRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.refreshLayout);
         mContentRv = (RecyclerView) mRootView.findViewById(R.id.content_rv);
+
+        mSkrAudioPermission = new SkrAudioPermission();
 
         mIvBack.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -74,38 +83,25 @@ public class GrabFriendsRoomFragment extends BaseFragment {
         mFriendRoomVeritAdapter = new FriendRoomVerticalAdapter(new RecyclerOnItemClickListener() {
             @Override
             public void onItemClicked(View view, int position, Object model) {
-                if (model != null) {
-                    // TODO: 2019/3/29 跳到房间里面
-//                    FriendRoomModel model1 = (FriendRoomModel) model;
-//                    GrabRoomServerApi roomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
-//                    HashMap<String, Object> map = new HashMap<>();
-//                    map.put("roomID", model1.getRoomInfo().getRoomID());
-//                    RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSON), JSON.toJSONString(map));
-//                    ApiMethods.subscribe(roomServerApi.joinGrabRoom(body), new ApiObserver<ApiResult>() {
-//                        @Override
-//                        public void process(ApiResult result) {
-//                            if (result.getErrno() == 0) {
-//                                JoinGrabRoomRspModel grabCurGameStateModel = JSON.parseObject(result.getData().toString(), JoinGrabRoomRspModel.class);
-//                                //先跳转
-//                                ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_ROOM)
-//                                        .withSerializable("prepare_data", grabCurGameStateModel)
-//                                        .navigation();
-//                                Activity activity = getActivity();
-//                                if (activity != null) {
-//                                    activity.finish();
-//                                }
-//                            } else {
-//                                U.getToastUtil().showShort(result.getErrmsg());
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onNetworkError(ErrorType errorType) {
-//                            super.onNetworkError(errorType);
-//                        }
-//                    });
+                if (model != null && model instanceof FriendRoomModel) {
+                    FriendRoomModel friendRoomModel = (FriendRoomModel) model;
+                    if (friendRoomModel != null && friendRoomModel.getRoomInfo() != null) {
+                        final int roomID = friendRoomModel.getRoomInfo().getRoomID();
+                        mSkrAudioPermission.ensurePermission(new Runnable() {
+                            @Override
+                            public void run() {
+                                IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
+                                if (iRankingModeService != null) {
+                                    iRankingModeService.tryGoGrabRoom(roomID);
+                                }
+                            }
+                        }, true);
+                    } else {
+                        MyLog.w(TAG, "friendRoomModel == null or friendRoomModel.getRoomInfo() == null");
+                    }
+                } else {
+                    MyLog.w(TAG, "onItemClicked" + " view=" + view + " position=" + position + " model=" + model);
                 }
-
             }
         });
         mContentRv.setAdapter(mFriendRoomVeritAdapter);

@@ -12,11 +12,13 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
+import com.component.busilib.constans.GameModeType;
 import com.module.RouterConstants;
 import com.module.playways.event.GrabChangeRoomEvent;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.activity.GrabRoomActivity;
 import com.module.playways.rank.prepare.model.JoinGrabRoomRspModel;
+import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.playways.rank.room.fragment.LeaderboardFragment;
 import com.module.rank.IRankingModeService;
 
@@ -81,6 +83,29 @@ public class PlayWaysServiceImpl implements IRankingModeService {
             }
         });
     }
+
+    @Override
+    public void tryGoCreateRoom() {
+        ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_CREATE_ROOM)
+                .navigation();
+    }
+
+    @Override
+    public void tryGoGrabMatch(int tagId) {
+        PrepareData prepareData = new PrepareData();
+        prepareData.setGameType(GameModeType.GAME_MODE_GRAB);
+        prepareData.setTagId(tagId);
+
+//        if (musicURLs != null && musicURLs.size() > 0) {
+//            prepareData.setBgMusic(musicURLs.get(0));
+//        }
+
+        ARouter.getInstance()
+                .build(RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)
+                .withSerializable("prepare_data", prepareData)
+                .navigation();
+    }
+
 
     @Override
     public void init(Context context) {
