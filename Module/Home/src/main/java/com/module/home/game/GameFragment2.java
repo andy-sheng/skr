@@ -4,25 +4,36 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
 import com.common.core.account.event.AccountEvent;
+import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.permission.SkrAudioPermission;
 import com.common.core.userinfo.model.UserLevelModel;
 import com.common.core.userinfo.model.UserRankModel;
+import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
+import com.common.rxretrofit.ApiManager;
+import com.common.rxretrofit.ApiMethods;
+import com.common.rxretrofit.ApiObserver;
+import com.common.rxretrofit.ApiResult;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.component.busilib.friends.RecommendModel;
 import com.component.busilib.friends.GrabFriendsRoomFragment;
 import com.component.busilib.friends.SpecialModel;
 import com.module.RouterConstants;
+import com.module.home.MainPageSlideApi;
 import com.module.home.R;
 import com.module.home.game.adapter.GameAdapter;
 import com.module.home.game.model.BannerModel;
 import com.module.home.game.model.QuickJoinRoomModel;
+import com.module.home.model.GameKConfigModel;
 import com.module.home.model.SlideShowModel;
 import com.module.home.widget.UserInfoTileView2;
 import com.module.rank.IRankingModeService;
@@ -37,6 +48,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
 
     UserInfoTileView2 mUserInfoTitle;
     RecyclerView mRecyclerView;
+    BaseImageView mIvOpFirst;
 
     GameAdapter mGameAdapter;
 
@@ -53,7 +65,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
     public void initData(@Nullable Bundle savedInstanceState) {
         mUserInfoTitle = (UserInfoTileView2) mRootView.findViewById(R.id.user_info_title);
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
-
+        mIvOpFirst = (BaseImageView) mRootView.findViewById(R.id.iv_op_first);
         mSkrAudioPermission = new SkrAudioPermission();
 
         mGameAdapter = new GameAdapter(getContext(), new GameAdapter.GameAdapterListener() {
@@ -132,6 +144,34 @@ public class GameFragment2 extends BaseFragment implements IGameView {
     }
 
     @Override
+    public void showOp(GameKConfigModel gameKConfigModel) {
+        if(gameKConfigModel == null){
+            return;
+        }
+
+        GameKConfigModel.HomepagesitefirstBean homepagesitefirstBean = gameKConfigModel.getHomepagesitefirst();
+        if (homepagesitefirstBean != null && homepagesitefirstBean.isEnable()) {
+            AvatarUtils.loadAvatarByUrl(mIvOpFirst,
+                    AvatarUtils.newParamsBuilder(homepagesitefirstBean.getPic())
+                            .setWidth(U.getDisplayUtils().dip2px(48f))
+                            .setHeight(U.getDisplayUtils().dip2px(53f))
+                            .build());
+            mIvOpFirst.setVisibility(View.VISIBLE);
+            mIvOpFirst.setOnClickListener(new DebounceViewClickListener() {
+                @Override
+                public void clickValid(View v) {
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_SCHEME)
+                            .withString("uri", homepagesitefirstBean.getSchema())
+                            .navigation();
+                }
+            });
+        } else {
+            MyLog.w(TAG, "initGameKConfig first operation area is empty");
+            mIvOpFirst.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
     public boolean useEventBus() {
         return true;
     }
@@ -144,6 +184,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mGamePresenter.initQuickRoom(false);
         mGamePresenter.initRankInfo(false);
         mGamePresenter.initRecommendRoom(false);
+        mGamePresenter.getGameKConfig();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

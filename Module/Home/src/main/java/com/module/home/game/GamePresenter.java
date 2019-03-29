@@ -1,8 +1,11 @@
 package com.module.home.game;
 
 import android.text.TextUtils;
+import android.view.View;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
+import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.model.UserLevelModel;
@@ -14,10 +17,13 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.component.busilib.friends.RecommendModel;
 import com.component.busilib.friends.GrabSongApi;
 import com.component.busilib.friends.SpecialModel;
+import com.module.RouterConstants;
 import com.module.home.MainPageSlideApi;
+import com.module.home.model.GameKConfigModel;
 import com.module.home.model.SlideShowModel;
 
 import java.util.List;
@@ -32,6 +38,8 @@ public class GamePresenter extends RxLifeCyclePresenter {
     long mLastUpdateRecommendInfo = 0;//房间推荐上次更新成功时间
     long mLastUpdateQuickInfo = 0;    //快速加入房间更新成功时间
     long mLastUpdateRankInfo = 0;     //排名信息上次更新成功时间
+
+    boolean mIsKConfig = false;  //标记是否拉到过游戏配置信息
 
     IGameView mIGameView;
 
@@ -86,6 +94,29 @@ public class GamePresenter extends RxLifeCyclePresenter {
         });
     }
 
+    public void getGameKConfig() {
+        if (mIsKConfig) {
+            return;
+        }
+
+        ApiMethods.subscribe(mMainPageSlideApi.getKConfig(), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    mIsKConfig = true;
+                    GameKConfigModel gameKConfigModel = JSON.parseObject(result.getData().getString("common"), GameKConfigModel.class);
+                    mIGameView.showOp(gameKConfigModel);
+                } else {
+                    MyLog.w(TAG, "initGameKConfig failed, " + " traceid is " + result.getErrno());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                U.getToastUtil().showShort("网络异常");
+            }
+        });
+    }
 
     public void initQuickRoom(boolean isFlag) {
         long now = System.currentTimeMillis();
