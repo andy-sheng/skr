@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.component.busilib.friends.FriendRoomModel;
+import com.component.busilib.friends.SpecialModel;
 import com.module.home.R;
 import com.module.home.game.model.BannerModel;
 import com.module.home.game.model.QuickJoinRoomModel;
@@ -21,6 +23,8 @@ import java.util.List;
 public class GameAdapter extends RecyclerView.Adapter {
 
     Context mContext;
+
+    GameAdapterListener mListener;
 
     List<Object> mDataList = new ArrayList<>();
 
@@ -45,8 +49,9 @@ public class GameAdapter extends RecyclerView.Adapter {
         return null;
     }
 
-    public GameAdapter(Context context) {
+    public GameAdapter(Context context, GameAdapterListener gameAdapterListener) {
         mContext = context;
+        mListener = gameAdapterListener;
     }
 
     @NonNull
@@ -58,11 +63,11 @@ public class GameAdapter extends RecyclerView.Adapter {
             return bannerViewHolder;
         } else if (viewType == TYPE_RECOMMEND_HOLDER) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.game_recommend_room_item_view, parent, false);
-            RecommendRoomViewHolder recommendRoomViewHolder = new RecommendRoomViewHolder(view, mContext);
+            RecommendRoomViewHolder recommendRoomViewHolder = new RecommendRoomViewHolder(view, mContext, mListener);
             return recommendRoomViewHolder;
         } else if (viewType == TYPE_QUICK_ROOM_HOLDER) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.game_quick_room_item_view, parent, false);
-            QuickRoomViewHolder quickRoomViewHolder = new QuickRoomViewHolder(view, mContext);
+            QuickRoomViewHolder quickRoomViewHolder = new QuickRoomViewHolder(view, mContext, mListener);
             return quickRoomViewHolder;
         }
         return null;
@@ -74,7 +79,7 @@ public class GameAdapter extends RecyclerView.Adapter {
             ((BannerViewHolder) holder).bindData((BannerModel) (mDataList.get(position)));
         } else if (mDataList.get(position) instanceof RecommendRoomModel) {
             ((RecommendRoomViewHolder) holder).bindData((RecommendRoomModel) (mDataList.get(position)));
-        } else if (mDataList.get(position) instanceof QuickJoinRoomModel){
+        } else if (mDataList.get(position) instanceof QuickJoinRoomModel) {
             ((QuickRoomViewHolder) holder).bindData((QuickJoinRoomModel) (mDataList.get(position)));
         }
 
@@ -95,5 +100,15 @@ public class GameAdapter extends RecyclerView.Adapter {
             return TYPE_QUICK_ROOM_HOLDER;
         }
         return 0;
+    }
+
+    public interface GameAdapterListener {
+        void createRoom();     //创建房间
+
+        void selectSpecial(SpecialModel specialModel);   //选择专场
+
+        void enterRoom(FriendRoomModel friendRoomModel);   //进入房间
+
+        void moreRoom();  //更多房间
     }
 }

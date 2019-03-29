@@ -20,18 +20,10 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;
-import com.module.RouterConstants;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
-
-import java.util.HashMap;
 import java.util.List;
-
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
-
-import static com.common.rxretrofit.ApiManager.APPLICATION_JSON;
 
 public class GrabFriendsRoomFragment extends BaseFragment {
 
@@ -83,6 +75,7 @@ public class GrabFriendsRoomFragment extends BaseFragment {
             @Override
             public void onItemClicked(View view, int position, Object model) {
                 if (model != null) {
+                    // TODO: 2019/3/29 跳到房间里面
 //                    FriendRoomModel model1 = (FriendRoomModel) model;
 //                    GrabRoomServerApi roomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
 //                    HashMap<String, Object> map = new HashMap<>();

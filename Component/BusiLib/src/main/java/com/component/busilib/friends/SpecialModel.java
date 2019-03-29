@@ -46,4 +46,14 @@ public class SpecialModel implements Serializable {
     public void setBgColor(String bgColor) {
         this.bgColor = bgColor;
     }
+
+    @Override
+    public String toString() {
+        return "SpecialModel{" +
+                "tagID=" + tagID +
+                ", tagName='" + tagName + '\'' +
+                ", introduction='" + introduction + '\'' +
+                ", bgColor='" + bgColor + '\'' +
+                '}';
+    }
 }

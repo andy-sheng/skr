@@ -4,22 +4,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 
-import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
-import com.common.core.userinfo.UserInfoServerApi;
 import com.common.log.MyLog;
-import com.common.rxretrofit.ApiManager;
-import com.common.rxretrofit.ApiMethods;
-import com.common.rxretrofit.ApiObserver;
-import com.common.rxretrofit.ApiResult;
-import com.common.utils.U;
-import com.component.busilib.callback.ErrorCallback;
 import com.component.busilib.friends.FriendRoomModel;
-import com.component.busilib.friends.GrabSongApi;
 import com.component.busilib.friends.SpecialModel;
-import com.module.home.MainPageSlideApi;
 import com.module.home.R;
 import com.module.home.game.adapter.GameAdapter;
 import com.module.home.game.model.BannerModel;
@@ -30,22 +19,16 @@ import com.module.home.widget.UserInfoTileView2;
 
 import java.util.List;
 
-public class Game2Fragment extends BaseFragment {
+public class Game2Fragment extends BaseFragment implements IGameView {
+    
+    public final static String TAG = "Game2Fragment";
 
     UserInfoTileView2 mUserInfoTitle;
     RecyclerView mRecyclerView;
 
     GameAdapter mGameAdapter;
 
-    MainPageSlideApi mMainPageSlideApi;
-    UserInfoServerApi mUserInfoServerApi;
-    GrabSongApi mGrabSongApi;
-
-    boolean mIsKConfig = false;
-
-    long mLastUpdateOperaArea = 0;
-    long mLastUpdateRoomInfo = 0;
-    long mLastupdateQuickInfo = 0;
+    GamePresenter mGamePresenter;
 
     @Override
     public int initView() {
@@ -57,13 +40,76 @@ public class Game2Fragment extends BaseFragment {
         mUserInfoTitle = (UserInfoTileView2) mRootView.findViewById(R.id.user_info_title);
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
 
-        mGameAdapter = new GameAdapter(getContext());
+        mGameAdapter = new GameAdapter(getContext(), new GameAdapter.GameAdapterListener() {
+            @Override
+            public void createRoom() {
+                MyLog.d(TAG, "createRoom" );
+                // TODO: 2019/3/29 创建房间
+            }
+
+            @Override
+            public void selectSpecial(SpecialModel specialModel) {
+                MyLog.d(TAG, "selectSpecial" + " specialModel=" + specialModel);
+                // TODO: 2019/3/29 选择专场，进入快速匹配
+            }
+
+            @Override
+            public void enterRoom(FriendRoomModel friendRoomModel) {
+                MyLog.d(TAG, "enterRoom" + " friendRoomModel=" + friendRoomModel);
+                // TODO: 2019/3/29 加入好友房
+//                if (model != null) {
+//                    mSkrAudioPermission.ensurePermission(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            FriendRoomModel model1 = (FriendRoomModel) model;
+//                            GrabRoomServerApi roomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
+//                            HashMap<String, Object> map = new HashMap<>();
+//                            map.put("roomID", model1.getRoomInfo().getRoomID());
+//                            RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSON), JSON.toJSONString(map));
+//                            ApiMethods.subscribe(roomServerApi.joinGrabRoom(body), new ApiObserver<ApiResult>() {
+//                                @Override
+//                                public void process(ApiResult result) {
+//                                    if (result.getErrno() == 0) {
+//                                        JoinGrabRoomRspModel grabCurGameStateModel = JSON.parseObject(result.getData().toString(), JoinGrabRoomRspModel.class);
+//                                        //先跳转
+//                                        ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_ROOM)
+//                                                .withSerializable("prepare_data", grabCurGameStateModel)
+//                                                .navigation();
+//                                        Activity activity = getActivity();
+//                                        if (activity != null) {
+//                                            activity.finish();
+//                                        }
+//                                    } else {
+//                                        U.getToastUtil().showShort(result.getErrmsg());
+//                                    }
+//                                }
+//
+//                                @Override
+//                                public void onNetworkError(ErrorType errorType) {
+//                                    super.onNetworkError(errorType);
+//                                }
+//                            });
+//                        }
+//                    }, true);
+//                }
+            }
+
+            @Override
+            public void moreRoom() {
+                MyLog.d(TAG, "moreRoom" );
+                // TODO: 2019/3/29 更多房间 
+                
+            }
+        });
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         mRecyclerView.setAdapter(mGameAdapter);
 
-        initOperationArea(true);
-        initFriendRoom(true);
-        initQuickRoom(true);
+        mGamePresenter = new GamePresenter(this);
+        addPresent(mGamePresenter);
+
+        mGamePresenter.initOperationArea(true);
+        mGamePresenter.initFriendRoom(true);
+        mGamePresenter.initQuickRoom(true);
     }
 
     @Override
@@ -75,106 +121,12 @@ public class Game2Fragment extends BaseFragment {
     @Override
     protected void onFragmentVisible() {
         super.onFragmentVisible();
-        initOperationArea(false);
-        initFriendRoom(false);
-        initQuickRoom(false);
+        mGamePresenter.initOperationArea(false);
+        mGamePresenter.initFriendRoom(false);
+        mGamePresenter.initQuickRoom(false);
     }
 
-    private void initOperationArea(boolean isFlag) {
-        long now = System.currentTimeMillis();
-        if (!isFlag) {
-            // 距离上次拉去已经超过30秒了
-            if ((now - mLastUpdateOperaArea) < 30 * 1000) {
-                return;
-            }
-        }
-
-        String slideshow = U.getPreferenceUtils().getSettingString("slideshow", "");
-        if (!TextUtils.isEmpty(slideshow)) {
-            try {
-                List<SlideShowModel> slideShowModelList = JSON.parseArray(slideshow, SlideShowModel.class);
-                setBannerImage(slideShowModelList);
-            } catch (Exception e) {
-                MyLog.e(TAG, e);
-            }
-        }
-
-        mMainPageSlideApi = ApiManager.getInstance().createService(MainPageSlideApi.class);
-        ApiMethods.subscribe(mMainPageSlideApi.getSlideList(), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    mLastUpdateOperaArea = System.currentTimeMillis();
-                    List<SlideShowModel> slideShowModelList = JSON.parseArray(result.getData().getString("slideshow"), SlideShowModel.class);
-                    U.getPreferenceUtils().setSettingString("slideshow", result.getData().getString("slideshow"));
-                    setBannerImage(slideShowModelList);
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                U.getToastUtil().showShort("网络异常");
-            }
-
-            @Override
-            public void onNetworkError(ErrorType errorType) {
-                U.getToastUtil().showShort("网络超时");
-            }
-        });
-    }
-
-    private void initFriendRoom(boolean isFlag) {
-        long now = System.currentTimeMillis();
-        if (!isFlag) {
-            // 距离上次拉去已经超过30秒了
-            if ((now - mLastUpdateRoomInfo) < 30 * 1000) {
-                return;
-            }
-        }
-
-        if (mGrabSongApi == null) {
-            mGrabSongApi = ApiManager.getInstance().createService(GrabSongApi.class);
-        }
-        ApiMethods.subscribe(mGrabSongApi.getOnlineFriendsRoom(0, 10), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult obj) {
-                if (obj.getErrno() == 0) {
-                    mLastUpdateRoomInfo = System.currentTimeMillis();
-                    List<FriendRoomModel> list = JSON.parseArray(obj.getData().getString("friends"), FriendRoomModel.class);
-                    int offset = obj.getData().getIntValue("offset");
-                    int totalNum = obj.getData().getIntValue("totalRoomsNum");
-                    setFriendRoom(list, offset, totalNum);
-                }
-            }
-        }, this);
-
-    }
-
-    private void initQuickRoom(boolean isFlag) {
-        long now = System.currentTimeMillis();
-        if (!isFlag) {
-            // 半个小时更新一次吧
-            if ((now - mLastupdateQuickInfo) < 30 * 60 * 1000) {
-                return;
-            }
-        }
-
-        if (mGrabSongApi == null) {
-            mGrabSongApi = ApiManager.getInstance().createService(GrabSongApi.class);
-        }
-        ApiMethods.subscribe(mGrabSongApi.getSepcialList(0, 10), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult obj) {
-                if (obj.getErrno() == 0) {
-                    List<SpecialModel> list = JSON.parseArray(obj.getData().getString("tags"), SpecialModel.class);
-                    int offset = obj.getData().getIntValue("offset");
-                    setQuickRoom(list, offset);
-                }
-            }
-        }, this);
-    }
-
-    private void setQuickRoom(List<SpecialModel> list, int offset) {
+    public void setQuickRoom(List<SpecialModel> list, int offset) {
         if (list == null || list.size() == 0) {
             MyLog.w(TAG, "initQuickRoom 为null");
             return;
@@ -189,7 +141,7 @@ public class Game2Fragment extends BaseFragment {
 
     }
 
-    private void setFriendRoom(List<FriendRoomModel> list, int offset, int totalNum) {
+    public void setFriendRoom(List<FriendRoomModel> list, int offset, int totalNum) {
         if (list == null || list.size() == 0) {
             MyLog.w(TAG, "initFriendRoom 为null");
             return;
@@ -209,7 +161,7 @@ public class Game2Fragment extends BaseFragment {
     }
 
 
-    private void setBannerImage(List<SlideShowModel> slideShowModelList) {
+    public void setBannerImage(List<SlideShowModel> slideShowModelList) {
         if (slideShowModelList == null || slideShowModelList.size() == 0) {
             MyLog.w(TAG, "initOperationArea 为null");
             return;
@@ -222,27 +174,27 @@ public class Game2Fragment extends BaseFragment {
         mGameAdapter.notifyDataSetChanged();
     }
 
-    private void initGameKConfig() {
-        if (mIsKConfig) {
-            return;
-        }
-        mMainPageSlideApi = ApiManager.getInstance().createService(MainPageSlideApi.class);
-        ApiMethods.subscribe(mMainPageSlideApi.getKConfig(), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    mIsKConfig = true;
-
-                } else {
-
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                U.getToastUtil().showShort("网络异常");
-            }
-        });
-    }
+//    private void initGameKConfig() {
+//        if (mIsKConfig) {
+//            return;
+//        }
+//        mMainPageSlideApi = ApiManager.getInstance().createService(MainPageSlideApi.class);
+//        ApiMethods.subscribe(mMainPageSlideApi.getKConfig(), new ApiObserver<ApiResult>() {
+//            @Override
+//            public void process(ApiResult result) {
+//                if (result.getErrno() == 0) {
+//                    mIsKConfig = true;
+//
+//                } else {
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                U.getToastUtil().showShort("网络异常");
+//            }
+//        });
+//    }
 
 }

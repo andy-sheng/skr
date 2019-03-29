@@ -28,11 +28,9 @@ public class GrabSelectViewHolder extends RecyclerView.ViewHolder {
 
     SpecialModel mSpecialModel;
     int mPosition;
-    RecyclerOnItemClickListener mItemClickListener;
 
-    public GrabSelectViewHolder(View itemView, RecyclerOnItemClickListener recyclerOnItemClickListener) {
+    public GrabSelectViewHolder(View itemView, RecyclerOnItemClickListener mItemClickListener) {
         super(itemView);
-        this.mItemClickListener = recyclerOnItemClickListener;
 
         mBackground = (RelativeLayout) itemView.findViewById(R.id.background);
         mSpecialTv = (ExTextView) itemView.findViewById(R.id.special_tv);
