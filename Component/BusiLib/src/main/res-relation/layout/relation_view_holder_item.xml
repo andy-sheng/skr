@@ -45,6 +45,7 @@
         android:text="+ 关注"
         android:textColor="#0C2275"
         android:textSize="@dimen/textsize_14_dp"
+        android:visibility="gone"
         app:bl_corners_radius="@dimen/view_8_dp"
         app:bl_shape="rectangle"
         app:bl_solid_color="#FFF7BB"

@@ -18,11 +18,11 @@ public class RelationAdapter extends RecyclerView.Adapter {
 
     List<UserInfoModel> mUserInfos;
 
-    boolean isBlack;
+    int mMode = 0;
     RecyclerOnItemClickListener mRecyclerOnItemClickListener;
 
-    public RelationAdapter(boolean isBlack, RecyclerOnItemClickListener mRecyclerOnItemClickListener) {
-        this.isBlack = isBlack;
+    public RelationAdapter(int mode, RecyclerOnItemClickListener mRecyclerOnItemClickListener) {
+        this.mMode = mode;
         this.mRecyclerOnItemClickListener = mRecyclerOnItemClickListener;
         mUserInfos = new ArrayList<>();
     }
@@ -39,7 +39,7 @@ public class RelationAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.relation_view_holder_item, parent, false);
-        RelationHolderView viewHolder = new RelationHolderView(view, mRecyclerOnItemClickListener);
+        RelationHolderView viewHolder = new RelationHolderView(view, mMode, mRecyclerOnItemClickListener);
         return viewHolder;
     }
 
@@ -48,7 +48,7 @@ public class RelationAdapter extends RecyclerView.Adapter {
         if (holder instanceof RelationHolderView) {
             RelationHolderView songInfoHolder = (RelationHolderView) holder;
             UserInfoModel songModel = mUserInfos.get(position);
-            songInfoHolder.bind(isBlack, position, songModel);
+            songInfoHolder.bind(position, songModel);
         }
     }
 

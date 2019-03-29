@@ -36,7 +36,6 @@ public class UserInfoManager {
     public static final int RELATION_FOLLOW = 1;       //我关注的人，关注
     public static final int RELATION_FANS = 2;         //关注我的人，粉丝
     public static final int RELATION_FRIENDS = 3;      //双方关注，好友
-
     public static final int RELATION_BLACKLIST = 4;    //黑名单
 
     public static final int RA_UNKNOWN = 0;       //未知

@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
+import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.rxretrofit.ApiManager;
@@ -73,7 +74,7 @@ public class BlackListFragment extends BaseFragment {
             }
         });
 
-        mRelationAdapter = new RelationAdapter(true, new RecyclerOnItemClickListener() {
+        mRelationAdapter = new RelationAdapter(UserInfoManager.RELATION_BLACKLIST, new RecyclerOnItemClickListener() {
             @Override
             public void onItemClicked(View view, int position, Object model) {
                 final UserInfoModel userInfoModel = (UserInfoModel) model;
