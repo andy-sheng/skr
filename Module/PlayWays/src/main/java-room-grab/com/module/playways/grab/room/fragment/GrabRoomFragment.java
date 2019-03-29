@@ -369,9 +369,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ShowPersonCardEvent event) {
-        if (event.getUid() != MyUserInfoManager.getInstance().getUid()) {
-            showPersonInfoView(event.getUid());
-        }
+        showPersonInfoView(event.getUid());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -752,7 +750,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             MyLog.d(TAG, "这轮刚进来，不播放导唱过场");
             mGrabOpBtn.hide();
         } else {
-            if(mRoomData.isContainMe()){
+            if (mRoomData.isContainMe()) {
                 mGrabOpBtn.playCountDown(pendingPlaySongCardData.getSeq(), 4
                         , pendingPlaySongCardData.songModel.getStandIntroEndT() - pendingPlaySongCardData.songModel.getStandIntroBeginT());
             }
