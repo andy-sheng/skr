@@ -29,6 +29,7 @@ import com.module.RouterConstants;
 import com.module.home.dialogmanager.HomeDialogManager;
 import com.module.home.fragment.GameFragment;
 import com.module.home.fragment.PersonFragment;
+import com.module.home.fragment.PkInfoFragment;
 import com.module.home.game.Game2Fragment;
 import com.module.home.persenter.CheckInPresenter;
 import com.module.home.persenter.HomeCorePresenter;
@@ -56,6 +57,8 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
     RelativeLayout mPersonArea;
     ExImageView mPersonInfoBtn;
     ExImageView mPersonInfoRedDot;
+    RelativeLayout mRankArea;
+    ExImageView mRankBtn;
     NestViewPager mMainVp;
     IMsgService mMsgService;
     HomeCorePresenter mHomePresenter;
@@ -103,6 +106,8 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mBottomContainer = (LinearLayout) findViewById(R.id.bottom_container);
         mGameArea = (RelativeLayout) findViewById(R.id.game_area);
         mGameBtn = (ExImageView) findViewById(R.id.game_btn);
+        mRankArea = (RelativeLayout) findViewById(R.id.rank_area);
+        mRankBtn = (ExImageView) findViewById(R.id.rank_btn);
         mMessageArea = (RelativeLayout) findViewById(R.id.message_area);
         mMessageBtn = (ExImageView) findViewById(R.id.message_btn);
         mUnreadNumTv = (ExTextView) findViewById(R.id.unread_num_tv);
@@ -114,7 +119,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
 
         mMsgService = ModuleServiceManager.getInstance().getMsgService();
         mMainVp.setViewPagerCanScroll(false);
-        mMainVp.setOffscreenPageLimit(2);
+        mMainVp.setOffscreenPageLimit(3);
         checkIfFromSchema();
 
         FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
@@ -124,12 +129,14 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
                 if (position == 0) {
                     return new Game2Fragment();
                 } else if (position == 1) {
+                    return new PkInfoFragment();
+                } else if (position == 2) {
                     if (mMsgService == null) {
                         return new PersonFragment();
                     } else {
                         return (Fragment) mMsgService.getMessageFragment();
                     }
-                } else if (position == 2) {
+                } else if (position == 3) {
                     return new PersonFragment();
                 }
                 return null;
@@ -138,9 +145,9 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             @Override
             public int getCount() {
                 if (mMsgService == null) {
-                    return 2;
-                } else {
                     return 3;
+                } else {
+                    return 4;
                 }
             }
         };
@@ -157,6 +164,18 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             public void clickValid(View v) {
                 mMainVp.setCurrentItem(0, false);
                 mGameBtn.setImageResource(R.drawable.ic_home_selected);
+                mRankBtn.setImageResource(R.drawable.ic_rank_normal);
+                mMessageBtn.setImageResource(R.drawable.ic_chat_normal);
+                mPersonInfoBtn.setImageResource(R.drawable.ic_me_normal);
+            }
+        });
+
+        mRankArea.setOnClickListener(new DebounceViewClickListener(100) {
+            @Override
+            public void clickValid(View v) {
+                mMainVp.setCurrentItem(1, false);
+                mGameBtn.setImageResource(R.drawable.ic_home_normal);
+                mRankBtn.setImageResource(R.drawable.ic_rank_selected);
                 mMessageBtn.setImageResource(R.drawable.ic_chat_normal);
                 mPersonInfoBtn.setImageResource(R.drawable.ic_me_normal);
             }
@@ -165,8 +184,9 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mMessageArea.setOnClickListener(new DebounceViewClickListener(100) {
             @Override
             public void clickValid(View v) {
-                mMainVp.setCurrentItem(1, false);
+                mMainVp.setCurrentItem(2, false);
                 mGameBtn.setImageResource(R.drawable.ic_home_normal);
+                mRankBtn.setImageResource(R.drawable.ic_rank_normal);
                 mMessageBtn.setImageResource(R.drawable.ic_chat_selected);
                 mPersonInfoBtn.setImageResource(R.drawable.ic_me_normal);
 
@@ -179,8 +199,9 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         mPersonArea.setOnClickListener(new DebounceViewClickListener(100) {
             @Override
             public void clickValid(View v) {
-                mMainVp.setCurrentItem(2, false);
+                mMainVp.setCurrentItem(3, false);
                 mGameBtn.setImageResource(R.drawable.ic_home_normal);
+                mRankBtn.setImageResource(R.drawable.ic_rank_normal);
                 mMessageBtn.setImageResource(R.drawable.ic_chat_normal);
                 mPersonInfoBtn.setImageResource(R.drawable.ic_me_selected);
             }
@@ -212,7 +233,6 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             }
         }
     }
-
 
 
     @Override
