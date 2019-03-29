@@ -25,6 +25,8 @@ public class JsRegister {
     public static final String BIND_GET_VERSION = "getAppVersion";
     public static final String GET_CLIP_BOARD = "getClipboard";
     public static final String AUTH_SUCCESS = "authSuccess";
+    public static final String FINISH = "finish";
+    public static final String CHECK_CAMERA_PERM = "checkCameraPerm";
 
     BridgeWebView mBridgeWebView;
 
@@ -66,6 +68,10 @@ public class JsRegister {
             mJsBridgeImpl.getClipboard(callBackFunction);
         } else if (AUTH_SUCCESS.equals(opt)) {
             mJsBridgeImpl.authSuccess(callBackFunction);
+        } else if (FINISH.equals(opt)) {
+            mJsBridgeImpl.finish(callBackFunction);
+        } else if (CHECK_CAMERA_PERM.equals(opt)) {
+            mJsBridgeImpl.checkCameraPerm(callBackFunction);
         } else {
             mJsBridgeImpl.noMethed(callBackFunction);
         }

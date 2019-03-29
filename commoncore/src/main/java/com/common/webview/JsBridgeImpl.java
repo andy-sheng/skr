@@ -14,6 +14,7 @@ import com.common.core.share.SharePanel;
 import com.common.core.share.SharePlatform;
 import com.common.core.share.ShareType;
 import com.common.log.MyLog;
+import com.common.permission.PermissionUtils;
 import com.common.utils.U;
 import com.jsbridge.CallBackFunction;
 import com.module.RouterConstants;
@@ -22,6 +23,7 @@ import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
+import java.util.List;
 import java.util.Map;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
@@ -190,6 +192,40 @@ public class JsBridgeImpl {
     public void authSuccess(final CallBackFunction function) {
         IHomeService channelService = (IHomeService) ARouter.getInstance().build(RouterConstants.SERVICE_HOME).navigation();
         channelService.authSuccess();
+        function.onCallBack(getJsonObj(new Pair("errcode", "0"), new Pair("errmsg", "")).toJSONString());
+    }
+
+    public void finish(final CallBackFunction function) {
+        mBaseActivity.finish();
+        function.onCallBack(getJsonObj(new Pair("errcode", "0"), new Pair("errmsg", "")).toJSONString());
+    }
+
+    public void checkCameraPerm(final CallBackFunction function) {
+        if (U.getPermissionUtils().checkCamera(mBaseActivity)) {
+            function.onCallBack(getJsonObj(new Pair("errcode", "0"), new Pair("errmsg", ""),
+                    new Pair<String, Object>("data", getJsonObj(new Pair<String, Object>("camera_perm", true)))).toJSONString());
+        } else {
+            U.getPermissionUtils().requestCamera(new PermissionUtils.RequestPermission() {
+                @Override
+                public void onRequestPermissionSuccess() {
+                    function.onCallBack(getJsonObj(new Pair("errcode", "0"), new Pair("errmsg", ""),
+                            new Pair<String, Object>("data", getJsonObj(new Pair<String, Object>("camera_perm", true)))).toJSONString());
+                }
+
+                @Override
+                public void onRequestPermissionFailure(List<String> permissions) {
+                    function.onCallBack(getJsonObj(new Pair("errcode", "0"), new Pair("errmsg", ""),
+                            new Pair<String, Object>("data", getJsonObj(new Pair<String, Object>("camera_perm", false)))).toJSONString());
+                }
+
+                @Override
+                public void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions) {
+                    function.onCallBack(getJsonObj(new Pair("errcode", "0"), new Pair("errmsg", ""),
+                            new Pair<String, Object>("data", getJsonObj(new Pair<String, Object>("camera_perm", false)))).toJSONString());
+                }
+            }, mBaseActivity);
+        }
+
         function.onCallBack(getJsonObj(new Pair("errcode", "0"), new Pair("errmsg", "")).toJSONString());
     }
 
