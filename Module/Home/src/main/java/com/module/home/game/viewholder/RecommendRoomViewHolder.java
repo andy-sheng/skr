@@ -14,6 +14,7 @@ import com.component.busilib.friends.FriendRoomHorizontalAdapter;
 import com.component.busilib.friends.RecommendModel;
 import com.module.home.R;
 import com.module.home.game.adapter.GameAdapter;
+import com.module.home.game.model.RecommendRoomModel;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 public class RecommendRoomViewHolder extends RecyclerView.ViewHolder {
@@ -66,7 +67,7 @@ public class RecommendRoomViewHolder extends RecyclerView.ViewHolder {
 
     }
 
-    public void bindData(com.module.home.game.model.RecommendRoomModel recommendRoomModel) {
+    public void bindData(RecommendRoomModel recommendRoomModel) {
         mFriendRoomAdapter.setDataList(recommendRoomModel.getRoomModels());
     }
 }

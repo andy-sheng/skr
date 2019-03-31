@@ -18,6 +18,7 @@ import com.common.utils.U;
 import com.component.busilib.friends.RecommendModel;
 import com.component.busilib.friends.GrabSongApi;
 import com.component.busilib.friends.SpecialModel;
+import com.engine.EngineManager;
 import com.module.home.MainPageSlideApi;
 import com.module.home.model.GameKConfigModel;
 import com.module.home.model.SlideShowModel;
@@ -59,7 +60,8 @@ public class GamePresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     mIsKConfig = true;
-                    GameKConfigModel gameKConfigModel = JSON.parseObject(result.getData().toString(), GameKConfigModel.class);
+                    GameKConfigModel gameKConfigModel = JSON.parseObject(result.getData().getString("common"), GameKConfigModel.class);
+                    U.getPreferenceUtils().setSettingBoolean(EngineManager.PREF_KEY_TOKEN_ENABLE, gameKConfigModel.isAgoraTokenEnable());
                     mIGameView.setGameConfig(gameKConfigModel);
                 } else {
                     mIsKConfig = false;
