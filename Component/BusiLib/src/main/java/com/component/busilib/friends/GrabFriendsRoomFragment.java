@@ -69,6 +69,7 @@ public class GrabFriendsRoomFragment extends BaseFragment {
         mRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                mRefreshLayout.finishLoadMore();
                 loadData(offset, DEFAULT_COUNT);
             }
 
