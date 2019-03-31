@@ -76,7 +76,7 @@ public class TurnChangeCardView extends RelativeLayout {
         this.mSVGAListener = listener;
 
         RankRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
-        if ( infoModel == null) {
+        if (infoModel == null) {
             return false;
         }
 
@@ -108,6 +108,8 @@ public class TurnChangeCardView extends RelativeLayout {
     private void firstTurnCard(RankPlayerInfoModel info) {
         setVisibility(VISIBLE);
         mFirstSvga.clearAnimation();
+        mFirstSvga.setCallback(null);
+
         mFirstSvga.setVisibility(VISIBLE);
         mFirstSvga.setLoops(1);
         SVGAParser parser = new SVGAParser(U.app());
@@ -126,7 +128,7 @@ public class TurnChangeCardView extends RelativeLayout {
                 }
             });
         } catch (Exception e) {
-            MyLog.e(TAG,e);
+            MyLog.e(TAG, e);
         }
 
         mFirstSvga.setCallback(new SVGACallback() {
@@ -164,6 +166,8 @@ public class TurnChangeCardView extends RelativeLayout {
     private void nextTurnCard(RankPlayerInfoModel info) {
         setVisibility(VISIBLE);
         mNextSvga.clearAnimation();
+        mNextSvga.setCallback(null);
+
         mNextSvga.setVisibility(VISIBLE);
         mNextSvga.setLoops(1);
         SVGAParser parser = new SVGAParser(U.app());
@@ -182,7 +186,7 @@ public class TurnChangeCardView extends RelativeLayout {
                 }
             });
         } catch (Exception e) {
-            MyLog.e(TAG,e);
+            MyLog.e(TAG, e);
         }
 
         mNextSvga.setCallback(new SVGACallback() {
@@ -277,9 +281,11 @@ public class TurnChangeCardView extends RelativeLayout {
         if (visibility == GONE) {
             this.mSVGAListener = null;
             if (mFirstSvga != null) {
+                mFirstSvga.setCallback(null);
                 mFirstSvga.stopAnimation(false);
             }
             if (mNextSvga != null) {
+                mNextSvga.setCallback(null);
                 mNextSvga.stopAnimation(false);
             }
         }
