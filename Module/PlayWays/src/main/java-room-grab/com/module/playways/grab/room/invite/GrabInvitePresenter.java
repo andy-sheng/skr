@@ -24,7 +24,7 @@ public class GrabInvitePresenter extends RxLifeCyclePresenter {
     List<GrabFriendModel> mGrabFriendModelList = new ArrayList<>();
 
     int mOffset = 0;
-    int mLimit = 20;
+    int mLimit = 50;
 
     GrabRoomData mGrabRoomData;
 
