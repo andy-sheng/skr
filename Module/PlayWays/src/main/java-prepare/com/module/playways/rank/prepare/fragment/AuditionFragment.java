@@ -115,21 +115,22 @@ public class AuditionFragment extends BaseFragment {
                     MyLog.d(TAG, "handleMessage" + " lineNo=" + lineNo);
                     if (lineNo > mLastLineNum) {
                         if (ScoreConfig.isMelpEnable()) {
-                            int score = EngineManager.getInstance().getLineScore1();
+                            int melp1score = EngineManager.getInstance().getLineScore1();
                             if (MyLog.isDebugLogOpen()) {
-                                addLogText("第" + lineNo + "行,melp1得分:" + score);
+                                addLogText("第" + lineNo + "行,melp1得分:" + melp1score);
                             }
-                            MyLog.d(TAG, "handleMessage acr超时 本地获取得分:" + score);
-                            processScore(score, lineNo);
+                            MyLog.d(TAG, "handleMessage acr超时 本地获取得分:" + melp1score);
+                            processScore(melp1score, lineNo);
                         }
 
                         if (ScoreConfig.isMelp2Enable()) {
                             EngineManager.getInstance().getLineScore2(lineNo, new Score2Callback() {
                                 @Override
-                                public void onGetScore(int lineNum, int score) {
+                                public void onGetScore(int lineNum, int melp2score) {
                                     if (MyLog.isDebugLogOpen()) {
-                                        addLogText("第" + lineNo + "行 melp2得分:" + score);
+                                        addLogText("第" + lineNo + "行 melp2得分:" + melp2score);
                                     }
+                                    processScore(melp2score, lineNo);
                                 }
                             });
                         }
@@ -313,40 +314,47 @@ public class AuditionFragment extends BaseFragment {
                     public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
                         mUiHandler.removeMessages(MSG_SHOW_SCORE_EVENT + lineNo * 100);
                         if (lineNo > mLastLineNum) {
-                            // 使用最新的打分方案做优化
-                            int score1 = EngineManager.getInstance().getLineScore1();
-                            if (MyLog.isDebugLogOpen()) {
-                                addLogText("第" + lineNo + "行 melp1得分:" + score1);
-                            }
-                            if (ScoreConfig.isMelp2Enable()) {
-                                EngineManager.getInstance().getLineScore2(lineNo, new Score2Callback() {
-                                    @Override
-                                    public void onGetScore(int lineNum, int score) {
-                                        if (MyLog.isDebugLogOpen()) {
-                                            addLogText("第" + lineNo + "行 melp2得分:" + score);
-                                        }
-                                    }
-                                });
-                            }
-                            int score2 = -1;
+                            int acrScore = -1;
                             if (targetSongInfo != null) {
-                                score2 = (int) (targetSongInfo.getScore() * 100);
+                                acrScore = (int) (targetSongInfo.getScore() * 100);
                                 if (MyLog.isDebugLogOpen()) {
-                                    addLogText("第" + lineNo + "行 acr得分:" + score2);
+                                    addLogText("第" + lineNo + "行 acr得分:" + acrScore);
                                 }
                             } else {
                                 if (MyLog.isDebugLogOpen()) {
                                     addLogText("第" + lineNo + "行 acr得分:未识别");
                                 }
                             }
+
                             if (ScoreConfig.isMelpEnable()) {
-                                if (score1 > score2) {
-                                    processScore(score1, lineNo);
+                                int melp1Score = EngineManager.getInstance().getLineScore1();
+                                if (MyLog.isDebugLogOpen()) {
+                                    addLogText("第" + lineNo + "行 melp1得分:" + melp1Score);
+                                }
+                                if (melp1Score > acrScore) {
+                                    processScore(melp1Score, lineNo);
                                 } else {
-                                    processScore(score2, lineNo);
+                                    processScore(acrScore, lineNo);
                                 }
                             } else {
-                                processScore(score2, lineNo);
+                                processScore(acrScore, lineNo);
+                            }
+
+                            if (ScoreConfig.isMelp2Enable()) {
+                                int finalAcrScore = acrScore;
+                                EngineManager.getInstance().getLineScore2(lineNo, new Score2Callback() {
+                                    @Override
+                                    public void onGetScore(int lineNum, int melp2score) {
+                                        if (MyLog.isDebugLogOpen()) {
+                                            addLogText("第" + lineNo + "行 melp2得分:" + melp2score);
+                                        }
+                                        if (melp2score > finalAcrScore) {
+                                            processScore(melp2score, lineNo);
+                                        } else {
+                                            processScore(finalAcrScore, lineNo);
+                                        }
+                                    }
+                                });
                             }
                         }
                     }
@@ -575,6 +583,7 @@ public class AuditionFragment extends BaseFragment {
                         if (MyLog.isDebugLogOpen()) {
                             addLogText("第" + lineNum + "行 melp2得分:" + score);
                         }
+                        processScore(score, event.lineNum);
                     }
                 });
             }

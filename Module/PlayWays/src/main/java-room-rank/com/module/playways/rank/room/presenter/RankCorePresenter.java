@@ -30,6 +30,7 @@ import com.engine.Params;
 import com.engine.arccloud.ArcRecognizeListener;
 import com.engine.arccloud.RecognizeConfig;
 import com.engine.arccloud.SongInfo;
+import com.engine.score.Score2Callback;
 import com.module.ModuleServiceManager;
 import com.module.msg.CustomMsgType;
 import com.module.msg.IMsgService;
@@ -162,9 +163,20 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                     int lineNo = (msg.what - MSG_SHOW_SCORE_EVENT) / 100;
                     MyLog.d(TAG, "handleMessage" + " lineNo=" + lineNo);
                     if (lineNo > mLastLineNum) {
-                        int score = EngineManager.getInstance().getLineScore1();
-                        MyLog.d(TAG, "handleMessage acr超时 本地获取得分:" + score);
-                        processScore(score, lineNo);
+                        if (ScoreConfig.isMelpEnable()) {
+                            int melp1score = EngineManager.getInstance().getLineScore1();
+                            MyLog.d(TAG, "handleMessage acr超时 本地获取得分:" + melp1score);
+                            processScore(melp1score, lineNo);
+                        }
+
+                        if (ScoreConfig.isMelp2Enable()) {
+                            EngineManager.getInstance().getLineScore2(lineNo, new Score2Callback() {
+                                @Override
+                                public void onGetScore(int lineNum, int melp2score) {
+                                    processScore(melp2score, lineNo);
+                                }
+                            });
+                        }
                     }
             }
 
@@ -186,7 +198,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 //            if(RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())){
 //                isAnchor = true;
 //            }
-            EngineManager.getInstance().joinRoom(String.valueOf(mRoomData.getGameId()), (int) UserAccountManager.getInstance().getUuidAsLong(), isAnchor,mRoomData.getAgoraToken());
+            EngineManager.getInstance().joinRoom(String.valueOf(mRoomData.getGameId()), (int) UserAccountManager.getInstance().getUuidAsLong(), isAnchor, mRoomData.getAgoraToken());
             // 不发送本地音频
 //            EngineManager.getInstance().muteLocalAudioStream(true);
             // 系统提示
@@ -197,7 +209,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
             for (int i = 0; i < mRoomData.getRoundInfoModelList().size(); i++) {
                 RankRoundInfoModel roundInfoModel = mRoomData.getRoundInfoModelList().get(i);
                 PlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, roundInfoModel.getUserID());
-                if(playerInfoModel == null){
+                if (playerInfoModel == null) {
                     MyLog.e(TAG, "RankCorePresenter constractor playerInfoModel is null, id is " + roundInfoModel.getUserID());
                     continue;
                 }
@@ -229,20 +241,35 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                             public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
                                 mUiHandler.removeMessages(MSG_SHOW_SCORE_EVENT + lineNo * 100);
                                 if (lineNo > mLastLineNum) {
-                                    // 使用最新的打分方案做优化
-                                    int score1 = EngineManager.getInstance().getLineScore1();
-                                    int score2 = 0;
+                                    int acrScore = -1;
                                     if (targetSongInfo != null) {
-                                        score2 = (int) (targetSongInfo.getScore() * 100);
+                                        acrScore = (int) (targetSongInfo.getScore() * 100);
+                                    } else {
                                     }
+
                                     if (ScoreConfig.isMelpEnable()) {
-                                        if (score1 > score2) {
-                                            processScore(score1, lineNo);
+                                        int melp1Score = EngineManager.getInstance().getLineScore1();
+                                        if (melp1Score > acrScore) {
+                                            processScore(melp1Score, lineNo);
                                         } else {
-                                            processScore(score2, lineNo);
+                                            processScore(acrScore, lineNo);
                                         }
                                     } else {
-                                        processScore(score2, lineNo);
+                                        processScore(acrScore, lineNo);
+                                    }
+
+                                    if (ScoreConfig.isMelp2Enable()) {
+                                        int finalAcrScore = acrScore;
+                                        EngineManager.getInstance().getLineScore2(lineNo, new Score2Callback() {
+                                            @Override
+                                            public void onGetScore(int lineNum, int melp2score) {
+                                                if (melp2score > finalAcrScore) {
+                                                    processScore(melp2score, lineNo);
+                                                } else {
+                                                    processScore(finalAcrScore, lineNo);
+                                                }
+                                            }
+                                        });
                                     }
                                 }
                             }
@@ -1514,13 +1541,20 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     public void onEvent(LrcEvent.LineLineEndEvent event) {
         MyLog.d(TAG, "onEvent LineEndEvent lineno=" + event.lineNum);
         if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
-
             if (ScoreConfig.isAcrEnable()) {
                 EngineManager.getInstance().recognizeInManualMode(event.lineNum);
             } else {
                 if (ScoreConfig.isMelpEnable()) {
                     int score = EngineManager.getInstance().getLineScore1();
                     processScore(score, event.lineNum);
+                }
+                if (ScoreConfig.isMelp2Enable()) {
+                    EngineManager.getInstance().getLineScore2(event.lineNum, new Score2Callback() {
+                        @Override
+                        public void onGetScore(int lineNum, int score) {
+                            processScore(score, event.lineNum);
+                        }
+                    });
                 }
             }
             Message msg = mUiHandler.obtainMessage(MSG_SHOW_SCORE_EVENT + event.lineNum * 100);
@@ -1610,7 +1644,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         map.put("gameID", mRoomData.getGameId());
         RankRoundInfoModel infoModel = RoomDataUtils.getRoundInfoByUserId(mRoomData, (int) MyUserInfoManager.getInstance().getUid());
         if (infoModel == null) {
-            MyLog.d(TAG,"sendScoreToServer 但不是自己的轮次");
+            MyLog.d(TAG, "sendScoreToServer 但不是自己的轮次");
             return;
         }
         int itemID = infoModel.getPlaybookID();
