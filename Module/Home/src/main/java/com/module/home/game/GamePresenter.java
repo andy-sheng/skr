@@ -1,9 +1,7 @@
 package com.module.home.game;
 
 import android.text.TextUtils;
-import android.view.View;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.model.UserRankModel;
@@ -25,6 +23,8 @@ import com.module.home.model.SlideShowModel;
 
 import java.util.List;
 
+import io.reactivex.disposables.Disposable;
+
 public class GamePresenter extends RxLifeCyclePresenter {
 
     MainPageSlideApi mMainPageSlideApi;
@@ -32,12 +32,14 @@ public class GamePresenter extends RxLifeCyclePresenter {
     GrabSongApi mGrabSongApi;
 
     long mLastUpdateOperaArea = 0;    //广告位上次更新成功时间
+    long mLastUpdateRecomendInfo = 0; //好友派对上次更新成功时间
     long mLastUpdateQuickInfo = 0;    //快速加入房间更新成功时间
     long mLastUpdateRankInfo = 0;     //排名信息上次更新成功时间
 
     boolean mIsKConfig = false;  //标记是否拉到过游戏配置信息
 
     HandlerTaskTimer mRecommendTimer;
+    Disposable mDisposable;
 
     IGameView mIGameView;
 
@@ -140,9 +142,15 @@ public class GamePresenter extends RxLifeCyclePresenter {
     }
 
     public void initRecommendRoom(int interval) {
+//        long delayTime = 0;
+//        long now = System.currentTimeMillis();
         if (interval <= 0) {
             stopTimer();
+//            if ((now - mLastUpdateRecomendInfo) < 20 * 1000) {
+//                delayTime = 20 * 1000 - (now - mLastUpdateRecomendInfo);
+//            }
             mRecommendTimer = HandlerTaskTimer.newBuilder()
+//                    .delay(delayTime)
                     .take(-1)
                     .interval(20 * 1000)
                     .start(new HandlerTaskTimer.ObserverW() {
@@ -153,7 +161,11 @@ public class GamePresenter extends RxLifeCyclePresenter {
                     });
         } else {
             stopTimer();
+//            if ((now - mLastUpdateRecomendInfo) < interval * 1000) {
+//                delayTime = interval * 1000 - (now - mLastUpdateRecomendInfo);
+//            }
             mRecommendTimer = HandlerTaskTimer.newBuilder()
+//                    .delay(delayTime)
                     .take(-1)
                     .interval(interval * 1000)
                     .start(new HandlerTaskTimer.ObserverW() {
@@ -173,10 +185,15 @@ public class GamePresenter extends RxLifeCyclePresenter {
 
 
     private void loadRecommendRoomData() {
-        ApiMethods.subscribe(mGrabSongApi.getRecommendRoomList(0, 10), new ApiObserver<ApiResult>() {
+        if (mDisposable != null && !mDisposable.isDisposed()) {
+            mDisposable.dispose();
+            return;
+        }
+        mDisposable = ApiMethods.subscribeWith(mGrabSongApi.getRecommendRoomList(0, 50), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult obj) {
                 if (obj.getErrno() == 0) {
+                    mLastUpdateRecomendInfo = System.currentTimeMillis();
                     List<RecommendModel> list = JSON.parseArray(obj.getData().getString("rooms"), RecommendModel.class);
                     int offset = obj.getData().getIntValue("offset");
                     int totalNum = obj.getData().getIntValue("totalRoomsNum");
@@ -221,5 +238,8 @@ public class GamePresenter extends RxLifeCyclePresenter {
     public void destroy() {
         super.destroy();
         stopTimer();
+        if (mDisposable != null) {
+            mDisposable.dispose();
+        }
     }
 }
