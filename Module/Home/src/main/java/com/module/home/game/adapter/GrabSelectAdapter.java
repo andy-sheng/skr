@@ -61,7 +61,10 @@ public class GrabSelectAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return mDataList.size() + 1;
+        if (mDataList != null && mDataList.size() != 0) {
+            return mDataList.size() + 1;
+        }
+        return 1;
     }
 
     @Override
@@ -77,6 +80,8 @@ public class GrabSelectAdapter extends RecyclerView.Adapter {
     }
 
     public void setDataList(List<SpecialModel> dataList) {
-        mDataList = dataList;
+        if (dataList != null && dataList.size() != 0) {
+            mDataList = dataList;
+        }
     }
 }

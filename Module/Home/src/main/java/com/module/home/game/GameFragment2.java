@@ -225,14 +225,20 @@ public class GameFragment2 extends BaseFragment implements IGameView {
     public void setQuickRoom(List<SpecialModel> list, int offset) {
         MyLog.d(TAG, "setQuickRoom" + " list=" + list + " offset=" + offset);
         if (list == null || list.size() == 0) {
-            MyLog.w(TAG, "initQuickRoom 为null");
+            // 快速加入专场空了，清空数据
+            if (offset == 0) {
+                QuickJoinRoomModel quickJoinRoomModel = new QuickJoinRoomModel(null, offset);
+                mGameAdapter.updateQuickJoinRoomInfo(quickJoinRoomModel);
+                mGameAdapter.notifyDataSetChanged();
+            } else {
+                MyLog.w(TAG, "initQuickRoom 为null");
+            }
             return;
         }
 
         QuickJoinRoomModel quickJoinRoomModel = new QuickJoinRoomModel(list, offset);
         mGameAdapter.updateQuickJoinRoomInfo(quickJoinRoomModel);
         mGameAdapter.notifyDataSetChanged();
-
     }
 
     @Override
@@ -256,12 +262,20 @@ public class GameFragment2 extends BaseFragment implements IGameView {
     @Override
     public void setRecommendInfo(List<RecommendModel> list, int offset, int totalNum) {
         if (list == null || list.size() == 0) {
-            MyLog.w(TAG, "initFriendRoom 为null");
+            if (offset == 0) {
+                // 清空好友派对列表
+                if (mGameAdapter.getPositionObject(0) != null && mGameAdapter.getPositionObject(0) instanceof RecommendRoomModel) {
+                    mGameAdapter.getDataList().remove(mGameAdapter.getPositionObject(0));
+                }
+                mGameAdapter.notifyDataSetChanged();
+            } else {
+                MyLog.w(TAG, "initFriendRoom 为null");
+            }
             return;
         }
 
         RecommendRoomModel recommendRoomModel = new RecommendRoomModel(list, offset, totalNum);
-        if (mGameAdapter.getPositionObject(0) != null && mGameAdapter.getPositionObject(0) instanceof com.module.home.game.model.RecommendRoomModel) {
+        if (mGameAdapter.getPositionObject(0) != null && mGameAdapter.getPositionObject(0) instanceof RecommendRoomModel) {
             mGameAdapter.getDataList().remove(mGameAdapter.getPositionObject(0));
         }
         mGameAdapter.getDataList().add(0, recommendRoomModel);

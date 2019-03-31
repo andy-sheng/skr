@@ -1,9 +1,9 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.common.view.ex.ExRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/background"
     android:layout_width="match_parent"
     android:layout_height="@dimen/view_80_dp"
     android:layout_margin="@dimen/view_8_dp"
-    android:background="#F5A623">
+    android:background="@drawable/shouye_createroom">
 
     <com.common.view.ex.ExTextView
         android:id="@+id/special_tv"
@@ -39,4 +39,4 @@
         android:layout_marginRight="@dimen/view_8_dp" />
 
 
-</RelativeLayout>
+</com.common.view.ex.ExRelativeLayout>
