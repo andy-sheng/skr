@@ -29,6 +29,7 @@ import com.module.home.model.SlideShowModel;
 import com.module.home.widget.UserInfoTileView2;
 import com.module.rank.IRankingModeService;
 import com.youth.banner.Banner;
+import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -65,6 +66,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mRecyclerLayout = (ExRelativeLayout) mRootView.findViewById(R.id.recycler_layout);
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
         mBannerView = (Banner) mRootView.findViewById(R.id.banner_view);
+        mBannerView.setIndicatorGravity(BannerConfig.RIGHT);
 
         mSkrAudioPermission = new SkrAudioPermission();
 

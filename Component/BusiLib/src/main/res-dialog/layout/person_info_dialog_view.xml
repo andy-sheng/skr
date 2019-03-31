@@ -35,7 +35,7 @@
                 android:layout_centerVertical="true"
                 android:ellipsize="end"
                 android:gravity="center"
-                android:maxWidth="@dimen/view_250_dp"
+                android:maxWidth="@dimen/view_234_dp"
                 android:maxLines="1"
                 android:singleLine="true"
                 android:textColor="@color/black"
