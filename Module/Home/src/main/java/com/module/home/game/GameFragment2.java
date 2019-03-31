@@ -1,14 +1,17 @@
 package com.module.home.game;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.banner.BannerImageLoader;
 import com.common.base.BaseFragment;
 import com.common.core.account.event.AccountEvent;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.permission.SkrAudioPermission;
 import com.common.core.userinfo.model.UserRankModel;
@@ -28,9 +31,15 @@ import com.module.home.model.GameKConfigModel;
 import com.module.home.model.SlideShowModel;
 import com.module.home.widget.UserInfoTileView2;
 import com.module.rank.IRankingModeService;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
+import com.scwang.smartrefresh.layout.header.ClassicsHeader;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
+import com.zq.level.utils.LevelConfigUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -41,6 +50,9 @@ import java.util.List;
 public class GameFragment2 extends BaseFragment implements IGameView {
     public final static String TAG = "Game2Fragment";
 
+    RelativeLayout mBackground;
+    SmartRefreshLayout mRefreshLayout;
+    ClassicsHeader mClassicsHeader;
     UserInfoTileView2 mUserInfoTitle;
     ExRelativeLayout mRecyclerLayout;
     RecyclerView mRecyclerView;
@@ -62,6 +74,9 @@ public class GameFragment2 extends BaseFragment implements IGameView {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
 
+        mBackground = (RelativeLayout) mRootView.findViewById(R.id.background);
+        mRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.refreshLayout);
+        mClassicsHeader = (ClassicsHeader) mRootView.findViewById(R.id.classics_header);
         mUserInfoTitle = (UserInfoTileView2) mRootView.findViewById(R.id.user_info_title);
         mRecyclerLayout = (ExRelativeLayout) mRootView.findViewById(R.id.recycler_layout);
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
@@ -69,6 +84,28 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mBannerView.setIndicatorGravity(BannerConfig.RIGHT);
 
         mSkrAudioPermission = new SkrAudioPermission();
+
+        mRefreshLayout.setEnableRefresh(true);
+        mRefreshLayout.setEnableLoadMore(false);
+        mRefreshLayout.setEnableLoadMoreWhenContentNotFull(false);
+        mRefreshLayout.setEnableOverScrollDrag(true);
+        mRefreshLayout.setRefreshHeader(mClassicsHeader);
+        mRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+
+            }
+
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                refreshLayout.finishRefresh();
+                mGamePresenter.initOperationArea(true);
+                mGamePresenter.initQuickRoom(true);
+                mGamePresenter.initRankInfo(true);
+                mGamePresenter.initRecommendRoom(mRecommendInterval);
+                mGamePresenter.initGameKConfig();
+            }
+        });
 
         mGameAdapter = new GameAdapter(this, new GameAdapter.GameAdapterListener() {
             @Override
@@ -196,13 +233,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         }
 
         QuickJoinRoomModel quickJoinRoomModel = new QuickJoinRoomModel(list, offset);
-        if (mGameAdapter.getPositionObject(1) != null && mGameAdapter.getPositionObject(1) instanceof RecommendRoomModel) {
-            mGameAdapter.getDataList().remove(mGameAdapter.getPositionObject(1));
-            mGameAdapter.getDataList().add(1, quickJoinRoomModel);
-        } else {
-            mGameAdapter.getDataList().add(quickJoinRoomModel);
-        }
-
+        mGameAdapter.updateQuickJoinRoomInfo(quickJoinRoomModel);
         mGameAdapter.notifyDataSetChanged();
 
     }
@@ -210,6 +241,9 @@ public class GameFragment2 extends BaseFragment implements IGameView {
     @Override
     public void setRankInfo(UserRankModel userRankModel) {
         if (userRankModel != null) {
+            if (LevelConfigUtils.getHomePageTopBg(userRankModel.getMainRanking()) != null) {
+                mClassicsHeader.setBackground(LevelConfigUtils.getHomePageTopBg(userRankModel.getMainRanking()));
+            }
             mUserInfoTitle.showRankView(userRankModel);
         } else {
             MyLog.w(TAG, "setRankInfo" + " userRankModel = null");

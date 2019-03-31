@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.common.anim.ObjectPlayControlTemplate;
 import com.common.base.BaseFragment;
 import com.component.busilib.friends.RecommendModel;
 import com.component.busilib.friends.SpecialModel;
@@ -17,6 +18,7 @@ import com.module.home.game.viewholder.QuickRoomViewHolder;
 import com.module.home.game.viewholder.RecommendRoomViewHolder;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class GameAdapter extends RecyclerView.Adapter {
@@ -52,6 +54,24 @@ public class GameAdapter extends RecyclerView.Adapter {
     public GameAdapter(BaseFragment baseFragment, GameAdapterListener gameAdapterListener) {
         this.mBaseFragment = baseFragment;
         mListener = gameAdapterListener;
+    }
+
+    public void updateQuickJoinRoomInfo(QuickJoinRoomModel quickJoinRoomModel) {
+        if (mDataList != null && mDataList.size() > 0) {
+            Iterator<Object> iterator = mDataList.iterator();
+            while (iterator.hasNext()) {
+                if (iterator.next() instanceof QuickJoinRoomModel) {
+                    iterator.remove();
+                }
+            }
+            if (mDataList != null && mDataList.size() >= 1) {
+                mDataList.add(1, quickJoinRoomModel);
+            } else {
+                mDataList.add(quickJoinRoomModel);
+            }
+        } else {
+            mDataList.add(quickJoinRoomModel);
+        }
     }
 
     @NonNull
