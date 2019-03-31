@@ -482,7 +482,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     GrabTopContainerView.Listener mListener = new GrabTopContainerView.Listener() {
         @Override
         public void closeBtnClick() {
-            mCorePresenter.exitRoom();
+            if (mRoomData.isOwner() && mRoomData.getPlayerInfoList().size()>=2) {
+                quitGame();
+            } else {
+                mCorePresenter.exitRoom();
+            }
         }
 
         @Override
@@ -966,8 +970,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     private void quitGame() {
         if (mQuitTipsDialog == null) {
+            String msg = "提前退出会破坏其他玩家的对局体验\n确定退出么？";
+            if (mRoomData.isOwner()) {
+                msg = "房主退出后房间将解散,是否确认退出?";
+            }
             TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
-                    .setMessageTip("提前退出会破坏其他玩家的对局体验\n确定退出么？")
+                    .setMessageTip(msg)
                     .setConfirmTip("确定")
                     .setCancelTip("取消")
                     .setConfirmBtnClickListener(new View.OnClickListener() {
