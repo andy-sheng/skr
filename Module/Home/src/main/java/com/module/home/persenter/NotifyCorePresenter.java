@@ -260,8 +260,8 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
     }
 
     void resendFollowFloatWindowDismissMsg() {
-        mUiHandler.removeMessages(MSG_DISMISS_INVITE_FLOAT_WINDOW);
-        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_INVITE_FLOAT_WINDOW, 5000);
+        mUiHandler.removeMessages(MSG_DISMISS_RELATION_FLOAT_WINDOW);
+        mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_RELATION_FLOAT_WINDOW, 5000);
     }
 
     void showFollowFloatWindow(UserInfoModel userInfoModel) {
