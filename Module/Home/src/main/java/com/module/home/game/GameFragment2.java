@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.common.banner.BannerImageLoader;
 import com.common.base.BaseFragment;
 import com.common.core.account.event.AccountEvent;
 import com.common.core.myinfo.event.MyUserInfoEvent;
@@ -14,30 +15,35 @@ import com.common.core.userinfo.model.UserRankModel;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
+import com.common.view.ex.ExRelativeLayout;
 import com.component.busilib.friends.RecommendModel;
 import com.component.busilib.friends.GrabFriendsRoomFragment;
 import com.component.busilib.friends.SpecialModel;
 import com.module.RouterConstants;
 import com.module.home.R;
 import com.module.home.game.adapter.GameAdapter;
-import com.module.home.game.model.BannerModel;
 import com.module.home.game.model.QuickJoinRoomModel;
 import com.module.home.game.model.RecommendRoomModel;
 import com.module.home.model.GameKConfigModel;
 import com.module.home.model.SlideShowModel;
 import com.module.home.widget.UserInfoTileView2;
 import com.module.rank.IRankingModeService;
+import com.youth.banner.Banner;
+import com.youth.banner.listener.OnBannerListener;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GameFragment2 extends BaseFragment implements IGameView {
     public final static String TAG = "Game2Fragment";
 
     UserInfoTileView2 mUserInfoTitle;
+    ExRelativeLayout mRecyclerLayout;
     RecyclerView mRecyclerView;
+    Banner mBannerView;
 
     GameAdapter mGameAdapter;
 
@@ -54,8 +60,12 @@ public class GameFragment2 extends BaseFragment implements IGameView {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+
         mUserInfoTitle = (UserInfoTileView2) mRootView.findViewById(R.id.user_info_title);
+        mRecyclerLayout = (ExRelativeLayout) mRootView.findViewById(R.id.recycler_layout);
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
+        mBannerView = (Banner) mRootView.findViewById(R.id.banner_view);
+
         mSkrAudioPermission = new SkrAudioPermission();
 
         mGameAdapter = new GameAdapter(getContext(), new GameAdapter.GameAdapterListener() {
@@ -176,8 +186,8 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         }
 
         QuickJoinRoomModel quickJoinRoomModel = new QuickJoinRoomModel(list, offset);
-        if (mGameAdapter.getPositionObject(2) != null && mGameAdapter.getPositionObject(2) instanceof com.module.home.game.model.RecommendRoomModel) {
-            mGameAdapter.getDataList().remove(mGameAdapter.getPositionObject(2));
+        if (mGameAdapter.getPositionObject(1) != null && mGameAdapter.getPositionObject(1) instanceof com.module.home.game.model.RecommendRoomModel) {
+            mGameAdapter.getDataList().remove(mGameAdapter.getPositionObject(1));
         }
         mGameAdapter.getDataList().add(quickJoinRoomModel);
         mGameAdapter.notifyDataSetChanged();
@@ -199,6 +209,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mGamePresenter.initRecommendRoom(false, mRecommendInterval);
     }
 
+    @Override
     public void setRecommendInfo(List<RecommendModel> list, int offset, int totalNum) {
         if (list == null || list.size() == 0) {
             MyLog.w(TAG, "initFriendRoom 为null");
@@ -206,25 +217,43 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         }
 
         RecommendRoomModel recommendRoomModel = new RecommendRoomModel(list, offset, totalNum);
-        if (mGameAdapter.getPositionObject(1) != null && mGameAdapter.getPositionObject(1) instanceof com.module.home.game.model.RecommendRoomModel) {
-            mGameAdapter.getDataList().remove(mGameAdapter.getPositionObject(1));
+        if (mGameAdapter.getPositionObject(0) != null && mGameAdapter.getPositionObject(0) instanceof com.module.home.game.model.RecommendRoomModel) {
+            mGameAdapter.getDataList().remove(mGameAdapter.getPositionObject(0));
         }
-        mGameAdapter.getDataList().add(1, recommendRoomModel);
+        mGameAdapter.getDataList().add(0, recommendRoomModel);
         mGameAdapter.notifyDataSetChanged();
     }
 
 
+    @Override
     public void setBannerImage(List<SlideShowModel> slideShowModelList) {
         if (slideShowModelList == null || slideShowModelList.size() == 0) {
             MyLog.w(TAG, "initOperationArea 为null");
             return;
         }
-        BannerModel bannerModel = new BannerModel(slideShowModelList);
-        if (mGameAdapter.getPositionObject(0) != null && mGameAdapter.getPositionObject(0) instanceof BannerModel) {
-            mGameAdapter.getDataList().remove(mGameAdapter.getPositionObject(0));
-        }
-        mGameAdapter.getDataList().add(0, bannerModel);
-        mGameAdapter.notifyDataSetChanged();
+
+        mBannerView.setImages(getSlideUrlList(slideShowModelList))
+                .setImageLoader(new BannerImageLoader())
+                .setOnBannerListener(new OnBannerListener() {
+                    @Override
+                    public void OnBannerClick(int position) {
+                        ARouter.getInstance().build(RouterConstants.ACTIVITY_SCHEME)
+                                .withString("uri", slideShowModelList.get(position).getSchema())
+                                .navigation();
+                    }
+                })
+                .start();
     }
+
+    private ArrayList<String> getSlideUrlList(List<SlideShowModel> slideShowModelList) {
+        ArrayList<String> urlList = new ArrayList<>();
+        for (SlideShowModel slideShowModel :
+                slideShowModelList) {
+            urlList.add(slideShowModel.getCoverURL());
+        }
+
+        return urlList;
+    }
+
 
 }

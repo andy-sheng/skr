@@ -7,12 +7,13 @@
     <com.module.home.widget.UserInfoTileView2
         android:id="@+id/user_info_title"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_115_dp"></com.module.home.widget.UserInfoTileView2>
+        android:layout_height="@dimen/view_178_dp"></com.module.home.widget.UserInfoTileView2>
 
     <com.common.view.ex.ExRelativeLayout
+        android:id="@+id/recycler_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/view_95_dp"
+        android:layout_marginTop="@dimen/view_158_dp"
         app:bl_corners_topLeftRadius="@dimen/view_20_dp"
         app:bl_corners_topRightRadius="@dimen/view_20_dp"
         app:bl_shape="rectangle"
@@ -25,5 +26,23 @@
             android:overScrollMode="never"></android.support.v7.widget.RecyclerView>
 
     </com.common.view.ex.ExRelativeLayout>
+
+    <com.youth.banner.Banner
+        android:id="@+id/banner_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_90_dp"
+        android:layout_alignTop="@id/recycler_layout"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginTop="-45dp"
+        android:layout_marginRight="@dimen/view_16_dp"
+        android:visibility="visible"
+        app:banner_layout="@layout/game_banner_layout"
+        app:banner_space="16dp"
+        app:image_scale_type="fit_xy"
+        app:indicator_drawable_selected="@drawable/indicator_selected"
+        app:indicator_drawable_unselected="@drawable/indicator_unselected"
+        app:indicator_height="@dimen/view_6_dp"
+        app:indicator_margin="@dimen/view_4_dp"
+        app:indicator_width="@dimen/view_6_dp" />
 
 </RelativeLayout>
