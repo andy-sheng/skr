@@ -248,6 +248,14 @@ public class PkInfoFragment extends BaseFragment {
                 }
             }
         }
+
+        mTvUserName.setText(MyUserInfoManager.getInstance().getNickName());
+        AvatarUtils.loadAvatarByUrl(mIvUserIcon,
+                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
+                        .setCircle(true)
+                        .setBorderWidth(U.getDisplayUtils().dip2px(3))
+                        .setBorderColor(U.getColor(R.color.white))
+                        .build());
     }
 
     @Override
