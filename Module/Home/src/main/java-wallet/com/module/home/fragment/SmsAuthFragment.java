@@ -88,7 +88,13 @@ public class SmsAuthFragment extends BaseFragment {
         } else {
             mCodeInputTv.requestFocus();
         }
-        U.getKeyBoardUtils().showSoftInputKeyBoard(getActivity());
+
+        mUiHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                U.getKeyBoardUtils().showSoftInputKeyBoard(getActivity());
+            }
+        }, 300);
 
         mGetCodeTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
