@@ -97,7 +97,7 @@ public class GrabDengBigAnimationView extends RelativeLayout {
 
                 @Override
                 public void onError() {
-                    MyLog.d(TAG, "onError");
+                    MyLog.d(TAG, "playBurstAnimationInner onError");
                 }
             });
         } catch (Exception e) {

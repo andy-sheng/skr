@@ -485,7 +485,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
                 @Override
                 public void onError() {
-
+                    MyLog.d(TAG,"playShowMainStageAnimator onError" );
                 }
             });
         } catch (Exception e) {
