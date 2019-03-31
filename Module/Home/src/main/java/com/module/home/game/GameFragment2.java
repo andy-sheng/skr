@@ -70,7 +70,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
 
         mSkrAudioPermission = new SkrAudioPermission();
 
-        mGameAdapter = new GameAdapter(getContext(), new GameAdapter.GameAdapterListener() {
+        mGameAdapter = new GameAdapter(this, new GameAdapter.GameAdapterListener() {
             @Override
             public void createRoom() {
                 MyLog.d(TAG, "createRoom");
@@ -139,11 +139,6 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mGamePresenter = new GamePresenter(this);
         addPresent(mGamePresenter);
 
-        mGamePresenter.initOperationArea(true);
-        mGamePresenter.initQuickRoom(true);
-        mGamePresenter.initRankInfo(true);
-        mGamePresenter.initRecommendRoom(mRecommendInterval);
-        mGamePresenter.initGameKConfig();
     }
 
     @Override
@@ -166,6 +161,11 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mGamePresenter.initRankInfo(false);
         mGamePresenter.initRecommendRoom(mRecommendInterval);
         mGamePresenter.initGameKConfig();
+    }
+
+    @Override
+    public boolean isInViewPager() {
+        return true;
     }
 
     @Override

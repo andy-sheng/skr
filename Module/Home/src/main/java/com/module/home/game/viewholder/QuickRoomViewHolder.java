@@ -5,6 +5,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.common.base.BaseFragment;
 import com.common.log.MyLog;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
@@ -25,14 +26,14 @@ public class QuickRoomViewHolder extends RecyclerView.ViewHolder {
 
     GameAdapter.GameAdapterListener mListener;
 
-    public QuickRoomViewHolder(View itemView, Context context, GameAdapter.GameAdapterListener listener) {
+    public QuickRoomViewHolder(View itemView, BaseFragment baseFragment, GameAdapter.GameAdapterListener listener) {
         super(itemView);
         this.mListener = listener;
 
         mQuickEnter = (ExTextView) itemView.findViewById(R.id.quick_enter);
         mFriendsRecycle = (RecyclerView) itemView.findViewById(R.id.friends_recycle);
         mFriendsRecycle.setFocusableInTouchMode(false);
-        mFriendsRecycle.setLayoutManager(new GridLayoutManager(context, 2));
+        mFriendsRecycle.setLayoutManager(new GridLayoutManager(baseFragment.getContext(), 2));
         mGrabSelectAdapter = new GrabSelectAdapter(new RecyclerOnItemClickListener() {
             @Override
             public void onItemClicked(View view, int position, Object model) {
