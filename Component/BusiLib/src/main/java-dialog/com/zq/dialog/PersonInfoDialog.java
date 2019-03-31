@@ -119,7 +119,7 @@ public class PersonInfoDialog {
 
     public void dismiss() {
         if (mDialogPlus != null) {
-            mDialogPlus.dismiss();
+            mDialogPlus.dismiss(false);
         }
         mKickListener = null;
     }

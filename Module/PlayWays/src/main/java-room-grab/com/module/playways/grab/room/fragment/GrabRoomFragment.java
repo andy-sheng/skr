@@ -1106,6 +1106,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         if (mGameRoleDialog != null) {
             mGameRoleDialog.dismiss();
         }
+        mBottomContainerView.dismissPopWindow();
         if (mPersonInfoDialog != null) {
             mPersonInfoDialog.dismiss();
         }
