@@ -1,45 +1,57 @@
 package com.module.home.game.viewholder;
 
-import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.alibaba.fastjson.JSON;
+import com.common.base.BaseFragment;
 import com.common.log.MyLog;
+import com.common.rxretrofit.ApiManager;
+import com.common.rxretrofit.ApiMethods;
+import com.common.rxretrofit.ApiObserver;
+import com.common.rxretrofit.ApiResult;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.friends.FriendRoomHorizontalAdapter;
+import com.component.busilib.friends.GrabSongApi;
 import com.component.busilib.friends.RecommendModel;
 import com.module.home.R;
 import com.module.home.game.adapter.GameAdapter;
+import com.module.home.game.listener.EndlessRecycleOnScollListener;
 import com.module.home.game.model.RecommendRoomModel;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+
+import java.util.List;
 
 public class RecommendRoomViewHolder extends RecyclerView.ViewHolder {
 
     public final static String TAG = "RecommendRoomViewHolder";
 
+    BaseFragment mBaseFragment;
+
     ExTextView mFriendsTv;
     ExRelativeLayout mMoreArea;
-    SmartRefreshLayout mRefreshLayout;
     RecyclerView mFriendsRecycle;
 
+    boolean hasMore = true;
+
+    RecommendRoomModel mRecommendRoomModel;
     FriendRoomHorizontalAdapter mFriendRoomAdapter;
     GameAdapter.GameAdapterListener mListener;
 
-    public RecommendRoomViewHolder(View itemView, Context context, GameAdapter.GameAdapterListener listener) {
+    public RecommendRoomViewHolder(View itemView, BaseFragment baseFragment, GameAdapter.GameAdapterListener listener) {
         super(itemView);
 
+        this.mBaseFragment = baseFragment;
         this.mListener = listener;
 
         mFriendsTv = (ExTextView) itemView.findViewById(R.id.friends_tv);
-        mRefreshLayout = (SmartRefreshLayout) itemView.findViewById(R.id.refreshLayout);
         mMoreArea = (ExRelativeLayout) itemView.findViewById(R.id.more_area);
         mFriendsRecycle = (RecyclerView) itemView.findViewById(R.id.friends_recycle);
         mFriendsRecycle.setFocusableInTouchMode(false);
-        mFriendsRecycle.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+        mFriendsRecycle.setLayoutManager(new LinearLayoutManager(baseFragment.getContext(), LinearLayoutManager.HORIZONTAL, false));
         mFriendRoomAdapter = new FriendRoomHorizontalAdapter(new RecyclerOnItemClickListener() {
             @Override
             public void onItemClicked(View view, int position, Object model) {
@@ -51,6 +63,13 @@ public class RecommendRoomViewHolder extends RecyclerView.ViewHolder {
                 } else {
                     MyLog.w(TAG, "onItemClicked model = null");
                 }
+            }
+        });
+        mFriendsRecycle.addOnScrollListener(new EndlessRecycleOnScollListener() {
+            @Override
+            public void onLoadMore() {
+                MyLog.d(TAG, "onLoadMore");
+                loadMoreData();
             }
         });
 
@@ -68,6 +87,39 @@ public class RecommendRoomViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bindData(RecommendRoomModel recommendRoomModel) {
-        mFriendRoomAdapter.setDataList(recommendRoomModel.getRoomModels());
+        hasMore = true;
+        this.mRecommendRoomModel = recommendRoomModel;
+        mFriendRoomAdapter.setDataList(mRecommendRoomModel.getRoomModels());
+    }
+
+    private void loadMoreData() {
+        if (!hasMore) {
+            return;
+        }
+        GrabSongApi mGrabSongApi = ApiManager.getInstance().createService(GrabSongApi.class);
+        ApiMethods.subscribe(mGrabSongApi.getRecommendRoomList(mRecommendRoomModel.getOffset(), 10), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult obj) {
+                if (obj.getErrno() == 0) {
+                    List<RecommendModel> list = JSON.parseArray(obj.getData().getString("rooms"), RecommendModel.class);
+                    int offset = obj.getData().getIntValue("offset");
+                    int totalNum = obj.getData().getIntValue("totalRoomsNum");
+                    refreshData(list, offset, totalNum);
+                }
+            }
+        }, mBaseFragment);
+    }
+
+    private void refreshData(List<RecommendModel> list, int offset, int totalNum) {
+        if (list == null || list.size() == 0) {
+            hasMore = false;
+            return;
+        }
+
+        this.mRecommendRoomModel.setOffset(offset);
+        this.mRecommendRoomModel.setTotalNum(totalNum);
+        this.mRecommendRoomModel.getRoomModels().addAll(list);
+
+        mFriendRoomAdapter.setDataList(mRecommendRoomModel.getRoomModels());
     }
 }

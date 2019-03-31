@@ -49,18 +49,10 @@
     </com.common.view.ex.ExRelativeLayout>
 
 
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout
-        android:id="@+id/refreshLayout"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/friends_recycle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_120_dp"
-        android:layout_below="@id/friends_tv">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/friends_recycle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
-
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
-
+        android:layout_below="@id/friends_tv"></android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>

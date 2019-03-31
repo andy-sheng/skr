@@ -1,12 +1,12 @@
 package com.module.home.game.adapter;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.common.base.BaseFragment;
 import com.component.busilib.friends.RecommendModel;
 import com.component.busilib.friends.SpecialModel;
 import com.module.home.R;
@@ -21,7 +21,7 @@ import java.util.List;
 
 public class GameAdapter extends RecyclerView.Adapter {
 
-    Context mContext;
+    BaseFragment mBaseFragment;
 
     GameAdapterListener mListener;
 
@@ -49,8 +49,8 @@ public class GameAdapter extends RecyclerView.Adapter {
         return null;
     }
 
-    public GameAdapter(Context context, GameAdapterListener gameAdapterListener) {
-        mContext = context;
+    public GameAdapter(BaseFragment baseFragment, GameAdapterListener gameAdapterListener) {
+        this.mBaseFragment = baseFragment;
         mListener = gameAdapterListener;
     }
 
@@ -63,11 +63,11 @@ public class GameAdapter extends RecyclerView.Adapter {
             return emptyPlaceViewHolder;
         } else if (viewType == TYPE_RECOMMEND_HOLDER) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.game_recommend_room_item_view, parent, false);
-            RecommendRoomViewHolder recommendRoomViewHolder = new RecommendRoomViewHolder(view, mContext, mListener);
+            RecommendRoomViewHolder recommendRoomViewHolder = new RecommendRoomViewHolder(view, mBaseFragment, mListener);
             return recommendRoomViewHolder;
         } else if (viewType == TYPE_QUICK_ROOM_HOLDER) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.game_quick_room_item_view, parent, false);
-            QuickRoomViewHolder quickRoomViewHolder = new QuickRoomViewHolder(view, mContext, mListener);
+            QuickRoomViewHolder quickRoomViewHolder = new QuickRoomViewHolder(view, mBaseFragment, mListener);
             return quickRoomViewHolder;
         }
         return null;
