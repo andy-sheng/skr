@@ -85,7 +85,7 @@ public class RankResultView2 extends FrameLayout {
         mPlaybackIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                MyLog.d(TAG,"clickValid mIsPlay=" + mIsPlay+" mListener="+mListener);
+                MyLog.d(TAG, "clickValid mIsPlay=" + mIsPlay + " mListener=" + mListener);
                 if (mIsPlay) {
                     // TODO: 2019/3/22 暂停播放
                     mIsPlay = false;
@@ -126,7 +126,10 @@ public class RankResultView2 extends FrameLayout {
                             .setBorderColorBySex(playerInfoModel.getUserInfo().getIsMale())
                             .setBorderWidth(U.getDisplayUtils().dip2px(2))
                             .build());
-            if (MyUserInfoManager.getInstance().getUid() == playerInfoModel.getUserInfo().getUserId() && new File(RoomDataUtils.getSaveAudioForAiFilePath()).exists()) {
+            if (MyUserInfoManager.getInstance().getUid() == playerInfoModel.getUserInfo().getUserId()
+                    && new File(RoomDataUtils.getSaveAudioForAiFilePath()).exists()
+                    && (roomData.getSingBeginTs() > System.currentTimeMillis() - 1000 * 3600)
+            ) {
                 mPlaybackIv.setVisibility(VISIBLE);
             } else {
                 mPlaybackIv.setVisibility(GONE);

@@ -280,6 +280,7 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
                 ", roomType=" + roomType +
                 ", ownerId=" + ownerId +
                 ", hasGameBegin=" + hasGameBegin +
+                ", mAgoraToken=" + mAgoraToken +
                 '}';
     }
 }
