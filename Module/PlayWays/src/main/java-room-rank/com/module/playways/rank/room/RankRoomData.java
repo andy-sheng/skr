@@ -208,6 +208,7 @@ public class RankRoomData extends BaseRoomData<RankRoundInfoModel> {
         return "RankRoomData{" +
                 ", mGameConfigModel=" + mGameConfigModel +
                 ", mSongLineNum=" + mSongLineNum +
+                ", mAgoraToken=" + mAgoraToken +
                 "}\n" + super.toString();
     }
 }
