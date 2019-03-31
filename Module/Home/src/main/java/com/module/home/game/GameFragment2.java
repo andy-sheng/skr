@@ -11,7 +11,6 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.banner.BannerImageLoader;
 import com.common.base.BaseFragment;
 import com.common.core.account.event.AccountEvent;
-import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.permission.SkrAudioPermission;
 import com.common.core.userinfo.model.UserRankModel;
@@ -29,11 +28,10 @@ import com.module.home.game.model.QuickJoinRoomModel;
 import com.module.home.game.model.RecommendRoomModel;
 import com.module.home.model.GameKConfigModel;
 import com.module.home.model.SlideShowModel;
-import com.module.home.widget.UserInfoTileView2;
+import com.module.home.widget.UserInfoTitleView2;
 import com.module.rank.IRankingModeService;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.youth.banner.Banner;
@@ -53,7 +51,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
     RelativeLayout mBackground;
     SmartRefreshLayout mRefreshLayout;
     ClassicsHeader mClassicsHeader;
-    UserInfoTileView2 mUserInfoTitle;
+    UserInfoTitleView2 mUserInfoTitle;
     ExRelativeLayout mRecyclerLayout;
     RecyclerView mRecyclerView;
     Banner mBannerView;
@@ -77,7 +75,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mBackground = (RelativeLayout) mRootView.findViewById(R.id.background);
         mRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.refreshLayout);
         mClassicsHeader = (ClassicsHeader) mRootView.findViewById(R.id.classics_header);
-        mUserInfoTitle = (UserInfoTileView2) mRootView.findViewById(R.id.user_info_title);
+        mUserInfoTitle = (UserInfoTitleView2) mRootView.findViewById(R.id.user_info_title);
         mRecyclerLayout = (ExRelativeLayout) mRootView.findViewById(R.id.recycler_layout);
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
         mBannerView = (Banner) mRootView.findViewById(R.id.banner_view);
@@ -175,7 +173,6 @@ public class GameFragment2 extends BaseFragment implements IGameView {
 
         mGamePresenter = new GamePresenter(this);
         addPresent(mGamePresenter);
-
     }
 
     @Override

@@ -20,7 +20,7 @@ import com.zq.level.utils.LevelConfigUtils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class UserInfoTileView2 extends RelativeLayout {
+public class UserInfoTitleView2 extends RelativeLayout {
 
     RelativeLayout mContentArea;
     SimpleDraweeView mIvUserIcon;
@@ -29,17 +29,17 @@ public class UserInfoTileView2 extends RelativeLayout {
     ExTextView mNameTv;
     ExTextView mRankInfo;
 
-    public UserInfoTileView2(Context context) {
+    public UserInfoTitleView2(Context context) {
         super(context);
         init();
     }
 
-    public UserInfoTileView2(Context context, AttributeSet attrs) {
+    public UserInfoTitleView2(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public UserInfoTileView2(Context context, AttributeSet attrs, int defStyleAttr) {
+    public UserInfoTitleView2(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
@@ -53,6 +53,7 @@ public class UserInfoTileView2 extends RelativeLayout {
         mUserLevelTv = (ExTextView) this.findViewById(R.id.user_level_tv);
         mNameTv = (ExTextView) this.findViewById(R.id.name_tv);
         mRankInfo = (ExTextView) this.findViewById(R.id.rank_info);
+        showBaseInfo();
     }
 
     public void showBaseInfo() {

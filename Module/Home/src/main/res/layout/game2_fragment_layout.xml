@@ -21,10 +21,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.module.home.widget.UserInfoTileView2
+            <com.module.home.widget.UserInfoTitleView2
                 android:id="@+id/user_info_title"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></com.module.home.widget.UserInfoTileView2>
+                android:layout_height="wrap_content"></com.module.home.widget.UserInfoTitleView2>
 
             <com.common.view.ex.ExRelativeLayout
                 android:id="@+id/recycler_layout"
