@@ -183,7 +183,7 @@ public class SettingFragment extends BaseFragment {
             @Override
             public void clickValid(View v) {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                        .withString("url", "http://test.app.inframe.mobi/extend/exchangeGold")
+                        .withString("url", "http://sandbox.app.inframe.mobi/extend/exchangeGold")
                         .greenChannel().navigation();
             }
         });
