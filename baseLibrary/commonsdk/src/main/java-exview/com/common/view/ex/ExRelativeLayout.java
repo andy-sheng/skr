@@ -31,11 +31,9 @@ public class ExRelativeLayout extends RelativeLayout {
 
     private void loadAttributes(Context context, AttributeSet attrs) {
         AttributeInject.injectBackground(this, context, attrs);
-
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.background);
         int shadowColor = typedArray.getInt(R.styleable.background_bl_shadow_Color, Color.TRANSPARENT);
     }
-
 
     @Override
     protected void onDraw(Canvas canvas) {

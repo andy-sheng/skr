@@ -60,22 +60,24 @@ public class GrabSelectViewHolder extends RecyclerView.ViewHolder {
         } else if (postion % 3 == 2) {
             mSpecialIv.setBackground(U.getDrawable(R.drawable.grab_special_3));
         }
+        int color = 0;
         if (!TextUtils.isEmpty(specialModel.getBgColor())) {
-            mBackground.setBackground(getShapeDrawable(Color.parseColor(specialModel.getBgColor())));
+            color = Color.parseColor(specialModel.getBgColor());
         } else {
-            mBackground.setBackground(getShapeDrawable(Color.parseColor("#68ABD3")));
+            color = Color.parseColor("#68ABD3");
         }
+        mBackground.setBackground(getShapeDrawable(color));
+        int corner = U.getDisplayUtils().dip2px(10);
         mBackground.setShadowConfig(ShadowConfig.obtain()
-                .color(Color.RED)
-                .leftTopCorner(20)
-                .rightTopCorner(30)
-                .leftBottomCorner(40)
-                .rightBottomCorner(50)
-                .radius(60)
-                .xOffset(30)
-                .yOffset(30)
+                .color(color)
+                .leftTopCorner(corner)
+                .rightTopCorner(corner)
+                .leftBottomCorner(corner)
+                .rightBottomCorner(corner)
+                .xOffset(U.getDisplayUtils().dip2px(1))
+                .yOffset(U.getDisplayUtils().dip2px(4))
+                .radius(U.getDisplayUtils().dip2px(4))
         );
-
 
         mSpecialTv.setText(this.mSpecialModel.getTagName());
         mIntroductionTv.setText(this.mSpecialModel.getIntroduction());
