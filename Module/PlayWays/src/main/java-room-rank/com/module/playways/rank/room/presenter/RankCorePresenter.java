@@ -32,6 +32,7 @@ import com.engine.arccloud.RecognizeConfig;
 import com.engine.arccloud.SongInfo;
 import com.engine.score.Score2Callback;
 import com.module.ModuleServiceManager;
+import com.module.common.ICallback;
 import com.module.msg.CustomMsgType;
 import com.module.msg.IMsgService;
 import com.module.playways.rank.msg.BasePushInfo;
@@ -100,11 +101,11 @@ import static com.module.playways.rank.msg.event.ExitGameEvent.EXIT_GAME_OUT_ROU
 public class RankCorePresenter extends RxLifeCyclePresenter {
     String TAG = "RankCorePresenter";
 
+    static final int MSG_ENSURE_IN_RC_ROOM = 9;// 确保在融云的聊天室，保证融云的长链接
+
     static final int MSG_ROBOT_SING_BEGIN = 10;
 
     static final int MSG_ENSURE_SWITCH_BROADCAST_SUCCESS = 21; // 确保用户切换成主播成功，防止引擎不回调的保护
-    //    static final int MSG_ROBOT_SING_END = 11;
-//    static final int MSG_GET_VOTE = 20;
 
     static final int MSG_START_LAST_TWO_SECONDS_TASK = 30;
 
@@ -147,6 +148,11 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
+                case MSG_ENSURE_IN_RC_ROOM:
+                    MyLog.d(TAG, "handleMessage 长时间没收到push，重新进入融云房间容错");
+                    ModuleServiceManager.getInstance().getMsgService().leaveChatRoom(mRoomData.getGameId() + "");
+                    joinRcRoom(0);
+                    break;
                 case MSG_ROBOT_SING_BEGIN:
                     robotSingBegin((RankPlayerInfoModel) msg.obj);
                     break;
@@ -278,6 +284,32 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
+    private void joinRcRoom(int deep) {
+        if (deep > 4) {
+            MyLog.d(TAG, "加入融云房间，重试5次仍然失败，放弃");
+            return;
+        }
+        if (mRoomData.getGameId() > 0) {
+            ModuleServiceManager.getInstance().getMsgService().joinChatRoom(String.valueOf(mRoomData.getGameId()), new ICallback() {
+                @Override
+                public void onSucess(Object obj) {
+                    MyLog.d(TAG, "加入融云房间成功");
+                }
+
+                @Override
+                public void onFailed(Object obj, int errcode, String message) {
+                    MyLog.d(TAG, "加入融云房间失败");
+                    joinRcRoom(deep + 1);
+                }
+            });
+        }
+    }
+
+    private void ensureInRcRoom() {
+        mUiHandler.removeMessages(MSG_ENSURE_IN_RC_ROOM);
+        mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_IN_RC_ROOM, 30 * 1000);
+    }
+
     private void pretenSystemMsg() {
         CommentModel commentModel = new CommentModel();
         commentModel.setCommentType(CommentModel.TYPE_TRICK);
@@ -318,6 +350,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         }
         mRoomData.checkRoundInEachMode();
         startSyncGameStateTask(sSyncStateTaskInterval);
+        ensureInRcRoom();
     }
 
     @Override
@@ -1411,6 +1444,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     // 游戏轮次结束的通知消息（在某人向服务器短连接成功后推送)
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEventMainThread(RoundOverEvent event) {
+        ensureInRcRoom();
         MyLog.w(TAG, "收到服务器的某一个人轮次结束的push，id是 " + event.currenRound.getUserID()
                 + ", exitUserID 是 " + event.exitUserID + " timets 是" + event.info.getTimeMs());
         if (mRoomData.getLastSyncTs() > event.info.getTimeMs()) {
@@ -1467,6 +1501,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     // 长连接 状态同步信令， 以11秒为单位检测
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(SyncStatusEvent syncStatusEvent) {
+        ensureInRcRoom();
         String msg = "收到服务器更新状态的push了, currentRound 是 ";
         msg = msg + (syncStatusEvent.currentInfo == null ? "null" : syncStatusEvent.currentInfo.getUserID() + "");
         msg = msg + ", nextInfo 是 " + (syncStatusEvent.nextInfo == null ? "null" : syncStatusEvent.nextInfo.getUserID() + "");
@@ -1644,6 +1679,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(MachineScoreEvent event) {
+        ensureInRcRoom();
         //收到其他人的机器打分消息，比较复杂，暂时简单点，轮次正确就直接展示
         if (RoomDataUtils.isThisUserRound(mRoomData.getRealRoundInfo(), event.userId)) {
             mIGameRuleView.updateScrollBarProgress(event.score, event.totalScore, event.lineNum);
