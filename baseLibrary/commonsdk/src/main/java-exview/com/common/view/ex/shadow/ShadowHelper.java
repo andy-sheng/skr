@@ -23,7 +23,7 @@ public class ShadowHelper {
 
 
     public static void draw(Canvas canvas, View view, ShadowConfig config) {
-        MyLog.d(TAG,"draw" + " canvas=" + canvas + " view=" + view + " config=" + config);
+        //MyLog.d(TAG,"draw" + " canvas=" + canvas + " view=" + view + " config=" + config);
         View parent = (View) view.getParent();
         if (parent.getLayerType() != View.LAYER_TYPE_SOFTWARE) {
             parent.setLayerType(View.LAYER_TYPE_SOFTWARE, null);

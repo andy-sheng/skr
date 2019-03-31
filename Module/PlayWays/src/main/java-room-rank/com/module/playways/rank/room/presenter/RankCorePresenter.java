@@ -770,6 +770,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         estimateOverTsThisRound();
         //以防万一
         tryStopRobotPlay();
+        mUiHandler.removeMessages(MSG_START_LAST_TWO_SECONDS_TASK);
         mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS);
         if (event.myturn) {
             // 轮到我唱了
@@ -1347,7 +1348,8 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                 // 假设演唱的轮次在当前轮次后面，说明本地滞后了
                 MyLog.w(TAG, "演唱的轮次在当前轮次后面，说明本地滞后了,矫正并放歌词");
                 // 直接设置最新轮次，什么专场动画都不要了，都异常了，还要这些干嘛
-                mRoomData.setRealRoundInfo(infoModel);
+                mRoomData.setExpectRoundInfo(infoModel);
+                mRoomData.checkRoundInEachMode();
                 mUiHandler.post(new Runnable() {
                     @Override
                     public void run() {
