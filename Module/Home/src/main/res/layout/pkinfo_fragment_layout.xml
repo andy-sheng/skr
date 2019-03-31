@@ -27,7 +27,7 @@
                 android:id="@+id/tv_bg"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/view_332_dp"
-                app:bl_gradient_angle="45"
+                app:bl_gradient_angle="0"
                 app:bl_gradient_endColor="#6E42C3"
                 app:bl_gradient_startColor="#EB83CA" />
 

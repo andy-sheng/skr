@@ -3,6 +3,7 @@ package com.module.home.fragment;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -36,6 +37,7 @@ import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
+import com.common.view.ex.drawable.DrawableCreator;
 import com.component.busilib.constans.GameModeType;
 import com.module.RouterConstants;
 import com.module.home.R;
@@ -93,6 +95,11 @@ public class PkInfoFragment extends BaseFragment {
         mIvVoiceRoom = (ExImageView) mRootView.findViewById(R.id.iv_voice_room);
         mIvAthleticsPk = (ExImageView) mRootView.findViewById(R.id.iv_athletics_pk);
         mRlAreaContainer = (RelativeLayout) mRootView.findViewById(R.id.rl_area_container);
+
+        mClassicsHeader.setBackground(new DrawableCreator.Builder()
+                .setGradientColor(Color.parseColor("#EB83CA"), Color.parseColor("#6E42C3"))
+                .setGradientAngle(0)
+                .build());
 
         mSmartRefreshLayout.setEnableRefresh(true);
         mSmartRefreshLayout.setEnableLoadMore(false);
