@@ -235,7 +235,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                 .setViewStateListener(new ViewStateListenerAdapter() {
                     @Override
                     public void onDismiss() {
-                        mUiHandler.removeMessages(MSG_DISMISS_INVITE_FLOAT_WINDOW);
+                        //mUiHandler.removeMessages(MSG_DISMISS_INVITE_FLOAT_WINDOW);
                     }
 
                     @Override
@@ -275,7 +275,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                 .setViewStateListener(new ViewStateListenerAdapter() {
                     @Override
                     public void onDismiss() {
-                        mUiHandler.removeMessages(MSG_DISMISS_RELATION_FLOAT_WINDOW);
+                        //mUiHandler.removeMessages(MSG_DISMISS_RELATION_FLOAT_WINDOW);
                     }
 
                     @Override

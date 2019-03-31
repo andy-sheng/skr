@@ -13,7 +13,7 @@ void *pvoln = NULL;
 
 #define LOG_TAG "ITBAgcEngine"
 
-#define FILEOPEN 1
+#define FILEOPEN 0
 
 extern "C"
 JNIEXPORT jint JNICALL
@@ -71,6 +71,7 @@ Java_com_engine_effect_ITbAgcProcessor_destroyAgcProcessor(JNIEnv *env, jobject 
     flag2 = -1;
     if (pvoln != NULL) {
         SKR_agc_free(pvoln);
+        pvoln = NULL;
     }
     if (FILEOPEN && inputFile2 != NULL) {
         fclose(inputFile2);
