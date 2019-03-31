@@ -2,9 +2,11 @@
 #include <assert.h>
 #include <stdlib.h>
 #include "../../common/functions.h"
+#include "../../Delay/Delay_LIB/Delay_SDK_API.h"
 
 typedef struct VOLN_Mono_channel_memory{
 	AGC_ID mAGC;
+	Buf16_s mBuf;
 	NatureMix_ID mNatureMix;
 	DCC_ID mDCC;
 	float memavergex_db_beforevmic;
@@ -43,6 +45,8 @@ void SKR_agc_reset(void *mVOLN)
 
 	DCCReset_API(&pVOLN->mDCC);
 	AGCReset_API(&pVOLN->mAGC);
+	BufresetAPI(&pVOLN->mBuf);
+	pVOLN->mBuf.front = pVOLN->mBuf.rear = 0;
 	NatureMixReset_API(&pVOLN->mNatureMix);
 	pVOLN->memavergex_db_beforevmic = -90.0f;
 	pVOLN->mNatureMix.weight[0] = 1.0f;
@@ -248,6 +252,9 @@ void VOLN_AGCRun_API(void *mVOLN, short *input, int inLen, short *output)
 	int boost[8];
 	AGC_ID *pAGC;
 	VOLN_ID *pVOLN;
+	short inputreframe[SKR_MAX_FRAME_SAMPLE_STEREO];
+	int tmpoutlen;
+	int framelen20ms;
 
 	pAGC = &(((VOLN_ID *)mVOLN)->mAGC);
 	pVOLN = (VOLN_ID *)mVOLN;
@@ -256,11 +263,31 @@ void VOLN_AGCRun_API(void *mVOLN, short *input, int inLen, short *output)
 	fgaininfo[5] = pVOLN->memavergex_db_beforevmic;//ec处理前音量信息，无信息填极小值,此处是vmic前的音量信息
 	fgaininfo[6] = 12345;
 
-	AGCRun_API(pAGC,input,inLen,output,fgaininfo,boost);
+	framelen20ms = pVOLN->mAGC.samplerate*0.02*pVOLN->mAGC.chanel;
+	if (inLen != framelen20ms)
+	{
+		assert(pAGC->DyKind == 0);
+		putinAPI_loop(&pVOLN->mBuf, input, inLen);
+		do
+		{
+			tmpoutlen = putoutAPI_ForReframe_loop(&pVOLN->mBuf, inputreframe, framelen20ms);
 
-	pVOLN->mNatureMix.weight[0] = boost[0]/65535.0;
+			if (tmpoutlen)
+			{
+				AGCRun_API(pAGC, inputreframe, framelen20ms, inputreframe, fgaininfo, boost);
+				pVOLN->mNatureMix.weight[0] = boost[0] / 65535.0;
+			}
+		} while (tmpoutlen != 0);
+	}
+	else
+	{
+		AGCRun_API(pAGC, input, inLen, output, fgaininfo, boost);
+		pVOLN->mNatureMix.weight[0] = boost[0] / 65535.0;
+	}
 
-	fwrite_findordef(NULL, 2, inLen / pAGC->chanel, "gain", pVOLN->mNatureMix.weight[0] * 1000, 1);
+	
+
+	//fwrite_findordef(NULL, 2, inLen / pAGC->chanel, "gain", pVOLN->mNatureMix.weight[0] * 1000, 1);
 
 }
 

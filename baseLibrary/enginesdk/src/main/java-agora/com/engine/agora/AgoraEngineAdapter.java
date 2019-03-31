@@ -1068,9 +1068,9 @@ public class AgoraEngineAdapter {
                 if (DEBUG) {
                     MyLog.d(TAG, "step0:" + testIn(samples));
                 }
-                long ts = 0;
+                long accTs = 0;
                 if (mConfig != null && mConfig.isMixMusicPlaying() && mConfig.getLrcHasStart()) {
-                    ts = mConfig.getCurrentMusicTs() + mConfig.getMixMusicBeginOffset() + (System.currentTimeMillis() - mConfig.getRecordCurrentMusicTsTs());
+                    accTs = mConfig.getCurrentMusicTs() + mConfig.getMixMusicBeginOffset() + (System.currentTimeMillis() - mConfig.getRecordCurrentMusicTsTs());
                 }
                 if (DEBUG) {
                     MyLog.d(TAG, "step1:" + testIn(samples));
@@ -1092,12 +1092,12 @@ public class AgoraEngineAdapter {
                             e.printStackTrace();
                         }
                     }
-                    if (ts > 0) {
+                    if (accTs > 0) {
                         // 取本地数据，本地数据为44100 单声道
                         byte[] data = new byte[1024];
                         try {
                             if (mDebugScoreIS.read(data) != -1) {
-                                mICbScoreProcessor.process(data, data.length, 1, samplesPerSec, ts, mConfig.getMidiPath());
+                                mICbScoreProcessor.process(data, data.length, 1, samplesPerSec, accTs, mConfig.getMidiPath());
                             }
                             if (mArcCloudManager != null) {
                                 if (mConfig != null) {
@@ -1110,7 +1110,7 @@ public class AgoraEngineAdapter {
 
                     }
                 } else {
-                    mICbScoreProcessor.process(samples, samples.length, channels, samplesPerSec, ts, mConfig.getMidiPath());
+                    mICbScoreProcessor.process(samples, samples.length, channels, samplesPerSec, accTs, mConfig.getMidiPath());
                     if (mArcCloudManager != null) {
                         if (mConfig != null) {
                             if (mConfig.isMixMusicPlaying() && mConfig.getLrcHasStart()) {
@@ -1137,7 +1137,22 @@ public class AgoraEngineAdapter {
                 if (DEBUG) {
                     MyLog.d(TAG, "step3:" + testIn(samples));
                 }
-                //mITbAgcProcessor.processV1(samples,samples.length,channels,samplesPerSec);
+                //TODO 是不是可以考虑AGC 后再给打分
+                // 针对不同场景，处理agc
+                switch (mConfig.getScene()) {
+                    case grab:
+                        mITbAgcProcessor.processV1(samples, samples.length, channels, samplesPerSec);
+                        break;
+                    case voice:
+                        break;
+                    case rank:
+                    case audiotest:
+                        if (accTs > 0) {
+                            mITbAgcProcessor.processV1(samples, samples.length, channels, samplesPerSec);
+                        }
+                        break;
+                }
+
                 if (DEBUG) {
                     MyLog.d(TAG, "step4:" + testIn(samples));
                 }

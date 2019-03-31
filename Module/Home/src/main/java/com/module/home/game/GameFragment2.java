@@ -147,6 +147,12 @@ public class GameFragment2 extends BaseFragment implements IGameView {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mSkrAudioPermission.onBackFromPermisionManagerMaybe();
+    }
+
+    @Override
     public boolean useEventBus() {
         return true;
     }

@@ -47,12 +47,19 @@ Java_com_engine_effect_ITbAgcProcessor_process(JNIEnv *env, jobject ins, jbyteAr
 
     // 2048 512 下来
     short *samples = (short *) data; // 长度只有1024了
+    if (inputFile2 == NULL && FILEOPEN) {
+        inputFile2 = fopen("/mnt/sdcard/tb_agc_input.pcm", "wb+");
+    }
+
+    if (outputFile2 == NULL && FILEOPEN) {
+        outputFile2 = fopen("/mnt/sdcard/tb_agc_output.pcm", "wb+");
+    }
     if (FILEOPEN) {
-        LOGI("before SKR_agc_proc");
+        fwrite(samples, sizeof(short), len / 2, inputFile2);
     }
     SKR_agc_proc(pvoln, samples, len / 2, samples);
     if (FILEOPEN) {
-        LOGI("after SKR_agc_proc");
+        fwrite(samples, sizeof(short), len / 2, outputFile2);
     }
     env->ReleaseByteArrayElements(samplesJni, reinterpret_cast<jbyte *>(data), 0);
     return flag2;
@@ -63,5 +70,11 @@ JNIEXPORT jint JNICALL
 Java_com_engine_effect_ITbAgcProcessor_destroyAgcProcessor(JNIEnv *env, jobject instance) {
     flag2 = -1;
     SKR_agc_free(pvoln);
+    if (FILEOPEN && inputFile2 != NULL) {
+        fclose(inputFile2);
+    }
+    if (FILEOPEN && outputFile2 != NULL) {
+        fclose(outputFile2);
+    }
     return flag2;
 }

@@ -1,4 +1,5 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.common.view.ex.ExRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/background"
     android:layout_width="match_parent"
     android:layout_height="@dimen/view_80_dp"
@@ -36,7 +37,8 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_marginTop="@dimen/view_8_dp"
+        app:bl_shadow_Color="@color/red"
         android:layout_marginRight="@dimen/view_8_dp" />
 
 
-</RelativeLayout>
+</com.common.view.ex.ExRelativeLayout>
