@@ -5,8 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.common.anim.ObjectPlayControlTemplate;
 import com.common.base.BaseFragment;
 import com.component.busilib.friends.RecommendModel;
 import com.component.busilib.friends.SpecialModel;

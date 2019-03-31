@@ -33,8 +33,6 @@ public class GrabSelectAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        MyLog.d(TAG, "onCreateViewHolder" + " parent=" + parent + " viewType=" + viewType);
-
         if (viewType == TYPE_SELECT_NORMAL) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.game_grab_select_item_view, parent, false);
             GrabSelectViewHolder grabSelectViewHolder = new GrabSelectViewHolder(view, mRecyclerOnItemClickListener);
