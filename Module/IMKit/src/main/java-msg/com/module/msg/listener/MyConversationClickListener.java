@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.common.base.BaseActivity;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
@@ -26,15 +27,17 @@ public class MyConversationClickListener implements RongIM.ConversationClickList
      */
     @Override
     public boolean onUserPortraitClick(Context context, Conversation.ConversationType conversationType, UserInfo userInfo, String s) {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(OtherPersonFragment.BUNDLE_USER_ID, Integer.valueOf(userInfo.getUserId()));
-        U.getFragmentUtils().addFragment(FragmentUtils
-                .newAddParamsBuilder((BaseActivity) context, OtherPersonFragment.class)
-                .setUseOldFragmentIfExist(false)
-                .setBundle(bundle)
-                .setAddToBackStack(true)
-                .setHasAnimation(true)
-                .build());
+        if (Integer.valueOf(userInfo.getUserId()) != MyUserInfoManager.getInstance().getUid()) {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(OtherPersonFragment.BUNDLE_USER_ID, Integer.valueOf(userInfo.getUserId()));
+            U.getFragmentUtils().addFragment(FragmentUtils
+                    .newAddParamsBuilder((BaseActivity) context, OtherPersonFragment.class)
+                    .setUseOldFragmentIfExist(false)
+                    .setBundle(bundle)
+                    .setAddToBackStack(true)
+                    .setHasAnimation(true)
+                    .build());
+        }
         return true;
     }
 
