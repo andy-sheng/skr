@@ -189,16 +189,20 @@ public class GameFragment2 extends BaseFragment implements IGameView {
     }
 
     public void setQuickRoom(List<SpecialModel> list, int offset) {
+        MyLog.d(TAG, "setQuickRoom" + " list=" + list + " offset=" + offset);
         if (list == null || list.size() == 0) {
             MyLog.w(TAG, "initQuickRoom 为null");
             return;
         }
 
         QuickJoinRoomModel quickJoinRoomModel = new QuickJoinRoomModel(list, offset);
-        if (mGameAdapter.getPositionObject(1) != null && mGameAdapter.getPositionObject(1) instanceof com.module.home.game.model.RecommendRoomModel) {
+        if (mGameAdapter.getPositionObject(1) != null && mGameAdapter.getPositionObject(1) instanceof RecommendRoomModel) {
             mGameAdapter.getDataList().remove(mGameAdapter.getPositionObject(1));
+            mGameAdapter.getDataList().add(1, quickJoinRoomModel);
+        } else {
+            mGameAdapter.getDataList().add(quickJoinRoomModel);
         }
-        mGameAdapter.getDataList().add(quickJoinRoomModel);
+
         mGameAdapter.notifyDataSetChanged();
 
     }
