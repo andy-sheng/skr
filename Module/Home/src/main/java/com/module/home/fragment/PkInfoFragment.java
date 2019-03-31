@@ -125,6 +125,7 @@ public class PkInfoFragment extends BaseFragment {
                         .withInt("key_game_type", GameModeType.GAME_MODE_CLASSIC_RANK)
                         .withBoolean("selectSong", true)
                         .navigation();
+
                 StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_HOME),
                         StatConstants.KEY_RANK_CLICK, null);
             }
