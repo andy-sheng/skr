@@ -13,7 +13,9 @@ import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
+import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
+import com.common.view.ex.shadow.ShadowConfig;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.friends.SpecialModel;
 import com.module.home.R;
@@ -22,7 +24,7 @@ public class GrabSelectViewHolder extends RecyclerView.ViewHolder {
 
     public final static String TAG = "GrabSelectViewHolder";
 
-    RelativeLayout mBackground;
+    ExRelativeLayout mBackground;
     ExTextView mSpecialTv;
     ExTextView mIntroductionTv;
     ExImageView mSpecialIv;
@@ -33,7 +35,7 @@ public class GrabSelectViewHolder extends RecyclerView.ViewHolder {
     public GrabSelectViewHolder(View itemView, RecyclerOnItemClickListener mItemClickListener) {
         super(itemView);
 
-        mBackground = (RelativeLayout) itemView.findViewById(R.id.background);
+        mBackground = (ExRelativeLayout) itemView.findViewById(R.id.background);
         mSpecialTv = (ExTextView) itemView.findViewById(R.id.special_tv);
         mIntroductionTv = (ExTextView) itemView.findViewById(R.id.introduction_tv);
         mSpecialIv = (ExImageView) itemView.findViewById(R.id.special_iv);
@@ -63,6 +65,11 @@ public class GrabSelectViewHolder extends RecyclerView.ViewHolder {
         } else {
             mBackground.setBackground(getShapeDrawable(Color.parseColor("#68ABD3")));
         }
+        mBackground.setShadowConfig(ShadowConfig.obtain()
+                .xOffset(U.getDisplayUtils().dip2px(2))
+                .yOffset(U.getDisplayUtils().dip2px(5))
+                .color(Color.RED)
+        );
         mSpecialTv.setText(this.mSpecialModel.getTagName());
         mIntroductionTv.setText(this.mSpecialModel.getIntroduction());
     }

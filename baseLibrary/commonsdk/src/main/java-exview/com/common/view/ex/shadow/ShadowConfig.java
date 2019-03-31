@@ -7,21 +7,21 @@ import java.util.List;
  * Created by wanjian on 2017/9/14.
  */
 
-public class Config {
-    private static List<Config> sConfigs = new ArrayList<>();
+public class ShadowConfig {
+    private static List<ShadowConfig> sConfigs = new ArrayList<>();
 
-    private Config() {
+    private ShadowConfig() {
     }
 
-    public static Config obtain() {
+    public static ShadowConfig obtain() {
         if (sConfigs.isEmpty()) {
-            return new Config();
+            return new ShadowConfig();
         }
         return sConfigs.remove(sConfigs.size() - 1);
     }
 
-    public static Config obtain(Config config) {
-        Config b = obtain();
+    public static ShadowConfig obtain(ShadowConfig config) {
+        ShadowConfig b = obtain();
         b.color = config.color;
         b.xOffset = config.xOffset;
         b.yOffset = config.yOffset;
@@ -46,7 +46,7 @@ public class Config {
      * @param color 阴影颜色
      * @return this
      */
-    public Config color(int color) {
+    public ShadowConfig color(int color) {
         this.color = color;
         return this;
     }
@@ -55,7 +55,7 @@ public class Config {
      * @param xOffset x轴偏移量
      * @return this
      */
-    public Config xOffset(int xOffset) {
+    public ShadowConfig xOffset(int xOffset) {
         this.xOffset = xOffset;
         return this;
     }
@@ -64,7 +64,7 @@ public class Config {
      * @param yOffset y轴偏移量
      * @return this
      */
-    public Config yOffset(int yOffset) {
+    public ShadowConfig yOffset(int yOffset) {
         this.yOffset = yOffset;
         return this;
     }
@@ -73,7 +73,7 @@ public class Config {
      * @param radius 模糊半径
      * @return this
      */
-    public Config radius(float radius) {
+    public ShadowConfig radius(float radius) {
         if (radius < 1e-6) {
             radius = 0.01f;
         }
@@ -81,22 +81,22 @@ public class Config {
         return this;
     }
 
-    public Config leftTopCorner(int leftTopCorner) {
+    public ShadowConfig leftTopCorner(int leftTopCorner) {
         this.leftTopCorner = leftTopCorner;
         return this;
     }
 
-    public Config rightTopCorner(int rightTopCorner) {
+    public ShadowConfig rightTopCorner(int rightTopCorner) {
         this.rightTopCorner = rightTopCorner;
         return this;
     }
 
-    public Config rightBottomCorner(int rightBottomCorner) {
+    public ShadowConfig rightBottomCorner(int rightBottomCorner) {
         this.rightBottomCorner = rightBottomCorner;
         return this;
     }
 
-    public Config leftBottomCorner(int leftBottomCorner) {
+    public ShadowConfig leftBottomCorner(int leftBottomCorner) {
         this.leftBottomCorner = leftBottomCorner;
         return this;
     }
@@ -120,10 +120,10 @@ public class Config {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Config)) {
+        if (!(obj instanceof ShadowConfig)) {
             return false;
         }
-        Config b = ((Config) obj);
+        ShadowConfig b = ((ShadowConfig) obj);
         if (obj == this ||
                 b.color == color &&
                         b.xOffset == xOffset &&

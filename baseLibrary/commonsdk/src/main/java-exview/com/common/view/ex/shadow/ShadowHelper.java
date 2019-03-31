@@ -18,7 +18,7 @@ public class ShadowHelper {
     private static RectF sRectF = new RectF();
 
 
-    public static void draw(Canvas canvas, View view, Config config) {
+    public static void draw(Canvas canvas, View view, ShadowConfig config) {
 
         View parent = (View) view.getParent();
         if (parent.getLayerType() != View.LAYER_TYPE_SOFTWARE) {
@@ -75,7 +75,7 @@ public class ShadowHelper {
     /**
      * 圆角path
      */
-    private static void initPath(int w, int h, Config config) {
+    private static void initPath(int w, int h, ShadowConfig config) {
 
         float lt = config.leftTopCorner;
         float rt = config.rightTopCorner;
