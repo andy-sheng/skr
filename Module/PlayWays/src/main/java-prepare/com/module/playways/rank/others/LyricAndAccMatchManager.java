@@ -32,7 +32,7 @@ import static com.zq.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
 /**
  * 这个类的职责是负责
  * 歌词与伴奏 以及 歌词结束时间 以及歌词条运动动画 的完整匹配
- * 因为 调音间 排位赛 一唱到底伴奏模式 很多地方都要有类似的校准
+ * 因为 调音间 排位赛 一adb唱到底伴奏模式 很多地方都要有类似的校准
  * 特别是 加入 agora token 验证后，播放音乐就有延迟了
  */
 public class LyricAndAccMatchManager {
@@ -52,7 +52,7 @@ public class LyricAndAccMatchManager {
     LyricsReader mLyricsReader;
     // 按理 歌词 和 伴奏 都ok了 才抛出歌词end事件，但事件的时间戳要做矫正
     boolean mAccLoadOk = false;
-    boolean mLryLoadOk = false;
+    boolean mLrcLoadOk = false;
     boolean mHasLauncher = false;
 
     Handler mUiHandler = new Handler() {
@@ -82,7 +82,7 @@ public class LyricAndAccMatchManager {
         mAccBeginTs = accBeginTs;
         mAccEndTs = accEndTs;
         mAccLoadOk = false;
-        mLryLoadOk = false;
+        mLrcLoadOk = false;
         mHasLauncher = false;
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
@@ -137,7 +137,7 @@ public class LyricAndAccMatchManager {
                             } else {
                                 mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_LAUNCHER, LAUNCHER_DELAY);
                             }
-                            mLryLoadOk = true;
+                            mLrcLoadOk = true;
                             // 这里是假设 伴奏 和 歌词一起初始化完毕的， 实际两者会有偏差优化下
 //                            int lineNum = mLyricEventLauncher.postLyricEvent(lyricsReader, lrcBeginTs - GrabRoomData.ACC_OFFSET_BY_LYRIC, lrcBeginTs + totalMs - GrabRoomData.ACC_OFFSET_BY_LYRIC, null);
 //                            mRoomData.setSongLineNum(lineNum);
@@ -158,7 +158,7 @@ public class LyricAndAccMatchManager {
 
     //发射歌词事件
     void launchLyricEvent(int accPlayTs) {
-        MyLog.d(TAG, "launchLyricEvent accPlayTs=" + accPlayTs + "mAccLoadOk=" + mAccLoadOk + " mLryLoadOk=" + mLryLoadOk);
+        MyLog.d(TAG, "launchLyricEvent accPlayTs=" + accPlayTs + "mAccLoadOk=" + mAccLoadOk + " mLryLoadOk=" + mLrcLoadOk);
         if (mLyricsReader == null) {
             return;
         }
@@ -194,7 +194,7 @@ public class LyricAndAccMatchManager {
             MyLog.d(TAG, "伴奏 ts=" + in.getCurrent());
             if (in != null && in.getCurrent() > 0) {
                 if (!mAccLoadOk) {
-                    if (mLryLoadOk) {
+                    if (mLrcLoadOk) {
                         launchLyricEvent(in.getCurrent());
                     }
                 }

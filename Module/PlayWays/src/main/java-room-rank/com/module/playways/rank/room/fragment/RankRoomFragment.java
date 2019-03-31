@@ -252,7 +252,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             public void run() {
                 // 模式改为3，自动播放主舞台退出的svga动画
 //                mUFOMode = 3;
-                playhideMainStageAnimator();
+                playHideMainStageAnimator();
                 mManyLyricsView.setVisibility(View.GONE);
             }
         }, 800);
@@ -268,7 +268,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         }
     }
 
-    private void playhideMainStageAnimator() {
+    private void playHideMainStageAnimator() {
         MyLog.d(TAG, "playhideMainStageAnimator");
         //        // 舞台退出，淡出
         ObjectAnimator objectAnimatorStage = ObjectAnimator.ofFloat(mStageView, View.ALPHA, 1f, 0f);
