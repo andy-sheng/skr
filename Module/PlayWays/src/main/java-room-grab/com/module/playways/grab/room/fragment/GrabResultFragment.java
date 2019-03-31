@@ -1,20 +1,14 @@
 package com.module.playways.grab.room.fragment;
 
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
-import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.share.SharePanel;
 import com.common.core.share.ShareType;
@@ -28,10 +22,8 @@ import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.constans.GameModeType;
 import com.component.busilib.view.BitmapTextView;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
-import com.module.playways.BaseRoomData;
 import com.module.playways.grab.room.GrabResultData;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;

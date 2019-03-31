@@ -11,7 +11,7 @@
         android:id="@+id/result_area"
         android:layout_width="@dimen/view_320_dp"
         android:layout_height="@dimen/view_356_dp"
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:layout_marginTop="@dimen/view_133_dp"
         app:bl_corners_radius="@dimen/view_10_dp"
         app:bl_shape="rectangle"
@@ -186,6 +186,8 @@
     <com.common.view.ex.ExImageView
         android:layout_width="@dimen/view_375_dp"
         android:layout_height="@dimen/view_192_dp"
+        android:layout_alignTop="@id/result_area"
+        android:layout_marginTop="-140dp"
         android:layout_centerHorizontal="true"
         android:background="@drawable/ycdd_zhanji" />
 
