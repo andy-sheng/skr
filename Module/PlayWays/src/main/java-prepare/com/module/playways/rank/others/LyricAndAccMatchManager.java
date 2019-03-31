@@ -169,7 +169,7 @@ public class LyricAndAccMatchManager {
         if (mListener != null) {
             mListener.onLyricEventPost(lineNum);
         }
-        if (mVoiceScaleView != null) {
+        if (mVoiceScaleView != null && mManyLyricsView.getVisibility()==View.VISIBLE) {
             mVoiceScaleView.setVisibility(View.VISIBLE);
             mVoiceScaleView.startWithData(mLyricsReader.getLyricsLineInfoList(), mAccBeginTs + accPlayTs);
         }

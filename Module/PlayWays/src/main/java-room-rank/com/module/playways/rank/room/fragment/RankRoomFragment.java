@@ -859,6 +859,9 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         if (mManyLyricsView != null) {
             mManyLyricsView.setVisibility(View.GONE);
         }
+        if (mVoiceScaleView != null) {
+            mVoiceScaleView.setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -1033,6 +1036,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             mDengBigAnimation.setTranslationY(U.getDisplayUtils().dip2px(200));
             mDengBigAnimation.playBurstAnimation();
         } else {
+            mDengBigAnimation.setTranslationY(0);
             mDengBigAnimation.playBurstAnimation();
         }
     }

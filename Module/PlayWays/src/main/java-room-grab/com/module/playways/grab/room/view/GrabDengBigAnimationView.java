@@ -1,10 +1,12 @@
 package com.module.playways.grab.room.view;
 
 import android.content.Context;
+import android.net.http.HttpResponseCache;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 import com.common.anim.ObjectPlayControlTemplate;
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.module.playways.BaseRoomData;
 import com.module.rank.R;
@@ -16,6 +18,7 @@ import com.opensource.svgaplayer.SVGAVideoEntity;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +27,7 @@ import java.util.List;
  * 灯的全屏效果
  */
 public class GrabDengBigAnimationView extends RelativeLayout {
-
+    public final static String TAG = "GrabDengBigAnimationView";
     List<SVGAImageViewEx> mDengSvgaViewList = new ArrayList<>();
 
     public GrabDengBigAnimationView(Context context) {
@@ -64,11 +67,13 @@ public class GrabDengBigAnimationView extends RelativeLayout {
     };
 
     public void playBurstAnimation() {
+        MyLog.d(TAG, "playBurstAnimation");
         mViewObjectPlayControlTemplate.add(new PlayData(), true);
     }
 
     // 爆灯
     private void playBurstAnimationInner(PlayData playData, SVGAImageViewEx dengSvgaEx) {
+        MyLog.d(TAG, "playBurstAnimationInner" + " playData=" + playData + " dengSvgaEx=" + dengSvgaEx);
         SVGAImageView dengSvga = dengSvgaEx.mSVGAImageView;
         if (this.indexOfChild(dengSvga) == -1) {
             dengSvgaEx.add(this);
@@ -92,11 +97,11 @@ public class GrabDengBigAnimationView extends RelativeLayout {
 
                 @Override
                 public void onError() {
-
+                    MyLog.d(TAG, "onError");
                 }
             });
         } catch (Exception e) {
-            System.out.print(true);
+            MyLog.e(TAG, e);
         }
 
         dengSvga.setCallback(new SVGACallback() {
