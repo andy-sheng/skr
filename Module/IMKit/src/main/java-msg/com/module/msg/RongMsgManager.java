@@ -17,6 +17,7 @@ import com.common.utils.HandlerTaskTimer;
 import com.common.utils.LogUploadUtils;
 import com.common.utils.U;
 import com.module.common.ICallback;
+import com.module.msg.listener.MyConversationClickListener;
 import com.module.msg.model.CustomChatRoomMsg;
 import com.module.msg.model.CustomNotificationMsg;
 import com.module.msg.model.SpecailOpMsg;
@@ -219,6 +220,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             RongIM.registerMessageType(CustomChatRoomMsg.class);
             RongIM.registerMessageType(CustomNotificationMsg.class);
             RongIM.registerMessageType(SpecailOpMsg.class);
+            RongIM.getInstance().setConversationClickListener(new MyConversationClickListener());
             RongIM.setConnectionStatusListener(new RongIMClient.ConnectionStatusListener() {
                 @Override
                 public void onChanged(ConnectionStatus connectionStatus) {
@@ -349,7 +351,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
         @Override
         public void onCountChanged(int unReadNum) {
             MyLog.d(TAG, "onCountChanged" + " unReadNum=" + unReadNum);
-            for(ICallback callback:mUnreadCallbacks){
+            for (ICallback callback : mUnreadCallbacks) {
                 callback.onSucess(unReadNum);
             }
         }

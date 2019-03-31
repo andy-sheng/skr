@@ -33,7 +33,6 @@ import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.zq.relation.fragment.RelationFragment;
 import com.zq.relation.fragment.SearchFriendFragment;
 
 import java.util.HashMap;
