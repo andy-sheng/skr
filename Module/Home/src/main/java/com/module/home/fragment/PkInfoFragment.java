@@ -251,6 +251,11 @@ public class PkInfoFragment extends BaseFragment {
     }
 
     @Override
+    public boolean isInViewPager() {
+        return true;
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
     }
