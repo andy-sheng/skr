@@ -22,7 +22,7 @@
 
             <com.common.view.ex.ExTextView
                 app:bl_unSelected_textColor="@color/black_trans_40"
-                app:bl_selected_textColor="#7646C3"
+                app:bl_selected_textColor="#CD8E48"
                 android:textSize="@dimen/textsize_10_dp"
                 android:text="抢唱"
                 android:id="@+id/game_btn"
@@ -67,7 +67,7 @@
             <com.common.view.ex.ExTextView
                 android:gravity="center_horizontal"
                 app:bl_unSelected_textColor="@color/black_trans_40"
-                app:bl_selected_textColor="#7646C3"
+                app:bl_selected_textColor="#627AD9"
                 android:textSize="@dimen/textsize_10_dp"
                 android:text="消息"
                 android:id="@+id/message_btn"
@@ -116,7 +116,7 @@
             <com.common.view.ex.ExTextView
                 android:gravity="center_horizontal"
                 app:bl_unSelected_textColor="@color/black_trans_40"
-                app:bl_selected_textColor="#7646C3"
+                app:bl_selected_textColor="#238B33"
                 android:textSize="@dimen/textsize_10_dp"
                 android:text="我的"
                 android:id="@+id/person_info_btn"
