@@ -320,7 +320,8 @@ public class JoinGrabRoomRspModel implements Serializable {
     @Override
     public String toString() {
         return "JoinGrabRoomRspModel{" +
-                "coin=" + coin +
+                "roomType=" + roomType +
+                "ownerID=" + ownerID +
                 ", config=" + config +
                 ", elapsedTimeMs=" + elapsedTimeMs +
                 ", gameOverTimeMs=" + gameOverTimeMs +

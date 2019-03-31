@@ -26,8 +26,8 @@ import static com.zq.report.fragment.ReportFragment.REPORT_USER_ID;
 // 个人信息卡片
 public class PersonInfoDialog {
 
-    boolean isReport = false;
-    boolean isKick = false;
+    boolean mIsReport = false;
+    boolean mIsKick = false;
 
     Context mContext;
     DialogPlus mDialogPlus;
@@ -49,12 +49,13 @@ public class PersonInfoDialog {
                     public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
                         if (view.getId() == R.id.report) {
                             // 举报
+                            mIsReport = true;
                             dialog.dismiss();
-                            isReport = true;
+
                         } else if (view.getId() == R.id.kick) {
                             // 踢人
+                            mIsKick = true;
                             dialog.dismiss();
-                            isKick = true;
                         } else if (view.getId() == R.id.follow_area || view.getId() == R.id.follow_tv) {
                             // 关注
                             if (personInfoDialogView.getUserInfoModel().isFollow() || personInfoDialogView.getUserInfoModel().isFriend()) {
@@ -84,15 +85,15 @@ public class PersonInfoDialog {
                 .setOnDismissListener(new OnDismissListener() {
                     @Override
                     public void onDismiss(@NonNull DialogPlus dialog) {
-                        if (isReport) {
+                        if (mIsReport) {
+                            mIsReport = false;
                             showReportView(userId);
-                            isReport = false;
                         }
-                        if (isKick) {
+                        if (mIsKick) {
+                            mIsKick = false;
                             if (mKickListener != null) {
                                 mKickListener.onClickKick(personInfoDialogView.getUserInfoModel());
                             }
-                            isKick = false;
                         }
 
                     }
@@ -138,7 +139,7 @@ public class PersonInfoDialog {
                         .build());
     }
 
-   public interface KickListener {
+    public interface KickListener {
         void onClickKick(UserInfoModel userInfoModel);
     }
 

@@ -64,7 +64,7 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
 
 
     public boolean isContainMe() {
-        if(mExpectRoundInfo == null || mExpectRoundInfo.getPlayUsers() == null){
+        if (mExpectRoundInfo == null || mExpectRoundInfo.getPlayUsers() == null) {
             return false;
         }
 
@@ -270,5 +270,16 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
 
     public void setSongLineNum(Integer songLineNum) {
         mSongLineNum = songLineNum;
+    }
+
+    @Override
+    public String toString() {
+        return "GrabRoomData{" +
+                ", mTagId=" + mTagId +
+                ", mGrabConfigModel=" + mGrabConfigModel +
+                ", roomType=" + roomType +
+                ", ownerId=" + ownerId +
+                ", hasGameBegin=" + hasGameBegin +
+                '}';
     }
 }

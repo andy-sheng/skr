@@ -1096,7 +1096,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     // 确认踢人弹窗
     private void showKickConfirmDialog(UserInfoModel userInfoModel) {
-        MyLog.d(TAG, "showConfirmDialog" + " userInfoModel=" + userInfoModel);
+        MyLog.d(TAG, "showKickConfirmDialog" + " userInfoModel=" + userInfoModel);
         dismissDialog();
         U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
         mGrabKickDialog = new ConfirmDialog(getActivity(), userInfoModel, ConfirmDialog.TYPE_KICK_CONFIRM, mRoomData.getGrabConfigModel().getKickUserConsumCoinCnt());
