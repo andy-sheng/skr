@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.rank.R;
@@ -19,6 +20,8 @@ import org.jetbrains.annotations.NotNull;
  * 游戏结束，对战结束的动画
  */
 public class GrabGameOverView extends RelativeLayout {
+
+    public final static String TAG = "GrabGameOverView";
 
     SVGAImageView mEndGameIv;
     SVGAListener mSVGAListener;
@@ -65,7 +68,7 @@ public class GrabGameOverView extends RelativeLayout {
                 }
             });
         } catch (Exception e) {
-            System.out.print(true);
+            MyLog.e(TAG,e);
         }
 
         mEndGameIv.setCallback(new SVGACallback() {

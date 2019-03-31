@@ -282,7 +282,7 @@ public class SelfSingCardView extends RelativeLayout {
                 }
             });
         } catch (Exception e) {
-            System.out.print(true);
+            MyLog.e(TAG,e);
         }
     }
 

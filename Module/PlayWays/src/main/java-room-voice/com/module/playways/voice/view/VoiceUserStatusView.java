@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import com.common.core.avatar.AvatarUtils;
 import com.common.image.fresco.BaseImageView;
 
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
@@ -25,6 +26,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
 
 public class VoiceUserStatusView extends RelativeLayout {
+
+    public final static String TAG = "VoiceUserStatusView";
 
     static final int MSG_SPEAK_OVER = 1;
     SVGAImageView mSpeakerSvga;
@@ -161,7 +164,7 @@ public class VoiceUserStatusView extends RelativeLayout {
                 }
             });
         } catch (Exception e) {
-            System.out.print(true);
+            MyLog.e(TAG,e);
         }
     }
 

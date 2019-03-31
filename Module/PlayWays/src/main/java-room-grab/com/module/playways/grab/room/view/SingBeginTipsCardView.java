@@ -94,7 +94,7 @@ public class SingBeginTipsCardView extends RelativeLayout {
                 }
             });
         } catch (Exception e) {
-            System.out.print(true);
+            MyLog.e(TAG,e);
         }
 
         mSingBeginSvga.setCallback(new SVGACallback() {

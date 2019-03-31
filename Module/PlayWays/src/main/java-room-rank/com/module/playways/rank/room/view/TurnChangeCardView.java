@@ -16,6 +16,7 @@ import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.HttpImage;
 import com.common.image.model.ImageFactory;
 import com.common.image.model.oss.OssImgFactory;
+import com.common.log.MyLog;
 import com.common.utils.ImageUtils;
 import com.common.utils.U;
 import com.module.playways.grab.room.listener.SVGAListener;
@@ -39,6 +40,8 @@ import java.io.File;
 import java.net.URL;
 
 public class TurnChangeCardView extends RelativeLayout {
+
+    public final static String TAG = "TurnChangeCardView";
 
     RankRoomData mRoomData;
 
@@ -123,7 +126,7 @@ public class TurnChangeCardView extends RelativeLayout {
                 }
             });
         } catch (Exception e) {
-            System.out.print(true);
+            MyLog.e(TAG,e);
         }
 
         mFirstSvga.setCallback(new SVGACallback() {
@@ -179,7 +182,7 @@ public class TurnChangeCardView extends RelativeLayout {
                 }
             });
         } catch (Exception e) {
-            System.out.print(true);
+            MyLog.e(TAG,e);
         }
 
         mNextSvga.setCallback(new SVGACallback() {

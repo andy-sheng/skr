@@ -182,7 +182,7 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
                 }
             });
         } catch (Exception e) {
-            System.out.print(true);
+            MyLog.e(TAG,e);
         }
     }
 

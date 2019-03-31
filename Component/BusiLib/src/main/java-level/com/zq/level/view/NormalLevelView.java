@@ -293,7 +293,7 @@ public class NormalLevelView extends RelativeLayout {
                 }
             });
         } catch (Exception e) {
-            System.out.print(true);
+            MyLog.e(TAG,e);
         }
 
         levelChange.setCallback(new SVGACallback() {
@@ -454,7 +454,7 @@ public class NormalLevelView extends RelativeLayout {
                 }
             });
         } catch (Exception e) {
-            System.out.print(true);
+            MyLog.e(TAG,e);
         }
 
         starUp.setCallback(new SVGACallback() {
@@ -537,7 +537,7 @@ public class NormalLevelView extends RelativeLayout {
                 }
             });
         } catch (Exception e) {
-            System.out.print(true);
+            MyLog.e(TAG,e);
         }
         starLoss.setCallback(new SVGACallback() {
             @Override

@@ -570,7 +570,7 @@ public class RankTopContainerView2 extends RelativeLayout {
                 }
             });
         } catch (Exception e) {
-            System.out.print(true);
+            MyLog.e(TAG,e);
         }
 
 

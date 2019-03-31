@@ -212,7 +212,7 @@ public class RankLevelChange2Fragment extends BaseFragment {
                 }
             });
         } catch (Exception e) {
-            System.out.print(true);
+            MyLog.e(TAG,e);
         }
 
         mResultSvga.setCallback(new SVGACallback() {

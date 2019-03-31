@@ -487,7 +487,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                 }
             });
         } catch (Exception e) {
-            System.out.print(true);
+            MyLog.e(TAG,e);
         }
 
         RxView.clicks(mSingAvatarView)

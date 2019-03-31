@@ -191,7 +191,7 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
                 }
             });
         } catch (Exception e) {
-            System.out.print(true);
+            MyLog.e(TAG,e);
         }
 
         mTopSvgaView.setCallback(new SVGACallback() {
