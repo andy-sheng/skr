@@ -142,7 +142,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mGamePresenter.initOperationArea(true);
         mGamePresenter.initQuickRoom(true);
         mGamePresenter.initRankInfo(true);
-        mGamePresenter.initRecommendRoom(true, mRecommendInterval);
+        mGamePresenter.initRecommendRoom(mRecommendInterval);
         mGamePresenter.initGameKConfig();
     }
 
@@ -164,7 +164,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mGamePresenter.initOperationArea(false);
         mGamePresenter.initQuickRoom(false);
         mGamePresenter.initRankInfo(false);
-        mGamePresenter.initRecommendRoom(false, mRecommendInterval);
+        mGamePresenter.initRecommendRoom(mRecommendInterval);
         mGamePresenter.initGameKConfig();
     }
 
@@ -184,7 +184,8 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mGamePresenter.initOperationArea(true);
         mGamePresenter.initQuickRoom(true);
         mGamePresenter.initRankInfo(true);
-        mGamePresenter.initRecommendRoom(true, mRecommendInterval);
+        mGamePresenter.initRecommendRoom(mRecommendInterval);
+        mGamePresenter.initGameKConfig();
     }
 
     public void setQuickRoom(List<SpecialModel> list, int offset) {
@@ -214,7 +215,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
     @Override
     public void setGameConfig(GameKConfigModel gameKConfigModel) {
         mRecommendInterval = gameKConfigModel.getHomepagetickerinterval();
-        mGamePresenter.initRecommendRoom(false, mRecommendInterval);
+        mGamePresenter.initRecommendRoom(mRecommendInterval);
     }
 
     @Override

@@ -32,7 +32,6 @@ public class GamePresenter extends RxLifeCyclePresenter {
     GrabSongApi mGrabSongApi;
 
     long mLastUpdateOperaArea = 0;    //广告位上次更新成功时间
-    long mLastUpdateRecommendInfo = 0;//房间推荐上次更新成功时间
     long mLastUpdateQuickInfo = 0;    //快速加入房间更新成功时间
     long mLastUpdateRankInfo = 0;     //排名信息上次更新成功时间
 
@@ -140,16 +139,18 @@ public class GamePresenter extends RxLifeCyclePresenter {
         }, this);
     }
 
-    public void initRecommendRoom(boolean isFlag, int interval) {
-        long now = System.currentTimeMillis();
+    public void initRecommendRoom(int interval) {
         if (interval <= 0) {
-            if (!isFlag) {
-                // 距离上次拉去已经超过30秒了
-                if ((now - mLastUpdateRecommendInfo) < 30 * 1000) {
-                    return;
-                }
-            }
-            loadRecommendRoomData();
+            stopTimer();
+            mRecommendTimer = HandlerTaskTimer.newBuilder()
+                    .take(-1)
+                    .interval(20 * 1000)
+                    .start(new HandlerTaskTimer.ObserverW() {
+                        @Override
+                        public void onNext(Integer integer) {
+                            loadRecommendRoomData();
+                        }
+                    });
         } else {
             stopTimer();
             mRecommendTimer = HandlerTaskTimer.newBuilder()
@@ -176,7 +177,6 @@ public class GamePresenter extends RxLifeCyclePresenter {
             @Override
             public void process(ApiResult obj) {
                 if (obj.getErrno() == 0) {
-                    mLastUpdateRecommendInfo = System.currentTimeMillis();
                     List<RecommendModel> list = JSON.parseArray(obj.getData().getString("rooms"), RecommendModel.class);
                     int offset = obj.getData().getIntValue("offset");
                     int totalNum = obj.getData().getIntValue("totalRoomsNum");
