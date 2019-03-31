@@ -1,23 +1,16 @@
 package com.common.view.ex.shadow;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by wanjian on 2017/9/14.
  */
 
 public class ShadowConfig {
-    private static List<ShadowConfig> sConfigs = new ArrayList<>();
 
     private ShadowConfig() {
     }
 
     public static ShadowConfig obtain() {
-        if (sConfigs.isEmpty()) {
-            return new ShadowConfig();
-        }
-        return sConfigs.remove(sConfigs.size() - 1);
+        return new ShadowConfig();
     }
 
     public static ShadowConfig obtain(ShadowConfig config) {
@@ -102,20 +95,28 @@ public class ShadowConfig {
     }
 
     void recycle() {
-        if (sConfigs.contains(this)) {
-            throw new RuntimeException("build has been recycled!");
-        }
-        color = 0;
-        xOffset = 0;
-        yOffset = 0;
-        radius = 0;
-        leftTopCorner = 0;
-        rightTopCorner = 0;
-        rightBottomCorner = 0;
-        leftBottomCorner = 0;
-        if (sConfigs.size() < 50) {
-            sConfigs.add(this);
-        }
+//        color = 0;
+//        xOffset = 0;
+//        yOffset = 0;
+//        radius = 0;
+//        leftTopCorner = 0;
+//        rightTopCorner = 0;
+//        rightBottomCorner = 0;
+//        leftBottomCorner = 0;
+    }
+
+    @Override
+    public String toString() {
+        return "ShadowConfig{" +
+                "color=" + color +
+                ", xOffset=" + xOffset +
+                ", yOffset=" + yOffset +
+                ", radius=" + radius +
+                ", leftTopCorner=" + leftTopCorner +
+                ", rightTopCorner=" + rightTopCorner +
+                ", rightBottomCorner=" + rightBottomCorner +
+                ", leftBottomCorner=" + leftBottomCorner +
+                '}';
     }
 
     @Override
@@ -133,7 +134,7 @@ public class ShadowConfig {
                         b.rightTopCorner == rightTopCorner &&
                         b.rightBottomCorner == rightBottomCorner &&
                         b.leftBottomCorner == leftBottomCorner
-                ) {
+        ) {
             return true;
         }
 

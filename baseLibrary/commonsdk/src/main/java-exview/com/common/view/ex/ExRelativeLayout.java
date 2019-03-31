@@ -42,13 +42,12 @@ public class ExRelativeLayout extends RelativeLayout {
         super.onDraw(canvas);
         if (mShadowConfig != null) {
             //实现阴影
-            ShadowHelper.draw(canvas, this,
-                    mShadowConfig);
+            ShadowHelper.draw(canvas, this, mShadowConfig);
         }
     }
 
     public void setShadowConfig(ShadowConfig shadowConfig) {
         mShadowConfig = shadowConfig;
-        invalidate();
+        //invalidate();
     }
 }

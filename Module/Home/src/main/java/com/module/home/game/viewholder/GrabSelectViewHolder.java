@@ -66,10 +66,17 @@ public class GrabSelectViewHolder extends RecyclerView.ViewHolder {
             mBackground.setBackground(getShapeDrawable(Color.parseColor("#68ABD3")));
         }
         mBackground.setShadowConfig(ShadowConfig.obtain()
-                .xOffset(U.getDisplayUtils().dip2px(2))
-                .yOffset(U.getDisplayUtils().dip2px(5))
                 .color(Color.RED)
+                .leftTopCorner(20)
+                .rightTopCorner(30)
+                .leftBottomCorner(40)
+                .rightBottomCorner(50)
+                .radius(60)
+                .xOffset(30)
+                .yOffset(30)
         );
+
+
         mSpecialTv.setText(this.mSpecialModel.getTagName());
         mIntroductionTv.setText(this.mSpecialModel.getIntroduction());
     }

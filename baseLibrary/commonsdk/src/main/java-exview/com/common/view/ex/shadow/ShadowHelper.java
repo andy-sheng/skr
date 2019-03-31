@@ -9,8 +9,12 @@ import android.graphics.Region;
 import android.util.Log;
 import android.view.View;
 
+import com.common.log.MyLog;
+
 
 public class ShadowHelper {
+    public final static String TAG = "ShadowHelper";
+
     private static final float RATIO = 1.3f;//绘制矩形的区域至少要距离view边框Ratio倍blur,否定导致裁剪掉
 
     private static Path sPath = new Path();
@@ -19,7 +23,7 @@ public class ShadowHelper {
 
 
     public static void draw(Canvas canvas, View view, ShadowConfig config) {
-
+        MyLog.d(TAG,"draw" + " canvas=" + canvas + " view=" + view + " config=" + config);
         View parent = (View) view.getParent();
         if (parent.getLayerType() != View.LAYER_TYPE_SOFTWARE) {
             parent.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
