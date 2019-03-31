@@ -36,7 +36,7 @@ public class GrabFriendsRoomFragment extends BaseFragment {
     RecyclerView mContentRv;
 
     int offset = 0;          //偏移量
-    int DEFAULT_COUNT = 10;  // 每次拉去列表数目
+    int DEFAULT_COUNT = 50;  // 每次拉去列表数目
 
     FriendRoomVerticalAdapter mFriendRoomVeritAdapter;
 
@@ -70,7 +70,7 @@ public class GrabFriendsRoomFragment extends BaseFragment {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 mRefreshLayout.finishLoadMore();
-                loadData(offset, DEFAULT_COUNT);
+                loadData(offset, DEFAULT_COUNT, true);
             }
 
             @Override
@@ -106,7 +106,7 @@ public class GrabFriendsRoomFragment extends BaseFragment {
         });
         mContentRv.setAdapter(mFriendRoomVeritAdapter);
 
-        loadData(offset, DEFAULT_COUNT);
+        loadData(0, DEFAULT_COUNT, false);
     }
 
     @Override
@@ -114,7 +114,7 @@ public class GrabFriendsRoomFragment extends BaseFragment {
         return false;
     }
 
-    private void loadData(int offset, int count) {
+    private void loadData(int offset, int count, final boolean isLoadMore) {
         GrabSongApi grabSongApi = ApiManager.getInstance().createService(GrabSongApi.class);
         ApiMethods.subscribe(grabSongApi.getRecommendRoomList(offset, count), new ApiObserver<ApiResult>() {
             @Override
@@ -123,16 +123,20 @@ public class GrabFriendsRoomFragment extends BaseFragment {
                     List<RecommendModel> list = JSON.parseArray(obj.getData().getString("rooms"), RecommendModel.class);
                     int offset = obj.getData().getIntValue("offset");
                     int totalNum = obj.getData().getIntValue("cnt");
-                    refreshView(list, offset);
+                    refreshView(list, offset, isLoadMore);
                 }
             }
         }, this);
     }
 
-    private void refreshView(List<RecommendModel> list, int offset) {
+    private void refreshView(List<RecommendModel> list, int offset, boolean isLoadMore) {
         this.offset = offset;
         if (list != null) {
-            mFriendRoomVeritAdapter.getDataList().addAll(list);
+            if (isLoadMore) {
+                mFriendRoomVeritAdapter.getDataList().addAll(list);
+            } else {
+                mFriendRoomVeritAdapter.setDataList(list);
+            }
             mFriendRoomVeritAdapter.notifyDataSetChanged();
         }
     }
