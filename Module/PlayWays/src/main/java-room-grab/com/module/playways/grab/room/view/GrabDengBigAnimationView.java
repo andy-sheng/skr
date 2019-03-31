@@ -76,7 +76,10 @@ public class GrabDengBigAnimationView extends RelativeLayout {
         MyLog.d(TAG, "playBurstAnimationInner" + " playData=" + playData + " dengSvgaEx=" + dengSvgaEx);
         SVGAImageView dengSvga = dengSvgaEx.mSVGAImageView;
         if (this.indexOfChild(dengSvga) == -1) {
+            MyLog.d(TAG,"视图未添加，添加");
             dengSvgaEx.add(this);
+        }else{
+            MyLog.d(TAG,"视图已添加");
         }
         dengSvga.setCallback(null);
         dengSvga.stopAnimation(true);
@@ -92,7 +95,6 @@ public class GrabDengBigAnimationView extends RelativeLayout {
                     SVGADrawable drawable = new SVGADrawable(videoItem);
                     dengSvga.setImageDrawable(drawable);
                     dengSvga.startAnimation();
-                    dengSvgaEx.playing = true;
                 }
 
                 @Override
@@ -149,6 +151,7 @@ public class GrabDengBigAnimationView extends RelativeLayout {
     private SVGAImageViewEx isIdle() {
         for (SVGAImageViewEx svgaImageViewEx : mDengSvgaViewList) {
             if (!svgaImageViewEx.playing) {
+                svgaImageViewEx.playing = true;
                 return svgaImageViewEx;
             }
         }
