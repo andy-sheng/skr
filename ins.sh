@@ -1,3 +1,4 @@
+#! /bin/bash
 #修改 BuildModule
 changeBuildModule(){
     echo "changeBuildModule$1"
