@@ -23,8 +23,9 @@ private:
         diff = diff <-6 ? (diff+12): diff;
         return diff;
     }
-    
+
 private:
+    MelChordAna *melChordAna = NULL;
     int m_sampleRate = 44100;
     int m_channels = 1;
     int m_totalSamples = 0;

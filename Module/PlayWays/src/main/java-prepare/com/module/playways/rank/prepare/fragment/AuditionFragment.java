@@ -96,6 +96,8 @@ public class AuditionFragment extends BaseFragment {
     private volatile boolean isRecord = false;
 
     private int mLastLineNum = -1;
+    int mMelp2Score = -1;// 本轮 Melp2 打分
+    int mAcrScore = -1;// 本轮 acr 打分
 
     private int mTotalLineNum = -1;
 
@@ -114,29 +116,26 @@ public class AuditionFragment extends BaseFragment {
                     int lineNo = (msg.what - MSG_SHOW_SCORE_EVENT) / 100;
                     MyLog.d(TAG, "handleMessage" + " lineNo=" + lineNo);
                     if (lineNo > mLastLineNum) {
-                        if (ScoreConfig.isMelpEnable()) {
-                            int melp1score = EngineManager.getInstance().getLineScore1();
-                            if (MyLog.isDebugLogOpen()) {
-                                addLogText("第" + lineNo + "行,melp1得分:" + melp1score);
-                            }
-                            MyLog.d(TAG, "handleMessage acr超时 本地获取得分:" + melp1score);
-                            processScore(melp1score, lineNo);
-                        }
-
-                        if (ScoreConfig.isMelp2Enable()) {
-                            EngineManager.getInstance().getLineScore2(lineNo, new Score2Callback() {
-                                @Override
-                                public void onGetScore(int lineNum, int melp2score) {
-                                    if (MyLog.isDebugLogOpen()) {
-                                        addLogText("第" + lineNo + "行 melp2得分:" + melp2score);
-                                    }
-                                    processScore(melp2score, lineNo);
-                                }
-                            });
-                        }
-
+                        mAcrScore = 0;
                         if (MyLog.isDebugLogOpen()) {
                             addLogText("第" + lineNo + "行,acr请求未及时返回");
+                        }
+                        if (ScoreConfig.isMelp2Enable()) {
+                            if (mMelp2Score >= 0) {
+                                processScore("mMelp2Score", mMelp2Score, lineNo);
+                            } else {
+                                // 这样等melp2 回调ok了还可以继续走
+                            }
+                        } else if (ScoreConfig.isMelpEnable()) {
+                            int melp1Score = EngineManager.getInstance().getLineScore1();
+                            if (MyLog.isDebugLogOpen()) {
+                                addLogText("第" + lineNo + "行,melp1Score:" + melp1Score);
+                            }
+                            if (melp1Score > mAcrScore) {
+                                processScore("melp1Score", melp1Score, lineNo);
+                            } else {
+                                processScore("mAcrScore", mAcrScore, lineNo);
+                            }
                         }
                     }
                     break;
@@ -314,47 +313,39 @@ public class AuditionFragment extends BaseFragment {
                     public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
                         mUiHandler.removeMessages(MSG_SHOW_SCORE_EVENT + lineNo * 100);
                         if (lineNo > mLastLineNum) {
-                            int acrScore = -1;
+                            mAcrScore = 0;
                             if (targetSongInfo != null) {
-                                acrScore = (int) (targetSongInfo.getScore() * 100);
+                                mAcrScore = (int) (targetSongInfo.getScore() * 100);
                                 if (MyLog.isDebugLogOpen()) {
-                                    addLogText("第" + lineNo + "行 acr得分:" + acrScore);
+                                    addLogText("第" + lineNo + "行 mAcrScore:" + mAcrScore);
                                 }
                             } else {
                                 if (MyLog.isDebugLogOpen()) {
                                     addLogText("第" + lineNo + "行 acr得分:未识别");
                                 }
                             }
-
-                            if (ScoreConfig.isMelpEnable()) {
-                                int melp1Score = EngineManager.getInstance().getLineScore1();
-                                if (MyLog.isDebugLogOpen()) {
-                                    addLogText("第" + lineNo + "行 melp1得分:" + melp1Score);
-                                }
-                                if (melp1Score > acrScore) {
-                                    processScore(melp1Score, lineNo);
+                            if (ScoreConfig.isMelp2Enable()) {
+                                if (mMelp2Score >= 0) {
+                                    if (mAcrScore > mMelp2Score) {
+                                        processScore("mAcrScore", mAcrScore, lineNo);
+                                    } else {
+                                        processScore("mMelp2Score", mMelp2Score, lineNo);
+                                    }
                                 } else {
-                                    processScore(acrScore, lineNo);
+                                    // Melp2 没返回
                                 }
                             } else {
-                                processScore(acrScore, lineNo);
-                            }
-
-                            if (ScoreConfig.isMelp2Enable()) {
-                                int finalAcrScore = acrScore;
-                                EngineManager.getInstance().getLineScore2(lineNo, new Score2Callback() {
-                                    @Override
-                                    public void onGetScore(int lineNum, int melp2score) {
-                                        if (MyLog.isDebugLogOpen()) {
-                                            addLogText("第" + lineNo + "行 melp2得分:" + melp2score);
-                                        }
-                                        if (melp2score > finalAcrScore) {
-                                            processScore(melp2score, lineNo);
-                                        } else {
-                                            processScore(finalAcrScore, lineNo);
-                                        }
+                                if (ScoreConfig.isMelpEnable()) {
+                                    int melp1Score = EngineManager.getInstance().getLineScore1();
+                                    if (MyLog.isDebugLogOpen()) {
+                                        addLogText("第" + lineNo + "行 melp1Score:" + melp1Score);
                                     }
-                                });
+                                    if (melp1Score > mAcrScore) {
+                                        processScore("melp1Score", melp1Score, lineNo);
+                                    } else {
+                                        processScore("mAcrScore", mAcrScore, lineNo);
+                                    }
+                                }
                             }
                         }
                     }
@@ -566,30 +557,45 @@ public class AuditionFragment extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(LrcEvent.LineLineEndEvent event) {
+        if (ScoreConfig.isMelp2Enable()) {
+            EngineManager.getInstance().getLineScore2(event.lineNum, new Score2Callback() {
+                @Override
+                public void onGetScore(int lineNum, int score) {
+                    mMelp2Score = score;
+                    if (MyLog.isDebugLogOpen()) {
+                        addLogText("第" + lineNum + "行 mMelp2Score:" + mMelp2Score);
+                    }
+                    if (ScoreConfig.isAcrEnable()) {
+                        if (mAcrScore >= 0) {
+                            if (mAcrScore > mMelp2Score) {
+                                processScore("mAcrScore", mAcrScore, event.lineNum);
+                            } else {
+                                processScore("mMelp2Score", mMelp2Score, event.lineNum);
+                            }
+                        } else {
+                            // 没返回
+                        }
+                    } else {
+                        processScore("mMelp2Score", mMelp2Score, event.lineNum);
+                    }
+                }
+            });
+        }
         if (ScoreConfig.isAcrEnable()) {
             EngineManager.getInstance().recognizeInManualMode(event.lineNum);
+            Message msg = mUiHandler.obtainMessage(MSG_SHOW_SCORE_EVENT + event.lineNum * 100);
+            mUiHandler.sendMessageDelayed(msg, 1000);
         } else {
-            if (ScoreConfig.isMelpEnable()) {
-                int score = EngineManager.getInstance().getLineScore1();
-                if (MyLog.isDebugLogOpen()) {
-                    addLogText("第" + event.lineNum + "行 melp得分:" + score);
-                }
-                processScore(score, event.lineNum);
-            }
-            if (ScoreConfig.isMelp2Enable()) {
-                EngineManager.getInstance().getLineScore2(event.lineNum, new Score2Callback() {
-                    @Override
-                    public void onGetScore(int lineNum, int score) {
-                        if (MyLog.isDebugLogOpen()) {
-                            addLogText("第" + lineNum + "行 melp2得分:" + score);
-                        }
-                        processScore(score, event.lineNum);
+            if (!ScoreConfig.isMelp2Enable()) {
+                if (ScoreConfig.isMelpEnable()) {
+                    int score = EngineManager.getInstance().getLineScore1();
+                    if (MyLog.isDebugLogOpen()) {
+                        addLogText("第" + event.lineNum + "行 mMelp1Score:" + score);
                     }
-                });
+                    processScore("mMelp1Score", score, event.lineNum);
+                }
             }
         }
-        Message msg = mUiHandler.obtainMessage(MSG_SHOW_SCORE_EVENT + event.lineNum * 100);
-        mUiHandler.sendMessageDelayed(msg, 1000);
     }
 
     void jisuanScore() {
@@ -641,53 +647,11 @@ public class AuditionFragment extends BaseFragment {
         if (activity != null) {
             activity.finish();
         }
-//            if (mQuitTipsDialog == null) {
-//                TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
-//                        .setMessageTip("直接返回你的设置变动\n将不会被保存哦～")
-//                        .setConfirmTip("保存")
-//                        .setCancelTip("取消")
-//                        .setConfirmBtnClickListener(new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View v) {
-//                                mQuitTipsDialog.dismiss(false);
-//                                // 要保存
-//                                Params.save2Pref(EngineManager.getInstance().getParams());
-//                                U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
-//                                        .setImage(R.drawable.touxiangshezhichenggong_icon)
-//                                        .setText("保存设置成功\n已应用到所有对局")
-//                                        .build());
-//
-//                                mUiHandler.postDelayed(() -> {
-//                                    Activity activity = getActivity();
-//                                    if (activity != null) {
-//                                        activity.finish();
-//                                    }
-//                                }, 2000);
-//
-//                            }
-//                        })
-//                        .setCancelBtnClickListener(new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View v) {
-//                                mQuitTipsDialog.dismiss(false);
-//                                U.getFragmentUtils().popFragment(AuditionFragment.this);
-//                            }
-//                        })
-//                        .build();
-//
-//                mQuitTipsDialog = DialogPlus.newDialog(getContext())
-//                        .setContentHolder(new ViewHolder(tipsDialogView))
-//                        .setGravity(Gravity.BOTTOM)
-//                        .setContentBackgroundResource(R.color.transparent)
-//                        .setOverlayBackgroundResource(R.color.black_trans_80)
-//                        .setExpanded(false)
-//                        .create();
-//            }
-//            mQuitTipsDialog.show();
         return true;
     }
 
-    private void processScore(int score, int line) {
+    private void processScore(String from, int score, int line) {
+        MyLog.d(TAG, "processScore" + " from=" + from + " score=" + score + " line=" + line);
         if (line <= mLastLineNum) {
             return;
         }
