@@ -185,9 +185,9 @@
 
     <com.common.view.ex.ExImageView
         android:layout_width="@dimen/view_375_dp"
-        android:layout_height="@dimen/view_192_dp"
+        android:layout_height="@dimen/view_250_dp"
         android:layout_alignTop="@id/result_area"
-        android:layout_marginTop="-140dp"
+        android:layout_marginTop="-200dp"
         android:layout_centerHorizontal="true"
         android:background="@drawable/ycdd_zhanji" />
 
