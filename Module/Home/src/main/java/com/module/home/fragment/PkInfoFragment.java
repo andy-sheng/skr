@@ -237,13 +237,13 @@ public class PkInfoFragment extends BaseFragment {
     private void showRankView(List<UserRankModel> userRankModelList) {
         for (UserRankModel userRankModel : userRankModelList){
             if(userRankModel.getCategory() == 1){
-                mTvNumCountry.setText(userRankModel.getRankSeq() == 0 ? "**" : userRankModel.getRankSeq() + "");
+                mTvNumCountry.setText(userRankModel.getRankSeq() == 0 ? "**" : formatRank(userRankModel.getRankSeq()));
             }else if(userRankModel.getCategory() == 4){
                 if(userRankModel.getRankSeq() == 0){
                     mRlAreaContainer.setVisibility(View.GONE);
                 }else {
                     mRlAreaContainer.setVisibility(View.VISIBLE);
-                    mTvNum.setText(userRankModel.getRankSeq() + "");
+                    mTvNum.setText(formatRank(userRankModel.getRankSeq()));
                     mTvArea.setText(userRankModel.getRegionDesc());
                 }
             }
@@ -256,6 +256,15 @@ public class PkInfoFragment extends BaseFragment {
                         .setBorderWidth(U.getDisplayUtils().dip2px(3))
                         .setBorderColor(U.getColor(R.color.white))
                         .build());
+    }
+
+    private String formatRank(int rankSeq) {
+        if (rankSeq < 10000) {
+            return String.valueOf(rankSeq);
+        } else {
+            float result = (float) (Math.round(((float) rankSeq / 10000) * 10)) / 10;
+            return String.valueOf(result) + "w";
+        }
     }
 
     @Override

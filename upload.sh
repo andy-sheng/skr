@@ -1,4 +1,5 @@
-function findChannel()  
+#! /bin/bash
+function findChannel()
 {  
   for file in `ls app/build/outputs/channels`  
   do  
