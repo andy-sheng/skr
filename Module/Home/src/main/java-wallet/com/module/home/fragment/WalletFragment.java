@@ -120,18 +120,9 @@ public class WalletFragment extends BaseFragment implements IWalletView {
                     U.getToastUtil().showShort("正在加载数据");
                     mWalletRecordPresenter.getWithDrawInfo(0);
                 } else if(!mWithDrawInfoModel.isIsPhoneAuth()){
-                    U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), SmsAuthFragment.class)
-                            .setAddToBackStack(false)
-                            .setHasAnimation(true)
-                            .setFragmentDataListener(new FragmentDataListener() {
-                                @Override
-                                public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
-                                    if (requestCode == 0 && resultCode == 0) {
-                                        mWithDrawInfoModel.setIsPhoneAuth(true);
-                                    }
-                                }
-                            })
-                            .build());
+                    ARouter.getInstance()
+                            .build(RouterConstants.ACTIVITY_SMS_AUTH)
+                            .navigation();
                 } else if(!mWithDrawInfoModel.isIsRealAuth()){
                     mWithDrawInfoModel = null;
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
