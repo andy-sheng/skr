@@ -77,6 +77,10 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(FollowNotifyEvent event) {
+        if (!U.getActivityUtils().isAppForeground()) {
+            MyLog.d(TAG, "在后台，不弹出通知");
+            return;
+        }
         showFollowFloatWindow(event.mUserInfoModel);
         if (event.mUserInfoModel.isFriend()) {
             // 好友
@@ -91,6 +95,10 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabInviteNotifyEvent event) {
+        if (!U.getActivityUtils().isAppForeground()) {
+            MyLog.d(TAG, "在后台，不弹出通知");
+            return;
+        }
         showGrabInviteFloatWindow(event.mUserInfoModel, event.roomID);
     }
 
