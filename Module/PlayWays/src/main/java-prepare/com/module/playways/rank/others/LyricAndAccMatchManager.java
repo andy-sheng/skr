@@ -98,11 +98,17 @@ public class LyricAndAccMatchManager {
         EventBus.getDefault().unregister(this);
         mUiHandler.removeCallbacksAndMessages(null);
         mLyricEventLauncher.destroy();
+        if (mDisposable != null) {
+            mDisposable.dispose();
+        }
         mListener = null;
     }
 
 
     private void parseLyric() {
+        if (mDisposable != null) {
+            mDisposable.dispose();
+        }
         mDisposable = LyricsManager.getLyricsManager(U.app())
                 .fetchAndLoadLyrics(mLyricUrl)
                 .subscribeOn(Schedulers.io())
