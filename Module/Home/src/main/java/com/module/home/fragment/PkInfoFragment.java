@@ -32,6 +32,7 @@ import com.common.statistics.StatConstants;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
+import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
@@ -91,7 +92,7 @@ public class PkInfoFragment extends BaseFragment {
         mTvToLeaderBoard = (ExTextView) mRootView.findViewById(R.id.tv_to_leader_board);
         mIvVoiceRoom = (ExImageView) mRootView.findViewById(R.id.iv_voice_room);
         mIvAthleticsPk = (ExImageView) mRootView.findViewById(R.id.iv_athletics_pk);
-        mRlAreaContainer = (RelativeLayout)mRootView.findViewById(R.id.rl_area_container);
+        mRlAreaContainer = (RelativeLayout) mRootView.findViewById(R.id.rl_area_container);
 
         mSmartRefreshLayout.setEnableRefresh(true);
         mSmartRefreshLayout.setEnableLoadMore(false);
@@ -117,21 +118,24 @@ public class PkInfoFragment extends BaseFragment {
                         .setBorderColor(U.getColor(R.color.white))
                         .build());
 
-        mIvAthleticsPk.setOnClickListener(new DebounceViewClickListener() {
+        mIvAthleticsPk.setOnClickListener(new AnimateClickListener() {
             @Override
-            public void clickValid(View v) {
-//                U.getSoundUtils().play(TAG, R.raw.home_rank, 500);
-                clickAnimation(mIvAthleticsPk);
+            public void click(View view) {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
+                        .withInt("key_game_type", GameModeType.GAME_MODE_CLASSIC_RANK)
+                        .withBoolean("selectSong", true)
+                        .navigation();
                 StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_HOME),
                         StatConstants.KEY_RANK_CLICK, null);
             }
         });
 
-        mIvVoiceRoom.setOnClickListener(new DebounceViewClickListener() {
+        mIvVoiceRoom.setOnClickListener(new AnimateClickListener() {
             @Override
-            public void clickValid(View v) {
-//                U.getSoundUtils().play(TAG, R.raw.home_grab, 500);
-                clickAnimation(mIvVoiceRoom);
+            public void click(View v) {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_AUDIOROOM)
+                        .withBoolean("selectSong", true)
+                        .navigation();
             }
         });
 
@@ -155,52 +159,6 @@ public class PkInfoFragment extends BaseFragment {
 
         mTvUserName.setText(MyUserInfoManager.getInstance().getNickName());
         showRankInfo();
-    }
-
-    public void clickAnimation(View view) {
-
-        AnimatorSet set = new AnimatorSet();
-
-        ObjectAnimator a1 = ObjectAnimator.ofFloat(view, "scaleX", 1f, 0.95f);
-        ObjectAnimator a2 = ObjectAnimator.ofFloat(view, "scaleY", 1f, 0.95f);
-        ObjectAnimator a3 = ObjectAnimator.ofFloat(view, "scaleX", 0.95f, 1f);
-        ObjectAnimator a4 = ObjectAnimator.ofFloat(view, "scaleY", 0.95f, 1f);
-
-        set.play(a1).with(a2);
-        set.play(a3).with(a4).after(a1);
-
-        set.setDuration(80);
-        set.start();
-        set.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animator) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animator) {
-                if (view.getId() == R.id.iv_athletics_pk) {
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
-                            .withInt("key_game_type", GameModeType.GAME_MODE_CLASSIC_RANK)
-                            .withBoolean("selectSong", true)
-                            .navigation();
-                } else if (view.getId() == R.id.iv_voice_room) {
-                    ARouter.getInstance().build(RouterConstants.ACTIVITY_AUDIOROOM)
-                            .withBoolean("selectSong", true)
-                            .navigation();
-                }
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animator) {
-                onAnimationEnd(animator);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animator) {
-
-            }
-        });
     }
 
     private void showRankInfo() {
@@ -235,13 +193,13 @@ public class PkInfoFragment extends BaseFragment {
     }
 
     private void showRankView(List<UserRankModel> userRankModelList) {
-        for (UserRankModel userRankModel : userRankModelList){
-            if(userRankModel.getCategory() == 1){
+        for (UserRankModel userRankModel : userRankModelList) {
+            if (userRankModel.getCategory() == 1) {
                 mTvNumCountry.setText(userRankModel.getRankSeq() == 0 ? "**" : formatRank(userRankModel.getRankSeq()));
-            }else if(userRankModel.getCategory() == 4){
-                if(userRankModel.getRankSeq() == 0){
+            } else if (userRankModel.getCategory() == 4) {
+                if (userRankModel.getRankSeq() == 0) {
                     mRlAreaContainer.setVisibility(View.GONE);
-                }else {
+                } else {
                     mRlAreaContainer.setVisibility(View.VISIBLE);
                     mTvNum.setText(formatRank(userRankModel.getRankSeq()));
                     mTvArea.setText(userRankModel.getRegionDesc());
