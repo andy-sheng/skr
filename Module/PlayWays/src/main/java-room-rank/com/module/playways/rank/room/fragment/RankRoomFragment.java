@@ -89,9 +89,8 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     public final static String TAG = "RankingRoomFragment";
 
-    static final int ENSURE_RUN = 99;
-
-    static final int SHOW_RIVAL_LYRIC = 10;
+    static final int ENSURE_SELF_RUN = 99;
+    static final int ENSURE_OTHER_RUN = 98;
 
     RankRoomData mRoomData;
 
@@ -125,15 +124,18 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if (msg.what == ENSURE_RUN) {
+            if (msg.what == ENSURE_SELF_RUN) {
+                MyLog.d(TAG, "handleMessage ENSURE_SELF_RUN");
                 Runnable runnable = (Runnable) msg.obj;
                 if (runnable != null) {
                     runnable.run();
                     mPendingSelfCountDownRunnable = null;
                 }
                 onFirstSongGo();
-            } else if (SHOW_RIVAL_LYRIC == msg.what) {
-
+            } else if (ENSURE_OTHER_RUN == msg.what) {
+                int uid = msg.arg1;
+                MyLog.d(TAG, "handleMessage ENSURE_OTHER_RUN uid=" + uid);
+                playShowMainStageAnimator(uid);
             }
         }
     };
@@ -257,7 +259,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             }
         }, 800);
         RankRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
-        if (infoModel!=null && infoModel.getRoundSeq() == 3) {
+        if (infoModel != null && infoModel.getRoundSeq() == 3) {
             // 最后一轮
             mUiHanlder.postDelayed(new Runnable() {
                 @Override
@@ -487,7 +489,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                 }
             });
         } catch (Exception e) {
-            MyLog.e(TAG,e);
+            MyLog.e(TAG, e);
         }
 
         RxView.clicks(mSingAvatarView)
@@ -654,7 +656,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         GiftBigAnimationViewGroup giftBigAnimationViewGroup = mRootView.findViewById(R.id.gift_big_animation_vg);
         giftBigAnimationViewGroup.setRoomData(mRoomData);
 
-        mDengBigAnimation = (GrabDengBigAnimationView)mRootView.findViewById(R.id.deng_big_animation);
+        mDengBigAnimation = (GrabDengBigAnimationView) mRootView.findViewById(R.id.deng_big_animation);
     }
 
     private void initOpView() {
@@ -821,10 +823,10 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         mCountDownProcess.setVisibility(View.GONE);
 
         // 确保演唱逻辑一定要执行
-        Message msg = mUiHanlder.obtainMessage(ENSURE_RUN);
-        msg.what = ENSURE_RUN;
+        Message msg = mUiHanlder.obtainMessage(ENSURE_SELF_RUN);
+        msg.what = ENSURE_SELF_RUN;
         msg.obj = countDownOver;
-        mUiHanlder.removeMessages(ENSURE_RUN);
+        mUiHanlder.removeMessages(ENSURE_SELF_RUN);
         mUiHanlder.sendMessageDelayed(msg, 5000);
 
         int seq = 0;
@@ -844,12 +846,12 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             @Override
             public void onFinished() {
                 if (countDownOver != null) {
-                    mUiHanlder.removeMessages(ENSURE_RUN);
+                    mUiHanlder.removeMessages(ENSURE_SELF_RUN);
                     countDownOver.run();
                 }
             }
         });
-        mUiHanlder.removeMessages(SHOW_RIVAL_LYRIC);
+        mUiHanlder.removeMessages(ENSURE_OTHER_RUN);
     }
 
     @Override
@@ -899,17 +901,21 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                 }
             }, 500);
         }
+
+        mUiHanlder.removeMessages(ENSURE_OTHER_RUN);
+        Message msg = mUiHanlder.obtainMessage();
+        msg.what = ENSURE_OTHER_RUN;
+        msg.arg1 = uid;
+        mUiHanlder.sendMessageDelayed(msg, 3000);
+
         mTurnChangeView.setData(mRoomData, new SVGAListener() {
             @Override
             public void onFinished() {
+                mUiHanlder.removeMessages(ENSURE_OTHER_RUN);
                 playShowMainStageAnimator(uid);
             }
         });
 
-        mUiHanlder.removeMessages(SHOW_RIVAL_LYRIC);
-        Message showLyricMsg = new Message();
-        showLyricMsg.what = SHOW_RIVAL_LYRIC;
-        mUiHanlder.sendMessageDelayed(showLyricMsg, 3000);
     }
 
     @Override
@@ -1059,9 +1065,9 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         }
         MyLog.w(TAG, "开始播放歌词 songId=" + songModel.getItemID());
 
-        mLyricAndAccMatchManager.setArgs(mManyLyricsView,mVoiceScaleView,
-                songModel.getLyric(),songModel.getRankLrcBeginT(),songModel.getRankLrcEndT(),
-                songModel.getBeginMs(),songModel.getEndMs());
+        mLyricAndAccMatchManager.setArgs(mManyLyricsView, mVoiceScaleView,
+                songModel.getLyric(), songModel.getRankLrcBeginT(), songModel.getRankLrcEndT(),
+                songModel.getBeginMs(), songModel.getEndMs());
         mLyricAndAccMatchManager.start(new LyricAndAccMatchManager.Listener() {
             @Override
             public void onLyricParseSuccess() {
