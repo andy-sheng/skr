@@ -43,7 +43,7 @@ import okhttp3.RequestBody;
  * 手机方式登陆界面
  */
 public class SmsAuthFragment extends BaseFragment {
-
+    public final static String TAG = "SmsAuthFragment";
     public static final String PREF_KEY_PHONE_NUM = "pref_key_phone_num";
 
     RelativeLayout mMainActContainer;
@@ -123,7 +123,7 @@ public class SmsAuthFragment extends BaseFragment {
                                         mUiHandler.postDelayed(new Runnable() {
                                             @Override
                                             public void run() {
-                                                finish();
+                                                finish("runnable");
                                             }
                                         }, 300);
 
@@ -154,11 +154,11 @@ public class SmsAuthFragment extends BaseFragment {
                 //U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
                 U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
                 stopTimeTask();
-                finish();
+                finish("mIvBack");
             }
         });
 
-        mLoginTv.setClickable(false);
+        mLoginTv.setClickable(true);
         mLoginTv.setTextColor(Color.parseColor("#660C2275"));
 
         U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
@@ -235,19 +235,16 @@ public class SmsAuthFragment extends BaseFragment {
         }, this);
     }
 
-    @Override
-    public void finish() {
-        U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
-                .setActivity(getActivity())
-                .setPopFragment(SmsAuthFragment.this)
-                .setPopAbove(false)
-                .setHasAnimation(true)
-                .build());
+    public void finish(String from) {
+        MyLog.d(TAG, "finish" + " from=" + from);
+        if (getActivity() != null && !getActivity().isFinishing()) {
+            getActivity().finish();
+        }
     }
 
     @Override
     protected boolean onBackPressed() {
-        finish();
+        finish("onBackPressed");
         return true;
     }
 
