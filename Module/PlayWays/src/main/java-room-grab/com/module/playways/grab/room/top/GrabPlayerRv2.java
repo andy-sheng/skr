@@ -40,8 +40,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
@@ -176,12 +178,23 @@ public class GrabPlayerRv2 extends RelativeLayout {
                         vp.grabTopItemView.setGrap(false);
                     }
                 }
+
+                initLight();
+                syncLight();
             }
         }
         RelativeLayout.LayoutParams lp = (LayoutParams) mContentLl.getLayoutParams();
         lp.leftMargin = U.getDisplayUtils().dip2px(15);
         lp.rightMargin = U.getDisplayUtils().dip2px(15);
         mContentLl.setLayoutParams(lp);
+    }
+
+    //刚进来的时候初始化灯
+    private void initLight(){
+        Iterator<Map.Entry<Integer, VP>> iterator = mInfoMap.entrySet().iterator();
+        while (iterator.hasNext()){
+            iterator.next().getValue().grabTopItemView.setLight(true);
+        }
     }
 
     //这里可能人员有变动
