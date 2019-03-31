@@ -1,20 +1,11 @@
 package com.module.playways.grab.room.view;
 
-import android.animation.Animator;
-import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Animatable;
-import android.graphics.drawable.Drawable;
-import android.os.Handler;
-import android.os.Message;
-import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.common.core.avatar.AvatarUtils;
@@ -22,12 +13,9 @@ import com.common.core.userinfo.model.UserInfoModel;
 import com.common.image.fresco.BaseImageView;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.fresco.IFrescoCallBack;
-import com.common.image.model.HttpImage;
 import com.common.image.model.ImageFactory;
 import com.common.log.MyLog;
-import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
-import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.fresco.animation.drawable.AnimatedDrawable2;
 import com.facebook.fresco.animation.drawable.AnimationListener;
 import com.facebook.imagepipeline.image.ImageInfo;
@@ -39,16 +27,9 @@ import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.rank.room.view.ArcProgressBar;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
-import com.opensource.svgaplayer.SVGADrawable;
-import com.opensource.svgaplayer.SVGADynamicEntity;
-import com.opensource.svgaplayer.SVGAImageView;
-import com.opensource.svgaplayer.SVGAParser;
-import com.opensource.svgaplayer.SVGAVideoEntity;
 
 import org.greenrobot.eventbus.EventBus;
-import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.functions.Consumer;
@@ -113,6 +94,7 @@ public class OthersSingCardView extends RelativeLayout {
     }
 
     public void bindData(UserInfoModel userInfoModel) {
+        isPlayFullAnimation = false;
         setVisibility(VISIBLE);
         if (userInfoModel != null) {
             this.useId = userInfoModel.getUserId();
@@ -172,14 +154,42 @@ public class OthersSingCardView extends RelativeLayout {
                 })
                 .build()
         );
-        countDown();
+        countDownAfterAnimation();
     }
 
     public void tryStartCountDown() {
         if (mCountDownStatus == COUNT_DOWN_STATUS_WAIT) {
             mCountDownStatus = COUNT_DOWN_STATUS_PLAYING;
+            countDownAfterAnimation();
+        }
+    }
+
+    boolean isPlayFullAnimation = false;
+
+    //给所有倒计时加上一个前面到满的动画
+    private void countDownAfterAnimation() {
+        GrabRoundInfoModel grabRoundInfoModel = mGrabRoomData.getRealRoundInfo();
+        if (grabRoundInfoModel == null) {
+            return;
+        }
+        SongModel songModel = grabRoundInfoModel.getMusic();
+        if (songModel == null) {
+            return;
+        }
+
+        if (!isPlayFullAnimation) {
+            isPlayFullAnimation = true;
+            mCountDownProcess.fullCountDownAnimation(new ArcProgressBar.ArcAnimationListener() {
+                @Override
+                public void onAnimationEnd() {
+                    MyLog.d(TAG, "onAnimationEnd");
+                    countDown();
+                }
+            });
+        } else {
             countDown();
         }
+
     }
 
     private void countDown() {

@@ -1,5 +1,6 @@
 package com.module.playways.rank.room.view;
 
+import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -141,6 +142,56 @@ public class ArcProgressBar extends View {
     }
 
     /**
+     * 加上一个从0到满充满的动画
+     */
+    public void fullCountDownAnimation(ArcAnimationListener animationListener) {
+        if (mAnimatorSet != null) {
+            mAnimatorSet.removeAllListeners();
+            mAnimatorSet.cancel();
+        }
+
+        setProgress(100);
+
+        ValueAnimator fullAnimator = ValueAnimator.ofInt(1, 100);
+        fullAnimator.setInterpolator(new LinearInterpolator());
+        fullAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                int progress = (int) animation.getAnimatedValue();
+                setProgress(100 - progress);
+            }
+        });
+
+        mAnimatorSet = new AnimatorSet();
+        mAnimatorSet.setDuration(1000).play(fullAnimator);
+        mAnimatorSet.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if (animationListener != null) {
+                    animationListener.onAnimationEnd();
+                }
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                onAnimationEnd(animation);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+        mAnimatorSet.start();
+    }
+
+
+    /**
      * @param progress 进度条，从什么地方开始播放
      * @param duration 剩下歌曲的时长
      */
@@ -149,6 +200,7 @@ public class ArcProgressBar extends View {
             mAnimatorSet.removeAllListeners();
             mAnimatorSet.cancel();
         }
+
         setProgress(progress);
 
         ValueAnimator creditValueAnimator = ValueAnimator.ofInt(progress + 1, 100);
@@ -232,4 +284,8 @@ public class ArcProgressBar extends View {
         }
     }
 
+
+    public interface ArcAnimationListener {
+        void onAnimationEnd();
+    }
 }
