@@ -272,7 +272,7 @@ public class RankTopContainerView2 extends RelativeLayout {
                 setLight(2, ul);
             }
         }
-        mCurScore -= mRoomData.getGameConfigModel().getpKBLightEnergyPercentage() * mTotalScore;
+        mCurScore -= mRoomData.getGameConfigModel().getpKMLightEnergyPercentage() * mTotalScore;
         tryPlayProgressAnimation();
     }
 
@@ -323,7 +323,7 @@ public class RankTopContainerView2 extends RelativeLayout {
                 setLight(2, ul);
             }
         }
-        mCurScore += mRoomData.getGameConfigModel().getpKMLightEnergyPercentage() * mTotalScore;
+        mCurScore += mRoomData.getGameConfigModel().getpKBLightEnergyPercentage() * mTotalScore;
         tryPlayProgressAnimation();
     }
 

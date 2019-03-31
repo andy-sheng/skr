@@ -78,6 +78,19 @@ public class RankGameConfigModel implements Serializable {
         this.pKMLightEnergyPercentage = pKMLightEnergyPercentage;
     }
 
+    @Override
+    public String toString() {
+        return "RankGameConfigModel{" +
+                "pKMaxShowBLightTimes=" + pKMaxShowBLightTimes +
+                ", pKMaxShowMLightTimes=" + pKMaxShowMLightTimes +
+                ", pKEnableShowBLightWaitTimeMs=" + pKEnableShowBLightWaitTimeMs +
+                ", pKEnableShowMLightWaitTimeMs=" + pKEnableShowMLightWaitTimeMs +
+                ", pKFullEnergyPercentage=" + pKFullEnergyPercentage +
+                ", pKBLightEnergyPercentage=" + pKBLightEnergyPercentage +
+                ", pKMLightEnergyPercentage=" + pKMLightEnergyPercentage +
+                '}';
+    }
+
     public static RankGameConfigModel parse(GameConfig gameConfig) {
         RankGameConfigModel gameConfigModel = new RankGameConfigModel();
         gameConfigModel.pKMaxShowBLightTimes = gameConfig.getPKMaxShowBLightTimes();
