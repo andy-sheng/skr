@@ -321,7 +321,7 @@ public class JoinGrabRoomRspModel implements Serializable {
     public String toString() {
         return "JoinGrabRoomRspModel{" +
                 "roomType=" + roomType +
-                "ownerID=" + ownerID +
+                ",ownerID=" + ownerID +
                 ", config=" + config +
                 ", elapsedTimeMs=" + elapsedTimeMs +
                 ", gameOverTimeMs=" + gameOverTimeMs +
