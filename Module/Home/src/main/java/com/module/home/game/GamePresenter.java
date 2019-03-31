@@ -142,39 +142,19 @@ public class GamePresenter extends RxLifeCyclePresenter {
     }
 
     public void initRecommendRoom(int interval) {
-//        long delayTime = 0;
-//        long now = System.currentTimeMillis();
-        if (interval <= 0) {
-            stopTimer();
-//            if ((now - mLastUpdateRecomendInfo) < 20 * 1000) {
-//                delayTime = 20 * 1000 - (now - mLastUpdateRecomendInfo);
-//            }
-            mRecommendTimer = HandlerTaskTimer.newBuilder()
-//                    .delay(delayTime)
-                    .take(-1)
-                    .interval(20 * 1000)
-                    .start(new HandlerTaskTimer.ObserverW() {
-                        @Override
-                        public void onNext(Integer integer) {
-                            loadRecommendRoomData();
-                        }
-                    });
-        } else {
-            stopTimer();
-//            if ((now - mLastUpdateRecomendInfo) < interval * 1000) {
-//                delayTime = interval * 1000 - (now - mLastUpdateRecomendInfo);
-//            }
-            mRecommendTimer = HandlerTaskTimer.newBuilder()
-//                    .delay(delayTime)
-                    .take(-1)
-                    .interval(interval * 1000)
-                    .start(new HandlerTaskTimer.ObserverW() {
-                        @Override
-                        public void onNext(Integer integer) {
-                            loadRecommendRoomData();
-                        }
-                    });
+        if(interval<=0){
+            interval = 15;
         }
+        stopTimer();
+        mRecommendTimer = HandlerTaskTimer.newBuilder()
+                .take(-1)
+                .interval(interval * 1000)
+                .start(new HandlerTaskTimer.ObserverW() {
+                    @Override
+                    public void onNext(Integer integer) {
+                        loadRecommendRoomData();
+                    }
+                });
     }
 
     public void stopTimer() {
@@ -187,7 +167,6 @@ public class GamePresenter extends RxLifeCyclePresenter {
     private void loadRecommendRoomData() {
         if (mDisposable != null && !mDisposable.isDisposed()) {
             mDisposable.dispose();
-            return;
         }
         mDisposable = ApiMethods.subscribeWith(mGrabSongApi.getRecommendRoomList(0, 50), new ApiObserver<ApiResult>() {
             @Override
