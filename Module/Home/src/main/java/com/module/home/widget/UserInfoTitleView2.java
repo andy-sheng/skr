@@ -77,6 +77,7 @@ public class UserInfoTitleView2 extends RelativeLayout {
         } else {
             mNameTv.setText(userRankModel.getMainDesc() + " " + userRankModel.getSubRanking() + "段");
         }
+        mUserLevelTv.setTextColor(Color.parseColor(LevelConfigUtils.getHomePageLevelTextColor(userRankModel.getMainRanking())));
         mUserLevelTv.setText(userRankModel.getMainDesc());
     }
 

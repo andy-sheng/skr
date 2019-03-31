@@ -92,6 +92,28 @@ public class LevelConfigUtils {
         }
     }
 
+
+    public static String getHomePageLevelTextColor(int mainLevel) {
+        switch (mainLevel) {
+            case UserLevelType.SKRER_LEVEL_POTENTIAL:
+                return "#55352E";
+            case UserLevelType.SKRER_LEVEL_SILVER:
+                return "#495378";
+            case UserLevelType.SKRER_LEVEL_GOLD:
+                return "#814A39";
+            case UserLevelType.SKRER_LEVEL_PLATINUM:
+                return "#2A54A0";
+            case UserLevelType.SKRER_LEVEL_DIAMOND:
+                return "#0A3FBD";
+            case UserLevelType.SKRER_LEVEL_KING:
+                return "#7B2A27";
+            default:
+                MyLog.w(TAG, "getHomePageLevelTopBg null" + " mainLevel = " + mainLevel);
+                return "#55352E";
+        }
+    }
+
+
     public static int getAvatarLevelBg(int mainLevel) {
         switch (mainLevel) {
             case UserLevelType.SKRER_LEVEL_POTENTIAL:
