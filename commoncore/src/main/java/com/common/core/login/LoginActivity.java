@@ -129,19 +129,19 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(U.app()).onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
     protected void destroy() {
         super.destroy();
-        UMShareAPI.get(this).release();
+        UMShareAPI.get(U.app()).release();
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        UMShareAPI.get(this).onSaveInstanceState(outState);
+        UMShareAPI.get(U.app()).onSaveInstanceState(outState);
     }
 
     @Override

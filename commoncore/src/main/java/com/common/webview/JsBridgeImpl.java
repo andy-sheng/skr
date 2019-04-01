@@ -120,7 +120,7 @@ public class JsBridgeImpl {
 
     public void bindWeChat(String data, final CallBackFunction function) {
         MyLog.w(TAG, "bindWeChat" + " data=" + data);
-        UMShareAPI.get(mBaseActivity).getPlatformInfo(mBaseActivity, SHARE_MEDIA.WEIXIN, new UMAuthListener() {
+        UMShareAPI.get(U.app()).getPlatformInfo(mBaseActivity, SHARE_MEDIA.WEIXIN, new UMAuthListener() {
             @Override
             public void onStart(SHARE_MEDIA share_media) {
 
@@ -150,7 +150,7 @@ public class JsBridgeImpl {
 
     public void bindQqChat(String data, final CallBackFunction function) {
         MyLog.w(TAG, "bindQQ" + " data=" + data);
-        UMShareAPI.get(mBaseActivity).getPlatformInfo(mBaseActivity, SHARE_MEDIA.QQ, new UMAuthListener() {
+        UMShareAPI.get(U.app()).getPlatformInfo(mBaseActivity, SHARE_MEDIA.QQ, new UMAuthListener() {
             @Override
             public void onStart(SHARE_MEDIA share_media) {
 

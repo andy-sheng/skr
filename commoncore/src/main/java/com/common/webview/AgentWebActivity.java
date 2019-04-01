@@ -339,7 +339,7 @@ public class AgentWebActivity extends CameraAdapWebActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(U.app()).onActivityResult(requestCode, resultCode, data);
     }
 
     protected @NonNull
