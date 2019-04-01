@@ -131,6 +131,9 @@ public class ArcProgressBar extends View {
 
     /**
      * 设置当前进度
+     * 黄色满代表满
+     * 0 代表 黄色满
+     * 100 灰色全满
      *
      * @param progress
      */
@@ -143,6 +146,7 @@ public class ArcProgressBar extends View {
 
     /**
      * 加上一个从0到满充满的动画
+     * 全灰 变 全黄 的动画
      */
     public void fullCountDownAnimation(ArcAnimationListener animationListener) {
         if (mAnimatorSet != null) {

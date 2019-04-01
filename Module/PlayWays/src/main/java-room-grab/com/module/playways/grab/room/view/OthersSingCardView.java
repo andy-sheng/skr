@@ -2,7 +2,9 @@ package com.module.playways.grab.room.view;
 
 import android.content.Context;
 import android.graphics.drawable.Animatable;
+import android.os.Handler;
 import android.util.AttributeSet;
+import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
@@ -16,6 +18,7 @@ import com.common.image.fresco.IFrescoCallBack;
 import com.common.image.model.ImageFactory;
 import com.common.log.MyLog;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.facebook.fresco.animation.drawable.AnimatedDrawable2;
 import com.facebook.fresco.animation.drawable.AnimationListener;
 import com.facebook.imagepipeline.image.ImageInfo;
@@ -40,10 +43,14 @@ import io.reactivex.functions.Consumer;
 public class OthersSingCardView extends RelativeLayout {
     public final static String TAG = "OthersSingCardView";
     final static int MSG_ENSURE_PLAY = 1;
-    final static int COUNT_DOWN_STATUS_WAIT = 1;
-    final static int COUNT_DOWN_STATUS_PLAYING = 2;
 
-    int useId;   // 当前唱歌人的id
+    final static int COUNT_DOWN_STATUS_INIT = 1;
+    final static int COUNT_DOWN_STATUS_WAIT = 2;
+    final static int COUNT_DOWN_STATUS_PLAYING = 3;
+
+    int mCountDownStatus = COUNT_DOWN_STATUS_INIT;
+
+    int mUseId;   // 当前唱歌人的id
 
     BaseImageView mGrabStageView;
     BaseImageView mSingAvatarView;
@@ -54,7 +61,10 @@ public class OthersSingCardView extends RelativeLayout {
 
     GrabRoomData mGrabRoomData;
 
-    int mCountDownStatus = COUNT_DOWN_STATUS_WAIT;
+    Handler mUiHandler = new Handler();
+
+    boolean mHasPlayFullAnimation = false;
+    boolean mCanStartFlag = false;
 
     public OthersSingCardView(Context context) {
         super(context);
@@ -77,16 +87,14 @@ public class OthersSingCardView extends RelativeLayout {
         mSingAvatarView = (BaseImageView) findViewById(R.id.sing_avatar_view);
         mCountDownProcess = (ArcProgressBar) findViewById(R.id.count_down_process);
 
-        RxView.clicks(mSingAvatarView)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        if (useId != 0) {
-                            EventBus.getDefault().post(new ShowPersonCardEvent(useId));
-                        }
-                    }
-                });
+        mSingAvatarView.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mUseId != 0) {
+                    EventBus.getDefault().post(new ShowPersonCardEvent(mUseId));
+                }
+            }
+        });
     }
 
     public void setRoomData(GrabRoomData roomData) {
@@ -94,10 +102,11 @@ public class OthersSingCardView extends RelativeLayout {
     }
 
     public void bindData(UserInfoModel userInfoModel) {
-        isPlayFullAnimation = false;
+        mUiHandler.removeCallbacksAndMessages(null);
+        mHasPlayFullAnimation = false;
         setVisibility(VISIBLE);
         if (userInfoModel != null) {
-            this.useId = userInfoModel.getUserId();
+            this.mUseId = userInfoModel.getUserId();
             AvatarUtils.loadAvatarByUrl(mSingAvatarView,
                     AvatarUtils.newParamsBuilder(userInfoModel.getAvatar())
                             .setCircle(true)
@@ -154,20 +163,21 @@ public class OthersSingCardView extends RelativeLayout {
                 })
                 .build()
         );
-        countDownAfterAnimation();
+        countDownAfterAnimation("bindData");
     }
 
     public void tryStartCountDown() {
+        MyLog.d(TAG, "tryStartCountDown");
+        mCanStartFlag = true;
         if (mCountDownStatus == COUNT_DOWN_STATUS_WAIT) {
             mCountDownStatus = COUNT_DOWN_STATUS_PLAYING;
-            countDownAfterAnimation();
+            countDownAfterAnimation("tryStartCountDown");
         }
     }
 
-    boolean isPlayFullAnimation = false;
-
     //给所有倒计时加上一个前面到满的动画
-    private void countDownAfterAnimation() {
+    private void countDownAfterAnimation(String from) {
+        MyLog.d(TAG, "countDownAfterAnimation from=" + from);
         GrabRoundInfoModel grabRoundInfoModel = mGrabRoomData.getRealRoundInfo();
         if (grabRoundInfoModel == null) {
             return;
@@ -177,22 +187,26 @@ public class OthersSingCardView extends RelativeLayout {
             return;
         }
 
-        if (!isPlayFullAnimation) {
-            isPlayFullAnimation = true;
-            mCountDownProcess.fullCountDownAnimation(new ArcProgressBar.ArcAnimationListener() {
-                @Override
-                public void onAnimationEnd() {
-                    MyLog.d(TAG, "onAnimationEnd");
-                    countDown();
-                }
-            });
+        if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_SING) {
+            countDown("中途进来");
         } else {
-            countDown();
+            if (!mHasPlayFullAnimation) {
+                mHasPlayFullAnimation = true;
+                mCountDownProcess.fullCountDownAnimation(new ArcProgressBar.ArcAnimationListener() {
+                    @Override
+                    public void onAnimationEnd() {
+                        MyLog.d(TAG, "onAnimationEnd");
+                        countDown("after full Animation");
+                    }
+                });
+            } else {
+                countDown("else full Animation");
+            }
         }
-
     }
 
-    private void countDown() {
+    private void countDown(String from) {
+        MyLog.d(TAG, "countDown" + " from=" + from);
         GrabRoundInfoModel grabRoundInfoModel = mGrabRoomData.getRealRoundInfo();
         if (grabRoundInfoModel == null) {
             return;
@@ -203,14 +217,19 @@ public class OthersSingCardView extends RelativeLayout {
         }
         int totalMs = songModel.getTotalMs();
         if (mCountDownStatus == COUNT_DOWN_STATUS_WAIT) {
-            // 不需要播放countdown
-            mCountDownProcess.startCountDown(0, totalMs);
-            return;
+            MyLog.d(TAG, "countDown mCountDownStatus == COUNT_DOWN_STATUS_WAIT");
+            if (mCanStartFlag) {
+                mCountDownStatus = COUNT_DOWN_STATUS_PLAYING;
+            } else {
+                // 不需要播放countdown
+                mCountDownProcess.startCountDown(0, totalMs);
+                return;
+            }
         }
 
         int progress;  //当前进度条
         int leaveTime; //剩余时间
-
+        MyLog.d(TAG, "countDown isParticipant:" + grabRoundInfoModel.isParticipant() + " enterStatus=" + grabRoundInfoModel.getEnterStatus());
         if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_SING) {
             MyLog.d(TAG, "演唱阶段加入的，倒计时没那么多");
             progress = grabRoundInfoModel.getElapsedTimeMs() * 100 / totalMs;
@@ -222,7 +241,6 @@ public class OthersSingCardView extends RelativeLayout {
         mCountDownProcess.startCountDown(progress, leaveTime);
     }
 
-
     public void hide() {
         if (this != null && this.getVisibility() == VISIBLE) {
             if (mLeaveTranslateAnimation == null) {
@@ -230,7 +248,6 @@ public class OthersSingCardView extends RelativeLayout {
                 mLeaveTranslateAnimation.setDuration(200);
             }
             this.startAnimation(mLeaveTranslateAnimation);
-
             mLeaveTranslateAnimation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
@@ -254,6 +271,15 @@ public class OthersSingCardView extends RelativeLayout {
         }
     }
 
+    @Override
+    public void setVisibility(int visibility) {
+        super.setVisibility(visibility);
+        if (visibility == GONE) {
+            mCountDownStatus = COUNT_DOWN_STATUS_INIT;
+            mCanStartFlag = false;
+            mHasPlayFullAnimation = false;
+        }
+    }
 
     @Override
     protected void onDetachedFromWindow() {

@@ -482,7 +482,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     GrabTopContainerView.Listener mListener = new GrabTopContainerView.Listener() {
         @Override
         public void closeBtnClick() {
-            if (mRoomData.isOwner() && mRoomData.getPlayerInfoList().size()>=2) {
+            if (mRoomData.isOwner() && mRoomData.getPlayerInfoList().size() >= 2) {
                 quitGame();
             } else {
                 mCorePresenter.exitRoom();
@@ -1114,11 +1114,15 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         if (mGameRoleDialog != null) {
             mGameRoleDialog.dismiss();
         }
-        mBottomContainerView.dismissPopWindow();
+        if (mBottomContainerView != null) {
+            mBottomContainerView.dismissPopWindow();
+        }
         if (mPersonInfoDialog != null) {
             mPersonInfoDialog.dismiss();
         }
-        mVoiceControlView.setVisibility(View.GONE);
+        if (mVoiceControlView != null) {
+            mVoiceControlView.setVisibility(View.GONE);
+        }
         if (mGrabKickDialog != null) {
             mGrabKickDialog.dismiss();
         }
