@@ -1,7 +1,10 @@
 package com.module.playways.grab.createroom.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 
 import com.common.base.BaseFragment;
@@ -15,10 +18,15 @@ import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
+import com.common.view.ex.ExTextView;
 import com.component.busilib.constans.GrabRoomType;
+import com.dialog.view.TipsDialogView;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.rank.song.fragment.GrabSearchSongFragment;
 import com.module.rank.R;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.OnClickListener;
+import com.orhanobut.dialogplus.ViewHolder;
 
 /**
  * 一唱到底，创建房间页面
@@ -31,6 +39,8 @@ public class GrabCreateRoomFragment extends BaseFragment {
     ExRelativeLayout mFriendsRoom;
     ExRelativeLayout mSecretRoom;
     ExRelativeLayout mPublicRoom;
+
+    DialogPlus mDialogPlus;
 
     @Override
     public int initView() {
@@ -78,20 +88,64 @@ public class GrabCreateRoomFragment extends BaseFragment {
                             if (result.getData().getBoolean("has")) {
                                 goGrabCreateSpecialFragment(GrabRoomType.ROOM_TYPE_PUBLIC);
                             } else {
-                                U.getToastUtil().showShort("您还没有权限创建公开房间");
+                                if (TextUtils.isEmpty(result.getData().getString("notice"))) {
+                                    showErrorMsgDialog("您还没有权限创建公开房间");
+                                } else {
+                                    showErrorMsgDialog(result.getData().getString("notice"));
+                                }
                             }
                         } else {
-                            U.getToastUtil().showShort("" + result.getErrmsg());
+                            if (TextUtils.isEmpty(result.getErrmsg())) {
+                                showErrorMsgDialog("您还没有权限创建公开房间");
+                            } else {
+                                showErrorMsgDialog("" + result.getErrmsg());
+                            }
                         }
                     }
                 }, GrabCreateRoomFragment.this);
             }
         });
-        
+
     }
 
+    public void showErrorMsgDialog(String string) {
+        TipsDialogView tipsDialogView = new TipsDialogView.Builder(getActivity())
+                .setMessageTip(string)
+                .setOkBtnTip("确认")
+                .build();
+
+        mDialogPlus = DialogPlus.newDialog(U.getActivityUtils().getTopActivity())
+                .setContentHolder(new ViewHolder(tipsDialogView))
+                .setGravity(Gravity.BOTTOM)
+                .setContentBackgroundResource(R.color.transparent)
+                .setOverlayBackgroundResource(R.color.black_trans_50)
+                .setExpanded(false)
+                .setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
+                        if (view instanceof ExTextView) {
+                            if (view.getId() == R.id.ok_btn) {
+                                dialog.dismiss();
+                            }
+                        }
+                    }
+                })
+                .create();
+        mDialogPlus.show();
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        if (mDialogPlus != null) {
+            mDialogPlus.dismiss(false);
+        }
+    }
 
     void goGrabCreateSpecialFragment(int roomType) {
+        if (mDialogPlus != null) {
+            mDialogPlus.dismiss(false);
+        }
         Bundle bundle = new Bundle();
         bundle.putInt(KEY_ROOM_TYPE, roomType);
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), GrabCreateSpecialFragment.class)
