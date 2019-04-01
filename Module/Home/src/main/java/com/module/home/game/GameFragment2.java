@@ -31,6 +31,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.RouterConstants;
 import com.module.home.R;
 import com.module.home.game.adapter.GameAdapter;
+import com.module.home.game.model.BannerModel;
 import com.module.home.game.model.QuickJoinRoomModel;
 import com.module.home.game.model.RecommendRoomModel;
 import com.module.home.model.GameKConfigModel;
@@ -62,7 +63,6 @@ public class GameFragment2 extends BaseFragment implements IGameView {
     ExTextView mCoinNum;
     ExRelativeLayout mRecyclerLayout;
     RecyclerView mRecyclerView;
-    Banner mBannerView;
 
     GameAdapter mGameAdapter;
 
@@ -88,9 +88,6 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mCoinNum = (ExTextView) mRootView.findViewById(R.id.coin_num);
         mRecyclerLayout = (ExRelativeLayout) mRootView.findViewById(R.id.recycler_layout);
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
-        mBannerView = (Banner) mRootView.findViewById(R.id.banner_view);
-
-        mBannerView.setIndicatorGravity(BannerConfig.RIGHT);
 
         mSkrAudioPermission = new SkrAudioPermission();
 
@@ -294,8 +291,8 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         if (list == null || list.size() == 0) {
             if (offset == 0) {
                 // 清空好友派对列表
-                if (mGameAdapter.getPositionObject(0) != null && mGameAdapter.getPositionObject(0) instanceof RecommendRoomModel) {
-                    mGameAdapter.getDataList().remove(mGameAdapter.getPositionObject(0));
+                if (mGameAdapter.getPositionObject(1) != null && mGameAdapter.getPositionObject(1) instanceof RecommendRoomModel) {
+                    mGameAdapter.getDataList().remove(mGameAdapter.getPositionObject(1));
                 }
                 mGameAdapter.notifyDataSetChanged();
             } else {
@@ -305,10 +302,17 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         }
 
         RecommendRoomModel recommendRoomModel = new RecommendRoomModel(list, offset, totalNum);
-        if (mGameAdapter.getPositionObject(0) != null && mGameAdapter.getPositionObject(0) instanceof RecommendRoomModel) {
-            mGameAdapter.getDataList().remove(mGameAdapter.getPositionObject(0));
+        if (mGameAdapter.getPositionObject(1) != null && mGameAdapter.getPositionObject(1) instanceof RecommendRoomModel) {
+            mGameAdapter.getDataList().remove(mGameAdapter.getPositionObject(1));
+        } else {
+
         }
-        mGameAdapter.getDataList().add(0, recommendRoomModel);
+        if (mGameAdapter.getDataList() != null && mGameAdapter.getDataList().size() >= 1) {
+            mGameAdapter.getDataList().add(1, recommendRoomModel);
+        } else {
+            mGameAdapter.getDataList().add(recommendRoomModel);
+        }
+
         mGameAdapter.notifyDataSetChanged();
     }
 
@@ -320,17 +324,12 @@ public class GameFragment2 extends BaseFragment implements IGameView {
             return;
         }
 
-        mBannerView.setImages(getSlideUrlList(slideShowModelList))
-                .setImageLoader(new BannerImageLoader())
-                .setOnBannerListener(new OnBannerListener() {
-                    @Override
-                    public void OnBannerClick(int position) {
-                        ARouter.getInstance().build(RouterConstants.ACTIVITY_SCHEME)
-                                .withString("uri", slideShowModelList.get(position).getSchema())
-                                .navigation();
-                    }
-                })
-                .start();
+        BannerModel bannerModel = new BannerModel(slideShowModelList);
+        if (mGameAdapter.getPositionObject(0) != null && mGameAdapter.getPositionObject(0) instanceof BannerModel) {
+            mGameAdapter.getDataList().remove(mGameAdapter.getPositionObject(0));
+        }
+        mGameAdapter.getDataList().add(0, bannerModel);
+        mGameAdapter.notifyDataSetChanged();
     }
 
     private ArrayList<String> getSlideUrlList(List<SlideShowModel> slideShowModelList) {

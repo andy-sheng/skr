@@ -5,13 +5,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.common.base.BaseFragment;
 import com.component.busilib.friends.RecommendModel;
 import com.component.busilib.friends.SpecialModel;
 import com.module.home.R;
+import com.module.home.game.model.BannerModel;
 import com.module.home.game.model.QuickJoinRoomModel;
 import com.module.home.game.model.RecommendRoomModel;
-import com.module.home.game.viewholder.EmptyPlaceViewHolder;
+import com.module.home.game.viewholder.BannerViewHolder;
 import com.module.home.game.viewholder.QuickRoomViewHolder;
 import com.module.home.game.viewholder.RecommendRoomViewHolder;
 
@@ -27,8 +29,7 @@ public class GameAdapter extends RecyclerView.Adapter {
 
     List<Object> mDataList = new ArrayList<>();
 
-    //    public static final int TYPE_BANNER_HOLDER = 1;       // 广告
-    public static final int TYPE_EMPTY_PLACE_HOLDER = 1;  // 顶部站位控件
+    public static final int TYPE_BANNER_HOLDER = 1;       // 广告
     public static final int TYPE_RECOMMEND_HOLDER = 2;    // 推荐房
     public static final int TYPE_QUICK_ROOM_HOLDER = 3;   // 快速房
 
@@ -62,12 +63,13 @@ public class GameAdapter extends RecyclerView.Adapter {
                     iterator.remove();
                 }
             }
-            if (mDataList != null && mDataList.size() >= 1) {
-                mDataList.add(1, quickJoinRoomModel);
+            if (mDataList.size() >= 2) {
+                mDataList.add(2, quickJoinRoomModel);
             } else {
                 mDataList.add(quickJoinRoomModel);
             }
         } else {
+            mDataList = new ArrayList<>();
             mDataList.add(quickJoinRoomModel);
         }
     }
@@ -75,10 +77,10 @@ public class GameAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (viewType == TYPE_EMPTY_PLACE_HOLDER) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.game_empty_place_item_view, parent, false);
-            EmptyPlaceViewHolder emptyPlaceViewHolder = new EmptyPlaceViewHolder(view);
-            return emptyPlaceViewHolder;
+        if (viewType == TYPE_BANNER_HOLDER) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.game_banner_item_view, parent, false);
+            BannerViewHolder bannerViewHolder = new BannerViewHolder(view);
+            return bannerViewHolder;
         } else if (viewType == TYPE_RECOMMEND_HOLDER) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.game_recommend_room_item_view, parent, false);
             RecommendRoomViewHolder recommendRoomViewHolder = new RecommendRoomViewHolder(view, mBaseFragment, mListener);
@@ -93,27 +95,29 @@ public class GameAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if (position != 0 && mDataList != null) {
-            if (mDataList.get(position - 1) instanceof RecommendRoomModel) {
-                ((RecommendRoomViewHolder) holder).bindData((RecommendRoomModel) (mDataList.get(position - 1)));
-            } else if (mDataList.get(position - 1) instanceof QuickJoinRoomModel) {
-                ((QuickRoomViewHolder) holder).bindData((QuickJoinRoomModel) (mDataList.get(position - 1)));
+        if (mDataList != null && mDataList.get(position) != null) {
+            if (mDataList.get(position) instanceof BannerModel) {
+                ((BannerViewHolder) holder).bindData((BannerModel) (mDataList.get(position)));
+            } else if (mDataList.get(position) instanceof RecommendRoomModel) {
+                ((RecommendRoomViewHolder) holder).bindData((RecommendRoomModel) (mDataList.get(position)));
+            } else if (mDataList.get(position) instanceof QuickJoinRoomModel) {
+                ((QuickRoomViewHolder) holder).bindData((QuickJoinRoomModel) (mDataList.get(position)));
             }
         }
     }
 
     @Override
     public int getItemCount() {
-        return mDataList.size() + 1;
+        return mDataList.size();
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 0) {
-            return TYPE_EMPTY_PLACE_HOLDER;
-        } else if (mDataList.get(position - 1) instanceof RecommendRoomModel) {
+        if (mDataList.get(position) instanceof BannerModel) {
+            return TYPE_BANNER_HOLDER;
+        } else if (mDataList.get(position) instanceof RecommendRoomModel) {
             return TYPE_RECOMMEND_HOLDER;
-        } else if (mDataList.get(position - 1) instanceof QuickJoinRoomModel) {
+        } else if (mDataList.get(position) instanceof QuickJoinRoomModel) {
             return TYPE_QUICK_ROOM_HOLDER;
         }
         return 0;
