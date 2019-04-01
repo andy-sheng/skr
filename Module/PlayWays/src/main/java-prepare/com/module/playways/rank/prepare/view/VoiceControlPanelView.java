@@ -202,13 +202,15 @@ public class VoiceControlPanelView extends ScrollView {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        if(!EventBus.getDefault().isRegistered(this)){
+        if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(EngineEvent event){
-        bindData();
+    public void onEvent(EngineEvent event) {
+        if (EngineEvent.TYPE_USER_SELF_JOIN_SUCCESS == event.getType()) {
+            bindData();
+        }
     }
 }

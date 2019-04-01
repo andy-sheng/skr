@@ -485,7 +485,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
                 @Override
                 public void onError() {
-                    MyLog.d(TAG,"playShowMainStageAnimator onError" );
+                    MyLog.d(TAG, "playShowMainStageAnimator onError");
                 }
             });
         } catch (Exception e) {
@@ -830,8 +830,9 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         mUiHanlder.sendMessageDelayed(msg, 5000);
 
         int seq = 0;
-        if (mRoomData.getRealRoundInfo() != null) {
-            seq = mRoomData.getRealRoundInfo().getRoundSeq();
+        RankRoundInfoModel now = mRoomData.getRealRoundInfo();
+        if (now != null) {
+            seq = now.getRoundSeq();
         }
         if (seq == 1) {
             mUiHanlder.postDelayed(new Runnable() {
@@ -891,8 +892,11 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             MyLog.w(TAG, "mRoomData为null");
             return;
         }
-
-        int seq = mRoomData.getRealRoundInfo().getRoundSeq();
+        int seq = 0;
+        RankRoundInfoModel now = mRoomData.getRealRoundInfo();
+        if (now != null) {
+            seq = now.getRoundSeq();
+        }
         if (seq == 1) {
             mUiHanlder.postDelayed(new Runnable() {
                 @Override

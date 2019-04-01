@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Animatable;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
+
 import com.common.image.fresco.cache.MLCacheKeyFactory;
 import com.common.image.model.BaseImage;
 import com.common.image.model.HttpImage;
@@ -249,7 +251,7 @@ public class FrescoWorker {
                     @Override
                     public void onFinalImageSet(String s, ImageInfo imageInfo, Animatable animatable) {
                         if (baseImage.getCallBack() != null) {
-                            baseImage.getCallBack().processWithInfo(imageInfo,animatable);
+                            baseImage.getCallBack().processWithInfo(imageInfo, animatable);
                         }
                     }
                 });
@@ -393,8 +395,13 @@ public class FrescoWorker {
     }
 
     public static File getCacheFileFromFrescoDiskCache(String url) {
-        Uri uri = Uri.parse(url);
-        return getCacheFileFromFrescoDiskCache(uri);
+        if (!TextUtils.isEmpty(url)) {
+            Uri uri = Uri.parse(url);
+            if (uri != null) {
+                return getCacheFileFromFrescoDiskCache(uri);
+            }
+        }
+        return null;
     }
 
     /**
