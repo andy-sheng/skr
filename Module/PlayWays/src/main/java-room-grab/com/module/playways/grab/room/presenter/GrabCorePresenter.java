@@ -1885,13 +1885,15 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QKickUserReqEvent qKickUserReqEvent) {
-        // 踢人请求
+        // 踢人的请求
+        MyLog.d(TAG, "收到踢人请求 kickUserID:" + qKickUserReqEvent.kickUserID);
         mIGrabView.showKickVoteDialog(qKickUserReqEvent.kickUserID, qKickUserReqEvent.sourceUserID);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QKickUserResultEvent qKickUserResultEvent) {
         // 踢人的结果
+        MyLog.d(TAG, "收到踢人结果 kickUserID:" + qKickUserResultEvent.kickUserID);
         if (qKickUserResultEvent.kickUserID == MyUserInfoManager.getInstance().getUid()) {
             // 自己被踢出去
             if (qKickUserResultEvent.isKickSuccess) {
