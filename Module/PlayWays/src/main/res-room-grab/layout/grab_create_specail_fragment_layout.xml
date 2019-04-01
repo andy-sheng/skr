@@ -2,6 +2,7 @@
 <com.common.view.ex.ExRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:background="#6E42C3"
     android:layout_height="match_parent"
     app:bl_gradient_endColor="#6E42C3"
     app:bl_gradient_startColor="#EB83CA"
@@ -30,10 +31,14 @@
         android:textStyle="bold" />
 
     <ImageView
-        android:layout_width="@dimen/view_434_dp"
-        android:layout_height="@dimen/view_217_dp"
+        android:layout_marginRight="-20dp"
+        android:layout_marginLeft="-20dp"
+        android:src="@drawable/grab_create_specail_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
         android:layout_alignParentBottom="true"
-        android:src="@drawable/grab_create_specail_bg" />
+         />
 
     <com.module.playways.grab.createroom.view.SpecialSelectView
         android:id="@+id/special_view"
