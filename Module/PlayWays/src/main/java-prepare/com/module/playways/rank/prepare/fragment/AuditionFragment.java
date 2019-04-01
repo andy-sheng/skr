@@ -326,6 +326,7 @@ public class AuditionFragment extends BaseFragment {
                             }
                             if (ScoreConfig.isMelp2Enable()) {
                                 if (mMelp2Score >= 0) {
+
                                     if (mAcrScore > mMelp2Score) {
                                         processScore("mAcrScore", mAcrScore, lineNo);
                                     } else {
@@ -666,6 +667,8 @@ public class AuditionFragment extends BaseFragment {
                 mRankTopView.setScoreProgress(score, 0, mTotalLineNum);
             }
         });
+        mAcrScore = -1;
+        mMelp2Score = -1;
     }
 
     @Override
