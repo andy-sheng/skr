@@ -7,7 +7,7 @@
     <com.youth.banner.Banner
         android:id="@+id/banner_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_140_dp"
+        android:layout_height="@dimen/view_126_dp"
         android:layout_marginLeft="@dimen/view_13_dp"
         android:layout_marginRight="@dimen/view_13_dp"
         android:visibility="visible"
