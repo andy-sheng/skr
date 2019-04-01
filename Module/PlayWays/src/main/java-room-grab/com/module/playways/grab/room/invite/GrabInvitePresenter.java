@@ -44,6 +44,7 @@ public class GrabInvitePresenter extends RxLifeCyclePresenter {
                     List<GrabFriendModel> grabFriendModelList = JSON.parseArray(result.getData().getString("friends"), GrabFriendModel.class);
                     if (grabFriendModelList == null || grabFriendModelList.size() == 0) {
                         //没有更多了
+                        mIGrabInviteView.updateFriendList(mGrabFriendModelList);
                         mIGrabInviteView.hasMore(false);
                         return;
                     }

@@ -19,6 +19,9 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
+import com.kingja.loadsir.callback.Callback;
+import com.kingja.loadsir.core.LoadService;
+import com.kingja.loadsir.core.LoadSir;
 import com.module.common.ICallback;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.inter.IGrabInviteView;
@@ -36,6 +39,7 @@ import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
+import com.zq.relation.callback.FriendsEmptyCallback;
 
 import java.util.List;
 
@@ -52,6 +56,8 @@ public class InviteFriendFragment extends BaseFragment implements IGrabInviteVie
 
     View mEmptyView;
     DialogPlus mShareDialog;
+
+    LoadService mLoadService;
 
     InviteFirendAdapter mInviteFirendAdapter;
 
@@ -96,6 +102,17 @@ public class InviteFriendFragment extends BaseFragment implements IGrabInviteVie
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
 
+            }
+        });
+
+        LoadSir mLoadSir = new LoadSir.Builder()
+                .addCallback(new FriendsEmptyCallback())
+                .build();
+
+        mLoadService = mLoadSir.register(mRefreshLayout, new Callback.OnReloadListener() {
+            @Override
+            public void onReload(View v) {
+                mGrabInvitePresenter.getFriendList();
             }
         });
 
@@ -209,7 +226,12 @@ public class InviteFriendFragment extends BaseFragment implements IGrabInviteVie
 
     @Override
     public void updateFriendList(List<GrabFriendModel> grabFriendModelList) {
-        mInviteFirendAdapter.setDataList(grabFriendModelList);
+        if(grabFriendModelList != null && grabFriendModelList.size() > 0){
+            mLoadService.showSuccess();
+            mInviteFirendAdapter.setDataList(grabFriendModelList);
+        }else {
+            mLoadService.showCallback(FriendsEmptyCallback.class);
+        }
     }
 
     @Override

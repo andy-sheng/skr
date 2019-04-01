@@ -20,6 +20,7 @@
         app:bl_solid_color="@color/white">
 
         <com.common.view.ex.ExTextView
+            android:layout_marginBottom="@dimen/view_15_dp"
             android:layout_marginTop="@dimen/view_16_dp"
             android:id="@+id/tv_share"
             android:layout_width="@dimen/view_233_dp"
@@ -48,8 +49,8 @@
             android:id="@+id/refreshLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/top_container"
-            android:layout_marginTop="@dimen/view_71_dp">
+            android:layout_below="@+id/tv_share"
+            >
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view"
