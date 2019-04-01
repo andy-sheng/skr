@@ -25,6 +25,7 @@ import com.common.view.AnimateClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
+import com.common.view.titlebar.CommonTitleBar;
 import com.component.busilib.friends.RecommendModel;
 import com.component.busilib.friends.GrabFriendsRoomFragment;
 import com.component.busilib.friends.SpecialModel;
@@ -59,6 +60,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
     RelativeLayout mBackground;
     SmartRefreshLayout mRefreshLayout;
     ClassicsHeader mClassicsHeader;
+    CommonTitleBar mTitlebar;
     ExImageView mCreateRoom;
     SimpleDraweeView mAvatarIv;
     ExTextView mNameTv;
@@ -84,6 +86,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mBackground = (RelativeLayout) mRootView.findViewById(R.id.background);
         mRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.refreshLayout);
         mClassicsHeader = (ClassicsHeader) mRootView.findViewById(R.id.classics_header);
+        mTitlebar = (CommonTitleBar)mRootView.findViewById(R.id.titlebar);
         mCreateRoom = (ExImageView) mRootView.findViewById(R.id.create_room);
         mAvatarIv = (SimpleDraweeView) mRootView.findViewById(R.id.avatar_iv);
         mNameTv = (ExTextView) mRootView.findViewById(R.id.name_tv);
@@ -92,6 +95,12 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
 
         mSkrAudioPermission = new SkrAudioPermission();
+
+        if (U.getDeviceUtils().hasNotch(getContext())) {
+            mTitlebar.setVisibility(View.VISIBLE);
+        } else {
+            mTitlebar.setVisibility(View.GONE);
+        }
 
         mRefreshLayout.setEnableRefresh(true);
         mRefreshLayout.setEnableLoadMore(false);

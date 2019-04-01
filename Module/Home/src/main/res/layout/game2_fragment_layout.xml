@@ -20,8 +20,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <RelativeLayout
+            <!--只是做一下刘海屏幕的适配-->
+            <com.common.view.titlebar.CommonTitleBar
+                android:id="@+id/titlebar"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:showBottomLine="false"
+                app:statusBarColor="@color/transparent"
+                app:titleBarHeight="@dimen/view_0_dp"></com.common.view.titlebar.CommonTitleBar>
+
+            <RelativeLayout
+                android:id="@+id/top_area"
+                android:layout_width="match_parent"
+                android:layout_below="@id/titlebar"
                 android:layout_height="@dimen/view_100_dp">
 
                 <ImageView
@@ -95,7 +106,7 @@
                 android:id="@+id/recycler_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/view_100_dp">
+                android:layout_below="@id/top_area">
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycler_view"
