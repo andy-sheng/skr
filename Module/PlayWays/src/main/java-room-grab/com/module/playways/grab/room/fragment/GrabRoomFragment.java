@@ -23,7 +23,6 @@ import com.common.log.MyLog;
 import com.common.statistics.StatConstants;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
-import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
@@ -754,7 +753,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             MyLog.d(TAG, "这轮刚进来，不播放导唱过场");
             mGrabOpBtn.hide();
         } else {
-            if (mRoomData.isContainMe()) {
+            if (mRoomData.isInPlayerList()) {
                 mGrabOpBtn.playCountDown(pendingPlaySongCardData.getSeq(), 4
                         , pendingPlaySongCardData.songModel.getStandIntroEndT() - pendingPlaySongCardData.songModel.getStandIntroBeginT());
             }

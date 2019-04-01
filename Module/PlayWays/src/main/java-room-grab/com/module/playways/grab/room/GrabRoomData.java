@@ -63,7 +63,7 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
     }
 
 
-    public boolean isContainMe() {
+    public boolean isInPlayerList() {
         if (mExpectRoundInfo == null || mExpectRoundInfo.getPlayUsers() == null) {
             return false;
         }
