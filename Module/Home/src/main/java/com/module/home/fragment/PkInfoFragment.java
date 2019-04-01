@@ -279,6 +279,7 @@ public class PkInfoFragment extends BaseFragment implements IPkInfoView {
     @Override
     protected void onFragmentVisible() {
         super.onFragmentVisible();
+        initBaseInfo();
         mPkInfoPresenter.getHomePage(MyUserInfoManager.getInstance().getUid(), false);
     }
 
