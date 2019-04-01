@@ -13,7 +13,6 @@ import com.common.utils.U;
 import com.component.busilib.constans.GameModeType;
 import com.engine.EngineManager;
 import com.module.RouterConstants;
-import com.module.playways.grab.createroom.fragment.GrabSelectFragment;
 import com.module.playways.rank.song.fragment.SongSelectFragment;
 import com.module.rank.R;
 
@@ -70,12 +69,12 @@ public class PlayWaysActivity extends BaseActivity {
                         .build());
             }
         } else if (gameType == GameModeType.GAME_MODE_GRAB) {
-            mainActContainer.setBackground(null);
-            // 一唱到底抢唱模式,
-            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, GrabSelectFragment.class)
-                    .setAddToBackStack(false)
-                    .setHasAnimation(false)
-                    .build());
+//            mainActContainer.setBackground(null);
+//            // 一唱到底抢唱模式,
+//            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, GrabSelectFragment.class)
+//                    .setAddToBackStack(false)
+//                    .setHasAnimation(false)
+//                    .build());
         } else {
             U.getToastUtil().showShort("该游戏模式已经下线 mode=" + gameType);
             finish();
