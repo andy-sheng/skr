@@ -28,44 +28,40 @@
         android:textStyle="bold" />
 
     <com.common.view.ex.ExRelativeLayout
-        android:id="@+id/secret_room"
+        android:id="@+id/friends_room"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_166_dp"
+        android:layout_height="@dimen/view_164_dp"
         android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginTop="@dimen/view_80_dp"
         android:layout_marginRight="@dimen/view_16_dp">
 
-        <!--<com.common.view.ex.ExTextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="@dimen/view_30_dp"-->
-            <!--android:layout_marginLeft="@dimen/view_32_dp"-->
-            <!--android:layout_marginTop="@dimen/view_24_dp"-->
-            <!--android:drawableRight="@drawable/grab_select_room_icon"-->
-            <!--android:drawablePadding="@dimen/view_4_dp"-->
-            <!--android:gravity="center"-->
-            <!--android:text="私密房"-->
-            <!--android:textColor="@color/white"-->
-            <!--android:textSize="@dimen/textsize_22_dp"-->
-            <!--android:visibility="gone" />-->
+        <com.common.view.ex.ExImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_138_dp"
+            android:background="@drawable/haoyoufang" />
 
-        <!--<com.common.view.ex.ExTextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="@dimen/view_34_dp"-->
-            <!--android:layout_marginLeft="@dimen/view_24_dp"-->
-            <!--android:layout_marginTop="@dimen/view_66_dp"-->
-            <!--android:gravity="center"-->
-            <!--android:paddingLeft="@dimen/view_9_dp"-->
-            <!--android:paddingRight="@dimen/view_9_dp"-->
-            <!--android:text="房间隐藏，仅房主邀请才可加入"-->
-            <!--android:textColor="@color/white"-->
-            <!--android:visibility="gone"-->
-            <!--app:bl_corners_radius="@dimen/view_100_dp"-->
-            <!--app:bl_shape="rectangle"-->
-            <!--app:bl_solid_color="#8717D1" />-->
+        <com.common.view.ex.ExImageView
+            android:layout_width="@dimen/view_95_dp"
+            android:layout_height="@dimen/view_50_dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="@dimen/view_24_dp"
+            android:background="@drawable/create_room_type" />
+
+    </com.common.view.ex.ExRelativeLayout>
+
+    <com.common.view.ex.ExRelativeLayout
+        android:id="@+id/secret_room"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_148_dp"
+        android:layout_below="@+id/friends_room"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginTop="@dimen/view_16_dp"
+        android:layout_marginRight="@dimen/view_16_dp">
 
         <com.common.view.ex.ExImageView
             android:layout_width="match_parent"
-            android:layout_height="@dimen/view_142_dp"
+            android:layout_height="@dimen/view_124_dp"
             android:background="@drawable/simifang" />
 
         <com.common.view.ex.ExImageView
@@ -79,95 +75,15 @@
 
     </com.common.view.ex.ExRelativeLayout>
 
-    <com.common.view.ex.ExRelativeLayout
-        android:id="@+id/friends_room"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_150_dp"
-        android:layout_below="@+id/secret_room"
-        android:layout_marginLeft="@dimen/view_16_dp"
-        android:layout_marginTop="@dimen/view_16_dp"
-        android:layout_marginRight="@dimen/view_16_dp">
-
-        <!--<com.common.view.ex.ExTextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="@dimen/view_30_dp"-->
-            <!--android:layout_marginLeft="@dimen/view_32_dp"-->
-            <!--android:layout_marginTop="@dimen/view_24_dp"-->
-            <!--android:drawableRight="@drawable/grab_select_room_icon"-->
-            <!--android:drawablePadding="@dimen/view_4_dp"-->
-            <!--android:gravity="center"-->
-            <!--android:text="好友房"-->
-            <!--android:textColor="@color/white"-->
-            <!--android:textSize="@dimen/textsize_22_dp"-->
-            <!--android:visibility="gone" />-->
-
-        <!--<com.common.view.ex.ExTextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="@dimen/view_34_dp"-->
-            <!--android:layout_marginLeft="@dimen/view_24_dp"-->
-            <!--android:layout_marginTop="@dimen/view_66_dp"-->
-            <!--android:gravity="center"-->
-            <!--android:paddingLeft="@dimen/view_9_dp"-->
-            <!--android:paddingRight="@dimen/view_9_dp"-->
-            <!--android:text="房间向好友公开"-->
-            <!--android:textColor="@color/white"-->
-            <!--android:visibility="gone"-->
-            <!--app:bl_corners_radius="@dimen/view_100_dp"-->
-            <!--app:bl_shape="rectangle"-->
-            <!--app:bl_solid_color="#ED7000" />-->
-
-        <com.common.view.ex.ExImageView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/view_124_dp"
-            android:background="@drawable/haoyoufang" />
-
-        <com.common.view.ex.ExImageView
-            android:layout_width="@dimen/view_95_dp"
-            android:layout_height="@dimen/view_50_dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginRight="@dimen/view_24_dp"
-            android:background="@drawable/create_room_type" />
-
-    </com.common.view.ex.ExRelativeLayout>
-
 
     <com.common.view.ex.ExRelativeLayout
         android:id="@+id/public_room"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_150_dp"
-        android:layout_below="@id/friends_room"
+        android:layout_below="@id/secret_room"
         android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginTop="@dimen/view_16_dp"
         android:layout_marginRight="@dimen/view_16_dp">
-
-        <!--<com.common.view.ex.ExTextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="@dimen/view_30_dp"-->
-        <!--android:layout_marginLeft="@dimen/view_32_dp"-->
-        <!--android:layout_marginTop="@dimen/view_24_dp"-->
-        <!--android:drawableRight="@drawable/grab_select_room_icon"-->
-        <!--android:drawablePadding="@dimen/view_4_dp"-->
-        <!--android:gravity="center"-->
-        <!--android:text="豪华派对"-->
-        <!--android:textColor="@color/white"-->
-        <!--android:textSize="@dimen/textsize_22_dp"-->
-        <!--android:visibility="gone"/>-->
-
-        <!--<com.common.view.ex.ExTextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="@dimen/view_34_dp"-->
-        <!--android:layout_marginLeft="@dimen/view_24_dp"-->
-        <!--android:layout_marginTop="@dimen/view_66_dp"-->
-        <!--android:gravity="center"-->
-        <!--android:paddingLeft="@dimen/view_9_dp"-->
-        <!--android:paddingRight="@dimen/view_9_dp"-->
-        <!--android:text="主持一个公开派对，成为撕歌最靓的仔"-->
-        <!--android:textColor="@color/white"-->
-        <!--app:bl_corners_radius="@dimen/view_100_dp"-->
-        <!--app:bl_shape="rectangle"-->
-        <!--app:bl_solid_color="#808C520C"-->
-        <!--android:visibility="gone"/>-->
 
         <com.common.view.ex.ExImageView
             android:layout_width="match_parent"

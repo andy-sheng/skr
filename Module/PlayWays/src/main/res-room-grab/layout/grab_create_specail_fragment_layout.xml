@@ -2,11 +2,8 @@
 <com.common.view.ex.ExRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="#6E42C3"
     android:layout_height="match_parent"
-    app:bl_gradient_endColor="#6E42C3"
-    app:bl_gradient_startColor="#EB83CA"
-    app:bl_shape="rectangle">
+    android:background="#7088FF">
 
     <com.common.view.ex.ExImageView
         android:id="@+id/iv_back"
