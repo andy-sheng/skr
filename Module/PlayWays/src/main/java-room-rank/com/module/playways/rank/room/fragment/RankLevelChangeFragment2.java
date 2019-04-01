@@ -62,7 +62,7 @@ import java.util.List;
 import static android.view.View.ALPHA;
 import static android.view.View.VISIBLE;
 
-public class RankLevelChange2Fragment extends BaseFragment {
+public class RankLevelChangeFragment2 extends BaseFragment {
 
     public final static String TAG = "RankLevelChange2Fragment";
 
@@ -90,7 +90,7 @@ public class RankLevelChange2Fragment extends BaseFragment {
 
     @Override
     public int initView() {
-        return R.layout.rank_level2_change_fragment_layout;
+        return R.layout.rank_level_change_fragment_layout2;
     }
 
     @Override
