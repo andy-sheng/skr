@@ -1201,22 +1201,20 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         if (now != null) {
             EventBus.getDefault().post(new GrabPlaySeatUpdateEvent(now.getPlayUsers()));
             EventBus.getDefault().post(new GrabWaitSeatUpdateEvent(now.getWaitUsers()));
-            if (now.getPlayUsers().size() <= 2) {
-                mUiHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mIGrabView.showPracticeFlag(true);
-                    }
-                });
-
-            } else {
-                mUiHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mIGrabView.showPracticeFlag(false);
-                    }
-                });
+            int size = 0;
+            for (GrabPlayerInfoModel playerInfoModel : now.getPlayUsers()) {
+                if (playerInfoModel.getUserID() == 2) {
+                    continue;
+                }
+                size++;
             }
+            int finalSize = size;
+            mUiHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    mIGrabView.showPracticeFlag(finalSize <= 2);
+                }
+            });
         }
 
         if (now.getStatus() == GrabRoundInfoModel.STATUS_GRAB) {
