@@ -56,9 +56,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.module.home.fragment.GameFragment.SHANDIAN_BADGE;
-import static com.module.home.fragment.GameFragment.STAR_BADGE;
-import static com.module.home.fragment.GameFragment.TOP_BADGE;
 
 public class PkInfoFragment extends BaseFragment implements IPkInfoView {
     public final static String TAG = "PkInfoFragment";
@@ -261,11 +258,11 @@ public class PkInfoFragment extends BaseFragment implements IPkInfoView {
 
 //        showPopWindow(userRankModel.getDiff());
 
-        if (userRankModel.getBadge() == STAR_BADGE) {
+        if (userRankModel.getBadge() == PersonFragment.STAR_BADGE) {
             mMedalIv.setBackground(getResources().getDrawable(R.drawable.paiming));
-        } else if (userRankModel.getBadge() == TOP_BADGE) {
+        } else if (userRankModel.getBadge() == PersonFragment.TOP_BADGE) {
             mMedalIv.setBackground(getResources().getDrawable(R.drawable.paihang));
-        } else if (userRankModel.getBadge() == SHANDIAN_BADGE) {
+        } else if (userRankModel.getBadge() == PersonFragment.SHANDIAN_BADGE) {
             mMedalIv.setBackground(getResources().getDrawable(R.drawable.dabai));
         }
     }

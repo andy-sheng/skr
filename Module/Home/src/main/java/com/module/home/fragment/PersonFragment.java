@@ -77,11 +77,11 @@ import java.util.regex.Pattern;
 import io.reactivex.functions.Consumer;
 import model.RelationNumModel;
 
-import static com.module.home.fragment.GameFragment.SHANDIAN_BADGE;
-import static com.module.home.fragment.GameFragment.STAR_BADGE;
-import static com.module.home.fragment.GameFragment.TOP_BADGE;
-
 public class PersonFragment extends BaseFragment implements IPersonView, WeakRedDotManager.WeakRedDotListener {
+
+    public static final int STAR_BADGE = 1;
+    public static final int TOP_BADGE = 2;
+    public static final int SHANDIAN_BADGE = 3;
 
     public final static String TAG = "PersonFragment";
 

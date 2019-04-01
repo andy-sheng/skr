@@ -5,7 +5,6 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Spannable;
@@ -28,17 +27,13 @@ import com.common.base.FragmentDataListener;
 import com.common.core.account.UserAccountManager;
 import com.common.core.account.event.AccountEvent;
 import com.common.core.avatar.AvatarUtils;
-import com.common.core.kouling.SkrKouLingUtils;
-import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
-import com.common.core.permission.SkrLocationPermission;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.model.UserRankModel;
 import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
-import com.common.notification.event.FollowNotifyEvent;
 import com.common.notification.event.GrabInviteNotifyEvent;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -54,8 +49,6 @@ import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
 import com.component.busilib.constans.GameModeType;
 import com.engine.EngineManager;
-import com.facebook.drawee.view.SimpleDraweeView;
-import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
 import com.module.home.BuildConfig;
 import com.module.home.MainPageSlideApi;
@@ -71,9 +64,7 @@ import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.header.BezierRadarHeader;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
-import com.scwang.smartrefresh.layout.header.FalsifyHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -87,19 +78,13 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import io.reactivex.functions.Consumer;
-
+@Deprecated
 public class GameFragment extends BaseFragment {
 
     public final static String TAG = "GameFragment";
-
-    public static final int STAR_BADGE = 1;
-    public static final int TOP_BADGE = 2;
-    public static final int SHANDIAN_BADGE = 3;
 
     CommonTitleBar mTitlebar; //用来做适配使用
     RelativeLayout mTopArea;
@@ -402,11 +387,11 @@ public class GameFragment extends BaseFragment {
 
         showPopWindow(userRankModel.getDiff());
 
-        if (userRankModel.getBadge() == STAR_BADGE) {
+        if (userRankModel.getBadge() == PersonFragment.STAR_BADGE) {
             mMedalIv.setBackground(getResources().getDrawable(R.drawable.paiming));
-        } else if (userRankModel.getBadge() == TOP_BADGE) {
+        } else if (userRankModel.getBadge() == PersonFragment.TOP_BADGE) {
             mMedalIv.setBackground(getResources().getDrawable(R.drawable.paihang));
-        } else if (userRankModel.getBadge() == SHANDIAN_BADGE) {
+        } else if (userRankModel.getBadge() == PersonFragment.SHANDIAN_BADGE) {
             mMedalIv.setBackground(getResources().getDrawable(R.drawable.dabai));
         }
     }
