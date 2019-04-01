@@ -7,8 +7,13 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -21,7 +26,10 @@ import com.common.base.FragmentDataListener;
 import com.common.core.account.UserAccountManager;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.userinfo.UserInfoServerApi;
+import com.common.core.userinfo.model.GameStatisModel;
+import com.common.core.userinfo.model.UserLevelModel;
 import com.common.core.userinfo.model.UserRankModel;
 import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
@@ -32,45 +40,66 @@ import com.common.rxretrofit.ApiResult;
 import com.common.statistics.StatConstants;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
+import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
+import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
 import com.component.busilib.constans.GameModeType;
 import com.module.RouterConstants;
 import com.module.home.R;
 
+import com.module.home.persenter.PkInfoPresenter;
+import com.module.home.view.IPkInfoView;
+import com.module.home.widget.UserInfoTitleView;
 import com.module.rank.IRankingModeService;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+import com.zq.level.view.NormalLevelView2;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class PkInfoFragment extends BaseFragment {
+import static com.module.home.fragment.GameFragment.SHANDIAN_BADGE;
+import static com.module.home.fragment.GameFragment.STAR_BADGE;
+import static com.module.home.fragment.GameFragment.TOP_BADGE;
+
+public class PkInfoFragment extends BaseFragment implements IPkInfoView {
     public final static String TAG = "PkInfoFragment";
 
     SmartRefreshLayout mSmartRefreshLayout;
-    ExTextView mTvBg;
-    BaseImageView mIvUserIcon;
-    TextView mTvUserName;
-    LinearLayout mLlNumContainer;
-    TextView mTvNum;
-    TextView mTvArea;
-    LinearLayout mLlCountry;
-    TextView mTvNumCountry;
-    TextView mTvCountry;
-    ExTextView mBottomBg;
-    ExTextView mTvToLeaderBoard;
     ExImageView mIvVoiceRoom;
     ExImageView mIvAthleticsPk;
-    RelativeLayout mRlAreaContainer;
+    UserInfoTitleView mUserInfoTitle;
     ClassicsHeader mClassicsHeader;
+    ExRelativeLayout mMedalLayout;
+    NormalLevelView2 mLevelView;
+    ExTextView mLevelTv;
+    ImageView mPaiweiImg;
+    ExTextView mRankNumTv;
+    ImageView mSingendImg;
+    ExTextView mSingendNumTv;
+    RelativeLayout mRankArea;
+    ExTextView mRankText;
+    ExImageView mRankDiffIv;
+    ExImageView mMedalIv;
 
-    UserInfoServerApi mUserInfoServerApi;
+    int rank = 0;           //当前父段位
+    int subRank = 0;        //当前子段位
+    int starNum = 0;        //当前星星
+    int starLimit = 0;      //当前星星上限
+    String levelDesc;
+
+    PkInfoPresenter mPkInfoPresenter;
 
     @Override
     public int initView() {
@@ -81,23 +110,23 @@ public class PkInfoFragment extends BaseFragment {
     public void initData(@Nullable Bundle savedInstanceState) {
         mSmartRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.smart_refresh_layout);
         mClassicsHeader = (ClassicsHeader) mRootView.findViewById(R.id.classics_header);
-        mTvBg = (ExTextView) mRootView.findViewById(R.id.tv_bg);
-        mIvUserIcon = (BaseImageView) mRootView.findViewById(R.id.iv_user_icon);
-        mTvUserName = (TextView) mRootView.findViewById(R.id.tv_user_name);
-        mLlNumContainer = (LinearLayout) mRootView.findViewById(R.id.ll_num_container);
-        mTvNum = (TextView) mRootView.findViewById(R.id.tv_num);
-        mTvArea = (TextView) mRootView.findViewById(R.id.tv_area);
-        mLlCountry = (LinearLayout) mRootView.findViewById(R.id.ll_country);
-        mTvNumCountry = (TextView) mRootView.findViewById(R.id.tv_num_country);
-        mTvCountry = (TextView) mRootView.findViewById(R.id.tv_country);
-        mBottomBg = (ExTextView) mRootView.findViewById(R.id.bottom_bg);
-        mTvToLeaderBoard = (ExTextView) mRootView.findViewById(R.id.tv_to_leader_board);
-        mIvVoiceRoom = (ExImageView) mRootView.findViewById(R.id.iv_voice_room);
+        mUserInfoTitle = (UserInfoTitleView) mRootView.findViewById(R.id.user_info_title);
+        mMedalLayout = (ExRelativeLayout) mRootView.findViewById(R.id.medal_layout);
+        mLevelView = (NormalLevelView2) mRootView.findViewById(R.id.level_view);
+        mLevelTv = (ExTextView) mRootView.findViewById(R.id.level_tv);
+        mPaiweiImg = (ImageView) mRootView.findViewById(R.id.paiwei_img);
+        mRankNumTv = (ExTextView) mRootView.findViewById(R.id.rank_num_tv);
+        mSingendImg = (ImageView) mRootView.findViewById(R.id.singend_img);
+        mSingendNumTv = (ExTextView) mRootView.findViewById(R.id.singend_num_tv);
+        mRankArea = (RelativeLayout) mRootView.findViewById(R.id.rank_area);
+        mRankText = (ExTextView) mRootView.findViewById(R.id.rank_text);
+        mRankDiffIv = (ExImageView) mRootView.findViewById(R.id.rank_diff_iv);
         mIvAthleticsPk = (ExImageView) mRootView.findViewById(R.id.iv_athletics_pk);
-        mRlAreaContainer = (RelativeLayout) mRootView.findViewById(R.id.rl_area_container);
-
+        mIvVoiceRoom = (ExImageView) mRootView.findViewById(R.id.iv_voice_room);
+        mMedalIv = (ExImageView) mRootView.findViewById(R.id.medal_iv);
+        mUserInfoTitle.getTopUserBg().setVisibility(View.GONE);
         mClassicsHeader.setBackground(new DrawableCreator.Builder()
-                .setGradientColor(Color.parseColor("#EB83CA"), Color.parseColor("#6E42C3"))
+                .setGradientColor(Color.parseColor("#7088FF"), Color.parseColor("#7088FF"))
                 .setGradientAngle(0)
                 .build());
 
@@ -114,16 +143,9 @@ public class PkInfoFragment extends BaseFragment {
 
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                showRankInfo();
+                mPkInfoPresenter.getHomePage(MyUserInfoManager.getInstance().getUid(), true);
             }
         });
-
-        AvatarUtils.loadAvatarByUrl(mIvUserIcon,
-                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
-                        .setCircle(true)
-                        .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                        .setBorderColor(U.getColor(R.color.white))
-                        .build());
 
         mIvAthleticsPk.setOnClickListener(new AnimateClickListener() {
             @Override
@@ -147,81 +169,102 @@ public class PkInfoFragment extends BaseFragment {
             }
         });
 
-        mTvToLeaderBoard.setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
-                Class<BaseFragment> baseFragment = (Class<BaseFragment>) iRankingModeService.getLeaderboardFragmentClass();
-                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), baseFragment)
-                        .setAddToBackStack(true)
-                        .setHasAnimation(true)
-                        .setFragmentDataListener(new FragmentDataListener() {
-                            @Override
-                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
-
-                            }
-                        })
-                        .build());
-            }
-        });
-
-        mTvUserName.setText(MyUserInfoManager.getInstance().getNickName());
-        showRankInfo();
+        mPkInfoPresenter = new PkInfoPresenter(this);
+        addPresent(mPkInfoPresenter);
+        initBaseInfo();
+        mPkInfoPresenter.getHomePage(MyUserInfoManager.getInstance().getUid(), true);
     }
 
-    private void showRankInfo() {
-        if (mUserInfoServerApi == null) {
-            mUserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
+    @Override
+    public void showUserLevel(List<UserLevelModel> list) {
+        mSmartRefreshLayout.finishRefresh();
+        // 展示段位信息
+        for (UserLevelModel userLevelModel : list) {
+            if (userLevelModel.getType() == UserLevelModel.RANKING_TYPE) {
+                rank = userLevelModel.getScore();
+            } else if (userLevelModel.getType() == UserLevelModel.SUB_RANKING_TYPE) {
+                subRank = userLevelModel.getScore();
+                levelDesc = userLevelModel.getDesc();
+            } else if (userLevelModel.getType() == UserLevelModel.TOTAL_RANKING_STAR_TYPE) {
+                starNum = userLevelModel.getScore();
+            } else if (userLevelModel.getType() == UserLevelModel.REAL_RANKING_STAR_TYPE) {
+                starLimit = userLevelModel.getScore();
+            }
         }
-
-        ApiMethods.subscribe(mUserInfoServerApi.getReginRank(MyUserInfoManager.getInstance().getUid()), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                mSmartRefreshLayout.finishRefresh();
-                if (result.getErrno() == 0) {
-                    List<UserRankModel> userRankModels = JSON.parseArray(result.getData().getString("seqInfo"), UserRankModel.class);
-                    showRankView(userRankModels);
-                } else {
-                    MyLog.d(TAG, "showRankInfo" + " result=" + result);
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                U.getToastUtil().showShort("网络异常");
-                mSmartRefreshLayout.finishRefresh();
-            }
-
-            @Override
-            public void onNetworkError(ErrorType errorType) {
-                mSmartRefreshLayout.finishRefresh();
-                U.getToastUtil().showShort("网络超时");
-            }
-        }, this);
+        mLevelView.bindData(rank, subRank);
+        mLevelTv.setText(levelDesc);
     }
 
-    private void showRankView(List<UserRankModel> userRankModelList) {
-        for (UserRankModel userRankModel : userRankModelList) {
-            if (userRankModel.getCategory() == 1) {
-                mTvNumCountry.setText(userRankModel.getRankSeq() == 0 ? "**" : formatRank(userRankModel.getRankSeq()));
-            } else if (userRankModel.getCategory() == 4) {
-                if (userRankModel.getRankSeq() == 0) {
-                    mRlAreaContainer.setVisibility(View.GONE);
-                } else {
-                    mRlAreaContainer.setVisibility(View.VISIBLE);
-                    mTvNum.setText(formatRank(userRankModel.getRankSeq()));
-                    mTvArea.setText(userRankModel.getRegionDesc());
-                }
+    @Override
+    public void showGameStatic(List<GameStatisModel> list) {
+        mSmartRefreshLayout.finishRefresh();
+        for (GameStatisModel gameStatisModel : list) {
+            if (gameStatisModel.getMode() == GameModeType.GAME_MODE_CLASSIC_RANK) {
+                SpannableStringBuilder stringBuilder = new SpanUtils()
+                        .append(String.valueOf(gameStatisModel.getTotalTimes())).setFontSize(14, true)
+                        .append("场").setFontSize(10, true)
+                        .create();
+                mRankNumTv.setText(stringBuilder);
+            } else if (gameStatisModel.getMode() == GameModeType.GAME_MODE_GRAB) {
+                SpannableStringBuilder stringBuilder = new SpanUtils()
+                        .append(String.valueOf(gameStatisModel.getTotalTimes())).setFontSize(14, true)
+                        .append("首").setFontSize(10, true)
+                        .create();
+                mSingendNumTv.setText(stringBuilder);
             }
         }
+    }
 
-        mTvUserName.setText(MyUserInfoManager.getInstance().getNickName());
-        AvatarUtils.loadAvatarByUrl(mIvUserIcon,
-                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
-                        .setCircle(true)
-                        .setBorderWidth(U.getDisplayUtils().dip2px(3))
-                        .setBorderColor(U.getColor(R.color.white))
-                        .build());
+    private void initBaseInfo() {
+        mUserInfoTitle.showBaseInfo();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(MyUserInfoEvent.UserInfoChangeEvent userInfoChangeEvent) {
+        initBaseInfo();
+    }
+
+    @Override
+    public void showRankView(UserRankModel userRankModel) {
+        MyLog.d(TAG, "showRankView" + " userRankModel=" + userRankModel);
+        mUserInfoTitle.showRankView(userRankModel);
+        MyLog.d(TAG, "showRankView" + " userRankModel=" + userRankModel);
+
+        if (userRankModel.getDiff() == 0) {
+            // 默认按照上升显示
+            mRankDiffIv.setVisibility(View.GONE);
+            mRankText.setText(highlight(userRankModel.getText(), userRankModel.getHighlight(), true));
+        } else if (userRankModel.getDiff() > 0) {
+            mRankDiffIv.setVisibility(View.VISIBLE);
+            mRankDiffIv.setImageResource(R.drawable.shangsheng_ic);
+            mRankText.setText(highlight(userRankModel.getText(), userRankModel.getHighlight(), true));
+        } else if (userRankModel.getDiff() < 0) {
+            mRankDiffIv.setVisibility(View.VISIBLE);
+            mRankDiffIv.setImageResource(R.drawable.xiajiang_ic);
+            mRankText.setText(highlight(userRankModel.getText(), userRankModel.getHighlight(), false));
+        }
+
+//        showPopWindow(userRankModel.getDiff());
+
+        if (userRankModel.getBadge() == STAR_BADGE) {
+            mMedalIv.setBackground(getResources().getDrawable(R.drawable.paiming));
+        } else if (userRankModel.getBadge() == TOP_BADGE) {
+            mMedalIv.setBackground(getResources().getDrawable(R.drawable.paihang));
+        } else if (userRankModel.getBadge() == SHANDIAN_BADGE) {
+            mMedalIv.setBackground(getResources().getDrawable(R.drawable.dabai));
+        }
+    }
+
+    private SpannableString highlight(String text, String target, boolean isUp) {
+        SpannableString spannableString = new SpannableString(text);
+        Pattern pattern = Pattern.compile(target);
+        Matcher matcher = pattern.matcher(text);
+        while (matcher.find()) {
+            ForegroundColorSpan span = new ForegroundColorSpan(Color.parseColor("#FF3B3C"));
+            spannableString.setSpan(span, matcher.start(), matcher.end(),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        return spannableString;
     }
 
     private String formatRank(int rankSeq) {
@@ -231,6 +274,12 @@ public class PkInfoFragment extends BaseFragment {
             float result = (float) (Math.round(((float) rankSeq / 10000) * 10)) / 10;
             return String.valueOf(result) + "w";
         }
+    }
+
+    @Override
+    protected void onFragmentVisible() {
+        super.onFragmentVisible();
+        mPkInfoPresenter.getHomePage(MyUserInfoManager.getInstance().getUid(), false);
     }
 
     @Override

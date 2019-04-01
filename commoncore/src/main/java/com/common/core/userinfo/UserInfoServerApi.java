@@ -46,7 +46,7 @@ public interface UserInfoServerApi {
      * @return
      */
     @GET("/v1/skr/homepage")
-    Observable<ApiResult> getHomePage(@Query("userID") int userID);
+    Observable<ApiResult> getHomePage(@Query("userID") long userID);
 
 
     /**

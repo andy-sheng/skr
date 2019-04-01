@@ -48,6 +48,10 @@ public class UserInfoTitleView extends RelativeLayout {
         mUserLevelTv.setText(userRankModel.getLevelDesc());
     }
 
+    public ImageView getTopUserBg() {
+        return mTopUserBg;
+    }
+
     public void showBaseInfo() {
         AvatarUtils.loadAvatarByUrl(mIvUserIcon,
                 AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
