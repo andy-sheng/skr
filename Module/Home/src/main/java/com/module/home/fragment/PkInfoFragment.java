@@ -161,6 +161,24 @@ public class PkInfoFragment extends BaseFragment implements IPkInfoView {
             }
         });
 
+        mRankArea.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
+                Class<BaseFragment> baseFragment = (Class<BaseFragment>) iRankingModeService.getLeaderboardFragmentClass();
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), baseFragment)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(true)
+                        .setFragmentDataListener(new FragmentDataListener() {
+                            @Override
+                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
+
+                            }
+                        })
+                        .build());
+            }
+        });
+
         mIvVoiceRoom.setOnClickListener(new AnimateClickListener() {
             @Override
             public void click(View v) {
