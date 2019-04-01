@@ -11,6 +11,7 @@ import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
+import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
@@ -52,23 +53,23 @@ public class GrabCreateRoomFragment extends BaseFragment {
             }
         });
 
-        mFriendsRoom.setOnClickListener(new DebounceViewClickListener() {
+
+        mFriendsRoom.setOnClickListener(new AnimateClickListener() {
             @Override
-            public void clickValid(View v) {
+            public void click(View view) {
                 goGrabCreateSpecialFragment(GrabRoomType.ROOM_TYPE_FRIEND);
             }
         });
 
-        mSecretRoom.setOnClickListener(new DebounceViewClickListener() {
+        mSecretRoom.setOnClickListener(new AnimateClickListener() {
             @Override
-            public void clickValid(View v) {
+            public void click(View view) {
                 goGrabCreateSpecialFragment(GrabRoomType.ROOM_TYPE_SECRET);
             }
         });
-
-        mPublicRoom.setOnClickListener(new DebounceViewClickListener() {
+        mPublicRoom.setOnClickListener(new AnimateClickListener() {
             @Override
-            public void clickValid(View v) {
+            public void click(View view) {
                 GrabRoomServerApi roomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
                 ApiMethods.subscribe(roomServerApi.checkCreatePublicRoomPermission(), new ApiObserver<ApiResult>() {
                     @Override
@@ -86,6 +87,7 @@ public class GrabCreateRoomFragment extends BaseFragment {
                 }, GrabCreateRoomFragment.this);
             }
         });
+        
     }
 
 
