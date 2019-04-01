@@ -22,10 +22,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+                <!--只是做一下刘海屏幕的适配-->
+                <com.common.view.titlebar.CommonTitleBar
+                    android:id="@+id/titlebar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:showBottomLine="false"
+                    app:statusBarColor="@color/transparent"
+                    app:titleBarHeight="@dimen/view_0_dp"></com.common.view.titlebar.CommonTitleBar>
+
                 <com.common.image.fresco.BaseImageView
                     android:id="@+id/avatar_iv"
                     android:layout_width="@dimen/view_80_dp"
                     android:layout_height="@dimen/view_80_dp"
+                    android:layout_below="@id/titlebar"
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="@dimen/view_30_dp"
                     android:layout_marginTop="@dimen/view_50_dp" />
@@ -35,7 +46,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_marginTop="@dimen/view_44_dp"
+                    android:layout_alignTop="@id/avatar_iv"
+                    android:layout_marginTop="@dimen/view_8_dp"
                     android:layout_marginRight="@dimen/view_16_dp"
                     android:drawableTop="@drawable/gerenzhuye_fenxiang"
                     android:text="分享"
@@ -46,8 +58,9 @@
                     android:id="@+id/setting_area"
                     android:layout_width="@dimen/view_25_dp"
                     android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/avatar_iv"
                     android:layout_alignParentRight="true"
-                    android:layout_marginTop="@dimen/view_56_dp"
+                    android:layout_marginTop="@dimen/view_6_dp"
                     android:layout_marginRight="@dimen/view_16_dp">
 
                     <ImageView
@@ -239,6 +252,7 @@
                     android:layout_height="@dimen/view_145_dp"
                     android:layout_centerHorizontal="true"
                     android:layout_marginLeft="@dimen/view_16_dp"
+                    android:layout_below="@id/titlebar"
                     android:layout_marginTop="@dimen/view_235_dp"
                     android:layout_marginRight="@dimen/view_16_dp"
                     android:clipChildren="false"

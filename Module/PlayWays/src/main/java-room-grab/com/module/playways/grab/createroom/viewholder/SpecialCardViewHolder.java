@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
+import com.common.view.AnimateClickListener;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.friends.SpecialModel;
 import com.facebook.drawee.drawable.ScalingUtils;
@@ -25,11 +26,11 @@ public class SpecialCardViewHolder extends RecyclerView.ViewHolder {
 
         mBackground = (SimpleDraweeView) itemView.findViewById(R.id.background);
 
-        itemView.setOnClickListener(new View.OnClickListener() {
+        itemView.setOnClickListener(new AnimateClickListener() {
             @Override
-            public void onClick(View v) {
+            public void click(View view) {
                 if (mItemClickListener != null) {
-                    mItemClickListener.onItemClicked(v, mPosition, mSpecialModel);
+                    mItemClickListener.onItemClicked(view, mPosition, mSpecialModel);
                 }
             }
         });

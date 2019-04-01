@@ -47,6 +47,7 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
+import com.common.view.titlebar.CommonTitleBar;
 import com.component.busilib.constans.GameModeType;
 import com.component.busilib.manager.WeakRedDotManager;
 import com.component.busilib.view.MarqueeTextView;
@@ -85,6 +86,7 @@ public class PersonFragment extends BaseFragment implements IPersonView, WeakRed
     public final static String TAG = "PersonFragment";
 
     SmartRefreshLayout mRefreshLayout;
+    CommonTitleBar mTitlebar;
     BaseImageView mAvatarIv;
     ExTextView mShareTv;
     ExTextView mNameTv;
@@ -108,7 +110,6 @@ public class PersonFragment extends BaseFragment implements IPersonView, WeakRed
     ExTextView mRankText;
     ExImageView mRankDiffIv;
     ExImageView mMedalIv;
-
 
     RelativeLayout mWalletArea;
     RelativeLayout mAuditionArea;
@@ -166,6 +167,13 @@ public class PersonFragment extends BaseFragment implements IPersonView, WeakRed
 
     private void initTopView() {
         mRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.refreshLayout);
+        mTitlebar = (CommonTitleBar)mRootView.findViewById(R.id.titlebar);
+
+        if (U.getDeviceUtils().hasNotch(getContext())) {
+            mTitlebar.setVisibility(View.VISIBLE);
+        } else {
+            mTitlebar.setVisibility(View.GONE);
+        }
 
         mAvatarIv = (BaseImageView) mRootView.findViewById(R.id.avatar_iv);
         mShareTv = (ExTextView) mRootView.findViewById(R.id.share_tv);
