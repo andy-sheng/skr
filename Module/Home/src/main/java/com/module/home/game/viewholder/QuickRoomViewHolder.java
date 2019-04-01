@@ -1,13 +1,10 @@
 package com.module.home.game.viewholder;
 
-import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.common.base.BaseFragment;
-import com.common.log.MyLog;
-import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.friends.SpecialModel;
 import com.module.home.R;
@@ -19,7 +16,6 @@ public class QuickRoomViewHolder extends RecyclerView.ViewHolder {
 
     public final static String TAG = "QuickRoomViewHolder";
 
-    ExTextView mQuickEnter;
     RecyclerView mFriendsRecycle;
 
     GrabSelectAdapter mGrabSelectAdapter;
@@ -30,7 +26,6 @@ public class QuickRoomViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
         this.mListener = listener;
 
-        mQuickEnter = (ExTextView) itemView.findViewById(R.id.quick_enter);
         mFriendsRecycle = (RecyclerView) itemView.findViewById(R.id.friends_recycle);
         mFriendsRecycle.setFocusableInTouchMode(false);
         mFriendsRecycle.setLayoutManager(new GridLayoutManager(baseFragment.getContext(), 2));

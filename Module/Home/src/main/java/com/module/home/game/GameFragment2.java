@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -49,6 +50,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class GameFragment2 extends BaseFragment implements IGameView {
@@ -258,6 +260,19 @@ public class GameFragment2 extends BaseFragment implements IGameView {
 
     public void setQuickRoom(List<SpecialModel> list, int offset) {
         MyLog.d(TAG, "setQuickRoom" + " list=" + list + " offset=" + offset);
+        // TODO: 2019/4/1 过滤一下空的背景
+        if (list != null && list.size() > 0) {
+            Iterator<SpecialModel> iterator = list.iterator();
+            while (iterator.hasNext()) {
+                SpecialModel specialModel = iterator.next();
+                if (specialModel != null) {
+                    if (TextUtils.isEmpty(specialModel.getBgImage2()) || TextUtils.isEmpty(specialModel.getBgImage1())) {
+                        iterator.remove();
+                    }
+                }
+            }
+        }
+
         if (list == null || list.size() == 0) {
             // 快速加入专场空了，清空数据
             if (offset == 0) {
@@ -331,16 +346,4 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mGameAdapter.getDataList().add(0, bannerModel);
         mGameAdapter.notifyDataSetChanged();
     }
-
-    private ArrayList<String> getSlideUrlList(List<SlideShowModel> slideShowModelList) {
-        ArrayList<String> urlList = new ArrayList<>();
-        for (SlideShowModel slideShowModel :
-                slideShowModelList) {
-            urlList.add(slideShowModel.getCoverURL());
-        }
-
-        return urlList;
-    }
-
-
 }

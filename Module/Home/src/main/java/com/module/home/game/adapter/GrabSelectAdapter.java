@@ -20,7 +20,7 @@ public class GrabSelectAdapter extends RecyclerView.Adapter {
 
     public final static String TAG = "GrabSelectAdapter";
 
-    public static final int TYPE_CREATE_ROOM = 1;   //创建房间
+//  public static final int TYPE_CREATE_ROOM = 1;   //创建房间
     public static final int TYPE_SELECT_NORMAL = 2; //正常选择房间
 
     List<SpecialModel> mDataList = new ArrayList<>();
@@ -37,39 +37,37 @@ public class GrabSelectAdapter extends RecyclerView.Adapter {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.game_grab_select_item_view, parent, false);
             GrabSelectViewHolder grabSelectViewHolder = new GrabSelectViewHolder(view, mRecyclerOnItemClickListener);
             return grabSelectViewHolder;
-        } else if (viewType == TYPE_CREATE_ROOM) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.game_garb_create_item_view, parent, false);
-            GrabCreateViewHolder grabCreateViewHolder = new GrabCreateViewHolder(view, mRecyclerOnItemClickListener);
-            return grabCreateViewHolder;
         }
+//        else if (viewType == TYPE_CREATE_ROOM) {
+//            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.game_garb_create_item_view, parent, false);
+//            GrabCreateViewHolder grabCreateViewHolder = new GrabCreateViewHolder(view, mRecyclerOnItemClickListener);
+//            return grabCreateViewHolder;
+//        }
         return null;
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof GrabSelectViewHolder) {
-            ((GrabSelectViewHolder) holder).bindData(mDataList.get(position - 1), position);
+            ((GrabSelectViewHolder) holder).bindData(mDataList.get(position), position);
         }
 
-        if (holder instanceof GrabCreateViewHolder) {
-            ((GrabCreateViewHolder) holder).bindData(position);
-        }
+//        if (holder instanceof GrabCreateViewHolder) {
+//            ((GrabCreateViewHolder) holder).bindData(position);
+//        }
     }
 
 
     @Override
     public int getItemCount() {
-        if (mDataList != null && mDataList.size() != 0) {
-            return mDataList.size() + 1;
-        }
-        return 1;
+        return mDataList.size();
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 0) {
-            return TYPE_CREATE_ROOM;
-        }
+//        if (position == 0) {
+//            return TYPE_CREATE_ROOM;
+//        }
         return TYPE_SELECT_NORMAL;
     }
 
