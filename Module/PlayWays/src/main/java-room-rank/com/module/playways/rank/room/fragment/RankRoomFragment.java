@@ -757,6 +757,10 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             mAnimatorList.clear();
         }
 
+        if(mLyricAndAccMatchManager != null){
+            mLyricAndAccMatchManager.stop();
+        }
+
         U.getSoundUtils().release(TAG);
         BgMusicManager.getInstance().setRoom(false);
     }
