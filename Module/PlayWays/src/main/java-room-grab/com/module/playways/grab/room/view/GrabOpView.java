@@ -451,6 +451,8 @@ public class GrabOpView extends RelativeLayout {
         mBtnIv.clearAnimation();
         cancelCountDownTask();
         mUiHandler.removeCallbacksAndMessages(null);
+        clearAnimation();
+        mIvBurst.clearAnimation();
     }
 
     private void cancelCountDownTask() {
