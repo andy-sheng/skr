@@ -14,6 +14,8 @@ public class SpecialModel implements Serializable {
     private String tagName;
     private String introduction;
     private String bgColor;
+    private String bgImage1;
+    private String bgImage2;
 
     public int getTagID() {
         return tagID;
@@ -47,6 +49,23 @@ public class SpecialModel implements Serializable {
         this.bgColor = bgColor;
     }
 
+
+    public String getBgImage1() {
+        return bgImage1;
+    }
+
+    public void setBgImage1(String bgImage1) {
+        this.bgImage1 = bgImage1;
+    }
+
+    public String getBgImage2() {
+        return bgImage2;
+    }
+
+    public void setBgImage2(String bgImage2) {
+        this.bgImage2 = bgImage2;
+    }
+
     @Override
     public String toString() {
         return "SpecialModel{" +
@@ -54,6 +73,8 @@ public class SpecialModel implements Serializable {
                 ", tagName='" + tagName + '\'' +
                 ", introduction='" + introduction + '\'' +
                 ", bgColor='" + bgColor + '\'' +
+                ", bgImage1='" + bgImage1 + '\'' +
+                ", bgImage2='" + bgImage2 + '\'' +
                 '}';
     }
 }

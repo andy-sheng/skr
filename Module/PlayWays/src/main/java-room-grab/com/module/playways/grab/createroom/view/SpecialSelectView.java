@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -11,6 +12,7 @@ import android.widget.RelativeLayout;
 import com.alibaba.fastjson.JSON;
 import com.common.core.account.UserAccountManager;
 import com.common.core.permission.SkrAudioPermission;
+import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -33,6 +35,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
@@ -41,6 +44,8 @@ import io.reactivex.disposables.Disposable;
  * 歌曲专场选择
  */
 public class SpecialSelectView extends RelativeLayout {
+
+    public final static String TAG = "SpecialSelectView";
 
     SmartRefreshLayout mRefreshLayout;
     RecyclerView mContentRv;
@@ -167,6 +172,19 @@ public class SpecialSelectView extends RelativeLayout {
 
     private void refreshView(List<SpecialModel> list, int offset, boolean isLoadMore) {
         this.offset = offset;
+
+        if (list != null && list.size() > 0) {
+            Iterator<SpecialModel> iterator = list.iterator();
+            while (iterator.hasNext()) {
+                SpecialModel specialModel = iterator.next();
+                if (specialModel != null) {
+                    if (TextUtils.isEmpty(specialModel.getBgImage2()) || TextUtils.isEmpty(specialModel.getBgImage1())) {
+                        iterator.remove();
+                    }
+                }
+            }
+        }
+
         if (list != null) {
             mRefreshLayout.finishLoadMore();
             if (!isLoadMore) {
