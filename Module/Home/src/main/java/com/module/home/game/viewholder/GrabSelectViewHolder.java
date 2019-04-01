@@ -8,6 +8,7 @@ import com.common.image.model.ImageFactory;
 import com.common.view.AnimateClickListener;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.friends.SpecialModel;
+import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.home.R;
 
@@ -39,6 +40,8 @@ public class GrabSelectViewHolder extends RecyclerView.ViewHolder {
         this.mSpecialModel = specialModel;
         this.mPosition = postion;
 
-        FrescoWorker.loadImage(mBackground, ImageFactory.newHttpImage(mSpecialModel.getBgImage1()).build());
+        FrescoWorker.loadImage(mBackground, ImageFactory.newHttpImage(mSpecialModel.getBgImage1())
+                .setScaleType(ScalingUtils.ScaleType.FIT_CENTER)
+                .build());
     }
 }

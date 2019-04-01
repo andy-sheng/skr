@@ -30,4 +30,9 @@ public class GrabCreateRoomActivity extends BaseActivity {
     public boolean useEventBus() {
         return false;
     }
+
+    @Override
+    public boolean canSlide() {
+        return false;
+    }
 }

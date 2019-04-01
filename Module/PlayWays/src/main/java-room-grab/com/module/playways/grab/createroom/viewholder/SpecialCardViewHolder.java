@@ -8,6 +8,7 @@ import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.friends.SpecialModel;
+import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.rank.R;
 
@@ -37,7 +38,9 @@ public class SpecialCardViewHolder extends RecyclerView.ViewHolder {
     public void bindData(SpecialModel specialModel, int postion) {
         this.mSpecialModel = specialModel;
         this.mPosition = postion;
-        FrescoWorker.loadImage(mBackground, ImageFactory.newHttpImage(mSpecialModel.getBgImage2()).build());
+        FrescoWorker.loadImage(mBackground, ImageFactory.newHttpImage(mSpecialModel.getBgImage2())
+                .setScaleType(ScalingUtils.ScaleType.FIT_CENTER)
+                .build());
     }
 
     public void setItemClickListener(RecyclerOnItemClickListener<SpecialModel> itemClickListener) {
