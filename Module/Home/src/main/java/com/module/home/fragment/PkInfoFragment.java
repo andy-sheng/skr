@@ -143,6 +143,7 @@ public class PkInfoFragment extends BaseFragment implements IPkInfoView {
 
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                initBaseInfo();
                 mPkInfoPresenter.getHomePage(MyUserInfoManager.getInstance().getUid(), true);
             }
         });
