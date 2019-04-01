@@ -4,7 +4,7 @@
     android:id="@+id/smart_refresh_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#c0F9F4F1"
+    android:background="#7088FF"
     app:srlEnablePreviewInEditMode="true">
 
     <com.scwang.smartrefresh.layout.header.ClassicsHeader
@@ -15,7 +15,6 @@
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#7088FF"
         android:fadingEdge="none"
         android:overScrollMode="never"
         android:scrollbars="none">
