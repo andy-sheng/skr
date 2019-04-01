@@ -36,7 +36,7 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
     ExTextView mRecommendTv;
     ExTextView mRoomSongTv;
     ExTextView mRoomInfoTv;
-    ExRelativeLayout mEnterRoomArea;
+    ExImageView mEnterRoomIv;
 
     public FriendRoomVerticalViewHolder(View itemView) {
         super(itemView);
@@ -50,9 +50,9 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
         mRecommendTv = (ExTextView) itemView.findViewById(R.id.recommend_tv);
         mRoomSongTv = (ExTextView) itemView.findViewById(R.id.room_song_tv);
         mRoomInfoTv = (ExTextView) itemView.findViewById(R.id.room_info_tv);
-        mEnterRoomArea = (ExRelativeLayout) itemView.findViewById(R.id.enter_room_area);
+        mEnterRoomIv = (ExImageView) itemView.findViewById(R.id.enter_room_iv);
 
-        mEnterRoomArea.setOnClickListener(new AnimateClickListener() {
+        mEnterRoomIv.setOnClickListener(new AnimateClickListener() {
             @Override
             public void click(View view) {
                 if (mOnItemClickListener != null) {
@@ -74,16 +74,22 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
         if (mFriendRoomModel != null && mFriendRoomModel.getUserInfo() != null && mFriendRoomModel.getRoomInfo() != null) {
             AvatarUtils.loadAvatarByUrl(mAvatarIv,
                     AvatarUtils.newParamsBuilder(mFriendRoomModel.getUserInfo().getAvatar())
-                            .setBorderColor(U.getColor(R.color.white))
-                            .setBorderWidth(U.getDisplayUtils().dip2px(2))
                             .setCircle(true)
                             .build());
 
             mNameTv.setText(mFriendRoomModel.getUserInfo().getNickname());
             if (friendRoomModel.getCategory() == RecommendModel.TYPE_FRIEND_ROOM) {
-                mFriendTv.setVisibility(View.VISIBLE);
-                mRecommendTv.setVisibility(View.GONE);
+                if (friendRoomModel.getRoomInfo().isIsOwner()) {
+                    mOwnerIv.setVisibility(View.VISIBLE);
+                    mFriendTv.setVisibility(View.GONE);
+                    mRecommendTv.setVisibility(View.GONE);
+                } else {
+                    mOwnerIv.setVisibility(View.GONE);
+                    mFriendTv.setVisibility(View.VISIBLE);
+                    mRecommendTv.setVisibility(View.GONE);
+                }
             } else {
+                mOwnerIv.setVisibility(View.GONE);
                 mFriendTv.setVisibility(View.GONE);
                 mRecommendTv.setVisibility(View.VISIBLE);
             }
