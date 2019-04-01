@@ -237,10 +237,13 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
                             if (getActivity() != null) {
                                 getActivity().finish();
                             }
-                            ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
-                                    .withInt("key_game_type", mPrepareData.getGameType())
-                                    .withBoolean("selectSong", true)
-                                    .navigation();
+
+                            if(mPrepareData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK){
+                                ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
+                                        .withInt("key_game_type", mPrepareData.getGameType())
+                                        .withBoolean("selectSong", true)
+                                        .navigation();
+                            }
                             return;
                         }
 
