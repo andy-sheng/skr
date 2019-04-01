@@ -1499,7 +1499,14 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         boolean canAdd = false;
         GrabPlayerInfoModel playerInfoModel = event.infoModel;
         MyLog.d(TAG, "有人加入房间,id=" + playerInfoModel.getUserID() + " name=" + playerInfoModel.getUserInfo().getNickname() + " role=" + playerInfoModel.getRole() + " roundSeq=" + event.roundSeq);
-        if (RoomDataUtils.isCurrentExpectingRound(event.roundSeq, mRoomData)) {
+        if (playerInfoModel != null && playerInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+            /**
+             * 自己加入房间不提示
+             * 因为会有一个bug，
+             * 场景如下，A中途进入房间，返回的轮次信息里waitlist里没有A，但是会下发一个 A 以观众身份加入房间的push，导致提示语重复
+             */
+            canAdd = false;
+        } else if (RoomDataUtils.isCurrentExpectingRound(event.roundSeq, mRoomData)) {
             GrabRoundInfoModel grabRoundInfoModel = mRoomData.getExpectRoundInfo();
             if (grabRoundInfoModel != null && grabRoundInfoModel.addUser(true, playerInfoModel)) {
                 canAdd = true;
