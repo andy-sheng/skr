@@ -1,6 +1,5 @@
 package com.module.home.game;
 
-import com.common.core.userinfo.model.UserRankModel;
 import com.component.busilib.friends.RecommendModel;
 import com.component.busilib.friends.SpecialModel;
 import com.module.home.model.GameKConfigModel;
@@ -16,7 +15,7 @@ public interface IGameView {
 
     void setQuickRoom(List<SpecialModel> list, int offset);
 
-    void setRankInfo(UserRankModel userRankModel);
-
     void setGameConfig(GameKConfigModel gameKConfigModel);
+
+    void setGrabCoinNum(int coinNum);
 }

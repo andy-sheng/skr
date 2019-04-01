@@ -5,22 +5,29 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.banner.BannerImageLoader;
 import com.common.base.BaseFragment;
 import com.common.core.account.event.AccountEvent;
+import com.common.core.avatar.AvatarUtils;
+
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.permission.SkrAudioPermission;
-import com.common.core.userinfo.model.UserRankModel;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
+import com.common.view.AnimateClickListener;
+import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
+import com.common.view.ex.ExTextView;
 import com.component.busilib.friends.RecommendModel;
 import com.component.busilib.friends.GrabFriendsRoomFragment;
 import com.component.busilib.friends.SpecialModel;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.RouterConstants;
 import com.module.home.R;
 import com.module.home.game.adapter.GameAdapter;
@@ -28,7 +35,6 @@ import com.module.home.game.model.QuickJoinRoomModel;
 import com.module.home.game.model.RecommendRoomModel;
 import com.module.home.model.GameKConfigModel;
 import com.module.home.model.SlideShowModel;
-import com.module.home.widget.UserInfoTitleView2;
 import com.module.rank.IRankingModeService;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -37,7 +43,6 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
-import com.zq.level.utils.LevelConfigUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -51,7 +56,10 @@ public class GameFragment2 extends BaseFragment implements IGameView {
     RelativeLayout mBackground;
     SmartRefreshLayout mRefreshLayout;
     ClassicsHeader mClassicsHeader;
-    UserInfoTitleView2 mUserInfoTitle;
+    ExImageView mCreateRoom;
+    SimpleDraweeView mAvatarIv;
+    ExTextView mNameTv;
+    ExTextView mCoinNum;
     ExRelativeLayout mRecyclerLayout;
     RecyclerView mRecyclerView;
     Banner mBannerView;
@@ -71,14 +79,17 @@ public class GameFragment2 extends BaseFragment implements IGameView {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-
         mBackground = (RelativeLayout) mRootView.findViewById(R.id.background);
         mRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.refreshLayout);
         mClassicsHeader = (ClassicsHeader) mRootView.findViewById(R.id.classics_header);
-        mUserInfoTitle = (UserInfoTitleView2) mRootView.findViewById(R.id.user_info_title);
+        mCreateRoom = (ExImageView) mRootView.findViewById(R.id.create_room);
+        mAvatarIv = (SimpleDraweeView) mRootView.findViewById(R.id.avatar_iv);
+        mNameTv = (ExTextView) mRootView.findViewById(R.id.name_tv);
+        mCoinNum = (ExTextView) mRootView.findViewById(R.id.coin_num);
         mRecyclerLayout = (ExRelativeLayout) mRootView.findViewById(R.id.recycler_layout);
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
         mBannerView = (Banner) mRootView.findViewById(R.id.banner_view);
+
         mBannerView.setIndicatorGravity(BannerConfig.RIGHT);
 
         mSkrAudioPermission = new SkrAudioPermission();
@@ -97,11 +108,27 @@ public class GameFragment2 extends BaseFragment implements IGameView {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 refreshLayout.finishRefresh();
+                mGamePresenter.initGameKConfig();
+                mGamePresenter.initCoinNum(true);
                 mGamePresenter.initOperationArea(true);
                 mGamePresenter.initQuickRoom(true);
-                mGamePresenter.initRankInfo(true);
                 mGamePresenter.initRecommendRoom(mRecommendInterval);
-                mGamePresenter.initGameKConfig();
+
+            }
+        });
+
+        mCreateRoom.setOnClickListener(new AnimateClickListener() {
+            @Override
+            public void click(View view) {
+                mSkrAudioPermission.ensurePermission(new Runnable() {
+                    @Override
+                    public void run() {
+                        IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
+                        if (iRankingModeService != null) {
+                            iRankingModeService.tryGoCreateRoom();
+                        }
+                    }
+                }, true);
             }
         });
 
@@ -173,6 +200,16 @@ public class GameFragment2 extends BaseFragment implements IGameView {
 
         mGamePresenter = new GamePresenter(this);
         addPresent(mGamePresenter);
+
+        initBaseInfo();
+    }
+
+    private void initBaseInfo() {
+        AvatarUtils.loadAvatarByUrl(mAvatarIv,
+                AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
+                        .setCircle(true)
+                        .build());
+        mNameTv.setText(MyUserInfoManager.getInstance().getNickName());
     }
 
     @Override
@@ -192,9 +229,9 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         super.onFragmentVisible();
         mGamePresenter.initOperationArea(false);
         mGamePresenter.initQuickRoom(false);
-        mGamePresenter.initRankInfo(false);
         mGamePresenter.initRecommendRoom(mRecommendInterval);
         mGamePresenter.initGameKConfig();
+        mGamePresenter.initCoinNum(false);
     }
 
     @Override
@@ -210,16 +247,16 @@ public class GameFragment2 extends BaseFragment implements IGameView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(MyUserInfoEvent.UserInfoChangeEvent userInfoChangeEvent) {
-        mUserInfoTitle.showBaseInfo();
+        initBaseInfo();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(AccountEvent.SetAccountEvent event) {
         mGamePresenter.initOperationArea(true);
         mGamePresenter.initQuickRoom(true);
-        mGamePresenter.initRankInfo(true);
         mGamePresenter.initRecommendRoom(mRecommendInterval);
         mGamePresenter.initGameKConfig();
+        mGamePresenter.initCoinNum(true);
     }
 
     public void setQuickRoom(List<SpecialModel> list, int offset) {
@@ -242,21 +279,14 @@ public class GameFragment2 extends BaseFragment implements IGameView {
     }
 
     @Override
-    public void setRankInfo(UserRankModel userRankModel) {
-        if (userRankModel != null) {
-            if (LevelConfigUtils.getHomePageTopBg(userRankModel.getMainRanking()) != null) {
-                mClassicsHeader.setBackground(LevelConfigUtils.getHomePageTopBg(userRankModel.getMainRanking()));
-            }
-            mUserInfoTitle.showRankView(userRankModel);
-        } else {
-            MyLog.w(TAG, "setRankInfo" + " userRankModel = null");
-        }
-    }
-
-    @Override
     public void setGameConfig(GameKConfigModel gameKConfigModel) {
         mRecommendInterval = gameKConfigModel.getHomepagetickerinterval();
         mGamePresenter.initRecommendRoom(mRecommendInterval);
+    }
+
+    @Override
+    public void setGrabCoinNum(int coinNum) {
+        mCoinNum.setText("" + coinNum);
     }
 
     @Override

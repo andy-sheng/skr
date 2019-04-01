@@ -3,6 +3,7 @@ package com.module.home.game;
 import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.model.UserRankModel;
 import com.common.log.MyLog;
@@ -31,10 +32,10 @@ public class GamePresenter extends RxLifeCyclePresenter {
     UserInfoServerApi mUserInfoServerApi;
     GrabSongApi mGrabSongApi;
 
+    long mLastUpdateCoinNum = 0;      //金币数量上次更新成功时间
     long mLastUpdateOperaArea = 0;    //广告位上次更新成功时间
     long mLastUpdateRecomendInfo = 0; //好友派对上次更新成功时间
     long mLastUpdateQuickInfo = 0;    //快速加入房间更新成功时间
-    long mLastUpdateRankInfo = 0;     //排名信息上次更新成功时间
 
     boolean mIsKConfig = false;  //标记是否拉到过游戏配置信息
 
@@ -74,6 +75,26 @@ public class GamePresenter extends RxLifeCyclePresenter {
                 U.getToastUtil().showShort("网络异常");
             }
         });
+    }
+
+    public void initCoinNum(boolean isFlag) {
+        long now = System.currentTimeMillis();
+        if (!isFlag) {
+            // 距离上次拉去已经超过30秒了
+            if ((now - mLastUpdateCoinNum) < 30 * 1000) {
+                return;
+            }
+        }
+
+        ApiMethods.subscribe(mUserInfoServerApi.getCoinNum(MyUserInfoManager.getInstance().getUid()), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    int coinNum = result.getData().getIntValue("coin");
+                    mIGameView.setGrabCoinNum(coinNum);
+                }
+            }
+        }, this);
     }
 
     public void initOperationArea(boolean isFlag) {
@@ -142,7 +163,7 @@ public class GamePresenter extends RxLifeCyclePresenter {
     }
 
     public void initRecommendRoom(int interval) {
-        if(interval<=0){
+        if (interval <= 0) {
             interval = 15;
         }
         stopTimer();
@@ -178,37 +199,6 @@ public class GamePresenter extends RxLifeCyclePresenter {
                     int totalNum = obj.getData().getIntValue("totalRoomsNum");
                     mIGameView.setRecommendInfo(list, offset, totalNum);
                 }
-            }
-        }, this);
-    }
-
-    public void initRankInfo(boolean isFlag) {
-        long now = System.currentTimeMillis();
-        if (!isFlag) {
-            // 距离上次拉去已经超过30秒了
-            if ((now - mLastUpdateRankInfo) < 30 * 1000) {
-                return;
-            }
-        }
-
-        ApiMethods.subscribe(mUserInfoServerApi.getReginDiff(), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    mLastUpdateRankInfo = System.currentTimeMillis();
-                    UserRankModel userRankModel = JSON.parseObject(result.getData().getString("diff"), UserRankModel.class);
-                    mIGameView.setRankInfo(userRankModel);
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                U.getToastUtil().showShort("网络异常");
-            }
-
-            @Override
-            public void onNetworkError(ErrorType errorType) {
-                U.getToastUtil().showShort("网络超时");
             }
         }, this);
     }

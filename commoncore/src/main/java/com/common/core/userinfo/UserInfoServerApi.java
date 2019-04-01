@@ -64,7 +64,8 @@ public interface UserInfoServerApi {
 
     /**
      * 成为好友
-     * @param body  "toUserID" : 关系被动接受者id
+     *
+     * @param body "toUserID" : 关系被动接受者id
      * @return
      */
     @PUT("/v1/mate/mutual-follow")
@@ -90,9 +91,9 @@ public interface UserInfoServerApi {
     /**
      * 搜索好友列表
      *
-     * @param searchContent  搜索好友
-     * @param offset     [必选]偏移
-     * @param limit      [必选]限制数量,最大50
+     * @param searchContent 搜索好友
+     * @param offset        [必选]偏移
+     * @param limit         [必选]限制数量,最大50
      * @return
      */
     @GET("/v1/user/search-users")
@@ -101,8 +102,8 @@ public interface UserInfoServerApi {
                                             @Query("limit") int limit);
 
     @GET("/v1/mate/contacts")
-    Observable<ApiResult> getFriendStatusList( @Query("offset") int offset,
-                                               @Query("limit") int limit);
+    Observable<ApiResult> getFriendStatusList(@Query("offset") int offset,
+                                              @Query("limit") int limit);
 
     /**
      * 获取指定用户的关系数量
@@ -194,4 +195,13 @@ public interface UserInfoServerApi {
      */
     @PUT("v1/report/upload")
     Observable<ApiResult> report(@Body RequestBody body);
+
+    /**
+     * 获取某人的金币
+     *
+     * @param userID
+     * @return
+     */
+    @GET("http://dev.stand.inframe.mobi/v1/stand/coin-cnt")
+    Observable<ApiResult> getCoinNum(@Query("userID") long userID);
 }
