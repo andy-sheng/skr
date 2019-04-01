@@ -16,7 +16,7 @@
         android:layout_height="@dimen/view_27_dp"
         android:layout_alignTop="@id/friends_recycle"
         android:layout_marginLeft="@dimen/view_16_dp"
-        android:layout_marginTop="-13dp"
+        android:layout_marginTop="-10dp"
         android:background="@drawable/grab_quick_game" />
 
 </RelativeLayout>

@@ -39,7 +39,7 @@ public class SpecialCardViewHolder extends RecyclerView.ViewHolder {
         this.mSpecialModel = specialModel;
         this.mPosition = postion;
         FrescoWorker.loadImage(mBackground, ImageFactory.newHttpImage(mSpecialModel.getBgImage2())
-                .setScaleType(ScalingUtils.ScaleType.FIT_CENTER)
+                .setScaleType(ScalingUtils.ScaleType.FIT_XY)
                 .build());
     }
 
