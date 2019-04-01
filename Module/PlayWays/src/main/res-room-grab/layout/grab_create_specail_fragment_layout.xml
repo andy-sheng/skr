@@ -29,6 +29,12 @@
         android:textSize="@dimen/textsize_18_dp"
         android:textStyle="bold" />
 
+    <ImageView
+        android:layout_width="@dimen/view_434_dp"
+        android:layout_height="@dimen/view_217_dp"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/grab_create_specail_bg" />
+
     <com.module.playways.grab.createroom.view.SpecialSelectView
         android:id="@+id/special_view"
         android:layout_width="match_parent"
