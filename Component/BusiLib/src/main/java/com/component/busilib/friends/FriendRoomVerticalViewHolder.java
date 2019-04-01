@@ -1,11 +1,13 @@
 package com.component.busilib.friends;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableStringBuilder;
 import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.common.core.avatar.AvatarUtils;
 import com.common.log.MyLog;
+import com.common.utils.SpanUtils;
 import com.common.view.AnimateClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
@@ -28,7 +30,6 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
     ExTextView mNameTv;
     ExTextView mFriendTv;
     ExTextView mRecommendTv;
-    ExTextView mRoomSongTv;
     ExTextView mRoomInfoTv;
     ExImageView mEnterRoomIv;
 
@@ -42,7 +43,6 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
         mNameTv = (ExTextView) itemView.findViewById(R.id.name_tv);
         mFriendTv = (ExTextView) itemView.findViewById(R.id.friend_tv);
         mRecommendTv = (ExTextView) itemView.findViewById(R.id.recommend_tv);
-        mRoomSongTv = (ExTextView) itemView.findViewById(R.id.room_song_tv);
         mRoomInfoTv = (ExTextView) itemView.findViewById(R.id.room_info_tv);
         mEnterRoomIv = (ExImageView) itemView.findViewById(R.id.enter_room_iv);
 
@@ -87,8 +87,13 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
                 mFriendTv.setVisibility(View.GONE);
                 mRecommendTv.setVisibility(View.VISIBLE);
             }
-            mRoomSongTv.setText(mFriendRoomModel.getRoomInfo().getCurrentRoundSeq() + " / " + mFriendRoomModel.getRoomInfo().getTotalGameRoundSeq());
-            mRoomInfoTv.setText(mFriendRoomModel.getTagInfo().getTagName() + " / " + mFriendRoomModel.getRoomInfo().getInPlayersNum());
+
+            SpannableStringBuilder stringBuilder = new SpanUtils()
+                    .append(mFriendRoomModel.getRoomInfo().getInPlayersNum() + "/" + mFriendRoomModel.getRoomInfo().getTotalPlayersNum()).setBold().setFontSize(24, true)
+                    .append("人  " + mFriendRoomModel.getTagInfo().getTagName())
+                    .create();
+
+            mRoomInfoTv.setText(stringBuilder);
         } else {
             MyLog.w(TAG, "bindData" + " friendRoomModel=" + friendRoomModel + " position=" + position);
         }
