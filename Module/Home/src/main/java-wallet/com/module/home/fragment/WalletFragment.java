@@ -126,7 +126,7 @@ public class WalletFragment extends BaseFragment implements IWalletView {
                 } else if(!mWithDrawInfoModel.isIsRealAuth()){
                     mWithDrawInfoModel = null;
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                            .withString(RouterConstants.KEY_WEB_URL, "http://sandbox.app.inframe.mobi/face/faceauth")
+                            .withString(RouterConstants.KEY_WEB_URL, U.getChannelUtils().getUrlByChannel("http://app.inframe.mobi/face/faceauth"))
                             .navigation();
                 } else {
                     if(!U.getNetworkUtils().hasNetwork()){
