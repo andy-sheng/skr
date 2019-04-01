@@ -1,6 +1,7 @@
 package com.module.home.widget;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -45,6 +46,7 @@ public class UserInfoTitleView extends RelativeLayout {
     public void showRankView(UserRankModel userRankModel) {
         mTopUserBg.setBackground(getResources().getDrawable(LevelConfigUtils.getHomePageLevelTopBg(userRankModel.getMainRanking())));
         mLevelBg.setBackground(getResources().getDrawable(LevelConfigUtils.getAvatarLevelBg(userRankModel.getMainRanking())));
+        mUserLevelTv.setTextColor(Color.parseColor(LevelConfigUtils.getHomePageLevelTextColor(userRankModel.getMainRanking())));
         mUserLevelTv.setText(userRankModel.getLevelDesc());
     }
 

@@ -1,8 +1,5 @@
 package com.module.home.fragment;
 
-import android.animation.Animator;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,33 +7,22 @@ import android.support.annotation.Nullable;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
-import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.alibaba.fastjson.JSON;
 import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
 import com.common.core.account.UserAccountManager;
-import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
-import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.model.GameStatisModel;
 import com.common.core.userinfo.model.UserLevelModel;
 import com.common.core.userinfo.model.UserRankModel;
-import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
-import com.common.rxretrofit.ApiManager;
-import com.common.rxretrofit.ApiMethods;
-import com.common.rxretrofit.ApiObserver;
-import com.common.rxretrofit.ApiResult;
 import com.common.statistics.StatConstants;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
@@ -48,6 +34,7 @@ import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
+import com.common.view.titlebar.CommonTitleBar;
 import com.component.busilib.constans.GameModeType;
 import com.module.RouterConstants;
 import com.module.home.R;
@@ -79,6 +66,7 @@ public class PkInfoFragment extends BaseFragment implements IPkInfoView {
     SmartRefreshLayout mSmartRefreshLayout;
     ExImageView mIvVoiceRoom;
     ExImageView mIvAthleticsPk;
+    CommonTitleBar mTitlebar;
     UserInfoTitleView mUserInfoTitle;
     ClassicsHeader mClassicsHeader;
     ExRelativeLayout mMedalLayout;
@@ -110,6 +98,8 @@ public class PkInfoFragment extends BaseFragment implements IPkInfoView {
     public void initData(@Nullable Bundle savedInstanceState) {
         mSmartRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.smart_refresh_layout);
         mClassicsHeader = (ClassicsHeader) mRootView.findViewById(R.id.classics_header);
+
+        mTitlebar = (CommonTitleBar)mRootView.findViewById(R.id.titlebar);
         mUserInfoTitle = (UserInfoTitleView) mRootView.findViewById(R.id.user_info_title);
         mMedalLayout = (ExRelativeLayout) mRootView.findViewById(R.id.medal_layout);
         mLevelView = (NormalLevelView2) mRootView.findViewById(R.id.level_view);
@@ -129,6 +119,12 @@ public class PkInfoFragment extends BaseFragment implements IPkInfoView {
                 .setGradientColor(Color.parseColor("#7088FF"), Color.parseColor("#7088FF"))
                 .setGradientAngle(0)
                 .build());
+
+        if (U.getDeviceUtils().hasNotch(getContext())) {
+            mTitlebar.setVisibility(View.VISIBLE);
+        } else {
+            mTitlebar.setVisibility(View.GONE);
+        }
 
         mSmartRefreshLayout.setEnableRefresh(true);
         mSmartRefreshLayout.setEnableLoadMore(false);

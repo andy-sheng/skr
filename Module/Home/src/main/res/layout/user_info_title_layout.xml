@@ -32,7 +32,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/view_2_dp"
         android:gravity="center"
-        android:textColor="#0C2275"
+        android:textColor="#55352E"
         android:textStyle="bold"
         android:textSize="@dimen/textsize_14_dp" />
 </RelativeLayout>
