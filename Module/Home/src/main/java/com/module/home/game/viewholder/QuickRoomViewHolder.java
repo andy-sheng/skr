@@ -32,13 +32,6 @@ public class QuickRoomViewHolder extends RecyclerView.ViewHolder {
         mGrabSelectAdapter = new GrabSelectAdapter(new RecyclerOnItemClickListener() {
             @Override
             public void onItemClicked(View view, int position, Object model) {
-                if (position == 0) {
-                    if (mListener != null) {
-                        mListener.createRoom();
-                    }
-                    return;
-                }
-
                 if (model != null && model instanceof SpecialModel) {
                     SpecialModel specialModel = (SpecialModel) model;
                     if (mListener != null) {
