@@ -139,7 +139,7 @@ public class SmsAuthFragment extends BaseFragment {
 
                                         //短信验证完实人认证
                                         ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                                                .withString(RouterConstants.KEY_WEB_URL, "http://test.app.inframe.mobi/face/faceauth")
+                                                .withString(RouterConstants.KEY_WEB_URL, "http://sandbox.app.inframe.mobi/face/faceauth")
                                                 .navigation();
                                     } else {
                                         U.getToastUtil().showShort(result.getErrmsg());
