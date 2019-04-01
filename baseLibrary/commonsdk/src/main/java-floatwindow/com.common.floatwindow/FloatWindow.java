@@ -86,7 +86,7 @@ public class FloatWindow {
         int mSlideRightMargin;
         long mDuration = 300;
         TimeInterpolator mInterpolator;
-        private String mTag = mDefaultTag;
+        String mTag = mDefaultTag;
         boolean mDesktopShow;
         ViewStateListener mViewStateListener;
         boolean cancelIfExist = false;// true 取消，如果该tag的window以及存在了。false会销毁之前的再新建

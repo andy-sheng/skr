@@ -306,7 +306,8 @@ public class IFloatWindowImpl extends IFloatWindow {
                                                 @Override
                                                 public void onAnimationEnd(Animator animation) {
                                                     super.onAnimationEnd(animation);
-                                                    dismiss();
+                                                    FloatWindow.destroy(mB.mTag);
+                                                    //dismiss();
                                                 }
                                             });
                                             startAnimator();
