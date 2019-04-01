@@ -8,6 +8,7 @@ import android.view.Gravity;
 import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.common.anim.ObjectPlayControlTemplate;
 import com.common.core.scheme.event.BothRelationFromSchemeEvent;
 import com.common.core.scheme.event.GrabInviteFromSchemeEvent;
 import com.common.core.userinfo.UserInfoManager;
@@ -21,6 +22,7 @@ import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.notification.event.FollowNotifyEvent;
 import com.common.notification.event.GrabInviteNotifyEvent;
+import com.common.utils.ActivityUtils;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.component.busilib.manager.WeakRedDotManager;
@@ -46,6 +48,8 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
     static final int MSG_DISMISS_INVITE_FLOAT_WINDOW = 2;
     static final int MSG_DISMISS_RELATION_FLOAT_WINDOW = 3;
 
+    DialogPlus mBeFriendDialog;
+
     Handler mUiHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -61,6 +65,34 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         }
     };
 
+    ObjectPlayControlTemplate<FloatWindowData,NotifyCorePresenter> mFloatWindowDataFloatWindowObjectPlayControlTemplate = new ObjectPlayControlTemplate<FloatWindowData, NotifyCorePresenter>() {
+        @Override
+        protected NotifyCorePresenter accept(FloatWindowData cur) {
+            if(FloatWindow.hasFollowWindowShow() ){
+                return null;
+            }
+            if(!U.getActivityUtils().isAppForeground()){
+                MyLog.d(TAG, "在后台，不弹出通知");
+                return null;
+            }
+            return NotifyCorePresenter.this;
+        }
+
+        @Override
+        public void onStart(FloatWindowData floatWindowData, NotifyCorePresenter floatWindow) {
+            if(floatWindowData.mType == FloatWindowData.Type.FOLLOW){
+                showFollowFloatWindow(floatWindowData);
+            }else if(floatWindowData.mType == FloatWindowData.Type.GRABINVITE){
+                showGrabInviteFloatWindow(floatWindowData);
+            }
+        }
+
+        @Override
+        protected void onEnd(FloatWindowData floatWindowData) {
+
+        }
+    };
+
     public NotifyCorePresenter() {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
@@ -73,33 +105,9 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(FollowNotifyEvent event) {
-        if (!U.getActivityUtils().isAppForeground()) {
-            MyLog.d(TAG, "在后台，不弹出通知");
-            return;
+        if (mFloatWindowDataFloatWindowObjectPlayControlTemplate != null) {
+            mFloatWindowDataFloatWindowObjectPlayControlTemplate.destroy();
         }
-        showFollowFloatWindow(event.mUserInfoModel);
-        if (event.mUserInfoModel.isFriend()) {
-            // 好友
-            U.getPreferenceUtils().setSettingInt(WeakRedDotManager.SP_KEY_NEW_FRIEND, 2);
-            WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FRIEND_RED_ROD_TYPE, 2);
-        } else {
-            // 粉丝
-            U.getPreferenceUtils().setSettingInt(WeakRedDotManager.SP_KEY_NEW_FANS, 2);
-            WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FANS_RED_ROD_TYPE, 2);
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(GrabInviteNotifyEvent event) {
-        if (!U.getActivityUtils().isAppForeground()) {
-            MyLog.d(TAG, "在后台，不弹出通知");
-            return;
-        }
-        showGrabInviteFloatWindow(event.mUserInfoModel, event.roomID);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -140,8 +148,6 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
             tryGoGrabRoom(event.roomId);
         }
     }
-
-    DialogPlus mBeFriendDialog;
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(BothRelationFromSchemeEvent event) {
@@ -198,7 +204,6 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                 return false;
             }
         });
-
     }
 
     private void beFriend(int userId) {
@@ -212,12 +217,43 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(FollowNotifyEvent event) {
+        FloatWindowData floatWindowData = new FloatWindowData(FloatWindowData.Type.FOLLOW);
+        floatWindowData.setUserInfoModel(event.mUserInfoModel);
+        mFloatWindowDataFloatWindowObjectPlayControlTemplate.add(floatWindowData,true);
+
+        if (event.mUserInfoModel.isFriend()) {
+            // 好友
+            WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FRIEND_RED_ROD_TYPE, 2);
+        } else {
+            // 粉丝
+            WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FANS_RED_ROD_TYPE, 2);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(GrabInviteNotifyEvent event) {
+        FloatWindowData floatWindowData = new FloatWindowData(FloatWindowData.Type.GRABINVITE);
+        floatWindowData.setUserInfoModel(event.mUserInfoModel);
+        floatWindowData.setRoomID(event.roomID);
+        mFloatWindowDataFloatWindowObjectPlayControlTemplate.add(floatWindowData,true);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ActivityUtils.ForeOrBackgroundChange event) {
+        mFloatWindowDataFloatWindowObjectPlayControlTemplate.endCurrent(null);
+    }
+
     void resendGrabInviterFloatWindowDismissMsg() {
         mUiHandler.removeMessages(MSG_DISMISS_INVITE_FLOAT_WINDOW);
         mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_INVITE_FLOAT_WINDOW, 5000);
     }
 
-    void showGrabInviteFloatWindow(UserInfoModel userInfoModel, int roomID) {
+    void showGrabInviteFloatWindow(FloatWindowData floatWindowData) {
+        UserInfoModel userInfoModel = floatWindowData.getUserInfoModel();
+        int roomID = floatWindowData.getRoomID();
+
         resendGrabInviterFloatWindowDismissMsg();
         GrabInviteNotifyView grabInviteNotifyView = new GrabInviteNotifyView(U.app());
         grabInviteNotifyView.bindData(userInfoModel);
@@ -243,7 +279,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                 .setViewStateListener(new ViewStateListenerAdapter() {
                     @Override
                     public void onDismiss() {
-                        //mUiHandler.removeMessages(MSG_DISMISS_INVITE_FLOAT_WINDOW);
+                        mFloatWindowDataFloatWindowObjectPlayControlTemplate.endCurrent(floatWindowData);
                     }
 
                     @Override
@@ -264,7 +300,8 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         mUiHandler.sendEmptyMessageDelayed(MSG_DISMISS_RELATION_FLOAT_WINDOW, 5000);
     }
 
-    void showFollowFloatWindow(UserInfoModel userInfoModel) {
+    void showFollowFloatWindow(FloatWindowData floatWindowData) {
+        UserInfoModel userInfoModel = floatWindowData.getUserInfoModel();
         resendFollowFloatWindowDismissMsg();
         FollowNotifyView relationNotifyView = new FollowNotifyView(U.app());
         relationNotifyView.bindData(userInfoModel);
@@ -283,7 +320,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                 .setViewStateListener(new ViewStateListenerAdapter() {
                     @Override
                     public void onDismiss() {
-                        //mUiHandler.removeMessages(MSG_DISMISS_RELATION_FLOAT_WINDOW);
+                        mFloatWindowDataFloatWindowObjectPlayControlTemplate.endCurrent(floatWindowData);
                     }
 
                     @Override
@@ -299,4 +336,34 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                 .build();
     }
 
+
+    public static class FloatWindowData{
+        private UserInfoModel mUserInfoModel;
+        private Type mType;
+        private int mRoomID;
+
+        public void setUserInfoModel(UserInfoModel userInfoModel) {
+            mUserInfoModel = userInfoModel;
+        }
+
+        public UserInfoModel getUserInfoModel() {
+            return mUserInfoModel;
+        }
+
+        public FloatWindowData(Type type) {
+            mType = type;
+        }
+
+        public void setRoomID(int roomID) {
+            mRoomID = roomID;
+        }
+
+        public int getRoomID() {
+            return mRoomID;
+        }
+
+        public enum Type{
+            FOLLOW,GRABINVITE
+        }
+    }
 }

@@ -50,16 +50,24 @@ public class FloatWindow {
         return mBuilder = new B(applicationContext);
     }
 
-    public static void destroy() {
-        destroy(mDefaultTag);
+    public static boolean hasFollowWindowShow() {
+        if(mFloatWindowMap!=null){
+            return mFloatWindowMap.size()>0;
+        }
+        return false;
     }
 
-    public static void destroy(String tag) {
+    public static boolean destroy() {
+        return  destroy(mDefaultTag);
+    }
+
+    public static boolean destroy(String tag) {
         if (mFloatWindowMap == null || !mFloatWindowMap.containsKey(tag)) {
-            return;
+            return false;
         }
         mFloatWindowMap.get(tag).dismiss();
         mFloatWindowMap.remove(tag);
+        return true;
     }
 
     public static class B {
