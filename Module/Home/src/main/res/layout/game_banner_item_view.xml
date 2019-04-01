@@ -10,7 +10,7 @@
         android:layout_height="@dimen/view_126_dp"
         android:visibility="visible"
         app:banner_layout="@layout/game_banner_layout"
-        app:banner_space="@dimen/view_32_dp"
+        app:banner_space="@dimen/view_0_dp"
         app:image_scale_type="fit_xy"
         app:indicator_drawable_selected="@drawable/indicator_selected"
         app:indicator_drawable_unselected="@drawable/indicator_unselected"
