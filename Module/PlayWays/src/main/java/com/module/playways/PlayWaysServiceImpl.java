@@ -22,6 +22,8 @@ import com.module.playways.rank.prepare.model.JoinGrabRoomRspModel;
 import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.playways.rank.room.fragment.LeaderboardFragment;
 import com.module.rank.IRankingModeService;
+import com.module.rank.R;
+import com.zq.toast.CommonToastView;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -75,7 +77,22 @@ public class PlayWaysServiceImpl implements IRankingModeService {
                             .withSerializable("prepare_data", grabCurGameStateModel)
                             .navigation();
                 } else {
-                    U.getToastUtil().showShort(result.getErrmsg());
+                    if (result.getErrno() == 8344135) {
+                        // 房间已满
+                        U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
+                                .setImage(R.drawable.grab_room_fill_player)
+                                .setText("" + result.getErrmsg())
+                                .build());
+                    } else if (result.getErrno() == 8344141) {
+                        // 房间解散
+                        U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
+                                .setImage(R.drawable.grab_room_dissolve)
+                                .setText("" + result.getErrmsg())
+                                .build());
+                    } else {
+                        U.getToastUtil().showShort("" + result.getErrmsg());
+                    }
+
                 }
             }
 
