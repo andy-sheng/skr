@@ -75,7 +75,6 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
             mFollowTv.setVisibility(View.VISIBLE);
             mFollowTv.setText("移出黑名单");
             mFollowTv.setTextColor(Color.parseColor("#0C2275"));
-            mFollowTv.setWidth(U.getDisplayUtils().dip2px(90));
             mFollowTv.setBackground(ContextCompat.getDrawable(U.app(), R.drawable.unfollow_bg));
         } else {
             if (userInfoModel.getUserId() == MyUserInfoManager.getInstance().getUid()) {
@@ -90,10 +89,8 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
                     mFollowTv.setVisibility(View.VISIBLE);
                     if (mMode == UserInfoManager.RELATION_FANS) {
                         mFollowTv.setText("加为好友");
-                        mFollowTv.setWidth(U.getDisplayUtils().dip2px(74));
-                    } else if (mMode == UserInfoManager.RELATION_FANS) {
+                    } else {
                         mFollowTv.setText("关注");
-                        mFollowTv.setWidth(U.getDisplayUtils().dip2px(72));
                     }
 
                     mFollowTv.setTextColor(Color.parseColor("#0C2275"));

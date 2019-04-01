@@ -18,7 +18,6 @@
         android:layout_alignTop="@+id/avatar_iv"
         android:layout_marginLeft="@dimen/view_9_dp"
         android:layout_toRightOf="@+id/avatar_iv"
-        android:text="小巴拉巴拉"
         android:textColor="#0C2275"
         android:textSize="@dimen/textsize_16_dp"
         android:textStyle="bold" />
@@ -29,7 +28,6 @@
         android:layout_height="@dimen/view_17_dp"
         android:layout_below="@+id/name_tv"
         android:layout_alignLeft="@+id/name_tv"
-        android:text="ID:2313245"
         android:textColor="#800C2275"
         android:textSize="@dimen/textsize_14_dp" />
 
@@ -41,8 +39,9 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/view_16_dp"
         android:layout_marginBottom="@dimen/view_7_dp"
+        android:paddingLeft="@dimen/view_10_dp"
+        android:paddingRight="@dimen/view_10_dp"
         android:gravity="center"
-        android:text="+ 关注"
         android:textColor="#0C2275"
         android:textSize="@dimen/textsize_14_dp"
         android:visibility="gone"
