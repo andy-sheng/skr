@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
+import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.friends.SpecialModel;
@@ -41,6 +42,7 @@ public class GrabSelectViewHolder extends RecyclerView.ViewHolder {
         this.mPosition = postion;
 
         FrescoWorker.loadImage(mBackground, ImageFactory.newHttpImage(mSpecialModel.getBgImage1())
+                .setLoadingDrawable(U.getDrawable(R.drawable.grab_img_btn_loading1))
                 .setScaleType(ScalingUtils.ScaleType.FIT_XY)
                 .build());
     }

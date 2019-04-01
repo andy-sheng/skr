@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
+import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.friends.SpecialModel;
@@ -40,6 +41,7 @@ public class SpecialCardViewHolder extends RecyclerView.ViewHolder {
         this.mSpecialModel = specialModel;
         this.mPosition = postion;
         FrescoWorker.loadImage(mBackground, ImageFactory.newHttpImage(mSpecialModel.getBgImage2())
+                .setLoadingDrawable(U.getDrawable(R.drawable.grab_img_btn_loading2))
                 .setScaleType(ScalingUtils.ScaleType.FIT_XY)
                 .build());
     }

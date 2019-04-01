@@ -165,13 +165,16 @@ public class UserInfoManager {
         }
     }
 
+    public void mateRelation(final int userId, final int action, final boolean isOldFriend) {
+        mateRelation(userId,action,isOldFriend,null);
+    }
     /**
      * 处理关系
      *
      * @param userId
      * @param action
      */
-    public void mateRelation(final int userId, final int action, final boolean isOldFriend) {
+    public void mateRelation(final int userId, final int action, final boolean isOldFriend, final ResponseCallBack responseCallBack) {
         HashMap<String, Object> map = new HashMap<>();
         map.put("toUserID", userId);
         map.put("action", action);
@@ -184,6 +187,9 @@ public class UserInfoManager {
                 if (obj.getErrno() == 0) {
                     final boolean isFriend = obj.getData().getBoolean("isFriend");
                     final boolean isFollow = obj.getData().getBoolean("isFollow");
+                    if (responseCallBack != null) {
+                        responseCallBack.onServerSucess(isFriend);
+                    }
                     if (action == RA_BUILD) {
                         if (isOldFriend) {
                             EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.FOLLOW_TYPE, userId, true, isFriend, isFollow));
@@ -196,7 +202,6 @@ public class UserInfoManager {
                         } else {
                             EventBus.getDefault().post(new RelationChangeEvent(RelationChangeEvent.UNFOLLOW_TYPE, userId, false, isFriend, isFollow));
                         }
-
                     }
                 } else {
                     U.getToastUtil().showShort("关系请求处理出错");

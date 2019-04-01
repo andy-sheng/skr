@@ -61,7 +61,17 @@ public class FollowNotifyView extends RelativeLayout {
 //                            UserInfoManager.RA_UNBUILD, mUserInfoModel.isFriend());
                 } else {
                     UserInfoManager.getInstance().mateRelation(mUserInfoModel.getUserId(),
-                            UserInfoManager.RA_BUILD, mUserInfoModel.isFriend());
+                            UserInfoManager.RA_BUILD, mUserInfoModel.isFriend(), new UserInfoManager.ResponseCallBack() {
+                                @Override
+                                public void onServerSucess(Object o) {
+                                    mFollowTv.setText("已互关");
+                                }
+
+                                @Override
+                                public void onServerFailed() {
+
+                                }
+                            });
                 }
                 if (mListener != null) {
                     mListener.onFollowBtnClick();

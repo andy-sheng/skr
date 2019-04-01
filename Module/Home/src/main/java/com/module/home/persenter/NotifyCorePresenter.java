@@ -308,8 +308,9 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         relationNotifyView.setListener(new FollowNotifyView.Listener() {
             @Override
             public void onFollowBtnClick() {
-                mUiHandler.removeMessages(MSG_DISMISS_RELATION_FLOAT_WINDOW);
-                FloatWindow.destroy(TAG_RELATION_FOALT_WINDOW);
+                // 不消失
+//                mUiHandler.removeMessages(MSG_DISMISS_RELATION_FLOAT_WINDOW);
+//                FloatWindow.destroy(TAG_RELATION_FOALT_WINDOW);
             }
         });
         FloatWindow.with(U.app())
