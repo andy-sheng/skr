@@ -102,6 +102,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         MyLog.w(TAG, "HomeActivity initData" + ", version is " + U.getAppInfoUtils().getVersionCode());
+        U.getStatusBarUtil().setTransparentBar(this, false);
         mMainActContainer = (RelativeLayout) findViewById(R.id.main_act_container);
         mBottomContainer = (LinearLayout) findViewById(R.id.bottom_container);
         mGameArea = (RelativeLayout) findViewById(R.id.game_area);
