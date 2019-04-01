@@ -165,6 +165,13 @@ public class RankOpView extends RelativeLayout {
         if (RoomDataUtils.isCurrentRunningRound(event.roundInfo.getRoundSeq(), mRoomData)) {
             // 爆灯成功
             mIvBurst.setEnabled(false);
+            TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 1.0f,
+                    Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0);
+            animation.setDuration(200);
+            animation.setRepeatMode(Animation.REVERSE);
+            animation.setInterpolator(new OvershootInterpolator());
+            animation.setFillAfter(true);
+            mIvBurst.startAnimation(animation);
         }
     }
 
