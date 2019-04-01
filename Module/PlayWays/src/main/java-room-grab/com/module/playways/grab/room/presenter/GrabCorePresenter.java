@@ -997,6 +997,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             joinRoomAndInit(false);
             mRoomData.checkRoundInEachMode();
             mIGrabView.onChangeRoomResult(true, null);
+            mIGrabView.dimissKickDialog();
         }
     }
 
@@ -1901,7 +1902,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             }
         } else {
             // 别人被踢出去
-            mIGrabView.kickSomeOne();
+            mIGrabView.dimissKickDialog();
             pretenSystemMsg(qKickUserResultEvent.kickResultContent);
         }
     }

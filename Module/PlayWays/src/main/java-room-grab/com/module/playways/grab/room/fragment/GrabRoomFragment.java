@@ -1164,7 +1164,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     }
 
     @Override
-    public void kickSomeOne() {
+    public void dimissKickDialog() {
         if (mGrabKickDialog != null) {
             mGrabKickDialog.dismiss();
         }
