@@ -4,55 +4,34 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.common.view.ex.ExTextView
-        android:id="@+id/friends_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_24_dp"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="@dimen/view_16_dp"
-        android:layout_marginBottom="@dimen/view_2_dp"
-        android:gravity="center"
-        android:text="好友派对"
-        android:textColor="#7638A6"
-        android:textSize="@dimen/textsize_14_dp"
-        android:textStyle="bold" />
-
     <com.common.view.ex.ExRelativeLayout
-        android:id="@+id/more_area"
-        android:layout_width="@dimen/view_62_dp"
-        android:layout_height="@dimen/view_24_dp"
-        android:layout_alignTop="@+id/friends_tv"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/view_18_dp"
-        app:bl_corners_radius="@dimen/view_12_dp"
+        android:id="@+id/recycler_area"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_146_dp"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginTop="@dimen/view_15_dp"
+        android:layout_marginRight="@dimen/view_16_dp"
+        app:bl_corners_bottomLeftRadius="@dimen/view_16_dp"
+        app:bl_corners_bottomRightRadius="@dimen/view_16_dp"
+        app:bl_corners_topLeftRadius="@dimen/view_0_dp"
+        app:bl_corners_topRightRadius="@dimen/view_16_dp"
         app:bl_shape="rectangle"
-        app:bl_solid_color="#FFC484">
+        app:bl_solid_color="#25000000">
 
-        <com.common.view.ex.ExTextView
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/view_24_dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/view_12_dp"
-            android:gravity="center"
-            android:text="更多"
-            android:textColor="@color/white"
-            android:textSize="@dimen/textsize_14_dp" />
-
-        <ImageView
-            android:layout_width="@dimen/view_6_dp"
-            android:layout_height="@dimen/view_8_dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/view_12_dp"
-            android:background="@drawable/more_gengduo" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/friends_recycle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
 
     </com.common.view.ex.ExRelativeLayout>
 
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/friends_recycle"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_120_dp"
-        android:layout_below="@id/friends_tv"></android.support.v7.widget.RecyclerView>
+    <com.common.view.ex.ExImageView
+        android:id="@+id/more_friends"
+        android:layout_width="@dimen/view_137_dp"
+        android:layout_height="@dimen/view_28_dp"
+        android:layout_alignTop="@id/recycler_area"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginTop="-14dp"
+        android:background="@drawable/grab_more_friend_party" />
 
 </RelativeLayout>

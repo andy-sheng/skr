@@ -12,8 +12,8 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.view.DebounceViewClickListener;
+import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
-import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.friends.FriendRoomHorizontalAdapter;
 import com.component.busilib.friends.GrabSongApi;
@@ -31,9 +31,9 @@ public class RecommendRoomViewHolder extends RecyclerView.ViewHolder {
 
     BaseFragment mBaseFragment;
 
-    ExTextView mFriendsTv;
-    ExRelativeLayout mMoreArea;
+    ExRelativeLayout mRecyclerArea;
     RecyclerView mFriendsRecycle;
+    ExImageView mMoreFriends;
 
     boolean hasMore = true;
 
@@ -47,9 +47,10 @@ public class RecommendRoomViewHolder extends RecyclerView.ViewHolder {
         this.mBaseFragment = baseFragment;
         this.mListener = listener;
 
-        mFriendsTv = (ExTextView) itemView.findViewById(R.id.friends_tv);
-        mMoreArea = (ExRelativeLayout) itemView.findViewById(R.id.more_area);
-        mFriendsRecycle = (RecyclerView) itemView.findViewById(R.id.friends_recycle);
+        mRecyclerArea = (ExRelativeLayout)itemView.findViewById(R.id.recycler_area);
+        mFriendsRecycle = (RecyclerView)itemView.findViewById(R.id.friends_recycle);
+        mMoreFriends = (ExImageView)itemView.findViewById(R.id.more_friends);
+
         mFriendsRecycle.setFocusableInTouchMode(false);
         mFriendsRecycle.setLayoutManager(new LinearLayoutManager(baseFragment.getContext(), LinearLayoutManager.HORIZONTAL, false));
         mFriendRoomAdapter = new FriendRoomHorizontalAdapter(new RecyclerOnItemClickListener() {
@@ -73,7 +74,7 @@ public class RecommendRoomViewHolder extends RecyclerView.ViewHolder {
             }
         });
 
-        mMoreArea.setOnClickListener(new DebounceViewClickListener() {
+        mMoreFriends.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 if (mListener != null) {

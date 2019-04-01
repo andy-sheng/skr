@@ -1,19 +1,13 @@
 package com.component.busilib.friends;
 
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.common.core.avatar.AvatarUtils;
 import com.common.log.MyLog;
-import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.view.ex.ExImageView;
-import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;

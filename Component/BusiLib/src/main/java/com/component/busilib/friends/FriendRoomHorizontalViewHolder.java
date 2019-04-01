@@ -20,7 +20,8 @@ public class FriendRoomHorizontalViewHolder extends RecyclerView.ViewHolder {
     SimpleDraweeView mAvatarIv;
     ExTextView mNicknameTv;
     ExImageView mOwnerIv;
-    ExTextView mRecommendIv;
+    ExTextView mFriendTv;
+    ExTextView mRecommendTv;
 
     RecommendModel mFriendRoomModel;
     int position;
@@ -31,8 +32,8 @@ public class FriendRoomHorizontalViewHolder extends RecyclerView.ViewHolder {
         mAvatarIv = (SimpleDraweeView) itemView.findViewById(R.id.avatar_iv);
         mNicknameTv = (ExTextView) itemView.findViewById(R.id.nickname_tv);
         mOwnerIv = (ExImageView) itemView.findViewById(R.id.owner_iv);
-        mRecommendIv = (ExTextView) itemView.findViewById(R.id.recommend_iv);
-
+        mFriendTv = (ExTextView) itemView.findViewById(R.id.friend_tv);
+        mRecommendTv = (ExTextView) itemView.findViewById(R.id.recommend_tv);
 
         itemView.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -60,15 +61,18 @@ public class FriendRoomHorizontalViewHolder extends RecyclerView.ViewHolder {
         mNicknameTv.setText(friendRoomModel.getUserInfo().getNickname());
 
         if (friendRoomModel.getCategory() == RecommendModel.TYPE_RECOMMEND_ROOM) {
-            mRecommendIv.setVisibility(View.VISIBLE);
+            mRecommendTv.setVisibility(View.VISIBLE);
             mOwnerIv.setVisibility(View.GONE);
+            mFriendTv.setVisibility(View.GONE);
         } else {
             if (friendRoomModel.getRoomInfo().isIsOwner()) {
-                mRecommendIv.setVisibility(View.GONE);
+                mRecommendTv.setVisibility(View.GONE);
                 mOwnerIv.setVisibility(View.VISIBLE);
+                mFriendTv.setVisibility(View.GONE);
             } else {
-                mRecommendIv.setVisibility(View.GONE);
+                mRecommendTv.setVisibility(View.GONE);
                 mOwnerIv.setVisibility(View.GONE);
+                mFriendTv.setVisibility(View.VISIBLE);
             }
         }
     }
