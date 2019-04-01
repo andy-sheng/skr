@@ -331,7 +331,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                 })
                 .setDesktopShow(false)                        //桌面显示
                 .setCancelIfExist(false)
-                .setReqPermissionIfNeed(true)
+                .setReqPermissionIfNeed(false)
                 .setTag(TAG_RELATION_FOALT_WINDOW)
                 .build();
     }

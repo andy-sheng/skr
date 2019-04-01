@@ -187,7 +187,7 @@
                     android:layout_width="@dimen/view_30_dp"
                     android:layout_height="@dimen/view_30_dp"
                     android:layout_alignLeft="@+id/rank_area"
-                    android:layout_marginBottom="@dimen/view_d_13_dp"
+                    android:layout_marginBottom="@dimen/view_13_dp"
                     android:layout_alignParentBottom="true"
                     android:layout_marginLeft="@dimen/view_12_dp"
                     />
