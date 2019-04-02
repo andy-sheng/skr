@@ -1150,9 +1150,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     @Override
     public void kickBySomeOne() {
         MyLog.d(TAG, "kickBySomeOne");
-        if (getActivity() != null) {
-            getActivity().finish();
-        }
+        onGrabGameOver("kickBySomeOne");
 
         U.getToastUtil().showSkrCustomLong(new CommonToastView.Builder(U.app())
                 .setImage(R.drawable.touxiangshezhishibai_icon)
