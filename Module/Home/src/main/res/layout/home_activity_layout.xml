@@ -30,7 +30,7 @@
                 android:scaleType="center"
                 android:text="抢唱"
                 android:textSize="@dimen/textsize_10_dp"
-                app:bl_selected_textColor="#CD8E48"
+                app:bl_selected_textColor="#BD5900"
                 app:bl_unSelected_textColor="@color/black_trans_50" />
         </RelativeLayout>
 
@@ -52,7 +52,7 @@
                 android:scaleType="center"
                 android:text="排位"
                 android:textSize="@dimen/textsize_10_dp"
-                app:bl_selected_textColor="#CD8E48"
+                app:bl_selected_textColor="#8D501A"
                 app:bl_unSelected_textColor="@color/black_trans_50" />
         </RelativeLayout>
 
@@ -73,7 +73,7 @@
                 android:gravity="center_horizontal"
                 android:text="消息"
                 android:textSize="@dimen/textsize_10_dp"
-                app:bl_selected_textColor="#90DEEF"
+                app:bl_selected_textColor="#003DAD"
                 app:bl_unSelected_textColor="@color/black_trans_50" />
 
             <com.common.view.ex.ExTextView
@@ -123,7 +123,7 @@
                 android:scaleType="center"
                 android:text="我的"
                 android:textSize="@dimen/textsize_10_dp"
-                app:bl_selected_textColor="#F19CB7"
+                app:bl_selected_textColor="#A100B4"
                 app:bl_unSelected_textColor="@color/black_trans_50" />
 
             <com.common.view.ex.ExImageView
