@@ -24,6 +24,7 @@ import com.module.rank.R;
 import java.util.HashMap;
 import java.util.List;
 
+import io.reactivex.disposables.Disposable;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
@@ -71,6 +72,7 @@ public class GrabCreateSpecialFragment extends BaseFragment {
      * 创建房间
      */
     private void createRoom(SpecialModel model) {
+
         GrabRoomServerApi grabRoomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomType", mRoomType);

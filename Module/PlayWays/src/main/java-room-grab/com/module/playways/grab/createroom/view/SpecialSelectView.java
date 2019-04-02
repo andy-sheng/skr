@@ -155,7 +155,7 @@ public class SpecialSelectView extends RelativeLayout {
 
     private void loadData(int offset, int count, boolean isLoadMore) {
         GrabSongApi grabSongApi = ApiManager.getInstance().createService(GrabSongApi.class);
-        mDisposable = ApiMethods.subscribeWith(grabSongApi.getSepcialList(offset, count), new ApiObserver<ApiResult>() {
+        mDisposable = ApiMethods.subscribe(grabSongApi.getSepcialList(offset, count), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult obj) {
                 if (obj.getErrno() == 0) {

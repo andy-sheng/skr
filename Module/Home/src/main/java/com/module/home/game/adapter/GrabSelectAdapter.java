@@ -6,11 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.common.log.MyLog;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.friends.SpecialModel;
 import com.module.home.R;
-import com.module.home.game.viewholder.GrabCreateViewHolder;
 import com.module.home.game.viewholder.GrabSelectViewHolder;
 
 import java.util.ArrayList;
@@ -20,7 +18,6 @@ public class GrabSelectAdapter extends RecyclerView.Adapter {
 
     public final static String TAG = "GrabSelectAdapter";
 
-//  public static final int TYPE_CREATE_ROOM = 1;   //创建房间
     public static final int TYPE_SELECT_NORMAL = 2; //正常选择房间
 
     List<SpecialModel> mDataList = new ArrayList<>();
@@ -38,11 +35,6 @@ public class GrabSelectAdapter extends RecyclerView.Adapter {
             GrabSelectViewHolder grabSelectViewHolder = new GrabSelectViewHolder(view, mRecyclerOnItemClickListener);
             return grabSelectViewHolder;
         }
-//        else if (viewType == TYPE_CREATE_ROOM) {
-//            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.game_garb_create_item_view, parent, false);
-//            GrabCreateViewHolder grabCreateViewHolder = new GrabCreateViewHolder(view, mRecyclerOnItemClickListener);
-//            return grabCreateViewHolder;
-//        }
         return null;
     }
 
@@ -51,10 +43,6 @@ public class GrabSelectAdapter extends RecyclerView.Adapter {
         if (holder instanceof GrabSelectViewHolder) {
             ((GrabSelectViewHolder) holder).bindData(mDataList.get(position), position);
         }
-
-//        if (holder instanceof GrabCreateViewHolder) {
-//            ((GrabCreateViewHolder) holder).bindData(position);
-//        }
     }
 
 
@@ -65,9 +53,6 @@ public class GrabSelectAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-//        if (position == 0) {
-//            return TYPE_CREATE_ROOM;
-//        }
         return TYPE_SELECT_NORMAL;
     }
 

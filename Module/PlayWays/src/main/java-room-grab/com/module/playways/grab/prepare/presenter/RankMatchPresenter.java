@@ -110,7 +110,7 @@ public class RankMatchPresenter extends BaseMatchPresenter {
         }
         map.put("platform", 20);   // 代表是android平台
         RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSON), JSON.toJSONString(map));
-        mStartMatchTask = ApiMethods.subscribeWith(mMatchServerApi.startMatch(body).retryWhen(new RxRetryAssist(1, 5, false)), new ApiObserver<ApiResult>() {
+        mStartMatchTask = ApiMethods.subscribe(mMatchServerApi.startMatch(body).retryWhen(new RxRetryAssist(1, 5, false)), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 MyLog.w(TAG, "process" + " result =" + result.getErrno() + " traceId =" + result.getTraceId());
@@ -263,7 +263,7 @@ public class RankMatchPresenter extends BaseMatchPresenter {
                     public void onNext(final Integer integer) {
                         MyLog.d(TAG, "checkCurrentGameData onNext try num is " + integer);
                         mMatchServerApi = ApiManager.getInstance().createService(MatchServerApi.class);
-                        ApiMethods.subscribeWith(mMatchServerApi.getCurrentGameData(mJoinActionEvent.gameId), new ApiObserver<ApiResult>() {
+                        ApiMethods.subscribe(mMatchServerApi.getCurrentGameData(mJoinActionEvent.gameId), new ApiObserver<ApiResult>() {
                             @Override
                             public void process(ApiResult result) {
                                 MyLog.w(TAG, "checkCurrentGameData result = " + result.getErrno() + " traceId = " + result.getTraceId());
@@ -346,7 +346,7 @@ public class RankMatchPresenter extends BaseMatchPresenter {
      */
     private void updateUserListState() {
         MyLog.d(TAG, "updateUserListState");
-        ApiMethods.subscribeWith(mMatchServerApi.getCurrentGameData(mJoinActionEvent.gameId), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mMatchServerApi.getCurrentGameData(mJoinActionEvent.gameId), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 MyLog.w(TAG, "updateUserListState result = " + result.getErrno() + " traceId = " + result.getTraceId());

@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import com.alibaba.fastjson.JSON;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
-import com.common.core.userinfo.model.UserRankModel;
 import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.rxretrofit.ApiManager;
@@ -189,7 +188,7 @@ public class GamePresenter extends RxLifeCyclePresenter {
         if (mDisposable != null && !mDisposable.isDisposed()) {
             mDisposable.dispose();
         }
-        mDisposable = ApiMethods.subscribeWith(mGrabSongApi.getRecommendRoomList(0, 50), new ApiObserver<ApiResult>() {
+        mDisposable = ApiMethods.subscribe(mGrabSongApi.getRecommendRoomList(0, 50), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult obj) {
                 if (obj.getErrno() == 0) {

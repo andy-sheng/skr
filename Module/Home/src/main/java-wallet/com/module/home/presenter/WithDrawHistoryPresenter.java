@@ -38,7 +38,7 @@ public class WithDrawHistoryPresenter extends RxLifeCyclePresenter {
             mDisposable.dispose();
         }
 
-        mDisposable = ApiMethods.subscribeWith(mWalletServerApi.getListWithdraw(mOffset, mLimit), new ApiObserver<ApiResult>() {
+        mDisposable = ApiMethods.subscribe(mWalletServerApi.getListWithdraw(mOffset, mLimit), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {

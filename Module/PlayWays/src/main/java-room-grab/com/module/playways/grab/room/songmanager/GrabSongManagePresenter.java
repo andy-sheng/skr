@@ -73,7 +73,7 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
             return;
         }
 
-        mGetTagsTask = ApiMethods.subscribeWith(mGrabRoomServerApi.getSepcialList(0, 20), new ApiObserver<ApiResult>() {
+        mGetTagsTask = ApiMethods.subscribe(mGrabRoomServerApi.getSepcialList(0, 20), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult obj) {
                 if (obj.getErrno() == 0) {
@@ -113,7 +113,7 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
 
         MyLog.d(TAG, "getPlayBookList offset is " + offset);
 
-        mGetSongModelListTask = ApiMethods.subscribeWith(mGrabRoomServerApi.getPlaybook(mGrabRoomData.getGameId(), offset, mLimit), new ApiObserver<ApiResult>() {
+        mGetSongModelListTask = ApiMethods.subscribe(mGrabRoomServerApi.getPlaybook(mGrabRoomData.getGameId(), offset, mLimit), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {

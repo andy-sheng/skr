@@ -106,7 +106,7 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
         map.put("tagID", playbookItemID);
 
         RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSON), JSON.toJSONString(map));
-        mStartMatchTask = ApiMethods.subscribeWith(mMatchServerApi.startGrabMatch(body).retryWhen(new RxRetryAssist(1, 5, false)), new ApiObserver<ApiResult>() {
+        mStartMatchTask = ApiMethods.subscribe(mMatchServerApi.startGrabMatch(body).retryWhen(new RxRetryAssist(1, 5, false)), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 MyLog.w(TAG, "process" + " result =" + result.getErrno() + " traceId =" + result.getTraceId());
