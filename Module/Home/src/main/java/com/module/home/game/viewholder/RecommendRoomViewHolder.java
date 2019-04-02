@@ -47,9 +47,9 @@ public class RecommendRoomViewHolder extends RecyclerView.ViewHolder {
         this.mBaseFragment = baseFragment;
         this.mListener = listener;
 
-        mRecyclerArea = (ExRelativeLayout)itemView.findViewById(R.id.recycler_area);
-        mFriendsRecycle = (RecyclerView)itemView.findViewById(R.id.friends_recycle);
-        mMoreFriends = (ExImageView)itemView.findViewById(R.id.more_friends);
+        mRecyclerArea = (ExRelativeLayout) itemView.findViewById(R.id.recycler_area);
+        mFriendsRecycle = (RecyclerView) itemView.findViewById(R.id.friends_recycle);
+        mMoreFriends = (ExImageView) itemView.findViewById(R.id.more_friends);
 
         mFriendsRecycle.setFocusableInTouchMode(false);
         mFriendsRecycle.setLayoutManager(new LinearLayoutManager(baseFragment.getContext(), LinearLayoutManager.HORIZONTAL, false));
@@ -91,6 +91,7 @@ public class RecommendRoomViewHolder extends RecyclerView.ViewHolder {
         hasMore = true;
         this.mRecommendRoomModel = recommendRoomModel;
         mFriendRoomAdapter.setDataList(mRecommendRoomModel.getRoomModels());
+        mFriendRoomAdapter.notifyDataSetChanged();
     }
 
     private void loadMoreData() {

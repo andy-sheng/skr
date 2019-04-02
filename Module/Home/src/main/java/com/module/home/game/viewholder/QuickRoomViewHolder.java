@@ -46,6 +46,7 @@ public class QuickRoomViewHolder extends RecyclerView.ViewHolder {
 
     public void bindData(QuickJoinRoomModel quickJoinRoomModel) {
         mGrabSelectAdapter.setDataList(quickJoinRoomModel.getModelList());
+        mGrabSelectAdapter.notifyDataSetChanged();
     }
 
 }
