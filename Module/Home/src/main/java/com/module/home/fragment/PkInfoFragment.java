@@ -48,6 +48,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.zq.level.view.NormalLevelView2;
+import com.zq.person.fragment.ImageBigPreviewFragment;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -96,7 +97,7 @@ public class PkInfoFragment extends BaseFragment implements IPkInfoView {
         mSmartRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.smart_refresh_layout);
         mClassicsHeader = (ClassicsHeader) mRootView.findViewById(R.id.classics_header);
 
-        mTitlebar = (CommonTitleBar)mRootView.findViewById(R.id.titlebar);
+        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
         mUserInfoTitle = (UserInfoTitleView) mRootView.findViewById(R.id.user_info_title);
         mMedalLayout = (ExRelativeLayout) mRootView.findViewById(R.id.medal_layout);
         mLevelView = (NormalLevelView2) mRootView.findViewById(R.id.level_view);
@@ -178,6 +179,22 @@ public class PkInfoFragment extends BaseFragment implements IPkInfoView {
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_AUDIOROOM)
                         .withBoolean("selectSong", true)
                         .navigation();
+            }
+        });
+
+        mUserInfoTitle.setListener(new UserInfoTitleView.UserTitleClickListener() {
+            @Override
+            public void onClickAvatar() {
+                Bundle bundle = new Bundle();
+                bundle.putString(ImageBigPreviewFragment.BIG_IMAGE_PATH, MyUserInfoManager.getInstance().getAvatar());
+                U.getFragmentUtils().addFragment(
+                        FragmentUtils.newAddParamsBuilder(getActivity(), ImageBigPreviewFragment.class)
+                                .setAddToBackStack(true)
+                                .setEnterAnim(com.component.busilib.R.anim.fade_in_center)
+                                .setExitAnim(com.component.busilib.R.anim.fade_out_center)
+                                .setHasAnimation(true)
+                                .setBundle(bundle)
+                                .build());
             }
         });
 
