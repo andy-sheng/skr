@@ -17,10 +17,12 @@ package com.common.permission;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.media.AudioManager;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
@@ -56,7 +58,7 @@ public class PermissionUtils {
     }
 
     public boolean checkFloatWindow(Context context) {
-        return  FloatWindowPermission.checkFloatWindow(context);
+        return FloatWindowPermission.checkFloatWindow(context);
     }
 
     public boolean checkReadPhoneState(Activity activity) {
@@ -240,6 +242,30 @@ public class PermissionUtils {
      */
     public void goToPermissionManager(Activity refs) {
         GoSettingPage.toPermissionSetting(refs);
+    }
+
+    /**
+     * 检查 app 是否具备 修改 勿扰模式 权限
+     * @return
+     */
+    public boolean checkNotificationPolicyAccessGranted() {
+        NotificationManager mNotificationManager = (NotificationManager) U.app().getSystemService(Context.NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            if (mNotificationManager.isNotificationPolicyAccessGranted()) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 请求 可以设置 勿扰 ／ 非勿扰 权限
+     */
+    public void requestNotificationPolicyAccessSettings() {
+        Intent intent = new Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+        U.app().startActivity(intent);
     }
 }
 

@@ -87,12 +87,12 @@ public class VolumeFragment extends BaseFragment {
                 U.getPreferenceUtils().setSettingBoolean(PREF_KEY_GAME_VOLUME_SWITCH, isChecked);
                 U.getSoundUtils().setPlay(isChecked);
                 if (isChecked) {
-                    NotificationManager mNotificationManager = (NotificationManager) U.app().getSystemService(Context.NOTIFICATION_SERVICE);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-                            && !mNotificationManager.isNotificationPolicyAccessGranted()) {
-                        U.getToastUtil().showShort("手机处于免打扰状态，可能听不到音效");
-                        return;
-                    }
+//                    NotificationManager mNotificationManager = (NotificationManager) U.app().getSystemService(Context.NOTIFICATION_SERVICE);
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+//                            && !mNotificationManager.isNotificationPolicyAccessGranted()) {
+//                        U.getToastUtil().showShort("如果手机处于免打扰状态，可能听不到音效");
+//                        return;
+//                    }
                     AudioManager mAudioManager = (AudioManager) U.app().getSystemService(Context.AUDIO_SERVICE);
                     int v = mAudioManager.getStreamVolume(AudioManager.STREAM_RING);
                     int max = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_RING);
