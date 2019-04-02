@@ -98,7 +98,7 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
                     mTvManage.setText("演唱中");
                 } else if (mGrabRoomData.getRealRoundSeq() + 1 == model.getRoundSeq()) {
                     mTvManage.setEnabled(false);
-                    mTvManage.setText("下发中");
+                    mTvManage.setText("已加载");
                 } else {
                     mTvManage.setEnabled(true);
                     mTvManage.setText("删除");

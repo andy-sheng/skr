@@ -46,7 +46,7 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
 
     GrabRoomData mRoomData;
 
-    ExImageView mSearchSongIv;
+    ExTextView mSearchSongIv;
 
     ExTextView mTvSelectedSong;
 
@@ -82,7 +82,7 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
         mGrabSongManagePresenter = new GrabSongManagePresenter(this, mRoomData);
         addPresent(mGrabSongManagePresenter);
 
-        mSearchSongIv = (ExImageView) mRootView.findViewById(R.id.search_song_iv);
+        mSearchSongIv = mRootView.findViewById(R.id.search_song_iv);
         mTvSelectedSong = (ExTextView) mRootView.findViewById(R.id.tv_selected_song);
         mFlSongListContainer = (ExFrameLayout) mRootView.findViewById(R.id.fl_song_list_container);
         mRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.refreshLayout);
