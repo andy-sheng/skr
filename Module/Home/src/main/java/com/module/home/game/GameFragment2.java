@@ -65,7 +65,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
     SimpleDraweeView mAvatarIv;
     ExTextView mNameTv;
     ExTextView mCoinNum;
-    ExRelativeLayout mRecyclerLayout;
+    SmartRefreshLayout mRecyclerLayout;
     RecyclerView mRecyclerView;
 
     GameAdapter mGameAdapter;
@@ -91,7 +91,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mAvatarIv = (SimpleDraweeView) mRootView.findViewById(R.id.avatar_iv);
         mNameTv = (ExTextView) mRootView.findViewById(R.id.name_tv);
         mCoinNum = (ExTextView) mRootView.findViewById(R.id.coin_num);
-        mRecyclerLayout = (ExRelativeLayout) mRootView.findViewById(R.id.recycler_layout);
+        mRecyclerLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.recycler_layout);
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
 
         mSkrAudioPermission = new SkrAudioPermission();
@@ -105,7 +105,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mRefreshLayout.setEnableRefresh(true);
         mRefreshLayout.setEnableLoadMore(false);
         mRefreshLayout.setEnableLoadMoreWhenContentNotFull(false);
-        mRefreshLayout.setEnableOverScrollDrag(true);
+        mRefreshLayout.setEnableOverScrollDrag(false);
         mRefreshLayout.setRefreshHeader(mClassicsHeader);
         mRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
@@ -124,6 +124,11 @@ public class GameFragment2 extends BaseFragment implements IGameView {
 
             }
         });
+
+        mRecyclerLayout.setEnableRefresh(false);
+        mRecyclerLayout.setEnableLoadMore(false);
+        mRecyclerLayout.setEnableLoadMoreWhenContentNotFull(false);
+        mRecyclerLayout.setEnableOverScrollDrag(true);
 
         mCreateRoom.setOnClickListener(new AnimateClickListener() {
             @Override
