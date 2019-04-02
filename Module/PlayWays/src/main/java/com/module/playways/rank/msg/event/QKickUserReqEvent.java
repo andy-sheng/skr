@@ -18,4 +18,14 @@ public class QKickUserReqEvent {
         this.kickUserID = qKickUserRequestMsg.getKickUserID();
         this.otherOnlineUserIDs = qKickUserRequestMsg.getOtherOnlineUserIDsList();
     }
+
+    @Override
+    public String toString() {
+        return "QKickUserReqEvent{" +
+                "info=" + info +
+                ", sourceUserID=" + sourceUserID +
+                ", kickUserID=" + kickUserID +
+                ", otherOnlineUserIDs=" + otherOnlineUserIDs +
+                '}';
+    }
 }

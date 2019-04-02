@@ -28,4 +28,19 @@ public class QKickUserResultEvent {
         this.giveUnknownVoteUserIDs = qKickUserResultMsg.getGiveUnknownVoteUserIDsList();
         this.kickResultContent = qKickUserResultMsg.getKickResultContent();
     }
+
+    @Override
+    public String toString() {
+        return "QKickUserResultEvent{" +
+                "mBasePushInfo=" + mBasePushInfo +
+                ", sourceUserID=" + sourceUserID +
+                ", kickUserID=" + kickUserID +
+                ", giveYesVoteUserIDs=" + giveYesVoteUserIDs +
+                ", giveNoVoteUserIDs=" + giveNoVoteUserIDs +
+                ", giveUnknownVoteUserIDs=" + giveUnknownVoteUserIDs +
+                ", kickResultContent='" + kickResultContent + '\'' +
+                ", isKickSuccess=" + isKickSuccess +
+                ", kickFailedReason=" + kickFailedReason +
+                '}';
+    }
 }

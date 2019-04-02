@@ -482,12 +482,16 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
     private void processGrabKickRequest(BasePushInfo basePushInfo, QKickUserRequestMsg qKickUserRequestMsg) {
         if (basePushInfo != null && qKickUserRequestMsg != null) {
             // 过滤下,所有投票者
-            for (Integer integer : qKickUserRequestMsg.getOtherOnlineUserIDsList()) {
-                if (integer == MyUserInfoManager.getInstance().getUid()) {
-                    QKickUserReqEvent qKickUserReqEvent = new QKickUserReqEvent(basePushInfo, qKickUserRequestMsg);
-                    EventBus.getDefault().post(qKickUserReqEvent);
-                    return;
+            if (qKickUserRequestMsg.getOtherOnlineUserIDsList() != null && qKickUserRequestMsg.getOtherOnlineUserIDsList().size() > 0) {
+                for (Integer integer : qKickUserRequestMsg.getOtherOnlineUserIDsList()) {
+                    if (integer == MyUserInfoManager.getInstance().getUid()) {
+                        QKickUserReqEvent qKickUserReqEvent = new QKickUserReqEvent(basePushInfo, qKickUserRequestMsg);
+                        EventBus.getDefault().post(qKickUserReqEvent);
+                        return;
+                    }
                 }
+            } else {
+                MyLog.w(TAG, "processGrabKickRequest" + " OtherOnlineUserIDsList() = null");
             }
         } else {
             MyLog.w(TAG, "processGrabKickRequest" + " basePushInfo = null or qKickUserRequestMsg = null");
