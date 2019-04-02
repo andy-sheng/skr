@@ -26,6 +26,7 @@ import java.util.List;
  */
 public class GrabDengBigAnimationView extends RelativeLayout {
     public final static String TAG = "GrabDengBigAnimationView";
+
     List<SVGAImageViewEx> mDengSvgaViewList = new ArrayList<>();
 
     public GrabDengBigAnimationView(Context context) {
@@ -45,6 +46,7 @@ public class GrabDengBigAnimationView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.grab_deng_big_animation_view, this);
+        U.getSoundUtils().preLoad(TAG, R.raw.grab_olight_lowervolume, R.raw.grab_olight);
     }
 
     ObjectPlayControlTemplate<PlayData, SVGAImageViewEx> mViewObjectPlayControlTemplate = new ObjectPlayControlTemplate<PlayData, SVGAImageViewEx>() {
@@ -64,20 +66,26 @@ public class GrabDengBigAnimationView extends RelativeLayout {
         }
     };
 
-    public void playBurstAnimation() {
+    public void playBurstAnimation(boolean flag) {
         MyLog.d(TAG, "playBurstAnimation");
-        mViewObjectPlayControlTemplate.add(new PlayData(), true);
+        mViewObjectPlayControlTemplate.add(new PlayData(flag), true);
     }
 
     // 爆灯
     private void playBurstAnimationInner(PlayData playData, SVGAImageViewEx dengSvgaEx) {
         MyLog.d(TAG, "playBurstAnimationInner" + " playData=" + playData + " dengSvgaEx=" + dengSvgaEx);
+        if (playData.isFlag) {
+            U.getSoundUtils().play(TAG, R.raw.grab_olight_lowervolume);
+        } else {
+            U.getSoundUtils().play(TAG, R.raw.grab_olight);
+        }
+
         SVGAImageView dengSvga = dengSvgaEx.mSVGAImageView;
         if (this.indexOfChild(dengSvga) == -1) {
-            MyLog.d(TAG,"视图未添加，添加");
+            MyLog.d(TAG, "视图未添加，添加");
             dengSvgaEx.add(this);
-        }else{
-            MyLog.d(TAG,"视图已添加");
+        } else {
+            MyLog.d(TAG, "视图已添加");
         }
         dengSvga.setCallback(null);
         dengSvga.stopAnimation(true);
@@ -144,6 +152,7 @@ public class GrabDengBigAnimationView extends RelativeLayout {
         if (mViewObjectPlayControlTemplate != null) {
             mViewObjectPlayControlTemplate.destroy();
         }
+        U.getSoundUtils().release(TAG);
     }
 
     private SVGAImageViewEx isIdle() {
@@ -163,7 +172,11 @@ public class GrabDengBigAnimationView extends RelativeLayout {
     }
 
     public static class PlayData {
+        boolean isFlag;   //标记是否是演唱者
 
+        public PlayData(boolean isFlag) {
+            this.isFlag = isFlag;
+        }
     }
 
     public static class SVGAImageViewEx {
