@@ -14,7 +14,7 @@
             android:id="@+id/result_area"
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_452_dp"
-            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
             android:layout_marginLeft="@dimen/view_27_dp"
             android:layout_marginTop="@dimen/view_133_dp"
             android:layout_marginRight="@dimen/view_27_dp"
