@@ -12,6 +12,7 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
+import com.zq.live.proto.Common.UserInfo;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -112,13 +113,12 @@ public class UserInfoManager {
 
     }
 
-
     /**
      * 获取一个用户的信息
      *
      * @uuid 用户id
      */
-    public void getUserInfoByUuid(final int uuid, final ResultCallback resultCallback) {
+    public void getUserInfoByUuid(final int uuid, final boolean isNeedRelation, final ResultCallback resultCallback) {
         if (uuid <= 0) {
             MyLog.w(TAG, "getUserInfoByUuid Illegal parameter");
             return;
@@ -132,37 +132,57 @@ public class UserInfoManager {
                 public void process(ApiResult obj) {
                     if (obj.getErrno() == 0) {
                         final UserInfoModel jsonUserInfo = JSON.parseObject(obj.getData().toString(), UserInfoModel.class);
-                        //写入数据库
-                        Observable.create(new ObservableOnSubscribe<UserInfoModel>() {
-                            @Override
-                            public void subscribe(ObservableEmitter<UserInfoModel> emitter) throws Exception {
-                                // 写入数据库
-                                UserInfoLocalApi.insertOrUpdate(jsonUserInfo, false, false);
-                                UserInfoModel userInfo = UserInfoLocalApi.getUserInfoByUUid(uuid);
-                                if (userInfo != null) {
-                                    BuddyCache.getInstance().putBuddy(new BuddyCache.BuddyCacheEntry(userInfo));
-                                }
-
-                                if (userInfo != null) {
-                                    emitter.onNext(userInfo);
-                                }
-                                emitter.onComplete();
-                            }
-                        })
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(new Consumer<UserInfoModel>() {
-                                    @Override
-                                    public void accept(UserInfoModel userInfo) throws Exception {
+                        //写入数据库,
+                        insertUpdateDBAndCache(jsonUserInfo);
+                        if (isNeedRelation) {
+                            ApiMethods.subscribe(userInfoServerApi.getRelation(uuid), new ApiObserver<ApiResult>() {
+                                @Override
+                                public void process(ApiResult obj) {
+                                    if (obj.getErrno() == 0) {
+                                        boolean isFriend = obj.getData().getBoolean("isFriend");
+                                        boolean isFollow = obj.getData().getBoolean("isFollow");
+                                        jsonUserInfo.setFollow(isFollow);
+                                        jsonUserInfo.setFriend(isFriend);
                                         if (resultCallback != null) {
-                                            resultCallback.onGetServer(userInfo);
+                                            resultCallback.onGetServer(jsonUserInfo);
+                                        }
+                                    } else {
+                                        if (resultCallback != null) {
+                                            resultCallback.onGetServer(jsonUserInfo);
                                         }
                                     }
-                                });
+                                }
+                            });
+                        } else {
+                            if (resultCallback != null) {
+                                resultCallback.onGetServer(jsonUserInfo);
+                            }
+                        }
+
                     }
                 }
             });
         }
+    }
+
+    private void insertUpdateDBAndCache(final UserInfoModel userInfoModel) {
+        Observable.create(new ObservableOnSubscribe<UserInfoModel>() {
+            @Override
+            public void subscribe(ObservableEmitter<UserInfoModel> emitter) throws Exception {
+                // 写入数据库
+                UserInfoLocalApi.insertOrUpdate(userInfoModel);
+                if (userInfoModel != null) {
+                    BuddyCache.getInstance().putBuddy(new BuddyCache.BuddyCacheEntry(userInfoModel));
+                }
+
+                if (userInfoModel != null) {
+                    emitter.onNext(userInfoModel);
+                }
+                emitter.onComplete();
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     public void mateRelation(final int userId, final int action, final boolean isOldFriend) {

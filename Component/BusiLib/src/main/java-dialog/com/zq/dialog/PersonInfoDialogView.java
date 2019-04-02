@@ -173,7 +173,7 @@ public class PersonInfoDialogView extends RelativeLayout {
 
         mUserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
         // 个人基础资料
-        UserInfoManager.getInstance().getUserInfoByUuid(userID, new UserInfoManager.ResultCallback<UserInfoModel>() {
+        UserInfoManager.getInstance().getUserInfoByUuid(userID, false, new UserInfoManager.ResultCallback<UserInfoModel>() {
             @Override
             public boolean onGetLocalDB(UserInfoModel userInfoModel) {
                 showBaseInfo(userInfoModel);

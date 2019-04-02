@@ -65,13 +65,13 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         }
     };
 
-    ObjectPlayControlTemplate<FloatWindowData,NotifyCorePresenter> mFloatWindowDataFloatWindowObjectPlayControlTemplate = new ObjectPlayControlTemplate<FloatWindowData, NotifyCorePresenter>() {
+    ObjectPlayControlTemplate<FloatWindowData, NotifyCorePresenter> mFloatWindowDataFloatWindowObjectPlayControlTemplate = new ObjectPlayControlTemplate<FloatWindowData, NotifyCorePresenter>() {
         @Override
         protected NotifyCorePresenter accept(FloatWindowData cur) {
-            if(FloatWindow.hasFollowWindowShow() ){
+            if (FloatWindow.hasFollowWindowShow()) {
                 return null;
             }
-            if(!U.getActivityUtils().isAppForeground()){
+            if (!U.getActivityUtils().isAppForeground()) {
                 MyLog.d(TAG, "在后台，不弹出通知");
                 return null;
             }
@@ -80,9 +80,9 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
 
         @Override
         public void onStart(FloatWindowData floatWindowData, NotifyCorePresenter floatWindow) {
-            if(floatWindowData.mType == FloatWindowData.Type.FOLLOW){
+            if (floatWindowData.mType == FloatWindowData.Type.FOLLOW) {
                 showFollowFloatWindow(floatWindowData);
-            }else if(floatWindowData.mType == FloatWindowData.Type.GRABINVITE){
+            } else if (floatWindowData.mType == FloatWindowData.Type.GRABINVITE) {
                 showGrabInviteFloatWindow(floatWindowData);
             }
         }
@@ -115,7 +115,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         // TODO: 2019/3/20   一场到底邀请 口令
         if (event.ask == 1) {
             // 需要再次确认弹窗
-            UserInfoManager.getInstance().getUserInfoByUuid(event.ownerId, new UserInfoManager.ResultCallback<UserInfoModel>() {
+            UserInfoManager.getInstance().getUserInfoByUuid(event.ownerId, true, new UserInfoManager.ResultCallback<UserInfoModel>() {
                 @Override
                 public boolean onGetLocalDB(UserInfoModel o) {
                     return false;
@@ -153,7 +153,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
     public void onEvent(BothRelationFromSchemeEvent event) {
         // TODO: 2019/3/25 成为好友的的口令
         MyLog.d(TAG, "onEvent" + " event=" + event);
-        UserInfoManager.getInstance().getUserInfoByUuid(event.useId, new UserInfoManager.ResultCallback<UserInfoModel>() {
+        UserInfoManager.getInstance().getUserInfoByUuid(event.useId, true, new UserInfoManager.ResultCallback<UserInfoModel>() {
             @Override
             public boolean onGetLocalDB(UserInfoModel o) {
                 return false;
@@ -177,7 +177,12 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                                     if (mBeFriendDialog != null) {
                                         mBeFriendDialog.dismiss(false);
                                     }
-                                    UserInfoManager.getInstance().beFriend(userInfoModel.getUserId(),null);
+                                    if (userInfoModel.isFriend()){
+                                        U.getToastUtil().showShort("你们已经是好友了");
+                                    }else {
+                                        UserInfoManager.getInstance().beFriend(userInfoModel.getUserId(), null);
+                                    }
+
                                 }
                             })
                             .setCancelBtnClickListener(new View.OnClickListener() {
@@ -217,7 +222,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
     public void onEvent(FollowNotifyEvent event) {
         FloatWindowData floatWindowData = new FloatWindowData(FloatWindowData.Type.FOLLOW);
         floatWindowData.setUserInfoModel(event.mUserInfoModel);
-        mFloatWindowDataFloatWindowObjectPlayControlTemplate.add(floatWindowData,true);
+        mFloatWindowDataFloatWindowObjectPlayControlTemplate.add(floatWindowData, true);
 
         if (event.mUserInfoModel.isFriend()) {
             // 好友
@@ -233,7 +238,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         FloatWindowData floatWindowData = new FloatWindowData(FloatWindowData.Type.GRABINVITE);
         floatWindowData.setUserInfoModel(event.mUserInfoModel);
         floatWindowData.setRoomID(event.roomID);
-        mFloatWindowDataFloatWindowObjectPlayControlTemplate.add(floatWindowData,true);
+        mFloatWindowDataFloatWindowObjectPlayControlTemplate.add(floatWindowData, true);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -334,7 +339,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
     }
 
 
-    public static class FloatWindowData{
+    public static class FloatWindowData {
         private UserInfoModel mUserInfoModel;
         private Type mType;
         private int mRoomID;
@@ -359,8 +364,8 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
             return mRoomID;
         }
 
-        public enum Type{
-            FOLLOW,GRABINVITE
+        public enum Type {
+            FOLLOW, GRABINVITE
         }
     }
 }
