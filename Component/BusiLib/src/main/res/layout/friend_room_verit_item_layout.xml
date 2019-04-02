@@ -74,8 +74,8 @@
 
     <com.common.view.ex.ExImageView
         android:id="@+id/owner_iv"
-        android:layout_width="@dimen/view_24_dp"
-        android:layout_height="@dimen/view_24_dp"
+        android:layout_width="@dimen/view_16_dp"
+        android:layout_height="@dimen/view_16_dp"
         android:layout_below="@id/name_tv"
         android:layout_alignLeft="@id/name_tv"
         android:layout_marginTop="@dimen/view_2_dp"
