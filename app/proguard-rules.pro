@@ -1,9 +1,15 @@
+#ProGuard 都会输出一些文件在项目模块 /build/outputs/mapping/release/下：
+#dump.txt ：描述 APK 中所有类文件的内部结构
+#mapping.txt ：提供原始和混淆后类、方法、字段名的映射对照
+#seeds.txt ：列出未混淆的类和成员
+#usage.txt ：列出从 APK 中移除的代码
+
 #1.基本指令区
 -optimizationpasses 5 #代码混淆压缩比， 在0~7之间，默认为5，一般不需要改
 -dontusemixedcaseclassnames #不使用大小写混合，混淆后类名称为小写
 -dontskipnonpubliclibraryclasses #指定不去忽略非公共的库类
 -dontskipnonpubliclibraryclassmembers #指定不去忽略包可见的库类的成员
--dontpreverify # 混淆时是否做预校验
+-dontpreverify # 混淆时是否做预校验，Android平台上不需要这项功能，去掉之后还可以加快混淆速度。
 -verbose # 混淆时是否记录日志
 -ignorewarning
 #-dontshrink #关闭shrink,默认开启，用以减小应用体积，移除未被使用的类和成员，并且会在优化动作执行之后再次执行
