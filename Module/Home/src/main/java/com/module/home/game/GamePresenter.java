@@ -39,7 +39,6 @@ public class GamePresenter extends RxLifeCyclePresenter {
     boolean mIsKConfig = false;  //标记是否拉到过游戏配置信息
 
     HandlerTaskTimer mRecommendTimer;
-    Disposable mDisposable;
 
     IGameView mIGameView;
 
@@ -185,10 +184,7 @@ public class GamePresenter extends RxLifeCyclePresenter {
 
 
     private void loadRecommendRoomData() {
-        if (mDisposable != null && !mDisposable.isDisposed()) {
-            mDisposable.dispose();
-        }
-        mDisposable = ApiMethods.subscribe(mGrabSongApi.getRecommendRoomList(0, 50), new ApiObserver<ApiResult>() {
+         ApiMethods.subscribe(mGrabSongApi.getRecommendRoomList(0, 50), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult obj) {
                 if (obj.getErrno() == 0) {
@@ -199,15 +195,12 @@ public class GamePresenter extends RxLifeCyclePresenter {
                     mIGameView.setRecommendInfo(list, offset, totalNum);
                 }
             }
-        }, this);
+        }, this,new ApiMethods.RequestControl("recommend-room-list", ApiMethods.ControlType.CancelThis));
     }
 
     @Override
     public void destroy() {
         super.destroy();
         stopTimer();
-        if (mDisposable != null) {
-            mDisposable.dispose();
-        }
     }
 }
