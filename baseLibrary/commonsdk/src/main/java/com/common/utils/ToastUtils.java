@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.common.base.R;
+import com.common.log.MyLog;
 
 import java.lang.reflect.Field;
 
@@ -40,6 +41,10 @@ import java.lang.reflect.Field;
  * </pre>
  */
 public final class ToastUtils {
+
+    public final static String TAG = "ToastUtils";
+
+    static final boolean LOG_OPEN = false;
 
     private static final int COLOR_DEFAULT = 0xFEFFFFFF;
     private static final Handler HANDLER = new Handler(Looper.getMainLooper());
@@ -170,8 +175,17 @@ public final class ToastUtils {
                     if (obj != null) {
                         p = (int) obj;
                     }
-                    if (priority < p && iToast.getView().isShown()) {
-                        // 优先级不如当前的view，不显示
+                    boolean shown = iToast.getView().isShown();
+                    long addTs = (long) iToast.getView().getTag(R.id.toast_add_ts);
+                    boolean ganggang = addTs > System.currentTimeMillis() - 1000;
+                    if (LOG_OPEN) {
+                        MyLog.d(TAG, "priority=" + priority + " p=" + p + " text=" + text + " shown=" + shown + " ganggang=" + ganggang);
+                    }
+                    if (priority < p && (shown || ganggang)) {
+                        // 优先级不如当前的view 并且 当前 view 显示 或者 刚刚添加
+                        if (LOG_OPEN) {
+                            MyLog.d(TAG, "取消当前");
+                        }
                         return;
                     }
                 }
@@ -179,6 +193,7 @@ public final class ToastUtils {
                 iToast = ToastFactory.makeToast(U.app(), text, duration);
                 final TextView tvMessage = iToast.getView().findViewById(android.R.id.message);
                 iToast.getView().setTag(R.id.toast_priority, priority);
+                iToast.getView().setTag(R.id.toast_add_ts, System.currentTimeMillis());
                 if (sMsgColor != COLOR_DEFAULT) {
                     tvMessage.setTextColor(sMsgColor);
                 }
@@ -204,8 +219,17 @@ public final class ToastUtils {
                     if (obj != null) {
                         p = (int) obj;
                     }
-                    if (priority < p && iToast.getView().isShown()) {
-                        // 优先级不如当前的view，不显示
+                    boolean shown = iToast.getView().isShown();
+                    long addTs = (long) iToast.getView().getTag(R.id.toast_add_ts);
+                    boolean ganggang = addTs > System.currentTimeMillis() - 1000;
+                    if (LOG_OPEN) {
+                        MyLog.d(TAG, "priority=" + priority + " p=" + p + " text=" + view + " shown=" + shown + " ganggang=" + ganggang);
+                    }
+                    if (priority < p && (shown || ganggang)) {
+                        // 优先级不如当前的view 并且 当前 view 显示 或者 刚刚添加
+                        if (LOG_OPEN) {
+                            MyLog.d(TAG, "取消当前");
+                        }
                         return;
                     }
                 }
@@ -213,6 +237,7 @@ public final class ToastUtils {
                 iToast = ToastFactory.newToast(U.app());
                 iToast.setView(view);
                 iToast.getView().setTag(R.id.toast_priority, priority);
+                iToast.getView().setTag(R.id.toast_add_ts, System.currentTimeMillis());
                 iToast.setDuration(duration);
                 if (sGravity != -1 || sXOffset != -1 || sYOffset != -1) {
                     iToast.setGravity(sGravity, sXOffset, sYOffset);
