@@ -263,7 +263,7 @@ public class RelationFragment extends BaseFragment {
 
     private void showShareDialog() {
         if (mShareDialog == null) {
-            mShareDialog = DialogPlus.newDialog(getContext())
+            mShareDialog = DialogPlus.newDialog(getActivity())
                     .setContentHolder(new ViewHolder(R.layout.invite_friend_panel))
                     .setContentBackgroundResource(R.color.transparent)
                     .setOverlayBackgroundResource(R.color.black_trans_50)

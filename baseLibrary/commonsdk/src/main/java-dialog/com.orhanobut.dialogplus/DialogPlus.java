@@ -12,6 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 
 import com.common.base.R;
+import com.common.view.DebounceViewClickListener;
 
 public class DialogPlus {
 
@@ -348,9 +349,9 @@ public class DialogPlus {
         }
 
         if (onClickListener != null) {
-            view.setOnClickListener(new View.OnClickListener() {
+            view.setOnClickListener(new DebounceViewClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void clickValid(View v) {
                     if (onClickListener == null) {
                         return;
                     }
