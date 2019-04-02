@@ -151,6 +151,7 @@ public class PersonInfoDialogView extends RelativeLayout {
     }
 
     private void initData(Context context, int userID, boolean showReport, boolean showKick) {
+        mUserInfoModel.setUserId(userID);
         mTargetUserId = userID;
 
         mReport.setVisibility(showReport ? VISIBLE : GONE);
