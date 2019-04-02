@@ -136,13 +136,16 @@ public class GameAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if (mDataList != null && mDataList.get(position) != null) {
-            if (mDataList.get(position) instanceof BannerModel) {
-                ((BannerViewHolder) holder).bindData((BannerModel) (mDataList.get(position)));
-            } else if (mDataList.get(position) instanceof RecommendRoomModel) {
-                ((RecommendRoomViewHolder) holder).bindData((RecommendRoomModel) (mDataList.get(position)));
-            } else if (mDataList.get(position) instanceof QuickJoinRoomModel) {
-                ((QuickRoomViewHolder) holder).bindData((QuickJoinRoomModel) (mDataList.get(position)));
+        if (mDataList != null) {
+            Object object = mDataList.get(position);
+            if (object != null) {
+                if (object instanceof BannerModel) {
+                    ((BannerViewHolder) holder).bindData((BannerModel) (object));
+                } else if (object instanceof RecommendRoomModel) {
+                    ((RecommendRoomViewHolder) holder).bindData((RecommendRoomModel) (object));
+                } else if (object instanceof QuickJoinRoomModel) {
+                    ((QuickRoomViewHolder) holder).bindData((QuickJoinRoomModel) (object));
+                }
             }
         }
     }
