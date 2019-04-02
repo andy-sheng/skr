@@ -86,7 +86,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mBackground = (RelativeLayout) mRootView.findViewById(R.id.background);
         mRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.refreshLayout);
         mClassicsHeader = (ClassicsHeader) mRootView.findViewById(R.id.classics_header);
-        mTitlebar = (CommonTitleBar)mRootView.findViewById(R.id.titlebar);
+        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
         mCreateRoom = (ExImageView) mRootView.findViewById(R.id.create_room);
         mAvatarIv = (SimpleDraweeView) mRootView.findViewById(R.id.avatar_iv);
         mNameTv = (ExTextView) mRootView.findViewById(R.id.name_tv);
@@ -290,8 +290,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         if (list == null || list.size() == 0) {
             // 快速加入专场空了，清空数据
             if (offset == 0) {
-                QuickJoinRoomModel quickJoinRoomModel = new QuickJoinRoomModel(null, offset);
-                mGameAdapter.updateQuickJoinRoomInfo(quickJoinRoomModel);
+                mGameAdapter.clearQuickJoinRoomInfo();
                 mGameAdapter.notifyDataSetChanged();
             } else {
                 MyLog.w(TAG, "initQuickRoom 为null");
@@ -320,9 +319,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         if (list == null || list.size() == 0) {
             if (offset == 0) {
                 // 清空好友派对列表
-                if (mGameAdapter.getPositionObject(1) != null && mGameAdapter.getPositionObject(1) instanceof RecommendRoomModel) {
-                    mGameAdapter.getDataList().remove(mGameAdapter.getPositionObject(1));
-                }
+                mGameAdapter.clearRecommendRoomInfo();
                 mGameAdapter.notifyDataSetChanged();
             } else {
                 MyLog.w(TAG, "initFriendRoom 为null");
@@ -331,17 +328,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         }
 
         RecommendRoomModel recommendRoomModel = new RecommendRoomModel(list, offset, totalNum);
-        if (mGameAdapter.getPositionObject(1) != null && mGameAdapter.getPositionObject(1) instanceof RecommendRoomModel) {
-            mGameAdapter.getDataList().remove(mGameAdapter.getPositionObject(1));
-        } else {
-
-        }
-        if (mGameAdapter.getDataList() != null && mGameAdapter.getDataList().size() >= 1) {
-            mGameAdapter.getDataList().add(1, recommendRoomModel);
-        } else {
-            mGameAdapter.getDataList().add(recommendRoomModel);
-        }
-
+        mGameAdapter.updateRecommendRoomInfo(recommendRoomModel);
         mGameAdapter.notifyDataSetChanged();
     }
 
