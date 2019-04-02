@@ -115,6 +115,7 @@
         android:layout_marginLeft="@dimen/view_13_dp"
         android:layout_marginTop="@dimen/view_12_dp"
         android:layout_marginRight="@dimen/view_13_dp"
+        android:layout_marginBottom="@dimen/view_30_dp"
         android:orientation="horizontal"
         >
 
@@ -127,30 +128,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/view_8_dp"
-            android:text="练习中一唱到底不给金币奖励"
-            android:textColor="#B2B6D6"
-            android:textSize="@dimen/textsize_14_dp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/view_13_dp"
-        android:layout_marginTop="@dimen/view_12_dp"
-        android:layout_marginRight="@dimen/view_13_dp"
-        android:orientation="horizontal"
-        android:layout_marginBottom="@dimen/view_30_dp">
-
-        <com.common.view.ex.ExImageView
-            android:layout_width="@dimen/view_26_dp"
-            android:layout_height="@dimen/view_20_dp"
-            android:background="@drawable/guize6" />
-
-        <com.common.view.ex.ExTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/view_8_dp"
-            android:text="练习中一唱到底不给排位经验奖励"
+            android:text="1-2人的练习房金币不加减，段位不升降"
             android:textColor="#B2B6D6"
             android:textSize="@dimen/textsize_14_dp" />
     </LinearLayout>
