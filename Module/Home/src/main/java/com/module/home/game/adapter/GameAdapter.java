@@ -18,7 +18,6 @@ import com.module.home.game.viewholder.QuickRoomViewHolder;
 import com.module.home.game.viewholder.RecommendRoomViewHolder;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class GameAdapter extends RecyclerView.Adapter {
@@ -27,92 +26,41 @@ public class GameAdapter extends RecyclerView.Adapter {
 
     GameAdapterListener mListener;
 
+    Object[] mObjArr = new Object[3];
     List<Object> mDataList = new ArrayList<>();
 
-    public static final int TYPE_BANNER_HOLDER = 1;       // 广告
-    public static final int TYPE_RECOMMEND_HOLDER = 2;    // 推荐房
-    public static final int TYPE_QUICK_ROOM_HOLDER = 3;   // 快速房
-
-    public List<Object> getDataList() {
-        return mDataList;
-    }
-
-    public void setDataList(List<Object> dataList) {
-        mDataList = dataList;
-    }
-
-    public Object getPositionObject(int position) {
-        if (mDataList != null && mDataList.size() > 0) {
-            if (position < mDataList.size()) {
-                return mDataList.get(position);
-            }
-        }
-        return null;
-    }
+    public static final int TYPE_BANNER_HOLDER = 0;       // 广告
+    public static final int TYPE_RECOMMEND_HOLDER = 1;    // 推荐房
+    public static final int TYPE_QUICK_ROOM_HOLDER = 2;   // 快速房
 
     public GameAdapter(BaseFragment baseFragment, GameAdapterListener gameAdapterListener) {
         this.mBaseFragment = baseFragment;
         mListener = gameAdapterListener;
     }
 
-    public void updateQuickJoinRoomInfo(QuickJoinRoomModel quickJoinRoomModel) {
-        if (mDataList != null && mDataList.size() > 0) {
-            Iterator<Object> iterator = mDataList.iterator();
-            while (iterator.hasNext()) {
-                if (iterator.next() instanceof QuickJoinRoomModel) {
-                    iterator.remove();
-                }
-            }
-            if (mDataList.size() >= 2) {
-                mDataList.add(2, quickJoinRoomModel);
-            } else {
-                mDataList.add(quickJoinRoomModel);
-            }
-        } else {
-            mDataList = new ArrayList<>();
-            mDataList.add(quickJoinRoomModel);
-        }
-    }
-
-    public void clearQuickJoinRoomInfo() {
-        if (mDataList != null && mDataList.size() > 0) {
-            Iterator<Object> iterator = mDataList.iterator();
-            while (iterator.hasNext()) {
-                if (iterator.next() instanceof QuickJoinRoomModel) {
-                    iterator.remove();
-                }
-            }
-        }
+    public void updateBanner(BannerModel bannerModel) {
+        mObjArr[TYPE_BANNER_HOLDER] = bannerModel;
+        setDataList();
     }
 
     public void updateRecommendRoomInfo(RecommendRoomModel recommendRoomModel) {
-        if (mDataList != null && mDataList.size() > 0) {
-            Iterator<Object> iterator = mDataList.iterator();
-            while (iterator.hasNext()) {
-                if (iterator.next() instanceof RecommendRoomModel) {
-                    iterator.remove();
-                }
-            }
-            if (mDataList.size() >= 1) {
-                mDataList.add(1, recommendRoomModel);
-            } else {
-                mDataList.add(recommendRoomModel);
-            }
-        } else {
-            mDataList = new ArrayList<>();
-            mDataList.add(recommendRoomModel);
-        }
+        mObjArr[TYPE_RECOMMEND_HOLDER] = recommendRoomModel;
+        setDataList();
     }
 
-    public void clearRecommendRoomInfo() {
-        if (mDataList != null && mDataList.size() > 0) {
-            Iterator<Object> iterator = mDataList.iterator();
-            while (iterator.hasNext()) {
-                if (iterator.next() instanceof RecommendRoomModel) {
-                    iterator.remove();
-                }
+    public void updateQuickJoinRoomInfo(QuickJoinRoomModel quickJoinRoomModel) {
+        mObjArr[TYPE_QUICK_ROOM_HOLDER] = quickJoinRoomModel;
+        setDataList();
+    }
+
+    private void setDataList() {
+        mDataList.clear();
+        for (Object object : mObjArr) {
+            if (object != null) {
+                mDataList.add(object);
             }
         }
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -136,17 +84,13 @@ public class GameAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if (mDataList != null) {
-            Object object = mDataList.get(position);
-            if (object != null) {
-                if (object instanceof BannerModel) {
-                    ((BannerViewHolder) holder).bindData((BannerModel) (object));
-                } else if (object instanceof RecommendRoomModel) {
-                    ((RecommendRoomViewHolder) holder).bindData((RecommendRoomModel) (object));
-                } else if (object instanceof QuickJoinRoomModel) {
-                    ((QuickRoomViewHolder) holder).bindData((QuickJoinRoomModel) (object));
-                }
-            }
+        Object obj = mDataList.get(position);
+        if (obj instanceof BannerModel) {
+            ((BannerViewHolder) holder).bindData((BannerModel) obj);
+        } else if (obj instanceof RecommendRoomModel) {
+            ((RecommendRoomViewHolder) holder).bindData((RecommendRoomModel) obj);
+        } else if (obj instanceof QuickJoinRoomModel) {
+            ((QuickRoomViewHolder) holder).bindData((QuickJoinRoomModel) obj);
         }
     }
 
@@ -157,11 +101,12 @@ public class GameAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        if (mDataList.get(position) instanceof BannerModel) {
+        Object obj = mDataList.get(position);
+        if (obj instanceof BannerModel) {
             return TYPE_BANNER_HOLDER;
-        } else if (mDataList.get(position) instanceof RecommendRoomModel) {
+        } else if (obj instanceof RecommendRoomModel) {
             return TYPE_RECOMMEND_HOLDER;
-        } else if (mDataList.get(position) instanceof QuickJoinRoomModel) {
+        } else if (obj instanceof QuickJoinRoomModel) {
             return TYPE_QUICK_ROOM_HOLDER;
         }
         return 0;

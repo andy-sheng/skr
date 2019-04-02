@@ -290,8 +290,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         if (list == null || list.size() == 0) {
             // 快速加入专场空了，清空数据
             if (offset == 0) {
-                mGameAdapter.clearQuickJoinRoomInfo();
-                mGameAdapter.notifyDataSetChanged();
+                mGameAdapter.updateQuickJoinRoomInfo(null);
             } else {
                 MyLog.w(TAG, "initQuickRoom 为null");
             }
@@ -300,7 +299,6 @@ public class GameFragment2 extends BaseFragment implements IGameView {
 
         QuickJoinRoomModel quickJoinRoomModel = new QuickJoinRoomModel(list, offset);
         mGameAdapter.updateQuickJoinRoomInfo(quickJoinRoomModel);
-        mGameAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -319,17 +317,14 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         if (list == null || list.size() == 0) {
             if (offset == 0) {
                 // 清空好友派对列表
-                mGameAdapter.clearRecommendRoomInfo();
-                mGameAdapter.notifyDataSetChanged();
+                mGameAdapter.updateRecommendRoomInfo(null);
             } else {
                 MyLog.w(TAG, "initFriendRoom 为null");
             }
             return;
         }
-
         RecommendRoomModel recommendRoomModel = new RecommendRoomModel(list, offset, totalNum);
         mGameAdapter.updateRecommendRoomInfo(recommendRoomModel);
-        mGameAdapter.notifyDataSetChanged();
     }
 
 
@@ -337,14 +332,10 @@ public class GameFragment2 extends BaseFragment implements IGameView {
     public void setBannerImage(List<SlideShowModel> slideShowModelList) {
         if (slideShowModelList == null || slideShowModelList.size() == 0) {
             MyLog.w(TAG, "initOperationArea 为null");
+            mGameAdapter.updateBanner(null);
             return;
         }
-
         BannerModel bannerModel = new BannerModel(slideShowModelList);
-        if (mGameAdapter.getPositionObject(0) != null && mGameAdapter.getPositionObject(0) instanceof BannerModel) {
-            mGameAdapter.getDataList().remove(mGameAdapter.getPositionObject(0));
-        }
-        mGameAdapter.getDataList().add(0, bannerModel);
-        mGameAdapter.notifyDataSetChanged();
+        mGameAdapter.updateBanner(bannerModel);
     }
 }

@@ -49,7 +49,6 @@ public class WithDrawHistoryPresenter extends RxLifeCyclePresenter {
                         mWithDrawHistoryModels.clear();
                     }
 
-
                     mWithDrawHistoryModels.addAll(withDrawHistoryModelList);
                     mOffset = result.getData().getInteger("offset");
                     mIWalletView.update(mWithDrawHistoryModels);
