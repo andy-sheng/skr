@@ -18,7 +18,7 @@
 
     <com.module.playways.grab.room.top.GrabAudienceView
         android:id="@+id/grab_audience_view"
-        android:layout_marginTop="@dimen/view_96_dp"
+        android:layout_marginTop="@dimen/view_102_dp"
         android:layout_marginRight="@dimen/view_24_dp"
         android:layout_alignParentRight="true"
         android:layout_width="match_parent"
