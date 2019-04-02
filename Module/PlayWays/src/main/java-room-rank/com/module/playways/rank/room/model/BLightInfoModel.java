@@ -1,12 +1,10 @@
 package com.module.playways.rank.room.model;
 
-import com.common.utils.U;
 import com.zq.live.proto.Room.BLightInfo;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class BLightInfoModel implements Serializable {
     /**

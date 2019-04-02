@@ -1,7 +1,6 @@
 package com.module.playways.rank.room.presenter;
 
 import com.alibaba.fastjson.JSON;
-import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.model.RankInfoModel;
 import com.common.core.userinfo.model.UserRankModel;

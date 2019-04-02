@@ -1,7 +1,6 @@
 package com.module.playways.grab.room.event;
 
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
-import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
 
 /**
  * 加入观众席

@@ -10,7 +10,6 @@ import android.widget.RelativeLayout;
 
 import com.common.core.account.UserAccountManager;
 import com.common.log.MyLog;
-import com.common.mvp.PresenterEvent;
 import com.common.utils.U;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.playways.grab.room.event.GrabSwitchRoomEvent;

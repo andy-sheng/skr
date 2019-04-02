@@ -1,48 +1,28 @@
 package com.module.playways.grab.room.view;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Message;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.log.MyLog;
 import com.common.rx.RxRetryAssist;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
-import com.component.busilib.constans.GameModeType;
-import com.component.busilib.manager.BgMusicManager;
-import com.engine.EngineEvent;
-import com.engine.EngineManager;
-import com.module.RouterConstants;
 import com.module.playways.grab.room.GrabRoomData;
-import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.rank.others.LyricAndAccMatchManager;
 import com.module.playways.rank.room.view.ArcProgressBar;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
-import com.zq.lyrics.LyricsManager;
-import com.zq.lyrics.LyricsReader;
-import com.zq.lyrics.event.LyricEventLauncher;
-import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.ManyLyricsView;
 import com.zq.lyrics.widget.VoiceScaleView;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import java.io.File;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -53,8 +33,6 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import okio.BufferedSource;
 import okio.Okio;
-
-import static com.zq.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
 
 /**
  * 你的主场景歌词

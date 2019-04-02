@@ -1,6 +1,5 @@
 package com.module.playways.rank.room.event;
 
-import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
 import com.module.playways.rank.room.model.RankRoundInfoModel;
 
 public class RankRoundInfoChangeEvent {

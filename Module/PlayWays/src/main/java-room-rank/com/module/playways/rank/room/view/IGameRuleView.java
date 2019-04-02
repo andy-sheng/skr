@@ -2,7 +2,6 @@ package com.module.playways.rank.room.view;
 
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.room.model.RankRoundInfoModel;
-import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.rank.song.model.SongModel;
 
 import java.util.List;

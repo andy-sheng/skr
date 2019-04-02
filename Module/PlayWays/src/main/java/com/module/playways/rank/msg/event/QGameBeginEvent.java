@@ -4,9 +4,6 @@ import com.module.playways.grab.room.model.GrabConfigModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.rank.msg.BasePushInfo;
 import com.zq.live.proto.Room.QGameBeginMsg;
-import com.zq.live.proto.Room.QKickUserRequestMsg;
-
-import java.util.List;
 
 public class QGameBeginEvent {
 

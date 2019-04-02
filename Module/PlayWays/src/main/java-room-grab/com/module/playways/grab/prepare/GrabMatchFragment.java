@@ -1,10 +1,6 @@
 package com.module.playways.grab.prepare;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -13,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
@@ -38,7 +33,6 @@ import com.module.RouterConstants;
 import com.module.playways.grab.prepare.presenter.RankMatchPresenter;
 import com.module.playways.rank.msg.event.JoinActionEvent;
 import com.module.playways.rank.prepare.model.JoinGrabRoomRspModel;
-import com.module.playways.rank.prepare.model.MatchIconModel;
 import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.playways.rank.prepare.presenter.BaseMatchPresenter;
 import com.module.playways.rank.prepare.presenter.GrabMatchPresenter;

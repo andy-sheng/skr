@@ -8,8 +8,6 @@ import com.module.playways.rank.song.model.SongModel;
 import java.io.Serializable;
 import java.util.List;
 
-import io.reactivex.subjects.PublishSubject;
-
 
 /**
  * 房间内所有数据的聚合类

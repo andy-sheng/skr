@@ -1,12 +1,8 @@
 package com.module.playways.grab.room.model;
 
-import com.module.playways.rank.room.model.ScoreTipTypeModel;
-import com.zq.live.proto.Room.PKScoreTipMsg;
 import com.zq.live.proto.Room.QScoreTipMsg;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 public class GrabScoreTipMsgModel implements Serializable {
     int tipType;

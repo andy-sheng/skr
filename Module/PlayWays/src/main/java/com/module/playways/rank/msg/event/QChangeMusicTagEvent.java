@@ -1,10 +1,7 @@
 package com.module.playways.rank.msg.event;
 
-import com.module.playways.grab.room.model.GrabConfigModel;
-import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.rank.msg.BasePushInfo;
 import com.zq.live.proto.Room.QChangeMusicTag;
-import com.zq.live.proto.Room.QGameBeginMsg;
 
 public class QChangeMusicTagEvent {
     public BasePushInfo info;

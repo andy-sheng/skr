@@ -1,7 +1,6 @@
 package com.module.playways.grab.room.view;
 
 import android.content.Context;
-import android.net.http.HttpResponseCache;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
@@ -18,7 +17,6 @@ import com.opensource.svgaplayer.SVGAVideoEntity;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;

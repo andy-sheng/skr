@@ -23,17 +23,13 @@ import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.callback.EmptyCallback;
 import com.component.busilib.callback.ErrorCallback;
 import com.component.busilib.callback.LoadingCallback;
-import com.jakewharton.rxbinding2.view.RxView;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
 import com.module.RouterConstants;
 import com.module.playways.audioroom.AudioRoomActivity;
 import com.module.playways.PlayWaysActivity;
-import com.module.playways.rank.prepare.fragment.AuditionFragment;
-import com.module.playways.rank.prepare.fragment.AuditionPrepareResFragment;
 import com.module.playways.rank.prepare.fragment.PrepareResFragment;
-import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.playways.rank.song.adapter.SongSelectAdapter;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
@@ -45,7 +41,6 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import static com.module.playways.PlayWaysActivity.KEY_GAME_TYPE;
 

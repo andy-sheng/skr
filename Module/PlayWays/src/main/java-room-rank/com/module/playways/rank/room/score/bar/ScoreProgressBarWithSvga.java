@@ -6,7 +6,6 @@ import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 import com.common.log.MyLog;
-import com.common.utils.DisplayUtils;
 import com.common.utils.U;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGACallback;

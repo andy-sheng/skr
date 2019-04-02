@@ -22,7 +22,6 @@ import com.common.view.DebounceViewClickListener;
 import com.facebook.fresco.animation.drawable.AnimatedDrawable2;
 import com.facebook.fresco.animation.drawable.AnimationListener;
 import com.facebook.imagepipeline.image.ImageInfo;
-import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.BaseRoomData;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.ShowPersonCardEvent;
@@ -32,10 +31,6 @@ import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
 
 import org.greenrobot.eventbus.EventBus;
-
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.functions.Consumer;
 
 /**
  * 其他人主场景收音机

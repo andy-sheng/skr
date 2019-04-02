@@ -2,14 +2,10 @@ package com.module.playways.rank.prepare.model;
 
 import com.common.core.userinfo.model.UserInfoModel;
 import com.module.playways.grab.room.event.SomeOneOnlineChangeEvent;
-import com.module.playways.rank.song.model.SongModel;
-import com.zq.live.proto.Common.MusicInfo;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class PlayerInfoModel implements Serializable {
     protected boolean isOnline = true;//是否在线

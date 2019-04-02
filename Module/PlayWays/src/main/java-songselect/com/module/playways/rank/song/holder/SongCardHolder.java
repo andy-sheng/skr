@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 
 import com.common.utils.U;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
-import com.module.playways.rank.song.fragment.SongSelectFragment;
 import com.module.playways.rank.song.model.SongCardModel;
 import com.module.rank.R;
 import com.module.playways.rank.song.adapter.SongSelectAdapter;

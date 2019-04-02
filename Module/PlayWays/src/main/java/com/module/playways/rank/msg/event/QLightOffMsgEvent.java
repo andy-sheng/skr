@@ -4,7 +4,6 @@ package com.module.playways.rank.msg.event;
 
 import com.module.playways.rank.msg.BasePushInfo;
 import com.zq.live.proto.Room.QMLightMsg;
-import com.zq.live.proto.Room.QNoPassSingMsg;
 
 public final class QLightOffMsgEvent {
   public BasePushInfo info;

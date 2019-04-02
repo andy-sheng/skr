@@ -22,7 +22,6 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.permission.SkrLocationPermission;
 import com.common.core.userinfo.model.RankInfoModel;
-import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.model.UserRankModel;
 import com.common.utils.FragmentUtils;
 import com.common.utils.LbsUtils;

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.View;
-import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
 
 import com.common.base.BaseFragment;
@@ -21,11 +20,8 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
-import com.jakewharton.rxbinding2.view.RxView;
-import com.module.playways.BaseRoomData;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.room.RankRoomData;
-import com.module.playways.rank.room.view.RankResultView;
 import com.module.playways.rank.room.view.RankResultView2;
 import com.module.rank.R;
 import com.orhanobut.dialogplus.DialogPlus;
@@ -34,8 +30,6 @@ import com.zq.live.proto.Room.EWinType;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * pk战绩页面
