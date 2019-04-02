@@ -25,6 +25,7 @@ curl --basic -u 4d12d1f858d244d9adaa80738d30ce7b:5dc4ca0495564fb582ec8958c70ed6a
     ]
 }
 
+
 # 重置key
 curl --basic -u 4d12d1f858d244d9adaa80738d30ce7b:5dc4ca0495564fb582ec8958c70ed6af -H "Content-Type:application/json" -X POST -d '{"id":"rkKbefMME"}' https://api.agora.io/dev/v1/reset_signkey/
 

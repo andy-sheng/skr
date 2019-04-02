@@ -1,13 +1,17 @@
 #1.基本指令区
--optimizationpasses 5
--dontusemixedcaseclassnames
--dontskipnonpubliclibraryclasses
--dontskipnonpubliclibraryclassmembers
--dontpreverify
--verbose
+-optimizationpasses 5 #代码混淆压缩比， 在0~7之间，默认为5，一般不需要改
+-dontusemixedcaseclassnames #不使用大小写混合，混淆后类名称为小写
+-dontskipnonpubliclibraryclasses #指定不去忽略非公共的库类
+-dontskipnonpubliclibraryclassmembers #指定不去忽略包可见的库类的成员
+-dontpreverify # 混淆时是否做预校验
+-verbose # 混淆时是否记录日志
 -ignorewarning
+#-dontshrink #关闭shrink,默认开启，用以减小应用体积，移除未被使用的类和成员，并且会在优化动作执行之后再次执行
+#-dontoptimize #关闭优化,默认开启，在字节码级别执行优化，让应用运行的更快。
+#-dontobfuscate #关闭混淆,默认开启，增大反编译难度，类和类成员会被随机命名，除非用keep保护。
+
 -printmapping proguardMapping.txt
--optimizations !code/simplification/cast,!field/*,!class/merging/*
+-optimizations !code/simplification/cast,!field/*,!class/merging/* # 混淆时所采用的算法
 -keepattributes *Annotation*,InnerClasses
 -keepattributes Signature
 -keepattributes SourceFile,LineNumberTable
@@ -61,17 +65,8 @@
 }
 
 #proto
--keep public class com.wali.live.proto.** { *; }
+-keep public class com.zq.live.proto.** { *; }
 
-#galileo
--keep class com.xiaomi.conferencemanager.**{ *; }
--keep class com.xiaomi.broadcaster.**{ *; }
--keep class org.webrtc.**{ *; }
--keep class org.xplatform_util.**{ *;}
--keep class com.xiaomi.devicemanager.**{ *; }
--keep class com.xiaomi.rendermanager.**{ *; }
--keep class com.xiaomi.player.** { *; }
--keep class com.xiaomi.transport.**{ *; }
 
 -keep class com.xiaomi.mibi.** {
  *;
@@ -323,8 +318,6 @@ public static java.lang.String TABLENAME;
 -keep class com.ta.** {*;}
 -dontwarn com.ta.**
 
-
-
 # Add project specific ProGuard rules here.
 # You can control the set of applied configuration files using the
 # proguardFiles setting in build.gradle.
@@ -346,8 +339,6 @@ public static java.lang.String TABLENAME;
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
--dontshrink
--dontoptimize
 -dontwarn com.google.android.maps.**
 -dontwarn android.webkit.WebView
 -dontwarn com.umeng.**
