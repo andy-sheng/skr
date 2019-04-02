@@ -285,8 +285,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
         U.getSoundUtils().preLoad(TAG, R.raw.grab_challengelose, R.raw.grab_challengewin,
                 R.raw.grab_gameover, R.raw.grab_iwannasing,
-                R.raw.grab_nobodywants, R.raw.grab_olight, R.raw.grab_olight_lowervolume,
-                R.raw.grab_readygo, R.raw.grab_xlight, R.raw.grab_lightup, R.raw.normal_click);
+                R.raw.grab_nobodywants, R.raw.grab_readygo,
+                R.raw.grab_xlight, R.raw.grab_lightup, R.raw.normal_click);
 
         MyLog.w(TAG, "gameid 是 " + mRoomData.getGameId() + " userid 是 " + MyUserInfoManager.getInstance().getUid());
 
@@ -667,12 +667,10 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
         if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
             // 当前我是演唱者
-            U.getSoundUtils().play(TAG, R.raw.grab_olight_lowervolume);
             mDengBigAnimation.setTranslationY(U.getDisplayUtils().dip2px(200));
-            mDengBigAnimation.playBurstAnimation();
+            mDengBigAnimation.playBurstAnimation(true);
         } else {
-            U.getSoundUtils().play(TAG, R.raw.grab_olight);
-            mDengBigAnimation.playBurstAnimation();
+            mDengBigAnimation.playBurstAnimation(false);
         }
     }
 

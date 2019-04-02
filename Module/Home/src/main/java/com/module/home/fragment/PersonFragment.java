@@ -415,7 +415,7 @@ public class PersonFragment extends BaseFragment implements IPersonView, WeakRed
         AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance()
                 .getAvatar())
                 .setCircle(true)
-                .setBorderColorBySex(MyUserInfoManager.getInstance().getSex() == 1)
+                .setBorderColor(Color.parseColor("#0C2275"))
                 .setBorderWidth(U.getDisplayUtils().dip2px(3))
                 .build());
         mNameTv.setText(MyUserInfoManager.getInstance().getNickName());

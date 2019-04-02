@@ -221,7 +221,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         }, mRoomData.getPlayerInfoList());
         addPresent(mDownLoadScoreFilePresenter);
         mDownLoadScoreFilePresenter.prepareRes();
-        U.getSoundUtils().preLoad(TAG, R.raw.rank_readygo, R.raw.rank_gameover, R.raw.grab_olight, R.raw.grab_olight_lowervolume);
+        U.getSoundUtils().preLoad(TAG, R.raw.rank_readygo, R.raw.rank_gameover);
         BgMusicManager.getInstance().setRoom(true);
         MyLog.w(TAG, "gameid 是 " + mRoomData.getGameId() + " userid 是 " + MyUserInfoManager.getInstance().getUid());
 
@@ -1047,13 +1047,11 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         MyLog.d(TAG, "PkSomeOneBurstLightEvent onEvent uid " + event.uid);
         if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
             // 当前我是演唱者
-            U.getSoundUtils().play(TAG, R.raw.grab_olight_lowervolume);
             mDengBigAnimation.setTranslationY(U.getDisplayUtils().dip2px(200));
-            mDengBigAnimation.playBurstAnimation();
+            mDengBigAnimation.playBurstAnimation(true);
         } else {
-            U.getSoundUtils().play(TAG, R.raw.grab_olight);
             mDengBigAnimation.setTranslationY(0);
-            mDengBigAnimation.playBurstAnimation();
+            mDengBigAnimation.playBurstAnimation(false);
         }
     }
 
