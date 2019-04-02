@@ -74,6 +74,47 @@ public class GameAdapter extends RecyclerView.Adapter {
         }
     }
 
+    public void clearQuickJoinRoomInfo() {
+        if (mDataList != null && mDataList.size() > 0) {
+            Iterator<Object> iterator = mDataList.iterator();
+            while (iterator.hasNext()) {
+                if (iterator.next() instanceof QuickJoinRoomModel) {
+                    iterator.remove();
+                }
+            }
+        }
+    }
+
+    public void updateRecommendRoomInfo(RecommendRoomModel recommendRoomModel) {
+        if (mDataList != null && mDataList.size() > 0) {
+            Iterator<Object> iterator = mDataList.iterator();
+            while (iterator.hasNext()) {
+                if (iterator.next() instanceof RecommendRoomModel) {
+                    iterator.remove();
+                }
+            }
+            if (mDataList.size() >= 1) {
+                mDataList.add(1, recommendRoomModel);
+            } else {
+                mDataList.add(recommendRoomModel);
+            }
+        } else {
+            mDataList = new ArrayList<>();
+            mDataList.add(recommendRoomModel);
+        }
+    }
+
+    public void clearRecommendRoomInfo() {
+        if (mDataList != null && mDataList.size() > 0) {
+            Iterator<Object> iterator = mDataList.iterator();
+            while (iterator.hasNext()) {
+                if (iterator.next() instanceof RecommendRoomModel) {
+                    iterator.remove();
+                }
+            }
+        }
+    }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

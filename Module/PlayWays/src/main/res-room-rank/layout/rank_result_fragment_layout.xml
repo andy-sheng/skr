@@ -80,10 +80,10 @@
             android:id="@+id/iv_game_role"
             android:layout_width="@dimen/view_24_dp"
             android:layout_height="@dimen/view_24_dp"
-            android:layout_above="@+id/result_area"
+            android:layout_alignTop="@id/result_area"
             android:layout_alignRight="@+id/result_area"
             android:layout_marginRight="@dimen/view_12_dp"
-            android:layout_marginBottom="@dimen/view_12_dp"
+            android:layout_marginTop="-36dp"
             android:background="@drawable/yanchang_bisaiguize" />
     </RelativeLayout>
 
