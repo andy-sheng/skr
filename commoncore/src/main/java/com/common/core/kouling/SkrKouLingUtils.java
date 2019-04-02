@@ -7,6 +7,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.clipboard.ClipboardUtils;
 import com.common.core.account.UserAccountManager;
 import com.common.core.kouling.api.KouLingServerApi;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.scheme.processor.ProcessResult;
 import com.common.core.scheme.processor.ZqSchemeProcessorManager;
 import com.common.log.MyLog;
@@ -40,11 +41,11 @@ public class SkrKouLingUtils {
             public void process(ApiResult obj) {
                 if (obj.getErrno() == 0) {
                     StringBuilder sb = new StringBuilder();
-                    sb.append("复制整段信息，打开【撕歌Skr】查看。");
-                    sb.append("我开了个房间，一起来撕歌吧。");
-                    sb.append("$").append(obj.getData().getString("token")).append("$");
-                    sb.append("还没安装【撕歌Skr】？点击安装");
-                    sb.append("http://a.app.qq.com/o/simple.jsp?pkgname=com.zq.live");
+                    sb.append("【复制消息 打开撕歌skr】").append("\n");
+                    sb.append(MyUserInfoManager.getInstance().getNickName()).append(" 在 撕歌skr 创建了个嗨唱包房 ，邀你一起来嗨呀。等你喔~").append("\n");
+                    sb.append("——————————").append("\n");
+                    sb.append("房间口令:").append("$").append(obj.getData().getString("token")).append("$").append("\n");
+                    sb.append("撕歌skr 下载地址:http://a.app.qq.com/o/simple.jsp?pkgname=com.zq.live").append("\n");
                     if (callback != null) {
                         callback.onSucess(sb.toString());
                     }
@@ -95,7 +96,7 @@ public class SkrKouLingUtils {
 //            try {
 //                String kouling = new String(bytes, "utf-8");
             String kouling = getKoulingByStr(str);
-            MyLog.d(TAG,"tryParseScheme kouling=" + kouling);
+            MyLog.d(TAG, "tryParseScheme kouling=" + kouling);
             if (!TextUtils.isEmpty(kouling)) {
                 KouLingServerApi kouLingServerApi = ApiManager.getInstance().createService(KouLingServerApi.class);
                 ApiMethods.subscribe(kouLingServerApi.getCodeByToken(kouling), new ApiObserver<ApiResult>() {
@@ -121,7 +122,7 @@ public class SkrKouLingUtils {
                 });
             }
         }
-        return ;
+        return;
     }
 
     private static String parseKouling2Scheme(String kouling) {
@@ -164,7 +165,7 @@ public class SkrKouLingUtils {
         if (!TextUtils.isEmpty(str)) {
             int b = str.indexOf("$");
             if (b >= 0) {
-                str = str.substring(b+1);
+                str = str.substring(b + 1);
                 int e = str.indexOf("$");
                 if (e >= 0) {
                     str = str.substring(0, e);
