@@ -27,7 +27,7 @@ public class SpecialCardViewHolder extends RecyclerView.ViewHolder {
 
         mBackground = (SimpleDraweeView) itemView.findViewById(R.id.background);
 
-        itemView.setOnClickListener(new AnimateClickListener() {
+        itemView.setOnClickListener(new AnimateClickListener(500) {
             @Override
             public void click(View view) {
                 if (mItemClickListener != null) {

@@ -6,6 +6,13 @@ import android.animation.ObjectAnimator;
 import android.view.View;
 
 public abstract class AnimateClickListener extends DebounceViewClickListener {
+    public AnimateClickListener() {
+    }
+
+    public AnimateClickListener(int debounceTime) {
+        super(debounceTime);
+    }
+
     @Override
     public void clickValid(View view) {
         AnimatorSet set = new AnimatorSet();

@@ -7,6 +7,7 @@ import android.view.View;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
+import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -63,7 +64,9 @@ public class GrabCreateSpecialFragment extends BaseFragment {
         mSpecialView.setSpecialSelectListner(new SpecialSelectView.SpecialSelectListner() {
             @Override
             public void onClickSpecial(SpecialModel model, List<String> music) {
-                createRoom(model);
+                if(!getActivity().isFinishing()){
+                    createRoom(model);
+                }
             }
         });
     }
@@ -72,7 +75,7 @@ public class GrabCreateSpecialFragment extends BaseFragment {
      * 创建房间
      */
     private void createRoom(SpecialModel model) {
-
+        MyLog.d(TAG, "createRoom" + " model=" + model);
         GrabRoomServerApi grabRoomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomType", mRoomType);
@@ -99,7 +102,7 @@ public class GrabCreateSpecialFragment extends BaseFragment {
                     U.getToastUtil().showShort("" + result.getErrmsg());
                 }
             }
-        }, this);
+        }, this, new ApiMethods.RequestControl("create-room", ApiMethods.ControlType.CancelThis));
     }
 
     @Override

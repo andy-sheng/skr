@@ -99,7 +99,11 @@ public class ApiMethods {
      * @return
      */
     public static <T> Disposable subscribe(Observable<T> observable, ApiObserver<T> apiObserver) {
-        return subscribe(observable, apiObserver, null,null);
+        return innerSubscribe(observable, apiObserver, null,null);
+    }
+
+    public static <T> Disposable subscribe(Observable<T> observable, ApiObserver<T> apiObserver,final RequestControl requestControl) {
+        return innerSubscribe(observable, apiObserver, null,requestControl);
     }
 
     /**
@@ -111,7 +115,11 @@ public class ApiMethods {
      * @param <T>
      */
     public static <T> Disposable subscribe(Observable<T> observable, ApiObserver<T> apiObserver, BaseFragment baseFragment) {
-        return subscribe(observable, apiObserver, baseFragment.bindUntilEvent(FragmentEvent.DESTROY),null);
+        return innerSubscribe(observable, apiObserver, baseFragment.bindUntilEvent(FragmentEvent.DESTROY),null);
+    }
+
+    public static <T> Disposable subscribe(Observable<T> observable, ApiObserver<T> apiObserver, BaseFragment baseFragment,final RequestControl requestControl) {
+        return innerSubscribe(observable, apiObserver, baseFragment.bindUntilEvent(FragmentEvent.DESTROY),requestControl);
     }
 
     /**
@@ -123,7 +131,11 @@ public class ApiMethods {
      * @param <T>
      */
     public static <T> Disposable subscribe(Observable<T> observable, ApiObserver<T> apiObserver, BaseActivity baseActivity) {
-        return subscribe(observable, apiObserver, baseActivity.bindUntilEvent(ActivityEvent.DESTROY),null);
+        return innerSubscribe(observable, apiObserver, baseActivity.bindUntilEvent(ActivityEvent.DESTROY),null);
+    }
+
+    public static <T> Disposable subscribe(Observable<T> observable, ApiObserver<T> apiObserver, BaseActivity baseActivity,final RequestControl requestControl) {
+        return innerSubscribe(observable, apiObserver, baseActivity.bindUntilEvent(ActivityEvent.DESTROY),requestControl);
     }
 
     /**
@@ -135,10 +147,14 @@ public class ApiMethods {
      * @param <T>
      */
     public static <T> Disposable subscribe(Observable<T> observable, ApiObserver<T> apiObserver, RxLifeCyclePresenter presenter) {
-        return subscribe(observable, apiObserver, presenter.bindUntilEvent(PresenterEvent.DESTROY),null);
+        return innerSubscribe(observable, apiObserver, presenter.bindUntilEvent(PresenterEvent.DESTROY),null);
     }
 
-    public static <T> Disposable subscribe(final Observable<T> observable, final ApiObserver<T> apiObserver, ObservableTransformer transformer, final RequestControl requestControl) {
+    public static <T> Disposable subscribe(Observable<T> observable, ApiObserver<T> apiObserver, RxLifeCyclePresenter presenter,final RequestControl requestControl) {
+        return innerSubscribe(observable, apiObserver, presenter.bindUntilEvent(PresenterEvent.DESTROY),requestControl);
+    }
+
+    private static <T> Disposable innerSubscribe(final Observable<T> observable, final ApiObserver<T> apiObserver, ObservableTransformer transformer, final RequestControl requestControl) {
 
         if (requestControl != null) {
             if (requestControl.mControlType == ControlType.CancelLast) {
@@ -151,7 +167,7 @@ public class ApiMethods {
                 // 取消上一次,继续
                 Disposable lastDisposeable = sReqMap.get(requestControl.mKey);
                 if (lastDisposeable != null && !lastDisposeable.isDisposed()) {
-                    MyLog.e("ApiMethod", "请求key=" + requestControl.mKey + "还在执行，取消这一次");
+                    MyLog.e("ApiMethods", "请求key=" + requestControl.mKey + "还在执行，取消这一次");
                     return null;
                 }
             }
@@ -239,7 +255,7 @@ public class ApiMethods {
         }
     }
 
-    private class RequestControl {
+    public static class RequestControl {
         String mKey; // key 用于标识 唯一的请求行为
         ControlType mControlType; // 控制类型
 
@@ -249,7 +265,7 @@ public class ApiMethods {
         }
     }
 
-    private enum ControlType {
+    public enum ControlType {
         CancelLast,// 同一个api请求不可以重复，有重复会取消上一次
         CancelThis// 同一个api请求不可以重复，有重复会取消这一次
         // 如果不想有控制 RequestControl 传入 null
