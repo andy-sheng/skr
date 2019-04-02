@@ -46,6 +46,9 @@ public class SkrKouLingUtils {
                     sb.append("——————————").append("\n");
                     sb.append("房间口令:").append("$").append(obj.getData().getString("token")).append("$").append("\n");
                     sb.append("撕歌skr 下载地址:http://a.app.qq.com/o/simple.jsp?pkgname=com.zq.live").append("\n");
+                    if (MyLog.isDebugLogOpen()) {
+                        sb.append("仅debug才显示本条,不同环境口令不互通,环境=").append(U.getChannelUtils().getChannel());
+                    }
                     if (callback != null) {
                         callback.onSucess(sb.toString());
                     }
@@ -67,11 +70,14 @@ public class SkrKouLingUtils {
             public void process(ApiResult obj) {
                 if (obj.getErrno() == 0) {
                     StringBuilder sb = new StringBuilder();
-                    sb.append("复制整段信息，打开【撕歌Skr】查看。");
-                    sb.append("快来撕歌关注我,我是").append(name);
-                    sb.append("$").append(obj.getData().getString("token")).append("$");
-                    sb.append("还没安装【撕歌Skr】？点击安装");
-                    sb.append("http://a.app.qq.com/o/simple.jsp?pkgname=com.zq.live");
+                    sb.append("【复制消息 打开撕歌skr】").append("\n");
+                    sb.append(MyUserInfoManager.getInstance().getNickName()).append(" 想添加你为好友，来 撕歌skr 一起嗨唱躁不停，等你喔~").append("\n");
+                    sb.append("——————————").append("\n");
+                    sb.append("邀请口令:").append("$").append(obj.getData().getString("token")).append("$").append("\n");
+                    sb.append("撕歌skr 下载地址:http://a.app.qq.com/o/simple.jsp?pkgname=com.zq.live").append("\n");
+                    if (MyLog.isDebugLogOpen()) {
+                        sb.append("仅debug才显示本条,不同环境口令不互通,环境=").append(U.getChannelUtils().getChannel());
+                    }
                     if (callback != null) {
                         callback.onSucess(sb.toString());
                     }
