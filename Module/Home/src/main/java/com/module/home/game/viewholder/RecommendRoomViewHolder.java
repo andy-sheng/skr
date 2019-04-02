@@ -91,7 +91,6 @@ public class RecommendRoomViewHolder extends RecyclerView.ViewHolder {
         hasMore = true;
         this.mRecommendRoomModel = recommendRoomModel;
         mFriendRoomAdapter.setDataList(mRecommendRoomModel.getRoomModels());
-        mFriendRoomAdapter.notifyDataSetChanged();
     }
 
     private void loadMoreData() {
