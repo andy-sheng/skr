@@ -132,7 +132,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                                 if (userInfoModel != null) {
                                     if (!userInfoModel.isFriend()) {
                                         MyLog.d(TAG, "同意邀请，强制成为好友" + userInfoModel);
-                                        UserInfoManager.getInstance().beFriend(userInfoModel.getUserId());
+                                        UserInfoManager.getInstance().beFriend(userInfoModel.getUserId(), null);
                                     }
                                 }
                                 tryGoGrabRoom(event.roomId);
@@ -177,7 +177,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                                     if (mBeFriendDialog != null) {
                                         mBeFriendDialog.dismiss(false);
                                     }
-                                    beFriend(userInfoModel.getUserId());
+                                    UserInfoManager.getInstance().beFriend(userInfoModel.getUserId(),null);
                                 }
                             })
                             .setCancelBtnClickListener(new View.OnClickListener() {
@@ -204,10 +204,6 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                 return false;
             }
         });
-    }
-
-    private void beFriend(int userId) {
-        UserInfoManager.getInstance().beFriend(userId);
     }
 
     void tryGoGrabRoom(int roomID) {

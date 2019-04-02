@@ -166,8 +166,9 @@ public class UserInfoManager {
     }
 
     public void mateRelation(final int userId, final int action, final boolean isOldFriend) {
-        mateRelation(userId,action,isOldFriend,null);
+        mateRelation(userId, action, isOldFriend, null);
     }
+
     /**
      * 处理关系
      *
@@ -215,7 +216,7 @@ public class UserInfoManager {
      *
      * @param userId
      */
-    public void beFriend(int userId) {
+    public void beFriend(int userId, final ResponseCallBack responseCallBack) {
         HashMap<String, Object> map = new HashMap<>();
         map.put("toUserID", userId);
 
@@ -225,9 +226,17 @@ public class UserInfoManager {
             @Override
             public void process(ApiResult obj) {
                 if (obj.getErrno() == 0) {
-                    U.getToastUtil().showShort("成为好友");
+                    if (responseCallBack != null) {
+                        responseCallBack.onServerSucess(null);
+                    } else {
+                        U.getToastUtil().showShort("添加好友成功");
+                    }
                 } else {
-                    U.getToastUtil().showShort("" + obj.getErrmsg());
+                    if (responseCallBack != null) {
+                        responseCallBack.onServerFailed();
+                    } else {
+                        U.getToastUtil().showShort("" + obj.getErrmsg());
+                    }
                 }
             }
         });
