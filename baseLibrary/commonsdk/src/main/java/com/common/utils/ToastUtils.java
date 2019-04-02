@@ -27,6 +27,8 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.common.base.R;
+
 import java.lang.reflect.Field;
 
 /**
@@ -111,75 +113,26 @@ public final class ToastUtils {
      * @param text The text.
      */
     public static void showShort(final CharSequence text) {
-        show(text == null ? NULL : text, Toast.LENGTH_SHORT);
+        show(text == null ? NULL : text, Toast.LENGTH_SHORT,0);
     }
 
     /**
      * Show the toast for a short period of time.
      *
-     * @param resId The resource id for text.
+     * @param text The text.
      */
-    public static void showShort(@StringRes final int resId) {
-        show(resId, Toast.LENGTH_SHORT);
+    public static void showShort(final CharSequence text,int priority) {
+        show(text == null ? NULL : text, Toast.LENGTH_SHORT,priority);
     }
-
-    /**
-     * Show the toast for a short period of time.
-     *
-     * @param resId The resource id for text.
-     * @param args  The args.
-     */
-    public static void showShort(@StringRes final int resId, final Object... args) {
-        show(resId, Toast.LENGTH_SHORT, args);
-    }
-
-    /**
-     * Show the toast for a short period of time.
-     *
-     * @param format The format.
-     * @param args   The args.
-     */
-    public static void showShort(final String format, final Object... args) {
-        show(format, Toast.LENGTH_SHORT, args);
-    }
-
     /**
      * Show the toast for a long period of time.
      *
      * @param text The text.
      */
     public static void showLong(final CharSequence text) {
-        show(text == null ? NULL : text, Toast.LENGTH_LONG);
+        show(text == null ? NULL : text, Toast.LENGTH_LONG,0);
     }
 
-    /**
-     * Show the toast for a long period of time.
-     *
-     * @param resId The resource id for text.
-     */
-    public static void showLong(@StringRes final int resId) {
-        show(resId, Toast.LENGTH_LONG);
-    }
-
-    /**
-     * Show the toast for a long period of time.
-     *
-     * @param resId The resource id for text.
-     * @param args  The args.
-     */
-    public static void showLong(@StringRes final int resId, final Object... args) {
-        show(resId, Toast.LENGTH_LONG, args);
-    }
-
-    /**
-     * Show the toast for a long period of time.
-     *
-     * @param format The format.
-     * @param args   The args.
-     */
-    public static void showLong(final String format, final Object... args) {
-        show(format, Toast.LENGTH_LONG, args);
-    }
 
     /**
      * Show custom toast for a short period of time.
@@ -188,7 +141,7 @@ public final class ToastUtils {
      */
     public static View showCustomShort(@LayoutRes final int layoutId) {
         final View view = getView(layoutId);
-        show(view, Toast.LENGTH_SHORT);
+        show(view, Toast.LENGTH_SHORT,0);
         return view;
     }
 
@@ -199,8 +152,24 @@ public final class ToastUtils {
      */
     public static View showCustomLong(@LayoutRes final int layoutId) {
         final View view = getView(layoutId);
-        show(view, Toast.LENGTH_LONG);
+        show(view, Toast.LENGTH_LONG,0);
         return view;
+    }
+
+    public void showSkrCustomShort(View view) {
+        if (view == null) {
+            return;
+        }
+        setGravity(Gravity.CENTER, 0, 0);
+        show(view, Toast.LENGTH_SHORT,0);
+    }
+
+    public void showSkrCustomLong(View view) {
+        if (view == null) {
+            return;
+        }
+        setGravity(Gravity.CENTER, 0, 0);
+        show(view, Toast.LENGTH_LONG,0);
     }
 
     /**
@@ -212,46 +181,26 @@ public final class ToastUtils {
         }
     }
 
-    private static void show(final int resId, final int duration) {
-        try {
-            CharSequence text = U.app().getResources().getText(resId);
-            show(text, duration);
-        } catch (Exception ignore) {
-            show(String.valueOf(resId), duration);
-        }
-    }
-
-    private static void show(final int resId, final int duration, final Object... args) {
-        try {
-            CharSequence text = U.app().getResources().getText(resId);
-            String format = String.format(text.toString(), args);
-            show(format, duration);
-        } catch (Exception ignore) {
-            show(String.valueOf(resId), duration);
-        }
-    }
-
-    private static void show(final String format, final int duration, final Object... args) {
-        String text;
-        if (format == null) {
-            text = NULL;
-        } else {
-            text = String.format(format, args);
-            if (text == null) {
-                text = NULL;
-            }
-        }
-        show(text, duration);
-    }
-
-    private static void show(final CharSequence text, final int duration) {
+    private static void show(final CharSequence text, final int duration, int priority) {
         HANDLER.post(new Runnable() {
             @SuppressLint("ShowToast")
             @Override
             public void run() {
+                if (iToast != null && iToast.getView() != null) {
+                    Object obj = iToast.getView().getTag(R.id.toast_priority);
+                    int p = 0;
+                    if (obj != null) {
+                        p = (int) obj;
+                    }
+                    if (priority < p && iToast.getView().isShown()) {
+                        // 优先级不如当前的view，不显示
+                        return;
+                    }
+                }
                 cancel();
                 iToast = ToastFactory.makeToast(U.app(), text, duration);
                 final TextView tvMessage = iToast.getView().findViewById(android.R.id.message);
+                iToast.getView().setTag(R.id.toast_priority, priority);
                 if (sMsgColor != COLOR_DEFAULT) {
                     tvMessage.setTextColor(sMsgColor);
                 }
@@ -267,13 +216,25 @@ public final class ToastUtils {
         });
     }
 
-    private static void show(final View view, final int duration) {
+    private static void show(final View view, final int duration,int priority) {
         HANDLER.post(new Runnable() {
             @Override
             public void run() {
+                if (iToast != null && iToast.getView() != null) {
+                    Object obj = iToast.getView().getTag(R.id.toast_priority);
+                    int p = 0;
+                    if (obj != null) {
+                        p = (int) obj;
+                    }
+                    if (priority < p && iToast.getView().isShown()) {
+                        // 优先级不如当前的view，不显示
+                        return;
+                    }
+                }
                 cancel();
                 iToast = ToastFactory.newToast(U.app());
                 iToast.setView(view);
+                iToast.getView().setTag(R.id.toast_priority, priority);
                 iToast.setDuration(duration);
                 if (sGravity != -1 || sXOffset != -1 || sYOffset != -1) {
                     iToast.setGravity(sGravity, sXOffset, sYOffset);
@@ -284,21 +245,7 @@ public final class ToastUtils {
         });
     }
 
-    public void showSkrCustomShort(View view) {
-        if (view == null) {
-            return;
-        }
-        setGravity(Gravity.CENTER, 0, 0);
-        show(view, Toast.LENGTH_SHORT);
-    }
 
-    public void showSkrCustomLong(View view) {
-        if (view == null) {
-            return;
-        }
-        setGravity(Gravity.CENTER, 0, 0);
-        show(view, Toast.LENGTH_LONG);
-    }
 
     public IToast createToast(View view) {
         IToast iToast = ToastFactory.newToast(U.app());

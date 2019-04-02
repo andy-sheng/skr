@@ -20,6 +20,7 @@ import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.permission.SkrAudioPermission;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
+import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.view.ex.ExImageView;
@@ -46,6 +47,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
+import com.zq.toast.CommonToastView;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -213,7 +215,6 @@ public class GameFragment2 extends BaseFragment implements IGameView {
 
         mGamePresenter = new GamePresenter(this);
         addPresent(mGamePresenter);
-
         initBaseInfo();
     }
 
