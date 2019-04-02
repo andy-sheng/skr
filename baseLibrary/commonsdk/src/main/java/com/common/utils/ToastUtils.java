@@ -113,7 +113,7 @@ public final class ToastUtils {
      * @param text The text.
      */
     public static void showShort(final CharSequence text) {
-        show(text == null ? NULL : text, Toast.LENGTH_SHORT,0);
+        show(text == null ? NULL : text, Toast.LENGTH_SHORT, 0);
     }
 
     /**
@@ -121,39 +121,17 @@ public final class ToastUtils {
      *
      * @param text The text.
      */
-    public static void showShort(final CharSequence text,int priority) {
-        show(text == null ? NULL : text, Toast.LENGTH_SHORT,priority);
+    public static void showShort(final CharSequence text, int priority) {
+        show(text == null ? NULL : text, Toast.LENGTH_SHORT, priority);
     }
+
     /**
      * Show the toast for a long period of time.
      *
      * @param text The text.
      */
     public static void showLong(final CharSequence text) {
-        show(text == null ? NULL : text, Toast.LENGTH_LONG,0);
-    }
-
-
-    /**
-     * Show custom toast for a short period of time.
-     *
-     * @param layoutId ID for an XML layout resource to load.
-     */
-    public static View showCustomShort(@LayoutRes final int layoutId) {
-        final View view = getView(layoutId);
-        show(view, Toast.LENGTH_SHORT,0);
-        return view;
-    }
-
-    /**
-     * Show custom toast for a long period of time.
-     *
-     * @param layoutId ID for an XML layout resource to load.
-     */
-    public static View showCustomLong(@LayoutRes final int layoutId) {
-        final View view = getView(layoutId);
-        show(view, Toast.LENGTH_LONG,0);
-        return view;
+        show(text == null ? NULL : text, Toast.LENGTH_LONG, 0);
     }
 
     public void showSkrCustomShort(View view) {
@@ -161,7 +139,7 @@ public final class ToastUtils {
             return;
         }
         setGravity(Gravity.CENTER, 0, 0);
-        show(view, Toast.LENGTH_SHORT,0);
+        show(view, Toast.LENGTH_SHORT, 1);
     }
 
     public void showSkrCustomLong(View view) {
@@ -169,7 +147,7 @@ public final class ToastUtils {
             return;
         }
         setGravity(Gravity.CENTER, 0, 0);
-        show(view, Toast.LENGTH_LONG,0);
+        show(view, Toast.LENGTH_LONG, 1);
     }
 
     /**
@@ -216,7 +194,7 @@ public final class ToastUtils {
         });
     }
 
-    private static void show(final View view, final int duration,int priority) {
+    private static void show(final View view, final int duration, int priority) {
         HANDLER.post(new Runnable() {
             @Override
             public void run() {
@@ -244,7 +222,6 @@ public final class ToastUtils {
             }
         });
     }
-
 
 
     public IToast createToast(View view) {
