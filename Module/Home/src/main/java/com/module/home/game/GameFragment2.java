@@ -273,6 +273,8 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mGamePresenter.initCoinNum(true);
     }
 
+    // TODO: 2019/4/3 这都是第一次拉
+    @Override
     public void setQuickRoom(List<SpecialModel> list, int offset) {
         MyLog.d(TAG, "setQuickRoom" + " list=" + list + " offset=" + offset);
         // TODO: 2019/4/1 过滤一下空的背景
@@ -290,11 +292,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
 
         if (list == null || list.size() == 0) {
             // 快速加入专场空了，清空数据
-            if (offset == 0) {
-                mGameAdapter.updateQuickJoinRoomInfo(null);
-            } else {
-                MyLog.w(TAG, "initQuickRoom 为null");
-            }
+            mGameAdapter.updateQuickJoinRoomInfo(null);
             return;
         }
 
@@ -313,15 +311,12 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mCoinNum.setText("" + coinNum);
     }
 
+    // TODO: 2019/4/3 这都是第一次拉数据
     @Override
     public void setRecommendInfo(List<RecommendModel> list, int offset, int totalNum) {
         if (list == null || list.size() == 0) {
-            if (offset == 0) {
-                // 清空好友派对列表
-                mGameAdapter.updateRecommendRoomInfo(null);
-            } else {
-                MyLog.w(TAG, "initFriendRoom 为null");
-            }
+            // 清空好友派对列表
+            mGameAdapter.updateRecommendRoomInfo(null);
             return;
         }
         RecommendRoomModel recommendRoomModel = new RecommendRoomModel(list, offset, totalNum);

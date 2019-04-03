@@ -146,7 +146,7 @@ public class GamePresenter extends RxLifeCyclePresenter {
             }
         }
 
-        ApiMethods.subscribe(mGrabSongApi.getSepcialList(0, 10), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mGrabSongApi.getSepcialList(0, 20), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult obj) {
                 if (obj.getErrno() == 0) {
