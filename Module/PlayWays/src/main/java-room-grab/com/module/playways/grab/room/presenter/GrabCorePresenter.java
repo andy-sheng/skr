@@ -1753,11 +1753,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             return;
         }
         mLastLineNum = line;
-        if (ScoreConfig.isMelpEnable() && ScoreConfig.isAcrEnable()) {
-
-        } else {
-            U.getToastUtil().showShort("score:" + score);
-        }
         MyLog.d(TAG, "onEvent" + " 得分=" + score);
         MachineScoreItem machineScoreItem = new MachineScoreItem();
         machineScoreItem.setScore(score);
