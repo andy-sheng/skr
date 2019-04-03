@@ -495,7 +495,10 @@ public final class ToastUtils {
 
         @Override
         public View getView() {
-            return mToast.getView();
+            if (mToast != null) {
+                return mToast.getView();
+            }
+            return null;
         }
 
         @Override
