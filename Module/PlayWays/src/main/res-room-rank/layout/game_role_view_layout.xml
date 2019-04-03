@@ -60,7 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/view_8_dp"
-            android:text="撕歌会根据你的歌声，以及受欢迎度决定本剧比赛排名。"
+            android:text="撕歌会根据你的歌声，以及受欢迎度决定本局比赛排名。"
             android:textColor="#B2B6D6"
             android:textSize="@dimen/textsize_14_dp" />
     </LinearLayout>
