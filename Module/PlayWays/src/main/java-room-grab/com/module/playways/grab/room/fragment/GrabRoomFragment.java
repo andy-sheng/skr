@@ -805,7 +805,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             @Override
             public void run() {
                 GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
-                if (grabRoundInfoModel != null && grabRoundInfoModel.isParticipant()) {
+                if (grabRoundInfoModel != null && grabRoundInfoModel.isParticipant() && mRoomData.isInPlayerList()) {
                     mGrabOpBtn.toOtherSingState();
                 } else {
                     mGrabOpBtn.hide();
