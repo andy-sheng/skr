@@ -237,11 +237,8 @@ public final class ToastUtils {
                 iToast.getView().setTag(R.id.toast_priority, priority);
                 iToast.getView().setTag(R.id.toast_add_ts, System.currentTimeMillis());
                 iToast.setDuration(duration);
-                if (sGravity != -1 || sXOffset != -1 || sYOffset != -1) {
-                    iToast.setGravity(sGravity, sXOffset, sYOffset);
-                }
-                if (gravity != -1){
-                    iToast.setGravity(gravity, sXOffset, sYOffset);
+                if (gravity != -1) {
+                    iToast.setGravity(gravity, 0, 0);
                 }
                 setBg();
                 iToast.show();
