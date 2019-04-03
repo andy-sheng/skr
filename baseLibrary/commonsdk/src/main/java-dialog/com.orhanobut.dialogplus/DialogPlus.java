@@ -171,6 +171,7 @@ public class DialogPlus {
             return;
         }
         if (useAnimation) {
+            // 如果View 不显示，动画是不会走的
             outAnim.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
