@@ -117,20 +117,29 @@ class FloatPhone extends FloatView {
     }
 
     public void addView() {
-        if (isRemove) {
-            MyLog.d(TAG, "addView type=" + mLayoutParams.type);
-            mWindowManager.addView(mB.mView, mLayoutParams);
-            isRemove = false;
+        try {
+            if (isRemove) {
+                MyLog.d(TAG, "addView type=" + mLayoutParams.type);
+                mWindowManager.addView(mB.mView, mLayoutParams);
+                isRemove = false;
+            }
+        }catch (Exception e){
+            MyLog.e(TAG, e);
         }
     }
 
     @Override
     public void dismiss() {
         MyLog.d(TAG, "dismiss isRemove=" + isRemove);
-        if (!isRemove) {
-            isRemove = true;
-            mWindowManager.removeView(mB.mView);
+        try {
+            if (!isRemove) {
+                isRemove = true;
+                mWindowManager.removeView(mB.mView);
+            }
+        }catch (Exception e){
+            MyLog.e(TAG, e);
         }
+
     }
 
     @Override
