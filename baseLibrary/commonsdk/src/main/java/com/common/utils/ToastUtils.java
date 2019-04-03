@@ -143,16 +143,14 @@ public final class ToastUtils {
         if (view == null) {
             return;
         }
-        setGravity(Gravity.CENTER, 0, 0);
-        show(view, Toast.LENGTH_SHORT, 1);
+        show(view, Toast.LENGTH_SHORT, 1, Gravity.CENTER);
     }
 
     public void showSkrCustomLong(View view) {
         if (view == null) {
             return;
         }
-        setGravity(Gravity.CENTER, 0, 0);
-        show(view, Toast.LENGTH_LONG, 1);
+        show(view, Toast.LENGTH_LONG, 1, Gravity.CENTER);
     }
 
     /**
@@ -209,7 +207,7 @@ public final class ToastUtils {
         });
     }
 
-    private static void show(final View view, final int duration, int priority) {
+    private static void show(final View view, final int duration, int priority, int gravity) {
         HANDLER.post(new Runnable() {
             @Override
             public void run() {
@@ -241,6 +239,9 @@ public final class ToastUtils {
                 iToast.setDuration(duration);
                 if (sGravity != -1 || sXOffset != -1 || sYOffset != -1) {
                     iToast.setGravity(sGravity, sXOffset, sYOffset);
+                }
+                if (gravity != -1){
+                    iToast.setGravity(gravity, sXOffset, sYOffset);
                 }
                 setBg();
                 iToast.show();
