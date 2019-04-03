@@ -24,6 +24,7 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.titlebar.CommonTitleBar;
 import com.module.RouterConstants;
 import com.module.home.event.AuthSuccessEvent;
+import com.module.home.event.PhoneAuthSuccessEvent;
 import com.module.home.event.WithDrawSuccessEvent;
 import com.module.home.inter.IWalletView;
 import com.module.home.R;
@@ -180,6 +181,11 @@ public class WalletFragment extends BaseFragment implements IWalletView {
     public void onEvent(WithDrawSuccessEvent event) {
         mWalletRecordPresenter.getBalance();
         mWalletRecordPresenter.getAllWalletRecords(offset, DEFAULT_COUNT);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(PhoneAuthSuccessEvent event) {
+        mWithDrawInfoModel.setIsPhoneAuth(true);
     }
 
     @Override

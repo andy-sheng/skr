@@ -30,7 +30,9 @@ import com.common.view.ex.NoLeakEditText;
 import com.module.RouterConstants;
 import com.module.home.R;
 import com.module.home.WalletServerApi;
+import com.module.home.event.PhoneAuthSuccessEvent;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -136,6 +138,8 @@ public class SmsAuthFragment extends BaseFragment {
                                         if (mFragmentDataListener != null) {
                                             mFragmentDataListener.onFragmentResult(0, 0, null, null);
                                         }
+
+                                        EventBus.getDefault().post(new PhoneAuthSuccessEvent());
 
                                         //短信验证完实人认证
                                         ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
