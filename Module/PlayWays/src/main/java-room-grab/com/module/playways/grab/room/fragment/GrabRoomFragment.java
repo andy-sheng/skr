@@ -818,16 +818,20 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     private void singBeginTipsPlay(int uid, Runnable runnable) {
         GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
-        if (grabRoundInfoModel != null && !grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_SING) {
-            MyLog.d(TAG, " 进入时已经时演唱阶段了，则不用播卡片了");
-            runnable.run();
+        if (grabRoundInfoModel != null) {
+            if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_SING) {
+                MyLog.d(TAG, " 进入时已经时演唱阶段了，则不用播卡片了");
+                runnable.run();
+            } else {
+                mSingBeginTipsCardView.bindData(mRoomData.getUserInfo(uid), grabRoundInfoModel.getMusic(), new SVGAListener() {
+                    @Override
+                    public void onFinished() {
+                        runnable.run();
+                    }
+                });
+            }
         } else {
-            mSingBeginTipsCardView.bindData(mRoomData.getUserInfo(uid), grabRoundInfoModel.getMusic(), new SVGAListener() {
-                @Override
-                public void onFinished() {
-                    runnable.run();
-                }
-            });
+            MyLog.w(TAG, "singBeginTipsPlay" + " grabRoundInfoModel = null ");
         }
     }
 

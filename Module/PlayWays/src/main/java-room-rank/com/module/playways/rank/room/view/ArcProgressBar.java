@@ -200,6 +200,9 @@ public class ArcProgressBar extends View {
      * @param duration 剩下歌曲的时长
      */
     public void startCountDown(int progress, long duration) {
+        if (duration <= 0) {
+            return;
+        }
         if (mAnimatorSet != null) {
             mAnimatorSet.removeAllListeners();
             mAnimatorSet.cancel();
