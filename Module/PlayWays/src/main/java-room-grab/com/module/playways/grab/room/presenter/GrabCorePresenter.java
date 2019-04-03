@@ -267,7 +267,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     private void ensureInRcRoom() {
         mUiHandler.removeMessages(MSG_ENSURE_IN_RC_ROOM);
-        mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_IN_RC_ROOM, 60 * 1000);
+        mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_IN_RC_ROOM, 30 * 1000);
     }
 
     private void pretenSystemMsg(String text) {

@@ -217,12 +217,14 @@ public class EngineManager implements AgoraOutCallback {
 
     @Override
     public void onRecordingBuffer(final byte[] samples) {
-        mCustomHandlerThread.post(new Runnable() {
-            @Override
-            public void run() {
-                saveRecordingFrame(samples);
-            }
-        });
+        if (mCustomHandlerThread != null) {
+            mCustomHandlerThread.post(new Runnable() {
+                @Override
+                public void run() {
+                    saveRecordingFrame(samples);
+                }
+            });
+        }
     }
 
     @Override
@@ -952,14 +954,16 @@ public class EngineManager implements AgoraOutCallback {
     /*音频高级扩展开始*/
 
     public void setAudioEffectStyle(final Params.AudioEffect styleEnum) {
-        mCustomHandlerThread.post(new Runnable() {
-            @Override
-            public void run() {
-                mConfig.setStyleEnum(styleEnum);
+        if (mCustomHandlerThread != null) {
+            mCustomHandlerThread.post(new Runnable() {
+                @Override
+                public void run() {
+                    mConfig.setStyleEnum(styleEnum);
 //                CbEngineAdapter.getInstance().setIFAudioEffectEngine(styleEnum);
-                AgoraEngineAdapter.getInstance().setIFAudioEffectEngine(styleEnum);
-            }
-        });
+                    AgoraEngineAdapter.getInstance().setIFAudioEffectEngine(styleEnum);
+                }
+            });
+        }
 
     }
 
@@ -967,13 +971,14 @@ public class EngineManager implements AgoraOutCallback {
      * 播放音效
      */
     public void playEffects(final EffectModel effectModel) {
-        mCustomHandlerThread.post(new Runnable() {
-            @Override
-            public void run() {
-                AgoraEngineAdapter.getInstance().playEffects(effectModel);
-            }
-        });
-
+        if (mCustomHandlerThread != null) {
+            mCustomHandlerThread.post(new Runnable() {
+                @Override
+                public void run() {
+                    AgoraEngineAdapter.getInstance().playEffects(effectModel);
+                }
+            });
+        }
     }
 
     public List<EffectModel> getAllEffects() {
@@ -1042,45 +1047,47 @@ public class EngineManager implements AgoraOutCallback {
     }
 
     public void startAudioMixing(final int uid, final String filePath, final String midiPath, final long mixMusicBeginOffset, final boolean loopback, final boolean replace, final int cycle) {
-        mCustomHandlerThread.post(new Runnable() {
-            @Override
-            public void run() {
-                MyLog.w(TAG, "startAudioMixing" + " uid=" + uid + " filePath=" + filePath + " midiPath=" + midiPath + " mixMusicBeginOffset=" + mixMusicBeginOffset + " loopback=" + loopback + " replace=" + replace + " cycle=" + cycle);
-                boolean canGo = false;
-                if (uid <= 0) {
-                    canGo = true;
-                } else {
-                    UserStatus userStatus = mUserStatusMap.get(uid);
-                    if (userStatus == null) {
-                        MyLog.w(TAG, "该用户还未在频道中，播伴奏挂起");
-                        canGo = false;
-                    } else {
-                        MyLog.w(TAG, "用户已经在频道中继续走起");
+        if (mCustomHandlerThread != null) {
+            mCustomHandlerThread.post(new Runnable() {
+                @Override
+                public void run() {
+                    MyLog.w(TAG, "startAudioMixing" + " uid=" + uid + " filePath=" + filePath + " midiPath=" + midiPath + " mixMusicBeginOffset=" + mixMusicBeginOffset + " loopback=" + loopback + " replace=" + replace + " cycle=" + cycle);
+                    boolean canGo = false;
+                    if (uid <= 0) {
                         canGo = true;
+                    } else {
+                        UserStatus userStatus = mUserStatusMap.get(uid);
+                        if (userStatus == null) {
+                            MyLog.w(TAG, "该用户还未在频道中，播伴奏挂起");
+                            canGo = false;
+                        } else {
+                            MyLog.w(TAG, "用户已经在频道中继续走起");
+                            canGo = true;
+                        }
+                    }
+                    if (canGo) {
+                        mConfig.setMixMusicPlaying(true);
+                        mConfig.setMixMusicFilePath(filePath);
+                        mConfig.setMidiPath(midiPath);
+                        mConfig.setMixMusicBeginOffset(mixMusicBeginOffset);
+
+                        startMusicPlayTimeListener();
+                        EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_START);
+                        EventBus.getDefault().post(engineEvent);
+                        AgoraEngineAdapter.getInstance().startAudioMixing(filePath, midiPath, loopback, replace, cycle);
+                    } else {
+                        mPendingStartMixAudioParams = new PendingStartMixAudioParams();
+                        mPendingStartMixAudioParams.uid = uid;
+                        mPendingStartMixAudioParams.filePath = filePath;
+                        mPendingStartMixAudioParams.midiPath = midiPath;
+                        mPendingStartMixAudioParams.mixMusicBeginOffset = mixMusicBeginOffset;
+                        mPendingStartMixAudioParams.loopback = loopback;
+                        mPendingStartMixAudioParams.replace = replace;
+                        mPendingStartMixAudioParams.cycle = cycle;
                     }
                 }
-                if (canGo) {
-                    mConfig.setMixMusicPlaying(true);
-                    mConfig.setMixMusicFilePath(filePath);
-                    mConfig.setMidiPath(midiPath);
-                    mConfig.setMixMusicBeginOffset(mixMusicBeginOffset);
-
-                    startMusicPlayTimeListener();
-                    EngineEvent engineEvent = new EngineEvent(EngineEvent.TYPE_MUSIC_PLAY_START);
-                    EventBus.getDefault().post(engineEvent);
-                    AgoraEngineAdapter.getInstance().startAudioMixing(filePath, midiPath, loopback, replace, cycle);
-                } else {
-                    mPendingStartMixAudioParams = new PendingStartMixAudioParams();
-                    mPendingStartMixAudioParams.uid = uid;
-                    mPendingStartMixAudioParams.filePath = filePath;
-                    mPendingStartMixAudioParams.midiPath = midiPath;
-                    mPendingStartMixAudioParams.mixMusicBeginOffset = mixMusicBeginOffset;
-                    mPendingStartMixAudioParams.loopback = loopback;
-                    mPendingStartMixAudioParams.replace = replace;
-                    mPendingStartMixAudioParams.cycle = cycle;
-                }
-            }
-        });
+            });
+        }
     }
 
     public static class PendingStartMixAudioParams {
