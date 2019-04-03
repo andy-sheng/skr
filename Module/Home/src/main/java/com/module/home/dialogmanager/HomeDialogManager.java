@@ -35,7 +35,7 @@ public class HomeDialogManager {
                         dialogPlus.onDismissListener = new OnDismissListener() {
                             @Override
                             public void onDismiss(@NonNull DialogPlus dialog) {
-                                MyLog.d(TAG,"onDismiss" + " dialog=" + dialog);
+                                MyLog.d(TAG, "onDismiss" + " dialog=" + dialog);
                                 if (oriListener != null) {
                                     oriListener.onDismiss(dialog);
                                 }
@@ -43,6 +43,7 @@ public class HomeDialogManager {
                                 mObjectPlayControlTemplate.endCurrent(cur);
                             }
                         };
+                        mHasShowDialog = true;
                         return HomeDialogManager.this;
                     } else {
                         return null;
@@ -54,7 +55,6 @@ public class HomeDialogManager {
             public void onStart(ExDialogData exDialogData, HomeDialogManager manager) {
                 if (exDialogData.mDialogPlus != null) {
                     exDialogData.mDialogPlus.show();
-                    mHasShowDialog = true;
                 }
             }
 

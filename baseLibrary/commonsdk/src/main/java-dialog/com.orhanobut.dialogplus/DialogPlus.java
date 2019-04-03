@@ -12,6 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 
 import com.common.base.R;
+import com.common.log.MyLog;
 import com.common.view.DebounceViewClickListener;
 
 public class DialogPlus {
@@ -51,7 +52,7 @@ public class DialogPlus {
     /**
      * Listener to notify the user that dialog has been dismissed
      */
-    public  OnDismissListener onDismissListener;
+    public OnDismissListener onDismissListener;
 
     /**
      * Listener to notify the user that dialog has been canceled
@@ -154,7 +155,7 @@ public class DialogPlus {
      * Dismisses the displayed dialog.
      */
     public void dismiss() {
-       dismiss(true);
+        dismiss(true);
     }
 
     public void dismiss(boolean useAnimation) {
@@ -367,6 +368,10 @@ public class DialogPlus {
      * @param view is the dialog plus view
      */
     private void onAttached(View view) {
+        if (decorView.indexOfChild(view) != -1) {
+            MyLog.d("DialogPlus","无法重复添加某个view");
+            return;
+        }
         decorView.addView(view);
         contentContainer.startAnimation(inAnim);
 
