@@ -158,9 +158,15 @@ public class InviteFriendFragment extends BaseFragment implements IGrabInviteVie
                         @Override
                         public void onSucess(Object obj) {
                             mShareDialog.dismiss();
-                            new ShareAction(getActivity()).withText((String) obj)
-                                    .setPlatform(SHARE_MEDIA.WEIXIN)
-                                    .share();
+                            ClipboardUtils.setCopy((String) obj);
+                            Intent intent = U.getActivityUtils().getLaunchIntentForPackage("com.tencent.mm");
+                            if (null != intent.resolveActivity(U.app().getPackageManager())) {
+                                startActivity(intent);
+                            }
+                            U.getToastUtil().showLong("请将口令粘贴给你的好友");
+//                            new ShareAction(getActivity()).withText((String) obj)
+//                                    .setPlatform(SHARE_MEDIA.WEIXIN)
+//                                    .share();
                         }
 
                         @Override
