@@ -62,7 +62,7 @@ public class CrashCaptureMainFragment extends BaseFragment {
                 if (data.desc == R.string.dk_crash_capture_look) {
                     showContent(CrashCaptureFragment.class);
                 } else if (data.desc == R.string.dk_crash_capture_clean_data) {
-                    CrashHandlerManager.getInstance().cleanHistoricalData();
+                    CrashHandlerManager.getInstance().cleanHistoricalData(0);
                 }
             }
         });
