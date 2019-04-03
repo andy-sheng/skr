@@ -3,9 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:bl_shape="rectangle"
-    app:bl_gradient_startColor="#EB83CA"
-    app:bl_gradient_endColor="#6E42C3">
+    android:background="#7088FF">
 
     <com.common.view.ex.ExImageView
         android:id="@+id/iv_back"
