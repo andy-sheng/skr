@@ -177,12 +177,12 @@ public class SkrKouLingUtils {
 
     private static String getKoulingByStr(String str) {
         if (!TextUtils.isEmpty(str)) {
-            int b = str.indexOf("$");
-            if (b >= 0) {
-                str = str.substring(b + 1);
-                int e = str.indexOf("$");
-                if (e >= 0) {
-                    str = str.substring(0, e);
+            int e = str.lastIndexOf("$");
+            if (e >= 0) {
+                str = str.substring(0,e);
+                int b = str.lastIndexOf("$");
+                if (b >= 0) {
+                    str = str.substring(b+1);
                     return str;
                 }
             }
