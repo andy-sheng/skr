@@ -134,8 +134,7 @@ public class GrabAudienceView extends RelativeLayout {
         }
 
         for (int i = 0; i < mWaitInfoModelList.size() && i<mBaseImageViewList.size(); i++) {
-            MyLog.d(TAG, "i=" + i);
-
+            //MyLog.d(TAG, "i=" + i);
             UserInfoModel userInfoModel = mWaitInfoModelList.get(i).getUserInfo();
             VH vp = mBaseImageViewList.get(i);
             vp.mGrabPlayerInfoModel = userInfoModel;
