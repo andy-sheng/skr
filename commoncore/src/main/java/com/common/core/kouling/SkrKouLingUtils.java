@@ -42,7 +42,11 @@ public class SkrKouLingUtils {
                 if (obj.getErrno() == 0) {
                     StringBuilder sb = new StringBuilder();
                     sb.append("【复制消息 打开撕歌skr】").append("\n");
-                    sb.append(MyUserInfoManager.getInstance().getNickName()).append(" 在 撕歌skr 创建了个嗨唱包房 ，邀你一起来嗨呀。等你喔~").append("\n");
+                    String name = MyUserInfoManager.getInstance().getNickName();
+                    if (!TextUtils.isEmpty(name)) {
+                        name = name.replaceAll("\\$", "");
+                    }
+                    sb.append(name).append(" 在 撕歌skr 创建了个嗨唱包房 ，邀你一起来嗨呀。等你喔~").append("\n");
                     sb.append("——————————").append("\n");
                     sb.append("房间口令:").append("$").append(obj.getData().getString("token")).append("$").append("\n");
                     sb.append("撕歌skr 下载地址:http://a.app.qq.com/o/simple.jsp?pkgname=com.zq.live").append("\n");
@@ -71,7 +75,11 @@ public class SkrKouLingUtils {
                 if (obj.getErrno() == 0) {
                     StringBuilder sb = new StringBuilder();
                     sb.append("【复制消息 打开撕歌skr】").append("\n");
-                    sb.append(MyUserInfoManager.getInstance().getNickName()).append(" 想添加你为好友，来 撕歌skr 一起嗨唱躁不停，等你喔~").append("\n");
+                    String name = MyUserInfoManager.getInstance().getNickName();
+                    if (!TextUtils.isEmpty(name)) {
+                        name = name.replaceAll("\\$", "");
+                    }
+                    sb.append(name).append(" 想添加你为好友，来 撕歌skr 一起嗨唱躁不停，等你喔~").append("\n");
                     sb.append("——————————").append("\n");
                     sb.append("邀请口令:").append("$").append(obj.getData().getString("token")).append("$").append("\n");
                     sb.append("撕歌skr 下载地址:http://a.app.qq.com/o/simple.jsp?pkgname=com.zq.live").append("\n");

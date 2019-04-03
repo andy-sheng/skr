@@ -17,6 +17,8 @@ import com.common.view.DebounceViewClickListener;
 
 public class DialogPlus {
 
+    public final static String TAG = "DialogPlus";
+
     private static final int INVALID = -1;
 
     /**
@@ -159,18 +161,25 @@ public class DialogPlus {
     }
 
     public void dismiss(boolean useAnimation) {
+        MyLog.d(TAG, "dismiss" + " useAnimation=" + useAnimation + " isDismissing=" + isDismissing+" isShowing="+isShowing());
+
         if (isDismissing) {
+            return;
+        }
+
+        if(!isShowing()){
             return;
         }
         if (useAnimation) {
             outAnim.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
-
+                    MyLog.d(TAG, "onAnimationStart" + " animation=" + animation);
                 }
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
+                    MyLog.d(TAG, "onAnimationEnd" + " animation=" + animation);
                     decorView.post(new Runnable() {
                         @Override
                         public void run() {
@@ -369,7 +378,7 @@ public class DialogPlus {
      */
     private void onAttached(View view) {
         if (decorView.indexOfChild(view) != -1) {
-            MyLog.d("DialogPlus","无法重复添加某个view");
+            MyLog.d("DialogPlus", "无法重复添加某个view");
             return;
         }
         decorView.addView(view);
