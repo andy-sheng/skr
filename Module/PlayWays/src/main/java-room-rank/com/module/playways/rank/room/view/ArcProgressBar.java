@@ -201,6 +201,7 @@ public class ArcProgressBar extends View {
      */
     public void startCountDown(int progress, long duration) {
         if (duration <= 0) {
+            setProgress(100);
             return;
         }
         if (mAnimatorSet != null) {
