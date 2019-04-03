@@ -110,7 +110,7 @@ public class CheckInPresenter extends RxLifeCyclePresenter {
             public void onError(Throwable e) {
                 MyLog.e(TAG, e);
             }
-        }, this);
+        }, this,new ApiMethods.RequestControl("checkInInfo", ApiMethods.ControlType.CancelThis));
     }
 
     public void showCheckInView(List<HomeGoldModel> homeGoldModelList) {
