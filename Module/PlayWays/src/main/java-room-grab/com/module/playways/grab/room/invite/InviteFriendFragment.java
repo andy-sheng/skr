@@ -160,13 +160,12 @@ public class InviteFriendFragment extends BaseFragment implements IGrabInviteVie
                             mShareDialog.dismiss();
                             ClipboardUtils.setCopy((String) obj);
                             Intent intent = U.getActivityUtils().getLaunchIntentForPackage("com.tencent.mm");
-                            if (null != intent.resolveActivity(U.app().getPackageManager())) {
+                            if (intent!=null && null != intent.resolveActivity(U.app().getPackageManager())) {
                                 startActivity(intent);
+                                U.getToastUtil().showLong("请将口令粘贴给你的好友");
+                            }else{
+                                U.getToastUtil().showLong("未安装微信,请将口令粘贴给你的好友");
                             }
-                            U.getToastUtil().showLong("请将口令粘贴给你的好友");
-//                            new ShareAction(getActivity()).withText((String) obj)
-//                                    .setPlatform(SHARE_MEDIA.WEIXIN)
-//                                    .share();
                         }
 
                         @Override
@@ -187,16 +186,12 @@ public class InviteFriendFragment extends BaseFragment implements IGrabInviteVie
                             mShareDialog.dismiss();
                             ClipboardUtils.setCopy((String) obj);
                             Intent intent = U.getActivityUtils().getLaunchIntentForPackage("com.tencent.mobileqq");
-                            if (null != intent.resolveActivity(U.app().getPackageManager())) {
+                            if (intent!=null && null != intent.resolveActivity(U.app().getPackageManager())) {
                                 startActivity(intent);
+                                U.getToastUtil().showLong("请将口令粘贴给你的好友");
+                            }else{
+                                U.getToastUtil().showLong("未安装QQ,请将口令粘贴给你的好友");
                             }
-                            U.getToastUtil().showLong("请将口令粘贴给你的好友");
-                            //TODO QQ 不支持纯文本分享
-//                            new ShareAction(getActivity())
-//                                    .withMedia(new UMImage(getActivity(),obj))
-//                                    .setPlatform(SHARE_MEDIA.QQ)
-//                                    .withText((String) obj)
-//                                    .share();
                         }
 
                         @Override

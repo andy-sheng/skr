@@ -282,10 +282,12 @@ public class RelationFragment extends BaseFragment {
                             mShareDialog.dismiss();
                             ClipboardUtils.setCopy((String) obj);
                             Intent intent = U.getActivityUtils().getLaunchIntentForPackage("com.tencent.mm");
-                            if (null != intent.resolveActivity(U.app().getPackageManager())) {
+                            if (intent!=null && null != intent.resolveActivity(U.app().getPackageManager())) {
                                 startActivity(intent);
+                                U.getToastUtil().showLong("请将口令粘贴给你的好友");
+                            }else{
+                                U.getToastUtil().showLong("未安装微信,请将口令粘贴给你的好友");
                             }
-                            U.getToastUtil().showLong("请将口令粘贴给你的好友");
                         }
 
                         @Override
@@ -306,10 +308,12 @@ public class RelationFragment extends BaseFragment {
                             mShareDialog.dismiss();
                             ClipboardUtils.setCopy((String) obj);
                             Intent intent = U.getActivityUtils().getLaunchIntentForPackage("com.tencent.mobileqq");
-                            if (null != intent.resolveActivity(U.app().getPackageManager())) {
+                            if (intent!=null && null != intent.resolveActivity(U.app().getPackageManager())) {
                                 startActivity(intent);
+                                U.getToastUtil().showLong("请将口令粘贴给你的好友");
+                            }else{
+                                U.getToastUtil().showLong("未安装QQ,请将口令粘贴给你的好友");
                             }
-                            U.getToastUtil().showLong("请将口令粘贴给你的好友");
                         }
 
                         @Override
