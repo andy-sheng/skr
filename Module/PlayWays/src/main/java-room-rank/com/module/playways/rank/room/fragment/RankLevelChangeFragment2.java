@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
@@ -257,11 +258,13 @@ public class RankLevelChangeFragment2 extends BaseFragment {
                                 .build()
                 )
                 .build();
-        File file = FrescoWorker.getCacheFileFromFrescoDiskCache(image.getUrl());
-        if (file != null && file.exists()) {
-            dynamicEntity.setDynamicImage(BitmapFactory.decodeFile(file.getPath()), "avatar");
-        } else {
-            dynamicEntity.setDynamicImage(image.getUrl(), "avatar");
+        if(!TextUtils.isEmpty(image.getUrl())) {
+            File file = FrescoWorker.getCacheFileFromFrescoDiskCache(image.getUrl());
+            if (file != null && file.exists()) {
+                dynamicEntity.setDynamicImage(BitmapFactory.decodeFile(file.getPath()), "avatar");
+            } else {
+                dynamicEntity.setDynamicImage(image.getUrl(), "avatar");
+            }
         }
         if (LevelConfigUtils.getImageResoucesLevel(mScoreStateModel.getMainRanking()) != 0) {
             dynamicEntity.setDynamicImage(BitmapFactory.decodeResource(U.app().getResources(), LevelConfigUtils.getImageResoucesLevel(mScoreStateModel.getMainRanking())), "keyMedalNew");

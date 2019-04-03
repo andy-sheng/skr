@@ -562,7 +562,9 @@ public class UpgradeManager {
                 int downloaded = cursor.getInt(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
                 //下载文件的总大小
                 int total = cursor.getInt(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
-                ds.progress = downloaded * 100 / total;
+                if(total!=0) {
+                    ds.progress = downloaded * 100 / total;
+                }
                 //下载状态
                 ds.status = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
             }
