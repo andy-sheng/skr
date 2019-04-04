@@ -5,17 +5,17 @@
 
     <com.module.playways.grab.room.top.CircleAnimationView
         android:id="@+id/circle_animation_view"
-        android:layout_marginTop="@dimen/view_d_5_dp"
-        android:layout_marginRight="@dimen/view_d_5_dp"
-        android:layout_marginLeft="@dimen/view_d_5_dp"
-        android:layout_marginBottom="@dimen/view_d_5_dp"
-        android:layout_alignTop="@+id/avatar_iv"
-        android:layout_alignBottom="@+id/avatar_iv"
-        android:layout_alignLeft="@+id/avatar_iv"
-        android:layout_alignRight="@+id/avatar_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignLeft="@+id/avatar_iv"
+        android:layout_alignTop="@+id/avatar_iv"
+        android:layout_alignRight="@+id/avatar_iv"
+        android:layout_alignBottom="@+id/avatar_iv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="@dimen/view_d_5_dp"
+        android:layout_marginTop="@dimen/view_d_5_dp"
+        android:layout_marginRight="@dimen/view_d_5_dp"
+        android:layout_marginBottom="@dimen/view_d_5_dp" />
 
     <com.common.image.fresco.BaseImageView
         android:id="@+id/avatar_iv"
@@ -25,28 +25,36 @@
         android:layout_marginTop="@dimen/view_10_dp" />
 
     <com.common.view.ex.ExImageView
-        android:visibility="gone"
+        android:id="@+id/owner_icon_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/avatar_iv"
+        android:layout_alignBottom="@+id/avatar_iv"
+        android:layout_marginRight="-1dp"
+        android:layout_marginBottom="-1dp"
+        android:src="@drawable/grab_top_fangzhu"
+        android:visibility="gone" />
+
+    <com.common.view.ex.ExImageView
         android:id="@+id/flag_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/avatar_iv"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="-10dp"
-        android:src="@drawable/xiangchang_flag" />
+        android:src="@drawable/xiangchang_flag"
+        android:visibility="gone" />
 
     <com.common.view.ex.ExTextView
-        android:visibility="gone"
-        app:bl_corners_radius="@dimen/view_9_dp"
-        app:bl_solid_color="#747474"
-        android:textColor="@color/white_trans_70"
-        android:gravity="center"
-        android:textSize="@dimen/textsize_9_dp"
-        android:text="离线"
-        android:id="@+id/leave_iv"
-        android:layout_width="@dimen/view_35_dp"
-        android:layout_height="@dimen/view_18_dp"
+        android:id="@+id/invite_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/avatar_iv"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="-4dp"
-         />
+        android:layout_marginTop="0dp"
+        android:gravity="center"
+        android:text="邀请"
+        android:textColor="@color/white_trans_50"
+        android:textSize="@dimen/textsize_14_dp"
+        android:visibility="gone" />
 </merge>

@@ -23,8 +23,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.List;
-
 public class VoiceRightOpView extends RelativeLayout {
     public final static String TAG = "VoiceRightOpView";
     //    Listener mListener;

@@ -103,7 +103,7 @@ public class BuddyCache {
             }
             if (queryIfNotExist) {
                 // 网络查询
-                UserInfoManager.getInstance().getUserInfoByUuid(uuid, null);
+                UserInfoManager.getInstance().getUserInfoByUuid(uuid, false, null);
             }
         }
         return result;

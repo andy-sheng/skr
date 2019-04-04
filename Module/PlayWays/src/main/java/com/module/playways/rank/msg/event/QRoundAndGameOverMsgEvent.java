@@ -7,6 +7,7 @@ import com.module.playways.grab.room.model.GrabResultInfoModel;
 import com.module.playways.rank.msg.BasePushInfo;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
+import com.zq.live.proto.Room.EQGameOverReason;
 import com.zq.live.proto.Room.QResultInfo;
 import com.zq.live.proto.Room.QRoundAndGameOverMsg;
 import com.zq.live.proto.Room.QUserCoin;
@@ -35,20 +36,23 @@ public final class QRoundAndGameOverMsgEvent {
 
     public int myCoin = -1;
 
+    public EQGameOverReason mOverReason;
+
     public QRoundAndGameOverMsgEvent(BasePushInfo info, QRoundAndGameOverMsg qRoundAndGameOverMsg) {
         this.info = info;
         this.roundOverTimeMs = qRoundAndGameOverMsg.getRoundOverTimeMs();
         this.roundInfoModel = GrabRoundInfoModel.parseFromRoundInfo(qRoundAndGameOverMsg.getCurrentRound());
         resultInfo = new ArrayList<>();
-        for(QResultInfo qResultInfo:qRoundAndGameOverMsg.getResultInfoList()){
+        for (QResultInfo qResultInfo : qRoundAndGameOverMsg.getResultInfoList()) {
             resultInfo.add(GrabResultInfoModel.parse(qResultInfo));
         }
-        for(QUserCoin c :qRoundAndGameOverMsg.getQUserCoinList()){
-            if(c.getUserID()== MyUserInfoManager.getInstance().getUid()){
+        for (QUserCoin c : qRoundAndGameOverMsg.getQUserCoinList()) {
+            if (c.getUserID() == MyUserInfoManager.getInstance().getUid()) {
                 long a = c.getCoin();
                 myCoin = (int) a;
             }
         }
+        this.mOverReason = qRoundAndGameOverMsg.getOverReason();
     }
 
     public BasePushInfo getInfo() {
@@ -65,5 +69,9 @@ public final class QRoundAndGameOverMsgEvent {
 
     public List<GrabResultInfoModel> getResultInfo() {
         return resultInfo;
+    }
+
+    public EQGameOverReason getOverReason() {
+        return mOverReason;
     }
 }

@@ -1,6 +1,11 @@
 package com.zq.level.utils;
 
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+
 import com.common.log.MyLog;
+import com.common.utils.U;
+import com.common.view.ex.drawable.DrawableCreator;
 import com.component.busilib.R;
 import com.common.core.userinfo.model.UserLevelType;
 
@@ -29,6 +34,44 @@ public class LevelConfigUtils {
         }
     }
 
+    public static Drawable getHomePageTopBg(int mainLevel) {
+        switch (mainLevel) {
+            case UserLevelType.SKRER_LEVEL_POTENTIAL:
+                return new DrawableCreator.Builder()
+                        .setGradientColor(Color.parseColor("#E3B081"), Color.parseColor("#856054"))
+                        .setGradientAngle(0)
+                        .build();
+            case UserLevelType.SKRER_LEVEL_SILVER:
+                return new DrawableCreator.Builder()
+                        .setGradientColor(Color.parseColor("#D1E1F1"), Color.parseColor("#727CA0"))
+                        .setGradientAngle(0)
+                        .build();
+            case UserLevelType.SKRER_LEVEL_GOLD:
+                return new DrawableCreator.Builder()
+                        .setGradientColor(Color.parseColor("#ECB246"), Color.parseColor("#BE6B2F"))
+                        .setGradientAngle(0)
+                        .build();
+            case UserLevelType.SKRER_LEVEL_PLATINUM:
+                return new DrawableCreator.Builder()
+                        .setGradientColor(Color.parseColor("#85DCFF"), Color.parseColor("#4D42C3"))
+                        .setGradientAngle(0)
+                        .build();
+            case UserLevelType.SKRER_LEVEL_DIAMOND:
+                return new DrawableCreator.Builder()
+                        .setGradientColor(Color.parseColor("#C37823"), Color.parseColor("#445AFF"))
+                        .setGradientAngle(0)
+                        .build();
+            case UserLevelType.SKRER_LEVEL_KING:
+                return new DrawableCreator.Builder()
+                        .setGradientColor(Color.parseColor("#FF616B"), Color.parseColor("#4D42C3"))
+                        .setGradientAngle(0)
+                        .build();
+            default:
+                return null;
+        }
+    }
+
+
     public static String getHomePageTopBgColor(int mainLevel) {
         switch (mainLevel) {
             case UserLevelType.SKRER_LEVEL_POTENTIAL:
@@ -48,6 +91,28 @@ public class LevelConfigUtils {
                 return "#c0F9F4F1";
         }
     }
+
+
+    public static String getHomePageLevelTextColor(int mainLevel) {
+        switch (mainLevel) {
+            case UserLevelType.SKRER_LEVEL_POTENTIAL:
+                return "#55352E";
+            case UserLevelType.SKRER_LEVEL_SILVER:
+                return "#495378";
+            case UserLevelType.SKRER_LEVEL_GOLD:
+                return "#814A39";
+            case UserLevelType.SKRER_LEVEL_PLATINUM:
+                return "#2A54A0";
+            case UserLevelType.SKRER_LEVEL_DIAMOND:
+                return "#0A3FBD";
+            case UserLevelType.SKRER_LEVEL_KING:
+                return "#7B2A27";
+            default:
+                MyLog.w(TAG, "getHomePageLevelTopBg null" + " mainLevel = " + mainLevel);
+                return "#55352E";
+        }
+    }
+
 
     public static int getAvatarLevelBg(int mainLevel) {
         switch (mainLevel) {

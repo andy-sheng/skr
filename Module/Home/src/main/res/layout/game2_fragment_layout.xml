@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#7088FF">
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.scwang.smartrefresh.layout.header.ClassicsHeader
+            android:id="@+id/classics_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></com.scwang.smartrefresh.layout.header.ClassicsHeader>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!--只是做一下刘海屏幕的适配-->
+            <com.common.view.titlebar.CommonTitleBar
+                android:id="@+id/titlebar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:showBottomLine="false"
+                app:statusBarColor="@color/transparent"
+                app:titleBarHeight="@dimen/view_0_dp"></com.common.view.titlebar.CommonTitleBar>
+
+            <RelativeLayout
+                android:id="@+id/top_area"
+                android:layout_width="match_parent"
+                android:layout_below="@id/titlebar"
+                android:layout_height="@dimen/view_100_dp">
+
+                <ImageView
+                    android:layout_width="@dimen/view_50_dp"
+                    android:layout_height="@dimen/view_53_dp"
+                    android:layout_marginLeft="@dimen/view_20_dp"
+                    android:layout_marginTop="@dimen/view_36_dp"
+                    android:background="@drawable/s_touxiang" />
+
+                <com.common.view.ex.ExImageView
+                    android:id="@+id/create_room"
+                    android:layout_width="@dimen/view_132_dp"
+                    android:layout_height="@dimen/view_57_dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginRight="@dimen/view_18_dp"
+                    android:layout_marginBottom="@dimen/view_12_dp"
+                    android:background="@drawable/shouye_grab_create_room" />
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/avatar_iv"
+                    android:layout_width="@dimen/view_40_dp"
+                    android:layout_height="@dimen/view_40_dp"
+                    android:layout_marginLeft="@dimen/view_25_dp"
+                    android:layout_marginTop="@dimen/view_41_dp" />
+
+                <com.common.view.ex.ExTextView
+                    android:id="@+id/name_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/view_22_dp"
+                    android:layout_marginLeft="@dimen/view_15_dp"
+                    android:layout_marginTop="@dimen/view_40_dp"
+                    android:layout_marginRight="@dimen/view_5_dp"
+                    android:layout_toLeftOf="@id/create_room"
+                    android:layout_toRightOf="@+id/avatar_iv"
+                    android:ellipsize="end"
+                    android:gravity="left|center_vertical"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:text="KTV酒彪子"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/textsize_16_dp" />
+
+                <com.common.view.ex.ExTextView
+                    android:id="@+id/coin_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/view_18_dp"
+                    android:layout_below="@id/name_tv"
+                    android:layout_alignLeft="@id/name_tv"
+                    android:layout_marginTop="@dimen/view_4_dp"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/view_18_dp"
+                    android:paddingRight="@dimen/view_5_dp"
+                    android:text="0"
+                    android:textColor="@color/white_trans_50"
+                    android:textSize="@dimen/textsize_14_dp"
+                    app:bl_corners_radius="@dimen/view_9_dp"
+                    app:bl_shape="rectangle"
+                    app:bl_solid_color="@color/black_trans_20" />
+
+                <ImageView
+                    android:layout_width="@dimen/view_16_dp"
+                    android:layout_height="@dimen/view_18_dp"
+                    android:layout_alignLeft="@id/coin_num"
+                    android:layout_alignTop="@id/coin_num"
+                    android:background="@drawable/grab_coin_icon" />
+
+            </RelativeLayout>
+
+            <com.scwang.smartrefresh.layout.SmartRefreshLayout
+                android:id="@+id/recycler_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/top_area">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:overScrollMode="never"></android.support.v7.widget.RecyclerView>
+
+            </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+        </RelativeLayout>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+</RelativeLayout>

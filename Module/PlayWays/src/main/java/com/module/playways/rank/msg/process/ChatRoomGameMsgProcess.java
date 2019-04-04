@@ -1,5 +1,6 @@
 package com.module.playways.rank.msg.process;
 
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.module.playways.rank.msg.BasePushInfo;
 import com.module.playways.rank.msg.event.AccBeginEvent;
@@ -10,10 +11,18 @@ import com.module.playways.rank.msg.event.JoinNoticeEvent;
 import com.module.playways.rank.msg.event.MachineScoreEvent;
 import com.module.playways.rank.msg.event.PkBurstLightMsgEvent;
 import com.module.playways.rank.msg.event.PkLightOffMsgEvent;
+
+import com.module.playways.rank.msg.event.QCoinChangeEvent;
+
+import com.module.playways.rank.msg.event.QChangeMusicTagEvent;
+
 import com.module.playways.rank.msg.event.QExitGameMsgEvent;
+import com.module.playways.rank.msg.event.QGameBeginEvent;
 import com.module.playways.rank.msg.event.QGetSingChanceMsgEvent;
 import com.module.playways.rank.msg.event.QJoinActionEvent;
 import com.module.playways.rank.msg.event.QJoinNoticeEvent;
+import com.module.playways.rank.msg.event.QKickUserReqEvent;
+import com.module.playways.rank.msg.event.QKickUserResultEvent;
 import com.module.playways.rank.msg.event.QLightBurstMsgEvent;
 import com.module.playways.rank.msg.event.QLightOffMsgEvent;
 import com.module.playways.rank.msg.event.QNoPassSingMsgEvent;
@@ -37,10 +46,18 @@ import com.zq.live.proto.Room.MachineScore;
 import com.zq.live.proto.Room.PKBLightMsg;
 import com.zq.live.proto.Room.PKMLightMsg;
 import com.zq.live.proto.Room.QBLightMsg;
+
+import com.zq.live.proto.Room.QCoinChangeMsg;
+
+import com.zq.live.proto.Room.QChangeMusicTag;
+
 import com.zq.live.proto.Room.QExitGameMsg;
+import com.zq.live.proto.Room.QGameBeginMsg;
 import com.zq.live.proto.Room.QGetSingChanceMsg;
 import com.zq.live.proto.Room.QJoinActionMsg;
 import com.zq.live.proto.Room.QJoinNoticeMsg;
+import com.zq.live.proto.Room.QKickUserRequestMsg;
+import com.zq.live.proto.Room.QKickUserResultMsg;
 import com.zq.live.proto.Room.QMLightMsg;
 import com.zq.live.proto.Room.QNoPassSingMsg;
 import com.zq.live.proto.Room.QRoundAndGameOverMsg;
@@ -119,6 +136,16 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
             processGrabJoinNoticeMsg(basePushInfo, msg.getQJoinNoticeMsg());
         } else if (msg.getMsgType() == ERoomMsgType.RM_Q_JOIN_ACTION) {
             processGrabJoinActionMsg(basePushInfo, msg.getQJoinActionMsg());
+        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_KICK_USER_REQUEST) {
+            processGrabKickRequest(basePushInfo, msg.getQKickUserRequestMsg());
+        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_KICK_USER_RESULT) {
+            processGrabKickResult(basePushInfo, msg.getQKickUserResultMsg());
+        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_GAME_BEGIN) {
+            processGrabGameBegin(basePushInfo, msg.getQGameBeginMsg());
+        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_COIN_CHANGE) {
+            processGrabCoinChange(basePushInfo, msg.getQCoinChangeMsg());
+        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_CHANGE_MUSIC_TAG) {
+            processChangeMusicTag(basePushInfo, msg.getQChangeMusicTag());
         }
     }
 
@@ -136,7 +163,10 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
                 ERoomMsgType.RM_Q_ROUND_OVER, ERoomMsgType.RM_Q_ROUND_AND_GAME_OVER,
                 ERoomMsgType.RM_Q_NO_PASS_SING, ERoomMsgType.RM_Q_EXIT_GAME,
                 ERoomMsgType.RM_PK_BLIGHT, ERoomMsgType.RM_PK_MLIGHT,
-                ERoomMsgType.RM_Q_BLIGHT, ERoomMsgType.RM_Q_MLIGHT, ERoomMsgType.RM_Q_JOIN_NOTICE,ERoomMsgType.RM_Q_JOIN_ACTION
+                ERoomMsgType.RM_Q_BLIGHT, ERoomMsgType.RM_Q_MLIGHT,
+                ERoomMsgType.RM_Q_JOIN_NOTICE, ERoomMsgType.RM_Q_JOIN_ACTION,
+                ERoomMsgType.RM_Q_KICK_USER_REQUEST, ERoomMsgType.RM_Q_KICK_USER_RESULT,
+                ERoomMsgType.RM_Q_GAME_BEGIN, ERoomMsgType.RM_Q_COIN_CHANGE, ERoomMsgType.RM_Q_CHANGE_MUSIC_TAG
         };
     }
 
@@ -395,13 +425,104 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
         }
     }
 
-
     private void processAccBeigin(BasePushInfo basePushInfo) {
         if (basePushInfo != null) {
             AccBeginEvent machineScoreEvent = new AccBeginEvent(basePushInfo, basePushInfo.getSender().getUserID());
             EventBus.getDefault().post(machineScoreEvent);
         } else {
             MyLog.w(TAG, "processAccBeigin" + " basePushInfo = null ");
+        }
+    }
+
+    private void processGrabKickResult(BasePushInfo basePushInfo, QKickUserResultMsg qKickUserResultMsg) {
+        if (basePushInfo != null && qKickUserResultMsg != null) {
+            // 过滤，被踢人 也可以放在收事件的地方，但是觉得没有必要
+            if (MyUserInfoManager.getInstance().getUid() == qKickUserResultMsg.getKickUserID()) {
+                QKickUserResultEvent qKickUserResultEvent = new QKickUserResultEvent(basePushInfo, qKickUserResultMsg);
+                EventBus.getDefault().post(qKickUserResultEvent);
+                return;
+            }
+            // 过滤下, 所有投同意票
+            if (qKickUserResultMsg.getGiveYesVoteUserIDsList() != null) {
+                for (Integer integer : qKickUserResultMsg.getGiveYesVoteUserIDsList()) {
+                    if (integer == MyUserInfoManager.getInstance().getUid()) {
+                        QKickUserResultEvent qKickUserResultEvent = new QKickUserResultEvent(basePushInfo, qKickUserResultMsg);
+                        EventBus.getDefault().post(qKickUserResultEvent);
+                        return;
+                    }
+                }
+            }
+
+            // 过滤下, 所有投不同意票
+            if (qKickUserResultMsg.getGiveNoVoteUserIDsList() != null) {
+                for (Integer integer : qKickUserResultMsg.getGiveNoVoteUserIDsList()) {
+                    if (integer == MyUserInfoManager.getInstance().getUid()) {
+                        QKickUserResultEvent qKickUserResultEvent = new QKickUserResultEvent(basePushInfo, qKickUserResultMsg);
+                        EventBus.getDefault().post(qKickUserResultEvent);
+                        return;
+                    }
+                }
+            }
+
+            // 过滤下, 所有未知票
+            if (qKickUserResultMsg.getGiveUnknownVoteUserIDsList() != null) {
+                for (Integer integer : qKickUserResultMsg.getGiveUnknownVoteUserIDsList()) {
+                    if (integer == MyUserInfoManager.getInstance().getUid()) {
+                        QKickUserResultEvent qKickUserResultEvent = new QKickUserResultEvent(basePushInfo, qKickUserResultMsg);
+                        EventBus.getDefault().post(qKickUserResultEvent);
+                        return;
+                    }
+                }
+            }
+        } else {
+            MyLog.w(TAG, "processGrabKickResult" + " basePushInfo = null or qKickUserSuccessMsg = null");
+        }
+    }
+
+    private void processGrabKickRequest(BasePushInfo basePushInfo, QKickUserRequestMsg qKickUserRequestMsg) {
+        if (basePushInfo != null && qKickUserRequestMsg != null) {
+            // 过滤下,所有投票者
+            if (qKickUserRequestMsg.getOtherOnlineUserIDsList() != null && qKickUserRequestMsg.getOtherOnlineUserIDsList().size() > 0) {
+                for (Integer integer : qKickUserRequestMsg.getOtherOnlineUserIDsList()) {
+                    if (integer == MyUserInfoManager.getInstance().getUid()) {
+                        QKickUserReqEvent qKickUserReqEvent = new QKickUserReqEvent(basePushInfo, qKickUserRequestMsg);
+                        EventBus.getDefault().post(qKickUserReqEvent);
+                        return;
+                    }
+                }
+            } else {
+                MyLog.w(TAG, "processGrabKickRequest" + " OtherOnlineUserIDsList() = null");
+            }
+        } else {
+            MyLog.w(TAG, "processGrabKickRequest" + " basePushInfo = null or qKickUserRequestMsg = null");
+        }
+    }
+
+    private void processGrabGameBegin(BasePushInfo basePushInfo, QGameBeginMsg qGameBeginMsg) {
+        if (basePushInfo != null && qGameBeginMsg != null) {
+            // 过滤下,所有投票者
+            QGameBeginEvent event = new QGameBeginEvent(basePushInfo, qGameBeginMsg);
+            EventBus.getDefault().post(event);
+        } else {
+            MyLog.w(TAG, "processGrabKickRequest" + " basePushInfo = null or qKickUserRequestMsg = null");
+        }
+    }
+
+    private void processGrabCoinChange(BasePushInfo basePushInfo, QCoinChangeMsg qCoinChangeMsg) {
+        if (basePushInfo != null && qCoinChangeMsg != null) {
+            QCoinChangeEvent event = new QCoinChangeEvent(basePushInfo, qCoinChangeMsg);
+            EventBus.getDefault().post(event);
+        } else {
+            MyLog.w(TAG, "processGrabKickRequest" + " basePushInfo = null or qKickUserRequestMsg = null");
+        }
+    }
+
+    private void processChangeMusicTag(BasePushInfo basePushInfo, QChangeMusicTag qChangeMusicTag) {
+        if (basePushInfo != null && qChangeMusicTag != null) {
+            QChangeMusicTagEvent event = new QChangeMusicTagEvent(basePushInfo, qChangeMusicTag);
+            EventBus.getDefault().post(event);
+        } else {
+            MyLog.w(TAG, "processChangeMusicTag" + " basePushInfo = null or QChangeMusicTag = null");
         }
     }
 }

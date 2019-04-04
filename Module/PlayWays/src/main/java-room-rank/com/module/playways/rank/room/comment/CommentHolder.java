@@ -1,20 +1,13 @@
 package com.module.playways.rank.room.comment;
 
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
-import android.text.SpannableStringBuilder;
-import android.text.TextPaint;
-import android.text.TextUtils;
 import android.view.View;
-import android.widget.TextView;
 
 import com.common.core.avatar.AvatarUtils;
 import com.common.image.fresco.BaseImageView;
-import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
-import com.module.playways.BaseRoomData;
 import com.module.rank.R;
 
 public class CommentHolder extends RecyclerView.ViewHolder {

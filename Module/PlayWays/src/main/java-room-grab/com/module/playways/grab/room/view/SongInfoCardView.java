@@ -28,8 +28,6 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
 import com.trello.rxlifecycle2.android.ActivityEvent;
-import com.zq.lyrics.LyricsManager;
-import com.zq.lyrics.LyricsReader;
 
 import java.io.File;
 import java.io.IOException;

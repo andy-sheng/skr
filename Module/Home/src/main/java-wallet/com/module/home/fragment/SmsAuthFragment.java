@@ -2,16 +2,17 @@ package com.module.home.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
 
 import com.common.core.account.event.VerifyCodeErrorEvent;
-import com.common.core.login.fragment.LoginFragment;
 import com.common.core.permission.SkrBasePermission;
 import com.common.core.permission.SkrPhoneStatePermission;
 import com.common.log.MyLog;
@@ -26,9 +27,12 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.NoLeakEditText;
+import com.module.RouterConstants;
 import com.module.home.R;
 import com.module.home.WalletServerApi;
+import com.module.home.event.PhoneAuthSuccessEvent;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -41,7 +45,7 @@ import okhttp3.RequestBody;
  * 手机方式登陆界面
  */
 public class SmsAuthFragment extends BaseFragment {
-
+    public final static String TAG = "SmsAuthFragment";
     public static final String PREF_KEY_PHONE_NUM = "pref_key_phone_num";
 
     RelativeLayout mMainActContainer;
@@ -55,6 +59,8 @@ public class SmsAuthFragment extends BaseFragment {
 
     String mPhoneNumber; //发送验证码的电话号码
     String mCode; //验证码
+
+    Handler mUiHandler = new Handler();
 
     HandlerTaskTimer mTaskTimer; // 倒计时验证码
 
@@ -84,7 +90,13 @@ public class SmsAuthFragment extends BaseFragment {
         } else {
             mCodeInputTv.requestFocus();
         }
-        U.getKeyBoardUtils().showSoftInputKeyBoard(getActivity());
+
+        mUiHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                U.getKeyBoardUtils().showSoftInputKeyBoard(getActivity());
+            }
+        }, 300);
 
         mGetCodeTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -110,16 +122,29 @@ public class SmsAuthFragment extends BaseFragment {
                             HashMap<String, Object> map = new HashMap<>();
                             map.put("phone", mPhoneNumber);
                             map.put("code", mCode);
-                            RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+                            RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
 
                             ApiMethods.subscribe(mWalletServerApi.checkSMSCode(body), new ApiObserver<ApiResult>() {
                                 @Override
                                 public void process(ApiResult result) {
                                     if (result.getErrno() == 0) {
-                                        SmsAuthFragment.this.finish();
+                                        mUiHandler.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                finish("runnable");
+                                            }
+                                        }, 300);
+
                                         if (mFragmentDataListener != null) {
                                             mFragmentDataListener.onFragmentResult(0, 0, null, null);
                                         }
+
+                                        EventBus.getDefault().post(new PhoneAuthSuccessEvent());
+
+                                        //短信验证完实人认证
+                                        ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                                                .withString(RouterConstants.KEY_WEB_URL, U.getChannelUtils().getUrlByChannel("http://app.inframe.mobi/face/faceauth"))
+                                                .navigation();
                                     } else {
                                         U.getToastUtil().showShort(result.getErrmsg());
                                     }
@@ -139,11 +164,11 @@ public class SmsAuthFragment extends BaseFragment {
                 //U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
                 U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
                 stopTimeTask();
-                finish();
+                finish("mIvBack");
             }
         });
 
-        mLoginTv.setClickable(false);
+        mLoginTv.setClickable(true);
         mLoginTv.setTextColor(Color.parseColor("#660C2275"));
 
         U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
@@ -195,7 +220,7 @@ public class SmsAuthFragment extends BaseFragment {
         map.put("phone", phoneNumber);
         map.put("sign", sign);
         map.put("timeMs", timeMs);
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
 
         ApiMethods.subscribe(mWalletServerApi.sendSMSCode(body), new ApiObserver<ApiResult>() {
             @Override
@@ -220,6 +245,18 @@ public class SmsAuthFragment extends BaseFragment {
         }, this);
     }
 
+    public void finish(String from) {
+        MyLog.d(TAG, "finish" + " from=" + from);
+        if (getActivity() != null && !getActivity().isFinishing()) {
+            getActivity().finish();
+        }
+    }
+
+    @Override
+    protected boolean onBackPressed() {
+        finish("onBackPressed");
+        return true;
+    }
 
     /**
      * 更新准备时间倒计时
@@ -278,5 +315,6 @@ public class SmsAuthFragment extends BaseFragment {
         super.destroy();
         stopTimeTask();
         U.getSoundUtils().release(TAG);
+        mUiHandler.removeCallbacksAndMessages(null);
     }
 }

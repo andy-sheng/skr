@@ -1,0 +1,21 @@
+package com.module.home.game;
+
+import com.component.busilib.friends.RecommendModel;
+import com.component.busilib.friends.SpecialModel;
+import com.module.home.model.GameKConfigModel;
+import com.module.home.model.SlideShowModel;
+
+import java.util.List;
+
+public interface IGameView {
+
+    void setBannerImage(List<SlideShowModel> slideShowModelList);
+
+    void setRecommendInfo(List<RecommendModel> list, int offset, int totalNum);
+
+    void setQuickRoom(List<SpecialModel> list, int offset);
+
+    void setGameConfig(GameKConfigModel gameKConfigModel);
+
+    void setGrabCoinNum(int coinNum);
+}

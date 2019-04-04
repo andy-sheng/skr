@@ -238,7 +238,7 @@ public class RankTopContainerView2 extends RelativeLayout {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(PkSomeOneBurstLightEvent event) {
         MyLog.d(TAG, "PkSomeOneBurstLightEvent onEvent uid " + event.uid);
-        parseBurstEvent(event.uid);
+        parseBurstEvent(event.uid, event.roundInfo.getUserID());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -262,28 +262,25 @@ public class RankTopContainerView2 extends RelativeLayout {
         UserLightInfo ul = new UserLightInfo();
         ul.mUserId = uid;
         ul.mLightState = LightState.MIE;
+        pretendLightComment(currUid, uid, false);
         if (mStatusArr[0] == null) {
             setLight(0, ul);
-            pretendMieComment(currUid, uid, 0);
         } else {
             if (mStatusArr[1] == null) {
                 setLight(1, ul);
-                pretendMieComment(currUid, uid, 1);
             } else if (mStatusArr[2] == null) {
                 setLight(2, ul);
-                pretendMieComment(currUid, uid, 2);
             }
         }
-        mCurScore -= mRoomData.getGameConfigModel().getpKBLightEnergyPercentage() * mTotalScore;
+        mCurScore -= mRoomData.getGameConfigModel().getpKMLightEnergyPercentage() * mTotalScore;
         tryPlayProgressAnimation();
     }
 
     /**
      * @param currUid 被投票者
      * @param uid     投票者
-     * @param index
      */
-    private void pretendMieComment(int currUid, int uid, int index) {
+    private void pretendLightComment(int currUid, int uid, boolean isBao) {
         CommentModel commentModel = new CommentModel();
         PlayerInfoModel voter = RoomDataUtils.getPlayerInfoById(mRoomData, uid);
         commentModel.setCommentType(CommentModel.TYPE_TRICK);
@@ -304,18 +301,19 @@ public class RankTopContainerView2 extends RelativeLayout {
                     .append(voter.getUserInfo().getNickname() + " ").setForegroundColor(CommentModel.TEXT_YELLOW)
                     .append("对").setForegroundColor(CommentModel.TEXT_WHITE)
                     .append(model.getUserInfo().getNickname()).setForegroundColor(CommentModel.TEXT_YELLOW)
-                    .append("按了“x”").setForegroundColor(CommentModel.TEXT_WHITE)
+                    .append(isBao ? "爆了个灯" : "按了“x”").setForegroundColor(CommentModel.TEXT_WHITE)
                     .create();
             commentModel.setStringBuilder(stringBuilder);
         }
         EventBus.getDefault().post(new PretendCommentMsgEvent(commentModel));
     }
 
-    private void parseBurstEvent(int uid) {
+    private void parseBurstEvent(int uid, int curUid) {
         MyLog.d(TAG, "parseBurstEvent" + " uid=" + uid);
         UserLightInfo ul = new UserLightInfo();
         ul.mUserId = uid;
         ul.mLightState = LightState.BAO;
+        pretendLightComment(curUid, uid, true);
         if (mStatusArr[1] == null) {
             setLight(1, ul);
         } else {
@@ -325,7 +323,7 @@ public class RankTopContainerView2 extends RelativeLayout {
                 setLight(2, ul);
             }
         }
-        mCurScore += mRoomData.getGameConfigModel().getpKMLightEnergyPercentage() * mTotalScore;
+        mCurScore += mRoomData.getGameConfigModel().getpKBLightEnergyPercentage() * mTotalScore;
         tryPlayProgressAnimation();
     }
 
@@ -370,6 +368,10 @@ public class RankTopContainerView2 extends RelativeLayout {
 //            mRightLedView.setVisibility(GONE);
 //            mMidLedView.setVisibility(GONE);
 //        }
+        if (userLightInfo.mLightState == LightState.BAO) {
+            // TODO: 2019/3/22 爆灯不做效果
+            return;
+        }
         mStatusArr[index] = userLightInfo;
         LightState lightState = userLightInfo.mLightState;
         MyLog.d(TAG, "setLight" + " index=" + index + " lightState=" + lightState);
@@ -568,7 +570,7 @@ public class RankTopContainerView2 extends RelativeLayout {
                 }
             });
         } catch (Exception e) {
-            System.out.print(true);
+            MyLog.e(TAG,e);
         }
 
 

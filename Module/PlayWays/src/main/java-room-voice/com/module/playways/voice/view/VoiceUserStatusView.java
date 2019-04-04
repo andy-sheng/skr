@@ -1,7 +1,6 @@
 package com.module.playways.voice.view;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
@@ -11,6 +10,7 @@ import android.widget.RelativeLayout;
 import com.common.core.avatar.AvatarUtils;
 import com.common.image.fresco.BaseImageView;
 
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
@@ -26,6 +26,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
 
 public class VoiceUserStatusView extends RelativeLayout {
+
+    public final static String TAG = "VoiceUserStatusView";
 
     static final int MSG_SPEAK_OVER = 1;
     SVGAImageView mSpeakerSvga;
@@ -70,7 +72,7 @@ public class VoiceUserStatusView extends RelativeLayout {
         mSpeakerSvga = (SVGAImageView) this.findViewById(R.id.speaker_svga);
         mAvatarIv = (BaseImageView) this.findViewById(R.id.avatar_iv);
         mMuteMicIv = (ExImageView) this.findViewById(R.id.mute_mic_iv);
-        mLeaveIv = (ExImageView) this.findViewById(R.id.leave_iv);
+        mLeaveIv = (ExImageView) this.findViewById(R.id.invite_tv);
 
         mAvatarIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -162,7 +164,7 @@ public class VoiceUserStatusView extends RelativeLayout {
                 }
             });
         } catch (Exception e) {
-            System.out.print(true);
+            MyLog.e(TAG,e);
         }
     }
 

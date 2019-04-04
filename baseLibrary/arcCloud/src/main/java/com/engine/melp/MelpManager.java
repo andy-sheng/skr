@@ -120,7 +120,7 @@ public class MelpManager {
         map.put("Type", 1);
         map.put("UserID", uid);
 
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         melpScoreServerApi.requestMelpScore(body)
                 .subscribe(new Consumer<ApiResult>() {
                     @Override

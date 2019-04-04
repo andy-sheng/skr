@@ -1,6 +1,7 @@
 package com.engine;
 
 public class EngineEvent {
+    public static final int TYPE_USER_SELF_JOIN_SUCCESS = 21;
     public static final int TYPE_USER_JOIN = 1;
     public static final int TYPE_USER_LEAVE = 2;
     public static final int TYPE_FIRST_VIDEO_DECODED = 3;

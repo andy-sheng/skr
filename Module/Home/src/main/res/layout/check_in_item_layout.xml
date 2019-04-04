@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/view_87_dp"
+    android:layout_height="@dimen/view_87_dp">
+
+    <com.common.view.ex.ExTextView
+        android:layout_marginTop="@dimen/view_d_5_dp"
+        android:id="@+id/tv_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_2_dp"
+        android:text="07"
+        android:textColor="#CEE6FF"
+        android:textSize="@dimen/textsize_25_dp" />
+
+    <ImageView
+        android:id="@+id/iv_gold_bj"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true" />
+
+    <TextView
+        android:id="@+id/tv_gold"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_20_dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="30金币"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_14_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/tv_cover"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:bl_corners_radius="@dimen/view_5_dp"
+        app:bl_solid_color="@color/black_trans_25" />
+
+    <ImageView
+        android:id="@+id/ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>

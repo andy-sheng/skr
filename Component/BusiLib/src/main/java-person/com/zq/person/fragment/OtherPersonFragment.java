@@ -2,12 +2,13 @@ package com.zq.person.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -32,9 +33,12 @@ import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
 import com.component.busilib.constans.GameModeType;
-import com.jakewharton.rxbinding2.view.RxView;
+import com.dialog.view.TipsDialogView;
 import com.module.ModuleServiceManager;
-import com.zq.level.view.NormalLevelView;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.OnDismissListener;
+import com.orhanobut.dialogplus.ViewHolder;
+import com.zq.level.view.NormalLevelView2;
 import com.zq.live.proto.Common.ESex;
 import com.zq.person.presenter.OtherPersonPresenter;
 import com.zq.person.view.IOtherPersonView;
@@ -45,9 +49,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import io.reactivex.functions.Consumer;
 import model.RelationNumModel;
 
 import com.common.core.userinfo.model.UserLevelModel;
@@ -84,7 +86,8 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
     ExRelativeLayout mMedalLayout;
     ExTextView mRankNumTv;
     ExTextView mSingendNumTv;
-    NormalLevelView mLevelView;
+    ExTextView mLevelTv;
+    NormalLevelView2 mLevelView;
     ExTextView mRankTv;
     LinearLayout mLlBottomContainer;
     ExTextView mFollowTv;
@@ -97,8 +100,9 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
 
     int rank = 0;           //当前父段位
     int subRank = 0;        //当前子段位
-    int starNum = 0;        //当前星星
-    int starLimit = 0;      //当前星星上限
+    String rankDesc;       //段位描述
+
+    DialogPlus mDialogPlus;
 
     @Override
     public int initView() {
@@ -118,7 +122,8 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
         mMedalLayout = (ExRelativeLayout) mRootView.findViewById(R.id.medal_layout);
         mRankNumTv = (ExTextView) mRootView.findViewById(R.id.rank_num_tv);
         mSingendNumTv = (ExTextView) mRootView.findViewById(R.id.singend_num_tv);
-        mLevelView = (NormalLevelView) mRootView.findViewById(R.id.level_view);
+        mLevelView = (NormalLevelView2) mRootView.findViewById(R.id.level_view);
+        mLevelTv = (ExTextView) mRootView.findViewById(R.id.level_tv);
         mRankTv = (ExTextView) mRootView.findViewById(R.id.rank_tv);
         mLlBottomContainer = (LinearLayout) mRootView.findViewById(R.id.ll_bottom_container);
         mFollowTv = (ExTextView) mRootView.findViewById(R.id.follow_tv);
@@ -206,7 +211,8 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
                 }
                 if (mUserInfoModel != null) {
                     if ((int) mFollowTv.getTag() == RELATION_FOLLOWED) {
-                        UserInfoManager.getInstance().mateRelation(mUserInfoModel.getUserId(), UserInfoManager.RA_UNBUILD, mUserInfoModel.isFriend());
+                        unFollow(mUserInfoModel);
+//                        UserInfoManager.getInstance().mateRelation(mUserInfoModel.getUserId(), UserInfoManager.RA_UNBUILD, mUserInfoModel.isFriend());
                     } else if ((int) mFollowTv.getTag() == RELATION_UN_FOLLOW) {
                         UserInfoManager.getInstance().mateRelation(mUserInfoModel.getUserId(), UserInfoManager.RA_BUILD, mUserInfoModel.isFriend());
                     }
@@ -218,6 +224,48 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
             mLlBottomContainer.setVisibility(View.GONE);
             mReport.setVisibility(View.GONE);
         }
+    }
+
+    private void unFollow(final UserInfoModel userInfoModel) {
+        TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
+                .setTitleTip("取消关注")
+                .setMessageTip("是否取消关注")
+                .setConfirmTip("取消关注")
+                .setCancelTip("不了")
+                .setConfirmBtnClickListener(new DebounceViewClickListener() {
+
+                    @Override
+                    public void clickValid(View v) {
+                        if (mDialogPlus != null) {
+                            mDialogPlus.dismiss();
+                        }
+                        UserInfoManager.getInstance().mateRelation(userInfoModel.getUserId(), UserInfoManager.RA_UNBUILD, userInfoModel.isFriend());
+                    }
+                })
+                .setCancelBtnClickListener(new DebounceViewClickListener() {
+                    @Override
+                    public void clickValid(View v) {
+                        if (mDialogPlus != null) {
+                            mDialogPlus.dismiss();
+                        }
+                    }
+                })
+                .build();
+
+        mDialogPlus = DialogPlus.newDialog(getContext())
+                .setContentHolder(new ViewHolder(tipsDialogView))
+                .setGravity(Gravity.BOTTOM)
+                .setContentBackgroundResource(R.color.transparent)
+                .setOverlayBackgroundResource(R.color.black_trans_80)
+                .setExpanded(false)
+                .setOnDismissListener(new OnDismissListener() {
+                    @Override
+                    public void onDismiss(@NonNull DialogPlus dialog) {
+
+                    }
+                })
+                .create();
+        mDialogPlus.show();
     }
 
     @Override
@@ -306,13 +354,11 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
                 rank = userLevelModel.getScore();
             } else if (userLevelModel.getType() == UserLevelModel.SUB_RANKING_TYPE) {
                 subRank = userLevelModel.getScore();
-            } else if (userLevelModel.getType() == UserLevelModel.TOTAL_RANKING_STAR_TYPE) {
-                starNum = userLevelModel.getScore();
-            } else if (userLevelModel.getType() == UserLevelModel.REAL_RANKING_STAR_TYPE) {
-                starLimit = userLevelModel.getScore();
+                rankDesc = userLevelModel.getDesc();
             }
         }
-        mLevelView.bindData(rank, subRank, starLimit, starNum);
+        mLevelView.bindData(rank, subRank);
+        mLevelTv.setText(rankDesc);
     }
 
     @Override
@@ -402,5 +448,8 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
     public void destroy() {
         super.destroy();
         U.getSoundUtils().release(TAG);
+        if (mDialogPlus != null) {
+            mDialogPlus.dismiss();
+        }
     }
 }

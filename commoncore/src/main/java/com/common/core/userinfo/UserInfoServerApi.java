@@ -1,5 +1,7 @@
 package com.common.core.userinfo;
 
+import android.support.v7.widget.RecyclerView;
+
 import com.common.rxretrofit.ApiResult;
 
 import io.reactivex.Observable;
@@ -27,9 +29,10 @@ public interface UserInfoServerApi {
 
     /**
      * 拿到某些人的信息
-     * @param body  body: {
-     *  "userIDs": [1982416,1156569]
-     * }
+     *
+     * @param body body: {
+     *             "userIDs": [1982416,1156569]
+     *             }
      * @return
      */
     @POST("/v1/query/uprofiles")
@@ -43,7 +46,7 @@ public interface UserInfoServerApi {
      * @return
      */
     @GET("/v1/skr/homepage")
-    Observable<ApiResult> getHomePage(@Query("userID") int userID);
+    Observable<ApiResult> getHomePage(@Query("userID") long userID);
 
 
     /**
@@ -60,6 +63,15 @@ public interface UserInfoServerApi {
     Observable<ApiResult> mateRelation(@Body RequestBody body);
 
     /**
+     * 成为好友
+     *
+     * @param body "toUserID" : 关系被动接受者id
+     * @return
+     */
+    @PUT("/v1/mate/mutual-follow")
+    Observable<ApiResult> beFriend(@Body RequestBody body);
+
+    /**
      * 获取指定关系列表
      *
      * @param relation [必选]关系类型   0 未知  RC_UNKNOWN
@@ -74,6 +86,24 @@ public interface UserInfoServerApi {
     Observable<ApiResult> getRelationList(@Query("relation") int relation,
                                           @Query("offset") int offset,
                                           @Query("limit") int limit);
+
+
+    /**
+     * 搜索好友列表
+     *
+     * @param searchContent 搜索好友
+     * @param offset        [必选]偏移
+     * @param limit         [必选]限制数量,最大50
+     * @return
+     */
+    @GET("/v1/user/search-users")
+    Observable<ApiResult> searchFriendsList(@Query("searchContent") String searchContent,
+                                            @Query("offset") int offset,
+                                            @Query("limit") int limit);
+
+    @GET("/v1/mate/contacts")
+    Observable<ApiResult> getFriendStatusList(@Query("offset") int offset,
+                                              @Query("limit") int limit);
 
     /**
      * 获取指定用户的关系数量
@@ -145,7 +175,7 @@ public interface UserInfoServerApi {
      * @return
      */
     @GET("/v1/rank/region-seq")
-    Observable<ApiResult> getReginRank(@Query("userID") int userID);
+    Observable<ApiResult> getReginRank(@Query("userID") long userID);
 
 
     /**
@@ -165,4 +195,13 @@ public interface UserInfoServerApi {
      */
     @PUT("v1/report/upload")
     Observable<ApiResult> report(@Body RequestBody body);
+
+    /**
+     * 获取某人的金币
+     *
+     * @param userID
+     * @return
+     */
+    @GET("http://dev.stand.inframe.mobi/v1/stand/coin-cnt")
+    Observable<ApiResult> getCoinNum(@Query("userID") long userID);
 }

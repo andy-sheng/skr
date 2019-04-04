@@ -7,7 +7,6 @@ import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.Gravity;
@@ -20,14 +19,12 @@ import com.common.core.account.UserAccountManager;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrAudioPermission;
-import com.common.core.userinfo.UserInfoManager;
 import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
 import com.common.statistics.StatConstants;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.HttpUtils;
-import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.manager.BgMusicManager;
@@ -35,10 +32,13 @@ import com.dialog.view.TipsDialogView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.listener.SVGAListener;
+import com.module.playways.grab.room.view.GrabDengBigAnimationView;
+import com.module.playways.rank.others.LyricAndAccMatchManager;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.room.RankRoomData;
 import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.comment.CommentView;
+import com.module.playways.rank.room.event.PkSomeOneBurstLightEvent;
 import com.module.playways.rank.room.event.RankToVoiceTransformDataEvent;
 import com.module.playways.rank.room.gift.GiftBigAnimationViewGroup;
 import com.module.playways.rank.room.gift.GiftContinueViewGroup;
@@ -50,8 +50,8 @@ import com.module.playways.rank.room.view.BottomContainerView;
 import com.module.playways.rank.room.view.IGameRuleView;
 import com.module.playways.rank.room.view.InputContainerView;
 import com.module.playways.rank.room.view.RankOpView;
-import com.module.playways.rank.room.view.RankTopContainerView2;
 import com.module.playways.rank.room.view.RankTopContainerView1;
+import com.module.playways.rank.room.view.RankTopContainerView2;
 import com.module.playways.rank.room.view.TurnChangeCardView;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
@@ -61,50 +61,36 @@ import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
-import com.trello.rxlifecycle2.android.FragmentEvent;
 import com.zq.dialog.PersonInfoDialog;
-import com.zq.lyrics.LyricsManager;
-import com.zq.lyrics.LyricsReader;
-import com.zq.lyrics.event.LyricEventLauncher;
 import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.ManyLyricsView;
 import com.zq.lyrics.widget.VoiceScaleView;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import static com.zq.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
-
 public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     public final static String TAG = "RankingRoomFragment";
 
-    static final int ENSURE_RUN = 99;
-
-    static final int SHOW_RIVAL_LYRIC = 10;
+    static final int ENSURE_SELF_RUN = 99;
+    static final int ENSURE_OTHER_RUN = 98;
 
     RankRoomData mRoomData;
 
@@ -134,32 +120,29 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
 
-    LyricEventLauncher mLyricEventLauncher = new LyricEventLauncher();
-
     Handler mUiHanlder = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if (msg.what == ENSURE_RUN) {
+            if (msg.what == ENSURE_SELF_RUN) {
+                MyLog.d(TAG, "handleMessage ENSURE_SELF_RUN");
                 Runnable runnable = (Runnable) msg.obj;
                 if (runnable != null) {
                     runnable.run();
                     mPendingSelfCountDownRunnable = null;
                 }
                 onFirstSongGo();
-            } else if (SHOW_RIVAL_LYRIC == msg.what) {
-
+            } else if (ENSURE_OTHER_RUN == msg.what) {
+                int uid = msg.arg1;
+                MyLog.d(TAG, "handleMessage ENSURE_OTHER_RUN uid=" + uid);
+                playShowMainStageAnimator(uid);
             }
         }
     };
 
-    Disposable mPrepareLyricTask;
-
     TurnChangeCardView mTurnChangeView;
 
     PersonInfoDialog mPersonInfoDialog;
-
-    SongModel mPlayingSongModel;
 
     Runnable mPendingSelfCountDownRunnable;
 
@@ -173,9 +156,13 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     VoiceScaleView mVoiceScaleView;
 
+    GrabDengBigAnimationView mDengBigAnimation;
+
     List<Animator> mAnimatorList = new ArrayList<>();  //存放所有需要尝试取消的动画
 
     boolean isGameEndAniamtionShow = false; // 标记对战结束动画是否播放
+
+    LyricAndAccMatchManager mLyricAndAccMatchManager = new LyricAndAccMatchManager();
 
     @Override
     public int initView() {
@@ -267,12 +254,12 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             public void run() {
                 // 模式改为3，自动播放主舞台退出的svga动画
 //                mUFOMode = 3;
-                playhideMainStageAnimator();
+                playHideMainStageAnimator();
                 mManyLyricsView.setVisibility(View.GONE);
             }
         }, 800);
-
-        if (mRoomData.getRealRoundInfo().getRoundSeq() == 3) {
+        RankRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
+        if (infoModel != null && infoModel.getRoundSeq() == 3) {
             // 最后一轮
             mUiHanlder.postDelayed(new Runnable() {
                 @Override
@@ -283,7 +270,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         }
     }
 
-    private void playhideMainStageAnimator() {
+    private void playHideMainStageAnimator() {
         MyLog.d(TAG, "playhideMainStageAnimator");
         //        // 舞台退出，淡出
         ObjectAnimator objectAnimatorStage = ObjectAnimator.ofFloat(mStageView, View.ALPHA, 1f, 0f);
@@ -498,11 +485,11 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
                 @Override
                 public void onError() {
-
+                    MyLog.d(TAG, "playShowMainStageAnimator onError");
                 }
             });
         } catch (Exception e) {
-            System.out.print(true);
+            MyLog.e(TAG, e);
         }
 
         RxView.clicks(mSingAvatarView)
@@ -630,7 +617,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         }
         mInputContainerView.hideSoftInput();
 
-        mPersonInfoDialog = new PersonInfoDialog(getActivity(), userID);
+        mPersonInfoDialog = new PersonInfoDialog(getActivity(), userID, true, false);
         mPersonInfoDialog.show();
     }
 
@@ -668,6 +655,8 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         giftContinueViewGroup.setRoomData(mRoomData);
         GiftBigAnimationViewGroup giftBigAnimationViewGroup = mRootView.findViewById(R.id.gift_big_animation_vg);
         giftBigAnimationViewGroup.setRoomData(mRoomData);
+
+        mDengBigAnimation = (GrabDengBigAnimationView) mRootView.findViewById(R.id.deng_big_animation);
     }
 
     private void initOpView() {
@@ -689,25 +678,25 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     private SVGAParser getSVGAParser() {
         if (mSVGAParser == null) {
             mSVGAParser = new SVGAParser(U.app());
-            mSVGAParser.setFileDownloader(new SVGAParser.FileDownloader() {
-                @Override
-                public void resume(final URL url, final Function1<? super InputStream, Unit> complete, final Function1<? super Exception, Unit> failure) {
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            OkHttpClient client = new OkHttpClient();
-                            Request request = new Request.Builder().url(url).get().build();
-                            try {
-                                Response response = client.newCall(request).execute();
-                                complete.invoke(response.body().byteStream());
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                                failure.invoke(e);
-                            }
-                        }
-                    }).start();
-                }
-            });
+//            mSVGAParser.setFileDownloader(new SVGAParser.FileDownloader() {
+//                @Override
+//                public void resume(final URL url, final Function1<? super InputStream, Unit> complete, final Function1<? super Exception, Unit> failure) {
+//                    new Thread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            OkHttpClient client = new OkHttpClient();
+//                            Request request = new Request.Builder().url(url).get().build();
+//                            try {
+//                                Response response = client.newCall(request).execute();
+//                                complete.invoke(response.body().byteStream());
+//                            } catch (IOException e) {
+//                                e.printStackTrace();
+//                                failure.invoke(e);
+//                            }
+//                        }
+//                    }).start();
+//                }
+//            });
         }
         return mSVGAParser;
     }
@@ -728,7 +717,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     @Override
     public boolean useEventBus() {
-        return false;
+        return true;
     }
 
     @Override
@@ -766,6 +755,10 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                 }
             }
             mAnimatorList.clear();
+        }
+
+        if (mLyricAndAccMatchManager != null) {
+            mLyricAndAccMatchManager.stop();
         }
 
         U.getSoundUtils().release(TAG);
@@ -827,22 +820,23 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         mRankOpView.setVisibility(View.GONE);
         mManyLyricsView.setVisibility(View.GONE);
 
-        mLyricEventLauncher.destroy();
+        mLyricAndAccMatchManager.stop();
         // 加保护，确保当前主舞台一定被移除
         mStageView.setVisibility(View.GONE);
         mSingAvatarView.setVisibility(View.GONE);
         mCountDownProcess.setVisibility(View.GONE);
 
         // 确保演唱逻辑一定要执行
-        Message msg = mUiHanlder.obtainMessage(ENSURE_RUN);
-        msg.what = ENSURE_RUN;
+        Message msg = mUiHanlder.obtainMessage(ENSURE_SELF_RUN);
+        msg.what = ENSURE_SELF_RUN;
         msg.obj = countDownOver;
-        mUiHanlder.removeMessages(ENSURE_RUN);
+        mUiHanlder.removeMessages(ENSURE_SELF_RUN);
         mUiHanlder.sendMessageDelayed(msg, 5000);
 
         int seq = 0;
-        if (mRoomData.getRealRoundInfo() != null) {
-            seq = mRoomData.getRealRoundInfo().getRoundSeq();
+        RankRoundInfoModel now = mRoomData.getRealRoundInfo();
+        if (now != null) {
+            seq = now.getRoundSeq();
         }
         if (seq == 1) {
             mUiHanlder.postDelayed(new Runnable() {
@@ -857,18 +851,24 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             @Override
             public void onFinished() {
                 if (countDownOver != null) {
-                    mUiHanlder.removeMessages(ENSURE_RUN);
+                    mUiHanlder.removeMessages(ENSURE_SELF_RUN);
                     countDownOver.run();
                 }
             }
         });
-        mUiHanlder.removeMessages(SHOW_RIVAL_LYRIC);
+        mUiHanlder.removeMessages(ENSURE_OTHER_RUN);
     }
 
     @Override
     public void onOtherStartSing(SongModel songModel) {
         mRankOpView.playCountDown(mRoomData.getRealRoundSeq(), true);
-        mCountDownProcess.startCountDown(0, mPlayingSongModel.getTotalMs());
+        mCountDownProcess.startCountDown(0, songModel.getTotalMs());
+        if (mManyLyricsView != null) {
+            mManyLyricsView.setVisibility(View.GONE);
+        }
+        if (mVoiceScaleView != null) {
+            mVoiceScaleView.setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -883,7 +883,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         mRankOpView.playCountDown(mRoomData.getRealRoundSeq(), false);
         mVoiceScaleView.setVisibility(View.GONE);
         mManyLyricsView.setVisibility(View.GONE);
-        mLyricEventLauncher.destroy();
+        mLyricAndAccMatchManager.stop();
         // 加保护，确保当前主舞台一定被移除
         mStageView.setVisibility(View.GONE);
         mSingAvatarView.setVisibility(View.GONE);
@@ -896,8 +896,11 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             MyLog.w(TAG, "mRoomData为null");
             return;
         }
-
-        int seq = mRoomData.getRealRoundInfo().getRoundSeq();
+        int seq = 0;
+        RankRoundInfoModel now = mRoomData.getRealRoundInfo();
+        if (now != null) {
+            seq = now.getRoundSeq();
+        }
         if (seq == 1) {
             mUiHanlder.postDelayed(new Runnable() {
                 @Override
@@ -906,17 +909,21 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                 }
             }, 500);
         }
+
+        mUiHanlder.removeMessages(ENSURE_OTHER_RUN);
+        Message msg = mUiHanlder.obtainMessage();
+        msg.what = ENSURE_OTHER_RUN;
+        msg.arg1 = uid;
+        mUiHanlder.sendMessageDelayed(msg, 3000);
+
         mTurnChangeView.setData(mRoomData, new SVGAListener() {
             @Override
             public void onFinished() {
+                mUiHanlder.removeMessages(ENSURE_OTHER_RUN);
                 playShowMainStageAnimator(uid);
             }
         });
 
-        mUiHanlder.removeMessages(SHOW_RIVAL_LYRIC);
-        Message showLyricMsg = new Message();
-        showLyricMsg.what = SHOW_RIVAL_LYRIC;
-        mUiHanlder.sendMessageDelayed(showLyricMsg, 3000);
     }
 
     @Override
@@ -933,7 +940,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     private void startGameEndAniamtion(boolean isGameOver) {
         // 提前加载音效
-        U.getSoundUtils().preLoad(RankLevelChange2Fragment.TAG, R.raw.rank_win, R.raw.rank_lose);
+        U.getSoundUtils().preLoad(RankLevelChangeFragment2.TAG, R.raw.rank_win, R.raw.rank_lose);
         if (isGameEndAniamtionShow) {
             // 动画已经在播放
             if (isGameOver) {
@@ -989,7 +996,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         EventBus.getDefault().removeStickyEvent(RankToVoiceTransformDataEvent.class);
         EventBus.getDefault().postSticky(event);
         // 先播放段位动画
-        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankLevelChange2Fragment.class)
+        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), RankLevelChangeFragment2.class)
                 .setAddToBackStack(true)
                 .setHasAnimation(false)
                 .addDataBeforeAdd(1, mRoomData)
@@ -1014,11 +1021,8 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     @Override
     public void gameFinish() {
         MyLog.w(TAG, "游戏结束了");
-        mLyricEventLauncher.destroy();
+        mLyricAndAccMatchManager.stop();
         mRankOpView.setVisibility(View.GONE);
-        if (mPrepareLyricTask != null && !mPrepareLyricTask.isDisposed()) {
-            mPrepareLyricTask.dispose();
-        }
         mManyLyricsView.setVisibility(View.GONE);
         mManyLyricsView.release();
         mVoiceScaleView.setVisibility(View.GONE);
@@ -1038,6 +1042,19 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(PkSomeOneBurstLightEvent event) {
+        MyLog.d(TAG, "PkSomeOneBurstLightEvent onEvent uid " + event.uid);
+        if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
+            // 当前我是演唱者
+            mDengBigAnimation.setTranslationY(U.getDisplayUtils().dip2px(200));
+            mDengBigAnimation.playBurstAnimation(true);
+        } else {
+            mDengBigAnimation.setTranslationY(0);
+            mDengBigAnimation.playBurstAnimation(false);
+        }
+    }
+
     @Override
     public void updateScrollBarProgress(int score, int curTotalScore, int lineNum) {
         mRankTopContainerView.setScoreProgress(score, curTotalScore, lineNum);
@@ -1049,126 +1066,36 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     }
 
     @Override
-    public void playLyric(SongModel songModel, boolean play) {
+    public void playLyric(SongModel songModel) {
         if (songModel == null) {
             MyLog.d(TAG, "songModel 是空的");
             return;
         }
         MyLog.w(TAG, "开始播放歌词 songId=" + songModel.getItemID());
-        mPlayingSongModel = songModel;
 
-        if (mPrepareLyricTask != null && !mPrepareLyricTask.isDisposed()) {
-            mPrepareLyricTask.dispose();
-        }
-
-        File file = SongResUtils.getLyricFileByUrl(songModel.getLyric());
-
-        if (file == null || !file.exists()) {
-            MyLog.w(TAG, "playLyric is not in local file");
-            fetchLyricTask(songModel, play);
-        } else {
-            MyLog.w(TAG, "playLyric is exist");
-            final String fileName = SongResUtils.getFileNameWithMD5(songModel.getLyric());
-            parseLyrics(fileName, play);
-        }
-    }
-
-
-    private void parseLyrics(String fileName, boolean play) {
-        MyLog.w(TAG, "parseLyrics" + " fileName=" + fileName);
-        mPrepareLyricTask = LyricsManager.getLyricsManager(U.app())
-                .loadLyricsObserable(fileName, fileName.hashCode() + "")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .retry(10)
-                .compose(bindUntilEvent(FragmentEvent.DESTROY))
-                .subscribe(lyricsReader -> {
-                    drawLyric(fileName.hashCode() + "", lyricsReader, play);
-                }, throwable -> {
-                    MyLog.e(TAG, throwable);
-                });
-    }
-
-
-    private void drawLyric(String fileNameHash, LyricsReader lyricsReader, boolean play) {
-        MyLog.w(TAG, "drawLyric" + " fileNameHash=" + fileNameHash + " lyricsReader=" + lyricsReader);
-        if (lyricsReader != null) {
-            lyricsReader.setHash(fileNameHash);
-            //自己
-            if (mRoomData.getRealRoundInfo().getUserID()
-                    == MyUserInfoManager.getInstance().getUid()) {
-                mManyLyricsView.setVisibility(View.VISIBLE);
-                mManyLyricsView.initLrcData();
-                lyricsReader.cut(mPlayingSongModel.getRankLrcBeginT(), mPlayingSongModel.getRankLrcEndT());
-                mManyLyricsView.setLyricsReader(lyricsReader);
-
-                Set<Integer> set = new HashSet<>();
-                set.add(lyricsReader.getLineInfoIdByStartTs(mPlayingSongModel.getRankLrcBeginT()));
-                mManyLyricsView.setNeedCountDownLine(set);
-
-                if (!play) {
-                    mManyLyricsView.seekto(mPlayingSongModel.getBeginMs());
-                    mManyLyricsView.pause();
-                }
-                if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY && play) {
-                    MyLog.w(TAG, "onEventMainThread " + "play");
-                    mManyLyricsView.play(mPlayingSongModel.getBeginMs());
-                    int eventNum = mLyricEventLauncher.postLyricEvent(lyricsReader, mPlayingSongModel.getBeginMs(), mPlayingSongModel.getEndMs(), mRoomData.getRealRoundInfo());
-                    mRoomData.setSongLineNum(eventNum);
-                    mCorePresenter.sendTotalScoreToOthers(eventNum);
-                    mVoiceScaleView.setVisibility(View.VISIBLE);
-                    mVoiceScaleView.startWithData(lyricsReader.getLyricsLineInfoList(), mPlayingSongModel.getBeginMs());
-                }
-            } else {
-                if (play && RoomDataUtils.isRobotRound(mRoomData.getRealRoundInfo(), mRoomData.getPlayerInfoList())) {
-                    lyricsReader.cut(mPlayingSongModel.getRankLrcBeginT(), mPlayingSongModel.getRankLrcEndT());
-                    int eventNum = mLyricEventLauncher.postLyricEvent(lyricsReader, mPlayingSongModel.getBeginMs(), mPlayingSongModel.getEndMs(), mRoomData.getRealRoundInfo());
-                    mRoomData.setSongLineNum(eventNum);
-                    mCorePresenter.sendTotalScoreToOthers(eventNum);
-                }
-                mManyLyricsView.setVisibility(View.GONE);
-                mManyLyricsView.resetData();
-            }
-        }
-    }
-
-
-    private void fetchLyricTask(SongModel songModel, boolean play) {
-        MyLog.w(TAG, "fetchLyricTask" + " songModel=" + songModel);
-        mPrepareLyricTask = Observable.create(new ObservableOnSubscribe<File>() {
+        mLyricAndAccMatchManager.setArgs(mManyLyricsView, mVoiceScaleView,
+                songModel.getLyric(), songModel.getRankLrcBeginT(), songModel.getRankLrcEndT(),
+                songModel.getBeginMs(), songModel.getEndMs());
+        mLyricAndAccMatchManager.start(new LyricAndAccMatchManager.Listener() {
             @Override
-            public void subscribe(ObservableEmitter<File> emitter) {
-                File tempFile = new File(SongResUtils.createTempLyricFileName(songModel.getLyric()));
+            public void onLyricParseSuccess() {
 
-                boolean isSuccess = U.getHttpUtils().downloadFileSync(songModel.getLyric(), tempFile, null);
-
-                File oldName = new File(SongResUtils.createTempLyricFileName(songModel.getLyric()));
-                File newName = new File(SongResUtils.createLyricFileName(songModel.getLyric()));
-
-                if (isSuccess) {
-                    if (oldName.renameTo(newName)) {
-                        MyLog.w(TAG, "已重命名");
-                        emitter.onNext(newName);
-                        emitter.onComplete();
-                    } else {
-                        MyLog.w(TAG, "Error");
-                        emitter.onError(new Throwable("重命名错误"));
-                    }
-                } else {
-                    emitter.onError(new Throwable("下载失败" + TAG));
-                }
             }
-        }).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .retry(1000)
-                .compose(bindUntilEvent(FragmentEvent.DESTROY))
-                .subscribe(file -> {
-                    final String fileName = SongResUtils.getFileNameWithMD5(songModel.getLyric());
-                    parseLyrics(fileName, play);
-                }, throwable -> {
-                    MyLog.e(TAG, throwable);
-                });
+
+            @Override
+            public void onLyricParseFailed() {
+
+            }
+
+            @Override
+            public void onLyricEventPost(int eventNum) {
+                mRoomData.setSongLineNum(eventNum);
+                mCorePresenter.sendTotalScoreToOthers(eventNum);
+            }
+        });
+
     }
+
 
     static class PendingRivalData {
         int uid;

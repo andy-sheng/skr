@@ -22,6 +22,7 @@ import com.common.upload.UploadTask;
 import com.common.utils.FragmentUtils;
 import com.common.utils.LbsUtils;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
@@ -67,7 +68,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
     RelativeLayout mEditSex;
     ExTextView mSexTv;
     RelativeLayout mEditLocation;
-    ExTextView mLocationTv;
+    MarqueeTextView mLocationTv;
     ExImageView mLocationRefreshBtn;
     ProgressBar mProgressBar;
 
@@ -94,7 +95,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
         mSignTv = (MarqueeTextView) findViewById(R.id.sign_tv);
         mAgeTv = (ExTextView) findViewById(R.id.age_tv);
         mSexTv = (ExTextView) findViewById(R.id.sex_tv);
-        mLocationTv = (ExTextView) findViewById(R.id.location_tv);
+        mLocationTv = (MarqueeTextView) findViewById(R.id.location_tv);
         mLocationRefreshBtn = (ExImageView) findViewById(R.id.location_refresh_btn);
 
         mProgressBar = findViewById(R.id.progress_bar);
@@ -109,15 +110,13 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
         mEditLocation.setOnClickListener(this);
         mLocationRefreshBtn.setOnClickListener(this);
 
-        RxView.clicks(mTitlebar.getLeftTextView())
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-//                        U.getSoundUtils().play(EditInfoActivity.TAG, R.raw.normal_back, 500);
-                        finish();
-                    }
-                });
+        mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+//                U.getSoundUtils().play(EditInfoActivity.TAG, R.raw.normal_back, 500);
+                finish();
+            }
+        });
 
         U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
     }
@@ -147,8 +146,6 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
         }
         mSexTv.setText(sex);
         mLocationTv.setText(MyUserInfoManager.getInstance().getLocationDesc());
-
-
     }
 
     @Override

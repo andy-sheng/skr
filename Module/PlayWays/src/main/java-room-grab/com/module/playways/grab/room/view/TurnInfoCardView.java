@@ -83,7 +83,7 @@ public class TurnInfoCardView extends RelativeLayout {
                 }
             });
         } catch (Exception e) {
-            System.out.print(true);
+            MyLog.e(TAG,e);
         }
 
         mFirstSvga.setCallback(new SVGACallback() {
@@ -137,7 +137,7 @@ public class TurnInfoCardView extends RelativeLayout {
                 }
             });
         } catch (Exception e) {
-            System.out.print(true);
+            MyLog.e(TAG,e);
         }
 
         mNextSvga.setCallback(new SVGACallback() {

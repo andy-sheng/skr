@@ -1,14 +1,12 @@
 package com.common.engine;
 
-import android.support.v4.util.Pair;
-
 import com.common.utils.U;
 
 public class ScoreConfig {
     static int mConfig;
 
     static {
-        mConfig = U.getPreferenceUtils().getSettingInt("score_config", 0x0001 | 0x0002);
+        mConfig = U.getPreferenceUtils().getSettingInt("score_config", 0x0002 | 0x0004 );
     }
 
     public static void setMelpEnable(boolean enable) {
@@ -29,7 +27,7 @@ public class ScoreConfig {
         U.getPreferenceUtils().setSettingInt("score_config", mConfig);
     }
 
-    public static void setMelpServerEnable(boolean enable) {
+    public static void setMelp2Enable(boolean enable) {
         if (enable) {
             mConfig = (mConfig | 0x0004);
         } else {
@@ -46,7 +44,7 @@ public class ScoreConfig {
         return (mConfig & 0x0001) == 0x0001;
     }
 
-    public static boolean isMelpServerEnable() {
+    public static boolean isMelp2Enable() {
         return (mConfig & 0x0004) == 0x0004;
     }
 
@@ -58,8 +56,8 @@ public class ScoreConfig {
         if (isMelpEnable()) {
             sb.append("MELP").append("+");
         }
-        if (isMelpServerEnable()) {
-            sb.append("MELPSERVER").append("+");
+        if (isMelp2Enable()) {
+            sb.append("MELP2").append("+");
         }
         if (sb.toString().length() > 0) {
             sb.deleteCharAt(sb.length() - 1);

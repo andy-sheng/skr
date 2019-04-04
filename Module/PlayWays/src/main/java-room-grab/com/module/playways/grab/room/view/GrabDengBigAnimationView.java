@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
+import com.common.anim.ObjectPlayControlTemplate;
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.module.playways.BaseRoomData;
 import com.module.rank.R;
@@ -16,13 +18,16 @@ import com.opensource.svgaplayer.SVGAVideoEntity;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 灯的全屏效果
  */
 public class GrabDengBigAnimationView extends RelativeLayout {
+    public final static String TAG = "GrabDengBigAnimationView";
 
-    SVGAImageView mDengSvga;
+    List<SVGAImageViewEx> mDengSvgaViewList = new ArrayList<>();
 
     public GrabDengBigAnimationView(Context context) {
         super(context);
@@ -41,37 +46,73 @@ public class GrabDengBigAnimationView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.grab_deng_big_animation_view, this);
-        mDengSvga = (SVGAImageView) findViewById(R.id.deng_svga);
+        U.getSoundUtils().preLoad(TAG, R.raw.grab_olight_lowervolume, R.raw.grab_olight);
+    }
+
+    ObjectPlayControlTemplate<PlayData, SVGAImageViewEx> mViewObjectPlayControlTemplate = new ObjectPlayControlTemplate<PlayData, SVGAImageViewEx>() {
+        @Override
+        protected SVGAImageViewEx accept(PlayData cur) {
+            return isIdle();
+        }
+
+        @Override
+        public void onStart(PlayData playData, SVGAImageViewEx svgaImageView) {
+            playBurstAnimationInner(playData, svgaImageView);
+        }
+
+        @Override
+        protected void onEnd(PlayData playData) {
+
+        }
+    };
+
+    public void playBurstAnimation(boolean flag) {
+        MyLog.d(TAG, "playBurstAnimation");
+        mViewObjectPlayControlTemplate.add(new PlayData(flag), true);
     }
 
     // 爆灯
-    public void playBurstAnimation() {
-        mDengSvga.setCallback(null);
-        mDengSvga.stopAnimation(true);
+    private void playBurstAnimationInner(PlayData playData, SVGAImageViewEx dengSvgaEx) {
+        MyLog.d(TAG, "playBurstAnimationInner" + " playData=" + playData + " dengSvgaEx=" + dengSvgaEx);
+        if (playData.isFlag) {
+            U.getSoundUtils().play(TAG, R.raw.grab_olight_lowervolume);
+        } else {
+            U.getSoundUtils().play(TAG, R.raw.grab_olight);
+        }
+
+        SVGAImageView dengSvga = dengSvgaEx.mSVGAImageView;
+        if (this.indexOfChild(dengSvga) == -1) {
+            MyLog.d(TAG, "视图未添加，添加");
+            dengSvgaEx.add(this);
+        } else {
+            MyLog.d(TAG, "视图已添加");
+        }
+        dengSvga.setCallback(null);
+        dengSvga.stopAnimation(true);
         setVisibility(VISIBLE);
 
-        mDengSvga.setVisibility(VISIBLE);
-        mDengSvga.setLoops(1);
+        dengSvga.setVisibility(VISIBLE);
+        dengSvga.setLoops(1);
         SVGAParser parser = new SVGAParser(U.app());
         try {
             parser.parse(new URL(BaseRoomData.GRAB_BURST_BIG_SVGA), new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete(@NotNull SVGAVideoEntity videoItem) {
                     SVGADrawable drawable = new SVGADrawable(videoItem);
-                    mDengSvga.setImageDrawable(drawable);
-                    mDengSvga.startAnimation();
+                    dengSvga.setImageDrawable(drawable);
+                    dengSvga.startAnimation();
                 }
 
                 @Override
                 public void onError() {
-
+                    MyLog.d(TAG, "playBurstAnimationInner onError");
                 }
             });
         } catch (Exception e) {
-            System.out.print(true);
+            MyLog.e(TAG, e);
         }
 
-        mDengSvga.setCallback(new SVGACallback() {
+        dengSvga.setCallback(new SVGACallback() {
             @Override
             public void onPause() {
 
@@ -79,17 +120,19 @@ public class GrabDengBigAnimationView extends RelativeLayout {
 
             @Override
             public void onFinished() {
-                if (mDengSvga != null) {
-                    mDengSvga.setCallback(null);
-                    mDengSvga.stopAnimation(true);
+                if (dengSvga != null) {
+                    dengSvga.setCallback(null);
+                    dengSvga.stopAnimation(true);
                     setVisibility(GONE);
                 }
+                dengSvgaEx.playing = false;
+                mViewObjectPlayControlTemplate.endCurrent(playData);
             }
 
             @Override
             public void onRepeat() {
-                if (mDengSvga != null && mDengSvga.isAnimating()) {
-                    mDengSvga.stopAnimation(false);
+                if (dengSvga != null && dengSvga.isAnimating()) {
+                    dengSvga.stopAnimation(false);
                 }
             }
 
@@ -103,9 +146,60 @@ public class GrabDengBigAnimationView extends RelativeLayout {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if (mDengSvga != null) {
-            mDengSvga.setCallback(null);
-            mDengSvga.stopAnimation(true);
+        for (SVGAImageViewEx svgaImageViewEx : mDengSvgaViewList) {
+            svgaImageViewEx.destroy();
+        }
+        if (mViewObjectPlayControlTemplate != null) {
+            mViewObjectPlayControlTemplate.destroy();
+        }
+        U.getSoundUtils().release(TAG);
+    }
+
+    private SVGAImageViewEx isIdle() {
+        for (SVGAImageViewEx svgaImageViewEx : mDengSvgaViewList) {
+            if (!svgaImageViewEx.playing) {
+                svgaImageViewEx.playing = true;
+                return svgaImageViewEx;
+            }
+        }
+        // 先让只有一个消费者
+        if (mDengSvgaViewList.size() < 1) {
+            SVGAImageViewEx svgaImageViewEx = new SVGAImageViewEx(new SVGAImageView(getContext()));
+            mDengSvgaViewList.add(svgaImageViewEx);
+            return svgaImageViewEx;
+        }
+        return null;
+    }
+
+    public static class PlayData {
+        boolean isFlag;   //标记是否是演唱者
+
+        public PlayData(boolean isFlag) {
+            this.isFlag = isFlag;
         }
     }
+
+    public static class SVGAImageViewEx {
+        public SVGAImageView mSVGAImageView;
+        public boolean playing = false;
+
+        public SVGAImageViewEx(SVGAImageView SVGAImageView) {
+            mSVGAImageView = SVGAImageView;
+        }
+
+        public void add(GrabDengBigAnimationView parent) {
+            LayoutParams lp = new LayoutParams(U.getDisplayUtils().dip2px(375), U.getDisplayUtils().dip2px(400));
+            lp.addRule(RelativeLayout.CENTER_HORIZONTAL);
+            lp.topMargin = U.getDisplayUtils().dip2px(50);
+            parent.addView(mSVGAImageView, lp);
+        }
+
+        public void destroy() {
+            if (mSVGAImageView != null) {
+                mSVGAImageView.setCallback(null);
+                mSVGAImageView.stopAnimation(true);
+            }
+        }
+    }
+
 }

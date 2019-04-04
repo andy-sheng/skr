@@ -30,7 +30,9 @@ import com.engine.Params;
 import com.engine.arccloud.ArcRecognizeListener;
 import com.engine.arccloud.RecognizeConfig;
 import com.engine.arccloud.SongInfo;
+import com.engine.score.Score2Callback;
 import com.module.ModuleServiceManager;
+import com.module.common.ICallback;
 import com.module.msg.CustomMsgType;
 import com.module.msg.IMsgService;
 import com.module.playways.rank.msg.BasePushInfo;
@@ -53,7 +55,7 @@ import com.module.playways.rank.room.model.RankPlayerInfoModel;
 import com.module.playways.rank.room.model.RankRoundInfoModel;
 import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
 import com.module.playways.rank.room.RankRoomData;
-import com.module.playways.rank.room.RoomServerApi;
+import com.module.playways.rank.room.RankRoomServerApi;
 import com.module.playways.rank.room.SwapStatusType;
 import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.event.PretendCommentMsgEvent;
@@ -99,11 +101,11 @@ import static com.module.playways.rank.msg.event.ExitGameEvent.EXIT_GAME_OUT_ROU
 public class RankCorePresenter extends RxLifeCyclePresenter {
     String TAG = "RankCorePresenter";
 
+    static final int MSG_ENSURE_IN_RC_ROOM = 9;// 确保在融云的聊天室，保证融云的长链接
+
     static final int MSG_ROBOT_SING_BEGIN = 10;
 
     static final int MSG_ENSURE_SWITCH_BROADCAST_SUCCESS = 21; // 确保用户切换成主播成功，防止引擎不回调的保护
-    //    static final int MSG_ROBOT_SING_END = 11;
-//    static final int MSG_GET_VOTE = 20;
 
     static final int MSG_START_LAST_TWO_SECONDS_TASK = 30;
 
@@ -115,7 +117,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 
     RankRoomData mRoomData;
 
-    RoomServerApi mRoomServerApi = ApiManager.getInstance().createService(RoomServerApi.class);
+    RankRoomServerApi mRoomServerApi = ApiManager.getInstance().createService(RankRoomServerApi.class);
 
     Disposable mHeartBeatTask;
 
@@ -128,6 +130,8 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     ExoPlayer mExoPlayer;
 
     int mLastLineNum = -1;
+    int mMelp2Score = -1;// 本轮 Melp2 打分
+    int mAcrScore = -1;// 本轮 acr 打分
 
     PushMsgFilter mPushMsgFilter = new PushMsgFilter() {
         @Override
@@ -144,6 +148,11 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
+                case MSG_ENSURE_IN_RC_ROOM:
+                    MyLog.d(TAG, "handleMessage 长时间没收到push，重新进入融云房间容错");
+                    ModuleServiceManager.getInstance().getMsgService().leaveChatRoom(mRoomData.getGameId() + "");
+                    joinRcRoom(0);
+                    break;
                 case MSG_ROBOT_SING_BEGIN:
                     robotSingBegin((RankPlayerInfoModel) msg.obj);
                     break;
@@ -162,9 +171,21 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                     int lineNo = (msg.what - MSG_SHOW_SCORE_EVENT) / 100;
                     MyLog.d(TAG, "handleMessage" + " lineNo=" + lineNo);
                     if (lineNo > mLastLineNum) {
-                        int score = EngineManager.getInstance().getLineScore();
-                        MyLog.d(TAG, "handleMessage acr超时 本地获取得分:" + score);
-                        processScore(score, lineNo);
+                        mAcrScore = 0;
+                        if (ScoreConfig.isMelp2Enable()) {
+                            if(mMelp2Score>=0){
+                                processScore("mMelp2Score",mMelp2Score,lineNo);
+                            }else{
+                                // 这样等melp2 回调ok了还可以继续走
+                            }
+                        }else if(ScoreConfig.isMelpEnable()){
+                            int melp1Score = EngineManager.getInstance().getLineScore1();
+                            if (melp1Score > mAcrScore) {
+                                processScore("melp1Score", melp1Score, lineNo);
+                            } else {
+                                processScore("mAcrScore", mAcrScore, lineNo);
+                            }
+                        }
                     }
             }
 
@@ -186,7 +207,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 //            if(RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())){
 //                isAnchor = true;
 //            }
-            EngineManager.getInstance().joinRoom(String.valueOf(mRoomData.getGameId()), (int) UserAccountManager.getInstance().getUuidAsLong(), isAnchor);
+            EngineManager.getInstance().joinRoom(String.valueOf(mRoomData.getGameId()), (int) UserAccountManager.getInstance().getUuidAsLong(), isAnchor, mRoomData.getAgoraToken());
             // 不发送本地音频
 //            EngineManager.getInstance().muteLocalAudioStream(true);
             // 系统提示
@@ -197,7 +218,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
             for (int i = 0; i < mRoomData.getRoundInfoModelList().size(); i++) {
                 RankRoundInfoModel roundInfoModel = mRoomData.getRoundInfoModelList().get(i);
                 PlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, roundInfoModel.getUserID());
-                if(playerInfoModel == null){
+                if (playerInfoModel == null) {
                     MyLog.e(TAG, "RankCorePresenter constractor playerInfoModel is null, id is " + roundInfoModel.getUserID());
                     continue;
                 }
@@ -229,20 +250,31 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                             public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
                                 mUiHandler.removeMessages(MSG_SHOW_SCORE_EVENT + lineNo * 100);
                                 if (lineNo > mLastLineNum) {
-                                    // 使用最新的打分方案做优化
-                                    int score1 = EngineManager.getInstance().getLineScore();
-                                    int score2 = 0;
+                                    mAcrScore = 0;
                                     if (targetSongInfo != null) {
-                                        score2 = (int) (targetSongInfo.getScore() * 100);
+                                        mAcrScore = (int) (targetSongInfo.getScore() * 100);
+                                    } else {
+
                                     }
-                                    if (ScoreConfig.isMelpEnable()) {
-                                        if (score1 > score2) {
-                                            processScore(score1, lineNo);
+                                    if (ScoreConfig.isMelp2Enable()) {
+                                        if (mMelp2Score >= 0) {
+                                            if (mAcrScore > mMelp2Score) {
+                                                processScore("mAcrScore", mAcrScore, lineNo);
+                                            } else {
+                                                processScore("mMelp2Score", mMelp2Score, lineNo);
+                                            }
                                         } else {
-                                            processScore(score2, lineNo);
+                                            // Melp2 没返回
                                         }
                                     } else {
-                                        processScore(score2, lineNo);
+                                        if (ScoreConfig.isMelpEnable()) {
+                                            int melp1Score = EngineManager.getInstance().getLineScore1();
+                                            if (melp1Score > mAcrScore) {
+                                                processScore("melp1Score", melp1Score, lineNo);
+                                            } else {
+                                                processScore("mAcrScore", mAcrScore, lineNo);
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -250,6 +282,32 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                 );
             }
         }
+    }
+
+    private void joinRcRoom(int deep) {
+        if (deep > 4) {
+            MyLog.d(TAG, "加入融云房间，重试5次仍然失败，放弃");
+            return;
+        }
+        if (mRoomData.getGameId() > 0) {
+            ModuleServiceManager.getInstance().getMsgService().joinChatRoom(String.valueOf(mRoomData.getGameId()), new ICallback() {
+                @Override
+                public void onSucess(Object obj) {
+                    MyLog.d(TAG, "加入融云房间成功");
+                }
+
+                @Override
+                public void onFailed(Object obj, int errcode, String message) {
+                    MyLog.d(TAG, "加入融云房间失败");
+                    joinRcRoom(deep + 1);
+                }
+            });
+        }
+    }
+
+    private void ensureInRcRoom() {
+        mUiHandler.removeMessages(MSG_ENSURE_IN_RC_ROOM);
+        mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_IN_RC_ROOM, 30 * 1000);
     }
 
     private void pretenSystemMsg() {
@@ -292,6 +350,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         }
         mRoomData.checkRoundInEachMode();
         startSyncGameStateTask(sSyncStateTaskInterval);
+        ensureInRcRoom();
     }
 
     @Override
@@ -347,7 +406,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         // 提前获取roundSeq，如果在result里在获取，可能是下下一个了，如果提前收到轮次变化的push
         map.put("roundSeq", infoModel.getRoundSeq());
 
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.sendRoundOver(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -373,13 +432,62 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     }
 
     /**
+     * 上报我的轮次得分信息
+     */
+    public void sendRoundScoreInfo(int myRoundSeq) {
+        MyLog.w(TAG, "上报我的轮次得分");
+        estimateOverTsThisRound();
+        long timeMs = System.currentTimeMillis();
+        int sysScore = 0;
+        if (mRobotScoreHelper != null) {
+            sysScore = mRobotScoreHelper.getAverageScore();
+        }
+        String sign = U.getMD5Utils().MD5_32("skrer|" +
+                String.valueOf(mRoomData.getGameId()) + "|" +
+                String.valueOf(sysScore) + "|" +
+                String.valueOf(timeMs));
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("gameID", mRoomData.getGameId());
+        map.put("sysScore", sysScore);
+        map.put("timeMs", timeMs);
+        map.put("sign", sign);
+        // 提前获取roundSeq，如果在result里在获取，可能是下下一个了，如果提前收到轮次变化的push
+        map.put("roundSeq", myRoundSeq);
+
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+        ApiMethods.subscribe(mRoomServerApi.sendRoundScore(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    MyLog.w(TAG, "演唱结束上报总分成功 traceid is " + result.getTraceId());
+                    // TODO: 2019/1/22  可能带回来游戏结束的信息，后期优化
+                    // 尝试自己切换到下一个轮次
+//                    if (finalRoundSeq >= 0) {
+//                        RoundInfoModel roundInfoModel = RoomDataUtils.findRoundInfoBySeq(mRoomData.getRoundInfoModelList(), finalRoundSeq + 1);
+//                        mRoomData.setExpectRoundInfo(roundInfoModel);
+//                        mRoomData.checkRound();
+//                    }
+                } else {
+                    MyLog.w(TAG, "演唱结束上报总分失败 traceid is " + result.getTraceId());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                MyLog.w(TAG, "sendRoundScoreInfo error " + e);
+            }
+        }, this);
+    }
+
+    /**
      * 退出游戏
      */
     public void exitGame() {
         HashMap<String, Object> map = new HashMap<>();
         map.put("gameID", mRoomData.getGameId());
 
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.exitGame(body), null);
     }
 
@@ -400,7 +508,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         }
 
 
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.swap(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -448,7 +556,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         map.put("gameID", mRoomData.getGameId());
         map.put("userID", MyUserInfoManager.getInstance().getUid());
 
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.sendHeartBeat(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -565,7 +673,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         map.put("gameID", mRoomData.getGameId());
         map.put("roundSeq", mRoomData.getRealRoundSeq());
 
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.pklightOff(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -590,7 +698,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         map.put("gameID", mRoomData.getGameId());
         map.put("roundSeq", mRoomData.getRealRoundSeq());
 
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.pkburst(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -662,6 +770,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         estimateOverTsThisRound();
         //以防万一
         tryStopRobotPlay();
+        mUiHandler.removeMessages(MSG_START_LAST_TWO_SECONDS_TASK);
         mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS);
         if (event.myturn) {
             // 轮到我唱了
@@ -708,6 +817,8 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                         uploadRes1ForAi(myRoundInfoModel);
                     }
                 }
+                // 上报分数
+                sendRoundScoreInfo(event.getLastRoundInfoModel().getRoundSeq());
             }
 
             EngineManager.getInstance().stopAudioMixing();
@@ -733,7 +844,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                         } else {
                             MyLog.w(TAG, "mRoomData.getRealRoundInfo() 为空啊！！！！");
                         }
-                        mIGameRuleView.playLyric(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), uid), false);
+                        //mIGameRuleView.playLyric(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), uid), false);
                     }
                 });
             } else if (mRoomData.getRealRoundInfo() == null) {
@@ -795,7 +906,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
             HashMap<String, Object> map = new HashMap<>();
             map.put("gameID", mRoomData.getGameId());
             map.put("roundSeq", roundInfoModel.getRoundSeq());
-            RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+            RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
             ApiMethods.subscribe(mRoomServerApi.pkburst(body), new ApiObserver<ApiResult>() {
                 @Override
                 public void process(ApiResult result) {
@@ -828,7 +939,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
             HashMap<String, Object> map = new HashMap<>();
             map.put("gameID", mRoomData.getGameId());
             map.put("roundSeq", roundInfoModel.getRoundSeq());
-            RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+            RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
             ApiMethods.subscribe(mRoomServerApi.pklightOff(body), new ApiObserver<ApiResult>() {
 
                 @Override
@@ -1015,7 +1126,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                 .append("|").append(timeMs);
         String sign = U.getMD5Utils().MD5_32(sb.toString());
         map.put("sign", sign);
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.putGameResource(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -1163,7 +1274,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                      */
                     EngineManager.getInstance().setAudioMixingPosition(0);
                     // 还应开始播放歌词
-                    mIGameRuleView.playLyric(mRoomData.getSongModel(), true);
+                    mIGameRuleView.playLyric(mRoomData.getSongModel());
                     mIGameRuleView.showLeftTime(infoModel.getSingEndMs() - infoModel.getSingBeginMs());
                     MyLog.w(TAG, "本人开始唱了，歌词和伴奏响起");
                     mRoomData.setSingBeginTs(System.currentTimeMillis());
@@ -1237,7 +1348,8 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                 // 假设演唱的轮次在当前轮次后面，说明本地滞后了
                 MyLog.w(TAG, "演唱的轮次在当前轮次后面，说明本地滞后了,矫正并放歌词");
                 // 直接设置最新轮次，什么专场动画都不要了，都异常了，还要这些干嘛
-                mRoomData.setRealRoundInfo(infoModel);
+                mRoomData.setExpectRoundInfo(infoModel);
+                mRoomData.checkRoundInEachMode();
                 mUiHandler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -1259,7 +1371,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         if (infoModel != null && !infoModel.isHasSing()) {
             infoModel.setHasSing(true);
             mIGameRuleView.showLeftTime(infoModel.getSingEndMs() - infoModel.getSingBeginMs());
-            mIGameRuleView.playLyric(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), infoModel.getUserID()), true);
+            //mIGameRuleView.playLyric(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), infoModel.getUserID()), true);
             mIGameRuleView.onOtherStartSing(RoomDataUtils.getPlayerSongInfoUserId(mRoomData.getPlayerInfoList(), infoModel.getUserID()));
             startLastTwoSecondTask();
         }
@@ -1334,6 +1446,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     // 游戏轮次结束的通知消息（在某人向服务器短连接成功后推送)
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEventMainThread(RoundOverEvent event) {
+        ensureInRcRoom();
         MyLog.w(TAG, "收到服务器的某一个人轮次结束的push，id是 " + event.currenRound.getUserID()
                 + ", exitUserID 是 " + event.exitUserID + " timets 是" + event.info.getTimeMs());
         if (mRoomData.getLastSyncTs() > event.info.getTimeMs()) {
@@ -1390,6 +1503,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     // 长连接 状态同步信令， 以11秒为单位检测
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(SyncStatusEvent syncStatusEvent) {
+        ensureInRcRoom();
         String msg = "收到服务器更新状态的push了, currentRound 是 ";
         msg = msg + (syncStatusEvent.currentInfo == null ? "null" : syncStatusEvent.currentInfo.getUserID() + "");
         msg = msg + ", nextInfo 是 " + (syncStatusEvent.nextInfo == null ? "null" : syncStatusEvent.nextInfo.getUserID() + "");
@@ -1463,17 +1577,39 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     public void onEvent(LrcEvent.LineLineEndEvent event) {
         MyLog.d(TAG, "onEvent LineEndEvent lineno=" + event.lineNum);
         if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
-
+            if (ScoreConfig.isMelp2Enable()) {
+                EngineManager.getInstance().getLineScore2(event.lineNum, new Score2Callback() {
+                    @Override
+                    public void onGetScore(int lineNum, int score) {
+                        mMelp2Score = score;
+                        if (ScoreConfig.isAcrEnable()) {
+                            if (mAcrScore >= 0) {
+                                if (mAcrScore > mMelp2Score) {
+                                    processScore("mAcrScore", mAcrScore, event.lineNum);
+                                } else {
+                                    processScore("mMelp2Score", mMelp2Score, event.lineNum);
+                                }
+                            }else{
+                                // 没返回
+                            }
+                        } else {
+                            processScore("mMelp2Score", mMelp2Score, event.lineNum);
+                        }
+                    }
+                });
+            }
             if (ScoreConfig.isAcrEnable()) {
                 EngineManager.getInstance().recognizeInManualMode(event.lineNum);
+                Message msg = mUiHandler.obtainMessage(MSG_SHOW_SCORE_EVENT + event.lineNum * 100);
+                mUiHandler.sendMessageDelayed(msg, 1000);
             } else {
-                if (ScoreConfig.isMelpEnable()) {
-                    int score = EngineManager.getInstance().getLineScore();
-                    processScore(score, event.lineNum);
+                if (!ScoreConfig.isMelp2Enable()) {
+                    if (ScoreConfig.isMelpEnable()) {
+                        int score = EngineManager.getInstance().getLineScore1();
+                        processScore("mMelp1Score", score, event.lineNum);
+                    }
                 }
             }
-            Message msg = mUiHandler.obtainMessage(MSG_SHOW_SCORE_EVENT + event.lineNum * 100);
-            mUiHandler.sendMessageDelayed(msg, 1000);
         } else {
             if (RoomDataUtils.isRobotRound(mRoomData.getRealRoundInfo(), mRoomData.getPlayerInfoList())) {
                 // 尝试算机器人的演唱得分
@@ -1504,7 +1640,8 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
-    void processScore(int score, int line) {
+    void processScore(String from, int score, int line) {
+        MyLog.d(TAG, "processScore" + " from=" + from + " score=" + score + " line=" + line);
         if (line <= mLastLineNum) {
             return;
         }
@@ -1513,11 +1650,11 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
             return;
         }
         mLastLineNum = line;
-        if (ScoreConfig.isMelpEnable() && ScoreConfig.isAcrEnable()) {
-
-        } else {
-            U.getToastUtil().showShort("score:" + score);
-        }
+//        if (ScoreConfig.isMelpEnable() && ScoreConfig.isAcrEnable()) {
+//
+//        } else {
+//            U.getToastUtil().showShort("score:" + score);
+//        }
         MyLog.d(TAG, "onEvent" + " 得分=" + score);
         MachineScoreItem machineScoreItem = new MachineScoreItem();
         machineScoreItem.setScore(score);
@@ -1538,10 +1675,13 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         });
         //打分传给服务器
         sendScoreToServer(score, line);
+        mAcrScore = -1;
+        mMelp2Score = -1;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(MachineScoreEvent event) {
+        ensureInRcRoom();
         //收到其他人的机器打分消息，比较复杂，暂时简单点，轮次正确就直接展示
         if (RoomDataUtils.isThisUserRound(mRoomData.getRealRoundInfo(), event.userId)) {
             mIGameRuleView.updateScrollBarProgress(event.score, event.totalScore, event.lineNum);
@@ -1559,6 +1699,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         map.put("gameID", mRoomData.getGameId());
         RankRoundInfoModel infoModel = RoomDataUtils.getRoundInfoByUserId(mRoomData, (int) MyUserInfoManager.getInstance().getUid());
         if (infoModel == null) {
+            MyLog.d(TAG, "sendScoreToServer 但不是自己的轮次");
             return;
         }
         int itemID = infoModel.getPlaybookID();
@@ -1590,7 +1731,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                 .append("|").append(roundSeq)
                 .append("|").append(nowTs);
         map.put("sign", U.getMD5Utils().MD5_32(sb.toString()));
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.sendPkPerSegmentResult(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {

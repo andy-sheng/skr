@@ -2,26 +2,24 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="@dimen/view_86_dp"
+    android:layout_width="@dimen/view_118_dp"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     tools:parentTag="android.widget.RelativeLayout">
 
     <com.common.view.ex.ExImageView
         android:id="@+id/iv_burst"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="@dimen/view_102_dp"
+        android:layout_height="@dimen/view_74_dp"
         android:layout_alignParentRight="true"
         android:layout_marginTop="@dimen/view_52_dp"
-        android:layout_marginRight="@dimen/view_16_dp"
-        app:src_pressed_drawable="@drawable/baodeng_anxia"
-        app:src_unEnabled_drawable="@drawable/baodeng_bukedian"
-        app:src_unPressed_drawable="@drawable/guanzhong_baodeng" />
+        app:bl_pressed_drawable="@drawable/grab_baodeng_anxia"
+        app:bl_unPressed_drawable="@drawable/grab_yanchang_baodeng" />
 
     <com.common.view.ex.ExImageView
         android:id="@+id/iv_turn_off"
-        android:layout_width="@dimen/view_104_dp"
-        android:layout_height="@dimen/view_112_dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_below="@+id/iv_burst"
         android:layout_alignParentRight="true"
         app:src_pressed_drawable="@drawable/guanzhong_miedeng"
@@ -30,8 +28,8 @@
 
     <com.common.view.ex.ExImageView
         android:id="@+id/iv_count_down"
-        android:layout_width="@dimen/view_104_dp"
-        android:layout_height="@dimen/view_112_dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_below="@+id/iv_burst"
         android:layout_alignParentRight="true"
         android:background="@drawable/yanchang_miedeng"
@@ -39,8 +37,8 @@
 
     <com.common.view.ex.ExTextView
         android:id="@+id/tv_count_down"
-        android:layout_width="@dimen/view_90_dp"
-        android:layout_height="@dimen/view_90_dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_alignRight="@+id/iv_count_down"
         android:layout_alignTop="@+id/iv_count_down"
         android:layout_marginTop="@dimen/view_12_dp"

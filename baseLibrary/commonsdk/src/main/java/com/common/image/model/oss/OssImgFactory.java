@@ -69,7 +69,7 @@ public class OssImgFactory {
      * @param ossProcessors
      * @return
      */
-    public static String addOssParams(String url, IOssParam[] ossProcessors) {
+    public static String addOssParams(String url, IOssParam... ossProcessors) {
         if(TextUtils.isEmpty(url)){
             return url;
         }

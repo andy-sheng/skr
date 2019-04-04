@@ -6,12 +6,10 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
-import com.common.utils.U;
 import com.module.playways.rank.song.SongSelectServerApi;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.playways.rank.song.view.ISongTagDetailView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SongTagDetailsPresenter extends RxLifeCyclePresenter {

@@ -1,10 +1,6 @@
 package com.module.playways.grab.prepare;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -13,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
@@ -38,7 +33,6 @@ import com.module.RouterConstants;
 import com.module.playways.grab.prepare.presenter.RankMatchPresenter;
 import com.module.playways.rank.msg.event.JoinActionEvent;
 import com.module.playways.rank.prepare.model.JoinGrabRoomRspModel;
-import com.module.playways.rank.prepare.model.MatchIconModel;
 import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.playways.rank.prepare.presenter.BaseMatchPresenter;
 import com.module.playways.rank.prepare.presenter.GrabMatchPresenter;
@@ -182,7 +176,7 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
                 }
             });
         } catch (Exception e) {
-            System.out.print(true);
+            MyLog.e(TAG,e);
         }
     }
 
@@ -237,10 +231,13 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
                             if (getActivity() != null) {
                                 getActivity().finish();
                             }
-                            ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
-                                    .withInt("key_game_type", mPrepareData.getGameType())
-                                    .withBoolean("selectSong", true)
-                                    .navigation();
+
+                            if(mPrepareData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK){
+                                ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
+                                        .withInt("key_game_type", mPrepareData.getGameType())
+                                        .withBoolean("selectSong", true)
+                                        .navigation();
+                            }
                             return;
                         }
 
@@ -364,6 +361,7 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
         mPrepareData.setPlayerInfoList(event.playerInfoList);
         mPrepareData.setSongModelList(event.songModelList);
         mPrepareData.setGameConfigModel(event.gameConfigModel);
+        mPrepareData.setAgoraToken(event.agoraToken);
         stopTimeTask();
 
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), GrabMatchSuccessFragment.class)

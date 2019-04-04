@@ -36,7 +36,7 @@ import top.zibin.luban.OnCompressListener;
 
 public class UploadTask {
 
-    public final static String TAG = "UploadManager";
+    public final static String TAG = "UploadTask";
 
     static {
         if (MyLog.isDebugLogOpen()) {
@@ -63,6 +63,9 @@ public class UploadTask {
             MyLog.w(TAG, "startUpload fileLength:" + file.length());
         } else {
             MyLog.e(TAG, "file==null 或者 文件不存在");
+            if (uploadCallback != null) {
+                uploadCallback.onFailure("文件不存在：" + file.getAbsolutePath());
+            }
             return this;
         }
         // 在移动端建议使用STS的方式初始化OSSClient，更多信息参考：[访问控制]
@@ -87,12 +90,10 @@ public class UploadTask {
                             conf.setSocketTimeout(15 * 1000); // socket超时，默认15秒
                             conf.setMaxConcurrentRequest(5); // 最大并发请求书，默认5个
                             conf.setMaxErrorRetry(2); // 失败后最大重试次数，默认2次
-
                             JSONObject uploadParams = data.getJSONObject("uploadParams");
                             String endpoint = uploadParams.getString("endpoint");
 
                             mOss = new OSSClient(U.app(), endpoint, credentialProvider, conf);
-
                             mBucketName = uploadParams.getString("bucketName");
                             mDir = uploadParams.getString("dir");
 

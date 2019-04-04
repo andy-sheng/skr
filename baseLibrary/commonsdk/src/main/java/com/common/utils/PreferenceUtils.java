@@ -1,5 +1,6 @@
 package com.common.utils;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
@@ -12,8 +13,18 @@ import java.util.Map;
 public class PreferenceUtils {
     private static final String TAG = "PreferenceUtils";
 
+    SharedPreferences mSharedPreferencesSp2 = U.app().getSharedPreferences(U.getAppInfoUtils().getAppName()+"_sp2",Context.MODE_PRIVATE);
+
     PreferenceUtils() {
 
+    }
+
+    /**
+     * 私有的pref 这个Pref退出账号时不会清空
+     * @return
+     */
+    public SharedPreferences getSharedPreferencesSp2() {
+        return mSharedPreferencesSp2;
     }
 
     public void setSettingString(String key, String value) {
@@ -115,6 +126,12 @@ public class PreferenceUtils {
 
     public void clearPreference(SharedPreferences sp) {
         SharedPreferences.Editor editor = sp.edit();
+        editor.clear();
+        editor.apply();
+    }
+
+    public void clearPreference() {
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(U.app()).edit();
         editor.clear();
         editor.apply();
     }

@@ -44,10 +44,9 @@ public class GlobalEventReceiver {
         if (event.foreground) {
             // 检查剪贴板
             String str = ClipboardUtils.getPaste();
+//            str = "dD0xJnU9MTM0MzA4OCZyPTEwMA==";
             if (!TextUtils.isEmpty(str)) {
-                if (SkrKouLingUtils.tryParseScheme(str)) {
-                    ClipboardUtils.clear();
-                }
+                SkrKouLingUtils.tryParseScheme(str);
             }
         }
     }
@@ -57,7 +56,7 @@ public class GlobalEventReceiver {
         SharePanel sharePanel = new SharePanel(U.getActivityUtils().getTopActivity());
         String title = String.format("日志 id=%s,name=%s,date=%s", event.uploaderId, event.uploaderName, event.date);
         sharePanel.setShareContent(event.uploaderAvatar, title, event.extra, event.mLogUrl);
-        sharePanel.share(SharePlatform.WEIXIN, ShareType.URL);
+        sharePanel.share(SharePlatform.WEIXIN, ShareType.TEXT);
         MyLog.w(TAG, title + " url:" + event.mLogUrl);
         U.getToastUtil().showLong(title + "拉取成功，请将其分享给研发同学");
     }

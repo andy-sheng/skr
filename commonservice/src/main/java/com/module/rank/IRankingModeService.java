@@ -7,5 +7,12 @@ import com.alibaba.android.arouter.facade.template.IProvider;
  */
 public interface IRankingModeService extends IProvider {
     Object getData(int type, Object object);
+
     Class getLeaderboardFragmentClass();
+
+    void tryGoGrabRoom(int roomID);
+
+    void tryGoCreateRoom();
+
+    void tryGoGrabMatch(int tagId);
 }

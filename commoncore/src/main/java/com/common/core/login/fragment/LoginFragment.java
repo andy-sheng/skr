@@ -144,7 +144,7 @@ public class LoginFragment extends BaseFragment {
                 if (mIsWaitOss) {
                     return;
                 }
-                if (!UMShareAPI.get(getContext()).isInstall(getActivity(), SHARE_MEDIA.WEIXIN)) {
+                if (!UMShareAPI.get(U.app()).isInstall(getActivity(), SHARE_MEDIA.WEIXIN)) {
                     U.getToastUtil().showShort("你没有安装微信");
                     return;
                 }
@@ -154,12 +154,12 @@ public class LoginFragment extends BaseFragment {
                         @Override
                         public void run() {
                             showLoginingBar(true);
-                            UMShareAPI.get(getContext()).getPlatformInfo(getActivity(), SHARE_MEDIA.WEIXIN, mAuthListener);
+                            UMShareAPI.get(U.app()).getPlatformInfo(getActivity(), SHARE_MEDIA.WEIXIN, mAuthListener);
                         }
                     }, true);
                 } else {
                     showLoginingBar(true);
-                    UMShareAPI.get(getContext()).getPlatformInfo(getActivity(), SHARE_MEDIA.WEIXIN, mAuthListener);
+                    UMShareAPI.get(U.app()).getPlatformInfo(getActivity(), SHARE_MEDIA.WEIXIN, mAuthListener);
                 }
             }
         });
@@ -170,7 +170,7 @@ public class LoginFragment extends BaseFragment {
                 if (mIsWaitOss) {
                     return;
                 }
-                if (!UMShareAPI.get(getContext()).isInstall(getActivity(), SHARE_MEDIA.QQ)) {
+                if (!UMShareAPI.get(U.app()).isInstall(getActivity(), SHARE_MEDIA.QQ)) {
                     U.getToastUtil().showShort("你没有安装QQ");
                     return;
                 }
@@ -179,12 +179,12 @@ public class LoginFragment extends BaseFragment {
                         @Override
                         public void run() {
                             showLoginingBar(true);
-                            UMShareAPI.get(getContext()).getPlatformInfo(getActivity(), SHARE_MEDIA.QQ, mAuthListener);
+                            UMShareAPI.get(U.app()).getPlatformInfo(getActivity(), SHARE_MEDIA.QQ, mAuthListener);
                         }
                     }, true);
                 } else {
                     showLoginingBar(true);
-                    UMShareAPI.get(getContext()).getPlatformInfo(getActivity(), SHARE_MEDIA.QQ, mAuthListener);
+                    UMShareAPI.get(U.app()).getPlatformInfo(getActivity(), SHARE_MEDIA.QQ, mAuthListener);
                 }
 
             }

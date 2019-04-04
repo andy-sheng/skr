@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/view_8_dp"
-            android:text="“❤”表示喜欢，对应分值为3分"
+            android:text="爆灯表示喜欢，对应分值为1分。"
             android:textColor="#B2B6D6"
             android:textSize="@dimen/textsize_14_dp" />
     </LinearLayout>
@@ -59,7 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/view_8_dp"
-            android:text="“X”表示不喜欢，参考灭灯时间，最低1分 最高3分"
+            android:text="AI裁判会根据选手受欢迎度和演唱水平给出最终打分。"
             android:textColor="#B2B6D6"
             android:textSize="@dimen/textsize_14_dp" />
     </LinearLayout>
@@ -81,32 +81,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/view_8_dp"
-            android:text="AI裁判会根据选手受欢迎度和演唱水平给出最终打分"
+            android:text="逃跑用户自动判负，当局不计分。"
             android:textColor="#B2B6D6"
             android:textSize="@dimen/textsize_14_dp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/view_13_dp"
-        android:layout_marginTop="@dimen/view_12_dp"
-        android:layout_marginRight="@dimen/view_13_dp"
-        android:layout_marginBottom="@dimen/view_30_dp"
-        android:orientation="horizontal">
-
-        <com.common.view.ex.ExImageView
-            android:layout_width="@dimen/view_26_dp"
-            android:layout_height="@dimen/view_20_dp"
-            android:background="@drawable/guize4" />
-
-        <com.common.view.ex.ExTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/view_8_dp"
-            android:text="逃跑用户自动判负，当局不计分"
-            android:textColor="#B2B6D6"
-            android:textSize="@dimen/textsize_14_dp" />
-    </LinearLayout>
-
+        android:layout_height="@dimen/view_20_dp"></LinearLayout>
 </com.common.view.ex.ExLinearLayout>

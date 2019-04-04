@@ -85,7 +85,7 @@ public class RankTopLEDView extends RelativeLayout {
                     }
                 });
             } catch (Exception e) {
-                System.out.print(true);
+                MyLog.e(TAG,e);
             }
 
 
@@ -164,7 +164,7 @@ public class RankTopLEDView extends RelativeLayout {
                 }
             });
         } catch (Exception e) {
-            System.out.print(true);
+            MyLog.e(TAG,e);
         }
     }
 
@@ -208,7 +208,7 @@ public class RankTopLEDView extends RelativeLayout {
                 }
             });
         } catch (Exception e) {
-            System.out.print(true);
+            MyLog.e(TAG,e);
         }
 
         mDengSvga.setCallback(new SVGACallback() {
@@ -277,7 +277,7 @@ public class RankTopLEDView extends RelativeLayout {
                 }
             });
         } catch (Exception e) {
-            System.out.print(true);
+            MyLog.e(TAG,e);
         }
     }
 

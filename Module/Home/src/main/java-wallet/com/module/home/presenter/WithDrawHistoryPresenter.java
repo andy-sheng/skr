@@ -24,8 +24,6 @@ public class WithDrawHistoryPresenter extends RxLifeCyclePresenter {
     int mLimit = 20;
     int mOffset = 0;
 
-    Disposable mDisposable;
-
     List<WithDrawHistoryModel> mWithDrawHistoryModels = new ArrayList<>();
 
     public WithDrawHistoryPresenter(IWithDrawHistoryView walletView) {
@@ -34,11 +32,7 @@ public class WithDrawHistoryPresenter extends RxLifeCyclePresenter {
     }
 
     public void getMoreWithDrawHistory() {
-        if (mDisposable != null) {
-            mDisposable.dispose();
-        }
-
-        mDisposable = ApiMethods.subscribeWith(mWalletServerApi.getListWithdraw(mOffset, mLimit), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mWalletServerApi.getListWithdraw(mOffset, mLimit), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
@@ -54,7 +48,6 @@ public class WithDrawHistoryPresenter extends RxLifeCyclePresenter {
                     if (mOffset == 0) {
                         mWithDrawHistoryModels.clear();
                     }
-
 
                     mWithDrawHistoryModels.addAll(withDrawHistoryModelList);
                     mOffset = result.getData().getInteger("offset");
@@ -80,7 +73,7 @@ public class WithDrawHistoryPresenter extends RxLifeCyclePresenter {
                 mIWalletView.update(mWithDrawHistoryModels);
                 mIWalletView.hasMore(true);
             }
-        }, this);
+        }, this,new ApiMethods.RequestControl("getListWithdraw", ApiMethods.ControlType.CancelLast));
     }
 
     @Override

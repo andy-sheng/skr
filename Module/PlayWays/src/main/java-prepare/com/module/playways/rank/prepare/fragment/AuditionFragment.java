@@ -11,7 +11,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,6 +19,7 @@ import android.widget.TextView;
 
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
+import com.common.clipboard.ClipboardUtils;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrAudioPermission;
@@ -31,30 +31,23 @@ import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
-import com.dialog.view.TipsDialogView;
 import com.engine.EngineEvent;
 import com.engine.EngineManager;
 import com.engine.Params;
 import com.engine.arccloud.ArcRecognizeListener;
 import com.engine.arccloud.RecognizeConfig;
 import com.engine.arccloud.SongInfo;
+import com.engine.score.Score2Callback;
+import com.module.playways.rank.others.LyricAndAccMatchManager;
 import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.playways.rank.prepare.view.VoiceControlPanelView;
-import com.module.playways.rank.room.score.MachineScoreItem;
 import com.module.playways.rank.room.view.RankTopContainerView2;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
-import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.ViewHolder;
-import com.trello.rxlifecycle2.android.FragmentEvent;
-import com.zq.lyrics.LyricsManager;
 import com.zq.lyrics.LyricsReader;
 import com.zq.lyrics.event.LrcEvent;
-import com.zq.lyrics.event.LyricEventLauncher;
-import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.ManyLyricsView;
 import com.zq.lyrics.widget.VoiceScaleView;
-import com.zq.toast.CommonToastView;
 import com.zq.toast.NoImageCommonToastView;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -62,13 +55,9 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import io.agora.rtc.Constants;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 import static com.engine.EngineEvent.TYPE_MUSIC_PLAY_FINISH;
 import static com.zq.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
@@ -107,8 +96,12 @@ public class AuditionFragment extends BaseFragment {
     private volatile boolean isRecord = false;
 
     private int mLastLineNum = -1;
+    int mMelp2Score = -1;// 本轮 Melp2 打分
+    int mAcrScore = -1;// 本轮 acr 打分
 
     private int mTotalLineNum = -1;
+
+    LyricAndAccMatchManager mLyricAndAccMatchManager = new LyricAndAccMatchManager();
 
     Handler mUiHandler = new Handler(Looper.getMainLooper()) {
         @Override
@@ -122,14 +115,28 @@ public class AuditionFragment extends BaseFragment {
                 default:
                     int lineNo = (msg.what - MSG_SHOW_SCORE_EVENT) / 100;
                     MyLog.d(TAG, "handleMessage" + " lineNo=" + lineNo);
-                    if (lineNo > mLastLineNum && ScoreConfig.isMelpEnable()) {
-                        int score = EngineManager.getInstance().getLineScore();
+                    if (lineNo > mLastLineNum) {
+                        mAcrScore = 0;
                         if (MyLog.isDebugLogOpen()) {
-                            addLogText("第" + lineNo + "行,melp得分:" + score);
                             addLogText("第" + lineNo + "行,acr请求未及时返回");
                         }
-                        MyLog.d(TAG, "handleMessage acr超时 本地获取得分:" + score);
-                        processScore(score, lineNo);
+                        if (ScoreConfig.isMelp2Enable()) {
+                            if (mMelp2Score >= 0) {
+                                processScore("mMelp2Score", mMelp2Score, lineNo);
+                            } else {
+                                // 这样等melp2 回调ok了还可以继续走
+                            }
+                        } else if (ScoreConfig.isMelpEnable()) {
+                            int melp1Score = EngineManager.getInstance().getLineScore1();
+                            if (MyLog.isDebugLogOpen()) {
+                                addLogText("第" + lineNo + "行,melp1Score:" + melp1Score);
+                            }
+                            if (melp1Score > mAcrScore) {
+                                processScore("melp1Score", melp1Score, lineNo);
+                            } else {
+                                processScore("mAcrScore", mAcrScore, lineNo);
+                            }
+                        }
                     }
                     break;
             }
@@ -143,8 +150,6 @@ public class AuditionFragment extends BaseFragment {
     SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
 
     List<Integer> mCbScoreList = new ArrayList<>();
-
-    LyricEventLauncher mLyricEventLauncher = new LyricEventLauncher();
 
     @Override
     public int initView() {
@@ -160,7 +165,7 @@ public class AuditionFragment extends BaseFragment {
             EngineManager.getInstance().init("prepare", params);
 //            boolean isAnchor = MyUserInfoManager.getInstance().getUid() == 1705476;
             boolean isAnchor = true;
-            EngineManager.getInstance().joinRoom("csm" + System.currentTimeMillis(), (int) UserAccountManager.getInstance().getUuidAsLong(), isAnchor);
+            EngineManager.getInstance().joinRoom("csm" + System.currentTimeMillis(), (int) UserAccountManager.getInstance().getUuidAsLong(), isAnchor, null);
         } else {
             EngineManager.getInstance().resumeAudioMixing();
         }
@@ -176,7 +181,6 @@ public class AuditionFragment extends BaseFragment {
         mTvSongName = (ExTextView) mRootView.findViewById(R.id.tv_song_name);
         mManyLyricsView = (ManyLyricsView) mRootView.findViewById(R.id.many_lyrics_view);
         mVoiceControlView = (VoiceControlPanelView) mRootView.findViewById(R.id.voice_control_view);
-        mVoiceControlView.bindData();
         mVoiceScaleView = (VoiceScaleView) mRootView.findViewById(R.id.voice_scale_view);
         mLogView = mRootView.findViewById(R.id.log_view);
         View mLogViewScrollContainer = mRootView.findViewById(R.id.log_view_scroll_container);
@@ -247,9 +251,8 @@ public class AuditionFragment extends BaseFragment {
 
         mSongModel = mPrepareData.getSongModel();
         mTvSongName.setText("《" + mSongModel.getItemName() + "》");
-        playLyrics(mSongModel, false, true);
-
         resendAutoLeaveChannelMsg();
+        startRecord();
     }
 
     private void startRecord() {
@@ -265,28 +268,42 @@ public class AuditionFragment extends BaseFragment {
     }
 
     private void startRecord1() {
-        resetView();
-
-        if(mLyricsReader != null){
+        reset();
+        if (mLyricsReader != null) {
             mVoiceScaleView.startWithData(mLyricsReader.getLyricsLineInfoList(), mSongModel.getBeginMs());
         }
-        playLyrics(mSongModel, true, false);
+
+        mLyricAndAccMatchManager.setArgs(mManyLyricsView, mVoiceScaleView, mSongModel.getLyric(),
+                mSongModel.getRankLrcBeginT(), mSongModel.getRankLrcEndT(),
+                mSongModel.getBeginMs(), mSongModel.getEndMs());
+        mLyricAndAccMatchManager.start(new LyricAndAccMatchManager.Listener() {
+            @Override
+            public void onLyricParseSuccess() {
+
+            }
+
+            @Override
+            public void onLyricParseFailed() {
+
+            }
+
+            @Override
+            public void onLyricEventPost(int lineNum) {
+                mTotalLineNum = lineNum;
+                mStartRecordTs = System.currentTimeMillis();
+                mCbScoreList.clear();
+                if (RECORD_BY_CALLBACK) {
+                    EngineManager.getInstance().startAudioRecording(PCM_SAVE_PATH, Constants.AUDIO_RECORDING_QUALITY_HIGH, true);
+                } else {
+                    EngineManager.getInstance().startAudioRecording(ACC_SAVE_PATH, Constants.AUDIO_RECORDING_QUALITY_HIGH, false);
+                }
+
+            }
+        });
+//        playLyrics(mSongModel, true, false);
         playMusic(mSongModel);
-
-        mTotalLineNum = mLyricEventLauncher.postLyricEvent(mLyricsReader, mSongModel.getBeginMs(), mSongModel.getEndMs(), null);
         mStartRecordTs = System.currentTimeMillis();
-//        mIvRecordStart.setVisibility(View.GONE);
-//        mTvRecordStop.setVisibility(View.VISIBLE);
-//        mRlControlContainer.setVisibility(View.GONE);
-//        mTvRecordTip.setText("点击结束试音演唱");
-//        mIvPlay.setEnabled(true);
-        if (RECORD_BY_CALLBACK) {
-            EngineManager.getInstance().startAudioRecording(PCM_SAVE_PATH, Constants.AUDIO_RECORDING_QUALITY_HIGH, true);
-        } else {
-            EngineManager.getInstance().startAudioRecording(ACC_SAVE_PATH, Constants.AUDIO_RECORDING_QUALITY_HIGH, false);
-        }
 
-        mCbScoreList.clear();
         EngineManager.getInstance().startRecognize(RecognizeConfig.newBuilder()
                 .setMode(RecognizeConfig.MODE_MANUAL)
                 .setSongName(mSongModel.getItemName())
@@ -296,37 +313,47 @@ public class AuditionFragment extends BaseFragment {
                     public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
                         mUiHandler.removeMessages(MSG_SHOW_SCORE_EVENT + lineNo * 100);
                         if (lineNo > mLastLineNum) {
-                            // 使用最新的打分方案做优化
-                            int score1 = EngineManager.getInstance().getLineScore();
-                            if (MyLog.isDebugLogOpen()) {
-                                addLogText("第" + lineNo + "行 melp得分:" + score1);
-                            }
-                            int score2 = -1;
+                            mAcrScore = 0;
                             if (targetSongInfo != null) {
-                                score2 = (int) (targetSongInfo.getScore() * 100);
+                                mAcrScore = (int) (targetSongInfo.getScore() * 100);
                                 if (MyLog.isDebugLogOpen()) {
-                                    addLogText("第" + lineNo + "行 acr得分:" + score2);
+                                    addLogText("第" + lineNo + "行 mAcrScore:" + mAcrScore);
                                 }
                             } else {
                                 if (MyLog.isDebugLogOpen()) {
                                     addLogText("第" + lineNo + "行 acr得分:未识别");
                                 }
                             }
-                            if (ScoreConfig.isMelpEnable()) {
-                                if (score1 > score2) {
-                                    processScore(score1, lineNo);
+                            if (ScoreConfig.isMelp2Enable()) {
+                                if (mMelp2Score >= 0) {
+
+                                    if (mAcrScore > mMelp2Score) {
+                                        processScore("mAcrScore", mAcrScore, lineNo);
+                                    } else {
+                                        processScore("mMelp2Score", mMelp2Score, lineNo);
+                                    }
                                 } else {
-                                    processScore(score2, lineNo);
+                                    // Melp2 没返回
                                 }
                             } else {
-                                processScore(score2, lineNo);
+                                if (ScoreConfig.isMelpEnable()) {
+                                    int melp1Score = EngineManager.getInstance().getLineScore1();
+                                    if (MyLog.isDebugLogOpen()) {
+                                        addLogText("第" + lineNo + "行 melp1Score:" + melp1Score);
+                                    }
+                                    if (melp1Score > mAcrScore) {
+                                        processScore("melp1Score", melp1Score, lineNo);
+                                    } else {
+                                        processScore("mAcrScore", mAcrScore, lineNo);
+                                    }
+                                }
                             }
                         }
                     }
                 }).build());
     }
 
-    private void resetView() {
+    private void reset() {
         isRecord = true;
         mRankTopView.reset();
         mLastLineNum = -1;
@@ -357,7 +384,7 @@ public class AuditionFragment extends BaseFragment {
                     .build());
             return;
         }
-        mLyricEventLauncher.destroy();
+        mLyricAndAccMatchManager.stop();
         mVoiceScaleView.setVisibility(View.GONE);
         isRecord = false;
         EngineManager.getInstance().stopAudioRecording();
@@ -460,49 +487,49 @@ public class AuditionFragment extends BaseFragment {
         }
     }
 
-    private void playLyrics(SongModel songModel, boolean play, boolean isFirst) {
-        final String lyricFile = SongResUtils.getFileNameWithMD5(songModel.getLyric());
-
-        if (lyricFile != null) {
-            LyricsManager.getLyricsManager(U.app())
-                    .loadLyricsObserable(lyricFile, lyricFile.hashCode() + "")
-                    .subscribeOn(Schedulers.io())
-                    .retry(10)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .compose(bindUntilEvent(FragmentEvent.DESTROY))
-                    .subscribe(lyricsReader -> {
-                        MyLog.d(TAG, "playMusic, start play lyric");
-                        mManyLyricsView.resetData();
-                        mManyLyricsView.initLrcData();
-                        lyricsReader.cut(songModel.getRankLrcBeginT(), songModel.getRankLrcEndT());
-                        if (isRecord) {
-                            Set<Integer> set = new HashSet<>();
-                            set.add(lyricsReader.getLineInfoIdByStartTs(songModel.getRankLrcBeginT()));
-                            mManyLyricsView.setNeedCountDownLine(set);
-                        } else {
-                            Set<Integer> set = new HashSet<>();
-                            mManyLyricsView.setNeedCountDownLine(set);
-                        }
-                        MyLog.d(TAG, "getRankLrcBeginT : " + songModel.getRankLrcBeginT());
-                        mManyLyricsView.setLyricsReader(lyricsReader);
-                        mLyricsReader = lyricsReader;
-                        if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {
-                            mManyLyricsView.play(songModel.getBeginMs());
-                            MyLog.d(TAG, "songModel.getBeginMs() : " + songModel.getBeginMs());
-                        }
-
-                        if (!play) {
-                            mManyLyricsView.pause();
-                        }
-
-                        if (isFirst) {
-                            startRecord();
-                        }
-                    }, throwable -> MyLog.e(throwable));
-        } else {
-            MyLog.e(TAG, "没有歌词文件，不应该，进界面前已经下载好了");
-        }
-    }
+//    private void playLyrics(SongModel songModel, boolean play, boolean isFirst) {
+//        final String lyricFile = SongResUtils.getFileNameWithMD5(songModel.getLyric());
+//
+//        if (lyricFile != null) {
+//            LyricsManager.getLyricsManager(U.app())
+//                    .loadLyricsObserable(lyricFile, lyricFile.hashCode() + "")
+//                    .subscribeOn(Schedulers.io())
+//                    .retry(10)
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .compose(bindUntilEvent(FragmentEvent.DESTROY))
+//                    .subscribe(lyricsReader -> {
+//                        MyLog.d(TAG, "playMusic, start play lyric");
+//                        mManyLyricsView.resetData();
+//                        mManyLyricsView.initLrcData();
+//                        lyricsReader.cut(songModel.getRankLrcBeginT(), songModel.getRankLrcEndT());
+//                        if (isRecord) {
+//                            Set<Integer> set = new HashSet<>();
+//                            set.add(lyricsReader.getLineInfoIdByStartTs(songModel.getRankLrcBeginT()));
+//                            mManyLyricsView.setNeedCountDownLine(set);
+//                        } else {
+//                            Set<Integer> set = new HashSet<>();
+//                            mManyLyricsView.setNeedCountDownLine(set);
+//                        }
+//                        MyLog.d(TAG, "getRankLrcBeginT : " + songModel.getRankLrcBeginT());
+//                        mManyLyricsView.setLyricsReader(lyricsReader);
+//                        mLyricsReader = lyricsReader;
+//                        if (mManyLyricsView.getLrcStatus() == AbstractLrcView.LRCSTATUS_LRC && mManyLyricsView.getLrcPlayerStatus() != LRCPLAYERSTATUS_PLAY) {
+//                            mManyLyricsView.play(songModel.getBeginMs());
+//                            MyLog.d(TAG, "songModel.getBeginMs() : " + songModel.getBeginMs());
+//                        }
+//
+//                        if (!play) {
+//                            mManyLyricsView.pause();
+//                        }
+//
+//                        if (isFirst) {
+//                            startRecord();
+//                        }
+//                    }, throwable -> MyLog.e(throwable));
+//        } else {
+//            MyLog.e(TAG, "没有歌词文件，不应该，进界面前已经下载好了");
+//        }
+//    }
 
     @Override
     public void onResume() {
@@ -531,19 +558,45 @@ public class AuditionFragment extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(LrcEvent.LineLineEndEvent event) {
+        if (ScoreConfig.isMelp2Enable()) {
+            EngineManager.getInstance().getLineScore2(event.lineNum, new Score2Callback() {
+                @Override
+                public void onGetScore(int lineNum, int score) {
+                    mMelp2Score = score;
+                    if (MyLog.isDebugLogOpen()) {
+                        addLogText("第" + lineNum + "行 mMelp2Score:" + mMelp2Score);
+                    }
+                    if (ScoreConfig.isAcrEnable()) {
+                        if (mAcrScore >= 0) {
+                            if (mAcrScore > mMelp2Score) {
+                                processScore("mAcrScore", mAcrScore, event.lineNum);
+                            } else {
+                                processScore("mMelp2Score", mMelp2Score, event.lineNum);
+                            }
+                        } else {
+                            // 没返回
+                        }
+                    } else {
+                        processScore("mMelp2Score", mMelp2Score, event.lineNum);
+                    }
+                }
+            });
+        }
         if (ScoreConfig.isAcrEnable()) {
             EngineManager.getInstance().recognizeInManualMode(event.lineNum);
+            Message msg = mUiHandler.obtainMessage(MSG_SHOW_SCORE_EVENT + event.lineNum * 100);
+            mUiHandler.sendMessageDelayed(msg, 1000);
         } else {
-            if (ScoreConfig.isMelpEnable()) {
-                int score = EngineManager.getInstance().getLineScore();
-                if (MyLog.isDebugLogOpen()) {
-                    addLogText("第" + event.lineNum + "行 melp得分:" + score);
+            if (!ScoreConfig.isMelp2Enable()) {
+                if (ScoreConfig.isMelpEnable()) {
+                    int score = EngineManager.getInstance().getLineScore1();
+                    if (MyLog.isDebugLogOpen()) {
+                        addLogText("第" + event.lineNum + "行 mMelp1Score:" + score);
+                    }
+                    processScore("mMelp1Score", score, event.lineNum);
                 }
-                processScore(score, event.lineNum);
             }
         }
-        Message msg = mUiHandler.obtainMessage(MSG_SHOW_SCORE_EVENT + event.lineNum * 100);
-        mUiHandler.sendMessageDelayed(msg, 1000);
     }
 
     void jisuanScore() {
@@ -561,7 +614,8 @@ public class AuditionFragment extends BaseFragment {
             fc += (t * t);
         }
         if (MyLog.isDebugLogOpen()) {
-            U.getToastUtil().showShort("平均分:" + pj + " 方差:" + fc);
+            ClipboardUtils.setCopy(mLogView.getText().toString());
+            U.getToastUtil().showShort("平均分:" + pj + " 方差:" + fc + "得分记录已在剪贴板中");
         }
         MyLog.d(TAG, "平均分:" + pj + " 方差:" + fc);
     }
@@ -581,9 +635,9 @@ public class AuditionFragment extends BaseFragment {
             EngineManager.getInstance().stopAudioRecording();
             EngineManager.getInstance().stopAudioMixing();
         } else {
-            resetView();
+            reset();
             mVoiceScaleView.setVisibility(View.GONE);
-            playLyrics(mSongModel, false, false);
+            mManyLyricsView.pause();
         }
     }
 
@@ -594,53 +648,11 @@ public class AuditionFragment extends BaseFragment {
         if (activity != null) {
             activity.finish();
         }
-//            if (mQuitTipsDialog == null) {
-//                TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
-//                        .setMessageTip("直接返回你的设置变动\n将不会被保存哦～")
-//                        .setConfirmTip("保存")
-//                        .setCancelTip("取消")
-//                        .setConfirmBtnClickListener(new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View v) {
-//                                mQuitTipsDialog.dismiss(false);
-//                                // 要保存
-//                                Params.save2Pref(EngineManager.getInstance().getParams());
-//                                U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
-//                                        .setImage(R.drawable.touxiangshezhichenggong_icon)
-//                                        .setText("保存设置成功\n已应用到所有对局")
-//                                        .build());
-//
-//                                mUiHandler.postDelayed(() -> {
-//                                    Activity activity = getActivity();
-//                                    if (activity != null) {
-//                                        activity.finish();
-//                                    }
-//                                }, 2000);
-//
-//                            }
-//                        })
-//                        .setCancelBtnClickListener(new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View v) {
-//                                mQuitTipsDialog.dismiss(false);
-//                                U.getFragmentUtils().popFragment(AuditionFragment.this);
-//                            }
-//                        })
-//                        .build();
-//
-//                mQuitTipsDialog = DialogPlus.newDialog(getContext())
-//                        .setContentHolder(new ViewHolder(tipsDialogView))
-//                        .setGravity(Gravity.BOTTOM)
-//                        .setContentBackgroundResource(R.color.transparent)
-//                        .setOverlayBackgroundResource(R.color.black_trans_80)
-//                        .setExpanded(false)
-//                        .create();
-//            }
-//            mQuitTipsDialog.show();
         return true;
     }
 
-    private void processScore(int score, int line) {
+    private void processScore(String from, int score, int line) {
+        MyLog.d(TAG, "processScore" + " from=" + from + " score=" + score + " line=" + line);
         if (line <= mLastLineNum) {
             return;
         }
@@ -655,12 +667,14 @@ public class AuditionFragment extends BaseFragment {
                 mRankTopView.setScoreProgress(score, 0, mTotalLineNum);
             }
         });
+        mAcrScore = -1;
+        mMelp2Score = -1;
     }
 
     @Override
     public void destroy() {
         super.destroy();
-        mLyricEventLauncher.destroy();
+        mLyricAndAccMatchManager.stop();
         mManyLyricsView.release();
         EngineManager.getInstance().destroy("prepare");
         File recordFile = new File(PCM_SAVE_PATH);

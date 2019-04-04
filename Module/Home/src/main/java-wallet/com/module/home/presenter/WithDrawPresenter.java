@@ -29,10 +29,9 @@ public class WithDrawPresenter extends RxLifeCyclePresenter {
         mWalletServerApi = ApiManager.getInstance().createService(WalletServerApi.class);
     }
 
-    int i = 0;
 
-    public void getWithDrawInfo() {
-        if (i < 10) {
+    public void getWithDrawInfo(int deep) {
+        if (deep < 10) {
             ApiMethods.subscribe(mWalletServerApi.getWithdrawInfo(), new ApiObserver<ApiResult>() {
                 @Override
                 public void process(ApiResult result) {
@@ -46,14 +45,12 @@ public class WithDrawPresenter extends RxLifeCyclePresenter {
 
                 @Override
                 public void onError(Throwable e) {
-                    i++;
-                    getWithDrawInfo();
+                    getWithDrawInfo(deep+1);
                 }
 
                 @Override
                 public void onNetworkError(ErrorType errorType) {
-                    i++;
-                    getWithDrawInfo();
+                    getWithDrawInfo(deep+1);
                 }
             }, this);
         } else {
@@ -66,7 +63,7 @@ public class WithDrawPresenter extends RxLifeCyclePresenter {
         HashMap<String, Object> map = new HashMap<>();
         map.put("openID", openId);
         map.put("accessToken", accessToken);
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
 
         ApiMethods.subscribe(mWalletServerApi.authBindWX(body), new ApiObserver<ApiResult>() {
             @Override
@@ -103,7 +100,7 @@ public class WithDrawPresenter extends RxLifeCyclePresenter {
         HashMap<String, Object> map = new HashMap<>();
         map.put("amount", amount);
         map.put("action", action);
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
 
         ApiMethods.subscribe(mWalletServerApi.decr(body), new ApiObserver<ApiResult>() {
             @Override

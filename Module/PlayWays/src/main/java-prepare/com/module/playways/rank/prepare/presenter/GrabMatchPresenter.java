@@ -27,7 +27,7 @@ import io.reactivex.disposables.Disposable;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
-import static com.common.rxretrofit.ApiManager.APPLICATION_JSOIN;
+import static com.common.rxretrofit.ApiManager.APPLICATION_JSON;
 
 // 只处理匹配 请求匹配 取消匹配 和 收到加入游戏通知
 public class GrabMatchPresenter extends BaseMatchPresenter {
@@ -105,8 +105,8 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
         map.put("platform", PLAT_FORM);   // 代表是android平台
         map.put("tagID", playbookItemID);
 
-        RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSOIN), JSON.toJSONString(map));
-        mStartMatchTask = ApiMethods.subscribeWith(mMatchServerApi.startGrabMatch(body).retryWhen(new RxRetryAssist(1, 5, false)), new ApiObserver<ApiResult>() {
+        RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSON), JSON.toJSONString(map));
+        mStartMatchTask = ApiMethods.subscribe(mMatchServerApi.startGrabMatch(body).retryWhen(new RxRetryAssist(1, 5, false)), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 MyLog.w(TAG, "process" + " result =" + result.getErrno() + " traceId =" + result.getTraceId());
@@ -136,7 +136,7 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
         HashMap<String, Object> map = new HashMap<>();
         map.put("modeID", mGameType);
 
-        RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mMatchServerApi.cancleGrabMatch(body).retry(3), null);
     }
 
@@ -251,21 +251,22 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
      */
     private void joinGrabRoom() {
         HashMap<String, Object> map = new HashMap<>();
-        map.put("modeID", mGameType);
-        map.put("platform", PLAT_FORM);
+//        map.put("modeID", mGameType);
+//        map.put("platform", PLAT_FORM);
         map.put("roomID", mJoinActionEvent.gameId);
+        map.put("matchEnter", true);
 
-        RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mMatchServerApi.joinGrabRoom(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 StringBuilder sb = new StringBuilder();
-                MyLog.w(TAG, "sendIntoRoomReq 请求加入房间 result =  " + result.getErrno() + " traceId = " + result.getTraceId()+ " ");
+                MyLog.w(TAG, "sendIntoRoomReq 请求加入房间 result =  " + result.getErrno() + " traceId = " + result.getTraceId() + " ");
                 if (result.getErrno() == 0) {
                     if (mMatchState == MatchState.JoinRongYunRoomSuccess) {
                         mMatchState = MatchState.JoinGameSuccess;
                         JoinGrabRoomRspModel grabCurGameStateModel = JSON.parseObject(result.getData().toString(), JoinGrabRoomRspModel.class);
-                        grabCurGameStateModel.setGameCreateMs(GrabMatchPresenter.this.mJoinActionEvent.gameCreateMs);
+                        grabCurGameStateModel.setGameStartTimeMs(GrabMatchPresenter.this.mJoinActionEvent.gameCreateMs);
                         mView.matchGrabSucess(grabCurGameStateModel);
                         if (mCheckJoinStateTask != null) {
                             mCheckJoinStateTask.dispose();
@@ -300,7 +301,7 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
         // TODO: 2019/2/27  roomId
         map.put("roomID", mJoinActionEvent.gameId);
 
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mMatchServerApi.exitGame(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {

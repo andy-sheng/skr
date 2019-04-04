@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.common.view.ex.ExRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/view_70_dp"
+    android:layout_marginLeft="@dimen/view_16_dp"
+    android:layout_marginRight="@dimen/view_16_dp"
+    app:bl_corners_radius="@dimen/view_8_dp"
+    app:bl_shape="rectangle"
+    app:bl_solid_color="#EBEBEB"
+    app:bl_stroke_color="#ACACAC"
+    app:bl_stroke_width="@dimen/view_1_dp">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/avatar_iv"
+        android:layout_width="@dimen/view_40_dp"
+        android:layout_height="@dimen/view_40_dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/view_15_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/name_tv"
+        android:layout_width="wrap_content"
+        android:layout_marginRight="@dimen/view_20_dp"
+        android:layout_height="@dimen/view_20_dp"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginTop="@dimen/textsize_14_dp"
+        android:layout_toRightOf="@id/avatar_iv"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        android:paddingRight="@dimen/view_100_dp"
+        android:singleLine="true"
+        android:text="KTV酒彪子"
+        android:textColor="#FF8900"
+        android:textSize="@dimen/textsize_14_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/hint_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_20_dp"
+        android:layout_below="@id/name_tv"
+        android:layout_alignLeft="@id/name_tv"
+        android:gravity="center"
+        android:text="邀请你加入一唱到底"
+        android:textColor="#7F7F7F"
+        android:textSize="@dimen/textsize_14_dp" />
+
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/agree_tv"
+        android:layout_width="@dimen/view_60_dp"
+        android:layout_height="@dimen/view_32_dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/view_12_dp"
+        android:gravity="center"
+        android:text="同意"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_16_dp"
+        app:bl_corners_bottomRightRadius="@dimen/view_6_dp"
+        app:bl_corners_topRightRadius="@dimen/view_6_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#F5A623" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/ignore_tv"
+        android:layout_width="@dimen/view_60_dp"
+        android:layout_height="@dimen/view_32_dp"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/agree_tv"
+        android:gravity="center"
+        android:text="忽略"
+        android:textColor="@color/black_trans_50"
+        android:textSize="@dimen/textsize_16_dp"
+        app:bl_corners_bottomLeftRadius="@dimen/view_6_dp"
+        app:bl_corners_topLeftRadius="@dimen/view_6_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="@color/white" />
+
+</com.common.view.ex.ExRelativeLayout>

@@ -3,6 +3,7 @@ package com.common.image.fresco;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.net.http.HttpResponseCache;
 import android.os.Build;
 
 import com.common.base.BuildConfig;
@@ -26,6 +27,7 @@ import com.facebook.imagepipeline.listener.RequestListener;
 import com.facebook.imagepipeline.listener.RequestLoggingListener;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -66,7 +68,7 @@ public class FrescoInitManager {
                 if (MemoryTrimType.OnCloseToDalvikHeapLimit.getSuggestedTrimRatio() == suggestedTrimRatio
                         || MemoryTrimType.OnSystemLowMemoryWhileAppInBackground.getSuggestedTrimRatio() == suggestedTrimRatio
                         || MemoryTrimType.OnSystemLowMemoryWhileAppInForeground.getSuggestedTrimRatio() == suggestedTrimRatio
-                        ) {
+                ) {
                     // 清除内存缓存
                     Fresco.getImagePipeline().clearMemoryCaches();
                 }
@@ -114,6 +116,14 @@ public class FrescoInitManager {
 
         FLog.setLoggingDelegate(new FrescoLogDelegate("FrescoLogDelegate"));
         FLog.setMinimumLoggingLevel(BuildConfig.DEBUG ? FLog.ERROR : FLog.ERROR);
+
+        MyLog.d(TAG, "initFresco install cache for svga");
+        File cacheDir = new File(U.app().getCacheDir(), "http");
+        try {
+            HttpResponseCache.install(cacheDir, 1024 * 1024 * 64);
+        } catch (IOException e) {
+            MyLog.e(e);
+        }
     }
 
 

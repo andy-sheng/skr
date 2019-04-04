@@ -1,6 +1,7 @@
 package com.module.playways.grab.room.model;
 
-import com.module.playways.rank.room.model.PkScoreTipMsgModel;
+import com.zq.live.proto.Room.QGameConfig;
+import com.zq.live.proto.Room.QScoreTipMsg;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -11,7 +12,22 @@ public class GrabConfigModel implements Serializable {
     int enableShowMLightWaitTimeMs = 2;
     int totalGameRoundSeq = 100;
     int wantSingDelayTimeMs = 500;
-    List <GrabScoreTipMsgModel> qScoreTipMsg = new ArrayList<>();
+    List<GrabScoreTipMsgModel> qScoreTipMsg = new ArrayList<>();
+    int kickUserConsumCoinCnt = 2;
+
+    public static GrabConfigModel parse(QGameConfig config) {
+        GrabConfigModel grabConfigModel = new GrabConfigModel();
+        grabConfigModel.setEnableShowBLightWaitTimeMs(config.getEnableShowBLightWaitTimeMs());
+        grabConfigModel.setEnableShowMLightWaitTimeMs(config.getEnableShowMLightWaitTimeMs());
+        grabConfigModel.setTotalGameRoundSeq(config.getTotalGameRoundSeq());
+        grabConfigModel.setWantSingDelayTimeMs(config.getWantSingDelayTimeMs());
+        for(QScoreTipMsg qScoreTipMsg:config.getQScoreTipMsgList()){
+            GrabScoreTipMsgModel grabScoreTipMsgModel = GrabScoreTipMsgModel.parse(qScoreTipMsg);
+            grabConfigModel.getQScoreTipMsg().add(grabScoreTipMsgModel);
+        }
+        grabConfigModel.setKickUserConsumCoinCnt(config.getKickUserConsumCoinCnt());
+        return grabConfigModel;
+    }
 
     public int getEnableShowBLightWaitTimeMs() {
         return enableShowBLightWaitTimeMs;
@@ -51,6 +67,14 @@ public class GrabConfigModel implements Serializable {
 
     public void setQScoreTipMsg(List<GrabScoreTipMsgModel> qScoreTipMsg) {
         this.qScoreTipMsg = qScoreTipMsg;
+    }
+
+    public int getKickUserConsumCoinCnt() {
+        return kickUserConsumCoinCnt;
+    }
+
+    public void setKickUserConsumCoinCnt(int kickUserConsumCoinCnt) {
+        this.kickUserConsumCoinCnt = kickUserConsumCoinCnt;
     }
 
     @Override

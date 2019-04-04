@@ -23,11 +23,14 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.titlebar.CommonTitleBar;
 import com.module.RouterConstants;
+import com.module.home.event.AuthSuccessEvent;
+import com.module.home.event.PhoneAuthSuccessEvent;
 import com.module.home.event.WithDrawSuccessEvent;
 import com.module.home.inter.IWalletView;
 import com.module.home.R;
 import com.module.home.adapter.WalletRecordAdapter;
 import com.module.home.model.WalletRecordModel;
+import com.module.home.model.WithDrawInfoModel;
 import com.module.home.presenter.WalletRecordPresenter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -46,6 +49,8 @@ public class WalletFragment extends BaseFragment implements IWalletView {
     TextView mWithdrawTv;
     SmartRefreshLayout mRefreshLayout;
     RecyclerView mRecyclerView;
+
+    WithDrawInfoModel mWithDrawInfoModel;
 
     WalletRecordAdapter mWalletRecordAdapter;
 
@@ -110,8 +115,20 @@ public class WalletFragment extends BaseFragment implements IWalletView {
         mWithdrawTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                if (balance <= 0) {
-                    U.getToastUtil().showShort("暂无可提现余额");
+                if (balance < 10) {
+                    U.getToastUtil().showShort("满10元才能提现哦～");
+                } else if(mWithDrawInfoModel == null){
+                    U.getToastUtil().showShort("正在加载数据");
+                    mWalletRecordPresenter.getWithDrawInfo(0);
+                } else if(!mWithDrawInfoModel.isIsPhoneAuth()){
+                    ARouter.getInstance()
+                            .build(RouterConstants.ACTIVITY_SMS_AUTH)
+                            .navigation();
+                } else if(!mWithDrawInfoModel.isIsRealAuth()){
+                    mWithDrawInfoModel = null;
+                    ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                            .withString(RouterConstants.KEY_WEB_URL, U.getChannelUtils().getUrlByChannel("http://app.inframe.mobi/face/faceauth"))
+                            .navigation();
                 } else {
                     if(!U.getNetworkUtils().hasNetwork()){
                         U.getToastUtil().showShort("您网络异常！");
@@ -126,7 +143,14 @@ public class WalletFragment extends BaseFragment implements IWalletView {
         });
 
         U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(mWithDrawInfoModel == null){
+            mWalletRecordPresenter.getWithDrawInfo(0);
+        }
     }
 
     private void initPresenter() {
@@ -159,6 +183,11 @@ public class WalletFragment extends BaseFragment implements IWalletView {
         mWalletRecordPresenter.getAllWalletRecords(offset, DEFAULT_COUNT);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(PhoneAuthSuccessEvent event) {
+        mWithDrawInfoModel.setIsPhoneAuth(true);
+    }
+
     @Override
     public void onGetBalanceSucess(String availableBalance, String lockedBalance) {
         if (!TextUtils.isEmpty(availableBalance)) {
@@ -175,7 +204,7 @@ public class WalletFragment extends BaseFragment implements IWalletView {
     public void onGetIncrRecords(int offset, List<WalletRecordModel> list) {
         this.offset = offset;
         if (list == null || list.size() <= 0) {
-            mRefreshLayout.finishLoadMoreWithNoMoreData();
+            mRefreshLayout.setEnableLoadMore(false);
             return;
         }
         mRefreshLayout.finishLoadMore();
@@ -187,11 +216,17 @@ public class WalletFragment extends BaseFragment implements IWalletView {
     public void onGetAllRecords(int offset, List<WalletRecordModel> list) {
         this.offset = offset;
         if (list == null || list.size() <= 0) {
-            mRefreshLayout.finishLoadMoreWithNoMoreData();
+            mRefreshLayout.setEnableLoadMore(false);
+            mRefreshLayout.finishLoadMore();
             return;
         }
         mRefreshLayout.finishLoadMore();
         mWalletRecordAdapter.insertListLast(list);
         mWalletRecordAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showWithDrawInfo(WithDrawInfoModel withDrawInfoModel) {
+        mWithDrawInfoModel = withDrawInfoModel;
     }
 }

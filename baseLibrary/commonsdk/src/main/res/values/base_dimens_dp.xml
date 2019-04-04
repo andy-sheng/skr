@@ -43,9 +43,11 @@
     <dimen name="view_11_33_dp">11.33dp</dimen>
     <dimen name="view_11_67_dp">11.67dp</dimen>
     <dimen name="view_12_dp">12dp</dimen>
+    <dimen name="view_d_12_dp">-12dp</dimen>
     <dimen name="view_12_33_dp">12.33dp</dimen>
     <dimen name="view_12_67_dp">12.67dp</dimen>
     <dimen name="view_13_dp">13dp</dimen>
+    <dimen name="view_d_13_dp">-13dp</dimen>
     <dimen name="view_13_33_dp">13.33dp</dimen>
     <dimen name="view_13_67_dp">13.67dp</dimen>
     <dimen name="view_14_dp">14dp</dimen>
@@ -59,6 +61,7 @@
     <dimen name="view_16_33_dp">16.33dp</dimen>
     <dimen name="view_16_67_dp">16.67dp</dimen>
     <dimen name="view_17_dp">17dp</dimen>
+    <dimen name="view_d_17_dp">-17dp</dimen>
     <dimen name="view_17_33_dp">17.33dp</dimen>
     <dimen name="view_17_67_dp">17.67dp</dimen>
     <dimen name="view_18_dp">18dp</dimen>
@@ -68,6 +71,7 @@
     <dimen name="view_19_33_dp">19.33dp</dimen>
     <dimen name="view_19_67_dp">19.67dp</dimen>
     <dimen name="view_20_dp">20dp</dimen>
+    <dimen name="view_d_20_dp">-20dp</dimen>
     <dimen name="view_20_33_dp">20.33dp</dimen>
     <dimen name="view_20_67_dp">20.67dp</dimen>
     <dimen name="view_21_dp">21dp</dimen>
@@ -2036,6 +2040,7 @@
     <dimen name="textsize_32_67_dp">32.67dp</dimen>
     <dimen name="textsize_33_dp">33dp</dimen>
     <dimen name="textsize_40_dp">40dp</dimen>
+    <dimen name="textsize_42_dp">42dp</dimen>
     <dimen name="textsize_50_dp">50dp</dimen>
 </resources>
 

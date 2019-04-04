@@ -16,14 +16,15 @@ import java.util.List;
 
 public class RelationAdapter extends RecyclerView.Adapter {
 
-    List<UserInfoModel> mUserInfos = new ArrayList<>();
+    List<UserInfoModel> mUserInfos;
 
-    private int mode;
+    int mMode = 0;
     RecyclerOnItemClickListener mRecyclerOnItemClickListener;
 
     public RelationAdapter(int mode, RecyclerOnItemClickListener mRecyclerOnItemClickListener) {
-        this.mode = mode;
+        this.mMode = mode;
         this.mRecyclerOnItemClickListener = mRecyclerOnItemClickListener;
+        mUserInfos = new ArrayList<>();
     }
 
     public void addData(List<UserInfoModel> list) {
@@ -38,7 +39,7 @@ public class RelationAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.relation_view_holder_item, parent, false);
-        RelationHolderView viewHolder = new RelationHolderView(view, mRecyclerOnItemClickListener);
+        RelationHolderView viewHolder = new RelationHolderView(view, mMode, mRecyclerOnItemClickListener);
         return viewHolder;
     }
 
@@ -47,7 +48,7 @@ public class RelationAdapter extends RecyclerView.Adapter {
         if (holder instanceof RelationHolderView) {
             RelationHolderView songInfoHolder = (RelationHolderView) holder;
             UserInfoModel songModel = mUserInfos.get(position);
-            songInfoHolder.bind(mode, position, songModel);
+            songInfoHolder.bind(position, songModel);
         }
     }
 

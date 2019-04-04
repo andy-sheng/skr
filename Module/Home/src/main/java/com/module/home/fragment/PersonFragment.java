@@ -15,6 +15,7 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
@@ -25,6 +26,7 @@ import com.common.core.share.ShareType;
 import com.common.core.upgrade.UpgradeData;
 import com.common.core.upgrade.UpgradeManager;
 import com.common.core.userinfo.UserInfoManager;
+import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.event.RelationChangeEvent;
 import com.common.core.userinfo.model.GameStatisModel;
 import com.common.core.userinfo.model.UserInfoModel;
@@ -33,6 +35,11 @@ import com.common.core.userinfo.model.UserRankModel;
 import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
 
+import com.common.notification.event.FollowNotifyEvent;
+import com.common.rxretrofit.ApiManager;
+import com.common.rxretrofit.ApiMethods;
+import com.common.rxretrofit.ApiObserver;
+import com.common.rxretrofit.ApiResult;
 import com.common.utils.FragmentUtils;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
@@ -40,7 +47,9 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
+import com.common.view.titlebar.CommonTitleBar;
 import com.component.busilib.constans.GameModeType;
+import com.component.busilib.manager.WeakRedDotManager;
 import com.component.busilib.view.MarqueeTextView;
 import com.module.home.musictest.fragment.MusicTestFragment;
 import com.module.home.setting.fragment.SettingFragment;
@@ -68,15 +77,16 @@ import java.util.regex.Pattern;
 import io.reactivex.functions.Consumer;
 import model.RelationNumModel;
 
-import static com.module.home.fragment.GameFragment.SHANDIAN_BADGE;
-import static com.module.home.fragment.GameFragment.STAR_BADGE;
-import static com.module.home.fragment.GameFragment.TOP_BADGE;
+public class PersonFragment extends BaseFragment implements IPersonView, WeakRedDotManager.WeakRedDotListener {
 
-public class PersonFragment extends BaseFragment implements IPersonView {
+    public static final int STAR_BADGE = 1;
+    public static final int TOP_BADGE = 2;
+    public static final int SHANDIAN_BADGE = 3;
 
     public final static String TAG = "PersonFragment";
 
     SmartRefreshLayout mRefreshLayout;
+    CommonTitleBar mTitlebar;
     BaseImageView mAvatarIv;
     ExTextView mShareTv;
     ExTextView mNameTv;
@@ -84,8 +94,10 @@ public class PersonFragment extends BaseFragment implements IPersonView {
     MarqueeTextView mSignTv;
     RelativeLayout mFriends;
     ExTextView mFriendsNumTv;
+    ExImageView mFriendRedDot;
     RelativeLayout mFans;
     ExTextView mFansNumTv;
+    ExImageView mFansRedDot;
     RelativeLayout mFollows;
     ExTextView mFollowsNumTv;
 
@@ -98,7 +110,6 @@ public class PersonFragment extends BaseFragment implements IPersonView {
     ExTextView mRankText;
     ExImageView mRankDiffIv;
     ExImageView mMedalIv;
-
 
     RelativeLayout mWalletArea;
     RelativeLayout mAuditionArea;
@@ -123,6 +134,9 @@ public class PersonFragment extends BaseFragment implements IPersonView {
     int mFansNum = 0;    // 粉丝数
     int mFocusNum = 0;   // 关注数
 
+    int mFansRedDotValue = 0;
+    int mFriendRedDotValue = 0;
+
     @Override
     public int initView() {
         return R.layout.person_fragment_layout;
@@ -144,10 +158,22 @@ public class PersonFragment extends BaseFragment implements IPersonView {
         addPresent(mPersonCorePresenter);
         mPersonCorePresenter.getHomePage((int) MyUserInfoManager.getInstance().getUid(), true);
         mPersonCorePresenter.getRankLevel(true);
+
+        WeakRedDotManager.getInstance().addListener(this);
+        mFansRedDotValue = U.getPreferenceUtils().getSettingInt(WeakRedDotManager.SP_KEY_NEW_FANS, 0);
+        mFriendRedDotValue = U.getPreferenceUtils().getSettingInt(WeakRedDotManager.SP_KEY_NEW_FRIEND, 0);
+        refreshPersonRedDot();
     }
 
     private void initTopView() {
         mRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.refreshLayout);
+        mTitlebar = (CommonTitleBar)mRootView.findViewById(R.id.titlebar);
+
+        if (U.getDeviceUtils().hasNotch(getContext())) {
+            mTitlebar.setVisibility(View.VISIBLE);
+        } else {
+            mTitlebar.setVisibility(View.GONE);
+        }
 
         mAvatarIv = (BaseImageView) mRootView.findViewById(R.id.avatar_iv);
         mShareTv = (ExTextView) mRootView.findViewById(R.id.share_tv);
@@ -156,8 +182,10 @@ public class PersonFragment extends BaseFragment implements IPersonView {
         mSignTv = (MarqueeTextView) mRootView.findViewById(R.id.sign_tv);
         mFriends = (RelativeLayout) mRootView.findViewById(R.id.friends);
         mFriendsNumTv = (ExTextView) mRootView.findViewById(R.id.friends_num_tv);
+        mFriendRedDot = (ExImageView) mRootView.findViewById(R.id.friend_red_dot);
         mFans = (RelativeLayout) mRootView.findViewById(R.id.fans);
         mFansNumTv = (ExTextView) mRootView.findViewById(R.id.fans_num_tv);
+        mFansRedDot = (ExImageView) mRootView.findViewById(R.id.fans_red_dot);
         mFollows = (RelativeLayout) mRootView.findViewById(R.id.follows);
         mFollowsNumTv = (ExTextView) mRootView.findViewById(R.id.follows_num_tv);
 
@@ -252,35 +280,31 @@ public class PersonFragment extends BaseFragment implements IPersonView {
             }
         });
 
-        RxView.clicks(mFriends)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        // 好友，双向关注
-                        openRelationFragment(RelationFragment.FROM_FRIENDS);
-                    }
-                });
+        mFriends.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FRIEND_RED_ROD_TYPE, 0);
+                // 好友，双向关注
+                openRelationFragment(RelationFragment.FROM_FRIENDS);
+            }
+        });
 
-        RxView.clicks(mFans)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        // 粉丝，我关注的
-                        openRelationFragment(RelationFragment.FROM_FANS);
-                    }
-                });
+        mFans.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FANS_RED_ROD_TYPE, 0);
+                // 粉丝，我关注的
+                openRelationFragment(RelationFragment.FROM_FANS);
+            }
+        });
 
-        RxView.clicks(mFollows)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        // 关注, 关注我的
-                        openRelationFragment(RelationFragment.FROM_FOLLOW);
-                    }
-                });
+        mFollows.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                // 关注, 关注我的
+                openRelationFragment(RelationFragment.FROM_FOLLOW);
+            }
+        });
     }
 
     private void openRelationFragment(int mode) {
@@ -391,7 +415,7 @@ public class PersonFragment extends BaseFragment implements IPersonView {
         AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance()
                 .getAvatar())
                 .setCircle(true)
-                .setBorderColorBySex(MyUserInfoManager.getInstance().getSex() == 1)
+                .setBorderColor(Color.parseColor("#0C2275"))
                 .setBorderWidth(U.getDisplayUtils().dip2px(3))
                 .build());
         mNameTv.setText(MyUserInfoManager.getInstance().getNickName());
@@ -413,30 +437,49 @@ public class PersonFragment extends BaseFragment implements IPersonView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(RelationChangeEvent event) {
-        if (event.type == RelationChangeEvent.FOLLOW_TYPE) {
-            if (event.isFriend) {
-                // 新增好友,好友数加1
-                mFriendNum = mFriendNum + 1;
-                mFocusNum = mFocusNum + 1;
-            } else if (event.isFollow) {
-                // 新增关注,关注数加1
-                mFocusNum = mFocusNum + 1;
-            }
-        } else if (event.type == RelationChangeEvent.UNFOLLOW_TYPE) {
-            // 关注数减1
-            mFocusNum = mFocusNum - 1;
-            // TODO: 2019/1/17 怎么判断之前也是好友
-            if (event.isOldFriend) {
-                mFriendNum = mFriendNum - 1;
-            }
-        }
+        getRelationNums();
+    }
 
-        refreshRelationNum();
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(FollowNotifyEvent event) {
+        getRelationNums();
+    }
+
+    private void getRelationNums() {
+        UserInfoServerApi userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
+        ApiMethods.subscribe(userInfoServerApi.getRelationNum((int) MyUserInfoManager.getInstance().getUid()), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    List<RelationNumModel> relationNumModels = JSON.parseArray(result.getData().getString("cnt"), RelationNumModel.class);
+                    if (relationNumModels != null && relationNumModels.size() > 0) {
+                        for (RelationNumModel mode : relationNumModels) {
+                            if (mode.getRelation() == UserInfoManager.RELATION_FRIENDS) {
+                                mFriendNum = mode.getCnt();
+                            } else if (mode.getRelation() == UserInfoManager.RELATION_FANS) {
+                                mFansNum = mode.getCnt();
+                            } else if (mode.getRelation() == UserInfoManager.RELATION_FOLLOW) {
+                                mFocusNum = mode.getCnt();
+                            }
+                        }
+                    }
+                    refreshRelationNum();
+                }
+            }
+        }, this);
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(UpgradeData.RedDotStatusEvent event) {
         updateSettingRedDot();
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        WeakRedDotManager.getInstance().removeListener(this);
     }
 
     @Override
@@ -629,4 +672,39 @@ public class PersonFragment extends BaseFragment implements IPersonView {
     public boolean isInViewPager() {
         return true;
     }
+
+    @Override
+    public int[] acceptType() {
+        return new int[]{
+                WeakRedDotManager.FANS_RED_ROD_TYPE,
+                WeakRedDotManager.FRIEND_RED_ROD_TYPE
+        };
+    }
+
+    @Override
+    public void onWeakRedDotChange(int type, int value) {
+        if (type == WeakRedDotManager.FANS_RED_ROD_TYPE) {
+            mFansRedDotValue = value;
+        } else if (type == WeakRedDotManager.FRIEND_RED_ROD_TYPE) {
+            mFriendRedDotValue = value;
+        }
+
+        refreshPersonRedDot();
+    }
+
+    private void refreshPersonRedDot() {
+        // 关注和粉丝红点
+        if (mFansRedDotValue < 1) {
+            mFansRedDot.setVisibility(View.GONE);
+        } else {
+            mFansRedDot.setVisibility(View.VISIBLE);
+        }
+
+        if (mFriendRedDotValue < 1) {
+            mFriendRedDot.setVisibility(View.GONE);
+        } else {
+            mFriendRedDot.setVisibility(View.VISIBLE);
+        }
+    }
+
 }

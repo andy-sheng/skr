@@ -1,73 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/view_344_dp"
-    android:layout_height="@dimen/view_250_dp"
+<com.common.view.ex.ExRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/view_180_dp"
     android:layout_centerHorizontal="true"
-    android:layout_marginBottom="@dimen/view_17_dp"
-    android:background="@drawable/img_dialog_bg">
+    android:layout_marginLeft="@dimen/view_16_dp"
+    android:layout_marginRight="@dimen/view_16_dp"
+    android:layout_marginBottom="@dimen/view_16_dp"
+    app:bl_corners_radius="@dimen/view_8_dp"
+    app:bl_shape="rectangle"
+    app:bl_solid_color="#ffebebeb"
+    app:bl_stroke_color="#ffacacac"
+    app:bl_stroke_width="@dimen/view_1_dp">
 
-    <com.common.view.ex.ExTextView
-        android:id="@+id/message_tv"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_74_dp"
-        android:gravity="center"
-        android:text="马上要为你匹配对手了\n还要退出吗?"
-        android:textColor="#0C2275"
-        android:textSize="@dimen/textsize_16_dp" />
+        android:layout_marginTop="@dimen/view_20_dp"
+        android:layout_marginBottom="@dimen/view_84_dp">
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/view_22_dp"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/black_trans_80"
+            android:textSize="@dimen/textsize_17_dp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/message_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/view_40_dp"
+            android:layout_below="@+id/title_tv"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/view_10_dp"
+            android:gravity="center"
+            android:textColor="#7F7F7F"
+            android:textSize="@dimen/textsize_14_dp" />
+
+    </RelativeLayout>
 
     <com.common.view.ex.ExTextView
         android:id="@+id/ok_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/view_240_dp"
+        android:layout_height="@dimen/view_48_dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/view_24_dp"
-        android:background="@drawable/btn_dialog_ok"
+        android:layout_marginBottom="@dimen/view_16_dp"
         android:gravity="center"
-        android:paddingBottom="@dimen/view_7_dp"
         android:text="确定"
-        android:textColor="#0C2275"
-        android:textSize="@dimen/view_20_dp"
-        android:textStyle="bold"
-        android:visibility="gone" />
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_16_dp"
+        android:visibility="gone"
+        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#F5A623" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/view_48_dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="@dimen/view_32_dp"
-        android:layout_marginRight="@dimen/view_32_dp"
-        android:layout_marginBottom="@dimen/view_24_dp"
+        android:layout_marginBottom="@dimen/view_16_dp"
         android:orientation="horizontal">
 
         <com.common.view.ex.ExTextView
             android:id="@+id/cancel_tv"
             android:layout_width="@dimen/view_0_dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/view_27_dp"
+            android:layout_marginRight="@dimen/view_5_dp"
             android:layout_weight="1"
-            android:background="@drawable/btn_dialog_cancle"
             android:gravity="center"
-            android:paddingBottom="@dimen/view_7_dp"
             android:text="取消请求"
-            android:textColor="#0C2275"
-            android:textSize="@dimen/textsize_20_dp"
-            android:textStyle="bold"
-            android:visibility="gone" />
+            android:textColor="@color/white"
+            android:textSize="@dimen/textsize_16_dp"
+            android:visibility="gone"
+            app:bl_corners_radius="@dimen/view_8_dp"
+            app:bl_shape="rectangle"
+            app:bl_solid_color="#A6A6A6" />
 
         <com.common.view.ex.ExTextView
             android:id="@+id/confirm_tv"
             android:layout_width="@dimen/view_0_dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/view_5_dp"
+            android:layout_marginRight="@dimen/view_27_dp"
             android:layout_weight="1"
-            android:background="@drawable/btn_dialog_confirm"
             android:gravity="center"
-            android:paddingBottom="@dimen/view_7_dp"
             android:text="确认请求"
             android:textColor="@color/white"
-            android:textSize="@dimen/textsize_20_dp"
-            android:textStyle="bold"
-            android:visibility="gone" />
+            android:textSize="@dimen/textsize_16_dp"
+            android:visibility="gone"
+            app:bl_corners_radius="@dimen/view_8_dp"
+            app:bl_shape="rectangle"
+            app:bl_solid_color="#F5A623" />
     </LinearLayout>
-</RelativeLayout>
+</com.common.view.ex.ExRelativeLayout>

@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+import "Common.proto";
+
+package com.zq.live.proto.Notification;
+
+/**
+
+java -jar -Dfile.encoding=UTF-8 ./proto/wire-compiler-2.3.0-SNAPSHOT-jar-with-dependencies.jar \
+--proto_path=./proto --java_out=./commoncore/src/main/java-gen-pb/ Notification.proto
+
+*/
+
+// 房间消息：此结构会通过pb编码后，通过系统消息通道到达客户端
+message NotificationMsg
+{
+    sint64 timeMs                = 1; //消息产生时间，单位毫秒
+    ENotificationMsgType msgType = 2; //消息类型
+    uint32 roomID                = 3; //房间ID,若不需要为0
+    sint64 no                    = 4; //消息序号
+    EMsgPosType posType          = 5; //消息显示位置类型
+    Common.UserInfo sender              = 6; //发送者简要信息
+
+    FollowMsg followMsg           = 10;
+    InviteStandMsg inviteStandMsg = 11;
+}
+
+// ENotificationMsgType 房间消息类型
+enum ENotificationMsgType {
+    NM_UNKNOWN = 0; //未知消息
+
+    NM_FOLLOW       = 1; //关注类型
+    NM_INVITE_STAND = 2; //一唱到底邀请
+}
+
+message FollowMsg
+{
+    Common.UserInfo user = 1; //发起关注的用户详情
+    bool isFriend = 2; //是否好友
+    bool isFollow = 3; //是否关注
+}
+
+message InviteStandMsg
+{
+    Common.UserInfo user = 1; //发起邀请的用户详情
+    uint32 roomID = 2; //房间id
+}
+
+// 消息位置类型
+enum EMsgPosType {
+    EPT_UNKNOWN = 0; // 未知位置
+    EPT_NORMAL = 1; // 一般评论消息
+    EPT_CENTER = 2; // 在整个页面中心区域显示的消息
+    EPT_TOP = 3; // 页面上方
+    EPT_BOTTOM = 4; // 页面底部
+}

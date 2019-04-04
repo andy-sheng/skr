@@ -2,7 +2,6 @@ package com.module.playways.grab.room.view;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -282,7 +281,7 @@ public class SelfSingCardView extends RelativeLayout {
                 }
             });
         } catch (Exception e) {
-            System.out.print(true);
+            MyLog.e(TAG,e);
         }
     }
 

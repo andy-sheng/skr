@@ -133,6 +133,8 @@ android {
             java.srcDirs += 'src/main/java-banner'
             res.srcDirs += 'src/main/res-banner'
 
+            java.srcDirs += 'src/main/java-floatwindow'
+            res.srcDirs += 'src/main/res-floatwindow'
         }
 
 //        release {

@@ -10,7 +10,6 @@ import com.common.utils.CustomHandlerThread;
 import com.module.playways.rank.room.gift.GiftContinuousView;
 
 
-
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -22,15 +21,11 @@ import java.util.Map;
 public abstract class GiftPlayControlTemplate {
     public static final String GiftPlayModelAG = "AnimationPlayControlGiftPlayModelemplate";
 
-    static final int MSG_SGiftPlayModelARGiftPlayModel = 80;
+    static final int MSG_START_ON_UI = 80;
 
-    static final int MSG_END = 81;
+    static final int MSG_END_ON_UI = 81;
 
     public static final int SIZE = 100;//生产者池子里最多多少个
-
-    private int mMaxConsumerNumber = 1;//消费者的最大个数
-
-    private int mCurConsumerNumber = 0;//当前消费者的个数
 
     /**
      * 播放动画队列
@@ -42,8 +37,7 @@ public abstract class GiftPlayControlTemplate {
     Handler mUiHandler;
 
 
-    public GiftPlayControlTemplate(int maxConsumerNumber) {
-        this.mMaxConsumerNumber = maxConsumerNumber;
+    public GiftPlayControlTemplate() {
         mHandlerGiftPlayModelhread = new CustomHandlerThread("my-queue-thread") {
             @Override
             protected void processMessage(Message var1) {
@@ -54,11 +48,11 @@ public abstract class GiftPlayControlTemplate {
             @Override
             public void handleMessage(Message msg) {
                 switch (msg.what) {
-                    case MSG_SGiftPlayModelARGiftPlayModel:
+                    case MSG_START_ON_UI:
                         Pair<GiftPlayModel, GiftContinuousView> pair = (Pair<GiftPlayModel, GiftContinuousView>) msg.obj;
                         onStart(pair.first, pair.second);
                         break;
-                    case MSG_END:
+                    case MSG_END_ON_UI:
                         onEnd((GiftPlayModel) msg.obj);
                         break;
                 }
@@ -106,23 +100,17 @@ public abstract class GiftPlayControlTemplate {
     }
 
     private void play() {
-        if (mCurConsumerNumber >= mMaxConsumerNumber) {
-            MyLog.d(GiftPlayModelAG, "no idle consumer");
-            return;
-        }
-
         GiftPlayModel cur = peek();
-        if (cur == null) {
-            return;
-        }
-        GiftContinuousView consumer = accept(cur);
-        if (consumer != null) {
-            // 肯定有消费者，才会走到这
-            mQueueMap.remove(getKey(cur));
-            if (cur != null) {
-                //取出来一个
-                processInBackGround(cur);
-                onStartInside(cur, consumer);
+        if (cur != null) {
+            GiftContinuousView consumer = accept(cur);
+            if (consumer != null) {
+                // 肯定有消费者，才会走到这
+                mQueueMap.remove(getKey(cur));
+                if (cur != null) {
+                    //取出来一个
+                    processInBackGround(cur);
+                    onStartInside(cur, consumer);
+                }
             }
         }
     }
@@ -134,12 +122,7 @@ public abstract class GiftPlayControlTemplate {
      */
     private void onStartInside(GiftPlayModel model, GiftContinuousView consumer) {
         MyLog.d(GiftPlayModelAG, "onStartInside model:" + model);
-        if (++mCurConsumerNumber > mMaxConsumerNumber) {
-            mCurConsumerNumber = mMaxConsumerNumber;
-            add(model,false);
-            return;
-        }
-        Message msg = mUiHandler.obtainMessage(MSG_SGiftPlayModelARGiftPlayModel);
+        Message msg = mUiHandler.obtainMessage(MSG_START_ON_UI);
         msg.obj = new Pair<>(model, consumer);
         mUiHandler.sendMessage(msg);
     }
@@ -151,7 +134,7 @@ public abstract class GiftPlayControlTemplate {
      * @param model
      */
     public void endCurrent(GiftPlayModel model) {
-        Message msg = mUiHandler.obtainMessage(MSG_END);
+        Message msg = mUiHandler.obtainMessage(MSG_END_ON_UI);
         msg.obj = model;
         mUiHandler.sendMessage(msg);
 
@@ -165,9 +148,6 @@ public abstract class GiftPlayControlTemplate {
 
     private void onEndInSide(GiftPlayModel model) {
         MyLog.d(GiftPlayModelAG, "onEndInSide model:" + model);
-        if (--mCurConsumerNumber < 0) {
-            mCurConsumerNumber = 0;
-        }
         play();
     }
 
@@ -175,7 +155,6 @@ public abstract class GiftPlayControlTemplate {
      * 复位
      */
     public synchronized void reset() {
-        mCurConsumerNumber = 0;
         mQueueMap.clear();
     }
 
@@ -183,7 +162,6 @@ public abstract class GiftPlayControlTemplate {
      * 复位
      */
     public synchronized void destroy() {
-        mCurConsumerNumber = 0;
         mQueueMap.clear();
         if (mUiHandler != null) {
             mUiHandler.removeCallbacksAndMessages(null);
@@ -226,15 +204,5 @@ public abstract class GiftPlayControlTemplate {
     public synchronized boolean hasMoreData() {
         return !mQueueMap.isEmpty();
     }
-
-    /**
-     * 是否空闲的消费者
-     *
-     * @return
-     */
-    public boolean hasIdleConsumer() {
-        return mCurConsumerNumber < mMaxConsumerNumber;
-    }
-
 
 }

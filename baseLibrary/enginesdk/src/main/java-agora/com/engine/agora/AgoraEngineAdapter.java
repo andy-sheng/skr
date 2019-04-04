@@ -17,8 +17,10 @@ import com.engine.agora.source.PrivateTextureHelper;
 import com.engine.arccloud.ArcCloudManager;
 import com.engine.arccloud.RecognizeConfig;
 import com.engine.effect.IFAudioEffectEngine;
+import com.engine.effect.ITbAgcProcessor;
 import com.engine.effect.ITbEffectProcessor;
 import com.engine.score.ICbScoreProcessor;
+import com.engine.score.Score2Callback;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -80,9 +82,9 @@ public class AgoraEngineAdapter {
     private AgoraOutCallback mOutCallback;
     private List<EffectModel> mEffectModels = new ArrayList<>();
     private ArcCloudManager mArcCloudManager;// ArcClound的打分和识别
-    private ITbEffectProcessor mTbEffectProcessor = new ITbEffectProcessor();// 天宝提供的音效处理类
+    private ITbEffectProcessor mTbEffectProcessor = new ITbEffectProcessor();// 提供的音效处理类
+    private ITbAgcProcessor mITbAgcProcessor = new ITbAgcProcessor();// 提供的Agc处理算法
     private IFAudioEffectEngine mCbEffectProcessor = new IFAudioEffectEngine();// 唱吧提供的音效处理类
-
     private ICbScoreProcessor mICbScoreProcessor = new ICbScoreProcessor();// 唱吧打分系统
 
     /**
@@ -209,6 +211,14 @@ public class AgoraEngineAdapter {
                 mOutCallback.onAudioRouteChanged(routing);
             }
         }
+
+        @Override
+        public void onError(int error) {
+            super.onError(error);
+            if (mOutCallback != null) {
+                mOutCallback.onError(error);
+            }
+        }
     };
 
     public void setOutCallback(AgoraOutCallback outCallback) {
@@ -238,6 +248,7 @@ public class AgoraEngineAdapter {
             synchronized (this) {
                 try {
                     if (mRtcEngine == null) {
+                        MyLog.d(TAG, "InitRtcEngine");
                         mRtcEngine = RtcEngine.create(U.app(), APP_ID, mCallback);
                         //mRtcEngine.setParameters("{\"rtc.log_filter\": 65535}");
 
@@ -262,7 +273,7 @@ public class AgoraEngineAdapter {
         if (mConfig.isEnableAudio()) {
             MyLog.d(TAG, "initRtcEngineInner enableAudio");
             //该方法需要在 joinChannel 之前设置好，joinChannel 后设置不生效。
-            if(mRtcEngine == null){
+            if (mRtcEngine == null) {
                 tryInitRtcEngine();
             }
             mRtcEngine.enableAudio();
@@ -344,6 +355,7 @@ public class AgoraEngineAdapter {
             );
         }
         mTbEffectProcessor.init();
+        mITbAgcProcessor.init();
     }
 
     /**
@@ -360,6 +372,7 @@ public class AgoraEngineAdapter {
      * 离开房间
      */
     public void leaveChannel() {
+        MyLog.d(TAG, "leaveChannel");
         if (mRtcEngine != null) {
             mRtcEngine.leaveChannel();
         }
@@ -394,6 +407,9 @@ public class AgoraEngineAdapter {
         if (mICbScoreProcessor != null) {
             mICbScoreProcessor.destroy();
         }
+        if (mITbAgcProcessor != null) {
+            mITbAgcProcessor.destroyAgcProcessor();
+        }
     }
 
     /**
@@ -423,7 +439,11 @@ public class AgoraEngineAdapter {
         tryInitRtcEngine();
         MyLog.d(TAG, "joinChannel" + " token=" + token + " channelId=" + channelId + " extra=" + extra + " uid=" + uid);
         // 一定要设置一个角色
-        int retCode = mRtcEngine.joinChannel(token, channelId, extra, uid);
+        String t = null;
+        if (!TextUtils.isEmpty(token)) {
+            t = token;
+        }
+        int retCode = mRtcEngine.joinChannel(t, channelId, extra, uid);
         return retCode;
     }
 
@@ -1048,24 +1068,9 @@ public class AgoraEngineAdapter {
                 if (DEBUG) {
                     MyLog.d(TAG, "step0:" + testIn(samples));
                 }
-                if (mArcCloudManager != null) {
-                    if (mConfig != null) {
-                        switch (mConfig.getScene()) {
-                            case voice:
-                                break;
-                            case grab:
-                            case rank:
-                            case audiotest:
-                                if (mConfig.isMixMusicPlaying() && mConfig.getLrcHasStart()) {
-                                    mArcCloudManager.putPool(samples, samplesPerSec, channels);
-                                }
-                                break;
-                        }
-                    }
-                }
-                long ts = 0;
+                long accTs = 0;
                 if (mConfig != null && mConfig.isMixMusicPlaying() && mConfig.getLrcHasStart()) {
-                    ts = mConfig.getCurrentMusicTs() + mConfig.getMixMusicBeginOffset() + (System.currentTimeMillis() - mConfig.getRecordCurrentMusicTsTs());
+                    accTs = mConfig.getCurrentMusicTs() + mConfig.getMixMusicBeginOffset() + (System.currentTimeMillis() - mConfig.getRecordCurrentMusicTsTs());
                 }
                 if (DEBUG) {
                     MyLog.d(TAG, "step1:" + testIn(samples));
@@ -1087,19 +1092,32 @@ public class AgoraEngineAdapter {
                             e.printStackTrace();
                         }
                     }
-                    if (ts > 0) {
+                    if (accTs > 0) {
                         // 取本地数据，本地数据为44100 单声道
                         byte[] data = new byte[1024];
                         try {
                             if (mDebugScoreIS.read(data) != -1) {
-                                mICbScoreProcessor.process(data, data.length, 1, samplesPerSec, ts, mConfig.getMidiPath());
+                                mICbScoreProcessor.process(data, data.length, 1, samplesPerSec, accTs, mConfig.getMidiPath());
+                            }
+                            if (mArcCloudManager != null) {
+                                if (mConfig != null) {
+                                    mArcCloudManager.putPool(data, samplesPerSec, 1);
+                                }
                             }
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
+
                     }
                 } else {
-                    mICbScoreProcessor.process(samples, samples.length, channels, samplesPerSec, ts, mConfig.getMidiPath());
+                    mICbScoreProcessor.process(samples, samples.length, channels, samplesPerSec, accTs, mConfig.getMidiPath());
+                    if (mArcCloudManager != null) {
+                        if (mConfig != null) {
+                            if (mConfig.isMixMusicPlaying() && mConfig.getLrcHasStart()) {
+                                mArcCloudManager.putPool(samples, samplesPerSec, channels);
+                            }
+                        }
+                    }
                 }
 
                 if (DEBUG) {
@@ -1119,13 +1137,29 @@ public class AgoraEngineAdapter {
                 if (DEBUG) {
                     MyLog.d(TAG, "step3:" + testIn(samples));
                 }
+                //TODO 是不是可以考虑AGC 后再给打分
+                // 针对不同场景，处理agc
+                switch (mConfig.getScene()) {
+                    case grab:
+                        mITbAgcProcessor.processV1(samples, samples.length, channels, samplesPerSec);
+                        break;
+                    case voice:
+                        break;
+                    case rank:
+                    case audiotest:
+                        if (accTs > 0) {
+                            mITbAgcProcessor.processV1(samples, samples.length, channels, samplesPerSec);
+                        }
+                        break;
+                }
+
+                if (DEBUG) {
+                    MyLog.d(TAG, "step4:" + testIn(samples));
+                }
                 if (!TextUtils.isEmpty(mConfig.getRecordingFromCallbackSavePath())) {
                     if (mOutCallback != null) {
                         mOutCallback.onRecordingBuffer(samples);
                     }
-                }
-                if (DEBUG) {
-                    MyLog.d(TAG, "step4:" + testIn(samples));
                 }
                 return true;
             }
@@ -1149,8 +1183,12 @@ public class AgoraEngineAdapter {
         return a;
     }
 
-    public int getScore() {
-        return mICbScoreProcessor.getScore();
+    public int getScoreV1() {
+        return mICbScoreProcessor.getScoreV1();
+    }
+
+    public void getScoreV2(int lineNum, Score2Callback callback) {
+        mICbScoreProcessor.getScoreV2(lineNum, callback);
     }
 
     /**

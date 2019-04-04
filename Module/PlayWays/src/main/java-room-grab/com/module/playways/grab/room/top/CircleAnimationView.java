@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.common.log.MyLog;
 import com.common.utils.U;
 
 public class CircleAnimationView extends View {

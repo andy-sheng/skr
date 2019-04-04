@@ -2,7 +2,6 @@ package com.module.playways.rank.room.view;
 
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.room.model.RankRoundInfoModel;
-import com.module.playways.rank.room.model.RecordData;
 import com.module.playways.rank.song.model.SongModel;
 
 import java.util.List;
@@ -26,7 +25,7 @@ public interface IGameRuleView {
     void updateUserState(List<OnlineInfoModel> jsonOnLineInfoList);
 
     //先显示，然后再播放
-    void playLyric(SongModel songModel, boolean play);
+    void playLyric(SongModel songModel);
 
     void updateScrollBarProgress(int score,int curTotalScore,int lineNum);
 

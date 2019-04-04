@@ -1,21 +1,19 @@
 package com.module.playways.grab.room.view;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 import com.common.core.account.UserAccountManager;
+import com.common.log.MyLog;
 import com.common.statistics.StatConstants;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
-import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.fragment.GrabRoomFragment;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGADrawable;
-import com.opensource.svgaplayer.SVGADynamicEntity;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
@@ -29,6 +27,8 @@ import java.util.HashMap;
  * 轮次结束
  */
 public class RoundOverCardView extends RelativeLayout {
+
+    public final static String TAG = "RoundOverCardView";
 
     public final static int UNKNOW_END = 0;                // 未知原因
     public final static int NONE_SING_END = -1;             // 无人想唱
@@ -133,7 +133,7 @@ public class RoundOverCardView extends RelativeLayout {
                 }
             });
         } catch (Exception e) {
-            System.out.print(true);
+            MyLog.e(TAG,e);
         }
 
         mNoneSingSvga.setCallback(new SVGACallback() {
@@ -193,7 +193,7 @@ public class RoundOverCardView extends RelativeLayout {
                 }
             });
         } catch (Exception e) {
-            System.out.print(true);
+            MyLog.e(TAG,e);
         }
 
         mSingResultSvga.setCallback(new SVGACallback() {
@@ -272,7 +272,7 @@ public class RoundOverCardView extends RelativeLayout {
                 }
             });
         } catch (Exception e) {
-            System.out.print(true);
+            MyLog.e(TAG,e);
         }
 
         mSingResultSvga.setCallback(new SVGACallback() {

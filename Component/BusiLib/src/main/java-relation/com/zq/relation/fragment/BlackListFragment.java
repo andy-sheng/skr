@@ -147,7 +147,7 @@ public class BlackListFragment extends BaseFragment {
                     HashMap<String, Object> map = new HashMap<>();
                     map.put("userIDs", JSON.toJSON(useIDs));
 
-                    RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+                    RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
                     ApiMethods.subscribe(userInfoServerApi.getUserInfos(body), new ApiObserver<ApiResult>() {
                         @Override
                         public void process(ApiResult result) {

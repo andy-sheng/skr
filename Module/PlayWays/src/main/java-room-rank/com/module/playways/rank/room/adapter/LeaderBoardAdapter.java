@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.userinfo.model.RankInfoModel;
-import com.common.core.userinfo.model.UserInfoModel;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;

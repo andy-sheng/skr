@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--BitmapTextView的属性-->
+    <declare-styleable name="BitmapTextView">
+        <!--字体的高度-->
+        <attr name="scale" format="float" />
+    </declare-styleable>
+</resources>

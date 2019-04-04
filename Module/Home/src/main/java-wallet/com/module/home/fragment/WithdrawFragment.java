@@ -157,23 +157,7 @@ public class WithdrawFragment extends BaseFragment implements IWithDrawView {
                 }
 
                 U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity(), mEditCashNum);
-                if (!mWithDrawInfoModel.isIsRealAuth()) {
-                    U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), SmsAuthFragment.class)
-                            .setAddToBackStack(true)
-                            .setHasAnimation(true)
-                            .setFragmentDataListener(new FragmentDataListener() {
-                                @Override
-                                public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
-                                    if (requestCode == 0 && resultCode == 0) {
-                                        mWithDrawInfoModel.setIsRealAuth(true);
-                                        U.getToastUtil().showShort("验证成功");
-                                    }
-                                }
-                            })
-                            .build());
-                } else {
-                    mWithDrawPresenter.withDraw(stringToHaoFen(mEditCashNum.getText().toString()), mSelectedChannel);
-                }
+                mWithDrawPresenter.withDraw(stringToHaoFen(mEditCashNum.getText().toString()), mSelectedChannel);
             }
         });
 
@@ -240,7 +224,7 @@ public class WithdrawFragment extends BaseFragment implements IWithDrawView {
             }
         }, 500);
 
-        mWithDrawPresenter.getWithDrawInfo();
+        mWithDrawPresenter.getWithDrawInfo(0);
         mTvWithdrawBtn.setEnabled(false);
         mTvWxSelect.setSelected(false);
     }

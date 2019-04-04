@@ -9,7 +9,7 @@
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:centerSearchBg="@drawable/search_song_edit_shape"
+        app:centerSearchBg="@drawable/search_edit_shape"
         app:centerSearchEditable="true"
         app:centerSearchHint="请输入歌曲名称或歌手名字"
         app:centerSearchMaxLength="20"
@@ -18,23 +18,17 @@
         app:rightText="取消"
         app:rightTextColor="@color/white"
         app:rightType="textView"
-        app:showBottomLine="false"
+        app:showBottomLine="true"
+        app:bottomLineColor="#202239"
         app:statusBarColor="#0288D0"
         app:titleBarColor="#0288D0"></com.common.view.titlebar.CommonTitleBar>
-
-    <View
-        android:id="@+id/divide"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_2_dp"
-        android:layout_below="@+id/titlebar"
-        android:background="#0C2275" />
 
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/search_result"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/divide"
+        android:layout_below="@+id/titlebar"
         android:visibility="gone"></android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>

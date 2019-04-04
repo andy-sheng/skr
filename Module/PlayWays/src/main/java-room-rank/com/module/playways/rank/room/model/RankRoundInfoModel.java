@@ -13,6 +13,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.HashSet;
 
 public class RankRoundInfoModel extends BaseRoundInfoModel {
+
     private HashSet<BLightInfoModel> bLightInfos = new HashSet<>();//已经爆灯的人, pk
 
     private HashSet<MLightInfoModel> mLightInfos = new HashSet<>();  //已经灭灯的人, pk
@@ -51,6 +52,7 @@ public class RankRoundInfoModel extends BaseRoundInfoModel {
     public void addBrustLightUid(boolean notify, BLightInfoModel bLightInfoModel) {
         if (!bLightInfos.contains(bLightInfoModel)) {
             bLightInfos.add(bLightInfoModel);
+            MyLog.d(TAG, "addBrustLightUid" + " notify=" + notify + " bLightInfoModel=" + bLightInfoModel);
             if (notify) {
                 PkSomeOneBurstLightEvent event = new PkSomeOneBurstLightEvent(bLightInfoModel.getUserID(), this);
                 EventBus.getDefault().post(event);
@@ -79,17 +81,19 @@ public class RankRoundInfoModel extends BaseRoundInfoModel {
             MyLog.e("JsonRoundInfo RoundInfo == null");
             return;
         }
-        RankRoundInfoModel roundInfo = (RankRoundInfoModel)round;
+        RankRoundInfoModel roundInfo = (RankRoundInfoModel) round;
         this.setUserID(roundInfo.getUserID());
         this.setPlaybookID(roundInfo.getPlaybookID());
         this.setRoundSeq(roundInfo.getRoundSeq());
         this.setSingBeginMs(roundInfo.getSingBeginMs());
         this.setSingEndMs(roundInfo.getSingEndMs());
-        //TODO 抢 灭 结束原因 补全
+        //TODO 抢 灭 结束原因 补全 注意json里面是不带这些的
         for (BLightInfoModel bLightInfoModel : roundInfo.getbLightInfos()) {
+            bLightInfoModel.setSeq(roundInfo.getRoundSeq());
             addBrustLightUid(notify, bLightInfoModel);
         }
         for (MLightInfoModel mLightInfoModel : roundInfo.getLightInfos()) {
+            mLightInfoModel.setSeq(roundInfo.getRoundSeq());
             addPkLightOffUid(notify, mLightInfoModel);
         }
         if (roundInfo.getOverReason() > 0) {

@@ -8,8 +8,6 @@ import com.module.playways.rank.song.model.SongModel;
 import java.io.Serializable;
 import java.util.List;
 
-import io.reactivex.subjects.PublishSubject;
-
 
 /**
  * 房间内所有数据的聚合类
@@ -20,8 +18,8 @@ public abstract class BaseRoomData<T extends BaseRoundInfoModel> implements Seri
 
     public final static String RANK_BATTLE_START_SVGA = "http://res-static.inframe.mobi/app/rank_battle_start.svga";
     public final static String RANK_RESULT_WIN_SVGA = "http://res-static.inframe.mobi/app/rank_result_win.svga";
-    public final static String RANK_RESULT_LOSE_SVGA ="http://res-static.inframe.mobi/app/rank_result_lose.svga";
-    public final static String RANK_RESULT_DRAW_SVGA ="http://res-static.inframe.mobi/app/rank_result_draw.svga";
+    public final static String RANK_RESULT_LOSE_SVGA = "http://res-static.inframe.mobi/app/rank_result_lose.svga";
+    public final static String RANK_RESULT_DRAW_SVGA = "http://res-static.inframe.mobi/app/rank_result_draw.svga";
     public final static String GRAB_BURST_BIG_SVGA = "http://res-static.inframe.mobi/app/grab_burst_big_animation.svga";
 
     public final static String PK_MAIN_STAGE_WEBP = "http://res-static.inframe.mobi/app/pk_main_stage.webp";
@@ -63,6 +61,7 @@ public abstract class BaseRoomData<T extends BaseRoundInfoModel> implements Seri
 
     protected boolean mMute = false;//是否mute
 
+    protected String mAgoraToken; // 声网token
 
     public abstract int getGameType();
 
@@ -210,4 +209,11 @@ public abstract class BaseRoomData<T extends BaseRoundInfoModel> implements Seri
         return null;
     }
 
+    public void setAgoraToken(String agoraToken) {
+        mAgoraToken = agoraToken;
+    }
+
+    public String getAgoraToken() {
+        return mAgoraToken;
+    }
 }

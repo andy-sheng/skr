@@ -43,7 +43,7 @@ public class GiftContinueViewGroup extends RelativeLayout {
         init(context);
     }
 
-    GiftPlayControlTemplate mGiftPlayControlTemplate = new GiftPlayControlTemplate(2) {
+    GiftPlayControlTemplate mGiftPlayControlTemplate = new GiftPlayControlTemplate() {
         @Override
         protected GiftContinuousView accept(GiftPlayModel cur) {
             return isIdle();

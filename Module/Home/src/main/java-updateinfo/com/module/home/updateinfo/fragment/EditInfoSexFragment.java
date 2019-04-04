@@ -1,8 +1,5 @@
 package com.module.home.updateinfo.fragment;
 
-import android.animation.Animator;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,23 +13,18 @@ import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
 import com.dialog.view.TipsDialogView;
-import com.jakewharton.rxbinding2.view.RxView;
 import com.module.home.R;
-import com.module.home.updateinfo.EditInfoActivity;
 import com.module.home.updateinfo.UploadAccountInfoActivity;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.live.proto.Common.ESex;
-
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.functions.Consumer;
 
 //编辑性别
 public class EditInfoSexFragment extends BaseFragment {
@@ -55,58 +47,47 @@ public class EditInfoSexFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mMainActContainer = (RelativeLayout)mRootView.findViewById(R.id.main_act_container);
-        mTitlebar = (CommonTitleBar)mRootView.findViewById(R.id.titlebar);
-        mMale = (ExImageView)mRootView.findViewById(R.id.male);
-        mFemale = (ExImageView)mRootView.findViewById(R.id.female);
-        mNextTv = (ExTextView)mRootView.findViewById(R.id.next_tv);
+        mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
+        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
+        mMale = (ExImageView) mRootView.findViewById(R.id.male);
+        mFemale = (ExImageView) mRootView.findViewById(R.id.female);
+        mNextTv = (ExTextView) mRootView.findViewById(R.id.next_tv);
 
-
-        RxView.clicks(mTitlebar.getLeftTextView())
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
+        mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
 //                        U.getSoundUtils().play(EditInfoActivity.TAG, R.raw.normal_back, 500);
-                        U.getFragmentUtils().popFragment(EditInfoSexFragment.this);
-                    }
-                });
+                U.getFragmentUtils().popFragment(EditInfoSexFragment.this);
+            }
+        });
 
-        RxView.clicks(mTitlebar.getRightTextView())
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        clickComplete();
-                    }
-                });
+        mTitlebar.getRightTextView().setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                clickComplete();
+            }
+        });
 
-        RxView.clicks(mMale)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        selectSex(true);
-                    }
-                });
+        mMale.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                selectSex(true);
+            }
+        });
 
-        RxView.clicks(mFemale)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        selectSex(false);
-                    }
-                });
+        mFemale.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                selectSex(false);
+            }
+        });
 
-        RxView.clicks(mNextTv)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        clickNext();
-                    }
-                });
+        mNextTv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                clickNext();
+            }
+        });
 
         Bundle bundle = getArguments();
         if (bundle != null) {

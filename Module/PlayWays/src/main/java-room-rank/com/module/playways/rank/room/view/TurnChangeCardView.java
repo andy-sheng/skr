@@ -10,19 +10,19 @@ import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
-import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.HttpImage;
 import com.common.image.model.ImageFactory;
 import com.common.image.model.oss.OssImgFactory;
+import com.common.log.MyLog;
 import com.common.utils.ImageUtils;
 import com.common.utils.U;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.rank.room.RankRoomData;
 import com.module.playways.rank.room.model.RankPlayerInfoModel;
+import com.module.playways.rank.room.model.RankRoundInfoModel;
 import com.module.rank.R;
-import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.BaseRoomData;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGADrawable;
@@ -38,6 +38,8 @@ import java.io.File;
 import java.net.URL;
 
 public class TurnChangeCardView extends RelativeLayout {
+
+    public final static String TAG = "TurnChangeCardView";
 
     RankRoomData mRoomData;
 
@@ -71,12 +73,13 @@ public class TurnChangeCardView extends RelativeLayout {
         this.mRoomData = data;
         this.mSVGAListener = listener;
 
-        if (mRoomData.getRealRoundInfo() == null) {
+        RankRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
+        if (infoModel == null) {
             return false;
         }
 
-        int curUid = mRoomData.getRealRoundInfo().getUserID();
-        int seq = mRoomData.getRealRoundInfo().getRoundSeq();
+        int curUid = infoModel.getUserID();
+        int seq = infoModel.getRoundSeq();
 
         RankPlayerInfoModel curInfo = mRoomData.getPlayerInfoModel(curUid);
 
@@ -103,6 +106,8 @@ public class TurnChangeCardView extends RelativeLayout {
     private void firstTurnCard(RankPlayerInfoModel info) {
         setVisibility(VISIBLE);
         mFirstSvga.clearAnimation();
+        mFirstSvga.setCallback(null);
+
         mFirstSvga.setVisibility(VISIBLE);
         mFirstSvga.setLoops(1);
         SVGAParser parser = new SVGAParser(U.app());
@@ -121,7 +126,7 @@ public class TurnChangeCardView extends RelativeLayout {
                 }
             });
         } catch (Exception e) {
-            System.out.print(true);
+            MyLog.e(TAG, e);
         }
 
         mFirstSvga.setCallback(new SVGACallback() {
@@ -159,6 +164,8 @@ public class TurnChangeCardView extends RelativeLayout {
     private void nextTurnCard(RankPlayerInfoModel info) {
         setVisibility(VISIBLE);
         mNextSvga.clearAnimation();
+        mNextSvga.setCallback(null);
+
         mNextSvga.setVisibility(VISIBLE);
         mNextSvga.setLoops(1);
         SVGAParser parser = new SVGAParser(U.app());
@@ -177,7 +184,7 @@ public class TurnChangeCardView extends RelativeLayout {
                 }
             });
         } catch (Exception e) {
-            System.out.print(true);
+            MyLog.e(TAG, e);
         }
 
         mNextSvga.setCallback(new SVGACallback() {
@@ -272,9 +279,11 @@ public class TurnChangeCardView extends RelativeLayout {
         if (visibility == GONE) {
             this.mSVGAListener = null;
             if (mFirstSvga != null) {
+                mFirstSvga.setCallback(null);
                 mFirstSvga.stopAnimation(false);
             }
             if (mNextSvga != null) {
+                mNextSvga.setCallback(null);
                 mNextSvga.stopAnimation(false);
             }
         }

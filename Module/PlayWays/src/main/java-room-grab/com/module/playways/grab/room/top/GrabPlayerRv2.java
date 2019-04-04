@@ -12,13 +12,10 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.U;
-import com.common.view.ex.ExImageView;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent;
-import com.module.playways.grab.room.event.GrabSwitchRoomEvent;
 import com.module.playways.grab.room.event.LightOffAnimationOverEvent;
 import com.module.playways.grab.room.fragment.GrabRoomFragment;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
@@ -42,8 +39,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
@@ -60,8 +59,6 @@ public class GrabPlayerRv2 extends RelativeLayout {
     AnimatorSet mAnimatorAllSet;
 
     LinearLayout mContentLl;
-    ExImageView mErjiIv;
-
     SVGAParser mSVGAParser;
 
     int mCurSeq = -2;
@@ -87,7 +84,6 @@ public class GrabPlayerRv2 extends RelativeLayout {
     private void init() {
         inflate(getContext(), R.layout.grab_top_content_view_layout, this);
         mContentLl = (LinearLayout) this.findViewById(R.id.content_ll);
-        mErjiIv = (ExImageView) this.findViewById(R.id.erji_iv);
         addChildView();
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
@@ -98,6 +94,11 @@ public class GrabPlayerRv2 extends RelativeLayout {
         for (int i = 0; i < PLAYER_COUNT; i++) {
             VP vp = new VP();
             vp.grabTopItemView = new GrabTopItemView(getContext());
+            if (i == PLAYER_COUNT - 1) {
+                vp.grabTopItemView.setCanShowInviteWhenEmpty(true);
+            } else {
+                vp.grabTopItemView.setCanShowInviteWhenEmpty(false);
+            }
             vp.grabTopItemView.setGrap(false);
             vp.grabTopItemView.tryAddParent(mContentLl);
             vp.grabTopItemView.setToPlaceHolder();
@@ -118,58 +119,81 @@ public class GrabPlayerRv2 extends RelativeLayout {
 
     //只有轮次切换的时候调用
     private void initData() {
-        GrabRoundInfoModel now = mRoomData.getExpectRoundInfo();
-        if (now == null) {
-            MyLog.w(TAG, "initData data error");
-            return;
-        }
-        if (mCurSeq == now.getRoundSeq()) {
-            MyLog.w(TAG, "initdata 轮次一样，无需更新");
-            return;
-        }
-        mCurSeq = now.getRoundSeq();
-        for (int i = 0; i < mGrabTopItemViewArrayList.size(); i++) {
-            VP vp = mGrabTopItemViewArrayList.get(i);
-            vp.grabTopItemView.setVisibility(VISIBLE);
-        }
-        resetAllGrabTopItemView();
-        List<GrabPlayerInfoModel> playerInfoModels = now.getPlayUsers();
-        mInfoMap.clear();
-        MyLog.d(TAG, "initData playerInfoModels.size() is " + playerInfoModels.size());
-        for (int i = 0; i < playerInfoModels.size() && i < mGrabTopItemViewArrayList.size(); i++) {
-            VP vp = mGrabTopItemViewArrayList.get(i);
-            mInfoMap.put(playerInfoModels.get(i).getUserInfo().getUserId(), vp);
-            vp.grabTopItemView.bindData(playerInfoModels.get(i));
-            if(playerInfoModels.get(i).getUserID() == now.getUserID()
-                    && now.getStatus() == GrabRoundInfoModel.STATUS_SING){
-                LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) vp.grabTopItemView.getLayoutParams();
-                lp.weight = 0;
-                vp.grabTopItemView.setLayoutParams(lp);
-            }
-        }
-
-        MyLog.d(TAG, "initData + now.getStatus() " + now.getStatus());
-        if (now.getStatus() == GrabRoundInfoModel.STATUS_GRAB) {
-            for (WantSingerInfo wantSingerInfo : now.getWantSingInfos()) {
-                VP vp = mInfoMap.get(wantSingerInfo.getUserID());
-                if (vp != null && vp.grabTopItemView != null) {
-                    vp.grabTopItemView.setGrap(true);
-                }
+        if (!mRoomData.hasGameBegin()) {
+            MyLog.d(TAG, "游戏未开始，不能用轮次信息里更新头像");
+            resetAllGrabTopItemView();
+            List<GrabPlayerInfoModel> list = mRoomData.getPlayerInfoList();
+            for (int i = 0; i < list.size() && i < mGrabTopItemViewArrayList.size(); i++) {
+                VP vp = mGrabTopItemViewArrayList.get(i);
+                GrabPlayerInfoModel playerInfoModel = list.get(i);
+                mInfoMap.put(playerInfoModel.getUserID(), vp);
+                vp.grabTopItemView.bindData(playerInfoModel, mRoomData.getOwnerId() == playerInfoModel.getUserID());
             }
         } else {
-            MyLog.d(TAG, "initData else");
-            for (VP vp : mGrabTopItemViewArrayList) {
-                if (vp != null && vp.grabTopItemView != null) {
-                    MyLog.d(TAG, "initData else 2");
-                    vp.grabTopItemView.setGrap(false);
+            GrabRoundInfoModel now = mRoomData.getExpectRoundInfo();
+            if (now == null) {
+                MyLog.w(TAG, "initData data error");
+                return;
+            }
+            if (mCurSeq == now.getRoundSeq()) {
+                MyLog.w(TAG, "initdata 轮次一样，无需更新");
+                return;
+            }
+            mCurSeq = now.getRoundSeq();
+            for (int i = 0; i < mGrabTopItemViewArrayList.size(); i++) {
+                VP vp = mGrabTopItemViewArrayList.get(i);
+                vp.grabTopItemView.setVisibility(VISIBLE);
+            }
+            resetAllGrabTopItemView();
+            List<GrabPlayerInfoModel> playerInfoModels = now.getPlayUsers();
+            mInfoMap.clear();
+            MyLog.d(TAG, "initData playerInfoModels.size() is " + playerInfoModels.size());
+            for (int i = 0; i < playerInfoModels.size() && i < mGrabTopItemViewArrayList.size(); i++) {
+                VP vp = mGrabTopItemViewArrayList.get(i);
+                GrabPlayerInfoModel playerInfoModel = playerInfoModels.get(i);
+                mInfoMap.put(playerInfoModel.getUserID(), vp);
+                vp.grabTopItemView.bindData(playerInfoModel, mRoomData.getOwnerId() == playerInfoModel.getUserID());
+                if(playerInfoModels.get(i).getUserID() == now.getUserID()
+                        && now.getStatus() == GrabRoundInfoModel.STATUS_SING){
+                    LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) vp.grabTopItemView.getLayoutParams();
+                    lp.weight = 0;
+                    vp.grabTopItemView.setLayoutParams(lp);
                 }
             }
-        }
 
+            MyLog.d(TAG, "initData + now.getStatus() " + now.getStatus());
+            if (now.getStatus() == GrabRoundInfoModel.STATUS_GRAB) {
+                for (WantSingerInfo wantSingerInfo : now.getWantSingInfos()) {
+                    VP vp = mInfoMap.get(wantSingerInfo.getUserID());
+                    if (vp != null && vp.grabTopItemView != null) {
+                        vp.grabTopItemView.setGrap(true);
+                    }
+                }
+            } else {
+                MyLog.d(TAG, "initData else");
+                for (VP vp : mGrabTopItemViewArrayList) {
+                    if (vp != null && vp.grabTopItemView != null) {
+                        MyLog.d(TAG, "initData else 2");
+                        vp.grabTopItemView.setGrap(false);
+                    }
+                }
+
+                initLight();
+                syncLight();
+            }
+        }
         RelativeLayout.LayoutParams lp = (LayoutParams) mContentLl.getLayoutParams();
         lp.leftMargin = U.getDisplayUtils().dip2px(15);
         lp.rightMargin = U.getDisplayUtils().dip2px(15);
         mContentLl.setLayoutParams(lp);
+    }
+
+    //刚进来的时候初始化灯
+    private void initLight(){
+        Iterator<Map.Entry<Integer, VP>> iterator = mInfoMap.entrySet().iterator();
+        while (iterator.hasNext()){
+            iterator.next().getValue().grabTopItemView.setLight(true);
+        }
     }
 
     //这里可能人员有变动
@@ -178,7 +202,6 @@ public class GrabPlayerRv2 extends RelativeLayout {
         if (mAnimatorAllSet != null) {
             mAnimatorAllSet.cancel();
         }
-        mErjiIv.setVisibility(GONE);
         mHasBurst = false;
         initData();
         for (int uId : mInfoMap.keySet()) {
@@ -190,7 +213,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
                 wantSingerInfo.setUserID(uId);
                 GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
                 // TODO: 2019/2/26 判空
-                if (grabRoundInfoModel.getWantSingInfos().contains(wantSingerInfo)) {
+                if (grabRoundInfoModel != null && grabRoundInfoModel.getWantSingInfos().contains(wantSingerInfo)) {
                     vp.grabTopItemView.setGrap(true);
                 } else {
 //                    if (vp.grabTopItemView.getPlayerInfoModel().isOnline()) {
@@ -559,25 +582,25 @@ public class GrabPlayerRv2 extends RelativeLayout {
     private SVGAParser getSVGAParser() {
         if (mSVGAParser == null) {
             mSVGAParser = new SVGAParser(U.app());
-            mSVGAParser.setFileDownloader(new SVGAParser.FileDownloader() {
-                @Override
-                public void resume(final URL url, final Function1<? super InputStream, Unit> complete, final Function1<? super Exception, Unit> failure) {
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            OkHttpClient client = new OkHttpClient();
-                            Request request = new Request.Builder().url(url).get().build();
-                            try {
-                                Response response = client.newCall(request).execute();
-                                complete.invoke(response.body().byteStream());
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                                failure.invoke(e);
-                            }
-                        }
-                    }).start();
-                }
-            });
+//            mSVGAParser.setFileDownloader(new SVGAParser.FileDownloader() {
+//                @Override
+//                public void resume(final URL url, final Function1<? super InputStream, Unit> complete, final Function1<? super Exception, Unit> failure) {
+//                    new Thread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            OkHttpClient client = new OkHttpClient();
+//                            Request request = new Request.Builder().url(url).get().build();
+//                            try {
+//                                Response response = client.newCall(request).execute();
+//                                complete.invoke(response.body().byteStream());
+//                            } catch (IOException e) {
+//                                e.printStackTrace();
+//                                failure.invoke(e);
+//                            }
+//                        }
+//                    }).start();
+//                }
+//            });
         }
         return mSVGAParser;
     }
@@ -590,6 +613,14 @@ public class GrabPlayerRv2 extends RelativeLayout {
 
     public void setRoomData(GrabRoomData roomData) {
         mRoomData = roomData;
+        if (mGrabTopItemViewArrayList.size() != 0) {
+            VP vp = mGrabTopItemViewArrayList.get(mGrabTopItemViewArrayList.size() - 1);
+            if (mRoomData.isOwner()) {
+                vp.grabTopItemView.setCanShowInviteWhenEmpty(true);
+            } else {
+                vp.grabTopItemView.setCanShowInviteWhenEmpty(false);
+            }
+        }
         initData();
     }
 

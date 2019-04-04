@@ -1,6 +1,5 @@
 package com.module.playways.grab.room.model;
 
-import com.zq.live.proto.Room.NoPassSingInfo;
 import com.zq.live.proto.Room.QMLightMsg;
 
 import java.io.Serializable;

@@ -17,12 +17,13 @@ import com.common.utils.HandlerTaskTimer;
 import com.common.utils.LogUploadUtils;
 import com.common.utils.U;
 import com.module.common.ICallback;
+import com.module.msg.listener.MyConversationClickListener;
 import com.module.msg.model.CustomChatRoomMsg;
+import com.module.msg.model.CustomNotificationMsg;
 import com.module.msg.model.SpecailOpMsg;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -38,6 +39,7 @@ import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
 import io.rong.imlib.model.UserInfo;
 
+import static com.module.msg.CustomMsgType.MSG_TYPE_NOTIFICATION;
 import static com.module.msg.CustomMsgType.MSG_TYPE_ROOM;
 
 public class RongMsgManager implements RongIM.UserInfoProvider {
@@ -115,6 +117,15 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             if (message == null) {
                 return false;
             }
+
+            // 针对融云的系统消息增加打点，统计下
+            if (message.getConversationType() == Conversation.ConversationType.SYSTEM) {
+                long delay = message.getReceivedTime() - message.getSentTime();
+                if (delay > 0) {
+                    StatisticsAdapter.recordCalculateEvent("rc", "system_msg_delay", delay, null);
+                }
+            }
+
             if (message.getContent() instanceof CustomChatRoomMsg) {
                 // 是自定义消息 其content即整个RoomMsg
                 CustomChatRoomMsg customChatRoomMsg = (CustomChatRoomMsg) message.getContent();
@@ -126,13 +137,19 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                         process.process(MSG_TYPE_ROOM, data);
                     }
                 }
-                // 针对融云的系统消息增加打点，统计下
-                if (message.getConversationType() == Conversation.ConversationType.SYSTEM) {
-                    long delay = message.getReceivedTime() - message.getSentTime();
-                    if (delay > 0) {
-                        StatisticsAdapter.recordCalculateEvent("rc", "system_msg_delay", delay, null);
+
+                return true;
+            } else if (message.getContent() instanceof CustomNotificationMsg) {
+                CustomNotificationMsg notificationMsg = (CustomNotificationMsg) message.getContent();
+                byte[] data = U.getBase64Utils().decode(notificationMsg.getContentJsonStr());
+
+                HashSet<IPushMsgProcess> processors = mProcessorMap.get(MSG_TYPE_NOTIFICATION);
+                if (processors != null) {
+                    for (IPushMsgProcess process : processors) {
+                        process.process(MSG_TYPE_NOTIFICATION, data);
                     }
                 }
+
                 return true;
             } else if (message.getContent() instanceof SpecailOpMsg) {
                 /**
@@ -196,11 +213,14 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             } else {
                 rongKey = "e5t4ouvpec57a";
             }
+            RongIM.getInstance().disconnect();
             RongIM.init(application, rongKey);
             RongIM.setUserInfoProvider(this, true);
             mIsInit = true;
             RongIM.registerMessageType(CustomChatRoomMsg.class);
+            RongIM.registerMessageType(CustomNotificationMsg.class);
             RongIM.registerMessageType(SpecailOpMsg.class);
+            RongIM.getInstance().setConversationClickListener(new MyConversationClickListener());
             RongIM.setConnectionStatusListener(new RongIMClient.ConnectionStatusListener() {
                 @Override
                 public void onChanged(ConnectionStatus connectionStatus) {
@@ -325,25 +345,25 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
         });
     }
 
-    ICallback mUnreadCallback;
+    HashSet<ICallback> mUnreadCallbacks = new HashSet<>();
 
     IUnReadMessageObserver mIUnReadMessageObserver = new IUnReadMessageObserver() {
         @Override
         public void onCountChanged(int unReadNum) {
             MyLog.d(TAG, "onCountChanged" + " unReadNum=" + unReadNum);
-            if (mUnreadCallback != null) {
-                mUnreadCallback.onSucess(unReadNum);
+            for (ICallback callback : mUnreadCallbacks) {
+                callback.onSucess(unReadNum);
             }
         }
     };
 
     public void addUnReadMessageCountChangedObserver(ICallback callback) {
-        this.mUnreadCallback = callback;
+        mUnreadCallbacks.add(callback);
         RongIM.getInstance().addUnReadMessageCountChangedObserver(mIUnReadMessageObserver, Conversation.ConversationType.PRIVATE);
     }
 
-    public void removeUnReadMessageCountChangedObserver() {
-        this.mUnreadCallback = null;
+    public void removeUnReadMessageCountChangedObserver(ICallback callback) {
+        mUnreadCallbacks.remove(callback);
         RongIM.getInstance().removeUnReadMessageCountChangedObserver(mIUnReadMessageObserver);
     }
 

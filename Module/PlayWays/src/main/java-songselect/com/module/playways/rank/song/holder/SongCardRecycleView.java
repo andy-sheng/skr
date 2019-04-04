@@ -6,8 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
-import com.common.log.MyLog;
-
 public class SongCardRecycleView extends RecyclerView {
 
     public final static String TAG = "SongCardRecycleView";

@@ -1,4 +1,5 @@
-function findChannel()  
+#! /bin/bash
+function findChannel()
 {  
   for file in `ls app/build/outputs/channels`  
   do  
@@ -49,6 +50,9 @@ function findChannel2()
     fi
   done
 }
+if [ x$2 = x"build" ]; then
+    ./ins.sh app release all
+fi
 
 findChannel $1
 if [[ x$uploadFile = x"" ]]; then

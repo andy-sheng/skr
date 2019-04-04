@@ -264,10 +264,6 @@ int PitchScoring::getScore() {
              mCurrentLineSampleCount, mCurrentLineLevelSum, lineScore);
     }
 
-    // 50 - 79   90 - 99 加权了
-    float x = (float) lineScore * 0.01;
-    x = (x * (1 - x) + x) * 0.2 + 0.8 * x;
-    lineScore = 100 * (x * (1 - x) + x);
     if (LOGOPEN) {
         LOGI("获取得分 lineScore1:%d", lineScore);
     }
@@ -289,6 +285,10 @@ int PitchScoring::getScore() {
             lineScore = lineScore + (db * c / 10 - 5 * c);
         }
     }
+    // 50 - 79   90 - 99 加权了
+    float x = (float) lineScore * 0.01;
+    x = (x * (1 - x) + x) * 0.2 + 0.8 * x;
+    lineScore = 100 * (x * (1 - x) + x);
     if (LOGOPEN) {
         LOGI("获取得分 lineScore2:%d", lineScore);
     }

@@ -86,6 +86,7 @@ public class SettingFragment extends BaseFragment {
     RelativeLayout mUserFeedback;
     RelativeLayout mComment;
     RelativeLayout mServiceAgreen;
+    RelativeLayout mRlExchange;
     ExTextView mExitLogin;
 
     boolean hasNewVersion = false; // 判断是否有新版本
@@ -127,108 +128,100 @@ public class SettingFragment extends BaseFragment {
         mServiceAgreen = (RelativeLayout) mRootView.findViewById(R.id.service_agreen);
         mExitLogin = (ExTextView) mRootView.findViewById(R.id.exit_login);
 
+        mRlExchange = (RelativeLayout) mRootView.findViewById(R.id.Rl_exchange);
+
         U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
 
         initCache();
         initVersion();
         checkTuiGuang();
 
-        RxView.clicks(mTitlebar.getLeftTextView())
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        //U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
-                        U.getFragmentUtils().popFragment(SettingFragment.this);
-                    }
-                });
+        mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                //U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
+                U.getFragmentUtils().popFragment(SettingFragment.this);
+            }
+        });
 
-        RxView.clicks(mEditPerson)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        ARouter.getInstance().build(RouterConstants.ACTIVITY_EDIT_INFO)
-                                .navigation();
-                    }
-                });
+        mEditPerson.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_EDIT_INFO)
+                        .navigation();
+            }
+        });
 
-        RxView.clicks(mClearCache)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        clearCache();
-                    }
-                });
+        mClearCache.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                clearCache();
+            }
+        });
 
-        RxView.clicks(mVolumeSet)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), VolumeFragment.class)
-                                .setAddToBackStack(true)
-                                .setHasAnimation(true)
-                                .build());
-                    }
-                });
+        mVolumeSet.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), VolumeFragment.class)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(true)
+                        .build());
+            }
+        });
 
-        RxView.clicks(mUserBlacklist)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), BlackListFragment.class)
-                                .setAddToBackStack(true)
-                                .setHasAnimation(true)
-                                .build());
-                    }
-                });
+        mUserBlacklist.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), BlackListFragment.class)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(true)
+                        .build());
+            }
+        });
+
+        mRlExchange.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                        .withString("url", U.getChannelUtils().getUrlByChannel("http://app.inframe.mobi/extend/exchangeGold"))
+                        .greenChannel().navigation();
+            }
+        });
+
+        mUserFeedback.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                //FeedbackManager.openFeedbackActivity();
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), FeedbackFragment.class)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(true)
+                        .build());
+            }
+        });
 
 
-        RxView.clicks(mUserFeedback)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-//                        FeedbackManager.openFeedbackActivity();
-                        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), FeedbackFragment.class)
-                                .setAddToBackStack(true)
-                                .setHasAnimation(true)
-                                .build());
-                    }
-                });
+        mServiceAgreen.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                        .withString(RouterConstants.KEY_WEB_URL, "https://api.inframe.mobi/user-agreement.html")
+                        .navigation();
+            }
+        });
 
-        RxView.clicks(mServiceAgreen)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        // TODO: 2018/12/26 用户服务协议
-                        ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
-                                .withString(RouterConstants.KEY_WEB_URL, "https://api.inframe.mobi/user-agreement.html")
-                                .navigation();
-                    }
-                });
+        mComment.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                gotoMarketDetail(getActivity());
+            }
+        });
 
-        RxView.clicks(mComment)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        gotoMarketDetail(getActivity());
-                    }
-                });
-
-        RxView.clicks(mExitLogin)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        exitLogin();
-                    }
-                });
+        mExitLogin.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                exitLogin();
+            }
+        });
 
         mVersionTv.setText("版本号:" + U.getAppInfoUtils().getVersionName());
         mVersionArea.setOnLongClickListener(new View.OnLongClickListener() {
@@ -240,9 +233,9 @@ public class SettingFragment extends BaseFragment {
             }
         });
 
-        mVersionArea.setOnClickListener(new View.OnClickListener() {
+        mVersionArea.setOnClickListener(new DebounceViewClickListener() {
             @Override
-            public void onClick(View v) {
+            public void clickValid(View v) {
                 if (hasNewVersion) {
                     UpgradeManager.getInstance().checkUpdate2();
                 }
@@ -250,17 +243,15 @@ public class SettingFragment extends BaseFragment {
             }
         });
 
-        RxView.clicks(mInviteCode)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), InviteCodeFragment.class)
-                                .setAddToBackStack(true)
-                                .setHasAnimation(true)
-                                .build());
-                    }
-                });
+        mInviteCode.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), InviteCodeFragment.class)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(true)
+                        .build());
+            }
+        });
     }
 
     private void checkTuiGuang() {
@@ -274,7 +265,7 @@ public class SettingFragment extends BaseFragment {
                         mTuiGuangConfig = configList.get(0);
                         mTuiguang.setVisibility(View.VISIBLE);
                         mTuiguang.setClickable(true);
-                        if(mTuiGuangConfig != null){
+                        if (mTuiGuangConfig != null) {
                             mTuiguang.setOnClickListener(new DebounceViewClickListener() {
                                 @Override
                                 public void clickValid(View v) {

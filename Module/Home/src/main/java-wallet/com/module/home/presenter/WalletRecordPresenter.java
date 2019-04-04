@@ -1,14 +1,17 @@
 package com.module.home.presenter;
 
 import com.alibaba.fastjson.JSON;
+import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.utils.U;
 import com.module.home.inter.IWalletView;
 import com.module.home.WalletServerApi;
 import com.module.home.model.WalletRecordModel;
+import com.module.home.model.WithDrawInfoModel;
 
 import java.util.List;
 
@@ -17,6 +20,7 @@ public class WalletRecordPresenter extends RxLifeCyclePresenter {
 
     WalletServerApi mWalletServerApi;
     IWalletView mIWalletView;
+    WithDrawInfoModel mWithDrawInfoModel;
 
     public WalletRecordPresenter(IWalletView walletView) {
         this.mIWalletView = walletView;
@@ -38,6 +42,34 @@ public class WalletRecordPresenter extends RxLifeCyclePresenter {
         }, this);
     }
 
+    public void getWithDrawInfo(int deep) {
+        if (deep < 10) {
+            ApiMethods.subscribe(mWalletServerApi.getWithdrawInfo(), new ApiObserver<ApiResult>() {
+                @Override
+                public void process(ApiResult result) {
+                    if (result.getErrno() == 0) {
+                        mWithDrawInfoModel = JSON.parseObject(result.getData().toString(), WithDrawInfoModel.class);
+                        mIWalletView.showWithDrawInfo(mWithDrawInfoModel);
+                    } else {
+                        U.getToastUtil().showShort(result.getErrmsg());
+                    }
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    getWithDrawInfo(deep+1);
+                }
+
+                @Override
+                public void onNetworkError(ErrorType errorType) {
+                    getWithDrawInfo(deep+1);
+                }
+            }, this);
+        } else {
+            MyLog.e(TAG, "10次都没拉到数据");
+            U.getToastUtil().showShort("您网络异常，请退出重进");
+        }
+    }
 
     /**
      * 获取全部流水

@@ -133,6 +133,9 @@
     <attr name="src_unFocused_hovered" format="color|reference" />
     <attr name="src_unFocused_activated" format="color|reference" />
 
+    <!--阴影-->
+    <attr name="bl_shadow_Color" format="color|reference" />
+
     <!--分割-->
 
 
@@ -195,6 +198,8 @@
         <attr name="bl_unSelected_stroke_color" />
         <attr name="bl_unPressed_stroke_color" />
         <attr name="bl_unFocused_stroke_color" />
+
+        <attr name="bl_shadow_Color" />
     </declare-styleable>
 
     <declare-styleable name="background_press">
@@ -549,6 +554,8 @@
         <attr name="bl_unFocused_hovered" />
         <attr name="bl_unFocused_activated" />
 
+        <attr name="bl_shadow_Color" />
+
         <!--ImageView专用 -->
         <!--设置各种selector 状态时 color 或者 drawable -->
         <attr name="src_checkable_drawable" />
@@ -568,6 +575,7 @@
         <attr name="src_unFocused_drawable" />
         <attr name="src_unFocused_hovered" />
         <attr name="src_unFocused_activated" />
+
     </declare-styleable>
 
     <declare-styleable name="NoLeakEditText">
@@ -767,5 +775,9 @@
         <attr name="bl_unSelected_textColor" />
         <attr name="bl_unPressed_textColor" />
         <attr name="bl_unFocused_textColor" />
+
+        <!--阴影-->
+        <attr name="bl_shadow_Color" />
+
     </declare-styleable>
 </resources>

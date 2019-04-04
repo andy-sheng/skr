@@ -7,26 +7,29 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.View;
-import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
 
 import com.common.base.BaseFragment;
 import com.common.core.share.SharePanel;
 import com.common.core.share.ShareType;
+import com.common.player.IPlayer;
+import com.common.player.VideoPlayerAdapter;
+import com.common.player.exoplayer.ExoPlayer;
+import com.common.utils.ActivityUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
-import com.jakewharton.rxbinding2.view.RxView;
-import com.module.playways.BaseRoomData;
+import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.room.RankRoomData;
-import com.module.playways.rank.room.view.RankResultView;
+import com.module.playways.rank.room.view.RankResultView2;
 import com.module.rank.R;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.live.proto.Room.EWinType;
 
-import java.util.concurrent.TimeUnit;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * pk战绩页面
@@ -36,9 +39,11 @@ public class RankResultFragment extends BaseFragment {
     RelativeLayout mResultInfoArea;
 
     ExRelativeLayout mResultArea;
-    RankResultView mFirstResult;
-    RankResultView mSecondResult;
-    RankResultView mThirdResult;
+    RankResultView2 mFirstResult;
+    RankResultView2 mSecondResult;
+    RankResultView2 mThirdResult;
+    RankResultView2 mMyRankResult;
+
     ExImageView mResultTop;
     ExImageView mResultExit;
     ExImageView mShareIv;
@@ -47,6 +52,7 @@ public class RankResultFragment extends BaseFragment {
     RankRoomData mRoomData;
 
     DialogPlus mGameRoleDialog;
+    IPlayer mIPlayer;
 
     @Override
     public int initView() {
@@ -55,11 +61,15 @@ public class RankResultFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mResultInfoArea = (RelativeLayout)mRootView.findViewById(R.id.result_info_area);
+        mResultInfoArea = (RelativeLayout) mRootView.findViewById(R.id.result_info_area);
         mResultArea = (ExRelativeLayout) mRootView.findViewById(R.id.result_area);
-        mFirstResult = (RankResultView) mRootView.findViewById(R.id.first_result);
-        mSecondResult = (RankResultView) mRootView.findViewById(R.id.second_result);
-        mThirdResult = (RankResultView) mRootView.findViewById(R.id.third_result);
+
+        mFirstResult = (RankResultView2) mRootView.findViewById(R.id.first_result);
+        mSecondResult = (RankResultView2) mRootView.findViewById(R.id.second_result);
+        mThirdResult = (RankResultView2) mRootView.findViewById(R.id.third_result);
+        bindListener(mFirstResult);
+        bindListener(mSecondResult);
+        bindListener(mThirdResult);
         mResultTop = (ExImageView) mRootView.findViewById(R.id.result_top);
         mResultExit = (ExImageView) mRootView.findViewById(R.id.result_exit);
         mShareIv = (ExImageView) mRootView.findViewById(R.id.share_iv);
@@ -75,10 +85,16 @@ public class RankResultFragment extends BaseFragment {
         if (mRoomData.getRecordData() != null) {
             if (mRoomData.getRecordData().getSelfWinType() == EWinType.Win.getValue()) {
                 mResultTop.setBackground(getResources().getDrawable(R.drawable.zhanji_top_win));
+                mResultExit.setBackground(getResources().getDrawable(R.drawable.zhanji_win_exit));
+                mResultArea.setBackground(getResources().getDrawable(R.drawable.rank_win_bg));
             } else if (mRoomData.getRecordData().getSelfWinType() == EWinType.Draw.getValue()) {
                 mResultTop.setBackground(getResources().getDrawable(R.drawable.zhanji_top_draw));
+                mResultExit.setBackground(getResources().getDrawable(R.drawable.zhanji_loss_exit));
+                mResultArea.setBackground(getResources().getDrawable(R.drawable.rank_lose_bg));
             } else if (mRoomData.getRecordData().getSelfWinType() == EWinType.Lose.getValue()) {
                 mResultTop.setBackground(getResources().getDrawable(R.drawable.zhanji_top_loss));
+                mResultExit.setBackground(getResources().getDrawable(R.drawable.zhanji_loss_exit));
+                mResultArea.setBackground(getResources().getDrawable(R.drawable.rank_lose_bg));
             }
 
             mFirstResult.bindData(mRoomData, mRoomData.getRecordData().getUserIdByRank(1), 1);
@@ -160,12 +176,44 @@ public class RankResultFragment extends BaseFragment {
         });
     }
 
+    void bindListener(RankResultView2 view) {
+        view.setListener(new RankResultView2.Listener() {
+            @Override
+            public void onPlayBtnClick() {
+                mMyRankResult = view;
+                if (mIPlayer == null) {
+                    mIPlayer = new ExoPlayer();
+                    // 播放完毕
+                    mIPlayer.setCallback(new VideoPlayerAdapter.PlayerCallbackAdapter() {
+                        @Override
+                        public void onCompletion() {
+                            super.onCompletion();
+                            mIPlayer.stop();
+                            view.playComplete();
+                        }
+                    });
+                }
+                mIPlayer.startPlay(RoomDataUtils.getSaveAudioForAiFilePath());
+            }
+
+            @Override
+            public void onPauseBtnClick() {
+                if (mIPlayer != null) {
+                    mIPlayer.pause();
+                }
+            }
+        });
+    }
+
 
     @Override
     public void destroy() {
         super.destroy();
         if (mGameRoleDialog != null && mGameRoleDialog.isShowing()) {
             mGameRoleDialog.dismiss();
+        }
+        if (mIPlayer != null) {
+            mIPlayer.release();
         }
     }
 
@@ -176,8 +224,22 @@ public class RankResultFragment extends BaseFragment {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ActivityUtils.ForeOrBackgroundChange event) {
+        if (event.foreground) {
+
+        } else {
+            if (mIPlayer != null) {
+                mIPlayer.stop();
+                if (mMyRankResult != null) {
+                    mMyRankResult.playComplete();
+                }
+            }
+        }
+    }
+
     @Override
     public boolean useEventBus() {
-        return false;
+        return true;
     }
 }

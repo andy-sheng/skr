@@ -86,6 +86,9 @@
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
+    <!--悬浮窗权限-->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
     <application>
         <!--蒲公英集成需要-->
         <!--<provider-->
@@ -151,6 +154,13 @@
 
         <activity android:name="com.respicker.activity.ResPickerActivity"
             android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.common.permission.FloatWindowPermissionActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="standard"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden"/>
+
     </application>
 
 </manifest>

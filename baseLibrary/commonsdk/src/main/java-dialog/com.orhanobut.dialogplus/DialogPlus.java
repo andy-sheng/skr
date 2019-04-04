@@ -12,8 +12,12 @@ import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 
 import com.common.base.R;
+import com.common.log.MyLog;
+import com.common.view.DebounceViewClickListener;
 
 public class DialogPlus {
+
+    public final static String TAG = "DialogPlus";
 
     private static final int INVALID = -1;
 
@@ -50,7 +54,7 @@ public class DialogPlus {
     /**
      * Listener to notify the user that dialog has been dismissed
      */
-    private final OnDismissListener onDismissListener;
+    public OnDismissListener onDismissListener;
 
     /**
      * Listener to notify the user that dialog has been canceled
@@ -153,22 +157,30 @@ public class DialogPlus {
      * Dismisses the displayed dialog.
      */
     public void dismiss() {
-       dismiss(true);
+        dismiss(true);
     }
 
     public void dismiss(boolean useAnimation) {
+        MyLog.d(TAG, "dismiss" + " useAnimation=" + useAnimation + " isDismissing=" + isDismissing+" isShowing="+isShowing());
+
         if (isDismissing) {
             return;
         }
+
+        if(!isShowing()){
+            return;
+        }
         if (useAnimation) {
+            // 如果View 不显示，动画是不会走的
             outAnim.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
-
+                    MyLog.d(TAG, "onAnimationStart" + " animation=" + animation);
                 }
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
+                    MyLog.d(TAG, "onAnimationEnd" + " animation=" + animation);
                     decorView.post(new Runnable() {
                         @Override
                         public void run() {
@@ -348,9 +360,9 @@ public class DialogPlus {
         }
 
         if (onClickListener != null) {
-            view.setOnClickListener(new View.OnClickListener() {
+            view.setOnClickListener(new DebounceViewClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void clickValid(View v) {
                     if (onClickListener == null) {
                         return;
                     }
@@ -366,6 +378,10 @@ public class DialogPlus {
      * @param view is the dialog plus view
      */
     private void onAttached(View view) {
+        if (decorView.indexOfChild(view) != -1) {
+            MyLog.d("DialogPlus", "无法重复添加某个view");
+            return;
+        }
         decorView.addView(view);
         contentContainer.startAnimation(inAnim);
 

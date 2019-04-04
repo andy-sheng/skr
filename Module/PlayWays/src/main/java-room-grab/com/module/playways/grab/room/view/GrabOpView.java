@@ -27,7 +27,6 @@ import com.common.view.ex.drawable.DrawableCreator;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
-import com.module.playways.grab.room.fragment.GrabRoomFragment;
 import com.module.playways.grab.room.model.GrabConfigModel;
 import com.module.rank.R;
 
@@ -301,7 +300,7 @@ public class GrabOpView extends RelativeLayout {
                 mBtnIv.setOnTouchListener(new OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
-                        MyLog.d(TAG, "onTouch" + " v=" + v + " event=" + event);
+                        //MyLog.d(TAG, "onTouch" + " v=" + v + " event=" + event);
                         if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE) {
                             mRrlProgress.setVisibility(GONE);
                         } else {
@@ -451,6 +450,8 @@ public class GrabOpView extends RelativeLayout {
         mBtnIv.clearAnimation();
         cancelCountDownTask();
         mUiHandler.removeCallbacksAndMessages(null);
+        clearAnimation();
+        mIvBurst.clearAnimation();
     }
 
     private void cancelCountDownTask() {

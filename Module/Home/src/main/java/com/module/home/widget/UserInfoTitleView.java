@@ -2,49 +2,19 @@ package com.module.home.widget;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.widget.FrameLayout;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.alibaba.android.arouter.launcher.ARouter;
-import com.alibaba.fastjson.JSON;
-import com.common.base.BaseActivity;
-import com.common.base.BaseFragment;
-import com.common.base.FragmentDataListener;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
-import com.common.core.myinfo.event.MyUserInfoEvent;
-import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.model.UserRankModel;
-import com.common.rxretrofit.ApiManager;
-import com.common.rxretrofit.ApiMethods;
-import com.common.rxretrofit.ApiObserver;
-import com.common.rxretrofit.ApiResult;
-import com.common.utils.FragmentUtils;
-import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.jakewharton.rxbinding2.view.RxView;
-import com.module.RouterConstants;
 import com.module.home.R;
-import com.module.home.fragment.GameFragment;
-import com.module.rank.IRankingModeService;
 import com.zq.level.utils.LevelConfigUtils;
-import com.zq.live.proto.Common.ESex;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.List;
-
-import io.reactivex.functions.Consumer;
-
-import static com.common.core.userinfo.model.UserRankModel.COUNTRY;
-import static com.common.core.userinfo.model.UserRankModel.REGION;
 
 public class UserInfoTitleView extends RelativeLayout {
 
@@ -54,6 +24,8 @@ public class UserInfoTitleView extends RelativeLayout {
     ImageView mLevelBg;
     SimpleDraweeView mIvUserIcon;
     ExTextView mUserLevelTv;
+
+    UserTitleClickListener mListener;
 
     public UserInfoTitleView(Context context) {
         this(context, null);
@@ -74,12 +46,31 @@ public class UserInfoTitleView extends RelativeLayout {
         mLevelBg = (ImageView) findViewById(R.id.level_bg);
         mIvUserIcon = (SimpleDraweeView) findViewById(R.id.iv_user_icon);
         mUserLevelTv = (ExTextView) findViewById(R.id.user_level_tv);
+
+        // TODO: 2019/4/2 因为 mLevelBg盖在头像上
+        mLevelBg.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mListener != null) {
+                    mListener.onClickAvatar();
+                }
+            }
+        });
+    }
+
+    public void setListener(UserTitleClickListener userTitleClickListener) {
+        this.mListener = userTitleClickListener;
     }
 
     public void showRankView(UserRankModel userRankModel) {
         mTopUserBg.setBackground(getResources().getDrawable(LevelConfigUtils.getHomePageLevelTopBg(userRankModel.getMainRanking())));
         mLevelBg.setBackground(getResources().getDrawable(LevelConfigUtils.getAvatarLevelBg(userRankModel.getMainRanking())));
+        mUserLevelTv.setTextColor(Color.parseColor(LevelConfigUtils.getHomePageLevelTextColor(userRankModel.getMainRanking())));
         mUserLevelTv.setText(userRankModel.getLevelDesc());
+    }
+
+    public ImageView getTopUserBg() {
+        return mTopUserBg;
     }
 
     public void showBaseInfo() {
@@ -87,5 +78,9 @@ public class UserInfoTitleView extends RelativeLayout {
                 AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
                         .setCircle(true)
                         .build());
+    }
+
+    public interface UserTitleClickListener {
+        void onClickAvatar();
     }
 }

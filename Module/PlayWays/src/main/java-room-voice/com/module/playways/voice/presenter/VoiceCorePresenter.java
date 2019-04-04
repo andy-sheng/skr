@@ -1,13 +1,11 @@
 package com.module.playways.voice.presenter;
 
-import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.text.SpannableStringBuilder;
 
 import com.alibaba.fastjson.JSON;
 import com.common.core.account.UserAccountManager;
-import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
@@ -21,12 +19,10 @@ import com.engine.EngineManager;
 import com.engine.Params;
 import com.engine.UserStatus;
 import com.module.ModuleServiceManager;
-import com.module.playways.BaseRoomData;
 import com.module.playways.rank.msg.filter.PushMsgFilter;
 import com.module.playways.rank.msg.manager.ChatRoomMsgManager;
-import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.room.RankRoomData;
-import com.module.playways.rank.room.RoomServerApi;
+import com.module.playways.rank.room.RankRoomServerApi;
 import com.module.playways.rank.room.comment.CommentModel;
 import com.module.playways.rank.room.event.PretendCommentMsgEvent;
 import com.module.playways.rank.room.model.RankPlayerInfoModel;
@@ -83,7 +79,7 @@ public class VoiceCorePresenter extends RxLifeCyclePresenter {
             params.setStyleEnum(Params.AudioEffect.none);
             params.setSelfUid((int) MyUserInfoManager.getInstance().getUid());
             EngineManager.getInstance().init("voiceroom", params);
-            EngineManager.getInstance().joinRoom(mRoomData.getGameId() + "_chat", (int) UserAccountManager.getInstance().getUuidAsLong(), true);
+            EngineManager.getInstance().joinRoom(mRoomData.getGameId() + "_chat", (int) UserAccountManager.getInstance().getUuidAsLong(), true,null);
             EngineManager.getInstance().muteLocalAudioStream(true);
         }
         if (mRoomData.getGameId() > 0) {
@@ -122,8 +118,8 @@ public class VoiceCorePresenter extends RxLifeCyclePresenter {
         HashMap<String, Object> map = new HashMap<>();
         map.put("gameID", mRoomData.getGameId());
 
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
-        ApiMethods.subscribe(ApiManager.getInstance().createService(RoomServerApi.class).exitGame(body), null);
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+        ApiMethods.subscribe(ApiManager.getInstance().createService(RankRoomServerApi.class).exitGame(body), null);
     }
 
     @Override

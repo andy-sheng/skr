@@ -8,6 +8,9 @@ extern "C"
 {
 #endif
 
+	void FilterReset_API(Filter_s *mFilter);
+	void FilterCalcu_API_FromMatlabTable(Filter_s *mFilter,float *num,float *den,int Order,int type);
+	void FilterRun_API(Filter_s *mFilter,short *input,int inLen,short *output);
 	void FilterfReset_API(Filterf_s *mFilter);
 	void FilterfRun_API(Filterf_s *mFilter,float *input,int inLen,float *output);
 	void FilterfRun_API_shortin(Filterf_s *mFilter,short *input,int inLen,float *output);

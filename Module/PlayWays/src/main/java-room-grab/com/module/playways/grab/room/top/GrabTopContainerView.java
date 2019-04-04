@@ -191,6 +191,17 @@ public class GrabTopContainerView extends RelativeLayout {
         mTopContentRv.onlineChange(event.playerInfoModel);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(GrabTopItemView.InviteBtnVisibleEvent event) {
+//        LayoutParams lp = (LayoutParams) mGrabAudienceView.getLayoutParams();
+//        if (event.visiable) {
+//            lp.rightMargin = U.getDisplayUtils().dip2px(60);
+//        } else {
+//            lp.rightMargin = U.getDisplayUtils().dip2px(24);
+//        }
+//        mGrabAudienceView.setLayoutParams(lp);
+    }
+
     public void setListener(Listener l) {
         mListener = l;
     }

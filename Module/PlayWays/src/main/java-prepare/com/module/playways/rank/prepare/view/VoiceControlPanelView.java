@@ -10,9 +10,14 @@ import android.widget.SeekBar;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
+import com.engine.EngineEvent;
 import com.engine.EngineManager;
 import com.engine.Params;
 import com.module.rank.R;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 public class VoiceControlPanelView extends ScrollView {
     public final static String TAG = "VoiceControlPanelView";
@@ -156,7 +161,6 @@ public class VoiceControlPanelView extends ScrollView {
         if (EngineManager.getInstance().getParams() != null) {
             styleEnum = EngineManager.getInstance().getParams().getStyleEnum();
         }
-
         if (styleEnum == Params.AudioEffect.dianyin) {
             mScenesBtnGroup.check(R.id.dianyin_sbtn);
         } else if (styleEnum == Params.AudioEffect.kongling) {
@@ -192,10 +196,21 @@ public class VoiceControlPanelView extends ScrollView {
         super.onDetachedFromWindow();
         // 停止播放混音
 //        EngineManager.getInstance().pauseAudioMixing();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(EngineEvent event) {
+        if (EngineEvent.TYPE_USER_SELF_JOIN_SUCCESS == event.getType()) {
+            bindData();
+        }
     }
 }

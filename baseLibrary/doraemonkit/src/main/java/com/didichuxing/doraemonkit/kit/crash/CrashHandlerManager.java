@@ -22,6 +22,9 @@ import java.io.Writer;
 import java.lang.reflect.Field;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -152,7 +155,7 @@ public class CrashHandlerManager implements Thread.UncaughtExceptionHandler {
     }
 
     private String saveCrashInfo2File(Throwable ex) {
-
+        cleanHistoricalData(10);
         StringBuffer sb = new StringBuffer();
         for (Map.Entry<String, String> entry : infos.entrySet()) {
             String key = entry.getKey();
@@ -189,11 +192,11 @@ public class CrashHandlerManager implements Thread.UncaughtExceptionHandler {
         return null;
     }
 
-    public void cleanHistoricalData() {
+    public void cleanHistoricalData(int left) {
         try {
             File file = new File(getFilePath());
             if (file.exists()) {
-                RecursionDeleteFile(file);
+                RecursionDeleteFile(file, left);
             }
         } catch (Exception e) {
 
@@ -201,7 +204,7 @@ public class CrashHandlerManager implements Thread.UncaughtExceptionHandler {
 
     }
 
-    public void RecursionDeleteFile(File file) {
+    public void RecursionDeleteFile(File file, int left) {
         if (file.isFile()) {
             file.delete();
             return;
@@ -212,8 +215,23 @@ public class CrashHandlerManager implements Thread.UncaughtExceptionHandler {
                 file.delete();
                 return;
             }
-            for (File f : childFile) {
-                RecursionDeleteFile(f);
+            // 文件修改时间排序
+            Arrays.sort(childFile, new Comparator<File>() {
+                public int compare(File f1, File f2) {
+                    long diff = f1.lastModified() - f2.lastModified();
+                    if (diff > 0)
+                        return 1;
+                    else if (diff == 0)
+                        return 0;
+                    else
+                        return -1;
+                }
+            });
+            for (int i = childFile.length - 1; i >= 0; i--) {
+                if (i <= childFile.length - left) {
+                    File f = childFile[i];
+                    RecursionDeleteFile(f, left);
+                }
             }
             file.delete();
         }

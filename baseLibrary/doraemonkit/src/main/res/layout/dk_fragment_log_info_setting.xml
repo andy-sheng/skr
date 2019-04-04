@@ -10,12 +10,39 @@
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="89dp"
-        app:dkTitle="@string/dk_kit_log_info"
-        app:dkIcon="@drawable/dk_close_icon_big"/>
+        app:dkIcon="@drawable/dk_close_icon_big"
+        app:dkTitle="@string/dk_kit_log_info" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/setting_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <LinearLayout
+        android:id="@+id/pull_log_container"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        android:layout_gravity="center_vertical">
+
+        <com.common.view.ex.NoLeakEditText
+            android:id="@+id/id_input_et"
+            android:layout_width="200dp"
+            android:layout_marginLeft="@dimen/view_10_dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="输入用户id" />
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/pull_log_btn"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginLeft="@dimen/view_20_dp"
+            app:bl_shape="rectangle"
+            app:bl_corners_radius="@dimen/view_5_dp"
+            app:bl_unpressed_color="#800000ff"
+            app:bl_pressed_color="@color/blue"
+            android:text="捞取" />
+    </LinearLayout>
 </LinearLayout>

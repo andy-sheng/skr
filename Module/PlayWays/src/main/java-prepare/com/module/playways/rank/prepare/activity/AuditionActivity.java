@@ -45,8 +45,8 @@ public class AuditionActivity extends BaseActivity {
                 prepareData.setSongModel(songModel);
                 prepareData.setBgMusic(songModel.getRankUserVoice());
                 U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, AuditionFragment.class)
-                        .setAddToBackStack(true)
-                        .setHasAnimation(true)
+                        .setAddToBackStack(false)
+                        .setHasAnimation(false)
                         .addDataBeforeAdd(0, prepareData)
                         .setFragmentDataListener(new FragmentDataListener() {
                             @Override
@@ -58,7 +58,7 @@ public class AuditionActivity extends BaseActivity {
             } else {
                 U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, AuditionPrepareResFragment.class)
                         .setAddToBackStack(false)
-                        .setHasAnimation(true)
+                        .setHasAnimation(false)
                         .addDataBeforeAdd(0, songModel)
                         .setFragmentDataListener(new FragmentDataListener() {
                             @Override
@@ -79,7 +79,7 @@ public class AuditionActivity extends BaseActivity {
         HashMap<String, Object> map = new HashMap<>();
         map.put("playbookItemID", itemID);
 
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(songSelectServerApi.reportAuditionSong(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {

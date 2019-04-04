@@ -35,6 +35,9 @@ android {
 
             java.srcDirs += 'src/main/java-report'
             res.srcDirs += 'src/main/res-report'
+
+            java.srcDirs += 'src/main/java-notification'
+            res.srcDirs += 'src/main/res-notification'
         }
     }
 }

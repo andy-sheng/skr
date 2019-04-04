@@ -7,6 +7,7 @@ import com.common.utils.U;
 import com.elvishew.xlog.LogConfiguration;
 import com.elvishew.xlog.LogLevel;
 import com.elvishew.xlog.XLog;
+import com.elvishew.xlog.formatter.message.json.DefaultJsonFormatter;
 import com.elvishew.xlog.formatter.message.throwable.DefaultThrowableFormatter;
 import com.elvishew.xlog.printer.AndroidPrinter;
 import com.elvishew.xlog.printer.ConsolePrinter;
@@ -51,7 +52,7 @@ public class MyLog {
 //                    .t()                                                   // 允许打印线程信息，默认禁止
 //                    .st(2)                                                 // 允许打印深度为2的调用栈信息，默认禁止
 //                .b()                                                   // 允许打印日志边框，默认禁止
-//                .jsonFormatter(new MyJsonFormatter())                  // 指定 JSON 格式化器，默认为 DefaultJsonFormatter
+                .jsonFormatter(new DefaultJsonFormatter())                   // 指定 JSON 格式化器，默认为 DefaultJsonFormatter
 //                .xmlFormatter(new MyXmlFormatter())                    // 指定 XML 格式化器，默认为 DefaultXmlFormatter
                     .throwableFormatter(new DefaultThrowableFormatter())        // 指定可抛出异常格式化器，默认为 DefaultThrowableFormatter
                     .threadFormatter(new MyThreadFormatter())              // 指定线程信息格式化器，默认为 DefaultThreadFormatter

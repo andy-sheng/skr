@@ -7,7 +7,6 @@ import com.common.mvp.RxLifeCyclePresenter;
 import com.common.utils.HttpUtils;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
-import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.ResourceInfoModel;
 import com.module.playways.rank.room.model.RankPlayerInfoModel;
 import com.zq.lyrics.model.UrlRes;

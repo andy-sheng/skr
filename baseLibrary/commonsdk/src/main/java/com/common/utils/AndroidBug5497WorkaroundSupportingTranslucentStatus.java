@@ -75,7 +75,9 @@ public class AndroidBug5497WorkaroundSupportingTranslucentStatus {
         }
         Activity curActivity = U.getActivityUtils().getCurrentActivity();
         if (curActivity != mBaseActivityRef.get()) {
-            MyLog.d(TAG, "not curActivity ,return");
+            if(mLogSwitch) {
+                MyLog.d(TAG, "not curActivity ,return");
+            }
             /**
              * 如果不是当前acitivity发出的就忽略吧。
              */

@@ -65,4 +65,15 @@ public class BasePushInfo {
     public void setSender(UserInfo sender) {
         this.sender = sender;
     }
+
+    @Override
+    public String toString() {
+        return "BasePushInfo{" +
+                "timeMs=" + timeMs +
+                ", roomID=" + roomID +
+                ", no=" + no +
+                ", posType=" + posType +
+                ", sender=" + sender +
+                '}';
+    }
 }

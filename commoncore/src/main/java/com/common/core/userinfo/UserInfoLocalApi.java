@@ -64,11 +64,9 @@ public class UserInfoLocalApi {
      * 由于relation表存储关系和关系人信息,注意默认值引起的影响
      *
      * @param userInfoModel
-     * @param relationChange 关系是否改变
-     * @param blockChange    拉黑状态是否改变
      * @return
      */
-    public static int insertOrUpdate(UserInfoModel userInfoModel, boolean relationChange, boolean blockChange) {
+    public static int insertOrUpdate(UserInfoModel userInfoModel) {
         MyLog.d(TAG, "insertOrUpdate" + userInfoModel);
         if (userInfoModel == null) {
             MyLog.w(TAG, "insertOrUpdate relation == null");

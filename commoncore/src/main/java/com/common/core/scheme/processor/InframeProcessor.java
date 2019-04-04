@@ -5,12 +5,17 @@ import android.text.TextUtils;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.core.account.UserAccountManager;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.scheme.SchemeConstants;
 import com.common.core.scheme.SchemeUtils;
+import com.common.core.scheme.event.BothRelationFromSchemeEvent;
+import com.common.core.scheme.event.GrabInviteFromSchemeEvent;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.module.RouterConstants;
 import com.module.grab.IGrabModeGameService;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by lan on 16/10/26.
@@ -59,6 +64,12 @@ public class InframeProcessor implements ISchemeProcessor {
                         return ProcessResult.AcceptedAndReturn;
                     case SchemeConstants.HOST_WALLET:
                         processWalletUrl(uri);
+                        return ProcessResult.AcceptedAndReturn;
+                    case SchemeConstants.HOST_ROOM:
+                        processRoomUrl(uri);
+                        return ProcessResult.AcceptedAndReturn;
+                    case SchemeConstants.HOST_RELATION:
+                        processRelationUrl(uri);
                         return ProcessResult.AcceptedAndReturn;
                 }
             }
@@ -150,6 +161,69 @@ public class InframeProcessor implements ISchemeProcessor {
         } else {
 
         }
+    }
+
+    private void processRoomUrl(Uri uri) {
+        String path = uri.getPath();
+        if (TextUtils.isEmpty(path)) {
+            MyLog.w(TAG, "processRoomUrl path is empty");
+            return;
+        }
+
+        if ("/grabjoin".equals(path)) {
+            try {
+                if (!UserAccountManager.getInstance().hasAccount()) {
+                    MyLog.w(TAG, "processRoomUrl 没有登录");
+                    return;
+                }
+                int ownerId = SchemeUtils.getInt(uri, "owner", 0);
+                int roomId = SchemeUtils.getInt(uri, "gameId", 0);
+                int ask = SchemeUtils.getInt(uri, "ask", 0);
+                if (ownerId > 0 && roomId > 0) {
+                    if (ownerId == MyUserInfoManager.getInstance().getUid()) {
+                        MyLog.d(TAG, "processRoomUrl 房主id是自己，可能从口令粘贴板过来的，忽略");
+                        return;
+                    }
+                    GrabInviteFromSchemeEvent event = new GrabInviteFromSchemeEvent();
+                    event.ask = ask;
+                    event.ownerId = ownerId;
+                    event.roomId = roomId;
+                    EventBus.getDefault().post(event);
+                }
+            } catch (Exception e) {
+                MyLog.e(TAG, e);
+            }
+        } else {
+
+        }
+    }
+
+    private void processRelationUrl(Uri uri) {
+        String path = uri.getPath();
+        if (TextUtils.isEmpty(path)) {
+            MyLog.w(TAG, "processRelationUrl path is empty");
+            return;
+        }
+
+        if ("/bothfollow".equals(path)) {
+            try {
+                if (!UserAccountManager.getInstance().hasAccount()) {
+                    MyLog.w(TAG, "processRelationUrl 没有登录");
+                    return;
+                }
+                int inviterId = SchemeUtils.getInt(uri, "inviterId", 0);
+                if (inviterId > 0 && inviterId != MyUserInfoManager.getInstance().getUid()) {
+                    BothRelationFromSchemeEvent event = new BothRelationFromSchemeEvent();
+                    event.useId = inviterId;
+                    EventBus.getDefault().post(event);
+                }
+            } catch (Exception e) {
+                MyLog.e(TAG, e);
+            }
+        } else {
+
+        }
+
     }
 
     private void processShareUrl(Uri uri) {

@@ -265,7 +265,7 @@ public class RoomDataUtils {
      * @param roomData
      * @return
      */
-    public static <T extends BaseRoundInfoModel> boolean isCurrentExpectingRound(int eventSeq, BaseRoomData<T> roomData) {
+    public static boolean isCurrentExpectingRound(int eventSeq, GrabRoomData roomData) {
         if (roomData != null) {
             if (roomData.getExpectRoundInfo() == null) {
                 return false;

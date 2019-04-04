@@ -3,7 +3,6 @@ package com.module.playways.rank.prepare.fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
@@ -13,7 +12,6 @@ import android.widget.RelativeLayout;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.core.account.UserAccountManager;
-import com.common.core.avatar.AvatarUtils;
 import com.common.core.permission.SkrAudioPermission;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
@@ -29,10 +27,8 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
-import com.component.busilib.constans.GameModeType;
 import com.component.busilib.manager.BgMusicManager;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
 import com.module.rank.R;
 import com.module.playways.rank.prepare.model.PrepareData;
@@ -45,7 +41,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 准备资源界面

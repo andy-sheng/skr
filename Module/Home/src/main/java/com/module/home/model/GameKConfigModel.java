@@ -6,19 +6,21 @@ import java.io.Serializable;
 import java.util.List;
 
 public class GameKConfigModel implements Serializable {
-
     /**
      * homepage-site-first : {"enable":true,"pic":"http://res-static.inframe.mobi/app/skr-redpacket-20190304.png","schema":"inframeskr://web/fullScreen?url=https://www.baidu.com&showShare=1"}
      * pk-tags : ["K歌·3人赛"]
      * stand-tags : ["抢麦·挑战30s"]
      */
-
+    @JSONField(name = "agora-token")
+    private boolean agoraTokenEnable;
     @JSONField(name = "homepage-site-first")
     private HomepagesitefirstBean homepagesitefirst;
     @JSONField(name = "pk-tags")
     private List<String> pktags;
     @JSONField(name = "stand-tags")
     private List<String> standtags;
+    @JSONField(name = "homepage-ticker-interval")
+    private int homepagetickerinterval;
 
     public HomepagesitefirstBean getHomepagesitefirst() {
         return homepagesitefirst;
@@ -42,6 +44,22 @@ public class GameKConfigModel implements Serializable {
 
     public void setStandtags(List<String> standtags) {
         this.standtags = standtags;
+    }
+
+    public boolean isAgoraTokenEnable() {
+        return agoraTokenEnable;
+    }
+
+    public void setAgoraTokenEnable(boolean agoraTokenEnable) {
+        this.agoraTokenEnable = agoraTokenEnable;
+    }
+
+    public int getHomepagetickerinterval() {
+        return homepagetickerinterval;
+    }
+
+    public void setHomepagetickerinterval(int homepagetickerinterval) {
+        this.homepagetickerinterval = homepagetickerinterval;
     }
 
     public static class HomepagesitefirstBean implements Serializable{
@@ -78,5 +96,16 @@ public class GameKConfigModel implements Serializable {
         public void setSchema(String schema) {
             this.schema = schema;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "GameKConfigModel{" +
+                "agoraTokenEnable=" + agoraTokenEnable +
+                ", homepagesitefirst=" + homepagesitefirst +
+                ", pktags=" + pktags +
+                ", standtags=" + standtags +
+                ", homepagetickerinterval=" + homepagetickerinterval +
+                '}';
     }
 }

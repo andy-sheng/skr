@@ -181,6 +181,7 @@ public class ScoreResultModel implements Serializable {
                 ", battleIndexChange=" + battleIndexChange +
                 ", winType=" + winType +
                 ", sss=" + sss +
+                ", expChange=" + expChange +
                 '}';
     }
 }

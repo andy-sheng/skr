@@ -49,6 +49,8 @@ android {
 
             // doraemonkit 滴滴开源一款app内调试工具
             java.srcDirs += 'src/main/java-doraemonkit'
+
+            java.srcDirs += 'src/main/java-notification'
         }
     }
 

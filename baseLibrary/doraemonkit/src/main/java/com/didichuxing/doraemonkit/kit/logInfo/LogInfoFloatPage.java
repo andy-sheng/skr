@@ -281,6 +281,23 @@ public class LogInfoFloatPage extends BaseFloatPage implements LogInfoManager.On
         return false;
     }
 
+    boolean accept2(LogInfoItem infoItem) {
+        if (infoItem.level >= mLevel) {
+            if (infoItem.tag != null && infoItem.tag.equals("ApiManager")) {
+                if (infoItem.meseage == null) {
+                    return false;
+                }
+                if (infoItem.meseage.contains("http")) {
+                    return true;
+                }
+                if (infoItem.meseage.contains("traceId")) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     @Override
     protected void onLayoutParamsCreated(WindowManager.LayoutParams params) {
         params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
@@ -291,13 +308,13 @@ public class LogInfoFloatPage extends BaseFloatPage implements LogInfoManager.On
         if (mLogList == null || mLogItemAdapter == null) {
             return;
         }
-        if (accept(infoItem)) {
+        if (accept2(infoItem)) {
             mLogInfoItems.add(infoItem);
-            if (mLogInfoItems.size() == MAX_LOG_LINE_NUM) {
+            if (mLogInfoItems.size() >= MAX_LOG_LINE_NUM) {
                 mLogInfoItems.remove(0);
             }
             mLogItemAdapter.append(infoItem);
-            if (mLogItemAdapter.getItemCount() == MAX_LOG_LINE_NUM) {
+            if (mLogItemAdapter.getItemCount() >= MAX_LOG_LINE_NUM) {
                 mLogItemAdapter.remove(0);
             }
         }

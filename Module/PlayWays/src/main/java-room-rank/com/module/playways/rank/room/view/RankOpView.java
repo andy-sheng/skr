@@ -1,11 +1,15 @@
 package com.module.playways.rank.room.view;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
 
 import com.common.core.account.UserAccountManager;
@@ -31,7 +35,9 @@ import org.greenrobot.eventbus.ThreadMode;
 
 public class RankOpView extends RelativeLayout {
     public final static String TAG = "RankOpView";
+    public final static int MSG_SHOW_BURST = 0;
     public int mLightOffDelayTime = 20;
+    public int mLightBurstDelayTime = 30;
     ExImageView mIvBurst;
     ExImageView mIvTurnOff;
     ExImageView mIvCountDown;
@@ -48,6 +54,23 @@ public class RankOpView extends RelativeLayout {
     HashSet<Integer> mHasOpSeq = new HashSet<>();
 
     ScaleAnimation mShakeAnimation; //抖动动画
+
+    Handler mUiHandler = new Handler(Looper.getMainLooper()){
+        @Override
+        public void handleMessage(Message msg) {
+            if(msg.what == MSG_SHOW_BURST){
+                mIvBurst.setVisibility(VISIBLE);
+                mIvBurst.setEnabled(true);
+                TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f,
+                        Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0);
+                animation.setDuration(200);
+                animation.setRepeatMode(Animation.REVERSE);
+                animation.setInterpolator(new OvershootInterpolator());
+                animation.setFillAfter(true);
+                mIvBurst.startAnimation(animation);
+            }
+        }
+    };
 
     public RankOpView(Context context) {
         super(context);
@@ -72,7 +95,7 @@ public class RankOpView extends RelativeLayout {
                 if (mRoomData.getLeftBurstLightTimes() > 0) {
                     if (mOpListener != null) {
                         if (mHasOpSeq.contains(mSeq)) {
-                            U.getToastUtil().showShort("灭灯之后不能爆灯哦");
+                            U.getToastUtil().showShort("爆灯之后不能爆灯哦");
                             return;
                         }
                     }
@@ -122,11 +145,13 @@ public class RankOpView extends RelativeLayout {
         if (mCountDownTask != null) {
             mCountDownTask.dispose();
         }
+        mUiHandler.removeCallbacksAndMessages(null);
     }
 
     public void setRoomData(RankRoomData roomData) {
         mRoomData = roomData;
         mLightOffDelayTime = mRoomData.getGameConfigModel().getpKEnableShowMLightWaitTimeMs() / 1000;
+        mLightBurstDelayTime = mRoomData.getGameConfigModel().getpKEnableShowBLightWaitTimeMs() / 1000;
     }
 
     public void setOpListener(OpListener opListener) {
@@ -140,6 +165,13 @@ public class RankOpView extends RelativeLayout {
         if (RoomDataUtils.isCurrentRunningRound(event.roundInfo.getRoundSeq(), mRoomData)) {
             // 爆灯成功
             mIvBurst.setEnabled(false);
+            TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 1.0f,
+                    Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0);
+            animation.setDuration(200);
+            animation.setRepeatMode(Animation.REVERSE);
+            animation.setInterpolator(new OvershootInterpolator());
+            animation.setFillAfter(true);
+            mIvBurst.startAnimation(animation);
         }
     }
 
@@ -158,61 +190,62 @@ public class RankOpView extends RelativeLayout {
             setVisibility(GONE);
             return;
         }
+
         mSeq = seq;
         cancelTimer();
 
-        if (mRoomData.getLeftBurstLightTimes() <= 0) {
-            mIvBurst.setVisibility(GONE);
-        } else {
-            mIvBurst.setVisibility(VISIBLE);
-            mIvBurst.setEnabled(true);
+        mIvBurst.setVisibility(GONE);
+        if (mRoomData.getLeftBurstLightTimes() > 0 && startCountDown) {
+            mUiHandler.removeMessages(MSG_SHOW_BURST);
+            Message msg = mUiHandler.obtainMessage(MSG_SHOW_BURST);
+            mUiHandler.sendMessageDelayed(msg, mLightBurstDelayTime * 1000);
         }
 
-        if (mRoomData.getLeftLightOffTimes() <= 0) {
-            mIvTurnOff.setVisibility(GONE);
-            mIvCountDown.setVisibility(GONE);
-            mTvCountDown.setVisibility(GONE);
-            stopShake();
-        } else {
-            mIvTurnOff.setVisibility(GONE);
-            mIvCountDown.setVisibility(VISIBLE);
-            mTvCountDown.setVisibility(VISIBLE);
-            mTvCountDown.setText(mLightOffDelayTime + "");
-            if (startCountDown) {
-                playShake();
-                mCountDownTask = HandlerTaskTimer.newBuilder()
-                        .interval(1000)
-                        .take(mLightOffDelayTime)
-                        .start(new HandlerTaskTimer.ObserverW() {
-                            @Override
-                            public void onNext(Integer integer) {
-                                integer = mLightOffDelayTime - integer;
-                                if (integer == 0) {
-                                    if (mRoomData.getLeftLightOffTimes() > 0) {
-                                        mIvTurnOff.setVisibility(VISIBLE);
-                                        mIvTurnOff.setEnabled(true);
-                                    } else {
-                                        mIvTurnOff.setVisibility(GONE);
-                                        mIvTurnOff.setEnabled(false);
-                                    }
-
-                                    mTvCountDown.setVisibility(GONE);
-                                    mIvCountDown.setVisibility(GONE);
-                                    mTvCountDown.setText("");
-                                    return;
-                                }
-
-                                mTvCountDown.setText(integer + "");
-                            }
-
-                            @Override
-                            public void onComplete() {
-                                super.onComplete();
-                                stopShake();
-                            }
-                        });
-            }
-        }
+//        if (mRoomData.getLeftLightOffTimes() <= 0) {
+//            mIvTurnOff.setVisibility(GONE);
+//            mIvCountDown.setVisibility(GONE);
+//            mTvCountDown.setVisibility(GONE);
+//            stopShake();
+//        } else {
+//            mIvTurnOff.setVisibility(GONE);
+//            mIvCountDown.setVisibility(VISIBLE);
+//            mTvCountDown.setVisibility(VISIBLE);
+//            mTvCountDown.setText(mLightOffDelayTime + "");
+//            if (startCountDown) {
+//                playShake();
+//                mCountDownTask = HandlerTaskTimer.newBuilder()
+//                        .interval(1000)
+//                        .take(mLightOffDelayTime)
+//                        .start(new HandlerTaskTimer.ObserverW() {
+//                            @Override
+//                            public void onNext(Integer integer) {
+//                                integer = mLightOffDelayTime - integer;
+//                                if (integer == 0) {
+//                                    if (mRoomData.getLeftLightOffTimes() > 0) {
+//                                        mIvTurnOff.setVisibility(VISIBLE);
+//                                        mIvTurnOff.setEnabled(true);
+//                                    } else {
+//                                        mIvTurnOff.setVisibility(GONE);
+//                                        mIvTurnOff.setEnabled(false);
+//                                    }
+//
+//                                    mTvCountDown.setVisibility(GONE);
+//                                    mIvCountDown.setVisibility(GONE);
+//                                    mTvCountDown.setText("");
+//                                    return;
+//                                }
+//
+//                                mTvCountDown.setText(integer + "");
+//                            }
+//
+//                            @Override
+//                            public void onComplete() {
+//                                super.onComplete();
+//                                stopShake();
+//                            }
+//                        });
+//            }
+//        }
     }
 
     private void playShake() {

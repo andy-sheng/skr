@@ -1,20 +1,20 @@
 package com.module.playways.grab.room;
 
+import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.component.busilib.constans.GameModeType;
 import com.module.playways.BaseRoomData;
 import com.module.playways.RoomDataUtils;
+import com.component.busilib.friends.SpecialModel;
 import com.module.playways.grab.room.event.GrabGameOverEvent;
 import com.module.playways.grab.room.event.GrabMyCoinChangeEvent;
 import com.module.playways.grab.room.event.GrabRoundChangeEvent;
 import com.module.playways.grab.room.model.GrabConfigModel;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
-import com.module.playways.grab.room.model.GrabResultInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.rank.prepare.model.JoinGrabRoomRspModel;
-import com.zq.live.proto.Room.EQRoundOverReason;
-import com.zq.live.proto.Room.EQRoundResultType;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -22,14 +22,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
-//    public static final int ACC_OFFSET_BY_LYRIC = 5000;// 伴奏是比歌词提前 5 秒的
+    //    public static final int ACC_OFFSET_BY_LYRIC = 5000;// 伴奏是比歌词提前 5 秒的
     protected int mCoin;// 金币数
-    protected List<GrabResultInfoModel> mResultList = new ArrayList<>(); // 一唱到底对战结果数据
     protected int mTagId;//一场到底歌曲分类
     protected GrabConfigModel mGrabConfigModel = new GrabConfigModel();// 一唱到底配置
     protected boolean mHasExitGame = false;// 是否已经正常退出房间
     private boolean mIsAccEnable = false;// 是否开启伴奏
-    private Integer mSongLineNum;
+    private Integer mSongLineNum;// 歌词总行数
+    private int roomType;// 一唱到底房间类型，公开，好友，私密，普通
+    private int ownerId;// 房主id
+    private boolean hasGameBegin = true;// 游戏是否已经开始
+    SpecialModel mSpecialModel;
+
+    GrabResultData mGrabResultData;    // 游戏结果
 
     public GrabRoomData() {
         mIsAccEnable = U.getPreferenceUtils().getSettingBoolean("grab_acc_enable1", false);
@@ -38,9 +43,48 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
     @Override
     public List<GrabPlayerInfoModel> getPlayerInfoList() {
         List<GrabPlayerInfoModel> l = new ArrayList<>();
-        l.addAll(mExpectRoundInfo.getPlayUsers());
-        l.addAll(mExpectRoundInfo.getWaitUsers());
+        if (mExpectRoundInfo != null) {
+            l.addAll(mExpectRoundInfo.getPlayUsers());
+            l.addAll(mExpectRoundInfo.getWaitUsers());
+        } else {
+            GrabPlayerInfoModel p = new GrabPlayerInfoModel();
+            p.setSkrer(false);
+            p.setOnline(true);
+            p.setRole(GrabPlayerInfoModel.ROLE_PLAY);
+            p.setUserID((int) MyUserInfoManager.getInstance().getUid());
+            UserInfoModel userInfoModel = new UserInfoModel();
+            userInfoModel.setUserId((int) MyUserInfoManager.getInstance().getUid());
+            userInfoModel.setAvatar(MyUserInfoManager.getInstance().getAvatar());
+            userInfoModel.setNickname(MyUserInfoManager.getInstance().getNickName());
+            p.setUserInfo(userInfoModel);
+            l.add(p);
+        }
         return l;
+    }
+
+
+    public boolean isInPlayerList() {
+        if (mExpectRoundInfo == null || mExpectRoundInfo.getPlayUsers() == null) {
+            return false;
+        }
+
+        List<GrabPlayerInfoModel> getPlayerInfoList = mExpectRoundInfo.getPlayUsers();
+        for (GrabPlayerInfoModel model :
+                getPlayerInfoList) {
+            if (model.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public SpecialModel getSpecialModel() {
+        return mSpecialModel;
+    }
+
+    public void setSpecialModel(SpecialModel specialModel) {
+        mSpecialModel = specialModel;
     }
 
     @Override
@@ -96,15 +140,6 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
         }
     }
 
-    public void setResultList(List<GrabResultInfoModel> resultList) {
-        mResultList.clear();
-        mResultList.addAll(resultList);
-    }
-
-    public List<GrabResultInfoModel> getResultList() {
-        return mResultList;
-    }
-
     public int getTagId() {
         return mTagId;
     }
@@ -149,6 +184,47 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
         mHasExitGame = hasExitGame;
     }
 
+    public int getRoomType() {
+        return roomType;
+    }
+
+    public void setRoomType(int roomType) {
+        this.roomType = roomType;
+    }
+
+    public GrabResultData getGrabResultData() {
+        return mGrabResultData;
+    }
+
+    public void setGrabResultData(GrabResultData grabResultData) {
+        mGrabResultData = grabResultData;
+    }
+
+    public int getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(int ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    /**
+     * 是不是房主
+     *
+     * @return
+     */
+    public boolean isOwner() {
+        return this.ownerId == MyUserInfoManager.getInstance().getUid();
+    }
+
+    public boolean hasGameBegin() {
+        return hasGameBegin;
+    }
+
+    public void setHasGameBegin(boolean hasGameBegin) {
+        this.hasGameBegin = hasGameBegin;
+    }
+
     public void loadFromRsp(JoinGrabRoomRspModel rsp) {
         this.setGameId(rsp.getRoomID());
         this.setCoin(rsp.getCoin());
@@ -158,27 +234,34 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
             MyLog.w(TAG, "JoinGrabRoomRspModel rsp==null");
         }
         GrabRoundInfoModel grabRoundInfoModel = rsp.getCurrentRound();
-        if (rsp.isNewGame()) {
-            grabRoundInfoModel.setParticipant(true);
-        } else {
-            grabRoundInfoModel.setParticipant(false);
-            grabRoundInfoModel.setEnterStatus(grabRoundInfoModel.getStatus());
+        if (grabRoundInfoModel != null) {
+            if (rsp.isNewGame()) {
+                grabRoundInfoModel.setParticipant(true);
+            } else {
+                grabRoundInfoModel.setParticipant(false);
+                grabRoundInfoModel.setEnterStatus(grabRoundInfoModel.getStatus());
+            }
+            grabRoundInfoModel.setElapsedTimeMs(rsp.getElapsedTimeMs());
         }
-        grabRoundInfoModel.setElapsedTimeMs(rsp.getElapsedTimeMs());
         this.setExpectRoundInfo(grabRoundInfoModel);
         this.setRealRoundInfo(null);
 //            mRoomData.setRealRoundInfo(rsp.getCurrentRound());
         this.setTagId(rsp.getTagID());
-        this.setGameCreateTs(rsp.getGameCreateMs());
+
+        setIsGameFinish(false);
+        setHasExitGame(false);
+        this.setAgoraToken(rsp.getAgoraToken());
+        this.setRoomType(rsp.getRoomType());
+        this.setOwnerId(rsp.getOwnerID());
+
         if (this.getGameCreateTs() == 0) {
             this.setGameCreateTs(System.currentTimeMillis());
         }
         if (this.getGameStartTs() == 0) {
             this.setGameStartTs(this.getGameCreateTs());
         }
-        setIsGameFinish(false);
-        setHasExitGame(false);
-        mResultList.clear();
+        // 游戏未开始
+        this.setHasGameBegin(rsp.hasGameBegin());
     }
 
     public Integer getSongLineNum() {
@@ -187,5 +270,17 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
 
     public void setSongLineNum(Integer songLineNum) {
         mSongLineNum = songLineNum;
+    }
+
+    @Override
+    public String toString() {
+        return "GrabRoomData{" +
+                ", mTagId=" + mTagId +
+                ", mGrabConfigModel=" + mGrabConfigModel +
+                ", roomType=" + roomType +
+                ", ownerId=" + ownerId +
+                ", hasGameBegin=" + hasGameBegin +
+                ", mAgoraToken=" + mAgoraToken +
+                '}';
     }
 }

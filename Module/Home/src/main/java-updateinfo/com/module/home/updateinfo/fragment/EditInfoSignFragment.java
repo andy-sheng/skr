@@ -6,17 +6,17 @@ import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.View;
 
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
-import com.common.log.MyLog;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.NoLeakEditText;
 import com.common.view.titlebar.CommonTitleBar;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.home.R;
-import com.module.home.updateinfo.EditInfoActivity;
 
 import java.util.concurrent.TimeUnit;
 
@@ -45,28 +45,21 @@ public class EditInfoSignFragment extends BaseFragment {
         mSignEt = (NoLeakEditText) mRootView.findViewById(R.id.sign_et);
         mSignTextSize = (ExTextView) mRootView.findViewById(R.id.sign_text_size);
 
+        mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+                U.getFragmentUtils().popFragment(EditInfoSignFragment.this);
+            }
+        });
 
-        RxView.clicks(mTitlebar.getLeftTextView())
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-//                        U.getSoundUtils().play(EditInfoActivity.TAG, R.raw.normal_back, 500);
-                        U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-                        U.getFragmentUtils().popFragment(EditInfoSignFragment.this);
-                    }
-                });
-
-        RxView.clicks(mTitlebar.getRightTextView())
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        // 完成
-                        clickComplete();
-                    }
-                });
-
+        mTitlebar.getRightTextView().setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                // 完成
+                clickComplete();
+            }
+        });
 
         mSignEt.setText(MyUserInfoManager.getInstance().getSignature());
         if (!TextUtils.isEmpty(MyUserInfoManager.getInstance().getSignature())) {

@@ -54,4 +54,18 @@ public interface IGrabView {
     void giveUpSuccess(int seq);
 
     void updateScrollBarProgress(int score, int songLineNum);
+
+    void showKickVoteDialog(int kickUserID, int sourceUserID);
+
+    /**
+     * 自己被人踢出去
+     */
+    void kickBySomeOne();
+
+    /**
+     * 把别人踢出去
+     */
+    void dimissKickDialog();
+
+    void showPracticeFlag(boolean flag);
 }

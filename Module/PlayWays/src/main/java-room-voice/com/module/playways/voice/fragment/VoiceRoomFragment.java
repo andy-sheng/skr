@@ -3,16 +3,13 @@ package com.module.playways.voice.fragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
-import com.common.core.userinfo.UserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
@@ -33,21 +30,10 @@ import com.module.playways.voice.view.VoiceRightOpView;
 import com.module.playways.voice.view.VoiceTopContainerView;
 import com.module.playways.voice.view.VoiceUserStatusContainerView;
 import com.module.rank.R;
-import com.opensource.svgaplayer.SVGAParser;
 import com.zq.dialog.PersonInfoDialog;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
 
@@ -74,8 +60,6 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
     VoiceCorePresenter mCorePresenter;
 
     PersonInfoDialog mPersonInfoDialog;
-
-    SVGAParser mSVGAParser;
 
     boolean mIsGameEndAniamtionShow = false; // 标记对战结束动画是否播放
 
@@ -219,37 +203,9 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
         }
         mInputContainerView.hideSoftInput();
 
-        mPersonInfoDialog = new PersonInfoDialog(getActivity(), userID);
+        mPersonInfoDialog = new PersonInfoDialog(getActivity(), userID, true, false);
         mPersonInfoDialog.show();
     }
-
-
-    private SVGAParser getSVGAParser() {
-        if (mSVGAParser == null) {
-            mSVGAParser = new SVGAParser(U.app());
-            mSVGAParser.setFileDownloader(new SVGAParser.FileDownloader() {
-                @Override
-                public void resume(final URL url, final Function1<? super InputStream, Unit> complete, final Function1<? super Exception, Unit> failure) {
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            OkHttpClient client = new OkHttpClient();
-                            Request request = new Request.Builder().url(url).get().build();
-                            try {
-                                Response response = client.newCall(request).execute();
-                                complete.invoke(response.body().byteStream());
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                                failure.invoke(e);
-                            }
-                        }
-                    }).start();
-                }
-            });
-        }
-        return mSVGAParser;
-    }
-
 
     @Override
     public boolean useEventBus() {

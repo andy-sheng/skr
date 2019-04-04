@@ -1,38 +1,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/view_15_dp">
+    android:layout_marginTop="@dimen/view_12_dp"
+    android:layout_marginBottom="@dimen/view_12_dp">
 
-    <ImageView
+    <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/background"
-        android:layout_width="@dimen/view_310_dp"
-        android:layout_height="@dimen/view_108_dp"
-        android:layout_centerHorizontal="true" />
-
-    <com.common.view.ex.ExTextView
-        android:id="@+id/special_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/background"
-        android:layout_marginLeft="60dp"
-        android:layout_marginTop="@dimen/view_18_dp"
-        android:gravity="left"
-        android:textColor="#0C2275"
-        android:textSize="@dimen/textsize_24_dp"
-        android:textStyle="bold" />
-
-
-    <com.common.view.ex.ExTextView
-        android:id="@+id/introduction_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/special_tv"
-        android:layout_alignRight="@+id/background"
-        android:layout_alignBottom="@+id/background"
-        android:layout_marginRight="@dimen/view_50_dp"
-        android:layout_marginBottom="@dimen/view_16_dp"
-        android:gravity="right"
-        android:textColor="@color/white"
-        android:textSize="@dimen/textsize_14_dp" />
+        android:layout_width="@dimen/view_343_dp"
+        android:layout_height="@dimen/view_84_dp"
+        android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>

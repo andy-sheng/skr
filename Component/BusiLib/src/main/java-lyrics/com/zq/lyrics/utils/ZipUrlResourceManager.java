@@ -222,24 +222,23 @@ public class ZipUrlResourceManager {
         mIsCancel = true;
         if(mIsFinished){
             MyLog.d(TAG, "cancel when tasklist is finished");
+            onDownloadProgress = null;
             return;
         }
 
+        if(onDownloadProgress != null){
+            onDownloadProgress.onCanceled();
+            onDownloadProgress = null;
+        }
+
         if (checkTotlaSizeTask != null && !checkTotlaSizeTask.isDisposed()) {
-            MyLog.d(TAG, "cancelAllTask 1" );
             checkTotlaSizeTask.dispose();
         }
 
         if (currentTask != null) {
-            MyLog.d(TAG, "cancelAllTask 2" );
             U.getHttpUtils().cancelDownload(currentTask.downloadUrl);
         }
 
-        MyLog.d(TAG, "cancelAllTask 3" );
         taskQueue.clear();
-        if(onDownloadProgress != null){
-            MyLog.d(TAG, "cancelAllTask 4" );
-            onDownloadProgress.onCanceled();
-        }
     }
 }

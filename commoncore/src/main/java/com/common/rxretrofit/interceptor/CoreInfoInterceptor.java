@@ -21,7 +21,7 @@ import okhttp3.Protocol;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
-import okio.BufferedSource;
+import retrofit2.adapter.rxjava2.HttpException;
 
 public class CoreInfoInterceptor implements Interceptor {
     public final static String TAG = "CoreInfoInterceptor";
@@ -39,7 +39,7 @@ public class CoreInfoInterceptor implements Interceptor {
                 HashMap hashMap = new HashMap<>();
                 hashMap.put("errno", 102);
                 hashMap.put("errmsg", "未登录不能发送该请求-->" + request.url());
-                ResponseBody responseBody = ResponseBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(hashMap));
+                ResponseBody responseBody = ResponseBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(hashMap));
                 Response response = new Response.Builder()
                         .request(request)
                         .code(200)
@@ -53,6 +53,7 @@ public class CoreInfoInterceptor implements Interceptor {
         // todo 标识设备的唯一ID
         request = request.newBuilder()
                 .addHeader("Inframe-Client-ID", U.getDeviceUtils().getDeviceID())
+                .addHeader("Inframe-App-Version", U.getAppInfoUtils().getVersionCode() + "")
                 .build();
         // 如果是测试环境的话
         HttpUrl httpUrl = request.url();
@@ -79,17 +80,24 @@ public class CoreInfoInterceptor implements Interceptor {
             long beginTs = System.currentTimeMillis();
             response = chain.proceed(request);
             long duration = System.currentTimeMillis() - beginTs;
-            StatisticsAdapter.recordCalculateEvent("api", "duration", duration,null);
+            StatisticsAdapter.recordCalculateEvent("api", "duration", duration, null);
+            if (response != null && response.code() == 404) {
+                U.getToastUtil().showShort(httpUrl.toString() + " 服务HTTP404");
+            }
         } catch (Exception e) {
             //TODO 增加异常打点
             if (e instanceof SocketTimeoutException) {
                 HashMap map = new HashMap();
                 map.put("url", httpUrl.toString());
                 StatisticsAdapter.recordCountEvent("api", "timeout", map);
-            }else if(e instanceof UnknownHostException){
+            } else if (e instanceof UnknownHostException) {
                 HashMap map = new HashMap();
                 map.put("url", httpUrl.toString());
                 StatisticsAdapter.recordCountEvent("api", "unknownHost", map);
+            } else if (e instanceof HttpException) {
+                if (((HttpException) e).code() == 404) {
+                    U.getToastUtil().showShort(httpUrl.toString() + " 404");
+                }
             }
             throw e;
         }

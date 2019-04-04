@@ -7,6 +7,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
+import com.common.view.ex.ExTextView;
+import com.common.view.ex.NoLeakEditText;
+import com.didichuxing.doraemonkit.DoraemonKit;
 import com.didichuxing.doraemonkit.R;
 import com.didichuxing.doraemonkit.config.LogInfoConfig;
 import com.didichuxing.doraemonkit.ui.base.BaseFragment;
@@ -24,6 +29,9 @@ public class LogInfoSettingFragment extends BaseFragment {
     private static final String TAG = "LogInfoSettingFragment";
     private RecyclerView mSettingList;
     private SettingItemAdapter mSettingItemAdapter;
+
+    NoLeakEditText mIdInputEt;
+    ExTextView mPullLogBtn;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -59,6 +67,15 @@ public class LogInfoSettingFragment extends BaseFragment {
             }
         });
         mSettingList.setAdapter(mSettingItemAdapter);
+
+        mIdInputEt = (NoLeakEditText)this.findViewById(R.id.id_input_et);
+        mPullLogBtn = (ExTextView)this.findViewById(R.id.pull_log_btn);
+        mPullLogBtn.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                DoraemonKit.getExtraInfoProvider().pullLog(mIdInputEt.getText().toString());
+            }
+        });
     }
 
     @Override

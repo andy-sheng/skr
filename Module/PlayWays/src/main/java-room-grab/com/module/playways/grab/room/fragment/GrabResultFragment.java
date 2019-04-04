@@ -1,20 +1,14 @@
 package com.module.playways.grab.room.fragment;
 
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
-import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.share.SharePanel;
 import com.common.core.share.ShareType;
@@ -27,17 +21,20 @@ import com.common.utils.U;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.constans.GameModeType;
-import com.facebook.drawee.view.SimpleDraweeView;
+import com.component.busilib.view.BitmapTextView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
-import com.module.playways.BaseRoomData;
+import com.module.playways.grab.room.GrabResultData;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.model.GrabResultInfoModel;
 import com.module.playways.rank.prepare.model.PrepareData;
+import com.module.playways.rank.room.model.score.ScoreResultModel;
+import com.module.playways.rank.room.model.score.ScoreStateModel;
 import com.module.rank.R;
+import com.zq.level.view.LevelStarProgressBar;
+import com.zq.level.view.NormalLevelView2;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -49,18 +46,18 @@ public class GrabResultFragment extends BaseFragment {
     public final static String TAG = "GrabResultFragment";
 
     GrabRoomData mRoomData;
-    GrabResultInfoModel mGrabResultInfoModel;
+    GrabResultData mGrabResultData;
+    ScoreStateModel mScoreStateModel;
 
     RelativeLayout mSingEndRecord;
     ExRelativeLayout mResultArea;
-    SimpleDraweeView mAvatarIv;
-    ExTextView mNameTv;
-    ImageView mSingNumBg;
-    ImageView mSingNum;
-    TextView mSingWantNum;
-    TextView mSingSelfNum;
-    TextView mSingSucessTv;
-    TextView mSingAboveTv;
+    ExRelativeLayout mGrabResultArea;
+    ExTextView mLevelDescTv;
+    LevelStarProgressBar mLevelProgress;
+    BitmapTextView mSongNum;
+    BitmapTextView mSongEndPer;
+    BitmapTextView mBaodengNum;
+    NormalLevelView2 mLevelView;
     LinearLayout mLlBottomArea;
     ExTextView mTvBack;
     ExTextView mTvAgain;
@@ -75,32 +72,29 @@ public class GrabResultFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-
         mSingEndRecord = (RelativeLayout) mRootView.findViewById(R.id.sing_end_record);
         mResultArea = (ExRelativeLayout) mRootView.findViewById(R.id.result_area);
-        mAvatarIv = (SimpleDraweeView) mRootView.findViewById(R.id.avatar_iv);
-        mNameTv = (ExTextView) mRootView.findViewById(R.id.name_tv);
-        mSingNumBg = (ImageView) mRootView.findViewById(R.id.sing_num_bg);
-        mSingNum = (ImageView) mRootView.findViewById(R.id.sing_num);
-        mSingWantNum = (TextView) mRootView.findViewById(R.id.sing_want_num);
-        mSingSelfNum = (TextView) mRootView.findViewById(R.id.sing_self_num);
-        mSingSucessTv = (TextView) mRootView.findViewById(R.id.sing_sucess_tv);
-        mSingAboveTv = (TextView) mRootView.findViewById(R.id.sing_above_tv);
+        mGrabResultArea = (ExRelativeLayout) mRootView.findViewById(R.id.grab_result_area);
+        mLevelDescTv = (ExTextView) mRootView.findViewById(R.id.level_desc_tv);
+        mLevelProgress = (LevelStarProgressBar) mRootView.findViewById(R.id.level_progress);
+        mSongNum = (BitmapTextView) mRootView.findViewById(R.id.song_num);
+        mSongEndPer = (BitmapTextView) mRootView.findViewById(R.id.song_end_per);
+        mBaodengNum = (BitmapTextView) mRootView.findViewById(R.id.baodeng_num);
+        mLevelView = (NormalLevelView2) mRootView.findViewById(R.id.level_view);
         mLlBottomArea = (LinearLayout) mRootView.findViewById(R.id.ll_bottom_area);
         mTvBack = (ExTextView) mRootView.findViewById(R.id.tv_back);
         mTvAgain = (ExTextView) mRootView.findViewById(R.id.tv_again);
         mTvShare = (ExTextView) mRootView.findViewById(R.id.tv_share);
 
-
-        List<GrabResultInfoModel> list = mRoomData.getResultList();
-        if (list == null || list.size() <= 0) {
+        mGrabResultData = mRoomData.getGrabResultData();
+        if (mGrabResultData == null) {
             /**
              * 游戏结束会由sync或者push触发
              * push触发的话带着结果数据
              */
             syncFromServer();
         } else {
-            bindData(list);
+            bindData();
         }
 
 
@@ -150,36 +144,36 @@ public class GrabResultFragment extends BaseFragment {
     public void destroy() {
         super.destroy();
 //        U.getSoundUtils().release(TAG);
+        mUiHandler.removeCallbacksAndMessages(null);
     }
 
-    private void bindData(List<GrabResultInfoModel> list) {
-        if (list == null || list.size() <= 0) {
-            MyLog.w(TAG, "bindData" + " list = null");
+    private void bindData() {
+        if (mGrabResultData == null) {
+            MyLog.w(TAG, "bindData" + " grabResultData = null");
             return;
         }
-        for (GrabResultInfoModel resultInfoModel : list) {
-            if (resultInfoModel != null && resultInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
-                this.mGrabResultInfoModel = resultInfoModel;
-            }
-        }
 
-        if (mGrabResultInfoModel != null) {
-            AvatarUtils.loadAvatarByUrl(mAvatarIv,
-                    AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance().getAvatar())
-                            .setCircle(true)
-                            .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                            .setBorderColor(U.getColor(R.color.white))
-                            .build());
-            mNameTv.setText(MyUserInfoManager.getInstance().getNickName());
-            Drawable drawable = getNumDrawable(mGrabResultInfoModel.getWholeTimeSingCnt());
-            mSingNum.setImageDrawable(drawable);
-            mSingWantNum.setText(String.valueOf(mGrabResultInfoModel.getWantSingChanceCnt()));
-            mSingSelfNum.setText(String.valueOf(mGrabResultInfoModel.getGetSingChanceCnt()));
-            mSingSucessTv.setText(String.valueOf(mGrabResultInfoModel.getWholeTimeSingRatio() * 100) + "%");
-            mSingAboveTv.setText(String.valueOf(mGrabResultInfoModel.getBeyondSkrerRatio() * 100) + "%");
+        if (mGrabResultData != null) {
+            for (ScoreResultModel scoreResultModel : mGrabResultData.getScoreResultModels()) {
+                if (scoreResultModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                    mScoreStateModel = scoreResultModel.getSeq(3);
+                }
+            }
+
+            if (mScoreStateModel != null && mGrabResultData.getGrabResultInfoModel() != null) {
+                mLevelView.bindData(mScoreStateModel.getMainRanking(), mScoreStateModel.getSubRanking());
+                mLevelDescTv.setText(mScoreStateModel.getRankingDesc());
+                int progress = 0;
+                if (mScoreStateModel.getMaxExp() != 0) {
+                    progress = mScoreStateModel.getCurrExp() * 100 / mScoreStateModel.getMaxExp();
+                }
+                mLevelProgress.setCurProgress(progress);
+                mSongNum.setText(String.valueOf(mGrabResultData.getGrabResultInfoModel().getWholeTimeSingCnt()) + "");
+                mSongEndPer.setText(String.valueOf(mGrabResultData.getGrabResultInfoModel().getWholeTimeSingRatio()) + "");
+                mBaodengNum.setText(String.valueOf(mGrabResultData.getGrabResultInfoModel().getOtherBlightCntTotal()) + "");
+            }
         } else {
-            MyLog.d(TAG, "还去同步了一次");
-            syncFromServer();
+            MyLog.w(TAG, "bindData 数据为空了");
         }
     }
 
@@ -189,14 +183,12 @@ public class GrabResultFragment extends BaseFragment {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
-                    String info = result.getData().getString("resultInfo");
-                    if (!TextUtils.isEmpty(info)) {
-                        GrabResultInfoModel resultInfoModel = JSON.parseObject(info, GrabResultInfoModel.class);
-                        List<GrabResultInfoModel> l = new ArrayList<>();
-                        l.add(resultInfoModel);
-                        if (resultInfoModel != null) {
-                            bindData(l);
-                        }
+                    GrabResultInfoModel resultInfoModel = JSON.parseObject(result.getData().getString("resultInfo"), GrabResultInfoModel.class);
+                    List<ScoreResultModel> scoreResultModels = JSON.parseArray(result.getData().getString("userScoreResult"), ScoreResultModel.class);
+                    if (resultInfoModel != null && scoreResultModels != null) {
+                        mGrabResultData = new GrabResultData(resultInfoModel, scoreResultModels);
+                        mRoomData.setGrabResultData(mGrabResultData);
+                        bindData();
                     } else {
                         MyLog.d(TAG, "syncFromServer" + " info=null");
                     }
@@ -219,42 +211,7 @@ public class GrabResultFragment extends BaseFragment {
         if (getActivity() != null) {
             getActivity().finish();
         }
-        return super.onBackPressed();
-    }
-
-    private Drawable getNumDrawable(int num) {
-        Drawable drawable = null;
-        switch (num) {
-            case 0:
-                drawable = U.getDrawable(R.drawable.zhanji_0);
-                break;
-            case 1:
-                drawable = U.getDrawable(R.drawable.zhanji_1);
-                break;
-            case 2:
-                drawable = U.getDrawable(R.drawable.zhanji_2);
-                break;
-            case 3:
-                drawable = U.getDrawable(R.drawable.zhanji_3);
-                break;
-            case 4:
-                drawable = U.getDrawable(R.drawable.zhanji_4);
-                break;
-            case 5:
-                drawable = U.getDrawable(R.drawable.zhanji_5);
-                break;
-            case 6:
-                drawable = U.getDrawable(R.drawable.zhanji_6);
-                break;
-            case 7:
-                drawable = U.getDrawable(R.drawable.zhanji_7);
-                break;
-            case 8:
-                drawable = U.getDrawable(R.drawable.zhanji_8);
-                break;
-        }
-
-        return drawable;
+        return true;
     }
 
     @Override

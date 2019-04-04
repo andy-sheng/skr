@@ -10,15 +10,12 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
-import com.common.core.userinfo.UserInfoManager;
-import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -124,7 +121,7 @@ public class SearchSongFragment extends BaseFragment {
                             .build());
                 }
             }
-        }, SongSelectAdapter.HAS_FOOTER_SEARCH);
+        }, true);
         mSearchResult.setAdapter(mSongSelectAdapter);
 
         mTitlebar.setListener(new CommonTitleBar.OnTitleBarListener() {

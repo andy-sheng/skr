@@ -83,7 +83,7 @@ public class HomeCorePresenter {
             EventBus.getDefault().unregister(this);
         }
         mView = null;
-        ModuleServiceManager.getInstance().getMsgService().removeUnReadMessageCountChangedObserver();
+        ModuleServiceManager.getInstance().getMsgService().removeUnReadMessageCountChangedObserver(mUnreadICallback);
     }
 
     public void onReject(String text) {

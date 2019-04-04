@@ -17,7 +17,7 @@ import com.module.playways.rank.prepare.model.GameReadyModel;
 import com.module.playways.rank.prepare.model.PrepareData;
 import com.module.playways.rank.prepare.model.ReadyInfoModel;
 import com.module.playways.rank.prepare.view.IMatchSucessView;
-import com.module.playways.rank.room.RoomServerApi;
+import com.module.playways.rank.room.RankRoomServerApi;
 import com.zq.lyrics.model.UrlRes;
 import com.zq.lyrics.utils.ZipUrlResourceManager;
 
@@ -34,7 +34,7 @@ import io.reactivex.annotations.NonNull;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
-import static com.common.rxretrofit.ApiManager.APPLICATION_JSOIN;
+import static com.common.rxretrofit.ApiManager.APPLICATION_JSON;
 import static com.module.playways.rank.msg.event.ExitGameEvent.EXIT_GAME_BEFORE_PLAY;
 
 // 处理匹配成功之后   加入房间  检查房间
@@ -124,11 +124,11 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
      * 退出游戏
      */
     public void exitGame() {
-        RoomServerApi roomServerApi = ApiManager.getInstance().createService(RoomServerApi.class);
+        RankRoomServerApi roomServerApi = ApiManager.getInstance().createService(RankRoomServerApi.class);
         HashMap<String, Object> map = new HashMap<>();
         map.put("gameID", currentGameId);
 
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(roomServerApi.exitGame(body), null);
     }
 
@@ -149,7 +149,7 @@ public class MatchSucessPresenter extends RxLifeCyclePresenter {
         HashMap<String, Object> map = new HashMap<>();
         map.put("gameID", currentGameId);
 
-        RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSOIN), JSON.toJSONString(map));
+        RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(matchServerApi.readyGame(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {

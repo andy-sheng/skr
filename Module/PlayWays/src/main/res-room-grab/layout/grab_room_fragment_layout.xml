@@ -45,6 +45,13 @@
         android:layout_height="@dimen/view_200_dp"
         android:layout_marginTop="0dp" />
 
+    <com.common.view.ex.ExImageView
+        android:id="@+id/practice_flag_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_150_dp"
+        android:src="@drawable/grab_inpractice" />
+
     <!-- 转场的一些卡片-->
     <com.module.playways.grab.room.view.TurnInfoCardView
         android:id="@+id/turn_info_iv"
@@ -156,6 +163,17 @@
         android:layout_alignParentBottom="true"
         android:layout_marginRight="@dimen/view_26_dp"
         android:layout_marginBottom="@dimen/view_79_dp"
+        android:visibility="gone" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/iv_room_manage"
+        android:layout_width="@dimen/view_52_dp"
+        android:layout_height="@dimen/view_52_dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="@dimen/view_26_dp"
+        android:layout_marginBottom="@dimen/view_79_dp"
+        android:background="@drawable/fangzhuzhushou"
         android:visibility="gone" />
 
     <View

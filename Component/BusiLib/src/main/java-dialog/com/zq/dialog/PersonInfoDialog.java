@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.common.base.BaseActivity;
 import com.common.core.userinfo.UserInfoManager;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.component.busilib.R;
@@ -25,14 +26,17 @@ import static com.zq.report.fragment.ReportFragment.REPORT_USER_ID;
 // 个人信息卡片
 public class PersonInfoDialog {
 
-    boolean isReport = false;
+    boolean mIsReport = false;
+    boolean mIsKick = false;
 
     Context mContext;
     DialogPlus mDialogPlus;
 
-    public PersonInfoDialog(Context context, final int userId) {
+    KickListener mKickListener;
+
+    public PersonInfoDialog(Context context, final int userId, boolean showReport, boolean showKick) {
         mContext = context;
-        final PersonInfoDialogView personInfoDialogView = new PersonInfoDialogView(context, userId);
+        final PersonInfoDialogView personInfoDialogView = new PersonInfoDialogView(context, userId, showReport, showKick);
 
         mDialogPlus = DialogPlus.newDialog(mContext)
                 .setContentHolder(new ViewHolder(personInfoDialogView))
@@ -45,13 +49,19 @@ public class PersonInfoDialog {
                     public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
                         if (view.getId() == R.id.report) {
                             // 举报
+                            mIsReport = true;
                             dialog.dismiss();
-                            isReport = true;
-                        } else if (view.getId() == R.id.follow_tv) {
+
+                        } else if (view.getId() == R.id.kick) {
+                            // 踢人
+                            mIsKick = true;
+                            dialog.dismiss();
+                        } else if (view.getId() == R.id.follow_area || view.getId() == R.id.follow_tv) {
                             // 关注
                             if (personInfoDialogView.getUserInfoModel().isFollow() || personInfoDialogView.getUserInfoModel().isFriend()) {
-                                UserInfoManager.getInstance().mateRelation(personInfoDialogView.getUserInfoModel().getUserId(),
-                                        UserInfoManager.RA_UNBUILD, personInfoDialogView.getUserInfoModel().isFriend());
+                                // TODO: 2019/3/28 个人信息卡片不让取关
+//                                UserInfoManager.getInstance().mateRelation(personInfoDialogView.getUserInfoModel().getUserId(),
+//                                        UserInfoManager.RA_UNBUILD, personInfoDialogView.getUserInfoModel().isFriend());
                             } else {
                                 UserInfoManager.getInstance().mateRelation(personInfoDialogView.getUserInfoModel().getUserId(),
                                         UserInfoManager.RA_BUILD, personInfoDialogView.getUserInfoModel().isFriend());
@@ -75,13 +85,24 @@ public class PersonInfoDialog {
                 .setOnDismissListener(new OnDismissListener() {
                     @Override
                     public void onDismiss(@NonNull DialogPlus dialog) {
-                        if (isReport) {
+                        if (mIsReport) {
+                            mIsReport = false;
                             showReportView(userId);
                         }
-                        isReport = false;
+                        if (mIsKick) {
+                            mIsKick = false;
+                            if (mKickListener != null) {
+                                mKickListener.onClickKick(personInfoDialogView.getUserInfoModel());
+                            }
+                        }
+
                     }
                 })
                 .create();
+    }
+
+    public void setListener(KickListener kickListener) {
+        this.mKickListener = kickListener;
     }
 
     public void show() {
@@ -99,8 +120,9 @@ public class PersonInfoDialog {
 
     public void dismiss() {
         if (mDialogPlus != null) {
-            mDialogPlus.dismiss();
+            mDialogPlus.dismiss(false);
         }
+        mKickListener = null;
     }
 
     private void showReportView(int userID) {
@@ -115,6 +137,10 @@ public class PersonInfoDialog {
                         .setEnterAnim(com.component.busilib.R.anim.slide_in_bottom)
                         .setExitAnim(com.component.busilib.R.anim.slide_out_bottom)
                         .build());
+    }
+
+    public interface KickListener {
+        void onClickKick(UserInfoModel userInfoModel);
     }
 
 }

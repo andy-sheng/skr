@@ -9,12 +9,11 @@ import com.common.view.ex.ExTextView;
 
 public class TipsDialogView extends RelativeLayout {
 
+    public ExTextView mTitleTv;
     public ExTextView mMessageTv;
     public ExTextView mOkBtn;
     public ExTextView mConfirmTv;
     public ExTextView mCancelTv;
-
-
 
     private TipsDialogView(Context context) {
         super(context);
@@ -34,9 +33,10 @@ public class TipsDialogView extends RelativeLayout {
     private void init() {
         inflate(getContext(), R.layout.template_tips1_dialog, this);
 
-        mMessageTv = (ExTextView)this.findViewById(R.id.message_tv);
-        mOkBtn = (ExTextView)this.findViewById(R.id.ok_btn);
-        mConfirmTv = (ExTextView)this.findViewById(R.id.confirm_tv);
+        mTitleTv = (ExTextView) this.findViewById(R.id.title_tv);
+        mMessageTv = (ExTextView) this.findViewById(R.id.message_tv);
+        mOkBtn = (ExTextView) this.findViewById(R.id.ok_btn);
+        mConfirmTv = (ExTextView) this.findViewById(R.id.confirm_tv);
         mCancelTv = (ExTextView) this.findViewById(R.id.cancel_tv);
     }
 
@@ -47,6 +47,12 @@ public class TipsDialogView extends RelativeLayout {
 
         public Builder(Context context) {
             tipsDialogView = new TipsDialogView(context);
+        }
+
+        public Builder setTitleTip(CharSequence text) {
+            tipsDialogView.mTitleTv.setText(text);
+            tipsDialogView.mTitleTv.setVisibility(VISIBLE);
+            return this;
         }
 
         public Builder setMessageTip(CharSequence text) {
@@ -61,32 +67,33 @@ public class TipsDialogView extends RelativeLayout {
             return this;
         }
 
-        public Builder setCancelTip(String text){
+        public Builder setCancelTip(String text) {
             tipsDialogView.mCancelTv.setText(text);
             tipsDialogView.mCancelTv.setVisibility(VISIBLE);
             return this;
         }
 
-        public Builder setOkBtnTip(String text){
+        public Builder setOkBtnTip(String text) {
             tipsDialogView.mOkBtn.setText(text);
             tipsDialogView.mOkBtn.setVisibility(VISIBLE);
             return this;
         }
 
-        public Builder setOkBtnClickListener(OnClickListener l){
+        public Builder setOkBtnClickListener(OnClickListener l) {
             tipsDialogView.mOkBtn.setOnClickListener(l);
             return this;
         }
 
-        public Builder setConfirmBtnClickListener(OnClickListener l){
+        public Builder setConfirmBtnClickListener(OnClickListener l) {
             tipsDialogView.mConfirmTv.setOnClickListener(l);
             return this;
         }
 
-        public Builder setCancelBtnClickListener(OnClickListener l){
+        public Builder setCancelBtnClickListener(OnClickListener l) {
             tipsDialogView.mCancelTv.setOnClickListener(l);
             return this;
         }
+
         public TipsDialogView build() {
             return tipsDialogView;
         }

@@ -10,11 +10,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.common.core.account.event.AccountEvent;
 import com.common.core.account.event.VerifyCodeErrorEvent;
 import com.common.core.channel.HostChannelManager;
+import com.common.core.db.UserInfoDBDao;
 import com.common.core.myinfo.Location;
 import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoLocalApi;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.MyUserInfoServerApi;
+import com.common.core.userinfo.UserInfoLocalApi;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -275,7 +277,7 @@ public class UserAccountManager {
                                 UmengStatistics.onProfileSignIn("qq", userAccount.getUid());
                             }
                         } else {
-                            EventBus.getDefault().post(new VerifyCodeErrorEvent(obj.getErrno(), obj.getErrmsg()));
+                            U.getToastUtil().showShort(obj.getErrmsg());
                         }
                     }
                 });
@@ -381,6 +383,9 @@ public class UserAccountManager {
                     }
                     mAccount = null;
                     ApiManager.getInstance().clearCookies();
+                    // 清除pref 清除数据库
+                    U.getPreferenceUtils().clearPreference();
+                    UserInfoLocalApi.deleteAll();
                     UmengStatistics.onProfileSignOff();
                     UmengPush.clearAlias(userId);
                     MyUserInfoManager.getInstance().logoff();
@@ -500,7 +505,12 @@ public class UserAccountManager {
                         MyLog.e(TAG, "getIMToken from Server is null");
                     }
                 } else {
-                    U.getToastUtil().showShort("GET融云token error=" + result.getErrno());
+                    if (result.getErrno() == 8302102) {
+                        U.getToastUtil().showShort("GET融云token失败，测试用户账号超过100限度");
+                    } else {
+                        U.getToastUtil().showShort("GET融云token error=" + result.getErrno());
+                    }
+
                 }
                 if (TextUtils.isEmpty(token)) {
                     mUiHanlder.removeMessages(MSG_DELAY_GET_RC_TOKEN);

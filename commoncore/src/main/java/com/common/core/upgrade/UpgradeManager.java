@@ -19,6 +19,7 @@ import android.view.Gravity;
 
 import com.alibaba.fastjson.JSON;
 import com.common.core.R;
+import com.common.core.global.event.ShowDialogInHomeEvent;
 import com.common.log.MyLog;
 import com.common.provideer.MyFileProvider;
 import com.common.rxretrofit.ApiManager;
@@ -30,6 +31,8 @@ import com.common.utils.HttpUtils;
 import com.common.utils.U;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.List;
@@ -52,7 +55,7 @@ public class UpgradeManager {
     DialogPlus mForceUpgradeDialog;
 
     NormalUpgradeView mNormalUpgradeView;
-    DialogPlus mNarmalUpgradeDialog;
+    DialogPlus mNormalUpgradeDialog;
 
     FinishReceiver mFinishReceiver;
     DownloadChangeObserver mDownloadChangeObserver;
@@ -122,6 +125,18 @@ public class UpgradeManager {
         if (mUpgradeData.getStatus() == UpgradeData.STATUS_INIT) {
             mUpgradeData.setNeedShowDialog(false);
             loadDataFromServer();
+        } else if (mUpgradeData.getStatus() == UpgradeData.STATUS_LOAD_DATA_FROM_SERVER
+                || mUpgradeData.getStatus() == UpgradeData.STATUS_DOWNLOWNED) {
+            UpgradeInfoModel upgradeInfoModel = mUpgradeData.getUpgradeInfoModel();
+            if (upgradeInfoModel != null) {
+                if (upgradeInfoModel.isForceUpdate()) {
+                    if (mForceUpgradeDialog != null) {
+                        if (!mForceUpgradeDialog.isShowing()) {
+                            mForceUpgradeDialog.show();
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -227,7 +242,7 @@ public class UpgradeManager {
     }
 
     private void showNormalUpgradeDialog() {
-        if (mNarmalUpgradeDialog == null) {
+        if (mNormalUpgradeDialog == null) {
             Activity activity = U.getActivityUtils().getTopActivity();
             if (activity != null) {
                 mNormalUpgradeView = new NormalUpgradeView(activity);
@@ -249,7 +264,7 @@ public class UpgradeManager {
                         dimissDialog();
                     }
                 });
-                mNarmalUpgradeDialog = DialogPlus.newDialog(activity)
+                mNormalUpgradeDialog = DialogPlus.newDialog(activity)
                         .setContentHolder(new ViewHolder(mNormalUpgradeView))
                         .setGravity(Gravity.CENTER)
                         .setCancelable(true)
@@ -266,7 +281,11 @@ public class UpgradeManager {
             mUpgradeData.setStatus(UpgradeData.STATUS_DOWNLOWNED);
             mNormalUpgradeView.setAlreadyDownloadTips();
         }
-        mNarmalUpgradeDialog.show();
+        if (U.getActivityUtils().isHomeActivity(U.getActivityUtils().getTopActivity())) {
+            EventBus.getDefault().post(new ShowDialogInHomeEvent(mNormalUpgradeDialog, 1));
+        } else {
+            mNormalUpgradeDialog.show();
+        }
     }
 
     private void showForceUpgradeDialog() {
@@ -311,7 +330,11 @@ public class UpgradeManager {
             mUpgradeData.setStatus(UpgradeData.STATUS_DOWNLOWNED);
             mForceUpgradeView.setAlreadyDownloadTips();
         }
-        mForceUpgradeDialog.show();
+        if (U.getActivityUtils().isHomeActivity(U.getActivityUtils().getTopActivity())) {
+            EventBus.getDefault().post(new ShowDialogInHomeEvent(mForceUpgradeDialog, 1));
+        } else {
+            mForceUpgradeDialog.show();
+        }
     }
 
     private boolean forceDownloadBegin() {
@@ -539,7 +562,9 @@ public class UpgradeManager {
                 int downloaded = cursor.getInt(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
                 //下载文件的总大小
                 int total = cursor.getInt(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
-                ds.progress = downloaded * 100 / total;
+                if(total!=0) {
+                    ds.progress = downloaded * 100 / total;
+                }
                 //下载状态
                 ds.status = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
             }
@@ -581,9 +606,13 @@ public class UpgradeManager {
     private void dimissDialog() {
         if (mForceUpgradeDialog != null) {
             mForceUpgradeDialog.dismiss();
+            mForceUpgradeDialog = null;
+            mForceUpgradeView = null;
         }
-        if (mNarmalUpgradeDialog != null) {
-            mNarmalUpgradeDialog.dismiss();
+        if (mNormalUpgradeDialog != null) {
+            mNormalUpgradeDialog.dismiss();
+            mNormalUpgradeDialog = null;
+            mNormalUpgradeView = null;
         }
     }
 

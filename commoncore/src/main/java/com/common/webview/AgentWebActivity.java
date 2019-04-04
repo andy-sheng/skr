@@ -1,17 +1,24 @@
 package com.common.webview;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.ConsoleMessage;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
+import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
@@ -23,6 +30,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.base.R;
+import com.common.core.BuildConfig;
 import com.common.rxretrofit.cookie.persistence.SharedPrefsCookiePersistor;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
@@ -35,15 +43,18 @@ import com.just.agentweb.MiddlewareWebClientBase;
 import com.module.RouterConstants;
 import com.umeng.socialize.UMShareAPI;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import okhttp3.Cookie;
 
+import static android.os.Build.VERSION_CODES.M;
 import static com.common.core.scheme.SchemeConstants.SCHEME_INFRAMESKER;
 import static com.common.view.titlebar.CommonTitleBar.ACTION_LEFT_TEXT;
 
 
-public class AgentWebActivity extends BaseActivity {
+public class AgentWebActivity extends CameraAdapWebActivity {
 
     protected AgentWeb mAgentWeb;
     private AgentWebUIControllerImplBase mAgentWebUIController;
@@ -59,8 +70,101 @@ public class AgentWebActivity extends BaseActivity {
 
     JsRegister mJsRegister;
 
+    protected WebChromeClient mWebChromeClient = mWebChromeClient = new WebChromeClient() {
+        // Work on Android 4.4.2 Zenfone 5
+        public void showFileChooser(ValueCallback<String[]> filePathCallback,
+                                    String acceptType, boolean paramBoolean){
 
-    private WebChromeClient mWebChromeClient = new WebChromeClient() {
+
+
+
+            // TODO Auto-generated method stub
+        }
+        //for  Android 4.0+
+        public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType, String capture) {
+
+            if (nFilePathCallback != null) {
+                nFilePathCallback.onReceiveValue(null);
+            }
+            nFilePathCallback = uploadMsg;
+            if ("image/*".equals(acceptType)) {
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                    File photoFile = null;
+                    try {
+                        photoFile = createImageFile();
+                        takePictureIntent.putExtra("PhotoPath", mCameraPhotoPath);
+                    } catch (IOException ex) {
+                        Log.e("TAG", "Unable to create Image File", ex);
+                    }
+                    if (photoFile != null) {
+                        mCameraPhotoPath = "file:" + photoFile.getAbsolutePath();
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                                Uri.fromFile(photoFile));
+                    } else {
+                        takePictureIntent = null;
+                    }
+                }
+                startActivityForResult(takePictureIntent, INPUT_FILE_REQUEST_CODE);
+            } else if ("video/*".equals(acceptType)) {
+                Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+                if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivityForResult(takeVideoIntent, INPUT_VIDEO_CODE);
+                }
+            }
+        }
+        @SuppressLint("NewApi")
+        @Override
+        public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback,
+                                         WebChromeClient.FileChooserParams fileChooserParams) {
+            if (mFilePathCallback != null) {
+                mFilePathCallback.onReceiveValue(null);
+            }
+            mFilePathCallback = filePathCallback;
+            String[] acceptTypes = fileChooserParams.getAcceptTypes();
+            if (acceptTypes[0].equals("image/*")) {
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                    File photoFile = null;
+                    try {
+                        photoFile = createImageFile();
+                        takePictureIntent.putExtra("PhotoPath", mCameraPhotoPath);
+                    } catch (IOException ex) {
+                        Log.e("TAG", "Unable to create Image File", ex);
+                    }
+                    //适配7.0
+                    if(Build.VERSION.SDK_INT > M) {
+                        if (photoFile != null) {
+                            photoURI = FileProvider.getUriForFile(AgentWebActivity.this,
+                                    BuildConfig.APPLICATION_ID+".fileprovider", photoFile);
+                            takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                        }
+                    }else{
+                        if (photoFile != null) {
+                            mCameraPhotoPath = "file:" + photoFile.getAbsolutePath();
+                            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                                    Uri.fromFile(photoFile));
+                        } else {
+                            takePictureIntent = null;
+                        }
+                    }
+                }
+                startActivityForResult(takePictureIntent, INPUT_FILE_REQUEST_CODE);
+            } else if (acceptTypes[0].equals("video/*")) {
+                Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+                if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivityForResult(takeVideoIntent, INPUT_VIDEO_CODE);
+                }
+            }
+            return true;
+        }
+
+        @Override
+        public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+            return true;
+        }
+
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             //do you work
@@ -86,6 +190,7 @@ public class AgentWebActivity extends BaseActivity {
     public void initData(@Nullable Bundle savedInstanceState) {
         mTitlebar = (CommonTitleBar) this.findViewById(R.id.titlebar);
         mContentContainer = (RelativeLayout) this.findViewById(R.id.content_container);
+        mBridgeWebView = new BridgeWebView(this);
         buildAgentWeb();
     }
 
@@ -104,7 +209,6 @@ public class AgentWebActivity extends BaseActivity {
         ErrorLayoutEntity mErrorLayoutEntity = getErrorLayoutEntity();
         String url = getIntent().getStringExtra("url");
 
-        mBridgeWebView = new BridgeWebView(this);
         BridgeWebViewClient mBridgeWebViewClient = new BridgeWebViewClient(mBridgeWebView) {
             @Override
             public void onPageFinished(WebView view, String url) {
@@ -233,9 +337,9 @@ public class AgentWebActivity extends BaseActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(U.app()).onActivityResult(requestCode, resultCode, data);
     }
 
     protected @NonNull

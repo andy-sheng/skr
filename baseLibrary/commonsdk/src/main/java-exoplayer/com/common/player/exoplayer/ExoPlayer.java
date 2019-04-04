@@ -151,6 +151,11 @@ public class ExoPlayer implements IPlayer {
 
                         break;
                     case com.google.android.exoplayer2.ExoPlayer.STATE_READY:
+                        if (mCallback != null) {
+                            mCallback.onPrepared();
+                        } else {
+                            mPreparedFlag = true;
+                        }
                         break;
                     default:
                         break;
@@ -251,11 +256,6 @@ public class ExoPlayer implements IPlayer {
             @Override
             public void onRenderedFirstFrame(Surface surface) {
                 MyLog.d(TAG, "onRenderedFirstFrame" + " surface=" + surface);
-                if (mCallback != null) {
-                    mCallback.onPrepared();
-                } else {
-                    mPreparedFlag = true;
-                }
             }
 
             @Override

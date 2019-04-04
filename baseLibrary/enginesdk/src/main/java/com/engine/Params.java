@@ -77,18 +77,27 @@ public class Params implements Serializable {
     private int audioMixingVolume = 50; // 混音音量 0-100，默认是100
     private boolean enableInEarMonitoring = false;// 耳返
     private int earMonitoringVolume = 80; // 耳返音量
-    private boolean allRemoteAudioStreamsMute = false;// 禁其他音频流
+
 
     private HashMap<Integer, Integer> localVoiceReverb = new HashMap<>(); // 存混响参数
-    private boolean localAudioStreamMute = false; // 本地音频流禁止
+
+    @JSONField(serialize=false)
     private boolean cameraTorchOn = false; // 闪光灯常亮
-    private boolean localVideoStreamMute = false;// 本地视频流禁止
-    private boolean allRemoteVideoStreamsMute = false;// 拒接所有其他视频流
+
     private int playbackSignalVolume = 100;// 0-400 默认100，最多放大4倍
     private int recordingSignalVolume = 200;// 0-400 默认100，最多放大4倍
     private int selfUid; // 本人在引擎中的id
     private AudioEffect styleEnum = AudioEffect.none;// 混响style
     private boolean enableSpeakerphone = false;// 开启扬声器
+
+    @JSONField(serialize=false)
+    private boolean allRemoteAudioStreamsMute = false;// 禁其他音频流
+    @JSONField(serialize=false)
+    private boolean localAudioStreamMute = false; // 本地音频流禁止
+    @JSONField(serialize=false)
+    private boolean localVideoStreamMute = false;// 本地视频流禁止
+    @JSONField(serialize=false)
+    private boolean allRemoteVideoStreamsMute = false;// 拒接所有其他视频流
 
     @JSONField(serialize=false)
     private String mMixMusicFilePath;// 伴奏路径

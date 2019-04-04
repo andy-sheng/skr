@@ -14,6 +14,7 @@ import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 
 import com.jakewharton.rxbinding2.view.RxView;
+import com.module.playways.grab.room.event.GrabWantInviteEvent;
 import com.module.playways.grab.room.event.ShowPersonCardEvent;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 
@@ -34,13 +35,16 @@ public class GrabTopItemView extends RelativeLayout {
     public BaseImageView mAvatarIv;
     public ExImageView mFlagIv;
     public PlayerInfoModel mPlayerInfoModel;
-    AnimationDrawable mFlickerAnim;
-
-    public ExTextView mLeaveIv;
+    public AnimationDrawable mFlickerAnim;
+    public ExTextView mInviteTv;
+    public ExImageView mOwnerIconIv;
 
     public boolean mShowEmptySeat = false;
 
     int mMode = MODE_GRAB;
+    private boolean mCanShowInviteWhenEmpty = false; // 能否显示邀请按钮
+
+    private boolean mLast = false; // 是否是最后一个
 
     public GrabTopItemView(Context context) {
         super(context);
@@ -62,15 +66,20 @@ public class GrabTopItemView extends RelativeLayout {
         mCircleAnimationView = (CircleAnimationView) this.findViewById(R.id.circle_animation_view);
         mAvatarIv = (BaseImageView) this.findViewById(R.id.avatar_iv);
         mFlagIv = (ExImageView) this.findViewById(R.id.flag_iv);
-        mLeaveIv = (ExTextView) findViewById(R.id.leave_iv);
+        mInviteTv = (ExTextView) findViewById(R.id.invite_tv);
+        mOwnerIconIv = findViewById(R.id.owner_icon_iv);
 
         RxView.clicks(mAvatarIv)
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) {
-                        if (mPlayerInfoModel != null && mPlayerInfoModel.getUserInfo() != null) {
-                            if (!mShowEmptySeat) {
-                                EventBus.getDefault().post(new ShowPersonCardEvent(mPlayerInfoModel.getUserInfo().getUserId()));
+                        if (mShowEmptySeat && mCanShowInviteWhenEmpty) {
+                            EventBus.getDefault().post(new GrabWantInviteEvent());
+                        } else {
+                            if (mPlayerInfoModel != null && mPlayerInfoModel.getUserInfo() != null) {
+                                if (!mShowEmptySeat) {
+                                    EventBus.getDefault().post(new ShowPersonCardEvent(mPlayerInfoModel.getUserInfo().getUserId()));
+                                }
                             }
                         }
                     }
@@ -115,7 +124,7 @@ public class GrabTopItemView extends RelativeLayout {
         }
     }
 
-    public void bindData(PlayerInfoModel userInfoModel) {
+    public void bindData(PlayerInfoModel userInfoModel, boolean isOwner) {
         if (userInfoModel == null) {
             return;
         }
@@ -129,21 +138,32 @@ public class GrabTopItemView extends RelativeLayout {
         );
         mShowEmptySeat = false;
 
-//        if (mPlayerInfoModel.isOnline()) {
-//            mLeaveIv.setVisibility(GONE);
-//            mFlagIv.setVisibility(VISIBLE);
-//        } else {
-//            mLeaveIv.setVisibility(VISIBLE);
-//            mFlagIv.setVisibility(GONE);
-//        }
-        mLeaveIv.setVisibility(GONE);
+        mInviteTv.setVisibility(GONE);
         mFlagIv.setVisibility(GONE);
         mCircleAnimationView.setVisibility(GONE);
+        if (isOwner) {
+            mOwnerIconIv.setVisibility(VISIBLE);
+        } else {
+            mOwnerIconIv.setVisibility(GONE);
+        }
     }
 
     //占位的View
     public void setToPlaceHolder() {
-        mAvatarIv.setImageDrawable(U.getDrawable(R.drawable.guanzhong_kongwei));
+        if (mCanShowInviteWhenEmpty) {
+            mAvatarIv.setImageDrawable(U.getDrawable(R.drawable.grab_fangzhu_yaoqing));
+            mInviteTv.setVisibility(VISIBLE);
+            if (mLast) {
+                EventBus.getDefault().post(new InviteBtnVisibleEvent(true));
+            }
+        } else {
+            mAvatarIv.setImageDrawable(U.getDrawable(R.drawable.guanzhong_kongwei));
+            mInviteTv.setVisibility(GONE);
+            if (mLast) {
+                EventBus.getDefault().post(new InviteBtnVisibleEvent(false));
+            }
+        }
+        mOwnerIconIv.setVisibility(GONE);
         mShowEmptySeat = true;
     }
 
@@ -201,22 +221,7 @@ public class GrabTopItemView extends RelativeLayout {
     }
 
     public void setGrap(boolean grap) {
-        MyLog.d(TAG, "setGrap" + " grap=" + grap);
-//        if (!mPlayerInfoModel.isOnline()) {
-//            mLeaveIv.setVisibility(VISIBLE);
-//            mFlagIv.setVisibility(GONE);
-//        } else {
-//            if (grap) {
-//                mFlagIv.setVisibility(VISIBLE);
-//                LayoutParams lp = (LayoutParams) mFlagIv.getLayoutParams();
-//                lp.topMargin = -U.getDisplayUtils().dip2px(10);
-//                mFlagIv.setLayoutParams(lp);
-//                mFlagIv.setImageResource(R.drawable.xiangchang_flag);
-//            } else {
-//                mFlagIv.setVisibility(GONE);
-//            }
-//        }
-
+//        MyLog.d(TAG, "setGrap" + " grap=" + grap);
         if (grap) {
             mFlagIv.setVisibility(VISIBLE);
             LayoutParams lp = (LayoutParams) mFlagIv.getLayoutParams();
@@ -230,21 +235,6 @@ public class GrabTopItemView extends RelativeLayout {
 
     public void setLight(boolean on) {
         MyLog.d(TAG, "setLight" + " on=" + on);
-//        if (!mPlayerInfoModel.isOnline()) {
-//            mLeaveIv.setVisibility(VISIBLE);
-//            mFlagIv.setVisibility(GONE);
-//        } else {
-//            mFlagIv.setVisibility(VISIBLE);
-//            LayoutParams lp = (LayoutParams) mFlagIv.getLayoutParams();
-//            lp.topMargin = -U.getDisplayUtils().dip2px(20);
-//            mFlagIv.setLayoutParams(lp);
-//            if (on) {
-//                mFlagIv.setImageResource(R.drawable.liangdeng);
-//            } else {
-//                mFlagIv.setImageResource(R.drawable.miedeng);
-//            }
-//        }
-
         mFlagIv.setVisibility(VISIBLE);
         LayoutParams lp = (LayoutParams) mFlagIv.getLayoutParams();
         lp.topMargin = -U.getDisplayUtils().dip2px(20);
@@ -262,5 +252,21 @@ public class GrabTopItemView extends RelativeLayout {
 
     public PlayerInfoModel getPlayerInfoModel() {
         return mPlayerInfoModel;
+    }
+
+    public void setCanShowInviteWhenEmpty(boolean canShowInviteWhenEmpty) {
+        mCanShowInviteWhenEmpty = canShowInviteWhenEmpty;
+    }
+
+    public void setLast(boolean last) {
+        mLast = last;
+    }
+
+    public static class InviteBtnVisibleEvent {
+        boolean visiable;
+
+        public InviteBtnVisibleEvent(boolean visiable) {
+            this.visiable = visiable;
+        }
     }
 }

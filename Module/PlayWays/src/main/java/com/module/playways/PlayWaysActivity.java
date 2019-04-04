@@ -6,25 +6,15 @@ import android.support.annotation.Nullable;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
-import com.common.base.FragmentDataListener;
 import com.common.log.MyLog;
-import com.common.mvp.Presenter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.component.busilib.constans.GameModeType;
 import com.engine.EngineManager;
 import com.module.RouterConstants;
-import com.module.playways.event.FinishPlayWayActivityEvent;
-import com.module.playways.grab.songselect.SpecialSelectFragment;
-import com.module.playways.rank.room.event.InputBoardEvent;
-import com.module.rank.R;
-import com.module.playways.rank.room.fragment.PkRoomFragment;
 import com.module.playways.rank.song.fragment.SongSelectFragment;
-
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
+import com.module.rank.R;
 
 @Route(path = RouterConstants.ACTIVITY_PLAY_WAYS)
 public class PlayWaysActivity extends BaseActivity {
@@ -79,12 +69,12 @@ public class PlayWaysActivity extends BaseActivity {
                         .build());
             }
         } else if (gameType == GameModeType.GAME_MODE_GRAB) {
-            mainActContainer.setBackground(null);
-            // 一唱到底抢唱模式,
-            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, SpecialSelectFragment.class)
-                    .setAddToBackStack(false)
-                    .setHasAnimation(false)
-                    .build());
+//            mainActContainer.setBackground(null);
+//            // 一唱到底抢唱模式,
+//            U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(this, GrabSelectFragment.class)
+//                    .setAddToBackStack(false)
+//                    .setHasAnimation(false)
+//                    .build());
         } else {
             U.getToastUtil().showShort("该游戏模式已经下线 mode=" + gameType);
             finish();
@@ -98,14 +88,9 @@ public class PlayWaysActivity extends BaseActivity {
         EngineManager.getInstance().destroy("prepare");
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(FinishPlayWayActivityEvent event) {
-        finish();
-    }
-
     @Override
     public boolean useEventBus() {
-        return true;
+        return false;
     }
 
     @Override

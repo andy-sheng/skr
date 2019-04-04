@@ -45,8 +45,8 @@ public class RongMsgServiceImpl implements IMsgService {
     }
 
     @Override
-    public void removeUnReadMessageCountChangedObserver() {
-        RongMsgManager.getInstance().removeUnReadMessageCountChangedObserver();
+    public void removeUnReadMessageCountChangedObserver(ICallback callback) {
+        RongMsgManager.getInstance().removeUnReadMessageCountChangedObserver(callback);
     }
 
     @Override

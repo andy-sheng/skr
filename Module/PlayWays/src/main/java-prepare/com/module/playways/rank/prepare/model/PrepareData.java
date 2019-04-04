@@ -24,6 +24,7 @@ public class PrepareData implements Serializable {
     private RankGameConfigModel mGameConfigModel;// 游戏配置
 
     private JoinGrabRoomRspModel mGrabCurGameStateModel;
+    private String mAgoraToken;
 
     public JoinGrabRoomRspModel getJoinGrabRoomRspModel() {
         return mGrabCurGameStateModel;
@@ -131,5 +132,13 @@ public class PrepareData implements Serializable {
 
     public void setGameConfigModel(RankGameConfigModel gameConfigModel) {
         mGameConfigModel = gameConfigModel;
+    }
+
+    public void setAgoraToken(String agoraToken) {
+        mAgoraToken = agoraToken;
+    }
+
+    public String getAgoraToken() {
+        return mAgoraToken;
     }
 }

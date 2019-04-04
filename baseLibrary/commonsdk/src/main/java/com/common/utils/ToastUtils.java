@@ -27,6 +27,9 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.common.base.R;
+import com.common.log.MyLog;
+
 import java.lang.reflect.Field;
 
 /**
@@ -38,6 +41,10 @@ import java.lang.reflect.Field;
  * </pre>
  */
 public final class ToastUtils {
+
+    public final static String TAG = "ToastUtils";
+
+    static final boolean LOG_OPEN = false;
 
     private static final int COLOR_DEFAULT = 0xFEFFFFFF;
     private static final Handler HANDLER = new Handler(Looper.getMainLooper());
@@ -111,36 +118,16 @@ public final class ToastUtils {
      * @param text The text.
      */
     public static void showShort(final CharSequence text) {
-        show(text == null ? NULL : text, Toast.LENGTH_SHORT);
+        show(text == null ? NULL : text, Toast.LENGTH_SHORT, 0);
     }
 
     /**
      * Show the toast for a short period of time.
      *
-     * @param resId The resource id for text.
+     * @param text The text.
      */
-    public static void showShort(@StringRes final int resId) {
-        show(resId, Toast.LENGTH_SHORT);
-    }
-
-    /**
-     * Show the toast for a short period of time.
-     *
-     * @param resId The resource id for text.
-     * @param args  The args.
-     */
-    public static void showShort(@StringRes final int resId, final Object... args) {
-        show(resId, Toast.LENGTH_SHORT, args);
-    }
-
-    /**
-     * Show the toast for a short period of time.
-     *
-     * @param format The format.
-     * @param args   The args.
-     */
-    public static void showShort(final String format, final Object... args) {
-        show(format, Toast.LENGTH_SHORT, args);
+    public static void showShort(final CharSequence text, int priority) {
+        show(text == null ? NULL : text, Toast.LENGTH_SHORT, priority);
     }
 
     /**
@@ -149,58 +136,21 @@ public final class ToastUtils {
      * @param text The text.
      */
     public static void showLong(final CharSequence text) {
-        show(text == null ? NULL : text, Toast.LENGTH_LONG);
+        show(text == null ? NULL : text, Toast.LENGTH_LONG, 0);
     }
 
-    /**
-     * Show the toast for a long period of time.
-     *
-     * @param resId The resource id for text.
-     */
-    public static void showLong(@StringRes final int resId) {
-        show(resId, Toast.LENGTH_LONG);
+    public void showSkrCustomShort(View view) {
+        if (view == null) {
+            return;
+        }
+        show(view, Toast.LENGTH_SHORT, 1, Gravity.CENTER);
     }
 
-    /**
-     * Show the toast for a long period of time.
-     *
-     * @param resId The resource id for text.
-     * @param args  The args.
-     */
-    public static void showLong(@StringRes final int resId, final Object... args) {
-        show(resId, Toast.LENGTH_LONG, args);
-    }
-
-    /**
-     * Show the toast for a long period of time.
-     *
-     * @param format The format.
-     * @param args   The args.
-     */
-    public static void showLong(final String format, final Object... args) {
-        show(format, Toast.LENGTH_LONG, args);
-    }
-
-    /**
-     * Show custom toast for a short period of time.
-     *
-     * @param layoutId ID for an XML layout resource to load.
-     */
-    public static View showCustomShort(@LayoutRes final int layoutId) {
-        final View view = getView(layoutId);
-        show(view, Toast.LENGTH_SHORT);
-        return view;
-    }
-
-    /**
-     * Show custom toast for a long period of time.
-     *
-     * @param layoutId ID for an XML layout resource to load.
-     */
-    public static View showCustomLong(@LayoutRes final int layoutId) {
-        final View view = getView(layoutId);
-        show(view, Toast.LENGTH_LONG);
-        return view;
+    public void showSkrCustomLong(View view) {
+        if (view == null) {
+            return;
+        }
+        show(view, Toast.LENGTH_LONG, 1, Gravity.CENTER);
     }
 
     /**
@@ -212,46 +162,36 @@ public final class ToastUtils {
         }
     }
 
-    private static void show(final int resId, final int duration) {
-        try {
-            CharSequence text = U.app().getResources().getText(resId);
-            show(text, duration);
-        } catch (Exception ignore) {
-            show(String.valueOf(resId), duration);
-        }
-    }
-
-    private static void show(final int resId, final int duration, final Object... args) {
-        try {
-            CharSequence text = U.app().getResources().getText(resId);
-            String format = String.format(text.toString(), args);
-            show(format, duration);
-        } catch (Exception ignore) {
-            show(String.valueOf(resId), duration);
-        }
-    }
-
-    private static void show(final String format, final int duration, final Object... args) {
-        String text;
-        if (format == null) {
-            text = NULL;
-        } else {
-            text = String.format(format, args);
-            if (text == null) {
-                text = NULL;
-            }
-        }
-        show(text, duration);
-    }
-
-    private static void show(final CharSequence text, final int duration) {
+    private static void show(final CharSequence text, final int duration, int priority) {
         HANDLER.post(new Runnable() {
             @SuppressLint("ShowToast")
             @Override
             public void run() {
+                if (iToast != null && iToast.getView() != null) {
+                    Object obj = iToast.getView().getTag(R.id.toast_priority);
+                    int p = 0;
+                    if (obj != null) {
+                        p = (int) obj;
+                    }
+                    boolean shown = iToast.getView().isShown();
+                    long addTs = (long) iToast.getView().getTag(R.id.toast_add_ts);
+                    boolean ganggang = addTs > System.currentTimeMillis() - 1000;
+                    if (LOG_OPEN) {
+                        MyLog.d(TAG, "priority=" + priority + " p=" + p + " text=" + text + " shown=" + shown + " ganggang=" + ganggang);
+                    }
+                    if (priority < p && (shown || ganggang)) {
+                        // 优先级不如当前的view 并且 当前 view 显示 或者 刚刚添加
+                        if (LOG_OPEN) {
+                            MyLog.d(TAG, "取消当前");
+                        }
+                        return;
+                    }
+                }
                 cancel();
                 iToast = ToastFactory.makeToast(U.app(), text, duration);
                 final TextView tvMessage = iToast.getView().findViewById(android.R.id.message);
+                iToast.getView().setTag(R.id.toast_priority, priority);
+                iToast.getView().setTag(R.id.toast_add_ts, System.currentTimeMillis());
                 if (sMsgColor != COLOR_DEFAULT) {
                     tvMessage.setTextColor(sMsgColor);
                 }
@@ -267,16 +207,38 @@ public final class ToastUtils {
         });
     }
 
-    private static void show(final View view, final int duration) {
+    private static void show(final View view, final int duration, int priority, int gravity) {
         HANDLER.post(new Runnable() {
             @Override
             public void run() {
+                if (iToast != null && iToast.getView() != null) {
+                    Object obj = iToast.getView().getTag(R.id.toast_priority);
+                    int p = 0;
+                    if (obj != null) {
+                        p = (int) obj;
+                    }
+                    boolean shown = iToast.getView().isShown();
+                    long addTs = (long) iToast.getView().getTag(R.id.toast_add_ts);
+                    boolean ganggang = addTs > System.currentTimeMillis() - 1000;
+                    if (LOG_OPEN) {
+                        MyLog.d(TAG, "priority=" + priority + " p=" + p + " text=" + view + " shown=" + shown + " ganggang=" + ganggang);
+                    }
+                    if (priority < p && (shown || ganggang)) {
+                        // 优先级不如当前的view 并且 当前 view 显示 或者 刚刚添加
+                        if (LOG_OPEN) {
+                            MyLog.d(TAG, "取消当前");
+                        }
+                        return;
+                    }
+                }
                 cancel();
                 iToast = ToastFactory.newToast(U.app());
                 iToast.setView(view);
+                iToast.getView().setTag(R.id.toast_priority, priority);
+                iToast.getView().setTag(R.id.toast_add_ts, System.currentTimeMillis());
                 iToast.setDuration(duration);
-                if (sGravity != -1 || sXOffset != -1 || sYOffset != -1) {
-                    iToast.setGravity(sGravity, sXOffset, sYOffset);
+                if (gravity != -1) {
+                    iToast.setGravity(gravity, 0, 0);
                 }
                 setBg();
                 iToast.show();
@@ -284,20 +246,13 @@ public final class ToastUtils {
         });
     }
 
-    public void showSkrCustomShort(View view) {
-        if (view == null) {
-            return;
-        }
-        setGravity(Gravity.CENTER, 0, 0);
-        show(view, Toast.LENGTH_SHORT);
-    }
 
-    public void showSkrCustomLong(View view) {
-        if (view == null) {
-            return;
-        }
-        setGravity(Gravity.CENTER, 0, 0);
-        show(view, Toast.LENGTH_LONG);
+    public IToast createToast(View view) {
+        IToast iToast = ToastFactory.newToast(U.app());
+        iToast.setView(view);
+        iToast.setDuration(-1);
+        iToast.setGravity(Gravity.CENTER, 0, 0);
+        return iToast;
     }
 
     private static void setBg() {
@@ -502,7 +457,6 @@ public final class ToastUtils {
                     mWM.addView(mView, mParams);
                 }
             } catch (Exception ignored) { /**/ }
-
             HANDLER.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -539,7 +493,10 @@ public final class ToastUtils {
 
         @Override
         public View getView() {
-            return mToast.getView();
+            if (mToast != null) {
+                return mToast.getView();
+            }
+            return null;
         }
 
         @Override
@@ -563,7 +520,7 @@ public final class ToastUtils {
         }
     }
 
-    interface IToast {
+    public interface IToast {
 
         void show();
 

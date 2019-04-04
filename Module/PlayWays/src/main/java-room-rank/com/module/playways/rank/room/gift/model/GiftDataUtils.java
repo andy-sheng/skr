@@ -1,8 +1,5 @@
 package com.module.playways.rank.room.gift.model;
 
-import com.module.playways.rank.prepare.model.PlayerInfoModel;
-import com.zq.live.proto.Room.PlayerInfo;
-
 public class GiftDataUtils {
 
     public static boolean sameContinueId(GiftPlayModel model1, GiftPlayModel model2) {

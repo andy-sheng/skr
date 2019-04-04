@@ -18,25 +18,19 @@ import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
-import com.common.core.myinfo.event.MyUserInfoEvent;
-import com.common.core.userinfo.UserInfoManager;
 import com.common.log.MyLog;
-import com.common.utils.FragmentUtils;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
 import com.dialog.view.TipsDialogView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.home.R;
-import com.module.home.updateinfo.EditInfoActivity;
 import com.module.home.updateinfo.UploadAccountInfoActivity;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
-import com.zq.live.proto.Common.ESex;
-
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -47,9 +41,9 @@ import io.reactivex.functions.Consumer;
 
 public class EditInfoAgeFragment extends BaseFragment {
 
-    boolean isUpload = false; //当前是否是完善个人资料
-    String uploadNickname;    //完善资料的昵称
-    int uploadSex;            // 未知、非法参数
+    boolean mIsUpload = false; //当前是否是完善个人资料
+    String mUploadNickname;    //完善资料的昵称
+    int mUploadSex;            // 未知、非法参数
 
 
     RelativeLayout mMainActContainer;
@@ -71,40 +65,32 @@ public class EditInfoAgeFragment extends BaseFragment {
     public void initData(@Nullable Bundle savedInstanceState) {
         mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
         mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
-        mDivider = (View) mRootView.findViewById(R.id.divider);
         mFrameLayout = (FrameLayout) mRootView.findViewById(R.id.frame_layout);
         mCompleteTv = (ExTextView) mRootView.findViewById(R.id.complete_tv);
 
         initTimePicker();
 
-        RxView.clicks(mTitlebar.getLeftTextView())
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-//                        U.getSoundUtils().play(EditInfoActivity.TAG, R.raw.normal_back, 500);
-                        U.getFragmentUtils().popFragment(EditInfoAgeFragment.this);
-                    }
-                });
+        mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+//                U.getSoundUtils().play(EditInfoActivity.TAG, R.raw.normal_back, 500);
+                U.getFragmentUtils().popFragment(EditInfoAgeFragment.this);
+            }
+        });
 
-        RxView.clicks(mTitlebar.getRightTextView())
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        pvCustomLunar.returnData();
-                    }
-                });
+        mTitlebar.getRightTextView().setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                pvCustomLunar.returnData();
+            }
+        });
 
-        RxView.clicks(mCompleteTv)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        pvCustomLunar.returnData();
-                    }
-                });
-
+        mCompleteTv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                pvCustomLunar.returnData();
+            }
+        });
 
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -114,16 +100,15 @@ public class EditInfoAgeFragment extends BaseFragment {
             mTitlebar.getCenterTextView().setText("完善个人信息");
             mTitlebar.setStatusBarColor(Color.parseColor("#F9F4F1"));
             mTitlebar.setTitleBarColor(Color.parseColor("#F9F4F1"));
-            mDivider.setBackgroundColor(Color.parseColor("#F9F4F1"));
             mTitlebar.getCenterTextView().setTextColor(Color.parseColor("#0C2275"));
             mTitlebar.getRightTextView().setTextSize(16);
             mTitlebar.getRightTextView().setTextColor(Color.parseColor("#0C2275"));
             mTitlebar.getRightTextView().setClickable(false);
 
             mCompleteTv.setVisibility(View.VISIBLE);
-            isUpload = bundle.getBoolean(UploadAccountInfoActivity.BUNDLE_IS_UPLOAD);
-            uploadNickname = bundle.getString(UploadAccountInfoActivity.BUNDLE_UPLOAD_NICKNAME);
-            uploadSex = bundle.getInt(UploadAccountInfoActivity.BUNDLE_UPLOAD_SEX);
+            mIsUpload = bundle.getBoolean(UploadAccountInfoActivity.BUNDLE_IS_UPLOAD);
+            mUploadNickname = bundle.getString(UploadAccountInfoActivity.BUNDLE_UPLOAD_NICKNAME);
+            mUploadSex = bundle.getInt(UploadAccountInfoActivity.BUNDLE_UPLOAD_SEX);
         }
     }
 
@@ -131,7 +116,7 @@ public class EditInfoAgeFragment extends BaseFragment {
         String birthday = MyUserInfoManager.getInstance().getMyUserInfo().getBirthday();
         Calendar selectedDate = Calendar.getInstance();//系统当前时间
         if (TextUtils.isEmpty(birthday)) {
-            selectedDate.set(2000, 11,00);
+            selectedDate.set(2000, 11, 00);
         } else {
             String[] strings = birthday.split("-");
             int year = Integer.valueOf(strings[0]);
@@ -152,17 +137,18 @@ public class EditInfoAgeFragment extends BaseFragment {
                     U.getToastUtil().showShort("当前选择的出生年月无效");
                     return;
                 }
-                if (isUpload) {
+                if (mIsUpload) {
                     // 上传个人信息
                     String bir = U.getDateTimeUtils().formatSpecailDateString(date);
                     MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
-                            .setNickName(uploadNickname).setSex(uploadSex).setBirthday(bir)
+                            .setNickName(mUploadNickname).setSex(mUploadSex).setBirthday(bir)
                             .build(), true, true, new MyUserInfoManager.ServerCallback() {
                         @Override
                         public void onSucess() {
                             if (getActivity() != null) {
                                 getActivity().finish();
                             }
+                            StatisticsAdapter.recordCountEvent("signup", "success", null);
                         }
 
                         @Override
@@ -293,6 +279,12 @@ public class EditInfoAgeFragment extends BaseFragment {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        StatisticsAdapter.recordCountEvent("signup", "age_expose", null);
     }
 
     @Override

@@ -22,7 +22,6 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.permission.SkrLocationPermission;
 import com.common.core.userinfo.model.RankInfoModel;
-import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.model.UserRankModel;
 import com.common.utils.FragmentUtils;
 import com.common.utils.LbsUtils;
@@ -41,7 +40,6 @@ import com.module.rank.R;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
-import com.zq.level.view.NormalLevelView;
 import com.zq.level.view.NormalLevelView2;
 import com.zq.live.proto.Common.ESex;
 import com.zq.person.fragment.OtherPersonFragment;
@@ -403,13 +401,17 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
         switch (seq) {
             case 1:
                 mTvRightChanpainName.setText("虚位以待");
-                mSdvRightChampainIcon.setBackground(U.getDrawable(R.drawable.zanwu_dierming));
+                mSdvRightChampainIcon.setImageResource(R.drawable.zanwu_dierming);
                 mRightChanpainLevelView.setVisibility(View.GONE);
+                mRightChanpainLevelTv.setText("");
+                mSdvRightChampainIcon.setOnClickListener(null);
                 break;
             case 2:
                 mTvLeftChanpainName.setText("虚位以待");
-                mSdvLeftChampainIcon.setBackground(U.getDrawable(R.drawable.zanwu_disanming));
+                mSdvLeftChampainIcon.setImageResource(R.drawable.zanwu_disanming);
                 mLeftChanpainLevelView.setVisibility(View.GONE);
+                mLeftChanpainLevelTv.setText("");
+                mSdvLeftChampainIcon.setOnClickListener(null);
                 break;
         }
     }
