@@ -28,7 +28,7 @@ public class UserInfoDB implements Serializable {
     private String userNickname;    // 昵称
     private String userDisplayname; // 备注
     private String letter;          // 昵称或备注的首字母
-    private Long updateTime;        //更新时间，水位
+    private Long updateTime=0L;        //更新时间，水位
 
     private Integer sex = -1;         // 性别
     private String birthday;      // 生日
