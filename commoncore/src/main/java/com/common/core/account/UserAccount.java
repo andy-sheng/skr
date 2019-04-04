@@ -24,12 +24,12 @@ public class UserAccount {
     @NotNull
     private String uid;
     private String password;
-    private Boolean isLogOff;
+    private Boolean isLogOff = false;
     private String thirdId;
     private String phoneNum;
     @NotNull
     private Integer channelId;
-    private Boolean needEditUserInfo;
+    private Boolean needEditUserInfo = false;
     private String serviceToken;
     private String secretToken;
     private String rongToken;
