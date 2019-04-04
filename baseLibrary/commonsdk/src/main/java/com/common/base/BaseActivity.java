@@ -322,6 +322,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
 
     @Override
     public void finish() {
+        MyLog.d(TAG,"start finish" );
         super.finish();
         //animationOut();
     }

@@ -113,7 +113,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     public static final int MSG_ENSURE_BATTLE_BEGIN_OVER = 5;
 
-    public static final int MSG_ENSURE_GAME_OVER = 6;
+//    public static final int MSG_ENSURE_GAME_OVER = 6;
 
     //自己演唱玩
 //    public static final int MSG_SEND_SELF_SING_END = 7;
@@ -208,9 +208,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                 case MSG_ENSURE_ROUND_OVER_PLAY_OVER:
                     onRoundOverPlayOver(msg.arg1 == 1, (BaseRoundInfoModel) msg.obj);
                     break;
-                case MSG_ENSURE_GAME_OVER:
-                    onGrabGameOver("MSG_ENSURE_GAME_OVER");
-                    break;
+//                case MSG_ENSURE_GAME_OVER:
+//                    onGrabGameOver("MSG_ENSURE_GAME_OVER");
+//                    break;
 //                case MSG_SEND_SELF_SING_END:
 //                    mCorePresenter.sendRoundOverInfo();
 //                    break;
@@ -1014,11 +1014,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     @Override
     public void gameFinish() {
         MyLog.w(TAG, "游戏结束了");
-        mUiHanlder.removeMessages(MSG_ENSURE_GAME_OVER);
-//        mUiHanlder.removeMessages(MSG_SEND_SELF_SING_END);
-        Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_GAME_OVER);
-        mUiHanlder.sendMessageDelayed(msg, 4000);
-
+//        mUiHanlder.removeMessages(MSG_ENSURE_GAME_OVER);
+//        Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_GAME_OVER);
+//        mUiHanlder.sendMessageDelayed(msg, 4000);
         mSelfSingCardView.setVisibility(View.GONE);
         mOthersSingCardView.hide();
         mTurnInfoCardView.setVisibility(View.GONE);
@@ -1029,20 +1027,21 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         mGrabGameOverView.starAnimation(new SVGAListener() {
             @Override
             public void onFinished() {
-                onGrabGameOver("onFinished");
+                mCorePresenter.exitRoom();
+                //onGrabGameOver("onFinished");
             }
         });
     }
 
     @Override
     public void onGetGameResult(boolean success) {
-        if (success) {
+//        if (success) {
             onGrabGameOver("onGetGameResultSuccess");
-        } else {
-            if (getActivity() != null) {
-                getActivity().finish();
-            }
-        }
+//        } else {
+//            if (getActivity() != null) {
+//                getActivity().finish();
+//            }
+//        }
     }
 
     @Override
@@ -1078,6 +1077,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     private void onGrabGameOver(String from) {
         MyLog.d(TAG, "onGrabGameOver " + from);
+//        mUiHanlder.removeMessages(MSG_ENSURE_GAME_OVER);
+
         ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_RESULT)
                 .withSerializable("room_data", mRoomData)
                 .navigation();
@@ -1088,6 +1089,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                 Activity activity = getActivity();
                 if (activity != null) {
                     activity.finish();
+                } else {
+                    MyLog.d(TAG, "onGrabGameOver activity==null");
                 }
                 StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
                         StatConstants.KEY_GAME_FINISH, null);
@@ -1154,12 +1157,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     @Override
     public void kickBySomeOne() {
         MyLog.d(TAG, "kickBySomeOne");
-        onGrabGameOver("kickBySomeOne");
-
+        //onGrabGameOver("kickBySomeOne");
         U.getToastUtil().showSkrCustomLong(new CommonToastView.Builder(U.app())
                 .setImage(R.drawable.touxiangshezhishibai_icon)
                 .setText("超过半数玩家请你出房间，要友好文明游戏哦~")
                 .build());
+        mCorePresenter.exitRoom();
     }
 
     @Override
