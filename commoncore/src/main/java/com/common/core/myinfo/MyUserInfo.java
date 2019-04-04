@@ -170,7 +170,7 @@ public class MyUserInfo implements Serializable {
     public static MyUserInfo parseFromDB(UserInfoDB userInDB) {
         MyUserInfo myInfoModel = new MyUserInfo();
         if (userInDB != null) {
-            myInfoModel.setUserId((int) userInDB.getUserId());
+            myInfoModel.setUserId(userInDB.getUserId().intValue());
             myInfoModel.setAvatar(userInDB.getAvatar());
             myInfoModel.setUserNickname(userInDB.getUserNickname());
             myInfoModel.setUserDisplayname(userInDB.getUserDisplayname());

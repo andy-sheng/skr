@@ -194,7 +194,7 @@ public class UserInfoModel implements Serializable, Cloneable {
     public static UserInfoDB toUserInfoDB(UserInfoModel userInfModel) {
         UserInfoDB userInfoDB = new UserInfoDB();
         if (userInfModel != null) {
-            userInfoDB.setUserId(userInfModel.getUserId());
+            userInfoDB.setUserId(Long.valueOf((long)userInfModel.getUserId()));
             userInfoDB.setUserNickname(userInfModel.getNickname());
             userInfoDB.setSex(userInfModel.getSex());
             userInfoDB.setBirthday(userInfModel.getBirthday());
@@ -223,7 +223,7 @@ public class UserInfoModel implements Serializable, Cloneable {
     public static UserInfoModel parseFromDB(UserInfoDB userInDB) {
         UserInfoModel userInfoModel = new UserInfoModel();
         if (userInDB != null) {
-            userInfoModel.setUserId((int) userInDB.getUserId());
+            userInfoModel.setUserId(userInDB.getUserId().intValue());
             userInfoModel.setNickname(userInDB.getUserNickname());
             userInfoModel.setSex(userInDB.getSex());
             userInfoModel.setBirthday(userInDB.getBirthday());

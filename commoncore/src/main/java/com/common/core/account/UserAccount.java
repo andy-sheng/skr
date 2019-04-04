@@ -20,7 +20,7 @@ import retrofit2.http.Body;
 )
 public class UserAccount {
     @Id
-    private long id;
+    private Long id;
     @NotNull
     private String uid;
     private String password;
@@ -28,17 +28,18 @@ public class UserAccount {
     private String thirdId;
     private String phoneNum;
     @NotNull
-    private int channelId;
-    private boolean needEditUserInfo;
+    private Integer channelId;
+    private Boolean needEditUserInfo;
     private String serviceToken;
     private String secretToken;
     private String rongToken;
     private String ext;
 
-    @Generated(hash = 733193947)
-    public UserAccount(long id, @NotNull String uid, String password, Boolean isLogOff,
-            String thirdId, String phoneNum, int channelId, boolean needEditUserInfo,
-            String serviceToken, String secretToken, String rongToken, String ext) {
+    @Generated(hash = 15335548)
+    public UserAccount(Long id, @NotNull String uid, String password,
+                       Boolean isLogOff, String thirdId, String phoneNum,
+                       @NotNull Integer channelId, Boolean needEditUserInfo,
+                       String serviceToken, String secretToken, String rongToken, String ext) {
         this.id = id;
         this.uid = uid;
         this.password = password;
@@ -57,11 +58,11 @@ public class UserAccount {
     public UserAccount() {
     }
 
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -105,19 +106,19 @@ public class UserAccount {
         this.phoneNum = phoneNum;
     }
 
-    public int getChannelId() {
+    public Integer getChannelId() {
         return this.channelId;
     }
 
-    public void setChannelId(int channelId) {
+    public void setChannelId(Integer channelId) {
         this.channelId = channelId;
     }
 
-    public boolean getNeedEditUserInfo() {
+    public Boolean getNeedEditUserInfo() {
         return this.needEditUserInfo;
     }
 
-    public void setNeedEditUserInfo(boolean needEditUserInfo) {
+    public void setNeedEditUserInfo(Boolean needEditUserInfo) {
         this.needEditUserInfo = needEditUserInfo;
     }
 
@@ -152,4 +153,5 @@ public class UserAccount {
     public void setExt(String ext) {
         this.ext = ext;
     }
+
 }

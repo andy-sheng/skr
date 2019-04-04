@@ -24,14 +24,14 @@ public class UserAccountDao extends AbstractDao<UserAccount, Long> {
      * Can be used for QueryBuilder and for referencing column names.
      */
     public static class Properties {
-        public final static Property Id = new Property(0, long.class, "id", true, "_id");
+        public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Uid = new Property(1, String.class, "uid", false, "UID");
         public final static Property Password = new Property(2, String.class, "password", false, "PASSWORD");
         public final static Property IsLogOff = new Property(3, Boolean.class, "isLogOff", false, "IS_LOG_OFF");
         public final static Property ThirdId = new Property(4, String.class, "thirdId", false, "THIRD_ID");
         public final static Property PhoneNum = new Property(5, String.class, "phoneNum", false, "PHONE_NUM");
-        public final static Property ChannelId = new Property(6, int.class, "channelId", false, "CHANNEL_ID");
-        public final static Property NeedEditUserInfo = new Property(7, boolean.class, "needEditUserInfo", false, "NEED_EDIT_USER_INFO");
+        public final static Property ChannelId = new Property(6, Integer.class, "channelId", false, "CHANNEL_ID");
+        public final static Property NeedEditUserInfo = new Property(7, Boolean.class, "needEditUserInfo", false, "NEED_EDIT_USER_INFO");
         public final static Property ServiceToken = new Property(8, String.class, "serviceToken", false, "SERVICE_TOKEN");
         public final static Property SecretToken = new Property(9, String.class, "secretToken", false, "SECRET_TOKEN");
         public final static Property RongToken = new Property(10, String.class, "rongToken", false, "RONG_TOKEN");
@@ -51,14 +51,14 @@ public class UserAccountDao extends AbstractDao<UserAccount, Long> {
     public static void createTable(Database db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"USER_ACCOUNT\" (" + //
-                "\"_id\" INTEGER PRIMARY KEY NOT NULL ," + // 0: id
+                "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
                 "\"UID\" TEXT NOT NULL ," + // 1: uid
                 "\"PASSWORD\" TEXT," + // 2: password
                 "\"IS_LOG_OFF\" INTEGER," + // 3: isLogOff
                 "\"THIRD_ID\" TEXT," + // 4: thirdId
                 "\"PHONE_NUM\" TEXT," + // 5: phoneNum
                 "\"CHANNEL_ID\" INTEGER NOT NULL ," + // 6: channelId
-                "\"NEED_EDIT_USER_INFO\" INTEGER NOT NULL ," + // 7: needEditUserInfo
+                "\"NEED_EDIT_USER_INFO\" INTEGER," + // 7: needEditUserInfo
                 "\"SERVICE_TOKEN\" TEXT," + // 8: serviceToken
                 "\"SECRET_TOKEN\" TEXT," + // 9: secretToken
                 "\"RONG_TOKEN\" TEXT," + // 10: rongToken
@@ -77,7 +77,11 @@ public class UserAccountDao extends AbstractDao<UserAccount, Long> {
     @Override
     protected final void bindValues(DatabaseStatement stmt, UserAccount entity) {
         stmt.clearBindings();
-        stmt.bindLong(1, entity.getId());
+ 
+        Long id = entity.getId();
+        if (id != null) {
+            stmt.bindLong(1, id);
+        }
         stmt.bindString(2, entity.getUid());
  
         String password = entity.getPassword();
@@ -100,7 +104,11 @@ public class UserAccountDao extends AbstractDao<UserAccount, Long> {
             stmt.bindString(6, phoneNum);
         }
         stmt.bindLong(7, entity.getChannelId());
-        stmt.bindLong(8, entity.getNeedEditUserInfo() ? 1L: 0L);
+ 
+        Boolean needEditUserInfo = entity.getNeedEditUserInfo();
+        if (needEditUserInfo != null) {
+            stmt.bindLong(8, needEditUserInfo ? 1L: 0L);
+        }
  
         String serviceToken = entity.getServiceToken();
         if (serviceToken != null) {
@@ -126,7 +134,11 @@ public class UserAccountDao extends AbstractDao<UserAccount, Long> {
     @Override
     protected final void bindValues(SQLiteStatement stmt, UserAccount entity) {
         stmt.clearBindings();
-        stmt.bindLong(1, entity.getId());
+ 
+        Long id = entity.getId();
+        if (id != null) {
+            stmt.bindLong(1, id);
+        }
         stmt.bindString(2, entity.getUid());
  
         String password = entity.getPassword();
@@ -149,7 +161,11 @@ public class UserAccountDao extends AbstractDao<UserAccount, Long> {
             stmt.bindString(6, phoneNum);
         }
         stmt.bindLong(7, entity.getChannelId());
-        stmt.bindLong(8, entity.getNeedEditUserInfo() ? 1L: 0L);
+ 
+        Boolean needEditUserInfo = entity.getNeedEditUserInfo();
+        if (needEditUserInfo != null) {
+            stmt.bindLong(8, needEditUserInfo ? 1L: 0L);
+        }
  
         String serviceToken = entity.getServiceToken();
         if (serviceToken != null) {
@@ -174,20 +190,20 @@ public class UserAccountDao extends AbstractDao<UserAccount, Long> {
 
     @Override
     public Long readKey(Cursor cursor, int offset) {
-        return cursor.getLong(offset + 0);
+        return cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0);
     }    
 
     @Override
     public UserAccount readEntity(Cursor cursor, int offset) {
         UserAccount entity = new UserAccount( //
-            cursor.getLong(offset + 0), // id
+            cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.getString(offset + 1), // uid
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // password
             cursor.isNull(offset + 3) ? null : cursor.getShort(offset + 3) != 0, // isLogOff
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // thirdId
             cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // phoneNum
             cursor.getInt(offset + 6), // channelId
-            cursor.getShort(offset + 7) != 0, // needEditUserInfo
+            cursor.isNull(offset + 7) ? null : cursor.getShort(offset + 7) != 0, // needEditUserInfo
             cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // serviceToken
             cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // secretToken
             cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // rongToken
@@ -198,14 +214,14 @@ public class UserAccountDao extends AbstractDao<UserAccount, Long> {
      
     @Override
     public void readEntity(Cursor cursor, UserAccount entity, int offset) {
-        entity.setId(cursor.getLong(offset + 0));
+        entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setUid(cursor.getString(offset + 1));
         entity.setPassword(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
         entity.setIsLogOff(cursor.isNull(offset + 3) ? null : cursor.getShort(offset + 3) != 0);
         entity.setThirdId(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
         entity.setPhoneNum(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
         entity.setChannelId(cursor.getInt(offset + 6));
-        entity.setNeedEditUserInfo(cursor.getShort(offset + 7) != 0);
+        entity.setNeedEditUserInfo(cursor.isNull(offset + 7) ? null : cursor.getShort(offset + 7) != 0);
         entity.setServiceToken(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
         entity.setSecretToken(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
         entity.setRongToken(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
@@ -229,7 +245,7 @@ public class UserAccountDao extends AbstractDao<UserAccount, Long> {
 
     @Override
     public boolean hasKey(UserAccount entity) {
-        throw new UnsupportedOperationException("Unsupported for entities with a non-null key");
+        return entity.getId() != null;
     }
 
     @Override
