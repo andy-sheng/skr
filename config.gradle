@@ -117,7 +117,7 @@ ext {
             "vlayout"                          : "com.alibaba.android:vlayout:1.1.0@aar",
             "lottie"                           : "com.airbnb.android:lottie:2.5.4",
             //SVGA
-            "svga"                             : "com.github.yyued:SVGAPlayer-Android:2.3.0",
+            "svga"                             : "com.github.yyued:SVGAPlayer-Android:2.4.2",
 
             //exoplayer
             "exoplayer-core"                   : "com.google.android.exoplayer:exoplayer-core:r2.4.1",
