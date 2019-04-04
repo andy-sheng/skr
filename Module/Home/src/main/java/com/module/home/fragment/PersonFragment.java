@@ -64,6 +64,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.zq.level.view.NormalLevelView2;
+import com.zq.person.fragment.PersonInfoCardFragment;
 import com.zq.relation.fragment.RelationFragment;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -397,6 +398,13 @@ public class PersonFragment extends BaseFragment implements IPersonView, WeakRed
                                 .setAddToBackStack(true)
                                 .setHasAnimation(true)
                                 .build());
+
+                // TODO: 2019/4/4 测试代码
+//                U.getFragmentUtils().addFragment(
+//                        FragmentUtils.newAddParamsBuilder(getActivity(), PersonInfoCardFragment.class)
+//                                .setAddToBackStack(true)
+//                                .setHasAnimation(true)
+//                                .build());
             }
         });
         mSettingRedDot = mSettingArea.findViewById(R.id.setting_red_dot);
