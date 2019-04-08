@@ -6,6 +6,7 @@ import com.common.rxretrofit.ApiResult;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
+import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -218,6 +219,19 @@ public interface UserInfoServerApi {
     Observable<ApiResult> getPhotos(@Query("userID") long userID,
                                     @Query("offset") int offset,
                                     @Query("limit") int limit);
+
+    /**
+     * 查询照片墙
+     *
+     * @param userID
+     * @param offset
+     * @param limit
+     * @return
+     */
+    @GET("http://dev.stand.inframe.mobi/v1/profile/query-pic")
+    Call<ApiResult> getPhotosSync(@Query("userID") long userID,
+                              @Query("offset") int offset,
+                              @Query("limit") int limit);
 
     /**
      * 新增照片墙

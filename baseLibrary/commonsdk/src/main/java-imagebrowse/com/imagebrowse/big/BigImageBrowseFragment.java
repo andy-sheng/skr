@@ -240,8 +240,8 @@ public class BigImageBrowseFragment extends BaseFragment {
             }
 
             @Override
-            public void load(ImageBrowseView imageBrowseView, int position, Object item) {
-                imageBrowseView.load(path);
+            public void load(ImageBrowseView imageBrowseView, int position, String item) {
+                imageBrowseView.load(item);
             }
 
             @Override
@@ -272,7 +272,7 @@ public class BigImageBrowseFragment extends BaseFragment {
     public interface Loader<T> {
         void init();
 
-        void load(ImageBrowseView imageBrowseView, int position, Object item);
+        void load(ImageBrowseView imageBrowseView, int position, T item);
 
         int getInitCurrentItemPostion();
 

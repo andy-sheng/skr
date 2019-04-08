@@ -1,14 +1,16 @@
 package com.zq.dialog;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,13 +24,12 @@ import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.event.RelationChangeEvent;
-import com.common.core.userinfo.model.GameStatisModel;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.model.UserLevelModel;
-import com.common.core.userinfo.model.UserRankModel;
 import com.common.flowlayout.FlowLayout;
 import com.common.flowlayout.TagAdapter;
 import com.common.flowlayout.TagFlowLayout;
+import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -39,9 +40,12 @@ import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.imagebrowse.ImageBrowseView;
+import com.imagebrowse.big.BigImageBrowseFragment;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+import com.trello.rxlifecycle2.android.ActivityEvent;
 import com.zq.person.adapter.PhotoAdapter;
 import com.zq.person.model.PhotoModel;
 
@@ -49,17 +53,29 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Response;
 
 public class PersonInfoDialogView2 extends RelativeLayout {
 
     public final static String TAG = "PersonInfoDialogView2";
 
+    Handler mUiHandler = new Handler();
+
     SmartRefreshLayout mSmartRefresh;
     CoordinatorLayout mCoordinator;
-    RecyclerView mPhotoView;
+    RecyclerView mPhotoRv;
     AppBarLayout mAppbar;
     CollapsingToolbarLayout mToolbarLayout;
 
@@ -100,6 +116,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
     UserInfoServerApi mUserInfoServerApi;
 
     int mOffset = 0;
+    boolean mHasMore = false;
     int DEFAULT_CNT = 10;
 
     boolean hasInitHeight = false;
@@ -113,6 +130,13 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        EventBus.getDefault().unregister(this);
+        mUiHandler.removeCallbacksAndMessages(null);
     }
 
     public void setListener(PersonInfoDialog.PersonCardClickListener listener) {
@@ -179,21 +203,18 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         }, (BaseActivity) mContext);
     }
 
-    public void getPhotos(int userID, int offset, int cnt) {
-
-        ApiMethods.subscribe(mUserInfoServerApi.getPhotos(userID, offset, cnt), new ApiObserver<ApiResult>() {
+    void getPhotos(final int offset) {
+        ApiMethods.subscribe(mUserInfoServerApi.getPhotos(mUserId, offset, DEFAULT_CNT), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
+                if (result != null && result.getErrno() == 0) {
                     List<PhotoModel> list = JSON.parseArray(result.getData().getString("pic"), PhotoModel.class);
                     int newOffset = result.getData().getIntValue("offset");
                     showPhotos(list, newOffset);
                 }
-
             }
-        }, (BaseActivity) mContext);
+        });
     }
-
 
     private void initBaseContainInfo() {
         ViewGroup personCardMainContainer = this.findViewById(R.id.person_card_main_containner);
@@ -217,7 +238,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 mSmartRefresh.finishLoadMore();
-                getPhotos(mUserId, mOffset, DEFAULT_CNT);
+                getPhotos(mOffset);
             }
 
             @Override
@@ -326,18 +347,77 @@ public class PersonInfoDialogView2 extends RelativeLayout {
     }
 
     private void initPhotoArea() {
-        mPhotoView = (RecyclerView) this.findViewById(R.id.photo_view);
+        mPhotoRv = (RecyclerView) this.findViewById(R.id.photo_view);
 
-        mPhotoView.setFocusableInTouchMode(false);
+        mPhotoRv.setFocusableInTouchMode(false);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
-        mPhotoView.setLayoutManager(gridLayoutManager);
+        mPhotoRv.setLayoutManager(gridLayoutManager);
         mPhotoAdapter = new PhotoAdapter(new RecyclerOnItemClickListener() {
             @Override
-            public void onItemClicked(View view, int position, Object model) {
-                // TODO: 2019/4/8 看大图
+            public void onItemClicked(View view, final int position, Object model) {
+                BigImageBrowseFragment.open(false, (FragmentActivity) getContext(), new BigImageBrowseFragment.Loader<PhotoModel>() {
+
+                    @Override
+                    public void init() {
+
+                    }
+
+                    @Override
+                    public List getInitList() {
+                        return mPhotoAdapter.getDataList();
+                    }
+
+                    @Override
+                    public List<PhotoModel> loadMore(boolean backward, int position, PhotoModel data) {
+                        if (backward) {
+                            Call<ApiResult> call = mUserInfoServerApi.getPhotosSync(mUserId, position, DEFAULT_CNT);
+                            Response<ApiResult> rsp = null;
+                            try {
+                                rsp = call.execute();
+                                ApiResult result = rsp.body();
+
+                                if (result != null && result.getErrno() == 0) {
+                                    final List<PhotoModel> list = JSON.parseArray(result.getData().getString("pic"), PhotoModel.class);
+                                    final int newOffset = result.getData().getIntValue("offset");
+                                    mUiHandler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            showPhotos(list, newOffset);
+                                        }
+                                    });
+                                    return list;
+                                }
+                            } catch (IOException e) {
+                                MyLog.e(e);
+                            }
+                            return null;
+                        } else {
+                            return null;
+                        }
+                    }
+
+                    @Override
+                    public boolean hasMore(boolean backward, int position, PhotoModel data) {
+                        if (backward) {
+                            return mHasMore;
+                        } else {
+                            return false;
+                        }
+                    }
+
+                    @Override
+                    public void load(ImageBrowseView imageBrowseView, int position, PhotoModel item) {
+                        imageBrowseView.load(item.getPicPath());
+                    }
+
+                    @Override
+                    public int getInitCurrentItemPostion() {
+                        return position;
+                    }
+                });
             }
         });
-        mPhotoView.setAdapter(mPhotoAdapter);
+        mPhotoRv.setAdapter(mPhotoAdapter);
     }
 
 
@@ -352,18 +432,17 @@ public class PersonInfoDialogView2 extends RelativeLayout {
                 hasInitHeight = true;
             }
             mPhotoAdapter.getDataList().addAll(list);
-            mPhotoAdapter.setDataList(list);
             mPhotoAdapter.notifyDataSetChanged();
         } else {
+            mHasMore = false;
+            mSmartRefresh.setEnableRefresh(false);//是否启用下拉刷新功能
+            mSmartRefresh.setEnableLoadMore(false);//是否启用上拉加载功能
             if (mPhotoAdapter.getDataList() != null && mPhotoAdapter.getDataList().size() > 0) {
                 // 没有更多了
-                mSmartRefresh.setEnableRefresh(false);//是否启用下拉刷新功能
-                mSmartRefresh.setEnableLoadMore(false);//是否启用上拉加载功能
+
             } else {
                 // 没有数据
                 // TODO: 2019/4/8 禁止整个布局的滑动
-                mSmartRefresh.setEnableRefresh(false);//是否启用下拉刷新功能
-                mSmartRefresh.setEnableLoadMore(false);//是否启用上拉加载功能
                 if (mAppbar != null && mAppbar.getLayoutParams() != null) {
                     CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) mAppbar.getLayoutParams();
                     AppBarLayout.Behavior behavior = new AppBarLayout.Behavior();
