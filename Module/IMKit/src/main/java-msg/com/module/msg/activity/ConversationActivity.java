@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import com.alibaba.fastjson.JSON;
 import com.common.base.BaseActivity;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -20,6 +21,7 @@ import com.module.msg.IMsgService;
 import com.module.msg.api.IMsgServerApi;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -28,6 +30,8 @@ import io.rong.imkit.R;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Message;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 /**
  * 单聊界面
@@ -103,8 +107,12 @@ public class ConversationActivity extends BaseActivity {
                     } else {
                         mCanSendTimes--;
                         // 告诉服务器自增
+
                         IMsgServerApi iMsgServerApi = ApiManager.getInstance().createService(IMsgServerApi.class);
-                        ApiMethods.subscribe(iMsgServerApi.incSendMsgTimes(Integer.parseInt(mUserId)), null);
+                        HashMap<String, Object> map = new HashMap<>();
+                        map.put("toUserID", Integer.parseInt(mUserId));
+                        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+                        ApiMethods.subscribe(iMsgServerApi.incSendMsgTimes(body), null);
                         return message;
                     }
                 }
