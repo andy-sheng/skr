@@ -292,7 +292,7 @@ public class GrabOpView extends RelativeLayout {
                 mBtnIv.setImageDrawable(null);
                 Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20))
                         .setShape(DrawableCreator.Shape.Rectangle)
-                        .setPressedDrawable(U.getDrawable(R.drawable.ycdd_qiangchang))
+                        .setPressedDrawable(U.getDrawable(R.drawable.ycdd_qiangchang_anxia))
                         .setUnPressedDrawable(U.getDrawable(R.drawable.ycdd_qiangchang))
                         .build();
                 mBtnIv.setBackground(drawable);
@@ -396,7 +396,7 @@ public class GrabOpView extends RelativeLayout {
                         mIvLightOff.setEnabled(true);
                         Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20))
                                 .setShape(DrawableCreator.Shape.Rectangle)
-                                .setPressedDrawable(U.getDrawable(R.drawable.ycdd_miedeng))
+                                .setPressedDrawable(U.getDrawable(R.drawable.ycdd_miedeng_anxia))
                                 .setUnPressedDrawable(U.getDrawable(R.drawable.ycdd_miedeng))
                                 .build();
 

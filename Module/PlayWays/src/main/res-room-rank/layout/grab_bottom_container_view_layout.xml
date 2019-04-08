@@ -55,18 +55,17 @@
         >
 
         <com.common.view.ex.ExTextView
-            android:paddingBottom="@dimen/view_3_dp"
             android:paddingLeft="@dimen/view_28_dp"
             android:gravity="center_vertical"
             android:text="夸赞是一种美德"
             android:id="@+id/show_input_container_btn"
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_38_dp"
-            android:layout_marginLeft="@dimen/view_d_23_dp"
+            android:layout_marginLeft="@dimen/view_d_25_dp"
             android:layout_marginRight="@dimen/view_23_dp"
             android:layout_toLeftOf="@+id/emoji1_btn"
             android:layout_toRightOf="@id/quick_btn"
-            android:background="@drawable/qiehuanmoshi_bj"
+            android:background="@drawable/ycdd_shurukuang"
             android:textSize="@dimen/textsize_16_dp"
             android:textColor="@color/white_trans_30"
              />
