@@ -126,7 +126,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@id/avatar_bg"
                             android:layout_centerHorizontal="true"
-                            android:layout_marginLeft="-6dp"
+                            android:layout_marginLeft="16dp"
                             android:layout_marginTop="@dimen/view_10_dp"
                             android:layout_marginBottom="@dimen/view_14_dp"></com.common.flowlayout.TagFlowLayout>
 
