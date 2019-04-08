@@ -10,6 +10,7 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.utils.NetworkUtils;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
 import com.dialog.list.DialogListItem;
@@ -20,6 +21,8 @@ import com.module.common.ICallback;
 import com.module.msg.IMsgService;
 import com.module.msg.api.IMsgServerApi;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +31,6 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.functions.Consumer;
 import io.rong.imkit.R;
 import io.rong.imkit.RongIM;
-import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Message;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -124,6 +126,11 @@ public class ConversationActivity extends BaseActivity {
                 return false;
             }
         });
+        checkMsgTimes();
+    }
+
+
+    private void checkMsgTimes() {
         if (mIsFriend) {
 
         } else {
@@ -141,7 +148,6 @@ public class ConversationActivity extends BaseActivity {
             }, this);
         }
     }
-
 
     private void showConfirmOptions() {
         msgService.getBlacklistStatus(mUserId, new ICallback() {
@@ -209,10 +215,20 @@ public class ConversationActivity extends BaseActivity {
         listDialog.showList(listItems);
     }
 
+    @Subscribe
+    public void onEvent(NetworkUtils.NetworkChangeEvent event) {
+        if (U.getNetworkUtils().hasNetwork()) {
+            // 变有网了
+            if (!mIsFriend && mCanSendTimes == -1) {
+                // 非好友，且 次数未初始化，初始化一下
+                checkMsgTimes();
+            }
+        }
+    }
 
     @Override
     public boolean useEventBus() {
-        return false;
+        return true;
     }
 
     @Override
