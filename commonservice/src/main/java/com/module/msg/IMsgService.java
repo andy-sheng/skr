@@ -79,7 +79,7 @@ public interface IMsgService extends IProvider {
      * @param targetId
      * @param title
      */
-    void startPrivateChat(Context context, String targetId, String title);
+    void startPrivateChat(Context context, String targetId, String title,boolean isFriend);
 
     /**
      * 在融云服务器上更新当前用户信息

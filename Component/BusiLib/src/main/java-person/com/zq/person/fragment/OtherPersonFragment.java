@@ -190,7 +190,10 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
             public void clickValid(View v) {
                 if (mUserInfoModel != null) {
                     ModuleServiceManager.getInstance().getMsgService().startPrivateChat(getContext(),
-                            String.valueOf(mUserInfoModel.getUserId()), mUserInfoModel.getNickname());
+                            String.valueOf(mUserInfoModel.getUserId()),
+                            mUserInfoModel.getNickname(),
+                            mUserInfoModel.isFriend()
+                    );
                 }
             }
         });

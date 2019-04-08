@@ -2,8 +2,10 @@ package com.module.msg;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Pair;
 
 import com.alibaba.fastjson.JSON;
@@ -27,9 +29,11 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 
 import io.rong.imkit.DefaultExtensionModule;
 import io.rong.imkit.IExtensionModule;
+import io.rong.imkit.RongContext;
 import io.rong.imkit.RongExtensionManager;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.manager.IUnReadMessageObserver;
@@ -498,8 +502,23 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
         });
     }
 
-    public void startPrivateChat(Context context, String targetId, String title) {
-        RongIM.getInstance().startPrivateChat(context, targetId, title);
+    public void startPrivateChat(Context context, String targetUserId, String title,boolean isFriend) {
+        if (context != null && !TextUtils.isEmpty(targetUserId)) {
+            if (RongContext.getInstance() == null) {
+                throw new ExceptionInInitializerError("RongCloud SDK not init");
+            } else {
+                Uri uri = Uri.parse("rong://" + context.getApplicationInfo().packageName).buildUpon()
+                        .appendPath("conversation").appendPath(Conversation.ConversationType.PRIVATE.getName().toLowerCase(Locale.US))
+                        .appendQueryParameter("targetId", targetUserId)
+                        .appendQueryParameter("title", title)
+                        .build();
+                Intent intent = new Intent("android.intent.action.VIEW", uri);
+                intent.putExtra("isFriend",false);
+                context.startActivity(intent);
+            }
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     public void updateCurrentUserInfo() {

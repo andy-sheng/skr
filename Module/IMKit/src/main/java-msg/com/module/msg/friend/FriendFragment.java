@@ -84,7 +84,7 @@ public class FriendFragment extends BaseFragment {
             @Override
             public void onItemClicked(View view, int position, FriendStatusModel model) {
                 ModuleServiceManager.getInstance().getMsgService().startPrivateChat(getContext(),
-                        String.valueOf(model.getUserID()), model.getNickname());
+                        String.valueOf(model.getUserID()), model.getNickname(),true);
             }
         });
         mContentRv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));

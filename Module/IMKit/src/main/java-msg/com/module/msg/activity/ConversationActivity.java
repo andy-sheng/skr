@@ -2,8 +2,13 @@ package com.module.msg.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.common.base.BaseActivity;
+import com.common.rxretrofit.ApiManager;
+import com.common.rxretrofit.ApiMethods;
+import com.common.rxretrofit.ApiObserver;
+import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
 import com.common.view.titlebar.CommonTitleBar;
 import com.dialog.list.DialogListItem;
@@ -12,6 +17,7 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
 import com.module.msg.IMsgService;
+import com.module.msg.api.IMsgServerApi;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +25,9 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.functions.Consumer;
 import io.rong.imkit.R;
+import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Message;
 
 /**
  * 单聊界面
@@ -29,9 +38,14 @@ public class ConversationActivity extends BaseActivity {
 
     String mUserId;
 
+    boolean mIsFriend;
+
     IMsgService msgService;
 
     ListDialog listDialog;
+
+    String mDescWhenExceed;
+    int mCanSendTimes = -1;
 
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
@@ -47,6 +61,8 @@ public class ConversationActivity extends BaseActivity {
             mUserId = getIntent().getData().getQueryParameter("targetId");
             mTitleBar.getCenterTextView().setText(title);
         }
+        mIsFriend = getIntent().getBooleanExtra("isFriend", false);
+
         msgService = ModuleServiceManager.getInstance().getMsgService();
 
         RxView.clicks(mTitleBar.getLeftTextView())
@@ -70,6 +86,52 @@ public class ConversationActivity extends BaseActivity {
                 });
 
         U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
+        RongIM.getInstance().setSendMessageListener(new RongIM.OnSendMessageListener() {
+            @Override
+            public Message onSend(Message message) {
+                if (mCanSendTimes == -1) {
+                    return message;
+                } else {
+                    if (mCanSendTimes <= 0) {
+                        // 超出发送次数了，提示用户
+                        if (!TextUtils.isEmpty(mDescWhenExceed)) {
+                            U.getToastUtil().showShort(mDescWhenExceed);
+                        } else {
+                            U.getToastUtil().showShort("陌生人间不能发送太多消息哦");
+                        }
+                        return null;
+                    } else {
+                        mCanSendTimes--;
+                        // 告诉服务器自增
+                        IMsgServerApi iMsgServerApi = ApiManager.getInstance().createService(IMsgServerApi.class);
+                        ApiMethods.subscribe(iMsgServerApi.incSendMsgTimes(Integer.parseInt(mUserId)), null);
+                        return message;
+                    }
+                }
+
+            }
+
+            @Override
+            public boolean onSent(Message message, RongIM.SentMessageErrorCode sentMessageErrorCode) {
+                return false;
+            }
+        });
+        if (mIsFriend) {
+
+        } else {
+            // 不是好友，看看有没有资格发消息
+            IMsgServerApi iMsgServerApi = ApiManager.getInstance().createService(IMsgServerApi.class);
+            ApiMethods.subscribe(iMsgServerApi.checkSendMsg(Integer.parseInt(mUserId)), new ApiObserver<ApiResult>() {
+
+                @Override
+                public void process(ApiResult obj) {
+                    if (obj.getErrno() == 0) {
+                        mCanSendTimes = obj.getData().getIntValue("resTimes");
+                        mDescWhenExceed = obj.getData().getString("desc");
+                    }
+                }
+            }, this);
+        }
     }
 
 
@@ -148,6 +210,7 @@ public class ConversationActivity extends BaseActivity {
     @Override
     protected void destroy() {
         super.destroy();
+        RongIM.getInstance().setSendMessageListener(null);
         U.getSoundUtils().release(TAG);
     }
 }
