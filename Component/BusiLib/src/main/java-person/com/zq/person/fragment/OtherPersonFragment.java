@@ -34,6 +34,8 @@ import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
 import com.component.busilib.constans.GameModeType;
 import com.dialog.view.TipsDialogView;
+import com.imagebrowse.ImageBrowseView;
+import com.imagebrowse.big.BigImageBrowseFragment;
 import com.module.ModuleServiceManager;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnDismissListener;
@@ -154,16 +156,7 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
         mAvatarIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putString(ImageBigPreviewFragment.BIG_IMAGE_PATH, mUserInfoModel.getAvatar());
-                U.getFragmentUtils().addFragment(
-                        FragmentUtils.newAddParamsBuilder(getActivity(), ImageBigPreviewFragment.class)
-                                .setAddToBackStack(true)
-                                .setHasAnimation(true)
-                                .setEnterAnim(R.anim.fade_in_center)
-                                .setExitAnim(R.anim.fade_out_center)
-                                .setBundle(bundle)
-                                .build());
+                BigImageBrowseFragment.open(false, getActivity(), mUserInfoModel.getAvatar());
             }
         });
 

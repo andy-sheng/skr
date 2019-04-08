@@ -36,9 +36,9 @@ import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
 import com.common.view.titlebar.CommonTitleBar;
 import com.component.busilib.constans.GameModeType;
+import com.imagebrowse.big.BigImageBrowseFragment;
 import com.module.RouterConstants;
 import com.module.home.R;
-
 import com.module.home.persenter.PkInfoPresenter;
 import com.module.home.view.IPkInfoView;
 import com.module.home.widget.UserInfoTitleView;
@@ -48,7 +48,6 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.zq.level.view.NormalLevelView2;
-import com.zq.person.fragment.ImageBigPreviewFragment;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -185,16 +184,7 @@ public class PkInfoFragment extends BaseFragment implements IPkInfoView {
         mUserInfoTitle.setListener(new UserInfoTitleView.UserTitleClickListener() {
             @Override
             public void onClickAvatar() {
-                Bundle bundle = new Bundle();
-                bundle.putString(ImageBigPreviewFragment.BIG_IMAGE_PATH, MyUserInfoManager.getInstance().getAvatar());
-                U.getFragmentUtils().addFragment(
-                        FragmentUtils.newAddParamsBuilder(getActivity(), ImageBigPreviewFragment.class)
-                                .setAddToBackStack(true)
-                                .setEnterAnim(com.component.busilib.R.anim.fade_in_center)
-                                .setExitAnim(com.component.busilib.R.anim.fade_out_center)
-                                .setHasAnimation(true)
-                                .setBundle(bundle)
-                                .build());
+                BigImageBrowseFragment.open(false, getActivity(), MyUserInfoManager.getInstance().getAvatar());
             }
         });
 

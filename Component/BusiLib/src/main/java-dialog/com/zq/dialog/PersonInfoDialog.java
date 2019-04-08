@@ -3,6 +3,7 @@ package com.zq.dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
 import android.view.Gravity;
 import android.view.View;
 
@@ -12,11 +13,11 @@ import com.common.core.userinfo.model.UserInfoModel;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.component.busilib.R;
+import com.imagebrowse.big.BigImageBrowseFragment;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
-import com.zq.person.fragment.ImageBigPreviewFragment;
 import com.zq.report.fragment.ReportFragment;
 
 import static com.zq.report.fragment.ReportFragment.FORM_GAME;
@@ -69,16 +70,7 @@ public class PersonInfoDialog {
 
                         } else if (view.getId() == R.id.avatar_iv) {
                             dialog.dismiss();
-                            Bundle bundle = new Bundle();
-                            bundle.putString(ImageBigPreviewFragment.BIG_IMAGE_PATH, personInfoDialogView.getUserInfoModel().getAvatar());
-                            U.getFragmentUtils().addFragment(
-                                    FragmentUtils.newAddParamsBuilder((BaseActivity) mContext, ImageBigPreviewFragment.class)
-                                            .setAddToBackStack(true)
-                                            .setEnterAnim(R.anim.fade_in_center)
-                                            .setExitAnim(R.anim.fade_out_center)
-                                            .setHasAnimation(true)
-                                            .setBundle(bundle)
-                                            .build());
+                            BigImageBrowseFragment.open(false, (FragmentActivity) mContext,personInfoDialogView.getUserInfoModel().getAvatar());
                         }
                     }
                 })
