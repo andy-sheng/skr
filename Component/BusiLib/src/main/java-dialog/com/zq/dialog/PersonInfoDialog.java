@@ -15,6 +15,7 @@ import com.component.busilib.R;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
+import com.zq.live.proto.Common.UserInfo;
 import com.zq.person.model.PhotoModel;
 import com.zq.report.fragment.ReportFragment;
 
@@ -42,11 +43,11 @@ public class PersonInfoDialog {
             }
 
             @Override
-            public void onClickKick(int userID) {
+            public void onClickKick(UserInfoModel userInfoModel) {
                 mDialogPlus.dismiss(false);
-//                if (mKickListener != null) {
-//                    mKickListener.onClickKick(userID);
-//                }
+                if (mKickListener != null) {
+                    mKickListener.onClickKick(userInfoModel);
+                }
             }
 
             @Override
@@ -92,52 +93,6 @@ public class PersonInfoDialog {
                 .setOverlayBackgroundResource(R.color.black_trans_60)
                 .setExpanded(false)
                 .setCancelable(true)
-//                .setOnClickListener(new OnClickListener() {
-//                    @Override
-//                    public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
-//                        dialog.dismiss();
-//                        if (view.getId() == R.id.report) {
-//                            // 举报
-//                            mIsReport = true;
-//                            dialog.dismiss();
-//
-//                        } else if (view.getId() == R.id.kick) {
-//                            // 踢人
-//                            mIsKick = true;
-//                            dialog.dismiss();
-//                        } else if (view.getId() == R.id.follow_area || view.getId() == R.id.follow_tv) {
-//                            // 关注
-//                            if (personInfoDialogView.getUserInfoModel().isFollow() || personInfoDialogView.getUserInfoModel().isFriend()) {
-//                                // TODO: 2019/3/28 个人信息卡片不让取关
-////                                UserInfoManager.getInstance().mateRelation(personInfoDialogView.getUserInfoModel().getUserId(),
-////                                        UserInfoManager.RA_UNBUILD, personInfoDialogView.getUserInfoModel().isFriend());
-//                            } else {
-//                                UserInfoManager.getInstance().mateRelation(personInfoDialogView.getUserInfoModel().getUserId(),
-//                                        UserInfoManager.RA_BUILD, personInfoDialogView.getUserInfoModel().isFriend());
-//                            }
-//
-//                        } else if (view.getId() == R.id.avatar_iv) {
-//                            dialog.dismiss();
-//                            BigImageBrowseFragment.open(false, (FragmentActivity) mContext, personInfoDialogView.getUserInfoModel().getAvatar());
-//                        }
-//                    }
-//                })
-                .setOnDismissListener(new OnDismissListener() {
-                    @Override
-                    public void onDismiss(@NonNull DialogPlus dialog) {
-//                        if (mIsReport) {
-//                            mIsReport = false;
-//                            showReportView(userId);
-//                        }
-//                        if (mIsKick) {
-//                            mIsKick = false;
-//                            if (mKickListener != null) {
-//                                mKickListener.onClickKick(personInfoDialogView.getUserInfoModel());
-//                            }
-//                        }
-
-                    }
-                })
                 .create();
     }
 
@@ -186,7 +141,7 @@ public class PersonInfoDialog {
     public interface PersonCardClickListener {
         void onClickReport(int userID);
 
-        void onClickKick(int userID);
+        void onClickKick(UserInfoModel userInfoModel);
 
         void onClickAvatar(String avatar);
 

@@ -212,33 +212,33 @@ public interface UserInfoServerApi {
      *
      * @param userID
      * @param offset
-     * @param limit
+     * @param cnt
      * @return
      */
-    @GET("http://dev.stand.inframe.mobi/v1/profile/query-pic")
+    @GET("/v1/profile/query-pic")
     Observable<ApiResult> getPhotos(@Query("userID") long userID,
                                     @Query("offset") int offset,
-                                    @Query("limit") int limit);
+                                    @Query("cnt") int cnt);
 
     /**
      * 查询照片墙
      *
      * @param userID
      * @param offset
-     * @param limit
+     * @param cnt
      * @return
      */
     @GET("http://dev.stand.inframe.mobi/v1/profile/query-pic")
     Call<ApiResult> getPhotosSync(@Query("userID") long userID,
                               @Query("offset") int offset,
-                              @Query("limit") int limit);
+                              @Query("cnt") int cnt);
 
     /**
      * 新增照片墙
      * @param body  "picPath": "string"
      * @return
      */
-    @PUT("http://dev.stand.inframe.mobi/v1/profile/add-pic")
+    @PUT("/v1/profile/add-pic")
     Observable<ApiResult> addPhoto(@Body RequestBody body);
 
 
@@ -247,6 +247,6 @@ public interface UserInfoServerApi {
      * @param body  "picID": 0
      * @return
      */
-    @PUT("http://dev.stand.inframe.mobi/v1/profile/del-pic")
+    @PUT("/v1/profile/del-pic")
     Observable<ApiResult> deletePhoto(@Body RequestBody body);
 }

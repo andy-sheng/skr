@@ -143,6 +143,23 @@ public class UserInfoModel implements Serializable, Cloneable {
         return 0;
     }
 
+    public String getConstellation() {
+        String[] array = this.birthday.split("-");
+        if (!TextUtils.isEmpty(array[1]) && !TextUtils.isEmpty(array[2])) {
+            int month = Integer.valueOf(array[1]);
+            int day = Integer.valueOf(array[2]);
+            return getConstellation(month, day);
+        }
+        return "";
+    }
+
+    private final static int[] dayArr = new int[]{20, 19, 21, 20, 21, 22, 23, 23, 23, 24, 23, 22};
+    private final static String[] constellationArr = new String[]{"摩羯座", "水瓶座", "双鱼座", "白羊座", "金牛座", "双子座", "巨蟹座", "狮子座", "处女座", "天秤座", "天蝎座", "射手座", "摩羯座"};
+
+    private String getConstellation(int month, int day) {
+        return day < dayArr[month - 1] ? constellationArr[month - 1] : constellationArr[month];
+    }
+
     public int getMainLevel() {
         return mainLevel;
     }
@@ -194,7 +211,7 @@ public class UserInfoModel implements Serializable, Cloneable {
     public static UserInfoDB toUserInfoDB(UserInfoModel userInfModel) {
         UserInfoDB userInfoDB = new UserInfoDB();
         if (userInfModel != null) {
-            userInfoDB.setUserId(Long.valueOf((long)userInfModel.getUserId()));
+            userInfoDB.setUserId(Long.valueOf((long) userInfModel.getUserId()));
             userInfoDB.setUserNickname(userInfModel.getNickname());
             userInfoDB.setSex(userInfModel.getSex());
             userInfoDB.setBirthday(userInfModel.getBirthday());

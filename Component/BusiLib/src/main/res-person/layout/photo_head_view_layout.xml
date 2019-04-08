@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/view_20_dp">
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/photo_num_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="个人相册"
+        android:textColor="#3B4E79"
+        android:textSize="@dimen/textsize_14_dp" />
+
+</RelativeLayout>

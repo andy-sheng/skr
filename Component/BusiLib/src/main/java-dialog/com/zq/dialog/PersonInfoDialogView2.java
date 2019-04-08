@@ -14,6 +14,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -22,6 +23,7 @@ import com.common.base.BaseActivity;
 import com.common.core.account.UserAccountManager;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.event.RelationChangeEvent;
 import com.common.core.userinfo.model.UserInfoModel;
@@ -30,6 +32,7 @@ import com.common.flowlayout.FlowLayout;
 import com.common.flowlayout.TagAdapter;
 import com.common.flowlayout.TagFlowLayout;
 import com.common.log.MyLog;
+import com.common.notification.event.FollowNotifyEvent;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -45,7 +48,6 @@ import com.imagebrowse.big.BigImageBrowseFragment;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
-import com.trello.rxlifecycle2.android.ActivityEvent;
 import com.zq.person.adapter.PhotoAdapter;
 import com.zq.person.model.PhotoModel;
 
@@ -58,14 +60,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
+
 import retrofit2.Call;
 import retrofit2.Response;
+import model.RelationNumModel;
 
 public class PersonInfoDialogView2 extends RelativeLayout {
 
@@ -95,9 +93,9 @@ public class PersonInfoDialogView2 extends RelativeLayout {
     ImageView mSrlAvatarBg;
     SimpleDraweeView mSrlAvatarIv;
 
-    private static final int LOCATION_TAG = 0;           //区域标签
-    private static final int AGE_TAG = 1;                //年龄标签
-    private static final int CONSTELLATION_TAG = 2;      //星座标签
+    private static final int LOCATION_TAG = 0;           //城市标签
+    private static final int CONSTELLATION_TAG = 1;      //星座标签
+    private static final int FANS_NUM_TAG = 2;      //粉丝数标签
 
     private List<String> mTags = new ArrayList<>();  //标签
     private HashMap<Integer, String> mHashMap = new HashMap();
@@ -135,8 +133,11 @@ public class PersonInfoDialogView2 extends RelativeLayout {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        EventBus.getDefault().unregister(this);
         mUiHandler.removeCallbacksAndMessages(null);
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+
     }
 
     public void setListener(PersonInfoDialog.PersonCardClickListener listener) {
@@ -150,6 +151,8 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         initUserInfo();
         initOpretaArea();
         initPhotoArea();
+
+        setAppBarCanScroll(false);
     }
 
     private void initData(Context context, int userID, boolean showReport, boolean showKick) {
@@ -174,11 +177,14 @@ public class PersonInfoDialogView2 extends RelativeLayout {
             mFollowIv.setVisibility(View.GONE);
             mMessageIv.setVisibility(View.GONE);
             // TODO: 2019/4/8 可能需要调整布局
+            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mUserInfoArea.getLayoutParams();
+            layoutParams.bottomMargin = U.getDisplayUtils().dip2px(10);
+            mUserInfoArea.setLayoutParams(layoutParams);
         }
 
         mUserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
         getHomePage(mUserId);
-//        getPhotos(mUserId, 0, DEFAULT_CNT);
+        getPhotos(0);
     }
 
     private void getHomePage(int userId) {
@@ -188,7 +194,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
                 if (result.getErrno() == 0) {
                     UserInfoModel userInfoModel = JSON.parseObject(result.getData().getString("userBaseInfo"), UserInfoModel.class);
 //                    List<UserRankModel> userRankModels = JSON.parseArray(result.getData().getJSONObject("userRankInfo").getString("seqInfo"), UserRankModel.class);
-//                    List<RelationNumModel> relationNumModes = JSON.parseArray(result.getData().getJSONObject("userRelationCntInfo").getString("cnt"), RelationNumModel.class);
+                    List<RelationNumModel> relationNumModes = JSON.parseArray(result.getData().getJSONObject("userRelationCntInfo").getString("cnt"), RelationNumModel.class);
                     List<UserLevelModel> userLevelModels = JSON.parseArray(result.getData().getJSONObject("userScoreInfo").getString("userScore"), UserLevelModel.class);
 //                    List<GameStatisModel> userGameStatisModels = JSON.parseArray(result.getData().getJSONObject("userGameStatisticsInfo").getString("statistic"), GameStatisModel.class);
 
@@ -196,6 +202,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
                     boolean isFollow = result.getData().getJSONObject("userMateInfo").getBoolean("isFollow");
 
                     showUserInfo(userInfoModel);
+                    showUserRelationNum(relationNumModes);
                     showUserLevel(userLevelModels);
                     showUserRelation(isFriend, isFollow);
                 }
@@ -207,11 +214,19 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         ApiMethods.subscribe(mUserInfoServerApi.getPhotos(mUserId, offset, DEFAULT_CNT), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
+                mSmartRefresh.finishLoadMore();
                 if (result != null && result.getErrno() == 0) {
                     List<PhotoModel> list = JSON.parseArray(result.getData().getString("pic"), PhotoModel.class);
                     int newOffset = result.getData().getIntValue("offset");
-                    showPhotos(list, newOffset);
+                    int totalCount = result.getData().getIntValue("totalCount");
+                    showPhotos(list, newOffset, totalCount);
                 }
+            }
+
+            @Override
+            public void onNetworkError(ErrorType errorType) {
+                mSmartRefresh.finishLoadMore();
+                super.onNetworkError(errorType);
             }
         });
     }
@@ -237,7 +252,6 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         mSmartRefresh.setOnRefreshListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                mSmartRefresh.finishLoadMore();
                 getPhotos(mOffset);
             }
 
@@ -322,7 +336,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
             @Override
             public void clickValid(View v) {
                 if (mClickListener != null) {
-                    mClickListener.onClickKick(mUserId);
+                    mClickListener.onClickKick(mUserInfoModel);
                 }
             }
         });
@@ -379,10 +393,12 @@ public class PersonInfoDialogView2 extends RelativeLayout {
                                 if (result != null && result.getErrno() == 0) {
                                     final List<PhotoModel> list = JSON.parseArray(result.getData().getString("pic"), PhotoModel.class);
                                     final int newOffset = result.getData().getIntValue("offset");
+                                    final int totalCount = result.getData().getIntValue("totalCount");
+
                                     mUiHandler.post(new Runnable() {
                                         @Override
                                         public void run() {
-                                            showPhotos(list, newOffset);
+                                            showPhotos(list, newOffset, totalCount);
                                         }
                                     });
                                     return list;
@@ -421,11 +437,13 @@ public class PersonInfoDialogView2 extends RelativeLayout {
     }
 
 
-    public void showPhotos(List<PhotoModel> list, int offset) {
+    public void showPhotos(List<PhotoModel> list, int offset, int totalCount) {
         this.mOffset = offset;
 
+        mPhotoAdapter.setTotalCount(totalCount);
         if (list != null && list.size() != 0) {
             if (!hasInitHeight) {
+                setAppBarCanScroll(true);
                 ViewGroup.LayoutParams layoutParams = mSmartRefresh.getLayoutParams();
                 layoutParams.height = U.getDisplayUtils().dip2px(375);
                 mSmartRefresh.setLayoutParams(layoutParams);
@@ -439,23 +457,25 @@ public class PersonInfoDialogView2 extends RelativeLayout {
             mSmartRefresh.setEnableLoadMore(false);//是否启用上拉加载功能
             if (mPhotoAdapter.getDataList() != null && mPhotoAdapter.getDataList().size() > 0) {
                 // 没有更多了
-
             } else {
                 // 没有数据
-                // TODO: 2019/4/8 禁止整个布局的滑动
-                if (mAppbar != null && mAppbar.getLayoutParams() != null) {
-                    CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) mAppbar.getLayoutParams();
-                    AppBarLayout.Behavior behavior = new AppBarLayout.Behavior();
-                    behavior.setDragCallback(new AppBarLayout.Behavior.DragCallback() {
-                        @Override
-                        public boolean canDrag(@NonNull AppBarLayout appBarLayout) {
-                            return false;
-                        }
-                    });
-                    params.setBehavior(behavior);
-                    mAppbar.setLayoutParams(params);
-                }
+                setAppBarCanScroll(false);
             }
+        }
+    }
+
+    private void setAppBarCanScroll(final boolean canScroll) {
+        if (mAppbar != null && mAppbar.getLayoutParams() != null) {
+            CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) mAppbar.getLayoutParams();
+            AppBarLayout.Behavior behavior = new AppBarLayout.Behavior();
+            behavior.setDragCallback(new AppBarLayout.Behavior.DragCallback() {
+                @Override
+                public boolean canDrag(@NonNull AppBarLayout appBarLayout) {
+                    return canScroll;
+                }
+            });
+            params.setBehavior(behavior);
+            mAppbar.setLayoutParams(params);
         }
     }
 
@@ -480,11 +500,24 @@ public class PersonInfoDialogView2 extends RelativeLayout {
             }
 
             if (!TextUtils.isEmpty(model.getBirthday())) {
-                mHashMap.put(AGE_TAG, String.format(U.app().getString(R.string.age_tag), model.getAge()));
+                mHashMap.put(CONSTELLATION_TAG, model.getConstellation());
             }
 
             refreshTag();
         }
+    }
+
+
+    private void showUserRelationNum(List<RelationNumModel> relationNumModes) {
+        int fansNum = 0;
+        for (RelationNumModel mode : relationNumModes) {
+            if (mode.getRelation() == UserInfoManager.RELATION_FANS) {
+                fansNum = mode.getCnt();
+            }
+        }
+        mHashMap.put(FANS_NUM_TAG, String.format(getResources().getString(R.string.fans_num_tag), fansNum));
+
+        refreshTag();
     }
 
     public void showUserLevel(List<UserLevelModel> list) {
@@ -500,7 +533,42 @@ public class PersonInfoDialogView2 extends RelativeLayout {
     public void showUserRelation(final boolean isFriend, final boolean isFollow) {
         this.isFollow = isFollow;
         this.isFriend = isFriend;
+
+        refreshFollow();
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(RelationChangeEvent event) {
+        if (event.useId == mUserId) {
+            isFollow = event.isFollow;
+            isFriend = event.isFriend;
+
+            refreshFollow();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(FollowNotifyEvent event) {
+        if (event.mUserInfoModel != null && event.mUserInfoModel.getUserId() == mUserId) {
+            isFollow = event.mUserInfoModel.isFollow();
+            isFriend = event.mUserInfoModel.isFriend();
+
+            refreshFollow();
+        }
+    }
+
+    private void refreshFollow() {
+        mUserInfoModel.setFollow(isFollow);
+        mUserInfoModel.setFriend(isFriend);
+        if (isFriend) {
+            mFollowIv.setBackgroundResource(R.drawable.person_card_friend);
+        } else if (isFollow) {
+            mFollowIv.setBackgroundResource(R.drawable.person_card_followed);
+        } else {
+            mFollowIv.setBackgroundResource(R.drawable.person_card_follow);
+        }
+    }
+
 
     private void refreshTag() {
         mTags.clear();
@@ -509,21 +577,16 @@ public class PersonInfoDialogView2 extends RelativeLayout {
                 mTags.add(mHashMap.get(LOCATION_TAG));
             }
 
-            if (!TextUtils.isEmpty(mHashMap.get(AGE_TAG))) {
-                mTags.add(mHashMap.get(AGE_TAG));
-            }
-
             if (!TextUtils.isEmpty(mHashMap.get(CONSTELLATION_TAG))) {
                 mTags.add(mHashMap.get(CONSTELLATION_TAG));
             }
+
+            if (!TextUtils.isEmpty(mHashMap.get(FANS_NUM_TAG))) {
+                mTags.add(mHashMap.get(FANS_NUM_TAG));
+            }
+
         }
         mTagAdapter.setTagDatas(mTags);
         mTagAdapter.notifyDataChanged();
-    }
-
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(RelationChangeEvent event) {
-
     }
 }

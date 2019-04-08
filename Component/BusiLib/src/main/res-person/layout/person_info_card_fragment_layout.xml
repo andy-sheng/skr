@@ -47,6 +47,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fitsSystemWindows="true"
+                    android:paddingBottom="@dimen/view_10_dp"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                     <RelativeLayout
@@ -161,8 +162,7 @@
                                 android:layout_height="@dimen/view_50_dp"
                                 android:layout_centerVertical="true"
                                 android:layout_marginRight="@dimen/view_14_dp"
-                                android:layout_toLeftOf="@id/message_iv"
-                                android:background="@drawable/person_card_follow" />
+                                android:layout_toLeftOf="@id/message_iv" />
 
                             <ImageView
                                 android:id="@+id/kick_iv"
