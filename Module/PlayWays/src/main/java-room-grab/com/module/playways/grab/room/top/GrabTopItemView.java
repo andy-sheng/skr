@@ -116,7 +116,7 @@ public class GrabTopItemView extends RelativeLayout {
             AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mPlayerInfoModel.getUserInfo().getAvatar())
                     .setCircle(true)
                     .setGray(mPlayerInfoModel.isOnline() ? false : true) // 先加上，方便调试时看出哪个用户离开了
-                    .setBorderColorBySex(mPlayerInfoModel.getUserInfo().getSex() == 1)
+                    .setBorderColor(U.getColor(R.color.white))
                     .setBorderWidth(U.getDisplayUtils().dip2px(2))
                     .build()
             );
@@ -132,7 +132,7 @@ public class GrabTopItemView extends RelativeLayout {
         AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mPlayerInfoModel.getUserInfo().getAvatar())
                 .setCircle(true)
                 .setGray(mPlayerInfoModel.isOnline() ? false : true) // 先加上，方便调试时看出哪个用户离开了
-                .setBorderColorBySex(mPlayerInfoModel.getUserInfo().getSex() == 1)
+                .setBorderColor(U.getColor(R.color.white))
                 .setBorderWidth(U.getDisplayUtils().dip2px(2))
                 .build()
         );

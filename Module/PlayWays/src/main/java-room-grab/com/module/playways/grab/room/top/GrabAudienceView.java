@@ -17,6 +17,7 @@ import com.module.playways.grab.room.event.SomeOneJoinWaitSeatEvent;
 import com.module.playways.grab.room.event.SomeOneLeaveWaitSeatEvent;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
+import com.module.rank.R;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -142,7 +143,7 @@ public class GrabAudienceView extends RelativeLayout {
             AvatarUtils.loadAvatarByUrl(vp.mBaseImageView, AvatarUtils.newParamsBuilder(userInfoModel.getAvatar())
                     .setCircle(true)
                     .setBorderWidth(U.getDisplayUtils().dip2px(1))
-                    .setBorderColorBySex(userInfoModel.getIsMale())
+                    .setBorderColor(U.getColor(R.color.white))
                     .build());
         }
     }
