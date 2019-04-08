@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 
 import com.common.base.BaseActivity;
+import com.common.base.R;
 
 /**
  * 包裹看大图的Activity
@@ -20,8 +21,14 @@ public class BigImageBrowseActivity extends BaseActivity {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        BigImageBrowseFragment.open(false, this,sLoader);
+        BigImageBrowseFragment.open(false, this, sLoader);
         sLoader = null;
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, R.anim.fade_out_center);
     }
 
     @Override
@@ -33,5 +40,11 @@ public class BigImageBrowseActivity extends BaseActivity {
         sLoader = loader;
         Intent intent = new Intent(activity, BigImageBrowseActivity.class);
         activity.startActivity(intent);
+        activity.overridePendingTransition(R.anim.fade_in_center, 0);
+    }
+
+    @Override
+    public boolean canSlide() {
+        return false;
     }
 }

@@ -178,22 +178,21 @@ public class PkInfoFragment extends BaseFragment implements IPkInfoView {
             @Override
             public void click(View v) {
 //                if (true) {
-//                    BigImageBrowseFragment.open(false, getActivity(), new BigImageBrowseFragment.Loader<Integer>() {
+//                    BigImageBrowseFragment.open(true, getActivity(), new BigImageBrowseFragment.Loader<Integer>() {
 //                        List<Integer> mStrings = new ArrayList<>();
 //
 //                        @Override
 //                        public void init() {
-//                            mStrings.add(100);
-//                            mStrings.add(200);
-//                            mStrings.add(300);
-//                            mStrings.add(400);
+//                            mStrings.add(50);
+//                            mStrings.add(60);
+//                            mStrings.add(70);
 //                        }
 //
 //                        @Override
-//                        public void load(ImageBrowseView imageBrowseView, int position) {
-//                            int r = mStrings.get(position);
-//                            imageBrowseView.load("http://res-static.inframe.mobi/pictures/1752091/48031a16980612dd.png?r="+r);
+//                        public void load(ImageBrowseView imageBrowseView, int position, Object item) {
+//                            imageBrowseView.load("http://res-static.inframe.mobi/pictures/1752091/48031a16980612dd.png?r=" + item);
 //                        }
+//
 //
 //                        @Override
 //                        public int getInitCurrentItemPostion() {
@@ -201,37 +200,28 @@ public class PkInfoFragment extends BaseFragment implements IPkInfoView {
 //                        }
 //
 //                        @Override
-//                        public int getCount() {
-//                            return mStrings.size();
+//                        public List<Integer> getInitList() {
+//                            return mStrings;
 //                        }
 //
 //                        @Override
-//                        public List<Integer> loadMore(boolean backward, int position) {
+//                        public List<Integer> loadMore(boolean backward, int position, Integer item) {
 //                            MyLog.d(TAG, "loadMore" + " backward=" + backward + " position=" + position);
 //                            List<Integer> l = new ArrayList<>();
 //                            if (backward) {
-//                                l.add(mStrings.get(position) + 10);
+//                                l.add(item + 10);
 //                            } else {
-//                                l.add(0, mStrings.get(0) - 10);
+//                                l.add(item - 10);
 //                            }
 //                            return l;
 //                        }
 //
 //                        @Override
-//                        public void afterLoadMoreOnUi(boolean backward,List<Integer> list) {
-//                            if(backward){
-//                                mStrings.addAll(list);
-//                            }else{
-//                                mStrings.addAll(0,list);
-//                            }
-//                        }
-//
-//                        @Override
-//                        public boolean hasMore(boolean backward) {
+//                        public boolean hasMore(boolean backward, int position, Integer item) {
 //                            if (backward) {
-//                                return mStrings.size() < 10;
+//                                return item < 150;
 //                            } else {
-//                                return mStrings.size() < 10;
+//                                return item > 0;
 //                            }
 //                        }
 //

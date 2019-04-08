@@ -155,11 +155,15 @@
         <activity android:name="com.respicker.activity.ResPickerActivity"
             android:screenOrientation="portrait"/>
 
-        <activity
-            android:name="com.common.permission.FloatWindowPermissionActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:launchMode="standard"
-            android:windowSoftInputMode="stateHidden|stateAlwaysHidden"/>
+        <!--<activity-->
+            <!--android:name="com.common.permission.FloatWindowPermissionActivity"-->
+            <!--android:configChanges="keyboardHidden|orientation|screenSize"-->
+            <!--android:launchMode="standard"-->
+            <!--android:windowSoftInputMode="stateHidden|stateAlwaysHidden"/>-->
+        <!---->
+        <activity android:name="com.imagebrowse.big.BigImageBrowseActivity"
+            android:screenOrientation="portrait"/>
+
 
     </application>
 

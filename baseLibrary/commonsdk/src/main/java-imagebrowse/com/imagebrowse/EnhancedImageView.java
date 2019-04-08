@@ -78,11 +78,6 @@ public class EnhancedImageView extends RelativeLayout {
         super.onAttachedToWindow();
     }
 
-    // 设置图片长按事件的监听
-    public void setLongClickListener(OnLongClickListener longClickListener) {
-        this.mLongClickListener = longClickListener;
-    }
-
     @Override
     public void setOnClickListener(@Nullable OnClickListener l) {
         this.mClickListener = l;
@@ -90,7 +85,7 @@ public class EnhancedImageView extends RelativeLayout {
 
     @Override
     public void setOnLongClickListener(@Nullable OnLongClickListener l) {
-        super.setOnLongClickListener(l);
+        this.mLongClickListener = l;
     }
 
     @Override

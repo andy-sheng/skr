@@ -1,11 +1,10 @@
 package com.imagebrowse.big;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -16,6 +15,7 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.titlebar.CommonTitleBar;
+import com.common.view.viewpager.arraypageradapter.ArrayViewPagerAdapter;
 import com.imagebrowse.ImageBrowseView;
 import com.trello.rxlifecycle2.android.FragmentEvent;
 
@@ -45,45 +45,32 @@ public class BigImageBrowseFragment extends BaseFragment {
     boolean mBackward;
     Disposable mLoadMoreDisposable;
 
-    PagerAdapter mPagerAdapter = new PagerAdapter() {
-
-        @NonNull
+    ArrayViewPagerAdapter mPagerAdapter = new ArrayViewPagerAdapter() {
         @Override
-        public Object instantiateItem(@NonNull ViewGroup container, int position) {
+        public View getView(LayoutInflater inflater, ViewGroup container, Object item, int position) {
             ImageBrowseView imageBrowseView = new ImageBrowseView(container.getContext());
             if (mLoader != null) {
-                mLoader.load(imageBrowseView, position);
+                mLoader.load(imageBrowseView, position, item);
             } else {
                 //imageBrowseView.load(data);
             }
-            container.addView(imageBrowseView);
+            imageBrowseView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    //U.getToastUtil().showShort("长按事件");
+                    return false;
+                }
+            });
+            imageBrowseView.setOnClickListener(new DebounceViewClickListener() {
+                @Override
+                public void clickValid(View v) {
+                    finish();
+                }
+            });
             return imageBrowseView;
         }
-
-        @Override
-        public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-            container.removeView((View) object);
-        }
-
-        @Override
-        public int getCount() {
-            if (mLoader != null) {
-                return mLoader.getCount();
-            } else {
-                return 0;
-            }
-        }
-
-        @Override
-        public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
-            return view == object;
-        }
-
-        @Override
-        public int getItemPosition(Object object) {
-            return POSITION_NONE;
-        }
     };
+
 
     @Override
     public int initView() {
@@ -110,6 +97,7 @@ public class BigImageBrowseFragment extends BaseFragment {
             finish();
             return;
         }
+        mPagerAdapter.addAll(mLoader.getInitList());
         mImagesVp.setAdapter(mPagerAdapter);
         setCurrentItem(mLoader.getInitCurrentItemPostion());
         mLastPostion = mImagesVp.getCurrentItem();
@@ -136,16 +124,20 @@ public class BigImageBrowseFragment extends BaseFragment {
                 if (state == 0) {
                     if (mBackward) {
                         // 往后滑动
-                        if (mLastPostion >= mLoader.getCount() - 2) {
-                            if (mLoader.hasMore(true)) {
+                        if (mLastPostion >= mPagerAdapter.getCount() - 2) {
+                            if (mLoader.hasMore(true,
+                                    mPagerAdapter.getCount(),
+                                    mPagerAdapter.getItem(mPagerAdapter.getCount() - 1))) {
                                 // 需要往后加载更多了
-                                loadMore(true, mLoader.getCount() - 1);
+                                loadMore(true, mPagerAdapter.getCount() - 1);
                             }
                         }
                     } else {
                         if (mLastPostion <= 1) {
                             // 需要往后加载更多了
-                            if (mLoader.hasMore(false)) {
+                            if (mLoader.hasMore(false,
+                                    0,
+                                    mPagerAdapter.getItem(0))) {
                                 loadMore(false, 0);
                             }
                         }
@@ -162,7 +154,7 @@ public class BigImageBrowseFragment extends BaseFragment {
         mLoadMoreDisposable = Observable.create(new ObservableOnSubscribe<List>() {
             @Override
             public void subscribe(ObservableEmitter<List> emitter) throws Exception {
-                List dataList = mLoader.loadMore(backward, postion);
+                List dataList = mLoader.loadMore(backward, postion, mPagerAdapter.getItem(postion));
                 emitter.onNext(dataList);
                 emitter.onComplete();
             }
@@ -172,12 +164,11 @@ public class BigImageBrowseFragment extends BaseFragment {
                 .subscribe(new Consumer<List>() {
                     @Override
                     public void accept(List list) throws Exception {
-                        mLoader.afterLoadMoreOnUi(backward, list);
-                        mPagerAdapter.notifyDataSetChanged();
                         if (backward) {
-
+                            mPagerAdapter.addAll(list);
                         } else {
-                            setCurrentItem(mImagesVp.getCurrentItem() + list.size());
+                            mPagerAdapter.addAll(0, list);
+                            //setCurrentItem(mImagesVp.getCurrentItem() + list.size());
                         }
                     }
                 });
@@ -208,6 +199,12 @@ public class BigImageBrowseFragment extends BaseFragment {
         } else {
             U.getFragmentUtils().popFragment(BigImageBrowseFragment.this);
         }
+    }
+
+    @Override
+    protected boolean onBackPressed() {
+        finish();
+        return true;
     }
 
     @Override
@@ -243,7 +240,7 @@ public class BigImageBrowseFragment extends BaseFragment {
             }
 
             @Override
-            public void load(ImageBrowseView imageBrowseView, int position) {
+            public void load(ImageBrowseView imageBrowseView, int position, Object item) {
                 imageBrowseView.load(path);
             }
 
@@ -253,36 +250,33 @@ public class BigImageBrowseFragment extends BaseFragment {
             }
 
             @Override
-            public int getCount() {
-                return 1;
+            public List<String> getInitList() {
+                ArrayList list = new ArrayList<>();
+                list.add(path);
+                return list;
             }
 
             @Override
-            public List<String> loadMore(boolean backward, int position) {
+            public List<String> loadMore(boolean backward, int position, String data) {
                 return new ArrayList<>();
             }
 
             @Override
-            public boolean hasMore(boolean backward) {
+            public boolean hasMore(boolean backward, int position, String data) {
                 return false;
             }
 
-            @Override
-            public void afterLoadMoreOnUi(boolean backward, List<String> list) {
-
-            }
         });
     }
 
     public interface Loader<T> {
         void init();
 
-        void load(ImageBrowseView imageBrowseView, int position);
+        void load(ImageBrowseView imageBrowseView, int position, Object item);
 
         int getInitCurrentItemPostion();
 
-        int getCount();
-
+        List<T> getInitList();
 
         /**
          * 执行在IO线程
@@ -293,7 +287,7 @@ public class BigImageBrowseFragment extends BaseFragment {
          * @param backward
          * @param position 返回新增了多少个元素，主要用在向前load more 时，更正当前元素的索引
          */
-        List<T> loadMore(boolean backward, int position);
+        List<T> loadMore(boolean backward, int position, T data);
 
         /**
          * 一定要判断是向前还是向后
@@ -302,8 +296,6 @@ public class BigImageBrowseFragment extends BaseFragment {
          *
          * @param backward
          */
-        boolean hasMore(boolean backward);
-
-        void afterLoadMoreOnUi(boolean backward, List<T> list);
+        boolean hasMore(boolean backward, int position, T data);
     }
 }
