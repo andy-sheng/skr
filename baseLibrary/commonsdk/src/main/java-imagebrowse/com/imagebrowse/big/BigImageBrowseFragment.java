@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.common.base.BaseFragment;
 import com.common.base.R;
+import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -18,12 +19,15 @@ import com.common.view.titlebar.CommonTitleBar;
 import com.imagebrowse.ImageBrowseView;
 import com.trello.rxlifecycle2.android.FragmentEvent;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -38,7 +42,8 @@ public class BigImageBrowseFragment extends BaseFragment {
     //ArrayList<IMAGE_DATA> mDataList = new ArrayList<>();
     Loader mLoader;
     int mLastPostion = 0;
-
+    boolean mBackward;
+    Disposable mLoadMoreDisposable;
 
     PagerAdapter mPagerAdapter = new PagerAdapter() {
 
@@ -101,75 +106,86 @@ public class BigImageBrowseFragment extends BaseFragment {
             }
         });
 
+        if (mLoader == null) {
+            finish();
+            return;
+        }
         mImagesVp.setAdapter(mPagerAdapter);
+        setCurrentItem(mLoader.getInitCurrentItemPostion());
+        mLastPostion = mImagesVp.getCurrentItem();
         mImagesVp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+                //MyLog.d(TAG, "onPageScrolled" + " position=" + position + " positionOffset=" + positionOffset + " positionOffsetPixels=" + positionOffsetPixels);
             }
 
             @Override
             public void onPageSelected(int position) {
+                MyLog.d(TAG, "onPageSelected" + " position=" + position);
                 if (position > mLastPostion) {
-                    // 往后滑动
-                    if (position >= mLoader.getCount() - 2) {
-                        if (mLoader.hasMore(true)) {
-                            // 需要往后加载更多了
-                            loadMore(true, mLoader.getCount() - 1);
-                        }
-                    }
+                    mBackward = true;
                 } else if (position < mLastPostion) {
-                    if (position <= 1) {
-                        // 需要往后加载更多了
-                        if (mLoader.hasMore(false)) {
-                            loadMore(false, 0);
-                        }
-                    }
+                    mBackward = false;
                 }
                 mLastPostion = position;
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
+                MyLog.d(TAG, "onPageScrollStateChanged" + " state=" + state);
+                if (state == 0) {
+                    if (mBackward) {
+                        // 往后滑动
+                        if (mLastPostion >= mLoader.getCount() - 2) {
+                            if (mLoader.hasMore(true)) {
+                                // 需要往后加载更多了
+                                loadMore(true, mLoader.getCount() - 1);
+                            }
+                        }
+                    } else {
+                        if (mLastPostion <= 1) {
+                            // 需要往后加载更多了
+                            if (mLoader.hasMore(false)) {
+                                loadMore(false, 0);
+                            }
+                        }
+                    }
+                }
             }
         });
-        if (mLoader == null) {
-            finish();
-        }
     }
 
     void loadMore(boolean backward, int postion) {
-        Observable.create(new ObservableOnSubscribe<Object>() {
+        if (mLoadMoreDisposable != null && !mLoadMoreDisposable.isDisposed()) {
+            return;
+        }
+        mLoadMoreDisposable = Observable.create(new ObservableOnSubscribe<List>() {
             @Override
-            public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
-                mLoader.loadMore(backward, postion);
+            public void subscribe(ObservableEmitter<List> emitter) throws Exception {
+                List dataList = mLoader.loadMore(backward, postion);
+                emitter.onNext(dataList);
                 emitter.onComplete();
             }
         }).subscribeOn(Schedulers.io())
                 .compose(BigImageBrowseFragment.this.bindUntilEvent(FragmentEvent.DESTROY))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Object>() {
+                .subscribe(new Consumer<List>() {
                     @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(Object o) {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
+                    public void accept(List list) throws Exception {
+                        mLoader.afterLoadMoreOnUi(backward, list);
                         mPagerAdapter.notifyDataSetChanged();
+                        if (backward) {
+
+                        } else {
+                            setCurrentItem(mImagesVp.getCurrentItem() + list.size());
+                        }
                     }
                 });
+    }
+
+    void setCurrentItem(int postion) {
+        MyLog.d(TAG, "setCurrentItem" + " postion=" + postion);
+        mImagesVp.setCurrentItem(postion);
     }
 
     @Override
@@ -202,6 +218,9 @@ public class BigImageBrowseFragment extends BaseFragment {
     }
 
     public static void open(boolean useActivity, FragmentActivity activity, Loader mLoader) {
+        if (mLoader != null) {
+            mLoader.init();
+        }
         if (useActivity) {
             BigImageBrowseActivity.open(mLoader, activity);
         } else {
@@ -217,10 +236,20 @@ public class BigImageBrowseFragment extends BaseFragment {
     }
 
     public static void open(boolean useActivity, FragmentActivity activity, String path) {
-        open(useActivity, activity, new Loader() {
+        open(useActivity, activity, new Loader<String>() {
+            @Override
+            public void init() {
+
+            }
+
             @Override
             public void load(ImageBrowseView imageBrowseView, int position) {
                 imageBrowseView.load(path);
+            }
+
+            @Override
+            public int getInitCurrentItemPostion() {
+                return 0;
             }
 
             @Override
@@ -229,32 +258,52 @@ public class BigImageBrowseFragment extends BaseFragment {
             }
 
             @Override
-            public void loadMore(boolean backward, int position) {
-
+            public List<String> loadMore(boolean backward, int position) {
+                return new ArrayList<>();
             }
 
             @Override
             public boolean hasMore(boolean backward) {
                 return false;
             }
+
+            @Override
+            public void afterLoadMoreOnUi(boolean backward, List<String> list) {
+
+            }
         });
     }
 
-    public interface Loader {
+    public interface Loader<T> {
+        void init();
+
         void load(ImageBrowseView imageBrowseView, int position);
+
+        int getInitCurrentItemPostion();
 
         int getCount();
 
 
         /**
+         * 执行在IO线程
+         * 一定要判断是向前还是向后
          * backward 为 true，表示要向后加载更多，position 为当前最后一个元素的索引
          * backward 为 false，表示要向前加载更多，position 为当前最前一个元素的索引
          *
          * @param backward
-         * @param position
+         * @param position 返回新增了多少个元素，主要用在向前load more 时，更正当前元素的索引
          */
-        void loadMore(boolean backward, int position);
+        List<T> loadMore(boolean backward, int position);
 
+        /**
+         * 一定要判断是向前还是向后
+         * backward 为 true，表示要向后加载更多
+         * backward 为 false，表示要向前加载更多
+         *
+         * @param backward
+         */
         boolean hasMore(boolean backward);
+
+        void afterLoadMoreOnUi(boolean backward, List<T> list);
     }
 }

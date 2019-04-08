@@ -36,6 +36,7 @@ import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
 import com.common.view.titlebar.CommonTitleBar;
 import com.component.busilib.constans.GameModeType;
+import com.imagebrowse.ImageBrowseView;
 import com.imagebrowse.big.BigImageBrowseFragment;
 import com.module.RouterConstants;
 import com.module.home.R;
@@ -52,6 +53,7 @@ import com.zq.level.view.NormalLevelView2;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -175,6 +177,67 @@ public class PkInfoFragment extends BaseFragment implements IPkInfoView {
         mIvVoiceRoom.setOnClickListener(new AnimateClickListener() {
             @Override
             public void click(View v) {
+//                if (true) {
+//                    BigImageBrowseFragment.open(false, getActivity(), new BigImageBrowseFragment.Loader<Integer>() {
+//                        List<Integer> mStrings = new ArrayList<>();
+//
+//                        @Override
+//                        public void init() {
+//                            mStrings.add(100);
+//                            mStrings.add(200);
+//                            mStrings.add(300);
+//                            mStrings.add(400);
+//                        }
+//
+//                        @Override
+//                        public void load(ImageBrowseView imageBrowseView, int position) {
+//                            int r = mStrings.get(position);
+//                            imageBrowseView.load("http://res-static.inframe.mobi/pictures/1752091/48031a16980612dd.png?r="+r);
+//                        }
+//
+//                        @Override
+//                        public int getInitCurrentItemPostion() {
+//                            return 2;
+//                        }
+//
+//                        @Override
+//                        public int getCount() {
+//                            return mStrings.size();
+//                        }
+//
+//                        @Override
+//                        public List<Integer> loadMore(boolean backward, int position) {
+//                            MyLog.d(TAG, "loadMore" + " backward=" + backward + " position=" + position);
+//                            List<Integer> l = new ArrayList<>();
+//                            if (backward) {
+//                                l.add(mStrings.get(position) + 10);
+//                            } else {
+//                                l.add(0, mStrings.get(0) - 10);
+//                            }
+//                            return l;
+//                        }
+//
+//                        @Override
+//                        public void afterLoadMoreOnUi(boolean backward,List<Integer> list) {
+//                            if(backward){
+//                                mStrings.addAll(list);
+//                            }else{
+//                                mStrings.addAll(0,list);
+//                            }
+//                        }
+//
+//                        @Override
+//                        public boolean hasMore(boolean backward) {
+//                            if (backward) {
+//                                return mStrings.size() < 10;
+//                            } else {
+//                                return mStrings.size() < 10;
+//                            }
+//                        }
+//
+//                    });
+//                    return;
+//                }
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_AUDIOROOM)
                         .withBoolean("selectSong", true)
                         .navigation();

@@ -2,6 +2,7 @@ package com.imagebrowse;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.Animatable;
 import android.net.Uri;
 import android.os.Handler;
@@ -10,6 +11,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.common.base.R;
 import com.common.image.fresco.BaseImageView;
@@ -122,6 +124,14 @@ public class EnhancedImageView extends RelativeLayout {
     public void load(String path) {
 //        path = "http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/1111.jpg?x-oss-process=image/resize,w_480,h_1080/circle,r_500/blur,r_30,s_20";
         MyLog.d(TAG, "load" + " path=" + path);
+//        TextView textView = new TextView(getContext());
+//        LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 300);
+//        lp.topMargin=400;
+//        textView.setTextColor(Color.RED);
+//        textView.setGravity(CENTER_IN_PARENT);
+//        textView.setText("path=" + path);
+//        addView(textView, lp);
+
         if (path.startsWith("http://") || path.startsWith("https://")) {
             HttpImage httpImage = (HttpImage) ImageFactory.newHttpImage(path)
                     .setFailureDrawable(U.app().getResources().getDrawable(R.drawable.load_img_error))
@@ -139,7 +149,7 @@ public class EnhancedImageView extends RelativeLayout {
     }
 
     public void load(BaseImage baseImage) {
-        if(baseImage == null || baseImage.getUri() == null){
+        if (baseImage == null || baseImage.getUri() == null) {
             return;
         }
 
@@ -253,7 +263,7 @@ public class EnhancedImageView extends RelativeLayout {
             @Override
             public void onProgressUpdate(float progress) {
                 //显示下载进度条
-                MyLog.d(TAG, "onProgressUpdate" + " progress=" + progress);
+                //MyLog.d(TAG, "onProgressUpdate" + " progress=" + progress);
             }
 
             @Override
@@ -272,7 +282,7 @@ public class EnhancedImageView extends RelativeLayout {
             @Override
             public void processWithInfo(ImageInfo info, Animatable animatable) {
                 if (preCallback != null) {
-                    preCallback.processWithInfo(info,animatable);
+                    preCallback.processWithInfo(info, animatable);
                 }
                 if (!useSubSampleView()) {
                     return;
