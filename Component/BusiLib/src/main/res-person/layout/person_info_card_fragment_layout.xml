@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/smart_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginRight="@dimen/view_16_dp"
+        android:layout_marginBottom="@dimen/view_16_dp"
+        android:background="@drawable/person_card_bg"
+        android:paddingBottom="@dimen/view_6_dp"
+        app:srlFooterTranslationViewId="@+id/photo_view">
+
+        <com.scwang.smartrefresh.layout.header.ClassicsHeader
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srlClassicsSpinnerStyle="FixedBehind" />
+
+        <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/coordinator"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/photo_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:overScrollMode="never"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"></android.support.v7.widget.RecyclerView>
+
+            <android.support.design.widget.AppBarLayout
+                android:id="@+id/appbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:fadingEdge="none"
+                app:elevation="@dimen/view_0_dp">
+
+                <android.support.design.widget.CollapsingToolbarLayout
+                    android:id="@+id/toolbar_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fitsSystemWindows="true"
+                    app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+                    <RelativeLayout
+                        android:id="@+id/user_info_area"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/view_70_dp">
+
+                        <ImageView
+                            android:id="@+id/avatar_bg"
+                            android:layout_width="@dimen/view_62_dp"
+                            android:layout_height="@dimen/view_67_dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="@dimen/view_18_dp"
+                            android:background="@drawable/b_touxiang" />
+
+                        <com.facebook.drawee.view.SimpleDraweeView
+                            android:id="@+id/avatar_iv"
+                            android:layout_width="@dimen/view_52_dp"
+                            android:layout_height="@dimen/view_52_dp"
+                            android:layout_alignLeft="@id/avatar_bg"
+                            android:layout_alignTop="@id/avatar_bg"
+                            android:layout_marginLeft="@dimen/view_5_dp"
+                            android:layout_marginTop="@dimen/view_5_dp" />
+
+                        <com.common.view.ex.ExTextView
+                            android:id="@+id/report"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginTop="@dimen/view_12_dp"
+                            android:layout_marginRight="@dimen/view_12_dp"
+                            android:drawableTop="@drawable/ic_report_normal"
+                            android:drawablePadding="@dimen/view_6_dp"
+                            android:gravity="center"
+                            android:text="举报"
+                            android:textColor="#3B4E79"
+                            android:textSize="@dimen/textsize_12_dp" />
+
+                        <com.common.view.ex.ExTextView
+                            android:id="@+id/name_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/view_33_dp"
+                            android:layout_alignTop="@+id/avatar_bg"
+                            android:layout_marginLeft="@dimen/view_10_dp"
+                            android:layout_marginTop="@dimen/view_8_dp"
+                            android:layout_toLeftOf="@id/report"
+                            android:layout_toRightOf="@id/avatar_bg"
+                            android:ellipsize="end"
+                            android:gravity="left|center_vertical"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:text="KTV酒彪子"
+                            android:textColor="#3B4E79"
+                            android:textSize="@dimen/textsize_24_dp"
+                            android:textStyle="bold" />
+
+                        <com.common.view.ex.ExTextView
+                            android:id="@+id/level_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/view_20_dp"
+                            android:layout_below="@id/name_tv"
+                            android:layout_alignLeft="@id/name_tv"
+                            android:layout_marginTop="@dimen/view_2_dp"
+                            android:layout_toLeftOf="@id/report"
+                            android:ellipsize="end"
+                            android:gravity="left|center_vertical"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:text="铂金唱将II"
+                            android:textColor="#3B4E79"
+                            android:textSize="@dimen/textsize_14_dp" />
+
+                        <com.common.flowlayout.TagFlowLayout
+                            android:id="@+id/flowlayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/avatar_bg"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginLeft="-6dp"
+                            android:layout_marginTop="@dimen/view_10_dp"
+                            android:layout_marginBottom="@dimen/view_14_dp"></com.common.flowlayout.TagFlowLayout>
+
+                    </RelativeLayout>
+
+                    <android.support.v7.widget.Toolbar
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/view_70_dp"
+                        android:layout_gravity="bottom|center_horizontal"
+                        app:contentInsetStart="@dimen/view_0_dp"
+                        app:contentInsetStartWithNavigation="@dimen/view_0_dp"
+                        app:layout_collapseMode="pin">
+
+                        <RelativeLayout
+                            android:id="@+id/opreta_area"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <ImageView
+                                android:id="@+id/message_iv"
+                                android:layout_width="@dimen/view_44_dp"
+                                android:layout_height="@dimen/view_50_dp"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginRight="@dimen/view_16_dp"
+                                android:background="@drawable/person_card_sixin" />
+
+                            <ImageView
+                                android:id="@+id/follow_iv"
+                                android:layout_width="@dimen/view_114_dp"
+                                android:layout_height="@dimen/view_50_dp"
+                                android:layout_centerVertical="true"
+                                android:layout_marginRight="@dimen/view_14_dp"
+                                android:layout_toLeftOf="@id/message_iv"
+                                android:background="@drawable/person_card_follow" />
+
+                            <ImageView
+                                android:id="@+id/kick_iv"
+                                android:layout_width="@dimen/view_114_dp"
+                                android:layout_height="@dimen/view_50_dp"
+                                android:layout_centerVertical="true"
+                                android:layout_marginRight="@dimen/view_14_dp"
+                                android:layout_toLeftOf="@id/follow_iv"
+                                android:background="@drawable/person_card_kick" />
+
+
+                            <RelativeLayout
+                                android:id="@+id/srl_avatar_area"
+                                android:layout_width="@dimen/view_118_dp"
+                                android:layout_height="@dimen/view_53_dp"
+                                android:layout_centerVertical="true"
+                                android:layout_marginRight="@dimen/view_14_dp"
+                                android:layout_toLeftOf="@id/follow_iv"
+                                android:visibility="gone">
+
+                                <ImageView
+                                    android:id="@+id/srl_avatar_bg"
+                                    android:layout_width="@dimen/view_50_dp"
+                                    android:layout_height="@dimen/view_53_dp"
+                                    android:layout_centerVertical="true"
+                                    android:background="@drawable/s_touxiang" />
+
+                                <com.facebook.drawee.view.SimpleDraweeView
+                                    android:id="@+id/srl_avatar_iv"
+                                    android:layout_width="@dimen/view_40_dp"
+                                    android:layout_height="@dimen/view_40_dp"
+                                    android:layout_alignLeft="@id/srl_avatar_bg"
+                                    android:layout_alignTop="@id/srl_avatar_bg"
+                                    android:layout_marginLeft="@dimen/view_5_dp"
+                                    android:layout_marginTop="@dimen/view_5_dp" />
+
+                            </RelativeLayout>
+
+                        </RelativeLayout>
+
+                    </android.support.v7.widget.Toolbar>
+
+
+                </android.support.design.widget.CollapsingToolbarLayout>
+
+                <!--<RelativeLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--app:layout_scrollFlags="scroll">-->
+
+                <!--<ImageView-->
+                <!--android:id="@+id/avatar_bg"-->
+                <!--android:layout_width="@dimen/view_62_dp"-->
+                <!--android:layout_height="@dimen/view_67_dp"-->
+                <!--android:layout_marginLeft="20dp"-->
+                <!--android:layout_marginTop="@dimen/view_18_dp"-->
+                <!--android:background="@drawable/b_touxiang" />-->
+
+                <!--<com.facebook.drawee.view.SimpleDraweeView-->
+                <!--android:id="@+id/avatar_iv"-->
+                <!--android:layout_width="@dimen/view_52_dp"-->
+                <!--android:layout_height="@dimen/view_52_dp"-->
+                <!--android:layout_alignLeft="@id/avatar_bg"-->
+                <!--android:layout_alignTop="@id/avatar_bg"-->
+                <!--android:layout_marginLeft="@dimen/view_5_dp"-->
+                <!--android:layout_marginTop="@dimen/view_5_dp" />-->
+
+                <!--<com.common.view.ex.ExTextView-->
+                <!--android:id="@+id/report"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentTop="true"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_marginTop="@dimen/view_12_dp"-->
+                <!--android:layout_marginRight="@dimen/view_12_dp"-->
+                <!--android:drawableTop="@drawable/ic_report_normal"-->
+                <!--android:drawablePadding="@dimen/view_6_dp"-->
+                <!--android:gravity="center"-->
+                <!--android:text="举报"-->
+                <!--android:textColor="#3B4E79"-->
+                <!--android:textSize="@dimen/textsize_12_dp" />-->
+
+                <!--<com.common.view.ex.ExTextView-->
+                <!--android:id="@+id/name_tv"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="@dimen/view_33_dp"-->
+                <!--android:layout_alignTop="@+id/avatar_bg"-->
+                <!--android:layout_marginLeft="@dimen/view_10_dp"-->
+                <!--android:layout_marginTop="@dimen/view_8_dp"-->
+                <!--android:layout_toLeftOf="@id/report"-->
+                <!--android:layout_toRightOf="@id/avatar_bg"-->
+                <!--android:ellipsize="end"-->
+                <!--android:gravity="left|center_vertical"-->
+                <!--android:maxLines="1"-->
+                <!--android:singleLine="true"-->
+                <!--android:text="KTV酒彪子"-->
+                <!--android:textColor="#3B4E79"-->
+                <!--android:textSize="@dimen/textsize_24_dp"-->
+                <!--android:textStyle="bold" />-->
+
+                <!--<com.common.view.ex.ExTextView-->
+                <!--android:id="@+id/level_tv"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="@dimen/view_20_dp"-->
+                <!--android:layout_below="@id/name_tv"-->
+                <!--android:layout_alignLeft="@id/name_tv"-->
+                <!--android:layout_marginTop="@dimen/view_2_dp"-->
+                <!--android:layout_toLeftOf="@id/report"-->
+                <!--android:ellipsize="end"-->
+                <!--android:gravity="left|center_vertical"-->
+                <!--android:maxLines="1"-->
+                <!--android:singleLine="true"-->
+                <!--android:text="铂金唱将II"-->
+                <!--android:textColor="#3B4E79"-->
+                <!--android:textSize="@dimen/textsize_14_dp" />-->
+
+                <!--<com.common.flowlayout.TagFlowLayout-->
+                <!--android:id="@+id/flowlayout"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_below="@id/avatar_bg"-->
+                <!--android:layout_centerHorizontal="true"-->
+                <!--android:layout_marginLeft="-6dp"-->
+                <!--android:layout_marginTop="@dimen/view_10_dp"-->
+                <!--android:layout_marginBottom="@dimen/view_14_dp"></com.common.flowlayout.TagFlowLayout>-->
+
+                <!--<LinearLayout-->
+                <!--android:id="@+id/opera_area"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_below="@id/flowlayout"-->
+                <!--android:layout_centerHorizontal="true"-->
+                <!--android:layout_marginBottom="@dimen/view_20_dp"-->
+                <!--android:orientation="horizontal">-->
+
+                <!--<ImageView-->
+                <!--android:id="@+id/kick_iv"-->
+                <!--android:layout_width="@dimen/view_118_dp"-->
+                <!--android:layout_height="@dimen/view_50_dp"-->
+                <!--android:layout_marginRight="@dimen/view_14_dp"-->
+                <!--android:background="@drawable/person_card_kick" />-->
+
+                <!--<ImageView-->
+                <!--android:id="@+id/follow_iv"-->
+                <!--android:layout_width="@dimen/view_118_dp"-->
+                <!--android:layout_height="@dimen/view_50_dp"-->
+                <!--android:layout_marginRight="@dimen/view_14_dp"-->
+                <!--android:background="@drawable/person_card_follow" />-->
+
+
+                <!--<ImageView-->
+                <!--android:id="@+id/message_iv"-->
+                <!--android:layout_width="@dimen/view_44_dp"-->
+                <!--android:layout_height="@dimen/view_50_dp"-->
+                <!--android:background="@drawable/person_card_sixin" />-->
+                <!--</LinearLayout>-->
+                <!--</RelativeLayout>-->
+
+            </android.support.design.widget.AppBarLayout>
+
+        </android.support.design.widget.CoordinatorLayout>
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+</RelativeLayout>

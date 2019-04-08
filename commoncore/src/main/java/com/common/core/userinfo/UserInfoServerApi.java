@@ -204,4 +204,35 @@ public interface UserInfoServerApi {
      */
     @GET("http://dev.stand.inframe.mobi/v1/stand/coin-cnt")
     Observable<ApiResult> getCoinNum(@Query("userID") long userID);
+
+
+    /**
+     * 查询照片墙
+     *
+     * @param userID
+     * @param offset
+     * @param limit
+     * @return
+     */
+    @GET("http://dev.stand.inframe.mobi/v1/profile/query-pic")
+    Observable<ApiResult> getPhotos(@Query("userID") long userID,
+                                    @Query("offset") int offset,
+                                    @Query("limit") int limit);
+
+    /**
+     * 新增照片墙
+     * @param body  "picPath": "string"
+     * @return
+     */
+    @PUT("http://dev.stand.inframe.mobi/v1/profile/add-pic")
+    Observable<ApiResult> addPhoto(@Body RequestBody body);
+
+
+    /**
+     * 删除照片墙
+     * @param body  "picID": 0
+     * @return
+     */
+    @PUT("http://dev.stand.inframe.mobi/v1/profile/del-pic")
+    Observable<ApiResult> deletePhoto(@Body RequestBody body);
 }

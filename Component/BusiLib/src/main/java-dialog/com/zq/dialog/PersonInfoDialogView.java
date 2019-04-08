@@ -64,7 +64,6 @@ public class PersonInfoDialogView extends RelativeLayout {
 
     TagAdapter<String> mTagAdapter;
 
-
     int mTargetUserId;
 
     ExRelativeLayout mContentArea;
