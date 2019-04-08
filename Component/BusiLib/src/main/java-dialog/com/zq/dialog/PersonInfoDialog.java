@@ -78,6 +78,11 @@ public class PersonInfoDialog {
                 mDialogPlus.dismiss(false);
                 // TODO: 2019/4/8 打开大图浏览
             }
+
+            @Override
+            public void onClickOut() {
+                mDialogPlus.dismiss();
+            }
         });
 
         mDialogPlus = DialogPlus.newDialog(mContext)
@@ -86,6 +91,7 @@ public class PersonInfoDialog {
                 .setContentBackgroundResource(R.color.transparent)
                 .setOverlayBackgroundResource(R.color.black_trans_60)
                 .setExpanded(false)
+                .setCancelable(true)
 //                .setOnClickListener(new OnClickListener() {
 //                    @Override
 //                    public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
@@ -189,5 +195,7 @@ public class PersonInfoDialog {
         void onClickMessage(UserInfoModel userInfoModel);
 
         void onClickPhoto(PhotoModel photoModel, int position);
+
+        void onClickOut();
     }
 }

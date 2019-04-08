@@ -196,6 +196,15 @@ public class PersonInfoDialogView2 extends RelativeLayout {
 
 
     private void initBaseContainInfo() {
+        ViewGroup personCardMainContainer = this.findViewById(R.id.person_card_main_containner);
+        personCardMainContainer.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mClickListener != null) {
+                    mClickListener.onClickOut();
+                }
+            }
+        });
         mSmartRefresh = (SmartRefreshLayout) this.findViewById(R.id.smart_refresh);
         mCoordinator = (CoordinatorLayout) this.findViewById(R.id.coordinator);
         mAppbar = (AppBarLayout) this.findViewById(R.id.appbar);
