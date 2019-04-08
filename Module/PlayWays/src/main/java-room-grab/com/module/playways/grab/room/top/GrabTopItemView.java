@@ -1,6 +1,7 @@
 package com.module.playways.grab.room.top;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
@@ -13,6 +14,7 @@ import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 
+import com.common.view.ex.drawable.DrawableCreator;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.grab.room.event.GrabWantInviteEvent;
 import com.module.playways.grab.room.event.ShowPersonCardEvent;
@@ -37,6 +39,7 @@ public class GrabTopItemView extends RelativeLayout {
     public PlayerInfoModel mPlayerInfoModel;
     public AnimationDrawable mFlickerAnim;
     public ExTextView mInviteTv;
+    public ExTextView mTvIconBg;
     public ExImageView mOwnerIconIv;
 
     public boolean mShowEmptySeat = false;
@@ -68,6 +71,7 @@ public class GrabTopItemView extends RelativeLayout {
         mFlagIv = (ExImageView) this.findViewById(R.id.flag_iv);
         mInviteTv = (ExTextView) findViewById(R.id.invite_tv);
         mOwnerIconIv = findViewById(R.id.owner_icon_iv);
+        mTvIconBg = (ExTextView) findViewById(R.id.tv_icon_bg);
 
         RxView.clicks(mAvatarIv)
                 .subscribe(new Consumer<Object>() {
@@ -146,18 +150,27 @@ public class GrabTopItemView extends RelativeLayout {
         } else {
             mOwnerIconIv.setVisibility(GONE);
         }
+
+        Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20))
+                .setSolidColor(Color.parseColor("#6EBDFF"))
+                .setCornersRadius(U.getDisplayUtils().dip2px(20))
+                .setStrokeWidth(U.getDisplayUtils().dip2px(2))
+                .setStrokeColor(Color.parseColor("#3B4E79"))
+                .build();
+
+        mTvIconBg.setBackground(drawable);
     }
 
     //占位的View
     public void setToPlaceHolder() {
         if (mCanShowInviteWhenEmpty) {
-            mAvatarIv.setImageDrawable(U.getDrawable(R.drawable.grab_fangzhu_yaoqing));
+            mAvatarIv.setImageDrawable(U.getDrawable(R.drawable.ycdd_yaoqing));
             mInviteTv.setVisibility(VISIBLE);
             if (mLast) {
                 EventBus.getDefault().post(new InviteBtnVisibleEvent(true));
             }
         } else {
-            mAvatarIv.setImageDrawable(U.getDrawable(R.drawable.guanzhong_kongwei));
+            mAvatarIv.setImageDrawable(U.getDrawable(R.drawable.ycdd_kongwei));
             mInviteTv.setVisibility(GONE);
             if (mLast) {
                 EventBus.getDefault().post(new InviteBtnVisibleEvent(false));
@@ -165,6 +178,15 @@ public class GrabTopItemView extends RelativeLayout {
         }
         mOwnerIconIv.setVisibility(GONE);
         mShowEmptySeat = true;
+
+        Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20))
+                .setSolidColor(Color.parseColor("#5C67C1"))
+                .setCornersRadius(U.getDisplayUtils().dip2px(20))
+                .setStrokeWidth(U.getDisplayUtils().dip2px(2))
+                .setStrokeColor(Color.parseColor("#3B4E79"))
+                .build();
+
+        mTvIconBg.setBackground(drawable);
     }
 
     //开始闪烁，有人爆灯的时候
@@ -175,11 +197,11 @@ public class GrabTopItemView extends RelativeLayout {
         Drawable drawable = null;
         drawable = U.getDrawable(R.drawable.liangdeng_shan);
         mFlickerAnim.addFrame(drawable, 200);
-        drawable = U.getDrawable(R.drawable.liangdeng);
+        drawable = U.getDrawable(R.drawable.ycdd_liangdeng);
         mFlickerAnim.addFrame(drawable, 300);
         drawable = U.getDrawable(R.drawable.liangdeng_shan);
         mFlickerAnim.addFrame(drawable, 200);
-        drawable = U.getDrawable(R.drawable.liangdeng);
+        drawable = U.getDrawable(R.drawable.ycdd_liangdeng);
         mFlickerAnim.addFrame(drawable, 300);
         mFlagIv.setImageDrawable(mFlickerAnim);
         mFlickerAnim.start();
@@ -237,12 +259,12 @@ public class GrabTopItemView extends RelativeLayout {
         MyLog.d(TAG, "setLight" + " on=" + on);
         mFlagIv.setVisibility(VISIBLE);
         LayoutParams lp = (LayoutParams) mFlagIv.getLayoutParams();
-        lp.topMargin = -U.getDisplayUtils().dip2px(20);
+        lp.topMargin = -U.getDisplayUtils().dip2px(8);
         mFlagIv.setLayoutParams(lp);
         if (on) {
-            mFlagIv.setImageResource(R.drawable.liangdeng);
+            mFlagIv.setImageResource(R.drawable.ycdd_liangdeng);
         } else {
-            mFlagIv.setImageResource(R.drawable.miedeng);
+            mFlagIv.setImageResource(R.drawable.ycdd_xideng);
         }
     }
 

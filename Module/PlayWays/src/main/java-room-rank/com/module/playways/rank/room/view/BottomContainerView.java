@@ -1,6 +1,7 @@
 package com.module.playways.rank.room.view;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.os.Message;
@@ -57,6 +58,8 @@ public class BottomContainerView extends RelativeLayout {
     ExImageView mEmoji2Btn;
     ExImageView mEmoji1Btn;
 
+    int mGameType = 0;
+
     PopupWindow mQuickMsgPopWindow;
     private BaseRoomData mRoomData;
 
@@ -77,16 +80,26 @@ public class BottomContainerView extends RelativeLayout {
 
     public BottomContainerView(Context context) {
         super(context);
-        init();
+        init(null);
     }
 
     public BottomContainerView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(attrs);
     }
 
-    private void init() {
-        inflate(getContext(), R.layout.bottom_container_view_layout, this);
+    private void init(AttributeSet attrs) {
+        if(attrs != null){
+            TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.gameType);
+            mGameType = typedArray.getInt(R.styleable.gameType_type, 0);
+            typedArray.recycle();
+        }
+
+        if(mGameType == 0){
+            inflate(getContext(), R.layout.bottom_container_view_layout, this);
+        }else {
+            inflate(getContext(), R.layout.grab_bottom_container_view_layout, this);
+        }
 
         mQuickBtn = (ExTextView) this.findViewById(R.id.quick_btn);
         mShowInputContainerBtn = (ExTextView) this.findViewById(R.id.show_input_container_btn);

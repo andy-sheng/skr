@@ -351,8 +351,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             }
         });
         mCommentView.setRoomData(mRoomData);
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mCommentView.getLayoutParams();
-        layoutParams.height = U.getDisplayUtils().getPhoneHeight() - U.getDisplayUtils().dip2px(430 + 60);
+//        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mCommentView.getLayoutParams();
+//        layoutParams.height = U.getDisplayUtils().getPhoneHeight() - U.getDisplayUtils().dip2px(430 + 60);
     }
 
     private void initChangeRoomTransitionView() {

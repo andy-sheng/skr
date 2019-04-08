@@ -23,4 +23,9 @@
         </attr>
     </declare-styleable>
 
+    <declare-styleable name="gameType">
+        <!--位置-->
+        <attr name="type" format="integer" />
+    </declare-styleable>
+
 </resources>

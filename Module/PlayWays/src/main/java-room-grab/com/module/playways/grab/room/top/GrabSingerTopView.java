@@ -163,15 +163,15 @@ public class GrabSingerTopView extends FrameLayout {
         mFlickerAnim = new AnimationDrawable();
         mFlickerAnim.setOneShot(true);
         Drawable drawable = null;
-        drawable = U.getDrawable(R.drawable.liangdeng);
+        drawable = U.getDrawable(R.drawable.ycdd_liangdeng);
         mFlickerAnim.addFrame(drawable, 1800);
         drawable = U.getDrawable(R.drawable.liangdeng_shan);
         mFlickerAnim.addFrame(drawable, 200);
-        drawable = U.getDrawable(R.drawable.liangdeng);
+        drawable = U.getDrawable(R.drawable.ycdd_liangdeng);
         mFlickerAnim.addFrame(drawable, 300);
         drawable = U.getDrawable(R.drawable.liangdeng_shan);
         mFlickerAnim.addFrame(drawable, 200);
-        drawable = U.getDrawable(R.drawable.liangdeng);
+        drawable = U.getDrawable(R.drawable.ycdd_liangdeng);
         mFlickerAnim.addFrame(drawable, 300);
         mIvLight.setImageDrawable(mFlickerAnim);
         mFlickerAnim.start();
@@ -223,7 +223,7 @@ public class GrabSingerTopView extends FrameLayout {
     public void startSelfShow() {
         cancelCountDownTask();
         stopFlickerAnim();
-        mIvLight.setImageDrawable(U.getDrawable(R.drawable.liangdeng));
+        mIvLight.setImageDrawable(U.getDrawable(R.drawable.ycdd_liangdeng));
         GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
         if(grabRoundInfoModel == null || grabRoundInfoModel.getPlayUsers() == null || grabRoundInfoModel.getPlayUsers().size() == 0){
             MyLog.d(TAG, "startSelfShow grabRoundInfoModel data error");

@@ -1,6 +1,7 @@
 package com.module.playways.rank.room.comment;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -31,6 +32,8 @@ public class CommentView extends RelativeLayout {
 
     RecyclerView mCommentRv;
 
+    int mGameType = 0;
+
     LinearLayoutManager mLinearLayoutManager;
 
     CommentAdapter mCommentAdapter;
@@ -47,12 +50,12 @@ public class CommentView extends RelativeLayout {
 
     public CommentView(Context context) {
         super(context);
-        init();
+        init(null);
     }
 
     public CommentView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(attrs);
     }
 
     public void setListener(RecyclerOnItemClickListener listener) {
@@ -119,7 +122,13 @@ public class CommentView extends RelativeLayout {
         }
     }
 
-    private void init() {
+    private void init(AttributeSet attrs) {
+        if(attrs != null){
+            TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.gameType);
+            mGameType = typedArray.getInt(R.styleable.gameType_type, 0);
+            typedArray.recycle();
+        }
+
         inflate(getContext(), R.layout.comment_view_layout, this);
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
@@ -138,6 +147,7 @@ public class CommentView extends RelativeLayout {
                 }
             }
         });
+        mCommentAdapter.setGameType(mGameType);
         mCommentRv.setAdapter(mCommentAdapter);
         mCommentRv.addOnScrollListener(mOnScrollListener);
 

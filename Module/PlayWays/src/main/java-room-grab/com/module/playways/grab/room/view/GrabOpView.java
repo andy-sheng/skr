@@ -281,7 +281,7 @@ public class GrabOpView extends RelativeLayout {
                 mGrabContainer.setVisibility(VISIBLE);
                 mBtnIv.setEnabled(false);
                 mBtnIv.setImageDrawable(null);
-                mBtnIv.setBackground(U.getDrawable(R.drawable.xiangchang_bj));
+                mBtnIv.setBackground(U.getDrawable(R.drawable.ycdd_qiangchang_bj));
                 break;
             case STATUS_GRAP:
                 mGrabContainer.setVisibility(VISIBLE);
@@ -292,8 +292,8 @@ public class GrabOpView extends RelativeLayout {
                 mBtnIv.setImageDrawable(null);
                 Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20))
                         .setShape(DrawableCreator.Shape.Rectangle)
-                        .setPressedDrawable(U.getDrawable(R.drawable.xiangchang_anxia))
-                        .setUnPressedDrawable(U.getDrawable(R.drawable.xiangchang_daojishi))
+                        .setPressedDrawable(U.getDrawable(R.drawable.ycdd_qiangchang))
+                        .setUnPressedDrawable(U.getDrawable(R.drawable.ycdd_qiangchang))
                         .build();
                 mBtnIv.setBackground(drawable);
 
@@ -370,46 +370,37 @@ public class GrabOpView extends RelativeLayout {
     public void toOtherSingState() {
         MyLog.d(TAG, "toOtherSingState");
 
-        TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f,
-                Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0);
-        animation.setDuration(200);
-        animation.setRepeatMode(Animation.REVERSE);
-        animation.setInterpolator(new OvershootInterpolator());
-        animation.setFillAfter(true);
-        startAnimation(animation);
-
-        setVisibility(VISIBLE);
         mStatus = STATUS_CAN_OP;
         onChangeState();
 
         mUiHandler.removeCallbacksAndMessages(null);
 
         cancelCountDownTask();
-        mCountDownTask = HandlerTaskTimer.newBuilder().interval(1000)
-                .take((int) (sShowLightOffTime / 1000) + 1)
+        mCountDownTask = HandlerTaskTimer.newBuilder().delay(sShowLightOffTime)
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
-                        int num1 = (int) (sShowLightOffTime / 1000) - integer + 1;
-                        mIvLightOff.setText(String.valueOf(num1));
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        super.onComplete();
                         if (mListener != null) {
                             mListener.countDownOver();
                         }
-                        mIvLightOff.setText("");
+
+                        TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f,
+                                Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0);
+                        animation.setDuration(200);
+                        animation.setRepeatMode(Animation.REVERSE);
+                        animation.setInterpolator(new OvershootInterpolator());
+                        animation.setFillAfter(true);
+                        startAnimation(animation);
+                        setVisibility(VISIBLE);
+
                         mIvLightOff.setEnabled(true);
                         Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20))
                                 .setShape(DrawableCreator.Shape.Rectangle)
-                                .setPressedDrawable(U.getDrawable(R.drawable.grab_miedeng_anxia))
-                                .setUnPressedDrawable(U.getDrawable(R.drawable.grab_yanchang_miedeng))
+                                .setPressedDrawable(U.getDrawable(R.drawable.ycdd_miedeng))
+                                .setUnPressedDrawable(U.getDrawable(R.drawable.ycdd_miedeng))
                                 .build();
 
                         mIvLightOff.setBackground(drawable);
-
                     }
                 });
 

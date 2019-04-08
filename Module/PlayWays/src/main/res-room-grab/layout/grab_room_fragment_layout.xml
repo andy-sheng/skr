@@ -2,10 +2,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:VoiceControlPanelView="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:gameType="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ranking_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#2E3041">
+    android:background="#404A9A">
 
     <!--<com.module.playways.grab.room.top.GrabSingerTopView-->
     <!--android:id="@+id/singer_top_view"-->
@@ -15,29 +16,12 @@
 
     <!--这里面是软键盘弹出时 需要上移的布局-->
     <com.module.playways.rank.room.view.BottomContainerView
+        gameType:type="1"
         android:id="@+id/bottom_container_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/view_284_dp"
         android:layout_above="@+id/input_container_view"
-        android:layout_marginBottom="@dimen/view_22_dp" />
-
-    <com.module.playways.rank.room.comment.CommentView
-        android:id="@+id/comment_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_marginRight="@dimen/view_100_dp"
-        android:layout_marginBottom="@dimen/view_66_dp"
-        android:paddingLeft="@dimen/view_18_dp"
-        android:paddingBottom="@dimen/view_7_dp" />
-
-    <com.common.view.ex.ExImageView
-        android:id="@+id/cover_iv"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_10_dp"
-        android:layout_alignTop="@+id/comment_view"
-        android:layout_marginRight="@dimen/view_128_dp"
-        android:background="@drawable/zhengzaiyanchang_duihua_zhezhao" />
+        />
 
     <com.module.playways.grab.room.top.GrabTopContainerView
         android:id="@+id/top_container_view"
@@ -116,15 +100,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_148_dp"
         android:visibility="gone" />
-
-    <!--抢按钮以及倒计时按钮-->
-    <com.module.playways.grab.room.view.GrabOpView
-        android:id="@+id/grab_op_btn"
-        android:layout_width="@dimen/view_141_dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/view_165_dp" />
 
     <com.module.playways.grab.room.view.GrabGiveupView
         android:id="@+id/grab_pass_view"

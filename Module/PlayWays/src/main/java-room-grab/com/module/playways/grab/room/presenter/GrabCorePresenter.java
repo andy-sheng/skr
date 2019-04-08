@@ -1481,9 +1481,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     U.getColor(R.color.color_man_stroke_color) : U.getColor(R.color.color_woman_stroke_color));
             SpannableStringBuilder stringBuilder = new SpanUtils()
                     .append(playerInfoModel.getUserInfo().getNickname() + " ").setForegroundColor(CommentModel.TEXT_YELLOW)
-                    .append("对").setForegroundColor(CommentModel.TEXT_WHITE)
+                    .append("对").setForegroundColor(CommentModel.TEXT_3B4E79)
                     .append(singerModel.getUserInfo().getNickname()).setForegroundColor(CommentModel.TEXT_YELLOW)
-                    .append(isBao ? "爆灯啦" : "灭了盏灯").setForegroundColor(CommentModel.TEXT_WHITE)
+                    .append(isBao ? "爆灯啦" : "灭了盏灯").setForegroundColor(CommentModel.TEXT_3B4E79)
                     .create();
             commentModel.setStringBuilder(stringBuilder);
             EventBus.getDefault().post(new PretendCommentMsgEvent(commentModel));
@@ -1530,12 +1530,12 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             if (playerInfoModel.getUserInfo().getUserId() == UserAccountManager.SYSTEM_GRAB_ID) {
                 stringBuilder = new SpanUtils()
                         .append(playerInfoModel.getUserInfo().getNickname() + " ").setForegroundColor(CommentModel.TEXT_YELLOW)
-                        .append("我是撕歌最傲娇小助手多音，来和你们一起唱歌卖萌~").setForegroundColor(CommentModel.TEXT_WHITE)
+                        .append("我是撕歌最傲娇小助手多音，来和你们一起唱歌卖萌~").setForegroundColor(CommentModel.TEXT_3B4E79)
                         .create();
             } else {
                 SpanUtils spanUtils = new SpanUtils()
                         .append(playerInfoModel.getUserInfo().getNickname() + " ").setForegroundColor(CommentModel.TEXT_YELLOW)
-                        .append("加入了房间").setForegroundColor(CommentModel.TEXT_WHITE);
+                        .append("加入了房间").setForegroundColor(CommentModel.TEXT_3B4E79);
                 if (BuildConfig.DEBUG) {
                     spanUtils.append(" 角色为" + playerInfoModel.getRole())
                             .append(" 在线状态为" + playerInfoModel.isOnline());

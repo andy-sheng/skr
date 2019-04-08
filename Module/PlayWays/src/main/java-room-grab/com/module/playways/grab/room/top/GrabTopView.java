@@ -186,16 +186,16 @@ public class GrabTopView extends RelativeLayout {
     void setChangeRoomBtnVisiable(boolean visiable) {
         if (visiable) {
             mTvChangeRoom.setVisibility(VISIBLE);
-            LayoutParams lp = (LayoutParams) mTvCoin.getLayoutParams();
-            lp.addRule(RelativeLayout.RIGHT_OF, mTvChangeRoom.getId());
-            lp.leftMargin = U.getDisplayUtils().dip2px(10);
-            mTvCoin.setLayoutParams(lp);
+//            LayoutParams lp = (LayoutParams) mTvCoin.getLayoutParams();
+//            lp.addRule(RelativeLayout.RIGHT_OF, mTvChangeRoom.getId());
+//            lp.leftMargin = U.getDisplayUtils().dip2px(10);
+//            mTvCoin.setLayoutParams(lp);
         } else {
             mTvChangeRoom.setVisibility(GONE);
-            LayoutParams lp = (LayoutParams) mTvCoin.getLayoutParams();
-            lp.addRule(RelativeLayout.RIGHT_OF, -1);
-            lp.leftMargin = U.getDisplayUtils().dip2px(16);
-            mTvCoin.setLayoutParams(lp);
+//            LayoutParams lp = (LayoutParams) mTvCoin.getLayoutParams();
+//            lp.addRule(RelativeLayout.RIGHT_OF, -1);
+//            lp.leftMargin = U.getDisplayUtils().dip2px(16);
+//            mTvCoin.setLayoutParams(lp);
         }
     }
 

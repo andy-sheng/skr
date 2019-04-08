@@ -14,17 +14,28 @@ public class CommentAdapter extends DiffAdapter<CommentModel, RecyclerView.ViewH
 
     public static final int VIEW_HOLDER_TYPE_TEXT = 1;
 
+    public int mGameType = 0;
+
     RecyclerOnItemClickListener mRecyclerOnItemClickListener;
 
     public CommentAdapter(RecyclerOnItemClickListener l) {
         mRecyclerOnItemClickListener = l;
     }
 
+    public void setGameType(int gameType) {
+        mGameType = gameType;
+    }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (VIEW_HOLDER_TYPE_TEXT == viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.comment_view_holder_item, parent, false);
+            View view = null;
+            if(mGameType == 0){
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.comment_view_holder_item, parent, false);
+            }else {
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grab_comment_view_holder_item, parent, false);
+            }
             CommentHolder viewHolder = new CommentHolder(view);
             viewHolder.setListener(mRecyclerOnItemClickListener);
             return viewHolder;

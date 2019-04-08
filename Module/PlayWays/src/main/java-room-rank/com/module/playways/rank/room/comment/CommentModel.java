@@ -20,6 +20,7 @@ public class CommentModel {
     public static final int TEXT_YELLOW = Color.parseColor("#ccFFB100");
     public static final int TEXT_RED = Color.parseColor("#EF5E85");
     public static final int TEXT_GRAY = Color.GRAY;
+    public static final int TEXT_3B4E79 = Color.parseColor("#3B4E79");
 
     private int commentType = 0;
     private int userId;

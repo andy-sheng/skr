@@ -11,34 +11,32 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <com.common.view.ex.ExImageView
+            android:paddingBottom="@dimen/view_6_dp"
             android:src="@drawable/xiangchang_1"
-            android:paddingRight="@dimen/view_13_dp"
-            android:paddingBottom="@dimen/view_20_dp"
             android:scaleType="centerInside"
             android:id="@+id/iv_text"
-            android:layout_width="@dimen/view_97_dp"
-            android:layout_height="@dimen/view_60_dp"
-            android:background="@drawable/xiangchang_bj"
+            android:layout_width="@dimen/view_84_dp"
+            android:layout_height="@dimen/view_50_dp"
+            android:background="@drawable/ycdd_qiangchang_bj"
             android:textColor="@color/white"
             android:textSize="@dimen/textsize_20_dp" />
 
         <com.module.playways.grab.room.view.RoundRectangleView
-            android:layout_marginLeft="@dimen/view_4_dp"
             android:layout_alignLeft="@+id/iv_text"
             android:id="@+id/rrl_progress"
-            android:layout_width="@dimen/view_72_dp"
+            android:layout_width="@dimen/view_84_dp"
             android:layout_height="@dimen/view_42_dp"
             android:visibility="visible" />
     </RelativeLayout>
 
     <com.common.view.ex.ExImageView
-        app:bl_pressed_drawable="@drawable/grab_baodeng_anxia"
-        app:bl_unPressed_drawable="@drawable/grab_yanchang_baodeng"
+        app:bl_pressed_drawable="@drawable/ycdd_baodeng"
+        app:bl_unPressed_drawable="@drawable/ycdd_baodeng"
         android:text="2"
         android:layout_alignParentRight="true"
         android:id="@+id/iv_burst"
-        android:layout_width="@dimen/view_102_dp"
-        android:layout_height="@dimen/view_74_dp"
+        android:layout_width="@dimen/view_84_dp"
+        android:layout_height="@dimen/view_50_dp"
         />
 
     <com.common.view.ex.ExTextView
@@ -50,8 +48,8 @@
         android:paddingLeft="@dimen/view_32_dp"
         android:layout_alignParentRight="true"
         android:id="@+id/iv_light_off"
-        android:layout_width="@dimen/view_97_dp"
-        android:layout_height="@dimen/view_60_dp"
+        android:layout_width="@dimen/view_84_dp"
+        android:layout_height="@dimen/view_50_dp"
         android:layout_below="@+id/iv_burst"
         android:paddingBottom="@dimen/view_25_dp"
         android:visibility="visible" />

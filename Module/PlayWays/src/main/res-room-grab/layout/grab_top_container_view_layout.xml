@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:scaleType="centerInside"
-        app:src_unPressed_drawable="@drawable/yanchang_gengduo" />
+        app:src_unPressed_drawable="@drawable/ycdd_daojishi_gengduo" />
 
     <com.common.view.ex.ExTextView
         android:visibility="gone"
