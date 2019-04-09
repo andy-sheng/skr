@@ -273,7 +273,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     }
 
     private void pretenSystemMsg(String text) {
-        CommentSysModel commentSysModel = new CommentSysModel(text);
+        CommentSysModel commentSysModel = new CommentSysModel(mRoomData.getGameType(), text);
         EventBus.getDefault().post(new PretendCommentMsgEvent(commentSysModel));
     }
 

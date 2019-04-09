@@ -301,7 +301,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     }
 
     private void pretenSystemMsg() {
-        CommentSysModel commentSysModel = new CommentSysModel("欢迎进入撕歌排位赛，对局马上开始，比赛过程发现坏蛋请用力举报哦～");
+        CommentSysModel commentSysModel = new CommentSysModel(mRoomData.getGameType(), "欢迎进入撕歌排位赛，对局马上开始，比赛过程发现坏蛋请用力举报哦～");
         EventBus.getDefault().post(new PretendCommentMsgEvent(commentSysModel));
     }
 
@@ -1514,7 +1514,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(PkSomeOneOnlineChangeEvent event) {
         UserInfoModel userInfo = mRoomData.getUserInfo(event.model.getUserID());
-        CommentSysModel commentSysModel = new CommentSysModel(userInfo.getNickname(),"偷偷溜走了");
+        CommentSysModel commentSysModel = new CommentSysModel(userInfo.getNickname(), "偷偷溜走了");
         EventBus.getDefault().post(new PretendCommentMsgEvent(commentSysModel));
 
         if (event.model.getUserID() == MyUserInfoManager.getInstance().getUid()) {

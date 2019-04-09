@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:gameType="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:parentTag="android.widget.RelativeLayout">
@@ -11,22 +11,22 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/view_d_2_dp"
         android:layout_marginRight="@dimen/view_d_2_dp"
-        app:bl_corners_topRightRadius="@dimen/view_20_dp"
         app:bl_corners_topLeftRadius="@dimen/view_20_dp"
+        app:bl_corners_topRightRadius="@dimen/view_20_dp"
         app:bl_solid_color="#7088FF"
         app:bl_stroke_color="#3B4E79"
         app:bl_stroke_width="@dimen/view_2_dp" />
 
     <com.module.playways.rank.room.comment.CommentView
-        gameType:type="1"
-        android:layout_marginTop="@dimen/view_20_dp"
         android:id="@+id/comment_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/view_20_dp"
         android:layout_marginRight="@dimen/view_100_dp"
         android:layout_marginBottom="@dimen/view_66_dp"
         android:paddingLeft="@dimen/view_18_dp"
-        android:paddingBottom="@dimen/view_7_dp" />
+        android:paddingBottom="@dimen/view_7_dp"
+        gameType:type="grab" />
 
     <com.common.view.ex.ExImageView
         android:id="@+id/cover_iv"
@@ -38,26 +38,21 @@
 
     <!--抢按钮以及倒计时按钮-->
     <com.module.playways.grab.room.view.GrabOpView
-        android:layout_marginTop="@dimen/view_20_dp"
         android:id="@+id/grab_op_btn"
         android:layout_width="@dimen/view_141_dp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/view_10_dp"
-         />
+        android:layout_marginTop="@dimen/view_20_dp"
+        android:layout_marginRight="@dimen/view_10_dp" />
     <!--这里面是软键盘弹出时 需要上移的布局-->
     <RelativeLayout
-        android:layout_alignParentBottom="true"
         android:id="@+id/rl_bottom_op"
-        android:layout_marginBottom="@dimen/view_20_dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        >
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/view_20_dp">
 
         <com.common.view.ex.ExTextView
-            android:paddingLeft="@dimen/view_28_dp"
-            android:gravity="center_vertical"
-            android:text="夸赞是一种美德"
             android:id="@+id/show_input_container_btn"
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_38_dp"
@@ -66,9 +61,11 @@
             android:layout_toLeftOf="@+id/emoji1_btn"
             android:layout_toRightOf="@id/quick_btn"
             android:background="@drawable/ycdd_shurukuang"
-            android:textSize="@dimen/textsize_16_dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/view_28_dp"
+            android:text="夸赞是一种美德"
             android:textColor="@color/white_trans_30"
-             />
+            android:textSize="@dimen/textsize_16_dp" />
 
         <com.common.view.ex.ExTextView
             android:id="@+id/quick_btn"
@@ -80,8 +77,7 @@
             android:gravity="center"
             android:paddingLeft="@dimen/view_10_dp"
             android:paddingRight="@dimen/view_10_dp"
-            android:textColor="@color/white_trans_30"
-            />
+            android:textColor="@color/white_trans_30" />
 
         <com.common.view.ex.ExImageView
             android:id="@+id/emoji2_btn"

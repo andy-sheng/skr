@@ -5,14 +5,11 @@ import android.content.res.TypedArray;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.AbsListView;
 import android.widget.RelativeLayout;
 
-import com.common.core.account.UserAccountManager;
 import com.common.log.MyLog;
 import com.common.utils.U;
-import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.playways.grab.room.event.GrabSwitchRoomEvent;
 import com.module.playways.rank.room.comment.adapter.CommentAdapter;
 import com.module.playways.rank.room.comment.listener.CommentItemListener;

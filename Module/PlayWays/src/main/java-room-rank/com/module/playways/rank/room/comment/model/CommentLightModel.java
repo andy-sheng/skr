@@ -1,13 +1,11 @@
 package com.module.playways.rank.room.comment.model;
 
+import android.graphics.Color;
 import android.text.SpannableStringBuilder;
 
 import com.common.utils.SpanUtils;
-import com.common.utils.U;
 import com.component.busilib.constans.GameModeType;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
-import com.module.rank.R;
-import com.zq.live.proto.Common.ESex;
 
 /**
  * 爆灭灯消息
@@ -26,8 +24,7 @@ public class CommentLightModel extends CommentModel {
         setUserId(voter.getUserID());
         setAvatar(voter.getUserInfo().getAvatar());
         setUserName(voter.getUserInfo().getNickname());
-        setAvatarColor(voter.getUserInfo().getSex() == ESex.SX_MALE.getValue() ?
-                U.getColor(R.color.color_man_stroke_color) : U.getColor(R.color.color_woman_stroke_color));
+        setAvatarColor(Color.WHITE);
         SpannableStringBuilder stringBuilder = null;
         if (mGameType == GameModeType.GAME_MODE_GRAB) {
             stringBuilder = new SpanUtils()

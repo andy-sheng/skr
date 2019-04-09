@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
+import com.component.busilib.constans.GameModeType;
 import com.module.playways.BaseRoomData;
 import com.module.playways.rank.msg.event.CommentMsgEvent;
 import com.module.rank.R;
@@ -34,26 +35,27 @@ public class CommentTextModel extends CommentModel {
 
         if (roomData != null) {
             UserInfoModel sender = roomData.getUserInfo(event.info.getSender().getUserID());
+            commentModel.setAvatarColor(Color.WHITE);
             if (sender != null) {
                 commentModel.setAvatar(sender.getAvatar());
-                if (sender.getSex() == ESex.SX_MALE.getValue()) {
-                    commentModel.setAvatarColor(U.getColor(R.color.color_man_stroke_color));
-                } else if (sender.getSex() == ESex.SX_FEMALE.getValue()) {
-                    commentModel.setAvatarColor(U.getColor(R.color.color_woman_stroke_color));
-                } else {
-                    commentModel.setAvatarColor(Color.WHITE);
-                }
             } else {
                 commentModel.setAvatar(event.info.getSender().getAvatar());
-                commentModel.setAvatarColor(Color.WHITE);
             }
         }
 
-        SpannableStringBuilder ssb = new SpanUtils()
-                .append(commentModel.getUserName() + " ").setForegroundColor(TEXT_YELLOW)
-                .append(event.text).setForegroundColor(TEXT_WHITE)
-                .create();
-        commentModel.setStringBuilder(ssb);
+        if (roomData.getGameType() == GameModeType.GAME_MODE_GRAB) {
+            SpannableStringBuilder ssb = new SpanUtils()
+                    .append(commentModel.getUserName() + " ").setForegroundColor(Color.parseColor("#DF7900"))
+                    .append(event.text).setForegroundColor(Color.parseColor("#586D94"))
+                    .create();
+            commentModel.setStringBuilder(ssb);
+        } else {
+            SpannableStringBuilder ssb = new SpanUtils()
+                    .append(commentModel.getUserName() + " ").setForegroundColor(TEXT_YELLOW)
+                    .append(event.text).setForegroundColor(TEXT_WHITE)
+                    .create();
+            commentModel.setStringBuilder(ssb);
+        }
         return commentModel;
     }
 }

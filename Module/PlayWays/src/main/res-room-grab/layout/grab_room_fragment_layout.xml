@@ -16,12 +16,11 @@
 
     <!--这里面是软键盘弹出时 需要上移的布局-->
     <com.module.playways.rank.room.view.BottomContainerView
-        gameType:type="1"
         android:id="@+id/bottom_container_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_284_dp"
         android:layout_above="@+id/input_container_view"
-        />
+        gameType:type="grab" />
 
     <com.module.playways.grab.room.top.GrabTopContainerView
         android:id="@+id/top_container_view"
