@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/view_22_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
         android:scaleType="centerInside"
         app:src_unPressed_drawable="@drawable/ycdd_liaotian_bixin" />
 
@@ -44,9 +44,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/view_20_dp"
+        android:layout_marginRight="@dimen/view_10_dp"
         android:layout_toLeftOf="@+id/emoji2_btn"
         android:scaleType="centerInside"
         app:src_unPressed_drawable="@drawable/ycdd_liaotian_biaoqing" />
 
+    <com.common.view.ex.ExImageView
+        android:id="@+id/iv_room_manage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:src="@drawable/fangzhuzhushou"
+        android:visibility="gone" />
 </merge>

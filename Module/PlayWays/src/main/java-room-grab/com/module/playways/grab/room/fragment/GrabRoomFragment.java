@@ -179,8 +179,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     ConfirmDialog mGrabKickDialog;
 
-    ExImageView mIvRoomManage;
-
     SVGAParser mSVGAParser;
 
     List<Animator> mAnimatorList = new ArrayList<>();  //存放所有需要尝试取消的动画
@@ -255,7 +253,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         initChangeRoomTransitionView();
         initCountDownView();
         initScoreView();
-        initManageView();
         mCorePresenter = new GrabCorePresenter(this, mRoomData);
         addPresent(mCorePresenter);
         mGrabRedPkgPresenter = new GrabRedPkgPresenter(this);
@@ -329,6 +326,15 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                     mPersonInfoDialog.dismiss();
                 }
                 mInputContainerView.showSoftInput();
+            }
+
+            @Override
+            public void clickRoomManagerBtn() {
+                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(GrabRoomFragment.this.getActivity(), GrabSongManageFragment.class)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(true)
+                        .addDataBeforeAdd(0, mRoomData)
+                        .build());
             }
         });
         mBottomContainerView.setRoomData(mRoomData);
@@ -549,23 +555,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     private void initScoreView() {
         mGrabScoreTipsView = mRootView.findViewById(R.id.grab_score_tips_view);
         mGrabScoreTipsView.setRoomData(mRoomData);
-    }
-
-    private void initManageView() {
-        mIvRoomManage = (ExImageView) mRootView.findViewById(R.id.iv_room_manage);
-        if (mRoomData.isOwner()) {
-            mIvRoomManage.setVisibility(View.VISIBLE);
-            mIvRoomManage.setOnClickListener(new DebounceViewClickListener() {
-                @Override
-                public void clickValid(View v) {
-                    U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(GrabRoomFragment.this.getActivity(), GrabSongManageFragment.class)
-                            .setAddToBackStack(true)
-                            .setHasAnimation(true)
-                            .addDataBeforeAdd(0, mRoomData)
-                            .build());
-                }
-            });
-        }
     }
 
     private void initGrabOpView() {
@@ -894,8 +883,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             }
         });
 
-        if(mGrabRedPkgPresenter.isCanReceive()
-                && now.getUserID() == MyUserInfoManager.getInstance().getUid()){
+        if (mGrabRedPkgPresenter.isCanReceive()
+                && now.getUserID() == MyUserInfoManager.getInstance().getUid()) {
             mGrabRedPkgPresenter.getRedPkg();
         }
     }
@@ -1046,7 +1035,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     @Override
     public void onGetGameResult(boolean success) {
 //        if (success) {
-            onGrabGameOver("onGetGameResultSuccess");
+        onGrabGameOver("onGetGameResultSuccess");
 //        } else {
 //            if (getActivity() != null) {
 //                getActivity().finish();

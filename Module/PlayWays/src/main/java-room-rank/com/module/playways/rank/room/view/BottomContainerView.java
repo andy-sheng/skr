@@ -25,6 +25,7 @@ import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
 import com.module.msg.CustomMsgType;
 import com.module.msg.IMsgService;
+import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.rank.msg.BasePushInfo;
 import com.module.playways.rank.msg.event.SpecialEmojiMsgEvent;
 import com.module.playways.RoomDataUtils;
@@ -54,9 +55,10 @@ public class BottomContainerView extends RelativeLayout {
 
     View mQuickBtn;
     ExTextView mShowInputContainerBtn;
-
     ExImageView mEmoji2Btn;
     ExImageView mEmoji1Btn;
+
+    View mIvRoomManage;
 
     int mGameType = 0;
 
@@ -97,11 +99,20 @@ public class BottomContainerView extends RelativeLayout {
 
         if (mGameType == GameModeType.GAME_MODE_GRAB) {
             inflate(getContext(), R.layout.grab_bottom_container_view_layout, this);
+            mIvRoomManage = this.findViewById(R.id.iv_room_manage);
+            mIvRoomManage.setOnClickListener(new DebounceViewClickListener() {
+                @Override
+                public void clickValid(View v) {
+                    if (mBottomContainerListener != null) {
+                        mBottomContainerListener.clickRoomManagerBtn();
+                    }
+                }
+            });
         } else {
             inflate(getContext(), R.layout.bottom_container_view_layout, this);
         }
 
-        mQuickBtn =  this.findViewById(R.id.quick_btn);
+        mQuickBtn = this.findViewById(R.id.quick_btn);
         mShowInputContainerBtn = (ExTextView) this.findViewById(R.id.show_input_container_btn);
         mEmoji2Btn = (ExImageView) this.findViewById(R.id.emoji2_btn);
         mEmoji1Btn = (ExImageView) this.findViewById(R.id.emoji1_btn);
@@ -288,10 +299,39 @@ public class BottomContainerView extends RelativeLayout {
 
     public void setRoomData(BaseRoomData roomData) {
         mRoomData = roomData;
+        if (mRoomData instanceof GrabRoomData) {
+            GrabRoomData grabRoomData = (GrabRoomData) mRoomData;
+            if (grabRoomData.isOwner()) {
+                //是房主
+                adjustUi(true);
+            } else {
+                //不是一唱到底房主
+                adjustUi(false);
+            }
+        }
     }
 
-    public interface Listener {
-        void showInputBtnClick();
+    void adjustUi(boolean grabOwner) {
+        if (grabOwner) {
+            mIvRoomManage.setVisibility(VISIBLE);
+            LayoutParams lp = (LayoutParams) mEmoji2Btn.getLayoutParams();
+            lp.addRule(RelativeLayout.LEFT_OF, mIvRoomManage.getId());
+            lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 0);
+            mEmoji2Btn.setLayoutParams(lp);
+        } else {
+            mIvRoomManage.setVisibility(GONE);
+            LayoutParams lp = (LayoutParams) mEmoji2Btn.getLayoutParams();
+            lp.addRule(RelativeLayout.LEFT_OF, 0);
+            lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            mEmoji2Btn.setLayoutParams(lp);
+        }
+    }
+
+    public static abstract class Listener {
+        public abstract void showInputBtnClick();
+
+        public void clickRoomManagerBtn() {
+        }
     }
 
 }
