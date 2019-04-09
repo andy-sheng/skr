@@ -58,21 +58,21 @@
         android:src="@drawable/ycdd_daojishi_jinbi" />
 
     <com.common.view.ex.ExTextView
+        android:textStyle="bold"
+        android:paddingBottom="@dimen/view_4_dp"
+        android:background="@drawable/qiehuanmoshi_bj"
         android:id="@+id/tv_acc_switch"
         android:layout_width="@dimen/view_80_dp"
-        android:layout_height="@dimen/view_32_dp"
-        android:layout_alignParentRight="true"
+        android:layout_height="@dimen/view_31_dp"
+        android:layout_toRightOf="@+id/tv_coin"
         android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/view_58_dp"
+        android:layout_marginLeft="@dimen/view_12_dp"
         android:gravity="center"
-        android:visibility="gone"
+        android:visibility="visible"
         android:text="清唱模式"
         android:textColor="#B2B6D6"
         android:textSize="@dimen/textsize_14_dp"
-        app:bl_corners_radius="@dimen/view_16_dp"
-        app:bl_solid_color="#3C3F57"
-        app:bl_stroke_color="#202239"
-        app:bl_stroke_width="@dimen/view_2_dp" />
+        />
 
     <!--<ImageView-->
     <!--android:id="@+id/iv_acc_disable"-->

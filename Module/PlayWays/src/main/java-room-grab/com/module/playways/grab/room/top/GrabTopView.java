@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -138,10 +139,12 @@ public class GrabTopView extends RelativeLayout {
                 if (mGrabRoomData.isAccEnable()) {
                     mGrabRoomData.setAccEnable(false);
                     mTvAccSwitch.setText("清唱模式");
+                    mTvAccSwitch.setTextColor(Color.parseColor("#FFC15B"));
                     U.getToastUtil().showShort("已关闭伴奏");
                 } else {
                     mGrabRoomData.setAccEnable(true);
                     mTvAccSwitch.setText("伴奏模式");
+                    mTvAccSwitch.setTextColor(Color.parseColor("#793B64"));
                     U.getToastUtil().showShort("已打开伴奏");
                 }
             }
@@ -150,7 +153,7 @@ public class GrabTopView extends RelativeLayout {
 
     public void setAccSwitchBtnStatus(boolean visibale) {
         if (visibale) {
-            mTvAccSwitch.setVisibility(GONE);
+            mTvAccSwitch.setVisibility(VISIBLE);
         } else {
             mTvAccSwitch.setVisibility(GONE);
         }
@@ -161,8 +164,10 @@ public class GrabTopView extends RelativeLayout {
         mTvCoin.setText(mGrabRoomData.getCoin() + "");
         if (mGrabRoomData.isAccEnable()) {
             mTvAccSwitch.setText("伴奏模式");
+            mTvAccSwitch.setTextColor(Color.parseColor("#793B64"));
         } else {
             mTvAccSwitch.setText("清唱模式");
+            mTvAccSwitch.setTextColor(Color.parseColor("#FFC15B"));
         }
         if (mGrabRoomData.isOwner()) {
             // 是房主，肯定不能切换房间
