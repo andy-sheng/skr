@@ -12,6 +12,7 @@ import com.common.rx.RxRetryAssist;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
+import com.common.view.countdown.CircleCountDownView;
 import com.common.view.ex.ExTextView;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.rank.others.LyricAndAccMatchManager;
@@ -41,9 +42,7 @@ public class SelfSingCardView2 extends RelativeLayout {
     public final static String TAG = "SelfSingCardView2";
 
     TextView mTvLyric;
-    ArcProgressBar mCountDownProcess;
     ExTextView mCountDownTv;
-    ImageView mCountIv;
     ManyLyricsView mManyLyricsView;
 
     Disposable mDisposable;
@@ -53,6 +52,8 @@ public class SelfSingCardView2 extends RelativeLayout {
     SongModel mSongModel;
 
     ImageView mIvTag;
+
+    CircleCountDownView mCircleCountDownView;
 
     VoiceScaleView mVoiceScaleView;
 
@@ -78,9 +79,8 @@ public class SelfSingCardView2 extends RelativeLayout {
         inflate(getContext(), R.layout.grab_self_sing_card_layout_two, this);
         mTvLyric = findViewById(R.id.tv_lyric);
         mManyLyricsView = (ManyLyricsView) findViewById(R.id.many_lyrics_view);
-        mCountDownProcess = (ArcProgressBar) findViewById(R.id.count_down_process);
+        mCircleCountDownView = (CircleCountDownView) findViewById(R.id.circle_count_down_view);
         mCountDownTv = (ExTextView) findViewById(R.id.count_down_tv);
-        mCountIv = (ImageView) findViewById(R.id.count_iv);
         mIvTag = (ImageView) findViewById(R.id.iv_tag);
         mVoiceScaleView = (VoiceScaleView) findViewById(R.id.voice_scale_view);
     }
@@ -98,10 +98,10 @@ public class SelfSingCardView2 extends RelativeLayout {
         }
         if (!hasAcc) {
             playWithNoAcc(songModel);
-            mIvTag.setBackground(U.getDrawable(R.drawable.self_sing_biaoqian));
+            mIvTag.setBackground(U.getDrawable(R.drawable.ycdd_daojishi_qingchang));
             mLyricAndAccMatchManager.stop();
         } else {
-            mIvTag.setBackground(U.getDrawable(R.drawable.biaoqian_haichang));
+            mIvTag.setBackground(U.getDrawable(R.drawable.ycdd_daojishi_banzou));
             mLyricAndAccMatchManager.setArgs(mManyLyricsView, mVoiceScaleView,
                     songModel.getLyric(),
                     songModel.getStandLrcBeginT(), songModel.getStandLrcBeginT() + songModel.getTotalMs(),
@@ -148,9 +148,8 @@ public class SelfSingCardView2 extends RelativeLayout {
 
 
     private void starCounDown(SongModel songModel) {
-        mCountIv.setVisibility(GONE);
         mCountDownTv.setVisibility(VISIBLE);
-        mCountDownProcess.startCountDown(0, songModel.getTotalMs());
+        mCircleCountDownView.go(songModel.getTotalMs());
         int counDown = songModel.getTotalMs() / 1000;
         mCounDownTask = HandlerTaskTimer.newBuilder()
                 .interval(1000)
@@ -168,8 +167,7 @@ public class SelfSingCardView2 extends RelativeLayout {
                             mListener.onSelfSingOver();
                         }
                         stopCounDown();
-                        mCountIv.setVisibility(VISIBLE);
-                        mCountDownTv.setVisibility(GONE);
+//                        mCountDownTv.setVisibility(GONE);
                     }
                 });
     }
