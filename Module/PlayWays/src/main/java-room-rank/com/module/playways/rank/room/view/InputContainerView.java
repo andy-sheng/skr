@@ -2,6 +2,8 @@ package com.module.playways.rank.room.view;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +51,18 @@ public class InputContainerView extends RelativeLayout {
     ViewGroup mPlaceHolderView;
     View mSendMsgBtn;
 
+    boolean mHasPretend = false;
+
+    Handler mUiHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 100) {
+                EventHelper.pretendCommentPush((String) msg.obj, mRoomData.getGameId());
+                mHasPretend = true;
+            }
+        }
+    };
     private BaseRoomData mRoomData;
 
     public InputContainerView(Context context) {
@@ -118,6 +132,7 @@ public class InputContainerView extends RelativeLayout {
         mSendMsgBtn.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+                mHasPretend = false;
                 if (mRoomData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK) {
                     if (getContext() instanceof VoiceRoomActivity) {
                         StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK), "chatroom_chat", null);
@@ -139,13 +154,22 @@ public class InputContainerView extends RelativeLayout {
                     @Override
                     public void process(ApiResult result) {
                         if (result.getErrno() == 0) {
+                            mUiHandler.removeMessages(100);
                             mEtContent.setText("");
+                            String content = result.getData().getString("afterFilterContent");
+                            if (!mHasPretend) {
+                                EventHelper.pretendCommentPush(content, mRoomData.getGameId());
+                            }
                             U.getKeyBoardUtils().hideSoftInputKeyBoard(U.getActivityUtils().getCurrentActivity());
                         }
                     }
                 });
+                Message msg = mUiHandler.obtainMessage();
+                msg.what = 100;
+                msg.obj = content;
+                mUiHandler.removeMessages(100);
+                mUiHandler.sendMessageDelayed(msg, 1000);
 
-                EventHelper.pretendCommentPush(content, mRoomData.getGameId());
             }
         });
     }
@@ -199,5 +223,6 @@ public class InputContainerView extends RelativeLayout {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         mEmotionKeyboard.destroy();
+        mUiHandler.removeCallbacksAndMessages(null);
     }
 }
