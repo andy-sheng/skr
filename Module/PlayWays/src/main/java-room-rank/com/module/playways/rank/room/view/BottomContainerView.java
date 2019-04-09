@@ -50,9 +50,10 @@ import java.util.HashMap;
 /**
  * 一唱到底的看这个
  * {@link com.module.playways.grab.room.bottom.GrabBottomContainerView}
- * BottomContainerView 给排位赛用
+ * 排位赛看这个
+ * {@link com.module.playways.rank.room.bottom.RankBottomContainerView}
  */
-public class BottomContainerView extends RelativeLayout {
+public abstract class BottomContainerView extends RelativeLayout {
 
     static final int CLEAR_CONTINUE_FLAG = 11;
 
@@ -61,6 +62,7 @@ public class BottomContainerView extends RelativeLayout {
     protected Listener mBottomContainerListener;
 
     protected View mQuickBtn;
+
     protected ExTextView mShowInputContainerBtn;
     protected ExImageView mEmoji2Btn;
     protected ExImageView mEmoji1Btn;
@@ -92,17 +94,19 @@ public class BottomContainerView extends RelativeLayout {
         init();
     }
 
-    protected int  getLayout(){
-        return R.layout.bottom_container_view_layout;
+    protected abstract int getLayout();
+
+    protected void onQuickMsgDialogShow(boolean show) {
+
     }
 
     protected void init() {
-            inflate(getContext(), getLayout(), this);
+        inflate(getContext(), getLayout(), this);
 
         mQuickBtn = this.findViewById(R.id.quick_btn);
-        mShowInputContainerBtn = (ExTextView) this.findViewById(R.id.show_input_container_btn);
-        mEmoji2Btn = (ExImageView) this.findViewById(R.id.emoji2_btn);
-        mEmoji1Btn = (ExImageView) this.findViewById(R.id.emoji1_btn);
+        mShowInputContainerBtn = this.findViewById(R.id.show_input_container_btn);
+        mEmoji2Btn = this.findViewById(R.id.emoji2_btn);
+        mEmoji1Btn = this.findViewById(R.id.emoji1_btn);
 
         mShowInputContainerBtn.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -135,11 +139,18 @@ public class BottomContainerView extends RelativeLayout {
 //                    mQuickMsgPopWindow.setAnimationStyle(R.style.anim_quickmsg_dialog);
                     mQuickMsgPopWindow.setBackgroundDrawable(new BitmapDrawable());
                     mQuickMsgPopWindow.setOutsideTouchable(true);
+                    mQuickMsgPopWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                        @Override
+                        public void onDismiss() {
+                            onQuickMsgDialogShow(false);
+                        }
+                    });
                 }
                 if (!mQuickMsgPopWindow.isShowing()) {
                     int l[] = new int[2];
                     mQuickBtn.getLocationInWindow(l);
                     mQuickMsgPopWindow.showAtLocation(mQuickBtn, Gravity.START | Gravity.TOP, l[0], l[1] - h - U.getDisplayUtils().dip2px(5));
+                    onQuickMsgDialogShow(true);
                 }
             }
         });

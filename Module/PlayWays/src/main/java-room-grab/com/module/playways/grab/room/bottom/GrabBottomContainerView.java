@@ -2,10 +2,12 @@ package com.module.playways.grab.room.bottom;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.common.view.DebounceViewClickListener;
+import com.common.view.ex.ExImageView;
 import com.module.playways.BaseRoomData;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.rank.room.view.BottomContainerView;
@@ -14,6 +16,8 @@ import com.module.rank.R;
 public class GrabBottomContainerView extends BottomContainerView {
 
     View mIvRoomManage;
+
+    ExImageView mQuickBtn;
 
     public GrabBottomContainerView(Context context) {
         super(context);
@@ -39,6 +43,15 @@ public class GrabBottomContainerView extends BottomContainerView {
                 }
             }
         });
+        mQuickBtn = (ExImageView) super.mQuickBtn;
+    }
+
+    protected void onQuickMsgDialogShow(boolean show) {
+        if (show) {
+            mQuickBtn.setImageResource(R.drawable.ycdd_kuaijie_anxia);
+        } else {
+            mQuickBtn.setImageResource(R.drawable.ycdd_kuaijie);
+        }
     }
 
     public void setRoomData(BaseRoomData roomData) {
@@ -62,12 +75,29 @@ public class GrabBottomContainerView extends BottomContainerView {
             lp.addRule(RelativeLayout.LEFT_OF, mIvRoomManage.getId());
             lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 0);
             mEmoji2Btn.setLayoutParams(lp);
+            mQuickBtn.setImageResource(R.drawable.fz_anzhushuohua);
+            mQuickBtn.setOnClickListener(null);
+            mQuickBtn.setOnTouchListener(new OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getActionMasked()) {
+                        case MotionEvent.ACTION_DOWN:
+                            mQuickBtn.setImageResource(R.drawable.fz_shuohuazhong);
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            mQuickBtn.setImageResource(R.drawable.fz_anzhushuohua);
+                            break;
+                    }
+                    return true;
+                }
+            });
         } else {
             mIvRoomManage.setVisibility(GONE);
             LayoutParams lp = (LayoutParams) mEmoji2Btn.getLayoutParams();
             lp.addRule(RelativeLayout.LEFT_OF, 0);
             lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             mEmoji2Btn.setLayoutParams(lp);
+            mQuickBtn.setImageResource(R.drawable.ycdd_kuaijie);
         }
     }
 }
