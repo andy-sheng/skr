@@ -290,4 +290,21 @@ public interface GrabRoomServerApi {
      */
     @PUT("http://dev.api.inframe.mobi/v1/mate/room-invite")
     Observable<ApiResult> inviteFriend(@Body RequestBody body);
+
+
+    /**
+     * 获取一唱到底的表情列表
+     * @return
+     */
+    @GET("http://dev.stand.inframe.mobi/v1/stand/list-emoji")
+    Observable<ApiResult> getDynamicEmoji();
+
+    /**
+     * 发送一唱到底表情
+     * @param body      "gameID": 0  游戏id
+     *                  "id": 0      表情id
+     * @return
+     */
+    @PUT("http://dev.stand.inframe.mobi/v1/stand/send-emoji")
+    Observable<ApiResult> sendDynamicEmoji(@Body RequestBody body);
 }

@@ -477,6 +477,8 @@ message SpecialEmojiMsg {
 // 动态表情消息
 message DynamicEmojiMsg {
     uint32 id = 1; //表情包id
+    string smallEmojiURL = 2; //小图
+    string bigEmojiURL   = 3; //大图
 }
 
 // 加入通知消息

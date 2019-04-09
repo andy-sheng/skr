@@ -29,7 +29,7 @@
             android:layout_above="@+id/input_container_view"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="@dimen/view_25_dp"
-            gameType:type="5" />
+            gameType:type="grab" />
 
         <com.module.playways.rank.room.comment.CommentView
             android:id="@+id/comment_view"
@@ -41,7 +41,7 @@
             android:layout_marginBottom="@dimen/view_66_dp"
             android:paddingLeft="@dimen/view_18_dp"
             android:paddingBottom="@dimen/view_7_dp"
-            gameType:type="5" />
+            gameType:type="grab" />
 
         <com.common.view.ex.ExImageView
             android:id="@+id/cover_iv"

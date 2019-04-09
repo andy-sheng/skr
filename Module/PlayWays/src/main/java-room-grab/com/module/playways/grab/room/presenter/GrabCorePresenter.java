@@ -1,5 +1,6 @@
 package com.module.playways.grab.room.presenter;
 
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.text.SpannableStringBuilder;
@@ -1499,38 +1500,11 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
         //TODO 如果加入房间提示有遗漏，可以考虑接受 SomeOne 事件，一担用户有变化都会回调
         if (canAdd) {
-//            CommentModel commentModel = new CommentModel();
-//            commentModel.setCommentType(CommentModel.TYPE_TRICK);
-//            commentModel.setUserId(playerInfoModel.getUserInfo().getUserId());
-//            commentModel.setAvatar(playerInfoModel.getUserInfo().getAvatar());
-//            commentModel.setUserName(playerInfoModel.getUserInfo().getNickname());
-//            commentModel.setAvatarColor(playerInfoModel.getUserInfo().getSex() == ESex.SX_MALE.getValue() ?
-//                    U.getColor(R.color.color_man_stroke_color) : U.getColor(R.color.color_woman_stroke_color));
-//            SpannableStringBuilder stringBuilder;
-//            if (playerInfoModel.getUserInfo().getUserId() == UserAccountManager.SYSTEM_GRAB_ID) {
-//                stringBuilder = new SpanUtils()
-//                        .append(playerInfoModel.getUserInfo().getNickname() + " ").setForegroundColor(CommentModel.TEXT_YELLOW)
-//                        .append("我是撕歌最傲娇小助手多音，来和你们一起唱歌卖萌~").setForegroundColor(CommentModel.TEXT_3B4E79)
-//                        .create();
-//            } else {
-//                SpanUtils spanUtils = new SpanUtils()
-//                        .append(playerInfoModel.getUserInfo().getNickname() + " ").setForegroundColor(CommentModel.TEXT_YELLOW)
-//                        .append("加入了房间").setForegroundColor(CommentModel.TEXT_3B4E79);
-//                if (BuildConfig.DEBUG) {
-//                    spanUtils.append(" 角色为" + playerInfoModel.getRole())
-//                            .append(" 在线状态为" + playerInfoModel.isOnline());
-//                }
-//                stringBuilder = spanUtils.create();
-//            }
-//            commentModel.setStringBuilder(stringBuilder);
-//            EventBus.getDefault().post(new PretendCommentMsgEvent(commentModel));
-
             CommentTextModel commentModel = new CommentTextModel();
             commentModel.setUserId(playerInfoModel.getUserInfo().getUserId());
             commentModel.setAvatar(playerInfoModel.getUserInfo().getAvatar());
             commentModel.setUserName(playerInfoModel.getUserInfo().getNickname());
-            commentModel.setAvatarColor(playerInfoModel.getUserInfo().getSex() == ESex.SX_MALE.getValue() ?
-                    U.getColor(R.color.color_man_stroke_color) : U.getColor(R.color.color_woman_stroke_color));
+            commentModel.setAvatarColor(Color.WHITE);
             SpannableStringBuilder stringBuilder;
             if (playerInfoModel.getUserInfo().getUserId() == UserAccountManager.SYSTEM_GRAB_ID) {
                 stringBuilder = new SpanUtils()
