@@ -125,6 +125,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     RelativeLayout mRankingContainer;
 
+    ExImageView mGrabRoomBgFlag;
+
     InputContainerView mInputContainerView;
 
     BottomContainerView mBottomContainerView;
@@ -242,6 +244,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                 mInputContainerView.hideSoftInput();
             }
         });
+        initBgView();
         initInputView();
         initBottomView();
         initCommentView();
@@ -308,6 +311,19 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     private void initCountDownView() {
         mRedPkgView = (RedPkgCountDownView) mRootView.findViewById(R.id.red_pkg_view);
+    }
+
+    private void initBgView() {
+        mGrabRoomBgFlag = mRootView.findViewById(R.id.grab_room_bg_flag);
+        if (mRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_SECRET) {
+            mGrabRoomBgFlag.setImageResource(R.drawable.fz_bj_simi);
+        } else if (mRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_FRIEND) {
+            mGrabRoomBgFlag.setImageResource(R.drawable.fz_bj_haoyou);
+        } else if (mRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_COMMON) {
+            //mGrabRoomBgFlag.setImageResource(R.drawable.fz_bj_simi);
+        } else if (mRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_PUBLIC) {
+            mGrabRoomBgFlag.setImageResource(R.drawable.fz_bj_haohua);
+        }
     }
 
     private void initInputView() {

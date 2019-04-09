@@ -26,8 +26,8 @@
         android:layout_width="@dimen/view_90_dp"
         android:layout_height="@dimen/view_38_dp"
         android:layout_centerVertical="true"
-        android:visibility="gone"
-        android:layout_toRightOf="@+id/quick_btn" />
+        android:layout_toRightOf="@+id/quick_btn"
+        android:visibility="gone" />
 
     <com.common.view.ex.ExImageView
         android:id="@+id/quick_btn"

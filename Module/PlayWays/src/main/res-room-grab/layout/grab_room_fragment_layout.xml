@@ -8,6 +8,13 @@
     android:layout_height="match_parent"
     android:background="#404A9A">
 
+    <com.common.view.ex.ExImageView
+        android:id="@+id/grab_room_bg_flag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottom_bg_vp"
+        />
+
     <com.common.view.ex.ExRelativeLayout
         android:id="@+id/bottom_bg_vp"
         android:layout_width="match_parent"
@@ -153,9 +160,9 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_75_dp"
         android:layout_alignTop="@+id/bottom_bg_vp"
-        android:paddingLeft="@dimen/view_18_dp"
         android:layout_marginTop="-30dp"
-        android:layout_marginBottom="@dimen/view_10_dp" />
+        android:layout_marginBottom="@dimen/view_10_dp"
+        android:paddingLeft="@dimen/view_18_dp" />
 
     <com.module.playways.rank.room.gift.GiftBigAnimationViewGroup
         android:id="@+id/gift_big_animation_vg"
