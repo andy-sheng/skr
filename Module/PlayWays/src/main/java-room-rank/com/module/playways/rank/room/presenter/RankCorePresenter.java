@@ -1,6 +1,6 @@
 package com.module.playways.rank.room.presenter;
 
-import android.graphics.Color;
+
 import android.os.Handler;
 import android.os.Message;
 import android.text.SpannableStringBuilder;
@@ -35,10 +35,8 @@ import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
 import com.module.msg.CustomMsgType;
 import com.module.msg.IMsgService;
-import com.module.playways.rank.msg.BasePushInfo;
 import com.module.playways.rank.msg.event.AccBeginEvent;
 import com.module.playways.rank.msg.event.AppSwapEvent;
-import com.module.playways.rank.msg.event.CommentMsgEvent;
 import com.module.playways.rank.msg.event.ExitGameEvent;
 import com.module.playways.rank.msg.event.MachineScoreEvent;
 import com.module.playways.rank.msg.event.PkBurstLightMsgEvent;
@@ -50,6 +48,9 @@ import com.module.playways.rank.msg.filter.PushMsgFilter;
 import com.module.playways.rank.msg.manager.ChatRoomMsgManager;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
+import com.module.playways.rank.room.comment.model.CommentAiModel;
+import com.module.playways.rank.room.comment.model.CommentSysModel;
+import com.module.playways.rank.room.comment.model.CommentTextModel;
 import com.module.playways.rank.room.event.PkSomeOneOnlineChangeEvent;
 import com.module.playways.rank.room.model.RankPlayerInfoModel;
 import com.module.playways.rank.room.model.RankRoundInfoModel;
@@ -57,7 +58,7 @@ import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
 import com.module.playways.rank.room.RankRoomData;
 import com.module.playways.rank.room.RankRoomServerApi;
 import com.module.playways.rank.room.SwapStatusType;
-import com.module.playways.rank.room.comment.CommentModel;
+import com.module.playways.rank.room.comment.model.CommentModel;
 import com.module.playways.rank.room.event.PretendCommentMsgEvent;
 import com.module.playways.rank.room.event.RankRoundInfoChangeEvent;
 import com.module.playways.rank.room.model.BLightInfoModel;
@@ -67,6 +68,7 @@ import com.module.playways.RoomDataUtils;
 import com.module.playways.rank.room.score.MachineScoreItem;
 import com.module.playways.rank.room.score.RobotScoreHelper;
 import com.module.playways.rank.room.view.IGameRuleView;
+import com.module.rank.R;
 import com.zq.live.proto.Common.ESex;
 import com.zq.live.proto.Common.UserInfo;
 import com.zq.live.proto.Room.EMsgPosType;
@@ -97,6 +99,8 @@ import okhttp3.RequestBody;
 
 import static com.module.playways.rank.msg.event.ExitGameEvent.EXIT_GAME_AFTER_PLAY;
 import static com.module.playways.rank.msg.event.ExitGameEvent.EXIT_GAME_OUT_ROUND;
+import static com.module.playways.rank.room.comment.model.CommentModel.TEXT_WHITE;
+import static com.module.playways.rank.room.comment.model.CommentModel.TEXT_YELLOW;
 
 public class RankCorePresenter extends RxLifeCyclePresenter {
     String TAG = "RankCorePresenter";
@@ -173,12 +177,12 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                     if (lineNo > mLastLineNum) {
                         mAcrScore = 0;
                         if (ScoreConfig.isMelp2Enable()) {
-                            if(mMelp2Score>=0){
-                                processScore("mMelp2Score",mMelp2Score,lineNo);
-                            }else{
+                            if (mMelp2Score >= 0) {
+                                processScore("mMelp2Score", mMelp2Score, lineNo);
+                            } else {
                                 // 这样等melp2 回调ok了还可以继续走
                             }
-                        }else if(ScoreConfig.isMelpEnable()){
+                        } else if (ScoreConfig.isMelpEnable()) {
                             int melp1Score = EngineManager.getInstance().getLineScore1();
                             if (melp1Score > mAcrScore) {
                                 processScore("melp1Score", melp1Score, lineNo);
@@ -218,21 +222,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
             for (int i = 0; i < mRoomData.getRoundInfoModelList().size(); i++) {
                 RankRoundInfoModel roundInfoModel = mRoomData.getRoundInfoModelList().get(i);
                 PlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, roundInfoModel.getUserID());
-                if (playerInfoModel == null) {
-                    MyLog.e(TAG, "RankCorePresenter constractor playerInfoModel is null, id is " + roundInfoModel.getUserID());
-                    continue;
-                }
-                BasePushInfo basePushInfo = new BasePushInfo();
-                basePushInfo.setRoomID(mRoomData.getGameId());
-                basePushInfo.setSender(new UserInfo.Builder()
-                        .setUserID(playerInfoModel.getUserInfo().getUserId())
-                        .setAvatar(playerInfoModel.getUserInfo().getAvatar())
-                        .setNickName(playerInfoModel.getUserInfo().getNickname())
-                        .setSex(ESex.fromValue(playerInfoModel.getUserInfo().getSex()))
-                        .build());
-                String text = String.format("第%s个唱", i + 1);
-                CommentMsgEvent msgEvent = new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text);
-                EventBus.getDefault().post(msgEvent);
+                pretenEnterRoom(playerInfoModel, i);
             }
 //            IMsgService msgService = ModuleServiceManager.getInstance().getMsgService();
 //            if (msgService != null) {
@@ -311,35 +301,31 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     }
 
     private void pretenSystemMsg() {
-        CommentModel commentModel = new CommentModel();
-        commentModel.setCommentType(CommentModel.TYPE_TRICK);
-        commentModel.setUserId(UserAccountManager.SYSTEM_ID);
-        commentModel.setAvatar(UserAccountManager.SYSTEM_AVATAR);
-        commentModel.setUserName("系统消息");
-        commentModel.setAvatarColor(Color.WHITE);
-        SpannableStringBuilder stringBuilder = new SpanUtils()
-                .append("欢迎进入撕歌排位赛，对局马上开始，比赛过程发现坏蛋请用力举报哦～").setForegroundColor(CommentModel.TEXT_RED)
-                .create();
-        commentModel.setStringBuilder(stringBuilder);
-        EventBus.getDefault().post(new PretendCommentMsgEvent(commentModel));
+        CommentSysModel commentSysModel = new CommentSysModel("欢迎进入撕歌排位赛，对局马上开始，比赛过程发现坏蛋请用力举报哦～");
+        EventBus.getDefault().post(new PretendCommentMsgEvent(commentSysModel));
     }
 
     private void pretenAiJudgeMsg() {
         PlayerInfoModel ai = mRoomData.getAiJudgeInfo();
         if (ai != null) {
-            CommentModel commentModel = new CommentModel();
-            commentModel.setCommentType(CommentModel.TYPE_TRICK);
-            commentModel.setUserId(UserAccountManager.SYSTEM_RANK_AI);
-            commentModel.setAvatar(ai.getUserInfo().getAvatar());
-            commentModel.setUserName("系统消息");
-            commentModel.setAvatarColor(Color.WHITE);
-            SpannableStringBuilder stringBuilder = new SpanUtils()
-                    .append("AI裁判 ").setForegroundColor(CommentModel.TEXT_YELLOW)
-                    .append("已就位,参与本局演唱评价，比赛正式开始").setForegroundColor(CommentModel.TEXT_WHITE)
-                    .create();
-            commentModel.setStringBuilder(stringBuilder);
-            EventBus.getDefault().post(new PretendCommentMsgEvent(commentModel));
+            CommentAiModel commentAiModel = new CommentAiModel(ai, "已就位,参与本局演唱评价，比赛正式开始");
+            EventBus.getDefault().post(new PretendCommentMsgEvent(commentAiModel));
         }
+    }
+
+    private void pretenEnterRoom(PlayerInfoModel playerInfoModel, int index) {
+        CommentTextModel commentTextModel = new CommentTextModel();
+        commentTextModel.setUserId(playerInfoModel.getUserInfo().getUserId());
+        commentTextModel.setAvatar(playerInfoModel.getUserInfo().getAvatar());
+        commentTextModel.setUserName(playerInfoModel.getUserInfo().getNickname());
+        commentTextModel.setAvatarColor(playerInfoModel.getUserInfo().getSex() == ESex.SX_MALE.getValue() ?
+                U.getColor(R.color.color_man_stroke_color) : U.getColor(R.color.color_woman_stroke_color));
+        SpannableStringBuilder ssb = new SpanUtils()
+                .append(playerInfoModel.getUserInfo().getNickname() + " ").setForegroundColor(TEXT_YELLOW)
+                .append(String.format("第%s个唱", index + 1)).setForegroundColor(TEXT_WHITE)
+                .create();
+        commentTextModel.setStringBuilder(ssb);
+        EventBus.getDefault().post(new PretendCommentMsgEvent(commentTextModel));
     }
 
     @Override
@@ -1527,24 +1513,9 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(PkSomeOneOnlineChangeEvent event) {
-//        if (mRoomData.isIsGameFinish()) {
-//            MyLog.d(TAG, "游戏结束了，不关心 PkSomeOneOnlineChangeEvent 事件");
-//            return;
-//        }
-
         UserInfoModel userInfo = mRoomData.getUserInfo(event.model.getUserID());
-        CommentModel commentModel = new CommentModel();
-        commentModel.setCommentType(CommentModel.TYPE_TRICK);
-        commentModel.setUserId(UserAccountManager.SYSTEM_ID);
-        commentModel.setAvatar(UserAccountManager.SYSTEM_AVATAR);
-        commentModel.setUserName(userInfo.getNickname());
-        commentModel.setAvatarColor(Color.WHITE);
-        SpannableStringBuilder stringBuilder = new SpanUtils()
-                .append(userInfo.getNickname() + " ").setForegroundColor(CommentModel.TEXT_GRAY)
-                .append("偷偷溜走了").setForegroundColor(CommentModel.TEXT_GRAY)
-                .create();
-        commentModel.setStringBuilder(stringBuilder);
-        EventBus.getDefault().post(new PretendCommentMsgEvent(commentModel));
+        CommentSysModel commentSysModel = new CommentSysModel(userInfo.getNickname(),"偷偷溜走了");
+        EventBus.getDefault().post(new PretendCommentMsgEvent(commentSysModel));
 
         if (event.model.getUserID() == MyUserInfoManager.getInstance().getUid()) {
             MyLog.d(TAG, "本人溜走了，需要关掉当前房间,id是" + event.model.getUserID());
@@ -1589,7 +1560,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                                 } else {
                                     processScore("mMelp2Score", mMelp2Score, event.lineNum);
                                 }
-                            }else{
+                            } else {
                                 // 没返回
                             }
                         } else {

@@ -18,11 +18,12 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.listener.SVGAListener;
+import com.module.playways.rank.room.comment.model.CommentLightModel;
 import com.module.playways.rank.room.model.RankGameConfigModel;
 import com.module.playways.rank.room.model.PkScoreTipMsgModel;
 import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.room.RankRoomData;
-import com.module.playways.rank.room.comment.CommentModel;
+import com.module.playways.rank.room.comment.model.CommentModel;
 import com.module.playways.rank.room.event.PkSomeOneBurstLightEvent;
 import com.module.playways.rank.room.event.PkSomeOneLightOffEvent;
 import com.module.playways.rank.room.event.PretendCommentMsgEvent;
@@ -281,31 +282,12 @@ public class RankTopContainerView2 extends RelativeLayout {
      * @param uid     投票者
      */
     private void pretendLightComment(int currUid, int uid, boolean isBao) {
-        CommentModel commentModel = new CommentModel();
         PlayerInfoModel voter = RoomDataUtils.getPlayerInfoById(mRoomData, uid);
-        commentModel.setCommentType(CommentModel.TYPE_TRICK);
-        commentModel.setUserId(voter.getUserID());
-        commentModel.setAvatar(voter.getUserInfo().getAvatar());
-        commentModel.setUserName(voter.getUserInfo().getNickname());
-        commentModel.setAvatarColor(voter.getUserInfo().getSex() == ESex.SX_MALE.getValue() ?
-                U.getColor(R.color.color_man_stroke_color) : U.getColor(R.color.color_woman_stroke_color));
         PlayerInfoModel model = RoomDataUtils.getPlayerInfoById(mRoomData, currUid);
-        if (model != null) {
-//            String text = "";
-//            if (index != 2) {
-//                text = "按了“x”";
-//            } else {
-//                text = "收到" + (index + 1) + "个“x”，演唱结束";
-//            }
-            SpannableStringBuilder stringBuilder = new SpanUtils()
-                    .append(voter.getUserInfo().getNickname() + " ").setForegroundColor(CommentModel.TEXT_YELLOW)
-                    .append("对").setForegroundColor(CommentModel.TEXT_WHITE)
-                    .append(model.getUserInfo().getNickname()).setForegroundColor(CommentModel.TEXT_YELLOW)
-                    .append(isBao ? "爆了个灯" : "按了“x”").setForegroundColor(CommentModel.TEXT_WHITE)
-                    .create();
-            commentModel.setStringBuilder(stringBuilder);
+        if (voter != null && model != null) {
+            CommentLightModel commentLightModel = new CommentLightModel(mRoomData.getGameType(), voter, model, isBao);
+            EventBus.getDefault().post(new PretendCommentMsgEvent(commentLightModel));
         }
-        EventBus.getDefault().post(new PretendCommentMsgEvent(commentModel));
     }
 
     private void parseBurstEvent(int uid, int curUid) {
@@ -570,7 +552,7 @@ public class RankTopContainerView2 extends RelativeLayout {
                 }
             });
         } catch (Exception e) {
-            MyLog.e(TAG,e);
+            MyLog.e(TAG, e);
         }
 
 

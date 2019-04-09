@@ -26,7 +26,6 @@ import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.HttpUtils;
 import com.common.utils.U;
-import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.manager.BgMusicManager;
 import com.dialog.view.TipsDialogView;
 import com.jakewharton.rxbinding2.view.RxView;
@@ -36,7 +35,7 @@ import com.module.playways.grab.room.view.GrabDengBigAnimationView;
 import com.module.playways.rank.others.LyricAndAccMatchManager;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.room.RankRoomData;
-import com.module.playways.rank.room.comment.CommentModel;
+import com.module.playways.rank.room.comment.listener.CommentItemListener;
 import com.module.playways.rank.room.comment.CommentView;
 import com.module.playways.rank.room.event.PkSomeOneBurstLightEvent;
 import com.module.playways.rank.room.event.RankToVoiceTransformDataEvent;
@@ -71,19 +70,11 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.functions.Consumer;
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
@@ -593,13 +584,15 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
 
     private void initCommentView() {
         mCommentView = mRootView.findViewById(R.id.comment_view);
-        mCommentView.setListener(new RecyclerOnItemClickListener() {
+        mCommentView.setListener(new CommentItemListener() {
             @Override
-            public void onItemClicked(View view, int position, Object model) {
-                if (model instanceof CommentModel) {
-                    int userID = ((CommentModel) model).getUserId();
-                    showPersonInfoView(userID);
-                }
+            public void clickAvatar(int userId) {
+                showPersonInfoView(userId);
+            }
+
+            @Override
+            public void clickAgreeKick(int userId, boolean isAgree) {
+
             }
         });
         mCommentView.setRoomData(mRoomData);

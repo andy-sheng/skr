@@ -14,6 +14,10 @@ import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.playways.grab.room.event.GrabSwitchRoomEvent;
+import com.module.playways.rank.room.comment.adapter.CommentAdapter;
+import com.module.playways.rank.room.comment.listener.CommentItemListener;
+import com.module.playways.rank.room.comment.model.CommentModel;
+import com.module.playways.rank.room.comment.model.CommentTextModel;
 import com.module.playways.rank.room.event.PretendCommentMsgEvent;
 import com.module.playways.rank.room.event.RankToVoiceTransformDataEvent;
 import com.module.playways.voice.activity.VoiceRoomActivity;
@@ -38,7 +42,7 @@ public class CommentView extends RelativeLayout {
 
     CommentAdapter mCommentAdapter;
 
-    RecyclerOnItemClickListener mClickListener;
+    CommentItemListener mCommentItemListener;
 
     int maxHeight = U.getDisplayUtils().dip2px(260);
 
@@ -58,8 +62,8 @@ public class CommentView extends RelativeLayout {
         init(attrs);
     }
 
-    public void setListener(RecyclerOnItemClickListener listener) {
-        this.mClickListener = listener;
+    public void setListener(CommentItemListener listener) {
+        this.mCommentItemListener = listener;
     }
 
     RecyclerView.OnScrollListener mOnScrollListener = new RecyclerView.OnScrollListener() {
@@ -137,13 +141,19 @@ public class CommentView extends RelativeLayout {
         mLinearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, true);
         mLinearLayoutManager.setStackFromEnd(true);
         mCommentRv.setLayoutManager(mLinearLayoutManager);
-        mCommentAdapter = new CommentAdapter(new RecyclerOnItemClickListener<CommentModel>() {
+
+        mCommentAdapter = new CommentAdapter(new CommentItemListener() {
             @Override
-            public void onItemClicked(View view, int position, CommentModel model) {
-                if (mClickListener != null) {
-                    if (model.getUserId() != UserAccountManager.SYSTEM_ID) {
-                        mClickListener.onItemClicked(view, position, model);
-                    }
+            public void clickAvatar(int userId) {
+                if (mCommentItemListener != null) {
+                    mCommentItemListener.clickAvatar(userId);
+                }
+            }
+
+            @Override
+            public void clickAgreeKick(int userId, boolean isAgree) {
+                if (mCommentItemListener != null) {
+                    mCommentItemListener.clickAgreeKick(userId, isAgree);
                 }
             }
         });
@@ -170,8 +180,8 @@ public class CommentView extends RelativeLayout {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(CommentMsgEvent event) {
         MyLog.d(TAG, "onEvent" + " CommentMsgEvent = " + event.text);
-        CommentModel commentModel = CommentModel.parseFromEvent(event, mRoomData);
-        processCommentModel(commentModel);
+        CommentTextModel commentTextModel = CommentTextModel.parseFromEvent(event, mRoomData);
+        processCommentModel(commentTextModel);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

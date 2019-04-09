@@ -1,4 +1,4 @@
-package com.module.playways.rank.room.comment;
+package com.module.playways.rank.room.comment.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -7,19 +7,21 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.common.view.recyclerview.DiffAdapter;
-import com.common.view.recyclerview.RecyclerOnItemClickListener;
+import com.component.busilib.constans.GameModeType;
+import com.module.playways.rank.room.comment.holder.CommentHolder;
+import com.module.playways.rank.room.comment.listener.CommentItemListener;
+import com.module.playways.rank.room.comment.model.CommentModel;
 import com.module.rank.R;
 
 public class CommentAdapter extends DiffAdapter<CommentModel, RecyclerView.ViewHolder> {
 
-    public static final int VIEW_HOLDER_TYPE_TEXT = 1;
-
+    public static final int VIEW_HOLDER_TYPE_NORMAL = 1;  // 普通消息(即头像加上文字的普通消息)
     public int mGameType = 0;
 
-    RecyclerOnItemClickListener mRecyclerOnItemClickListener;
+    CommentItemListener mCommentItemListener;
 
-    public CommentAdapter(RecyclerOnItemClickListener l) {
-        mRecyclerOnItemClickListener = l;
+    public CommentAdapter(CommentItemListener mCommentItemListener) {
+        this.mCommentItemListener = mCommentItemListener;
     }
 
     public void setGameType(int gameType) {
@@ -29,18 +31,14 @@ public class CommentAdapter extends DiffAdapter<CommentModel, RecyclerView.ViewH
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (VIEW_HOLDER_TYPE_TEXT == viewType) {
-            View view = null;
-            if(mGameType == 0){
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.comment_view_holder_item, parent, false);
-            }else {
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grab_comment_view_holder_item, parent, false);
-            }
-            CommentHolder viewHolder = new CommentHolder(view);
-            viewHolder.setListener(mRecyclerOnItemClickListener);
-            return viewHolder;
+        View view = null;
+        if (mGameType == 0) {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.comment_view_holder_text_item, parent, false);
+        } else {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grab_comment_view_holder_item, parent, false);
         }
-        return null;
+        CommentHolder commentHolder = new CommentHolder(view);
+        return commentHolder;
     }
 
     @Override
@@ -59,7 +57,6 @@ public class CommentAdapter extends DiffAdapter<CommentModel, RecyclerView.ViewH
 
     @Override
     public int getItemViewType(int position) {
-        CommentModel model = mDataList.get(position);
-        return VIEW_HOLDER_TYPE_TEXT;
+        return VIEW_HOLDER_TYPE_NORMAL;
     }
 }

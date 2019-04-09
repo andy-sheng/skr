@@ -1,4 +1,4 @@
-package com.module.playways.rank.room.comment;
+package com.module.playways.rank.room.comment.holder;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -7,7 +7,8 @@ import com.common.core.avatar.AvatarUtils;
 import com.common.image.fresco.BaseImageView;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
-import com.common.view.recyclerview.RecyclerOnItemClickListener;
+import com.module.playways.rank.room.comment.listener.CommentItemListener;
+import com.module.playways.rank.room.comment.model.CommentModel;
 import com.module.rank.R;
 
 public class CommentHolder extends RecyclerView.ViewHolder {
@@ -18,7 +19,7 @@ public class CommentHolder extends RecyclerView.ViewHolder {
 
     CommentModel mCommentModel;
     int mPostion;
-    RecyclerOnItemClickListener mRecyclerOnItemClickListener;
+    CommentItemListener mCommentItemListener;
 
     public CommentHolder(View itemView) {
         super(itemView);
@@ -27,8 +28,8 @@ public class CommentHolder extends RecyclerView.ViewHolder {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mRecyclerOnItemClickListener != null) {
-                    mRecyclerOnItemClickListener.onItemClicked(itemView, mPostion, mCommentModel);
+                if (mCommentItemListener != null) {
+                    mCommentItemListener.clickAvatar(mCommentModel.getUserId());
                 }
             }
         });
@@ -47,7 +48,7 @@ public class CommentHolder extends RecyclerView.ViewHolder {
     }
 
 
-    public void setListener(RecyclerOnItemClickListener recyclerOnItemClickListener) {
-        mRecyclerOnItemClickListener = recyclerOnItemClickListener;
+    public void setListener(CommentItemListener mCommentItemListener) {
+        this.mCommentItemListener = mCommentItemListener;
     }
 }

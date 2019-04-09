@@ -1,6 +1,6 @@
 package com.module.playways.rank.room.event;
 
-import com.module.playways.rank.room.comment.CommentModel;
+import com.module.playways.rank.room.comment.model.CommentModel;
 
 import java.util.List;
 

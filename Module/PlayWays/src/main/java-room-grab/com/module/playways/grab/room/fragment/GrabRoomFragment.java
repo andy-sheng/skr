@@ -67,7 +67,8 @@ import com.module.playways.grab.room.view.TurnInfoCardView;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
 import com.module.playways.rank.prepare.view.VoiceControlPanelView;
-import com.module.playways.rank.room.comment.CommentModel;
+import com.module.playways.rank.room.comment.listener.CommentItemListener;
+import com.module.playways.rank.room.comment.model.CommentModel;
 import com.module.playways.rank.room.comment.CommentView;
 import com.module.playways.rank.room.gift.GiftBigAnimationViewGroup;
 import com.module.playways.rank.room.gift.GiftContinueViewGroup;
@@ -341,13 +342,15 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     private void initCommentView() {
         mCommentView = mRootView.findViewById(R.id.comment_view);
-        mCommentView.setListener(new RecyclerOnItemClickListener() {
+        mCommentView.setListener(new CommentItemListener() {
             @Override
-            public void onItemClicked(View view, int position, Object model) {
-                if (model instanceof CommentModel) {
-                    int userID = ((CommentModel) model).getUserId();
-                    showPersonInfoView(userID);
-                }
+            public void clickAvatar(int userId) {
+                showPersonInfoView(userId);
+            }
+
+            @Override
+            public void clickAgreeKick(int userId, boolean isAgree) {
+
             }
         });
         mCommentView.setRoomData(mRoomData);

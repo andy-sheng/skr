@@ -23,7 +23,8 @@ import com.module.playways.rank.msg.filter.PushMsgFilter;
 import com.module.playways.rank.msg.manager.ChatRoomMsgManager;
 import com.module.playways.rank.room.RankRoomData;
 import com.module.playways.rank.room.RankRoomServerApi;
-import com.module.playways.rank.room.comment.CommentModel;
+import com.module.playways.rank.room.comment.model.CommentModel;
+import com.module.playways.rank.room.comment.model.CommentTextModel;
 import com.module.playways.rank.room.event.PretendCommentMsgEvent;
 import com.module.playways.rank.room.model.RankPlayerInfoModel;
 import com.module.playways.voice.inter.IVoiceView;
@@ -160,8 +161,7 @@ public class VoiceCorePresenter extends RxLifeCyclePresenter {
     public void pretentLeaveMsg(int userId) {
         UserInfoModel userInfo = mRoomData.getUserInfo(userId);
         if (userInfo != null) {
-            CommentModel commentModel = new CommentModel();
-            commentModel.setCommentType(CommentModel.TYPE_TRICK);
+            CommentTextModel commentModel = new CommentTextModel();
             commentModel.setUserId(userInfo.getUserId());
             commentModel.setAvatar(userInfo.getAvatar());
             commentModel.setUserName(userInfo.getNickname());

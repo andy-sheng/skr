@@ -15,11 +15,10 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
-import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.manager.BgMusicManager;
 import com.module.playways.grab.room.event.ShowPersonCardEvent;
 import com.module.playways.rank.room.RankRoomData;
-import com.module.playways.rank.room.comment.CommentModel;
+import com.module.playways.rank.room.comment.listener.CommentItemListener;
 import com.module.playways.rank.room.comment.CommentView;
 import com.module.playways.rank.room.fragment.RankResultFragment;
 import com.module.playways.rank.room.view.InputContainerView;
@@ -127,13 +126,15 @@ public class VoiceRoomFragment extends BaseFragment implements IVoiceView {
 
     private void initCommentView() {
         mCommentView = mRootView.findViewById(R.id.comment_view);
-        mCommentView.setListener(new RecyclerOnItemClickListener() {
+        mCommentView.setListener(new CommentItemListener() {
             @Override
-            public void onItemClicked(View view, int position, Object model) {
-                if (model instanceof CommentModel) {
-                    int userID = ((CommentModel) model).getUserId();
-                    showPersonInfoView(userID);
-                }
+            public void clickAvatar(int userId) {
+                showPersonInfoView(userId);
+            }
+
+            @Override
+            public void clickAgreeKick(int userId, boolean isAgree) {
+
             }
         });
         mCommentView.setRoomData(mRoomData);

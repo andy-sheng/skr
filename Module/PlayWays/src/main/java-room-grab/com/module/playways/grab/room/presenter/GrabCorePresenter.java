@@ -1,6 +1,5 @@
 package com.module.playways.grab.room.presenter;
 
-import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.text.SpannableStringBuilder;
@@ -83,7 +82,10 @@ import com.module.playways.rank.prepare.model.PlayerInfoModel;
 import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
 import com.module.playways.rank.room.SwapStatusType;
 import com.module.playways.RoomDataUtils;
-import com.module.playways.rank.room.comment.CommentModel;
+import com.module.playways.rank.room.comment.model.CommentLightModel;
+import com.module.playways.rank.room.comment.model.CommentModel;
+import com.module.playways.rank.room.comment.model.CommentSysModel;
+import com.module.playways.rank.room.comment.model.CommentTextModel;
 import com.module.playways.rank.room.event.PretendCommentMsgEvent;
 import com.module.playways.rank.room.model.score.ScoreResultModel;
 
@@ -271,17 +273,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     }
 
     private void pretenSystemMsg(String text) {
-        CommentModel commentModel = new CommentModel();
-        commentModel.setCommentType(CommentModel.TYPE_TRICK);
-        commentModel.setUserId(UserAccountManager.SYSTEM_ID);
-        commentModel.setAvatar(UserAccountManager.SYSTEM_AVATAR);
-        commentModel.setUserName("系统消息");
-        commentModel.setAvatarColor(Color.WHITE);
-        SpannableStringBuilder stringBuilder = new SpanUtils()
-                .append(text).setForegroundColor(CommentModel.TEXT_RED)
-                .create();
-        commentModel.setStringBuilder(stringBuilder);
-        EventBus.getDefault().post(new PretendCommentMsgEvent(commentModel));
+        CommentSysModel commentSysModel = new CommentSysModel(text);
+        EventBus.getDefault().post(new PretendCommentMsgEvent(commentSysModel));
     }
 
     @Override
@@ -1472,21 +1465,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         PlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, uid);
         MyLog.d(TAG, "pretendLightMsgComment" + " singerId=" + singerModel + " uid=" + playerInfoModel + " isBao=" + isBao);
         if (singerModel != null && playerInfoModel != null) {
-            CommentModel commentModel = new CommentModel();
-            commentModel.setCommentType(CommentModel.TYPE_TRICK);
-            commentModel.setUserId(playerInfoModel.getUserID());
-            commentModel.setAvatar(playerInfoModel.getUserInfo().getAvatar());
-            commentModel.setUserName(playerInfoModel.getUserInfo().getNickname());
-            commentModel.setAvatarColor(playerInfoModel.getUserInfo().getSex() == ESex.SX_MALE.getValue() ?
-                    U.getColor(R.color.color_man_stroke_color) : U.getColor(R.color.color_woman_stroke_color));
-            SpannableStringBuilder stringBuilder = new SpanUtils()
-                    .append(playerInfoModel.getUserInfo().getNickname() + " ").setForegroundColor(CommentModel.TEXT_YELLOW)
-                    .append("对").setForegroundColor(CommentModel.TEXT_3B4E79)
-                    .append(singerModel.getUserInfo().getNickname()).setForegroundColor(CommentModel.TEXT_YELLOW)
-                    .append(isBao ? "爆灯啦" : "灭了盏灯").setForegroundColor(CommentModel.TEXT_3B4E79)
-                    .create();
-            commentModel.setStringBuilder(stringBuilder);
-            EventBus.getDefault().post(new PretendCommentMsgEvent(commentModel));
+            CommentLightModel commentLightModel = new CommentLightModel(mRoomData.getGameType(), playerInfoModel, singerModel, isBao);
+            EventBus.getDefault().post(new PretendCommentMsgEvent(commentLightModel));
         }
     }
 
@@ -1519,8 +1499,33 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
         //TODO 如果加入房间提示有遗漏，可以考虑接受 SomeOne 事件，一担用户有变化都会回调
         if (canAdd) {
-            CommentModel commentModel = new CommentModel();
-            commentModel.setCommentType(CommentModel.TYPE_TRICK);
+//            CommentModel commentModel = new CommentModel();
+//            commentModel.setCommentType(CommentModel.TYPE_TRICK);
+//            commentModel.setUserId(playerInfoModel.getUserInfo().getUserId());
+//            commentModel.setAvatar(playerInfoModel.getUserInfo().getAvatar());
+//            commentModel.setUserName(playerInfoModel.getUserInfo().getNickname());
+//            commentModel.setAvatarColor(playerInfoModel.getUserInfo().getSex() == ESex.SX_MALE.getValue() ?
+//                    U.getColor(R.color.color_man_stroke_color) : U.getColor(R.color.color_woman_stroke_color));
+//            SpannableStringBuilder stringBuilder;
+//            if (playerInfoModel.getUserInfo().getUserId() == UserAccountManager.SYSTEM_GRAB_ID) {
+//                stringBuilder = new SpanUtils()
+//                        .append(playerInfoModel.getUserInfo().getNickname() + " ").setForegroundColor(CommentModel.TEXT_YELLOW)
+//                        .append("我是撕歌最傲娇小助手多音，来和你们一起唱歌卖萌~").setForegroundColor(CommentModel.TEXT_3B4E79)
+//                        .create();
+//            } else {
+//                SpanUtils spanUtils = new SpanUtils()
+//                        .append(playerInfoModel.getUserInfo().getNickname() + " ").setForegroundColor(CommentModel.TEXT_YELLOW)
+//                        .append("加入了房间").setForegroundColor(CommentModel.TEXT_3B4E79);
+//                if (BuildConfig.DEBUG) {
+//                    spanUtils.append(" 角色为" + playerInfoModel.getRole())
+//                            .append(" 在线状态为" + playerInfoModel.isOnline());
+//                }
+//                stringBuilder = spanUtils.create();
+//            }
+//            commentModel.setStringBuilder(stringBuilder);
+//            EventBus.getDefault().post(new PretendCommentMsgEvent(commentModel));
+
+            CommentTextModel commentModel = new CommentTextModel();
             commentModel.setUserId(playerInfoModel.getUserInfo().getUserId());
             commentModel.setAvatar(playerInfoModel.getUserInfo().getAvatar());
             commentModel.setUserName(playerInfoModel.getUserInfo().getNickname());
@@ -1530,12 +1535,12 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             if (playerInfoModel.getUserInfo().getUserId() == UserAccountManager.SYSTEM_GRAB_ID) {
                 stringBuilder = new SpanUtils()
                         .append(playerInfoModel.getUserInfo().getNickname() + " ").setForegroundColor(CommentModel.TEXT_YELLOW)
-                        .append("我是撕歌最傲娇小助手多音，来和你们一起唱歌卖萌~").setForegroundColor(CommentModel.TEXT_3B4E79)
+                        .append("我是撕歌最傲娇小助手多音，来和你们一起唱歌卖萌~").setForegroundColor(CommentModel.TEXT_WHITE)
                         .create();
             } else {
                 SpanUtils spanUtils = new SpanUtils()
                         .append(playerInfoModel.getUserInfo().getNickname() + " ").setForegroundColor(CommentModel.TEXT_YELLOW)
-                        .append("加入了房间").setForegroundColor(CommentModel.TEXT_3B4E79);
+                        .append("加入了房间").setForegroundColor(CommentModel.TEXT_WHITE);
                 if (BuildConfig.DEBUG) {
                     spanUtils.append(" 角色为" + playerInfoModel.getRole())
                             .append(" 在线状态为" + playerInfoModel.isOnline());
