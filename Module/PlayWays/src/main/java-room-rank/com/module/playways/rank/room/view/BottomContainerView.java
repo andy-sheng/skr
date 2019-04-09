@@ -52,7 +52,7 @@ public class BottomContainerView extends RelativeLayout {
 
     Listener mBottomContainerListener;
 
-    ExTextView mQuickBtn;
+    View mQuickBtn;
     ExTextView mShowInputContainerBtn;
 
     ExImageView mEmoji2Btn;
@@ -89,19 +89,19 @@ public class BottomContainerView extends RelativeLayout {
     }
 
     private void init(AttributeSet attrs) {
-        if(attrs != null){
+        if (attrs != null) {
             TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.gameType);
             mGameType = typedArray.getInt(R.styleable.gameType_type, 0);
             typedArray.recycle();
         }
 
-        if(mGameType == 0){
-            inflate(getContext(), R.layout.bottom_container_view_layout, this);
-        }else {
+        if (mGameType == GameModeType.GAME_MODE_GRAB) {
             inflate(getContext(), R.layout.grab_bottom_container_view_layout, this);
+        } else {
+            inflate(getContext(), R.layout.bottom_container_view_layout, this);
         }
 
-        mQuickBtn = (ExTextView) this.findViewById(R.id.quick_btn);
+        mQuickBtn =  this.findViewById(R.id.quick_btn);
         mShowInputContainerBtn = (ExTextView) this.findViewById(R.id.show_input_container_btn);
         mEmoji2Btn = (ExImageView) this.findViewById(R.id.emoji2_btn);
         mEmoji1Btn = (ExImageView) this.findViewById(R.id.emoji1_btn);

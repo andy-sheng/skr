@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.common.view.recyclerview.DiffAdapter;
-import com.component.busilib.constans.GameModeType;
 import com.module.playways.rank.room.comment.holder.CommentHolder;
 import com.module.playways.rank.room.comment.listener.CommentItemListener;
 import com.module.playways.rank.room.comment.model.CommentModel;
