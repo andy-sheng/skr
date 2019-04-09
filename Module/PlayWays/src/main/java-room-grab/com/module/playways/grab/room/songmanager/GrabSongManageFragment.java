@@ -25,6 +25,7 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExFrameLayout;
 import com.common.view.ex.ExImageView;
+import com.common.view.ex.ExLinearLayout;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
 import com.module.playways.grab.room.GrabRoomData;
@@ -50,7 +51,7 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
 
     ExTextView mTvSelectedSong;
 
-    ExFrameLayout mFlSongListContainer;
+    ExLinearLayout mFlSongListContainer;
 
     SmartRefreshLayout mRefreshLayout;
 
@@ -84,7 +85,7 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
 
         mSearchSongIv = mRootView.findViewById(R.id.search_song_iv);
         mTvSelectedSong = (ExTextView) mRootView.findViewById(R.id.tv_selected_song);
-        mFlSongListContainer = (ExFrameLayout) mRootView.findViewById(R.id.fl_song_list_container);
+        mFlSongListContainer = (ExLinearLayout) mRootView.findViewById(R.id.fl_song_list_container);
         mRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.refreshLayout);
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
         mTvSelectedTag = (ExTextView) mRootView.findViewById(R.id.selected_tag);

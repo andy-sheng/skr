@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="#2E3041"
+    android:background="#576FE3"
     android:layout_height="@dimen/view_69_dp"
     android:orientation="vertical">
 
@@ -17,8 +17,8 @@
         android:layout_toLeftOf="@+id/tv_manage"
         android:ellipsize="end"
         android:singleLine="true"
-        android:textColor="@color/white_trans_70"
-        android:textSize="@dimen/textsize_18_dp" />
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_16_dp" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/tv_auther"
@@ -31,31 +31,23 @@
         android:alpha="0.6"
         android:ellipsize="end"
         android:singleLine="true"
-        android:textColor="#B2B6D6"
+        android:textColor="@color/white_trans_80"
         android:textSize="@dimen/textsize_12_dp" />
 
     <com.common.view.ex.ExTextView
         android:id="@+id/tv_manage"
-        android:layout_width="@dimen/view_65_dp"
-        android:layout_height="@dimen/view_34_dp"
+        android:layout_width="@dimen/view_72_dp"
+        android:layout_height="@dimen/view_38_dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/view_16_dp"
         android:gravity="center"
         android:textSize="@dimen/textsize_16_dp"
-        app:bl_corners_radius="@dimen/view_8_dp"
-        app:bl_enabled_drawable="#D36060"
-        app:bl_enabled_textColor="@color/white"
-        app:bl_stroke_color="#202239"
-        app:bl_stroke_width="@dimen/view_2_dp"
-        app:bl_unEnabled_drawable="#484B63"
-        app:bl_unEnabled_textColor="#B2B6D6" />
+        />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="@dimen/view_16_dp"
-        android:layout_marginRight="@dimen/view_16_dp"
-        android:background="@color/white_trans_10" />
+        android:background="#3B4E79" />
 </RelativeLayout>
