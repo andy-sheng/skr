@@ -21,6 +21,14 @@
         android:textColor="@color/white_trans_30"
         android:textSize="@dimen/textsize_16_dp" />
 
+    <com.module.playways.grab.room.bottom.SpeakingDotAnimationView
+        android:id="@+id/speaking_dot_animation_view"
+        android:layout_width="@dimen/view_90_dp"
+        android:layout_height="@dimen/view_38_dp"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        android:layout_toRightOf="@+id/quick_btn" />
+
     <com.common.view.ex.ExImageView
         android:id="@+id/quick_btn"
         android:layout_width="wrap_content"
@@ -56,6 +64,6 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/view_10_dp"
-        android:src="@drawable/fangzhuzhushou"
+        android:src="@drawable/fz_kongzhichouti"
         android:visibility="gone" />
 </merge>

@@ -19,6 +19,8 @@ public class GrabBottomContainerView extends BottomContainerView {
 
     ExImageView mQuickBtn;
 
+    View mSpeakingDotAnimationView;
+
     public GrabBottomContainerView(Context context) {
         super(context);
     }
@@ -43,6 +45,7 @@ public class GrabBottomContainerView extends BottomContainerView {
                 }
             }
         });
+        mSpeakingDotAnimationView = this.findViewById(R.id.speaking_dot_animation_view);
         mQuickBtn = (ExImageView) super.mQuickBtn;
     }
 
@@ -83,9 +86,14 @@ public class GrabBottomContainerView extends BottomContainerView {
                     switch (event.getActionMasked()) {
                         case MotionEvent.ACTION_DOWN:
                             mQuickBtn.setImageResource(R.drawable.fz_shuohuazhong);
+                            mSpeakingDotAnimationView.setVisibility(VISIBLE);
+                            mShowInputContainerBtn.setText("");
                             break;
+                        case MotionEvent.ACTION_CANCEL:
                         case MotionEvent.ACTION_UP:
                             mQuickBtn.setImageResource(R.drawable.fz_anzhushuohua);
+                            mSpeakingDotAnimationView.setVisibility(GONE);
+                            mShowInputContainerBtn.setText("夸赞是一种美德");
                             break;
                     }
                     return true;

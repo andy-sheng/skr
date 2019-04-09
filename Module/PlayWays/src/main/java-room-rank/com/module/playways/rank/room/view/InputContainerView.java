@@ -169,7 +169,7 @@ public class InputContainerView extends RelativeLayout {
                 msg.what = 100;
                 msg.obj = content;
                 mUiHandler.removeMessages(100);
-                mUiHandler.sendMessageDelayed(msg, 1000);
+                mUiHandler.sendMessageDelayed(msg, 500);
 
             }
         });
