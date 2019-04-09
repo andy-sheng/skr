@@ -37,7 +37,7 @@
             android:lineSpacingExtra="7dp"
             android:paddingLeft="@dimen/view_40_dp"
             android:paddingRight="@dimen/view_40_dp"
-            android:textColor="@color/black"
+            android:textColor="#364E7C"
             android:textSize="@dimen/textsize_18_dp"
             android:textStyle="bold" />
     </ScrollView>
@@ -53,11 +53,11 @@
         android:visibility="visible"
         app:ly_eable_scroll="false"
         app:ly_eable_verbatim="true"
-        app:ly_high_light_paint_color_from="#CD0972"
-        app:ly_high_light_paint_color_to="#CD0972"
-        app:ly_high_light_paint_text_size="@dimen/textsize_dimen_20"
-        app:ly_high_light_sub_paint_color="#594017"
-        app:ly_outline_paint_color="#594017"
+        app:ly_high_light_paint_color_from="#DB4D84"
+        app:ly_high_light_paint_color_to="#DB4D84"
+        app:ly_high_light_paint_text_size="@dimen/textsize_dimen_18"
+        app:ly_high_light_sub_paint_color="#665945"
+        app:ly_outline_paint_color="#665945"
         app:ly_paint_color_from="@color/black_trans_30"
         app:ly_paint_color_to="@color/black_trans_30"
         app:ly_paint_text_size="@dimen/textsize_dimen_16"
@@ -67,64 +67,52 @@
         app:leftBgPaintColor="@color/transparent"
         app:rightBgPaintColor="@color/transparent"
         app:leftPaintColor="@color/white"
-        app:rightPaintColor="#CD830A"
-        app:redInnerpaintColor="@color/white"
-        app:redOutpaintColor="#CD830A"
-        app:redLinePaintColor="@color/white_trans_40"
-        android:layout_marginTop="@dimen/view_d_30_dp"
+        app:rightPaintColor="#D4AF72"
+        app:redInnerpaintColor="#FFC15B"
+        app:redOutpaintColor="#A9864E"
+        app:redLinePaintColor="#D4AF72"
+        android:layout_marginTop="@dimen/view_d_25_dp"
         android:layout_marginLeft="@dimen/view_20_dp"
         android:layout_marginRight="@dimen/view_20_dp"
         android:id="@+id/voice_scale_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_61_dp"
+        android:layout_height="@dimen/view_56_dp"
         android:layout_below="@+id/many_lyrics_view"
         android:visibility="visible" />
 
     <ImageView
         android:id="@+id/iv_tag"
-        android:layout_width="@dimen/view_120_dp"
-        android:layout_height="@dimen/view_64_dp"
+        android:layout_width="@dimen/view_144_dp"
+        android:layout_height="@dimen/view_67_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
         android:layout_marginTop="@dimen/view_98_dp"
-        android:background="@drawable/self_sing_biaoqian" />
+        android:background="@drawable/ycdd_daojishi_banzou" />
 
+    <com.common.view.countdown.CircleCountDownView
+        android:layout_marginTop="@dimen/view_3_dp"
+        android:layout_marginLeft="@dimen/view_3_dp"
+        app:inner_color="#FFC15B"
+        app:inner_stroke_raduis="@dimen/view_24_dp"
+        app:inner_stroke_width="@dimen/view_4_dp"
+        android:id="@+id/circle_count_down_view"
+        android:layout_alignTop="@+id/iv_tag"
+        android:layout_alignLeft="@+id/iv_tag"
+        android:layout_width="@dimen/view_60_dp"
+        android:layout_height="@dimen/view_60_dp"
+        />
 
-    <com.common.view.ex.ExRelativeLayout
-        android:layout_width="@dimen/view_80_dp"
-        android:layout_height="@dimen/view_80_dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_85_dp"
-        app:bl_shape="oval"
-        app:bl_solid_color="#2E3041"
-        app:bl_stroke_color="#202239"
-        app:bl_stroke_width="@dimen/view_2_dp">
-
-        <com.module.playways.rank.room.view.ArcProgressBar
-            android:id="@+id/count_down_process"
-            android:layout_width="@dimen/view_70_dp"
-            android:layout_height="@dimen/view_70_dp"
-            android:layout_centerInParent="true"
-            arcProgress:linesnum="52" />
-
-        <com.common.view.ex.ExTextView
-            android:id="@+id/count_down_tv"
-            android:layout_width="@dimen/view_50_dp"
-            android:layout_height="@dimen/view_40_dp"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:textColor="#FFED3F"
-            android:textSize="@dimen/textsize_32_dp"
-            android:textStyle="bold" />
-
-        <ImageView
-            android:id="@+id/count_iv"
-            android:layout_width="@dimen/view_71_dp"
-            android:layout_height="@dimen/view_72_dp"
-            android:layout_centerInParent="true"
-            android:src="@drawable/zan"
-            android:visibility="gone" />
-
-    </com.common.view.ex.ExRelativeLayout>
+    <com.common.view.ex.ExTextView
+        android:layout_marginLeft="@dimen/view_6_dp"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:id="@+id/count_down_tv"
+        android:layout_width="@dimen/view_50_dp"
+        android:layout_height="@dimen/view_40_dp"
+        android:layout_alignTop="@+id/iv_tag"
+        android:layout_alignLeft="@+id/iv_tag"
+        android:gravity="center"
+        android:textColor="#FFED3F"
+        android:textSize="@dimen/textsize_32_dp"
+        android:textStyle="bold" />
 
 
 </merge>
