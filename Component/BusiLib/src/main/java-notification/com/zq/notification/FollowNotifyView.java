@@ -11,6 +11,7 @@ import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
+import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -26,7 +27,7 @@ public class FollowNotifyView extends RelativeLayout {
     SimpleDraweeView mAvatarIv;
     ExTextView mNameTv;
     ExTextView mHintTv;
-    ExTextView mFollowTv;
+    ExImageView mFollowTv;
 
     UserInfoModel mUserInfoModel;
 
@@ -50,7 +51,7 @@ public class FollowNotifyView extends RelativeLayout {
         mAvatarIv = (SimpleDraweeView) findViewById(R.id.avatar_iv);
         mNameTv = (ExTextView) findViewById(R.id.name_tv);
         mHintTv = (ExTextView) findViewById(R.id.hint_tv);
-        mFollowTv = (ExTextView) findViewById(R.id.follow_tv);
+        mFollowTv = (ExImageView) findViewById(R.id.follow_tv);
 
         mFollowTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -64,7 +65,8 @@ public class FollowNotifyView extends RelativeLayout {
                             UserInfoManager.RA_BUILD, mUserInfoModel.isFriend(), new UserInfoManager.ResponseCallBack() {
                                 @Override
                                 public void onServerSucess(Object o) {
-                                    mFollowTv.setText("已互关");
+                                    mFollowTv.setBackgroundResource(R.drawable.person_card_friend);
+                                    mFollowTv.setClickable(false);
                                 }
 
                                 @Override
@@ -86,22 +88,19 @@ public class FollowNotifyView extends RelativeLayout {
         AvatarUtils.loadAvatarByUrl(mAvatarIv,
                 AvatarUtils.newParamsBuilder(mUserInfoModel.getAvatar())
                         .setCircle(true)
-                        .setBorderColorBySex(mUserInfoModel.getSex() == ESex.SX_MALE.getValue())
-                        .setBorderWidth(U.getDisplayUtils().dip2px(2))
                         .build());
         mNameTv.setText(mUserInfoModel.getNickname());
 
         if (mUserInfoModel.isFriend()) {
             // 好友怎么展示
-            mFollowTv.setText("已互关");
+            mFollowTv.setBackgroundResource(R.drawable.person_card_friend);
             mFollowTv.setClickable(false);
         } else if (mUserInfoModel.isFollow()) {
             MyLog.w(TAG, "error 他关注我，为什么我能收到我关注他，但是我们不是好友？？？");
         } else {
             // 粉丝
             mFollowTv.setClickable(true);
-            mFollowTv.setText("关注ta");
-
+            mFollowTv.setBackgroundResource(R.drawable.person_card_follow);
         }
     }
 

@@ -13,7 +13,7 @@
         android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginRight="@dimen/view_16_dp"
         android:layout_marginBottom="@dimen/view_16_dp"
-        android:background="@drawable/person_card_bg"
+        android:background="@drawable/common_dialog_bg"
         android:paddingBottom="@dimen/view_6_dp"
         app:srlFooterTranslationViewId="@+id/photo_view">
 
