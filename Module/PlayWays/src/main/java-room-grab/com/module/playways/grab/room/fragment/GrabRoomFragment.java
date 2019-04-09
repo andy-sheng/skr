@@ -100,6 +100,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import static com.module.playways.grab.room.view.RoundOverCardView.SING_ABANDON_END;
+
 public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkgCountDownView {
 
     public final static String TAG = "GrabRoomFragment";
@@ -891,6 +893,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                 onRoundOverPlayOver(playNextSongInfoCard, now);
             }
         });
+
+        if(mGrabRedPkgPresenter.isCanReceive()
+                && now.getUserID() == MyUserInfoManager.getInstance().getUid()){
+            mGrabRedPkgPresenter.getRedPkg();
+        }
     }
 
     private void onRoundOverPlayOver(boolean playNextSongInfoCard, BaseRoundInfoModel now) {

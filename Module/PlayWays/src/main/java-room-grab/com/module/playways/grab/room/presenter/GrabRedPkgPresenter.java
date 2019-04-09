@@ -29,6 +29,7 @@ public class GrabRedPkgPresenter extends RxLifeCyclePresenter {
     GrabRoomServerApi mGrabRoomServerApi;
     IRedPkgCountDownView view;
     boolean mIsHasShow = false;
+    boolean mCanReceive = false;
 
     public GrabRedPkgPresenter(IRedPkgCountDownView view) {
         this.view = view;
@@ -56,16 +57,8 @@ public class GrabRedPkgPresenter extends RxLifeCyclePresenter {
                         for (GrabRedPkgTaskModel model :
                                 redPkgTaskModelList) {
                             if ("1".equals(model.getTaskID()) && !model.isDone()) {
-                                view.redPkgCountDown(RED_PKG_COUNT_DOWN_TIME);
-                                HandlerTaskTimer.newBuilder()
-                                        .delay(RED_PKG_COUNT_DOWN_TIME)
-                                        .compose(GrabRedPkgPresenter.this)
-                                        .start(new HandlerTaskTimer.ObserverW() {
-                                            @Override
-                                            public void onNext(Integer integer) {
-                                                getRedPkg();
-                                            }
-                                        });
+//                                view.redPkgCountDown(RED_PKG_COUNT_DOWN_TIME);
+                                mCanReceive = true;
                             }
                         }
                     } else {
@@ -81,6 +74,10 @@ public class GrabRedPkgPresenter extends RxLifeCyclePresenter {
                 MyLog.e(TAG, e);
             }
         }, this);
+    }
+
+    public boolean isCanReceive() {
+        return mCanReceive;
     }
 
     public void getRedPkg() {
@@ -107,6 +104,7 @@ public class GrabRedPkgPresenter extends RxLifeCyclePresenter {
                     if (redPkgTaskModel != null) {
                         if ("1".equals(redPkgTaskModel.getTaskID()) && redPkgTaskModel.isDone()) {
                             mIsHasShow = true;
+                            mCanReceive = false;
                             view.getCashSuccess(Float.parseFloat(redPkgTaskModel.getRedbagExtra().getCash()));
                         } else {
                             MyLog.w(TAG, "getRedPkg task id is  " + redPkgTaskModel.getTaskID() + ", isDone is " + redPkgTaskModel.isDone());
