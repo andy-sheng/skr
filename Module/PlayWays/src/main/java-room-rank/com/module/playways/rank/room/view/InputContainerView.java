@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -154,10 +155,10 @@ public class InputContainerView extends RelativeLayout {
                     @Override
                     public void process(ApiResult result) {
                         if (result.getErrno() == 0) {
-                            mUiHandler.removeMessages(100);
                             mEtContent.setText("");
                             String content = result.getData().getString("afterFilterContent");
-                            if (!mHasPretend) {
+                            if (!mHasPretend && !TextUtils.isEmpty(content)) {
+                                mUiHandler.removeMessages(100);
                                 EventHelper.pretendCommentPush(content, mRoomData.getGameId());
                             }
                             U.getKeyBoardUtils().hideSoftInputKeyBoard(U.getActivityUtils().getCurrentActivity());

@@ -22,7 +22,7 @@
         app:bl_stroke_width="@dimen/view_2_dp">
 
         <!--这里面是软键盘弹出时 需要上移的布局-->
-        <com.module.playways.rank.room.view.BottomContainerView
+        <com.module.playways.grab.room.bottom.GrabBottomContainerView
             android:id="@+id/bottom_container_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

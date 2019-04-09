@@ -47,27 +47,29 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 
+/**
+ * 一唱到底的看这个
+ * {@link com.module.playways.grab.room.bottom.GrabBottomContainerView}
+ * BottomContainerView 给排位赛用
+ */
 public class BottomContainerView extends RelativeLayout {
 
     static final int CLEAR_CONTINUE_FLAG = 11;
 
-    Listener mBottomContainerListener;
+    protected BaseRoomData mRoomData;
 
-    View mQuickBtn;
-    ExTextView mShowInputContainerBtn;
-    ExImageView mEmoji2Btn;
-    ExImageView mEmoji1Btn;
+    protected Listener mBottomContainerListener;
 
-    View mIvRoomManage;
+    protected View mQuickBtn;
+    protected ExTextView mShowInputContainerBtn;
+    protected ExImageView mEmoji2Btn;
+    protected ExImageView mEmoji1Btn;
 
-    int mGameType = 0;
+    protected PopupWindow mQuickMsgPopWindow;
 
-    PopupWindow mQuickMsgPopWindow;
-    private BaseRoomData mRoomData;
-
-    SpecialEmojiMsgType mLastSendType = null;
-    int mContinueCount = 1;
-    long mContinueId = 0L;
+    protected SpecialEmojiMsgType mLastSendType = null;
+    protected int mContinueCount = 1;
+    protected long mContinueId = 0L;
 
     Handler mHandler = new Handler() {
         @Override
@@ -82,35 +84,20 @@ public class BottomContainerView extends RelativeLayout {
 
     public BottomContainerView(Context context) {
         super(context);
-        init(null);
+        init();
     }
 
     public BottomContainerView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(attrs);
+        init();
     }
 
-    private void init(AttributeSet attrs) {
-        if (attrs != null) {
-            TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.gameType);
-            mGameType = typedArray.getInt(R.styleable.gameType_type, 0);
-            typedArray.recycle();
-        }
+    protected int  getLayout(){
+        return R.layout.bottom_container_view_layout;
+    }
 
-        if (mGameType == GameModeType.GAME_MODE_GRAB) {
-            inflate(getContext(), R.layout.grab_bottom_container_view_layout, this);
-            mIvRoomManage = this.findViewById(R.id.iv_room_manage);
-            mIvRoomManage.setOnClickListener(new DebounceViewClickListener() {
-                @Override
-                public void clickValid(View v) {
-                    if (mBottomContainerListener != null) {
-                        mBottomContainerListener.clickRoomManagerBtn();
-                    }
-                }
-            });
-        } else {
-            inflate(getContext(), R.layout.bottom_container_view_layout, this);
-        }
+    protected void init() {
+            inflate(getContext(), getLayout(), this);
 
         mQuickBtn = this.findViewById(R.id.quick_btn);
         mShowInputContainerBtn = (ExTextView) this.findViewById(R.id.show_input_container_btn);
@@ -299,32 +286,6 @@ public class BottomContainerView extends RelativeLayout {
 
     public void setRoomData(BaseRoomData roomData) {
         mRoomData = roomData;
-        if (mRoomData instanceof GrabRoomData) {
-            GrabRoomData grabRoomData = (GrabRoomData) mRoomData;
-            if (grabRoomData.isOwner()) {
-                //是房主
-                adjustUi(true);
-            } else {
-                //不是一唱到底房主
-                adjustUi(false);
-            }
-        }
-    }
-
-    void adjustUi(boolean grabOwner) {
-        if (grabOwner) {
-            mIvRoomManage.setVisibility(VISIBLE);
-            LayoutParams lp = (LayoutParams) mEmoji2Btn.getLayoutParams();
-            lp.addRule(RelativeLayout.LEFT_OF, mIvRoomManage.getId());
-            lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 0);
-            mEmoji2Btn.setLayoutParams(lp);
-        } else {
-            mIvRoomManage.setVisibility(GONE);
-            LayoutParams lp = (LayoutParams) mEmoji2Btn.getLayoutParams();
-            lp.addRule(RelativeLayout.LEFT_OF, 0);
-            lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            mEmoji2Btn.setLayoutParams(lp);
-        }
     }
 
     public static abstract class Listener {
