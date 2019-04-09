@@ -11,11 +11,16 @@ import android.view.Gravity;
 import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
+import com.common.rxretrofit.ApiManager;
+import com.common.rxretrofit.ApiMethods;
+import com.common.rxretrofit.ApiObserver;
+import com.common.rxretrofit.ApiResult;
 import com.common.utils.ActivityUtils;
 import com.common.utils.FragmentUtils;
 import com.common.utils.HandlerTaskTimer;
@@ -26,6 +31,7 @@ import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
 import com.component.busilib.constans.GameModeType;
+import com.component.busilib.friends.GrabSongApi;
 import com.component.busilib.manager.BgMusicManager;
 import com.dialog.view.TipsDialogView;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -176,7 +182,7 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
                 }
             });
         } catch (Exception e) {
-            MyLog.e(TAG,e);
+            MyLog.e(TAG, e);
         }
     }
 
@@ -232,7 +238,7 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
                                 getActivity().finish();
                             }
 
-                            if(mPrepareData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK){
+                            if (mPrepareData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK) {
                                 ARouter.getInstance().build(RouterConstants.ACTIVITY_PLAY_WAYS)
                                         .withInt("key_game_type", mPrepareData.getGameType())
                                         .withBoolean("selectSong", true)
@@ -420,7 +426,28 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
     private void playBackgroundMusic() {
         if (!BgMusicManager.getInstance().isPlaying() && mPrepareData != null && GrabMatchFragment.this.fragmentVisible) {
             if (!TextUtils.isEmpty(mPrepareData.getBgMusic())) {
-                BgMusicManager.getInstance().starPlay(mPrepareData.getBgMusic(), 0, "GrabMatchFragment");
+                BgMusicManager.getInstance().starPlay(mPrepareData.getBgMusic(), 0, "GrabMatchFragment1");
+            } else {
+                GrabSongApi grabSongApi = ApiManager.getInstance().createService(GrabSongApi.class);
+                ApiMethods.subscribe(grabSongApi.getSepcialBgVoice(), new ApiObserver<ApiResult>() {
+                    @Override
+                    public void process(ApiResult result) {
+                        if (result.getErrno() == 0) {
+                            List<String> musicURLs = JSON.parseArray(result.getData().getString("musicURL"), String.class);
+                            if (musicURLs != null && !musicURLs.isEmpty()) {
+                                mPrepareData.setBgMusic(musicURLs.get(0));
+                                BgMusicManager.getInstance().starPlay(mPrepareData.getBgMusic(), 0, "GrabMatchFragment2");
+                            }
+                        } else {
+
+                        }
+                    }
+
+                    @Override
+                    public void onNetworkError(ApiObserver.ErrorType errorType) {
+                        super.onNetworkError(errorType);
+                    }
+                }, this);
             }
         }
     }

@@ -111,24 +111,8 @@ public class PlayWaysServiceImpl implements IRankingModeService {
 
     @Override
     public void tryGoGrabMatch(int tagId) {
-        GrabSongApi grabSongApi = ApiManager.getInstance().createService(GrabSongApi.class);
-        ApiMethods.subscribe(grabSongApi.getSepcialBgVoice(), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    List<String> musicURLs = JSON.parseArray(result.getData().getString("musicURL"), String.class);
-                    goGrabMatch(tagId, musicURLs);
-                } else {
-                    goGrabMatch(tagId, null);
-                }
-            }
-
-            @Override
-            public void onNetworkError(ErrorType errorType) {
-                super.onNetworkError(errorType);
-            }
-        });
-
+        // 拉取音乐不是关键路径，不block进入匹配
+        goGrabMatch(tagId, null);
     }
 
     private void goGrabMatch(int tagId, List<String> musicURLs) {
