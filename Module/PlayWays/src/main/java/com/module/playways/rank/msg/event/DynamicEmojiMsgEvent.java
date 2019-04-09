@@ -1,18 +1,35 @@
 package com.module.playways.rank.msg.event;
 
+import com.module.playways.grab.room.dynamicmsg.DynamicModel;
 import com.module.playways.rank.msg.BasePushInfo;
+import com.zq.live.proto.Room.DynamicEmojiMsg;
 
 public class DynamicEmojiMsgEvent {
     public final static int MSG_TYPE_SEND = 0;
     public final static int MSG_TYPE_RECE = 1;
 
     int type = MSG_TYPE_RECE;
-    int emojiId;
-    BasePushInfo info;
+    public DynamicModel mDynamicModel;
+    public BasePushInfo info;
 
-    public DynamicEmojiMsgEvent(BasePushInfo info, int type, int emojiId){
+    public DynamicEmojiMsgEvent(BasePushInfo info, int type, DynamicEmojiMsg dynamicEmojiMsg) {
         this.info = info;
         this.type = type;
-        this.emojiId = emojiId;
+        this.mDynamicModel = DynamicModel.parse(dynamicEmojiMsg);
+    }
+
+    public DynamicEmojiMsgEvent(BasePushInfo info, int type, DynamicModel mDynamicModel) {
+        this.info = info;
+        this.type = type;
+        this.mDynamicModel = mDynamicModel;
+    }
+
+    @Override
+    public String toString() {
+        return "DynamicEmojiMsgEvent{" +
+                "type=" + type +
+                ", mDynamicModel=" + mDynamicModel +
+                ", info=" + info +
+                '}';
     }
 }

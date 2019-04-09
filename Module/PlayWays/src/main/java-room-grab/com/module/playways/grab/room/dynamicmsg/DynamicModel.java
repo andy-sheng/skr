@@ -1,5 +1,7 @@
 package com.module.playways.grab.room.dynamicmsg;
 
+import com.zq.live.proto.Room.DynamicEmojiMsg;
+
 import java.io.Serializable;
 
 public class DynamicModel implements Serializable {
@@ -35,6 +37,14 @@ public class DynamicModel implements Serializable {
 
     public void setSmallEmojiURL(String smallEmojiURL) {
         this.smallEmojiURL = smallEmojiURL;
+    }
+
+    public static DynamicModel parse(DynamicEmojiMsg dynamicEmojiMsg) {
+        DynamicModel model = new DynamicModel();
+        model.setId(dynamicEmojiMsg.getId());
+        model.setBigEmojiURL(dynamicEmojiMsg.getBigEmojiURL());
+        model.setSmallEmojiURL(dynamicEmojiMsg.getSmallEmojiURL());
+        return model;
     }
 
 

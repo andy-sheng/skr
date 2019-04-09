@@ -78,7 +78,6 @@ public class ChatRoomChatMsgProcess implements IPushChatRoomMsgProcess {
             return;
         }
 
-        int emojiId = dynamicEmojiMsg.getId();
-        EventBus.getDefault().post(new DynamicEmojiMsgEvent(info, DynamicEmojiMsgEvent.MSG_TYPE_RECE, emojiId));
+        EventBus.getDefault().post(new DynamicEmojiMsgEvent(info, DynamicEmojiMsgEvent.MSG_TYPE_RECE, dynamicEmojiMsg));
     }
 }

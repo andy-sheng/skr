@@ -21,6 +21,7 @@ public abstract class CommentModel {
     public static final int TYPE_AI = 2;         // AI裁判消息
     public static final int TYPE_TEXT = 101;     // 普通文本聊天消息
     public static final int TYPE_LIGHT = 102;    // 爆灭灯消息
+    public static final int TYPE_DYNAMIC = 103;  // 特殊表情消息
 
     public static final int TEXT_WHITE = U.getColor(R.color.white_trans_80);
     public static final int TEXT_YELLOW = Color.parseColor("#ccFFB100");

@@ -25,7 +25,6 @@ import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
 import com.module.msg.CustomMsgType;
 import com.module.msg.IMsgService;
-import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.rank.msg.BasePushInfo;
 import com.module.playways.rank.msg.event.SpecialEmojiMsgEvent;
 import com.module.playways.RoomDataUtils;
@@ -67,7 +66,8 @@ public abstract class BottomContainerView extends RelativeLayout {
     protected ExImageView mEmoji2Btn;
     protected ExImageView mEmoji1Btn;
 
-    protected PopupWindow mQuickMsgPopWindow;
+
+    protected PopupWindow mQuickMsgPopWindow;  //快捷词弹出面板
 
     protected SpecialEmojiMsgType mLastSendType = null;
     protected int mContinueCount = 1;
@@ -161,7 +161,7 @@ public abstract class BottomContainerView extends RelativeLayout {
         mEmoji1Btn.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                // 发送动态表情，爱心
+                // 发送动态表情，粑粑
                 sendSpecialEmojiMsg(SpecialEmojiMsgType.SP_EMOJI_TYPE_UNLIKE, "扔了粑粑");
                 HashMap map = new HashMap();
                 map.put("expressionId2", String.valueOf(SpecialEmojiMsgType.SP_EMOJI_TYPE_UNLIKE.getValue()));
@@ -172,6 +172,7 @@ public abstract class BottomContainerView extends RelativeLayout {
                 }
             }
         });
+
         mEmoji2Btn.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {

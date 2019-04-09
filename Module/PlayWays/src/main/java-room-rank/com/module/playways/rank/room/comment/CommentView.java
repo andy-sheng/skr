@@ -11,8 +11,10 @@ import android.widget.RelativeLayout;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.module.playways.grab.room.event.GrabSwitchRoomEvent;
+import com.module.playways.rank.msg.event.DynamicEmojiMsgEvent;
 import com.module.playways.rank.room.comment.adapter.CommentAdapter;
 import com.module.playways.rank.room.comment.listener.CommentItemListener;
+import com.module.playways.rank.room.comment.model.CommentDynamicModel;
 import com.module.playways.rank.room.comment.model.CommentModel;
 import com.module.playways.rank.room.comment.model.CommentTextModel;
 import com.module.playways.rank.room.event.PretendCommentMsgEvent;
@@ -185,6 +187,14 @@ public class CommentView extends RelativeLayout {
     public void onEvent(PretendCommentMsgEvent event) {
         MyLog.d(TAG, "onEvent" + " PresenterEvent =" + event.mCommentModel);
         processCommentModel(event.mCommentModel);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(DynamicEmojiMsgEvent event){
+        MyLog.d(TAG, "onEvent" + " event=" + event);
+        // TODO: 2019/4/9 特殊图片表情
+        CommentDynamicModel commentDynamicModel = CommentDynamicModel.parseFromEvent(event, mRoomData);
+        processCommentModel(commentDynamicModel);
     }
 
     void processCommentModel(CommentModel commentModel) {

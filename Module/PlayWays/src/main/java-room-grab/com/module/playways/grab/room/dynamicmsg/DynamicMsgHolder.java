@@ -5,10 +5,9 @@ import android.view.View;
 
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
-import com.common.image.model.oss.OssImgFactory;
-import com.common.utils.ImageUtils;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
+import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.rank.R;
 
@@ -39,8 +38,8 @@ public class DynamicMsgHolder extends RecyclerView.ViewHolder {
         this.mDynamicModel = model;
 
         FrescoWorker.loadImage(mDynamicEmojiIv,
-                ImageFactory.newHttpImage(mDynamicModel.getBigEmojiURL())
-                        .addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_160.getW()).build())
+                ImageFactory.newHttpImage(mDynamicModel.getSmallEmojiURL())
+                        .setScaleType(ScalingUtils.ScaleType.CENTER_INSIDE)
                         .build());
 
     }
