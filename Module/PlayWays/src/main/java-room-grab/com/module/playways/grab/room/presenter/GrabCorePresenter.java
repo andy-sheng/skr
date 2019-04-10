@@ -418,11 +418,30 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     /**
      * 抢唱歌权
      */
-    public void grabThisRound(int seq) {
-        int wantSingType = 0 ;
+    public void grabThisRound(int seq, boolean challenge) {
+        MyLog.d(TAG, "grabThisRound" + " seq=" + seq + " challenge=" + challenge + " accenable=" + mRoomData.isAccEnable());
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", mRoomData.getGameId());
         map.put("roundSeq", seq);
+
+        int wantSingType;
+        if (challenge) {
+            if (mRoomData.getCoin() < 1) {
+                MyLog.w(TAG, "没有充足金币,无法进行挑战");
+                return;
+            }
+            if (mRoomData.isAccEnable()) {
+                wantSingType = GrabRoundInfoModel.EWST_ACCOMPANY_OVER_TIME;
+            } else {
+                wantSingType = GrabRoundInfoModel.EWST_COMMON_OVER_TIME;
+            }
+        } else {
+            if (mRoomData.isAccEnable()) {
+                wantSingType = GrabRoundInfoModel.EWST_ACCOMPANY;
+            } else {
+                wantSingType = GrabRoundInfoModel.EWST_DEFAULT;
+            }
+        }
         map.put("wantSingType", wantSingType);
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
@@ -443,6 +462,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     } else {
                         MyLog.w(TAG, "now != null && now.getRoundSeq() == seq 条件不满足，" + result.getTraceId());
                     }
+                } else if (result.getErrno() == 8346144) {
+                    MyLog.w(TAG, "grabThisRound failed 没有充足金币 ");
+                    U.getToastUtil().showShort(result.getErrmsg());
                 } else {
                     MyLog.w(TAG, "grabThisRound failed, " + result.getTraceId());
                 }
@@ -1308,10 +1330,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     private void closeEngine() {
         if (mRoomData.getGameId() > 0) {
             EngineManager.getInstance().stopAudioMixing();
-            if(!mRoomData.isSpeaking()){
+            if (!mRoomData.isSpeaking()) {
                 EngineManager.getInstance().setClientRole(false);
-            }else{
-                MyLog.d(TAG,"closeEngine 正在抢麦说话，无需闭麦" );
+            } else {
+                MyLog.d(TAG, "closeEngine 正在抢麦说话，无需闭麦");
             }
         }
     }
@@ -1326,7 +1348,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 if (roundInfoModel != null && roundInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
                     MyLog.d(TAG, "演唱环节切换主播成功");
                     onChangeBroadcastSuccess();
-                }else if(mRoomData.isSpeaking()){
+                } else if (mRoomData.isSpeaking()) {
                     MyLog.d(TAG, "抢麦切换主播成功");
                 }
             }
@@ -1408,7 +1430,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         if (RoomDataUtils.isCurrentExpectingRound(event.getRoundSeq(), mRoomData)) {
             MyLog.w(TAG, "抢到唱歌权：userID " + event.getUserID() + ", seq " + event.getRoundSeq());
             GrabRoundInfoModel roundInfoModel = mRoomData.getExpectRoundInfo();
-            roundInfoModel.tryUpdateRoundInfoModel(roundInfoModel,true);
+            roundInfoModel.tryUpdateRoundInfoModel(roundInfoModel, true);
             roundInfoModel.setHasSing(true);
             roundInfoModel.setUserID(event.getUserID());
             roundInfoModel.updateStatus(true, GrabRoundInfoModel.STATUS_SING);
@@ -1911,9 +1933,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             // 要闭麦
             GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
             if (infoModel != null) {
-                if(infoModel.getUserID() == MyUserInfoManager.getInstance().getUid()){
-                    MyLog.d(TAG,"自己的轮次，无需闭麦");
-                }else{
+                if (infoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                    MyLog.d(TAG, "自己的轮次，无需闭麦");
+                } else {
                     EngineManager.getInstance().setClientRole(false);
                 }
             }

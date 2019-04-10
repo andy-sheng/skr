@@ -31,6 +31,11 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
     public static final int STATUS_SING = 3;
     public static final int STATUS_OVER = 4;
 
+    public static final int EWST_DEFAULT = 0; //默认抢唱类型：普通
+    public static final int EWST_ACCOMPANY = 1; //带伴奏抢唱
+    public static final int EWST_COMMON_OVER_TIME = 2; //普通加时抢唱
+    public static final int EWST_ACCOMPANY_OVER_TIME = 3; //带伴奏加时抢唱
+
     /* 一唱到底使用 */
     private int status = STATUS_INIT;// 轮次状态，在一唱到底中使用
 
@@ -442,8 +447,8 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
                 ", userID=" + userID +
                 ", playbookID=" + playbookID +
                 ", songModel=" + (music == null ? "" : music.toSimpleString()) +
-//                ", singBeginMs=" + singBeginMs +
-//                ", singEndMs=" + singEndMs +
+                ", singBeginMs=" + singBeginMs +
+                ", singEndMs=" + singEndMs +
 //                ", startTs=" + startTs +
 //                ", endTs=" + endTs +
 //                ", sysScore=" + sysScore +
@@ -453,7 +458,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
                 ", mLightInfos=" + mLightInfos +
                 ", playUsers=" + playUsers +
                 ", waitUsers=" + waitUsers +
-                ", skrResource=" + skrResource +
+//                ", skrResource=" + skrResource +
                 ", wantSingInfos=" + wantSingInfos +
                 ", resultType=" + resultType +
                 ", isParticipant=" + isParticipant +

@@ -177,10 +177,6 @@ public class OthersSingCardView extends RelativeLayout {
         if (grabRoundInfoModel == null) {
             return;
         }
-        SongModel songModel = grabRoundInfoModel.getMusic();
-        if (songModel == null) {
-            return;
-        }
 
         if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_SING) {
             countDown("中途进来");
@@ -206,11 +202,7 @@ public class OthersSingCardView extends RelativeLayout {
         if (grabRoundInfoModel == null) {
             return;
         }
-        SongModel songModel = grabRoundInfoModel.getMusic();
-        if (songModel == null) {
-            return;
-        }
-        int totalMs = songModel.getTotalMs();
+        int totalMs = grabRoundInfoModel.getSingEndMs() - grabRoundInfoModel.getSingBeginMs();
         if (mCountDownStatus == COUNT_DOWN_STATUS_WAIT) {
             MyLog.d(TAG, "countDown mCountDownStatus == COUNT_DOWN_STATUS_WAIT");
             if (mCanStartFlag) {

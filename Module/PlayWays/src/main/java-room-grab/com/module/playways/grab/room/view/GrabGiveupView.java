@@ -80,7 +80,7 @@ public class GrabGiveupView extends RelativeLayout {
         mUiHandler.sendEmptyMessageDelayed(MSG_ANIMATION_SHOW,5000);
     }
 
-    public void passSuccess() {
+    public void giveUpSuccess() {
         mUiHandler.removeMessages(MSG_ANIMATION_SHOW);
         hideWithAnimation(true);
     }

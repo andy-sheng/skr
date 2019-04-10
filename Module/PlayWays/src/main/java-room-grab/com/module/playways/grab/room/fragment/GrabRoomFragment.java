@@ -26,7 +26,6 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
-import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.constans.GrabRoomType;
 import com.component.busilib.manager.BgMusicManager;
 import com.dialog.view.TipsDialogView;
@@ -68,7 +67,6 @@ import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
 import com.module.playways.rank.prepare.view.VoiceControlPanelView;
 import com.module.playways.rank.room.comment.listener.CommentItemListener;
-import com.module.playways.rank.room.comment.model.CommentModel;
 import com.module.playways.rank.room.comment.CommentView;
 import com.module.playways.rank.room.gift.GiftBigAnimationViewGroup;
 import com.module.playways.rank.room.gift.GiftContinueViewGroup;
@@ -87,20 +85,9 @@ import com.zq.toast.CommonToastView;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-
-import static com.module.playways.grab.room.view.RoundOverCardView.SING_ABANDON_END;
 
 public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkgCountDownView {
 
@@ -580,9 +567,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         mGrabOpBtn.setGrabRoomData(mRoomData);
         mGrabOpBtn.setListener(new GrabOpView.Listener() {
             @Override
-            public void clickGrabBtn(int seq) {
+            public void clickGrabBtn(int seq,boolean challenge) {
                 U.getSoundUtils().play(TAG, R.raw.grab_iwannasing);
-                mCorePresenter.grabThisRound(seq);
+                mCorePresenter.grabThisRound(seq,challenge);
             }
 
             @Override
@@ -860,7 +847,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             mOthersSingCardView.setVisibility(View.GONE);
             GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
             if (infoModel != null) {
-                mSelfSingCardView.playLyric(infoModel.getMusic(), mRoomData.isAccEnable());
+                mSelfSingCardView.playLyric(infoModel, mRoomData.isAccEnable());
             }
         } else {
             // 显示收音机
@@ -1084,7 +1071,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     @Override
     public void giveUpSuccess(int seq) {
-        mGrabGiveupView.passSuccess();
+        mGrabGiveupView.giveUpSuccess();
     }
 
     @Override

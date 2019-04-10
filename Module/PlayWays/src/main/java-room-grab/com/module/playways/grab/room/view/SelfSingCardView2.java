@@ -15,6 +15,7 @@ import com.common.utils.U;
 import com.common.view.countdown.CircleCountDownView;
 import com.common.view.ex.ExTextView;
 import com.module.playways.grab.room.GrabRoomData;
+import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.rank.others.LyricAndAccMatchManager;
 import com.module.playways.rank.room.view.ArcProgressBar;
 import com.module.playways.rank.song.model.SongModel;
@@ -85,27 +86,36 @@ public class SelfSingCardView2 extends RelativeLayout {
         mVoiceScaleView = (VoiceScaleView) findViewById(R.id.voice_scale_view);
     }
 
-    public void playLyric(SongModel songModel, boolean hasAcc) {
-        mSongModel = songModel;
+    public void playLyric(GrabRoundInfoModel infoModel, boolean hasAcc) {
+        if (infoModel == null) {
+            MyLog.d(TAG, "infoModel 是空的");
+            return;
+        }
+        mSongModel = infoModel.getMusic();
         mTvLyric.setText("歌词加载中...");
         mTvLyric.setVisibility(VISIBLE);
         mManyLyricsView.setVisibility(GONE);
         mManyLyricsView.initLrcData();
         mVoiceScaleView.setVisibility(View.GONE);
-        if (songModel == null) {
+        if (mSongModel == null) {
             MyLog.d(TAG, "songModel 是空的");
             return;
         }
+        /**
+         * 该轮次的总时间，之前用的是歌曲内的总时间，但是不灵活，现在都放在服务器的轮次信息的 begin 和 end 里
+         *
+         */
+        int totalTs = infoModel.getSingEndMs() - infoModel.getSingBeginMs();
         if (!hasAcc) {
-            playWithNoAcc(songModel);
+            playWithNoAcc(mSongModel);
             mIvTag.setBackground(U.getDrawable(R.drawable.ycdd_daojishi_qingchang));
             mLyricAndAccMatchManager.stop();
         } else {
             mIvTag.setBackground(U.getDrawable(R.drawable.ycdd_daojishi_banzou));
             mLyricAndAccMatchManager.setArgs(mManyLyricsView, mVoiceScaleView,
-                    songModel.getLyric(),
-                    songModel.getStandLrcBeginT(), songModel.getStandLrcBeginT() + songModel.getTotalMs(),
-                    songModel.getBeginMs(), songModel.getBeginMs() + songModel.getTotalMs());
+                    mSongModel.getLyric(),
+                    mSongModel.getStandLrcBeginT(), mSongModel.getStandLrcBeginT() + totalTs,
+                    mSongModel.getBeginMs(), mSongModel.getBeginMs() + totalTs);
             mLyricAndAccMatchManager.start(new LyricAndAccMatchManager.Listener() {
                 @Override
                 public void onLyricParseSuccess() {
@@ -124,7 +134,7 @@ public class SelfSingCardView2 extends RelativeLayout {
             });
         }
 
-        starCounDown(songModel);
+        starCounDown(totalTs);
     }
 
     private void playWithNoAcc(SongModel songModel) {
@@ -147,10 +157,10 @@ public class SelfSingCardView2 extends RelativeLayout {
     }
 
 
-    private void starCounDown(SongModel songModel) {
+    private void starCounDown(int totalMs) {
         mCountDownTv.setVisibility(VISIBLE);
-        mCircleCountDownView.go(songModel.getTotalMs());
-        int counDown = songModel.getTotalMs() / 1000;
+        mCircleCountDownView.go(totalMs);
+        int counDown = totalMs / 1000;
         mCounDownTask = HandlerTaskTimer.newBuilder()
                 .interval(1000)
                 .take(counDown)

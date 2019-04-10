@@ -56,19 +56,24 @@ public class GrabOpView extends RelativeLayout {
 
     int mSeq = -1;
 
+    // 抢唱按钮模块
+    RelativeLayout mGrabContainer;
+    ExImageView mGrabIv;
     RoundRectangleView mRrlProgress;
+
+    // 挑战按钮模块
+    RelativeLayout mGrab2Container;
+    ExImageView mGrab2Iv;
+    RoundRectangleView mRrl2Progress;
 
     int mStatus;
 
-    public ExImageView mBtnIv;
 
     ExTextView mIvLightOff;
 
     Listener mListener;
 
     ExImageView mIvBurst;
-
-    RelativeLayout mGrabContainer;
 
     HandlerTaskTimer mCountDownTask;
 
@@ -124,27 +129,47 @@ public class GrabOpView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.grab_op_view_layout, this);
-        mBtnIv = this.findViewById(R.id.iv_text);
-        mRrlProgress = findViewById(R.id.rrl_progress);
-        mIvLightOff = findViewById(R.id.iv_light_off);
-        mGrabContainer = findViewById(R.id.grab_container);
-        mIvBurst = findViewById(R.id.iv_burst);
-
-        mBtnIv.setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                MyLog.d(TAG, "mBtnIv mStatus ==" + mStatus);
-                if (mStatus == STATUS_GRAP) {
-                    if (mListener != null) {
-                        mListener.clickGrabBtn(mSeq);
-                        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-                                "game_grab", null);
+        {
+            mGrabIv = this.findViewById(R.id.grab_iv);
+            mRrlProgress = findViewById(R.id.rrl_progress);
+            mGrabContainer = findViewById(R.id.grab_container);
+            mGrabIv.setOnClickListener(new DebounceViewClickListener() {
+                @Override
+                public void clickValid(View v) {
+                    MyLog.d(TAG, "mBtnIv mStatus ==" + mStatus);
+                    if (mStatus == STATUS_GRAP) {
+                        if (mListener != null) {
+                            mListener.clickGrabBtn(mSeq, false);
+                            StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
+                                    "game_grab", null);
 //                        mBtnIv.setEnabled(false);
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
+        {
+            mGrab2Iv = this.findViewById(R.id.grab2_iv);
+            mRrl2Progress = findViewById(R.id.rrl2_progress);
+            mGrab2Container = findViewById(R.id.grab2_container);
+            mGrab2Iv.setOnClickListener(new DebounceViewClickListener() {
+                @Override
+                public void clickValid(View v) {
+                    MyLog.d(TAG, "mBtnIv mStatus ==" + mStatus);
+                    if (mStatus == STATUS_GRAP) {
+                        if (mListener != null) {
+                            mListener.clickGrabBtn(mSeq, true);
+                            StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
+                                    "game_challenge_grab", null);
+//                        mBtnIv.setEnabled(false);
+                        }
+                    }
+                }
+            });
+        }
 
+
+        mIvBurst = findViewById(R.id.iv_burst);
         mIvBurst.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
@@ -159,7 +184,7 @@ public class GrabOpView extends RelativeLayout {
                 }
             }
         });
-
+        mIvLightOff = findViewById(R.id.iv_light_off);
         mIvLightOff.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
@@ -241,7 +266,8 @@ public class GrabOpView extends RelativeLayout {
                                 break;
                         }
                         mIvBurst.setVisibility(GONE);
-                        mBtnIv.setImageDrawable(drawable);
+                        mGrabIv.setImageDrawable(drawable);
+                        mGrab2Iv.setImageDrawable(drawable);
                     }
 
                     @Override
@@ -278,26 +304,32 @@ public class GrabOpView extends RelativeLayout {
                 mIvLightOff.setVisibility(GONE);
                 mIvBurst.clearAnimation();
                 mIvBurst.setVisibility(GONE);
+
                 mGrabContainer.setVisibility(VISIBLE);
-                mBtnIv.setEnabled(false);
-                mBtnIv.setImageDrawable(null);
-                mBtnIv.setBackground(U.getDrawable(R.drawable.ycdd_qiangchang_bj));
+                mGrabIv.setEnabled(false);
+                mGrabIv.setImageDrawable(null);
+                mGrabIv.setBackground(U.getDrawable(R.drawable.ycdd_qiangchang_bj));
+
+                mGrab2Container.setVisibility(VISIBLE);
+                mGrab2Iv.setEnabled(false);
+                mGrab2Iv.setImageDrawable(null);
+                mGrab2Iv.setBackground(U.getDrawable(R.drawable.ycdd_qiangchang_bj));
                 break;
             case STATUS_GRAP:
-                mGrabContainer.setVisibility(VISIBLE);
                 mIvLightOff.setVisibility(GONE);
                 mIvBurst.clearAnimation();
                 mIvBurst.setVisibility(GONE);
-                mBtnIv.setEnabled(true);
-                mBtnIv.setImageDrawable(null);
+            {
+                mGrabContainer.setVisibility(VISIBLE);
+                mGrabIv.setEnabled(true);
+                mGrabIv.setImageDrawable(null);
                 Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20))
                         .setShape(DrawableCreator.Shape.Rectangle)
                         .setPressedDrawable(U.getDrawable(R.drawable.ycdd_qiangchang_anxia))
                         .setUnPressedDrawable(U.getDrawable(R.drawable.ycdd_qiangchang))
                         .build();
-                mBtnIv.setBackground(drawable);
-
-                mBtnIv.setOnTouchListener(new OnTouchListener() {
+                mGrabIv.setBackground(drawable);
+                mGrabIv.setOnTouchListener(new OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
                         //MyLog.d(TAG, "onTouch" + " v=" + v + " event=" + event);
@@ -309,9 +341,34 @@ public class GrabOpView extends RelativeLayout {
                         return false;
                     }
                 });
-                break;
+            }
+            {
+                mGrab2Container.setVisibility(VISIBLE);
+                mGrab2Iv.setEnabled(true);
+                mGrab2Iv.setImageDrawable(null);
+                Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20))
+                        .setShape(DrawableCreator.Shape.Rectangle)
+                        .setPressedDrawable(U.getDrawable(R.drawable.ycdd_tiaozhan_anxia))
+                        .setUnPressedDrawable(U.getDrawable(R.drawable.ycdd_tiaozhan))
+                        .build();
+                mGrab2Iv.setBackground(drawable);
+                mGrab2Iv.setOnTouchListener(new OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        //MyLog.d(TAG, "onTouch" + " v=" + v + " event=" + event);
+                        if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE) {
+                            mRrl2Progress.setVisibility(GONE);
+                        } else {
+                            mRrl2Progress.setVisibility(VISIBLE);
+                        }
+                        return false;
+                    }
+                });
+            }
+            break;
             case STATUS_CAN_OP:
                 mGrabContainer.setVisibility(GONE);
+                mGrab2Container.setVisibility(GONE);
                 mIvLightOff.setVisibility(VISIBLE);
                 mIvLightOff.setBackground(U.getDrawable(R.drawable.miedeng_bj));
                 mIvLightOff.setEnabled(false);
@@ -329,8 +386,10 @@ public class GrabOpView extends RelativeLayout {
     public void hide() {
         MyLog.d(TAG, "hide");
         cancelCountDownTask();
-        mBtnIv.clearAnimation();
+        mGrabIv.clearAnimation();
         mRrlProgress.stopCountDown();
+        mGrab2Iv.clearAnimation();
+        mRrl2Progress.stopCountDown();
         TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 1.0f,
                 Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0);
         animation.setDuration(200);
@@ -438,7 +497,8 @@ public class GrabOpView extends RelativeLayout {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         EventBus.getDefault().unregister(this);
-        mBtnIv.clearAnimation();
+        mGrabIv.clearAnimation();
+        mGrab2Iv.clearAnimation();
         cancelCountDownTask();
         mUiHandler.removeCallbacksAndMessages(null);
         clearAnimation();
@@ -452,7 +512,7 @@ public class GrabOpView extends RelativeLayout {
     }
 
     public interface Listener {
-        void clickGrabBtn(int seq);
+        void clickGrabBtn(int seq, boolean challenge);
 
         void clickLightOff();
 
