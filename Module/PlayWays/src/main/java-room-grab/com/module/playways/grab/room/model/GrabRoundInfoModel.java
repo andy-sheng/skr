@@ -60,6 +60,14 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
 
     private int enterStatus;//你进入这个轮次处于的状态
 
+    /**
+     * EWST_DEFAULT = 0; //默认抢唱类型：普通
+     * EWST_ACCOMPANY = 1; //带伴奏抢唱
+     * EWST_COMMON_OVER_TIME = 2; //普通加时抢唱
+     * EWST_ACCOMPANY_OVER_TIME = 3; //带伴奏加时抢唱
+     */
+    private int wantSingType;
+
     public GrabRoundInfoModel() {
 
     }
@@ -151,7 +159,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         if (!wantSingInfos.contains(wantSingerInfo)) {
             wantSingInfos.add(wantSingerInfo);
             if (notify) {
-                SomeOneGrabEvent event = new SomeOneGrabEvent(wantSingerInfo.getUserID(), this);
+                SomeOneGrabEvent event = new SomeOneGrabEvent(wantSingerInfo, this);
                 EventBus.getDefault().post(event);
             }
         }
@@ -297,6 +305,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         if (roundInfo.getResultType() > 0) {
             this.setResultType(roundInfo.getResultType());
         }
+        this.setWantSingType(roundInfo.getWantSingType());
         updateStatus(notify, roundInfo.getStatus());
 
         return;
@@ -308,27 +317,33 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         roundInfoModel.setUserID(roundInfo.getUserID());
         roundInfoModel.setPlaybookID(roundInfo.getPlaybookID());
         roundInfoModel.setRoundSeq(roundInfo.getRoundSeq());
+
         roundInfoModel.setSingBeginMs(roundInfo.getSingBeginMs());
         roundInfoModel.setSingEndMs(roundInfo.getSingEndMs());
+
         roundInfoModel.setStatus(roundInfo.getStatus().getValue());
-        SongModel songModel = new SongModel();
-        songModel.parse(roundInfo.getMusic());
-        roundInfoModel.setMusic(songModel);
+
         for (WantSingInfo wantSingInfo : roundInfo.getWantSingInfosList()) {
             roundInfoModel.addGrabUid(false, WantSingerInfo.parse(wantSingInfo));
         }
-        for (QMLightMsg m : roundInfo.getMLightInfosList()) {
-            roundInfoModel.addLightOffUid(false, MLightInfoModel.parse(m));
-        }
+
+        roundInfoModel.setOverReason(roundInfo.getOverReason().getValue());
+        roundInfoModel.setResultType(roundInfo.getResultType().getValue());
+
+        SongModel songModel = new SongModel();
+        songModel.parse(roundInfo.getMusic());
+        roundInfoModel.setMusic(songModel);
+
         for (QBLightMsg m : roundInfo.getBLightInfosList()) {
             roundInfoModel.addLightBurstUid(false, BLightInfoModel.parse(m));
         }
 
+        for (QMLightMsg m : roundInfo.getMLightInfosList()) {
+            roundInfoModel.addLightOffUid(false, MLightInfoModel.parse(m));
+        }
+
         GrabSkrResourceModel grabSkrResourceModel = GrabSkrResourceModel.parse(roundInfo.getSkrResource());
         roundInfoModel.setSkrResource(grabSkrResourceModel);
-
-        roundInfoModel.setOverReason(roundInfo.getOverReason().getValue());
-        roundInfoModel.setResultType(roundInfo.getResultType().getValue());
 
         // 观众席
         for (OnlineInfo m : roundInfo.getWaitUsersList()) {
@@ -341,6 +356,8 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
             GrabPlayerInfoModel grabPlayerInfoModel = GrabPlayerInfoModel.parse(m);
             roundInfoModel.addPlayUser(false, grabPlayerInfoModel);
         }
+
+        roundInfoModel.setWantSingType(roundInfo.getWantSingType().getValue());
         return roundInfoModel;
     }
 
@@ -407,6 +424,14 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
 
     public void setEnterStatus(int enterStatus) {
         this.enterStatus = enterStatus;
+    }
+
+    public int getWantSingType() {
+        return wantSingType;
+    }
+
+    public void setWantSingType(int wantSingType) {
+        this.wantSingType = wantSingType;
     }
 
     @Override

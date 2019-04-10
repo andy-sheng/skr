@@ -7,11 +7,12 @@ import java.io.Serializable;
 public class WantSingerInfo implements Serializable {
     int userID;
     long timeMs;
-
+    int wantSingType;
     public static WantSingerInfo parse(WantSingInfo pb) {
         WantSingerInfo wantSingerInfo = new WantSingerInfo();
         wantSingerInfo.setUserID(pb.getUserID());
         wantSingerInfo.setTimeMs(pb.getTimeMs());
+//        wantSingerInfo.setWantSingType(pb.get);
         return wantSingerInfo;
     }
 
@@ -29,6 +30,14 @@ public class WantSingerInfo implements Serializable {
 
     public void setTimeMs(long timeMs) {
         this.timeMs = timeMs;
+    }
+
+    public int getWantSingType() {
+        return wantSingType;
+    }
+
+    public void setWantSingType(int wantSingType) {
+        this.wantSingType = wantSingType;
     }
 
     @Override

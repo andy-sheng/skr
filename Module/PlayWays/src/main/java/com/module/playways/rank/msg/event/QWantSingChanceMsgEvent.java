@@ -17,10 +17,13 @@ public final class QWantSingChanceMsgEvent{
    */
   public Integer roundSeq;
 
+  public int wantSingType;
+
   public QWantSingChanceMsgEvent(BasePushInfo info, QWantSingChanceMsg qWantSingChanceMsg) {
     this.info = info;
     this.userID = qWantSingChanceMsg.getUserID();
     this.roundSeq = qWantSingChanceMsg.getRoundSeq();
+    this.wantSingType = qWantSingChanceMsg.getWantSingType().getValue();
   }
 
   public BasePushInfo getInfo() {
@@ -33,5 +36,9 @@ public final class QWantSingChanceMsgEvent{
 
   public Integer getRoundSeq() {
     return roundSeq;
+  }
+
+  public int getWantSingType() {
+    return wantSingType;
   }
 }

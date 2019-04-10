@@ -26,6 +26,8 @@ public final class QWantSingChanceMsg extends Message<QWantSingChanceMsg, QWantS
 
   public static final Integer DEFAULT_ROUNDSEQ = 0;
 
+  public static final EWantSingType DEFAULT_WANTSINGTYPE = EWantSingType.EWST_DEFAULT;
+
   /**
    * 用户id
    */
@@ -44,14 +46,25 @@ public final class QWantSingChanceMsg extends Message<QWantSingChanceMsg, QWantS
   )
   private final Integer roundSeq;
 
-  public QWantSingChanceMsg(Integer userID, Integer roundSeq) {
-    this(userID, roundSeq, ByteString.EMPTY);
+  /**
+   * 抢唱方式
+   */
+  @WireField(
+      tag = 3,
+      adapter = "com.zq.live.proto.Room.EWantSingType#ADAPTER"
+  )
+  private final EWantSingType wantSingType;
+
+  public QWantSingChanceMsg(Integer userID, Integer roundSeq, EWantSingType wantSingType) {
+    this(userID, roundSeq, wantSingType, ByteString.EMPTY);
   }
 
-  public QWantSingChanceMsg(Integer userID, Integer roundSeq, ByteString unknownFields) {
+  public QWantSingChanceMsg(Integer userID, Integer roundSeq, EWantSingType wantSingType,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
     this.roundSeq = roundSeq;
+    this.wantSingType = wantSingType;
   }
 
   @Override
@@ -59,6 +72,7 @@ public final class QWantSingChanceMsg extends Message<QWantSingChanceMsg, QWantS
     Builder builder = new Builder();
     builder.userID = userID;
     builder.roundSeq = roundSeq;
+    builder.wantSingType = wantSingType;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -70,7 +84,8 @@ public final class QWantSingChanceMsg extends Message<QWantSingChanceMsg, QWantS
     QWantSingChanceMsg o = (QWantSingChanceMsg) other;
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(userID, o.userID)
-        && Internal.equals(roundSeq, o.roundSeq);
+        && Internal.equals(roundSeq, o.roundSeq)
+        && Internal.equals(wantSingType, o.wantSingType);
   }
 
   @Override
@@ -80,6 +95,7 @@ public final class QWantSingChanceMsg extends Message<QWantSingChanceMsg, QWantS
       result = unknownFields().hashCode();
       result = result * 37 + (userID != null ? userID.hashCode() : 0);
       result = result * 37 + (roundSeq != null ? roundSeq.hashCode() : 0);
+      result = result * 37 + (wantSingType != null ? wantSingType.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -90,6 +106,7 @@ public final class QWantSingChanceMsg extends Message<QWantSingChanceMsg, QWantS
     StringBuilder builder = new StringBuilder();
     if (userID != null) builder.append(", userID=").append(userID);
     if (roundSeq != null) builder.append(", roundSeq=").append(roundSeq);
+    if (wantSingType != null) builder.append(", wantSingType=").append(wantSingType);
     return builder.replace(0, 2, "QWantSingChanceMsg{").append('}').toString();
   }
 
@@ -124,6 +141,16 @@ public final class QWantSingChanceMsg extends Message<QWantSingChanceMsg, QWantS
   }
 
   /**
+   * 抢唱方式
+   */
+  public EWantSingType getWantSingType() {
+    if(wantSingType==null){
+        return new EWantSingType.Builder().build();
+    }
+    return wantSingType;
+  }
+
+  /**
    * 用户id
    */
   public boolean hasUserID() {
@@ -137,10 +164,19 @@ public final class QWantSingChanceMsg extends Message<QWantSingChanceMsg, QWantS
     return roundSeq!=null;
   }
 
+  /**
+   * 抢唱方式
+   */
+  public boolean hasWantSingType() {
+    return wantSingType!=null;
+  }
+
   public static final class Builder extends Message.Builder<QWantSingChanceMsg, Builder> {
     private Integer userID;
 
     private Integer roundSeq;
+
+    private EWantSingType wantSingType;
 
     public Builder() {
     }
@@ -161,9 +197,17 @@ public final class QWantSingChanceMsg extends Message<QWantSingChanceMsg, QWantS
       return this;
     }
 
+    /**
+     * 抢唱方式
+     */
+    public Builder setWantSingType(EWantSingType wantSingType) {
+      this.wantSingType = wantSingType;
+      return this;
+    }
+
     @Override
     public QWantSingChanceMsg build() {
-      return new QWantSingChanceMsg(userID, roundSeq, super.buildUnknownFields());
+      return new QWantSingChanceMsg(userID, roundSeq, wantSingType, super.buildUnknownFields());
     }
   }
 
@@ -176,6 +220,7 @@ public final class QWantSingChanceMsg extends Message<QWantSingChanceMsg, QWantS
     public int encodedSize(QWantSingChanceMsg value) {
       return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.userID)
           + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.roundSeq)
+          + EWantSingType.ADAPTER.encodedSizeWithTag(3, value.wantSingType)
           + value.unknownFields().size();
     }
 
@@ -183,6 +228,7 @@ public final class QWantSingChanceMsg extends Message<QWantSingChanceMsg, QWantS
     public void encode(ProtoWriter writer, QWantSingChanceMsg value) throws IOException {
       ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.userID);
       ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.roundSeq);
+      EWantSingType.ADAPTER.encodeWithTag(writer, 3, value.wantSingType);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -194,6 +240,14 @@ public final class QWantSingChanceMsg extends Message<QWantSingChanceMsg, QWantS
         switch (tag) {
           case 1: builder.setUserID(ProtoAdapter.UINT32.decode(reader)); break;
           case 2: builder.setRoundSeq(ProtoAdapter.UINT32.decode(reader)); break;
+          case 3: {
+            try {
+              builder.setWantSingType(EWantSingType.ADAPTER.decode(reader));
+            } catch (ProtoAdapter.EnumConstantNotFoundException e) {
+              builder.addUnknownField(tag, FieldEncoding.VARINT, (long) e.value);
+            }
+            break;
+          }
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

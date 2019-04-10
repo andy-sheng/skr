@@ -113,7 +113,6 @@ public class DynamicMsgView extends RelativeLayout {
         if (list != null && list.size() > 0) {
             mDynamicMsgAdapter.setDataList(list);
         }
-
     }
 
     private void sendDynamicEmoji(DynamicModel model) {

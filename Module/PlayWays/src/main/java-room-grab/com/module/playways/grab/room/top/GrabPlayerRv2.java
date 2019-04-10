@@ -484,8 +484,8 @@ public class GrabPlayerRv2 extends RelativeLayout {
         }
     }
 
-    public void grap(int uid) {
-        VP vp = mInfoMap.get(uid);
+    public void grap(WantSingerInfo wantSingerInfo) {
+        VP vp = mInfoMap.get(wantSingerInfo.getUserID());
         if (vp != null && vp.grabTopItemView != null) {
             vp.grabTopItemView.setGrap(true);
         }

@@ -161,6 +161,7 @@ message QJoinNoticeMsg {
     sint64 joinTimeMs = 2; //加入毫秒时间戳
     EQUserRole role = 3; //角色
     uint32 roundSeq = 4; //轮次顺序
+    repeated OnlineInfo waitUsers = 5; //等待中用户列表
 }
 
 message PKBLightMsg {
@@ -176,12 +177,20 @@ message PKMLightMsg {
 message QWantSingChanceMsg {
     uint32 userID = 1; // 用户id
     uint32 roundSeq = 2; // 轮次顺序
+    EWantSingType wantSingType = 3; //抢唱方式
 }
 
 message QGetSingChanceMsg {
     uint32 userID = 1; // 用户id
     uint32 roundSeq = 2; // 轮次顺序
     QRoundInfo currentRound = 3; //当前轮次信息
+}
+
+enum EWantSingType {
+    EWST_DEFAULT = 0; //默认抢唱类型：普通
+    EWST_ACCOMPANY = 1; //带伴奏抢唱
+    EWST_COMMON_OVER_TIME = 2; //普通加时抢唱
+    EWST_ACCOMPANY_OVER_TIME = 3; //带伴奏加时抢唱
 }
 
 message QSyncStatusMsg {
@@ -478,7 +487,7 @@ message SpecialEmojiMsg {
 message DynamicEmojiMsg {
     uint32 id = 1; //表情包id
     string smallEmojiURL = 2; //小图
-    string bigEmojiURL   = 3; //大图
+    string bigEmojiURL = 3; //大图
 }
 
 // 加入通知消息
@@ -542,7 +551,7 @@ message QRoundInfo {
     uint32 singBeginMs = 6; //演唱开始相对时间（相对于startTimeMs时间）
     uint32 singEndMs = 7; //演唱结束相对时间（相对于startTimeMs时间）
     EQRoundStatus status = 8; //轮次状态
-    repeated WantSingInfo wantSingInfos = 9; //抢唱列表
+    repeated WantSingInfo wantSingInfos = 9; //抢唱列表。兵营告知，服务器没存，所以这个列表是没东西的。
     EQRoundOverReason overReason = 10; //切换轮次原因
     EQRoundResultType resultType = 11; //当EQRoundOverReason == ROR_MULTI_NO_PASS 演唱结果信息
     Common.MusicInfo music = 12; //本轮次的歌曲信息
@@ -551,6 +560,8 @@ message QRoundInfo {
     Common.ResourceInfo skrResource = 15; //机器人资源
     repeated OnlineInfo waitUsers = 16; //等待中用户列表
     repeated OnlineInfo playUsers = 17; //当局玩的用户列表
+    bool isInChallenge                  = 18; //是否在挑战中
+    EWantSingType wantSingType          = 19; //抢唱方式
 }
 
 message QBLightMsg {
@@ -576,7 +587,6 @@ message ReadyInfo {
 message OnlineInfo {
     uint32 userID = 1; //用户id
     bool isOnline = 2; //是否在线
-
     Common.UserInfo userInfo = 3; //一唱到底使用：带入用户信息
     bool isSkrer = 4; //一唱到底使用：是否机器人
     EQUserRole role = 5; //一唱到底使用：用户角色

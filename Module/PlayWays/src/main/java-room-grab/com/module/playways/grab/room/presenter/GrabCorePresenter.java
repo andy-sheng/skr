@@ -418,10 +418,11 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     /**
      * 抢唱歌权
      */
-    public void grabThisRound(int seq) {
+    public void grabThisRound(int seq,int wantSingType) {
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", mRoomData.getGameId());
         map.put("roundSeq", seq);
+        map.put("wantSingType", wantSingType);
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.wangSingChance(body), new ApiObserver<ApiResult>() {
@@ -436,6 +437,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                         wantSingerInfo.setUserID((int) MyUserInfoManager.getInstance().getUid());
                         wantSingerInfo.setTimeMs(System.currentTimeMillis());
                         now.addGrabUid(true, wantSingerInfo);
+                        int coin = result.getData().getInteger("coin");
+                        mRoomData.setCoin(coin);
                     } else {
                         MyLog.w(TAG, "now != null && now.getRoundSeq() == seq 条件不满足，" + result.getTraceId());
                     }
@@ -1376,9 +1379,12 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         if (RoomDataUtils.isCurrentExpectingRound(event.getRoundSeq(), mRoomData)) {
             MyLog.w(TAG, "有人想唱：userID " + event.getUserID() + ", seq " + event.getRoundSeq());
             GrabRoundInfoModel roundInfoModel = mRoomData.getExpectRoundInfo();
+
             WantSingerInfo wantSingerInfo = new WantSingerInfo();
             wantSingerInfo.setUserID(event.getUserID());
             wantSingerInfo.setTimeMs(System.currentTimeMillis());
+            wantSingerInfo.setWantSingType(event.getWantSingType());
+
             if (roundInfoModel.getStatus() == GrabRoundInfoModel.STATUS_GRAB) {
                 roundInfoModel.addGrabUid(true, wantSingerInfo);
             } else {
@@ -1401,6 +1407,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         if (RoomDataUtils.isCurrentExpectingRound(event.getRoundSeq(), mRoomData)) {
             MyLog.w(TAG, "抢到唱歌权：userID " + event.getUserID() + ", seq " + event.getRoundSeq());
             GrabRoundInfoModel roundInfoModel = mRoomData.getExpectRoundInfo();
+            roundInfoModel.tryUpdateRoundInfoModel(roundInfoModel,true);
             roundInfoModel.setHasSing(true);
             roundInfoModel.setUserID(event.getUserID());
             roundInfoModel.updateStatus(true, GrabRoundInfoModel.STATUS_SING);

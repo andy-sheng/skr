@@ -173,7 +173,7 @@ public class GrabTopContainerView extends RelativeLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(SomeOneGrabEvent event) {
-        mTopContentRv.grap(event.uid);
+        mTopContentRv.grap(event.mWantSingerInfo);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
