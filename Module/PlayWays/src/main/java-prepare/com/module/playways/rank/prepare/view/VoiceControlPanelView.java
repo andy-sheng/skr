@@ -2,6 +2,7 @@ package com.module.playways.rank.prepare.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.v7.widget.AppCompatRadioButton;
 import android.util.AttributeSet;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
@@ -28,11 +29,11 @@ public class VoiceControlPanelView extends ScrollView {
     SeekBar mMusicVoiceSeekbar;
 
     RadioGroup mScenesBtnGroup;
-    ScenesSelectBtn mDefaultSbtn;
-    ScenesSelectBtn mKtvSbtn;
-    ScenesSelectBtn mRockSbtn;
-    ScenesSelectBtn mDianyinSbtn;
-    ScenesSelectBtn mKonglingSbtn;
+    AppCompatRadioButton mDefaultSbtn;
+    AppCompatRadioButton mKtvSbtn;
+    AppCompatRadioButton mRockSbtn;
+    AppCompatRadioButton mDianyinSbtn;
+    AppCompatRadioButton mKonglingSbtn;
 
     // 记录值用来标记是否改变
     Params.AudioEffect mBeforeMode;
@@ -55,25 +56,33 @@ public class VoiceControlPanelView extends ScrollView {
         init(context, attrs);
     }
 
+    protected int getLayout(){
+        return R.layout.voice_control_panel_layout;
+    }
+
+    protected int getMarginLeft(){
+        return U.getDisplayUtils().getScreenWidth() - U.getDisplayUtils().dip2px(30 + 24) - U.getDisplayUtils().dip2px(53 * 5);
+    }
+
     void init(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.VoiceControlPanelView);
         isShowACC = typedArray.getBoolean(R.styleable.VoiceControlPanelView_isShowACC, true);
         typedArray.recycle();
 
-        inflate(getContext(), R.layout.voice_control_panel_layout, this);
+        inflate(getContext(), getLayout(), this);
 
         mPeopleVoice = (ExTextView) this.findViewById(R.id.people_voice);
         mPeopleVoiceSeekbar = (SeekBar) this.findViewById(R.id.people_voice_seekbar);
         mAccVoice = (ExTextView) this.findViewById(R.id.acc_voice);
         mMusicVoiceSeekbar = (SeekBar) this.findViewById(R.id.music_voice_seekbar);
 
-        mDefaultSbtn = (ScenesSelectBtn) this.findViewById(R.id.default_sbtn);
-        mKtvSbtn = (ScenesSelectBtn) this.findViewById(R.id.ktv_sbtn);
-        mRockSbtn = (ScenesSelectBtn) this.findViewById(R.id.rock_sbtn);
-        mDianyinSbtn = (ScenesSelectBtn) this.findViewById(R.id.dianyin_sbtn);
-        mKonglingSbtn = (ScenesSelectBtn) this.findViewById(R.id.kongling_sbtn);
+        mDefaultSbtn = (AppCompatRadioButton) this.findViewById(R.id.default_sbtn);
+        mKtvSbtn = (AppCompatRadioButton) this.findViewById(R.id.ktv_sbtn);
+        mRockSbtn = (AppCompatRadioButton) this.findViewById(R.id.rock_sbtn);
+        mDianyinSbtn = (AppCompatRadioButton) this.findViewById(R.id.dianyin_sbtn);
+        mKonglingSbtn = (AppCompatRadioButton) this.findViewById(R.id.kongling_sbtn);
 
-        int marginLeft = U.getDisplayUtils().getScreenWidth() - U.getDisplayUtils().dip2px(30 + 24) - U.getDisplayUtils().dip2px(53 * 5);
+        int marginLeft = getMarginLeft();
         marginLeft = marginLeft / 6;
 
         if (!isShowACC) {
@@ -151,8 +160,8 @@ public class VoiceControlPanelView extends ScrollView {
         });
     }
 
-    private void setMarginLeft(ScenesSelectBtn scenesSelectBtn, int marginLeft) {
-        RadioGroup.LayoutParams layoutParams = (RadioGroup.LayoutParams) scenesSelectBtn.getLayoutParams();
+    private void setMarginLeft(AppCompatRadioButton view, int marginLeft) {
+        RadioGroup.LayoutParams layoutParams = (RadioGroup.LayoutParams) view.getLayoutParams();
         layoutParams.setMargins(marginLeft, 0, 0, 0);
     }
 
