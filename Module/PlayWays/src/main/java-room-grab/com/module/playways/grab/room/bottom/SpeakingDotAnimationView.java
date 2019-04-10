@@ -47,8 +47,8 @@ public class SpeakingDotAnimationView extends View {
         for (int i = 0; i < mDotNum; i++) {
             int x = w * (i + 1) / (mDotNum + 1);
 //            int alpha = 255 - 255 * ((mIndex + i) % mDotNum) / mDotNum;
-            int alpha =  255 * ((mIndex + i) % mDotNum+1) / mDotNum;
-            MyLog.d(TAG,"onDraw mIndex=" + mIndex+" i="+i+" alpha="+alpha);
+            int alpha = 255 * ((mIndex + i) % mDotNum + 1) / mDotNum;
+            //MyLog.d(TAG,"onDraw mIndex=" + mIndex+" i="+i+" alpha="+alpha);
 
             mPaint.setAlpha(alpha);
             canvas.drawCircle(x, h / 2, mR, mPaint);

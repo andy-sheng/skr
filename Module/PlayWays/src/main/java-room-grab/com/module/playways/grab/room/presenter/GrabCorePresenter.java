@@ -44,6 +44,7 @@ import com.module.playways.grab.room.event.GrabGameOverEvent;
 import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent;
 import com.module.playways.grab.room.event.GrabRoundChangeEvent;
 import com.module.playways.grab.room.event.GrabRoundStatusChangeEvent;
+import com.module.playways.grab.room.event.GrabSpeakingControlEvent;
 import com.module.playways.grab.room.event.GrabSwitchRoomEvent;
 import com.module.playways.grab.room.event.GrabWaitSeatUpdateEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
@@ -94,7 +95,6 @@ import com.module.playways.rank.room.score.MachineScoreItem;
 import com.module.playways.rank.room.score.RobotScoreHelper;
 import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.BuildConfig;
-import com.module.rank.R;
 import com.zq.live.proto.Common.ESex;
 import com.zq.live.proto.Common.UserInfo;
 import com.zq.live.proto.Room.EMsgPosType;
@@ -1304,7 +1304,11 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     private void closeEngine() {
         if (mRoomData.getGameId() > 0) {
             EngineManager.getInstance().stopAudioMixing();
-            EngineManager.getInstance().setClientRole(false);
+            if(!mRoomData.isSpeaking()){
+                EngineManager.getInstance().setClientRole(false);
+            }else{
+                MyLog.d(TAG,"closeEngine 正在抢麦说话，无需闭麦" );
+            }
         }
     }
 
@@ -1314,7 +1318,13 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         if (event.getType() == EngineEvent.TYPE_USER_ROLE_CHANGE) {
             EngineEvent.RoleChangeInfo roleChangeInfo = event.getObj();
             if (roleChangeInfo.getNewRole() == 1) {
-                onChangeBroadcastSuccess();
+                GrabRoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
+                if (roundInfoModel != null && roundInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                    MyLog.d(TAG, "演唱环节切换主播成功");
+                    onChangeBroadcastSuccess();
+                }else if(mRoomData.isSpeaking()){
+                    MyLog.d(TAG, "抢麦切换主播成功");
+                }
             }
         }
     }
@@ -1323,7 +1333,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      * 成功切换为主播
      */
     private void onChangeBroadcastSuccess() {
-        MyLog.d(TAG, "onChangeBroadcastSuccess");
+        MyLog.d(TAG, "onChangeBroadcastSuccess 我的演唱环节");
         mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS);
         mUiHandler.post(new Runnable() {
             @Override
@@ -1880,4 +1890,26 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             pretenSystemMsg(qKickUserResultEvent.kickResultContent);
         }
     }
+
+
+    //TODO 房主说话 。。。
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(GrabSpeakingControlEvent event) {
+        mRoomData.setSpeaking(event.speaking);
+        // 踢人的结果
+        if (event.speaking) {
+            EngineManager.getInstance().setClientRole(true);
+        } else {
+            // 要闭麦
+            GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
+            if (infoModel != null) {
+                if(infoModel.getUserID() == MyUserInfoManager.getInstance().getUid()){
+                    MyLog.d(TAG,"自己的轮次，无需闭麦");
+                }else{
+                    EngineManager.getInstance().setClientRole(false);
+                }
+            }
+        }
+    }
+
 }

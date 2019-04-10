@@ -10,8 +10,11 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.module.playways.BaseRoomData;
 import com.module.playways.grab.room.GrabRoomData;
+import com.module.playways.grab.room.event.GrabSpeakingControlEvent;
 import com.module.playways.rank.room.view.BottomContainerView;
 import com.module.rank.R;
+
+import org.greenrobot.eventbus.EventBus;
 
 public class GrabBottomContainerView extends BottomContainerView {
 
@@ -88,12 +91,14 @@ public class GrabBottomContainerView extends BottomContainerView {
                             mQuickBtn.setImageResource(R.drawable.fz_shuohuazhong);
                             mSpeakingDotAnimationView.setVisibility(VISIBLE);
                             mShowInputContainerBtn.setText("");
+                            EventBus.getDefault().post(new GrabSpeakingControlEvent(true));
                             break;
                         case MotionEvent.ACTION_CANCEL:
                         case MotionEvent.ACTION_UP:
                             mQuickBtn.setImageResource(R.drawable.fz_anzhushuohua);
                             mSpeakingDotAnimationView.setVisibility(GONE);
                             mShowInputContainerBtn.setText("夸赞是一种美德");
+                            EventBus.getDefault().post(new GrabSpeakingControlEvent(false));
                             break;
                     }
                     return true;
