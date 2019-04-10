@@ -62,6 +62,8 @@
             android:layout_height="wrap_content"
             android:layout_alignRight="@+id/grab2_iv"
             android:layout_alignBottom="@+id/grab2_iv"
+            android:layout_marginRight="@dimen/view_5_dp"
+            android:layout_marginBottom="@dimen/view_d_7_dp"
             android:src="@drawable/challenge_coin_icon" />
     </RelativeLayout>
 
