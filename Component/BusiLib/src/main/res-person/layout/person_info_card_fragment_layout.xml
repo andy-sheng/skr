@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:levelView2="http://schemas.android.com/apk/res-auto"
     android:id="@+id/person_card_main_containner"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -88,37 +89,68 @@
                             android:textColor="#3B4E79"
                             android:textSize="@dimen/textsize_12_dp" />
 
-                        <com.common.view.ex.ExTextView
-                            android:id="@+id/name_tv"
+                        <RelativeLayout
+                            android:id="@+id/name_area"
                             android:layout_width="wrap_content"
-                            android:layout_height="@dimen/view_33_dp"
+                            android:layout_height="wrap_content"
                             android:layout_alignTop="@+id/avatar_bg"
                             android:layout_marginLeft="@dimen/view_10_dp"
-                            android:layout_marginTop="@dimen/view_8_dp"
+                            android:layout_marginRight="@dimen/view_10_dp"
                             android:layout_toLeftOf="@id/report"
-                            android:layout_toRightOf="@id/avatar_bg"
-                            android:ellipsize="end"
-                            android:gravity="left|center_vertical"
-                            android:maxLines="1"
-                            android:singleLine="true"
-                            android:text="KTV酒彪子"
-                            android:textColor="#3B4E79"
-                            android:textSize="@dimen/textsize_24_dp"
-                            android:textStyle="bold" />
+                            android:layout_toRightOf="@id/avatar_bg">
 
-                        <com.common.view.ex.ExTextView
-                            android:id="@+id/level_tv"
+                            <com.zq.level.view.NormalLevelView2
+                                android:id="@+id/level_view"
+                                android:layout_width="@dimen/view_28_dp"
+                                android:layout_height="@dimen/view_24_dp"
+                                android:layout_marginTop="@dimen/view_10_dp"
+                                levelView2:mainHeight2="@dimen/view_24_dp"
+                                levelView2:mainWidth2="@dimen/view_28_dp"
+                                levelView2:subBottom2="@dimen/view_1_dp"
+                                levelView2:subHeight2="@dimen/view_3_dp"
+                                levelView2:subWidth2="@dimen/view_5_dp"></com.zq.level.view.NormalLevelView2>
+
+                            <com.common.view.ex.ExTextView
+                                android:id="@+id/name_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="@dimen/view_25_dp"
+                                android:layout_marginLeft="@dimen/view_4_dp"
+                                android:layout_marginTop="@dimen/view_8_dp"
+                                android:layout_toRightOf="@id/level_view"
+                                android:ellipsize="end"
+                                android:gravity="left|center_vertical"
+                                android:maxLines="1"
+                                android:paddingRight="@dimen/view_20_dp"
+                                android:singleLine="true"
+                                android:text="KTV酒彪子"
+                                android:textColor="#3B4E79"
+                                android:textSize="@dimen/textsize_18_dp" />
+
+                            <ImageView
+                                android:id="@+id/sex_iv"
+                                android:layout_width="@dimen/view_16_dp"
+                                android:layout_height="@dimen/view_16_dp"
+                                android:layout_alignBottom="@id/name_tv"
+                                android:layout_marginLeft="-16dp"
+                                android:layout_marginBottom="@dimen/view_4_dp"
+                                android:layout_toRightOf="@id/name_tv" />
+
+                        </RelativeLayout>
+
+                        <com.component.busilib.view.MarqueeTextView
+                            android:id="@+id/sign_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/view_20_dp"
-                            android:layout_below="@id/name_tv"
-                            android:layout_alignLeft="@id/name_tv"
-                            android:layout_marginTop="@dimen/view_2_dp"
-                            android:layout_toLeftOf="@id/report"
-                            android:ellipsize="end"
-                            android:gravity="left|center_vertical"
-                            android:maxLines="1"
+                            android:layout_below="@id/name_area"
+                            android:layout_alignLeft="@id/name_area"
+                            android:layout_marginTop="@dimen/view_4_dp"
+                            android:layout_marginRight="@dimen/view_50_dp"
+                            android:ellipsize="marquee"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:gravity="center"
+                            android:marqueeRepeatLimit="marquee_forever"
                             android:singleLine="true"
-                            android:text="铂金唱将II"
                             android:textColor="#3B4E79"
                             android:textSize="@dimen/textsize_14_dp" />
 

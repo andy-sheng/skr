@@ -42,12 +42,15 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;
+import com.component.busilib.view.MarqueeTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.imagebrowse.ImageBrowseView;
 import com.imagebrowse.big.BigImageBrowseFragment;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+import com.zq.level.view.NormalLevelView2;
+import com.zq.live.proto.Common.ESex;
 import com.zq.person.adapter.PhotoAdapter;
 import com.zq.person.model.PhotoModel;
 
@@ -81,8 +84,11 @@ public class PersonInfoDialogView2 extends RelativeLayout {
     ImageView mAvatarBg;
     SimpleDraweeView mAvatarIv;
     ExTextView mReport;
+    RelativeLayout mNameArea;
+    NormalLevelView2 mLevelView;
     ExTextView mNameTv;
-    ExTextView mLevelTv;
+    ImageView mSexIv;
+    MarqueeTextView mSignTv;
     TagFlowLayout mFlowlayout;
 
     RelativeLayout mOpretaArea;     // 私信，关注，踢人
@@ -290,7 +296,11 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         mAvatarIv = (SimpleDraweeView) this.findViewById(R.id.avatar_iv);
         mReport = (ExTextView) this.findViewById(R.id.report);
         mNameTv = (ExTextView) this.findViewById(R.id.name_tv);
-        mLevelTv = (ExTextView) this.findViewById(R.id.level_tv);
+        mNameArea = (RelativeLayout) this.findViewById(R.id.name_area);
+        mLevelView = (NormalLevelView2) this.findViewById(R.id.level_view);
+        mNameTv = (ExTextView) this.findViewById(R.id.name_tv);
+        mSexIv = (ImageView) this.findViewById(R.id.sex_iv);
+        mSignTv = (MarqueeTextView) this.findViewById(R.id.sign_tv);
         mFlowlayout = (TagFlowLayout) this.findViewById(R.id.flowlayout);
 
         mTagAdapter = new TagAdapter<String>(mTags) {
@@ -492,6 +502,8 @@ public class PersonInfoDialogView2 extends RelativeLayout {
                             .build());
 
             mNameTv.setText(model.getNickname());
+            mSignTv.setText(model.getSignature());
+            mSexIv.setBackgroundResource(model.getSex() == ESex.SX_MALE.getValue() ? R.drawable.sex_man_icon : R.drawable.sex_woman_icon);
 
             if (model.getLocation() != null && !TextUtils.isEmpty(model.getLocation().getCity())) {
                 mHashMap.put(LOCATION_TAG, model.getLocation().getCity());
@@ -521,13 +533,18 @@ public class PersonInfoDialogView2 extends RelativeLayout {
     }
 
     public void showUserLevel(List<UserLevelModel> list) {
-        String rankDesc = "";
+        int mainRank = 0;
+        int subRank = 0;
         for (UserLevelModel userLevelModel : list) {
-            if (userLevelModel.getType() == UserLevelModel.SUB_RANKING_TYPE) {
-                rankDesc = userLevelModel.getDesc();
+            if (userLevelModel.getType() == UserLevelModel.RANKING_TYPE) {
+                mainRank = userLevelModel.getScore();
+            } else if (userLevelModel.getType() == UserLevelModel.SUB_RANKING_TYPE) {
+                subRank = userLevelModel.getScore();
             }
         }
-        mLevelTv.setText(rankDesc);
+
+        mLevelView.bindData(mainRank, subRank);
+
     }
 
     public void showUserRelation(final boolean isFriend, final boolean isFollow) {
