@@ -35,16 +35,6 @@
         android:textColor="@color/white_trans_60"
         android:textSize="@dimen/textsize_12_dp" />
 
-    <com.common.view.ex.ExImageView
-        android:id="@+id/owner_iv"
-        android:layout_width="@dimen/view_16_dp"
-        android:layout_height="@dimen/view_16_dp"
-        android:layout_below="@id/avatar_iv"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_6_dp"
-        android:background="@drawable/grab_friend_room_owner"
-        android:visibility="gone" />
-
     <com.common.view.ex.ExTextView
         android:id="@+id/friend_tv"
         android:layout_width="@dimen/view_36_dp"
@@ -59,7 +49,7 @@
         android:visibility="gone"
         app:bl_corners_radius="@dimen/view_8_dp"
         app:bl_shape="rectangle"
-        app:bl_solid_color="#FFC484"
+        app:bl_solid_color="#68CCFF"
         app:bl_stroke_color="@color/white"
         app:bl_stroke_width="@dimen/view_1_dp" />
 
@@ -78,6 +68,24 @@
         app:bl_corners_radius="@dimen/view_8_dp"
         app:bl_shape="rectangle"
         app:bl_solid_color="#82C43B"
+        app:bl_stroke_color="@color/white"
+        app:bl_stroke_width="@dimen/view_1_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/follow_tv"
+        android:layout_width="@dimen/view_36_dp"
+        android:layout_height="@dimen/view_16_dp"
+        android:layout_below="@id/avatar_iv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_6_dp"
+        android:gravity="center"
+        android:text="关注"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_10_dp"
+        android:visibility="gone"
+        app:bl_corners_radius="@dimen/view_8_dp"
+        app:bl_shape="rectangle"
+        app:bl_solid_color="#F5A623"
         app:bl_stroke_color="@color/white"
         app:bl_stroke_width="@dimen/view_1_dp" />
 
