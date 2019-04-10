@@ -251,7 +251,7 @@ public class FrescoWorker {
 
                     @Override
                     public void onFinalImageSet(String s, ImageInfo imageInfo, Animatable animatable) {
-                        if (imageInfo != null && baseImage.isFitDrawable()) {
+                        if (imageInfo != null && baseImage.adjustViewWHbyImage()) {
                             ViewGroup.LayoutParams layoutParams = draweeView.getLayoutParams();
                             layoutParams.width = imageInfo.getWidth();
                             layoutParams.height = imageInfo.getHeight();

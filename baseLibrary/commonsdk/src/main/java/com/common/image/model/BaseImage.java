@@ -4,7 +4,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 
 import com.common.image.fresco.IFrescoCallBack;
-import com.common.utils.U;
 import com.facebook.drawee.drawable.ProgressBarDrawable;
 import com.facebook.drawee.drawable.ScalingUtils.ScaleType;
 import com.facebook.imagepipeline.common.Priority;
@@ -34,8 +33,8 @@ public abstract class BaseImage {
      */
     protected ScaleType mScaleType;
 
-    // 是否自适应图片的大小 注意只有图片可控才这么做
-    protected boolean isFitDrawable = false;
+    // 是否自适应图片的大小 注意只有图片可控才这么做，将view的宽高自适应图片宽高
+    protected boolean adjustViewWHbyImage = false;
 
     // 加载失败的图
     protected Drawable mFailureDrawable;
@@ -186,12 +185,12 @@ public abstract class BaseImage {
         this.mScaleType = mScaleType;
     }
 
-    public boolean isFitDrawable() {
-        return isFitDrawable;
+    public boolean adjustViewWHbyImage() {
+        return adjustViewWHbyImage;
     }
 
-    public void setFitDrawable(boolean fitDrawable) {
-        isFitDrawable = fitDrawable;
+    public void setAdjustViewWHbyImage(boolean adjustViewWHbyImage) {
+        this.adjustViewWHbyImage = adjustViewWHbyImage;
     }
 
     public void setIsCircle(boolean isCircle) {

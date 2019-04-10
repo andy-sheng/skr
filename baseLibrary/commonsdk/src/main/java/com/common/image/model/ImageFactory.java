@@ -64,7 +64,7 @@ public class ImageFactory {
         }
 
         public ImageFactory.Builder setFitDrawable(boolean isFit) {
-            mBaseImage.setFitDrawable(isFit);
+            mBaseImage.setAdjustViewWHbyImage(isFit);
             return this;
         }
 
