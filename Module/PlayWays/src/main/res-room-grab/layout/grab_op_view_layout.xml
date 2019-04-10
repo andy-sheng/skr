@@ -55,6 +55,14 @@
             android:layout_height="@dimen/view_45_dp"
             android:layout_alignLeft="@+id/grab2_iv"
             android:visibility="visible" />
+
+        <com.common.view.ex.ExImageView
+            android:id="@+id/coin_flag_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/grab2_iv"
+            android:layout_alignBottom="@+id/grab2_iv"
+            android:src="@drawable/challenge_coin_icon" />
     </RelativeLayout>
 
     <!--爆灯-->

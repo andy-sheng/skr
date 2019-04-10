@@ -47,11 +47,13 @@ public class GrabOpView extends RelativeLayout {
     public static final int MSG_HIDE = 1;
     public static final int MSG_SHOW_BRUST_BTN = 2;
 
+    // 抢唱阶段可抢
     public static final int STATUS_GRAP = 1;
+    // 抢唱阶段倒计时
     public static final int STATUS_COUNT_DOWN = 2;
-    //可操作
+    // 演唱阶段可操作
     public static final int STATUS_CAN_OP = 3;
-    //已经操作完成
+    // 演唱阶段已经操作完成
     public static final int STATUS_HAS_OP = 4;
 
     int mSeq = -1;
@@ -65,6 +67,7 @@ public class GrabOpView extends RelativeLayout {
     RelativeLayout mGrab2Container;
     ExImageView mGrab2Iv;
     RoundRectangleView mRrl2Progress;
+    ExImageView mCoinFlagIv;
 
     int mStatus;
 
@@ -154,6 +157,8 @@ public class GrabOpView extends RelativeLayout {
             mGrab2Iv = this.findViewById(R.id.grab2_iv);
             mRrl2Progress = findViewById(R.id.rrl2_progress);
             mGrab2Container = findViewById(R.id.grab2_container);
+            mCoinFlagIv = findViewById(R.id.coin_flag_iv);
+
             mGrab2Iv.setOnClickListener(new DebounceViewClickListener() {
                 @Override
                 public void clickValid(View v) {
@@ -319,6 +324,7 @@ public class GrabOpView extends RelativeLayout {
                 mGrab2Iv.setEnabled(false);
                 mGrab2Iv.setImageDrawable(null);
                 mGrab2Iv.setBackground(U.getDrawable(R.drawable.ycdd_tiaozhan_bg));
+                mCoinFlagIv.setVisibility(GONE);
                 break;
             case STATUS_GRAP:
                 mIvLightOff.setVisibility(GONE);
@@ -357,6 +363,7 @@ public class GrabOpView extends RelativeLayout {
                         .setUnPressedDrawable(U.getDrawable(R.drawable.ycdd_tiaozhan))
                         .build();
                 mGrab2Iv.setBackground(drawable);
+                mCoinFlagIv.setVisibility(VISIBLE);
                 mGrab2Iv.setOnTouchListener(new OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
