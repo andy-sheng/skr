@@ -12,6 +12,7 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.utils.U;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.playways.BaseRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
@@ -69,22 +70,43 @@ public class DynamicMsgView extends RelativeLayout {
         });
         mDynamicMsgRv.setAdapter(mDynamicMsgAdapter);
         setBackgroundResource(R.drawable.grab_pop_window_bg);
+
+        loadEmoji();
     }
 
-    public void setData(BaseRoomData roomData) {
-        mRoomData = roomData;
+    public void loadEmoji() {
+        long saveTs = U.getPreferenceUtils().getSettingLong(U.getPreferenceUtils().getSharedPreferencesSp2(), "pref_emojis_save_ts", 0);
+        if (System.currentTimeMillis() - saveTs > 3600 * 1000 * 6) {
+            syncEmojis();
+        } else {
+            String listStr = U.getPreferenceUtils().getSettingString(U.getPreferenceUtils().getSharedPreferencesSp2(), "pref_emojis", "");
+            List<DynamicModel> list = JSON.parseArray(listStr, DynamicModel.class);
+            if (list != null && list.size() > 0) {
+                showDynamicModels(list);
+            } else {
+                syncEmojis();
+            }
+        }
+    }
 
-        // TODO: 2019/4/9 加上缓存策略
+    private void syncEmojis() {
         GrabRoomServerApi grabRoomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
         ApiMethods.subscribe(grabRoomServerApi.getDynamicEmoji(), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
-                    List<DynamicModel> list = JSON.parseArray(result.getData().getString("emojis"), DynamicModel.class);
+                    String listStr = result.getData().getString("emojis");
+                    List<DynamicModel> list = JSON.parseArray(listStr, DynamicModel.class);
+                    U.getPreferenceUtils().setSettingString(U.getPreferenceUtils().getSharedPreferencesSp2(), "pref_emojis", listStr);
+                    U.getPreferenceUtils().setSettingLong(U.getPreferenceUtils().getSharedPreferencesSp2(), "pref_emojis_save_ts", System.currentTimeMillis());
                     showDynamicModels(list);
                 }
             }
         });
+    }
+
+    public void setData(BaseRoomData roomData) {
+        mRoomData = roomData;
     }
 
     private void showDynamicModels(List<DynamicModel> list) {

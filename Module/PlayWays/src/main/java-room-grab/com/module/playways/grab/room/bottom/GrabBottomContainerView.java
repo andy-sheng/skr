@@ -31,6 +31,8 @@ public class GrabBottomContainerView extends BottomContainerView {
 
     PopupWindow mDynamicMsgPopWindow;    //动态表情弹出面板
 
+    DynamicMsgView mDynamicMsgView;
+
     public GrabBottomContainerView(Context context) {
         super(context);
     }
@@ -64,10 +66,10 @@ public class GrabBottomContainerView extends BottomContainerView {
                 // 动态表情按钮
                 int w = U.getDisplayUtils().getScreenWidth() - U.getDisplayUtils().dip2px(32);
                 int h = U.getDisplayUtils().dip2px(72);
-                if (mDynamicMsgPopWindow == null) {
-                    DynamicMsgView dynamicMsgView = new DynamicMsgView(getContext());
-                    dynamicMsgView.setData(mRoomData);
-                    dynamicMsgView.setListener(new DynamicMsgView.Listener() {
+                if (mDynamicMsgView == null) {
+                    mDynamicMsgView = new DynamicMsgView(getContext());
+                    mDynamicMsgView.setData(mRoomData);
+                    mDynamicMsgView.setListener(new DynamicMsgView.Listener() {
                         @Override
                         public void onSendMsgOver() {
                             if (mDynamicMsgPopWindow != null) {
@@ -75,7 +77,11 @@ public class GrabBottomContainerView extends BottomContainerView {
                             }
                         }
                     });
-                    mDynamicMsgPopWindow = new PopupWindow(dynamicMsgView, w, h);
+                } else {
+                    mDynamicMsgView.loadEmoji();
+                }
+                if (mDynamicMsgPopWindow == null) {
+                    mDynamicMsgPopWindow = new PopupWindow(mDynamicMsgView, w, h);
                     mDynamicMsgPopWindow.setFocusable(false);
                     // 去除动画
 //                      mDynamicMsgPopWindow.setAnimationStyle(R.style.anim_quickmsg_dialog);
