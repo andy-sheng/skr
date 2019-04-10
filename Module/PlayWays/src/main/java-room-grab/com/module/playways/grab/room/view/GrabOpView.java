@@ -93,8 +93,9 @@ public class GrabOpView extends RelativeLayout {
                     break;
                 case MSG_HIDE:
                     mIvLightOff.setVisibility(GONE);
-                    mGrabContainer.setVisibility(GONE);
                     mIvBurst.setVisibility(GONE);
+                    mGrabContainer.setVisibility(GONE);
+                    mGrab2Container.setVisibility(GONE);
                     break;
                 case MSG_SHOW_BRUST_BTN:
                     MyLog.d(TAG, "handleMessage" + " msg=" + MSG_SHOW_BRUST_BTN);
@@ -285,6 +286,9 @@ public class GrabOpView extends RelativeLayout {
                         } else {
                             mRrlProgress.setVisibility(VISIBLE);
                             mRrlProgress.startCountDown(waitNum - 2000);
+
+                            mRrl2Progress.setVisibility(VISIBLE);
+                            mRrl2Progress.startCountDown(waitNum - 2000);
                             Message msg = mUiHandler.obtainMessage(MSG_HIDE_FROM_END_GUIDE_AUDIO);
                             mUiHandler.sendMessageDelayed(msg, waitNum - 2000);
                         }
