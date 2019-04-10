@@ -172,7 +172,7 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
 
     @Override
     public void showTagList(List<SpecialModel> specialModelList) {
-        int height = U.getDisplayUtils().dip2px(specialModelList.size() > 4 ? 150 : (47 * (specialModelList.size() - 1)));
+        int height = U.getDisplayUtils().dip2px(specialModelList.size() > 4 ? 150 : (55 * (specialModelList.size() - 1)));
         if (mGrabSongTagsView != null) {
             mGrabSongTagsView.setSpecialModelList(specialModelList);
             mPopupWindow.setHeight(height);
@@ -180,8 +180,8 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
 
         int[] location = new int[2];
         mTvSelectedTag.getLocationOnScreen(location);
-        mPopupWindow.showAtLocation(mTvSelectedTag, Gravity.NO_GRAVITY, location[0], location[1] - height - U.getDisplayUtils().dip2px(5));
-
+//        mPopupWindow.showAtLocation(mTvSelectedTag, Gravity.NO_GRAVITY, location[0], location[1] - height - U.getDisplayUtils().dip2px(5));
+        mPopupWindow.showAsDropDown(mTvSelectedTag);
         Drawable drawable = U.getDrawable(R.drawable.zhuanchang_shouqi_up);
         drawable.setBounds(new Rect(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight()));
         mTvSelectedTag.setCompoundDrawables(null, null,

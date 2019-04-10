@@ -110,14 +110,8 @@ public class GrabTagsAdapter extends DiffAdapter<SpecialModel, RecyclerView.View
                 color = Color.parseColor(model.getBgColor());
             }
 
-            Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(45))
-                    .setStrokeColor(Color.parseColor("#202239"))
-                    .setStrokeWidth(U.getDisplayUtils().dip2px(2))
-                    .setSolidColor(color)
-                    .setCornersRadius(U.getDisplayUtils().dip2px(8))
-                    .build();
-            mTvSelectedTag.setBackground(drawable);
             mTvSelectedTag.setText(model.getTagName());
+            mTvSelectedTag.setTextColor(color);
         }
     }
 
