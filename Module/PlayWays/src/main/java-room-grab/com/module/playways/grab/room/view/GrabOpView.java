@@ -40,8 +40,8 @@ import org.greenrobot.eventbus.ThreadMode;
  */
 public class GrabOpView extends RelativeLayout {
     public final static String TAG = "GrabOpView";
-    public static long sShowBurstTime = 15000;
-    public static long sShowLightOffTime = 5000;
+    public  long mShowBurstTime = 15000;
+    public  long mShowLightOffTime = 5000;
 
     public static final int MSG_HIDE_FROM_END_GUIDE_AUDIO = 0;
     public static final int MSG_HIDE = 1;
@@ -68,7 +68,6 @@ public class GrabOpView extends RelativeLayout {
 
     int mStatus;
 
-
     ExTextView mIvLightOff;
 
     Listener mListener;
@@ -81,12 +80,14 @@ public class GrabOpView extends RelativeLayout {
 
     boolean mGrabPreRound = false; // 标记上一轮是否抢了
 
+    Animation mExitAnimation;
+
     Handler mUiHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_HIDE_FROM_END_GUIDE_AUDIO:
-                    hide();
+                    hide("MSG_HIDE_FROM_END_GUIDE_AUDIO");
                     if (mListener != null) {
                         mListener.grabCountDownOver();
                     }
@@ -207,8 +208,8 @@ public class GrabOpView extends RelativeLayout {
             MyLog.d(TAG, "setGrabRoomData GrabRoomData error");
             return;
         }
-        sShowBurstTime = mGrabRoomData.getGrabConfigModel().getEnableShowBLightWaitTimeMs();
-        sShowLightOffTime = mGrabRoomData.getGrabConfigModel().getEnableShowMLightWaitTimeMs();
+        mShowBurstTime = mGrabRoomData.getGrabConfigModel().getEnableShowBLightWaitTimeMs();
+        mShowLightOffTime = mGrabRoomData.getGrabConfigModel().getEnableShowMLightWaitTimeMs();
     }
 
     public void setListener(Listener listener) {
@@ -317,7 +318,7 @@ public class GrabOpView extends RelativeLayout {
                 mGrab2Container.setVisibility(VISIBLE);
                 mGrab2Iv.setEnabled(false);
                 mGrab2Iv.setImageDrawable(null);
-                mGrab2Iv.setBackground(U.getDrawable(R.drawable.ycdd_qiangchang_bj));
+                mGrab2Iv.setBackground(U.getDrawable(R.drawable.ycdd_tiaozhan_bg));
                 break;
             case STATUS_GRAP:
                 mIvLightOff.setVisibility(GONE);
@@ -378,7 +379,7 @@ public class GrabOpView extends RelativeLayout {
                 mIvLightOff.setEnabled(false);
                 break;
             case STATUS_HAS_OP:
-                hide();
+                hide("STATUS_HAS_OP");
                 break;
         }
     }
@@ -387,42 +388,44 @@ public class GrabOpView extends RelativeLayout {
         mGrabPreRound = grabPreRound;
     }
 
-    public void hide() {
-        MyLog.d(TAG, "hide");
+    public void hide(String from) {
+        MyLog.d(TAG, "hide from="+from);
         cancelCountDownTask();
         mGrabIv.clearAnimation();
         mRrlProgress.stopCountDown();
         mGrab2Iv.clearAnimation();
         mRrl2Progress.stopCountDown();
-        TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 1.0f,
-                Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0);
-        animation.setDuration(200);
-        animation.setRepeatMode(Animation.REVERSE);
-        animation.setInterpolator(new OvershootInterpolator());
-        animation.setFillAfter(true);
-        startAnimation(animation);
+        if(mExitAnimation ==null) {
+            mExitAnimation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 1.0f,
+                    Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0);
+            mExitAnimation.setDuration(200);
+            mExitAnimation.setRepeatMode(Animation.REVERSE);
+            mExitAnimation.setInterpolator(new OvershootInterpolator());
+            mExitAnimation.setFillAfter(true);
+            mExitAnimation.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
 
-        animation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
+                }
 
-            }
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    mIvLightOff.setVisibility(GONE);
+                    mIvBurst.setVisibility(GONE);
+                }
 
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                mIvLightOff.setVisibility(GONE);
-                mIvBurst.setVisibility(GONE);
-            }
+                @Override
+                public void onAnimationRepeat(Animation animation) {
 
-            @Override
-            public void onAnimationRepeat(Animation animation) {
+                }
+            });
+        }
+        if(mExitAnimation.hasStarted() && !mExitAnimation.hasEnded()){
 
-            }
-        });
-
+        }else{
+            startAnimation(mExitAnimation);
+        }
         mUiHandler.removeCallbacksAndMessages(null);
-        mUiHandler.removeMessages(MSG_HIDE_FROM_END_GUIDE_AUDIO);
-        mUiHandler.removeMessages(MSG_SHOW_BRUST_BTN);
         Message msg = mUiHandler.obtainMessage(MSG_HIDE);
         mUiHandler.sendMessageDelayed(msg, 200);
     }
@@ -439,7 +442,7 @@ public class GrabOpView extends RelativeLayout {
         mUiHandler.removeCallbacksAndMessages(null);
 
         cancelCountDownTask();
-        mCountDownTask = HandlerTaskTimer.newBuilder().delay(sShowLightOffTime)
+        mCountDownTask = HandlerTaskTimer.newBuilder().delay(mShowLightOffTime)
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
@@ -470,7 +473,7 @@ public class GrabOpView extends RelativeLayout {
         mUiHandler.removeMessages(MSG_SHOW_BRUST_BTN);
         Message msg = Message.obtain();
         msg.what = MSG_SHOW_BRUST_BTN;
-        mUiHandler.sendMessageDelayed(msg, sShowBurstTime);
+        mUiHandler.sendMessageDelayed(msg, mShowBurstTime);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

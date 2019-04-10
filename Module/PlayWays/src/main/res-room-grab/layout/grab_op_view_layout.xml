@@ -42,7 +42,7 @@
             android:id="@+id/grab2_iv"
             android:layout_width="@dimen/view_87_dp"
             android:layout_height="@dimen/view_53_dp"
-            android:background="@drawable/ycdd_qiangchang_bj"
+            android:background="@drawable/ycdd_tiaozhan_bg"
             android:paddingBottom="@dimen/view_6_dp"
             android:scaleType="centerInside"
             android:src="@drawable/xiangchang_1"
