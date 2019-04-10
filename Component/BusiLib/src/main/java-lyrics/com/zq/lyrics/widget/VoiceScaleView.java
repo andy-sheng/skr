@@ -26,8 +26,7 @@ public class VoiceScaleView extends View {
     public final static String TAG = "VoiceScaleView";
     static final int SPEED = U.getDisplayUtils().dip2px(72);// 每秒走72个像素单位
     float mReadLineX = 0.2f;// 红线大约在距离左边 20% 的位置
-    float mDefaultCy = (U.getDisplayUtils().dip2px(30) + U.getDisplayUtils().dip2px(30) + U.getDisplayUtils().dip2px(7)) / 2;
-    float mRedCy = mDefaultCy;
+    float mRedCy;
     int mWidth = -1;// view的宽度
     int mHeight = -1;// view的高度
     long mLocalBeginTs = -1;// 本地开始播放的时间戳，本地基准时间
@@ -139,8 +138,9 @@ public class VoiceScaleView extends View {
         for (LyricsLineInfo lyricsLineInfo : mLyricsLineInfoList) {
             float left = divideLineTX + (lyricsLineInfo.getStartTime() - mTranslateTX - duration) * SPEED / 1000;
             float right = divideLineTX + (lyricsLineInfo.getEndTime() - mTranslateTX - duration) * SPEED / 1000;
-            float top = isLowStart ? U.getDisplayUtils().dip2px(40) : U.getDisplayUtils().dip2px(20);
-            float bottom = top + U.getDisplayUtils().dip2px(7);
+            float h = U.getDisplayUtils().dip2px(7);
+            float top = isLowStart ? getHeight() * 2 / 3 - h / 2 : getHeight() * 1 / 3 - h / 2;
+            float bottom = top + h;
             if (right < left) {
                 MyLog.w(TAG, "right<left? error");
                 continue;
@@ -179,10 +179,8 @@ public class VoiceScaleView extends View {
             isLowStart = !isLowStart;
         }
 
-        if (mRedCy > 0) {
-            if (!isRedFlag) {
-                mRedCy = mDefaultCy;
-            }
+        if (!isRedFlag) {
+            mRedCy = getHeight() / 2.0f;
         }
         canvas.drawCircle(divideLineTX, mRedCy, U.getDisplayUtils().dip2px(9), mRedOutpaint);
         canvas.drawCircle(divideLineTX, mRedCy, U.getDisplayUtils().dip2px(6), mRedInnerpaint);
