@@ -6,6 +6,36 @@
     android:layout_height="match_parent"
     android:background="#7088FF">
 
+    <!--
+            appbar_scrolling_view_behavior
+            表示使用android.support.design.widget.AppBarLayout$ScrollingViewBehavior来处理 滚动的view 与 AppBarLayout 的关系
+    -->
+
+    <!--
+    AppBarLayout 是一个垂直布局的 LinearLayout，它主要是为了实现 “Material Design” 风格的标题栏的特性，比如：滚动
+    -->
+
+    <!--
+    AppBarLayout 中的 View，如要想要滚动到屏幕外，必须设置以下属性 app:layout_scrollFlags="scroll"
+    scroll： 隐藏的时候，先整体向上滚动，直到 AppBarLayout 完全隐藏，再开始滚动 Scrolling View；
+             显示的时候，直到 Scrolling View 顶部完全出现后，再开始滚动 AppBarLayout 到完全显示。向下时先显示 ScrollView 到顶再显示bar。
+
+    enterAlways：与 scroll 类似（scroll|enterAlways），只不过向下滚动先显示 AppBarLayout 到完全，再滚动 ScrollingView。
+
+    enterAlwaysCollapsed：需要和 enterAlways 一起使用（scroll|enterAlways|enterAlwaysCollapsed），和 enterAlways 不一样的是，不会显示 AppBarLayout 到完全再滚动 Scrolling View，而是先滚动 AppBarLayout 到最小高度，再滚动 Scrolling View，最后再滚动 AppBarLayout 到完全显示。
+    注意：需要定义 View 的最小高度（minHeight）才有效果
+
+    exitUntilCollapsed：顾名思义，定义了 AppBarLayout 消失的规则。发生向上滚动事件时，AppBarLayout 向上滚动退出直至最小高度（minHeight），
+    然后 Scrolling View 开始滚动。也就是，AppBarLayout 不会完全退出屏幕,也要定义最小高度
+
+    CollapsingToolbarLayout 继承自 FrameLayout，它是用来实现 Toolbar 的折叠效果，一般它的直接子 View 是 Toolbar，当然也可以是其它类型的 View。
+    如果你不使用 Toolbar，有些效果没法直接实现，比如下图的“My files”文字在折叠和展开的时候，有一个过渡效果：
+
+    也就是 CollapsingToolbarLayout 设置 title 的相关方法无效，比如：
+    setTitle、setCollapsedTitleTextColor、setExpandedTitleGravity等，更多方法可以自行查阅 API 。
+    另外，exitUntilCollapsed 属性也会失效，即使你设置了 minHeight，所以官方也说明了CollapsingToolbarLayout 是为了配合 Toolbar 而设计
+    -->
+
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/smart_refresh"
         android:layout_width="match_parent"
