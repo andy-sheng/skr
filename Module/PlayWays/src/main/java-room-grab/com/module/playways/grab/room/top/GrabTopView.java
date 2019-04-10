@@ -7,6 +7,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.common.core.account.UserAccountManager;
@@ -31,6 +32,7 @@ public class GrabTopView extends RelativeLayout {
     ExTextView mTvCoin;
     ExImageView mConinChangeIv;
     ExTextView mTvCoinChange;
+    ImageView mIvVoiceSetting;
 //    ImageView mIvAccDisable;
 
     Listener mOnClickChangeRoomListener;
@@ -118,7 +120,7 @@ public class GrabTopView extends RelativeLayout {
         mTvCoin = (ExTextView) findViewById(R.id.tv_coin);
         mConinChangeIv = (ExImageView) findViewById(R.id.conin_change_iv);
         mTvCoinChange = (ExTextView) findViewById(R.id.tv_coin_change);
-//        mIvAccDisable = (ImageView) findViewById(R.id.iv_acc_disable);
+        mIvVoiceSetting = (ImageView) findViewById(R.id.iv_voice_setting);
 
         mTvChangeRoom.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -127,6 +129,15 @@ public class GrabTopView extends RelativeLayout {
                     mOnClickChangeRoomListener.changeRoom();
                     StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
                             "game_changeroom", null);
+                }
+            }
+        });
+
+        mIvVoiceSetting.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mOnClickChangeRoomListener != null) {
+                    mOnClickChangeRoomListener.onClickVoiceAudition();
                 }
             }
         });
@@ -193,5 +204,7 @@ public class GrabTopView extends RelativeLayout {
         void changeRoom();
 
         void addFirend();
+
+        void onClickVoiceAudition();
     }
 }

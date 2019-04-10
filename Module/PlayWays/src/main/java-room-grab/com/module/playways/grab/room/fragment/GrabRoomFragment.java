@@ -269,7 +269,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             }
         }, 500);
         BgMusicManager.getInstance().setRoom(true);
-        if(!mRoomData.hasGameBegin() && mRoomData.isOwner() && mOwnerBeginGameIv==null){
+        if (!mRoomData.hasGameBegin() && mRoomData.isOwner() && mOwnerBeginGameIv == null) {
             // 是房主并且游戏未开始，增加一个 开始游戏 的按钮
 
             Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20))
@@ -280,12 +280,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
             mOwnerBeginGameIv = new ExImageView(getContext());
             mOwnerBeginGameIv.setImageResource(R.drawable.fz_kaishiyouxi);
-            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             lp.rightMargin = U.getDisplayUtils().dip2px(10);
-            lp.addRule(RelativeLayout.ABOVE,R.id.bottom_bg_vp);
+            lp.addRule(RelativeLayout.ABOVE, R.id.bottom_bg_vp);
             lp.bottomMargin = U.getDisplayUtils().dip2px(10);
-            mRankingContainer.addView(mOwnerBeginGameIv,lp);
+            mRankingContainer.addView(mOwnerBeginGameIv, lp);
             mOwnerBeginGameIv.setOnClickListener(new DebounceViewClickListener() {
                 @Override
                 public void clickValid(View v) {
@@ -495,6 +495,13 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             public void addFirend() {
 
             }
+
+            @Override
+            public void onClickVoiceAudition() {
+                U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+                mVoiceControlBg.setVisibility(View.VISIBLE);
+                mVoiceControlView.setVisibility(View.VISIBLE);
+            }
         });
 
         mPracticeFlagIv = mRootView.findViewById(R.id.practice_flag_iv);
@@ -573,9 +580,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         mGrabOpBtn.setGrabRoomData(mRoomData);
         mGrabOpBtn.setListener(new GrabOpView.Listener() {
             @Override
-            public void clickGrabBtn(int seq,boolean challenge) {
+            public void clickGrabBtn(int seq, boolean challenge) {
                 U.getSoundUtils().play(TAG, R.raw.grab_iwannasing);
-                mCorePresenter.grabThisRound(seq,challenge);
+                mCorePresenter.grabThisRound(seq, challenge);
             }
 
             @Override
@@ -709,7 +716,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     public void grabBegin(int seq, SongModel songModel) {
         MyLog.d(TAG, "grabBegin" + " seq=" + seq + " songModel=" + songModel);
         removeAllEnsureMsg();
-        if(mOwnerBeginGameIv!=null){
+        if (mOwnerBeginGameIv != null) {
             // 如果房主开始游戏的按钮还在的话，将其移除
             mRankingContainer.removeView(mOwnerBeginGameIv);
         }

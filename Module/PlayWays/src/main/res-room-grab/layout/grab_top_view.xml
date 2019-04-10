@@ -9,25 +9,25 @@
     tools:parentTag="android.widget.RelativeLayout">
 
     <com.common.view.ex.ExTextView
-        android:textStyle="bold"
-        android:paddingBottom="@dimen/view_4_dp"
         android:id="@+id/tv_change_room"
         android:layout_width="@dimen/view_80_dp"
         android:layout_height="@dimen/view_31_dp"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/view_12_dp"
+        android:background="@drawable/qiehuanmoshi_bj"
         android:gravity="center"
+        android:paddingBottom="@dimen/view_4_dp"
         android:text="换房间"
         android:textColor="#3B4E79"
         android:textSize="@dimen/textsize_14_dp"
-        android:background="@drawable/qiehuanmoshi_bj" />
+        android:textStyle="bold" />
 
     <com.common.view.ex.ExTextView
-        android:layout_marginLeft="@dimen/view_d_14_dp"
         android:id="@+id/tv_coin"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_31_dp"
         android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/view_d_14_dp"
         android:layout_toRightOf="@+id/iv_money_coin"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/view_18_dp"
@@ -52,9 +52,9 @@
         android:id="@+id/iv_money_coin"
         android:layout_width="@dimen/view_27_dp"
         android:layout_height="@dimen/view_31_dp"
-        android:layout_toRightOf="@+id/tv_change_room"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/view_12_dp"
+        android:layout_toRightOf="@+id/tv_change_room"
         android:src="@drawable/ycdd_daojishi_jinbi" />
 
     <!--<ImageView-->
@@ -76,4 +76,13 @@
         android:textColor="#B2B6D6"
         android:textSize="@dimen/textsize_16_dp"
         android:visibility="gone" />
+
+    <ImageView
+        android:background="@drawable/grzx_shezhi"
+        android:id="@+id/iv_voice_setting"
+        android:layout_width="@dimen/view_27_dp"
+        android:layout_height="@dimen/view_31_dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/view_66_dp" />
 </merge>

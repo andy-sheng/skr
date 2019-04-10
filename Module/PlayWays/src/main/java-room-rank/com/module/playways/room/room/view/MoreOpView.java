@@ -23,8 +23,6 @@ import com.module.rank.R;
 public class MoreOpView extends RelativeLayout {
 
     LinearLayout mMenuContainer;
-    RelativeLayout mVoiceAudition;// 调音板
-    ExTextView mVoiceAuditionBt;
     RelativeLayout mQuitBtnContainer;
     ExTextView mQuitBtn;
     RelativeLayout mVoiceControlBtnContainer;
@@ -49,8 +47,6 @@ public class MoreOpView extends RelativeLayout {
         setBackgroundResource(R.drawable.tuichufangjian);
 
         mMenuContainer = (LinearLayout) this.findViewById(R.id.menu_container);
-        mVoiceAudition = (RelativeLayout) this.findViewById(R.id.voice_audition);
-        mVoiceAuditionBt = (ExTextView) this.findViewById(R.id.voice_audition_bt);
         mVoiceControlBtnContainer = (RelativeLayout) this.findViewById(R.id.voice_control_btn_container);
         mVoiceControlBtn = (ExTextView) this.findViewById(R.id.voice_control_btn);
         mGameGuideRl = (RelativeLayout) findViewById(R.id.game_guide_rl);
@@ -92,16 +88,6 @@ public class MoreOpView extends RelativeLayout {
                 mPopupWindow.dismiss();
             }
         });
-
-        mVoiceAudition.setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                if (mListener != null) {
-                    mListener.onClickVoiceAudition();
-                }
-                mPopupWindow.dismiss();
-            }
-        });
     }
 
     public void showAt(View view) {
@@ -117,11 +103,6 @@ public class MoreOpView extends RelativeLayout {
             mVoiceControlBtnContainer.setVisibility(GONE);
         } else {
             mVoiceControlBtnContainer.setVisibility(VISIBLE);
-        }
-        if (mRoomData.getGameType() == GameModeType.GAME_MODE_GRAB) {
-            mVoiceAudition.setVisibility(VISIBLE);
-        } else {
-            mVoiceAudition.setVisibility(GONE);
         }
     }
 
@@ -159,7 +140,5 @@ public class MoreOpView extends RelativeLayout {
         void onVoiceChange(boolean voiceOpen);
 
         void onClickGameRule();
-
-        void onClickVoiceAudition();
     }
 }

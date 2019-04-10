@@ -176,11 +176,6 @@ public class RankTopContainerView2 extends RelativeLayout {
                         public void onClickGameRule() {
 
                         }
-
-                        @Override
-                        public void onClickVoiceAudition() {
-
-                        }
                     });
                     mMoreOpView.setRoomData(mRoomData);
                 }

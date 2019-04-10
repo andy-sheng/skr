@@ -10,33 +10,6 @@
         android:orientation="vertical">
 
         <RelativeLayout
-            android:id="@+id/voice_audition"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/view_50_dp"
-            android:visibility="gone">
-
-            <com.common.view.ex.ExTextView
-                android:id="@+id/voice_audition_bt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginLeft="@dimen/view_10_dp"
-                android:layout_marginRight="@dimen/view_10_dp"
-                android:drawableLeft="@drawable/tiaojieyinliang"
-                android:drawablePadding="@dimen/view_5_dp"
-                android:gravity="center"
-                android:text="音量调节"
-                android:textColor="@color/white"
-                android:textSize="@dimen/textsize_16_dp" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/view_1_dp"
-                android:layout_alignParentBottom="true"
-                android:background="#2E3041" />
-        </RelativeLayout>
-
-        <RelativeLayout
             android:id="@+id/voice_control_btn_container"
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_50_dp">
