@@ -49,6 +49,8 @@ import com.module.playways.grab.room.event.GrabSwitchRoomEvent;
 import com.module.playways.grab.room.event.GrabWaitSeatUpdateEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
+import com.module.playways.grab.room.event.SomeOneJoinWaitSeatEvent;
+import com.module.playways.grab.room.event.SomeOneLeaveWaitSeatEvent;
 import com.module.playways.grab.room.inter.IGrabView;
 import com.module.playways.grab.room.model.BLightInfoModel;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
@@ -114,6 +116,7 @@ import org.greenrobot.greendao.annotation.NotNull;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import io.agora.rtc.Constants;
@@ -1315,6 +1318,20 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             MyLog.w(TAG, "GrabRoundChangeEvent 刚切换到该轮次就告诉我轮次结束？？？roundSeq:" + now.getRoundSeq());
             MyLog.w(TAG, "自动切换到下个轮次");
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(GrabWaitSeatUpdateEvent event) {
+        MyLog.d(TAG, "onEvent" + " event=" + event);
+        if(event.list != null && event.list.size() > 0){
+            mIGrabView.hideInviteTipView();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(SomeOneJoinWaitSeatEvent event) {
+        MyLog.d(TAG, "onEvent" + " event=" + event);
+        mIGrabView.hideInviteTipView();
     }
 
     /**

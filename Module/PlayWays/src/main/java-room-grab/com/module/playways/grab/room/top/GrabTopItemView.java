@@ -38,7 +38,6 @@ public class GrabTopItemView extends RelativeLayout {
     public ExImageView mFlagIv;
     public PlayerInfoModel mPlayerInfoModel;
     public AnimationDrawable mFlickerAnim;
-    public ExTextView mInviteTv;
     public ExTextView mTvIconBg;
     public ExImageView mOwnerIconIv;
 
@@ -69,7 +68,6 @@ public class GrabTopItemView extends RelativeLayout {
         mCircleAnimationView = (CircleAnimationView) this.findViewById(R.id.circle_animation_view);
         mAvatarIv = (BaseImageView) this.findViewById(R.id.avatar_iv);
         mFlagIv = (ExImageView) this.findViewById(R.id.flag_iv);
-        mInviteTv = (ExTextView) findViewById(R.id.invite_tv);
         mOwnerIconIv = findViewById(R.id.owner_icon_iv);
         mTvIconBg = (ExTextView) findViewById(R.id.tv_icon_bg);
 
@@ -142,7 +140,6 @@ public class GrabTopItemView extends RelativeLayout {
         );
         mShowEmptySeat = false;
 
-        mInviteTv.setVisibility(GONE);
         mFlagIv.setVisibility(GONE);
         mCircleAnimationView.setVisibility(GONE);
         if (isOwner) {
@@ -165,13 +162,11 @@ public class GrabTopItemView extends RelativeLayout {
     public void setToPlaceHolder() {
         if (mCanShowInviteWhenEmpty) {
             mAvatarIv.setImageDrawable(U.getDrawable(R.drawable.ycdd_yaoqing));
-            mInviteTv.setVisibility(VISIBLE);
             if (mLast) {
                 EventBus.getDefault().post(new InviteBtnVisibleEvent(true));
             }
         } else {
             mAvatarIv.setImageDrawable(U.getDrawable(R.drawable.ycdd_kongwei));
-            mInviteTv.setVisibility(GONE);
             if (mLast) {
                 EventBus.getDefault().post(new InviteBtnVisibleEvent(false));
             }

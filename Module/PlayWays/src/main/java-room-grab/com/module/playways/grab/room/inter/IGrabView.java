@@ -68,4 +68,6 @@ public interface IGrabView {
     void dimissKickDialog();
 
     void showPracticeFlag(boolean flag);
+
+    void hideInviteTipView();
 }
