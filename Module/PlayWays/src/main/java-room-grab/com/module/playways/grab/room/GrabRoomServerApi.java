@@ -307,4 +307,19 @@ public interface GrabRoomServerApi {
      */
     @PUT("http://dev.stand.inframe.mobi/v1/stand/send-emoji")
     Observable<ApiResult> sendDynamicEmoji(@Body RequestBody body);
+
+    /**
+     * 用户是否有未激活的红包
+     * @return
+     */
+    @GET("http://dev.api.inframe.mobi/v1/redbag/check-newbie-task")
+    Observable<ApiResult> checkNewBieTask();
+
+    /**
+     * 激活红包
+     * @param body
+     * @return
+     */
+    @PUT("http://dev.api.inframe.mobi/v1/redbag/trigger-newbie-task")
+    Observable<ApiResult> triggerNewBieTask(@Body RequestBody body);
 }
