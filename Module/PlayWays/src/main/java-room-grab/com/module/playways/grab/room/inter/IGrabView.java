@@ -70,4 +70,6 @@ public interface IGrabView {
     void showPracticeFlag(boolean flag);
 
     void hideInviteTipView();
+
+    void hideManageTipView();
 }

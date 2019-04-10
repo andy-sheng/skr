@@ -1318,6 +1318,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             MyLog.w(TAG, "GrabRoundChangeEvent 刚切换到该轮次就告诉我轮次结束？？？roundSeq:" + now.getRoundSeq());
             MyLog.w(TAG, "自动切换到下个轮次");
         }
+
+        mUiHandler.post(() -> mIGrabView.hideManageTipView());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

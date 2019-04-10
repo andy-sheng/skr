@@ -187,6 +187,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     ImageView mOwnerBeginGameIv;
 
     ImageView mIvInviteTip;
+    ImageView mIvManageSongTipView;
 
     SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
 
@@ -301,6 +302,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         }
 
         tryShowInviteTipView();
+        tryShowManageSongTipView();
     }
 
     private void tryShowInviteTipView() {
@@ -312,6 +314,19 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             layoutParams.setMargins(0, U.getDisplayUtils().dip2px(127), U.getDisplayUtils().dip2px(13), 0);
             ((ViewGroup) mRootView).addView(mIvInviteTip);
+        }
+    }
+
+    private void tryShowManageSongTipView() {
+        if (mRoomData.isOwner()) {
+            mIvManageSongTipView = new ImageView(getContext());
+            mIvManageSongTipView.setBackground(U.getDrawable(R.drawable.fz_kongzhi_tishi));
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(142), U.getDisplayUtils().dip2px(74));
+            mIvManageSongTipView.setLayoutParams(layoutParams);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            layoutParams.setMargins(0, 0, U.getDisplayUtils().dip2px(13), U.getDisplayUtils().dip2px(78));
+            ((ViewGroup) mRootView).addView(mIvManageSongTipView);
         }
     }
 
@@ -361,6 +376,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                         .setHasAnimation(true)
                         .addDataBeforeAdd(0, mRoomData)
                         .build());
+                removeManageSongTipView();
             }
 
 
@@ -422,6 +438,13 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         if (mIvInviteTip != null && mIvInviteTip.getParent() != null) {
             ((ViewGroup) mRootView).removeView(mIvInviteTip);
             mIvInviteTip = null;
+        }
+    }
+
+    private void removeManageSongTipView() {
+        if (mIvManageSongTipView != null && mIvManageSongTipView.getParent() != null) {
+            ((ViewGroup) mRootView).removeView(mIvManageSongTipView);
+            mIvManageSongTipView = null;
         }
     }
 
@@ -1248,6 +1271,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     @Override
     public void hideInviteTipView() {
         removeInviteTipView();
+    }
+
+    @Override
+    public void hideManageTipView() {
+        removeManageSongTipView();
     }
 
     static class PendingPlaySongCardData {
