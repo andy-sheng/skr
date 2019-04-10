@@ -3,14 +3,17 @@ package com.module.home.fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.SpannableStringBuilder;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.common.base.BaseFragment;
 import com.common.core.avatar.AvatarUtils;
@@ -94,6 +97,10 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
     NormalLevelView2 mLevelView;
     ExTextView mLevelTv;
 
+    AppBarLayout mAppbar;
+    Toolbar mToolbar;
+    TextView mSrlNameTv;
+
     PersonCorePresenter mPresenter;
 
     PhotoAdapter mPhotoAdapter;
@@ -141,6 +148,11 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
         mUserInfoArea = (RelativeLayout) mRootView.findViewById(R.id.user_info_area);
         mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
 
+        mAppbar = (AppBarLayout) mRootView.findViewById(R.id.appbar);
+        mToolbar = (Toolbar) mRootView.findViewById(R.id.toolbar);
+        mSrlNameTv = (TextView) mRootView.findViewById(R.id.srl_name_tv);
+
+
         if (U.getDeviceUtils().hasNotch(getContext())) {
             mTitlebar.setVisibility(View.VISIBLE);
         } else {
@@ -162,6 +174,22 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 mPresenter.getHomePage((int) MyUserInfoManager.getInstance().getUid(), true);
                 mPresenter.getPhotos(0);
+            }
+        });
+
+        mAppbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (verticalOffset == 0) {
+                    // 展开状态
+                    mToolbar.setVisibility(View.GONE);
+                } else if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()) {
+                    // 完全收缩状态
+                    mToolbar.setVisibility(View.VISIBLE);
+                } else {
+                    // TODO: 2019/4/8 过程中，可以加动画，先直接显示
+                    mToolbar.setVisibility(View.GONE);
+                }
             }
         });
     }
@@ -336,6 +364,7 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
                 .build());
         mNameTv.setText(MyUserInfoManager.getInstance().getNickName());
         mUseridTv.setText("撕歌号：" + MyUserInfoManager.getInstance().getUid());
+        mSrlNameTv.setText(MyUserInfoManager.getInstance().getNickName());
     }
 
 
@@ -423,7 +452,7 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
         MyLog.d(TAG, "showPhoto" + " list=" + list + " offset=" + offset + " totalNum=" + totalNum);
         // TODO: 2019/4/10 just for test
         List<PhotoModel> models = new ArrayList<>();
-        for (int i = 0; i <= 20; i++) {
+        for (int i = 0; i <= 1; i++) {
             PhotoModel photoModel = new PhotoModel();
             photoModel.setPicID(i);
             photoModel.setPicPath(MyUserInfoManager.getInstance().getAvatar());

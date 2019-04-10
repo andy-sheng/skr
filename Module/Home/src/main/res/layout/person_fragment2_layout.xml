@@ -4,7 +4,7 @@
     xmlns:levelView2="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#7088FF">
+    android:background="#D0EFFF">
 
     <!--
             appbar_scrolling_view_behavior
@@ -54,6 +54,9 @@
                 android:id="@+id/photo_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/view_7_dp"
+                android:layout_marginLeft="@dimen/view_9_dp"
+                android:layout_marginRight="@dimen/view_9_dp"
                 android:overScrollMode="never"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"></android.support.v7.widget.RecyclerView>
 
@@ -74,7 +77,8 @@
                     <RelativeLayout
                         android:id="@+id/user_info_area"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/person_fragment_bg">
 
                         <!--只是做一下刘海屏幕的适配-->
                         <com.common.view.titlebar.CommonTitleBar
@@ -107,7 +111,7 @@
                         <!--设置-->
                         <RelativeLayout
                             android:id="@+id/setting_area"
-                            android:layout_width="@dimen/view_25_dp"
+                            android:layout_width="@dimen/view_27_dp"
                             android:layout_height="wrap_content"
                             android:layout_alignTop="@id/avatar_iv"
                             android:layout_alignParentRight="true"
@@ -193,7 +197,6 @@
                                     android:layout_height="@dimen/view_36_dp"
                                     android:layout_centerHorizontal="true"
                                     android:gravity="center"
-                                    android:text="0好友"
                                     android:textColor="@color/white"
                                     android:textSize="@dimen/textsize_24_dp" />
 
@@ -220,7 +223,6 @@
                                     android:layout_height="wrap_content"
                                     android:layout_centerHorizontal="true"
                                     android:gravity="center"
-                                    android:text="0关注"
                                     android:textColor="@color/white"
                                     android:textSize="@dimen/textsize_24_dp" />
 
@@ -238,7 +240,6 @@
                                     android:layout_height="@dimen/view_36_dp"
                                     android:layout_centerHorizontal="true"
                                     android:gravity="center"
-                                    android:text="0粉丝"
                                     android:textColor="@color/white"
                                     android:textSize="@dimen/textsize_24_dp" />
 
@@ -311,7 +312,7 @@
                                     android:id="@+id/rank_num_tv"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/view_15_dp"
+                                    android:layout_marginTop="@dimen/view_20_dp"
                                     android:gravity="center"
                                     android:textColor="#0C2275"
                                     android:textSize="@dimen/textsize_14_dp" />
@@ -347,7 +348,7 @@
                                     android:id="@+id/singend_num_tv"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/view_15_dp"
+                                    android:layout_marginTop="@dimen/view_20_dp"
                                     android:gravity="center"
                                     android:textColor="#0C2275"
                                     android:textSize="@dimen/textsize_14_dp" />
@@ -400,12 +401,47 @@
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/view_27_dp"
                             android:layout_below="@id/medal_layout"
+                            android:layout_marginLeft="@dimen/view_16_dp"
+                            android:layout_marginTop="@dimen/view_20_dp"
+                            android:background="@drawable/person_photos_bg"
                             android:gravity="center_vertical"
                             android:paddingLeft="@dimen/view_12_dp"
                             android:paddingRight="@dimen/view_12_dp"
+                            android:paddingBottom="@dimen/view_1_dp"
                             android:textColor="@color/white" />
 
                     </RelativeLayout>
+
+                    <android.support.v7.widget.Toolbar
+                        android:id="@+id/toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/view_70_dp"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:visibility="gone"
+                        app:contentInsetStart="@dimen/view_0_dp"
+                        app:contentInsetStartWithNavigation="@dimen/view_0_dp"
+                        app:layout_collapseMode="pin">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="#7088FF">
+
+                            <TextView
+                                android:id="@+id/srl_name_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentBottom="true"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginBottom="@dimen/view_10_dp"
+                                android:gravity="center"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/textsize_18_dp"
+                                android:textStyle="bold" />
+
+                        </RelativeLayout>
+
+                    </android.support.v7.widget.Toolbar>
 
                 </android.support.design.widget.CollapsingToolbarLayout>
 
