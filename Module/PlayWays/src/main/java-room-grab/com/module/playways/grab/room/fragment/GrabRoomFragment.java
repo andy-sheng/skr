@@ -722,7 +722,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_SONGCARD_OVER);
         msg.obj = pendingPlaySongCardData;
         if (seq == 1) {
-            mUiHanlder.sendMessageDelayed(msg, 4000);
+            mUiHanlder.sendMessageDelayed(msg, 5000);
             mUiHanlder.postDelayed(new Runnable() {
                 @Override
                 public void run() {

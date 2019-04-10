@@ -33,7 +33,7 @@
     <RelativeLayout
         android:id="@+id/grab2_container"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/view_57_dp"
         android:layout_below="@+id/grab_container"
         android:layout_alignParentRight="true"
         android:layout_marginTop="@dimen/view_20_dp">
@@ -63,7 +63,7 @@
             android:layout_alignRight="@+id/grab2_iv"
             android:layout_below="@+id/grab2_iv"
             android:layout_marginRight="@dimen/view_5_dp"
-            android:layout_marginTop="@dimen/view_d_7_dp"
+            android:layout_marginTop="@dimen/view_d_9_dp"
             android:src="@drawable/challenge_coin_icon" />
     </RelativeLayout>
 
