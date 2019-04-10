@@ -16,7 +16,7 @@ import com.module.playways.BaseRoomData;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabSpeakingControlEvent;
 import com.module.playways.grab.room.dynamicmsg.DynamicMsgView;
-import com.module.playways.rank.room.view.BottomContainerView;
+import com.module.playways.room.room.view.BottomContainerView;
 import com.module.rank.R;
 
 import org.greenrobot.eventbus.EventBus;

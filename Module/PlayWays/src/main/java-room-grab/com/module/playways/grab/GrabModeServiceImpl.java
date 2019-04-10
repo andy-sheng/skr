@@ -7,7 +7,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.component.busilib.constans.GameModeType;
 import com.module.RouterConstants;
 import com.module.grab.IGrabModeGameService;
-import com.module.playways.rank.prepare.model.PrepareData;
+import com.module.playways.room.prepare.model.PrepareData;
 
 @Route(path = RouterConstants.SERVICE_GRAB_SERVICE, name = "抢唱服务")
 public class GrabModeServiceImpl implements IGrabModeGameService {

@@ -10,7 +10,7 @@ import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabConfigModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.GrabScoreTipMsgModel;
-import com.module.playways.rank.room.score.bar.ScoreTipsView;
+import com.module.playways.room.room.score.bar.ScoreTipsView;
 import com.module.rank.R;
 
 import java.util.List;

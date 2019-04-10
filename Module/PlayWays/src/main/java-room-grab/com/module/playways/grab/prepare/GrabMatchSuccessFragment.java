@@ -29,12 +29,12 @@ import com.component.busilib.manager.BgMusicManager;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import com.module.RouterConstants;
-import com.module.playways.rank.prepare.model.GameReadyModel;
-import com.module.playways.rank.prepare.model.PlayerInfoModel;
-import com.module.playways.rank.prepare.model.PrepareData;
-import com.module.playways.rank.prepare.model.ReadyInfoModel;
-import com.module.playways.rank.prepare.presenter.MatchSucessPresenter;
-import com.module.playways.rank.prepare.view.IMatchSucessView;
+import com.module.playways.room.prepare.model.GameReadyModel;
+import com.module.playways.room.prepare.model.PlayerInfoModel;
+import com.module.playways.room.prepare.model.PrepareData;
+import com.module.playways.room.prepare.model.ReadyInfoModel;
+import com.module.playways.room.prepare.presenter.MatchSucessPresenter;
+import com.module.playways.room.prepare.view.IMatchSucessView;
 
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGACallback;

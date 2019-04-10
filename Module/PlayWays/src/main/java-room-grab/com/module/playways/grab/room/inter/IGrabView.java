@@ -1,8 +1,8 @@
 package com.module.playways.grab.room.inter;
 
-import com.module.playways.rank.prepare.model.OnlineInfoModel;
-import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
-import com.module.playways.rank.song.model.SongModel;
+import com.module.playways.room.prepare.model.OnlineInfoModel;
+import com.module.playways.room.prepare.model.BaseRoundInfoModel;
+import com.module.playways.room.song.model.SongModel;
 
 import java.util.List;
 

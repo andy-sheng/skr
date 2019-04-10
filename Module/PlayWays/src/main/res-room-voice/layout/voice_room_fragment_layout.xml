@@ -31,7 +31,7 @@
         android:layout_above="@+id/input_container_view"
         android:layout_marginBottom="@dimen/view_22_dp" />
 
-    <com.module.playways.rank.room.comment.CommentView
+    <com.module.playways.room.room.comment.CommentView
         android:id="@+id/comment_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -81,7 +81,7 @@
         android:layout_marginBottom="235dp"
         android:background="@drawable/yuyinfang_zhanjibtn" />
 
-    <com.module.playways.rank.room.view.InputContainerView
+    <com.module.playways.room.room.view.InputContainerView
         android:id="@+id/input_container_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -7,7 +7,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.common.core.myinfo.MyUserInfoManager;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.module.playways.grab.room.GrabRoomData;
@@ -15,8 +14,8 @@ import com.module.playways.grab.room.event.SomeOneGrabEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
 import com.module.playways.grab.room.event.SomeOneOnlineChangeEvent;
-import com.module.playways.rank.room.event.InputBoardEvent;
-import com.module.playways.rank.room.view.MoreOpView;
+import com.module.playways.room.room.event.InputBoardEvent;
+import com.module.playways.room.room.view.MoreOpView;
 import com.module.rank.R;
 
 import org.greenrobot.eventbus.EventBus;

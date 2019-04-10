@@ -14,7 +14,7 @@ import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.event.GrabRoundChangeEvent;
 import com.module.playways.grab.room.inter.IGrabSongManageView;
 import com.component.busilib.friends.SpecialModel;
-import com.module.playways.rank.song.model.SongModel;
+import com.module.playways.room.song.model.SongModel;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

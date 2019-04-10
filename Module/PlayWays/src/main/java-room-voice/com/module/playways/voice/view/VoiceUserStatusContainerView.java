@@ -11,8 +11,8 @@ import com.common.utils.U;
 import com.common.view.ex.ExLinearLayout;
 import com.engine.EngineEvent;
 import com.engine.UserStatus;
-import com.module.playways.rank.room.RankRoomData;
-import com.module.playways.rank.room.model.RankPlayerInfoModel;
+import com.module.playways.room.room.RankRoomData;
+import com.module.playways.room.room.model.RankPlayerInfoModel;
 import com.module.rank.R;
 
 import org.greenrobot.eventbus.EventBus;

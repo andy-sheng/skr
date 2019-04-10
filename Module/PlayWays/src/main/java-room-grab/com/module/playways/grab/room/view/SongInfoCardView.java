@@ -25,7 +25,7 @@ import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.module.playways.rank.song.model.SongModel;
+import com.module.playways.room.song.model.SongModel;
 import com.module.rank.R;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 

@@ -10,7 +10,7 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.module.RouterConstants;
 import com.module.playways.grab.prepare.GrabMatchFragment;
-import com.module.playways.rank.prepare.model.PrepareData;
+import com.module.playways.room.prepare.model.PrepareData;
 import com.module.rank.R;
 
 @Route(path = RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)

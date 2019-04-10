@@ -26,9 +26,9 @@ import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.model.GrabConfigModel;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.module.playways.rank.prepare.model.JoinGrabRoomRspModel;
+import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
 
-import com.module.playways.rank.song.model.SongModel;
+import com.module.playways.room.song.model.SongModel;
 import com.module.rank.R;
 import com.module.playways.grab.room.fragment.GrabRoomFragment;
 

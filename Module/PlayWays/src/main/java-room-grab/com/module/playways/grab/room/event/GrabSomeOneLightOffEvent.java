@@ -1,6 +1,6 @@
 package com.module.playways.grab.room.event;
 
-import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
+import com.module.playways.room.prepare.model.BaseRoundInfoModel;
 
 public class GrabSomeOneLightOffEvent {
     public BaseRoundInfoModel roundInfo;

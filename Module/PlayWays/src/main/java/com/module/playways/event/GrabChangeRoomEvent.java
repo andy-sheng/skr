@@ -1,6 +1,6 @@
 package com.module.playways.event;
 
-import com.module.playways.rank.prepare.model.JoinGrabRoomRspModel;
+import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
 
 public class GrabChangeRoomEvent {
     public JoinGrabRoomRspModel mJoinGrabRoomRspModel;

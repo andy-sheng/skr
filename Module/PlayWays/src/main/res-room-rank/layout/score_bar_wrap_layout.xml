@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:parentTag="android.widget.RelativeLayout">
 
-    <com.module.playways.rank.room.score.bar.ScorePrograssBar2
+    <com.module.playways.room.room.score.bar.ScorePrograssBar2
         android:id="@+id/score_progress_bar2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

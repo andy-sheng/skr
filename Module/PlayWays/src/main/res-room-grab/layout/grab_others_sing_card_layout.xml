@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     tools:parentTag="android.widget.RelativeLayout">
 
-    <com.module.playways.rank.room.view.ArcProgressBar
+    <com.module.playways.room.room.view.ArcProgressBar
         android:id="@+id/count_down_process"
         android:layout_width="@dimen/view_116_dp"
         android:layout_height="@dimen/view_116_dp"

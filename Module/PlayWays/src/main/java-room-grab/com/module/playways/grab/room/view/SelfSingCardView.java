@@ -25,7 +25,7 @@ import com.common.utils.HandlerTaskTimer;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.module.playways.rank.song.model.SongModel;
+import com.module.playways.room.song.model.SongModel;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGADynamicEntity;

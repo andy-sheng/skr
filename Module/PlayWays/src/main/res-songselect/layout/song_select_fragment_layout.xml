@@ -36,7 +36,7 @@
         android:padding="@dimen/view_16_dp"
         android:src="@drawable/xuanzegequ_sousuo" />
 
-    <com.module.playways.rank.song.flingswipe.SwipeFlingAdapterView
+    <com.module.playways.room.song.flingswipe.SwipeFlingAdapterView
         android:id="@+id/swipe_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

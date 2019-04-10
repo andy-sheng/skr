@@ -20,7 +20,7 @@ import com.common.log.MyLog;
 import com.common.utils.ImageUtils;
 import com.common.utils.U;
 import com.module.playways.grab.room.listener.SVGAListener;
-import com.module.playways.rank.song.model.SongModel;
+import com.module.playways.room.song.model.SongModel;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGADrawable;

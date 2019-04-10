@@ -14,7 +14,7 @@ import com.module.playways.grab.room.event.GrabRoundChangeEvent;
 import com.module.playways.grab.room.model.GrabConfigModel;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.module.playways.rank.prepare.model.JoinGrabRoomRspModel;
+import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
 
 import org.greenrobot.eventbus.EventBus;
 

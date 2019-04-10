@@ -18,7 +18,7 @@ import com.common.view.ex.drawable.DrawableCreator;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.grab.room.event.GrabWantInviteEvent;
 import com.module.playways.grab.room.event.ShowPersonCardEvent;
-import com.module.playways.rank.prepare.model.PlayerInfoModel;
+import com.module.playways.room.prepare.model.PlayerInfoModel;
 
 import com.common.view.ex.ExTextView;
 

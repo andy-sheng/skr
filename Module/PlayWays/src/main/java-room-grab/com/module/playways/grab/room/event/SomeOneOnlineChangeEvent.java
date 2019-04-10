@@ -1,6 +1,6 @@
 package com.module.playways.grab.room.event;
 
-import com.module.playways.rank.prepare.model.PlayerInfoModel;
+import com.module.playways.room.prepare.model.PlayerInfoModel;
 
 public class SomeOneOnlineChangeEvent {
     public PlayerInfoModel playerInfoModel;

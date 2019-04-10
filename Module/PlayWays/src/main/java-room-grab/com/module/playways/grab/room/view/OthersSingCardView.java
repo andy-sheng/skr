@@ -26,8 +26,7 @@ import com.module.playways.BaseRoomData;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.ShowPersonCardEvent;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.module.playways.rank.room.view.ArcProgressBar;
-import com.module.playways.rank.song.model.SongModel;
+import com.module.playways.room.room.view.ArcProgressBar;
 import com.module.rank.R;
 
 import org.greenrobot.eventbus.EventBus;
