@@ -457,8 +457,11 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                         wantSingerInfo.setUserID((int) MyUserInfoManager.getInstance().getUid());
                         wantSingerInfo.setTimeMs(System.currentTimeMillis());
                         now.addGrabUid(true, wantSingerInfo);
-                        int coin = result.getData().getInteger("coin");
-                        mRoomData.setCoin(coin);
+
+                        if (result.getData().getBoolean("success")) {
+                            int coin = result.getData().getInteger("coin");
+                            mRoomData.setCoin(coin);
+                        }
                     } else {
                         MyLog.w(TAG, "now != null && now.getRoundSeq() == seq 条件不满足，" + result.getTraceId());
                     }

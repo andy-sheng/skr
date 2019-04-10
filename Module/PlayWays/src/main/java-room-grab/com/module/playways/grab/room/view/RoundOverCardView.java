@@ -46,7 +46,6 @@ public class RoundOverCardView extends RelativeLayout {
     //4有种遗憾叫明明可以（60%<=t<90%）
     //5有种可惜叫我觉得你行（90%<=t<=100%)
 
-    SVGAImageView mNoneSingSvga;
     SVGAImageView mSingResultSvga;
 
     SVGAListener mSVGAListener;
@@ -68,7 +67,6 @@ public class RoundOverCardView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.grab_round_over_card_layout, this);
-        mNoneSingSvga = (SVGAImageView) findViewById(R.id.none_sing_svga);
         mSingResultSvga = (SVGAImageView) findViewById(R.id.sing_result_svga);
     }
 
@@ -77,19 +75,34 @@ public class RoundOverCardView extends RelativeLayout {
         setVisibility(VISIBLE);
         int mode = getRoundOver(reason, resultType);
         switch (mode) {
-            case NONE_SING_END:
+            case NONE_SING_END: {
+                LayoutParams lp = (LayoutParams) mSingResultSvga.getLayoutParams();
+                lp.height = U.getDisplayUtils().dip2px(560);
+                lp.topMargin = 0;
+                mSingResultSvga.setLayoutParams(lp);
                 startNoneSing(songId);
-                break;
-            case SING_PERFECT_END:
+            }
+            break;
+            case SING_PERFECT_END: {
+                LayoutParams lp = (LayoutParams) mSingResultSvga.getLayoutParams();
+                lp.height = U.getDisplayUtils().dip2px(180);
+                lp.topMargin = U.getDisplayUtils().dip2px(139);
+                mSingResultSvga.setLayoutParams(lp);
                 startPerfect(songId);
-                break;
+            }
+            break;
             case SING_MOMENT_END:
             case SING_NO_PASS_END:
             case SING_PASS_END:
             case SING_ENOUGH_END:
-            case SING_ABANDON_END:
+            case SING_ABANDON_END: {
+                LayoutParams lp = (LayoutParams) mSingResultSvga.getLayoutParams();
+                lp.height = U.getDisplayUtils().dip2px(180);
+                lp.topMargin = U.getDisplayUtils().dip2px(139);
+                mSingResultSvga.setLayoutParams(lp);
                 startFailed(mode, songId);
-                break;
+            }
+            break;
             default:
                 if (mSVGAListener != null) {
                     mSVGAListener.onFinished();
@@ -115,16 +128,16 @@ public class RoundOverCardView extends RelativeLayout {
         map.put("songId2", String.valueOf(songId));
         StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
                 StatConstants.KEY_SONG_NO_ONE, map);
-        mNoneSingSvga.setVisibility(VISIBLE);
-        mNoneSingSvga.setLoops(1);
+        mSingResultSvga.setVisibility(VISIBLE);
+        mSingResultSvga.setLoops(1);
         SVGAParser parser = new SVGAParser(U.app());
         try {
             parser.parse("grab_none_sing_end.svga", new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete(@NotNull SVGAVideoEntity videoItem) {
                     SVGADrawable drawable = new SVGADrawable(videoItem);
-                    mNoneSingSvga.setImageDrawable(drawable);
-                    mNoneSingSvga.startAnimation();
+                    mSingResultSvga.setImageDrawable(drawable);
+                    mSingResultSvga.startAnimation();
                 }
 
                 @Override
@@ -133,10 +146,10 @@ public class RoundOverCardView extends RelativeLayout {
                 }
             });
         } catch (Exception e) {
-            MyLog.e(TAG,e);
+            MyLog.e(TAG, e);
         }
 
-        mNoneSingSvga.setCallback(new SVGACallback() {
+        mSingResultSvga.setCallback(new SVGACallback() {
             @Override
             public void onPause() {
 
@@ -144,9 +157,9 @@ public class RoundOverCardView extends RelativeLayout {
 
             @Override
             public void onFinished() {
-                if (mNoneSingSvga != null) {
-                    mNoneSingSvga.stopAnimation(true);
-                    mNoneSingSvga.setVisibility(GONE);
+                if (mSingResultSvga != null) {
+                    mSingResultSvga.stopAnimation(true);
+                    mSingResultSvga.setVisibility(GONE);
                 }
 
                 if (mSVGAListener != null) {
@@ -156,8 +169,8 @@ public class RoundOverCardView extends RelativeLayout {
 
             @Override
             public void onRepeat() {
-                if (mNoneSingSvga != null && mNoneSingSvga.isAnimating()) {
-                    mNoneSingSvga.stopAnimation(false);
+                if (mSingResultSvga != null && mSingResultSvga.isAnimating()) {
+                    mSingResultSvga.stopAnimation(false);
                 }
             }
 
@@ -193,7 +206,7 @@ public class RoundOverCardView extends RelativeLayout {
                 }
             });
         } catch (Exception e) {
-            MyLog.e(TAG,e);
+            MyLog.e(TAG, e);
         }
 
         mSingResultSvga.setCallback(new SVGACallback() {
@@ -272,7 +285,7 @@ public class RoundOverCardView extends RelativeLayout {
                 }
             });
         } catch (Exception e) {
-            MyLog.e(TAG,e);
+            MyLog.e(TAG, e);
         }
 
         mSingResultSvga.setCallback(new SVGACallback() {
@@ -313,9 +326,9 @@ public class RoundOverCardView extends RelativeLayout {
         super.setVisibility(visibility);
         if (visibility == GONE) {
             this.mSVGAListener = null;
-            if (mNoneSingSvga != null) {
-                mNoneSingSvga.setCallback(null);
-                mNoneSingSvga.stopAnimation(false);
+            if (mSingResultSvga != null) {
+                mSingResultSvga.setCallback(null);
+                mSingResultSvga.stopAnimation(false);
             }
         }
     }
@@ -324,10 +337,6 @@ public class RoundOverCardView extends RelativeLayout {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         this.mSVGAListener = null;
-        if (mNoneSingSvga != null) {
-            mNoneSingSvga.setCallback(null);
-            mNoneSingSvga.stopAnimation(true);
-        }
         if (mSingResultSvga != null) {
             mSingResultSvga.setCallback(null);
             mSingResultSvga.stopAnimation(true);
