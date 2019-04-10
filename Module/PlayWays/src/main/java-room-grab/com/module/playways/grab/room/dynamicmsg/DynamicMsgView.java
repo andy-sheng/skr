@@ -15,6 +15,7 @@ import com.common.rxretrofit.ApiResult;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.playways.BaseRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
+import com.module.playways.rank.msg.event.EventHelper;
 import com.module.rank.R;
 
 import java.util.HashMap;
@@ -67,9 +68,10 @@ public class DynamicMsgView extends RelativeLayout {
             }
         });
         mDynamicMsgRv.setAdapter(mDynamicMsgAdapter);
+        setBackgroundResource(R.drawable.grab_pop_window_bg);
     }
 
-    public void initData(BaseRoomData roomData) {
+    public void setData(BaseRoomData roomData) {
         mRoomData = roomData;
 
         // TODO: 2019/4/9 加上缓存策略
@@ -79,9 +81,17 @@ public class DynamicMsgView extends RelativeLayout {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     List<DynamicModel> list = JSON.parseArray(result.getData().getString("emojis"), DynamicModel.class);
+                    showDynamicModels(list);
                 }
             }
         });
+    }
+
+    private void showDynamicModels(List<DynamicModel> list) {
+        if (list != null && list.size() > 0) {
+            mDynamicMsgAdapter.setDataList(list);
+        }
+
     }
 
     private void sendDynamicEmoji(DynamicModel model) {
@@ -99,7 +109,7 @@ public class DynamicMsgView extends RelativeLayout {
             }
         });
 
-//        EventHelper.pretendCommentPush(content, mRoomData.getGameId());
+        EventHelper.pretendDynamicPush(model, mRoomData.getGameId());
         if (mListener != null) {
             mListener.onSendMsgOver();
         }

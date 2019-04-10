@@ -352,6 +352,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                         .addDataBeforeAdd(0, mRoomData)
                         .build());
             }
+
+
         });
         mBottomContainerView.setRoomData(mRoomData);
 

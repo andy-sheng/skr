@@ -1,16 +1,21 @@
 package com.module.playways.grab.room.bottom;
 
 import android.content.Context;
+import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
+import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.module.playways.BaseRoomData;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabSpeakingControlEvent;
+import com.module.playways.grab.room.dynamicmsg.DynamicMsgView;
 import com.module.playways.rank.room.view.BottomContainerView;
 import com.module.rank.R;
 
@@ -23,6 +28,8 @@ public class GrabBottomContainerView extends BottomContainerView {
     ExImageView mQuickBtn;
 
     View mSpeakingDotAnimationView;
+
+    PopupWindow mDynamicMsgPopWindow;    //动态表情弹出面板
 
     public GrabBottomContainerView(Context context) {
         super(context);
@@ -50,6 +57,38 @@ public class GrabBottomContainerView extends BottomContainerView {
         });
         mSpeakingDotAnimationView = this.findViewById(R.id.speaking_dot_animation_view);
         mQuickBtn = (ExImageView) super.mQuickBtn;
+
+        mEmoji1Btn.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                // 动态表情按钮
+                int w = U.getDisplayUtils().getScreenWidth() - U.getDisplayUtils().dip2px(32);
+                int h = U.getDisplayUtils().dip2px(72);
+                if (mDynamicMsgPopWindow == null) {
+                    DynamicMsgView dynamicMsgView = new DynamicMsgView(getContext());
+                    dynamicMsgView.setData(mRoomData);
+                    dynamicMsgView.setListener(new DynamicMsgView.Listener() {
+                        @Override
+                        public void onSendMsgOver() {
+                            if (mDynamicMsgPopWindow != null) {
+                                mDynamicMsgPopWindow.dismiss();
+                            }
+                        }
+                    });
+                    mDynamicMsgPopWindow = new PopupWindow(dynamicMsgView, w, h);
+                    mDynamicMsgPopWindow.setFocusable(false);
+                    // 去除动画
+//                      mDynamicMsgPopWindow.setAnimationStyle(R.style.anim_quickmsg_dialog);
+                    mDynamicMsgPopWindow.setBackgroundDrawable(new BitmapDrawable());
+                    mDynamicMsgPopWindow.setOutsideTouchable(true);
+                }
+                if (!mDynamicMsgPopWindow.isShowing()) {
+                    int l[] = new int[2];
+                    mQuickBtn.getLocationInWindow(l);
+                    mDynamicMsgPopWindow.showAtLocation(mQuickBtn, Gravity.START | Gravity.TOP, l[0], l[1] - h - U.getDisplayUtils().dip2px(5));
+                }
+            }
+        });
     }
 
     protected void onQuickMsgDialogShow(boolean show) {

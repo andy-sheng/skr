@@ -63,6 +63,11 @@ public class ImageFactory {
             return this;
         }
 
+        public ImageFactory.Builder setFitDrawable(boolean isFit) {
+            mBaseImage.setFitDrawable(isFit);
+            return this;
+        }
+
         public ImageFactory.Builder setFailureDrawable(Drawable failure) {
             mBaseImage.setFailureDrawable(failure);
             return this;
@@ -156,15 +161,16 @@ public class ImageFactory {
         /**
          * 阿里云oss强大的 oss处理库
          * 使用 {@link com.common.image.model.oss.OssImgFactory 构造处理效果}
+         *
          * @param ossProcessors
          * @return
          */
-        public ImageFactory.Builder addOssProcessors(IOssParam...ossProcessors) {
-            if(mBaseImage instanceof HttpImage){
+        public ImageFactory.Builder addOssProcessors(IOssParam... ossProcessors) {
+            if (mBaseImage instanceof HttpImage) {
                 HttpImage httpImage = (HttpImage) mBaseImage;
                 httpImage.addOssProcessors(ossProcessors);
-            }else{
-                if(MyLog.isDebugLogOpen()){
+            } else {
+                if (MyLog.isDebugLogOpen()) {
                     throw new IllegalStateException("setOssProcessors only can be set In HttpImage");
                 }
             }

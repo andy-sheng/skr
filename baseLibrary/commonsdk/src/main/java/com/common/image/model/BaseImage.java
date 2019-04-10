@@ -34,6 +34,9 @@ public abstract class BaseImage {
      */
     protected ScaleType mScaleType;
 
+    // 是否自适应图片的大小 注意只有图片可控才这么做
+    protected boolean isFitDrawable = false;
+
     // 加载失败的图
     protected Drawable mFailureDrawable;
     protected ScaleType mFailureScaleType = ScaleType.CENTER_INSIDE;
@@ -181,6 +184,14 @@ public abstract class BaseImage {
 
     public void setScaleType(ScaleType mScaleType) {
         this.mScaleType = mScaleType;
+    }
+
+    public boolean isFitDrawable() {
+        return isFitDrawable;
+    }
+
+    public void setFitDrawable(boolean fitDrawable) {
+        isFitDrawable = fitDrawable;
     }
 
     public void setIsCircle(boolean isCircle) {

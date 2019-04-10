@@ -19,10 +19,10 @@ public class CommentHolder extends RecyclerView.ViewHolder {
 
     CommentModel mCommentModel;
     int mPostion;
-    CommentItemListener mCommentItemListener;
 
-    public CommentHolder(View itemView) {
+    public CommentHolder(View itemView, CommentItemListener mCommentItemListener) {
         super(itemView);
+
         mAvatarIv = (BaseImageView) itemView.findViewById(R.id.avatar_iv);
         mCommentTv = (ExTextView) itemView.findViewById(R.id.comment_tv);
         itemView.setOnClickListener(new View.OnClickListener() {
@@ -45,10 +45,5 @@ public class CommentHolder extends RecyclerView.ViewHolder {
                 .setBorderColor(model.getAvatarColor())
                 .build());
         mCommentTv.setText(model.getStringBuilder());
-    }
-
-
-    public void setListener(CommentItemListener mCommentItemListener) {
-        this.mCommentItemListener = mCommentItemListener;
     }
 }
