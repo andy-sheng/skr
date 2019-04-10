@@ -59,6 +59,7 @@ import com.module.playways.grab.room.view.GrabOpView;
 
 import com.module.playways.grab.room.view.GrabGiveupView;
 import com.module.playways.grab.room.view.GrabScoreTipsView;
+import com.module.playways.grab.room.view.GrabVoiceControlPanelView;
 import com.module.playways.grab.room.view.IRedPkgCountDownView;
 import com.module.playways.grab.room.view.OthersSingCardView;
 import com.module.playways.grab.room.view.RedPkgCountDownView;
@@ -69,7 +70,6 @@ import com.module.playways.grab.room.view.SongInfoCardView;
 import com.module.playways.grab.room.view.TurnInfoCardView;
 import com.module.playways.room.prepare.model.OnlineInfoModel;
 import com.module.playways.room.prepare.model.BaseRoundInfoModel;
-import com.module.playways.grab.room.view.GrabVoiceControlPanelView;
 import com.module.playways.room.room.comment.listener.CommentItemListener;
 import com.module.playways.room.room.comment.CommentView;
 import com.module.playways.room.room.gift.GiftBigAnimationViewGroup;
@@ -122,9 +122,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     BottomContainerView mBottomContainerView;
 
-    View mVoiceControlBg;
-
-    GrabVoiceControlPanelView mVoiceControlView;
+//    GrabVoiceControlPanelView mVoiceControlView;
 
     RedPkgCountDownView mRedPkgView;
 
@@ -168,9 +166,13 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     PersonInfoDialog mPersonInfoDialog;
 
-    DialogPlus mGameRoleDialog;
+    DialogPlus mGameRuleDialog;
 
     ConfirmDialog mGrabKickDialog;
+
+    GrabVoiceControlPanelView mGrabVoiceControlPanelView;
+
+    DialogPlus mVoiceControlDialog;
 
     SVGAParser mSVGAParser;
 
@@ -324,8 +326,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     }
 
     private void initBottomView() {
-        mVoiceControlBg = (View) mRootView.findViewById(R.id.voice_control_bg);
-        mVoiceControlView = (GrabVoiceControlPanelView) mRootView.findViewById(R.id.voice_control_view);
         mBottomContainerView = (BottomContainerView) mRootView.findViewById(R.id.bottom_container_view);
         mBottomContainerView.setListener(new BottomContainerView.Listener() {
             @Override
@@ -348,15 +348,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
         });
         mBottomContainerView.setRoomData(mRoomData);
-
-        mVoiceControlBg.setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                mVoiceControlView.setVisibility(View.GONE);
-                mVoiceControlBg.setVisibility(View.GONE);
-            }
-        });
-        mVoiceControlView.setRoomData(mRoomData);
     }
 
     private void initCommentView() {
@@ -470,7 +461,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             topLayoutParams.topMargin = statusBarHeight + topLayoutParams.topMargin;
         }
 
-        mTopContainerView.setListener(mListener);
+        mTopContainerView.setListener(mTopListener);
         mTopContainerView.getGrabTopView().setListener(new GrabTopView.Listener() {
             @Override
             public void changeRoom() {
@@ -507,7 +498,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         mPracticeFlagIv = mRootView.findViewById(R.id.practice_flag_iv);
     }
 
-    GrabTopContainerView.Listener mListener = new GrabTopContainerView.Listener() {
+    GrabTopContainerView.Listener mTopListener = new GrabTopContainerView.Listener() {
         @Override
         public void closeBtnClick() {
             if (mRoomData.isOwner() && mRoomData.getPlayerInfoList().size() >= 2) {
@@ -528,25 +519,39 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
         @Override
         public void onClickGameRule() {
-            if (mGameRoleDialog != null) {
-                mGameRoleDialog.dismiss();
+            if (mGameRuleDialog != null) {
+                mGameRuleDialog.dismiss();
             }
             U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-            mGameRoleDialog = DialogPlus.newDialog(getContext())
+            mGameRuleDialog = DialogPlus.newDialog(getContext())
                     .setContentHolder(new ViewHolder(R.layout.grab_game_role_view_layout))
                     .setContentBackgroundResource(R.color.transparent)
                     .setOverlayBackgroundResource(R.color.black_trans_50)
                     .setExpanded(false)
                     .setGravity(Gravity.CENTER)
                     .create();
-            mGameRoleDialog.show();
+            mGameRuleDialog.show();
         }
 
         @Override
         public void onClickVoiceVoiceAudition() {
             U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-            mVoiceControlBg.setVisibility(View.VISIBLE);
-            mVoiceControlView.setVisibility(View.VISIBLE);
+            if (mGrabVoiceControlPanelView == null) {
+                mGrabVoiceControlPanelView = new GrabVoiceControlPanelView(getContext());
+                mGrabVoiceControlPanelView.setRoomData(mRoomData);
+            }
+            mGrabVoiceControlPanelView.bindData();
+            if (mVoiceControlDialog == null) {
+                mVoiceControlDialog = DialogPlus.newDialog(getContext())
+                        .setContentHolder(new ViewHolder(mGrabVoiceControlPanelView))
+                        .setContentBackgroundResource(R.color.transparent)
+                        .setOverlayBackgroundResource(R.color.black_trans_50)
+                        .setExpanded(false)
+                        .setCancelable(true)
+                        .setGravity(Gravity.BOTTOM)
+                        .create();
+            }
+            mVoiceControlDialog.show();
         }
     };
 
@@ -780,7 +785,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         removeAllEnsureMsg();
         mCorePresenter.stopGuide();
         mTopContainerView.setModeSing((int) MyUserInfoManager.getInstance().getUid());
-        mVoiceControlView.setSingerId((int) MyUserInfoManager.getInstance().getUid());
         mTopContainerView.setSeqIndex(RoomDataUtils.getSeqOfRoundInfo(mRoomData.getRealRoundInfo()), mRoomData.getGrabConfigModel().getTotalGameRoundSeq());
         mSongInfoCardView.hide();
         mSingBeginTipsCardView.setVisibility(View.VISIBLE);
@@ -807,7 +811,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         mTopContainerView.setVisibility(View.VISIBLE);
         mCorePresenter.stopGuide();
         mTopContainerView.setModeSing(uid);
-        mVoiceControlView.setSingerId(uid);
         mTopContainerView.setSeqIndex(RoomDataUtils.getSeqOfRoundInfo(mRoomData.getRealRoundInfo()), mRoomData.getGrabConfigModel().getTotalGameRoundSeq());
         mSongInfoCardView.hide();
         mGrabOpBtn.hide("singByOthers");
@@ -900,7 +903,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         mSongInfoCardView.hide();
         mGrabOpBtn.hide("roundOver");
         mGrabGiveupView.hideWithAnimation(false);
-        mVoiceControlView.setSingerId(0);
         mRoundOverCardView.bindData(songId, reason, resultType, new SVGAListener() {
             @Override
             public void onFinished() {
@@ -1139,17 +1141,14 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     }
 
     private void dismissDialog() {
-        if (mGameRoleDialog != null) {
-            mGameRoleDialog.dismiss();
+        if (mGameRuleDialog != null) {
+            mGameRuleDialog.dismiss();
         }
         if (mBottomContainerView != null) {
             mBottomContainerView.dismissPopWindow();
         }
         if (mPersonInfoDialog != null) {
             mPersonInfoDialog.dismiss();
-        }
-        if (mVoiceControlView != null) {
-            mVoiceControlView.setVisibility(View.GONE);
         }
         if (mGrabKickDialog != null) {
             mGrabKickDialog.dismiss();

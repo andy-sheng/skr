@@ -187,20 +187,6 @@
         android:layout_marginBottom="@dimen/view_79_dp"
         android:visibility="gone" />
 
-    <View
-        android:id="@+id/voice_control_bg"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
-
-    <com.module.playways.grab.room.view.GrabVoiceControlPanelView
-        android:id="@+id/voice_control_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:visibility="gone"
-        VoiceControlPanelView:isShowACC="true" />
-
     <com.module.playways.room.room.view.InputContainerView
         android:id="@+id/input_container_view"
         android:layout_width="match_parent"

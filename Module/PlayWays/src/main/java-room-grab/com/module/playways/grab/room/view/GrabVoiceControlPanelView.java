@@ -11,6 +11,7 @@ import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.kyleduo.switchbutton.SwitchButton;
 import com.module.playways.grab.room.GrabRoomData;
+import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.view.VoiceControlPanelView;
 import com.module.rank.R;
 
@@ -42,7 +43,7 @@ public class GrabVoiceControlPanelView extends VoiceControlPanelView {
         return R.layout.grab_voice_control_panel_layout;
     }
 
-    protected int getMarginLeft(){
+    protected int getMarginLeft() {
         return U.getDisplayUtils().getScreenWidth() - U.getDisplayUtils().dip2px(30 + 24) - U.getDisplayUtils().dip2px(44 * 5);
     }
 
@@ -68,6 +69,12 @@ public class GrabVoiceControlPanelView extends VoiceControlPanelView {
         mSbAcc.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                GrabRoundInfoModel infoModel = mGrabRoomData.getRealRoundInfo();
+                if (infoModel != null && infoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                    U.getToastUtil().showShort("你的演唱阶段无法修改演唱模式");
+                    mSbAcc.setChecked(!isChecked);
+                    return;
+                }
                 if (mGrabRoomData != null) {
                     mGrabRoomData.setAccEnable(!isChecked);
                 }
@@ -75,29 +82,34 @@ public class GrabVoiceControlPanelView extends VoiceControlPanelView {
         });
     }
 
-    public void setSingerId(long singUid) {
-        if (singUid == MyUserInfoManager.getInstance().getUid()) {
-            setAccSwitchBtnStatus(false);
-        } else {
-            setAccSwitchBtnStatus(true);
-        }
-    }
-
-    private void setAccSwitchBtnStatus(boolean visibale) {
-        if (visibale) {
-            mLlSwitchContainer.setVisibility(VISIBLE);
-        } else {
-            mLlSwitchContainer.setVisibility(GONE);
-        }
-    }
-
-    public void setRoomData(GrabRoomData modelBaseRoomData) {
-        mGrabRoomData = modelBaseRoomData;
+    @Override
+    public void bindData() {
+        super.bindData();
         if (mGrabRoomData.isAccEnable()) {
             mSbAcc.setChecked(false);
         } else {
             mSbAcc.setChecked(true);
         }
+    }
+
+    //    public void setSingerId(long singUid) {
+//        if (singUid == MyUserInfoManager.getInstance().getUid()) {
+//            setAccSwitchBtnStatus(false);
+//        } else {
+//            setAccSwitchBtnStatus(true);
+//        }
+//    }
+//
+//    private void setAccSwitchBtnStatus(boolean visibale) {
+//        if (visibale) {
+//            mLlSwitchContainer.setVisibility(VISIBLE);
+//        } else {
+//            mLlSwitchContainer.setVisibility(GONE);
+//        }
+//    }
+
+    public void setRoomData(GrabRoomData modelBaseRoomData) {
+        mGrabRoomData = modelBaseRoomData;
     }
 
     private void setTextMarginLeft(View view, int marginLeft) {
