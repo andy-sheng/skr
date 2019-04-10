@@ -7,7 +7,7 @@
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/photo_iv"
-        android:layout_width="@dimen/view_96_dp"
-        android:layout_height="@dimen/view_120_dp" />
+        android:layout_width="@dimen/view_105_dp"
+        android:layout_height="@dimen/view_142_dp" />
 
 </com.common.view.ex.ExRelativeLayout>

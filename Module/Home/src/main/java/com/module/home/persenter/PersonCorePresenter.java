@@ -1,6 +1,7 @@
 package com.module.home.persenter;
 
 import com.alibaba.fastjson.JSON;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.model.GameStatisModel;
 import com.common.core.userinfo.model.UserInfoModel;
@@ -12,6 +13,7 @@ import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 
 import model.RelationNumModel;
+import retrofit2.http.DELETE;
 
 import com.common.utils.U;
 import com.module.home.view.IPersonView;
@@ -19,13 +21,14 @@ import com.module.home.view.IPersonView;
 import java.util.List;
 
 import com.common.core.userinfo.model.UserLevelModel;
+import com.zq.person.model.PhotoModel;
 
 public class PersonCorePresenter extends RxLifeCyclePresenter {
 
     UserInfoServerApi userInfoServerApi;
     IPersonView view;
     long mLastUpdateTime = 0;  // 主页刷新时间
-    long mLastRankUpdateTime = 0;  //排名刷新时间
+    int DEFUAT_CNT = 20;       // 默认拉取一页的数量
 
     public PersonCorePresenter(IPersonView view) {
         this.view = view;
@@ -61,50 +64,27 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
 //                    boolean isFriend = result.getData().getJSONObject("userMateInfo").getBoolean("isFriend");
 //                    boolean isFollow = result.getData().getJSONObject("userMateInfo").getBoolean("isFollow");
 
-                    view.showUserInfo(userInfoModel);
-                    view.showReginRank(userRankModels);
-                    view.showRelationNum(relationNumModes);
-                    view.showUserLevel(userLevelModels);
-                    view.showGameStatic(userGameStatisModels);
+                    view.showHomePageInfo(userInfoModel, relationNumModes, userRankModels, userLevelModels, userGameStatisModels);
                 }
             }
         }, this);
     }
 
-    public void getRankLevel(boolean flag) {
-        long now = System.currentTimeMillis();
-        if (!flag) {
-            if ((now - mLastRankUpdateTime) < 30 * 1000) {
-                return;
-            }
-        }
-
-        getRankLevel();
-    }
-
-
-    public void getRankLevel() {
-        ApiMethods.subscribe(userInfoServerApi.getReginDiff(), new ApiObserver<ApiResult>() {
+    public void getPhotos(int offset) {
+        ApiMethods.subscribe(userInfoServerApi.getPhotos((int) MyUserInfoManager.getInstance().getUid(), offset, DEFUAT_CNT), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
-                    mLastRankUpdateTime = System.currentTimeMillis();
-                    UserRankModel userRankModel = JSON.parseObject(result.getData().getString("diff"), UserRankModel.class);
-                    view.showRankView(userRankModel);
+                    if (result != null && result.getErrno() == 0) {
+                        List<PhotoModel> list = JSON.parseArray(result.getData().getString("pic"), PhotoModel.class);
+                        int newOffset = result.getData().getIntValue("offset");
+                        int totalCount = result.getData().getIntValue("totalCount");
+                        view.showPhoto(list, newOffset, totalCount);
+                    }
                 }
             }
+        }, this);
 
-            @Override
-            public void onError(Throwable e) {
-                U.getToastUtil().showShort("网络异常");
-            }
 
-            @Override
-            public void onNetworkError(ErrorType errorType) {
-                U.getToastUtil().showShort("网络超时");
-            }
-        });
     }
-
-
 }

@@ -64,6 +64,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.zq.level.view.NormalLevelView2;
+import com.zq.person.model.PhotoModel;
 import com.zq.relation.fragment.RelationFragment;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -78,10 +79,6 @@ import io.reactivex.functions.Consumer;
 import model.RelationNumModel;
 
 public class PersonFragment extends BaseFragment implements IPersonView, WeakRedDotManager.WeakRedDotListener {
-
-    public static final int STAR_BADGE = 1;
-    public static final int TOP_BADGE = 2;
-    public static final int SHANDIAN_BADGE = 3;
 
     public final static String TAG = "PersonFragment";
 
@@ -157,7 +154,6 @@ public class PersonFragment extends BaseFragment implements IPersonView, WeakRed
         mPersonCorePresenter = new PersonCorePresenter(this);
         addPresent(mPersonCorePresenter);
         mPersonCorePresenter.getHomePage((int) MyUserInfoManager.getInstance().getUid(), true);
-        mPersonCorePresenter.getRankLevel(true);
 
         WeakRedDotManager.getInstance().addListener(this);
         mFansRedDotValue = U.getPreferenceUtils().getSettingInt(WeakRedDotManager.SP_KEY_NEW_FANS, 0);
@@ -427,7 +423,6 @@ public class PersonFragment extends BaseFragment implements IPersonView, WeakRed
     protected void onFragmentVisible() {
         super.onFragmentVisible();
         mPersonCorePresenter.getHomePage((int) MyUserInfoManager.getInstance().getUid(), false);
-        mPersonCorePresenter.getRankLevel(false);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -507,13 +502,18 @@ public class PersonFragment extends BaseFragment implements IPersonView, WeakRed
 
         showPopWindow(userRankModel.getDiff());
 
-        if (userRankModel.getBadge() == STAR_BADGE) {
-            mMedalIv.setBackground(getResources().getDrawable(R.drawable.paiming));
-        } else if (userRankModel.getBadge() == TOP_BADGE) {
-            mMedalIv.setBackground(getResources().getDrawable(R.drawable.paihang));
-        } else if (userRankModel.getBadge() == SHANDIAN_BADGE) {
-            mMedalIv.setBackground(getResources().getDrawable(R.drawable.dabai));
-        }
+//        if (userRankModel.getBadge() == STAR_BADGE) {
+//            mMedalIv.setBackground(getResources().getDrawable(R.drawable.paiming));
+//        } else if (userRankModel.getBadge() == TOP_BADGE) {
+//            mMedalIv.setBackground(getResources().getDrawable(R.drawable.paihang));
+//        } else if (userRankModel.getBadge() == SHANDIAN_BADGE) {
+//            mMedalIv.setBackground(getResources().getDrawable(R.drawable.dabai));
+//        }
+    }
+
+    @Override
+    public void showPhoto(List<PhotoModel> list, int offset, int totalNum) {
+
     }
 
     private void showPopWindow(int diff) {
@@ -574,15 +574,23 @@ public class PersonFragment extends BaseFragment implements IPersonView, WeakRed
         return spannableString;
     }
 
-
     @Override
-    public void showUserInfo(UserInfoModel userInfoModel) {
+    public void showHomePageInfo(UserInfoModel userInfoModel, List<RelationNumModel> relationNumModels, List<UserRankModel> userRankModels, List<UserLevelModel> userLevelModels, List<GameStatisModel> gameStatisModels) {
         mRefreshLayout.finishRefresh();
+        showUserInfo(userInfoModel);
+        showRelationNum(relationNumModels);
+        showReginRank(userRankModels);
+        showUserLevel(userLevelModels);
+        showGameStatic(gameStatisModels);
     }
 
-    @Override
+
+    public void showUserInfo(UserInfoModel userInfoModel) {
+
+    }
+
+
     public void showRelationNum(List<RelationNumModel> list) {
-        mRefreshLayout.finishRefresh();
         for (RelationNumModel mode : list) {
             if (mode.getRelation() == UserInfoManager.RELATION_FRIENDS) {
                 mFriendNum = mode.getCnt();
@@ -603,7 +611,6 @@ public class PersonFragment extends BaseFragment implements IPersonView, WeakRed
         mFollowsNumTv.setText(String.valueOf(mFocusNum));
     }
 
-    @Override
     public void showReginRank(List<UserRankModel> list) {
         mRefreshLayout.finishRefresh();
         UserRankModel reginRankModel = new UserRankModel();
@@ -628,9 +635,7 @@ public class PersonFragment extends BaseFragment implements IPersonView, WeakRed
 //        }
     }
 
-    @Override
     public void showUserLevel(List<UserLevelModel> list) {
-        mRefreshLayout.finishRefresh();
         // 展示段位信息
         for (UserLevelModel userLevelModel : list) {
             if (userLevelModel.getType() == UserLevelModel.RANKING_TYPE) {
@@ -648,9 +653,7 @@ public class PersonFragment extends BaseFragment implements IPersonView, WeakRed
         mLevelTv.setText(levelDesc);
     }
 
-    @Override
     public void showGameStatic(List<GameStatisModel> list) {
-        mRefreshLayout.finishRefresh();
         for (GameStatisModel gameStatisModel : list) {
             if (gameStatisModel.getMode() == GameModeType.GAME_MODE_CLASSIC_RANK) {
                 SpannableStringBuilder stringBuilder = new SpanUtils()

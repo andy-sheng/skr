@@ -442,7 +442,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
                     }
                 });
             }
-        });
+        }, false);
         mPhotoRv.setAdapter(mPhotoAdapter);
     }
 
@@ -450,7 +450,6 @@ public class PersonInfoDialogView2 extends RelativeLayout {
     public void showPhotos(List<PhotoModel> list, int offset, int totalCount) {
         this.mOffset = offset;
 
-        mPhotoAdapter.setTotalCount(totalCount);
         if (list != null && list.size() != 0) {
             if (!hasInitHeight) {
                 setAppBarCanScroll(true);

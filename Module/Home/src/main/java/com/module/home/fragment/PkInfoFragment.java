@@ -36,7 +36,6 @@ import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
 import com.common.view.titlebar.CommonTitleBar;
 import com.component.busilib.constans.GameModeType;
-import com.imagebrowse.ImageBrowseView;
 import com.imagebrowse.big.BigImageBrowseFragment;
 import com.module.RouterConstants;
 import com.module.home.R;
@@ -53,7 +52,6 @@ import com.zq.level.view.NormalLevelView2;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -61,6 +59,10 @@ import java.util.regex.Pattern;
 
 public class PkInfoFragment extends BaseFragment implements IPkInfoView {
     public final static String TAG = "PkInfoFragment";
+
+    public static final int STAR_BADGE = 1;
+    public static final int TOP_BADGE = 2;
+    public static final int SHANDIAN_BADGE = 3;
 
     SmartRefreshLayout mSmartRefreshLayout;
     ExImageView mIvVoiceRoom;
@@ -318,11 +320,11 @@ public class PkInfoFragment extends BaseFragment implements IPkInfoView {
 
 //        showPopWindow(userRankModel.getDiff());
 
-        if (userRankModel.getBadge() == PersonFragment.STAR_BADGE) {
+        if (userRankModel.getBadge() == STAR_BADGE) {
             mMedalIv.setBackground(getResources().getDrawable(R.drawable.paiming));
-        } else if (userRankModel.getBadge() == PersonFragment.TOP_BADGE) {
+        } else if (userRankModel.getBadge() == TOP_BADGE) {
             mMedalIv.setBackground(getResources().getDrawable(R.drawable.paihang));
-        } else if (userRankModel.getBadge() == PersonFragment.SHANDIAN_BADGE) {
+        } else if (userRankModel.getBadge() == SHANDIAN_BADGE) {
             mMedalIv.setBackground(getResources().getDrawable(R.drawable.dabai));
         }
     }
