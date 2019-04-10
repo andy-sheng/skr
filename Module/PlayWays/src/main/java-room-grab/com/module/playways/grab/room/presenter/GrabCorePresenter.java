@@ -418,7 +418,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     /**
      * 抢唱歌权
      */
-    public void grabThisRound(int seq,int wantSingType) {
+    public void grabThisRound(int seq) {
+        int wantSingType = 0 ;
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", mRoomData.getGameId());
         map.put("roundSeq", seq);
