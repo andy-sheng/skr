@@ -12,6 +12,9 @@ public class QGameBeginEvent {
     public GrabRoundInfoModel mInfoModel;
     public GrabConfigModel mGrabConfigModel;
 
+    public QGameBeginEvent() {
+    }
+
     public QGameBeginEvent(BasePushInfo info, QGameBeginMsg event) {
         this.info = info;
         this.roomID = event.getRoomID();

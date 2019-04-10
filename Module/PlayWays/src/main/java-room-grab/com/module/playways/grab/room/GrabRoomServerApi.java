@@ -11,10 +11,20 @@ import retrofit2.http.Query;
 
 public interface GrabRoomServerApi {
 
-    /** room 相关 **/
+    /**
+     * room 相关
+     **/
 
     /**
-     *  请求发JoinNotice的push
+     * 房主开始游戏
+     * @param body
+     * @return
+     */
+    @PUT("http://dev.room.inframe.mobi/v2/room/game-begin")
+    Observable<ApiResult> ownerBeginGame(@Body RequestBody body);
+
+    /**
+     * 请求发JoinNotice的push
      *
      * @param body 游戏标识 gameID (必选)
      * @return
@@ -24,9 +34,10 @@ public interface GrabRoomServerApi {
 
     /**
      * {
-     *   "roomType": "RT_UNKNOWN",
-     *   "tagID": 0
+     * "roomType": "RT_UNKNOWN",
+     * "tagID": 0
      * }
+     *
      * @param body
      * @return
      */
@@ -179,11 +190,9 @@ public interface GrabRoomServerApi {
     Observable<ApiResult> giveUpSing(@Body RequestBody body);
 
     /**
-     *
-     * @param body
-     *   "kickUserID": 0,
-     *   "roomID": 0,
-     *   "roundSeq": 0
+     * @param body "kickUserID": 0,
+     *             "roomID": 0,
+     *             "roundSeq": 0
      * @return
      */
     @PUT("http://dev.stand.inframe.mobi/v1/stand/req-kick-user")
@@ -191,18 +200,20 @@ public interface GrabRoomServerApi {
 
     /**
      * 回应踢人请求
-     * @param body
-     *   "agree": true,
-     *   "kickUserID": 0,
-     *   "roomID": 0,
-     *   "sourceUserID": 0
+     *
+     * @param body "agree": true,
+     *             "kickUserID": 0,
+     *             "roomID": 0,
+     *             "sourceUserID": 0
      * @return
      */
     @PUT("http://dev.stand.inframe.mobi/v1/stand/agree-kick-user")
     Observable<ApiResult> repKickUser(@Body RequestBody body);
 
 
-    /** 其余模块接口 **/
+    /**
+     * 其余模块接口
+     **/
 
     //检查要不要显示红包领取
     @GET("http://dev.api.inframe.mobi/v1/task/list-newbee-task")
@@ -272,6 +283,7 @@ public interface GrabRoomServerApi {
 
     /**
      * 获取好友列表
+     *
      * @param offset
      * @param count
      * @return
@@ -282,9 +294,10 @@ public interface GrabRoomServerApi {
     /**
      * 邀请好友
      * {
-     *   "roomID": 0,
-     *   "userID": 0
+     * "roomID": 0,
+     * "userID": 0
      * }
+     *
      * @param body
      * @return
      */
@@ -294,6 +307,7 @@ public interface GrabRoomServerApi {
 
     /**
      * 获取一唱到底的表情列表
+     *
      * @return
      */
     @GET("http://dev.stand.inframe.mobi/v1/stand/list-emoji")
@@ -301,8 +315,9 @@ public interface GrabRoomServerApi {
 
     /**
      * 发送一唱到底表情
-     * @param body      "gameID": 0  游戏id
-     *                  "id": 0      表情id
+     *
+     * @param body "gameID": 0  游戏id
+     *             "id": 0      表情id
      * @return
      */
     @PUT("http://dev.stand.inframe.mobi/v1/stand/send-emoji")
@@ -310,6 +325,7 @@ public interface GrabRoomServerApi {
 
     /**
      * 用户是否有未激活的红包
+     *
      * @return
      */
     @GET("http://dev.api.inframe.mobi/v1/redbag/check-newbie-task")
@@ -317,6 +333,7 @@ public interface GrabRoomServerApi {
 
     /**
      * 激活红包
+     *
      * @param body
      * @return
      */

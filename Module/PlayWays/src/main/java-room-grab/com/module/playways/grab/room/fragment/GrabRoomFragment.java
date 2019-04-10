@@ -2,6 +2,7 @@ package com.module.playways.grab.room.fragment;
 
 import android.animation.Animator;
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -10,6 +11,8 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -26,6 +29,7 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
+import com.common.view.ex.drawable.DrawableCreator;
 import com.component.busilib.constans.GrabRoomType;
 import com.component.busilib.manager.BgMusicManager;
 import com.dialog.view.TipsDialogView;
@@ -177,6 +181,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     long mBeginChangeRoomTs;
 
+    ImageView mOwnerBeginGameIv;
+
     SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
 
     Handler mUiHanlder = new Handler() {
@@ -249,30 +255,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         mGrabRedPkgPresenter = new GrabRedPkgPresenter(this);
         addPresent(mGrabRedPkgPresenter);
         mGrabRedPkgPresenter.checkRedPkg();
-//        mDownLoadScoreFilePresenter = new DownLoadScoreFilePresenter(new HttpUtils.OnDownloadProgress() {
-//            @Override
-//            public void onDownloaded(long downloaded, long totalLength) {
-//
-//            }
-//
-//            @Override
-//            public void onCompleted(String localPath) {
-//                MyLog.d(TAG, "机器人打分文件下载就绪");
-//            }
-//
-//            @Override
-//            public void onCanceled() {
-//
-//            }
-//
-//            @Override
-//            public void onFailed() {
-//
-//            }
-//        }, mRoomData.getPlayerInfoList());
-//
-//        addPresent(mDownLoadScoreFilePresenter);
-//        mDownLoadScoreFilePresenter.prepareRes();
 
         U.getSoundUtils().preLoad(TAG, R.raw.grab_challengelose, R.raw.grab_challengewin,
                 R.raw.grab_gameover, R.raw.grab_iwannasing,
@@ -288,7 +270,30 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             }
         }, 500);
         BgMusicManager.getInstance().setRoom(true);
+        if(!mRoomData.hasGameBegin() && mRoomData.isOwner() && mOwnerBeginGameIv==null){
+            // 是房主并且游戏未开始，增加一个 开始游戏 的按钮
 
+            Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20))
+                    .setShape(DrawableCreator.Shape.Rectangle)
+                    .setPressedDrawable(U.getDrawable(R.drawable.ycdd_qiangchang_anxia))
+                    .setUnPressedDrawable(U.getDrawable(R.drawable.ycdd_qiangchang))
+                    .build();
+
+            mOwnerBeginGameIv = new ExImageView(getContext());
+            mOwnerBeginGameIv.setImageResource(R.drawable.fz_kaishiyouxi);
+            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+            lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            lp.rightMargin = U.getDisplayUtils().dip2px(10);
+            lp.addRule(RelativeLayout.ABOVE,R.id.bottom_bg_vp);
+            lp.bottomMargin = U.getDisplayUtils().dip2px(10);
+            mRankingContainer.addView(mOwnerBeginGameIv,lp);
+            mOwnerBeginGameIv.setOnClickListener(new DebounceViewClickListener() {
+                @Override
+                public void clickValid(View v) {
+                    mCorePresenter.ownerBeginGame();
+                }
+            });
+        }
     }
 
     @Override
@@ -705,6 +710,10 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     public void grabBegin(int seq, SongModel songModel) {
         MyLog.d(TAG, "grabBegin" + " seq=" + seq + " songModel=" + songModel);
         removeAllEnsureMsg();
+        if(mOwnerBeginGameIv!=null){
+            // 如果房主开始游戏的按钮还在的话，将其移除
+            mRankingContainer.removeView(mOwnerBeginGameIv);
+        }
         // 播放3秒导唱
         mTopContainerView.setVisibility(View.VISIBLE);
         mOthersSingCardView.setVisibility(View.GONE);

@@ -416,6 +416,36 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     }
 
     /**
+     * 房主点击开始游戏
+     */
+    public void ownerBeginGame() {
+        MyLog.d(TAG,"ownerBeginGame" );
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("roomID", mRoomData.getGameId());
+
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+        ApiMethods.subscribe(mRoomServerApi.ownerBeginGame(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if(result.getErrno()==0){
+                    JoinGrabRoomRspModel rsp = JSON.parseObject(result.getData().toJSONString(), JoinGrabRoomRspModel.class);
+                    // 模拟服务器push，触发游戏更新
+                    QGameBeginEvent event = new QGameBeginEvent();
+                    event.roomID = rsp.getRoomID();
+                    event.mGrabConfigModel = rsp.getConfig();
+                    event.mInfoModel = rsp.getCurrentRound();
+                    onEvent(event);
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+        }, this,new ApiMethods.RequestControl("ownerBeginGame", ApiMethods.ControlType.CancelThis));
+    }
+
+    /**
      * 抢唱歌权
      */
     public void grabThisRound(int seq, boolean challenge) {
