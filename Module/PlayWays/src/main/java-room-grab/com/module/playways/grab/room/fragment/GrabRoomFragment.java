@@ -490,8 +490,22 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             @Override
             public void onClickVoiceAudition() {
                 U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-                mVoiceControlBg.setVisibility(View.VISIBLE);
-                mVoiceControlView.setVisibility(View.VISIBLE);
+                if (mGrabVoiceControlPanelView == null) {
+                    mGrabVoiceControlPanelView = new GrabVoiceControlPanelView(getContext());
+                    mGrabVoiceControlPanelView.setRoomData(mRoomData);
+                }
+                mGrabVoiceControlPanelView.bindData();
+                if (mVoiceControlDialog == null) {
+                    mVoiceControlDialog = DialogPlus.newDialog(getContext())
+                            .setContentHolder(new ViewHolder(mGrabVoiceControlPanelView))
+                            .setContentBackgroundResource(R.color.transparent)
+                            .setOverlayBackgroundResource(R.color.black_trans_50)
+                            .setExpanded(false)
+                            .setCancelable(true)
+                            .setGravity(Gravity.BOTTOM)
+                            .create();
+                }
+                mVoiceControlDialog.show();
             }
         });
 
