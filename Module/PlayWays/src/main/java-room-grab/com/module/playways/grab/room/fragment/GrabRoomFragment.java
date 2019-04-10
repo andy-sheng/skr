@@ -65,6 +65,7 @@ import com.module.playways.grab.room.view.SongInfoCardView;
 import com.module.playways.grab.room.view.TurnInfoCardView;
 import com.module.playways.rank.prepare.model.OnlineInfoModel;
 import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
+import com.module.playways.rank.prepare.view.GrabVoiceControlPanelView;
 import com.module.playways.rank.prepare.view.VoiceControlPanelView;
 import com.module.playways.rank.room.comment.listener.CommentItemListener;
 import com.module.playways.rank.room.comment.CommentView;
@@ -120,7 +121,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     View mVoiceControlBg;
 
-    VoiceControlPanelView mVoiceControlView;
+    GrabVoiceControlPanelView mVoiceControlView;
 
     RedPkgCountDownView mRedPkgView;
 
@@ -320,7 +321,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     private void initBottomView() {
         mVoiceControlBg = (View) mRootView.findViewById(R.id.voice_control_bg);
-        mVoiceControlView = (VoiceControlPanelView) mRootView.findViewById(R.id.voice_control_view);
+        mVoiceControlView = (GrabVoiceControlPanelView) mRootView.findViewById(R.id.voice_control_view);
         mBottomContainerView = (BottomContainerView) mRootView.findViewById(R.id.bottom_container_view);
         mBottomContainerView.setListener(new BottomContainerView.Listener() {
             @Override
@@ -351,6 +352,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                 mVoiceControlBg.setVisibility(View.GONE);
             }
         });
+        mVoiceControlView.setRoomData(mRoomData);
     }
 
     private void initCommentView() {
@@ -763,6 +765,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         removeAllEnsureMsg();
         mCorePresenter.stopGuide();
         mTopContainerView.setModeSing((int) MyUserInfoManager.getInstance().getUid());
+        mVoiceControlView.setSingerId((int) MyUserInfoManager.getInstance().getUid());
         mTopContainerView.setSeqIndex(RoomDataUtils.getSeqOfRoundInfo(mRoomData.getRealRoundInfo()), mRoomData.getGrabConfigModel().getTotalGameRoundSeq());
         mSongInfoCardView.hide();
         mSingBeginTipsCardView.setVisibility(View.VISIBLE);
@@ -789,6 +792,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         mTopContainerView.setVisibility(View.VISIBLE);
         mCorePresenter.stopGuide();
         mTopContainerView.setModeSing(uid);
+        mVoiceControlView.setSingerId(uid);
         mTopContainerView.setSeqIndex(RoomDataUtils.getSeqOfRoundInfo(mRoomData.getRealRoundInfo()), mRoomData.getGrabConfigModel().getTotalGameRoundSeq());
         mSongInfoCardView.hide();
         mGrabOpBtn.hide("singByOthers");
@@ -881,6 +885,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         mSongInfoCardView.hide();
         mGrabOpBtn.hide("roundOver");
         mGrabGiveupView.hideWithAnimation(false);
+        mVoiceControlView.setSingerId(0);
         mRoundOverCardView.bindData(songId, reason, resultType, new SVGAListener() {
             @Override
             public void onFinished() {

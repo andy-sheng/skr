@@ -57,23 +57,6 @@
         android:layout_marginLeft="@dimen/view_12_dp"
         android:src="@drawable/ycdd_daojishi_jinbi" />
 
-    <com.common.view.ex.ExTextView
-        android:textStyle="bold"
-        android:paddingBottom="@dimen/view_4_dp"
-        android:background="@drawable/qiehuanmoshi_bj"
-        android:id="@+id/tv_acc_switch"
-        android:layout_width="@dimen/view_80_dp"
-        android:layout_height="@dimen/view_31_dp"
-        android:layout_toRightOf="@+id/tv_coin"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/view_12_dp"
-        android:gravity="center"
-        android:visibility="visible"
-        android:text="清唱模式"
-        android:textColor="#B2B6D6"
-        android:textSize="@dimen/textsize_14_dp"
-        />
-
     <!--<ImageView-->
     <!--android:id="@+id/iv_acc_disable"-->
     <!--android:layout_width="@dimen/view_12_dp"-->

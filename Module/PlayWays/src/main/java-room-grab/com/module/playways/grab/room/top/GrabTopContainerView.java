@@ -129,17 +129,11 @@ public class GrabTopContainerView extends RelativeLayout {
     public void setModeGrab() {
         // 抢唱模式
         mTopContentRv.setModeGrab();
-        mGrabTopView.setAccSwitchBtnStatus(true);
     }
 
     public void setModeSing(long singUid) {
         // 演唱模式
         mTopContentRv.setModeSing((int) singUid);
-        if (singUid == MyUserInfoManager.getInstance().getUid()) {
-            mGrabTopView.setAccSwitchBtnStatus(false);
-        } else {
-            mGrabTopView.setAccSwitchBtnStatus(true);
-        }
     }
 
     public void onGameFinish() {

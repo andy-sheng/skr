@@ -31,7 +31,6 @@ public class GrabTopView extends RelativeLayout {
     ExTextView mTvCoin;
     ExImageView mConinChangeIv;
     ExTextView mTvCoinChange;
-    ExTextView mTvAccSwitch;
 //    ImageView mIvAccDisable;
 
     Listener mOnClickChangeRoomListener;
@@ -119,7 +118,6 @@ public class GrabTopView extends RelativeLayout {
         mTvCoin = (ExTextView) findViewById(R.id.tv_coin);
         mConinChangeIv = (ExImageView) findViewById(R.id.conin_change_iv);
         mTvCoinChange = (ExTextView) findViewById(R.id.tv_coin_change);
-        mTvAccSwitch = (ExTextView) findViewById(R.id.tv_acc_switch);
 //        mIvAccDisable = (ImageView) findViewById(R.id.iv_acc_disable);
 
         mTvChangeRoom.setOnClickListener(new DebounceViewClickListener() {
@@ -132,43 +130,12 @@ public class GrabTopView extends RelativeLayout {
                 }
             }
         });
-
-        mTvAccSwitch.setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                if (mGrabRoomData.isAccEnable()) {
-                    mGrabRoomData.setAccEnable(false);
-                    mTvAccSwitch.setText("清唱模式");
-                    mTvAccSwitch.setTextColor(Color.parseColor("#FFC15B"));
-                    U.getToastUtil().showShort("已关闭伴奏");
-                } else {
-                    mGrabRoomData.setAccEnable(true);
-                    mTvAccSwitch.setText("伴奏模式");
-                    mTvAccSwitch.setTextColor(Color.parseColor("#793B64"));
-                    U.getToastUtil().showShort("已打开伴奏");
-                }
-            }
-        });
-    }
-
-    public void setAccSwitchBtnStatus(boolean visibale) {
-        if (visibale) {
-            mTvAccSwitch.setVisibility(VISIBLE);
-        } else {
-            mTvAccSwitch.setVisibility(GONE);
-        }
     }
 
     public void setRoomData(GrabRoomData modelBaseRoomData) {
         mGrabRoomData = modelBaseRoomData;
         mTvCoin.setText(mGrabRoomData.getCoin() + "");
-        if (mGrabRoomData.isAccEnable()) {
-            mTvAccSwitch.setText("伴奏模式");
-            mTvAccSwitch.setTextColor(Color.parseColor("#793B64"));
-        } else {
-            mTvAccSwitch.setText("清唱模式");
-            mTvAccSwitch.setTextColor(Color.parseColor("#FFC15B"));
-        }
+
         if (mGrabRoomData.isOwner()) {
             // 是房主，肯定不能切换房间
             setChangeRoomBtnVisiable(false);
