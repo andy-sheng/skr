@@ -57,8 +57,8 @@ public class OtherPersonPresenter extends RxLifeCyclePresenter {
         }, this);
     }
 
-    public void getPhotos(int offset, int cnt) {
-        ApiMethods.subscribe(mUserInfoServerApi.getPhotos((int) MyUserInfoManager.getInstance().getUid(), offset, cnt), new ApiObserver<ApiResult>() {
+    public void getPhotos(int userId, int offset, int cnt) {
+        ApiMethods.subscribe(mUserInfoServerApi.getPhotos(userId, offset, cnt), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {

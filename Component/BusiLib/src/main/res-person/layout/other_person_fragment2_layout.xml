@@ -318,7 +318,7 @@
                             android:id="@+id/photo_num_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/view_27_dp"
-                            android:layout_below="@id/medal_layout"
+                            android:layout_below="@id/game_layout"
                             android:layout_marginLeft="@dimen/view_16_dp"
                             android:layout_marginTop="@dimen/view_20_dp"
                             android:background="@drawable/person_photos_bg"
@@ -336,7 +336,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/view_70_dp"
                         android:layout_gravity="bottom|center_horizontal"
-                        android:visibility="gone"
                         app:contentInsetStart="@dimen/view_0_dp"
                         app:contentInsetStartWithNavigation="@dimen/view_0_dp"
                         app:layout_collapseMode="pin">

@@ -173,7 +173,7 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
         if (bundle != null) {
             mUserId = bundle.getInt(BUNDLE_USER_ID);
             mPresenter.getHomePage(mUserId);
-            mPresenter.getPhotos(0, DEFAUAT_CNT);
+            mPresenter.getPhotos(mUserId, 0, DEFAUAT_CNT);
         }
 
         if (mUserId == MyUserInfoManager.getInstance().getUid()) {
@@ -214,13 +214,13 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
         mSmartRefresh.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                mPresenter.getPhotos(offset, DEFAUAT_CNT);
+                mPresenter.getPhotos(mUserId, offset, DEFAUAT_CNT);
             }
 
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 mPresenter.getHomePage(mUserId);
-                mPresenter.getPhotos(0, DEFAUAT_CNT);
+                mPresenter.getPhotos(mUserId, 0, DEFAUAT_CNT);
             }
         });
 
@@ -509,6 +509,7 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
                         .build());
 
         mNameTv.setText(model.getNickname());
+        mSrlNameTv.setText(model.getNickname());
         mUseridTv.setText("撕歌号：" + model.getUserId());
 
         if (model.getLocation() != null && !TextUtils.isEmpty(model.getLocation().getCity()) && !TextUtils.isEmpty(model.getLocation().getDistrict())) {
