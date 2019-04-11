@@ -85,11 +85,12 @@ public class PhotoAdapter extends RecyclerView.Adapter {
         if (dataList != null) {
             mDataList.clear();
             mDataList.addAll(dataList);
+            notifyDataSetChanged();
         }
     }
 
     /**
-     * 插入某条数据
+     * 头部插入某条数据
      *
      * @param data
      */
@@ -99,6 +100,20 @@ public class PhotoAdapter extends RecyclerView.Adapter {
             notifyItemInserted(1);
         } else {
             notifyItemInserted(0);
+        }
+    }
+
+    /**
+     * 尾部插入一堆数据
+     * @param list
+     */
+    public void insertLast(List<PhotoModel> list) {
+        int origin = mDataList.size();
+        mDataList.addAll(list);
+        if (mHasUpdate) {
+            notifyItemRangeInserted(origin + 1, mDataList.size() - origin + 1);
+        } else {
+            notifyItemRangeInserted(origin, mDataList.size() - origin);
         }
     }
 }

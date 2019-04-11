@@ -1,6 +1,7 @@
 package com.module.home.persenter;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.common.anim.ObjectPlayControlTemplate;
 import com.common.core.myinfo.MyUserInfo;
@@ -24,6 +25,7 @@ import okhttp3.RequestBody;
 import com.common.upload.UploadCallback;
 import com.common.upload.UploadParams;
 import com.common.upload.UploadTask;
+import com.common.utils.U;
 import com.module.home.view.IPersonView;
 
 import java.util.ArrayList;
@@ -40,7 +42,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
     IPersonView mView;
 
     long mLastUpdateTime = 0;  // 主页刷新时间
-    long mLastPhotoUpTime = 0; // 照片墙更新时间
+//    long mLastPhotoUpTime = 0; // 照片墙更新时间
     boolean mUploadingPhoto = false;
 
     ObjectPlayControlTemplate<ImageItem, PersonCorePresenter> mPlayControlTemplate = new ObjectPlayControlTemplate<ImageItem, PersonCorePresenter>() {
@@ -56,6 +58,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
 
         @Override
         public void onStart(ImageItem imageItem, PersonCorePresenter personFragment2) {
+            U.getToastUtil().showShort("开始上传，队列还剩" + mPlayControlTemplate.getSize());
             execUploadPhoto(imageItem);
         }
 
@@ -108,18 +111,17 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
         }, this);
     }
 
-    public void getPhotos(int offset, int cnt, boolean flag) {
-        long now = System.currentTimeMillis();
-        if (!flag) {
-            if ((now - mLastPhotoUpTime) < 60 * 1000) {
-                return;
-            }
-        }
+//    public void getPhotos(int offset, int cnt, boolean flag) {
+//        long now = System.currentTimeMillis();
+//        if (!flag) {
+//            if ((now - mLastPhotoUpTime) < 60 * 1000) {
+//                return;
+//            }
+//        }
+//        getPhotos(offset, cnt);
+//    }
 
-        getPhotos(offset, cnt);
-    }
-
-    private void getPhotos(int offset, int cnt) {
+    public void getPhotos(int offset, int cnt) {
         ApiMethods.subscribe(userInfoServerApi.getPhotos((int) MyUserInfoManager.getInstance().getUid(), offset, cnt), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -128,7 +130,13 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
                         List<PhotoModel> list = JSON.parseArray(result.getData().getString("pic"), PhotoModel.class);
                         int newOffset = result.getData().getIntValue("offset");
                         int totalCount = result.getData().getIntValue("totalCount");
-                        mView.showPhoto(list, newOffset, totalCount);
+                        if(offset==0){
+                            // 刷新拉
+                            mView.showPhoto(list, true, totalCount);
+                        }else{
+                            // 下拉更多拉
+                            mView.showPhoto(list, false, totalCount);
+                        }
                     }
                 }
             }
@@ -178,12 +186,22 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
                         pics.add(jsonObject);
                         map.put("pic", pics);
                         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+
                         ApiMethods.subscribe(userInfoServerApi.addPhoto(body), new ApiObserver<ApiResult>() {
                             @Override
                             public void process(ApiResult obj) {
-                                PhotoModel photoModel = new PhotoModel();
-                                photoModel.setPicPath(url);
-                                mView.insertPhoto(photoModel);
+                                if (obj.getErrno() == 0) {
+                                    PhotoModel photoModel = new PhotoModel();
+                                    JSONArray jsonArray = obj.getData().getJSONArray("pic");
+                                    if (jsonArray.size() > 0) {
+                                        JSONObject jo = jsonArray.getJSONObject(0);
+                                        int picID = jo.getInteger("picID");
+                                        String url = jo.getString("picPath");
+                                        photoModel.setPicID(picID);
+                                        photoModel.setPicPath(url);
+                                        mView.insertPhoto(photoModel);
+                                    }
+                                }
                             }
                         });
                         mPlayControlTemplate.endCurrent(imageItem);

@@ -134,7 +134,6 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
 
     PhotoAdapter mPhotoAdapter;
 
-    int offset = 0;
     int DEFAUAT_CNT = 20;       // 默认拉取一页的数量
     boolean mHasMore = false;
 
@@ -174,7 +173,9 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
     protected void onFragmentVisible() {
         super.onFragmentVisible();
         mPresenter.getHomePage(false);
-        mPresenter.getPhotos(0, DEFAUAT_CNT, false);
+        if(mPhotoAdapter.getDataList().isEmpty()){
+            mPresenter.getPhotos(0, DEFAUAT_CNT);
+        }
     }
 
     private void initBaseContainArea() {
@@ -203,13 +204,13 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
         mSmartRefresh.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                mPresenter.getPhotos(offset, DEFAUAT_CNT, false);
+                mPresenter.getPhotos(mPhotoAdapter.getDataList().size(), DEFAUAT_CNT);
             }
 
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 mPresenter.getHomePage(true);
-                mPresenter.getPhotos(0, DEFAUAT_CNT, true);
+                mPresenter.getPhotos(0, DEFAUAT_CNT);
             }
         });
 
@@ -506,9 +507,8 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
     }
 
     @Override
-    public void showPhoto(List<PhotoModel> list, int offset, int totalNum) {
-        MyLog.d(TAG, "showPhoto" + " list=" + list + " offset=" + offset + " totalNum=" + totalNum);
-        this.offset = offset;
+    public void showPhoto(List<PhotoModel> list, boolean clear, int totalNum) {
+        MyLog.d(TAG,"showPhoto" + " list=" + list + " clear=" + clear + " totalNum=" + totalNum);
         mSmartRefresh.finishRefresh();
         mSmartRefresh.finishLoadMore();
 
@@ -517,10 +517,14 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
 
 
         if (list != null && list.size() > 0) {
+            // 有数据
             mHasMore = true;
             mSmartRefresh.setEnableLoadMore(true);
-            mPhotoAdapter.getDataList().addAll(list);
-            mPhotoAdapter.notifyDataSetChanged();
+            if(clear){
+                mPhotoAdapter.setDataList(list);
+            }else{
+                mPhotoAdapter.insertLast(list);
+            }
         } else {
             mHasMore = false;
             mSmartRefresh.setEnableLoadMore(false);
