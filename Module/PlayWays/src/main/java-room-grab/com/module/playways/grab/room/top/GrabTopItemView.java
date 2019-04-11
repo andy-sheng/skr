@@ -190,11 +190,11 @@ public class GrabTopItemView extends RelativeLayout {
         mFlickerAnim = new AnimationDrawable();
         mFlickerAnim.setOneShot(false);
         Drawable drawable = null;
-        drawable = U.getDrawable(R.drawable.liangdeng_shan);
+        drawable = U.getDrawable(R.drawable.ycdd_baodeng_guangyun);
         mFlickerAnim.addFrame(drawable, 200);
         drawable = U.getDrawable(R.drawable.ycdd_liangdeng);
         mFlickerAnim.addFrame(drawable, 300);
-        drawable = U.getDrawable(R.drawable.liangdeng_shan);
+        drawable = U.getDrawable(R.drawable.ycdd_baodeng_guangyun);
         mFlickerAnim.addFrame(drawable, 200);
         drawable = U.getDrawable(R.drawable.ycdd_liangdeng);
         mFlickerAnim.addFrame(drawable, 300);
@@ -254,7 +254,7 @@ public class GrabTopItemView extends RelativeLayout {
         MyLog.d(TAG, "setLight" + " on=" + on);
         mFlagIv.setVisibility(VISIBLE);
         LayoutParams lp = (LayoutParams) mFlagIv.getLayoutParams();
-        lp.topMargin = -U.getDisplayUtils().dip2px(8);
+        lp.topMargin = -U.getDisplayUtils().dip2px(25);
         mFlagIv.setLayoutParams(lp);
         if (on) {
             mFlagIv.setImageResource(R.drawable.ycdd_liangdeng);
