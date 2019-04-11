@@ -43,7 +43,7 @@
         android:layout_below="@+id/avatar_iv"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="-10dp"
-        android:src="@drawable/xiangchang_flag"
+        android:src="@drawable/ycdd_biaoqian_qiangchang"
         android:visibility="gone" />
 
     <com.common.view.ex.ExImageView

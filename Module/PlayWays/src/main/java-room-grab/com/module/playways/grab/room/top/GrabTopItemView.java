@@ -215,7 +215,7 @@ public class GrabTopItemView extends RelativeLayout {
     }
 
     public void reset() {
-        setGrap(false);
+        hideGrabIcon();
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT);
         lp.weight = 1;
         setLayoutParams(lp);
@@ -237,17 +237,17 @@ public class GrabTopItemView extends RelativeLayout {
         stopEvasive();
     }
 
-    public void setGrap(boolean grap) {
+    public void setGrap(boolean isChallenge) {
 //        MyLog.d(TAG, "setGrap" + " grap=" + grap);
-        if (grap) {
-            mFlagIv.setVisibility(VISIBLE);
-            LayoutParams lp = (LayoutParams) mFlagIv.getLayoutParams();
-            lp.topMargin = -U.getDisplayUtils().dip2px(10);
-            mFlagIv.setLayoutParams(lp);
-            mFlagIv.setImageResource(R.drawable.xiangchang_flag);
-        } else {
-            mFlagIv.setVisibility(GONE);
-        }
+        mFlagIv.setVisibility(VISIBLE);
+        LayoutParams lp = (LayoutParams) mFlagIv.getLayoutParams();
+        lp.topMargin = -U.getDisplayUtils().dip2px(10);
+        mFlagIv.setLayoutParams(lp);
+        mFlagIv.setImageResource(isChallenge ? R.drawable.ycdd_biaoqian_tiaozhan : R.drawable.ycdd_biaoqian_qiangchang);
+    }
+
+    public void hideGrabIcon() {
+        mFlagIv.setVisibility(GONE);
     }
 
     public void setLight(boolean on) {

@@ -8,6 +8,7 @@ public class WantSingerInfo implements Serializable {
     int userID;
     long timeMs;
     int wantSingType;
+
     public static WantSingerInfo parse(WantSingInfo pb) {
         WantSingerInfo wantSingerInfo = new WantSingerInfo();
         wantSingerInfo.setUserID(pb.getUserID());
@@ -34,6 +35,10 @@ public class WantSingerInfo implements Serializable {
 
     public int getWantSingType() {
         return wantSingType;
+    }
+
+    public boolean isChallengeType() {
+        return wantSingType == 2 || wantSingType == 3;
     }
 
     public void setWantSingType(int wantSingType) {

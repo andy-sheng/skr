@@ -90,7 +90,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
             } else {
                 vp.grabTopItemView.setCanShowInviteWhenEmpty(false);
             }
-            vp.grabTopItemView.setGrap(false);
+            vp.grabTopItemView.hideGrabIcon();
             vp.grabTopItemView.tryAddParent(mContentLl);
             vp.grabTopItemView.setToPlaceHolder();
             vp.SVGAImageView = new SVGAImageView(getContext());
@@ -157,7 +157,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
                 for (WantSingerInfo wantSingerInfo : now.getWantSingInfos()) {
                     VP vp = mInfoMap.get(wantSingerInfo.getUserID());
                     if (vp != null && vp.grabTopItemView != null) {
-                        vp.grabTopItemView.setGrap(true);
+                        vp.grabTopItemView.setGrap(wantSingerInfo.isChallengeType());
                     }
                 }
             } else {
@@ -165,7 +165,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
                 for (VP vp : mGrabTopItemViewArrayList) {
                     if (vp != null && vp.grabTopItemView != null) {
                         MyLog.d(TAG, "initData else 2");
-                        vp.grabTopItemView.setGrap(false);
+                        vp.grabTopItemView.hideGrabIcon();
                     }
                 }
 
@@ -205,14 +205,14 @@ public class GrabPlayerRv2 extends RelativeLayout {
                 GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
                 // TODO: 2019/2/26 判空
                 if (grabRoundInfoModel != null && grabRoundInfoModel.getWantSingInfos().contains(wantSingerInfo)) {
-                    vp.grabTopItemView.setGrap(true);
+                    vp.grabTopItemView.setGrap(wantSingerInfo.isChallengeType());
                 } else {
 //                    if (vp.grabTopItemView.getPlayerInfoModel().isOnline()) {
 //                        vp.grabTopItemView.setGrap(false);
 //                    } else {
 //                        //离线了
 //                    }
-                    vp.grabTopItemView.setGrap(false);
+                    vp.grabTopItemView.hideGrabIcon();
                 }
             }
         }
@@ -478,7 +478,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
     public void grap(WantSingerInfo wantSingerInfo) {
         VP vp = mInfoMap.get(wantSingerInfo.getUserID());
         if (vp != null && vp.grabTopItemView != null) {
-            vp.grabTopItemView.setGrap(true);
+            vp.grabTopItemView.setGrap(wantSingerInfo.isChallengeType());
         }
     }
 

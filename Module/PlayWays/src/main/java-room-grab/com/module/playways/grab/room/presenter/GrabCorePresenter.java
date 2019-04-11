@@ -461,6 +461,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         if (challenge) {
             if (mRoomData.getCoin() < 1) {
                 MyLog.w(TAG, "没有充足金币,无法进行挑战");
+                U.getToastUtil().showShort("没有充足的金币");
                 return;
             }
             if (mRoomData.isAccEnable()) {
@@ -487,6 +488,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
                     if (now != null && now.getRoundSeq() == seq) {
                         WantSingerInfo wantSingerInfo = new WantSingerInfo();
+                        wantSingerInfo.setWantSingType(wantSingType);
                         wantSingerInfo.setUserID((int) MyUserInfoManager.getInstance().getUid());
                         wantSingerInfo.setTimeMs(System.currentTimeMillis());
                         now.addGrabUid(true, wantSingerInfo);
