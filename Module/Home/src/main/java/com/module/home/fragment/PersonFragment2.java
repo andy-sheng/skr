@@ -2,6 +2,7 @@ package com.module.home.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -22,6 +23,8 @@ import com.alibaba.fastjson.JSON;
 import com.common.anim.ObjectPlayControlTemplate;
 import com.common.base.BaseFragment;
 import com.common.core.avatar.AvatarUtils;
+import com.common.core.myinfo.MyUserInfo;
+import com.common.core.myinfo.MyUserInfoLocalApi;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.upgrade.UpgradeData;
@@ -85,13 +88,13 @@ import model.RelationNumModel;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.PUT;
 
 public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRedDotManager.WeakRedDotListener {
 
-    Handler mUiHandler = new Handler();
-
     SmartRefreshLayout mSmartRefresh;
+    ClassicsHeader mClassicsHeader;
     ExTextView mPhotoNumTv;
     RecyclerView mPhotoView;
     RelativeLayout mUserInfoArea;
@@ -131,6 +134,10 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
 
     PhotoAdapter mPhotoAdapter;
 
+    int offset = 0;
+    int DEFAUAT_CNT = 20;       // 默认拉取一页的数量
+    boolean mHasMore = false;
+
     int mFriendNum = 0;  // 好友数
     int mFansNum = 0;    // 粉丝数
     int mFocusNum = 0;   // 关注数
@@ -160,17 +167,19 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
         mFansRedDotValue = U.getPreferenceUtils().getSettingInt(WeakRedDotManager.SP_KEY_NEW_FANS, 0);
         mFriendRedDotValue = U.getPreferenceUtils().getSettingInt(WeakRedDotManager.SP_KEY_NEW_FRIEND, 0);
         refreshPersonRedDot();
+        refreshUserInfoView();
     }
 
     @Override
     protected void onFragmentVisible() {
         super.onFragmentVisible();
-        mPresenter.getHomePage((int) MyUserInfoManager.getInstance().getUid(), false);
-        mPresenter.getPhotos(0);
+        mPresenter.getHomePage(false);
+        mPresenter.getPhotos(0, DEFAUAT_CNT, false);
     }
 
     private void initBaseContainArea() {
         mSmartRefresh = (SmartRefreshLayout) mRootView.findViewById(R.id.smart_refresh);
+        mClassicsHeader = (ClassicsHeader)mRootView.findViewById(R.id.classics_header);
         mUserInfoArea = (RelativeLayout) mRootView.findViewById(R.id.user_info_area);
         mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
 
@@ -187,19 +196,20 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
 
         mSmartRefresh.setEnableRefresh(true);
         mSmartRefresh.setEnableLoadMore(false);
-        mSmartRefresh.setEnableLoadMoreWhenContentNotFull(true);
+        mSmartRefresh.setEnableLoadMoreWhenContentNotFull(false);
         mSmartRefresh.setEnableOverScrollDrag(true);
-        mSmartRefresh.setRefreshHeader(new ClassicsHeader(getContext()));
+        mClassicsHeader.setBackgroundColor(Color.parseColor("#7088FF"));
+        mSmartRefresh.setRefreshHeader(mClassicsHeader);
         mSmartRefresh.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-
+                mPresenter.getPhotos(offset, DEFAUAT_CNT, false);
             }
 
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                mPresenter.getHomePage((int) MyUserInfoManager.getInstance().getUid(), true);
-                mPresenter.getPhotos(0);
+                mPresenter.getHomePage(true);
+                mPresenter.getPhotos(0, DEFAUAT_CNT, true);
             }
         });
 
@@ -394,30 +404,29 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
     }
 
     @Override
-    public void showHomePageInfo(UserInfoModel userInfoModel, List<RelationNumModel> relationNumModels, List<UserRankModel> userRankModels
+    public void showHomePageInfo(List<RelationNumModel> relationNumModels, List<UserRankModel> userRankModels
             , List<UserLevelModel> userLevelModels, List<GameStatisModel> gameStatisModels) {
         mSmartRefresh.finishRefresh();
-        showUserInfo(userInfoModel);
         showRelationNum(relationNumModels);
         showReginRank(userRankModels);
         showUserLevel(userLevelModels);
         showGameStatic(gameStatisModels);
     }
 
-
-    private void showUserInfo(UserInfoModel userInfoModel) {
-        // TODO: 2019/4/10 更新下数据库中个人资料
-        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance()
-                .getAvatar())
-                .setCircle(true)
-                .build());
-        mNameTv.setText(MyUserInfoManager.getInstance().getNickName());
-        mUseridTv.setText("撕歌号：" + MyUserInfoManager.getInstance().getUid());
-        mSrlNameTv.setText(MyUserInfoManager.getInstance().getNickName());
+    private void refreshUserInfoView() {
+        if (MyUserInfoManager.getInstance().hasMyUserInfo()) {
+            AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(MyUserInfoManager.getInstance()
+                    .getAvatar())
+                    .setCircle(true)
+                    .build());
+            mNameTv.setText(MyUserInfoManager.getInstance().getNickName());
+            mUseridTv.setText("撕歌号：" + MyUserInfoManager.getInstance().getUid());
+            mSrlNameTv.setText(MyUserInfoManager.getInstance().getNickName());
+        }
     }
 
-
-    private void showRelationNum(List<RelationNumModel> list) {
+    @Override
+    public void showRelationNum(List<RelationNumModel> list) {
         for (RelationNumModel mode : list) {
             if (mode.getRelation() == UserInfoManager.RELATION_FRIENDS) {
                 mFriendNum = mode.getCnt();
@@ -499,17 +508,28 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
     @Override
     public void showPhoto(List<PhotoModel> list, int offset, int totalNum) {
         MyLog.d(TAG, "showPhoto" + " list=" + list + " offset=" + offset + " totalNum=" + totalNum);
-        // TODO: 2019/4/10 just for test
-//        List<PhotoModel> models = new ArrayList<>();
-//        for (int i = 0; i <= 1; i++) {
-//            PhotoModel photoModel = new PhotoModel();
-//            photoModel.setPicID(i);
-//            photoModel.setPicPath(MyUserInfoManager.getInstance().getAvatar());
-//            models.add(photoModel);
-//        }
-        mPhotoNumTv.setText("个人相册");
-        mPhotoAdapter.setDataList(list);
-        mPhotoAdapter.notifyDataSetChanged();
+        this.offset = offset;
+        mSmartRefresh.finishRefresh();
+        mSmartRefresh.finishLoadMore();
+
+        mPhotoNumTv.setText("个人相册（" + totalNum + "）");
+        mPhotoNumTv.setVisibility(View.VISIBLE);
+
+
+        if (list != null && list.size() > 0) {
+            mHasMore = true;
+            mSmartRefresh.setEnableLoadMore(true);
+            mPhotoAdapter.getDataList().addAll(list);
+            mPhotoAdapter.notifyDataSetChanged();
+        } else {
+            mHasMore = false;
+            mSmartRefresh.setEnableLoadMore(false);
+            if (mPhotoAdapter.getDataList() != null && mPhotoAdapter.getDataList().size() > 0) {
+                // 没有更多了
+            } else {
+                // 没有数据
+            }
+        }
     }
 
     @Override
@@ -519,22 +539,23 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvnet(MyUserInfoEvent.UserInfoChangeEvent userInfoChangeEvent) {
-
+        refreshUserInfoView();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(RelationChangeEvent event) {
+        mPresenter.getRelationNums();
     }
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(FollowNotifyEvent event) {
-
+        mPresenter.getRelationNums();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(UpgradeData.RedDotStatusEvent event) {
-
+        updateSettingRedDot();
     }
 
     @Override
@@ -569,5 +590,11 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
         } else {
             mFriendRedDot.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        WeakRedDotManager.getInstance().removeListener(this);
     }
 }

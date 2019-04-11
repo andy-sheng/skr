@@ -13,17 +13,16 @@ import java.util.List;
 
 public interface IPersonView {
     // 展示homepage回来的结果
-    void showHomePageInfo(UserInfoModel userInfoModel,
-                          List<RelationNumModel> relationNumModels,
+    void showHomePageInfo(List<RelationNumModel> relationNumModels,
                           List<UserRankModel> userRankModels,
                           List<UserLevelModel> userLevelModels,
                           List<GameStatisModel> gameStatisModels);
 
+    // 展示好友，粉丝和关注数量
+    void showRelationNum(List<RelationNumModel> list);
+
 //    // 展示个人基本信息
 //    void showUserInfo(UserInfoModel userInfoModel);
-//
-//    // 展示好友，粉丝和关注数量
-//    void showRelationNum(List<RelationNumModel> list);
 //
 //    // 展示地区排名
 //    void showReginRank(List<UserRankModel> list);
