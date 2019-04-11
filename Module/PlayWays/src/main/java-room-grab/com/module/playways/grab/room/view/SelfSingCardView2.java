@@ -14,6 +14,7 @@ import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.countdown.CircleCountDownView;
 import com.common.view.ex.ExTextView;
+import com.component.busilib.view.BitmapTextView;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.others.LyricAndAccMatchManager;
@@ -42,7 +43,7 @@ public class SelfSingCardView2 extends RelativeLayout {
     public final static String TAG = "SelfSingCardView2";
 
     TextView mTvLyric;
-    ExTextView mCountDownTv;
+    BitmapTextView mCountDownTv;
     ManyLyricsView mManyLyricsView;
 
     Disposable mDisposable;
@@ -80,7 +81,7 @@ public class SelfSingCardView2 extends RelativeLayout {
         mTvLyric = findViewById(R.id.tv_lyric);
         mManyLyricsView = (ManyLyricsView) findViewById(R.id.many_lyrics_view);
         mCircleCountDownView = (CircleCountDownView) findViewById(R.id.circle_count_down_view);
-        mCountDownTv = (ExTextView) findViewById(R.id.count_down_tv);
+        mCountDownTv = (BitmapTextView) findViewById(R.id.count_down_tv);
         mIvTag = (ImageView) findViewById(R.id.iv_tag);
         mVoiceScaleView = (VoiceScaleView) findViewById(R.id.voice_scale_view);
     }

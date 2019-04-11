@@ -101,18 +101,22 @@
         android:layout_height="@dimen/view_60_dp"
         />
 
-    <com.common.view.ex.ExTextView
+    <FrameLayout
         android:layout_marginLeft="@dimen/view_6_dp"
         android:layout_marginTop="@dimen/view_10_dp"
-        android:id="@+id/count_down_tv"
-        android:layout_width="@dimen/view_50_dp"
-        android:layout_height="@dimen/view_40_dp"
         android:layout_alignTop="@+id/iv_tag"
         android:layout_alignLeft="@+id/iv_tag"
-        android:gravity="center"
-        android:textColor="#FFED3F"
-        android:textSize="@dimen/textsize_32_dp"
-        android:textStyle="bold" />
-
-
+        android:layout_width="@dimen/view_50_dp"
+        android:layout_height="@dimen/view_40_dp"
+        >
+        <com.component.busilib.view.BitmapTextView
+            android:layout_gravity="center"
+            android:id="@+id/count_down_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="#FFED3F"
+            android:textSize="@dimen/textsize_32_dp"
+            android:textStyle="bold" />
+    </FrameLayout>
 </merge>
