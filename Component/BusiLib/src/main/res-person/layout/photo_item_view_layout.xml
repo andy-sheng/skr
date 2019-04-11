@@ -10,4 +10,9 @@
         android:layout_width="@dimen/view_105_dp"
         android:layout_height="@dimen/view_142_dp" />
 
+    <com.common.view.ex.ExTextView
+        android:id="@+id/upload_tips_tv"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </com.common.view.ex.ExRelativeLayout>

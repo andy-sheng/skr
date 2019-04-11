@@ -159,7 +159,7 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
     protected void onFragmentVisible() {
         super.onFragmentVisible();
         mPresenter.getHomePage(false);
-        if (mPhotoAdapter.getDataList().isEmpty()) {
+        if (mPhotoAdapter.getSuccessNum()==0) {
             mPresenter.getPhotos(0, DEFAUAT_CNT);
         }
     }
@@ -190,7 +190,7 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
         mSmartRefresh.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                mPresenter.getPhotos(mPhotoAdapter.getDataList().size(), DEFAUAT_CNT);
+                mPresenter.getPhotos(mPhotoAdapter.getSuccessNum(), DEFAUAT_CNT);
             }
 
             @Override
@@ -355,7 +355,6 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
                     goAddPhotoFragment();
                 } else if (model instanceof PhotoModel) {
                     // 跳到看大图
-
                     BigImageBrowseFragment.open(true, getActivity(), new DefaultImageBrowserLoader<PhotoModel>() {
                         @Override
                         public void init() {
@@ -381,11 +380,11 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
                         public void loadMore(boolean backward, int position, PhotoModel data, Callback<List<PhotoModel>> callback) {
                             if (backward) {
                                 // 向后加载
-                                mPresenter.getPhotos(mPhotoAdapter.getDataList().size(), DEFAUAT_CNT, new Callback<List<PhotoModel>>() {
+                                mPresenter.getPhotos(mPhotoAdapter.getSuccessNum(), DEFAUAT_CNT, new Callback<List<PhotoModel>>() {
                                     @Override
-                                    public void onCallback(int r, List<PhotoModel> obj) {
+                                    public void onCallback(int r, List<PhotoModel> list) {
                                         if (callback != null) {
-                                            callback.onCallback(0, obj);
+                                            callback.onCallback(0, list);
                                         }
                                     }
                                 });
@@ -424,6 +423,7 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
             }
         }, true);
         mPhotoView.setAdapter(mPhotoAdapter);
+        mPresenter.loadUnSuccessPhotoFromDB();
     }
 
     void goAddPhotoFragment() {
@@ -554,7 +554,7 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
     }
 
     @Override
-    public void showPhoto(List<PhotoModel> list, boolean clear, int totalNum) {
+    public void addPhoto(List<PhotoModel> list, boolean clear, int totalNum) {
         MyLog.d(TAG, "showPhoto" + " list=" + list + " clear=" + clear + " totalNum=" + totalNum);
         mSmartRefresh.finishRefresh();
         mSmartRefresh.finishLoadMore();
@@ -590,6 +590,11 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
     @Override
     public void deletePhoto(PhotoModel photoModel) {
         mPhotoAdapter.delete(photoModel);
+    }
+
+    @Override
+    public void updatePhoto(PhotoModel photoModel) {
+        mPhotoAdapter.update(photoModel);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

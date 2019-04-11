@@ -1,4 +1,4 @@
-package com.common.core.db;
+package com.component.busilib.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -21,14 +21,12 @@ public class DaoMaster extends AbstractDaoMaster {
 
     /** Creates underlying database table using DAOs. */
     public static void createAllTables(Database db, boolean ifNotExists) {
-        UserAccountDao.createTable(db, ifNotExists);
-        UserInfoDBDao.createTable(db, ifNotExists);
+        PhotoModelDBDao.createTable(db, ifNotExists);
     }
 
     /** Drops underlying database table using DAOs. */
     public static void dropAllTables(Database db, boolean ifExists) {
-        UserAccountDao.dropTable(db, ifExists);
-        UserInfoDBDao.dropTable(db, ifExists);
+        PhotoModelDBDao.dropTable(db, ifExists);
     }
 
     /**
@@ -47,8 +45,7 @@ public class DaoMaster extends AbstractDaoMaster {
 
     public DaoMaster(Database db) {
         super(db, SCHEMA_VERSION);
-        registerDaoClass(UserAccountDao.class);
-        registerDaoClass(UserInfoDBDao.class);
+        registerDaoClass(PhotoModelDBDao.class);
     }
 
     public DaoSession newSession() {

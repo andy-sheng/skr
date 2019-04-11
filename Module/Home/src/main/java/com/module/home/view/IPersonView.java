@@ -37,9 +37,11 @@ public interface IPersonView {
     // 展示排行数据
     void showRankView(UserRankModel userRankModel);
 
-    void showPhoto(List<PhotoModel> list, boolean clear, int totalNum);
+    void addPhoto(List<PhotoModel> list, boolean clear, int totalNum);
 
     void insertPhoto(PhotoModel photoModel);
 
     void deletePhoto(PhotoModel photoModel);
+
+    void updatePhoto(PhotoModel imageItem);
 }

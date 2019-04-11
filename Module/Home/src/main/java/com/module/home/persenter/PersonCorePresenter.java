@@ -12,12 +12,16 @@ import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.model.GameStatisModel;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.model.UserRankModel;
+import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import model.RelationNumModel;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -35,6 +39,8 @@ import java.util.List;
 import com.common.core.userinfo.model.UserLevelModel;
 import com.respicker.model.ImageItem;
 import com.zq.person.model.PhotoModel;
+import com.zq.person.photo.PhotoDataManager;
+import com.zq.person.photo.PhotoLocalApi;
 
 public class PersonCorePresenter extends RxLifeCyclePresenter {
 
@@ -45,9 +51,9 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
     //    long mLastPhotoUpTime = 0; // 照片墙更新时间
     boolean mUploadingPhoto = false;
 
-    ObjectPlayControlTemplate<ImageItem, PersonCorePresenter> mPlayControlTemplate = new ObjectPlayControlTemplate<ImageItem, PersonCorePresenter>() {
+    ObjectPlayControlTemplate<PhotoModel, PersonCorePresenter> mPlayControlTemplate = new ObjectPlayControlTemplate<PhotoModel, PersonCorePresenter>() {
         @Override
-        protected PersonCorePresenter accept(ImageItem cur) {
+        protected PersonCorePresenter accept(PhotoModel cur) {
             if (mUploadingPhoto) {
                 return null;
             } else {
@@ -57,13 +63,13 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
         }
 
         @Override
-        public void onStart(ImageItem imageItem, PersonCorePresenter personFragment2) {
+        public void onStart(PhotoModel imageItem, PersonCorePresenter personFragment2) {
             U.getToastUtil().showShort("开始上传，队列还剩" + mPlayControlTemplate.getSize());
             execUploadPhoto(imageItem);
         }
 
         @Override
-        protected void onEnd(ImageItem imageItem) {
+        protected void onEnd(PhotoModel imageItem) {
 
         }
     };
@@ -136,13 +142,13 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
                         int totalCount = result.getData().getIntValue("totalCount");
                         if (offset == 0) {
                             // 刷新拉
-                            mView.showPhoto(list, true, totalCount);
+                            mView.addPhoto(list, true, totalCount);
                             if (callback != null) {
                                 callback.onCallback(1, list);
                             }
                         } else {
                             // 下拉更多拉
-                            mView.showPhoto(list, false, totalCount);
+                            mView.addPhoto(list, false, totalCount);
                             if (callback != null) {
                                 callback.onCallback(2, list);
                             }
@@ -168,13 +174,31 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
     }
 
     public void uploadPhotoList(List<ImageItem> imageItems) {
+        List<PhotoModel> list = new ArrayList<>();
+
         for (ImageItem imageItem : imageItems) {
-            mPlayControlTemplate.add(imageItem, true);
+            PhotoModel photoModel = new PhotoModel();
+            photoModel.setLocalPath(imageItem.getPath());
+            photoModel.setStatus(PhotoModel.STATUS_WAIT_UPLOAD);
+            list.add(photoModel);
+        }
+        // 数据库中的zhukey怎么定，数据库中只存未上传成功的
+        PhotoDataManager.insertOrUpdate(list);
+        for (PhotoModel photoModel : list) {
+            mView.insertPhoto(photoModel);
+            mPlayControlTemplate.add(photoModel, true);
         }
     }
 
-    void execUploadPhoto(ImageItem imageItem) {
-        UploadTask uploadTask = UploadParams.newBuilder(imageItem.getPath())
+    void execUploadPhoto(PhotoModel photo) {
+        if (photo.getStatus() == photo.STATUS_DELETE) {
+            MyLog.d(TAG, "execUploadPhoto" + " imageItem=" + photo + " 用户删除了，取消上传");
+            mPlayControlTemplate.endCurrent(photo);
+            return;
+        }
+        photo.setStatus(PhotoModel.STATUS_UPLOADING);
+        mView.updatePhoto(photo);
+        UploadTask uploadTask = UploadParams.newBuilder(photo.getLocalPath())
                 .setNeedCompress(true)
                 .setFileType(UploadParams.FileType.profilepic)
                 .startUploadAsync(new UploadCallback() {
@@ -200,46 +224,74 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
                             @Override
                             public void process(ApiResult obj) {
                                 if (obj.getErrno() == 0) {
-                                    PhotoModel photoModel = new PhotoModel();
                                     JSONArray jsonArray = obj.getData().getJSONArray("pic");
                                     if (jsonArray.size() > 0) {
                                         JSONObject jo = jsonArray.getJSONObject(0);
                                         int picID = jo.getInteger("picID");
                                         String url = jo.getString("picPath");
-                                        photoModel.setPicID(picID);
-                                        photoModel.setPicPath(url);
-                                        mView.insertPhoto(photoModel);
+                                        photo.setPicID(picID);
+                                        photo.setPicPath(url);
+                                        photo.setStatus(PhotoModel.STATUS_SUCCESS);
+                                        mView.updatePhoto(photo);
+                                        // 删除数据中的
+                                        PhotoDataManager.delete(photo);
                                     }
                                 } else {
+                                    photo.setStatus(PhotoModel.STATUS_FAILED);
+                                    mView.updatePhoto(photo);
                                     U.getToastUtil().showShort(obj.getErrmsg());
                                 }
                             }
                         });
-                        mPlayControlTemplate.endCurrent(imageItem);
+                        mPlayControlTemplate.endCurrent(photo);
                     }
 
                     @Override
                     public void onFailure(String msg) {
                         mUploadingPhoto = false;
-                        mPlayControlTemplate.endCurrent(imageItem);
+                        photo.setStatus(PhotoModel.STATUS_FAILED);
+                        mView.updatePhoto(photo);
+                        mPlayControlTemplate.endCurrent(photo);
                     }
                 });
     }
 
     public void deletePhoto(PhotoModel photoModel) {
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("picID", photoModel.getPicID());
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+        if (photoModel.getStatus() == PhotoModel.STATUS_SUCCESS) {
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("picID", photoModel.getPicID());
+            RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
 
-        ApiMethods.subscribe(mUserInfoServerApi.deletePhoto(body), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult obj) {
-                if (obj.getErrno() == 0) {
-                    if (mView != null) {
-                        mView.deletePhoto(photoModel);
+            ApiMethods.subscribe(mUserInfoServerApi.deletePhoto(body), new ApiObserver<ApiResult>() {
+                @Override
+                public void process(ApiResult obj) {
+                    if (obj.getErrno() == 0) {
+                        if (mView != null) {
+                            photoModel.setStatus(PhotoModel.STATUS_DELETE);
+                            mView.deletePhoto(photoModel);
+                        }
+                    } else {
+                        U.getToastUtil().showShort(obj.getErrmsg());
                     }
-                } else {
-                    U.getToastUtil().showShort(obj.getErrmsg());
+                }
+            });
+        } else {
+            photoModel.setStatus(PhotoModel.STATUS_DELETE);
+            PhotoDataManager.delete(photoModel);
+            // 还没上传成功，本地删除就好，// 上传队列还得删除
+            if (mView != null) {
+                mView.deletePhoto(photoModel);
+            }
+        }
+    }
+
+    public void loadUnSuccessPhotoFromDB() {
+        PhotoDataManager.getAllPhotoFromDB(new Callback<List<PhotoModel>>() {
+            @Override
+            public void onCallback(int r, List<PhotoModel> list) {
+                for (PhotoModel photoModel : list) {
+                    mView.insertPhoto(photoModel);
+                    mPlayControlTemplate.add(photoModel, true);
                 }
             }
         });

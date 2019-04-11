@@ -81,9 +81,31 @@ public class PhotoAdapter extends RecyclerView.Adapter {
         return mDataList;
     }
 
+    /**
+     * 列表中上传成功的item个数
+     * @return
+     */
+    public int getSuccessNum() {
+        int success = 0;
+        for (PhotoModel photoModel : mDataList) {
+            if (photoModel.getStatus() == PhotoModel.STATUS_SUCCESS) {
+                success++;
+            }
+        }
+        return success;
+    }
+
     public void setDataList(List<PhotoModel> dataList) {
         if (dataList != null) {
+            // 把未成功的挑选出来
+            List<PhotoModel> unSuccessList = new ArrayList<>();
+            for (PhotoModel photoModel : mDataList) {
+                if (photoModel.getStatus() != PhotoModel.STATUS_SUCCESS) {
+                    unSuccessList.add(photoModel);
+                }
+            }
             mDataList.clear();
+            mDataList.addAll(unSuccessList);
             mDataList.addAll(dataList);
             notifyDataSetChanged();
         }
@@ -124,6 +146,16 @@ public class PhotoAdapter extends RecyclerView.Adapter {
             if (m.equals(photoModel)) {
                 mDataList.remove(i);
                 notifyItemRemoved(i);
+                return;
+            }
+        }
+    }
+
+    public void update(PhotoModel photoModel) {
+        for (int i = 0; i < mDataList.size(); i++) {
+            PhotoModel m = mDataList.get(i);
+            if (m.equals(photoModel)) {
+                notifyItemChanged(i);
                 return;
             }
         }
