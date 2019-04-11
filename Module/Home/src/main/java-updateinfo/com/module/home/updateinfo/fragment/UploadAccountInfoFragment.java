@@ -7,7 +7,9 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
@@ -55,9 +57,11 @@ public class UploadAccountInfoFragment extends BaseFragment {
     ExTextView mNicknameHintTv;
 
     ExImageView mMale;
+    TextView mMaleTv;
     ExImageView mFemale;
+    TextView mFemaleTv;
 
-    ExTextView mNextTv;
+    ImageView mNextIv;
 
     int sex = 0;// 未知、非法参数
     String mNickName = "";
@@ -79,8 +83,11 @@ public class UploadAccountInfoFragment extends BaseFragment {
         mNicknameEt = (NoLeakEditText) mRootView.findViewById(R.id.nickname_et);
         mNicknameHintTv = (ExTextView) mRootView.findViewById(R.id.nickname_hint_tv);
         mMale = (ExImageView) mRootView.findViewById(R.id.male);
+        mMaleTv = (TextView) mRootView.findViewById(R.id.male_tv);
         mFemale = (ExImageView) mRootView.findViewById(R.id.female);
-        mNextTv = (ExTextView) mRootView.findViewById(R.id.next_tv);
+        mFemaleTv = (TextView) mRootView.findViewById(R.id.female_tv);
+
+        mNextIv = (ImageView)mRootView.findViewById(R.id.next_iv);
 
 
         Bundle bundle = getArguments();
@@ -131,7 +138,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
             }
         });
 
-        mNextTv.setOnClickListener(new DebounceViewClickListener() {
+        mNextIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 mNickName = mNicknameEt.getText().toString().trim();
@@ -223,13 +230,11 @@ public class UploadAccountInfoFragment extends BaseFragment {
 
     private void setCompleteTv(boolean isClick) {
         if (isClick) {
-            mNextTv.setClickable(true);
-            mNextTv.setTextColor(Color.parseColor("#0C2275"));
-            mNextTv.setBackgroundResource(com.common.core.R.drawable.img_btn_bg_yellow);
+            mNextIv.setClickable(true);
+            mNextIv.setBackgroundResource(R.drawable.next_normal_icon);
         } else {
-            mNextTv.setClickable(false);
-            mNextTv.setTextColor(Color.parseColor("#660C2275"));
-            mNextTv.setBackgroundResource(com.common.core.R.drawable.img_btn_bg_gray);
+            mNextIv.setClickable(false);
+            mNextIv.setBackgroundResource(R.drawable.next_unclick_icon);
         }
     }
 
@@ -237,10 +242,12 @@ public class UploadAccountInfoFragment extends BaseFragment {
     private void selectSex(boolean isMale) {
         this.sex = isMale ? ESex.SX_MALE.getValue() : ESex.SX_FEMALE.getValue();
         mMale.setBackground(isMale ? getResources().getDrawable(R.drawable.head_man_xuanzhong) : getResources().getDrawable(R.drawable.head_man_weixuanzhong));
-        mFemale.setBackground(isMale ? getResources().getDrawable(R.drawable.head_woman_weixuanzhong) : getResources().getDrawable(R.drawable.head_women_xuanzhong));
+        mFemale.setBackground(isMale ? getResources().getDrawable(R.drawable.head_woman_weixuanzhong) : getResources().getDrawable(R.drawable.head_woman_xuanzhong));
 
         mMale.setClickable(isMale ? false : true);
+        mMaleTv.setTextColor(isMale ? U.getColor(R.color.white) : U.getColor(R.color.white_trans_50));
         mFemale.setClickable(isMale ? true : false);
+        mFemaleTv.setTextColor(isMale ? U.getColor(R.color.white_trans_50) : U.getColor(R.color.white));
 
         // TODO: 2019/3/1 去掉动画
 //        // 放大动画

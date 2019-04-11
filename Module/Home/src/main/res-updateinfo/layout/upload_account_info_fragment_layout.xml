@@ -4,7 +4,7 @@
     android:id="@+id/main_act_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F9F4F1">
+    android:background="#7187FF">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -19,28 +19,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:centerText="完善个人资料"
-                app:centerTextColor="#0C2275"
+                app:centerTextColor="@color/white"
                 app:centerTextSize="@dimen/textsize_20_dp"
                 app:centerType="textView"
                 app:leftDrawable="@drawable/img_back"
                 app:leftType="textView"
                 app:rightText="1/2"
-                app:rightTextColor="#0C2275"
+                app:rightTextColor="@color/white"
                 app:rightTextSize="@dimen/textsize_16_dp"
                 app:rightType="textView"
                 app:showBottomLine="false"
-                app:statusBarColor="#F9F4F1"
-                app:titleBarColor="#F9F4F1">
-            </com.common.view.titlebar.CommonTitleBar>
+                app:statusBarColor="#7187FF"
+                app:titleBarColor="#7187FF"></com.common.view.titlebar.CommonTitleBar>
 
 
             <com.common.view.ex.NoLeakEditText
                 android:id="@+id/nickname_et"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/view_54_dp"
-                android:layout_marginLeft="@dimen/view_25_dp"
-                android:layout_marginTop="@dimen/view_98_dp"
-                android:layout_marginRight="@dimen/view_25_dp"
+                android:layout_marginLeft="@dimen/view_40_dp"
+                android:layout_below="@id/titlebar"
+                android:layout_marginTop="@dimen/view_60_dp"
+                android:layout_marginRight="@dimen/view_40_dp"
+                android:background="@drawable/common_input_edit_bg"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:gravity="center_vertical"
@@ -48,17 +49,12 @@
                 android:inputType="text"
                 android:maxLength="16"
                 android:maxLines="1"
-                android:paddingLeft="@dimen/view_16_dp"
-                android:paddingRight="@dimen/view_14_dp"
+                android:paddingLeft="@dimen/view_25_dp"
+                android:paddingRight="@dimen/view_25_dp"
                 android:singleLine="true"
                 android:textColor="#091E77"
                 android:textColorHint="#4c0C2275"
-                android:textSize="@dimen/view_18_dp"
-                app:bl_corners_radius="@dimen/view_8_dp"
-                app:bl_shape="rectangle"
-                app:bl_solid_color="#E1E1EC"
-                app:bl_stroke_color="#0C2275"
-                app:bl_stroke_width="@dimen/view_2_dp" />
+                android:textSize="@dimen/view_18_dp" />
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/nickname_hint_tv"
@@ -77,7 +73,7 @@
                 android:layout_height="@dimen/view_106_dp"
                 android:layout_below="@+id/nickname_et"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/view_54_dp"
+                android:layout_marginTop="@dimen/view_40_dp"
                 android:orientation="horizontal">
 
                 <RelativeLayout
@@ -94,15 +90,15 @@
                         android:scaleType="center" />
 
                     <TextView
+                        android:id="@+id/male_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/view_22_dp"
                         android:layout_below="@+id/male"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="@dimen/view_8_dp"
                         android:text="男"
-                        android:textColor="#0F2076"
-                        android:textSize="@dimen/textsize_16_dp"
-                        android:textStyle="bold" />
+                        android:textColor="@color/white_trans_50"
+                        android:textSize="@dimen/textsize_16_dp" />
 
                 </RelativeLayout>
 
@@ -120,36 +116,29 @@
                         android:scaleType="center" />
 
                     <TextView
+                        android:id="@+id/female_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/view_22_dp"
                         android:layout_below="@+id/female"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="@dimen/view_8_dp"
                         android:text="女"
-                        android:textColor="#0F2076"
-                        android:textSize="@dimen/textsize_16_dp"
-                        android:textStyle="bold" />
+                        android:textColor="@color/white_trans_50"
+                        android:textSize="@dimen/textsize_16_dp" />
 
                 </RelativeLayout>
 
             </LinearLayout>
 
 
-            <com.common.view.ex.ExTextView
-                android:id="@+id/next_tv"
-                android:layout_width="@dimen/view_206_dp"
-                android:layout_height="@dimen/view_54_dp"
+            <ImageView
+                android:id="@+id/next_iv"
+                android:layout_width="@dimen/view_172_dp"
+                android:layout_height="@dimen/view_72_dp"
                 android:layout_below="@+id/nickname_et"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/view_188_dp"
-                android:background="@drawable/img_btn_bg_gray"
-                android:gravity="center"
-                android:paddingRight="@dimen/view_6_dp"
-                android:paddingBottom="@dimen/view_6_dp"
-                android:text="下一步"
-                android:textColor="#0C2275"
-                android:textSize="@dimen/textsize_20_dp"
-                android:textStyle="bold" />
+                android:layout_marginTop="@dimen/view_180_dp"
+                android:background="@drawable/next_unclick_icon" />
         </RelativeLayout>
 
     </ScrollView>

@@ -193,7 +193,7 @@ public class EditInfoSexFragment extends BaseFragment {
     private void selectSex(boolean isMale) {
         this.sex = isMale ? ESex.SX_MALE.getValue() : ESex.SX_FEMALE.getValue();
         mMale.setBackground(isMale ? getResources().getDrawable(R.drawable.head_man_xuanzhong) : getResources().getDrawable(R.drawable.head_man_weixuanzhong));
-        mFemale.setBackground(isMale ? getResources().getDrawable(R.drawable.head_woman_weixuanzhong) : getResources().getDrawable(R.drawable.head_women_xuanzhong));
+        mFemale.setBackground(isMale ? getResources().getDrawable(R.drawable.head_woman_weixuanzhong) : getResources().getDrawable(R.drawable.head_woman_xuanzhong));
 
         mMale.setClickable(isMale ? false : true);
         mFemale.setClickable(isMale ? true : false);
