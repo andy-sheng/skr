@@ -104,6 +104,8 @@ public class OthersSingCardView extends RelativeLayout {
             this.mUseId = userInfoModel.getUserId();
             AvatarUtils.loadAvatarByUrl(mSingAvatarView,
                     AvatarUtils.newParamsBuilder(userInfoModel.getAvatar())
+                            .setBorderColor(U.getColor(R.color.white))
+                            .setBorderWidth(U.getDisplayUtils().dip2px(5))
                             .setCircle(true)
                             .build());
         } else {

@@ -52,6 +52,7 @@ import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.common.view.titlebar.CommonTitleBar;
 import com.component.busilib.R;
 import com.component.busilib.constans.GameModeType;
+import com.component.busilib.view.BitmapTextView;
 import com.dialog.view.TipsDialogView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.imagebrowse.ImageBrowseView;
@@ -134,9 +135,9 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
     TagFlowLayout mFlowlayout;
     ExRelativeLayout mGameLayout;
     ImageView mPaiweiImg;
-    ExTextView mRankNumTv;
+    BitmapTextView mRankNumTv;
     ImageView mSingendImg;
-    ExTextView mSingendNumTv;
+    BitmapTextView mSingendNumTv;
     NormalLevelView2 mLevelView;
     ExTextView mLevelTv;
 
@@ -190,7 +191,7 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
 
     private void initBaseContainArea() {
         mSmartRefresh = (SmartRefreshLayout) mRootView.findViewById(R.id.smart_refresh);
-        mClassicsHeader = (ClassicsHeader)mRootView.findViewById(R.id.classics_header);
+        mClassicsHeader = (ClassicsHeader) mRootView.findViewById(R.id.classics_header);
         mAppbar = (AppBarLayout) mRootView.findViewById(R.id.appbar);
         mToolbarLayout = (CollapsingToolbarLayout) mRootView.findViewById(R.id.toolbar_layout);
         mUserInfoArea = (RelativeLayout) mRootView.findViewById(R.id.user_info_area);
@@ -249,9 +250,9 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
         mFlowlayout = (TagFlowLayout) mRootView.findViewById(R.id.flowlayout);
         mGameLayout = (ExRelativeLayout) mRootView.findViewById(R.id.game_layout);
         mPaiweiImg = (ImageView) mRootView.findViewById(R.id.paiwei_img);
-        mRankNumTv = (ExTextView) mRootView.findViewById(R.id.rank_num_tv);
+        mRankNumTv = (BitmapTextView) mRootView.findViewById(R.id.rank_num_tv);
         mSingendImg = (ImageView) mRootView.findViewById(R.id.singend_img);
-        mSingendNumTv = (ExTextView) mRootView.findViewById(R.id.singend_num_tv);
+        mSingendNumTv = (BitmapTextView) mRootView.findViewById(R.id.singend_num_tv);
         mLevelView = (NormalLevelView2) mRootView.findViewById(R.id.level_view);
         mLevelTv = (ExTextView) mRootView.findViewById(R.id.level_tv);
 
@@ -609,13 +610,10 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
 
     public void showGameStatic(List<GameStatisModel> list) {
         for (GameStatisModel gameStatisModel : list) {
-            SpannableStringBuilder stringBuilder = new SpanUtils()
-                    .append(String.valueOf(gameStatisModel.getTotalTimes())).setFontSize(14, true)
-                    .create();
             if (gameStatisModel.getMode() == GameModeType.GAME_MODE_CLASSIC_RANK) {
-                mRankNumTv.setText(stringBuilder);
+                mRankNumTv.setText("" + gameStatisModel.getTotalTimes());
             } else if (gameStatisModel.getMode() == GameModeType.GAME_MODE_GRAB) {
-                mSingendNumTv.setText(stringBuilder);
+                mSingendNumTv.setText("" + gameStatisModel.getTotalTimes());
             }
         }
     }

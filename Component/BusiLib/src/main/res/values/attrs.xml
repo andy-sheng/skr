@@ -4,5 +4,7 @@
     <declare-styleable name="BitmapTextView">
         <!--字体的高度-->
         <attr name="scale" format="float" />
+        <!--字体的颜色-->
+        <attr name="text_color" format="color"/>
     </declare-styleable>
 </resources>

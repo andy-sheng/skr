@@ -13,6 +13,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.common.log.MyLog;
+import com.common.utils.BitmapUtils;
 import com.common.utils.U;
 import com.component.busilib.R;
 
@@ -24,11 +25,12 @@ public class BitmapTextView extends View {
     public final static String TAG = "BitmapTextView";
 
     List<Bitmap> mBitmapList = new ArrayList<>();
-    int diff = U.getDisplayUtils().dip2px(5);  //两张图片的偏移量重合部分
+    int diff = U.getDisplayUtils().dip2px(4);  //两张图片的偏移量重合部分
     int mWidth = 0;// view的宽度
     int mHeight = 0;// view的高度
 
-    float scale; //图片放缩
+    float scale;   //图片放缩比例
+    int textColor; //图片文字颜色
 
     public BitmapTextView(Context context) {
         super(context);
@@ -48,6 +50,7 @@ public class BitmapTextView extends View {
     private void init(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BitmapTextView);
         scale = typedArray.getFloat(R.styleable.BitmapTextView_scale, 1.0f);
+        textColor = typedArray.getColor(R.styleable.BitmapTextView_text_color, 0);
         typedArray.recycle();
     }
 
@@ -128,7 +131,11 @@ public class BitmapTextView extends View {
                             if (mHeight < newBM.getHeight()) {
                                 mHeight = newBM.getHeight();
                             }
-                            mBitmapList.add(newBM);
+                            if (textColor != 0) {
+                                mBitmapList.add(U.getBitmapUtils().tintBitmap(newBM, textColor));
+                            } else {
+                                mBitmapList.add(newBM);
+                            }
                         } else {
                             MyLog.w(TAG, "setText" + " text=" + text + "newBM is null");
                             MyLog.w(TAG, "scale = " + scale);
@@ -138,7 +145,12 @@ public class BitmapTextView extends View {
                         if (mHeight < bitmap.getHeight()) {
                             mHeight = bitmap.getHeight();
                         }
-                        mBitmapList.add(bitmap);
+                        if (textColor != 0) {
+                            mBitmapList.add(U.getBitmapUtils().tintBitmap(bitmap, textColor));
+                        } else {
+                            mBitmapList.add(bitmap);
+                        }
+
                     }
                 } else {
                     MyLog.w(TAG, " setText error text=" + text);
