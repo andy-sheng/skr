@@ -418,8 +418,7 @@
                         android:id="@+id/toolbar"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/view_70_dp"
-                        android:layout_gravity="bottom|center_horizontal"
-                        android:visibility="gone"
+                        android:layout_gravity="top"
                         app:contentInsetStart="@dimen/view_0_dp"
                         app:contentInsetStartWithNavigation="@dimen/view_0_dp"
                         app:layout_collapseMode="pin">
