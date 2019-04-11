@@ -10,25 +10,19 @@ import android.view.ViewGroup;
 
 import com.common.base.BaseFragment;
 import com.common.base.R;
+import com.common.callback.Callback;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.titlebar.CommonTitleBar;
 import com.common.view.viewpager.arraypageradapter.ArrayViewPagerAdapter;
+import com.dialog.list.DialogListItem;
+import com.dialog.list.ListDialog;
 import com.imagebrowse.ImageBrowseView;
-import com.trello.rxlifecycle2.android.FragmentEvent;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * 看大图的Fragment
@@ -43,7 +37,7 @@ public class BigImageBrowseFragment extends BaseFragment {
     Loader mLoader;
     int mLastPostion = 0;
     boolean mBackward;
-    Disposable mLoadMoreDisposable;
+    ListDialog mMenuDialog;
 
     ArrayViewPagerAdapter mPagerAdapter = new ArrayViewPagerAdapter() {
         @Override
@@ -79,6 +73,10 @@ public class BigImageBrowseFragment extends BaseFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        if (mLoader == null) {
+            finish();
+            return;
+        }
 
         U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
 
@@ -93,10 +91,45 @@ public class BigImageBrowseFragment extends BaseFragment {
             }
         });
 
-        if (mLoader == null) {
-            finish();
-            return;
+        if (mLoader.hasDeleteMenu()) {
+            mTitlebar.getRightImageButton().setOnClickListener(new DebounceViewClickListener() {
+                @Override
+                public void clickValid(View v) {
+                    mMenuDialog = new ListDialog(getContext());
+                    List<DialogListItem> listItems = new ArrayList<>();
+                    if (mLoader.hasDeleteMenu()) {
+                        listItems.add(new DialogListItem("删除", new Runnable() {
+                            @Override
+                            public void run() {
+                                int cp = mImagesVp.getCurrentItem();
+                                if (mLoader.getDeleteListener() != null) {
+                                    mLoader.getDeleteListener().onCallback(0, mPagerAdapter.getItem(cp));
+                                }
+                                mPagerAdapter.remove(cp);
+                                mMenuDialog.dissmiss();
+                                if (mPagerAdapter.getCount() <= 0) {
+                                    finish();
+                                }
+                            }
+                        }));
+                    }
+
+                    listItems.add(new DialogListItem("取消", new Runnable() {
+                        @Override
+                        public void run() {
+                            if (mMenuDialog != null) {
+                                mMenuDialog.dissmiss();
+                            }
+                        }
+                    }));
+                    mMenuDialog.showList(listItems);
+                }
+            });
+        } else {
+            mTitlebar.getRightImageButton().setVisibility(View.GONE);
         }
+
+
         mPagerAdapter.addAll(mLoader.getInitList());
         mImagesVp.setAdapter(mPagerAdapter);
         setCurrentItem(mLoader.getInitCurrentItemPostion());
@@ -148,30 +181,16 @@ public class BigImageBrowseFragment extends BaseFragment {
     }
 
     void loadMore(boolean backward, int postion) {
-        if (mLoadMoreDisposable != null && !mLoadMoreDisposable.isDisposed()) {
-            return;
-        }
-        mLoadMoreDisposable = Observable.create(new ObservableOnSubscribe<List>() {
+        mLoader.loadMore(backward, postion, mPagerAdapter.getItem(postion), new Callback<List>() {
             @Override
-            public void subscribe(ObservableEmitter<List> emitter) throws Exception {
-                List dataList = mLoader.loadMore(backward, postion, mPagerAdapter.getItem(postion));
-                emitter.onNext(dataList);
-                emitter.onComplete();
+            public void onCallback(int r, List list) {
+                if (backward) {
+                    mPagerAdapter.addAll(list);
+                } else {
+                    mPagerAdapter.addAll(0, list);
+                }
             }
-        }).subscribeOn(Schedulers.io())
-                .compose(BigImageBrowseFragment.this.bindUntilEvent(FragmentEvent.DESTROY))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List>() {
-                    @Override
-                    public void accept(List list) throws Exception {
-                        if (backward) {
-                            mPagerAdapter.addAll(list);
-                        } else {
-                            mPagerAdapter.addAll(0, list);
-                            //setCurrentItem(mImagesVp.getCurrentItem() + list.size());
-                        }
-                    }
-                });
+        });
     }
 
     void setCurrentItem(int postion) {
@@ -233,7 +252,7 @@ public class BigImageBrowseFragment extends BaseFragment {
     }
 
     public static void open(boolean useActivity, FragmentActivity activity, String path) {
-        open(useActivity, activity, new Loader<String>() {
+        open(useActivity, activity, new DefaultImageBrowserLoader<String>() {
             @Override
             public void init() {
 
@@ -257,8 +276,8 @@ public class BigImageBrowseFragment extends BaseFragment {
             }
 
             @Override
-            public List<String> loadMore(boolean backward, int position, String data) {
-                return new ArrayList<>();
+            public void loadMore(boolean backward, int position, String data, Callback<List<String>> callback) {
+
             }
 
             @Override
@@ -269,33 +288,4 @@ public class BigImageBrowseFragment extends BaseFragment {
         });
     }
 
-    public interface Loader<T> {
-        void init();
-
-        void load(ImageBrowseView imageBrowseView, int position, T item);
-
-        int getInitCurrentItemPostion();
-
-        List<T> getInitList();
-
-        /**
-         * 执行在IO线程
-         * 一定要判断是向前还是向后
-         * backward 为 true，表示要向后加载更多，position 为当前最后一个元素的索引
-         * backward 为 false，表示要向前加载更多，position 为当前最前一个元素的索引
-         *
-         * @param backward
-         * @param position 返回新增了多少个元素，主要用在向前load more 时，更正当前元素的索引
-         */
-        List<T> loadMore(boolean backward, int position, T data);
-
-        /**
-         * 一定要判断是向前还是向后
-         * backward 为 true，表示要向后加载更多
-         * backward 为 false，表示要向前加载更多
-         *
-         * @param backward
-         */
-        boolean hasMore(boolean backward, int position, T data);
-    }
 }

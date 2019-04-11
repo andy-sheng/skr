@@ -4,10 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.common.anim.ObjectPlayControlTemplate;
+import com.common.callback.Callback;
 import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoLocalApi;
 import com.common.core.myinfo.MyUserInfoManager;
-import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.model.GameStatisModel;
 import com.common.core.userinfo.model.UserInfoModel;
@@ -38,11 +38,11 @@ import com.zq.person.model.PhotoModel;
 
 public class PersonCorePresenter extends RxLifeCyclePresenter {
 
-    UserInfoServerApi userInfoServerApi;
+    UserInfoServerApi mUserInfoServerApi;
     IPersonView mView;
 
     long mLastUpdateTime = 0;  // 主页刷新时间
-//    long mLastPhotoUpTime = 0; // 照片墙更新时间
+    //    long mLastPhotoUpTime = 0; // 照片墙更新时间
     boolean mUploadingPhoto = false;
 
     ObjectPlayControlTemplate<ImageItem, PersonCorePresenter> mPlayControlTemplate = new ObjectPlayControlTemplate<ImageItem, PersonCorePresenter>() {
@@ -70,7 +70,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
 
     public PersonCorePresenter(IPersonView view) {
         this.mView = view;
-        userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
+        mUserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
     }
 
     /**
@@ -88,7 +88,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
     }
 
     private void getHomePage(int userID) {
-        ApiMethods.subscribe(userInfoServerApi.getHomePage(userID), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mUserInfoServerApi.getHomePage(userID), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
@@ -122,7 +122,11 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
 //    }
 
     public void getPhotos(int offset, int cnt) {
-        ApiMethods.subscribe(userInfoServerApi.getPhotos((int) MyUserInfoManager.getInstance().getUid(), offset, cnt), new ApiObserver<ApiResult>() {
+        getPhotos(offset, cnt, null);
+    }
+
+    public void getPhotos(int offset, int cnt, Callback<List<PhotoModel>> callback) {
+        ApiMethods.subscribe(mUserInfoServerApi.getPhotos((int) MyUserInfoManager.getInstance().getUid(), offset, cnt), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
@@ -130,22 +134,28 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
                         List<PhotoModel> list = JSON.parseArray(result.getData().getString("pic"), PhotoModel.class);
                         int newOffset = result.getData().getIntValue("offset");
                         int totalCount = result.getData().getIntValue("totalCount");
-                        if(offset==0){
+                        if (offset == 0) {
                             // 刷新拉
                             mView.showPhoto(list, true, totalCount);
-                        }else{
+                            if (callback != null) {
+                                callback.onCallback(1, list);
+                            }
+                        } else {
                             // 下拉更多拉
                             mView.showPhoto(list, false, totalCount);
+                            if (callback != null) {
+                                callback.onCallback(2, list);
+                            }
                         }
+
                     }
                 }
             }
-        }, this);
+        }, this, new ApiMethods.RequestControl("getPhotos", ApiMethods.ControlType.CancelThis));
     }
 
     public void getRelationNums() {
-        UserInfoServerApi userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
-        ApiMethods.subscribe(userInfoServerApi.getRelationNum((int) MyUserInfoManager.getInstance().getUid()), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mUserInfoServerApi.getRelationNum((int) MyUserInfoManager.getInstance().getUid()), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
@@ -177,7 +187,6 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
                     public void onSuccess(String url) {
                         mUploadingPhoto = false;
                         // 上传到服务器
-                        UserInfoServerApi userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
                         HashMap<String, Object> map = new HashMap<>();
 
                         List<JSONObject> pics = new ArrayList<>();
@@ -187,7 +196,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
                         map.put("pic", pics);
                         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
 
-                        ApiMethods.subscribe(userInfoServerApi.addPhoto(body), new ApiObserver<ApiResult>() {
+                        ApiMethods.subscribe(mUserInfoServerApi.addPhoto(body), new ApiObserver<ApiResult>() {
                             @Override
                             public void process(ApiResult obj) {
                                 if (obj.getErrno() == 0) {
@@ -201,6 +210,8 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
                                         photoModel.setPicPath(url);
                                         mView.insertPhoto(photoModel);
                                     }
+                                } else {
+                                    U.getToastUtil().showShort(obj.getErrmsg());
                                 }
                             }
                         });
@@ -213,5 +224,24 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
                         mPlayControlTemplate.endCurrent(imageItem);
                     }
                 });
+    }
+
+    public void deletePhoto(PhotoModel photoModel) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("picID", photoModel.getPicID());
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+
+        ApiMethods.subscribe(mUserInfoServerApi.deletePhoto(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult obj) {
+                if (obj.getErrno() == 0) {
+                    if (mView != null) {
+                        mView.deletePhoto(photoModel);
+                    }
+                } else {
+                    U.getToastUtil().showShort(obj.getErrmsg());
+                }
+            }
+        });
     }
 }

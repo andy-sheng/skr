@@ -12,7 +12,7 @@ import com.common.base.R;
  * 包裹看大图的Activity
  */
 public class BigImageBrowseActivity extends BaseActivity {
-    static BigImageBrowseFragment.Loader sLoader;
+    static Loader sLoader;
 
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
@@ -36,7 +36,7 @@ public class BigImageBrowseActivity extends BaseActivity {
         return false;
     }
 
-    public static void open(BigImageBrowseFragment.Loader loader, FragmentActivity activity) {
+    public static void open(Loader loader, FragmentActivity activity) {
         sLoader = loader;
         Intent intent = new Intent(activity, BigImageBrowseActivity.class);
         activity.startActivity(intent);

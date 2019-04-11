@@ -105,6 +105,7 @@ public class PhotoAdapter extends RecyclerView.Adapter {
 
     /**
      * 尾部插入一堆数据
+     *
      * @param list
      */
     public void insertLast(List<PhotoModel> list) {
@@ -114,6 +115,17 @@ public class PhotoAdapter extends RecyclerView.Adapter {
             notifyItemRangeInserted(origin + 1, mDataList.size() - origin + 1);
         } else {
             notifyItemRangeInserted(origin, mDataList.size() - origin);
+        }
+    }
+
+    public void delete(PhotoModel photoModel) {
+        for (int i = 0; i < mDataList.size(); i++) {
+            PhotoModel m = mDataList.get(i);
+            if (m.equals(photoModel)) {
+                mDataList.remove(i);
+                notifyItemRemoved(i);
+                return;
+            }
         }
     }
 }

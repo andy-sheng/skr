@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.common.base.BaseFragment;
+import com.common.callback.Callback;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
@@ -44,7 +45,13 @@ import com.common.view.titlebar.CommonTitleBar;
 import com.component.busilib.constans.GameModeType;
 import com.component.busilib.manager.WeakRedDotManager;
 import com.component.busilib.view.BitmapTextView;
+import com.dialog.list.DialogListItem;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.imagebrowse.ImageBrowseView;
+import com.imagebrowse.big.BigImageBrowseActivity;
+import com.imagebrowse.big.BigImageBrowseFragment;
+import com.imagebrowse.big.DefaultImageBrowserLoader;
+import com.imagebrowse.big.Loader;
 import com.module.home.R;
 import com.module.home.musictest.fragment.MusicTestFragment;
 import com.module.home.persenter.PersonCorePresenter;
@@ -65,7 +72,9 @@ import com.zq.relation.fragment.RelationFragment;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.List;
+
 import model.RelationNumModel;
 
 public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRedDotManager.WeakRedDotListener {
@@ -150,7 +159,7 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
     protected void onFragmentVisible() {
         super.onFragmentVisible();
         mPresenter.getHomePage(false);
-        if(mPhotoAdapter.getDataList().isEmpty()){
+        if (mPhotoAdapter.getDataList().isEmpty()) {
             mPresenter.getPhotos(0, DEFAUAT_CNT);
         }
     }
@@ -344,6 +353,73 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
             public void onItemClicked(View view, int position, Object model) {
                 if (model instanceof AddPhotoModel) {
                     goAddPhotoFragment();
+                } else if (model instanceof PhotoModel) {
+                    // 跳到看大图
+
+                    BigImageBrowseFragment.open(true, getActivity(), new DefaultImageBrowserLoader<PhotoModel>() {
+                        @Override
+                        public void init() {
+
+                        }
+
+                        @Override
+                        public void load(ImageBrowseView imageBrowseView, int position, PhotoModel item) {
+                            imageBrowseView.load(item.getPicPath());
+                        }
+
+                        @Override
+                        public int getInitCurrentItemPostion() {
+                            return position - 1;
+                        }
+
+                        @Override
+                        public List<PhotoModel> getInitList() {
+                            return mPhotoAdapter.getDataList();
+                        }
+
+                        @Override
+                        public void loadMore(boolean backward, int position, PhotoModel data, Callback<List<PhotoModel>> callback) {
+                            if (backward) {
+                                // 向后加载
+                                mPresenter.getPhotos(mPhotoAdapter.getDataList().size(), DEFAUAT_CNT, new Callback<List<PhotoModel>>() {
+                                    @Override
+                                    public void onCallback(int r, List<PhotoModel> obj) {
+                                        if (callback != null) {
+                                            callback.onCallback(0, obj);
+                                        }
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public boolean hasMore(boolean backward, int position, PhotoModel data) {
+                            if (backward) {
+                                return mHasMore;
+                            }
+                            return false;
+                        }
+
+                        @Override
+                        public boolean hasMenu() {
+                            return true;
+                        }
+
+                        @Override
+                        public boolean hasDeleteMenu() {
+                            return true;
+                        }
+
+                        @Override
+                        public Callback<PhotoModel> getDeleteListener() {
+                            return new Callback<PhotoModel>() {
+                                @Override
+                                public void onCallback(int r, PhotoModel obj) {
+                                    mPresenter.deletePhoto(obj);
+                                }
+                            };
+                        }
+                    });
                 }
             }
         }, true);
@@ -479,21 +555,20 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
 
     @Override
     public void showPhoto(List<PhotoModel> list, boolean clear, int totalNum) {
-        MyLog.d(TAG,"showPhoto" + " list=" + list + " clear=" + clear + " totalNum=" + totalNum);
+        MyLog.d(TAG, "showPhoto" + " list=" + list + " clear=" + clear + " totalNum=" + totalNum);
         mSmartRefresh.finishRefresh();
         mSmartRefresh.finishLoadMore();
 
         mPhotoNumTv.setText("个人相册（" + totalNum + "）");
         mPhotoNumTv.setVisibility(View.VISIBLE);
 
-
         if (list != null && list.size() > 0) {
             // 有数据
             mHasMore = true;
             mSmartRefresh.setEnableLoadMore(true);
-            if(clear){
+            if (clear) {
                 mPhotoAdapter.setDataList(list);
-            }else{
+            } else {
                 mPhotoAdapter.insertLast(list);
             }
         } else {
@@ -510,6 +585,11 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
     @Override
     public void insertPhoto(PhotoModel photoModel) {
         mPhotoAdapter.insertFirst(photoModel);
+    }
+
+    @Override
+    public void deletePhoto(PhotoModel photoModel) {
+        mPhotoAdapter.delete(photoModel);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

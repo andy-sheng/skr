@@ -28,6 +28,24 @@ public class PhotoModel implements Serializable {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        PhotoModel that = (PhotoModel) o;
+
+        if (picID != that.picID) return false;
+        return picPath != null ? picPath.equals(that.picPath) : that.picPath == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = picID;
+        result = 31 * result + (picPath != null ? picPath.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "PhotoModel{" +
                 "picID=" + picID +

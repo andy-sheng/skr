@@ -7,6 +7,7 @@ import com.common.core.userinfo.model.UserRankModel;
 import model.RelationNumModel;
 
 import com.common.core.userinfo.model.UserLevelModel;
+import com.common.rxretrofit.ApiResult;
 import com.zq.person.model.PhotoModel;
 
 import java.util.List;
@@ -39,4 +40,6 @@ public interface IPersonView {
     void showPhoto(List<PhotoModel> list, boolean clear, int totalNum);
 
     void insertPhoto(PhotoModel photoModel);
+
+    void deletePhoto(PhotoModel photoModel);
 }

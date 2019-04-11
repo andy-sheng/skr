@@ -379,68 +379,68 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         mPhotoAdapter = new PhotoAdapter(new RecyclerOnItemClickListener() {
             @Override
             public void onItemClicked(View view, final int position, Object model) {
-                BigImageBrowseFragment.open(false, (FragmentActivity) getContext(), new BigImageBrowseFragment.Loader<PhotoModel>() {
-
-                    @Override
-                    public void init() {
-
-                    }
-
-                    @Override
-                    public List getInitList() {
-                        return mPhotoAdapter.getDataList();
-                    }
-
-                    @Override
-                    public List<PhotoModel> loadMore(boolean backward, int position, PhotoModel data) {
-                        if (backward) {
-                            Call<ApiResult> call = mUserInfoServerApi.getPhotosSync(mUserId, position, DEFAULT_CNT);
-                            Response<ApiResult> rsp = null;
-                            try {
-                                rsp = call.execute();
-                                ApiResult result = rsp.body();
-
-                                if (result != null && result.getErrno() == 0) {
-                                    final List<PhotoModel> list = JSON.parseArray(result.getData().getString("pic"), PhotoModel.class);
-                                    final int newOffset = result.getData().getIntValue("offset");
-                                    final int totalCount = result.getData().getIntValue("totalCount");
-
-                                    mUiHandler.post(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            showPhotos(list, newOffset, totalCount);
-                                        }
-                                    });
-                                    return list;
-                                }
-                            } catch (IOException e) {
-                                MyLog.e(e);
-                            }
-                            return null;
-                        } else {
-                            return null;
-                        }
-                    }
-
-                    @Override
-                    public boolean hasMore(boolean backward, int position, PhotoModel data) {
-                        if (backward) {
-                            return mHasMore;
-                        } else {
-                            return false;
-                        }
-                    }
-
-                    @Override
-                    public void load(ImageBrowseView imageBrowseView, int position, PhotoModel item) {
-                        imageBrowseView.load(item.getPicPath());
-                    }
-
-                    @Override
-                    public int getInitCurrentItemPostion() {
-                        return position;
-                    }
-                });
+//                BigImageBrowseFragment.open(false, (FragmentActivity) getContext(), new BigImageBrowseFragment.Loader<PhotoModel>() {
+//
+//                    @Override
+//                    public void init() {
+//
+//                    }
+//
+//                    @Override
+//                    public List getInitList() {
+//                        return mPhotoAdapter.getDataList();
+//                    }
+//
+//                    @Override
+//                    public List<PhotoModel> loadMore(boolean backward, int position, PhotoModel data) {
+//                        if (backward) {
+//                            Call<ApiResult> call = mUserInfoServerApi.getPhotosSync(mUserId, position, DEFAULT_CNT);
+//                            Response<ApiResult> rsp = null;
+//                            try {
+//                                rsp = call.execute();
+//                                ApiResult result = rsp.body();
+//
+//                                if (result != null && result.getErrno() == 0) {
+//                                    final List<PhotoModel> list = JSON.parseArray(result.getData().getString("pic"), PhotoModel.class);
+//                                    final int newOffset = result.getData().getIntValue("offset");
+//                                    final int totalCount = result.getData().getIntValue("totalCount");
+//
+//                                    mUiHandler.post(new Runnable() {
+//                                        @Override
+//                                        public void run() {
+//                                            showPhotos(list, newOffset, totalCount);
+//                                        }
+//                                    });
+//                                    return list;
+//                                }
+//                            } catch (IOException e) {
+//                                MyLog.e(e);
+//                            }
+//                            return null;
+//                        } else {
+//                            return null;
+//                        }
+//                    }
+//
+//                    @Override
+//                    public boolean hasMore(boolean backward, int position, PhotoModel data) {
+//                        if (backward) {
+//                            return mHasMore;
+//                        } else {
+//                            return false;
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void load(ImageBrowseView imageBrowseView, int position, PhotoModel item) {
+//                        imageBrowseView.load(item.getPicPath());
+//                    }
+//
+//                    @Override
+//                    public int getInitCurrentItemPostion() {
+//                        return position;
+//                    }
+//                });
             }
         }, false);
         mPhotoRv.setAdapter(mPhotoAdapter);
