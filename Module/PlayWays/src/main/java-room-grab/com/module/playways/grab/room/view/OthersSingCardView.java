@@ -19,6 +19,7 @@ import com.common.image.model.ImageFactory;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
+import com.common.view.countdown.CircleCountDownView;
 import com.facebook.fresco.animation.drawable.AnimatedDrawable2;
 import com.facebook.fresco.animation.drawable.AnimationListener;
 import com.facebook.imagepipeline.image.ImageInfo;
@@ -48,7 +49,7 @@ public class OthersSingCardView extends RelativeLayout {
 
     BaseImageView mGrabStageView;
     BaseImageView mSingAvatarView;
-    ArcProgressBar mCountDownProcess;
+    CircleCountDownView mCircleCountDownView;
 
     AlphaAnimation mEnterAlphaAnimation;                // 进场动画
     TranslateAnimation mLeaveTranslateAnimation;   // 出场动画
@@ -79,7 +80,7 @@ public class OthersSingCardView extends RelativeLayout {
         inflate(getContext(), R.layout.grab_others_sing_card_layout, this);
         mGrabStageView = (BaseImageView) findViewById(R.id.grab_stage_view);
         mSingAvatarView = (BaseImageView) findViewById(R.id.sing_avatar_view);
-        mCountDownProcess = (ArcProgressBar) findViewById(R.id.count_down_process);
+        mCircleCountDownView = (CircleCountDownView) findViewById(R.id.circle_count_down_view);
 
         mSingAvatarView.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -109,7 +110,7 @@ public class OthersSingCardView extends RelativeLayout {
             MyLog.w(TAG, "userInfoModel==null 加载选手信息失败");
         }
         mCountDownStatus = COUNT_DOWN_STATUS_WAIT;
-        mCountDownProcess.setProgress(0);
+        mCircleCountDownView.setProgress(0);
         // 淡出效果
         if (mEnterAlphaAnimation == null) {
             mEnterAlphaAnimation = new AlphaAnimation(0f, 1f);
@@ -180,18 +181,7 @@ public class OthersSingCardView extends RelativeLayout {
         if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_SING) {
             countDown("中途进来");
         } else {
-            if (!mHasPlayFullAnimation) {
-                mHasPlayFullAnimation = true;
-                mCountDownProcess.fullCountDownAnimation(new ArcProgressBar.ArcAnimationListener() {
-                    @Override
-                    public void onAnimationEnd() {
-                        MyLog.d(TAG, "onAnimationEnd");
-                        countDown("after full Animation");
-                    }
-                });
-            } else {
-                countDown("else full Animation");
-            }
+            countDown("else full Animation");
         }
     }
 
@@ -208,7 +198,8 @@ public class OthersSingCardView extends RelativeLayout {
                 mCountDownStatus = COUNT_DOWN_STATUS_PLAYING;
             } else {
                 // 不需要播放countdown
-                mCountDownProcess.startCountDown(0, totalMs);
+//                mCountDownProcess.startCountDown(0, totalMs);
+                mCircleCountDownView.go(0, totalMs);
                 return;
             }
         }
@@ -224,7 +215,8 @@ public class OthersSingCardView extends RelativeLayout {
             progress = 1;
             leaveTime = totalMs;
         }
-        mCountDownProcess.startCountDown(progress, leaveTime);
+//        mCountDownProcess.startCountDown(progress, leaveTime);
+        mCircleCountDownView.go(progress, leaveTime);
     }
 
     public void hide() {
