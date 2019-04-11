@@ -8,6 +8,7 @@ import android.view.View;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
 import com.common.image.model.oss.OssImgFactory;
+import com.common.log.MyLog;
 import com.common.utils.ImageUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -18,6 +19,8 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.zq.person.model.PhotoModel;
 
 public class PhotoViewHolder extends RecyclerView.ViewHolder {
+
+    public final static String TAG = "PhotoViewHolder";
 
     SimpleDraweeView mPhotoIv;
     ExTextView mUploadTipsTv;
@@ -42,6 +45,8 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bindData(PhotoModel photoModel, int position) {
+        MyLog.d(TAG,"bindData" + " photoModel=" + photoModel + " position=" + position);
+
         this.mPhotoModel = photoModel;
         this.position = position;
 
@@ -56,6 +61,7 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
                         .addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_160.getW()).build())
                         .setBorderColor(Color.parseColor("#3B4E79")).build());
         mUploadTipsTv.setVisibility(View.VISIBLE);
+        mUploadTipsTv.setTextColor(Color.WHITE);
         if (mPhotoModel.getStatus() == PhotoModel.STATUS_DELETE) {
             mUploadTipsTv.setText("删除");
         } else if (mPhotoModel.getStatus() == PhotoModel.STATUS_UPLOADING) {

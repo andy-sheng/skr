@@ -212,8 +212,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
 
                     @Override
                     public void onSuccess(String url) {
-                        MyLog.d(TAG,"上传成功" + " url=" + url);
-                        mUploadingPhoto = false;
+                        MyLog.d(TAG, "上传成功" + " url=" + url);
                         // 上传到服务器
                         HashMap<String, Object> map = new HashMap<>();
 
@@ -227,6 +226,8 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
                         ApiMethods.subscribe(mUserInfoServerApi.addPhoto(body), new ApiObserver<ApiResult>() {
                             @Override
                             public void process(ApiResult obj) {
+                                mUploadingPhoto = false;
+                                mPlayControlTemplate.endCurrent(photo);
                                 if (obj.getErrno() == 0) {
                                     JSONArray jsonArray = obj.getData().getJSONArray("pic");
                                     if (jsonArray.size() > 0) {
@@ -239,24 +240,30 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
                                         mView.updatePhoto(photo);
                                         // 删除数据中的
                                         PhotoDataManager.delete(photo);
+                                        return;
                                     }
-                                } else {
-                                    photo.setStatus(PhotoModel.STATUS_FAILED);
-                                    mView.updatePhoto(photo);
-                                    U.getToastUtil().showShort(obj.getErrmsg());
                                 }
+                                photo.setStatus(PhotoModel.STATUS_FAILED);
+                                mView.updatePhoto(photo);
+                                U.getToastUtil().showShort(obj.getErrmsg());
+                            }
+
+                            @Override
+                            public void onNetworkError(ErrorType errorType) {
+                                super.onNetworkError(errorType);
+                                mUploadingPhoto = false;
+                                mPlayControlTemplate.endCurrent(photo);
                             }
                         });
-                        mPlayControlTemplate.endCurrent(photo);
                     }
 
                     @Override
                     public void onFailure(String msg) {
-                        MyLog.d(TAG,"上传失败" + " msg=" + msg);
                         mUploadingPhoto = false;
+                        mPlayControlTemplate.endCurrent(photo);
+                        MyLog.d(TAG, "上传失败" + " msg=" + msg);
                         photo.setStatus(PhotoModel.STATUS_FAILED);
                         mView.updatePhoto(photo);
-                        mPlayControlTemplate.endCurrent(photo);
                     }
                 });
     }

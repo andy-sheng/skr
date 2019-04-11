@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.common.log.MyLog;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;
 import com.zq.person.holder.PhotoAddHolder;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PhotoAdapter extends RecyclerView.Adapter {
-
+    public final static String TAG = "PhotoAdapter";
     List<PhotoModel> mDataList = new ArrayList<>();
     RecyclerOnItemClickListener mListener;
 
@@ -83,6 +84,7 @@ public class PhotoAdapter extends RecyclerView.Adapter {
 
     /**
      * 列表中上传成功的item个数
+     *
      * @return
      */
     public int getSuccessNum() {
@@ -144,18 +146,30 @@ public class PhotoAdapter extends RecyclerView.Adapter {
         for (int i = 0; i < mDataList.size(); i++) {
             PhotoModel m = mDataList.get(i);
             if (m.equals(photoModel)) {
+                MyLog.d(TAG, "delete" + " find i=" + i);
                 mDataList.remove(i);
-                notifyItemRemoved(i);
+                if (mHasUpdate) {
+                    notifyItemRemoved(i + 1);
+                } else {
+                    notifyItemRemoved(i);
+                }
                 return;
             }
         }
     }
 
     public void update(PhotoModel photoModel) {
+        MyLog.d(TAG, "update" + " photoModel=" + photoModel);
         for (int i = 0; i < mDataList.size(); i++) {
             PhotoModel m = mDataList.get(i);
             if (m.equals(photoModel)) {
-                notifyItemChanged(i);
+                MyLog.d(TAG, "update" + " find i=" + i);
+                m.setStatus(photoModel.getStatus());
+                if (mHasUpdate) {
+                    notifyItemChanged(i + 1);
+                } else {
+                    notifyItemChanged(i);
+                }
                 return;
             }
         }

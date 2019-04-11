@@ -16,9 +16,9 @@ import com.facebook.imagepipeline.request.Postprocessor;
 public abstract class BaseImage {
     protected Uri mUri;
 
-    protected int mWidth =  0; //显示宽度
+    protected int mWidth =  0; //显示宽度 其实缩小 bitmap
 
-    protected int mHeight = 0;//显示高度
+    protected int mHeight = 0;//显示高度 其实缩小 bitmap
 
     /**
      * FIT_XY           无视宽高比填充满

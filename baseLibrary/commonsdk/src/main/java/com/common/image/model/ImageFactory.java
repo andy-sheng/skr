@@ -5,6 +5,7 @@ import android.net.Uri;
 
 import com.common.image.fresco.IFrescoCallBack;
 import com.common.image.model.oss.IOssParam;
+import com.common.image.model.oss.OssImgResize;
 import com.common.log.MyLog;
 import com.facebook.drawee.drawable.ProgressBarDrawable;
 import com.facebook.drawee.drawable.ScalingUtils.ScaleType;
@@ -174,6 +175,18 @@ public class ImageFactory {
                 HttpImage httpImage = (HttpImage) mBaseImage;
                 httpImage.addOssProcessors(ossProcessors);
             } else {
+                for(IOssParam iOssParam:ossProcessors){
+                    if(iOssParam instanceof OssImgResize){
+                        OssImgResize ossImgResize = (OssImgResize) iOssParam;
+                        if(ossImgResize.getW()>0){
+                            setWidth(ossImgResize.getW());
+                        }
+                        if(ossImgResize.getH()>0){
+                            setHeight(ossImgResize.getH());
+                        }
+                        break;
+                    }
+                }
                 if (MyLog.isDebugLogOpen()) {
                     //throw new IllegalStateException("setOssProcessors only can be set In HttpImage");
                 }
