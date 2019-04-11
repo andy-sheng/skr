@@ -1,6 +1,7 @@
 package com.module.home.persenter;
 
 import com.alibaba.fastjson.JSON;
+import com.common.anim.ObjectPlayControlTemplate;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.model.GameStatisModel;
@@ -13,25 +14,53 @@ import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 
 import model.RelationNumModel;
-import retrofit2.http.DELETE;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
-import com.common.utils.U;
+import com.common.upload.UploadCallback;
+import com.common.upload.UploadParams;
+import com.common.upload.UploadTask;
 import com.module.home.view.IPersonView;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.common.core.userinfo.model.UserLevelModel;
+import com.respicker.model.ImageItem;
 import com.zq.person.model.PhotoModel;
 
 public class PersonCorePresenter extends RxLifeCyclePresenter {
 
     UserInfoServerApi userInfoServerApi;
-    IPersonView view;
+    IPersonView mView;
     long mLastUpdateTime = 0;  // 主页刷新时间
     int DEFUAT_CNT = 20;       // 默认拉取一页的数量
+    boolean mUploadingPhoto = false;
+
+    ObjectPlayControlTemplate<ImageItem, PersonCorePresenter> mPlayControlTemplate = new ObjectPlayControlTemplate<ImageItem, PersonCorePresenter>() {
+        @Override
+        protected PersonCorePresenter accept(ImageItem cur) {
+            if (mUploadingPhoto) {
+                return null;
+            } else {
+                mUploadingPhoto = true;
+                return PersonCorePresenter.this;
+            }
+        }
+
+        @Override
+        public void onStart(ImageItem imageItem, PersonCorePresenter personFragment2) {
+            execUploadPhoto(imageItem);
+        }
+
+        @Override
+        protected void onEnd(ImageItem imageItem) {
+
+        }
+    };
 
     public PersonCorePresenter(IPersonView view) {
-        this.view = view;
+        this.mView = view;
         userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
     }
 
@@ -64,7 +93,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
 //                    boolean isFriend = result.getData().getJSONObject("userMateInfo").getBoolean("isFriend");
 //                    boolean isFollow = result.getData().getJSONObject("userMateInfo").getBoolean("isFollow");
 
-                    view.showHomePageInfo(userInfoModel, relationNumModes, userRankModels, userLevelModels, userGameStatisModels);
+                    mView.showHomePageInfo(userInfoModel, relationNumModes, userRankModels, userLevelModels, userGameStatisModels);
                 }
             }
         }, this);
@@ -79,12 +108,51 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
                         List<PhotoModel> list = JSON.parseArray(result.getData().getString("pic"), PhotoModel.class);
                         int newOffset = result.getData().getIntValue("offset");
                         int totalCount = result.getData().getIntValue("totalCount");
-                        view.showPhoto(list, newOffset, totalCount);
+                        mView.showPhoto(list, newOffset, totalCount);
                     }
                 }
             }
         }, this);
 
 
+    }
+
+    public void uploadPhotoList(List<ImageItem> imageItems) {
+        for(ImageItem imageItem:imageItems){
+            mPlayControlTemplate.add(imageItem,true);
+        }
+    }
+
+    void execUploadPhoto(ImageItem imageItem){
+        UploadTask uploadTask = UploadParams.newBuilder(imageItem.getPath())
+                .setNeedCompress(true)
+                .startUploadAsync(new UploadCallback() {
+                    @Override
+                    public void onProgress(long currentSize, long totalSize) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(String url) {
+                        // 上传到服务器
+                        UserInfoServerApi userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
+                        HashMap<String, Object> map = new HashMap<>();
+                        map.put("picPath", url);
+                        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+                        ApiMethods.subscribe(userInfoServerApi.addPhoto(body), new ApiObserver<ApiResult>() {
+                            @Override
+                            public void process(ApiResult obj) {
+                                PhotoModel photoModel = new PhotoModel();
+                                mView.insertPhoto(photoModel);
+                            }
+                        });
+                        mPlayControlTemplate.endCurrent(imageItem);
+                    }
+
+                    @Override
+                    public void onFailure(String msg) {
+                        mPlayControlTemplate.endCurrent(imageItem);
+                    }
+                });
     }
 }

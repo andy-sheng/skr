@@ -22,7 +22,7 @@ public class PhotoAdapter extends RecyclerView.Adapter {
 
     boolean mHasUpdate;
 
-    private int PHOTO_UPDATE_TYPE = 0;
+    private int PHOTO_ADD_TYPE = 0;
     private int PHOTO_ITEM_TYPE = 1;
 
     public PhotoAdapter(RecyclerOnItemClickListener mListener, boolean hasUpdate) {
@@ -37,8 +37,8 @@ public class PhotoAdapter extends RecyclerView.Adapter {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.photo_item_view_layout, parent, false);
             PhotoViewHolder viewHolder = new PhotoViewHolder(view, mListener);
             return viewHolder;
-        } else if (viewType == PHOTO_UPDATE_TYPE) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.photo_update_view_layout, parent, false);
+        } else if (viewType == PHOTO_ADD_TYPE) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.photo_add_view_layout, parent, false);
             PhotoUpdateHolder viewHolder = new PhotoUpdateHolder(view, mListener);
             return viewHolder;
         }
@@ -63,7 +63,7 @@ public class PhotoAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemViewType(int position) {
         if (position == 0 && mHasUpdate) {
-            return PHOTO_UPDATE_TYPE;
+            return PHOTO_ADD_TYPE;
         }
         return PHOTO_ITEM_TYPE;
     }
@@ -83,5 +83,19 @@ public class PhotoAdapter extends RecyclerView.Adapter {
 
     public void setDataList(List<PhotoModel> dataList) {
         mDataList = dataList;
+    }
+
+    /**
+     * 插入某条数据
+     *
+     * @param data
+     */
+    public void insertFirst(PhotoModel data) {
+        mDataList.add(0, data);
+        if (mHasUpdate) {
+            notifyItemInserted(1);
+        } else {
+            notifyItemInserted(0);
+        }
     }
 }

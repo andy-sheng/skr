@@ -1,6 +1,9 @@
 package com.module.home.fragment;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -15,6 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.common.anim.ObjectPlayControlTemplate;
 import com.common.base.BaseFragment;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
@@ -22,6 +27,7 @@ import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.upgrade.UpgradeData;
 import com.common.core.upgrade.UpgradeManager;
 import com.common.core.userinfo.UserInfoManager;
+import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.event.RelationChangeEvent;
 import com.common.core.userinfo.model.GameStatisModel;
 import com.common.core.userinfo.model.UserInfoModel;
@@ -29,6 +35,13 @@ import com.common.core.userinfo.model.UserLevelModel;
 import com.common.core.userinfo.model.UserRankModel;
 import com.common.log.MyLog;
 import com.common.notification.event.FollowNotifyEvent;
+import com.common.rxretrofit.ApiManager;
+import com.common.rxretrofit.ApiMethods;
+import com.common.rxretrofit.ApiObserver;
+import com.common.rxretrofit.ApiResult;
+import com.common.upload.UploadCallback;
+import com.common.upload.UploadParams;
+import com.common.upload.UploadTask;
 import com.common.utils.FragmentUtils;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
@@ -46,12 +59,17 @@ import com.module.home.musictest.fragment.MusicTestFragment;
 import com.module.home.persenter.PersonCorePresenter;
 import com.module.home.setting.fragment.SettingFragment;
 import com.module.home.view.IPersonView;
+import com.respicker.ResPicker;
+import com.respicker.activity.ResPickerActivity;
+import com.respicker.model.ImageItem;
+import com.respicker.view.CropImageView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.zq.level.view.NormalLevelView2;
 import com.zq.person.adapter.PhotoAdapter;
+import com.zq.person.model.AddPhotoModel;
 import com.zq.person.model.PhotoModel;
 import com.zq.relation.fragment.RelationFragment;
 
@@ -59,11 +77,19 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import io.reactivex.Observable;
 import model.RelationNumModel;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import retrofit2.http.Body;
+import retrofit2.http.PUT;
 
 public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRedDotManager.WeakRedDotListener {
+
+    Handler mUiHandler = new Handler();
 
     SmartRefreshLayout mSmartRefresh;
     ExTextView mPhotoNumTv;
@@ -328,10 +354,33 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
         mPhotoAdapter = new PhotoAdapter(new RecyclerOnItemClickListener() {
             @Override
             public void onItemClicked(View view, int position, Object model) {
-
+                if (model instanceof AddPhotoModel) {
+                    goAddPhotoFragment();
+                }
             }
         }, true);
         mPhotoView.setAdapter(mPhotoAdapter);
+    }
+
+    void goAddPhotoFragment() {
+        ResPicker.getInstance().setParams(ResPicker.newParamsBuilder()
+                .setMultiMode(true)
+                .setShowCamera(true)
+                .setCrop(false)
+                .setSelectLimit(9)
+                .build()
+        );
+        ResPickerActivity.open(getActivity());
+    }
+
+    @Override
+    public boolean onActivityResultReal(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK && requestCode == ResPickerActivity.REQ_CODE_RES_PICK) {
+            List<ImageItem> imageItems = ResPicker.getInstance().getSelectedImageList();
+            mPresenter.uploadPhotoList(imageItems);
+            return true;
+        }
+        return super.onActivityResultReal(requestCode, resultCode, data);
     }
 
     @Override
@@ -451,16 +500,21 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
     public void showPhoto(List<PhotoModel> list, int offset, int totalNum) {
         MyLog.d(TAG, "showPhoto" + " list=" + list + " offset=" + offset + " totalNum=" + totalNum);
         // TODO: 2019/4/10 just for test
-        List<PhotoModel> models = new ArrayList<>();
-        for (int i = 0; i <= 1; i++) {
-            PhotoModel photoModel = new PhotoModel();
-            photoModel.setPicID(i);
-            photoModel.setPicPath(MyUserInfoManager.getInstance().getAvatar());
-            models.add(photoModel);
-        }
+//        List<PhotoModel> models = new ArrayList<>();
+//        for (int i = 0; i <= 1; i++) {
+//            PhotoModel photoModel = new PhotoModel();
+//            photoModel.setPicID(i);
+//            photoModel.setPicPath(MyUserInfoManager.getInstance().getAvatar());
+//            models.add(photoModel);
+//        }
         mPhotoNumTv.setText("个人相册");
-        mPhotoAdapter.setDataList(models);
+        mPhotoAdapter.setDataList(list);
         mPhotoAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void insertPhoto(PhotoModel photoModel) {
+        mPhotoAdapter.insertFirst(photoModel);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

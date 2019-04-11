@@ -6,6 +6,7 @@ import com.alibaba.sdk.android.oss.callback.OSSCompletedCallback;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 
 /**
+ * 注意！！！
  * 这些方法都不一定在主线程执行
  */
 public interface UploadCallback {

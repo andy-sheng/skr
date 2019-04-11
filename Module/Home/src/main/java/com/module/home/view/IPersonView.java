@@ -38,4 +38,6 @@ public interface IPersonView {
     void showRankView(UserRankModel userRankModel);
 
     void showPhoto(List<PhotoModel> list, int offset, int totalNum);
+
+    void insertPhoto(PhotoModel photoModel);
 }
