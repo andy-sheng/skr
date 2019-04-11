@@ -1,12 +1,16 @@
 package com.module.playways.grab.room.songmanager;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.OvershootInterpolator;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -72,6 +76,8 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
 
     RelativeLayout mRlContent;
 
+    Handler mUiHandler = new Handler();
+
     int mSpecialModelId;
 
     @Override
@@ -125,6 +131,16 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
         if (mRoomData.getSpecialModel() != null) {
             setTagTv(mRoomData.getSpecialModel());
         }
+
+        mUiHandler.postDelayed(() -> {
+            TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f,
+                    Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0);
+            animation.setDuration(400);
+            animation.setRepeatMode(Animation.REVERSE);
+            animation.setFillAfter(true);
+            mRlContent.startAnimation(animation);
+            mRlContent.setVisibility(View.VISIBLE);
+        }, 50);
     }
 
     private void setTagTv(SpecialModel specialModel) {
@@ -265,6 +281,7 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
     @Override
     public void destroy() {
         super.destroy();
+        mRlContent.clearAnimation();
     }
 
     @Override

@@ -373,7 +373,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             public void clickRoomManagerBtn() {
                 U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(GrabRoomFragment.this.getActivity(), GrabSongManageFragment.class)
                         .setAddToBackStack(true)
-                        .setHasAnimation(true)
+                        .setHasAnimation(false)
                         .addDataBeforeAdd(0, mRoomData)
                         .build());
                 removeManageSongTipView();
