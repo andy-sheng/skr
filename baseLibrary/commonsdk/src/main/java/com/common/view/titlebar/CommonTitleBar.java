@@ -779,6 +779,12 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
         }
     }
 
+    public void setBottomLineColor(int color) {
+        if (viewBottomLine != null) {
+            viewBottomLine.setBackgroundColor(color);
+        }
+    }
+
     /**
      * 是否填充状态栏
      *

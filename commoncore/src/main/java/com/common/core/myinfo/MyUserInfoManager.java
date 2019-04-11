@@ -310,6 +310,18 @@ public class MyUserInfoManager {
         return 0;
     }
 
+    public String getConstellation() {
+        if (mUser != null && !TextUtils.isEmpty(mUser.getBirthday())) {
+            String[] array = mUser.getBirthday().split("-");
+            if (!TextUtils.isEmpty(array[1]) && !TextUtils.isEmpty(array[2])) {
+                int month = Integer.valueOf(array[1]);
+                int day = Integer.valueOf(array[2]);
+                return U.getDateTimeUtils().getConstellation(month, day);
+            }
+        }
+        return "";
+    }
+
     public String getAvatar() {
         return mUser != null ? mUser.getAvatar() : "";
     }

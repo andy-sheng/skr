@@ -48,7 +48,6 @@ public class EditInfoAgeFragment extends BaseFragment {
 
     RelativeLayout mMainActContainer;
     CommonTitleBar mTitlebar;
-    View mDivider;
     FrameLayout mFrameLayout;
 
     TimePickerView pvCustomLunar;

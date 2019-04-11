@@ -204,7 +204,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
                         bundle.putString(UploadAccountInfoActivity.BUNDLE_UPLOAD_NICKNAME, nickName);
                         bundle.putInt(UploadAccountInfoActivity.BUNDLE_UPLOAD_SEX, sex);
                         U.getFragmentUtils().addFragment(FragmentUtils
-                                .newAddParamsBuilder(getActivity(), EditInfoAgeFragment.class)
+                                .newAddParamsBuilder(getActivity(), EditInfoAgeFragment2.class)
                                 .setBundle(bundle)
                                 .setAddToBackStack(true)
                                 .setHasAnimation(true)

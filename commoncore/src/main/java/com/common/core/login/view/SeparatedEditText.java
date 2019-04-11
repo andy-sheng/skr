@@ -13,6 +13,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.common.core.R;
+import com.common.log.MyLog;
+import com.common.utils.U;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -24,6 +26,8 @@ import java.util.TimerTask;
  */
 
 public class SeparatedEditText extends EditText {
+
+    public final static String TAG = "SeparatedEditText";
 
     private static final int TYPE_HOLLOW = 1;//空心
     private static final int TYPE_SOLID = 2;//实心
@@ -57,6 +61,7 @@ public class SeparatedEditText extends EditText {
     private int borderColor;
     private int blockColor;
     private int textColor;
+    private int textSize;
 
     private boolean isCursorShowing;
 
@@ -79,12 +84,12 @@ public class SeparatedEditText extends EditText {
         super(context, attrs, defStyleAttr);
 
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.SeparatedEditText);
-
         password = ta.getBoolean(R.styleable.SeparatedEditText_password, false);
         showCursor = ta.getBoolean(R.styleable.SeparatedEditText_showCursor, true);
         borderColor = ta.getColor(R.styleable.SeparatedEditText_borderColor, ContextCompat.getColor(getContext(), R.color.gray));
         blockColor = ta.getColor(R.styleable.SeparatedEditText_blockColor, ContextCompat.getColor(getContext(), R.color.colorPrimary));
         textColor = ta.getColor(R.styleable.SeparatedEditText_textColor, ContextCompat.getColor(getContext(), R.color.gray));
+        textSize = ta.getDimensionPixelOffset(R.styleable.SeparatedEditText_textSize, U.getDisplayUtils().dip2px(12));
         cursorColor = ta.getColor(R.styleable.SeparatedEditText_cursorColor, ContextCompat.getColor(getContext(), R.color.gray));
         corner = (int) ta.getDimension(R.styleable.SeparatedEditText_corner, 0);
         spacing = (int) ta.getDimension(R.styleable.SeparatedEditText_blockSpacing, 0);
@@ -93,7 +98,6 @@ public class SeparatedEditText extends EditText {
         cursorDuration = ta.getInt(R.styleable.SeparatedEditText_cursorDuration, 500);
         cursorWidth = (int) ta.getDimension(R.styleable.SeparatedEditText_cursorWidth, 2);
         borderWidth = (int) ta.getDimension(R.styleable.SeparatedEditText_borderWidth, 5);
-
         ta.recycle();
 
         init();
@@ -190,6 +194,7 @@ public class SeparatedEditText extends EditText {
         textPaint = new Paint();
         textPaint.setAntiAlias(true);
         textPaint.setColor(textColor);
+        textPaint.setTextSize(textSize);
         textPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         textPaint.setStrokeWidth(1);
 
@@ -233,7 +238,7 @@ public class SeparatedEditText extends EditText {
 
         borderRectF.set(0, 0, width, height);
 
-        textPaint.setTextSize(boxWidth / 2);
+//        textPaint.setTextSize(boxWidth / 2);
     }
 
     @Override
@@ -297,9 +302,11 @@ public class SeparatedEditText extends EditText {
         invalidate();
 
         if (textChangedListener != null)
-            if (upperCase.length() == maxLength)
+            if (upperCase.length() == maxLength) {
                 textChangedListener.textCompleted(upperCase);
-            else textChangedListener.textChanged(upperCase);
+            } else {
+                textChangedListener.textChanged(upperCase);
+            }
     }
 
     @Override
