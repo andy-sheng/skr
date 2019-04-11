@@ -1,6 +1,7 @@
 package com.module.home.persenter;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.common.anim.ObjectPlayControlTemplate;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
@@ -119,12 +120,12 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
     }
 
     public void uploadPhotoList(List<ImageItem> imageItems) {
-        for(ImageItem imageItem:imageItems){
-            mPlayControlTemplate.add(imageItem,true);
+        for (ImageItem imageItem : imageItems) {
+            mPlayControlTemplate.add(imageItem, true);
         }
     }
 
-    void execUploadPhoto(ImageItem imageItem){
+    void execUploadPhoto(ImageItem imageItem) {
         UploadTask uploadTask = UploadParams.newBuilder(imageItem.getPath())
                 .setNeedCompress(true)
                 .setFileType(UploadParams.FileType.profilepic)
@@ -140,14 +141,18 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
                         // 上传到服务器
                         UserInfoServerApi userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
                         HashMap<String, Object> map = new HashMap<>();
-                        List<String> pics = new ArrayList<>();
-                        pics.add(url);
+
+                        List<JSONObject> pics = new ArrayList<>();
+                        JSONObject jsonObject = new JSONObject();
+                        jsonObject.put("picPath", url);
+                        pics.add(jsonObject);
                         map.put("pic", pics);
                         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
                         ApiMethods.subscribe(userInfoServerApi.addPhoto(body), new ApiObserver<ApiResult>() {
                             @Override
                             public void process(ApiResult obj) {
                                 PhotoModel photoModel = new PhotoModel();
+                                photoModel.setPicPath(url);
                                 mView.insertPhoto(photoModel);
                             }
                         });
