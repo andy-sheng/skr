@@ -29,6 +29,7 @@
     <dimen name="view_7_33_dp">7.33dp</dimen>
     <dimen name="view_7_67_dp">7.67dp</dimen>
     <dimen name="view_8_dp">8dp</dimen>
+    <dimen name="view_d_8_dp">-8dp</dimen>
     <dimen name="view_8_33_dp">8.33dp</dimen>
     <dimen name="view_8_67_dp">8.67dp</dimen>
     <dimen name="view_9_dp">9dp</dimen>
