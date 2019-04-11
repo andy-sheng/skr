@@ -1,15 +1,11 @@
 package com.module.playways.grab.room.songmanager;
 
-import android.graphics.Color;
-import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
@@ -19,7 +15,6 @@ import android.widget.TextView;
 import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
-import com.common.core.avatar.AvatarUtils;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
 import com.common.image.model.oss.OssImgFactory;
@@ -30,7 +25,6 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExLinearLayout;
 import com.common.view.ex.ExTextView;
-import com.common.view.ex.drawable.DrawableCreator;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.grab.room.GrabRoomData;
@@ -139,7 +133,7 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
 
         mSpecialModelId = specialModel.getTagID();
 
-        FrescoWorker.loadImage(mTvSelectedTag, ImageFactory.newHttpImage(specialModel.getBgImage3())
+        FrescoWorker.loadImage(mTvSelectedTag, ImageFactory.newPathImage(specialModel.getBgImage3())
                 .setScaleType(ScalingUtils.ScaleType.FIT_XY)
                 .addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_640.getW()).build())
                 .build());

@@ -22,7 +22,7 @@ public class PhotoModel implements Serializable {
 
     public static PhotoModelDB toPhotoDB(PhotoModel pm) {
         PhotoModelDB photoModelDB = new PhotoModelDB();
-        photoModelDB.setLocalPath(pm.localPath);
+        photoModelDB.setLocalPath(pm.getLocalPath());
         photoModelDB.setStatus(pm.getStatus());
         return photoModelDB;
     }
@@ -102,6 +102,7 @@ public class PhotoModel implements Serializable {
                 "picID=" + picID +
                 ", picPath='" + picPath + '\'' +
                 ", localPath='" + localPath + '\'' +
+                ", status='" + status + '\'' +
                 '}';
     }
 }

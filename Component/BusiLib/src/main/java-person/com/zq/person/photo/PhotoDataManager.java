@@ -37,6 +37,7 @@ public class PhotoDataManager {
     }
 
     public static void delete(final PhotoModel photo) {
+        MyLog.d(TAG,"delete" + " photo=" + photo);
         Observable.create(new ObservableOnSubscribe<List<PhotoModel>>() {
             @Override
             public void subscribe(ObservableEmitter<List<PhotoModel>> emitter) throws Exception {

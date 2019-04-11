@@ -98,7 +98,7 @@ public class SongInfoCardView extends RelativeLayout {
         setVisibility(VISIBLE);
         if (!TextUtils.isEmpty(songModel.getCover())) {
             FrescoWorker.loadImage(mSongCoverIv,
-                    ImageFactory.newHttpImage(songModel.getCover())
+                    ImageFactory.newPathImage(songModel.getCover())
                             .setCornerRadius(U.getDisplayUtils().dip2px(6))
                             .setBorderWidth(U.getDisplayUtils().dip2px(2))
                             .setBorderColor(Color.parseColor("#202239"))

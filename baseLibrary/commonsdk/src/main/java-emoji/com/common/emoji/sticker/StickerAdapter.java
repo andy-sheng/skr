@@ -89,7 +89,7 @@ public class StickerAdapter extends BaseAdapter {
 
         StickerItem sticker = mDataList.get(position);
         String stickerBitmapPath = StickerManager.getInstance().getStickerBitmapPath(sticker.getCategory(), sticker.getName());
-        FrescoWorker.loadImage(viewHolder.mImageView,ImageFactory.newLocalImage(stickerBitmapPath).build());
+        FrescoWorker.loadImage(viewHolder.mImageView,ImageFactory.newPathImage(stickerBitmapPath).build());
         return convertView;
     }
 

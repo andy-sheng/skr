@@ -152,7 +152,7 @@ public class SingBeginTipsCardView extends RelativeLayout {
 
         if (!TextUtils.isEmpty(userInfoModel.getAvatar())) {
             // 填入头像和背景框
-            HttpImage image = ImageFactory.newHttpImage(userInfoModel.getAvatar())
+            HttpImage image = ImageFactory.newPathImage(userInfoModel.getAvatar())
                     .addOssProcessors(OssImgFactory.newResizeBuilder()
                                     .setW(ImageUtils.SIZE.SIZE_160.getW())
                                     .build()

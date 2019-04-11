@@ -13,6 +13,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -137,6 +138,9 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        mPresenter = new PersonCorePresenter(this);
+        addPresent(mPresenter);
+
         initBaseContainArea();
         initUserInfoArea();
         initSettingArea();
@@ -144,9 +148,6 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
         initFunctionArea();
         initGameInfoArea();
         initPhotoArea();
-
-        mPresenter = new PersonCorePresenter(this);
-        addPresent(mPresenter);
 
         WeakRedDotManager.getInstance().addListener(this);
         mFansRedDotValue = U.getPreferenceUtils().getSettingInt(WeakRedDotManager.SP_KEY_NEW_FANS, 0);
@@ -159,7 +160,7 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
     protected void onFragmentVisible() {
         super.onFragmentVisible();
         mPresenter.getHomePage(false);
-        if (mPhotoAdapter.getSuccessNum()==0) {
+        if (mPhotoAdapter.getSuccessNum() == 0) {
             mPresenter.getPhotos(0, DEFAUAT_CNT);
         }
     }
@@ -363,7 +364,11 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
 
                         @Override
                         public void load(ImageBrowseView imageBrowseView, int position, PhotoModel item) {
-                            imageBrowseView.load(item.getPicPath());
+                            if (TextUtils.isEmpty(item.getPicPath())) {
+                                imageBrowseView.load(item.getLocalPath());
+                            } else {
+                                imageBrowseView.load(item.getPicPath());
+                            }
                         }
 
                         @Override
@@ -383,7 +388,7 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
                                 mPresenter.getPhotos(mPhotoAdapter.getSuccessNum(), DEFAUAT_CNT, new Callback<List<PhotoModel>>() {
                                     @Override
                                     public void onCallback(int r, List<PhotoModel> list) {
-                                        if (callback != null) {
+                                        if (callback != null && list != null) {
                                             callback.onCallback(0, list);
                                         }
                                     }

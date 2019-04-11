@@ -249,7 +249,7 @@ public class RankLevelChangeFragment2 extends BaseFragment {
     private SVGADynamicEntity requestDynamicItem() {
         SVGADynamicEntity dynamicEntity = new SVGADynamicEntity();
 
-        HttpImage image = ImageFactory.newHttpImage(MyUserInfoManager.getInstance().getAvatar())
+        HttpImage image = ImageFactory.newPathImage(MyUserInfoManager.getInstance().getAvatar())
                 .addOssProcessors(OssImgFactory.newResizeBuilder()
                                 .setW(ImageUtils.SIZE.SIZE_160.getW())
                                 .build()

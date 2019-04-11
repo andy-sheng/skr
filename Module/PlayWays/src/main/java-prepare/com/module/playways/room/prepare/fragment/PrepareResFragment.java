@@ -104,7 +104,7 @@ public class PrepareResFragment extends BaseFragment implements IPrepareResView 
 
         if (!TextUtils.isEmpty(mPrepareData.getSongModel().getCover())) {
             FrescoWorker.loadImage(mSongIcon,
-                    ImageFactory.newHttpImage(mPrepareData.getSongModel().getCover())
+                    ImageFactory.newPathImage(mPrepareData.getSongModel().getCover())
                             .setCornerRadius(U.getDisplayUtils().dip2px(6))
                             .setBorderWidth(U.getDisplayUtils().dip2px(3))
                             .addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_160.getW()).build())

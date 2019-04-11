@@ -71,7 +71,7 @@ public class SongInfoHolder extends RecyclerView.ViewHolder {
         mSongOwnerTv.setText(mSongModel.getOwner());
         int strokeColor = mode == SongSelectAdapter.GRAB_MODE ? Color.parseColor("#202239") : Color.parseColor("#0C2275");
         if (!TextUtils.isEmpty(mSongModel.getCover())) {
-            FrescoWorker.loadImage(mSongCoverIv, ImageFactory.newHttpImage(mSongModel.getCover())
+            FrescoWorker.loadImage(mSongCoverIv, ImageFactory.newPathImage(mSongModel.getCover())
                     .setCornerRadius(U.getDisplayUtils().dip2px(4))
                     .setBorderWidth(U.getDisplayUtils().dip2px(2))
                     .setBorderColor(strokeColor)

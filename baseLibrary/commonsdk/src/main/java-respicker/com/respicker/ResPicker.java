@@ -52,7 +52,7 @@ public class ResPicker {
         mImageLoader = new ImageLoader() {
             @Override
             public void displayImage(Activity activity, String path, BaseImageView imageView, int width, int height) {
-                FrescoWorker.loadImage(imageView, ImageFactory.newLocalImage(path)
+                FrescoWorker.loadImage(imageView, ImageFactory.newPathImage(path)
                         .setWidth(width)
                         .setHeight(height)
                         .build());
@@ -60,7 +60,7 @@ public class ResPicker {
 
             @Override
             public void displayImagePreview(Activity activity, String path, BaseImageView imageView, int width, int height) {
-                FrescoWorker.loadImage(imageView, ImageFactory.newLocalImage(path)
+                FrescoWorker.loadImage(imageView, ImageFactory.newPathImage(path)
                         .setWidth(width)
                         .setHeight(height)
                         .build());

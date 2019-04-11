@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;
-import com.zq.person.holder.PhotoUpdateHolder;
+import com.zq.person.holder.PhotoAddHolder;
 import com.zq.person.holder.PhotoViewHolder;
 import com.zq.person.model.PhotoModel;
 
@@ -39,7 +39,7 @@ public class PhotoAdapter extends RecyclerView.Adapter {
             return viewHolder;
         } else if (viewType == PHOTO_ADD_TYPE) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.photo_add_view_layout, parent, false);
-            PhotoUpdateHolder viewHolder = new PhotoUpdateHolder(view, mListener);
+            PhotoAddHolder viewHolder = new PhotoAddHolder(view, mListener);
             return viewHolder;
         }
         return null;
@@ -49,7 +49,7 @@ public class PhotoAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (mHasUpdate) {
             if (position == 0) {
-                ((PhotoUpdateHolder) holder).bindData(position);
+                ((PhotoAddHolder) holder).bindData(position);
             } else {
                 PhotoModel photoModel = mDataList.get(position - 1);
                 ((PhotoViewHolder) holder).bindData(photoModel, position);

@@ -10,11 +10,11 @@ import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;
 import com.zq.person.model.AddPhotoModel;
 
-public class PhotoUpdateHolder extends RecyclerView.ViewHolder {
+public class PhotoAddHolder extends RecyclerView.ViewHolder {
 
     ImageView mUpdatePhotoIv;
 
-    public PhotoUpdateHolder(final View itemView, final RecyclerOnItemClickListener listener) {
+    public PhotoAddHolder(final View itemView, final RecyclerOnItemClickListener listener) {
         super(itemView);
         mUpdatePhotoIv = (ImageView)itemView.findViewById(R.id.update_photo_iv);
         itemView.setOnClickListener(new DebounceViewClickListener() {

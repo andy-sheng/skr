@@ -15,7 +15,7 @@ import com.zq.person.photo.PhotoModelDB;
 /** 
  * DAO for table "PHOTO_MODEL_DB".
 */
-public class PhotoModelDBDao extends AbstractDao<PhotoModelDB, Long> {
+public class PhotoModelDBDao extends AbstractDao<PhotoModelDB, String> {
 
     public static final String TABLENAME = "PHOTO_MODEL_DB";
 
@@ -24,9 +24,8 @@ public class PhotoModelDBDao extends AbstractDao<PhotoModelDB, Long> {
      * Can be used for QueryBuilder and for referencing column names.
      */
     public static class Properties {
-        public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property LocalPath = new Property(1, String.class, "localPath", false, "LOCAL_PATH");
-        public final static Property Status = new Property(2, Integer.class, "status", false, "STATUS");
+        public final static Property LocalPath = new Property(0, String.class, "localPath", true, "LOCAL_PATH");
+        public final static Property Status = new Property(1, Integer.class, "status", false, "STATUS");
     }
 
 
@@ -42,14 +41,8 @@ public class PhotoModelDBDao extends AbstractDao<PhotoModelDB, Long> {
     public static void createTable(Database db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"PHOTO_MODEL_DB\" (" + //
-                "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
-                "\"LOCAL_PATH\" TEXT," + // 1: localPath
-                "\"STATUS\" INTEGER);"); // 2: status
-        // Add Indexes
-        db.execSQL("CREATE UNIQUE INDEX " + constraint + "IDX_PHOTO_MODEL_DB_LOCAL_PATH ON PHOTO_MODEL_DB" +
-                " (\"LOCAL_PATH\" ASC);");
-        db.execSQL("CREATE UNIQUE INDEX " + constraint + "IDX_PHOTO_MODEL_DB_LOCAL_PATH ON PHOTO_MODEL_DB" +
-                " (\"LOCAL_PATH\" ASC);");
+                "\"LOCAL_PATH\" TEXT PRIMARY KEY NOT NULL ," + // 0: localPath
+                "\"STATUS\" INTEGER);"); // 1: status
     }
 
     /** Drops the underlying database table. */
@@ -62,19 +55,14 @@ public class PhotoModelDBDao extends AbstractDao<PhotoModelDB, Long> {
     protected final void bindValues(DatabaseStatement stmt, PhotoModelDB entity) {
         stmt.clearBindings();
  
-        Long id = entity.getId();
-        if (id != null) {
-            stmt.bindLong(1, id);
-        }
- 
         String localPath = entity.getLocalPath();
         if (localPath != null) {
-            stmt.bindString(2, localPath);
+            stmt.bindString(1, localPath);
         }
  
         Integer status = entity.getStatus();
         if (status != null) {
-            stmt.bindLong(3, status);
+            stmt.bindLong(2, status);
         }
     }
 
@@ -82,54 +70,46 @@ public class PhotoModelDBDao extends AbstractDao<PhotoModelDB, Long> {
     protected final void bindValues(SQLiteStatement stmt, PhotoModelDB entity) {
         stmt.clearBindings();
  
-        Long id = entity.getId();
-        if (id != null) {
-            stmt.bindLong(1, id);
-        }
- 
         String localPath = entity.getLocalPath();
         if (localPath != null) {
-            stmt.bindString(2, localPath);
+            stmt.bindString(1, localPath);
         }
  
         Integer status = entity.getStatus();
         if (status != null) {
-            stmt.bindLong(3, status);
+            stmt.bindLong(2, status);
         }
     }
 
     @Override
-    public Long readKey(Cursor cursor, int offset) {
-        return cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0);
+    public String readKey(Cursor cursor, int offset) {
+        return cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0);
     }    
 
     @Override
     public PhotoModelDB readEntity(Cursor cursor, int offset) {
         PhotoModelDB entity = new PhotoModelDB( //
-            cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // localPath
-            cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2) // status
+            cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // localPath
+            cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1) // status
         );
         return entity;
     }
      
     @Override
     public void readEntity(Cursor cursor, PhotoModelDB entity, int offset) {
-        entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setLocalPath(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-        entity.setStatus(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
+        entity.setLocalPath(cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0));
+        entity.setStatus(cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1));
      }
     
     @Override
-    protected final Long updateKeyAfterInsert(PhotoModelDB entity, long rowId) {
-        entity.setId(rowId);
-        return rowId;
+    protected final String updateKeyAfterInsert(PhotoModelDB entity, long rowId) {
+        return entity.getLocalPath();
     }
     
     @Override
-    public Long getKey(PhotoModelDB entity) {
+    public String getKey(PhotoModelDB entity) {
         if(entity != null) {
-            return entity.getId();
+            return entity.getLocalPath();
         } else {
             return null;
         }
@@ -137,7 +117,7 @@ public class PhotoModelDBDao extends AbstractDao<PhotoModelDB, Long> {
 
     @Override
     public boolean hasKey(PhotoModelDB entity) {
-        return entity.getId() != null;
+        return entity.getLocalPath() != null;
     }
 
     @Override

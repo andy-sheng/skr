@@ -58,7 +58,7 @@ public class VideoPreviewView extends RelativeLayout {
 
     public void bind(VideoItem videoItem) {
         mVideoItem = videoItem;
-        FrescoWorker.loadImage(mPreviewIv, ImageFactory.newLocalImage(videoItem.getPath())
+        FrescoWorker.loadImage(mPreviewIv, ImageFactory.newPathImage(videoItem.getPath())
                 .build());
         mVideoPlayerAdapter.setVideoPath(mVideoItem.getPath());
     }

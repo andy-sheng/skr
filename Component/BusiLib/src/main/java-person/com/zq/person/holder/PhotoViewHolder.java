@@ -2,6 +2,7 @@ package com.zq.person.holder;
 
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.common.image.fresco.FrescoWorker;
@@ -44,8 +45,12 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
         this.mPhotoModel = photoModel;
         this.position = position;
 
+        String path = mPhotoModel.getPicPath();
+        if (TextUtils.isEmpty(path)) {
+            path = mPhotoModel.getLocalPath();
+        }
         FrescoWorker.loadImage(mPhotoIv,
-                ImageFactory.newHttpImage(mPhotoModel.getPicPath())
+                ImageFactory.newPathImage(path)
                         .setCornerRadius(U.getDisplayUtils().dip2px(8))
                         .setBorderWidth(U.getDisplayUtils().dip2px(2))
                         .addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_160.getW()).build())

@@ -54,6 +54,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
     ObjectPlayControlTemplate<PhotoModel, PersonCorePresenter> mPlayControlTemplate = new ObjectPlayControlTemplate<PhotoModel, PersonCorePresenter>() {
         @Override
         protected PersonCorePresenter accept(PhotoModel cur) {
+            MyLog.d(TAG, "accept" + " cur=" + cur + " mUploadingPhoto=" + mUploadingPhoto);
             if (mUploadingPhoto) {
                 return null;
             } else {
@@ -63,14 +64,14 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
         }
 
         @Override
-        public void onStart(PhotoModel imageItem, PersonCorePresenter personFragment2) {
-            U.getToastUtil().showShort("开始上传，队列还剩" + mPlayControlTemplate.getSize());
-            execUploadPhoto(imageItem);
+        public void onStart(PhotoModel pm, PersonCorePresenter personFragment2) {
+            MyLog.d(TAG, "onStart" + "开始上传 PhotoModel=" + pm + " 队列还有 mPlayControlTemplate.getSize()=" + mPlayControlTemplate.getSize());
+            execUploadPhoto(pm);
         }
 
         @Override
-        protected void onEnd(PhotoModel imageItem) {
-
+        protected void onEnd(PhotoModel pm) {
+            MyLog.d(TAG, "onEnd" + " 上传结束 PhotoModel=" + pm);
         }
     };
 
@@ -132,6 +133,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
     }
 
     public void getPhotos(int offset, int cnt, Callback<List<PhotoModel>> callback) {
+        MyLog.d(TAG, "getPhotos" + " offset=" + offset + " cnt=" + cnt + " callback=" + callback);
         ApiMethods.subscribe(mUserInfoServerApi.getPhotos((int) MyUserInfoManager.getInstance().getUid(), offset, cnt), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -174,8 +176,8 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
     }
 
     public void uploadPhotoList(List<ImageItem> imageItems) {
+        MyLog.d(TAG, "uploadPhotoList" + " imageItems=" + imageItems);
         List<PhotoModel> list = new ArrayList<>();
-
         for (ImageItem imageItem : imageItems) {
             PhotoModel photoModel = new PhotoModel();
             photoModel.setLocalPath(imageItem.getPath());
@@ -191,6 +193,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
     }
 
     void execUploadPhoto(PhotoModel photo) {
+        MyLog.d(TAG, "execUploadPhoto" + " photo=" + photo);
         if (photo.getStatus() == photo.STATUS_DELETE) {
             MyLog.d(TAG, "execUploadPhoto" + " imageItem=" + photo + " 用户删除了，取消上传");
             mPlayControlTemplate.endCurrent(photo);
@@ -209,6 +212,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
 
                     @Override
                     public void onSuccess(String url) {
+                        MyLog.d(TAG,"上传成功" + " url=" + url);
                         mUploadingPhoto = false;
                         // 上传到服务器
                         HashMap<String, Object> map = new HashMap<>();
@@ -248,6 +252,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
 
                     @Override
                     public void onFailure(String msg) {
+                        MyLog.d(TAG,"上传失败" + " msg=" + msg);
                         mUploadingPhoto = false;
                         photo.setStatus(PhotoModel.STATUS_FAILED);
                         mView.updatePhoto(photo);
@@ -257,11 +262,11 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
     }
 
     public void deletePhoto(PhotoModel photoModel) {
+        MyLog.d(TAG, "deletePhoto" + " photoModel=" + photoModel);
         if (photoModel.getStatus() == PhotoModel.STATUS_SUCCESS) {
             HashMap<String, Object> map = new HashMap<>();
             map.put("picID", photoModel.getPicID());
             RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
-
             ApiMethods.subscribe(mUserInfoServerApi.deletePhoto(body), new ApiObserver<ApiResult>() {
                 @Override
                 public void process(ApiResult obj) {
@@ -290,6 +295,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
             @Override
             public void onCallback(int r, List<PhotoModel> list) {
                 for (PhotoModel photoModel : list) {
+                    MyLog.d(TAG, "loadUnSuccessPhotoFromDB photoModel=" + photoModel);
                     mView.insertPhoto(photoModel);
                     mPlayControlTemplate.add(photoModel, true);
                 }

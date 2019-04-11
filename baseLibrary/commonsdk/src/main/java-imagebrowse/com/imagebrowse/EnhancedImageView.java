@@ -2,7 +2,6 @@ package com.imagebrowse;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.Animatable;
 import android.net.Uri;
 import android.os.Handler;
@@ -11,7 +10,6 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.common.base.R;
 import com.common.image.fresco.BaseImageView;
@@ -128,7 +126,7 @@ public class EnhancedImageView extends RelativeLayout {
 //        addView(textView, lp);
 
         if (path.startsWith("http://") || path.startsWith("https://")) {
-            HttpImage httpImage = (HttpImage) ImageFactory.newHttpImage(path)
+            HttpImage httpImage = (HttpImage) ImageFactory.newPathImage(path)
                     .setFailureDrawable(U.app().getResources().getDrawable(R.drawable.load_img_error))
                     .setLoadingDrawable(U.app().getResources().getDrawable(R.drawable.loading_place_holder_img))
                     .setProgressBarDrawable(new ImageBrowseProgressBar())
@@ -137,7 +135,7 @@ public class EnhancedImageView extends RelativeLayout {
                     .build();
             load(httpImage);
         } else {
-            LocalImage localImage = (LocalImage) ImageFactory.newLocalImage(path)
+            LocalImage localImage = (LocalImage) ImageFactory.newPathImage(path)
                     .build();
             load(localImage);
         }

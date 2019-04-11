@@ -59,7 +59,7 @@ public class AvatarUtils {
         if (TextUtils.isEmpty(url)) {
             return null;
         }
-        ImageFactory.Builder imgBuilder = ImageFactory.newHttpImage(url)
+        ImageFactory.Builder imgBuilder = ImageFactory.newPathImage(url)
                 .setWidth(params.width)
                 .setHeight(params.height)
                 .setIsCircle(params.isCircle)

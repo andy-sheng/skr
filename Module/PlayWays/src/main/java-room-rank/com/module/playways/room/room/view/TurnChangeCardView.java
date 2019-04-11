@@ -225,7 +225,7 @@ public class TurnChangeCardView extends RelativeLayout {
         bitmap.eraseColor(info.getUserInfo().getSex() == ESex.SX_MALE.getValue() ? U.getColor(com.common.core.R.color.color_man_stroke_color) : U.getColor(com.common.core.R.color.color_woman_stroke_color));
         dynamicEntity.setDynamicImage(bitmap, "border");
 
-        HttpImage image = ImageFactory.newHttpImage(info.getUserInfo().getAvatar())
+        HttpImage image = ImageFactory.newPathImage(info.getUserInfo().getAvatar())
                 .addOssProcessors(OssImgFactory.newResizeBuilder()
                                 .setW(ImageUtils.SIZE.SIZE_160.getW())
                                 .build()

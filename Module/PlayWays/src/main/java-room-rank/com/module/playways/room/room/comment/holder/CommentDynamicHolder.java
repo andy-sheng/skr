@@ -49,7 +49,7 @@ public class CommentDynamicHolder extends RecyclerView.ViewHolder {
                 .setBorderColor(commentModel.getAvatarColor())
                 .build());
 
-        FrescoWorker.loadImage(mCommentSdv, ImageFactory.newHttpImage(commentModel.getDynamicModel().getBigEmojiURL())
+        FrescoWorker.loadImage(mCommentSdv, ImageFactory.newPathImage(commentModel.getDynamicModel().getBigEmojiURL())
                 .setScaleType(ScalingUtils.ScaleType.CENTER)
                 .setFitDrawable(true)
                 .build());

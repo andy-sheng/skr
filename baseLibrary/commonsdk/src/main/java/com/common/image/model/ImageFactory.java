@@ -15,13 +15,13 @@ import com.facebook.imagepipeline.request.Postprocessor;
  * Created by lan on 15-12-14.
  */
 public class ImageFactory {
-    public static ImageFactory.Builder newHttpImage(String url) {
-        return new ImageFactory.Builder().setUrl(url);
+    public static ImageFactory.Builder newPathImage(String url) {
+        return new ImageFactory.Builder().setPath(url);
     }
 
-    public static ImageFactory.Builder newLocalImage(String path) {
-        return new ImageFactory.Builder().setPath(path);
-    }
+//    public static ImageFactory.Builder newLocalImage(String path) {
+//        return new ImageFactory.Builder().setPath(path);
+//    }
 
     public static ImageFactory.Builder newResImage(int resId) {
         return new ImageFactory.Builder().setResId(resId);
@@ -33,13 +33,17 @@ public class ImageFactory {
         private Builder() {
         }
 
-        protected ImageFactory.Builder setUrl(String url) {
-            mBaseImage = new HttpImage(url);
-            return this;
-        }
+//        protected ImageFactory.Builder setUrl(String url) {
+//            mBaseImage = new HttpImage(url);
+//            return this;
+//        }
 
         protected ImageFactory.Builder setPath(String path) {
-            mBaseImage = new LocalImage(path);
+            if(path.startsWith("http")){
+                mBaseImage = new HttpImage(path);
+            }else{
+                mBaseImage = new LocalImage(path);
+            }
             return this;
         }
 
@@ -171,7 +175,7 @@ public class ImageFactory {
                 httpImage.addOssProcessors(ossProcessors);
             } else {
                 if (MyLog.isDebugLogOpen()) {
-                    throw new IllegalStateException("setOssProcessors only can be set In HttpImage");
+                    //throw new IllegalStateException("setOssProcessors only can be set In HttpImage");
                 }
             }
             return this;

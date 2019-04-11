@@ -27,7 +27,6 @@ import com.module.playways.BaseRoomData;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.ShowPersonCardEvent;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.module.playways.room.room.view.ArcProgressBar;
 import com.module.rank.R;
 
 import org.greenrobot.eventbus.EventBus;
@@ -119,7 +118,7 @@ public class OthersSingCardView extends RelativeLayout {
             mEnterAlphaAnimation.setDuration(1000);
         }
         this.startAnimation(mEnterAlphaAnimation);
-        FrescoWorker.loadImage(mGrabStageView, ImageFactory.newHttpImage(BaseRoomData.PK_MAIN_STAGE_WEBP)
+        FrescoWorker.loadImage(mGrabStageView, ImageFactory.newPathImage(BaseRoomData.PK_MAIN_STAGE_WEBP)
                 .setCallBack(new IFrescoCallBack() {
                     @Override
                     public void processWithInfo(ImageInfo info, Animatable animatable) {
