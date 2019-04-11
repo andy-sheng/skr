@@ -19,32 +19,19 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
-import com.common.anim.ObjectPlayControlTemplate;
 import com.common.base.BaseFragment;
 import com.common.core.avatar.AvatarUtils;
-import com.common.core.myinfo.MyUserInfo;
-import com.common.core.myinfo.MyUserInfoLocalApi;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.upgrade.UpgradeData;
 import com.common.core.upgrade.UpgradeManager;
 import com.common.core.userinfo.UserInfoManager;
-import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.event.RelationChangeEvent;
 import com.common.core.userinfo.model.GameStatisModel;
-import com.common.core.userinfo.model.UserInfoModel;
 import com.common.core.userinfo.model.UserLevelModel;
 import com.common.core.userinfo.model.UserRankModel;
 import com.common.log.MyLog;
 import com.common.notification.event.FollowNotifyEvent;
-import com.common.rxretrofit.ApiManager;
-import com.common.rxretrofit.ApiMethods;
-import com.common.rxretrofit.ApiObserver;
-import com.common.rxretrofit.ApiResult;
-import com.common.upload.UploadCallback;
-import com.common.upload.UploadParams;
-import com.common.upload.UploadTask;
 import com.common.utils.FragmentUtils;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
@@ -56,6 +43,7 @@ import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.common.view.titlebar.CommonTitleBar;
 import com.component.busilib.constans.GameModeType;
 import com.component.busilib.manager.WeakRedDotManager;
+import com.component.busilib.view.BitmapTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.home.R;
 import com.module.home.musictest.fragment.MusicTestFragment;
@@ -65,7 +53,6 @@ import com.module.home.view.IPersonView;
 import com.respicker.ResPicker;
 import com.respicker.activity.ResPickerActivity;
 import com.respicker.model.ImageItem;
-import com.respicker.view.CropImageView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
@@ -78,18 +65,8 @@ import com.zq.relation.fragment.RelationFragment;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-
-import io.reactivex.Observable;
 import model.RelationNumModel;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
-import retrofit2.http.Body;
-import retrofit2.http.DELETE;
-import retrofit2.http.PUT;
 
 public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRedDotManager.WeakRedDotListener {
 
@@ -120,9 +97,9 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
     ExImageView mMusicTestIv;
     ExRelativeLayout mMedalLayout;
     ImageView mPaiweiImg;
-    ExTextView mRankNumTv;
+    BitmapTextView mRankNumTv;
     ImageView mSingendImg;
-    ExTextView mSingendNumTv;
+    BitmapTextView mSingendNumTv;
     NormalLevelView2 mLevelView;
     ExTextView mLevelTv;
 
@@ -179,7 +156,7 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
 
     private void initBaseContainArea() {
         mSmartRefresh = (SmartRefreshLayout) mRootView.findViewById(R.id.smart_refresh);
-        mClassicsHeader = (ClassicsHeader)mRootView.findViewById(R.id.classics_header);
+        mClassicsHeader = (ClassicsHeader) mRootView.findViewById(R.id.classics_header);
         mUserInfoArea = (RelativeLayout) mRootView.findViewById(R.id.user_info_area);
         mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
 
@@ -347,9 +324,9 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
     private void initGameInfoArea() {
         mMedalLayout = (ExRelativeLayout) mRootView.findViewById(R.id.medal_layout);
         mPaiweiImg = (ImageView) mRootView.findViewById(R.id.paiwei_img);
-        mRankNumTv = (ExTextView) mRootView.findViewById(R.id.rank_num_tv);
+        mRankNumTv = (BitmapTextView) mRootView.findViewById(R.id.rank_num_tv);
         mSingendImg = (ImageView) mRootView.findViewById(R.id.singend_img);
-        mSingendNumTv = (ExTextView) mRootView.findViewById(R.id.singend_num_tv);
+        mSingendNumTv = (BitmapTextView) mRootView.findViewById(R.id.singend_num_tv);
         mLevelView = (NormalLevelView2) mRootView.findViewById(R.id.level_view);
         mLevelTv = (ExTextView) mRootView.findViewById(R.id.level_tv);
     }
@@ -487,15 +464,9 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
     private void showGameStatic(List<GameStatisModel> list) {
         for (GameStatisModel gameStatisModel : list) {
             if (gameStatisModel.getMode() == GameModeType.GAME_MODE_CLASSIC_RANK) {
-                SpannableStringBuilder stringBuilder = new SpanUtils()
-                        .append(String.valueOf(gameStatisModel.getTotalTimes())).setFontSize(14, true)
-                        .create();
-                mRankNumTv.setText(stringBuilder);
+                mRankNumTv.setText("" + gameStatisModel.getTotalTimes());
             } else if (gameStatisModel.getMode() == GameModeType.GAME_MODE_GRAB) {
-                SpannableStringBuilder stringBuilder = new SpanUtils()
-                        .append(String.valueOf(gameStatisModel.getTotalTimes())).setFontSize(14, true)
-                        .create();
-                mSingendNumTv.setText(stringBuilder);
+                mSingendNumTv.setText("" + gameStatisModel.getTotalTimes());
             }
         }
     }

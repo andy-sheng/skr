@@ -4,6 +4,7 @@
     xmlns:levelView2="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:BitmapTextView="http://schemas.android.com/apk/res-auto"
     android:background="#D0EFFF">
 
     <!--
@@ -309,14 +310,14 @@
                                     android:layout_centerHorizontal="true"
                                     android:background="@drawable/person_rank_num_bg" />
 
-                                <com.common.view.ex.ExTextView
+                                <com.component.busilib.view.BitmapTextView
                                     android:id="@+id/rank_num_tv"
-                                    android:layout_width="match_parent"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/view_20_dp"
-                                    android:gravity="center"
-                                    android:textColor="#0C2275"
-                                    android:textSize="@dimen/textsize_14_dp" />
+                                    android:layout_centerHorizontal="true"
+                                    BitmapTextView:scale="0.6"
+                                    BitmapTextView:text_color="#3E4E76"/>
 
                                 <com.common.view.ex.ExTextView
                                     android:layout_width="match_parent"
@@ -345,14 +346,14 @@
                                     android:layout_centerHorizontal="true"
                                     android:background="@drawable/person_grab_num_bg" />
 
-                                <com.common.view.ex.ExTextView
+                                <com.component.busilib.view.BitmapTextView
                                     android:id="@+id/singend_num_tv"
-                                    android:layout_width="match_parent"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/view_20_dp"
-                                    android:gravity="center"
-                                    android:textColor="#0C2275"
-                                    android:textSize="@dimen/textsize_14_dp" />
+                                    android:layout_centerHorizontal="true"
+                                    BitmapTextView:scale="0.6"
+                                    BitmapTextView:text_color="#3E4E76"/>
 
                                 <com.common.view.ex.ExTextView
                                     android:layout_width="match_parent"
