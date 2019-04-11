@@ -7,6 +7,8 @@ public class UploadParams {
 
     private boolean needCompress = false;
 
+    private boolean needMonitor = false;// 特别依赖回调的业务可以开启监听，防止没有回调
+
     private FileType fileType = FileType.picture;
 
     UploadParams() {
@@ -32,6 +34,14 @@ public class UploadParams {
         this.needCompress = needCompress;
     }
 
+    public void setNeedMonitor(boolean needMonitor) {
+        this.needMonitor = needMonitor;
+    }
+
+    public boolean isNeedMonitor() {
+        return needMonitor;
+    }
+
     public String getFileName() {
         return fileName;
     }
@@ -52,10 +62,11 @@ public class UploadParams {
         return new Builder().setFilePath(filePath);
     }
 
-    public enum FileType{
-        profilepic("profile-pic"),picture("picture"),audioAi("audio"),midiAi("midi"),log("androidLog");
+    public enum FileType {
+        profilepic("profile-pic"), picture("picture"), audioAi("audio"), midiAi("midi"), log("androidLog");
 
         private String ossSavaDir;
+
         FileType(String d) {
             ossSavaDir = d;
         }
@@ -89,6 +100,11 @@ public class UploadParams {
 
         public Builder setFileType(FileType fileType) {
             this.mParams.setFileType(fileType);
+            return this;
+        }
+
+        public Builder setNeedMonitor(boolean needMonitor) {
+            this.mParams.setNeedMonitor(needMonitor);
             return this;
         }
 

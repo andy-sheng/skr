@@ -606,6 +606,13 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
         mPhotoAdapter.update(photoModel);
     }
 
+    @Override
+    public void loadDataFailed() {
+        MyLog.d(TAG, "loadDataFailed");
+        mSmartRefresh.finishRefresh();
+        mSmartRefresh.finishLoadMore();
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvnet(MyUserInfoEvent.UserInfoChangeEvent userInfoChangeEvent) {
         refreshUserInfoView();

@@ -44,4 +44,6 @@ public interface IPersonView {
     void deletePhoto(PhotoModel photoModel);
 
     void updatePhoto(PhotoModel imageItem);
+
+    void loadDataFailed();
 }

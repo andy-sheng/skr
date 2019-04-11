@@ -33,6 +33,10 @@ public class LocalImage extends BaseImage {
         }
     }
 
+    public String getPath() {
+        return mPath;
+    }
+
     public void setUri(Uri mUri) {
         this.mUri=mUri;
     }

@@ -22,6 +22,7 @@ import com.alibaba.sdk.android.oss.model.PutObjectResult;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.statistics.StatisticsAdapter;
+import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 
 import java.io.File;
@@ -76,6 +77,9 @@ public class UploadTask {
                     public void accept(JSONObject data) throws Exception {
                         boolean has = data.containsKey("statusCode");
                         if (!has) {
+                            if (uploadCallback != null) {
+                                uploadCallback.onFailure("has == false");
+                            }
                             return;
                         }
                         int code = data.getInteger("statusCode");
@@ -150,6 +154,9 @@ public class UploadTask {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
                         MyLog.e(throwable);
+                        if (uploadCallback != null) {
+                            uploadCallback.onFailure("Throwable");
+                        }
                     }
                 });
         return this;
@@ -178,9 +185,13 @@ public class UploadTask {
         if (mTask != null) {
             mTask.cancel();
         }
+        if (mUploadParams.isNeedMonitor()) {
+            startMonitor(uploadCallback);
+        }
         mTask = mOss.asyncPutObject(request, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
             @Override
             public void onSuccess(PutObjectRequest request, PutObjectResult result) {
+                cancelMonitor("onSuccess");
                 if (uploadCallback != null) {
                     // 只有设置了servercallback，这个值才有数据
                     String serverCallbackReturnJson = result.getServerCallbackReturnBody();
@@ -204,18 +215,26 @@ public class UploadTask {
 
             @Override
             public void onFailure(PutObjectRequest request, ClientException clientException, ServiceException serviceException) {
+                cancelMonitor("onFailure");
                 if (uploadCallback != null) {
-                    String log = "error:" + serviceException.getErrorCode() + " clientMsg:" + clientException.getMessage() + " serverMsg:" + serviceException.getMessage();
-                    uploadCallback.onFailure(log);
+                    StringBuilder sb = new StringBuilder();
+                    if (serviceException != null) {
+                        sb.append("error=").append(serviceException.getErrorCode()).append(" serverMsg=").append(serviceException.getMessage());
+                    }
+                    if (clientException != null) {
+                        sb.append(" clientMsg=").append(clientException.getMessage());
+                    }
+                    uploadCallback.onFailure(sb.toString());
                     // 上传失败打点
                     HashMap param = new HashMap();
-                    param.put("reason", log);
+                    param.put("reason", sb.toString());
                     StatisticsAdapter.recordCalculateEvent("upload", "failed", System.currentTimeMillis() - uploadStartMs, param);
                 }
 
             }
         });
     }
+
 
     /**
      * 创建普通上传
@@ -273,6 +292,45 @@ public class UploadTask {
         return put;
     }
 
+    HandlerTaskTimer mMonitorTimer;
+
+    /**
+     * 开启监听器，因为有可能失败但是两个回调都不走
+     * 对于一些特别依赖回调的业务可以开启
+     */
+    void startMonitor(UploadCallback uploadCallback) {
+        MyLog.d(TAG, "startMonitor");
+        cancelMonitor("startMonitor");
+        mMonitorTimer = HandlerTaskTimer.newBuilder().interval(5000)
+                .take(15)
+                .start(new HandlerTaskTimer.ObserverW() {
+                    int num = 0;
+
+                    @Override
+                    public void onNext(Integer integer) {
+                        MyLog.d(TAG, "onNext" + " integer=" + integer);
+                        num++;
+                        if (!U.getNetworkUtils().hasNetwork()) {
+                            if (uploadCallback != null) {
+                                uploadCallback.onFailure("没有网络了");
+                            }
+                            return;
+                        }
+                        if (num >= 10) {
+                            if (uploadCallback != null) {
+                                uploadCallback.onFailure("上传很久了，还没有回调，认为失败");
+                            }
+                        }
+                    }
+                });
+    }
+
+    void cancelMonitor(String from) {
+        MyLog.d(TAG, "cancelMonitor from=" + from);
+        if (mMonitorTimer != null) {
+            mMonitorTimer.dispose();
+        }
+    }
 //    /**
 //     * 创建追加上传
 //     */

@@ -1,5 +1,7 @@
 package com.module.home.persenter;
 
+import android.os.Handler;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -46,6 +48,8 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
 
     UserInfoServerApi mUserInfoServerApi;
     IPersonView mView;
+
+    Handler mUiHandler = new Handler();
 
     long mLastUpdateTime = 0;  // 主页刷新时间
     //    long mLastPhotoUpTime = 0; // 照片墙更新时间
@@ -148,16 +152,24 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
                             if (callback != null) {
                                 callback.onCallback(1, list);
                             }
+                            return;
                         } else {
                             // 下拉更多拉
                             mView.addPhoto(list, false, totalCount);
                             if (callback != null) {
                                 callback.onCallback(2, list);
                             }
+                            return;
                         }
-
                     }
                 }
+                mView.loadDataFailed();
+            }
+
+            @Override
+            public void onNetworkError(ErrorType errorType) {
+                super.onNetworkError(errorType);
+                mView.loadDataFailed();
             }
         }, this, new ApiMethods.RequestControl("getPhotos", ApiMethods.ControlType.CancelThis));
     }
@@ -203,6 +215,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
         mView.updatePhoto(photo);
         UploadTask uploadTask = UploadParams.newBuilder(photo.getLocalPath())
                 .setNeedCompress(true)
+                .setNeedMonitor(true)
                 .setFileType(UploadParams.FileType.profilepic)
                 .startUploadAsync(new UploadCallback() {
                     @Override
@@ -259,11 +272,16 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
 
                     @Override
                     public void onFailure(String msg) {
+                        MyLog.d(TAG, "上传失败" + " msg=" + msg);
                         mUploadingPhoto = false;
                         mPlayControlTemplate.endCurrent(photo);
-                        MyLog.d(TAG, "上传失败" + " msg=" + msg);
-                        photo.setStatus(PhotoModel.STATUS_FAILED);
-                        mView.updatePhoto(photo);
+                        mUiHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                photo.setStatus(PhotoModel.STATUS_FAILED);
+                                mView.updatePhoto(photo);
+                            }
+                        });
                     }
                 });
     }
@@ -308,5 +326,13 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
                 }
             }
         });
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        if (mUiHandler != null) {
+            mUiHandler.removeCallbacksAndMessages(null);
+        }
     }
 }

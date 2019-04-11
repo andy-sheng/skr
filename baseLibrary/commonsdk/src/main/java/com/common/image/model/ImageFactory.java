@@ -7,6 +7,7 @@ import com.common.image.fresco.IFrescoCallBack;
 import com.common.image.model.oss.IOssParam;
 import com.common.image.model.oss.OssImgResize;
 import com.common.log.MyLog;
+import com.common.utils.U;
 import com.facebook.drawee.drawable.ProgressBarDrawable;
 import com.facebook.drawee.drawable.ScalingUtils.ScaleType;
 import com.facebook.imagepipeline.common.Priority;
@@ -40,9 +41,9 @@ public class ImageFactory {
 //        }
 
         protected ImageFactory.Builder setPath(String path) {
-            if(path.startsWith("http")){
+            if (path.startsWith("http")) {
                 mBaseImage = new HttpImage(path);
-            }else{
+            } else {
                 mBaseImage = new LocalImage(path);
             }
             return this;
@@ -174,16 +175,22 @@ public class ImageFactory {
             if (mBaseImage instanceof HttpImage) {
                 HttpImage httpImage = (HttpImage) mBaseImage;
                 httpImage.addOssProcessors(ossProcessors);
-            } else {
-                for(IOssParam iOssParam:ossProcessors){
-                    if(iOssParam instanceof OssImgResize){
+            } else if (mBaseImage instanceof LocalImage) {
+                for (IOssParam iOssParam : ossProcessors) {
+                    if (iOssParam instanceof OssImgResize) {
                         OssImgResize ossImgResize = (OssImgResize) iOssParam;
-                        if(ossImgResize.getW()>0){
+                        if (ossImgResize.getW() > 0) {
                             setWidth(ossImgResize.getW());
+                            if (ossImgResize.getH() > 0) {
+                                setHeight(ossImgResize.getH());
+                            } else {
+                                int wh[] = U.getImageUtils().getImageWidthAndHeightFromFile(((LocalImage) mBaseImage).getPath());
+                                if (wh != null) {
+                                    setHeight(ossImgResize.getW() * wh[1] / wh[0]);
+                                }
+                            }
                         }
-                        if(ossImgResize.getH()>0){
-                            setHeight(ossImgResize.getH());
-                        }
+
                         break;
                     }
                 }
