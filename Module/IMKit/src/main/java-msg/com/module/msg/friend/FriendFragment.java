@@ -217,4 +217,9 @@ public class FriendFragment extends BaseFragment {
     public boolean useEventBus() {
         return false;
     }
+
+    @Override
+    public boolean isInViewPager() {
+        return true;
+    }
 }

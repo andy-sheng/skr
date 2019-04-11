@@ -22,6 +22,7 @@ import com.common.upload.UploadParams;
 import com.common.upload.UploadTask;
 import com.module.home.view.IPersonView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -126,6 +127,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
     void execUploadPhoto(ImageItem imageItem){
         UploadTask uploadTask = UploadParams.newBuilder(imageItem.getPath())
                 .setNeedCompress(true)
+                .setFileType(UploadParams.FileType.profilepic)
                 .startUploadAsync(new UploadCallback() {
                     @Override
                     public void onProgress(long currentSize, long totalSize) {
@@ -134,10 +136,13 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
 
                     @Override
                     public void onSuccess(String url) {
+                        mUploadingPhoto = false;
                         // 上传到服务器
                         UserInfoServerApi userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
                         HashMap<String, Object> map = new HashMap<>();
-                        map.put("picPath", url);
+                        List<String> pics = new ArrayList<>();
+                        pics.add(url);
+                        map.put("pic", pics);
                         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
                         ApiMethods.subscribe(userInfoServerApi.addPhoto(body), new ApiObserver<ApiResult>() {
                             @Override
@@ -151,6 +156,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
 
                     @Override
                     public void onFailure(String msg) {
+                        mUploadingPhoto = false;
                         mPlayControlTemplate.endCurrent(imageItem);
                     }
                 });
