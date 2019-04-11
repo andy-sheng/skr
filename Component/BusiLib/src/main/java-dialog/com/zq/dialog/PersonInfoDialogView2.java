@@ -10,6 +10,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -91,6 +92,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
     MarqueeTextView mSignTv;
     TagFlowLayout mFlowlayout;
 
+    Toolbar mToolbar;
     RelativeLayout mOpretaArea;     // 私信，关注，踢人
     ImageView mMessageIv;
     ImageView mFollowIv;
@@ -177,6 +179,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
 
         // 自己卡片的处理
         if (mUserId == MyUserInfoManager.getInstance().getUid()) {
+            mToolbar.setVisibility(GONE);
             mReport.setVisibility(View.GONE);
             mOpretaArea.setVisibility(View.GONE);
             mKickIv.setVisibility(View.GONE);
@@ -334,6 +337,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
     }
 
     private void initOpretaArea() {
+        mToolbar = (Toolbar) this.findViewById(R.id.toolbar);
         mOpretaArea = (RelativeLayout) this.findViewById(R.id.opreta_area);
         mMessageIv = (ImageView) this.findViewById(R.id.message_iv);
         mFollowIv = (ImageView) this.findViewById(R.id.follow_iv);
