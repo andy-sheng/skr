@@ -3,7 +3,10 @@ package com.module.home.persenter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.common.anim.ObjectPlayControlTemplate;
+import com.common.core.myinfo.MyUserInfo;
+import com.common.core.myinfo.MyUserInfoLocalApi;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.model.GameStatisModel;
 import com.common.core.userinfo.model.UserInfoModel;
@@ -35,8 +38,9 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
 
     UserInfoServerApi userInfoServerApi;
     IPersonView mView;
+
     long mLastUpdateTime = 0;  // 主页刷新时间
-    int DEFUAT_CNT = 20;       // 默认拉取一页的数量
+    long mLastPhotoUpTime = 0; // 照片墙更新时间
     boolean mUploadingPhoto = false;
 
     ObjectPlayControlTemplate<ImageItem, PersonCorePresenter> mPlayControlTemplate = new ObjectPlayControlTemplate<ImageItem, PersonCorePresenter>() {
@@ -67,10 +71,9 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
     }
 
     /**
-     * @param userID
-     * @param flag   是否立即更新
+     * @param flag 是否立即更新
      */
-    public void getHomePage(int userID, boolean flag) {
+    public void getHomePage(boolean flag) {
         long now = System.currentTimeMillis();
         if (!flag) {
             if ((now - mLastUpdateTime) < 60 * 1000) {
@@ -78,7 +81,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
             }
         }
 
-        getHomePage(userID);
+        getHomePage((int) MyUserInfoManager.getInstance().getUid());
     }
 
     private void getHomePage(int userID) {
@@ -95,14 +98,29 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
 //                    boolean isFriend = result.getData().getJSONObject("userMateInfo").getBoolean("isFriend");
 //                    boolean isFollow = result.getData().getJSONObject("userMateInfo").getBoolean("isFollow");
 
-                    mView.showHomePageInfo(userInfoModel, relationNumModes, userRankModels, userLevelModels, userGameStatisModels);
+                    MyUserInfo myUserInfo = MyUserInfo.parseFromUserInfoModel(userInfoModel);
+                    MyUserInfoLocalApi.insertOrUpdate(myUserInfo);
+                    MyUserInfoManager.getInstance().setMyUserInfo(myUserInfo, true);
+
+                    mView.showHomePageInfo(relationNumModes, userRankModels, userLevelModels, userGameStatisModels);
                 }
             }
         }, this);
     }
 
-    public void getPhotos(int offset) {
-        ApiMethods.subscribe(userInfoServerApi.getPhotos((int) MyUserInfoManager.getInstance().getUid(), offset, DEFUAT_CNT), new ApiObserver<ApiResult>() {
+    public void getPhotos(int offset, int cnt, boolean flag) {
+        long now = System.currentTimeMillis();
+        if (!flag) {
+            if ((now - mLastPhotoUpTime) < 60 * 1000) {
+                return;
+            }
+        }
+
+        getPhotos(offset, cnt);
+    }
+
+    private void getPhotos(int offset, int cnt) {
+        ApiMethods.subscribe(userInfoServerApi.getPhotos((int) MyUserInfoManager.getInstance().getUid(), offset, cnt), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
@@ -115,7 +133,19 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
                 }
             }
         }, this);
+    }
 
+    public void getRelationNums() {
+        UserInfoServerApi userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
+        ApiMethods.subscribe(userInfoServerApi.getRelationNum((int) MyUserInfoManager.getInstance().getUid()), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    List<RelationNumModel> relationNumModels = JSON.parseArray(result.getData().getString("cnt"), RelationNumModel.class);
+                    mView.showRelationNum(relationNumModels);
+                }
+            }
+        }, this);
 
     }
 

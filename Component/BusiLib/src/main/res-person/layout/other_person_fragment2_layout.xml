@@ -43,6 +43,7 @@
         app:srlFooterTranslationViewId="@id/photo_view">
 
         <com.scwang.smartrefresh.layout.header.ClassicsHeader
+            android:id="@+id/classics_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

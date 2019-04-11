@@ -1,27 +1,35 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:parentTag="android.widget.RelativeLayout">
-
-    <com.module.playways.room.room.view.ArcProgressBar
-        android:id="@+id/count_down_process"
-        android:layout_width="@dimen/view_116_dp"
-        android:layout_height="@dimen/view_116_dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_194_dp" />
 
     <com.common.image.fresco.BaseImageView
         android:id="@+id/grab_stage_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_160_dp"
-        android:layout_marginTop="@dimen/view_172_dp" />
+        android:layout_marginTop="@dimen/view_172_dp"
+        android:visibility="visible" />
+
+    <com.common.view.countdown.CircleCountDownView
+        android:id="@+id/circle_count_down_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_189_dp"
+        app:bg_color="@color/transparent"
+        app:inner_color="#FFC15B"
+        app:inner_stroke_raduis="@dimen/view_64_dp"
+        app:inner_stroke_width="@dimen/view_6_dp"
+        app:stroke_bg_color="#353E89"
+        app:stroke_bg_width="@dimen/view_8_dp" />
+
 
     <com.common.image.fresco.BaseImageView
         android:id="@+id/sing_avatar_view"
-        android:layout_width="@dimen/view_90_dp"
-        android:layout_height="@dimen/view_90_dp"
+        android:layout_width="@dimen/view_100_dp"
+        android:layout_height="@dimen/view_100_dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_207_dp" />
 

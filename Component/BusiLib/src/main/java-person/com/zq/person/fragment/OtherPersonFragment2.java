@@ -118,6 +118,7 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
     OtherPersonPresenter mPresenter;
 
     SmartRefreshLayout mSmartRefresh;
+    ClassicsHeader mClassicsHeader;
     AppBarLayout mAppbar;
     CollapsingToolbarLayout mToolbarLayout;
     RelativeLayout mUserInfoArea;
@@ -184,12 +185,12 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
         mRankText = (ExTextView) mRootView.findViewById(R.id.rank_text);
         mRankDiffIv = (ExImageView) mRootView.findViewById(R.id.rank_diff_iv);
         mMedalIv = (ExImageView) mRootView.findViewById(R.id.medal_iv);
-
     }
 
 
     private void initBaseContainArea() {
         mSmartRefresh = (SmartRefreshLayout) mRootView.findViewById(R.id.smart_refresh);
+        mClassicsHeader = (ClassicsHeader)mRootView.findViewById(R.id.classics_header);
         mAppbar = (AppBarLayout) mRootView.findViewById(R.id.appbar);
         mToolbarLayout = (CollapsingToolbarLayout) mRootView.findViewById(R.id.toolbar_layout);
         mUserInfoArea = (RelativeLayout) mRootView.findViewById(R.id.user_info_area);
@@ -207,7 +208,8 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
         mSmartRefresh.setEnableLoadMore(true);
         mSmartRefresh.setEnableLoadMoreWhenContentNotFull(false);
         mSmartRefresh.setEnableOverScrollDrag(true);
-        mSmartRefresh.setRefreshHeader(new ClassicsHeader(getContext()));
+        mClassicsHeader.setBackgroundColor(Color.parseColor("#7088FF"));
+        mSmartRefresh.setRefreshHeader(mClassicsHeader);
         mSmartRefresh.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {

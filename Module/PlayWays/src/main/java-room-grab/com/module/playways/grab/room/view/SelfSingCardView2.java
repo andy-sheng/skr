@@ -158,7 +158,7 @@ public class SelfSingCardView2 extends RelativeLayout {
 
     private void starCounDown(int totalMs) {
         mCountDownTv.setVisibility(VISIBLE);
-        mCircleCountDownView.go(totalMs);
+        mCircleCountDownView.go(0, totalMs);
         int counDown = totalMs / 1000;
         mCounDownTask = HandlerTaskTimer.newBuilder()
                 .interval(1000)
