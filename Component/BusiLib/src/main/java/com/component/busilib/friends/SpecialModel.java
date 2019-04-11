@@ -16,6 +16,7 @@ public class SpecialModel implements Serializable {
     private String bgColor;
     private String bgImage1;
     private String bgImage2;
+    private String bgImage3;
 
     public int getTagID() {
         return tagID;
@@ -49,6 +50,13 @@ public class SpecialModel implements Serializable {
         this.bgColor = bgColor;
     }
 
+    public String getBgImage3() {
+        return bgImage3;
+    }
+
+    public void setBgImage3(String bgImage3) {
+        this.bgImage3 = bgImage3;
+    }
 
     public String getBgImage1() {
         return bgImage1;
