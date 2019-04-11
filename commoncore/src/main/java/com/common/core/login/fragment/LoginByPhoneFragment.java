@@ -42,8 +42,8 @@ public class LoginByPhoneFragment extends BaseFragment {
     NoLeakEditText mPhoneInputTv;
     NoLeakEditText mCodeInputTv;
     ExTextView mGetCodeTv;
-    ExTextView mLoginTv;
     ExTextView mErrorHint;
+    ExImageView mLoginIv;
 
     String mPhoneNumber; //发送验证码的电话号码
     String mCode; //验证码
@@ -65,7 +65,7 @@ public class LoginByPhoneFragment extends BaseFragment {
         mCodeInputTv = (NoLeakEditText) mRootView.findViewById(R.id.code_input_tv);
         mGetCodeTv = (ExTextView) mRootView.findViewById(R.id.get_code_tv);
         mErrorHint = (ExTextView) mRootView.findViewById(R.id.error_hint);
-        mLoginTv = (ExTextView) mRootView.findViewById(R.id.login_tv);
+        mLoginIv = (ExImageView) mRootView.findViewById(R.id.login_iv);
 
         mPhoneInputTv.setText(U.getPreferenceUtils().getSettingString(PREF_KEY_PHONE_NUM, ""));
 
@@ -86,7 +86,7 @@ public class LoginByPhoneFragment extends BaseFragment {
             }
         });
 
-        mLoginTv.setOnClickListener(new DebounceViewClickListener() {
+        mLoginIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
@@ -131,8 +131,7 @@ public class LoginByPhoneFragment extends BaseFragment {
             }
         });
 
-        mLoginTv.setClickable(false);
-        mLoginTv.setTextColor(Color.parseColor("#660C2275"));
+        mLoginIv.setClickable(false);
 
         U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
     }
@@ -156,9 +155,9 @@ public class LoginByPhoneFragment extends BaseFragment {
 
     private void setHintText(String text, boolean isError) {
         if (isError) {
-            mErrorHint.setTextColor(Color.parseColor("#EF5E85"));
+            mErrorHint.setTextColor(Color.WHITE);
         } else {
-            mErrorHint.setTextColor(Color.parseColor("#398A26"));
+            mErrorHint.setTextColor(Color.WHITE);
         }
         mErrorHint.setText(text);
     }
@@ -193,9 +192,8 @@ public class LoginByPhoneFragment extends BaseFragment {
                     mCodeInputTv.setFocusable(true);
                     mCodeInputTv.setFocusableInTouchMode(true);
                     mCodeInputTv.requestFocus();
-                    mLoginTv.setClickable(true);
-                    mLoginTv.setTextColor(Color.parseColor("#0C2275"));
-                    mLoginTv.setBackgroundResource(R.drawable.img_btn_bg_yellow);
+                    mLoginIv.setClickable(true);
+                    mLoginIv.setBackgroundResource(R.drawable.login_normal_icon);
                     startTimeTask();
                 } else {
                     setHintText(result.getErrmsg(), true);
@@ -215,7 +213,7 @@ public class LoginByPhoneFragment extends BaseFragment {
                 .start(new HandlerTaskTimer.ObserverW() {
                     @Override
                     public void onNext(Integer integer) {
-                        mGetCodeTv.setText("倒计时:" + (60 - integer) + "s");
+                        mGetCodeTv.setText((60 - integer) + "s");
                     }
 
                     @Override

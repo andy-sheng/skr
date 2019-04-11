@@ -136,22 +136,6 @@ public class UploadAccountInfoFragment extends BaseFragment {
             public void clickValid(View v) {
                 mNickName = mNicknameEt.getText().toString().trim();
                 checkNameAndSex(mNickName, sex);
-//                MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
-//                        .setNickName(mNickName).setSex(sex)
-//                        .build(), true, false, new MyUserInfoManager.ServerCallback() {
-//                    @Override
-//                    public void onSucess() {
-//                        if (getActivity() != null) {
-//                            getActivity().finish();
-//                        }
-//                        StatisticsAdapter.recordCountEvent("signup", "success", null);
-//                    }
-//
-//                    @Override
-//                    public void onFail() {
-//
-//                    }
-//                });
             }
         });
 

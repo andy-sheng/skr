@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_act_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F9F4F1">
+
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:centerText="选择年龄"
+        app:centerTextColor="@color/white"
+        app:centerTextSize="@dimen/textsize_20_dp"
+        app:centerType="textView"
+        app:leftDrawable="@drawable/img_back"
+        app:leftType="textView"
+        app:rightText="完成"
+        app:rightTextColor="@color/white"
+        app:rightTextSize="@dimen/textsize_16_dp"
+        app:rightType="textView"
+        app:showBottomLine="true"
+        app:bottomLineColor="#0C2275"
+        app:statusBarColor="#0288D0"
+        app:titleBarColor="#0288D0">
+    </com.common.view.titlebar.CommonTitleBar>
+
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/complete_tv"
+        android:layout_width="@dimen/view_206_dp"
+        android:layout_height="@dimen/view_54_dp"
+        android:layout_below="@+id/titlebar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_343_dp"
+        android:background="@drawable/img_btn_bg_yellow"
+        android:gravity="center"
+        android:paddingRight="@dimen/view_6_dp"
+        android:paddingBottom="@dimen/view_6_dp"
+        android:text="完成"
+        android:textColor="#0C2275"
+        android:textSize="@dimen/textsize_20_dp"
+        android:textStyle="bold"
+        android:visibility="gone"/>
+
+</RelativeLayout>
