@@ -1,6 +1,9 @@
 package com.module.playways.grab.room.fragment;
 
 import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -12,9 +15,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -303,6 +304,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
         tryShowInviteTipView();
         tryShowManageSongTipView();
+        tipViewAnimate(mIvInviteTip, mIvManageSongTipView);
     }
 
     private void tryShowInviteTipView() {
@@ -328,6 +330,34 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             layoutParams.setMargins(0, 0, U.getDisplayUtils().dip2px(13), U.getDisplayUtils().dip2px(78));
             ((ViewGroup) mRootView).addView(mIvManageSongTipView);
         }
+    }
+
+    ValueAnimator mTipViewAnimator;
+
+    private void tipViewAnimate(View... viewList) {
+        mTipViewAnimator = ValueAnimator.ofInt(0, 20, 0);
+        mTipViewAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        mTipViewAnimator.setDuration(2500);
+        mTipViewAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                boolean hasSetableView = false;
+                for (View view : viewList) {
+                    if (view.getParent() != null) {
+                        MyLog.d(TAG, "onAnimationUpdate" + " view.getParent() != null");
+                        hasSetableView = true;
+                        view.setTranslationY((int) animation.getAnimatedValue());
+                    }
+                }
+
+                if (!hasSetableView) {
+                    MyLog.d(TAG, "onAnimationUpdate" + " !hasSetableView");
+                    mTipViewAnimator.cancel();
+                }
+            }
+        });
+
+        mTipViewAnimator.start();
     }
 
     @Override
@@ -1034,6 +1064,10 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                 }
             }
             mAnimatorList.clear();
+        }
+
+        if(mTipViewAnimator != null){
+            mTipViewAnimator.cancel();
         }
 
         U.getSoundUtils().release(TAG);
