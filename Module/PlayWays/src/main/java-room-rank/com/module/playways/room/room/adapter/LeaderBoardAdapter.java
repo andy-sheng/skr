@@ -18,7 +18,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.rank.R;
 import com.zq.level.view.NormalLevelView2;
 import com.zq.live.proto.Common.ESex;
-import com.zq.person.fragment.OtherPersonFragment;
+import com.zq.person.fragment.OtherPersonFragment2;
 
 public class LeaderBoardAdapter extends DiffAdapter<RankInfoModel, RecyclerView.ViewHolder> {
 
@@ -81,9 +81,9 @@ public class LeaderBoardAdapter extends DiffAdapter<RankInfoModel, RecyclerView.
                 @Override
                 public void onClick(View v) {
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable(OtherPersonFragment.BUNDLE_USER_ID, mRankInfoModel.getUserID());
+                    bundle.putSerializable(OtherPersonFragment2.BUNDLE_USER_ID, mRankInfoModel.getUserID());
                     U.getFragmentUtils().addFragment(FragmentUtils
-                            .newAddParamsBuilder((FragmentActivity) itemView.getContext(), OtherPersonFragment.class)
+                            .newAddParamsBuilder((FragmentActivity) itemView.getContext(), OtherPersonFragment2.class)
                             .setUseOldFragmentIfExist(false)
                             .setBundle(bundle)
                             .setAddToBackStack(true)

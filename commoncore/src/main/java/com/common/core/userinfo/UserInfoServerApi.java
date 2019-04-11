@@ -228,7 +228,7 @@ public interface UserInfoServerApi {
      * @param cnt
      * @return
      */
-    @GET("http://dev.stand.inframe.mobi/v1/profile/query-pic")
+    @GET("/v1/profile/query-pic")
     Call<ApiResult> getPhotosSync(@Query("userID") long userID,
                               @Query("offset") int offset,
                               @Query("cnt") int cnt);

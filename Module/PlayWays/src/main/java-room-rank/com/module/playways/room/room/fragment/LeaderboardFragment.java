@@ -42,7 +42,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.zq.level.view.NormalLevelView2;
 import com.zq.live.proto.Common.ESex;
-import com.zq.person.fragment.OtherPersonFragment;
+import com.zq.person.fragment.OtherPersonFragment2;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -481,9 +481,9 @@ public class LeaderboardFragment extends BaseFragment implements ILeaderBoardVie
 
     public void gotoPersonFragment(int uid) {
         Bundle bundle = new Bundle();
-        bundle.putSerializable(OtherPersonFragment.BUNDLE_USER_ID, uid);
+        bundle.putSerializable(OtherPersonFragment2.BUNDLE_USER_ID, uid);
         U.getFragmentUtils().addFragment(FragmentUtils
-                .newAddParamsBuilder((FragmentActivity) getActivity(), OtherPersonFragment.class)
+                .newAddParamsBuilder((FragmentActivity) getActivity(), OtherPersonFragment2.class)
                 .setUseOldFragmentIfExist(false)
                 .setBundle(bundle)
                 .setAddToBackStack(true)

@@ -458,6 +458,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
                 mSmartRefresh.setLayoutParams(layoutParams);
                 hasInitHeight = true;
             }
+            mHasMore = true;
             mPhotoAdapter.getDataList().addAll(list);
             mPhotoAdapter.notifyDataSetChanged();
         } else {
@@ -521,11 +522,14 @@ public class PersonInfoDialogView2 extends RelativeLayout {
 
     private void showUserRelationNum(List<RelationNumModel> relationNumModes) {
         int fansNum = 0;
-        for (RelationNumModel mode : relationNumModes) {
-            if (mode.getRelation() == UserInfoManager.RELATION_FANS) {
-                fansNum = mode.getCnt();
+        if (relationNumModes != null && relationNumModes.size() > 0) {
+            for (RelationNumModel mode : relationNumModes) {
+                if (mode.getRelation() == UserInfoManager.RELATION_FANS) {
+                    fansNum = mode.getCnt();
+                }
             }
         }
+
         mHashMap.put(FANS_NUM_TAG, String.format(getResources().getString(R.string.fans_num_tag), fansNum));
 
         refreshTag();

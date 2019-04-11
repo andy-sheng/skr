@@ -42,6 +42,7 @@ import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.level.view.NormalLevelView2;
 import com.zq.live.proto.Common.ESex;
+import com.zq.person.model.PhotoModel;
 import com.zq.person.presenter.OtherPersonPresenter;
 import com.zq.person.view.IOtherPersonView;
 
@@ -270,6 +271,28 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
     }
 
     @Override
+    public void showHomePageInfo(UserInfoModel userInfoModel, List<RelationNumModel> relationNumModels,
+                                 List<UserRankModel> userRankModels, List<UserLevelModel> userLevelModels,
+                                 List<GameStatisModel> gameStatisModels, boolean isFriend, boolean isFollow) {
+        showUserInfo(userInfoModel);
+        showRelationNum(relationNumModels);
+        showUserLevel(userLevelModels);
+        showReginRank(userRankModels);
+        showGameStatic(gameStatisModels);
+        showUserRelation(isFriend, isFollow);
+    }
+
+    @Override
+    public void showPhotos(List<PhotoModel> list, int newOffset, int totalNum) {
+
+    }
+
+    @Override
+    public void showRankView(UserRankModel userRankModel) {
+
+    }
+
+
     public void showUserInfo(UserInfoModel model) {
         this.mUserInfoModel = model;
 
@@ -306,7 +329,7 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
         refreshTag();
     }
 
-    @Override
+
     public void showRelationNum(List<RelationNumModel> list) {
         int fansNum = 0;
         for (RelationNumModel mode : list) {
@@ -318,7 +341,7 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
         refreshTag();
     }
 
-    @Override
+
     public void showReginRank(List<UserRankModel> list) {
         UserRankModel reginRankModel = new UserRankModel();
         UserRankModel countryRankModel = new UserRankModel();
@@ -342,7 +365,7 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
         }
     }
 
-    @Override
+
     public void showUserLevel(List<UserLevelModel> list) {
         // 展示段位信息
         for (UserLevelModel userLevelModel : list) {
@@ -357,7 +380,7 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
         mLevelTv.setText(rankDesc);
     }
 
-    @Override
+
     public void showUserRelation(boolean isFriend, boolean isFollow) {
         mUserInfoModel.setFriend(isFriend);
         mUserInfoModel.setFollow(isFollow);
@@ -379,7 +402,7 @@ public class OtherPersonFragment extends BaseFragment implements IOtherPersonVie
         }
     }
 
-    @Override
+
     public void showGameStatic(List<GameStatisModel> list) {
         for (GameStatisModel gameStatisModel : list) {
             SpannableStringBuilder stringBuilder = new SpanUtils()
