@@ -82,7 +82,10 @@ public class PhotoAdapter extends RecyclerView.Adapter {
     }
 
     public void setDataList(List<PhotoModel> dataList) {
-        mDataList = dataList;
+        if (dataList != null) {
+            mDataList.clear();
+            mDataList.addAll(dataList);
+        }
     }
 
     /**
