@@ -192,6 +192,7 @@ public class JoinGrabRoomRspModel implements Serializable {
     private int ownerID;// 房主id
     private long gameStartTimeMs;// 游戏创建时间,<=0 代表游戏未创建
     private boolean hasGameBegin = true;// 游戏是否已经开始
+    private boolean challengeAvailable = false;// 是否有挑战资格
 
     public JoinGrabRoomRspModel() {
 
@@ -315,6 +316,18 @@ public class JoinGrabRoomRspModel implements Serializable {
 
     public void setHasGameBegin(boolean hasGameBegin) {
         this.hasGameBegin = hasGameBegin;
+    }
+
+    public boolean isChallengeAvailable() {
+        return challengeAvailable;
+    }
+
+    public boolean isHasGameBegin() {
+        return hasGameBegin;
+    }
+
+    public void setChallengeAvailable(boolean challengeAvailable) {
+        this.challengeAvailable = challengeAvailable;
     }
 
     @Override

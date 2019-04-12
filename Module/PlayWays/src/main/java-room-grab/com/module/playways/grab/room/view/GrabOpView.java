@@ -40,8 +40,8 @@ import org.greenrobot.eventbus.ThreadMode;
  */
 public class GrabOpView extends RelativeLayout {
     public final static String TAG = "GrabOpView";
-    public  long mShowBurstTime = 15000;
-    public  long mShowLightOffTime = 5000;
+    public long mShowBurstTime = 15000;
+    public long mShowLightOffTime = 5000;
 
     public static final int MSG_HIDE_FROM_END_GUIDE_AUDIO = 0;
     public static final int MSG_HIDE = 1;
@@ -320,11 +320,13 @@ public class GrabOpView extends RelativeLayout {
                 mGrabIv.setImageDrawable(null);
                 mGrabIv.setBackground(U.getDrawable(R.drawable.ycdd_qiangchang_bj));
 
-                mGrab2Container.setVisibility(VISIBLE);
-                mGrab2Iv.setEnabled(false);
-                mGrab2Iv.setImageDrawable(null);
-                mGrab2Iv.setBackground(U.getDrawable(R.drawable.ycdd_tiaozhan_bg));
-                mCoinFlagIv.setVisibility(GONE);
+                if (mGrabRoomData.isChallengeAvailable()) {
+                    mGrab2Container.setVisibility(VISIBLE);
+                    mGrab2Iv.setEnabled(false);
+                    mGrab2Iv.setImageDrawable(null);
+                    mGrab2Iv.setBackground(U.getDrawable(R.drawable.ycdd_tiaozhan_bg));
+                    mCoinFlagIv.setVisibility(GONE);
+                }
                 break;
             case STATUS_GRAP:
                 mIvLightOff.setVisibility(GONE);
@@ -354,28 +356,30 @@ public class GrabOpView extends RelativeLayout {
                 });
             }
             {
-                mGrab2Container.setVisibility(VISIBLE);
-                mGrab2Iv.setEnabled(true);
-                mGrab2Iv.setImageDrawable(null);
-                Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20))
-                        .setShape(DrawableCreator.Shape.Rectangle)
-                        .setPressedDrawable(U.getDrawable(R.drawable.ycdd_tiaozhan_anxia))
-                        .setUnPressedDrawable(U.getDrawable(R.drawable.ycdd_tiaozhan))
-                        .build();
-                mGrab2Iv.setBackground(drawable);
-                mCoinFlagIv.setVisibility(VISIBLE);
-                mGrab2Iv.setOnTouchListener(new OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        //MyLog.d(TAG, "onTouch" + " v=" + v + " event=" + event);
-                        if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE) {
-                            mRrl2Progress.setVisibility(GONE);
-                        } else {
-                            mRrl2Progress.setVisibility(VISIBLE);
+                if (mGrabRoomData.isChallengeAvailable()) {
+                    mGrab2Container.setVisibility(VISIBLE);
+                    mGrab2Iv.setEnabled(true);
+                    mGrab2Iv.setImageDrawable(null);
+                    Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20))
+                            .setShape(DrawableCreator.Shape.Rectangle)
+                            .setPressedDrawable(U.getDrawable(R.drawable.ycdd_tiaozhan_anxia))
+                            .setUnPressedDrawable(U.getDrawable(R.drawable.ycdd_tiaozhan))
+                            .build();
+                    mGrab2Iv.setBackground(drawable);
+                    mCoinFlagIv.setVisibility(VISIBLE);
+                    mGrab2Iv.setOnTouchListener(new OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            //MyLog.d(TAG, "onTouch" + " v=" + v + " event=" + event);
+                            if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE) {
+                                mRrl2Progress.setVisibility(GONE);
+                            } else {
+                                mRrl2Progress.setVisibility(VISIBLE);
+                            }
+                            return false;
                         }
-                        return false;
-                    }
-                });
+                    });
+                }
             }
             break;
             case STATUS_CAN_OP:
@@ -396,13 +400,13 @@ public class GrabOpView extends RelativeLayout {
     }
 
     public void hide(String from) {
-        MyLog.d(TAG, "hide from="+from);
+        MyLog.d(TAG, "hide from=" + from);
         cancelCountDownTask();
         mGrabIv.clearAnimation();
         mRrlProgress.stopCountDown();
         mGrab2Iv.clearAnimation();
         mRrl2Progress.stopCountDown();
-        if(mExitAnimation ==null) {
+        if (mExitAnimation == null) {
             mExitAnimation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 1.0f,
                     Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0);
             mExitAnimation.setDuration(200);
@@ -427,9 +431,9 @@ public class GrabOpView extends RelativeLayout {
                 }
             });
         }
-        if(mExitAnimation.hasStarted() && !mExitAnimation.hasEnded()){
+        if (mExitAnimation.hasStarted() && !mExitAnimation.hasEnded()) {
 
-        }else{
+        } else {
             startAnimation(mExitAnimation);
         }
         mUiHandler.removeCallbacksAndMessages(null);

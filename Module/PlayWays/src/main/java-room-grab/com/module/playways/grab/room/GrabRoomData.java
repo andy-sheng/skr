@@ -36,6 +36,7 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
 
     GrabResultData mGrabResultData;    // 游戏结果
     private boolean mSpeaking; // 是否正在抢麦说话，一般用于主播控场
+    private boolean mChallengeAvailable;
 
     public GrabRoomData() {
         mIsAccEnable = U.getPreferenceUtils().getSettingBoolean("grab_acc_enable1", false);
@@ -263,6 +264,15 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
         }
         // 游戏未开始
         this.setHasGameBegin(rsp.hasGameBegin());
+        this.setChallengeAvailable(rsp.isChallengeAvailable());
+    }
+
+    public boolean isChallengeAvailable() {
+        return mChallengeAvailable;
+    }
+
+    public void setChallengeAvailable(boolean challengeAvailable) {
+        mChallengeAvailable = challengeAvailable;
     }
 
     public Integer getSongLineNum() {

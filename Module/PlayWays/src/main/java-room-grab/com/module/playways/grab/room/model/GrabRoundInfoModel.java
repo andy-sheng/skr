@@ -66,6 +66,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
     private int enterStatus;//你进入这个轮次处于的状态
 
     /**
+     * {@link GrabRoundInfoModel.EWST_DEFAULT}
      * EWST_DEFAULT = 0; //默认抢唱类型：普通
      * EWST_ACCOMPANY = 1; //带伴奏抢唱
      * EWST_COMMON_OVER_TIME = 2; //普通加时抢唱
