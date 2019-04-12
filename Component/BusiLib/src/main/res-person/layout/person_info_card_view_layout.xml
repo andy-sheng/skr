@@ -122,7 +122,6 @@
                                 android:maxLines="1"
                                 android:paddingRight="@dimen/view_20_dp"
                                 android:singleLine="true"
-                                android:text="KTV酒彪子"
                                 android:textColor="#3B4E79"
                                 android:textSize="@dimen/textsize_18_dp" />
 

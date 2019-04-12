@@ -32,7 +32,6 @@ import com.common.core.userinfo.model.UserLevelModel;
 import com.common.flowlayout.FlowLayout;
 import com.common.flowlayout.TagAdapter;
 import com.common.flowlayout.TagFlowLayout;
-import com.common.log.MyLog;
 import com.common.notification.event.FollowNotifyEvent;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -44,7 +43,6 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;
-import com.component.busilib.constans.GameModeType;
 import com.component.busilib.view.MarqueeTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.imagebrowse.ImageBrowseView;
@@ -154,7 +152,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
     }
 
     private void initView() {
-        inflate(getContext(), R.layout.person_info_card_fragment_layout, this);
+        inflate(getContext(), R.layout.person_info_card_view_layout, this);
 
         initBaseContainInfo();
         initUserInfo();
