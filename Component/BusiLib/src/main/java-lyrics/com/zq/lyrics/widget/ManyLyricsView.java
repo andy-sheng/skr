@@ -25,11 +25,12 @@ import android.view.animation.LinearInterpolator;
 import android.widget.Scroller;
 
 import com.common.log.MyLog;
+import com.common.utils.U;
 import com.component.busilib.R;
 import com.zq.lyrics.LyricsReader;
 import com.zq.lyrics.model.LyricsInfo;
 import com.zq.lyrics.model.LyricsLineInfo;
-import com.zq.lyrics.utils.ColorUtils;
+import com.common.utils.ColorUtils;
 import com.zq.lyrics.utils.LyricsUtils;
 import com.zq.lyrics.utils.TimeUtils;
 
@@ -270,7 +271,7 @@ public class ManyLyricsView extends AbstractLrcView {
 
 
         setGotoSearchTextColor(Color.WHITE);
-        setGotoSearchTextPressedColor(ColorUtils.parserColor("#0288d1"));
+        setGotoSearchTextPressedColor(U.getColorUtils().parserColor("#0288d1"));
 
         //获取屏幕宽度
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
@@ -789,7 +790,7 @@ public class ManyLyricsView extends AbstractLrcView {
         float lineY = (getHeight() - lineH) / 2;
         float lineLeft = textX + textWidth + linePadding;
         float lineR = rectL - linePadding;
-        LinearGradient linearGradientHL = new LinearGradient(lineLeft, lineY + lineH, lineR, lineY + lineH, new int[]{ColorUtils.parserColor(mPaintLineColor, 255), ColorUtils.parserColor(mPaintLineColor, 0), ColorUtils.parserColor(mPaintLineColor, 0), ColorUtils.parserColor(mPaintLineColor, 255)}, new float[]{0f, 0.2f, 0.8f, 1f}, Shader.TileMode.CLAMP);
+        LinearGradient linearGradientHL = new LinearGradient(lineLeft, lineY + lineH, lineR, lineY + lineH, new int[]{U.getColorUtils().parserColor(mPaintLineColor, 255), U.getColorUtils().parserColor(mPaintLineColor, 0), U.getColorUtils().parserColor(mPaintLineColor, 0), U.getColorUtils().parserColor(mPaintLineColor, 255)}, new float[]{0f, 0.2f, 0.8f, 1f}, Shader.TileMode.CLAMP);
         mPaintLine.setShader(linearGradientHL);
         canvas.drawRect(lineLeft, lineY, lineR, lineY + lineH, mPaintLine);
 

@@ -10,8 +10,9 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.common.utils.U;
 import com.component.busilib.R;
-import com.zq.lyrics.utils.ColorUtils;
+import com.common.utils.ColorUtils;
 
 /**
  * 歌词图片预览视图
@@ -28,9 +29,9 @@ public class LrcImgPreView extends View {
      * 默认画笔颜色
      */
     private int[] mPaintColor = new int[]{
-            ColorUtils.parserColor("#00348a"),
-            ColorUtils.parserColor("#0080c0"),
-            ColorUtils.parserColor("#03cafc")
+            U.getColorUtils().parserColor("#00348a"),
+            U.getColorUtils().parserColor("#0080c0"),
+            U.getColorUtils().parserColor("#03cafc")
     };
     /**
      * 高亮歌词画笔
@@ -38,9 +39,9 @@ public class LrcImgPreView extends View {
     private Paint mPaintHL;
     //高亮颜色
     private int[] mPaintHLColor = new int[]{
-            ColorUtils.parserColor("#82f7fd"),
-            ColorUtils.parserColor("#ffffff"),
-            ColorUtils.parserColor("#03e9fc")
+            U.getColorUtils().parserColor("#82f7fd"),
+            U.getColorUtils().parserColor("#ffffff"),
+            U.getColorUtils().parserColor("#03e9fc")
     };
     /**
      * 轮廓画笔
