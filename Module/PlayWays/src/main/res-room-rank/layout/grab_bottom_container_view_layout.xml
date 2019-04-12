@@ -17,6 +17,8 @@
         android:background="@drawable/ycdd_shurukuang"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/view_28_dp"
+        android:paddingRight="@dimen/view_5_dp"
+        android:singleLine="true"
         android:text="夸赞是一种美德"
         android:textColor="@color/white_trans_30"
         android:textSize="@dimen/textsize_16_dp" />

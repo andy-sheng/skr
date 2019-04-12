@@ -21,8 +21,8 @@ public class GrabInviteNotifyView extends RelativeLayout {
     SimpleDraweeView mAvatarIv;
     ExTextView mNameTv;
     ExTextView mHintTv;
-    ExTextView mAgreeTv;
-    ExTextView mIgnoreTv;
+    View mAgreeTv;
+    //ExTextView mIgnoreTv;
 
     UserInfoModel mUserInfoModel;
 
@@ -43,11 +43,11 @@ public class GrabInviteNotifyView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.grab_invite_notification_view_layout, this);
-        mAvatarIv = (SimpleDraweeView) this.findViewById(R.id.avatar_iv);
-        mNameTv = (ExTextView) this.findViewById(R.id.name_tv);
-        mHintTv = (ExTextView) this.findViewById(R.id.hint_tv);
-        mAgreeTv = (ExTextView) this.findViewById(R.id.agree_tv);
-        mIgnoreTv = (ExTextView) this.findViewById(R.id.ignore_tv);
+        mAvatarIv =  this.findViewById(R.id.avatar_iv);
+        mNameTv =  this.findViewById(R.id.name_tv);
+        mHintTv =  this.findViewById(R.id.hint_tv);
+        mAgreeTv =  this.findViewById(R.id.ok_btn);
+        //mIgnoreTv = (ExTextView) this.findViewById(R.id.ignore_tv);
 
         mAgreeTv.setOnClickListener(new OnClickListener() {
             @Override
@@ -58,14 +58,14 @@ public class GrabInviteNotifyView extends RelativeLayout {
             }
         });
 
-        mIgnoreTv.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mListener != null) {
-                    mListener.onIgnore();
-                }
-            }
-        });
+//        mIgnoreTv.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (mListener != null) {
+//                    mListener.onIgnore();
+//                }
+//            }
+//        });
     }
 
     public void bindData(UserInfoModel userInfoModel){
