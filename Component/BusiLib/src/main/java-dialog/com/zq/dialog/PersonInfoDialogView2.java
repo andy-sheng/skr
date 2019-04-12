@@ -1,13 +1,11 @@
 package com.zq.dialog;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -228,7 +226,12 @@ public class PersonInfoDialogView2 extends RelativeLayout {
                     List<PhotoModel> list = JSON.parseArray(result.getData().getString("pic"), PhotoModel.class);
                     int newOffset = result.getData().getIntValue("offset");
                     int totalCount = result.getData().getIntValue("totalCount");
-                    showPhotos(list, newOffset, totalCount);
+                    if (offset == 0) {
+                        addPhotos(list, newOffset, totalCount, true);
+                    } else {
+                        addPhotos(list, newOffset, totalCount, false);
+                    }
+
                 }
             }
 
@@ -451,8 +454,12 @@ public class PersonInfoDialogView2 extends RelativeLayout {
     }
 
 
-    public void showPhotos(List<PhotoModel> list, int offset, int totalCount) {
+    public void addPhotos(List<PhotoModel> list, int offset, int totalCount, boolean clear) {
         this.mOffset = offset;
+
+        if (clear) {
+            mPhotoAdapter.getDataList().clear();
+        }
 
         if (list != null && list.size() != 0) {
             if (!hasInitHeight) {

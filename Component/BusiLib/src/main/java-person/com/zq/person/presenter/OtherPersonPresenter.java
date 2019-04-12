@@ -57,7 +57,7 @@ public class OtherPersonPresenter extends RxLifeCyclePresenter {
         }, this);
     }
 
-    public void getPhotos(int userId, int offset, int cnt) {
+    public void getPhotos(int userId, final int offset, int cnt) {
         ApiMethods.subscribe(mUserInfoServerApi.getPhotos(userId, offset, cnt), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -66,7 +66,12 @@ public class OtherPersonPresenter extends RxLifeCyclePresenter {
                         List<PhotoModel> list = JSON.parseArray(result.getData().getString("pic"), PhotoModel.class);
                         int newOffset = result.getData().getIntValue("offset");
                         int totalCount = result.getData().getIntValue("totalCount");
-                        view.showPhotos(list, newOffset, totalCount);
+                        if (offset == 0) {
+                            view.addPhotos(list, newOffset, totalCount, true);
+                        } else {
+                            view.addPhotos(list, newOffset, totalCount, false);
+                        }
+
                     }
                 }
             }

@@ -430,7 +430,7 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
     }
 
     @Override
-    public void showPhotos(List<PhotoModel> list, int newOffset, int totalNum) {
+    public void addPhotos(List<PhotoModel> list, int newOffset, int totalNum, boolean clear) {
         offset = newOffset;
         mSmartRefresh.finishLoadMore();
 
@@ -439,6 +439,10 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
             mPhotoNumTv.setVisibility(View.VISIBLE);
         } else {
             mPhotoNumTv.setVisibility(View.GONE);
+        }
+
+        if (clear) {
+            mPhotoAdapter.getDataList().clear();
         }
 
         if (list != null && list.size() > 0) {
@@ -457,33 +461,6 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
                 // 没有数据
                 setAppBarCanScroll(false);
             }
-        }
-    }
-
-    @Override
-    public void showRankView(UserRankModel userRankModel) {
-        MyLog.d(TAG, "showRankView" + " userRankModel=" + userRankModel);
-
-        if (userRankModel.getDiff() == 0) {
-            // 默认按照上升显示
-            mRankDiffIv.setVisibility(View.GONE);
-            mRankText.setText(highlight(userRankModel.getText(), userRankModel.getHighlight(), true));
-        } else if (userRankModel.getDiff() > 0) {
-            mRankDiffIv.setVisibility(View.VISIBLE);
-            mRankDiffIv.setImageResource(R.drawable.shangsheng_ic);
-            mRankText.setText(highlight(userRankModel.getText(), userRankModel.getHighlight(), true));
-        } else if (userRankModel.getDiff() < 0) {
-            mRankDiffIv.setVisibility(View.VISIBLE);
-            mRankDiffIv.setImageResource(R.drawable.xiajiang_ic);
-            mRankText.setText(highlight(userRankModel.getText(), userRankModel.getHighlight(), false));
-        }
-
-        if (userRankModel.getBadge() == UserRankModel.STAR_BADGE) {
-            mMedalIv.setBackground(getResources().getDrawable(R.drawable.paiming));
-        } else if (userRankModel.getBadge() == UserRankModel.TOP_BADGE) {
-            mMedalIv.setBackground(getResources().getDrawable(R.drawable.paihang));
-        } else if (userRankModel.getBadge() == UserRankModel.SHANDIAN_BADGE) {
-            mMedalIv.setBackground(getResources().getDrawable(R.drawable.dabai));
         }
     }
 
@@ -571,7 +548,27 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
 
 
     public void showReginRank(List<UserRankModel> list) {
+        mMedalIv.setBackground(getResources().getDrawable(R.drawable.paihang));
+        UserRankModel reginRankModel = new UserRankModel();
+        UserRankModel countryRankModel = new UserRankModel();
+        if (list != null && list.size() > 0) {
+            for (UserRankModel model : list) {
+                if (model.getCategory() == UserRankModel.REGION) {
+                    reginRankModel = model;
+                }
+                if (model.getCategory() == UserRankModel.COUNTRY) {
+                    countryRankModel = model;
+                }
+            }
+        }
 
+        if (reginRankModel != null && reginRankModel.getRankSeq() != 0) {
+            mRankText.setText(reginRankModel.getRegionDesc() + "第" + String.valueOf(reginRankModel.getRankSeq()) + "位");
+        } else if (countryRankModel != null && countryRankModel.getRankSeq() != 0) {
+            mRankText.setText(countryRankModel.getRegionDesc() + "第" + String.valueOf(countryRankModel.getRankSeq()) + "位");
+        } else {
+            mRankText.setText(getResources().getString(R.string.default_rank_text));
+        }
     }
 
 

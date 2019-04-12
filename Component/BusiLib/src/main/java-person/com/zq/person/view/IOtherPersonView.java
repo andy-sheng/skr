@@ -21,9 +21,7 @@ public interface IOtherPersonView {
                           boolean isFriend, boolean isFollow);
 
     // 展示照片墙
-    void showPhotos(List<PhotoModel> list, int newOffset, int totalNum);
-
-    void showRankView(UserRankModel userRankModel);
+    void addPhotos(List<PhotoModel> list, int newOffset, int totalNum, boolean clear);
 
 //    // 个人基本信息
 //    void showUserInfo(UserInfoModel model);

@@ -281,8 +281,7 @@
                             android:layout_marginBottom="@dimen/view_d_12_dp"
                             android:background="@drawable/pk_info_paiming"
                             android:paddingLeft="@dimen/view_42_dp"
-                            android:paddingRight="@dimen/view_12_dp"
-                            android:visibility="gone">
+                            android:paddingRight="@dimen/view_12_dp">
 
                             <com.common.view.ex.ExTextView
                                 android:id="@+id/rank_text"
@@ -309,10 +308,10 @@
                             android:layout_width="@dimen/view_42_dp"
                             android:layout_height="@dimen/view_42_dp"
                             android:layout_alignLeft="@+id/rank_area"
-                            android:layout_alignParentBottom="true"
+                            android:layout_alignTop="@id/rank_area"
                             android:layout_marginLeft="@dimen/view_12_dp"
-                            android:layout_marginBottom="@dimen/view_d_17_dp"
-                            android:visibility="gone" />
+                            android:layout_marginTop="-4dp"
+                            android:background="@drawable/paihang" />
 
                         <com.common.view.ex.ExTextView
                             android:id="@+id/photo_num_tv"
