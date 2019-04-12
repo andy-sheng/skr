@@ -89,7 +89,7 @@
             android:layout_marginRight="@dimen/view_72_dp"
             android:lineSpacingExtra="@dimen/view_6_dp"
             android:maxLines="2"
-            android:textColor="@color/black_trans_70"
+            android:textColor="@color/black_trans_60"
             android:textSize="@dimen/view_16_dp" />
 
         <ImageView
