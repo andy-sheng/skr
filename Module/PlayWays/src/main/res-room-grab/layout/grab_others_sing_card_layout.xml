@@ -5,11 +5,15 @@
     android:layout_height="wrap_content"
     tools:parentTag="android.widget.RelativeLayout">
 
-    <com.common.image.fresco.BaseImageView
+    <com.opensource.svgaplayer.SVGAImageView
+        android:layout_centerHorizontal="true"
         android:id="@+id/grab_stage_view"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_160_dp"
-        android:layout_marginTop="@dimen/view_172_dp"
+        android:layout_width="@dimen/view_360_dp"
+        android:layout_height="@dimen/view_360_dp"
+        android:layout_marginTop="@dimen/view_77_dp"
+        app:antiAlias="true"
+        app:autoPlay="false"
+        app:loopCount="-1"
         android:visibility="visible" />
 
     <com.common.view.countdown.CircleCountDownView

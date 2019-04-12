@@ -28,8 +28,13 @@ import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.ShowPersonCardEvent;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.rank.R;
+import com.opensource.svgaplayer.SVGADrawable;
+import com.opensource.svgaplayer.SVGAImageView;
+import com.opensource.svgaplayer.SVGAParser;
+import com.opensource.svgaplayer.SVGAVideoEntity;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.greendao.annotation.NotNull;
 
 /**
  * 其他人主场景收音机
@@ -46,7 +51,7 @@ public class OthersSingCardView extends RelativeLayout {
 
     int mUseId;   // 当前唱歌人的id
 
-    BaseImageView mGrabStageView;
+    SVGAImageView mGrabStageView;
     BaseImageView mSingAvatarView;
     CircleCountDownView mCircleCountDownView;
 
@@ -77,7 +82,7 @@ public class OthersSingCardView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.grab_others_sing_card_layout, this);
-        mGrabStageView = (BaseImageView) findViewById(R.id.grab_stage_view);
+        mGrabStageView = (SVGAImageView) findViewById(R.id.grab_stage_view);
         mSingAvatarView = (BaseImageView) findViewById(R.id.sing_avatar_view);
         mCircleCountDownView = (CircleCountDownView) findViewById(R.id.circle_count_down_view);
 
@@ -118,47 +123,30 @@ public class OthersSingCardView extends RelativeLayout {
             mEnterAlphaAnimation.setDuration(1000);
         }
         this.startAnimation(mEnterAlphaAnimation);
-        FrescoWorker.loadImage(mGrabStageView, ImageFactory.newPathImage(BaseRoomData.PK_MAIN_STAGE_WEBP)
-                .setCallBack(new IFrescoCallBack() {
-                    @Override
-                    public void processWithInfo(ImageInfo info, Animatable animatable) {
-                        if (animatable != null && animatable instanceof AnimatedDrawable2) {
-                            ((AnimatedDrawable2) animatable).setAnimationListener(new AnimationListener() {
 
-                                @Override
-                                public void onAnimationStart(AnimatedDrawable2 drawable) {
-                                    MyLog.d(TAG, "onAnimationStart" + " drawable=" + drawable);
-                                }
+        mGrabStageView.setVisibility(View.VISIBLE);
+        mGrabStageView.setLoops(1);
 
-                                @Override
-                                public void onAnimationStop(AnimatedDrawable2 drawable) {
-                                    MyLog.d(TAG, "onAnimationStop" + " drawable=" + drawable);
-                                }
+        SVGAParser parser = new SVGAParser(U.app());
+        try {
+            parser.parse("grab_main_stage.svga", new SVGAParser.ParseCompletion() {
+                @Override
+                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                    SVGADrawable drawable = new SVGADrawable(videoItem);
+                    mGrabStageView.setLoops(-1);
+                    mGrabStageView.setImageDrawable(drawable);
+                    mGrabStageView.startAnimation();
+                }
 
-                                @Override
-                                public void onAnimationReset(AnimatedDrawable2 drawable) {
-                                }
+                @Override
+                public void onError() {
 
-                                @Override
-                                public void onAnimationRepeat(AnimatedDrawable2 drawable) {
+                }
+            });
+        } catch (Exception e) {
+            MyLog.e(TAG, e);
+        }
 
-                                }
-
-                                @Override
-                                public void onAnimationFrame(AnimatedDrawable2 drawable, int frameNumber) {
-                                }
-                            });
-                            animatable.start();
-                        }
-                    }
-
-                    @Override
-                    public void processWithFailure() {
-                        MyLog.d(TAG, "processWithFailure");
-                    }
-                })
-                .build()
-        );
         countDownAfterAnimation("bindData");
     }
 
