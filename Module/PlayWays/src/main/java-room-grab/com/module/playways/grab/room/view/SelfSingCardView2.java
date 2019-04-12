@@ -111,6 +111,9 @@ public class SelfSingCardView2 extends RelativeLayout {
          *
          */
         int totalTs = infoModel.getSingEndMs() - infoModel.getSingBeginMs();
+        if(totalTs<=0){
+            MyLog.d(TAG,"playLyric" + " totalTs时间不合法, infoModel=" + infoModel );
+        }
         if (!hasAcc) {
             playWithNoAcc(mSongModel);
             mIvTag.setBackground(U.getDrawable(R.drawable.ycdd_daojishi_qingchang));

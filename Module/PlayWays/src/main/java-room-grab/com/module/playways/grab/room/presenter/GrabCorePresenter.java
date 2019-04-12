@@ -1446,9 +1446,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     public void onEvent(QGetSingChanceMsgEvent event) {
         ensureInRcRoom();
         if (RoomDataUtils.isCurrentExpectingRound(event.getRoundSeq(), mRoomData)) {
-            MyLog.w(TAG, "抢到唱歌权：userID " + event.getUserID() + ", seq " + event.getRoundSeq());
+            MyLog.w(TAG, "抢到唱歌权：userID " + event.getUserID() + ", roundInfo"+event.currentRound);
             GrabRoundInfoModel roundInfoModel = mRoomData.getExpectRoundInfo();
-            roundInfoModel.tryUpdateRoundInfoModel(roundInfoModel, true);
+            roundInfoModel.tryUpdateRoundInfoModel(event.getCurrentRound(), true);
             roundInfoModel.setHasSing(true);
             roundInfoModel.setUserID(event.getUserID());
             roundInfoModel.updateStatus(true, GrabRoundInfoModel.STATUS_SING);
