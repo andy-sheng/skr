@@ -40,7 +40,7 @@ public class GrabTopItemView extends RelativeLayout {
     public AnimationDrawable mFlickerAnim;
     public ExTextView mTvIconBg;
     public ExImageView mOwnerIconIv;
-
+    public SpeakingTipsAnimationView mSpeakingTipsAnimationView;
     public boolean mShowEmptySeat = false;
 
     int mMode = MODE_GRAB;
@@ -70,6 +70,7 @@ public class GrabTopItemView extends RelativeLayout {
         mFlagIv = (ExImageView) this.findViewById(R.id.flag_iv);
         mOwnerIconIv = findViewById(R.id.owner_icon_iv);
         mTvIconBg = (ExTextView) findViewById(R.id.tv_icon_bg);
+        mSpeakingTipsAnimationView = findViewById(R.id.speaker_animation_iv);
 
         RxView.clicks(mAvatarIv)
                 .subscribe(new Consumer<Object>() {
@@ -261,6 +262,10 @@ public class GrabTopItemView extends RelativeLayout {
         } else {
             mFlagIv.setImageResource(R.drawable.ycdd_xideng);
         }
+    }
+
+    public void showSpeakingAnimation() {
+        mSpeakingTipsAnimationView.show(2000);
     }
 
     public void setGetSingChance() {

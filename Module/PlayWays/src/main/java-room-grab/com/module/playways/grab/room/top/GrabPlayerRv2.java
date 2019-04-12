@@ -12,8 +12,10 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.U;
+import com.engine.EngineEvent;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent;
 import com.module.playways.grab.room.event.LightOffAnimationOverEvent;
@@ -573,25 +575,6 @@ public class GrabPlayerRv2 extends RelativeLayout {
     private SVGAParser getSVGAParser() {
         if (mSVGAParser == null) {
             mSVGAParser = new SVGAParser(U.app());
-//            mSVGAParser.setFileDownloader(new SVGAParser.FileDownloader() {
-//                @Override
-//                public void resume(final URL url, final Function1<? super InputStream, Unit> complete, final Function1<? super Exception, Unit> failure) {
-//                    new Thread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            OkHttpClient client = new OkHttpClient();
-//                            Request request = new Request.Builder().url(url).get().build();
-//                            try {
-//                                Response response = client.newCall(request).execute();
-//                                complete.invoke(response.body().byteStream());
-//                            } catch (IOException e) {
-//                                e.printStackTrace();
-//                                failure.invoke(e);
-//                            }
-//                        }
-//                    }).start();
-//                }
-//            });
         }
         return mSVGAParser;
     }
@@ -600,6 +583,27 @@ public class GrabPlayerRv2 extends RelativeLayout {
     public void onEvent(GrabPlaySeatUpdateEvent event) {
         MyLog.d(TAG, "onEvent" + " event=" + event);
         initData();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(EngineEvent event) {
+        /**
+         * 提示说话声纹
+         */
+        if(event.getType() == EngineEvent.TYPE_USER_AUDIO_VOLUME_INDICATION){
+            List<EngineEvent.UserVolumeInfo> list = event.getObj();
+            for(EngineEvent.UserVolumeInfo uv :list){
+                MyLog.d(TAG,"UserVolumeInfo uv=" + uv);
+                int uid = uv.getUid();
+                if(uid==0){
+                    uid = (int) MyUserInfoManager.getInstance().getUid();
+                }
+                VP vp = mInfoMap.get(uid);
+                if (vp != null && vp.grabTopItemView != null && vp.grabTopItemView.isShown()) {
+                    vp.grabTopItemView.showSpeakingAnimation();
+                }
+            }
+        }
     }
 
     public void setRoomData(GrabRoomData roomData) {

@@ -1930,7 +1930,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
-
     //TODO 房主说话 。。。
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabSpeakingControlEvent event) {
@@ -1941,12 +1940,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         } else {
             // 要闭麦
             GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
-            if (infoModel != null) {
-                if (infoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
-                    MyLog.d(TAG, "自己的轮次，无需闭麦");
-                } else {
-                    EngineManager.getInstance().setClientRole(false);
-                }
+            if (infoModel != null && infoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                MyLog.d(TAG, "自己的轮次，无需闭麦");
+            } else {
+                EngineManager.getInstance().setClientRole(false);
             }
         }
     }

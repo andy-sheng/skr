@@ -7,8 +7,10 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
+import com.engine.EngineEvent;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.SomeOneGrabEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
@@ -21,6 +23,11 @@ import com.module.rank.R;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import io.agora.rtc.IRtcEngineEventHandler;
 
 
 public class GrabTopContainerView extends RelativeLayout {
