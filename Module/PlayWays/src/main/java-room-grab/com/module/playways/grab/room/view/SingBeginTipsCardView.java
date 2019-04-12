@@ -163,9 +163,9 @@ public class SingBeginTipsCardView extends RelativeLayout {
                     .build();
             File file = FrescoWorker.getCacheFileFromFrescoDiskCache(image.getUrl());
             if (file != null) {
-                dynamicEntity.setDynamicImage(BitmapFactory.decodeFile(file.getPath()), "avatar_128");
+                dynamicEntity.setDynamicImage(BitmapFactory.decodeFile(file.getPath()), "avatar_104");
             } else {
-                dynamicEntity.setDynamicImage(image.getUrl(), "avatar_128");
+                dynamicEntity.setDynamicImage(image.getUrl(), "avatar_104");
             }
 
             Bitmap bitmap = Bitmap.createBitmap(U.getDisplayUtils().dip2px(70), U.getDisplayUtils().dip2px(70), Bitmap.Config.ARGB_8888);
