@@ -44,6 +44,7 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
+import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
@@ -382,9 +383,9 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
         mFollowIv = (ImageView) mRootView.findViewById(R.id.follow_iv);
         mMessageIv = (ImageView) mRootView.findViewById(R.id.message_iv);
 
-        mFollowIv.setOnClickListener(new DebounceViewClickListener() {
+        mFollowIv.setOnClickListener(new AnimateClickListener() {
             @Override
-            public void clickValid(View v) {
+            public void click(View view) {
                 if (!U.getNetworkUtils().hasNetwork()) {
                     U.getToastUtil().showShort("网络异常，请检查网络后重试!");
                     return;
@@ -398,10 +399,10 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
                 }
             }
         });
-
-        mMessageIv.setOnClickListener(new DebounceViewClickListener() {
+        
+        mMessageIv.setOnClickListener(new AnimateClickListener() {
             @Override
-            public void clickValid(View v) {
+            public void click(View view) {
                 if (mUserInfoModel != null) {
                     ModuleServiceManager.getInstance().getMsgService().startPrivateChat(getContext(),
                             String.valueOf(mUserInfoModel.getUserId()),

@@ -3,6 +3,7 @@ package com.module.playways.grab.room.fragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -18,6 +19,7 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
+import com.common.view.AnimateClickListener;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.constans.GameModeType;
@@ -98,37 +100,40 @@ public class GrabResultFragment extends BaseFragment {
         }
 
 
-        RxView.clicks(mTvBack)
-                .throttleFirst(300, TimeUnit.MILLISECONDS)
-                .subscribe(o -> {
-                    if (getActivity() != null) {
-                        getActivity().finish();
-                    }
-                });
+        mTvBack.setOnClickListener(new AnimateClickListener() {
+            @Override
+            public void click(View view) {
+                if (getActivity() != null) {
+                    getActivity().finish();
+                }
+            }
+        });
 
-        RxView.clicks(mTvShare)
-                .throttleFirst(300, TimeUnit.MILLISECONDS)
-                .subscribe(o -> {
-                    SharePanel sharePanel = new SharePanel(getActivity());
-                    sharePanel.setShareContent("http://res-static.inframe.mobi/common/skr-share.png");
-                    sharePanel.show(ShareType.IMAGE_RUL);
-                });
+        mTvShare.setOnClickListener(new AnimateClickListener() {
+            @Override
+            public void click(View view) {
+                SharePanel sharePanel = new SharePanel(getActivity());
+                sharePanel.setShareContent("http://res-static.inframe.mobi/common/skr-share.png");
+                sharePanel.show(ShareType.IMAGE_RUL);
+            }
+        });
 
-        RxView.clicks(mTvAgain)
-                .throttleFirst(300, TimeUnit.MILLISECONDS)
-                .subscribe(o -> {
-                    PrepareData prepareData = new PrepareData();
-                    prepareData.setGameType(GameModeType.GAME_MODE_GRAB);
-                    prepareData.setTagId(mRoomData.getTagId());
-                    ARouter.getInstance()
-                            .build(RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)
-                            .withSerializable("prepare_data", prepareData)
-                            .navigation();
+        mTvAgain.setOnClickListener(new AnimateClickListener() {
+            @Override
+            public void click(View view) {
+                PrepareData prepareData = new PrepareData();
+                prepareData.setGameType(GameModeType.GAME_MODE_GRAB);
+                prepareData.setTagId(mRoomData.getTagId());
+                ARouter.getInstance()
+                        .build(RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)
+                        .withSerializable("prepare_data", prepareData)
+                        .navigation();
 
-                    if (getActivity() != null) {
-                        getActivity().finish();
-                    }
-                });
+                if (getActivity() != null) {
+                    getActivity().finish();
+                }
+            }
+        });
 
         U.getSoundUtils().preLoad(TAG, R.raw.grab_gameover);
 
