@@ -25,7 +25,7 @@ public class CommentHolder extends RecyclerView.ViewHolder {
 
         mAvatarIv = (BaseImageView) itemView.findViewById(R.id.avatar_iv);
         mCommentTv = (ExTextView) itemView.findViewById(R.id.comment_tv);
-        itemView.setOnClickListener(new View.OnClickListener() {
+        mAvatarIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mCommentItemListener != null) {
