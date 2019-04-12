@@ -447,7 +447,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
                             }
                         }
                     } else {
-                        if (topFragmentNotInViewPager != null) {
+                        if (topFragmentNotInViewPager == null) {
                             topFragmentNotInViewPager = bf;
                         }
                     }
