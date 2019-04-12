@@ -186,7 +186,9 @@ public class ImageFactory {
                             } else {
                                 int wh[] = U.getImageUtils().getImageWidthAndHeightFromFile(((LocalImage) mBaseImage).getPath());
                                 if (wh != null) {
-                                    setHeight(ossImgResize.getW() * wh[1] / wh[0]);
+                                    if (wh[0] != 0) {
+                                        setHeight(ossImgResize.getW() * wh[1] / wh[0]);
+                                    }
                                 }
                             }
                         }

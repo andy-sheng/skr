@@ -251,10 +251,10 @@ void MelChordAna::_AnalyzeMelString(const string &_contents) {
                            >> tmpMN.note_org
                            >> tmpMN.exhibitionPos;
 
-                        //LOGI("1——> no=%d %d %d %d %d duration=%d", i,
-                             tmpMN.beginTimeMs, tmpMN.endTimeMs,
-                             tmpMN.note_org, tmpMN.exhibitionPos,
-                             tmpMN.endTimeMs - tmpMN.beginTimeMs);
+//                        LOGI("1——> no=%d %d %d %d %d duration=%d", i,
+//                             tmpMN.beginTimeMs, tmpMN.endTimeMs,
+//                             tmpMN.note_org, tmpMN.exhibitionPos,
+//                             tmpMN.endTimeMs - tmpMN.beginTimeMs);
                         if (tmpMN.exhibitionPos > m_melMaxPos) {
                             m_melMaxPos = tmpMN.exhibitionPos;
                         }
