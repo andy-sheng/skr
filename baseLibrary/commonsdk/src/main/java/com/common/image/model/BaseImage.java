@@ -26,8 +26,8 @@ public abstract class BaseImage {
      * FIT_CENTER       同上，但是最后居中
      * FIT_END          同上上，但与显示边界右或下对齐
      * CENTER           居中无缩放
-     * CENTER_INSIDE    使的图片都在边界内，与FIT_CENTER不同的是，只会缩小不会放大，默认是这个吧
-     * CENTER_CROP      保持宽高比，缩小或放大，使两边都大于等于边界，居中。
+     * CENTER_INSIDE    使的图片都在边界内，与FIT_CENTER不同的是，只会缩小不会放大，
+     * CENTER_CROP      保持宽高比，缩小或放大，使两边都大于等于边界，居中。默认是这个
      * FOCUS_CROP       同CENTER_CROP，但中心点可以设置
      * FIT_BOTTOM_START
      */

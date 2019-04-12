@@ -27,6 +27,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
+import com.common.callback.Callback;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
@@ -58,6 +59,7 @@ import com.dialog.view.TipsDialogView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.imagebrowse.ImageBrowseView;
 import com.imagebrowse.big.BigImageBrowseFragment;
+import com.imagebrowse.big.DefaultImageBrowserLoader;
 import com.module.ModuleServiceManager;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnDismissListener;
@@ -310,69 +312,60 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
         mPhotoAdapter = new PhotoAdapter(new RecyclerOnItemClickListener() {
             @Override
             public void onItemClicked(View view, final int position, Object model) {
-//                BigImageBrowseFragment.open(false, (FragmentActivity) getContext(), new BigImageBrowseFragment.Loader<PhotoModel>() {
-//
-//                    @Override
-//                    public void init() {
-//
-//                    }
-//
-//                    @Override
-//                    public List getInitList() {
-//                        return mPhotoAdapter.getDataList();
-//                    }
-//
-//                    @Override
-//                    public List<PhotoModel> loadMore(boolean backward, int position, PhotoModel data) {
-//                        if (backward) {
-//                            UserInfoServerApi mUserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
-//                            Call<ApiResult> call = mUserInfoServerApi.getPhotosSync(mUserId, position, DEFAUAT_CNT);
-//                            Response<ApiResult> rsp = null;
-//                            try {
-//                                rsp = call.execute();
-//                                ApiResult result = rsp.body();
-//
-//                                if (result != null && result.getErrno() == 0) {
-//                                    final List<PhotoModel> list = JSON.parseArray(result.getData().getString("pic"), PhotoModel.class);
-//                                    final int newOffset = result.getData().getIntValue("offset");
-//                                    final int totalCount = result.getData().getIntValue("totalCount");
-//
-//                                    mUiHandler.post(new Runnable() {
-//                                        @Override
-//                                        public void run() {
-//                                            showPhotos(list, newOffset, totalCount);
-//                                        }
-//                                    });
-//                                    return list;
-//                                }
-//                            } catch (IOException e) {
-//                                MyLog.e(e);
-//                            }
-//                            return null;
-//                        } else {
-//                            return null;
-//                        }
-//                    }
-//
-//                    @Override
-//                    public boolean hasMore(boolean backward, int position, PhotoModel data) {
-//                        if (backward) {
-//                            return mHasMore;
-//                        } else {
-//                            return false;
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void load(ImageBrowseView imageBrowseView, int position, PhotoModel item) {
-//                        imageBrowseView.load(item.getPicPath());
-//                    }
-//
-//                    @Override
-//                    public int getInitCurrentItemPostion() {
-//                        return position;
-//                    }
-//                });
+                BigImageBrowseFragment.open(true, getActivity(), new DefaultImageBrowserLoader<PhotoModel>() {
+                    @Override
+                    public void init() {
+
+                    }
+
+                    @Override
+                    public void load(ImageBrowseView imageBrowseView, int position, PhotoModel item) {
+                        if (TextUtils.isEmpty(item.getPicPath())) {
+                            imageBrowseView.load(item.getLocalPath());
+                        } else {
+                            imageBrowseView.load(item.getPicPath());
+                        }
+                    }
+
+                    @Override
+                    public int getInitCurrentItemPostion() {
+                        return position - 1;
+                    }
+
+                    @Override
+                    public List<PhotoModel> getInitList() {
+                        return mPhotoAdapter.getDataList();
+                    }
+
+                    @Override
+                    public void loadMore(boolean backward, int position, PhotoModel data, final Callback<List<PhotoModel>> callback) {
+                        if (backward) {
+                            // 向后加载
+                            mPresenter.getPhotos(mUserId,mPhotoAdapter.getSuccessNum(), DEFAUAT_CNT, new Callback<List<PhotoModel>>() {
+
+                                @Override
+                                public void onCallback(int r, List<PhotoModel> list) {
+                                        if (callback != null && list != null) {
+                                            callback.onCallback(0, list);
+                                        }
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public boolean hasMore(boolean backward, int position, PhotoModel data) {
+                        if (backward) {
+                            return mHasMore;
+                        }
+                        return false;
+                    }
+
+                    @Override
+                    public boolean hasMenu() {
+                        return false;
+                    }
+                });
             }
         }, false);
         mPhotoView.setAdapter(mPhotoAdapter);

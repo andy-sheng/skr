@@ -24,6 +24,7 @@ import com.common.utils.HttpUtils;
 import com.common.utils.U;
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
+import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.imagepipeline.image.ImageInfo;
 
 import java.io.File;
@@ -127,9 +128,10 @@ public class EnhancedImageView extends RelativeLayout {
 
         if (path.startsWith("http://") || path.startsWith("https://")) {
             HttpImage httpImage = (HttpImage) ImageFactory.newPathImage(path)
+                    .setScaleType(ScalingUtils.ScaleType.CENTER_CROP)
                     .setFailureDrawable(U.app().getResources().getDrawable(R.drawable.load_img_error))
                     .setLoadingDrawable(U.app().getResources().getDrawable(R.drawable.loading_place_holder_img))
-                    .setProgressBarDrawable(new ImageBrowseProgressBar())
+//                    .setProgressBarDrawable(new ImageBrowseProgressBar())
                     .setTapToRetryEnabled(true)
 //                    .setOssProcessors(OssPsFactory.newResizeBuilder().setW(360).build(),OssPsFactory.newCropBuilder().setH(180).build())
                     .build();

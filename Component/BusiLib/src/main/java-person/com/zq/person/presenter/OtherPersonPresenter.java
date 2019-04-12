@@ -1,6 +1,7 @@
 package com.zq.person.presenter;
 
 import com.alibaba.fastjson.JSON;
+import com.common.callback.Callback;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.GameStatisModel;
 import com.common.core.userinfo.model.UserInfoModel;
@@ -57,7 +58,11 @@ public class OtherPersonPresenter extends RxLifeCyclePresenter {
         }, this);
     }
 
-    public void getPhotos(int userId, final int offset, int cnt) {
+    public void getPhotos(int userId, int offset, int cnt) {
+        getPhotos(userId, offset, cnt, null);
+    }
+
+    public void getPhotos(int userId, final int offset, int cnt, final Callback<List<PhotoModel>> callback) {
         ApiMethods.subscribe(mUserInfoServerApi.getPhotos(userId, offset, cnt), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -71,7 +76,9 @@ public class OtherPersonPresenter extends RxLifeCyclePresenter {
                         } else {
                             view.addPhotos(list, newOffset, totalCount, false);
                         }
-
+                        if (callback != null) {
+                            callback.onCallback(0, list);
+                        }
                     }
                 }
             }

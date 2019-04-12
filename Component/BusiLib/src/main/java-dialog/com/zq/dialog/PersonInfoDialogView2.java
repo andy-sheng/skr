@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -19,6 +20,7 @@ import android.widget.RelativeLayout;
 
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseActivity;
+import com.common.callback.Callback;
 import com.common.core.account.UserAccountManager;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
@@ -45,6 +47,7 @@ import com.component.busilib.view.MarqueeTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.imagebrowse.ImageBrowseView;
 import com.imagebrowse.big.BigImageBrowseFragment;
+import com.imagebrowse.big.DefaultImageBrowserLoader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
@@ -218,6 +221,10 @@ public class PersonInfoDialogView2 extends RelativeLayout {
     }
 
     void getPhotos(final int offset) {
+        getPhotos(offset, null);
+    }
+
+    void getPhotos(final int offset, final Callback<List<PhotoModel>> callback) {
         ApiMethods.subscribe(mUserInfoServerApi.getPhotos(mUserId, offset, DEFAULT_CNT), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
@@ -231,7 +238,9 @@ public class PersonInfoDialogView2 extends RelativeLayout {
                     } else {
                         addPhotos(list, newOffset, totalCount, false);
                     }
-
+                    if (callback != null) {
+                        callback.onCallback(0, list);
+                    }
                 }
             }
 
@@ -386,68 +395,60 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         mPhotoAdapter = new PhotoAdapter(new RecyclerOnItemClickListener() {
             @Override
             public void onItemClicked(View view, final int position, Object model) {
-//                BigImageBrowseFragment.open(false, (FragmentActivity) getContext(), new BigImageBrowseFragment.Loader<PhotoModel>() {
-//
-//                    @Override
-//                    public void init() {
-//
-//                    }
-//
-//                    @Override
-//                    public List getInitList() {
-//                        return mPhotoAdapter.getDataList();
-//                    }
-//
-//                    @Override
-//                    public List<PhotoModel> loadMore(boolean backward, int position, PhotoModel data) {
-//                        if (backward) {
-//                            Call<ApiResult> call = mUserInfoServerApi.getPhotosSync(mUserId, position, DEFAULT_CNT);
-//                            Response<ApiResult> rsp = null;
-//                            try {
-//                                rsp = call.execute();
-//                                ApiResult result = rsp.body();
-//
-//                                if (result != null && result.getErrno() == 0) {
-//                                    final List<PhotoModel> list = JSON.parseArray(result.getData().getString("pic"), PhotoModel.class);
-//                                    final int newOffset = result.getData().getIntValue("offset");
-//                                    final int totalCount = result.getData().getIntValue("totalCount");
-//
-//                                    mUiHandler.post(new Runnable() {
-//                                        @Override
-//                                        public void run() {
-//                                            showPhotos(list, newOffset, totalCount);
-//                                        }
-//                                    });
-//                                    return list;
-//                                }
-//                            } catch (IOException e) {
-//                                MyLog.e(e);
-//                            }
-//                            return null;
-//                        } else {
-//                            return null;
-//                        }
-//                    }
-//
-//                    @Override
-//                    public boolean hasMore(boolean backward, int position, PhotoModel data) {
-//                        if (backward) {
-//                            return mHasMore;
-//                        } else {
-//                            return false;
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void load(ImageBrowseView imageBrowseView, int position, PhotoModel item) {
-//                        imageBrowseView.load(item.getPicPath());
-//                    }
-//
-//                    @Override
-//                    public int getInitCurrentItemPostion() {
-//                        return position;
-//                    }
-//                });
+                BigImageBrowseFragment.open(true, (FragmentActivity) getContext(), new DefaultImageBrowserLoader<PhotoModel>() {
+                    @Override
+                    public void init() {
+
+                    }
+
+                    @Override
+                    public void load(ImageBrowseView imageBrowseView, int position, PhotoModel item) {
+                        if (TextUtils.isEmpty(item.getPicPath())) {
+                            imageBrowseView.load(item.getLocalPath());
+                        } else {
+                            imageBrowseView.load(item.getPicPath());
+                        }
+                    }
+
+                    @Override
+                    public int getInitCurrentItemPostion() {
+                        return position - 1;
+                    }
+
+                    @Override
+                    public List<PhotoModel> getInitList() {
+                        return mPhotoAdapter.getDataList();
+                    }
+
+                    @Override
+                    public void loadMore(boolean backward, int position, PhotoModel data, final Callback<List<PhotoModel>> callback) {
+                        if (backward) {
+                            // 向后加载
+                            getPhotos(mPhotoAdapter.getSuccessNum(), new Callback<List<PhotoModel>>() {
+
+                                @Override
+                                public void onCallback(int r, List<PhotoModel> list) {
+                                    if (callback != null && list != null) {
+                                        callback.onCallback(0, list);
+                                    }
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public boolean hasMore(boolean backward, int position, PhotoModel data) {
+                        if (backward) {
+                            return mHasMore;
+                        }
+                        return false;
+                    }
+
+                    @Override
+                    public boolean hasMenu() {
+                        return false;
+                    }
+                });
             }
         }, false);
         mPhotoRv.setAdapter(mPhotoAdapter);
