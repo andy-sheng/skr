@@ -122,7 +122,6 @@
                                 android:maxLines="1"
                                 android:paddingRight="@dimen/view_20_dp"
                                 android:singleLine="true"
-                                android:text="KTV酒彪子"
                                 android:textColor="#3B4E79"
                                 android:textSize="@dimen/textsize_18_dp" />
 
@@ -177,43 +176,54 @@
 
                         <RelativeLayout
                             android:id="@+id/opreta_area"
+                            android:layout_marginLeft="@dimen/view_16_dp"
+                            android:layout_marginRight="@dimen/view_16_dp"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
 
-                            <ImageView
-                                android:id="@+id/message_iv"
-                                android:layout_width="@dimen/view_44_dp"
-                                android:layout_height="@dimen/view_50_dp"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:layout_marginRight="@dimen/view_16_dp"
-                                android:background="@drawable/person_card_sixin" />
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal">
 
-                            <ImageView
-                                android:id="@+id/follow_iv"
-                                android:layout_width="@dimen/view_114_dp"
-                                android:layout_height="@dimen/view_50_dp"
-                                android:layout_centerVertical="true"
-                                android:layout_marginRight="@dimen/view_14_dp"
-                                android:layout_toLeftOf="@id/message_iv" />
+                                <RelativeLayout
+                                    android:id="@+id/kick_area"
+                                    android:layout_width="@dimen/view_0_dp"
+                                    android:layout_height="match_parent"
+                                    android:visibility="gone"
+                                    android:layout_weight="1">
 
-                            <ImageView
-                                android:id="@+id/kick_iv"
-                                android:layout_width="@dimen/view_114_dp"
-                                android:layout_height="@dimen/view_50_dp"
-                                android:layout_centerVertical="true"
-                                android:layout_marginRight="@dimen/view_14_dp"
-                                android:layout_toLeftOf="@id/follow_iv"
-                                android:background="@drawable/person_card_kick" />
+                                    <ImageView
+                                        android:id="@+id/kick_iv"
+                                        android:layout_width="@dimen/view_114_dp"
+                                        android:layout_height="@dimen/view_50_dp"
+                                        android:layout_centerInParent="true"
+                                        android:background="@drawable/person_card_kick"/>
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:id="@+id/follow_area"
+                                    android:layout_width="@dimen/view_0_dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1">
+
+                                    <ImageView
+                                        android:id="@+id/follow_iv"
+                                        android:layout_width="@dimen/view_114_dp"
+                                        android:layout_height="@dimen/view_50_dp"
+                                        android:layout_centerInParent="true" />
+
+                                </RelativeLayout>
+
+                            </LinearLayout>
 
 
                             <RelativeLayout
                                 android:id="@+id/srl_avatar_area"
                                 android:layout_width="@dimen/view_118_dp"
                                 android:layout_height="@dimen/view_53_dp"
+                                android:layout_alignParentLeft="true"
                                 android:layout_centerVertical="true"
-                                android:layout_marginRight="@dimen/view_14_dp"
-                                android:layout_toLeftOf="@id/follow_iv"
                                 android:visibility="gone">
 
                                 <ImageView

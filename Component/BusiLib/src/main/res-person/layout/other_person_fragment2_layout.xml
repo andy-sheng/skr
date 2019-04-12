@@ -133,7 +133,6 @@
                             android:gravity="left|center_vertical"
                             android:maxLines="1"
                             android:singleLine="true"
-                            android:text="KTV酒彪子"
                             android:textColor="@color/white"
                             android:textSize="@dimen/textsize_18_dp"
                             android:textStyle="bold" />
@@ -145,7 +144,6 @@
                             android:layout_below="@id/name_tv"
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="@dimen/view_4_dp"
-                            android:text="撕歌号：278326163"
                             android:textColor="@color/white_trans_50"
                             android:textSize="@dimen/textsize_14_dp" />
 
@@ -268,7 +266,6 @@
                             android:gravity="center"
                             android:maxLines="1"
                             android:singleLine="true"
-                            android:text="钻石巨星6段"
                             android:textColor="#0C2275"
                             android:textSize="@dimen/textsize_14_dp"
                             android:textStyle="bold" />
