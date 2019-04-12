@@ -2,6 +2,7 @@ package com.imagebrowse;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.Animatable;
 import android.net.Uri;
 import android.os.Handler;
@@ -10,6 +11,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.common.base.R;
 import com.common.image.fresco.BaseImageView;
@@ -52,6 +54,8 @@ public class EnhancedImageView extends RelativeLayout {
 
     protected OnLongClickListener mLongClickListener; //长按事件的监听
     protected OnClickListener mClickListener; //点击事件的监听
+
+    TextView mDebugLogView;
 
     protected Handler mUiHandler = new Handler();
 
@@ -118,17 +122,21 @@ public class EnhancedImageView extends RelativeLayout {
     public void load(String path) {
 //        path = "http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/1111.jpg?x-oss-process=image/resize,w_480,h_1080/circle,r_500/blur,r_30,s_20";
         MyLog.d(TAG, "load" + " path=" + path);
-//        TextView textView = new TextView(getContext());
-//        LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 300);
-//        lp.topMargin=400;
-//        textView.setTextColor(Color.RED);
-//        textView.setGravity(CENTER_IN_PARENT);
-//        textView.setText("path=" + path);
-//        addView(textView, lp);
+        if (mDebugLogView == null && MyLog.isDebugLogOpen()) {
+            mDebugLogView = new TextView(getContext());
+            LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 300);
+            lp.topMargin = 400;
+            mDebugLogView.setTextColor(Color.RED);
+            mDebugLogView.setGravity(CENTER_IN_PARENT);
+            addView(mDebugLogView, lp);
+        }
+        if (mDebugLogView != null) {
+            mDebugLogView.setText("path=" + path);
+        }
 
         if (path.startsWith("http://") || path.startsWith("https://")) {
             HttpImage httpImage = (HttpImage) ImageFactory.newPathImage(path)
-                    .setScaleType(ScalingUtils.ScaleType.CENTER_CROP)
+                    .setScaleType(ScalingUtils.ScaleType.CENTER_INSIDE)
                     .setFailureDrawable(U.app().getResources().getDrawable(R.drawable.load_img_error))
                     .setLoadingDrawable(U.app().getResources().getDrawable(R.drawable.loading_place_holder_img))
 //                    .setProgressBarDrawable(new ImageBrowseProgressBar())
@@ -175,6 +183,7 @@ public class EnhancedImageView extends RelativeLayout {
     }
 
     private void showFrescoViewIfNeed() {
+        addLog("showFrescoViewIfNeed");
         if (mGifImageView != null) {
             mGifImageView.setVisibility(GONE);
         }
@@ -204,6 +213,7 @@ public class EnhancedImageView extends RelativeLayout {
     }
 
     private void showSubSampleViewIfNeed() {
+        addLog("showSubSampleViewIfNeed");
         if (mGifImageView != null) {
             mGifImageView.setVisibility(GONE);
         }
@@ -233,7 +243,7 @@ public class EnhancedImageView extends RelativeLayout {
                 File file = FrescoWorker.getCacheFileFromFrescoDiskCache(httpImage.getUri());
                 int wh[] = U.getImageUtils().getImageWidthAndHeightFromFile(file.getAbsolutePath());
 
-                MyLog.d(TAG, "load processWithInfo wh " + wh[0] + " " + wh[1]);
+                addLog("load processWithInfo wh " + wh[0] + " " + wh[1]);
                 // 如果是图特别大，用 subsample加载
                 boolean b1 = wh[0] != 0 && wh[0] > U.getDisplayUtils().getScreenWidth() * 1.5;
                 boolean b2 = wh[1] != 0 && wh[1] > U.getDisplayUtils().getScreenHeight() * 1.5;
@@ -317,17 +327,17 @@ public class EnhancedImageView extends RelativeLayout {
             @Override
             public void onPreviewLoadError(Exception e) {
                 // 改用fresco
-                MyLog.d(TAG, " subSampleTouchView onPreviewLoadError");
+                addLog(" subSampleTouchView onPreviewLoadError");
             }
 
             @Override
             public void onImageLoadError(Exception e) {
-                MyLog.d(TAG, " subSampleTouchView onPreviewLoadError");
+                addLog(" subSampleTouchView onPreviewLoadError");
             }
 
             @Override
             public void onTileLoadError(Exception e) {
-                MyLog.d(TAG, " subSampleTouchView onPreviewLoadError");
+                addLog(" subSampleTouchView onPreviewLoadError");
             }
 
             @Override
@@ -337,7 +347,7 @@ public class EnhancedImageView extends RelativeLayout {
 
             @Override
             public void onImageLoaded() {
-                MyLog.d(TAG, " subSampleTouchView onImageLoaded");
+                addLog(" subSampleTouchView onImageLoaded");
                 if (mPhotoDraweeView != null) {
                     mPhotoDraweeView.setVisibility(GONE);
                 }
@@ -433,6 +443,13 @@ public class EnhancedImageView extends RelativeLayout {
         } catch (IOException e) {
             // 失败了
             loadLocalByFresco(mBaseImage);
+        }
+    }
+
+    void addLog(String text) {
+        MyLog.d(TAG, text);
+        if (mDebugLogView != null) {
+            mDebugLogView.setText(mDebugLogView.getText() + "\n" + text);
         }
     }
 }
