@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.alibaba.fastjson.JSON;
@@ -72,13 +73,13 @@ public class PersonInfoDialogView2 extends RelativeLayout {
 
     Handler mUiHandler = new Handler();
 
+    RelativeLayout mPersonCardMainContainner;
     SmartRefreshLayout mSmartRefresh;
     CoordinatorLayout mCoordinator;
-    RecyclerView mPhotoRv;
+
     AppBarLayout mAppbar;
     CollapsingToolbarLayout mToolbarLayout;
-
-    RelativeLayout mUserInfoArea;   // 个人信息
+    RelativeLayout mUserInfoArea;
     ImageView mAvatarBg;
     SimpleDraweeView mAvatarIv;
     ExTextView mReport;
@@ -89,15 +90,19 @@ public class PersonInfoDialogView2 extends RelativeLayout {
     MarqueeTextView mSignTv;
     TagFlowLayout mFlowlayout;
 
-    Toolbar mToolbar;
-    RelativeLayout mOpretaArea;     // 私信，关注，踢人
-    RelativeLayout mFollowArea;
-    ImageView mFollowIv;
+    LinearLayout mFunctionArea;
     RelativeLayout mKickArea;
     ImageView mKickIv;
+    RelativeLayout mFollowArea;
+    ImageView mFollowIv;
+
+    Toolbar mToolbar;
+    ImageView mSrlFollowIv;
     RelativeLayout mSrlAvatarArea;
     ImageView mSrlAvatarBg;
     SimpleDraweeView mSrlAvatarIv;
+
+    RecyclerView mPhotoView;
 
     private static final int LOCATION_TAG = 0;           //城市标签
     private static final int CONSTELLATION_TAG = 1;      //星座标签
@@ -177,13 +182,9 @@ public class PersonInfoDialogView2 extends RelativeLayout {
             isShowKick = false;
             mToolbar.setVisibility(GONE);
             mReport.setVisibility(View.GONE);
-            mOpretaArea.setVisibility(View.GONE);
-            mKickArea.setVisibility(GONE);
-            mFollowIv.setVisibility(View.GONE);
+            mFunctionArea.setVisibility(View.GONE);
+            mSrlFollowIv.setVisibility(GONE);
             // TODO: 2019/4/8 可能需要调整布局
-            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mUserInfoArea.getLayoutParams();
-            layoutParams.bottomMargin = U.getDisplayUtils().dip2px(10);
-            mUserInfoArea.setLayoutParams(layoutParams);
         }
 
         mReport.setVisibility(showReport ? VISIBLE : GONE);
@@ -286,23 +287,13 @@ public class PersonInfoDialogView2 extends RelativeLayout {
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                 if (verticalOffset == 0) {
                     // 展开状态
-                    if (isShowKick) {
-                        mKickArea.setVisibility(VISIBLE);
-                    }
-                    mSrlAvatarArea.setVisibility(View.GONE);
-                    mOpretaArea.setBackground(null);
+                    mToolbar.setVisibility(GONE);
                 } else if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()) {
                     // 完全收缩状态
-                    mKickArea.setVisibility(GONE);
-                    mSrlAvatarArea.setVisibility(View.VISIBLE);
-                    mOpretaArea.setBackground(getResources().getDrawable(R.drawable.person_info_top_bg));
+                    mToolbar.setVisibility(VISIBLE);
                 } else {
                     // TODO: 2019/4/8 过程中，可以加动画，先直接显示
-                    if (isShowKick) {
-                        mKickArea.setVisibility(VISIBLE);
-                    }
-                    mSrlAvatarArea.setVisibility(View.GONE);
-                    mOpretaArea.setBackground(null);
+                    mToolbar.setVisibility(GONE);
                 }
             }
         });
@@ -352,14 +343,14 @@ public class PersonInfoDialogView2 extends RelativeLayout {
     }
 
     private void initOpretaArea() {
-        mToolbar = (Toolbar) this.findViewById(R.id.toolbar);
-        mOpretaArea = (RelativeLayout) this.findViewById(R.id.opreta_area);
-
-        mFollowArea = (RelativeLayout) this.findViewById(R.id.follow_area);
-        mFollowIv = (ImageView) this.findViewById(R.id.follow_iv);
+        mFunctionArea = (LinearLayout) this.findViewById(R.id.function_area);
         mKickArea = (RelativeLayout) this.findViewById(R.id.kick_area);
         mKickIv = (ImageView) this.findViewById(R.id.kick_iv);
+        mFollowArea = (RelativeLayout) this.findViewById(R.id.follow_area);
+        mFollowIv = (ImageView) this.findViewById(R.id.follow_iv);
 
+        mToolbar = (Toolbar) this.findViewById(R.id.toolbar);
+        mSrlFollowIv = (ImageView) this.findViewById(R.id.srl_follow_iv);
         mSrlAvatarArea = (RelativeLayout) this.findViewById(R.id.srl_avatar_area);
         mSrlAvatarBg = (ImageView) this.findViewById(R.id.srl_avatar_bg);
         mSrlAvatarIv = (SimpleDraweeView) this.findViewById(R.id.srl_avatar_iv);
@@ -382,6 +373,24 @@ public class PersonInfoDialogView2 extends RelativeLayout {
             }
         });
 
+        mSrlFollowIv.setOnClickListener(new AnimateClickListener() {
+            @Override
+            public void click(View view) {
+                if (mClickListener != null) {
+                    mClickListener.onClickFollow(mUserId, isFriend, isFollow);
+                }
+            }
+        });
+
+        mSrlAvatarIv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mClickListener != null) {
+                    mClickListener.onClickAvatar(mUserInfoModel.getAvatar());
+                }
+            }
+        });
+
 //        mMessageIv.setOnClickListener(new DebounceViewClickListener() {
 //            @Override
 //            public void clickValid(View v) {
@@ -393,11 +402,11 @@ public class PersonInfoDialogView2 extends RelativeLayout {
     }
 
     private void initPhotoArea() {
-        mPhotoRv = (RecyclerView) this.findViewById(R.id.photo_view);
+        mPhotoView = (RecyclerView) this.findViewById(R.id.photo_view);
 
-        mPhotoRv.setFocusableInTouchMode(false);
+        mPhotoView.setFocusableInTouchMode(false);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
-        mPhotoRv.setLayoutManager(gridLayoutManager);
+        mPhotoView.setLayoutManager(gridLayoutManager);
         mPhotoAdapter = new PhotoAdapter(new RecyclerOnItemClickListener() {
             @Override
             public void onItemClicked(View view, final int position, Object model) {
@@ -457,7 +466,8 @@ public class PersonInfoDialogView2 extends RelativeLayout {
                 });
             }
         }, false);
-        mPhotoRv.setAdapter(mPhotoAdapter);
+
+        mPhotoView.setAdapter(mPhotoAdapter);
     }
 
 
@@ -611,10 +621,13 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         mUserInfoModel.setFriend(isFriend);
         if (isFriend) {
             mFollowIv.setBackgroundResource(R.drawable.person_card_friend);
+            mSrlFollowIv.setBackgroundResource(R.drawable.person_card_friend);
         } else if (isFollow) {
             mFollowIv.setBackgroundResource(R.drawable.person_card_followed);
+            mSrlFollowIv.setBackgroundResource(R.drawable.person_card_followed);
         } else {
             mFollowIv.setBackgroundResource(R.drawable.person_card_follow);
+            mSrlFollowIv.setBackgroundResource(R.drawable.person_card_follow);
         }
     }
 

@@ -48,14 +48,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fitsSystemWindows="true"
-                    android:paddingBottom="@dimen/view_10_dp"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                     <RelativeLayout
                         android:id="@+id/user_info_area"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/view_70_dp">
+                        android:layout_height="wrap_content">
 
                         <ImageView
                             android:id="@+id/avatar_bg"
@@ -163,6 +161,46 @@
                             android:layout_marginTop="@dimen/view_10_dp"
                             android:layout_marginBottom="@dimen/view_14_dp"></com.common.flowlayout.TagFlowLayout>
 
+                        <LinearLayout
+                            android:id="@+id/function_area"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/view_70_dp"
+                            android:layout_below="@+id/flowlayout"
+                            android:layout_marginLeft="@dimen/view_16_dp"
+                            android:layout_marginRight="@dimen/view_16_dp"
+                            android:orientation="horizontal">
+
+                            <RelativeLayout
+                                android:id="@+id/kick_area"
+                                android:layout_width="@dimen/view_0_dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:visibility="gone">
+
+                                <ImageView
+                                    android:id="@+id/kick_iv"
+                                    android:layout_width="@dimen/view_114_dp"
+                                    android:layout_height="@dimen/view_50_dp"
+                                    android:layout_centerInParent="true"
+                                    android:background="@drawable/person_card_kick" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/follow_area"
+                                android:layout_width="@dimen/view_0_dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1">
+
+                                <ImageView
+                                    android:id="@+id/follow_iv"
+                                    android:layout_width="@dimen/view_114_dp"
+                                    android:layout_height="@dimen/view_50_dp"
+                                    android:layout_centerInParent="true" />
+
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
                     </RelativeLayout>
 
                     <android.support.v7.widget.Toolbar
@@ -170,61 +208,30 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/view_70_dp"
                         android:layout_gravity="bottom|center_horizontal"
+                        android:background="@drawable/person_info_top_bg"
                         app:contentInsetStart="@dimen/view_0_dp"
                         app:contentInsetStartWithNavigation="@dimen/view_0_dp"
                         app:layout_collapseMode="pin">
 
                         <RelativeLayout
-                            android:id="@+id/opreta_area"
-                            android:layout_marginLeft="@dimen/view_16_dp"
-                            android:layout_marginRight="@dimen/view_16_dp"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
 
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:orientation="horizontal">
-
-                                <RelativeLayout
-                                    android:id="@+id/kick_area"
-                                    android:layout_width="@dimen/view_0_dp"
-                                    android:layout_height="match_parent"
-                                    android:visibility="gone"
-                                    android:layout_weight="1">
-
-                                    <ImageView
-                                        android:id="@+id/kick_iv"
-                                        android:layout_width="@dimen/view_114_dp"
-                                        android:layout_height="@dimen/view_50_dp"
-                                        android:layout_centerInParent="true"
-                                        android:background="@drawable/person_card_kick"/>
-                                </RelativeLayout>
-
-                                <RelativeLayout
-                                    android:id="@+id/follow_area"
-                                    android:layout_width="@dimen/view_0_dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1">
-
-                                    <ImageView
-                                        android:id="@+id/follow_iv"
-                                        android:layout_width="@dimen/view_114_dp"
-                                        android:layout_height="@dimen/view_50_dp"
-                                        android:layout_centerInParent="true" />
-
-                                </RelativeLayout>
-
-                            </LinearLayout>
-
+                            <ImageView
+                                android:id="@+id/srl_follow_iv"
+                                android:layout_width="@dimen/view_114_dp"
+                                android:layout_height="@dimen/view_50_dp"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginRight="@dimen/view_20_dp" />
 
                             <RelativeLayout
                                 android:id="@+id/srl_avatar_area"
-                                android:layout_width="@dimen/view_118_dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="@dimen/view_53_dp"
                                 android:layout_alignParentLeft="true"
                                 android:layout_centerVertical="true"
-                                android:visibility="gone">
+                                android:layout_marginLeft="@dimen/view_16_dp">
 
                                 <ImageView
                                     android:id="@+id/srl_avatar_bg"
@@ -237,8 +244,8 @@
                                     android:id="@+id/srl_avatar_iv"
                                     android:layout_width="@dimen/view_40_dp"
                                     android:layout_height="@dimen/view_40_dp"
-                                    android:layout_alignLeft="@id/srl_avatar_bg"
-                                    android:layout_alignTop="@id/srl_avatar_bg"
+                                    android:layout_alignLeft="@+id/srl_avatar_bg"
+                                    android:layout_alignTop="@+id/srl_avatar_bg"
                                     android:layout_marginLeft="@dimen/view_5_dp"
                                     android:layout_marginTop="@dimen/view_5_dp" />
 

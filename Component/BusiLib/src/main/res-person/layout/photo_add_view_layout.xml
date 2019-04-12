@@ -2,7 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/view_7_dp">
+    android:layout_marginLeft="@dimen/view_7_dp"
+    android:layout_marginRight="@dimen/view_7_dp"
+    android:layout_marginBottom="@dimen/textsize_14_dp">
 
     <ImageView
         android:id="@+id/update_photo_iv"
