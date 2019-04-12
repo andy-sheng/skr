@@ -307,7 +307,11 @@ public class ResPickerFragment extends ImageBaseFragment implements ResPicker.On
             if (mImagePicker.getParams().isCrop()) {
                 gotoCrop();
             } else {
-                deliverResult(requestCode, resultCode, data.getExtras());
+                if (data != null) {
+                    deliverResult(requestCode, resultCode, data.getExtras());
+                } else {
+                    deliverResult(requestCode, resultCode, null);
+                }
             }
         }
         return false;

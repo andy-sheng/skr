@@ -168,7 +168,7 @@ public class ImageFactory {
          * 阿里云oss强大的 oss处理库
          * 使用 {@link com.common.image.model.oss.OssImgFactory 构造处理效果}
          *
-         * @param ossProcessors
+         * @cparam ossProcessors
          * @return
          */
         public ImageFactory.Builder addOssProcessors(IOssParam... ossProcessors) {
