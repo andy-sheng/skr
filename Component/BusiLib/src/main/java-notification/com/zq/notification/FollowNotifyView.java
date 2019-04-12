@@ -3,6 +3,7 @@ package com.zq.notification;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.common.core.avatar.AvatarUtils;
@@ -26,6 +27,7 @@ public class FollowNotifyView extends RelativeLayout {
 
     SimpleDraweeView mAvatarIv;
     ExTextView mNameTv;
+    ImageView mSexIv;
     ExTextView mHintTv;
     ExImageView mFollowTv;
 
@@ -50,6 +52,7 @@ public class FollowNotifyView extends RelativeLayout {
         inflate(getContext(), R.layout.relation_notification_view_layout, this);
         mAvatarIv = (SimpleDraweeView) findViewById(R.id.avatar_iv);
         mNameTv = (ExTextView) findViewById(R.id.name_tv);
+        mSexIv = (ImageView) findViewById(R.id.sex_iv);
         mHintTv = (ExTextView) findViewById(R.id.hint_tv);
         mFollowTv = (ExImageView) findViewById(R.id.follow_tv);
 
@@ -90,6 +93,7 @@ public class FollowNotifyView extends RelativeLayout {
                         .setCircle(true)
                         .build());
         mNameTv.setText(mUserInfoModel.getNickname());
+        mSexIv.setBackgroundResource(userInfoModel.getSex() == ESex.SX_MALE.getValue() ? R.drawable.sex_man_icon : R.drawable.sex_woman_icon);
 
         if (mUserInfoModel.isFriend()) {
             // 好友怎么展示
