@@ -98,7 +98,8 @@ public class SelfSingCardView2 extends RelativeLayout {
             MyLog.d(TAG, "infoModel 是空的");
             return;
         }
-        if(infoModel.getType() == 2 || infoModel.getType() == 3){
+        if(infoModel.getWantSingType() == GrabRoundInfoModel.EWST_COMMON_OVER_TIME
+                || infoModel.getWantSingType() == GrabRoundInfoModel.EWST_ACCOMPANY_OVER_TIME){
             mIvChallengeIcon.setVisibility(VISIBLE);
         }else {
             mIvChallengeIcon.setVisibility(INVISIBLE);
