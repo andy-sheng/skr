@@ -302,34 +302,32 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             });
         }
 
-        tryShowInviteTipView();
-        tryShowManageSongTipView();
-        tipViewAnimate(mIvInviteTip, mIvManageSongTipView);
+        if (mRoomData.isOwner()) {
+            tryShowInviteTipView();
+            tryShowManageSongTipView();
+            tipViewAnimate(mIvInviteTip, mIvManageSongTipView);
+        }
     }
 
     private void tryShowInviteTipView() {
-        if (mRoomData.isOwner()) {
-            mIvInviteTip = new ImageView(getContext());
-            mIvInviteTip.setBackground(U.getDrawable(R.drawable.fz_yaoqing_tishi));
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(142), U.getDisplayUtils().dip2px(74));
-            mIvInviteTip.setLayoutParams(layoutParams);
-            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            layoutParams.setMargins(0, U.getDisplayUtils().dip2px(127), U.getDisplayUtils().dip2px(13), 0);
-            ((ViewGroup) mRootView).addView(mIvInviteTip);
-        }
+        mIvInviteTip = new ImageView(getContext());
+        mIvInviteTip.setBackground(U.getDrawable(R.drawable.fz_yaoqing_tishi));
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(142), U.getDisplayUtils().dip2px(74));
+        mIvInviteTip.setLayoutParams(layoutParams);
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        layoutParams.setMargins(0, U.getDisplayUtils().dip2px(127), U.getDisplayUtils().dip2px(13), 0);
+        ((ViewGroup) mRootView).addView(mIvInviteTip);
     }
 
     private void tryShowManageSongTipView() {
-        if (mRoomData.isOwner()) {
-            mIvManageSongTipView = new ImageView(getContext());
-            mIvManageSongTipView.setBackground(U.getDrawable(R.drawable.fz_kongzhi_tishi));
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(142), U.getDisplayUtils().dip2px(74));
-            mIvManageSongTipView.setLayoutParams(layoutParams);
-            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-            layoutParams.setMargins(0, 0, U.getDisplayUtils().dip2px(13), U.getDisplayUtils().dip2px(78));
-            ((ViewGroup) mRootView).addView(mIvManageSongTipView);
-        }
+        mIvManageSongTipView = new ImageView(getContext());
+        mIvManageSongTipView.setBackground(U.getDrawable(R.drawable.fz_kongzhi_tishi));
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(142), U.getDisplayUtils().dip2px(74));
+        mIvManageSongTipView.setLayoutParams(layoutParams);
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        layoutParams.setMargins(0, 0, U.getDisplayUtils().dip2px(13), U.getDisplayUtils().dip2px(78));
+        ((ViewGroup) mRootView).addView(mIvManageSongTipView);
     }
 
     ValueAnimator mTipViewAnimator;
@@ -1064,7 +1062,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             mAnimatorList.clear();
         }
 
-        if(mTipViewAnimator != null){
+        if (mTipViewAnimator != null) {
             mTipViewAnimator.cancel();
         }
 
