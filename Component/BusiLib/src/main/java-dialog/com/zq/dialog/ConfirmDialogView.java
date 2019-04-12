@@ -15,6 +15,7 @@ import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.R;
+import com.dialog.view.StrokeTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 public class ConfirmDialogView extends RelativeLayout {
@@ -22,8 +23,8 @@ public class ConfirmDialogView extends RelativeLayout {
 
     SimpleDraweeView mAvatarIv;
     TextView mContentTv;
-    ExTextView mCancleTv;
-    ExTextView mConfirmTv;
+    StrokeTextView mCancleTv;
+    StrokeTextView mConfirmTv;
     ImageView mKickMaskIv;
 
     UserInfoModel mUserInfoModel;
@@ -47,8 +48,8 @@ public class ConfirmDialogView extends RelativeLayout {
 
         mAvatarIv = (SimpleDraweeView) findViewById(R.id.avatar_iv);
         mContentTv = (TextView) findViewById(R.id.content_tv);
-        mCancleTv = (ExTextView) findViewById(R.id.cancle_tv);
-        mConfirmTv = (ExTextView) findViewById(R.id.confirm_tv);
+        mCancleTv = (StrokeTextView) findViewById(R.id.cancle_tv);
+        mConfirmTv = (StrokeTextView) findViewById(R.id.confirm_tv);
         mKickMaskIv = (ImageView) this.findViewById(R.id.kick_mask_iv);
     }
 
@@ -66,18 +67,18 @@ public class ConfirmDialogView extends RelativeLayout {
             // 金币确认
             if (num != 0) {
                 SpannableStringBuilder stringBuilder = new SpanUtils()
-                        .append("将").setForegroundColor(U.getColor(R.color.black_trans_50))
+                        .append("将").setForegroundColor(Color.parseColor("#3B4E79"))
                         .append(" " + mUserInfoModel.getNickname() + " \n").setForegroundColor(Color.parseColor("#F5A623"))
-                        .append("移除房间需要消耗").setForegroundColor(U.getColor(R.color.black_trans_50))
+                        .append("移除房间需要消耗").setForegroundColor(Color.parseColor("#3B4E79"))
                         .append("" + num).setForegroundColor(Color.parseColor("#F5A623"))
-                        .append("金币").setForegroundColor(U.getColor(R.color.black_trans_50))
+                        .append("金币").setForegroundColor(Color.parseColor("#3B4E79"))
                         .create();
                 mContentTv.setText(stringBuilder);
             } else {
                 SpannableStringBuilder stringBuilder = new SpanUtils()
-                        .append("是否发起投票将").setForegroundColor(U.getColor(R.color.black_trans_50))
+                        .append("是否发起投票将").setForegroundColor(Color.parseColor("#3B4E79"))
                         .append(" " + mUserInfoModel.getNickname() + " ").setForegroundColor(Color.parseColor("#F5A623"))
-                        .append("踢出房间").setForegroundColor(U.getColor(R.color.black_trans_50))
+                        .append("踢出房间").setForegroundColor(Color.parseColor("#3B4E79"))
                         .create();
                 mContentTv.setText(stringBuilder);
             }

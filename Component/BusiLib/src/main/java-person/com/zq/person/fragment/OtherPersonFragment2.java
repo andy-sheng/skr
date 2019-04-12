@@ -631,19 +631,18 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
                 .setMessageTip("是否取消关注")
                 .setConfirmTip("取消关注")
                 .setCancelTip("不了")
-                .setConfirmBtnClickListener(new DebounceViewClickListener() {
-
+                .setConfirmBtnClickListener(new AnimateClickListener() {
                     @Override
-                    public void clickValid(View v) {
+                    public void click(View view) {
                         if (mDialogPlus != null) {
                             mDialogPlus.dismiss();
                         }
                         UserInfoManager.getInstance().mateRelation(userInfoModel.getUserId(), UserInfoManager.RA_UNBUILD, userInfoModel.isFriend());
                     }
                 })
-                .setCancelBtnClickListener(new DebounceViewClickListener() {
+                .setCancelBtnClickListener(new AnimateClickListener() {
                     @Override
-                    public void clickValid(View v) {
+                    public void click(View view) {
                         if (mDialogPlus != null) {
                             mDialogPlus.dismiss();
                         }

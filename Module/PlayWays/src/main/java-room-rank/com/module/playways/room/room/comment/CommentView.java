@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.widget.AbsListView;
 import android.widget.RelativeLayout;
 
+import com.common.core.account.UserAccountManager;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.module.playways.grab.room.event.GrabSwitchRoomEvent;
@@ -126,7 +127,7 @@ public class CommentView extends RelativeLayout {
     }
 
     private void init(AttributeSet attrs) {
-        if(attrs != null){
+        if (attrs != null) {
             TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.gameType);
             mGameType = typedArray.getInt(R.styleable.gameType_type, 0);
             typedArray.recycle();
@@ -145,7 +146,9 @@ public class CommentView extends RelativeLayout {
             @Override
             public void clickAvatar(int userId) {
                 if (mCommentItemListener != null) {
-                    mCommentItemListener.clickAvatar(userId);
+                    if (userId != UserAccountManager.SYSTEM_ID) {
+                        mCommentItemListener.clickAvatar(userId);
+                    }
                 }
             }
 
@@ -190,7 +193,7 @@ public class CommentView extends RelativeLayout {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(DynamicEmojiMsgEvent event){
+    public void onEvent(DynamicEmojiMsgEvent event) {
         MyLog.d(TAG, "onEvent" + " event=" + event);
         // TODO: 2019/4/9 特殊图片表情
         CommentDynamicModel commentDynamicModel = CommentDynamicModel.parseFromEvent(event, mRoomData);

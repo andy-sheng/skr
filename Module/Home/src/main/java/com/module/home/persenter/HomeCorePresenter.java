@@ -17,6 +17,7 @@ import com.common.core.upgrade.UpgradeData;
 import com.common.log.MyLog;
 import com.common.utils.NetworkUtils;
 import com.common.utils.U;
+import com.common.view.AnimateClickListener;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.manager.BgMusicManager;
 import com.dialog.view.TipsDialogView;
@@ -47,6 +48,7 @@ public class HomeCorePresenter {
 
     IHomeActivity mView;
     BaseActivity mBaseActivity;
+    DialogPlus mDialogPlus;
 
 
     private Runnable mNetworkChangeRunnable = new Runnable() {
@@ -82,6 +84,9 @@ public class HomeCorePresenter {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
+        if (mDialogPlus != null) {
+            mDialogPlus.dismiss(false);
+        }
         mView = null;
         ModuleServiceManager.getInstance().getMsgService().removeUnReadMessageCountChangedObserver(mUnreadICallback);
     }
@@ -93,9 +98,9 @@ public class HomeCorePresenter {
             mTipsDialogView = new TipsDialogView.Builder(activity)
                     .setMessageTip(text)
                     .setOkBtnTip("去设置")
-                    .setOkBtnClickListener(new View.OnClickListener() {
+                    .setOkBtnClickListener(new AnimateClickListener() {
                         @Override
-                        public void onClick(View v) {
+                        public void click(View view) {
                             U.getPermissionUtils().goToPermissionManager(activity);
                         }
                     })
@@ -133,25 +138,24 @@ public class HomeCorePresenter {
         TipsDialogView tipsDialogView = new TipsDialogView.Builder(U.getActivityUtils().getTopActivity())
                 .setMessageTip("网络异常\n请检查网络连接后重试")
                 .setOkBtnTip("确认")
+                .setOkBtnClickListener(new AnimateClickListener() {
+                    @Override
+                    public void click(View view) {
+                        if (mDialogPlus != null) {
+                            mDialogPlus.dismiss();
+                        }
+                    }
+                })
                 .build();
 
-        DialogPlus.newDialog(U.getActivityUtils().getTopActivity())
+        mDialogPlus = DialogPlus.newDialog(U.getActivityUtils().getTopActivity())
                 .setContentHolder(new ViewHolder(tipsDialogView))
                 .setGravity(Gravity.BOTTOM)
                 .setContentBackgroundResource(R.color.transparent)
                 .setOverlayBackgroundResource(R.color.black_trans_50)
                 .setExpanded(false)
-                .setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
-                        if (view instanceof ExTextView) {
-                            if (view.getId() == R.id.ok_btn) {
-                                dialog.dismiss();
-                            }
-                        }
-                    }
-                })
-                .create().show();
+                .create();
+        mDialogPlus.show();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

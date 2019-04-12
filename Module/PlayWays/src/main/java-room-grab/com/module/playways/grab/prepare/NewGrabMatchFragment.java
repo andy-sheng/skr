@@ -25,6 +25,7 @@ import com.common.utils.ActivityUtils;
 import com.common.utils.FragmentUtils;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
+import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
@@ -287,6 +288,31 @@ public class NewGrabMatchFragment extends BaseFragment implements IGrabMatchingV
                 .setMessageTip("马上要为你匹配到对手了\n还要退出吗？")
                 .setCancelTip("退出")
                 .setConfirmTip("继续匹配")
+                .setConfirmBtnClickListener(new AnimateClickListener() {
+                    @Override
+                    public void click(View view) {
+                        if (mExitDialog != null) {
+                            mExitDialog.dismiss();
+                        }
+                    }
+                })
+                .setCancelBtnClickListener(new AnimateClickListener() {
+                    @Override
+                    public void click(View view) {
+                        if (mExitDialog != null) {
+                            mExitDialog.dismiss();
+                        }
+                        U.getSoundUtils().release(GrabMatchSuccessFragment.TAG);
+                        mMatchPresenter.cancelMatch();
+                        if (mPrepareData.getGameType() == GameModeType.GAME_MODE_GRAB) {
+                            BgMusicManager.getInstance().destory();
+                        }
+                        stopTimeTask();
+                        if (getActivity() != null) {
+                            getActivity().finish();
+                        }
+                    }
+                })
                 .build();
 
         mExitDialog = DialogPlus.newDialog(getContext())
@@ -295,30 +321,6 @@ public class NewGrabMatchFragment extends BaseFragment implements IGrabMatchingV
                 .setContentBackgroundResource(R.color.transparent)
                 .setOverlayBackgroundResource(R.color.black_trans_80)
                 .setExpanded(false)
-                .setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
-                        if (view instanceof ExTextView) {
-                            if (view.getId() == R.id.confirm_tv) {
-                                // 继续匹配
-                                dialog.dismiss();
-                            }
-
-                            if (view.getId() == R.id.cancel_tv) {
-                                dialog.dismiss();
-                                U.getSoundUtils().release(GrabMatchSuccessFragment.TAG);
-                                mMatchPresenter.cancelMatch();
-                                if (mPrepareData.getGameType() == GameModeType.GAME_MODE_GRAB) {
-                                    BgMusicManager.getInstance().destory();
-                                }
-                                stopTimeTask();
-                                if (getActivity() != null) {
-                                    getActivity().finish();
-                                }
-                            }
-                        }
-                    }
-                })
                 .create();
         mExitDialog.show();
 
@@ -425,7 +427,7 @@ public class NewGrabMatchFragment extends BaseFragment implements IGrabMatchingV
     @Override
     public void notifyToHide() {
         if (mExitDialog != null && mExitDialog.isShowing()) {
-            mExitDialog.dismiss();
+            mExitDialog.dismiss(false);
         }
         mRootView.setVisibility(View.GONE);
 //        U.getFragmentUtils().popFragment(FragmentUtils.newPopParamsBuilder()

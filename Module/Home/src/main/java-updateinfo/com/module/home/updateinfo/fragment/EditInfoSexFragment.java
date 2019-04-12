@@ -13,6 +13,7 @@ import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
+import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
@@ -37,6 +38,8 @@ public class EditInfoSexFragment extends BaseFragment {
     ExImageView mMale;
     ExImageView mFemale;
     ExTextView mNextTv;
+
+    DialogPlus mDialogPlus;
 
     int sex = 0;// 未知、非法参数
 
@@ -151,39 +154,36 @@ public class EditInfoSexFragment extends BaseFragment {
                     .setMessageTip("确定修改性别？\n 性别只能修改一次哦～")
                     .setConfirmTip("确认修改")
                     .setCancelTip("取消")
+                    .setConfirmBtnClickListener(new AnimateClickListener() {
+                        @Override
+                        public void click(View view) {
+                            if (mDialogPlus != null) {
+                                mDialogPlus.dismiss(false);
+                            }
+                            MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
+                                    .setSex(sex)
+                                    .build(), false);
+                            U.getFragmentUtils().popFragment(EditInfoSexFragment.this);
+                        }
+                    })
+                    .setCancelBtnClickListener(new AnimateClickListener() {
+                        @Override
+                        public void click(View view) {
+                            if (mDialogPlus != null) {
+                                mDialogPlus.dismiss();
+                            }
+                        }
+                    })
                     .build();
 
-            DialogPlus.newDialog(getContext())
+            mDialogPlus = DialogPlus.newDialog(getContext())
                     .setContentHolder(new ViewHolder(tipsDialogView))
                     .setGravity(Gravity.BOTTOM)
                     .setContentBackgroundResource(R.color.transparent)
                     .setOverlayBackgroundResource(R.color.black_trans_80)
                     .setExpanded(false)
-                    .setOnClickListener(new OnClickListener() {
-                        @Override
-                        public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
-                            if (view instanceof ExTextView) {
-                                if (view.getId() == R.id.confirm_tv) {
-                                    dialog.dismiss();
-                                    MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
-                                            .setSex(sex)
-                                            .build(), false);
-                                    U.getFragmentUtils().popFragment(EditInfoSexFragment.this);
-                                }
-
-                                if (view.getId() == R.id.cancel_tv) {
-                                    dialog.dismiss();
-                                }
-                            }
-                        }
-                    })
-                    .setOnDismissListener(new OnDismissListener() {
-                        @Override
-                        public void onDismiss(@NonNull DialogPlus dialog) {
-
-                        }
-                    })
-                    .create().show();
+                    .create();
+            mDialogPlus.show();
 
         }
     }
@@ -256,5 +256,13 @@ public class EditInfoSexFragment extends BaseFragment {
     @Override
     public boolean useEventBus() {
         return false;
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        if (mDialogPlus != null) {
+            mDialogPlus.dismiss(false);
+        }
     }
 }

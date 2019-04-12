@@ -1038,7 +1038,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         MyLog.d(TAG, "destroy");
         dismissDialog();
         if (mQuitTipsDialog != null && mQuitTipsDialog.isShowing()) {
-            mQuitTipsDialog.dismiss();
+            mQuitTipsDialog.dismiss(false);
             mQuitTipsDialog = null;
         }
         if (mSelfSingCardView != null) {
@@ -1107,7 +1107,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                         @Override
                         public void onClick(View v) {
                             if (mQuitTipsDialog != null) {
-                                mQuitTipsDialog.dismiss(false);
+                                mQuitTipsDialog.dismiss();
                             }
                         }
                     })

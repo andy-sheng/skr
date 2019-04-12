@@ -25,6 +25,7 @@ import com.common.utils.ActivityUtils;
 import com.common.utils.FragmentUtils;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
+import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
@@ -33,6 +34,7 @@ import com.common.view.ex.drawable.DrawableCreator;
 import com.component.busilib.constans.GameModeType;
 import com.component.busilib.friends.GrabSongApi;
 import com.component.busilib.manager.BgMusicManager;
+import com.dialog.view.StrokeTextView;
 import com.dialog.view.TipsDialogView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.RouterConstants;
@@ -320,6 +322,33 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
                 .setMessageTip("马上要为你匹配到对手了\n还要退出吗？")
                 .setCancelTip("退出")
                 .setConfirmTip("继续匹配")
+                .setCancelBtnClickListener(new AnimateClickListener() {
+                    @Override
+                    public void click(View view) {
+                        if (mExitDialog != null) {
+                            mExitDialog.dismiss();
+                        }
+
+                        U.getSoundUtils().release(GrabMatchSuccessFragment.TAG);
+                        mMatchPresenter.cancelMatch();
+                        if (mPrepareData.getGameType() == GameModeType.GAME_MODE_GRAB) {
+                            BgMusicManager.getInstance().destory();
+                        }
+                        stopTimeTask();
+                        if (getActivity() != null) {
+                            getActivity().finish();
+                        }
+                    }
+                })
+                .setConfirmBtnClickListener(new AnimateClickListener() {
+                    @Override
+                    public void click(View view) {
+                        // 继续匹配
+                        if (mExitDialog != null) {
+                            mExitDialog.dismiss();
+                        }
+                    }
+                })
                 .build();
 
         mExitDialog = DialogPlus.newDialog(getContext())
@@ -328,30 +357,6 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
                 .setContentBackgroundResource(R.color.transparent)
                 .setOverlayBackgroundResource(R.color.black_trans_80)
                 .setExpanded(false)
-                .setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
-                        if (view instanceof ExTextView) {
-                            if (view.getId() == R.id.confirm_tv) {
-                                // 继续匹配
-                                dialog.dismiss();
-                            }
-
-                            if (view.getId() == R.id.cancel_tv) {
-                                dialog.dismiss();
-                                U.getSoundUtils().release(GrabMatchSuccessFragment.TAG);
-                                mMatchPresenter.cancelMatch();
-                                if (mPrepareData.getGameType() == GameModeType.GAME_MODE_GRAB) {
-                                    BgMusicManager.getInstance().destory();
-                                }
-                                stopTimeTask();
-                                if (getActivity() != null) {
-                                    getActivity().finish();
-                                }
-                            }
-                        }
-                    }
-                })
                 .create();
         mExitDialog.show();
 
@@ -458,7 +463,7 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
     @Override
     public void notifyToHide() {
         if (mExitDialog != null && mExitDialog.isShowing()) {
-            mExitDialog.dismiss();
+            mExitDialog.dismiss(false);
         }
         mRootView.setVisibility(View.GONE);
 //        U.getFragmentUtils().popFragment(FragmentUtils.newPopParamsBuilder()

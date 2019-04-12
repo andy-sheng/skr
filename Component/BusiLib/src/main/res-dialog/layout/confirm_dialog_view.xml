@@ -21,15 +21,29 @@
         android:layout_marginTop="@dimen/view_26_dp"
         android:layout_marginRight="@dimen/view_18_dp">
 
+        <ImageView
+            android:id="@+id/avatar_bg"
+            android:layout_width="@dimen/view_50_dp"
+            android:layout_height="@dimen/view_53_dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/view_12_dp"
+            android:background="@drawable/s_touxiang" />
+
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/avatar_iv"
-            android:layout_width="@dimen/view_44_dp"
-            android:layout_height="@dimen/view_44_dp" />
+            android:layout_width="@dimen/view_40_dp"
+            android:layout_height="@dimen/view_40_dp"
+            android:layout_alignLeft="@id/avatar_bg"
+            android:layout_alignTop="@id/avatar_bg"
+            android:layout_marginLeft="@dimen/view_5_dp"
+            android:layout_marginTop="@dimen/view_5_dp" />
 
         <ImageView
             android:id="@+id/kick_mask_iv"
             android:layout_width="@dimen/view_44_dp"
             android:layout_height="@dimen/view_44_dp"
+            android:layout_marginLeft="-2dp"
+            android:layout_marginTop="-2dp"
             android:layout_alignLeft="@id/avatar_iv"
             android:layout_alignTop="@id/avatar_iv"
             android:background="@drawable/jb_jingzhi" />
@@ -39,7 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@id/avatar_iv"
-            android:layout_marginLeft="@dimen/view_8_dp"
+            android:layout_marginLeft="@dimen/view_15_dp"
             android:layout_toRightOf="@id/avatar_iv"
             android:text="是否同意将KTV酒彪子移除房间 4s"
             android:textSize="@dimen/textsize_14_dp" />
@@ -53,7 +67,7 @@
         android:layout_marginBottom="@dimen/view_16_dp"
         android:orientation="horizontal">
 
-        <com.common.view.ex.ExTextView
+        <com.dialog.view.StrokeTextView
             android:id="@+id/cancle_tv"
             android:layout_width="@dimen/view_0_dp"
             android:layout_height="match_parent"
@@ -64,11 +78,9 @@
             android:text="取消请求"
             android:textColor="@color/white"
             android:textSize="@dimen/textsize_16_dp"
-            app:bl_corners_radius="@dimen/view_8_dp"
-            app:bl_shape="rectangle"
-            app:bl_solid_color="#A6A6A6" />
+            android:background="@drawable/red_button_icon" />
 
-        <com.common.view.ex.ExTextView
+        <com.dialog.view.StrokeTextView
             android:id="@+id/confirm_tv"
             android:layout_width="@dimen/view_0_dp"
             android:layout_height="match_parent"
@@ -77,11 +89,8 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="确认请求"
-            android:textColor="@color/white"
             android:textSize="@dimen/textsize_16_dp"
-            app:bl_corners_radius="@dimen/view_8_dp"
-            app:bl_shape="rectangle"
-            app:bl_solid_color="#F5A623" />
+            android:background="@drawable/yellow_button_icon" />
     </LinearLayout>
 
 

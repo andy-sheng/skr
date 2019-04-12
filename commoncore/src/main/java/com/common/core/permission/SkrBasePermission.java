@@ -8,6 +8,7 @@ import com.common.core.R;
 import com.common.log.MyLog;
 import com.common.permission.PermissionUtils;
 import com.common.utils.U;
+import com.common.view.AnimateClickListener;
 import com.dialog.view.TipsDialogView;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
@@ -79,9 +80,9 @@ public abstract class SkrBasePermission {
             mTipsDialogView = new TipsDialogView.Builder(activity)
                     .setMessageTip(text)
                     .setOkBtnTip("去设置")
-                    .setOkBtnClickListener(new View.OnClickListener() {
+                    .setOkBtnClickListener(new AnimateClickListener() {
                         @Override
-                        public void onClick(View v) {
+                        public void click(View view) {
                             mHasGoPermission = true;
                             U.getPermissionUtils().goToPermissionManager(activity);
                         }
