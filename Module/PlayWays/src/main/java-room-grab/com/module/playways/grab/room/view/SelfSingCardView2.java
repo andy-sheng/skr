@@ -58,6 +58,7 @@ public class SelfSingCardView2 extends RelativeLayout {
     SongModel mSongModel;
 
     ImageView mIvTag;
+    ImageView mIvChallengeIcon;
 
     CircleCountDownView mCircleCountDownView;
 
@@ -89,12 +90,18 @@ public class SelfSingCardView2 extends RelativeLayout {
         mCountDownTv = (BitmapTextView) findViewById(R.id.count_down_tv);
         mIvTag = (ImageView) findViewById(R.id.iv_tag);
         mVoiceScaleView = (VoiceScaleView) findViewById(R.id.voice_scale_view);
+        mIvChallengeIcon = (ImageView) findViewById(R.id.iv_challenge_icon);
     }
 
     public void playLyric(GrabRoundInfoModel infoModel, boolean hasAcc) {
         if (infoModel == null) {
             MyLog.d(TAG, "infoModel 是空的");
             return;
+        }
+        if(infoModel.getType() == 2 || infoModel.getType() == 3){
+            mIvChallengeIcon.setVisibility(VISIBLE);
+        }else {
+            mIvChallengeIcon.setVisibility(INVISIBLE);
         }
         mSongModel = infoModel.getMusic();
         mTvLyric.setText("歌词加载中...");

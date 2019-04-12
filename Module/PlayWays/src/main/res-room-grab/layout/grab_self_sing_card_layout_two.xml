@@ -7,6 +7,7 @@
     tools:parentTag="android.widget.RelativeLayout">
 
     <ImageView
+        android:id="@+id/iv_bg"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_200_dp"
         android:layout_marginLeft="@dimen/view_18_dp"
@@ -62,6 +63,18 @@
         app:ly_paint_color_to="@color/black_trans_30"
         app:ly_paint_text_size="@dimen/textsize_dimen_16"
         app:ly_top_line_num="2" />
+
+    <ImageView
+        android:layout_marginTop="@dimen/view_1_33_dp"
+        android:layout_marginRight="@dimen/view_1_33_dp"
+        android:visibility="invisible"
+        android:id="@+id/iv_challenge_icon"
+        android:background="@drawable/biaoqian_jiashi"
+        android:layout_alignTop="@+id/iv_bg"
+        android:layout_alignRight="@+id/iv_bg"
+        android:layout_width="@dimen/view_64_dp"
+        android:layout_height="@dimen/view_64_dp"
+        />
 
     <com.zq.lyrics.widget.VoiceScaleView
         app:leftBgPaintColor="@color/transparent"
