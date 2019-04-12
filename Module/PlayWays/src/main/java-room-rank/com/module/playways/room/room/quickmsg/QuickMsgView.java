@@ -93,7 +93,7 @@ public class QuickMsgView extends RelativeLayout {
         });
         mQuickMsgRv.setAdapter(mQuickMsgAdapter);
         setPadding(U.getDisplayUtils().dip2px(18), U.getDisplayUtils().dip2px(4), U.getDisplayUtils().dip2px(7), U.getDisplayUtils().dip2px(4));
-        setBackgroundResource(R.drawable.quick_msg_view_bg);
+        setBackgroundResource(R.drawable.kuaijie_bj);
     }
 
     public void setRoomData(BaseRoomData roomData) {
