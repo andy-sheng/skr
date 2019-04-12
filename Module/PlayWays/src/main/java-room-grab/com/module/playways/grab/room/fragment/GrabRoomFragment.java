@@ -824,7 +824,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                 }
             }, 100);
         } else {
-            mUiHanlder.sendMessageDelayed(msg, 1200);
+            mUiHanlder.sendMessageDelayed(msg, 2000);
         }
 
         GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();

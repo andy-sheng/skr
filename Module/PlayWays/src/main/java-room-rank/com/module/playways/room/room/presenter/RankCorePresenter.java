@@ -35,6 +35,7 @@ import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
 import com.module.msg.CustomMsgType;
 import com.module.msg.IMsgService;
+import com.module.playways.others.LyricAndAccMatchManager;
 import com.module.playways.room.msg.event.AccBeginEvent;
 import com.module.playways.room.msg.event.AppSwapEvent;
 import com.module.playways.room.msg.event.ExitGameEvent;
@@ -112,9 +113,6 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
 
     static final int MSG_START_LAST_TWO_SECONDS_TASK = 30;
 
-    static final int MSG_SHOW_SCORE_EVENT = 32;
-
-
     private static long sHeartBeatTaskInterval = 3000;
     private static long sSyncStateTaskInterval = 12000;
 
@@ -131,10 +129,6 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     RobotScoreHelper mRobotScoreHelper;
 
     ExoPlayer mExoPlayer;
-
-    int mLastLineNum = -1;
-    int mMelp2Score = -1;// 本轮 Melp2 打分
-    int mAcrScore = -1;// 本轮 acr 打分
 
     PushMsgFilter mPushMsgFilter = new PushMsgFilter() {
         @Override
@@ -170,26 +164,6 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                         mIGameRuleView.hideMainStage();
                     }
                     break;
-                default:
-                    int lineNo = (msg.what - MSG_SHOW_SCORE_EVENT) / 100;
-                    MyLog.d(TAG, "handleMessage" + " lineNo=" + lineNo);
-                    if (lineNo > mLastLineNum) {
-                        mAcrScore = 0;
-                        if (ScoreConfig.isMelp2Enable()) {
-                            if (mMelp2Score >= 0) {
-                                processScore("mMelp2Score", mMelp2Score, lineNo);
-                            } else {
-                                // 这样等melp2 回调ok了还可以继续走
-                            }
-                        } else if (ScoreConfig.isMelpEnable()) {
-                            int melp1Score = EngineManager.getInstance().getLineScore1();
-                            if (melp1Score > mAcrScore) {
-                                processScore("melp1Score", melp1Score, lineNo);
-                            } else {
-                                processScore("mAcrScore", mAcrScore, lineNo);
-                            }
-                        }
-                    }
             }
 
         }
@@ -234,40 +208,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                         .setMode(RecognizeConfig.MODE_MANUAL)
                         .setSongName(mRoomData.getSongModel().getItemName())
                         .setArtist(mRoomData.getSongModel().getOwner())
-                        .setMResultListener(new ArcRecognizeListener() {
-                            @Override
-                            public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
-                                mUiHandler.removeMessages(MSG_SHOW_SCORE_EVENT + lineNo * 100);
-                                if (lineNo > mLastLineNum) {
-                                    mAcrScore = 0;
-                                    if (targetSongInfo != null) {
-                                        mAcrScore = (int) (targetSongInfo.getScore() * 100);
-                                    } else {
-
-                                    }
-                                    if (ScoreConfig.isMelp2Enable()) {
-                                        if (mMelp2Score >= 0) {
-                                            if (mAcrScore > mMelp2Score) {
-                                                processScore("mAcrScore", mAcrScore, lineNo);
-                                            } else {
-                                                processScore("mMelp2Score", mMelp2Score, lineNo);
-                                            }
-                                        } else {
-                                            // Melp2 没返回
-                                        }
-                                    } else {
-                                        if (ScoreConfig.isMelpEnable()) {
-                                            int melp1Score = EngineManager.getInstance().getLineScore1();
-                                            if (melp1Score > mAcrScore) {
-                                                processScore("melp1Score", melp1Score, lineNo);
-                                            } else {
-                                                processScore("mAcrScore", mAcrScore, lineNo);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }).build()
+                                .build()
                 );
             }
         }
@@ -581,17 +522,6 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                         syncGameStatus(mRoomData.getGameId());
                     }
                 }, throwable -> MyLog.w(TAG, throwable + ""));
-//        mSyncGameStateTask = HandlerTaskTimer.newBuilder()
-//                .delay(delayTime)
-//                .interval(sSyncStateTaskInterval)
-//                .take(-1)
-//                .start(new HandlerTaskTimer.ObserverW() {
-//                    @Override
-//                    public void onNext(Integer integer) {
-//                        MyLog.w(TAG, "12秒钟的 syncGameTask 去更新状态了");
-//                        syncGameStatus(mRoomData.getGameId());
-//                    }
-//                });
     }
 
     public void cancelSyncGameStateTask() {
@@ -1546,41 +1476,6 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(LrcEvent.LineLineEndEvent event) {
         MyLog.d(TAG, "onEvent LineEndEvent lineno=" + event.lineNum);
-        if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
-            if (ScoreConfig.isMelp2Enable()) {
-                EngineManager.getInstance().getLineScore2(event.lineNum, new Score2Callback() {
-                    @Override
-                    public void onGetScore(int lineNum, int score) {
-                        mMelp2Score = score;
-                        if (ScoreConfig.isAcrEnable()) {
-                            if (mAcrScore >= 0) {
-                                if (mAcrScore > mMelp2Score) {
-                                    processScore("mAcrScore", mAcrScore, event.lineNum);
-                                } else {
-                                    processScore("mMelp2Score", mMelp2Score, event.lineNum);
-                                }
-                            } else {
-                                // 没返回
-                            }
-                        } else {
-                            processScore("mMelp2Score", mMelp2Score, event.lineNum);
-                        }
-                    }
-                });
-            }
-            if (ScoreConfig.isAcrEnable()) {
-                EngineManager.getInstance().recognizeInManualMode(event.lineNum);
-                Message msg = mUiHandler.obtainMessage(MSG_SHOW_SCORE_EVENT + event.lineNum * 100);
-                mUiHandler.sendMessageDelayed(msg, 1000);
-            } else {
-                if (!ScoreConfig.isMelp2Enable()) {
-                    if (ScoreConfig.isMelpEnable()) {
-                        int score = EngineManager.getInstance().getLineScore1();
-                        processScore("mMelp1Score", score, event.lineNum);
-                    }
-                }
-            }
-        } else {
             if (RoomDataUtils.isRobotRound(mRoomData.getRealRoundInfo(), mRoomData.getPlayerInfoList())) {
                 // 尝试算机器人的演唱得分
                 if (mRobotScoreHelper != null) {
@@ -1597,7 +1492,6 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                 }
             } else {
                 // 尝试拿其他人的演唱打分
-            }
         }
     }
 
@@ -1610,21 +1504,24 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(LyricAndAccMatchManager.ScoreResultEvent event) {
+        int line = event.line;
+        int acrScore = event.acrScore;
+        int melpScore = event.melpScore;
+        String from = event.from;
+        if(melpScore>acrScore){
+            processScore(from,melpScore,line);
+        }else{
+            processScore(from,acrScore,line);
+        }
+    }
+
     void processScore(String from, int score, int line) {
         MyLog.d(TAG, "processScore" + " from=" + from + " score=" + score + " line=" + line);
-        if (line <= mLastLineNum) {
-            return;
-        }
-
         if (score < 0) {
             return;
         }
-        mLastLineNum = line;
-//        if (ScoreConfig.isMelpEnable() && ScoreConfig.isAcrEnable()) {
-//
-//        } else {
-//            U.getToastUtil().showShort("score:" + score);
-//        }
         MyLog.d(TAG, "onEvent" + " 得分=" + score);
         MachineScoreItem machineScoreItem = new MachineScoreItem();
         machineScoreItem.setScore(score);
@@ -1645,8 +1542,6 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         });
         //打分传给服务器
         sendScoreToServer(score, line);
-        mAcrScore = -1;
-        mMelp2Score = -1;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

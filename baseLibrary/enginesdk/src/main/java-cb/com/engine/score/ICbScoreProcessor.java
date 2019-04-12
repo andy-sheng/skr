@@ -108,6 +108,8 @@ public class ICbScoreProcessor {
 
     public int destroy() {
         melPath = null;
+        melFileExist = false;
+        checkMelFileTs = 0;
         destroyScoreProcessor();
         if (mCustomHandlerThread != null) {
             mCustomHandlerThread.destroy();

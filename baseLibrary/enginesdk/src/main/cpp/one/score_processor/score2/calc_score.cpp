@@ -1,6 +1,9 @@
 #include "calc_score.hpp"
 #include <queue>
 #include <algorithm>
+#include <common/CommonTools.h>
+
+#define LOG_TAG "CalcScore"
 
 using namespace std;
 
@@ -22,6 +25,8 @@ CalcScore::~CalcScore() {
 }
 
 int CalcScore::LoadMelp(std::string filename, int startStamp) {
+    cout<<"CalcScore"<<filename<<endl;
+    LOGI("LoadMelp startStamp=%d", startStamp);
     int ret = 0;
     m_melpfilename = filename;
     m_lastTimeStamp = startStamp;
@@ -42,6 +47,7 @@ void CalcScore::Flow(short *data, int len) {
 }
 
 int CalcScore::GetScore(int curTimeStamp) {
+    LOGI("GetScore curTimeStamp=%d", curTimeStamp);
     int score = 0;
     m_pitchDetector->MarkAsFinished();
     vector<PitchElement> pitchTrack = m_pitchDetector->GetPitchData();
@@ -57,6 +63,7 @@ int CalcScore::GetScore(int curTimeStamp) {
         m_pitchDetector = NULL;
     }
     m_pitchDetector = new CPitchDetection(m_sampleRate);
+    LOGI("GetScore score=%d", score);
     return score;
 }
 

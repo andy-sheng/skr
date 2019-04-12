@@ -15,6 +15,10 @@ import com.common.utils.U;
 import com.common.view.countdown.CircleCountDownView;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.view.BitmapTextView;
+import com.engine.EngineManager;
+import com.engine.arccloud.ArcCloudManager;
+import com.engine.arccloud.ArcRecognizeListener;
+import com.engine.arccloud.SongInfo;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.others.LyricAndAccMatchManager;
@@ -25,6 +29,7 @@ import com.zq.lyrics.widget.VoiceScaleView;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -131,7 +136,15 @@ public class SelfSingCardView2 extends RelativeLayout {
                 public void onLyricEventPost(int lineNum) {
                     mRoomData.setSongLineNum(lineNum);
                 }
+
             });
+            EngineManager.getInstance().setRecognizeListener(new ArcRecognizeListener() {
+                @Override
+                public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
+                    mLyricAndAccMatchManager.onAcrResult(result,list,targetSongInfo,lineNo);
+                }
+            });
+
         }
 
         starCounDown(totalTs);

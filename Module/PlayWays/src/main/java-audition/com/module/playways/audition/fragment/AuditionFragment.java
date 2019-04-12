@@ -67,8 +67,6 @@ public class AuditionFragment extends BaseFragment {
 
     static final int MSG_AUTO_LEAVE_CHANNEL = 9;
 
-    static final int MSG_SHOW_SCORE_EVENT = 32;
-
     static final boolean RECORD_BY_CALLBACK = false;
     static final String ACC_SAVE_PATH = new File(U.getAppInfoUtils().getMainDir(), "audition.acc").getAbsolutePath();
     static final String PCM_SAVE_PATH = new File(U.getAppInfoUtils().getMainDir(), "audition.pcm").getAbsolutePath();
@@ -95,10 +93,6 @@ public class AuditionFragment extends BaseFragment {
 
     private volatile boolean isRecord = false;
 
-    private int mLastLineNum = -1;
-    int mMelp2Score = -1;// 本轮 Melp2 打分
-    int mAcrScore = -1;// 本轮 acr 打分
-
     private int mTotalLineNum = -1;
 
     LyricAndAccMatchManager mLyricAndAccMatchManager = new LyricAndAccMatchManager();
@@ -111,33 +105,6 @@ public class AuditionFragment extends BaseFragment {
                 case MSG_AUTO_LEAVE_CHANNEL:
                     // 为了省钱，因为引擎每多在试音房一分钟都是消耗，防止用户挂机
                     U.getFragmentUtils().popFragment(AuditionFragment.this);
-                    break;
-                default:
-                    int lineNo = (msg.what - MSG_SHOW_SCORE_EVENT) / 100;
-                    MyLog.d(TAG, "handleMessage" + " lineNo=" + lineNo);
-                    if (lineNo > mLastLineNum) {
-                        mAcrScore = 0;
-                        if (MyLog.isDebugLogOpen()) {
-                            addLogText("第" + lineNo + "行,acr请求未及时返回");
-                        }
-                        if (ScoreConfig.isMelp2Enable()) {
-                            if (mMelp2Score >= 0) {
-                                processScore("mMelp2Score", mMelp2Score, lineNo);
-                            } else {
-                                // 这样等melp2 回调ok了还可以继续走
-                            }
-                        } else if (ScoreConfig.isMelpEnable()) {
-                            int melp1Score = EngineManager.getInstance().getLineScore1();
-                            if (MyLog.isDebugLogOpen()) {
-                                addLogText("第" + lineNo + "行,melp1Score:" + melp1Score);
-                            }
-                            if (melp1Score > mAcrScore) {
-                                processScore("melp1Score", melp1Score, lineNo);
-                            } else {
-                                processScore("mAcrScore", mAcrScore, lineNo);
-                            }
-                        }
-                    }
                     break;
             }
         }
@@ -297,7 +264,6 @@ public class AuditionFragment extends BaseFragment {
                 } else {
                     EngineManager.getInstance().startAudioRecording(ACC_SAVE_PATH, Constants.AUDIO_RECORDING_QUALITY_HIGH, false);
                 }
-
             }
         });
 //        playLyrics(mSongModel, true, false);
@@ -311,44 +277,7 @@ public class AuditionFragment extends BaseFragment {
                 .setMResultListener(new ArcRecognizeListener() {
                     @Override
                     public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
-                        mUiHandler.removeMessages(MSG_SHOW_SCORE_EVENT + lineNo * 100);
-                        if (lineNo > mLastLineNum) {
-                            mAcrScore = 0;
-                            if (targetSongInfo != null) {
-                                mAcrScore = (int) (targetSongInfo.getScore() * 100);
-                                if (MyLog.isDebugLogOpen()) {
-                                    addLogText("第" + lineNo + "行 mAcrScore:" + mAcrScore);
-                                }
-                            } else {
-                                if (MyLog.isDebugLogOpen()) {
-                                    addLogText("第" + lineNo + "行 acr得分:未识别");
-                                }
-                            }
-                            if (ScoreConfig.isMelp2Enable()) {
-                                if (mMelp2Score >= 0) {
-
-                                    if (mAcrScore > mMelp2Score) {
-                                        processScore("mAcrScore", mAcrScore, lineNo);
-                                    } else {
-                                        processScore("mMelp2Score", mMelp2Score, lineNo);
-                                    }
-                                } else {
-                                    // Melp2 没返回
-                                }
-                            } else {
-                                if (ScoreConfig.isMelpEnable()) {
-                                    int melp1Score = EngineManager.getInstance().getLineScore1();
-                                    if (MyLog.isDebugLogOpen()) {
-                                        addLogText("第" + lineNo + "行 melp1Score:" + melp1Score);
-                                    }
-                                    if (melp1Score > mAcrScore) {
-                                        processScore("melp1Score", melp1Score, lineNo);
-                                    } else {
-                                        processScore("mAcrScore", mAcrScore, lineNo);
-                                    }
-                                }
-                            }
-                        }
+                        mLyricAndAccMatchManager.onAcrResult( result,  list,  targetSongInfo,  lineNo);
                     }
                 }).build());
     }
@@ -356,7 +285,6 @@ public class AuditionFragment extends BaseFragment {
     private void reset() {
         isRecord = true;
         mRankTopView.reset();
-        mLastLineNum = -1;
         mAuditionArea.setVisibility(View.VISIBLE);
         showVoicePanelView(true);
         mVoiceScaleView.setVisibility(View.VISIBLE);
@@ -556,49 +484,6 @@ public class AuditionFragment extends BaseFragment {
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(LrcEvent.LineLineEndEvent event) {
-        if (ScoreConfig.isMelp2Enable()) {
-            EngineManager.getInstance().getLineScore2(event.lineNum, new Score2Callback() {
-                @Override
-                public void onGetScore(int lineNum, int score) {
-                    mMelp2Score = score;
-                    if (MyLog.isDebugLogOpen()) {
-                        addLogText("第" + lineNum + "行 mMelp2Score:" + mMelp2Score);
-                    }
-                    if (ScoreConfig.isAcrEnable()) {
-                        if (mAcrScore >= 0) {
-                            if (mAcrScore > mMelp2Score) {
-                                processScore("mAcrScore", mAcrScore, event.lineNum);
-                            } else {
-                                processScore("mMelp2Score", mMelp2Score, event.lineNum);
-                            }
-                        } else {
-                            // 没返回
-                        }
-                    } else {
-                        processScore("mMelp2Score", mMelp2Score, event.lineNum);
-                    }
-                }
-            });
-        }
-        if (ScoreConfig.isAcrEnable()) {
-            EngineManager.getInstance().recognizeInManualMode(event.lineNum);
-            Message msg = mUiHandler.obtainMessage(MSG_SHOW_SCORE_EVENT + event.lineNum * 100);
-            mUiHandler.sendMessageDelayed(msg, 1000);
-        } else {
-            if (!ScoreConfig.isMelp2Enable()) {
-                if (ScoreConfig.isMelpEnable()) {
-                    int score = EngineManager.getInstance().getLineScore1();
-                    if (MyLog.isDebugLogOpen()) {
-                        addLogText("第" + event.lineNum + "行 mMelp1Score:" + score);
-                    }
-                    processScore("mMelp1Score", score, event.lineNum);
-                }
-            }
-        }
-    }
-
     void jisuanScore() {
         if (mCbScoreList.isEmpty()) {
             return;
@@ -651,24 +536,35 @@ public class AuditionFragment extends BaseFragment {
         return true;
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(LyricAndAccMatchManager.ScoreResultEvent event) {
+        int line = event.line;
+        int acrScore = event.acrScore;
+        int melpScore = event.melpScore;
+        String from = event.from;
+        if(MyLog.isDebugLogOpen()){
+            StringBuilder sb = new StringBuilder();
+            sb.append("第").append(line).append("行,");
+            sb.append(" melpScore=").append(melpScore);
+            sb.append(" acrScore=").append(acrScore);
+            addLogText(sb.toString());
+        }
+        if(melpScore>acrScore){
+            processScore(from,melpScore,line);
+        }else{
+            processScore(from,acrScore,line);
+        }
+    }
+
     private void processScore(String from, int score, int line) {
         MyLog.d(TAG, "processScore" + " from=" + from + " score=" + score + " line=" + line);
-        if (line <= mLastLineNum) {
-            return;
-        }
-        if (score < 0) {
-            return;
-        }
         mCbScoreList.add(score);
-        mLastLineNum = line;
         mUiHandler.post(new Runnable() {
             @Override
             public void run() {
                 mRankTopView.setScoreProgress(score, 0, mTotalLineNum);
             }
         });
-        mAcrScore = -1;
-        mMelp2Score = -1;
     }
 
     @Override

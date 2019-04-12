@@ -4,12 +4,18 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 
+import com.common.engine.ScoreConfig;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.engine.EngineEvent;
 import com.engine.EngineManager;
+import com.engine.Params;
+import com.engine.arccloud.SongInfo;
+import com.engine.score.Score2Callback;
+import com.module.playways.grab.room.event.GrabSpeakingControlEvent;
 import com.zq.lyrics.LyricsManager;
 import com.zq.lyrics.LyricsReader;
+import com.zq.lyrics.event.LrcEvent;
 import com.zq.lyrics.event.LyricEventLauncher;
 import com.zq.lyrics.widget.AbstractLrcView;
 import com.zq.lyrics.widget.ManyLyricsView;
@@ -20,6 +26,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -38,6 +45,8 @@ import static com.zq.lyrics.widget.AbstractLrcView.LRCPLAYERSTATUS_PLAY;
 public class LyricAndAccMatchManager {
     public final static String TAG = "LyricAndAccMatchManager";
     static final int MSG_ENSURE_LAUNCHER = 1;
+    static final int MSG_SHOW_SCORE_EVENT = 32;
+
     static final int LAUNCHER_DELAY = 5000;
     ManyLyricsView mManyLyricsView; // 歌词显示用的view
     VoiceScaleView mVoiceScaleView; // 歌词长度滚动view
@@ -59,9 +68,33 @@ public class LyricAndAccMatchManager {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if (msg.what == MSG_ENSURE_LAUNCHER) {
-                MyLog.d(TAG, "handleMessage acc 加载超时，不等了，直接发事件");
-                launchLyricEvent(LAUNCHER_DELAY);
+            switch (msg.what) {
+                case MSG_ENSURE_LAUNCHER: {
+                    MyLog.d(TAG, "handleMessage acc 加载超时，不等了，直接发事件");
+                    launchLyricEvent(LAUNCHER_DELAY);
+                }
+                break;
+                default:
+                    int lineNo = (msg.what - MSG_SHOW_SCORE_EVENT) / 100;
+                    MyLog.d(TAG, "handleMessage" + " lineNo=" + lineNo+" mLastLineNum="+mLastLineNum);
+                    if (lineNo > mLastLineNum) {
+                        mAcrScore = -2;
+                        if (ScoreConfig.isMelp2Enable()) {
+                            if (mMelp2Score >= 0) {
+                                processScore("handleMessage", mMelp2Score, mAcrScore, lineNo);
+                            } else {
+                                // 这样等melp2 回调ok了还可以继续走
+                            }
+                        } else if (ScoreConfig.isMelpEnable()) {
+                            int melp1Score = EngineManager.getInstance().getLineScore1();
+                            if (melp1Score > mAcrScore) {
+                                processScore("handleMessage", melp1Score, mAcrScore, lineNo);
+                            } else {
+                                processScore("handleMessage", melp1Score, mAcrScore, lineNo);
+                            }
+                        }
+                    }
+                    break;
             }
         }
     };
@@ -90,17 +123,22 @@ public class LyricAndAccMatchManager {
     }
 
     public void start(Listener l) {
+        MyLog.d(TAG,"start" + " l=" + l);
+        mUiHandler.removeCallbacksAndMessages(null);
+        mLastLineNum = -1;
         mListener = l;
         parseLyric();
     }
 
     public void stop() {
+        MyLog.d(TAG,"stop" );
         EventBus.getDefault().unregister(this);
         mUiHandler.removeCallbacksAndMessages(null);
         mLyricEventLauncher.destroy();
         if (mDisposable != null) {
             mDisposable.dispose();
         }
+        mLastLineNum = -1;
         mListener = null;
     }
 
@@ -175,7 +213,7 @@ public class LyricAndAccMatchManager {
         if (mListener != null) {
             mListener.onLyricEventPost(lineNum);
         }
-        if (mVoiceScaleView != null && mManyLyricsView.getVisibility()==View.VISIBLE) {
+        if (mVoiceScaleView != null && mManyLyricsView.getVisibility() == View.VISIBLE) {
             mVoiceScaleView.setVisibility(View.VISIBLE);
             mVoiceScaleView.startWithData(mLyricsReader.getLyricsLineInfoList(), mAccBeginTs + accPlayTs);
         }
@@ -211,9 +249,97 @@ public class LyricAndAccMatchManager {
         }
     }
 
+    private int mLastLineNum = -1;
+    int mMelp2Score = -1;// 本轮 Melp2 打分
+    int mAcrScore = -1;// 本轮 acr 打分
+
+
+    public void onAcrResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
+        MyLog.d(TAG,"onAcrResult" + " result=" + result + " list=" + list + " targetSongInfo=" + targetSongInfo + " lineNo=" + lineNo+" mLastLineNum="+mLastLineNum);
+        mUiHandler.removeMessages(MSG_SHOW_SCORE_EVENT + lineNo * 100);
+        if (lineNo > mLastLineNum) {
+            mAcrScore = 0;
+            if (targetSongInfo != null) {
+                mAcrScore = (int) (targetSongInfo.getScore() * 100);
+            } else {
+            }
+            if (ScoreConfig.isMelp2Enable()) {
+                if (mMelp2Score >= 0) {
+                    processScore("onAcrResult", mMelp2Score, mAcrScore, lineNo);
+                } else {
+                    // Melp2 没返回
+                }
+            } else {
+                if (ScoreConfig.isMelpEnable()) {
+                    int melp1Score = EngineManager.getInstance().getLineScore1();
+                    if (melp1Score > mAcrScore) {
+                        processScore("onAcrResult", melp1Score, mAcrScore, lineNo);
+                    } else {
+                        processScore("onAcrResult", melp1Score, mAcrScore, lineNo);
+                    }
+                }
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(LrcEvent.LineLineEndEvent event) {
+        MyLog.d(TAG,"onEvent" + " event=" + event);
+        if (ScoreConfig.isMelp2Enable()) {
+            EngineManager.getInstance().getLineScore2(event.lineNum, new Score2Callback() {
+                @Override
+                public void onGetScore(int lineNum, int score) {
+                    MyLog.d(TAG,"melp2 onGetScore" + " lineNum=" + lineNum + " score=" + score);
+                    mMelp2Score = score;
+                    if (ScoreConfig.isAcrEnable()) {
+                        if (mAcrScore >= 0||mAcrScore==-2) {
+                            processScore("mMelp2Score", mMelp2Score, mAcrScore, event.lineNum);
+                        } else {
+                            // 没返回
+                        }
+                    } else {
+                        processScore("mMelp2Score", mMelp2Score, mAcrScore, event.lineNum);
+                    }
+                }
+            });
+        }
+        if (ScoreConfig.isAcrEnable()) {
+            EngineManager.getInstance().recognizeInManualMode(event.lineNum);
+            Message msg = mUiHandler.obtainMessage(MSG_SHOW_SCORE_EVENT + event.lineNum * 100);
+            mUiHandler.sendMessageDelayed(msg, 1000);
+        } else {
+            if (!ScoreConfig.isMelp2Enable()) {
+                if (ScoreConfig.isMelpEnable()) {
+                    int score = EngineManager.getInstance().getLineScore1();
+                    processScore("mMelp1Score", score, mAcrScore, event.lineNum);
+                }
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(LrcEvent.LyricStartEvent event) {
+        MyLog.d(TAG, "onEvent LineStartEvent");
+        mLastLineNum = -1;
+    }
+
+    private void processScore(String from, int melpScore, int acrScore, int line) {
+        MyLog.d(TAG, "processScore" + " from=" + from + " melpScore=" + melpScore + " acrScore=" + acrScore + " line=" + line+" mLastLineNum="+mLastLineNum);
+        if (line <= mLastLineNum) {
+            return;
+        }
+        mLastLineNum = line;
+        EventBus.getDefault().post(new ScoreResultEvent(from, melpScore, acrScore, line));
+        // 处理
+        mAcrScore = -1;
+        mMelp2Score = -1;
+    }
+
+
     public void setListener(Listener l) {
         mListener = l;
     }
+
 
     public interface Listener {
         void onLyricParseSuccess();
@@ -221,5 +347,21 @@ public class LyricAndAccMatchManager {
         void onLyricParseFailed();
 
         void onLyricEventPost(int lineNum);
+
+        //void onScoreResult(String from,int melpScore, int acrScore, int line);
+    }
+
+    public class ScoreResultEvent {
+        public String from;
+        public int melpScore;
+        public int acrScore;
+        public int line;
+
+        public ScoreResultEvent(String from, int melpScore, int acrScore, int line) {
+            this.from = from;
+            this.melpScore = melpScore;
+            this.acrScore = acrScore;
+            this.line = line;
+        }
     }
 }

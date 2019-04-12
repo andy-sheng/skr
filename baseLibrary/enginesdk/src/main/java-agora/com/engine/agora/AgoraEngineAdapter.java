@@ -15,6 +15,7 @@ import com.engine.Params;
 import com.engine.agora.effect.EffectModel;
 import com.engine.agora.source.PrivateTextureHelper;
 import com.engine.arccloud.ArcCloudManager;
+import com.engine.arccloud.ArcRecognizeListener;
 import com.engine.arccloud.RecognizeConfig;
 import com.engine.effect.IFAudioEffectEngine;
 import com.engine.effect.ITbAgcProcessor;
@@ -1395,6 +1396,12 @@ public class AgoraEngineAdapter {
     public void startRecognize(RecognizeConfig recognizeConfig) {
         tryInitArcManager();
         mArcCloudManager.startRecognize(recognizeConfig);
+    }
+
+    public void setRecognizeListener(ArcRecognizeListener recognizeConfig) {
+        if (mArcCloudManager != null) {
+            mArcCloudManager.setRecognizeListener(recognizeConfig);
+        }
     }
 
     public void stopRecognize() {

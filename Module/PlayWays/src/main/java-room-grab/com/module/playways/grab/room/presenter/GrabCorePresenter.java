@@ -58,6 +58,7 @@ import com.module.playways.grab.room.model.GrabResultInfoModel;
 import com.module.playways.grab.room.model.GrabSkrResourceModel;
 import com.module.playways.grab.room.model.MLightInfoModel;
 import com.module.playways.grab.room.model.WantSingerInfo;
+import com.module.playways.others.LyricAndAccMatchManager;
 import com.module.playways.room.msg.BasePushInfo;
 import com.module.playways.room.msg.event.CommentMsgEvent;
 import com.module.playways.room.msg.event.MachineScoreEvent;
@@ -132,8 +133,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     static final int MSG_ROBOT_SING_BEGIN = 10;
 
-    static final int MSG_SHOW_SCORE_EVENT = 32;
-
     static final int MSG_ENSURE_SWITCH_BROADCAST_SUCCESS = 21; // 确保用户切换成主播成功，防止引擎不回调的保护
 
     GrabRoomData mRoomData;
@@ -154,8 +153,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     ZipUrlResourceManager mZipUrlResourceManager;
 
-    int mLastLineNum = -1;
-
     Handler mUiHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -172,14 +169,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 case MSG_ENSURE_SWITCH_BROADCAST_SUCCESS:
                     onChangeBroadcastSuccess();
                     break;
-                default:
-                    int lineNo = (msg.what - MSG_SHOW_SCORE_EVENT) / 100;
-                    MyLog.d(TAG, "handleMessage" + " lineNo=" + lineNo);
-                    if (lineNo > mLastLineNum) {
-                        int score = EngineManager.getInstance().getLineScore1();
-                        MyLog.d(TAG, "handleMessage acr超时 本地获取得分:" + score);
-                        processScore(score, lineNo);
-                    }
             }
         }
     };
@@ -348,7 +337,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     void preOpWhenSelfRound() {
         if (mRoomData.isAccEnable()) {
-            mLastLineNum = -1;
             // 1. 开启伴奏的，预先下载 melp 资源
             GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
             if (now != null) {
@@ -371,30 +359,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     .setSongName(now.getMusic().getItemName())
                     .setArtist(now.getMusic().getOwner())
                     .setMode(RecognizeConfig.MODE_MANUAL)
-                    .setMResultListener(new ArcRecognizeListener() {
-                        @Override
-                        public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
-                            mUiHandler.removeMessages(MSG_SHOW_SCORE_EVENT + lineNo * 100);
-                            if (lineNo > mLastLineNum) {
-                                // 使用最新的打分方案做优化
-                                int score1 = EngineManager.getInstance().getLineScore1();
-                                int score2 = -1;
-                                if (targetSongInfo != null) {
-                                    score2 = (int) (targetSongInfo.getScore() * 100);
-                                }
-                                MyLog.d(TAG, "lineNo=" + lineNo + " melp打分=" + score1 + " acr打分=" + score2);
-                                if (ScoreConfig.isMelpEnable()) {
-                                    if (score1 > score2) {
-                                        processScore(score1, lineNo);
-                                    } else {
-                                        processScore(score2, lineNo);
-                                    }
-                                } else {
-                                    processScore(score2, lineNo);
-                                }
-                            }
-                        }
-                    })
                     .build());
         }
     }
@@ -422,7 +386,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      * 房主点击开始游戏
      */
     public void ownerBeginGame() {
-        MyLog.d(TAG,"ownerBeginGame" );
+        MyLog.d(TAG, "ownerBeginGame");
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", mRoomData.getGameId());
 
@@ -430,7 +394,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         ApiMethods.subscribe(mRoomServerApi.ownerBeginGame(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
-                if(result.getErrno()==0){
+                if (result.getErrno() == 0) {
                     JoinGrabRoomRspModel rsp = JSON.parseObject(result.getData().toJSONString(), JoinGrabRoomRspModel.class);
                     // 模拟服务器push，触发游戏更新
                     QGameBeginEvent event = new QGameBeginEvent();
@@ -445,7 +409,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             public void onError(Throwable e) {
 
             }
-        }, this,new ApiMethods.RequestControl("ownerBeginGame", ApiMethods.ControlType.CancelThis));
+        }, this, new ApiMethods.RequestControl("ownerBeginGame", ApiMethods.ControlType.CancelThis));
     }
 
     /**
@@ -1327,7 +1291,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabWaitSeatUpdateEvent event) {
         MyLog.d(TAG, "onEvent" + " event=" + event);
-        if(event.list != null && event.list.size() > 0){
+        if (event.list != null && event.list.size() > 0) {
             mIGrabView.hideInviteTipView();
         }
     }
@@ -1791,24 +1755,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onEvent(LrcEvent.LineLineEndEvent event) {
-        MyLog.d(TAG, "onEvent LineEndEvent lineno=" + event.lineNum);
-        if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
-            if (ScoreConfig.isAcrEnable()) {
-                EngineManager.getInstance().recognizeInManualMode(event.lineNum);
-            } else {
-                if (ScoreConfig.isMelpEnable()) {
-                    int score = EngineManager.getInstance().getLineScore1();
-                    processScore(score, event.lineNum);
-                }
-            }
-            Message msg = mUiHandler.obtainMessage(MSG_SHOW_SCORE_EVENT + event.lineNum * 100);
-            mUiHandler.sendMessageDelayed(msg, 1000);
-        } else {
-        }
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(LrcEvent.LyricStartEvent event) {
         MyLog.d(TAG, "onEvent LineStartEvent");
@@ -1818,14 +1764,23 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(LyricAndAccMatchManager.ScoreResultEvent event) {
+        int line = event.line;
+        int acrScore = event.acrScore;
+        int melpScore = event.melpScore;
+        String from = event.from;
+        if (acrScore > melpScore) {
+            processScore(acrScore, line);
+        } else {
+            processScore(melpScore, line);
+        }
+    }
+
     void processScore(int score, int line) {
         if (score < 0) {
             return;
         }
-        if (line <= mLastLineNum) {
-            return;
-        }
-        mLastLineNum = line;
         MyLog.d(TAG, "onEvent" + " 得分=" + score);
         MachineScoreItem machineScoreItem = new MachineScoreItem();
         machineScoreItem.setScore(score);
