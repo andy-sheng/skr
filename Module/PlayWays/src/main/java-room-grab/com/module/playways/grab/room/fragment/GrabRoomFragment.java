@@ -285,8 +285,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                 RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
                 lp.rightMargin = U.getDisplayUtils().dip2px(10);
-                lp.addRule(RelativeLayout.ABOVE, R.id.bottom_bg_vp);
-                lp.bottomMargin = U.getDisplayUtils().dip2px(10);
+                lp.addRule(RelativeLayout.ALIGN_TOP, R.id.bottom_bg_vp);
+                lp.topMargin = -U.getDisplayUtils().dip2px(55);
                 int index = mRankingContainer.indexOfChild(mInputContainerView);
                 mRankingContainer.addView(mOwnerBeginGameIv,index, lp);
                 mOwnerBeginGameIv.setOnClickListener(new DebounceViewClickListener() {
@@ -320,7 +320,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         layoutParams.setMargins(0, 0, U.getDisplayUtils().dip2px(13), U.getDisplayUtils().dip2px(78));
-        ((ViewGroup) mRootView).addView(mIvManageSongTipView);
+        int index = mRankingContainer.indexOfChild(mInputContainerView);
+        mRankingContainer.addView(mIvManageSongTipView,index, layoutParams);
     }
 
     ValueAnimator mTipViewAnimator;
