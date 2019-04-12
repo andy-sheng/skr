@@ -39,10 +39,12 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
+import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;
+import com.component.busilib.constans.GameModeType;
 import com.component.busilib.view.MarqueeTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.imagebrowse.ImageBrowseView;
@@ -91,8 +93,9 @@ public class PersonInfoDialogView2 extends RelativeLayout {
 
     Toolbar mToolbar;
     RelativeLayout mOpretaArea;     // 私信，关注，踢人
-    ImageView mMessageIv;
+    RelativeLayout mFollowArea;
     ImageView mFollowIv;
+    RelativeLayout mKickArea;
     ImageView mKickIv;
     RelativeLayout mSrlAvatarArea;
     ImageView mSrlAvatarBg;
@@ -164,28 +167,29 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         mUserId = userID;
         isShowKick = showKick;
 
-        mReport.setVisibility(showReport ? VISIBLE : GONE);
-        mKickIv.setVisibility(showKick ? VISIBLE : GONE);
-
         // 多音和ai裁判
         if (mUserId == UserAccountManager.SYSTEM_GRAB_ID || mUserId == UserAccountManager.SYSTEM_RANK_AI) {
+            isShowKick = false;
             mReport.setVisibility(View.GONE);
-            mKickIv.setVisibility(View.GONE);
+            mKickArea.setVisibility(GONE);
         }
 
         // 自己卡片的处理
         if (mUserId == MyUserInfoManager.getInstance().getUid()) {
+            isShowKick = false;
             mToolbar.setVisibility(GONE);
             mReport.setVisibility(View.GONE);
             mOpretaArea.setVisibility(View.GONE);
-            mKickIv.setVisibility(View.GONE);
+            mKickArea.setVisibility(GONE);
             mFollowIv.setVisibility(View.GONE);
-            mMessageIv.setVisibility(View.GONE);
             // TODO: 2019/4/8 可能需要调整布局
             FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mUserInfoArea.getLayoutParams();
             layoutParams.bottomMargin = U.getDisplayUtils().dip2px(10);
             mUserInfoArea.setLayoutParams(layoutParams);
         }
+
+        mReport.setVisibility(showReport ? VISIBLE : GONE);
+        mKickArea.setVisibility(isShowKick ? VISIBLE : GONE);
 
         mUserInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
         getHomePage(mUserId);
@@ -284,17 +288,21 @@ public class PersonInfoDialogView2 extends RelativeLayout {
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                 if (verticalOffset == 0) {
                     // 展开状态
-                    mKickIv.setVisibility(View.VISIBLE);
+                    if (isShowKick) {
+                        mKickArea.setVisibility(VISIBLE);
+                    }
                     mSrlAvatarArea.setVisibility(View.GONE);
                     mOpretaArea.setBackground(null);
                 } else if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()) {
                     // 完全收缩状态
-                    mKickIv.setVisibility(View.GONE);
+                    mKickArea.setVisibility(GONE);
                     mSrlAvatarArea.setVisibility(View.VISIBLE);
                     mOpretaArea.setBackground(getResources().getDrawable(R.drawable.person_info_top_bg));
                 } else {
                     // TODO: 2019/4/8 过程中，可以加动画，先直接显示
-                    mKickIv.setVisibility(View.VISIBLE);
+                    if (isShowKick) {
+                        mKickArea.setVisibility(VISIBLE);
+                    }
                     mSrlAvatarArea.setVisibility(View.GONE);
                     mOpretaArea.setBackground(null);
                 }
@@ -348,39 +356,42 @@ public class PersonInfoDialogView2 extends RelativeLayout {
     private void initOpretaArea() {
         mToolbar = (Toolbar) this.findViewById(R.id.toolbar);
         mOpretaArea = (RelativeLayout) this.findViewById(R.id.opreta_area);
-        mMessageIv = (ImageView) this.findViewById(R.id.message_iv);
+
+        mFollowArea = (RelativeLayout) this.findViewById(R.id.follow_area);
         mFollowIv = (ImageView) this.findViewById(R.id.follow_iv);
+        mKickArea = (RelativeLayout) this.findViewById(R.id.kick_area);
         mKickIv = (ImageView) this.findViewById(R.id.kick_iv);
+
         mSrlAvatarArea = (RelativeLayout) this.findViewById(R.id.srl_avatar_area);
         mSrlAvatarBg = (ImageView) this.findViewById(R.id.srl_avatar_bg);
         mSrlAvatarIv = (SimpleDraweeView) this.findViewById(R.id.srl_avatar_iv);
 
-        mKickIv.setOnClickListener(new DebounceViewClickListener() {
+        mKickIv.setOnClickListener(new AnimateClickListener() {
             @Override
-            public void clickValid(View v) {
+            public void click(View view) {
                 if (mClickListener != null) {
                     mClickListener.onClickKick(mUserInfoModel);
                 }
             }
         });
 
-        mFollowIv.setOnClickListener(new DebounceViewClickListener() {
+        mFollowIv.setOnClickListener(new AnimateClickListener() {
             @Override
-            public void clickValid(View v) {
+            public void click(View view) {
                 if (mClickListener != null) {
                     mClickListener.onClickFollow(mUserId, isFriend, isFollow);
                 }
             }
         });
 
-        mMessageIv.setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                if (mClickListener != null) {
-                    mClickListener.onClickMessage(mUserInfoModel);
-                }
-            }
-        });
+//        mMessageIv.setOnClickListener(new DebounceViewClickListener() {
+//            @Override
+//            public void clickValid(View v) {
+//                if (mClickListener != null) {
+//                    mClickListener.onClickMessage(mUserInfoModel);
+//                }
+//            }
+//        });
     }
 
     private void initPhotoArea() {
