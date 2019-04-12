@@ -61,6 +61,7 @@ public class RedPkgPresenter extends RxLifeCyclePresenter {
 
         if (U.getPreferenceUtils().getSettingBoolean(PREF_KEY_RED_PKG_SHOW, false)) {
             MyLog.w(TAG, "checkRedPkg 展示过一次就不展示了");
+            mIsHasReq = true;
             return;
         }
 
