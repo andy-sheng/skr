@@ -1114,7 +1114,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                         @Override
                         public void onClick(View v) {
                             if (mQuitTipsDialog != null) {
-                                mQuitTipsDialog.dismiss(false);
+                                mQuitTipsDialog.dismiss();
                             }
                         }
                     })

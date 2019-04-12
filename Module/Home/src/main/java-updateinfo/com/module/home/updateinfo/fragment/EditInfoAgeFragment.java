@@ -21,6 +21,7 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
+import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
@@ -232,38 +233,34 @@ public class EditInfoAgeFragment extends BaseFragment {
                 .setMessageTip("年龄只能修改一次哦～\n确认修改吗？")
                 .setConfirmTip("确认修改")
                 .setCancelTip("取消")
+                .setConfirmBtnClickListener(new AnimateClickListener() {
+                    @Override
+                    public void click(View view) {
+                        if (mDialogPlus != null) {
+                            mDialogPlus.dismiss();
+                        }
+                        MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
+                                .setBirthday(bir)
+                                .build(), false);
+                        U.getFragmentUtils().popFragment(EditInfoAgeFragment.this);
+                    }
+                })
+                .setCancelBtnClickListener(new AnimateClickListener() {
+                    @Override
+                    public void click(View view) {
+                        if (mDialogPlus != null) {
+                            mDialogPlus.dismiss();
+                        }
+                    }
+                })
                 .build();
 
         mDialogPlus = DialogPlus.newDialog(getContext())
                 .setContentHolder(new ViewHolder(tipsDialogView))
                 .setGravity(Gravity.BOTTOM)
-                .setContentBackgroundResource(com.component.busilib.R.color.transparent)
-                .setOverlayBackgroundResource(com.component.busilib.R.color.black_trans_80)
+                .setContentBackgroundResource(R.color.transparent)
+                .setOverlayBackgroundResource(R.color.black_trans_80)
                 .setExpanded(false)
-                .setOnClickListener(new com.orhanobut.dialogplus.OnClickListener() {
-                    @Override
-                    public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
-                        if (view instanceof ExTextView) {
-                            if (view.getId() == com.component.busilib.R.id.confirm_tv) {
-                                dialog.dismiss();
-                                MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
-                                        .setBirthday(bir)
-                                        .build(), false);
-                                U.getFragmentUtils().popFragment(EditInfoAgeFragment.this);
-                            }
-
-                            if (view.getId() == com.component.busilib.R.id.cancel_tv) {
-                                dialog.dismiss();
-                            }
-                        }
-                    }
-                })
-                .setOnDismissListener(new OnDismissListener() {
-                    @Override
-                    public void onDismiss(@NonNull DialogPlus dialog) {
-
-                    }
-                })
                 .create();
         mDialogPlus.show();
     }

@@ -26,6 +26,7 @@ import com.common.statistics.StatisticsAdapter;
 import com.common.utils.FragmentUtils;
 import com.common.utils.HttpUtils;
 import com.common.utils.U;
+import com.common.view.AnimateClickListener;
 import com.component.busilib.manager.BgMusicManager;
 import com.dialog.view.TipsDialogView;
 import com.jakewharton.rxbinding2.view.RxView;
@@ -773,20 +774,24 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                     .setMessageTip("提前退出会破坏其他玩家的对局体验\n确定退出么？")
                     .setConfirmTip("确定")
                     .setCancelTip("取消")
-                    .setConfirmBtnClickListener(new View.OnClickListener() {
+                    .setConfirmBtnClickListener(new AnimateClickListener() {
                         @Override
-                        public void onClick(View v) {
-                            mQuitTipsDialog.dismiss(false);
+                        public void click(View view) {
+                            if (mQuitTipsDialog != null) {
+                                mQuitTipsDialog.dismiss(false);
+                            }
                             if (getActivity() != null) {
                                 getActivity().finish();
                             }
                             StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK), "game_exit", null);
                         }
                     })
-                    .setCancelBtnClickListener(new View.OnClickListener() {
+                    .setCancelBtnClickListener(new AnimateClickListener() {
                         @Override
-                        public void onClick(View v) {
-                            mQuitTipsDialog.dismiss(false);
+                        public void click(View view) {
+                            if (mQuitTipsDialog != null) {
+                                mQuitTipsDialog.dismiss();
+                            }
                         }
                     })
                     .build();

@@ -1,4 +1,4 @@
-package com.component.busilib.view;
+package com.dialog.view;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -11,8 +11,8 @@ import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
+import com.common.base.R;
 import com.common.utils.U;
-import com.component.busilib.R;
 
 import java.lang.reflect.Field;
 
@@ -41,9 +41,9 @@ public class StrokeTextView extends TextView {
 
     private void init(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.StrokeTextView);
-        textColor = typedArray.getColor(R.styleable.StrokeTextView_textColor, 0);
-        borderColor = typedArray.getColor(R.styleable.StrokeTextView_borderColor, 0);
-        borderWidth = typedArray.getDimensionPixelOffset(R.styleable.StrokeTextView_borderWidth, 0);
+        textColor = typedArray.getColor(R.styleable.StrokeTextView_textColor, Color.WHITE);
+        borderColor = typedArray.getColor(R.styleable.StrokeTextView_borderColor, Color.parseColor("#CC7F00"));
+        borderWidth = typedArray.getDimensionPixelOffset(R.styleable.StrokeTextView_borderWidth, U.getDisplayUtils().dip2px(3));
         typedArray.recycle();
 
         textPaint = getPaint();

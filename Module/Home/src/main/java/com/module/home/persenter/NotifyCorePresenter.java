@@ -25,6 +25,7 @@ import com.common.notification.event.GrabInviteNotifyEvent;
 import com.common.utils.ActivityUtils;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
+import com.common.view.AnimateClickListener;
 import com.component.busilib.manager.WeakRedDotManager;
 import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
@@ -171,23 +172,22 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                             .setMessageTip(stringBuilder)
                             .setConfirmTip("确定")
                             .setCancelTip("取消")
-                            .setConfirmBtnClickListener(new View.OnClickListener() {
+                            .setConfirmBtnClickListener(new AnimateClickListener() {
                                 @Override
-                                public void onClick(View v) {
+                                public void click(View view) {
                                     if (mBeFriendDialog != null) {
                                         mBeFriendDialog.dismiss(false);
                                     }
-                                    if (userInfoModel.isFriend()){
+                                    if (userInfoModel.isFriend()) {
                                         U.getToastUtil().showShort("你们已经是好友了");
-                                    }else {
+                                    } else {
                                         UserInfoManager.getInstance().beFriend(userInfoModel.getUserId(), null);
                                     }
-
                                 }
                             })
-                            .setCancelBtnClickListener(new View.OnClickListener() {
+                            .setCancelBtnClickListener(new AnimateClickListener() {
                                 @Override
-                                public void onClick(View v) {
+                                public void click(View view) {
                                     if (mBeFriendDialog != null) {
                                         mBeFriendDialog.dismiss(false);
                                     }
