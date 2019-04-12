@@ -222,7 +222,7 @@ void MelChordAna::_AnalyzeMelString(const string &_contents) {
             vector<int> tmpTime;
             tmpTime.resize(2);
 
-            LOGI("sec=%d lines=%d", sec, lines);
+            //LOGI("sec=%d lines=%d", sec, lines);
             char tmpBuf[10240];
             switch (sec) {
                 case 0: // key
@@ -251,7 +251,7 @@ void MelChordAna::_AnalyzeMelString(const string &_contents) {
                            >> tmpMN.note_org
                            >> tmpMN.exhibitionPos;
 
-                        LOGI("1——> no=%d %d %d %d %d duration=%d", i,
+                        //LOGI("1——> no=%d %d %d %d %d duration=%d", i,
                              tmpMN.beginTimeMs, tmpMN.endTimeMs,
                              tmpMN.note_org, tmpMN.exhibitionPos,
                              tmpMN.endTimeMs - tmpMN.beginTimeMs);
@@ -261,7 +261,7 @@ void MelChordAna::_AnalyzeMelString(const string &_contents) {
                         tmpMN.beginTime = (tmpMN.beginTimeMs / 1000.0) * m_sampleRate;
                         tmpMN.endTime = (tmpMN.endTimeMs / 1000.0) * m_sampleRate;
                         tmpMN.note = MelodyNote::TransNote(tmpMN.note_org);
-                        LOGI("2——> %d %d %d", tmpMN.beginTime, tmpMN.endTime, tmpMN.note);
+                        //LOGI("2——> %d %d %d", tmpMN.beginTime, tmpMN.endTime, tmpMN.note);
                         m_melNote.push_back(tmpMN);
                     }
                     m_melMaxPos += 1;
