@@ -41,7 +41,8 @@
         android:id="@+id/smart_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:srlFooterTranslationViewId="@id/photo_view">
+        app:srlFooterTranslationViewId="@id/photo_view"
+        android:layout_above="@id/function_area">
 
         <com.scwang.smartrefresh.layout.header.ClassicsHeader
             android:id="@+id/classics_header"

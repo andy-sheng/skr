@@ -60,14 +60,10 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
-import retrofit2.Call;
-import retrofit2.Response;
 import model.RelationNumModel;
 
 public class PersonInfoDialogView2 extends RelativeLayout {
@@ -127,6 +123,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
     int DEFAULT_CNT = 10;
 
     boolean hasInitHeight = false;
+    boolean isAppBarCanScroll = true;   // AppBarLayout是否可以滚动
 
     PersonInfoDialog.PersonCardClickListener mClickListener;
 
@@ -160,8 +157,6 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         initUserInfo();
         initOpretaArea();
         initPhotoArea();
-
-        setAppBarCanScroll(false);
     }
 
     private void initData(Context context, int userID, boolean showReport, boolean showKick) {
@@ -241,12 +236,14 @@ public class PersonInfoDialogView2 extends RelativeLayout {
                     if (callback != null) {
                         callback.onCallback(0, list);
                     }
+                } else {
+                    addPhotoFail();
                 }
             }
 
             @Override
             public void onNetworkError(ErrorType errorType) {
-                mSmartRefresh.finishLoadMore();
+                addPhotoFail();
                 super.onNetworkError(errorType);
             }
         });
@@ -486,13 +483,24 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         }
     }
 
+    public void addPhotoFail() {
+        mSmartRefresh.finishLoadMore();
+        if (mPhotoAdapter.getDataList() == null || mPhotoAdapter.getDataList().size() == 0) {
+            setAppBarCanScroll(false);
+        }
+    }
+
     private void setAppBarCanScroll(final boolean canScroll) {
+        if (isAppBarCanScroll == canScroll) {
+            return;
+        }
         if (mAppbar != null && mAppbar.getLayoutParams() != null) {
             CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) mAppbar.getLayoutParams();
             AppBarLayout.Behavior behavior = new AppBarLayout.Behavior();
             behavior.setDragCallback(new AppBarLayout.Behavior.DragCallback() {
                 @Override
                 public boolean canDrag(@NonNull AppBarLayout appBarLayout) {
+                    isAppBarCanScroll = canScroll;
                     return canScroll;
                 }
             });

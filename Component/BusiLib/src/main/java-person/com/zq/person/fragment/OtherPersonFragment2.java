@@ -111,8 +111,7 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
     int DEFAUAT_CNT = 20;       // 默认拉取一页的数量
 
     boolean mHasMore = false;
-
-    Handler mUiHandler = new Handler();
+    boolean isAppbarCanSrcoll = true;  // AppBarLayout是否可以滚动
 
     UserInfoModel mUserInfoModel;
     int mUserId;
@@ -283,17 +282,19 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
                 BigImageBrowseFragment.open(false, getActivity(), mUserInfoModel.getAvatar());
             }
         });
-
-        setAppBarCanScroll(false);
     }
 
     private void setAppBarCanScroll(final boolean canScroll) {
+        if (isAppbarCanSrcoll == canScroll) {
+            return;
+        }
         if (mAppbar != null && mAppbar.getLayoutParams() != null) {
             CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) mAppbar.getLayoutParams();
             AppBarLayout.Behavior behavior = new AppBarLayout.Behavior();
             behavior.setDragCallback(new AppBarLayout.Behavior.DragCallback() {
                 @Override
                 public boolean canDrag(@NonNull AppBarLayout appBarLayout) {
+                    isAppbarCanSrcoll = canScroll;
                     return canScroll;
                 }
             });
@@ -341,13 +342,13 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
                     public void loadMore(boolean backward, int position, PhotoModel data, final Callback<List<PhotoModel>> callback) {
                         if (backward) {
                             // 向后加载
-                            mPresenter.getPhotos(mUserId,mPhotoAdapter.getSuccessNum(), DEFAUAT_CNT, new Callback<List<PhotoModel>>() {
+                            mPresenter.getPhotos(mUserId, mPhotoAdapter.getSuccessNum(), DEFAUAT_CNT, new Callback<List<PhotoModel>>() {
 
                                 @Override
                                 public void onCallback(int r, List<PhotoModel> list) {
-                                        if (callback != null && list != null) {
-                                            callback.onCallback(0, list);
-                                        }
+                                    if (callback != null && list != null) {
+                                        callback.onCallback(0, list);
+                                    }
                                 }
                             });
                         }
@@ -392,7 +393,7 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
                 }
             }
         });
-        
+
         mMessageIv.setOnClickListener(new AnimateClickListener() {
             @Override
             public void click(View view) {
@@ -450,7 +451,6 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
             mSmartRefresh.setEnableLoadMore(false);
             if (mPhotoAdapter.getDataList() != null && mPhotoAdapter.getDataList().size() > 0) {
                 // 没有更多了
-                setAppBarCanScroll(true);
             } else {
                 // 没有数据
                 setAppBarCanScroll(false);
@@ -458,18 +458,13 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
         }
     }
 
-    private SpannableString highlight(String text, String target, boolean isUp) {
-        SpannableString spannableString = new SpannableString(text);
-        Pattern pattern = Pattern.compile(target);
-        Matcher matcher = pattern.matcher(text);
-        while (matcher.find()) {
-            ForegroundColorSpan span = new ForegroundColorSpan(Color.parseColor("#FF3B3C"));
-            spannableString.setSpan(span, matcher.start(), matcher.end(),
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+    @Override
+    public void addPhotosFail() {
+        mSmartRefresh.finishLoadMore();
+        if (mPhotoAdapter.getDataList() == null || mPhotoAdapter.getDataList().size() == 0) {
+            setAppBarCanScroll(false);
         }
-        return spannableString;
     }
-
 
     public void showUserInfo(UserInfoModel model) {
         this.mUserInfoModel = model;

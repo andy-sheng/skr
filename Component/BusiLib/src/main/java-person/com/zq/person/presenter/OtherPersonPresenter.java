@@ -80,7 +80,15 @@ public class OtherPersonPresenter extends RxLifeCyclePresenter {
                             callback.onCallback(0, list);
                         }
                     }
+                } else {
+                    view.addPhotosFail();
                 }
+            }
+
+            @Override
+            public void onNetworkError(ErrorType errorType) {
+                super.onNetworkError(errorType);
+                view.addPhotosFail();
             }
         }, this);
 

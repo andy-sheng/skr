@@ -19,6 +19,8 @@ public interface IPersonView {
                           List<UserLevelModel> userLevelModels,
                           List<GameStatisModel> gameStatisModels);
 
+    void loadHomePageFailed();
+
     // 展示好友，粉丝和关注数量
     void showRelationNum(List<RelationNumModel> list);
 

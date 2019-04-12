@@ -183,7 +183,7 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
         }
 
         mSmartRefresh.setEnableRefresh(true);
-        mSmartRefresh.setEnableLoadMore(false);
+        mSmartRefresh.setEnableLoadMore(true);
         mSmartRefresh.setEnableLoadMoreWhenContentNotFull(false);
         mSmartRefresh.setEnableOverScrollDrag(true);
         mClassicsHeader.setBackgroundColor(Color.parseColor("#7088FF"));
@@ -474,6 +474,11 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
         showReginRank(userRankModels);
         showUserLevel(userLevelModels);
         showGameStatic(gameStatisModels);
+    }
+
+    @Override
+    public void loadHomePageFailed() {
+        mSmartRefresh.finishRefresh();
     }
 
     private void refreshUserInfoView() {

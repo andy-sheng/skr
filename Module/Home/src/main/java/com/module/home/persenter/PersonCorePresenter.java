@@ -117,7 +117,15 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
                     MyUserInfoManager.getInstance().setMyUserInfo(myUserInfo, true);
 
                     mView.showHomePageInfo(relationNumModes, userRankModels, userLevelModels, userGameStatisModels);
+                }else {
+                    mView.loadHomePageFailed();
                 }
+            }
+
+            @Override
+            public void onNetworkError(ErrorType errorType) {
+                super.onNetworkError(errorType);
+                mView.loadHomePageFailed();
             }
         }, this);
     }

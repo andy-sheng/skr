@@ -23,6 +23,9 @@ public interface IOtherPersonView {
     // 展示照片墙
     void addPhotos(List<PhotoModel> list, int newOffset, int totalNum, boolean clear);
 
+    // 照片墙请求出错
+    void addPhotosFail();
+
 //    // 个人基本信息
 //    void showUserInfo(UserInfoModel model);
 //
