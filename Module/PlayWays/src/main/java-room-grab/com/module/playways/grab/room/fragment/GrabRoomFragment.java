@@ -344,14 +344,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                 boolean hasSetableView = false;
                 for (View view : viewList) {
                     if (view.getParent() != null) {
-                        MyLog.d(TAG, "onAnimationUpdate" + " view.getParent() != null");
                         hasSetableView = true;
                         view.setTranslationY((int) animation.getAnimatedValue());
                     }
                 }
 
                 if (!hasSetableView) {
-                    MyLog.d(TAG, "onAnimationUpdate" + " !hasSetableView");
                     mTipViewAnimator.cancel();
                 }
             }
