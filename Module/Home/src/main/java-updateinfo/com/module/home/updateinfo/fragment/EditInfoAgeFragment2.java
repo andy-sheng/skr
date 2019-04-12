@@ -33,8 +33,12 @@ import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class EditInfoAgeFragment2 extends BaseFragment {
 
@@ -100,7 +104,15 @@ public class EditInfoAgeFragment2 extends BaseFragment {
                     // 无任何变化
                     U.getFragmentUtils().popFragment(EditInfoAgeFragment2.this);
                 } else {
-                    changeAge(bir);
+                    if (checkBirthDay(mYearDate + mMonthDate + mDayDate)) {
+                        changeAge(bir);
+                    } else {
+                        mDay.setText("");
+                        mMonth.setText("");
+                        mYear.setText("");
+                        mYear.requestFocus();
+                        U.getToastUtil().showShort("输入的出生日期不合法");
+                    }
                 }
             }
         });
@@ -111,22 +123,31 @@ public class EditInfoAgeFragment2 extends BaseFragment {
                 // TODO: 2019/4/11 完成完善过程
                 U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
                 String bir = mYearDate + "-" + mMonthDate + "-" + mDayDate;
-                MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
-                        .setNickName(mUploadNickname).setSex(mUploadSex).setBirthday(bir)
-                        .build(), true, true, new MyUserInfoManager.ServerCallback() {
-                    @Override
-                    public void onSucess() {
-                        if (getActivity() != null) {
-                            getActivity().finish();
+                if (checkBirthDay(mYearDate + mMonthDate + mDayDate)) {
+                    MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
+                            .setNickName(mUploadNickname).setSex(mUploadSex).setBirthday(bir)
+                            .build(), true, true, new MyUserInfoManager.ServerCallback() {
+                        @Override
+                        public void onSucess() {
+                            if (getActivity() != null) {
+                                getActivity().finish();
+                            }
+                            StatisticsAdapter.recordCountEvent("signup", "success", null);
                         }
-                        StatisticsAdapter.recordCountEvent("signup", "success", null);
-                    }
 
-                    @Override
-                    public void onFail() {
+                        @Override
+                        public void onFail() {
 
-                    }
-                });
+                        }
+                    });
+                } else {
+                    mDay.setText("");
+                    mMonth.setText("");
+                    mYear.setText("");
+                    mYear.requestFocus();
+                    U.getToastUtil().showShort("输入的出生日期不合法");
+                }
+
             }
         });
 
@@ -250,33 +271,71 @@ public class EditInfoAgeFragment2 extends BaseFragment {
             }
         });
 
-        if (!TextUtils.isEmpty(MyUserInfoManager.getInstance().getBirthday())) {
-            String[] array = MyUserInfoManager.getInstance().getBirthday().split("-");
-
-            if (array.length >= 1) {
-                mYear.setText(array[0]);
-            }
-            if (array.length >= 2) {
-                mMonth.setText(array[1]);
-            }
-            if (array.length >= 3) {
-                mDay.setText(array[2]);
-            }
-
-            mAgeTv.setText(MyUserInfoManager.getInstance().getAge() + "岁");
-            mConTv.setText(MyUserInfoManager.getInstance().getConstellation());
-            if (U.getKeyBoardUtils().isSoftKeyboardShowing(getActivity())) {
-                U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-            }
-        } else {
-            mYear.requestFocus();
-            U.getKeyBoardUtils().showSoftInputKeyBoard(getActivity());
-        }
+//        if (!TextUtils.isEmpty(MyUserInfoManager.getInstance().getBirthday())) {
+//            String[] array = MyUserInfoManager.getInstance().getBirthday().split("-");
+//
+//            if (array.length >= 1) {
+//                mYear.setText(array[0]);
+//            }
+//            if (array.length >= 2) {
+//                mMonth.setText(array[1]);
+//            }
+//            if (array.length >= 3) {
+//                mDay.setText(array[2]);
+//            }
+//
+//            mAgeTv.setText(MyUserInfoManager.getInstance().getAge() + "岁");
+//            mConTv.setText(MyUserInfoManager.getInstance().getConstellation());
+//            if (U.getKeyBoardUtils().isSoftKeyboardShowing(getActivity())) {
+//                U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+//            }
+//        } else {
+        mYear.requestFocus();
+//        }
     }
 
     @Override
     public boolean useEventBus() {
         return false;
+    }
+
+    /**
+     * 检查出生日期是否合法
+     *
+     * @param birthday 格式必须是yyyyMMdd
+     * @return
+     */
+    public boolean checkBirthDay(String birthday) {
+        if (TextUtils.isEmpty(birthday)) {
+            return false;
+        }
+        if (birthday.length() != 8) {
+            return false;
+        }
+        Pattern pattern = Pattern
+                .compile("^[1,2]\\d{3}(0[1-9]||1[0-2])(0[1-9]||[1,2][0-9]||3[0,1])$");
+        Matcher matcher = pattern.matcher(birthday);
+        if (!matcher.matches()) {
+            return false;
+        }
+        Date birth = null;
+        try {
+            birth = new SimpleDateFormat("yyyyMMdd").parse(birthday);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if (!new SimpleDateFormat("yyyyMMdd").format(birth).equals(birthday)) {
+            return false;
+        }
+        // 获取当前日期的毫秒数
+        long currentTime = System.currentTimeMillis();
+        // 获取生日的毫秒数
+        long birthTime = birth.getTime();
+        // 如果当前时间小于生日，生日不合法。反之合法
+        if (birthTime > currentTime) {
+            return false;
+        }
+        return true;
     }
 
 
