@@ -145,9 +145,6 @@ public class GrabOpView extends RelativeLayout {
                     if (mStatus == STATUS_GRAP) {
                         if (mListener != null) {
                             mListener.clickGrabBtn(mSeq, false);
-                            StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-                                    "game_grab", null);
-//                        mBtnIv.setEnabled(false);
                         }
                     }
                 }
@@ -166,9 +163,6 @@ public class GrabOpView extends RelativeLayout {
                     if (mStatus == STATUS_GRAP) {
                         if (mListener != null) {
                             mListener.clickGrabBtn(mSeq, true);
-                            StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-                                    "game_challenge_grab", null);
-//                        mBtnIv.setEnabled(false);
                         }
                     }
                 }

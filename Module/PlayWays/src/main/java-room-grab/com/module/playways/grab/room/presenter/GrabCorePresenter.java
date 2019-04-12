@@ -18,6 +18,8 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.statistics.StatConstants;
+import com.common.statistics.StatisticsAdapter;
 import com.common.upload.UploadCallback;
 import com.common.upload.UploadParams;
 import com.common.utils.ActivityUtils;
@@ -441,6 +443,16 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             }
         }
         map.put("wantSingType", wantSingType);
+
+
+        GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
+        if (infoModel != null && infoModel.getMusic()!=null) {
+            HashMap map1 = new HashMap();
+            map.put("songId2", String.valueOf(infoModel.getMusic().getItemID()));
+            map.put("songName", infoModel.getMusic().getItemName());
+            StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
+                    "game_grab", map1);
+        }
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.wangSingChance(body), new ApiObserver<ApiResult>() {
