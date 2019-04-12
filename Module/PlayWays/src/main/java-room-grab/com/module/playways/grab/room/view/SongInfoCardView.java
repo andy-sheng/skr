@@ -101,7 +101,7 @@ public class SongInfoCardView extends RelativeLayout {
                     ImageFactory.newPathImage(songModel.getCover())
                             .setCornerRadius(U.getDisplayUtils().dip2px(6))
                             .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                            .setBorderColor(Color.parseColor("#202239"))
+                            .setBorderColor(U.getColor(R.color.white))
                             .addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_160.getW()).build())
                             .build());
         } else {
@@ -109,7 +109,7 @@ public class SongInfoCardView extends RelativeLayout {
                     ImageFactory.newResImage(R.drawable.xuanzegequ_wufengmian)
                             .setCornerRadius(U.getDisplayUtils().dip2px(6))
                             .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                            .setBorderColor(Color.parseColor("#202239")).build());
+                            .setBorderColor(U.getColor(R.color.white)).build());
         }
         mSongNameTv.setText("《" + songModel.getItemName() + "》");
         mSongSingerTv.setText(songModel.getOwner());
