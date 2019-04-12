@@ -181,7 +181,7 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
 
     @Override
     public void showTagList(List<SpecialModel> specialModelList) {
-        int height = U.getDisplayUtils().dip2px(specialModelList.size() > 4 ? 150 : (55 * (specialModelList.size() - 1)));
+        int height = U.getDisplayUtils().dip2px(specialModelList.size() > 4 ? 190 : (55 * (specialModelList.size() - 1)));
         if (mGrabSongTagsView != null) {
             mGrabSongTagsView.setSpecialModelList(specialModelList);
             mPopupWindow.setHeight(height);
