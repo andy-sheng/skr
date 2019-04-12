@@ -377,7 +377,7 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
 
                         @Override
                         public int getInitCurrentItemPostion() {
-                            return position - 1;
+                            return mPhotoAdapter.getPostionOfItem((PhotoModel) model);
                         }
 
                         @Override

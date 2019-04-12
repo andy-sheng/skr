@@ -265,7 +265,7 @@ public class GrabTopItemView extends RelativeLayout {
     }
 
     public void showSpeakingAnimation() {
-        mSpeakingTipsAnimationView.show(2000);
+        mSpeakingTipsAnimationView.show(1000);
     }
 
     public void setGetSingChance() {

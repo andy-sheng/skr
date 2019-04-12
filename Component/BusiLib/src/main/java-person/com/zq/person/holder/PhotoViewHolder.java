@@ -29,6 +29,10 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
 
     RecyclerOnItemClickListener mListener;
 
+    /**
+     * 这里传入 position 的话 insert delete 会导致postion不准
+     */
+
     public PhotoViewHolder(View itemView, RecyclerOnItemClickListener listener) {
         super(itemView);
         this.mListener = listener;

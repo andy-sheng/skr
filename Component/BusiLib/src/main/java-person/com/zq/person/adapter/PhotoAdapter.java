@@ -174,4 +174,14 @@ public class PhotoAdapter extends RecyclerView.Adapter {
             }
         }
     }
+
+    public int getPostionOfItem(PhotoModel model) {
+        for (int i = 0; i < mDataList.size(); i++) {
+            PhotoModel m = mDataList.get(i);
+            if (m.equals(model)) {
+                return i;
+            }
+        }
+        return 0;
+    }
 }
