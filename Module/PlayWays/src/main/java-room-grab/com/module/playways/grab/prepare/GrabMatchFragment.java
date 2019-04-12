@@ -463,7 +463,7 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
     @Override
     public void notifyToHide() {
         if (mExitDialog != null && mExitDialog.isShowing()) {
-            mExitDialog.dismiss();
+            mExitDialog.dismiss(false);
         }
         mRootView.setVisibility(View.GONE);
 //        U.getFragmentUtils().popFragment(FragmentUtils.newPopParamsBuilder()

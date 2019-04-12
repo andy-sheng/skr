@@ -21,6 +21,7 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
+import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
@@ -284,6 +285,26 @@ public class EditInfoAgeFragment2 extends BaseFragment {
                 .setMessageTip("年龄只能修改一次哦～\n确认修改吗？")
                 .setConfirmTip("确认修改")
                 .setCancelTip("取消")
+                .setConfirmBtnClickListener(new AnimateClickListener() {
+                    @Override
+                    public void click(View view) {
+                        if (mDialogPlus != null) {
+                            mDialogPlus.dismiss(false);
+                        }
+                        MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
+                                .setBirthday(bir)
+                                .build(), false);
+                        U.getFragmentUtils().popFragment(EditInfoAgeFragment2.this);
+                    }
+                })
+                .setCancelBtnClickListener(new AnimateClickListener() {
+                    @Override
+                    public void click(View view) {
+                        if (mDialogPlus != null) {
+                            mDialogPlus.dismiss();
+                        }
+                    }
+                })
                 .build();
 
         mDialogPlus = DialogPlus.newDialog(getContext())
@@ -292,30 +313,6 @@ public class EditInfoAgeFragment2 extends BaseFragment {
                 .setContentBackgroundResource(com.component.busilib.R.color.transparent)
                 .setOverlayBackgroundResource(com.component.busilib.R.color.black_trans_80)
                 .setExpanded(false)
-                .setOnClickListener(new com.orhanobut.dialogplus.OnClickListener() {
-                    @Override
-                    public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
-                        if (view instanceof ExTextView) {
-                            if (view.getId() == com.component.busilib.R.id.confirm_tv) {
-                                dialog.dismiss();
-                                MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
-                                        .setBirthday(bir)
-                                        .build(), false);
-                                U.getFragmentUtils().popFragment(EditInfoAgeFragment2.this);
-                            }
-
-                            if (view.getId() == com.component.busilib.R.id.cancel_tv) {
-                                dialog.dismiss();
-                            }
-                        }
-                    }
-                })
-                .setOnDismissListener(new OnDismissListener() {
-                    @Override
-                    public void onDismiss(@NonNull DialogPlus dialog) {
-
-                    }
-                })
                 .create();
         mDialogPlus.show();
     }

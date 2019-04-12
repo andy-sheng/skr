@@ -109,6 +109,9 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         if (mFloatWindowDataFloatWindowObjectPlayControlTemplate != null) {
             mFloatWindowDataFloatWindowObjectPlayControlTemplate.destroy();
         }
+        if (mBeFriendDialog != null) {
+            mBeFriendDialog.dismiss(false);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

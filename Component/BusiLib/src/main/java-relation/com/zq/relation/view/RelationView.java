@@ -234,7 +234,7 @@ public class RelationView extends RelativeLayout {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         if (mDialogPlus != null && mDialogPlus.isShowing()) {
-            mDialogPlus.dismiss();
+            mDialogPlus.dismiss(false);
         }
     }
 

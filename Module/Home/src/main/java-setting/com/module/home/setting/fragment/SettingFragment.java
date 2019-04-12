@@ -452,6 +452,9 @@ public class SettingFragment extends BaseFragment {
     public void destroy() {
         super.destroy();
         U.getSoundUtils().release(TAG);
+        if (mDialogPlus != null) {
+            mDialogPlus.dismiss();
+        }
     }
 
     @Override
