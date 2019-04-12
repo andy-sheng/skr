@@ -1,9 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/view_7_dp"
+    android:layout_marginTop="@dimen/view_5_dp"
     android:paddingRight="@dimen/view_10_dp"
-    android:layout_marginBottom="@dimen/view_7_dp">
+    android:layout_marginBottom="@dimen/view_4_dp">
 
     <com.common.image.fresco.BaseImageView
         android:id="@+id/avatar_iv"
@@ -17,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/view_11_dp"
+        android:layout_marginLeft="@dimen/view_5_dp"
         android:layout_toRightOf="@+id/avatar_iv"
         android:background="@drawable/ycdd_liaotian_qipao"
         android:gravity="left"
