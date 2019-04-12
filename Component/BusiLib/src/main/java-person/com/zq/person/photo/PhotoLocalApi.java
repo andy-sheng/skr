@@ -55,6 +55,10 @@ public class PhotoLocalApi {
         return rl;
     }
 
+    public static void deleteAll() {
+        getPhotoDao().deleteAll();
+    }
+
 //    /**
 //     * 插入或者更新 db数据
 //     * <p>

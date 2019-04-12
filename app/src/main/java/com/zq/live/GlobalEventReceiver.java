@@ -1,11 +1,10 @@
-package com.common.core.global;
+package com.zq.live;
 
 import android.text.TextUtils;
 
 import com.common.clipboard.ClipboardUtils;
-import com.common.core.account.UserAccountManager;
+import com.common.core.account.event.AccountEvent;
 import com.common.core.kouling.SkrKouLingUtils;
-import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.share.SharePanel;
 import com.common.core.share.SharePlatform;
 import com.common.core.share.ShareType;
@@ -13,12 +12,15 @@ import com.common.log.MyLog;
 import com.common.utils.ActivityUtils;
 import com.common.utils.LogUploadUtils;
 import com.common.utils.U;
+import com.zq.person.photo.PhotoLocalApi;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import io.agora.rtc.RtcEngine;
-
+/**
+ * 这个类放在最顶层，因为只有可能它 调用 其它
+ * 其它不后悔调用它
+ */
 public class GlobalEventReceiver {
     public final static String TAG = "GlobalEventReceiver";
 
@@ -50,6 +52,12 @@ public class GlobalEventReceiver {
             }
         }
     }
+
+    @Subscribe
+    public void onEvent(AccountEvent.LogoffAccountEvent event) {
+        PhotoLocalApi.deleteAll();
+    }
+
 
     @Subscribe
     public void onEvent(LogUploadUtils.RequestOthersUploadLogSuccess event) {

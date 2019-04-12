@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.wali.live.newlivesdk;
+package com.zq.live;
 
 import android.app.Application;
 import android.content.Context;
@@ -59,6 +59,7 @@ public class MainConfiguration implements ConfigModule {
             @Override
             public void onMainProcessCreate(@NonNull Application application) {
                 Log.d(TAG, "application onCreate");
+                GlobalEventReceiver.getInstance().register();
 
             }
 
