@@ -277,32 +277,25 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             }
         }, 500);
         BgMusicManager.getInstance().setRoom(true);
-        if (!mRoomData.hasGameBegin() && mRoomData.isOwner() && mOwnerBeginGameIv == null) {
-            // 是房主并且游戏未开始，增加一个 开始游戏 的按钮
-
-            Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20))
-                    .setShape(DrawableCreator.Shape.Rectangle)
-                    .setPressedDrawable(U.getDrawable(R.drawable.ycdd_qiangchang_anxia))
-                    .setUnPressedDrawable(U.getDrawable(R.drawable.ycdd_qiangchang))
-                    .build();
-
-            mOwnerBeginGameIv = new ExImageView(getContext());
-            mOwnerBeginGameIv.setImageResource(R.drawable.fz_kaishiyouxi);
-            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            lp.rightMargin = U.getDisplayUtils().dip2px(10);
-            lp.addRule(RelativeLayout.ABOVE, R.id.bottom_bg_vp);
-            lp.bottomMargin = U.getDisplayUtils().dip2px(10);
-            mRankingContainer.addView(mOwnerBeginGameIv, lp);
-            mOwnerBeginGameIv.setOnClickListener(new DebounceViewClickListener() {
-                @Override
-                public void clickValid(View v) {
-                    mCorePresenter.ownerBeginGame();
-                }
-            });
-        }
-
         if (mRoomData.isOwner()) {
+            if (!mRoomData.hasGameBegin() && mOwnerBeginGameIv == null) {
+                // 是房主并且游戏未开始，增加一个 开始游戏 的按钮
+                mOwnerBeginGameIv = new ExImageView(getContext());
+                mOwnerBeginGameIv.setImageResource(R.drawable.fz_kaishiyouxi);
+                RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                lp.rightMargin = U.getDisplayUtils().dip2px(10);
+                lp.addRule(RelativeLayout.ABOVE, R.id.bottom_bg_vp);
+                lp.bottomMargin = U.getDisplayUtils().dip2px(10);
+                int index = mRankingContainer.indexOfChild(mInputContainerView);
+                mRankingContainer.addView(mOwnerBeginGameIv,index, lp);
+                mOwnerBeginGameIv.setOnClickListener(new DebounceViewClickListener() {
+                    @Override
+                    public void clickValid(View v) {
+                        mCorePresenter.ownerBeginGame();
+                    }
+                });
+            }
             tryShowInviteTipView();
             tryShowManageSongTipView();
             tipViewAnimate(mIvInviteTip, mIvManageSongTipView);
