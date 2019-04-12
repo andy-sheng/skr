@@ -111,8 +111,17 @@ public class SelfSingCardView2 extends RelativeLayout {
          *
          */
         int totalTs = infoModel.getSingEndMs() - infoModel.getSingBeginMs();
-        if(totalTs<=0){
-            MyLog.d(TAG,"playLyric" + " totalTs时间不合法, infoModel=" + infoModel );
+        if (totalTs <= 0) {
+            MyLog.d(TAG, "playLyric" + " totalTs时间不合法,做矫正, infoModel=" + infoModel);
+            if (infoModel.getWantSingType() == 0) {
+                totalTs = 20 * 1000;
+            } else if (infoModel.getWantSingType() == 1) {
+                totalTs = 30 * 1000;
+            } else if (infoModel.getWantSingType() == 2) {
+                totalTs = 40 * 1000;
+            } else if (infoModel.getWantSingType() == 3) {
+                totalTs = 50 * 1000;
+            }
         }
         if (!hasAcc) {
             playWithNoAcc(mSongModel);
@@ -144,7 +153,7 @@ public class SelfSingCardView2 extends RelativeLayout {
             EngineManager.getInstance().setRecognizeListener(new ArcRecognizeListener() {
                 @Override
                 public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
-                    mLyricAndAccMatchManager.onAcrResult(result,list,targetSongInfo,lineNo);
+                    mLyricAndAccMatchManager.onAcrResult(result, list, targetSongInfo, lineNo);
                 }
             });
 
