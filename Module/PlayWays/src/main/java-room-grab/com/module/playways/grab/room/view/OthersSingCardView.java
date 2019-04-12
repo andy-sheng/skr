@@ -20,6 +20,7 @@ import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.countdown.CircleCountDownView;
+import com.common.view.ex.ExTextView;
 import com.facebook.fresco.animation.drawable.AnimatedDrawable2;
 import com.facebook.fresco.animation.drawable.AnimationListener;
 import com.facebook.imagepipeline.image.ImageInfo;
@@ -54,6 +55,7 @@ public class OthersSingCardView extends RelativeLayout {
     SVGAImageView mGrabStageView;
     BaseImageView mSingAvatarView;
     CircleCountDownView mCircleCountDownView;
+    ExTextView mTvSingerName;
 
     AlphaAnimation mEnterAlphaAnimation;                // 进场动画
     TranslateAnimation mLeaveTranslateAnimation;   // 出场动画
@@ -85,6 +87,7 @@ public class OthersSingCardView extends RelativeLayout {
         mGrabStageView = (SVGAImageView) findViewById(R.id.grab_stage_view);
         mSingAvatarView = (BaseImageView) findViewById(R.id.sing_avatar_view);
         mCircleCountDownView = (CircleCountDownView) findViewById(R.id.circle_count_down_view);
+        mTvSingerName = (ExTextView) findViewById(R.id.tv_singer_name);
 
         mSingAvatarView.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -124,6 +127,7 @@ public class OthersSingCardView extends RelativeLayout {
         }
         this.startAnimation(mEnterAlphaAnimation);
 
+        mTvSingerName.setText(userInfoModel.getNickname());
         mGrabStageView.setVisibility(View.VISIBLE);
         mGrabStageView.setLoops(1);
 
