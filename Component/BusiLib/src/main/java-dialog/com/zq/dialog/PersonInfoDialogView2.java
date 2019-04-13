@@ -103,6 +103,8 @@ public class PersonInfoDialogView2 extends RelativeLayout {
     SimpleDraweeView mSrlAvatarIv;
 
     RecyclerView mPhotoView;
+    ExTextView mPhotoNumTv;
+    ExTextView mEmptyMyPhoto;
 
     private static final int LOCATION_TAG = 0;           //城市标签
     private static final int CONSTELLATION_TAG = 1;      //星座标签
@@ -267,9 +269,10 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         mAppbar = (AppBarLayout) this.findViewById(R.id.appbar);
         mToolbarLayout = (CollapsingToolbarLayout) this.findViewById(R.id.toolbar_layout);
 
-        mSmartRefresh.setEnableLoadMore(true);
         mSmartRefresh.setEnableRefresh(false);
-
+        mSmartRefresh.setEnableLoadMore(true);
+        mSmartRefresh.setEnableLoadMoreWhenContentNotFull(false);
+        mSmartRefresh.setEnableOverScrollDrag(true);
         mSmartRefresh.setOnRefreshListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
@@ -288,7 +291,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
                 if (verticalOffset == 0) {
                     // 展开状态
                     mToolbar.setVisibility(GONE);
-                } else if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()) {
+                } else if (Math.abs(verticalOffset) >= (appBarLayout.getTotalScrollRange() - U.getDisplayUtils().dip2px(70))) {
                     // 完全收缩状态
                     mToolbar.setVisibility(VISIBLE);
                 } else {
@@ -403,6 +406,8 @@ public class PersonInfoDialogView2 extends RelativeLayout {
 
     private void initPhotoArea() {
         mPhotoView = (RecyclerView) this.findViewById(R.id.photo_view);
+        mPhotoNumTv = (ExTextView) this.findViewById(R.id.photo_num_tv);
+        mEmptyMyPhoto = (ExTextView) this.findViewById(R.id.empty_my_photo);
 
         mPhotoView.setFocusableInTouchMode(false);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
@@ -472,10 +477,21 @@ public class PersonInfoDialogView2 extends RelativeLayout {
 
 
     public void addPhotos(List<PhotoModel> list, int offset, int totalCount, boolean clear) {
+        mSmartRefresh.finishLoadMore();
         this.mOffset = offset;
 
         if (clear) {
             mPhotoAdapter.getDataList().clear();
+        }
+
+        if (totalCount > 0) {
+            mPhotoNumTv.setText("照片（" + totalCount + "）");
+            mPhotoNumTv.setVisibility(VISIBLE);
+        } else {
+            mPhotoNumTv.setVisibility(GONE);
+            if (mUserId == MyUserInfoManager.getInstance().getUid()) {
+                mEmptyMyPhoto.setVisibility(VISIBLE);
+            }
         }
 
         if (list != null && list.size() != 0) {
@@ -487,11 +503,11 @@ public class PersonInfoDialogView2 extends RelativeLayout {
                 hasInitHeight = true;
             }
             mHasMore = true;
+            mSmartRefresh.setEnableLoadMore(true);
             mPhotoAdapter.getDataList().addAll(list);
             mPhotoAdapter.notifyDataSetChanged();
         } else {
             mHasMore = false;
-            mSmartRefresh.setEnableRefresh(false);//是否启用下拉刷新功能
             mSmartRefresh.setEnableLoadMore(false);//是否启用上拉加载功能
             if (mPhotoAdapter.getDataList() != null && mPhotoAdapter.getDataList().size() > 0) {
                 // 没有更多了
