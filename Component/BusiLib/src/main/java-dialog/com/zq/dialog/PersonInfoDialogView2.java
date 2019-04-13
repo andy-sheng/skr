@@ -273,7 +273,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         mSmartRefresh.setEnableLoadMore(true);
         mSmartRefresh.setEnableLoadMoreWhenContentNotFull(false);
         mSmartRefresh.setEnableOverScrollDrag(true);
-        mSmartRefresh.setOnRefreshListener(new OnRefreshLoadMoreListener() {
+        mSmartRefresh.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 getPhotos(mOffset);
@@ -470,7 +470,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
                     }
                 });
             }
-        }, false);
+        }, PhotoAdapter.TYPE_PERSON_CARD);
 
         mPhotoView.setAdapter(mPhotoAdapter);
     }
@@ -508,7 +508,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
             mPhotoAdapter.notifyDataSetChanged();
         } else {
             mHasMore = false;
-            mSmartRefresh.setEnableLoadMore(false);//是否启用上拉加载功能
+            mSmartRefresh.setEnableLoadMore(false);//是否启用下加载功能
             if (mPhotoAdapter.getDataList() != null && mPhotoAdapter.getDataList().size() > 0) {
                 // 没有更多了
             } else {

@@ -430,7 +430,7 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
                     });
                 }
             }
-        }, true);
+        }, PhotoAdapter.TYPE_PERSON_CENTER);
         mPhotoView.setAdapter(mPhotoAdapter);
         mPresenter.loadUnSuccessPhotoFromDB();
     }

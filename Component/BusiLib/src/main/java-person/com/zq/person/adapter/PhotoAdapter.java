@@ -18,24 +18,40 @@ import java.util.List;
 
 public class PhotoAdapter extends RecyclerView.Adapter {
     public final static String TAG = "PhotoAdapter";
+
+    public final static int TYPE_PERSON_CARD = 1;
+    public final static int TYPE_PERSON_CENTER = 2;
+    public final static int TYPE_OTHER_PERSON_CENTER = 3;
+
     List<PhotoModel> mDataList = new ArrayList<>();
     RecyclerOnItemClickListener mListener;
 
     boolean mHasUpdate;
+    int type;
 
     private int PHOTO_ADD_TYPE = 0;
     private int PHOTO_ITEM_TYPE = 1;
 
-    public PhotoAdapter(RecyclerOnItemClickListener mListener, boolean hasUpdate) {
+    public PhotoAdapter(RecyclerOnItemClickListener mListener, int type) {
         this.mListener = mListener;
-        this.mHasUpdate = hasUpdate;
+        this.type = type;
+        if (type == TYPE_PERSON_CENTER) {
+            mHasUpdate = true;
+        } else {
+            mHasUpdate = false;
+        }
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == PHOTO_ITEM_TYPE) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.photo_item_view_layout, parent, false);
+            View view;
+            if (type == TYPE_PERSON_CARD) {
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.photo_card_item_view_layout, parent, false);
+            } else {
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.photo_item_view_layout, parent, false);
+            }
             PhotoViewHolder viewHolder = new PhotoViewHolder(view, mListener);
             return viewHolder;
         } else if (viewType == PHOTO_ADD_TYPE) {

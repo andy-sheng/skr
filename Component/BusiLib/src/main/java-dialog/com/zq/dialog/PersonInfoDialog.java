@@ -12,6 +12,7 @@ import com.common.core.userinfo.model.UserInfoModel;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.component.busilib.R;
+import com.imagebrowse.big.BigImageBrowseFragment;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
@@ -38,13 +39,17 @@ public class PersonInfoDialog {
         personInfoDialogView.setListener(new PersonCardClickListener() {
             @Override
             public void onClickReport(int userID) {
-                mDialogPlus.dismiss(false);
+                if (mDialogPlus != null) {
+                    mDialogPlus.dismiss(false);
+                }
                 showReportView(userID);
             }
 
             @Override
             public void onClickKick(UserInfoModel userInfoModel) {
-                mDialogPlus.dismiss(false);
+                if (mDialogPlus != null) {
+                    mDialogPlus.dismiss(false);
+                }
                 if (mKickListener != null) {
                     mKickListener.onClickKick(userInfoModel);
                 }
@@ -52,7 +57,10 @@ public class PersonInfoDialog {
 
             @Override
             public void onClickAvatar(String avatar) {
-                // TODO: 2019/4/8 头像看大图
+                if (mDialogPlus != null) {
+                    mDialogPlus.dismiss(false);
+                }
+                BigImageBrowseFragment.open(false, (BaseActivity) mContext, avatar);
             }
 
             @Override
@@ -71,12 +79,16 @@ public class PersonInfoDialog {
             @Override
             public void onClickMessage(UserInfoModel userInfoModel) {
                 // TODO: 2019/4/8 私信
-                mDialogPlus.dismiss(false);
+                if (mDialogPlus != null) {
+                    mDialogPlus.dismiss(false);
+                }
             }
 
             @Override
             public void onClickPhoto(PhotoModel photoModel, int position) {
-                mDialogPlus.dismiss(false);
+                if (mDialogPlus != null) {
+                    mDialogPlus.dismiss(false);
+                }
                 // TODO: 2019/4/8 打开大图浏览
             }
 

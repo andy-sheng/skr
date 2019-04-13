@@ -368,7 +368,7 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
                     }
                 });
             }
-        }, false);
+        }, PhotoAdapter.TYPE_OTHER_PERSON_CENTER);
         mPhotoView.setAdapter(mPhotoAdapter);
     }
 
