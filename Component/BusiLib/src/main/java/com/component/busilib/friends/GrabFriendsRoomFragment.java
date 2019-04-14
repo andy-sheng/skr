@@ -58,7 +58,9 @@ public class GrabFriendsRoomFragment extends BaseFragment {
         mIvBack.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                U.getFragmentUtils().popFragment(GrabFriendsRoomFragment.this);
+                if (getActivity() != null) {
+                    getActivity().finish();
+                }
             }
         });
 

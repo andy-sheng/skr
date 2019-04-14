@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.callback.Callback;
 import com.common.core.avatar.AvatarUtils;
@@ -48,6 +49,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.imagebrowse.ImageBrowseView;
 import com.imagebrowse.big.BigImageBrowseFragment;
 import com.imagebrowse.big.DefaultImageBrowserLoader;
+import com.module.RouterConstants;
 import com.module.home.R;
 import com.module.home.musictest.fragment.MusicTestFragment;
 import com.module.home.persenter.PersonCorePresenter;
@@ -232,11 +234,9 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
         mSettingArea.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                U.getFragmentUtils().addFragment(
-                        FragmentUtils.newAddParamsBuilder(getActivity(), SettingFragment.class)
-                                .setAddToBackStack(true)
-                                .setHasAnimation(true)
-                                .build());
+                ARouter.getInstance()
+                        .build(RouterConstants.ACTIVITY_SETTING)
+                        .navigation();
             }
         });
         updateSettingRedDot();
@@ -267,7 +267,7 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
             public void clickValid(View v) {
                 WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FRIEND_RED_ROD_TYPE, 0);
                 // 好友，双向关注
-                openRelationFragment(RelationFragment.FROM_FRIENDS);
+                openRelationFragment(UserInfoManager.RELATION_FRIENDS);
             }
         });
 
@@ -276,7 +276,7 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
             public void clickValid(View v) {
                 WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FANS_RED_ROD_TYPE, 0);
                 // 粉丝，我关注的
-                openRelationFragment(RelationFragment.FROM_FANS);
+                openRelationFragment(UserInfoManager.RELATION_FANS);
             }
         });
 
@@ -284,23 +284,22 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
             @Override
             public void clickValid(View v) {
                 // 关注, 关注我的
-                openRelationFragment(RelationFragment.FROM_FOLLOW);
+                openRelationFragment(UserInfoManager.RELATION_FOLLOW);
             }
         });
     }
 
     private void openRelationFragment(int mode) {
         Bundle bundle = new Bundle();
-        bundle.putInt(RelationFragment.FROM_PAGE_KEY, mode);
-        bundle.putInt(RelationFragment.FRIEND_NUM_KEY, mFriendNum);
-        bundle.putInt(RelationFragment.FOLLOW_NUM_KEY, mFocusNum);
-        bundle.putInt(RelationFragment.FANS_NUM_KEY, mFansNum);
-        U.getFragmentUtils().addFragment(
-                FragmentUtils.newAddParamsBuilder(getActivity(), RelationFragment.class)
-                        .setBundle(bundle)
-                        .setAddToBackStack(true)
-                        .setHasAnimation(true)
-                        .build());
+        bundle.putInt("from_page_key", mode);
+        bundle.putInt("friend_num_key", mFriendNum);
+        bundle.putInt("follow_num_key", mFocusNum);
+        bundle.putInt("fans_num_key", mFansNum);
+        ARouter.getInstance()
+                .build(RouterConstants.ACTIVITY_RELATION)
+                .with(bundle)
+                .navigation();
+
     }
 
     private void initFunctionArea() {
@@ -311,22 +310,18 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
         mWalletIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                U.getFragmentUtils().addFragment(
-                        FragmentUtils.newAddParamsBuilder(getActivity(), WalletFragment.class)
-                                .setAddToBackStack(true)
-                                .setHasAnimation(true)
-                                .build());
+                ARouter.getInstance()
+                        .build(RouterConstants.ACTIVITY_WALLET)
+                        .navigation();
             }
         });
 
         mMusicTestIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                U.getFragmentUtils().addFragment(
-                        FragmentUtils.newAddParamsBuilder(getActivity(), MusicTestFragment.class)
-                                .setAddToBackStack(true)
-                                .setHasAnimation(true)
-                                .build());
+                ARouter.getInstance()
+                        .build(RouterConstants.ACTIVITY_MUSIC_TEST)
+                        .navigation();
             }
         });
     }

@@ -46,6 +46,7 @@ import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.zq.relation.activity.RelationActivity;
 import com.zq.relation.view.RelationView;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -62,15 +63,6 @@ import model.RelationNumModel;
  * 关系列表
  */
 public class RelationFragment extends BaseFragment {
-
-    public static final int FROM_FRIENDS = 0;
-    public static final int FROM_FOLLOW = 1;
-    public static final int FROM_FANS = 2;
-
-    public static final String FROM_PAGE_KEY = "from_page_key";
-    public static final String FRIEND_NUM_KEY = "friend_num_key";
-    public static final String FANS_NUM_KEY = "fans_num_key";
-    public static final String FOLLOW_NUM_KEY = "follow_num_key";
 
     CommonTitleBar mTitlebar;
     LinearLayout mContainer;
@@ -134,7 +126,10 @@ public class RelationFragment extends BaseFragment {
         mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                U.getFragmentUtils().popFragment(RelationFragment.this);
+//                U.getFragmentUtils().popFragment(RelationFragment.this);
+                if (getActivity() != null) {
+                    getActivity().finish();
+                }
             }
         });
 
@@ -248,11 +243,17 @@ public class RelationFragment extends BaseFragment {
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            int from = bundle.getInt(FROM_PAGE_KEY);
-            mFriendNum = bundle.getInt(FRIEND_NUM_KEY);
-            mFansNum = bundle.getInt(FANS_NUM_KEY);
-            mFocusNum = bundle.getInt(FOLLOW_NUM_KEY);
-            mRelationVp.setCurrentItem(from);
+            int relation = bundle.getInt(RelationActivity.FROM_PAGE_KEY);
+            mFriendNum = bundle.getInt(RelationActivity.FRIEND_NUM_KEY);
+            mFansNum = bundle.getInt(RelationActivity.FANS_NUM_KEY);
+            mFocusNum = bundle.getInt(RelationActivity.FOLLOW_NUM_KEY);
+            if (relation == UserInfoManager.RELATION_FRIENDS) {
+                mRelationVp.setCurrentItem(0);
+            } else if (relation == UserInfoManager.RELATION_FOLLOW) {
+                mRelationVp.setCurrentItem(1);
+            } else if (relation == UserInfoManager.RELATION_FANS) {
+                mRelationVp.setCurrentItem(2);
+            }
             refreshRelationNums();
         } else {
             getRelationNums();
@@ -282,10 +283,10 @@ public class RelationFragment extends BaseFragment {
                             mShareDialog.dismiss();
                             ClipboardUtils.setCopy((String) obj);
                             Intent intent = U.getActivityUtils().getLaunchIntentForPackage("com.tencent.mm");
-                            if (intent!=null && null != intent.resolveActivity(U.app().getPackageManager())) {
+                            if (intent != null && null != intent.resolveActivity(U.app().getPackageManager())) {
                                 startActivity(intent);
                                 U.getToastUtil().showLong("请将口令粘贴给你的好友");
-                            }else{
+                            } else {
                                 U.getToastUtil().showLong("未安装微信,请将口令粘贴给你的好友");
                             }
                         }
@@ -308,10 +309,10 @@ public class RelationFragment extends BaseFragment {
                             mShareDialog.dismiss();
                             ClipboardUtils.setCopy((String) obj);
                             Intent intent = U.getActivityUtils().getLaunchIntentForPackage("com.tencent.mobileqq");
-                            if (intent!=null && null != intent.resolveActivity(U.app().getPackageManager())) {
+                            if (intent != null && null != intent.resolveActivity(U.app().getPackageManager())) {
                                 startActivity(intent);
                                 U.getToastUtil().showLong("请将口令粘贴给你的好友");
-                            }else{
+                            } else {
                                 U.getToastUtil().showLong("未安装QQ,请将口令粘贴给你的好友");
                             }
                         }

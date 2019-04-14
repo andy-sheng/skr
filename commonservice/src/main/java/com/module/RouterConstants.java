@@ -18,12 +18,19 @@ public interface RouterConstants {
     String ACTIVITY_RANK_ROOM = "/rankingmode/RankRoomActivity";
     String ACTIVITY_GRAB_CREATE_ROOM = "/rankingmode/GrabCreateRoomActivity";
     String ACTIVITY_GRAB_ROOM = "/rankingmode/GrabRoomActivity";
-    String ACTIVITY_AUDITION_ROOM  = "/rankingmode/AuditionActivity";
+    String ACTIVITY_AUDITION_ROOM = "/rankingmode/AuditionActivity";
     String ACTIVITY_GRAB_RESULT = "/rankingmode/GrabResultActivity";
     String ACTIVITY_SHARE_WEB = "/rankingmode/ShareWebActivity";
     String ACTIVITY_GRAB_MATCH_ROOM = "/rankingmode/GrabMatchActivity";
+
+    String ACTIVITY_WALLET = "/home/WalletActivity";
     String ACTIVITY_WITH_DRAW = "/home/WithDrawActivity";
     String ACTIVITY_SMS_AUTH = "/home/SmsAuthActivity";
+    String ACTIVITY_MUSIC_TEST = "/home/MusicTestActivity";
+    String ACTIVITY_SETTING = "/home/SettingActivity";
+
+    String ACTIVITY_FRIEND_ROOM = "/busilib/GrabFriendRoomActivity";
+    String ACTIVITY_RELATION = "/busilib/RelationActivity";
 
     String ACTIVITY_DEVICE_INFO = "/test/DeviceInfoActivity";
     String ACTIVITY_EMOJI = "/test/EmojiActivity";

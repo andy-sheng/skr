@@ -260,7 +260,6 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         mOutView.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                MyLog.d(TAG, "clickValid" + " v=" + v);
                 if (mClickListener != null) {
                     mClickListener.onClickOut();
                 }

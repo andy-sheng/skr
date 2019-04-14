@@ -203,11 +203,9 @@ public class GameFragment2 extends BaseFragment implements IGameView {
             @Override
             public void moreRoom() {
                 MyLog.d(TAG, "moreRoom");
-                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), GrabFriendsRoomFragment.class)
-                        .setAddToBackStack(true)
-                        .setHasAnimation(true)
-                        .build());
-
+                ARouter.getInstance()
+                        .build(RouterConstants.ACTIVITY_FRIEND_ROOM)
+                        .navigation();
             }
         });
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
