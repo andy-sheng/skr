@@ -330,7 +330,7 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
 
                     @Override
                     public int getInitCurrentItemPostion() {
-                        return position - 1;
+                        return position;
                     }
 
                     @Override

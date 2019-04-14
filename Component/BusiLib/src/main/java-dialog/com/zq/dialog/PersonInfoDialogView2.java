@@ -435,7 +435,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
 
                     @Override
                     public int getInitCurrentItemPostion() {
-                        return position - 1;
+                        return position;
                     }
 
                     @Override
