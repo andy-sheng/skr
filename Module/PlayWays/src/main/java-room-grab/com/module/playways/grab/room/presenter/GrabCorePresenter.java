@@ -1583,13 +1583,13 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             SpannableStringBuilder stringBuilder;
             if (playerInfoModel.getUserInfo().getUserId() == UserAccountManager.SYSTEM_GRAB_ID) {
                 stringBuilder = new SpanUtils()
-                        .append(playerInfoModel.getUserInfo().getNickname() + " ").setForegroundColor(CommentModel.TEXT_YELLOW)
-                        .append("我是撕歌最傲娇小助手多音，来和你们一起唱歌卖萌~").setForegroundColor(CommentModel.TEXT_WHITE)
+                        .append(playerInfoModel.getUserInfo().getNickname() + " ").setForegroundColor(Color.parseColor("#DF7900"))
+                        .append("我是撕歌最傲娇小助手多音，来和你们一起唱歌卖萌~").setForegroundColor(Color.parseColor("#586D94"))
                         .create();
             } else {
                 SpanUtils spanUtils = new SpanUtils()
-                        .append(playerInfoModel.getUserInfo().getNickname() + " ").setForegroundColor(CommentModel.TEXT_YELLOW)
-                        .append("加入了房间").setForegroundColor(CommentModel.TEXT_WHITE);
+                        .append(playerInfoModel.getUserInfo().getNickname() + " ").setForegroundColor(Color.parseColor("#DF7900"))
+                        .append("加入了房间").setForegroundColor(Color.parseColor("#586D94"));
                 if (BuildConfig.DEBUG) {
                     spanUtils.append(" 角色为" + playerInfoModel.getRole())
                             .append(" 在线状态为" + playerInfoModel.isOnline());
