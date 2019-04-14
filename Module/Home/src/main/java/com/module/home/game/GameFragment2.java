@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.common.banner.BannerImageLoader;
 import com.common.base.BaseFragment;
 import com.common.core.account.event.AccountEvent;
 import com.common.core.avatar.AvatarUtils;
@@ -18,17 +17,15 @@ import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.permission.SkrAudioPermission;
+import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
-import com.common.utils.FragmentUtils;
-import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
-import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
 import com.component.busilib.friends.RecommendModel;
-import com.component.busilib.friends.GrabFriendsRoomFragment;
 import com.component.busilib.friends.SpecialModel;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.RouterConstants;
@@ -44,15 +41,10 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
-import com.youth.banner.Banner;
-import com.youth.banner.BannerConfig;
-import com.youth.banner.listener.OnBannerListener;
-import com.zq.toast.CommonToastView;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -69,6 +61,8 @@ public class GameFragment2 extends BaseFragment implements IGameView {
     ExTextView mCoinNum;
     SmartRefreshLayout mRecyclerLayout;
     RecyclerView mRecyclerView;
+
+    BaseImageView mIvRedPkg;
 
     GameAdapter mGameAdapter;
 
@@ -95,6 +89,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mCoinNum = (ExTextView) mRootView.findViewById(R.id.coin_num);
         mRecyclerLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.recycler_layout);
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
+        mIvRedPkg = (BaseImageView)mRootView.findViewById(R.id.iv_red_pkg);
 
         mSkrAudioPermission = new SkrAudioPermission();
 
@@ -309,6 +304,29 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mCoinNum.setText("" + coinNum);
     }
 
+    @Override
+    public void showRedOperationView(GameKConfigModel.HomepagesitefirstBean homepagesitefirstBean) {
+        AvatarUtils.loadAvatarByUrl(mIvRedPkg,
+                AvatarUtils.newParamsBuilder(homepagesitefirstBean.getPic())
+                        .setWidth(U.getDisplayUtils().dip2px(48f))
+                        .setHeight(U.getDisplayUtils().dip2px(53f))
+                        .build());
+        mIvRedPkg.setVisibility(View.VISIBLE);
+        mIvRedPkg.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_SCHEME)
+                        .withString("uri", homepagesitefirstBean.getSchema())
+                        .navigation();
+            }
+        });
+    }
+
+    @Override
+    public void hideRedOperationView() {
+        mIvRedPkg.setVisibility(View.GONE);
+    }
+
     // TODO: 2019/4/3 这都是第一次拉数据
     @Override
     public void setRecommendInfo(List<RecommendModel> list, int offset, int totalNum) {
@@ -320,7 +338,6 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         RecommendRoomModel recommendRoomModel = new RecommendRoomModel(list, offset, totalNum);
         mGameAdapter.updateRecommendRoomInfo(recommendRoomModel);
     }
-
 
     @Override
     public void setBannerImage(List<SlideShowModel> slideShowModelList) {

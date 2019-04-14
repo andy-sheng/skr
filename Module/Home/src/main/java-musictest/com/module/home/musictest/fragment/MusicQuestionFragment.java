@@ -168,10 +168,13 @@ public class MusicQuestionFragment extends BaseFragment implements IQuestionView
                 .setImage(R.drawable.touxiangshezhichenggong_icon)
                 .setText("提交成功")
                 .build());
-        U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
-                .setPopFragment(MusicQuestionFragment.this)
-                .setPopAbove(false)
-                .setHasAnimation(true)
-                .build());
+//        U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
+//                .setPopFragment(MusicQuestionFragment.this)
+//                .setPopAbove(false)
+//                .setHasAnimation(true)
+//                .build());
+        if (getActivity() != null) {
+            getActivity().finish();
+        }
     }
 }

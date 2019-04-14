@@ -130,7 +130,7 @@ public class GrabSearchSongFragment extends BaseFragment {
         mTitlebar.postDelayed(new Runnable() {
             @Override
             public void run() {
-                U.getKeyBoardUtils().showSoftInputKeyBoard(getContext());
+                U.getKeyBoardUtils().showSoftInputKeyBoard(getActivity());
             }
         }, 200);
     }

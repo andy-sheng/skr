@@ -268,7 +268,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         U.getSoundUtils().preLoad(TAG, R.raw.grab_challengelose, R.raw.grab_challengewin,
                 R.raw.grab_gameover, R.raw.grab_iwannasing,
                 R.raw.grab_nobodywants, R.raw.grab_readygo,
-                R.raw.grab_xlight, R.raw.grab_lightup, R.raw.normal_click);
+                R.raw.grab_xlight, R.raw.normal_click);
 
         MyLog.w(TAG, "gameid 是 " + mRoomData.getGameId() + " userid 是 " + MyUserInfoManager.getInstance().getUid());
 

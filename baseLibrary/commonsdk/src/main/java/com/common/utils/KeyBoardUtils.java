@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.ResultReceiver;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -18,7 +21,7 @@ public class KeyBoardUtils {
     }
 
     public void hideSoftInputKeyBoard(Context context, View focusView) {
-        if(context == null){
+        if (context == null) {
             return;
         }
         if (focusView != null) {
@@ -30,33 +33,89 @@ public class KeyBoardUtils {
         }
     }
 
-    public void hideSoftInputKeyBoard(Activity context) {
-        if(context == null){
-            return;
+    public void hideSoftInputKeyBoard(Activity activity) {
+        View view = activity.getCurrentFocus();
+        if (view == null) {
+            view = new View(activity);
         }
-        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-//        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-        if (context.getCurrentFocus() != null) {
-            imm.hideSoftInputFromWindow(context.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-        }
+        hideSoftInput(view);
     }
 
+    /**
+     * Hide the soft input.
+     *
+     * @param view The view.
+     */
+    public void hideSoftInput(final View view) {
+        InputMethodManager imm =
+                (InputMethodManager) U.app().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm == null) return;
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0, new ResultReceiver(new Handler()) {
+            @Override
+            protected void onReceiveResult(int resultCode, Bundle resultData) {
+                if (resultCode == InputMethodManager.RESULT_UNCHANGED_SHOWN
+                        || resultCode == InputMethodManager.RESULT_SHOWN) {
+                    toggleSoftInput();
+                }
+            }
+        });
+    }
+
+    /**
+     * Toggle the soft input display or not.
+     */
+    public void toggleSoftInput() {
+        InputMethodManager imm =
+                (InputMethodManager) U.app().getSystemService(Context.INPUT_METHOD_SERVICE);
+        //noinspection ConstantConditions
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+    }
+
+
     public void showSoftInputKeyBoard(Context context, View focusView) {
-        if(context == null){
+        if (context == null) {
             return;
         }
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(focusView, InputMethodManager.SHOW_FORCED);
     }
 
-    public void showSoftInputKeyBoard(Context context) {
-        if(context == null){
-            return;
-        }
-        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.SHOW_FORCED);
+    public void showSoftInputKeyBoard(Activity activity) {
+        showSoftInput(activity, InputMethodManager.SHOW_FORCED);
     }
 
+    /**
+     * Show the soft input.
+     *
+     * @param activity The activity.
+     * @param flags    Provides additional operating flags.  Currently may be
+     *                 0 or have the {@link InputMethodManager#SHOW_IMPLICIT} bit set.
+     */
+    public void showSoftInput(final Activity activity, final int flags) {
+        View view = activity.getCurrentFocus();
+        if (view == null) {
+            view = new View(activity);
+        }
+        showSoftInput(view, flags);
+    }
+
+    public void showSoftInput(final View view, final int flags) {
+        InputMethodManager imm =
+                (InputMethodManager) U.app().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm == null) return;
+        view.setFocusable(true);
+        view.setFocusableInTouchMode(true);
+        view.requestFocus();
+        imm.showSoftInput(view, flags, new ResultReceiver(new Handler()) {
+            @Override
+            protected void onReceiveResult(int resultCode, Bundle resultData) {
+                if (resultCode == InputMethodManager.RESULT_UNCHANGED_HIDDEN
+                        || resultCode == InputMethodManager.RESULT_HIDDEN) {
+                    toggleSoftInput();
+                }
+            }
+        });
+    }
 
     public boolean isSoftKeyboardShowing(Activity activity) {
         //获取当屏幕内容的高度
@@ -67,7 +126,7 @@ public class KeyBoardUtils {
         activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
         //考虑到虚拟导航栏的情况（虚拟导航栏情况下：screenHeight = rect.bottom + 虚拟导航栏高度）
         //选取screenHeight*2/3进行判断
-        return screenHeight*2/3 > rect.bottom+U.getDeviceUtils().getVirtualNavBarHeight();
+        return screenHeight * 2 / 3 > rect.bottom + U.getDeviceUtils().getVirtualNavBarHeight();
     }
 
     /**
