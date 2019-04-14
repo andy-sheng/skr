@@ -33,6 +33,7 @@ import com.common.core.userinfo.model.UserLevelModel;
 import com.common.flowlayout.FlowLayout;
 import com.common.flowlayout.TagAdapter;
 import com.common.flowlayout.TagFlowLayout;
+import com.common.log.MyLog;
 import com.common.notification.event.FollowNotifyEvent;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -73,8 +74,8 @@ public class PersonInfoDialogView2 extends RelativeLayout {
 
     Handler mUiHandler = new Handler();
 
-    RelativeLayout mPersonCardMainContainner;
     SmartRefreshLayout mSmartRefresh;
+    View mOutView;
     CoordinatorLayout mCoordinator;
 
     AppBarLayout mAppbar;
@@ -255,15 +256,17 @@ public class PersonInfoDialogView2 extends RelativeLayout {
     }
 
     private void initBaseContainInfo() {
-        ViewGroup personCardMainContainer = this.findViewById(R.id.person_card_main_containner);
-        personCardMainContainer.setOnClickListener(new DebounceViewClickListener() {
+        mOutView = (View) this.findViewById(R.id.out_view);
+        mOutView.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+                MyLog.d(TAG, "clickValid" + " v=" + v);
                 if (mClickListener != null) {
                     mClickListener.onClickOut();
                 }
             }
         });
+
         mSmartRefresh = (SmartRefreshLayout) this.findViewById(R.id.smart_refresh);
         mCoordinator = (CoordinatorLayout) this.findViewById(R.id.coordinator);
         mAppbar = (AppBarLayout) this.findViewById(R.id.appbar);
