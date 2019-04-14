@@ -177,6 +177,13 @@ public class UploadAccountInfoFragment extends BaseFragment {
         initPublishSubject();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        mNicknameEt.requestFocus();
+        U.getKeyBoardUtils().showSoftInputKeyBoard(getActivity());
+    }
+
     private void checkNameAndSex(String nickName, int sex) {
         if (TextUtils.isEmpty(nickName)) {
             setNicknameHintText("昵称不能为空哦～", true);
