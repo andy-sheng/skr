@@ -1064,6 +1064,7 @@ public class AgoraEngineAdapter {
             ) {
 
                 if (++mLogtag % 500 == 0) {
+                    //  案例这个日志应该5秒一次
                     MyLog.d(TAG, "onRecordFrame" + " samples=" + samples + " numOfSamples=" + numOfSamples + " bytesPerSample=" + bytesPerSample + " channels=" + channels + " samplesPerSec=" + samplesPerSec);
                 }
                 if (DEBUG) {

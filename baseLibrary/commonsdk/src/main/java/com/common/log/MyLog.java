@@ -297,6 +297,7 @@ public class MyLog {
     }
 
     public static boolean isDebugLogOpen() {
-        return BuildConfig.DEBUG || sForceOpenFlag || U.getChannelUtils().isStaging();
+//        return BuildConfig.DEBUG || sForceOpenFlag || U.getChannelUtils().isStaging();
+        return BuildConfig.DEBUG || sForceOpenFlag ;
     }
 }

@@ -22,15 +22,22 @@ public class Params implements Serializable {
     public static final int CHANNEL_TYPE_COMMUNICATION = Constants.CHANNEL_PROFILE_COMMUNICATION;
     public static final int CHANNEL_TYPE_LIVE_BROADCASTING = Constants.CHANNEL_PROFILE_LIVE_BROADCASTING;
 
+    @JSONField(serialize=false)
     private int channelProfile = CHANNEL_TYPE_LIVE_BROADCASTING;
     @JSONField(serialize=false)
     private Scene scene = Scene.audiotest;
     // 是否使用唱吧的引擎
+    @JSONField(serialize=false)
     private boolean useCbEngine = false;
+    @JSONField(serialize=false)
     private boolean enableVideo = false;
+    @JSONField(serialize=false)
     private boolean enableAudio = true;
+    @JSONField(serialize=false)
     private int localVideoWidth = 360; //本地视频的分辨率，会影响对端获取的流大小，确保是2的倍数
+    @JSONField(serialize=false)
     private int localVideoHeight = 640;
+    @JSONField(serialize=false)
     private VideoEncoderConfiguration.FRAME_RATE rateFps = VideoEncoderConfiguration.FRAME_RATE.FRAME_RATE_FPS_24; // 帧率，取值范围为 [1,7,10,15,24,30]
     /**
      * STANDARD_BITRATE
@@ -45,6 +52,7 @@ public class Params implements Serializable {
      * static
      * 适配码率模式。该模式下，视频在通信和直播模式下的码率均与基准码率一致。直播下如果选择该模式，可能会导致帧率低于设置的值
      */
+    @JSONField(serialize=false)
     private int bitrate = VideoEncoderConfiguration.STANDARD_BITRATE;
 
     /**
@@ -57,39 +65,40 @@ public class Params implements Serializable {
      * <p>
      * 注意注意，会影响FistDDecode的 width height 以及 rotation
      */
+    @JSONField(serialize=false)
     private VideoEncoderConfiguration.ORIENTATION_MODE orientationMode = VideoEncoderConfiguration.ORIENTATION_MODE.ORIENTATION_MODE_FIXED_PORTRAIT;
 
+    @JSONField(serialize=false)
     private boolean enableAudioQualityIndication = true;// 开启音量提示
 
+    @JSONField(serialize=false)
     private int volumeIndicationInterval = 300; // 是谁在说话提示最小间隔
-
+    @JSONField(serialize=false)
     private int volumeIndicationSmooth = 3; // 平滑程度
 
+    @JSONField(serialize=false)
+    private boolean mixMusicPlaying = false; // 混音在播放中
+    @JSONField(serialize=false)
     private boolean cameraAutoFocusFaceModeEnabled = true;// 相机自动对焦开启
 
     private double localVoicePitch = 1.0; // 音调
-
     private int bandFrequency = 0; // 子带频率
-
     private int bandGain = 0;// 子带增益
+    private HashMap<Integer, Integer> localVoiceReverb = new HashMap<>(); // 存混响参数
 
-    private boolean mixMusicPlaying = false; // 混音在播放中
     private int audioMixingVolume = 50; // 混音音量 0-100，默认是100
     private boolean enableInEarMonitoring = false;// 耳返
     private int earMonitoringVolume = 80; // 耳返音量
-
-
-    private HashMap<Integer, Integer> localVoiceReverb = new HashMap<>(); // 存混响参数
+    private int playbackSignalVolume = 100;// 0-400 默认100，最多放大4倍
+    private int recordingSignalVolume = 200;// 0-400 默认100，最多放大4倍
+    private AudioEffect styleEnum = AudioEffect.none;// 混响style
 
     @JSONField(serialize=false)
     private boolean cameraTorchOn = false; // 闪光灯常亮
-
-    private int playbackSignalVolume = 100;// 0-400 默认100，最多放大4倍
-    private int recordingSignalVolume = 200;// 0-400 默认100，最多放大4倍
+    @JSONField(serialize=false)
     private int selfUid; // 本人在引擎中的id
-    private AudioEffect styleEnum = AudioEffect.none;// 混响style
+    @JSONField(serialize=false)
     private boolean enableSpeakerphone = false;// 开启扬声器
-
     @JSONField(serialize=false)
     private boolean allRemoteAudioStreamsMute = false;// 禁其他音频流
     @JSONField(serialize=false)
@@ -98,7 +107,6 @@ public class Params implements Serializable {
     private boolean localVideoStreamMute = false;// 本地视频流禁止
     @JSONField(serialize=false)
     private boolean allRemoteVideoStreamsMute = false;// 拒接所有其他视频流
-
     @JSONField(serialize=false)
     private String mMixMusicFilePath;// 伴奏路径
     @JSONField(serialize=false)
@@ -627,7 +635,7 @@ public class Params implements Serializable {
         if (params != null) {
             String s = JSON.toJSONString(params);
             MyLog.w(EngineManager.TAG, "save2Pref " + s);
-            U.getPreferenceUtils().setSettingString("engine_pref_params2", s);
+            U.getPreferenceUtils().setSettingString("engine_pref_params3", s);
         }
     }
 
@@ -637,7 +645,7 @@ public class Params implements Serializable {
      * @return
      */
     public static Params getFromPref() {
-        String s = U.getPreferenceUtils().getSettingString("engine_pref_params2", "");
+        String s = U.getPreferenceUtils().getSettingString("engine_pref_params3", "");
         MyLog.w(EngineManager.TAG, "getFromPref " + s);
         Params params;
         if (!TextUtils.isEmpty(s)) {
