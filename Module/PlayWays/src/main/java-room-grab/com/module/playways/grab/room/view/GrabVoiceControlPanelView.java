@@ -72,7 +72,9 @@ public class GrabVoiceControlPanelView extends VoiceControlPanelView {
                 GrabRoundInfoModel infoModel = mGrabRoomData.getRealRoundInfo();
                 if (infoModel != null && infoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
                     U.getToastUtil().showShort("你的演唱阶段无法修改演唱模式");
-                    mSbAcc.setChecked(!isChecked);
+                    if(mGrabRoomData!=null){
+                        mSbAcc.setChecked(!mGrabRoomData.isAccEnable());
+                    }
                     return;
                 }
                 if (mGrabRoomData != null) {
