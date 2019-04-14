@@ -133,11 +133,12 @@ public abstract class BottomContainerView extends RelativeLayout {
                         }
                     });
                     mQuickMsgPopWindow = new PopupWindow(quickMsgView, w, h);
-                    mQuickMsgPopWindow.setFocusable(false);
+//                    mQuickMsgPopWindow.setFocusable(false);
                     // 去除动画
 //                    mQuickMsgPopWindow.setAnimationStyle(R.style.anim_quickmsg_dialog);
                     mQuickMsgPopWindow.setBackgroundDrawable(new BitmapDrawable());
                     mQuickMsgPopWindow.setOutsideTouchable(true);
+                    mQuickMsgPopWindow.setFocusable(true);
                     mQuickMsgPopWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
                         @Override
                         public void onDismiss() {
@@ -150,6 +151,8 @@ public abstract class BottomContainerView extends RelativeLayout {
                     mQuickBtn.getLocationInWindow(l);
                     mQuickMsgPopWindow.showAtLocation(mQuickBtn, Gravity.START | Gravity.TOP, l[0], l[1] - h - U.getDisplayUtils().dip2px(5));
                     onQuickMsgDialogShow(true);
+                }else {
+                    mQuickMsgPopWindow.dismiss();
                 }
             }
         });

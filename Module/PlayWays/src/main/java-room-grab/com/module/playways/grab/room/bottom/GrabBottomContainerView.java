@@ -82,7 +82,7 @@ public class GrabBottomContainerView extends BottomContainerView {
                 }
                 if (mDynamicMsgPopWindow == null) {
                     mDynamicMsgPopWindow = new PopupWindow(mDynamicMsgView, w, h);
-                    mDynamicMsgPopWindow.setFocusable(false);
+                    mDynamicMsgPopWindow.setFocusable(true);
                     // 去除动画
 //                      mDynamicMsgPopWindow.setAnimationStyle(R.style.anim_quickmsg_dialog);
                     mDynamicMsgPopWindow.setBackgroundDrawable(new BitmapDrawable());
@@ -92,6 +92,8 @@ public class GrabBottomContainerView extends BottomContainerView {
                     int l[] = new int[2];
                     mQuickBtn.getLocationInWindow(l);
                     mDynamicMsgPopWindow.showAtLocation(mQuickBtn, Gravity.START | Gravity.TOP, l[0], l[1] - h - U.getDisplayUtils().dip2px(5));
+                }else {
+                    mDynamicMsgPopWindow.dismiss();
                 }
             }
         });
