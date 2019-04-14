@@ -87,7 +87,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
         mFemale = (ExImageView) mRootView.findViewById(R.id.female);
         mFemaleTv = (TextView) mRootView.findViewById(R.id.female_tv);
 
-        mNextIv = (ImageView)mRootView.findViewById(R.id.next_iv);
+        mNextIv = (ImageView) mRootView.findViewById(R.id.next_iv);
 
 
         Bundle bundle = getArguments();
@@ -229,7 +229,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
     }
 
     private void setCompleteTv(boolean isClick) {
-        if (isClick) {
+        if (isClick && sex != 0 && !TextUtils.isEmpty(mNickName)) {
             mNextIv.setClickable(true);
             mNextIv.setBackgroundResource(R.drawable.next_normal_icon);
         } else {
@@ -249,41 +249,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
         mFemale.setClickable(isMale ? true : false);
         mFemaleTv.setTextColor(isMale ? U.getColor(R.color.white_trans_50) : U.getColor(R.color.white));
 
-        // TODO: 2019/3/1 去掉动画
-//        // 放大动画
-//        ObjectAnimator a1 = ObjectAnimator.ofFloat(isMale ? mMale : mFemale, "scaleX", 1f, 1.2f);
-//        ObjectAnimator a2 = ObjectAnimator.ofFloat(isMale ? mMale : mFemale, "scaleY", 1f, 1.2f);
-//        // 缩小动画
-//        ObjectAnimator s1 = ObjectAnimator.ofFloat(isMale ? mFemale : mMale, "scaleX", 1.2f, 1f);
-//        ObjectAnimator s2 = ObjectAnimator.ofFloat(isMale ? mFemale : mMale, "scaleY", 1.2f, 1f);
-//        AnimatorSet set = new AnimatorSet();
-//        set.setDuration(80);
-//        set.playTogether(a1, a2, s1, s2);
-//
-//        set.addListener(new Animator.AnimatorListener() {
-//            @Override
-//            public void onAnimationStart(Animator animator) {
-//
-//            }
-//
-//            @Override
-//            public void onAnimationEnd(Animator animator) {
-//                mMale.setClickable(isMale ? false : true);
-//                mFemale.setClickable(isMale ? true : false);
-//            }
-//
-//            @Override
-//            public void onAnimationCancel(Animator animator) {
-//                onAnimationEnd(animator);
-//            }
-//
-//            @Override
-//            public void onAnimationRepeat(Animator animator) {
-//
-//            }
-//        });
-//
-//        set.start();
+        setCompleteTv(true);
     }
 
     private void initPublishSubject() {
