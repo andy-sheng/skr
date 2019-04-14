@@ -161,7 +161,6 @@ public class InputContainerView extends RelativeLayout {
                                 mUiHandler.removeMessages(100);
                                 EventHelper.pretendCommentPush(content, mRoomData.getGameId());
                             }
-                            U.getKeyBoardUtils().hideSoftInputKeyBoard(U.getActivityUtils().getCurrentActivity());
                         }
                     }
                 });
@@ -170,7 +169,7 @@ public class InputContainerView extends RelativeLayout {
                 msg.obj = content;
                 mUiHandler.removeMessages(100);
                 mUiHandler.sendMessageDelayed(msg, 500);
-
+                U.getKeyBoardUtils().hideSoftInputKeyBoard(U.getActivityUtils().getCurrentActivity());
             }
         });
     }

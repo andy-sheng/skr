@@ -123,6 +123,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     InputContainerView mInputContainerView;
 
+    ViewGroup mBottomBgVp;
     BottomContainerView mBottomContainerView;
 
 //    GrabVoiceControlPanelView mVoiceControlView;
@@ -431,6 +432,13 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     }
 
     private void initBottomView() {
+         mBottomBgVp = mRootView.findViewById(R.id.bottom_bg_vp);
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mBottomBgVp.getLayoutParams();
+        /**
+         * 按比例适配手机
+         */
+        lp.height = U.getDisplayUtils().getScreenHeight()*284/667;
+
         mBottomContainerView = (BottomContainerView) mRootView.findViewById(R.id.bottom_container_view);
         mBottomContainerView.setListener(new BottomContainerView.Listener() {
             @Override
