@@ -632,18 +632,25 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         }
     }
 
+    // TODO: 2019/4/14 在卡片内，不提供取关功能
     private void refreshFollow() {
         mUserInfoModel.setFollow(isFollow);
         mUserInfoModel.setFriend(isFriend);
         if (isFriend) {
             mFollowIv.setBackgroundResource(R.drawable.person_card_friend);
             mSrlFollowIv.setBackgroundResource(R.drawable.person_card_friend);
+            mFollowIv.setClickable(false);
+            mSrlFollowIv.setClickable(false);
         } else if (isFollow) {
             mFollowIv.setBackgroundResource(R.drawable.person_card_followed);
             mSrlFollowIv.setBackgroundResource(R.drawable.person_card_followed);
+            mFollowIv.setClickable(false);
+            mSrlFollowIv.setClickable(false);
         } else {
             mFollowIv.setBackgroundResource(R.drawable.person_card_follow);
             mSrlFollowIv.setBackgroundResource(R.drawable.person_card_follow);
+            mFollowIv.setClickable(true);
+            mSrlFollowIv.setClickable(true);
         }
     }
 
