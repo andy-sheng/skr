@@ -100,6 +100,15 @@ public class ConfirmDialogView extends RelativeLayout {
 
             mCancleTv.setText("忽略");
             mConfirmTv.setText("同意");
+        }else if(type == ConfirmDialog.TYPE_OWNER_KICK_CONFIRM){
+            SpannableStringBuilder stringBuilder = new SpanUtils()
+                    .append("是否将").setForegroundColor(Color.parseColor("#3B4E79"))
+                    .append(" " + mUserInfoModel.getNickname() + " ").setForegroundColor(Color.parseColor("#F5A623"))
+                    .append("踢出房间?").setForegroundColor(Color.parseColor("#3B4E79"))
+                    .create();
+            mContentTv.setText(stringBuilder);
+            mCancleTv.setText("取消");
+            mConfirmTv.setText("踢人");
         }
     }
 

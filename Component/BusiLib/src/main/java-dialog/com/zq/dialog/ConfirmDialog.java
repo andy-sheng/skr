@@ -17,9 +17,10 @@ import org.greenrobot.eventbus.EventBus;
 
 public class ConfirmDialog {
 
-    public static final int TYPE_KICK_CONFIRM = 1;
-    public static final int TYPE_KICK_REQUEST = 2;
-    public static final int TYPE_INVITE_CONFIRM = 3;
+    public static final int TYPE_KICK_CONFIRM = 1;// 踢人发起前确认
+    public static final int TYPE_KICK_REQUEST = 2;// 踢人投票确认
+    public static final int TYPE_INVITE_CONFIRM = 3;// 邀请确认
+    public static final int TYPE_OWNER_KICK_CONFIRM = 4;// 房主发起踢人确认
 
     DialogPlus mDialogPlus;
     UserInfoModel mUserInfoModel;
