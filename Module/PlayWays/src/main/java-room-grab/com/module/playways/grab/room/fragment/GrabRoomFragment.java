@@ -1084,6 +1084,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     }
 
     private void quitGame() {
+        dismissDialog();
         if (mQuitTipsDialog == null) {
             String msg = "提前退出会破坏其他玩家的对局体验\n确定退出么？";
             if (mRoomData.isOwner()) {

@@ -158,4 +158,12 @@ public class GrabBottomContainerView extends BottomContainerView {
             mQuickBtn.setImageResource(R.drawable.ycdd_kuaijie);
         }
     }
+
+    @Override
+    public void dismissPopWindow() {
+        super.dismissPopWindow();
+        if (mDynamicMsgPopWindow != null) {
+            mDynamicMsgPopWindow.dismiss();
+        }
+    }
 }

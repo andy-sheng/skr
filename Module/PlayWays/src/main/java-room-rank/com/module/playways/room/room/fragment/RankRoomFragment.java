@@ -769,6 +769,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     }
 
     private void quitGame() {
+        dismissDialog();
         if (mQuitTipsDialog == null) {
             TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
                     .setMessageTip("提前退出会破坏其他玩家的对局体验\n确定退出么？")
@@ -804,8 +805,19 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                     .setExpanded(false)
                     .create();
         }
-        mBottomContainerView.dismissPopWindow();
         mQuitTipsDialog.show();
+    }
+
+    private void dismissDialog() {
+        if (mBottomContainerView != null) {
+            mBottomContainerView.dismissPopWindow();
+        }
+        if (mPersonInfoDialog != null) {
+            mPersonInfoDialog.dismiss();
+        }
+        if (mQuitTipsDialog != null) {
+            mQuitTipsDialog.dismiss();
+        }
     }
 
     /**
