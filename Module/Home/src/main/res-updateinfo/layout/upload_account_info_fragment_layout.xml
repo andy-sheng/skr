@@ -36,7 +36,7 @@
             <com.common.view.ex.NoLeakEditText
                 android:id="@+id/nickname_et"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/view_54_dp"
+                android:layout_height="@dimen/view_58_dp"
                 android:layout_marginLeft="@dimen/view_40_dp"
                 android:layout_below="@id/titlebar"
                 android:layout_marginTop="@dimen/view_60_dp"
@@ -59,21 +59,22 @@
             <com.common.view.ex.ExTextView
                 android:id="@+id/nickname_hint_tv"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/view_20_dp"
                 android:layout_below="@+id/nickname_et"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/view_18_dp"
+                android:layout_marginTop="@dimen/view_5_dp"
                 android:text="昵称的提示哦"
-                android:textColor="#EF5E85"
+                android:gravity="center"
+                android:textColor="#FFB1CE"
                 android:textSize="@dimen/textsize_14_dp"
                 android:visibility="gone" />
 
             <LinearLayout
                 android:layout_width="@dimen/view_234_dp"
-                android:layout_height="@dimen/view_106_dp"
+                android:layout_height="@dimen/view_76_dp"
                 android:layout_below="@+id/nickname_et"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/view_40_dp"
+                android:layout_marginTop="@dimen/view_35_dp"
                 android:orientation="horizontal">
 
                 <RelativeLayout
@@ -98,7 +99,8 @@
                         android:layout_marginTop="@dimen/view_8_dp"
                         android:text="男"
                         android:textColor="@color/white_trans_50"
-                        android:textSize="@dimen/textsize_16_dp" />
+                        android:textSize="@dimen/textsize_16_dp"
+                        android:visibility="gone"/>
 
                 </RelativeLayout>
 
@@ -124,7 +126,8 @@
                         android:layout_marginTop="@dimen/view_8_dp"
                         android:text="女"
                         android:textColor="@color/white_trans_50"
-                        android:textSize="@dimen/textsize_16_dp" />
+                        android:textSize="@dimen/textsize_16_dp"
+                        android:visibility="gone"/>
 
                 </RelativeLayout>
 
@@ -133,11 +136,11 @@
 
             <ImageView
                 android:id="@+id/next_iv"
-                android:layout_width="@dimen/view_172_dp"
-                android:layout_height="@dimen/view_72_dp"
+                android:layout_width="@dimen/view_176_dp"
+                android:layout_height="@dimen/view_61_dp"
                 android:layout_below="@+id/nickname_et"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/view_180_dp"
+                android:layout_marginTop="@dimen/view_120_dp"
                 android:background="@drawable/next_unclick_icon" />
         </RelativeLayout>
 

@@ -28,7 +28,7 @@
     <RelativeLayout
         android:id="@+id/birthday_area"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_63_dp"
+        android:layout_height="@dimen/view_58_dp"
         android:layout_below="@id/titlebar"
         android:layout_marginLeft="@dimen/view_40_dp"
         android:layout_marginTop="@dimen/view_60_dp"
@@ -124,7 +124,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_33_dp"
         android:layout_below="@+id/birthday_area"
-        android:layout_marginTop="@dimen/view_85_dp">
+        android:layout_marginTop="@dimen/view_48_dp">
 
         <com.common.view.ex.ExTextView
             android:id="@+id/age_tv"
@@ -159,11 +159,11 @@
 
     <com.common.view.ex.ExImageView
         android:id="@+id/complete_iv"
-        android:layout_width="@dimen/view_172_dp"
-        android:layout_height="@dimen/view_72_dp"
+        android:layout_width="@dimen/view_176_dp"
+        android:layout_height="@dimen/view_61_dp"
         android:layout_below="@+id/birthday_area"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_180_dp"
+        android:layout_marginTop="@dimen/view_120_dp"
         android:background="@drawable/complete_icon"
         android:visibility="gone" />
 
