@@ -72,7 +72,7 @@ public class PhotoAdapter extends RecyclerView.Adapter {
                 ((PhotoViewHolder) holder).bindData(photoModel, position);
             }
         } else {
-            ((PhotoViewHolder) holder).bindData(mDataList.get(position), position - 1);
+            ((PhotoViewHolder) holder).bindData(mDataList.get(position), position);
         }
     }
 
