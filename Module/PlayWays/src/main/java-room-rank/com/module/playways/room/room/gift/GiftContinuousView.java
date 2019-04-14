@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
@@ -103,7 +104,7 @@ public class GiftContinuousView extends RelativeLayout {
         AvatarUtils.loadAvatarByUrl(mSendAvatarIv, AvatarUtils.newParamsBuilder(model.getSender().getAvatar())
                 .setCircle(true)
                 .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                .setBorderColorBySex(model.getSender().getIsMale())
+                .setBorderColor(Color.WHITE)
                 .build()
         );
         mSenderNameTv.setText(model.getSender().getNickname());
