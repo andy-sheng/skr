@@ -1252,7 +1252,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             mUiHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    mIGrabView.showPracticeFlag(finalSize <= 2);
+                    mIGrabView.showPracticeFlag(finalSize <= 1);
                 }
             });
         }
