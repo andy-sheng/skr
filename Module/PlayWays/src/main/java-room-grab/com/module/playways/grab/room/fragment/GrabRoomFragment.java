@@ -1,11 +1,8 @@
 package com.module.playways.grab.room.fragment;
 
 import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.app.Activity;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -32,7 +29,6 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
-import com.common.view.ex.drawable.DrawableCreator;
 import com.component.busilib.constans.GrabRoomType;
 import com.component.busilib.manager.BgMusicManager;
 import com.dialog.view.TipsDialogView;
@@ -668,7 +664,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             }
             U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
             mGameRuleDialog = DialogPlus.newDialog(getContext())
-                    .setContentHolder(new ViewHolder(R.layout.grab_game_role_view_layout))
+                    .setContentHolder(new ViewHolder(R.layout.grab_game_rule_view_layout))
                     .setContentBackgroundResource(R.color.transparent)
                     .setOverlayBackgroundResource(R.color.black_trans_50)
                     .setExpanded(false)
