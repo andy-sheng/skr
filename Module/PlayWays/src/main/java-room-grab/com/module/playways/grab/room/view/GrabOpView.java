@@ -331,7 +331,7 @@ public class GrabOpView extends RelativeLayout {
                             mListener.showChallengeTipView();
                         }
 
-                        U.getPreferenceUtils().getSettingBoolean(KEY_HAS_SHOW_CHALLENGE, true);
+                        U.getPreferenceUtils().setSettingBoolean(KEY_HAS_SHOW_CHALLENGE, true);
                         mIsHasShowChallengeTipView = true;
                     }
                 }
