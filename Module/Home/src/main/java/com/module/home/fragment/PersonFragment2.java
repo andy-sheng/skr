@@ -22,6 +22,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.callback.Callback;
 import com.common.core.avatar.AvatarUtils;
+import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.upgrade.UpgradeData;
@@ -224,6 +225,13 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
         mAvatarIv = (SimpleDraweeView) mRootView.findViewById(R.id.avatar_iv);
         mNameTv = (ExTextView) mRootView.findViewById(R.id.name_tv);
         mUseridTv = (ExTextView) mRootView.findViewById(R.id.userid_tv);
+
+        mAvatarIv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                BigImageBrowseFragment.open(false, getActivity(), MyUserInfoManager.getInstance().getAvatar());
+            }
+        });
     }
 
     private void initSettingArea() {
