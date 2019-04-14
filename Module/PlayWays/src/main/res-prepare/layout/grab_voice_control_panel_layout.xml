@@ -84,7 +84,7 @@
                 android:minHeight="@dimen/view_3_dp"
                 android:paddingLeft="@dimen/view_10_dp"
                 android:paddingRight="@dimen/view_10_dp"
-                android:progressDrawable="@drawable/grab_voice_control_panel_seekbar_bg"
+                android:progressDrawable="@drawable/grab_voice_control_panel_seekbar_bg2"
                 android:thumb="@drawable/ty_anniu" />
         </LinearLayout>
 
@@ -119,7 +119,7 @@
                 android:minHeight="@dimen/view_3_dp"
                 android:paddingLeft="@dimen/view_10_dp"
                 android:paddingRight="@dimen/view_10_dp"
-                android:progressDrawable="@drawable/grab_voice_control_panel_seekbar_bg"
+                android:progressDrawable="@drawable/grab_voice_control_panel_seekbar_bg2"
                 android:thumb="@drawable/ty_anniu" />
         </LinearLayout>
 
