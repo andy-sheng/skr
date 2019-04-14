@@ -4,11 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -46,13 +44,10 @@ import com.common.view.titlebar.CommonTitleBar;
 import com.component.busilib.constans.GameModeType;
 import com.component.busilib.manager.WeakRedDotManager;
 import com.component.busilib.view.BitmapTextView;
-import com.dialog.list.DialogListItem;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.imagebrowse.ImageBrowseView;
-import com.imagebrowse.big.BigImageBrowseActivity;
 import com.imagebrowse.big.BigImageBrowseFragment;
 import com.imagebrowse.big.DefaultImageBrowserLoader;
-import com.imagebrowse.big.Loader;
 import com.module.home.R;
 import com.module.home.musictest.fragment.MusicTestFragment;
 import com.module.home.persenter.PersonCorePresenter;
@@ -123,7 +118,7 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
 
     int DEFAUAT_CNT = 20;       // 默认拉取一页的数量
     boolean mHasMore = false;
-
+    int mTotalPhotoNum = 0;
     int mFriendNum = 0;  // 好友数
     int mFansNum = 0;    // 粉丝数
     int mFocusNum = 0;   // 关注数
@@ -573,7 +568,8 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
         mSmartRefresh.finishRefresh();
         mSmartRefresh.finishLoadMore();
 
-        mPhotoNumTv.setText("个人相册（" + totalNum + "）");
+        mTotalPhotoNum = totalNum;
+        setPhotoNum();
         mPhotoNumTv.setVisibility(View.VISIBLE);
 
         if (list != null && list.size() > 0) {
@@ -596,6 +592,10 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
         }
     }
 
+    void setPhotoNum() {
+        mPhotoNumTv.setText("个人相册（" + mTotalPhotoNum + "）");
+    }
+
     @Override
     public void insertPhoto(PhotoModel photoModel) {
         mPhotoAdapter.insertFirst(photoModel);
@@ -603,11 +603,17 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
 
     @Override
     public void deletePhoto(PhotoModel photoModel) {
+        mTotalPhotoNum--;
+        setPhotoNum();
         mPhotoAdapter.delete(photoModel);
     }
 
     @Override
     public void updatePhoto(PhotoModel photoModel) {
+        if (photoModel.getStatus() == PhotoModel.STATUS_SUCCESS) {
+            mTotalPhotoNum++;
+            setPhotoNum();
+        }
         mPhotoAdapter.update(photoModel);
     }
 
