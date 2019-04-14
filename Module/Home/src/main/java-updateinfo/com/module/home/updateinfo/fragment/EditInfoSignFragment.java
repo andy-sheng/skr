@@ -110,8 +110,19 @@ public class EditInfoSignFragment extends BaseFragment {
             U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
             MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
                     .setSign(sign)
-                    .build(), false);
-            U.getFragmentUtils().popFragment(EditInfoSignFragment.this);
+                    .build(), false, false, new MyUserInfoManager.ServerCallback() {
+                @Override
+                public void onSucess() {
+                    U.getToastUtil().showShort("签名更新成功");
+                    U.getFragmentUtils().popFragment(EditInfoSignFragment.this);
+                }
+
+                @Override
+                public void onFail() {
+
+                }
+            });
+
         }
     }
 

@@ -124,8 +124,18 @@ public class EditInfoNameFragment extends BaseFragment {
                         if (isValid) {
                             MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
                                     .setNickName(nickName)
-                                    .build(), false);
-                            U.getFragmentUtils().popFragment(EditInfoNameFragment.this);
+                                    .build(), false, false, new MyUserInfoManager.ServerCallback() {
+                                @Override
+                                public void onSucess() {
+                                    U.getToastUtil().showShort("姓名更新成功");
+                                    U.getFragmentUtils().popFragment(EditInfoNameFragment.this);
+                                }
+
+                                @Override
+                                public void onFail() {
+
+                                }
+                            });
                         } else {
                             U.getToastUtil().showSkrCustomShort(new CommonToastView.Builder(U.app())
                                     .setImage(R.drawable.touxiangshezhishibai_icon)

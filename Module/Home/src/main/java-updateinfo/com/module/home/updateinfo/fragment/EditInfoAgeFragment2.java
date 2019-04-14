@@ -356,6 +356,7 @@ public class EditInfoAgeFragment2 extends BaseFragment {
 
                             @Override
                             public void onSucess() {
+                                U.getToastUtil().showShort("年龄更新成功");
                                 U.getFragmentUtils().popFragment(EditInfoAgeFragment2.this);
                             }
 

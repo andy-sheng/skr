@@ -165,6 +165,7 @@ public class EditInfoSexFragment extends BaseFragment {
                                     .build(), false, false, new MyUserInfoManager.ServerCallback() {
                                 @Override
                                 public void onSucess() {
+                                    U.getToastUtil().showShort("性别更新成功");
                                     U.getFragmentUtils().popFragment(EditInfoSexFragment.this);
                                 }
 

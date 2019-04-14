@@ -203,7 +203,6 @@ public class MyUserInfoManager {
             @Override
             public void process(final ApiResult obj) {
                 if (obj.getErrno() == 0) {
-                    U.getToastUtil().showShort("个人信息更新成功");
                     //写入数据库
                     Observable.create(new ObservableOnSubscribe<Object>() {
                         @Override
