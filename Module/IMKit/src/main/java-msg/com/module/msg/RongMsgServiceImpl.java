@@ -50,8 +50,8 @@ public class RongMsgServiceImpl implements IMsgService {
     }
 
     @Override
-    public void joinChatRoom(String roomId, ICallback callback) {
-        RongMsgManager.getInstance().joinChatRoom(roomId, callback);
+    public void joinChatRoom(String roomId, int defMessageCount,ICallback callback) {
+        RongMsgManager.getInstance().joinChatRoom(roomId,defMessageCount, callback);
     }
 
     @Override

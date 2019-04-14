@@ -43,7 +43,7 @@ public interface IMsgService extends IProvider {
      * @param roomId
      * @param callback
      */
-    void joinChatRoom(String roomId, ICallback callback);
+    void joinChatRoom(String roomId,int defMessageCount, ICallback callback);
 
     void leaveChatRoom(String roomId);
 

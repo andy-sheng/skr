@@ -391,12 +391,21 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
         RongIM.getInstance().logout();
     }
 
-    public void joinChatRoom(String roomId, ICallback callback) {
+    /**
+     * 加入聊天室。
+     * <p>如果聊天室不存在，sdk 会创建聊天室并加入，如果已存在，则直接加入</p>
+     * <p>加入聊天室时，可以选择拉取聊天室消息数目。</p>
+     *
+     * @param defMessageCount 进入聊天室拉取消息数目，-1 时不拉取任何消息，0 时拉取 10 条消息，最多只能拉取 50 条。
+     * @param callback        状态回调。
+     * @param roomId
+     */
+    public void joinChatRoom(String roomId, int defMessageCount, ICallback callback) {
         mOneTimeJoinroomCallback = callback;
         /**
          * 不拉之前的消息
          */
-        RongIM.getInstance().joinChatRoom(roomId, 0, mOperationCallback);
+        RongIM.getInstance().joinChatRoom(roomId, defMessageCount, mOperationCallback);
     }
 
     public void refreshUserInfoCache(int userId, String nickName, String avatar) {
@@ -502,7 +511,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
         });
     }
 
-    public void startPrivateChat(Context context, String targetUserId, String title,boolean isFriend) {
+    public void startPrivateChat(Context context, String targetUserId, String title, boolean isFriend) {
         if (context != null && !TextUtils.isEmpty(targetUserId)) {
             if (RongContext.getInstance() == null) {
                 throw new ExceptionInInitializerError("RongCloud SDK not init");
@@ -513,7 +522,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                         .appendQueryParameter("title", title)
                         .build();
                 Intent intent = new Intent("android.intent.action.VIEW", uri);
-                intent.putExtra("isFriend",false);
+                intent.putExtra("isFriend", false);
                 context.startActivity(intent);
             }
         } else {

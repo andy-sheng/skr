@@ -198,7 +198,7 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
      */
     private void joinRongRoom() {
         MyLog.d(TAG, "joinRongRoom gameId " + mJoinActionEvent.gameId);
-        ModuleServiceManager.getInstance().getMsgService().joinChatRoom(String.valueOf(mJoinActionEvent.gameId), new ICallback() {
+        ModuleServiceManager.getInstance().getMsgService().joinChatRoom(String.valueOf(mJoinActionEvent.gameId),10, new ICallback() {
             @Override
             public void onSucess(Object obj) {
                 if (mMatchState == MatchState.MatchSucess) {

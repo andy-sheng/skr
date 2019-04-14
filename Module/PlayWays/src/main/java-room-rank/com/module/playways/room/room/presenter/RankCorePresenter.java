@@ -220,7 +220,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
             return;
         }
         if (mRoomData.getGameId() > 0) {
-            ModuleServiceManager.getInstance().getMsgService().joinChatRoom(String.valueOf(mRoomData.getGameId()), new ICallback() {
+            ModuleServiceManager.getInstance().getMsgService().joinChatRoom(String.valueOf(mRoomData.getGameId()),10, new ICallback() {
                 @Override
                 public void onSucess(Object obj) {
                     MyLog.d(TAG, "加入融云房间成功");
