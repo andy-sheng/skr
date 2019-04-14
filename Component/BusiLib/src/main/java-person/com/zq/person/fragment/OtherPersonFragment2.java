@@ -589,7 +589,7 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
             mFollowIv.setBackgroundResource(R.drawable.person_card_followed);
             mFollowIv.setTag(RELATION_FOLLOWED);
         } else {
-            mFollowIv.setBackgroundResource(R.drawable.person_card_friend);
+            mFollowIv.setBackgroundResource(R.drawable.person_card_follow);
             mFollowIv.setTag(RELATION_UN_FOLLOW);
         }
     }
