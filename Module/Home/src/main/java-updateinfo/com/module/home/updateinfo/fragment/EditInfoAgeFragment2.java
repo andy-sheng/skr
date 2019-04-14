@@ -173,9 +173,11 @@ public class EditInfoAgeFragment2 extends BaseFragment {
                 mMonth.requestFocus();
                 // 展示年龄
                 mYearDate = mYear.getText().toString();
-                int year = Calendar.getInstance().get(Calendar.YEAR) - Integer.valueOf(mYearDate);
-                if (year >= 0) {
-                    mAgeTv.setText(year + "岁");
+                if (!TextUtils.isEmpty(mYearDate)) {
+                    int year = Calendar.getInstance().get(Calendar.YEAR) - Integer.valueOf(mYearDate);
+                    if (year >= 0) {
+                        mAgeTv.setText(year + "岁");
+                    }
                 }
             }
         });
@@ -204,9 +206,9 @@ public class EditInfoAgeFragment2 extends BaseFragment {
                     mMothUp = mMonth.getText().toString();
 
                     if (TextUtils.isEmpty(mMothDown) && TextUtils.isEmpty(mMothUp)) {
-                        Editable year = mYear.getText();
-                        if (!TextUtils.isEmpty(year)) {
-                            int length = year.length();
+                        String yearString = mYear.getText().toString();
+                        if (!TextUtils.isEmpty(yearString)) {
+                            int length = yearString.length();
                             mYear.getText().delete(length - 1, length);
                             mYear.setSelection(length - 1);
                         }
@@ -228,9 +230,11 @@ public class EditInfoAgeFragment2 extends BaseFragment {
                 // 展示星座
                 mMonthDate = mMonth.getText().toString();
                 mDayDate = mDay.getText().toString();
-                String constellation = U.getDateTimeUtils().getConstellation(Integer.valueOf(mMonthDate), Integer.valueOf(mDayDate));
-                if (!TextUtils.isEmpty(constellation)) {
-                    mConTv.setText(constellation);
+                if (!TextUtils.isEmpty(mMonthDate) && !TextUtils.isEmpty(mDayDate)) {
+                    String constellation = U.getDateTimeUtils().getConstellation(Integer.valueOf(mMonthDate), Integer.valueOf(mDayDate));
+                    if (!TextUtils.isEmpty(constellation)) {
+                        mConTv.setText(constellation);
+                    }
                 }
             }
         });
@@ -247,9 +251,9 @@ public class EditInfoAgeFragment2 extends BaseFragment {
                     mDayUp = mDay.getText().toString();
 
                     if (TextUtils.isEmpty(mDayDown) && TextUtils.isEmpty(mDayUp)) {
-                        Editable month = mMonth.getText();
-                        if (!TextUtils.isEmpty(month)) {
-                            int length = month.length();
+                        String monthString = mMonth.getText().toString();
+                        if (!TextUtils.isEmpty(monthString)) {
+                            int length = monthString.length();
                             mMonth.getText().delete(length - 1, length);
                             mMonth.setSelection(length - 1);
                         }
