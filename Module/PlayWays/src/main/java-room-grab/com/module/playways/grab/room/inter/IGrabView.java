@@ -58,9 +58,10 @@ public interface IGrabView {
     void showKickVoteDialog(int kickUserID, int sourceUserID);
 
     /**
-     * 自己被人踢出去
+     * 是否被房主踢出去
+     * @param isOwner
      */
-    void kickBySomeOne();
+    void kickBySomeOne(boolean isOwner);
 
     /**
      * 把别人踢出去

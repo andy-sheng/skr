@@ -432,12 +432,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     }
 
     private void initBottomView() {
-         mBottomBgVp = mRootView.findViewById(R.id.bottom_bg_vp);
+        mBottomBgVp = mRootView.findViewById(R.id.bottom_bg_vp);
         RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mBottomBgVp.getLayoutParams();
         /**
          * 按比例适配手机
          */
-        lp.height = U.getDisplayUtils().getScreenHeight()*284/667;
+        lp.height = U.getDisplayUtils().getScreenHeight() * 284 / 667;
 
         mBottomContainerView = (BottomContainerView) mRootView.findViewById(R.id.bottom_container_view);
         mBottomContainerView.setListener(new BottomContainerView.Listener() {
@@ -1293,9 +1293,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         dismissDialog();
         U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
         int type;
-        if(mRoomData.isOwner()){
-            type =  ConfirmDialog.TYPE_OWNER_KICK_CONFIRM;
-        }else {
+        if (mRoomData.isOwner()) {
+            type = ConfirmDialog.TYPE_OWNER_KICK_CONFIRM;
+        } else {
             type = ConfirmDialog.TYPE_KICK_CONFIRM;
         }
         mGrabKickDialog = new ConfirmDialog(getActivity(), userInfoModel, type, mRoomData.getGrabConfigModel().getKickUserConsumCoinCnt());
@@ -1347,12 +1347,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     }
 
     @Override
-    public void kickBySomeOne() {
-        MyLog.d(TAG, "kickBySomeOne");
+    public void kickBySomeOne(boolean isOwner) {
+        MyLog.d(TAG, "kickBySomeOne" + " isOwner=" + isOwner);
         //onGrabGameOver("kickBySomeOne");
         U.getToastUtil().showSkrCustomLong(new CommonToastView.Builder(U.app())
                 .setImage(R.drawable.touxiangshezhishibai_icon)
-                .setText("超过半数玩家请你出房间，要友好文明游戏哦~")
+                .setText(isOwner ? "房主将你请出了房间" : "超过半数玩家请你出房间，要友好文明游戏哦~")
                 .build());
         mCorePresenter.exitRoom();
     }

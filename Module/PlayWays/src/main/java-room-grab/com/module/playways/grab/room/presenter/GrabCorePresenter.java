@@ -247,7 +247,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             return;
         }
         if (mRoomData.getGameId() > 0) {
-            ModuleServiceManager.getInstance().getMsgService().joinChatRoom(String.valueOf(mRoomData.getGameId()),-1, new ICallback() {
+            ModuleServiceManager.getInstance().getMsgService().joinChatRoom(String.valueOf(mRoomData.getGameId()), -1, new ICallback() {
                 @Override
                 public void onSucess(Object obj) {
                     MyLog.d(TAG, "加入融云房间成功");
@@ -446,7 +446,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
 
         GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
-        if (infoModel != null && infoModel.getMusic()!=null) {
+        if (infoModel != null && infoModel.getMusic() != null) {
             HashMap map1 = new HashMap();
             map.put("songId2", String.valueOf(infoModel.getMusic().getItemID()));
             map.put("songName", infoModel.getMusic().getItemName());
@@ -895,9 +895,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
-                    if(mRoomData.isOwner()){
+                    if (mRoomData.isOwner()) {
                         U.getToastUtil().showShort("踢人成功");
-                    }else{
+                    } else {
                         U.getToastUtil().showShort("发起踢人请求成功");
                     }
 
@@ -1463,7 +1463,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     public void onEvent(QGetSingChanceMsgEvent event) {
         ensureInRcRoom();
         if (RoomDataUtils.isCurrentExpectingRound(event.getRoundSeq(), mRoomData)) {
-            MyLog.w(TAG, "抢到唱歌权：userID " + event.getUserID() + ", roundInfo"+event.currentRound);
+            MyLog.w(TAG, "抢到唱歌权：userID " + event.getUserID() + ", roundInfo" + event.currentRound);
             GrabRoundInfoModel roundInfoModel = mRoomData.getExpectRoundInfo();
             roundInfoModel.tryUpdateRoundInfoModel(event.getCurrentRound(), true);
             roundInfoModel.setHasSing(true);
@@ -1938,7 +1938,12 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         if (qKickUserResultEvent.kickUserID == MyUserInfoManager.getInstance().getUid()) {
             // 自己被踢出去
             if (qKickUserResultEvent.isKickSuccess) {
-                mIGrabView.kickBySomeOne();
+                if (mRoomData.getOwnerId() == qKickUserResultEvent.sourceUserID) {
+                    mIGrabView.kickBySomeOne(true);
+                } else {
+                    mIGrabView.kickBySomeOne(false);
+                }
+
             }
         } else {
             // 别人被踢出去
