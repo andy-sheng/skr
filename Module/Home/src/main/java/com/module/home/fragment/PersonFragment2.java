@@ -22,7 +22,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.callback.Callback;
 import com.common.core.avatar.AvatarUtils;
-import com.common.core.myinfo.MyUserInfo;
+
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.upgrade.UpgradeData;
@@ -34,7 +34,7 @@ import com.common.core.userinfo.model.UserLevelModel;
 import com.common.core.userinfo.model.UserRankModel;
 import com.common.log.MyLog;
 import com.common.notification.event.FollowNotifyEvent;
-import com.common.utils.FragmentUtils;
+
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -52,9 +52,8 @@ import com.imagebrowse.big.BigImageBrowseFragment;
 import com.imagebrowse.big.DefaultImageBrowserLoader;
 import com.module.RouterConstants;
 import com.module.home.R;
-import com.module.home.musictest.fragment.MusicTestFragment;
+
 import com.module.home.persenter.PersonCorePresenter;
-import com.module.home.setting.fragment.SettingFragment;
 import com.module.home.view.IPersonView;
 import com.respicker.ResPicker;
 import com.respicker.activity.ResPickerActivity;
@@ -67,7 +66,6 @@ import com.zq.level.view.NormalLevelView2;
 import com.zq.person.adapter.PhotoAdapter;
 import com.zq.person.model.AddPhotoModel;
 import com.zq.person.model.PhotoModel;
-import com.zq.relation.fragment.RelationFragment;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -229,7 +227,8 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
         mAvatarIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                BigImageBrowseFragment.open(false, getActivity(), MyUserInfoManager.getInstance().getAvatar());
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_EDIT_INFO)
+                        .navigation();
             }
         });
     }
