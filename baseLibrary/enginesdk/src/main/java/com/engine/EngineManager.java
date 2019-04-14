@@ -1053,6 +1053,10 @@ public class EngineManager implements AgoraOutCallback {
                 @Override
                 public void run() {
                     MyLog.w(TAG, "startAudioMixing" + " uid=" + uid + " filePath=" + filePath + " midiPath=" + midiPath + " mixMusicBeginOffset=" + mixMusicBeginOffset + " loopback=" + loopback + " replace=" + replace + " cycle=" + cycle);
+                    if(TextUtils.isEmpty(filePath)){
+                        MyLog.d(TAG,"伴奏路径非法" );
+                        return;
+                    }
                     boolean canGo = false;
                     if (uid <= 0) {
                         canGo = true;

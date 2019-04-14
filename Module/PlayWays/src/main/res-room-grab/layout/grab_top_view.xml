@@ -78,7 +78,7 @@
         android:visibility="gone" />
 
     <ImageView
-        android:background="@drawable/grzx_shezhi"
+        android:background="@drawable/grab_acc_setting_icon"
         android:id="@+id/iv_voice_setting"
         android:layout_width="@dimen/view_27_dp"
         android:layout_height="@dimen/view_31_dp"
