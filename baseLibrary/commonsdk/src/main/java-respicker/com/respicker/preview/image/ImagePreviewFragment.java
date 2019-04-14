@@ -154,6 +154,12 @@ public class ImagePreviewFragment extends ImageBaseFragment implements ResPicker
                 }
             }
         });
+        // 初始化 check 按钮
+        ImageItem item = mImageItems.get(mCurrentPosition);
+        boolean isSelected = mImagePicker.getSelectedResList().contains(item);
+        mCbCheck.setChecked(isSelected);
+
+        mTvDes.setText(getString(R.string.ip_preview_image_count, mCurrentPosition + 1, mImageItems.size()));
 
         //滑动ViewPager的时候，根据外界的数据改变当前的选中状态和当前的图片的位置描述文本
         mViewpager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
