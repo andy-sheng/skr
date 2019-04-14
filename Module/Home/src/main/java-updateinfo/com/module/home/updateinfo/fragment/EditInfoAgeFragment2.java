@@ -2,23 +2,17 @@ package com.module.home.updateinfo.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.text.method.KeyListener;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.common.base.BaseFragment;
 import com.common.core.login.view.SeparatedEditText;
-import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoManager;
-import com.common.log.MyLog;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
@@ -30,7 +24,6 @@ import com.dialog.view.TipsDialogView;
 import com.module.home.R;
 import com.module.home.updateinfo.UploadAccountInfoActivity;
 import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
 
 import java.text.ParseException;
@@ -70,7 +63,7 @@ public class EditInfoAgeFragment2 extends BaseFragment {
 
     @Override
     public int initView() {
-        return R.layout.edit_info_age_fragment2;
+        return R.layout.edit_info_age_fragment_layout;
     }
 
     @Override
@@ -96,8 +89,6 @@ public class EditInfoAgeFragment2 extends BaseFragment {
         mTitlebar.getRightTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                // TODO: 2019/4/11 修改年龄完成
-                U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
                 // 修改个人信息
                 String bir = mYearDate + "-" + mMonthDate + "-" + mDayDate;
                 if (bir.equals(MyUserInfoManager.getInstance().getBirthday())) {
@@ -120,8 +111,6 @@ public class EditInfoAgeFragment2 extends BaseFragment {
         mCompleteIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                // TODO: 2019/4/11 完成完善过程
-                U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
                 String bir = mYearDate + "-" + mMonthDate + "-" + mDayDate;
                 if (checkBirthDay(mYearDate + mMonthDate + mDayDate)) {
                     MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
@@ -340,6 +329,7 @@ public class EditInfoAgeFragment2 extends BaseFragment {
 
 
     private void changeAge(String bir) {
+        U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
         TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
                 .setMessageTip("年龄只能修改一次哦～\n确认修改吗？")
                 .setConfirmTip("确认修改")
@@ -352,8 +342,19 @@ public class EditInfoAgeFragment2 extends BaseFragment {
                         }
                         MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
                                 .setBirthday(bir)
-                                .build(), false);
-                        U.getFragmentUtils().popFragment(EditInfoAgeFragment2.this);
+                                .build(), false, false, new MyUserInfoManager.ServerCallback() {
+
+                            @Override
+                            public void onSucess() {
+                                U.getFragmentUtils().popFragment(EditInfoAgeFragment2.this);
+                            }
+
+                            @Override
+                            public void onFail() {
+
+                            }
+                        });
+
                     }
                 })
                 .setCancelBtnClickListener(new AnimateClickListener() {
@@ -379,9 +380,7 @@ public class EditInfoAgeFragment2 extends BaseFragment {
     @Override
     public void destroy() {
         super.destroy();
-        if (U.getKeyBoardUtils().isSoftKeyboardShowing(getActivity())) {
-            U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-        }
+        U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
 
         if (mDialogPlus != null) {
             mDialogPlus.dismiss(false);

@@ -162,8 +162,17 @@ public class EditInfoSexFragment extends BaseFragment {
                             }
                             MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
                                     .setSex(sex)
-                                    .build(), false);
-                            U.getFragmentUtils().popFragment(EditInfoSexFragment.this);
+                                    .build(), false, false, new MyUserInfoManager.ServerCallback() {
+                                @Override
+                                public void onSucess() {
+                                    U.getFragmentUtils().popFragment(EditInfoSexFragment.this);
+                                }
+
+                                @Override
+                                public void onFail() {
+
+                                }
+                            });
                         }
                     })
                     .setCancelBtnClickListener(new AnimateClickListener() {
@@ -197,60 +206,6 @@ public class EditInfoSexFragment extends BaseFragment {
 
         mMale.setClickable(isMale ? false : true);
         mFemale.setClickable(isMale ? true : false);
-        // TODO: 2019/3/6  去掉动画
-//        boolean needAnimation = false; //另一个性别是否需要缩放动画
-//        if (mMaleTaoxin.getVisibility() == View.VISIBLE || mFemaleTaoxin.getVisibility() == View.VISIBLE) {
-//            // 当前已有被选中的，需要一个缩放动画
-//            needAnimation = true;
-//        }
-//
-//        // 放大动画
-//        ObjectAnimator a1 = ObjectAnimator.ofFloat(isMale ? mMale : mFemale, "scaleX", 1f, 1.2f);
-//        ObjectAnimator a2 = ObjectAnimator.ofFloat(isMale ? mMale : mFemale, "scaleY", 1f, 1.2f);
-//        ObjectAnimator a3 = ObjectAnimator.ofFloat(isMale ? mMaleTaoxin : mFemaleTaoxin, "scaleX", 0f, 1f);
-//        ObjectAnimator a4 = ObjectAnimator.ofFloat(isMale ? mMaleTaoxin : mFemaleTaoxin, "scaleY", 0f, 1f);
-//
-//        AnimatorSet set = new AnimatorSet();
-//        set.setDuration(80);
-//
-//        if (needAnimation) {
-//            // 缩小动画
-//            ObjectAnimator s1 = ObjectAnimator.ofFloat(isMale ? mFemale : mMale, "scaleX", 1.2f, 1f);
-//            ObjectAnimator s2 = ObjectAnimator.ofFloat(isMale ? mFemale : mMale, "scaleY", 1.2f, 1f);
-//            ObjectAnimator s3 = ObjectAnimator.ofFloat(isMale ? mFemaleTaoxin : mMaleTaoxin, "scaleX", 1f, 0f);
-//            ObjectAnimator s4 = ObjectAnimator.ofFloat(isMale ? mFemaleTaoxin : mMaleTaoxin, "scaleY", 1f, 0f);
-//            set.playTogether(a1, a2, a3, a4, s1, s2, s3, s4);
-//        } else {
-//            set.playTogether(a1, a2, a3, a4);
-//        }
-//
-//        set.addListener(new Animator.AnimatorListener() {
-//            @Override
-//            public void onAnimationStart(Animator animator) {
-//
-//            }
-//
-//            @Override
-//            public void onAnimationEnd(Animator animator) {
-//                mMaleTaoxin.setVisibility(isMale ? View.VISIBLE : View.GONE);
-//                mFemaleTaoxin.setVisibility(isMale ? View.GONE : View.VISIBLE);
-//
-//                mMale.setClickable(isMale ? false : true);
-//                mMaleTaoxin.setClickable(isMale ? true : false);
-//            }
-//
-//            @Override
-//            public void onAnimationCancel(Animator animator) {
-//                onAnimationEnd(animator);
-//            }
-//
-//            @Override
-//            public void onAnimationRepeat(Animator animator) {
-//
-//            }
-//        });
-//
-//        set.start();
     }
 
     @Override

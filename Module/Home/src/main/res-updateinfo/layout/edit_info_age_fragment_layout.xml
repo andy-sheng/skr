@@ -10,6 +10,7 @@
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:bottomLineColor="#0C2275"
         app:centerText="选择年龄"
         app:centerTextColor="@color/white"
         app:centerTextSize="@dimen/textsize_20_dp"
@@ -21,35 +22,143 @@
         app:rightTextSize="@dimen/textsize_16_dp"
         app:rightType="textView"
         app:showBottomLine="true"
-        app:bottomLineColor="#0C2275"
         app:statusBarColor="#0288D0"
-        app:titleBarColor="#0288D0">
-    </com.common.view.titlebar.CommonTitleBar>
+        app:titleBarColor="#0288D0"></com.common.view.titlebar.CommonTitleBar>
 
-    <FrameLayout
-        android:id="@+id/frame_layout"
+    <RelativeLayout
+        android:id="@+id/birthday_area"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/titlebar"
-        android:layout_marginLeft="@dimen/view_30_dp"
-        android:layout_marginTop="@dimen/view_30_dp"
-        android:layout_marginRight="@dimen/view_30_dp" />
+        android:layout_height="@dimen/view_63_dp"
+        android:layout_below="@id/titlebar"
+        android:layout_marginLeft="@dimen/view_40_dp"
+        android:layout_marginTop="@dimen/view_60_dp"
+        android:layout_marginRight="@dimen/view_40_dp"
+        android:background="@drawable/common_input_edit_bg">
 
-    <com.common.view.ex.ExTextView
-        android:id="@+id/complete_tv"
-        android:layout_width="@dimen/view_206_dp"
-        android:layout_height="@dimen/view_54_dp"
-        android:layout_below="@+id/titlebar"
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="horizontal">
+
+            <com.common.core.login.view.SeparatedEditText
+                android:id="@+id/year"
+                android:layout_width="@dimen/view_72_dp"
+                android:layout_height="30dp"
+                android:inputType="number"
+                app:blockSpacing="@dimen/view_6_dp"
+                app:borderColor="#A9B0CE"
+                app:borderWidth="@dimen/view_4_dp"
+                app:maxLength="4"
+                app:separateType="@integer/type_underline"
+                app:textColor="#3B4E79"
+                app:textSize="@dimen/textsize_18_dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginLeft="@dimen/view_12_dp"
+                android:layout_marginTop="@dimen/view_6_dp"
+                android:layout_marginRight="@dimen/view_12_dp"
+                android:text="年"
+                android:textColor="#A9B0CE"
+                android:textSize="@dimen/textsize_14_dp" />
+
+            <com.common.core.login.view.SeparatedEditText
+                android:id="@+id/month"
+                android:layout_width="@dimen/view_36_dp"
+                android:layout_height="30dp"
+                android:inputType="number"
+                app:blockSpacing="@dimen/view_6_dp"
+                app:borderColor="#A9B0CE"
+                app:borderWidth="@dimen/view_4_dp"
+                app:maxLength="2"
+                app:separateType="@integer/type_underline"
+                app:textColor="#3B4E79"
+                app:textSize="@dimen/textsize_18_dp" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginLeft="@dimen/view_12_dp"
+                android:layout_marginTop="@dimen/view_6_dp"
+                android:layout_marginRight="@dimen/view_12_dp"
+                android:text="月"
+                android:textColor="#A9B0CE"
+                android:textSize="@dimen/textsize_14_dp" />
+
+            <com.common.core.login.view.SeparatedEditText
+                android:id="@+id/day"
+                android:layout_width="@dimen/view_36_dp"
+                android:layout_height="30dp"
+                android:inputType="number"
+                app:blockSpacing="@dimen/view_6_dp"
+                app:borderColor="#A9B0CE"
+                app:borderWidth="@dimen/view_4_dp"
+                app:maxLength="2"
+                app:separateType="@integer/type_underline"
+                app:textColor="#3B4E79"
+                app:textSize="@dimen/textsize_18_dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginLeft="@dimen/view_12_dp"
+                android:layout_marginTop="@dimen/view_6_dp"
+                android:text="日"
+                android:textColor="#A9B0CE"
+                android:textSize="@dimen/textsize_14_dp" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_33_dp"
+        android:layout_below="@+id/birthday_area"
+        android:layout_marginTop="@dimen/view_85_dp">
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/age_tv"
+            android:layout_width="@dimen/view_0_dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="@dimen/view_22_dp"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:text="年龄"
+            android:textColor="#3B4E79"
+            android:textSize="@dimen/textsize_24_dp" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="@dimen/view_1_dp"
+            android:layout_height="@dimen/view_23_dp"
+            android:layout_marginTop="@dimen/view_5_dp"
+            android:background="#3B4E79" />
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/con_tv"
+            android:layout_width="@dimen/view_0_dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/view_22_dp"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:text="星座"
+            android:textColor="#3B4E79"
+            android:textSize="@dimen/textsize_24_dp" />
+    </LinearLayout>
+
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/complete_iv"
+        android:layout_width="@dimen/view_172_dp"
+        android:layout_height="@dimen/view_72_dp"
+        android:layout_below="@+id/birthday_area"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_343_dp"
-        android:background="@drawable/img_btn_bg_yellow"
-        android:gravity="center"
-        android:paddingRight="@dimen/view_6_dp"
-        android:paddingBottom="@dimen/view_6_dp"
-        android:text="完成"
-        android:textColor="#0C2275"
-        android:textSize="@dimen/textsize_20_dp"
-        android:textStyle="bold"
-        android:visibility="gone"/>
+        android:layout_marginTop="@dimen/view_180_dp"
+        android:background="@drawable/complete_icon"
+        android:visibility="gone" />
 
 </RelativeLayout>
