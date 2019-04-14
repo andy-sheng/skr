@@ -436,6 +436,10 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         return wantSingType;
     }
 
+    public boolean isChallengeRound(){
+        return wantSingType == EWST_COMMON_OVER_TIME || wantSingType == EWST_ACCOMPANY_OVER_TIME;
+    }
+
     public void setWantSingType(int wantSingType) {
         this.wantSingType = wantSingType;
     }

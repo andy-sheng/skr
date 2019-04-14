@@ -66,7 +66,7 @@ public class SingBeginTipsCardView extends RelativeLayout {
         mSingBeginSvga = (SVGAImageView) findViewById(R.id.sing_begin_svga);
     }
 
-    public void bindData(UserInfoModel info, SongModel songModel, SVGAListener listener) {
+    public void bindData(UserInfoModel info, SongModel songModel, SVGAListener listener, boolean isChallenge) {
         if (info == null || songModel == null) {
             MyLog.e(TAG, "bindData" + " info=" + info + " songModel=" + songModel + " listener=" + listener);
             return;
@@ -74,7 +74,7 @@ public class SingBeginTipsCardView extends RelativeLayout {
         this.mSVGAListener = listener;
         setVisibility(VISIBLE);
         SVGAParser parser = new SVGAParser(U.app());
-        String assetsName = "grab_sing_chance.svga";
+        String assetsName = isChallenge ? "grab_challenge_sing_chance.svga" : "grab_sing_chance.svga";
         mSingBeginSvga.setVisibility(VISIBLE);
         try {
             parser.parse(assetsName, new SVGAParser.ParseCompletion() {

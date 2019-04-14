@@ -933,7 +933,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                     public void onFinished() {
                         runnable.run();
                     }
-                });
+                }, grabRoundInfoModel.isChallengeRound());
             }
         } else {
             MyLog.w(TAG, "singBeginTipsPlay" + " grabRoundInfoModel = null ");
