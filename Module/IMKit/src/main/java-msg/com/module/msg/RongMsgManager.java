@@ -396,7 +396,7 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
         /**
          * 不拉之前的消息
          */
-        RongIM.getInstance().joinChatRoom(roomId, 10, mOperationCallback);
+        RongIM.getInstance().joinChatRoom(roomId, 0, mOperationCallback);
     }
 
     public void refreshUserInfoCache(int userId, String nickName, String avatar) {
