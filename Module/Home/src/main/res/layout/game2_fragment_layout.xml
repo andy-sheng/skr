@@ -116,6 +116,15 @@
 
             </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
+            <com.common.image.fresco.BaseImageView
+                android:visibility="gone"
+                android:id="@+id/iv_red_pkg"
+                android:layout_marginRight="@dimen/view_4_dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="@dimen/view_4_dp"
+                android:layout_width="@dimen/view_48_dp"
+                android:layout_height="@dimen/view_53_dp" />
         </RelativeLayout>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </RelativeLayout>

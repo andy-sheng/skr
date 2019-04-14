@@ -18,4 +18,9 @@ public interface IGameView {
     void setGameConfig(GameKConfigModel gameKConfigModel);
 
     void setGrabCoinNum(int coinNum);
+
+    //显示红包运营为
+    void showRedOperationView(GameKConfigModel.HomepagesitefirstBean homepagesitefirstBean);
+
+    void hideRedOperationView();
 }
