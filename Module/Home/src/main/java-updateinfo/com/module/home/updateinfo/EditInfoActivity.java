@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -132,7 +133,14 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
                         .build());
         mNicknameTv.setText(MyUserInfoManager.getInstance().getNickName());
         mSignTv.setText(MyUserInfoManager.getInstance().getSignature());
-        mAgeTv.setText(String.format(U.app().getString(com.component.busilib.R.string.age_tag), MyUserInfoManager.getInstance().getAge()));
+        String age = String.format(U.app().getString(com.component.busilib.R.string.age_tag), MyUserInfoManager.getInstance().getAge());
+        String constellation = MyUserInfoManager.getInstance().getConstellation();
+        if (!TextUtils.isEmpty(constellation)) {
+            mAgeTv.setText(age + " " + constellation);
+        } else {
+            mAgeTv.setText(age + "");
+        }
+
         String sex = "未知";
         if (MyUserInfoManager.getInstance().getSex() == 1) {
             sex = "男";
