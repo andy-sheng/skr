@@ -64,11 +64,9 @@ public class MusicQuestionFragment extends BaseFragment implements IQuestionView
                     @Override
                     public void accept(Object o) {
                         //U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
-                        U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
-                                .setPopFragment(MusicQuestionFragment.this)
-                                .setPopAbove(false)
-                                .setHasAnimation(true)
-                                .build());
+                        if (getActivity() != null) {
+                            getActivity().finish();
+                        }
                     }
                 });
 
@@ -176,5 +174,13 @@ public class MusicQuestionFragment extends BaseFragment implements IQuestionView
         if (getActivity() != null) {
             getActivity().finish();
         }
+    }
+
+    @Override
+    protected boolean onBackPressed() {
+        if (getActivity() != null) {
+            getActivity().finish();
+        }
+        return true;
     }
 }

@@ -95,7 +95,9 @@ public class MusicTestFragment extends BaseFragment {
 
     @Override
     protected boolean onBackPressed() {
-        U.getFragmentUtils().popFragment(this);
+        if (getActivity() != null) {
+            getActivity().finish();
+        }
         return true;
     }
 
