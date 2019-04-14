@@ -398,9 +398,9 @@ public class GrabPlayerRv2 extends RelativeLayout {
                     @Override
                     public void onAnimationStart(Animator animation) {
                         super.onAnimationStart(animation);
-                        if (tti == 0) {
-                            U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.grab_lightup);
-                        }
+//                        if (tti == 0) {
+//                            U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.grab_lightup);
+//                        }
                     }
 
                     @Override
