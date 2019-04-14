@@ -284,8 +284,13 @@ public class EditInfoAgeFragment2 extends BaseFragment {
 //            }
 //        } else {
         mYear.requestFocus();
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
         U.getKeyBoardUtils().showSoftInputKeyBoard(getActivity());
-//        }
     }
 
     @Override

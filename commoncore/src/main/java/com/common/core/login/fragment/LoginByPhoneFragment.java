@@ -74,7 +74,6 @@ public class LoginByPhoneFragment extends BaseFragment {
         } else {
             mCodeInputTv.requestFocus();
         }
-        U.getKeyBoardUtils().showSoftInputKeyBoard(getActivity());
 
         mGetCodeTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -145,6 +144,7 @@ public class LoginByPhoneFragment extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
+        U.getKeyBoardUtils().showSoftInputKeyBoard(getActivity());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
