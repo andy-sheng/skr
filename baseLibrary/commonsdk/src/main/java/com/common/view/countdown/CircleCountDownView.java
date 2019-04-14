@@ -124,13 +124,15 @@ public class CircleCountDownView extends ProgressBar {
     public void go(int start, int leave) {
         cancelAnim();
         setMax(360);
-        mRecordAnimator = ValueAnimator.ofInt(0, 360);
+        int startD = (360 * start)/(100);
+
+        mRecordAnimator = ValueAnimator.ofInt(startD, 360);
         mRecordAnimator.setDuration(leave);
         mRecordAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 int value = (Integer) animation.getAnimatedValue();
-                setProgress(value + start);
+                setProgress(value);
             }
         });
         mRecordAnimator.start();
