@@ -189,6 +189,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     ImageView mIvInviteTip;
     ImageView mIvManageSongTipView;
+    ImageView mIvChanllengeTipView;
 
     SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
 
@@ -288,7 +289,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                 lp.addRule(RelativeLayout.ALIGN_TOP, R.id.bottom_bg_vp);
                 lp.topMargin = -U.getDisplayUtils().dip2px(55);
                 int index = mRankingContainer.indexOfChild(mInputContainerView);
-                mRankingContainer.addView(mOwnerBeginGameIv,index, lp);
+                mRankingContainer.addView(mOwnerBeginGameIv, index, lp);
                 mOwnerBeginGameIv.setOnClickListener(new DebounceViewClickListener() {
                     @Override
                     public void clickValid(View v) {
@@ -321,7 +322,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         layoutParams.setMargins(0, 0, U.getDisplayUtils().dip2px(13), U.getDisplayUtils().dip2px(78));
         int index = mRankingContainer.indexOfChild(mInputContainerView);
-        mRankingContainer.addView(mIvManageSongTipView,index, layoutParams);
+        mRankingContainer.addView(mIvManageSongTipView, index, layoutParams);
     }
 
     ValueAnimator mTipViewAnimator;
@@ -348,6 +349,57 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         });
 
         mTipViewAnimator.start();
+    }
+
+    ValueAnimator mChallengeTipViewAnimator;
+
+    private void startChallengeTipViewAnimator(View view) {
+        mChallengeTipViewAnimator = ValueAnimator.ofInt(0, 20, 0);
+        mChallengeTipViewAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        mChallengeTipViewAnimator.setDuration(2500);
+        mChallengeTipViewAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                boolean hasSetableView = false;
+
+                if (view.getParent() != null) {
+                    hasSetableView = true;
+                    view.setTranslationY((int) animation.getAnimatedValue());
+                }
+
+                if (!hasSetableView) {
+                    mChallengeTipViewAnimator.cancel();
+                }
+            }
+        });
+
+        mChallengeTipViewAnimator.start();
+    }
+
+    private void tryShowChallengeTipView() {
+        if (mIvChanllengeTipView != null && mIvChanllengeTipView.getParent() != null) {
+            return;
+        }
+
+        mIvChanllengeTipView = new ImageView(getContext());
+        mIvChanllengeTipView.setBackground(U.getDrawable(R.drawable.fz_tiaozhan_tishi));
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(142), U.getDisplayUtils().dip2px(74));
+        mIvChanllengeTipView.setLayoutParams(layoutParams);
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        layoutParams.addRule(RelativeLayout.BELOW, R.id.grab_op_btn);
+        layoutParams.setMargins(0, U.getDisplayUtils().dip2px(2), U.getDisplayUtils().dip2px(10), 0);
+        int index = mRankingContainer.indexOfChild(mInputContainerView);
+        mRankingContainer.addView(mIvChanllengeTipView, index, layoutParams);
+
+        startChallengeTipViewAnimator(mIvChanllengeTipView);
+    }
+
+    private void removeChallengeTipView() {
+        if (mIvChanllengeTipView != null && mIvChanllengeTipView.getParent() != null) {
+            ((ViewGroup) mRootView).removeView(mIvChanllengeTipView);
+            mIvChanllengeTipView = null;
+            mChallengeTipViewAnimator.cancel();
+        }
     }
 
     @Override
@@ -693,6 +745,16 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             @Override
             public void clickBurst(int seq) {
                 mCorePresenter.lightsBurst();
+            }
+
+            @Override
+            public void showChallengeTipView() {
+                tryShowChallengeTipView();
+            }
+
+            @Override
+            public void hideChallengeTipView() {
+                removeChallengeTipView();
             }
         });
 
@@ -1058,6 +1120,10 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
         if (mTipViewAnimator != null) {
             mTipViewAnimator.cancel();
+        }
+
+        if (mChallengeTipViewAnimator != null) {
+            mChallengeTipViewAnimator.cancel();
         }
 
         U.getSoundUtils().release(TAG);

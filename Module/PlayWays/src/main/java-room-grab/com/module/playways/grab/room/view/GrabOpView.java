@@ -40,6 +40,7 @@ import org.greenrobot.eventbus.ThreadMode;
  */
 public class GrabOpView extends RelativeLayout {
     public final static String TAG = "GrabOpView";
+    public final static String KEY_HAS_SHOW_CHALLENGE = "hasShowChallengeView";
     public long mShowBurstTime = 15000;
     public long mShowLightOffTime = 5000;
 
@@ -68,6 +69,8 @@ public class GrabOpView extends RelativeLayout {
     ExImageView mGrab2Iv;
     RoundRectangleView mRrl2Progress;
     ExImageView mCoinFlagIv;
+
+    boolean mIsHasShowChallengeTipView = false;
 
     int mStatus;
 
@@ -100,6 +103,7 @@ public class GrabOpView extends RelativeLayout {
                     mIvBurst.setVisibility(GONE);
                     mGrabContainer.setVisibility(GONE);
                     mGrab2Container.setVisibility(GONE);
+                    mListener.hideChallengeTipView();
                     break;
                 case MSG_SHOW_BRUST_BTN:
                     MyLog.d(TAG, "handleMessage" + " msg=" + MSG_SHOW_BRUST_BTN);
@@ -163,6 +167,7 @@ public class GrabOpView extends RelativeLayout {
                     if (mStatus == STATUS_GRAP) {
                         if (mListener != null) {
                             mListener.clickGrabBtn(mSeq, true);
+                            mListener.hideChallengeTipView();
                         }
                     }
                 }
@@ -320,6 +325,15 @@ public class GrabOpView extends RelativeLayout {
                     mGrab2Iv.setImageDrawable(null);
                     mGrab2Iv.setBackground(U.getDrawable(R.drawable.ycdd_tiaozhan_bg));
                     mCoinFlagIv.setVisibility(GONE);
+
+                    if(!mIsHasShowChallengeTipView && !U.getPreferenceUtils().getSettingBoolean(KEY_HAS_SHOW_CHALLENGE, false)){
+                        if(mListener != null){
+                            mListener.showChallengeTipView();
+                        }
+
+                        U.getPreferenceUtils().getSettingBoolean(KEY_HAS_SHOW_CHALLENGE, true);
+                        mIsHasShowChallengeTipView = true;
+                    }
                 }
                 break;
             case STATUS_GRAP:
@@ -515,6 +529,7 @@ public class GrabOpView extends RelativeLayout {
         mUiHandler.removeCallbacksAndMessages(null);
         clearAnimation();
         mIvBurst.clearAnimation();
+        mListener.hideChallengeTipView();
     }
 
     private void cancelCountDownTask() {
@@ -533,5 +548,9 @@ public class GrabOpView extends RelativeLayout {
         void grabCountDownOver();
 
         void countDownOver();
+
+        void showChallengeTipView();
+
+        void hideChallengeTipView();
     }
 }
