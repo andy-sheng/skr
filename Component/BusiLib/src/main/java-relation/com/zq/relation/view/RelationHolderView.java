@@ -12,6 +12,7 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;
@@ -39,18 +40,18 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
         mUseridTv = (ExTextView) itemView.findViewById(R.id.userid_tv);
         mFollowTv = (ExTextView) itemView.findViewById(R.id.follow_tv);
 
-        mFollowTv.setOnClickListener(new View.OnClickListener() {
+        mFollowTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
-            public void onClick(View view) {
+            public void clickValid(View v) {
                 if (recyclerOnItemClickListener != null) {
                     recyclerOnItemClickListener.onItemClicked(mFollowTv, position, userInfoModel);
                 }
             }
         });
 
-        mContent.setOnClickListener(new View.OnClickListener() {
+        mContent.setOnClickListener(new DebounceViewClickListener() {
             @Override
-            public void onClick(View view) {
+            public void clickValid(View v) {
                 if (recyclerOnItemClickListener != null) {
                     recyclerOnItemClickListener.onItemClicked(mContent, position, userInfoModel);
                 }
