@@ -38,6 +38,7 @@
         android:layout_marginTop="@dimen/view_207_dp" />
 
     <com.common.view.ex.ExTextView
+        android:singleLine="true"
         android:textStyle="bold"
         android:textSize="@dimen/textsize_14_dp"
         android:textColor="#FFC15B"
@@ -46,6 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/sing_avatar_view"
         android:layout_centerHorizontal="true"
+        android:maxWidth="@dimen/view_200_dp"
         android:layout_marginTop="@dimen/view_32_dp"
         android:paddingLeft="@dimen/view_10_dp"
         android:paddingTop="@dimen/view_2_dp"
