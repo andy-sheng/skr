@@ -27,6 +27,7 @@ public class MyConversationClickListener implements RongIM.ConversationClickList
     @Override
     public boolean onUserPortraitClick(Context context, Conversation.ConversationType conversationType, UserInfo userInfo, String s) {
         if (Integer.valueOf(userInfo.getUserId()) != MyUserInfoManager.getInstance().getUid()) {
+            U.getKeyBoardUtils().hideSoftInputKeyBoard(U.getActivityUtils().getTopActivity());
             Bundle bundle = new Bundle();
             bundle.putSerializable(OtherPersonFragment2.BUNDLE_USER_ID, Integer.valueOf(userInfo.getUserId()));
             U.getFragmentUtils().addFragment(FragmentUtils
