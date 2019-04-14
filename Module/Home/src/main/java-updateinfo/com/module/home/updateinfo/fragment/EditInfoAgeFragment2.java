@@ -280,6 +280,7 @@ public class EditInfoAgeFragment2 extends BaseFragment {
 //            }
 //        } else {
         mYear.requestFocus();
+        U.getKeyBoardUtils().showSoftInputKeyBoard(getActivity());
 //        }
     }
 
