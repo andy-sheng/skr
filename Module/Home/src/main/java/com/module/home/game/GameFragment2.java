@@ -181,15 +181,20 @@ public class GameFragment2 extends BaseFragment implements IGameView {
             public void enterRoom(RecommendModel friendRoomModel) {
                 MyLog.d(TAG, "enterRoom" + " friendRoomModel=" + friendRoomModel);
                 if (friendRoomModel != null) {
-                    mSkrAudioPermission.ensurePermission(new Runnable() {
-                        @Override
-                        public void run() {
-                            IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
-                            if (iRankingModeService != null) {
-                                iRankingModeService.tryGoGrabRoom(friendRoomModel.getRoomInfo().getRoomID());
-                            }
-                        }
-                    }, true);
+//                    mSkrAudioPermission.ensurePermission(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
+//                            if (iRankingModeService != null) {
+//                                iRankingModeService.tryGoGrabRoom(friendRoomModel.getRoomInfo().getRoomID());
+//                            }
+//                        }
+//                    }, true);
+
+                    IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
+                    if (iRankingModeService != null) {
+                        iRankingModeService.tryGoGrabRoom(friendRoomModel.getRoomInfo().getRoomID());
+                    }
                 } else {
 
                 }

@@ -11,7 +11,7 @@
         android:layout_marginBottom="@dimen/view_14_dp"
         app:bl_corners_radius="@dimen/view_12_dp"
         app:bl_shape="rectangle"
-        app:bl_solid_color="#80ACC2"
+        app:bl_solid_color="#ffd0efff"
         app:bl_stroke_color="#3B4E79"
         app:bl_stroke_width="@dimen/view_2_dp">
 
