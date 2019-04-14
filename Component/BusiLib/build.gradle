@@ -47,6 +47,12 @@ android {
 
 dependencies {
     api project(":commoncore")
+    if (isBuildModule.toBoolean()) {
+//        tools
+        annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
+    } else {
+        compileOnly rootProject.ext.dependencies["arouter-compiler"]
+    }
 //    implementation 'com.github.zhangliangming:Register:v1.1'
 }
 
