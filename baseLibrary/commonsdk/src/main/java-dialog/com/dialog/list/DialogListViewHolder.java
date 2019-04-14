@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.common.base.R;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 
 
@@ -19,9 +20,9 @@ public class DialogListViewHolder extends RecyclerView.ViewHolder {
         } else {
             titleTv = (ExTextView) itemView.findViewById(R.id.desc_tv);
         }
-        itemView.setOnClickListener(new View.OnClickListener() {
+        itemView.setOnClickListener(new DebounceViewClickListener() {
             @Override
-            public void onClick(View v) {
+            public void clickValid(View v) {
                 if (data != null) {
                     data.op.run();
                 }
