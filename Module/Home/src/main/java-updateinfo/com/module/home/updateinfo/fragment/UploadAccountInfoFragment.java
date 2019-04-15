@@ -236,7 +236,7 @@ public class UploadAccountInfoFragment extends BaseFragment {
     }
 
     private void setCompleteTv(boolean isClick) {
-        if (isClick && sex != 0 && !TextUtils.isEmpty(mNicknameEt.getText().toString())) {
+        if (isClick && sex != 0 && !TextUtils.isEmpty(mNicknameEt.getText().toString().trim())) {
             mNextIv.setClickable(true);
             mNextIv.setBackgroundResource(R.drawable.next_normal_icon);
         } else {

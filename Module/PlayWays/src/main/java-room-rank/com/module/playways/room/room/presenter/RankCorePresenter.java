@@ -1,6 +1,7 @@
 package com.module.playways.room.room.presenter;
 
 
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.text.SpannableStringBuilder;
@@ -258,8 +259,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         commentTextModel.setUserId(playerInfoModel.getUserInfo().getUserId());
         commentTextModel.setAvatar(playerInfoModel.getUserInfo().getAvatar());
         commentTextModel.setUserName(playerInfoModel.getUserInfo().getNickname());
-        commentTextModel.setAvatarColor(playerInfoModel.getUserInfo().getSex() == ESex.SX_MALE.getValue() ?
-                U.getColor(R.color.color_man_stroke_color) : U.getColor(R.color.color_woman_stroke_color));
+        commentTextModel.setAvatarColor(Color.WHITE);
         SpannableStringBuilder ssb = new SpanUtils()
                 .append(playerInfoModel.getUserInfo().getNickname() + " ").setForegroundColor(TEXT_YELLOW)
                 .append(String.format("第%s个唱", index + 1)).setForegroundColor(TEXT_WHITE)
