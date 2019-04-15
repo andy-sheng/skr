@@ -290,10 +290,11 @@ public class AgoraEngineAdapter {
                     mRtcEngine.setParameters("{\"che.audio.enable.aec\":true }");
                     break;
                 case grab:
-                    b = 4;
+                    b = 3;
+                    mRtcEngine.setParameters("{\"che.audio.enable.aec\":true }");
                     break;
                 case voice:
-                    b = 1;
+                    b = 3;
                     break;
                 case audiotest:
                     b = 3;
@@ -1109,7 +1110,6 @@ public class AgoraEngineAdapter {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-
                     }
                 } else {
                     mICbScoreProcessor.process(samples, samples.length, channels, samplesPerSec, accTs, mConfig.getMidiPath());
