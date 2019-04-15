@@ -135,7 +135,7 @@ public abstract class BottomContainerView extends RelativeLayout {
                     mQuickMsgPopWindow = new PopupWindow(quickMsgView, w, h);
 //                    mQuickMsgPopWindow.setFocusable(false);
                     // 去除动画
-//                    mQuickMsgPopWindow.setAnimationStyle(R.style.anim_quickmsg_dialog);
+                    mQuickMsgPopWindow.setAnimationStyle(R.style.MyPopupWindow_anim_style);
                     mQuickMsgPopWindow.setBackgroundDrawable(new BitmapDrawable());
                     mQuickMsgPopWindow.setOutsideTouchable(true);
                     mQuickMsgPopWindow.setFocusable(true);
