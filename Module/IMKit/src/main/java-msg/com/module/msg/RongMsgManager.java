@@ -12,7 +12,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.cache.BuddyCache;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.HandlerTaskTimer;
@@ -286,11 +288,25 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
         HandlerTaskTimer.newBuilder().start(new HandlerTaskTimer.ObserverW() {
             @Override
             public void onNext(Integer integer) {
-                BuddyCache.BuddyCacheEntry buddyCacheEntry = BuddyCache.getInstance().getBuddyNormal(Integer.valueOf(useId), true);
-                if (buddyCacheEntry != null) {
-                    UserInfo userInfo = new UserInfo(String.valueOf(buddyCacheEntry.getUuid()), buddyCacheEntry.getName(), Uri.parse(buddyCacheEntry.getAvatar()));
-                    RongIM.getInstance().refreshUserInfoCache(userInfo);
-                }
+                BuddyCache.getInstance().getBuddyNormal(Integer.valueOf(useId), true, new UserInfoManager.ResultCallback<UserInfoModel>() {
+                    @Override
+                    public boolean onGetLocalDB(UserInfoModel userInfoModel) {
+                        if (userInfoModel != null) {
+                            UserInfo userInfo = new UserInfo(String.valueOf(userInfoModel.getUserId()), userInfoModel.getNickname(), Uri.parse(userInfoModel.getAvatar()));
+                            RongIM.getInstance().refreshUserInfoCache(userInfo);
+                        }
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onGetServer(UserInfoModel userInfoModel) {
+                        if (userInfoModel != null) {
+                            UserInfo userInfo = new UserInfo(String.valueOf(userInfoModel.getUserId()), userInfoModel.getNickname(), Uri.parse(userInfoModel.getAvatar()));
+                            RongIM.getInstance().refreshUserInfoCache(userInfo);
+                        }
+                        return false;
+                    }
+                });
             }
         });
         return null;

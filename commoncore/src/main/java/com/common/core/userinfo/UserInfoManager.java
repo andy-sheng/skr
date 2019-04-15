@@ -1,5 +1,6 @@
 package com.common.core.userinfo;
 
+import android.net.Uri;
 import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
