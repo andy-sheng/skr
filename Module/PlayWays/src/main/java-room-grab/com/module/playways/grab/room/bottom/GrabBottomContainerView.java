@@ -83,6 +83,7 @@ public class GrabBottomContainerView extends BottomContainerView {
                 if (mDynamicMsgPopWindow == null) {
                     mDynamicMsgPopWindow = new PopupWindow(mDynamicMsgView, w, h);
                     mDynamicMsgPopWindow.setFocusable(true);
+                    mDynamicMsgPopWindow.setAnimationStyle(R.style.MyPopupWindow_anim_style);
                     // 去除动画
 //                      mDynamicMsgPopWindow.setAnimationStyle(R.style.anim_quickmsg_dialog);
                     mDynamicMsgPopWindow.setBackgroundDrawable(new BitmapDrawable());
