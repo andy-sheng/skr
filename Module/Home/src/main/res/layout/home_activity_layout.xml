@@ -7,7 +7,7 @@
     <LinearLayout
         android:id="@+id/bottom_container"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_50_dp"
+        android:layout_height="@dimen/view_54_dp"
         android:layout_alignParentBottom="true"
         android:background="#F9F4F1"
         android:orientation="horizontal">
