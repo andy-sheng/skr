@@ -136,7 +136,7 @@ public class EnhancedImageView extends RelativeLayout {
 
         if (path.startsWith("http://") || path.startsWith("https://")) {
             HttpImage httpImage = (HttpImage) ImageFactory.newPathImage(path)
-                    .setScaleType(ScalingUtils.ScaleType.CENTER_INSIDE)
+                    .setScaleType(ScalingUtils.ScaleType.FIT_CENTER)
                     .setFailureDrawable(U.app().getResources().getDrawable(R.drawable.load_img_error))
                     .setLoadingDrawable(U.app().getResources().getDrawable(R.drawable.loading_place_holder_img))
 //                    .setProgressBarDrawable(new ImageBrowseProgressBar())
