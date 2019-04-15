@@ -63,6 +63,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.zq.level.view.NormalLevelView2;
+import com.zq.live.proto.Common.ESex;
 import com.zq.person.adapter.PhotoAdapter;
 import com.zq.person.model.AddPhotoModel;
 import com.zq.person.model.PhotoModel;
@@ -89,6 +90,7 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
     ImageView mSettingImgIv;
     ExImageView mSettingRedDot;
     ExTextView mNameTv;
+    ImageView mSexIv;
     ExTextView mUseridTv;
     LinearLayout mRelationNumArea;
     RelativeLayout mFriendsArea;
@@ -223,6 +225,7 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
         mAvatarBg = (ImageView) mRootView.findViewById(R.id.avatar_bg);
         mAvatarIv = (SimpleDraweeView) mRootView.findViewById(R.id.avatar_iv);
         mNameTv = (ExTextView) mRootView.findViewById(R.id.name_tv);
+        mSexIv = (ImageView) mRootView.findViewById(R.id.sex_iv);
         mUseridTv = (ExTextView) mRootView.findViewById(R.id.userid_tv);
 
         mAvatarIv.setOnClickListener(new DebounceViewClickListener() {
@@ -440,7 +443,7 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
             public void reupload(PhotoModel model) {
                 ArrayList<PhotoModel> photoModelArrayList = new ArrayList<>(1);
                 photoModelArrayList.add(model);
-                mPresenter.upload(photoModelArrayList,true);
+                mPresenter.upload(photoModelArrayList, true);
             }
         });
         mPhotoView.setAdapter(mPhotoAdapter);
@@ -500,6 +503,7 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
                     .setCircle(true)
                     .build());
             mNameTv.setText(MyUserInfoManager.getInstance().getNickName());
+            mSexIv.setBackgroundResource(MyUserInfoManager.getInstance().getSex() == ESex.SX_MALE.getValue() ? R.drawable.sex_man_icon : R.drawable.sex_woman_icon);
             mUseridTv.setText("撕歌号：" + MyUserInfoManager.getInstance().getUid());
             mSrlNameTv.setText(MyUserInfoManager.getInstance().getNickName());
         }

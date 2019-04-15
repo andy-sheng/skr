@@ -69,6 +69,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.zq.level.view.NormalLevelView2;
+import com.zq.live.proto.Common.ESex;
 import com.zq.person.adapter.PhotoAdapter;
 import com.zq.person.model.PhotoModel;
 import com.zq.person.presenter.OtherPersonPresenter;
@@ -133,6 +134,7 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
     ImageView mAvatarBg;
     SimpleDraweeView mAvatarIv;
     ExTextView mNameTv;
+    ImageView mSexIv;
     ExTextView mUseridTv;
     TagFlowLayout mFlowlayout;
     ExRelativeLayout mGameLayout;
@@ -248,6 +250,7 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
         mAvatarBg = (ImageView) mRootView.findViewById(R.id.avatar_bg);
         mAvatarIv = (SimpleDraweeView) mRootView.findViewById(R.id.avatar_iv);
         mNameTv = (ExTextView) mRootView.findViewById(R.id.name_tv);
+        mSexIv = (ImageView)mRootView.findViewById(R.id.sex_iv);
         mUseridTv = (ExTextView) mRootView.findViewById(R.id.userid_tv);
         mFlowlayout = (TagFlowLayout) mRootView.findViewById(R.id.flowlayout);
         mGameLayout = (ExRelativeLayout) mRootView.findViewById(R.id.game_layout);
@@ -475,6 +478,7 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
                         .build());
 
         mNameTv.setText(model.getNickname());
+        mSexIv.setBackgroundResource(model.getSex() == ESex.SX_MALE.getValue() ? R.drawable.sex_man_icon : R.drawable.sex_woman_icon);
         mSrlNameTv.setText(model.getNickname());
         mUseridTv.setText("撕歌号：" + model.getUserId());
 

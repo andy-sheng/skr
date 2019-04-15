@@ -156,8 +156,8 @@
                             android:layout_alignTop="@id/avatar_iv"
                             android:layout_marginLeft="@dimen/view_12_dp"
                             android:layout_marginTop="@dimen/view_3_dp"
-                            android:layout_toLeftOf="@id/setting_area"
                             android:layout_toRightOf="@id/avatar_iv"
+                            android:paddingRight="@dimen/view_70_dp"
                             android:ellipsize="end"
                             android:gravity="left|center_vertical"
                             android:maxLines="1"
@@ -165,6 +165,15 @@
                             android:textColor="@color/white"
                             android:textSize="@dimen/textsize_18_dp"
                             android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/sex_iv"
+                            android:layout_width="@dimen/view_16_dp"
+                            android:layout_height="@dimen/view_16_dp"
+                            android:layout_alignBottom="@id/name_tv"
+                            android:layout_marginLeft="-66dp"
+                            android:layout_marginBottom="@dimen/view_4_dp"
+                            android:layout_toRightOf="@id/name_tv" />
 
                         <com.common.view.ex.ExTextView
                             android:id="@+id/userid_tv"

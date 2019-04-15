@@ -41,8 +41,8 @@
         android:id="@+id/smart_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:srlFooterTranslationViewId="@id/photo_view"
-        android:layout_above="@id/function_area">
+        android:layout_above="@id/function_area"
+        app:srlFooterTranslationViewId="@id/photo_view">
 
         <com.scwang.smartrefresh.layout.header.ClassicsHeader
             android:id="@+id/classics_header"
@@ -132,10 +132,20 @@
                             android:ellipsize="end"
                             android:gravity="left|center_vertical"
                             android:maxLines="1"
+                            android:paddingRight="@dimen/view_20_dp"
                             android:singleLine="true"
                             android:textColor="@color/white"
                             android:textSize="@dimen/textsize_18_dp"
                             android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/sex_iv"
+                            android:layout_width="@dimen/view_16_dp"
+                            android:layout_height="@dimen/view_16_dp"
+                            android:layout_alignBottom="@id/name_tv"
+                            android:layout_marginLeft="-16dp"
+                            android:layout_marginBottom="@dimen/view_4_dp"
+                            android:layout_toRightOf="@id/name_tv" />
 
                         <com.common.view.ex.ExTextView
                             android:id="@+id/userid_tv"
