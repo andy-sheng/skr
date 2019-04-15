@@ -4,10 +4,10 @@
     <translate
         android:duration="300"
         android:fromXDelta="0%"
-        android:fromYDelta="100%"
+        android:fromYDelta="0%"
         android:toXDelta="0%"
-        android:toYDelta="0%"
-        android:interpolator="@android:anim/bounce_interpolator" />
+        android:toYDelta="100%"
+        />
 
     <alpha
         android:duration="300"
