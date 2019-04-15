@@ -40,7 +40,7 @@ import org.greenrobot.eventbus.ThreadMode;
  */
 public class GrabOpView extends RelativeLayout {
     public final static String TAG = "GrabOpView";
-    public final static String KEY_HAS_SHOW_CHALLENGE = "hasShowChallengeView";
+    public final static String KEY_SHOW_CHALLENGE_TIME = "showChallengeTime";
     public long mShowBurstTime = 15000;
     public long mShowLightOffTime = 5000;
 
@@ -70,7 +70,7 @@ public class GrabOpView extends RelativeLayout {
     RoundRectangleView mRrl2Progress;
     ExImageView mCoinFlagIv;
 
-    boolean mIsHasShowChallengeTipView = false;
+    int mShowChallengeTime = 0;
 
     int mStatus;
 
@@ -204,6 +204,8 @@ public class GrabOpView extends RelativeLayout {
                 }
             }
         });
+
+        mShowChallengeTime = U.getPreferenceUtils().getSettingInt(KEY_SHOW_CHALLENGE_TIME, 0);
     }
 
     public void setGrabRoomData(GrabRoomData grabRoomData) {
@@ -326,13 +328,13 @@ public class GrabOpView extends RelativeLayout {
                     mGrab2Iv.setBackground(U.getDrawable(R.drawable.ycdd_tiaozhan_bg));
                     mCoinFlagIv.setVisibility(GONE);
 
-                    if(!mIsHasShowChallengeTipView && !U.getPreferenceUtils().getSettingBoolean(KEY_HAS_SHOW_CHALLENGE, false)){
+
+                    if(mShowChallengeTime < 3){
                         if(mListener != null){
                             mListener.showChallengeTipView();
                         }
 
-                        U.getPreferenceUtils().setSettingBoolean(KEY_HAS_SHOW_CHALLENGE, true);
-                        mIsHasShowChallengeTipView = true;
+                        U.getPreferenceUtils().setSettingInt(KEY_SHOW_CHALLENGE_TIME, ++mShowChallengeTime);
                     }
                 }
                 break;

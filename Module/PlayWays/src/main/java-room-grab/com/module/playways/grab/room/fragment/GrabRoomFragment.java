@@ -96,6 +96,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     public final static String TAG = "GrabRoomFragment";
 
+    public final static String KEY_OWNER_SHOW_TIMES = "ownerShowTimes";
+
 //    public static final int MSG_ENSURE_READYGO_OVER = 1;
 
     public static final int MSG_ENSURE_SONGCARD_OVER = 2;
@@ -188,6 +190,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     ImageView mIvManageSongTipView;
     ImageView mIvChanllengeTipView;
 
+    int mShowOwnerTipTimes = 0;
+
     SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
 
     Handler mUiHanlder = new Handler() {
@@ -255,6 +259,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         initChangeRoomTransitionView();
         initCountDownView();
         initScoreView();
+
+        mShowOwnerTipTimes = U.getPreferenceUtils().getSettingInt(KEY_OWNER_SHOW_TIMES, 0);
+
         mCorePresenter = new GrabCorePresenter(this, mRoomData);
         addPresent(mCorePresenter);
         mGrabRedPkgPresenter = new GrabRedPkgPresenter(this);
@@ -294,9 +301,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                     }
                 });
             }
-            tryShowInviteTipView();
-            tryShowManageSongTipView();
-            tipViewAnimate(mIvInviteTip, mIvManageSongTipView);
+
+            if (mShowOwnerTipTimes < 3) {
+                tryShowInviteTipView();
+                tryShowManageSongTipView();
+                tipViewAnimate(mIvInviteTip, mIvManageSongTipView);
+            }
         }
     }
 
@@ -308,6 +318,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         layoutParams.setMargins(0, U.getDisplayUtils().dip2px(127), U.getDisplayUtils().dip2px(13), 0);
         ((ViewGroup) mRootView).addView(mIvInviteTip);
+
+        U.getPreferenceUtils().setSettingInt(KEY_OWNER_SHOW_TIMES, ++mShowOwnerTipTimes);
     }
 
     private void tryShowManageSongTipView() {
@@ -333,7 +345,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             public void onAnimationUpdate(ValueAnimator animation) {
                 boolean hasSetableView = false;
                 for (View view : viewList) {
-                    if (view.getParent() != null) {
+                    if (view != null && view.getParent() != null) {
                         hasSetableView = true;
                         view.setTranslationY((int) animation.getAnimatedValue());
                     }
