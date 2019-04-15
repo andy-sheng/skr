@@ -320,7 +320,7 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         mTagAdapter = new TagAdapter<String>(mTags) {
             @Override
             public View getView(FlowLayout parent, int position, String o) {
-                ExTextView tv = (ExTextView) LayoutInflater.from(getContext()).inflate(R.layout.person_tag_textview,
+                ExTextView tv = (ExTextView) LayoutInflater.from(getContext()).inflate(R.layout.person_card_tag_textview,
                         mFlowlayout, false);
                 tv.setText(o);
                 return tv;

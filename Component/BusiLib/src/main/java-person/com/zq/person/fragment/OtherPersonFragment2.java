@@ -478,8 +478,8 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
         mSrlNameTv.setText(model.getNickname());
         mUseridTv.setText("撕歌号：" + model.getUserId());
 
-        if (model.getLocation() != null && !TextUtils.isEmpty(model.getLocation().getCity()) && !TextUtils.isEmpty(model.getLocation().getDistrict())) {
-            mHashMap.put(LOCATION_TAG, model.getLocation().getCity() + "/" + model.getLocation().getDistrict());
+        if (model.getLocation() != null && !TextUtils.isEmpty(model.getLocation().getCity())) {
+            mHashMap.put(LOCATION_TAG, model.getLocation().getCity());
         } else {
             mHashMap.put(LOCATION_TAG, "未知星球");
         }
