@@ -25,6 +25,7 @@ public class PhotoAdapter extends RecyclerView.Adapter {
 
     List<PhotoModel> mDataList = new ArrayList<>();
     RecyclerOnItemClickListener mListener;
+    PhotoManageListener mPhotoManageListener;
 
     boolean mHasUpdate;
     int type;
@@ -42,6 +43,10 @@ public class PhotoAdapter extends RecyclerView.Adapter {
         }
     }
 
+    public void setPhotoManageListener(PhotoManageListener photoManageListener) {
+        mPhotoManageListener = photoManageListener;
+    }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -53,6 +58,7 @@ public class PhotoAdapter extends RecyclerView.Adapter {
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.photo_item_view_layout, parent, false);
             }
             PhotoViewHolder viewHolder = new PhotoViewHolder(view, mListener);
+            viewHolder.setPhotoManageListener(mPhotoManageListener);
             return viewHolder;
         } else if (viewType == PHOTO_ADD_TYPE) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.photo_add_view_layout, parent, false);
@@ -199,5 +205,11 @@ public class PhotoAdapter extends RecyclerView.Adapter {
             }
         }
         return 0;
+    }
+
+    public interface PhotoManageListener {
+        void delete(PhotoModel model);
+
+        void reupload(PhotoModel model);
     }
 }

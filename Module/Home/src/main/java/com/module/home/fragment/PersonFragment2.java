@@ -70,6 +70,7 @@ import com.zq.person.model.PhotoModel;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import model.RelationNumModel;
@@ -428,6 +429,21 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
                 }
             }
         }, PhotoAdapter.TYPE_PERSON_CENTER);
+
+        mPhotoAdapter.setPhotoManageListener(new PhotoAdapter.PhotoManageListener() {
+            @Override
+            public void delete(PhotoModel model) {
+                mPresenter.deletePhoto(model);
+            }
+
+            @Override
+            public void reupload(PhotoModel model) {
+                mPresenter.deletePhoto(model);
+                ArrayList<PhotoModel> photoModelArrayList = new ArrayList<>(1);
+                photoModelArrayList.add(model);
+                mPresenter.upload(photoModelArrayList);
+            }
+        });
         mPhotoView.setAdapter(mPhotoAdapter);
         mPresenter.loadUnSuccessPhotoFromDB();
     }

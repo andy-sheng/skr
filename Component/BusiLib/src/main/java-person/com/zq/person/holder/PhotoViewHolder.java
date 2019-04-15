@@ -12,10 +12,13 @@ import com.common.log.MyLog;
 import com.common.utils.ImageUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
+import com.common.view.ex.ExFrameLayout;
+import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.zq.person.adapter.PhotoAdapter;
 import com.zq.person.model.PhotoModel;
 
 public class PhotoViewHolder extends RecyclerView.ViewHolder {
@@ -24,10 +27,14 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
 
     SimpleDraweeView mPhotoIv;
     ExTextView mUploadTipsTv;
+    ExImageView mIvBlackBg;
     PhotoModel mPhotoModel;
+    ExTextView mTvErrorTips;
+    ExFrameLayout mErrorContainer;
     int position;
 
     RecyclerOnItemClickListener mListener;
+    PhotoAdapter.PhotoManageListener mPhotoManageListener;
 
     /**
      * 这里传入 position 的话 insert delete 会导致postion不准
@@ -38,6 +45,10 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
         this.mListener = listener;
         mPhotoIv = (SimpleDraweeView) itemView.findViewById(R.id.photo_iv);
         mUploadTipsTv = itemView.findViewById(R.id.upload_tips_tv);
+        mIvBlackBg = (ExImageView) itemView.findViewById(R.id.iv_black_bg);
+        mTvErrorTips = (ExTextView) itemView.findViewById(R.id.tv_error_tips);
+        mErrorContainer = (ExFrameLayout) itemView.findViewById(R.id.error_container);
+
         itemView.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
@@ -46,10 +57,27 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
                 }
             }
         });
+
+        mIvBlackBg.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if(mPhotoManageListener != null){
+                    if (mPhotoModel.getStatus() == PhotoModel.STATUS_FAILED) {
+                        mPhotoManageListener.reupload(mPhotoModel);
+                    } else if (mPhotoModel.getStatus() == PhotoModel.STATUS_FAILED_SEXY) {
+                        mPhotoManageListener.delete(mPhotoModel);
+                    }
+                }
+            }
+        });
+    }
+
+    public void setPhotoManageListener(PhotoAdapter.PhotoManageListener photoManageListener) {
+        mPhotoManageListener = photoManageListener;
     }
 
     public void bindData(PhotoModel photoModel, int position) {
-        MyLog.d(TAG,"bindData" + " photoModel=" + photoModel + " position=" + position);
+        MyLog.d(TAG, "bindData" + " photoModel=" + photoModel + " position=" + position);
 
         this.mPhotoModel = photoModel;
         this.position = position;
@@ -66,6 +94,8 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
                         .setBorderColor(Color.parseColor("#3B4E79")).build());
         mUploadTipsTv.setVisibility(View.VISIBLE);
         mUploadTipsTv.setTextColor(Color.WHITE);
+        mErrorContainer.setVisibility(View.GONE);
+
         if (mPhotoModel.getStatus() == PhotoModel.STATUS_DELETE) {
             mUploadTipsTv.setText("删除");
         } else if (mPhotoModel.getStatus() == PhotoModel.STATUS_UPLOADING) {
@@ -73,11 +103,17 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
         } else if (mPhotoModel.getStatus() == PhotoModel.STATUS_WAIT_UPLOAD) {
             mUploadTipsTv.setText("等待上传");
         } else if (mPhotoModel.getStatus() == PhotoModel.STATUS_FAILED) {
-            mUploadTipsTv.setText("上传失败");
+            mUploadTipsTv.setVisibility(View.GONE);
+            mErrorContainer.setVisibility(View.VISIBLE);
+            mIvBlackBg.setImageDrawable(U.getDrawable(R.drawable.photo_chonglai));
+            mTvErrorTips.setText("上传失败");
         } else if (mPhotoModel.getStatus() == PhotoModel.STATUS_SUCCESS) {
             mUploadTipsTv.setVisibility(View.GONE);
-        }else if (mPhotoModel.getStatus() == PhotoModel.STATUS_FAILED_SEXY) {
-            mUploadTipsTv.setText("违规图片");
+        } else if (mPhotoModel.getStatus() == PhotoModel.STATUS_FAILED_SEXY) {
+            mUploadTipsTv.setVisibility(View.GONE);
+            mErrorContainer.setVisibility(View.VISIBLE);
+            mIvBlackBg.setImageDrawable(U.getDrawable(R.drawable.photo_shanchu));
+            mTvErrorTips.setText("图片敏感");
         }
     }
 }
