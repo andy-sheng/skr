@@ -18,6 +18,7 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.constans.GrabRoomType;
+import com.component.busilib.view.BitmapTextView;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabMyCoinChangeEvent;
 import com.module.rank.R;
@@ -29,7 +30,7 @@ import org.greenrobot.eventbus.ThreadMode;
 public class GrabTopView extends RelativeLayout {
 
     ExTextView mTvChangeRoom;
-    ExTextView mTvCoin;
+    BitmapTextView mTvCoin;
     ExImageView mConinChangeIv;
     ExTextView mTvCoinChange;
     ImageView mIvVoiceSetting;
@@ -117,7 +118,7 @@ public class GrabTopView extends RelativeLayout {
     public void init() {
         inflate(getContext(), R.layout.grab_top_view, this);
         mTvChangeRoom = (ExTextView) findViewById(R.id.tv_change_room);
-        mTvCoin = (ExTextView) findViewById(R.id.tv_coin);
+        mTvCoin = (BitmapTextView) findViewById(R.id.tv_coin);
         mConinChangeIv = (ExImageView) findViewById(R.id.conin_change_iv);
         mTvCoinChange = (ExTextView) findViewById(R.id.tv_coin_change);
         mIvVoiceSetting = (ImageView) findViewById(R.id.iv_voice_setting);

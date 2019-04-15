@@ -25,7 +25,7 @@ public class BitmapTextView extends View {
     public final static String TAG = "BitmapTextView";
 
     List<Bitmap> mBitmapList = new ArrayList<>();
-    int diff = U.getDisplayUtils().dip2px(4);  //两张图片的偏移量重合部分
+    int diff = U.getDisplayUtils().dip2px(2);  //两张图片的偏移量重合部分
     int mWidth = 0;// view的宽度
     int mHeight = 0;// view的高度
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:BitmapTextView="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -22,21 +23,26 @@
         android:textSize="@dimen/textsize_14_dp"
         android:textStyle="bold" />
 
-    <com.common.view.ex.ExTextView
-        android:id="@+id/tv_coin"
+    <com.common.view.ex.ExRelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/view_31_dp"
+        android:layout_height="@dimen/view_27_dp"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/view_d_14_dp"
         android:layout_toRightOf="@+id/iv_money_coin"
-        android:gravity="center_vertical"
-        android:paddingLeft="@dimen/view_18_dp"
-        android:paddingRight="@dimen/view_12_dp"
-        android:textColor="#FFC15B"
-        android:textSize="@dimen/textsize_16_dp"
         app:bl_corners_bottomRightRadius="@dimen/view_15_dp"
         app:bl_corners_topRightRadius="@dimen/view_15_dp"
-        app:bl_solid_color="@color/black_trans_20" />
+        app:bl_solid_color="@color/black_trans_20">
+
+        <com.component.busilib.view.BitmapTextView
+            android:id="@+id/tv_coin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/view_18_dp"
+            android:layout_marginRight="@dimen/view_9_dp"
+            BitmapTextView:scale="0.5" />
+
+    </com.common.view.ex.ExRelativeLayout>
 
     <com.common.view.ex.ExImageView
         android:id="@+id/conin_change_iv"
@@ -78,11 +84,11 @@
         android:visibility="gone" />
 
     <ImageView
-        android:background="@drawable/grab_acc_setting_icon"
         android:id="@+id/iv_voice_setting"
         android:layout_width="@dimen/view_27_dp"
         android:layout_height="@dimen/view_31_dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/view_66_dp" />
+        android:layout_marginRight="@dimen/view_66_dp"
+        android:background="@drawable/grab_acc_setting_icon" />
 </merge>

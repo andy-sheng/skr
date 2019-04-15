@@ -27,6 +27,7 @@ import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
 import com.component.busilib.friends.RecommendModel;
 import com.component.busilib.friends.SpecialModel;
+import com.component.busilib.view.BitmapTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.RouterConstants;
 import com.module.home.R;
@@ -58,7 +59,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
     ExImageView mCreateRoom;
     SimpleDraweeView mAvatarIv;
     ExTextView mNameTv;
-    ExTextView mCoinNum;
+    BitmapTextView mCoinNum;
     SmartRefreshLayout mRecyclerLayout;
     RecyclerView mRecyclerView;
 
@@ -86,7 +87,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mCreateRoom = (ExImageView) mRootView.findViewById(R.id.create_room);
         mAvatarIv = (SimpleDraweeView) mRootView.findViewById(R.id.avatar_iv);
         mNameTv = (ExTextView) mRootView.findViewById(R.id.name_tv);
-        mCoinNum = (ExTextView) mRootView.findViewById(R.id.coin_num);
+        mCoinNum = (BitmapTextView) mRootView.findViewById(R.id.coin_num);
         mRecyclerLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.recycler_layout);
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
         mIvRedPkg = (BaseImageView)mRootView.findViewById(R.id.iv_red_pkg);
