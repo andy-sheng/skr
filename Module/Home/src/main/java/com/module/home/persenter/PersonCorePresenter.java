@@ -205,16 +205,21 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
             list.add(photoModel);
         }
         // 数据库中的zhukey怎么定，数据库中只存未上传成功的
-        upload(list);
+        upload(list, false);
     }
 
-    public void upload(List<PhotoModel> photoModels) {
+    public void upload(List<PhotoModel> photoModels, boolean reupload) {
         MyLog.d(TAG, "uploadPhotoList" + " photoModels=" + photoModels);
-        if(photoModels != null && photoModels.size() > 0){
+        if (photoModels != null && photoModels.size() > 0) {
             // 数据库中的zhukey怎么定，数据库中只存未上传成功的
             PhotoDataManager.insertOrUpdate(photoModels);
             for (PhotoModel photoModel : photoModels) {
-                mView.insertPhoto(photoModel);
+                photoModel.setStatus(PhotoModel.STATUS_WAIT_UPLOAD);
+                if (reupload) {
+                    mView.updatePhoto(photoModel);
+                } else {
+                    mView.insertPhoto(photoModel);
+                }
                 mPlayControlTemplate.add(photoModel, true);
             }
         }

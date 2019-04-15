@@ -438,10 +438,9 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
 
             @Override
             public void reupload(PhotoModel model) {
-                mPresenter.deletePhoto(model);
                 ArrayList<PhotoModel> photoModelArrayList = new ArrayList<>(1);
                 photoModelArrayList.add(model);
-                mPresenter.upload(photoModelArrayList);
+                mPresenter.upload(photoModelArrayList,true);
             }
         });
         mPhotoView.setAdapter(mPhotoAdapter);
