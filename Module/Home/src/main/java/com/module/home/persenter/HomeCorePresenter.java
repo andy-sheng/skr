@@ -202,6 +202,8 @@ public class HomeCorePresenter {
                             // 顶层的不是这个activity
                             ARouter.getInstance().build(RouterConstants.ACTIVITY_UPLOAD)
                                     .greenChannel().navigation();
+                        }else{
+                            MyLog.d(TAG,"顶部已经是UploadAccountInfoActivity");
                         }
                     } else {
                         //MyUserInfoManager.getInstance().trySyncLocation();

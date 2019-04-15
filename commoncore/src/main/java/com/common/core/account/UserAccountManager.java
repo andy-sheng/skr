@@ -7,6 +7,7 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.common.callback.Callback;
 import com.common.core.account.event.AccountEvent;
 import com.common.core.account.event.VerifyCodeErrorEvent;
 import com.common.core.channel.HostChannelManager;
@@ -222,7 +223,7 @@ public class UserAccountManager {
     }
 
     // 手机登录
-    public void loginByPhoneNum(final String phoneNum, String verifyCode) {
+    public void loginByPhoneNum(final String phoneNum, String verifyCode, final Callback callback) {
         UserAccountServerApi userAccountServerApi = ApiManager.getInstance().createService(UserAccountServerApi.class);
         // 1 为手机登录
         String deviceId = U.getDeviceUtils().getImei();
@@ -237,7 +238,7 @@ public class UserAccountManager {
                     @Override
                     public void process(ApiResult obj) {
                         if (obj.getErrno() == 0) {
-                            UserAccount userAccount = parseRsp(obj.getData(), phoneNum);
+                            UserAccount userAccount = parseRsp(obj.getData(), phoneNum,callback);
                             UmengStatistics.onProfileSignIn("phone", userAccount.getUid());
                         } else {
                             EventBus.getDefault().post(new VerifyCodeErrorEvent(obj.getErrno(), obj.getErrmsg()));
@@ -270,7 +271,7 @@ public class UserAccountManager {
                     @Override
                     public void process(ApiResult obj) {
                         if (obj.getErrno() == 0) {
-                            UserAccount userAccount = parseRsp(obj.getData(), "");
+                            UserAccount userAccount = parseRsp(obj.getData(), "",null);
                             if (mode == 3) {
                                 UmengStatistics.onProfileSignIn("wx", userAccount.getUid());
                             } else if (mode == 2) {
@@ -283,7 +284,7 @@ public class UserAccountManager {
                 });
     }
 
-    UserAccount parseRsp(JSONObject jsonObject, String phoneNum) {
+    UserAccount parseRsp(JSONObject jsonObject, String phoneNum,Callback callback) {
         String secretToken = jsonObject.getJSONObject("token").getString("T");
         String serviceToken = jsonObject.getJSONObject("token").getString("S");
         String rongToken = jsonObject.getJSONObject("token").getString("RC");
@@ -311,6 +312,7 @@ public class UserAccountManager {
         myUserInfo.setSignature(sign);
         myUserInfo.setLocation(location);
         MyUserInfoLocalApi.insertOrUpdate(myUserInfo);
+        MyUserInfoManager.getInstance().setMyUserInfo(myUserInfo,true);
 
         UserAccount userAccount = new UserAccount();
         userAccount.setPhoneNum(phoneNum);
@@ -321,6 +323,9 @@ public class UserAccountManager {
         userAccount.setNeedEditUserInfo(isFirstLogin);
         userAccount.setChannelId(HostChannelManager.getInstance().getChannelId());
         onLoginResult(userAccount);
+        if (callback != null) {
+            callback.onCallback(1,null);
+        }
         return userAccount;
     }
 

@@ -62,14 +62,19 @@ public class MyUserInfoManager {
             @Override
             public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
                 if (UserAccountManager.getInstance().hasAccount()) {
-                    MyUserInfo userInfo = MyUserInfoLocalApi.getUserInfoByUUid(UserAccountManager.getInstance().getUuidAsLong());
-                    MyLog.d(TAG, "load myUserInfo uid =" + UserAccountManager.getInstance().getUuidAsLong());
-                    MyLog.d(TAG, "load myUserInfo=" + userInfo);
-                    if (userInfo != null) {
-                        setMyUserInfo(userInfo, false);
+                    if(mUserInfoFromServer && mUser!=null){
+                        MyLog.d(TAG,"load。 mUser 有效 来自server，取消本次");
+                    }else{
+                        MyUserInfo userInfo = MyUserInfoLocalApi.getUserInfoByUUid(UserAccountManager.getInstance().getUuidAsLong());
+                        MyLog.d(TAG, "load myUserInfo uid =" + UserAccountManager.getInstance().getUuidAsLong());
+                        MyLog.d(TAG, "load myUserInfo=" + userInfo);
+                        if (userInfo != null) {
+                            setMyUserInfo(userInfo, false);
+                        }
+                        // 从服务器同步个人信息
+                        syncMyInfoFromServer();
                     }
-                    // 从服务器同步个人信息
-                    syncMyInfoFromServer();
+
                 }
 //                mHasLoadFromDB = true;
 //                EventBus.getDefault().post(new MyUserInfoEvent.UserInfoLoadOkEvent());

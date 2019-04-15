@@ -48,7 +48,7 @@
             android:name=".updateinfo.UploadAccountInfoActivity"
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
             android:exported="true"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
 

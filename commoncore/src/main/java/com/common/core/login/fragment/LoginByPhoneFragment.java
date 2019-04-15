@@ -7,11 +7,14 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
+import com.common.callback.Callback;
 import com.common.core.R;
 import com.common.core.account.UserAccountManager;
 import com.common.core.account.UserAccountServerApi;
 import com.common.core.account.event.VerifyCodeErrorEvent;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrBasePermission;
 import com.common.core.permission.SkrPhoneStatePermission;
 import com.common.log.MyLog;
@@ -26,6 +29,7 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.NoLeakEditText;
+import com.module.RouterConstants;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -33,7 +37,7 @@ import org.greenrobot.eventbus.ThreadMode;
 /**
  * 手机方式登陆界面
  */
-public class LoginByPhoneFragment extends BaseFragment {
+public class LoginByPhoneFragment extends BaseFragment implements Callback {
 
     public static final String PREF_KEY_PHONE_NUM = "pref_key_phone_num";
 
@@ -101,11 +105,11 @@ public class LoginByPhoneFragment extends BaseFragment {
                                 mSkrPermission.ensurePermission(new Runnable() {
                                     @Override
                                     public void run() {
-                                        UserAccountManager.getInstance().loginByPhoneNum(mPhoneNumber, mCode);
+                                        UserAccountManager.getInstance().loginByPhoneNum(mPhoneNumber, mCode, LoginByPhoneFragment.this);
                                     }
                                 }, true);
                             } else {
-                                UserAccountManager.getInstance().loginByPhoneNum(mPhoneNumber, mCode);
+                                UserAccountManager.getInstance().loginByPhoneNum(mPhoneNumber, mCode, LoginByPhoneFragment.this);
                             }
                         }
                     } else {
@@ -277,5 +281,29 @@ public class LoginByPhoneFragment extends BaseFragment {
                 .setNotifyShowFragment(LoginFragment.class)
                 .build());
         return true;
+    }
+
+    @Override
+    public void onCallback(int r, Object obj) {
+        MyLog.d(TAG, "onCallback" + " r=" + r + " obj=" + obj);
+        if (r == 1) {
+            // 表示登录成功了，这里判断下跳转
+            if (UserAccountManager.getInstance().hasAccount()) {
+                if (MyUserInfoManager.getInstance().hasMyUserInfo() && MyUserInfoManager.getInstance().isUserInfoFromServer()) {
+                    // 如果有账号了
+                    if (MyUserInfoManager.getInstance().isNeedCompleteInfo()) {
+                        boolean isUpAc = U.getActivityUtils().getTopActivity().getClass().getSimpleName().equals("UploadAccountInfoActivity");
+                        if (!isUpAc) {
+                            // 顶层的不是这个activity
+                            ARouter.getInstance().build(RouterConstants.ACTIVITY_UPLOAD)
+                                    .greenChannel().navigation();
+                        }else
+                        {
+                            MyLog.d(TAG,"顶部已经是UploadAccountInfoActivity");
+                        }
+                    }
+                }
+            }
+        }
     }
 }
