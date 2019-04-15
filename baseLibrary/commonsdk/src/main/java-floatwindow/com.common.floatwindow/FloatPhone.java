@@ -27,20 +27,20 @@ class FloatPhone extends FloatView {
     private boolean isRemove = true;
 
     private int MSG_CHECK = 1;
-    Handler mUiHandler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if(msg.what == MSG_CHECK){
-                if(isShow()){
-                    MyLog.d(TAG,"handleMessage 浮窗可见");
-                }else{
-                    MyLog.d(TAG,"handleMessage 浮窗不可见");
-                    attachView(true);
-                }
-            }
-        }
-    };
+//    Handler mUiHandler = new Handler(){
+//        @Override
+//        public void handleMessage(Message msg) {
+//            super.handleMessage(msg);
+//            if(msg.what == MSG_CHECK){
+//                if(isShow()){
+//                    MyLog.d(TAG,"handleMessage 浮窗可见");
+//                }else{
+//                    MyLog.d(TAG,"handleMessage 浮窗不可见");
+//                    attachView(true);
+//                }
+//            }
+//        }
+//    };
 
     FloatPhone(FloatWindow.B b) {
         mB = b;
@@ -84,7 +84,7 @@ class FloatPhone extends FloatView {
             } else {
                 mLayoutParams.type = WindowManager.LayoutParams.TYPE_PHONE;
             }
-            addView();
+            addView(false);
         } else {
             if (reqPermissionIfNeed) {
                 //TODO 这里不好加悬浮窗权限是否获得成功的回调
@@ -127,7 +127,7 @@ class FloatPhone extends FloatView {
                  */
 
                 attachView(false);
-                mUiHandler.sendEmptyMessageDelayed(MSG_CHECK,200);
+                //mUiHandler.sendEmptyMessageDelayed(MSG_CHECK,200);
             }
         }
     }
@@ -176,10 +176,10 @@ class FloatPhone extends FloatView {
         mLayoutParams.x = mB.xOffset;
         mLayoutParams.packageName = U.app().getPackageName();
 
-        addView();
+        addView(attachActivity);
     }
 
-    public void addView() {
+    public void addView(boolean attachActivity) {
         try {
             if (isRemove) {
                 MyLog.d(TAG, "addView type=" + mLayoutParams.type);
@@ -188,6 +188,9 @@ class FloatPhone extends FloatView {
             }
         } catch (Exception e) {
             MyLog.e(TAG, e);
+            if(!attachActivity){
+                attachView(true);
+            }
         }
     }
 
@@ -201,7 +204,7 @@ class FloatPhone extends FloatView {
     @Override
     public void dismiss() {
         MyLog.d(TAG, "dismiss isRemove=" + isRemove);
-        mUiHandler.removeCallbacksAndMessages(null);
+        //mUiHandler.removeCallbacksAndMessages(null);
         try {
             if (!isRemove) {
                 isRemove = true;
