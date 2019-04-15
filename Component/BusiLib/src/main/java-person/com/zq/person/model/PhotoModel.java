@@ -8,8 +8,10 @@ public class PhotoModel implements Serializable {
     public static final int STATUS_SUCCESS = 0;// 上传成功
     public static final int STATUS_WAIT_UPLOAD = 1;// 等待上传
     public static final int STATUS_UPLOADING = 2;// 上传中
-    public static final int STATUS_FAILED = 3;// 上传失败
     public static final int STATUS_DELETE = 4;// 删除了
+    public static final int STATUS_FAILED = 3;// 上传失败
+    public static final int STATUS_FAILED_SEXY = 5;// 上传失败 违规
+
     /**
      * picID : 0
      * picPath : string
@@ -19,7 +21,6 @@ public class PhotoModel implements Serializable {
 
     private String localPath;// 本地路径
     private int status = STATUS_SUCCESS;
-
     public static PhotoModelDB toPhotoDB(PhotoModel pm) {
         PhotoModelDB photoModelDB = new PhotoModelDB();
         photoModelDB.setLocalPath(pm.getLocalPath());

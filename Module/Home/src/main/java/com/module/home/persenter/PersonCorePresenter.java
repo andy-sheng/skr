@@ -117,7 +117,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
                     MyUserInfoManager.getInstance().setMyUserInfo(myUserInfo, true);
 
                     mView.showHomePageInfo(relationNumModes, userRankModels, userLevelModels, userGameStatisModels);
-                }else {
+                } else {
                     mView.loadHomePageFailed();
                 }
             }
@@ -264,7 +264,11 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
                                         return;
                                     }
                                 }
-                                photo.setStatus(PhotoModel.STATUS_FAILED);
+                                if (obj.getErrno() == 8302160) {
+                                    photo.setStatus(PhotoModel.STATUS_FAILED_SEXY);
+                                } else {
+                                    photo.setStatus(PhotoModel.STATUS_FAILED);
+                                }
                                 mView.updatePhoto(photo);
                                 U.getToastUtil().showShort(obj.getErrmsg());
                             }

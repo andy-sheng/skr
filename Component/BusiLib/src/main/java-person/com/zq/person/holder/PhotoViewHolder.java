@@ -76,6 +76,8 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
             mUploadTipsTv.setText("上传失败");
         } else if (mPhotoModel.getStatus() == PhotoModel.STATUS_SUCCESS) {
             mUploadTipsTv.setVisibility(View.GONE);
+        }else if (mPhotoModel.getStatus() == PhotoModel.STATUS_FAILED_SEXY) {
+            mUploadTipsTv.setText("违规图片");
         }
     }
 }
