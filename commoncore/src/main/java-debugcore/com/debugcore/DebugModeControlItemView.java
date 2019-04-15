@@ -27,7 +27,7 @@ public class DebugModeControlItemView extends RelativeLayout {
         mDescTv = (TextView) this.findViewById(R.id.desc_tv);
         mSwtichBtn = (SwitchButton) this.findViewById(R.id.swtich_btn);
 
-        if (BuildConfig.DEBUG || U.getChannelUtils().isStaging()) {
+        if (BuildConfig.DEBUG ) {
             // 调试模式，悬浮球永远都在，无法关闭
             mSwtichBtn.setChecked(true);
             mSwtichBtn.setEnabled(false);
