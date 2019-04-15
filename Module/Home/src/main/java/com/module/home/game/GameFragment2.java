@@ -90,7 +90,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mCoinNum = (BitmapTextView) mRootView.findViewById(R.id.coin_num);
         mRecyclerLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.recycler_layout);
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
-        mIvRedPkg = (BaseImageView)mRootView.findViewById(R.id.iv_red_pkg);
+        mIvRedPkg = (BaseImageView) mRootView.findViewById(R.id.iv_red_pkg);
 
         mSkrAudioPermission = new SkrAudioPermission();
 
@@ -131,15 +131,10 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mCreateRoom.setOnClickListener(new AnimateClickListener() {
             @Override
             public void click(View view) {
-                mSkrAudioPermission.ensurePermission(new Runnable() {
-                    @Override
-                    public void run() {
-                        IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
-                        if (iRankingModeService != null) {
-                            iRankingModeService.tryGoCreateRoom();
-                        }
-                    }
-                }, true);
+                IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
+                if (iRankingModeService != null) {
+                    iRankingModeService.tryGoCreateRoom();
+                }
             }
         });
 
