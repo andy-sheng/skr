@@ -165,7 +165,7 @@
         android:layout_alignTop="@+id/bottom_bg_vp"
         android:layout_marginTop="-30dp"
         android:layout_marginBottom="@dimen/view_10_dp"
-        android:paddingLeft="@dimen/view_18_dp" />
+        android:paddingLeft="@dimen/view_16_dp" />
 
     <com.module.playways.room.room.gift.GiftBigAnimationViewGroup
         android:id="@+id/gift_big_animation_vg"

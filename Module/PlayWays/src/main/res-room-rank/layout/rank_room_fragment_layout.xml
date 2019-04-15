@@ -105,7 +105,7 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_75_dp"
         android:layout_alignTop="@+id/comment_view"
-        android:layout_marginLeft="@dimen/view_18_dp"
+        android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginTop="-30dp"
         android:layout_marginBottom="@dimen/view_10_dp" />
 
