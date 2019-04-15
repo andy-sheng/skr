@@ -159,7 +159,7 @@ public class LoginByPhoneFragment extends BaseFragment implements Callback {
 
     private void setHintText(String text, boolean isError) {
         if (isError) {
-            mErrorHint.setTextColor(Color.WHITE);
+            mErrorHint.setTextColor(Color.parseColor("#EDADC5"));
         } else {
             mErrorHint.setTextColor(Color.WHITE);
         }

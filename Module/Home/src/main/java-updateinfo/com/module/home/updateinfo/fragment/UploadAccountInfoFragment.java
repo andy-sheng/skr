@@ -227,9 +227,9 @@ public class UploadAccountInfoFragment extends BaseFragment {
 
     private void setNicknameHintText(String text, boolean isError) {
         if (isError) {
-            mNicknameHintTv.setTextColor(Color.parseColor("#EF5E85"));
+            mNicknameHintTv.setTextColor(Color.parseColor("#EDADC5"));
         } else {
-            mNicknameHintTv.setTextColor(Color.parseColor("#398A26"));
+            mNicknameHintTv.setTextColor(Color.WHITE);
         }
         mNicknameHintTv.setVisibility(View.VISIBLE);
         mNicknameHintTv.setText(text);
