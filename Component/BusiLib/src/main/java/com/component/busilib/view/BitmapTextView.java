@@ -13,7 +13,6 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.common.log.MyLog;
-import com.common.utils.BitmapUtils;
 import com.common.utils.U;
 import com.component.busilib.R;
 
@@ -31,6 +30,7 @@ public class BitmapTextView extends View {
 
     float scale;   //图片放缩比例
     int textColor; //图片文字颜色
+    boolean hasShadow;  //是否有阴影
 
     public BitmapTextView(Context context) {
         super(context);
@@ -51,6 +51,7 @@ public class BitmapTextView extends View {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BitmapTextView);
         scale = typedArray.getFloat(R.styleable.BitmapTextView_scale, 1.0f);
         textColor = typedArray.getColor(R.styleable.BitmapTextView_text_color, 0);
+        hasShadow = typedArray.getBoolean(R.styleable.BitmapTextView_has_shadow, false);
         typedArray.recycle();
     }
 
@@ -80,31 +81,60 @@ public class BitmapTextView extends View {
     }
 
     private Bitmap getBitmap(char aChar) {
-        switch (aChar) {
-            case '0':
-                return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_0);
-            case '1':
-                return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_1);
-            case '2':
-                return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_2);
-            case '3':
-                return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_3);
-            case '4':
-                return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_4);
-            case '5':
-                return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_5);
-            case '6':
-                return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_6);
-            case '7':
-                return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_7);
-            case '8':
-                return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_8);
-            case '9':
-                return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_9);
-            case '.':
-                return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_dian);
-            default:
-                return null;
+        if (hasShadow) {
+            switch (aChar) {
+                case '0':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_0);
+                case '1':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_1);
+                case '2':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_2);
+                case '3':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_3);
+                case '4':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_4);
+                case '5':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_5);
+                case '6':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_6);
+                case '7':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_7);
+                case '8':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_8);
+                case '9':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_9);
+                case '.':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_dian);
+                default:
+                    return null;
+            }
+        } else {
+            switch (aChar) {
+                case '0':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_0);
+                case '1':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_1);
+                case '2':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_2);
+                case '3':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_3);
+                case '4':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_4);
+                case '5':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_5);
+                case '6':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_6);
+                case '7':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_7);
+                case '8':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_8);
+                case '9':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_9);
+                case '.':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_dian);
+                default:
+                    return null;
+            }
         }
     }
 
