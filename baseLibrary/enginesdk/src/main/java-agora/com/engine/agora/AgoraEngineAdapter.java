@@ -290,7 +290,7 @@ public class AgoraEngineAdapter {
                     mRtcEngine.setParameters("{\"che.audio.enable.aec\":true }");
                     break;
                 case grab:
-                    b = 4;
+                    b = 3;
                     break;
                 case voice:
                     b = 3;
