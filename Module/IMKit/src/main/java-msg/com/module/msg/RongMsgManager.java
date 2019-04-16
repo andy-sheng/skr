@@ -1,5 +1,6 @@
 package com.module.msg;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
@@ -21,6 +22,7 @@ import com.common.utils.HandlerTaskTimer;
 import com.common.utils.LogUploadUtils;
 import com.common.utils.U;
 import com.module.common.ICallback;
+import com.module.msg.activity.ConversationActivity;
 import com.module.msg.listener.MyConversationClickListener;
 import com.module.msg.model.CustomChatRoomMsg;
 import com.module.msg.model.CustomNotificationMsg;
@@ -527,11 +529,25 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
         });
     }
 
-    public void startPrivateChat(Context context, String targetUserId, String title, boolean isFriend) {
+    public boolean startPrivateChat(Context context, String targetUserId, String title, boolean isFriend) {
         if (context != null && !TextUtils.isEmpty(targetUserId)) {
             if (RongContext.getInstance() == null) {
                 throw new ExceptionInInitializerError("RongCloud SDK not init");
             } else {
+                for(Activity activity  : U.getActivityUtils().getActivityList()){
+                    if(activity instanceof ConversationActivity){
+                        // 已经有会话页面了
+                        ConversationActivity conversationActivity = (ConversationActivity) activity;
+                        if(targetUserId.equals(conversationActivity.getUserId())){
+                            // 正好期望会话的人，已经有一个与这个人的会话Activity存在了
+                            return true;
+                        }else{
+                            // 有一个会话，但是不是与当前人的，强制finish调
+                            conversationActivity.finish();
+                        }
+                        break;
+                    }
+                }
                 Uri uri = Uri.parse("rong://" + context.getApplicationInfo().packageName).buildUpon()
                         .appendPath("conversation").appendPath(Conversation.ConversationType.PRIVATE.getName().toLowerCase(Locale.US))
                         .appendQueryParameter("targetId", targetUserId)
@@ -540,10 +556,12 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
                 Intent intent = new Intent("android.intent.action.VIEW", uri);
                 intent.putExtra("isFriend", false);
                 context.startActivity(intent);
+
             }
         } else {
             throw new IllegalArgumentException();
         }
+        return  false;
     }
 
     public void updateCurrentUserInfo() {

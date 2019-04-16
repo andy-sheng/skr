@@ -42,7 +42,7 @@ public class ConversationActivity extends BaseActivity {
 
     CommonTitleBar mTitleBar;
 
-    String mUserId;
+    public String mUserId;
 
     boolean mIsFriend;
 
@@ -236,5 +236,9 @@ public class ConversationActivity extends BaseActivity {
         super.destroy();
         RongIM.getInstance().setSendMessageListener(null);
         U.getSoundUtils().release(TAG);
+    }
+
+    public String getUserId() {
+        return mUserId;
     }
 }

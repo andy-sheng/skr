@@ -401,11 +401,14 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
             @Override
             public void click(View view) {
                 if (mUserInfoModel != null) {
-                    ModuleServiceManager.getInstance().getMsgService().startPrivateChat(getContext(),
+                    boolean needPop = ModuleServiceManager.getInstance().getMsgService().startPrivateChat(getContext(),
                             String.valueOf(mUserInfoModel.getUserId()),
                             mUserInfoModel.getNickname(),
                             mUserInfoModel.isFriend()
                     );
+                    if(needPop){
+                        U.getFragmentUtils().popFragment(OtherPersonFragment2.this);
+                    }
                 }
             }
         });
