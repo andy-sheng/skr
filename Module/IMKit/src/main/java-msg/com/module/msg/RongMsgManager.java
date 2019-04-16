@@ -287,31 +287,35 @@ public class RongMsgManager implements RongIM.UserInfoProvider {
             return userInfo;
         }
 
-        HandlerTaskTimer.newBuilder().start(new HandlerTaskTimer.ObserverW() {
-            @Override
-            public void onNext(Integer integer) {
-                BuddyCache.getInstance().getBuddyNormal(Integer.valueOf(useId), true, new UserInfoManager.ResultCallback<UserInfoModel>() {
-                    @Override
-                    public boolean onGetLocalDB(UserInfoModel userInfoModel) {
-                        if (userInfoModel != null) {
-                            UserInfo userInfo = new UserInfo(String.valueOf(userInfoModel.getUserId()), userInfoModel.getNickname(), Uri.parse(userInfoModel.getAvatar()));
-                            RongIM.getInstance().refreshUserInfoCache(userInfo);
-                        }
-                        return false;
-                    }
 
-                    @Override
-                    public boolean onGetServer(UserInfoModel userInfoModel) {
-                        if (userInfoModel != null) {
-                            UserInfo userInfo = new UserInfo(String.valueOf(userInfoModel.getUserId()), userInfoModel.getNickname(), Uri.parse(userInfoModel.getAvatar()));
-                            RongIM.getInstance().refreshUserInfoCache(userInfo);
-                        }
-                        return false;
-                    }
-                });
+        BuddyCache.BuddyCacheEntry buddyCacheEntry = BuddyCache.getInstance().getBuddyNormal(Integer.valueOf(useId), true, new UserInfoManager.ResultCallback<UserInfoModel>() {
+            @Override
+            public boolean onGetLocalDB(UserInfoModel userInfoModel) {
+                if (userInfoModel != null) {
+                    UserInfo userInfo = new UserInfo(String.valueOf(userInfoModel.getUserId()), userInfoModel.getNickname(), Uri.parse(userInfoModel.getAvatar()));
+                    RongIM.getInstance().refreshUserInfoCache(userInfo);
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onGetServer(UserInfoModel userInfoModel) {
+                if (userInfoModel != null) {
+                    UserInfo userInfo = new UserInfo(String.valueOf(userInfoModel.getUserId()), userInfoModel.getNickname(), Uri.parse(userInfoModel.getAvatar()));
+                    RongIM.getInstance().refreshUserInfoCache(userInfo);
+                }
+                return false;
             }
         });
-        return null;
+
+        if (buddyCacheEntry != null) {
+            return new UserInfo(String.valueOf(buddyCacheEntry.getUuid()), buddyCacheEntry.getName(), Uri.parse(buddyCacheEntry.getAvatar()));
+        } else {
+            // TODO: 2019/4/16 此时靠 RongIM.getInstance().refreshUserInfoCache去更新
+            return null;
+        }
+
+
     }
 
     public synchronized void addMsgProcessor(IPushMsgProcess processor) {
