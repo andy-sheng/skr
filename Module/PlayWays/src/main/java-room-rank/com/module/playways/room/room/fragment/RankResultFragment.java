@@ -82,7 +82,7 @@ public class RankResultFragment extends BaseFragment {
             }
         });
 
-        if (mRoomData.getRecordData() != null) {
+        if (mRoomData != null && mRoomData.getRecordData() != null) {
             if (mRoomData.getRecordData().getSelfWinType() == EWinType.Win.getValue()) {
                 mResultTop.setBackground(getResources().getDrawable(R.drawable.zhanji_top_win));
                 mResultExit.setBackground(getResources().getDrawable(R.drawable.zhanji_win_exit));
