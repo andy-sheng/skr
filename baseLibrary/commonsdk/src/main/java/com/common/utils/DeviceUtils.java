@@ -58,8 +58,8 @@ public class DeviceUtils {
     private static final String KEY_VERSION_SMARTISAN = "ro.smartisan.version";
     private static final String KEY_VERSION_VIVO = "ro.vivo.os.version";
 
-    private String romName;
-    private String romVersion;
+    private String romName = "";
+    private String romVersion = "";
 
     private NotchPhoneUtils mNotchPhoneUtils;
 
@@ -157,6 +157,13 @@ public class DeviceUtils {
         return romName.equals(rom);
     }
 
+    public String getRomVersion(){
+        if(!TextUtils.isEmpty(romVersion)){
+            return romVersion;
+        }
+        check("");
+        return romVersion;
+    }
     /**
      * 得到系统的属性值
      *
@@ -164,7 +171,7 @@ public class DeviceUtils {
      * @return
      */
     public String getProp(String name) {
-        String line = null;
+        String line = "";
         BufferedReader input = null;
         try {
             Process p = Runtime.getRuntime().exec("getprop " + name);
@@ -173,7 +180,7 @@ public class DeviceUtils {
             input.close();
         } catch (IOException ex) {
             Log.e(TAG, "Unable to read prop " + name, ex);
-            return null;
+            return "";
         } finally {
             if (input != null) {
                 try {
@@ -348,7 +355,7 @@ public class DeviceUtils {
     }
 
     public int getVirtualNavBarHeight() {
-        if (U.getDeviceUtils().getProductModel() != null && U.getDeviceUtils().getProductModel().equals("SM-G9600")) {
+        if (U.getDeviceUtils().getProductModel().equals("SM-G9600")) {
             // 适配三星 G9600
             return U.getDisplayUtils().getPhoneHeight() - U.getDisplayUtils().getScreenHeight();
         }

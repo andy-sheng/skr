@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
@@ -17,8 +18,13 @@ import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.permission.SkrAudioPermission;
+import com.common.floatwindow.FloatWindow;
+import com.common.floatwindow.MoveType;
+import com.common.floatwindow.Screen;
+import com.common.floatwindow.ViewStateListenerAdapter;
 import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
+import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
@@ -200,6 +206,24 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mGamePresenter = new GamePresenter(this);
         addPresent(mGamePresenter);
         initBaseInfo();
+
+        HandlerTaskTimer.newBuilder().interval(10000)
+                .start(new HandlerTaskTimer.ObserverW() {
+                    @Override
+                    public void onNext(Integer integer) {
+                        TextView textView = new TextView(getContext());
+                        textView.setText("阿斯顿健康垃圾堆里卡就睡了多久了 ");
+                        FloatWindow.with(U.app())
+                                .setView(textView)
+                                .setMoveType(MoveType.canRemove)
+                                .setWidth(Screen.width, 1f)                               //设置控件宽高
+                                .setHeight(Screen.height, 0.2f)
+                                .setDesktopShow(false)                        //桌面显示
+                                .setCancelIfExist(false)
+                                .setReqPermissionIfNeed(false)
+                                .build();
+                    }
+                });
     }
 
     private void initBaseInfo() {

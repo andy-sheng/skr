@@ -26,18 +26,27 @@ class FloatPhone extends FloatView {
     private final WindowManager.LayoutParams mLayoutParams;
     private boolean isRemove = true;
 
-    private int MSG_CHECK = 1;
-//    Handler mUiHandler = new Handler(){
+//    private int MSG_CHECK = 1;
+//    Handler mUiHandler = new Handler() {
 //        @Override
 //        public void handleMessage(Message msg) {
 //            super.handleMessage(msg);
-//            if(msg.what == MSG_CHECK){
-//                if(isShow()){
-//                    MyLog.d(TAG,"handleMessage 浮窗可见");
-//                }else{
-//                    MyLog.d(TAG,"handleMessage 浮窗不可见");
-//                    attachView(true);
+//            if (msg.what == MSG_CHECK) {
+//                if (isShow()) {
+//                    // 判断位置
+//                    int[] location = new int[2];
+//                    mB.mView.getLocationOnScreen(location);
+//                    int x = location[0];
+//                    int y = location[1];
+//                    Log.d(TAG, "Screenx--->" + x + "  " + "Screeny--->" + y);
+//                    mB.mView.getLocationInWindow(location);
+//                    x = location[0];
+//                    y = location[1];
+//                    Log.d(TAG, "Window--->" + x + "  " + "Window--->" + y);
+//                    return;
 //                }
+//                MyLog.d(TAG, "handleMessage 浮窗不可见");
+//                attachView(true);
 //            }
 //        }
 //    };
@@ -125,16 +134,19 @@ class FloatPhone extends FloatView {
                  *
                  * 而且api>=23之后,要正确设置token值才能使用,要注意哦
                  */
-
-                attachView(false);
+                if (U.getDeviceUtils().getProductBrand().equals("INE-TL00") && U.getDeviceUtils().getRomVersion().startsWith("EmotionUI_8")) {
+                    attachView(true);
+                } else {
+                    attachView(false);
+                }
                 //mUiHandler.sendEmptyMessageDelayed(MSG_CHECK,200);
             }
         }
     }
 
-    void attachView(boolean attachActivity){
-        MyLog.d(TAG,"attachView" + " attachActivity=" + attachActivity);
-        if(attachActivity) {
+    void attachView(boolean attachActivity) {
+        MyLog.d(TAG, "attachView" + " attachActivity=" + attachActivity);
+        if (attachActivity) {
             Activity topActivityOrApp = U.getActivityUtils().getTopActivity();
             if (topActivityOrApp != null) {
                 if (!topActivityOrApp.isFinishing() && !topActivityOrApp.isDestroyed()) {
@@ -142,7 +154,8 @@ class FloatPhone extends FloatView {
                 }
             }
             mLayoutParams.type = WindowManager.LayoutParams.LAST_APPLICATION_WINDOW;
-        }else{
+        } else {
+
             mLayoutParams.type = WindowManager.LayoutParams.FIRST_SYSTEM_WINDOW + 37;
         }
 //        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.N_MR1) {
@@ -185,17 +198,18 @@ class FloatPhone extends FloatView {
                 MyLog.d(TAG, "addView type=" + mLayoutParams.type);
                 mWindowManager.addView(mB.mView, mLayoutParams);
                 isRemove = false;
+//                mUiHandler.sendEmptyMessageDelayed(MSG_CHECK, 200);
             }
         } catch (Exception e) {
             MyLog.e(TAG, e);
-            if(!attachActivity){
+            if (!attachActivity) {
                 attachView(true);
             }
         }
     }
 
-    public boolean isShow(){
-        if(mB.mView!=null && mB.mView.isShown()){
+    public boolean isShow() {
+        if (mB.mView != null && mB.mView.isShown()) {
             return true;
         }
         return false;
