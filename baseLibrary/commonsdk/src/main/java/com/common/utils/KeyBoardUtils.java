@@ -117,7 +117,16 @@ public class KeyBoardUtils {
         });
     }
 
+    /**
+     * 注意 该判断与activity的属性相关
+     *        例如在EditActivity中设置成adjustNothing  此判断不准
+     * @param activity
+     * @return
+     */
     public boolean isSoftKeyboardShowing(Activity activity) {
+        if (activity.getWindow().getDecorView() == null) {
+            return false;
+        }
         //获取当屏幕内容的高度
         int screenHeight = activity.getWindow().getDecorView().getHeight();
         //获取View可见区域的bottom
