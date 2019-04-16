@@ -54,6 +54,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
     long mLastUpdateTime = 0;  // 主页刷新时间
     //    long mLastPhotoUpTime = 0; // 照片墙更新时间
     boolean mUploadingPhoto = false;
+    boolean mExceedLimit = false;
 
     ObjectPlayControlTemplate<PhotoModel, PersonCorePresenter> mPlayControlTemplate = new ObjectPlayControlTemplate<PhotoModel, PersonCorePresenter>() {
         @Override
@@ -227,8 +228,15 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
 
     void execUploadPhoto(PhotoModel photo) {
         MyLog.d(TAG, "execUploadPhoto" + " photo=" + photo);
+
         if (photo.getStatus() == photo.STATUS_DELETE) {
             MyLog.d(TAG, "execUploadPhoto" + " imageItem=" + photo + " 用户删除了，取消上传");
+            mPlayControlTemplate.endCurrent(photo);
+            return;
+        }
+        if(mExceedLimit){
+            photo.setStatus(PhotoModel.STATUS_FAILED_LIMIT);
+            mView.updatePhoto(photo);
             mPlayControlTemplate.endCurrent(photo);
             return;
         }
@@ -280,6 +288,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
                                 if (obj.getErrno() == 8302160) {
                                     photo.setStatus(PhotoModel.STATUS_FAILED_SEXY);
                                 } else if (obj.getErrno() == 8302161) {
+                                    mExceedLimit = true;
                                     photo.setStatus(PhotoModel.STATUS_FAILED_LIMIT);
                                 } else {
                                     photo.setStatus(PhotoModel.STATUS_FAILED);
@@ -327,6 +336,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
                             photoModel.setStatus(PhotoModel.STATUS_DELETE);
                             mView.deletePhoto(photoModel, true);
                         }
+                        mExceedLimit = false;
                     } else {
                         U.getToastUtil().showShort(obj.getErrmsg());
                     }
