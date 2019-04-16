@@ -1,5 +1,6 @@
 package com.module.playways.grab.room.presenter;
 
+import android.animation.ValueAnimator;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
@@ -31,9 +32,8 @@ import com.component.busilib.SkrConfig;
 import com.engine.EngineEvent;
 import com.engine.EngineManager;
 import com.engine.Params;
-import com.engine.arccloud.ArcRecognizeListener;
+import com.engine.UserStatus;
 import com.engine.arccloud.RecognizeConfig;
-import com.engine.arccloud.SongInfo;
 import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
 import com.module.msg.CustomMsgType;
@@ -52,7 +52,6 @@ import com.module.playways.grab.room.event.GrabWaitSeatUpdateEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
 import com.module.playways.grab.room.event.SomeOneJoinWaitSeatEvent;
-import com.module.playways.grab.room.event.SomeOneLeaveWaitSeatEvent;
 import com.module.playways.grab.room.inter.IGrabView;
 import com.module.playways.grab.room.model.BLightInfoModel;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
@@ -60,6 +59,7 @@ import com.module.playways.grab.room.model.GrabResultInfoModel;
 import com.module.playways.grab.room.model.GrabSkrResourceModel;
 import com.module.playways.grab.room.model.MLightInfoModel;
 import com.module.playways.grab.room.model.WantSingerInfo;
+import com.module.playways.grab.room.top.GrabPlayerRv2;
 import com.module.playways.others.LyricAndAccMatchManager;
 import com.module.playways.room.msg.BasePushInfo;
 import com.module.playways.room.msg.event.CommentMsgEvent;
@@ -90,7 +90,6 @@ import com.module.playways.room.prepare.model.BaseRoundInfoModel;
 import com.module.playways.room.room.SwapStatusType;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.room.room.comment.model.CommentLightModel;
-import com.module.playways.room.room.comment.model.CommentModel;
 import com.module.playways.room.room.comment.model.CommentSysModel;
 import com.module.playways.room.room.comment.model.CommentTextModel;
 import com.module.playways.room.room.event.PretendCommentMsgEvent;
@@ -119,7 +118,6 @@ import org.greenrobot.greendao.annotation.NotNull;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import io.agora.rtc.Constants;
@@ -136,6 +134,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     static final int MSG_ROBOT_SING_BEGIN = 10;
 
     static final int MSG_ENSURE_SWITCH_BROADCAST_SUCCESS = 21; // 确保用户切换成主播成功，防止引擎不回调的保护
+
+    static final int MSG_RECOVER_VOLUME = 22; // 房主说话后 恢复音量
+
 
     GrabRoomData mRoomData;
 
@@ -157,6 +158,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     ZipUrlResourceManager mZipUrlResourceManager;
 
+    EngineParamsTemp mEngineParamsTemp;
+
     Handler mUiHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -172,6 +175,22 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     break;
                 case MSG_ENSURE_SWITCH_BROADCAST_SUCCESS:
                     onChangeBroadcastSuccess();
+                    break;
+                case MSG_RECOVER_VOLUME:
+                    if (mEngineParamsTemp != null) {
+                        ValueAnimator valueAnimator = ValueAnimator.ofFloat(0.3f, 1);
+                        valueAnimator.setDuration(1000);
+                        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                            @Override
+                            public void onAnimationUpdate(ValueAnimator animation) {
+                                float p = (float) animation.getAnimatedValue();
+                                EngineManager.getInstance().adjustAudioMixingVolume((int) (mEngineParamsTemp.audioVolume * p), false);
+                                EngineManager.getInstance().adjustRecordingSignalVolume((int) (mEngineParamsTemp.recordVolume * p), false);
+                            }
+                        });
+                        valueAnimator.start();
+                        mEngineParamsTemp = null;
+                    }
                     break;
             }
         }
@@ -213,9 +232,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 params.setScene(Params.Scene.grab);
                 EngineManager.getInstance().init("grabroom", params);
             }
-            EngineManager.getInstance().joinRoom(String.valueOf(mRoomData.getGameId()), (int) UserAccountManager.getInstance().getUuidAsLong(), false, mRoomData.getAgoraToken());
+            EngineManager.getInstance().joinRoom(String.valueOf(mRoomData.getGameId()), (int) UserAccountManager.getInstance().getUuidAsLong(), mRoomData.isOwner(), mRoomData.getAgoraToken());
             // 不发送本地音频, 会造成第一次抢没声音
-            //EngineManager.getInstance().muteLocalAudioStream(true);
+            EngineManager.getInstance().muteLocalAudioStream(true);
         }
         joinRcRoom(0);
         if (mRoomData.getGameId() > 0) {
@@ -354,11 +373,19 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 }
             }
         }
-        EngineManager.getInstance().setClientRole(true);
+        if (!mRoomData.isOwner()) {
+            EngineManager.getInstance().setClientRole(true);
+        }
+        EngineManager.getInstance().muteLocalAudioStream(false);
         if (mRoomData.isAccEnable()) {
-            // 如果需要播放伴奏，一定要在角色切换成功才能播
-            mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS);
-            mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS, 2000);
+            if (mRoomData.isOwner()) {
+                MyLog.d(TAG, "preOpWhenSelfRound 是主播 直接 onChangeBroadcastSuccess");
+                onChangeBroadcastSuccess();
+            } else {
+                // 如果需要播放伴奏，一定要在角色切换成功才能播
+                mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS);
+                mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS, 2000);
+            }
         }
         // 开始acr打分
         BaseRoundInfoModel now = mRoomData.getRealRoundInfo();
@@ -1375,14 +1402,20 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     private void closeEngine() {
         if (mRoomData.getGameId() > 0) {
             EngineManager.getInstance().stopAudioMixing();
-            if (!mRoomData.isSpeaking()) {
-                EngineManager.getInstance().setClientRole(false);
-            } else {
+            if (mRoomData.isSpeaking()) {
                 MyLog.d(TAG, "closeEngine 正在抢麦说话，无需闭麦");
+            } else {
+                if (mRoomData.isOwner()) {
+                    MyLog.d(TAG, "closeEngine 是房主 mute即可");
+                    EngineManager.getInstance().muteLocalAudioStream(true);
+                } else {
+                    if (EngineManager.getInstance().getParams().isAnchor()) {
+                        EngineManager.getInstance().setClientRole(false);
+                    }
+                }
             }
         }
     }
-
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(EngineEvent event) {
@@ -1394,9 +1427,74 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     MyLog.d(TAG, "演唱环节切换主播成功");
                     onChangeBroadcastSuccess();
                 } else if (mRoomData.isSpeaking()) {
-                    MyLog.d(TAG, "抢麦切换主播成功");
+                    MyLog.d(TAG, "房主抢麦切换主播成功");
                 }
             }
+        } else if (event.getType() == EngineEvent.TYPE_USER_MUTE_AUDIO) {
+            UserStatus userStatus = event.getUserStatus();
+            if (userStatus != null) {
+                MyLog.d(TAG, "有人mute变化 uid=" + userStatus.getUserId());
+                if (userStatus.getUserId() == mRoomData.getOwnerId()) {
+                    if (mRoomData.isOwner()) {
+                        MyLog.d(TAG, "自己就是房主，忽略");
+                    } else {
+                        if (EngineManager.getInstance().getParams().isAnchor()) {
+                            if (userStatus.isAudioMute()) {
+                                MyLog.d(TAG, "房主mute了，恢复音量");
+                                mUiHandler.removeMessages(MSG_RECOVER_VOLUME);
+                                mUiHandler.sendEmptyMessage(MSG_RECOVER_VOLUME);
+                            } else {
+                                MyLog.d(TAG, "房主解开mute，如果检测到房主说话，音量就衰减");
+//                                int audioVolume = EngineManager.getInstance().getParams().getAudioMixingVolume();
+//                                int recordVolume = EngineManager.getInstance().getParams().getRecordingSignalVolume();
+//                                mEngineParamsTemp = new EngineParamsTemp(audioVolume, recordVolume);
+//                                EngineManager.getInstance().adjustAudioMixingVolume(audioVolume / 3, false);
+//                                EngineManager.getInstance().adjustRecordingSignalVolume(audioVolume / 3, false);
+                            }
+                        } else {
+                            MyLog.d(TAG, "我不是主播，忽略");
+                        }
+                    }
+                }
+            }
+        } else if (event.getType() == EngineEvent.TYPE_USER_AUDIO_VOLUME_INDICATION) {
+            List<EngineEvent.UserVolumeInfo> list = event.getObj();
+            for (EngineEvent.UserVolumeInfo uv : list) {
+                MyLog.d(TAG, "UserVolumeInfo uv=" + uv);
+                int uid = uv.getUid();
+                if (uid == 0) {
+                    uid = (int) MyUserInfoManager.getInstance().getUid();
+                }
+                if (uid == mRoomData.getOwnerId()) {
+                    MyLog.d(TAG, "房主在说话");
+                    if (EngineManager.getInstance().getParams().isAnchor()) {
+                        MyLog.d(TAG, "我是主播，我把自己的音量衰减2秒钟");
+                        mUiHandler.removeMessages(MSG_RECOVER_VOLUME);
+                        mUiHandler.sendEmptyMessageDelayed(MSG_RECOVER_VOLUME, 1000);
+                        if (mEngineParamsTemp == null) {
+                            int audioVolume = EngineManager.getInstance().getParams().getAudioMixingVolume();
+                            int recordVolume = EngineManager.getInstance().getParams().getRecordingSignalVolume();
+                            mEngineParamsTemp = new EngineParamsTemp(audioVolume, recordVolume);
+                            ValueAnimator valueAnimator = ValueAnimator.ofFloat(1, 0.3f);
+                            valueAnimator.setDuration(300);
+                            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                                @Override
+                                public void onAnimationUpdate(ValueAnimator animation) {
+                                    float p = (float) animation.getAnimatedValue();
+                                    EngineManager.getInstance().adjustAudioMixingVolume((int) (audioVolume * p), false);
+                                    EngineManager.getInstance().adjustRecordingSignalVolume((int) (recordVolume * p), false);
+                                }
+                            });
+                            valueAnimator.start();
+                        }
+                    } else {
+                        MyLog.d(TAG, "我不是主播，忽略");
+                    }
+
+                }
+            }
+        } else {
+            // 可以考虑监听下房主的说话提示 做下容错
         }
     }
 
@@ -1968,16 +2066,25 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         mRoomData.setSpeaking(event.speaking);
         // 踢人的结果
         if (event.speaking) {
-            EngineManager.getInstance().setClientRole(true);
+            EngineManager.getInstance().muteLocalAudioStream(false);
         } else {
             // 要闭麦
             GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
             if (infoModel != null && infoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
                 MyLog.d(TAG, "自己的轮次，无需闭麦");
             } else {
-                EngineManager.getInstance().setClientRole(false);
+                EngineManager.getInstance().muteLocalAudioStream(true);
             }
         }
     }
 
+    public static class EngineParamsTemp {
+        int audioVolume;
+        int recordVolume;
+
+        public EngineParamsTemp(int audioVolume, int recordVolume) {
+            this.audioVolume = audioVolume;
+            this.recordVolume = recordVolume;
+        }
+    }
 }

@@ -123,6 +123,8 @@ public class Params implements Serializable {
     private long mJoinRoomBeginTs; // 开始加入房间的时间
     @JSONField(serialize=false)
     private String mRecordingFromCallbackSavePath;// 保存录音的路径
+    @JSONField(serialize=false)
+    private boolean mIsAnchor;
 
     public static Builder newBuilder(int channelProfile) {
         return new Builder().setChannelProfile(channelProfile);
@@ -478,6 +480,14 @@ public class Params implements Serializable {
 
     public void setScene(Scene scene) {
         this.scene = scene;
+    }
+
+    public void setAnchor(boolean anchor) {
+        mIsAnchor = anchor;
+    }
+
+    public boolean isAnchor() {
+        return mIsAnchor;
     }
 
     public static class Builder {
