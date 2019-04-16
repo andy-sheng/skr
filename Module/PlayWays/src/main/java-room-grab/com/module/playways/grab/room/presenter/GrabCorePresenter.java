@@ -2052,6 +2052,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
+
     //TODO 房主说话 。。。
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabSpeakingControlEvent event) {
@@ -2059,7 +2060,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         // 踢人的结果
         if (event.speaking) {
             EngineManager.getInstance().muteLocalAudioStream(false);
-            EngineManager.getInstance().muteAllRemoteAudioStreams(true);
+            int v = EngineManager.getInstance().getParams().getPlaybackSignalVolume() / 3;
+            EngineManager.getInstance().adjustPlaybackSignalVolume(v, false);
         } else {
             // 要闭麦
             GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
@@ -2068,7 +2070,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             } else {
                 EngineManager.getInstance().muteLocalAudioStream(true);
             }
-            EngineManager.getInstance().muteAllRemoteAudioStreams(false);
+            int v = EngineManager.getInstance().getParams().getPlaybackSignalVolume();
+            EngineManager.getInstance().adjustPlaybackSignalVolume(v, false);
         }
     }
 
