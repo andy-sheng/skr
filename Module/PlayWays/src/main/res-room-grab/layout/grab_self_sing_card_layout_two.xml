@@ -40,7 +40,7 @@
             android:paddingRight="@dimen/view_40_dp"
             android:textColor="#364E7C"
             android:textSize="@dimen/textsize_18_dp"
-            android:textStyle="bold" />
+             />
     </ScrollView>
 
     <com.zq.lyrics.widget.ManyLyricsView
