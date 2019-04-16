@@ -279,6 +279,8 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
                                 }
                                 if (obj.getErrno() == 8302160) {
                                     photo.setStatus(PhotoModel.STATUS_FAILED_SEXY);
+                                } else if (obj.getErrno() == 8302161) {
+                                    photo.setStatus(PhotoModel.STATUS_FAILED_LIMIT);
                                 } else {
                                     photo.setStatus(PhotoModel.STATUS_FAILED);
                                 }

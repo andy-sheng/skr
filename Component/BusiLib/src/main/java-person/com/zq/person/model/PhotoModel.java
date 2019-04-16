@@ -11,6 +11,7 @@ public class PhotoModel implements Serializable {
     public static final int STATUS_DELETE = 4;// 删除了
     public static final int STATUS_FAILED = 3;// 上传失败
     public static final int STATUS_FAILED_SEXY = 5;// 上传失败 违规
+    public static final int STATUS_FAILED_LIMIT = 6;// 上传失败 超出100张限制
 
     /**
      * picID : 0

@@ -178,14 +178,16 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     break;
                 case MSG_RECOVER_VOLUME:
                     if (mEngineParamsTemp != null) {
+                        int a = mEngineParamsTemp.audioVolume;
+                        int b = mEngineParamsTemp.recordVolume;
                         ValueAnimator valueAnimator = ValueAnimator.ofFloat(0.3f, 1);
                         valueAnimator.setDuration(1000);
                         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                             @Override
                             public void onAnimationUpdate(ValueAnimator animation) {
                                 float p = (float) animation.getAnimatedValue();
-                                EngineManager.getInstance().adjustAudioMixingVolume((int) (mEngineParamsTemp.audioVolume * p), false);
-                                EngineManager.getInstance().adjustRecordingSignalVolume((int) (mEngineParamsTemp.recordVolume * p), false);
+                                EngineManager.getInstance().adjustAudioMixingVolume((int) (a * p), false);
+                                EngineManager.getInstance().adjustRecordingSignalVolume((int) (b * p), false);
                             }
                         });
                         valueAnimator.start();

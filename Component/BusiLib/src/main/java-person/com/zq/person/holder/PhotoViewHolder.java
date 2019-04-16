@@ -61,10 +61,12 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
         mIvBlackBg.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                if(mPhotoManageListener != null){
+                if (mPhotoManageListener != null) {
                     if (mPhotoModel.getStatus() == PhotoModel.STATUS_FAILED) {
                         mPhotoManageListener.reupload(mPhotoModel);
                     } else if (mPhotoModel.getStatus() == PhotoModel.STATUS_FAILED_SEXY) {
+                        mPhotoManageListener.delete(mPhotoModel);
+                    } else if (mPhotoModel.getStatus() == PhotoModel.STATUS_FAILED_LIMIT) {
                         mPhotoManageListener.delete(mPhotoModel);
                     }
                 }
@@ -114,6 +116,11 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
             mErrorContainer.setVisibility(View.VISIBLE);
             mIvBlackBg.setImageDrawable(U.getDrawable(R.drawable.photo_shanchu));
             mTvErrorTips.setText("图片敏感");
+        } else if (mPhotoModel.getStatus() == PhotoModel.STATUS_FAILED_LIMIT) {
+            mUploadTipsTv.setVisibility(View.GONE);
+            mErrorContainer.setVisibility(View.VISIBLE);
+            mIvBlackBg.setImageDrawable(U.getDrawable(R.drawable.photo_shanchu));
+            mTvErrorTips.setText("超过上限");
         }
     }
 }

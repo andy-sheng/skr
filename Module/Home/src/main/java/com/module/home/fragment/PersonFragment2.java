@@ -624,8 +624,10 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
 
     @Override
     public void deletePhoto(PhotoModel photoModel) {
-        mTotalPhotoNum--;
-        setPhotoNum();
+        if (photoModel.getStatus() == PhotoModel.STATUS_SUCCESS) {
+            mTotalPhotoNum--;
+            setPhotoNum();
+        }
         mPhotoAdapter.delete(photoModel);
     }
 
