@@ -40,7 +40,7 @@ public class CommentTextModel extends CommentModel {
             }
         }
 
-        if (roomData.getGameType() == GameModeType.GAME_MODE_GRAB) {
+        if (roomData != null && roomData.getGameType() == GameModeType.GAME_MODE_GRAB) {
             SpannableStringBuilder ssb = new SpanUtils()
                     .append(commentModel.getUserName() + " ").setForegroundColor(Color.parseColor("#DF7900"))
                     .append(event.text).setForegroundColor(Color.parseColor("#586D94"))
