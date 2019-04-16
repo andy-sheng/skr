@@ -566,6 +566,9 @@ public class CropImageView extends AppCompatImageView {
     /** 将图片保存在本地 */
     private void saveOutput(Bitmap croppedImage, Bitmap.CompressFormat outputFormat, File saveFile) {
         OutputStream outputStream = null;
+        if(croppedImage == null){
+            return;
+        }
         try {
             outputStream = getContext().getContentResolver().openOutputStream(Uri.fromFile(saveFile));
             if (outputStream != null) croppedImage.compress(outputFormat, 90, outputStream);
