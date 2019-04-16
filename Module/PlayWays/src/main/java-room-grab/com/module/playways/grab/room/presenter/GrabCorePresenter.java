@@ -189,19 +189,19 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                         } else {
                             MyLog.d(TAG, "我不是主播，忽略");
                         }
-                        if (mExoPlayer != null) {
-                            ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, mExoPlayer.getVolume());
-                            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                                @Override
-                                public void onAnimationUpdate(ValueAnimator animation) {
-                                    float v = (float) animation.getAnimatedValue();
-                                    mExoPlayer.setVolume(v, false);
-                                }
-                            });
-                            valueAnimator.setDuration(1000);
-                            valueAnimator.start();
-                        }
                         mEngineParamsTemp = null;
+                    }
+                    if (mExoPlayer != null) {
+                        ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, mExoPlayer.getVolume());
+                        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                            @Override
+                            public void onAnimationUpdate(ValueAnimator animation) {
+                                float v = (float) animation.getAnimatedValue();
+                                mExoPlayer.setVolume(v, false);
+                            }
+                        });
+                        valueAnimator.setDuration(1000);
+                        valueAnimator.start();
                     }
                     break;
             }
