@@ -1181,7 +1181,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     private synchronized void updatePlayerState(long gameOverTimeMs, long syncStatusTimes, GrabRoundInfoModel newRoundInfo) {
         MyLog.w(TAG, "updatePlayerState" + " gameOverTimeMs=" + gameOverTimeMs + " syncStatusTimes=" + syncStatusTimes + " currentInfo=" + newRoundInfo.getRoundSeq());
-        if(!newRoundInfo.isContainInRoom()){
+        if (!newRoundInfo.isContainInRoom()) {
             MyLog.w(TAG, "updatePlayerState" + ", 不再当前的游戏里");
             exitRoom();
             return;
@@ -1698,7 +1698,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QExitGameMsgEvent event) {
-        if(event.userID == MyUserInfoManager.getInstance().getUid()){
+        if (event.userID == MyUserInfoManager.getInstance().getUid()) {
             exitRoom();
             return;
         }
@@ -2052,6 +2052,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
+    float mPreVolume = 1.0f;
 
     //TODO 房主说话 。。。
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -2062,6 +2063,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             EngineManager.getInstance().muteLocalAudioStream(false);
             int v = EngineManager.getInstance().getParams().getPlaybackSignalVolume() / 3;
             EngineManager.getInstance().adjustPlaybackSignalVolume(v, false);
+            if (mExoPlayer != null) {
+                mPreVolume = mExoPlayer.getVolume();
+                mExoPlayer.setVolume(mPreVolume * 0.3f);
+            }
         } else {
             // 要闭麦
             GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
@@ -2072,6 +2077,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             }
             int v = EngineManager.getInstance().getParams().getPlaybackSignalVolume();
             EngineManager.getInstance().adjustPlaybackSignalVolume(v, false);
+            if (mExoPlayer != null) {
+                mExoPlayer.setVolume(mPreVolume);
+            }
         }
     }
 
