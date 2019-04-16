@@ -1063,7 +1063,7 @@ public class AgoraEngineAdapter {
                                          int samplesPerSec//44100
             ) {
                 if (samples == null) {
-                    return true;
+                    return false;
                 }
                 if (++mLogtag % 500 == 0) {
                     //  案例这个日志应该5秒一次

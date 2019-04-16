@@ -14,12 +14,17 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.module.playways.BaseRoomData;
 import com.module.playways.grab.room.GrabRoomData;
+import com.module.playways.grab.room.event.GrabRoundStatusChangeEvent;
 import com.module.playways.grab.room.event.GrabSpeakingControlEvent;
 import com.module.playways.grab.room.dynamicmsg.DynamicMsgView;
+import com.module.playways.grab.room.model.GrabRoundInfoModel;
+import com.module.playways.room.room.event.InputBoardEvent;
 import com.module.playways.room.room.view.BottomContainerView;
 import com.module.rank.R;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 public class GrabBottomContainerView extends BottomContainerView {
 
@@ -32,6 +37,8 @@ public class GrabBottomContainerView extends BottomContainerView {
     PopupWindow mDynamicMsgPopWindow;    //动态表情弹出面板
 
     DynamicMsgView mDynamicMsgView;
+
+    GrabRoomData mGrabRoomData;
 
     public GrabBottomContainerView(Context context) {
         super(context);
@@ -93,7 +100,7 @@ public class GrabBottomContainerView extends BottomContainerView {
                     int l[] = new int[2];
                     mQuickBtn.getLocationInWindow(l);
                     mDynamicMsgPopWindow.showAtLocation(mQuickBtn, Gravity.START | Gravity.TOP, l[0], l[1] - h - U.getDisplayUtils().dip2px(5));
-                }else {
+                } else {
                     mDynamicMsgPopWindow.dismiss();
                 }
             }
@@ -111,8 +118,8 @@ public class GrabBottomContainerView extends BottomContainerView {
     public void setRoomData(BaseRoomData roomData) {
         super.setRoomData(roomData);
         if (mRoomData instanceof GrabRoomData) {
-            GrabRoomData grabRoomData = (GrabRoomData) mRoomData;
-            if (grabRoomData.isOwner()) {
+            mGrabRoomData = (GrabRoomData) mRoomData;
+            if (mGrabRoomData.isOwner()) {
                 //是房主
                 adjustUi(true);
             } else {
@@ -159,6 +166,17 @@ public class GrabBottomContainerView extends BottomContainerView {
             lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             mEmoji2Btn.setLayoutParams(lp);
             mQuickBtn.setImageResource(R.drawable.ycdd_kuaijie);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(GrabRoundStatusChangeEvent event) {
+        GrabRoundInfoModel now = event.roundInfo;
+        if (now.getStatus() == GrabRoundInfoModel.STATUS_SING && mGrabRoomData.isOwner() && mGrabRoomData.isSpeaking()) {
+            mQuickBtn.setImageResource(R.drawable.fz_anzhushuohua);
+            mSpeakingDotAnimationView.setVisibility(GONE);
+            mShowInputContainerBtn.setText("夸赞是一种美德");
+            EventBus.getDefault().post(new GrabSpeakingControlEvent(false));
         }
     }
 
