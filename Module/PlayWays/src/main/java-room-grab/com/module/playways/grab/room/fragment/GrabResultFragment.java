@@ -88,7 +88,10 @@ public class GrabResultFragment extends BaseFragment {
         mTvAgain = (ExTextView) mRootView.findViewById(R.id.tv_again);
         mTvShare = (ExTextView) mRootView.findViewById(R.id.tv_share);
 
-        mGrabResultData = mRoomData.getGrabResultData();
+        if (mRoomData != null) {
+            mGrabResultData = mRoomData.getGrabResultData();
+        }
+
         if (mGrabResultData == null) {
             /**
              * 游戏结束会由sync或者push触发
