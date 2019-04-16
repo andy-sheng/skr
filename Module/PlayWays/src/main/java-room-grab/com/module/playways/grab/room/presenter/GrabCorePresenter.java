@@ -394,7 +394,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS, 2000);
             }
         } else {
-            // 如果是房主,不在这里 解禁，会录进去别的声音 延后一些 在
+            // 如果是房主,不在这里 解禁，会录进去音效的声音 延后一些再解开
             mUiHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
