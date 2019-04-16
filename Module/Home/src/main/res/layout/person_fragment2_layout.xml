@@ -98,7 +98,7 @@
                             android:layout_height="@dimen/view_67_dp"
                             android:layout_below="@id/titlebar"
                             android:layout_marginLeft="20dp"
-                            android:layout_marginTop="@dimen/view_18_dp"
+                            android:layout_marginTop="@dimen/view_40_dp"
                             android:background="@drawable/b_touxiang" />
 
                         <com.facebook.drawee.view.SimpleDraweeView
