@@ -2052,8 +2052,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
-    float mPreVolume = 1.0f;
-
     //TODO 房主说话 。。。
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabSpeakingControlEvent event) {
@@ -2064,8 +2062,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             int v = EngineManager.getInstance().getParams().getPlaybackSignalVolume() / 3;
             EngineManager.getInstance().adjustPlaybackSignalVolume(v, false);
             if (mExoPlayer != null) {
-                mPreVolume = mExoPlayer.getVolume();
-                mExoPlayer.setVolume(mPreVolume * 0.3f);
+                mExoPlayer.setVolume(mExoPlayer.getVolume() * 0.2f, false);
             }
         } else {
             // 要闭麦
@@ -2078,7 +2075,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             int v = EngineManager.getInstance().getParams().getPlaybackSignalVolume();
             EngineManager.getInstance().adjustPlaybackSignalVolume(v, false);
             if (mExoPlayer != null) {
-                mExoPlayer.setVolume(mPreVolume);
+                mExoPlayer.setVolume(mExoPlayer.getVolume(), false);
             }
         }
     }
