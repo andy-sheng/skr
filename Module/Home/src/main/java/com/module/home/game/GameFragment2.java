@@ -207,23 +207,23 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         addPresent(mGamePresenter);
         initBaseInfo();
 
-//        HandlerTaskTimer.newBuilder().interval(10000)
-//                .start(new HandlerTaskTimer.ObserverW() {
-//                    @Override
-//                    public void onNext(Integer integer) {
-//                        TextView textView = new TextView(getContext());
-//                        textView.setText("阿斯顿健康垃圾堆里卡就睡了多久了 ");
-//                        FloatWindow.with(U.app())
-//                                .setView(textView)
-//                                .setMoveType(MoveType.canRemove)
-//                                .setWidth(Screen.width, 1f)                               //设置控件宽高
-//                                .setHeight(Screen.height, 0.2f)
-//                                .setDesktopShow(false)                        //桌面显示
-//                                .setCancelIfExist(false)
-//                                .setReqPermissionIfNeed(false)
-//                                .build();
-//                    }
-//                });
+        HandlerTaskTimer.newBuilder().interval(10000)
+                .start(new HandlerTaskTimer.ObserverW() {
+                    @Override
+                    public void onNext(Integer integer) {
+                        TextView textView = new TextView(getContext());
+                        textView.setText("阿斯顿健康垃圾堆里卡就睡了多久了 ");
+                        FloatWindow.with(U.app())
+                                .setView(textView)
+                                .setMoveType(MoveType.canRemove)
+                                .setWidth(Screen.width, 1f)                               //设置控件宽高
+                                .setHeight(Screen.height, 0.2f)
+                                .setDesktopShow(false)                        //桌面显示
+                                .setCancelIfExist(false)
+                                .setReqPermissionIfNeed(false)
+                                .build();
+                    }
+                });
     }
 
     private void initBaseInfo() {

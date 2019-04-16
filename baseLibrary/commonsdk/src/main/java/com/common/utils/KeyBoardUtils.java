@@ -133,9 +133,23 @@ public class KeyBoardUtils {
         Rect rect = new Rect();
         //DecorView即为activity的顶级view
         activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
+
+        return screenHeight * 3 / 4 > rect.bottom + U.getDeviceUtils().getVirtualNavBarHeight();
+//        final View decorView = activity.getWindow().getDecorView();
+//        if (decorView == null) return false;
+//        final Rect outRect = new Rect();
+//        decorView.getWindowVisibleDisplayFrame(outRect);
+//        Log.d("KeyboardUtils", "getDecorViewInvisibleHeight: "
+//                + (decorView.getBottom() - outRect.bottom));
+//        int delta = Math.abs(decorView.getBottom() - outRect.bottom);
+//        if (delta <= U.getDeviceUtils().getVirtualNavBarHeight()) {
+//            return false;
+//        }
+//        if()
+//        return delta - sDecorViewDelta;
+
         //考虑到虚拟导航栏的情况（虚拟导航栏情况下：screenHeight = rect.bottom + 虚拟导航栏高度）
         //选取screenHeight*2/3进行判断
-        return screenHeight * 2 / 3 > rect.bottom + U.getDeviceUtils().getVirtualNavBarHeight();
     }
 
     /**
