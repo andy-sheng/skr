@@ -1296,7 +1296,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         } else {
             type = ConfirmDialog.TYPE_KICK_CONFIRM;
         }
-        mGrabKickDialog = new ConfirmDialog(getActivity(), userInfoModel, type, mRoomData.getGrabConfigModel().getKickUserConsumCoinCnt());
+        mGrabKickDialog = new ConfirmDialog(U.getActivityUtils().getTopActivity(), userInfoModel, type, mRoomData.getGrabConfigModel().getKickUserConsumCoinCnt());
         mGrabKickDialog.setListener(new ConfirmDialog.Listener() {
             @Override
             public void onClickConfirm(UserInfoModel userInfoModel) {
@@ -1335,7 +1335,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         GrabPlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, userId);
         if (playerInfoModel != null) {
             UserInfoModel userInfoModel = playerInfoModel.getUserInfo();
-            mGrabKickDialog = new ConfirmDialog(getActivity(), userInfoModel, ConfirmDialog.TYPE_KICK_REQUEST, 5);
+            mGrabKickDialog = new ConfirmDialog(U.getActivityUtils().getTopActivity(), userInfoModel, ConfirmDialog.TYPE_KICK_REQUEST, 5);
             mGrabKickDialog.setListener(new ConfirmDialog.Listener() {
                 @Override
                 public void onClickConfirm(UserInfoModel userInfoModel) {
