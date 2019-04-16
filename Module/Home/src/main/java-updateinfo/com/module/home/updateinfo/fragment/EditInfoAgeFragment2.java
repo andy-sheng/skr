@@ -45,6 +45,7 @@ public class EditInfoAgeFragment2 extends BaseFragment {
     SeparatedEditText mYear;
     SeparatedEditText mMonth;
     SeparatedEditText mDay;
+    ExTextView mErrorHint;
     ExTextView mAgeTv;
     View mDivider;
     ExTextView mConTv;
@@ -74,6 +75,7 @@ public class EditInfoAgeFragment2 extends BaseFragment {
         mYear = (SeparatedEditText) mRootView.findViewById(R.id.year);
         mMonth = (SeparatedEditText) mRootView.findViewById(R.id.month);
         mDay = (SeparatedEditText) mRootView.findViewById(R.id.day);
+        mErrorHint = (ExTextView)mRootView.findViewById(R.id.error_hint);
         mAgeTv = (ExTextView) mRootView.findViewById(R.id.age_tv);
         mDivider = (View) mRootView.findViewById(R.id.divider);
         mConTv = (ExTextView) mRootView.findViewById(R.id.con_tv);
@@ -102,7 +104,8 @@ public class EditInfoAgeFragment2 extends BaseFragment {
                         mMonth.setText("");
                         mYear.setText("");
                         mYear.requestFocus();
-                        U.getToastUtil().showShort("输入的出生日期不合法");
+                        mErrorHint.setVisibility(View.VISIBLE);
+                        mErrorHint.setText("输入的出生日期不合法");
                     }
                 }
             }
@@ -134,7 +137,8 @@ public class EditInfoAgeFragment2 extends BaseFragment {
                     mMonth.setText("");
                     mYear.setText("");
                     mYear.requestFocus();
-                    U.getToastUtil().showShort("输入的出生日期不合法");
+                    mErrorHint.setVisibility(View.VISIBLE);
+                    mErrorHint.setText("输入的出生日期不合法");
                 }
 
             }
@@ -171,6 +175,7 @@ public class EditInfoAgeFragment2 extends BaseFragment {
             @Override
             public void textCompleted(CharSequence text) {
                 mMonth.requestFocus();
+                mErrorHint.setVisibility(View.GONE);
                 // 展示年龄
                 mYearDate = mYear.getText().toString();
                 if (!TextUtils.isEmpty(mYearDate)) {

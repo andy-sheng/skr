@@ -120,6 +120,18 @@
 
     </RelativeLayout>
 
+    <com.common.view.ex.ExTextView
+        android:id="@+id/error_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_20_dp"
+        android:layout_below="@+id/birthday_area"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_14_dp"
+        android:gravity="center"
+        android:textColor="#EDADC5"
+        android:textSize="@dimen/textsize_14_dp"
+        android:visibility="gone" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_33_dp"
