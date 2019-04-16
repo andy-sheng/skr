@@ -134,7 +134,7 @@ class FloatPhone extends FloatView {
                  *
                  * 而且api>=23之后,要正确设置token值才能使用,要注意哦
                  */
-                if (U.getDeviceUtils().getProductModel().equals("INE-TL00") && U.getDeviceUtils().getRomVersion().startsWith("EmotionUI_8")) {
+                if (U.getKeyBoardUtils().isSoftKeyboardShowing(U.getActivityUtils().getTopActivity())) {
                     // 这个机型,有键盘在的时候有问题，通知栏会被顶上去
                     attachView(true);
                 } else {
