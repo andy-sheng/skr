@@ -63,7 +63,7 @@ public class GrabCreateSpecialFragment extends BaseFragment {
         mSpecialView.setSpecialSelectListner(new SpecialSelectView.SpecialSelectListner() {
             @Override
             public void onClickSpecial(SpecialModel model, List<String> music) {
-                if(!getActivity().isFinishing()){
+                if(getActivity() != null && !getActivity().isFinishing()){
                     createRoom(model);
                 }
             }
