@@ -143,10 +143,15 @@ public class GrabBottomContainerView extends BottomContainerView {
                 public boolean onTouch(View v, MotionEvent event) {
                     switch (event.getActionMasked()) {
                         case MotionEvent.ACTION_DOWN:
-                            mQuickBtn.setImageResource(R.drawable.fz_shuohuazhong);
-                            mSpeakingDotAnimationView.setVisibility(VISIBLE);
-                            mShowInputContainerBtn.setText("");
-                            EventBus.getDefault().post(new GrabSpeakingControlEvent(true));
+                            GrabRoundInfoModel roundInfoModel = mGrabRoomData.getRealRoundInfo();
+                            if(roundInfoModel!=null && roundInfoModel.getStatus() == GrabRoundInfoModel.STATUS_SING){
+                                U.getToastUtil().showShort("演唱阶段不能说话哦");
+                            }else{
+                                mQuickBtn.setImageResource(R.drawable.fz_shuohuazhong);
+                                mSpeakingDotAnimationView.setVisibility(VISIBLE);
+                                mShowInputContainerBtn.setText("");
+                                EventBus.getDefault().post(new GrabSpeakingControlEvent(true));
+                            }
                             break;
                         case MotionEvent.ACTION_CANCEL:
                         case MotionEvent.ACTION_UP:
