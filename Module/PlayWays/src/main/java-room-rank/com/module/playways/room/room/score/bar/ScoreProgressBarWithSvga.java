@@ -54,7 +54,8 @@ public class ScoreProgressBarWithSvga extends RelativeLayout {
 
             @Override
             public void onFinished() {
-                mStarIv.stopAnimation();
+                mStarIv.setCallback(null);
+                mStarIv.stopAnimation(true);
                 mStarIv.setVisibility(GONE);
             }
 
@@ -123,6 +124,7 @@ public class ScoreProgressBarWithSvga extends RelativeLayout {
                 SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
                 mStarIv.setTranslationX(-getWidth() / 2 + tx);
                 mStarIv.setVisibility(VISIBLE);
+                mStarIv.setCallback(null);
                 mStarIv.stopAnimation(true);
                 mStarIv.setImageDrawable(drawable);
                 mStarIv.startAnimation();

@@ -98,6 +98,7 @@ public class RankTopLEDView extends RelativeLayout {
                 @Override
                 public void onFinished() {
                     if (mDengSvga != null) {
+                        mDengSvga.setCallback(null);
                         mDengSvga.stopAnimation(false);
                     }
 

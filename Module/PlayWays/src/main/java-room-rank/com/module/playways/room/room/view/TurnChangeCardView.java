@@ -196,6 +196,7 @@ public class TurnChangeCardView extends RelativeLayout {
             @Override
             public void onFinished() {
                 if (mNextSvga != null) {
+                    mNextSvga.setCallback(null);
                     mNextSvga.stopAnimation(true);
                     mNextSvga.setVisibility(GONE);
                 }
@@ -280,11 +281,11 @@ public class TurnChangeCardView extends RelativeLayout {
             this.mSVGAListener = null;
             if (mFirstSvga != null) {
                 mFirstSvga.setCallback(null);
-                mFirstSvga.stopAnimation(false);
+                mFirstSvga.stopAnimation(true);
             }
             if (mNextSvga != null) {
                 mNextSvga.setCallback(null);
-                mNextSvga.stopAnimation(false);
+                mNextSvga.stopAnimation(true);
             }
         }
     }

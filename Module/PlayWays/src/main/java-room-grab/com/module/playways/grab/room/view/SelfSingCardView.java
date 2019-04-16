@@ -281,7 +281,7 @@ public class SelfSingCardView extends RelativeLayout {
                 }
             });
         } catch (Exception e) {
-            MyLog.e(TAG,e);
+            MyLog.e(TAG, e);
         }
     }
 
@@ -373,7 +373,7 @@ public class SelfSingCardView extends RelativeLayout {
                         emitter.onError(new Throwable("重命名错误"));
                     }
                 } else {
-                    emitter.onError(new Throwable("下载失败"+TAG));
+                    emitter.onError(new Throwable("下载失败" + TAG));
                 }
             }
         }).subscribeOn(Schedulers.io())
@@ -495,7 +495,8 @@ public class SelfSingCardView extends RelativeLayout {
                 @Override
                 public void onAnimationEnd(Animation animation) {
                     if (mSingBgSvga != null) {
-                        mSingBgSvga.stopAnimation(false);
+                        mSingBgSvga.setCallback(null);
+                        mSingBgSvga.stopAnimation(true);
                     }
                     setVisibility(GONE);
                     clearAnimation();
@@ -508,7 +509,8 @@ public class SelfSingCardView extends RelativeLayout {
             });
         } else {
             if (mSingBgSvga != null) {
-                mSingBgSvga.stopAnimation(false);
+                mSingBgSvga.setCallback(null);
+                mSingBgSvga.stopAnimation(true);
             }
             setVisibility(GONE);
             clearAnimation();

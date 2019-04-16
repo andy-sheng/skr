@@ -182,7 +182,7 @@ public class SingBeginTipsCardView extends RelativeLayout {
             this.mSVGAListener = null;
             if (mSingBeginSvga != null) {
                 mSingBeginSvga.setCallback(null);
-                mSingBeginSvga.stopAnimation(false);
+                mSingBeginSvga.stopAnimation(true);
             }
         }
     }
