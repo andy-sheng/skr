@@ -1442,11 +1442,15 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                                 mUiHandler.sendEmptyMessage(MSG_RECOVER_VOLUME);
                             } else {
                                 MyLog.d(TAG, "房主解开mute，如果检测到房主说话，音量就衰减");
-//                                int audioVolume = EngineManager.getInstance().getParams().getAudioMixingVolume();
-//                                int recordVolume = EngineManager.getInstance().getParams().getRecordingSignalVolume();
-//                                mEngineParamsTemp = new EngineParamsTemp(audioVolume, recordVolume);
-//                                EngineManager.getInstance().adjustAudioMixingVolume(audioVolume / 3, false);
-//                                EngineManager.getInstance().adjustRecordingSignalVolume(audioVolume / 3, false);
+                                mUiHandler.removeMessages(MSG_RECOVER_VOLUME);
+                                mUiHandler.sendEmptyMessageDelayed(MSG_RECOVER_VOLUME, 1000);
+                                if (mEngineParamsTemp == null) {
+                                    int audioVolume = EngineManager.getInstance().getParams().getAudioMixingVolume();
+                                    int recordVolume = EngineManager.getInstance().getParams().getRecordingSignalVolume();
+                                    mEngineParamsTemp = new EngineParamsTemp(audioVolume, recordVolume);
+                                    EngineManager.getInstance().adjustAudioMixingVolume((int) (audioVolume * 0.2), false);
+                                    EngineManager.getInstance().adjustRecordingSignalVolume((int) (recordVolume * 0.2), false);
+                                }
                             }
                         } else {
                             MyLog.d(TAG, "我不是主播，忽略");
@@ -1472,8 +1476,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                             int audioVolume = EngineManager.getInstance().getParams().getAudioMixingVolume();
                             int recordVolume = EngineManager.getInstance().getParams().getRecordingSignalVolume();
                             mEngineParamsTemp = new EngineParamsTemp(audioVolume, recordVolume);
-                            EngineManager.getInstance().adjustAudioMixingVolume(audioVolume, false);
-                            EngineManager.getInstance().adjustRecordingSignalVolume(recordVolume, false);
+                            EngineManager.getInstance().adjustAudioMixingVolume((int) (audioVolume * 0.2), false);
+                            EngineManager.getInstance().adjustRecordingSignalVolume((int) (recordVolume * 0.2), false);
                         }
                     } else {
                         MyLog.d(TAG, "我不是主播，忽略");
@@ -2059,10 +2063,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         // 踢人的结果
         if (event.speaking) {
             EngineManager.getInstance().muteLocalAudioStream(false);
-            int v = EngineManager.getInstance().getParams().getPlaybackSignalVolume() / 3;
+            int v = EngineManager.getInstance().getParams().getPlaybackSignalVolume() / 4;
             EngineManager.getInstance().adjustPlaybackSignalVolume(v, false);
             if (mExoPlayer != null) {
-                mExoPlayer.setVolume(mExoPlayer.getVolume() * 0.2f, false);
+                mExoPlayer.setVolume(mExoPlayer.getVolume() * 0.1f, false);
             }
         } else {
             // 要闭麦
