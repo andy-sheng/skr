@@ -1217,11 +1217,11 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     private synchronized void updatePlayerState(long gameOverTimeMs, long syncStatusTimes, GrabRoundInfoModel newRoundInfo) {
         MyLog.w(TAG, "updatePlayerState" + " gameOverTimeMs=" + gameOverTimeMs + " syncStatusTimes=" + syncStatusTimes + " currentInfo=" + newRoundInfo.getRoundSeq());
-        if (!newRoundInfo.isContainInRoom()) {
-            MyLog.w(TAG, "updatePlayerState" + ", 不再当前的游戏里");
-            exitRoom();
-            return;
-        }
+//        if (!newRoundInfo.isContainInRoom()) {
+//            MyLog.w(TAG, "updatePlayerState" + ", 不再当前的游戏里");
+//            exitRoom();
+//            return;
+//        }
 
         if (syncStatusTimes > mRoomData.getLastSyncTs()) {
             mRoomData.setLastSyncTs(syncStatusTimes);
