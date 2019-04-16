@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
@@ -144,7 +145,7 @@ public class GrabBottomContainerView extends BottomContainerView {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     switch (event.getActionMasked()) {
-                        case MotionEvent.ACTION_DOWN:
+                        case MotionEvent.ACTION_DOWN: {
                             GrabRoundInfoModel roundInfoModel = mGrabRoomData.getRealRoundInfo();
                             if (roundInfoModel != null && roundInfoModel.getStatus() == GrabRoundInfoModel.STATUS_SING) {
                                 U.getToastUtil().showShort("演唱阶段不能说话哦");
@@ -154,13 +155,21 @@ public class GrabBottomContainerView extends BottomContainerView {
                                 mShowInputContainerBtn.setText("");
                                 EventBus.getDefault().post(new GrabSpeakingControlEvent(true));
                             }
+                        }
                             break;
                         case MotionEvent.ACTION_CANCEL:
-                        case MotionEvent.ACTION_UP:
-                            mQuickBtn.setImageResource(R.drawable.fz_anzhushuohua);
+                        case MotionEvent.ACTION_UP: {
+                            GrabRoundInfoModel roundInfoModel = mGrabRoomData.getRealRoundInfo();
+                            if (roundInfoModel != null && roundInfoModel.getStatus() == GrabRoundInfoModel.STATUS_SING) {
+                                U.getToastUtil().showShort("演唱阶段不能说话哦");
+                                mQuickBtn.setImageResource(R.drawable.fz_anzhushuohua_b);
+                            } else {
+                                mQuickBtn.setImageResource(R.drawable.fz_anzhushuohua);
+                            }
                             mSpeakingDotAnimationView.setVisibility(GONE);
                             mShowInputContainerBtn.setText("夸赞是一种美德");
                             EventBus.getDefault().post(new GrabSpeakingControlEvent(false));
+                        }
                             break;
                     }
                     return true;
@@ -178,6 +187,7 @@ public class GrabBottomContainerView extends BottomContainerView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabRoundStatusChangeEvent event) {
+        //MyLog.d("GrabBottomContainerView","onEvent" + " event=" + event);
         GrabRoundInfoModel now = event.roundInfo;
         if (now.getStatus() == GrabRoundInfoModel.STATUS_SING && mGrabRoomData.isOwner() && mGrabRoomData.isSpeaking()) {
             mQuickBtn.setImageResource(R.drawable.fz_anzhushuohua_b);

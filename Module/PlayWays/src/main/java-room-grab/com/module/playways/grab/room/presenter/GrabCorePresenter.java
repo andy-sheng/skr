@@ -1379,7 +1379,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      *
      * @param event
      */
-    @Subscribe(threadMode = ThreadMode.POSTING, priority = 9)
+    @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(GrabRoundStatusChangeEvent event) {
         MyLog.d(TAG, "GrabRoundStatusChangeEvent" + " event=" + event);
         estimateOverTsThisRound();
