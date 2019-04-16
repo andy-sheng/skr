@@ -127,7 +127,7 @@ public class EditInfoNameFragment extends BaseFragment {
                                     .build(), false, false, new MyUserInfoManager.ServerCallback() {
                                 @Override
                                 public void onSucess() {
-                                    U.getToastUtil().showShort("姓名更新成功");
+                                    U.getToastUtil().showShort("昵称更新成功");
                                     U.getFragmentUtils().popFragment(EditInfoNameFragment.this);
                                 }
 
