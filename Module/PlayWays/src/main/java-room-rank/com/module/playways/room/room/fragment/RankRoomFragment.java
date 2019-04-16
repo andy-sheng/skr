@@ -440,11 +440,13 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     // 播放主舞台动画,入场、循环的离场
     private void playShowMainStageAnimator(int userId) {
         MyLog.d(TAG, "playShowMainStageAnimator");
-        mStageView.setVisibility(View.VISIBLE);
-        String avatar = "";
-        if(mRoomData.getUserInfo(userId) != null){
-            avatar = mRoomData.getUserInfo(userId).getAvatar();
+        if(mRoomData.getUserInfo(userId) == null){
+            return;
         }
+
+        mStageView.setVisibility(View.VISIBLE);
+
+        String avatar = mRoomData.getUserInfo(userId).getAvatar();
 
         mStageView.setLoops(0);
         SVGAParser parser = new SVGAParser(U.app());
