@@ -12,7 +12,7 @@
         <activity
             android:name=".updateinfo.EditInfoActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustNothing" />
+            android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".musictest.activity.MusicTestActivity"
