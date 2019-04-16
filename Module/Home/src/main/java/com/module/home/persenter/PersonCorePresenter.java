@@ -325,7 +325,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
                     if (obj.getErrno() == 0) {
                         if (mView != null) {
                             photoModel.setStatus(PhotoModel.STATUS_DELETE);
-                            mView.deletePhoto(photoModel);
+                            mView.deletePhoto(photoModel, true);
                         }
                     } else {
                         U.getToastUtil().showShort(obj.getErrmsg());
@@ -337,7 +337,7 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
             PhotoDataManager.delete(photoModel);
             // 还没上传成功，本地删除就好，// 上传队列还得删除
             if (mView != null) {
-                mView.deletePhoto(photoModel);
+                mView.deletePhoto(photoModel, false);
             }
         }
     }

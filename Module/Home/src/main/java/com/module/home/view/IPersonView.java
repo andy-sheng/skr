@@ -43,7 +43,7 @@ public interface IPersonView {
 
     void insertPhoto(PhotoModel photoModel);
 
-    void deletePhoto(PhotoModel photoModel);
+    void deletePhoto(PhotoModel photoModel,boolean numchange);
 
     void updatePhoto(PhotoModel imageItem);
 
