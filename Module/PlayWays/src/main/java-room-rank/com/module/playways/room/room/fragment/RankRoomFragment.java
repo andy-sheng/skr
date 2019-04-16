@@ -441,7 +441,10 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     private void playShowMainStageAnimator(int userId) {
         MyLog.d(TAG, "playShowMainStageAnimator");
         mStageView.setVisibility(View.VISIBLE);
-        String avatar = mRoomData.getUserInfo(userId).getAvatar();
+        String avatar = "";
+        if(mRoomData.getUserInfo(userId) != null){
+            avatar = mRoomData.getUserInfo(userId).getAvatar();
+        }
 
         mStageView.setLoops(0);
         SVGAParser parser = new SVGAParser(U.app());
