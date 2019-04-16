@@ -200,11 +200,13 @@ public class GrabBottomContainerView extends BottomContainerView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabRoundChangeEvent event) {
-        mQuickBtn.setEnabled(true);
-        if (mGrabRoomData.isSpeaking()) {
-            // 正在说话，就算了
-        } else {
-            mQuickBtn.setImageResource(R.drawable.fz_anzhushuohua);
+        if(mGrabRoomData.isOwner()) {
+            mQuickBtn.setEnabled(true);
+            if (mGrabRoomData.isSpeaking()) {
+                // 正在说话，就算了
+            } else {
+                mQuickBtn.setImageResource(R.drawable.fz_anzhushuohua);
+            }
         }
     }
 
