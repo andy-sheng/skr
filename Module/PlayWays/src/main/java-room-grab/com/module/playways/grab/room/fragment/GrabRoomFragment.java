@@ -267,6 +267,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         mGrabRedPkgPresenter = new GrabRedPkgPresenter(this);
         addPresent(mGrabRedPkgPresenter);
         mGrabRedPkgPresenter.checkRedPkg();
+        mCorePresenter.setGrabRedPkgPresenter(mGrabRedPkgPresenter);
 
         U.getSoundUtils().preLoad(TAG, R.raw.grab_challengelose, R.raw.grab_challengewin,
                 R.raw.grab_gameover, R.raw.grab_iwannasing,
@@ -1071,11 +1072,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                 onRoundOverPlayOver(playNextSongInfoCard, now);
             }
         });
-
-        if (mGrabRedPkgPresenter.isCanReceive()
-                && now.getUserID() == MyUserInfoManager.getInstance().getUid()) {
-            mGrabRedPkgPresenter.getRedPkg();
-        }
     }
 
     private void onRoundOverPlayOver(boolean playNextSongInfoCard, BaseRoundInfoModel now) {

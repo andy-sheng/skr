@@ -153,6 +153,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     boolean mSwitchRooming = false;
 
+    GrabRedPkgPresenter mGrabRedPkgPresenter;
+
     ZipUrlResourceManager mZipUrlResourceManager;
 
     Handler mUiHandler = new Handler() {
@@ -191,6 +193,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         TAG = "GrabCorePresenter";
         ChatRoomMsgManager.getInstance().addFilter(mPushMsgFilter);
         joinRoomAndInit(true);
+    }
+
+    public void setGrabRedPkgPresenter(GrabRedPkgPresenter grabRedPkgPresenter) {
+        mGrabRedPkgPresenter = grabRedPkgPresenter;
     }
 
     /**
@@ -671,6 +677,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     MyLog.d(TAG, "isScoreEnough false");
                 }
             }
+        }
+
+        if (mGrabRedPkgPresenter != null && mGrabRedPkgPresenter.isCanReceive()) {
+            mGrabRedPkgPresenter.getRedPkg();
         }
     }
 
