@@ -131,7 +131,6 @@ public class LoginFragment extends BaseFragment {
                     return;
                 }
                 U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), LoginByPhoneFragment.class)
-                        .setNotifyHideFragment(LoginFragment.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
                         .build());

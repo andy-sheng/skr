@@ -1272,23 +1272,17 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         MyLog.d(TAG, "onGrabGameOver " + from);
 //        mUiHanlder.removeMessages(MSG_ENSURE_GAME_OVER);
 
+        if (getActivity() != null) {
+            getActivity().finish();
+        }else {
+            MyLog.d(TAG, "onGrabGameOver activity==null");
+        }
+        StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
+                StatConstants.KEY_GAME_FINISH, null);
+
         ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_RESULT)
                 .withSerializable("room_data", mRoomData)
                 .navigation();
-        // 延迟一点finish，以防漏底
-        mUiHanlder.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Activity activity = getActivity();
-                if (activity != null) {
-                    activity.finish();
-                } else {
-                    MyLog.d(TAG, "onGrabGameOver activity==null");
-                }
-                StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-                        StatConstants.KEY_GAME_FINISH, null);
-            }
-        }, 500);
     }
 
     // 确认踢人弹窗
