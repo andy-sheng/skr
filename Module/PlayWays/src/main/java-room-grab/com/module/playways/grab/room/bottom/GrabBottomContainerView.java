@@ -14,6 +14,7 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.module.playways.BaseRoomData;
 import com.module.playways.grab.room.GrabRoomData;
+import com.module.playways.grab.room.event.GrabRoundChangeEvent;
 import com.module.playways.grab.room.event.GrabRoundStatusChangeEvent;
 import com.module.playways.grab.room.event.GrabSpeakingControlEvent;
 import com.module.playways.grab.room.dynamicmsg.DynamicMsgView;
@@ -137,6 +138,7 @@ public class GrabBottomContainerView extends BottomContainerView {
             lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 0);
             mEmoji2Btn.setLayoutParams(lp);
             mQuickBtn.setImageResource(R.drawable.fz_anzhushuohua);
+            mQuickBtn.setEnabled(true);
             mQuickBtn.setOnClickListener(null);
             mQuickBtn.setOnTouchListener(new OnTouchListener() {
                 @Override
@@ -144,9 +146,9 @@ public class GrabBottomContainerView extends BottomContainerView {
                     switch (event.getActionMasked()) {
                         case MotionEvent.ACTION_DOWN:
                             GrabRoundInfoModel roundInfoModel = mGrabRoomData.getRealRoundInfo();
-                            if(roundInfoModel!=null && roundInfoModel.getStatus() == GrabRoundInfoModel.STATUS_SING){
+                            if (roundInfoModel != null && roundInfoModel.getStatus() == GrabRoundInfoModel.STATUS_SING) {
                                 U.getToastUtil().showShort("演唱阶段不能说话哦");
-                            }else{
+                            } else {
                                 mQuickBtn.setImageResource(R.drawable.fz_shuohuazhong);
                                 mSpeakingDotAnimationView.setVisibility(VISIBLE);
                                 mShowInputContainerBtn.setText("");
@@ -178,10 +180,21 @@ public class GrabBottomContainerView extends BottomContainerView {
     public void onEvent(GrabRoundStatusChangeEvent event) {
         GrabRoundInfoModel now = event.roundInfo;
         if (now.getStatus() == GrabRoundInfoModel.STATUS_SING && mGrabRoomData.isOwner() && mGrabRoomData.isSpeaking()) {
-            mQuickBtn.setImageResource(R.drawable.fz_anzhushuohua);
+            mQuickBtn.setImageResource(R.drawable.fz_anzhushuohua_b);
+            mQuickBtn.setEnabled(false);
             mSpeakingDotAnimationView.setVisibility(GONE);
             mShowInputContainerBtn.setText("夸赞是一种美德");
             EventBus.getDefault().post(new GrabSpeakingControlEvent(false));
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(GrabRoundChangeEvent event) {
+        mQuickBtn.setEnabled(true);
+        if (mGrabRoomData.isSpeaking()) {
+            // 正在说话，就算了
+        } else {
+            mQuickBtn.setImageResource(R.drawable.fz_anzhushuohua);
         }
     }
 
