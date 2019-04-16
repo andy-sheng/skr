@@ -88,6 +88,8 @@ public class GrabOpView extends RelativeLayout {
 
     Animation mExitAnimation;
 
+    boolean mIsSupportChallenge = false;
+
     Handler mUiHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -226,9 +228,10 @@ public class GrabOpView extends RelativeLayout {
      * @param num     倒计时时间，倒计时结束后变成想唱
      * @param waitNum 等待想唱时间
      */
-    public void playCountDown(int seq, int num, int waitNum) {
+    public void playCountDown(int seq, int num, int waitNum, boolean supportChallenge) {
         // 播放 3 2 1 导唱倒计时
         MyLog.d(TAG, "playCountDown" + " seq=" + seq + " num=" + num + " waitNum=" + waitNum);
+        mIsSupportChallenge = supportChallenge;
         mSeq = seq;
         mStatus = STATUS_COUNT_DOWN;
         onChangeState();
@@ -321,7 +324,7 @@ public class GrabOpView extends RelativeLayout {
                 mGrabIv.setImageDrawable(null);
                 mGrabIv.setBackground(U.getDrawable(R.drawable.ycdd_qiangchang_bj));
 
-                if (mGrabRoomData.isChallengeAvailable()) {
+                if (mGrabRoomData.isChallengeAvailable() && mIsSupportChallenge) {
                     mGrab2Container.setVisibility(VISIBLE);
                     mGrab2Iv.setEnabled(false);
                     mGrab2Iv.setImageDrawable(null);
@@ -366,7 +369,7 @@ public class GrabOpView extends RelativeLayout {
                 });
             }
             {
-                if (mGrabRoomData.isChallengeAvailable()) {
+                if (mGrabRoomData.isChallengeAvailable() && mIsSupportChallenge) {
                     mGrab2Container.setVisibility(VISIBLE);
                     mGrab2Iv.setEnabled(true);
                     mGrab2Iv.setImageDrawable(null);

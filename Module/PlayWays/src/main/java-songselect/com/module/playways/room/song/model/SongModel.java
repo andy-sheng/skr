@@ -50,6 +50,15 @@ public class SongModel implements Serializable {
     private String standLrc = "";   //一唱到底是否是白板item
     private String rankUserVoice;   //排位进入游戏前的背景音乐
     private int rankLrcEndT;   //排位进入游戏前的背景音乐
+    private boolean challengeAvailable;
+
+    public boolean isChallengeAvailable() {
+        return challengeAvailable;
+    }
+
+    public void setChallengeAvailable(boolean challengeAvailable) {
+        this.challengeAvailable = challengeAvailable;
+    }
 
     public int getRankLrcBeginT() {
         return rankLrcBeginT;
@@ -273,6 +282,7 @@ public class SongModel implements Serializable {
         this.setStandLrc(musicInfo.getStandLrc());
         this.setRankUserVoice(musicInfo.getRankUserVoice());
         this.setRankLrcEndT(musicInfo.getRankLrcEndT());
+        this.setChallengeAvailable(musicInfo.getChallengeAvailable());
     }
 
     public boolean isAllResExist() {
@@ -329,6 +339,7 @@ public class SongModel implements Serializable {
                 ", standLrc='" + standLrc + '\'' +
                 ", rankUserVoice='" + rankUserVoice + '\'' +
                 ", rankLrcEndT=" + rankLrcEndT +
+                ", challengeAvailable=" + challengeAvailable +
                 '}';
     }
 
