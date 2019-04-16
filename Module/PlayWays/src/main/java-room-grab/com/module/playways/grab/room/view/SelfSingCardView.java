@@ -468,12 +468,13 @@ public class SelfSingCardView extends RelativeLayout {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         mUiHandler.removeCallbacksAndMessages(null);
+        if (mLeaveAnimation != null) {
+            mLeaveAnimation.setAnimationListener(null);
+            mLeaveAnimation.cancel();
+        }
         if (mSingBgSvga != null) {
             mSingBgSvga.setCallback(null);
             mSingBgSvga.stopAnimation(true);
-        }
-        if (mLeaveAnimation != null) {
-            mLeaveAnimation.cancel();
         }
         cancelCountDownTask();
     }

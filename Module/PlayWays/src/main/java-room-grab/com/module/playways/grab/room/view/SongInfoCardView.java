@@ -271,6 +271,7 @@ public class SongInfoCardView extends RelativeLayout {
             mEnterTranslateAnimation.cancel();
         }
         if (mRotateAnimation != null) {
+            mRotateAnimation.setAnimationListener(null);
             mRotateAnimation.cancel();
         }
         if (mLeaveTranslateAnimation != null) {

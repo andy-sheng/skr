@@ -206,6 +206,7 @@ public class RoundRectangleView extends View {
     public void stopCountDown(){
         hasData = false;
         if(mAnimatorSet != null){
+            mAnimatorSet.removeAllListeners();
             mAnimatorSet.cancel();
         }
         invalidate();
@@ -215,6 +216,7 @@ public class RoundRectangleView extends View {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         if(mAnimatorSet != null){
+            mAnimatorSet.removeAllListeners();
             mAnimatorSet.cancel();
         }
     }

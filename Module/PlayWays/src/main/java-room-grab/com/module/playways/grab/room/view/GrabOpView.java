@@ -329,8 +329,8 @@ public class GrabOpView extends RelativeLayout {
                     mCoinFlagIv.setVisibility(GONE);
 
 
-                    if(mShowChallengeTime < 3){
-                        if(mListener != null){
+                    if (mShowChallengeTime < 3) {
+                        if (mListener != null) {
                             mListener.showChallengeTipView();
                         }
 
@@ -525,13 +525,21 @@ public class GrabOpView extends RelativeLayout {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         EventBus.getDefault().unregister(this);
-        mGrabIv.clearAnimation();
-        mGrab2Iv.clearAnimation();
+        if (mGrabIv != null) {
+            mGrabIv.clearAnimation();
+        }
+        if (mGrab2Iv != null) {
+            mGrab2Iv.clearAnimation();
+        }
         cancelCountDownTask();
         mUiHandler.removeCallbacksAndMessages(null);
         clearAnimation();
-        mIvBurst.clearAnimation();
-        mListener.hideChallengeTipView();
+        if (mIvBurst != null) {
+            mIvBurst.clearAnimation();
+        }
+        if (mListener != null) {
+            mListener.hideChallengeTipView();
+        }
     }
 
     private void cancelCountDownTask() {

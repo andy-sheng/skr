@@ -195,7 +195,7 @@ public class TurnInfoCardView extends RelativeLayout {
             mFirstSvga.stopAnimation(true);
         }
         if (mNextSvga != null) {
-            mFirstSvga.setCallback(null);
+            mNextSvga.setCallback(null);
             mNextSvga.stopAnimation(true);
         }
     }

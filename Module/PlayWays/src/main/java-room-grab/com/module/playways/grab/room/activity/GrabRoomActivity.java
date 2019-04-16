@@ -170,8 +170,10 @@ public class GrabRoomActivity extends BaseActivity {
 
     @Override
     protected void destroy() {
+        if (getWindow() != null) {
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        }
         super.destroy();
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     @Override

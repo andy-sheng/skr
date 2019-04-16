@@ -256,9 +256,11 @@ public class OthersSingCardView extends RelativeLayout {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         if (mEnterAlphaAnimation != null) {
+            mEnterAlphaAnimation.setAnimationListener(null);
             mEnterAlphaAnimation.cancel();
         }
         if (mLeaveTranslateAnimation != null) {
+            mLeaveTranslateAnimation.setAnimationListener(null);
             mLeaveTranslateAnimation.cancel();
         }
     }
