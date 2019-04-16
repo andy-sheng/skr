@@ -1274,7 +1274,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
         if (getActivity() != null) {
             getActivity().finish();
-        }else {
+        } else {
             MyLog.d(TAG, "onGrabGameOver activity==null");
         }
         StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
@@ -1309,7 +1309,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     private void dismissDialog() {
         if (mGameRuleDialog != null) {
-            mGameRuleDialog.dismiss();
+            mGameRuleDialog.dismiss(false);
         }
         if (mBottomContainerView != null) {
             mBottomContainerView.dismissPopWindow();
@@ -1318,7 +1318,10 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             mPersonInfoDialog.dismiss();
         }
         if (mGrabKickDialog != null) {
-            mGrabKickDialog.dismiss();
+            mGrabKickDialog.dismiss(false);
+        }
+        if (mVoiceControlDialog != null) {
+            mVoiceControlDialog.dismiss(false);
         }
     }
 

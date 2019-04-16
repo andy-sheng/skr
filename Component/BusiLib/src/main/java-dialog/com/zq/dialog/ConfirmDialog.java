@@ -99,6 +99,13 @@ public class ConfirmDialog {
         mListener = null;
     }
 
+    public void dismiss(boolean useAnimation) {
+        if (mDialogPlus != null) {
+            mDialogPlus.dismiss();
+        }
+        mListener = null;
+    }
+
     public interface Listener {
         void onClickConfirm(UserInfoModel userInfoModel);
     }
