@@ -199,7 +199,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      * 系统消息弹幕
      */
     private void joinRoomAndInit(boolean first) {
-        MyLog.d(TAG, "joinRoomAndInit" + " first=" + first);
+        MyLog.w(TAG, "joinRoomAndInit" + " first=" + first + ", gameId is " + mRoomData.getGameId());
         if (mRoomData.getGameId() > 0) {
             if (first) {
                 Params params = Params.getFromPref();
