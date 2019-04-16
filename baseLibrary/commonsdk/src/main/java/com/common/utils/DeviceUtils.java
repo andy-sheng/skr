@@ -131,7 +131,7 @@ public class DeviceUtils {
     }
 
     public boolean check(String rom) {
-        if (romName != null) {
+        if (!TextUtils.isEmpty(romName)) {
             return romName.equals(rom);
         }
 
