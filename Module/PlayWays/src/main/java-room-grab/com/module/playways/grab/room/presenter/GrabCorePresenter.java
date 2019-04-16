@@ -387,8 +387,23 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
         if (!mRoomData.isOwner()) {
             EngineManager.getInstance().setClientRole(true);
+            EngineManager.getInstance().muteLocalAudioStream(false);
+            if (mRoomData.isAccEnable()) {
+                // 如果需要播放伴奏，一定要在角色切换成功才能播
+                mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS);
+                mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS, 2000);
+            }
+        } else {
+            // 如果是房主,不在这里 解禁，会录进去别的声音 延后一些 在
+            mUiHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    EngineManager.getInstance().muteLocalAudioStream(false);
+                    onChangeBroadcastSuccess();
+                }
+            }, 500);
         }
-        EngineManager.getInstance().muteLocalAudioStream(false);
+
         if (mRoomData.isAccEnable()) {
             if (mRoomData.isOwner()) {
                 MyLog.d(TAG, "preOpWhenSelfRound 是主播 直接 onChangeBroadcastSuccess");

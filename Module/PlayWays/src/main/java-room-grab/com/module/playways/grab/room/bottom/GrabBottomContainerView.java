@@ -141,36 +141,32 @@ public class GrabBottomContainerView extends BottomContainerView {
             mQuickBtn.setImageResource(R.drawable.fz_anzhushuohua);
             mQuickBtn.setEnabled(true);
             mQuickBtn.setOnClickListener(null);
+
             mQuickBtn.setOnTouchListener(new OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
+                    if (!mQuickBtn.isEnabled()) {
+                        if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
+                            U.getToastUtil().showShort("演唱阶段不能说话哦");
+                        }
+                        return true;
+                    }
                     switch (event.getActionMasked()) {
                         case MotionEvent.ACTION_DOWN: {
-                            GrabRoundInfoModel roundInfoModel = mGrabRoomData.getRealRoundInfo();
-                            if (roundInfoModel != null && roundInfoModel.getStatus() == GrabRoundInfoModel.STATUS_SING) {
-                                U.getToastUtil().showShort("演唱阶段不能说话哦");
-                            } else {
-                                mQuickBtn.setImageResource(R.drawable.fz_shuohuazhong);
-                                mSpeakingDotAnimationView.setVisibility(VISIBLE);
-                                mShowInputContainerBtn.setText("");
-                                EventBus.getDefault().post(new GrabSpeakingControlEvent(true));
-                            }
+                            mQuickBtn.setImageResource(R.drawable.fz_shuohuazhong);
+                            mSpeakingDotAnimationView.setVisibility(VISIBLE);
+                            mShowInputContainerBtn.setText("");
+                            EventBus.getDefault().post(new GrabSpeakingControlEvent(true));
                         }
-                            break;
+                        break;
                         case MotionEvent.ACTION_CANCEL:
                         case MotionEvent.ACTION_UP: {
-                            GrabRoundInfoModel roundInfoModel = mGrabRoomData.getRealRoundInfo();
-                            if (roundInfoModel != null && roundInfoModel.getStatus() == GrabRoundInfoModel.STATUS_SING) {
-                                U.getToastUtil().showShort("演唱阶段不能说话哦");
-                                mQuickBtn.setImageResource(R.drawable.fz_anzhushuohua_b);
-                            } else {
-                                mQuickBtn.setImageResource(R.drawable.fz_anzhushuohua);
-                            }
+                            mQuickBtn.setImageResource(R.drawable.fz_anzhushuohua);
                             mSpeakingDotAnimationView.setVisibility(GONE);
                             mShowInputContainerBtn.setText("夸赞是一种美德");
                             EventBus.getDefault().post(new GrabSpeakingControlEvent(false));
                         }
-                            break;
+                        break;
                     }
                     return true;
                 }
@@ -189,7 +185,7 @@ public class GrabBottomContainerView extends BottomContainerView {
     public void onEvent(GrabRoundStatusChangeEvent event) {
         //MyLog.d("GrabBottomContainerView","onEvent" + " event=" + event);
         GrabRoundInfoModel now = event.roundInfo;
-        if (now.getStatus() == GrabRoundInfoModel.STATUS_SING && mGrabRoomData.isOwner() && mGrabRoomData.isSpeaking()) {
+        if (now!=null && now.getStatus() == GrabRoundInfoModel.STATUS_SING && mGrabRoomData.isOwner() && mGrabRoomData.isSpeaking()) {
             mQuickBtn.setImageResource(R.drawable.fz_anzhushuohua_b);
             mQuickBtn.setEnabled(false);
             mSpeakingDotAnimationView.setVisibility(GONE);
@@ -200,7 +196,7 @@ public class GrabBottomContainerView extends BottomContainerView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabRoundChangeEvent event) {
-        if(mGrabRoomData.isOwner()) {
+        if (mGrabRoomData.isOwner()) {
             mQuickBtn.setEnabled(true);
             if (mGrabRoomData.isSpeaking()) {
                 // 正在说话，就算了
