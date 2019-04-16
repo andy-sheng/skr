@@ -952,15 +952,17 @@ public class EngineManager implements AgoraOutCallback {
     }
 
     public void adjustPlaybackSignalVolume(final int volume, final boolean setConfig) {
-        mCustomHandlerThread.post(new Runnable() {
-            @Override
-            public void run() {
-                if(setConfig) {
-                    mConfig.setPlaybackSignalVolume(volume);
+        if(mCustomHandlerThread != null){
+            mCustomHandlerThread.post(new Runnable() {
+                @Override
+                public void run() {
+                    if(setConfig) {
+                        mConfig.setPlaybackSignalVolume(volume);
+                    }
+                    AgoraEngineAdapter.getInstance().adjustPlaybackSignalVolume(volume);
                 }
-                AgoraEngineAdapter.getInstance().adjustPlaybackSignalVolume(volume);
-            }
-        });
+            });
+        }
     }
     /*音频基础结束*/
 
