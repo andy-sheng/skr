@@ -1192,6 +1192,12 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     private synchronized void updatePlayerState(long gameOverTimeMs, long syncStatusTimes, GrabRoundInfoModel newRoundInfo) {
         MyLog.w(TAG, "updatePlayerState" + " gameOverTimeMs=" + gameOverTimeMs + " syncStatusTimes=" + syncStatusTimes + " currentInfo=" + newRoundInfo.getRoundSeq());
+        if(!newRoundInfo.isContainInRoom()){
+            MyLog.w(TAG, "updatePlayerState" + ", 不再当前的游戏里");
+            exitRoom();
+            return;
+        }
+
         if (syncStatusTimes > mRoomData.getLastSyncTs()) {
             mRoomData.setLastSyncTs(syncStatusTimes);
         }
@@ -1713,6 +1719,11 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QExitGameMsgEvent event) {
+        if(event.userID == MyUserInfoManager.getInstance().getUid()){
+            exitRoom();
+            return;
+        }
+
         if (RoomDataUtils.isCurrentExpectingRound(event.roundSeq, mRoomData)) {
             MyLog.d(TAG, "有人离开房间,id=" + event.userID);
             GrabRoundInfoModel grabRoundInfoModel = mRoomData.getExpectRoundInfo();

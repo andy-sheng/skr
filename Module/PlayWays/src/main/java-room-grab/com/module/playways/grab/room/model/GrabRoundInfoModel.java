@@ -1,5 +1,6 @@
 package com.module.playways.grab.room.model;
 
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent;
 import com.module.playways.grab.room.event.GrabRoundStatusChangeEvent;
@@ -102,6 +103,22 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
 
     public List<GrabPlayerInfoModel> getPlayUsers() {
         return playUsers;
+    }
+
+    public boolean isContainInRoom(){
+        for (GrabPlayerInfoModel grabPlayerInfoModel : playUsers){
+            if(grabPlayerInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid()){
+                return true;
+            }
+        }
+
+        for (GrabPlayerInfoModel grabPlayerInfoModel : waitUsers){
+            if(grabPlayerInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid()){
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public void setPlayUsers(List<GrabPlayerInfoModel> playUsers) {
