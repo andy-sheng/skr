@@ -348,7 +348,7 @@ public class DeviceUtils {
     }
 
     public int getVirtualNavBarHeight() {
-        if (U.getDeviceUtils().getProductModel().equals("SM-G9600")) {
+        if (U.getDeviceUtils().getProductModel() != null && U.getDeviceUtils().getProductModel().equals("SM-G9600")) {
             // 适配三星 G9600
             return U.getDisplayUtils().getPhoneHeight() - U.getDisplayUtils().getScreenHeight();
         }
