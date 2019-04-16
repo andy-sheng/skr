@@ -179,6 +179,10 @@ public class RankLevelChangeFragment2 extends BaseFragment {
         } else if (mRoomData.getRecordData().getSelfWinType() == EWinType.Lose.getValue()) {
             url = BaseRoomData.RANK_RESULT_LOSE_SVGA;
             isWin = false;
+        } else {
+            // TODO: 2019/4/16  服务器给了个异常结果
+            goVoiceRoom("server error");
+            return;
         }
 
         mResultSvga.setVisibility(VISIBLE);
@@ -213,7 +217,7 @@ public class RankLevelChangeFragment2 extends BaseFragment {
                 }
             });
         } catch (Exception e) {
-            MyLog.e(TAG,e);
+            MyLog.e(TAG, e);
         }
 
         mResultSvga.setCallback(new SVGACallback() {
@@ -258,7 +262,7 @@ public class RankLevelChangeFragment2 extends BaseFragment {
                                 .build()
                 )
                 .build();
-        if(!TextUtils.isEmpty(image.getUrl())) {
+        if (!TextUtils.isEmpty(image.getUrl())) {
             File file = FrescoWorker.getCacheFileFromFrescoDiskCache(image.getUrl());
             if (file != null && file.exists()) {
                 dynamicEntity.setDynamicImage(BitmapFactory.decodeFile(file.getPath()), "avatar");
