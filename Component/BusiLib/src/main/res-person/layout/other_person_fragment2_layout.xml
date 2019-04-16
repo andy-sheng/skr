@@ -99,7 +99,7 @@
                             android:layout_height="@dimen/view_67_dp"
                             android:layout_below="@id/titlebar"
                             android:layout_centerHorizontal="true"
-                            android:layout_marginTop="@dimen/view_18_dp"
+                            android:layout_marginTop="@dimen/view_40_dp"
                             android:background="@drawable/b_touxiang" />
 
                         <com.facebook.drawee.view.SimpleDraweeView
@@ -385,25 +385,32 @@
         android:background="#D0EFFF"
         android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/follow_iv"
+        <RelativeLayout
             android:layout_width="@dimen/view_0_dp"
-            android:layout_height="@dimen/view_50_dp"
-            android:layout_marginLeft="@dimen/view_45_dp"
-            android:layout_marginTop="@dimen/view_10_dp"
-            android:layout_marginRight="@dimen/view_15_dp"
-            android:layout_weight="1"
-            android:background="@drawable/person_card_follow" />
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
-        <ImageView
-            android:id="@+id/message_iv"
+            <ImageView
+                android:id="@+id/follow_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/view_50_dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/other_person_follow" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
             android:layout_width="@dimen/view_0_dp"
-            android:layout_height="@dimen/view_50_dp"
-            android:layout_marginLeft="@dimen/view_15_dp"
-            android:layout_marginTop="@dimen/view_10_dp"
-            android:layout_marginRight="@dimen/view_45_dp"
-            android:layout_weight="1"
-            android:background="@drawable/person_send_message_icon" />
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/message_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/view_50_dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/person_send_message_icon" />
+        </RelativeLayout>
 
     </LinearLayout>
 
