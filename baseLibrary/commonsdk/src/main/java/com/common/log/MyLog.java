@@ -48,7 +48,7 @@ public class MyLog {
                 sFileLogLevel = LogLevel.ALL;
             }
 
-            if(isDebugLogOpen() && U.getChannelUtils().isStaging()){
+            if(isDebugLogOpen() || U.getChannelUtils().isStaging()){
                 sConsoleLogLevel = LogLevel.ALL;
             }else{
                 MyLog.d(TAG,"外发版本不打印控制台日志");
