@@ -178,19 +178,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     break;
                 case MSG_RECOVER_VOLUME:
                     if (mEngineParamsTemp != null) {
-                        int a = mEngineParamsTemp.audioVolume;
-                        int b = mEngineParamsTemp.recordVolume;
-                        ValueAnimator valueAnimator = ValueAnimator.ofFloat(0.3f, 1);
-                        valueAnimator.setDuration(1000);
-                        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                            @Override
-                            public void onAnimationUpdate(ValueAnimator animation) {
-                                float p = (float) animation.getAnimatedValue();
-                                EngineManager.getInstance().adjustAudioMixingVolume((int) (a * p), false);
-                                EngineManager.getInstance().adjustRecordingSignalVolume((int) (b * p), false);
-                            }
-                        });
-                        valueAnimator.start();
+                        EngineManager.getInstance().adjustAudioMixingVolume(mEngineParamsTemp.audioVolume, false);
+                        EngineManager.getInstance().adjustRecordingSignalVolume(mEngineParamsTemp.recordVolume, false);
                         mEngineParamsTemp = null;
                     }
                     break;
@@ -1483,22 +1472,12 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                             int audioVolume = EngineManager.getInstance().getParams().getAudioMixingVolume();
                             int recordVolume = EngineManager.getInstance().getParams().getRecordingSignalVolume();
                             mEngineParamsTemp = new EngineParamsTemp(audioVolume, recordVolume);
-                            ValueAnimator valueAnimator = ValueAnimator.ofFloat(1, 0.3f);
-                            valueAnimator.setDuration(300);
-                            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                                @Override
-                                public void onAnimationUpdate(ValueAnimator animation) {
-                                    float p = (float) animation.getAnimatedValue();
-                                    EngineManager.getInstance().adjustAudioMixingVolume((int) (audioVolume * p), false);
-                                    EngineManager.getInstance().adjustRecordingSignalVolume((int) (recordVolume * p), false);
-                                }
-                            });
-                            valueAnimator.start();
+                            EngineManager.getInstance().adjustAudioMixingVolume(audioVolume, false);
+                            EngineManager.getInstance().adjustRecordingSignalVolume(recordVolume, false);
                         }
                     } else {
                         MyLog.d(TAG, "我不是主播，忽略");
                     }
-
                 }
             }
         } else {
@@ -2080,6 +2059,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         // 踢人的结果
         if (event.speaking) {
             EngineManager.getInstance().muteLocalAudioStream(false);
+            EngineManager.getInstance().muteAllRemoteAudioStreams(true);
         } else {
             // 要闭麦
             GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
@@ -2088,6 +2068,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             } else {
                 EngineManager.getInstance().muteLocalAudioStream(true);
             }
+            EngineManager.getInstance().muteAllRemoteAudioStreams(false);
         }
     }
 
