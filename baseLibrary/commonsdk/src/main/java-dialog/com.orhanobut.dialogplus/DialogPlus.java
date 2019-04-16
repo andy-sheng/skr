@@ -225,7 +225,7 @@ public class DialogPlus {
             isDismissing = true;
             if (mHandler != null) {
                 mHandler.removeMessages(MSG_ENSURE_DISMISS);
-                mHandler.sendEmptyMessageDelayed(MSG_ENSURE_DISMISS,1000);
+                mHandler.sendEmptyMessageDelayed(MSG_ENSURE_DISMISS,outAnim.getDuration() > 1000 ? outAnim.getDuration() : 1000);
             }
         } else {
             if (mHandler != null) {
