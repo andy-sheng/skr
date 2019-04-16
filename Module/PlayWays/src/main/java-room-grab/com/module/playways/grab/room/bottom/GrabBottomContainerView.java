@@ -185,7 +185,7 @@ public class GrabBottomContainerView extends BottomContainerView {
     public void onEvent(GrabRoundStatusChangeEvent event) {
         //MyLog.d("GrabBottomContainerView","onEvent" + " event=" + event);
         GrabRoundInfoModel now = event.roundInfo;
-        if (now!=null && now.getStatus() == GrabRoundInfoModel.STATUS_SING && mGrabRoomData.isOwner() && mGrabRoomData.isSpeaking()) {
+        if (now!=null && now.getStatus() == GrabRoundInfoModel.STATUS_SING && mGrabRoomData.isOwner()) {
             mQuickBtn.setImageResource(R.drawable.fz_anzhushuohua_b);
             mQuickBtn.setEnabled(false);
             mSpeakingDotAnimationView.setVisibility(GONE);
