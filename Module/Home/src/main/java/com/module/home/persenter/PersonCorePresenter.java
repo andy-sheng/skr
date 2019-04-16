@@ -231,12 +231,14 @@ public class PersonCorePresenter extends RxLifeCyclePresenter {
 
         if (photo.getStatus() == photo.STATUS_DELETE) {
             MyLog.d(TAG, "execUploadPhoto" + " imageItem=" + photo + " 用户删除了，取消上传");
+            mUploadingPhoto = false;
             mPlayControlTemplate.endCurrent(photo);
             return;
         }
         if(mExceedLimit){
             photo.setStatus(PhotoModel.STATUS_FAILED_LIMIT);
             mView.updatePhoto(photo);
+            mUploadingPhoto = false;
             mPlayControlTemplate.endCurrent(photo);
             return;
         }
