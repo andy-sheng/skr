@@ -42,6 +42,9 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import static com.component.busilib.manager.WeakRedDotManager.SP_KEY_NEW_FANS;
+import static com.component.busilib.manager.WeakRedDotManager.SP_KEY_NEW_FRIEND;
+
 public class NotifyCorePresenter extends RxLifeCyclePresenter {
 
     static final String TAG_INVITE_FOALT_WINDOW = "TAG_INVITE_FOALT_WINDOW";
@@ -229,10 +232,10 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
 
         if (event.mUserInfoModel.isFriend()) {
             // 好友
-            WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FRIEND_RED_ROD_TYPE, 2);
+            WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FRIEND_RED_ROD_TYPE, 2, true);
         } else {
             // 粉丝
-            WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FANS_RED_ROD_TYPE, 2);
+            WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FANS_RED_ROD_TYPE, 2, true);
         }
     }
 
