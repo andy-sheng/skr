@@ -3,6 +3,7 @@ package com.module.playways.grab.room.bottom;
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,6 +25,7 @@ import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.room.room.event.InputBoardEvent;
 import com.module.playways.room.room.view.BottomContainerView;
 import com.module.rank.R;
+import com.zq.toast.CommonToastView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -143,7 +145,7 @@ public class GrabBottomContainerView extends BottomContainerView {
             mQuickBtn.setEnabled(true);
             mQuickBtn.setOnClickListener(null);
 
-            mShowInputContainerBtn.setTextSize(U.getDimension(R.dimen.textsize_13_dp));
+            mShowInputContainerBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, U.getDimension(R.dimen.textsize_13_dp));
 
             mQuickBtn.setOnTouchListener(new OnTouchListener() {
                 @Override
