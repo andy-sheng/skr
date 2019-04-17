@@ -189,7 +189,7 @@ public class GrabBottomContainerView extends BottomContainerView {
             mQuickBtn.setImageResource(R.drawable.fz_anzhushuohua_b);
             mQuickBtn.setEnabled(false);
             mSpeakingDotAnimationView.setVisibility(GONE);
-            mShowInputContainerBtn.setText("夸赞是一种美德");
+            mShowInputContainerBtn.setText("听歌不说话");
             EventBus.getDefault().post(new GrabSpeakingControlEvent(false));
         }
     }
