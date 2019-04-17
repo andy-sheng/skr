@@ -1032,7 +1032,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             mOthersSingCardView.setVisibility(View.GONE);
             GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
             if (infoModel != null) {
-                mSelfSingCardView.playLyric(infoModel, infoModel.isAccRound());
+                mSelfSingCardView.playLyric(infoModel, mRoomData.isAccEnable());
             }
         } else {
             // 显示收音机

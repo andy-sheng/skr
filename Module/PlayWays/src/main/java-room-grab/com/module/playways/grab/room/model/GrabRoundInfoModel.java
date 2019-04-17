@@ -452,13 +452,6 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
     }
 
     public int getWantSingType() {
-        if (isAccRound()) {
-            if (EWST_ACCOMPANY == wantSingType) {
-                return EWST_DEFAULT;
-            } else if (EWST_ACCOMPANY_OVER_TIME == wantSingType) {
-                return EWST_COMMON_OVER_TIME;
-            }
-        }
         return wantSingType;
     }
 
@@ -466,12 +459,6 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         return wantSingType == EWST_COMMON_OVER_TIME || wantSingType == EWST_ACCOMPANY_OVER_TIME;
     }
 
-    public boolean isAccRound() {
-        if (music == null || TextUtils.isEmpty(music.getAcc())) {
-            return false;
-        }
-        return wantSingType == EWST_ACCOMPANY || wantSingType == EWST_ACCOMPANY_OVER_TIME;
-    }
 
     public void setWantSingType(int wantSingType) {
         this.wantSingType = wantSingType;
