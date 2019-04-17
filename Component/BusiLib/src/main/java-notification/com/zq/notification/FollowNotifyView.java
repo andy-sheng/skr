@@ -68,7 +68,7 @@ public class FollowNotifyView extends RelativeLayout {
                             UserInfoManager.RA_BUILD, mUserInfoModel.isFriend(), new UserInfoManager.ResponseCallBack() {
                                 @Override
                                 public void onServerSucess(Object o) {
-                                    mFollowTv.setBackgroundResource(R.drawable.person_card_friend);
+                                    mFollowTv.setBackgroundResource(R.drawable.tc_huxiangguanzhu);
                                     mFollowTv.setClickable(false);
                                 }
 
@@ -97,7 +97,7 @@ public class FollowNotifyView extends RelativeLayout {
 
         if (mUserInfoModel.isFriend()) {
             // 好友怎么展示
-            mFollowTv.setBackgroundResource(R.drawable.person_card_friend);
+            mFollowTv.setBackgroundResource(R.drawable.tc_huxiangguanzhu);
             mFollowTv.setClickable(false);
         } else if (mUserInfoModel.isFollow()) {
             MyLog.w(TAG, "error 他关注我，为什么我能收到我关注他，但是我们不是好友？？？");

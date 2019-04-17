@@ -185,12 +185,16 @@ public class GrabBottomContainerView extends BottomContainerView {
     public void onEvent(GrabRoundStatusChangeEvent event) {
         //MyLog.d("GrabBottomContainerView","onEvent" + " event=" + event);
         GrabRoundInfoModel now = event.roundInfo;
-        if (now!=null && now.getStatus() == GrabRoundInfoModel.STATUS_SING && mGrabRoomData.isOwner()) {
+        if (now != null && now.getStatus() == GrabRoundInfoModel.STATUS_SING && mGrabRoomData.isOwner()) {
+            if (mGrabRoomData.isSpeaking()) {
+                U.getToastUtil().showShort("有人上麦了,暂时不能说话哦");
+            }
             mQuickBtn.setImageResource(R.drawable.fz_anzhushuohua_b);
             mQuickBtn.setEnabled(false);
             mSpeakingDotAnimationView.setVisibility(GONE);
-            mShowInputContainerBtn.setText("听歌不说话");
+            mShowInputContainerBtn.setText("夸赞是一种美德");
             EventBus.getDefault().post(new GrabSpeakingControlEvent(false));
+
         }
     }
 
