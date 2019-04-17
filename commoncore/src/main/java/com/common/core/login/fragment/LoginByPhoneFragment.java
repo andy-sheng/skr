@@ -223,7 +223,8 @@ public class LoginByPhoneFragment extends BaseFragment implements Callback {
                     @Override
                     public void onComplete() {
                         super.onComplete();
-                        mGetCodeTv.setText("获取验证码");
+                        mGetCodeTv.setText("");
+                        mGetCodeTv.setBackground(getResources().getDrawable(R.drawable.get_verify_normal));
                         mGetCodeTv.setSelected(false);
                         mGetCodeTv.setClickable(true);
                     }
