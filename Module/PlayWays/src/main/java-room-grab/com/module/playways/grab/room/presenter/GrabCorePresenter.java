@@ -137,8 +137,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     static final int MSG_RECOVER_VOLUME = 22; // 房主说话后 恢复音量
 
-    long  mFirstKickOutTime = -1; //用时间和次数来判断一个人有没有在一个房间里
-    
+    long mFirstKickOutTime = -1; //用时间和次数来判断一个人有没有在一个房间里
+
     int mAbsenTimes = 0;
 
     GrabRoomData mRoomData;
@@ -489,6 +489,16 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         map.put("roomID", mRoomData.getGameId());
         map.put("roundSeq", seq);
 
+        GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
+        SongModel songModel = null;
+        if (infoModel != null && infoModel.getMusic() != null) {
+            HashMap map1 = new HashMap();
+            map.put("songId2", String.valueOf(infoModel.getMusic().getItemID()));
+            map.put("songName", infoModel.getMusic().getItemName());
+            StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
+                    "game_grab", map1);
+            songModel = infoModel.getMusic();
+        }
         int wantSingType;
         if (challenge) {
             if (mRoomData.getCoin() < 1) {
@@ -496,29 +506,19 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 U.getToastUtil().showShort("没有充足的金币");
                 return;
             }
-            if (mRoomData.isAccEnable()) {
+            if (mRoomData.isAccEnable() && songModel != null && !TextUtils.isEmpty(songModel.getAcc())) {
                 wantSingType = GrabRoundInfoModel.EWST_ACCOMPANY_OVER_TIME;
             } else {
                 wantSingType = GrabRoundInfoModel.EWST_COMMON_OVER_TIME;
             }
         } else {
-            if (mRoomData.isAccEnable()) {
+            if (mRoomData.isAccEnable() && songModel != null && !TextUtils.isEmpty(songModel.getAcc())) {
                 wantSingType = GrabRoundInfoModel.EWST_ACCOMPANY;
             } else {
                 wantSingType = GrabRoundInfoModel.EWST_DEFAULT;
             }
         }
         map.put("wantSingType", wantSingType);
-
-
-        GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
-        if (infoModel != null && infoModel.getMusic() != null) {
-            HashMap map1 = new HashMap();
-            map.put("songId2", String.valueOf(infoModel.getMusic().getItemID()));
-            map.put("songName", infoModel.getMusic().getItemName());
-            StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-                    "game_grab", map1);
-        }
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.wangSingChance(body), new ApiObserver<ApiResult>() {
