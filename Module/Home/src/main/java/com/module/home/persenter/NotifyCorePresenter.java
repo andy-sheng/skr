@@ -230,7 +230,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                         iRankingModeService.tryGoGrabRoom(roomID);
                     }
                 }
-            }, false);
+            }, true);
         }
     }
 
