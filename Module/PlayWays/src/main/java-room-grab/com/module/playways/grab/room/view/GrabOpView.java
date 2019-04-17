@@ -398,8 +398,8 @@ public class GrabOpView extends RelativeLayout {
             case STATUS_CAN_OP:
                 mGrabContainer.setVisibility(GONE);
                 mGrab2Container.setVisibility(GONE);
-                mIvLightOff.setVisibility(VISIBLE);
-                mIvLightOff.setBackground(U.getDrawable(R.drawable.miedeng_bj));
+                mIvLightOff.setVisibility(GONE);
+                mIvBurst.setVisibility(GONE);
                 mIvLightOff.setEnabled(false);
                 break;
             case STATUS_HAS_OP:
@@ -484,6 +484,7 @@ public class GrabOpView extends RelativeLayout {
                         setVisibility(VISIBLE);
 
                         mIvLightOff.setEnabled(true);
+                        mIvLightOff.setVisibility(VISIBLE);
                         Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20))
                                 .setShape(DrawableCreator.Shape.Rectangle)
                                 .setPressedDrawable(U.getDrawable(R.drawable.ycdd_miedeng_anxia))
