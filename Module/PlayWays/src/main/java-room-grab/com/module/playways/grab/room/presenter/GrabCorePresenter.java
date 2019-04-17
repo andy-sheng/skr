@@ -1223,7 +1223,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     private synchronized void updatePlayerState(long gameOverTimeMs, long syncStatusTimes, GrabRoundInfoModel newRoundInfo, int gameId) {
         MyLog.w(TAG, "updatePlayerState" + " gameOverTimeMs=" + gameOverTimeMs + " syncStatusTimes=" + syncStatusTimes + " currentInfo=" + newRoundInfo.getRoundSeq() + ",gameId is " + gameId);
+        boolean isInRoom = true;
         if (!newRoundInfo.isContainInRoom()) {
+            isInRoom = false;
             MyLog.w(TAG, "updatePlayerState" + ", 不再当前的游戏里， game id is " + gameId);
             if(mFirstKickOutTime == -1){
                 mFirstKickOutTime = System.currentTimeMillis();
@@ -1234,12 +1236,14 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             if(System.currentTimeMillis() - mFirstKickOutTime > 15000 && mAbsenTimes > 10){
                 MyLog.w(TAG, "超过15秒 && 缺席次数是10以上，需要退出");
                 exitRoom();
+                return;
             }
-            return;
         }
 
-        mFirstKickOutTime = -1;
-        mAbsenTimes = 0;
+        if(isInRoom){
+            mFirstKickOutTime = -1;
+            mAbsenTimes = 0;
+        }
 
         if (syncStatusTimes > mRoomData.getLastSyncTs()) {
             mRoomData.setLastSyncTs(syncStatusTimes);
