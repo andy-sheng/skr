@@ -1,5 +1,7 @@
 package com.module.playways.grab.room.model;
 
+import android.text.TextUtils;
+
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent;
@@ -105,15 +107,15 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         return playUsers;
     }
 
-    public boolean isContainInRoom(){
-        for (GrabPlayerInfoModel grabPlayerInfoModel : playUsers){
-            if(grabPlayerInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid()){
+    public boolean isContainInRoom() {
+        for (GrabPlayerInfoModel grabPlayerInfoModel : playUsers) {
+            if (grabPlayerInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
                 return true;
             }
         }
 
-        for (GrabPlayerInfoModel grabPlayerInfoModel : waitUsers){
-            if(grabPlayerInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid()){
+        for (GrabPlayerInfoModel grabPlayerInfoModel : waitUsers) {
+            if (grabPlayerInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
                 return true;
             }
         }
@@ -450,11 +452,26 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
     }
 
     public int getWantSingType() {
+        if (isAccRound() && TextUtils.isEmpty(music.getAcc())) {
+            if (EWST_ACCOMPANY == wantSingType) {
+                return EWST_DEFAULT;
+            } else if (EWST_ACCOMPANY_OVER_TIME == wantSingType) {
+                return EWST_COMMON_OVER_TIME;
+            }
+        }
         return wantSingType;
     }
 
-    public boolean isChallengeRound(){
+    public boolean isChallengeRound() {
         return wantSingType == EWST_COMMON_OVER_TIME || wantSingType == EWST_ACCOMPANY_OVER_TIME;
+    }
+
+    public boolean isAccRound() {
+        if(TextUtils.isEmpty(music.getAcc())){
+            return false;
+        }
+
+        return wantSingType == EWST_ACCOMPANY || wantSingType == EWST_ACCOMPANY_OVER_TIME;
     }
 
     public void setWantSingType(int wantSingType) {
