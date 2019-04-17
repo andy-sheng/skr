@@ -150,8 +150,15 @@ public class OthersSingCardView extends RelativeLayout {
         } catch (Exception e) {
             MyLog.e(TAG, e);
         }
-//        countDownAfterAnimation("bindData");
-        if(mCircleCountDownView != null){
+
+        GrabRoundInfoModel grabRoundInfoModel = mGrabRoomData.getRealRoundInfo();
+        if (grabRoundInfoModel == null) {
+            return;
+        }
+
+        if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_SING) {
+            countDown("中途进来");
+        } else {
             mCircleCountDownView.cancelAnim();
             mCircleCountDownView.setMax(360);
             mCircleCountDownView.setProgress(0);
@@ -244,6 +251,10 @@ public class OthersSingCardView extends RelativeLayout {
             clearAnimation();
             setVisibility(GONE);
         }
+
+        mCircleCountDownView.cancelAnim();
+        mCircleCountDownView.setMax(360);
+        mCircleCountDownView.setProgress(0);
     }
 
     @Override
