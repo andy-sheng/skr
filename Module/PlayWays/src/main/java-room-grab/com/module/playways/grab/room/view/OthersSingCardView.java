@@ -170,9 +170,9 @@ public class OthersSingCardView extends RelativeLayout {
             mCircleCountDownView.cancelAnim();
             mCircleCountDownView.setMax(360);
             mCircleCountDownView.setProgress(0);
+            mUiHandler.removeMessages(MSG_ENSURE_PLAY);
+            mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_PLAY, 3000);
         }
-        mUiHandler.removeMessages(MSG_ENSURE_PLAY);
-        mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_PLAY, 3000);
     }
 
     public void tryStartCountDown() {
