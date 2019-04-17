@@ -132,8 +132,7 @@ public class SelfSingCardView2 extends RelativeLayout {
             }
         }
         boolean withAcc = false;
-        if ((infoModel.getWantSingType() == GrabRoundInfoModel.EWST_ACCOMPANY
-                || infoModel.getWantSingType() == GrabRoundInfoModel.EWST_ACCOMPANY_OVER_TIME) && accEnable) {
+        if (infoModel.isAccRound() && accEnable) {
             withAcc = true;
         }
         if (!withAcc) {

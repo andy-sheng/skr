@@ -313,7 +313,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         }
         if (!mSkrSdcardPermission.onBackFromPermisionManagerMaybe()) {
             if (mFromCreate) {
-                mSkrSdcardPermission.ensurePermission(null, true);
+                mSkrSdcardPermission.ensurePermission(this,null, true);
             }
         }
         mFromCreate = false;

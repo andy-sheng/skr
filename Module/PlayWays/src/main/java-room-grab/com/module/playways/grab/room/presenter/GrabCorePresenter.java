@@ -1557,7 +1557,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 File accFile = SongResUtils.getAccFileByUrl(infoModel.getMusic().getAcc());
                 // midi不需要在这下，只要下好，native就会解析，打分就能恢复
                 File midiFile = SongResUtils.getMIDIFileByUrl(infoModel.getMusic().getMidi());
-                if (mRoomData.isAccEnable()) {
+                if (mRoomData.isAccEnable() && infoModel.isAccRound()) {
                     int songBeginTs = songModel.getBeginMs();
                     if (accFile != null && accFile.exists()) {
                         // 伴奏文件存在

@@ -32,6 +32,10 @@ public abstract class SkrBasePermission {
 
     public void ensurePermission(final Runnable ifAgreeAction, final boolean goSettingIfRefuse) {
         final Activity activity = U.getActivityUtils().getTopActivity();
+        ensurePermission(activity,ifAgreeAction,goSettingIfRefuse);
+    }
+
+    public void ensurePermission(Activity activity ,final Runnable ifAgreeAction, final boolean goSettingIfRefuse) {
         if (!U.getPermissionUtils().checkPermission(activity, mPermissionStr)) {
             MyLog.d(TAG, "ensurePhoneStatePermission false");
             // 这里会起个 Activity 判断权限，会回调 activity 的 onResume 方法
