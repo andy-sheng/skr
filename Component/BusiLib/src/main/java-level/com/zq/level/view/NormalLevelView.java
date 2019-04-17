@@ -570,8 +570,10 @@ public class NormalLevelView extends RelativeLayout {
         super.onDetachedFromWindow();
         for (int i = 0; i < mayLeaksSvgaViews.size(); i++) {
             SVGAImageView view = mayLeaksSvgaViews.get(i);
-            view.setCallback(null);
-            view.stopAnimation(true);
+            if (view != null) {
+                view.setCallback(null);
+                view.stopAnimation(true);
+            }
         }
     }
 

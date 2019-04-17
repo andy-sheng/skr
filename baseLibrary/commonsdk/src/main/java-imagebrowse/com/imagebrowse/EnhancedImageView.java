@@ -99,10 +99,13 @@ public class EnhancedImageView extends RelativeLayout {
             mSubsamplingScaleImageView.recycle();
         }
         if (mBaseImage != null) {
-            String path = mBaseImage.getUri().toString();
-            if (path.startsWith("https://") || path.startsWith("http://")) {
-                if (path.endsWith(".gif")) {
-                    U.getHttpUtils().cancelDownload(path);
+            Uri uri = mBaseImage.getUri();
+            if (uri != null) {
+                String path = uri.toString();
+                if (path.startsWith("https://") || path.startsWith("http://")) {
+                    if (path.endsWith(".gif")) {
+                        U.getHttpUtils().cancelDownload(path);
+                    }
                 }
             }
         }
