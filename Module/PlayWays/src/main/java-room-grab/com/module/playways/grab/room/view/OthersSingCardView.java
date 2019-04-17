@@ -3,6 +3,7 @@ package com.module.playways.grab.room.view;
 import android.content.Context;
 import android.graphics.drawable.Animatable;
 import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -48,6 +49,8 @@ public class OthersSingCardView extends RelativeLayout {
     final static int COUNT_DOWN_STATUS_WAIT = 2;
     final static int COUNT_DOWN_STATUS_PLAYING = 3;
 
+    final static int MSG_COUNT_DOWN_PRO = 1;
+
     int mCountDownStatus = COUNT_DOWN_STATUS_INIT;
 
     int mUseId;   // 当前唱歌人的id
@@ -62,7 +65,14 @@ public class OthersSingCardView extends RelativeLayout {
 
     GrabRoomData mGrabRoomData;
 
-    Handler mUiHandler = new Handler();
+    Handler mUiHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            if(msg.what == MSG_COUNT_DOWN_PRO){
+                tryStartCountDown();
+            }
+        }
+    };
 
     boolean mHasPlayFullAnimation = false;
     boolean mCanStartFlag = false;
@@ -163,13 +173,8 @@ public class OthersSingCardView extends RelativeLayout {
             mCircleCountDownView.setMax(360);
             mCircleCountDownView.setProgress(0);
         }
-
-        mUiHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                tryStartCountDown();
-            }
-        }, 3000);
+        mUiHandler.removeMessages(MSG_COUNT_DOWN_PRO);
+        mUiHandler.sendMessageDelayed(mUiHandler.obtainMessage(MSG_COUNT_DOWN_PRO), 3000);
     }
 
     public void tryStartCountDown() {
@@ -262,6 +267,7 @@ public class OthersSingCardView extends RelativeLayout {
         mCircleCountDownView.cancelAnim();
         mCircleCountDownView.setMax(360);
         mCircleCountDownView.setProgress(0);
+        mUiHandler.removeCallbacksAndMessages(null);
     }
 
     @Override
@@ -271,6 +277,7 @@ public class OthersSingCardView extends RelativeLayout {
             mCountDownStatus = COUNT_DOWN_STATUS_INIT;
             mCanStartFlag = false;
             mHasPlayFullAnimation = false;
+            mUiHandler.removeCallbacksAndMessages(null);
         }
     }
 
