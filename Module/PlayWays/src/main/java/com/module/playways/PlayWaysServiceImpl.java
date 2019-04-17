@@ -29,6 +29,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.HashMap;
 import java.util.List;
 
+import io.reactivex.disposables.Disposable;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
@@ -53,13 +54,15 @@ public class PlayWaysServiceImpl implements IRankingModeService {
         return LeaderboardFragment.class;
     }
 
+    Disposable mJoinRoomDisposable;
+
     @Override
     public void tryGoGrabRoom(int roomID) {
         GrabRoomServerApi roomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", roomID);
         RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSON), JSON.toJSONString(map));
-        ApiMethods.subscribe(roomServerApi.joinGrabRoom(body), new ApiObserver<ApiResult>() {
+        mJoinRoomDisposable = ApiMethods.subscribe(roomServerApi.joinGrabRoom(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
@@ -104,6 +107,10 @@ public class PlayWaysServiceImpl implements IRankingModeService {
 
     @Override
     public void tryGoCreateRoom() {
+        if (mJoinRoomDisposable != null && !mJoinRoomDisposable.isDisposed()) {
+            MyLog.d(TAG, "tryGoCreateRoom 正在进入一唱到底，cancel");
+            return;
+        }
         ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_CREATE_ROOM)
                 .navigation();
     }

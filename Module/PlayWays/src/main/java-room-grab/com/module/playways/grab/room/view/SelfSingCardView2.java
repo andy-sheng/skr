@@ -93,15 +93,15 @@ public class SelfSingCardView2 extends RelativeLayout {
         mIvChallengeIcon = (ImageView) findViewById(R.id.iv_challenge_icon);
     }
 
-    public void playLyric(GrabRoundInfoModel infoModel, boolean hasAcc) {
+    public void playLyric(GrabRoundInfoModel infoModel, boolean accEnable) {
         if (infoModel == null) {
             MyLog.d(TAG, "infoModel 是空的");
             return;
         }
-        if(infoModel.getWantSingType() == GrabRoundInfoModel.EWST_COMMON_OVER_TIME
-                || infoModel.getWantSingType() == GrabRoundInfoModel.EWST_ACCOMPANY_OVER_TIME){
+        if (infoModel.getWantSingType() == GrabRoundInfoModel.EWST_COMMON_OVER_TIME
+                || infoModel.getWantSingType() == GrabRoundInfoModel.EWST_ACCOMPANY_OVER_TIME) {
             mIvChallengeIcon.setVisibility(VISIBLE);
-        }else {
+        } else {
             mIvChallengeIcon.setVisibility(INVISIBLE);
         }
         mSongModel = infoModel.getMusic();
@@ -131,7 +131,12 @@ public class SelfSingCardView2 extends RelativeLayout {
                 totalTs = 50 * 1000;
             }
         }
-        if (!hasAcc) {
+        boolean withAcc = false;
+        if ((infoModel.getWantSingType() == GrabRoundInfoModel.EWST_ACCOMPANY
+                || infoModel.getWantSingType() == GrabRoundInfoModel.EWST_ACCOMPANY_OVER_TIME) && accEnable) {
+            withAcc = true;
+        }
+        if (!withAcc) {
             playWithNoAcc(mSongModel);
             mIvTag.setBackground(U.getDrawable(R.drawable.ycdd_daojishi_qingchang));
             mLyricAndAccMatchManager.stop();
@@ -164,9 +169,7 @@ public class SelfSingCardView2 extends RelativeLayout {
                     mLyricAndAccMatchManager.onAcrResult(result, list, targetSongInfo, lineNo);
                 }
             });
-
         }
-
         starCounDown(totalTs);
     }
 

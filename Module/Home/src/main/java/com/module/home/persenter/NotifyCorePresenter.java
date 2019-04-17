@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.anim.ObjectPlayControlTemplate;
+import com.common.core.permission.SkrAudioPermission;
 import com.common.core.scheme.event.BothRelationFromSchemeEvent;
 import com.common.core.scheme.event.GrabInviteFromSchemeEvent;
 import com.common.core.userinfo.UserInfoManager;
@@ -53,6 +54,8 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
     static final int MSG_DISMISS_RELATION_FLOAT_WINDOW = 3;
 
     DialogPlus mBeFriendDialog;
+
+    SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
 
     Handler mUiHandler = new Handler() {
         @Override
@@ -218,9 +221,16 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
     }
 
     void tryGoGrabRoom(int roomID) {
-        IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
-        if (iRankingModeService != null) {
-            iRankingModeService.tryGoGrabRoom(roomID);
+        if (mSkrAudioPermission != null) {
+            mSkrAudioPermission.ensurePermission(new Runnable() {
+                @Override
+                public void run() {
+                    IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
+                    if (iRankingModeService != null) {
+                        iRankingModeService.tryGoGrabRoom(roomID);
+                    }
+                }
+            }, false);
         }
     }
 
