@@ -312,32 +312,87 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     }
 
     private void tryShowInviteTipView() {
-        mIvInviteTip = new ImageView(getContext());
-        mIvInviteTip.setBackground(U.getDrawable(R.drawable.fz_yaoqing_tishi));
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(142), U.getDisplayUtils().dip2px(74));
-        mIvInviteTip.setLayoutParams(layoutParams);
-        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        layoutParams.setMargins(0, U.getDisplayUtils().dip2px(127), U.getDisplayUtils().dip2px(13), 0);
-        ((ViewGroup) mRootView).addView(mIvInviteTip);
-
-        U.getPreferenceUtils().setSettingInt(KEY_OWNER_SHOW_TIMES, ++mShowOwnerTipTimes);
+        if (mIvInviteTip == null) {
+            mIvInviteTip = new ImageView(getContext());
+            mIvInviteTip.setBackground(U.getDrawable(R.drawable.fz_yaoqing_tishi));
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(142), U.getDisplayUtils().dip2px(74));
+            mIvInviteTip.setLayoutParams(layoutParams);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            layoutParams.setMargins(0, U.getDisplayUtils().dip2px(127), U.getDisplayUtils().dip2px(13), 0);
+            ((ViewGroup) mRankingContainer).addView(mIvInviteTip);
+            U.getPreferenceUtils().setSettingInt(KEY_OWNER_SHOW_TIMES, ++mShowOwnerTipTimes);
+        }
     }
 
     private void tryShowManageSongTipView() {
-        mIvManageSongTipView = new ImageView(getContext());
-        mIvManageSongTipView.setBackground(U.getDrawable(R.drawable.fz_kongzhi_tishi));
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(142), U.getDisplayUtils().dip2px(74));
-        mIvManageSongTipView.setLayoutParams(layoutParams);
-        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        layoutParams.setMargins(0, 0, U.getDisplayUtils().dip2px(13), U.getDisplayUtils().dip2px(78));
-        int index = mRankingContainer.indexOfChild(mInputContainerView);
-        mRankingContainer.addView(mIvManageSongTipView, index, layoutParams);
+        if (mIvManageSongTipView == null) {
+            mIvManageSongTipView = new ImageView(getContext());
+            mIvManageSongTipView.setBackground(U.getDrawable(R.drawable.fz_kongzhi_tishi));
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(142), U.getDisplayUtils().dip2px(74));
+            mIvManageSongTipView.setLayoutParams(layoutParams);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            layoutParams.setMargins(0, 0, U.getDisplayUtils().dip2px(13), U.getDisplayUtils().dip2px(78));
+            int index = mRankingContainer.indexOfChild(mInputContainerView);
+            mRankingContainer.addView(mIvManageSongTipView, index, layoutParams);
+        }
+    }
+
+    private void tryShowChallengeTipView() {
+        if (mIvChanllengeTipView == null) {
+            mIvChanllengeTipView = new ImageView(getContext());
+            mIvChanllengeTipView.setBackground(U.getDrawable(R.drawable.fz_tiaozhan_tishi));
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(142), U.getDisplayUtils().dip2px(74));
+            mIvChanllengeTipView.setLayoutParams(layoutParams);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            layoutParams.addRule(RelativeLayout.BELOW, R.id.grab_op_btn);
+            layoutParams.setMargins(0, U.getDisplayUtils().dip2px(2), U.getDisplayUtils().dip2px(10), 0);
+            int index = mRankingContainer.indexOfChild(mInputContainerView);
+            mRankingContainer.addView(mIvChanllengeTipView, index, layoutParams);
+            startChallengeTipViewAnimator(mIvChanllengeTipView);
+        }
+    }
+
+    private void removeInviteTipView() {
+        Activity activity = getActivity();
+        if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
+            if (mIvInviteTip != null) {
+                ((ViewGroup) mRankingContainer).removeView(mIvInviteTip);
+                mIvInviteTip = null;
+            }
+        }
+    }
+
+    private void removeManageSongTipView() {
+        Activity activity = getActivity();
+        if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
+            if (mIvManageSongTipView != null) {
+                ((ViewGroup) mRankingContainer).removeView(mIvManageSongTipView);
+                mIvManageSongTipView = null;
+            }
+        }
+    }
+
+    private void removeChallengeTipView() {
+        Activity activity = getActivity();
+        if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
+            if (mIvChanllengeTipView != null) {
+                ((ViewGroup) mRankingContainer).removeView(mIvChanllengeTipView);
+                mIvChanllengeTipView = null;
+                mChallengeTipViewAnimator.cancel();
+            }
+        }
     }
 
     ValueAnimator mTipViewAnimator;
 
+    ValueAnimator mChallengeTipViewAnimator;
+
     private void tipViewAnimate(View... viewList) {
+        if (mTipViewAnimator != null) {
+            mTipViewAnimator.removeAllUpdateListeners();
+            mTipViewAnimator.cancel();
+        }
         mTipViewAnimator = ValueAnimator.ofInt(0, 20, 0);
         mTipViewAnimator.setRepeatCount(ValueAnimator.INFINITE);
         mTipViewAnimator.setDuration(2500);
@@ -361,9 +416,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         mTipViewAnimator.start();
     }
 
-    ValueAnimator mChallengeTipViewAnimator;
-
     private void startChallengeTipViewAnimator(View view) {
+        if (mChallengeTipViewAnimator != null) {
+            mChallengeTipViewAnimator.removeAllUpdateListeners();
+            mChallengeTipViewAnimator.cancel();
+        }
         mChallengeTipViewAnimator = ValueAnimator.ofInt(0, 20, 0);
         mChallengeTipViewAnimator.setRepeatCount(ValueAnimator.INFINITE);
         mChallengeTipViewAnimator.setDuration(2500);
@@ -384,32 +441,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         });
 
         mChallengeTipViewAnimator.start();
-    }
-
-    private void tryShowChallengeTipView() {
-        if (mIvChanllengeTipView != null && mIvChanllengeTipView.getParent() != null) {
-            return;
-        }
-
-        mIvChanllengeTipView = new ImageView(getContext());
-        mIvChanllengeTipView.setBackground(U.getDrawable(R.drawable.fz_tiaozhan_tishi));
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(142), U.getDisplayUtils().dip2px(74));
-        mIvChanllengeTipView.setLayoutParams(layoutParams);
-        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        layoutParams.addRule(RelativeLayout.BELOW, R.id.grab_op_btn);
-        layoutParams.setMargins(0, U.getDisplayUtils().dip2px(2), U.getDisplayUtils().dip2px(10), 0);
-        int index = mRankingContainer.indexOfChild(mInputContainerView);
-        mRankingContainer.addView(mIvChanllengeTipView, index, layoutParams);
-
-        startChallengeTipViewAnimator(mIvChanllengeTipView);
-    }
-
-    private void removeChallengeTipView() {
-        if (mIvChanllengeTipView != null && mIvChanllengeTipView.getParent() != null) {
-            ((ViewGroup) mRootView).removeView(mIvChanllengeTipView);
-            mIvChanllengeTipView = null;
-            mChallengeTipViewAnimator.cancel();
-        }
     }
 
     @Override
@@ -521,20 +552,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         );
 
         removeInviteTipView();
-    }
-
-    private void removeInviteTipView() {
-        if (mIvInviteTip != null && mIvInviteTip.getParent() != null) {
-            ((ViewGroup) mRootView).removeView(mIvInviteTip);
-            mIvInviteTip = null;
-        }
-    }
-
-    private void removeManageSongTipView() {
-        if (mIvManageSongTipView != null && mIvManageSongTipView.getParent() != null) {
-            ((ViewGroup) mRootView).removeView(mIvManageSongTipView);
-            mIvManageSongTipView = null;
-        }
     }
 
     private void showPersonInfoView(int userID) {

@@ -541,9 +541,9 @@ public class GrabOpView extends RelativeLayout {
         if (mIvBurst != null) {
             mIvBurst.clearAnimation();
         }
-        if (mListener != null) {
-            mListener.hideChallengeTipView();
-        }
+//        if (mListener != null) {
+//            mListener.hideChallengeTipView();
+//        }
     }
 
     private void cancelCountDownTask() {
