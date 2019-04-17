@@ -92,6 +92,8 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
                 ImageFactory.newPathImage(path)
                         .setCornerRadius(U.getDisplayUtils().dip2px(8))
                         .setBorderWidth(U.getDisplayUtils().dip2px(2))
+                        .setFailureDrawable(U.app().getResources().getDrawable(com.common.base.R.drawable.load_img_error))
+                        .setLoadingDrawable(U.app().getResources().getDrawable(com.common.base.R.drawable.loading_place_holder_img))
                         .addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_320.getW()).build())
                         .setBorderColor(Color.parseColor("#3B4E79")).build());
         mUploadTipsTv.setVisibility(View.VISIBLE);
