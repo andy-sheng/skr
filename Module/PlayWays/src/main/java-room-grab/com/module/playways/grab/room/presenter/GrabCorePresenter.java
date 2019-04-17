@@ -138,8 +138,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     static final int MSG_RECOVER_VOLUME = 22; // 房主说话后 恢复音量
 
     //用时间和次数来判断一个人有没有在一个房间里
-    long mFirstKickOutTime = -1;
-    long mAbsenTimes = 0;
+    volatile long mFirstKickOutTime = -1;
+    volatile long mAbsenTimes = 0;
 
     GrabRoomData mRoomData;
 
