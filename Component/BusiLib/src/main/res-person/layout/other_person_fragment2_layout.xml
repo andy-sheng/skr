@@ -159,11 +159,12 @@
 
                         <com.common.flowlayout.TagFlowLayout
                             android:id="@+id/flowlayout"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/userid_tv"
                             android:layout_centerHorizontal="true"
-                            android:layout_marginLeft="16dp"
+                            android:layout_marginLeft="@dimen/view_11_dp"
+                            android:layout_marginRight="@dimen/view_11_dp"
                             android:layout_marginTop="@dimen/view_10_dp"
                             android:layout_marginBottom="@dimen/view_14_dp"></com.common.flowlayout.TagFlowLayout>
 
