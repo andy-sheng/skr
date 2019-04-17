@@ -151,6 +151,11 @@ public class OthersSingCardView extends RelativeLayout {
             MyLog.e(TAG, e);
         }
 //        countDownAfterAnimation("bindData");
+        if(mCircleCountDownView != null){
+            mCircleCountDownView.cancelAnim();
+            mCircleCountDownView.setMax(360);
+            mCircleCountDownView.setProgress(0);
+        }
     }
 
     public void tryStartCountDown() {
