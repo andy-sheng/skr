@@ -111,6 +111,10 @@ public class PlayWaysServiceImpl implements IRankingModeService {
             MyLog.d(TAG, "tryGoCreateRoom 正在进入一唱到底，cancel");
             return;
         }
+        if(U.getActivityUtils().getTopActivity() instanceof GrabRoomActivity){
+            MyLog.d(TAG, "tryGoCreateRoom 顶部一唱到底房间，cancel");
+            return;
+        }
         ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_CREATE_ROOM)
                 .navigation();
     }
