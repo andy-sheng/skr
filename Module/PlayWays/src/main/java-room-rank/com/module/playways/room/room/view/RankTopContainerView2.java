@@ -129,7 +129,14 @@ public class RankTopContainerView2 extends RelativeLayout {
         if (mMode == 1) {
             mMoreBtn.setVisibility(GONE);
             mIvGameRole.setVisibility(GONE);
-            initRankLEDViews();
+            // TODO: 2019/4/17 修复内存泄漏，或许有更好的办法
+            mIvLed.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    initRankLEDViews();
+                }
+            }, 100);
+
         }
 
         mIvGameRole.setOnClickListener(new DebounceViewClickListener() {
