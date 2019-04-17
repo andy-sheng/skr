@@ -410,8 +410,10 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         return true;
     }
 
+    static boolean canSlide = U.app().getResources().getBoolean(R.bool.translucent_no_bug);  //保存结果
+
     public boolean canSlide() {
-        return true;
+        return canSlide;
     }
 
     /**
