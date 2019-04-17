@@ -49,8 +49,6 @@ public class OthersSingCardView extends RelativeLayout {
     final static int COUNT_DOWN_STATUS_WAIT = 2;
     final static int COUNT_DOWN_STATUS_PLAYING = 3;
 
-    final static int MSG_COUNT_DOWN_PRO = 1;
-
     int mCountDownStatus = COUNT_DOWN_STATUS_INIT;
 
     int mUseId;   // 当前唱歌人的id
@@ -68,7 +66,7 @@ public class OthersSingCardView extends RelativeLayout {
     Handler mUiHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
-            if(msg.what == MSG_COUNT_DOWN_PRO){
+            if(msg.what == MSG_ENSURE_PLAY){
                 tryStartCountDown();
             }
         }
@@ -173,13 +171,14 @@ public class OthersSingCardView extends RelativeLayout {
             mCircleCountDownView.setMax(360);
             mCircleCountDownView.setProgress(0);
         }
-        mUiHandler.removeMessages(MSG_COUNT_DOWN_PRO);
-        mUiHandler.sendMessageDelayed(mUiHandler.obtainMessage(MSG_COUNT_DOWN_PRO), 3000);
+        mUiHandler.removeMessages(MSG_ENSURE_PLAY);
+        mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_PLAY, 3000);
     }
 
     public void tryStartCountDown() {
         MyLog.d(TAG, "tryStartCountDown");
         mCanStartFlag = true;
+        mUiHandler.removeMessages(MSG_ENSURE_PLAY);
         if (mCountDownStatus == COUNT_DOWN_STATUS_WAIT) {
             mCountDownStatus = COUNT_DOWN_STATUS_PLAYING;
             countDownAfterAnimation("tryStartCountDown");
@@ -263,11 +262,11 @@ public class OthersSingCardView extends RelativeLayout {
             clearAnimation();
             setVisibility(GONE);
         }
-
         mCircleCountDownView.cancelAnim();
         mCircleCountDownView.setMax(360);
         mCircleCountDownView.setProgress(0);
-        mUiHandler.removeCallbacksAndMessages(null);
+
+        mUiHandler.removeMessages(MSG_ENSURE_PLAY);
     }
 
     @Override
