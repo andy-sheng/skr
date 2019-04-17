@@ -142,6 +142,8 @@ public class GrabBottomContainerView extends BottomContainerView {
             mQuickBtn.setEnabled(true);
             mQuickBtn.setOnClickListener(null);
 
+            mShowInputContainerBtn.setTextSize(U.getDimension(R.dimen.textsize_13_dp));
+
             mQuickBtn.setOnTouchListener(new OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {

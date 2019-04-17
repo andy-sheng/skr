@@ -364,6 +364,9 @@ public class U {
         return U.app().getResources().getDrawable(drawableId);
     }
 
+    public static float getDimension(int dimenId) {
+        return U.app().getResources().getDimension(dimenId);
+    }
     public static void setProcessName(String processName) {
         sProcessName = processName;
     }
