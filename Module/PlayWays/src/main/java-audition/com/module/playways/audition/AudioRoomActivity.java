@@ -42,4 +42,10 @@ public class AudioRoomActivity extends BaseActivity {
     public boolean useEventBus() {
         return false;
     }
+
+    @Override
+    public boolean resizeLayoutSelfWhenKeybordShow() {
+        // 自己处理有键盘时的整体布局
+        return true;
+    }
 }
