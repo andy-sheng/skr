@@ -163,6 +163,13 @@ public class OthersSingCardView extends RelativeLayout {
             mCircleCountDownView.setMax(360);
             mCircleCountDownView.setProgress(0);
         }
+
+        mUiHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                tryStartCountDown();
+            }
+        }, 3000);
     }
 
     public void tryStartCountDown() {
@@ -277,6 +284,9 @@ public class OthersSingCardView extends RelativeLayout {
         if (mLeaveTranslateAnimation != null) {
             mLeaveTranslateAnimation.setAnimationListener(null);
             mLeaveTranslateAnimation.cancel();
+        }
+        if(mUiHandler != null){
+            mUiHandler.removeCallbacksAndMessages(null);
         }
     }
 }
