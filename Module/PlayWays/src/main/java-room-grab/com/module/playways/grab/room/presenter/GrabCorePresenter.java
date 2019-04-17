@@ -137,6 +137,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     static final int MSG_RECOVER_VOLUME = 22; // 房主说话后 恢复音量
 
+    //用时间和次数来判断一个人有没有在一个房间里
+    long mFirstKickOutTime = -1;
+    long mAbsenTimes = 0;
 
     GrabRoomData mRoomData;
 
@@ -237,6 +240,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     private void joinRoomAndInit(boolean first) {
         MyLog.w(TAG, "joinRoomAndInit" + " first=" + first + ", gameId is " + mRoomData.getGameId());
+        mFirstKickOutTime = -1;
+        mAbsenTimes = 0;
+
         if (mRoomData.getGameId() > 0) {
             if (first) {
                 Params params = Params.getFromPref();
@@ -1197,7 +1203,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                         return;
                     }
 
-                    updatePlayerState(gameOverTimeMs, syncStatusTimes, currentInfo);
+                    updatePlayerState(gameOverTimeMs, syncStatusTimes, currentInfo, gameID);
 //                    fetchAcc(nextInfo);
                 } else {
                     MyLog.w(TAG, "syncGameStatus失败 traceid is " + result.getTraceId());
@@ -1215,13 +1221,25 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     /**
      * 根据时间戳更新选手状态,目前就只有两个入口，SyncStatusEvent push了sycn，不写更多入口
      */
-    private synchronized void updatePlayerState(long gameOverTimeMs, long syncStatusTimes, GrabRoundInfoModel newRoundInfo) {
-        MyLog.w(TAG, "updatePlayerState" + " gameOverTimeMs=" + gameOverTimeMs + " syncStatusTimes=" + syncStatusTimes + " currentInfo=" + newRoundInfo.getRoundSeq());
-//        if (!newRoundInfo.isContainInRoom()) {
-//            MyLog.w(TAG, "updatePlayerState" + ", 不再当前的游戏里");
-//            exitRoom();
-//            return;
-//        }
+    private synchronized void updatePlayerState(long gameOverTimeMs, long syncStatusTimes, GrabRoundInfoModel newRoundInfo, int gameId) {
+        MyLog.w(TAG, "updatePlayerState" + " gameOverTimeMs=" + gameOverTimeMs + " syncStatusTimes=" + syncStatusTimes + " currentInfo=" + newRoundInfo.getRoundSeq() + ",gameId is " + gameId);
+        if (!newRoundInfo.isContainInRoom()) {
+            MyLog.w(TAG, "updatePlayerState" + ", 不再当前的游戏里， game id is " + gameId);
+            if(mFirstKickOutTime == -1){
+                mFirstKickOutTime = System.currentTimeMillis();
+            }
+
+            mAbsenTimes++;
+
+            if(System.currentTimeMillis() - mFirstKickOutTime > 15000 && mAbsenTimes > 10){
+                MyLog.w(TAG, "超过15秒 && 缺席次数是10以上，需要退出");
+                exitRoom();
+            }
+            return;
+        }
+
+        mFirstKickOutTime = -1;
+        mAbsenTimes = 0;
 
         if (syncStatusTimes > mRoomData.getLastSyncTs()) {
             mRoomData.setLastSyncTs(syncStatusTimes);
@@ -1732,11 +1750,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QExitGameMsgEvent event) {
-        if (event.userID == MyUserInfoManager.getInstance().getUid()) {
-            exitRoom();
-            return;
-        }
-
         if (RoomDataUtils.isCurrentExpectingRound(event.roundSeq, mRoomData)) {
             MyLog.d(TAG, "有人离开房间,id=" + event.userID);
             GrabRoundInfoModel grabRoundInfoModel = mRoomData.getExpectRoundInfo();
@@ -1815,7 +1828,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         ensureInRcRoom();
         MyLog.w(TAG, "收到服务器push更新状态,event.currentRound是" + event.getCurrentRound().getRoundSeq() + ", timeMs 是" + event.info.getTimeMs());
         startSyncGameStateTask(sSyncStateTaskInterval);
-        updatePlayerState(event.getGameOverTimeMs(), event.getSyncStatusTimeMs(), event.getCurrentRound());
+        updatePlayerState(event.getGameOverTimeMs(), event.getSyncStatusTimeMs(), event.getCurrentRound(), event.getInfo().getRoomID());
 //        fetchAcc(event.getNextRound());
     }
 
