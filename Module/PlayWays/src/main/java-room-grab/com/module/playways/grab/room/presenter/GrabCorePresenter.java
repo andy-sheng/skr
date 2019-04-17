@@ -137,9 +137,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     static final int MSG_RECOVER_VOLUME = 22; // 房主说话后 恢复音量
 
-    //用时间和次数来判断一个人有没有在一个房间里
-    volatile long mFirstKickOutTime = -1;
-    volatile long mAbsenTimes = 0;
+    long  mFirstKickOutTime = -1; //用时间和次数来判断一个人有没有在一个房间里
+    
+    int mAbsenTimes = 0;
 
     GrabRoomData mRoomData;
 
@@ -1223,24 +1223,18 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     private synchronized void updatePlayerState(long gameOverTimeMs, long syncStatusTimes, GrabRoundInfoModel newRoundInfo, int gameId) {
         MyLog.w(TAG, "updatePlayerState" + " gameOverTimeMs=" + gameOverTimeMs + " syncStatusTimes=" + syncStatusTimes + " currentInfo=" + newRoundInfo.getRoundSeq() + ",gameId is " + gameId);
-        boolean isInRoom = true;
         if (!newRoundInfo.isContainInRoom()) {
-            isInRoom = false;
             MyLog.w(TAG, "updatePlayerState" + ", 不再当前的游戏里， game id is " + gameId);
-            if(mFirstKickOutTime == -1){
+            if (mFirstKickOutTime == -1) {
                 mFirstKickOutTime = System.currentTimeMillis();
             }
-
             mAbsenTimes++;
-
-            if(System.currentTimeMillis() - mFirstKickOutTime > 15000 && mAbsenTimes > 10){
+            if (System.currentTimeMillis() - mFirstKickOutTime > 15000 && mAbsenTimes > 10) {
                 MyLog.w(TAG, "超过15秒 && 缺席次数是10以上，需要退出");
                 exitRoom();
                 return;
             }
-        }
-
-        if(isInRoom){
+        } else {
             mFirstKickOutTime = -1;
             mAbsenTimes = 0;
         }
