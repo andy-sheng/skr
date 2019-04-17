@@ -150,8 +150,7 @@ public class OthersSingCardView extends RelativeLayout {
         } catch (Exception e) {
             MyLog.e(TAG, e);
         }
-
-        countDownAfterAnimation("bindData");
+//        countDownAfterAnimation("bindData");
     }
 
     public void tryStartCountDown() {
