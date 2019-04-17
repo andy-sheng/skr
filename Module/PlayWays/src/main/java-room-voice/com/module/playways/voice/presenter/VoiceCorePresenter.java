@@ -1,5 +1,6 @@
 package com.module.playways.voice.presenter;
 
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.text.SpannableStringBuilder;
@@ -165,8 +166,7 @@ public class VoiceCorePresenter extends RxLifeCyclePresenter {
             commentModel.setUserId(userInfo.getUserId());
             commentModel.setAvatar(userInfo.getAvatar());
             commentModel.setUserName(userInfo.getNickname());
-            commentModel.setAvatarColor(userInfo.getSex() == ESex.SX_MALE.getValue() ?
-                    U.getColor(R.color.color_man_stroke_color) : U.getColor(R.color.color_woman_stroke_color));
+            commentModel.setAvatarColor(Color.WHITE);
             SpannableStringBuilder stringBuilder = new SpanUtils()
                     .append(userInfo.getNickname() + " ").setForegroundColor(CommentModel.TEXT_GRAY)
                     .append("离开了语音房").setForegroundColor(CommentModel.TEXT_GRAY)
