@@ -44,14 +44,14 @@
                     android:background="@drawable/s_touxiang" />
 
                 <com.common.view.ex.ExImageView
-                    android:id="@+id/create_room"
+                    android:id="@+id/task_iv"
                     android:layout_width="@dimen/view_132_dp"
-                    android:layout_height="@dimen/view_57_dp"
+                    android:layout_height="@dimen/view_50_dp"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
                     android:layout_marginRight="@dimen/view_18_dp"
                     android:layout_marginBottom="@dimen/view_12_dp"
-                    android:background="@drawable/shouye_grab_create_room" />
+                    android:background="@drawable/shouye_task" />
 
                 <com.facebook.drawee.view.SimpleDraweeView
                     android:id="@+id/avatar_iv"
@@ -67,7 +67,7 @@
                     android:layout_marginLeft="@dimen/view_15_dp"
                     android:layout_marginTop="@dimen/view_40_dp"
                     android:layout_marginRight="@dimen/view_5_dp"
-                    android:layout_toLeftOf="@id/create_room"
+                    android:layout_toLeftOf="@id/task_iv"
                     android:layout_toRightOf="@+id/avatar_iv"
                     android:ellipsize="end"
                     android:gravity="left|center_vertical"

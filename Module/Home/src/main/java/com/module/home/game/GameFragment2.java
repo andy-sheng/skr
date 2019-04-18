@@ -62,7 +62,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
     SmartRefreshLayout mRefreshLayout;
     ClassicsHeader mClassicsHeader;
     CommonTitleBar mTitlebar;
-    ExImageView mCreateRoom;
+    ExImageView mTaskIv;
     SimpleDraweeView mAvatarIv;
     ExTextView mNameTv;
     BitmapTextView mCoinNum;
@@ -90,7 +90,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.refreshLayout);
         mClassicsHeader = (ClassicsHeader) mRootView.findViewById(R.id.classics_header);
         mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
-        mCreateRoom = (ExImageView) mRootView.findViewById(R.id.create_room);
+        mTaskIv = (ExImageView)mRootView.findViewById(R.id.task_iv);
         mAvatarIv = (SimpleDraweeView) mRootView.findViewById(R.id.avatar_iv);
         mNameTv = (ExTextView) mRootView.findViewById(R.id.name_tv);
         mCoinNum = (BitmapTextView) mRootView.findViewById(R.id.coin_num);
@@ -134,13 +134,20 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mRecyclerLayout.setEnableLoadMoreWhenContentNotFull(false);
         mRecyclerLayout.setEnableOverScrollDrag(true);
 
-        mCreateRoom.setOnClickListener(new AnimateClickListener() {
+//        mCreateRoom.setOnClickListener(new AnimateClickListener() {
+//            @Override
+//            public void click(View view) {
+//                IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
+//                if (iRankingModeService != null) {
+//                    iRankingModeService.tryGoCreateRoom();
+//                }
+//            }
+//        });
+
+        mTaskIv.setOnClickListener(new AnimateClickListener() {
             @Override
             public void click(View view) {
-                IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
-                if (iRankingModeService != null) {
-                    iRankingModeService.tryGoCreateRoom();
-                }
+                U.getToastUtil().showShort("点击了做任务");
             }
         });
 
