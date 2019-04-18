@@ -123,7 +123,9 @@ public class EnhancedImageView extends RelativeLayout {
     }
 
     public void load(String path) {
-//        path = "http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/1111.jpg?x-oss-process=image/resize,w_480,h_1080/circle,r_500/blur,r_30,s_20";
+        if (path == null) {
+            return;
+        }
         MyLog.d(TAG, "load" + " path=" + path);
         if (mDebugLogView == null && MyLog.isDebugLogOpen()) {
             mDebugLogView = new TextView(getContext());

@@ -123,6 +123,7 @@ public class OthersSingCardView extends RelativeLayout {
                             .setBorderWidth(U.getDisplayUtils().dip2px(5))
                             .setCircle(true)
                             .build());
+            mTvSingerName.setText(userInfoModel.getNickname());
         } else {
             MyLog.w(TAG, "userInfoModel==null 加载选手信息失败");
         }
@@ -135,7 +136,6 @@ public class OthersSingCardView extends RelativeLayout {
         }
         this.startAnimation(mEnterAlphaAnimation);
 
-        mTvSingerName.setText(userInfoModel.getNickname());
         mGrabStageView.setVisibility(View.VISIBLE);
         mGrabStageView.setLoops(1);
 
