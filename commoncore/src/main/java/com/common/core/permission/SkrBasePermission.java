@@ -8,6 +8,7 @@ import com.common.core.R;
 import com.common.log.MyLog;
 import com.common.permission.PermissionUtils;
 import com.common.utils.U;
+import com.common.view.AnimateClickListener;
 import com.dialog.view.TipsDialogView;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
@@ -31,6 +32,10 @@ public abstract class SkrBasePermission {
 
     public void ensurePermission(final Runnable ifAgreeAction, final boolean goSettingIfRefuse) {
         final Activity activity = U.getActivityUtils().getTopActivity();
+        ensurePermission(activity,ifAgreeAction,goSettingIfRefuse);
+    }
+
+    public void ensurePermission(Activity activity ,final Runnable ifAgreeAction, final boolean goSettingIfRefuse) {
         if (!U.getPermissionUtils().checkPermission(activity, mPermissionStr)) {
             MyLog.d(TAG, "ensurePhoneStatePermission false");
             // 这里会起个 Activity 判断权限，会回调 activity 的 onResume 方法
@@ -79,9 +84,9 @@ public abstract class SkrBasePermission {
             mTipsDialogView = new TipsDialogView.Builder(activity)
                     .setMessageTip(text)
                     .setOkBtnTip("去设置")
-                    .setOkBtnClickListener(new View.OnClickListener() {
+                    .setOkBtnClickListener(new AnimateClickListener() {
                         @Override
-                        public void onClick(View v) {
+                        public void click(View view) {
                             mHasGoPermission = true;
                             U.getPermissionUtils().goToPermissionManager(activity);
                         }

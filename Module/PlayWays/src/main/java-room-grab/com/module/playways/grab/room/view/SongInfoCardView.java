@@ -24,8 +24,9 @@ import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 
+import com.component.busilib.view.BitmapTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.module.playways.rank.song.model.SongModel;
+import com.module.playways.room.song.model.SongModel;
 import com.module.rank.R;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 
@@ -53,7 +54,8 @@ public class SongInfoCardView extends RelativeLayout {
     SimpleDraweeView mSongCoverIv;
     ExTextView mSongNameTv;
     ExTextView mSongSingerTv;
-    ExTextView mSongSeqTv;
+    BitmapTextView mCurrentSeq;
+    BitmapTextView mTotalSeq;
     ExTextView mSongLyrics;
     ImageView mGrabCd;
 
@@ -83,7 +85,8 @@ public class SongInfoCardView extends RelativeLayout {
         mSongCoverIv = (SimpleDraweeView) findViewById(R.id.song_cover_iv);
         mSongNameTv = (ExTextView) findViewById(R.id.song_name_tv);
         mSongSingerTv = (ExTextView) findViewById(R.id.song_singer_tv);
-        mSongSeqTv = (ExTextView) findViewById(R.id.song_seq_tv);
+        mCurrentSeq = (BitmapTextView) findViewById(R.id.current_seq);
+        mTotalSeq = (BitmapTextView) findViewById(R.id.total_seq);
         mSongLyrics = (ExTextView) findViewById(R.id.song_lyrics);
         mGrabCd = (ImageView) findViewById(R.id.grab_cd);
     }
@@ -98,10 +101,10 @@ public class SongInfoCardView extends RelativeLayout {
         setVisibility(VISIBLE);
         if (!TextUtils.isEmpty(songModel.getCover())) {
             FrescoWorker.loadImage(mSongCoverIv,
-                    ImageFactory.newHttpImage(songModel.getCover())
+                    ImageFactory.newPathImage(songModel.getCover())
                             .setCornerRadius(U.getDisplayUtils().dip2px(6))
                             .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                            .setBorderColor(Color.parseColor("#202239"))
+                            .setBorderColor(U.getColor(R.color.white))
                             .addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_160.getW()).build())
                             .build());
         } else {
@@ -109,12 +112,13 @@ public class SongInfoCardView extends RelativeLayout {
                     ImageFactory.newResImage(R.drawable.xuanzegequ_wufengmian)
                             .setCornerRadius(U.getDisplayUtils().dip2px(6))
                             .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                            .setBorderColor(Color.parseColor("#202239")).build());
+                            .setBorderColor(U.getColor(R.color.white)).build());
         }
         mSongNameTv.setText("《" + songModel.getItemName() + "》");
         mSongSingerTv.setText(songModel.getOwner());
         mSongLyrics.setText("歌词加载中...");
-        mSongSeqTv.setText(curRoundSeq + "/" + totalSeq);
+        mCurrentSeq.setText("" + curRoundSeq);
+        mTotalSeq.setText("" + totalSeq);
         playLyric(songModel);
         // 入场动画
         animationGo();
@@ -267,6 +271,7 @@ public class SongInfoCardView extends RelativeLayout {
             mEnterTranslateAnimation.cancel();
         }
         if (mRotateAnimation != null) {
+            mRotateAnimation.setAnimationListener(null);
             mRotateAnimation.cancel();
         }
         if (mLeaveTranslateAnimation != null) {

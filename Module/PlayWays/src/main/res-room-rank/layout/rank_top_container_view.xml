@@ -54,7 +54,7 @@
         android:layout_marginTop="@dimen/view_28_dp"
         android:background="@drawable/yanchang_xianshiping" />
 
-    <com.module.playways.rank.room.score.bar.EnergySlotView
+    <com.module.playways.room.room.score.bar.EnergySlotView
         android:id="@+id/energy_slot_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -79,25 +79,25 @@
         android:scaleType="centerInside"
         app:src_unPressed_drawable="@drawable/more" />
 
-    <com.module.playways.rank.room.view.RankTopLEDView
+    <com.module.playways.room.room.view.RankTopLEDView
         android:id="@+id/left_led_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_8_dp"
-        rankLED:position="left"></com.module.playways.rank.room.view.RankTopLEDView>
+        rankLED:position="left"></com.module.playways.room.room.view.RankTopLEDView>
 
-    <com.module.playways.rank.room.view.RankTopLEDView
+    <com.module.playways.room.room.view.RankTopLEDView
         android:id="@+id/right_led_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_8_dp"
-        rankLED:position="right"></com.module.playways.rank.room.view.RankTopLEDView>
+        rankLED:position="right"></com.module.playways.room.room.view.RankTopLEDView>
 
-    <com.module.playways.rank.room.view.RankTopLEDView
+    <com.module.playways.room.room.view.RankTopLEDView
         android:id="@+id/mid_led_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_8_dp"
-        rankLED:position="mid"></com.module.playways.rank.room.view.RankTopLEDView>
+        rankLED:position="mid"></com.module.playways.room.room.view.RankTopLEDView>
 
 </merge>

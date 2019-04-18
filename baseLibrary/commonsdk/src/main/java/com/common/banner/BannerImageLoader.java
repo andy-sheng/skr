@@ -16,7 +16,7 @@ public class BannerImageLoader extends ImageLoader {
     @Override
     public void displayImage(Context context, Object path, ImageView imageView) {
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-        FrescoWorker.loadImage((SimpleDraweeView) imageView, ImageFactory.newHttpImage((String) path)
+        FrescoWorker.loadImage((SimpleDraweeView) imageView, ImageFactory.newPathImage((String) path)
                 .setScaleType(ScalingUtils.ScaleType.FIT_XY)
                 .addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_640.getW()).build())
                 .build());

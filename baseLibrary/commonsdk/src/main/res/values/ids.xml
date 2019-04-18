@@ -3,4 +3,5 @@
     <item type="id" name="fresco_view_tag"/>
     <item type="id" name="toast_priority"></item>
     <item type="id" name="toast_add_ts"></item>
+    <item type="id" name="avpa_view_tag_key"></item>
 </resources>

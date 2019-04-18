@@ -1,28 +1,59 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:parentTag="android.widget.RelativeLayout">
 
-    <com.module.playways.rank.room.view.ArcProgressBar
-        android:id="@+id/count_down_process"
-        android:layout_width="@dimen/view_116_dp"
-        android:layout_height="@dimen/view_116_dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_194_dp" />
-
-    <com.common.image.fresco.BaseImageView
+    <com.opensource.svgaplayer.SVGAImageView
         android:id="@+id/grab_stage_view"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_160_dp"
-        android:layout_marginTop="@dimen/view_172_dp" />
+        android:layout_width="@dimen/view_360_dp"
+        android:layout_height="@dimen/view_360_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_77_dp"
+        android:visibility="visible"
+        app:antiAlias="true"
+        app:autoPlay="false"
+        app:loopCount="-1" />
+
+    <com.common.view.countdown.CircleCountDownView
+        android:id="@+id/circle_count_down_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_189_dp"
+        app:bg_color="@color/transparent"
+        app:inner_color="#FFC15B"
+        app:inner_stroke_raduis="@dimen/view_64_dp"
+        app:inner_stroke_width="@dimen/view_6_dp"
+        app:stroke_bg_color="#353E89"
+        app:stroke_bg_width="@dimen/view_8_dp" />
+
 
     <com.common.image.fresco.BaseImageView
         android:id="@+id/sing_avatar_view"
-        android:layout_width="@dimen/view_90_dp"
-        android:layout_height="@dimen/view_90_dp"
+        android:layout_width="@dimen/view_100_dp"
+        android:layout_height="@dimen/view_100_dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_207_dp" />
+
+    <com.common.view.ex.ExTextView
+        android:singleLine="true"
+        android:textStyle="bold"
+        android:textSize="@dimen/textsize_14_dp"
+        android:textColor="#FFC15B"
+        android:id="@+id/tv_singer_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sing_avatar_view"
+        android:layout_centerHorizontal="true"
+        android:maxWidth="@dimen/view_200_dp"
+        android:layout_marginTop="@dimen/view_32_dp"
+        android:paddingLeft="@dimen/view_10_dp"
+        android:paddingTop="@dimen/view_2_dp"
+        android:paddingRight="@dimen/view_10_dp"
+        android:paddingBottom="@dimen/view_2_dp"
+        app:bl_corners_radius="@dimen/view_43_dp"
+        app:bl_solid_color="@color/black_trans_20" />
 
 </merge>

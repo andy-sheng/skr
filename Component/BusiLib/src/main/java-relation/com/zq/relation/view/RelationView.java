@@ -23,7 +23,6 @@ import com.common.rxretrofit.ApiResult;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
-import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;
 import com.dialog.view.TipsDialogView;
@@ -31,13 +30,12 @@ import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
 import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
-import com.zq.person.fragment.OtherPersonFragment;
+import com.zq.person.fragment.OtherPersonFragment2;
 import com.zq.relation.adapter.RelationAdapter;
 import com.zq.relation.callback.FansEmptyCallback;
 import com.zq.relation.callback.FriendsEmptyCallback;
@@ -49,8 +47,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.List;
 
 import static com.common.core.userinfo.UserInfoManager.RELATION_FOLLOW;
-import static com.common.core.userinfo.event.RelationChangeEvent.FOLLOW_TYPE;
-import static com.common.core.userinfo.event.RelationChangeEvent.UNFOLLOW_TYPE;
 
 public class RelationView extends RelativeLayout {
 
@@ -93,9 +89,9 @@ public class RelationView extends RelativeLayout {
                 if (view.getId() == R.id.content) {
                     // 跳到他人的个人主页
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable(OtherPersonFragment.BUNDLE_USER_ID, userInfoModel.getUserId());
+                    bundle.putSerializable(OtherPersonFragment2.BUNDLE_USER_ID, userInfoModel.getUserId());
                     U.getFragmentUtils().addFragment(FragmentUtils
-                            .newAddParamsBuilder((BaseActivity) getContext(), OtherPersonFragment.class)
+                            .newAddParamsBuilder((BaseActivity) getContext(), OtherPersonFragment2.class)
                             .setUseOldFragmentIfExist(false)
                             .setBundle(bundle)
                             .setAddToBackStack(true)
@@ -147,7 +143,7 @@ public class RelationView extends RelativeLayout {
             }
         });
 
-        loadData(mMode, mOffset, DEFAULT_COUNT);
+        loadData(mMode, 0, DEFAULT_COUNT);
     }
 
     private void unFollow(final UserInfoModel userInfoModel) {
@@ -195,15 +191,16 @@ public class RelationView extends RelativeLayout {
     UserInfoManager.ResponseCallBack<ApiResult> mApiResultResponseCallBack = new UserInfoManager.ResponseCallBack<ApiResult>() {
         @Override
         public void onServerSucess(ApiResult result) {
+            if (mOffset == 0) {
+                // 第一次拉数据
+                mRelationAdapter.getData().clear();
+            }
+
             mOffset = result.getData().getIntValue("offset");
             List<UserInfoModel> userInfoModels = JSON.parseArray(result.getData().getString("users"), UserInfoModel.class);
             if (userInfoModels != null && userInfoModels.size() != 0) {
                 mRefreshLayout.finishLoadMore();
                 mLoadService.showSuccess();
-                if (mOffset <= DEFAULT_COUNT) {
-                    // 第一次拉数据
-                    mRelationAdapter.getData().clear();
-                }
                 mRelationAdapter.addData(userInfoModels);
                 mRelationAdapter.notifyDataSetChanged();
                 hasMore = true;
@@ -211,7 +208,7 @@ public class RelationView extends RelativeLayout {
                 hasMore = false;
                 mRefreshLayout.setEnableLoadMore(false);
                 mRefreshLayout.finishLoadMore();
-                if (mOffset == 0) {
+                if (mRelationAdapter.getData() == null || mRelationAdapter.getData().size() == 0) {
                     // 第一次拉数据
                     if (mMode == UserInfoManager.RELATION_FRIENDS) {
                         mLoadService.showCallback(FriendsEmptyCallback.class);
@@ -231,6 +228,7 @@ public class RelationView extends RelativeLayout {
     };
 
     public void loadData(final int mode, final int offset, int limit) {
+        this.mOffset = offset;
         UserInfoManager.getInstance().getRelationList(mode, offset, limit, mApiResultResponseCallBack);
     }
 
@@ -238,7 +236,7 @@ public class RelationView extends RelativeLayout {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         if (mDialogPlus != null && mDialogPlus.isShowing()) {
-            mDialogPlus.dismiss();
+            mDialogPlus.dismiss(false);
         }
     }
 
@@ -258,39 +256,9 @@ public class RelationView extends RelativeLayout {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(FollowNotifyEvent event) {
+        MyLog.d(TAG, "onEvent" + " event=" + event);
+        this.mOffset = 0;
         UserInfoManager.getInstance().getRelationList(mMode, 0, DEFAULT_COUNT, mApiResultResponseCallBack);
-//        for (UserInfoModel userInfoModel : mRelationAdapter.getData()) {
-//            if (userInfoModel.getUserId() == event.mUserInfoModel.getUserId()) {
-//                // 已经包含
-//                mRelationAdapter.getData().remove(userInfoModel);
-//                break;
-//            }
-//        }
-//
-//        if (event.mUserInfoModel.isFriend()) {
-//            //好友
-//            mRelationAdapter.getData().add(0, event.mUserInfoModel);
-//        } else if (event.mUserInfoModel.isFollow()) {
-//            MyLog.w(TAG, "FollowNotifyEvent 啥玩意，又不是好友，只有我关注了他？ ");
-//        } else {
-//            // 粉丝
-//            if (mMode == UserInfoManager.RELATION_FANS) {
-//                mRelationAdapter.getData().add(0, event.mUserInfoModel);
-//            }
-//        }
-//        mRelationAdapter.notifyDataSetChanged();
-//
-//        if (mRelationAdapter.getData() != null && mRelationAdapter.getData().size() > 0) {
-//            mLoadService.showSuccess();
-//        } else {
-//            if (mMode == UserInfoManager.RELATION_FRIENDS) {
-//                mLoadService.showCallback(FriendsEmptyCallback.class);
-//            } else if (mMode == UserInfoManager.RELATION_FANS) {
-//                mLoadService.showCallback(FansEmptyCallback.class);
-//            } else if (mMode == RELATION_FOLLOW) {
-//                mLoadService.showCallback(FriendsEmptyCallback.class);
-//            }
-//        }
     }
 
     /**
@@ -301,55 +269,8 @@ public class RelationView extends RelativeLayout {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(RelationChangeEvent event) {
         MyLog.d(TAG, "RelationChangeEvent" + " event type = " + event.type + " isFriend = " + event.isFriend);
-
+        this.mOffset = 0;
         UserInfoManager.getInstance().getRelationList(mMode, 0, DEFAULT_COUNT, mApiResultResponseCallBack);
-//        BuddyCache.BuddyCacheEntry buddyCacheEntry = BuddyCache.getInstance().getBuddyNormal(event.useId, false);
-//        UserInfoModel userInfoModel = buddyCacheEntry.parseUserInfoMode();
-//        userInfoModel.setFriend(event.isFriend);
-//        userInfoModel.setFollow(event.isFollow);
-//
-//        boolean isContainId = false; // 当前页面是否有该联系人
-//        for (UserInfoModel infoModel : mRelationAdapter.getData()) {
-//            if (infoModel.getUserId() == event.useId) {
-//                // 已经包含
-//                isContainId = true;
-//                mRelationAdapter.getData().remove(infoModel);
-//                break;
-//            }
-//        }
-//
-//        if (event.type == FOLLOW_TYPE) {
-//            // 关注消息
-//            if (event.isFriend) {
-//                //好友
-//                mRelationAdapter.getData().add(0, userInfoModel);
-//            } else if (event.isFollow) {
-//                MyLog.w(TAG, "关注消息，服务返回我没关注？？？？？？");
-//            } else {
-//                // 粉丝
-//                if (mMode == UserInfoManager.RELATION_FANS) {
-//                    mRelationAdapter.getData().add(0, userInfoModel);
-//                }
-//            }
-//        } else if (event.type == UNFOLLOW_TYPE) {
-//            // 取关消息,只对粉丝有影响
-//            if (isContainId && mMode == UserInfoManager.RELATION_FANS) {
-//                mRelationAdapter.getData().add(0, userInfoModel);
-//            }
-//        }
-//        mRelationAdapter.notifyDataSetChanged();
-//
-//        if (mRelationAdapter.getData() != null && mRelationAdapter.getData().size() > 0) {
-//            mLoadService.showSuccess();
-//        } else {
-//            if (mMode == UserInfoManager.RELATION_FRIENDS) {
-//                mLoadService.showCallback(FriendsEmptyCallback.class);
-//            } else if (mMode == UserInfoManager.RELATION_FANS) {
-//                mLoadService.showCallback(FansEmptyCallback.class);
-//            } else if (mMode == RELATION_FOLLOW) {
-//                mLoadService.showCallback(FriendsEmptyCallback.class);
-//            }
-//        }
     }
 
 }

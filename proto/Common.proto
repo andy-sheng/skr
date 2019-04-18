@@ -45,6 +45,9 @@ message MusicInfo {
     string standLrc         = 21; //standLrc,一唱到底歌词URL
     string rankUserVoice    = 22; //rankUserVoice,匹配进入游戏前的背景音乐
     uint32 rankLrcEndT      = 23; //rankLrcEndT,匹配玩法最后一句歌词的结束时间,毫秒
+    uint32 task             = 24; //任务等级，若为0，表示非任务歌曲
+    uint32 standTotalMs     = 25; //一唱到底伴奏模式的时长
+    bool challengeAvailable = 26; //是否支持挑战模式
 }
 
 enum ESex {

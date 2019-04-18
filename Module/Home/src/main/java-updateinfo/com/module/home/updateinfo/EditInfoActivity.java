@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -28,10 +29,9 @@ import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
 import com.component.busilib.view.MarqueeTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
 import com.module.home.R;
-import com.module.home.updateinfo.fragment.EditInfoAgeFragment;
+import com.module.home.updateinfo.fragment.EditInfoAgeFragment2;
 import com.module.home.updateinfo.fragment.EditInfoNameFragment;
 import com.module.home.updateinfo.fragment.EditInfoSexFragment;
 import com.module.home.updateinfo.fragment.EditInfoSignFragment;
@@ -43,10 +43,6 @@ import com.zq.toast.CommonToastView;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.functions.Consumer;
 
 
 // 个人资料编辑
@@ -137,7 +133,14 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
                         .build());
         mNicknameTv.setText(MyUserInfoManager.getInstance().getNickName());
         mSignTv.setText(MyUserInfoManager.getInstance().getSignature());
-        mAgeTv.setText(String.format(U.app().getString(com.component.busilib.R.string.age_tag), MyUserInfoManager.getInstance().getAge()));
+        String age = String.format(U.app().getString(com.component.busilib.R.string.age_tag), MyUserInfoManager.getInstance().getAge());
+        String constellation = MyUserInfoManager.getInstance().getConstellation();
+        if (!TextUtils.isEmpty(constellation)) {
+            mAgeTv.setText(age + " " + constellation);
+        } else {
+            mAgeTv.setText(age + "");
+        }
+
         String sex = "未知";
         if (MyUserInfoManager.getInstance().getSex() == 1) {
             sex = "男";
@@ -198,7 +201,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
     //修改年龄
     private void onClickAgeContainer() {
         U.getFragmentUtils().addFragment(
-                FragmentUtils.newAddParamsBuilder(this, EditInfoAgeFragment.class)
+                FragmentUtils.newAddParamsBuilder(this, EditInfoAgeFragment2.class)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
                         .build());

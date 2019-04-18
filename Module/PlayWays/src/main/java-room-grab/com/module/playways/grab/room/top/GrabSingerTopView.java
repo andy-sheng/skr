@@ -19,8 +19,8 @@ import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.module.playways.rank.room.view.MoreOpView;
-import com.module.playways.rank.song.model.SongModel;
+import com.module.playways.room.room.view.MoreOpView;
+import com.module.playways.room.song.model.SongModel;
 import com.module.rank.R;
 
 import org.greenrobot.eventbus.EventBus;
@@ -44,10 +44,10 @@ public class GrabSingerTopView extends FrameLayout {
 
     HandlerTaskTimer mCountDownTask;
 
-    Handler mUiHandler = new Handler(){
+    Handler mUiHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what){
+            switch (msg.what) {
                 case MSG_SHOW:
                     setVisibility(VISIBLE);
                     break;
@@ -106,11 +106,6 @@ public class GrabSingerTopView extends FrameLayout {
                         public void onClickGameRule() {
 
                         }
-
-                        @Override
-                        public void onClickVoiceAudition() {
-
-                        }
                     });
                     mMoreOpView.setRoomData(mRoomData);
                 }
@@ -129,7 +124,7 @@ public class GrabSingerTopView extends FrameLayout {
 
     private void startSing(SongModel songModel) {
         cancelCountDownTask();
-        int total = (songModel.getTotalMs()/1000);
+        int total = (songModel.getTotalMs() / 1000);
         mCountDownTask = HandlerTaskTimer.newBuilder()
                 .take(total)
                 .interval(1000)
@@ -163,15 +158,15 @@ public class GrabSingerTopView extends FrameLayout {
         mFlickerAnim = new AnimationDrawable();
         mFlickerAnim.setOneShot(true);
         Drawable drawable = null;
-        drawable = U.getDrawable(R.drawable.liangdeng);
+        drawable = U.getDrawable(R.drawable.ycdd_liangdeng);
         mFlickerAnim.addFrame(drawable, 1800);
-        drawable = U.getDrawable(R.drawable.liangdeng_shan);
+        drawable = U.getDrawable(R.drawable.ycdd_baodeng_guangyun);
         mFlickerAnim.addFrame(drawable, 200);
-        drawable = U.getDrawable(R.drawable.liangdeng);
+        drawable = U.getDrawable(R.drawable.ycdd_liangdeng);
         mFlickerAnim.addFrame(drawable, 300);
-        drawable = U.getDrawable(R.drawable.liangdeng_shan);
+        drawable = U.getDrawable(R.drawable.ycdd_baodeng_guangyun);
         mFlickerAnim.addFrame(drawable, 200);
-        drawable = U.getDrawable(R.drawable.liangdeng);
+        drawable = U.getDrawable(R.drawable.ycdd_liangdeng);
         mFlickerAnim.addFrame(drawable, 300);
         mIvLight.setImageDrawable(mFlickerAnim);
         mFlickerAnim.start();
@@ -199,7 +194,7 @@ public class GrabSingerTopView extends FrameLayout {
         }
     }
 
-    public void showWithDelay(long delay){
+    public void showWithDelay(long delay) {
         mUiHandler.removeCallbacksAndMessages(null);
         mUiHandler.sendMessageDelayed(mUiHandler.obtainMessage(MSG_SHOW), delay);
     }
@@ -207,7 +202,7 @@ public class GrabSingerTopView extends FrameLayout {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        if(!EventBus.getDefault().isRegistered(this)){
+        if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
     }
@@ -223,15 +218,15 @@ public class GrabSingerTopView extends FrameLayout {
     public void startSelfShow() {
         cancelCountDownTask();
         stopFlickerAnim();
-        mIvLight.setImageDrawable(U.getDrawable(R.drawable.liangdeng));
+        mIvLight.setImageDrawable(U.getDrawable(R.drawable.ycdd_liangdeng));
         GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
-        if(grabRoundInfoModel == null || grabRoundInfoModel.getPlayUsers() == null || grabRoundInfoModel.getPlayUsers().size() == 0){
+        if (grabRoundInfoModel == null || grabRoundInfoModel.getPlayUsers() == null || grabRoundInfoModel.getPlayUsers().size() == 0) {
             MyLog.d(TAG, "startSelfShow grabRoundInfoModel data error");
             return;
         }
 
         mTvTotalLight.setText("/" + (grabRoundInfoModel.getPlayUsers().size() - 1));
-        int num = (grabRoundInfoModel.getPlayUsers().size() - 1)- grabRoundInfoModel.getMLightInfos().size() ;
+        int num = (grabRoundInfoModel.getPlayUsers().size() - 1) - grabRoundInfoModel.getMLightInfos().size();
         mTvCurLight.setText(String.valueOf(num));
         startSing(grabRoundInfoModel.getMusic());
     }

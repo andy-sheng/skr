@@ -15,6 +15,7 @@ import com.engine.Params;
 import com.engine.agora.effect.EffectModel;
 import com.engine.agora.source.PrivateTextureHelper;
 import com.engine.arccloud.ArcCloudManager;
+import com.engine.arccloud.ArcRecognizeListener;
 import com.engine.arccloud.RecognizeConfig;
 import com.engine.effect.IFAudioEffectEngine;
 import com.engine.effect.ITbAgcProcessor;
@@ -289,10 +290,10 @@ public class AgoraEngineAdapter {
                     mRtcEngine.setParameters("{\"che.audio.enable.aec\":true }");
                     break;
                 case grab:
-                    b = 4;
+                    b = 3;
                     break;
                 case voice:
-                    b = 1;
+                    b = 3;
                     break;
                 case audiotest:
                     b = 3;
@@ -1061,8 +1062,11 @@ public class AgoraEngineAdapter {
                                          int channels,// 2
                                          int samplesPerSec//44100
             ) {
-
+                if (samples == null) {
+                    return false;
+                }
                 if (++mLogtag % 500 == 0) {
+                    //  案例这个日志应该5秒一次
                     MyLog.d(TAG, "onRecordFrame" + " samples=" + samples + " numOfSamples=" + numOfSamples + " bytesPerSample=" + bytesPerSample + " channels=" + channels + " samplesPerSec=" + samplesPerSec);
                 }
                 if (DEBUG) {
@@ -1107,7 +1111,6 @@ public class AgoraEngineAdapter {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-
                     }
                 } else {
                     mICbScoreProcessor.process(samples, samples.length, channels, samplesPerSec, accTs, mConfig.getMidiPath());
@@ -1395,6 +1398,12 @@ public class AgoraEngineAdapter {
     public void startRecognize(RecognizeConfig recognizeConfig) {
         tryInitArcManager();
         mArcCloudManager.startRecognize(recognizeConfig);
+    }
+
+    public void setRecognizeListener(ArcRecognizeListener recognizeConfig) {
+        if (mArcCloudManager != null) {
+            mArcCloudManager.setRecognizeListener(recognizeConfig);
+        }
     }
 
     public void stopRecognize() {

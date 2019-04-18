@@ -12,6 +12,7 @@ import com.squareup.wire.internal.Internal;
 import com.zq.live.proto.Common.MusicInfo;
 import com.zq.live.proto.Common.ResourceInfo;
 import java.io.IOException;
+import java.lang.Boolean;
 import java.lang.Integer;
 import java.lang.Object;
 import java.lang.Override;
@@ -44,6 +45,10 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
   public static final EQRoundOverReason DEFAULT_OVERREASON = EQRoundOverReason.ROR_UNKNOWN;
 
   public static final EQRoundResultType DEFAULT_RESULTTYPE = EQRoundResultType.ROT_UNKNOWN;
+
+  public static final Boolean DEFAULT_ISINCHALLENGE = false;
+
+  public static final EWantSingType DEFAULT_WANTSINGTYPE = EWantSingType.EWST_DEFAULT;
 
   /**
    * 抢唱成功的玩家id
@@ -118,7 +123,7 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
   private final EQRoundStatus status;
 
   /**
-   * 抢唱列表
+   * 抢唱列表。兵营告知，服务器没存，所以这个列表是没东西的。
    */
   @WireField(
       tag = 9,
@@ -203,12 +208,31 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
   )
   private final List<OnlineInfo> playUsers;
 
+  /**
+   * 是否在挑战中
+   */
+  @WireField(
+      tag = 18,
+      adapter = "com.squareup.wire.ProtoAdapter#BOOL"
+  )
+  private final Boolean isInChallenge;
+
+  /**
+   * 抢唱方式
+   */
+  @WireField(
+      tag = 19,
+      adapter = "com.zq.live.proto.Room.EWantSingType#ADAPTER"
+  )
+  private final EWantSingType wantSingType;
+
   public QRoundInfo(Integer userID, Integer playbookID, Integer roundSeq, Integer introBeginMs,
       Integer introEndMs, Integer singBeginMs, Integer singEndMs, EQRoundStatus status,
       List<WantSingInfo> wantSingInfos, EQRoundOverReason overReason, EQRoundResultType resultType,
       MusicInfo music, List<QBLightMsg> bLightInfos, List<QMLightMsg> mLightInfos,
-      ResourceInfo skrResource, List<OnlineInfo> waitUsers, List<OnlineInfo> playUsers) {
-    this(userID, playbookID, roundSeq, introBeginMs, introEndMs, singBeginMs, singEndMs, status, wantSingInfos, overReason, resultType, music, bLightInfos, mLightInfos, skrResource, waitUsers, playUsers, ByteString.EMPTY);
+      ResourceInfo skrResource, List<OnlineInfo> waitUsers, List<OnlineInfo> playUsers,
+      Boolean isInChallenge, EWantSingType wantSingType) {
+    this(userID, playbookID, roundSeq, introBeginMs, introEndMs, singBeginMs, singEndMs, status, wantSingInfos, overReason, resultType, music, bLightInfos, mLightInfos, skrResource, waitUsers, playUsers, isInChallenge, wantSingType, ByteString.EMPTY);
   }
 
   public QRoundInfo(Integer userID, Integer playbookID, Integer roundSeq, Integer introBeginMs,
@@ -216,7 +240,7 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
       List<WantSingInfo> wantSingInfos, EQRoundOverReason overReason, EQRoundResultType resultType,
       MusicInfo music, List<QBLightMsg> bLightInfos, List<QMLightMsg> mLightInfos,
       ResourceInfo skrResource, List<OnlineInfo> waitUsers, List<OnlineInfo> playUsers,
-      ByteString unknownFields) {
+      Boolean isInChallenge, EWantSingType wantSingType, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
     this.playbookID = playbookID;
@@ -235,6 +259,8 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
     this.skrResource = skrResource;
     this.waitUsers = Internal.immutableCopyOf("waitUsers", waitUsers);
     this.playUsers = Internal.immutableCopyOf("playUsers", playUsers);
+    this.isInChallenge = isInChallenge;
+    this.wantSingType = wantSingType;
   }
 
   @Override
@@ -257,6 +283,8 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
     builder.skrResource = skrResource;
     builder.waitUsers = Internal.copyOf("waitUsers", waitUsers);
     builder.playUsers = Internal.copyOf("playUsers", playUsers);
+    builder.isInChallenge = isInChallenge;
+    builder.wantSingType = wantSingType;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -283,7 +311,9 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
         && mLightInfos.equals(o.mLightInfos)
         && Internal.equals(skrResource, o.skrResource)
         && waitUsers.equals(o.waitUsers)
-        && playUsers.equals(o.playUsers);
+        && playUsers.equals(o.playUsers)
+        && Internal.equals(isInChallenge, o.isInChallenge)
+        && Internal.equals(wantSingType, o.wantSingType);
   }
 
   @Override
@@ -308,6 +338,8 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
       result = result * 37 + (skrResource != null ? skrResource.hashCode() : 0);
       result = result * 37 + waitUsers.hashCode();
       result = result * 37 + playUsers.hashCode();
+      result = result * 37 + (isInChallenge != null ? isInChallenge.hashCode() : 0);
+      result = result * 37 + (wantSingType != null ? wantSingType.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -333,6 +365,8 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
     if (skrResource != null) builder.append(", skrResource=").append(skrResource);
     if (!waitUsers.isEmpty()) builder.append(", waitUsers=").append(waitUsers);
     if (!playUsers.isEmpty()) builder.append(", playUsers=").append(playUsers);
+    if (isInChallenge != null) builder.append(", isInChallenge=").append(isInChallenge);
+    if (wantSingType != null) builder.append(", wantSingType=").append(wantSingType);
     return builder.replace(0, 2, "QRoundInfo{").append('}').toString();
   }
 
@@ -427,7 +461,7 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
   }
 
   /**
-   * 抢唱列表
+   * 抢唱列表。兵营告知，服务器没存，所以这个列表是没东西的。
    */
   public List<WantSingInfo> getWantSingInfosList() {
     if(wantSingInfos==null){
@@ -517,6 +551,26 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
   }
 
   /**
+   * 是否在挑战中
+   */
+  public Boolean getIsInChallenge() {
+    if(isInChallenge==null){
+        return DEFAULT_ISINCHALLENGE;
+    }
+    return isInChallenge;
+  }
+
+  /**
+   * 抢唱方式
+   */
+  public EWantSingType getWantSingType() {
+    if(wantSingType==null){
+        return new EWantSingType.Builder().build();
+    }
+    return wantSingType;
+  }
+
+  /**
    * 抢唱成功的玩家id
    */
   public boolean hasUserID() {
@@ -573,7 +627,7 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
   }
 
   /**
-   * 抢唱列表
+   * 抢唱列表。兵营告知，服务器没存，所以这个列表是没东西的。
    */
   public boolean hasWantSingInfosList() {
     return wantSingInfos!=null;
@@ -635,6 +689,20 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
     return playUsers!=null;
   }
 
+  /**
+   * 是否在挑战中
+   */
+  public boolean hasIsInChallenge() {
+    return isInChallenge!=null;
+  }
+
+  /**
+   * 抢唱方式
+   */
+  public boolean hasWantSingType() {
+    return wantSingType!=null;
+  }
+
   public static final class Builder extends Message.Builder<QRoundInfo, Builder> {
     private Integer userID;
 
@@ -669,6 +737,10 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
     private List<OnlineInfo> waitUsers;
 
     private List<OnlineInfo> playUsers;
+
+    private Boolean isInChallenge;
+
+    private EWantSingType wantSingType;
 
     public Builder() {
       wantSingInfos = Internal.newMutableList();
@@ -743,7 +815,7 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
     }
 
     /**
-     * 抢唱列表
+     * 抢唱列表。兵营告知，服务器没存，所以这个列表是没东西的。
      */
     public Builder addAllWantSingInfos(List<WantSingInfo> wantSingInfos) {
       Internal.checkElementsNotNull(wantSingInfos);
@@ -819,9 +891,25 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
       return this;
     }
 
+    /**
+     * 是否在挑战中
+     */
+    public Builder setIsInChallenge(Boolean isInChallenge) {
+      this.isInChallenge = isInChallenge;
+      return this;
+    }
+
+    /**
+     * 抢唱方式
+     */
+    public Builder setWantSingType(EWantSingType wantSingType) {
+      this.wantSingType = wantSingType;
+      return this;
+    }
+
     @Override
     public QRoundInfo build() {
-      return new QRoundInfo(userID, playbookID, roundSeq, introBeginMs, introEndMs, singBeginMs, singEndMs, status, wantSingInfos, overReason, resultType, music, bLightInfos, mLightInfos, skrResource, waitUsers, playUsers, super.buildUnknownFields());
+      return new QRoundInfo(userID, playbookID, roundSeq, introBeginMs, introEndMs, singBeginMs, singEndMs, status, wantSingInfos, overReason, resultType, music, bLightInfos, mLightInfos, skrResource, waitUsers, playUsers, isInChallenge, wantSingType, super.buildUnknownFields());
     }
   }
 
@@ -849,6 +937,8 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
           + ResourceInfo.ADAPTER.encodedSizeWithTag(15, value.skrResource)
           + OnlineInfo.ADAPTER.asRepeated().encodedSizeWithTag(16, value.waitUsers)
           + OnlineInfo.ADAPTER.asRepeated().encodedSizeWithTag(17, value.playUsers)
+          + ProtoAdapter.BOOL.encodedSizeWithTag(18, value.isInChallenge)
+          + EWantSingType.ADAPTER.encodedSizeWithTag(19, value.wantSingType)
           + value.unknownFields().size();
     }
 
@@ -871,6 +961,8 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
       ResourceInfo.ADAPTER.encodeWithTag(writer, 15, value.skrResource);
       OnlineInfo.ADAPTER.asRepeated().encodeWithTag(writer, 16, value.waitUsers);
       OnlineInfo.ADAPTER.asRepeated().encodeWithTag(writer, 17, value.playUsers);
+      ProtoAdapter.BOOL.encodeWithTag(writer, 18, value.isInChallenge);
+      EWantSingType.ADAPTER.encodeWithTag(writer, 19, value.wantSingType);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -918,6 +1010,15 @@ public final class QRoundInfo extends Message<QRoundInfo, QRoundInfo.Builder> {
           case 15: builder.setSkrResource(ResourceInfo.ADAPTER.decode(reader)); break;
           case 16: builder.waitUsers.add(OnlineInfo.ADAPTER.decode(reader)); break;
           case 17: builder.playUsers.add(OnlineInfo.ADAPTER.decode(reader)); break;
+          case 18: builder.setIsInChallenge(ProtoAdapter.BOOL.decode(reader)); break;
+          case 19: {
+            try {
+              builder.setWantSingType(EWantSingType.ADAPTER.decode(reader));
+            } catch (ProtoAdapter.EnumConstantNotFoundException e) {
+              builder.addUnknownField(tag, FieldEncoding.VARINT, (long) e.value);
+            }
+            break;
+          }
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

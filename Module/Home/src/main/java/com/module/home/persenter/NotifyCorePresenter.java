@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.anim.ObjectPlayControlTemplate;
+import com.common.core.permission.SkrAudioPermission;
 import com.common.core.scheme.event.BothRelationFromSchemeEvent;
 import com.common.core.scheme.event.GrabInviteFromSchemeEvent;
 import com.common.core.userinfo.UserInfoManager;
@@ -25,6 +26,7 @@ import com.common.notification.event.GrabInviteNotifyEvent;
 import com.common.utils.ActivityUtils;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
+import com.common.view.AnimateClickListener;
 import com.component.busilib.manager.WeakRedDotManager;
 import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
@@ -41,6 +43,9 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import static com.component.busilib.manager.WeakRedDotManager.SP_KEY_NEW_FANS;
+import static com.component.busilib.manager.WeakRedDotManager.SP_KEY_NEW_FRIEND;
+
 public class NotifyCorePresenter extends RxLifeCyclePresenter {
 
     static final String TAG_INVITE_FOALT_WINDOW = "TAG_INVITE_FOALT_WINDOW";
@@ -49,6 +54,8 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
     static final int MSG_DISMISS_RELATION_FLOAT_WINDOW = 3;
 
     DialogPlus mBeFriendDialog;
+
+    SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
 
     Handler mUiHandler = new Handler() {
         @Override
@@ -107,6 +114,9 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         }
         if (mFloatWindowDataFloatWindowObjectPlayControlTemplate != null) {
             mFloatWindowDataFloatWindowObjectPlayControlTemplate.destroy();
+        }
+        if (mBeFriendDialog != null) {
+            mBeFriendDialog.dismiss(false);
         }
     }
 
@@ -171,23 +181,22 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                             .setMessageTip(stringBuilder)
                             .setConfirmTip("确定")
                             .setCancelTip("取消")
-                            .setConfirmBtnClickListener(new View.OnClickListener() {
+                            .setConfirmBtnClickListener(new AnimateClickListener() {
                                 @Override
-                                public void onClick(View v) {
+                                public void click(View view) {
                                     if (mBeFriendDialog != null) {
                                         mBeFriendDialog.dismiss(false);
                                     }
-                                    if (userInfoModel.isFriend()){
+                                    if (userInfoModel.isFriend()) {
                                         U.getToastUtil().showShort("你们已经是好友了");
-                                    }else {
+                                    } else {
                                         UserInfoManager.getInstance().beFriend(userInfoModel.getUserId(), null);
                                     }
-
                                 }
                             })
-                            .setCancelBtnClickListener(new View.OnClickListener() {
+                            .setCancelBtnClickListener(new AnimateClickListener() {
                                 @Override
-                                public void onClick(View v) {
+                                public void click(View view) {
                                     if (mBeFriendDialog != null) {
                                         mBeFriendDialog.dismiss(false);
                                     }
@@ -212,9 +221,16 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
     }
 
     void tryGoGrabRoom(int roomID) {
-        IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
-        if (iRankingModeService != null) {
-            iRankingModeService.tryGoGrabRoom(roomID);
+        if (mSkrAudioPermission != null) {
+            mSkrAudioPermission.ensurePermission(new Runnable() {
+                @Override
+                public void run() {
+                    IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
+                    if (iRankingModeService != null) {
+                        iRankingModeService.tryGoGrabRoom(roomID);
+                    }
+                }
+            }, true);
         }
     }
 
@@ -226,10 +242,10 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
 
         if (event.mUserInfoModel.isFriend()) {
             // 好友
-            WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FRIEND_RED_ROD_TYPE, 2);
+            WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FRIEND_RED_ROD_TYPE, 2, true);
         } else {
             // 粉丝
-            WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FANS_RED_ROD_TYPE, 2);
+            WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FANS_RED_ROD_TYPE, 2, true);
         }
     }
 

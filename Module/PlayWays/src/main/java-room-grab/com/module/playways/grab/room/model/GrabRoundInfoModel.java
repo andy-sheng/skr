@@ -1,5 +1,8 @@
 package com.module.playways.grab.room.model;
 
+import android.text.TextUtils;
+
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent;
 import com.module.playways.grab.room.event.GrabRoundStatusChangeEvent;
@@ -11,8 +14,8 @@ import com.module.playways.grab.room.event.SomeOneLeavePlaySeatEvent;
 import com.module.playways.grab.room.event.SomeOneLeaveWaitSeatEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
-import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
-import com.module.playways.rank.song.model.SongModel;
+import com.module.playways.room.prepare.model.BaseRoundInfoModel;
+import com.module.playways.room.song.model.SongModel;
 import com.zq.live.proto.Room.OnlineInfo;
 import com.zq.live.proto.Room.QBLightMsg;
 import com.zq.live.proto.Room.QMLightMsg;
@@ -30,6 +33,11 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
     public static final int STATUS_GRAB = 2;
     public static final int STATUS_SING = 3;
     public static final int STATUS_OVER = 4;
+
+    public static final int EWST_DEFAULT = 0; //默认抢唱类型：普通
+    public static final int EWST_ACCOMPANY = 1; //带伴奏抢唱
+    public static final int EWST_COMMON_OVER_TIME = 2; //普通加时抢唱
+    public static final int EWST_ACCOMPANY_OVER_TIME = 3; //带伴奏加时抢唱
 
     /* 一唱到底使用 */
     private int status = STATUS_INIT;// 轮次状态，在一唱到底中使用
@@ -60,6 +68,15 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
 
     private int enterStatus;//你进入这个轮次处于的状态
 
+    /**
+     * {@link GrabRoundInfoModel.EWST_DEFAULT}
+     * EWST_DEFAULT = 0; //默认抢唱类型：普通
+     * EWST_ACCOMPANY = 1; //带伴奏抢唱
+     * EWST_COMMON_OVER_TIME = 2; //普通加时抢唱
+     * EWST_ACCOMPANY_OVER_TIME = 3; //带伴奏加时抢唱
+     */
+    private int wantSingType;
+
     public GrabRoundInfoModel() {
 
     }
@@ -88,6 +105,22 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
 
     public List<GrabPlayerInfoModel> getPlayUsers() {
         return playUsers;
+    }
+
+    public boolean isContainInRoom() {
+        for (GrabPlayerInfoModel grabPlayerInfoModel : playUsers) {
+            if (grabPlayerInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                return true;
+            }
+        }
+
+        for (GrabPlayerInfoModel grabPlayerInfoModel : waitUsers) {
+            if (grabPlayerInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public void setPlayUsers(List<GrabPlayerInfoModel> playUsers) {
@@ -151,7 +184,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         if (!wantSingInfos.contains(wantSingerInfo)) {
             wantSingInfos.add(wantSingerInfo);
             if (notify) {
-                SomeOneGrabEvent event = new SomeOneGrabEvent(wantSingerInfo.getUserID(), this);
+                SomeOneGrabEvent event = new SomeOneGrabEvent(wantSingerInfo, this);
                 EventBus.getDefault().post(event);
             }
         }
@@ -297,6 +330,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         if (roundInfo.getResultType() > 0) {
             this.setResultType(roundInfo.getResultType());
         }
+        this.setWantSingType(roundInfo.getWantSingType());
         updateStatus(notify, roundInfo.getStatus());
 
         return;
@@ -308,27 +342,33 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         roundInfoModel.setUserID(roundInfo.getUserID());
         roundInfoModel.setPlaybookID(roundInfo.getPlaybookID());
         roundInfoModel.setRoundSeq(roundInfo.getRoundSeq());
+
         roundInfoModel.setSingBeginMs(roundInfo.getSingBeginMs());
         roundInfoModel.setSingEndMs(roundInfo.getSingEndMs());
+
         roundInfoModel.setStatus(roundInfo.getStatus().getValue());
-        SongModel songModel = new SongModel();
-        songModel.parse(roundInfo.getMusic());
-        roundInfoModel.setMusic(songModel);
+
         for (WantSingInfo wantSingInfo : roundInfo.getWantSingInfosList()) {
             roundInfoModel.addGrabUid(false, WantSingerInfo.parse(wantSingInfo));
         }
-        for (QMLightMsg m : roundInfo.getMLightInfosList()) {
-            roundInfoModel.addLightOffUid(false, MLightInfoModel.parse(m));
-        }
+
+        roundInfoModel.setOverReason(roundInfo.getOverReason().getValue());
+        roundInfoModel.setResultType(roundInfo.getResultType().getValue());
+
+        SongModel songModel = new SongModel();
+        songModel.parse(roundInfo.getMusic());
+        roundInfoModel.setMusic(songModel);
+
         for (QBLightMsg m : roundInfo.getBLightInfosList()) {
             roundInfoModel.addLightBurstUid(false, BLightInfoModel.parse(m));
         }
 
+        for (QMLightMsg m : roundInfo.getMLightInfosList()) {
+            roundInfoModel.addLightOffUid(false, MLightInfoModel.parse(m));
+        }
+
         GrabSkrResourceModel grabSkrResourceModel = GrabSkrResourceModel.parse(roundInfo.getSkrResource());
         roundInfoModel.setSkrResource(grabSkrResourceModel);
-
-        roundInfoModel.setOverReason(roundInfo.getOverReason().getValue());
-        roundInfoModel.setResultType(roundInfo.getResultType().getValue());
 
         // 观众席
         for (OnlineInfo m : roundInfo.getWaitUsersList()) {
@@ -341,6 +381,8 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
             GrabPlayerInfoModel grabPlayerInfoModel = GrabPlayerInfoModel.parse(m);
             roundInfoModel.addPlayUser(false, grabPlayerInfoModel);
         }
+
+        roundInfoModel.setWantSingType(roundInfo.getWantSingType().getValue());
         return roundInfoModel;
     }
 
@@ -409,6 +451,22 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         this.enterStatus = enterStatus;
     }
 
+    public int getWantSingType() {
+        return wantSingType;
+    }
+
+    public boolean isChallengeRound() {
+        return wantSingType == EWST_COMMON_OVER_TIME || wantSingType == EWST_ACCOMPANY_OVER_TIME;
+    }
+
+    public boolean isAccRound() {
+        return wantSingType == EWST_ACCOMPANY || wantSingType == EWST_ACCOMPANY_OVER_TIME;
+    }
+
+    public void setWantSingType(int wantSingType) {
+        this.wantSingType = wantSingType;
+    }
+
     @Override
     public String toString() {
         return "GrabRoundInfoModel{" +
@@ -417,8 +475,8 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
                 ", userID=" + userID +
                 ", playbookID=" + playbookID +
                 ", songModel=" + (music == null ? "" : music.toSimpleString()) +
-//                ", singBeginMs=" + singBeginMs +
-//                ", singEndMs=" + singEndMs +
+                ", singBeginMs=" + singBeginMs +
+                ", singEndMs=" + singEndMs +
 //                ", startTs=" + startTs +
 //                ", endTs=" + endTs +
 //                ", sysScore=" + sysScore +
@@ -428,7 +486,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
                 ", mLightInfos=" + mLightInfos +
                 ", playUsers=" + playUsers +
                 ", waitUsers=" + waitUsers +
-                ", skrResource=" + skrResource +
+//                ", skrResource=" + skrResource +
                 ", wantSingInfos=" + wantSingInfos +
                 ", resultType=" + resultType +
                 ", isParticipant=" + isParticipant +

@@ -12,17 +12,24 @@ import com.common.rx.RxRetryAssist;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
+import com.common.view.countdown.CircleCountDownView;
 import com.common.view.ex.ExTextView;
+import com.component.busilib.view.BitmapTextView;
+import com.engine.EngineManager;
+import com.engine.arccloud.ArcCloudManager;
+import com.engine.arccloud.ArcRecognizeListener;
+import com.engine.arccloud.SongInfo;
 import com.module.playways.grab.room.GrabRoomData;
-import com.module.playways.rank.others.LyricAndAccMatchManager;
-import com.module.playways.rank.room.view.ArcProgressBar;
-import com.module.playways.rank.song.model.SongModel;
+import com.module.playways.grab.room.model.GrabRoundInfoModel;
+import com.module.playways.others.LyricAndAccMatchManager;
+import com.module.playways.room.song.model.SongModel;
 import com.module.rank.R;
 import com.zq.lyrics.widget.ManyLyricsView;
 import com.zq.lyrics.widget.VoiceScaleView;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -41,9 +48,7 @@ public class SelfSingCardView2 extends RelativeLayout {
     public final static String TAG = "SelfSingCardView2";
 
     TextView mTvLyric;
-    ArcProgressBar mCountDownProcess;
-    ExTextView mCountDownTv;
-    ImageView mCountIv;
+    BitmapTextView mCountDownTv;
     ManyLyricsView mManyLyricsView;
 
     Disposable mDisposable;
@@ -53,6 +58,9 @@ public class SelfSingCardView2 extends RelativeLayout {
     SongModel mSongModel;
 
     ImageView mIvTag;
+    ImageView mIvChallengeIcon;
+
+    CircleCountDownView mCircleCountDownView;
 
     VoiceScaleView mVoiceScaleView;
 
@@ -78,34 +86,65 @@ public class SelfSingCardView2 extends RelativeLayout {
         inflate(getContext(), R.layout.grab_self_sing_card_layout_two, this);
         mTvLyric = findViewById(R.id.tv_lyric);
         mManyLyricsView = (ManyLyricsView) findViewById(R.id.many_lyrics_view);
-        mCountDownProcess = (ArcProgressBar) findViewById(R.id.count_down_process);
-        mCountDownTv = (ExTextView) findViewById(R.id.count_down_tv);
-        mCountIv = (ImageView) findViewById(R.id.count_iv);
+        mCircleCountDownView = (CircleCountDownView) findViewById(R.id.circle_count_down_view);
+        mCountDownTv = (BitmapTextView) findViewById(R.id.count_down_tv);
         mIvTag = (ImageView) findViewById(R.id.iv_tag);
         mVoiceScaleView = (VoiceScaleView) findViewById(R.id.voice_scale_view);
+        mIvChallengeIcon = (ImageView) findViewById(R.id.iv_challenge_icon);
     }
 
-    public void playLyric(SongModel songModel, boolean hasAcc) {
-        mSongModel = songModel;
+    public void playLyric(GrabRoundInfoModel infoModel, boolean accEnable) {
+        if (infoModel == null) {
+            MyLog.d(TAG, "infoModel 是空的");
+            return;
+        }
+        if (infoModel.getWantSingType() == GrabRoundInfoModel.EWST_COMMON_OVER_TIME
+                || infoModel.getWantSingType() == GrabRoundInfoModel.EWST_ACCOMPANY_OVER_TIME) {
+            mIvChallengeIcon.setVisibility(VISIBLE);
+        } else {
+            mIvChallengeIcon.setVisibility(INVISIBLE);
+        }
+        mSongModel = infoModel.getMusic();
         mTvLyric.setText("歌词加载中...");
         mTvLyric.setVisibility(VISIBLE);
         mManyLyricsView.setVisibility(GONE);
         mManyLyricsView.initLrcData();
         mVoiceScaleView.setVisibility(View.GONE);
-        if (songModel == null) {
+        if (mSongModel == null) {
             MyLog.d(TAG, "songModel 是空的");
             return;
         }
-        if (!hasAcc) {
-            playWithNoAcc(songModel);
-            mIvTag.setBackground(U.getDrawable(R.drawable.self_sing_biaoqian));
+        /**
+         * 该轮次的总时间，之前用的是歌曲内的总时间，但是不灵活，现在都放在服务器的轮次信息的 begin 和 end 里
+         *
+         */
+        int totalTs = infoModel.getSingEndMs() - infoModel.getSingBeginMs();
+        if (totalTs <= 0) {
+            MyLog.d(TAG, "playLyric" + " totalTs时间不合法,做矫正, infoModel=" + infoModel);
+            if (infoModel.getWantSingType() == 0) {
+                totalTs = 20 * 1000;
+            } else if (infoModel.getWantSingType() == 1) {
+                totalTs = 30 * 1000;
+            } else if (infoModel.getWantSingType() == 2) {
+                totalTs = 40 * 1000;
+            } else if (infoModel.getWantSingType() == 3) {
+                totalTs = 50 * 1000;
+            }
+        }
+        boolean withAcc = false;
+        if (infoModel.isAccRound() && accEnable) {
+            withAcc = true;
+        }
+        if (!withAcc) {
+            playWithNoAcc(mSongModel);
+            mIvTag.setBackground(U.getDrawable(R.drawable.ycdd_daojishi_qingchang));
             mLyricAndAccMatchManager.stop();
         } else {
-            mIvTag.setBackground(U.getDrawable(R.drawable.biaoqian_haichang));
+            mIvTag.setBackground(U.getDrawable(R.drawable.ycdd_daojishi_banzou));
             mLyricAndAccMatchManager.setArgs(mManyLyricsView, mVoiceScaleView,
-                    songModel.getLyric(),
-                    songModel.getStandLrcBeginT(), songModel.getStandLrcBeginT() + songModel.getTotalMs(),
-                    songModel.getBeginMs(), songModel.getBeginMs() + songModel.getTotalMs());
+                    mSongModel.getLyric(),
+                    mSongModel.getStandLrcBeginT(), mSongModel.getStandLrcBeginT() + totalTs,
+                    mSongModel.getBeginMs(), mSongModel.getBeginMs() + totalTs);
             mLyricAndAccMatchManager.start(new LyricAndAccMatchManager.Listener() {
                 @Override
                 public void onLyricParseSuccess() {
@@ -121,10 +160,16 @@ public class SelfSingCardView2 extends RelativeLayout {
                 public void onLyricEventPost(int lineNum) {
                     mRoomData.setSongLineNum(lineNum);
                 }
+
+            });
+            EngineManager.getInstance().setRecognizeListener(new ArcRecognizeListener() {
+                @Override
+                public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
+                    mLyricAndAccMatchManager.onAcrResult(result, list, targetSongInfo, lineNo);
+                }
             });
         }
-
-        starCounDown(songModel);
+        starCounDown(totalTs);
     }
 
     private void playWithNoAcc(SongModel songModel) {
@@ -147,11 +192,10 @@ public class SelfSingCardView2 extends RelativeLayout {
     }
 
 
-    private void starCounDown(SongModel songModel) {
-        mCountIv.setVisibility(GONE);
+    private void starCounDown(int totalMs) {
         mCountDownTv.setVisibility(VISIBLE);
-        mCountDownProcess.startCountDown(0, songModel.getTotalMs());
-        int counDown = songModel.getTotalMs() / 1000;
+        mCircleCountDownView.go(0, totalMs);
+        int counDown = totalMs / 1000;
         mCounDownTask = HandlerTaskTimer.newBuilder()
                 .interval(1000)
                 .take(counDown)
@@ -168,8 +212,7 @@ public class SelfSingCardView2 extends RelativeLayout {
                             mListener.onSelfSingOver();
                         }
                         stopCounDown();
-                        mCountIv.setVisibility(VISIBLE);
-                        mCountDownTv.setVisibility(GONE);
+//                        mCountDownTv.setVisibility(GONE);
                     }
                 });
     }

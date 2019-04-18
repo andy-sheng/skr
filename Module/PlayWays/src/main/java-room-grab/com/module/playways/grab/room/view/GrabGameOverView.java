@@ -80,6 +80,7 @@ public class GrabGameOverView extends RelativeLayout {
             @Override
             public void onFinished() {
                 if (mEndGameIv != null) {
+                    mEndGameIv.setCallback(null);
                     mEndGameIv.stopAnimation(true);
                     mEndGameIv.setVisibility(GONE);
                 }
@@ -108,7 +109,8 @@ public class GrabGameOverView extends RelativeLayout {
         if (visibility == GONE) {
             this.mSVGAListener = null;
             if (mEndGameIv != null) {
-                mEndGameIv.stopAnimation(false);
+                mEndGameIv.setCallback(null);
+                mEndGameIv.stopAnimation(true);
             }
         }
     }

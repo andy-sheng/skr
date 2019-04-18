@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.DiffAdapter;
@@ -95,24 +96,24 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
             if (mGrabRoomData.hasGameBegin()) {
                 if (mGrabRoomData.getRealRoundSeq() == model.getRoundSeq()) {
                     mTvManage.setEnabled(false);
-                    mTvManage.setText("演唱中");
+                    mTvManage.setBackground(U.getDrawable(R.drawable.fz_yanchangzhong));
                 } else if (mGrabRoomData.getRealRoundSeq() + 1 == model.getRoundSeq()) {
                     mTvManage.setEnabled(false);
-                    mTvManage.setText("已加载");
+                    mTvManage.setBackground(U.getDrawable(R.drawable.fz_yijiazai));
                 } else {
                     mTvManage.setEnabled(true);
-                    mTvManage.setText("删除");
+                    mTvManage.setBackground(U.getDrawable(R.drawable.fz_shanchu));
                 }
             } else {
                 if (position == 0) {
                     mTvManage.setEnabled(false);
-                    mTvManage.setText("已加载");
+                    mTvManage.setBackground(U.getDrawable(R.drawable.fz_yijiazai));
                 } else if (position == 1) {
                     mTvManage.setEnabled(false);
-                    mTvManage.setText("已加载");
+                    mTvManage.setBackground(U.getDrawable(R.drawable.fz_yijiazai));
                 } else {
                     mTvManage.setEnabled(true);
-                    mTvManage.setText("删除");
+                    mTvManage.setBackground(U.getDrawable(R.drawable.fz_shanchu));
                 }
             }
 

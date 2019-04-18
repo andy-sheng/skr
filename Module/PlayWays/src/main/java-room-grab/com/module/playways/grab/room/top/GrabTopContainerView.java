@@ -10,18 +10,24 @@ import android.widget.RelativeLayout;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
+import com.engine.EngineEvent;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.SomeOneGrabEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
 import com.module.playways.grab.room.event.SomeOneOnlineChangeEvent;
-import com.module.playways.rank.room.event.InputBoardEvent;
-import com.module.playways.rank.room.view.MoreOpView;
+import com.module.playways.room.room.event.InputBoardEvent;
+import com.module.playways.room.room.view.MoreOpView;
 import com.module.rank.R;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import io.agora.rtc.IRtcEngineEventHandler;
 
 
 public class GrabTopContainerView extends RelativeLayout {
@@ -106,13 +112,6 @@ public class GrabTopContainerView extends RelativeLayout {
                                 mListener.onClickGameRule();
                             }
                         }
-
-                        @Override
-                        public void onClickVoiceAudition() {
-                            if (mListener != null) {
-                                mListener.onClickVoiceVoiceAudition();
-                            }
-                        }
                     });
                     mMoreOpView.setRoomData(mRoomData);
                 }
@@ -129,17 +128,11 @@ public class GrabTopContainerView extends RelativeLayout {
     public void setModeGrab() {
         // 抢唱模式
         mTopContentRv.setModeGrab();
-        mGrabTopView.setAccSwitchBtnStatus(true);
     }
 
     public void setModeSing(long singUid) {
         // 演唱模式
         mTopContentRv.setModeSing((int) singUid);
-        if (singUid == MyUserInfoManager.getInstance().getUid()) {
-            mGrabTopView.setAccSwitchBtnStatus(false);
-        } else {
-            mGrabTopView.setAccSwitchBtnStatus(true);
-        }
     }
 
     public void onGameFinish() {
@@ -173,7 +166,7 @@ public class GrabTopContainerView extends RelativeLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(SomeOneGrabEvent event) {
-        mTopContentRv.grap(event.uid);
+        mTopContentRv.grap(event.mWantSingerInfo);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

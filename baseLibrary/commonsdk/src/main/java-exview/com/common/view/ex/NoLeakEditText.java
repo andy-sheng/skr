@@ -6,6 +6,7 @@ import android.text.TextWatcher;
 import android.util.AttributeSet;
 
 import java.util.ArrayList;
+import java.util.logging.Handler;
 
 /**
  * Created by feary on 17-8-23.
@@ -22,12 +23,12 @@ public class NoLeakEditText extends AppCompatEditText {
 
     public NoLeakEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
-        loadAttributes(context,attrs);
+        loadAttributes(context, attrs);
     }
 
     public NoLeakEditText(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        loadAttributes(context,attrs);
+        loadAttributes(context, attrs);
     }
 
     private void loadAttributes(Context context, AttributeSet attrs) {
@@ -36,7 +37,7 @@ public class NoLeakEditText extends AppCompatEditText {
 
     @Override
     public void addTextChangedListener(TextWatcher watcher) {
-       com.common.log.MyLog.d(TAG, "addTextChangedListener" + " watcher=" + watcher);
+        com.common.log.MyLog.d(TAG, "addTextChangedListener" + " watcher=" + watcher);
         if (!mAddedList.contains(watcher)) {
             mAddedList.add(watcher);
             super.addTextChangedListener(watcher);
@@ -48,7 +49,7 @@ public class NoLeakEditText extends AppCompatEditText {
 
     @Override
     public void removeTextChangedListener(TextWatcher watcher) {
-       com.common.log.MyLog.d(TAG, "removeTextChangedListener" + " watcher=" + watcher);
+        com.common.log.MyLog.d(TAG, "removeTextChangedListener" + " watcher=" + watcher);
         if (mRemovedList.contains(watcher)) {
             mRemovedList.remove(watcher);
         } else {
@@ -61,7 +62,7 @@ public class NoLeakEditText extends AppCompatEditText {
 
     @Override
     protected void onAttachedToWindow() {
-       com.common.log.MyLog.d(TAG, "onAttachedToWindow mAddedList.size:" + mAddedList.size() + ",mRemovedList.size:" + mRemovedList.size());
+        com.common.log.MyLog.d(TAG, "onAttachedToWindow mAddedList.size:" + mAddedList.size() + ",mRemovedList.size:" + mRemovedList.size());
         super.onAttachedToWindow();
         for (TextWatcher watcher : mRemovedList) {
             super.addTextChangedListener(watcher);
@@ -74,7 +75,7 @@ public class NoLeakEditText extends AppCompatEditText {
 
     @Override
     protected void onDetachedFromWindow() {
-       com.common.log.MyLog.d(TAG, "onDetachedFromWindow mAddedList.size:" + mAddedList.size() + ",mRemovedList.size:" + mRemovedList.size());
+        com.common.log.MyLog.d(TAG, "onDetachedFromWindow mAddedList.size:" + mAddedList.size() + ",mRemovedList.size:" + mRemovedList.size());
         for (TextWatcher watcher : mAddedList) {
             super.removeTextChangedListener(watcher);
             mRemovedList.add(watcher);
@@ -85,7 +86,10 @@ public class NoLeakEditText extends AppCompatEditText {
          * 防止 blink 内存泄漏
          */
         setCursorVisible(false);
-        getHandler().removeCallbacksAndMessages(null);
+        android.os.Handler handler = getHandler();
+        if (handler != null) {
+            handler.removeCallbacksAndMessages(null);
+        }
         super.onDetachedFromWindow();
     }
 }

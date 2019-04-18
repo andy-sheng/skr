@@ -2,6 +2,9 @@ package com.orhanobut.dialogplus;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.*;
@@ -18,6 +21,8 @@ import com.common.view.DebounceViewClickListener;
 public class DialogPlus {
 
     public final static String TAG = "DialogPlus";
+
+    public final static int MSG_ENSURE_DISMISS = 88;
 
     private static final int INVALID = -1;
 
@@ -79,6 +84,8 @@ public class DialogPlus {
     private final Animation outAnim;
     private final Animation inAnim;
 
+    Handler mHandler;
+
     DialogPlus(DialogPlusBuilder builder) {
         LayoutInflater layoutInflater = LayoutInflater.from(builder.getContext());
 
@@ -126,6 +133,15 @@ public class DialogPlus {
         if (builder.isExpanded()) {
             initExpandAnimator(activity, builder.getDefaultContentHeight(), builder.getContentParams().gravity);
         }
+        mHandler = new Handler(Looper.getMainLooper()){
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                if(msg.what == MSG_ENSURE_DISMISS){
+                    dismissInner(false);
+                }
+            }
+        };
     }
 
     /**
@@ -170,6 +186,10 @@ public class DialogPlus {
         if(!isShowing()){
             return;
         }
+        dismissInner(useAnimation);
+    }
+
+    void dismissInner(boolean useAnimation){
         if (useAnimation) {
             // 如果View 不显示，动画是不会走的
             outAnim.setAnimationListener(new Animation.AnimationListener() {
@@ -184,6 +204,9 @@ public class DialogPlus {
                     decorView.post(new Runnable() {
                         @Override
                         public void run() {
+                            if (mHandler != null) {
+                                mHandler.removeMessages(MSG_ENSURE_DISMISS);
+                            }
                             decorView.removeView(rootView);
                             isDismissing = false;
                             if (onDismissListener != null) {
@@ -200,7 +223,14 @@ public class DialogPlus {
             });
             contentContainer.startAnimation(outAnim);
             isDismissing = true;
+            if (mHandler != null) {
+                mHandler.removeMessages(MSG_ENSURE_DISMISS);
+                mHandler.sendEmptyMessageDelayed(MSG_ENSURE_DISMISS,outAnim.getDuration() > 1000 ? outAnim.getDuration() : 1000);
+            }
         } else {
+            if (mHandler != null) {
+                mHandler.removeMessages(MSG_ENSURE_DISMISS);
+            }
             decorView.removeView(rootView);
             isDismissing = false;
             if (onDismissListener != null) {
@@ -208,6 +238,7 @@ public class DialogPlus {
             }
         }
     }
+
 
     /**
      * Checks the given resource id and return the corresponding view if it exists.

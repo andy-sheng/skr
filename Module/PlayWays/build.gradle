@@ -71,6 +71,9 @@ android {
             java.srcDirs += 'src/main/java-prepare'
             res.srcDirs += 'src/main/res-prepare'
 
+            java.srcDirs += 'src/main/java-audition'
+            res.srcDirs += 'src/main/res-audition'
+
             java.srcDirs += 'src/main/java-room-rank'
             res.srcDirs += 'src/main/res-room-rank'
 

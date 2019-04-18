@@ -38,9 +38,13 @@
         app:bl_solid_color="@color/black_trans_25" />
 
     <ImageView
+        android:visibility="gone"
+        android:layout_marginRight="@dimen/view_6_dp"
+        android:layout_marginBottom="@dimen/view_6_dp"
+        android:background="@drawable/yilingqu"
         android:id="@+id/ok"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/view_43_dp"
+        android:layout_height="@dimen/view_43_dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true" />
 </RelativeLayout>

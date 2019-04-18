@@ -62,14 +62,19 @@ public class MyUserInfoManager {
             @Override
             public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
                 if (UserAccountManager.getInstance().hasAccount()) {
-                    MyUserInfo userInfo = MyUserInfoLocalApi.getUserInfoByUUid(UserAccountManager.getInstance().getUuidAsLong());
-                    MyLog.d(TAG, "load myUserInfo uid =" + UserAccountManager.getInstance().getUuidAsLong());
-                    MyLog.d(TAG, "load myUserInfo=" + userInfo);
-                    if (userInfo != null) {
-                        setMyUserInfo(userInfo, false);
+                    if(mUserInfoFromServer && mUser!=null){
+                        MyLog.d(TAG,"load。 mUser 有效 来自server，取消本次");
+                    }else{
+                        MyUserInfo userInfo = MyUserInfoLocalApi.getUserInfoByUUid(UserAccountManager.getInstance().getUuidAsLong());
+                        MyLog.d(TAG, "load myUserInfo uid =" + UserAccountManager.getInstance().getUuidAsLong());
+                        MyLog.d(TAG, "load myUserInfo=" + userInfo);
+                        if (userInfo != null) {
+                            setMyUserInfo(userInfo, false);
+                        }
+                        // 从服务器同步个人信息
+                        syncMyInfoFromServer();
                     }
-                    // 从服务器同步个人信息
-                    syncMyInfoFromServer();
+
                 }
 //                mHasLoadFromDB = true;
 //                EventBus.getDefault().post(new MyUserInfoEvent.UserInfoLoadOkEvent());
@@ -203,43 +208,56 @@ public class MyUserInfoManager {
             @Override
             public void process(final ApiResult obj) {
                 if (obj.getErrno() == 0) {
-                    U.getToastUtil().showShort("个人信息更新成功");
+                    if (!updateLocalIfServerFailed) {
+                        if (updateParams.nickName != null) {
+                            mUser.setUserNickname(updateParams.nickName);
+                        }
+                        if (updateParams.sex != -1) {
+                            mUser.setSex(updateParams.sex);
+                        }
+                        if (updateParams.birthday != null) {
+                            mUser.setBirthday(updateParams.birthday);
+                        }
+                        if (updateParams.avatar != null) {
+                            mUser.setAvatar(updateParams.avatar);
+                        }
+                        if (updateParams.sign != null) {
+                            mUser.setSignature(updateParams.sign);
+                        }
+                        if (updateParams.location != null) {
+                            mUser.setLocation(updateParams.location);
+                        }
+                    }
+
+                    if (isCompleteInfo) {
+                        // 是否在上传资料过程中
+                        UserInfoModel userInfoModel = JSON.parseObject(obj.getData().toString(), UserInfoModel.class);
+                        if (userInfoModel != null) {
+                            // TODO: 2019/3/10  这么解析是因为目前服务器只返回这几个字段
+                            if (!TextUtils.isEmpty(userInfoModel.getNickname())) {
+                                mUser.setUserNickname(userInfoModel.getNickname());
+                            }
+
+                            if (!TextUtils.isEmpty(userInfoModel.getAvatar())) {
+                                mUser.setAvatar(userInfoModel.getAvatar());
+                            }
+
+                            if (userInfoModel.getSex() != -1) {
+                                mUser.setSex(userInfoModel.getSex());
+                            }
+
+                            if (TextUtils.isEmpty(userInfoModel.getBirthday())) {
+                                mUser.setBirthday(userInfoModel.getBirthday());
+                            }
+                        }
+                    }
+                    if (callback != null) {
+                        callback.onSucess();
+                    }
                     //写入数据库
                     Observable.create(new ObservableOnSubscribe<Object>() {
                         @Override
                         public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
-                            if (!updateLocalIfServerFailed) {
-                                if (updateParams.nickName != null) {
-                                    mUser.setUserNickname(updateParams.nickName);
-                                }
-                                if (updateParams.sex != -1) {
-                                    mUser.setSex(updateParams.sex);
-                                }
-                                if (updateParams.birthday != null) {
-                                    mUser.setBirthday(updateParams.birthday);
-                                }
-                                if (updateParams.avatar != null) {
-                                    mUser.setAvatar(updateParams.avatar);
-                                }
-                                if (updateParams.sign != null) {
-                                    mUser.setSignature(updateParams.sign);
-                                }
-                                if (updateParams.location != null) {
-                                    mUser.setLocation(updateParams.location);
-                                }
-                            }
-
-                            if (isCompleteInfo) {
-                                // 是否在上传资料过程中
-                                UserInfoModel userInfoModel = JSON.parseObject(obj.getData().toString(), UserInfoModel.class);
-                                if (userInfoModel != null) {
-                                    // TODO: 2019/3/10  这么解析是因为目前服务器只返回这几个字段
-                                    mUser.setUserNickname(userInfoModel.getNickname());
-                                    mUser.setAvatar(userInfoModel.getAvatar());
-                                    mUser.setSex(userInfoModel.getSex());
-                                    mUser.setBirthday(userInfoModel.getBirthday());
-                                }
-                            }
                             MyUserInfoLocalApi.insertOrUpdate(mUser);
                             // 取得个人信息
                             MyUserInfo userInfo = MyUserInfoLocalApi.getUserInfoByUUid(UserAccountManager.getInstance().getUuidAsLong());
@@ -249,9 +267,6 @@ public class MyUserInfoManager {
                             if (updateParams.location != null) {
                                 // 有传地址位置
                                 U.getPreferenceUtils().setSettingLong(PREF_KEY_UPDATE_LACATION_TS, System.currentTimeMillis());
-                            }
-                            if (callback != null) {
-                                callback.onSucess();
                             }
                             emitter.onComplete();
                         }
@@ -308,6 +323,18 @@ public class MyUserInfoManager {
             }
         }
         return 0;
+    }
+
+    public String getConstellation() {
+        if (mUser != null && !TextUtils.isEmpty(mUser.getBirthday())) {
+            String[] array = mUser.getBirthday().split("-");
+            if (!TextUtils.isEmpty(array[1]) && !TextUtils.isEmpty(array[2])) {
+                int month = Integer.valueOf(array[1]);
+                int day = Integer.valueOf(array[2]);
+                return U.getDateTimeUtils().getConstellation(month, day);
+            }
+        }
+        return "";
     }
 
     public String getAvatar() {

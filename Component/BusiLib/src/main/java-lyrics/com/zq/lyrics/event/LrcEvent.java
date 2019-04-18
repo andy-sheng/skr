@@ -29,6 +29,12 @@ public class LrcEvent {
         public LineLineEndEvent() {
         }
 
+        @Override
+        public String toString() {
+            return "LineLineEndEvent{" +
+                    "lineNum=" + lineNum +
+                    '}';
+        }
     }
 
     /**

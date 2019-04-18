@@ -79,7 +79,7 @@ public class ExoPlayer implements IPlayer {
     private float mShiftUp = 0;
 
     private View mView;
-
+    private  float mVolume = 1.0f;
     private boolean mPreparedFlag = false;
 
     HandlerTaskTimer mMusicTimePlayTimeListener;
@@ -462,10 +462,21 @@ public class ExoPlayer implements IPlayer {
 
     @Override
     public void setVolume(float volume) {
+        setVolume(volume,true);
+    }
+
+    public void setVolume(float volume,boolean setConfig) {
         if (mPlayer == null) {
             return;
         }
+        if(setConfig) {
+            this.mVolume = volume;
+        }
         mPlayer.setVolume(volume);
+    }
+
+    public float getVolume() {
+        return mVolume;
     }
 
     @Override

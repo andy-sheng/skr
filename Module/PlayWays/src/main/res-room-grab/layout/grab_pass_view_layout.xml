@@ -6,11 +6,12 @@
     tools:parentTag="android.widget.RelativeLayout">
 
     <com.common.view.ex.ExImageView
+        android:layout_marginRight="@dimen/view_10_dp"
         android:id="@+id/pass_iv"
-        android:layout_width="@dimen/view_102_dp"
-        android:layout_height="@dimen/view_74_dp"
+        android:layout_width="@dimen/view_87_dp"
+        android:layout_height="@dimen/view_53_dp"
         android:layout_alignParentRight="true"
-        app:bl_pressed_drawable="@drawable/buchangle_anxia"
-        app:bl_unPressed_drawable="@drawable/buchangle" />
+        app:bl_pressed_drawable="@drawable/ycdd_buchangle_anxia"
+        app:bl_unPressed_drawable="@drawable/ycdd_buchangle" />
 
 </merge>

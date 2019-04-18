@@ -2,6 +2,7 @@ package com.imagebrowse;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.Animatable;
 import android.net.Uri;
 import android.os.Handler;
@@ -10,6 +11,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.common.base.R;
 import com.common.image.fresco.BaseImageView;
@@ -24,6 +26,7 @@ import com.common.utils.HttpUtils;
 import com.common.utils.U;
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
+import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.imagepipeline.image.ImageInfo;
 
 import java.io.File;
@@ -52,6 +55,8 @@ public class EnhancedImageView extends RelativeLayout {
     protected OnLongClickListener mLongClickListener; //长按事件的监听
     protected OnClickListener mClickListener; //点击事件的监听
 
+    TextView mDebugLogView;
+
     protected Handler mUiHandler = new Handler();
 
     protected BaseImage mBaseImage;
@@ -76,11 +81,6 @@ public class EnhancedImageView extends RelativeLayout {
         super.onAttachedToWindow();
     }
 
-    // 设置图片长按事件的监听
-    public void setLongClickListener(OnLongClickListener longClickListener) {
-        this.mLongClickListener = longClickListener;
-    }
-
     @Override
     public void setOnClickListener(@Nullable OnClickListener l) {
         this.mClickListener = l;
@@ -88,7 +88,7 @@ public class EnhancedImageView extends RelativeLayout {
 
     @Override
     public void setOnLongClickListener(@Nullable OnLongClickListener l) {
-        super.setOnLongClickListener(l);
+        this.mLongClickListener = l;
     }
 
     @Override
@@ -99,10 +99,13 @@ public class EnhancedImageView extends RelativeLayout {
             mSubsamplingScaleImageView.recycle();
         }
         if (mBaseImage != null) {
-            String path = mBaseImage.getUri().toString();
-            if (path.startsWith("https://") || path.startsWith("http://")) {
-                if (path.endsWith(".gif")) {
-                    U.getHttpUtils().cancelDownload(path);
+            Uri uri = mBaseImage.getUri();
+            if (uri != null) {
+                String path = uri.toString();
+                if (path.startsWith("https://") || path.startsWith("http://")) {
+                    if (path.endsWith(".gif")) {
+                        U.getHttpUtils().cancelDownload(path);
+                    }
                 }
             }
         }
@@ -120,26 +123,41 @@ public class EnhancedImageView extends RelativeLayout {
     }
 
     public void load(String path) {
-//        path = "http://bucket-oss-inframe.oss-cn-beijing.aliyuncs.com/1111.jpg?x-oss-process=image/resize,w_480,h_1080/circle,r_500/blur,r_30,s_20";
+        if (path == null) {
+            return;
+        }
         MyLog.d(TAG, "load" + " path=" + path);
+        if (mDebugLogView == null && MyLog.isDebugLogOpen()) {
+            mDebugLogView = new TextView(getContext());
+            LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 300);
+            lp.topMargin = 400;
+            mDebugLogView.setTextColor(Color.RED);
+            mDebugLogView.setGravity(CENTER_IN_PARENT);
+            addView(mDebugLogView, lp);
+        }
+        if (mDebugLogView != null) {
+            mDebugLogView.setText("path=" + path);
+        }
+
         if (path.startsWith("http://") || path.startsWith("https://")) {
-            HttpImage httpImage = (HttpImage) ImageFactory.newHttpImage(path)
+            HttpImage httpImage = (HttpImage) ImageFactory.newPathImage(path)
+                    .setScaleType(ScalingUtils.ScaleType.FIT_CENTER)
                     .setFailureDrawable(U.app().getResources().getDrawable(R.drawable.load_img_error))
                     .setLoadingDrawable(U.app().getResources().getDrawable(R.drawable.loading_place_holder_img))
-                    .setProgressBarDrawable(new ImageBrowseProgressBar())
+//                    .setProgressBarDrawable(new ImageBrowseProgressBar())
                     .setTapToRetryEnabled(true)
 //                    .setOssProcessors(OssPsFactory.newResizeBuilder().setW(360).build(),OssPsFactory.newCropBuilder().setH(180).build())
                     .build();
             load(httpImage);
         } else {
-            LocalImage localImage = (LocalImage) ImageFactory.newLocalImage(path)
+            LocalImage localImage = (LocalImage) ImageFactory.newPathImage(path)
                     .build();
             load(localImage);
         }
     }
 
     public void load(BaseImage baseImage) {
-        if(baseImage == null || baseImage.getUri() == null){
+        if (baseImage == null || baseImage.getUri() == null) {
             return;
         }
 
@@ -170,6 +188,7 @@ public class EnhancedImageView extends RelativeLayout {
     }
 
     private void showFrescoViewIfNeed() {
+        addLog("showFrescoViewIfNeed");
         if (mGifImageView != null) {
             mGifImageView.setVisibility(GONE);
         }
@@ -199,6 +218,7 @@ public class EnhancedImageView extends RelativeLayout {
     }
 
     private void showSubSampleViewIfNeed() {
+        addLog("showSubSampleViewIfNeed");
         if (mGifImageView != null) {
             mGifImageView.setVisibility(GONE);
         }
@@ -228,7 +248,7 @@ public class EnhancedImageView extends RelativeLayout {
                 File file = FrescoWorker.getCacheFileFromFrescoDiskCache(httpImage.getUri());
                 int wh[] = U.getImageUtils().getImageWidthAndHeightFromFile(file.getAbsolutePath());
 
-                MyLog.d(TAG, "load processWithInfo wh " + wh[0] + " " + wh[1]);
+                addLog("load processWithInfo wh " + wh[0] + " " + wh[1]);
                 // 如果是图特别大，用 subsample加载
                 boolean b1 = wh[0] != 0 && wh[0] > U.getDisplayUtils().getScreenWidth() * 1.5;
                 boolean b2 = wh[1] != 0 && wh[1] > U.getDisplayUtils().getScreenHeight() * 1.5;
@@ -253,7 +273,7 @@ public class EnhancedImageView extends RelativeLayout {
             @Override
             public void onProgressUpdate(float progress) {
                 //显示下载进度条
-                MyLog.d(TAG, "onProgressUpdate" + " progress=" + progress);
+                //MyLog.d(TAG, "onProgressUpdate" + " progress=" + progress);
             }
 
             @Override
@@ -272,7 +292,7 @@ public class EnhancedImageView extends RelativeLayout {
             @Override
             public void processWithInfo(ImageInfo info, Animatable animatable) {
                 if (preCallback != null) {
-                    preCallback.processWithInfo(info,animatable);
+                    preCallback.processWithInfo(info, animatable);
                 }
                 if (!useSubSampleView()) {
                     return;
@@ -312,17 +332,17 @@ public class EnhancedImageView extends RelativeLayout {
             @Override
             public void onPreviewLoadError(Exception e) {
                 // 改用fresco
-                MyLog.d(TAG, " subSampleTouchView onPreviewLoadError");
+                addLog(" subSampleTouchView onPreviewLoadError");
             }
 
             @Override
             public void onImageLoadError(Exception e) {
-                MyLog.d(TAG, " subSampleTouchView onPreviewLoadError");
+                addLog(" subSampleTouchView onPreviewLoadError");
             }
 
             @Override
             public void onTileLoadError(Exception e) {
-                MyLog.d(TAG, " subSampleTouchView onPreviewLoadError");
+                addLog(" subSampleTouchView onPreviewLoadError");
             }
 
             @Override
@@ -332,7 +352,7 @@ public class EnhancedImageView extends RelativeLayout {
 
             @Override
             public void onImageLoaded() {
-                MyLog.d(TAG, " subSampleTouchView onImageLoaded");
+                addLog(" subSampleTouchView onImageLoaded");
                 if (mPhotoDraweeView != null) {
                     mPhotoDraweeView.setVisibility(GONE);
                 }
@@ -428,6 +448,13 @@ public class EnhancedImageView extends RelativeLayout {
         } catch (IOException e) {
             // 失败了
             loadLocalByFresco(mBaseImage);
+        }
+    }
+
+    void addLog(String text) {
+        MyLog.d(TAG, text);
+        if (mDebugLogView != null) {
+            mDebugLogView.setText(mDebugLogView.getText() + "\n" + text);
         }
     }
 }

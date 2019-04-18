@@ -4,8 +4,10 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.common.core.account.UserAccountManager;
@@ -16,6 +18,7 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.constans.GrabRoomType;
+import com.component.busilib.view.BitmapTextView;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabMyCoinChangeEvent;
 import com.module.rank.R;
@@ -27,10 +30,10 @@ import org.greenrobot.eventbus.ThreadMode;
 public class GrabTopView extends RelativeLayout {
 
     ExTextView mTvChangeRoom;
-    ExTextView mTvCoin;
+    BitmapTextView mTvCoin;
     ExImageView mConinChangeIv;
     ExTextView mTvCoinChange;
-    ExTextView mTvAccSwitch;
+    ImageView mIvVoiceSetting;
 //    ImageView mIvAccDisable;
 
     Listener mOnClickChangeRoomListener;
@@ -115,11 +118,10 @@ public class GrabTopView extends RelativeLayout {
     public void init() {
         inflate(getContext(), R.layout.grab_top_view, this);
         mTvChangeRoom = (ExTextView) findViewById(R.id.tv_change_room);
-        mTvCoin = (ExTextView) findViewById(R.id.tv_coin);
+        mTvCoin = (BitmapTextView) findViewById(R.id.tv_coin);
         mConinChangeIv = (ExImageView) findViewById(R.id.conin_change_iv);
         mTvCoinChange = (ExTextView) findViewById(R.id.tv_coin_change);
-        mTvAccSwitch = (ExTextView) findViewById(R.id.tv_acc_switch);
-//        mIvAccDisable = (ImageView) findViewById(R.id.iv_acc_disable);
+        mIvVoiceSetting = (ImageView) findViewById(R.id.iv_voice_setting);
 
         mTvChangeRoom.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -132,38 +134,20 @@ public class GrabTopView extends RelativeLayout {
             }
         });
 
-        mTvAccSwitch.setOnClickListener(new DebounceViewClickListener() {
+        mIvVoiceSetting.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                if (mGrabRoomData.isAccEnable()) {
-                    mGrabRoomData.setAccEnable(false);
-                    mTvAccSwitch.setText("清唱模式");
-                    U.getToastUtil().showShort("已关闭伴奏");
-                } else {
-                    mGrabRoomData.setAccEnable(true);
-                    mTvAccSwitch.setText("伴奏模式");
-                    U.getToastUtil().showShort("已打开伴奏");
+                if (mOnClickChangeRoomListener != null) {
+                    mOnClickChangeRoomListener.onClickVoiceAudition();
                 }
             }
         });
     }
 
-    public void setAccSwitchBtnStatus(boolean visibale) {
-        if (visibale) {
-            mTvAccSwitch.setVisibility(GONE);
-        } else {
-            mTvAccSwitch.setVisibility(GONE);
-        }
-    }
-
     public void setRoomData(GrabRoomData modelBaseRoomData) {
         mGrabRoomData = modelBaseRoomData;
         mTvCoin.setText(mGrabRoomData.getCoin() + "");
-        if (mGrabRoomData.isAccEnable()) {
-            mTvAccSwitch.setText("伴奏模式");
-        } else {
-            mTvAccSwitch.setText("清唱模式");
-        }
+
         if (mGrabRoomData.isOwner()) {
             // 是房主，肯定不能切换房间
             setChangeRoomBtnVisiable(false);
@@ -186,16 +170,16 @@ public class GrabTopView extends RelativeLayout {
     void setChangeRoomBtnVisiable(boolean visiable) {
         if (visiable) {
             mTvChangeRoom.setVisibility(VISIBLE);
-            LayoutParams lp = (LayoutParams) mTvCoin.getLayoutParams();
-            lp.addRule(RelativeLayout.RIGHT_OF, mTvChangeRoom.getId());
-            lp.leftMargin = U.getDisplayUtils().dip2px(10);
-            mTvCoin.setLayoutParams(lp);
+//            LayoutParams lp = (LayoutParams) mTvCoin.getLayoutParams();
+//            lp.addRule(RelativeLayout.RIGHT_OF, mTvChangeRoom.getId());
+//            lp.leftMargin = U.getDisplayUtils().dip2px(10);
+//            mTvCoin.setLayoutParams(lp);
         } else {
             mTvChangeRoom.setVisibility(GONE);
-            LayoutParams lp = (LayoutParams) mTvCoin.getLayoutParams();
-            lp.addRule(RelativeLayout.RIGHT_OF, -1);
-            lp.leftMargin = U.getDisplayUtils().dip2px(16);
-            mTvCoin.setLayoutParams(lp);
+//            LayoutParams lp = (LayoutParams) mTvCoin.getLayoutParams();
+//            lp.addRule(RelativeLayout.RIGHT_OF, -1);
+//            lp.leftMargin = U.getDisplayUtils().dip2px(16);
+//            mTvCoin.setLayoutParams(lp);
         }
     }
 
@@ -221,5 +205,7 @@ public class GrabTopView extends RelativeLayout {
         void changeRoom();
 
         void addFirend();
+
+        void onClickVoiceAudition();
     }
 }

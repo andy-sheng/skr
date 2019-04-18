@@ -1,9 +1,9 @@
 package com.module.playways;
 
 import com.common.core.userinfo.model.UserInfoModel;
-import com.module.playways.rank.prepare.model.PlayerInfoModel;
-import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
-import com.module.playways.rank.song.model.SongModel;
+import com.module.playways.room.prepare.model.PlayerInfoModel;
+import com.module.playways.room.prepare.model.BaseRoundInfoModel;
+import com.module.playways.room.song.model.SongModel;
 
 import java.io.Serializable;
 import java.util.List;

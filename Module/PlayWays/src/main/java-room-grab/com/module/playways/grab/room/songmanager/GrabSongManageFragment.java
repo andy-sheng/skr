@@ -1,17 +1,17 @@
 package com.module.playways.grab.room.songmanager;
 
-import android.graphics.Color;
-import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.OvershootInterpolator;
+import android.view.animation.TranslateAnimation;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -19,21 +19,25 @@ import android.widget.TextView;
 import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
+import com.common.image.fresco.FrescoWorker;
+import com.common.image.model.ImageFactory;
+import com.common.image.model.oss.OssImgFactory;
 import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
+import com.common.utils.ImageUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
-import com.common.view.ex.ExFrameLayout;
-import com.common.view.ex.ExImageView;
+import com.common.view.ex.ExLinearLayout;
 import com.common.view.ex.ExTextView;
-import com.common.view.ex.drawable.DrawableCreator;
+import com.facebook.drawee.drawable.ScalingUtils;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.inter.IGrabSongManageView;
 import com.module.playways.grab.room.songmanager.tags.GrabSongTagsView;
 import com.component.busilib.friends.SpecialModel;
 import com.module.playways.grab.room.songmanager.tags.GrabTagsAdapter;
-import com.module.playways.rank.song.fragment.GrabSearchSongFragment;
-import com.module.playways.rank.song.model.SongModel;
+import com.module.playways.room.song.fragment.GrabSearchSongFragment;
+import com.module.playways.room.song.model.SongModel;
 import com.module.rank.R;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -50,15 +54,17 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
 
     ExTextView mTvSelectedSong;
 
-    ExFrameLayout mFlSongListContainer;
+    ExLinearLayout mFlSongListContainer;
 
     SmartRefreshLayout mRefreshLayout;
 
     RecyclerView mRecyclerView;
 
-    ExTextView mTvSelectedTag;
+    SimpleDraweeView mTvSelectedTag;
 
     TextView mTvFinish;
+
+    ImageView mIvArrow;
 
     ManageSongAdapter mManageSongAdapter;
 
@@ -69,6 +75,8 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
     PopupWindow mPopupWindow;
 
     RelativeLayout mRlContent;
+
+    Handler mUiHandler = new Handler();
 
     int mSpecialModelId;
 
@@ -82,12 +90,13 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
         mGrabSongManagePresenter = new GrabSongManagePresenter(this, mRoomData);
         addPresent(mGrabSongManagePresenter);
 
+        mIvArrow = (ImageView)mRootView.findViewById(R.id.iv_arrow);
         mSearchSongIv = mRootView.findViewById(R.id.search_song_iv);
         mTvSelectedSong = (ExTextView) mRootView.findViewById(R.id.tv_selected_song);
-        mFlSongListContainer = (ExFrameLayout) mRootView.findViewById(R.id.fl_song_list_container);
+        mFlSongListContainer = (ExLinearLayout) mRootView.findViewById(R.id.fl_song_list_container);
         mRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.refreshLayout);
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
-        mTvSelectedTag = (ExTextView) mRootView.findViewById(R.id.selected_tag);
+        mTvSelectedTag = mRootView.findViewById(R.id.selected_tag);
         mTvFinish = (TextView) mRootView.findViewById(R.id.tv_finish);
         mRlContent = (RelativeLayout) mRootView.findViewById(R.id.rl_content);
 
@@ -122,27 +131,28 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
         if (mRoomData.getSpecialModel() != null) {
             setTagTv(mRoomData.getSpecialModel());
         }
+
+        mUiHandler.postDelayed(() -> {
+            TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f,
+                    Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0);
+            animation.setDuration(400);
+            animation.setRepeatMode(Animation.REVERSE);
+            animation.setFillAfter(true);
+            mRlContent.startAnimation(animation);
+            mRlContent.setVisibility(View.VISIBLE);
+        }, 50);
     }
 
     private void setTagTv(SpecialModel specialModel) {
-        int color = Color.parseColor("#68ABD3");
-        if (!TextUtils.isEmpty(specialModel.getBgColor())) {
-            color = Color.parseColor(specialModel.getBgColor());
-        }
-
         mRoomData.setSpecialModel(specialModel);
         mRoomData.setTagId(specialModel.getTagID());
 
-        mTvSelectedTag.setText(specialModel.getTagName());
         mSpecialModelId = specialModel.getTagID();
-        Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(45))
-                .setStrokeColor(Color.parseColor("#202239"))
-                .setStrokeWidth(U.getDisplayUtils().dip2px(2))
-                .setSolidColor(color)
-                .setCornersRadius(U.getDisplayUtils().dip2px(8))
-                .build();
 
-        mTvSelectedTag.setBackground(drawable);
+        FrescoWorker.loadImage(mTvSelectedTag, ImageFactory.newPathImage(specialModel.getBgImage3())
+                .setScaleType(ScalingUtils.ScaleType.FIT_XY)
+                .addOssProcessors(OssImgFactory.newResizeBuilder().setW(ImageUtils.SIZE.SIZE_640.getW()).build())
+                .build());
     }
 
     @Override
@@ -171,7 +181,7 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
 
     @Override
     public void showTagList(List<SpecialModel> specialModelList) {
-        int height = U.getDisplayUtils().dip2px(specialModelList.size() > 4 ? 150 : (47 * (specialModelList.size() - 1)));
+        int height = U.getDisplayUtils().dip2px(specialModelList.size() > 4 ? 190 : (55 * (specialModelList.size() - 1)));
         if (mGrabSongTagsView != null) {
             mGrabSongTagsView.setSpecialModelList(specialModelList);
             mPopupWindow.setHeight(height);
@@ -179,12 +189,9 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
 
         int[] location = new int[2];
         mTvSelectedTag.getLocationOnScreen(location);
-        mPopupWindow.showAtLocation(mTvSelectedTag, Gravity.NO_GRAVITY, location[0], location[1] - height - U.getDisplayUtils().dip2px(5));
-
-        Drawable drawable = U.getDrawable(R.drawable.zhuanchang_shouqi_up);
-        drawable.setBounds(new Rect(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight()));
-        mTvSelectedTag.setCompoundDrawables(null, null,
-                drawable, null);
+//        mPopupWindow.showAtLocation(mTvSelectedTag, Gravity.NO_GRAVITY, location[0], location[1] - height - U.getDisplayUtils().dip2px(5));
+        mPopupWindow.showAsDropDown(mTvSelectedTag);
+        mIvArrow.setBackground(U.getDrawable(R.drawable.fz_shuxing_shang));
     }
 
     @Override
@@ -238,10 +245,7 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
                 mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
                     @Override
                     public void onDismiss() {
-                        Drawable drawable = U.getDrawable(R.drawable.zhuanchang_shouqi);
-                        drawable.setBounds(new Rect(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight()));
-                        mTvSelectedTag.setCompoundDrawables(null, null,
-                                drawable, null);
+                        mIvArrow.setBackground(U.getDrawable(R.drawable.fz_shuxing_xia));
                     }
                 });
             }
@@ -277,6 +281,7 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
     @Override
     public void destroy() {
         super.destroy();
+        mRlContent.clearAnimation();
     }
 
     @Override

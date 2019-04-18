@@ -144,6 +144,11 @@ public class LoginActivity extends BaseActivity {
         UMShareAPI.get(U.app()).onSaveInstanceState(outState);
     }
 
+    public static void open(Activity activity){
+        Intent intent = new Intent(activity,LoginActivity.class);
+        activity.startActivity(intent);
+    }
+
     @Override
     public boolean canSlide() {
         return false;

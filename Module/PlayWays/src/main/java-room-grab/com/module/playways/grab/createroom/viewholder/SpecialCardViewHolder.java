@@ -40,7 +40,7 @@ public class SpecialCardViewHolder extends RecyclerView.ViewHolder {
     public void bindData(SpecialModel specialModel, int postion) {
         this.mSpecialModel = specialModel;
         this.mPosition = postion;
-        FrescoWorker.loadImage(mBackground, ImageFactory.newHttpImage(mSpecialModel.getBgImage2())
+        FrescoWorker.loadImage(mBackground, ImageFactory.newPathImage(mSpecialModel.getBgImage2())
                 .setLoadingDrawable(U.getDrawable(R.drawable.grab_img_btn_loading2))
                 .setLoadingScaleType(ScalingUtils.ScaleType.FIT_XY)
                 .setScaleType(ScalingUtils.ScaleType.FIT_XY)

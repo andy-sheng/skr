@@ -2,15 +2,15 @@
 <com.common.view.ex.ExTextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/view_32_dp"
     android:layout_margin="5dp"
-    android:paddingLeft="@dimen/view_14_dp"
-    android:paddingTop="@dimen/view_5_dp"
-    android:paddingRight="@dimen/view_14_dp"
-    android:paddingBottom="@dimen/view_5_dp"
     android:gravity="center"
-    android:textColor="#0C2275"
-    android:textSize="@dimen/view_16_dp"
-    android:background="@drawable/gerenzhuye_xinxi">
+    android:paddingLeft="@dimen/view_15_dp"
+    android:paddingRight="@dimen/view_15_dp"
+    android:textColor="@color/white"
+    android:textSize="@dimen/view_14_dp"
+    app:bl_corners_radius="@dimen/view_16_dp"
+    app:bl_shape="rectangle"
+    app:bl_solid_color="@color/black_trans_30">
 
 </com.common.view.ex.ExTextView>

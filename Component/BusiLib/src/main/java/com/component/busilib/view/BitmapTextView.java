@@ -24,11 +24,13 @@ public class BitmapTextView extends View {
     public final static String TAG = "BitmapTextView";
 
     List<Bitmap> mBitmapList = new ArrayList<>();
-    int diff = U.getDisplayUtils().dip2px(5);  //两张图片的偏移量重合部分
+    int diff = U.getDisplayUtils().dip2px(2);  //两张图片的偏移量重合部分
     int mWidth = 0;// view的宽度
     int mHeight = 0;// view的高度
 
-    float scale; //图片放缩
+    float scale;   //图片放缩比例
+    int textColor; //图片文字颜色
+    boolean hasShadow;  //是否有阴影
 
     public BitmapTextView(Context context) {
         super(context);
@@ -48,6 +50,8 @@ public class BitmapTextView extends View {
     private void init(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BitmapTextView);
         scale = typedArray.getFloat(R.styleable.BitmapTextView_scale, 1.0f);
+        textColor = typedArray.getColor(R.styleable.BitmapTextView_text_color, 0);
+        hasShadow = typedArray.getBoolean(R.styleable.BitmapTextView_has_shadow, false);
         typedArray.recycle();
     }
 
@@ -77,31 +81,60 @@ public class BitmapTextView extends View {
     }
 
     private Bitmap getBitmap(char aChar) {
-        switch (aChar) {
-            case '0':
-                return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_0);
-            case '1':
-                return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_1);
-            case '2':
-                return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_2);
-            case '3':
-                return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_3);
-            case '4':
-                return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_4);
-            case '5':
-                return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_5);
-            case '6':
-                return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_6);
-            case '7':
-                return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_7);
-            case '8':
-                return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_8);
-            case '9':
-                return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_9);
-            case '.':
-                return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_dian);
-            default:
-                return null;
+        if (hasShadow) {
+            switch (aChar) {
+                case '0':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_0);
+                case '1':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_1);
+                case '2':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_2);
+                case '3':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_3);
+                case '4':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_4);
+                case '5':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_5);
+                case '6':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_6);
+                case '7':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_7);
+                case '8':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_8);
+                case '9':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_9);
+                case '.':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.daojishi_dian);
+                default:
+                    return null;
+            }
+        } else {
+            switch (aChar) {
+                case '0':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_0);
+                case '1':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_1);
+                case '2':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_2);
+                case '3':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_3);
+                case '4':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_4);
+                case '5':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_5);
+                case '6':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_6);
+                case '7':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_7);
+                case '8':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_8);
+                case '9':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_9);
+                case '.':
+                    return BitmapFactory.decodeResource(getResources(), R.drawable.pk_zhanji_dian);
+                default:
+                    return null;
+            }
         }
     }
 
@@ -128,7 +161,11 @@ public class BitmapTextView extends View {
                             if (mHeight < newBM.getHeight()) {
                                 mHeight = newBM.getHeight();
                             }
-                            mBitmapList.add(newBM);
+                            if (textColor != 0) {
+                                mBitmapList.add(U.getBitmapUtils().tintBitmap(newBM, textColor));
+                            } else {
+                                mBitmapList.add(newBM);
+                            }
                         } else {
                             MyLog.w(TAG, "setText" + " text=" + text + "newBM is null");
                             MyLog.w(TAG, "scale = " + scale);
@@ -138,7 +175,12 @@ public class BitmapTextView extends View {
                         if (mHeight < bitmap.getHeight()) {
                             mHeight = bitmap.getHeight();
                         }
-                        mBitmapList.add(bitmap);
+                        if (textColor != 0) {
+                            mBitmapList.add(U.getBitmapUtils().tintBitmap(bitmap, textColor));
+                        } else {
+                            mBitmapList.add(bitmap);
+                        }
+
                     }
                 } else {
                     MyLog.w(TAG, " setText error text=" + text);

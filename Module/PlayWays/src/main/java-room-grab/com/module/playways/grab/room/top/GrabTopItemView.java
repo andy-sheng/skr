@@ -1,6 +1,7 @@
 package com.module.playways.grab.room.top;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
@@ -13,10 +14,11 @@ import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
 
+import com.common.view.ex.drawable.DrawableCreator;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.grab.room.event.GrabWantInviteEvent;
 import com.module.playways.grab.room.event.ShowPersonCardEvent;
-import com.module.playways.rank.prepare.model.PlayerInfoModel;
+import com.module.playways.room.prepare.model.PlayerInfoModel;
 
 import com.common.view.ex.ExTextView;
 
@@ -36,9 +38,9 @@ public class GrabTopItemView extends RelativeLayout {
     public ExImageView mFlagIv;
     public PlayerInfoModel mPlayerInfoModel;
     public AnimationDrawable mFlickerAnim;
-    public ExTextView mInviteTv;
+    public ExTextView mTvIconBg;
     public ExImageView mOwnerIconIv;
-
+    public SpeakingTipsAnimationView mSpeakingTipsAnimationView;
     public boolean mShowEmptySeat = false;
 
     int mMode = MODE_GRAB;
@@ -66,8 +68,9 @@ public class GrabTopItemView extends RelativeLayout {
         mCircleAnimationView = (CircleAnimationView) this.findViewById(R.id.circle_animation_view);
         mAvatarIv = (BaseImageView) this.findViewById(R.id.avatar_iv);
         mFlagIv = (ExImageView) this.findViewById(R.id.flag_iv);
-        mInviteTv = (ExTextView) findViewById(R.id.invite_tv);
         mOwnerIconIv = findViewById(R.id.owner_icon_iv);
+        mTvIconBg = (ExTextView) findViewById(R.id.tv_icon_bg);
+        mSpeakingTipsAnimationView = findViewById(R.id.speaker_animation_iv);
 
         RxView.clicks(mAvatarIv)
                 .subscribe(new Consumer<Object>() {
@@ -116,7 +119,7 @@ public class GrabTopItemView extends RelativeLayout {
             AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mPlayerInfoModel.getUserInfo().getAvatar())
                     .setCircle(true)
                     .setGray(mPlayerInfoModel.isOnline() ? false : true) // 先加上，方便调试时看出哪个用户离开了
-                    .setBorderColorBySex(mPlayerInfoModel.getUserInfo().getSex() == 1)
+                    .setBorderColor(U.getColor(R.color.white))
                     .setBorderWidth(U.getDisplayUtils().dip2px(2))
                     .build()
             );
@@ -132,13 +135,12 @@ public class GrabTopItemView extends RelativeLayout {
         AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mPlayerInfoModel.getUserInfo().getAvatar())
                 .setCircle(true)
                 .setGray(mPlayerInfoModel.isOnline() ? false : true) // 先加上，方便调试时看出哪个用户离开了
-                .setBorderColorBySex(mPlayerInfoModel.getUserInfo().getSex() == 1)
+                .setBorderColor(U.getColor(R.color.white))
                 .setBorderWidth(U.getDisplayUtils().dip2px(2))
                 .build()
         );
         mShowEmptySeat = false;
 
-        mInviteTv.setVisibility(GONE);
         mFlagIv.setVisibility(GONE);
         mCircleAnimationView.setVisibility(GONE);
         if (isOwner) {
@@ -146,25 +148,41 @@ public class GrabTopItemView extends RelativeLayout {
         } else {
             mOwnerIconIv.setVisibility(GONE);
         }
+
+        Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20))
+                .setSolidColor(Color.parseColor("#6EBDFF"))
+                .setCornersRadius(U.getDisplayUtils().dip2px(20))
+                .setStrokeWidth(U.getDisplayUtils().dip2px(2))
+                .setStrokeColor(Color.parseColor("#3B4E79"))
+                .build();
+
+        mTvIconBg.setBackground(drawable);
     }
 
     //占位的View
     public void setToPlaceHolder() {
         if (mCanShowInviteWhenEmpty) {
-            mAvatarIv.setImageDrawable(U.getDrawable(R.drawable.grab_fangzhu_yaoqing));
-            mInviteTv.setVisibility(VISIBLE);
+            mAvatarIv.setImageDrawable(U.getDrawable(R.drawable.ycdd_yaoqing));
             if (mLast) {
                 EventBus.getDefault().post(new InviteBtnVisibleEvent(true));
             }
         } else {
-            mAvatarIv.setImageDrawable(U.getDrawable(R.drawable.guanzhong_kongwei));
-            mInviteTv.setVisibility(GONE);
+            mAvatarIv.setImageDrawable(U.getDrawable(R.drawable.ycdd_kongwei));
             if (mLast) {
                 EventBus.getDefault().post(new InviteBtnVisibleEvent(false));
             }
         }
         mOwnerIconIv.setVisibility(GONE);
         mShowEmptySeat = true;
+
+        Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20))
+                .setSolidColor(Color.parseColor("#5C67C1"))
+                .setCornersRadius(U.getDisplayUtils().dip2px(20))
+                .setStrokeWidth(U.getDisplayUtils().dip2px(2))
+                .setStrokeColor(Color.parseColor("#3B4E79"))
+                .build();
+
+        mTvIconBg.setBackground(drawable);
     }
 
     //开始闪烁，有人爆灯的时候
@@ -173,13 +191,13 @@ public class GrabTopItemView extends RelativeLayout {
         mFlickerAnim = new AnimationDrawable();
         mFlickerAnim.setOneShot(false);
         Drawable drawable = null;
-        drawable = U.getDrawable(R.drawable.liangdeng_shan);
+        drawable = U.getDrawable(R.drawable.ycdd_baodeng_guangyun);
         mFlickerAnim.addFrame(drawable, 200);
-        drawable = U.getDrawable(R.drawable.liangdeng);
+        drawable = U.getDrawable(R.drawable.ycdd_liangdeng);
         mFlickerAnim.addFrame(drawable, 300);
-        drawable = U.getDrawable(R.drawable.liangdeng_shan);
+        drawable = U.getDrawable(R.drawable.ycdd_baodeng_guangyun);
         mFlickerAnim.addFrame(drawable, 200);
-        drawable = U.getDrawable(R.drawable.liangdeng);
+        drawable = U.getDrawable(R.drawable.ycdd_liangdeng);
         mFlickerAnim.addFrame(drawable, 300);
         mFlagIv.setImageDrawable(mFlickerAnim);
         mFlickerAnim.start();
@@ -198,7 +216,7 @@ public class GrabTopItemView extends RelativeLayout {
     }
 
     public void reset() {
-        setGrap(false);
+        hideGrabIcon();
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT);
         lp.weight = 1;
         setLayoutParams(lp);
@@ -220,30 +238,34 @@ public class GrabTopItemView extends RelativeLayout {
         stopEvasive();
     }
 
-    public void setGrap(boolean grap) {
+    public void setGrap(boolean isChallenge) {
 //        MyLog.d(TAG, "setGrap" + " grap=" + grap);
-        if (grap) {
-            mFlagIv.setVisibility(VISIBLE);
-            LayoutParams lp = (LayoutParams) mFlagIv.getLayoutParams();
-            lp.topMargin = -U.getDisplayUtils().dip2px(10);
-            mFlagIv.setLayoutParams(lp);
-            mFlagIv.setImageResource(R.drawable.xiangchang_flag);
-        } else {
-            mFlagIv.setVisibility(GONE);
-        }
+        mFlagIv.setVisibility(VISIBLE);
+        LayoutParams lp = (LayoutParams) mFlagIv.getLayoutParams();
+        lp.topMargin = -U.getDisplayUtils().dip2px(10);
+        mFlagIv.setLayoutParams(lp);
+        mFlagIv.setImageResource(isChallenge ? R.drawable.ycdd_biaoqian_tiaozhan : R.drawable.ycdd_biaoqian_qiangchang);
+    }
+
+    public void hideGrabIcon() {
+        mFlagIv.setVisibility(GONE);
     }
 
     public void setLight(boolean on) {
         MyLog.d(TAG, "setLight" + " on=" + on);
         mFlagIv.setVisibility(VISIBLE);
         LayoutParams lp = (LayoutParams) mFlagIv.getLayoutParams();
-        lp.topMargin = -U.getDisplayUtils().dip2px(20);
+        lp.topMargin = -U.getDisplayUtils().dip2px(25);
         mFlagIv.setLayoutParams(lp);
         if (on) {
-            mFlagIv.setImageResource(R.drawable.liangdeng);
+            mFlagIv.setImageResource(R.drawable.ycdd_liangdeng);
         } else {
-            mFlagIv.setImageResource(R.drawable.miedeng);
+            mFlagIv.setImageResource(R.drawable.ycdd_xideng);
         }
+    }
+
+    public void showSpeakingAnimation() {
+        mSpeakingTipsAnimationView.show(1000);
     }
 
     public void setGetSingChance() {

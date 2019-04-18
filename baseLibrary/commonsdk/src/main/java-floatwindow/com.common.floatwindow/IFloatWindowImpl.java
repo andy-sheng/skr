@@ -207,6 +207,7 @@ public class IFloatWindowImpl extends IFloatWindow {
                 getView().setOnTouchListener(new View.OnTouchListener() {
                     float lastX, lastY;
                     int originVX, originVY;
+                    int direction = 0;//0 滑动方向未确定，1左右，2上滑
 
                     @SuppressLint("ClickableViewAccessibility")
                     @Override
@@ -220,6 +221,7 @@ public class IFloatWindowImpl extends IFloatWindow {
                                 lastY = event.getRawY();
                                 originVX = mFloatView.getX();
                                 originVY = mFloatView.getY();
+                                direction = 0;
                                 cancelAnimator();
                                 break;
                             case MotionEvent.ACTION_MOVE:
@@ -230,9 +232,30 @@ public class IFloatWindowImpl extends IFloatWindow {
                                 float changeX = rx - lastX;
                                 float changeY = ry - lastY;
                                 if (mB.mMoveType == MoveType.canRemove) {
-                                    mFloatView.updateX((int) (mFloatView.getX()+changeX));
+                                    if (direction == 0) {
+                                        if (changeY < 0) {
+                                            if (Math.abs(changeY) > Math.abs(changeX)) {
+                                                direction = 2;
+                                            } else {
+                                                direction = 1;
+                                            }
+                                        } else {
+                                            if (Math.abs(changeY) > Math.abs(changeX)) {
+                                                direction = 0;
+                                            } else {
+                                                direction = 1;
+                                            }
+                                        }
+                                    }
+                                    if (direction == 1) {
+                                        mFloatView.updateX((int) (mFloatView.getX() + changeX));
+                                    } else if (direction == 2) {
+                                        if (mFloatView.getY() + changeY < originVY) {
+                                            mFloatView.updateY((int) (mFloatView.getY() + changeY));
+                                        }
+                                    }
                                 } else {
-                                    mFloatView.updateXY((int) (mFloatView.getX()+changeX), (int) (mFloatView.getY()+changeY));
+                                    mFloatView.updateXY((int) (mFloatView.getX() + changeX), (int) (mFloatView.getY() + changeY));
                                 }
                                 if (mB.mViewStateListener != null) {
                                     mB.mViewStateListener.onPositionUpdate(mFloatView.getX(), mFloatView.getY());
@@ -282,51 +305,100 @@ public class IFloatWindowImpl extends IFloatWindow {
                                     }
                                     break;
                                     case MoveType.canRemove: {
-                                        if (upX - downX > U.getDisplayUtils().getScreenWidth() * 0.2) {
-                                            MyLog.d(TAG, "onTouchUp 划走消失");
-                                            PropertyValuesHolder pvhX = PropertyValuesHolder.ofInt("x", mFloatView.getX(), U.getDisplayUtils().getScreenWidth());
-                                            mAnimator = ObjectAnimator.ofPropertyValuesHolder(pvhX);
-                                            mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                                                @Override
-                                                public void onAnimationUpdate(ValueAnimator animation) {
-                                                    int x = (int) animation.getAnimatedValue("x");
-                                                    mFloatView.updateX(x);
-                                                    if (mB.mViewStateListener != null) {
-                                                        mB.mViewStateListener.onPositionUpdate(mFloatView.getX(), mFloatView.getY());
+                                        if(direction==1) {
+                                            if (upX - downX > U.getDisplayUtils().getScreenWidth() * 0.2) {
+                                                MyLog.d(TAG, "onTouchUp 左右划走消失");
+                                                PropertyValuesHolder pvhX = PropertyValuesHolder.ofInt("x", mFloatView.getX(), U.getDisplayUtils().getScreenWidth());
+                                                mAnimator = ObjectAnimator.ofPropertyValuesHolder(pvhX);
+                                                mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                                                    @Override
+                                                    public void onAnimationUpdate(ValueAnimator animation) {
+                                                        int x = (int) animation.getAnimatedValue("x");
+                                                        mFloatView.updateX(x);
+                                                        if (mB.mViewStateListener != null) {
+                                                            mB.mViewStateListener.onPositionUpdate(mFloatView.getX(), mFloatView.getY());
+                                                        }
                                                     }
-                                                }
-                                            });
-                                            mAnimator.setInterpolator(new AccelerateInterpolator());
-                                            mAnimator.addListener(new AnimatorListenerAdapter() {
-                                                @Override
-                                                public void onAnimationCancel(Animator animation) {
-                                                    super.onAnimationCancel(animation);
-                                                }
+                                                });
+                                                mAnimator.setInterpolator(new AccelerateInterpolator());
+                                                mAnimator.addListener(new AnimatorListenerAdapter() {
+                                                    @Override
+                                                    public void onAnimationCancel(Animator animation) {
+                                                        super.onAnimationCancel(animation);
+                                                    }
 
-                                                @Override
-                                                public void onAnimationEnd(Animator animation) {
-                                                    super.onAnimationEnd(animation);
-                                                    FloatWindow.destroy(mB.mTag);
-                                                    //dismiss();
-                                                }
-                                            });
-                                            startAnimator();
-                                        } else {
-                                            MyLog.d(TAG, "onTouchUp back");
-                                            PropertyValuesHolder pvhX = PropertyValuesHolder.ofInt("x", mFloatView.getX(), originVX);
-                                            mAnimator = ObjectAnimator.ofPropertyValuesHolder(pvhX);
-                                            mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                                                @Override
-                                                public void onAnimationUpdate(ValueAnimator animation) {
-                                                    int x = (int) animation.getAnimatedValue("x");
-                                                    mFloatView.updateX(x);
-                                                    if (mB.mViewStateListener != null) {
-                                                        mB.mViewStateListener.onPositionUpdate(mFloatView.getX(), mFloatView.getY());
+                                                    @Override
+                                                    public void onAnimationEnd(Animator animation) {
+                                                        super.onAnimationEnd(animation);
+                                                        FloatWindow.destroy(mB.mTag);
+                                                        //dismiss();
                                                     }
-                                                }
-                                            });
-                                            startAnimator();
+                                                });
+                                                startAnimator();
+                                            } else {
+                                                MyLog.d(TAG, "onTouchUp back");
+                                                PropertyValuesHolder pvhX = PropertyValuesHolder.ofInt("x", mFloatView.getX(), originVX);
+                                                mAnimator = ObjectAnimator.ofPropertyValuesHolder(pvhX);
+                                                mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                                                    @Override
+                                                    public void onAnimationUpdate(ValueAnimator animation) {
+                                                        int x = (int) animation.getAnimatedValue("x");
+                                                        mFloatView.updateX(x);
+                                                        if (mB.mViewStateListener != null) {
+                                                            mB.mViewStateListener.onPositionUpdate(mFloatView.getX(), mFloatView.getY());
+                                                        }
+                                                    }
+                                                });
+                                                startAnimator();
+                                            }
+                                        }else if(direction==2){
+                                            if (downY-upY > mB.mHeight/3) {
+                                                MyLog.d(TAG, "onTouchUp 上下划走消失");
+                                                PropertyValuesHolder pvhY = PropertyValuesHolder.ofInt("y", mFloatView.getY(), mFloatView.getY()-mB.mHeight);
+                                                mAnimator = ObjectAnimator.ofPropertyValuesHolder(pvhY);
+                                                mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                                                    @Override
+                                                    public void onAnimationUpdate(ValueAnimator animation) {
+                                                        int y = (int) animation.getAnimatedValue("y");
+                                                        mFloatView.updateY(y);
+                                                        if (mB.mViewStateListener != null) {
+                                                            mB.mViewStateListener.onPositionUpdate(mFloatView.getX(), mFloatView.getY());
+                                                        }
+                                                    }
+                                                });
+                                                mAnimator.setInterpolator(new AccelerateInterpolator());
+                                                mAnimator.addListener(new AnimatorListenerAdapter() {
+                                                    @Override
+                                                    public void onAnimationCancel(Animator animation) {
+                                                        super.onAnimationCancel(animation);
+                                                    }
+
+                                                    @Override
+                                                    public void onAnimationEnd(Animator animation) {
+                                                        super.onAnimationEnd(animation);
+                                                        FloatWindow.destroy(mB.mTag);
+                                                        //dismiss();
+                                                    }
+                                                });
+                                                startAnimator();
+                                            } else {
+                                                MyLog.d(TAG, "onTouchUp back");
+                                                PropertyValuesHolder pvhY = PropertyValuesHolder.ofInt("y", mFloatView.getY(), originVY);
+                                                mAnimator = ObjectAnimator.ofPropertyValuesHolder(pvhY);
+                                                mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                                                    @Override
+                                                    public void onAnimationUpdate(ValueAnimator animation) {
+                                                        int y = (int) animation.getAnimatedValue("y");
+                                                        mFloatView.updateY(y);
+                                                        if (mB.mViewStateListener != null) {
+                                                            mB.mViewStateListener.onPositionUpdate(mFloatView.getX(), mFloatView.getY());
+                                                        }
+                                                    }
+                                                });
+                                                startAnimator();
+                                            }
                                         }
+
                                         break;
                                     }
                                     default:

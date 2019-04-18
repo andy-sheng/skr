@@ -19,9 +19,9 @@ public class FriendRoomHorizontalViewHolder extends RecyclerView.ViewHolder {
 
     SimpleDraweeView mAvatarIv;
     ExTextView mNicknameTv;
-    ExImageView mOwnerIv;
     ExTextView mFriendTv;
     ExTextView mRecommendTv;
+    ExTextView mFollowTv;
 
     RecommendModel mFriendRoomModel;
     int position;
@@ -31,9 +31,9 @@ public class FriendRoomHorizontalViewHolder extends RecyclerView.ViewHolder {
 
         mAvatarIv = (SimpleDraweeView) itemView.findViewById(R.id.avatar_iv);
         mNicknameTv = (ExTextView) itemView.findViewById(R.id.nickname_tv);
-        mOwnerIv = (ExImageView) itemView.findViewById(R.id.owner_iv);
         mFriendTv = (ExTextView) itemView.findViewById(R.id.friend_tv);
         mRecommendTv = (ExTextView) itemView.findViewById(R.id.recommend_tv);
+        mFollowTv = (ExTextView) itemView.findViewById(R.id.follow_tv);
 
         itemView.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -62,18 +62,20 @@ public class FriendRoomHorizontalViewHolder extends RecyclerView.ViewHolder {
 
         if (friendRoomModel.getCategory() == RecommendModel.TYPE_RECOMMEND_ROOM) {
             mRecommendTv.setVisibility(View.VISIBLE);
-            mOwnerIv.setVisibility(View.GONE);
+            mFollowTv.setVisibility(View.GONE);
             mFriendTv.setVisibility(View.GONE);
+        } else if (friendRoomModel.getCategory() == RecommendModel.TYPE_FOLLOW_ROOM) {
+            mRecommendTv.setVisibility(View.GONE);
+            mFollowTv.setVisibility(View.VISIBLE);
+            mFriendTv.setVisibility(View.GONE);
+        } else if (friendRoomModel.getCategory() == RecommendModel.TYPE_FRIEND_ROOM) {
+            mRecommendTv.setVisibility(View.GONE);
+            mFollowTv.setVisibility(View.GONE);
+            mFriendTv.setVisibility(View.VISIBLE);
         } else {
-            if (friendRoomModel.getRoomInfo().isIsOwner()) {
-                mRecommendTv.setVisibility(View.GONE);
-                mOwnerIv.setVisibility(View.VISIBLE);
-                mFriendTv.setVisibility(View.GONE);
-            } else {
-                mRecommendTv.setVisibility(View.GONE);
-                mOwnerIv.setVisibility(View.GONE);
-                mFriendTv.setVisibility(View.VISIBLE);
-            }
+            mRecommendTv.setVisibility(View.GONE);
+            mFollowTv.setVisibility(View.GONE);
+            mFriendTv.setVisibility(View.GONE);
         }
     }
 }

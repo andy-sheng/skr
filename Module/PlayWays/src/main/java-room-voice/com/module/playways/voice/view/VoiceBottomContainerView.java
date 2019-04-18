@@ -15,8 +15,8 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.module.playways.BaseRoomData;
-import com.module.playways.rank.room.event.InputBoardEvent;
-import com.module.playways.rank.room.quickmsg.QuickMsgView;
+import com.module.playways.room.room.event.InputBoardEvent;
+import com.module.playways.room.room.quickmsg.QuickMsgView;
 import com.module.rank.R;
 import com.zq.live.proto.Room.SpecialEmojiMsgType;
 

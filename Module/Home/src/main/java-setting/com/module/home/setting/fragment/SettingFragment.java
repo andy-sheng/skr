@@ -26,6 +26,7 @@ import com.common.rxretrofit.ApiResult;
 import com.common.utils.FragmentUtils;
 import com.common.utils.RomUtils;
 import com.common.utils.U;
+import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
@@ -93,8 +94,10 @@ public class SettingFragment extends BaseFragment {
 
     TuiGuangConfig mTuiGuangConfig;
 
+    DialogPlus mDialogPlus;
+
     static final String[] CACHE_CAN_DELETE = {
-            "fresco", "gif", "upload"
+            "fresco", "gif", "upload", "acc", "acr", "logs", "grabLyric", "lyrics", "midi", "score"
     };
 
     @Override
@@ -140,7 +143,9 @@ public class SettingFragment extends BaseFragment {
             @Override
             public void clickValid(View v) {
                 //U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
-                U.getFragmentUtils().popFragment(SettingFragment.this);
+                if (getActivity() != null) {
+                    getActivity().finish();
+                }
             }
         });
 
@@ -321,37 +326,34 @@ public class SettingFragment extends BaseFragment {
                 .setMessageTip("确定退出当前账号么？")
                 .setConfirmTip("确定")
                 .setCancelTip("取消")
+                .setConfirmBtnClickListener(new AnimateClickListener() {
+                    @Override
+                    public void click(View view) {
+                        if (mDialogPlus != null) {
+                            mDialogPlus.dismiss(false);
+                        }
+                        U.getFragmentUtils().popFragment(SettingFragment.this);
+                        UserAccountManager.getInstance().logoff();
+                    }
+                })
+                .setCancelBtnClickListener(new AnimateClickListener() {
+                    @Override
+                    public void click(View view) {
+                        if (mDialogPlus != null) {
+                            mDialogPlus.dismiss();
+                        }
+                    }
+                })
                 .build();
 
-        DialogPlus.newDialog(getContext())
+        mDialogPlus = DialogPlus.newDialog(getContext())
                 .setContentHolder(new ViewHolder(tipsDialogView))
                 .setGravity(Gravity.BOTTOM)
                 .setContentBackgroundResource(R.color.transparent)
                 .setOverlayBackgroundResource(R.color.black_trans_80)
                 .setExpanded(false)
-                .setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
-                        if (view instanceof ExTextView) {
-                            if (view.getId() == R.id.confirm_tv) {
-                                dialog.dismiss();
-                                U.getFragmentUtils().popFragment(SettingFragment.this);
-                                UserAccountManager.getInstance().logoff();
-                            }
-
-                            if (view.getId() == R.id.cancel_tv) {
-                                dialog.dismiss();
-                            }
-                        }
-                    }
-                })
-                .setOnDismissListener(new OnDismissListener() {
-                    @Override
-                    public void onDismiss(@NonNull DialogPlus dialog) {
-
-                    }
-                })
-                .create().show();
+                .create();
+        mDialogPlus.show();
     }
 
     void computeCache() {
@@ -452,6 +454,9 @@ public class SettingFragment extends BaseFragment {
     public void destroy() {
         super.destroy();
         U.getSoundUtils().release(TAG);
+        if (mDialogPlus != null) {
+            mDialogPlus.dismiss();
+        }
     }
 
     @Override

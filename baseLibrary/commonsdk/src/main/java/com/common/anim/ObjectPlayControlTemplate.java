@@ -166,6 +166,9 @@ public abstract class ObjectPlayControlTemplate<MODEL, CONSUMER> {
 
     }
 
+    public int getSize(){
+        return mQueue.size();
+    }
     /**
      * 队列这是否还有
      *

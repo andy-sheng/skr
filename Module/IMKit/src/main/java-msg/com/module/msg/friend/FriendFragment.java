@@ -84,7 +84,7 @@ public class FriendFragment extends BaseFragment {
             @Override
             public void onItemClicked(View view, int position, FriendStatusModel model) {
                 ModuleServiceManager.getInstance().getMsgService().startPrivateChat(getContext(),
-                        String.valueOf(model.getUserID()), model.getNickname());
+                        String.valueOf(model.getUserID()), model.getNickname(), true);
             }
         });
         mContentRv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
@@ -191,23 +191,22 @@ public class FriendFragment extends BaseFragment {
         if (isLoadMore) mRefreshLayout.finishLoadMore();
         if (isRefresh) mRefreshLayout.finishRefresh();
 
+        if (!isLoadMore) {
+            mFriendAdapter.getDataList().clear();
+        }
+
         if (list != null && list.size() != 0) {
             hasMore = true;
             mRefreshLayout.setEnableLoadMore(true);
-            if (!isLoadMore) {
-                mFriendAdapter.getDataList().clear();
-            }
             mLoadService.showSuccess();
             mFriendAdapter.getDataList().addAll(list);
             mFriendAdapter.notifyDataSetChanged();
         } else {
             hasMore = false;
-            if (isLoadMore) {
-                // 没数据了
-                mRefreshLayout.setEnableLoadMore(false);
-            }
+            mRefreshLayout.setEnableLoadMore(false);
 
-            if (mOffset == 0) {
+            if (mFriendAdapter.getDataList() == null || mFriendAdapter.getDataList().size() == 0) {
+                // 数据为空
                 mLoadService.showCallback(FriendsEmptyCallback.class);
             }
         }
@@ -216,5 +215,10 @@ public class FriendFragment extends BaseFragment {
     @Override
     public boolean useEventBus() {
         return false;
+    }
+
+    @Override
+    public boolean isInViewPager() {
+        return true;
     }
 }

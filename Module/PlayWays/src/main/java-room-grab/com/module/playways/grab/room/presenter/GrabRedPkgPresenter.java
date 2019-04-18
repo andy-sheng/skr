@@ -25,10 +25,12 @@ import okhttp3.RequestBody;
 
 public class GrabRedPkgPresenter extends RxLifeCyclePresenter {
     public final static String TAG = "GrabRedPkgPresenter";
+    public final static String KEY_HAS_RESEIVE_RED_PKG = "hasReceiveRedPkg";
     public static final int RED_PKG_COUNT_DOWN_TIME = 15000;
     GrabRoomServerApi mGrabRoomServerApi;
     IRedPkgCountDownView view;
     boolean mIsHasShow = false;
+    boolean mCanReceive = false;
 
     public GrabRedPkgPresenter(IRedPkgCountDownView view) {
         this.view = view;
@@ -46,30 +48,23 @@ public class GrabRedPkgPresenter extends RxLifeCyclePresenter {
             return;
         }
 
-        ApiMethods.subscribe(mGrabRoomServerApi.checkRedPkg(), new ApiObserver<ApiResult>() {
+        if(U.getPreferenceUtils().getSettingBoolean(KEY_HAS_RESEIVE_RED_PKG, false)){
+            MyLog.w(TAG, "has receive red pkg");
+            mIsHasShow = true;
+            return;
+        }
+
+        ApiMethods.subscribe(mGrabRoomServerApi.checkNewBieTask(), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 MyLog.d(TAG, "process" + " result=" + result.getErrno());
                 if (result.getErrno() == 0) {
-                    List<GrabRedPkgTaskModel> redPkgTaskModelList = JSONArray.parseArray(result.getData().getString("tasks"), GrabRedPkgTaskModel.class);
-                    if (redPkgTaskModelList != null) {
-                        for (GrabRedPkgTaskModel model :
-                                redPkgTaskModelList) {
-                            if ("1".equals(model.getTaskID()) && !model.isDone()) {
-                                view.redPkgCountDown(RED_PKG_COUNT_DOWN_TIME);
-                                HandlerTaskTimer.newBuilder()
-                                        .delay(RED_PKG_COUNT_DOWN_TIME)
-                                        .compose(GrabRedPkgPresenter.this)
-                                        .start(new HandlerTaskTimer.ObserverW() {
-                                            @Override
-                                            public void onNext(Integer integer) {
-                                                getRedPkg();
-                                            }
-                                        });
-                            }
-                        }
+                    GrabRedPkgTaskModel grabRedPkgTaskModel = JSONObject.parseObject(result.getData().getString("task"), GrabRedPkgTaskModel.class);
+                    if (grabRedPkgTaskModel != null && !grabRedPkgTaskModel.isDone()) {
+//                        view.redPkgCountDown(RED_PKG_COUNT_DOWN_TIME);
+                        mCanReceive = true;
                     } else {
-                        MyLog.w(TAG, "checkRedPkg redPkgTaskModelList is null,traceid is " + result.getTraceId());
+                        MyLog.w(TAG, "checkRedPkg redPkgTaskModelList is null or grabRedPkgTaskModel is done,traceid is " + result.getTraceId());
                     }
                 } else {
                     MyLog.w(TAG, "checkRedPkg failed, " + " ,traceid is " + result.getTraceId());
@@ -83,6 +78,10 @@ public class GrabRedPkgPresenter extends RxLifeCyclePresenter {
         }, this);
     }
 
+    public boolean isCanReceive() {
+        return mCanReceive;
+    }
+
     public void getRedPkg() {
         MyLog.d(TAG, "getRedPkg");
         long ts = System.currentTimeMillis();
@@ -91,28 +90,25 @@ public class GrabRedPkgPresenter extends RxLifeCyclePresenter {
         map.put("nonce", ts);
         String sign = U.getMD5Utils().MD5_32("skrer" + "|"
                 + MyUserInfoManager.getInstance().getUid() + "|"
-                + "1" + "|"
                 + "OTQ2MmE0ZjAtZDNkNi00Mzc1LWE1OdyN" + "|"
                 + ts);
         map.put("sign", sign);
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
 
-        ApiMethods.subscribe(mGrabRoomServerApi.receiveCash(body), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mGrabRoomServerApi.triggerNewBieTask(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 MyLog.d(TAG, "process" + " result=" + result.getErrno());
                 if (result.getErrno() == 0) {
-                    GrabRedPkgTaskModel redPkgTaskModel = JSONObject.parseObject(result.getData().getString("task"), GrabRedPkgTaskModel.class);
-                    if (redPkgTaskModel != null) {
-                        if ("1".equals(redPkgTaskModel.getTaskID()) && redPkgTaskModel.isDone()) {
-                            mIsHasShow = true;
-                            view.getCashSuccess(Float.parseFloat(redPkgTaskModel.getRedbagExtra().getCash()));
-                        } else {
-                            MyLog.w(TAG, "getRedPkg task id is  " + redPkgTaskModel.getTaskID() + ", isDone is " + redPkgTaskModel.isDone());
-                        }
+                    GrabRedPkgTaskModel grabRedPkgTaskModel = JSONObject.parseObject(result.getData().getString("task"), GrabRedPkgTaskModel.class);
+                    if (grabRedPkgTaskModel != null && grabRedPkgTaskModel.isDone()) {
+                        mIsHasShow = true;
+                        mCanReceive = false;
+                        U.getPreferenceUtils().setSettingBoolean(KEY_HAS_RESEIVE_RED_PKG, true);
+                        view.getCashSuccess(Float.parseFloat(grabRedPkgTaskModel.getRedbagExtra().getCash()));
                     } else {
-                        MyLog.w(TAG, "getRedPkg redPkgTaskModelList is null, " + " traceid is " + result.getTraceId());
+                        MyLog.w(TAG, "getRedPkg redPkgTaskModelList is null or grabRedPkgTaskModel is not done, " + " traceid is " + result.getTraceId());
                     }
                 } else {
                     MyLog.w(TAG, "getRedPkg failed, " + " traceid is " + result.getTraceId());

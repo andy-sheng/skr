@@ -9,6 +9,7 @@
         <attr name="borderColor" format="color|reference" />
         <attr name="blockColor" format="color|reference" />
         <attr name="textColor" format="color|reference" />
+        <attr name="textSize" format="dimension" />
         <attr name="blockSpacing" format="dimension" />
         <attr name="cursorDuration" format="integer" />
         <attr name="cursorWidth" format="dimension" />

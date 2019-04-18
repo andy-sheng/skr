@@ -27,6 +27,10 @@ public final class DynamicEmojiMsg extends Message<DynamicEmojiMsg, DynamicEmoji
 
   public static final Integer DEFAULT_ID = 0;
 
+  public static final String DEFAULT_SMALLEMOJIURL = "";
+
+  public static final String DEFAULT_BIGEMOJIURL = "";
+
   /**
    * 表情包id
    */
@@ -36,19 +40,42 @@ public final class DynamicEmojiMsg extends Message<DynamicEmojiMsg, DynamicEmoji
   )
   private final Integer id;
 
-  public DynamicEmojiMsg(Integer id) {
-    this(id, ByteString.EMPTY);
+  /**
+   * 小图
+   */
+  @WireField(
+      tag = 2,
+      adapter = "com.squareup.wire.ProtoAdapter#STRING"
+  )
+  private final String smallEmojiURL;
+
+  /**
+   * 大图
+   */
+  @WireField(
+      tag = 3,
+      adapter = "com.squareup.wire.ProtoAdapter#STRING"
+  )
+  private final String bigEmojiURL;
+
+  public DynamicEmojiMsg(Integer id, String smallEmojiURL, String bigEmojiURL) {
+    this(id, smallEmojiURL, bigEmojiURL, ByteString.EMPTY);
   }
 
-  public DynamicEmojiMsg(Integer id, ByteString unknownFields) {
+  public DynamicEmojiMsg(Integer id, String smallEmojiURL, String bigEmojiURL,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.id = id;
+    this.smallEmojiURL = smallEmojiURL;
+    this.bigEmojiURL = bigEmojiURL;
   }
 
   @Override
   public Builder newBuilder() {
     Builder builder = new Builder();
     builder.id = id;
+    builder.smallEmojiURL = smallEmojiURL;
+    builder.bigEmojiURL = bigEmojiURL;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -59,7 +86,9 @@ public final class DynamicEmojiMsg extends Message<DynamicEmojiMsg, DynamicEmoji
     if (!(other instanceof DynamicEmojiMsg)) return false;
     DynamicEmojiMsg o = (DynamicEmojiMsg) other;
     return unknownFields().equals(o.unknownFields())
-        && Internal.equals(id, o.id);
+        && Internal.equals(id, o.id)
+        && Internal.equals(smallEmojiURL, o.smallEmojiURL)
+        && Internal.equals(bigEmojiURL, o.bigEmojiURL);
   }
 
   @Override
@@ -68,6 +97,8 @@ public final class DynamicEmojiMsg extends Message<DynamicEmojiMsg, DynamicEmoji
     if (result == 0) {
       result = unknownFields().hashCode();
       result = result * 37 + (id != null ? id.hashCode() : 0);
+      result = result * 37 + (smallEmojiURL != null ? smallEmojiURL.hashCode() : 0);
+      result = result * 37 + (bigEmojiURL != null ? bigEmojiURL.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -77,6 +108,8 @@ public final class DynamicEmojiMsg extends Message<DynamicEmojiMsg, DynamicEmoji
   public String toString() {
     StringBuilder builder = new StringBuilder();
     if (id != null) builder.append(", id=").append(id);
+    if (smallEmojiURL != null) builder.append(", smallEmojiURL=").append(smallEmojiURL);
+    if (bigEmojiURL != null) builder.append(", bigEmojiURL=").append(bigEmojiURL);
     return builder.replace(0, 2, "DynamicEmojiMsg{").append('}').toString();
   }
 
@@ -101,14 +134,52 @@ public final class DynamicEmojiMsg extends Message<DynamicEmojiMsg, DynamicEmoji
   }
 
   /**
+   * 小图
+   */
+  public String getSmallEmojiURL() {
+    if(smallEmojiURL==null){
+        return DEFAULT_SMALLEMOJIURL;
+    }
+    return smallEmojiURL;
+  }
+
+  /**
+   * 大图
+   */
+  public String getBigEmojiURL() {
+    if(bigEmojiURL==null){
+        return DEFAULT_BIGEMOJIURL;
+    }
+    return bigEmojiURL;
+  }
+
+  /**
    * 表情包id
    */
   public boolean hasId() {
     return id!=null;
   }
 
+  /**
+   * 小图
+   */
+  public boolean hasSmallEmojiURL() {
+    return smallEmojiURL!=null;
+  }
+
+  /**
+   * 大图
+   */
+  public boolean hasBigEmojiURL() {
+    return bigEmojiURL!=null;
+  }
+
   public static final class Builder extends Message.Builder<DynamicEmojiMsg, Builder> {
     private Integer id;
+
+    private String smallEmojiURL;
+
+    private String bigEmojiURL;
 
     public Builder() {
     }
@@ -121,9 +192,25 @@ public final class DynamicEmojiMsg extends Message<DynamicEmojiMsg, DynamicEmoji
       return this;
     }
 
+    /**
+     * 小图
+     */
+    public Builder setSmallEmojiURL(String smallEmojiURL) {
+      this.smallEmojiURL = smallEmojiURL;
+      return this;
+    }
+
+    /**
+     * 大图
+     */
+    public Builder setBigEmojiURL(String bigEmojiURL) {
+      this.bigEmojiURL = bigEmojiURL;
+      return this;
+    }
+
     @Override
     public DynamicEmojiMsg build() {
-      return new DynamicEmojiMsg(id, super.buildUnknownFields());
+      return new DynamicEmojiMsg(id, smallEmojiURL, bigEmojiURL, super.buildUnknownFields());
     }
   }
 
@@ -135,12 +222,16 @@ public final class DynamicEmojiMsg extends Message<DynamicEmojiMsg, DynamicEmoji
     @Override
     public int encodedSize(DynamicEmojiMsg value) {
       return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.id)
+          + ProtoAdapter.STRING.encodedSizeWithTag(2, value.smallEmojiURL)
+          + ProtoAdapter.STRING.encodedSizeWithTag(3, value.bigEmojiURL)
           + value.unknownFields().size();
     }
 
     @Override
     public void encode(ProtoWriter writer, DynamicEmojiMsg value) throws IOException {
       ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.id);
+      ProtoAdapter.STRING.encodeWithTag(writer, 2, value.smallEmojiURL);
+      ProtoAdapter.STRING.encodeWithTag(writer, 3, value.bigEmojiURL);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -151,6 +242,8 @@ public final class DynamicEmojiMsg extends Message<DynamicEmojiMsg, DynamicEmoji
       for (int tag; (tag = reader.nextTag()) != -1;) {
         switch (tag) {
           case 1: builder.setId(ProtoAdapter.UINT32.decode(reader)); break;
+          case 2: builder.setSmallEmojiURL(ProtoAdapter.STRING.decode(reader)); break;
+          case 3: builder.setBigEmojiURL(ProtoAdapter.STRING.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

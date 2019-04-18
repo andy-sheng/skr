@@ -29,7 +29,7 @@ import com.component.busilib.manager.WeakRedDotManager;
 import com.module.ModuleServiceManager;
 import com.module.RouterConstants;
 import com.module.home.dialogmanager.HomeDialogManager;
-import com.module.home.fragment.PersonFragment;
+import com.module.home.fragment.PersonFragment2;
 import com.module.home.game.GameFragment2;
 import com.module.home.fragment.PkInfoFragment;
 import com.module.home.persenter.CheckInPresenter;
@@ -132,12 +132,12 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
                     return new PkInfoFragment();
                 } else if (position == 2) {
                     if (mMsgService == null) {
-                        return new PersonFragment();
+                        return new PersonFragment2();
                     } else {
                         return (Fragment) mMsgService.getMessageFragment();
                     }
                 } else if (position == 3) {
-                    return new PersonFragment();
+                    return new PersonFragment2();
                 }
                 return null;
             }
@@ -313,7 +313,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
         }
         if (!mSkrSdcardPermission.onBackFromPermisionManagerMaybe()) {
             if (mFromCreate) {
-                mSkrSdcardPermission.ensurePermission(null, true);
+                mSkrSdcardPermission.ensurePermission(this,null, true);
             }
         }
         mFromCreate = false;

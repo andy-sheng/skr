@@ -207,13 +207,13 @@ public class ResRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
             BaseImage baseImage;
             if (resItem instanceof VideoItem) {
                 VideoItem videoItem = (VideoItem) resItem;
-                baseImage = ImageFactory.newLocalImage(videoItem.getThumb().getPath())
+                baseImage = ImageFactory.newPathImage(videoItem.getThumb().getPath())
                         .setWidth(300)
                         .setHeight(300)
                         .build();
                 playBtn.setVisibility(View.VISIBLE);
             } else {
-                baseImage = ImageFactory.newLocalImage(resItem.getPath())
+                baseImage = ImageFactory.newPathImage(resItem.getPath())
                         .setWidth(300)
                         .setHeight(300)
                         .build();

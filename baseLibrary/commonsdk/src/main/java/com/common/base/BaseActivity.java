@@ -22,6 +22,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.LayoutInflaterCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
@@ -50,6 +52,7 @@ import com.trello.rxlifecycle2.android.ActivityEvent;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashSet;
+import java.util.List;
 
 import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.Subject;
@@ -322,7 +325,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
 
     @Override
     public void finish() {
-        MyLog.d(TAG,"start finish" );
+        MyLog.d(TAG, "start finish");
         super.finish();
         //animationOut();
     }
@@ -407,8 +410,10 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         return true;
     }
 
+    static boolean canSlide = U.app().getResources().getBoolean(R.bool.translucent_no_bug);  //保存结果
+
     public boolean canSlide() {
-        return true;
+        return canSlide;
     }
 
     /**
@@ -428,10 +433,33 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
          * 先看看有没有顶层的 fragment 要处理这个事件的
          * 因为有可能顶层的 fragment 要收回键盘 表情面板等操作
          */
-        BaseFragment fragment = U.getFragmentUtils().getTopFragment(this);
-        if (fragment != null) {
-            if (fragment.onActivityResultReal(requestCode, resultCode, data)) {
-                return;
+        FragmentManager fm = this.getSupportFragmentManager();
+        if (fm != null) {
+            List<Fragment> fls = fm.getFragments();
+            BaseFragment topFragmentNotInViewPager = null;
+            for (int i = fls.size() - 1; i >= 0; i--) {
+                Fragment f = fls.get(i);
+                if (f instanceof BaseFragment) {
+                    BaseFragment bf = (BaseFragment) f;
+                    // 如果Fragment 在ViewPager 是是否可见判断顶部
+                    if (bf.isInViewPager()) {
+                        if (bf.fragmentVisible) {
+                            if (bf.onActivityResultReal(requestCode, resultCode, data)) {
+                                return;
+                            }
+                        }
+                    } else {
+                        if (topFragmentNotInViewPager == null) {
+                            topFragmentNotInViewPager = bf;
+                        }
+                    }
+                }
+            }
+            // 如果Fragment 不在viewPager中 则 最后一个就是顶部的
+            if (topFragmentNotInViewPager != null) {
+                if (topFragmentNotInViewPager.onActivityResultReal(requestCode, resultCode, data)) {
+                    return;
+                }
             }
         }
         super.onActivityResult(requestCode, resultCode, data);

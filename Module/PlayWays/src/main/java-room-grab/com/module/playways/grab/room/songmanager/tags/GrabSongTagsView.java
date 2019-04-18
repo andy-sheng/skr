@@ -1,11 +1,15 @@
 package com.module.playways.grab.room.songmanager.tags;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
+import com.common.utils.U;
+import com.common.view.ex.drawable.DrawableCreator;
 import com.component.busilib.friends.SpecialModel;
 import com.module.rank.R;
 
@@ -48,6 +52,12 @@ public class GrabSongTagsView extends RelativeLayout {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mGrabTagsAdapter = new GrabTagsAdapter();
         mRecyclerView.setAdapter(mGrabTagsAdapter);
+        Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(45))
+                .setSolidColor(Color.parseColor("#404A9A"))
+                .setCornersRadius(U.getDisplayUtils().dip2px(13))
+                .build();
+
+        setBackground(drawable);
     }
 
     public void setSpecialModelList(List<SpecialModel> specialModelList) {

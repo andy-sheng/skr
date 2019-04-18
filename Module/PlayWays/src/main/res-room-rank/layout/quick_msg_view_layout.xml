@@ -3,6 +3,7 @@
     tools:parentTag="android.widget.RelativeLayout">
 
     <android.support.v7.widget.RecyclerView
+        android:layout_marginTop="@dimen/view_10_dp"
         android:id="@+id/quick_msg_rv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

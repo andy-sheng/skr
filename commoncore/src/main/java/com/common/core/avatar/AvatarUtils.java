@@ -1,6 +1,7 @@
 package com.common.core.avatar;
 
 
+import android.graphics.Color;
 import android.text.TextUtils;
 
 import com.common.core.R;
@@ -59,7 +60,7 @@ public class AvatarUtils {
         if (TextUtils.isEmpty(url)) {
             return null;
         }
-        ImageFactory.Builder imgBuilder = ImageFactory.newHttpImage(url)
+        ImageFactory.Builder imgBuilder = ImageFactory.newPathImage(url)
                 .setWidth(params.width)
                 .setHeight(params.height)
                 .setIsCircle(params.isCircle)
@@ -284,7 +285,8 @@ public class AvatarUtils {
             }
 
             public Builder setBorderColorBySex(boolean isMan) {
-                mUploadParams.setBorderColor(isMan ? U.getColor(R.color.color_man_stroke_color) : U.getColor(R.color.color_woman_stroke_color));
+//                mUploadParams.setBorderColor(isMan ? U.getColor(R.color.color_man_stroke_color) : U.getColor(R.color.color_woman_stroke_color));
+                mUploadParams.setBorderColor(Color.WHITE);
                 return this;
             }
 

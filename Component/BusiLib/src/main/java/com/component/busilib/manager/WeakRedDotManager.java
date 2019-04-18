@@ -56,15 +56,13 @@ public class WeakRedDotManager {
     }
 
     /**
-     * 更新红点
-     *
-     * @param type  红点的类型
-     * @param value 红点的值
+     * @param type
+     * @param value
+     * @param isFlag 是否强制刷新
      */
-    public void updateWeakRedRot(int type, int value) {
-        MyLog.d(TAG, "updateWeakRedRot" + " type=" + type + " value=" + value);
+    public void updateWeakRedRot(int type, int value, boolean isFlag) {
         if (type == FANS_RED_ROD_TYPE) {
-            if (U.getPreferenceUtils().getSettingInt(SP_KEY_NEW_FANS, 0) < value) {
+            if (U.getPreferenceUtils().getSettingInt(SP_KEY_NEW_FANS, 0) < value && !isFlag) {
                 return;
             } else {
                 U.getPreferenceUtils().setSettingInt(SP_KEY_NEW_FANS, value);
@@ -72,7 +70,7 @@ public class WeakRedDotManager {
         }
 
         if (type == FRIEND_RED_ROD_TYPE) {
-            if (U.getPreferenceUtils().getSettingInt(SP_KEY_NEW_FRIEND, 0) < value) {
+            if (U.getPreferenceUtils().getSettingInt(SP_KEY_NEW_FRIEND, 0) < value && !isFlag) {
                 return;
             } else {
                 U.getPreferenceUtils().setSettingInt(SP_KEY_NEW_FRIEND, value);
@@ -85,6 +83,17 @@ public class WeakRedDotManager {
                 weakRedDotListener.onWeakRedDotChange(type, value);
             }
         }
+    }
+
+    /**
+     * 更新红点
+     *
+     * @param type  红点的类型
+     * @param value 红点的值
+     */
+    public void updateWeakRedRot(int type, int value) {
+        MyLog.d(TAG, "updateWeakRedRot" + " type=" + type + " value=" + value);
+        updateWeakRedRot(type, value, false);
     }
 
     public interface WeakRedDotListener {

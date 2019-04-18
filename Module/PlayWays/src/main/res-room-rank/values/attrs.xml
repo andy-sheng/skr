@@ -23,4 +23,13 @@
         </attr>
     </declare-styleable>
 
+    <declare-styleable name="gameType">
+        <!--位置-->
+        <attr name="type" format="enum">
+            <enum name="voice" value="1" />
+            <enum name="rank" value="4" />
+            <enum name="grab" value="5" />
+        </attr>
+    </declare-styleable>
+
 </resources>

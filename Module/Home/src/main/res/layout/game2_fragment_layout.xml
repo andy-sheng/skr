@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:BitmapTextView="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/background"
     android:layout_width="match_parent"
@@ -32,8 +33,8 @@
             <RelativeLayout
                 android:id="@+id/top_area"
                 android:layout_width="match_parent"
-                android:layout_below="@id/titlebar"
-                android:layout_height="@dimen/view_100_dp">
+                android:layout_height="@dimen/view_100_dp"
+                android:layout_below="@id/titlebar">
 
                 <ImageView
                     android:layout_width="@dimen/view_50_dp"
@@ -76,29 +77,34 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/textsize_16_dp" />
 
-                <com.common.view.ex.ExTextView
-                    android:id="@+id/coin_num"
+                <com.common.view.ex.ExRelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/view_18_dp"
+                    android:layout_height="@dimen/textsize_18_dp"
                     android:layout_below="@id/name_tv"
                     android:layout_alignLeft="@id/name_tv"
                     android:layout_marginTop="@dimen/view_4_dp"
-                    android:gravity="center"
-                    android:paddingLeft="@dimen/view_18_dp"
-                    android:paddingRight="@dimen/view_5_dp"
-                    android:text="0"
-                    android:textColor="@color/white_trans_50"
-                    android:textSize="@dimen/textsize_14_dp"
                     app:bl_corners_radius="@dimen/view_9_dp"
                     app:bl_shape="rectangle"
-                    app:bl_solid_color="@color/black_trans_20" />
+                    app:bl_solid_color="@color/black_trans_20">
 
-                <ImageView
-                    android:layout_width="@dimen/view_16_dp"
-                    android:layout_height="@dimen/view_18_dp"
-                    android:layout_alignLeft="@id/coin_num"
-                    android:layout_alignTop="@id/coin_num"
-                    android:background="@drawable/grab_coin_icon" />
+                    <ImageView
+                        android:id="@+id/coin_iv"
+                        android:layout_width="@dimen/view_16_dp"
+                        android:layout_height="@dimen/view_18_dp"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/grab_coin_icon" />
+
+                    <com.component.busilib.view.BitmapTextView
+                        android:id="@+id/coin_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/view_5_dp"
+                        android:layout_marginRight="@dimen/view_8_dp"
+                        android:layout_toRightOf="@id/coin_iv"
+                        android:layout_centerVertical="true"
+                        BitmapTextView:scale="0.4" />
+
+                </com.common.view.ex.ExRelativeLayout>
 
             </RelativeLayout>
 
@@ -116,6 +122,15 @@
 
             </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
+            <com.common.image.fresco.BaseImageView
+                android:id="@+id/iv_red_pkg"
+                android:layout_width="@dimen/view_48_dp"
+                android:layout_height="@dimen/view_53_dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="@dimen/view_4_dp"
+                android:layout_marginBottom="@dimen/view_4_dp"
+                android:visibility="gone" />
         </RelativeLayout>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </RelativeLayout>

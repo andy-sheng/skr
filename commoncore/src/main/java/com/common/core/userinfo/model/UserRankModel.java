@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 public class UserRankModel implements Serializable {
 
+    public static final int STAR_BADGE = 1;
+    public static final int TOP_BADGE = 2;
+    public static final int SHANDIAN_BADGE = 3;
+
     public static final int COUNTRY = 1;     //国家
     public static final int PROVINCIAL = 2;  //省会
     public static final int CITY = 3;        //城市

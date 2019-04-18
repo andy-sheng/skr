@@ -7,6 +7,7 @@ import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 /**
@@ -39,4 +40,10 @@ public interface MainPageSlideApi {
     @POST("http://dev.api.inframe.mobi/v1/event/app-home-signin")
     Observable<ApiResult> signIn(@Body RequestBody body);
 
+    /**
+     * 用户是否有未激活的红包
+     * @return
+     */
+    @GET("http://dev.api.inframe.mobi/v1/redbag/check-newbie-task")
+    Observable<ApiResult> checkNewBieTask();
 }

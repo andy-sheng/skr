@@ -19,13 +19,10 @@ import com.common.log.MyLog;
 import com.common.utils.U;
 import com.component.busilib.R;
 import com.zq.lyrics.LyricsReader;
-import com.zq.lyrics.event.LrcEvent;
 import com.zq.lyrics.model.LyricsInfo;
 import com.zq.lyrics.model.LyricsLineInfo;
-import com.zq.lyrics.utils.ColorUtils;
+import com.common.utils.ColorUtils;
 import com.zq.lyrics.utils.LyricsUtils;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.lang.ref.WeakReference;
 import java.util.HashSet;
@@ -114,8 +111,8 @@ public abstract class AbstractLrcView extends View {
      * 默认画笔颜色
      */
     private int[] mPaintColors = new int[]{
-            ColorUtils.parserColor("#555555"),
-            ColorUtils.parserColor("#555555")
+            U.getColorUtils().parserColor("#555555"),
+            U.getColorUtils().parserColor("#555555")
     };
     /**
      * 高亮歌词画笔
@@ -129,12 +126,12 @@ public abstract class AbstractLrcView extends View {
 
     //高亮颜色
     private int[] mPaintHLColors = new int[]{
-            ColorUtils.parserColor("#0288d1"),
-            ColorUtils.parserColor("#0288d1")
+            U.getColorUtils().parserColor("#0288d1"),
+            U.getColorUtils().parserColor("#0288d1")
     };
 
     //高亮副颜色
-    private int mSubPaintHLColor = ColorUtils.parserColor("#555555");
+    private int mSubPaintHLColor = U.getColorUtils().parserColor("#555555");
 
     /**
      * 轮廓画笔
@@ -192,7 +189,7 @@ public abstract class AbstractLrcView extends View {
     /**
      * 去搜索歌词文字颜色
      */
-    private int mGotoSearchTextColor = ColorUtils.parserColor("#0288d1");
+    private int mGotoSearchTextColor = U.getColorUtils().parserColor("#0288d1");
 
     /**
      * 绘画去搜索歌词文字画笔
@@ -201,7 +198,7 @@ public abstract class AbstractLrcView extends View {
     /**
      * 按下搜索歌词文字颜色
      */
-    private int mGotoSearchTextPressedColor = ColorUtils.parserColor("#ffffff");
+    private int mGotoSearchTextPressedColor = U.getColorUtils().parserColor("#ffffff");
 
     /**
      * 歌词状态

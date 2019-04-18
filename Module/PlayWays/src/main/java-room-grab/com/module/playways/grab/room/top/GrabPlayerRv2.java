@@ -12,8 +12,10 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.U;
+import com.engine.EngineEvent;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent;
 import com.module.playways.grab.room.event.LightOffAnimationOverEvent;
@@ -22,7 +24,7 @@ import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.MLightInfoModel;
 import com.module.playways.grab.room.model.WantSingerInfo;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.module.playways.rank.prepare.model.PlayerInfoModel;
+import com.module.playways.room.prepare.model.PlayerInfoModel;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGADrawable;
@@ -35,20 +37,11 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class GrabPlayerRv2 extends RelativeLayout {
     public final static String TAG = "GrabPlayerRv2";
@@ -99,7 +92,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
             } else {
                 vp.grabTopItemView.setCanShowInviteWhenEmpty(false);
             }
-            vp.grabTopItemView.setGrap(false);
+            vp.grabTopItemView.hideGrabIcon();
             vp.grabTopItemView.tryAddParent(mContentLl);
             vp.grabTopItemView.setToPlaceHolder();
             vp.SVGAImageView = new SVGAImageView(getContext());
@@ -166,7 +159,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
                 for (WantSingerInfo wantSingerInfo : now.getWantSingInfos()) {
                     VP vp = mInfoMap.get(wantSingerInfo.getUserID());
                     if (vp != null && vp.grabTopItemView != null) {
-                        vp.grabTopItemView.setGrap(true);
+                        vp.grabTopItemView.setGrap(wantSingerInfo.isChallengeType());
                     }
                 }
             } else {
@@ -174,7 +167,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
                 for (VP vp : mGrabTopItemViewArrayList) {
                     if (vp != null && vp.grabTopItemView != null) {
                         MyLog.d(TAG, "initData else 2");
-                        vp.grabTopItemView.setGrap(false);
+                        vp.grabTopItemView.hideGrabIcon();
                     }
                 }
 
@@ -214,14 +207,14 @@ public class GrabPlayerRv2 extends RelativeLayout {
                 GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
                 // TODO: 2019/2/26 判空
                 if (grabRoundInfoModel != null && grabRoundInfoModel.getWantSingInfos().contains(wantSingerInfo)) {
-                    vp.grabTopItemView.setGrap(true);
+                    vp.grabTopItemView.setGrap(wantSingerInfo.isChallengeType());
                 } else {
 //                    if (vp.grabTopItemView.getPlayerInfoModel().isOnline()) {
 //                        vp.grabTopItemView.setGrap(false);
 //                    } else {
 //                        //离线了
 //                    }
-                    vp.grabTopItemView.setGrap(false);
+                    vp.grabTopItemView.hideGrabIcon();
                 }
             }
         }
@@ -405,9 +398,9 @@ public class GrabPlayerRv2 extends RelativeLayout {
                     @Override
                     public void onAnimationStart(Animator animation) {
                         super.onAnimationStart(animation);
-                        if (tti == 0) {
-                            U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.grab_lightup);
-                        }
+//                        if (tti == 0) {
+//                            U.getSoundUtils().play(GrabRoomFragment.TAG, R.raw.grab_lightup);
+//                        }
                     }
 
                     @Override
@@ -484,10 +477,10 @@ public class GrabPlayerRv2 extends RelativeLayout {
         }
     }
 
-    public void grap(int uid) {
-        VP vp = mInfoMap.get(uid);
+    public void grap(WantSingerInfo wantSingerInfo) {
+        VP vp = mInfoMap.get(wantSingerInfo.getUserID());
         if (vp != null && vp.grabTopItemView != null) {
-            vp.grabTopItemView.setGrap(true);
+            vp.grabTopItemView.setGrap(wantSingerInfo.isChallengeType());
         }
     }
 
@@ -582,25 +575,6 @@ public class GrabPlayerRv2 extends RelativeLayout {
     private SVGAParser getSVGAParser() {
         if (mSVGAParser == null) {
             mSVGAParser = new SVGAParser(U.app());
-//            mSVGAParser.setFileDownloader(new SVGAParser.FileDownloader() {
-//                @Override
-//                public void resume(final URL url, final Function1<? super InputStream, Unit> complete, final Function1<? super Exception, Unit> failure) {
-//                    new Thread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            OkHttpClient client = new OkHttpClient();
-//                            Request request = new Request.Builder().url(url).get().build();
-//                            try {
-//                                Response response = client.newCall(request).execute();
-//                                complete.invoke(response.body().byteStream());
-//                            } catch (IOException e) {
-//                                e.printStackTrace();
-//                                failure.invoke(e);
-//                            }
-//                        }
-//                    }).start();
-//                }
-//            });
         }
         return mSVGAParser;
     }
@@ -609,6 +583,27 @@ public class GrabPlayerRv2 extends RelativeLayout {
     public void onEvent(GrabPlaySeatUpdateEvent event) {
         MyLog.d(TAG, "onEvent" + " event=" + event);
         initData();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(EngineEvent event) {
+        /**
+         * 提示说话声纹
+         */
+        if(event.getType() == EngineEvent.TYPE_USER_AUDIO_VOLUME_INDICATION){
+            List<EngineEvent.UserVolumeInfo> list = event.getObj();
+            for(EngineEvent.UserVolumeInfo uv :list){
+                MyLog.d(TAG,"UserVolumeInfo uv=" + uv);
+                int uid = uv.getUid();
+                if(uid==0){
+                    uid = (int) MyUserInfoManager.getInstance().getUid();
+                }
+                VP vp = mInfoMap.get(uid);
+                if (vp != null && vp.grabTopItemView != null && vp.grabTopItemView.isShown()) {
+                    vp.grabTopItemView.showSpeakingAnimation();
+                }
+            }
+        }
     }
 
     public void setRoomData(GrabRoomData roomData) {

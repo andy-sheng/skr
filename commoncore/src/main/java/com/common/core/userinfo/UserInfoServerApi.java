@@ -6,6 +6,7 @@ import com.common.rxretrofit.ApiResult;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
+import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -204,4 +205,48 @@ public interface UserInfoServerApi {
      */
     @GET("http://dev.stand.inframe.mobi/v1/stand/coin-cnt")
     Observable<ApiResult> getCoinNum(@Query("userID") long userID);
+
+
+    /**
+     * 查询照片墙
+     *
+     * @param userID
+     * @param offset
+     * @param cnt
+     * @return
+     */
+    @GET("/v1/profile/query-pic")
+    Observable<ApiResult> getPhotos(@Query("userID") long userID,
+                                    @Query("offset") int offset,
+                                    @Query("cnt") int cnt);
+
+    /**
+     * 查询照片墙
+     *
+     * @param userID
+     * @param offset
+     * @param cnt
+     * @return
+     */
+    @GET("/v1/profile/query-pic")
+    Call<ApiResult> getPhotosSync(@Query("userID") long userID,
+                              @Query("offset") int offset,
+                              @Query("cnt") int cnt);
+
+    /**
+     * 新增照片墙
+     * @param body  "picPath": "string"
+     * @return
+     */
+    @PUT("/v1/profile/add-pic")
+    Observable<ApiResult> addPhoto(@Body RequestBody body);
+
+
+    /**
+     * 删除照片墙
+     * @param body  "picID": 0
+     * @return
+     */
+    @PUT("/v1/profile/del-pic")
+    Observable<ApiResult> deletePhoto(@Body RequestBody body);
 }

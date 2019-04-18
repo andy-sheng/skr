@@ -2,6 +2,7 @@ package com.module.home.musictest.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 
 import com.common.base.BaseFragment;
 import com.common.rxretrofit.ApiManager;
@@ -10,6 +11,7 @@ import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
 import com.jakewharton.rxbinding2.view.RxView;
@@ -36,34 +38,31 @@ public class MusicTestFragment extends BaseFragment {
         mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
         mStartTv = (ExTextView) mRootView.findViewById(R.id.start_tv);
 
-        RxView.clicks(mTitlebar.getLeftTextView())
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        //U.getSoundUtils().play(TAG, R.raw.normal_back, 500);
-                        U.getFragmentUtils().popFragment(MusicTestFragment.this);
-                    }
-                });
+        mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (getActivity() != null) {
+                    getActivity().finish();
+                }
+            }
+        });
 
-        RxView.clicks(mStartTv)
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) {
-                        U.getFragmentUtils().addFragment(
-                                FragmentUtils.newAddParamsBuilder(getActivity(), MusicQuestionFragment.class)
-                                        .setAddToBackStack(true)
-                                        .setHasAnimation(false)
-                                        .build());
-
-                        U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
-                                .setPopFragment(MusicTestFragment.this)
-                                .setPopAbove(false)
+        mStartTv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                U.getFragmentUtils().addFragment(
+                        FragmentUtils.newAddParamsBuilder(getActivity(), MusicQuestionFragment.class)
+                                .setAddToBackStack(true)
                                 .setHasAnimation(false)
                                 .build());
-                    }
-                });
+
+                U.getFragmentUtils().popFragment(new FragmentUtils.PopParams.Builder()
+                        .setPopFragment(MusicTestFragment.this)
+                        .setPopAbove(false)
+                        .setHasAnimation(false)
+                        .build());
+            }
+        });
 
         initStart();
 
@@ -96,7 +95,9 @@ public class MusicTestFragment extends BaseFragment {
 
     @Override
     protected boolean onBackPressed() {
-        U.getFragmentUtils().popFragment(this);
+        if (getActivity() != null) {
+            getActivity().finish();
+        }
         return true;
     }
 

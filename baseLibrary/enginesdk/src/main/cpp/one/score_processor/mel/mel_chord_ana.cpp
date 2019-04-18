@@ -148,6 +148,7 @@ void MelChordAna::InitByPlainMelFile(const std::string &filename, int tag) {
             memcpy(cVersion, buffer, 4);
             int iVersion = 0;
             iVersion = atoi(cVersion);
+            LOGI("InitByMelFile midi Version=%d", iVersion);
             if ((iVersion > _MELP_VERSION) || (iVersion == 0)) {
                 delete[] buffer;
                 return;

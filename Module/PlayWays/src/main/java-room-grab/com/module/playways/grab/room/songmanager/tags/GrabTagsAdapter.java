@@ -77,17 +77,15 @@ public class GrabTagsAdapter extends DiffAdapter<SpecialModel, RecyclerView.View
                             .setOnClickListener(new OnClickListener() {
                                 @Override
                                 public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
-                                    if (view instanceof ExTextView) {
-                                        if (view.getId() == R.id.confirm_tv) {
-                                            dialog.dismiss();
-                                            if (mOnTagClickListener != null) {
-                                                mOnTagClickListener.onClick(mSpecialModel);
-                                            }
+                                    if (view.getId() == R.id.confirm_tv) {
+                                        dialog.dismiss();
+                                        if (mOnTagClickListener != null) {
+                                            mOnTagClickListener.onClick(mSpecialModel);
                                         }
+                                    }
 
-                                        if (view.getId() == R.id.cancel_tv) {
-                                            dialog.dismiss();
-                                        }
+                                    if (view.getId() == R.id.cancel_tv) {
+                                        dialog.dismiss();
                                     }
                                 }
                             })
@@ -110,14 +108,8 @@ public class GrabTagsAdapter extends DiffAdapter<SpecialModel, RecyclerView.View
                 color = Color.parseColor(model.getBgColor());
             }
 
-            Drawable drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(45))
-                    .setStrokeColor(Color.parseColor("#202239"))
-                    .setStrokeWidth(U.getDisplayUtils().dip2px(2))
-                    .setSolidColor(color)
-                    .setCornersRadius(U.getDisplayUtils().dip2px(8))
-                    .build();
-            mTvSelectedTag.setBackground(drawable);
             mTvSelectedTag.setText(model.getTagName());
+            mTvSelectedTag.setTextColor(color);
         }
     }
 

@@ -111,6 +111,14 @@ public class GrabCreateRoomFragment extends BaseFragment {
         TipsDialogView tipsDialogView = new TipsDialogView.Builder(getActivity())
                 .setMessageTip(string)
                 .setOkBtnTip("确认")
+                .setOkBtnClickListener(new AnimateClickListener() {
+                    @Override
+                    public void click(View view) {
+                        if (mDialogPlus != null) {
+                            mDialogPlus.dismiss();
+                        }
+                    }
+                })
                 .build();
 
         mDialogPlus = DialogPlus.newDialog(U.getActivityUtils().getTopActivity())
@@ -119,16 +127,6 @@ public class GrabCreateRoomFragment extends BaseFragment {
                 .setContentBackgroundResource(R.color.transparent)
                 .setOverlayBackgroundResource(R.color.black_trans_50)
                 .setExpanded(false)
-                .setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
-                        if (view instanceof ExTextView) {
-                            if (view.getId() == R.id.ok_btn) {
-                                dialog.dismiss();
-                            }
-                        }
-                    }
-                })
                 .create();
         mDialogPlus.show();
     }

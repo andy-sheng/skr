@@ -8,9 +8,9 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.common.banner.BannerImageLoader;
 import com.common.base.BaseFragment;
 import com.common.core.account.event.AccountEvent;
 import com.common.core.avatar.AvatarUtils;
@@ -18,18 +18,22 @@ import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.permission.SkrAudioPermission;
+import com.common.floatwindow.FloatWindow;
+import com.common.floatwindow.MoveType;
+import com.common.floatwindow.Screen;
+import com.common.floatwindow.ViewStateListenerAdapter;
+import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
-import com.common.utils.FragmentUtils;
 import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
-import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
 import com.component.busilib.friends.RecommendModel;
-import com.component.busilib.friends.GrabFriendsRoomFragment;
 import com.component.busilib.friends.SpecialModel;
+import com.component.busilib.view.BitmapTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.RouterConstants;
 import com.module.home.R;
@@ -44,15 +48,10 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
-import com.youth.banner.Banner;
-import com.youth.banner.BannerConfig;
-import com.youth.banner.listener.OnBannerListener;
-import com.zq.toast.CommonToastView;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -66,9 +65,11 @@ public class GameFragment2 extends BaseFragment implements IGameView {
     ExImageView mCreateRoom;
     SimpleDraweeView mAvatarIv;
     ExTextView mNameTv;
-    ExTextView mCoinNum;
+    BitmapTextView mCoinNum;
     SmartRefreshLayout mRecyclerLayout;
     RecyclerView mRecyclerView;
+
+    BaseImageView mIvRedPkg;
 
     GameAdapter mGameAdapter;
 
@@ -92,9 +93,10 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mCreateRoom = (ExImageView) mRootView.findViewById(R.id.create_room);
         mAvatarIv = (SimpleDraweeView) mRootView.findViewById(R.id.avatar_iv);
         mNameTv = (ExTextView) mRootView.findViewById(R.id.name_tv);
-        mCoinNum = (ExTextView) mRootView.findViewById(R.id.coin_num);
+        mCoinNum = (BitmapTextView) mRootView.findViewById(R.id.coin_num);
         mRecyclerLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.recycler_layout);
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
+        mIvRedPkg = (BaseImageView) mRootView.findViewById(R.id.iv_red_pkg);
 
         mSkrAudioPermission = new SkrAudioPermission();
 
@@ -135,15 +137,10 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mCreateRoom.setOnClickListener(new AnimateClickListener() {
             @Override
             public void click(View view) {
-                mSkrAudioPermission.ensurePermission(new Runnable() {
-                    @Override
-                    public void run() {
-                        IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
-                        if (iRankingModeService != null) {
-                            iRankingModeService.tryGoCreateRoom();
-                        }
-                    }
-                }, true);
+                IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
+                if (iRankingModeService != null) {
+                    iRankingModeService.tryGoCreateRoom();
+                }
             }
         });
 
@@ -151,16 +148,10 @@ public class GameFragment2 extends BaseFragment implements IGameView {
             @Override
             public void createRoom() {
                 MyLog.d(TAG, "createRoom");
-                // TODO: 2019/3/29 创建房间
-                mSkrAudioPermission.ensurePermission(new Runnable() {
-                    @Override
-                    public void run() {
-                        IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
-                        if (iRankingModeService != null) {
-                            iRankingModeService.tryGoCreateRoom();
-                        }
-                    }
-                }, true);
+                IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
+                if (iRankingModeService != null) {
+                    iRankingModeService.tryGoCreateRoom();
+                }
             }
 
             @Override
@@ -195,6 +186,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
                             }
                         }
                     }, true);
+
                 } else {
 
                 }
@@ -203,11 +195,9 @@ public class GameFragment2 extends BaseFragment implements IGameView {
             @Override
             public void moreRoom() {
                 MyLog.d(TAG, "moreRoom");
-                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), GrabFriendsRoomFragment.class)
-                        .setAddToBackStack(true)
-                        .setHasAnimation(true)
-                        .build());
-
+                ARouter.getInstance()
+                        .build(RouterConstants.ACTIVITY_FRIEND_ROOM)
+                        .navigation();
             }
         });
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
@@ -216,6 +206,24 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mGamePresenter = new GamePresenter(this);
         addPresent(mGamePresenter);
         initBaseInfo();
+
+//        HandlerTaskTimer.newBuilder().interval(10000)
+//                .start(new HandlerTaskTimer.ObserverW() {
+//                    @Override
+//                    public void onNext(Integer integer) {
+//                        TextView textView = new TextView(getContext());
+//                        textView.setText("阿斯顿健康垃圾堆里卡就睡了多久了 ");
+//                        FloatWindow.with(U.app())
+//                                .setView(textView)
+//                                .setMoveType(MoveType.canRemove)
+//                                .setWidth(Screen.width, 1f)                               //设置控件宽高
+//                                .setHeight(Screen.height, 0.2f)
+//                                .setDesktopShow(false)                        //桌面显示
+//                                .setCancelIfExist(false)
+//                                .setReqPermissionIfNeed(false)
+//                                .build();
+//                    }
+//                });
     }
 
     private void initBaseInfo() {
@@ -311,6 +319,29 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mCoinNum.setText("" + coinNum);
     }
 
+    @Override
+    public void showRedOperationView(GameKConfigModel.HomepagesitefirstBean homepagesitefirstBean) {
+        AvatarUtils.loadAvatarByUrl(mIvRedPkg,
+                AvatarUtils.newParamsBuilder(homepagesitefirstBean.getPic())
+                        .setWidth(U.getDisplayUtils().dip2px(48f))
+                        .setHeight(U.getDisplayUtils().dip2px(53f))
+                        .build());
+        mIvRedPkg.setVisibility(View.VISIBLE);
+        mIvRedPkg.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_SCHEME)
+                        .withString("uri", homepagesitefirstBean.getSchema())
+                        .navigation();
+            }
+        });
+    }
+
+    @Override
+    public void hideRedOperationView() {
+        mIvRedPkg.setVisibility(View.GONE);
+    }
+
     // TODO: 2019/4/3 这都是第一次拉数据
     @Override
     public void setRecommendInfo(List<RecommendModel> list, int offset, int totalNum) {
@@ -322,7 +353,6 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         RecommendRoomModel recommendRoomModel = new RecommendRoomModel(list, offset, totalNum);
         mGameAdapter.updateRecommendRoomInfo(recommendRoomModel);
     }
-
 
     @Override
     public void setBannerImage(List<SlideShowModel> slideShowModelList) {

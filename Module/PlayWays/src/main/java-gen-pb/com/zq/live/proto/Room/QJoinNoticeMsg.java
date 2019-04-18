@@ -17,6 +17,7 @@ import java.lang.Object;
 import java.lang.Override;
 import java.lang.String;
 import java.lang.StringBuilder;
+import java.util.List;
 import okio.ByteString;
 
 public final class QJoinNoticeMsg extends Message<QJoinNoticeMsg, QJoinNoticeMsg.Builder> {
@@ -66,17 +67,29 @@ public final class QJoinNoticeMsg extends Message<QJoinNoticeMsg, QJoinNoticeMsg
   )
   private final Integer roundSeq;
 
-  public QJoinNoticeMsg(UserInfo user, Long joinTimeMs, EQUserRole role, Integer roundSeq) {
-    this(user, joinTimeMs, role, roundSeq, ByteString.EMPTY);
+  /**
+   * 等待中用户列表
+   */
+  @WireField(
+      tag = 5,
+      adapter = "com.zq.live.proto.Room.OnlineInfo#ADAPTER",
+      label = WireField.Label.REPEATED
+  )
+  private final List<OnlineInfo> waitUsers;
+
+  public QJoinNoticeMsg(UserInfo user, Long joinTimeMs, EQUserRole role, Integer roundSeq,
+      List<OnlineInfo> waitUsers) {
+    this(user, joinTimeMs, role, roundSeq, waitUsers, ByteString.EMPTY);
   }
 
   public QJoinNoticeMsg(UserInfo user, Long joinTimeMs, EQUserRole role, Integer roundSeq,
-      ByteString unknownFields) {
+      List<OnlineInfo> waitUsers, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.user = user;
     this.joinTimeMs = joinTimeMs;
     this.role = role;
     this.roundSeq = roundSeq;
+    this.waitUsers = Internal.immutableCopyOf("waitUsers", waitUsers);
   }
 
   @Override
@@ -86,6 +99,7 @@ public final class QJoinNoticeMsg extends Message<QJoinNoticeMsg, QJoinNoticeMsg
     builder.joinTimeMs = joinTimeMs;
     builder.role = role;
     builder.roundSeq = roundSeq;
+    builder.waitUsers = Internal.copyOf("waitUsers", waitUsers);
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -99,7 +113,8 @@ public final class QJoinNoticeMsg extends Message<QJoinNoticeMsg, QJoinNoticeMsg
         && Internal.equals(user, o.user)
         && Internal.equals(joinTimeMs, o.joinTimeMs)
         && Internal.equals(role, o.role)
-        && Internal.equals(roundSeq, o.roundSeq);
+        && Internal.equals(roundSeq, o.roundSeq)
+        && waitUsers.equals(o.waitUsers);
   }
 
   @Override
@@ -111,6 +126,7 @@ public final class QJoinNoticeMsg extends Message<QJoinNoticeMsg, QJoinNoticeMsg
       result = result * 37 + (joinTimeMs != null ? joinTimeMs.hashCode() : 0);
       result = result * 37 + (role != null ? role.hashCode() : 0);
       result = result * 37 + (roundSeq != null ? roundSeq.hashCode() : 0);
+      result = result * 37 + waitUsers.hashCode();
       super.hashCode = result;
     }
     return result;
@@ -123,6 +139,7 @@ public final class QJoinNoticeMsg extends Message<QJoinNoticeMsg, QJoinNoticeMsg
     if (joinTimeMs != null) builder.append(", joinTimeMs=").append(joinTimeMs);
     if (role != null) builder.append(", role=").append(role);
     if (roundSeq != null) builder.append(", roundSeq=").append(roundSeq);
+    if (!waitUsers.isEmpty()) builder.append(", waitUsers=").append(waitUsers);
     return builder.replace(0, 2, "QJoinNoticeMsg{").append('}').toString();
   }
 
@@ -177,6 +194,16 @@ public final class QJoinNoticeMsg extends Message<QJoinNoticeMsg, QJoinNoticeMsg
   }
 
   /**
+   * 等待中用户列表
+   */
+  public List<OnlineInfo> getWaitUsersList() {
+    if(waitUsers==null){
+        return new java.util.ArrayList<OnlineInfo>();
+    }
+    return waitUsers;
+  }
+
+  /**
    * 加入游戏的信息
    */
   public boolean hasUser() {
@@ -204,6 +231,13 @@ public final class QJoinNoticeMsg extends Message<QJoinNoticeMsg, QJoinNoticeMsg
     return roundSeq!=null;
   }
 
+  /**
+   * 等待中用户列表
+   */
+  public boolean hasWaitUsersList() {
+    return waitUsers!=null;
+  }
+
   public static final class Builder extends Message.Builder<QJoinNoticeMsg, Builder> {
     private UserInfo user;
 
@@ -213,7 +247,10 @@ public final class QJoinNoticeMsg extends Message<QJoinNoticeMsg, QJoinNoticeMsg
 
     private Integer roundSeq;
 
+    private List<OnlineInfo> waitUsers;
+
     public Builder() {
+      waitUsers = Internal.newMutableList();
     }
 
     /**
@@ -248,9 +285,18 @@ public final class QJoinNoticeMsg extends Message<QJoinNoticeMsg, QJoinNoticeMsg
       return this;
     }
 
+    /**
+     * 等待中用户列表
+     */
+    public Builder addAllWaitUsers(List<OnlineInfo> waitUsers) {
+      Internal.checkElementsNotNull(waitUsers);
+      this.waitUsers = waitUsers;
+      return this;
+    }
+
     @Override
     public QJoinNoticeMsg build() {
-      return new QJoinNoticeMsg(user, joinTimeMs, role, roundSeq, super.buildUnknownFields());
+      return new QJoinNoticeMsg(user, joinTimeMs, role, roundSeq, waitUsers, super.buildUnknownFields());
     }
   }
 
@@ -265,6 +311,7 @@ public final class QJoinNoticeMsg extends Message<QJoinNoticeMsg, QJoinNoticeMsg
           + ProtoAdapter.SINT64.encodedSizeWithTag(2, value.joinTimeMs)
           + EQUserRole.ADAPTER.encodedSizeWithTag(3, value.role)
           + ProtoAdapter.UINT32.encodedSizeWithTag(4, value.roundSeq)
+          + OnlineInfo.ADAPTER.asRepeated().encodedSizeWithTag(5, value.waitUsers)
           + value.unknownFields().size();
     }
 
@@ -274,6 +321,7 @@ public final class QJoinNoticeMsg extends Message<QJoinNoticeMsg, QJoinNoticeMsg
       ProtoAdapter.SINT64.encodeWithTag(writer, 2, value.joinTimeMs);
       EQUserRole.ADAPTER.encodeWithTag(writer, 3, value.role);
       ProtoAdapter.UINT32.encodeWithTag(writer, 4, value.roundSeq);
+      OnlineInfo.ADAPTER.asRepeated().encodeWithTag(writer, 5, value.waitUsers);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -294,6 +342,7 @@ public final class QJoinNoticeMsg extends Message<QJoinNoticeMsg, QJoinNoticeMsg
             break;
           }
           case 4: builder.setRoundSeq(ProtoAdapter.UINT32.decode(reader)); break;
+          case 5: builder.waitUsers.add(OnlineInfo.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -309,6 +358,7 @@ public final class QJoinNoticeMsg extends Message<QJoinNoticeMsg, QJoinNoticeMsg
     public QJoinNoticeMsg redact(QJoinNoticeMsg value) {
       Builder builder = value.newBuilder();
       if (builder.user != null) builder.user = UserInfo.ADAPTER.redact(builder.user);
+      Internal.redactElements(builder.waitUsers, OnlineInfo.ADAPTER);
       builder.clearUnknownFields();
       return builder.build();
     }

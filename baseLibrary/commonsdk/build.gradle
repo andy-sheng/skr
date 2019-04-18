@@ -69,6 +69,7 @@ android {
 
             // 提供图片缩放浏览能力，支持渐变式，支持loading页，支持超大图，超大Gif
             java.srcDirs += 'src/main/java-imagebrowse'
+            res.srcDirs += 'src/main/res-imagebrowse'
 
             // 带拼音索引的列表 类似微信联系人
             java.srcDirs += 'src/main/java-indexrecyclerview'

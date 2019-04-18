@@ -15,11 +15,11 @@ import com.common.rxretrofit.ApiResult;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.CustomHandlerThread;
 import com.common.utils.DeviceUtils;
-import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.engine.agora.AgoraEngineAdapter;
 import com.engine.agora.AgoraOutCallback;
 import com.engine.agora.effect.EffectModel;
+import com.engine.arccloud.ArcRecognizeListener;
 import com.engine.arccloud.RecognizeConfig;
 import com.engine.score.Score2Callback;
 import com.engine.token.AgoraTokenApi;
@@ -555,6 +555,7 @@ public class EngineManager implements AgoraOutCallback {
 
     public void setClientRole(final boolean isAnchor) {
         if (mCustomHandlerThread != null) {
+            mConfig.setAnchor(isAnchor);
             mCustomHandlerThread.post(new Runnable() {
                 @Override
                 public void run() {
@@ -923,11 +924,18 @@ public class EngineManager implements AgoraOutCallback {
      * @param volume
      */
     public void adjustRecordingSignalVolume(final int volume) {
+        adjustRecordingSignalVolume(volume, true);
+    }
+
+    public void adjustRecordingSignalVolume(final int volume, final boolean setConfig) {
+        MyLog.d(TAG,"adjustRecordingSignalVolume" + " volume=" + volume + " setConfig=" + setConfig);
         if (mCustomHandlerThread != null) {
             mCustomHandlerThread.post(new Runnable() {
                 @Override
                 public void run() {
-                    mConfig.setRecordingSignalVolume(volume);
+                    if (setConfig) {
+                        mConfig.setRecordingSignalVolume(volume);
+                    }
                     AgoraEngineAdapter.getInstance().adjustRecordingSignalVolume(volume);
                 }
             });
@@ -940,15 +948,22 @@ public class EngineManager implements AgoraOutCallback {
      * @param volume
      */
     public void adjustPlaybackSignalVolume(final int volume) {
-        mCustomHandlerThread.post(new Runnable() {
-            @Override
-            public void run() {
-                mConfig.setPlaybackSignalVolume(volume);
-                AgoraEngineAdapter.getInstance().adjustPlaybackSignalVolume(volume);
-            }
-        });
+        adjustPlaybackSignalVolume(volume,true);
     }
 
+    public void adjustPlaybackSignalVolume(final int volume, final boolean setConfig) {
+        if(mCustomHandlerThread != null){
+            mCustomHandlerThread.post(new Runnable() {
+                @Override
+                public void run() {
+                    if(setConfig) {
+                        mConfig.setPlaybackSignalVolume(volume);
+                    }
+                    AgoraEngineAdapter.getInstance().adjustPlaybackSignalVolume(volume);
+                }
+            });
+        }
+    }
     /*音频基础结束*/
 
     /*音频高级扩展开始*/
@@ -1052,6 +1067,10 @@ public class EngineManager implements AgoraOutCallback {
                 @Override
                 public void run() {
                     MyLog.w(TAG, "startAudioMixing" + " uid=" + uid + " filePath=" + filePath + " midiPath=" + midiPath + " mixMusicBeginOffset=" + mixMusicBeginOffset + " loopback=" + loopback + " replace=" + replace + " cycle=" + cycle);
+                    if (TextUtils.isEmpty(filePath)) {
+                        MyLog.d(TAG, "伴奏路径非法");
+                        return;
+                    }
                     boolean canGo = false;
                     if (uid <= 0) {
                         canGo = true;
@@ -1234,11 +1253,18 @@ public class EngineManager implements AgoraOutCallback {
      * @param volume 1-100 默认100
      */
     public void adjustAudioMixingVolume(final int volume) {
+        adjustAudioMixingVolume(volume, true);
+    }
+
+    public void adjustAudioMixingVolume(final int volume, final boolean setConfig) {
+        MyLog.d(TAG,"adjustAudioMixingVolume" + " volume=" + volume + " setConfig=" + setConfig);
         if (mCustomHandlerThread != null) {
             mCustomHandlerThread.post(new Runnable() {
                 @Override
                 public void run() {
-                    mConfig.setAudioMixingVolume(volume);
+                    if (setConfig) {
+                        mConfig.setAudioMixingVolume(volume);
+                    }
                     AgoraEngineAdapter.getInstance().adjustAudioMixingVolume(volume);
                 }
             });
@@ -1384,6 +1410,10 @@ public class EngineManager implements AgoraOutCallback {
 
     public void startRecognize(RecognizeConfig recognizeConfig) {
         AgoraEngineAdapter.getInstance().startRecognize(recognizeConfig);
+    }
+
+    public void setRecognizeListener(ArcRecognizeListener recognizeConfig) {
+        AgoraEngineAdapter.getInstance().setRecognizeListener(recognizeConfig);
     }
 
     public void stopRecognize() {

@@ -14,6 +14,7 @@
         app:bl_solid_color="#FFED61">
 
         <com.common.image.fresco.BaseImageView
+            android:layout_marginLeft="@dimen/view_1_dp"
             android:id="@+id/send_avatar_iv"
             android:layout_width="@dimen/view_28_dp"
             android:layout_height="@dimen/view_28_dp"

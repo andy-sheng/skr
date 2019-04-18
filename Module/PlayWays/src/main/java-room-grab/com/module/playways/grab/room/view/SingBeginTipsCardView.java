@@ -20,7 +20,7 @@ import com.common.log.MyLog;
 import com.common.utils.ImageUtils;
 import com.common.utils.U;
 import com.module.playways.grab.room.listener.SVGAListener;
-import com.module.playways.rank.song.model.SongModel;
+import com.module.playways.room.song.model.SongModel;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGADrawable;
@@ -66,7 +66,7 @@ public class SingBeginTipsCardView extends RelativeLayout {
         mSingBeginSvga = (SVGAImageView) findViewById(R.id.sing_begin_svga);
     }
 
-    public void bindData(UserInfoModel info, SongModel songModel, SVGAListener listener) {
+    public void bindData(UserInfoModel info, SongModel songModel, SVGAListener listener, boolean isChallenge) {
         if (info == null || songModel == null) {
             MyLog.e(TAG, "bindData" + " info=" + info + " songModel=" + songModel + " listener=" + listener);
             return;
@@ -74,7 +74,7 @@ public class SingBeginTipsCardView extends RelativeLayout {
         this.mSVGAListener = listener;
         setVisibility(VISIBLE);
         SVGAParser parser = new SVGAParser(U.app());
-        String assetsName = "grab_sing_chance.svga";
+        String assetsName = isChallenge ? "grab_challenge_sing_chance.svga" : "grab_sing_chance.svga";
         mSingBeginSvga.setVisibility(VISIBLE);
         try {
             parser.parse(assetsName, new SVGAParser.ParseCompletion() {
@@ -152,7 +152,7 @@ public class SingBeginTipsCardView extends RelativeLayout {
 
         if (!TextUtils.isEmpty(userInfoModel.getAvatar())) {
             // 填入头像和背景框
-            HttpImage image = ImageFactory.newHttpImage(userInfoModel.getAvatar())
+            HttpImage image = ImageFactory.newPathImage(userInfoModel.getAvatar())
                     .addOssProcessors(OssImgFactory.newResizeBuilder()
                                     .setW(ImageUtils.SIZE.SIZE_160.getW())
                                     .build()
@@ -163,9 +163,9 @@ public class SingBeginTipsCardView extends RelativeLayout {
                     .build();
             File file = FrescoWorker.getCacheFileFromFrescoDiskCache(image.getUrl());
             if (file != null) {
-                dynamicEntity.setDynamicImage(BitmapFactory.decodeFile(file.getPath()), "avatar_128");
+                dynamicEntity.setDynamicImage(BitmapFactory.decodeFile(file.getPath()), "avatar_104");
             } else {
-                dynamicEntity.setDynamicImage(image.getUrl(), "avatar_128");
+                dynamicEntity.setDynamicImage(image.getUrl(), "avatar_104");
             }
 
             Bitmap bitmap = Bitmap.createBitmap(U.getDisplayUtils().dip2px(70), U.getDisplayUtils().dip2px(70), Bitmap.Config.ARGB_8888);
@@ -182,7 +182,7 @@ public class SingBeginTipsCardView extends RelativeLayout {
             this.mSVGAListener = null;
             if (mSingBeginSvga != null) {
                 mSingBeginSvga.setCallback(null);
-                mSingBeginSvga.stopAnimation(false);
+                mSingBeginSvga.stopAnimation(true);
             }
         }
     }

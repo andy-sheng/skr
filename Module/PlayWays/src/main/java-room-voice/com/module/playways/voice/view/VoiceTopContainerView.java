@@ -10,7 +10,7 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.module.playways.PlayWaysActivity;
-import com.module.playways.rank.room.event.InputBoardEvent;
+import com.module.playways.room.room.event.InputBoardEvent;
 import com.module.rank.R;
 
 import org.greenrobot.eventbus.EventBus;

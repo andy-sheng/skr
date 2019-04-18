@@ -32,7 +32,7 @@ import com.component.busilib.R;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
-import com.zq.person.fragment.OtherPersonFragment;
+import com.zq.person.fragment.OtherPersonFragment2;
 import com.zq.relation.adapter.RelationAdapter;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -107,9 +107,9 @@ public class SearchFriendFragment extends BaseFragment {
                     // 跳到他人的个人主页
                     U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable(OtherPersonFragment.BUNDLE_USER_ID, userInfoModel.getUserId());
+                    bundle.putSerializable(OtherPersonFragment2.BUNDLE_USER_ID, userInfoModel.getUserId());
                     U.getFragmentUtils().addFragment(FragmentUtils
-                            .newAddParamsBuilder((BaseActivity) getContext(), OtherPersonFragment.class)
+                            .newAddParamsBuilder((BaseActivity) getContext(), OtherPersonFragment2.class)
                             .setUseOldFragmentIfExist(false)
                             .setBundle(bundle)
                             .setAddToBackStack(true)
@@ -174,7 +174,7 @@ public class SearchFriendFragment extends BaseFragment {
         mTitlebar.postDelayed(new Runnable() {
             @Override
             public void run() {
-                U.getKeyBoardUtils().showSoftInputKeyBoard(getContext());
+                U.getKeyBoardUtils().showSoftInputKeyBoard(getActivity());
             }
         }, 200);
     }

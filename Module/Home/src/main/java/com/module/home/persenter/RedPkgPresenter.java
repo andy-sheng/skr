@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.common.core.account.UserAccountManager;
 import com.common.core.global.event.ShowDialogInHomeEvent;
 import com.common.log.MyLog;
@@ -58,27 +59,23 @@ public class RedPkgPresenter extends RxLifeCyclePresenter {
             return;
         }
 
-        if(U.getPreferenceUtils().getSettingBoolean(PREF_KEY_RED_PKG_SHOW, false)){
+        if (U.getPreferenceUtils().getSettingBoolean(PREF_KEY_RED_PKG_SHOW, false)) {
             MyLog.w(TAG, "checkRedPkg 展示过一次就不展示了");
+            mIsHasReq = true;
             return;
         }
 
-        ApiMethods.subscribe(mMainPageSlideApi.checkRedPkg(), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mMainPageSlideApi.checkNewBieTask(), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 MyLog.d(TAG, "process" + " result=" + result.getErrno());
                 if (result.getErrno() == 0) {
                     mIsHasReq = true;
-                    List<RedPkgTaskModel> redPkgTaskModelList = JSONArray.parseArray(result.getData().getString("tasks"), RedPkgTaskModel.class);
-                    if (redPkgTaskModelList != null) {
-                        for (RedPkgTaskModel model :
-                                redPkgTaskModelList) {
-                            if (RED_PKG_TASK_ID.equals(model.getTaskID()) && !model.isDone()) {
-                                showGetCashView(Float.parseFloat(model.getRedbagExtra().getCash()), model.getDeepLink());
-                            }
-                        }
+                    RedPkgTaskModel redPkgTaskModel = JSONObject.parseObject(result.getData().getString("task"), RedPkgTaskModel.class);
+                    if (redPkgTaskModel != null && !redPkgTaskModel.isDone()) {
+                        showGetCashView(Float.parseFloat(redPkgTaskModel.getRedbagExtra().getCash()), redPkgTaskModel.getDeepLink());
                     } else {
-                        MyLog.d(TAG, "checkRedPkg redPkgTaskModelList is null");
+                        MyLog.w(TAG, "checkRedPkg redPkgTaskModel is null or redPkgTaskModel is done,traceid is " + result.getTraceId());
                     }
                 } else {
                     MyLog.d(TAG, "checkRedPkg failed, " + " result=" + result.getTraceId());

@@ -26,10 +26,10 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
 
     RelativeLayout mBackground;
     SimpleDraweeView mAvatarIv;
-    ExImageView mOwnerIv;
     ExTextView mNameTv;
     ExTextView mFriendTv;
     ExTextView mRecommendTv;
+    ExTextView mFollowTv;
     ExTextView mRoomInfoTv;
     ExImageView mEnterRoomIv;
 
@@ -39,10 +39,10 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
 
         mBackground = (RelativeLayout) itemView.findViewById(R.id.background);
         mAvatarIv = (SimpleDraweeView) itemView.findViewById(R.id.avatar_iv);
-        mOwnerIv = (ExImageView) itemView.findViewById(R.id.owner_iv);
         mNameTv = (ExTextView) itemView.findViewById(R.id.name_tv);
         mFriendTv = (ExTextView) itemView.findViewById(R.id.friend_tv);
         mRecommendTv = (ExTextView) itemView.findViewById(R.id.recommend_tv);
+        mFollowTv = (ExTextView) itemView.findViewById(R.id.follow_tv);
         mRoomInfoTv = (ExTextView) itemView.findViewById(R.id.room_info_tv);
         mEnterRoomIv = (ExImageView) itemView.findViewById(R.id.enter_room_iv);
 
@@ -72,20 +72,22 @@ public class FriendRoomVerticalViewHolder extends RecyclerView.ViewHolder {
                             .build());
 
             mNameTv.setText(mFriendRoomModel.getUserInfo().getNickname());
-            if (friendRoomModel.getCategory() == RecommendModel.TYPE_FRIEND_ROOM) {
-                if (friendRoomModel.getRoomInfo().isIsOwner()) {
-                    mOwnerIv.setVisibility(View.VISIBLE);
-                    mFriendTv.setVisibility(View.GONE);
-                    mRecommendTv.setVisibility(View.GONE);
-                } else {
-                    mOwnerIv.setVisibility(View.GONE);
-                    mFriendTv.setVisibility(View.VISIBLE);
-                    mRecommendTv.setVisibility(View.GONE);
-                }
-            } else {
-                mOwnerIv.setVisibility(View.GONE);
-                mFriendTv.setVisibility(View.GONE);
+            if (friendRoomModel.getCategory() == RecommendModel.TYPE_RECOMMEND_ROOM) {
                 mRecommendTv.setVisibility(View.VISIBLE);
+                mFollowTv.setVisibility(View.GONE);
+                mFriendTv.setVisibility(View.GONE);
+            } else if (friendRoomModel.getCategory() == RecommendModel.TYPE_FOLLOW_ROOM) {
+                mRecommendTv.setVisibility(View.GONE);
+                mFollowTv.setVisibility(View.VISIBLE);
+                mFriendTv.setVisibility(View.GONE);
+            } else if (friendRoomModel.getCategory() == RecommendModel.TYPE_FRIEND_ROOM) {
+                mRecommendTv.setVisibility(View.GONE);
+                mFollowTv.setVisibility(View.GONE);
+                mFriendTv.setVisibility(View.VISIBLE);
+            } else {
+                mRecommendTv.setVisibility(View.GONE);
+                mFollowTv.setVisibility(View.GONE);
+                mFriendTv.setVisibility(View.GONE);
             }
 
             SpannableStringBuilder stringBuilder = new SpanUtils()

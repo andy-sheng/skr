@@ -3,6 +3,7 @@ package com.zq.notification;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.common.core.avatar.AvatarUtils;
@@ -20,9 +21,10 @@ public class GrabInviteNotifyView extends RelativeLayout {
 
     SimpleDraweeView mAvatarIv;
     ExTextView mNameTv;
+    ImageView mSexIv;
     ExTextView mHintTv;
-    ExTextView mAgreeTv;
-    ExTextView mIgnoreTv;
+    View mAgreeTv;
+    //ExTextView mIgnoreTv;
 
     UserInfoModel mUserInfoModel;
 
@@ -43,11 +45,13 @@ public class GrabInviteNotifyView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.grab_invite_notification_view_layout, this);
-        mAvatarIv = (SimpleDraweeView) this.findViewById(R.id.avatar_iv);
-        mNameTv = (ExTextView) this.findViewById(R.id.name_tv);
-        mHintTv = (ExTextView) this.findViewById(R.id.hint_tv);
-        mAgreeTv = (ExTextView) this.findViewById(R.id.agree_tv);
-        mIgnoreTv = (ExTextView) this.findViewById(R.id.ignore_tv);
+        mAvatarIv = this.findViewById(R.id.avatar_iv);
+        mNameTv = this.findViewById(R.id.name_tv);
+        mSexIv = this.findViewById(R.id.sex_iv);
+        mHintTv = this.findViewById(R.id.hint_tv);
+        mAgreeTv = this.findViewById(R.id.ok_btn);
+
+        //mIgnoreTv = (ExTextView) this.findViewById(R.id.ignore_tv);
 
         mAgreeTv.setOnClickListener(new OnClickListener() {
             @Override
@@ -58,17 +62,17 @@ public class GrabInviteNotifyView extends RelativeLayout {
             }
         });
 
-        mIgnoreTv.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mListener != null) {
-                    mListener.onIgnore();
-                }
-            }
-        });
+//        mIgnoreTv.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (mListener != null) {
+//                    mListener.onIgnore();
+//                }
+//            }
+//        });
     }
 
-    public void bindData(UserInfoModel userInfoModel){
+    public void bindData(UserInfoModel userInfoModel) {
         this.mUserInfoModel = userInfoModel;
 
         AvatarUtils.loadAvatarByUrl(mAvatarIv,
@@ -78,15 +82,16 @@ public class GrabInviteNotifyView extends RelativeLayout {
                         .setBorderWidth(U.getDisplayUtils().dip2px(2))
                         .build());
         mNameTv.setText(mUserInfoModel.getNickname());
+        mSexIv.setBackgroundResource(userInfoModel.getSex() == ESex.SX_MALE.getValue() ? R.drawable.sex_man_icon : R.drawable.sex_woman_icon);
     }
 
     Listener mListener;
 
-    public void setListener(Listener l){
+    public void setListener(Listener l) {
         mListener = l;
     }
 
-    public interface Listener{
+    public interface Listener {
 
         void onIgnore();
 

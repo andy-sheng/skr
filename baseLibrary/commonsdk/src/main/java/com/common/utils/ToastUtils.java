@@ -51,9 +51,6 @@ public final class ToastUtils {
     private static final String NULL = "null";
 
     private static IToast iToast;
-    private static int sGravity = -1;
-    private static int sXOffset = -1;
-    private static int sYOffset = -1;
     private static int sBgColor = COLOR_DEFAULT;
     private static int sBgResource = -1;
     private static int sMsgColor = COLOR_DEFAULT;
@@ -63,18 +60,6 @@ public final class ToastUtils {
 
     }
 
-    /**
-     * Set the gravity.
-     *
-     * @param gravity The gravity.
-     * @param xOffset X-axis offset, in pixel.
-     * @param yOffset Y-axis offset, in pixel.
-     */
-    public static void setGravity(final int gravity, final int xOffset, final int yOffset) {
-        sGravity = gravity;
-        sXOffset = xOffset;
-        sYOffset = yOffset;
-    }
 
     /**
      * Set the color of background.
@@ -118,7 +103,7 @@ public final class ToastUtils {
      * @param text The text.
      */
     public static void showShort(final CharSequence text) {
-        show(text == null ? NULL : text, Toast.LENGTH_SHORT, 0);
+        show(text == null ? NULL : text, Toast.LENGTH_SHORT, 0, -1,-1,-1);
     }
 
     /**
@@ -126,8 +111,8 @@ public final class ToastUtils {
      *
      * @param text The text.
      */
-    public static void showShort(final CharSequence text, int priority) {
-        show(text == null ? NULL : text, Toast.LENGTH_SHORT, priority);
+    public static void showShort(final CharSequence text, int priority,int gravity) {
+        show(text == null ? NULL : text, Toast.LENGTH_SHORT, priority, gravity,-1,-1);
     }
 
     /**
@@ -136,7 +121,7 @@ public final class ToastUtils {
      * @param text The text.
      */
     public static void showLong(final CharSequence text) {
-        show(text == null ? NULL : text, Toast.LENGTH_LONG, 0);
+        show(text == null ? NULL : text, Toast.LENGTH_LONG, 0, -1,-1,-1);
     }
 
     public void showSkrCustomShort(View view) {
@@ -162,7 +147,7 @@ public final class ToastUtils {
         }
     }
 
-    private static void show(final CharSequence text, final int duration, int priority) {
+    private static void show(final CharSequence text, final int duration, int priority, int gravity,int xOffset,int yOffset) {
         HANDLER.post(new Runnable() {
             @SuppressLint("ShowToast")
             @Override
@@ -198,8 +183,8 @@ public final class ToastUtils {
                 if (sMsgTextSize != -1) {
                     tvMessage.setTextSize(sMsgTextSize);
                 }
-                if (sGravity != -1 || sXOffset != -1 || sYOffset != -1) {
-                    iToast.setGravity(sGravity, sXOffset, sYOffset);
+                if (gravity != -1 || xOffset != -1 || yOffset != -1) {
+                    iToast.setGravity(gravity, xOffset, yOffset);
                 }
                 setBg(tvMessage);
                 iToast.show();

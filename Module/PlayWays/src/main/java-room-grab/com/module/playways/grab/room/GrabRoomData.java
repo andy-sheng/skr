@@ -14,7 +14,7 @@ import com.module.playways.grab.room.event.GrabRoundChangeEvent;
 import com.module.playways.grab.room.model.GrabConfigModel;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.module.playways.rank.prepare.model.JoinGrabRoomRspModel;
+import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -35,6 +35,8 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
     SpecialModel mSpecialModel;
 
     GrabResultData mGrabResultData;    // 游戏结果
+    private boolean mSpeaking; // 是否正在抢麦说话，一般用于主播控场
+    private boolean mChallengeAvailable;
 
     public GrabRoomData() {
         mIsAccEnable = U.getPreferenceUtils().getSettingBoolean("grab_acc_enable1", false);
@@ -262,6 +264,15 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
         }
         // 游戏未开始
         this.setHasGameBegin(rsp.hasGameBegin());
+        this.setChallengeAvailable(rsp.isChallengeAvailable());
+    }
+
+    public boolean isChallengeAvailable() {
+        return mChallengeAvailable;
+    }
+
+    public void setChallengeAvailable(boolean challengeAvailable) {
+        mChallengeAvailable = challengeAvailable;
     }
 
     public Integer getSongLineNum() {
@@ -282,5 +293,13 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
                 ", hasGameBegin=" + hasGameBegin +
                 ", mAgoraToken=" + mAgoraToken +
                 '}';
+    }
+
+    public void setSpeaking(boolean speaking) {
+        mSpeaking = speaking;
+    }
+
+    public boolean isSpeaking() {
+        return mSpeaking;
     }
 }

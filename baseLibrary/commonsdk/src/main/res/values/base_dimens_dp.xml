@@ -7,6 +7,7 @@
     <dimen name="view_1_33_dp">1.33dp</dimen>
     <dimen name="view_1_67_dp">1.67dp</dimen>
     <dimen name="view_2_dp">2dp</dimen>
+    <dimen name="view_d_2_dp">-2dp</dimen>
     <dimen name="view_2_33_dp">2.33dp</dimen>
     <dimen name="view_2_67_dp">2.67dp</dimen>
     <dimen name="view_3_dp">3dp</dimen>
@@ -28,6 +29,7 @@
     <dimen name="view_7_33_dp">7.33dp</dimen>
     <dimen name="view_7_67_dp">7.67dp</dimen>
     <dimen name="view_8_dp">8dp</dimen>
+    <dimen name="view_d_8_dp">-8dp</dimen>
     <dimen name="view_8_33_dp">8.33dp</dimen>
     <dimen name="view_8_67_dp">8.67dp</dimen>
     <dimen name="view_9_dp">9dp</dimen>
@@ -51,6 +53,7 @@
     <dimen name="view_13_33_dp">13.33dp</dimen>
     <dimen name="view_13_67_dp">13.67dp</dimen>
     <dimen name="view_14_dp">14dp</dimen>
+    <dimen name="view_d_14_dp">-14dp</dimen>
     <dimen name="view_14_33_dp">14.33dp</dimen>
     <dimen name="view_14_67_dp">14.67dp</dimen>
     <dimen name="view_15_dp">15dp</dimen>
@@ -81,12 +84,14 @@
     <dimen name="view_22_33_dp">22.33dp</dimen>
     <dimen name="view_22_67_dp">22.67dp</dimen>
     <dimen name="view_23_dp">23dp</dimen>
+    <dimen name="view_d_23_dp">-23dp</dimen>
     <dimen name="view_23_33_dp">23.33dp</dimen>
     <dimen name="view_23_67_dp">23.67dp</dimen>
     <dimen name="view_24_dp">24dp</dimen>
     <dimen name="view_24_33_dp">24.33dp</dimen>
     <dimen name="view_24_67_dp">24.67dp</dimen>
     <dimen name="view_25_dp">25dp</dimen>
+    <dimen name="view_d_25_dp">-25dp</dimen>
     <dimen name="view_25_33_dp">25.33dp</dimen>
     <dimen name="view_25_67_dp">25.67dp</dimen>
     <dimen name="view_26_dp">26dp</dimen>

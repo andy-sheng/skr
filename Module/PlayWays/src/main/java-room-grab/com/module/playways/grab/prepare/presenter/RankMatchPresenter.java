@@ -11,12 +11,12 @@ import com.common.utils.HandlerTaskTimer;
 import com.component.busilib.constans.GameModeType;
 import com.module.ModuleServiceManager;
 import com.module.common.ICallback;
-import com.module.playways.rank.msg.event.JoinActionEvent;
-import com.module.playways.rank.msg.event.JoinNoticeEvent;
-import com.module.playways.rank.prepare.MatchServerApi;
-import com.module.playways.rank.prepare.model.GameInfoModel;
-import com.module.playways.rank.prepare.presenter.BaseMatchPresenter;
-import com.module.playways.rank.prepare.view.IRankMatchingView;
+import com.module.playways.room.msg.event.JoinActionEvent;
+import com.module.playways.room.msg.event.JoinNoticeEvent;
+import com.module.playways.room.prepare.MatchServerApi;
+import com.module.playways.room.prepare.model.GameInfoModel;
+import com.module.playways.room.prepare.presenter.BaseMatchPresenter;
+import com.module.playways.room.prepare.view.IRankMatchingView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -199,7 +199,7 @@ public class RankMatchPresenter extends BaseMatchPresenter {
      */
     private void joinRoom() {
         MyLog.d(TAG, "joinRoom gameId " + mJoinActionEvent.gameId);
-        ModuleServiceManager.getInstance().getMsgService().joinChatRoom(String.valueOf(mJoinActionEvent.gameId), new ICallback() {
+        ModuleServiceManager.getInstance().getMsgService().joinChatRoom(String.valueOf(mJoinActionEvent.gameId),10, new ICallback() {
             @Override
             public void onSucess(Object obj) {
                 if (mMatchState == MatchState.MatchSucess) {

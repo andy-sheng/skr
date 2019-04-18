@@ -15,7 +15,7 @@
             android:id="@+id/iv_light"
             android:layout_marginLeft="@dimen/view_4_dp"
             android:layout_centerVertical="true"
-            android:src="@drawable/liangdeng"
+            android:src="@drawable/ycdd_liangdeng"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

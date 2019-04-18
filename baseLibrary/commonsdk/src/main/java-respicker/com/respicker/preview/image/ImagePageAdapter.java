@@ -63,7 +63,7 @@ public class ImagePageAdapter extends PagerAdapter {
                 }
             }
         });
-        imageBrowseView.setLongClickListener(new View.OnLongClickListener() {
+        imageBrowseView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
                 U.getToastUtil().showShort("长按事件");

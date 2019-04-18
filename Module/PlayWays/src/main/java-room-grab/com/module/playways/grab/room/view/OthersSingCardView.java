@@ -3,6 +3,7 @@ package com.module.playways.grab.room.view;
 import android.content.Context;
 import android.graphics.drawable.Animatable;
 import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -19,6 +20,8 @@ import com.common.image.model.ImageFactory;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
+import com.common.view.countdown.CircleCountDownView;
+import com.common.view.ex.ExTextView;
 import com.facebook.fresco.animation.drawable.AnimatedDrawable2;
 import com.facebook.fresco.animation.drawable.AnimationListener;
 import com.facebook.imagepipeline.image.ImageInfo;
@@ -26,11 +29,14 @@ import com.module.playways.BaseRoomData;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.ShowPersonCardEvent;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.module.playways.rank.room.view.ArcProgressBar;
-import com.module.playways.rank.song.model.SongModel;
 import com.module.rank.R;
+import com.opensource.svgaplayer.SVGADrawable;
+import com.opensource.svgaplayer.SVGAImageView;
+import com.opensource.svgaplayer.SVGAParser;
+import com.opensource.svgaplayer.SVGAVideoEntity;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.greendao.annotation.NotNull;
 
 /**
  * 其他人主场景收音机
@@ -47,16 +53,24 @@ public class OthersSingCardView extends RelativeLayout {
 
     int mUseId;   // 当前唱歌人的id
 
-    BaseImageView mGrabStageView;
+    SVGAImageView mGrabStageView;
     BaseImageView mSingAvatarView;
-    ArcProgressBar mCountDownProcess;
+    CircleCountDownView mCircleCountDownView;
+    ExTextView mTvSingerName;
 
     AlphaAnimation mEnterAlphaAnimation;                // 进场动画
     TranslateAnimation mLeaveTranslateAnimation;   // 出场动画
 
     GrabRoomData mGrabRoomData;
 
-    Handler mUiHandler = new Handler();
+    Handler mUiHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            if(msg.what == MSG_ENSURE_PLAY){
+                tryStartCountDown();
+            }
+        }
+    };
 
     boolean mHasPlayFullAnimation = false;
     boolean mCanStartFlag = false;
@@ -78,9 +92,10 @@ public class OthersSingCardView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.grab_others_sing_card_layout, this);
-        mGrabStageView = (BaseImageView) findViewById(R.id.grab_stage_view);
+        mGrabStageView = (SVGAImageView) findViewById(R.id.grab_stage_view);
         mSingAvatarView = (BaseImageView) findViewById(R.id.sing_avatar_view);
-        mCountDownProcess = (ArcProgressBar) findViewById(R.id.count_down_process);
+        mCircleCountDownView = (CircleCountDownView) findViewById(R.id.circle_count_down_view);
+        mTvSingerName = (ExTextView) findViewById(R.id.tv_singer_name);
 
         mSingAvatarView.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -104,66 +119,66 @@ public class OthersSingCardView extends RelativeLayout {
             this.mUseId = userInfoModel.getUserId();
             AvatarUtils.loadAvatarByUrl(mSingAvatarView,
                     AvatarUtils.newParamsBuilder(userInfoModel.getAvatar())
+                            .setBorderColor(U.getColor(R.color.white))
+                            .setBorderWidth(U.getDisplayUtils().dip2px(5))
                             .setCircle(true)
                             .build());
+            mTvSingerName.setText(userInfoModel.getNickname());
         } else {
             MyLog.w(TAG, "userInfoModel==null 加载选手信息失败");
         }
         mCountDownStatus = COUNT_DOWN_STATUS_WAIT;
-        mCountDownProcess.setProgress(0);
+        mCircleCountDownView.setProgress(0);
         // 淡出效果
         if (mEnterAlphaAnimation == null) {
             mEnterAlphaAnimation = new AlphaAnimation(0f, 1f);
             mEnterAlphaAnimation.setDuration(1000);
         }
         this.startAnimation(mEnterAlphaAnimation);
-        FrescoWorker.loadImage(mGrabStageView, ImageFactory.newHttpImage(BaseRoomData.PK_MAIN_STAGE_WEBP)
-                .setCallBack(new IFrescoCallBack() {
-                    @Override
-                    public void processWithInfo(ImageInfo info, Animatable animatable) {
-                        if (animatable != null && animatable instanceof AnimatedDrawable2) {
-                            ((AnimatedDrawable2) animatable).setAnimationListener(new AnimationListener() {
 
-                                @Override
-                                public void onAnimationStart(AnimatedDrawable2 drawable) {
-                                    MyLog.d(TAG, "onAnimationStart" + " drawable=" + drawable);
-                                }
+        mGrabStageView.setVisibility(View.VISIBLE);
+        mGrabStageView.setLoops(1);
 
-                                @Override
-                                public void onAnimationStop(AnimatedDrawable2 drawable) {
-                                    MyLog.d(TAG, "onAnimationStop" + " drawable=" + drawable);
-                                }
+        SVGAParser parser = new SVGAParser(U.app());
+        try {
+            parser.parse("grab_main_stage.svga", new SVGAParser.ParseCompletion() {
+                @Override
+                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                    SVGADrawable drawable = new SVGADrawable(videoItem);
+                    mGrabStageView.setLoops(-1);
+                    mGrabStageView.setImageDrawable(drawable);
+                    mGrabStageView.startAnimation();
+                }
 
-                                @Override
-                                public void onAnimationReset(AnimatedDrawable2 drawable) {
-                                }
+                @Override
+                public void onError() {
 
-                                @Override
-                                public void onAnimationRepeat(AnimatedDrawable2 drawable) {
+                }
+            });
+        } catch (Exception e) {
+            MyLog.e(TAG, e);
+        }
 
-                                }
+        GrabRoundInfoModel grabRoundInfoModel = mGrabRoomData.getRealRoundInfo();
+        if (grabRoundInfoModel == null) {
+            return;
+        }
 
-                                @Override
-                                public void onAnimationFrame(AnimatedDrawable2 drawable, int frameNumber) {
-                                }
-                            });
-                            animatable.start();
-                        }
-                    }
-
-                    @Override
-                    public void processWithFailure() {
-                        MyLog.d(TAG, "processWithFailure");
-                    }
-                })
-                .build()
-        );
-        countDownAfterAnimation("bindData");
+        if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_SING) {
+            countDown("中途进来");
+        } else {
+            mCircleCountDownView.cancelAnim();
+            mCircleCountDownView.setMax(360);
+            mCircleCountDownView.setProgress(0);
+            mUiHandler.removeMessages(MSG_ENSURE_PLAY);
+            mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_PLAY, 3000);
+        }
     }
 
     public void tryStartCountDown() {
         MyLog.d(TAG, "tryStartCountDown");
         mCanStartFlag = true;
+        mUiHandler.removeMessages(MSG_ENSURE_PLAY);
         if (mCountDownStatus == COUNT_DOWN_STATUS_WAIT) {
             mCountDownStatus = COUNT_DOWN_STATUS_PLAYING;
             countDownAfterAnimation("tryStartCountDown");
@@ -177,26 +192,11 @@ public class OthersSingCardView extends RelativeLayout {
         if (grabRoundInfoModel == null) {
             return;
         }
-        SongModel songModel = grabRoundInfoModel.getMusic();
-        if (songModel == null) {
-            return;
-        }
 
         if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_SING) {
             countDown("中途进来");
         } else {
-            if (!mHasPlayFullAnimation) {
-                mHasPlayFullAnimation = true;
-                mCountDownProcess.fullCountDownAnimation(new ArcProgressBar.ArcAnimationListener() {
-                    @Override
-                    public void onAnimationEnd() {
-                        MyLog.d(TAG, "onAnimationEnd");
-                        countDown("after full Animation");
-                    }
-                });
-            } else {
-                countDown("else full Animation");
-            }
+            countDown("else full Animation");
         }
     }
 
@@ -206,18 +206,15 @@ public class OthersSingCardView extends RelativeLayout {
         if (grabRoundInfoModel == null) {
             return;
         }
-        SongModel songModel = grabRoundInfoModel.getMusic();
-        if (songModel == null) {
-            return;
-        }
-        int totalMs = songModel.getTotalMs();
+        int totalMs = grabRoundInfoModel.getSingEndMs() - grabRoundInfoModel.getSingBeginMs();
         if (mCountDownStatus == COUNT_DOWN_STATUS_WAIT) {
             MyLog.d(TAG, "countDown mCountDownStatus == COUNT_DOWN_STATUS_WAIT");
             if (mCanStartFlag) {
                 mCountDownStatus = COUNT_DOWN_STATUS_PLAYING;
             } else {
                 // 不需要播放countdown
-                mCountDownProcess.startCountDown(0, totalMs);
+//                mCountDownProcess.startCountDown(0, totalMs);
+                mCircleCountDownView.go(0, totalMs);
                 return;
             }
         }
@@ -233,7 +230,8 @@ public class OthersSingCardView extends RelativeLayout {
             progress = 1;
             leaveTime = totalMs;
         }
-        mCountDownProcess.startCountDown(progress, leaveTime);
+//        mCountDownProcess.startCountDown(progress, leaveTime);
+        mCircleCountDownView.go(progress, leaveTime);
     }
 
     public void hide() {
@@ -264,6 +262,11 @@ public class OthersSingCardView extends RelativeLayout {
             clearAnimation();
             setVisibility(GONE);
         }
+        mCircleCountDownView.cancelAnim();
+        mCircleCountDownView.setMax(360);
+        mCircleCountDownView.setProgress(0);
+
+        mUiHandler.removeMessages(MSG_ENSURE_PLAY);
     }
 
     @Override
@@ -273,6 +276,7 @@ public class OthersSingCardView extends RelativeLayout {
             mCountDownStatus = COUNT_DOWN_STATUS_INIT;
             mCanStartFlag = false;
             mHasPlayFullAnimation = false;
+            mUiHandler.removeCallbacksAndMessages(null);
         }
     }
 
@@ -280,10 +284,15 @@ public class OthersSingCardView extends RelativeLayout {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         if (mEnterAlphaAnimation != null) {
+            mEnterAlphaAnimation.setAnimationListener(null);
             mEnterAlphaAnimation.cancel();
         }
         if (mLeaveTranslateAnimation != null) {
+            mLeaveTranslateAnimation.setAnimationListener(null);
             mLeaveTranslateAnimation.cancel();
+        }
+        if(mUiHandler != null){
+            mUiHandler.removeCallbacksAndMessages(null);
         }
     }
 }

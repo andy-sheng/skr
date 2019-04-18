@@ -6,58 +6,87 @@
     android:background="@color/black_trans_30"
     android:orientation="vertical">
 
-    <RelativeLayout
+    <com.common.view.ex.ExRelativeLayout
+        android:visibility="invisible"
         android:id="@+id/rl_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/view_63_dp"
-        android:background="#3F4153"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:bl_corners_bottomLeftRadius="@dimen/view_20_dp"
+        app:bl_corners_topLeftRadius="@dimen/view_20_dp"
+        app:bl_solid_color="#7088FF"
+        app:bl_stroke_color="#3B4E79"
+        app:bl_stroke_width="@dimen/view_2_dp">
 
         <com.common.view.ex.ExTextView
+            android:paddingTop="@dimen/view_4_dp"
             android:id="@+id/search_song_iv"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/view_37_dp"
+            android:layout_height="@dimen/view_38_dp"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
             android:layout_marginLeft="@dimen/view_20_dp"
             android:layout_marginTop="@dimen/view_43_dp"
-            android:layout_marginRight="@dimen/view_15_dp"
-            android:layout_toLeftOf="@+id/tv_selected_song"
-            android:drawableLeft="@drawable/fangzhu_sousuotianjiagequ"
+            android:layout_marginRight="@dimen/view_50_dp"
+            android:layout_marginBottom="@dimen/view_25_dp"
+            android:layout_toLeftOf="@+id/tv_finish"
+            android:drawableLeft="@drawable/fz_sousuo"
             android:drawablePadding="@dimen/view_10_dp"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/textsize_10_dp"
             android:text="添加歌曲"
-            android:textColor="@color/white_trans_20"
+            android:background="@drawable/ycdd_shurukuang"
+            android:textColor="@color/white_trans_50"
             android:textSize="@dimen/textsize_16_dp"
-            app:bl_corners_radius="@dimen/view_8_dp"
-            app:bl_solid_color="#2E3041"
-            app:bl_stroke_color="#202239"
-            app:bl_stroke_width="@dimen/view_2_dp" />
+            />
 
         <com.common.view.ex.ExTextView
             android:id="@+id/tv_selected_song"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignRight="@+id/fl_song_list_container"
-            android:layout_marginTop="@dimen/view_52_dp"
+            android:layout_marginTop="@dimen/view_41_dp"
             android:text=""
-            android:textColor="#3cB2B6D6"
-            android:textSize="@dimen/textsize_14_dp" />
+            android:textColor="@color/white"
+            android:textSize="@dimen/textsize_16_dp" />
 
-        <com.common.view.ex.ExFrameLayout
+        <com.common.view.ex.ExLinearLayout
             android:id="@+id/fl_song_list_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/view_20_dp"
-            android:layout_marginTop="@dimen/view_97_dp"
+            android:layout_marginTop="@dimen/view_72_dp"
             android:layout_marginRight="@dimen/view_20_dp"
-            android:layout_marginBottom="@dimen/view_148_dp"
+            android:layout_marginBottom="@dimen/view_82_dp"
+            android:orientation="vertical"
             android:padding="@dimen/view_2_dp"
-            app:bl_corners_radius="@dimen/view_8_dp"
-            app:bl_solid_color="#3F4153"
-            app:bl_stroke_color="#202239"
+            app:bl_corners_radius="@dimen/view_16_dp"
+            app:bl_solid_color="#4960CF"
+            app:bl_stroke_color="#3B4E79"
             app:bl_stroke_width="@dimen/view_2_dp">
+
+            <FrameLayout
+                android:layout_marginLeft="@dimen/view_5_dp"
+                android:layout_marginTop="@dimen/view_5_dp"
+                android:layout_marginRight="@dimen/view_5_dp"
+                android:layout_toLeftOf="@+id/tv_finish"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_42_dp">
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/selected_tag"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/view_42_dp"
+                    />
+
+                <ImageView
+                    android:background="@drawable/fz_shuxing_xia"
+                    android:id="@+id/iv_arrow"
+                    android:layout_marginRight="@dimen/view_13_dp"
+                    android:layout_gravity="center_vertical|right"
+                    android:layout_width="@dimen/view_14_dp"
+                    android:layout_height="@dimen/view_16_dp" />
+            </FrameLayout>
 
             <com.scwang.smartrefresh.layout.SmartRefreshLayout
                 android:id="@+id/refreshLayout"
@@ -69,34 +98,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </com.scwang.smartrefresh.layout.SmartRefreshLayout>
-        </com.common.view.ex.ExFrameLayout>
-
-        <com.common.view.ex.ExTextView
-            android:id="@+id/selected_tag"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/view_42_dp"
-            android:layout_alignLeft="@+id/fl_song_list_container"
-            android:layout_alignParentBottom="true"
-            android:layout_marginRight="@dimen/view_20_dp"
-            android:layout_marginBottom="@dimen/view_79_dp"
-            android:layout_toLeftOf="@+id/tv_finish"
-            android:drawableRight="@drawable/zhuanchang_shouqi"
-            android:gravity="center_vertical"
-            android:paddingLeft="@dimen/view_16_dp"
-            android:paddingRight="@dimen/view_15_dp"
-            android:text="经典回忆杀"
-            android:textColor="@color/black_trans_70"
-            android:textSize="@dimen/textsize_16_dp"
-            android:textStyle="bold" />
+        </com.common.view.ex.ExLinearLayout>
 
         <TextView
             android:id="@+id/tv_finish"
-            android:layout_width="@dimen/view_60_dp"
-            android:layout_height="@dimen/view_60_dp"
+            android:layout_width="@dimen/view_44_dp"
+            android:layout_height="@dimen/view_49_dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             android:layout_marginRight="@dimen/view_18_dp"
-            android:layout_marginBottom="@dimen/view_71_dp"
-            android:background="@drawable/fangzhu_shezhi_shouqi" />
-    </RelativeLayout>
+            android:layout_marginBottom="@dimen/view_20_dp"
+            android:background="@drawable/fz_shouqi" />
+    </com.common.view.ex.ExRelativeLayout>
 </FrameLayout>

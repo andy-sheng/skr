@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--StrokeTextView的属性-->
+    <declare-styleable name="StrokeTextView">
+        <!--字体颜色-->
+        <attr name="textColor" format="color" />
+        <!--字体描边颜色-->
+        <attr name="borderColor" format="color"/>
+        <!--字体描边宽度-->
+        <attr name="borderWidth" format="dimension"/>
+    </declare-styleable>
+</resources>

@@ -18,9 +18,7 @@ public class GrabRoundChangeEvent {
     @Override
     public String toString() {
         return "GrabRoundChangeEvent{" +
-                "\n" +
                 "lastRoundInfo=" + lastRoundInfo +
-                "\n" +
                 "newRoundInfo=" + newRoundInfo +
                 '}';
     }

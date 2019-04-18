@@ -43,7 +43,7 @@ public interface IMsgService extends IProvider {
      * @param roomId
      * @param callback
      */
-    void joinChatRoom(String roomId, ICallback callback);
+    void joinChatRoom(String roomId,int defMessageCount, ICallback callback);
 
     void leaveChatRoom(String roomId);
 
@@ -79,7 +79,7 @@ public interface IMsgService extends IProvider {
      * @param targetId
      * @param title
      */
-    void startPrivateChat(Context context, String targetId, String title);
+    boolean startPrivateChat(Context context, String targetId, String title,boolean isFriend);
 
     /**
      * 在融云服务器上更新当前用户信息

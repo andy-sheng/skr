@@ -10,7 +10,7 @@ import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabConfigModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.GrabScoreTipMsgModel;
-import com.module.playways.rank.room.score.bar.ScoreTipsView;
+import com.module.playways.room.room.score.bar.ScoreTipsView;
 import com.module.rank.R;
 
 import java.util.List;
@@ -111,9 +111,9 @@ public class GrabScoreTipsView extends RelativeLayout {
             mLastItem = item;
             GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
             if (now != null && now.getUserID() == MyUserInfoManager.getInstance().getUid()) {
-                ScoreTipsView.play(this, item, 2);
+                ScoreTipsView.play(this, item, 1);
             } else {
-                ScoreTipsView.play(this, item);
+                ScoreTipsView.play(this, item,1);
             }
         }
     }

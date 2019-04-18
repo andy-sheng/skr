@@ -16,10 +16,10 @@ import com.common.utils.U;
 import com.module.RouterConstants;
 import com.module.playways.PlayWaysActivity;
 import com.module.playways.RoomDataUtils;
-import com.module.playways.rank.room.model.RankPlayerInfoModel;
-import com.module.playways.rank.room.model.RankRoundInfoModel;
-import com.module.playways.rank.room.RankRoomData;
-import com.module.playways.rank.song.model.SongModel;
+import com.module.playways.room.room.model.RankPlayerInfoModel;
+import com.module.playways.room.room.model.RankRoundInfoModel;
+import com.module.playways.room.room.RankRoomData;
+import com.module.playways.room.song.model.SongModel;
 import com.module.playways.voice.fragment.VoiceRoomFragment;
 import com.module.rank.R;
 

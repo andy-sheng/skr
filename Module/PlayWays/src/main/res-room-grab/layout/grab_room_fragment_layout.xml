@@ -2,42 +2,64 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:VoiceControlPanelView="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:gameType="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ranking_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#2E3041">
-
-    <!--<com.module.playways.grab.room.top.GrabSingerTopView-->
-    <!--android:id="@+id/singer_top_view"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="@dimen/view_70_dp"-->
-    <!--android:visibility="gone" />-->
-
-    <!--这里面是软键盘弹出时 需要上移的布局-->
-    <com.module.playways.rank.room.view.BottomContainerView
-        android:id="@+id/bottom_container_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/input_container_view"
-        android:layout_marginBottom="@dimen/view_22_dp" />
-
-    <com.module.playways.rank.room.comment.CommentView
-        android:id="@+id/comment_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_marginRight="@dimen/view_100_dp"
-        android:layout_marginBottom="@dimen/view_66_dp"
-        android:paddingLeft="@dimen/view_18_dp"
-        android:paddingBottom="@dimen/view_7_dp" />
+    android:background="#404A9A">
 
     <com.common.view.ex.ExImageView
-        android:id="@+id/cover_iv"
+        android:id="@+id/grab_room_bg_flag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottom_bg_vp" />
+
+    <!-- 会在代码中按比例动态适配 -->
+    <com.common.view.ex.ExRelativeLayout
+        android:id="@+id/bottom_bg_vp"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_10_dp"
-        android:layout_alignTop="@+id/comment_view"
-        android:layout_marginRight="@dimen/view_128_dp"
-        android:background="@drawable/zhengzaiyanchang_duihua_zhezhao" />
+        android:layout_height="@dimen/view_284_dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="@dimen/view_d_2_dp"
+        android:layout_marginRight="@dimen/view_d_2_dp"
+        app:bl_corners_topLeftRadius="@dimen/view_20_dp"
+        app:bl_corners_topRightRadius="@dimen/view_20_dp"
+        app:bl_solid_color="#7088FF"
+        app:bl_stroke_color="#3B4E79"
+        app:bl_stroke_width="@dimen/view_2_dp">
+
+        <!--这里面是软键盘弹出时 需要上移的布局-->
+        <com.module.playways.grab.room.bottom.GrabBottomContainerView
+            android:id="@+id/bottom_container_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/input_container_view"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/view_25_dp"
+            gameType:type="grab" />
+
+        <com.module.playways.room.room.comment.CommentView
+            android:id="@+id/comment_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="@dimen/view_20_dp"
+            android:layout_marginRight="@dimen/view_100_dp"
+            android:layout_marginBottom="@dimen/view_66_dp"
+            android:paddingLeft="@dimen/view_18_dp"
+            android:paddingBottom="@dimen/view_7_dp"
+            gameType:type="grab" />
+
+        <com.common.view.ex.ExImageView
+            android:id="@+id/cover_iv"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_22_dp"
+            android:layout_alignTop="@+id/comment_view"
+            android:layout_marginRight="@dimen/view_100_dp"
+            android:background="@drawable/ycdd_zhezhao" />
+
+    </com.common.view.ex.ExRelativeLayout>
+
 
     <com.module.playways.grab.room.top.GrabTopContainerView
         android:id="@+id/top_container_view"
@@ -46,6 +68,7 @@
         android:layout_marginTop="0dp" />
 
     <com.common.view.ex.ExImageView
+        android:layout_marginLeft="@dimen/view_18_dp"
         android:id="@+id/practice_flag_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -122,28 +145,29 @@
         android:id="@+id/grab_op_btn"
         android:layout_width="@dimen/view_141_dp"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/bottom_bg_vp"
         android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/view_165_dp" />
+        android:layout_marginTop="@dimen/view_20_dp"
+        android:layout_marginRight="@dimen/view_10_dp" />
 
     <com.module.playways.grab.room.view.GrabGiveupView
         android:id="@+id/grab_pass_view"
         android:layout_width="@dimen/view_97_dp"
         android:layout_height="@dimen/view_60_dp"
+        android:layout_alignTop="@+id/bottom_bg_vp"
         android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/view_130_dp" />
+        android:layout_marginTop="@dimen/view_20_dp" />
 
-    <com.module.playways.rank.room.gift.GiftContinueViewGroup
+    <com.module.playways.room.room.gift.GiftContinueViewGroup
         android:id="@+id/gift_continue_vg"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_75_dp"
-        android:layout_alignTop="@+id/comment_view"
-        android:layout_marginLeft="@dimen/view_18_dp"
+        android:layout_alignTop="@+id/bottom_bg_vp"
         android:layout_marginTop="-30dp"
-        android:layout_marginBottom="@dimen/view_10_dp" />
+        android:layout_marginBottom="@dimen/view_10_dp"
+        android:paddingLeft="@dimen/view_16_dp" />
 
-    <com.module.playways.rank.room.gift.GiftBigAnimationViewGroup
+    <com.module.playways.room.room.gift.GiftBigAnimationViewGroup
         android:id="@+id/gift_big_animation_vg"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
@@ -165,32 +189,7 @@
         android:layout_marginBottom="@dimen/view_79_dp"
         android:visibility="gone" />
 
-    <com.common.view.ex.ExImageView
-        android:id="@+id/iv_room_manage"
-        android:layout_width="@dimen/view_52_dp"
-        android:layout_height="@dimen/view_52_dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginRight="@dimen/view_26_dp"
-        android:layout_marginBottom="@dimen/view_79_dp"
-        android:background="@drawable/fangzhuzhushou"
-        android:visibility="gone" />
-
-    <View
-        android:id="@+id/voice_control_bg"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
-
-    <com.module.playways.rank.prepare.view.VoiceControlPanelView
-        android:id="@+id/voice_control_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:visibility="gone"
-        VoiceControlPanelView:isShowACC="false" />
-
-    <com.module.playways.rank.room.view.InputContainerView
+    <com.module.playways.room.room.view.InputContainerView
         android:id="@+id/input_container_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

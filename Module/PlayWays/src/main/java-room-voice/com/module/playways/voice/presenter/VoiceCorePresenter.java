@@ -1,5 +1,6 @@
 package com.module.playways.voice.presenter;
 
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.text.SpannableStringBuilder;
@@ -19,13 +20,14 @@ import com.engine.EngineManager;
 import com.engine.Params;
 import com.engine.UserStatus;
 import com.module.ModuleServiceManager;
-import com.module.playways.rank.msg.filter.PushMsgFilter;
-import com.module.playways.rank.msg.manager.ChatRoomMsgManager;
-import com.module.playways.rank.room.RankRoomData;
-import com.module.playways.rank.room.RankRoomServerApi;
-import com.module.playways.rank.room.comment.CommentModel;
-import com.module.playways.rank.room.event.PretendCommentMsgEvent;
-import com.module.playways.rank.room.model.RankPlayerInfoModel;
+import com.module.playways.room.msg.filter.PushMsgFilter;
+import com.module.playways.room.msg.manager.ChatRoomMsgManager;
+import com.module.playways.room.room.RankRoomData;
+import com.module.playways.room.room.RankRoomServerApi;
+import com.module.playways.room.room.comment.model.CommentModel;
+import com.module.playways.room.room.comment.model.CommentTextModel;
+import com.module.playways.room.room.event.PretendCommentMsgEvent;
+import com.module.playways.room.room.model.RankPlayerInfoModel;
 import com.module.playways.voice.inter.IVoiceView;
 import com.module.rank.R;
 import com.zq.live.proto.Common.ESex;
@@ -160,13 +162,11 @@ public class VoiceCorePresenter extends RxLifeCyclePresenter {
     public void pretentLeaveMsg(int userId) {
         UserInfoModel userInfo = mRoomData.getUserInfo(userId);
         if (userInfo != null) {
-            CommentModel commentModel = new CommentModel();
-            commentModel.setCommentType(CommentModel.TYPE_TRICK);
+            CommentTextModel commentModel = new CommentTextModel();
             commentModel.setUserId(userInfo.getUserId());
             commentModel.setAvatar(userInfo.getAvatar());
             commentModel.setUserName(userInfo.getNickname());
-            commentModel.setAvatarColor(userInfo.getSex() == ESex.SX_MALE.getValue() ?
-                    U.getColor(R.color.color_man_stroke_color) : U.getColor(R.color.color_woman_stroke_color));
+            commentModel.setAvatarColor(Color.WHITE);
             SpannableStringBuilder stringBuilder = new SpanUtils()
                     .append(userInfo.getNickname() + " ").setForegroundColor(CommentModel.TEXT_GRAY)
                     .append("离开了语音房").setForegroundColor(CommentModel.TEXT_GRAY)

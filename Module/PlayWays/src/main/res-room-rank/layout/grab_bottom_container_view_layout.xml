@@ -1,0 +1,71 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="android.widget.RelativeLayout">
+
+    <!--这里面是软键盘弹出时 需要上移的布局-->
+
+    <com.common.view.ex.ExTextView
+        android:id="@+id/show_input_container_btn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_38_dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/view_d_25_dp"
+        android:layout_marginRight="@dimen/view_23_dp"
+        android:layout_toLeftOf="@+id/emoji1_btn"
+        android:layout_toRightOf="@id/quick_btn"
+        android:background="@drawable/ycdd_shurukuang"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/view_28_dp"
+        android:paddingRight="@dimen/view_5_dp"
+        android:singleLine="true"
+        android:text="夸赞是一种美德"
+        android:textColor="@color/white_trans_30"
+        android:textSize="@dimen/textsize_16_dp" />
+
+    <com.module.playways.grab.room.bottom.SpeakingDotAnimationView
+        android:id="@+id/speaking_dot_animation_view"
+        android:layout_width="@dimen/view_90_dp"
+        android:layout_height="@dimen/view_38_dp"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/quick_btn"
+        android:visibility="gone" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/quick_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:src="@drawable/ycdd_kuaijie" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/emoji2_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:scaleType="centerInside"
+        app:src_unPressed_drawable="@drawable/ycdd_liaotian_bixin" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/emoji1_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:layout_toLeftOf="@+id/emoji2_btn"
+        android:scaleType="centerInside"
+        app:src_unPressed_drawable="@drawable/ycdd_liaotian_biaoqing" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/iv_room_manage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/view_10_dp"
+        android:src="@drawable/fz_kongzhichouti"
+        android:visibility="gone" />
+</merge>

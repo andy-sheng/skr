@@ -10,6 +10,8 @@ import com.common.core.userinfo.model.UserInfoModel;
 import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
 import com.common.utils.U;
+import com.common.view.ex.ExTextView;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabWaitSeatUpdateEvent;
 import com.module.playways.grab.room.event.ShowPersonCardEvent;
@@ -17,6 +19,7 @@ import com.module.playways.grab.room.event.SomeOneJoinWaitSeatEvent;
 import com.module.playways.grab.room.event.SomeOneLeaveWaitSeatEvent;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
+import com.module.rank.R;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -28,9 +31,11 @@ import java.util.List;
 
 public class GrabAudienceView extends RelativeLayout {
     public final static String TAG = "GrabAudienceView";
-    public static final int MAX_COUNT = 12;
+    public static final int MAX_COUNT = 3;
     List<VH> mBaseImageViewList = new ArrayList<>(MAX_COUNT);
     List<GrabPlayerInfoModel> mWaitInfoModelList = new ArrayList<>();
+
+    ExTextView mTvCount;
 
     GrabRoomData mGrabRoomData;
 
@@ -114,17 +119,33 @@ public class GrabAudienceView extends RelativeLayout {
     }
 
     public void init() {
-        removeAllViews();
-        for (int i = 0; i < MAX_COUNT; i++) {
-            BaseImageView baseImageView = new BaseImageView(getContext());
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(24), U.getDisplayUtils().dip2px(24));
-            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            layoutParams.rightMargin = U.getDisplayUtils().dip2px(15) * i;
-            baseImageView.setVisibility(GONE);
-            VH vp = new VH(baseImageView);
-            mBaseImageViewList.add(vp);
-            addView(baseImageView, layoutParams);
-        }
+        inflate(getContext(), R.layout.audience_view_layout, this);
+//        removeAllViews();
+//        for (int i = 0; i < MAX_COUNT; i++) {
+//            BaseImageView baseImageView = new BaseImageView(getContext());
+//            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(24), U.getDisplayUtils().dip2px(24));
+//            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+//            layoutParams.rightMargin = U.getDisplayUtils().dip2px(15) * i;
+//            baseImageView.setVisibility(GONE);
+//            VH vp = new VH(baseImageView);
+//            mBaseImageViewList.add(vp);
+//            addView(baseImageView, layoutParams);
+//        }
+
+        BaseImageView firstIcon = findViewById(R.id.first_icon);
+        BaseImageView secondIcon = findViewById(R.id.second_icon);
+        BaseImageView thirdIcon = findViewById(R.id.third_icon);
+        addViewToList(firstIcon);
+        addViewToList(secondIcon);
+        addViewToList(thirdIcon);
+        mTvCount = (ExTextView) findViewById(R.id.tv_count);
+        mTvCount.setVisibility(GONE);
+    }
+
+    private void addViewToList(BaseImageView baseImageView) {
+        baseImageView.setVisibility(GONE);
+        VH vp = new VH(baseImageView);
+        mBaseImageViewList.add(vp);
     }
 
     public void updateAllView() {
@@ -133,7 +154,7 @@ public class GrabAudienceView extends RelativeLayout {
             mBaseImageViewList.get(i).mBaseImageView.setVisibility(GONE);
         }
 
-        for (int i = 0; i < mWaitInfoModelList.size() && i<mBaseImageViewList.size(); i++) {
+        for (int i = 0; i < mWaitInfoModelList.size() && i < mBaseImageViewList.size(); i++) {
             //MyLog.d(TAG, "i=" + i);
             UserInfoModel userInfoModel = mWaitInfoModelList.get(i).getUserInfo();
             VH vp = mBaseImageViewList.get(i);
@@ -142,8 +163,15 @@ public class GrabAudienceView extends RelativeLayout {
             AvatarUtils.loadAvatarByUrl(vp.mBaseImageView, AvatarUtils.newParamsBuilder(userInfoModel.getAvatar())
                     .setCircle(true)
                     .setBorderWidth(U.getDisplayUtils().dip2px(1))
-                    .setBorderColorBySex(userInfoModel.getIsMale())
+                    .setBorderColor(U.getColor(R.color.white))
                     .build());
+        }
+
+        if (mWaitInfoModelList.size() > 3) {
+            mTvCount.setVisibility(VISIBLE);
+            mTvCount.setText(mWaitInfoModelList.size() + "");
+        } else {
+            mTvCount.setVisibility(GONE);
         }
     }
 
@@ -164,5 +192,4 @@ public class GrabAudienceView extends RelativeLayout {
             });
         }
     }
-
 }

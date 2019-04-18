@@ -9,7 +9,6 @@ import com.elvishew.xlog.LogLevel;
 import com.elvishew.xlog.XLog;
 import com.elvishew.xlog.formatter.message.json.DefaultJsonFormatter;
 import com.elvishew.xlog.formatter.message.throwable.DefaultThrowableFormatter;
-import com.elvishew.xlog.printer.AndroidPrinter;
 import com.elvishew.xlog.printer.ConsolePrinter;
 import com.elvishew.xlog.printer.Printer;
 import com.elvishew.xlog.printer.file.FilePrinter;
@@ -24,7 +23,9 @@ public class MyLog {
     private final static HashMap<Integer, String> sActionNames = new HashMap<>();
 
 
-    private static int sCurrentLogLevel = LogLevel.ALL;             //当前的日志级别
+    private static int sFileLogLevel = LogLevel.ALL;             //当前的日志级别
+    private static int sConsoleLogLevel = LogLevel.ALL;             //当前的日志级别
+    //private static int sConsoleLogLevel = LogLevel.WARN;             //当前的日志级别 只显示 W E
     static boolean sHasInit = false;
     static boolean sForceOpenFlag = false;
 
@@ -40,14 +41,21 @@ public class MyLog {
             String logTag = U.getAppInfoUtils().getAppName();
             //存放的路径
             if (isDebugLogOpen()) {
-                sCurrentLogLevel = LogLevel.ALL;
+                sFileLogLevel = LogLevel.ALL;
             } else {
 //                sCurrentLogLevel = LogLevel.WARN;
                 //这里开发中先全部放开日志
-                sCurrentLogLevel = LogLevel.ALL;
+                sFileLogLevel = LogLevel.ALL;
+            }
+
+            if(isDebugLogOpen() || U.getChannelUtils().isStaging()){
+                sConsoleLogLevel = LogLevel.ALL;
+            }else{
+                MyLog.d(TAG,"外发版本不打印控制台日志");
+                sConsoleLogLevel = LogLevel.NONE;
             }
             LogConfiguration config = new LogConfiguration.Builder()
-                    .logLevel(sCurrentLogLevel)            // 指定日志级别，低于该级别的日志将不会被打印，默认为 LogLevel.ALL
+                    .logLevel(sFileLogLevel)            // 指定日志级别，低于该级别的日志将不会被打印，默认为 LogLevel.ALL
                     .tag(TAG)                                         // 指定 TAG，默认为 "X-LOG"
 //                    .t()                                                   // 允许打印线程信息，默认禁止
 //                    .st(2)                                                 // 允许打印深度为2的调用栈信息，默认禁止
@@ -88,7 +96,9 @@ public class MyLog {
     // 日志打印方法
     // ------------------------------------------------------------------------------
     public static final void v(String msg) {
-        Log.v(TAG,msg);
+        if(sConsoleLogLevel <= LogLevel.VERBOSE) {
+            Log.v(TAG, msg);
+        }
         if (!sHasInit) {
             return;
         }
@@ -96,7 +106,9 @@ public class MyLog {
     }
 
     public static final void d(String msg) {
-        Log.d(TAG,msg);
+        if(sConsoleLogLevel<=LogLevel.DEBUG) {
+            Log.d(TAG, msg);
+        }
         if (!sHasInit) {
             return;
         }
@@ -104,7 +116,10 @@ public class MyLog {
     }
 
     public static final void w(String msg) {
-        Log.w(TAG,msg);
+        if(sConsoleLogLevel<=LogLevel.WARN){
+            Log.w(TAG,msg);
+        }
+
         if (!sHasInit) {
             return;
         }
@@ -115,19 +130,11 @@ public class MyLog {
         }
     }
 
-    public static final void i(String msg) {
-        if (!sHasInit) {
-            return;
-        }
-        try {
-            XLog.i(null, msg);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     public static final void e(String msg) {
-        Log.e(TAG,msg);
+        if(sConsoleLogLevel<=LogLevel.ERROR) {
+            Log.e(TAG, msg);
+        }
         if (!sHasInit) {
             return;
         }
@@ -137,7 +144,9 @@ public class MyLog {
     /*分割*/
 
     public static final void v(String tag, String msg) {
-        Log.v(tag,msg);
+        if(sConsoleLogLevel<=LogLevel.VERBOSE) {
+            Log.v(tag, msg);
+        }
         if (!sHasInit) {
             return;
         }
@@ -145,7 +154,9 @@ public class MyLog {
     }
 
     public static final void d(String tag, String msg) {
-        Log.d(tag,msg);
+        if(sConsoleLogLevel<=LogLevel.DEBUG) {
+            Log.d(tag, msg);
+        }
         if (!sHasInit) {
             return;
         }
@@ -154,7 +165,9 @@ public class MyLog {
 
 
     public static final void w(String tag, String msg) {
-        Log.w(tag,msg);
+        if(sConsoleLogLevel<=LogLevel.WARN) {
+            Log.w(tag, msg);
+        }
         if (!sHasInit) {
             return;
         }
@@ -163,7 +176,9 @@ public class MyLog {
 
 
     public static final void i(String tag, String msg) {
-        Log.i(tag,msg);
+        if(sConsoleLogLevel<=LogLevel.INFO) {
+            Log.i(tag, msg);
+        }
         if (!sHasInit) {
             return;
         }
@@ -171,7 +186,9 @@ public class MyLog {
     }
 
     public static final void e(String tag, String msg) {
-        Log.e(tag,msg);
+        if(sConsoleLogLevel<=LogLevel.ERROR) {
+            Log.e(tag, msg);
+        }
         if (!sHasInit) {
             return;
         }
@@ -182,7 +199,9 @@ public class MyLog {
 
 
     public static final void d(String tag, String msg, Throwable tr) {
-        Log.d(tag,msg,tr);
+        if(sConsoleLogLevel<=LogLevel.DEBUG) {
+            Log.d(tag, msg, tr);
+        }
         if (!sHasInit) {
             return;
         }
@@ -190,7 +209,9 @@ public class MyLog {
     }
 
     public static final void d(String tag, Throwable tr) {
-        Log.d(tag,"",tr);
+        if(sConsoleLogLevel<=LogLevel.DEBUG) {
+            Log.d(tag, "", tr);
+        }
         if (!sHasInit) {
             return;
         }
@@ -198,7 +219,9 @@ public class MyLog {
     }
 
     public static final void d(Throwable tr) {
-        Log.d(TAG,"",tr);
+        if(sConsoleLogLevel<=LogLevel.DEBUG) {
+            Log.d(TAG, "", tr);
+        }
         if (!sHasInit) {
             return;
         }
@@ -206,7 +229,9 @@ public class MyLog {
     }
 
     public static final void e(String tag, String msg, Throwable tr) {
-        Log.e(tag,msg,tr);
+        if(sConsoleLogLevel<=LogLevel.ERROR) {
+            Log.e(tag, msg, tr);
+        }
         if (!sHasInit) {
             return;
         }
@@ -214,7 +239,9 @@ public class MyLog {
     }
 
     public static final void e(String tag, Throwable tr) {
-        Log.e(tag,"",tr);
+        if(sConsoleLogLevel<=LogLevel.ERROR) {
+            Log.e(tag, "", tr);
+        }
         if (!sHasInit) {
             return;
         }
@@ -222,7 +249,9 @@ public class MyLog {
     }
 
     public static final void e(Throwable tr) {
-        Log.e(TAG,"",tr);
+        if(sConsoleLogLevel<=LogLevel.ERROR) {
+            Log.e(TAG, "", tr);
+        }
         if (!sHasInit) {
             return;
         }
@@ -242,8 +271,8 @@ public class MyLog {
             level = LogLevel.ALL;
         }
 
-        if (level != sCurrentLogLevel) {
-            sCurrentLogLevel = level;
+        if (level != sFileLogLevel) {
+            sFileLogLevel = level;
             // 好像只能这么动态改了
             sHasInit = false;
             init();
@@ -255,8 +284,8 @@ public class MyLog {
      *
      * @return
      */
-    public static int getCurrentLogLevel() {
-        return sCurrentLogLevel;
+    public static int getFileLogLevel() {
+        return sFileLogLevel;
     }
 
 
@@ -297,6 +326,7 @@ public class MyLog {
     }
 
     public static boolean isDebugLogOpen() {
-        return BuildConfig.DEBUG || sForceOpenFlag || U.getChannelUtils().isStaging();
+//        return BuildConfig.DEBUG || sForceOpenFlag || U.getChannelUtils().isStaging();
+        return BuildConfig.DEBUG || sForceOpenFlag ;
     }
 }

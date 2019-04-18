@@ -19,13 +19,12 @@ import com.module.RouterConstants;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.component.busilib.friends.SpecialModel;
 import com.module.playways.grab.createroom.view.SpecialSelectView;
-import com.module.playways.rank.prepare.model.JoinGrabRoomRspModel;
+import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
 import com.module.rank.R;
 
 import java.util.HashMap;
 import java.util.List;
 
-import io.reactivex.disposables.Disposable;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
@@ -64,7 +63,7 @@ public class GrabCreateSpecialFragment extends BaseFragment {
         mSpecialView.setSpecialSelectListner(new SpecialSelectView.SpecialSelectListner() {
             @Override
             public void onClickSpecial(SpecialModel model, List<String> music) {
-                if(!getActivity().isFinishing()){
+                if(getActivity() != null && !getActivity().isFinishing()){
                     createRoom(model);
                 }
             }

@@ -4,7 +4,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 
 import com.common.image.fresco.IFrescoCallBack;
-import com.common.utils.U;
 import com.facebook.drawee.drawable.ProgressBarDrawable;
 import com.facebook.drawee.drawable.ScalingUtils.ScaleType;
 import com.facebook.imagepipeline.common.Priority;
@@ -17,9 +16,9 @@ import com.facebook.imagepipeline.request.Postprocessor;
 public abstract class BaseImage {
     protected Uri mUri;
 
-    protected int mWidth =  0; //显示宽度
+    protected int mWidth = 0; //显示宽度 其实缩小 bitmap
 
-    protected int mHeight = 0;//显示高度
+    protected int mHeight = 0;//显示高度 其实缩小 bitmap
 
     /**
      * FIT_XY           无视宽高比填充满
@@ -27,12 +26,15 @@ public abstract class BaseImage {
      * FIT_CENTER       同上，但是最后居中
      * FIT_END          同上上，但与显示边界右或下对齐
      * CENTER           居中无缩放
-     * CENTER_INSIDE    使的图片都在边界内，与FIT_CENTER不同的是，只会缩小不会放大，默认是这个吧
-     * CENTER_CROP      保持宽高比，缩小或放大，使两边都大于等于边界，居中。
+     * CENTER_INSIDE    使的图片都在边界内，与FIT_CENTER不同的是，只会缩小不会放大，
+     * CENTER_CROP      保持宽高比，缩小或放大，使两边都大于等于边界，居中。默认是这个
      * FOCUS_CROP       同CENTER_CROP，但中心点可以设置
      * FIT_BOTTOM_START
      */
     protected ScaleType mScaleType;
+
+    // 是否自适应图片的大小 注意只有图片可控才这么做，将view的宽高自适应图片宽高
+    protected boolean adjustViewWHbyImage = false;
 
     // 加载失败的图
     protected Drawable mFailureDrawable;
@@ -66,6 +68,7 @@ public abstract class BaseImage {
     protected boolean mProgressiveRenderingEnabled = true;
     //失败时点击重试
     protected boolean mTapToRetryEnabled = false;
+
     // 生成uri
     protected abstract void generateUri();
 
@@ -181,6 +184,14 @@ public abstract class BaseImage {
 
     public void setScaleType(ScaleType mScaleType) {
         this.mScaleType = mScaleType;
+    }
+
+    public boolean adjustViewWHbyImage() {
+        return adjustViewWHbyImage;
+    }
+
+    public void setAdjustViewWHbyImage(boolean adjustViewWHbyImage) {
+        this.adjustViewWHbyImage = adjustViewWHbyImage;
     }
 
     public void setIsCircle(boolean isCircle) {

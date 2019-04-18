@@ -41,7 +41,7 @@ public class GrabSelectViewHolder extends RecyclerView.ViewHolder {
         this.mSpecialModel = specialModel;
         this.mPosition = postion;
 
-        FrescoWorker.loadImage(mBackground, ImageFactory.newHttpImage(mSpecialModel.getBgImage1())
+        FrescoWorker.loadImage(mBackground, ImageFactory.newPathImage(mSpecialModel.getBgImage1())
                 .setLoadingDrawable(U.getDrawable(R.drawable.grab_img_btn_loading1))
                 .setLoadingScaleType(ScalingUtils.ScaleType.FIT_XY)
                 .setScaleType(ScalingUtils.ScaleType.FIT_XY)

@@ -72,6 +72,12 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
 
   public static final Integer DEFAULT_RANKLRCENDT = 0;
 
+  public static final Integer DEFAULT_TASK = 0;
+
+  public static final Integer DEFAULT_STANDTOTALMS = 0;
+
+  public static final Boolean DEFAULT_CHALLENGEAVAILABLE = false;
+
   /**
    * 音乐条目标识
    */
@@ -279,20 +285,48 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
   )
   private final Integer rankLrcEndT;
 
+  /**
+   * 任务等级，若为0，表示非任务歌曲
+   */
+  @WireField(
+      tag = 24,
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+  )
+  private final Integer task;
+
+  /**
+   * 一唱到底伴奏模式的时长
+   */
+  @WireField(
+      tag = 25,
+      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+  )
+  private final Integer standTotalMs;
+
+  /**
+   * 是否支持挑战模式
+   */
+  @WireField(
+      tag = 26,
+      adapter = "com.squareup.wire.ProtoAdapter#BOOL"
+  )
+  private final Boolean challengeAvailable;
+
   public MusicInfo(Integer itemID, String itemName, String cover, String owner, String lyric,
       String ori, String acc, String midi, String zip, String rankBgm, Integer beginMs,
       Integer endMs, String standIntro, Integer standIntroBeginT, Integer standIntroEndT,
       Integer totalMs, Integer rankLrcBeginT, Integer standLrcBeginT, Integer standLrcEndT,
-      Boolean isBlank, String standLrc, String rankUserVoice, Integer rankLrcEndT) {
-    this(itemID, itemName, cover, owner, lyric, ori, acc, midi, zip, rankBgm, beginMs, endMs, standIntro, standIntroBeginT, standIntroEndT, totalMs, rankLrcBeginT, standLrcBeginT, standLrcEndT, isBlank, standLrc, rankUserVoice, rankLrcEndT, ByteString.EMPTY);
+      Boolean isBlank, String standLrc, String rankUserVoice, Integer rankLrcEndT, Integer task,
+      Integer standTotalMs, Boolean challengeAvailable) {
+    this(itemID, itemName, cover, owner, lyric, ori, acc, midi, zip, rankBgm, beginMs, endMs, standIntro, standIntroBeginT, standIntroEndT, totalMs, rankLrcBeginT, standLrcBeginT, standLrcEndT, isBlank, standLrc, rankUserVoice, rankLrcEndT, task, standTotalMs, challengeAvailable, ByteString.EMPTY);
   }
 
   public MusicInfo(Integer itemID, String itemName, String cover, String owner, String lyric,
       String ori, String acc, String midi, String zip, String rankBgm, Integer beginMs,
       Integer endMs, String standIntro, Integer standIntroBeginT, Integer standIntroEndT,
       Integer totalMs, Integer rankLrcBeginT, Integer standLrcBeginT, Integer standLrcEndT,
-      Boolean isBlank, String standLrc, String rankUserVoice, Integer rankLrcEndT,
-      ByteString unknownFields) {
+      Boolean isBlank, String standLrc, String rankUserVoice, Integer rankLrcEndT, Integer task,
+      Integer standTotalMs, Boolean challengeAvailable, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.itemID = itemID;
     this.itemName = itemName;
@@ -317,6 +351,9 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     this.standLrc = standLrc;
     this.rankUserVoice = rankUserVoice;
     this.rankLrcEndT = rankLrcEndT;
+    this.task = task;
+    this.standTotalMs = standTotalMs;
+    this.challengeAvailable = challengeAvailable;
   }
 
   @Override
@@ -345,6 +382,9 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     builder.standLrc = standLrc;
     builder.rankUserVoice = rankUserVoice;
     builder.rankLrcEndT = rankLrcEndT;
+    builder.task = task;
+    builder.standTotalMs = standTotalMs;
+    builder.challengeAvailable = challengeAvailable;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -377,7 +417,10 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
         && Internal.equals(isBlank, o.isBlank)
         && Internal.equals(standLrc, o.standLrc)
         && Internal.equals(rankUserVoice, o.rankUserVoice)
-        && Internal.equals(rankLrcEndT, o.rankLrcEndT);
+        && Internal.equals(rankLrcEndT, o.rankLrcEndT)
+        && Internal.equals(task, o.task)
+        && Internal.equals(standTotalMs, o.standTotalMs)
+        && Internal.equals(challengeAvailable, o.challengeAvailable);
   }
 
   @Override
@@ -408,6 +451,9 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
       result = result * 37 + (standLrc != null ? standLrc.hashCode() : 0);
       result = result * 37 + (rankUserVoice != null ? rankUserVoice.hashCode() : 0);
       result = result * 37 + (rankLrcEndT != null ? rankLrcEndT.hashCode() : 0);
+      result = result * 37 + (task != null ? task.hashCode() : 0);
+      result = result * 37 + (standTotalMs != null ? standTotalMs.hashCode() : 0);
+      result = result * 37 + (challengeAvailable != null ? challengeAvailable.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -439,6 +485,9 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     if (standLrc != null) builder.append(", standLrc=").append(standLrc);
     if (rankUserVoice != null) builder.append(", rankUserVoice=").append(rankUserVoice);
     if (rankLrcEndT != null) builder.append(", rankLrcEndT=").append(rankLrcEndT);
+    if (task != null) builder.append(", task=").append(task);
+    if (standTotalMs != null) builder.append(", standTotalMs=").append(standTotalMs);
+    if (challengeAvailable != null) builder.append(", challengeAvailable=").append(challengeAvailable);
     return builder.replace(0, 2, "MusicInfo{").append('}').toString();
   }
 
@@ -683,6 +732,36 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
   }
 
   /**
+   * 任务等级，若为0，表示非任务歌曲
+   */
+  public Integer getTask() {
+    if(task==null){
+        return DEFAULT_TASK;
+    }
+    return task;
+  }
+
+  /**
+   * 一唱到底伴奏模式的时长
+   */
+  public Integer getStandTotalMs() {
+    if(standTotalMs==null){
+        return DEFAULT_STANDTOTALMS;
+    }
+    return standTotalMs;
+  }
+
+  /**
+   * 是否支持挑战模式
+   */
+  public Boolean getChallengeAvailable() {
+    if(challengeAvailable==null){
+        return DEFAULT_CHALLENGEAVAILABLE;
+    }
+    return challengeAvailable;
+  }
+
+  /**
    * 音乐条目标识
    */
   public boolean hasItemID() {
@@ -843,6 +922,27 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     return rankLrcEndT!=null;
   }
 
+  /**
+   * 任务等级，若为0，表示非任务歌曲
+   */
+  public boolean hasTask() {
+    return task!=null;
+  }
+
+  /**
+   * 一唱到底伴奏模式的时长
+   */
+  public boolean hasStandTotalMs() {
+    return standTotalMs!=null;
+  }
+
+  /**
+   * 是否支持挑战模式
+   */
+  public boolean hasChallengeAvailable() {
+    return challengeAvailable!=null;
+  }
+
   public static final class Builder extends Message.Builder<MusicInfo, Builder> {
     private Integer itemID;
 
@@ -889,6 +989,12 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
     private String rankUserVoice;
 
     private Integer rankLrcEndT;
+
+    private Integer task;
+
+    private Integer standTotalMs;
+
+    private Boolean challengeAvailable;
 
     public Builder() {
     }
@@ -1077,9 +1183,33 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
       return this;
     }
 
+    /**
+     * 任务等级，若为0，表示非任务歌曲
+     */
+    public Builder setTask(Integer task) {
+      this.task = task;
+      return this;
+    }
+
+    /**
+     * 一唱到底伴奏模式的时长
+     */
+    public Builder setStandTotalMs(Integer standTotalMs) {
+      this.standTotalMs = standTotalMs;
+      return this;
+    }
+
+    /**
+     * 是否支持挑战模式
+     */
+    public Builder setChallengeAvailable(Boolean challengeAvailable) {
+      this.challengeAvailable = challengeAvailable;
+      return this;
+    }
+
     @Override
     public MusicInfo build() {
-      return new MusicInfo(itemID, itemName, cover, owner, lyric, ori, acc, midi, zip, rankBgm, beginMs, endMs, standIntro, standIntroBeginT, standIntroEndT, totalMs, rankLrcBeginT, standLrcBeginT, standLrcEndT, isBlank, standLrc, rankUserVoice, rankLrcEndT, super.buildUnknownFields());
+      return new MusicInfo(itemID, itemName, cover, owner, lyric, ori, acc, midi, zip, rankBgm, beginMs, endMs, standIntro, standIntroBeginT, standIntroEndT, totalMs, rankLrcBeginT, standLrcBeginT, standLrcEndT, isBlank, standLrc, rankUserVoice, rankLrcEndT, task, standTotalMs, challengeAvailable, super.buildUnknownFields());
     }
   }
 
@@ -1113,6 +1243,9 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
           + ProtoAdapter.STRING.encodedSizeWithTag(21, value.standLrc)
           + ProtoAdapter.STRING.encodedSizeWithTag(22, value.rankUserVoice)
           + ProtoAdapter.UINT32.encodedSizeWithTag(23, value.rankLrcEndT)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(24, value.task)
+          + ProtoAdapter.UINT32.encodedSizeWithTag(25, value.standTotalMs)
+          + ProtoAdapter.BOOL.encodedSizeWithTag(26, value.challengeAvailable)
           + value.unknownFields().size();
     }
 
@@ -1141,6 +1274,9 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
       ProtoAdapter.STRING.encodeWithTag(writer, 21, value.standLrc);
       ProtoAdapter.STRING.encodeWithTag(writer, 22, value.rankUserVoice);
       ProtoAdapter.UINT32.encodeWithTag(writer, 23, value.rankLrcEndT);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 24, value.task);
+      ProtoAdapter.UINT32.encodeWithTag(writer, 25, value.standTotalMs);
+      ProtoAdapter.BOOL.encodeWithTag(writer, 26, value.challengeAvailable);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -1173,6 +1309,9 @@ public final class MusicInfo extends Message<MusicInfo, MusicInfo.Builder> {
           case 21: builder.setStandLrc(ProtoAdapter.STRING.decode(reader)); break;
           case 22: builder.setRankUserVoice(ProtoAdapter.STRING.decode(reader)); break;
           case 23: builder.setRankLrcEndT(ProtoAdapter.UINT32.decode(reader)); break;
+          case 24: builder.setTask(ProtoAdapter.UINT32.decode(reader)); break;
+          case 25: builder.setStandTotalMs(ProtoAdapter.UINT32.decode(reader)); break;
+          case 26: builder.setChallengeAvailable(ProtoAdapter.BOOL.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

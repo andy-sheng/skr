@@ -6,54 +6,92 @@
     tools:parentTag="android.widget.RelativeLayout">
 
     <RelativeLayout
-        android:layout_alignParentRight="true"
         android:id="@+id/grab_container"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true">
+
         <com.common.view.ex.ExImageView
-            android:src="@drawable/xiangchang_1"
-            android:paddingRight="@dimen/view_13_dp"
-            android:paddingBottom="@dimen/view_20_dp"
+            android:id="@+id/grab_iv"
+            android:layout_width="@dimen/view_87_dp"
+            android:layout_height="@dimen/view_53_dp"
+            android:background="@drawable/ycdd_qiangchang_bj"
+            android:paddingBottom="@dimen/view_6_dp"
             android:scaleType="centerInside"
-            android:id="@+id/iv_text"
-            android:layout_width="@dimen/view_97_dp"
-            android:layout_height="@dimen/view_60_dp"
-            android:background="@drawable/xiangchang_bj"
+            android:src="@drawable/xiangchang_1"
             android:textColor="@color/white"
             android:textSize="@dimen/textsize_20_dp" />
 
         <com.module.playways.grab.room.view.RoundRectangleView
-            android:layout_marginLeft="@dimen/view_4_dp"
-            android:layout_alignLeft="@+id/iv_text"
             android:id="@+id/rrl_progress"
-            android:layout_width="@dimen/view_72_dp"
-            android:layout_height="@dimen/view_42_dp"
+            android:layout_width="@dimen/view_87_dp"
+            android:layout_height="@dimen/view_45_dp"
+            android:layout_alignLeft="@+id/grab_iv"
             android:visibility="visible" />
     </RelativeLayout>
 
-    <com.common.view.ex.ExImageView
-        app:bl_pressed_drawable="@drawable/grab_baodeng_anxia"
-        app:bl_unPressed_drawable="@drawable/grab_yanchang_baodeng"
-        android:text="2"
+    <RelativeLayout
+        android:id="@+id/grab2_container"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_57_dp"
+        android:layout_below="@+id/grab_container"
+        android:visibility="gone"
         android:layout_alignParentRight="true"
-        android:id="@+id/iv_burst"
-        android:layout_width="@dimen/view_102_dp"
-        android:layout_height="@dimen/view_74_dp"
-        />
+        android:layout_marginTop="@dimen/view_20_dp">
 
-    <com.common.view.ex.ExTextView
-        android:layout_marginTop="@dimen/view_14_dp"
-        android:textStyle="bold"
-        android:textColor="#683030"
-        android:paddingRight="@dimen/view_12_dp"
-        android:textSize="@dimen/textsize_32_dp"
-        android:paddingLeft="@dimen/view_32_dp"
+        <com.common.view.ex.ExImageView
+            android:id="@+id/grab2_iv"
+            android:layout_width="@dimen/view_87_dp"
+            android:layout_height="@dimen/view_53_dp"
+            android:background="@drawable/ycdd_tiaozhan_bg"
+            android:paddingBottom="@dimen/view_6_dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/xiangchang_1"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textsize_20_dp" />
+
+        <com.module.playways.grab.room.view.RoundRectangleView
+            android:id="@+id/rrl2_progress"
+            android:layout_width="@dimen/view_87_dp"
+            android:layout_height="@dimen/view_45_dp"
+            android:layout_alignLeft="@+id/grab2_iv"
+            android:visibility="visible" />
+
+        <com.common.view.ex.ExImageView
+            android:id="@+id/coin_flag_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/grab2_iv"
+            android:layout_below="@+id/grab2_iv"
+            android:layout_marginRight="@dimen/view_5_dp"
+            android:layout_marginTop="@dimen/view_d_9_dp"
+            android:src="@drawable/challenge_coin_icon" />
+    </RelativeLayout>
+
+    <!--爆灯-->
+    <com.common.view.ex.ExImageView
+        android:id="@+id/iv_burst"
+        android:layout_width="@dimen/view_87_dp"
+        android:layout_height="@dimen/view_53_dp"
         android:layout_alignParentRight="true"
+        android:text="2"
+        app:bl_pressed_drawable="@drawable/ycdd_baodeng_anxia"
+        app:bl_unPressed_drawable="@drawable/ycdd_baodeng" />
+
+    <!--灭灯-->
+    <com.common.view.ex.ExTextView
         android:id="@+id/iv_light_off"
-        android:layout_width="@dimen/view_97_dp"
-        android:layout_height="@dimen/view_60_dp"
+        android:layout_width="@dimen/view_87_dp"
+        android:layout_height="@dimen/view_53_dp"
         android:layout_below="@+id/iv_burst"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/view_14_dp"
+        android:paddingLeft="@dimen/view_32_dp"
+        android:paddingRight="@dimen/view_12_dp"
         android:paddingBottom="@dimen/view_25_dp"
+        android:textColor="#683030"
+        android:textSize="@dimen/textsize_32_dp"
+        android:textStyle="bold"
         android:visibility="visible" />
 
 </merge>

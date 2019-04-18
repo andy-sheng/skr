@@ -6,6 +6,7 @@ import android.graphics.drawable.Animatable;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.view.ViewGroup;
 
 import com.common.image.fresco.cache.MLCacheKeyFactory;
 import com.common.image.model.BaseImage;
@@ -250,6 +251,12 @@ public class FrescoWorker {
 
                     @Override
                     public void onFinalImageSet(String s, ImageInfo imageInfo, Animatable animatable) {
+                        if (imageInfo != null && baseImage.adjustViewWHbyImage()) {
+                            ViewGroup.LayoutParams layoutParams = draweeView.getLayoutParams();
+                            layoutParams.width = imageInfo.getWidth();
+                            layoutParams.height = imageInfo.getHeight();
+                            draweeView.setLayoutParams(layoutParams);
+                        }
                         if (baseImage.getCallBack() != null) {
                             baseImage.getCallBack().processWithInfo(imageInfo, animatable);
                         }

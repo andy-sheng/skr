@@ -9,6 +9,7 @@ import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.module.ModuleServiceManager;
+import com.zq.live.proto.Common.UserInfo;
 
 import java.util.List;
 
@@ -92,6 +93,16 @@ public class BuddyCache {
      * @return
      */
     public BuddyCacheEntry getBuddyNormal(final int uuid, boolean queryIfNotExist) {
+        return getBuddyNormal(uuid, queryIfNotExist, null);
+    }
+
+    /**
+     * @param uuid
+     * @param queryIfNotExist 是否去服务器查询
+     * @param resultCallback  服务器回调
+     * @return
+     */
+    public BuddyCacheEntry getBuddyNormal(final int uuid, boolean queryIfNotExist, UserInfoManager.ResultCallback<UserInfoModel> resultCallback) {
         BuddyCacheEntry result = mLruCache.get(uuid);
         if (result != null) {
             return result;
@@ -103,7 +114,7 @@ public class BuddyCache {
             }
             if (queryIfNotExist) {
                 // 网络查询
-                UserInfoManager.getInstance().getUserInfoByUuid(uuid, false, null);
+                UserInfoManager.getInstance().getUserInfoByUuid(uuid, false, resultCallback);
             }
         }
         return result;

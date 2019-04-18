@@ -50,8 +50,8 @@ public class RongMsgServiceImpl implements IMsgService {
     }
 
     @Override
-    public void joinChatRoom(String roomId, ICallback callback) {
-        RongMsgManager.getInstance().joinChatRoom(roomId, callback);
+    public void joinChatRoom(String roomId, int defMessageCount,ICallback callback) {
+        RongMsgManager.getInstance().joinChatRoom(roomId,defMessageCount, callback);
     }
 
     @Override
@@ -95,8 +95,8 @@ public class RongMsgServiceImpl implements IMsgService {
     }
 
     @Override
-    public void startPrivateChat(Context context, String targetId, String title) {
-        RongMsgManager.getInstance().startPrivateChat(context, targetId, title);
+    public boolean startPrivateChat(Context context, String targetId, String title,boolean isFriend) {
+        return RongMsgManager.getInstance().startPrivateChat(context, targetId, title,isFriend);
     }
 
     @Override

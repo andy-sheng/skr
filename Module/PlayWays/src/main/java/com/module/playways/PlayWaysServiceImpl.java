@@ -13,14 +13,13 @@ import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.U;
 import com.component.busilib.constans.GameModeType;
-import com.component.busilib.friends.GrabSongApi;
 import com.module.RouterConstants;
 import com.module.playways.event.GrabChangeRoomEvent;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.activity.GrabRoomActivity;
-import com.module.playways.rank.prepare.model.JoinGrabRoomRspModel;
-import com.module.playways.rank.prepare.model.PrepareData;
-import com.module.playways.rank.room.fragment.LeaderboardFragment;
+import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
+import com.module.playways.room.prepare.model.PrepareData;
+import com.module.playways.room.room.fragment.LeaderboardFragment;
 import com.module.rank.IRankingModeService;
 import com.module.rank.R;
 import com.zq.toast.CommonToastView;
@@ -30,6 +29,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.HashMap;
 import java.util.List;
 
+import io.reactivex.disposables.Disposable;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
@@ -54,13 +54,15 @@ public class PlayWaysServiceImpl implements IRankingModeService {
         return LeaderboardFragment.class;
     }
 
+    Disposable mJoinRoomDisposable;
+
     @Override
     public void tryGoGrabRoom(int roomID) {
         GrabRoomServerApi roomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", roomID);
         RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSON), JSON.toJSONString(map));
-        ApiMethods.subscribe(roomServerApi.joinGrabRoom(body), new ApiObserver<ApiResult>() {
+        mJoinRoomDisposable = ApiMethods.subscribe(roomServerApi.joinGrabRoom(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
@@ -105,30 +107,22 @@ public class PlayWaysServiceImpl implements IRankingModeService {
 
     @Override
     public void tryGoCreateRoom() {
+        if (mJoinRoomDisposable != null && !mJoinRoomDisposable.isDisposed()) {
+            MyLog.d(TAG, "tryGoCreateRoom 正在进入一唱到底，cancel");
+            return;
+        }
+        if(U.getActivityUtils().getTopActivity() instanceof GrabRoomActivity){
+            MyLog.d(TAG, "tryGoCreateRoom 顶部一唱到底房间，cancel");
+            return;
+        }
         ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_CREATE_ROOM)
                 .navigation();
     }
 
     @Override
     public void tryGoGrabMatch(int tagId) {
-        GrabSongApi grabSongApi = ApiManager.getInstance().createService(GrabSongApi.class);
-        ApiMethods.subscribe(grabSongApi.getSepcialBgVoice(), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    List<String> musicURLs = JSON.parseArray(result.getData().getString("musicURL"), String.class);
-                    goGrabMatch(tagId, musicURLs);
-                } else {
-                    goGrabMatch(tagId, null);
-                }
-            }
-
-            @Override
-            public void onNetworkError(ErrorType errorType) {
-                super.onNetworkError(errorType);
-            }
-        });
-
+        // 拉取音乐不是关键路径，不block进入匹配
+        goGrabMatch(tagId, null);
     }
 
     private void goGrabMatch(int tagId, List<String> musicURLs) {

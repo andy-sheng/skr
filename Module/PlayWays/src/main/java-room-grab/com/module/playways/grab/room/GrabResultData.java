@@ -1,7 +1,7 @@
 package com.module.playways.grab.room;
 
 import com.module.playways.grab.room.model.GrabResultInfoModel;
-import com.module.playways.rank.room.model.score.ScoreResultModel;
+import com.module.playways.room.room.model.score.ScoreResultModel;
 
 import java.io.Serializable;
 import java.util.List;

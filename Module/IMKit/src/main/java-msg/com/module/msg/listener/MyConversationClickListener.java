@@ -6,10 +6,9 @@ import android.view.View;
 
 import com.common.base.BaseActivity;
 import com.common.core.myinfo.MyUserInfoManager;
-import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
-import com.zq.person.fragment.OtherPersonFragment;
+import com.zq.person.fragment.OtherPersonFragment2;
 
 import io.rong.imkit.RongIM;
 import io.rong.imlib.model.Conversation;
@@ -28,10 +27,11 @@ public class MyConversationClickListener implements RongIM.ConversationClickList
     @Override
     public boolean onUserPortraitClick(Context context, Conversation.ConversationType conversationType, UserInfo userInfo, String s) {
         if (Integer.valueOf(userInfo.getUserId()) != MyUserInfoManager.getInstance().getUid()) {
+            U.getKeyBoardUtils().hideSoftInputKeyBoard(U.getActivityUtils().getTopActivity());
             Bundle bundle = new Bundle();
-            bundle.putSerializable(OtherPersonFragment.BUNDLE_USER_ID, Integer.valueOf(userInfo.getUserId()));
+            bundle.putSerializable(OtherPersonFragment2.BUNDLE_USER_ID, Integer.valueOf(userInfo.getUserId()));
             U.getFragmentUtils().addFragment(FragmentUtils
-                    .newAddParamsBuilder((BaseActivity) context, OtherPersonFragment.class)
+                    .newAddParamsBuilder((BaseActivity) context, OtherPersonFragment2.class)
                     .setUseOldFragmentIfExist(false)
                     .setBundle(bundle)
                     .setAddToBackStack(true)

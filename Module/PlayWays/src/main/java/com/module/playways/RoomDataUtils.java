@@ -5,12 +5,12 @@ import com.common.log.MyLog;
 import com.common.utils.U;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
-import com.module.playways.rank.prepare.model.PlayerInfoModel;
-import com.module.playways.rank.prepare.model.BaseRoundInfoModel;
-import com.module.playways.rank.room.RankRoomData;
-import com.module.playways.rank.room.model.RankPlayerInfoModel;
-import com.module.playways.rank.room.model.RankRoundInfoModel;
-import com.module.playways.rank.song.model.SongModel;
+import com.module.playways.room.prepare.model.PlayerInfoModel;
+import com.module.playways.room.prepare.model.BaseRoundInfoModel;
+import com.module.playways.room.room.RankRoomData;
+import com.module.playways.room.room.model.RankPlayerInfoModel;
+import com.module.playways.room.room.model.RankRoundInfoModel;
+import com.module.playways.room.song.model.SongModel;
 
 import java.util.Collections;
 import java.util.Comparator;

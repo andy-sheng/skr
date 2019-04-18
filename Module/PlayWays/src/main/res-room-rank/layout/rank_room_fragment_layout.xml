@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="#2E3041">
 
-    <com.module.playways.rank.room.view.RankTopContainerView2
+    <com.module.playways.room.room.view.RankTopContainerView2
         android:id="@+id/rank_top_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
             android:layout_marginTop="@dimen/view_215_dp"
             android:visibility="gone" />
 
-        <com.module.playways.rank.room.view.ArcProgressBar
+        <com.module.playways.room.room.view.ArcProgressBar
             android:id="@+id/count_down_process"
             android:layout_width="@dimen/view_116_dp"
             android:layout_height="@dimen/view_116_dp"
@@ -74,14 +74,14 @@
     </RelativeLayout>
 
     <!--这里面是软键盘弹出时 需要上移的布局-->
-    <com.module.playways.rank.room.view.BottomContainerView
+    <com.module.playways.room.room.bottom.RankBottomContainerView
         android:id="@+id/bottom_container_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/input_container_view"
         android:layout_marginBottom="@dimen/view_16_dp" />
 
-    <com.module.playways.rank.room.comment.CommentView
+    <com.module.playways.room.room.comment.CommentView
         android:id="@+id/comment_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -100,23 +100,23 @@
         android:layout_marginRight="@dimen/view_128_dp"
         android:background="@drawable/zhengzaiyanchang_duihua_zhezhao" />
 
-    <com.module.playways.rank.room.gift.GiftContinueViewGroup
+    <com.module.playways.room.room.gift.GiftContinueViewGroup
         android:id="@+id/gift_continue_vg"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/view_75_dp"
         android:layout_alignTop="@+id/comment_view"
-        android:layout_marginLeft="@dimen/view_18_dp"
+        android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginTop="-30dp"
         android:layout_marginBottom="@dimen/view_10_dp" />
 
-    <com.module.playways.rank.room.view.TurnChangeCardView
+    <com.module.playways.room.room.view.TurnChangeCardView
         android:id="@+id/turn_change_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:visibility="gone" />
 
-    <com.module.playways.rank.room.gift.GiftBigAnimationViewGroup
+    <com.module.playways.room.room.gift.GiftBigAnimationViewGroup
         android:id="@+id/gift_big_animation_vg"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
@@ -128,7 +128,7 @@
         android:layout_height="match_parent"
         android:visibility="gone" />
 
-    <com.module.playways.rank.room.view.RankOpView
+    <com.module.playways.room.room.view.RankOpView
         android:id="@+id/rank_op_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -146,7 +146,7 @@
         android:src="@drawable/img_top_duizhanjieshu_bg"
         android:visibility="gone" />
 
-    <com.module.playways.rank.room.view.InputContainerView
+    <com.module.playways.room.room.view.InputContainerView
         android:id="@+id/input_container_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

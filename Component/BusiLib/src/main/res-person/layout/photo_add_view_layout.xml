@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/view_7_dp"
+    android:layout_marginRight="@dimen/view_7_dp"
+    android:layout_marginBottom="@dimen/textsize_14_dp">
+
+    <ImageView
+        android:id="@+id/update_photo_iv"
+        android:layout_width="@dimen/view_105_dp"
+        android:layout_height="@dimen/view_142_dp"
+        android:background="@drawable/photo_update_icon" />
+
+</RelativeLayout>

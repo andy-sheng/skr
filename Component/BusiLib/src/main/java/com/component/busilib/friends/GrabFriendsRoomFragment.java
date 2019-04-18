@@ -58,7 +58,9 @@ public class GrabFriendsRoomFragment extends BaseFragment {
         mIvBack.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                U.getFragmentUtils().popFragment(GrabFriendsRoomFragment.this);
+                if (getActivity() != null) {
+                    getActivity().finish();
+                }
             }
         });
 
@@ -69,7 +71,6 @@ public class GrabFriendsRoomFragment extends BaseFragment {
         mRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                mRefreshLayout.finishLoadMore();
                 loadData(offset, DEFAULT_COUNT, true);
             }
 
@@ -131,13 +132,18 @@ public class GrabFriendsRoomFragment extends BaseFragment {
 
     private void refreshView(List<RecommendModel> list, int offset, boolean isLoadMore) {
         this.offset = offset;
-        if (list != null) {
-            if (isLoadMore) {
-                mFriendRoomVeritAdapter.getDataList().addAll(list);
-            } else {
-                mFriendRoomVeritAdapter.setDataList(list);
-            }
+        mRefreshLayout.finishLoadMore();
+        if (!isLoadMore) {
+            mFriendRoomVeritAdapter.getDataList().clear();
+        }
+
+        if (list != null && list.size() > 0) {
+            mRefreshLayout.setEnableLoadMore(true);
+            mFriendRoomVeritAdapter.getDataList().addAll(list);
             mFriendRoomVeritAdapter.notifyDataSetChanged();
+        } else {
+            // TODO: 2019/4/15  用mFriendRoomVeritAdapter去判断是否空和没有更多
+            mRefreshLayout.setEnableLoadMore(false);
         }
     }
 }

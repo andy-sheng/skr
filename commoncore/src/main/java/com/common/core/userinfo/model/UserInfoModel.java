@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.common.core.myinfo.Location;
 import com.common.core.userinfo.UserInfoDB;
+import com.common.utils.U;
 import com.zq.live.proto.Common.ESex;
 import com.zq.live.proto.Common.UserInfo;
 
@@ -143,6 +144,16 @@ public class UserInfoModel implements Serializable, Cloneable {
         return 0;
     }
 
+    public String getConstellation() {
+        String[] array = this.birthday.split("-");
+        if (!TextUtils.isEmpty(array[1]) && !TextUtils.isEmpty(array[2])) {
+            int month = Integer.valueOf(array[1]);
+            int day = Integer.valueOf(array[2]);
+            return U.getDateTimeUtils().getConstellation(month, day);
+        }
+        return "";
+    }
+
     public int getMainLevel() {
         return mainLevel;
     }
@@ -194,7 +205,7 @@ public class UserInfoModel implements Serializable, Cloneable {
     public static UserInfoDB toUserInfoDB(UserInfoModel userInfModel) {
         UserInfoDB userInfoDB = new UserInfoDB();
         if (userInfModel != null) {
-            userInfoDB.setUserId(Long.valueOf((long)userInfModel.getUserId()));
+            userInfoDB.setUserId(Long.valueOf((long) userInfModel.getUserId()));
             userInfoDB.setUserNickname(userInfModel.getNickname());
             userInfoDB.setSex(userInfModel.getSex());
             userInfoDB.setBirthday(userInfModel.getBirthday());

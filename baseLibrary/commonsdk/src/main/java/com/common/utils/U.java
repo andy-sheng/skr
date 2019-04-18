@@ -82,6 +82,8 @@ public class U {
 
     private static MediaUtils mediaUtils;
 
+    private static ColorUtils colorUtils;
+
     public static void setApp(Application app) {
         application = app;
 
@@ -98,6 +100,13 @@ public class U {
             appInfoUtils = new AppInfoUtils();
         }
         return appInfoUtils;
+    }
+
+    public static ColorUtils getColorUtils() {
+        if (colorUtils == null) {
+            colorUtils = new ColorUtils();
+        }
+        return colorUtils;
     }
 
     public static DeviceUtils getDeviceUtils() {
@@ -355,6 +364,9 @@ public class U {
         return U.app().getResources().getDrawable(drawableId);
     }
 
+    public static float getDimension(int dimenId) {
+        return U.app().getResources().getDimension(dimenId);
+    }
     public static void setProcessName(String processName) {
         sProcessName = processName;
     }

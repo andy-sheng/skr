@@ -13,6 +13,7 @@ import com.common.base.BaseFragment;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
+import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
@@ -37,6 +38,8 @@ public class EditInfoSexFragment extends BaseFragment {
     ExImageView mMale;
     ExImageView mFemale;
     ExTextView mNextTv;
+
+    DialogPlus mDialogPlus;
 
     int sex = 0;// 未知、非法参数
 
@@ -126,7 +129,7 @@ public class EditInfoSexFragment extends BaseFragment {
                 bundle.putString(UploadAccountInfoActivity.BUNDLE_UPLOAD_NICKNAME, uploadNickname);
                 bundle.putInt(UploadAccountInfoActivity.BUNDLE_UPLOAD_SEX, sex);
                 U.getFragmentUtils().addFragment(FragmentUtils
-                        .newAddParamsBuilder(getActivity(), EditInfoAgeFragment.class)
+                        .newAddParamsBuilder(getActivity(), EditInfoAgeFragment2.class)
                         .setBundle(bundle)
                         .setAddToBackStack(true)
                         .setHasAnimation(true)
@@ -151,39 +154,46 @@ public class EditInfoSexFragment extends BaseFragment {
                     .setMessageTip("确定修改性别？\n 性别只能修改一次哦～")
                     .setConfirmTip("确认修改")
                     .setCancelTip("取消")
+                    .setConfirmBtnClickListener(new AnimateClickListener() {
+                        @Override
+                        public void click(View view) {
+                            if (mDialogPlus != null) {
+                                mDialogPlus.dismiss(false);
+                            }
+                            MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
+                                    .setSex(sex)
+                                    .build(), false, false, new MyUserInfoManager.ServerCallback() {
+                                @Override
+                                public void onSucess() {
+                                    U.getToastUtil().showShort("性别更新成功");
+                                    U.getFragmentUtils().popFragment(EditInfoSexFragment.this);
+                                }
+
+                                @Override
+                                public void onFail() {
+
+                                }
+                            });
+                        }
+                    })
+                    .setCancelBtnClickListener(new AnimateClickListener() {
+                        @Override
+                        public void click(View view) {
+                            if (mDialogPlus != null) {
+                                mDialogPlus.dismiss();
+                            }
+                        }
+                    })
                     .build();
 
-            DialogPlus.newDialog(getContext())
+            mDialogPlus = DialogPlus.newDialog(getContext())
                     .setContentHolder(new ViewHolder(tipsDialogView))
                     .setGravity(Gravity.BOTTOM)
                     .setContentBackgroundResource(R.color.transparent)
                     .setOverlayBackgroundResource(R.color.black_trans_80)
                     .setExpanded(false)
-                    .setOnClickListener(new OnClickListener() {
-                        @Override
-                        public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
-                            if (view instanceof ExTextView) {
-                                if (view.getId() == R.id.confirm_tv) {
-                                    dialog.dismiss();
-                                    MyUserInfoManager.getInstance().updateInfo(MyUserInfoManager.newMyInfoUpdateParamsBuilder()
-                                            .setSex(sex)
-                                            .build(), false);
-                                    U.getFragmentUtils().popFragment(EditInfoSexFragment.this);
-                                }
-
-                                if (view.getId() == R.id.cancel_tv) {
-                                    dialog.dismiss();
-                                }
-                            }
-                        }
-                    })
-                    .setOnDismissListener(new OnDismissListener() {
-                        @Override
-                        public void onDismiss(@NonNull DialogPlus dialog) {
-
-                        }
-                    })
-                    .create().show();
+                    .create();
+            mDialogPlus.show();
 
         }
     }
@@ -193,68 +203,22 @@ public class EditInfoSexFragment extends BaseFragment {
     private void selectSex(boolean isMale) {
         this.sex = isMale ? ESex.SX_MALE.getValue() : ESex.SX_FEMALE.getValue();
         mMale.setBackground(isMale ? getResources().getDrawable(R.drawable.head_man_xuanzhong) : getResources().getDrawable(R.drawable.head_man_weixuanzhong));
-        mFemale.setBackground(isMale ? getResources().getDrawable(R.drawable.head_woman_weixuanzhong) : getResources().getDrawable(R.drawable.head_women_xuanzhong));
+        mFemale.setBackground(isMale ? getResources().getDrawable(R.drawable.head_woman_weixuanzhong) : getResources().getDrawable(R.drawable.head_woman_xuanzhong));
 
         mMale.setClickable(isMale ? false : true);
         mFemale.setClickable(isMale ? true : false);
-        // TODO: 2019/3/6  去掉动画
-//        boolean needAnimation = false; //另一个性别是否需要缩放动画
-//        if (mMaleTaoxin.getVisibility() == View.VISIBLE || mFemaleTaoxin.getVisibility() == View.VISIBLE) {
-//            // 当前已有被选中的，需要一个缩放动画
-//            needAnimation = true;
-//        }
-//
-//        // 放大动画
-//        ObjectAnimator a1 = ObjectAnimator.ofFloat(isMale ? mMale : mFemale, "scaleX", 1f, 1.2f);
-//        ObjectAnimator a2 = ObjectAnimator.ofFloat(isMale ? mMale : mFemale, "scaleY", 1f, 1.2f);
-//        ObjectAnimator a3 = ObjectAnimator.ofFloat(isMale ? mMaleTaoxin : mFemaleTaoxin, "scaleX", 0f, 1f);
-//        ObjectAnimator a4 = ObjectAnimator.ofFloat(isMale ? mMaleTaoxin : mFemaleTaoxin, "scaleY", 0f, 1f);
-//
-//        AnimatorSet set = new AnimatorSet();
-//        set.setDuration(80);
-//
-//        if (needAnimation) {
-//            // 缩小动画
-//            ObjectAnimator s1 = ObjectAnimator.ofFloat(isMale ? mFemale : mMale, "scaleX", 1.2f, 1f);
-//            ObjectAnimator s2 = ObjectAnimator.ofFloat(isMale ? mFemale : mMale, "scaleY", 1.2f, 1f);
-//            ObjectAnimator s3 = ObjectAnimator.ofFloat(isMale ? mFemaleTaoxin : mMaleTaoxin, "scaleX", 1f, 0f);
-//            ObjectAnimator s4 = ObjectAnimator.ofFloat(isMale ? mFemaleTaoxin : mMaleTaoxin, "scaleY", 1f, 0f);
-//            set.playTogether(a1, a2, a3, a4, s1, s2, s3, s4);
-//        } else {
-//            set.playTogether(a1, a2, a3, a4);
-//        }
-//
-//        set.addListener(new Animator.AnimatorListener() {
-//            @Override
-//            public void onAnimationStart(Animator animator) {
-//
-//            }
-//
-//            @Override
-//            public void onAnimationEnd(Animator animator) {
-//                mMaleTaoxin.setVisibility(isMale ? View.VISIBLE : View.GONE);
-//                mFemaleTaoxin.setVisibility(isMale ? View.GONE : View.VISIBLE);
-//
-//                mMale.setClickable(isMale ? false : true);
-//                mMaleTaoxin.setClickable(isMale ? true : false);
-//            }
-//
-//            @Override
-//            public void onAnimationCancel(Animator animator) {
-//                onAnimationEnd(animator);
-//            }
-//
-//            @Override
-//            public void onAnimationRepeat(Animator animator) {
-//
-//            }
-//        });
-//
-//        set.start();
     }
 
     @Override
     public boolean useEventBus() {
         return false;
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        if (mDialogPlus != null) {
+            mDialogPlus.dismiss(false);
+        }
     }
 }

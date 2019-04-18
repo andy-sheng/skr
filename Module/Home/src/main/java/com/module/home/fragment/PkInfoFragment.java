@@ -36,9 +36,9 @@ import com.common.view.ex.ExTextView;
 import com.common.view.ex.drawable.DrawableCreator;
 import com.common.view.titlebar.CommonTitleBar;
 import com.component.busilib.constans.GameModeType;
+import com.imagebrowse.big.BigImageBrowseFragment;
 import com.module.RouterConstants;
 import com.module.home.R;
-
 import com.module.home.persenter.PkInfoPresenter;
 import com.module.home.view.IPkInfoView;
 import com.module.home.widget.UserInfoTitleView;
@@ -48,7 +48,6 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.zq.level.view.NormalLevelView2;
-import com.zq.person.fragment.ImageBigPreviewFragment;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -176,6 +175,57 @@ public class PkInfoFragment extends BaseFragment implements IPkInfoView {
         mIvVoiceRoom.setOnClickListener(new AnimateClickListener() {
             @Override
             public void click(View v) {
+//                if (true) {
+//                    BigImageBrowseFragment.open(true, getActivity(), new BigImageBrowseFragment.Loader<Integer>() {
+//                        List<Integer> mStrings = new ArrayList<>();
+//
+//                        @Override
+//                        public void init() {
+//                            mStrings.add(50);
+//                            mStrings.add(60);
+//                            mStrings.add(70);
+//                        }
+//
+//                        @Override
+//                        public void load(ImageBrowseView imageBrowseView, int position, Object item) {
+//                            imageBrowseView.load("http://res-static.inframe.mobi/pictures/1752091/48031a16980612dd.png?r=" + item);
+//                        }
+//
+//
+//                        @Override
+//                        public int getInitCurrentItemPostion() {
+//                            return 2;
+//                        }
+//
+//                        @Override
+//                        public List<Integer> getInitList() {
+//                            return mStrings;
+//                        }
+//
+//                        @Override
+//                        public List<Integer> loadMore(boolean backward, int position, Integer item) {
+//                            MyLog.d(TAG, "loadMore" + " backward=" + backward + " position=" + position);
+//                            List<Integer> l = new ArrayList<>();
+//                            if (backward) {
+//                                l.add(item + 10);
+//                            } else {
+//                                l.add(item - 10);
+//                            }
+//                            return l;
+//                        }
+//
+//                        @Override
+//                        public boolean hasMore(boolean backward, int position, Integer item) {
+//                            if (backward) {
+//                                return item < 150;
+//                            } else {
+//                                return item > 0;
+//                            }
+//                        }
+//
+//                    });
+//                    return;
+//                }
                 ARouter.getInstance().build(RouterConstants.ACTIVITY_AUDIOROOM)
                         .withBoolean("selectSong", true)
                         .navigation();
@@ -185,16 +235,7 @@ public class PkInfoFragment extends BaseFragment implements IPkInfoView {
         mUserInfoTitle.setListener(new UserInfoTitleView.UserTitleClickListener() {
             @Override
             public void onClickAvatar() {
-                Bundle bundle = new Bundle();
-                bundle.putString(ImageBigPreviewFragment.BIG_IMAGE_PATH, MyUserInfoManager.getInstance().getAvatar());
-                U.getFragmentUtils().addFragment(
-                        FragmentUtils.newAddParamsBuilder(getActivity(), ImageBigPreviewFragment.class)
-                                .setAddToBackStack(true)
-                                .setEnterAnim(com.component.busilib.R.anim.fade_in_center)
-                                .setExitAnim(com.component.busilib.R.anim.fade_out_center)
-                                .setHasAnimation(true)
-                                .setBundle(bundle)
-                                .build());
+                BigImageBrowseFragment.open(false, getActivity(), MyUserInfoManager.getInstance().getAvatar());
             }
         });
 
@@ -275,11 +316,11 @@ public class PkInfoFragment extends BaseFragment implements IPkInfoView {
 
 //        showPopWindow(userRankModel.getDiff());
 
-        if (userRankModel.getBadge() == PersonFragment.STAR_BADGE) {
+        if (userRankModel.getBadge() == UserRankModel.STAR_BADGE) {
             mMedalIv.setBackground(getResources().getDrawable(R.drawable.paiming));
-        } else if (userRankModel.getBadge() == PersonFragment.TOP_BADGE) {
+        } else if (userRankModel.getBadge() == UserRankModel.TOP_BADGE) {
             mMedalIv.setBackground(getResources().getDrawable(R.drawable.paihang));
-        } else if (userRankModel.getBadge() == PersonFragment.SHANDIAN_BADGE) {
+        } else if (userRankModel.getBadge() == UserRankModel.SHANDIAN_BADGE) {
             mMedalIv.setBackground(getResources().getDrawable(R.drawable.dabai));
         }
     }
