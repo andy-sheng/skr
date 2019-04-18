@@ -83,6 +83,7 @@ public class DialogPlus {
 
     private final Animation outAnim;
     private final Animation inAnim;
+    private int mDialogPriority;
 
     Handler mHandler;
 
@@ -109,9 +110,10 @@ public class DialogPlus {
         rootView = (ViewGroup) layoutInflater.inflate(R.layout.base_container, decorView, false);
         rootView.setLayoutParams(builder.getOutmostLayoutParams());
 
-        View outmostView = rootView.findViewById(R.id.dialogplus_outmost_container);
-        outmostView.setBackgroundResource(builder.getOverlayBackgroundResource());
+//        View outmostView = rootView.findViewById(R.id.dialogplus_outmost_container);
+        rootView.setBackgroundResource(builder.getOverlayBackgroundResource());
 
+        rootView.setTag(R.id.attach_dialog_ref,this);
         contentContainer = rootView.findViewById(R.id.dialogplus_content_container);
         contentContainer.setLayoutParams(builder.getContentParams());
 
@@ -142,6 +144,7 @@ public class DialogPlus {
                 }
             }
         };
+        mDialogPriority = builder.getPriority();
     }
 
     /**
@@ -156,9 +159,25 @@ public class DialogPlus {
      */
     public void show() {
         if (isShowing()) {
+            View view = decorView.findViewById(R.id.dialogplus_outmost_container);
+            if (view != null) {
+                DialogPlus otherDialogPlus = (DialogPlus) view.getTag(R.id.attach_dialog_ref);
+                if(otherDialogPlus!=null){
+                    if(mDialogPriority>otherDialogPlus.getDialogPriority()){
+                        MyLog.d(TAG,"当前要显示的dialog 优先级较高 mDialogPriority="+mDialogPriority);
+                        otherDialogPlus.dismiss(false);
+                        onAttached(rootView);
+                    }
+                }
+            }
             return;
+        }else{
+            onAttached(rootView);
         }
-        onAttached(rootView);
+    }
+
+    private int getDialogPriority() {
+        return mDialogPriority;
     }
 
     /**

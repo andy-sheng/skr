@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -44,6 +45,10 @@ import com.module.home.game.model.RecommendRoomModel;
 import com.module.home.model.GameKConfigModel;
 import com.module.home.model.SlideShowModel;
 import com.module.rank.IRankingModeService;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.OnClickListener;
+import com.orhanobut.dialogplus.OnDismissListener;
+import com.orhanobut.dialogplus.ViewHolder;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
@@ -231,6 +236,24 @@ public class GameFragment2 extends BaseFragment implements IGameView {
 //                                .build();
 //                    }
 //                });
+
+//        HandlerTaskTimer.newBuilder().interval(10000)
+//                .start(new HandlerTaskTimer.ObserverW() {
+//                    @Override
+//                    public void onNext(Integer integer) {
+//                        TextView textView = new TextView(getContext());
+//                        textView.setText("我是第 " + integer + " Dialogplus");
+//                        DialogPlus.newDialog(getActivity())
+//                                .setContentHolder(new ViewHolder(textView))
+//                                .setGravity(Gravity.CENTER)
+//                                .setContentBackgroundResource(R.color.transparent)
+//                                .setOverlayBackgroundResource(R.color.black_trans_80)
+//                                .setExpanded(false)
+//                                .setPriority(integer)
+//                                .create()
+//                                .show();
+//                    }
+//                });
     }
 
     private void initBaseInfo() {
@@ -327,7 +350,8 @@ public class GameFragment2 extends BaseFragment implements IGameView {
     }
 
     @Override
-    public void showRedOperationView(GameKConfigModel.HomepagesitefirstBean homepagesitefirstBean) {
+    public void showRedOperationView(GameKConfigModel.HomepagesitefirstBean
+                                             homepagesitefirstBean) {
         AvatarUtils.loadAvatarByUrl(mIvRedPkg,
                 AvatarUtils.newParamsBuilder(homepagesitefirstBean.getPic())
                         .setWidth(U.getDisplayUtils().dip2px(48f))
