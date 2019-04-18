@@ -50,6 +50,9 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.imagebrowse.ImageBrowseView;
 import com.imagebrowse.big.BigImageBrowseFragment;
 import com.imagebrowse.big.DefaultImageBrowserLoader;
+import com.module.ModuleServiceManager;
+import com.module.common.ICallback;
+import com.module.msg.IMsgService;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
@@ -345,6 +348,32 @@ public class PersonInfoDialogView2 extends RelativeLayout {
                 }
             }
         });
+
+        /**
+         * 这段代码不要删除，线上调试用的，可以在线拉这个人的日志调试问题
+         */
+        if (MyLog.isDebugLogOpen()) {
+            mAvatarIv.setOnLongClickListener(new OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    IMsgService msgService = ModuleServiceManager.getInstance().getMsgService();
+                    if (msgService != null) {
+                        msgService.sendSpecialDebugMessage(String.valueOf(mUserId), 1, "请求上传日志", new ICallback() {
+                            @Override
+                            public void onSucess(Object obj) {
+                                U.getToastUtil().showLong("请求成功,稍等看该用户是否有返回");
+                            }
+
+                            @Override
+                            public void onFailed(Object obj, int errcode, String message) {
+                                U.getToastUtil().showLong("请求失败");
+                            }
+                        });
+                    }
+                    return false;
+                }
+            });
+        }
     }
 
     private void initOpretaArea() {
