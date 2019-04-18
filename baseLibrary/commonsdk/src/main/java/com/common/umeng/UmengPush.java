@@ -19,6 +19,7 @@ import com.umeng.message.UmengNotificationClickHandler;
 import com.umeng.message.entity.UMessage;
 
 import org.android.agoo.huawei.HuaWeiRegister;
+import org.android.agoo.mezu.MeizuRegister;
 import org.android.agoo.xiaomi.MiPushRegistar;
 import org.greenrobot.eventbus.EventBus;
 
@@ -52,6 +53,9 @@ public class UmengPush {
 
         // 华为push
         HuaWeiRegister.register(U.app());
+
+        // 魅族push
+        MeizuRegister.register(U.app(), "1005211", "a623e6582e4d428b9fe90d2d64edbd91");
 
         UmengMessageHandler messageHandler = new UmengMessageHandler() {
 

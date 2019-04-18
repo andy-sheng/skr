@@ -251,6 +251,10 @@ dependencies {
     api rootProject.ext.dependencies['umeng-huawei-pushtb']
     api rootProject.ext.dependencies['umeng-huawei-umengaccs']
 
+    // 友盟push 集成魅族push
+    api rootProject.ext.dependencies['umeng-meizu-push']
+    api rootProject.ext.dependencies['umeng-meizu-umengaccs']
+
 //    debugApi rootProject.ext.dependencies["stetho"]
 
     // 使用矢量图来播动画的库
