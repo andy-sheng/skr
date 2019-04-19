@@ -254,7 +254,9 @@ class SVGAParser(private val context: Context) {
     private fun readAsBytes(inputStream: InputStream): ByteArray? {
         ByteArrayOutputStream().use { byteArrayOutputStream ->
             val byteArray = ByteArray(2048)
-            while (true) {
+            var bts = System.currentTimeMillis()
+            // 允许1分钟内下载好
+            while (System.currentTimeMillis() - bts <60*1000) {
                 val count = inputStream.read(byteArray, 0, 2048)
                 if (count <= 0) {
                     break
@@ -295,7 +297,9 @@ class SVGAParser(private val context: Context) {
             try {
                 BufferedInputStream(inputStream).use {
                     ZipInputStream(it).use { zipInputStream ->
-                        while (true) {
+                        var bts = System.currentTimeMillis()
+                        // 允许1分钟内下载好
+                        while (System.currentTimeMillis() - bts <60*1000) {
                             val zipItem = zipInputStream.nextEntry ?: break
                             if (zipItem.name.contains("/")) {
                                 continue
@@ -303,7 +307,9 @@ class SVGAParser(private val context: Context) {
                             val file = File(cacheDir, zipItem.name)
                             FileOutputStream(file).use { fileOutputStream ->
                                 val buff = ByteArray(2048)
-                                while (true) {
+                                var bts = System.currentTimeMillis()
+                                // 允许1分钟内下载好
+                                while (System.currentTimeMillis() - bts <60*1000) {
                                     val readBytes = zipInputStream.read(buff)
                                     if (readBytes <= 0) {
                                         break
