@@ -20,7 +20,6 @@ import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.zq.live.proto.Room.EQRoundOverReason;
 
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
@@ -133,7 +132,7 @@ public class RoundOverCardView extends RelativeLayout {
         mSingResultSvga.setLoops(1);
             SvgaParserAdapter.parse("grab_none_sing_end.svga", new SVGAParser.ParseCompletion() {
                 @Override
-                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                public void onComplete( SVGAVideoEntity videoItem) {
                     SVGADrawable drawable = new SVGADrawable(videoItem);
                     mSingResultSvga.setImageDrawable(drawable);
                     mSingResultSvga.startAnimation();
@@ -189,7 +188,7 @@ public class RoundOverCardView extends RelativeLayout {
         mSingResultSvga.setLoops(1);
         SvgaParserAdapter.parse( "grab_sing_perfect_end.svga", new SVGAParser.ParseCompletion() {
             @Override
-            public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+            public void onComplete( SVGAVideoEntity videoItem) {
                 SVGADrawable drawable = new SVGADrawable(videoItem);
                 mSingResultSvga.setImageDrawable(drawable);
                 mSingResultSvga.startAnimation();
@@ -263,7 +262,7 @@ public class RoundOverCardView extends RelativeLayout {
         }
         SvgaParserAdapter.parse( assetsName, new SVGAParser.ParseCompletion() {
             @Override
-            public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+            public void onComplete( SVGAVideoEntity videoItem) {
                 SVGADrawable drawable = new SVGADrawable(videoItem);
                 mSingResultSvga.setImageDrawable(drawable);
                 mSingResultSvga.startAnimation();
