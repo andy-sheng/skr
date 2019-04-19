@@ -31,11 +31,14 @@ import android.os.Environment;
 
 import com.common.base.BuildConfig;
 import com.common.log.MyLog;
+import com.common.utils.U;
 
 
 import java.io.File;
 import java.io.PrintWriter;
 import java.lang.Thread.UncaughtExceptionHandler;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -88,6 +91,19 @@ public class MyCrashHandler implements UncaughtExceptionHandler {
                     }
                 }
             });
+
+            try {
+                if(U.getDeviceUtils().isOppo()) {
+                    Class clazz = Class.forName("java.lang.Daemons$FinalizerWatchdogDaemon");
+                    Method method = clazz.getSuperclass().getDeclaredMethod("stop");
+                    method.setAccessible(true);
+                    Field field = clazz.getDeclaredField("INSTANCE");
+                    field.setAccessible(true);
+                    method.invoke(field.get(null));
+                }
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
         }
     }
 
