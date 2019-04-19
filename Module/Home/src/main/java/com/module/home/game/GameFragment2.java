@@ -224,6 +224,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
 //                                .build();
 //                    }
 //                });
+
     }
 
     private void initBaseInfo() {

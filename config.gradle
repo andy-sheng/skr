@@ -120,8 +120,8 @@ ext {
             "svga"                             : "com.github.yyued:SVGAPlayer-Android:2.4.2",
 
             //exoplayer
-            "exoplayer-core"                   : "com.google.android.exoplayer:exoplayer-core:r2.4.1",
-            "exoplayer-hls"                    : "com.google.android.exoplayer:exoplayer-hls:r2.4.1",
+            "exoplayer-core"                   : "com.google.android.exoplayer:exoplayer-core:2.9.6",
+            "exoplayer-hls"                    : "com.google.android.exoplayer:exoplayer-hls:2.9.6",
 
             //拼音处理TinyPinyin核心包，约80KB
             "tinypinyin"                       : "com.github.promeg:tinypinyin:2.0.3",

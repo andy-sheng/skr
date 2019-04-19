@@ -2,6 +2,7 @@ package com.common.player.exoplayer;
 
 import android.net.Uri;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.Surface;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.PlaybackParameters;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.audio.AudioRendererEventListener;
@@ -28,6 +30,7 @@ import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.metadata.Metadata;
 import com.google.android.exoplayer2.metadata.MetadataRenderer;
 import com.google.android.exoplayer2.source.AdaptiveMediaSourceEventListener;
+import com.google.android.exoplayer2.source.DefaultMediaSourceEventListener;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
@@ -79,7 +82,7 @@ public class ExoPlayer implements IPlayer {
     private float mShiftUp = 0;
 
     private View mView;
-    private  float mVolume = 1.0f;
+    private float mVolume = 1.0f;
     private boolean mPreparedFlag = false;
 
     HandlerTaskTimer mMusicTimePlayTimeListener;
@@ -118,27 +121,26 @@ public class ExoPlayer implements IPlayer {
             mPlayer = genPlayer();
         }
 
-        mPlayer.addListener(new com.google.android.exoplayer2.ExoPlayer.EventListener() {
+        mPlayer.addListener(new Player.EventListener() {
             @Override
-            public void onTimelineChanged(Timeline timeline, Object manifest) {
-                MyLog.d(TAG, "onTimelineChanged" + " timeline=" + timeline + " manifest=" + manifest);
+            public void onTimelineChanged(Timeline timeline, @Nullable Object manifest, int reason) {
+                MyLog.d(TAG, "onTimelineChanged" + " timeline=" + timeline + " manifest=" + manifest + " reason=" + reason);
             }
 
             @Override
             public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
                 MyLog.d(TAG, "onTracksChanged" + " trackGroups=" + trackGroups + " trackSelections=" + trackSelections);
-
             }
 
             @Override
             public void onLoadingChanged(boolean isLoading) {
                 MyLog.d(TAG, "onLoadingChanged" + " isLoading=" + isLoading);
+
             }
 
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
                 MyLog.d(TAG, "onPlayerStateChanged" + " playWhenReady=" + playWhenReady + " playbackState=" + playbackState);
-
                 switch (playbackState) {
                     case com.google.android.exoplayer2.ExoPlayer.STATE_BUFFERING:
                         break;
@@ -163,6 +165,20 @@ public class ExoPlayer implements IPlayer {
             }
 
             @Override
+            public void onRepeatModeChanged(int repeatMode) {
+                MyLog.d(TAG, "onRepeatModeChanged" + " repeatMode=" + repeatMode);
+
+            }
+
+
+            @Override
+            public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
+                MyLog.d(TAG, "onShuffleModeEnabledChanged" + " shuffleModeEnabled=" + shuffleModeEnabled);
+
+
+            }
+
+            @Override
             public void onPlayerError(ExoPlaybackException error) {
                 MyLog.d(TAG, "onPlayerError" + " error=" + error);
                 error.printStackTrace();
@@ -172,8 +188,8 @@ public class ExoPlayer implements IPlayer {
             }
 
             @Override
-            public void onPositionDiscontinuity() {
-                MyLog.d(TAG, "onPositionDiscontinuity");
+            public void onPositionDiscontinuity(int reason) {
+                MyLog.d(TAG, "onPositionDiscontinuity" + " reason=" + reason);
 
             }
 
@@ -182,44 +198,45 @@ public class ExoPlayer implements IPlayer {
                 MyLog.d(TAG, "onPlaybackParametersChanged" + " playbackParameters=" + playbackParameters);
 
             }
+
+            @Override
+            public void onSeekProcessed() {
+                MyLog.d(TAG, "onSeekProcessed");
+
+            }
         });
         mPlayer.setAudioDebugListener(new AudioRendererEventListener() {
             @Override
             public void onAudioEnabled(DecoderCounters counters) {
                 MyLog.d(TAG, "onAudioEnabled" + " counters=" + counters);
-
             }
 
             @Override
             public void onAudioSessionId(int audioSessionId) {
                 MyLog.d(TAG, "onAudioSessionId" + " audioSessionId=" + audioSessionId);
-
             }
 
             @Override
             public void onAudioDecoderInitialized(String decoderName, long initializedTimestampMs, long initializationDurationMs) {
                 MyLog.d(TAG, "onAudioDecoderInitialized" + " decoderName=" + decoderName + " initializedTimestampMs=" + initializedTimestampMs + " initializationDurationMs=" + initializationDurationMs);
-
             }
 
             @Override
             public void onAudioInputFormatChanged(Format format) {
                 MyLog.d(TAG, "onAudioInputFormatChanged" + " format=" + format);
-
             }
 
             @Override
-            public void onAudioTrackUnderrun(int bufferSize, long bufferSizeMs, long elapsedSinceLastFeedMs) {
-                MyLog.d(TAG, "onAudioTrackUnderrun" + " bufferSize=" + bufferSize + " bufferSizeMs=" + bufferSizeMs + " elapsedSinceLastFeedMs=" + elapsedSinceLastFeedMs);
-
+            public void onAudioSinkUnderrun(int bufferSize, long bufferSizeMs, long elapsedSinceLastFeedMs) {
+                MyLog.d(TAG, "onAudioSinkUnderrun" + " bufferSize=" + bufferSize + " bufferSizeMs=" + bufferSizeMs + " elapsedSinceLastFeedMs=" + elapsedSinceLastFeedMs);
             }
 
             @Override
             public void onAudioDisabled(DecoderCounters counters) {
                 MyLog.d(TAG, "onAudioDisabled" + " counters=" + counters);
-
             }
         });
+
         mPlayer.setVideoDebugListener(new VideoRendererEventListener() {
             @Override
             public void onVideoEnabled(DecoderCounters counters) {
@@ -285,35 +302,60 @@ public class ExoPlayer implements IPlayer {
 //                return new DashMediaSource(uri, ((DemoApplication) getApplication()).buildDataSourceFactory(null),
 //                        new DefaultDashChunkSource.Factory(mediaDataSourceFactory), mainHandler, eventLogger);
             case C.TYPE_HLS:
-                return new HlsMediaSource(uri, mediaDataSourceFactory, sUiHanlder, new AdaptiveMediaSourceEventListener() {
+                return new HlsMediaSource(uri, mediaDataSourceFactory, sUiHanlder, new DefaultMediaSourceEventListener() {
                     @Override
-                    public void onLoadStarted(DataSpec dataSpec, int dataType, int trackType, Format trackFormat, int trackSelectionReason, Object trackSelectionData, long mediaStartTimeMs, long mediaEndTimeMs, long elapsedRealtimeMs) {
-                        MyLog.d("ExoPlayer", "onLoadStarted" + " dataSpec=" + dataSpec + " dataType=" + dataType + " trackType=" + trackType + " trackFormat=" + trackFormat + " trackSelectionReason=" + trackSelectionReason + " trackSelectionData=" + trackSelectionData + " mediaStartTimeMs=" + mediaStartTimeMs + " mediaEndTimeMs=" + mediaEndTimeMs + " elapsedRealtimeMs=" + elapsedRealtimeMs);
+                    public void onMediaPeriodCreated(int windowIndex, MediaSource.MediaPeriodId mediaPeriodId) {
+                        super.onMediaPeriodCreated(windowIndex, mediaPeriodId);
+                        MyLog.d("ExoPlayer","onMediaPeriodCreated" + " windowIndex=" + windowIndex + " mediaPeriodId=" + mediaPeriodId);
                     }
 
                     @Override
-                    public void onLoadCompleted(DataSpec dataSpec, int dataType, int trackType, Format trackFormat, int trackSelectionReason, Object trackSelectionData, long mediaStartTimeMs, long mediaEndTimeMs, long elapsedRealtimeMs, long loadDurationMs, long bytesLoaded) {
-
-                    }
-
-                    @Override
-                    public void onLoadCanceled(DataSpec dataSpec, int dataType, int trackType, Format trackFormat, int trackSelectionReason, Object trackSelectionData, long mediaStartTimeMs, long mediaEndTimeMs, long elapsedRealtimeMs, long loadDurationMs, long bytesLoaded) {
-
-                    }
-
-                    @Override
-                    public void onLoadError(DataSpec dataSpec, int dataType, int trackType, Format trackFormat, int trackSelectionReason, Object trackSelectionData, long mediaStartTimeMs, long mediaEndTimeMs, long elapsedRealtimeMs, long loadDurationMs, long bytesLoaded, IOException error, boolean wasCanceled) {
+                    public void onMediaPeriodReleased(int windowIndex, MediaSource.MediaPeriodId mediaPeriodId) {
+                        super.onMediaPeriodReleased(windowIndex, mediaPeriodId);
+                        MyLog.d("ExoPlayer","onMediaPeriodReleased" + " windowIndex=" + windowIndex + " mediaPeriodId=" + mediaPeriodId);
 
                     }
 
                     @Override
-                    public void onUpstreamDiscarded(int trackType, long mediaStartTimeMs, long mediaEndTimeMs) {
-
+                    public void onLoadStarted(int windowIndex, @Nullable MediaSource.MediaPeriodId mediaPeriodId, LoadEventInfo loadEventInfo, MediaLoadData mediaLoadData) {
+                        super.onLoadStarted(windowIndex, mediaPeriodId, loadEventInfo, mediaLoadData);
+                        MyLog.d("ExoPlayer","onLoadStarted" + " windowIndex=" + windowIndex + " mediaPeriodId=" + mediaPeriodId + " loadEventInfo=" + loadEventInfo + " mediaLoadData=" + mediaLoadData);
                     }
 
                     @Override
-                    public void onDownstreamFormatChanged(int trackType, Format trackFormat, int trackSelectionReason, Object trackSelectionData, long mediaTimeMs) {
+                    public void onLoadCompleted(int windowIndex, @Nullable MediaSource.MediaPeriodId mediaPeriodId, LoadEventInfo loadEventInfo, MediaLoadData mediaLoadData) {
+                        super.onLoadCompleted(windowIndex, mediaPeriodId, loadEventInfo, mediaLoadData);
+                        MyLog.d("ExoPlayer","onLoadCompleted" + " windowIndex=" + windowIndex + " mediaPeriodId=" + mediaPeriodId + " loadEventInfo=" + loadEventInfo + " mediaLoadData=" + mediaLoadData);
+                    }
 
+                    @Override
+                    public void onLoadCanceled(int windowIndex, @Nullable MediaSource.MediaPeriodId mediaPeriodId, LoadEventInfo loadEventInfo, MediaLoadData mediaLoadData) {
+                        super.onLoadCanceled(windowIndex, mediaPeriodId, loadEventInfo, mediaLoadData);
+                        MyLog.d("ExoPlayer","onLoadCanceled" + " windowIndex=" + windowIndex + " mediaPeriodId=" + mediaPeriodId + " loadEventInfo=" + loadEventInfo + " mediaLoadData=" + mediaLoadData);
+                    }
+
+                    @Override
+                    public void onLoadError(int windowIndex, @Nullable MediaSource.MediaPeriodId mediaPeriodId, LoadEventInfo loadEventInfo, MediaLoadData mediaLoadData, IOException error, boolean wasCanceled) {
+                        super.onLoadError(windowIndex, mediaPeriodId, loadEventInfo, mediaLoadData, error, wasCanceled);
+                        MyLog.d("ExoPlayer","onLoadError" + " windowIndex=" + windowIndex + " mediaPeriodId=" + mediaPeriodId + " loadEventInfo=" + loadEventInfo + " mediaLoadData=" + mediaLoadData + " error=" + error + " wasCanceled=" + wasCanceled);
+                    }
+
+                    @Override
+                    public void onReadingStarted(int windowIndex, MediaSource.MediaPeriodId mediaPeriodId) {
+                        super.onReadingStarted(windowIndex, mediaPeriodId);
+                        MyLog.d("ExoPlayer","onReadingStarted" + " windowIndex=" + windowIndex + " mediaPeriodId=" + mediaPeriodId);
+                    }
+
+                    @Override
+                    public void onUpstreamDiscarded(int windowIndex, @Nullable MediaSource.MediaPeriodId mediaPeriodId, MediaLoadData mediaLoadData) {
+                        super.onUpstreamDiscarded(windowIndex, mediaPeriodId, mediaLoadData);
+                        MyLog.d("ExoPlayer","onUpstreamDiscarded" + " windowIndex=" + windowIndex + " mediaPeriodId=" + mediaPeriodId + " mediaLoadData=" + mediaLoadData);
+                    }
+
+                    @Override
+                    public void onDownstreamFormatChanged(int windowIndex, @Nullable MediaSource.MediaPeriodId mediaPeriodId, MediaLoadData mediaLoadData) {
+                        super.onDownstreamFormatChanged(windowIndex, mediaPeriodId, mediaLoadData);
+                        MyLog.d("ExoPlayer","onDownstreamFormatChanged" + " windowIndex=" + windowIndex + " mediaPeriodId=" + mediaPeriodId + " mediaLoadData=" + mediaLoadData);
                     }
                 });
             case C.TYPE_OTHER:
@@ -462,14 +504,15 @@ public class ExoPlayer implements IPlayer {
 
     @Override
     public void setVolume(float volume) {
-        setVolume(volume,true);
+        setVolume(volume, true);
     }
 
-    public void setVolume(float volume,boolean setConfig) {
+    @Override
+    public void setVolume(float volume, boolean setConfig) {
         if (mPlayer == null) {
             return;
         }
-        if(setConfig) {
+        if (setConfig) {
             this.mVolume = volume;
         }
         mPlayer.setVolume(volume);

@@ -207,7 +207,9 @@ public class BigImageBrowseFragment extends BaseFragment {
     public void destroy() {
         super.destroy();
         U.getSoundUtils().release(TAG);
-        mImagesVp.clearOnPageChangeListeners();
+        if (mImagesVp != null) {
+            mImagesVp.clearOnPageChangeListeners();
+        }
     }
 
     @Override
