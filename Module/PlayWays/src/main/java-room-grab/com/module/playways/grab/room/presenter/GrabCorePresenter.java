@@ -349,7 +349,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
         if (now != null) {
             if (mExoPlayer == null) {
-                mExoPlayer = new AndroidMediaPlayer();
+                mExoPlayer = new ExoPlayer();
                 if (mRoomData.isMute() || !U.getActivityUtils().isAppForeground()) {
                     mExoPlayer.setVolume(0);
                 } else {

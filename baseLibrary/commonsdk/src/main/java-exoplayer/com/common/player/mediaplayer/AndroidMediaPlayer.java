@@ -291,7 +291,7 @@ public class AndroidMediaPlayer implements IPlayer {
                 String p = mPath;
                 MyLog.d(TAG, "startPlay2" + " p=" + p);
                 mPlayer.setDataSource(p);
-                mPlayer.prepare();
+                mPlayer.prepareAsync();
             } catch (IOException e) {
             }
         }
