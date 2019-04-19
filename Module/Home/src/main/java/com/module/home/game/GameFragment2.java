@@ -126,6 +126,24 @@ public class GameFragment2 extends BaseFragment implements IGameView {
                 mGamePresenter.initQuickRoom(true);
                 mGamePresenter.initRecommendRoom(mRecommendInterval);
 
+
+//                for(int i=0;i<1000;i++)
+//                {
+//                    int finalI = i;
+//                    new Thread(){
+//                        @Override
+//                        public void run() {
+//                            while(true) {
+//                                try {
+//                                    MyLog.d(TAG, "run :" + finalI);
+//                                    Thread.sleep(finalI * 10);
+//                                } catch (InterruptedException e) {
+//                                    e.printStackTrace();
+//                                }
+//                            }
+//                        }
+//                    }.start();
+//                }
             }
         });
 
