@@ -7,6 +7,7 @@ import android.view.WindowManager;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.fastjson.JSON;
+import com.common.anim.svga.SvgaParserAdapter;
 import com.common.base.BaseActivity;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
@@ -55,6 +56,7 @@ public class GrabRoomActivity extends BaseActivity {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        SvgaParserAdapter.createSvgaParser(SvgaParserAdapter.ROOM_TAG);
         JoinGrabRoomRspModel rsp = (JoinGrabRoomRspModel) getIntent().getSerializableExtra("prepare_data");
         SpecialModel specialModel = (SpecialModel) getIntent().getSerializableExtra("special_model");
         if (rsp != null) {
@@ -170,6 +172,7 @@ public class GrabRoomActivity extends BaseActivity {
 
     @Override
     protected void destroy() {
+        SvgaParserAdapter.destroySvgaParser(SvgaParserAdapter.ROOM_TAG);
         if (getWindow() != null) {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }

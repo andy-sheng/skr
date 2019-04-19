@@ -5,6 +5,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
+import com.common.anim.svga.SvgaParserAdapter;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.module.rank.R;
@@ -23,7 +24,6 @@ public class ScoreProgressBarWithSvga extends RelativeLayout {
     ScorePrograssBar2 mScoreProgressBar;
     SVGAImageView mScoreAnimationIv;
     SVGAImageView mStarIv;
-    SVGAParser mSVGAParser;
 
     public ScoreProgressBarWithSvga(Context context) {
         super(context);
@@ -118,7 +118,7 @@ public class ScoreProgressBarWithSvga extends RelativeLayout {
     }
 
     private void startStarAnimation(String assetsName, int tx) {
-        getSVGAParser().parse(assetsName, new SVGAParser.ParseCompletion() {
+        SvgaParserAdapter.parse(SvgaParserAdapter.ROOM_TAG,assetsName, new SVGAParser.ParseCompletion() {
             @Override
             public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
                 SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
@@ -139,7 +139,7 @@ public class ScoreProgressBarWithSvga extends RelativeLayout {
 
     private void startScoreAnimation(String assetsName, int tx, int drawableId) {
 
-        getSVGAParser().parse(assetsName, new SVGAParser.ParseCompletion() {
+        SvgaParserAdapter.parse(SvgaParserAdapter.ROOM_TAG,assetsName, new SVGAParser.ParseCompletion() {
             @Override
             public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
                 SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
@@ -161,32 +161,6 @@ public class ScoreProgressBarWithSvga extends RelativeLayout {
 
             }
         });
-    }
-
-    private SVGAParser getSVGAParser() {
-        if (mSVGAParser == null) {
-            mSVGAParser = new SVGAParser(U.app());
-//            mSVGAParser.setFileDownloader(new SVGAParser.FileDownloader() {
-//                @Override
-//                public void resume(final URL url, final Function1<? super InputStream, Unit> complete, final Function1<? super Exception, Unit> failure) {
-//                    new Thread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            OkHttpClient client = new OkHttpClient();
-//                            Request request = new Request.Builder().url(url).get().build();
-//                            try {
-//                                Response response = client.newCall(request).execute();
-//                                complete.invoke(response.body().byteStream());
-//                            } catch (IOException e) {
-//                                e.printStackTrace();
-//                                failure.invoke(e);
-//                            }
-//                        }
-//                    }).start();
-//                }
-//            });
-        }
-        return mSVGAParser;
     }
 }
 

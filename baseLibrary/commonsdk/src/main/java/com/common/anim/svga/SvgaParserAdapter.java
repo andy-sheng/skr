@@ -1,9 +1,12 @@
 package com.common.anim.svga;
 
+import android.text.TextUtils;
+
 import com.common.utils.U;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 
@@ -15,13 +18,13 @@ import java.util.HashMap;
 public class SvgaParserAdapter {
     public static final String ROOM_TAG = "ROOM_TAG";
 
-    static HashMap<String,SVGAParser> sSvgaParserMap = new HashMap<>();
+    static HashMap<String, SVGAParser> sSvgaParserMap = new HashMap<>();
 
-    public static void createSvgaParser(String tag){
+    public static void createSvgaParser(String tag) {
         SVGAParser svgaParser = sSvgaParserMap.get(tag);
-        if(svgaParser==null){
+        if (svgaParser == null) {
             svgaParser = new SVGAParser(U.app());
-            sSvgaParserMap.put(tag,svgaParser);
+            sSvgaParserMap.put(tag, svgaParser);
 
             //        mSVGAParser.setFileDownloader(new SVGAParser.FileDownloader() {
 //            @Override
@@ -45,14 +48,33 @@ public class SvgaParserAdapter {
         }
     }
 
-    public static void destroySvgaParser(String tag){
+    public static void destroySvgaParser(String tag) {
         sSvgaParserMap.remove(tag);
     }
 
-    public static void decodeFromURL(String tag,URL url,SVGAParser.ParseCompletion completion){
+    public static void parse(String tag, String urlOrAssets, SVGAParser.ParseCompletion completion) {
+        if (TextUtils.isEmpty(urlOrAssets)) {
+            if (completion != null) {
+                completion.onError();
+            }
+            return;
+        }
         SVGAParser svgaParser = sSvgaParserMap.get(tag);
-        if(svgaParser!=null){
-            svgaParser.decodeFromURL(url,completion);
+        try {
+            if (svgaParser != null) {
+                if (urlOrAssets.startsWith("http")) {
+                    svgaParser.decodeFromURL(new URL(urlOrAssets), completion);
+                } else {
+                    svgaParser.decodeFromAssets(urlOrAssets, completion);
+                }
+            } else {
+                if (completion != null) {
+                    completion.onError();
+                }
+            }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
         }
     }
+
 }

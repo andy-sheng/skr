@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
+import com.common.anim.svga.SvgaParserAdapter;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.module.playways.grab.room.listener.SVGAListener;
@@ -85,7 +86,7 @@ public class RankTopLEDView extends RelativeLayout {
                     }
                 });
             } catch (Exception e) {
-                MyLog.e(TAG,e);
+                MyLog.e(TAG, e);
             }
 
 
@@ -165,7 +166,7 @@ public class RankTopLEDView extends RelativeLayout {
                 }
             });
         } catch (Exception e) {
-            MyLog.e(TAG,e);
+            MyLog.e(TAG, e);
         }
     }
 
@@ -209,7 +210,7 @@ public class RankTopLEDView extends RelativeLayout {
                 }
             });
         } catch (Exception e) {
-            MyLog.e(TAG,e);
+            MyLog.e(TAG, e);
         }
 
         mDengSvga.setCallback(new SVGACallback() {
@@ -260,26 +261,21 @@ public class RankTopLEDView extends RelativeLayout {
         mDengSvga.setVisibility(VISIBLE);
         mDengSvga.setCallback(null);
         mDengSvga.setLoops(0);
-        SVGAParser parser = new SVGAParser(U.app());
-        try {
-            parser.parse(assetsName, new SVGAParser.ParseCompletion() {
-                @Override
-                public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
-                    if (curMode == DEFAULT_MODE || curMode == BAO_MODE) {
-                        SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
-                        mDengSvga.setImageDrawable(drawable);
-                        mDengSvga.startAnimation();
-                    }
+        SvgaParserAdapter.parse(SvgaParserAdapter.ROOM_TAG, assetsName, new SVGAParser.ParseCompletion() {
+            @Override
+            public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
+                if (curMode == DEFAULT_MODE || curMode == BAO_MODE) {
+                    SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
+                    mDengSvga.setImageDrawable(drawable);
+                    mDengSvga.startAnimation();
                 }
+            }
 
-                @Override
-                public void onError() {
+            @Override
+            public void onError() {
 
-                }
-            });
-        } catch (Exception e) {
-            MyLog.e(TAG,e);
-        }
+            }
+        });
     }
 
     @Override

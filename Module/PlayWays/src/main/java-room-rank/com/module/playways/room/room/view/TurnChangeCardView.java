@@ -10,6 +10,7 @@ import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
+import com.common.anim.svga.SvgaParserAdapter;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.HttpImage;
@@ -110,24 +111,19 @@ public class TurnChangeCardView extends RelativeLayout {
 
         mFirstSvga.setVisibility(VISIBLE);
         mFirstSvga.setLoops(1);
-        SVGAParser parser = new SVGAParser(U.app());
-        try {
-            parser.parse(new URL(BaseRoomData.RANK_BATTLE_START_SVGA), new SVGAParser.ParseCompletion() {
-                @Override
-                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
-                    SVGADrawable drawable = new SVGADrawable(videoItem, requestDynamicItem(info));
-                    mFirstSvga.setImageDrawable(drawable);
-                    mFirstSvga.startAnimation();
-                }
+        SvgaParserAdapter.parse(SvgaParserAdapter.ROOM_TAG, BaseRoomData.RANK_BATTLE_START_SVGA, new SVGAParser.ParseCompletion() {
+            @Override
+            public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                SVGADrawable drawable = new SVGADrawable(videoItem, requestDynamicItem(info));
+                mFirstSvga.setImageDrawable(drawable);
+                mFirstSvga.startAnimation();
+            }
 
-                @Override
-                public void onError() {
+            @Override
+            public void onError() {
 
-                }
-            });
-        } catch (Exception e) {
-            MyLog.e(TAG, e);
-        }
+            }
+        });
 
         mFirstSvga.setCallback(new SVGACallback() {
             @Override
@@ -168,24 +164,19 @@ public class TurnChangeCardView extends RelativeLayout {
 
         mNextSvga.setVisibility(VISIBLE);
         mNextSvga.setLoops(1);
-        SVGAParser parser = new SVGAParser(U.app());
-        try {
-            parser.parse("rank_battle_next.svga", new SVGAParser.ParseCompletion() {
-                @Override
-                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
-                    SVGADrawable drawable = new SVGADrawable(videoItem, requestDynamicItem(info));
-                    mNextSvga.setImageDrawable(drawable);
-                    mNextSvga.startAnimation();
-                }
+        SvgaParserAdapter.parse(SvgaParserAdapter.ROOM_TAG, "rank_battle_next.svga", new SVGAParser.ParseCompletion() {
+            @Override
+            public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                SVGADrawable drawable = new SVGADrawable(videoItem, requestDynamicItem(info));
+                mNextSvga.setImageDrawable(drawable);
+                mNextSvga.startAnimation();
+            }
 
-                @Override
-                public void onError() {
+            @Override
+            public void onError() {
 
-                }
-            });
-        } catch (Exception e) {
-            MyLog.e(TAG, e);
-        }
+            }
+        });
 
         mNextSvga.setCallback(new SVGACallback() {
             @Override

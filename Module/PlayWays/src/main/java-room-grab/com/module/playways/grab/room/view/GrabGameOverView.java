@@ -4,8 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
-import com.common.log.MyLog;
-import com.common.utils.U;
+import com.common.anim.svga.SvgaParserAdapter;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGACallback;
@@ -52,24 +51,19 @@ public class GrabGameOverView extends RelativeLayout {
         mEndGameIv.clearAnimation();
         mEndGameIv.setVisibility(VISIBLE);
         mEndGameIv.setLoops(1);
-        SVGAParser parser = new SVGAParser(U.app());
-        try {
-            parser.parse("grab_game_over.svga", new SVGAParser.ParseCompletion() {
-                @Override
-                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
-                    SVGADrawable drawable = new SVGADrawable(videoItem);
-                    mEndGameIv.setImageDrawable(drawable);
-                    mEndGameIv.startAnimation();
-                }
+        SvgaParserAdapter.parse(SvgaParserAdapter.ROOM_TAG, "grab_game_over.svga", new SVGAParser.ParseCompletion() {
+            @Override
+            public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                SVGADrawable drawable = new SVGADrawable(videoItem);
+                mEndGameIv.setImageDrawable(drawable);
+                mEndGameIv.startAnimation();
+            }
 
-                @Override
-                public void onError() {
+            @Override
+            public void onError() {
 
-                }
-            });
-        } catch (Exception e) {
-            MyLog.e(TAG,e);
-        }
+            }
+        });
 
         mEndGameIv.setCallback(new SVGACallback() {
             @Override

@@ -82,7 +82,7 @@ public class GiftBigAnimationView {
                 url = BaseRoomData.ROOM_SPECAIL_EMOJI_AIXIN;
                 break;
         }
-            load(url);
+        load(url);
         mUiHanlder.removeMessages(MSG_ENSURE_FINISH);
         mUiHanlder.sendEmptyMessageDelayed(MSG_ENSURE_FINISH, 5000);
     }
@@ -92,21 +92,17 @@ public class GiftBigAnimationView {
             onFinish();
             return;
         }
-        try {
-            SvgaParserAdapter.decodeFromURL(SvgaParserAdapter.GRAB_TAG,new URL(url), new SVGAParser.ParseCompletion() {
-                @Override
-                public void onComplete(SVGAVideoEntity videoItem) {
-                    onLoadComplete(videoItem);
-                }
+        SvgaParserAdapter.parse(SvgaParserAdapter.ROOM_TAG, url, new SVGAParser.ParseCompletion() {
+            @Override
+            public void onComplete(SVGAVideoEntity videoItem) {
+                onLoadComplete(videoItem);
+            }
 
-                @Override
-                public void onError() {
-                    onFinish();
-                }
-            });
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+            @Override
+            public void onError() {
+                onFinish();
+            }
+        });
     }
 
     private void onLoadComplete(SVGAVideoEntity videoItem) {

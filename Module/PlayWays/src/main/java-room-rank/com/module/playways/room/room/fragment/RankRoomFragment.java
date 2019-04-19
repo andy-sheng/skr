@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.common.anim.svga.SvgaParserAdapter;
 import com.common.base.BaseFragment;
 import com.common.core.account.UserAccountManager;
 import com.common.core.avatar.AvatarUtils;
@@ -141,8 +142,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
     PendingRivalData mPendingRivalCountdown;
 
     RankOpView mRankOpView;
-
-    SVGAParser mSVGAParser;
 
     AnimatorSet mGameEndAnimation;
 
@@ -449,9 +448,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         String avatar = mRoomData.getUserInfo(userId).getAvatar();
 
         mStageView.setLoops(0);
-        SVGAParser parser = new SVGAParser(U.app());
-        try {
-            parser.parse("rank_stage_voice.svga", new SVGAParser.ParseCompletion() {
+        SvgaParserAdapter.parse(SvgaParserAdapter.ROOM_TAG,"rank_stage_voice.svga", new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
                     SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
@@ -485,9 +482,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                     MyLog.d(TAG, "playShowMainStageAnimator onError");
                 }
             });
-        } catch (Exception e) {
-            MyLog.e(TAG, e);
-        }
 
         RxView.clicks(mSingAvatarView)
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
@@ -672,32 +666,6 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
                 mCorePresenter.sendLightOff(seq);
             }
         });
-    }
-
-    private SVGAParser getSVGAParser() {
-        if (mSVGAParser == null) {
-            mSVGAParser = new SVGAParser(U.app());
-//            mSVGAParser.setFileDownloader(new SVGAParser.FileDownloader() {
-//                @Override
-//                public void resume(final URL url, final Function1<? super InputStream, Unit> complete, final Function1<? super Exception, Unit> failure) {
-//                    new Thread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            OkHttpClient client = new OkHttpClient();
-//                            Request request = new Request.Builder().url(url).get().build();
-//                            try {
-//                                Response response = client.newCall(request).execute();
-//                                complete.invoke(response.body().byteStream());
-//                            } catch (IOException e) {
-//                                e.printStackTrace();
-//                                failure.invoke(e);
-//                            }
-//                        }
-//                    }).start();
-//                }
-//            });
-        }
-        return mSVGAParser;
     }
 
     private void onFirstSongGo() {
