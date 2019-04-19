@@ -272,7 +272,9 @@ class SVGAParser(private val context: Context) {
         inflater.setInput(byteArray, 0, byteArray.size)
         val inflatedBytes = ByteArray(2048)
         ByteArrayOutputStream().use { inflatedOutputStream ->
-            while (true) {
+            var bts = System.currentTimeMillis()
+            // 允许1分钟内下载好
+            while (System.currentTimeMillis() - bts <60*1000) {
                 val count = inflater.inflate(inflatedBytes, 0, 2048)
                 if (count <= 0) {
                     break
