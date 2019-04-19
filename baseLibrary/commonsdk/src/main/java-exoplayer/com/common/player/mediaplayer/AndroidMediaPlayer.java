@@ -78,6 +78,9 @@ public class AndroidMediaPlayer implements IPlayer {
         mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
+                if (mPlayer != null) {
+                    mPlayer.start();
+                }
                 if (mCallback != null) {
                     mCallback.onPrepared();
                 }
@@ -295,7 +298,10 @@ public class AndroidMediaPlayer implements IPlayer {
             } catch (IOException e) {
             }
         }
-        mPlayer.start();
+
+        // 同步播放
+//        mPlayer.prepareAsync();
+//        mPlayer.start();
         startMusicPlayTimeListener();
     }
 
