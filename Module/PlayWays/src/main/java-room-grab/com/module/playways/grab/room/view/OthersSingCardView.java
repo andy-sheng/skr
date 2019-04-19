@@ -1,7 +1,6 @@
 package com.module.playways.grab.room.view;
 
 import android.content.Context;
-import android.graphics.drawable.Animatable;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
@@ -14,18 +13,11 @@ import android.widget.RelativeLayout;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.image.fresco.BaseImageView;
-import com.common.image.fresco.FrescoWorker;
-import com.common.image.fresco.IFrescoCallBack;
-import com.common.image.model.ImageFactory;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.countdown.CircleCountDownView;
 import com.common.view.ex.ExTextView;
-import com.facebook.fresco.animation.drawable.AnimatedDrawable2;
-import com.facebook.fresco.animation.drawable.AnimationListener;
-import com.facebook.imagepipeline.image.ImageInfo;
-import com.module.playways.BaseRoomData;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.ShowPersonCardEvent;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
@@ -36,7 +28,6 @@ import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.greendao.annotation.NotNull;
 
 /**
  * 其他人主场景收音机
@@ -77,21 +68,21 @@ public class OthersSingCardView extends RelativeLayout {
 
     public OthersSingCardView(Context context) {
         super(context);
-        init();
+        init(context);
     }
 
     public OthersSingCardView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(context);
     }
 
     public OthersSingCardView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
+        init(context);
     }
 
-    private void init() {
-        inflate(getContext(), R.layout.grab_others_sing_card_layout, this);
+    private void init(Context context) {
+        inflate(context, R.layout.grab_others_sing_card_layout, this);
         mGrabStageView = (SVGAImageView) findViewById(R.id.grab_stage_view);
         mSingAvatarView = (BaseImageView) findViewById(R.id.sing_avatar_view);
         mCircleCountDownView = (CircleCountDownView) findViewById(R.id.circle_count_down_view);
@@ -143,7 +134,7 @@ public class OthersSingCardView extends RelativeLayout {
         try {
             parser.parse("grab_main_stage.svga", new SVGAParser.ParseCompletion() {
                 @Override
-                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                public void onComplete(SVGAVideoEntity videoItem) {
                     SVGADrawable drawable = new SVGADrawable(videoItem);
                     mGrabStageView.setLoops(-1);
                     mGrabStageView.setImageDrawable(drawable);

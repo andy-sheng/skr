@@ -2,6 +2,7 @@ if (isBuildModule.toBoolean()) {
     apply plugin: 'com.android.application'
 } else {
     apply plugin: 'com.android.library'
+    apply plugin: 'org.greenrobot.greendao' // apply plugin
 }
 
 android {
@@ -82,6 +83,9 @@ android {
 
             java.srcDirs += 'src/main/java-room-voice'
             res.srcDirs += 'src/main/res-room-voice'
+
+            java.srcDirs += 'src/main/java-gift'
+            res.srcDirs += 'src/main/res-gift '
         }
     }
 }
@@ -95,4 +99,19 @@ dependencies {
     } else {
         compileOnly rootProject.ext.dependencies["arouter-compiler"]
     }
+}
+
+//与dependencies平级，主要用于配置数据库相关信息的及自动生成的“DAO”资源的目录
+greendao {
+
+    schemaVersion 1//数据库版本号
+
+    daoPackage 'com.module.playways.db'//设置DaoMaster、DaoSession、Dao包名
+
+    targetGenDir 'src/main/java-gen-db'//设置DaoMaster、DaoSession、Dao目录
+
+    //targetGenDirTest：设置生成单元测试目录
+
+    //generateTests：设置自动生成单元测试用例
+
 }

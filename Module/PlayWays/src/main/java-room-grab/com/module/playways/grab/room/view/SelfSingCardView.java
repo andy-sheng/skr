@@ -34,7 +34,7 @@ import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.zq.lyrics.model.LyricsLineInfo;
 
-import org.greenrobot.greendao.annotation.NotNull;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;

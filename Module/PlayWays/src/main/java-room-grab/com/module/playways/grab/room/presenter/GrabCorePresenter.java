@@ -1502,13 +1502,15 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             List<EngineEvent.UserVolumeInfo> list = event.getObj();
             for (EngineEvent.UserVolumeInfo uv : list) {
                 MyLog.d(TAG, "UserVolumeInfo uv=" + uv);
-                int uid = uv.getUid();
-                if (uid == 0) {
-                    uid = (int) MyUserInfoManager.getInstance().getUid();
-                }
-                if (uid == mRoomData.getOwnerId() && !mRoomData.isOwner()) {
-                    MyLog.d(TAG, "房主在说话");
-                    weakVolume(1000);
+                if(uv!=null){
+                    int uid = uv.getUid();
+                    if (uid == 0) {
+                        uid = (int) MyUserInfoManager.getInstance().getUid();
+                    }
+                    if (mRoomData!=null && uid == mRoomData.getOwnerId() && !mRoomData.isOwner()) {
+                        MyLog.d(TAG, "房主在说话");
+                        weakVolume(1000);
+                    }
                 }
             }
         } else {
