@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
+import com.common.anim.svga.SvgaParserAdapter;
 import com.common.base.BaseFragment;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
@@ -54,7 +55,6 @@ import com.zq.level.view.LevelStarProgressBar;
 import com.zq.live.proto.Room.EExpWhy;
 import com.zq.live.proto.Room.EWinType;
 
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.net.URL;
@@ -187,12 +187,11 @@ public class RankLevelChangeFragment2 extends BaseFragment {
 
         mResultSvga.setVisibility(VISIBLE);
         mResultSvga.setLoops(1);
-        SVGAParser parser = new SVGAParser(U.app());
         try {
             final boolean finalIsWin = isWin;
-            parser.parse(new URL(url), new SVGAParser.ParseCompletion() {
+            SvgaParserAdapter.parse(url, new SVGAParser.ParseCompletion() {
                 @Override
-                public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
+                public void onComplete( SVGAVideoEntity svgaVideoEntity) {
                     SVGADrawable drawable = new SVGADrawable(svgaVideoEntity, requestDynamicItem());
                     mResultSvga.setImageDrawable(drawable);
                     mResultSvga.startAnimation();

@@ -7,6 +7,7 @@ import android.view.WindowManager;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.fastjson.JSON;
+import com.common.anim.svga.SvgaParserAdapter;
 import com.common.base.BaseActivity;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;

@@ -10,6 +10,7 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
 
+import com.common.anim.svga.SvgaParserAdapter;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.image.fresco.BaseImageView;
@@ -54,10 +55,10 @@ public class OthersSingCardView extends RelativeLayout {
 
     GrabRoomData mGrabRoomData;
 
-    Handler mUiHandler = new Handler(){
+    Handler mUiHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            if(msg.what == MSG_ENSURE_PLAY){
+            if (msg.what == MSG_ENSURE_PLAY) {
                 tryStartCountDown();
             }
         }
@@ -130,25 +131,20 @@ public class OthersSingCardView extends RelativeLayout {
         mGrabStageView.setVisibility(View.VISIBLE);
         mGrabStageView.setLoops(1);
 
-        SVGAParser parser = new SVGAParser(U.app());
-        try {
-            parser.parse("grab_main_stage.svga", new SVGAParser.ParseCompletion() {
-                @Override
-                public void onComplete(SVGAVideoEntity videoItem) {
-                    SVGADrawable drawable = new SVGADrawable(videoItem);
-                    mGrabStageView.setLoops(-1);
-                    mGrabStageView.setImageDrawable(drawable);
-                    mGrabStageView.startAnimation();
-                }
+        SvgaParserAdapter.parse( "grab_main_stage.svga", new SVGAParser.ParseCompletion() {
+            @Override
+            public void onComplete( SVGAVideoEntity videoItem) {
+                SVGADrawable drawable = new SVGADrawable(videoItem);
+                mGrabStageView.setLoops(-1);
+                mGrabStageView.setImageDrawable(drawable);
+                mGrabStageView.startAnimation();
+            }
 
-                @Override
-                public void onError() {
+            @Override
+            public void onError() {
 
-                }
-            });
-        } catch (Exception e) {
-            MyLog.e(TAG, e);
-        }
+            }
+        });
 
         GrabRoundInfoModel grabRoundInfoModel = mGrabRoomData.getRealRoundInfo();
         if (grabRoundInfoModel == null) {
@@ -282,7 +278,7 @@ public class OthersSingCardView extends RelativeLayout {
             mLeaveTranslateAnimation.setAnimationListener(null);
             mLeaveTranslateAnimation.cancel();
         }
-        if(mUiHandler != null){
+        if (mUiHandler != null) {
             mUiHandler.removeCallbacksAndMessages(null);
         }
     }

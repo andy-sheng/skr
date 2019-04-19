@@ -12,6 +12,7 @@ import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
+import com.common.anim.svga.SvgaParserAdapter;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
 import com.common.core.avatar.AvatarUtils;
@@ -133,25 +134,20 @@ public class NewGrabMatchFragment extends BaseFragment implements IGrabMatchingV
         mSvgaMatchBg.setVisibility(View.VISIBLE);
         mSvgaMatchBg.setLoops(1);
 
-        SVGAParser parser = new SVGAParser(U.app());
-        try {
-            parser.parse("matching.svga", new SVGAParser.ParseCompletion() {
-                @Override
-                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
-                    SVGADrawable drawable = new SVGADrawable(videoItem);
-                    mSvgaMatchBg.setLoops(-1);
-                    mSvgaMatchBg.setImageDrawable(drawable);
-                    mSvgaMatchBg.startAnimation();
-                }
+        SvgaParserAdapter.parse( "matching.svga", new SVGAParser.ParseCompletion() {
+            @Override
+            public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                SVGADrawable drawable = new SVGADrawable(videoItem);
+                mSvgaMatchBg.setLoops(-1);
+                mSvgaMatchBg.setImageDrawable(drawable);
+                mSvgaMatchBg.startAnimation();
+            }
 
-                @Override
-                public void onError() {
+            @Override
+            public void onError() {
 
-                }
-            });
-        } catch (Exception e) {
-            MyLog.e(TAG, e);
-        }
+            }
+        });
     }
 
     private HandlerTaskTimer mControlTask;

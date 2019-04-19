@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
+import com.common.anim.svga.SvgaParserAdapter;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.image.fresco.FrescoWorker;
@@ -30,7 +31,6 @@ import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.zq.live.proto.Common.ESex;
 
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
@@ -73,13 +73,12 @@ public class SingBeginTipsCardView extends RelativeLayout {
         }
         this.mSVGAListener = listener;
         setVisibility(VISIBLE);
-        SVGAParser parser = new SVGAParser(U.app());
         String assetsName = isChallenge ? "grab_challenge_sing_chance.svga" : "grab_sing_chance.svga";
         mSingBeginSvga.setVisibility(VISIBLE);
         try {
-            parser.parse(assetsName, new SVGAParser.ParseCompletion() {
+            SvgaParserAdapter.parse(assetsName, new SVGAParser.ParseCompletion() {
                 @Override
-                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                public void onComplete( SVGAVideoEntity videoItem) {
                     SVGADrawable drawable = new SVGADrawable(videoItem, requestDynamicBitmapItem(info, songModel));
                     mSingBeginSvga.setImageDrawable(drawable);
                     mSingBeginSvga.startAnimation();

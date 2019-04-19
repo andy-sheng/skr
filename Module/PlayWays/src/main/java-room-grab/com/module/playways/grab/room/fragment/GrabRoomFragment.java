@@ -77,7 +77,6 @@ import com.module.playways.room.room.view.BottomContainerView;
 import com.module.playways.room.room.view.InputContainerView;
 import com.module.playways.room.song.model.SongModel;
 import com.module.rank.R;
-import com.opensource.svgaplayer.SVGAParser;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.ViewHolder;
@@ -175,8 +174,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     GrabVoiceControlPanelView mGrabVoiceControlPanelView;
 
     DialogPlus mVoiceControlDialog;
-
-    SVGAParser mSVGAParser;
 
     List<Animator> mAnimatorList = new ArrayList<>();  //存放所有需要尝试取消的动画
 
@@ -822,32 +819,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                 mCorePresenter.sendRoundOverInfo();
             }
         });
-    }
-
-    private SVGAParser getSVGAParser() {
-        if (mSVGAParser == null) {
-            mSVGAParser = new SVGAParser(U.app());
-//            mSVGAParser.setFileDownloader(new SVGAParser.FileDownloader() {
-//                @Override
-//                public void resume(final URL url, final Function1<? super InputStream, Unit> complete, final Function1<? super Exception, Unit> failure) {
-//                    new Thread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            OkHttpClient client = new OkHttpClient();
-//                            Request request = new Request.Builder().url(url).get().build();
-//                            try {
-//                                Response response = client.newCall(request).execute();
-//                                complete.invoke(response.body().byteStream());
-//                            } catch (IOException e) {
-//                                e.printStackTrace();
-//                                failure.invoke(e);
-//                            }
-//                        }
-//                    }).start();
-//                }
-//            });
-        }
-        return mSVGAParser;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

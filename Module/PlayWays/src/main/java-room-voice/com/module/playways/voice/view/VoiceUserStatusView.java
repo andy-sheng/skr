@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.common.anim.svga.SvgaParserAdapter;
 import com.common.core.avatar.AvatarUtils;
 import com.common.image.fresco.BaseImageView;
 
@@ -23,7 +24,6 @@ import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 
 import org.greenrobot.eventbus.EventBus;
-import org.jetbrains.annotations.NotNull;
 
 public class VoiceUserStatusView extends RelativeLayout {
 
@@ -148,24 +148,19 @@ public class VoiceUserStatusView extends RelativeLayout {
         mSpeakerSvga.stopAnimation(true);
         mSpeakerSvga.setVisibility(VISIBLE);
         mSpeakerSvga.setLoops(0);
-        SVGAParser parser = new SVGAParser(U.app());
-        try {
-            parser.parse("voice_room_speak.svga", new SVGAParser.ParseCompletion() {
-                @Override
-                public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
-                    SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
-                    mSpeakerSvga.setImageDrawable(drawable);
-                    mSpeakerSvga.startAnimation();
-                }
+        SvgaParserAdapter.parse( "voice_room_speak.svga", new SVGAParser.ParseCompletion() {
+            @Override
+            public void onComplete( SVGAVideoEntity svgaVideoEntity) {
+                SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
+                mSpeakerSvga.setImageDrawable(drawable);
+                mSpeakerSvga.startAnimation();
+            }
 
-                @Override
-                public void onError() {
+            @Override
+            public void onError() {
 
-                }
-            });
-        } catch (Exception e) {
-            MyLog.e(TAG,e);
-        }
+            }
+        });
     }
 
     public void stopSpeakSVGA() {

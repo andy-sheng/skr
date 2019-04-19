@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
+import com.common.anim.svga.SvgaParserAdapter;
 import com.common.core.account.UserAccountManager;
 import com.common.log.MyLog;
 import com.common.statistics.StatConstants;
@@ -130,9 +131,7 @@ public class RoundOverCardView extends RelativeLayout {
                 StatConstants.KEY_SONG_NO_ONE, map);
         mSingResultSvga.setVisibility(VISIBLE);
         mSingResultSvga.setLoops(1);
-        SVGAParser parser = new SVGAParser(U.app());
-        try {
-            parser.parse("grab_none_sing_end.svga", new SVGAParser.ParseCompletion() {
+            SvgaParserAdapter.parse("grab_none_sing_end.svga", new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete(@NotNull SVGAVideoEntity videoItem) {
                     SVGADrawable drawable = new SVGADrawable(videoItem);
@@ -145,9 +144,6 @@ public class RoundOverCardView extends RelativeLayout {
 
                 }
             });
-        } catch (Exception e) {
-            MyLog.e(TAG, e);
-        }
 
         mSingResultSvga.setCallback(new SVGACallback() {
             @Override
@@ -191,24 +187,19 @@ public class RoundOverCardView extends RelativeLayout {
                 StatConstants.KEY_SONG_SUCCESS, map);
         mSingResultSvga.setVisibility(VISIBLE);
         mSingResultSvga.setLoops(1);
-        SVGAParser parser = new SVGAParser(U.app());
-        try {
-            parser.parse("grab_sing_perfect_end.svga", new SVGAParser.ParseCompletion() {
-                @Override
-                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
-                    SVGADrawable drawable = new SVGADrawable(videoItem);
-                    mSingResultSvga.setImageDrawable(drawable);
-                    mSingResultSvga.startAnimation();
-                }
+        SvgaParserAdapter.parse( "grab_sing_perfect_end.svga", new SVGAParser.ParseCompletion() {
+            @Override
+            public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                SVGADrawable drawable = new SVGADrawable(videoItem);
+                mSingResultSvga.setImageDrawable(drawable);
+                mSingResultSvga.startAnimation();
+            }
 
-                @Override
-                public void onError() {
+            @Override
+            public void onError() {
 
-                }
-            });
-        } catch (Exception e) {
-            MyLog.e(TAG, e);
-        }
+            }
+        });
 
         mSingResultSvga.setCallback(new SVGACallback() {
             @Override
@@ -270,24 +261,19 @@ public class RoundOverCardView extends RelativeLayout {
                 assetsName = "grab_sing_abandon_end.svga";
                 break;
         }
-        SVGAParser parser = new SVGAParser(U.app());
-        try {
-            parser.parse(assetsName, new SVGAParser.ParseCompletion() {
-                @Override
-                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
-                    SVGADrawable drawable = new SVGADrawable(videoItem);
-                    mSingResultSvga.setImageDrawable(drawable);
-                    mSingResultSvga.startAnimation();
-                }
+        SvgaParserAdapter.parse( assetsName, new SVGAParser.ParseCompletion() {
+            @Override
+            public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                SVGADrawable drawable = new SVGADrawable(videoItem);
+                mSingResultSvga.setImageDrawable(drawable);
+                mSingResultSvga.startAnimation();
+            }
 
-                @Override
-                public void onError() {
+            @Override
+            public void onError() {
 
-                }
-            });
-        } catch (Exception e) {
-            MyLog.e(TAG, e);
-        }
+            }
+        });
 
         mSingResultSvga.setCallback(new SVGACallback() {
             @Override

@@ -13,6 +13,7 @@ import android.view.animation.OvershootInterpolator;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.common.anim.svga.SvgaParserAdapter;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
 import com.common.core.avatar.AvatarUtils;
@@ -44,7 +45,6 @@ import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -175,11 +175,9 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
     private void playTopSvgaAnimation() {
         mTopSvgaView.setVisibility(VISIBLE);
         mTopSvgaView.setLoops(1);
-        SVGAParser parser = new SVGAParser(U.app());
-        try {
-            parser.parse("match_sucess_top.svga", new SVGAParser.ParseCompletion() {
+            SvgaParserAdapter.parse("match_sucess_top.svga", new SVGAParser.ParseCompletion() {
                 @Override
-                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                public void onComplete( SVGAVideoEntity videoItem) {
                     SVGADrawable drawable = new SVGADrawable(videoItem);
                     mTopSvgaView.setImageDrawable(drawable);
                     mTopSvgaView.startAnimation();
@@ -190,9 +188,6 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
 
                 }
             });
-        } catch (Exception e) {
-            MyLog.e(TAG,e);
-        }
 
         mTopSvgaView.setCallback(new SVGACallback() {
             @Override

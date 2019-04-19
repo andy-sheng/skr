@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.common.anim.svga.SvgaParserAdapter;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.image.fresco.FrescoWorker;
@@ -34,7 +35,6 @@ import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.zq.lyrics.model.LyricsLineInfo;
 
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -265,24 +265,19 @@ public class SelfSingCardView extends RelativeLayout {
         setVisibility(VISIBLE);
         mSingBgSvga.setVisibility(VISIBLE);
         mSingBgSvga.setLoops(0);
-        SVGAParser parser = new SVGAParser(U.app());
-        try {
-            parser.parse("grab_self_sing_bg.svga", new SVGAParser.ParseCompletion() {
-                @Override
-                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
-                    SVGADrawable drawable = new SVGADrawable(videoItem, requestDynamicItem(avatar));
-                    mSingBgSvga.setImageDrawable(drawable);
-                    mSingBgSvga.startAnimation();
-                }
+        SvgaParserAdapter.parse("grab_self_sing_bg.svga", new SVGAParser.ParseCompletion() {
+            @Override
+            public void onComplete(SVGAVideoEntity videoItem) {
+                SVGADrawable drawable = new SVGADrawable(videoItem, requestDynamicItem(avatar));
+                mSingBgSvga.setImageDrawable(drawable);
+                mSingBgSvga.startAnimation();
+            }
 
-                @Override
-                public void onError() {
+            @Override
+            public void onError() {
 
-                }
-            });
-        } catch (Exception e) {
-            MyLog.e(TAG, e);
-        }
+            }
+        });
     }
 
     private SVGADynamicEntity requestDynamicItem(String avatar) {

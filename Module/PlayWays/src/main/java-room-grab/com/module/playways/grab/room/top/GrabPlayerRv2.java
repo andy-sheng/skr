@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.common.anim.svga.SvgaParserAdapter;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.U;
@@ -19,7 +20,6 @@ import com.engine.EngineEvent;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent;
 import com.module.playways.grab.room.event.LightOffAnimationOverEvent;
-import com.module.playways.grab.room.fragment.GrabRoomFragment;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.MLightInfoModel;
 import com.module.playways.grab.room.model.WantSingerInfo;
@@ -35,7 +35,6 @@ import com.opensource.svgaplayer.SVGAVideoEntity;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -52,7 +51,6 @@ public class GrabPlayerRv2 extends RelativeLayout {
     AnimatorSet mAnimatorAllSet;
 
     LinearLayout mContentLl;
-    SVGAParser mSVGAParser;
 
     int mCurSeq = -2;
 
@@ -531,9 +529,9 @@ public class GrabPlayerRv2 extends RelativeLayout {
         mMieDengIv.setTranslationX(position1[0] - U.getDisplayUtils().dip2px(32));
         mMieDengIv.setTranslationY(U.getDisplayUtils().dip2px(12f));
 
-        getSVGAParser().parse("grab_miedeng.svga", new SVGAParser.ParseCompletion() {
+        SvgaParserAdapter.parse("grab_miedeng.svga", new SVGAParser.ParseCompletion() {
             @Override
-            public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
+            public void onComplete( SVGAVideoEntity svgaVideoEntity) {
                 SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
                 mMieDengIv.setVisibility(VISIBLE);
                 mMieDengIv.stopAnimation(true);
@@ -570,13 +568,6 @@ public class GrabPlayerRv2 extends RelativeLayout {
 
             }
         });
-    }
-
-    private SVGAParser getSVGAParser() {
-        if (mSVGAParser == null) {
-            mSVGAParser = new SVGAParser(U.app());
-        }
-        return mSVGAParser;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

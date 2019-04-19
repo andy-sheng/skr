@@ -239,12 +239,26 @@ public class AndroidMediaPlayer implements IPlayer {
         }
     }
 
+    float mVolume;
+
     @Override
     public void setVolume(float volume) {
         if (mPlayer == null) {
             return;
         }
+        mVolume = volume;
         mPlayer.setVolume(volume, volume);
+    }
+
+    @Override
+    public void setVolume(float volume,boolean setConfig) {
+        if (mPlayer == null) {
+            return;
+        }
+        if(setConfig) {
+            this.mVolume = volume;
+        }
+        mPlayer.setVolume(volume,volume);
     }
 
     @Override
@@ -256,6 +270,10 @@ public class AndroidMediaPlayer implements IPlayer {
         mPlayer.setSurface(surface);
     }
 
+    /**
+     * 也可以播放在线的文件
+     * @param path
+     */
     @Override
     public void startPlay(String path) {
         MyLog.d(TAG, "startPlay" + " path=" + path);
@@ -365,6 +383,11 @@ public class AndroidMediaPlayer implements IPlayer {
     @Override
     public void reconnect() {
 
+    }
+
+    @Override
+    public float getVolume() {
+        return mVolume;
     }
 
     private void startMusicPlayTimeListener() {

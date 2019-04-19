@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
+import com.common.anim.svga.SvgaParserAdapter;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.module.playways.grab.room.listener.SVGAListener;
@@ -14,7 +15,6 @@ import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 
-import org.jetbrains.annotations.NotNull;
 
 public class TurnInfoCardView extends RelativeLayout {
 
@@ -67,24 +67,19 @@ public class TurnInfoCardView extends RelativeLayout {
         mFirstSvga.clearAnimation();
         mFirstSvga.setVisibility(VISIBLE);
         mFirstSvga.setLoops(1);
-        SVGAParser parser = new SVGAParser(U.app());
-        try {
-            parser.parse("grab_battle_start.svga", new SVGAParser.ParseCompletion() {
-                @Override
-                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
-                    SVGADrawable drawable = new SVGADrawable(videoItem);
-                    mFirstSvga.setImageDrawable(drawable);
-                    mFirstSvga.startAnimation();
-                }
+        SvgaParserAdapter.parse( "grab_battle_start.svga", new SVGAParser.ParseCompletion() {
+            @Override
+            public void onComplete( SVGAVideoEntity videoItem) {
+                SVGADrawable drawable = new SVGADrawable(videoItem);
+                mFirstSvga.setImageDrawable(drawable);
+                mFirstSvga.startAnimation();
+            }
 
-                @Override
-                public void onError() {
+            @Override
+            public void onError() {
 
-                }
-            });
-        } catch (Exception e) {
-            MyLog.e(TAG,e);
-        }
+            }
+        });
 
         mFirstSvga.setCallback(new SVGACallback() {
             @Override
@@ -122,24 +117,19 @@ public class TurnInfoCardView extends RelativeLayout {
         mNextSvga.clearAnimation();
         mNextSvga.setVisibility(VISIBLE);
         mNextSvga.setLoops(1);
-        SVGAParser parser = new SVGAParser(U.app());
-        try {
-            parser.parse("grab_battle_next.svga", new SVGAParser.ParseCompletion() {
-                @Override
-                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
-                    SVGADrawable drawable = new SVGADrawable(videoItem);
-                    mNextSvga.setImageDrawable(drawable);
-                    mNextSvga.startAnimation();
-                }
+        SvgaParserAdapter.parse( "grab_battle_next.svga", new SVGAParser.ParseCompletion() {
+            @Override
+            public void onComplete( SVGAVideoEntity videoItem) {
+                SVGADrawable drawable = new SVGADrawable(videoItem);
+                mNextSvga.setImageDrawable(drawable);
+                mNextSvga.startAnimation();
+            }
 
-                @Override
-                public void onError() {
+            @Override
+            public void onError() {
 
-                }
-            });
-        } catch (Exception e) {
-            MyLog.e(TAG,e);
-        }
+            }
+        });
 
         mNextSvga.setCallback(new SVGACallback() {
             @Override

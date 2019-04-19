@@ -1,5 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'org.greenrobot.greendao' // apply plugin
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion rootProject.ext.android["compileSdkVersion"]
@@ -131,11 +133,17 @@ android {
 
             java.srcDirs += 'src/main/java-jsbridge'
 
+            // banner
             java.srcDirs += 'src/main/java-banner'
             res.srcDirs += 'src/main/res-banner'
 
+            // 悬浮窗
             java.srcDirs += 'src/main/java-floatwindow'
             res.srcDirs += 'src/main/res-floatwindow'
+
+            // svga
+            java.srcDirs += 'src/main/java-svga'
+            res.srcDirs += 'src/main/res-svga'
         }
 
 //        release {
@@ -158,6 +166,7 @@ android {
 dependencies {
     // New api keyword is exactly the same as the old compile keyword.
     annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     // implementation 只会引入依赖的A，不会把A依赖的B也引进来
     api(rootProject.ext.dependencies["support-v4"])
     api(rootProject.ext.dependencies["appcompat-v7"])
@@ -258,9 +267,9 @@ dependencies {
 //    debugApi rootProject.ext.dependencies["stetho"]
 
     // 使用矢量图来播动画的库
-    api rootProject.ext.dependencies["lottie"]
+    //api rootProject.ext.dependencies["lottie"]
     // SVGA YY的动画播放框架
-    api rootProject.ext.dependencies["svga"]
+    //api rootProject.ext.dependencies["svga"]
 
     api rootProject.ext.dependencies["rxbinding"]
     api rootProject.ext.dependencies["rxbinding-support-v4"]

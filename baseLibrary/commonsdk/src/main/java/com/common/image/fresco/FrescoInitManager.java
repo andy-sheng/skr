@@ -116,14 +116,6 @@ public class FrescoInitManager {
 
         FLog.setLoggingDelegate(new FrescoLogDelegate("FrescoLogDelegate"));
         FLog.setMinimumLoggingLevel(BuildConfig.DEBUG ? FLog.ERROR : FLog.ERROR);
-
-        MyLog.d(TAG, "initFresco install cache for svga");
-        File cacheDir = new File(U.app().getCacheDir(), "http");
-        try {
-            HttpResponseCache.install(cacheDir, 1024 * 1024 * 64);
-        } catch (IOException e) {
-            MyLog.e(e);
-        }
     }
 
 

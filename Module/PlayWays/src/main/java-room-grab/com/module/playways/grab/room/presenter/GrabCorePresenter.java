@@ -13,8 +13,10 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.engine.ScoreConfig;
 import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
+import com.common.player.IPlayer;
 import com.common.player.VideoPlayerAdapter;
 import com.common.player.exoplayer.ExoPlayer;
+import com.common.player.mediaplayer.AndroidMediaPlayer;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -153,7 +155,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     boolean mDestroyed = false;
 
-    ExoPlayer mExoPlayer;
+    IPlayer mExoPlayer;
 
     boolean mSwitchRooming = false;
 
@@ -347,7 +349,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
         if (now != null) {
             if (mExoPlayer == null) {
-                mExoPlayer = new ExoPlayer();
+                mExoPlayer = new AndroidMediaPlayer();
                 if (mRoomData.isMute() || !U.getActivityUtils().isAppForeground()) {
                     mExoPlayer.setVolume(0);
                 } else {
@@ -835,6 +837,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         ChatRoomMsgManager.getInstance().removeFilter(mPushMsgFilter);
         if (mExoPlayer != null) {
             mExoPlayer.release();
+            mExoPlayer = null;
         } else {
             MyLog.d(TAG, "mExoPlayer == null ");
         }

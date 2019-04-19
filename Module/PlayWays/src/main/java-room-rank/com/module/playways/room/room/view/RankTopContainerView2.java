@@ -10,6 +10,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.common.anim.svga.SvgaParserAdapter;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -41,7 +42,6 @@ import com.zq.live.proto.Room.ERoundOverReason;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -534,24 +534,19 @@ public class RankTopContainerView2 extends RelativeLayout {
         mEnergyFillSvga.setVisibility(VISIBLE);
         mEnergyFillSvga.setLoops(1);
 
-        SVGAParser parser = new SVGAParser(U.app());
-        try {
-            parser.parse(assetsName, new SVGAParser.ParseCompletion() {
-                @Override
-                public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
-                    SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
-                    mEnergyFillSvga.setImageDrawable(drawable);
-                    mEnergyFillSvga.startAnimation();
-                }
+        SvgaParserAdapter.parse( assetsName, new SVGAParser.ParseCompletion() {
+            @Override
+            public void onComplete( SVGAVideoEntity svgaVideoEntity) {
+                SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
+                mEnergyFillSvga.setImageDrawable(drawable);
+                mEnergyFillSvga.startAnimation();
+            }
 
-                @Override
-                public void onError() {
+            @Override
+            public void onError() {
 
-                }
-            });
-        } catch (Exception e) {
-            MyLog.e(TAG, e);
-        }
+            }
+        });
 
 
         mEnergyFillSvga.setCallback(new SVGACallback() {

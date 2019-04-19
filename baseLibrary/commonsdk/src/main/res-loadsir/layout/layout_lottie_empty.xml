@@ -6,11 +6,20 @@
               android:layout_height="match_parent"
               android:gravity="center">
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/animation_view"
+    <ImageView
+        android:layout_marginBottom="4dp"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
+        android:background="@drawable/error"/>
+
+    <TextView
+        android:textSize="18sp"
+        android:textColor="#333333"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:lottie_fileName="lottie/lottie_empty.json"
-        app:lottie_loop="true"
-        app:lottie_autoPlay="true"/>
+        android:text="Boss! Empty"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="click me to retry!"/>
 </LinearLayout>

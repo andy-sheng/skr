@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
+import com.common.anim.svga.SvgaParserAdapter;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.module.playways.grab.room.listener.SVGAListener;
@@ -15,7 +16,7 @@ import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 
-import org.jetbrains.annotations.NotNull;
+
 
 /**
  * 顶部动画
@@ -67,27 +68,21 @@ public class RankTopLEDView extends RelativeLayout {
             setVisibility(VISIBLE);
             mDengSvga.setVisibility(VISIBLE);
             mDengSvga.setLoops(1);
-            SVGAParser parser = new SVGAParser(U.app());
-            try {
-                parser.parse("rank_love_mid.svga", new SVGAParser.ParseCompletion() {
-                    @Override
-                    public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
-                        if (curMode == MIE_MODE) {
-                            SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
-                            mDengSvga.setImageDrawable(drawable);
-                            mDengSvga.startAnimation();
-                        }
+            SvgaParserAdapter.parse( "rank_love_mid.svga", new SVGAParser.ParseCompletion() {
+                @Override
+                public void onComplete( SVGAVideoEntity svgaVideoEntity) {
+                    if (curMode == MIE_MODE) {
+                        SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
+                        mDengSvga.setImageDrawable(drawable);
+                        mDengSvga.startAnimation();
                     }
+                }
 
-                    @Override
-                    public void onError() {
+                @Override
+                public void onError() {
 
-                    }
-                });
-            } catch (Exception e) {
-                MyLog.e(TAG,e);
-            }
-
+                }
+            });
 
             mDengSvga.setCallback(new SVGACallback() {
                 @Override
@@ -147,26 +142,21 @@ public class RankTopLEDView extends RelativeLayout {
         mDengSvga.setVisibility(VISIBLE);
         mDengSvga.setLoops(0);
 
-        SVGAParser parser = new SVGAParser(U.app());
-        try {
-            parser.parse(assetsName, new SVGAParser.ParseCompletion() {
-                @Override
-                public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
-                    if (curMode == DEFAULT_MODE) {
-                        SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
-                        mDengSvga.setImageDrawable(drawable);
-                        mDengSvga.startAnimation();
-                    }
+        SvgaParserAdapter.parse( assetsName, new SVGAParser.ParseCompletion() {
+            @Override
+            public void onComplete( SVGAVideoEntity svgaVideoEntity) {
+                if (curMode == DEFAULT_MODE) {
+                    SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
+                    mDengSvga.setImageDrawable(drawable);
+                    mDengSvga.startAnimation();
                 }
+            }
 
-                @Override
-                public void onError() {
+            @Override
+            public void onError() {
 
-                }
-            });
-        } catch (Exception e) {
-            MyLog.e(TAG,e);
-        }
+            }
+        });
     }
 
     // 爆灯或者灭灯
@@ -191,11 +181,9 @@ public class RankTopLEDView extends RelativeLayout {
         }
         mDengSvga.setVisibility(VISIBLE);
         mDengSvga.setLoops(1);
-        SVGAParser parser = new SVGAParser(U.app());
-        try {
-            parser.parse(assetsName, new SVGAParser.ParseCompletion() {
+            SvgaParserAdapter.parse(assetsName, new SVGAParser.ParseCompletion() {
                 @Override
-                public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
+                public void onComplete( SVGAVideoEntity svgaVideoEntity) {
                     if (curMode == BAO_MODE || curMode == MIE_MODE) {
                         SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
                         mDengSvga.setImageDrawable(drawable);
@@ -208,9 +196,6 @@ public class RankTopLEDView extends RelativeLayout {
 
                 }
             });
-        } catch (Exception e) {
-            MyLog.e(TAG,e);
-        }
 
         mDengSvga.setCallback(new SVGACallback() {
             @Override
@@ -260,26 +245,21 @@ public class RankTopLEDView extends RelativeLayout {
         mDengSvga.setVisibility(VISIBLE);
         mDengSvga.setCallback(null);
         mDengSvga.setLoops(0);
-        SVGAParser parser = new SVGAParser(U.app());
-        try {
-            parser.parse(assetsName, new SVGAParser.ParseCompletion() {
-                @Override
-                public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
-                    if (curMode == DEFAULT_MODE || curMode == BAO_MODE) {
-                        SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
-                        mDengSvga.setImageDrawable(drawable);
-                        mDengSvga.startAnimation();
-                    }
+        SvgaParserAdapter.parse( assetsName, new SVGAParser.ParseCompletion() {
+            @Override
+            public void onComplete( SVGAVideoEntity svgaVideoEntity) {
+                if (curMode == DEFAULT_MODE || curMode == BAO_MODE) {
+                    SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
+                    mDengSvga.setImageDrawable(drawable);
+                    mDengSvga.startAnimation();
                 }
+            }
 
-                @Override
-                public void onError() {
+            @Override
+            public void onError() {
 
-                }
-            });
-        } catch (Exception e) {
-            MyLog.e(TAG,e);
-        }
+            }
+        });
     }
 
     @Override

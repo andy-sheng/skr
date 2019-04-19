@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 import com.common.anim.ObjectPlayControlTemplate;
+import com.common.anim.svga.SvgaParserAdapter;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.module.playways.BaseRoomData;
@@ -14,8 +15,6 @@ import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -93,24 +92,19 @@ public class GrabDengBigAnimationView extends RelativeLayout {
 
         dengSvga.setVisibility(VISIBLE);
         dengSvga.setLoops(1);
-        SVGAParser parser = new SVGAParser(U.app());
-        try {
-            parser.parse(new URL(BaseRoomData.GRAB_BURST_BIG_SVGA), new SVGAParser.ParseCompletion() {
-                @Override
-                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
-                    SVGADrawable drawable = new SVGADrawable(videoItem);
-                    dengSvga.setImageDrawable(drawable);
-                    dengSvga.startAnimation();
-                }
+        SvgaParserAdapter.parse( BaseRoomData.GRAB_BURST_BIG_SVGA, new SVGAParser.ParseCompletion() {
+            @Override
+            public void onComplete( SVGAVideoEntity videoItem) {
+                SVGADrawable drawable = new SVGADrawable(videoItem);
+                dengSvga.setImageDrawable(drawable);
+                dengSvga.startAnimation();
+            }
 
-                @Override
-                public void onError() {
-                    MyLog.d(TAG, "playBurstAnimationInner onError");
-                }
-            });
-        } catch (Exception e) {
-            MyLog.e(TAG, e);
-        }
+            @Override
+            public void onError() {
+                MyLog.d(TAG, "playBurstAnimationInner onError");
+            }
+        });
 
         dengSvga.setCallback(new SVGACallback() {
             @Override

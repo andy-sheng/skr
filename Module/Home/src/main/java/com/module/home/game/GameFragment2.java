@@ -131,6 +131,24 @@ public class GameFragment2 extends BaseFragment implements IGameView {
                 mGamePresenter.initQuickRoom(true);
                 mGamePresenter.initRecommendRoom(mRecommendInterval);
 
+
+//                for(int i=0;i<1000;i++)
+//                {
+//                    int finalI = i;
+//                    new Thread(){
+//                        @Override
+//                        public void run() {
+//                            while(true) {
+//                                try {
+//                                    MyLog.d(TAG, "run :" + finalI);
+//                                    Thread.sleep(finalI * 10);
+//                                } catch (InterruptedException e) {
+//                                    e.printStackTrace();
+//                                }
+//                            }
+//                        }
+//                    }.start();
+//                }
             }
         });
 
@@ -218,42 +236,6 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mGamePresenter = new GamePresenter(this);
         addPresent(mGamePresenter);
         initBaseInfo();
-
-//        HandlerTaskTimer.newBuilder().interval(10000)
-//                .start(new HandlerTaskTimer.ObserverW() {
-//                    @Override
-//                    public void onNext(Integer integer) {
-//                        TextView textView = new TextView(getContext());
-//                        textView.setText("阿斯顿健康垃圾堆里卡就睡了多久了 ");
-//                        FloatWindow.with(U.app())
-//                                .setView(textView)
-//                                .setMoveType(MoveType.canRemove)
-//                                .setWidth(Screen.width, 1f)                               //设置控件宽高
-//                                .setHeight(Screen.height, 0.2f)
-//                                .setDesktopShow(false)                        //桌面显示
-//                                .setCancelIfExist(false)
-//                                .setReqPermissionIfNeed(false)
-//                                .build();
-//                    }
-//                });
-
-//        HandlerTaskTimer.newBuilder().interval(10000)
-//                .start(new HandlerTaskTimer.ObserverW() {
-//                    @Override
-//                    public void onNext(Integer integer) {
-//                        TextView textView = new TextView(getContext());
-//                        textView.setText("我是第 " + integer + " Dialogplus");
-//                        DialogPlus.newDialog(getActivity())
-//                                .setContentHolder(new ViewHolder(textView))
-//                                .setGravity(Gravity.CENTER)
-//                                .setContentBackgroundResource(R.color.transparent)
-//                                .setOverlayBackgroundResource(R.color.black_trans_80)
-//                                .setExpanded(false)
-//                                .setPriority(integer)
-//                                .create()
-//                                .show();
-//                    }
-//                });
     }
 
     private void initBaseInfo() {

@@ -43,6 +43,8 @@ public interface IPlayer {
 
     void setVolume(float volume);
 
+    void setVolume(float volume,boolean set);
+
     void setSurface(Surface surface);
 
     void startPlay(String path);
@@ -66,4 +68,5 @@ public interface IPlayer {
 
     void reconnect();
 
+    float getVolume();
 }

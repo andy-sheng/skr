@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.common.anim.svga.SvgaParserAdapter;
 import com.common.utils.U;
 import com.module.playways.room.room.gift.model.GiftPlayModel;
 import com.module.playways.BaseRoomData;
@@ -17,7 +18,6 @@ import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 
-import org.jetbrains.annotations.Nullable;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -29,7 +29,6 @@ public class GiftBigAnimationView {
     static final int STATUS_IDLE = 1;
     static final int STATUS_PLAYING = 2;
     int mStatus = STATUS_IDLE;
-    SVGAParser mSVGAParser;
     Listener mListener;
 
     SVGAImageView mSVGAImageView;
@@ -47,32 +46,12 @@ public class GiftBigAnimationView {
         }
     };
 
-    public GiftBigAnimationView(@Nullable Context context) {
+    public GiftBigAnimationView( Context context) {
         init();
     }
 
     private void init() {
         mSVGAImageView = new SVGAImageView(U.app());
-        mSVGAParser = new SVGAParser(U.app());
-//        mSVGAParser.setFileDownloader(new SVGAParser.FileDownloader() {
-//            @Override
-//            public void resume(final URL url, final Function1<? super InputStream, Unit> complete, final Function1<? super Exception, Unit> failure) {
-//                new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        OkHttpClient client = new OkHttpClient();
-//                        Request request = new Request.Builder().url(url).get().build();
-//                        try {
-//                            Response response = client.newCall(request).execute();
-//                            complete.invoke(response.body().byteStream());
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                            failure.invoke(e);
-//                        }
-//                    }
-//                }).start();
-//            }
-//        });
     }
 
     public void play(RelativeLayout parent, GiftPlayModel giftPlayModel) {
@@ -112,21 +91,17 @@ public class GiftBigAnimationView {
             onFinish();
             return;
         }
-        try {
-            mSVGAParser.parse(new URL(url), new SVGAParser.ParseCompletion() {
-                @Override
-                public void onComplete(SVGAVideoEntity videoItem) {
-                    onLoadComplete(videoItem);
-                }
+        SvgaParserAdapter.parse( url, new SVGAParser.ParseCompletion() {
+            @Override
+            public void onComplete(SVGAVideoEntity videoItem) {
+                onLoadComplete(videoItem);
+            }
 
-                @Override
-                public void onError() {
-                    onFinish();
-                }
-            });
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+            @Override
+            public void onError() {
+                onFinish();
+            }
+        });
     }
 
     private void onLoadComplete(SVGAVideoEntity videoItem) {
