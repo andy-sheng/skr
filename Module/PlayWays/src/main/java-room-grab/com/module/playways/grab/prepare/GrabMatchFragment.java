@@ -12,6 +12,7 @@ import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
+import com.common.anim.svga.SvgaParserAdapter;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
 import com.common.core.avatar.AvatarUtils;
@@ -167,9 +168,7 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
         mSvgaMatchBg.setVisibility(View.VISIBLE);
         mSvgaMatchBg.setLoops(1);
 
-        SVGAParser parser = new SVGAParser(U.app());
-        try {
-            parser.parse("grab_matching.svga", new SVGAParser.ParseCompletion() {
+            SvgaParserAdapter.parse("grab_matching.svga", new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete(@NotNull SVGAVideoEntity videoItem) {
                     SVGADrawable drawable = new SVGADrawable(videoItem);
@@ -183,9 +182,6 @@ public class GrabMatchFragment extends BaseFragment implements IGrabMatchingView
 
                 }
             });
-        } catch (Exception e) {
-            MyLog.e(TAG, e);
-        }
     }
 
     private HandlerTaskTimer mControlTask;

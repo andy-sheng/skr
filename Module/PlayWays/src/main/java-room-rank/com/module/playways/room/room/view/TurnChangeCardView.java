@@ -111,7 +111,7 @@ public class TurnChangeCardView extends RelativeLayout {
 
         mFirstSvga.setVisibility(VISIBLE);
         mFirstSvga.setLoops(1);
-        SvgaParserAdapter.parse(SvgaParserAdapter.ROOM_TAG, BaseRoomData.RANK_BATTLE_START_SVGA, new SVGAParser.ParseCompletion() {
+        SvgaParserAdapter.parse( BaseRoomData.RANK_BATTLE_START_SVGA, new SVGAParser.ParseCompletion() {
             @Override
             public void onComplete(@NotNull SVGAVideoEntity videoItem) {
                 SVGADrawable drawable = new SVGADrawable(videoItem, requestDynamicItem(info));
@@ -164,7 +164,7 @@ public class TurnChangeCardView extends RelativeLayout {
 
         mNextSvga.setVisibility(VISIBLE);
         mNextSvga.setLoops(1);
-        SvgaParserAdapter.parse(SvgaParserAdapter.ROOM_TAG, "rank_battle_next.svga", new SVGAParser.ParseCompletion() {
+        SvgaParserAdapter.parse( "rank_battle_next.svga", new SVGAParser.ParseCompletion() {
             @Override
             public void onComplete(@NotNull SVGAVideoEntity videoItem) {
                 SVGADrawable drawable = new SVGADrawable(videoItem, requestDynamicItem(info));

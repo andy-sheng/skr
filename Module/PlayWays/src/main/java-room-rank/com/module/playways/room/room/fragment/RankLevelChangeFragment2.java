@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
+import com.common.anim.svga.SvgaParserAdapter;
 import com.common.base.BaseFragment;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
@@ -187,10 +188,9 @@ public class RankLevelChangeFragment2 extends BaseFragment {
 
         mResultSvga.setVisibility(VISIBLE);
         mResultSvga.setLoops(1);
-        SVGAParser parser = new SVGAParser(U.app());
         try {
             final boolean finalIsWin = isWin;
-            parser.parse(new URL(url), new SVGAParser.ParseCompletion() {
+            SvgaParserAdapter.parse(url, new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
                     SVGADrawable drawable = new SVGADrawable(svgaVideoEntity, requestDynamicItem());

@@ -77,7 +77,7 @@ public class SingBeginTipsCardView extends RelativeLayout {
         String assetsName = isChallenge ? "grab_challenge_sing_chance.svga" : "grab_sing_chance.svga";
         mSingBeginSvga.setVisibility(VISIBLE);
         try {
-            SvgaParserAdapter.parse(SvgaParserAdapter.ROOM_TAG,assetsName, new SVGAParser.ParseCompletion() {
+            SvgaParserAdapter.parse(assetsName, new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete(@NotNull SVGAVideoEntity videoItem) {
                     SVGADrawable drawable = new SVGADrawable(videoItem, requestDynamicBitmapItem(info, songModel));

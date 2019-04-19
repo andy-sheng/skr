@@ -92,7 +92,7 @@ public class GiftBigAnimationView {
             onFinish();
             return;
         }
-        SvgaParserAdapter.parse(SvgaParserAdapter.ROOM_TAG, url, new SVGAParser.ParseCompletion() {
+        SvgaParserAdapter.parse( url, new SVGAParser.ParseCompletion() {
             @Override
             public void onComplete(SVGAVideoEntity videoItem) {
                 onLoadComplete(videoItem);

@@ -118,7 +118,7 @@ public class ScoreProgressBarWithSvga extends RelativeLayout {
     }
 
     private void startStarAnimation(String assetsName, int tx) {
-        SvgaParserAdapter.parse(SvgaParserAdapter.ROOM_TAG,assetsName, new SVGAParser.ParseCompletion() {
+        SvgaParserAdapter.parse(assetsName, new SVGAParser.ParseCompletion() {
             @Override
             public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
                 SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
@@ -139,7 +139,7 @@ public class ScoreProgressBarWithSvga extends RelativeLayout {
 
     private void startScoreAnimation(String assetsName, int tx, int drawableId) {
 
-        SvgaParserAdapter.parse(SvgaParserAdapter.ROOM_TAG,assetsName, new SVGAParser.ParseCompletion() {
+        SvgaParserAdapter.parse(assetsName, new SVGAParser.ParseCompletion() {
             @Override
             public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
                 SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);

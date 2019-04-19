@@ -530,7 +530,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
         mMieDengIv.setTranslationX(position1[0] - U.getDisplayUtils().dip2px(32));
         mMieDengIv.setTranslationY(U.getDisplayUtils().dip2px(12f));
 
-        SvgaParserAdapter.parse(SvgaParserAdapter.ROOM_TAG,"grab_miedeng.svga", new SVGAParser.ParseCompletion() {
+        SvgaParserAdapter.parse("grab_miedeng.svga", new SVGAParser.ParseCompletion() {
             @Override
             public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
                 SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);

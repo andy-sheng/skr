@@ -140,7 +140,7 @@ public class OthersSingCardView extends RelativeLayout {
         mGrabStageView.setVisibility(View.VISIBLE);
         mGrabStageView.setLoops(1);
 
-        SvgaParserAdapter.parse(SvgaParserAdapter.ROOM_TAG, "grab_main_stage.svga", new SVGAParser.ParseCompletion() {
+        SvgaParserAdapter.parse( "grab_main_stage.svga", new SVGAParser.ParseCompletion() {
             @Override
             public void onComplete(@NotNull SVGAVideoEntity videoItem) {
                 SVGADrawable drawable = new SVGADrawable(videoItem);

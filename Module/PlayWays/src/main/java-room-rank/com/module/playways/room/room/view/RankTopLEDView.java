@@ -68,27 +68,21 @@ public class RankTopLEDView extends RelativeLayout {
             setVisibility(VISIBLE);
             mDengSvga.setVisibility(VISIBLE);
             mDengSvga.setLoops(1);
-            SVGAParser parser = new SVGAParser(U.app());
-            try {
-                parser.parse("rank_love_mid.svga", new SVGAParser.ParseCompletion() {
-                    @Override
-                    public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
-                        if (curMode == MIE_MODE) {
-                            SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
-                            mDengSvga.setImageDrawable(drawable);
-                            mDengSvga.startAnimation();
-                        }
+            SvgaParserAdapter.parse( "rank_love_mid.svga", new SVGAParser.ParseCompletion() {
+                @Override
+                public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
+                    if (curMode == MIE_MODE) {
+                        SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
+                        mDengSvga.setImageDrawable(drawable);
+                        mDengSvga.startAnimation();
                     }
+                }
 
-                    @Override
-                    public void onError() {
+                @Override
+                public void onError() {
 
-                    }
-                });
-            } catch (Exception e) {
-                MyLog.e(TAG, e);
-            }
-
+                }
+            });
 
             mDengSvga.setCallback(new SVGACallback() {
                 @Override
@@ -148,26 +142,21 @@ public class RankTopLEDView extends RelativeLayout {
         mDengSvga.setVisibility(VISIBLE);
         mDengSvga.setLoops(0);
 
-        SVGAParser parser = new SVGAParser(U.app());
-        try {
-            parser.parse(assetsName, new SVGAParser.ParseCompletion() {
-                @Override
-                public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
-                    if (curMode == DEFAULT_MODE) {
-                        SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
-                        mDengSvga.setImageDrawable(drawable);
-                        mDengSvga.startAnimation();
-                    }
+        SvgaParserAdapter.parse( assetsName, new SVGAParser.ParseCompletion() {
+            @Override
+            public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
+                if (curMode == DEFAULT_MODE) {
+                    SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
+                    mDengSvga.setImageDrawable(drawable);
+                    mDengSvga.startAnimation();
                 }
+            }
 
-                @Override
-                public void onError() {
+            @Override
+            public void onError() {
 
-                }
-            });
-        } catch (Exception e) {
-            MyLog.e(TAG, e);
-        }
+            }
+        });
     }
 
     // 爆灯或者灭灯
@@ -192,9 +181,7 @@ public class RankTopLEDView extends RelativeLayout {
         }
         mDengSvga.setVisibility(VISIBLE);
         mDengSvga.setLoops(1);
-        SVGAParser parser = new SVGAParser(U.app());
-        try {
-            parser.parse(assetsName, new SVGAParser.ParseCompletion() {
+            SvgaParserAdapter.parse(assetsName, new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
                     if (curMode == BAO_MODE || curMode == MIE_MODE) {
@@ -209,9 +196,6 @@ public class RankTopLEDView extends RelativeLayout {
 
                 }
             });
-        } catch (Exception e) {
-            MyLog.e(TAG, e);
-        }
 
         mDengSvga.setCallback(new SVGACallback() {
             @Override
@@ -261,7 +245,7 @@ public class RankTopLEDView extends RelativeLayout {
         mDengSvga.setVisibility(VISIBLE);
         mDengSvga.setCallback(null);
         mDengSvga.setLoops(0);
-        SvgaParserAdapter.parse(SvgaParserAdapter.ROOM_TAG, assetsName, new SVGAParser.ParseCompletion() {
+        SvgaParserAdapter.parse( assetsName, new SVGAParser.ParseCompletion() {
             @Override
             public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
                 if (curMode == DEFAULT_MODE || curMode == BAO_MODE) {

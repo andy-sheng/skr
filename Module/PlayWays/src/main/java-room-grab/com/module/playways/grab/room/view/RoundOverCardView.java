@@ -131,7 +131,7 @@ public class RoundOverCardView extends RelativeLayout {
                 StatConstants.KEY_SONG_NO_ONE, map);
         mSingResultSvga.setVisibility(VISIBLE);
         mSingResultSvga.setLoops(1);
-            SvgaParserAdapter.parse(SvgaParserAdapter.ROOM_TAG,"grab_none_sing_end.svga", new SVGAParser.ParseCompletion() {
+            SvgaParserAdapter.parse("grab_none_sing_end.svga", new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete(@NotNull SVGAVideoEntity videoItem) {
                     SVGADrawable drawable = new SVGADrawable(videoItem);
@@ -187,7 +187,7 @@ public class RoundOverCardView extends RelativeLayout {
                 StatConstants.KEY_SONG_SUCCESS, map);
         mSingResultSvga.setVisibility(VISIBLE);
         mSingResultSvga.setLoops(1);
-        SvgaParserAdapter.parse(SvgaParserAdapter.ROOM_TAG, "grab_sing_perfect_end.svga", new SVGAParser.ParseCompletion() {
+        SvgaParserAdapter.parse( "grab_sing_perfect_end.svga", new SVGAParser.ParseCompletion() {
             @Override
             public void onComplete(@NotNull SVGAVideoEntity videoItem) {
                 SVGADrawable drawable = new SVGADrawable(videoItem);
@@ -261,7 +261,7 @@ public class RoundOverCardView extends RelativeLayout {
                 assetsName = "grab_sing_abandon_end.svga";
                 break;
         }
-        SvgaParserAdapter.parse(SvgaParserAdapter.ROOM_TAG, assetsName, new SVGAParser.ParseCompletion() {
+        SvgaParserAdapter.parse( assetsName, new SVGAParser.ParseCompletion() {
             @Override
             public void onComplete(@NotNull SVGAVideoEntity videoItem) {
                 SVGADrawable drawable = new SVGADrawable(videoItem);

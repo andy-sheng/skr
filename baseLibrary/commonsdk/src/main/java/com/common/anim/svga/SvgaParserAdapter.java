@@ -4,11 +4,20 @@ import android.text.TextUtils;
 
 import com.common.utils.U;
 import com.opensource.svgaplayer.SVGAParser;
-import com.opensource.svgaplayer.SVGAVideoEntity;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
+
+import kotlin.Unit;
+import kotlin.jvm.functions.Function0;
+import kotlin.jvm.functions.Function1;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * 不重复new SvgaParser 因为每个 SvgaParser 对象中都有一个线程池
@@ -18,54 +27,45 @@ import java.util.HashMap;
 public class SvgaParserAdapter {
     public static final String ROOM_TAG = "ROOM_TAG";
 
-    static HashMap<String, SVGAParser> sSvgaParserMap = new HashMap<>();
+    static SVGAParser sSvgaParser = new SVGAParser(U.app());
 
-    public static void createSvgaParser(String tag) {
-        SVGAParser svgaParser = sSvgaParserMap.get(tag);
-        if (svgaParser == null) {
-            svgaParser = new SVGAParser(U.app());
-            sSvgaParserMap.put(tag, svgaParser);
-
-            //        mSVGAParser.setFileDownloader(new SVGAParser.FileDownloader() {
-//            @Override
-//            public void resume(final URL url, final Function1<? super InputStream, Unit> complete, final Function1<? super Exception, Unit> failure) {
-//                new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        OkHttpClient client = new OkHttpClient();
-//                        Request request = new Request.Builder().url(url).get().build();
-//                        try {
-//                            Response response = client.newCall(request).execute();
-//                            complete.invoke(response.body().byteStream());
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                            failure.invoke(e);
-//                        }
-//                    }
-//                }).start();
-//            }
-//        });
-        }
+    static {
+        sSvgaParser.setFileDownloader(new SVGAParser.FileDownloader() {
+            @NotNull
+            @Override
+            public Function0<Unit> resume(@NotNull URL url, @NotNull Function1<? super InputStream, Unit> complete, @NotNull Function1<? super Exception, Unit> failure) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        OkHttpClient client = new OkHttpClient();
+                        Request request = new Request.Builder().url(url).get().build();
+                        try {
+                            Response response = client.newCall(request).execute();
+                            complete.invoke(response.body().byteStream());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            failure.invoke(e);
+                        }
+                    }
+                }).start();
+                return null;
+            }
+        });
     }
 
-    public static void destroySvgaParser(String tag) {
-        sSvgaParserMap.remove(tag);
-    }
-
-    public static void parse(String tag, String urlOrAssets, SVGAParser.ParseCompletion completion) {
+    public static void parse(String urlOrAssets, SVGAParser.ParseCompletion completion) {
         if (TextUtils.isEmpty(urlOrAssets)) {
             if (completion != null) {
                 completion.onError();
             }
             return;
         }
-        SVGAParser svgaParser = sSvgaParserMap.get(tag);
         try {
-            if (svgaParser != null) {
+            if (sSvgaParser != null) {
                 if (urlOrAssets.startsWith("http")) {
-                    svgaParser.decodeFromURL(new URL(urlOrAssets), completion);
+                    sSvgaParser.decodeFromURL(new URL(urlOrAssets), completion);
                 } else {
-                    svgaParser.decodeFromAssets(urlOrAssets, completion);
+                    sSvgaParser.decodeFromAssets(urlOrAssets, completion);
                 }
             } else {
                 if (completion != null) {

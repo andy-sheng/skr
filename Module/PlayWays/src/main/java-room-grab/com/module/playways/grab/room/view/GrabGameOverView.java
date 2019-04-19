@@ -51,7 +51,7 @@ public class GrabGameOverView extends RelativeLayout {
         mEndGameIv.clearAnimation();
         mEndGameIv.setVisibility(VISIBLE);
         mEndGameIv.setLoops(1);
-        SvgaParserAdapter.parse(SvgaParserAdapter.ROOM_TAG, "grab_game_over.svga", new SVGAParser.ParseCompletion() {
+        SvgaParserAdapter.parse( "grab_game_over.svga", new SVGAParser.ParseCompletion() {
             @Override
             public void onComplete(@NotNull SVGAVideoEntity videoItem) {
                 SVGADrawable drawable = new SVGADrawable(videoItem);

@@ -68,7 +68,7 @@ public class TurnInfoCardView extends RelativeLayout {
         mFirstSvga.clearAnimation();
         mFirstSvga.setVisibility(VISIBLE);
         mFirstSvga.setLoops(1);
-        SvgaParserAdapter.parse(SvgaParserAdapter.ROOM_TAG, "grab_battle_start.svga", new SVGAParser.ParseCompletion() {
+        SvgaParserAdapter.parse( "grab_battle_start.svga", new SVGAParser.ParseCompletion() {
             @Override
             public void onComplete(@NotNull SVGAVideoEntity videoItem) {
                 SVGADrawable drawable = new SVGADrawable(videoItem);
@@ -118,7 +118,7 @@ public class TurnInfoCardView extends RelativeLayout {
         mNextSvga.clearAnimation();
         mNextSvga.setVisibility(VISIBLE);
         mNextSvga.setLoops(1);
-        SvgaParserAdapter.parse(SvgaParserAdapter.ROOM_TAG, "grab_battle_next.svga", new SVGAParser.ParseCompletion() {
+        SvgaParserAdapter.parse( "grab_battle_next.svga", new SVGAParser.ParseCompletion() {
             @Override
             public void onComplete(@NotNull SVGAVideoEntity videoItem) {
                 SVGADrawable drawable = new SVGADrawable(videoItem);

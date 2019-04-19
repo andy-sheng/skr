@@ -35,7 +35,6 @@ public class RankRoomActivity extends BaseActivity {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        SvgaParserAdapter.createSvgaParser(SvgaParserAdapter.ROOM_TAG);
         PrepareData prepareData = (PrepareData) getIntent().getSerializableExtra("prepare_data");
         if (prepareData != null) {
             mRoomData.setGameId(prepareData.getGameId());
@@ -76,7 +75,6 @@ public class RankRoomActivity extends BaseActivity {
 
     @Override
     protected void destroy() {
-        SvgaParserAdapter.destroySvgaParser(SvgaParserAdapter.ROOM_TAG);
         super.destroy();
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }

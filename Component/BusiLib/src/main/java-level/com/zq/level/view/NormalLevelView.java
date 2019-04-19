@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.common.anim.svga.SvgaParserAdapter;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.ex.ExImageView;
@@ -277,9 +278,7 @@ public class NormalLevelView extends RelativeLayout {
         levelChange.setLayoutParams(rl);
         viewGroup.addView(levelChange);
 
-        SVGAParser parser = new SVGAParser(U.app());
-        try {
-            parser.parse("duanwei_change.svga", new SVGAParser.ParseCompletion() {
+            SvgaParserAdapter.parse("duanwei_change.svga", new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete(@NotNull SVGAVideoEntity videoItem) {
                     SVGADrawable drawable = new SVGADrawable(videoItem, requestDynamicBitmapItem(levelBefore, subLevelBefore, levelNow, sublevelNow));
@@ -292,9 +291,6 @@ public class NormalLevelView extends RelativeLayout {
 
                 }
             });
-        } catch (Exception e) {
-            MyLog.e(TAG,e);
-        }
 
         levelChange.setCallback(new SVGACallback() {
             @Override
@@ -438,9 +434,7 @@ public class NormalLevelView extends RelativeLayout {
 
         viewGroup.addView(starUp);
 
-        SVGAParser parser = new SVGAParser(U.app());
-        try {
-            parser.parse("star_up.svga", new SVGAParser.ParseCompletion() {
+            SvgaParserAdapter.parse("star_up.svga", new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete(@NotNull SVGAVideoEntity videoItem) {
                     SVGADrawable drawable = new SVGADrawable(videoItem);
@@ -453,9 +447,6 @@ public class NormalLevelView extends RelativeLayout {
 
                 }
             });
-        } catch (Exception e) {
-            MyLog.e(TAG,e);
-        }
 
         starUp.setCallback(new SVGACallback() {
             @Override
@@ -520,9 +511,7 @@ public class NormalLevelView extends RelativeLayout {
 
         viewGroup.addView(starLoss);
 
-        SVGAParser parser = new SVGAParser(U.app());
-        try {
-            parser.parse("star_loss.svga", new SVGAParser.ParseCompletion() {
+            SvgaParserAdapter.parse("star_loss.svga", new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete(@NotNull SVGAVideoEntity videoItem) {
                     SVGADrawable drawable = new SVGADrawable(videoItem);
@@ -536,9 +525,6 @@ public class NormalLevelView extends RelativeLayout {
 
                 }
             });
-        } catch (Exception e) {
-            MyLog.e(TAG,e);
-        }
         starLoss.setCallback(new SVGACallback() {
             @Override
             public void onPause() {

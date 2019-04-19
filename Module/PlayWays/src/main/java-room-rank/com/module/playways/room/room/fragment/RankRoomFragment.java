@@ -448,7 +448,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         String avatar = mRoomData.getUserInfo(userId).getAvatar();
 
         mStageView.setLoops(0);
-        SvgaParserAdapter.parse(SvgaParserAdapter.ROOM_TAG,"rank_stage_voice.svga", new SVGAParser.ParseCompletion() {
+        SvgaParserAdapter.parse("rank_stage_voice.svga", new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
                     SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);

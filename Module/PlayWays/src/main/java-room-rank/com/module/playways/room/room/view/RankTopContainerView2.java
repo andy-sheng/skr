@@ -535,7 +535,7 @@ public class RankTopContainerView2 extends RelativeLayout {
         mEnergyFillSvga.setVisibility(VISIBLE);
         mEnergyFillSvga.setLoops(1);
 
-        SvgaParserAdapter.parse(SvgaParserAdapter.ROOM_TAG, assetsName, new SVGAParser.ParseCompletion() {
+        SvgaParserAdapter.parse( assetsName, new SVGAParser.ParseCompletion() {
             @Override
             public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
                 SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
