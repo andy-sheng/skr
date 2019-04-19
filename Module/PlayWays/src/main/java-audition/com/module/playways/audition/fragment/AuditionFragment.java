@@ -475,7 +475,7 @@ public class AuditionFragment extends BaseFragment {
         } else if (event.getType() == EngineEvent.TYPE_USER_AUDIO_VOLUME_INDICATION) {
             List<EngineEvent.UserVolumeInfo> l = event.getObj();
             for (EngineEvent.UserVolumeInfo userVolumeInfo : l) {
-                MyLog.d(TAG, "onEventMainThread" + " userVolumeInfo=" + userVolumeInfo);
+                //MyLog.d(TAG, "onEventMainThread" + " userVolumeInfo=" + userVolumeInfo);
                 if (userVolumeInfo.getUid() == 0 && userVolumeInfo.getVolume() > 0) {
                     //如果自己在唱歌也延迟关闭
                     resendAutoLeaveChannelMsg();
