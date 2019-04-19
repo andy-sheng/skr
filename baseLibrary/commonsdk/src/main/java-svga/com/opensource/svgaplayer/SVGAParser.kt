@@ -30,6 +30,8 @@ class SVGAParser(private val context: Context) {
     }
 
     open class FileDownloader {
+        private var threadPoolBlockingQueue = LinkedBlockingQueue<Runnable>()
+        private var threadPoolExecutor = ThreadPoolExecutor(5, 10, 60000, TimeUnit.MILLISECONDS, this.threadPoolBlockingQueue)
 
         var noCache = false
 
@@ -38,7 +40,7 @@ class SVGAParser(private val context: Context) {
             val cancelBlock = {
                 cancelled = true
             }
-            Thread {
+            threadPoolExecutor.execute {
                 try {
                     if (HttpResponseCache.getInstalled() == null && !noCache) {
                         Log.e("SVGAParser", "SVGAParser can not handle cache before install HttpResponseCache. see https://github.com/yyued/SVGAPlayer-Android#cache")
@@ -52,7 +54,9 @@ class SVGAParser(private val context: Context) {
                             ByteArrayOutputStream().use { outputStream ->
                                 val buffer = ByteArray(4096)
                                 var count: Int
-                                while (true) {
+                                var bts = System.currentTimeMillis()
+                                // 允许1分钟内下载好
+                                while (System.currentTimeMillis() - bts <60*1000) {
                                     if (cancelled) {
                                         break
                                     }
@@ -63,7 +67,7 @@ class SVGAParser(private val context: Context) {
                                     outputStream.write(buffer, 0, count)
                                 }
                                 if (cancelled) {
-                                    return@Thread
+                                    return@execute
                                 }
                                 ByteArrayInputStream(outputStream.toByteArray()).use {
                                     complete(it)
@@ -75,7 +79,7 @@ class SVGAParser(private val context: Context) {
                     e.printStackTrace()
                     failure(e)
                 }
-            }.start()
+            };
             return cancelBlock
         }
 
