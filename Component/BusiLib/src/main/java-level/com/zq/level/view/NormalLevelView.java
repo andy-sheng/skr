@@ -26,7 +26,6 @@ import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.zq.level.utils.LevelConfigUtils;
 
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -280,7 +279,7 @@ public class NormalLevelView extends RelativeLayout {
 
             SvgaParserAdapter.parse("duanwei_change.svga", new SVGAParser.ParseCompletion() {
                 @Override
-                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                public void onComplete( SVGAVideoEntity videoItem) {
                     SVGADrawable drawable = new SVGADrawable(videoItem, requestDynamicBitmapItem(levelBefore, subLevelBefore, levelNow, sublevelNow));
                     levelChange.setImageDrawable(drawable);
                     levelChange.startAnimation();
@@ -436,7 +435,7 @@ public class NormalLevelView extends RelativeLayout {
 
             SvgaParserAdapter.parse("star_up.svga", new SVGAParser.ParseCompletion() {
                 @Override
-                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                public void onComplete( SVGAVideoEntity videoItem) {
                     SVGADrawable drawable = new SVGADrawable(videoItem);
                     starUp.setImageDrawable(drawable);
                     starUp.startAnimation();
@@ -513,7 +512,7 @@ public class NormalLevelView extends RelativeLayout {
 
             SvgaParserAdapter.parse("star_loss.svga", new SVGAParser.ParseCompletion() {
                 @Override
-                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                public void onComplete( SVGAVideoEntity videoItem) {
                     SVGADrawable drawable = new SVGADrawable(videoItem);
                     imageView.setBackground(ContextCompat.getDrawable(U.app(), R.drawable.zhanji_xiaoxingxing_zhihui));
                     starLoss.setImageDrawable(drawable);

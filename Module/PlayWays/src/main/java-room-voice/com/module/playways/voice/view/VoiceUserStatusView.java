@@ -24,7 +24,6 @@ import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 
 import org.greenrobot.eventbus.EventBus;
-import org.jetbrains.annotations.NotNull;
 
 public class VoiceUserStatusView extends RelativeLayout {
 
@@ -151,7 +150,7 @@ public class VoiceUserStatusView extends RelativeLayout {
         mSpeakerSvga.setLoops(0);
         SvgaParserAdapter.parse( "voice_room_speak.svga", new SVGAParser.ParseCompletion() {
             @Override
-            public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
+            public void onComplete( SVGAVideoEntity svgaVideoEntity) {
                 SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
                 mSpeakerSvga.setImageDrawable(drawable);
                 mSpeakerSvga.startAnimation();

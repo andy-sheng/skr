@@ -16,8 +16,6 @@ import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -96,7 +94,7 @@ public class GrabDengBigAnimationView extends RelativeLayout {
         dengSvga.setLoops(1);
         SvgaParserAdapter.parse( BaseRoomData.GRAB_BURST_BIG_SVGA, new SVGAParser.ParseCompletion() {
             @Override
-            public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+            public void onComplete( SVGAVideoEntity videoItem) {
                 SVGADrawable drawable = new SVGADrawable(videoItem);
                 dengSvga.setImageDrawable(drawable);
                 dengSvga.startAnimation();

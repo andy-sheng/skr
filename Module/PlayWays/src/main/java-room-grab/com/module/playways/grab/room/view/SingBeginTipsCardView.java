@@ -31,7 +31,6 @@ import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.zq.live.proto.Common.ESex;
 
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
@@ -79,7 +78,7 @@ public class SingBeginTipsCardView extends RelativeLayout {
         try {
             SvgaParserAdapter.parse(assetsName, new SVGAParser.ParseCompletion() {
                 @Override
-                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                public void onComplete( SVGAVideoEntity videoItem) {
                     SVGADrawable drawable = new SVGADrawable(videoItem, requestDynamicBitmapItem(info, songModel));
                     mSingBeginSvga.setImageDrawable(drawable);
                     mSingBeginSvga.startAnimation();

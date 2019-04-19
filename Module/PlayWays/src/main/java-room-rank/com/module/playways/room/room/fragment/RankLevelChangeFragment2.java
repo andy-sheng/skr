@@ -55,7 +55,6 @@ import com.zq.level.view.LevelStarProgressBar;
 import com.zq.live.proto.Room.EExpWhy;
 import com.zq.live.proto.Room.EWinType;
 
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.net.URL;
@@ -192,7 +191,7 @@ public class RankLevelChangeFragment2 extends BaseFragment {
             final boolean finalIsWin = isWin;
             SvgaParserAdapter.parse(url, new SVGAParser.ParseCompletion() {
                 @Override
-                public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
+                public void onComplete( SVGAVideoEntity svgaVideoEntity) {
                     SVGADrawable drawable = new SVGADrawable(svgaVideoEntity, requestDynamicItem());
                     mResultSvga.setImageDrawable(drawable);
                     mResultSvga.startAnimation();

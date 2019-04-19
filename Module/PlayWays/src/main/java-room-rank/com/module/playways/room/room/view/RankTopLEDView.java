@@ -16,7 +16,7 @@ import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 
-import org.jetbrains.annotations.NotNull;
+
 
 /**
  * 顶部动画
@@ -70,7 +70,7 @@ public class RankTopLEDView extends RelativeLayout {
             mDengSvga.setLoops(1);
             SvgaParserAdapter.parse( "rank_love_mid.svga", new SVGAParser.ParseCompletion() {
                 @Override
-                public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
+                public void onComplete( SVGAVideoEntity svgaVideoEntity) {
                     if (curMode == MIE_MODE) {
                         SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
                         mDengSvga.setImageDrawable(drawable);
@@ -144,7 +144,7 @@ public class RankTopLEDView extends RelativeLayout {
 
         SvgaParserAdapter.parse( assetsName, new SVGAParser.ParseCompletion() {
             @Override
-            public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
+            public void onComplete( SVGAVideoEntity svgaVideoEntity) {
                 if (curMode == DEFAULT_MODE) {
                     SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
                     mDengSvga.setImageDrawable(drawable);
@@ -183,7 +183,7 @@ public class RankTopLEDView extends RelativeLayout {
         mDengSvga.setLoops(1);
             SvgaParserAdapter.parse(assetsName, new SVGAParser.ParseCompletion() {
                 @Override
-                public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
+                public void onComplete( SVGAVideoEntity svgaVideoEntity) {
                     if (curMode == BAO_MODE || curMode == MIE_MODE) {
                         SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
                         mDengSvga.setImageDrawable(drawable);
@@ -247,7 +247,7 @@ public class RankTopLEDView extends RelativeLayout {
         mDengSvga.setLoops(0);
         SvgaParserAdapter.parse( assetsName, new SVGAParser.ParseCompletion() {
             @Override
-            public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
+            public void onComplete( SVGAVideoEntity svgaVideoEntity) {
                 if (curMode == DEFAULT_MODE || curMode == BAO_MODE) {
                     SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
                     mDengSvga.setImageDrawable(drawable);

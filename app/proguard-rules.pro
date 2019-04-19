@@ -474,4 +474,6 @@ public static final int *;
 -keep public class **.R$*{
    public static final int *;
 }
+
+-keep class com.opensource.svgaplayer.proto.** { *; }
 -ignorewarnings

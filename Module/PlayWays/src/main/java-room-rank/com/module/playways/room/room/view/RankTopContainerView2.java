@@ -42,7 +42,6 @@ import com.zq.live.proto.Room.ERoundOverReason;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -537,7 +536,7 @@ public class RankTopContainerView2 extends RelativeLayout {
 
         SvgaParserAdapter.parse( assetsName, new SVGAParser.ParseCompletion() {
             @Override
-            public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
+            public void onComplete( SVGAVideoEntity svgaVideoEntity) {
                 SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
                 mEnergyFillSvga.setImageDrawable(drawable);
                 mEnergyFillSvga.startAnimation();

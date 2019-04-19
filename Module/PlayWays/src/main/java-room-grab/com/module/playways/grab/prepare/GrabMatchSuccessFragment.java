@@ -45,7 +45,6 @@ import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -178,7 +177,7 @@ public class GrabMatchSuccessFragment extends BaseFragment implements IMatchSuce
         mTopSvgaView.setLoops(1);
             SvgaParserAdapter.parse("match_sucess_top.svga", new SVGAParser.ParseCompletion() {
                 @Override
-                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                public void onComplete( SVGAVideoEntity videoItem) {
                     SVGADrawable drawable = new SVGADrawable(videoItem);
                     mTopSvgaView.setImageDrawable(drawable);
                     mTopSvgaView.startAnimation();

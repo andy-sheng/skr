@@ -35,7 +35,6 @@ import com.opensource.svgaplayer.SVGAVideoEntity;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -532,7 +531,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
 
         SvgaParserAdapter.parse("grab_miedeng.svga", new SVGAParser.ParseCompletion() {
             @Override
-            public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
+            public void onComplete( SVGAVideoEntity svgaVideoEntity) {
                 SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
                 mMieDengIv.setVisibility(VISIBLE);
                 mMieDengIv.stopAnimation(true);

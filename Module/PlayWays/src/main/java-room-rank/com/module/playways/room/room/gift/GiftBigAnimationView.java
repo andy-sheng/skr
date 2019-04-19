@@ -18,7 +18,6 @@ import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 
-import org.jetbrains.annotations.Nullable;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -47,7 +46,7 @@ public class GiftBigAnimationView {
         }
     };
 
-    public GiftBigAnimationView(@Nullable Context context) {
+    public GiftBigAnimationView( Context context) {
         init();
     }
 

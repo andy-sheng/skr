@@ -70,7 +70,6 @@ import com.zq.lyrics.widget.VoiceScaleView;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -450,7 +449,7 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
         mStageView.setLoops(0);
         SvgaParserAdapter.parse("rank_stage_voice.svga", new SVGAParser.ParseCompletion() {
                 @Override
-                public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
+                public void onComplete( SVGAVideoEntity svgaVideoEntity) {
                     SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
                     mStageView.setImageDrawable(drawable);
                     mStageView.startAnimation();

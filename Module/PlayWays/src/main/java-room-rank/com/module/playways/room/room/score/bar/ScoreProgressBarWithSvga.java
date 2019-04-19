@@ -15,7 +15,6 @@ import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 
-import org.jetbrains.annotations.NotNull;
 
 public class ScoreProgressBarWithSvga extends RelativeLayout {
 
@@ -120,7 +119,7 @@ public class ScoreProgressBarWithSvga extends RelativeLayout {
     private void startStarAnimation(String assetsName, int tx) {
         SvgaParserAdapter.parse(assetsName, new SVGAParser.ParseCompletion() {
             @Override
-            public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
+            public void onComplete( SVGAVideoEntity svgaVideoEntity) {
                 SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
                 mStarIv.setTranslationX(-getWidth() / 2 + tx);
                 mStarIv.setVisibility(VISIBLE);
@@ -141,7 +140,7 @@ public class ScoreProgressBarWithSvga extends RelativeLayout {
 
         SvgaParserAdapter.parse(assetsName, new SVGAParser.ParseCompletion() {
             @Override
-            public void onComplete(@NotNull SVGAVideoEntity svgaVideoEntity) {
+            public void onComplete( SVGAVideoEntity svgaVideoEntity) {
                 SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
 //                LayoutParams lp = new LayoutParams(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
 //                mScoreAnimationIv.setLayoutParams(lp);

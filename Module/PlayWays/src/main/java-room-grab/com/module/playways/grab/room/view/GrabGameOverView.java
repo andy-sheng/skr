@@ -13,8 +13,6 @@ import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 
-import org.jetbrains.annotations.NotNull;
-
 /**
  * 游戏结束，对战结束的动画
  */
@@ -53,7 +51,7 @@ public class GrabGameOverView extends RelativeLayout {
         mEndGameIv.setLoops(1);
         SvgaParserAdapter.parse( "grab_game_over.svga", new SVGAParser.ParseCompletion() {
             @Override
-            public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+            public void onComplete( SVGAVideoEntity videoItem) {
                 SVGADrawable drawable = new SVGADrawable(videoItem);
                 mEndGameIv.setImageDrawable(drawable);
                 mEndGameIv.startAnimation();
