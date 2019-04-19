@@ -7,8 +7,6 @@ import com.common.log.MyLog;
 import com.common.utils.U;
 import com.opensource.svgaplayer.SVGAParser;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -49,9 +47,8 @@ public class SvgaParserAdapter {
          */
         if (USE_SELF_CACHE) {
             sSvgaParser.setFileDownloader(new SVGAParser.FileDownloader() {
-                @NotNull
                 @Override
-                public Function0<Unit> resume(@NotNull URL url, @NotNull Function1<? super InputStream, Unit> complete, @NotNull Function1<? super Exception, Unit> failure) {
+                public Function0<Unit> resume( URL url,  Function1<? super InputStream, Unit> complete,  Function1<? super Exception, Unit> failure) {
                     Observable.create(new ObservableOnSubscribe<Object>() {
                         @Override
                         public void subscribe(ObservableEmitter<Object> emitter) throws Exception {

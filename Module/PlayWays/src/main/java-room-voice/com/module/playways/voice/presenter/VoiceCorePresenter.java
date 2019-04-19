@@ -36,7 +36,6 @@ import com.zq.live.proto.Room.RoomMsg;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
@@ -71,7 +70,7 @@ public class VoiceCorePresenter extends RxLifeCyclePresenter {
         }
     };
 
-    public VoiceCorePresenter(@NotNull IVoiceView iVoiceView, @NotNull RankRoomData roomData) {
+    public VoiceCorePresenter( IVoiceView iVoiceView,  RankRoomData roomData) {
         mIVoiceView = iVoiceView;
         mRoomData = roomData;
         TAG = "VoiceCorePresenter";
