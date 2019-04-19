@@ -186,24 +186,28 @@ public class GrabResultFragment extends BaseFragment {
     }
 
     private void syncFromServer() {
-        GrabRoomServerApi getStandResult = ApiManager.getInstance().createService(GrabRoomServerApi.class);
-        ApiMethods.subscribe(getStandResult.getStandResult(mRoomData.getGameId()), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    GrabResultInfoModel resultInfoModel = JSON.parseObject(result.getData().getString("resultInfo"), GrabResultInfoModel.class);
-                    List<ScoreResultModel> scoreResultModels = JSON.parseArray(result.getData().getString("userScoreResult"), ScoreResultModel.class);
-                    if (resultInfoModel != null && scoreResultModels != null) {
-                        mGrabResultData = new GrabResultData(resultInfoModel, scoreResultModels);
-                        mRoomData.setGrabResultData(mGrabResultData);
-                        bindData();
-                    } else {
-                        MyLog.d(TAG, "syncFromServer" + " info=null");
-                    }
+        if (mRoomData != null) {
+            GrabRoomServerApi getStandResult = ApiManager.getInstance().createService(GrabRoomServerApi.class);
+            ApiMethods.subscribe(getStandResult.getStandResult(mRoomData.getGameId()), new ApiObserver<ApiResult>() {
+                @Override
+                public void process(ApiResult result) {
+                    if (result.getErrno() == 0) {
+                        GrabResultInfoModel resultInfoModel = JSON.parseObject(result.getData().getString("resultInfo"), GrabResultInfoModel.class);
+                        List<ScoreResultModel> scoreResultModels = JSON.parseArray(result.getData().getString("userScoreResult"), ScoreResultModel.class);
+                        if (resultInfoModel != null && scoreResultModels != null) {
+                            mGrabResultData = new GrabResultData(resultInfoModel, scoreResultModels);
+                            mRoomData.setGrabResultData(mGrabResultData);
+                            bindData();
+                        } else {
+                            MyLog.d(TAG, "syncFromServer" + " info=null");
+                        }
 
+                    }
                 }
-            }
-        }, this);
+            }, this);
+        } else {
+            MyLog.d(TAG, "syncFromServer"  + " mRoomData == null Why?");
+        }
     }
 
     @Override
