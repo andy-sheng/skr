@@ -114,7 +114,7 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
     boolean mHasMore = false;
     boolean isAppbarCanSrcoll = true;  // AppBarLayout是否可以滚动
 
-    UserInfoModel mUserInfoModel;
+    UserInfoModel mUserInfoModel = new UserInfoModel();
     int mUserId;
 
     DialogPlus mDialogPlus;
@@ -176,6 +176,7 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
         Bundle bundle = getArguments();
         if (bundle != null) {
             mUserId = bundle.getInt(BUNDLE_USER_ID);
+            mUserInfoModel.setUserId(mUserId);
             mPresenter.getHomePage(mUserId);
             mPresenter.getPhotos(mUserId, 0, DEFAUAT_CNT);
         }

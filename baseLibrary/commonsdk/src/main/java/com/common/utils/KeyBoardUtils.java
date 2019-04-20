@@ -92,6 +92,9 @@ public class KeyBoardUtils {
      *                 0 or have the {@link InputMethodManager#SHOW_IMPLICIT} bit set.
      */
     public void showSoftInput(final Activity activity, final int flags) {
+        if (activity == null) {
+            return;
+        }
         View view = activity.getCurrentFocus();
         if (view == null) {
             view = new View(activity);
@@ -119,7 +122,8 @@ public class KeyBoardUtils {
 
     /**
      * 注意 该判断与activity的属性相关
-     *        例如在EditActivity中设置成adjustNothing  此判断不准
+     * 例如在EditActivity中设置成adjustNothing  此判断不准
+     *
      * @param activity
      * @return
      */

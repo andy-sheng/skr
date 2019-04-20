@@ -202,7 +202,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                             @Override
                             public void onAnimationUpdate(ValueAnimator animation) {
                                 float v = (float) animation.getAnimatedValue();
-                                mExoPlayer.setVolume(v, false);
+                                if (mExoPlayer != null) {
+                                    mExoPlayer.setVolume(v, false);
+                                }
                             }
                         });
                         valueAnimator.setDuration(1000);
@@ -1504,7 +1506,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         } else if (event.getType() == EngineEvent.TYPE_USER_AUDIO_VOLUME_INDICATION) {
             List<EngineEvent.UserVolumeInfo> list = event.getObj();
             for (EngineEvent.UserVolumeInfo uv : list) {
-                MyLog.d(TAG, "UserVolumeInfo uv=" + uv);
+            //    MyLog.d(TAG, "UserVolumeInfo uv=" + uv);
                 if(uv!=null){
                     int uid = uv.getUid();
                     if (uid == 0) {
