@@ -202,7 +202,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                             @Override
                             public void onAnimationUpdate(ValueAnimator animation) {
                                 float v = (float) animation.getAnimatedValue();
-                                mExoPlayer.setVolume(v, false);
+                                if (mExoPlayer != null) {
+                                    mExoPlayer.setVolume(v, false);
+                                }
                             }
                         });
                         valueAnimator.setDuration(1000);
