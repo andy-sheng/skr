@@ -4,11 +4,8 @@ import android.view.View;
 
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.listener.SVGAListener;
-import com.module.playways.grab.room.view.chorus.ChorusSelfSingCardView;
 import com.module.playways.grab.room.view.normal.NormalRoundOverCardView;
-import com.module.playways.grab.room.view.normal.NormalSelfSingCardView;
 import com.module.playways.grab.room.view.pk.PKRoundOverCardView;
-import com.module.playways.grab.room.view.pk.PKSelfSingCardView;
 import com.module.rank.R;
 
 public class RoundOverCardView {
