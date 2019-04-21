@@ -1,9 +1,20 @@
 package com.module.playways.grab.room.model;
 
+import com.common.log.MyLog;
+import com.module.playways.room.song.model.SongModel;
+import com.zq.live.proto.Room.OnlineInfo;
+import com.zq.live.proto.Room.QBLightMsg;
+import com.zq.live.proto.Room.QCHOInnerRoundInfo;
+import com.zq.live.proto.Room.QMLightMsg;
+import com.zq.live.proto.Room.QSPKInnerRoundInfo;
+import com.zq.live.proto.Room.WantSingInfo;
+
 import java.io.Serializable;
 import java.util.HashSet;
 
 public class SPkRoundInfoModel implements Serializable {
+    public final static String TAG = "SPkRoundInfoModel";
+
     int userID;
     int singBeginMs;
     int singEndMs;
@@ -13,6 +24,27 @@ public class SPkRoundInfoModel implements Serializable {
 
     private int overReason; // 结束的原因
     private int resultType; // 结果类型
+
+    public static SPkRoundInfoModel parse(QSPKInnerRoundInfo roundInfo) {
+        SPkRoundInfoModel roundInfoModel = new SPkRoundInfoModel();
+        roundInfoModel.setUserID(roundInfo.getUserID());
+
+        roundInfoModel.setSingBeginMs(roundInfo.getSingBeginMs());
+        roundInfoModel.setSingEndMs(roundInfo.getSingEndMs());
+
+        roundInfoModel.setOverReason(roundInfo.getOverReason().getValue());
+        roundInfoModel.setResultType(roundInfo.getResultType().getValue());
+
+        for (QBLightMsg m : roundInfo.getBLightInfosList()) {
+            roundInfoModel.getbLightInfos().add(BLightInfoModel.parse(m));
+        }
+
+        for (QMLightMsg m : roundInfo.getMLightInfosList()) {
+            roundInfoModel.getMLightInfos().add(MLightInfoModel.parse(m));
+        }
+
+        return roundInfoModel;
+    }
 
     public int getUserID() {
         return userID;
@@ -46,11 +78,11 @@ public class SPkRoundInfoModel implements Serializable {
         this.bLightInfos = bLightInfos;
     }
 
-    public HashSet<MLightInfoModel> getLightInfos() {
+    public HashSet<MLightInfoModel> getMLightInfos() {
         return mLightInfos;
     }
 
-    public void setLightInfos(HashSet<MLightInfoModel> lightInfos) {
+    public void setMLightInfos(HashSet<MLightInfoModel> lightInfos) {
         mLightInfos = lightInfos;
     }
 
@@ -68,5 +100,12 @@ public class SPkRoundInfoModel implements Serializable {
 
     public void setResultType(int resultType) {
         this.resultType = resultType;
+    }
+
+    public void tryUpdateRoundInfoModel(SPkRoundInfoModel pkRoundInfoModel) {
+        if (pkRoundInfoModel == null) {
+            MyLog.d(TAG, "tryUpdateRoundInfoModel" + " pkRoundInfoModel=" + pkRoundInfoModel);
+            return;
+        }
     }
 }

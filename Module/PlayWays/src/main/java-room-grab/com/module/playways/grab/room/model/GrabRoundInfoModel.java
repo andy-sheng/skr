@@ -15,11 +15,14 @@ import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
 import com.module.playways.room.prepare.model.BaseRoundInfoModel;
 import com.module.playways.room.song.model.SongModel;
+import com.zq.live.proto.Room.EQRoundStatus;
 import com.zq.live.proto.Room.EWantSingType;
 import com.zq.live.proto.Room.OnlineInfo;
 import com.zq.live.proto.Room.QBLightMsg;
+import com.zq.live.proto.Room.QCHOInnerRoundInfo;
 import com.zq.live.proto.Room.QMLightMsg;
 import com.zq.live.proto.Room.QRoundInfo;
+import com.zq.live.proto.Room.QSPKInnerRoundInfo;
 import com.zq.live.proto.Room.WantSingInfo;
 
 import org.greenrobot.eventbus.EventBus;
@@ -29,13 +32,9 @@ import java.util.HashSet;
 import java.util.List;
 
 public class GrabRoundInfoModel extends BaseRoundInfoModel {
-    public static final int STATUS_INIT = 1;
-    public static final int STATUS_GRAB = 2;
-    public static final int STATUS_SING = 3;
-    public static final int STATUS_OVER = 4;
 
     /* 一唱到底使用 */
-    private int status = STATUS_INIT;// 轮次状态，在一唱到底中使用
+    private int status = EQRoundStatus.QRS_UNKNOWN.getValue();// 轮次状态，在一唱到底中使用
 
     private HashSet<BLightInfoModel> bLightInfos = new HashSet<>();//已经爆灯的人, 一唱到底
 
@@ -168,12 +167,25 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
     }
 
     public void updateStatus(boolean notify, int statusGrab) {
-        if (status < statusGrab) {
+        if (getStatusPriority(status) < getStatusPriority(statusGrab)) {
             int old = status;
             status = statusGrab;
             if (notify) {
                 EventBus.getDefault().post(new GrabRoundStatusChangeEvent(this, old));
             }
+        }
+    }
+
+    /**
+     * 重排一下状态机的优先级
+     * @param status
+     * @return
+     */
+    int getStatusPriority(int status){
+        if(status == EQRoundStatus.QRS_END.getValue()){
+            return 1000;
+        }else{
+            return status;
         }
     }
 
@@ -333,9 +345,42 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         this.setWantSingType(roundInfo.getWantSingType());
         updateStatus(notify, roundInfo.getStatus());
 
+        // 更新合唱信息
+        if(wantSingType==EWantSingType.EWST_CHORUS.getValue()){
+            if(this.getChorusRoundInfoModels().size()<=1){
+                // 不满足两人通知全量更新
+                this.getChorusRoundInfoModels().clear();
+                this.getChorusRoundInfoModels().addAll(roundInfo.getChorusRoundInfoModels());
+            }else{
+                for(int i=0;i<this.getChorusRoundInfoModels().size() && i< roundInfo.getChorusRoundInfoModels().size();i++){
+                    ChorusRoundInfoModel chorusRoundInfoModel1 = this.getChorusRoundInfoModels().get(i);
+                    ChorusRoundInfoModel chorusRoundInfoModel2 = roundInfo.getChorusRoundInfoModels().get(i);
+                    chorusRoundInfoModel1.tryUpdateRoundInfoModel(chorusRoundInfoModel2);
+                }
+            }
+        }
+
+        // 更新pk信息
+        if(wantSingType ==EWantSingType.EWST_SPK.getValue()){
+            // pk房间
+            SPkRoundInfoModel sPkRoundInfoModel = this.getPkRoundInfoModel();
+            if(sPkRoundInfoModel!=null){
+                sPkRoundInfoModel.tryUpdateRoundInfoModel(roundInfo.getPkRoundInfoModel());
+            }else{
+                sPkRoundInfoModel = roundInfo.getPkRoundInfoModel();
+                //TODO 发事件 通知全量更新
+            }
+        }
+
         return;
     }
 
+    public SPkRoundInfoModel getPkRoundInfoModel(){
+        if(this.getsPkRoundInfoModels().isEmpty()){
+            return null;
+        }
+        return this.getsPkRoundInfoModels().get(0);
+    }
 
     public static GrabRoundInfoModel parseFromRoundInfo(QRoundInfo roundInfo) {
         GrabRoundInfoModel roundInfoModel = new GrabRoundInfoModel();
@@ -384,6 +429,16 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         }
         // 想唱类型
         roundInfoModel.setWantSingType(roundInfo.getWantSingType().getValue());
+
+        for (QCHOInnerRoundInfo qchoInnerRoundInfo : roundInfo.getCHORoundInfosList()) {
+            ChorusRoundInfoModel chorusRoundInfoModel = ChorusRoundInfoModel.parse(qchoInnerRoundInfo);
+            roundInfoModel.getChorusRoundInfoModels().add(chorusRoundInfoModel);
+        }
+
+        for (QSPKInnerRoundInfo qspkInnerRoundInfo : roundInfo.getSPKRoundInfosList()) {
+            SPkRoundInfoModel pkRoundInfoModel = SPkRoundInfoModel.parse(qspkInnerRoundInfo);
+            roundInfoModel.getsPkRoundInfoModels().add(pkRoundInfoModel);
+        }
         return roundInfoModel;
     }
 
@@ -466,6 +521,22 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
 
     public void setWantSingType(int wantSingType) {
         this.wantSingType = wantSingType;
+    }
+
+    public List<ChorusRoundInfoModel> getChorusRoundInfoModels() {
+        return chorusRoundInfoModels;
+    }
+
+    public void setChorusRoundInfoModels(List<ChorusRoundInfoModel> chorusRoundInfoModels) {
+        this.chorusRoundInfoModels = chorusRoundInfoModels;
+    }
+
+    public List<SPkRoundInfoModel> getsPkRoundInfoModels() {
+        return sPkRoundInfoModels;
+    }
+
+    public void setsPkRoundInfoModels(List<SPkRoundInfoModel> sPkRoundInfoModels) {
+        this.sPkRoundInfoModels = sPkRoundInfoModels;
     }
 
     @Override
