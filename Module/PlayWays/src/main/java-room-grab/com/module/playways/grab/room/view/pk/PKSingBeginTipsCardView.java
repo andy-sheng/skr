@@ -65,11 +65,10 @@ public class PKSingBeginTipsCardView extends RelativeLayout {
             MyLog.w(TAG, "bindData" + " left=" + left + " right=" + right + " listener=" + listener);
             return;
         }
-
         this.mSVGAListener = listener;
         setVisibility(VISIBLE);
-        // TODO: 2019/4/21 等新的svga再替换
-        String assetsName = "grab_sing_chance.svga";
+        
+        String assetsName = "grab_pk_sing_chance.svga";
         mPkSingBeginSvga.setVisibility(VISIBLE);
         try {
             SvgaParserAdapter.parse(assetsName, new SVGAParser.ParseCompletion() {
@@ -121,24 +120,7 @@ public class PKSingBeginTipsCardView extends RelativeLayout {
     }
 
     private SVGADynamicEntity requestDynamic(UserInfoModel left, UserInfoModel right) {
-        // TODO: 2019/4/21 等动效替换
         SVGADynamicEntity dynamicEntity = new SVGADynamicEntity();
-        TextPaint textPaint1 = new TextPaint();
-        textPaint1.setColor(Color.parseColor("#1A1B28"));
-        textPaint1.setAntiAlias(true);
-        textPaint1.setTypeface(Typeface.DEFAULT_BOLD);
-        textPaint1.setTextSize(U.getDisplayUtils().dip2px(20));
-
-        TextPaint textPaint2 = new TextPaint();
-        textPaint2.setColor(Color.parseColor("#2E3041"));
-        textPaint2.setAntiAlias(true);
-        textPaint2.setTextSize(U.getDisplayUtils().dip2px(14));
-
-        String text1 = left.getNickname() + "左边的人PK";
-        String text2 = right.getNickname() + "右边的人PK";
-        dynamicEntity.setDynamicText(text1, textPaint1, "text_48");
-        dynamicEntity.setDynamicText(text2, textPaint2, "text_32");
-
         if (!TextUtils.isEmpty(left.getAvatar())) {
             // 填入左边头像
             HttpImage image = ImageFactory.newPathImage(left.getAvatar())
@@ -152,30 +134,48 @@ public class PKSingBeginTipsCardView extends RelativeLayout {
                     .build();
             File file = FrescoWorker.getCacheFileFromFrescoDiskCache(image.getUrl());
             if (file != null) {
-                dynamicEntity.setDynamicImage(BitmapFactory.decodeFile(file.getPath()), "avatar_104");
+                dynamicEntity.setDynamicImage(BitmapFactory.decodeFile(file.getPath()), "avatar_1081");
             } else {
-                dynamicEntity.setDynamicImage(image.getUrl(), "avatar_104");
+                dynamicEntity.setDynamicImage(image.getUrl(), "avatar_1081");
             }
         }
 
-//        if (!TextUtils.isEmpty(right.getAvatar())) {
-//            // 填入右边头像
-//            HttpImage image = ImageFactory.newPathImage(right.getAvatar())
-//                    .addOssProcessors(OssImgFactory.newResizeBuilder()
-//                                    .setW(ImageUtils.SIZE.SIZE_160.getW())
-//                                    .build()
-//                            , OssImgFactory.newCircleBuilder()
-//                                    .setR(500)
-//                                    .build()
-//                    )
-//                    .build();
-//            File file = FrescoWorker.getCacheFileFromFrescoDiskCache(image.getUrl());
-//            if (file != null) {
-//                dynamicEntity.setDynamicImage(BitmapFactory.decodeFile(file.getPath()), "avatar_104");
-//            } else {
-//                dynamicEntity.setDynamicImage(image.getUrl(), "avatar_104");
-//            }
-//        }
+        if (!TextUtils.isEmpty(left.getNickname())) {
+            TextPaint leftPaint = new TextPaint();
+            leftPaint.setColor(U.getColor(R.color.black_trans_60));
+            leftPaint.setAntiAlias(true);
+            leftPaint.setTextSize(U.getDisplayUtils().dip2px(18));
+            String text = left.getNickname();
+            dynamicEntity.setDynamicText(text, leftPaint, "text_441");
+        }
+
+        if (!TextUtils.isEmpty(right.getAvatar())) {
+            // 填入右边头像
+            HttpImage image = ImageFactory.newPathImage(right.getAvatar())
+                    .addOssProcessors(OssImgFactory.newResizeBuilder()
+                                    .setW(ImageUtils.SIZE.SIZE_160.getW())
+                                    .build()
+                            , OssImgFactory.newCircleBuilder()
+                                    .setR(500)
+                                    .build()
+                    )
+                    .build();
+            File file = FrescoWorker.getCacheFileFromFrescoDiskCache(image.getUrl());
+            if (file != null) {
+                dynamicEntity.setDynamicImage(BitmapFactory.decodeFile(file.getPath()), "avatar_1082");
+            } else {
+                dynamicEntity.setDynamicImage(image.getUrl(), "avatar_1082");
+            }
+        }
+
+        if (!TextUtils.isEmpty(right.getNickname())) {
+            TextPaint rightPaint = new TextPaint();
+            rightPaint.setColor(U.getColor(R.color.black_trans_60));
+            rightPaint.setAntiAlias(true);
+            rightPaint.setTextSize(U.getDisplayUtils().dip2px(18));
+            String text = right.getNickname();
+            dynamicEntity.setDynamicText(text, rightPaint, "text_442");
+        }
         return dynamicEntity;
     }
 

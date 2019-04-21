@@ -8,7 +8,7 @@
     <com.opensource.svgaplayer.SVGAImageView
         android:id="@+id/chorus_sing_begin_svga"
         android:layout_width="@dimen/view_375_dp"
-        android:layout_height="@dimen/view_181_dp"
+        android:layout_height="@dimen/view_154_dp"
         android:layout_centerHorizontal="true"
         android:visibility="gone"
         app:antiAlias="true"
