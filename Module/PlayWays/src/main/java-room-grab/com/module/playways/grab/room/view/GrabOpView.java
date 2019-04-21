@@ -358,8 +358,18 @@ public class GrabOpView extends RelativeLayout {
                 Drawable drawable = null;
                 if (mSongModel.getPlayType() == StandPlayType.PT_CHO_TYPE.getValue()) {
                     // 合唱
+                    drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20))
+                            .setShape(DrawableCreator.Shape.Rectangle)
+                            .setPressedDrawable(U.getDrawable(R.drawable.ycdd_chorus_pressed))
+                            .setUnPressedDrawable(U.getDrawable(R.drawable.ycdd_chorus_normal))
+                            .build();
                 } else if (mSongModel.getPlayType() == StandPlayType.PT_SPK_TYPE.getValue()) {
                     // pk
+                    drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20))
+                            .setShape(DrawableCreator.Shape.Rectangle)
+                            .setPressedDrawable(U.getDrawable(R.drawable.ycdd_pk_pressed))
+                            .setUnPressedDrawable(U.getDrawable(R.drawable.ycdd_pk_normal))
+                            .build();
                 } else {
                     drawable = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20))
                             .setShape(DrawableCreator.Shape.Rectangle)
