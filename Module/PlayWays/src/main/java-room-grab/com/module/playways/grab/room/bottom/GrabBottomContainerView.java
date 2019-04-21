@@ -25,6 +25,7 @@ import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.room.room.event.InputBoardEvent;
 import com.module.playways.room.room.view.BottomContainerView;
 import com.module.rank.R;
+import com.zq.live.proto.Room.EQRoundStatus;
 import com.zq.toast.CommonToastView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -190,7 +191,7 @@ public class GrabBottomContainerView extends BottomContainerView {
     public void onEvent(GrabRoundStatusChangeEvent event) {
         //MyLog.d("GrabBottomContainerView","onEvent" + " event=" + event);
         GrabRoundInfoModel now = event.roundInfo;
-        if (now != null && now.getStatus() == GrabRoundInfoModel.STATUS_SING && mGrabRoomData.isOwner()) {
+        if (now != null && now.getStatus() == EQRoundStatus.QRS_SING.getValue() && mGrabRoomData.isOwner()) {
             if (mGrabRoomData.isSpeaking() && now.getUserID() != MyUserInfoManager.getInstance().getUid()) {
                 U.getToastUtil().showShort("有人上麦了,暂时不能说话哦", 0, Gravity.CENTER);
             }

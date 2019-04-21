@@ -15,6 +15,7 @@ import com.module.playways.grab.room.model.GrabConfigModel;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
+import com.zq.live.proto.Room.EQRoundStatus;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -108,7 +109,7 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
             // 结束状态了
             if (mRealRoundInfo != null) {
                 GrabRoundInfoModel lastRoundInfoModel = (GrabRoundInfoModel) mRealRoundInfo;
-                lastRoundInfoModel.updateStatus(false, GrabRoundInfoModel.STATUS_OVER);
+                lastRoundInfoModel.updateStatus(false, EQRoundStatus.QRS_END.getValue());
                 mRealRoundInfo = null;
 //                if (lastRoundInfoModel != null
 //                        && lastRoundInfoModel.getOverReason() == EQRoundOverReason.ROR_LAST_ROUND_OVER.getValue()
@@ -125,11 +126,11 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
             // 轮次大于，才切换
             GrabRoundInfoModel lastRoundInfoModel = (GrabRoundInfoModel) mRealRoundInfo;
             if (lastRoundInfoModel != null) {
-                lastRoundInfoModel.updateStatus(false, GrabRoundInfoModel.STATUS_OVER);
+                lastRoundInfoModel.updateStatus(false, EQRoundStatus.QRS_END.getValue());
             }
             mRealRoundInfo = mExpectRoundInfo;
             if (mRealRoundInfo != null) {
-                ((GrabRoundInfoModel) mRealRoundInfo).updateStatus(false, GrabRoundInfoModel.STATUS_GRAB);
+                ((GrabRoundInfoModel) mRealRoundInfo).updateStatus(false, EQRoundStatus.QRS_INTRO.getValue());
             }
             // 告知切换到新的轮次了
 //            if (lastRoundInfoModel != null

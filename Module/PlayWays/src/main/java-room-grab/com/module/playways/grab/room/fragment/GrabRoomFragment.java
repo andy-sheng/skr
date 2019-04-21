@@ -89,6 +89,7 @@ import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.dialog.ConfirmDialog;
 import com.zq.dialog.PersonInfoDialog;
+import com.zq.live.proto.Room.EQRoundStatus;
 import com.zq.toast.CommonToastView;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -917,7 +918,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         }
 
         GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
-        if (grabRoundInfoModel != null && !grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_GRAB) {
+        if (grabRoundInfoModel != null && !grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == EQRoundStatus.QRS_INTRO.getValue()) {
             mTurnInfoCardView.setVisibility(View.GONE);
             onSongInfoCardPlayOver("中途进来", pendingPlaySongCardData);
         } else {
@@ -940,7 +941,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
         mGrabGiveupView.hideWithAnimation(false);
         GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
-        if (grabRoundInfoModel != null && !grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_GRAB) {
+        if (grabRoundInfoModel != null && !grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == EQRoundStatus.QRS_INTRO.getValue()) {
             MyLog.d(TAG, "这轮刚进来，不播放导唱过场");
             mGrabOpBtn.hide("onSongInfoCardPlayOver1");
         } else {
@@ -1011,7 +1012,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     private void singBeginTipsPlay(int uid, Runnable runnable) {
         GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
         if (grabRoundInfoModel != null) {
-            if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_SING) {
+            if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == EQRoundStatus.QRS_SING.getValue()) {
                 MyLog.d(TAG, " 进入时已经时演唱阶段了，则不用播卡片了");
                 runnable.run();
             } else {

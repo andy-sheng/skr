@@ -27,6 +27,7 @@ import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
+import com.zq.live.proto.Room.EQRoundStatus;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -151,7 +152,7 @@ public class NormalOthersSingCardView extends RelativeLayout {
             return;
         }
 
-        if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_SING) {
+        if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == EQRoundStatus.QRS_SING.getValue()) {
             countDown("中途进来");
         } else {
             mCircleCountDownView.cancelAnim();
@@ -180,7 +181,7 @@ public class NormalOthersSingCardView extends RelativeLayout {
             return;
         }
 
-        if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_SING) {
+        if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == EQRoundStatus.QRS_SING.getValue()) {
             countDown("中途进来");
         } else {
             countDown("else full Animation");
@@ -221,7 +222,7 @@ public class NormalOthersSingCardView extends RelativeLayout {
         int progress;  //当前进度条
         int leaveTime; //剩余时间
         MyLog.d(TAG, "countDown isParticipant:" + infoModel.isParticipant() + " enterStatus=" + infoModel.getEnterStatus());
-        if (!infoModel.isParticipant() && infoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_SING) {
+        if (!infoModel.isParticipant() && infoModel.getEnterStatus() == EQRoundStatus.QRS_SING.getValue()) {
             MyLog.d(TAG, "演唱阶段加入的，倒计时没那么多");
             progress = infoModel.getElapsedTimeMs() * 100 / totalMs;
             leaveTime = totalMs - infoModel.getElapsedTimeMs();

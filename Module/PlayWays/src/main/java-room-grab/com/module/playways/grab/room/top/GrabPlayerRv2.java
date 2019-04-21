@@ -31,6 +31,7 @@ import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
+import com.zq.live.proto.Room.EQRoundStatus;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -145,7 +146,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
                 mInfoMap.put(playerInfoModel.getUserID(), vp);
                 vp.grabTopItemView.bindData(playerInfoModel, mRoomData.getOwnerId() == playerInfoModel.getUserID());
                 if(playerInfoModels.get(i).getUserID() == now.getUserID()
-                        && now.getStatus() == GrabRoundInfoModel.STATUS_SING){
+                        && now.getStatus() == EQRoundStatus.QRS_SING.getValue()){
                     LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) vp.grabTopItemView.getLayoutParams();
                     lp.weight = 0;
                     vp.grabTopItemView.setLayoutParams(lp);
@@ -153,7 +154,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
             }
 
             MyLog.d(TAG, "initData + now.getStatus() " + now.getStatus());
-            if (now.getStatus() == GrabRoundInfoModel.STATUS_GRAB) {
+            if (now.getStatus() == EQRoundStatus.QRS_INTRO.getValue()) {
                 for (WantSingerInfo wantSingerInfo : now.getWantSingInfos()) {
                     VP vp = mInfoMap.get(wantSingerInfo.getUserID());
                     if (vp != null && vp.grabTopItemView != null) {
@@ -234,7 +235,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
         if (now == null) {
             return;
         }
-        if (!now.isParticipant() && now.getEnterStatus() == GrabRoundInfoModel.STATUS_SING) {
+        if (!now.isParticipant() && now.getEnterStatus() == EQRoundStatus.QRS_SING.getValue()) {
             // 如果是演唱阶段进来的参与者
             LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) vp.grabTopItemView.getLayoutParams();
             lp.weight = 0;

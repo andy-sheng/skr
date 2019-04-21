@@ -22,6 +22,7 @@ import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.others.LyricAndAccMatchManager;
 import com.module.playways.room.song.model.SongModel;
 import com.module.rank.R;
+import com.zq.live.proto.Room.EWantSingType;
 import com.zq.lyrics.widget.ManyLyricsView;
 import com.zq.lyrics.widget.VoiceScaleView;
 
@@ -96,8 +97,8 @@ public class NormalSelfSingCardView extends RelativeLayout {
             MyLog.d(TAG, "infoModel 是空的");
             return;
         }
-        if (infoModel.getWantSingType() == GrabRoundInfoModel.EWST_COMMON_OVER_TIME
-                || infoModel.getWantSingType() == GrabRoundInfoModel.EWST_ACCOMPANY_OVER_TIME) {
+        if (infoModel.getWantSingType() == EWantSingType.EWST_COMMON_OVER_TIME.getValue()
+                || infoModel.getWantSingType() == EWantSingType.EWST_ACCOMPANY_OVER_TIME.getValue()) {
             mIvChallengeIcon.setVisibility(VISIBLE);
         } else {
             mIvChallengeIcon.setVisibility(INVISIBLE);
