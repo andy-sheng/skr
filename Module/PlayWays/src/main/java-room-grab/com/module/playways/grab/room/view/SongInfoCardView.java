@@ -29,6 +29,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.room.song.model.SongModel;
 import com.module.rank.R;
 import com.trello.rxlifecycle2.android.ActivityEvent;
+import com.zq.live.proto.Common.StandPlayType;
 
 import java.io.File;
 import java.io.IOException;
@@ -119,6 +120,12 @@ public class SongInfoCardView extends RelativeLayout {
         mSongLyrics.setText("歌词加载中...");
         mCurrentSeq.setText("" + curRoundSeq);
         mTotalSeq.setText("" + totalSeq);
+        if(songModel.getPlayType() == StandPlayType.PT_CHO_TYPE.getValue()){
+            // 合唱
+
+        }else{
+            
+        }
         playLyric(songModel);
         // 入场动画
         animationGo();

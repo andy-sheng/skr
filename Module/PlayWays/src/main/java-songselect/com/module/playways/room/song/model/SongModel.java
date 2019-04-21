@@ -1,11 +1,14 @@
 package com.module.playways.room.song.model;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.common.log.MyLog;
 import com.common.utils.SongResUtils;
 import com.zq.live.proto.Common.MusicInfo;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SongModel implements Serializable {
     /**
@@ -50,7 +53,10 @@ public class SongModel implements Serializable {
     private String standLrc = "";   //一唱到底是否是白板item
     private String rankUserVoice;   //排位进入游戏前的背景音乐
     private int rankLrcEndT;   //排位进入游戏前的背景音乐
-    private boolean challengeAvailable;
+    private boolean challengeAvailable;// 挑战是否可用
+    private int playType;// 玩法类型 普通 合唱 pk
+    @JSONField(name = "SPKMusic")
+    private List<SongModel> pkMusicList;
 
     public boolean isChallengeAvailable() {
         return challengeAvailable;
@@ -253,6 +259,14 @@ public class SongModel implements Serializable {
         this.rankUserVoice = rankUserVoice;
     }
 
+    public int getPlayType() {
+        return playType;
+    }
+
+    public void setPlayType(int playType) {
+        this.playType = playType;
+    }
+
     public void parse(MusicInfo musicInfo) {
         if (musicInfo == null) {
             MyLog.e("SongModel MusicInfo == null");
@@ -283,6 +297,16 @@ public class SongModel implements Serializable {
         this.setRankUserVoice(musicInfo.getRankUserVoice());
         this.setRankLrcEndT(musicInfo.getRankLrcEndT());
         this.setChallengeAvailable(musicInfo.getChallengeAvailable());
+        this.setPlayType(musicInfo.getPlayType().getValue());
+        List<MusicInfo> list = musicInfo.getSPKMusicList();
+        if (list != null) {
+            this.pkMusicList = new ArrayList<>();
+            for (int i = 0; i < list.size(); i++) {
+                SongModel songModel = new SongModel();
+                songModel.parse(list.get(i));
+                this.pkMusicList.add(songModel);
+            }
+        }
     }
 
     public boolean isAllResExist() {
