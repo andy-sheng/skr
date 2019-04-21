@@ -1,5 +1,6 @@
 package com.module.playways.grab.room.model;
 
+import com.zq.live.proto.Room.EWantSingType;
 import com.zq.live.proto.Room.WantSingInfo;
 
 import java.io.Serializable;
@@ -38,7 +39,7 @@ public class WantSingerInfo implements Serializable {
     }
 
     public boolean isChallengeType() {
-        return wantSingType == 2 || wantSingType == 3;
+        return wantSingType == EWantSingType.EWST_ACCOMPANY_OVER_TIME.getValue() || wantSingType == EWantSingType.EWST_COMMON_OVER_TIME.getValue();
     }
 
     public void setWantSingType(int wantSingType) {
