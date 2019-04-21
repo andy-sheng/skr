@@ -74,7 +74,7 @@ public class GrabGiveupView extends RelativeLayout {
         });
     }
 
-    public void delayShowPassView() {
+    public void delayShowGiveUpView() {
         hideWithAnimation(false);
         mUiHandler.removeMessages(MSG_ANIMATION_SHOW);
         mUiHandler.sendEmptyMessageDelayed(MSG_ANIMATION_SHOW,5000);

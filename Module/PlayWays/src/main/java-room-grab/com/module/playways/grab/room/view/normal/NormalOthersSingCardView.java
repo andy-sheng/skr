@@ -164,6 +164,9 @@ public class NormalOthersSingCardView extends RelativeLayout {
     }
 
     public void tryStartCountDown() {
+        if(getVisibility() == GONE){
+            return;
+        }
         MyLog.d(TAG, "tryStartCountDown");
         mCanStartFlag = true;
         mUiHandler.removeMessages(MSG_ENSURE_PLAY);

@@ -57,30 +57,24 @@ public class SingBeginTipsCardView {
         }
     }
 
-    public void bindData(UserInfoModel userInfo, SongModel music, SVGAListener svgaListener, boolean challengeRound) {
-        if (RoomDataUtils.isChorusRound(mRoomData)) {
-            GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
-            if (grabRoundInfoModel != null) {
+    public void bindData(SVGAListener svgaListener) {
+        GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
+        if (grabRoundInfoModel != null) {
+            if (RoomDataUtils.isChorusRound(mRoomData)) {
                 List<ChorusRoundInfoModel> list = grabRoundInfoModel.getChorusRoundInfoModels();
-                if(list!=null && list.size()>=2){
+                if (list != null && list.size() >= 2) {
                     UserInfoModel userInfoModel1 = mRoomData.getUserInfo(list.get(0).getUserID());
                     UserInfoModel userInfoModel2 = mRoomData.getUserInfo(list.get(1).getUserID());
-                    mChorusSingBeginTipsCardView.bindData(userInfoModel1,userInfoModel2,svgaListener);
+                    mChorusSingBeginTipsCardView.bindData(userInfoModel1, userInfoModel2, svgaListener);
                 }
-            }
-        } else if (RoomDataUtils.isPKRound(mRoomData)) {
-            GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
-            if (grabRoundInfoModel != null) {
+            } else if (RoomDataUtils.isPKRound(mRoomData)) {
                 SPkRoundInfoModel sPkRoundInfoModel = grabRoundInfoModel.getPkSecondRoundInfoModel();
-                if(sPkRoundInfoModel!=null){
-                    UserInfoModel userInfoModel1 = mRoomData.getUserInfo(grabRoundInfoModel.getUserID());
-                    UserInfoModel userInfoModel2 = mRoomData.getUserInfo(sPkRoundInfoModel.getUserID());
-                    mPKSingBeginTipsCardView.bindData(userInfoModel1,userInfoModel2,svgaListener);
-                }
+                UserInfoModel userInfoModel1 = mRoomData.getUserInfo(grabRoundInfoModel.getUserID());
+                UserInfoModel userInfoModel2 = mRoomData.getUserInfo(sPkRoundInfoModel.getUserID());
+                mPKSingBeginTipsCardView.bindData(userInfoModel1, userInfoModel2, svgaListener);
+            } else {
+                mNormalSingBeginTipsCardView.bindData(mRoomData.getUserInfo(grabRoundInfoModel.getUserID()), grabRoundInfoModel.getMusic(), svgaListener, grabRoundInfoModel.isChallengeRound());
             }
-        } else {
-            mNormalSingBeginTipsCardView.bindData(userInfo, music, svgaListener, challengeRound);
         }
-
     }
 }

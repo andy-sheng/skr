@@ -205,7 +205,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                     onSongInfoCardPlayOver("MSG_ENSURE_SONGCARD_OVER", (PendingPlaySongCardData) msg.obj);
                     break;
                 case MSG_ENSURE_SING_BEGIN_TIPS_OVER:
-                    onSingBeginTipsPlayOver(msg.arg1);
+                    onSingBeginTipsPlayOver();
                     break;
                 case MSG_ENSURE_ROUND_OVER_PLAY_OVER:
                     onRoundOverPlayOver(msg.arg1 == 1, (BaseRoundInfoModel) msg.obj);
@@ -944,16 +944,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         mGrabOpBtn.setGrabPreRound(true);
 
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
-        msg.arg1 = (int) MyUserInfoManager.getInstance().getUid();
         mUiHanlder.sendMessageDelayed(msg, 4000);
 
-//        mUiHanlder.removeMessages(MSG_SEND_SELF_SING_END);
-//        mUiHanlder.sendMessageDelayed(mUiHanlder.obtainMessage(MSG_SEND_SELF_SING_END), mRoomData.getRealRoundInfo().getMusic().getTotalMs());
-
-        singBeginTipsPlay((int) MyUserInfoManager.getInstance().getUid(), new Runnable() {
+        singBeginTipsPlay(new Runnable() {
             @Override
             public void run() {
-                onSingBeginTipsPlayOver(MyUserInfoManager.getInstance().getUid());
+                onSingBeginTipsPlayOver();
             }
         });
     }
@@ -975,7 +971,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         msg.arg1 = (int) uid;
         mUiHanlder.sendMessageDelayed(msg, 2600);
 
-        singBeginTipsPlay((int) uid, new Runnable() {
+        singBeginTipsPlay(new Runnable() {
             @Override
             public void run() {
                 GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
@@ -985,51 +981,50 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                     mGrabOpBtn.hide("singByOthers2");
                     MyLog.d(TAG, "中途进来的，不是本局参与者，隐藏按钮");
                 }
-                onSingBeginTipsPlayOver(uid);
+                onSingBeginTipsPlayOver();
             }
         });
     }
 
-    private void singBeginTipsPlay(int uid, Runnable runnable) {
+    private void singBeginTipsPlay(Runnable runnable) {
         GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
         if (grabRoundInfoModel != null) {
             if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.isEnterInSingStatus()) {
                 MyLog.d(TAG, " 进入时已经时演唱阶段了，则不用播卡片了");
                 runnable.run();
             } else {
-                mSingBeginTipsCardView.bindData(mRoomData.getUserInfo(uid), grabRoundInfoModel.getMusic(), new SVGAListener() {
+                mSingBeginTipsCardView.bindData(new SVGAListener() {
                     @Override
                     public void onFinished() {
                         runnable.run();
                     }
-                }, grabRoundInfoModel.isChallengeRound());
+                });
             }
         } else {
             MyLog.w(TAG, "singBeginTipsPlay" + " grabRoundInfoModel = null ");
         }
     }
 
-    private void onSingBeginTipsPlayOver(long uid) {
-        MyLog.d(TAG, "onSingBeginTipsPlayOver" + " uid=" + uid);
+    private void onSingBeginTipsPlayOver() {
+        MyLog.d(TAG, "onSingBeginTipsPlayOver");
         mUiHanlder.removeMessages(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
         mSingBeginTipsCardView.setVisibility(View.GONE);
         mGrabScoreTipsView.reset();
-        if (uid == MyUserInfoManager.getInstance().getUid()) {
-            mGrabGiveupView.delayShowPassView();
-            mCorePresenter.beginSing();
-            // 显示歌词
-            mSelfSingCardView.setVisibility(View.VISIBLE);
-            mOthersSingCardView.setVisibility(View.GONE);
-            GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
-            if (infoModel != null) {
-                mSelfSingCardView.playLyric(infoModel, mRoomData.isAccEnable());
+        GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
+        if(now!=null){
+            if( now.singBySelfNow()){
+                mGrabGiveupView.delayShowGiveUpView();
+                mCorePresenter.beginSing();
+                // 显示歌词
+                mSelfSingCardView.setVisibility(View.VISIBLE);
+                mOthersSingCardView.setVisibility(View.GONE);
+                mSelfSingCardView.playLyric();
+            }else{
+                // 显示收音机
+                mSelfSingCardView.setVisibility(View.GONE);
+                mOthersSingCardView.setVisibility(View.VISIBLE);
+                mOthersSingCardView.bindData();
             }
-        } else {
-            // 显示收音机
-            mSelfSingCardView.setVisibility(View.GONE);
-            mOthersSingCardView.setVisibility(View.VISIBLE);
-            UserInfoModel userInfoModel = mRoomData.getUserInfo((int) uid);
-            mOthersSingCardView.bindData(userInfoModel);
         }
     }
 
