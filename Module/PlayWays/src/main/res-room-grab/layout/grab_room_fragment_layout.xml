@@ -91,7 +91,7 @@
         android:layout_marginTop="@dimen/view_182_dp"
         android:visibility="gone" />
 
-    <com.module.playways.grab.room.view.SingBeginTipsCardView
+    <com.module.playways.grab.room.view.normal.NormalSingBeginTipsCardView
         android:id="@+id/turn_change_sing_beign_tips_card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -99,7 +99,7 @@
         android:layout_marginTop="@dimen/view_175_dp"
         android:visibility="gone" />
 
-    <com.module.playways.grab.room.view.RoundOverCardView
+    <com.module.playways.grab.room.view.normal.NormalRoundOverCardView
         android:id="@+id/turn_change_round_over_card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -109,7 +109,7 @@
     <!--转场卡片结束-->
 
     <!--演唱时两个主场景view-->
-    <com.module.playways.grab.room.view.OthersSingCardView
+    <com.module.playways.grab.room.view.normal.NormalOthersSingCardView
         android:id="@+id/other_sing_card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -117,7 +117,7 @@
         android:visibility="gone" />
 
 
-    <com.module.playways.grab.room.view.SelfSingCardView2
+    <com.module.playways.grab.room.view.normal.NormalSelfSingCardView
         android:id="@+id/self_sing_card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -1,4 +1,4 @@
-package com.module.playways.grab.room.view;
+package com.module.playways.grab.room.view.normal;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -44,7 +44,7 @@ import okio.Okio;
 /**
  * 你的主场景歌词
  */
-public class SelfSingCardView2 extends RelativeLayout {
+public class NormalSelfSingCardView extends RelativeLayout {
     public final static String TAG = "SelfSingCardView2";
 
     TextView mTvLyric;
@@ -67,17 +67,17 @@ public class SelfSingCardView2 extends RelativeLayout {
     LyricAndAccMatchManager mLyricAndAccMatchManager = new LyricAndAccMatchManager();
 
 
-    public SelfSingCardView2(Context context) {
+    public NormalSelfSingCardView(Context context) {
         super(context);
         init();
     }
 
-    public SelfSingCardView2(Context context, AttributeSet attrs) {
+    public NormalSelfSingCardView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public SelfSingCardView2(Context context, AttributeSet attrs, int defStyleAttr) {
+    public NormalSelfSingCardView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }

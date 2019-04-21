@@ -1,4 +1,4 @@
-package com.module.playways.grab.room.view;
+package com.module.playways.grab.room.view.normal;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -24,9 +24,9 @@ import com.zq.live.proto.Room.EQRoundOverReason;
 import java.util.HashMap;
 
 /**
- * 轮次结束
+ * 轮次结束 合唱和正常结束都用此板
  */
-public class RoundOverCardView extends RelativeLayout {
+public class NormalRoundOverCardView extends RelativeLayout {
 
     public final static String TAG = "RoundOverCardView";
 
@@ -50,17 +50,17 @@ public class RoundOverCardView extends RelativeLayout {
 
     SVGAListener mSVGAListener;
 
-    public RoundOverCardView(Context context) {
+    public NormalRoundOverCardView(Context context) {
         super(context);
         init();
     }
 
-    public RoundOverCardView(Context context, AttributeSet attrs) {
+    public NormalRoundOverCardView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public RoundOverCardView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public NormalRoundOverCardView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }

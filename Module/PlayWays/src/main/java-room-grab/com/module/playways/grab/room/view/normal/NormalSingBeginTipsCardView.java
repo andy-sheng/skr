@@ -1,4 +1,4 @@
-package com.module.playways.grab.room.view;
+package com.module.playways.grab.room.view.normal;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -39,24 +39,24 @@ import java.io.File;
  * 轮到你唱了
  * 演唱提示cardview
  */
-public class SingBeginTipsCardView extends RelativeLayout {
+public class NormalSingBeginTipsCardView extends RelativeLayout {
 
     public final static String TAG = "SingBeginTipsCardView";
 
     SVGAImageView mSingBeginSvga;
     SVGAListener mSVGAListener;
 
-    public SingBeginTipsCardView(Context context) {
+    public NormalSingBeginTipsCardView(Context context) {
         super(context);
         init();
     }
 
-    public SingBeginTipsCardView(Context context, AttributeSet attrs) {
+    public NormalSingBeginTipsCardView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public SingBeginTipsCardView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public NormalSingBeginTipsCardView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }

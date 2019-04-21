@@ -1,4 +1,4 @@
-package com.module.playways.grab.room.view;
+package com.module.playways.grab.room.view.normal;
 
 import android.content.Context;
 import android.os.Handler;
@@ -31,9 +31,9 @@ import com.opensource.svgaplayer.SVGAVideoEntity;
 import org.greenrobot.eventbus.EventBus;
 
 /**
- * 其他人主场景收音机
+ * 其他人主场景
  */
-public class OthersSingCardView extends RelativeLayout {
+public class NormalOthersSingCardView extends RelativeLayout {
     public final static String TAG = "OthersSingCardView";
     final static int MSG_ENSURE_PLAY = 1;
 
@@ -67,17 +67,17 @@ public class OthersSingCardView extends RelativeLayout {
     boolean mHasPlayFullAnimation = false;
     boolean mCanStartFlag = false;
 
-    public OthersSingCardView(Context context) {
+    public NormalOthersSingCardView(Context context) {
         super(context);
         init(context);
     }
 
-    public OthersSingCardView(Context context, AttributeSet attrs) {
+    public NormalOthersSingCardView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
-    public OthersSingCardView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public NormalOthersSingCardView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
     }

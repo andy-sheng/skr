@@ -60,11 +60,11 @@ import com.module.playways.grab.room.view.GrabGiveupView;
 import com.module.playways.grab.room.view.GrabScoreTipsView;
 import com.module.playways.grab.room.view.GrabVoiceControlPanelView;
 import com.module.playways.grab.room.view.IRedPkgCountDownView;
-import com.module.playways.grab.room.view.OthersSingCardView;
+import com.module.playways.grab.room.view.normal.NormalOthersSingCardView;
 import com.module.playways.grab.room.view.RedPkgCountDownView;
-import com.module.playways.grab.room.view.RoundOverCardView;
-import com.module.playways.grab.room.view.SelfSingCardView2;
-import com.module.playways.grab.room.view.SingBeginTipsCardView;
+import com.module.playways.grab.room.view.normal.NormalRoundOverCardView;
+import com.module.playways.grab.room.view.normal.NormalSelfSingCardView;
+import com.module.playways.grab.room.view.normal.NormalSingBeginTipsCardView;
 import com.module.playways.grab.room.view.SongInfoCardView;
 import com.module.playways.grab.room.view.TurnInfoCardView;
 import com.module.playways.room.prepare.model.OnlineInfoModel;
@@ -143,17 +143,17 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     SongInfoCardView mSongInfoCardView; // 歌曲信息卡片
 
-    SingBeginTipsCardView mSingBeginTipsCardView; // 提示xxx演唱开始的卡片
+    NormalSingBeginTipsCardView mSingBeginTipsCardView; // 提示xxx演唱开始的卡片
 
-    RoundOverCardView mRoundOverCardView; // 轮次结束的卡片
+    NormalRoundOverCardView mRoundOverCardView; // 轮次结束的卡片
 
     GrabOpView mGrabOpBtn; // 抢 倒计时 灭 等按钮
 
     GrabGiveupView mGrabGiveupView;
 
-    OthersSingCardView mOthersSingCardView;
+    NormalOthersSingCardView mOthersSingCardView;
 
-    SelfSingCardView2 mSelfSingCardView;
+    NormalSelfSingCardView mSelfSingCardView;
 
     GrabGameOverView mGrabGameOverView;
 
@@ -813,7 +813,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         mOthersSingCardView.setRoomData(mRoomData);
         mSelfSingCardView = mRootView.findViewById(R.id.self_sing_card_view);
         mSelfSingCardView.setRoomData(mRoomData);
-        mSelfSingCardView.setListener(new SelfSingCardView2.Listener() {
+        mSelfSingCardView.setListener(new NormalSelfSingCardView.Listener() {
             @Override
             public void onSelfSingOver() {
                 mCorePresenter.sendRoundOverInfo();
