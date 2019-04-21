@@ -150,7 +150,7 @@ public class NormalSingBeginTipsCardView extends RelativeLayout {
         dynamicEntity.setDynamicText(text2, textPaint2, "text_32");
 
         if (!TextUtils.isEmpty(userInfoModel.getAvatar())) {
-            // 填入头像和背景框
+            // 填入头像
             HttpImage image = ImageFactory.newPathImage(userInfoModel.getAvatar())
                     .addOssProcessors(OssImgFactory.newResizeBuilder()
                                     .setW(ImageUtils.SIZE.SIZE_160.getW())
@@ -167,9 +167,9 @@ public class NormalSingBeginTipsCardView extends RelativeLayout {
                 dynamicEntity.setDynamicImage(image.getUrl(), "avatar_104");
             }
 
-            Bitmap bitmap = Bitmap.createBitmap(U.getDisplayUtils().dip2px(70), U.getDisplayUtils().dip2px(70), Bitmap.Config.ARGB_8888);
-            bitmap.eraseColor(userInfoModel.getSex() == ESex.SX_MALE.getValue() ? U.getColor(R.color.color_man_stroke_color) : U.getColor(R.color.color_woman_stroke_color));
-            dynamicEntity.setDynamicImage(bitmap, "border_140");
+//            Bitmap bitmap = Bitmap.createBitmap(U.getDisplayUtils().dip2px(70), U.getDisplayUtils().dip2px(70), Bitmap.Config.ARGB_8888);
+//            bitmap.eraseColor(userInfoModel.getSex() == ESex.SX_MALE.getValue() ? U.getColor(R.color.color_man_stroke_color) : U.getColor(R.color.color_woman_stroke_color));
+//            dynamicEntity.setDynamicImage(bitmap, "border_140");
         }
         return dynamicEntity;
     }
