@@ -178,13 +178,14 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
 
     /**
      * 重排一下状态机的优先级
+     *
      * @param status
      * @return
      */
-    int getStatusPriority(int status){
-        if(status == EQRoundStatus.QRS_END.getValue()){
+    int getStatusPriority(int status) {
+        if (status == EQRoundStatus.QRS_END.getValue()) {
             return 1000;
-        }else{
+        } else {
             return status;
         }
     }
@@ -346,13 +347,13 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         updateStatus(notify, roundInfo.getStatus());
 
         // 更新合唱信息
-        if(wantSingType==EWantSingType.EWST_CHORUS.getValue()){
-            if(this.getChorusRoundInfoModels().size()<=1){
+        if (wantSingType == EWantSingType.EWST_CHORUS.getValue()) {
+            if (this.getChorusRoundInfoModels().size() <= 1) {
                 // 不满足两人通知全量更新
                 this.getChorusRoundInfoModels().clear();
                 this.getChorusRoundInfoModels().addAll(roundInfo.getChorusRoundInfoModels());
-            }else{
-                for(int i=0;i<this.getChorusRoundInfoModels().size() && i< roundInfo.getChorusRoundInfoModels().size();i++){
+            } else {
+                for (int i = 0; i < this.getChorusRoundInfoModels().size() && i < roundInfo.getChorusRoundInfoModels().size(); i++) {
                     ChorusRoundInfoModel chorusRoundInfoModel1 = this.getChorusRoundInfoModels().get(i);
                     ChorusRoundInfoModel chorusRoundInfoModel2 = roundInfo.getChorusRoundInfoModels().get(i);
                     chorusRoundInfoModel1.tryUpdateRoundInfoModel(chorusRoundInfoModel2);
@@ -361,13 +362,13 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         }
 
         // 更新pk信息
-        if(wantSingType ==EWantSingType.EWST_SPK.getValue()){
+        if (wantSingType == EWantSingType.EWST_SPK.getValue()) {
             // pk房间
-            SPkRoundInfoModel sPkRoundInfoModel = this.getPkRoundInfoModel();
-            if(sPkRoundInfoModel!=null){
-                sPkRoundInfoModel.tryUpdateRoundInfoModel(roundInfo.getPkRoundInfoModel());
-            }else{
-                sPkRoundInfoModel = roundInfo.getPkRoundInfoModel();
+            SPkRoundInfoModel sPkRoundInfoModel = this.getPkSecondRoundInfoModel();
+            if (sPkRoundInfoModel != null) {
+                sPkRoundInfoModel.tryUpdateRoundInfoModel(roundInfo.getPkSecondRoundInfoModel());
+            } else {
+                sPkRoundInfoModel = roundInfo.getPkSecondRoundInfoModel();
                 //TODO 发事件 通知全量更新
             }
         }
@@ -375,8 +376,12 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         return;
     }
 
-    public SPkRoundInfoModel getPkRoundInfoModel(){
-        if(this.getsPkRoundInfoModels().isEmpty()){
+    /**
+     * 返回pk第二轮的用户信息
+     * @return
+     */
+    public SPkRoundInfoModel getPkSecondRoundInfoModel() {
+        if (this.getsPkRoundInfoModels().isEmpty()) {
             return null;
         }
         return this.getsPkRoundInfoModels().get(0);
@@ -539,6 +544,31 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         this.sPkRoundInfoModels = sPkRoundInfoModels;
     }
 
+    /**
+     * 判断当前是否是自己的演唱轮次
+     *
+     * @return
+     */
+    public boolean singBySelfNow() {
+        if (getStatus() == EQRoundStatus.QRS_SING.getValue()) {
+            return getUserID() == MyUserInfoManager.getInstance().getUid();
+        } else if (getStatus() == EQRoundStatus.QRS_CHO_SING.getValue()) {
+            for (ChorusRoundInfoModel roundInfoModel : chorusRoundInfoModels) {
+                if (roundInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                    return true;
+                }
+            }
+        } else if (getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()) {
+            return getUserID() == MyUserInfoManager.getInstance().getUid();
+        } else if (getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
+            SPkRoundInfoModel pk = getPkSecondRoundInfoModel();
+            if (pk != null) {
+                return pk.getUserID() == MyUserInfoManager.getInstance().getUid();
+            }
+        }
+        return false;
+    }
+
     @Override
     public String toString() {
         return "GrabRoundInfoModel{" +
@@ -566,4 +596,5 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
                 ", enterStatus=" + enterStatus +
                 '}';
     }
+
 }

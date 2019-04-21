@@ -103,6 +103,7 @@ import com.module.playways.room.room.score.RobotScoreHelper;
 import com.module.playways.room.song.model.SongModel;
 import com.module.rank.BuildConfig;
 import com.zq.live.proto.Common.ESex;
+import com.zq.live.proto.Common.StandPlayType;
 import com.zq.live.proto.Common.UserInfo;
 import com.zq.live.proto.Room.EMsgPosType;
 import com.zq.live.proto.Room.EQGameOverReason;
@@ -388,9 +389,19 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      * 如果确定是自己唱了,预先可以做的操作
      */
     void preOpWhenSelfRound() {
-        if (mRoomData.isAccEnable()) {
+        GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
+        boolean needAcc = false;
+        if(now!=null){
+            if(now.getWantSingType() == EWantSingType.EWST_SPK.getValue()){
+                needAcc = true;
+            }else if(now.getWantSingType() == EWantSingType.EWST_CHORUS.getValue()){
+                needAcc = false;
+            }else if(mRoomData.isAccEnable()){
+                needAcc = true;
+            }
+        }
+        if (needAcc) {
             // 1. 开启伴奏的，预先下载 melp 资源
-            GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
             if (now != null) {
                 File midiFile = SongResUtils.getMIDIFileByUrl(now.getMusic().getMidi());
                 if (midiFile != null && !midiFile.exists()) {
@@ -401,7 +412,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         if (!mRoomData.isOwner()) {
             EngineManager.getInstance().setClientRole(true);
             EngineManager.getInstance().muteLocalAudioStream(false);
-            if (mRoomData.isAccEnable()) {
+            if (needAcc) {
                 // 如果需要播放伴奏，一定要在角色切换成功才能播
                 mUiHandler.removeMessages(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS);
                 mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_SWITCH_BROADCAST_SUCCESS, 2000);
@@ -417,7 +428,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             }, 500);
         }
 
-        if (mRoomData.isAccEnable()) {
+        if (needAcc) {
             if (mRoomData.isOwner()) {
                 MyLog.d(TAG, "preOpWhenSelfRound 是主播 直接 onChangeBroadcastSuccess");
                 onChangeBroadcastSuccess();
@@ -428,7 +439,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             }
         }
         // 开始acr打分
-        BaseRoundInfoModel now = mRoomData.getRealRoundInfo();
         if (ScoreConfig.isAcrEnable() && now != null && now.getMusic() != null) {
             EngineManager.getInstance().startRecognize(RecognizeConfig.newBuilder()
                     .setSongName(now.getMusic().getItemName())
@@ -507,24 +517,32 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             songModel = infoModel.getMusic();
         }
         int wantSingType;
-        if (challenge) {
-            if (mRoomData.getCoin() < 1) {
-                MyLog.w(TAG, "没有充足金币,无法进行挑战");
-                U.getToastUtil().showShort("没有充足的金币");
-                return;
-            }
-            if (mRoomData.isAccEnable() && songModel != null && !TextUtils.isEmpty(songModel.getAcc())) {
-                wantSingType = EWantSingType.EWST_ACCOMPANY_OVER_TIME.getValue();
-            } else {
-                wantSingType = EWantSingType.EWST_COMMON_OVER_TIME.getValue();
-            }
+        // 根据玩法决定抢唱类型
+        if (songModel.getPlayType() == StandPlayType.PT_SPK_TYPE.getValue()) {
+            wantSingType = EWantSingType.EWST_SPK.getValue();
+        } else if (songModel.getPlayType() == StandPlayType.PT_CHO_TYPE.getValue()) {
+            wantSingType = EWantSingType.EWST_CHORUS.getValue();
         } else {
-            if (mRoomData.isAccEnable() && songModel != null && !TextUtils.isEmpty(songModel.getAcc())) {
-                wantSingType = EWantSingType.EWST_ACCOMPANY.getValue();
+            if (challenge) {
+                if (mRoomData.getCoin() < 1) {
+                    MyLog.w(TAG, "没有充足金币,无法进行挑战");
+                    U.getToastUtil().showShort("没有充足的金币");
+                    return;
+                }
+                if (mRoomData.isAccEnable() && songModel != null && !TextUtils.isEmpty(songModel.getAcc())) {
+                    wantSingType = EWantSingType.EWST_ACCOMPANY_OVER_TIME.getValue();
+                } else {
+                    wantSingType = EWantSingType.EWST_COMMON_OVER_TIME.getValue();
+                }
             } else {
-                wantSingType = EWantSingType.EWST_DEFAULT.getValue();
+                if (mRoomData.isAccEnable() && songModel != null && !TextUtils.isEmpty(songModel.getAcc())) {
+                    wantSingType = EWantSingType.EWST_ACCOMPANY.getValue();
+                } else {
+                    wantSingType = EWantSingType.EWST_DEFAULT.getValue();
+                }
             }
         }
+
         map.put("wantSingType", wantSingType);
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
@@ -1434,9 +1452,12 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     mIGrabView.grabBegin(now.getRoundSeq(), now.getMusic());
                 }
             });
-        } else if (now.getStatus() == EQRoundStatus.QRS_SING.getValue()) {
+        } else if (now.getStatus() == EQRoundStatus.QRS_SING.getValue()
+                || now.getStatus() == EQRoundStatus.QRS_CHO_SING.getValue()
+                || now.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()
+                || now.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
             // 演唱阶段
-            if (now.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+            if (now.singBySelfNow()) {
                 mUiHandler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -1476,6 +1497,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     /**
      * 引擎相关事件
+     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.POSTING)
@@ -1513,13 +1535,13 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         } else if (event.getType() == EngineEvent.TYPE_USER_AUDIO_VOLUME_INDICATION) {
             List<EngineEvent.UserVolumeInfo> list = event.getObj();
             for (EngineEvent.UserVolumeInfo uv : list) {
-            //    MyLog.d(TAG, "UserVolumeInfo uv=" + uv);
-                if(uv!=null){
+                //    MyLog.d(TAG, "UserVolumeInfo uv=" + uv);
+                if (uv != null) {
                     int uid = uv.getUid();
                     if (uid == 0) {
                         uid = (int) MyUserInfoManager.getInstance().getUid();
                     }
-                    if (mRoomData!=null && uid == mRoomData.getOwnerId() && !mRoomData.isOwner()) {
+                    if (mRoomData != null && uid == mRoomData.getOwnerId() && !mRoomData.isOwner()) {
                         MyLog.d(TAG, "房主在说话");
                         weakVolume(1000);
                     }
@@ -1532,6 +1554,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     /**
      * 弱化声音
+     *
      * @param time
      */
     private void weakVolume(int time) {
@@ -1628,10 +1651,11 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         if (RoomDataUtils.isCurrentExpectingRound(event.getRoundSeq(), mRoomData)) {
             MyLog.w(TAG, "抢到唱歌权：userID " + event.getUserID() + ", roundInfo" + event.currentRound);
             GrabRoundInfoModel roundInfoModel = mRoomData.getExpectRoundInfo();
-            roundInfoModel.tryUpdateRoundInfoModel(event.getCurrentRound(), true);
             roundInfoModel.setHasSing(true);
             roundInfoModel.setUserID(event.getUserID());
-            roundInfoModel.updateStatus(true, EQRoundStatus.QRS_SING.getValue());
+            roundInfoModel.tryUpdateRoundInfoModel(event.getCurrentRound(), true);
+            // 加入抢唱状态后，不能用这个 updateStatus了
+            //roundInfoModel.updateStatus(true, EQRoundStatus.QRS_SING.getValue());
         } else {
             MyLog.w(TAG, "抢到唱歌权,但是不是这个轮次：userID " + event.getUserID() + ", seq " + event.getRoundSeq() + "，当前轮次是 " + mRoomData.getExpectRoundInfo());
         }
@@ -1690,6 +1714,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     /**
      * 同上
+     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -1770,6 +1795,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     /**
      * 某人退出游戏
+     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -1785,6 +1811,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     /**
      * 金币变化
+     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -1801,6 +1828,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     /**
      * 轮次变化
+     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -1841,6 +1869,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     /**
      * 游戏结束事件
+     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -1861,6 +1890,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     /**
      * 同步
+     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -1905,6 +1935,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     /**
      * 房主 被告知游戏开始
+     *
      * @param event
      */
     @Subscribe
