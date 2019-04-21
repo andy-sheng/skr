@@ -6,7 +6,6 @@ import android.widget.RelativeLayout;
 
 import com.common.anim.svga.SvgaParserAdapter;
 import com.common.core.account.UserAccountManager;
-import com.common.log.MyLog;
 import com.common.statistics.StatConstants;
 import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
@@ -66,7 +65,7 @@ public class NormalRoundOverCardView extends RelativeLayout {
     }
 
     private void init() {
-        inflate(getContext(), R.layout.grab_round_over_card_layout, this);
+        inflate(getContext(), R.layout.grab_normal_round_over_card_layout, this);
         mSingResultSvga = (SVGAImageView) findViewById(R.id.sing_result_svga);
     }
 

@@ -83,7 +83,7 @@ public class NormalOthersSingCardView extends RelativeLayout {
     }
 
     private void init(Context context) {
-        inflate(context, R.layout.grab_others_sing_card_layout, this);
+        inflate(context, R.layout.grab_normal_others_sing_card_layout, this);
         mGrabStageView = (SVGAImageView) findViewById(R.id.grab_stage_view);
         mSingAvatarView = (BaseImageView) findViewById(R.id.sing_avatar_view);
         mCircleCountDownView = (CircleCountDownView) findViewById(R.id.circle_count_down_view);

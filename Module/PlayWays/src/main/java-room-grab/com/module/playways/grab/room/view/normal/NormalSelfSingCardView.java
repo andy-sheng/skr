@@ -13,10 +13,8 @@ import com.common.utils.HandlerTaskTimer;
 import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.countdown.CircleCountDownView;
-import com.common.view.ex.ExTextView;
 import com.component.busilib.view.BitmapTextView;
 import com.engine.EngineManager;
-import com.engine.arccloud.ArcCloudManager;
 import com.engine.arccloud.ArcRecognizeListener;
 import com.engine.arccloud.SongInfo;
 import com.module.playways.grab.room.GrabRoomData;
@@ -83,7 +81,7 @@ public class NormalSelfSingCardView extends RelativeLayout {
     }
 
     private void init() {
-        inflate(getContext(), R.layout.grab_self_sing_card_layout_two, this);
+        inflate(getContext(), R.layout.grab_normal_self_sing_card_layout, this);
         mTvLyric = findViewById(R.id.tv_lyric);
         mManyLyricsView = (ManyLyricsView) findViewById(R.id.many_lyrics_view);
         mCircleCountDownView = (CircleCountDownView) findViewById(R.id.circle_count_down_view);

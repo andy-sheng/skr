@@ -62,7 +62,7 @@ public class NormalSingBeginTipsCardView extends RelativeLayout {
     }
 
     private void init() {
-        inflate(getContext(), R.layout.grab_sing_begin_tips_card_layout, this);
+        inflate(getContext(), R.layout.grab_normal_sing_begin_tips_card_layout, this);
         mSingBeginSvga = (SVGAImageView) findViewById(R.id.sing_begin_svga);
     }
 
