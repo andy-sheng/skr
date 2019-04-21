@@ -10,16 +10,16 @@ import com.module.playways.grab.room.GrabRoomData;
 /**
  * 别人唱歌是，自己看到的板子
  */
-public class ChorusOtherSingCardView extends RelativeLayout {
-    public ChorusOtherSingCardView(Context context) {
+public class ChorusOthersSingCardView extends RelativeLayout {
+    public ChorusOthersSingCardView(Context context) {
         super(context);
     }
 
-    public ChorusOtherSingCardView(Context context, AttributeSet attrs) {
+    public ChorusOthersSingCardView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public ChorusOtherSingCardView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public ChorusOthersSingCardView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 

@@ -19,6 +19,7 @@ import com.engine.arccloud.ArcRecognizeListener;
 import com.engine.arccloud.SongInfo;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
+import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.module.playways.others.LyricAndAccMatchManager;
 import com.module.playways.room.song.model.SongModel;
 import com.module.rank.R;
@@ -325,14 +326,11 @@ public class NormalSelfSingCardView extends RelativeLayout {
         mRoomData = roomData;
     }
 
-    Listener mListener;
+    SelfSingCardView.Listener mListener;
 
-    public void setListener(Listener l) {
+    public void setListener(SelfSingCardView.Listener l) {
         mListener = l;
     }
 
-    public interface Listener {
-        void onSelfSingOver();
-    }
 
 }

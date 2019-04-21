@@ -11,17 +11,17 @@ import com.module.playways.grab.room.GrabRoomData;
 /**
  * 别人唱歌PK时，自己看到的板子
  */
-public class PKOtherSingCardView extends RelativeLayout {
+public class PKOthersSingCardView extends RelativeLayout {
 
-    public PKOtherSingCardView(Context context) {
+    public PKOthersSingCardView(Context context) {
         super(context);
     }
 
-    public PKOtherSingCardView(Context context, AttributeSet attrs) {
+    public PKOthersSingCardView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public PKOtherSingCardView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public PKOthersSingCardView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
