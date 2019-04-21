@@ -145,6 +145,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
                 GrabPlayerInfoModel playerInfoModel = playerInfoModels.get(i);
                 mInfoMap.put(playerInfoModel.getUserID(), vp);
                 vp.grabTopItemView.bindData(playerInfoModel, mRoomData.getOwnerId() == playerInfoModel.getUserID());
+                //TODO 顶部动画统一修改
                 if(playerInfoModels.get(i).getUserID() == now.getUserID()
                         && now.getStatus() == EQRoundStatus.QRS_SING.getValue()){
                     LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) vp.grabTopItemView.getLayoutParams();

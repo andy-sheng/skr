@@ -110,7 +110,7 @@ public class GrabScoreTipsView extends RelativeLayout {
             }
             mLastItem = item;
             GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
-            if (now != null && now.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+            if (now != null && now.singBySelfNow()) {
                 ScoreTipsView.play(this, item, 1);
             } else {
                 ScoreTipsView.play(this, item,1);

@@ -3,6 +3,7 @@ package com.module.playways.grab.room.model;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
+import com.module.playways.grab.room.event.GrabGiveUpInChorusEvent;
 import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent;
 import com.module.playways.grab.room.event.GrabRoundStatusChangeEvent;
 import com.module.playways.grab.room.event.GrabWaitSeatUpdateEvent;
@@ -207,6 +208,9 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
      * 一唱到底使用 灭灯
      */
     public boolean addLightOffUid(boolean notify, MLightInfoModel noPassingInfo) {
+        if (status == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue() && getPkSecondRoundInfoModel() != null) {
+            return getPkSecondRoundInfoModel().addLightOffUid(notify, noPassingInfo, this);
+        }
         if (!mLightInfos.contains(noPassingInfo)) {
             mLightInfos.add(noPassingInfo);
             if (notify) {
@@ -215,6 +219,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
             }
             return true;
         }
+
         return false;
     }
 
@@ -222,6 +227,9 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
      * 一唱到底使用 爆灯
      */
     public boolean addLightBurstUid(boolean notify, BLightInfoModel bLightInfoModel) {
+        if (status == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue() && getPkSecondRoundInfoModel() != null) {
+            return getPkSecondRoundInfoModel().addLightBurstUid(notify, bLightInfoModel, this);
+        }
         if (!bLightInfos.contains(bLightInfoModel)) {
             bLightInfos.add(bLightInfoModel);
             if (notify) {
@@ -344,7 +352,6 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
             this.setResultType(roundInfo.getResultType());
         }
         this.setWantSingType(roundInfo.getWantSingType());
-        updateStatus(notify, roundInfo.getStatus());
 
         // 更新合唱信息
         if (wantSingType == EWantSingType.EWST_CHORUS.getValue()) {
@@ -373,11 +380,13 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
             }
         }
 
+        updateStatus(notify, roundInfo.getStatus());
         return;
     }
 
     /**
      * 返回pk第二轮的用户信息
+     *
      * @return
      */
     public SPkRoundInfoModel getPkSecondRoundInfoModel() {
@@ -385,6 +394,23 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
             return null;
         }
         return this.getsPkRoundInfoModels().get(0);
+    }
+
+    /**
+     * 一唱到底合唱某人放弃了演唱
+     *
+     * @param userID
+     */
+    public void giveUpInChorus(int userID) {
+        for (int i = 0; i < this.getChorusRoundInfoModels().size(); i++) {
+            ChorusRoundInfoModel chorusRoundInfoModel = this.getChorusRoundInfoModels().get(i);
+            if (chorusRoundInfoModel.getUserID() == userID) {
+                if (!chorusRoundInfoModel.isHasGiveUp()) {
+                    chorusRoundInfoModel.setHasGiveUp(true);
+                    EventBus.getDefault().post(new GrabGiveUpInChorusEvent(userID));
+                }
+            }
+        }
     }
 
     public static GrabRoundInfoModel parseFromRoundInfo(QRoundInfo roundInfo) {
@@ -511,8 +537,8 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
     public boolean isEnterInSingStatus() {
         return enterStatus == EQRoundStatus.QRS_SING.getValue()
                 || enterStatus == EQRoundStatus.QRS_CHO_SING.getValue()
-                ||enterStatus == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()
-                ||enterStatus == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()
+                || enterStatus == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()
+                || enterStatus == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()
                 ;
     }
 
@@ -577,6 +603,21 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         return false;
     }
 
+    /**
+     * 判断是各种演唱阶段
+     *
+     * @return
+     */
+    public boolean isSingStatus() {
+        if (status == EQRoundStatus.QRS_SING.getValue()
+                || status == EQRoundStatus.QRS_CHO_SING.getValue()
+                || status == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()
+                || status == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public String toString() {
         return "GrabRoundInfoModel{" +
@@ -604,5 +645,6 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
                 ", enterStatus=" + enterStatus +
                 '}';
     }
+
 
 }

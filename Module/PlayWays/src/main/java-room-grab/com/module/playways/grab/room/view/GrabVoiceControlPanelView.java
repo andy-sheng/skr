@@ -70,7 +70,7 @@ public class GrabVoiceControlPanelView extends VoiceControlPanelView {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 GrabRoundInfoModel infoModel = mGrabRoomData.getRealRoundInfo();
-                if (infoModel != null && infoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                if (infoModel != null && infoModel.singBySelfNow()) {
                     U.getToastUtil().showShort("你的演唱阶段无法修改演唱模式");
                     if(mGrabRoomData!=null){
                         mSbAcc.setChecked(!mGrabRoomData.isAccEnable());

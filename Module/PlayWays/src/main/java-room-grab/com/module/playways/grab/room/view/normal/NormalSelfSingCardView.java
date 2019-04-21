@@ -24,6 +24,7 @@ import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.module.playways.others.LyricAndAccMatchManager;
 import com.module.playways.room.song.model.SongModel;
 import com.module.rank.R;
+import com.zq.live.proto.Room.EQRoundStatus;
 import com.zq.live.proto.Room.EWantSingType;
 import com.zq.lyrics.widget.ManyLyricsView;
 import com.zq.lyrics.widget.VoiceScaleView;
@@ -120,7 +121,15 @@ public class NormalSelfSingCardView extends RelativeLayout {
          * 该轮次的总时间，之前用的是歌曲内的总时间，但是不灵活，现在都放在服务器的轮次信息的 begin 和 end 里
          *
          */
-        int totalTs = infoModel.getSingEndMs() - infoModel.getSingBeginMs();
+        int totalTs = 0;
+        /**
+         * pk第一轮和第二轮的演唱时间 和 歌曲截取的部位不一样
+         */
+        if(infoModel.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue() && infoModel.getPkSecondRoundInfoModel()!=null){
+            totalTs = infoModel.getPkSecondRoundInfoModel().getSingEndMs() - infoModel.getPkSecondRoundInfoModel().getSingBeginMs();
+        }else{
+            totalTs = infoModel.getSingEndMs() - infoModel.getSingBeginMs();
+        }
         if (totalTs <= 0) {
             MyLog.d(TAG, "playLyric" + " totalTs时间不合法,做矫正, infoModel=" + infoModel);
             if (infoModel.getWantSingType() == 0) {
@@ -146,11 +155,23 @@ public class NormalSelfSingCardView extends RelativeLayout {
             mIvTag.setBackground(U.getDrawable(R.drawable.ycdd_daojishi_qingchang));
             mLyricAndAccMatchManager.stop();
         } else {
-            mIvTag.setBackground(U.getDrawable(R.drawable.ycdd_daojishi_banzou));
+            if(RoomDataUtils.isPKRound(mRoomData)){
+                mIvTag.setBackground(U.getDrawable(R.drawable.ycdd_daojishi_pk));
+            }else{
+                mIvTag.setBackground(U.getDrawable(R.drawable.ycdd_daojishi_banzou));
+            }
+            SongModel curSong = mSongModel;
+            if(infoModel.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()){
+                if(mSongModel.getPkMusic()!=null){
+                    curSong = mSongModel.getPkMusic();
+                }
+            }
             mLyricAndAccMatchManager.setArgs(mManyLyricsView, mVoiceScaleView,
-                    mSongModel.getLyric(),
-                    mSongModel.getStandLrcBeginT(), mSongModel.getStandLrcBeginT() + totalTs,
-                    mSongModel.getBeginMs(), mSongModel.getBeginMs() + totalTs);
+                    curSong.getLyric(),
+                    curSong.getStandLrcBeginT(), curSong.getStandLrcBeginT() + totalTs,
+                    curSong.getBeginMs(), curSong.getBeginMs() + totalTs);
+
+            SongModel finalCurSong = curSong;
             mLyricAndAccMatchManager.start(new LyricAndAccMatchManager.Listener() {
                 @Override
                 public void onLyricParseSuccess() {
@@ -159,7 +180,7 @@ public class NormalSelfSingCardView extends RelativeLayout {
 
                 @Override
                 public void onLyricParseFailed() {
-                    playWithNoAcc(mSongModel);
+                    playWithNoAcc(finalCurSong);
                 }
 
                 @Override

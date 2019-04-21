@@ -309,6 +309,22 @@ public class SongModel implements Serializable {
         }
     }
 
+    public SongModel getPkMusic() {
+        if(pkMusicList.isEmpty()){
+            return null;
+        }
+        return pkMusicList.get(0);
+    }
+
+    public List<SongModel> getPkMusicList() {
+        return pkMusicList;
+    }
+
+    public void setPkMusicList(List<SongModel> pkMusicList) {
+        this.pkMusicList = pkMusicList;
+    }
+
+
     public boolean isAllResExist() {
         File lyricFile = SongResUtils.getLyricFileByUrl(getLyric());
 

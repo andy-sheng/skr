@@ -178,6 +178,9 @@ public class RoomDataUtils {
     }
 
     public static <T extends BaseRoundInfoModel> boolean isMyRound(T infoModel) {
+        if(infoModel instanceof GrabRoundInfoModel){
+            return ((GrabRoundInfoModel) infoModel).singBySelfNow();
+        }
         return infoModel != null && infoModel.getUserID() == MyUserInfoManager.getInstance().getUid();
     }
 

@@ -15,4 +15,12 @@ public class QChoGiveUpEvent {
         this.userID = msg.getUserID();
         this.roundSeq = msg.getRoundSeq();
     }
+
+    @Override
+    public String toString() {
+        return "QChoGiveUpEvent{" +
+                "userID=" + userID +
+                ", roundSeq=" + roundSeq +
+                '}';
+    }
 }

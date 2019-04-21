@@ -9,13 +9,9 @@ import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.SPkRoundInfoModel;
-import com.module.playways.grab.room.view.chorus.ChorusSelfSingCardView;
 import com.module.playways.grab.room.view.chorus.ChorusSingBeginTipsCardView;
-import com.module.playways.grab.room.view.normal.NormalSelfSingCardView;
 import com.module.playways.grab.room.view.normal.NormalSingBeginTipsCardView;
-import com.module.playways.grab.room.view.pk.PKSelfSingCardView;
 import com.module.playways.grab.room.view.pk.PKSingBeginTipsCardView;
-import com.module.playways.room.song.model.SongModel;
 import com.module.rank.R;
 
 import java.util.List;

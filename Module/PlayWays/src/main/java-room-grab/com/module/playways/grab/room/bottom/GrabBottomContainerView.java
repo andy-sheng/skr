@@ -191,8 +191,8 @@ public class GrabBottomContainerView extends BottomContainerView {
     public void onEvent(GrabRoundStatusChangeEvent event) {
         //MyLog.d("GrabBottomContainerView","onEvent" + " event=" + event);
         GrabRoundInfoModel now = event.roundInfo;
-        if (now != null && now.getStatus() == EQRoundStatus.QRS_SING.getValue() && mGrabRoomData.isOwner()) {
-            if (mGrabRoomData.isSpeaking() && now.getUserID() != MyUserInfoManager.getInstance().getUid()) {
+        if (now != null && now.isSingStatus() && mGrabRoomData.isOwner()) {
+            if (mGrabRoomData.isSpeaking() && !now.singBySelfNow()) {
                 U.getToastUtil().showShort("有人上麦了,暂时不能说话哦", 0, Gravity.CENTER);
             }
             mQuickBtn.setImageResource(R.drawable.fz_anzhushuohua_b);

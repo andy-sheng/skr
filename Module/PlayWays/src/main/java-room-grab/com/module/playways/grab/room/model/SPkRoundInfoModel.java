@@ -1,13 +1,18 @@
 package com.module.playways.grab.room.model;
 
 import com.common.log.MyLog;
+import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
+import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
 import com.module.playways.room.song.model.SongModel;
+import com.zq.live.proto.Room.EQRoundStatus;
 import com.zq.live.proto.Room.OnlineInfo;
 import com.zq.live.proto.Room.QBLightMsg;
 import com.zq.live.proto.Room.QCHOInnerRoundInfo;
 import com.zq.live.proto.Room.QMLightMsg;
 import com.zq.live.proto.Room.QSPKInnerRoundInfo;
 import com.zq.live.proto.Room.WantSingInfo;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -107,5 +112,30 @@ public class SPkRoundInfoModel implements Serializable {
             MyLog.d(TAG, "tryUpdateRoundInfoModel" + " pkRoundInfoModel=" + pkRoundInfoModel);
             return;
         }
+    }
+
+    public boolean addLightOffUid(boolean notify, MLightInfoModel noPassingInfo, GrabRoundInfoModel roundInfoModel) {
+        if (!mLightInfos.contains(noPassingInfo)) {
+            mLightInfos.add(noPassingInfo);
+            if (notify) {
+                GrabSomeOneLightOffEvent event = new GrabSomeOneLightOffEvent(noPassingInfo.getUserID(), roundInfoModel);
+                EventBus.getDefault().post(event);
+            }
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean addLightBurstUid(boolean notify, BLightInfoModel bLightInfoModel, GrabRoundInfoModel roundInfoModel) {
+        if (!bLightInfos.contains(bLightInfoModel)) {
+            bLightInfos.add(bLightInfoModel);
+            if (notify) {
+                GrabSomeOneLightBurstEvent event = new GrabSomeOneLightBurstEvent(bLightInfoModel.getUserID(), roundInfoModel);
+                EventBus.getDefault().post(event);
+            }
+            return true;
+        }
+        return false;
     }
 }
