@@ -8,13 +8,30 @@
     tools:parentTag="android.widget.RelativeLayout">
 
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_200_dp"
+        android:layout_marginLeft="@dimen/view_18_dp"
+        android:layout_marginTop="@dimen/view_125_dp"
+        android:layout_marginRight="@dimen/view_18_dp"
+        android:background="@drawable/self_lyric_bg">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/lyric_recycle_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </android.support.v7.widget.RecyclerView>
+
+    </RelativeLayout>
+
+
     <ImageView
         android:id="@+id/iv_tag"
         android:layout_width="@dimen/view_144_dp"
         android:layout_height="@dimen/view_67_dp"
         android:layout_marginLeft="@dimen/view_10_dp"
         android:layout_marginTop="@dimen/view_98_dp"
-        android:background="@drawable/ycdd_daojishi_banzou" />
+        android:background="@drawable/ycdd_daojishi_chorus" />
 
     <com.common.view.countdown.CircleCountDownView
         android:id="@+id/circle_count_down_view"
