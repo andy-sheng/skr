@@ -17,6 +17,7 @@ import com.component.busilib.view.BitmapTextView;
 import com.engine.EngineManager;
 import com.engine.arccloud.ArcRecognizeListener;
 import com.engine.arccloud.SongInfo;
+import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
@@ -93,7 +94,8 @@ public class NormalSelfSingCardView extends RelativeLayout {
         mIvChallengeIcon = (ImageView) findViewById(R.id.iv_challenge_icon);
     }
 
-    public void playLyric(GrabRoundInfoModel infoModel, boolean accEnable) {
+    public void playLyric() {
+        GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
         if (infoModel == null) {
             MyLog.d(TAG, "infoModel 是空的");
             return;
@@ -132,7 +134,11 @@ public class NormalSelfSingCardView extends RelativeLayout {
             }
         }
         boolean withAcc = false;
-        if (infoModel.isAccRound() && accEnable) {
+        if (infoModel.isAccRound() && mRoomData != null && mRoomData.isAccEnable()) {
+            withAcc = true;
+        }
+        if (RoomDataUtils.isPKRound(mRoomData)) {
+            // pk模式
             withAcc = true;
         }
         if (!withAcc) {

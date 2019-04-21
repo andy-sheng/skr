@@ -71,23 +71,19 @@ public class ChorusSingBeginTipsCardView extends RelativeLayout {
         setVisibility(VISIBLE);
         String assetsName = "grab_chorus_sing_chance.svga";
         mChorusSingBeginSvga.setVisibility(VISIBLE);
-        try {
-            SvgaParserAdapter.parse(assetsName, new SVGAParser.ParseCompletion() {
-                @Override
-                public void onComplete(SVGAVideoEntity videoItem) {
-                    SVGADrawable drawable = new SVGADrawable(videoItem, requestDynamic(left, right));
-                    mChorusSingBeginSvga.setImageDrawable(drawable);
-                    mChorusSingBeginSvga.startAnimation();
-                }
+        SvgaParserAdapter.parse(assetsName, new SVGAParser.ParseCompletion() {
+            @Override
+            public void onComplete(SVGAVideoEntity videoItem) {
+                SVGADrawable drawable = new SVGADrawable(videoItem, requestDynamic(left, right));
+                mChorusSingBeginSvga.setImageDrawable(drawable);
+                mChorusSingBeginSvga.startAnimation();
+            }
 
-                @Override
-                public void onError() {
+            @Override
+            public void onError() {
 
-                }
-            });
-        } catch (Exception e) {
-            MyLog.e(TAG, e);
-        }
+            }
+        });
 
         mChorusSingBeginSvga.setCallback(new SVGACallback() {
             @Override
