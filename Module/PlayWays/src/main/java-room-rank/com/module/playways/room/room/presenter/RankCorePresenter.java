@@ -1496,15 +1496,6 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(LrcEvent.LyricStartEvent event) {
-        MyLog.d(TAG, "onEvent LineStartEvent");
-        Params params = EngineManager.getInstance().getParams();
-        if (params != null) {
-            params.setLrcHasStart(true);
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(LyricAndAccMatchManager.ScoreResultEvent event) {
         int line = event.line;
         int acrScore = event.acrScore;

@@ -321,6 +321,10 @@ public class LyricAndAccMatchManager {
     public void onEvent(LrcEvent.LyricStartEvent event) {
         MyLog.d(TAG, "onEvent LineStartEvent");
         mLastLineNum = -1;
+        Params params = EngineManager.getInstance().getParams();
+        if (params != null) {
+            params.setLrcHasStart(true);
+        }
     }
 
     private void processScore(String from, int melpScore, int acrScore, int line) {

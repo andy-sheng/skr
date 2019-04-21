@@ -506,14 +506,6 @@ public class AuditionFragment extends BaseFragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(LrcEvent.LyricStartEvent event) {
-        Params params = EngineManager.getInstance().getParams();
-        if (params != null) {
-            params.setLrcHasStart(true);
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ActivityUtils.ForeOrBackgroundChange event) {
         MyLog.w(TAG, event.foreground ? "切换到前台" : "切换到后台");
         if (!event.foreground) {

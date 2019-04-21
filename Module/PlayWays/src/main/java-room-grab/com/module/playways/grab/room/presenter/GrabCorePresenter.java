@@ -67,6 +67,7 @@ import com.module.playways.room.msg.BasePushInfo;
 import com.module.playways.room.msg.event.CommentMsgEvent;
 import com.module.playways.room.msg.event.MachineScoreEvent;
 
+import com.module.playways.room.msg.event.QChangeRoomNameEvent;
 import com.module.playways.room.msg.event.QCoinChangeEvent;
 
 import com.module.playways.room.msg.event.QChangeMusicTagEvent;
@@ -1471,6 +1472,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
+    /**
+     * 引擎相关事件
+     * @param event
+     */
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(EngineEvent event) {
         if (event.getType() == EngineEvent.TYPE_USER_ROLE_CHANGE) {
@@ -1523,6 +1528,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
+    /**
+     * 弱化声音
+     * @param time
+     */
     private void weakVolume(int time) {
         mUiHandler.removeMessages(MSG_RECOVER_VOLUME);
         mUiHandler.sendEmptyMessageDelayed(MSG_RECOVER_VOLUME, time);
@@ -1677,6 +1686,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         pretendLightMsgComment(event.roundInfo.getUserID(), event.uid, false);
     }
 
+    /**
+     * 同上
+     * @param event
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabSomeOneLightBurstEvent event) {
         pretendLightMsgComment(event.roundInfo.getUserID(), event.uid, true);
@@ -1753,6 +1766,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
+    /**
+     * 某人退出游戏
+     * @param event
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QExitGameMsgEvent event) {
         if (RoomDataUtils.isCurrentExpectingRound(event.roundSeq, mRoomData)) {
@@ -1764,6 +1781,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
+    /**
+     * 金币变化
+     * @param event
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QCoinChangeEvent event) {
         if (event.userID == MyUserInfoManager.getInstance().getUid()) {
@@ -1776,6 +1797,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
+    /**
+     * 轮次变化
+     * @param event
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QRoundOverMsgEvent event) {
         MyLog.w(TAG, "收到服务器的某一个人轮次结束的push event:" + event);
@@ -1812,6 +1837,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
+    /**
+     * 游戏结束事件
+     * @param event
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QRoundAndGameOverMsgEvent event) {
         cancelSyncGameStateTask();
@@ -1828,6 +1857,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
+    /**
+     * 同步
+     * @param event
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QSyncStatusMsgEvent event) {
         ensureInRcRoom();
@@ -1868,6 +1901,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
     }
 
+    /**
+     * 房主 被告知游戏开始
+     * @param event
+     */
     @Subscribe
     public void onEvent(QGameBeginEvent event) {
         MyLog.d(TAG, "onEvent QGameBeginEvent !!收到游戏开始的push " + event);
@@ -1888,11 +1925,20 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         ensureInRcRoom();
     }
 
+
     @Subscribe
     public void onEvent(QChangeMusicTagEvent event) {
         MyLog.d(TAG, "onEvent QChangeMusicTagEvent !!切换专场 " + event);
         if (mRoomData.getGameId() == event.info.getRoomID()) {
             pretenSystemMsg(String.format("房主已将歌单切换为 %s 专场", event.getTagName()));
+        }
+    }
+
+    @Subscribe
+    public void onEvent(QChangeRoomNameEvent event) {
+        MyLog.d(TAG, "onEvent QChangeRoomNameEvent !!改变房间名 " + event);
+        if (mRoomData.getGameId() == event.info.getRoomID()) {
+            pretenSystemMsg(String.format("房主已将房间名修改为 %s ", event.newName));
         }
     }
 
@@ -1921,15 +1967,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         //收到其他人的机器打分消息，比较复杂，暂时简单点，轮次正确就直接展示
         if (RoomDataUtils.isThisUserRound(mRoomData.getRealRoundInfo(), event.userId)) {
             mIGrabView.updateScrollBarProgress(event.score, event.lineNum);
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(LrcEvent.LyricStartEvent event) {
-        MyLog.d(TAG, "onEvent LineStartEvent");
-        Params params = EngineManager.getInstance().getParams();
-        if (params != null) {
-            params.setLrcHasStart(true);
         }
     }
 
