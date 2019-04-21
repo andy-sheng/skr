@@ -924,8 +924,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             mGrabOpBtn.hide("onSongInfoCardPlayOver1");
         } else {
             if (mRoomData.isInPlayerList()) {
-                mGrabOpBtn.playCountDown(pendingPlaySongCardData.getSeq(), 4
-                        , pendingPlaySongCardData.songModel.getStandIntroEndT() - pendingPlaySongCardData.songModel.getStandIntroBeginT(), pendingPlaySongCardData.songModel.isChallengeAvailable());
+                mGrabOpBtn.playCountDown(pendingPlaySongCardData.getSeq(), 4,pendingPlaySongCardData.songModel);
             }
         }
         mCorePresenter.playGuide();
