@@ -311,6 +311,7 @@ public class NormalSelfSingCardView extends RelativeLayout {
                         e.printStackTrace();
                     }
                 }
+
                 emitter.onComplete();
             }
         }).observeOn(AndroidSchedulers.mainThread())

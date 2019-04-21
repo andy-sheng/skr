@@ -20,9 +20,11 @@ public class SelfSingCardView {
     public SelfSingCardView(View mRootView, GrabRoomData roomData) {
         mRoomData = roomData;
         mNormalSelfSingCardView = mRootView.findViewById(R.id.self_sing_card_view);
-        mChorusSelfSingCardView = mRootView.findViewById(R.id.chorus_self_sing_card_view);
-        mPKSelfSingCardView = mRootView.findViewById(R.id.pk_self_sing_card_view);
         mNormalSelfSingCardView.setRoomData(mRoomData);
+        mChorusSelfSingCardView = mRootView.findViewById(R.id.chorus_self_sing_card_view);
+        mChorusSelfSingCardView.setRoomData(mRoomData);
+        mPKSelfSingCardView = mRootView.findViewById(R.id.pk_self_sing_card_view);
+
     }
 
     public void setVisibility(int visibility) {
@@ -51,7 +53,7 @@ public class SelfSingCardView {
         GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
         if (grabRoundInfoModel != null) {
             if (RoomDataUtils.isChorusRound(mRoomData)) {
-                mChorusSelfSingCardView.playLyric(grabRoundInfoModel);
+                mChorusSelfSingCardView.playLyric();
             } else if (RoomDataUtils.isPKRound(mRoomData)) {
                 mPKSelfSingCardView.playLyric(grabRoundInfoModel);
             } else {
