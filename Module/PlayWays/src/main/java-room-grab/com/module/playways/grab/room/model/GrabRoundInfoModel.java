@@ -1,7 +1,6 @@
 package com.module.playways.grab.room.model;
 
-import android.text.TextUtils;
-
+import com.alibaba.fastjson.annotation.JSONField;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent;
@@ -16,6 +15,7 @@ import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
 import com.module.playways.room.prepare.model.BaseRoundInfoModel;
 import com.module.playways.room.song.model.SongModel;
+import com.zq.live.proto.Room.EWantSingType;
 import com.zq.live.proto.Room.OnlineInfo;
 import com.zq.live.proto.Room.QBLightMsg;
 import com.zq.live.proto.Room.QMLightMsg;
@@ -33,11 +33,6 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
     public static final int STATUS_GRAB = 2;
     public static final int STATUS_SING = 3;
     public static final int STATUS_OVER = 4;
-
-    public static final int EWST_DEFAULT = 0; //默认抢唱类型：普通
-    public static final int EWST_ACCOMPANY = 1; //带伴奏抢唱
-    public static final int EWST_COMMON_OVER_TIME = 2; //普通加时抢唱
-    public static final int EWST_ACCOMPANY_OVER_TIME = 3; //带伴奏加时抢唱
 
     /* 一唱到底使用 */
     private int status = STATUS_INIT;// 轮次状态，在一唱到底中使用
@@ -69,13 +64,18 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
     private int enterStatus;//你进入这个轮次处于的状态
 
     /**
-     * {@link GrabRoundInfoModel.EWST_DEFAULT}
      * EWST_DEFAULT = 0; //默认抢唱类型：普通
      * EWST_ACCOMPANY = 1; //带伴奏抢唱
      * EWST_COMMON_OVER_TIME = 2; //普通加时抢唱
      * EWST_ACCOMPANY_OVER_TIME = 3; //带伴奏加时抢唱
      */
-    private int wantSingType;
+    private int wantSingType = EWantSingType.EWST_DEFAULT.getValue();
+
+    @JSONField(name = "CHORoundInfos")
+    List<ChorusRoundInfoModel> chorusRoundInfoModels = new ArrayList<>();
+
+    @JSONField(name = "SPKRoundInfos")
+    List<SPkRoundInfoModel> sPkRoundInfoModels = new ArrayList<>();
 
     public GrabRoundInfoModel() {
 
@@ -346,6 +346,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         roundInfoModel.setSingBeginMs(roundInfo.getSingBeginMs());
         roundInfoModel.setSingEndMs(roundInfo.getSingEndMs());
 
+        // 轮次状态
         roundInfoModel.setStatus(roundInfo.getStatus().getValue());
 
         for (WantSingInfo wantSingInfo : roundInfo.getWantSingInfosList()) {
@@ -381,7 +382,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
             GrabPlayerInfoModel grabPlayerInfoModel = GrabPlayerInfoModel.parse(m);
             roundInfoModel.addPlayUser(false, grabPlayerInfoModel);
         }
-
+        // 想唱类型
         roundInfoModel.setWantSingType(roundInfo.getWantSingType().getValue());
         return roundInfoModel;
     }
@@ -456,11 +457,11 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
     }
 
     public boolean isChallengeRound() {
-        return wantSingType == EWST_COMMON_OVER_TIME || wantSingType == EWST_ACCOMPANY_OVER_TIME;
+        return wantSingType == EWantSingType.EWST_COMMON_OVER_TIME.getValue() || wantSingType == EWantSingType.EWST_ACCOMPANY_OVER_TIME.getValue();
     }
 
     public boolean isAccRound() {
-        return wantSingType == EWST_ACCOMPANY || wantSingType == EWST_ACCOMPANY_OVER_TIME;
+        return wantSingType == EWantSingType.EWST_ACCOMPANY.getValue() || wantSingType == EWantSingType.EWST_ACCOMPANY_OVER_TIME.getValue();
     }
 
     public void setWantSingType(int wantSingType) {
