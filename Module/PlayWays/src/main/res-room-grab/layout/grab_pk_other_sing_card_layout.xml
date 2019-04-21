@@ -8,13 +8,13 @@
     tools:parentTag="android.widget.RelativeLayout">
 
     <LinearLayout
-        android:id="@+id/chorus_other_area"
+        android:id="@+id/pk_other_area"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_194_dp"
         android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginTop="@dimen/view_125_dp"
         android:layout_marginRight="@dimen/view_16_dp"
-        android:background="@drawable/grab_chorus_bg"
+        android:background="@drawable/grab_pk_bg"
         android:orientation="horizontal">
 
         <RelativeLayout
@@ -92,7 +92,7 @@
         android:layout_alignTop="@id/chorus_other_area"
         android:layout_marginLeft="@dimen/view_10_dp"
         android:layout_marginTop="-34dp"
-        android:background="@drawable/ycdd_daojishi_chorus" />
+        android:background="@drawable/ycdd_daojishi_pk" />
 
     <com.common.view.countdown.CircleCountDownView
         android:id="@+id/circle_count_down_view"
