@@ -427,7 +427,7 @@ message QGameConfig {
     uint32 WantSingDelayTimeMs = 4; //想唱延迟时间(毫秒)
     repeated QScoreTipMsg qScoreTipMsg = 5; //反馈分提示语
     uint32 KickUserConsumCoinCnt = 6; //踢人消耗金币数
-    repeated PKScoreTipMsg PKScoreTipMsg = 7; //反馈分提示语
+    repeated PKScoreTipMsg qPKScoreTipMsg = 7; //反馈分提示语
 }
 // 加入指令
 message JoinActionMsg {
