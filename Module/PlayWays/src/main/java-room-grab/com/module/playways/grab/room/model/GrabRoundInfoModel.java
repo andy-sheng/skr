@@ -508,6 +508,14 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         return enterStatus;
     }
 
+    public boolean isEnterInSingStatus() {
+        return enterStatus == EQRoundStatus.QRS_SING.getValue()
+                || enterStatus == EQRoundStatus.QRS_CHO_SING.getValue()
+                ||enterStatus == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()
+                ||enterStatus == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()
+                ;
+    }
+
     public void setEnterStatus(int enterStatus) {
         this.enterStatus = enterStatus;
     }

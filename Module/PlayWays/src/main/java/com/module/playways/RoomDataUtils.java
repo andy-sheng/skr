@@ -5,12 +5,14 @@ import com.common.log.MyLog;
 import com.common.utils.U;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
+import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.room.prepare.model.PlayerInfoModel;
 import com.module.playways.room.prepare.model.BaseRoundInfoModel;
 import com.module.playways.room.room.RankRoomData;
 import com.module.playways.room.room.model.RankPlayerInfoModel;
 import com.module.playways.room.room.model.RankRoundInfoModel;
 import com.module.playways.room.song.model.SongModel;
+import com.zq.live.proto.Room.EQRoundStatus;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -288,7 +290,27 @@ public class RoomDataUtils {
                 return roundInfo;
             }
         }
-
         return null;
+    }
+
+    public static boolean isChorusRound(GrabRoomData roomData) {
+        if (roomData != null) {
+            GrabRoundInfoModel infoModel = roomData.getRealRoundInfo();
+            if (infoModel != null) {
+                return infoModel.getStatus() == EQRoundStatus.QRS_CHO_SING.getValue();
+            }
+        }
+        return false;
+    }
+
+    public static boolean isPKRound(GrabRoomData roomData) {
+        if (roomData != null) {
+            GrabRoundInfoModel infoModel = roomData.getRealRoundInfo();
+            if (infoModel != null) {
+                return infoModel.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()
+                        || infoModel.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue();
+            }
+        }
+        return false;
     }
 }

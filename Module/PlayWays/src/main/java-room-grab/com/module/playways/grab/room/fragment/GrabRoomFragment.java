@@ -993,7 +993,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     private void singBeginTipsPlay(int uid, Runnable runnable) {
         GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
         if (grabRoundInfoModel != null) {
-            if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == EQRoundStatus.QRS_SING.getValue()) {
+            if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.isEnterInSingStatus()) {
                 MyLog.d(TAG, " 进入时已经时演唱阶段了，则不用播卡片了");
                 runnable.run();
             } else {
