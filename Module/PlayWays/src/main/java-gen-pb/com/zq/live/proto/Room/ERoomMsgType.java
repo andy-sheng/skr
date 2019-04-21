@@ -182,6 +182,21 @@ public enum ERoomMsgType implements WireEnum {
   RM_Q_COIN_CHANGE(129),
 
   /**
+   * 一唱到底：合唱模式放弃演唱
+   */
+  RM_Q_CHO_GIVEUP(131),
+
+  /**
+   * 一唱到底：spk模式内部轮次结束
+   */
+  RM_Q_PK_INNER_ROUND_OVER(132),
+
+  /**
+   * 一唱到底：房主修改房间名称
+   */
+  RM_Q_CHANGE_ROOM_NAME(133),
+
+  /**
    * 告知伴奏开始
    */
   RM_ROUND_ACC_BEGIN(190);
@@ -233,6 +248,9 @@ public enum ERoomMsgType implements WireEnum {
       case 127: return RM_Q_GAME_BEGIN;
       case 128: return RM_Q_CHANGE_MUSIC_TAG;
       case 129: return RM_Q_COIN_CHANGE;
+      case 131: return RM_Q_CHO_GIVEUP;
+      case 132: return RM_Q_PK_INNER_ROUND_OVER;
+      case 133: return RM_Q_CHANGE_ROOM_NAME;
       case 190: return RM_ROUND_ACC_BEGIN;
       default: return null;
     }

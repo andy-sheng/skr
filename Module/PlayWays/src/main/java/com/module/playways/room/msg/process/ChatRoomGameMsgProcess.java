@@ -12,6 +12,8 @@ import com.module.playways.room.msg.event.MachineScoreEvent;
 import com.module.playways.room.msg.event.PkBurstLightMsgEvent;
 import com.module.playways.room.msg.event.PkLightOffMsgEvent;
 
+import com.module.playways.room.msg.event.QChangeRoomNameEvent;
+import com.module.playways.room.msg.event.QChoGiveUpEvent;
 import com.module.playways.room.msg.event.QCoinChangeEvent;
 
 import com.module.playways.room.msg.event.QChangeMusicTagEvent;
@@ -26,6 +28,7 @@ import com.module.playways.room.msg.event.QKickUserResultEvent;
 import com.module.playways.room.msg.event.QLightBurstMsgEvent;
 import com.module.playways.room.msg.event.QLightOffMsgEvent;
 import com.module.playways.room.msg.event.QNoPassSingMsgEvent;
+import com.module.playways.room.msg.event.QPkInnerRoundOverEvent;
 import com.module.playways.room.msg.event.QRoundAndGameOverMsgEvent;
 import com.module.playways.room.msg.event.QRoundOverMsgEvent;
 import com.module.playways.room.msg.event.QSyncStatusMsgEvent;
@@ -47,6 +50,8 @@ import com.zq.live.proto.Room.PKBLightMsg;
 import com.zq.live.proto.Room.PKMLightMsg;
 import com.zq.live.proto.Room.QBLightMsg;
 
+import com.zq.live.proto.Room.QCHOGiveUpMsg;
+import com.zq.live.proto.Room.QChangeRoomName;
 import com.zq.live.proto.Room.QCoinChangeMsg;
 
 import com.zq.live.proto.Room.QChangeMusicTag;
@@ -62,6 +67,7 @@ import com.zq.live.proto.Room.QMLightMsg;
 import com.zq.live.proto.Room.QNoPassSingMsg;
 import com.zq.live.proto.Room.QRoundAndGameOverMsg;
 import com.zq.live.proto.Room.QRoundOverMsg;
+import com.zq.live.proto.Room.QSPKInnerRoundOverMsg;
 import com.zq.live.proto.Room.QSyncStatusMsg;
 import com.zq.live.proto.Room.QWantSingChanceMsg;
 import com.zq.live.proto.Room.ReadyNoticeMsg;
@@ -77,6 +83,28 @@ import org.greenrobot.eventbus.EventBus;
 public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
 
     public final static String TAG = "ChatRoomGameMsgProcess";
+
+    @Override
+    public ERoomMsgType[] acceptType() {
+        return new ERoomMsgType[]{
+                ERoomMsgType.RM_JOIN_ACTION, ERoomMsgType.RM_JOIN_NOTICE,
+                ERoomMsgType.RM_READY_NOTICE, ERoomMsgType.RM_SYNC_STATUS,
+                ERoomMsgType.RM_ROUND_OVER, ERoomMsgType.RM_ROUND_AND_GAME_OVER,
+                ERoomMsgType.RM_APP_SWAP, ERoomMsgType.RM_EXIT_GAME_BEFORE_PLAY,
+                ERoomMsgType.RM_EXIT_GAME_AFTER_PLAY, ERoomMsgType.RM_EXIT_GAME_OUT_ROUND,
+                ERoomMsgType.RM_VOTE_RESULT, ERoomMsgType.RM_ROUND_MACHINE_SCORE,
+                ERoomMsgType.RM_ROUND_ACC_BEGIN, ERoomMsgType.RM_Q_WANT_SING_CHANCE,
+                ERoomMsgType.RM_Q_GET_SING_CHANCE, ERoomMsgType.RM_Q_SYNC_STATUS,
+                ERoomMsgType.RM_Q_ROUND_OVER, ERoomMsgType.RM_Q_ROUND_AND_GAME_OVER,
+                ERoomMsgType.RM_Q_NO_PASS_SING, ERoomMsgType.RM_Q_EXIT_GAME,
+                ERoomMsgType.RM_PK_BLIGHT, ERoomMsgType.RM_PK_MLIGHT,
+                ERoomMsgType.RM_Q_BLIGHT, ERoomMsgType.RM_Q_MLIGHT,
+                ERoomMsgType.RM_Q_JOIN_NOTICE, ERoomMsgType.RM_Q_JOIN_ACTION,
+                ERoomMsgType.RM_Q_KICK_USER_REQUEST, ERoomMsgType.RM_Q_KICK_USER_RESULT,
+                ERoomMsgType.RM_Q_GAME_BEGIN, ERoomMsgType.RM_Q_COIN_CHANGE, ERoomMsgType.RM_Q_CHANGE_MUSIC_TAG,
+                ERoomMsgType.RM_Q_CHO_GIVEUP, ERoomMsgType.RM_Q_PK_INNER_ROUND_OVER, ERoomMsgType.RM_Q_CHANGE_ROOM_NAME
+        };
+    }
 
     @Override
     public void processRoomMsg(ERoomMsgType messageType, RoomMsg msg) {
@@ -146,28 +174,40 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
             processGrabCoinChange(basePushInfo, msg.getQCoinChangeMsg());
         } else if (msg.getMsgType() == ERoomMsgType.RM_Q_CHANGE_MUSIC_TAG) {
             processChangeMusicTag(basePushInfo, msg.getQChangeMusicTag());
+        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_CHO_GIVEUP) {
+            processGrabChoGiveUp(basePushInfo, msg.getQCHOGiveUpMsg());
+        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_PK_INNER_ROUND_OVER) {
+            processGrabPkRoundOver(basePushInfo, msg.getQSPKInnerRoundOverMsg());
+        } else if (msg.getMsgType() == ERoomMsgType.RM_Q_CHANGE_ROOM_NAME) {
+            processGrabChangeRoomName(basePushInfo, msg.getQChangeRoomName());
         }
     }
 
-    @Override
-    public ERoomMsgType[] acceptType() {
-        return new ERoomMsgType[]{
-                ERoomMsgType.RM_JOIN_ACTION, ERoomMsgType.RM_JOIN_NOTICE,
-                ERoomMsgType.RM_READY_NOTICE, ERoomMsgType.RM_SYNC_STATUS,
-                ERoomMsgType.RM_ROUND_OVER, ERoomMsgType.RM_ROUND_AND_GAME_OVER,
-                ERoomMsgType.RM_APP_SWAP, ERoomMsgType.RM_EXIT_GAME_BEFORE_PLAY,
-                ERoomMsgType.RM_EXIT_GAME_AFTER_PLAY, ERoomMsgType.RM_EXIT_GAME_OUT_ROUND,
-                ERoomMsgType.RM_VOTE_RESULT, ERoomMsgType.RM_ROUND_MACHINE_SCORE,
-                ERoomMsgType.RM_ROUND_ACC_BEGIN, ERoomMsgType.RM_Q_WANT_SING_CHANCE,
-                ERoomMsgType.RM_Q_GET_SING_CHANCE, ERoomMsgType.RM_Q_SYNC_STATUS,
-                ERoomMsgType.RM_Q_ROUND_OVER, ERoomMsgType.RM_Q_ROUND_AND_GAME_OVER,
-                ERoomMsgType.RM_Q_NO_PASS_SING, ERoomMsgType.RM_Q_EXIT_GAME,
-                ERoomMsgType.RM_PK_BLIGHT, ERoomMsgType.RM_PK_MLIGHT,
-                ERoomMsgType.RM_Q_BLIGHT, ERoomMsgType.RM_Q_MLIGHT,
-                ERoomMsgType.RM_Q_JOIN_NOTICE, ERoomMsgType.RM_Q_JOIN_ACTION,
-                ERoomMsgType.RM_Q_KICK_USER_REQUEST, ERoomMsgType.RM_Q_KICK_USER_RESULT,
-                ERoomMsgType.RM_Q_GAME_BEGIN, ERoomMsgType.RM_Q_COIN_CHANGE, ERoomMsgType.RM_Q_CHANGE_MUSIC_TAG
-        };
+    private void processGrabChangeRoomName(BasePushInfo basePushInfo, QChangeRoomName qChangeRoomName) {
+        if (qChangeRoomName != null) {
+            QChangeRoomNameEvent changeRoomNameEvent = new QChangeRoomNameEvent(basePushInfo, qChangeRoomName);
+            EventBus.getDefault().post(changeRoomNameEvent);
+        } else {
+            MyLog.w(TAG, "processGrabChangeRoomName" + " info=" + basePushInfo + " qChangeRoomName = null");
+        }
+    }
+
+    private void processGrabPkRoundOver(BasePushInfo basePushInfo, QSPKInnerRoundOverMsg qspkInnerRoundOverMsg) {
+        if (qspkInnerRoundOverMsg != null) {
+            QPkInnerRoundOverEvent qPkInnerRoundOverEvent = new QPkInnerRoundOverEvent(basePushInfo, qspkInnerRoundOverMsg);
+            EventBus.getDefault().post(qPkInnerRoundOverEvent);
+        } else {
+            MyLog.w(TAG, "processGrabPkRoundOver" + " info=" + basePushInfo + " qspkInnerRoundOverMsg = null");
+        }
+    }
+
+    private void processGrabChoGiveUp(BasePushInfo basePushInfo, QCHOGiveUpMsg qchoGiveUpMsg) {
+        if (qchoGiveUpMsg != null) {
+            QChoGiveUpEvent joinActionEvent = new QChoGiveUpEvent(basePushInfo, qchoGiveUpMsg);
+            EventBus.getDefault().post(joinActionEvent);
+        } else {
+            MyLog.w(TAG, "processGrabChoGiveUp" + " info=" + basePushInfo + " qchoGiveUpMsg = null");
+        }
     }
 
     //加入游戏指令消息
