@@ -198,11 +198,23 @@ public class OthersSingCardView extends RelativeLayout {
 
     private void countDown(String from) {
         MyLog.d(TAG, "countDown" + " from=" + from);
-        GrabRoundInfoModel grabRoundInfoModel = mGrabRoomData.getRealRoundInfo();
-        if (grabRoundInfoModel == null) {
+        GrabRoundInfoModel infoModel = mGrabRoomData.getRealRoundInfo();
+        if (infoModel == null) {
             return;
         }
-        int totalMs = grabRoundInfoModel.getSingEndMs() - grabRoundInfoModel.getSingBeginMs();
+        int totalMs = infoModel.getSingEndMs() - infoModel.getSingBeginMs();
+        if (totalMs <= 0) {
+            MyLog.d(TAG, "playLyric" + " totalTs时间不合法,做矫正, infoModel=" + infoModel);
+            if (infoModel.getWantSingType() == 0) {
+                totalMs = 20 * 1000;
+            } else if (infoModel.getWantSingType() == 1) {
+                totalMs = 30 * 1000;
+            } else if (infoModel.getWantSingType() == 2) {
+                totalMs = 40 * 1000;
+            } else if (infoModel.getWantSingType() == 3) {
+                totalMs = 50 * 1000;
+            }
+        }
         if (mCountDownStatus == COUNT_DOWN_STATUS_WAIT) {
             MyLog.d(TAG, "countDown mCountDownStatus == COUNT_DOWN_STATUS_WAIT");
             if (mCanStartFlag) {
@@ -217,11 +229,11 @@ public class OthersSingCardView extends RelativeLayout {
 
         int progress;  //当前进度条
         int leaveTime; //剩余时间
-        MyLog.d(TAG, "countDown isParticipant:" + grabRoundInfoModel.isParticipant() + " enterStatus=" + grabRoundInfoModel.getEnterStatus());
-        if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_SING) {
+        MyLog.d(TAG, "countDown isParticipant:" + infoModel.isParticipant() + " enterStatus=" + infoModel.getEnterStatus());
+        if (!infoModel.isParticipant() && infoModel.getEnterStatus() == GrabRoundInfoModel.STATUS_SING) {
             MyLog.d(TAG, "演唱阶段加入的，倒计时没那么多");
-            progress = grabRoundInfoModel.getElapsedTimeMs() * 100 / totalMs;
-            leaveTime = totalMs - grabRoundInfoModel.getElapsedTimeMs();
+            progress = infoModel.getElapsedTimeMs() * 100 / totalMs;
+            leaveTime = totalMs - infoModel.getElapsedTimeMs();
         } else {
             progress = 1;
             leaveTime = totalMs;
