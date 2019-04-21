@@ -120,11 +120,12 @@ public class SongInfoCardView extends RelativeLayout {
         mSongLyrics.setText("歌词加载中...");
         mCurrentSeq.setText("" + curRoundSeq);
         mTotalSeq.setText("" + totalSeq);
-        if(songModel.getPlayType() == StandPlayType.PT_CHO_TYPE.getValue()){
+        if (songModel.getPlayType() == StandPlayType.PT_CHO_TYPE.getValue()) {
             // 合唱
-
-        }else{
-            
+        } else if (songModel.getPlayType() == StandPlayType.PT_SPK_TYPE.getValue()) {
+            // PK
+        } else {
+            // 普通
         }
         playLyric(songModel);
         // 入场动画
