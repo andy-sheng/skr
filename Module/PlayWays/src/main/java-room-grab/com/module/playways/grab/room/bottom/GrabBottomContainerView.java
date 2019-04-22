@@ -10,8 +10,6 @@ import android.view.View;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
-import com.common.core.myinfo.MyUserInfoManager;
-import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
@@ -22,11 +20,8 @@ import com.module.playways.grab.room.event.GrabRoundStatusChangeEvent;
 import com.module.playways.grab.room.event.GrabSpeakingControlEvent;
 import com.module.playways.grab.room.dynamicmsg.DynamicMsgView;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.module.playways.room.room.event.InputBoardEvent;
 import com.module.playways.room.room.view.BottomContainerView;
 import com.module.rank.R;
-import com.zq.live.proto.Room.EQRoundStatus;
-import com.zq.toast.CommonToastView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -192,7 +187,7 @@ public class GrabBottomContainerView extends BottomContainerView {
         //MyLog.d("GrabBottomContainerView","onEvent" + " event=" + event);
         GrabRoundInfoModel now = event.roundInfo;
         if (now != null && now.isSingStatus() && mGrabRoomData.isOwner()) {
-            if (mGrabRoomData.isSpeaking() && !now.singBySelfNow()) {
+            if (mGrabRoomData.isSpeaking() && !now.singBySelf()) {
                 U.getToastUtil().showShort("有人上麦了,暂时不能说话哦", 0, Gravity.CENTER);
             }
             mQuickBtn.setImageResource(R.drawable.fz_anzhushuohua_b);

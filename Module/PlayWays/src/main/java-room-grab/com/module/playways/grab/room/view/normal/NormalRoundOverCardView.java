@@ -11,6 +11,7 @@ import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
 import com.module.playways.grab.room.fragment.GrabRoomFragment;
 import com.module.playways.grab.room.listener.SVGAListener;
+import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGADrawable;
@@ -56,7 +57,16 @@ public class NormalRoundOverCardView extends RelativeLayout {
         mSingResultSvga = (SVGAImageView) findViewById(R.id.sing_result_svga);
     }
 
-    public void bindData(int songId, int reason, int resultType, SVGAListener listener) {
+    public void bindData(GrabRoundInfoModel lastRoundInfo, SVGAListener listener) {
+        if(lastRoundInfo==null){
+            return;
+        }
+        int songId = 0;
+        if(lastRoundInfo.getMusic()!=null) {
+             songId = lastRoundInfo.getMusic().getItemID();
+        }
+        int reason = lastRoundInfo.getOverReason();
+        int resultType = lastRoundInfo.getResultType();
         this.mSVGAListener = listener;
         setVisibility(VISIBLE);
 
@@ -111,7 +121,6 @@ public class NormalRoundOverCardView extends RelativeLayout {
                 }
             }
         }
-
     }
 
     private void startNoneSing(int songId) {
@@ -133,9 +142,7 @@ public class NormalRoundOverCardView extends RelativeLayout {
         lp.height = U.getDisplayUtils().dip2px(180);
         lp.topMargin = U.getDisplayUtils().dip2px(150);
         mSingResultSvga.setLayoutParams(lp);
-
         // TODO: 2019/4/22 音效和打点？？？
-
         playAnimation();
     }
 

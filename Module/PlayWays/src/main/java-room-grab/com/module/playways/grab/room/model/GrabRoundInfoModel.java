@@ -580,7 +580,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
      *
      * @return
      */
-    public boolean singBySelfNow() {
+    public boolean singBySelf() {
         if (getStatus() == EQRoundStatus.QRS_SING.getValue()) {
             return getUserID() == MyUserInfoManager.getInstance().getUid();
         } else if (getStatus() == EQRoundStatus.QRS_CHO_SING.getValue()) {

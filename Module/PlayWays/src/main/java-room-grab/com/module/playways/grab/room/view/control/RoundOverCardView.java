@@ -5,6 +5,7 @@ import android.view.View;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.listener.SVGAListener;
+import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.view.normal.NormalRoundOverCardView;
 import com.module.playways.grab.room.view.pk.PKRoundOverCardView;
 import com.module.rank.R;
@@ -22,8 +23,8 @@ public class RoundOverCardView {
         mPKRoundOverCardView = mRootView.findViewById(R.id.pk_round_over_card_view);
     }
 
-    public void bindData(int songId, int reason, int resultType, SVGAListener svgaListener) {
-        mNormalRoundOverCardView.bindData(songId, reason, resultType, svgaListener);
+    public void bindData(GrabRoundInfoModel lastRoundInfo, SVGAListener svgaListener) {
+        mNormalRoundOverCardView.bindData(lastRoundInfo, svgaListener);
     }
 
     public void setVisibility(int visibility) {

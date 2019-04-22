@@ -1011,7 +1011,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         mGrabScoreTipsView.reset();
         GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
         if(now!=null){
-            if( now.singBySelfNow()){
+            if( now.singBySelf()){
                 mGrabGiveupView.delayShowGiveUpView();
                 mCorePresenter.beginSing();
                 // 显示歌词
@@ -1038,7 +1038,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     }
 
     @Override
-    public void roundOver(int songId, int reason, int resultType, boolean playNextSongInfoCard, BaseRoundInfoModel now) {
+    public void roundOver(GrabRoundInfoModel lastInfoModel, boolean playNextSongInfoCard,GrabRoundInfoModel now) {
         removeAllEnsureMsg();
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_ROUND_OVER_PLAY_OVER);
         msg.arg1 = playNextSongInfoCard ? 1 : 0;
@@ -1050,7 +1050,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         mSongInfoCardView.hide();
         mGrabOpBtn.hide("roundOver");
         mGrabGiveupView.hideWithAnimation(false);
-        mRoundOverCardView.bindData(songId, reason, resultType, new SVGAListener() {
+        mRoundOverCardView.bindData(lastInfoModel, new SVGAListener() {
             @Override
             public void onFinished() {
                 onRoundOverPlayOver(playNextSongInfoCard, now);

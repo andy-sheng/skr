@@ -12,7 +12,6 @@ import com.module.playways.room.room.RankRoomData;
 import com.module.playways.room.room.model.RankPlayerInfoModel;
 import com.module.playways.room.room.model.RankRoundInfoModel;
 import com.module.playways.room.song.model.SongModel;
-import com.zq.live.proto.Room.EQRoundStatus;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -179,7 +178,7 @@ public class RoomDataUtils {
 
     public static <T extends BaseRoundInfoModel> boolean isMyRound(T infoModel) {
         if(infoModel instanceof GrabRoundInfoModel){
-            return ((GrabRoundInfoModel) infoModel).singBySelfNow();
+            return ((GrabRoundInfoModel) infoModel).singBySelf();
         }
         return infoModel != null && infoModel.getUserID() == MyUserInfoManager.getInstance().getUid();
     }

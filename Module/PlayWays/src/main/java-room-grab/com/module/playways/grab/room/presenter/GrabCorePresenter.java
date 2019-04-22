@@ -911,7 +911,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         estimateOverTsThisRound();
 
         GrabRoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
-        if (roundInfoModel == null || !roundInfoModel.singBySelfNow()) {
+        if (roundInfoModel == null || !roundInfoModel.singBySelf()) {
             return;
         }
         HashMap<String, Object> map = new HashMap<>();
@@ -945,7 +945,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         estimateOverTsThisRound();
 
         GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
-        if (now == null || !now.singBySelfNow()) {
+        if (now == null || !now.singBySelf()) {
             return;
         }
         HashMap<String, Object> map = new HashMap<>();
@@ -1327,7 +1327,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         mUiHandler.post(new Runnable() {
             @Override
             public void run() {
-                mIGrabView.roundOver(event.lastRoundInfo.getMusic().getItemID(), event.lastRoundInfo.getOverReason(), event.lastRoundInfo.getResultType(), false, null);
+                mIGrabView.roundOver(event.lastRoundInfo, false,null);
             }
         });
         // 销毁引擎，减小成本
@@ -1374,15 +1374,16 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
         if (now.getStatus() == EQRoundStatus.QRS_INTRO.getValue()) {
             //抢唱阶段，播抢唱卡片
+            //TODO 再梳理整个流程
             if (event.lastRoundInfo != null && event.lastRoundInfo.getStatus() >= EQRoundStatus.QRS_SING.getValue()) {
                 // 新一轮的抢唱阶段，得告诉上一轮演唱结束了啊，上一轮演唱结束卡片播完，才播歌曲卡片
                 mUiHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        mIGrabView.roundOver(event.lastRoundInfo.getMusic().getItemID(), event.lastRoundInfo.getOverReason(), event.lastRoundInfo.getResultType(), true, now);
+                        mIGrabView.roundOver( event.lastRoundInfo,true ,now);
                     }
                 });
-                if (event.lastRoundInfo.singBySelfNow()) {
+                if (event.lastRoundInfo.singBySelf()) {
                     onSelfRoundOver(event.lastRoundInfo);
                 }
             } else {
@@ -1398,7 +1399,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 || now.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()
                 || now.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
             // 演唱阶段
-            if (now.singBySelfNow()) {
+            if (now.singBySelf()) {
                 mUiHandler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -1463,7 +1464,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 || now.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()
                 || now.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
             // 演唱阶段
-            if (now.singBySelfNow()) {
+            if (now.singBySelf()) {
                 mUiHandler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -1512,7 +1513,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             EngineEvent.RoleChangeInfo roleChangeInfo = event.getObj();
             if (roleChangeInfo.getNewRole() == 1) {
                 GrabRoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
-                if (roundInfoModel != null && roundInfoModel.singBySelfNow()) {
+                if (roundInfoModel != null && roundInfoModel.singBySelf()) {
                     MyLog.d(TAG, "演唱环节切换主播成功");
                     onChangeBroadcastSuccess();
                 } else if (mRoomData.isSpeaking()) {
@@ -1592,7 +1593,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             @Override
             public void run() {
                 GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
-                if (infoModel == null || !infoModel.singBySelfNow()) {
+                if (infoModel == null || !infoModel.singBySelf()) {
                     MyLog.d(TAG, "onChangeBroadcastSuccess,但已经不是你的轮次了，cancel");
                     return;
                 }
@@ -2223,7 +2224,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         } else {
             // 要闭麦
             GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
-            if (infoModel != null && infoModel.singBySelfNow()) {
+            if (infoModel != null && infoModel.singBySelf()) {
                 MyLog.d(TAG, "自己的轮次，无需闭麦");
             } else {
                 EngineManager.getInstance().muteLocalAudioStream(true);
