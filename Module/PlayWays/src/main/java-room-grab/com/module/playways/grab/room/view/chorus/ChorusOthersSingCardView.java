@@ -164,7 +164,7 @@ public class ChorusOthersSingCardView extends RelativeLayout {
                 return;
             }
 
-            if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == EQRoundStatus.QRS_SING.getValue()) {
+            if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.isEnterInSingStatus()) {
                 countDown("中途进来");
             } else {
                 mCircleCountDownView.cancelAnim();
