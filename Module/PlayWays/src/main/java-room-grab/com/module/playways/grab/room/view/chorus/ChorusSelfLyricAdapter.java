@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.common.core.avatar.AvatarUtils;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
@@ -69,8 +70,8 @@ public class ChorusSelfLyricAdapter extends DiffAdapter<String, ChorusSelfLyricA
                 mRightGiveUp = true;
             }
         }
-    }
 
+    }
 
     class ChorusSelfLyricHolder extends RecyclerView.ViewHolder {
 
@@ -90,7 +91,13 @@ public class ChorusSelfLyricAdapter extends DiffAdapter<String, ChorusSelfLyricA
             if (position % 2 == 0) {
                 // left
                 if (mLeft.mUserInfoModel != null && !mLeftGiveUp) {
-                    mLyricLineTv.setTextColor(Color.parseColor("#364E7C"));
+                    if(mLeft.mUserInfoModel.getUserId() == MyUserInfoManager.getInstance().getUid()){
+                        // 左边是自己
+                        mLyricLineTv.setTextColor(Color.parseColor("#364E7C"));
+                    }else{
+                        mLyricLineTv.setTextColor(Color.parseColor("#beb19d"));
+                    }
+
                     mAvatarIv.setVisibility(View.VISIBLE);
                     AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mLeft.mUserInfoModel.getAvatar())
                             .setCircle(true)
@@ -104,8 +111,13 @@ public class ChorusSelfLyricAdapter extends DiffAdapter<String, ChorusSelfLyricA
                 }
             } else {
                 // right
-                if (mRight.mUserInfoModel != null && mRightGiveUp) {
-                    mLyricLineTv.setTextColor(Color.parseColor("#364E7C"));
+                if (mRight.mUserInfoModel != null && !mRightGiveUp) {
+                    if(mRight.mUserInfoModel.getUserId() == MyUserInfoManager.getInstance().getUid()){
+                        // 右边是自己
+                        mLyricLineTv.setTextColor(Color.parseColor("#364E7C"));
+                    }else{
+                        mLyricLineTv.setTextColor(Color.parseColor("#beb19d"));
+                    }
                     mAvatarIv.setVisibility(View.VISIBLE);
                     AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mRight.mUserInfoModel.getAvatar())
                             .setCircle(true)

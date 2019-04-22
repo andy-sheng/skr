@@ -107,33 +107,8 @@ public class NormalSelfSingCardView extends RelativeLayout {
             MyLog.d(TAG, "songModel 是空的");
             return;
         }
-        /**
-         * 该轮次的总时间，之前用的是歌曲内的总时间，但是不灵活，现在都放在服务器的轮次信息的 begin 和 end 里
-         *
-         */
-        int totalTs = 0;
-        /**
-         * pk第一轮和第二轮的演唱时间 和 歌曲截取的部位不一样
-         */
-        if (infoModel.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue() && infoModel.getsPkRoundInfoModels().size() > 1) {
-            totalTs = infoModel.getsPkRoundInfoModels().get(1).getSingEndMs() - infoModel.getsPkRoundInfoModels().get(1).getSingBeginMs();
-        } else if (infoModel.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue() && infoModel.getsPkRoundInfoModels().size() > 0) {
-            totalTs = infoModel.getsPkRoundInfoModels().get(0).getSingEndMs() - infoModel.getsPkRoundInfoModels().get(0).getSingBeginMs();
-        } else {
-            totalTs = infoModel.getSingEndMs() - infoModel.getSingBeginMs();
-        }
-        if (totalTs <= 0) {
-            MyLog.d(TAG, "playLyric" + " totalTs时间不合法,做矫正, infoModel=" + infoModel);
-            if (infoModel.getWantSingType() == 0) {
-                totalTs = 20 * 1000;
-            } else if (infoModel.getWantSingType() == 1) {
-                totalTs = 30 * 1000;
-            } else if (infoModel.getWantSingType() == 2) {
-                totalTs = 40 * 1000;
-            } else if (infoModel.getWantSingType() == 3) {
-                totalTs = 50 * 1000;
-            }
-        }
+
+        int totalTs = infoModel.getSingTotalMs();
         boolean withAcc = false;
         if (infoModel.isAccRound() && mRoomData != null && mRoomData.isAccEnable()) {
             withAcc = true;

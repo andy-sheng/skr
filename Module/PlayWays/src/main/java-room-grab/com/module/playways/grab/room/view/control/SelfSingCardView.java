@@ -22,7 +22,6 @@ public class SelfSingCardView {
         mNormalSelfSingCardView.setRoomData(mRoomData);
         mChorusSelfSingCardView = mRootView.findViewById(R.id.chorus_self_sing_card_view);
         mChorusSelfSingCardView.setRoomData(mRoomData);
-
     }
 
     public void setVisibility(int visibility) {
@@ -63,6 +62,7 @@ public class SelfSingCardView {
     public void setListener(SelfSingCardView.Listener listener) {
         mListener = listener;
         mNormalSelfSingCardView.setListener(listener);
+        mChorusSelfSingCardView.setListener(listener);
     }
 
     public interface Listener {

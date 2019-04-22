@@ -619,6 +619,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
 
     /**
      * 是否是合唱轮次
+     *
      * @return
      */
     public boolean isChorusRound() {
@@ -627,6 +628,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
 
     /**
      * 是否是pk轮次
+     *
      * @return
      */
     public boolean isPKRound() {
@@ -636,6 +638,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
 
     /**
      * 返回当前演唱者的id信息
+     *
      * @return
      */
     public List<Integer> getSingUserIds() {
@@ -652,6 +655,37 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
             singerUserIds.add(getUserID());
         }
         return singerUserIds;
+    }
+
+    public int getSingTotalMs() {
+        /**
+         * 该轮次的总时间，之前用的是歌曲内的总时间，但是不灵活，现在都放在服务器的轮次信息的 begin 和 end 里
+         *
+         */
+        int totalTs = 0;
+        /**
+         * pk第一轮和第二轮的演唱时间 和 歌曲截取的部位不一样
+         */
+        if (getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue() && getsPkRoundInfoModels().size() > 1) {
+            totalTs = getsPkRoundInfoModels().get(1).getSingEndMs() - getsPkRoundInfoModels().get(1).getSingBeginMs();
+        } else if (getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue() && getsPkRoundInfoModels().size() > 0) {
+            totalTs = getsPkRoundInfoModels().get(0).getSingEndMs() - getsPkRoundInfoModels().get(0).getSingBeginMs();
+        } else {
+            totalTs = getSingEndMs() - getSingBeginMs();
+        }
+        if (totalTs <= 0) {
+            MyLog.d(TAG, "playLyric" + " totalTs时间不合法,做矫正");
+            if (getWantSingType() == 0) {
+                totalTs = 20 * 1000;
+            } else if (getWantSingType() == 1) {
+                totalTs = 30 * 1000;
+            } else if (getWantSingType() == 2) {
+                totalTs = 40 * 1000;
+            } else if (getWantSingType() == 3) {
+                totalTs = 50 * 1000;
+            }
+        }
+        return totalTs;
     }
 
     @Override

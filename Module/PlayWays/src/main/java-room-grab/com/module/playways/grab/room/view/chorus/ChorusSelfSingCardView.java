@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
+import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.countdown.CircleCountDownView;
 import com.component.busilib.view.BitmapTextView;
@@ -17,6 +18,7 @@ import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabGiveUpInChorusEvent;
 import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
+import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.module.playways.room.song.model.SongModel;
 import com.module.rank.R;
 import com.zq.lyrics.LyricsManager;
@@ -51,6 +53,8 @@ public class ChorusSelfSingCardView extends RelativeLayout {
 
     Disposable mDisposable;
 
+    HandlerTaskTimer mCounDownTask;
+
     public static class DH {
         UserInfoModel mUserInfoModel;
         ChorusRoundInfoModel mChorusRoundInfoModel;
@@ -58,6 +62,8 @@ public class ChorusSelfSingCardView extends RelativeLayout {
 
     DH mLeft = new DH();
     DH mRight = new DH();
+
+    SelfSingCardView.Listener mListener;
 
     public ChorusSelfSingCardView(Context context) {
         super(context);
@@ -84,6 +90,9 @@ public class ChorusSelfSingCardView extends RelativeLayout {
         mLyricRecycleView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         mChorusSelfLyricAdapter = new ChorusSelfLyricAdapter(mLeft, mRight);
         mLyricRecycleView.setAdapter(mChorusSelfLyricAdapter);
+        if(!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 
     public void setRoomData(GrabRoomData roomData) {
@@ -103,20 +112,11 @@ public class ChorusSelfSingCardView extends RelativeLayout {
                 mLeft.mUserInfoModel = mRoomData.getUserInfo(uid1);
                 mRight.mUserInfoModel = mRoomData.getUserInfo(uid2);
             }
+            mSongModel = infoModel.getMusic();
+            playWithNoAcc();
+            starCounDown(infoModel.getSingTotalMs());
         }
-
-        playLyric(infoModel);
     }
-
-    public void playLyric(GrabRoundInfoModel infoModel) {
-        if (infoModel == null) {
-            MyLog.d(TAG, "infoModel 是空的");
-            return;
-        }
-        mSongModel = infoModel.getMusic();
-        playWithNoAcc();
-    }
-
 
     private void playWithNoAcc() {
         if (mSongModel == null) {
@@ -150,6 +150,49 @@ public class ChorusSelfSingCardView extends RelativeLayout {
                         MyLog.d(TAG, "accept" + " throwable=" + throwable);
                     }
                 });
+    }
+
+
+    private void starCounDown(int totalMs) {
+        mCountDownTv.setVisibility(VISIBLE);
+        mCircleCountDownView.go(0, totalMs);
+        int counDown = totalMs / 1000;
+        mCounDownTask = HandlerTaskTimer.newBuilder()
+                .interval(1000)
+                .take(counDown)
+                .start(new HandlerTaskTimer.ObserverW() {
+                    @Override
+                    public void onNext(Integer integer) {
+                        mCountDownTv.setText((counDown - integer) + "");
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+                        if (mListener != null) {
+                            mListener.onSelfSingOver();
+                        }
+                        stopCounDown();
+//                        mCountDownTv.setVisibility(GONE);
+                    }
+                });
+    }
+
+    private void stopCounDown() {
+        if (mCounDownTask != null) {
+            mCounDownTask.dispose();
+        }
+    }
+
+    public void setListener(SelfSingCardView.Listener listener) {
+        mListener = listener;
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        stopCounDown();
+        EventBus.getDefault().unregister(this);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
