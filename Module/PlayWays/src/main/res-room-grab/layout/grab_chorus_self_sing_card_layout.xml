@@ -20,8 +20,11 @@
             android:id="@+id/lyric_recycle_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingRight="@dimen/view_12_dp"
             android:layout_marginTop="@dimen/view_40_dp"
-            android:layout_marginBottom="@dimen/view_15_dp"/>
+            android:layout_marginBottom="@dimen/view_15_dp"
+            android:scrollbarThumbVertical="@drawable/chorus_self_sing_bar"
+            android:scrollbars="vertical" />
 
     </RelativeLayout>
 
