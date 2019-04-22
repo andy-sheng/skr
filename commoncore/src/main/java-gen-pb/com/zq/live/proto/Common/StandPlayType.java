@@ -17,14 +17,19 @@ public enum StandPlayType implements WireEnum {
   PT_INVALID_TYPE(0),
 
   /**
+   * 普通玩法
+   */
+  PT_COMMON_TYPE(1),
+
+  /**
    * PK玩法
    */
-  PT_SPK_TYPE(1),
+  PT_SPK_TYPE(2),
 
   /**
    * 合唱玩法
    */
-  PT_CHO_TYPE(2);
+  PT_CHO_TYPE(3);
 
   public static final ProtoAdapter<StandPlayType> ADAPTER = new ProtoAdapter_StandPlayType();
 
@@ -40,8 +45,9 @@ public enum StandPlayType implements WireEnum {
   public static StandPlayType fromValue(int value) {
     switch (value) {
       case 0: return PT_INVALID_TYPE;
-      case 1: return PT_SPK_TYPE;
-      case 2: return PT_CHO_TYPE;
+      case 1: return PT_COMMON_TYPE;
+      case 2: return PT_SPK_TYPE;
+      case 3: return PT_CHO_TYPE;
       default: return null;
     }
   }

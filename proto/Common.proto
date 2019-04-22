@@ -55,8 +55,9 @@ message MusicInfo {
 // 一唱到底playType
 enum StandPlayType {
     PT_INVALID_TYPE = 0; //无效
-    PT_SPK_TYPE = 1; //PK玩法
-    PT_CHO_TYPE = 2; //合唱玩法
+    PT_COMMON_TYPE  = 1; //普通玩法
+    PT_SPK_TYPE     = 2; //PK玩法
+    PT_CHO_TYPE     = 3; //合唱玩法
 }
 
 enum ESex {
