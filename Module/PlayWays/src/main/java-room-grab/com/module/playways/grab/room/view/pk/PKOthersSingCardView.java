@@ -21,6 +21,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.rank.R;
+import com.opensource.svgaplayer.SVGAImageView;
 import com.zq.live.proto.Room.EQRoundStatus;
 
 
@@ -37,6 +38,9 @@ public class PKOthersSingCardView extends RelativeLayout {
     final static int COUNT_DOWN_STATUS_PLAYING = 3;
 
     int mCountDownStatus = COUNT_DOWN_STATUS_INIT;
+
+    SVGAImageView mLeftSingSvga;
+    SVGAImageView mRightSingSvga;
 
     LinearLayout mPkOtherArea;
     SimpleDraweeView mLeftIv;
@@ -81,6 +85,8 @@ public class PKOthersSingCardView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.grab_pk_other_sing_card_layout, this);
+        mLeftSingSvga = (SVGAImageView)findViewById(R.id.left_sing_svga);
+        mRightSingSvga = (SVGAImageView)findViewById(R.id.right_sing_svga);
         mPkOtherArea = (LinearLayout) findViewById(R.id.pk_other_area);
         mLeftIv = (SimpleDraweeView) findViewById(R.id.left_iv);
         mLeftName = (ExTextView) findViewById(R.id.left_name);
@@ -89,6 +95,10 @@ public class PKOthersSingCardView extends RelativeLayout {
         mIvTag = (ImageView) findViewById(R.id.iv_tag);
         mCircleCountDownView = (CircleCountDownView) findViewById(R.id.circle_count_down_view);
         mCountDownTv = (BitmapTextView) findViewById(R.id.count_down_tv);
+
+        int offsetX = (U.getDisplayUtils().getScreenWidth() / 2 - U.getDisplayUtils().dip2px(16)) / 2;
+        mLeftSingSvga.setTranslationX(-offsetX);
+        mRightSingSvga.setTranslationX(offsetX);
     }
 
     public void bindData(GrabRoomData roomData, UserInfoModel left, UserInfoModel right) {
