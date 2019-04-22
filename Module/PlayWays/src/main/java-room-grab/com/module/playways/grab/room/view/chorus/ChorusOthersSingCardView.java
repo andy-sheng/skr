@@ -47,7 +47,8 @@ public class ChorusOthersSingCardView extends RelativeLayout {
 
     public final static String TAG = "ChorusOthersSingCardView";
     final static int MSG_ENSURE_PLAY = 1;
-    static final int MSG_SPEAK_OVER = 2;
+    static final int MSG_LEFT_SPEAK_OVER = 2;
+    static final int MSG_RIGHT_SPEAK_OVER = 3;
 
     final static int COUNT_DOWN_STATUS_INIT = 1;
     final static int COUNT_DOWN_STATUS_WAIT = 2;
@@ -58,10 +59,15 @@ public class ChorusOthersSingCardView extends RelativeLayout {
     SVGAImageView mLeftSingSvga;
     SVGAImageView mRightSingSvga;
     LinearLayout mChorusOtherArea;
+
     SimpleDraweeView mLeftIv;
+    ExTextView mLeftStatus;
     ExTextView mLeftName;
+
     SimpleDraweeView mRightIv;
+    ExTextView mRightStatus;
     ExTextView mRightName;
+
     ImageView mIvTag;
     CircleCountDownView mCircleCountDownView;
     BitmapTextView mCountDownTv;
@@ -79,12 +85,10 @@ public class ChorusOthersSingCardView extends RelativeLayout {
         public void handleMessage(Message msg) {
             if (msg.what == MSG_ENSURE_PLAY) {
                 tryStartCountDown();
-            } else if (msg.what == MSG_SPEAK_OVER) {
-                if (msg.obj != null) {
-                    stopSingAnimation((int) msg.obj);
-                } else {
-                    MyLog.w(TAG, "handleMessage" + " msg=" + msg);
-                }
+            } else if (msg.what == MSG_LEFT_SPEAK_OVER) {
+                stopSingAnimation(mLeftSingSvga);
+            } else if (msg.what == MSG_RIGHT_SPEAK_OVER) {
+                stopSingAnimation(mRightSingSvga);
             }
         }
     };
@@ -115,8 +119,10 @@ public class ChorusOthersSingCardView extends RelativeLayout {
         mLeftSingSvga = (SVGAImageView) findViewById(R.id.left_sing_svga);
         mRightSingSvga = (SVGAImageView) findViewById(R.id.right_sing_svga);
         mLeftIv = (SimpleDraweeView) findViewById(R.id.left_iv);
+        mLeftStatus = (ExTextView) findViewById(R.id.left_status);
         mLeftName = (ExTextView) findViewById(R.id.left_name);
         mRightIv = (SimpleDraweeView) findViewById(R.id.right_iv);
+        mRightStatus = (ExTextView) findViewById(R.id.right_status);
         mRightName = (ExTextView) findViewById(R.id.right_name);
         mIvTag = (ImageView) findViewById(R.id.iv_tag);
         mCircleCountDownView = (CircleCountDownView) findViewById(R.id.circle_count_down_view);
@@ -178,53 +184,6 @@ public class ChorusOthersSingCardView extends RelativeLayout {
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(EngineEvent event) {
-        if(getVisibility() == GONE){
-            return;
-        }
-        switch (event.getType()) {
-            case EngineEvent.TYPE_USER_AUDIO_VOLUME_INDICATION: {
-                // 有人在说话,播2秒动画
-                List<EngineEvent.UserVolumeInfo> l = event.getObj();
-                for (EngineEvent.UserVolumeInfo u : l) {
-                    int uid = u.getUid();
-                    if (uid == 0) {
-                        uid = (int) UserAccountManager.getInstance().getUuidAsLong();
-                    }
-                    if (mLeftUserInfoModel != null && mLeftUserInfoModel.getUserId() == uid) {
-                        mUiHandler.removeMessages(MSG_SPEAK_OVER);
-                        Message msg = new Message();
-                        msg.what = MSG_SPEAK_OVER;
-                        msg.obj = uid;
-                        mUiHandler.sendMessageDelayed(msg, 2000);
-                        playSingAnimation(mLeftSingSvga);
-                    } else if (mRightUserInfoModel != null && mRightUserInfoModel.getUserId() == uid) {
-                        mUiHandler.removeMessages(MSG_SPEAK_OVER);
-                        Message msg = new Message();
-                        msg.what = MSG_SPEAK_OVER;
-                        msg.obj = uid;
-                        mUiHandler.sendMessageDelayed(msg, 2000);
-                        playSingAnimation(mRightSingSvga);
-                    } else {
-                        MyLog.w(TAG, "onEvent" + " 不是唱歌两人说话 event=" + event);
-                    }
-                }
-                break;
-            }
-            case EngineEvent.TYPE_USER_MUTE_AUDIO:{
-                //用户闭麦，开麦
-                UserStatus userStatus = event.getUserStatus();
-                if (userStatus != null) {
-                    int userId = userStatus.getUserId();
-                    if (userStatus.isAudioMute()) {
-                        stopSingAnimation(userId);
-                    }
-                }
-                break;
-            }
-        }
-    }
 
     // 播放声纹动画
     private void playSingAnimation(SVGAImageView svgaImageView) {
@@ -409,22 +368,87 @@ public class ChorusOthersSingCardView extends RelativeLayout {
         if (getVisibility() == GONE) {
             return;
         }
-//        if (mLeft.mChorusRoundInfoModel != null) {
-//            if (event.mChorusRoundInfoModel.getUserID() == mLeft.mChorusRoundInfoModel.getUserID()) {
-//                mLeft.mChorusRoundInfoModel = event.mChorusRoundInfoModel;
-//            }
-//        } else {
-//            mLeft.mChorusRoundInfoModel = event.mChorusRoundInfoModel;
-//        }
-//        if (mRight.mChorusRoundInfoModel != null) {
-//            if (event.mChorusRoundInfoModel.getUserID() == mRight.mChorusRoundInfoModel.getUserID()) {
-//                mRight.mChorusRoundInfoModel = event.mChorusRoundInfoModel;
-//            }
-//        } else {
-//            mRight.mChorusRoundInfoModel = event.mChorusRoundInfoModel;
-//        }
-//        mChorusSelfLyricAdapter.computeFlag();
-//        mChorusSelfLyricAdapter.notifyDataSetChanged();
+
+        if (event.mChorusRoundInfoModel != null) {
+            stopSingAnimation(event.mChorusRoundInfoModel.getUserID());
+            if (mLeftUserInfoModel != null && event.mChorusRoundInfoModel.getUserID() == mLeftUserInfoModel.getUserId()) {
+                mLeftStatus.setVisibility(VISIBLE);
+                String text = "";
+                if (event.mChorusRoundInfoModel.isHasGiveUp()) {
+                    text = "不唱了";
+                } else if (event.mChorusRoundInfoModel.isHasExit()) {
+                    text = "掉线了";
+                }
+                mLeftStatus.setText(text);
+                AvatarUtils.loadAvatarByUrl(mLeftIv,
+                        AvatarUtils.newParamsBuilder(mLeftUserInfoModel.getAvatar())
+                                .setBorderColor(U.getColor(R.color.white))
+                                .setBorderWidth(U.getDisplayUtils().dip2px(2))
+                                .setGray(true)
+                                .setCircle(true)
+                                .build());
+            } else if (mRightUserInfoModel != null && event.mChorusRoundInfoModel.getUserID() == mRightUserInfoModel.getUserId()) {
+                mRightStatus.setVisibility(VISIBLE);
+                String text = "";
+                if (event.mChorusRoundInfoModel.isHasGiveUp()) {
+                    text = "不唱了";
+                } else if (event.mChorusRoundInfoModel.isHasExit()) {
+                    text = "掉线了";
+                }
+                mRightStatus.setText(text);
+                AvatarUtils.loadAvatarByUrl(mRightIv,
+                        AvatarUtils.newParamsBuilder(mRightUserInfoModel.getAvatar())
+                                .setBorderColor(U.getColor(R.color.white))
+                                .setBorderWidth(U.getDisplayUtils().dip2px(2))
+                                .setGray(true)
+                                .setCircle(true)
+                                .build());
+            } else {
+                MyLog.w(TAG, "onEvent" + "不是麦上的人？？？ event=" + event);
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(EngineEvent event) {
+        if (getVisibility() == GONE) {
+            return;
+        }
+        switch (event.getType()) {
+            case EngineEvent.TYPE_USER_AUDIO_VOLUME_INDICATION: {
+                // 有人在说话,播2秒动画
+                List<EngineEvent.UserVolumeInfo> l = event.getObj();
+                for (EngineEvent.UserVolumeInfo u : l) {
+                    int uid = u.getUid();
+                    if (uid == 0) {
+                        uid = (int) UserAccountManager.getInstance().getUuidAsLong();
+                    }
+                    if (mLeftUserInfoModel != null && mLeftUserInfoModel.getUserId() == uid) {
+                        mUiHandler.removeMessages(MSG_LEFT_SPEAK_OVER);
+                        mUiHandler.sendEmptyMessageDelayed(MSG_LEFT_SPEAK_OVER, 2000);
+                        playSingAnimation(mLeftSingSvga);
+                    } else if (mRightUserInfoModel != null && mRightUserInfoModel.getUserId() == uid) {
+                        mUiHandler.removeMessages(MSG_RIGHT_SPEAK_OVER);
+                        mUiHandler.sendEmptyMessageDelayed(MSG_RIGHT_SPEAK_OVER, 2000);
+                        playSingAnimation(mRightSingSvga);
+                    } else {
+                        MyLog.w(TAG, "onEvent" + " 不是唱歌两人说话 event=" + event);
+                    }
+                }
+                break;
+            }
+            case EngineEvent.TYPE_USER_MUTE_AUDIO: {
+                //用户闭麦，开麦
+                UserStatus userStatus = event.getUserStatus();
+                if (userStatus != null) {
+                    int userId = userStatus.getUserId();
+                    if (userStatus.isAudioMute()) {
+                        stopSingAnimation(userId);
+                    }
+                }
+                break;
+            }
+        }
     }
 
     @Override
