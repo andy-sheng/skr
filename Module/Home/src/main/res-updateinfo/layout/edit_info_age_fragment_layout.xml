@@ -4,7 +4,7 @@
     android:id="@+id/main_act_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F9F4F1">
+    android:background="@color/colorPrimary">
 
     <com.common.view.titlebar.CommonTitleBar
         android:id="@+id/titlebar"
@@ -13,19 +13,19 @@
         app:bottomLineColor="#0C2275"
         app:centerText="选择年龄"
         app:centerTextColor="@color/white"
-        app:centerType="textView"
         app:centerTextSize="@dimen/textsize_18_dp"
         app:centerTextStyle="BOLD"
+        app:centerType="textView"
         app:leftDrawable="@drawable/img_back"
         app:leftType="textView"
         app:rightText="完成"
         app:rightTextColor="@color/white_trans_70"
         app:rightTextSize="@dimen/textsize_18_dp"
-        app:rightType="textView"
-        app:showBottomLine="true"
         app:rightTextStyle="BOLD"
-        app:statusBarColor="#0288D0"
-        app:titleBarColor="#0288D0"></com.common.view.titlebar.CommonTitleBar>
+        app:rightType="textView"
+        app:showBottomLine="false"
+        app:statusBarColor="@color/colorPrimary"
+        app:titleBarColor="@color/colorPrimary"></com.common.view.titlebar.CommonTitleBar>
 
     <RelativeLayout
         android:id="@+id/birthday_area"
@@ -148,7 +148,7 @@
             android:layout_weight="1"
             android:gravity="right"
             android:text="年龄"
-            android:textColor="#3B4E79"
+            android:textColor="@color/white"
             android:textSize="@dimen/textsize_24_dp" />
 
         <View
@@ -156,7 +156,7 @@
             android:layout_width="@dimen/view_1_dp"
             android:layout_height="@dimen/view_23_dp"
             android:layout_marginTop="@dimen/view_5_dp"
-            android:background="#3B4E79" />
+            android:background="@color/white" />
 
         <com.common.view.ex.ExTextView
             android:id="@+id/con_tv"
@@ -166,7 +166,7 @@
             android:layout_weight="1"
             android:gravity="left"
             android:text="星座"
-            android:textColor="#3B4E79"
+            android:textColor="@color/white"
             android:textSize="@dimen/textsize_24_dp" />
     </LinearLayout>
 

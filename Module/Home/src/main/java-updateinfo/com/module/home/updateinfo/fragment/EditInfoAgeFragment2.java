@@ -1,6 +1,7 @@
 package com.module.home.updateinfo.fragment;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -75,7 +76,7 @@ public class EditInfoAgeFragment2 extends BaseFragment {
         mYear = (SeparatedEditText) mRootView.findViewById(R.id.year);
         mMonth = (SeparatedEditText) mRootView.findViewById(R.id.month);
         mDay = (SeparatedEditText) mRootView.findViewById(R.id.day);
-        mErrorHint = (ExTextView)mRootView.findViewById(R.id.error_hint);
+        mErrorHint = (ExTextView) mRootView.findViewById(R.id.error_hint);
         mAgeTv = (ExTextView) mRootView.findViewById(R.id.age_tv);
         mDivider = (View) mRootView.findViewById(R.id.divider);
         mConTv = (ExTextView) mRootView.findViewById(R.id.con_tv);
@@ -146,13 +147,9 @@ public class EditInfoAgeFragment2 extends BaseFragment {
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            mMainActContainer.setBackgroundColor(Color.parseColor("#7187FF"));
-
             mTitlebar.getRightTextView().setText("2/2");
             mTitlebar.getCenterTextView().setText("完善个人信息");
-            mTitlebar.setStatusBarColor(Color.parseColor("#7187FF"));
-            mTitlebar.setTitleBarColor(Color.parseColor("#7187FF"));
-            mTitlebar.setBottomLineColor(Color.parseColor("#7187FF"));
+            mTitlebar.getCenterTextView().setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
             mTitlebar.getRightTextView().setTextSize(16);
             mTitlebar.getRightTextView().setClickable(false);
 
@@ -160,10 +157,6 @@ public class EditInfoAgeFragment2 extends BaseFragment {
             mIsUpload = bundle.getBoolean(UploadAccountInfoActivity.BUNDLE_IS_UPLOAD);
             mUploadNickname = bundle.getString(UploadAccountInfoActivity.BUNDLE_UPLOAD_NICKNAME);
             mUploadSex = bundle.getInt(UploadAccountInfoActivity.BUNDLE_UPLOAD_SEX);
-
-            mDivider.setBackgroundColor(Color.WHITE);
-            mAgeTv.setTextColor(Color.WHITE);
-            mConTv.setTextColor(Color.WHITE);
         }
 
         mYear.setTextChangedListener(new SeparatedEditText.TextChangedListener() {
