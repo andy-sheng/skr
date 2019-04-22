@@ -4,21 +4,19 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
-import com.common.clipboard.ClipboardUtils;
 import com.common.core.account.UserAccountManager;
 import com.common.core.upgrade.UpgradeManager;
 import com.common.core.upgrade.UpgradeCheckApi;
-import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -31,27 +29,18 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
-import com.common.webview.AgentWebActivity;
 import com.dialog.view.TipsDialogView;
-import com.huawei.android.hms.agent.common.ApiClientMgr;
-import com.jakewharton.rxbinding2.view.RxView;
 import com.module.RouterConstants;
 import com.module.home.R;
 import com.module.home.feedback.FeedbackFragment;
 import com.module.home.setting.InviteServerApi;
 import com.module.home.setting.Model.TuiGuangConfig;
-import com.module.home.updateinfo.EditInfoActivity;
 import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.OnClickListener;
-import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.relation.fragment.BlackListFragment;
 import com.zq.toast.CommonToastView;
 
-import java.io.File;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -88,7 +77,7 @@ public class SettingFragment extends BaseFragment {
     RelativeLayout mComment;
     RelativeLayout mServiceAgreen;
     RelativeLayout mRlExchange;
-    ExTextView mExitLogin;
+    ImageView mExitLogin;
 
     boolean hasNewVersion = false; // 判断是否有新版本
 
@@ -129,7 +118,7 @@ public class SettingFragment extends BaseFragment {
         mUserFeedback = (RelativeLayout) mRootView.findViewById(R.id.user_feedback);
         mComment = (RelativeLayout) mRootView.findViewById(R.id.comment);
         mServiceAgreen = (RelativeLayout) mRootView.findViewById(R.id.service_agreen);
-        mExitLogin = (ExTextView) mRootView.findViewById(R.id.exit_login);
+        mExitLogin = (ImageView) mRootView.findViewById(R.id.exit_login);
 
         mRlExchange = (RelativeLayout) mRootView.findViewById(R.id.Rl_exchange);
 
