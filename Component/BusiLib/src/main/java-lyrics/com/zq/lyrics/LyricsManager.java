@@ -4,20 +4,20 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.common.core.crash.IgnoreException;
 import com.common.log.MyLog;
-import com.common.utils.SongResUtils;
+import com.common.rx.RxRetryAssist;
 import com.common.utils.U;
 import com.zq.lyrics.event.LrcEvent;
 import com.zq.lyrics.model.LyricsInfo;
 import com.zq.lyrics.utils.LyricsIOUtils;
 import com.zq.lyrics.utils.LyricsUtils;
+import com.zq.lyrics.utils.SongResUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,7 +30,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-import okio.BufferedSink;
 import okio.BufferedSource;
 import okio.Okio;
 
@@ -61,6 +60,12 @@ public class LyricsManager {
     }
 
 
+    /**
+     * 加载标准歌词 文件名
+     * @param fileName
+     * @param hash
+     * @return
+     */
     public Observable<LyricsReader> loadLyricsObserable(final String fileName, final String hash) {
         return Observable.create(new ObservableOnSubscribe<LyricsReader>() {
 
@@ -93,6 +98,11 @@ public class LyricsManager {
         });
     }
 
+    /**
+     * 加载标准歌词 url
+     * @param url
+     * @return
+     */
     public Observable<LyricsReader> fetchAndLoadLyrics(final String url) {
         return fetchLyricTask(url)
                 .flatMap(new Function<File, ObservableSource<LyricsReader>>() {
@@ -139,72 +149,51 @@ public class LyricsManager {
     }
 
     /**
-     * @param fileName
-     * @param keyword
-     * @param hash
+     * 加载一唱到底普通文本歌词
+     * @param url
      * @return
      */
-    public void loadLyricsUtil(final String fileName, final String keyword, final String hash) {
-        loadLyricsObserable(fileName, hash).subscribeOn(Schedulers.io())
-                .retry(10)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<LyricsReader>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(LyricsReader lyricsReader) {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        MyLog.e(TAG, e);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        EventBus.getDefault().post(new LrcEvent.FinishLoadLrcEvent(hash));
-                    }
-                });
-    }
-
-    public LyricsReader getLyricsUtil(String hash) {
-        return mLyricsUtils.get(hash);
-    }
-
-    public void removeLyricsReader(String fileName) {
-        if (TextUtils.isEmpty(fileName)) {
-            return;
-        }
-
-        mLyricsUtils.remove(fileName.hashCode() + "");
-    }
-
-
-    /**
-     * 保存歌词文件
-     *
-     * @param lrcFilePath lrc歌词路径
-     * @param lyricsInfo  lrc歌词数据
-     */
-    private void saveLrcFile(final String lrcFilePath, final LyricsInfo lyricsInfo) {
-        new Thread() {
-
+    public Observable<String> loadGrabPlainLyric(final String url) {
+        MyLog.d(TAG, "fetchLyricTask" + " url =" + url);
+        return Observable.create(new ObservableOnSubscribe<File>() {
             @Override
-            public void run() {
-
-                //保存修改的歌词文件
-                try {
-                    LyricsIOUtils.getLyricsFileWriter(lrcFilePath).writer(lyricsInfo, lrcFilePath);
-                } catch (Exception e) {
-
-                    e.printStackTrace();
+            public void subscribe(ObservableEmitter<File> emitter) {
+                File file = SongResUtils.getGrabLyricFileByUrl(url);
+                if (file == null || !file.exists()) {
+                    File tempFile = new File(SongResUtils.createStandLyricTempFileName(url));
+                    boolean isSuccess = U.getHttpUtils().downloadFileSync(url, tempFile, null);
+                    File oldName = new File(SongResUtils.createStandLyricTempFileName(url));
+                    File newName = new File(SongResUtils.createStandLyricFileName(url));
+                    if (isSuccess) {
+                        if (oldName != null && oldName.renameTo(newName)) {
+                            MyLog.w(TAG, "已重命名");
+                            emitter.onNext(newName);
+                        }
+                    }else {
+                        emitter.onError(new IgnoreException("下载失败"));
+                    }
+                } else {
+                    MyLog.w(TAG, "playLyric is exist");
+                    emitter.onNext(file);
                 }
+                emitter.onComplete();
             }
-
-        }.start();
+        })
+                .map(new Function<File, String>() {
+                    @Override
+                    public String apply(File file) throws Exception {
+                        if (file != null && file.exists() && file.isFile()) {
+                            try (BufferedSource source = Okio.buffer(Okio.source(file))) {
+                                return source.readUtf8();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        return null;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .retryWhen(new RxRetryAssist(3,""))
+                .observeOn(AndroidSchedulers.mainThread());
     }
 }

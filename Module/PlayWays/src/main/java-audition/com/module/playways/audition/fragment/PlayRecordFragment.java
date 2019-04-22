@@ -16,7 +16,7 @@ import com.common.player.IPlayerCallback;
 import com.common.player.exoplayer.ExoPlayer;
 import com.common.player.mediaplayer.AndroidMediaPlayer;
 import com.common.utils.ActivityUtils;
-import com.common.utils.SongResUtils;
+import com.zq.lyrics.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;

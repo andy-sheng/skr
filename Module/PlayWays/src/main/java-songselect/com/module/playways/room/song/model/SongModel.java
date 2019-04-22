@@ -2,7 +2,7 @@ package com.module.playways.room.song.model;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.common.log.MyLog;
-import com.common.utils.SongResUtils;
+import com.zq.lyrics.utils.SongResUtils;
 import com.zq.live.proto.Common.MusicInfo;
 
 import java.io.File;

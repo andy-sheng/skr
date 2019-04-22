@@ -16,7 +16,7 @@ import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.DiffAdapter;
 import com.module.rank.R;
 
-public class ChorusSelfLyricAdapter extends DiffAdapter<String, ChorusSelfLyricAdapter.ChorusSelfLyric> {
+public class ChorusSelfLyricAdapter extends DiffAdapter<String, ChorusSelfLyricAdapter.ChorusSelfLyricHolder> {
     
     public final static String TAG = "ChorusSelfLyricAdapter";
 
@@ -30,14 +30,14 @@ public class ChorusSelfLyricAdapter extends DiffAdapter<String, ChorusSelfLyricA
 
     @NonNull
     @Override
-    public ChorusSelfLyric onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ChorusSelfLyricHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.chorus_self_lyric_item_layout, parent, false);
-        ChorusSelfLyric chorusSelfLyric = new ChorusSelfLyric(view);
+        ChorusSelfLyricHolder chorusSelfLyric = new ChorusSelfLyricHolder(view);
         return chorusSelfLyric;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ChorusSelfLyric holder, int position) {
+    public void onBindViewHolder(@NonNull ChorusSelfLyricHolder holder, int position) {
         String string = mDataList.get(position);
         holder.bindData(string, position);
     }
@@ -47,12 +47,12 @@ public class ChorusSelfLyricAdapter extends DiffAdapter<String, ChorusSelfLyricA
         return mDataList.size();
     }
 
-    class ChorusSelfLyric extends RecyclerView.ViewHolder {
+    class ChorusSelfLyricHolder extends RecyclerView.ViewHolder {
 
         BaseImageView mAvatarIv;
         ExTextView mLyricLineTv;
 
-        public ChorusSelfLyric(View itemView) {
+        public ChorusSelfLyricHolder(View itemView) {
             super(itemView);
 
             mAvatarIv = (BaseImageView) itemView.findViewById(R.id.avatar_iv);

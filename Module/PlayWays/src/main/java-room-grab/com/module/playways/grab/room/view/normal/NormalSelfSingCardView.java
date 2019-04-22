@@ -8,9 +8,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.common.log.MyLog;
-import com.common.rx.RxRetryAssist;
 import com.common.utils.HandlerTaskTimer;
-import com.common.utils.SongResUtils;
 import com.common.utils.U;
 import com.common.view.countdown.CircleCountDownView;
 import com.component.busilib.view.BitmapTextView;
@@ -26,22 +24,14 @@ import com.module.playways.room.song.model.SongModel;
 import com.module.rank.R;
 import com.zq.live.proto.Room.EQRoundStatus;
 import com.zq.live.proto.Room.EWantSingType;
+import com.zq.lyrics.LyricsManager;
 import com.zq.lyrics.widget.ManyLyricsView;
 import com.zq.lyrics.widget.VoiceScaleView;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
-import okio.BufferedSource;
-import okio.Okio;
 
 /**
  * 你的主场景歌词
@@ -210,14 +200,19 @@ public class NormalSelfSingCardView extends RelativeLayout {
         if (mDisposable != null && !mDisposable.isDisposed()) {
             mDisposable.dispose();
         }
-        File file = SongResUtils.getGrabLyricFileByUrl(songModel.getStandLrc());
-        if (file == null || !file.exists()) {
-            MyLog.w(TAG, "playLyric is not in local file");
-            fetchLyricTask(songModel);
-        } else {
-            MyLog.w(TAG, "playLyric is exist");
-            drawLyric(file);
-        }
+        mDisposable = LyricsManager.getLyricsManager(U.app())
+                .loadGrabPlainLyric(songModel.getStandLrc())
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String s) throws Exception {
+                        mTvLyric.setText(s);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        MyLog.d(TAG, "accept" + " throwable=" + throwable);
+                    }
+                });
     }
 
 
@@ -278,78 +273,10 @@ public class NormalSelfSingCardView extends RelativeLayout {
         }
     }
 
-    /**
-     * 拉取一唱到底的歌词字符串
-     *
-     * @param songModel
-     */
-    private void fetchLyricTask(SongModel songModel) {
-        MyLog.w(TAG, "fetchLyricTask" + " songModel=" + songModel);
-        mDisposable = Observable.create(new ObservableOnSubscribe<File>() {
-            @Override
-            public void subscribe(ObservableEmitter<File> emitter) {
-                File tempFile = new File(SongResUtils.createStandLyricTempFileName(songModel.getStandLrc()));
-                boolean isSuccess = U.getHttpUtils().downloadFileSync(songModel.getStandLrc(), tempFile, null);
-                File oldName = new File(SongResUtils.createStandLyricTempFileName(songModel.getStandLrc()));
-                File newName = new File(SongResUtils.createStandLyricFileName(songModel.getStandLrc()));
-                if (isSuccess) {
-                    if (oldName != null && oldName.renameTo(newName)) {
-                        MyLog.w(TAG, "已重命名");
-                        emitter.onNext(newName);
-                        emitter.onComplete();
-                    } else {
-                        MyLog.w(TAG, "Error");
-                        emitter.onError(new Throwable("重命名错误"));
-                    }
-                } else {
-                    emitter.onError(new Throwable("下载失败, 文件地址是" + songModel.getStandLrc()));
-                }
-            }
-        }).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .retryWhen(new RxRetryAssist(5, 1, false))
-//                .compose(bindUntilEvent(FragmentEvent.DESTROY))
-                .subscribe(file -> {
-                    final File fileName = SongResUtils.getGrabLyricFileByUrl(songModel.getStandLrc());
-                    drawLyric(fileName);
-                }, throwable -> {
-                    MyLog.e(TAG, throwable);
-                });
-    }
-
     public void destroy() {
         if (mManyLyricsView != null) {
             mManyLyricsView.release();
         }
-    }
-
-    /**
-     * 画出一唱到底歌词字符串
-     *
-     * @param file
-     */
-    private void drawLyric(final File file) {
-        MyLog.w(TAG, "file is " + file);
-        Observable.create(new ObservableOnSubscribe<String>() {
-            @Override
-            public void subscribe(ObservableEmitter<String> emitter) {
-                if (file != null && file.exists() && file.isFile()) {
-                    try (BufferedSource source = Okio.buffer(Okio.source(file))) {
-                        emitter.onNext(source.readUtf8());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                emitter.onComplete();
-            }
-        }).observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io()).subscribe(new Consumer<String>() {
-            @Override
-            public void accept(String o) {
-                mTvLyric.setText(o);
-            }
-        }, throwable -> MyLog.e(TAG, throwable));
     }
 
     public void setRoomData(GrabRoomData roomData) {

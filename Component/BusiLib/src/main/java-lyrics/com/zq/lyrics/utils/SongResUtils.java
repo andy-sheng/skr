@@ -1,6 +1,8 @@
-package com.common.utils;
+package com.zq.lyrics.utils;
 
 import android.text.TextUtils;
+
+import com.common.utils.U;
 
 import java.io.File;
 

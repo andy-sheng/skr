@@ -2,7 +2,6 @@ package com.module.playways.grab.room.view;
 
 
 import android.content.Context;
-import android.graphics.Color;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -20,9 +19,8 @@ import com.common.image.model.oss.OssImgFactory;
 import com.common.log.MyLog;
 import com.common.rx.RxRetryAssist;
 import com.common.utils.ImageUtils;
-import com.common.utils.SongResUtils;
+import com.zq.lyrics.utils.SongResUtils;
 import com.common.utils.U;
-import com.common.utils.VideoUtils;
 import com.common.view.ex.ExTextView;
 
 import com.component.busilib.view.BitmapTextView;
