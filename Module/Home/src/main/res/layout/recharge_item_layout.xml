@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.common.view.ex.ExLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/view_124_dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/info_container"
+    app:bl_solid_color="#D0EFFF"
+    app:bl_stroke_width="@dimen/view_2_dp"
+    app:bl_corners_radius="@dimen/view_8_dp"
+    app:bl_stroke_color="#3B4E79"
+    android:orientation="vertical">
+
+    <TextView
+        android:textColor="#3B4E79"
+        android:id="@+id/tv_recharge_num"
+        android:layout_marginTop="@dimen/view_12_dp"
+        android:text="100钻石"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    
+    <ImageView
+        android:background="@drawable/yue_zuanshiyue"
+        android:layout_marginTop="@dimen/view_8_dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="@dimen/view_26_dp"
+        android:layout_height="@dimen/view_29_dp" />
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/view_24_dp"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textColor="#3B4E79"
+            android:text="¥"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tv_cash"
+            android:textSize="@dimen/textsize_20_dp"
+            android:textColor="#3B4E79"
+            android:text="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+</com.common.view.ex.ExLinearLayout>

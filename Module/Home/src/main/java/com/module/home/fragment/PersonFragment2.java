@@ -327,6 +327,16 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
             }
         });
 
+        mWalletIv.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                ARouter.getInstance()
+                        .build(RouterConstants.ACTIVITY_BALANCE)
+                        .navigation();
+                return false;
+            }
+        });
+
         mMusicTestIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {

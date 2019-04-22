@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#7187FF"
+    android:orientation="vertical">
+
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:centerText="点券兑换现金"
+        app:centerTextColor="@color/white"
+        app:centerTextSize="@dimen/textsize_20_dp"
+        app:centerType="textView"
+        app:leftDrawable="@drawable/img_back"
+        app:leftType="textView"
+        app:rightText=""
+        app:rightTextColor="@color/white"
+        app:rightTextSize="@dimen/textsize_14_dp"
+        app:rightType="textView"
+        app:showBottomLine="false"
+        app:statusBarColor="#7187FF"
+        app:titleBarColor="#7187FF" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_16_dp"
+        android:background="@drawable/chongzhizuanshi_beijingban"
+        android:orientation="vertical">
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/tv_max_exchange"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_68_dp"
+            android:layout_marginLeft="@dimen/view_30_dp"
+            android:gravity="center_vertical"
+            android:text="账户最多可兑现"
+            android:textColor="#3B4E79"
+            android:textSize="@dimen/textsize_14_dp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_5_dp"
+            android:layout_marginLeft="@dimen/view_2_dp"
+            android:layout_marginRight="@dimen/view_2_dp"
+            android:background="#77C7F0" />
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/tv_exchange_role"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_30_dp"
+            android:layout_marginTop="@dimen/view_18_dp"
+            android:gravity="center_vertical"
+            android:text="兑换汇率：100点券兑换人民币0.6元"
+            android:textColor="#7f3B4E79"
+            android:textSize="@dimen/textsize_13_dp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_56_dp"
+            android:layout_marginLeft="@dimen/view_25_dp"
+            android:layout_marginTop="@dimen/view_20_dp"
+            android:layout_marginRight="@dimen/view_16_dp"
+            android:orientation="horizontal">
+
+            <com.common.view.ex.ExTextView
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="现金："
+                android:textColor="#ff41547e"
+                android:textSize="@dimen/textsize_20_dp" />
+
+            <com.common.view.ex.NoLeakEditText
+                android:id="@+id/edit_cash_num"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/view_3_dp"
+                android:background="@null"
+                android:hint="请输入提现金额"
+                android:inputType="numberDecimal"
+                android:textColor="#0C2275"
+                android:textSize="@dimen/textsize_24_dp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_1_dp"
+            android:layout_marginLeft="@dimen/view_25_dp"
+            android:layout_marginRight="@dimen/view_25_dp"
+            android:background="#77C7F0" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/view_25_dp"
+            android:layout_marginTop="@dimen/view_10_dp"
+            android:layout_marginBottom="@dimen/view_47_dp"
+            android:orientation="horizontal">
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/tv_tip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="点券余额23.1，"
+                android:textColor="#ff3b4e79"
+                android:textSize="@dimen/textsize_12_dp"
+                android:textStyle="bold" />
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/tv_exchange_whole"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="全部兑换"
+                android:textColor="#ff7187ff"
+                android:textSize="@dimen/textsize_12_dp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <com.dialog.view.StrokeTextView
+        android:textSize="@dimen/textsize_18_dp"
+        android:textColor="@color/white"
+        android:id="@+id/iv_exchange_btn"
+        android:layout_width="@dimen/view_180_dp"
+        android:layout_height="@dimen/view_45_dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/view_20_dp"
+        app:bl_unEnabled_drawable="@drawable/chongzhijiemian_bukeyidianji"
+        app:bl_enabled_drawable="@drawable/chongzuzuanshi_anniu"
+        android:gravity="center"
+        android:paddingBottom="@dimen/view_5_dp"
+        android:text="立即兑换" />
+</LinearLayout>

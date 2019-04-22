@@ -158,6 +158,12 @@
             android:exported="true"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
+        <!-- 微信支付 -->
+        <activity
+            android:name="com.zq.live.wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop"/>
+
         <activity
             android:name="com.umeng.socialize.media.WBShareCallBackActivity"
             android:configChanges="keyboardHidden|orientation"
