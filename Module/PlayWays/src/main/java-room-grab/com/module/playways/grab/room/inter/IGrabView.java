@@ -26,7 +26,7 @@ public interface IGrabView {
      * 别人抢到了
      * 演唱阶段开始
      */
-    void singByOthers(long uid);
+    void singByOthers();
 
     /**
      * 轮次结束

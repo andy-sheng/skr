@@ -3,6 +3,7 @@ package com.module.playways.grab.room.model;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
+import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.event.GrabGiveUpInChorusEvent;
 import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent;
 import com.module.playways.grab.room.event.GrabRoundStatusChangeEvent;
@@ -208,8 +209,11 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
      * 一唱到底使用 灭灯
      */
     public boolean addLightOffUid(boolean notify, MLightInfoModel noPassingInfo) {
-        if (status == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue() && getPkSecondRoundInfoModel() != null) {
-            return getPkSecondRoundInfoModel().addLightOffUid(notify, noPassingInfo, this);
+        if (status == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue() && getsPkRoundInfoModels().size() > 1) {
+            return getsPkRoundInfoModels().get(0).addLightOffUid(notify, noPassingInfo, this);
+        }
+        if (status == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue() && getsPkRoundInfoModels().size() > 1) {
+            return getsPkRoundInfoModels().get(1).addLightOffUid(notify, noPassingInfo, this);
         }
         if (!mLightInfos.contains(noPassingInfo)) {
             mLightInfos.add(noPassingInfo);
@@ -227,8 +231,11 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
      * 一唱到底使用 爆灯
      */
     public boolean addLightBurstUid(boolean notify, BLightInfoModel bLightInfoModel) {
-        if (status == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue() && getPkSecondRoundInfoModel() != null) {
-            return getPkSecondRoundInfoModel().addLightBurstUid(notify, bLightInfoModel, this);
+        if (status == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue() && getsPkRoundInfoModels().size() > 1) {
+            return getsPkRoundInfoModels().get(0).addLightBurstUid(notify, bLightInfoModel, this);
+        }
+        if (status == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue() && getsPkRoundInfoModels().size() > 1) {
+            return getsPkRoundInfoModels().get(1).addLightBurstUid(notify, bLightInfoModel, this);
         }
         if (!bLightInfos.contains(bLightInfoModel)) {
             bLightInfos.add(bLightInfoModel);
@@ -371,29 +378,20 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         // 更新pk信息
         if (wantSingType == EWantSingType.EWST_SPK.getValue()) {
             // pk房间
-            SPkRoundInfoModel sPkRoundInfoModel = this.getPkSecondRoundInfoModel();
-            if (sPkRoundInfoModel != null) {
-                sPkRoundInfoModel.tryUpdateRoundInfoModel(roundInfo.getPkSecondRoundInfoModel());
+            if (this.getsPkRoundInfoModels().size() <= 1) {
+                // 不满足两人通知全量更新
+                this.getsPkRoundInfoModels().clear();
+                this.getsPkRoundInfoModels().addAll(roundInfo.getsPkRoundInfoModels());
             } else {
-                sPkRoundInfoModel = roundInfo.getPkSecondRoundInfoModel();
-                //TODO 发事件 通知全量更新
+                for (int i = 0; i < this.getsPkRoundInfoModels().size() && i < roundInfo.getsPkRoundInfoModels().size(); i++) {
+                    SPkRoundInfoModel sPkRoundInfoModel1 = this.getsPkRoundInfoModels().get(i);
+                    SPkRoundInfoModel sPkRoundInfoModel2 = roundInfo.getsPkRoundInfoModels().get(i);
+                    sPkRoundInfoModel1.tryUpdateRoundInfoModel(sPkRoundInfoModel2, notify, this);
+                }
             }
         }
-
         updateStatus(notify, roundInfo.getStatus());
         return;
-    }
-
-    /**
-     * 返回pk第二轮的用户信息
-     *
-     * @return
-     */
-    public SPkRoundInfoModel getPkSecondRoundInfoModel() {
-        if (this.getsPkRoundInfoModels().isEmpty()) {
-            return null;
-        }
-        return this.getsPkRoundInfoModels().get(0);
     }
 
     /**
@@ -593,11 +591,12 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
                 }
             }
         } else if (getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()) {
-            return getUserID() == MyUserInfoManager.getInstance().getUid();
+            if (getsPkRoundInfoModels().size() > 0) {
+                return getsPkRoundInfoModels().get(0).getUserID() == MyUserInfoManager.getInstance().getUid();
+            }
         } else if (getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
-            SPkRoundInfoModel pk = getPkSecondRoundInfoModel();
-            if (pk != null) {
-                return pk.getUserID() == MyUserInfoManager.getInstance().getUid();
+            if (getsPkRoundInfoModels().size() > 1) {
+                return getsPkRoundInfoModels().get(1).getUserID() == MyUserInfoManager.getInstance().getUid();
             }
         }
         return false;
@@ -616,6 +615,43 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
             return true;
         }
         return false;
+    }
+
+    /**
+     * 是否是合唱轮次
+     * @return
+     */
+    public boolean isChorusRound() {
+        return status == EQRoundStatus.QRS_CHO_SING.getValue();
+    }
+
+    /**
+     * 是否是pk轮次
+     * @return
+     */
+    public boolean isPKRound() {
+        return status == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()
+                || status == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue();
+    }
+
+    /**
+     * 返回当前演唱者的id信息
+     * @return
+     */
+    public List<Integer> getSingUserIds() {
+        List<Integer> singerUserIds = new ArrayList<>();
+        if (isPKRound()) {
+            for (SPkRoundInfoModel infoModel : getsPkRoundInfoModels()) {
+                singerUserIds.add(infoModel.getUserID());
+            }
+        } else if (isChorusRound()) {
+            for (ChorusRoundInfoModel infoModel : getChorusRoundInfoModels()) {
+                singerUserIds.add(infoModel.getUserID());
+            }
+        } else {
+            singerUserIds.add(getUserID());
+        }
+        return singerUserIds;
     }
 
     @Override

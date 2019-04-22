@@ -5,6 +5,7 @@ import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
 import com.module.playways.room.song.model.SongModel;
 import com.zq.live.proto.Room.EQRoundStatus;
+import com.zq.live.proto.Room.EWantSingType;
 import com.zq.live.proto.Room.OnlineInfo;
 import com.zq.live.proto.Room.QBLightMsg;
 import com.zq.live.proto.Room.QCHOInnerRoundInfo;
@@ -107,10 +108,27 @@ public class SPkRoundInfoModel implements Serializable {
         this.resultType = resultType;
     }
 
-    public void tryUpdateRoundInfoModel(SPkRoundInfoModel pkRoundInfoModel) {
-        if (pkRoundInfoModel == null) {
-            MyLog.d(TAG, "tryUpdateRoundInfoModel" + " pkRoundInfoModel=" + pkRoundInfoModel);
+    public void tryUpdateRoundInfoModel(SPkRoundInfoModel roundInfo, boolean notify, GrabRoundInfoModel grabRoundInfoModel) {
+        if (roundInfo == null) {
+            MyLog.d(TAG, "tryUpdateRoundInfoModel" + " pkRoundInfoModel=" + roundInfo);
             return;
+        }
+        if (roundInfo.getUserID() == userID) {
+            this.setSingBeginMs(roundInfo.getSingBeginMs());
+            this.setSingEndMs(roundInfo.getSingEndMs());
+            for (MLightInfoModel m : roundInfo.getMLightInfos()) {
+                addLightOffUid(notify, m, grabRoundInfoModel);
+            }
+            for (BLightInfoModel m : roundInfo.getbLightInfos()) {
+                addLightBurstUid(notify, m, grabRoundInfoModel);
+            }
+
+            if (roundInfo.getOverReason() > 0) {
+                this.setOverReason(roundInfo.getOverReason());
+            }
+            if (roundInfo.getResultType() > 0) {
+                this.setResultType(roundInfo.getResultType());
+            }
         }
     }
 
@@ -123,7 +141,6 @@ public class SPkRoundInfoModel implements Serializable {
             }
             return true;
         }
-
         return false;
     }
 

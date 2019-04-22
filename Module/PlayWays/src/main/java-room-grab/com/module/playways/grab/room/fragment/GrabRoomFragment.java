@@ -934,7 +934,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     public void singBySelf() {
         removeAllEnsureMsg();
         mCorePresenter.stopGuide();
-        mTopContainerView.setModeSing((int) MyUserInfoManager.getInstance().getUid());
+        mTopContainerView.setModeSing();
         mTopContainerView.setSeqIndex(RoomDataUtils.getSeqOfRoundInfo(mRoomData.getRealRoundInfo()), mRoomData.getGrabConfigModel().getTotalGameRoundSeq());
         mSongInfoCardView.hide();
 
@@ -955,11 +955,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     }
 
     @Override
-    public void singByOthers(long uid) {
+    public void singByOthers() {
         removeAllEnsureMsg();
         mTopContainerView.setVisibility(View.VISIBLE);
         mCorePresenter.stopGuide();
-        mTopContainerView.setModeSing(uid);
+        mTopContainerView.setModeSing();
         mTopContainerView.setSeqIndex(RoomDataUtils.getSeqOfRoundInfo(mRoomData.getRealRoundInfo()), mRoomData.getGrabConfigModel().getTotalGameRoundSeq());
         mSongInfoCardView.hide();
         mGrabOpBtn.hide("singByOthers");
@@ -968,7 +968,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         mSingBeginTipsCardView.setVisibility(View.VISIBLE);
 
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
-        msg.arg1 = (int) uid;
         mUiHanlder.sendMessageDelayed(msg, 2600);
 
         singBeginTipsPlay(new Runnable() {

@@ -125,9 +125,11 @@ public class NormalSelfSingCardView extends RelativeLayout {
         /**
          * pk第一轮和第二轮的演唱时间 和 歌曲截取的部位不一样
          */
-        if(infoModel.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue() && infoModel.getPkSecondRoundInfoModel()!=null){
-            totalTs = infoModel.getPkSecondRoundInfoModel().getSingEndMs() - infoModel.getPkSecondRoundInfoModel().getSingBeginMs();
-        }else{
+        if (infoModel.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue() && infoModel.getsPkRoundInfoModels().size() > 1) {
+            totalTs = infoModel.getsPkRoundInfoModels().get(1).getSingEndMs() - infoModel.getsPkRoundInfoModels().get(1).getSingBeginMs();
+        } else if (infoModel.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue() && infoModel.getsPkRoundInfoModels().size() > 0) {
+            totalTs = infoModel.getsPkRoundInfoModels().get(0).getSingEndMs() - infoModel.getsPkRoundInfoModels().get(0).getSingBeginMs();
+        } else {
             totalTs = infoModel.getSingEndMs() - infoModel.getSingBeginMs();
         }
         if (totalTs <= 0) {
@@ -155,14 +157,14 @@ public class NormalSelfSingCardView extends RelativeLayout {
             mIvTag.setBackground(U.getDrawable(R.drawable.ycdd_daojishi_qingchang));
             mLyricAndAccMatchManager.stop();
         } else {
-            if(RoomDataUtils.isPKRound(mRoomData)){
+            if (RoomDataUtils.isPKRound(mRoomData)) {
                 mIvTag.setBackground(U.getDrawable(R.drawable.ycdd_daojishi_pk));
-            }else{
+            } else {
                 mIvTag.setBackground(U.getDrawable(R.drawable.ycdd_daojishi_banzou));
             }
             SongModel curSong = mSongModel;
-            if(infoModel.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()){
-                if(mSongModel.getPkMusic()!=null){
+            if (infoModel.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
+                if (mSongModel.getPkMusic() != null) {
                     curSong = mSongModel.getPkMusic();
                 }
             }

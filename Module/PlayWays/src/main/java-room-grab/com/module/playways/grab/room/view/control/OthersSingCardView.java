@@ -65,10 +65,12 @@ public class OthersSingCardView {
                     mChorusOtherSingCardView.bindData(mRoomData, userInfoModel1, userInfoModel2);
                 }
             } else if (RoomDataUtils.isPKRound(mRoomData)) {
-                SPkRoundInfoModel sPkRoundInfoModel = grabRoundInfoModel.getPkSecondRoundInfoModel();
-                UserInfoModel userInfoModel1 = mRoomData.getUserInfo(grabRoundInfoModel.getUserID());
-                UserInfoModel userInfoModel2 = mRoomData.getUserInfo(sPkRoundInfoModel.getUserID());
-                mPKOtherSingCardView.bindData(mRoomData, userInfoModel1, userInfoModel2);
+                List<SPkRoundInfoModel> list = grabRoundInfoModel.getsPkRoundInfoModels();
+                if (list != null && list.size() >= 2) {
+                    UserInfoModel userInfoModel1 = mRoomData.getUserInfo(list.get(0).getUserID());
+                    UserInfoModel userInfoModel2 = mRoomData.getUserInfo(list.get(1).getUserID());
+                    mPKOtherSingCardView.bindData(mRoomData, userInfoModel1, userInfoModel2);
+                }
             } else {
                 int uid = grabRoundInfoModel.getUserID();
                 mNormalOthersSingCardView.bindData(mRoomData.getUserInfo(uid));

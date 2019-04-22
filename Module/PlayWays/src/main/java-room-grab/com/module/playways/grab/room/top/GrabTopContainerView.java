@@ -130,9 +130,9 @@ public class GrabTopContainerView extends RelativeLayout {
         mTopContentRv.setModeGrab();
     }
 
-    public void setModeSing(long singUid) {
+    public void setModeSing() {
         // 演唱模式
-        mTopContentRv.setModeSing((int) singUid);
+        mTopContentRv.setModeSing();
     }
 
     public void onGameFinish() {

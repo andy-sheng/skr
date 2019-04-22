@@ -64,10 +64,12 @@ public class SingBeginTipsCardView {
                     mChorusSingBeginTipsCardView.bindData(userInfoModel1, userInfoModel2, svgaListener);
                 }
             } else if (RoomDataUtils.isPKRound(mRoomData)) {
-                SPkRoundInfoModel sPkRoundInfoModel = grabRoundInfoModel.getPkSecondRoundInfoModel();
-                UserInfoModel userInfoModel1 = mRoomData.getUserInfo(grabRoundInfoModel.getUserID());
-                UserInfoModel userInfoModel2 = mRoomData.getUserInfo(sPkRoundInfoModel.getUserID());
-                mPKSingBeginTipsCardView.bindData(userInfoModel1, userInfoModel2, svgaListener);
+                List<SPkRoundInfoModel> list = grabRoundInfoModel.getsPkRoundInfoModels();
+                if (list != null && list.size() >= 2) {
+                    UserInfoModel userInfoModel1 = mRoomData.getUserInfo(list.get(0).getUserID());
+                    UserInfoModel userInfoModel2 = mRoomData.getUserInfo(list.get(1).getUserID());
+                    mPKSingBeginTipsCardView.bindData(userInfoModel1, userInfoModel2,svgaListener);
+                }
             } else {
                 mNormalSingBeginTipsCardView.bindData(mRoomData.getUserInfo(grabRoundInfoModel.getUserID()), grabRoundInfoModel.getMusic(), svgaListener, grabRoundInfoModel.isChallengeRound());
             }

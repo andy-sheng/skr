@@ -300,7 +300,7 @@ public class RoomDataUtils {
         if (roomData != null) {
             GrabRoundInfoModel infoModel = roomData.getRealRoundInfo();
             if (infoModel != null) {
-                return infoModel.getStatus() == EQRoundStatus.QRS_CHO_SING.getValue();
+                return infoModel.isChorusRound();
             }
         }
         return false;
@@ -310,8 +310,7 @@ public class RoomDataUtils {
         if (roomData != null) {
             GrabRoundInfoModel infoModel = roomData.getRealRoundInfo();
             if (infoModel != null) {
-                return infoModel.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()
-                        || infoModel.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue();
+                return infoModel.isPKRound();
             }
         }
         return false;

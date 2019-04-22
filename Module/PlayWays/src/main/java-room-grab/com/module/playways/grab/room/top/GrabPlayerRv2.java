@@ -17,11 +17,14 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.engine.EngineEvent;
+import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent;
 import com.module.playways.grab.room.event.LightOffAnimationOverEvent;
+import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.MLightInfoModel;
+import com.module.playways.grab.room.model.SPkRoundInfoModel;
 import com.module.playways.grab.room.model.WantSingerInfo;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.room.prepare.model.PlayerInfoModel;
@@ -145,12 +148,18 @@ public class GrabPlayerRv2 extends RelativeLayout {
                 GrabPlayerInfoModel playerInfoModel = playerInfoModels.get(i);
                 mInfoMap.put(playerInfoModel.getUserID(), vp);
                 vp.grabTopItemView.bindData(playerInfoModel, mRoomData.getOwnerId() == playerInfoModel.getUserID());
-                //TODO 顶部动画统一修改
-                if(playerInfoModels.get(i).getUserID() == now.getUserID()
-                        && now.getStatus() == EQRoundStatus.QRS_SING.getValue()){
-                    LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) vp.grabTopItemView.getLayoutParams();
-                    lp.weight = 0;
-                    vp.grabTopItemView.setLayoutParams(lp);
+                for (int userId : now.getSingUserIds()) {
+                    if(userId==playerInfoModel.getUserID() && now.isSingStatus()){
+                        if (vp.grabTopItemView != null) {
+                            vp.grabTopItemView.setGetSingChance();
+                        }
+                        GrabTopItemView finalGrabTopItemView = vp.grabTopItemView;
+                        finalGrabTopItemView.mCircleAnimationView.setVisibility(VISIBLE);
+                        finalGrabTopItemView.mCircleAnimationView.setProgress(100);
+                        vp.grabTopItemView.mAvatarIv.setScaleX(1.08f);
+                        vp.grabTopItemView.mAvatarIv.setScaleY(1.08f);
+                        vp.grabTopItemView.setGrap(now.getWantSingType());
+                    }
                 }
             }
 
@@ -182,9 +191,9 @@ public class GrabPlayerRv2 extends RelativeLayout {
     }
 
     //刚进来的时候初始化灯
-    private void initLight(){
+    private void initLight() {
         Iterator<Map.Entry<Integer, VP>> iterator = mInfoMap.entrySet().iterator();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             iterator.next().getValue().grabTopItemView.setLight(true);
         }
     }
@@ -225,163 +234,135 @@ public class GrabPlayerRv2 extends RelativeLayout {
         mContentLl.setLayoutParams(lp);
     }
 
-    public void setModeSing(int singUid) {
-        MyLog.d(TAG, "setModeSing" + " singUid=" + singUid);
-        VP vp = mInfoMap.get(singUid);
-        if (vp == null) {
-            MyLog.d(TAG, "没有在选手席位找到 id=" + singUid + " 相应ui，return");
-            return;
-        }
+    public void setModeSing() {
+        MyLog.d(TAG, "setModeSing");
         GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
         if (now == null) {
             return;
         }
-        if (!now.isParticipant() && now.getEnterStatus() == EQRoundStatus.QRS_SING.getValue()) {
+
+        List<Integer> singerUserIds = now.getSingUserIds();
+
+        if (!now.isParticipant() && now.getEnterStatus() == now.getStatus()) {
             // 如果是演唱阶段进来的参与者
-            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) vp.grabTopItemView.getLayoutParams();
-            lp.weight = 0;
-            vp.grabTopItemView.setLayoutParams(lp);
             syncLight();
+            for (int userId : singerUserIds) {
+                VP vp = mInfoMap.get(userId);
+                if (vp == null) {
+                    MyLog.d(TAG, "没有在选手席位找到 id=" + userId + " 相应ui，return");
+                    continue;
+                }
+                if (vp.grabTopItemView != null) {
+                    vp.grabTopItemView.setGetSingChance();
+                }
+                GrabTopItemView finalGrabTopItemView = vp.grabTopItemView;
+                finalGrabTopItemView.mCircleAnimationView.setVisibility(VISIBLE);
+                finalGrabTopItemView.mCircleAnimationView.setProgress(100);
+                vp.grabTopItemView.mAvatarIv.setScaleX(1.08f);
+                vp.grabTopItemView.mAvatarIv.setScaleY(1.08f);
+                vp.grabTopItemView.setGrap(now.getWantSingType());
+            }
             EventBus.getDefault().post(new LightOffAnimationOverEvent());
             return;
         }
 
-        if (vp.grabTopItemView != null) {
-            vp.grabTopItemView.setGetSingChance();
-        }
-
         List<Animator> allAnimator = new ArrayList<>();
-        GrabTopItemView finalGrabTopItemView = vp.grabTopItemView;
+        List<Animator> animatorSet123s = new ArrayList<>();
+        for (int userId : singerUserIds) {
+            VP vp = mInfoMap.get(userId);
+            if (vp == null) {
+                MyLog.d(TAG, "没有在选手席位找到 id=" + userId + " 相应ui，return");
+                continue;
+            }
+            if (vp.grabTopItemView != null) {
+                vp.grabTopItemView.setGetSingChance();
+            }
+            GrabTopItemView finalGrabTopItemView = vp.grabTopItemView;
+            {
+                // 这是圈圈动画
+                ValueAnimator objectAnimator1 = new ValueAnimator();
+                objectAnimator1.setIntValues(0, 100);
+                objectAnimator1.setDuration(495);
+                objectAnimator1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        int p = (int) animation.getAnimatedValue();
+                        finalGrabTopItemView.mCircleAnimationView.setProgress(p);
+                    }
+                });
+                objectAnimator1.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+                        super.onAnimationStart(animation);
+                        finalGrabTopItemView.mCircleAnimationView.setVisibility(VISIBLE);
+                    }
 
-        {
-            // 这是圈圈动画
-            ValueAnimator objectAnimator1 = new ValueAnimator();
-            objectAnimator1.setIntValues(0, 100);
-            objectAnimator1.setDuration(495);
-            objectAnimator1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    int p = (int) animation.getAnimatedValue();
-                    finalGrabTopItemView.mCircleAnimationView.setProgress(p);
-                }
-            });
-            objectAnimator1.addListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationStart(Animator animation) {
-                    super.onAnimationStart(animation);
-                    finalGrabTopItemView.mCircleAnimationView.setVisibility(VISIBLE);
-                }
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+                        super.onAnimationCancel(animation);
+                        finalGrabTopItemView.mCircleAnimationView.setVisibility(GONE);
+                    }
+                });
 
-                @Override
-                public void onAnimationCancel(Animator animation) {
-                    super.onAnimationCancel(animation);
-                    finalGrabTopItemView.mCircleAnimationView.setVisibility(GONE);
-                }
-            });
+                // 接下来是头像放大一点的动画
+                ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(vp.grabTopItemView.mAvatarIv, View.SCALE_X, 1, 1.08f);
+                ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(vp.grabTopItemView.mAvatarIv, View.SCALE_Y, 1, 1.08f);
+                AnimatorSet animatorSet23 = new AnimatorSet();
+                animatorSet23.playTogether(objectAnimator2, objectAnimator3);
+                animatorSet23.setDuration(4 * 33);
 
-            // 接下来是头像放大一点的动画
-            ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(vp.grabTopItemView.mAvatarIv, View.SCALE_X, 1, 1.08f);
-            ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(vp.grabTopItemView.mAvatarIv, View.SCALE_Y, 1, 1.08f);
-            AnimatorSet animatorSet23 = new AnimatorSet();
-            animatorSet23.playTogether(objectAnimator2, objectAnimator3);
-            animatorSet23.setDuration(4 * 33);
-
-            AnimatorSet animatorSet123 = new AnimatorSet();
-            animatorSet123.playTogether(objectAnimator1, animatorSet23);
-            allAnimator.add(animatorSet123);
+                AnimatorSet animatorSet123 = new AnimatorSet();
+                animatorSet123.playTogether(objectAnimator1, animatorSet23);
+                animatorSet123s.add(animatorSet123);
+            }
         }
+        AnimatorSet animatorSet123ss = new AnimatorSet();
+        animatorSet123ss.playTogether(animatorSet123s);
+        allAnimator.add(animatorSet123ss);
         // 等待47个节拍
-        {
-            // 放大透明度消失
-            ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(vp.grabTopItemView, View.ALPHA, 1, 0);
-            ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(vp.grabTopItemView.mAvatarIv, View.SCALE_X, 1.0f, 1.08f);
-            ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(vp.grabTopItemView.mAvatarIv, View.SCALE_Y, 1.0f, 1.08f);
-
-            ValueAnimator objectAnimator4 = new ValueAnimator();
-            objectAnimator4.setFloatValues(1, 0);
-            objectAnimator4.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    float weight = (float) animation.getAnimatedValue();
-                    LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) finalGrabTopItemView.getLayoutParams();
-                    lp.weight = weight;
-                    finalGrabTopItemView.setLayoutParams(lp);
-
-                    RelativeLayout.LayoutParams lp2 = (LayoutParams) mContentLl.getLayoutParams();
-                    int t = (int) (U.getDisplayUtils().dip2px(15) * weight);
-                    lp2.leftMargin = U.getDisplayUtils().dip2px(30) - t;
-                    lp2.rightMargin = U.getDisplayUtils().dip2px(30) - t;
-                    mContentLl.setLayoutParams(lp2);
-                }
-            });
-            AnimatorSet animatorSet1234 = new AnimatorSet();
-            animatorSet1234.playTogether(objectAnimator1, objectAnimator2, objectAnimator3, objectAnimator4);
-            animatorSet1234.setDuration(9 * 33);
-            animatorSet1234.setStartDelay(47 * 33);
-            allAnimator.add(animatorSet1234);
-        }
-
-//        {
-//            // 耳机的出现
-//            ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(mErjiIv, View.TRANSLATION_Y, -U.getDisplayUtils().dip2px(100), 0);
-//            objectAnimator1.addListener(new AnimatorListenerAdapter() {
-//                @Override
-//                public void onAnimationStart(Animator animation) {
-//                    super.onAnimationStart(animation);
-//                    mErjiIv.setVisibility(VISIBLE);
-//                }
-//            });
-//            objectAnimator1.setDuration(14 * 33);
+//            {
+//                // 放大透明度消失
+//                ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(vp.grabTopItemView, View.ALPHA, 1, 0);
+//                ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(vp.grabTopItemView.mAvatarIv, View.SCALE_X, 1.0f, 1.08f);
+//                ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(vp.grabTopItemView.mAvatarIv, View.SCALE_Y, 1.0f, 1.08f);
 //
-//            List<Animator> mieDengList = new ArrayList<>();
-//            mieDengList.add(objectAnimator1);
-//            int i = 0;
-//            // 灯的出现，以灭灯的形式出现
-//            for (int uId : mInfoMap.keySet()) {
-//                if (uId == singUid) {
-//                    continue;
-//                }
-//                VP vp1 = mInfoMap.get(uId);
-//                GrabTopItemView itemView = vp1.grabTopItemView;
-//                if (!itemView.getPlayerInfoModel().isOnline()) {
-//                    continue;
-//                }
-//                ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(itemView.mFlagIv, View.SCALE_X, 1, 2);
-//                ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(itemView.mFlagIv, View.SCALE_Y, 1, 2);
-//                ObjectAnimator objectAnimator4 = ObjectAnimator.ofFloat(itemView.mFlagIv, View.ALPHA, 0, 1);
-//                ObjectAnimator objectAnimator5 = ObjectAnimator.ofFloat(itemView.mFlagIv, View.TRANSLATION_Y, U.getDisplayUtils().dip2px(100), 0);
-//                AnimatorSet animatorSet2345 = new AnimatorSet();
-//                animatorSet2345.playTogether(objectAnimator2, objectAnimator3, objectAnimator4, objectAnimator5);
-//                animatorSet2345.setDuration(7 * 33);
-//
-//                ObjectAnimator objectAnimator6 = ObjectAnimator.ofFloat(itemView.mFlagIv, View.SCALE_X, 2, 1);
-//                ObjectAnimator objectAnimator7 = ObjectAnimator.ofFloat(itemView.mFlagIv, View.SCALE_Y, 2, 1);
-//                AnimatorSet animatorSet67 = new AnimatorSet();
-//                animatorSet67.playTogether(objectAnimator6, objectAnimator7);
-//                animatorSet67.setDuration(3 * 33);
-//                AnimatorSet animatorSet234567 = new AnimatorSet();
-//                animatorSet234567.playSequentially(animatorSet2345, animatorSet67);
-//                animatorSet234567.setStartDelay(i * 4 * 33);
-//                animatorSet234567.addListener(new AnimatorListenerAdapter() {
+//                ValueAnimator objectAnimator4 = new ValueAnimator();
+//                objectAnimator4.setFloatValues(1, 0);
+//                objectAnimator4.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 //                    @Override
-//                    public void onAnimationStart(Animator animation) {
-//                        super.onAnimationStart(animation);
-//                        itemView.setLight(false);
+//                    public void onAnimationUpdate(ValueAnimator animation) {
+//                        float weight = (float) animation.getAnimatedValue();
+//                        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) finalGrabTopItemView.getLayoutParams();
+//                        lp.weight = weight;
+//                        finalGrabTopItemView.setLayoutParams(lp);
+//
+//                        RelativeLayout.LayoutParams lp2 = (LayoutParams) mContentLl.getLayoutParams();
+//                        int t = (int) (U.getDisplayUtils().dip2px(15) * weight);
+//                        lp2.leftMargin = U.getDisplayUtils().dip2px(30) - t;
+//                        lp2.rightMargin = U.getDisplayUtils().dip2px(30) - t;
+//                        mContentLl.setLayoutParams(lp2);
 //                    }
 //                });
-//                mieDengList.add(animatorSet234567);
-//                i++;
+//                AnimatorSet animatorSet1234 = new AnimatorSet();
+//                animatorSet1234.playTogether(objectAnimator1, objectAnimator2, objectAnimator3, objectAnimator4);
+//                animatorSet1234.setDuration(9 * 33);
+//                animatorSet1234.setStartDelay(47 * 33);
+//                allAnimator.add(animatorSet1234);
 //            }
-//            AnimatorSet animatorSet1_234567s = new AnimatorSet();
-//            animatorSet1_234567s.playTogether(mieDengList);
-//            allAnimator.add(animatorSet1_234567s);
-//        }
-        // 等 125 个节拍
+
+        // 等 125 个节拍 把灯变亮
         {
             List<Animator> liangdengList = new ArrayList<>();
             int i = 0;
             for (int uId : mInfoMap.keySet()) {
-                if (uId == singUid) {
+                boolean filter = false;
+                for (int uid2 : singerUserIds) {
+                    if (uId == uid2) {
+                        filter = true;
+                        continue;
+                    }
+                }
+                if (filter) {
                     continue;
                 }
 
@@ -430,6 +411,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
             animatorSet1s.setStartDelay(20 * 33);
             allAnimator.add(animatorSet1s);
         }
+
 
         if (mAnimatorAllSet != null) {
             mAnimatorAllSet.cancel();
@@ -533,7 +515,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
 
         SvgaParserAdapter.parse("grab_miedeng.svga", new SVGAParser.ParseCompletion() {
             @Override
-            public void onComplete( SVGAVideoEntity svgaVideoEntity) {
+            public void onComplete(SVGAVideoEntity svgaVideoEntity) {
                 SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
                 mMieDengIv.setVisibility(VISIBLE);
                 mMieDengIv.stopAnimation(true);
@@ -583,12 +565,12 @@ public class GrabPlayerRv2 extends RelativeLayout {
         /**
          * 提示说话声纹
          */
-        if(event.getType() == EngineEvent.TYPE_USER_AUDIO_VOLUME_INDICATION){
+        if (event.getType() == EngineEvent.TYPE_USER_AUDIO_VOLUME_INDICATION) {
             List<EngineEvent.UserVolumeInfo> list = event.getObj();
-            for(EngineEvent.UserVolumeInfo uv :list){
+            for (EngineEvent.UserVolumeInfo uv : list) {
                 //MyLog.d(TAG,"UserVolumeInfo uv=" + uv);
                 int uid = uv.getUid();
-                if(uid==0){
+                if (uid == 0) {
                     uid = (int) MyUserInfoManager.getInstance().getUid();
                 }
                 VP vp = mInfoMap.get(uid);

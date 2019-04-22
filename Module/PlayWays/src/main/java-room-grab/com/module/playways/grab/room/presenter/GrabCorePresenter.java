@@ -391,12 +391,12 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     void preOpWhenSelfRound() {
         GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
         boolean needAcc = false;
-        if(now!=null){
-            if(now.getWantSingType() == EWantSingType.EWST_SPK.getValue()){
+        if (now != null) {
+            if (now.getWantSingType() == EWantSingType.EWST_SPK.getValue()) {
                 needAcc = true;
-            }else if(now.getWantSingType() == EWantSingType.EWST_CHORUS.getValue()){
+            } else if (now.getWantSingType() == EWantSingType.EWST_CHORUS.getValue()) {
                 needAcc = false;
-            }else if(mRoomData.isAccEnable()){
+            } else if (mRoomData.isAccEnable()) {
                 needAcc = true;
             }
         }
@@ -518,9 +518,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
         int wantSingType;
         // 根据玩法决定抢唱类型
-        if (songModel.getPlayType() == StandPlayType.PT_SPK_TYPE.getValue()) {
+        if (songModel != null && songModel.getPlayType() == StandPlayType.PT_SPK_TYPE.getValue()) {
             wantSingType = EWantSingType.EWST_SPK.getValue();
-        } else if (songModel.getPlayType() == StandPlayType.PT_CHO_TYPE.getValue()) {
+        } else if (songModel != null && songModel.getPlayType() == StandPlayType.PT_CHO_TYPE.getValue()) {
             wantSingType = EWantSingType.EWST_CHORUS.getValue();
         } else {
             if (challenge) {
@@ -1407,7 +1407,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 mUiHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        mIGrabView.singByOthers(now.getUserID());
+                        mIGrabView.singByOthers();
                     }
                 });
                 checkMachineUser(now.getUserID());
@@ -1472,7 +1472,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 mUiHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        mIGrabView.singByOthers(now.getUserID());
+                        mIGrabView.singByOthers();
                     }
                 });
                 checkMachineUser(now.getUserID());
@@ -1831,14 +1831,13 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     /**
      * 合唱某人放弃了演唱
-     *
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QChoGiveUpEvent event) {
-        MyLog.d(TAG,"onEvent" + " event=" + event);
+        MyLog.d(TAG, "onEvent" + " event=" + event);
         GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
-        if(now!=null){
-            if(now.getRoundSeq() == event.roundSeq){
+        if (now != null) {
+            if (now.getRoundSeq() == event.roundSeq) {
                 now.giveUpInChorus(event.userID);
             }
         }
@@ -1846,15 +1845,14 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     /**
      * 合唱某人放弃了演唱
-     *
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QPkInnerRoundOverEvent event) {
-        MyLog.d(TAG,"onEvent" + " event=" + event);
-        if(RoomDataUtils.isCurrentRunningRound(event.mRoundInfoModel.getRoundSeq(),mRoomData)){
+        MyLog.d(TAG, "onEvent" + " event=" + event);
+        if (RoomDataUtils.isCurrentRunningRound(event.mRoundInfoModel.getRoundSeq(), mRoomData)) {
             GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
-            if(now!=null){
-                now.tryUpdateRoundInfoModel(event.mRoundInfoModel,true);
+            if (now != null) {
+                now.tryUpdateRoundInfoModel(event.mRoundInfoModel, true);
             }
         }
     }
