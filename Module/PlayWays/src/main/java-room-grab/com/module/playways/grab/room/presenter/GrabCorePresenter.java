@@ -951,8 +951,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", mRoomData.getGameId());
         map.put("roundSeq", now.getRoundSeq());
-        if(now.getMusic()!=null){
-            map.put("playType",now.getMusic().getPlayType());
+        if (now.getMusic() != null) {
+            map.put("playType", now.getMusic().getPlayType());
         }
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.giveUpSing(body), new ApiObserver<ApiResult>() {
@@ -960,6 +960,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     mIGrabView.giveUpSuccess(now.getRoundSeq());
+                    closeEngine();
                     MyLog.w(TAG, "放弃演唱上报成功 traceid is " + result.getTraceId());
                 } else {
                     MyLog.w(TAG, "放弃演唱上报失败 traceid is " + result.getTraceId());

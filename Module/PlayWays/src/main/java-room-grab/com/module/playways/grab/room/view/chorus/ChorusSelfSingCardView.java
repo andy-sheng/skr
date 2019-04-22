@@ -90,7 +90,7 @@ public class ChorusSelfSingCardView extends RelativeLayout {
         mLyricRecycleView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         mChorusSelfLyricAdapter = new ChorusSelfLyricAdapter(mLeft, mRight);
         mLyricRecycleView.setAdapter(mChorusSelfLyricAdapter);
-        if(!EventBus.getDefault().isRegistered(this)) {
+        if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
     }
@@ -197,10 +197,21 @@ public class ChorusSelfSingCardView extends RelativeLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabGiveUpInChorusEvent event) {
-        if (mLeft.mChorusRoundInfoModel != null && event.mChorusRoundInfoModel.getUserID() == mLeft.mChorusRoundInfoModel.getUserID()) {
+        if (getVisibility() == GONE) {
+            return;
+        }
+        if (mLeft.mChorusRoundInfoModel != null) {
+            if (event.mChorusRoundInfoModel.getUserID() == mLeft.mChorusRoundInfoModel.getUserID()) {
+                mLeft.mChorusRoundInfoModel = event.mChorusRoundInfoModel;
+            }
+        } else {
             mLeft.mChorusRoundInfoModel = event.mChorusRoundInfoModel;
         }
-        if (mRight.mChorusRoundInfoModel != null && event.mChorusRoundInfoModel.getUserID() == mRight.mChorusRoundInfoModel.getUserID()) {
+        if (mRight.mChorusRoundInfoModel != null) {
+            if (event.mChorusRoundInfoModel.getUserID() == mRight.mChorusRoundInfoModel.getUserID()) {
+                mRight.mChorusRoundInfoModel = event.mChorusRoundInfoModel;
+            }
+        } else {
             mRight.mChorusRoundInfoModel = event.mChorusRoundInfoModel;
         }
         mChorusSelfLyricAdapter.computeFlag();
