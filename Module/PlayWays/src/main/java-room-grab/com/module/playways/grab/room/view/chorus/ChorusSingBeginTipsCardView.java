@@ -142,7 +142,7 @@ public class ChorusSingBeginTipsCardView extends RelativeLayout {
             TextPaint leftPaint = new TextPaint();
             leftPaint.setColor(U.getColor(R.color.black_trans_60));
             leftPaint.setAntiAlias(true);
-            leftPaint.setTextSize(U.getDisplayUtils().dip2px(18));
+            leftPaint.setTextSize(U.getDisplayUtils().dip2px(14));
             String text = left.getNickname();
             dynamicEntity.setDynamicText(text, leftPaint, "text_441");
         }
@@ -170,7 +170,7 @@ public class ChorusSingBeginTipsCardView extends RelativeLayout {
             TextPaint rightPaint = new TextPaint();
             rightPaint.setColor(U.getColor(R.color.black_trans_60));
             rightPaint.setAntiAlias(true);
-            rightPaint.setTextSize(U.getDisplayUtils().dip2px(18));
+            rightPaint.setTextSize(U.getDisplayUtils().dip2px(14));
             String text = right.getNickname();
             dynamicEntity.setDynamicText(text, rightPaint, "text_442");
         }
