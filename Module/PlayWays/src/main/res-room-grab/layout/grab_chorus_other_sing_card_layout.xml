@@ -7,6 +7,36 @@
     android:layout_height="wrap_content"
     tools:parentTag="android.widget.RelativeLayout">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_194_dp"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginTop="@dimen/view_125_dp"
+        android:layout_marginRight="@dimen/view_16_dp"
+        android:background="@drawable/grab_chorus_bg" />
+
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/left_sing_svga"
+        android:layout_width="@dimen/view_360_dp"
+        android:layout_height="@dimen/view_360_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_22_dp"
+        android:visibility="gone"
+        app:antiAlias="true"
+        app:autoPlay="false"
+        app:loopCount="0" />
+
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/right_sing_svga"
+        android:layout_width="@dimen/view_360_dp"
+        android:layout_height="@dimen/view_360_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_22_dp"
+        android:visibility="gone"
+        app:antiAlias="true"
+        app:autoPlay="false"
+        app:loopCount="0" />
+
     <LinearLayout
         android:id="@+id/chorus_other_area"
         android:layout_width="match_parent"
@@ -14,7 +44,6 @@
         android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginTop="@dimen/view_125_dp"
         android:layout_marginRight="@dimen/view_16_dp"
-        android:background="@drawable/grab_chorus_bg"
         android:orientation="horizontal">
 
         <RelativeLayout
@@ -33,15 +62,15 @@
                 android:id="@+id/left_name"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/view_24_dp"
-                android:layout_centerHorizontal="true"
                 android:layout_below="@id/left_iv"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_24_dp"
                 android:ellipsize="end"
                 android:gravity="center"
                 android:maxLines="1"
                 android:paddingLeft="@dimen/view_10_dp"
                 android:paddingRight="@dimen/view_10_dp"
                 android:singleLine="true"
-                android:layout_marginTop="@dimen/view_24_dp"
                 android:textColor="@color/white_trans_80"
                 android:textSize="@dimen/textsize_14_dp"
                 app:bl_corners_radius="@dimen/view_12_dp"
@@ -65,15 +94,15 @@
                 android:id="@+id/right_name"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/view_24_dp"
-                android:layout_centerHorizontal="true"
                 android:layout_below="@id/right_iv"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_24_dp"
                 android:ellipsize="end"
                 android:gravity="center"
                 android:maxLines="1"
                 android:paddingLeft="@dimen/view_10_dp"
                 android:paddingRight="@dimen/view_10_dp"
                 android:singleLine="true"
-                android:layout_marginTop="@dimen/view_24_dp"
                 android:textColor="@color/white_trans_80"
                 android:textSize="@dimen/textsize_14_dp"
                 app:bl_corners_radius="@dimen/view_12_dp"
