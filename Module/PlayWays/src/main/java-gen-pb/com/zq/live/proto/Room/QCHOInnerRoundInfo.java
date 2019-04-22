@@ -27,6 +27,8 @@ public final class QCHOInnerRoundInfo extends Message<QCHOInnerRoundInfo, QCHOIn
 
   public static final Boolean DEFAULT_HASGIVEUP = false;
 
+  public static final Boolean DEFAULT_HASEXIT = false;
+
   /**
    * 抢唱成功的玩家id
    */
@@ -45,14 +47,25 @@ public final class QCHOInnerRoundInfo extends Message<QCHOInnerRoundInfo, QCHOIn
   )
   private final Boolean hasGiveUp;
 
-  public QCHOInnerRoundInfo(Integer userID, Boolean hasGiveUp) {
-    this(userID, hasGiveUp, ByteString.EMPTY);
+  /**
+   * 是否已经退出
+   */
+  @WireField(
+      tag = 3,
+      adapter = "com.squareup.wire.ProtoAdapter#BOOL"
+  )
+  private final Boolean hasExit;
+
+  public QCHOInnerRoundInfo(Integer userID, Boolean hasGiveUp, Boolean hasExit) {
+    this(userID, hasGiveUp, hasExit, ByteString.EMPTY);
   }
 
-  public QCHOInnerRoundInfo(Integer userID, Boolean hasGiveUp, ByteString unknownFields) {
+  public QCHOInnerRoundInfo(Integer userID, Boolean hasGiveUp, Boolean hasExit,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
     this.hasGiveUp = hasGiveUp;
+    this.hasExit = hasExit;
   }
 
   @Override
@@ -60,6 +73,7 @@ public final class QCHOInnerRoundInfo extends Message<QCHOInnerRoundInfo, QCHOIn
     Builder builder = new Builder();
     builder.userID = userID;
     builder.hasGiveUp = hasGiveUp;
+    builder.hasExit = hasExit;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -71,7 +85,8 @@ public final class QCHOInnerRoundInfo extends Message<QCHOInnerRoundInfo, QCHOIn
     QCHOInnerRoundInfo o = (QCHOInnerRoundInfo) other;
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(userID, o.userID)
-        && Internal.equals(hasGiveUp, o.hasGiveUp);
+        && Internal.equals(hasGiveUp, o.hasGiveUp)
+        && Internal.equals(hasExit, o.hasExit);
   }
 
   @Override
@@ -81,6 +96,7 @@ public final class QCHOInnerRoundInfo extends Message<QCHOInnerRoundInfo, QCHOIn
       result = unknownFields().hashCode();
       result = result * 37 + (userID != null ? userID.hashCode() : 0);
       result = result * 37 + (hasGiveUp != null ? hasGiveUp.hashCode() : 0);
+      result = result * 37 + (hasExit != null ? hasExit.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -91,6 +107,7 @@ public final class QCHOInnerRoundInfo extends Message<QCHOInnerRoundInfo, QCHOIn
     StringBuilder builder = new StringBuilder();
     if (userID != null) builder.append(", userID=").append(userID);
     if (hasGiveUp != null) builder.append(", hasGiveUp=").append(hasGiveUp);
+    if (hasExit != null) builder.append(", hasExit=").append(hasExit);
     return builder.replace(0, 2, "QCHOInnerRoundInfo{").append('}').toString();
   }
 
@@ -125,6 +142,16 @@ public final class QCHOInnerRoundInfo extends Message<QCHOInnerRoundInfo, QCHOIn
   }
 
   /**
+   * 是否已经退出
+   */
+  public Boolean getHasExit() {
+    if(hasExit==null){
+        return DEFAULT_HASEXIT;
+    }
+    return hasExit;
+  }
+
+  /**
    * 抢唱成功的玩家id
    */
   public boolean hasUserID() {
@@ -138,10 +165,19 @@ public final class QCHOInnerRoundInfo extends Message<QCHOInnerRoundInfo, QCHOIn
     return hasGiveUp!=null;
   }
 
+  /**
+   * 是否已经退出
+   */
+  public boolean hasHasExit() {
+    return hasExit!=null;
+  }
+
   public static final class Builder extends Message.Builder<QCHOInnerRoundInfo, Builder> {
     private Integer userID;
 
     private Boolean hasGiveUp;
+
+    private Boolean hasExit;
 
     public Builder() {
     }
@@ -162,9 +198,17 @@ public final class QCHOInnerRoundInfo extends Message<QCHOInnerRoundInfo, QCHOIn
       return this;
     }
 
+    /**
+     * 是否已经退出
+     */
+    public Builder setHasExit(Boolean hasExit) {
+      this.hasExit = hasExit;
+      return this;
+    }
+
     @Override
     public QCHOInnerRoundInfo build() {
-      return new QCHOInnerRoundInfo(userID, hasGiveUp, super.buildUnknownFields());
+      return new QCHOInnerRoundInfo(userID, hasGiveUp, hasExit, super.buildUnknownFields());
     }
   }
 
@@ -177,6 +221,7 @@ public final class QCHOInnerRoundInfo extends Message<QCHOInnerRoundInfo, QCHOIn
     public int encodedSize(QCHOInnerRoundInfo value) {
       return ProtoAdapter.UINT32.encodedSizeWithTag(1, value.userID)
           + ProtoAdapter.BOOL.encodedSizeWithTag(2, value.hasGiveUp)
+          + ProtoAdapter.BOOL.encodedSizeWithTag(3, value.hasExit)
           + value.unknownFields().size();
     }
 
@@ -184,6 +229,7 @@ public final class QCHOInnerRoundInfo extends Message<QCHOInnerRoundInfo, QCHOIn
     public void encode(ProtoWriter writer, QCHOInnerRoundInfo value) throws IOException {
       ProtoAdapter.UINT32.encodeWithTag(writer, 1, value.userID);
       ProtoAdapter.BOOL.encodeWithTag(writer, 2, value.hasGiveUp);
+      ProtoAdapter.BOOL.encodeWithTag(writer, 3, value.hasExit);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -195,6 +241,7 @@ public final class QCHOInnerRoundInfo extends Message<QCHOInnerRoundInfo, QCHOIn
         switch (tag) {
           case 1: builder.setUserID(ProtoAdapter.UINT32.decode(reader)); break;
           case 2: builder.setHasGiveUp(ProtoAdapter.BOOL.decode(reader)); break;
+          case 3: builder.setHasExit(ProtoAdapter.BOOL.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

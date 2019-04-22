@@ -63,6 +63,7 @@ message RoomMsg {
     QCHOGiveUpMsg qCHOGiveUpMsg = 131; //一唱到底：合唱模式放弃演唱
     QSPKInnerRoundOverMsg qSPKInnerRoundOverMsg = 132; //一唱到底：spk模式内部轮次结束
     QChangeRoomName qChangeRoomName = 133; //一唱到底：房主修改房间名称
+
 }
 
 // ERoomMsgType 房间消息类型
@@ -268,6 +269,9 @@ enum EQRoundOverReason {
     ROR_IN_ROUND_PLAYER_EXIT = 3; //当前玩家退出
     ROR_MULTI_NO_PASS = 4; //多人灭灯
     ROR_SELF_GIVE_UP = 5; //自己放弃演唱
+    ROR_CHO_SUCCESS          = 6; //合唱成功
+    ROR_CHO_FAILED           = 7; //合唱失败
+    ROR_CHO_NOT_ENOUTH_PLAYER = 8; //合唱人数不够
 }
 
 message QResultInfo {
@@ -597,6 +601,7 @@ message QRoundInfo {
 message QCHOInnerRoundInfo {
     uint32 userID = 1; //抢唱成功的玩家id
     bool hasGiveUp = 2; //是否已经放弃
+    bool hasExit   = 3; //是否已经退出
 }
 
 message QSPKInnerRoundInfo {
