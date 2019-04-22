@@ -189,19 +189,7 @@ public class PKOthersSingCardView extends RelativeLayout {
         if (infoModel == null) {
             return;
         }
-        int totalMs = infoModel.getSingEndMs() - infoModel.getSingBeginMs();
-        if (totalMs <= 0) {
-            MyLog.d(TAG, "playLyric" + " totalTs时间不合法,做矫正, infoModel=" + infoModel);
-            if (infoModel.getWantSingType() == 0) {
-                totalMs = 20 * 1000;
-            } else if (infoModel.getWantSingType() == 1) {
-                totalMs = 30 * 1000;
-            } else if (infoModel.getWantSingType() == 2) {
-                totalMs = 40 * 1000;
-            } else if (infoModel.getWantSingType() == 3) {
-                totalMs = 50 * 1000;
-            }
-        }
+        int totalMs = infoModel.getSingTotalMs();
         if (mCountDownStatus == COUNT_DOWN_STATUS_WAIT) {
             MyLog.d(TAG, "countDown mCountDownStatus == COUNT_DOWN_STATUS_WAIT");
             if (mCanStartFlag) {
