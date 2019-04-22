@@ -944,20 +944,22 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         MyLog.w(TAG, "我放弃演唱");
         estimateOverTsThisRound();
 
-        GrabRoundInfoModel roundInfoModel = mRoomData.getRealRoundInfo();
-        if (roundInfoModel == null || !roundInfoModel.singBySelfNow()) {
+        GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
+        if (now == null || !now.singBySelfNow()) {
             return;
         }
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", mRoomData.getGameId());
-        map.put("roundSeq", roundInfoModel.getRoundSeq());
-
+        map.put("roundSeq", now.getRoundSeq());
+        if(now.getMusic()!=null){
+            map.put("playType",now.getMusic().getPlayType());
+        }
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.giveUpSing(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
-                    mIGrabView.giveUpSuccess(roundInfoModel.getRoundSeq());
+                    mIGrabView.giveUpSuccess(now.getRoundSeq());
                     MyLog.w(TAG, "放弃演唱上报成功 traceid is " + result.getTraceId());
                 } else {
                     MyLog.w(TAG, "放弃演唱上报失败 traceid is " + result.getTraceId());

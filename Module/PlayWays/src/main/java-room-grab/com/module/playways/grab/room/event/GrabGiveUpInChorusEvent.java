@@ -1,16 +1,18 @@
 package com.module.playways.grab.room.event;
 
-public class GrabGiveUpInChorusEvent {
-    public int uid;
+import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 
-    public GrabGiveUpInChorusEvent(int uid) {
-        this.uid = uid;
+public class GrabGiveUpInChorusEvent {
+    public ChorusRoundInfoModel mChorusRoundInfoModel;
+
+    public GrabGiveUpInChorusEvent(ChorusRoundInfoModel infoModel) {
+        this.mChorusRoundInfoModel = infoModel;
     }
 
     @Override
     public String toString() {
         return "GrabGiveUpInChorusEvent{" +
-                "uid=" + uid +
+                "uid=" + mChorusRoundInfoModel +
                 '}';
     }
 }

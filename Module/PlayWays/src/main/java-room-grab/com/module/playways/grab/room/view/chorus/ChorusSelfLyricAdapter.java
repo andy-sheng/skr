@@ -17,15 +17,18 @@ import com.common.view.recyclerview.DiffAdapter;
 import com.module.rank.R;
 
 public class ChorusSelfLyricAdapter extends DiffAdapter<String, ChorusSelfLyricAdapter.ChorusSelfLyricHolder> {
-    
+
     public final static String TAG = "ChorusSelfLyricAdapter";
 
-    UserInfoModel mLeftUserInfoModel;
-    UserInfoModel mRightUserInfoModel;
+    ChorusSelfSingCardView.DH mLeft;
+    ChorusSelfSingCardView.DH mRight;
 
-    public void setUserInfos(UserInfoModel mLeftUserInfoModel, UserInfoModel mRightUserInfoModel) {
-        this.mLeftUserInfoModel = mLeftUserInfoModel;
-        this.mRightUserInfoModel = mRightUserInfoModel;
+    boolean mLeftGiveUp = false;
+    boolean mRightGiveUp = false;
+
+    public ChorusSelfLyricAdapter(ChorusSelfSingCardView.DH left, ChorusSelfSingCardView.DH right) {
+        mLeft = left;
+        mRight = right;
     }
 
     @NonNull
@@ -47,6 +50,28 @@ public class ChorusSelfLyricAdapter extends DiffAdapter<String, ChorusSelfLyricA
         return mDataList.size();
     }
 
+    /**
+     * 计算几个标记位
+     */
+    public void computeFlag() {
+        mLeftGiveUp = false;
+        mRightGiveUp = false;
+        if (mLeft.mChorusRoundInfoModel != null) {
+            if (mLeft.mChorusRoundInfoModel.isHasExit() || mLeft.mChorusRoundInfoModel.isHasGiveUp()) {
+                // 左边的人不唱了
+                mLeftGiveUp = true;
+            }
+        }
+
+        if (mRight.mChorusRoundInfoModel != null) {
+            if (mRight.mChorusRoundInfoModel.isHasExit() || mRight.mChorusRoundInfoModel.isHasGiveUp()) {
+                // 右边的人不唱了
+                mRightGiveUp = true;
+            }
+        }
+    }
+
+
     class ChorusSelfLyricHolder extends RecyclerView.ViewHolder {
 
         BaseImageView mAvatarIv;
@@ -60,27 +85,36 @@ public class ChorusSelfLyricAdapter extends DiffAdapter<String, ChorusSelfLyricA
         }
 
         public void bindData(String text, int position) {
+
             mLyricLineTv.setText(text);
             if (position % 2 == 0) {
                 // left
-                if (mLeftUserInfoModel != null) {
-                    AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mLeftUserInfoModel.getAvatar())
+                if (mLeft.mUserInfoModel != null && !mLeftGiveUp) {
+                    mLyricLineTv.setTextColor(Color.parseColor("#364E7C"));
+                    mAvatarIv.setVisibility(View.VISIBLE);
+                    AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mLeft.mUserInfoModel.getAvatar())
                             .setCircle(true)
                             .setBorderWidth(U.getDisplayUtils().dip2px(2))
                             .setBorderColor(Color.WHITE)
                             .build());
                 } else {
+                    mAvatarIv.setVisibility(View.GONE);
+                    mLyricLineTv.setTextColor(Color.parseColor("#beb19d"));
                     MyLog.w(TAG, "bindData" + " text=" + text + " position=" + position);
                 }
             } else {
                 // right
-                if (mRightUserInfoModel != null) {
-                    AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mRightUserInfoModel.getAvatar())
+                if (mRight.mUserInfoModel != null && mRightGiveUp) {
+                    mLyricLineTv.setTextColor(Color.parseColor("#364E7C"));
+                    mAvatarIv.setVisibility(View.VISIBLE);
+                    AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mRight.mUserInfoModel.getAvatar())
                             .setCircle(true)
                             .setBorderWidth(U.getDisplayUtils().dip2px(2))
                             .setBorderColor(Color.WHITE)
                             .build());
                 } else {
+                    mAvatarIv.setVisibility(View.GONE);
+                    mLyricLineTv.setTextColor(Color.parseColor("#beb19d"));
                     MyLog.w(TAG, "bindData" + " text=" + text + " position=" + position);
                 }
             }

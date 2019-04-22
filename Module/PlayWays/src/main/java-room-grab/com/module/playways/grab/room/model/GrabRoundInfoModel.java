@@ -405,7 +405,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
             if (chorusRoundInfoModel.getUserID() == userID) {
                 if (!chorusRoundInfoModel.isHasGiveUp()) {
                     chorusRoundInfoModel.setHasGiveUp(true);
-                    EventBus.getDefault().post(new GrabGiveUpInChorusEvent(userID));
+                    EventBus.getDefault().post(new GrabGiveUpInChorusEvent(chorusRoundInfoModel));
                 }
             }
         }

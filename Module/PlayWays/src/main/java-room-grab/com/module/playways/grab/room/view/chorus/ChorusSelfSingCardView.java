@@ -14,11 +14,16 @@ import com.common.utils.U;
 import com.common.view.countdown.CircleCountDownView;
 import com.component.busilib.view.BitmapTextView;
 import com.module.playways.grab.room.GrabRoomData;
+import com.module.playways.grab.room.event.GrabGiveUpInChorusEvent;
 import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.room.song.model.SongModel;
 import com.module.rank.R;
 import com.zq.lyrics.LyricsManager;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +51,13 @@ public class ChorusSelfSingCardView extends RelativeLayout {
 
     Disposable mDisposable;
 
-    UserInfoModel mLeftUserInfoModel;
-    UserInfoModel mRightUserInfoModel;
+    public static class DH {
+        UserInfoModel mUserInfoModel;
+        ChorusRoundInfoModel mChorusRoundInfoModel;
+    }
+
+    DH mLeft = new DH();
+    DH mRight = new DH();
 
     public ChorusSelfSingCardView(Context context) {
         super(context);
@@ -72,7 +82,7 @@ public class ChorusSelfSingCardView extends RelativeLayout {
         mCountDownTv = (BitmapTextView) this.findViewById(R.id.count_down_tv);
 
         mLyricRecycleView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        mChorusSelfLyricAdapter = new ChorusSelfLyricAdapter();
+        mChorusSelfLyricAdapter = new ChorusSelfLyricAdapter(mLeft, mRight);
         mLyricRecycleView.setAdapter(mChorusSelfLyricAdapter);
     }
 
@@ -90,12 +100,11 @@ public class ChorusSelfSingCardView extends RelativeLayout {
             if (chorusRoundInfoModelList != null && chorusRoundInfoModelList.size() >= 2) {
                 int uid1 = chorusRoundInfoModelList.get(0).getUserID();
                 int uid2 = chorusRoundInfoModelList.get(1).getUserID();
-                mLeftUserInfoModel = mRoomData.getUserInfo(uid1);
-                mRightUserInfoModel = mRoomData.getUserInfo(uid2);
+                mLeft.mUserInfoModel = mRoomData.getUserInfo(uid1);
+                mRight.mUserInfoModel = mRoomData.getUserInfo(uid2);
             }
         }
 
-        mChorusSelfLyricAdapter.setUserInfos(mLeftUserInfoModel, mRightUserInfoModel);
         playLyric(infoModel);
     }
 
@@ -104,7 +113,6 @@ public class ChorusSelfSingCardView extends RelativeLayout {
             MyLog.d(TAG, "infoModel 是空的");
             return;
         }
-
         mSongModel = infoModel.getMusic();
         playWithNoAcc();
     }
@@ -133,6 +141,7 @@ public class ChorusSelfSingCardView extends RelativeLayout {
                                 }
                             }
                         }
+                        mChorusSelfLyricAdapter.computeFlag();
                         mChorusSelfLyricAdapter.setDataList(lyrics);
                     }
                 }, new Consumer<Throwable>() {
@@ -141,6 +150,18 @@ public class ChorusSelfSingCardView extends RelativeLayout {
                         MyLog.d(TAG, "accept" + " throwable=" + throwable);
                     }
                 });
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(GrabGiveUpInChorusEvent event) {
+        if (mLeft.mChorusRoundInfoModel != null && event.mChorusRoundInfoModel.getUserID() == mLeft.mChorusRoundInfoModel.getUserID()) {
+            mLeft.mChorusRoundInfoModel = event.mChorusRoundInfoModel;
+        }
+        if (mRight.mChorusRoundInfoModel != null && event.mChorusRoundInfoModel.getUserID() == mRight.mChorusRoundInfoModel.getUserID()) {
+            mRight.mChorusRoundInfoModel = event.mChorusRoundInfoModel;
+        }
+        mChorusSelfLyricAdapter.computeFlag();
+        mChorusSelfLyricAdapter.notifyDataSetChanged();
     }
 
 }
