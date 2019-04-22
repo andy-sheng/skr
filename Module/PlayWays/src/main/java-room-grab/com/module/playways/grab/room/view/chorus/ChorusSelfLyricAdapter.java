@@ -91,10 +91,10 @@ public class ChorusSelfLyricAdapter extends DiffAdapter<String, ChorusSelfLyricA
             if (position % 2 == 0) {
                 // left
                 if (mLeft.mUserInfoModel != null && !mLeftGiveUp) {
-                    if(mLeft.mUserInfoModel.getUserId() == MyUserInfoManager.getInstance().getUid()){
+                    if (mLeft.mUserInfoModel.getUserId() == MyUserInfoManager.getInstance().getUid()) {
                         // 左边是自己
                         mLyricLineTv.setTextColor(Color.parseColor("#364E7C"));
-                    }else{
+                    } else {
                         mLyricLineTv.setTextColor(Color.parseColor("#beb19d"));
                     }
 
@@ -106,16 +106,22 @@ public class ChorusSelfLyricAdapter extends DiffAdapter<String, ChorusSelfLyricA
                             .build());
                 } else {
                     mAvatarIv.setVisibility(View.GONE);
-                    mLyricLineTv.setTextColor(Color.parseColor("#beb19d"));
+                    if (mLeft.mUserInfoModel.getUserId() == MyUserInfoManager.getInstance().getUid()) {
+                        // 左边是自己，自己不唱了
+                        mLyricLineTv.setTextColor(Color.parseColor("#beb19d"));
+                    } else {
+                        //对手不唱了
+                        mLyricLineTv.setTextColor(Color.parseColor("#364E7C"));
+                    }
                     MyLog.w(TAG, "bindData" + " text=" + text + " position=" + position);
                 }
             } else {
                 // right
                 if (mRight.mUserInfoModel != null && !mRightGiveUp) {
-                    if(mRight.mUserInfoModel.getUserId() == MyUserInfoManager.getInstance().getUid()){
+                    if (mRight.mUserInfoModel.getUserId() == MyUserInfoManager.getInstance().getUid()) {
                         // 右边是自己
                         mLyricLineTv.setTextColor(Color.parseColor("#364E7C"));
-                    }else{
+                    } else {
                         mLyricLineTv.setTextColor(Color.parseColor("#beb19d"));
                     }
                     mAvatarIv.setVisibility(View.VISIBLE);
@@ -126,7 +132,13 @@ public class ChorusSelfLyricAdapter extends DiffAdapter<String, ChorusSelfLyricA
                             .build());
                 } else {
                     mAvatarIv.setVisibility(View.GONE);
-                    mLyricLineTv.setTextColor(Color.parseColor("#beb19d"));
+                    if (mRight.mUserInfoModel.getUserId() == MyUserInfoManager.getInstance().getUid()) {
+                        // 右边是自己，自己不唱了
+                        mLyricLineTv.setTextColor(Color.parseColor("#beb19d"));
+                    } else {
+                        //对手不唱了
+                        mLyricLineTv.setTextColor(Color.parseColor("#364E7C"));
+                    }
                     MyLog.w(TAG, "bindData" + " text=" + text + " position=" + position);
                 }
             }

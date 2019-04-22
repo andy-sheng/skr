@@ -58,6 +58,11 @@ public class ChorusSelfSingCardView extends RelativeLayout {
     public static class DH {
         UserInfoModel mUserInfoModel;
         ChorusRoundInfoModel mChorusRoundInfoModel;
+
+        public void reset() {
+            mUserInfoModel =null;
+            mChorusRoundInfoModel = null;
+        }
     }
 
     DH mLeft = new DH();
@@ -103,6 +108,8 @@ public class ChorusSelfSingCardView extends RelativeLayout {
         if (mRoomData == null) {
             return;
         }
+        mLeft.reset();
+        mRight.reset();
         GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
         if (infoModel != null) {
             List<ChorusRoundInfoModel> chorusRoundInfoModelList = infoModel.getChorusRoundInfoModels();
@@ -200,19 +207,15 @@ public class ChorusSelfSingCardView extends RelativeLayout {
         if (getVisibility() == GONE) {
             return;
         }
-        if (mLeft.mChorusRoundInfoModel != null) {
-            if (event.mChorusRoundInfoModel.getUserID() == mLeft.mChorusRoundInfoModel.getUserID()) {
+        if (mLeft.mUserInfoModel != null) {
+            if (event.mChorusRoundInfoModel.getUserID() == mLeft.mUserInfoModel.getUserId()) {
                 mLeft.mChorusRoundInfoModel = event.mChorusRoundInfoModel;
             }
-        } else {
-            mLeft.mChorusRoundInfoModel = event.mChorusRoundInfoModel;
         }
-        if (mRight.mChorusRoundInfoModel != null) {
-            if (event.mChorusRoundInfoModel.getUserID() == mRight.mChorusRoundInfoModel.getUserID()) {
+        if (mRight.mUserInfoModel != null) {
+            if (event.mChorusRoundInfoModel.getUserID() == mRight.mUserInfoModel.getUserId()) {
                 mRight.mChorusRoundInfoModel = event.mChorusRoundInfoModel;
             }
-        } else {
-            mRight.mChorusRoundInfoModel = event.mChorusRoundInfoModel;
         }
         mChorusSelfLyricAdapter.computeFlag();
         mChorusSelfLyricAdapter.notifyDataSetChanged();
