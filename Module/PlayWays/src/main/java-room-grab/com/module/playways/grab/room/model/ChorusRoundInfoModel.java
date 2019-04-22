@@ -1,18 +1,16 @@
 package com.module.playways.grab.room.model;
 
-import com.common.core.userinfo.model.UserInfoModel;
-import com.module.playways.grab.room.event.GrabGiveUpInChorusEvent;
+import com.module.playways.grab.room.event.GrabChorusUserStatusChangeEvent;
 import com.zq.live.proto.Room.QCHOInnerRoundInfo;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.Serializable;
-import java.util.HashSet;
 
 public class ChorusRoundInfoModel implements Serializable {
     int userID;
-    boolean hasGiveUp;
-    boolean hasExit;
+    boolean hasGiveUp;// 不唱了
+    boolean hasExit;// 离线了
 
     public static ChorusRoundInfoModel parse(QCHOInnerRoundInfo qchoInnerRoundInfo) {
         ChorusRoundInfoModel chorusRoundInfoModel = new ChorusRoundInfoModel();
@@ -50,7 +48,7 @@ public class ChorusRoundInfoModel implements Serializable {
         if (chorusRoundInfoModel2.getUserID() == userID) {
             if (!isHasGiveUp() && chorusRoundInfoModel2.isHasGiveUp()) {
                 setHasGiveUp(true);
-                EventBus.getDefault().post(new GrabGiveUpInChorusEvent(this));
+                EventBus.getDefault().post(new GrabChorusUserStatusChangeEvent(this));
             }
             if(isHasExit()!=chorusRoundInfoModel2.isHasExit()){
                 setHasExit(chorusRoundInfoModel2.isHasExit());

@@ -64,6 +64,10 @@ public class SpeakingTipsAnimationView extends AppCompatImageView {
         mUiHandler.sendEmptyMessageDelayed(MSG_HIDE,duration);
     }
 
+    public void hide() {
+        mUiHandler.removeCallbacksAndMessages(null);
+        setVisibility(GONE);
+    }
 
     @Override
     protected void onDetachedFromWindow() {

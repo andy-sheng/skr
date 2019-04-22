@@ -3,8 +3,7 @@ package com.module.playways.grab.room.model;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
-import com.module.playways.RoomDataUtils;
-import com.module.playways.grab.room.event.GrabGiveUpInChorusEvent;
+import com.module.playways.grab.room.event.GrabChorusUserStatusChangeEvent;
 import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent;
 import com.module.playways.grab.room.event.GrabRoundStatusChangeEvent;
 import com.module.playways.grab.room.event.GrabWaitSeatUpdateEvent;
@@ -405,7 +404,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
             if (chorusRoundInfoModel.getUserID() == userID) {
                 if (!chorusRoundInfoModel.isHasGiveUp()) {
                     chorusRoundInfoModel.setHasGiveUp(true);
-                    EventBus.getDefault().post(new GrabGiveUpInChorusEvent(chorusRoundInfoModel));
+                    EventBus.getDefault().post(new GrabChorusUserStatusChangeEvent(chorusRoundInfoModel));
                 }
             }
         }

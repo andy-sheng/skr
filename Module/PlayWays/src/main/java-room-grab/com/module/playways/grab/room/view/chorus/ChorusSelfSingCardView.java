@@ -15,7 +15,7 @@ import com.common.utils.U;
 import com.common.view.countdown.CircleCountDownView;
 import com.component.busilib.view.BitmapTextView;
 import com.module.playways.grab.room.GrabRoomData;
-import com.module.playways.grab.room.event.GrabGiveUpInChorusEvent;
+import com.module.playways.grab.room.event.GrabChorusUserStatusChangeEvent;
 import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
@@ -196,7 +196,7 @@ public class ChorusSelfSingCardView extends RelativeLayout {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(GrabGiveUpInChorusEvent event) {
+    public void onEvent(GrabChorusUserStatusChangeEvent event) {
         if (getVisibility() == GONE) {
             return;
         }

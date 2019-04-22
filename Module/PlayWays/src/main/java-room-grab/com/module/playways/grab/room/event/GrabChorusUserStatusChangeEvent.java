@@ -2,10 +2,10 @@ package com.module.playways.grab.room.event;
 
 import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 
-public class GrabGiveUpInChorusEvent {
+public class GrabChorusUserStatusChangeEvent {
     public ChorusRoundInfoModel mChorusRoundInfoModel;
 
-    public GrabGiveUpInChorusEvent(ChorusRoundInfoModel infoModel) {
+    public GrabChorusUserStatusChangeEvent(ChorusRoundInfoModel infoModel) {
         this.mChorusRoundInfoModel = infoModel;
     }
 

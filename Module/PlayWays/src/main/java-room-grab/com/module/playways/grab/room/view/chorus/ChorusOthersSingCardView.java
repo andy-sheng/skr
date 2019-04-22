@@ -22,8 +22,10 @@ import com.common.view.countdown.CircleCountDownView;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.view.BitmapTextView;
 import com.engine.EngineEvent;
+import com.engine.UserStatus;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.grab.room.GrabRoomData;
+import com.module.playways.grab.room.event.GrabChorusUserStatusChangeEvent;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGADrawable;
@@ -178,6 +180,9 @@ public class ChorusOthersSingCardView extends RelativeLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EngineEvent event) {
+        if(getVisibility() == GONE){
+            return;
+        }
         switch (event.getType()) {
             case EngineEvent.TYPE_USER_AUDIO_VOLUME_INDICATION: {
                 // 有人在说话,播2秒动画
@@ -207,9 +212,19 @@ public class ChorusOthersSingCardView extends RelativeLayout {
                 }
                 break;
             }
+            case EngineEvent.TYPE_USER_MUTE_AUDIO:{
+                //用户闭麦，开麦
+                UserStatus userStatus = event.getUserStatus();
+                if (userStatus != null) {
+                    int userId = userStatus.getUserId();
+                    if (userStatus.isAudioMute()) {
+                        stopSingAnimation(userId);
+                    }
+                }
+                break;
+            }
         }
     }
-
 
     // 播放声纹动画
     private void playSingAnimation(SVGAImageView svgaImageView) {
@@ -399,6 +414,29 @@ public class ChorusOthersSingCardView extends RelativeLayout {
             clearAnimation();
             setVisibility(GONE);
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(GrabChorusUserStatusChangeEvent event) {
+        if (getVisibility() == GONE) {
+            return;
+        }
+//        if (mLeft.mChorusRoundInfoModel != null) {
+//            if (event.mChorusRoundInfoModel.getUserID() == mLeft.mChorusRoundInfoModel.getUserID()) {
+//                mLeft.mChorusRoundInfoModel = event.mChorusRoundInfoModel;
+//            }
+//        } else {
+//            mLeft.mChorusRoundInfoModel = event.mChorusRoundInfoModel;
+//        }
+//        if (mRight.mChorusRoundInfoModel != null) {
+//            if (event.mChorusRoundInfoModel.getUserID() == mRight.mChorusRoundInfoModel.getUserID()) {
+//                mRight.mChorusRoundInfoModel = event.mChorusRoundInfoModel;
+//            }
+//        } else {
+//            mRight.mChorusRoundInfoModel = event.mChorusRoundInfoModel;
+//        }
+//        mChorusSelfLyricAdapter.computeFlag();
+//        mChorusSelfLyricAdapter.notifyDataSetChanged();
     }
 
     @Override

@@ -17,6 +17,7 @@ import com.common.core.myinfo.MyUserInfoManager;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.engine.EngineEvent;
+import com.engine.UserStatus;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent;
@@ -28,6 +29,7 @@ import com.module.playways.grab.room.model.SPkRoundInfoModel;
 import com.module.playways.grab.room.model.WantSingerInfo;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.room.prepare.model.PlayerInfoModel;
+import com.module.playways.voice.view.VoiceUserStatusView;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGADrawable;
@@ -149,7 +151,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
                 mInfoMap.put(playerInfoModel.getUserID(), vp);
                 vp.grabTopItemView.bindData(playerInfoModel, mRoomData.getOwnerId() == playerInfoModel.getUserID());
                 for (int userId : now.getSingUserIds()) {
-                    if(userId==playerInfoModel.getUserID() && now.isSingStatus()){
+                    if (userId == playerInfoModel.getUserID() && now.isSingStatus()) {
                         if (vp.grabTopItemView != null) {
                             vp.grabTopItemView.setGetSingChance();
                         }
@@ -576,6 +578,16 @@ public class GrabPlayerRv2 extends RelativeLayout {
                 VP vp = mInfoMap.get(uid);
                 if (vp != null && vp.grabTopItemView != null && vp.grabTopItemView.isShown()) {
                     vp.grabTopItemView.showSpeakingAnimation();
+                }
+            }
+        } else if (event.getType() == EngineEvent.TYPE_USER_MUTE_AUDIO) {
+            //用户闭麦，开麦
+            UserStatus userStatus = event.getUserStatus();
+            if (userStatus != null) {
+                int userId = userStatus.getUserId();
+                VP vp = mInfoMap.get(userId);
+                if (vp != null && vp.grabTopItemView != null && vp.grabTopItemView.isShown() && userStatus.isAudioMute()) {
+                    vp.grabTopItemView.hideSpeakingAnimation();
                 }
             }
         }

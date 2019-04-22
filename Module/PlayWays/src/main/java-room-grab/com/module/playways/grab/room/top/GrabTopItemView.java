@@ -279,6 +279,10 @@ public class GrabTopItemView extends RelativeLayout {
         mSpeakingTipsAnimationView.show(1000);
     }
 
+    public void hideSpeakingAnimation() {
+        mSpeakingTipsAnimationView.hide();
+    }
+
     public void setGetSingChance() {
         mCircleAnimationView.setVisibility(VISIBLE);
     }
