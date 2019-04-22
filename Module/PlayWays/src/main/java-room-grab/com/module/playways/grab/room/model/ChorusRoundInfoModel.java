@@ -46,12 +46,17 @@ public class ChorusRoundInfoModel implements Serializable {
 
     public void tryUpdateRoundInfoModel(ChorusRoundInfoModel chorusRoundInfoModel2) {
         if (chorusRoundInfoModel2.getUserID() == userID) {
+            boolean sendEvent = false;
             if (!isHasGiveUp() && chorusRoundInfoModel2.isHasGiveUp()) {
                 setHasGiveUp(true);
-                EventBus.getDefault().post(new GrabChorusUserStatusChangeEvent(this));
+                sendEvent = true;
             }
-            if(isHasExit()!=chorusRoundInfoModel2.isHasExit()){
+            if (isHasExit() != chorusRoundInfoModel2.isHasExit()) {
                 setHasExit(chorusRoundInfoModel2.isHasExit());
+                sendEvent = true;
+            }
+            if (sendEvent) {
+                EventBus.getDefault().post(new GrabChorusUserStatusChangeEvent(this));
             }
         }
     }
