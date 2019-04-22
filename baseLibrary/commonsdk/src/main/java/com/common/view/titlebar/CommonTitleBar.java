@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -134,6 +135,7 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
     private String leftText;                            // 左边TextView文字
     private int leftTextColor;                          // 左边TextView颜色
     private float leftTextSize;                         // 左边TextView文字大小
+    private int leftTextType;                           // 左边TextView文字风格
     private int leftDrawable;                           // 左边TextView drawableLeft资源
     private float leftDrawablePadding;                  // 左边TextView drawablePadding
     private int leftImageResource;                      // 左边图片资源
@@ -143,6 +145,7 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
     private String rightText;                           // 右边TextView文字
     private int rightTextColor;                         // 右边TextView颜色
     private float rightTextSize;                        // 右边TextView文字大小
+    private int rightTextType;                          // 右边TextView文字风格
     private int rightImageResource;                     // 右边图片资源
     private int rightCustomViewRes;                     // 右边自定义视图布局资源
 
@@ -150,6 +153,7 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
     private String centerText;                          // 中间TextView文字
     private int centerTextColor;                        // 中间TextView字体颜色
     private float centerTextSize;                       // 中间TextView字体大小
+    private int centerTextStyle;                      // 中间TextView字体风格
     private String centerSubText;                       // 中间subTextView文字
     private int centerSubTextColor;                     // 中间subTextView字体颜色
     private float centerSubTextSize;                    // 中间subTextView字体大小
@@ -219,6 +223,7 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
             leftText = array.getString(R.styleable.CommonTitleBar_leftText);
             leftTextColor = array.getColor(R.styleable.CommonTitleBar_leftTextColor, getResources().getColor(R.color.comm_titlebar_text_selector));
             leftTextSize = array.getDimension(R.styleable.CommonTitleBar_leftTextSize, U.getDisplayUtils().dip2px(context, 16));
+            leftTextType = array.getInt(R.styleable.CommonTitleBar_leftTextStyle, 0);
             leftDrawable = array.getResourceId(R.styleable.CommonTitleBar_leftDrawable, 0);
             leftDrawablePadding = array.getDimension(R.styleable.CommonTitleBar_leftDrawablePadding, 5);
         } else if (leftType == TYPE_LEFT_IMAGEBUTTON) {
@@ -232,6 +237,7 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
             rightText = array.getString(R.styleable.CommonTitleBar_rightText);
             rightTextColor = array.getColor(R.styleable.CommonTitleBar_rightTextColor, getResources().getColor(R.color.comm_titlebar_text_selector));
             rightTextSize = array.getDimension(R.styleable.CommonTitleBar_rightTextSize, U.getDisplayUtils().dip2px(context, 16));
+            rightTextType = array.getInt(R.styleable.CommonTitleBar_rightTextStyle, 0);
         } else if (rightType == TYPE_RIGHT_IMAGEBUTTON) {
             rightImageResource = array.getResourceId(R.styleable.CommonTitleBar_rightImageResource, 0);
         } else if (rightType == TYPE_RIGHT_CUSTOM_VIEW) {
@@ -243,6 +249,7 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
             centerText = array.getString(R.styleable.CommonTitleBar_centerText);
             centerTextColor = array.getColor(R.styleable.CommonTitleBar_centerTextColor, Color.parseColor("#333333"));
             centerTextSize = array.getDimension(R.styleable.CommonTitleBar_centerTextSize, U.getDisplayUtils().dip2px(context, 18));
+            centerTextStyle = array.getInt(R.styleable.CommonTitleBar_centerTextStyle, 0);
             centerSubText = array.getString(R.styleable.CommonTitleBar_centerSubText);
             centerSubTextColor = array.getColor(R.styleable.CommonTitleBar_centerSubTextColor, Color.parseColor("#666666"));
             centerSubTextSize = array.getDimension(R.styleable.CommonTitleBar_centerSubTextSize, U.getDisplayUtils().dip2px(context, 11));
@@ -358,6 +365,7 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
             tvLeft.setText(leftText);
             tvLeft.setTextColor(leftTextColor);
             tvLeft.setTextSize(TypedValue.COMPLEX_UNIT_PX, leftTextSize);
+            tvLeft.setTypeface(Typeface.defaultFromStyle(leftTextType));
             tvLeft.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
             tvLeft.setSingleLine(true);
             tvLeft.setOnClickListener(this);
@@ -415,6 +423,7 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
             tvRight.setText(rightText);
             tvRight.setTextColor(rightTextColor);
             tvRight.setTextSize(TypedValue.COMPLEX_UNIT_PX, rightTextSize);
+            tvRight.setTypeface(Typeface.defaultFromStyle(rightTextType));
             tvRight.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
             tvRight.setSingleLine(true);
             tvRight.setPadding(PADDING_12, 0, PADDING_12, 0);
@@ -470,6 +479,7 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
             tvCenter.setText(centerText);
             tvCenter.setTextColor(centerTextColor);
             tvCenter.setTextSize(TypedValue.COMPLEX_UNIT_PX, centerTextSize);
+            tvCenter.setTypeface(Typeface.defaultFromStyle(centerTextStyle));
             tvCenter.setGravity(Gravity.CENTER);
             tvCenter.setSingleLine(true);
             // 设置跑马灯效果
