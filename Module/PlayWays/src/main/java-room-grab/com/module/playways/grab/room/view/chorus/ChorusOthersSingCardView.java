@@ -16,6 +16,7 @@ import com.common.core.account.UserAccountManager;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
+import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.countdown.CircleCountDownView;
 import com.common.view.ex.ExTextView;
@@ -68,6 +69,8 @@ public class ChorusOthersSingCardView extends RelativeLayout {
 
     boolean mHasPlayFullAnimation = false;
     boolean mCanStartFlag = false;
+
+    HandlerTaskTimer mCounDownTask;
 
     Handler mUiHandler = new Handler() {
         @Override
@@ -312,6 +315,7 @@ public class ChorusOthersSingCardView extends RelativeLayout {
                 // 不需要播放countdown
 //                mCountDownProcess.startCountDown(0, totalMs);
                 mCircleCountDownView.go(0, totalMs);
+                startCountDownText(totalMs / 1000);
                 return;
             }
         }
@@ -329,6 +333,31 @@ public class ChorusOthersSingCardView extends RelativeLayout {
         }
 //        mCountDownProcess.startCountDown(progress, leaveTime);
         mCircleCountDownView.go(progress, leaveTime);
+        startCountDownText(leaveTime / 1000);
+    }
+
+    private void startCountDownText(int counDown) {
+        mCounDownTask = HandlerTaskTimer.newBuilder()
+                .interval(1000)
+                .take(counDown)
+                .start(new HandlerTaskTimer.ObserverW() {
+                    @Override
+                    public void onNext(Integer integer) {
+                        mCountDownTv.setText((counDown - integer) + "");
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+                        stopCounDown();
+                    }
+                });
+    }
+
+    private void stopCounDown() {
+        if (mCounDownTask != null) {
+            mCounDownTask.dispose();
+        }
     }
 
     private void animationGo() {

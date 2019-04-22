@@ -84,5 +84,7 @@ public class OthersSingCardView {
 
     public void hide() {
         mNormalOthersSingCardView.hide();
+        mChorusOtherSingCardView.hide();
+        mPKOtherSingCardView.hide();
     }
 }
