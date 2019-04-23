@@ -99,16 +99,16 @@ public class PKOthersSingCardView extends RelativeLayout {
             mPkCardView.bindData();
             if (grabRoundInfoModel.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()) {
                 // pk第一个人唱
-                animationGo();
+                playCardEnterAniamtion();
             } else if (grabRoundInfoModel.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
                 if (mRightUserInfoModel != null) {
-                    playAnimation(mRightUserInfoModel.getUserId());
+                    playIndicateAnimation(mRightUserInfoModel.getUserId());
                 }
             }
         }
     }
 
-    private void playAnimation(int userId) {
+    private void playIndicateAnimation(int userId) {
         GrabRoundInfoModel infoModel = mGrabRoomData.getRealRoundInfo();
         if (infoModel == null) {
             return;
@@ -135,7 +135,7 @@ public class PKOthersSingCardView extends RelativeLayout {
     }
 
     // pk 他人的为什么有动画
-    private void animationGo() {
+    private void playCardEnterAniamtion() {
         if (mEnterTranslateAnimation == null) {
             mEnterTranslateAnimation = new TranslateAnimation(-U.getDisplayUtils().getScreenWidth(), 0.0F, 0.0F, 0.0F);
             mEnterTranslateAnimation.setDuration(200);
@@ -150,7 +150,7 @@ public class PKOthersSingCardView extends RelativeLayout {
             public void onAnimationEnd(Animation animation) {
                 // TODO: 2019/4/23 先播放左边的动画，后面都是一体的
                 if (mLeftUserInfoModel != null) {
-                    playAnimation(mLeftUserInfoModel.getUserId());
+                    playIndicateAnimation(mLeftUserInfoModel.getUserId());
                 }
             }
 
