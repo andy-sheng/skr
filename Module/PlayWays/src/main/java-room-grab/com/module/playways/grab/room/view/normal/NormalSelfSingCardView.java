@@ -17,6 +17,7 @@ import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.view.common.SingCountDownView;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
+import com.module.playways.grab.room.view.normal.view.SelfSingLyricView;
 import com.module.playways.others.LyricAndAccMatchManager;
 import com.module.playways.room.song.model.SongModel;
 import com.module.playways.R;
@@ -37,17 +38,10 @@ import io.reactivex.functions.Consumer;
 public class NormalSelfSingCardView extends RelativeLayout {
     public final static String TAG = "SelfSingCardView2";
 
-    TextView mTvLyric;
-    ManyLyricsView mManyLyricsView;
-    Disposable mDisposable;
     GrabRoomData mRoomData;
-    SongModel mSongModel;
-    ImageView mIvChallengeIcon;
-    VoiceScaleView mVoiceScaleView;
+
+    SelfSingLyricView mSelfSingLyricView;
     SingCountDownView mSingCountDownView;
-
-    LyricAndAccMatchManager mLyricAndAccMatchManager = new LyricAndAccMatchManager();
-
 
     public NormalSelfSingCardView(Context context) {
         super(context);
@@ -66,11 +60,9 @@ public class NormalSelfSingCardView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.grab_normal_self_sing_card_layout, this);
-        mTvLyric = findViewById(R.id.tv_lyric);
-        mManyLyricsView = (ManyLyricsView) findViewById(R.id.many_lyrics_view);
+
+        mSelfSingLyricView = (SelfSingLyricView) findViewById(R.id.self_sing_lyric_view);
         mSingCountDownView = (SingCountDownView) findViewById(R.id.sing_count_down_view);
-        mVoiceScaleView = (VoiceScaleView) findViewById(R.id.voice_scale_view);
-        mIvChallengeIcon = (ImageView) findViewById(R.id.iv_challenge_icon);
     }
 
     public void playLyric() {
@@ -79,19 +71,9 @@ public class NormalSelfSingCardView extends RelativeLayout {
             MyLog.d(TAG, "infoModel 是空的");
             return;
         }
-        if (infoModel.getWantSingType() == EWantSingType.EWST_COMMON_OVER_TIME.getValue()
-                || infoModel.getWantSingType() == EWantSingType.EWST_ACCOMPANY_OVER_TIME.getValue()) {
-            mIvChallengeIcon.setVisibility(VISIBLE);
-        } else {
-            mIvChallengeIcon.setVisibility(INVISIBLE);
-        }
-        mSongModel = infoModel.getMusic();
-        mTvLyric.setText("歌词加载中...");
-        mTvLyric.setVisibility(VISIBLE);
-        mManyLyricsView.setVisibility(GONE);
-        mManyLyricsView.initLrcData();
-        mVoiceScaleView.setVisibility(View.GONE);
-        if (mSongModel == null) {
+
+        mSelfSingLyricView.initLyric();
+        if (infoModel.getMusic() == null) {
             MyLog.d(TAG, "songModel 是空的");
             return;
         }
@@ -106,72 +88,13 @@ public class NormalSelfSingCardView extends RelativeLayout {
             withAcc = true;
         }
         if (!withAcc) {
-            playWithNoAcc(mSongModel);
             mSingCountDownView.setTagImgRes(R.drawable.ycdd_daojishi_qingchang);
-            mLyricAndAccMatchManager.stop();
+            mSelfSingLyricView.playWithNoAcc(infoModel.getMusic());
         } else {
             mSingCountDownView.setTagImgRes(R.drawable.ycdd_daojishi_banzou);
-            SongModel curSong = mSongModel;
-            if (infoModel.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
-                if (mSongModel.getPkMusic() != null) {
-                    curSong = mSongModel.getPkMusic();
-                }
-            }
-            mLyricAndAccMatchManager.setArgs(mManyLyricsView, mVoiceScaleView,
-                    curSong.getLyric(),
-                    curSong.getStandLrcBeginT(), curSong.getStandLrcBeginT() + totalTs,
-                    curSong.getBeginMs(), curSong.getBeginMs() + totalTs);
-
-            SongModel finalCurSong = curSong;
-            mLyricAndAccMatchManager.start(new LyricAndAccMatchManager.Listener() {
-                @Override
-                public void onLyricParseSuccess() {
-                    mTvLyric.setVisibility(GONE);
-                }
-
-                @Override
-                public void onLyricParseFailed() {
-                    playWithNoAcc(finalCurSong);
-                }
-
-                @Override
-                public void onLyricEventPost(int lineNum) {
-                    mRoomData.setSongLineNum(lineNum);
-                }
-
-            });
-            EngineManager.getInstance().setRecognizeListener(new ArcRecognizeListener() {
-                @Override
-                public void onResult(String result, List<SongInfo> list, SongInfo targetSongInfo, int lineNo) {
-                    mLyricAndAccMatchManager.onAcrResult(result, list, targetSongInfo, lineNo);
-                }
-            });
+            mSelfSingLyricView.playWithAcc(infoModel, totalTs);
         }
         starCounDown(totalTs);
-    }
-
-    private void playWithNoAcc(SongModel songModel) {
-        if (songModel == null) {
-            return;
-        }
-        mManyLyricsView.setVisibility(GONE);
-        mTvLyric.setVisibility(VISIBLE);
-        if (mDisposable != null && !mDisposable.isDisposed()) {
-            mDisposable.dispose();
-        }
-        mDisposable = LyricsManager.getLyricsManager(U.app())
-                .loadGrabPlainLyric(songModel.getStandLrc())
-                .subscribe(new Consumer<String>() {
-                    @Override
-                    public void accept(String s) throws Exception {
-                        mTvLyric.setText(s);
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        MyLog.d(TAG, "accept" + " throwable=" + throwable);
-                    }
-                });
     }
 
     private void starCounDown(int totalMs) {
@@ -181,12 +104,6 @@ public class NormalSelfSingCardView extends RelativeLayout {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if (mDisposable != null && !mDisposable.isDisposed()) {
-            mDisposable.dispose();
-        }
-        if (mLyricAndAccMatchManager != null) {
-            mLyricAndAccMatchManager.stop();
-        }
     }
 
     @Override
@@ -194,30 +111,29 @@ public class NormalSelfSingCardView extends RelativeLayout {
         super.setVisibility(visibility);
         if (visibility == GONE) {
             mSingCountDownView.reset();
-            if (mManyLyricsView != null) {
-                mManyLyricsView.setLyricsReader(null);
-            }
-            if (mLyricAndAccMatchManager != null) {
-                mLyricAndAccMatchManager.stop();
-            }
         }
     }
 
     public void destroy() {
-        if (mManyLyricsView != null) {
-            mManyLyricsView.release();
+        if (mSelfSingLyricView != null) {
+            mSelfSingLyricView.destroy();
         }
     }
 
     public void setRoomData(GrabRoomData roomData) {
-        mRoomData = roomData;
+        this.mRoomData = roomData;
+        if (mSelfSingLyricView != null) {
+            mSelfSingLyricView.setRoomData(roomData);
+        }
     }
 
     SelfSingCardView.Listener mListener;
 
     public void setListener(SelfSingCardView.Listener l) {
         mListener = l;
+        if (mSingCountDownView != null) {
+            mSingCountDownView.setListener(mListener);
+        }
     }
-
 
 }

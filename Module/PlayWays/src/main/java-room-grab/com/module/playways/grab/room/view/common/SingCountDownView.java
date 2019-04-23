@@ -9,11 +9,21 @@ import com.common.utils.HandlerTaskTimer;
 import com.common.view.countdown.CircleCountDownView;
 import com.component.busilib.view.BitmapTextView;
 import com.module.playways.R;
+import com.module.playways.grab.room.view.control.SelfSingCardView;
 
 /**
  * 演唱时的倒计时view
  */
 public class SingCountDownView extends RelativeLayout {
+
+    SelfSingCardView.Listener mListener;
+
+    ImageView mIvTag;
+    CircleCountDownView mCircleCountDownView;
+    BitmapTextView mCountDownTv;
+
+    HandlerTaskTimer mCounDownTask;
+
     public SingCountDownView(Context context) {
         super(context);
         init();
@@ -23,12 +33,6 @@ public class SingCountDownView extends RelativeLayout {
         super(context, attrs);
         init();
     }
-
-    ImageView mIvTag;
-    CircleCountDownView mCircleCountDownView;
-    BitmapTextView mCountDownTv;
-
-    HandlerTaskTimer mCounDownTask;
 
     private void init() {
         inflate(getContext(), R.layout.grab_sing_count_down_view_layout, this);
@@ -77,6 +81,9 @@ public class SingCountDownView extends RelativeLayout {
                         if (mCounDownTask != null) {
                             mCounDownTask.dispose();
                         }
+                        if (mListener != null) {
+                            mListener.onSelfSingOver();
+                        }
                     }
                 });
     }
@@ -91,5 +98,9 @@ public class SingCountDownView extends RelativeLayout {
 
     public void setTagImgRes(int resId) {
         mIvTag.setBackgroundResource(resId);
+    }
+
+    public void setListener(SelfSingCardView.Listener listener) {
+        this.mListener = listener;
     }
 }

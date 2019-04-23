@@ -1,208 +1,25 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:BitmapTextView="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:arcProgress="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:parentTag="android.widget.RelativeLayout">
 
-    <ImageView
-        android:id="@+id/iv_bg"
+    <com.module.playways.grab.room.view.normal.NormalSelfSingCardView
+        android:id="@+id/normal_sing_card_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_200_dp"
-        android:layout_marginLeft="@dimen/view_18_dp"
-        android:layout_marginTop="@dimen/view_125_dp"
-        android:layout_marginRight="@dimen/view_18_dp"
-        android:background="@drawable/self_lyric_bg" />
+        android:layout_height="wrap_content" />
 
-    <ScrollView
-        android:id="@+id/sv_lyric"
+    <com.module.playways.grab.room.view.pk.view.PKSingCardView
+        android:id="@+id/pk_sing_card_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_180_dp"
-        android:layout_marginLeft="@dimen/view_18_dp"
-        android:layout_marginTop="@dimen/view_125_dp"
-        android:layout_marginRight="@dimen/view_18_dp"
-        android:fadeScrollbars="false"
-        android:fadingEdge="none"
-        android:overScrollMode="never"
-        android:paddingTop="@dimen/view_45_dp"
-        android:paddingBottom="@dimen/view_10_dp"
-        android:scrollbarThumbVertical="@drawable/jindutiao">
+        android:layout_height="wrap_content" />
 
-        <TextView
-            android:id="@+id/tv_lyric"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:alpha="0.6"
-            android:gravity="center"
-            android:lineSpacingExtra="7dp"
-            android:paddingLeft="@dimen/view_40_dp"
-            android:paddingRight="@dimen/view_40_dp"
-            android:textColor="#364E7C"
-            android:textSize="@dimen/textsize_18_dp" />
-    </ScrollView>
-
-    <com.zq.lyrics.widget.ManyLyricsView
-        android:id="@+id/many_lyrics_view"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_150_dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="@dimen/view_20_dp"
-        android:layout_marginTop="@dimen/view_142_dp"
-        android:layout_marginRight="@dimen/view_20_dp"
-        android:visibility="visible"
-        app:ly_eable_scroll="false"
-        app:ly_eable_verbatim="true"
-        app:ly_high_light_paint_color_from="#DB4D84"
-        app:ly_high_light_paint_color_to="#DB4D84"
-        app:ly_high_light_paint_text_size="@dimen/textsize_dimen_18"
-        app:ly_high_light_sub_paint_color="#665945"
-        app:ly_outline_paint_color="#665945"
-        app:ly_paint_color_from="@color/black_trans_30"
-        app:ly_paint_color_to="@color/black_trans_30"
-        app:ly_paint_text_size="@dimen/textsize_dimen_16"
-        app:ly_top_line_num="2" />
-
-
-    <com.zq.lyrics.widget.VoiceScaleView
-        android:id="@+id/voice_scale_view"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_56_dp"
-        android:layout_below="@+id/many_lyrics_view"
-        android:layout_marginLeft="@dimen/view_20_dp"
-        android:layout_marginTop="@dimen/view_d_25_dp"
-        android:layout_marginRight="@dimen/view_20_dp"
-        android:visibility="visible"
-        app:leftBgPaintColor="@color/transparent"
-        app:leftPaintColor="@color/white"
-        app:redInnerpaintColor="#FFC15B"
-        app:redLinePaintColor="#D4AF72"
-        app:redOutpaintColor="#A9864E"
-        app:rightBgPaintColor="@color/transparent"
-        app:rightPaintColor="#D4AF72" />
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_194_dp"
-        android:layout_marginLeft="@dimen/view_16_dp"
-        android:layout_marginTop="@dimen/view_125_dp"
-        android:layout_marginRight="@dimen/view_16_dp"
-        android:background="@drawable/grab_pk_bg"
-        android:orientation="horizontal" />
-
-    <LinearLayout
-        android:id="@+id/pk_self_area"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_194_dp"
-        android:layout_marginLeft="@dimen/view_16_dp"
-        android:layout_marginTop="@dimen/view_125_dp"
-        android:layout_marginRight="@dimen/view_16_dp"
-        android:orientation="horizontal">
-
-        <RelativeLayout
-            android:layout_width="@dimen/view_0_dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/left_iv"
-                android:layout_width="@dimen/view_90_dp"
-                android:layout_height="@dimen/view_90_dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/view_32_dp" />
-
-            <com.common.view.ex.ExTextView
-                android:id="@+id/left_name"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/view_24_dp"
-                android:layout_below="@id/left_iv"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/view_24_dp"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:maxLines="1"
-                android:paddingLeft="@dimen/view_10_dp"
-                android:paddingRight="@dimen/view_10_dp"
-                android:singleLine="true"
-                android:textColor="@color/white_trans_80"
-                android:textSize="@dimen/textsize_14_dp"
-                app:bl_corners_radius="@dimen/view_12_dp"
-                app:bl_shape="rectangle"
-                app:bl_solid_color="@color/black_trans_20" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="@dimen/view_0_dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/right_iv"
-                android:layout_width="@dimen/view_90_dp"
-                android:layout_height="@dimen/view_90_dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/view_32_dp" />
-
-            <com.common.view.ex.ExTextView
-                android:id="@+id/right_name"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/view_24_dp"
-                android:layout_below="@id/right_iv"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/view_24_dp"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:maxLines="1"
-                android:paddingLeft="@dimen/view_10_dp"
-                android:paddingRight="@dimen/view_10_dp"
-                android:singleLine="true"
-                android:textColor="@color/white_trans_80"
-                android:textSize="@dimen/textsize_14_dp"
-                app:bl_corners_radius="@dimen/view_12_dp"
-                app:bl_shape="rectangle"
-                app:bl_solid_color="@color/black_trans_20" />
-
-        </RelativeLayout>
-
-    </LinearLayout>
-
-
-    <ImageView
-        android:id="@+id/iv_tag"
-        android:layout_width="@dimen/view_144_dp"
-        android:layout_height="@dimen/view_67_dp"
-        android:layout_alignTop="@id/chorus_other_area"
+    <com.module.playways.grab.room.view.common.SingCountDownView
+        android:id="@+id/sing_count_down_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/view_10_dp"
-        android:layout_marginTop="-34dp"
-        android:background="@drawable/ycdd_daojishi_pk" />
+        android:layout_marginTop="@dimen/view_98_dp" />
 
-    <com.common.view.countdown.CircleCountDownView
-        android:id="@+id/circle_count_down_view"
-        android:layout_width="@dimen/view_60_dp"
-        android:layout_height="@dimen/view_60_dp"
-        android:layout_alignLeft="@+id/iv_tag"
-        android:layout_alignTop="@+id/iv_tag"
-        android:layout_marginLeft="@dimen/view_3_dp"
-        android:layout_marginTop="@dimen/view_3_dp"
-        app:inner_color="#FFC15B"
-        app:inner_stroke_raduis="@dimen/view_24_dp"
-        app:inner_stroke_width="@dimen/view_4_dp" />
-
-    <FrameLayout
-        android:layout_width="@dimen/view_50_dp"
-        android:layout_height="@dimen/view_40_dp"
-        android:layout_alignLeft="@+id/iv_tag"
-        android:layout_alignTop="@+id/iv_tag"
-        android:layout_marginLeft="@dimen/view_6_dp"
-        android:layout_marginTop="@dimen/view_12_dp">
-
-        <com.component.busilib.view.BitmapTextView
-            android:id="@+id/count_down_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            BitmapTextView:has_shadow="true" />
-    </FrameLayout>
 </merge>
