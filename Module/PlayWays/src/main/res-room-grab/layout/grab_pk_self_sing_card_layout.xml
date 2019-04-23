@@ -5,8 +5,8 @@
     android:layout_height="wrap_content"
     tools:parentTag="android.widget.RelativeLayout">
 
-    <com.module.playways.grab.room.view.normal.NormalSelfSingCardView
-        android:id="@+id/normal_sing_card_view"
+    <com.module.playways.grab.room.view.normal.view.SelfSingLyricView
+        android:id="@+id/pk_self_sing_lyric_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
