@@ -10,6 +10,7 @@ import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
 import java.io.IOException;
+import java.lang.Float;
 import java.lang.Integer;
 import java.lang.Object;
 import java.lang.Override;
@@ -32,6 +33,8 @@ public final class QSPKInnerRoundInfo extends Message<QSPKInnerRoundInfo, QSPKIn
   public static final EQRoundOverReason DEFAULT_OVERREASON = EQRoundOverReason.ROR_UNKNOWN;
 
   public static final EQRoundResultType DEFAULT_RESULTTYPE = EQRoundResultType.ROT_UNKNOWN;
+
+  public static final Float DEFAULT_SPKFINALSCORE = 0.0f;
 
   /**
    * 抢唱成功的玩家id
@@ -98,15 +101,24 @@ public final class QSPKInnerRoundInfo extends Message<QSPKInnerRoundInfo, QSPKIn
   )
   private final EQRoundResultType resultType;
 
+  /**
+   * 最终得分
+   */
+  @WireField(
+      tag = 8,
+      adapter = "com.squareup.wire.ProtoAdapter#FLOAT"
+  )
+  private final Float SPKFinalScore;
+
   public QSPKInnerRoundInfo(Integer userID, Integer singBeginMs, Integer singEndMs,
       List<QBLightMsg> bLightInfos, List<QMLightMsg> mLightInfos, EQRoundOverReason overReason,
-      EQRoundResultType resultType) {
-    this(userID, singBeginMs, singEndMs, bLightInfos, mLightInfos, overReason, resultType, ByteString.EMPTY);
+      EQRoundResultType resultType, Float SPKFinalScore) {
+    this(userID, singBeginMs, singEndMs, bLightInfos, mLightInfos, overReason, resultType, SPKFinalScore, ByteString.EMPTY);
   }
 
   public QSPKInnerRoundInfo(Integer userID, Integer singBeginMs, Integer singEndMs,
       List<QBLightMsg> bLightInfos, List<QMLightMsg> mLightInfos, EQRoundOverReason overReason,
-      EQRoundResultType resultType, ByteString unknownFields) {
+      EQRoundResultType resultType, Float SPKFinalScore, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
     this.singBeginMs = singBeginMs;
@@ -115,6 +127,7 @@ public final class QSPKInnerRoundInfo extends Message<QSPKInnerRoundInfo, QSPKIn
     this.mLightInfos = Internal.immutableCopyOf("mLightInfos", mLightInfos);
     this.overReason = overReason;
     this.resultType = resultType;
+    this.SPKFinalScore = SPKFinalScore;
   }
 
   @Override
@@ -127,6 +140,7 @@ public final class QSPKInnerRoundInfo extends Message<QSPKInnerRoundInfo, QSPKIn
     builder.mLightInfos = Internal.copyOf("mLightInfos", mLightInfos);
     builder.overReason = overReason;
     builder.resultType = resultType;
+    builder.SPKFinalScore = SPKFinalScore;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -143,7 +157,8 @@ public final class QSPKInnerRoundInfo extends Message<QSPKInnerRoundInfo, QSPKIn
         && bLightInfos.equals(o.bLightInfos)
         && mLightInfos.equals(o.mLightInfos)
         && Internal.equals(overReason, o.overReason)
-        && Internal.equals(resultType, o.resultType);
+        && Internal.equals(resultType, o.resultType)
+        && Internal.equals(SPKFinalScore, o.SPKFinalScore);
   }
 
   @Override
@@ -158,6 +173,7 @@ public final class QSPKInnerRoundInfo extends Message<QSPKInnerRoundInfo, QSPKIn
       result = result * 37 + mLightInfos.hashCode();
       result = result * 37 + (overReason != null ? overReason.hashCode() : 0);
       result = result * 37 + (resultType != null ? resultType.hashCode() : 0);
+      result = result * 37 + (SPKFinalScore != null ? SPKFinalScore.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -173,6 +189,7 @@ public final class QSPKInnerRoundInfo extends Message<QSPKInnerRoundInfo, QSPKIn
     if (!mLightInfos.isEmpty()) builder.append(", mLightInfos=").append(mLightInfos);
     if (overReason != null) builder.append(", overReason=").append(overReason);
     if (resultType != null) builder.append(", resultType=").append(resultType);
+    if (SPKFinalScore != null) builder.append(", SPKFinalScore=").append(SPKFinalScore);
     return builder.replace(0, 2, "QSPKInnerRoundInfo{").append('}').toString();
   }
 
@@ -257,6 +274,16 @@ public final class QSPKInnerRoundInfo extends Message<QSPKInnerRoundInfo, QSPKIn
   }
 
   /**
+   * 最终得分
+   */
+  public Float getSPKFinalScore() {
+    if(SPKFinalScore==null){
+        return DEFAULT_SPKFINALSCORE;
+    }
+    return SPKFinalScore;
+  }
+
+  /**
    * 抢唱成功的玩家id
    */
   public boolean hasUserID() {
@@ -305,6 +332,13 @@ public final class QSPKInnerRoundInfo extends Message<QSPKInnerRoundInfo, QSPKIn
     return resultType!=null;
   }
 
+  /**
+   * 最终得分
+   */
+  public boolean hasSPKFinalScore() {
+    return SPKFinalScore!=null;
+  }
+
   public static final class Builder extends Message.Builder<QSPKInnerRoundInfo, Builder> {
     private Integer userID;
 
@@ -319,6 +353,8 @@ public final class QSPKInnerRoundInfo extends Message<QSPKInnerRoundInfo, QSPKIn
     private EQRoundOverReason overReason;
 
     private EQRoundResultType resultType;
+
+    private Float SPKFinalScore;
 
     public Builder() {
       bLightInfos = Internal.newMutableList();
@@ -383,9 +419,17 @@ public final class QSPKInnerRoundInfo extends Message<QSPKInnerRoundInfo, QSPKIn
       return this;
     }
 
+    /**
+     * 最终得分
+     */
+    public Builder setSPKFinalScore(Float SPKFinalScore) {
+      this.SPKFinalScore = SPKFinalScore;
+      return this;
+    }
+
     @Override
     public QSPKInnerRoundInfo build() {
-      return new QSPKInnerRoundInfo(userID, singBeginMs, singEndMs, bLightInfos, mLightInfos, overReason, resultType, super.buildUnknownFields());
+      return new QSPKInnerRoundInfo(userID, singBeginMs, singEndMs, bLightInfos, mLightInfos, overReason, resultType, SPKFinalScore, super.buildUnknownFields());
     }
   }
 
@@ -403,6 +447,7 @@ public final class QSPKInnerRoundInfo extends Message<QSPKInnerRoundInfo, QSPKIn
           + QMLightMsg.ADAPTER.asRepeated().encodedSizeWithTag(5, value.mLightInfos)
           + EQRoundOverReason.ADAPTER.encodedSizeWithTag(6, value.overReason)
           + EQRoundResultType.ADAPTER.encodedSizeWithTag(7, value.resultType)
+          + ProtoAdapter.FLOAT.encodedSizeWithTag(8, value.SPKFinalScore)
           + value.unknownFields().size();
     }
 
@@ -415,6 +460,7 @@ public final class QSPKInnerRoundInfo extends Message<QSPKInnerRoundInfo, QSPKIn
       QMLightMsg.ADAPTER.asRepeated().encodeWithTag(writer, 5, value.mLightInfos);
       EQRoundOverReason.ADAPTER.encodeWithTag(writer, 6, value.overReason);
       EQRoundResultType.ADAPTER.encodeWithTag(writer, 7, value.resultType);
+      ProtoAdapter.FLOAT.encodeWithTag(writer, 8, value.SPKFinalScore);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -445,6 +491,7 @@ public final class QSPKInnerRoundInfo extends Message<QSPKInnerRoundInfo, QSPKIn
             }
             break;
           }
+          case 8: builder.setSPKFinalScore(ProtoAdapter.FLOAT.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

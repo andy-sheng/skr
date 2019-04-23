@@ -1,5 +1,6 @@
 package com.module.playways.grab.room.model;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.common.log.MyLog;
 import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
@@ -30,6 +31,8 @@ public class SPkRoundInfoModel implements Serializable {
 
     private int overReason; // 结束的原因
     private int resultType; // 结果类型
+    @JSONField(name = "SPKFinalScore")
+    private float score;
 
     public static SPkRoundInfoModel parse(QSPKInnerRoundInfo roundInfo) {
         SPkRoundInfoModel roundInfoModel = new SPkRoundInfoModel();
@@ -48,7 +51,7 @@ public class SPkRoundInfoModel implements Serializable {
         for (QMLightMsg m : roundInfo.getMLightInfosList()) {
             roundInfoModel.getMLightInfos().add(MLightInfoModel.parse(m));
         }
-
+        roundInfoModel.setScore(roundInfo.getSPKFinalScore());
         return roundInfoModel;
     }
 
@@ -106,6 +109,14 @@ public class SPkRoundInfoModel implements Serializable {
 
     public void setResultType(int resultType) {
         this.resultType = resultType;
+    }
+
+    public float getScore() {
+        return score;
+    }
+
+    public void setScore(float score) {
+        this.score = score;
     }
 
     public void tryUpdateRoundInfoModel(SPkRoundInfoModel roundInfo, boolean notify, GrabRoundInfoModel grabRoundInfoModel) {
