@@ -1,12 +1,12 @@
 package com.module.msg.fragment;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -14,40 +14,32 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.clipboard.ClipboardUtils;
 import com.common.core.kouling.SkrKouLingUtils;
 import com.common.core.myinfo.MyUserInfoManager;
-import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.titlebar.CommonTitleBar;
-import com.common.view.viewpager.NestViewPager;
-import com.common.view.viewpager.SlidingTabLayout;
+import com.module.RouterConstants;
 import com.module.common.ICallback;
 import com.module.msg.IMessageFragment;
-import com.module.msg.friend.FriendFragment;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.relation.fragment.SearchFriendFragment;
-
-import java.util.HashMap;
 
 import io.rong.imkit.R;
 import io.rong.imkit.fragment.ConversationListFragment;
 import io.rong.imlib.model.Conversation;
 
-public class MessageFragment extends BaseFragment implements IMessageFragment {
-
-    public final static String TAG = "MessageFragment";
+public class MessgaeFragment2 extends BaseFragment implements IMessageFragment {
 
     RelativeLayout mMainActContainer;
     CommonTitleBar mTitlebar;
-    LinearLayout mContainer;
-    SlidingTabLayout mMessageTab;
-    View mSplitLine;
-    NestViewPager mMessageVp;
+    RelativeLayout mLatestFollowArea;
+    RelativeLayout mContent;
 
     PopupWindow mPopupWindow;  // 弹窗
     RelativeLayout mSearchArea;
@@ -59,27 +51,24 @@ public class MessageFragment extends BaseFragment implements IMessageFragment {
 
     Fragment mConversationListFragment; //获取融云的会话列表对象
 
-    HashMap<Integer, String> mTitleList = new HashMap<>();
-
     @Override
     public int initView() {
-        return R.layout.conversation_list_fragment;
-    }
-
-    @Override
-    public boolean useEventBus() {
-        return false;
+        return R.layout.conversation_list_fragment2;
     }
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
 
-        mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
-        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
-        mContainer = (LinearLayout) mRootView.findViewById(R.id.container);
-        mMessageTab = (SlidingTabLayout) mRootView.findViewById(R.id.message_tab);
-        mSplitLine = (View) mRootView.findViewById(R.id.split_line);
-        mMessageVp = (NestViewPager) mRootView.findViewById(R.id.message_vp);
+        mMainActContainer = (RelativeLayout)mRootView.findViewById(R.id.main_act_container);
+        mTitlebar = (CommonTitleBar)mRootView.findViewById(R.id.titlebar);
+        mLatestFollowArea = (RelativeLayout)mRootView.findViewById(R.id.latest_follow_area);
+        mContent = (RelativeLayout)mRootView.findViewById(R.id.content);
+
+        mConversationListFragment = initConversationList();
+        FragmentManager fragmentManager = getChildFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.content, mConversationListFragment);
+        transaction.commit();
 
         LinearLayout linearLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(com.component.busilib.R.layout.add_friend_pop_window_layout, null);
         mSearchArea = (RelativeLayout) linearLayout.findViewById(com.component.busilib.R.id.search_area);
@@ -111,9 +100,9 @@ public class MessageFragment extends BaseFragment implements IMessageFragment {
             }
         });
 
-        mTitlebar.getRightImageButton().setOnClickListener(new View.OnClickListener() {
+        mTitlebar.getRightImageButton().setOnClickListener(new DebounceViewClickListener() {
             @Override
-            public void onClick(View view) {
+            public void clickValid(View v) {
                 if (mPopupWindow != null && mPopupWindow.isShowing()) {
                     mPopupWindow.dismiss();
                 }
@@ -123,43 +112,14 @@ public class MessageFragment extends BaseFragment implements IMessageFragment {
             }
         });
 
-        mTitleList.put(0, "消息");
-        mTitleList.put(1, "好友");
-
-        mMessageTab.setCustomTabView(R.layout.relation_tab_view, R.id.tab_tv);
-        mMessageTab.setSelectedIndicatorColors(Color.parseColor("#FE8400"));
-        mMessageTab.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_TAB_IN_SECTION_CENTER);
-        mMessageTab.setIndicatorWidth(U.getDisplayUtils().dip2px(27));
-        mMessageTab.setIndicatorBottomMargin(U.getDisplayUtils().dip2px(5));
-        mMessageTab.setSelectedIndicatorThickness(U.getDisplayUtils().dip2px(4));
-        mMessageTab.setIndicatorCornorRadius(U.getDisplayUtils().dip2px(2));
-
-        FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getActivity().getSupportFragmentManager()) {
+        mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
-            public Fragment getItem(int position) {
-                MyLog.d(TAG, "getItem" + " position=" + position);
-                if (position == 0) {
-                    return initConversationList();
-                } else if (position == 1) {
-                    return new FriendFragment();
-                }
-                return null;
+            public void clickValid(View v) {
+                ARouter.getInstance()
+                        .build(RouterConstants.ACTIVITY_RELATION)
+                        .navigation();
             }
-
-            @Override
-            public int getCount() {
-                return mTitleList.size();
-            }
-
-            @Nullable
-            @Override
-            public CharSequence getPageTitle(int position) {
-                return mTitleList.get(position);
-            }
-        };
-
-        mMessageVp.setAdapter(fragmentPagerAdapter);
-        mMessageTab.setViewPager(mMessageVp);
+        });
     }
 
     private void showShareDialog() {
@@ -268,6 +228,11 @@ public class MessageFragment extends BaseFragment implements IMessageFragment {
         } else {
             return mConversationListFragment;
         }
+    }
+
+    @Override
+    public boolean useEventBus() {
+        return false;
     }
 
     @Override

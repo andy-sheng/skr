@@ -10,6 +10,7 @@ import com.module.RouterConstants;
 import com.module.common.ICallback;
 
 import com.module.msg.fragment.MessageFragment;
+import com.module.msg.fragment.MessgaeFragment2;
 
 @Route(path = RouterConstants.SERVICE_MSG, name = "消息服务")
 public class RongMsgServiceImpl implements IMsgService {
@@ -50,8 +51,8 @@ public class RongMsgServiceImpl implements IMsgService {
     }
 
     @Override
-    public void joinChatRoom(String roomId, int defMessageCount,ICallback callback) {
-        RongMsgManager.getInstance().joinChatRoom(roomId,defMessageCount, callback);
+    public void joinChatRoom(String roomId, int defMessageCount, ICallback callback) {
+        RongMsgManager.getInstance().joinChatRoom(roomId, defMessageCount, callback);
     }
 
     @Override
@@ -75,8 +76,8 @@ public class RongMsgServiceImpl implements IMsgService {
     }
 
     @Override
-    public void sendSpecialDebugMessage(String targetId, int messageType,String content, ICallback callback) {
-        RongMsgManager.getInstance().sendSpecialDebugMessage(targetId, messageType,content, callback);
+    public void sendSpecialDebugMessage(String targetId, int messageType, String content, ICallback callback) {
+        RongMsgManager.getInstance().sendSpecialDebugMessage(targetId, messageType, content, callback);
     }
 
     @Override
@@ -91,12 +92,12 @@ public class RongMsgServiceImpl implements IMsgService {
 
     @Override
     public IMessageFragment getMessageFragment() {
-        return new MessageFragment();
+        return new MessgaeFragment2();
     }
 
     @Override
-    public boolean startPrivateChat(Context context, String targetId, String title,boolean isFriend) {
-        return RongMsgManager.getInstance().startPrivateChat(context, targetId, title,isFriend);
+    public boolean startPrivateChat(Context context, String targetId, String title, boolean isFriend) {
+        return RongMsgManager.getInstance().startPrivateChat(context, targetId, title, isFriend);
     }
 
     @Override
