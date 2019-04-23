@@ -1,15 +1,22 @@
 package com.module.playways.grab.room.view.pk;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
+import android.view.View;
 import android.view.animation.Animation;
+import android.view.animation.OvershootInterpolator;
+import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.common.anim.svga.SvgaParserAdapter;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
@@ -20,8 +27,12 @@ import com.component.busilib.view.BitmapTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
+import com.module.playways.grab.room.top.CircleAnimationView;
 import com.module.rank.R;
+import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGAImageView;
+import com.opensource.svgaplayer.SVGAParser;
+import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.zq.live.proto.Room.EQRoundStatus;
 
 
@@ -45,6 +56,8 @@ public class PKOthersSingCardView extends RelativeLayout {
     LinearLayout mPkOtherArea;
     SimpleDraweeView mLeftIv;
     ExTextView mLeftName;
+    CircleAnimationView mLeftCircleAnimationView;
+    CircleAnimationView mRightCircleAnimationView;
     SimpleDraweeView mRightIv;
     ExTextView mRightName;
     ImageView mIvTag;
@@ -53,6 +66,8 @@ public class PKOthersSingCardView extends RelativeLayout {
 
     TranslateAnimation mEnterTranslateAnimation; // 飞入的进场动画
     TranslateAnimation mLeaveTranslateAnimation; // 飞出的离场动画
+    ScaleAnimation mScaleAnimation;      // 头像放大动画
+    ValueAnimator mValueAnimator;       // 画圆圈的属性动画
 
     boolean mHasPlayFullAnimation = false;
     boolean mCanStartFlag = false;
@@ -67,6 +82,8 @@ public class PKOthersSingCardView extends RelativeLayout {
     };
 
     GrabRoomData mGrabRoomData;
+    UserInfoModel mLeftUserInfoModel;
+    UserInfoModel mRightUserInfoModel;
 
     public PKOthersSingCardView(Context context) {
         super(context);
@@ -85,13 +102,16 @@ public class PKOthersSingCardView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.grab_pk_other_sing_card_layout, this);
-        mLeftSingSvga = (SVGAImageView)findViewById(R.id.left_sing_svga);
-        mRightSingSvga = (SVGAImageView)findViewById(R.id.right_sing_svga);
+        mLeftSingSvga = (SVGAImageView) findViewById(R.id.left_sing_svga);
+        mRightSingSvga = (SVGAImageView) findViewById(R.id.right_sing_svga);
         mPkOtherArea = (LinearLayout) findViewById(R.id.pk_other_area);
         mLeftIv = (SimpleDraweeView) findViewById(R.id.left_iv);
         mLeftName = (ExTextView) findViewById(R.id.left_name);
+        mLeftCircleAnimationView = (CircleAnimationView) findViewById(R.id.left_circle_animation_view);
         mRightIv = (SimpleDraweeView) findViewById(R.id.right_iv);
         mRightName = (ExTextView) findViewById(R.id.right_name);
+        mRightCircleAnimationView = (CircleAnimationView) findViewById(R.id.right_circle_animation_view);
+
         mIvTag = (ImageView) findViewById(R.id.iv_tag);
         mCircleCountDownView = (CircleCountDownView) findViewById(R.id.circle_count_down_view);
         mCountDownTv = (BitmapTextView) findViewById(R.id.count_down_tv);
@@ -101,9 +121,13 @@ public class PKOthersSingCardView extends RelativeLayout {
         mRightSingSvga.setTranslationX(offsetX);
     }
 
+
     public void bindData(GrabRoomData roomData, UserInfoModel left, UserInfoModel right) {
         if (roomData != null && left != null && right != null) {
             this.mGrabRoomData = roomData;
+            this.mLeftUserInfoModel = left;
+            this.mRightUserInfoModel = right;
+
             mHasPlayFullAnimation = false;
             mUiHandler.removeCallbacksAndMessages(null);
             setVisibility(VISIBLE);
@@ -127,12 +151,153 @@ public class PKOthersSingCardView extends RelativeLayout {
         }
     }
 
+
     private void animationGo() {
         if (mEnterTranslateAnimation == null) {
             mEnterTranslateAnimation = new TranslateAnimation(-U.getDisplayUtils().getScreenWidth(), 0.0F, 0.0F, 0.0F);
             mEnterTranslateAnimation.setDuration(200);
         }
+        mEnterTranslateAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                // TODO: 2019/4/23 先播放左边的动画，后面都是一体的
+                playScaleAnimation(mLeftUserInfoModel.getUserId());
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
         this.startAnimation(mEnterTranslateAnimation);
+
+    }
+
+    private void playScaleAnimation(int uid) {
+        if (mScaleAnimation == null) {
+            mScaleAnimation = new ScaleAnimation(1.0f, 1.35f, 1f, 1.35f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+            mScaleAnimation.setInterpolator(new OvershootInterpolator());
+            mScaleAnimation.setFillAfter(true);
+            mScaleAnimation.setDuration(500);
+        }
+        mScaleAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                playCircleAnimation(uid);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        if (uid == mLeftUserInfoModel.getUserId()) {
+            mLeftIv.clearAnimation();
+            mLeftIv.startAnimation(mScaleAnimation);
+        } else if (uid == mRightUserInfoModel.getUserId()) {
+            mRightIv.clearAnimation();
+            mRightIv.startAnimation(mScaleAnimation);
+        }
+    }
+
+
+    private void playCircleAnimation(int uid) {
+        mValueAnimator = new ValueAnimator();
+        mValueAnimator.setIntValues(0, 100);
+        mValueAnimator.setDuration(495);
+        mValueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                int p = (int) animation.getAnimatedValue();
+                if (uid == mLeftUserInfoModel.getUserId()) {
+                    mLeftCircleAnimationView.setProgress(p);
+                } else if (uid == mRightUserInfoModel.getUserId()) {
+                    mRightCircleAnimationView.setProgress(p);
+                }
+
+            }
+        });
+        mValueAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                if (uid == mLeftUserInfoModel.getUserId()) {
+                    mLeftCircleAnimationView.setVisibility(VISIBLE);
+                } else if (uid == mRightUserInfoModel.getUserId()) {
+                    mRightCircleAnimationView.setVisibility(VISIBLE);
+                }
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                super.onAnimationCancel(animation);
+                if (uid == mLeftUserInfoModel.getUserId()) {
+                    mLeftCircleAnimationView.setVisibility(GONE);
+                } else if (uid == mRightUserInfoModel.getUserId()) {
+                    mRightCircleAnimationView.setVisibility(GONE);
+                }
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                if (uid == mLeftUserInfoModel.getUserId()) {
+                    mLeftCircleAnimationView.setVisibility(GONE);
+                } else if (uid == mRightUserInfoModel.getUserId()) {
+                    mRightCircleAnimationView.setVisibility(GONE);
+                }
+                playSingAnimation(uid);
+            }
+        });
+        mValueAnimator.start();
+    }
+
+    private void playSingAnimation(int uid) {
+        if (uid == mLeftUserInfoModel.getUserId()) {
+            playSingAnimation(mLeftSingSvga);
+        } else if (uid == mRightUserInfoModel.getUserId()) {
+            playSingAnimation(mRightSingSvga);
+        }
+    }
+
+    // 播放声纹动画
+    private void playSingAnimation(SVGAImageView svgaImageView) {
+        if (svgaImageView == null) {
+            MyLog.w(TAG, "playSingAnimation" + " svgaImageView=" + svgaImageView);
+            return;
+        }
+
+        if (svgaImageView != null && svgaImageView.getVisibility() == VISIBLE) {
+            // 正在播放
+            return;
+        }
+
+        svgaImageView.setVisibility(View.VISIBLE);
+        svgaImageView.setLoops(-1);
+
+        SvgaParserAdapter.parse("grab_main_stage.svga", new SVGAParser.ParseCompletion() {
+            @Override
+            public void onComplete(SVGAVideoEntity videoItem) {
+                SVGADrawable drawable = new SVGADrawable(videoItem);
+                svgaImageView.setImageDrawable(drawable);
+                svgaImageView.startAnimation();
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
     }
 
     /**
@@ -152,6 +317,7 @@ public class PKOthersSingCardView extends RelativeLayout {
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
+                    destoryAnimation();
                     clearAnimation();
                     setVisibility(GONE);
                 }
@@ -163,6 +329,7 @@ public class PKOthersSingCardView extends RelativeLayout {
             });
             this.startAnimation(mLeaveTranslateAnimation);
         } else {
+            destoryAnimation();
             clearAnimation();
             setVisibility(GONE);
         }
@@ -230,6 +397,10 @@ public class PKOthersSingCardView extends RelativeLayout {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+        destoryAnimation();
+    }
+
+    private void destoryAnimation() {
         if (mEnterTranslateAnimation != null) {
             mEnterTranslateAnimation.setAnimationListener(null);
             mEnterTranslateAnimation.cancel();
@@ -238,6 +409,22 @@ public class PKOthersSingCardView extends RelativeLayout {
             mLeaveTranslateAnimation.setAnimationListener(null);
             mLeaveTranslateAnimation.cancel();
         }
-
+        if (mScaleAnimation != null) {
+            mScaleAnimation.setAnimationListener(null);
+            mScaleAnimation.cancel();
+        }
+        if (mValueAnimator != null) {
+            mValueAnimator.removeAllListeners();
+            mValueAnimator.removeAllUpdateListeners();
+            mValueAnimator.cancel();
+        }
+        if (mLeftSingSvga != null) {
+            mLeftSingSvga.setCallback(null);
+            mLeftSingSvga.stopAnimation(true);
+        }
+        if (mRightSingSvga != null) {
+            mRightSingSvga.setCallback(null);
+            mRightSingSvga.stopAnimation(true);
+        }
     }
 }

@@ -14,14 +14,14 @@
         android:layout_marginTop="@dimen/view_125_dp"
         android:layout_marginRight="@dimen/view_16_dp"
         android:background="@drawable/grab_pk_bg"
-        android:orientation="horizontal"/>
+        android:orientation="horizontal" />
 
     <com.opensource.svgaplayer.SVGAImageView
         android:id="@+id/left_sing_svga"
         android:layout_width="@dimen/view_360_dp"
         android:layout_height="@dimen/view_360_dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_22_dp"
+        android:layout_marginTop="@dimen/view_26_dp"
         android:visibility="gone"
         app:antiAlias="true"
         app:autoPlay="false"
@@ -32,7 +32,7 @@
         android:layout_width="@dimen/view_360_dp"
         android:layout_height="@dimen/view_360_dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_22_dp"
+        android:layout_marginTop="@dimen/view_26_dp"
         android:visibility="gone"
         app:antiAlias="true"
         app:autoPlay="false"
@@ -54,29 +54,36 @@
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/left_iv"
-                android:layout_width="@dimen/view_90_dp"
-                android:layout_height="@dimen/view_90_dp"
+                android:layout_width="@dimen/view_68_dp"
+                android:layout_height="@dimen/view_68_dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/view_32_dp" />
+                android:layout_marginTop="@dimen/view_47_dp" />
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/left_name"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/view_24_dp"
-                android:layout_centerHorizontal="true"
                 android:layout_below="@id/left_iv"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_30_dp"
                 android:ellipsize="end"
                 android:gravity="center"
                 android:maxLines="1"
                 android:paddingLeft="@dimen/view_10_dp"
                 android:paddingRight="@dimen/view_10_dp"
                 android:singleLine="true"
-                android:layout_marginTop="@dimen/view_24_dp"
                 android:textColor="@color/white_trans_80"
                 android:textSize="@dimen/textsize_14_dp"
                 app:bl_corners_radius="@dimen/view_12_dp"
                 app:bl_shape="rectangle"
                 app:bl_solid_color="@color/black_trans_20" />
+
+            <com.module.playways.grab.room.top.CircleAnimationView
+                android:id="@+id/left_circle_animation_view"
+                android:layout_width="@dimen/view_100_dp"
+                android:layout_height="@dimen/view_100_dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_30_dp" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -86,29 +93,36 @@
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/right_iv"
-                android:layout_width="@dimen/view_90_dp"
-                android:layout_height="@dimen/view_90_dp"
+                android:layout_width="@dimen/view_68_dp"
+                android:layout_height="@dimen/view_68_dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/view_32_dp" />
+                android:layout_marginTop="@dimen/view_47_dp" />
 
             <com.common.view.ex.ExTextView
                 android:id="@+id/right_name"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/view_24_dp"
-                android:layout_centerHorizontal="true"
                 android:layout_below="@id/right_iv"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_24_dp"
                 android:ellipsize="end"
                 android:gravity="center"
                 android:maxLines="1"
                 android:paddingLeft="@dimen/view_10_dp"
                 android:paddingRight="@dimen/view_10_dp"
                 android:singleLine="true"
-                android:layout_marginTop="@dimen/view_24_dp"
                 android:textColor="@color/white_trans_80"
                 android:textSize="@dimen/textsize_14_dp"
                 app:bl_corners_radius="@dimen/view_12_dp"
                 app:bl_shape="rectangle"
                 app:bl_solid_color="@color/black_trans_20" />
+
+            <com.module.playways.grab.room.top.CircleAnimationView
+                android:id="@+id/right_circle_animation_view"
+                android:layout_width="@dimen/view_100_dp"
+                android:layout_height="@dimen/view_100_dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_33_dp" />
 
         </RelativeLayout>
 
@@ -119,7 +133,7 @@
         android:id="@+id/iv_tag"
         android:layout_width="@dimen/view_144_dp"
         android:layout_height="@dimen/view_67_dp"
-        android:layout_alignTop="@id/chorus_other_area"
+        android:layout_alignTop="@id/pk_other_area"
         android:layout_marginLeft="@dimen/view_10_dp"
         android:layout_marginTop="-34dp"
         android:background="@drawable/ycdd_daojishi_pk" />
