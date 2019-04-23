@@ -109,9 +109,7 @@ public class PKSingCardView extends RelativeLayout {
         }
         mLeftUserInfoModel = null;
         mRightUserInfoModel = null;
-//        List<SPkRoundInfoModel> list = grabRoundInfoModel.getsPkRoundInfoModels();
-        // TODO: 2019/4/23 just for test
-        List<ChorusRoundInfoModel> list = grabRoundInfoModel.getChorusRoundInfoModels();
+        List<SPkRoundInfoModel> list = grabRoundInfoModel.getsPkRoundInfoModels();
         if (list != null && list.size() >= 2) {
             mLeftUserInfoModel = mGrabRoomData.getUserInfo(list.get(0).getUserID());
             mRightUserInfoModel = mGrabRoomData.getUserInfo(list.get(1).getUserID());
