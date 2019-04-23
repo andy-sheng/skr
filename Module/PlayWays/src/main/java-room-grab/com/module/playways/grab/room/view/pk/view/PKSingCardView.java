@@ -248,7 +248,7 @@ public class PKSingCardView extends RelativeLayout {
                 }
 
                 if (mAnimationListerner != null) {
-                    mAnimationListerner.onNoSVGAAnimationEnd();
+                    mAnimationListerner.onAnimationEndExcludeSvga();
                 }
 
                 if (mIsPlaySVGA) {
@@ -333,6 +333,9 @@ public class PKSingCardView extends RelativeLayout {
     }
 
     public interface AnimationListerner {
-        void onNoSVGAAnimationEnd();
+        /**
+         * 动画播放完毕，不包括svga
+         */
+        void onAnimationEndExcludeSvga();
     }
 }

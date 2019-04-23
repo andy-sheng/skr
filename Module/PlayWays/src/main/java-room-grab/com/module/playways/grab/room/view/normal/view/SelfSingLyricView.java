@@ -65,9 +65,9 @@ public class SelfSingLyricView extends RelativeLayout {
         inflate(getContext(), R.layout.grab_self_sing_lyric_layout, this);
 
         mTvLyric = findViewById(R.id.tv_lyric);
-        mManyLyricsView = (ManyLyricsView) findViewById(R.id.many_lyrics_view);
-        mVoiceScaleView = (VoiceScaleView) findViewById(R.id.voice_scale_view);
-        mIvChallengeIcon = (ImageView) findViewById(R.id.iv_challenge_icon);
+        mManyLyricsView = findViewById(R.id.many_lyrics_view);
+        mVoiceScaleView = findViewById(R.id.voice_scale_view);
+        mIvChallengeIcon = findViewById(R.id.iv_challenge_icon);
     }
 
     public void initLyric() {

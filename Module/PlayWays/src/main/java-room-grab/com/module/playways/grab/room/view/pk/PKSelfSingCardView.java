@@ -37,7 +37,6 @@ public class PKSelfSingCardView extends RelativeLayout {
 
     TranslateAnimation mEnterTranslateAnimation; // 飞入的进场动画
     TranslateAnimation mLeaveTranslateAnimation; // 飞出的离场动画
-    boolean isPlaySVGA = false;    //是否播放svga
 
     public PKSelfSingCardView(Context context) {
         super(context);
@@ -66,7 +65,6 @@ public class PKSelfSingCardView extends RelativeLayout {
         if (grabRoundInfoModel == null) {
             return;
         }
-        isPlaySVGA = false;
         mLeftUserInfoModel = null;
         mRightUserInfoModel = null;
         List<SPkRoundInfoModel> list = grabRoundInfoModel.getsPkRoundInfoModels();
@@ -81,16 +79,22 @@ public class PKSelfSingCardView extends RelativeLayout {
             if (grabRoundInfoModel.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()) {
                 // pk第一个人唱
                 mPkSingCardView.setVisibility(VISIBLE);
-                animationGo();
+                playCardEnterAnimation();
             } else if (grabRoundInfoModel.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
                 if (mRightUserInfoModel != null) {
-                    playAnimation(mRightUserInfoModel.getUserId());
+                    mPkSingCardView.setVisibility(VISIBLE);
+                    playIndicateAnimation(mRightUserInfoModel.getUserId());
                 }
             }
         }
     }
 
-    private void playAnimation(int userId) {
+    /**
+     * 播放指示谁唱的animation
+     *
+     * @param userId
+     */
+    private void playIndicateAnimation(int userId) {
         GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
         if (infoModel == null) {
             return;
@@ -98,26 +102,11 @@ public class PKSelfSingCardView extends RelativeLayout {
         int totalMs = infoModel.getSingTotalMs();
         mSingCountDownView.startPlay(0, totalMs, false);
 
-        if (userId == MyUserInfoManager.getInstance().getUid()) {
-            // TODO: 2019/4/23  自己唱，不播放SVGA, 加载解析歌词
-            isPlaySVGA = false;
-        } else {
-            // TODO: 2019/4/23 别人唱，播放SVGA
-            isPlaySVGA = true;
-        }
-        mPkSingCardView.playScaleAnimation(userId, isPlaySVGA, new PKSingCardView.AnimationListerner() {
+        mPkSingCardView.playScaleAnimation(userId, true, new PKSingCardView.AnimationListerner() {
             @Override
-            public void onNoSVGAAnimationEnd() {
-                if (isPlaySVGA) {
-                    // TODO: 2019/4/23 直播倒计时
-                    starCounDown();
-                } else {
-                    // TODO: 2019/4/23 大幕拉开的动画，歌词和倒计时可以同时进行
-                    // TODO: 2019/4/23 缺少一个动画
-                    mPkSingCardView.setVisibility(GONE);
-                    playRealLyric();
-                    starCounDown();
-                }
+            public void onAnimationEndExcludeSvga() {
+                mPkSingCardView.setVisibility(GONE);
+                playRealLyric();
             }
         });
 
@@ -138,9 +127,6 @@ public class PKSelfSingCardView extends RelativeLayout {
 
         int totalTs = infoModel.getSingTotalMs();
         boolean withAcc = false;
-        if (infoModel.isAccRound() && mRoomData != null && mRoomData.isAccEnable()) {
-            withAcc = true;
-        }
         if (RoomDataUtils.isPKRound(mRoomData)) {
             // pk模式
             withAcc = true;
@@ -153,39 +139,13 @@ public class PKSelfSingCardView extends RelativeLayout {
             mSingCountDownView.setTagImgRes(R.drawable.ycdd_daojishi_banzou);
             mPkSelfSingLyricView.playWithAcc(infoModel, totalTs);
         }
-    }
-
-    private void starCounDown() {
-        GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
-        if (infoModel == null) {
-            MyLog.d(TAG, "infoModel 是空的");
-            return;
-        }
-
-        mPkSelfSingLyricView.initLyric();
-        if (infoModel.getMusic() == null) {
-            MyLog.d(TAG, "songModel 是空的");
-            return;
-        }
-
-        int totalTs = infoModel.getSingTotalMs();
         mSingCountDownView.startPlay(0, totalTs, true);
-    }
-
-    public void setRoomData(GrabRoomData roomData) {
-        mRoomData = roomData;
-        if (mPkSelfSingLyricView != null) {
-            mPkSelfSingLyricView.setRoomData(roomData);
-        }
-        if (mPkSingCardView != null) {
-            mPkSingCardView.setRoomData(roomData);
-        }
     }
 
     /**
      * 入场动画
      */
-    private void animationGo() {
+    private void playCardEnterAnimation() {
         if (mEnterTranslateAnimation == null) {
             mEnterTranslateAnimation = new TranslateAnimation(-U.getDisplayUtils().getScreenWidth(), 0.0F, 0.0F, 0.0F);
             mEnterTranslateAnimation.setDuration(200);
@@ -199,7 +159,7 @@ public class PKSelfSingCardView extends RelativeLayout {
             @Override
             public void onAnimationEnd(Animation animation) {
                 if (mLeftUserInfoModel != null) {
-                    playAnimation(mLeftUserInfoModel.getUserId());
+                    playIndicateAnimation(mLeftUserInfoModel.getUserId());
                 }
             }
 
@@ -209,6 +169,16 @@ public class PKSelfSingCardView extends RelativeLayout {
             }
         });
         this.startAnimation(mEnterTranslateAnimation);
+    }
+
+    public void setRoomData(GrabRoomData roomData) {
+        mRoomData = roomData;
+        if (mPkSelfSingLyricView != null) {
+            mPkSelfSingLyricView.setRoomData(roomData);
+        }
+        if (mPkSingCardView != null) {
+            mPkSingCardView.setRoomData(roomData);
+        }
     }
 
     /**

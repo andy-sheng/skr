@@ -83,10 +83,6 @@ public class NormalSelfSingCardView extends RelativeLayout {
         if (infoModel.isAccRound() && mRoomData != null && mRoomData.isAccEnable()) {
             withAcc = true;
         }
-        if (RoomDataUtils.isPKRound(mRoomData)) {
-            // pk模式
-            withAcc = true;
-        }
         if (!withAcc) {
             mSingCountDownView.setTagImgRes(R.drawable.ycdd_daojishi_qingchang);
             mSelfSingLyricView.playWithNoAcc(infoModel.getMusic());
@@ -94,12 +90,9 @@ public class NormalSelfSingCardView extends RelativeLayout {
             mSingCountDownView.setTagImgRes(R.drawable.ycdd_daojishi_banzou);
             mSelfSingLyricView.playWithAcc(infoModel, totalTs);
         }
-        starCounDown(totalTs);
+        mSingCountDownView.startPlay(0, totalTs, true);
     }
 
-    private void starCounDown(int totalMs) {
-        mSingCountDownView.startPlay(0, totalMs, true);
-    }
 
     @Override
     protected void onDetachedFromWindow() {

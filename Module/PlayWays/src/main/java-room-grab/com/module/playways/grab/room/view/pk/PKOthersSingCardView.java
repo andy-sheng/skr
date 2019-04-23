@@ -125,7 +125,7 @@ public class PKOthersSingCardView extends RelativeLayout {
         } else {
             mPkCardView.playScaleAnimation(userId, true, new PKSingCardView.AnimationListerner() {
                 @Override
-                public void onNoSVGAAnimationEnd() {
+                public void onAnimationEndExcludeSvga() {
                     // 开始倒计时
                     mCountDownStatus = COUNT_DOWN_STATUS_PLAYING;
                     countDown("动画播放完毕");
