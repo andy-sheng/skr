@@ -18,6 +18,7 @@ import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabChorusUserStatusChangeEvent;
 import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
+import com.module.playways.grab.room.view.common.SingCountDownView;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.module.playways.room.song.model.SongModel;
 import com.module.rank.R;
@@ -43,17 +44,12 @@ public class ChorusSelfSingCardView extends RelativeLayout {
 
     RecyclerView mLyricRecycleView;
     ChorusSelfLyricAdapter mChorusSelfLyricAdapter;
-
-    ImageView mIvTag;
-    CircleCountDownView mCircleCountDownView;
-    BitmapTextView mCountDownTv;
+    SingCountDownView mSingCountDownView;
 
     GrabRoomData mRoomData;
     SongModel mSongModel;
 
     Disposable mDisposable;
-
-    HandlerTaskTimer mCounDownTask;
 
     public static class DH {
         UserInfoModel mUserInfoModel;
@@ -88,10 +84,7 @@ public class ChorusSelfSingCardView extends RelativeLayout {
     private void init() {
         inflate(getContext(), R.layout.grab_chorus_self_sing_card_layout, this);
         mLyricRecycleView = (RecyclerView) findViewById(R.id.lyric_recycle_view);
-        mIvTag = (ImageView) this.findViewById(R.id.iv_tag);
-        mCircleCountDownView = (CircleCountDownView) this.findViewById(R.id.circle_count_down_view);
-        mCountDownTv = (BitmapTextView) this.findViewById(R.id.count_down_tv);
-
+         mSingCountDownView = findViewById(R.id.sing_count_down_view);
         mLyricRecycleView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         mChorusSelfLyricAdapter = new ChorusSelfLyricAdapter(mLeft, mRight);
         mLyricRecycleView.setAdapter(mChorusSelfLyricAdapter);
@@ -121,7 +114,7 @@ public class ChorusSelfSingCardView extends RelativeLayout {
             }
             mSongModel = infoModel.getMusic();
             playWithNoAcc();
-            starCounDown(infoModel.getSingTotalMs());
+            mSingCountDownView.startPlay(0,infoModel.getSingTotalMs(),true);
         }
     }
 
@@ -159,38 +152,6 @@ public class ChorusSelfSingCardView extends RelativeLayout {
                 });
     }
 
-
-    private void starCounDown(int totalMs) {
-        mCountDownTv.setVisibility(VISIBLE);
-        mCircleCountDownView.go(0, totalMs);
-        int counDown = totalMs / 1000;
-        mCounDownTask = HandlerTaskTimer.newBuilder()
-                .interval(1000)
-                .take(counDown)
-                .start(new HandlerTaskTimer.ObserverW() {
-                    @Override
-                    public void onNext(Integer integer) {
-                        mCountDownTv.setText((counDown - integer) + "");
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        super.onComplete();
-                        if (mListener != null) {
-                            mListener.onSelfSingOver();
-                        }
-                        stopCounDown();
-//                        mCountDownTv.setVisibility(GONE);
-                    }
-                });
-    }
-
-    private void stopCounDown() {
-        if (mCounDownTask != null) {
-            mCounDownTask.dispose();
-        }
-    }
-
     public void setListener(SelfSingCardView.Listener listener) {
         mListener = listener;
     }
@@ -198,7 +159,6 @@ public class ChorusSelfSingCardView extends RelativeLayout {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        stopCounDown();
         EventBus.getDefault().unregister(this);
     }
 

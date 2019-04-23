@@ -28,6 +28,7 @@ import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabChorusUserStatusChangeEvent;
 import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
+import com.module.playways.grab.room.view.common.SingCountDownView;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGAImageView;
@@ -51,11 +52,10 @@ public class ChorusOthersSingCardView extends RelativeLayout {
     static final int MSG_LEFT_SPEAK_OVER = 2;
     static final int MSG_RIGHT_SPEAK_OVER = 3;
 
-    final static int COUNT_DOWN_STATUS_INIT = 1;
     final static int COUNT_DOWN_STATUS_WAIT = 2;
     final static int COUNT_DOWN_STATUS_PLAYING = 3;
 
-    int mCountDownStatus = COUNT_DOWN_STATUS_INIT;
+    int mCountDownStatus = COUNT_DOWN_STATUS_WAIT;
 
     SVGAImageView mLeftSingSvga;
     SVGAImageView mRightSingSvga;
@@ -69,22 +69,18 @@ public class ChorusOthersSingCardView extends RelativeLayout {
     ExTextView mRightStatus;
     ExTextView mRightName;
 
-    ImageView mIvTag;
-    CircleCountDownView mCircleCountDownView;
-    BitmapTextView mCountDownTv;
+    SingCountDownView mSingCountDownView;
 
     TranslateAnimation mEnterTranslateAnimation; // 飞入的进场动画
     TranslateAnimation mLeaveTranslateAnimation; // 飞出的离场动画
 
     boolean mHasPlayFullAnimation = false;
-    boolean mCanStartFlag = false;
-
-    HandlerTaskTimer mCounDownTask;
 
     Handler mUiHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == MSG_ENSURE_PLAY) {
+                mCountDownStatus = COUNT_DOWN_STATUS_PLAYING;
                 tryStartCountDown();
             } else if (msg.what == MSG_LEFT_SPEAK_OVER) {
                 stopSingAnimation(mLeftSingSvga);
@@ -125,9 +121,7 @@ public class ChorusOthersSingCardView extends RelativeLayout {
         mRightIv = (SimpleDraweeView) findViewById(R.id.right_iv);
         mRightStatus = (ExTextView) findViewById(R.id.right_status);
         mRightName = (ExTextView) findViewById(R.id.right_name);
-        mIvTag = (ImageView) findViewById(R.id.iv_tag);
-        mCircleCountDownView = (CircleCountDownView) findViewById(R.id.circle_count_down_view);
-        mCountDownTv = (BitmapTextView) findViewById(R.id.count_down_tv);
+        mSingCountDownView = findViewById(R.id.sing_count_down_view);
 
         int offsetX = (U.getDisplayUtils().getScreenWidth() / 2 - U.getDisplayUtils().dip2px(16)) / 2;
         mLeftSingSvga.setTranslationX(-offsetX);
@@ -176,7 +170,7 @@ public class ChorusOthersSingCardView extends RelativeLayout {
             animationGo();
 
             mCountDownStatus = COUNT_DOWN_STATUS_WAIT;
-            mCircleCountDownView.setProgress(0);
+            mSingCountDownView.reset();
 
             GrabRoundInfoModel grabRoundInfoModel = mGrabRoomData.getRealRoundInfo();
             if (grabRoundInfoModel == null) {
@@ -184,11 +178,10 @@ public class ChorusOthersSingCardView extends RelativeLayout {
             }
 
             if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.isEnterInSingStatus()) {
-                countDown("中途进来");
+                mCountDownStatus = COUNT_DOWN_STATUS_PLAYING;
+                countDown("中途进来,直接播放");
             } else {
-                mCircleCountDownView.cancelAnim();
-                mCircleCountDownView.setMax(360);
-                mCircleCountDownView.setProgress(0);
+                mSingCountDownView.startPlay(0, grabRoundInfoModel.getSingTotalMs(), false);
                 mUiHandler.removeMessages(MSG_ENSURE_PLAY);
                 mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_PLAY, 3000);
             }
@@ -250,26 +243,10 @@ public class ChorusOthersSingCardView extends RelativeLayout {
 
     public void tryStartCountDown() {
         MyLog.d(TAG, "tryStartCountDown");
-        mCanStartFlag = true;
         mUiHandler.removeMessages(MSG_ENSURE_PLAY);
         if (mCountDownStatus == COUNT_DOWN_STATUS_WAIT) {
             mCountDownStatus = COUNT_DOWN_STATUS_PLAYING;
-            countDownAfterAnimation("tryStartCountDown");
-        }
-    }
-
-    //给所有倒计时加上一个前面到满的动画
-    private void countDownAfterAnimation(String from) {
-        MyLog.d(TAG, "countDownAfterAnimation from=" + from);
-        GrabRoundInfoModel grabRoundInfoModel = mGrabRoomData.getRealRoundInfo();
-        if (grabRoundInfoModel == null) {
-            return;
-        }
-
-        if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == EQRoundStatus.QRS_SING.getValue()) {
-            countDown("中途进来");
-        } else {
-            countDown("else full Animation");
+            countDown("tryStartCountDown");
         }
     }
 
@@ -280,19 +257,6 @@ public class ChorusOthersSingCardView extends RelativeLayout {
             return;
         }
         int totalMs = infoModel.getSingTotalMs();
-        if (mCountDownStatus == COUNT_DOWN_STATUS_WAIT) {
-            MyLog.d(TAG, "countDown mCountDownStatus == COUNT_DOWN_STATUS_WAIT");
-            if (mCanStartFlag) {
-                mCountDownStatus = COUNT_DOWN_STATUS_PLAYING;
-            } else {
-                // 不需要播放countdown
-//                mCountDownProcess.startCountDown(0, totalMs);
-                mCircleCountDownView.go(0, totalMs);
-                startCountDownText(totalMs / 1000);
-                return;
-            }
-        }
-
         int progress;  //当前进度条
         int leaveTime; //剩余时间
         MyLog.d(TAG, "countDown isParticipant:" + infoModel.isParticipant() + " enterStatus=" + infoModel.getEnterStatus());
@@ -304,33 +268,7 @@ public class ChorusOthersSingCardView extends RelativeLayout {
             progress = 1;
             leaveTime = totalMs;
         }
-//        mCountDownProcess.startCountDown(progress, leaveTime);
-        mCircleCountDownView.go(progress, leaveTime);
-        startCountDownText(leaveTime / 1000);
-    }
-
-    private void startCountDownText(int counDown) {
-        mCounDownTask = HandlerTaskTimer.newBuilder()
-                .interval(1000)
-                .take(counDown)
-                .start(new HandlerTaskTimer.ObserverW() {
-                    @Override
-                    public void onNext(Integer integer) {
-                        mCountDownTv.setText((counDown - integer) + "");
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        super.onComplete();
-                        stopCounDown();
-                    }
-                });
-    }
-
-    private void stopCounDown() {
-        if (mCounDownTask != null) {
-            mCounDownTask.dispose();
-        }
+        mSingCountDownView.startPlay(progress, leaveTime, true);
     }
 
     private void animationGo() {
@@ -481,10 +419,10 @@ public class ChorusOthersSingCardView extends RelativeLayout {
             mRightSingSvga.setCallback(null);
             mRightSingSvga.stopAnimation(true);
         }
-
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
+
         mUiHandler.removeCallbacksAndMessages(null);
     }
 

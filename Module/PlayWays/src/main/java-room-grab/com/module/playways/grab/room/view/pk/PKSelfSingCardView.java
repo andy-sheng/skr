@@ -108,9 +108,9 @@ public class PKSelfSingCardView extends RelativeLayout {
         mLeftSingSvga.setTranslationX(-offsetX);
         mRightSingSvga.setTranslationX(offsetX);
 
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
-        }
+//        if (!EventBus.getDefault().isRegistered(this)) {
+//            EventBus.getDefault().register(this);
+//        }
     }
 
     // TODO: 2019/4/22 在这之前应该还有一个动画，然后开始绘制

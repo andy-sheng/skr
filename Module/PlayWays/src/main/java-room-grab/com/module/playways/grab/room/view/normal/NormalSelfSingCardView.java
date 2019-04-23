@@ -8,16 +8,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.common.log.MyLog;
-import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
-import com.common.view.countdown.CircleCountDownView;
-import com.component.busilib.view.BitmapTextView;
 import com.engine.EngineManager;
 import com.engine.arccloud.ArcRecognizeListener;
 import com.engine.arccloud.SongInfo;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
+import com.module.playways.grab.room.view.common.SingCountDownView;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.module.playways.others.LyricAndAccMatchManager;
 import com.module.playways.room.song.model.SongModel;
@@ -40,21 +38,13 @@ public class NormalSelfSingCardView extends RelativeLayout {
     public final static String TAG = "SelfSingCardView2";
 
     TextView mTvLyric;
-    BitmapTextView mCountDownTv;
     ManyLyricsView mManyLyricsView;
-
     Disposable mDisposable;
-    HandlerTaskTimer mCounDownTask;
-
     GrabRoomData mRoomData;
     SongModel mSongModel;
-
-    ImageView mIvTag;
     ImageView mIvChallengeIcon;
-
-    CircleCountDownView mCircleCountDownView;
-
     VoiceScaleView mVoiceScaleView;
+    SingCountDownView mSingCountDownView;
 
     LyricAndAccMatchManager mLyricAndAccMatchManager = new LyricAndAccMatchManager();
 
@@ -78,9 +68,7 @@ public class NormalSelfSingCardView extends RelativeLayout {
         inflate(getContext(), R.layout.grab_normal_self_sing_card_layout, this);
         mTvLyric = findViewById(R.id.tv_lyric);
         mManyLyricsView = (ManyLyricsView) findViewById(R.id.many_lyrics_view);
-        mCircleCountDownView = (CircleCountDownView) findViewById(R.id.circle_count_down_view);
-        mCountDownTv = (BitmapTextView) findViewById(R.id.count_down_tv);
-        mIvTag = (ImageView) findViewById(R.id.iv_tag);
+        mSingCountDownView = (SingCountDownView) findViewById(R.id.sing_count_down_view);
         mVoiceScaleView = (VoiceScaleView) findViewById(R.id.voice_scale_view);
         mIvChallengeIcon = (ImageView) findViewById(R.id.iv_challenge_icon);
     }
@@ -119,14 +107,10 @@ public class NormalSelfSingCardView extends RelativeLayout {
         }
         if (!withAcc) {
             playWithNoAcc(mSongModel);
-            mIvTag.setBackground(U.getDrawable(R.drawable.ycdd_daojishi_qingchang));
+            mSingCountDownView.setTagImgRes(R.drawable.ycdd_daojishi_qingchang);
             mLyricAndAccMatchManager.stop();
         } else {
-            if (RoomDataUtils.isPKRound(mRoomData)) {
-                mIvTag.setBackground(U.getDrawable(R.drawable.ycdd_daojishi_pk));
-            } else {
-                mIvTag.setBackground(U.getDrawable(R.drawable.ycdd_daojishi_banzou));
-            }
+            mSingCountDownView.setTagImgRes(R.drawable.ycdd_daojishi_banzou);
             SongModel curSong = mSongModel;
             if (infoModel.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
                 if (mSongModel.getPkMusic() != null) {
@@ -190,42 +174,13 @@ public class NormalSelfSingCardView extends RelativeLayout {
                 });
     }
 
-
     private void starCounDown(int totalMs) {
-        mCountDownTv.setVisibility(VISIBLE);
-        mCircleCountDownView.go(0, totalMs);
-        int counDown = totalMs / 1000;
-        mCounDownTask = HandlerTaskTimer.newBuilder()
-                .interval(1000)
-                .take(counDown)
-                .start(new HandlerTaskTimer.ObserverW() {
-                    @Override
-                    public void onNext(Integer integer) {
-                        mCountDownTv.setText((counDown - integer) + "");
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        super.onComplete();
-                        if (mListener != null) {
-                            mListener.onSelfSingOver();
-                        }
-                        stopCounDown();
-//                        mCountDownTv.setVisibility(GONE);
-                    }
-                });
-    }
-
-    private void stopCounDown() {
-        if (mCounDownTask != null) {
-            mCounDownTask.dispose();
-        }
+        mSingCountDownView.startPlay(0, totalMs, true);
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        stopCounDown();
         if (mDisposable != null && !mDisposable.isDisposed()) {
             mDisposable.dispose();
         }
@@ -238,7 +193,7 @@ public class NormalSelfSingCardView extends RelativeLayout {
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
         if (visibility == GONE) {
-            stopCounDown();
+            mSingCountDownView.reset();
             if (mManyLyricsView != null) {
                 mManyLyricsView.setLyricsReader(null);
             }

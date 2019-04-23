@@ -38,11 +38,10 @@ public class NormalOthersSingCardView extends RelativeLayout {
     public final static String TAG = "OthersSingCardView";
     final static int MSG_ENSURE_PLAY = 1;
 
-    final static int COUNT_DOWN_STATUS_INIT = 1;
     final static int COUNT_DOWN_STATUS_WAIT = 2;
     final static int COUNT_DOWN_STATUS_PLAYING = 3;
 
-    int mCountDownStatus = COUNT_DOWN_STATUS_INIT;
+    int mCountDownStatus = COUNT_DOWN_STATUS_WAIT;
 
     int mUseId;   // 当前唱歌人的id
 
@@ -60,13 +59,13 @@ public class NormalOthersSingCardView extends RelativeLayout {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == MSG_ENSURE_PLAY) {
+                mCountDownStatus = COUNT_DOWN_STATUS_PLAYING;
                 tryStartCountDown();
             }
         }
     };
 
     boolean mHasPlayFullAnimation = false;
-    boolean mCanStartFlag = false;
 
     public NormalOthersSingCardView(Context context) {
         super(context);
@@ -122,8 +121,7 @@ public class NormalOthersSingCardView extends RelativeLayout {
         } else {
             MyLog.w(TAG, "userInfoModel==null 加载选手信息失败");
         }
-        mCountDownStatus = COUNT_DOWN_STATUS_WAIT;
-        mCircleCountDownView.setProgress(0);
+
         // 淡出效果
         if (mEnterAlphaAnimation == null) {
             mEnterAlphaAnimation = new AlphaAnimation(0f, 1f);
@@ -153,13 +151,14 @@ public class NormalOthersSingCardView extends RelativeLayout {
         if (grabRoundInfoModel == null) {
             return;
         }
-
+        mCountDownStatus = COUNT_DOWN_STATUS_WAIT;
+        mCircleCountDownView.cancelAnim();
+        mCircleCountDownView.setMax(360);
+        mCircleCountDownView.setProgress(0);
         if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == EQRoundStatus.QRS_SING.getValue()) {
+            mCountDownStatus = COUNT_DOWN_STATUS_PLAYING;
             countDown("中途进来");
         } else {
-            mCircleCountDownView.cancelAnim();
-            mCircleCountDownView.setMax(360);
-            mCircleCountDownView.setProgress(0);
             mUiHandler.removeMessages(MSG_ENSURE_PLAY);
             mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_PLAY, 3000);
         }
@@ -170,26 +169,10 @@ public class NormalOthersSingCardView extends RelativeLayout {
             return;
         }
         MyLog.d(TAG, "tryStartCountDown");
-        mCanStartFlag = true;
         mUiHandler.removeMessages(MSG_ENSURE_PLAY);
         if (mCountDownStatus == COUNT_DOWN_STATUS_WAIT) {
             mCountDownStatus = COUNT_DOWN_STATUS_PLAYING;
-            countDownAfterAnimation("tryStartCountDown");
-        }
-    }
-
-    //给所有倒计时加上一个前面到满的动画
-    private void countDownAfterAnimation(String from) {
-        MyLog.d(TAG, "countDownAfterAnimation from=" + from);
-        GrabRoundInfoModel grabRoundInfoModel = mGrabRoomData.getRealRoundInfo();
-        if (grabRoundInfoModel == null) {
-            return;
-        }
-
-        if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.getEnterStatus() == EQRoundStatus.QRS_SING.getValue()) {
-            countDown("中途进来");
-        } else {
-            countDown("else full Animation");
+            countDown("tryStartCountDown");
         }
     }
 
@@ -200,18 +183,6 @@ public class NormalOthersSingCardView extends RelativeLayout {
             return;
         }
         int totalMs = infoModel.getSingTotalMs();
-        if (mCountDownStatus == COUNT_DOWN_STATUS_WAIT) {
-            MyLog.d(TAG, "countDown mCountDownStatus == COUNT_DOWN_STATUS_WAIT");
-            if (mCanStartFlag) {
-                mCountDownStatus = COUNT_DOWN_STATUS_PLAYING;
-            } else {
-                // 不需要播放countdown
-//                mCountDownProcess.startCountDown(0, totalMs);
-                mCircleCountDownView.go(0, totalMs);
-                return;
-            }
-        }
-
         int progress;  //当前进度条
         int leaveTime; //剩余时间
         MyLog.d(TAG, "countDown isParticipant:" + infoModel.isParticipant() + " enterStatus=" + infoModel.getEnterStatus());
@@ -223,7 +194,6 @@ public class NormalOthersSingCardView extends RelativeLayout {
             progress = 1;
             leaveTime = totalMs;
         }
-//        mCountDownProcess.startCountDown(progress, leaveTime);
         mCircleCountDownView.go(progress, leaveTime);
     }
 
@@ -266,8 +236,7 @@ public class NormalOthersSingCardView extends RelativeLayout {
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
         if (visibility == GONE) {
-            mCountDownStatus = COUNT_DOWN_STATUS_INIT;
-            mCanStartFlag = false;
+            mCountDownStatus = COUNT_DOWN_STATUS_WAIT;
             mHasPlayFullAnimation = false;
             mUiHandler.removeCallbacksAndMessages(null);
         }
