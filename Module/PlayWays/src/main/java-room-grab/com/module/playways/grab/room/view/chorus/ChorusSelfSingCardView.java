@@ -79,8 +79,8 @@ public class ChorusSelfSingCardView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.grab_chorus_self_sing_card_layout, this);
-        mLyricRecycleView = (RecyclerView) findViewById(R.id.lyric_recycle_view);
-         mSingCountDownView = findViewById(R.id.sing_count_down_view);
+        mLyricRecycleView =  findViewById(R.id.lyric_recycle_view);
+        mSingCountDownView = findViewById(R.id.sing_count_down_view);
         mLyricRecycleView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         mChorusSelfLyricAdapter = new ChorusSelfLyricAdapter(mLeft, mRight);
         mLyricRecycleView.setAdapter(mChorusSelfLyricAdapter);
