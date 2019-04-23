@@ -158,11 +158,16 @@ public class PKOthersSingCardView extends RelativeLayout {
                             .setCircle(true)
                             .build());
             mRightName.setText(mRightUserInfoModel.getNickname());
-            animationGo();
+            if(grabRoundInfoModel.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()){
+                // pk第一个人唱
+                animationGo();
+            }else if(grabRoundInfoModel.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()){
+                playScaleAnimation(mRightUserInfoModel.getUserId());
+            }
         }
     }
 
-
+    // pk 他人的为什么有动画
     private void animationGo() {
         if (mEnterTranslateAnimation == null) {
             mEnterTranslateAnimation = new TranslateAnimation(-U.getDisplayUtils().getScreenWidth(), 0.0F, 0.0F, 0.0F);
@@ -197,6 +202,9 @@ public class PKOthersSingCardView extends RelativeLayout {
             mScaleAnimation.setInterpolator(new OvershootInterpolator());
             mScaleAnimation.setFillAfter(true);
             mScaleAnimation.setDuration(500);
+        }else{
+            mScaleAnimation.setAnimationListener(null);
+            mScaleAnimation.cancel();
         }
         mScaleAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -214,10 +222,10 @@ public class PKOthersSingCardView extends RelativeLayout {
 
             }
         });
-        if (uid == mLeftUserInfoModel.getUserId()) {
+        if (mLeftUserInfoModel!=null && uid == mLeftUserInfoModel.getUserId()) {
             mLeftIv.clearAnimation();
             mLeftIv.startAnimation(mScaleAnimation);
-        } else if (uid == mRightUserInfoModel.getUserId()) {
+        } else if (mRightUserInfoModel!=null && uid == mRightUserInfoModel.getUserId()) {
             mRightIv.clearAnimation();
             mRightIv.startAnimation(mScaleAnimation);
         }
@@ -225,9 +233,15 @@ public class PKOthersSingCardView extends RelativeLayout {
 
 
     private void playCircleAnimation(int uid) {
-        mValueAnimator = new ValueAnimator();
-        mValueAnimator.setIntValues(0, 100);
-        mValueAnimator.setDuration(495);
+        if(mValueAnimator!=null){
+            mValueAnimator.removeAllUpdateListeners();
+            mValueAnimator.cancel();
+        }
+        if (mValueAnimator == null) {
+            mValueAnimator = new ValueAnimator();
+            mValueAnimator.setIntValues(0, 100);
+            mValueAnimator.setDuration(495);
+        }
         mValueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
