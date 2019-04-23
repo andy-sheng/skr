@@ -247,16 +247,20 @@ public class RelationFragment extends BaseFragment {
             mFriendNum = bundle.getInt(RelationActivity.FRIEND_NUM_KEY);
             mFansNum = bundle.getInt(RelationActivity.FANS_NUM_KEY);
             mFocusNum = bundle.getInt(RelationActivity.FOLLOW_NUM_KEY);
-            if (relation == UserInfoManager.RELATION_FRIENDS) {
-                mRelationVp.setCurrentItem(0);
-            } else if (relation == UserInfoManager.RELATION_FOLLOW) {
-                mRelationVp.setCurrentItem(1);
-            } else if (relation == UserInfoManager.RELATION_FANS) {
-                mRelationVp.setCurrentItem(2);
+            if (relation == UserInfoManager.RA_UNKNOWN) {
+                getRelationNums();
+            } else {
+                if (relation == UserInfoManager.RELATION_FRIENDS) {
+                    mRelationVp.setCurrentItem(0);
+                } else if (relation == UserInfoManager.RELATION_FOLLOW) {
+                    mRelationVp.setCurrentItem(1);
+                } else if (relation == UserInfoManager.RELATION_FANS) {
+                    mRelationVp.setCurrentItem(2);
+                }
+                refreshRelationNums();
             }
-            refreshRelationNums();
         } else {
-            getRelationNums();
+            MyLog.w(TAG, "initData" + " savedInstanceState=" + savedInstanceState);
         }
 
         U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
