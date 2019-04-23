@@ -91,28 +91,6 @@
         android:background="@drawable/grab_pk_bg"
         android:orientation="horizontal" />
 
-    <com.opensource.svgaplayer.SVGAImageView
-        android:id="@+id/left_sing_svga"
-        android:layout_width="@dimen/view_360_dp"
-        android:layout_height="@dimen/view_360_dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_22_dp"
-        android:visibility="gone"
-        app:antiAlias="true"
-        app:autoPlay="false"
-        app:loopCount="0" />
-
-    <com.opensource.svgaplayer.SVGAImageView
-        android:id="@+id/right_sing_svga"
-        android:layout_width="@dimen/view_360_dp"
-        android:layout_height="@dimen/view_360_dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_22_dp"
-        android:visibility="gone"
-        app:antiAlias="true"
-        app:autoPlay="false"
-        app:loopCount="0" />
-
     <LinearLayout
         android:id="@+id/pk_self_area"
         android:layout_width="match_parent"

@@ -20,6 +20,7 @@ import com.common.anim.svga.SvgaParserAdapter;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
+import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.countdown.CircleCountDownView;
 import com.common.view.ex.ExTextView;
@@ -72,8 +73,15 @@ public class PKOthersSingCardView extends RelativeLayout {
     ScaleAnimation mScaleAnimation;      // 头像放大动画
     ValueAnimator mValueAnimator;       // 画圆圈的属性动画
 
+    GrabRoomData mGrabRoomData;
+    UserInfoModel mLeftUserInfoModel;
+    UserInfoModel mRightUserInfoModel;
+    boolean mLeftAnimationFlag = false;    //左边动画是否在播标记（不包括SVGA）
+    boolean mRightAnimationFlag = false;   //右边动画是否在播标记（不包括SVGA）
     boolean mHasPlayFullAnimation = false;
     boolean mCanStartFlag = false;
+
+    HandlerTaskTimer mCounDownTask;
 
     Handler mUiHandler = new Handler() {
         @Override
@@ -83,10 +91,6 @@ public class PKOthersSingCardView extends RelativeLayout {
             }
         }
     };
-
-    GrabRoomData mGrabRoomData;
-    UserInfoModel mLeftUserInfoModel;
-    UserInfoModel mRightUserInfoModel;
 
     public PKOthersSingCardView(Context context) {
         super(context);
@@ -158,10 +162,10 @@ public class PKOthersSingCardView extends RelativeLayout {
                             .setCircle(true)
                             .build());
             mRightName.setText(mRightUserInfoModel.getNickname());
-            if(grabRoundInfoModel.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()){
+            if (grabRoundInfoModel.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()) {
                 // pk第一个人唱
                 animationGo();
-            }else if(grabRoundInfoModel.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()){
+            } else if (grabRoundInfoModel.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
                 playScaleAnimation(mRightUserInfoModel.getUserId());
             }
         }
@@ -193,23 +197,35 @@ public class PKOthersSingCardView extends RelativeLayout {
             }
         });
         this.startAnimation(mEnterTranslateAnimation);
-
     }
 
     private void playScaleAnimation(int uid) {
+        // TODO: 2019/4/23 恢复成初始状态
+        destoryAnimation();
+        mLeftIv.clearAnimation();
+        mRightIv.clearAnimation();
+        mLeftCircleAnimationView.setVisibility(GONE);
+        mRightCircleAnimationView.setVisibility(GONE);
+        GrabRoundInfoModel infoModel = mGrabRoomData.getRealRoundInfo();
+        if (infoModel == null) {
+            return;
+        }
+        int totalMs = infoModel.getSingTotalMs();
+        mCountDownTv.setText(totalMs + "");
+
+        // TODO: 2019/4/23 开始播放动画
         if (mScaleAnimation == null) {
             mScaleAnimation = new ScaleAnimation(1.0f, 1.35f, 1f, 1.35f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
             mScaleAnimation.setInterpolator(new OvershootInterpolator());
             mScaleAnimation.setFillAfter(true);
             mScaleAnimation.setDuration(500);
-        }else{
+        } else {
             mScaleAnimation.setAnimationListener(null);
             mScaleAnimation.cancel();
         }
         mScaleAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-
             }
 
             @Override
@@ -219,21 +235,30 @@ public class PKOthersSingCardView extends RelativeLayout {
 
             @Override
             public void onAnimationRepeat(Animation animation) {
-
             }
         });
-        if (mLeftUserInfoModel!=null && uid == mLeftUserInfoModel.getUserId()) {
-            mLeftIv.clearAnimation();
-            mLeftIv.startAnimation(mScaleAnimation);
-        } else if (mRightUserInfoModel!=null && uid == mRightUserInfoModel.getUserId()) {
-            mRightIv.clearAnimation();
-            mRightIv.startAnimation(mScaleAnimation);
+        if (mLeftUserInfoModel != null && uid == mLeftUserInfoModel.getUserId()) {
+            if (!mLeftAnimationFlag && !mLeftSingSvga.isAnimating()) {
+                // TODO: 2019/4/23 防止多次播放 
+                mLeftAnimationFlag = true;
+                mLeftIv.startAnimation(mScaleAnimation);
+            } else {
+                MyLog.w(TAG, "playScaleAnimation 动画已经在播放了" + " uid=" + uid);
+            }
+        } else if (mRightUserInfoModel != null && uid == mRightUserInfoModel.getUserId()) {
+            if (!mRightAnimationFlag && !mRightSingSvga.isAnimating()) {
+                // TODO: 2019/4/23 防止多次播放
+                mRightAnimationFlag = true;
+                mRightIv.startAnimation(mScaleAnimation);
+            } else {
+                MyLog.w(TAG, "playScaleAnimation 动画已经在播放了" + " uid=" + uid);
+            }
         }
     }
 
 
     private void playCircleAnimation(int uid) {
-        if(mValueAnimator!=null){
+        if (mValueAnimator != null) {
             mValueAnimator.removeAllUpdateListeners();
             mValueAnimator.cancel();
         }
@@ -279,8 +304,10 @@ public class PKOthersSingCardView extends RelativeLayout {
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 if (uid == mLeftUserInfoModel.getUserId()) {
+                    mLeftAnimationFlag = false;
                     mLeftCircleAnimationView.setVisibility(GONE);
                 } else if (uid == mRightUserInfoModel.getUserId()) {
+                    mRightAnimationFlag = false;
                     mRightCircleAnimationView.setVisibility(GONE);
                 }
                 playSingAnimation(uid);
@@ -289,11 +316,31 @@ public class PKOthersSingCardView extends RelativeLayout {
         mValueAnimator.start();
     }
 
+    // TODO: 2019/4/23 播放声纹动画，同时倒计时开始计时
     private void playSingAnimation(int uid) {
         if (uid == mLeftUserInfoModel.getUserId()) {
             playSingAnimation(mLeftSingSvga);
         } else if (uid == mRightUserInfoModel.getUserId()) {
             playSingAnimation(mRightSingSvga);
+        }
+
+        // 开始倒计时
+        mCountDownStatus = COUNT_DOWN_STATUS_WAIT;
+        mCircleCountDownView.setProgress(0);
+
+        GrabRoundInfoModel grabRoundInfoModel = mGrabRoomData.getRealRoundInfo();
+        if (grabRoundInfoModel == null) {
+            return;
+        }
+
+        if (!grabRoundInfoModel.isParticipant() && grabRoundInfoModel.isEnterInSingStatus()) {
+            countDown("中途进来");
+        } else {
+            mCircleCountDownView.cancelAnim();
+            mCircleCountDownView.setMax(360);
+            mCircleCountDownView.setProgress(0);
+            mUiHandler.removeMessages(MSG_ENSURE_PLAY);
+            mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_PLAY, 3000);
         }
     }
 
@@ -345,6 +392,7 @@ public class PKOthersSingCardView extends RelativeLayout {
                 @Override
                 public void onAnimationEnd(Animation animation) {
                     destoryAnimation();
+                    stopCounDown();
                     clearAnimation();
                     setVisibility(GONE);
                 }
@@ -357,6 +405,7 @@ public class PKOthersSingCardView extends RelativeLayout {
             this.startAnimation(mLeaveTranslateAnimation);
         } else {
             destoryAnimation();
+            stopCounDown();
             clearAnimation();
             setVisibility(GONE);
         }
@@ -402,6 +451,7 @@ public class PKOthersSingCardView extends RelativeLayout {
                 // 不需要播放countdown
 //                mCountDownProcess.startCountDown(0, totalMs);
                 mCircleCountDownView.go(0, totalMs);
+                startCountDownText(totalMs / 1000);
                 return;
             }
         }
@@ -419,12 +469,38 @@ public class PKOthersSingCardView extends RelativeLayout {
         }
 //        mCountDownProcess.startCountDown(progress, leaveTime);
         mCircleCountDownView.go(progress, leaveTime);
+        startCountDownText(leaveTime / 1000);
+    }
+
+    private void startCountDownText(int counDown) {
+        mCounDownTask = HandlerTaskTimer.newBuilder()
+                .interval(1000)
+                .take(counDown)
+                .start(new HandlerTaskTimer.ObserverW() {
+                    @Override
+                    public void onNext(Integer integer) {
+                        mCountDownTv.setText((counDown - integer) + "");
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+                        stopCounDown();
+                    }
+                });
+    }
+
+    private void stopCounDown() {
+        if (mCounDownTask != null) {
+            mCounDownTask.dispose();
+        }
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         destoryAnimation();
+        stopCounDown();
     }
 
     private void destoryAnimation() {
@@ -453,7 +529,7 @@ public class PKOthersSingCardView extends RelativeLayout {
             mRightSingSvga.setCallback(null);
             mRightSingSvga.stopAnimation(true);
         }
+        mLeftAnimationFlag = false;
+        mRightAnimationFlag = false;
     }
-
-
 }

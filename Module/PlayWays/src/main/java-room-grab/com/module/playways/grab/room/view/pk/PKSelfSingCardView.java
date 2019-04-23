@@ -50,8 +50,6 @@ public class PKSelfSingCardView extends RelativeLayout {
     TextView mTvLyric;
     ManyLyricsView mManyLyricsView;
     VoiceScaleView mVoiceScaleView;
-    SVGAImageView mLeftSingSvga;
-    SVGAImageView mRightSingSvga;
     LinearLayout mPkSelfArea;
     SimpleDraweeView mLeftIv;
     ExTextView mLeftName;
@@ -93,8 +91,6 @@ public class PKSelfSingCardView extends RelativeLayout {
         mTvLyric = (TextView) findViewById(R.id.tv_lyric);
         mManyLyricsView = (ManyLyricsView) findViewById(R.id.many_lyrics_view);
         mVoiceScaleView = (VoiceScaleView) findViewById(R.id.voice_scale_view);
-        mLeftSingSvga = (SVGAImageView) findViewById(R.id.left_sing_svga);
-        mRightSingSvga = (SVGAImageView) findViewById(R.id.right_sing_svga);
         mPkSelfArea = (LinearLayout) findViewById(R.id.pk_self_area);
         mLeftIv = (SimpleDraweeView) findViewById(R.id.left_iv);
         mLeftName = (ExTextView) findViewById(R.id.left_name);
@@ -103,10 +99,6 @@ public class PKSelfSingCardView extends RelativeLayout {
         mIvTag = (ImageView) findViewById(R.id.iv_tag);
         mCircleCountDownView = (CircleCountDownView) findViewById(R.id.circle_count_down_view);
         mCountDownTv = (BitmapTextView) findViewById(R.id.count_down_tv);
-
-        int offsetX = (U.getDisplayUtils().getScreenWidth() / 2 - U.getDisplayUtils().dip2px(16)) / 2;
-        mLeftSingSvga.setTranslationX(-offsetX);
-        mRightSingSvga.setTranslationX(offsetX);
 
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
@@ -312,15 +304,6 @@ public class PKSelfSingCardView extends RelativeLayout {
             mLeaveTranslateAnimation.setAnimationListener(null);
             mLeaveTranslateAnimation.cancel();
         }
-        if (mLeftSingSvga != null) {
-            mLeftSingSvga.setCallback(null);
-            mRightSingSvga.stopAnimation(true);
-        }
-        if (mRightSingSvga != null) {
-            mRightSingSvga.setCallback(null);
-            mRightSingSvga.stopAnimation(true);
-        }
-
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
