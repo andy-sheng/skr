@@ -599,7 +599,11 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", mRoomData.getGameId());
         map.put("roundSeq", roundSeq);
-
+        if(now.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()){
+            map.put("subRoundSeq",0);
+        }else if(now.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()){
+            map.put("subRoundSeq",1);
+        }
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.lightOff(body), new ApiObserver<ApiResult>() {
             @Override
@@ -642,6 +646,11 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         int roundSeq = now.getRoundSeq();
         map.put("roundSeq", mRoomData.getRealRoundSeq());
 
+        if(now.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()){
+            map.put("subRoundSeq",0);
+        }else if(now.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()){
+            map.put("subRoundSeq",1);
+        }
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.lightBurst(body), new ApiObserver<ApiResult>() {
             @Override
@@ -917,6 +926,11 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", mRoomData.getGameId());
         map.put("roundSeq", roundInfoModel.getRoundSeq());
+        if(roundInfoModel.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()){
+            map.put("subRoundSeq",0);
+        }else if(roundInfoModel.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()){
+            map.put("subRoundSeq",1);
+        }
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.sendRoundOver(body), new ApiObserver<ApiResult>() {
@@ -953,6 +967,11 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         map.put("roundSeq", now.getRoundSeq());
         if (now.getMusic() != null) {
             map.put("playType", now.getMusic().getPlayType());
+        }
+        if(now.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()){
+            map.put("subRoundSeq",0);
+        }else if(now.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()){
+            map.put("subRoundSeq",1);
         }
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.giveUpSing(body), new ApiObserver<ApiResult>() {
@@ -2073,7 +2092,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             }
         });
         //打分传给服务器
-        sendScoreToServer(score, line);
+        GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
+        if(now!=null && now.isPKRound()){
+            sendScoreToServer(score, line);
+        }
     }
 
     /**
@@ -2121,64 +2143,71 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
 
     /**
-     * 单句打分上报
+     * 单句打分上报,只在pk模式上报
      *
      * @param score
      * @param line
      */
     public void sendScoreToServer(int score, int line) {
-//        HashMap<String, Object> map = new HashMap<>();
-//        map.put("gameID", mRoomData.getGameId());
-//        RankRoundInfoModel infoModel = RoomDataUtils.getRoundInfoByUserId(mRoomData, (int) MyUserInfoManager.getInstance().getUid());
-//        if (infoModel == null) {
-//            return;
-//        }
-//        int itemID = infoModel.getPlaybookID();
-//        map.put("itemID", itemID);
-//        int mainLevel = 0;
-//        PlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, MyUserInfoManager.getInstance().getUid());
-//        if (playerInfoModel != null) {
-//            mainLevel = playerInfoModel.getUserInfo().getMainLevel();
-//        }
-//        map.put("mainLevel", mainLevel);
-//        map.put("no", line);
-//        int roundSeq = infoModel.getRoundSeq();
-//        map.put("roundSeq", roundSeq);
-//        map.put("score", score);
-//        long nowTs = System.currentTimeMillis();
-//        int singSecond = (int) ((nowTs - mRoomData.getSingBeginTs()) / 1000);
-//        map.put("singSecond", singSecond);
-//        map.put("timeMs", nowTs);
-//        map.put("userID", MyUserInfoManager.getInstance().getUid());
-//        StringBuilder sb = new StringBuilder();
-//        sb.append("skrer")
-//                .append("|").append(MyUserInfoManager.getInstance().getUid())
-//                .append("|").append(itemID)
-//                .append("|").append(score)
-//                .append("|").append(line)
-//                .append("|").append(mRoomData.getGameId())
-//                .append("|").append(mainLevel)
-//                .append("|").append(singSecond)
-//                .append("|").append(roundSeq)
-//                .append("|").append(nowTs);
-//        map.put("sign", U.getMD5Utils().MD5_32(sb.toString()));
-//        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSOIN), JSON.toJSONString(map));
-//        ApiMethods.subscribe(mRoomServerApi.sendPkPerSegmentResult(body), new ApiObserver<ApiResult>() {
-//            @Override
-//            public void process(ApiResult result) {
-//                if (result.getErrno() == 0) {
-//                    // TODO: 2018/12/13  当前postman返回的为空 待补充
-//                    MyLog.w(TAG, "单句打分上报成功");
-//                } else {
-//                    MyLog.w(TAG, "单句打分上报失败" + result.getErrno());
-//                }
-//            }
-//
-//            @Override
-//            public void onError(Throwable e) {
-//                MyLog.e(e);
-//            }
-//        }, this);
+        HashMap<String, Object> map = new HashMap<>();
+        GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
+        if (infoModel == null) {
+            return;
+        }
+        map.put("userID", MyUserInfoManager.getInstance().getUid());
+
+        int itemID = 0 ;
+        if(infoModel.getMusic()!=null){
+            itemID = infoModel.getMusic().getItemID();
+            if(infoModel.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()){
+                SongModel pkSong = infoModel.getMusic().getPkMusic();
+                if(pkSong!=null){
+                    itemID = pkSong.getItemID();
+                }
+            }
+        }
+
+        map.put("itemID", itemID);
+        map.put("score", score);
+        map.put("no", line);
+        map.put("gameID", mRoomData.getGameId());
+        map.put("mainLevel", 0);
+        map.put("singSecond", 0);
+        int roundSeq = infoModel.getRoundSeq();
+        map.put("roundSeq", roundSeq);
+        long nowTs = System.currentTimeMillis();
+        map.put("timeMs", nowTs);
+
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("skrer")
+                .append("|").append(MyUserInfoManager.getInstance().getUid())
+                .append("|").append(itemID)
+                .append("|").append(score)
+                .append("|").append(line)
+                .append("|").append(mRoomData.getGameId())
+                .append("|").append(0)
+                .append("|").append(0)
+                .append("|").append(roundSeq)
+                .append("|").append(nowTs);
+        map.put("sign", U.getMD5Utils().MD5_32(sb.toString()));
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+        ApiMethods.subscribe(mRoomServerApi.sendPkPerSegmentResult(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    // TODO: 2018/12/13  当前postman返回的为空 待补充
+                    MyLog.w(TAG, "单句打分上报成功");
+                } else {
+                    MyLog.w(TAG, "单句打分上报失败" + result.getErrno());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                MyLog.e(e);
+            }
+        }, this);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
