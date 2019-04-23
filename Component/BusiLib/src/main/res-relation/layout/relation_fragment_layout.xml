@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F9F4F1">
+    android:background="@color/colorPrimary">
 
     <com.common.view.titlebar.CommonTitleBar
         android:id="@+id/titlebar"
@@ -18,15 +18,14 @@
         app:leftType="textView"
         app:rightImageResource="@drawable/tianjia_friend_icon"
         app:rightType="imageButton"
-        app:showBottomLine="true"
-        app:statusBarColor="#0288D0"
-        app:titleBarColor="#0288D0"></com.common.view.titlebar.CommonTitleBar>
+        app:showBottomLine="false"
+        app:statusBarColor="@color/colorPrimary"
+        app:titleBarColor="@color/colorPrimary"></com.common.view.titlebar.CommonTitleBar>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_52_dp"
         android:layout_below="@+id/titlebar"
-        android:layout_marginTop="@dimen/view_2_dp"
         android:orientation="horizontal">
 
         <RelativeLayout
@@ -116,12 +115,6 @@
             android:layout_height="@dimen/view_52_dp"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center" />
-
-        <View
-            android:id="@+id/split_line"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/view_10_dp"
-            android:background="#E8DFDB" />
 
         <com.common.view.viewpager.NestViewPager
             android:id="@+id/relation_vp"

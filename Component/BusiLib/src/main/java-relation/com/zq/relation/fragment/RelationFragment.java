@@ -67,7 +67,6 @@ public class RelationFragment extends BaseFragment {
     CommonTitleBar mTitlebar;
     LinearLayout mContainer;
     SlidingTabLayout mRelationTab;
-    View mSplitLine;
     NestViewPager mRelationVp;
 
     RelativeLayout mFriendArea;
@@ -105,7 +104,6 @@ public class RelationFragment extends BaseFragment {
         mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
         mContainer = (LinearLayout) mRootView.findViewById(R.id.container);
         mRelationTab = (SlidingTabLayout) mRootView.findViewById(R.id.relation_tab);
-        mSplitLine = (View) mRootView.findViewById(R.id.split_line);
         mRelationVp = (NestViewPager) mRootView.findViewById(R.id.relation_vp);
 
         mFriendArea = (RelativeLayout) mRootView.findViewById(R.id.friend_area);
@@ -174,12 +172,12 @@ public class RelationFragment extends BaseFragment {
         mTitleAndViewMap.put(2, new RelationView(getContext(), UserInfoManager.RELATION_FANS));
 
         mRelationTab.setCustomTabView(R.layout.relation_tab_view, R.id.tab_tv);
-        mRelationTab.setSelectedIndicatorColors(Color.parseColor("#FE8400"));
+        mRelationTab.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20));
         mRelationTab.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_TAB_IN_SECTION_CENTER);
-        mRelationTab.setIndicatorWidth(U.getDisplayUtils().dip2px(27));
-        mRelationTab.setIndicatorBottomMargin(U.getDisplayUtils().dip2px(5));
-        mRelationTab.setSelectedIndicatorThickness(U.getDisplayUtils().dip2px(4));
-        mRelationTab.setIndicatorCornorRadius(U.getDisplayUtils().dip2px(2));
+        mRelationTab.setIndicatorWidth(U.getDisplayUtils().dip2px(67));
+        mRelationTab.setIndicatorBottomMargin(U.getDisplayUtils().dip2px(12));
+        mRelationTab.setSelectedIndicatorThickness(U.getDisplayUtils().dip2px(28));
+        mRelationTab.setIndicatorCornorRadius(U.getDisplayUtils().dip2px(14));
 
         mTabPagerAdapter = new PagerAdapter() {
 

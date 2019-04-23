@@ -33,7 +33,7 @@
         android:layout_below="@id/titlebar"
         android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginRight="@dimen/view_16_dp"
-        android:background="@drawable/conversation_bg"
+        android:background="@drawable/common_bg_2"
         android:orientation="vertical">
 
         <RelativeLayout
