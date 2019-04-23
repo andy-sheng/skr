@@ -1062,6 +1062,7 @@ public class AgoraEngineAdapter {
                                          int channels,// 2
                                          int samplesPerSec//44100
             ) {
+                //TODO 考虑用户如果开伴奏了，就不走音效和AGC了，只走下打分
                 if (samples == null) {
                     return false;
                 }
@@ -1126,38 +1127,41 @@ public class AgoraEngineAdapter {
                 if (DEBUG) {
                     MyLog.d(TAG, "step2:" + testIn(samples));
                 }
-                if (styleEnum == Params.AudioEffect.ktv) {
-                    mTbEffectProcessor.process(2, samples, samples.length, channels, samplesPerSec);
-                } else if (styleEnum == Params.AudioEffect.rock) {
-                    mTbEffectProcessor.process(1, samples, samples.length, channels, samplesPerSec);
-                } else if (styleEnum == Params.AudioEffect.dianyin) {
-                    mCbEffectProcessor.process(8, samples, samples.length, channels, samplesPerSec);
-                } else if (styleEnum == Params.AudioEffect.kongling) {
-                    mCbEffectProcessor.process(1, samples, samples.length, channels, samplesPerSec);
-                } else {
-                    mCbEffectProcessor.destroy();
-                }
-                if (DEBUG) {
-                    MyLog.d(TAG, "step3:" + testIn(samples));
-                }
-                //TODO 是不是可以考虑AGC 后再给打分
-                // 针对不同场景，处理agc
-                switch (mConfig.getScene()) {
-                    case grab:
-                        mITbAgcProcessor.processV1(samples, samples.length, channels, samplesPerSec);
-                        break;
-                    case voice:
-                        break;
-                    case rank:
-                    case audiotest:
-                        if (accTs > 0) {
+                if(!mConfig.isMixMusicPlaying()){
+                    // 不播放音乐才走这些音效，否则不走
+                    if (styleEnum == Params.AudioEffect.ktv) {
+                        mTbEffectProcessor.process(2, samples, samples.length, channels, samplesPerSec);
+                    } else if (styleEnum == Params.AudioEffect.rock) {
+                        mTbEffectProcessor.process(1, samples, samples.length, channels, samplesPerSec);
+                    } else if (styleEnum == Params.AudioEffect.dianyin) {
+                        mCbEffectProcessor.process(8, samples, samples.length, channels, samplesPerSec);
+                    } else if (styleEnum == Params.AudioEffect.kongling) {
+                        mCbEffectProcessor.process(1, samples, samples.length, channels, samplesPerSec);
+                    } else {
+                        mCbEffectProcessor.destroy();
+                    }
+                    if (DEBUG) {
+                        MyLog.d(TAG, "step3:" + testIn(samples));
+                    }
+                    //TODO 是不是可以考虑AGC 后再给打分
+                    // 针对不同场景，处理agc
+                    switch (mConfig.getScene()) {
+                        case grab:
                             mITbAgcProcessor.processV1(samples, samples.length, channels, samplesPerSec);
-                        }
-                        break;
-                }
+                            break;
+                        case voice:
+                            break;
+                        case rank:
+                        case audiotest:
+                            if (accTs > 0) {
+                                mITbAgcProcessor.processV1(samples, samples.length, channels, samplesPerSec);
+                            }
+                            break;
+                    }
 
-                if (DEBUG) {
-                    MyLog.d(TAG, "step4:" + testIn(samples));
+                    if (DEBUG) {
+                        MyLog.d(TAG, "step4:" + testIn(samples));
+                    }
                 }
                 if (!TextUtils.isEmpty(mConfig.getRecordingFromCallbackSavePath())) {
                     if (mOutCallback != null) {
