@@ -945,13 +945,19 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
         mUiHanlder.sendMessageDelayed(msg, 4000);
+        GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
+        if (now != null && now.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
+            // pk的第二轮，没有 vs 的演唱开始提示了
+            onSingBeginTipsPlayOver();
+        } else {
+            singBeginTipsPlay(new Runnable() {
+                @Override
+                public void run() {
+                    onSingBeginTipsPlayOver();
+                }
+            });
+        }
 
-        singBeginTipsPlay(new Runnable() {
-            @Override
-            public void run() {
-                onSingBeginTipsPlayOver();
-            }
-        });
     }
 
     @Override
@@ -970,19 +976,33 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
         mUiHanlder.sendMessageDelayed(msg, 2600);
 
-        singBeginTipsPlay(new Runnable() {
-            @Override
-            public void run() {
-                GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
-                if (grabRoundInfoModel != null && grabRoundInfoModel.isParticipant() && mRoomData.isInPlayerList()) {
-                    mGrabOpBtn.toOtherSingState();
-                } else {
-                    mGrabOpBtn.hide("singByOthers2");
-                    MyLog.d(TAG, "中途进来的，不是本局参与者，隐藏按钮");
-                }
-                onSingBeginTipsPlayOver();
+        GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
+        if (now != null && now.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
+            // pk的第二轮，没有 vs 的演唱开始提示了
+            GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
+            if (grabRoundInfoModel != null && grabRoundInfoModel.isParticipant() && mRoomData.isInPlayerList()) {
+                mGrabOpBtn.toOtherSingState();
+            } else {
+                mGrabOpBtn.hide("singByOthers2");
+                MyLog.d(TAG, "中途进来的，不是本局参与者，隐藏按钮");
             }
-        });
+            onSingBeginTipsPlayOver();
+        } else {
+            singBeginTipsPlay(new Runnable() {
+                @Override
+                public void run() {
+                    GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
+                    if (grabRoundInfoModel != null && grabRoundInfoModel.isParticipant() && mRoomData.isInPlayerList()) {
+                        mGrabOpBtn.toOtherSingState();
+                    } else {
+                        mGrabOpBtn.hide("singByOthers2");
+                        MyLog.d(TAG, "中途进来的，不是本局参与者，隐藏按钮");
+                    }
+                    onSingBeginTipsPlayOver();
+                }
+            });
+        }
+
     }
 
     private void singBeginTipsPlay(Runnable runnable) {
@@ -1010,15 +1030,15 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         mSingBeginTipsCardView.setVisibility(View.GONE);
         mGrabScoreTipsView.reset();
         GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
-        if(now!=null){
-            if( now.singBySelf()){
+        if (now != null) {
+            if (now.singBySelf()) {
                 mGrabGiveupView.delayShowGiveUpView();
                 mCorePresenter.beginSing();
                 // 显示歌词
                 mSelfSingCardView.setVisibility(View.VISIBLE);
                 mOthersSingCardView.setVisibility(View.GONE);
                 mSelfSingCardView.playLyric();
-            }else{
+            } else {
                 // 显示收音机
                 mSelfSingCardView.setVisibility(View.GONE);
                 mOthersSingCardView.setVisibility(View.VISIBLE);
@@ -1038,7 +1058,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     }
 
     @Override
-    public void roundOver(GrabRoundInfoModel lastInfoModel, boolean playNextSongInfoCard,GrabRoundInfoModel now) {
+    public void roundOver(GrabRoundInfoModel lastInfoModel, boolean playNextSongInfoCard, GrabRoundInfoModel now) {
         removeAllEnsureMsg();
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_ROUND_OVER_PLAY_OVER);
         msg.arg1 = playNextSongInfoCard ? 1 : 0;
