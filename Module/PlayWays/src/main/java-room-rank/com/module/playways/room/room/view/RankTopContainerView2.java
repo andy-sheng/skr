@@ -29,7 +29,7 @@ import com.module.playways.room.room.model.RankRoundInfoModel;
 import com.module.playways.room.room.score.RobotScoreHelper;
 import com.module.playways.room.room.score.bar.EnergySlotView;
 import com.module.playways.room.room.score.bar.ScoreTipsView;
-import com.module.rank.R;
+import com.module.playways.R;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGAImageView;

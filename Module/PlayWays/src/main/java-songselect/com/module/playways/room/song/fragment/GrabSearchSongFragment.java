@@ -22,7 +22,7 @@ import com.common.view.titlebar.CommonTitleBar;
 import com.module.playways.room.song.SongSelectServerApi;
 import com.module.playways.room.song.adapter.SongSelectAdapter;
 import com.module.playways.room.song.model.SongModel;
-import com.module.rank.R;
+import com.module.playways.R;
 import com.orhanobut.dialogplus.DialogPlus;
 
 import java.util.List;

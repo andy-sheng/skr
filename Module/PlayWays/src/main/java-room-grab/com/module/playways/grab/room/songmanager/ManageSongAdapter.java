@@ -12,7 +12,7 @@ import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.DiffAdapter;
 
 import com.module.playways.grab.room.GrabRoomData;
-import com.module.rank.R;
+import com.module.playways.R;
 
 public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerView.ViewHolder> {
     OnClickDeleteListener mOnClickDeleteListener;

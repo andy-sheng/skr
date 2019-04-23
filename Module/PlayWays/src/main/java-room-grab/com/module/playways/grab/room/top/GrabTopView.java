@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -21,7 +20,7 @@ import com.component.busilib.constans.GrabRoomType;
 import com.component.busilib.view.BitmapTextView;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabMyCoinChangeEvent;
-import com.module.rank.R;
+import com.module.playways.R;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

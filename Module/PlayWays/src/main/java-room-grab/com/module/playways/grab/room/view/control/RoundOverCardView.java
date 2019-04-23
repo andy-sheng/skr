@@ -8,7 +8,7 @@ import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.view.normal.NormalRoundOverCardView;
 import com.module.playways.grab.room.view.pk.PKRoundOverCardView;
-import com.module.rank.R;
+import com.module.playways.R;
 
 public class RoundOverCardView {
 

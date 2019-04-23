@@ -36,7 +36,7 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.room.room.adapter.LeaderBoardAdapter;
 import com.module.playways.room.room.presenter.LeaderboardPresenter;
 import com.module.playways.room.room.view.ILeaderBoardView;
-import com.module.rank.R;
+import com.module.playways.R;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;

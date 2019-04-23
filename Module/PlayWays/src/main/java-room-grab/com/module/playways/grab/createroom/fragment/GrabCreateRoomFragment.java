@@ -1,7 +1,6 @@
 package com.module.playways.grab.createroom.fragment;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -18,13 +17,11 @@ import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExRelativeLayout;
-import com.common.view.ex.ExTextView;
 import com.component.busilib.constans.GrabRoomType;
 import com.dialog.view.TipsDialogView;
 import com.module.playways.grab.room.GrabRoomServerApi;
-import com.module.rank.R;
+import com.module.playways.R;
 import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.ViewHolder;
 
 /**

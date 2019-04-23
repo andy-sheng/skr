@@ -8,7 +8,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.util.AttributeSet;
 
-import com.module.rank.R;
+import com.module.playways.R;
 
 public class ScenesSelectBtn extends android.support.v7.widget.AppCompatRadioButton {
 

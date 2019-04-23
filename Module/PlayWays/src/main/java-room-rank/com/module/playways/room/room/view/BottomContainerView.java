@@ -27,7 +27,7 @@ import com.module.msg.IMsgService;
 import com.module.playways.room.msg.BasePushInfo;
 import com.module.playways.room.msg.event.SpecialEmojiMsgEvent;
 import com.module.playways.RoomDataUtils;
-import com.module.rank.R;
+import com.module.playways.R;
 import com.module.playways.room.room.event.InputBoardEvent;
 import com.module.playways.BaseRoomData;
 import com.module.playways.room.room.quickmsg.QuickMsgView;

@@ -27,14 +27,12 @@ import com.module.playways.grab.room.inter.IGrabInviteView;
 
 import com.module.playways.grab.room.model.GrabFriendModel;
 
-import com.module.rank.R;
+import com.module.playways.R;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
-import com.umeng.socialize.ShareAction;
-import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.zq.relation.callback.FriendsEmptyCallback;
 
 import java.util.List;

@@ -28,7 +28,7 @@ import com.kingja.loadsir.core.LoadSir;
 import com.component.busilib.friends.GrabSongApi;
 import com.component.busilib.friends.SpecialModel;
 import com.module.playways.grab.createroom.adapter.SpecialSelectAdapter;
-import com.module.rank.R;
+import com.module.playways.R;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;

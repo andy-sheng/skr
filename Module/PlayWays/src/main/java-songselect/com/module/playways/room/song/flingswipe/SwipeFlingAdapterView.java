@@ -14,7 +14,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Adapter;
 import android.widget.FrameLayout;
 
-import com.module.rank.R;
+import com.module.playways.R;
 
 import java.util.ArrayList;
 

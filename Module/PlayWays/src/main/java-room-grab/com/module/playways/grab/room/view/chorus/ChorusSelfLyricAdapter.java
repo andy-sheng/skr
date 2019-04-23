@@ -9,13 +9,12 @@ import android.view.ViewGroup;
 
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
-import com.common.core.userinfo.model.UserInfoModel;
 import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.DiffAdapter;
-import com.module.rank.R;
+import com.module.playways.R;
 
 public class ChorusSelfLyricAdapter extends DiffAdapter<String, ChorusSelfLyricAdapter.ChorusSelfLyricHolder> {
 

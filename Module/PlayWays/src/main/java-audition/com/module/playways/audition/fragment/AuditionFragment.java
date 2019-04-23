@@ -41,7 +41,7 @@ import com.module.playways.room.prepare.model.PrepareData;
 import com.module.playways.view.VoiceControlPanelView;
 import com.module.playways.room.room.view.RankTopContainerView2;
 import com.module.playways.room.song.model.SongModel;
-import com.module.rank.R;
+import com.module.playways.R;
 import com.zq.lyrics.LyricsReader;
 import com.zq.lyrics.widget.ManyLyricsView;
 import com.zq.lyrics.widget.VoiceScaleView;

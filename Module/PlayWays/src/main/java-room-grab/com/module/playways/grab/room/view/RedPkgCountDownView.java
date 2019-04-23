@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
-import com.module.rank.R;
+import com.module.playways.R;
 
 public class RedPkgCountDownView extends RelativeLayout {
     RedCircleProgressView mRedCircleCountDownView;

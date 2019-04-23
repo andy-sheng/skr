@@ -55,7 +55,7 @@ import com.module.playways.room.room.view.RankTopContainerView1;
 import com.module.playways.room.room.view.RankTopContainerView2;
 import com.module.playways.room.room.view.TurnChangeCardView;
 import com.module.playways.room.song.model.SongModel;
-import com.module.rank.R;
+import com.module.playways.R;
 import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;

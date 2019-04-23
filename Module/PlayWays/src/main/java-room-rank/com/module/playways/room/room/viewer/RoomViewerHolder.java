@@ -7,7 +7,7 @@ import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.image.fresco.BaseImageView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
-import com.module.rank.R;
+import com.module.playways.R;
 
 public class RoomViewerHolder extends RecyclerView.ViewHolder {
     RoomViewerModel mRoomViewerModel;

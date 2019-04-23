@@ -6,7 +6,7 @@ import android.widget.RelativeLayout;
 
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
-import com.module.rank.R;
+import com.module.playways.R;
 
 public class PKSelfSingCardView extends RelativeLayout {
 

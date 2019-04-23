@@ -12,7 +12,7 @@ import com.module.playways.room.room.comment.holder.CommentHolder;
 import com.module.playways.room.room.comment.listener.CommentItemListener;
 import com.module.playways.room.room.comment.model.CommentDynamicModel;
 import com.module.playways.room.room.comment.model.CommentModel;
-import com.module.rank.R;
+import com.module.playways.R;
 
 public class CommentAdapter extends DiffAdapter<CommentModel, RecyclerView.ViewHolder> {
 

@@ -25,7 +25,7 @@ import com.module.playways.RoomDataUtils;
 import com.module.playways.room.room.RankRoomData;
 import com.module.playways.room.room.event.PkMyBurstSuccessEvent;
 import com.module.playways.room.room.event.PkMyLightOffSuccessEvent;
-import com.module.rank.R;
+import com.module.playways.R;
 
 import java.util.HashSet;
 

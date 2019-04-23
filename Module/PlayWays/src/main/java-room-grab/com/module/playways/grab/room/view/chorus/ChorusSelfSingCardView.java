@@ -5,15 +5,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
-import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
-import com.common.view.countdown.CircleCountDownView;
-import com.component.busilib.view.BitmapTextView;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabChorusUserStatusChangeEvent;
 import com.module.playways.grab.room.model.ChorusRoundInfoModel;
@@ -21,7 +17,7 @@ import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.view.common.SingCountDownView;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.module.playways.room.song.model.SongModel;
-import com.module.rank.R;
+import com.module.playways.R;
 import com.zq.lyrics.LyricsManager;
 
 import org.greenrobot.eventbus.EventBus;

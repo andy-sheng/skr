@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.common.view.DebounceViewClickListener;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
-import com.module.rank.R;
+import com.module.playways.R;
 
 public class SongSearchFooter extends RecyclerView.ViewHolder {
 

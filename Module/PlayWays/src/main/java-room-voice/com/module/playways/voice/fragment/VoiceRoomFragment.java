@@ -28,7 +28,7 @@ import com.module.playways.voice.view.VoiceBottomContainerView;
 import com.module.playways.voice.view.VoiceRightOpView;
 import com.module.playways.voice.view.VoiceTopContainerView;
 import com.module.playways.voice.view.VoiceUserStatusContainerView;
-import com.module.rank.R;
+import com.module.playways.R;
 import com.zq.dialog.PersonInfoDialog;
 
 import org.greenrobot.eventbus.Subscribe;

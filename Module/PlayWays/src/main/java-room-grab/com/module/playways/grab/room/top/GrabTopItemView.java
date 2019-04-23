@@ -22,7 +22,7 @@ import com.module.playways.room.prepare.model.PlayerInfoModel;
 
 import com.common.view.ex.ExTextView;
 
-import com.module.rank.R;
+import com.module.playways.R;
 import com.zq.live.proto.Room.EWantSingType;
 
 import org.greenrobot.eventbus.EventBus;

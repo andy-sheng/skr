@@ -29,7 +29,7 @@ import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
 import com.module.playways.grab.room.model.GrabConfigModel;
 import com.module.playways.room.song.model.SongModel;
-import com.module.rank.R;
+import com.module.playways.R;
 import com.zq.live.proto.Common.StandPlayType;
 
 import org.greenrobot.eventbus.EventBus;

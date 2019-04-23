@@ -11,7 +11,7 @@ import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.playways.room.song.holder.SongInfoHolder;
 import com.module.playways.room.song.holder.SongSearchFooter;
 import com.module.playways.room.song.model.SongModel;
-import com.module.rank.R;
+import com.module.playways.R;
 
 public class SongSelectAdapter extends DiffAdapter<SongModel, RecyclerView.ViewHolder> {
 

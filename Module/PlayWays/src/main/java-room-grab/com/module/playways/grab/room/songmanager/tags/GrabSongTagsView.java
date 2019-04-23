@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 import com.common.utils.U;
 import com.common.view.ex.drawable.DrawableCreator;
 import com.component.busilib.friends.SpecialModel;
-import com.module.rank.R;
+import com.module.playways.R;
 
 import java.util.ArrayList;
 import java.util.Iterator;

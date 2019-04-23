@@ -9,7 +9,7 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.module.RouterConstants;
 import com.module.playways.room.song.fragment.SongSelectFragment;
-import com.module.rank.R;
+import com.module.playways.R;
 
 /**
  * 调音间

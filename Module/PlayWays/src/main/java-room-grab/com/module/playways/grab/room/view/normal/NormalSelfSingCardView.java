@@ -19,7 +19,7 @@ import com.module.playways.grab.room.view.common.SingCountDownView;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.module.playways.others.LyricAndAccMatchManager;
 import com.module.playways.room.song.model.SongModel;
-import com.module.rank.R;
+import com.module.playways.R;
 import com.zq.live.proto.Room.EQRoundStatus;
 import com.zq.live.proto.Room.EWantSingType;
 import com.zq.lyrics.LyricsManager;

@@ -8,7 +8,7 @@ import android.widget.RelativeLayout;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.ex.ExTextView;
-import com.module.rank.R;
+import com.module.playways.R;
 
 /**
  * 切换房间过场UI

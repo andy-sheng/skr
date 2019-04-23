@@ -338,13 +338,27 @@ public class ActivityUtils {
         return intent;
     }
 
-    public boolean isHomeActivity(Activity topActivity) {
-        if (topActivity != null && topActivity.getClass().getSimpleName().equals("HomeActivity")) {
+    public boolean isHomeActivity(Activity activity) {
+        if (activity != null && activity.getClass().getSimpleName().equals("HomeActivity")) {
             return true;
         }
         return false;
     }
 
+    public boolean goHomeActivity() {
+        boolean homeExist = false;
+        for(Activity activity :getActivityList()){
+            if(isHomeActivity(activity)){
+                homeExist =true;
+            }else{
+                activity.finish();
+            }
+        }
+        if(!homeExist){
+
+        }
+        return homeExist;
+    }
     /**
      * 是否在后台回调
      */

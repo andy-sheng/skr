@@ -32,7 +32,7 @@ import com.module.playways.room.song.model.SongCardModel;
 import com.module.playways.room.song.model.SongModel;
 import com.module.playways.room.song.presenter.SongTagDetailsPresenter;
 import com.module.playways.room.song.view.ISongTagDetailView;
-import com.module.rank.R;
+import com.module.playways.R;
 
 import java.util.ArrayList;
 import java.util.List;

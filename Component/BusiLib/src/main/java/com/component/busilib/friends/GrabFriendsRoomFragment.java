@@ -16,13 +16,12 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
-import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.component.busilib.R;
 import com.module.RouterConstants;
-import com.module.rank.IRankingModeService;
+import com.module.playways.IPlaywaysModeService;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
@@ -91,7 +90,7 @@ public class GrabFriendsRoomFragment extends BaseFragment {
                         mSkrAudioPermission.ensurePermission(new Runnable() {
                             @Override
                             public void run() {
-                                IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
+                                IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
                                 if (iRankingModeService != null) {
                                     iRankingModeService.tryGoGrabRoom(roomID);
                                 }

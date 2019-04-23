@@ -20,7 +20,7 @@ import com.module.playways.audition.fragment.AuditionPrepareResFragment;
 import com.module.playways.room.prepare.model.PrepareData;
 import com.module.playways.room.song.SongSelectServerApi;
 import com.module.playways.room.song.model.SongModel;
-import com.module.rank.R;
+import com.module.playways.R;
 
 import java.util.HashMap;
 

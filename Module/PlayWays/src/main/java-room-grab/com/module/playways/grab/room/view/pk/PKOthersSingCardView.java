@@ -17,7 +17,7 @@ import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.SPkRoundInfoModel;
 import com.module.playways.grab.room.view.common.SingCountDownView;
 import com.module.playways.grab.room.view.pk.view.PKSingCardView;
-import com.module.rank.R;
+import com.module.playways.R;
 import com.zq.live.proto.Room.EQRoundStatus;
 
 import java.util.List;

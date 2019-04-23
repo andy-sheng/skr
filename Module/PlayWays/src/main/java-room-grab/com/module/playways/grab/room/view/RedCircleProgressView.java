@@ -14,7 +14,7 @@ import android.util.AttributeSet;
 import android.widget.ProgressBar;
 
 import com.common.utils.U;
-import com.module.rank.R;
+import com.module.playways.R;
 
 
 public class RedCircleProgressView extends ProgressBar {

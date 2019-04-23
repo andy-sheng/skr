@@ -13,7 +13,7 @@ import com.module.RouterConstants;
 import com.module.playways.grab.prepare.GrabMatchFragment;
 import com.module.playways.grab.prepare.NewGrabMatchFragment;
 import com.module.playways.room.prepare.model.PrepareData;
-import com.module.rank.R;
+import com.module.playways.R;
 
 @Route(path = RouterConstants.ACTIVITY_GRAB_MATCH_ROOM)
 public class GrabMatchActivity extends BaseActivity {

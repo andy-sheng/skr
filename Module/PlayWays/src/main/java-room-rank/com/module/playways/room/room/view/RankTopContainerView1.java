@@ -14,7 +14,7 @@ import com.common.view.ex.ExTextView;
 import com.module.playways.BaseRoomData;
 import com.module.playways.room.room.score.bar.ScoreProgressBarWithSvga;
 import com.module.playways.room.room.score.bar.ScoreTipsView;
-import com.module.rank.R;
+import com.module.playways.R;
 import com.module.playways.room.room.event.InputBoardEvent;
 
 import org.greenrobot.eventbus.EventBus;

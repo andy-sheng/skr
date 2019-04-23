@@ -4,7 +4,7 @@ import android.graphics.Color;
 import android.text.SpannableStringBuilder;
 
 import com.common.utils.U;
-import com.module.rank.R;
+import com.module.playways.R;
 
 /**
  * 消息的基类

@@ -10,7 +10,7 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.module.rank.R;
+import com.module.playways.R;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

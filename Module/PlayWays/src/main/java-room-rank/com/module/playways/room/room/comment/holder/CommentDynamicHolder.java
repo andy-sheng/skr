@@ -13,7 +13,7 @@ import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.room.room.comment.listener.CommentItemListener;
 import com.module.playways.room.room.comment.model.CommentDynamicModel;
-import com.module.rank.R;
+import com.module.playways.R;
 
 public class CommentDynamicHolder extends RecyclerView.ViewHolder {
     BaseImageView mAvatarIv;

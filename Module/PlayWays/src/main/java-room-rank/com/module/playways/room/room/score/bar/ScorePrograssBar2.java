@@ -20,7 +20,7 @@ import android.view.animation.DecelerateInterpolator;
 
 import com.common.log.MyLog;
 import com.common.utils.U;
-import com.module.rank.R;
+import com.module.playways.R;
 
 public class ScorePrograssBar2 extends View {
 

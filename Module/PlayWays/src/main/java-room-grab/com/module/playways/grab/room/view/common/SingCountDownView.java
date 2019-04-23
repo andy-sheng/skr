@@ -8,7 +8,7 @@ import android.widget.RelativeLayout;
 import com.common.utils.HandlerTaskTimer;
 import com.common.view.countdown.CircleCountDownView;
 import com.component.busilib.view.BitmapTextView;
-import com.module.rank.R;
+import com.module.playways.R;
 
 /**
  * 演唱时的倒计时view

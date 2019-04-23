@@ -13,7 +13,7 @@ import android.widget.RelativeLayout;
 import com.common.log.MyLog;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
-import com.module.rank.R;
+import com.module.playways.R;
 
 /**
  * 不唱了界面

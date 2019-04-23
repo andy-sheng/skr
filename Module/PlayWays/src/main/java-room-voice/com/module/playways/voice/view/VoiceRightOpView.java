@@ -17,7 +17,7 @@ import com.engine.EngineEvent;
 import com.engine.EngineManager;
 import com.engine.Params;
 import com.engine.UserStatus;
-import com.module.rank.R;
+import com.module.playways.R;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

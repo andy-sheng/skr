@@ -12,7 +12,7 @@ import com.kyleduo.switchbutton.SwitchButton;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.view.VoiceControlPanelView;
-import com.module.rank.R;
+import com.module.playways.R;
 
 public class GrabVoiceControlPanelView extends VoiceControlPanelView {
     public final static String TAG = "VoiceControlPanelView";

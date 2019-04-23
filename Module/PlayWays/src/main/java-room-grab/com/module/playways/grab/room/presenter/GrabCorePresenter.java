@@ -102,7 +102,7 @@ import com.module.playways.room.room.model.score.ScoreResultModel;
 import com.module.playways.room.room.score.MachineScoreItem;
 import com.module.playways.room.room.score.RobotScoreHelper;
 import com.module.playways.room.song.model.SongModel;
-import com.module.rank.BuildConfig;
+import com.module.playways.BuildConfig;
 import com.zq.live.proto.Common.ESex;
 import com.zq.live.proto.Common.StandPlayType;
 import com.zq.live.proto.Common.UserInfo;

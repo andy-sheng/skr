@@ -26,7 +26,7 @@ import com.common.view.ex.ExTextView;
 import com.component.busilib.view.BitmapTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.room.song.model.SongModel;
-import com.module.rank.R;
+import com.module.playways.R;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 import com.zq.live.proto.Common.StandPlayType;
 

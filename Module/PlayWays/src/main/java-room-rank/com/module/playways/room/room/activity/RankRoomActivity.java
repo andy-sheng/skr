@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.view.WindowManager;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.common.anim.svga.SvgaParserAdapter;
 import com.common.base.BaseActivity;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
@@ -16,7 +15,7 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.module.RouterConstants;
 import com.module.playways.room.room.RankRoomData;
-import com.module.rank.R;
+import com.module.playways.R;
 import com.module.playways.room.prepare.model.PrepareData;
 import com.module.playways.room.room.fragment.RankRoomFragment;
 import com.module.playways.RoomDataUtils;

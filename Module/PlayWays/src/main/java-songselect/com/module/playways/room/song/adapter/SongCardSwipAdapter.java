@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.module.playways.room.song.holder.SongCardHolder;
 import com.module.playways.room.song.model.SongCardModel;
-import com.module.rank.R;
+import com.module.playways.R;
 
 import java.util.ArrayList;
 import java.util.Collection;

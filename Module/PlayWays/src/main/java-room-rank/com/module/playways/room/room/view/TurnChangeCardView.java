@@ -16,14 +16,13 @@ import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.HttpImage;
 import com.common.image.model.ImageFactory;
 import com.common.image.model.oss.OssImgFactory;
-import com.common.log.MyLog;
 import com.common.utils.ImageUtils;
 import com.common.utils.U;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.room.room.RankRoomData;
 import com.module.playways.room.room.model.RankPlayerInfoModel;
 import com.module.playways.room.room.model.RankRoundInfoModel;
-import com.module.rank.R;
+import com.module.playways.R;
 import com.module.playways.BaseRoomData;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGADrawable;
@@ -35,7 +34,6 @@ import com.zq.live.proto.Common.ESex;
 
 
 import java.io.File;
-import java.net.URL;
 
 public class TurnChangeCardView extends RelativeLayout {
 

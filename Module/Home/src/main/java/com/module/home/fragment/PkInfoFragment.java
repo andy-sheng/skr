@@ -42,7 +42,7 @@ import com.module.home.R;
 import com.module.home.persenter.PkInfoPresenter;
 import com.module.home.view.IPkInfoView;
 import com.module.home.widget.UserInfoTitleView;
-import com.module.rank.IRankingModeService;
+import com.module.playways.IPlaywaysModeService;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
@@ -157,7 +157,7 @@ public class PkInfoFragment extends BaseFragment implements IPkInfoView {
         mRankArea.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
+                IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
                 Class<BaseFragment> baseFragment = (Class<BaseFragment>) iRankingModeService.getLeaderboardFragmentClass();
                 U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder((BaseActivity) getContext(), baseFragment)
                         .setAddToBackStack(true)

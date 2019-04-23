@@ -1,7 +1,6 @@
 package com.module.playways.grab.room.view.normal;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -22,14 +21,13 @@ import com.common.utils.ImageUtils;
 import com.common.utils.U;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.room.song.model.SongModel;
-import com.module.rank.R;
+import com.module.playways.R;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGADynamicEntity;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
-import com.zq.live.proto.Common.ESex;
 
 
 import java.io.File;

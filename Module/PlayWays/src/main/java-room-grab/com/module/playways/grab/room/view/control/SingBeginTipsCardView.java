@@ -12,7 +12,7 @@ import com.module.playways.grab.room.model.SPkRoundInfoModel;
 import com.module.playways.grab.room.view.chorus.ChorusSingBeginTipsCardView;
 import com.module.playways.grab.room.view.normal.NormalSingBeginTipsCardView;
 import com.module.playways.grab.room.view.pk.PKSingBeginTipsCardView;
-import com.module.rank.R;
+import com.module.playways.R;
 
 import java.util.List;
 

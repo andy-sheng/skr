@@ -21,7 +21,7 @@ import com.module.playways.grab.room.event.GrabSpeakingControlEvent;
 import com.module.playways.grab.room.dynamicmsg.DynamicMsgView;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.room.room.view.BottomContainerView;
-import com.module.rank.R;
+import com.module.playways.R;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

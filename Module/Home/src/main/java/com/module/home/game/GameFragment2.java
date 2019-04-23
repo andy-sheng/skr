@@ -6,10 +6,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
@@ -19,13 +17,8 @@ import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.permission.SkrAudioPermission;
-import com.common.floatwindow.FloatWindow;
-import com.common.floatwindow.MoveType;
-import com.common.floatwindow.Screen;
-import com.common.floatwindow.ViewStateListenerAdapter;
 import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
-import com.common.utils.HandlerTaskTimer;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
@@ -44,11 +37,7 @@ import com.module.home.game.model.QuickJoinRoomModel;
 import com.module.home.game.model.RecommendRoomModel;
 import com.module.home.model.GameKConfigModel;
 import com.module.home.model.SlideShowModel;
-import com.module.rank.IRankingModeService;
-import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.OnClickListener;
-import com.orhanobut.dialogplus.OnDismissListener;
-import com.orhanobut.dialogplus.ViewHolder;
+import com.module.playways.IPlaywaysModeService;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
@@ -178,7 +167,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
             @Override
             public void createRoom() {
                 MyLog.d(TAG, "createRoom");
-                IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
+                IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
                 if (iRankingModeService != null) {
                     iRankingModeService.tryGoCreateRoom();
                 }
@@ -192,7 +181,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
                     mSkrAudioPermission.ensurePermission(new Runnable() {
                         @Override
                         public void run() {
-                            IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
+                            IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
                             if (iRankingModeService != null) {
                                 iRankingModeService.tryGoGrabMatch(specialModel.getTagID());
                             }
@@ -210,7 +199,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
                     mSkrAudioPermission.ensurePermission(new Runnable() {
                         @Override
                         public void run() {
-                            IRankingModeService iRankingModeService = (IRankingModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
+                            IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
                             if (iRankingModeService != null) {
                                 iRankingModeService.tryGoGrabRoom(friendRoomModel.getRoomInfo().getRoomID());
                             }

@@ -32,7 +32,7 @@ import com.module.playways.PlayWaysActivity;
 import com.module.playways.room.prepare.fragment.PrepareResFragment;
 import com.module.playways.room.song.adapter.SongSelectAdapter;
 import com.module.playways.room.song.model.SongModel;
-import com.module.rank.R;
+import com.module.playways.R;
 import com.module.playways.room.song.presenter.SongTagDetailsPresenter;
 import com.module.playways.room.song.view.ISongTagDetailView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;

@@ -18,7 +18,7 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.module.playways.room.prepare.model.PrepareData;
 import com.module.playways.audition.presenter.PrepareAuditionResPresenter;
 import com.module.playways.room.song.model.SongModel;
-import com.module.rank.R;
+import com.module.playways.R;
 
 public class AuditionPrepareResFragment extends BaseFragment {
 

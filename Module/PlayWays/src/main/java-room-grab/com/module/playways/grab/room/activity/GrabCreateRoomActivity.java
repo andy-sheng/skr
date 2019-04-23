@@ -9,7 +9,7 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.module.RouterConstants;
 import com.module.playways.grab.createroom.fragment.GrabCreateRoomFragment;
-import com.module.rank.R;
+import com.module.playways.R;
 
 @Route(path = RouterConstants.ACTIVITY_GRAB_CREATE_ROOM)
 public class GrabCreateRoomActivity extends BaseActivity {

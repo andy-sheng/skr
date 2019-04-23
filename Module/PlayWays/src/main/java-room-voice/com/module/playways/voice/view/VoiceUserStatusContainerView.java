@@ -13,7 +13,7 @@ import com.engine.EngineEvent;
 import com.engine.UserStatus;
 import com.module.playways.room.room.RankRoomData;
 import com.module.playways.room.room.model.RankPlayerInfoModel;
-import com.module.rank.R;
+import com.module.playways.R;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

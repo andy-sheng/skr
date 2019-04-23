@@ -8,7 +8,7 @@ import android.widget.RelativeLayout;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.NoLeakEditText;
 import com.dialog.view.StrokeTextView;
-import com.module.rank.R;
+import com.module.playways.R;
 
 /**
  * 修改房间名字

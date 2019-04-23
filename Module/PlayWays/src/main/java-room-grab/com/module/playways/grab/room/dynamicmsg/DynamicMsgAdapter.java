@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import com.common.view.recyclerview.DiffAdapter;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
-import com.module.rank.R;
+import com.module.playways.R;
 
 public class DynamicMsgAdapter extends DiffAdapter<DynamicModel, DynamicMsgHolder> {
 

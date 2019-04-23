@@ -9,7 +9,7 @@ import com.module.playways.room.msg.event.SpecialEmojiMsgEvent;
 import com.module.playways.room.room.gift.model.GiftPlayModel;
 import com.module.playways.BaseRoomData;
 import com.module.playways.RoomDataUtils;
-import com.module.rank.R;
+import com.module.playways.R;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

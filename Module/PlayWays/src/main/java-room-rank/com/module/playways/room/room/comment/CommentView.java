@@ -21,7 +21,7 @@ import com.module.playways.room.room.comment.model.CommentTextModel;
 import com.module.playways.room.room.event.PretendCommentMsgEvent;
 import com.module.playways.room.room.event.RankToVoiceTransformDataEvent;
 import com.module.playways.voice.activity.VoiceRoomActivity;
-import com.module.rank.R;
+import com.module.playways.R;
 import com.module.playways.room.msg.event.CommentMsgEvent;
 import com.module.playways.BaseRoomData;
 

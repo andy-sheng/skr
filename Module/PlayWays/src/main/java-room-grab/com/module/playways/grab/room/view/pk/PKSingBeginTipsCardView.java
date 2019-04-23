@@ -2,15 +2,12 @@ package com.module.playways.grab.room.view.pk;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 import com.common.anim.svga.SvgaParserAdapter;
-import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.HttpImage;
@@ -20,7 +17,7 @@ import com.common.log.MyLog;
 import com.common.utils.ImageUtils;
 import com.common.utils.U;
 import com.module.playways.grab.room.listener.SVGAListener;
-import com.module.rank.R;
+import com.module.playways.R;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGADynamicEntity;

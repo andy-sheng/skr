@@ -20,8 +20,7 @@ import com.module.playways.grab.room.activity.GrabRoomActivity;
 import com.module.playways.room.prepare.model.JoinGrabRoomRspModel;
 import com.module.playways.room.prepare.model.PrepareData;
 import com.module.playways.room.room.fragment.LeaderboardFragment;
-import com.module.rank.IRankingModeService;
-import com.module.rank.R;
+import com.module.playways.R;
 import com.zq.toast.CommonToastView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -36,7 +35,7 @@ import okhttp3.RequestBody;
 import static com.common.rxretrofit.ApiManager.APPLICATION_JSON;
 
 @Route(path = RouterConstants.SERVICE_RANKINGMODE, name = "测试服务")
-public class PlayWaysServiceImpl implements IRankingModeService {
+public class PlayWaysServiceImpl implements IPlaywaysModeService {
     public final static String TAG = "ChannelServiceImpl";
 
     /**
