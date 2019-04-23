@@ -302,11 +302,11 @@ dependencies {
 
     api files('libs/BaiduLBS_Android.jar')
 
-//    api files('libs/alipay-sdk-java-3.6.0.ALL.jar')
-
+    // 阿里支付
     api files("libs/alipaySdk-20170922.jar")
 
-    api 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
+    // 微信支付
+    api 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:5.3.1'
 }
 
 //与dependencies平级，主要用于配置数据库相关信息的及自动生成的“DAO”资源的目录
