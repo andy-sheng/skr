@@ -22,85 +22,7 @@
         app:statusBarColor="@color/colorPrimary"
         app:titleBarColor="@color/colorPrimary"></com.common.view.titlebar.CommonTitleBar>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_52_dp"
-        android:layout_below="@+id/titlebar"
-        android:orientation="horizontal">
 
-        <RelativeLayout
-            android:id="@+id/friend_area"
-            android:layout_width="@dimen/view_0_dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/friend"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:singleLine="true"
-                android:text="好友"
-                android:textColor="#800C2275"
-                android:textSize="@dimen/textsize_15_dp" />
-
-            <com.common.view.ex.ExImageView
-                android:id="@+id/friend_red_dot"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/friend"
-                android:layout_alignRight="@+id/friend"
-                android:src="@drawable/reddot"
-                android:visibility="gone" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/follow_area"
-            android:layout_width="@dimen/view_0_dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/follow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:singleLine="true"
-                android:text="关注"
-                android:textColor="#800C2275"
-                android:textSize="@dimen/textsize_15_dp" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/fans_area"
-            android:layout_width="@dimen/view_0_dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/fans"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:singleLine="true"
-                android:text="粉丝"
-                android:textColor="#800C2275"
-                android:textSize="@dimen/textsize_15_dp" />
-
-            <com.common.view.ex.ExImageView
-                android:id="@+id/fans_red_dot"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/fans"
-                android:layout_alignRight="@+id/fans"
-                android:src="@drawable/reddot"
-                android:visibility="gone" />
-        </RelativeLayout>
-    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/container"
@@ -126,6 +48,89 @@
             android:overScrollMode="never"
             android:requiresFadingEdge="none" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_52_dp"
+        android:layout_below="@+id/titlebar"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/friend_area"
+            android:layout_width="@dimen/view_0_dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/friend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="好友"
+                android:textSize="@dimen/textsize_15_dp"
+                app:bl_unSelected_textColor="@color/white_trans_50"
+                app:bl_selected_textColor="@color/white"/>
+
+            <com.common.view.ex.ExImageView
+                android:id="@+id/friend_red_dot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/friend"
+                android:layout_alignRight="@+id/friend"
+                android:src="@drawable/reddot"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/follow_area"
+            android:layout_width="@dimen/view_0_dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/follow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="关注"
+                android:textSize="@dimen/textsize_15_dp"
+                app:bl_unSelected_textColor="@color/white_trans_50"
+                app:bl_selected_textColor="@color/white"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/fans_area"
+            android:layout_width="@dimen/view_0_dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/fans"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="粉丝"
+                android:textSize="@dimen/textsize_15_dp"
+                app:bl_unSelected_textColor="@color/white_trans_50"
+                app:bl_selected_textColor="@color/white"/>
+
+            <com.common.view.ex.ExImageView
+                android:id="@+id/fans_red_dot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/fans"
+                android:layout_alignRight="@+id/fans"
+                android:src="@drawable/reddot"
+                android:visibility="gone" />
+        </RelativeLayout>
     </LinearLayout>
 
 

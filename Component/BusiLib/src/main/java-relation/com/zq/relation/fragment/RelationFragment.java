@@ -34,6 +34,7 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
+import com.common.view.ex.ExTextView;
 import com.common.view.titlebar.CommonTitleBar;
 import com.common.view.viewpager.NestViewPager;
 import com.common.view.viewpager.SlidingTabLayout;
@@ -70,13 +71,13 @@ public class RelationFragment extends BaseFragment {
     NestViewPager mRelationVp;
 
     RelativeLayout mFriendArea;
-    TextView mFriend;
+    ExTextView mFriend;
     ExImageView mFriendRedDot;
     RelativeLayout mFansArea;
-    TextView mFans;
+    ExTextView mFans;
     ExImageView mFansRedDot;
     RelativeLayout mFollowArea;
-    TextView mFollow;
+    ExTextView mFollow;
 
     PopupWindow mPopupWindow;  // 弹窗
     RelativeLayout mSearchArea;
@@ -107,13 +108,13 @@ public class RelationFragment extends BaseFragment {
         mRelationVp = (NestViewPager) mRootView.findViewById(R.id.relation_vp);
 
         mFriendArea = (RelativeLayout) mRootView.findViewById(R.id.friend_area);
-        mFriend = (TextView) mRootView.findViewById(R.id.friend);
+        mFriend = (ExTextView) mRootView.findViewById(R.id.friend);
         mFriendRedDot = (ExImageView) mRootView.findViewById(R.id.friend_red_dot);
         mFansArea = (RelativeLayout) mRootView.findViewById(R.id.fans_area);
-        mFans = (TextView) mRootView.findViewById(R.id.fans);
+        mFans = (ExTextView) mRootView.findViewById(R.id.fans);
         mFansRedDot = (ExImageView) mRootView.findViewById(R.id.fans_red_dot);
         mFollowArea = (RelativeLayout) mRootView.findViewById(R.id.follow_area);
-        mFollow = (TextView) mRootView.findViewById(R.id.follow);
+        mFollow = (ExTextView) mRootView.findViewById(R.id.follow);
 
         LinearLayout linearLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.add_friend_pop_window_layout, null);
         mSearchArea = (RelativeLayout) linearLayout.findViewById(R.id.search_area);
@@ -227,6 +228,7 @@ public class RelationFragment extends BaseFragment {
                 } else if (position == 1) {
                     mFansRedDot.setVisibility(View.GONE);
                 }
+                selectPosition(position);
             }
 
             @Override
@@ -247,13 +249,17 @@ public class RelationFragment extends BaseFragment {
             mFocusNum = bundle.getInt(RelationActivity.FOLLOW_NUM_KEY);
             if (relation == UserInfoManager.RA_UNKNOWN) {
                 getRelationNums();
+                selectPosition(0);
             } else {
                 if (relation == UserInfoManager.RELATION_FRIENDS) {
                     mRelationVp.setCurrentItem(0);
+                    selectPosition(0);
                 } else if (relation == UserInfoManager.RELATION_FOLLOW) {
                     mRelationVp.setCurrentItem(1);
+                    selectPosition(1);
                 } else if (relation == UserInfoManager.RELATION_FANS) {
                     mRelationVp.setCurrentItem(2);
+                    selectPosition(2);
                 }
                 refreshRelationNums();
             }
@@ -262,6 +268,22 @@ public class RelationFragment extends BaseFragment {
         }
 
         U.getSoundUtils().preLoad(TAG, R.raw.normal_back);
+    }
+
+    private void selectPosition(int position) {
+        if (position == 0) {
+            mFriend.setSelected(true);
+            mFollow.setSelected(false);
+            mFans.setSelected(false);
+        } else if (position == 1) {
+            mFriend.setSelected(false);
+            mFollow.setSelected(true);
+            mFans.setSelected(false);
+        } else if (position == 2) {
+            mFriend.setSelected(false);
+            mFollow.setSelected(false);
+            mFans.setSelected(true);
+        }
     }
 
     private void showShareDialog() {
