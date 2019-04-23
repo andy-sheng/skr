@@ -12,7 +12,7 @@ import com.module.home.R;
 import com.module.home.fragment.InComeFragment;
 
 @Route(path = RouterConstants.ACTIVITY_BALANCE)
-public class BallanceActivity extends BaseActivity {
+public class BalanceActivity extends BaseActivity {
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
         return R.layout.empty_activity_layout;

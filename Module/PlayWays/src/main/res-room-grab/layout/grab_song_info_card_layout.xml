@@ -47,8 +47,8 @@
             android:layout_toRightOf="@+id/song_cover_iv"
             android:ellipsize="end"
             android:gravity="center_vertical|left"
-            android:maxLines="1"
             android:maxEms="9"
+            android:maxLines="1"
             android:singleLine="true"
             android:textColor="@color/black_trans_70"
             android:textSize="@dimen/textsize_16_dp" />
@@ -78,6 +78,7 @@
             android:layout_marginLeft="@dimen/view_10_dp"
             android:layout_marginTop="@dimen/view_1_dp"
             android:layout_toRightOf="@id/song_name_tv"
+            android:gravity="center"
             android:text="PK"
             android:textColor="#FFDCA2"
             android:textSize="@dimen/textsize_14_dp"

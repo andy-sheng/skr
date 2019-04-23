@@ -33,7 +33,7 @@
             android:windowSoftInputMode="adjustPan" />
 
         <activity
-            android:name=".activity.BallanceActivity"
+            android:name=".activity.BalanceActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
