@@ -28,12 +28,15 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.top.CircleAnimationView;
+import com.module.playways.grab.room.model.SPkRoundInfoModel;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.zq.live.proto.Room.EQRoundStatus;
+
+import java.util.List;
 
 
 /**
@@ -121,33 +124,41 @@ public class PKOthersSingCardView extends RelativeLayout {
         mRightSingSvga.setTranslationX(offsetX);
     }
 
+    public void setRoomData(GrabRoomData roomData) {
+        mGrabRoomData = roomData;
+    }
 
-    public void bindData(GrabRoomData roomData, UserInfoModel left, UserInfoModel right) {
-        if (roomData != null && left != null && right != null) {
-            this.mGrabRoomData = roomData;
-            this.mLeftUserInfoModel = left;
-            this.mRightUserInfoModel = right;
-
+    public void bindData() {
+        GrabRoundInfoModel grabRoundInfoModel = mGrabRoomData.getRealRoundInfo();
+        if (grabRoundInfoModel == null) {
+            return;
+        }
+        mLeftUserInfoModel = null;
+        mRightUserInfoModel = null;
+        List<SPkRoundInfoModel> list = grabRoundInfoModel.getsPkRoundInfoModels();
+        if (list != null && list.size() >= 2) {
+            mLeftUserInfoModel = mGrabRoomData.getUserInfo(list.get(0).getUserID());
+            mRightUserInfoModel = mGrabRoomData.getUserInfo(list.get(1).getUserID());
+        }
+        if (mLeftUserInfoModel != null && mRightUserInfoModel != null) {
             mHasPlayFullAnimation = false;
             mUiHandler.removeCallbacksAndMessages(null);
             setVisibility(VISIBLE);
             AvatarUtils.loadAvatarByUrl(mLeftIv,
-                    AvatarUtils.newParamsBuilder(left.getAvatar())
+                    AvatarUtils.newParamsBuilder(mLeftUserInfoModel.getAvatar())
                             .setBorderColor(U.getColor(R.color.white))
                             .setBorderWidth(U.getDisplayUtils().dip2px(2))
                             .setCircle(true)
                             .build());
-            mLeftName.setText(left.getNickname());
+            mLeftName.setText(mLeftUserInfoModel.getNickname());
             AvatarUtils.loadAvatarByUrl(mRightIv,
-                    AvatarUtils.newParamsBuilder(right.getAvatar())
+                    AvatarUtils.newParamsBuilder(mRightUserInfoModel.getAvatar())
                             .setBorderColor(U.getColor(R.color.white))
                             .setBorderWidth(U.getDisplayUtils().dip2px(2))
                             .setCircle(true)
                             .build());
-            mRightName.setText(right.getNickname());
+            mRightName.setText(mRightUserInfoModel.getNickname());
             animationGo();
-        } else {
-            MyLog.w(TAG, "bindData" + " roomData=" + roomData + " left=" + left + " right=" + right);
         }
     }
 
@@ -166,7 +177,9 @@ public class PKOthersSingCardView extends RelativeLayout {
             @Override
             public void onAnimationEnd(Animation animation) {
                 // TODO: 2019/4/23 先播放左边的动画，后面都是一体的
-                playScaleAnimation(mLeftUserInfoModel.getUserId());
+                if (mLeftUserInfoModel != null) {
+                    playScaleAnimation(mLeftUserInfoModel.getUserId());
+                }
             }
 
             @Override
@@ -427,4 +440,6 @@ public class PKOthersSingCardView extends RelativeLayout {
             mRightSingSvga.stopAnimation(true);
         }
     }
+
+
 }

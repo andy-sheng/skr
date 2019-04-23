@@ -26,6 +26,7 @@ import com.engine.UserStatus;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabChorusUserStatusChangeEvent;
+import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.rank.R;
 import com.opensource.svgaplayer.SVGADrawable;
@@ -137,12 +138,24 @@ public class ChorusOthersSingCardView extends RelativeLayout {
         }
     }
 
-    public void bindData(GrabRoomData roomData, UserInfoModel left, UserInfoModel right) {
-        if (roomData != null && left != null && right != null) {
-            this.mGrabRoomData = roomData;
-            this.mLeftUserInfoModel = left;
-            this.mRightUserInfoModel = right;
+    public void setRoomData(GrabRoomData roomData) {
+        mGrabRoomData = roomData;
+    }
 
+    public void bindData() {
+        GrabRoundInfoModel now = mGrabRoomData.getRealRoundInfo();
+        if (now == null) {
+            return;
+        }
+        mLeftUserInfoModel = null;
+        mRightUserInfoModel = null;
+        List<ChorusRoundInfoModel> list = now.getChorusRoundInfoModels();
+        if (list != null && list.size() >= 2) {
+            mLeftUserInfoModel = mGrabRoomData.getUserInfo(list.get(0).getUserID());
+            mRightUserInfoModel = mGrabRoomData.getUserInfo(list.get(1).getUserID());
+        }
+
+        if (mLeftUserInfoModel != null && mRightUserInfoModel != null) {
             mHasPlayFullAnimation = false;
             mUiHandler.removeCallbacksAndMessages(null);
             setVisibility(VISIBLE);
@@ -179,8 +192,6 @@ public class ChorusOthersSingCardView extends RelativeLayout {
                 mUiHandler.removeMessages(MSG_ENSURE_PLAY);
                 mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_PLAY, 3000);
             }
-        } else {
-            MyLog.w(TAG, "bindData" + " roomData=" + roomData + " left=" + left + " right=" + right);
         }
     }
 
@@ -476,4 +487,5 @@ public class ChorusOthersSingCardView extends RelativeLayout {
         }
         mUiHandler.removeCallbacksAndMessages(null);
     }
+
 }

@@ -104,7 +104,9 @@ public class NormalOthersSingCardView extends RelativeLayout {
         mGrabRoomData = roomData;
     }
 
-    public void bindData(UserInfoModel userInfoModel) {
+    public void bindData() {
+        GrabRoundInfoModel infoModel = mGrabRoomData.getRealRoundInfo();
+        UserInfoModel userInfoModel = mGrabRoomData.getUserInfo(infoModel.getUserID());
         mUiHandler.removeCallbacksAndMessages(null);
         mHasPlayFullAnimation = false;
         setVisibility(VISIBLE);
