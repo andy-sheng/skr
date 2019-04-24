@@ -2,7 +2,10 @@ package com.component.busilib;
 
 public class SkrConfig {
 
-    private boolean mNeedUploadAudioForAI = true;
+    /**
+     * 机器人资源让ios的传吧 ，android 好多机型性能太差了，一录音更卡了
+     */
+    private boolean mNeedUploadAudioForAI = false;
 
     private static class SkrConfigHolder {
         private static final SkrConfig INSTANCE = new SkrConfig();

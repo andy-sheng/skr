@@ -92,19 +92,17 @@ public class PKOthersSingCardView extends RelativeLayout {
             mLeftUserInfoModel = mGrabRoomData.getUserInfo(list.get(0).getUserID());
             mRightUserInfoModel = mGrabRoomData.getUserInfo(list.get(1).getUserID());
         }
-        if (mLeftUserInfoModel != null && mRightUserInfoModel != null) {
-            mHasPlayFullAnimation = false;
-            mUiHandler.removeCallbacksAndMessages(null);
-            setVisibility(VISIBLE);
-            // 绑定数据
-            mPkCardView.bindData();
-            if (grabRoundInfoModel.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()) {
-                // pk第一个人唱
-                playCardEnterAniamtion();
-            } else if (grabRoundInfoModel.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
-                if (mRightUserInfoModel != null) {
-                    playIndicateAnimation(mRightUserInfoModel.getUserId());
-                }
+        mHasPlayFullAnimation = false;
+        mUiHandler.removeCallbacksAndMessages(null);
+        setVisibility(VISIBLE);
+        // 绑定数据
+        mPkCardView.bindData();
+        if (grabRoundInfoModel.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()) {
+            // pk第一个人唱
+            playCardEnterAniamtion();
+        } else if (grabRoundInfoModel.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
+            if (mRightUserInfoModel != null) {
+                playIndicateAnimation(mRightUserInfoModel.getUserId());
             }
         }
     }

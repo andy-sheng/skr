@@ -113,8 +113,8 @@ public class PKSingCardView extends RelativeLayout {
             mLeftUserInfoModel = mGrabRoomData.getUserInfo(list.get(0).getUserID());
             mRightUserInfoModel = mGrabRoomData.getUserInfo(list.get(1).getUserID());
         }
-        if (mLeftUserInfoModel != null && mRightUserInfoModel != null) {
-            setVisibility(VISIBLE);
+        setVisibility(VISIBLE);
+        if (mLeftUserInfoModel != null) {
             AvatarUtils.loadAvatarByUrl(mLeftIv,
                     AvatarUtils.newParamsBuilder(mLeftUserInfoModel.getAvatar())
                             .setBorderColor(U.getColor(R.color.white))
@@ -122,6 +122,8 @@ public class PKSingCardView extends RelativeLayout {
                             .setCircle(true)
                             .build());
             mLeftName.setText(mLeftUserInfoModel.getNickname());
+        }
+        if (mRightUserInfoModel != null) {
             AvatarUtils.loadAvatarByUrl(mRightIv,
                     AvatarUtils.newParamsBuilder(mRightUserInfoModel.getAvatar())
                             .setBorderColor(U.getColor(R.color.white))
@@ -206,9 +208,9 @@ public class PKSingCardView extends RelativeLayout {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 int p = (int) animation.getAnimatedValue();
-                if (uid == mLeftUserInfoModel.getUserId()) {
+                if (mLeftUserInfoModel != null && uid == mLeftUserInfoModel.getUserId()) {
                     mLeftCircleAnimationView.setProgress(p);
-                } else if (uid == mRightUserInfoModel.getUserId()) {
+                } else if (mRightUserInfoModel != null && uid == mRightUserInfoModel.getUserId()) {
                     mRightCircleAnimationView.setProgress(p);
                 }
 
@@ -219,9 +221,9 @@ public class PKSingCardView extends RelativeLayout {
             @Override
             public void onAnimationStart(Animator animation) {
                 super.onAnimationStart(animation);
-                if (uid == mLeftUserInfoModel.getUserId()) {
+                if (mLeftUserInfoModel != null && uid == mLeftUserInfoModel.getUserId()) {
                     mLeftCircleAnimationView.setVisibility(VISIBLE);
-                } else if (uid == mRightUserInfoModel.getUserId()) {
+                } else if (mRightUserInfoModel != null && uid == mRightUserInfoModel.getUserId()) {
                     mRightCircleAnimationView.setVisibility(VISIBLE);
                 }
             }
@@ -229,9 +231,9 @@ public class PKSingCardView extends RelativeLayout {
             @Override
             public void onAnimationCancel(Animator animation) {
                 super.onAnimationCancel(animation);
-                if (uid == mLeftUserInfoModel.getUserId()) {
+                if (mLeftUserInfoModel != null && uid == mLeftUserInfoModel.getUserId()) {
                     mLeftCircleAnimationView.setVisibility(GONE);
-                } else if (uid == mRightUserInfoModel.getUserId()) {
+                } else if (mRightUserInfoModel != null && uid == mRightUserInfoModel.getUserId()) {
                     mRightCircleAnimationView.setVisibility(GONE);
                 }
             }
@@ -239,10 +241,10 @@ public class PKSingCardView extends RelativeLayout {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                if (uid == mLeftUserInfoModel.getUserId()) {
+                if (mLeftUserInfoModel != null && uid == mLeftUserInfoModel.getUserId()) {
                     mLeftAnimationFlag = false;
                     mLeftCircleAnimationView.setVisibility(GONE);
-                } else if (uid == mRightUserInfoModel.getUserId()) {
+                } else if (mRightUserInfoModel != null && uid == mRightUserInfoModel.getUserId()) {
                     mRightAnimationFlag = false;
                     mRightCircleAnimationView.setVisibility(GONE);
                 }
@@ -264,9 +266,9 @@ public class PKSingCardView extends RelativeLayout {
 
     // TODO: 2019/4/23 播放声纹动画，同时倒计时开始计时
     public void playSingAnimation(int uid) {
-        if (uid == mLeftUserInfoModel.getUserId()) {
+        if (mLeftUserInfoModel != null && uid == mLeftUserInfoModel.getUserId()) {
             playSingAnimation(mLeftSingSvga);
-        } else if (uid == mRightUserInfoModel.getUserId()) {
+        } else if (mRightUserInfoModel != null && uid == mRightUserInfoModel.getUserId()) {
             playSingAnimation(mRightSingSvga);
         }
     }
