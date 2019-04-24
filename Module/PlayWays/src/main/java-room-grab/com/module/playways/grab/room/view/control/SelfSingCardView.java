@@ -64,6 +64,8 @@ public class SelfSingCardView {
 
     public void destroy() {
         mNormalSelfSingCardView.destroy();
+        mChorusSelfSingCardView.destroy();
+        mPKSelfSingCardView.destroy();
     }
 
     public void setListener(SelfSingCardView.Listener listener) {

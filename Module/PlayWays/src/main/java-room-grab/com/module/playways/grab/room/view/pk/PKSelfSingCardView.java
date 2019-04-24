@@ -195,8 +195,12 @@ public class PKSelfSingCardView extends RelativeLayout {
             clearAnimation();
             setVisibility(GONE);
         }
+        mPkSelfSingLyricView.reset();
     }
 
+    public void destroy() {
+        mPkSelfSingLyricView.destroy();
+    }
 
     @Override
     protected void onDetachedFromWindow() {
@@ -220,4 +224,5 @@ public class PKSelfSingCardView extends RelativeLayout {
             mSingCountDownView.setListener(mListener);
         }
     }
+
 }

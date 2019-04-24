@@ -18,6 +18,11 @@ import com.common.view.ex.ExTextView;
 import com.component.busilib.view.BitmapTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.R;
+import com.module.playways.grab.room.GrabRoomData;
+import com.module.playways.grab.room.model.GrabRoundInfoModel;
+import com.module.playways.grab.room.model.SPkRoundInfoModel;
+
+import java.util.List;
 
 
 /**
@@ -46,6 +51,7 @@ public class PKRoundOverCardView extends RelativeLayout {
     UserInfoModel mRightUserInfoModel;
     float mLeftScore;
     float mRightScore;
+    private GrabRoomData mRoomData;
 
     public PKRoundOverCardView(Context context) {
         super(context);
@@ -78,29 +84,37 @@ public class PKRoundOverCardView extends RelativeLayout {
         mRightScoreBtv = (BitmapTextView) findViewById(R.id.right_score_btv);
     }
 
-    public void bindData(UserInfoModel left, float leftScore, UserInfoModel right, float rightScore) {
-        if (left == null || right == null) {
-            return;
+    public void bindData(GrabRoundInfoModel roundInfoModel) {
+
+        mLeftUserInfoModel = null;
+        mRightUserInfoModel = null;
+        mLeftScore = 0;
+        mRightScore = 0;
+        List<SPkRoundInfoModel> list = roundInfoModel.getsPkRoundInfoModels();
+        if (list != null && list.size() >= 2) {
+            mLeftUserInfoModel = mRoomData.getUserInfo(list.get(0).getUserID());
+            this.mLeftScore = list.get(0).getScore();
+            mRightUserInfoModel = mRoomData.getUserInfo(list.get(1).getUserID());
+            this.mRightScore = list.get(0).getScore();
         }
 
-        this.mLeftUserInfoModel = left;
-        this.mRightUserInfoModel = right;
-        this.mLeftScore = leftScore;
-        this.mRightScore = rightScore;
+        if (mLeftUserInfoModel != null) {
+            AvatarUtils.loadAvatarByUrl(mLeftAvatarIv,
+                    AvatarUtils.newParamsBuilder(mLeftUserInfoModel.getAvatar())
+                            .setCircle(true)
+                            .build());
+            mLeftName.setText(mLeftUserInfoModel.getNickname());
+            mLeftScoreBtv.setText(mLeftScore + "");
+        }
 
-        AvatarUtils.loadAvatarByUrl(mLeftAvatarIv,
-                AvatarUtils.newParamsBuilder(mLeftUserInfoModel.getAvatar())
-                        .setCircle(true)
-                        .build());
-        mLeftName.setText(mLeftUserInfoModel.getNickname());
-        mLeftScoreBtv.setText(leftScore + "");
-
-        AvatarUtils.loadAvatarByUrl(mRightAvatarIv,
-                AvatarUtils.newParamsBuilder(mRightUserInfoModel.getAvatar())
-                        .setCircle(true)
-                        .build());
-        mRightName.setText(mRightUserInfoModel.getNickname());
-        mRightScoreBtv.setText(rightScore + "");
+        if (mRightUserInfoModel != null) {
+            AvatarUtils.loadAvatarByUrl(mRightAvatarIv,
+                    AvatarUtils.newParamsBuilder(mRightUserInfoModel.getAvatar())
+                            .setCircle(true)
+                            .build());
+            mRightName.setText(mRightUserInfoModel.getNickname());
+            mRightScoreBtv.setText(mRightScore + "");
+        }
 
         playCardEnterAnimation();
     }
@@ -199,5 +213,13 @@ public class PKRoundOverCardView extends RelativeLayout {
         }
         mUiHandler.removeCallbacksAndMessages(null);
         clearAnimation();
+    }
+
+    public void setRoomData(GrabRoomData roomData) {
+        mRoomData = roomData;
+    }
+
+    public GrabRoomData getRoomData() {
+        return mRoomData;
     }
 }

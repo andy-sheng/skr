@@ -104,6 +104,7 @@ public class NormalSelfSingCardView extends RelativeLayout {
         super.setVisibility(visibility);
         if (visibility == GONE) {
             mSingCountDownView.reset();
+            mSelfSingLyricView.reset();
         }
     }
 

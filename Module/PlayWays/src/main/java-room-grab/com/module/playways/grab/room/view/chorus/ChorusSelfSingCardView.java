@@ -177,4 +177,7 @@ public class ChorusSelfSingCardView extends RelativeLayout {
         mChorusSelfLyricAdapter.notifyDataSetChanged();
     }
 
+    public void destroy() {
+
+    }
 }

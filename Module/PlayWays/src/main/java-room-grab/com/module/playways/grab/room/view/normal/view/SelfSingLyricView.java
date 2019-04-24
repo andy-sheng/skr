@@ -181,19 +181,6 @@ public class SelfSingLyricView extends RelativeLayout {
         }
     }
 
-    @Override
-    public void setVisibility(int visibility) {
-        super.setVisibility(visibility);
-        if (visibility == GONE) {
-            if (mManyLyricsView != null) {
-                mManyLyricsView.setLyricsReader(null);
-            }
-            if (mLyricAndAccMatchManager != null) {
-                mLyricAndAccMatchManager.stop();
-            }
-        }
-    }
-
     public void destroy() {
         if (mManyLyricsView != null) {
             mManyLyricsView.release();
@@ -202,5 +189,14 @@ public class SelfSingLyricView extends RelativeLayout {
 
     public void setRoomData(GrabRoomData roomData) {
         mRoomData = roomData;
+    }
+
+    public void reset() {
+        if (mManyLyricsView != null) {
+            mManyLyricsView.setLyricsReader(null);
+        }
+        if (mLyricAndAccMatchManager != null) {
+            mLyricAndAccMatchManager.stop();
+        }
     }
 }
