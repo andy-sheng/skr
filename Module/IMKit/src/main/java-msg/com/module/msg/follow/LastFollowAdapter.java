@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
@@ -53,6 +54,7 @@ public class LastFollowAdapter extends DiffAdapter<LastFollowModel, LastFollowAd
         int postion;
         LastFollowModel lastFollowModel;
 
+        RelativeLayout mContent;
         SimpleDraweeView mAvatarIv;
         ExTextView mNameTv;
         ExTextView mStatusDescTv;
@@ -63,17 +65,27 @@ public class LastFollowAdapter extends DiffAdapter<LastFollowModel, LastFollowAd
         public LastFollowViewHodler(View itemView) {
             super(itemView);
 
+            mContent = (RelativeLayout) itemView.findViewById(R.id.content);
             mAvatarIv = (SimpleDraweeView) itemView.findViewById(R.id.avatar_iv);
             mNameTv = (ExTextView) itemView.findViewById(R.id.name_tv);
             mStatusDescTv = (ExTextView) itemView.findViewById(R.id.status_desc_tv);
             mSexIv = (ImageView) itemView.findViewById(R.id.sex_iv);
             mFollowTv = (ExTextView) itemView.findViewById(R.id.follow_tv);
 
-            itemView.setOnClickListener(new DebounceViewClickListener() {
+            mContent.setOnClickListener(new DebounceViewClickListener() {
                 @Override
                 public void clickValid(View v) {
                     if (mItemClickListener != null) {
-                        mItemClickListener.onItemClicked(v, postion, lastFollowModel);
+                        mItemClickListener.onItemClicked(mContent, postion, lastFollowModel);
+                    }
+                }
+            });
+
+            mFollowTv.setOnClickListener(new DebounceViewClickListener() {
+                @Override
+                public void clickValid(View v) {
+                    if (mItemClickListener != null) {
+                        mItemClickListener.onItemClicked(mFollowTv, postion, lastFollowModel);
                     }
                 }
             });
