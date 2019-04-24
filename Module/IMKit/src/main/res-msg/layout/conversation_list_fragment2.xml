@@ -10,6 +10,7 @@
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/view_10_dp"
         app:centerText="消息"
         app:centerTextColor="@color/white"
         app:centerTextSize="@dimen/textsize_20_dp"
@@ -55,6 +56,7 @@
                 android:layout_alignTop="@id/follow_area_icon"
                 android:layout_marginLeft="@dimen/view_12_dp"
                 android:layout_toRightOf="@id/follow_area_icon"
+                android:layout_marginTop="@dimen/view_5_dp"
                 android:text="最新关注"
                 android:textColor="#3B4E79"
                 android:textSize="@dimen/textsize_16_dp" />
@@ -64,6 +66,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@id/follow_area_icon"
+                android:layout_marginBottom="@dimen/view_2_dp"
                 android:layout_marginLeft="@dimen/view_12_dp"
                 android:text="暂无消息"
                 android:layout_toRightOf="@id/follow_area_icon"

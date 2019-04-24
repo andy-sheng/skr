@@ -10,6 +10,7 @@
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/view_10_dp"
         app:bottomLineColor="@color/colorPrimary"
         app:centerText="修改个人信息"
         app:centerTextColor="@color/white"
