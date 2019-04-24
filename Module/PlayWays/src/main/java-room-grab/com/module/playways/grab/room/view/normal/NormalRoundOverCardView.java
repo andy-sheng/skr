@@ -89,6 +89,9 @@ public class NormalRoundOverCardView extends RelativeLayout {
         } else if (reason == EQRoundOverReason.ROR_CHO_NOT_ENOUTH_PLAYER.getValue()) {
             // 合唱人数不够失败
             // TODO: 2019/4/22  缺svga动画
+        } else if (reason == EQRoundOverReason.ROR_SPK_NOT_ENOUTH_PLAYER.getValue()) {
+            // pk人数不够
+            // TODO: 2019/4/22  缺svga动画
         } else {
             // 放弃不用单独处理，看在哪个阶段点击放弃的
             if (resultType == EQRoundResultType.ROT_TYPE_1.getValue()) {

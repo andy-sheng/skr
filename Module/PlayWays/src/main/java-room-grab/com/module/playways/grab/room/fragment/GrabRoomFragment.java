@@ -979,8 +979,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
         if (now != null && now.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
             // pk的第二轮，没有 vs 的演唱开始提示了
-            GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
-            if (grabRoundInfoModel != null && grabRoundInfoModel.isParticipant() && mRoomData.isInPlayerList()) {
+            if (now != null && now.isParticipant() && mRoomData.isInPlayerList()) {
                 mGrabOpBtn.toOtherSingState();
             } else {
                 mGrabOpBtn.hide("singByOthers2");

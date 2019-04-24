@@ -51,7 +51,12 @@ public enum EQRoundOverReason implements WireEnum {
   /**
    * 合唱人数不够
    */
-  ROR_CHO_NOT_ENOUTH_PLAYER(8);
+  ROR_CHO_NOT_ENOUTH_PLAYER(8),
+
+  /**
+   * SPK人数不够
+   */
+  ROR_SPK_NOT_ENOUTH_PLAYER(9);
 
   public static final ProtoAdapter<EQRoundOverReason> ADAPTER = new ProtoAdapter_EQRoundOverReason();
 
@@ -75,6 +80,7 @@ public enum EQRoundOverReason implements WireEnum {
       case 6: return ROR_CHO_SUCCESS;
       case 7: return ROR_CHO_FAILED;
       case 8: return ROR_CHO_NOT_ENOUTH_PLAYER;
+      case 9: return ROR_SPK_NOT_ENOUTH_PLAYER;
       default: return null;
     }
   }
