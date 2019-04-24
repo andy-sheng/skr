@@ -8,13 +8,19 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.module.playways.room.gift.GiftManager;
 import com.module.playways.room.gift.GiftServerApi;
+import com.module.playways.room.gift.event.GiftReadyEvent;
 import com.module.playways.room.gift.inter.IGiftView;
 import com.module.playways.room.gift.model.BaseGift;
 import com.module.playways.room.gift.model.GiftServerModel;
+import com.module.playways.room.msg.event.GiftBrushMsgEvent;
+import com.module.playways.room.msg.event.GiftPresentEvent;
 import com.umeng.socialize.media.Base;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,30 +48,28 @@ public class GiftViewPresenter extends RxLifeCyclePresenter {
         mIGiftView = iGiftView;
         mGiftServerApi = ApiManager.getInstance().createService(GiftServerApi.class);
         addToLifeCycle();
-//        EventBus.getDefault().register(this);
+        EventBus.getDefault().register(this);
     }
 
     public void loadData() {
         //先从数据库拉数据
-        mGiftDisposable = ApiMethods.subscribe(mGiftServerApi.getGiftList(0, 1000), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    List<GiftServerModel> giftServerModelList = JSON.parseArray(result.getData().getString("list"), GiftServerModel.class);
-                    formatGiftData(giftServerModelList);
-                }
-            }
-        }, this);
+        if (GiftManager.getInstance().isGiftReady()) {
+            formatGiftData(GiftManager.getInstance().getBaseGiftList());
+        } else {
+            GiftManager.getInstance().loadGift();
+        }
     }
 
-    public void formatGiftData(List<GiftServerModel> giftServerModelList) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(GiftReadyEvent giftReadyEvent) {
+        MyLog.w(TAG, "onEvent" + " giftReadyEvent=" + giftReadyEvent);
+        loadData();
+    }
+
+    public void formatGiftData(List<BaseGift> giftList) {
         ArrayList<List<BaseGift>> arrayList = new ArrayList<>();
-        Observable.just(giftServerModelList).flatMap(new Function<List<GiftServerModel>, ObservableSource<BaseGift>>() {
-            @Override
-            public ObservableSource<BaseGift> apply(List<GiftServerModel> giftServerModelList) throws Exception {
-                return Observable.fromIterable(BaseGift.parse(giftServerModelList));
-            }
-        }).buffer(8)
+
+        Observable.fromIterable(giftList).buffer(8)
                 .subscribeOn(Schedulers.io())
                 .compose(bindUntilEvent(PresenterEvent.DESTROY))
                 .observeOn(AndroidSchedulers.mainThread())
@@ -91,6 +95,6 @@ public class GiftViewPresenter extends RxLifeCyclePresenter {
     @Override
     public void destroy() {
         super.destroy();
-//        EventBus.getDefault().unregister(this);
+        EventBus.getDefault().unregister(this);
     }
 }

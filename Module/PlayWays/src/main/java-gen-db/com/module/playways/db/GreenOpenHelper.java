@@ -24,7 +24,6 @@ public class GreenOpenHelper extends DaoMaster.OpenHelper {
 
     @Override
     public void onUpgrade(Database db, int oldVersion, int newVersion) {
-
         MigrationHelper.migrate(db, new MigrationHelper.ReCreateAllTableListener() {
             @Override
             public void onCreateAllTables(Database db, boolean ifNotExists) {
@@ -36,5 +35,6 @@ public class GreenOpenHelper extends DaoMaster.OpenHelper {
                 GiftDBDao.dropTable(db, ifExists);
             }
         }, GiftDBDao.class);
+
     }
 }

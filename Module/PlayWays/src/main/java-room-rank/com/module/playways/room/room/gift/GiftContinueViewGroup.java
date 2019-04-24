@@ -4,6 +4,9 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
+import com.common.log.MyLog;
+import com.module.playways.room.msg.event.GiftBrushMsgEvent;
+import com.module.playways.room.msg.event.GiftPresentEvent;
 import com.module.playways.room.msg.event.SpecialEmojiMsgEvent;
 import com.module.playways.room.room.gift.model.GiftPlayControlTemplate;
 import com.module.playways.room.room.gift.model.GiftPlayModel;
@@ -111,6 +114,23 @@ public class GiftContinueViewGroup extends RelativeLayout {
             }
         }
         return null;
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onEvent(GiftBrushMsgEvent giftPresentEvent) {
+        // 收到一条礼物消息,进入生产者队列
+        GiftPlayModel playModel = GiftPlayModel.parseFromEvent(giftPresentEvent, mRoomData);
+        // 如果消息能被当前忙碌的view接受
+        for (GiftContinuousView giftContinuousView : mFeedGiftContinueViews) {
+            if (!giftContinuousView.isIdle()) {
+                if (giftContinuousView.accept(playModel)) {
+                    // 被这个view接受了
+                    giftContinuousView.tryTriggerAnimation();
+                    return;
+                }
+            }
+        }
+        mGiftPlayControlTemplate.add(playModel, false);
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)

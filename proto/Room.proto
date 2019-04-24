@@ -120,13 +120,14 @@ enum ERoomMsgType {
 
 message GPrensentGiftMsg
 {
-    Common.GiftInfo giftInfo    = 1;
-    uint32 count         = 2;
-    uint32 sendUserID    = 3;
-    uint32 receiveUserID = 4;
-    uint32 roomID        = 5;
-    sint64 continueID    = 6;
-    uint32 continueCnt   = 7;
+    Common.GiftInfo giftInfo        = 1;
+        uint32 count             = 2;
+        Common.UserInfo sendUserInfo    = 3;
+        Common.UserInfo receiveUserInfo = 4;
+        uint32 roomID            = 5;
+        sint64 continueID        = 6;
+        uint32 continueCnt       = 7;
+
 }
 
 message QChangeRoomName {

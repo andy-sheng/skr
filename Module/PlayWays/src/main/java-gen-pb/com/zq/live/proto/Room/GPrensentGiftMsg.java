@@ -10,6 +10,7 @@ import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
 import com.zq.live.proto.Common.GiftInfo;
+import com.zq.live.proto.Common.UserInfo;
 import java.io.IOException;
 import java.lang.Integer;
 import java.lang.Long;
@@ -25,10 +26,6 @@ public final class GPrensentGiftMsg extends Message<GPrensentGiftMsg, GPrensentG
   private static final long serialVersionUID = 0L;
 
   public static final Integer DEFAULT_COUNT = 0;
-
-  public static final Integer DEFAULT_SENDUSERID = 0;
-
-  public static final Integer DEFAULT_RECEIVEUSERID = 0;
 
   public static final Integer DEFAULT_ROOMID = 0;
 
@@ -50,15 +47,15 @@ public final class GPrensentGiftMsg extends Message<GPrensentGiftMsg, GPrensentG
 
   @WireField(
       tag = 3,
-      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+      adapter = "com.zq.live.proto.Common.UserInfo#ADAPTER"
   )
-  private final Integer sendUserID;
+  private final UserInfo sendUserInfo;
 
   @WireField(
       tag = 4,
-      adapter = "com.squareup.wire.ProtoAdapter#UINT32"
+      adapter = "com.zq.live.proto.Common.UserInfo#ADAPTER"
   )
-  private final Integer receiveUserID;
+  private final UserInfo receiveUserInfo;
 
   @WireField(
       tag = 5,
@@ -78,19 +75,19 @@ public final class GPrensentGiftMsg extends Message<GPrensentGiftMsg, GPrensentG
   )
   private final Integer continueCnt;
 
-  public GPrensentGiftMsg(GiftInfo giftInfo, Integer count, Integer sendUserID,
-      Integer receiveUserID, Integer roomID, Long continueID, Integer continueCnt) {
-    this(giftInfo, count, sendUserID, receiveUserID, roomID, continueID, continueCnt, ByteString.EMPTY);
+  public GPrensentGiftMsg(GiftInfo giftInfo, Integer count, UserInfo sendUserInfo,
+      UserInfo receiveUserInfo, Integer roomID, Long continueID, Integer continueCnt) {
+    this(giftInfo, count, sendUserInfo, receiveUserInfo, roomID, continueID, continueCnt, ByteString.EMPTY);
   }
 
-  public GPrensentGiftMsg(GiftInfo giftInfo, Integer count, Integer sendUserID,
-      Integer receiveUserID, Integer roomID, Long continueID, Integer continueCnt,
+  public GPrensentGiftMsg(GiftInfo giftInfo, Integer count, UserInfo sendUserInfo,
+      UserInfo receiveUserInfo, Integer roomID, Long continueID, Integer continueCnt,
       ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.giftInfo = giftInfo;
     this.count = count;
-    this.sendUserID = sendUserID;
-    this.receiveUserID = receiveUserID;
+    this.sendUserInfo = sendUserInfo;
+    this.receiveUserInfo = receiveUserInfo;
     this.roomID = roomID;
     this.continueID = continueID;
     this.continueCnt = continueCnt;
@@ -101,8 +98,8 @@ public final class GPrensentGiftMsg extends Message<GPrensentGiftMsg, GPrensentG
     Builder builder = new Builder();
     builder.giftInfo = giftInfo;
     builder.count = count;
-    builder.sendUserID = sendUserID;
-    builder.receiveUserID = receiveUserID;
+    builder.sendUserInfo = sendUserInfo;
+    builder.receiveUserInfo = receiveUserInfo;
     builder.roomID = roomID;
     builder.continueID = continueID;
     builder.continueCnt = continueCnt;
@@ -118,8 +115,8 @@ public final class GPrensentGiftMsg extends Message<GPrensentGiftMsg, GPrensentG
     return unknownFields().equals(o.unknownFields())
         && Internal.equals(giftInfo, o.giftInfo)
         && Internal.equals(count, o.count)
-        && Internal.equals(sendUserID, o.sendUserID)
-        && Internal.equals(receiveUserID, o.receiveUserID)
+        && Internal.equals(sendUserInfo, o.sendUserInfo)
+        && Internal.equals(receiveUserInfo, o.receiveUserInfo)
         && Internal.equals(roomID, o.roomID)
         && Internal.equals(continueID, o.continueID)
         && Internal.equals(continueCnt, o.continueCnt);
@@ -132,8 +129,8 @@ public final class GPrensentGiftMsg extends Message<GPrensentGiftMsg, GPrensentG
       result = unknownFields().hashCode();
       result = result * 37 + (giftInfo != null ? giftInfo.hashCode() : 0);
       result = result * 37 + (count != null ? count.hashCode() : 0);
-      result = result * 37 + (sendUserID != null ? sendUserID.hashCode() : 0);
-      result = result * 37 + (receiveUserID != null ? receiveUserID.hashCode() : 0);
+      result = result * 37 + (sendUserInfo != null ? sendUserInfo.hashCode() : 0);
+      result = result * 37 + (receiveUserInfo != null ? receiveUserInfo.hashCode() : 0);
       result = result * 37 + (roomID != null ? roomID.hashCode() : 0);
       result = result * 37 + (continueID != null ? continueID.hashCode() : 0);
       result = result * 37 + (continueCnt != null ? continueCnt.hashCode() : 0);
@@ -147,8 +144,8 @@ public final class GPrensentGiftMsg extends Message<GPrensentGiftMsg, GPrensentG
     StringBuilder builder = new StringBuilder();
     if (giftInfo != null) builder.append(", giftInfo=").append(giftInfo);
     if (count != null) builder.append(", count=").append(count);
-    if (sendUserID != null) builder.append(", sendUserID=").append(sendUserID);
-    if (receiveUserID != null) builder.append(", receiveUserID=").append(receiveUserID);
+    if (sendUserInfo != null) builder.append(", sendUserInfo=").append(sendUserInfo);
+    if (receiveUserInfo != null) builder.append(", receiveUserInfo=").append(receiveUserInfo);
     if (roomID != null) builder.append(", roomID=").append(roomID);
     if (continueID != null) builder.append(", continueID=").append(continueID);
     if (continueCnt != null) builder.append(", continueCnt=").append(continueCnt);
@@ -179,18 +176,18 @@ public final class GPrensentGiftMsg extends Message<GPrensentGiftMsg, GPrensentG
     return count;
   }
 
-  public Integer getSendUserID() {
-    if(sendUserID==null){
-        return DEFAULT_SENDUSERID;
+  public UserInfo getSendUserInfo() {
+    if(sendUserInfo==null){
+        return new UserInfo.Builder().build();
     }
-    return sendUserID;
+    return sendUserInfo;
   }
 
-  public Integer getReceiveUserID() {
-    if(receiveUserID==null){
-        return DEFAULT_RECEIVEUSERID;
+  public UserInfo getReceiveUserInfo() {
+    if(receiveUserInfo==null){
+        return new UserInfo.Builder().build();
     }
-    return receiveUserID;
+    return receiveUserInfo;
   }
 
   public Integer getRoomID() {
@@ -222,12 +219,12 @@ public final class GPrensentGiftMsg extends Message<GPrensentGiftMsg, GPrensentG
     return count!=null;
   }
 
-  public boolean hasSendUserID() {
-    return sendUserID!=null;
+  public boolean hasSendUserInfo() {
+    return sendUserInfo!=null;
   }
 
-  public boolean hasReceiveUserID() {
-    return receiveUserID!=null;
+  public boolean hasReceiveUserInfo() {
+    return receiveUserInfo!=null;
   }
 
   public boolean hasRoomID() {
@@ -247,9 +244,9 @@ public final class GPrensentGiftMsg extends Message<GPrensentGiftMsg, GPrensentG
 
     private Integer count;
 
-    private Integer sendUserID;
+    private UserInfo sendUserInfo;
 
-    private Integer receiveUserID;
+    private UserInfo receiveUserInfo;
 
     private Integer roomID;
 
@@ -270,13 +267,13 @@ public final class GPrensentGiftMsg extends Message<GPrensentGiftMsg, GPrensentG
       return this;
     }
 
-    public Builder setSendUserID(Integer sendUserID) {
-      this.sendUserID = sendUserID;
+    public Builder setSendUserInfo(UserInfo sendUserInfo) {
+      this.sendUserInfo = sendUserInfo;
       return this;
     }
 
-    public Builder setReceiveUserID(Integer receiveUserID) {
-      this.receiveUserID = receiveUserID;
+    public Builder setReceiveUserInfo(UserInfo receiveUserInfo) {
+      this.receiveUserInfo = receiveUserInfo;
       return this;
     }
 
@@ -297,7 +294,7 @@ public final class GPrensentGiftMsg extends Message<GPrensentGiftMsg, GPrensentG
 
     @Override
     public GPrensentGiftMsg build() {
-      return new GPrensentGiftMsg(giftInfo, count, sendUserID, receiveUserID, roomID, continueID, continueCnt, super.buildUnknownFields());
+      return new GPrensentGiftMsg(giftInfo, count, sendUserInfo, receiveUserInfo, roomID, continueID, continueCnt, super.buildUnknownFields());
     }
   }
 
@@ -310,8 +307,8 @@ public final class GPrensentGiftMsg extends Message<GPrensentGiftMsg, GPrensentG
     public int encodedSize(GPrensentGiftMsg value) {
       return GiftInfo.ADAPTER.encodedSizeWithTag(1, value.giftInfo)
           + ProtoAdapter.UINT32.encodedSizeWithTag(2, value.count)
-          + ProtoAdapter.UINT32.encodedSizeWithTag(3, value.sendUserID)
-          + ProtoAdapter.UINT32.encodedSizeWithTag(4, value.receiveUserID)
+          + UserInfo.ADAPTER.encodedSizeWithTag(3, value.sendUserInfo)
+          + UserInfo.ADAPTER.encodedSizeWithTag(4, value.receiveUserInfo)
           + ProtoAdapter.UINT32.encodedSizeWithTag(5, value.roomID)
           + ProtoAdapter.SINT64.encodedSizeWithTag(6, value.continueID)
           + ProtoAdapter.UINT32.encodedSizeWithTag(7, value.continueCnt)
@@ -322,8 +319,8 @@ public final class GPrensentGiftMsg extends Message<GPrensentGiftMsg, GPrensentG
     public void encode(ProtoWriter writer, GPrensentGiftMsg value) throws IOException {
       GiftInfo.ADAPTER.encodeWithTag(writer, 1, value.giftInfo);
       ProtoAdapter.UINT32.encodeWithTag(writer, 2, value.count);
-      ProtoAdapter.UINT32.encodeWithTag(writer, 3, value.sendUserID);
-      ProtoAdapter.UINT32.encodeWithTag(writer, 4, value.receiveUserID);
+      UserInfo.ADAPTER.encodeWithTag(writer, 3, value.sendUserInfo);
+      UserInfo.ADAPTER.encodeWithTag(writer, 4, value.receiveUserInfo);
       ProtoAdapter.UINT32.encodeWithTag(writer, 5, value.roomID);
       ProtoAdapter.SINT64.encodeWithTag(writer, 6, value.continueID);
       ProtoAdapter.UINT32.encodeWithTag(writer, 7, value.continueCnt);
@@ -338,8 +335,8 @@ public final class GPrensentGiftMsg extends Message<GPrensentGiftMsg, GPrensentG
         switch (tag) {
           case 1: builder.setGiftInfo(GiftInfo.ADAPTER.decode(reader)); break;
           case 2: builder.setCount(ProtoAdapter.UINT32.decode(reader)); break;
-          case 3: builder.setSendUserID(ProtoAdapter.UINT32.decode(reader)); break;
-          case 4: builder.setReceiveUserID(ProtoAdapter.UINT32.decode(reader)); break;
+          case 3: builder.setSendUserInfo(UserInfo.ADAPTER.decode(reader)); break;
+          case 4: builder.setReceiveUserInfo(UserInfo.ADAPTER.decode(reader)); break;
           case 5: builder.setRoomID(ProtoAdapter.UINT32.decode(reader)); break;
           case 6: builder.setContinueID(ProtoAdapter.SINT64.decode(reader)); break;
           case 7: builder.setContinueCnt(ProtoAdapter.UINT32.decode(reader)); break;
@@ -358,6 +355,8 @@ public final class GPrensentGiftMsg extends Message<GPrensentGiftMsg, GPrensentG
     public GPrensentGiftMsg redact(GPrensentGiftMsg value) {
       Builder builder = value.newBuilder();
       if (builder.giftInfo != null) builder.giftInfo = GiftInfo.ADAPTER.redact(builder.giftInfo);
+      if (builder.sendUserInfo != null) builder.sendUserInfo = UserInfo.ADAPTER.redact(builder.sendUserInfo);
+      if (builder.receiveUserInfo != null) builder.receiveUserInfo = UserInfo.ADAPTER.redact(builder.receiveUserInfo);
       builder.clearUnknownFields();
       return builder.build();
     }

@@ -65,8 +65,12 @@ public class ContinueSendView extends FrameLayout implements ContinueSendSchedul
     public void startBuy(BaseGift baseGift, long receiverId) {
         mBaseGift = baseGift;
         mReceiverId = receiverId;
-        mContinueSendScheduler.send(baseGift, receiverId);
-        setVisibility(VISIBLE);
+        if (baseGift.isCanContinue()) {
+            mContinueSendScheduler.send(baseGift, receiverId);
+            setVisibility(VISIBLE);
+        } else {
+            mBuyGiftPresenter.buyGift(baseGift, 1, mBaseRoomData.getGameId(), receiverId, System.currentTimeMillis());
+        }
     }
 
     private void init() {

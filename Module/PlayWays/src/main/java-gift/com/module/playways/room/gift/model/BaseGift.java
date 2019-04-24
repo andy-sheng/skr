@@ -1,5 +1,6 @@
 package com.module.playways.room.gift.model;
 
+import com.module.playways.room.gift.GiftDB;
 import com.module.playways.room.prepare.model.BaseRoundInfoModel;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class BaseGift {
 
     private boolean canContinue;
     private String description;
-    private int giftID;
+    private long giftID;
     private String giftName;
     private int giftType;
     private String giftURL;
@@ -45,11 +46,11 @@ public class BaseGift {
         this.description = description;
     }
 
-    public int getGiftID() {
+    public long getGiftID() {
         return giftID;
     }
 
-    public void setGiftID(int giftID) {
+    public void setGiftID(long giftID) {
         this.giftID = giftID;
     }
 
@@ -101,6 +102,20 @@ public class BaseGift {
         this.sourceURL = sourceURL;
     }
 
+
+    public static <T extends BaseGift> List<T> parseFromGiftDB(List<GiftDB> giftDBList) {
+        ArrayList<T> list = new ArrayList<>();
+        if (giftDBList == null) {
+            return list;
+        }
+
+        for (GiftDB giftDB : giftDBList) {
+            list.add(parse(giftDB));
+        }
+
+        return list;
+    }
+
     public static <T extends BaseGift> List<T> parse(List<GiftServerModel> giftServerModelList) {
         ArrayList<T> list = new ArrayList<>();
         if (giftServerModelList == null) {
@@ -125,6 +140,21 @@ public class BaseGift {
         normalGift.setGiftType(giftServerModel.getGiftType());
         normalGift.setSortID(giftServerModel.getSortID());
         normalGift.setSourceURL(giftServerModel.getSourceURL());
+
+        return (T) normalGift;
+    }
+
+    public static <T extends BaseGift> T parse(GiftDB giftDB) {
+        NormalGift normalGift = new NormalGift();
+        normalGift.setGiftID(giftDB.getGiftID());
+        normalGift.setGiftName(giftDB.getGiftName());
+        normalGift.setGiftURL(giftDB.getGiftURL());
+        normalGift.setPrice(giftDB.getPrice());
+        normalGift.setCanContinue(giftDB.getCanContinue());
+        normalGift.setDescription(giftDB.getDescription());
+        normalGift.setGiftType(giftDB.getGiftType());
+        normalGift.setSortID(giftDB.getSortID());
+        normalGift.setSourceURL(giftDB.getSourceURL());
 
         return (T) normalGift;
     }

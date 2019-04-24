@@ -1,5 +1,7 @@
 package com.module.playways.room.gift.model;
 
+import com.module.playways.room.gift.GiftDB;
+
 import java.io.Serializable;
 
 public class GiftServerModel implements Serializable {
@@ -19,7 +21,7 @@ public class GiftServerModel implements Serializable {
 
     private boolean canContinue;
     private String description;
-    private int giftID;
+    private long giftID;
     private String giftName;
     private int giftType;
     private String giftURL;
@@ -43,11 +45,11 @@ public class GiftServerModel implements Serializable {
         this.description = description;
     }
 
-    public int getGiftID() {
+    public long getGiftID() {
         return giftID;
     }
 
-    public void setGiftID(int giftID) {
+    public void setGiftID(long giftID) {
         this.giftID = giftID;
     }
 
@@ -97,5 +99,21 @@ public class GiftServerModel implements Serializable {
 
     public void setSourceURL(String sourceURL) {
         this.sourceURL = sourceURL;
+    }
+
+    public static GiftDB toGiftDB(GiftServerModel giftServerModel){
+        GiftDB giftDB = new GiftDB();
+        giftDB.setCanContinue(giftServerModel.isCanContinue());
+        giftDB.setDescription(giftServerModel.getDescription());
+        giftDB.setGiftID(giftServerModel.getGiftID());
+        giftDB.setGiftName(giftServerModel.getGiftName());
+        giftDB.setGiftType(giftServerModel.getGiftType());
+        giftDB.setGiftURL(giftServerModel.getGiftURL());
+        giftDB.setPrice(giftServerModel.getPrice());
+        giftDB.setSortID(giftServerModel.getSortID());
+        giftDB.setSourceURL(giftServerModel.getSourceURL());
+
+
+        return giftDB;
     }
 }
