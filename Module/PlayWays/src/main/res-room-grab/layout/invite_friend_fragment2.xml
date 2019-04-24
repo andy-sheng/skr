@@ -6,20 +6,20 @@
     android:orientation="vertical">
 
     <com.common.view.viewpager.SlidingTabLayout
-        android:id="@+id/message_tab"
+        android:id="@+id/invite_tab"
         android:layout_width="match_parent"
-        android:layout_marginTop="@dimen/view_36_dp"
-        android:layout_marginLeft="@dimen/view_80_dp"
-        android:layout_marginRight="@dimen/view_80_dp"
         android:layout_height="@dimen/view_52_dp"
         android:layout_centerHorizontal="true"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/view_80_dp"
+        android:layout_marginTop="@dimen/view_36_dp"
+        android:layout_marginRight="@dimen/view_80_dp" />
 
     <com.common.view.viewpager.NestViewPager
-        android:id="@+id/message_vp"
+        android:id="@+id/invite_vp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/message_tab"
+        android:layout_below="@id/invite_tab"
         android:layout_marginBottom="@dimen/view_140_dp"
         android:fadingEdge="none"
         android:fadingEdgeLength="0dp"
@@ -37,5 +37,11 @@
         android:layout_marginBottom="@dimen/view_4_dp"
         android:padding="@dimen/view_16_dp"
         android:src="@drawable/grab_back" />
+
+    <com.module.playways.grab.room.invite.InviteShareFriendView
+        android:id="@+id/share_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_140_dp"
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>
