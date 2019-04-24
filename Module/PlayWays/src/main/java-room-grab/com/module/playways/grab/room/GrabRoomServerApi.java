@@ -273,6 +273,15 @@ public interface GrabRoomServerApi {
     Observable<ApiResult> delMusic(@Body RequestBody body);
 
     /**
+     * 修改房间名
+     * @param body    "roomID": 0,
+     *                "roomName": "string"
+     * @return
+     */
+    @PUT("http://dev.room.inframe.mobi/v2/room/update-name")
+    Observable<ApiResult> updateRoomName(@Body RequestBody body);
+
+    /**
      * 得到专场列表
      *
      * @param offset

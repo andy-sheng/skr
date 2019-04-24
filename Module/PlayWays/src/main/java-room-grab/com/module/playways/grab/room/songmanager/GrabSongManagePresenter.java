@@ -9,6 +9,7 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.utils.U;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.event.GrabRoundChangeEvent;
@@ -211,14 +212,6 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
         }, this);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(GrabRoundChangeEvent event) {
-        if (event.newRoundInfo != null && event.newRoundInfo.getRoundSeq() != 1) {
-            mIGrabSongManageView.showNum(--mTotalNum);
-        }
-        updateSongList();
-    }
-
     public void updateSongList() {
         Iterator<GrabRoomSongModel> iterator = mGrabRoomSongModelList.iterator();
         int seq = mGrabRoomData.getRealRoundSeq();
@@ -326,6 +319,36 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
                 MyLog.e(TAG, e);
             }
         }, this);
+    }
+
+    public void updateRoomName(int roomID, String roomName) {
+        MyLog.d(TAG, "updateRoomName" + " roomID=" + roomID + " roomName=" + roomName);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("roomID", roomID);
+        map.put("roomName", roomName);
+
+        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+
+        ApiMethods.subscribe(mGrabRoomServerApi.updateRoomName(body), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    U.getToastUtil().showShort("修改房间名成功");
+                } else {
+                    U.getToastUtil().showShort(result.getErrmsg() + "");
+                }
+
+            }
+        }, this);
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(GrabRoundChangeEvent event) {
+        if (event.newRoundInfo != null && event.newRoundInfo.getRoundSeq() != 1) {
+            mIGrabSongManageView.showNum(--mTotalNum);
+        }
+        updateSongList();
     }
 
     @Override

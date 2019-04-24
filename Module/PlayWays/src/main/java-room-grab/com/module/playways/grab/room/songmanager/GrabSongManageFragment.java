@@ -309,8 +309,11 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
             public void onClickSave(String roomName) {
                 if (!TextUtils.isEmpty(roomName)) {
                     // TODO: 2019/4/18 修改房间名
+                    mEditRoomDialog.dismiss(false);
+                    mGrabSongManagePresenter.updateRoomName(mRoomData.getGameId(), roomName);
                 } else {
                     // TODO: 2019/4/18 房间名为空
+                    U.getToastUtil().showShort("输入的房间名为空");
                 }
             }
         });
