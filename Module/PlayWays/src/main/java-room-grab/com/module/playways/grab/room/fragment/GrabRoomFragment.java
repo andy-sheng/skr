@@ -1184,6 +1184,10 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         if (mInputContainerView.onBackPressed()) {
             return true;
         }
+
+        if(mGiftPanelView.onBackPressed()){
+            return true;
+        }
         quitGame();
         return true;
     }

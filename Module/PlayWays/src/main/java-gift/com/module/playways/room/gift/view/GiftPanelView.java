@@ -6,6 +6,7 @@ import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
@@ -29,12 +30,11 @@ import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.room.gift.adapter.GiftAllManAdapter;
 import com.module.playways.room.gift.event.BuyGiftEvent;
+import com.orhanobut.dialogplus.DialogPlus;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.List;
 
 public class GiftPanelView extends FrameLayout {
     public final static String TAG = "GiftPanelView";
@@ -74,17 +74,24 @@ public class GiftPanelView extends FrameLayout {
 
     public GiftPanelView(Context context) {
         super(context);
+        init();
     }
 
     public GiftPanelView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init();
     }
 
     public GiftPanelView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init();
     }
 
     private void init() {
+
+    }
+
+    private void inflate() {
         inflate(getContext(), R.layout.gift_panel_view_layout, this);
         mHasInit = true;
         mGiftPanelArea = (ExRelativeLayout) findViewById(R.id.gift_panel_area);
@@ -190,7 +197,7 @@ public class GiftPanelView extends FrameLayout {
 
     public void show(GrabPlayerInfoModel grabPlayerInfoModel) {
         if (!mHasInit) {
-            init();
+            inflate();
         }
         selectSendGiftMan(grabPlayerInfoModel);
         mGiftAllManAdapter.setDataList(mGrabRoomData.getPlayerInfoList());
@@ -206,7 +213,7 @@ public class GiftPanelView extends FrameLayout {
     }
 
     private void selectSendGiftMan(GrabPlayerInfoModel grabPlayerInfoModel) {
-        if(grabPlayerInfoModel == null){
+        if (grabPlayerInfoModel == null) {
             grabPlayerInfoModel = RoomDataUtils.getPlayerInfoById(mGrabRoomData, mGrabRoomData.getOwnerId());
         }
 
@@ -225,8 +232,17 @@ public class GiftPanelView extends FrameLayout {
         }
     }
 
+    public boolean onBackPressed() {
+        if(getVisibility() == VISIBLE){
+            hide();
+            return true;
+        }
+
+        return false;
+    }
+
     public void destroy() {
-        if(mGiftView != null){
+        if (mGiftView != null) {
             mGiftView.destroy();
         }
         EventBus.getDefault().unregister(this);

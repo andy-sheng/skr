@@ -70,7 +70,7 @@ public class GiftAllManAdapter extends DiffAdapter<GrabPlayerInfoModel, Recycler
                         update(grabPlayerInfoModel);
                     }
 
-                    if(mOnClickPlayerListener != null){
+                    if (mOnClickPlayerListener != null) {
                         mOnClickPlayerListener.onClick(mGrabPlayerInfoModel);
                     }
                 }
@@ -86,7 +86,7 @@ public class GiftAllManAdapter extends DiffAdapter<GrabPlayerInfoModel, Recycler
                             .setCircle(true)
                             .build());
 
-            if (mSelectedGrabPlayerInfoModel == mGrabPlayerInfoModel) {
+            if (mSelectedGrabPlayerInfoModel != null && mSelectedGrabPlayerInfoModel.getUserID() == mGrabPlayerInfoModel.getUserID()) {
                 mIvSelectedIcon.setVisibility(View.VISIBLE);
             } else {
                 mIvSelectedIcon.setVisibility(View.GONE);
