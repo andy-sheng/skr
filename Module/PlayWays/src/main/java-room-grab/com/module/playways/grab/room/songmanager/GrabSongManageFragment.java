@@ -301,6 +301,7 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
             @Override
             public void onClickCancel() {
                 if (mEditRoomDialog != null) {
+                    U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
                     mEditRoomDialog.dismiss();
                 }
             }
@@ -309,6 +310,7 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
             public void onClickSave(String roomName) {
                 if (!TextUtils.isEmpty(roomName)) {
                     // TODO: 2019/4/18 修改房间名
+                    U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
                     mEditRoomDialog.dismiss(false);
                     mGrabSongManagePresenter.updateRoomName(mRoomData.getGameId(), roomName);
                 } else {
