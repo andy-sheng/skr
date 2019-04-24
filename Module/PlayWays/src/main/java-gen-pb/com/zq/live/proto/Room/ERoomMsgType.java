@@ -197,6 +197,11 @@ public enum ERoomMsgType implements WireEnum {
   RM_Q_CHANGE_ROOM_NAME(133),
 
   /**
+   * 送礼
+   */
+  RM_G_PRESENT_GIFT(134),
+
+  /**
    * 告知伴奏开始
    */
   RM_ROUND_ACC_BEGIN(190);
@@ -251,6 +256,7 @@ public enum ERoomMsgType implements WireEnum {
       case 131: return RM_Q_CHO_GIVEUP;
       case 132: return RM_Q_PK_INNER_ROUND_OVER;
       case 133: return RM_Q_CHANGE_ROOM_NAME;
+      case 134: return RM_G_PRESENT_GIFT;
       case 190: return RM_ROUND_ACC_BEGIN;
       default: return null;
     }

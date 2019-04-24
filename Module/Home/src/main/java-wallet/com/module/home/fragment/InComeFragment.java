@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
+import com.common.base.FragmentDataListener;
 import com.common.core.pay.EPayPlatform;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
@@ -23,6 +24,7 @@ import com.dialog.view.StrokeTextView;
 import com.module.RouterConstants;
 import com.module.home.R;
 import com.module.home.adapter.RechargeAdapter;
+import com.module.home.event.WithDrawSuccessEvent;
 import com.module.home.inter.IBallanceView;
 import com.module.home.inter.IInComeView;
 import com.module.home.model.RechargeItemModel;
@@ -30,12 +32,16 @@ import com.module.home.presenter.BallencePresenter;
 import com.module.home.presenter.InComePresenter;
 import com.respicker.view.GridSpacingItemDecoration;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.List;
 
 /**
  * 余额明细
  */
 public class InComeFragment extends BaseFragment implements IInComeView {
+    public static final int DQ_EXCHANGE_REQ = 100;
 
     LinearLayout mMainActContainer;
     CommonTitleBar mTitlebar;
@@ -49,6 +55,16 @@ public class InComeFragment extends BaseFragment implements IInComeView {
     StrokeTextView mBtnExchangeCash;
 
     InComePresenter mInComePresenter;
+
+    FragmentDataListener mFragmentDataListener = new FragmentDataListener() {
+        @Override
+        public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
+            if (requestCode == DQ_EXCHANGE_REQ) {
+                mInComePresenter.getBalance();
+                mInComePresenter.getDqBalance();
+            }
+        }
+    };
 
     @Override
     public int initView() {
@@ -67,6 +83,15 @@ public class InComeFragment extends BaseFragment implements IInComeView {
         mTvDqNum = (ExTextView) mRootView.findViewById(R.id.tv_dq_num);
         mBtnExchangeDiamond = (StrokeTextView) mRootView.findViewById(R.id.btn_exchange_diamond);
         mBtnExchangeCash = (StrokeTextView) mRootView.findViewById(R.id.btn_exchange_cash);
+
+        mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (getActivity() != null) {
+                    getActivity().finish();
+                }
+            }
+        });
 
         mTvCashDetail.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -97,6 +122,7 @@ public class InComeFragment extends BaseFragment implements IInComeView {
                         FragmentUtils.newAddParamsBuilder(getActivity(), ExChangeDiamondFragment.class)
                                 .setAddToBackStack(true)
                                 .setHasAnimation(true)
+                                .setFragmentDataListener(mFragmentDataListener)
                                 .build());
             }
         });
@@ -117,6 +143,7 @@ public class InComeFragment extends BaseFragment implements IInComeView {
                         FragmentUtils.newAddParamsBuilder(getActivity(), ExChangeCashFragment.class)
                                 .setAddToBackStack(true)
                                 .setHasAnimation(true)
+                                .setFragmentDataListener(mFragmentDataListener)
                                 .build());
             }
         });
@@ -127,18 +154,23 @@ public class InComeFragment extends BaseFragment implements IInComeView {
         mInComePresenter.getDqBalance();
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(WithDrawSuccessEvent event) {
+        mInComePresenter.getBalance();
+    }
+
     @Override
     public void showCash(String availableBalance) {
         mTvCashNum.setText(availableBalance);
     }
 
     @Override
-    public void showDq(float dq) {
-        mTvDqNum.setText(String.format("%.1f", dq));
+    public void showDq(String dq) {
+        mTvDqNum.setText(dq);
     }
 
     @Override
     public boolean useEventBus() {
-        return false;
+        return true;
     }
 }

@@ -1,17 +1,22 @@
 package com.module.home.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.core.pay.EPayPlatform;
+import com.common.core.pay.PayBaseReq;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
@@ -23,6 +28,8 @@ import com.module.home.adapter.RechargeAdapter;
 import com.module.home.inter.IBallanceView;
 import com.module.home.model.RechargeItemModel;
 import com.module.home.presenter.BallencePresenter;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.ViewHolder;
 import com.respicker.view.GridSpacingItemDecoration;
 
 import java.util.List;
@@ -50,6 +57,8 @@ public class BallanceFragment extends BaseFragment implements IBallanceView {
     CheckBox mCheckbox;
     TextView mTvProtocal;
 
+    DialogPlus mWaitingDialogPlus;
+
     @Override
     public int initView() {
         return R.layout.ballance_fragment_layout;
@@ -70,8 +79,8 @@ public class BallanceFragment extends BaseFragment implements IBallanceView {
         mBtbZhifubao = (ExTextView) mRootView.findViewById(R.id.btb_zhifubao);
         mZhifubaoFlag = (ExImageView) mRootView.findViewById(R.id.zhifubao_flag);
         mProtocolContainer = (LinearLayout) mRootView.findViewById(R.id.protocol_container);
-        mCheckbox = (CheckBox)mRootView.findViewById(R.id.checkbox);
-        mTvProtocal = (TextView)mRootView.findViewById(R.id.tv_protocal);
+        mCheckbox = (CheckBox) mRootView.findViewById(R.id.checkbox);
+        mTvProtocal = (TextView) mRootView.findViewById(R.id.tv_protocal);
 
         mRechargeAdapter = new RechargeAdapter();
 
@@ -82,7 +91,7 @@ public class BallanceFragment extends BaseFragment implements IBallanceView {
         mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                if(getActivity() != null){
+                if (getActivity() != null) {
                     getActivity().finish();
                 }
             }
@@ -91,7 +100,7 @@ public class BallanceFragment extends BaseFragment implements IBallanceView {
         mWithdrawTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                if(!mCheckbox.isChecked()){
+                if (!mCheckbox.isChecked()) {
                     U.getToastUtil().showShort("请同意协议");
                     return;
                 }
@@ -150,23 +159,40 @@ public class BallanceFragment extends BaseFragment implements IBallanceView {
     }
 
     @Override
-    public void showBalance(long diamond) {
-        mDiaomentNum.setText(diamond + "");
+    public void showBalance(String diamond) {
+        mDiaomentNum.setText(diamond);
     }
 
     @Override
-    public void rechargeFailed() {
-        U.getToastUtil().showShort("充值失败");
+    public void rechargeFailed(String errorMsg) {
+        U.getToastUtil().showShort(errorMsg);
+        if (mWaitingDialogPlus != null) {
+            mWaitingDialogPlus.dismiss();
+        }
     }
 
     @Override
     public void rechargeSuccess() {
         U.getToastUtil().showShort("充值成功");
+        if (mWaitingDialogPlus != null) {
+            mWaitingDialogPlus.dismiss();
+        }
     }
 
     @Override
-    public void sendOrder() {
-        // TODO: 2019/4/20 支付中
+    public void sendOrder(PayBaseReq payBaseResp) {
+        if (mWaitingDialogPlus == null) {
+            mWaitingDialogPlus = DialogPlus.newDialog(getContext())
+                    .setContentHolder(new ViewHolder(new ProgressBar(getContext())))
+                    .setContentBackgroundResource(R.color.transparent)
+                    .setOverlayBackgroundResource(R.color.black_trans_50)
+                    .setExpanded(false)
+                    .setCancelable(false)
+                    .setGravity(Gravity.CENTER)
+                    .create();
+        }
+
+        mWaitingDialogPlus.show();
     }
 
     @Override

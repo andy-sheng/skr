@@ -417,6 +417,15 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
   )
   private final QChangeRoomName qChangeRoomName;
 
+  /**
+   * 送礼物
+   */
+  @WireField(
+      tag = 134,
+      adapter = "com.zq.live.proto.Room.GPrensentGiftMsg#ADAPTER"
+  )
+  private final GPrensentGiftMsg gPrensentGiftMsg;
+
   public RoomMsg(Long timeMs, ERoomMsgType msgType, Integer roomID, Long no, EMsgPosType posType,
       UserInfo sender, CommentMsg commentMsg, SpecialEmojiMsg specialEmojiMsg,
       DynamicEmojiMsg dynamicemojiMsg, JoinActionMsg joinActionMsg, JoinNoticeMsg joinNoticeMsg,
@@ -433,8 +442,8 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       QKickUserRequestMsg qKickUserRequestMsg, QKickUserResultMsg qKickUserResultMsg,
       QGameBeginMsg qGameBeginMsg, QChangeMusicTag qChangeMusicTag, QCoinChangeMsg qCoinChangeMsg,
       QCHOGiveUpMsg qCHOGiveUpMsg, QSPKInnerRoundOverMsg qSPKInnerRoundOverMsg,
-      QChangeRoomName qChangeRoomName) {
-    this(timeMs, msgType, roomID, no, posType, sender, commentMsg, specialEmojiMsg, dynamicemojiMsg, joinActionMsg, joinNoticeMsg, readyNoticeMsg, roundOverMsg, roundAndGameOverMsg, appSwapMsg, syncStatusMsg, exitGameBeforePlayMsg, exitGameAfterPlayMsg, exitGameOutRoundMsg, voteResultMsg, machineScore, qWantSingChanceMsg, qGetSingChanceMsg, qSyncStatusMsg, qRoundOverMsg, qRoundAndGameOverMsg, qNoPassSingMsg, qExitGameMsg, pkBLightMsg, pkMLightMsg, qBLightMsg, qMLightMsg, qJoinNoticeMsg, qJoinActionMsg, qKickUserRequestMsg, qKickUserResultMsg, qGameBeginMsg, qChangeMusicTag, qCoinChangeMsg, qCHOGiveUpMsg, qSPKInnerRoundOverMsg, qChangeRoomName, ByteString.EMPTY);
+      QChangeRoomName qChangeRoomName, GPrensentGiftMsg gPrensentGiftMsg) {
+    this(timeMs, msgType, roomID, no, posType, sender, commentMsg, specialEmojiMsg, dynamicemojiMsg, joinActionMsg, joinNoticeMsg, readyNoticeMsg, roundOverMsg, roundAndGameOverMsg, appSwapMsg, syncStatusMsg, exitGameBeforePlayMsg, exitGameAfterPlayMsg, exitGameOutRoundMsg, voteResultMsg, machineScore, qWantSingChanceMsg, qGetSingChanceMsg, qSyncStatusMsg, qRoundOverMsg, qRoundAndGameOverMsg, qNoPassSingMsg, qExitGameMsg, pkBLightMsg, pkMLightMsg, qBLightMsg, qMLightMsg, qJoinNoticeMsg, qJoinActionMsg, qKickUserRequestMsg, qKickUserResultMsg, qGameBeginMsg, qChangeMusicTag, qCoinChangeMsg, qCHOGiveUpMsg, qSPKInnerRoundOverMsg, qChangeRoomName, gPrensentGiftMsg, ByteString.EMPTY);
   }
 
   public RoomMsg(Long timeMs, ERoomMsgType msgType, Integer roomID, Long no, EMsgPosType posType,
@@ -453,7 +462,8 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       QKickUserRequestMsg qKickUserRequestMsg, QKickUserResultMsg qKickUserResultMsg,
       QGameBeginMsg qGameBeginMsg, QChangeMusicTag qChangeMusicTag, QCoinChangeMsg qCoinChangeMsg,
       QCHOGiveUpMsg qCHOGiveUpMsg, QSPKInnerRoundOverMsg qSPKInnerRoundOverMsg,
-      QChangeRoomName qChangeRoomName, ByteString unknownFields) {
+      QChangeRoomName qChangeRoomName, GPrensentGiftMsg gPrensentGiftMsg,
+      ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.timeMs = timeMs;
     this.msgType = msgType;
@@ -497,6 +507,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
     this.qCHOGiveUpMsg = qCHOGiveUpMsg;
     this.qSPKInnerRoundOverMsg = qSPKInnerRoundOverMsg;
     this.qChangeRoomName = qChangeRoomName;
+    this.gPrensentGiftMsg = gPrensentGiftMsg;
   }
 
   @Override
@@ -544,6 +555,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
     builder.qCHOGiveUpMsg = qCHOGiveUpMsg;
     builder.qSPKInnerRoundOverMsg = qSPKInnerRoundOverMsg;
     builder.qChangeRoomName = qChangeRoomName;
+    builder.gPrensentGiftMsg = gPrensentGiftMsg;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -595,7 +607,8 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
         && Internal.equals(qCoinChangeMsg, o.qCoinChangeMsg)
         && Internal.equals(qCHOGiveUpMsg, o.qCHOGiveUpMsg)
         && Internal.equals(qSPKInnerRoundOverMsg, o.qSPKInnerRoundOverMsg)
-        && Internal.equals(qChangeRoomName, o.qChangeRoomName);
+        && Internal.equals(qChangeRoomName, o.qChangeRoomName)
+        && Internal.equals(gPrensentGiftMsg, o.gPrensentGiftMsg);
   }
 
   @Override
@@ -645,6 +658,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       result = result * 37 + (qCHOGiveUpMsg != null ? qCHOGiveUpMsg.hashCode() : 0);
       result = result * 37 + (qSPKInnerRoundOverMsg != null ? qSPKInnerRoundOverMsg.hashCode() : 0);
       result = result * 37 + (qChangeRoomName != null ? qChangeRoomName.hashCode() : 0);
+      result = result * 37 + (gPrensentGiftMsg != null ? gPrensentGiftMsg.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -695,6 +709,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
     if (qCHOGiveUpMsg != null) builder.append(", qCHOGiveUpMsg=").append(qCHOGiveUpMsg);
     if (qSPKInnerRoundOverMsg != null) builder.append(", qSPKInnerRoundOverMsg=").append(qSPKInnerRoundOverMsg);
     if (qChangeRoomName != null) builder.append(", qChangeRoomName=").append(qChangeRoomName);
+    if (gPrensentGiftMsg != null) builder.append(", gPrensentGiftMsg=").append(gPrensentGiftMsg);
     return builder.replace(0, 2, "RoomMsg{").append('}').toString();
   }
 
@@ -1129,6 +1144,16 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
   }
 
   /**
+   * 送礼物
+   */
+  public GPrensentGiftMsg getGPrensentGiftMsg() {
+    if(gPrensentGiftMsg==null){
+        return new GPrensentGiftMsg.Builder().build();
+    }
+    return gPrensentGiftMsg;
+  }
+
+  /**
    * 房间消息产生时间，单位毫秒
    */
   public boolean hasTimeMs() {
@@ -1422,6 +1447,13 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
     return qChangeRoomName!=null;
   }
 
+  /**
+   * 送礼物
+   */
+  public boolean hasGPrensentGiftMsg() {
+    return gPrensentGiftMsg!=null;
+  }
+
   public static final class Builder extends Message.Builder<RoomMsg, Builder> {
     private Long timeMs;
 
@@ -1506,6 +1538,8 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
     private QSPKInnerRoundOverMsg qSPKInnerRoundOverMsg;
 
     private QChangeRoomName qChangeRoomName;
+
+    private GPrensentGiftMsg gPrensentGiftMsg;
 
     public Builder() {
     }
@@ -1846,9 +1880,17 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       return this;
     }
 
+    /**
+     * 送礼物
+     */
+    public Builder setGPrensentGiftMsg(GPrensentGiftMsg gPrensentGiftMsg) {
+      this.gPrensentGiftMsg = gPrensentGiftMsg;
+      return this;
+    }
+
     @Override
     public RoomMsg build() {
-      return new RoomMsg(timeMs, msgType, roomID, no, posType, sender, commentMsg, specialEmojiMsg, dynamicemojiMsg, joinActionMsg, joinNoticeMsg, readyNoticeMsg, roundOverMsg, roundAndGameOverMsg, appSwapMsg, syncStatusMsg, exitGameBeforePlayMsg, exitGameAfterPlayMsg, exitGameOutRoundMsg, voteResultMsg, machineScore, qWantSingChanceMsg, qGetSingChanceMsg, qSyncStatusMsg, qRoundOverMsg, qRoundAndGameOverMsg, qNoPassSingMsg, qExitGameMsg, pkBLightMsg, pkMLightMsg, qBLightMsg, qMLightMsg, qJoinNoticeMsg, qJoinActionMsg, qKickUserRequestMsg, qKickUserResultMsg, qGameBeginMsg, qChangeMusicTag, qCoinChangeMsg, qCHOGiveUpMsg, qSPKInnerRoundOverMsg, qChangeRoomName, super.buildUnknownFields());
+      return new RoomMsg(timeMs, msgType, roomID, no, posType, sender, commentMsg, specialEmojiMsg, dynamicemojiMsg, joinActionMsg, joinNoticeMsg, readyNoticeMsg, roundOverMsg, roundAndGameOverMsg, appSwapMsg, syncStatusMsg, exitGameBeforePlayMsg, exitGameAfterPlayMsg, exitGameOutRoundMsg, voteResultMsg, machineScore, qWantSingChanceMsg, qGetSingChanceMsg, qSyncStatusMsg, qRoundOverMsg, qRoundAndGameOverMsg, qNoPassSingMsg, qExitGameMsg, pkBLightMsg, pkMLightMsg, qBLightMsg, qMLightMsg, qJoinNoticeMsg, qJoinActionMsg, qKickUserRequestMsg, qKickUserResultMsg, qGameBeginMsg, qChangeMusicTag, qCoinChangeMsg, qCHOGiveUpMsg, qSPKInnerRoundOverMsg, qChangeRoomName, gPrensentGiftMsg, super.buildUnknownFields());
     }
   }
 
@@ -1901,6 +1943,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
           + QCHOGiveUpMsg.ADAPTER.encodedSizeWithTag(131, value.qCHOGiveUpMsg)
           + QSPKInnerRoundOverMsg.ADAPTER.encodedSizeWithTag(132, value.qSPKInnerRoundOverMsg)
           + QChangeRoomName.ADAPTER.encodedSizeWithTag(133, value.qChangeRoomName)
+          + GPrensentGiftMsg.ADAPTER.encodedSizeWithTag(134, value.gPrensentGiftMsg)
           + value.unknownFields().size();
     }
 
@@ -1948,6 +1991,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       QCHOGiveUpMsg.ADAPTER.encodeWithTag(writer, 131, value.qCHOGiveUpMsg);
       QSPKInnerRoundOverMsg.ADAPTER.encodeWithTag(writer, 132, value.qSPKInnerRoundOverMsg);
       QChangeRoomName.ADAPTER.encodeWithTag(writer, 133, value.qChangeRoomName);
+      GPrensentGiftMsg.ADAPTER.encodeWithTag(writer, 134, value.gPrensentGiftMsg);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -2013,6 +2057,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
           case 131: builder.setQCHOGiveUpMsg(QCHOGiveUpMsg.ADAPTER.decode(reader)); break;
           case 132: builder.setQSPKInnerRoundOverMsg(QSPKInnerRoundOverMsg.ADAPTER.decode(reader)); break;
           case 133: builder.setQChangeRoomName(QChangeRoomName.ADAPTER.decode(reader)); break;
+          case 134: builder.setGPrensentGiftMsg(GPrensentGiftMsg.ADAPTER.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
@@ -2064,6 +2109,7 @@ public final class RoomMsg extends Message<RoomMsg, RoomMsg.Builder> {
       if (builder.qCHOGiveUpMsg != null) builder.qCHOGiveUpMsg = QCHOGiveUpMsg.ADAPTER.redact(builder.qCHOGiveUpMsg);
       if (builder.qSPKInnerRoundOverMsg != null) builder.qSPKInnerRoundOverMsg = QSPKInnerRoundOverMsg.ADAPTER.redact(builder.qSPKInnerRoundOverMsg);
       if (builder.qChangeRoomName != null) builder.qChangeRoomName = QChangeRoomName.ADAPTER.redact(builder.qChangeRoomName);
+      if (builder.gPrensentGiftMsg != null) builder.gPrensentGiftMsg = GPrensentGiftMsg.ADAPTER.redact(builder.gPrensentGiftMsg);
       builder.clearUnknownFields();
       return builder.build();
     }

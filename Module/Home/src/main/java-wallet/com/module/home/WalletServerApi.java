@@ -191,9 +191,9 @@ public interface WalletServerApi {
 
     /**
      * 点卷兑换钻石
-     *{
-     *"amount": long
-     *}
+     * {
+     * "amount": long
+     * }
      *
      * @return
      */
@@ -202,9 +202,9 @@ public interface WalletServerApi {
 
     /**
      * 点卷兑换现金
-     *{
-     *"amount": long
-     *}
+     * {
+     * "amount": long
+     * }
      *
      * @return
      */
@@ -218,4 +218,22 @@ public interface WalletServerApi {
      */
     @GET("/v1/wallet/exchange-info")
     Observable<ApiResult> getExChangeInfo();
+
+    /**
+     * 点券明细
+     *
+     * @return
+     */
+    @GET("/v1/wallet/dq-list")
+    Observable<ApiResult> getDqList(@Query("offset") int offset,
+                                    @Query("cnt") int cnt);
+
+    /**
+     * 点券明细
+     *
+     * @return
+     */
+    @GET("/v1/wallet/zs-list")
+    Observable<ApiResult> getRechargeList(@Query("offset") int offset,
+                                    @Query("cnt") int cnt);
 }

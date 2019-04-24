@@ -30,7 +30,7 @@ public class CashDetailFragment extends BaseFragment implements IWalletView {
     SmartRefreshLayout mRefreshLayout;
 
     int offset = 0; //偏移量
-    int DEFAULT_COUNT = 10; //每次拉去的数量
+    int DEFAULT_COUNT = 50; //每次拉去的数量
 
     @Override
     public int initView() {

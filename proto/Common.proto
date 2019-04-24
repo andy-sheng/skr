@@ -52,6 +52,27 @@ message MusicInfo {
     repeated MusicInfo SPKMusic = 28; //一唱到底模式下spk歌曲信息
 }
 
+message GiftInfo
+{
+    uint32 giftID      = 1; //礼物id
+    string giftName    = 2; //礼物名称
+    string giftURL     = 3; //礼物的图片
+    uint64 price       = 4; //1000分之一钻单位 或者金币
+    string sourceURL   = 5; //礼物资源，使用效果
+    uint32 sortID      = 6; //排序id
+    EGiftType giftType = 7; //礼物类型，钻石礼物、金币礼物
+    bool canContinue   = 8; //是否可以连击
+    string description = 9; //礼物描述
+}
+
+// 礼物类型
+enum EGiftType {
+    EG_Unknown = 0;
+    EG_Coin    = 1;
+    EG_Zuan    = 2;
+}
+
+
 // 一唱到底playType
 enum StandPlayType {
     PT_INVALID_TYPE = 0; //无效

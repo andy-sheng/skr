@@ -64,6 +64,7 @@ import com.module.playways.grab.room.model.WantSingerInfo;
 import com.module.playways.others.LyricAndAccMatchManager;
 import com.module.playways.room.msg.BasePushInfo;
 import com.module.playways.room.msg.event.CommentMsgEvent;
+import com.module.playways.room.msg.event.GiftPresentEvent;
 import com.module.playways.room.msg.event.MachineScoreEvent;
 
 import com.module.playways.room.msg.event.QChangeRoomNameEvent;
@@ -2221,6 +2222,11 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         MyLog.d(TAG, "onEvent" + " qKickUserReqEvent=" + qKickUserReqEvent);
         // 踢人的请求
         mIGrabView.showKickVoteDialog(qKickUserReqEvent.kickUserID, qKickUserReqEvent.sourceUserID);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(GiftPresentEvent giftPresentEvent) {
+        MyLog.d(TAG, "onEvent" + " giftPresentEvent=" + giftPresentEvent);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

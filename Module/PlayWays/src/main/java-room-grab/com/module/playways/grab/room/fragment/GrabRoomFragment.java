@@ -67,6 +67,9 @@ import com.module.playways.grab.room.view.control.SingBeginTipsCardView;
 import com.module.playways.grab.room.view.RedPkgCountDownView;
 import com.module.playways.grab.room.view.SongInfoCardView;
 import com.module.playways.grab.room.view.TurnInfoCardView;
+import com.module.playways.room.gift.event.BuyGiftEvent;
+import com.module.playways.room.gift.view.ContinueSendView;
+import com.module.playways.room.gift.view.GiftPanelView;
 import com.module.playways.room.prepare.model.OnlineInfoModel;
 import com.module.playways.room.prepare.model.BaseRoundInfoModel;
 import com.module.playways.room.room.comment.listener.CommentItemListener;
@@ -172,6 +175,10 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     GrabVoiceControlPanelView mGrabVoiceControlPanelView;
 
+    GiftPanelView mGiftPanelView;
+
+    ContinueSendView mContinueSendView;
+
     DialogPlus mVoiceControlDialog;
 
     List<Animator> mAnimatorList = new ArrayList<>();  //存放所有需要尝试取消的动画
@@ -255,6 +262,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         initChangeRoomTransitionView();
         initCountDownView();
         initScoreView();
+        initGiftPanelView();
 
         mShowOwnerTipTimes = U.getPreferenceUtils().getSettingInt(KEY_OWNER_SHOW_TIMES, 0);
 
@@ -462,6 +470,16 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         }
     }
 
+    private void initGiftPanelView() {
+        mGiftPanelView = (GiftPanelView) mRootView.findViewById(R.id.gift_panel_view);
+
+        mGiftPanelView.setGrabRoomData(mRoomData);
+
+
+        mContinueSendView = (ContinueSendView) mRootView.findViewById(R.id.continue_send_view);
+        mContinueSendView.setBaseRoomData(mRoomData);
+    }
+
     private void initInputView() {
         mInputContainerView = mRootView.findViewById(R.id.input_container_view);
         mInputContainerView.setRoomData(mRoomData);
@@ -495,7 +513,14 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                 removeManageSongTipView();
             }
 
-
+            @Override
+            public void showGiftPanel() {
+                if (mRoomData.getRealRoundInfo() != null) {
+                    mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData, mRoomData.getRealRoundInfo().getUserID()));
+                } else {
+                    mGiftPanelView.show(null);
+                }
+            }
         });
         mBottomContainerView.setRoomData(mRoomData);
     }
@@ -532,6 +557,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ShowPersonCardEvent event) {
         showPersonInfoView(event.getUid());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(BuyGiftEvent event) {
+        mContinueSendView.startBuy(event.getBaseGift(), event.getReceiverId());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -1140,6 +1170,10 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         if (mChallengeTipViewAnimator != null) {
             mChallengeTipViewAnimator.cancel();
         }
+
+        mContinueSendView.destroy();
+
+        mGiftPanelView.destroy();
 
         U.getSoundUtils().release(TAG);
         BgMusicManager.getInstance().setRoom(false);

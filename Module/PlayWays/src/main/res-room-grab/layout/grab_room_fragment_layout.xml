@@ -113,7 +113,7 @@
     <include
         layout="@layout/grab_round_over_card_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
     <com.module.playways.grab.room.view.GrabScoreTipsView
         android:id="@+id/grab_score_tips_view"
@@ -176,6 +176,24 @@
         android:layout_alignParentBottom="true"
         android:layout_marginRight="@dimen/view_26_dp"
         android:layout_marginBottom="@dimen/view_79_dp"
+        android:visibility="gone" />
+
+    <com.module.playways.room.gift.view.ContinueSendView
+        android:id="@+id/continue_send_view"
+        android:layout_width="@dimen/view_78_dp"
+        android:layout_height="@dimen/view_120_dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="@dimen/view_18_dp"
+        android:layout_marginBottom="@dimen/view_10_dp"
+        android:paddingBottom="@dimen/view_8_dp"
+        android:visibility="gone" />
+
+    <com.module.playways.room.gift.view.GiftPanelView
+        android:id="@+id/gift_panel_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
         android:visibility="gone" />
 
     <com.module.playways.room.room.view.InputContainerView

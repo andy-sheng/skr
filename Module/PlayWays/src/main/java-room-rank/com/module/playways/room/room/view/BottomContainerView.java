@@ -307,6 +307,10 @@ public abstract class BottomContainerView extends RelativeLayout {
 
         public void clickRoomManagerBtn() {
         }
+
+        public void showGiftPanel(){
+
+        }
     }
 
 }

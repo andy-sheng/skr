@@ -6,6 +6,7 @@ import com.module.playways.room.msg.BasePushInfo;
 import com.module.playways.room.msg.event.AccBeginEvent;
 import com.module.playways.room.msg.event.AppSwapEvent;
 import com.module.playways.room.msg.event.ExitGameEvent;
+import com.module.playways.room.msg.event.GiftPresentEvent;
 import com.module.playways.room.msg.event.JoinActionEvent;
 import com.module.playways.room.msg.event.JoinNoticeEvent;
 import com.module.playways.room.msg.event.MachineScoreEvent;
@@ -43,6 +44,7 @@ import com.zq.live.proto.Room.ERoomMsgType;
 import com.zq.live.proto.Room.ExitGameAfterPlayMsg;
 import com.zq.live.proto.Room.ExitGameBeforePlayMsg;
 import com.zq.live.proto.Room.ExitGameOutRoundMsg;
+import com.zq.live.proto.Room.GPrensentGiftMsg;
 import com.zq.live.proto.Room.JoinActionMsg;
 import com.zq.live.proto.Room.JoinNoticeMsg;
 import com.zq.live.proto.Room.MachineScore;
@@ -102,7 +104,8 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
                 ERoomMsgType.RM_Q_JOIN_NOTICE, ERoomMsgType.RM_Q_JOIN_ACTION,
                 ERoomMsgType.RM_Q_KICK_USER_REQUEST, ERoomMsgType.RM_Q_KICK_USER_RESULT,
                 ERoomMsgType.RM_Q_GAME_BEGIN, ERoomMsgType.RM_Q_COIN_CHANGE, ERoomMsgType.RM_Q_CHANGE_MUSIC_TAG,
-                ERoomMsgType.RM_Q_CHO_GIVEUP, ERoomMsgType.RM_Q_PK_INNER_ROUND_OVER, ERoomMsgType.RM_Q_CHANGE_ROOM_NAME
+                ERoomMsgType.RM_Q_CHO_GIVEUP, ERoomMsgType.RM_Q_PK_INNER_ROUND_OVER, ERoomMsgType.RM_Q_CHANGE_ROOM_NAME,
+                ERoomMsgType.RM_G_PRESENT_GIFT
         };
     }
 
@@ -180,6 +183,17 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
             processGrabPkRoundOver(basePushInfo, msg.getQSPKInnerRoundOverMsg());
         } else if (msg.getMsgType() == ERoomMsgType.RM_Q_CHANGE_ROOM_NAME) {
             processGrabChangeRoomName(basePushInfo, msg.getQChangeRoomName());
+        } else if (msg.getMsgType() == ERoomMsgType.RM_G_PRESENT_GIFT) {
+            processSendGiftInfo(basePushInfo, msg.getGPrensentGiftMsg());
+        }
+    }
+
+    private void processSendGiftInfo(BasePushInfo basePushInfo, GPrensentGiftMsg gPrensentGiftMsg) {
+        if (gPrensentGiftMsg != null) {
+            GiftPresentEvent giftPresentEvent = new GiftPresentEvent(basePushInfo, gPrensentGiftMsg);
+            EventBus.getDefault().post(giftPresentEvent);
+        } else {
+            MyLog.w(TAG, "processSendGiftInfo" + " info=" + basePushInfo + " gPrensentGiftMsg = null");
         }
     }
 

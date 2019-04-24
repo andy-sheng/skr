@@ -9,6 +9,7 @@ import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.module.RouterConstants;
 import com.module.home.R;
+import com.module.home.fragment.BallanceFragment;
 import com.module.home.fragment.InComeFragment;
 
 @Route(path = RouterConstants.ACTIVITY_BALANCE)
@@ -21,7 +22,7 @@ public class BalanceActivity extends BaseActivity {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         U.getFragmentUtils().addFragment(
-                FragmentUtils.newAddParamsBuilder(this, InComeFragment.class)
+                FragmentUtils.newAddParamsBuilder(this, BallanceFragment.class)
                         .setAddToBackStack(false)
                         .setHasAnimation(false)
                         .build());

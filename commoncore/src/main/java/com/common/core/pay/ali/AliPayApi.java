@@ -48,6 +48,7 @@ public class AliPayApi implements IPayApi {
                 JSONObject jsonObject = JSON.parseObject(payResult.getResult());
                 AlipayResponse alipayResponse = JSON.parseObject(jsonObject.getString("alipay_trade_app_pay_response"), AlipayResponse.class);
                 EventBus.getDefault().post(new PayResultEvent(EPayPlatform.ALI_PAY, alipayResponse.getSub_msg(), alipayResponse.getCode()));
+                emitter.onComplete();
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

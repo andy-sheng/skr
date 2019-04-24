@@ -16,8 +16,9 @@ public class WxPayReq extends PayBaseReq {
     static final String WXapiKey = "c2e0219f57a71313a03c15a2a3d8772e";
     final String mPartnterId = "1525798071";
     private PayReq req;
+    String mOrderID;
 
-    public WxPayReq(String prepayid, String nonceStr) {
+    public WxPayReq(String prepayid, String nonceStr, String orderID) {
         mEPayPlatform = EPayPlatform.WX_PAY;
 
         PayReq req = new PayReq();
@@ -41,8 +42,13 @@ public class WxPayReq extends PayBaseReq {
         String mySign = createSign(characterEncoding,parameters);
 
         req.sign = mySign;
+        mOrderID = orderID;
 
         this.req = req;
+    }
+
+    public String getOrderID() {
+        return mOrderID;
     }
 
     @SuppressWarnings("unchecked")

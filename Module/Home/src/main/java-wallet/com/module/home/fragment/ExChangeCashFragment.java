@@ -23,6 +23,8 @@ import com.module.home.model.ExChangeInfoModel;
 import com.module.home.presenter.ExChangeCashPresenter;
 import com.zq.toast.CommonToastView;
 
+import static com.module.home.fragment.InComeFragment.DQ_EXCHANGE_REQ;
+
 /**
  * 兑换现金
  */
@@ -161,13 +163,16 @@ public class ExChangeCashFragment extends BaseFragment implements IExChangeCashV
                 .setText("兑换成功")
                 .build());
         mExChangeCashPresenter.getDQBalance();
+        if(mFragmentDataListener != null){
+            mFragmentDataListener.onFragmentResult(DQ_EXCHANGE_REQ, 0, null, null);
+        }
         finish();
     }
 
     @Override
     public void showExChangeInfo(ExChangeInfoModel exChangeInfoModel) {
         mExChangeInfoModel = exChangeInfoModel;
-        mDq = exChangeInfoModel.getDqBalance().getTotalAmount();
+        mDq = Float.parseFloat(exChangeInfoModel.getDqBalance().getTotalAmountStr());
         mMaxExchangeCash = (long) (600 * mDq);
         mTvMaxExchange.setText(String.format("账户最多可兑换%.2f元人民币", hfToYuan(mMaxExchangeCash)));
         mTvTip.setText(String.format("点券余额%.1f，", mDq));
@@ -222,6 +227,12 @@ public class ExChangeCashFragment extends BaseFragment implements IExChangeCashV
         }
 
         return true;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
     }
 
     @Override

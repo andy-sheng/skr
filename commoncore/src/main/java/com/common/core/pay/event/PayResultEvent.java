@@ -7,6 +7,9 @@ public class PayResultEvent {
 
     EPayPlatform mEPayPlatform;
 
+    // 0  成功
+    // -1 错误，支付失败
+    // -2 取消支付
     int errorCode;
 
     public PayResultEvent(EPayPlatform EPayPlatform, String errorMsg, int errorCode) {

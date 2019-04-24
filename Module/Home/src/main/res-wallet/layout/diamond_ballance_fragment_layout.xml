@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_act_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#7187FF"
+    android:orientation="vertical">
+
+    <com.common.view.titlebar.CommonTitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:centerText="充值钻石"
+        app:centerTextColor="@color/white"
+        app:centerTextSize="@dimen/textsize_20_dp"
+        app:centerType="textView"
+        app:leftDrawable="@drawable/img_back"
+        app:leftType="textView"
+        app:rightText="充值记录"
+        app:rightTextColor="@color/white"
+        app:rightTextSize="@dimen/textsize_14_dp"
+        app:rightType="textView"
+        app:showBottomLine="false"
+        app:statusBarColor="#7187FF"
+        app:titleBarColor="#7187FF"></com.common.view.titlebar.CommonTitleBar>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/view_16_dp"
+        android:layout_marginTop="@dimen/view_10_dp"
+        android:layout_marginRight="@dimen/view_16_dp"
+        android:layout_marginBottom="@dimen/view_30_dp"
+        android:background="@drawable/chongzhizuanshi_beijingban"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_diamond_icon"
+            android:layout_width="@dimen/view_52_dp"
+            android:layout_height="@dimen/view_58_dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/view_66_dp"
+            android:background="@drawable/yue_zuanshiyue" />
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/tv_diamond_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_diamond_icon"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/view_25_dp"
+            android:text="钻石余额"
+            android:textColor="#ff41547e"
+            android:textSize="14sp" />
+
+        <com.common.view.ex.ExTextView
+            android:id="@+id/tv_diamond_balance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_diamond_text"
+            android:layout_centerHorizontal="true"
+            android:text="44"
+            android:textColor="#ff3b4e79"
+            android:textSize="42sp" />
+
+        <com.dialog.view.StrokeTextView
+            android:id="@+id/recharge_btn"
+            android:layout_width="@dimen/view_180_dp"
+            android:layout_height="@dimen/view_45_dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/view_20_dp"
+            android:layout_marginBottom="@dimen/view_125_dp"
+            android:background="@drawable/chongzuzuanshi_anniu"
+            android:gravity="center"
+            android:paddingBottom="@dimen/view_5_dp"
+            android:text="充值"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textsize_18_dp" />
+    </RelativeLayout>
+</LinearLayout>

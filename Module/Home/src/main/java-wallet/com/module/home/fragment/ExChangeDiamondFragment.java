@@ -24,6 +24,8 @@ import com.module.home.model.ExChangeInfoModel;
 import com.module.home.presenter.ExChangeDiamondPresenter;
 import com.zq.toast.CommonToastView;
 
+import static com.module.home.fragment.InComeFragment.DQ_EXCHANGE_REQ;
+
 /**
  * 兑换钻石
  */
@@ -58,7 +60,7 @@ public class ExChangeDiamondFragment extends BaseFragment implements IExchangeDi
         mTvTip = (ExTextView) mRootView.findViewById(R.id.tv_tip);
         mTvExchangeWhole = (ExTextView) mRootView.findViewById(R.id.tv_exchange_whole);
         mIvExchangeBtn = mRootView.findViewById(R.id.iv_exchange_btn);
-        mTvExchangeRole = (ExTextView)mRootView.findViewById(R.id.tv_exchange_role);
+        mTvExchangeRole = (ExTextView) mRootView.findViewById(R.id.tv_exchange_role);
 
         mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -123,7 +125,7 @@ public class ExChangeDiamondFragment extends BaseFragment implements IExchangeDi
 
         mIvExchangeBtn.setEnabled(false);
 
-        mUiHandler.postDelayed(()-> {
+        mUiHandler.postDelayed(() -> {
             mEditCashNum.setFocusable(true);
             mEditCashNum.requestFocus();
             U.getKeyBoardUtils().showSoftInputKeyBoard(getActivity(), mEditCashNum);
@@ -141,6 +143,9 @@ public class ExChangeDiamondFragment extends BaseFragment implements IExchangeDi
                 .setText("兑换成功")
                 .build());
         mExChangeDiamondPresenter.getDQBalance();
+        if (mFragmentDataListener != null) {
+            mFragmentDataListener.onFragmentResult(DQ_EXCHANGE_REQ, 0, null, null);
+        }
         finish();
     }
 
@@ -151,11 +156,17 @@ public class ExChangeDiamondFragment extends BaseFragment implements IExchangeDi
 
     @Override
     public void showDQ(ExChangeInfoModel exChangeInfoModel) {
-        mDq = exChangeInfoModel.getDqBalance().getTotalAmount();
+        mDq = Float.parseFloat(exChangeInfoModel.getDqBalance().getTotalAmountStr());
         mMaxDiamond = (long) mDq * exChangeInfoModel.getToZSRatio();
         mTvMaxExchange.setText(String.format("账户最多可兑换%d钻石", mMaxDiamond));
         mTvTip.setText(String.format("点券余额%.1f钻石，", mDq));
         mTvExchangeRole.setText("兑换汇率：" + exChangeInfoModel.getToZSDesc());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
     }
 
     @Override

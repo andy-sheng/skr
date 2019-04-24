@@ -127,6 +127,7 @@
             app:bl_solid_color="#D0EFFF">
 
             <ImageView
+                android:visibility="gone"
                 android:id="@+id/iv_attention"
                 android:layout_width="@dimen/view_24_dp"
                 android:layout_height="@dimen/view_28_dp"

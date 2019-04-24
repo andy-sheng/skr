@@ -58,7 +58,7 @@ public class InComePresenter extends RxLifeCyclePresenter {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
-                    float dq = JSON.parseObject(result.getData().getString("totalAmount"), Float.class);
+                    String dq = JSON.parseObject(result.getData().getString("totalAmountStr"), String.class);
                     mIInComeView.showDq(dq);
                 }
             }
