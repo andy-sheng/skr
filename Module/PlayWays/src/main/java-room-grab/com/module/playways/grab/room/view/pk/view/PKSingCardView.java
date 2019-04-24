@@ -252,7 +252,7 @@ public class PKSingCardView extends RelativeLayout {
                 if (mAnimationListerner != null) {
                     mAnimationListerner.onAnimationEndExcludeSvga();
                 }
-
+                
                 if (mIsPlaySVGA) {
                     playSingAnimation(uid);
                 } else {
@@ -280,7 +280,7 @@ public class PKSingCardView extends RelativeLayout {
             return;
         }
 
-        if (svgaImageView != null && svgaImageView.getVisibility() == VISIBLE) {
+        if (svgaImageView != null && svgaImageView.isAnimating()) {
             // 正在播放
             return;
         }

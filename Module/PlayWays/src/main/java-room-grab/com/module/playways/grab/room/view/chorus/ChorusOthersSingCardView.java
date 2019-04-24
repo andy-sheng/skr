@@ -192,7 +192,7 @@ public class ChorusOthersSingCardView extends RelativeLayout {
             return;
         }
 
-        if (svgaImageView != null && svgaImageView.getVisibility() == VISIBLE) {
+        if (svgaImageView != null && svgaImageView.isAnimating()) {
             // 正在播放
             return;
         }

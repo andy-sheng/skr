@@ -101,7 +101,7 @@ public class PKSelfSingCardView extends RelativeLayout {
         int totalMs = infoModel.getSingTotalMs();
         mSingCountDownView.startPlay(0, totalMs, false);
 
-        mPkSingCardView.playScaleAnimation(userId, true, new PKSingCardView.AnimationListerner() {
+        mPkSingCardView.playScaleAnimation(userId, false, new PKSingCardView.AnimationListerner() {
             @Override
             public void onAnimationEndExcludeSvga() {
                 mPkSingCardView.setVisibility(GONE);
