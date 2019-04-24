@@ -7,43 +7,37 @@ import java.io.Serializable;
  */
 public class SimpleRoomInfo implements Serializable {
     /**
-     * inPlayersNum : 0
-     * isOwner : true
-     * roomID : 0
      * roomTag : 1
-     * roomType : 2
-     * tagID : 0
-     * totalPlayersNum : 0
-     * userID : 0
-     * currentRoundSeq : 0
-     * totalGameRoundSeq : 0
+     * roomID : 20367094
+     * isOwner : false
+     * roomType : 4
+     * inPlayersNum : 2
+     * totalPlayersNum : 12
+     * userID : 1982416
+     * tagID : 13
+     * currentRoundSeq : 3
+     * totalGameRoundSeq : 36
+     * roomName : 天选05后房间
      */
 
-    private int inPlayersNum;
-    private boolean isOwner;
-    private int roomID;
     private int roomTag;
+    private int roomID;
+    private boolean isOwner;
     private int roomType;
-    private int tagID;
+    private int inPlayersNum;
     private int totalPlayersNum;
     private int userID;
+    private int tagID;
     private int currentRoundSeq;
     private int totalGameRoundSeq;
+    private String roomName;
 
-    public int getInPlayersNum() {
-        return inPlayersNum;
+    public int getRoomTag() {
+        return roomTag;
     }
 
-    public void setInPlayersNum(int inPlayersNum) {
-        this.inPlayersNum = inPlayersNum;
-    }
-
-    public boolean isIsOwner() {
-        return isOwner;
-    }
-
-    public void setIsOwner(boolean isOwner) {
-        this.isOwner = isOwner;
+    public void setRoomTag(int roomTag) {
+        this.roomTag = roomTag;
     }
 
     public int getRoomID() {
@@ -54,12 +48,12 @@ public class SimpleRoomInfo implements Serializable {
         this.roomID = roomID;
     }
 
-    public int getRoomTag() {
-        return roomTag;
+    public boolean isIsOwner() {
+        return isOwner;
     }
 
-    public void setRoomTag(int roomTag) {
-        this.roomTag = roomTag;
+    public void setIsOwner(boolean isOwner) {
+        this.isOwner = isOwner;
     }
 
     public int getRoomType() {
@@ -70,12 +64,12 @@ public class SimpleRoomInfo implements Serializable {
         this.roomType = roomType;
     }
 
-    public int getTagID() {
-        return tagID;
+    public int getInPlayersNum() {
+        return inPlayersNum;
     }
 
-    public void setTagID(int tagID) {
-        this.tagID = tagID;
+    public void setInPlayersNum(int inPlayersNum) {
+        this.inPlayersNum = inPlayersNum;
     }
 
     public int getTotalPlayersNum() {
@@ -94,6 +88,14 @@ public class SimpleRoomInfo implements Serializable {
         this.userID = userID;
     }
 
+    public int getTagID() {
+        return tagID;
+    }
+
+    public void setTagID(int tagID) {
+        this.tagID = tagID;
+    }
+
     public int getCurrentRoundSeq() {
         return currentRoundSeq;
     }
@@ -110,19 +112,28 @@ public class SimpleRoomInfo implements Serializable {
         this.totalGameRoundSeq = totalGameRoundSeq;
     }
 
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
+    }
+
     @Override
     public String toString() {
         return "SimpleRoomInfo{" +
-                "inPlayersNum=" + inPlayersNum +
-                ", isOwner=" + isOwner +
+                "roomTag=" + roomTag +
                 ", roomID=" + roomID +
-                ", roomTag=" + roomTag +
+                ", isOwner=" + isOwner +
                 ", roomType=" + roomType +
-                ", tagID=" + tagID +
+                ", inPlayersNum=" + inPlayersNum +
                 ", totalPlayersNum=" + totalPlayersNum +
                 ", userID=" + userID +
+                ", tagID=" + tagID +
                 ", currentRoundSeq=" + currentRoundSeq +
                 ", totalGameRoundSeq=" + totalGameRoundSeq +
+                ", roomName='" + roomName + '\'' +
                 '}';
     }
 }
