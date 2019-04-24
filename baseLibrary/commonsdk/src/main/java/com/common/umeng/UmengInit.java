@@ -1,25 +1,11 @@
 package com.common.umeng;
 
-import android.app.Notification;
-import android.content.Context;
 import android.util.Log;
-import android.widget.RemoteViews;
 
-import com.common.base.R;
-import com.common.log.MyLog;
 import com.common.statistics.UmengStatistics;
 import com.common.utils.U;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
-import com.umeng.message.IUmengRegisterCallback;
-import com.umeng.message.PushAgent;
-import com.umeng.message.UmengMessageHandler;
-import com.umeng.message.UmengNotificationClickHandler;
-import com.umeng.message.entity.UMessage;
-
-import org.android.agoo.xiaomi.MiPushRegistar;
-
-import java.util.Map;
 
 public class UmengInit {
     public final static String TAG = "UmengInit";
@@ -44,7 +30,7 @@ public class UmengInit {
             // 选用MANUAL页面采集模式
             //默认SDK对Activity页面进行自动统计，现在我们自己统计，所以需要把自动统计关掉
             MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.MANUAL);
-            UmengPush.pushInit();
+            //UmengPush.pushInit();
             hasInited = true;
         }
     }

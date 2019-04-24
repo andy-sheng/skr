@@ -324,6 +324,15 @@ public static java.lang.String TABLENAME;
 -keep class com.ta.** {*;}
 -dontwarn com.ta.**
 
+#极光push 小米
+-dontwarn cn.jpush.**
+-keep class cn.jpush.** { *; }
+-keep class * extends cn.jpush.android.helpers.JPushMessageReceiver { *; }
+-dontwarn cn.jiguang.**
+-keep class cn.jiguang.** { *; }
+-dontwarn com.xiaomi.push.**
+-keep class com.xiaomi.push.**{*;}
+
 # Add project specific ProGuard rules here.
 # You can control the set of applied configuration files using the
 # proguardFiles setting in build.gradle.

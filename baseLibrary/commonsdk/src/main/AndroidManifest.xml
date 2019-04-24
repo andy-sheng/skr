@@ -194,6 +194,15 @@
                 <category android:name="${applicationId}"></category>
             </intent-filter>
         </receiver>
+
+
+        <activity
+            android:name="com.common.core.scheme.UmengThirdPushActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:noHistory="true"
+            android:theme="@style/TransparentTheme" />
     </application>
 
 </manifest>

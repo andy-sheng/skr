@@ -144,6 +144,15 @@ android {
             // svga
             java.srcDirs += 'src/main/java-svga'
             res.srcDirs += 'src/main/res-svga'
+
+            if(UmengPushEnable.toBoolean()) {
+                // umengpush
+                java.srcDirs += 'src/main/java-push-umeng'
+            }
+            if(JPushEnable.toBoolean()) {
+                // 极光push
+                java.srcDirs += 'src/main/java-push-jiguang'
+            }
         }
 
 //        release {
@@ -247,24 +256,34 @@ dependencies {
     // 友盟统计
     api rootProject.ext.dependencies['umeng-common']
     api rootProject.ext.dependencies['umeng-analytics']
-//     友盟push
-    api rootProject.ext.dependencies['umeng-push']
-    api rootProject.ext.dependencies['umeng-utdid']
+
+    // 友盟push
+    if(UmengPushEnable.toBoolean()){
+        api rootProject.ext.dependencies['umeng-push']
+        api rootProject.ext.dependencies['umeng-utdid']
 //
 //    // 友盟push 集成小米push
-    api rootProject.ext.dependencies['umeng-xiaomi-push']
-    api rootProject.ext.dependencies['umeng-xiaomi-umengaccs']
+        api rootProject.ext.dependencies['umeng-xiaomi-push']
+        api rootProject.ext.dependencies['umeng-xiaomi-umengaccs']
 //
 //    // 友盟push 集成华为push
-    api rootProject.ext.dependencies['umeng-huawei-basetb']
-    api rootProject.ext.dependencies['umeng-huawei-pushtb']
-    api rootProject.ext.dependencies['umeng-huawei-umengaccs']
+        api rootProject.ext.dependencies['umeng-huawei-basetb']
+        api rootProject.ext.dependencies['umeng-huawei-pushtb']
+        api rootProject.ext.dependencies['umeng-huawei-umengaccs']
 
-    // 友盟push 集成魅族push
-    api rootProject.ext.dependencies['umeng-meizu-push']
-    api rootProject.ext.dependencies['umeng-meizu-umengaccs']
+        // 友盟push 集成魅族push
+        api rootProject.ext.dependencies['umeng-meizu-push']
+        api rootProject.ext.dependencies['umeng-meizu-umengaccs']
+    }
 
-//    debugApi rootProject.ext.dependencies["stetho"]
+    // 极光推送
+    if(JPushEnable.toBoolean()){
+        api 'cn.jiguang.sdk:jpush:3.2.0'  // 此处以JPush 3.2.0 版本为例。
+        api 'cn.jiguang.sdk:jcore:1.2.7'  // 此处以JCore 1.2.7 版本为例。
+        api 'cn.jiguang.sdk.plugin:xiaomi:3.2.0'//此版本插件仅支持JPushSDK3.2.0及以上版本
+    }
+
+//  debugApi rootProject.ext.dependencies["stetho"]
 
     // 使用矢量图来播动画的库
     //api rootProject.ext.dependencies["lottie"]

@@ -141,6 +141,15 @@ android {
 
         // 只支持中文，对减包有一定作用
         resConfigs "zh"
+        if(JPushEnable.toBoolean()){
+            manifestPlaceholders=[
+                    JPUSH_PKGNAME:"com.zq.live",
+                    JPUSH_APPKEY : "9172d83ddf6a6a1ab46d6dc3", //JPush 上注册的包名对应的 Appkey.
+                    JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
+                    XIAOMI_APPKEY:"MI‐5701793259750",//小米平台注册的appkey
+                    XIAOMI_APPID:"MI‐2882303761517932750",//小米平台注册的appid
+            ]
+        }
     }
 
     signingConfigs {

@@ -70,13 +70,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name="com.common.core.scheme.UmengThirdPushActivity"
-            android:excludeFromRecents="true"
-            android:exported="true"
-            android:launchMode="singleTask"
-            android:noHistory="true"
-            android:theme="@style/TransparentTheme" />
 
         <!-- milinkservice -->
         <!--<service-->
@@ -181,11 +174,6 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"></activity>
 
-        <activity
-            android:name="com.common.webview.CameraAdapWebActivity"
-            android:configChanges="orientation|screenSize"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

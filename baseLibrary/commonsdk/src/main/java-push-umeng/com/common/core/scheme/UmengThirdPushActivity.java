@@ -2,15 +2,12 @@ package com.common.core.scheme;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
+import android.widget.FrameLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.common.core.R;
 import com.common.log.MyLog;
-import com.module.RouterConstants;
 import com.umeng.message.UmengNotifyClickActivity;
 
 import org.android.agoo.common.AgooConstants;
@@ -21,7 +18,8 @@ public class UmengThirdPushActivity extends UmengNotifyClickActivity {
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        setContentView(R.layout.third_push_activity);
+        FrameLayout frameLayout = new FrameLayout(this);
+        setContentView(frameLayout);
     }
 
 
@@ -55,7 +53,7 @@ public class UmengThirdPushActivity extends UmengNotifyClickActivity {
             JSONObject extraJO = jsonObject.getJSONObject("extra");
             if (extraJO != null) {
                 String uri = extraJO.getString("uri");
-                ARouter.getInstance().build(RouterConstants.ACTIVITY_SCHEME)
+                ARouter.getInstance().build("/core/SchemeSdkActivity")
                         .withString("uri", uri)
                         .navigation();
             }

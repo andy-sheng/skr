@@ -26,8 +26,6 @@ import com.common.base.delegate.AppLifecycles;
 import com.common.base.ConfigModule;
 import com.common.blockmoniter.BlockDetectByPrinter;
 
-import org.android.agoo.mezu.MeizuRegister;
-
 import java.util.List;
 
 
