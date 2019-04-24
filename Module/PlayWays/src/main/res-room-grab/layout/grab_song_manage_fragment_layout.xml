@@ -67,6 +67,15 @@
             app:bl_shape="rectangle"
             app:bl_solid_color="@color/black_trans_20" />
 
+        <ImageView
+            android:layout_width="@dimen/view_14_dp"
+            android:layout_height="@dimen/view_12_dp"
+            android:layout_alignLeft="@id/edit_room_name"
+            android:layout_alignTop="@id/edit_room_name"
+            android:layout_marginLeft="@dimen/view_8_dp"
+            android:layout_marginTop="@dimen/view_10_dp"
+            android:background="@drawable/ycdd_owner_icon" />
+
         <com.common.view.ex.ExLinearLayout
             android:id="@+id/fl_song_list_container"
             android:layout_width="match_parent"
