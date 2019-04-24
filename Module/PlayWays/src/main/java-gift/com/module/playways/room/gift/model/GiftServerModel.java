@@ -21,7 +21,7 @@ public class GiftServerModel implements Serializable {
 
     private boolean canContinue;
     private String description;
-    private long giftID;
+    private int giftID;
     private String giftName;
     private int giftType;
     private String giftURL;
@@ -45,11 +45,11 @@ public class GiftServerModel implements Serializable {
         this.description = description;
     }
 
-    public long getGiftID() {
+    public int getGiftID() {
         return giftID;
     }
 
-    public void setGiftID(long giftID) {
+    public void setGiftID(int giftID) {
         this.giftID = giftID;
     }
 

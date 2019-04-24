@@ -15,7 +15,7 @@ import com.module.playways.room.gift.GiftDB;
 /** 
  * DAO for table "GIFT_DB".
 */
-public class GiftDBDao extends AbstractDao<GiftDB, Long> {
+public class GiftDBDao extends AbstractDao<GiftDB, Integer> {
 
     public static final String TABLENAME = "GIFT_DB";
 
@@ -24,7 +24,7 @@ public class GiftDBDao extends AbstractDao<GiftDB, Long> {
      * Can be used for QueryBuilder and for referencing column names.
      */
     public static class Properties {
-        public final static Property GiftID = new Property(0, Long.class, "giftID", true, "_id");
+        public final static Property GiftID = new Property(0, Integer.class, "giftID", true, "GIFT_ID");
         public final static Property CanContinue = new Property(1, Boolean.class, "canContinue", false, "CAN_CONTINUE");
         public final static Property Description = new Property(2, String.class, "description", false, "DESCRIPTION");
         public final static Property GiftName = new Property(3, String.class, "giftName", false, "GIFT_NAME");
@@ -48,7 +48,7 @@ public class GiftDBDao extends AbstractDao<GiftDB, Long> {
     public static void createTable(Database db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"GIFT_DB\" (" + //
-                "\"_id\" INTEGER PRIMARY KEY ," + // 0: giftID
+                "\"GIFT_ID\" INTEGER PRIMARY KEY ," + // 0: giftID
                 "\"CAN_CONTINUE\" INTEGER," + // 1: canContinue
                 "\"DESCRIPTION\" TEXT," + // 2: description
                 "\"GIFT_NAME\" TEXT," + // 3: giftName
@@ -57,9 +57,6 @@ public class GiftDBDao extends AbstractDao<GiftDB, Long> {
                 "\"PRICE\" INTEGER," + // 6: price
                 "\"SORT_ID\" INTEGER," + // 7: sortID
                 "\"SOURCE_URL\" TEXT);"); // 8: sourceURL
-        // Add Indexes
-        db.execSQL("CREATE UNIQUE INDEX " + constraint + "IDX_GIFT_DB__id_DESC ON GIFT_DB" +
-                " (\"_id\" DESC);");
     }
 
     /** Drops the underlying database table. */
@@ -72,7 +69,7 @@ public class GiftDBDao extends AbstractDao<GiftDB, Long> {
     protected final void bindValues(DatabaseStatement stmt, GiftDB entity) {
         stmt.clearBindings();
  
-        Long giftID = entity.getGiftID();
+        Integer giftID = entity.getGiftID();
         if (giftID != null) {
             stmt.bindLong(1, giftID);
         }
@@ -122,7 +119,7 @@ public class GiftDBDao extends AbstractDao<GiftDB, Long> {
     protected final void bindValues(SQLiteStatement stmt, GiftDB entity) {
         stmt.clearBindings();
  
-        Long giftID = entity.getGiftID();
+        Integer giftID = entity.getGiftID();
         if (giftID != null) {
             stmt.bindLong(1, giftID);
         }
@@ -169,14 +166,14 @@ public class GiftDBDao extends AbstractDao<GiftDB, Long> {
     }
 
     @Override
-    public Long readKey(Cursor cursor, int offset) {
-        return cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0);
+    public Integer readKey(Cursor cursor, int offset) {
+        return cursor.isNull(offset + 0) ? null : cursor.getInt(offset + 0);
     }    
 
     @Override
     public GiftDB readEntity(Cursor cursor, int offset) {
         GiftDB entity = new GiftDB( //
-            cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // giftID
+            cursor.isNull(offset + 0) ? null : cursor.getInt(offset + 0), // giftID
             cursor.isNull(offset + 1) ? null : cursor.getShort(offset + 1) != 0, // canContinue
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // description
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // giftName
@@ -191,7 +188,7 @@ public class GiftDBDao extends AbstractDao<GiftDB, Long> {
      
     @Override
     public void readEntity(Cursor cursor, GiftDB entity, int offset) {
-        entity.setGiftID(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
+        entity.setGiftID(cursor.isNull(offset + 0) ? null : cursor.getInt(offset + 0));
         entity.setCanContinue(cursor.isNull(offset + 1) ? null : cursor.getShort(offset + 1) != 0);
         entity.setDescription(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
         entity.setGiftName(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
@@ -203,13 +200,12 @@ public class GiftDBDao extends AbstractDao<GiftDB, Long> {
      }
     
     @Override
-    protected final Long updateKeyAfterInsert(GiftDB entity, long rowId) {
-        entity.setGiftID(rowId);
-        return rowId;
+    protected final Integer updateKeyAfterInsert(GiftDB entity, long rowId) {
+        return entity.getGiftID();
     }
     
     @Override
-    public Long getKey(GiftDB entity) {
+    public Integer getKey(GiftDB entity) {
         if(entity != null) {
             return entity.getGiftID();
         } else {

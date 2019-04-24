@@ -72,7 +72,7 @@ public class GiftManager {
         mGiftServerApi.getGiftList(0, 1000)
                 .map(new Function<ApiResult, Object>() {
                     @Override
-                    public Object apply(ApiResult result) throws Exception {
+                    public List<GiftServerModel> apply(ApiResult result) throws Exception {
                         if (result.getErrno() == 0) {
                             List<GiftServerModel> giftServerModelList = JSON.parseArray(result.getData().getString("list"), GiftServerModel.class);
                             mGiftServerModelList.addAll(giftServerModelList);
@@ -80,8 +80,9 @@ public class GiftManager {
                             toLocalGiftModel(mGiftServerModelList);
                             isGiftReady = true;
                             EventBus.getDefault().post(new GiftReadyEvent());
+                            return giftServerModelList;
                         }
-                        return null;
+                        return new ArrayList<>();
                     }
                 })
                 .subscribeOn(Schedulers.io())

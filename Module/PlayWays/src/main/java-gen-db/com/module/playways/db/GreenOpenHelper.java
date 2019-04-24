@@ -3,7 +3,6 @@ package com.module.playways.db;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.common.core.db.DaoMaster;
 import com.common.dbhelper.MigrationHelper;
 
 import org.greenrobot.greendao.database.Database;
