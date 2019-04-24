@@ -6,16 +6,14 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
 
-import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.module.playways.R;
-import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.SPkRoundInfoModel;
-import com.module.playways.grab.room.view.common.SingCountDownView;
+import com.module.playways.grab.room.view.normal.view.SingCountDownView;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.module.playways.grab.room.view.normal.view.SelfSingLyricView;
 import com.module.playways.grab.room.view.pk.view.PKSingCardView;

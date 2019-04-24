@@ -2,35 +2,15 @@ package com.module.playways.grab.room.view.normal;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.common.log.MyLog;
-import com.common.utils.U;
-import com.engine.EngineManager;
-import com.engine.arccloud.ArcRecognizeListener;
-import com.engine.arccloud.SongInfo;
-import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.module.playways.grab.room.view.common.SingCountDownView;
+import com.module.playways.grab.room.view.normal.view.SingCountDownView;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.module.playways.grab.room.view.normal.view.SelfSingLyricView;
-import com.module.playways.others.LyricAndAccMatchManager;
-import com.module.playways.room.song.model.SongModel;
 import com.module.playways.R;
-import com.zq.live.proto.Room.EQRoundStatus;
-import com.zq.live.proto.Room.EWantSingType;
-import com.zq.lyrics.LyricsManager;
-import com.zq.lyrics.widget.ManyLyricsView;
-import com.zq.lyrics.widget.VoiceScaleView;
-
-import java.util.List;
-
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 
 /**
  * 你的主场景歌词
