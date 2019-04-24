@@ -21,6 +21,10 @@ import com.module.playways.R;
 public class InviteFirendAdapter extends DiffAdapter<GrabFriendModel, RecyclerView.ViewHolder> {
     OnInviteClickListener mOnInviteClickListener;
 
+    public InviteFirendAdapter(OnInviteClickListener onInviteClickListener){
+        this.mOnInviteClickListener = onInviteClickListener;
+    }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -35,10 +39,6 @@ public class InviteFirendAdapter extends DiffAdapter<GrabFriendModel, RecyclerVi
 
         ItemHolder reportItemHolder = (ItemHolder) holder;
         reportItemHolder.bind(model);
-    }
-
-    public void setOnInviteClickListener(OnInviteClickListener onInviteClickListener) {
-        mOnInviteClickListener = onInviteClickListener;
     }
 
     @Override

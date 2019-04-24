@@ -390,7 +390,7 @@ public class OtherPersonFragment2 extends BaseFragment implements IOtherPersonVi
                 }
                 if (mUserInfoModel != null) {
                     Integer tag = (Integer) mFollowIv.getTag();
-                    if (tag == null) {
+                    if (tag != null) {
                         if (tag == RELATION_FOLLOWED) {
                             unFollow(mUserInfoModel);
                         } else if (tag == RELATION_UN_FOLLOW) {

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical">
+
+    <com.common.view.viewpager.SlidingTabLayout
+        android:id="@+id/message_tab"
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/view_36_dp"
+        android:layout_marginLeft="@dimen/view_80_dp"
+        android:layout_marginRight="@dimen/view_80_dp"
+        android:layout_height="@dimen/view_52_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center" />
+
+    <com.common.view.viewpager.NestViewPager
+        android:id="@+id/message_vp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/message_tab"
+        android:layout_marginBottom="@dimen/view_140_dp"
+        android:fadingEdge="none"
+        android:fadingEdgeLength="0dp"
+        android:overScrollMode="never"
+        android:requiresFadingEdge="none" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/iv_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/view_10_dp"
+        android:layout_marginTop="@dimen/view_30_dp"
+        android:layout_marginBottom="@dimen/view_4_dp"
+        android:padding="@dimen/view_16_dp"
+        android:src="@drawable/grab_back" />
+
+</RelativeLayout>

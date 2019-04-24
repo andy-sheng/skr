@@ -41,7 +41,7 @@ import com.module.playways.grab.room.event.ShowPersonCardEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
 import com.module.playways.grab.room.inter.IGrabView;
-import com.module.playways.grab.room.invite.InviteFriendFragment;
+import com.module.playways.grab.room.invite.InviteFriendFragment2;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
@@ -568,12 +568,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     public void onEvent(GrabWantInviteEvent event) {
         // 房主想要邀请别人加入游戏
         // 打开邀请面板
-        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), InviteFriendFragment.class)
+        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), InviteFriendFragment2.class)
                 .setAddToBackStack(true)
                 .setHasAnimation(true)
                 .addDataBeforeAdd(0, mRoomData)
-                .setEnterAnim(R.anim.slide_in_bottom)
-                .setExitAnim(R.anim.slide_out_bottom)
+//                .setEnterAnim(R.anim.slide_in_bottom)
+//                .setExitAnim(R.anim.slide_out_bottom)
                 .build()
         );
 

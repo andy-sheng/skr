@@ -1,12 +1,13 @@
 package com.module.playways.grab.room.inter;
 
 import com.module.playways.grab.room.model.GrabFriendModel;
+
 import java.util.List;
 
 public interface IGrabInviteView {
-    void updateFriendList(List<GrabFriendModel> grabFriendModelList);
+    void addInviteModelList(List<GrabFriendModel> grabFriendModelList, int newOffset);
 
-    void hasMore(boolean hasMore);
+    void updateInviteModel(GrabFriendModel grabFriendModel);
 
     void finishRefresh();
 }
