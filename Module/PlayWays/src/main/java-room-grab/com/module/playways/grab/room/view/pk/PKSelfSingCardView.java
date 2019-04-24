@@ -117,27 +117,9 @@ public class PKSelfSingCardView extends RelativeLayout {
             MyLog.d(TAG, "infoModel 是空的");
             return;
         }
-
         mPkSelfSingLyricView.initLyric();
-        if (infoModel.getMusic() == null) {
-            MyLog.d(TAG, "songModel 是空的");
-            return;
-        }
-
         int totalTs = infoModel.getSingTotalMs();
-        boolean withAcc = false;
-        if (RoomDataUtils.isPKRound(mRoomData)) {
-            // pk模式
-            withAcc = true;
-        }
-
-        if (!withAcc) {
-            mSingCountDownView.setTagImgRes(R.drawable.ycdd_daojishi_qingchang);
-            mPkSelfSingLyricView.playWithNoAcc(infoModel.getMusic());
-        } else {
-            mSingCountDownView.setTagImgRes(R.drawable.ycdd_daojishi_banzou);
-            mPkSelfSingLyricView.playWithAcc(infoModel, totalTs);
-        }
+        mPkSelfSingLyricView.playWithAcc(infoModel, totalTs);
         mSingCountDownView.startPlay(0, totalTs, true);
     }
 
