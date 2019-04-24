@@ -84,6 +84,7 @@ public class PKOthersSingCardView extends RelativeLayout {
         if (grabRoundInfoModel == null) {
             return;
         }
+        mSingCountDownView.setTagImgRes(R.drawable.ycdd_daojishi_pk);
         mLeftUserInfoModel = null;
         mRightUserInfoModel = null;
         List<SPkRoundInfoModel> list = grabRoundInfoModel.getsPkRoundInfoModels();

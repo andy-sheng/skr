@@ -15,4 +15,11 @@ public class QPkInnerRoundOverEvent {
         this.roundOverTs = msg.getRoundOverTimeMs();
         this.mRoundInfoModel = GrabRoundInfoModel.parseFromRoundInfo(msg.getCurrentRound());
     }
+
+    @Override
+    public String toString() {
+        return "QPkInnerRoundOverEvent{" +
+                "mRoundInfoModel=" + mRoundInfoModel +
+                '}';
+    }
 }

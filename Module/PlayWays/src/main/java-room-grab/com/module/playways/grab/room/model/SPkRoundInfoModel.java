@@ -124,6 +124,9 @@ public class SPkRoundInfoModel implements Serializable {
             MyLog.d(TAG, "tryUpdateRoundInfoModel" + " pkRoundInfoModel=" + roundInfo);
             return;
         }
+        if(userID==0){
+            setUserID(roundInfo.getUserID());
+        }
         if (roundInfo.getUserID() == userID) {
             this.setSingBeginMs(roundInfo.getSingBeginMs());
             this.setSingEndMs(roundInfo.getSingEndMs());
@@ -165,5 +168,19 @@ public class SPkRoundInfoModel implements Serializable {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "SPkRoundInfoModel{" +
+                "userID=" + userID +
+                ", singBeginMs=" + singBeginMs +
+                ", singEndMs=" + singEndMs +
+                ", bLightInfos=" + bLightInfos +
+                ", mLightInfos=" + mLightInfos +
+                ", overReason=" + overReason +
+                ", resultType=" + resultType +
+                ", score=" + score +
+                '}';
     }
 }

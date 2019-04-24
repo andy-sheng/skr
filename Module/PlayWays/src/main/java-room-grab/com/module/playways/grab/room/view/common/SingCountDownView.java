@@ -78,9 +78,6 @@ public class SingCountDownView extends RelativeLayout {
                     @Override
                     public void onComplete() {
                         super.onComplete();
-                        if (mCounDownTask != null) {
-                            mCounDownTask.dispose();
-                        }
                         if (mListener != null) {
                             mListener.onSelfSingOver();
                         }

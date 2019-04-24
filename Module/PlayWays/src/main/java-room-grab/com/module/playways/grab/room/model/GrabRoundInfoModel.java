@@ -693,6 +693,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
                 "roundSeq=" + roundSeq +
                 ", status=" + status +
                 ", userID=" + userID +
+                ", wantSingType=" + wantSingType +
                 ", playbookID=" + playbookID +
                 ", songModel=" + (music == null ? "" : music.toSimpleString()) +
                 ", singBeginMs=" + singBeginMs +
@@ -712,6 +713,8 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
                 ", isParticipant=" + isParticipant +
                 ", elapsedTimeMs=" + elapsedTimeMs +
                 ", enterStatus=" + enterStatus +
+                ",chorusRoundInfoModels=" + chorusRoundInfoModels +
+                ", sPkRoundInfoModels=" + sPkRoundInfoModels +
                 '}';
     }
 

@@ -175,6 +175,7 @@ public class RelationFragment extends BaseFragment {
         mRelationTab.setCustomTabView(R.layout.relation_tab_view, R.id.tab_tv);
         mRelationTab.setSelectedIndicatorColors(U.getColor(R.color.black_trans_20));
         mRelationTab.setDistributeMode(SlidingTabLayout.DISTRIBUTE_MODE_TAB_IN_SECTION_CENTER);
+        mRelationTab.setIndicatorAnimationMode(SlidingTabLayout.ANI_MODE_NONE);
         mRelationTab.setIndicatorWidth(U.getDisplayUtils().dip2px(67));
         mRelationTab.setIndicatorBottomMargin(U.getDisplayUtils().dip2px(12));
         mRelationTab.setSelectedIndicatorThickness(U.getDisplayUtils().dip2px(28));

@@ -1620,11 +1620,17 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 if (songModel == null) {
                     return;
                 }
+                if(infoModel.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()){
+                    songModel = songModel.getPkMusic();
+                }
+                if (songModel == null) {
+                    return;
+                }
                 // 开始开始混伴奏，开始解除引擎mute
-                File accFile = SongResUtils.getAccFileByUrl(infoModel.getMusic().getAcc());
+                File accFile = SongResUtils.getAccFileByUrl(songModel.getAcc());
                 // midi不需要在这下，只要下好，native就会解析，打分就能恢复
-                File midiFile = SongResUtils.getMIDIFileByUrl(infoModel.getMusic().getMidi());
-                if (mRoomData.isAccEnable() && infoModel.isAccRound()) {
+                File midiFile = SongResUtils.getMIDIFileByUrl(songModel.getMidi());
+                if (mRoomData.isAccEnable() && infoModel.isAccRound() || infoModel.isPKRound()) {
                     int songBeginTs = songModel.getBeginMs();
                     if (accFile != null && accFile.exists()) {
                         // 伴奏文件存在
@@ -1857,7 +1863,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QChoGiveUpEvent event) {
-        MyLog.d(TAG, "onEvent" + " event=" + event);
+        MyLog.d(TAG, "QChoGiveUpEvent" + " event=" + event);
         GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
         if (now != null) {
             if (now.getRoundSeq() == event.roundSeq) {
@@ -1867,11 +1873,11 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     }
 
     /**
-     * 合唱某人放弃了演唱
+     * 轮次结束
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QPkInnerRoundOverEvent event) {
-        MyLog.d(TAG, "onEvent" + " event=" + event);
+        MyLog.d(TAG, "QPkInnerRoundOverEvent" + " event=" + event);
         if (RoomDataUtils.isCurrentRunningRound(event.mRoundInfoModel.getRoundSeq(), mRoomData)) {
             GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
             if (now != null) {
