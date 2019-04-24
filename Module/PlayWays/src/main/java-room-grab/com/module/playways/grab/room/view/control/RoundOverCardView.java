@@ -9,6 +9,9 @@ import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.view.normal.NormalRoundOverCardView;
 import com.module.playways.grab.room.view.pk.PKRoundOverCardView;
 import com.module.playways.R;
+import com.zq.live.proto.Common.StandPlayType;
+import com.zq.live.proto.Room.EQRoundOverReason;
+import com.zq.live.proto.Room.EQRoundStatus;
 import com.zq.live.proto.Room.EWantSingType;
 
 public class RoundOverCardView {
@@ -26,11 +29,19 @@ public class RoundOverCardView {
     }
 
     public void bindData(GrabRoundInfoModel lastRoundInfo, SVGAListener svgaListener) {
-        if(lastRoundInfo.getWantSingType() == EWantSingType.EWST_SPK.getValue()){
-            mPKRoundOverCardView.bindData(lastRoundInfo);
-        }else{
-            mNormalRoundOverCardView.bindData(lastRoundInfo, svgaListener);
+        if (lastRoundInfo != null) {
+            if (lastRoundInfo.getMusic() != null && lastRoundInfo.getMusic().getPlayType() == StandPlayType.PT_SPK_TYPE.getValue()) {
+                // 是pk的轮次 并且 两个轮次 userId 有效 ，说明有人玩了
+                if (lastRoundInfo.getsPkRoundInfoModels().size() >= 2) {
+                    if (lastRoundInfo.getsPkRoundInfoModels().get(0).getUserID() != 0
+                            && lastRoundInfo.getsPkRoundInfoModels().get(1).getUserID() != 0) {
+                        mPKRoundOverCardView.bindData(lastRoundInfo);
+                        return;
+                    }
+                }
+            }
         }
+        mNormalRoundOverCardView.bindData(lastRoundInfo, svgaListener);
     }
 
     public void setVisibility(int visibility) {
