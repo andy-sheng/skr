@@ -9,16 +9,24 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
 import com.common.clipboard.ClipboardUtils;
 import com.common.core.kouling.SkrKouLingUtils;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.userinfo.UserInfoServerApi;
+import com.common.core.userinfo.model.UserInfoModel;
+import com.common.rxretrofit.ApiManager;
+import com.common.rxretrofit.ApiMethods;
+import com.common.rxretrofit.ApiObserver;
+import com.common.rxretrofit.ApiResult;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -26,9 +34,14 @@ import com.common.view.titlebar.CommonTitleBar;
 import com.module.RouterConstants;
 import com.module.common.ICallback;
 import com.module.msg.IMessageFragment;
+import com.module.msg.follow.LastFollowFragment;
+import com.module.msg.follow.LastFollowModel;
+import com.module.msg.friend.FriendStatusModel;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.relation.fragment.SearchFriendFragment;
+
+import java.util.List;
 
 import io.rong.imkit.R;
 import io.rong.imkit.fragment.ConversationListFragment;
@@ -39,6 +52,8 @@ public class MessgaeFragment2 extends BaseFragment implements IMessageFragment {
     RelativeLayout mMainActContainer;
     CommonTitleBar mTitlebar;
     RelativeLayout mLatestFollowArea;
+    ImageView mFollowAreaIcon;
+    TextView mFollowTips;
     RelativeLayout mContent;
 
     PopupWindow mPopupWindow;  // 弹窗
@@ -51,6 +66,8 @@ public class MessgaeFragment2 extends BaseFragment implements IMessageFragment {
 
     Fragment mConversationListFragment; //获取融云的会话列表对象
 
+    long mLastUpdateTime = 0;  //最新关注第一条刷新时间
+
     @Override
     public int initView() {
         return R.layout.conversation_list_fragment2;
@@ -58,11 +75,12 @@ public class MessgaeFragment2 extends BaseFragment implements IMessageFragment {
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-
-        mMainActContainer = (RelativeLayout)mRootView.findViewById(R.id.main_act_container);
-        mTitlebar = (CommonTitleBar)mRootView.findViewById(R.id.titlebar);
-        mLatestFollowArea = (RelativeLayout)mRootView.findViewById(R.id.latest_follow_area);
-        mContent = (RelativeLayout)mRootView.findViewById(R.id.content);
+        mMainActContainer = (RelativeLayout) mRootView.findViewById(R.id.main_act_container);
+        mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
+        mLatestFollowArea = (RelativeLayout) mRootView.findViewById(R.id.latest_follow_area);
+        mFollowAreaIcon = (ImageView) mRootView.findViewById(R.id.follow_area_icon);
+        mFollowTips = (TextView) mRootView.findViewById(R.id.follow_tips);
+        mContent = (RelativeLayout) mRootView.findViewById(R.id.content);
 
         mConversationListFragment = initConversationList();
         FragmentManager fragmentManager = getChildFragmentManager();
@@ -120,6 +138,17 @@ public class MessgaeFragment2 extends BaseFragment implements IMessageFragment {
                         .navigation();
             }
         });
+
+        mLatestFollowArea.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                U.getFragmentUtils().addFragment(
+                        FragmentUtils.newAddParamsBuilder(getActivity(), LastFollowFragment.class)
+                                .setAddToBackStack(true)
+                                .setHasAnimation(true)
+                                .build());
+            }
+        });
     }
 
     private void showShareDialog() {
@@ -143,10 +172,10 @@ public class MessgaeFragment2 extends BaseFragment implements IMessageFragment {
                             mShareDialog.dismiss();
                             ClipboardUtils.setCopy((String) obj);
                             Intent intent = U.getActivityUtils().getLaunchIntentForPackage("com.tencent.mm");
-                            if (intent!=null && null != intent.resolveActivity(U.app().getPackageManager())) {
+                            if (intent != null && null != intent.resolveActivity(U.app().getPackageManager())) {
                                 startActivity(intent);
                                 U.getToastUtil().showLong("请将口令粘贴给你的好友");
-                            }else{
+                            } else {
                                 U.getToastUtil().showLong("未安装微信,请将口令粘贴给你的好友");
                             }
                         }
@@ -169,10 +198,10 @@ public class MessgaeFragment2 extends BaseFragment implements IMessageFragment {
                             mShareDialog.dismiss();
                             ClipboardUtils.setCopy((String) obj);
                             Intent intent = U.getActivityUtils().getLaunchIntentForPackage("com.tencent.mobileqq");
-                            if (intent!=null && null != intent.resolveActivity(U.app().getPackageManager())) {
+                            if (intent != null && null != intent.resolveActivity(U.app().getPackageManager())) {
                                 startActivity(intent);
                                 U.getToastUtil().showLong("请将口令粘贴给你的好友");
-                            }else{
+                            } else {
                                 U.getToastUtil().showLong("未安装QQ,请将口令粘贴给你的好友");
                             }
                         }
@@ -188,6 +217,41 @@ public class MessgaeFragment2 extends BaseFragment implements IMessageFragment {
 
         if (!mShareDialog.isShowing()) {
             mShareDialog.show();
+        }
+    }
+
+    @Override
+    protected void onFragmentVisible() {
+        super.onFragmentVisible();
+        getLastRelationOne(false);
+    }
+
+    private void getLastRelationOne(boolean flag) {
+        long now = System.currentTimeMillis();
+        if (!flag) {
+            if ((now - mLastUpdateTime) < 60 * 1000) {
+                return;
+            }
+        }
+
+        UserInfoServerApi userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
+        ApiMethods.subscribe(userInfoServerApi.getLatestRelation(true), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                if (result.getErrno() == 0) {
+                    List<LastFollowModel> list = JSON.parseArray(result.getData().getString("users"), LastFollowModel.class);
+                    showLastRelation(list);
+                }
+            }
+        }, this);
+    }
+
+    private void showLastRelation(List<LastFollowModel> list) {
+        if (list != null && list.size() != 0) {
+            LastFollowModel lastFollowModel = list.get(0);
+            mFollowTips.setText(lastFollowModel.getStatusDesc());
+        } else {
+            // TODO: 2019/4/24  暂无记录
         }
     }
 
