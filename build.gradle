@@ -81,7 +81,6 @@ allprojects {
         }
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
 
-
         // 为了同步component框架,后期改框架可去掉
         maven {
             url 'https://raw.githubusercontent.com/ModerateFish/mvn-repo/master/'
@@ -99,6 +98,9 @@ allprojects {
             }
         }
 
+        if(JPushEnable.toBoolean()){
+            maven{url'http://developer.huawei.com/repo/'}
+        }
         google()
         jcenter()
     }

@@ -24,6 +24,7 @@ import android.util.Log;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.delegate.AppLifecycles;
 import com.common.image.fresco.FrescoInitManager;
+import com.common.jiguang.JiGuangPush;
 import com.common.log.MyLog;
 import com.common.statistics.StatisticsAdapter;
 import com.common.umeng.UmengInit;
@@ -35,6 +36,8 @@ import com.kingja.loadsir.core.LoadSir;
 import com.squareup.leakcanary.LeakCanary;
 
 import java.util.List;
+
+import cn.jpush.android.api.JPushInterface;
 
 
 /**
@@ -77,6 +80,7 @@ public class CommonConfiguration implements ConfigModule {
 //                PgyCrashManager.register();
                 CommonReceiver.register();
                 UmengInit.init();
+                JiGuangPush.init();
                 //leakCanary 引用
                 LeakCanary.install(application);
             }
@@ -89,6 +93,8 @@ public class CommonConfiguration implements ConfigModule {
                  */
                 if (U.getProcessName().endsWith(":channel")) {
                     UmengInit.init();
+                }else if(U.getProcessName().endsWith(":pushcore")){
+                    JiGuangPush.init();
                 }
             }
 

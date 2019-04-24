@@ -18,6 +18,7 @@ import com.common.core.myinfo.MyUserInfoLocalApi;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.MyUserInfoServerApi;
 import com.common.core.userinfo.UserInfoLocalApi;
+import com.common.jiguang.JiGuangPush;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -392,6 +393,7 @@ public class UserAccountManager {
                     UserInfoLocalApi.deleteAll();
                     UmengStatistics.onProfileSignOff();
                     //com.common.umeng.UmengPush.UmengPush.clearAlias(userId);
+                    com.common.jiguang.JiGuangPush.clearAlias(userId);
                     MyUserInfoManager.getInstance().logoff();
                     EventBus.getDefault().post(new AccountEvent.LogoffAccountEvent(reason));
                     emitter.onComplete();
@@ -565,6 +567,7 @@ public class UserAccountManager {
     void trySetUmengPushAlias() {
         if (UserAccountManager.getInstance().hasAccount()) {
             //com.common.umeng.UmengPush.UmengPush.setAlias(UserAccountManager.getInstance().getUuid());
+            com.common.jiguang.JiGuangPush.setAlias(UserAccountManager.getInstance().getUuid());
         }
     }
 }
