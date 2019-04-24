@@ -1,22 +1,14 @@
 package com.module.playways.room.gift.presenter;
 
-import com.alibaba.fastjson.JSON;
 import com.common.log.MyLog;
 import com.common.mvp.PresenterEvent;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.rxretrofit.ApiManager;
-import com.common.rxretrofit.ApiMethods;
-import com.common.rxretrofit.ApiObserver;
-import com.common.rxretrofit.ApiResult;
 import com.module.playways.room.gift.GiftManager;
 import com.module.playways.room.gift.GiftServerApi;
 import com.module.playways.room.gift.event.GiftReadyEvent;
 import com.module.playways.room.gift.inter.IGiftView;
 import com.module.playways.room.gift.model.BaseGift;
-import com.module.playways.room.gift.model.GiftServerModel;
-import com.module.playways.room.msg.event.GiftBrushMsgEvent;
-import com.module.playways.room.msg.event.GiftPresentEvent;
-import com.umeng.socialize.media.Base;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -27,14 +19,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.ObservableSource;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 public class GiftViewPresenter extends RxLifeCyclePresenter {
@@ -79,7 +66,7 @@ public class GiftViewPresenter extends RxLifeCyclePresenter {
                         arrayList.add(baseGifts);
                     }
                 }, throwable -> {
-
+                    MyLog.d(TAG, "throwable" + throwable);
                 }, () -> {
                     HashMap<Integer, List<BaseGift>> giftHashMap = new HashMap<>();
                     int index = 0;

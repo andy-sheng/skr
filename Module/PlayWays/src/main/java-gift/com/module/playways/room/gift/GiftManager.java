@@ -18,6 +18,7 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 public class GiftManager {
@@ -61,7 +62,6 @@ public class GiftManager {
                     mBaseGiftList.addAll(baseGiftList);
                     EventBus.getDefault().post(new GiftReadyEvent());
                 }
-
                 emitter.onComplete();
             }
         }).subscribeOn(Schedulers.io())
@@ -69,19 +69,29 @@ public class GiftManager {
     }
 
     private void fetchGift() {
-        ApiMethods.subscribe(mGiftServerApi.getGiftList(0, 1000), new ApiObserver<ApiResult>() {
-            @Override
-            public void process(ApiResult result) {
-                if (result.getErrno() == 0) {
-                    List<GiftServerModel> giftServerModelList = JSON.parseArray(result.getData().getString("list"), GiftServerModel.class);
-                    mGiftServerModelList.addAll(giftServerModelList);
-                    cacheToDb(giftServerModelList);
-                    toLocalGiftModel(mGiftServerModelList);
-                    isGiftReady = true;
-                    EventBus.getDefault().post(new GiftReadyEvent());
-                }
-            }
-        });
+        mGiftServerApi.getGiftList(0, 1000)
+                .map(new Function<ApiResult, Object>() {
+                    @Override
+                    public Object apply(ApiResult result) throws Exception {
+                        if (result.getErrno() == 0) {
+                            List<GiftServerModel> giftServerModelList = JSON.parseArray(result.getData().getString("list"), GiftServerModel.class);
+                            mGiftServerModelList.addAll(giftServerModelList);
+                            cacheToDb(giftServerModelList);
+                            toLocalGiftModel(mGiftServerModelList);
+                            isGiftReady = true;
+                            EventBus.getDefault().post(new GiftReadyEvent());
+                        }
+                        return null;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .subscribe();
+//        ApiMethods.subscribe(, new ApiObserver<ApiResult>() {
+//            @Override
+//            public void process(ApiResult result) {
+//
+//            }
+//        });
     }
 
     private void cacheToDb(List<GiftServerModel> giftServerModelList) {

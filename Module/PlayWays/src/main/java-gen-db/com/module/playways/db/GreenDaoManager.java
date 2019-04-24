@@ -7,7 +7,7 @@ import com.common.utils.U;
  * Created by linjinbin on 15/11/9.
  */
 public class GreenDaoManager {
-    private static final String DB_NAME = "core.db";
+    private static final String DB_NAME = "playways.db";
 
     private static DaoMaster daoMaster;
     private static DaoSession daoSession;
