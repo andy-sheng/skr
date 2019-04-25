@@ -280,15 +280,22 @@
                                 android:layout_height="@dimen/view_60_dp"
                                 android:layout_marginRight="@dimen/view_6_dp"
                                 android:layout_weight="1"
-                                android:background="@drawable/person_wallet_icon" />
+                                android:background="@drawable/gerenzhongxin_yuederukou" />
+
+                            <com.common.view.ex.ExImageView
+                                android:id="@+id/income_iv"
+                                android:layout_width="@dimen/view_0_dp"
+                                android:layout_height="@dimen/view_60_dp"
+                                android:layout_marginRight="@dimen/view_6_dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/gerenzhongxin_shouyiderukou" />
 
                             <com.common.view.ex.ExImageView
                                 android:id="@+id/music_test_iv"
                                 android:layout_width="@dimen/view_0_dp"
                                 android:layout_height="@dimen/view_60_dp"
-                                android:layout_marginLeft="@dimen/view_6_dp"
                                 android:layout_weight="1"
-                                android:background="@drawable/person_test_icon" />
+                                android:background="@drawable/gerenzhongxin_ceshiderukou" />
 
                         </LinearLayout>
 

@@ -107,19 +107,37 @@ public class GiftContinuousView extends RelativeLayout {
                 .setBorderColor(Color.WHITE)
                 .build()
         );
+
         mSenderNameTv.setText(model.getSender().getNickname());
         mDescTv.setText(model.getAction());
-        int resId = 0;
-        switch (model.getEmojiType()) {
-            case SP_EMOJI_TYPE_LIKE:
-                resId = R.drawable.yanchangjiemian_xin;
-                break;
-            case SP_EMOJI_TYPE_UNLIKE:
-                resId = R.drawable.yanchangjiemian_dabian;
-                break;
+
+        if (model.getEGiftType() == GiftPlayModel.EGiftType.EMOJI) {
+            int resId = 0;
+            switch (model.getEmojiType()) {
+                case SP_EMOJI_TYPE_LIKE:
+                    resId = R.drawable.yanchangjiemian_xin;
+                    break;
+                case SP_EMOJI_TYPE_UNLIKE:
+                    resId = R.drawable.yanchangjiemian_dabian;
+                    break;
+            }
+            FrescoWorker.loadImage(mGiftImgIv, ImageFactory.newResImage(resId)
+                    .build());
+
+            mSenderNameTv.setText(model.getSender().getNickname() + model.getAction());
+            mDescTv.setVisibility(GONE);
+        } else if (model.getEGiftType() == GiftPlayModel.EGiftType.GIFT) {
+            FrescoWorker.loadImage(mGiftImgIv, ImageFactory.newPathImage(model.getGiftIconUrl())
+                    .setLoadingDrawable(U.getDrawable(R.drawable.skrer_logo))
+                    .setFailureDrawable(U.getDrawable(R.drawable.skrer_logo))
+                    .setWidth(U.getDisplayUtils().dip2px(45))
+                    .setHeight(U.getDisplayUtils().dip2px(45))
+                    .build());
+
+            mSenderNameTv.setText(model.getSender().getNickname());
+            mDescTv.setText("送给 " + model.getReceiver().getNickname());
+            mDescTv.setVisibility(VISIBLE);
         }
-        FrescoWorker.loadImage(mGiftImgIv, ImageFactory.newResImage(resId)
-                .build());
 
 //        mCurNum = model.getBeginCount();
 //        mGiftNumTv.setText("X" + mCurNum);

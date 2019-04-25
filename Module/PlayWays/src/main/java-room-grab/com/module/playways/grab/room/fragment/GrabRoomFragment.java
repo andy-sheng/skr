@@ -178,9 +178,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     GrabVoiceControlPanelView mGrabVoiceControlPanelView;
 
-//    GiftPanelView mGiftPanelView;
+    GiftPanelView mGiftPanelView;
 
-//    ContinueSendView mContinueSendView;
+    ContinueSendView mContinueSendView;
 
     DialogPlus mVoiceControlDialog;
 
@@ -474,13 +474,13 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     }
 
     private void initGiftPanelView() {
-//        mGiftPanelView = (GiftPanelView) mRootView.findViewById(R.id.gift_panel_view);
-//
-//        mGiftPanelView.setGrabRoomData(mRoomData);
-//
-//
-//        mContinueSendView = (ContinueSendView) mRootView.findViewById(R.id.continue_send_view);
-//        mContinueSendView.setBaseRoomData(mRoomData);
+        mGiftPanelView = (GiftPanelView) mRootView.findViewById(R.id.gift_panel_view);
+
+        mGiftPanelView.setGrabRoomData(mRoomData);
+
+
+        mContinueSendView = (ContinueSendView) mRootView.findViewById(R.id.continue_send_view);
+        mContinueSendView.setBaseRoomData(mRoomData);
     }
 
     private void initInputView() {
@@ -518,11 +518,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
             @Override
             public void showGiftPanel() {
-//                if (mRoomData.getRealRoundInfo() != null) {
-//                    mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData, mRoomData.getRealRoundInfo().getUserID()));
-//                } else {
-//                    mGiftPanelView.show(null);
-//                }
+                if (mRoomData.getRealRoundInfo() != null) {
+                    mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData, mRoomData.getRealRoundInfo().getUserID()));
+                } else {
+                    mGiftPanelView.show(null);
+                }
             }
         });
         mBottomContainerView.setRoomData(mRoomData);
@@ -564,7 +564,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(BuyGiftEvent event) {
-//        mContinueSendView.startBuy(event.getBaseGift(), event.getReceiverId());
+        mContinueSendView.startBuy(event.getBaseGift(), event.getReceiverId());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -1192,13 +1192,13 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             mChallengeTipViewAnimator.cancel();
         }
 
-//        if (mContinueSendView != null) {
-//            mContinueSendView.destroy();
-//        }
+        if (mContinueSendView != null) {
+            mContinueSendView.destroy();
+        }
 
-//        if (mGiftPanelView != null) {
-//            mGiftPanelView.destroy();
-//        }
+        if (mGiftPanelView != null) {
+            mGiftPanelView.destroy();
+        }
 
         U.getSoundUtils().release(TAG);
         BgMusicManager.getInstance().setRoom(false);
@@ -1210,9 +1210,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             return true;
         }
 
-//        if (mGiftPanelView.onBackPressed()) {
-//            return true;
-//        }
+        if (mGiftPanelView.onBackPressed()) {
+            return true;
+        }
         quitGame();
         return true;
     }
