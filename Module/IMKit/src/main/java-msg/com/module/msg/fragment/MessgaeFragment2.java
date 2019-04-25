@@ -1,13 +1,11 @@
 package com.module.msg.fragment;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,9 +16,6 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
-import com.common.clipboard.ClipboardUtils;
-import com.common.core.kouling.SkrKouLingUtils;
-import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -31,12 +26,10 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.titlebar.CommonTitleBar;
 import com.module.RouterConstants;
-import com.module.common.ICallback;
 import com.module.msg.IMessageFragment;
 import com.module.msg.follow.LastFollowFragment;
 import com.module.msg.follow.LastFollowModel;
-import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.ViewHolder;
+import com.zq.dialog.InviteFriendDialog;
 import com.zq.relation.fragment.SearchFriendFragment;
 
 import java.util.List;
@@ -59,9 +52,7 @@ public class MessgaeFragment2 extends BaseFragment implements IMessageFragment {
     RelativeLayout mSearchArea;
     RelativeLayout mInviteArea;
 
-    DialogPlus mShareDialog;
-    TextView mTvWeixinShare;
-    TextView mTvQqShare;
+    InviteFriendDialog mInviteFriendDialog;
 
     Fragment mConversationListFragment; //获取融云的会话列表对象
 
@@ -152,72 +143,10 @@ public class MessgaeFragment2 extends BaseFragment implements IMessageFragment {
     }
 
     private void showShareDialog() {
-        if (mShareDialog == null) {
-            mShareDialog = DialogPlus.newDialog(getContext())
-                    .setContentHolder(new ViewHolder(com.component.busilib.R.layout.invite_friend_panel))
-                    .setContentBackgroundResource(com.component.busilib.R.color.transparent)
-                    .setOverlayBackgroundResource(com.component.busilib.R.color.black_trans_50)
-                    .setExpanded(false)
-                    .setGravity(Gravity.BOTTOM)
-                    .create();
-
-            mTvWeixinShare = (TextView) mShareDialog.findViewById(com.component.busilib.R.id.tv_weixin_share);
-            mTvQqShare = (TextView) mShareDialog.findViewById(com.component.busilib.R.id.tv_qq_share);
-            mTvWeixinShare.setOnClickListener(new DebounceViewClickListener() {
-                @Override
-                public void clickValid(View v) {
-                    SkrKouLingUtils.genReqFollowKouling((int) MyUserInfoManager.getInstance().getUid(), MyUserInfoManager.getInstance().getNickName(), new ICallback() {
-                        @Override
-                        public void onSucess(Object obj) {
-                            mShareDialog.dismiss();
-                            ClipboardUtils.setCopy((String) obj);
-                            Intent intent = U.getActivityUtils().getLaunchIntentForPackage("com.tencent.mm");
-                            if (intent != null && null != intent.resolveActivity(U.app().getPackageManager())) {
-                                startActivity(intent);
-                                U.getToastUtil().showLong("请将口令粘贴给你的好友");
-                            } else {
-                                U.getToastUtil().showLong("未安装微信,请将口令粘贴给你的好友");
-                            }
-                        }
-
-                        @Override
-                        public void onFailed(Object obj, int errcode, String message) {
-                            U.getToastUtil().showShort("口令生成失败");
-                        }
-                    });
-                }
-            });
-
-            mTvQqShare.setOnClickListener(new DebounceViewClickListener() {
-                @Override
-                public void clickValid(View v) {
-                    // TODO: 2019/3/24 邀请好友
-                    SkrKouLingUtils.genReqFollowKouling((int) MyUserInfoManager.getInstance().getUid(), MyUserInfoManager.getInstance().getNickName(), new ICallback() {
-                        @Override
-                        public void onSucess(Object obj) {
-                            mShareDialog.dismiss();
-                            ClipboardUtils.setCopy((String) obj);
-                            Intent intent = U.getActivityUtils().getLaunchIntentForPackage("com.tencent.mobileqq");
-                            if (intent != null && null != intent.resolveActivity(U.app().getPackageManager())) {
-                                startActivity(intent);
-                                U.getToastUtil().showLong("请将口令粘贴给你的好友");
-                            } else {
-                                U.getToastUtil().showLong("未安装QQ,请将口令粘贴给你的好友");
-                            }
-                        }
-
-                        @Override
-                        public void onFailed(Object obj, int errcode, String message) {
-                            U.getToastUtil().showShort("口令生成失败");
-                        }
-                    });
-                }
-            });
+        if (mInviteFriendDialog == null) {
+            mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_GRAB_FRIEND, 0, null);
         }
-
-        if (!mShareDialog.isShowing()) {
-            mShareDialog.show();
-        }
+        mInviteFriendDialog.show();
     }
 
     @Override
@@ -263,8 +192,8 @@ public class MessgaeFragment2 extends BaseFragment implements IMessageFragment {
             mPopupWindow.dismiss();
         }
 
-        if (mShareDialog != null) {
-            mShareDialog.dismiss();
+        if (mInviteFriendDialog != null) {
+            mInviteFriendDialog.dismiss(false);
         }
     }
 
@@ -275,8 +204,8 @@ public class MessgaeFragment2 extends BaseFragment implements IMessageFragment {
             mPopupWindow.dismiss();
         }
 
-        if (mShareDialog != null) {
-            mShareDialog.dismiss();
+        if (mInviteFriendDialog != null) {
+            mInviteFriendDialog.dismiss(false);
         }
     }
 
