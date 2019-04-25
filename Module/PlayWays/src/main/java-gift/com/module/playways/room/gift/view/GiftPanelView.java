@@ -131,16 +131,7 @@ public class GiftPanelView extends FrameLayout {
         mGiftAllManAdapter.setOnClickPlayerListener(new GiftAllManAdapter.OnClickPlayerListener() {
             @Override
             public void onClick(GrabPlayerInfoModel grabPlayerInfoModel) {
-                mRecyclerView.setVisibility(GONE);
-                mLlSelectedMan.setVisibility(VISIBLE);
-                AvatarUtils.loadAvatarByUrl(mIvSelectedIcon,
-                        AvatarUtils.newParamsBuilder(grabPlayerInfoModel.getUserInfo().getAvatar())
-                                .setBorderColor(U.getColor(R.color.white))
-                                .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                                .setCircle(true)
-                                .build());
-                mTvSelectedName.setText(grabPlayerInfoModel.getUserInfo().getNickname());
-                mCurMicroMan = grabPlayerInfoModel;
+                selectSendGiftMan(grabPlayerInfoModel);
             }
         });
 
@@ -171,6 +162,11 @@ public class GiftPanelView extends FrameLayout {
         mTvAllMan.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
+                if (mCurMicroMan == null) {
+                    ToastUtils.showShort("请选择送礼用户");
+                    return;
+                }
+
                 int visibleState = mRecyclerView.getVisibility();
                 mRecyclerView.setVisibility(visibleState == VISIBLE ? GONE : VISIBLE);
                 mLlSelectedMan.setVisibility(visibleState == VISIBLE ? VISIBLE : GONE);
@@ -239,6 +235,7 @@ public class GiftPanelView extends FrameLayout {
         if (!mHasInit) {
             inflate();
         }
+
         selectSendGiftMan(grabPlayerInfoModel);
         mGiftAllManAdapter.setDataList(mGrabRoomData.getPlayerInfoList());
         mUiHandler.removeMessages(HIDE_PANEL);
@@ -254,7 +251,7 @@ public class GiftPanelView extends FrameLayout {
 
     private void selectSendGiftMan(GrabPlayerInfoModel grabPlayerInfoModel) {
         if (grabPlayerInfoModel == null) {
-            grabPlayerInfoModel = RoomDataUtils.getPlayerInfoById(mGrabRoomData, mGrabRoomData.getOwnerId());
+            grabPlayerInfoModel = mCurMicroMan;
         }
 
         if (grabPlayerInfoModel != null) {
@@ -269,6 +266,14 @@ public class GiftPanelView extends FrameLayout {
                             .setCircle(true)
                             .build());
             mTvSelectedName.setText(grabPlayerInfoModel.getUserInfo().getNickname());
+
+            mRecyclerView.setVisibility(GONE);
+            mLlSelectedMan.setVisibility(VISIBLE);
+        } else {
+            mGiftAllManAdapter.setSelectedGrabPlayerInfoModel(null);
+            mGiftAllManAdapter.update(grabPlayerInfoModel);
+            mRecyclerView.setVisibility(VISIBLE);
+            mLlSelectedMan.setVisibility(GONE);
         }
     }
 
