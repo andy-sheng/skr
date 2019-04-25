@@ -288,7 +288,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 CommentMsgEvent msgEvent = new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text);
                 EventBus.getDefault().post(msgEvent);
             }
-            pretenRoomNameSystemMsg(mRoomData.getRoomName(), CommentSysModel.TYPE_ENTER_ROOM);
+            pretendRoomNameSystemMsg(mRoomData.getRoomName(), CommentSysModel.TYPE_ENTER_ROOM);
         }
         if (mRoomData.hasGameBegin()) {
             startSyncGameStateTask(sSyncStateTaskInterval);
@@ -323,13 +323,13 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_IN_RC_ROOM, 30 * 1000);
     }
 
-    private void pretenSystemMsg(String text) {
+    private void pretendSystemMsg(String text) {
         CommentSysModel commentSysModel = new CommentSysModel(mRoomData.getGameType(), text);
         EventBus.getDefault().post(new PretendCommentMsgEvent(commentSysModel));
     }
 
-    private void pretenRoomNameSystemMsg(String roomNmae, int type) {
-        CommentSysModel commentSysModel = new CommentSysModel(roomNmae, type);
+    private void pretendRoomNameSystemMsg(String roomName, int type) {
+        CommentSysModel commentSysModel = new CommentSysModel(roomName, type);
         EventBus.getDefault().post(new PretendCommentMsgEvent(commentSysModel));
     }
 
@@ -1510,6 +1510,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 });
                 checkMachineUser(now.getUserID());
             }
+            if(now.getStatus() == EQRoundStatus.QRS_CHO_SING.getValue()){
+                pretendSystemMsg("合唱配对成功");
+            }
         }
     }
 
@@ -1868,7 +1871,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 mRoomData.setCoin(event.remainCoin);
             }
             if (event.reason.getValue() == 1) {
-                pretenSystemMsg("你获取了" + event.changeCoin + "金币奖励");
+                pretendSystemMsg("你获取了" + event.changeCoin + "金币奖励");
             }
         }
     }
@@ -1902,19 +1905,20 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                                     U.getToastUtil().showShort(userInfoModel.getNickname() + "已经退出合唱");
                                 }
                             }
-                            // TODO 对话区加个弹幕 xxx已退出合唱
-                            CommentTextModel commentModel = new CommentTextModel();
-                            commentModel.setUserId(userInfoModel.getUserId());
-                            commentModel.setAvatar(userInfoModel.getAvatar());
-                            commentModel.setUserName(userInfoModel.getNickname());
-                            commentModel.setAvatarColor(Color.WHITE);
-                            SpannableStringBuilder stringBuilder;
-                            SpanUtils spanUtils = new SpanUtils()
-                                    .append(userInfoModel.getNickname() + " ").setForegroundColor(Color.parseColor("#DF7900"))
-                                    .append("不唱了").setForegroundColor(Color.parseColor("#586D94"));
-                            stringBuilder = spanUtils.create();
-                            commentModel.setStringBuilder(stringBuilder);
-                            EventBus.getDefault().post(new PretendCommentMsgEvent(commentModel));
+                            if (userInfoModel != null) {
+                                CommentTextModel commentModel = new CommentTextModel();
+                                commentModel.setUserId(userInfoModel.getUserId());
+                                commentModel.setAvatar(userInfoModel.getAvatar());
+                                commentModel.setUserName(userInfoModel.getNickname());
+                                commentModel.setAvatarColor(Color.WHITE);
+                                SpannableStringBuilder stringBuilder;
+                                SpanUtils spanUtils = new SpanUtils()
+                                        .append(userInfoModel.getNickname() + " ").setForegroundColor(Color.parseColor("#DF7900"))
+                                        .append("不唱了").setForegroundColor(Color.parseColor("#586D94"));
+                                stringBuilder = spanUtils.create();
+                                commentModel.setStringBuilder(stringBuilder);
+                                EventBus.getDefault().post(new PretendCommentMsgEvent(commentModel));
+                            }
                             break;
                         }
                     }
@@ -2073,7 +2077,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     public void onEvent(QChangeMusicTagEvent event) {
         MyLog.d(TAG, "onEvent QChangeMusicTagEvent !!切换专场 " + event);
         if (mRoomData.getGameId() == event.info.getRoomID()) {
-            pretenSystemMsg(String.format("房主已将歌单切换为 %s 专场", event.getTagName()));
+            pretendSystemMsg(String.format("房主已将歌单切换为 %s 专场", event.getTagName()));
         }
     }
 
@@ -2081,7 +2085,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     public void onEvent(QChangeRoomNameEvent event) {
         MyLog.d(TAG, "onEvent QChangeRoomNameEvent !!改变房间名 " + event);
         if (mRoomData.getGameId() == event.info.getRoomID()) {
-            pretenRoomNameSystemMsg(event.newName, CommentSysModel.TYPE_MODIF_ROOM_NAME);
+            pretendRoomNameSystemMsg(event.newName, CommentSysModel.TYPE_MODIF_ROOM_NAME);
         }
     }
 
@@ -2302,11 +2306,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         } else {
             // 别人被踢出去
             mIGrabView.dimissKickDialog();
-            pretenSystemMsg(qKickUserResultEvent.kickResultContent);
+            pretendSystemMsg(qKickUserResultEvent.kickResultContent);
         }
     }
 
-    //TODO 房主说话 。。。
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabSpeakingControlEvent event) {
         mRoomData.setSpeaking(event.speaking);
