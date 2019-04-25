@@ -18,11 +18,21 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.common.utils.ToastUtils;
+import com.common.utils.U;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
+import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent;
 import com.module.playways.room.gift.inter.IContinueSendView;
 import com.module.playways.room.gift.model.BaseGift;
 import com.module.playways.room.gift.presenter.BuyGiftPresenter;
+
+import org.greenrobot.eventbus.EventBus;
+
+import static com.module.playways.room.gift.presenter.BuyGiftPresenter.ErrCoinNotEnough;
+import static com.module.playways.room.gift.presenter.BuyGiftPresenter.ErrPresentObjLeave;
+import static com.module.playways.room.gift.presenter.BuyGiftPresenter.ErrSystem;
+import static com.module.playways.room.gift.presenter.BuyGiftPresenter.ErrZSNotEnough;
 
 public class ContinueSendView extends FrameLayout implements IContinueSendView {
     public static final int MSG_HIDE = 101;
@@ -132,6 +142,25 @@ public class ContinueSendView extends FrameLayout implements IContinueSendView {
         mJumpAnimatorSet.play(objectAnimator1).with(objectAnimator2);
         mJumpAnimatorSet.setDuration(500);
         mJumpAnimatorSet.start();
+    }
+
+    @Override
+    public void buyFaild(int erroCode, String errorMsg) {
+        switch (erroCode) {
+            case ErrZSNotEnough:
+                ToastUtils.showShort("钻石余额不足 充值后就可以送礼啦");
+                EventBus.getDefault().post(new ShowHalfRechargeFragmentEvent());
+                break;
+            case ErrPresentObjLeave:
+                ToastUtils.showShort("送礼对象已离开，请重新选择");
+                break;
+            case ErrCoinNotEnough:
+                ToastUtils.showShort("金币余额不足");
+                break;
+            case ErrSystem:
+                ToastUtils.showShort(errorMsg);
+                break;
+        }
     }
 
     @Override

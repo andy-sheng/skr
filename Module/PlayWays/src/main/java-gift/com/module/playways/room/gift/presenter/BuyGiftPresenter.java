@@ -38,6 +38,11 @@ import okhttp3.RequestBody;
 
 public class BuyGiftPresenter extends RxLifeCyclePresenter {
     public final static String TAG = "BuyGiftPresenter";
+    public final static int ErrZSNotEnough = 8362101; //钻石余额不足，充值后就可以送礼啦
+    public final static int ErrPresentObjLeave = 8362102; //送礼对象已离开，请重新选择
+    public final static int ErrCoinNotEnough = 8362103; //金币余额不足，充值后就可以送礼啦
+    public final static int ErrSystem = 104; //系统错误
+
     GiftServerApi mGiftServerApi;
     IContinueSendView mIContinueSendView;
 
@@ -105,22 +110,26 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
                         MyLog.d(TAG, "buyGift process" + " result=" + result);
                         //{"coinBalance":207,"zuanBalance":14586340}
                         //还是在购买线程处理的
-                        {
-                            if (baseGift.isCanContinue()) {
-                                mContinueSendScheduler.sendGiftSuccess();
-                            }
 
-                            int coin = JSON.parseObject(result.getData().getString("coinBalance"), Integer.class);
-                            int diamond = JSON.parseObject(result.getData().getString("zuanBalance"), Integer.class);
-                            EventBus.getDefault().post(new UpdateCoinAndDiamondEvent(coin, diamond));
+                        {
+                            if (result.getErrno() == 0) {
+                                {
+                                    if (baseGift.isCanContinue()) {
+                                        mContinueSendScheduler.sendGiftSuccess();
+                                    }
+
+                                    int coin = JSON.parseObject(result.getData().getString("coinBalance"), Integer.class);
+                                    int diamond = JSON.parseObject(result.getData().getString("zuanBalance"), Integer.class);
+                                    EventBus.getDefault().post(new UpdateCoinAndDiamondEvent(coin, diamond));
+                                }
+                            }
                         }
 
                         mHandler.post(() -> {
                             if (result.getErrno() == 0) {
                                 mIContinueSendView.buySuccess(baseGift, continueCount[0]);
-
                             } else {
-                                ToastUtils.showShort(result.getErrmsg());
+                                mIContinueSendView.buyFaild(result.getErrno(), result.getErrmsg());
                             }
                         });
                     }
