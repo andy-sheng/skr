@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +15,10 @@ import com.common.base.BaseFragment;
 import com.common.clipboard.ClipboardUtils;
 import com.common.core.kouling.SkrKouLingUtils;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.share.SharePlatform;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.log.MyLog;
+import com.common.rxretrofit.ApiManager;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
@@ -27,6 +30,10 @@ import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 
 import java.util.HashMap;
 
@@ -45,6 +52,8 @@ public class InviteFriendFragment2 extends BaseFragment {
     PagerAdapter mTabPagerAdapter;
 
     DialogPlus mShareDialog;
+
+    String mKouLingToken = "";
 
     @Override
     public int initView() {
@@ -131,19 +140,80 @@ public class InviteFriendFragment2 extends BaseFragment {
                         break;
                     case ShareModel.SHARE_TYPE_QQ:
                         // TODO: 2019/4/24 补全下面的分享
+                        shareUrl(SharePlatform.QQ);
                         break;
                     case ShareModel.SHARE_TYPE_QQ_QZON:
+                        shareUrl(SharePlatform.QZONE);
                         break;
                     case ShareModel.SHARE_TYPE_WECHAT:
+                        shareUrl(SharePlatform.WEIXIN);
                         break;
                     case ShareModel.SHARE_TYPE_WECHAT_FRIEND:
+                        shareUrl(SharePlatform.WEIXIN_CIRCLE);
                         break;
                     default:
                         break;
                 }
             }
         });
+
+        SkrKouLingUtils.genNormalJoinGrabGameKouling((int) MyUserInfoManager.getInstance().getUid(), mRoomData.getGameId(), new ICallback() {
+            @Override
+            public void onSucess(Object obj) {
+                if (obj != null) {
+                    mKouLingToken = (String) obj;
+                }
+            }
+
+            @Override
+            public void onFailed(Object obj, int errcode, String message) {
+
+            }
+        });
     }
+
+
+    private void shareUrl(SharePlatform sharePlatform) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("http://test.app.inframe.mobi/room/invitation")
+                .append("?skerId=").append(String.valueOf(MyUserInfoManager.getInstance().getUid()))
+                .append("&code=").append(String.valueOf(mKouLingToken));
+        String mUrl = ApiManager.getInstance().findRealUrlByChannel(sb.toString());
+
+        UMWeb web = new UMWeb(mUrl);
+        web.setTitle("房间已开,就等你来唱\n我在撕歌skr开了一个嗨唱包房，快来一起耍呀～");
+        if (sharePlatform == SharePlatform.WEIXIN_CIRCLE) {
+            web.setThumb(new UMImage(getActivity(), R.drawable.share_app_weixin_circle_icon));
+        } else {
+            web.setThumb(new UMImage(getActivity(), "https://res-inframe.oss-cn-beijing.aliyuncs.com/common/app-icon.png"));
+        }
+        web.setDescription("唱歌吗，超嗨的那种，房间已开，速度进来");
+
+        switch (sharePlatform) {
+            case QQ:
+                new ShareAction(getActivity()).withMedia(web)
+                        .setPlatform(SHARE_MEDIA.QQ)
+                        .share();
+                break;
+            case QZONE:
+                new ShareAction(getActivity()).withMedia(web)
+                        .setPlatform(SHARE_MEDIA.QZONE)
+                        .share();
+                break;
+            case WEIXIN:
+                new ShareAction(getActivity()).withMedia(web)
+                        .setPlatform(SHARE_MEDIA.WEIXIN)
+                        .share();
+                break;
+
+            case WEIXIN_CIRCLE:
+                new ShareAction(getActivity()).withMedia(web)
+                        .setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
+                        .share();
+                break;
+        }
+    }
+
 
     private void showShareDialog() {
         if (mShareDialog == null) {

@@ -65,6 +65,26 @@ public class SkrKouLingUtils {
         });
     }
 
+    public static void genNormalJoinGrabGameKouling(final int inviterId, final int gameId, final ICallback callback) {
+        String code = String.format("inframeskr://room/grabjoin?owner=%s&gameId=%s&ask=1", inviterId, gameId);
+        KouLingServerApi kouLingServerApi = ApiManager.getInstance().createService(KouLingServerApi.class);
+
+        ApiMethods.subscribe(kouLingServerApi.setTokenByCode(code), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult obj) {
+                if (obj.getErrno() == 0) {
+                    if (callback != null) {
+                        callback.onSucess(obj.getData().getString("token"));
+                    }
+                } else {
+                    if (callback != null) {
+                        callback.onFailed("", obj.getErrno(), "口令生成失败");
+                    }
+                }
+            }
+        });
+    }
+
     public static void genReqFollowKouling(final int inviterId, final String name, final ICallback callback) {
         String code = String.format("inframeskr://relation/bothfollow?inviterId=%s", inviterId);
         KouLingServerApi kouLingServerApi = ApiManager.getInstance().createService(KouLingServerApi.class);
@@ -179,10 +199,10 @@ public class SkrKouLingUtils {
         if (!TextUtils.isEmpty(str)) {
             int e = str.lastIndexOf("$");
             if (e >= 0) {
-                str = str.substring(0,e);
+                str = str.substring(0, e);
                 int b = str.lastIndexOf("$");
                 if (b >= 0) {
-                    str = str.substring(b+1);
+                    str = str.substring(b + 1);
                     return str;
                 }
             }
