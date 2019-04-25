@@ -1192,9 +1192,13 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             mChallengeTipViewAnimator.cancel();
         }
 
-        mContinueSendView.destroy();
-
-        mGiftPanelView.destroy();
+        if (mContinueSendView != null) {
+            mContinueSendView.destroy();
+        }
+        
+        if (mGiftPanelView != null) {
+            mGiftPanelView.destroy();
+        }
 
         U.getSoundUtils().release(TAG);
         BgMusicManager.getInstance().setRoom(false);
