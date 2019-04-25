@@ -20,7 +20,7 @@ public class SchemeConstants {
     public static final String SCHEME_INFRAMESKER = "inframeskr";
 
     //host
-    public static final String HOST_HOME = "jump";
+    public static final String HOST_HOME = "home";
     public static final String HOST_ROOM = "room";
     public static final String HOST_PERSON = "person";
     public static final String HOST_WEB = "web";

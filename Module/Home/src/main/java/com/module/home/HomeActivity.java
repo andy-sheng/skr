@@ -350,6 +350,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(JumpHomeFromSchemeEvent event) {
+        U.getActivityUtils().goHomeActivity();
         mMainVp.setCurrentItem(event.channel, false);
         selectTab(event.channel);
         if (event.channel == 3) {
