@@ -38,7 +38,7 @@ public class GiftLocalApi {
         getGiftDBDao().deleteAll();
     }
 
-    public void deleteById(int id) {
+    public void deleteById(long id) {
         getGiftDBDao().deleteByKey(id);
     }
 }

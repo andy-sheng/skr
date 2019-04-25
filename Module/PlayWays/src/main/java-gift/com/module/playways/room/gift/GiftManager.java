@@ -55,19 +55,16 @@ public class GiftManager {
     }
 
     public void loadGift() {
-        Observable.create(new ObservableOnSubscribe<Object>() {
-            @Override
-            public void subscribe(ObservableEmitter<Object> emitter) {
-//                List<BaseGift> baseGiftList = GiftLocalApi.getAllGift();
-//                if (baseGiftList == null || baseGiftList.size() == 0) {
-                fetchGift();
-//                } else {
-//                    isGiftReady = true;
-//                    mBaseGiftList.addAll(baseGiftList);
-//                    EventBus.getDefault().post(new GiftReadyEvent());
-//                }
-                emitter.onComplete();
+        Observable.create(emitter -> {
+            List<BaseGift> baseGiftList = GiftLocalApi.getAllGift();
+            if (baseGiftList != null && baseGiftList.size() > 0) {
+                isGiftReady = true;
+                mBaseGiftList.addAll(baseGiftList);
+                EventBus.getDefault().post(new GiftReadyEvent(true));
             }
+
+            fetchGift();
+            emitter.onComplete();
         }).subscribeOn(Schedulers.io())
                 .subscribe();
     }
@@ -80,7 +77,7 @@ public class GiftManager {
                 if (result.getErrno() == 0) {
                     List<GiftServerModel> giftServerModelList = JSON.parseArray(result.getData().getString("list"), GiftServerModel.class);
                     mGiftServerModelList.addAll(giftServerModelList);
-//                            cacheToDb(giftServerModelList);
+                    cacheToDb(giftServerModelList);
                     toLocalGiftModel(mGiftServerModelList);
                     isGiftReady = true;
                     EventBus.getDefault().post(new GiftReadyEvent(true));
@@ -105,17 +102,15 @@ public class GiftManager {
     }
 
     private void cacheToDb(List<GiftServerModel> giftServerModelList) {
-        Observable.create(new ObservableOnSubscribe<Object>() {
-            @Override
-            public void subscribe(ObservableEmitter<Object> emitter) {
-                GiftLocalApi.insertAll(giftServerModelList);
-                emitter.onComplete();
-            }
+        Observable.create(emitter -> {
+            GiftLocalApi.insertAll(giftServerModelList);
+            emitter.onComplete();
         }).subscribeOn(Schedulers.io())
                 .subscribe();
     }
 
     private void toLocalGiftModel(List<GiftServerModel> giftServerModelList) {
+        mBaseGiftList.clear();
         mBaseGiftList.addAll(BaseGift.parse(giftServerModelList));
     }
 

@@ -16,7 +16,7 @@ public class GiftDB implements Serializable {
     private static final long serialVersionUID = -4809782578272913999L;
 
     @Id
-    private Integer giftID;
+    private Long giftID;
     private Boolean canContinue = true;
     private String description;
     private String giftName;
@@ -26,8 +26,8 @@ public class GiftDB implements Serializable {
     private Integer sortID = 0;
     private String sourceURL;
     private Float realPrice;
-    @Generated(hash = 1211253132)
-    public GiftDB(Integer giftID, Boolean canContinue, String description,
+    @Generated(hash = 1604501295)
+    public GiftDB(Long giftID, Boolean canContinue, String description,
             String giftName, Integer giftType, String giftURL, Integer price,
             Integer sortID, String sourceURL, Float realPrice) {
         this.giftID = giftID;
@@ -44,10 +44,10 @@ public class GiftDB implements Serializable {
     @Generated(hash = 2046579016)
     public GiftDB() {
     }
-    public Integer getGiftID() {
+    public Long getGiftID() {
         return this.giftID;
     }
-    public void setGiftID(Integer giftID) {
+    public void setGiftID(Long giftID) {
         this.giftID = giftID;
     }
     public Boolean getCanContinue() {
@@ -104,6 +104,7 @@ public class GiftDB implements Serializable {
     public void setRealPrice(Float realPrice) {
         this.realPrice = realPrice;
     }
+
     
     
 

@@ -21,7 +21,7 @@ public class GiftServerModel implements Serializable {
 
     private boolean canContinue;
     private String description;
-    private int giftID;
+    private long giftID;
     private String giftName;
     private int giftType;
     private String giftURL;
@@ -54,11 +54,11 @@ public class GiftServerModel implements Serializable {
         this.description = description;
     }
 
-    public int getGiftID() {
+    public long getGiftID() {
         return giftID;
     }
 
-    public void setGiftID(int giftID) {
+    public void setGiftID(long giftID) {
         this.giftID = giftID;
     }
 
@@ -121,7 +121,7 @@ public class GiftServerModel implements Serializable {
         giftDB.setPrice(giftServerModel.getPrice());
         giftDB.setSortID(giftServerModel.getSortID());
         giftDB.setSourceURL(giftServerModel.getSourceURL());
-
+        giftDB.setRealPrice(giftServerModel.getRealPrice());
 
         return giftDB;
     }
