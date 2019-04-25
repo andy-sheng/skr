@@ -137,8 +137,12 @@ public class ChorusOthersSingCardView extends RelativeLayout {
         if (now == null) {
             return;
         }
+        
+        mLeftStatus.setVisibility(GONE);
+        mRightStatus.setVisibility(GONE);
         mLeftUserInfoModel = null;
         mRightUserInfoModel = null;
+
         List<ChorusRoundInfoModel> list = now.getChorusRoundInfoModels();
         if (list != null && list.size() >= 2) {
             mLeftUserInfoModel = mGrabRoomData.getUserInfo(list.get(0).getUserID());
