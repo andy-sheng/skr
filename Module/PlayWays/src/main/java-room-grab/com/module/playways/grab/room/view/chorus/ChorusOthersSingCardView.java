@@ -77,7 +77,7 @@ public class ChorusOthersSingCardView extends RelativeLayout {
         public void handleMessage(Message msg) {
             if (msg.what == MSG_ENSURE_PLAY) {
                 mCountDownStatus = COUNT_DOWN_STATUS_PLAYING;
-                tryStartCountDown();
+                countDown("handleMessage");
             } else if (msg.what == MSG_LEFT_SPEAK_OVER) {
                 stopSingAnimation(mLeftSingSvga);
             } else if (msg.what == MSG_RIGHT_SPEAK_OVER) {
@@ -242,6 +242,9 @@ public class ChorusOthersSingCardView extends RelativeLayout {
     }
 
     public void tryStartCountDown() {
+        if(getVisibility() == GONE){
+            return;
+        }
         MyLog.d(TAG, "tryStartCountDown");
         mUiHandler.removeMessages(MSG_ENSURE_PLAY);
         if (mCountDownStatus == COUNT_DOWN_STATUS_WAIT) {

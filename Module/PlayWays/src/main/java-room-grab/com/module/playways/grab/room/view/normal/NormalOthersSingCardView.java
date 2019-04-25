@@ -60,7 +60,7 @@ public class NormalOthersSingCardView extends RelativeLayout {
         public void handleMessage(Message msg) {
             if (msg.what == MSG_ENSURE_PLAY) {
                 mCountDownStatus = COUNT_DOWN_STATUS_PLAYING;
-                tryStartCountDown();
+                countDown("handleMessage");
             }
         }
     };
