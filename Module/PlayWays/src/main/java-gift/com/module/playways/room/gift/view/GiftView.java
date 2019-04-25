@@ -4,16 +4,24 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.view.View;
 
+import com.common.core.userinfo.UserInfoManager;
 import com.common.utils.U;
 import com.common.view.ex.ExFrameLayout;
 import com.common.view.ex.drawable.DrawableCreator;
+import com.kingja.loadsir.callback.Callback;
+import com.kingja.loadsir.core.LoadService;
+import com.kingja.loadsir.core.LoadSir;
 import com.module.playways.R;
 import com.module.playways.room.gift.adapter.GiftAdapter;
 import com.module.playways.room.gift.adapter.GiftViewPagerAdapter;
 import com.module.playways.room.gift.inter.IGiftView;
+import com.module.playways.room.gift.loadsircallcack.GiftEmptyCallback;
 import com.module.playways.room.gift.model.BaseGift;
 import com.module.playways.room.gift.presenter.GiftViewPresenter;
+import com.zq.relation.callback.FansEmptyCallback;
+import com.zq.relation.callback.FriendsEmptyCallback;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +36,8 @@ public class GiftView extends ExFrameLayout implements IGiftView {
     BaseGift mSelectedGift;
 
     GiftAdapter.GiftUpdateListner mGiftUpdateListner;
+
+    LoadService mLoadService;
 
     public GiftView(Context context) {
         super(context);
@@ -79,11 +89,28 @@ public class GiftView extends ExFrameLayout implements IGiftView {
         mViewpager.setAdapter(mGiftViewPagerAdapter);
         mGiftViewPresenter = new GiftViewPresenter(this);
         mGiftViewPresenter.loadData();
+
+        LoadSir mLoadSir = new LoadSir.Builder()
+                .addCallback(new GiftEmptyCallback())
+                .build();
+
+        mLoadService = mLoadSir.register(mViewpager, new Callback.OnReloadListener() {
+            @Override
+            public void onReload(View v) {
+                mGiftViewPresenter.loadData();
+            }
+        });
     }
 
     @Override
     public void showGift(HashMap<Integer, List<BaseGift>> baseGiftCollection) {
+        mLoadService.showSuccess();
         mGiftViewPagerAdapter.setData(baseGiftCollection);
+    }
+
+    @Override
+    public void getGiftListFaild() {
+        mLoadService.showCallback(GiftEmptyCallback.class);
     }
 
     @Override

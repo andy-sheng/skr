@@ -1,6 +1,7 @@
 package com.module.playways.room.gift;
 
 import com.alibaba.fastjson.JSON;
+import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -17,11 +18,14 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 public class GiftManager {
+    public final static String TAG = "GiftManager";
+
     private static class GiftManagerHolder {
         private static final GiftManager INSTANCE = new GiftManager();
     }
@@ -56,7 +60,7 @@ public class GiftManager {
             public void subscribe(ObservableEmitter<Object> emitter) {
 //                List<BaseGift> baseGiftList = GiftLocalApi.getAllGift();
 //                if (baseGiftList == null || baseGiftList.size() == 0) {
-                    fetchGift();
+                fetchGift();
 //                } else {
 //                    isGiftReady = true;
 //                    mBaseGiftList.addAll(baseGiftList);
@@ -69,24 +73,35 @@ public class GiftManager {
     }
 
     private void fetchGift() {
-        mGiftServerApi.getGiftList(0, 1000)
-                .map(new Function<ApiResult, Object>() {
-                    @Override
-                    public List<GiftServerModel> apply(ApiResult result) throws Exception {
-                        if (result.getErrno() == 0) {
-                            List<GiftServerModel> giftServerModelList = JSON.parseArray(result.getData().getString("list"), GiftServerModel.class);
-                            mGiftServerModelList.addAll(giftServerModelList);
+        ApiMethods.subscribe(mGiftServerApi.getGiftList(0, 1000), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult result) {
+                MyLog.w(TAG, "fetchGift process" + " obj=" + result);
+                if (result.getErrno() == 0) {
+                    List<GiftServerModel> giftServerModelList = JSON.parseArray(result.getData().getString("list"), GiftServerModel.class);
+                    mGiftServerModelList.addAll(giftServerModelList);
 //                            cacheToDb(giftServerModelList);
-                            toLocalGiftModel(mGiftServerModelList);
-                            isGiftReady = true;
-                            EventBus.getDefault().post(new GiftReadyEvent());
-                            return giftServerModelList;
-                        }
-                        return new ArrayList<>();
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .subscribe();
+                    toLocalGiftModel(mGiftServerModelList);
+                    isGiftReady = true;
+                    EventBus.getDefault().post(new GiftReadyEvent(true));
+                } else {
+                    //礼物加载失败
+                    MyLog.e(TAG, "礼物加载失败" + result.toString());
+                    EventBus.getDefault().post(new GiftReadyEvent(false));
+                }
+            }
+
+            @Override
+            public void onNetworkError(ErrorType errorType) {
+                MyLog.e(TAG, "礼物加载失败，网络延迟");
+                EventBus.getDefault().post(new GiftReadyEvent(false));
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                EventBus.getDefault().post(new GiftReadyEvent(false));
+            }
+        });
     }
 
     private void cacheToDb(List<GiftServerModel> giftServerModelList) {

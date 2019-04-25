@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface IGiftView {
     void showGift(HashMap<Integer, List<BaseGift>> baseGiftCollection);
+
+    void getGiftListFaild();
 }

@@ -50,7 +50,11 @@ public class GiftViewPresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GiftReadyEvent giftReadyEvent) {
         MyLog.w(TAG, "onEvent" + " giftReadyEvent=" + giftReadyEvent);
-        loadData();
+        if (giftReadyEvent.isGiftLoadSuccess()) {
+            loadData();
+        } else {
+            mIGiftView.getGiftListFaild();
+        }
     }
 
     public void formatGiftData(List<BaseGift> giftList) {
