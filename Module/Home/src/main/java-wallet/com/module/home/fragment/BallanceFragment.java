@@ -8,6 +8,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -36,7 +37,7 @@ import java.util.List;
 
 public class BallanceFragment extends BaseFragment implements IBallanceView {
 
-    LinearLayout mMainActContainer;
+    ViewGroup mMainActContainer;
     CommonTitleBar mTitlebar;
 
     BallencePresenter mBallencePresenter;

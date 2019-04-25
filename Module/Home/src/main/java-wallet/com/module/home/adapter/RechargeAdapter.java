@@ -50,7 +50,7 @@ public class RechargeAdapter extends DiffAdapter<RechargeItemModel, RecyclerView
         reportItemHolder.bind(model);
     }
 
-    public RechargeItemModel getSelectedItem(){
+    public RechargeItemModel getSelectedItem() {
         return mSelectedItem;
     }
 
@@ -59,22 +59,22 @@ public class RechargeAdapter extends DiffAdapter<RechargeItemModel, RecyclerView
         return mDataList.size();
     }
 
-    private class RechargeItemHolder extends RecyclerView.ViewHolder {
+    public class RechargeItemHolder extends RecyclerView.ViewHolder {
         TextView mTvRechargeNum;
         TextView mTvCash;
-        ExLinearLayout mInfoContainer;
+        ViewGroup mInfoContainer;
         RechargeItemModel mRechargeItemModel;
 
         public RechargeItemHolder(View itemView) {
             super(itemView);
             mTvRechargeNum = (TextView) itemView.findViewById(R.id.tv_recharge_num);
             mTvCash = (TextView) itemView.findViewById(R.id.tv_cash);
-            mInfoContainer = (ExLinearLayout) itemView.findViewById(R.id.info_container);
+            mInfoContainer = itemView.findViewById(R.id.info_container);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(mSelectedItem != null){
+                    if (mSelectedItem != null) {
                         RechargeAdapter.this.update(mSelectedItem);
                     }
                     mSelectedItem = mRechargeItemModel;

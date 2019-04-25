@@ -22,6 +22,7 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.utils.FragmentUtils;
 import com.common.utils.ToastUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -36,6 +37,7 @@ import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.room.gift.GiftServerApi;
 import com.module.playways.room.gift.adapter.GiftAllManAdapter;
 import com.module.playways.room.gift.event.BuyGiftEvent;
+import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent;
 import com.module.playways.room.gift.event.UpdateCoinAndDiamondEvent;
 import com.orhanobut.dialogplus.DialogPlus;
 
@@ -172,6 +174,13 @@ public class GiftPanelView extends FrameLayout {
                 int visibleState = mRecyclerView.getVisibility();
                 mRecyclerView.setVisibility(visibleState == VISIBLE ? GONE : VISIBLE);
                 mLlSelectedMan.setVisibility(visibleState == VISIBLE ? VISIBLE : GONE);
+            }
+        });
+
+        mIvRecharge.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                EventBus.getDefault().post(new ShowHalfRechargeFragmentEvent());
             }
         });
 

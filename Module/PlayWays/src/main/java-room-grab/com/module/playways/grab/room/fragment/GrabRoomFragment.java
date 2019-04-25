@@ -3,6 +3,7 @@ package com.module.playways.grab.room.fragment;
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
+import android.app.Fragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -33,6 +34,7 @@ import com.component.busilib.constans.GrabRoomType;
 import com.component.busilib.manager.BgMusicManager;
 import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
+import com.module.home.IHomeService;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabWantInviteEvent;
@@ -68,6 +70,7 @@ import com.module.playways.grab.room.view.RedPkgCountDownView;
 import com.module.playways.grab.room.view.SongInfoCardView;
 import com.module.playways.grab.room.view.TurnInfoCardView;
 import com.module.playways.room.gift.event.BuyGiftEvent;
+import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent;
 import com.module.playways.room.gift.view.ContinueSendView;
 import com.module.playways.room.gift.view.GiftPanelView;
 import com.module.playways.room.prepare.model.OnlineInfoModel;
@@ -857,6 +860,19 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         if (event.getUid() == MyUserInfoManager.getInstance().getUid()) {
             U.getSoundUtils().play(TAG, R.raw.grab_xlight);
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ShowHalfRechargeFragmentEvent event) {
+        IHomeService channelService = (IHomeService) ARouter.getInstance().build(RouterConstants.SERVICE_HOME).navigation();
+        Class<BaseFragment> baseFragmentClass = (Class) channelService.getData(2, null);
+        U.getFragmentUtils().addFragment(
+                FragmentUtils.newAddParamsBuilder(getActivity(), baseFragmentClass)
+                        .setEnterAnim(R.anim.slide_in_bottom)
+                        .setExitAnim(R.anim.slide_out_bottom)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(true)
+                        .build());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
