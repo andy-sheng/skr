@@ -130,6 +130,17 @@ public class ApiManager {
                 // 说明是线上环境，暂时没给域名
                 return "stand.inframe.mobi";
             }
+        } else if (host.endsWith("app.inframe.mobi")) {
+            if (U.getChannelUtils().isDevChannel()) {
+                return "dev.app.inframe.mobi";
+            } else if (U.getChannelUtils().isTestChannel()) {
+                return "test.app.inframe.mobi";
+            } else if (U.getChannelUtils().isSandboxChannel()) {
+                return "sandbox.app.inframe.mobi";
+            } else {
+                // 说明是线上环境，暂时没给域名
+                return "app.inframe.mobi";
+            }
         }
         return host;
     }
@@ -137,7 +148,7 @@ public class ApiManager {
     public String findRealUrlByChannel(String url) {
         Uri uri = Uri.parse(url);
         String host = findRealHostByChannel(uri.getHost());
-        url = url.replace(uri.getHost(),host);
+        url = url.replace(uri.getHost(), host);
         return url;
     }
 
