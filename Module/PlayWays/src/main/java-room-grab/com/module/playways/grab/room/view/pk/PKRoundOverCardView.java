@@ -21,6 +21,7 @@ import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.SPkRoundInfoModel;
+import com.zq.live.proto.Room.EQRoundOverReason;
 
 import java.util.List;
 
@@ -34,9 +35,13 @@ public class PKRoundOverCardView extends RelativeLayout {
     ImageView mLeftAvatarBg;
     SimpleDraweeView mLeftAvatarIv;
     ExTextView mLeftName;
+    ImageView mLeftOverReasonIv;
+
     ImageView mRightAvatarBg;
     SimpleDraweeView mRightAvatarIv;
     ExTextView mRightName;
+    ImageView mRightOverReasonIv;
+
     LinearLayout mSroreArea;
     TextView mLeftTipsTv;
     BitmapTextView mLeftScoreBtv;
@@ -51,6 +56,8 @@ public class PKRoundOverCardView extends RelativeLayout {
     UserInfoModel mRightUserInfoModel;
     float mLeftScore;
     float mRightScore;
+    int mLeftOverReason;
+    int mRightOverReason;
     private GrabRoomData mRoomData;
 
     public PKRoundOverCardView(Context context) {
@@ -75,9 +82,11 @@ public class PKRoundOverCardView extends RelativeLayout {
         mLeftAvatarBg = (ImageView) findViewById(R.id.left_avatar_bg);
         mLeftAvatarIv = (SimpleDraweeView) findViewById(R.id.left_avatar_iv);
         mLeftName = (ExTextView) findViewById(R.id.left_name);
+        mLeftOverReasonIv = (ImageView) findViewById(R.id.left_over_reason_iv);
         mRightAvatarBg = (ImageView) findViewById(R.id.right_avatar_bg);
         mRightAvatarIv = (SimpleDraweeView) findViewById(R.id.right_avatar_iv);
         mRightName = (ExTextView) findViewById(R.id.right_name);
+        mRightOverReasonIv = (ImageView) findViewById(R.id.right_over_reason_iv);
         mSroreArea = (LinearLayout) findViewById(R.id.srore_area);
         mLeftTipsTv = (TextView) findViewById(R.id.left_tips_tv);
         mLeftScoreBtv = (BitmapTextView) findViewById(R.id.left_score_btv);
@@ -94,8 +103,12 @@ public class PKRoundOverCardView extends RelativeLayout {
         if (list != null && list.size() >= 2) {
             mLeftUserInfoModel = mRoomData.getUserInfo(list.get(0).getUserID());
             this.mLeftScore = list.get(0).getScore();
+            this.mLeftOverReason = list.get(0).getOverReason();
+
             mRightUserInfoModel = mRoomData.getUserInfo(list.get(1).getUserID());
-            this.mRightScore = list.get(0).getScore();
+            this.mRightScore = list.get(1).getScore();
+            this.mRightOverReason = list.get(1).getOverReason();
+
         }
 
         if (mLeftUserInfoModel != null) {
@@ -105,6 +118,7 @@ public class PKRoundOverCardView extends RelativeLayout {
                             .build());
             mLeftName.setText(mLeftUserInfoModel.getNickname());
             mLeftScoreBtv.setText(mLeftScore + "");
+            showOverReason(mLeftOverReason, mLeftOverReasonIv);
         }
 
         if (mRightUserInfoModel != null) {
@@ -114,9 +128,28 @@ public class PKRoundOverCardView extends RelativeLayout {
                             .build());
             mRightName.setText(mRightUserInfoModel.getNickname());
             mRightScoreBtv.setText(mRightScore + "");
+            showOverReason(mRightOverReason, mRightOverReasonIv);
         }
 
         playCardEnterAnimation();
+    }
+
+    private void showOverReason(int overReason, ImageView overReasonIv) {
+        if (overReasonIv == null) {
+            return;
+        }
+        if (overReason == EQRoundOverReason.ROR_SELF_GIVE_UP.getValue()) {
+            overReasonIv.setVisibility(VISIBLE);
+            overReasonIv.setBackgroundResource(R.drawable.grab_pk_buchangle);
+        } else if (overReason == EQRoundOverReason.ROR_MULTI_NO_PASS.getValue()) {
+            overReasonIv.setVisibility(VISIBLE);
+            overReasonIv.setBackgroundResource(R.drawable.grab_pk_miedeng);
+        } else if (overReason == EQRoundOverReason.ROR_IN_ROUND_PLAYER_EXIT.getValue()) {
+            overReasonIv.setVisibility(VISIBLE);
+            overReasonIv.setBackgroundResource(R.drawable.grab_pk_diaoxianle);
+        } else {
+            overReasonIv.setVisibility(GONE);
+        }
     }
 
     /**

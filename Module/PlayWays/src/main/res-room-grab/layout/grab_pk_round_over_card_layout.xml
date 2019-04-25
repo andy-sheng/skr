@@ -58,6 +58,16 @@
                 app:bl_shape="rectangle"
                 app:bl_solid_color="@color/black_trans_20" />
 
+            <ImageView
+                android:id="@+id/left_over_reason_iv"
+                android:layout_width="@dimen/view_56_dp"
+                android:layout_height="@dimen/view_40_dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="@dimen/view_10_dp"
+                android:layout_marginBottom="@dimen/view_44_dp"
+                android:visibility="gone" />
+
         </RelativeLayout>
 
         <RelativeLayout
@@ -101,6 +111,15 @@
                 app:bl_shape="rectangle"
                 app:bl_solid_color="@color/black_trans_20" />
 
+            <ImageView
+                android:id="@+id/right_over_reason_iv"
+                android:layout_width="@dimen/view_56_dp"
+                android:layout_height="@dimen/view_40_dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="@dimen/view_10_dp"
+                android:layout_marginBottom="@dimen/view_44_dp"
+                android:visibility="gone" />
 
         </RelativeLayout>
 
@@ -111,8 +130,8 @@
         android:layout_width="@dimen/view_304_dp"
         android:layout_height="@dimen/view_98_dp"
         android:layout_alignTop="@+id/pk_area"
-        android:layout_marginTop="-40dp"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="-40dp"
         android:background="@drawable/grab_pk_zhanji_top"
         android:orientation="horizontal">
 
@@ -137,7 +156,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/view_60_dp"
                 android:layout_toLeftOf="@id/left_tips_tv"
-                BitmapTextView:text_color="@color/white_trans_80"/>
+                BitmapTextView:text_color="@color/white_trans_80" />
 
         </RelativeLayout>
 
@@ -156,8 +175,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/view_17_dp"
-                android:layout_toRightOf="@id/right_score_btv"
                 android:layout_alignParentBottom="true"
+                android:layout_toRightOf="@id/right_score_btv"
                 android:text="分"
                 android:textColor="@color/white_trans_50"
                 android:textSize="@dimen/textsize_12_dp" />
