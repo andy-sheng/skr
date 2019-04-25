@@ -12,6 +12,7 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.utils.HandlerTaskTimer;
+import com.common.utils.ToastUtils;
 import com.common.utils.U;
 import com.module.playways.grab.room.GrabRoomServerApi;
 import com.module.playways.grab.room.model.GrabRedPkgTaskModel;
@@ -27,6 +28,7 @@ public class GrabRedPkgPresenter extends RxLifeCyclePresenter {
     public final static String TAG = "GrabRedPkgPresenter";
     public final static String KEY_HAS_RESEIVE_RED_PKG = "hasReceiveRedPkg";
     public static final int RED_PKG_COUNT_DOWN_TIME = 15000;
+    public static final long ERROR_CODE_RED_RULE = 8302202;
     GrabRoomServerApi mGrabRoomServerApi;
     IRedPkgCountDownView view;
     boolean mIsHasShow = false;
@@ -48,7 +50,7 @@ public class GrabRedPkgPresenter extends RxLifeCyclePresenter {
             return;
         }
 
-        if(U.getPreferenceUtils().getSettingBoolean(KEY_HAS_RESEIVE_RED_PKG, false)){
+        if (U.getPreferenceUtils().getSettingBoolean(KEY_HAS_RESEIVE_RED_PKG, false)) {
             MyLog.w(TAG, "has receive red pkg");
             mIsHasShow = true;
             return;
@@ -110,6 +112,8 @@ public class GrabRedPkgPresenter extends RxLifeCyclePresenter {
                     } else {
                         MyLog.w(TAG, "getRedPkg redPkgTaskModelList is null or grabRedPkgTaskModel is not done, " + " traceid is " + result.getTraceId());
                     }
+                } else if (result.getErrno() == ERROR_CODE_RED_RULE) {
+                    ToastUtils.showShort(result.getErrmsg());
                 } else {
                     MyLog.w(TAG, "getRedPkg failed, " + " traceid is " + result.getTraceId());
                 }
