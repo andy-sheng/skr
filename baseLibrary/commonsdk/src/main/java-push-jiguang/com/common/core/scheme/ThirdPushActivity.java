@@ -64,7 +64,6 @@ public class ThirdPushActivity extends BaseActivity {
         sb.append("platform:");
         sb.append(getPushSDKName(whichPushSDK));
 //            mTextView.setText(sb.toString());
-
         //上报点击事件
         JPushInterface.reportNotificationOpened(this, msgId, whichPushSDK);
 
@@ -95,5 +94,10 @@ public class ThirdPushActivity extends BaseActivity {
                 name = "jpush";
         }
         return name;
+    }
+
+    @Override
+    public boolean useEventBus() {
+        return false;
     }
 }
