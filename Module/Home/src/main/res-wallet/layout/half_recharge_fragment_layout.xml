@@ -101,7 +101,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginRight="@dimen/view_16_dp"
                 android:layout_weight="1"
-                android:background="@drawable/yue_chongzhiqian" />
+                android:background="@drawable/chongzhijiemian_chongzhideanniu" />
         </LinearLayout>
     </com.common.view.ex.ExLinearLayout>
 </FrameLayout>
