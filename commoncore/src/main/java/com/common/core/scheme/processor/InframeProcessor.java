@@ -11,7 +11,7 @@ import com.common.core.scheme.SchemeConstants;
 import com.common.core.scheme.SchemeUtils;
 import com.common.core.scheme.event.BothRelationFromSchemeEvent;
 import com.common.core.scheme.event.GrabInviteFromSchemeEvent;
-import com.common.core.scheme.event.JumpPersonCenterFromSchemeEvent;
+import com.common.core.scheme.event.JumpHomeFromSchemeEvent;
 import com.common.log.MyLog;
 import com.common.utils.U;
 import com.module.RouterConstants;
@@ -68,6 +68,9 @@ public class InframeProcessor implements ISchemeProcessor {
                     return ProcessResult.AcceptedAndReturn;
                 }
                 switch (authority) {
+                    case SchemeConstants.HOST_HOME:
+                        processHomeUrl(uri);
+                        return ProcessResult.AcceptedAndReturn;
                     case SchemeConstants.HOST_SHARE:
                         processShareUrl(uri);
                         return ProcessResult.AcceptedAndReturn;
@@ -195,7 +198,16 @@ public class InframeProcessor implements ISchemeProcessor {
                     .navigation();
         } else if ("/jump_person_center".equals(path)) {
             // 跳到个人中心
-            EventBus.getDefault().post(new JumpPersonCenterFromSchemeEvent());
+            U.getActivityUtils().goHomeActivity();
+            EventBus.getDefault().post(new JumpHomeFromSchemeEvent(3));
+        }
+    }
+
+    private void processHomeUrl(Uri uri) {
+        String path = uri.getPath();
+        if ("/jump".equals(path)) {
+            U.getActivityUtils().goHomeActivity();
+            EventBus.getDefault().post(new JumpHomeFromSchemeEvent(0));
         }
     }
 

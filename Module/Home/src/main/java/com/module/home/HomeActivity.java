@@ -17,7 +17,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseActivity;
 import com.common.core.account.UserAccountManager;
 import com.common.core.permission.SkrSdcardPermission;
-import com.common.core.scheme.event.JumpPersonCenterFromSchemeEvent;
+import com.common.core.scheme.event.JumpHomeFromSchemeEvent;
 import com.common.core.upgrade.UpgradeManager;
 import com.common.log.MyLog;
 import com.common.utils.ActivityUtils;
@@ -345,16 +345,17 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
 
     /**
      * 跳到个人中心
+     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(JumpPersonCenterFromSchemeEvent event) {
-        U.getActivityUtils().goHomeActivity();
-
-        mMainVp.setCurrentItem(3, false);
-        selectTab(3);
-        WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FANS_RED_ROD_TYPE, 1);
-        WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FRIEND_RED_ROD_TYPE, 1);
+    public void onEvent(JumpHomeFromSchemeEvent event) {
+        mMainVp.setCurrentItem(event.channel, false);
+        selectTab(event.channel);
+        if (event.channel == 3) {
+            WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FANS_RED_ROD_TYPE, 1);
+            WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FRIEND_RED_ROD_TYPE, 1);
+        }
     }
 
 

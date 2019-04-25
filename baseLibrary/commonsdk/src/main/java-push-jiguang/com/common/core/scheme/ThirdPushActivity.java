@@ -4,10 +4,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.common.base.BaseActivity;
 import com.common.log.MyLog;
+
+import org.json.JSONException;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -41,32 +44,45 @@ public class ThirdPushActivity extends BaseActivity {
         }
 
         MyLog.w(TAG, "msg content is " + String.valueOf(data));
-        if (TextUtils.isEmpty(data)) return;
-        JSONObject jsonObject = JSON.parseObject(data);
-        String msgId = jsonObject.getString("msg_id");
-        byte whichPushSDK = (byte) jsonObject.getByte("rom_type");
-        String title = jsonObject.getString("n_title");
-        String content = jsonObject.getString("n_content");
-        String extras = jsonObject.getString("n_extras");
-        StringBuilder sb = new StringBuilder();
-        sb.append("msgId:");
-        sb.append(String.valueOf(msgId));
-        sb.append("\n");
-        sb.append("title:");
-        sb.append(String.valueOf(title));
-        sb.append("\n");
-        sb.append("content:");
-        sb.append(String.valueOf(content));
-        sb.append("\n");
-        sb.append("extras:");
-        sb.append(String.valueOf(extras));
-        sb.append("\n");
-        sb.append("platform:");
-        sb.append(getPushSDKName(whichPushSDK));
+        if (!TextUtils.isEmpty(data)) {
+            JSONObject jsonObject = JSON.parseObject(data);
+            String msgId = jsonObject.getString("msg_id");
+            byte whichPushSDK = (byte) jsonObject.getByte("rom_type");
+            String title = jsonObject.getString("n_title");
+            String content = jsonObject.getString("n_content");
+            String extras = jsonObject.getString("n_extras");
+            StringBuilder sb = new StringBuilder();
+            sb.append("msgId:");
+            sb.append(String.valueOf(msgId));
+            sb.append("\n");
+            sb.append("title:");
+            sb.append(String.valueOf(title));
+            sb.append("\n");
+            sb.append("content:");
+            sb.append(String.valueOf(content));
+            sb.append("\n");
+            sb.append("extras:");
+            sb.append(String.valueOf(extras));
+            sb.append("\n");
+            sb.append("platform:");
+            sb.append(getPushSDKName(whichPushSDK));
 //            mTextView.setText(sb.toString());
-        //上报点击事件
-        JPushInterface.reportNotificationOpened(this, msgId, whichPushSDK);
+            //上报点击事件
+            JPushInterface.reportNotificationOpened(this, msgId, whichPushSDK);
+            try {
+                org.json.JSONObject jsonObject1 = new org.json.JSONObject(extras);
+                String url = jsonObject1.optString("url");
+                if (!TextUtils.isEmpty(url)) {
+                    ARouter.getInstance().build("/core/SchemeSdkActivity")
+                            .withString("uri", url)
+                            .navigation();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
+        }
+        finish();
     }
 
     private String getPushSDKName(byte whichPushSDK) {
