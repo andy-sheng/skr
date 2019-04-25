@@ -48,13 +48,13 @@ public class CommentSysModel extends CommentModel {
         if (type == TYPE_ENTER_ROOM) {
             stringBuilder = new SpanUtils()
                     .append("欢迎加入 ").setForegroundColor(Color.parseColor("#EA596B"))
-                    .append(roomName).setForegroundColor(Color.parseColor("#DF7900"))
+                    .append(roomName + "").setForegroundColor(Color.parseColor("#DF7900"))
                     .append("房间 撕歌唱到文明游戏，遇到恶意玩家们可以发起投票将ta踢出房间哦～").setForegroundColor(Color.parseColor("#EA596B"))
                     .create();
         } else if (type == TYPE_MODIF_ROOM_NAME) {
             stringBuilder = new SpanUtils()
                     .append("房主已将房间名称修改为 ").setForegroundColor(Color.parseColor("#EA596B"))
-                    .append(roomName).setForegroundColor(Color.parseColor("#DF7900"))
+                    .append(roomName + "").setForegroundColor(Color.parseColor("#DF7900"))
                     .create();
         }
 
