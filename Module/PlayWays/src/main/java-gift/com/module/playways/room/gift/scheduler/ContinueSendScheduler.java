@@ -1,94 +1,75 @@
 package com.module.playways.room.gift.scheduler;
 
-
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ValueAnimator;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 
 import com.module.playways.room.gift.model.BaseGift;
 
 public class ContinueSendScheduler {
+    private static final int MSG_END_CONTINUE_SEND = 100;
+
     private BaseGift mBaseGift;
 
     private long mReceiverId;
 
-    private int continueCount = 0;
+    private int continueCount = 1;
 
     private long continueId = 0;
 
     private long mCanContinueDuration = 5000;
 
-    ContinueSendListener mContinueSendListener;
+    Handler mHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == MSG_END_CONTINUE_SEND) {
+                endContinueSend();
+            }
+        }
+    };
 
-    ValueAnimator mValueAnimator;
-
-    public ContinueSendScheduler(long canContinueDuration, ContinueSendListener continueSendListener) {
+    public ContinueSendScheduler(long canContinueDuration) {
         mCanContinueDuration = canContinueDuration;
-        mContinueSendListener = continueSendListener;
+
     }
 
-    public void send(BaseGift baseGift, long receiverId) {
-        cancelAnimator();
-        if (baseGift == mBaseGift && mReceiverId == receiverId) {
-            if (mContinueSendListener != null) {
-                mContinueSendListener.buyGift(baseGift, ++continueCount, continueId, mReceiverId);
-            }
-        } else {
-            continueCount = 0;
+    public BuyGiftParam sendParam(BaseGift baseGift, long receiverId) {
+        if (baseGift != mBaseGift || mReceiverId != receiverId) {
+            continueCount = 1;
             mBaseGift = baseGift;
             mReceiverId = receiverId;
             continueId = System.currentTimeMillis();
-            if (mContinueSendListener != null) {
-                mContinueSendListener.buyGift(baseGift, ++continueCount, continueId, mReceiverId);
-                mContinueSendListener.continueSendStart();
-            }
         }
 
-        mValueAnimator = ValueAnimator.ofInt(360, 0);
-        mValueAnimator.setDuration(mCanContinueDuration);
-        mValueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                if (mContinueSendListener != null) {
-                    int progress = (int) animation.getAnimatedValue();
-                    mContinueSendListener.continueSendProgressUpdate(mCanContinueDuration, mCanContinueDuration * progress / 360, progress);
-                }
-            }
-        });
+        mHandler.removeMessages(MSG_END_CONTINUE_SEND);
+        mHandler.sendMessageDelayed(mHandler.obtainMessage(MSG_END_CONTINUE_SEND), mCanContinueDuration);
+        return new BuyGiftParam(continueId, continueCount);
+    }
 
-        mValueAnimator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation, boolean isReverse) {
-                endContinueSend();
-            }
-        });
-        mValueAnimator.start();
+    public void sendGiftSuccess() {
+        continueCount++;
     }
 
     private void endContinueSend() {
-        if (mContinueSendListener != null) {
-            mContinueSendListener.continueSendEnd();
-        }
-
         mBaseGift = null;
-        continueCount = 0;
+        continueCount = 1;
     }
 
-    private void cancelAnimator() {
-        if (mValueAnimator != null) {
-            mValueAnimator.removeAllUpdateListeners();
-            mValueAnimator.removeAllListeners();
-            mValueAnimator.cancel();
+    public static class BuyGiftParam {
+        long continueId;
+        int continueCount;
+
+        public BuyGiftParam(long continueId, int continueCount) {
+            this.continueId = continueId;
+            this.continueCount = continueCount;
         }
-    }
 
-    public interface ContinueSendListener {
-        void continueSendStart();
+        public long getContinueId() {
+            return continueId;
+        }
 
-        void continueSendProgressUpdate(long totalTime, long remainTime, int progress);
-
-        void continueSendEnd();
-
-        void buyGift(BaseGift baseGift, int continueCount, long continueId, long receiverId);
+        public int getContinueCount() {
+            return continueCount;
+        }
     }
 }

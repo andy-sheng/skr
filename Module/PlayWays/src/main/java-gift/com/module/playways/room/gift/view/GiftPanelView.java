@@ -14,9 +14,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.alibaba.fastjson.JSON;
 import com.common.core.avatar.AvatarUtils;
 import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
+import com.common.rxretrofit.ApiManager;
+import com.common.rxretrofit.ApiMethods;
+import com.common.rxretrofit.ApiObserver;
+import com.common.rxretrofit.ApiResult;
 import com.common.utils.ToastUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -28,8 +33,10 @@ import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
+import com.module.playways.room.gift.GiftServerApi;
 import com.module.playways.room.gift.adapter.GiftAllManAdapter;
 import com.module.playways.room.gift.event.BuyGiftEvent;
+import com.module.playways.room.gift.event.UpdateCoinAndDiamondEvent;
 import com.orhanobut.dialogplus.DialogPlus;
 
 import org.greenrobot.eventbus.EventBus;
@@ -50,6 +57,7 @@ public class GiftPanelView extends FrameLayout {
     ExRelativeLayout mGiftPanelArea;
     RecyclerView mRecyclerView;
     LinearLayout mLlSelectedMan;
+    ExTextView mTvDiamond;
 
     GiftView mGiftView;
 
@@ -61,6 +69,8 @@ public class GiftPanelView extends FrameLayout {
     GrabRoomData mGrabRoomData;
 
     private boolean mHasInit = false;
+
+    GiftServerApi mGiftServerApi;
 
     Handler mUiHandler = new Handler() {
         @Override
@@ -88,7 +98,7 @@ public class GiftPanelView extends FrameLayout {
     }
 
     private void init() {
-
+        mGiftServerApi = ApiManager.getInstance().createService(GiftServerApi.class);
     }
 
     private void inflate() {
@@ -104,6 +114,7 @@ public class GiftPanelView extends FrameLayout {
         mGiftView = (GiftView) findViewById(R.id.gift_view);
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mLlSelectedMan = (LinearLayout) findViewById(R.id.ll_selected_man);
+        mTvDiamond = (ExTextView) findViewById(R.id.tv_diamond);
 
         mGiftAllManAdapter = new GiftAllManAdapter();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -163,6 +174,21 @@ public class GiftPanelView extends FrameLayout {
                 mLlSelectedMan.setVisibility(visibleState == VISIBLE ? VISIBLE : GONE);
             }
         });
+
+        getZSBalance();
+    }
+
+    public void getZSBalance() {
+        ApiMethods.subscribe(mGiftServerApi.getZSBalance(), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult obj) {
+                MyLog.w(TAG, "getZSBalance process" + " obj=" + obj);
+                if (obj.getErrno() == 0) {
+                    String amount = JSON.parseObject(obj.getData().getString("totalAmountStr"), String.class);
+                    mTvDiamond.setText(amount);
+                }
+            }
+        });
     }
 
     public void setGrabRoomData(GrabRoomData grabRoomData) {
@@ -173,6 +199,11 @@ public class GiftPanelView extends FrameLayout {
     public void onEvent(GrabPlaySeatUpdateEvent event) {
         MyLog.d(TAG, "onEvent" + " event=" + event);
         mGiftAllManAdapter.setDataList(event.list);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(UpdateCoinAndDiamondEvent event) {
+        mTvDiamond.setText(String.valueOf(event.getZuanBalance()));
     }
 
     //外面不希望用这个函数
@@ -233,7 +264,7 @@ public class GiftPanelView extends FrameLayout {
     }
 
     public boolean onBackPressed() {
-        if(getVisibility() == VISIBLE){
+        if (getVisibility() == VISIBLE) {
             hide();
             return true;
         }

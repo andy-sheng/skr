@@ -23,5 +23,13 @@ public interface GiftServerApi {
 
     @PUT("/v1/gift/present-gift")
     Observable<ApiResult> buyGift(@Body RequestBody body);
+
+    /**
+     * 获取钻石余额
+     *
+     * @return
+     */
+    @GET("/v1/wallet/zs-balance")
+    Observable<ApiResult> getZSBalance();
 }
 

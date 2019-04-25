@@ -1,7 +1,11 @@
 package com.module.playways.room.gift.presenter;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import com.alibaba.fastjson.JSON;
 import com.common.log.MyLog;
+import com.common.mvp.PresenterEvent;
 import com.common.mvp.RxLifeCyclePresenter;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -10,15 +14,24 @@ import com.common.rxretrofit.ApiResult;
 import com.common.utils.ToastUtils;
 import com.common.utils.U;
 import com.module.playways.room.gift.GiftServerApi;
+import com.module.playways.room.gift.event.UpdateCoinAndDiamondEvent;
 import com.module.playways.room.gift.inter.IContinueSendView;
 import com.module.playways.room.gift.model.BaseGift;
+import com.module.playways.room.gift.scheduler.ContinueSendScheduler;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.ObservableSource;
+import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -28,63 +41,106 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
     GiftServerApi mGiftServerApi;
     IContinueSendView mIContinueSendView;
 
+    ContinueSendScheduler mContinueSendScheduler;
+
     ExecutorService mBuyGiftExecutor = Executors.newSingleThreadExecutor();
+
+    Handler mHandler = new Handler(Looper.getMainLooper());
 
     public BuyGiftPresenter(IContinueSendView iContinueSendView) {
         mGiftServerApi = ApiManager.getInstance().createService(GiftServerApi.class);
         mIContinueSendView = iContinueSendView;
+        mContinueSendScheduler = new ContinueSendScheduler(3000);
         addToLifeCycle();
     }
 
-    public void buyGift(BaseGift baseGift, int continueCount, long roomId, long userID, long continueId) {
-        MyLog.d(TAG, "buyGift gift id is " + baseGift.getGiftID() + ", continue Count is " + continueCount);
-        long ts = System.currentTimeMillis() / 1000;
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("giftID", baseGift.getGiftID());
-        map.put("continueCnt", continueCount);
-        map.put("continueID", continueId);
-        map.put("count", 1);
-        map.put("receiveUserID", userID);
-        map.put("roomID", roomId);
-        map.put("timestamp", ts);
+    public void buyGift(BaseGift baseGift, long roomId, long userID) {
+        MyLog.d(TAG, "buyGift" + " baseGift=" + baseGift + " roomId=" + roomId + " userID=" + userID);
 
-        HashMap<String, Object> signMap = new HashMap<>(map);
-        signMap.put("appSecret", "64c5b47f618489dece9b2f95afb56654");
-        map.put("sign", U.getMD5Utils().signReq(signMap));
+        final int[] continueCount = new int[1];
 
-        RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
-        ApiMethods.subscribe(getBuyGiftObservable(body), new ApiObserver<ApiResult>() {
+        Observable.create(new ObservableOnSubscribe<RequestBody>() {
             @Override
-            public void process(ApiResult result) {
-                MyLog.d(TAG, "buyGift process" + " result=" + result);
-                if (result.getErrno() == 0) {
-                    mIContinueSendView.buySuccess(baseGift, continueCount);
+            public void subscribe(ObservableEmitter<RequestBody> emitter) throws Exception {
+                long ts = System.currentTimeMillis() / 1000;
+                ContinueSendScheduler.BuyGiftParam buyGiftParam = null;
+                if (baseGift.isCanContinue()) {
+                    buyGiftParam = mContinueSendScheduler.sendParam(baseGift, userID);
                 } else {
-                    ToastUtils.showShort(result.getErrmsg());
+                    buyGiftParam = new ContinueSendScheduler.BuyGiftParam(System.currentTimeMillis(), 1);
                 }
-            }
+                continueCount[0] = buyGiftParam.getContinueCount();
+                HashMap<String, Object> map = new HashMap<>();
+                map.put("giftID", baseGift.getGiftID());
+                map.put("continueCnt", buyGiftParam.getContinueCount());
+                map.put("continueID", buyGiftParam.getContinueId());
+                map.put("count", 1);
+                map.put("receiveUserID", userID);
+                map.put("roomID", roomId);
+                map.put("timestamp", ts);
 
+                HashMap<String, Object> signMap = new HashMap<>(map);
+                signMap.put("appSecret", "64c5b47f618489dece9b2f95afb56654");
+                map.put("sign", U.getMD5Utils().signReq(signMap));
+
+                RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
+                emitter.onNext(body);
+                emitter.onComplete();
+            }
+        }).flatMap(new Function<RequestBody, ObservableSource<ApiResult>>() {
             @Override
-            public void onError(Throwable e) {
-                ToastUtils.showShort("购买礼物失败");
+            public ObservableSource<ApiResult> apply(RequestBody requestBody) throws Exception {
+                return mGiftServerApi.buyGift(requestBody);
             }
+        }).subscribeOn(Schedulers.from(mBuyGiftExecutor))
+                .compose(bindUntilEvent(PresenterEvent.DESTROY))
+                .subscribe(new Observer<ApiResult>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
-            @Override
-            public void onNetworkError(ErrorType errorType) {
-                ToastUtils.showShort("网络超时");
-            }
-        }, this);
-    }
+                    }
 
-    private io.reactivex.Observable getBuyGiftObservable(RequestBody body) {
-        return mGiftServerApi.buyGift(body)
-                .subscribeOn(Schedulers.from(mBuyGiftExecutor))
-                .observeOn(AndroidSchedulers.mainThread());
+                    @Override
+                    public void onNext(ApiResult result) {
+                        MyLog.d(TAG, "buyGift process" + " result=" + result);
+                        //{"coinBalance":207,"zuanBalance":14586340}
+                        //还是在购买线程处理的
+                        {
+                            if (baseGift.isCanContinue()) {
+                                mContinueSendScheduler.sendGiftSuccess();
+                            }
 
+                            int coin = JSON.parseObject(result.getData().getString("coinBalance"), Integer.class);
+                            int diamond = JSON.parseObject(result.getData().getString("zuanBalance"), Integer.class);
+                            EventBus.getDefault().post(new UpdateCoinAndDiamondEvent(coin, diamond));
+                        }
+
+                        mHandler.post(() -> {
+                            if (result.getErrno() == 0) {
+                                mIContinueSendView.buySuccess(baseGift, continueCount[0]);
+
+                            } else {
+                                ToastUtils.showShort(result.getErrmsg());
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        ToastUtils.showShort("购买礼物失败");
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
     @Override
     public void destroy() {
         super.destroy();
+        mBuyGiftExecutor.shutdown();
+        mHandler.removeCallbacksAndMessages(null);
     }
 }

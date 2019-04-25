@@ -101,6 +101,7 @@
                 android:background="@drawable/diamond_icon" />
 
             <com.common.view.ex.ExTextView
+                android:id="@+id/tv_diamond"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/view_27_dp"
                 android:layout_centerVertical="true"

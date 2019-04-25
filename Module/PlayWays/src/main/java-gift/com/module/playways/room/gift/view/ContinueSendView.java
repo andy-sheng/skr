@@ -3,6 +3,9 @@ package com.module.playways.room.gift.view;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.Animation;
@@ -15,16 +18,15 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.common.utils.U;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.room.gift.inter.IContinueSendView;
 import com.module.playways.room.gift.model.BaseGift;
 import com.module.playways.room.gift.presenter.BuyGiftPresenter;
-import com.module.playways.room.gift.scheduler.ContinueSendScheduler;
 
+public class ContinueSendView extends FrameLayout implements IContinueSendView {
+    public static final int MSG_HIDE = 101;
 
-public class ContinueSendView extends FrameLayout implements ContinueSendScheduler.ContinueSendListener, IContinueSendView {
     ImageView mIvBg;
     ImageView mIvContinueText;
     TextView mTvContinueNum;
@@ -33,8 +35,6 @@ public class ContinueSendView extends FrameLayout implements ContinueSendSchedul
 
     GrabRoomData mBaseRoomData;
 
-    ContinueSendScheduler mContinueSendScheduler;
-
     BuyGiftPresenter mBuyGiftPresenter;
 
     AnimatorSet mScaleAnimatorSet;
@@ -42,6 +42,17 @@ public class ContinueSendView extends FrameLayout implements ContinueSendSchedul
     AnimatorSet mJumpAnimatorSet;
 
     long mReceiverId;
+
+    private long mCanContinueDuration = 3000;
+
+    Handler mHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == MSG_HIDE) {
+                setVisibility(GONE);
+            }
+        }
+    };
 
     public ContinueSendView(Context context) {
         super(context);
@@ -66,10 +77,13 @@ public class ContinueSendView extends FrameLayout implements ContinueSendSchedul
         mBaseGift = baseGift;
         mReceiverId = receiverId;
         if (baseGift.isCanContinue()) {
-            mContinueSendScheduler.send(baseGift, receiverId);
+            mBuyGiftPresenter.buyGift(baseGift, mBaseRoomData.getGameId(), receiverId);
             setVisibility(VISIBLE);
+
+            mHandler.removeMessages(MSG_HIDE);
+            mHandler.sendMessageDelayed(mHandler.obtainMessage(MSG_HIDE), mCanContinueDuration);
         } else {
-            mBuyGiftPresenter.buyGift(baseGift, 1, mBaseRoomData.getGameId(), receiverId, System.currentTimeMillis());
+            mBuyGiftPresenter.buyGift(baseGift, mBaseRoomData.getGameId(), receiverId);
         }
     }
 
@@ -80,15 +94,12 @@ public class ContinueSendView extends FrameLayout implements ContinueSendSchedul
         mIvContinueText = (ImageView) findViewById(R.id.iv_continue_text);
         mTvContinueNum = (TextView) findViewById(R.id.tv_continue_num);
 
-        mContinueSendScheduler = new ContinueSendScheduler(5000, this);
         mBuyGiftPresenter = new BuyGiftPresenter(this);
 
         setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mBaseGift != null) {
-                    mContinueSendScheduler.send(mBaseGift, mReceiverId);
-                }
+                mBuyGiftPresenter.buyGift(mBaseGift, mBaseRoomData.getGameId(), mReceiverId);
 
                 if (mScaleAnimatorSet != null) {
                     mScaleAnimatorSet.cancel();
@@ -100,6 +111,9 @@ public class ContinueSendView extends FrameLayout implements ContinueSendSchedul
                 mScaleAnimatorSet.play(objectAnimator1).with(objectAnimator2);
                 mScaleAnimatorSet.setDuration(500);
                 mScaleAnimatorSet.start();
+
+                mHandler.removeMessages(MSG_HIDE);
+                mHandler.sendMessageDelayed(mHandler.obtainMessage(MSG_HIDE), mCanContinueDuration);
             }
         });
     }
@@ -121,21 +135,6 @@ public class ContinueSendView extends FrameLayout implements ContinueSendSchedul
     }
 
     @Override
-    public void continueSendStart() {
-
-    }
-
-    @Override
-    public void continueSendProgressUpdate(long totalTime, long remainTime, int progress) {
-
-    }
-
-    @Override
-    public void continueSendEnd() {
-        setVisibility(GONE);
-    }
-
-    @Override
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
         if (visibility == GONE) {
@@ -153,11 +152,6 @@ public class ContinueSendView extends FrameLayout implements ContinueSendSchedul
     }
 
     @Override
-    public void buyGift(BaseGift baseGift, int continueCount, long continueId, long receiverId) {
-        mBuyGiftPresenter.buyGift(baseGift, continueCount, mBaseRoomData.getGameId(), receiverId, continueId);
-    }
-
-    @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         if (mScaleAnimatorSet != null) {
@@ -171,5 +165,6 @@ public class ContinueSendView extends FrameLayout implements ContinueSendSchedul
 
     public void destroy() {
         mBuyGiftPresenter.destroy();
+        mHandler.removeCallbacksAndMessages(null);
     }
 }

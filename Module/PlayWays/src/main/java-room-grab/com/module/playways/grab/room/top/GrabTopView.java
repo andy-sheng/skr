@@ -21,6 +21,7 @@ import com.component.busilib.view.BitmapTextView;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabMyCoinChangeEvent;
 import com.module.playways.R;
+import com.module.playways.room.gift.event.UpdateCoinAndDiamondEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -37,6 +38,8 @@ public class GrabTopView extends RelativeLayout {
 
     Listener mOnClickChangeRoomListener;
     GrabRoomData mGrabRoomData;
+
+    int mCoin = 0;
 
     AnimatorSet mAnimatorSet;  //金币加减的动画
 
@@ -62,7 +65,17 @@ public class GrabTopView extends RelativeLayout {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabMyCoinChangeEvent event) {
         mTvCoin.setText(event.coin + "");
+        mCoin = event.coin;
         playCoinChangeAnimation(event.coinChange);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(UpdateCoinAndDiamondEvent event) {
+        if (mCoin != event.getCoinBalance()) {
+            mCoin = event.getCoinBalance();
+            mTvCoin.setText(event.getCoinBalance() + "");
+            playCoinChangeAnimation(event.getCoinBalance());
+        }
     }
 
     private void playCoinChangeAnimation(int coinChange) {
@@ -146,6 +159,7 @@ public class GrabTopView extends RelativeLayout {
     public void setRoomData(GrabRoomData modelBaseRoomData) {
         mGrabRoomData = modelBaseRoomData;
         mTvCoin.setText(mGrabRoomData.getCoin() + "");
+        mCoin = mGrabRoomData.getCoin();
 
         if (mGrabRoomData.isOwner()) {
             // 是房主，肯定不能切换房间

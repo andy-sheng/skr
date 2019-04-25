@@ -54,14 +54,14 @@ public class GiftManager {
         Observable.create(new ObservableOnSubscribe<Object>() {
             @Override
             public void subscribe(ObservableEmitter<Object> emitter) {
-                List<BaseGift> baseGiftList = GiftLocalApi.getAllGift();
-                if (baseGiftList == null || baseGiftList.size() == 0) {
+//                List<BaseGift> baseGiftList = GiftLocalApi.getAllGift();
+//                if (baseGiftList == null || baseGiftList.size() == 0) {
                     fetchGift();
-                } else {
-                    isGiftReady = true;
-                    mBaseGiftList.addAll(baseGiftList);
-                    EventBus.getDefault().post(new GiftReadyEvent());
-                }
+//                } else {
+//                    isGiftReady = true;
+//                    mBaseGiftList.addAll(baseGiftList);
+//                    EventBus.getDefault().post(new GiftReadyEvent());
+//                }
                 emitter.onComplete();
             }
         }).subscribeOn(Schedulers.io())
@@ -76,7 +76,7 @@ public class GiftManager {
                         if (result.getErrno() == 0) {
                             List<GiftServerModel> giftServerModelList = JSON.parseArray(result.getData().getString("list"), GiftServerModel.class);
                             mGiftServerModelList.addAll(giftServerModelList);
-                            cacheToDb(giftServerModelList);
+//                            cacheToDb(giftServerModelList);
                             toLocalGiftModel(mGiftServerModelList);
                             isGiftReady = true;
                             EventBus.getDefault().post(new GiftReadyEvent());
@@ -87,12 +87,6 @@ public class GiftManager {
                 })
                 .subscribeOn(Schedulers.io())
                 .subscribe();
-//        ApiMethods.subscribe(, new ApiObserver<ApiResult>() {
-//            @Override
-//            public void process(ApiResult result) {
-//
-//            }
-//        });
     }
 
     private void cacheToDb(List<GiftServerModel> giftServerModelList) {
