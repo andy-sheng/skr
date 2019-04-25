@@ -154,6 +154,13 @@ public class ChorusSelfSingCardView extends RelativeLayout {
     }
 
     @Override
+    public void setVisibility(int visibility) {
+        super.setVisibility(visibility);
+        if (visibility == GONE) {
+            mSingCountDownView.reset();
+        }
+    }
+    @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         EventBus.getDefault().unregister(this);
