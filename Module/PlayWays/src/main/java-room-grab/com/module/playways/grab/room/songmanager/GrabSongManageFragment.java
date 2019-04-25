@@ -42,6 +42,7 @@ import com.module.playways.room.song.fragment.GrabSearchSongFragment;
 import com.module.playways.room.song.model.SongModel;
 import com.module.playways.R;
 import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -301,7 +302,6 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
             @Override
             public void onClickCancel() {
                 if (mEditRoomDialog != null) {
-                    U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
                     mEditRoomDialog.dismiss();
                 }
             }
@@ -310,7 +310,6 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
             public void onClickSave(String roomName) {
                 if (!TextUtils.isEmpty(roomName)) {
                     // TODO: 2019/4/18 修改房间名
-                    U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
                     mEditRoomDialog.dismiss(false);
                     mGrabSongManagePresenter.updateRoomName(mRoomData.getGameId(), roomName);
                 } else {
@@ -326,6 +325,12 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
                 .setOverlayBackgroundResource(R.color.black_trans_50)
                 .setExpanded(false)
                 .setGravity(Gravity.CENTER)
+                .setOnDismissListener(new OnDismissListener() {
+                    @Override
+                    public void onDismiss(@NonNull DialogPlus dialog) {
+                        U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
+                    }
+                })
                 .create();
         mEditRoomDialog.show();
     }

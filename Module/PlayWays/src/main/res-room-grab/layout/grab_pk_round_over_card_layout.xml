@@ -108,10 +108,12 @@
 
     <LinearLayout
         android:id="@+id/srore_area"
-        android:layout_width="@dimen/view_150_dp"
-        android:layout_height="@dimen/view_60_dp"
+        android:layout_width="@dimen/view_304_dp"
+        android:layout_height="@dimen/view_98_dp"
         android:layout_alignTop="@+id/pk_area"
+        android:layout_marginTop="-40dp"
         android:layout_centerHorizontal="true"
+        android:background="@drawable/grab_pk_zhanji_top"
         android:orientation="horizontal">
 
         <RelativeLayout
@@ -133,7 +135,7 @@
                 android:id="@+id/left_score_btv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/view_24_dp"
+                android:layout_marginTop="@dimen/view_60_dp"
                 android:layout_toLeftOf="@id/left_tips_tv"
                 BitmapTextView:text_color="@color/white_trans_80"/>
 
@@ -148,7 +150,7 @@
                 android:id="@+id/right_score_btv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/view_24_dp"
+                android:layout_marginTop="@dimen/view_60_dp"
                 BitmapTextView:text_color="@color/white_trans_80" />
 
             <TextView
