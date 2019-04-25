@@ -107,6 +107,7 @@ public class LyricAndAccMatchManager {
                         int accBeginTs,
                         int accEndTs
     ) {
+        MyLog.d(TAG,"setArgs lyricUrl=" + lyricUrl + " lyricBeginTs=" + lyricBeginTs + " lyricEndTs=" + lyricEndTs + " accBeginTs=" + accBeginTs + " accEndTs=" + accEndTs);
         mManyLyricsView = manyLyricsView;
         mVoiceScaleView = voiceScaleView;
         mLyricUrl = lyricUrl;
@@ -283,7 +284,7 @@ public class LyricAndAccMatchManager {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(LrcEvent.LineLineEndEvent event) {
-        MyLog.d(TAG, "onEvent" + " event=" + event);
+        MyLog.d(TAG, "LineLineEndEvent" + " event=" + event);
         if (ScoreConfig.isMelp2Enable()) {
             EngineManager.getInstance().getLineScore2(event.lineNum, new Score2Callback() {
                 @Override
