@@ -31,6 +31,7 @@ import com.common.utils.HandlerTaskTimer;
 import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 import com.module.playways.room.msg.event.BigGiftBrushMsgEvent;
 import com.module.playways.room.msg.event.GiftBrushMsgEvent;
+import com.zq.live.proto.Room.ERoundOverReason;
 import com.zq.lyrics.utils.SongResUtils;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
@@ -1875,6 +1876,13 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             MyLog.d(TAG, "有人离开房间,id=" + event.userID);
             GrabRoundInfoModel grabRoundInfoModel = mRoomData.getExpectRoundInfo();
             grabRoundInfoModel.removeUser(true, event.userID);
+            if (grabRoundInfoModel != null) {
+                for(ChorusRoundInfoModel chorusRoundInfoModel:grabRoundInfoModel.getChorusRoundInfoModels()){
+                    if(chorusRoundInfoModel.getUserID()==event.userID){
+                        chorusRoundInfoModel.userExit();
+                    }
+                }
+            }
         } else {
             MyLog.w(TAG, "有人离开房间了,但是不是这个轮次：userID " + event.userID + ", seq " + event.roundSeq + "，当前轮次是 " + mRoomData.getExpectRoundInfo());
         }
@@ -1958,6 +1966,26 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
             if (now != null) {
                 now.tryUpdateRoundInfoModel(event.mRoundInfoModel, true);
+//                // PK 第一个人不唱了 加个弹幕
+//                if(now.getsPkRoundInfoModels().size()>0){
+//                    if(now.getsPkRoundInfoModels().get(0).getOverReason() == EQRoundOverReason.ROR_SELF_GIVE_UP.getValue()){
+//                        UserInfoModel userInfoModel = mRoomData.getUserInfo(now.getsPkRoundInfoModels().get(0).getUserID());
+//                        if (userInfoModel != null) {
+//                            CommentTextModel commentModel = new CommentTextModel();
+//                            commentModel.setUserId(userInfoModel.getUserId());
+//                            commentModel.setAvatar(userInfoModel.getAvatar());
+//                            commentModel.setUserName(userInfoModel.getNickname());
+//                            commentModel.setAvatarColor(Color.WHITE);
+//                            SpannableStringBuilder stringBuilder;
+//                            SpanUtils spanUtils = new SpanUtils()
+//                                    .append(userInfoModel.getNickname() + " ").setForegroundColor(Color.parseColor("#DF7900"))
+//                                    .append("不唱了").setForegroundColor(Color.parseColor("#586D94"));
+//                            stringBuilder = spanUtils.create();
+//                            commentModel.setStringBuilder(stringBuilder);
+//                            EventBus.getDefault().post(new PretendCommentMsgEvent(commentModel));
+//                        }
+//                    }
+//                }
             }
         }
     }

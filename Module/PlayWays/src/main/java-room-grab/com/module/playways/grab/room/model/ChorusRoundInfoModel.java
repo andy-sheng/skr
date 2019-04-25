@@ -60,7 +60,12 @@ public class ChorusRoundInfoModel implements Serializable {
             }
         }
     }
-
+    public void userExit() {
+        if(!hasExit){
+            setHasExit(true);
+            EventBus.getDefault().post(new GrabChorusUserStatusChangeEvent(this));
+        }
+    }
     @Override
     public String toString() {
         return "ChorusRoundInfoModel{" +
@@ -69,4 +74,6 @@ public class ChorusRoundInfoModel implements Serializable {
                 ", hasExit=" + hasExit +
                 '}';
     }
+
+
 }
