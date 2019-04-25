@@ -101,6 +101,7 @@ public class GrabInvitePresenter {
                 MyLog.d(TAG, "process" + " result=" + result.getErrno());
                 if (result.getErrno() == 0) {
                     model.setInvited(true);
+                    mIGrabInviteView.updateInviteModel(model);
                 } else {
                     MyLog.w(TAG, "inviteFriend failed, " + " traceid is " + result.getTraceId());
                 }

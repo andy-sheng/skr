@@ -137,7 +137,7 @@ public class ChorusOthersSingCardView extends RelativeLayout {
         if (now == null) {
             return;
         }
-        
+
         mLeftStatus.setVisibility(GONE);
         mRightStatus.setVisibility(GONE);
         mLeftUserInfoModel = null;
