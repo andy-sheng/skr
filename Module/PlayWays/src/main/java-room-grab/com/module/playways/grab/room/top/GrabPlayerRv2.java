@@ -18,6 +18,7 @@ import com.common.log.MyLog;
 import com.common.utils.U;
 import com.engine.EngineEvent;
 import com.engine.UserStatus;
+import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent;
 import com.module.playways.grab.room.event.LightOffAnimationOverEvent;
@@ -439,7 +440,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
         mHasBurst = true;
         for (int uId : mInfoMap.keySet()) {
             VP vp = mInfoMap.get(uId);
-            if (vp != null && vp.grabTopItemView != null) {
+            if (vp != null && vp.grabTopItemView != null && !RoomDataUtils.isRoundSinger(mRoomData.getRealRoundInfo(),uId)) {
                 vp.grabTopItemView.startEvasive();
             }
         }

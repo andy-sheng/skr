@@ -569,12 +569,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         // 房主想要邀请别人加入游戏
         // 打开邀请面板
         U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), InviteFriendFragment2.class)
-                .setAddToBackStack(true)
-                .setHasAnimation(true)
-                .addDataBeforeAdd(0, mRoomData)
+                        .setAddToBackStack(true)
+                        .setHasAnimation(true)
+                        .addDataBeforeAdd(0, mRoomData)
 //                .setEnterAnim(R.anim.slide_in_bottom)
 //                .setExitAnim(R.anim.slide_out_bottom)
-                .build()
+                        .build()
         );
 
         removeInviteTipView();
@@ -1009,7 +1009,10 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
         if (now != null && now.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
             // pk的第二轮，没有 vs 的演唱开始提示了
-            if (now != null && now.isParticipant() && mRoomData.isInPlayerList()) {
+            if (now != null && now.isParticipant()
+                    && mRoomData.isInPlayerList()
+                    && !RoomDataUtils.isRoundSinger(now, MyUserInfoManager.getInstance().getUid())) {
+                // 不是参与者 不是选手 如果是pk的轮次 pk的参与者 都没有爆灭灯按钮
                 mGrabOpBtn.toOtherSingState();
             } else {
                 mGrabOpBtn.hide("singByOthers2");
@@ -1021,7 +1024,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                 @Override
                 public void run() {
                     GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
-                    if (grabRoundInfoModel != null && grabRoundInfoModel.isParticipant() && mRoomData.isInPlayerList()) {
+                    if (grabRoundInfoModel != null && grabRoundInfoModel.isParticipant()
+                            && mRoomData.isInPlayerList()
+                            && !RoomDataUtils.isRoundSinger(now, MyUserInfoManager.getInstance().getUid())) {
                         mGrabOpBtn.toOtherSingState();
                     } else {
                         mGrabOpBtn.hide("singByOthers2");
@@ -1185,7 +1190,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             return true;
         }
 
-        if(mGiftPanelView.onBackPressed()){
+        if (mGiftPanelView.onBackPressed()) {
             return true;
         }
         quitGame();
