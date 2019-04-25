@@ -1888,16 +1888,28 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                                 U.getToastUtil().showShort("你已经退出合唱");
                             } else if (now.singBySelf()) {
                                 // 是我的对手不唱了
-                                if(userInfoModel!=null){
-                                    U.getToastUtil().showShort(userInfoModel.getNickname()+"已经退出合唱");
+                                if (userInfoModel != null) {
+                                    U.getToastUtil().showShort(userInfoModel.getNickname() + "已经退出合唱");
                                 }
                             } else {
                                 // 观众视角，有人不唱了
-                                if(userInfoModel!=null){
-                                    U.getToastUtil().showShort(userInfoModel.getNickname()+"已经退出合唱");
+                                if (userInfoModel != null) {
+                                    U.getToastUtil().showShort(userInfoModel.getNickname() + "已经退出合唱");
                                 }
                             }
                             // TODO 对话区加个弹幕 xxx已退出合唱
+                            CommentTextModel commentModel = new CommentTextModel();
+                            commentModel.setUserId(userInfoModel.getUserId());
+                            commentModel.setAvatar(userInfoModel.getAvatar());
+                            commentModel.setUserName(userInfoModel.getNickname());
+                            commentModel.setAvatarColor(Color.WHITE);
+                            SpannableStringBuilder stringBuilder;
+                            SpanUtils spanUtils = new SpanUtils()
+                                    .append(userInfoModel.getNickname() + " ").setForegroundColor(Color.parseColor("#DF7900"))
+                                    .append("不唱了").setForegroundColor(Color.parseColor("#586D94"));
+                            stringBuilder = spanUtils.create();
+                            commentModel.setStringBuilder(stringBuilder);
+                            EventBus.getDefault().post(new PretendCommentMsgEvent(commentModel));
                             break;
                         }
                     }
