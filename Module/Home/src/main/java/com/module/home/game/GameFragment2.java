@@ -19,6 +19,7 @@ import com.common.core.myinfo.event.MyUserInfoEvent;
 import com.common.core.permission.SkrAudioPermission;
 import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
+import com.common.rxretrofit.ApiManager;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
@@ -84,7 +85,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.refreshLayout);
         mClassicsHeader = (ClassicsHeader) mRootView.findViewById(R.id.classics_header);
         mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
-        mTaskIv = (ExImageView)mRootView.findViewById(R.id.task_iv);
+        mTaskIv = (ExImageView) mRootView.findViewById(R.id.task_iv);
         mAvatarIv = (SimpleDraweeView) mRootView.findViewById(R.id.avatar_iv);
         mNameTv = (ExTextView) mRootView.findViewById(R.id.name_tv);
         mCoinNum = (BitmapTextView) mRootView.findViewById(R.id.coin_num);
@@ -159,7 +160,10 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mTaskIv.setOnClickListener(new AnimateClickListener() {
             @Override
             public void click(View view) {
-                U.getToastUtil().showShort("点击了做任务");
+//                U.getToastUtil().showShort("点击了做任务");
+                ARouter.getInstance().build(RouterConstants.ACTIVITY_WEB)
+                        .withString("url", ApiManager.getInstance().findRealUrlByChannel("http://test.app.inframe.mobi/task"))
+                        .navigation();
             }
         });
 

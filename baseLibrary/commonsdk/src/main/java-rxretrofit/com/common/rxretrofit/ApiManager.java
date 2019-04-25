@@ -1,5 +1,7 @@
 package com.common.rxretrofit;
 
+import android.net.Uri;
+
 import com.common.log.MyLog;
 import com.common.rxretrofit.cookie.ClearableCookieJar;
 import com.common.rxretrofit.cookie.PersistentCookieJar;
@@ -130,6 +132,13 @@ public class ApiManager {
             }
         }
         return host;
+    }
+
+    public String findRealUrlByChannel(String url) {
+        Uri uri = Uri.parse(url);
+        String host = findRealHostByChannel(uri.getHost());
+        url = url.replace(uri.getHost(),host);
+        return url;
     }
 
     /**

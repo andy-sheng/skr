@@ -150,6 +150,7 @@ public class ChorusSelfSingCardView extends RelativeLayout {
 
     public void setListener(SelfSingCardView.Listener listener) {
         mListener = listener;
+        mSingCountDownView.setListener(listener);
     }
 
     @Override

@@ -256,7 +256,7 @@ public class ChorusOthersSingCardView extends RelativeLayout {
         int progress;  //当前进度条
         int leaveTime; //剩余时间
         MyLog.d(TAG, "countDown isParticipant:" + infoModel.isParticipant() + " enterStatus=" + infoModel.getEnterStatus());
-        if (!infoModel.isParticipant() && infoModel.getEnterStatus() == EQRoundStatus.QRS_SING.getValue()) {
+        if (!infoModel.isParticipant() && infoModel.isEnterInSingStatus()) {
             MyLog.d(TAG, "演唱阶段加入的，倒计时没那么多");
             progress = infoModel.getElapsedTimeMs() * 100 / totalMs;
             leaveTime = totalMs - infoModel.getElapsedTimeMs();
