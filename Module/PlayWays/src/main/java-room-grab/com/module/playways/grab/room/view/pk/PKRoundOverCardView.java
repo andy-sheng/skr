@@ -105,8 +105,11 @@ public class PKRoundOverCardView extends RelativeLayout {
         if (list != null && list.size() >= 2) {
             mLeftUserInfoModel = mRoomData.getUserInfo(list.get(0).getUserID());
             this.mLeftScore = String.format("%.1f", list.get(0).getScore());
+            this.mLeftOverReason = list.get(0).getOverReason();
+
             mRightUserInfoModel = mRoomData.getUserInfo(list.get(1).getUserID());
             this.mRightScore = String.format("%.1f", list.get(1).getScore());
+            this.mRightOverReason = list.get(0).getOverReason();
         }
 
         if (mLeftUserInfoModel != null) {
@@ -116,7 +119,7 @@ public class PKRoundOverCardView extends RelativeLayout {
                             .build());
             mLeftName.setText(mLeftUserInfoModel.getNickname());
             mLeftScoreBtv.setText(mLeftScore);
-            showOverReason(mLeftOverReason, mLeftOverReasonIv);
+            showOverReason(mLeftOverReason, mLeftOverReasonIv, mLeftScoreBtv);
         }
 
         if (mRightUserInfoModel != null) {
@@ -126,26 +129,30 @@ public class PKRoundOverCardView extends RelativeLayout {
                             .build());
             mRightName.setText(mRightUserInfoModel.getNickname());
             mRightScoreBtv.setText(mRightScore);
-            showOverReason(mRightOverReason, mRightOverReasonIv);
+            showOverReason(mRightOverReason, mRightOverReasonIv, mRightScoreBtv);
         }
 
         playCardEnterAnimation();
     }
 
-    private void showOverReason(int overReason, ImageView overReasonIv) {
+    private void showOverReason(int overReason, ImageView overReasonIv, BitmapTextView bitmapTextView) {
         if (overReasonIv == null) {
             return;
         }
         if (overReason == EQRoundOverReason.ROR_SELF_GIVE_UP.getValue()) {
+            bitmapTextView.setVisibility(GONE);
             overReasonIv.setVisibility(VISIBLE);
             overReasonIv.setBackgroundResource(R.drawable.grab_pk_buchangle);
         } else if (overReason == EQRoundOverReason.ROR_MULTI_NO_PASS.getValue()) {
+            bitmapTextView.setVisibility(GONE);
             overReasonIv.setVisibility(VISIBLE);
             overReasonIv.setBackgroundResource(R.drawable.grab_pk_miedeng);
         } else if (overReason == EQRoundOverReason.ROR_IN_ROUND_PLAYER_EXIT.getValue()) {
+            bitmapTextView.setVisibility(GONE);
             overReasonIv.setVisibility(VISIBLE);
             overReasonIv.setBackgroundResource(R.drawable.grab_pk_diaoxianle);
         } else {
+            bitmapTextView.setVisibility(VISIBLE);
             overReasonIv.setVisibility(GONE);
         }
     }
