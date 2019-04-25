@@ -111,7 +111,6 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
     BitmapTextView mSingendNumTv;
     NormalLevelView2 mLevelView;
     ExTextView mLevelTv;
-    ExImageView mIncomeIv;
 
     AppBarLayout mAppbar;
     Toolbar mToolbar;
@@ -317,23 +316,13 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
     private void initFunctionArea() {
         mFunctionArea = (LinearLayout) mRootView.findViewById(R.id.function_area);
         mWalletIv = (ExImageView) mRootView.findViewById(R.id.wallet_iv);
-        mIncomeIv = (ExImageView)mRootView.findViewById(R.id.income_iv);
         mMusicTestIv = (ExImageView) mRootView.findViewById(R.id.music_test_iv);
 
         mWalletIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
                 ARouter.getInstance()
-                        .build(RouterConstants.ACTIVITY_DIAMOND_BALANCE)
-                        .navigation();
-            }
-        });
-
-        mIncomeIv.setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                ARouter.getInstance()
-                        .build(RouterConstants.ACTIVITY_INCOME)
+                        .build(RouterConstants.ACTIVITY_WALLET)
                         .navigation();
             }
         });

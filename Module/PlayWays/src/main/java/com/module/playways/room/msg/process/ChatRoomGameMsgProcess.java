@@ -104,8 +104,7 @@ public class ChatRoomGameMsgProcess implements IPushChatRoomMsgProcess {
                 ERoomMsgType.RM_Q_JOIN_NOTICE, ERoomMsgType.RM_Q_JOIN_ACTION,
                 ERoomMsgType.RM_Q_KICK_USER_REQUEST, ERoomMsgType.RM_Q_KICK_USER_RESULT,
                 ERoomMsgType.RM_Q_GAME_BEGIN, ERoomMsgType.RM_Q_COIN_CHANGE, ERoomMsgType.RM_Q_CHANGE_MUSIC_TAG,
-                ERoomMsgType.RM_Q_CHO_GIVEUP, ERoomMsgType.RM_Q_PK_INNER_ROUND_OVER, ERoomMsgType.RM_Q_CHANGE_ROOM_NAME,
-                ERoomMsgType.RM_G_PRESENT_GIFT
+                ERoomMsgType.RM_Q_CHO_GIVEUP, ERoomMsgType.RM_Q_PK_INNER_ROUND_OVER, ERoomMsgType.RM_Q_CHANGE_ROOM_NAME
         };
     }
 

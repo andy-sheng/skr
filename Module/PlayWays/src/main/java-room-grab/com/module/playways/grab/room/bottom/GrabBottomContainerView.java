@@ -71,42 +71,42 @@ public class GrabBottomContainerView extends BottomContainerView {
         mEmoji1Btn.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-//                // 动态表情按钮
-//                int w = U.getDisplayUtils().getScreenWidth() - U.getDisplayUtils().dip2px(32);
-//                int h = U.getDisplayUtils().dip2px(72);
-//                if (mDynamicMsgView == null) {
-//                    mDynamicMsgView = new DynamicMsgView(getContext());
-//                    mDynamicMsgView.setData(mRoomData);
-//                    mDynamicMsgView.setListener(new DynamicMsgView.Listener() {
-//                        @Override
-//                        public void onSendMsgOver() {
-//                            if (mDynamicMsgPopWindow != null) {
-//                                mDynamicMsgPopWindow.dismiss();
-//                            }
-//                        }
-//                    });
-//                } else {
-//                    mDynamicMsgView.loadEmoji();
-//                }
-//                if (mDynamicMsgPopWindow == null) {
-//                    mDynamicMsgPopWindow = new PopupWindow(mDynamicMsgView, w, h);
-//                    mDynamicMsgPopWindow.setFocusable(true);
-//                    mDynamicMsgPopWindow.setAnimationStyle(R.style.MyPopupWindow_anim_style);
-//                    // 去除动画
-////                      mDynamicMsgPopWindow.setAnimationStyle(R.style.anim_quickmsg_dialog);
-//                    mDynamicMsgPopWindow.setBackgroundDrawable(new BitmapDrawable());
-//                    mDynamicMsgPopWindow.setOutsideTouchable(true);
-//                }
-//                if (!mDynamicMsgPopWindow.isShowing()) {
-//                    int l[] = new int[2];
-//                    mQuickBtn.getLocationInWindow(l);
-//                    mDynamicMsgPopWindow.showAtLocation(mQuickBtn, Gravity.START | Gravity.TOP, l[0], l[1] - h - U.getDisplayUtils().dip2px(5));
-//                } else {
-//                    mDynamicMsgPopWindow.dismiss();
-//                }
-                if (mBottomContainerListener != null) {
-                    mBottomContainerListener.showGiftPanel();
+                // 动态表情按钮
+                int w = U.getDisplayUtils().getScreenWidth() - U.getDisplayUtils().dip2px(32);
+                int h = U.getDisplayUtils().dip2px(72);
+                if (mDynamicMsgView == null) {
+                    mDynamicMsgView = new DynamicMsgView(getContext());
+                    mDynamicMsgView.setData(mRoomData);
+                    mDynamicMsgView.setListener(new DynamicMsgView.Listener() {
+                        @Override
+                        public void onSendMsgOver() {
+                            if (mDynamicMsgPopWindow != null) {
+                                mDynamicMsgPopWindow.dismiss();
+                            }
+                        }
+                    });
+                } else {
+                    mDynamicMsgView.loadEmoji();
                 }
+                if (mDynamicMsgPopWindow == null) {
+                    mDynamicMsgPopWindow = new PopupWindow(mDynamicMsgView, w, h);
+                    mDynamicMsgPopWindow.setFocusable(true);
+                    mDynamicMsgPopWindow.setAnimationStyle(R.style.MyPopupWindow_anim_style);
+                    // 去除动画
+//                      mDynamicMsgPopWindow.setAnimationStyle(R.style.anim_quickmsg_dialog);
+                    mDynamicMsgPopWindow.setBackgroundDrawable(new BitmapDrawable());
+                    mDynamicMsgPopWindow.setOutsideTouchable(true);
+                }
+                if (!mDynamicMsgPopWindow.isShowing()) {
+                    int l[] = new int[2];
+                    mQuickBtn.getLocationInWindow(l);
+                    mDynamicMsgPopWindow.showAtLocation(mQuickBtn, Gravity.START | Gravity.TOP, l[0], l[1] - h - U.getDisplayUtils().dip2px(5));
+                } else {
+                    mDynamicMsgPopWindow.dismiss();
+                }
+//                if (mBottomContainerListener != null) {
+//                    mBottomContainerListener.showGiftPanel();
+//                }
             }
         });
     }
