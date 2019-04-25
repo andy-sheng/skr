@@ -20,6 +20,8 @@ import com.common.core.permission.SkrAudioPermission;
 import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
+import com.common.statistics.StatisticsAdapter;
+import com.common.statistics.UmengStatistics;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
@@ -175,6 +177,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
                 if (iRankingModeService != null) {
                     iRankingModeService.tryGoCreateRoom();
                 }
+                StatisticsAdapter.recordCountEvent("grab","room_create",null);
             }
 
             @Override
@@ -194,6 +197,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
                 } else {
 
                 }
+                StatisticsAdapter.recordCountEvent("grab","room_click",null);
             }
 
             @Override
@@ -213,6 +217,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
                 } else {
 
                 }
+                StatisticsAdapter.recordCountEvent("grab","categoryall",null);
             }
 
             @Override

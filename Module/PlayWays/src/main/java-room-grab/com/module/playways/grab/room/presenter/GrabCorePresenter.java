@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import com.alibaba.fastjson.JSON;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
+import com.common.core.userinfo.model.UserInfoModel;
 import com.common.engine.ScoreConfig;
 import com.common.log.MyLog;
 import com.common.mvp.RxLifeCyclePresenter;
@@ -27,6 +28,7 @@ import com.common.upload.UploadCallback;
 import com.common.upload.UploadParams;
 import com.common.utils.ActivityUtils;
 import com.common.utils.HandlerTaskTimer;
+import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 import com.module.playways.room.msg.event.BigGiftBrushMsgEvent;
 import com.module.playways.room.msg.event.GiftBrushMsgEvent;
 import com.zq.lyrics.utils.SongResUtils;
@@ -1876,6 +1878,30 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         if (now != null) {
             if (now.getRoundSeq() == event.roundSeq) {
                 now.giveUpInChorus(event.userID);
+                List<ChorusRoundInfoModel> list = now.getChorusRoundInfoModels();
+                if (list != null) {
+                    for (ChorusRoundInfoModel chorusRoundInfoModel : list) {
+                        if (chorusRoundInfoModel.getUserID() == event.userID) {
+                            UserInfoModel userInfoModel = mRoomData.getUserInfo(event.userID);
+                            if (event.userID == MyUserInfoManager.getInstance().getUid()) {
+                                // 是我自己不唱了
+                                U.getToastUtil().showShort("你已经退出合唱");
+                            } else if (now.singBySelf()) {
+                                // 是我的对手不唱了
+                                if(userInfoModel!=null){
+                                    U.getToastUtil().showShort(userInfoModel.getNickname()+"已经退出合唱");
+                                }
+                            } else {
+                                // 观众视角，有人不唱了
+                                if(userInfoModel!=null){
+                                    U.getToastUtil().showShort(userInfoModel.getNickname()+"已经退出合唱");
+                                }
+                            }
+                            // TODO 对话区加个弹幕 xxx已退出合唱
+                            break;
+                        }
+                    }
+                }
             }
         }
     }
