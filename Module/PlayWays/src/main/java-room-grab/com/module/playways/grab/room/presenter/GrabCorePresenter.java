@@ -27,6 +27,7 @@ import com.common.upload.UploadCallback;
 import com.common.upload.UploadParams;
 import com.common.utils.ActivityUtils;
 import com.common.utils.HandlerTaskTimer;
+import com.module.playways.room.msg.event.BigGiftBrushMsgEvent;
 import com.module.playways.room.msg.event.GiftBrushMsgEvent;
 import com.zq.lyrics.utils.SongResUtils;
 import com.common.utils.SpanUtils;
@@ -2235,6 +2236,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         MyLog.d(TAG, "onEvent" + " giftPresentEvent=" + giftPresentEvent);
         if (giftPresentEvent.info.getRoomID() == mRoomData.getGameId()) {
             EventBus.getDefault().post(new GiftBrushMsgEvent(giftPresentEvent.mGPrensentGiftMsg));
+            if (!TextUtils.isEmpty(giftPresentEvent.mGPrensentGiftMsg.getGiftInfo().getSourceURL())) {
+                EventBus.getDefault().post(new BigGiftBrushMsgEvent(giftPresentEvent.mGPrensentGiftMsg));
+            }
         }
     }
 

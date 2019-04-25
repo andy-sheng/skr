@@ -17,7 +17,7 @@ public class ContinueSendScheduler {
 
     private long continueId = 0;
 
-    private long mCanContinueDuration = 5000;
+    private long mCanContinueDuration;
 
     Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override

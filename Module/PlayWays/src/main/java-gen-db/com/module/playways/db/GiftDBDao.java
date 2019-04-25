@@ -33,6 +33,7 @@ public class GiftDBDao extends AbstractDao<GiftDB, Integer> {
         public final static Property Price = new Property(6, Integer.class, "price", false, "PRICE");
         public final static Property SortID = new Property(7, Integer.class, "sortID", false, "SORT_ID");
         public final static Property SourceURL = new Property(8, String.class, "sourceURL", false, "SOURCE_URL");
+        public final static Property RealPrice = new Property(9, Float.class, "realPrice", false, "REAL_PRICE");
     }
 
 
@@ -56,7 +57,8 @@ public class GiftDBDao extends AbstractDao<GiftDB, Integer> {
                 "\"GIFT_URL\" TEXT," + // 5: giftURL
                 "\"PRICE\" INTEGER," + // 6: price
                 "\"SORT_ID\" INTEGER," + // 7: sortID
-                "\"SOURCE_URL\" TEXT);"); // 8: sourceURL
+                "\"SOURCE_URL\" TEXT," + // 8: sourceURL
+                "\"REAL_PRICE\" REAL);"); // 9: realPrice
     }
 
     /** Drops the underlying database table. */
@@ -113,6 +115,11 @@ public class GiftDBDao extends AbstractDao<GiftDB, Integer> {
         if (sourceURL != null) {
             stmt.bindString(9, sourceURL);
         }
+ 
+        Float realPrice = entity.getRealPrice();
+        if (realPrice != null) {
+            stmt.bindDouble(10, realPrice);
+        }
     }
 
     @Override
@@ -163,6 +170,11 @@ public class GiftDBDao extends AbstractDao<GiftDB, Integer> {
         if (sourceURL != null) {
             stmt.bindString(9, sourceURL);
         }
+ 
+        Float realPrice = entity.getRealPrice();
+        if (realPrice != null) {
+            stmt.bindDouble(10, realPrice);
+        }
     }
 
     @Override
@@ -181,7 +193,8 @@ public class GiftDBDao extends AbstractDao<GiftDB, Integer> {
             cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // giftURL
             cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // price
             cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7), // sortID
-            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8) // sourceURL
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // sourceURL
+            cursor.isNull(offset + 9) ? null : cursor.getFloat(offset + 9) // realPrice
         );
         return entity;
     }
@@ -197,6 +210,7 @@ public class GiftDBDao extends AbstractDao<GiftDB, Integer> {
         entity.setPrice(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
         entity.setSortID(cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7));
         entity.setSourceURL(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setRealPrice(cursor.isNull(offset + 9) ? null : cursor.getFloat(offset + 9));
      }
     
     @Override

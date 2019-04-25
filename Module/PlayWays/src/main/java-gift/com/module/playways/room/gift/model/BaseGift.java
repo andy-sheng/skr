@@ -27,8 +27,17 @@ public class BaseGift {
     private int giftType;
     private String giftURL;
     private int price;
+    private float realPrice;
     private int sortID;
     private String sourceURL;
+
+    public float getRealPrice() {
+        return realPrice;
+    }
+
+    public void setRealPrice(float realPrice) {
+        this.realPrice = realPrice;
+    }
 
     public boolean isCanContinue() {
         return canContinue;
@@ -140,6 +149,7 @@ public class BaseGift {
         normalGift.setGiftType(giftServerModel.getGiftType());
         normalGift.setSortID(giftServerModel.getSortID());
         normalGift.setSourceURL(giftServerModel.getSourceURL());
+        normalGift.setRealPrice(giftServerModel.getRealPrice());
 
         return (T) normalGift;
     }
@@ -155,7 +165,7 @@ public class BaseGift {
         normalGift.setGiftType(giftDB.getGiftType());
         normalGift.setSortID(giftDB.getSortID());
         normalGift.setSourceURL(giftDB.getSourceURL());
-
+        normalGift.setRealPrice(giftDB.getRealPrice());
         return (T) normalGift;
     }
 }

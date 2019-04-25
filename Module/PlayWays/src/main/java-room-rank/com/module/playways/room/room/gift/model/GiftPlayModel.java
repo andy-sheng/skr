@@ -8,6 +8,8 @@ import com.module.playways.room.msg.event.SpecialEmojiMsgEvent;
 import com.zq.live.proto.Room.GPrensentGiftMsg;
 import com.zq.live.proto.Room.SpecialEmojiMsgType;
 
+import static com.module.playways.BaseRoomData.ROOM_SPECAIL_EMOJI_AIXIN;
+
 public class GiftPlayModel {
     private EGiftType mEGiftType = EGiftType.EMOJI;
     private long continueId;//continueId相等的代表是同一次连送
@@ -20,6 +22,7 @@ public class GiftPlayModel {
     int beginCount;
     int endCount;
     String giftIconUrl;
+    String bigGiftResUrl;
 
 
     public static GiftPlayModel parseFromEvent(SpecialEmojiMsgEvent event, BaseRoomData roomData) {
@@ -46,8 +49,7 @@ public class GiftPlayModel {
     }
 
 
-    public static GiftPlayModel parseFromEvent(GiftBrushMsgEvent event, BaseRoomData roomData) {
-        GPrensentGiftMsg gPrensentGiftMsg = event.getGPrensentGiftMsg();
+    public static GiftPlayModel parseFromEvent(GPrensentGiftMsg gPrensentGiftMsg, BaseRoomData roomData) {
         GiftPlayModel giftPlayModel = new GiftPlayModel();
         giftPlayModel.setContinueId(gPrensentGiftMsg.getContinueID());
         giftPlayModel.setEmojiType(SpecialEmojiMsgType.SP_EMOJI_TYPE_UNKNOWN);
@@ -62,7 +64,7 @@ public class GiftPlayModel {
         UserInfoModel receiverModel = UserInfoModel.parseFromPB(gPrensentGiftMsg.getReceiveUserInfo());
         giftPlayModel.setReceiver(receiverModel);
         giftPlayModel.setGiftIconUrl(gPrensentGiftMsg.getGiftInfo().getGiftURL());
-
+        giftPlayModel.setBigGiftResUrl(gPrensentGiftMsg.getGiftInfo().getSourceURL());
         return giftPlayModel;
     }
 
@@ -149,6 +151,14 @@ public class GiftPlayModel {
 
     public void setGiftIconUrl(String giftIconUrl) {
         this.giftIconUrl = giftIconUrl;
+    }
+
+    public String getBigGiftResUrl() {
+        return bigGiftResUrl;
+    }
+
+    public void setBigGiftResUrl(String bigGiftResUrl) {
+        this.bigGiftResUrl = bigGiftResUrl;
     }
 
     public enum EGiftType {

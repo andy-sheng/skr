@@ -1,6 +1,5 @@
 package com.module.playways.room.gift.adapter;
 
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.common.core.avatar.AvatarUtils;
 import com.common.image.fresco.BaseImageView;
 import com.common.image.fresco.FrescoWorker;
 import com.common.image.model.ImageFactory;
@@ -98,7 +96,11 @@ public class GiftAdapter extends DiffAdapter<BaseGift, RecyclerView.ViewHolder> 
                 mIvCurrency.setBackground(U.getDrawable(R.drawable.diamond_icon));
             }
 
-            mTvPrice.setText(String.valueOf(model.getPrice()));
+            String price = String.valueOf(model.getRealPrice());
+            if (price.endsWith(".0")) {
+                price = price.replace(".0", "");
+            }
+            mTvPrice.setText(price);
 
             if (mBaseGift == mIGiftOpListener.getCurSelectedGift()) {
                 mIvSelectedBg.setVisibility(View.VISIBLE);

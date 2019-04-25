@@ -5,6 +5,8 @@ import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 import com.common.anim.ObjectPlayControlTemplate;
+import com.module.playways.room.msg.event.BigGiftBrushMsgEvent;
+import com.module.playways.room.msg.event.GiftBrushMsgEvent;
 import com.module.playways.room.msg.event.SpecialEmojiMsgEvent;
 import com.module.playways.room.room.gift.model.GiftPlayModel;
 import com.module.playways.BaseRoomData;
@@ -115,6 +117,17 @@ public class GiftBigAnimationViewGroup extends RelativeLayout {
             return giftBigAnimationView;
         }
         return null;
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onEvent(BigGiftBrushMsgEvent giftPresentEvent) {
+        if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
+            return;
+        }
+        // 收到一条礼物消息,进入生产者队列
+        GiftPlayModel playModel = GiftPlayModel.parseFromEvent(giftPresentEvent.getGPrensentGiftMsg(), mRoomData);
+        // 如果消息能被当前忙碌的view接受
+        mGiftPlayControlTemplate.add(playModel, true);
     }
 
 

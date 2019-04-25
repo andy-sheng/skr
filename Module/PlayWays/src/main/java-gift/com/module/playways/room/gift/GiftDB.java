@@ -25,10 +25,11 @@ public class GiftDB implements Serializable {
     private Integer price = 0;
     private Integer sortID = 0;
     private String sourceURL;
-    @Generated(hash = 153787231)
+    private Float realPrice;
+    @Generated(hash = 1211253132)
     public GiftDB(Integer giftID, Boolean canContinue, String description,
             String giftName, Integer giftType, String giftURL, Integer price,
-            Integer sortID, String sourceURL) {
+            Integer sortID, String sourceURL, Float realPrice) {
         this.giftID = giftID;
         this.canContinue = canContinue;
         this.description = description;
@@ -38,6 +39,7 @@ public class GiftDB implements Serializable {
         this.price = price;
         this.sortID = sortID;
         this.sourceURL = sourceURL;
+        this.realPrice = realPrice;
     }
     @Generated(hash = 2046579016)
     public GiftDB() {
@@ -96,6 +98,14 @@ public class GiftDB implements Serializable {
     public void setSourceURL(String sourceURL) {
         this.sourceURL = sourceURL;
     }
+    public Float getRealPrice() {
+        return this.realPrice;
+    }
+    public void setRealPrice(Float realPrice) {
+        this.realPrice = realPrice;
+    }
+    
+    
 
 }
 

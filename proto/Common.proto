@@ -63,6 +63,7 @@ message GiftInfo
     EGiftType giftType = 7; //礼物类型，钻石礼物、金币礼物
     bool canContinue   = 8; //是否可以连击
     string description = 9; //礼物描述
+    float realPrice    = 10; //真实价格
 }
 
 // 礼物类型

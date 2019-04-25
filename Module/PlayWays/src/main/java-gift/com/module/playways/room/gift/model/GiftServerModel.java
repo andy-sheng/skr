@@ -28,6 +28,15 @@ public class GiftServerModel implements Serializable {
     private int price;
     private int sortID;
     private String sourceURL;
+    private float realPrice;
+
+    public float getRealPrice() {
+        return realPrice;
+    }
+
+    public void setRealPrice(float realPrice) {
+        this.realPrice = realPrice;
+    }
 
     public boolean isCanContinue() {
         return canContinue;
@@ -101,7 +110,7 @@ public class GiftServerModel implements Serializable {
         this.sourceURL = sourceURL;
     }
 
-    public static GiftDB toGiftDB(GiftServerModel giftServerModel){
+    public static GiftDB toGiftDB(GiftServerModel giftServerModel) {
         GiftDB giftDB = new GiftDB();
         giftDB.setCanContinue(giftServerModel.isCanContinue());
         giftDB.setDescription(giftServerModel.getDescription());

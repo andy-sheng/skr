@@ -11,6 +11,7 @@ import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
 import java.io.IOException;
 import java.lang.Boolean;
+import java.lang.Float;
 import java.lang.Integer;
 import java.lang.Long;
 import java.lang.Object;
@@ -41,6 +42,8 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
   public static final Boolean DEFAULT_CANCONTINUE = false;
 
   public static final String DEFAULT_DESCRIPTION = "";
+
+  public static final Float DEFAULT_REALPRICE = 0.0f;
 
   /**
    * 礼物id
@@ -123,13 +126,23 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
   )
   private final String description;
 
-  public GiftInfo(Integer giftID, String giftName, String giftURL, Long price, String sourceURL,
-      Integer sortID, EGiftType giftType, Boolean canContinue, String description) {
-    this(giftID, giftName, giftURL, price, sourceURL, sortID, giftType, canContinue, description, ByteString.EMPTY);
-  }
+  /**
+   * 真实价格
+   */
+  @WireField(
+      tag = 10,
+      adapter = "com.squareup.wire.ProtoAdapter#FLOAT"
+  )
+  private final Float realPrice;
 
   public GiftInfo(Integer giftID, String giftName, String giftURL, Long price, String sourceURL,
       Integer sortID, EGiftType giftType, Boolean canContinue, String description,
+      Float realPrice) {
+    this(giftID, giftName, giftURL, price, sourceURL, sortID, giftType, canContinue, description, realPrice, ByteString.EMPTY);
+  }
+
+  public GiftInfo(Integer giftID, String giftName, String giftURL, Long price, String sourceURL,
+      Integer sortID, EGiftType giftType, Boolean canContinue, String description, Float realPrice,
       ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.giftID = giftID;
@@ -141,6 +154,7 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
     this.giftType = giftType;
     this.canContinue = canContinue;
     this.description = description;
+    this.realPrice = realPrice;
   }
 
   @Override
@@ -155,6 +169,7 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
     builder.giftType = giftType;
     builder.canContinue = canContinue;
     builder.description = description;
+    builder.realPrice = realPrice;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -173,7 +188,8 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
         && Internal.equals(sortID, o.sortID)
         && Internal.equals(giftType, o.giftType)
         && Internal.equals(canContinue, o.canContinue)
-        && Internal.equals(description, o.description);
+        && Internal.equals(description, o.description)
+        && Internal.equals(realPrice, o.realPrice);
   }
 
   @Override
@@ -190,6 +206,7 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
       result = result * 37 + (giftType != null ? giftType.hashCode() : 0);
       result = result * 37 + (canContinue != null ? canContinue.hashCode() : 0);
       result = result * 37 + (description != null ? description.hashCode() : 0);
+      result = result * 37 + (realPrice != null ? realPrice.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -207,6 +224,7 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
     if (giftType != null) builder.append(", giftType=").append(giftType);
     if (canContinue != null) builder.append(", canContinue=").append(canContinue);
     if (description != null) builder.append(", description=").append(description);
+    if (realPrice != null) builder.append(", realPrice=").append(realPrice);
     return builder.replace(0, 2, "GiftInfo{").append('}').toString();
   }
 
@@ -311,6 +329,16 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
   }
 
   /**
+   * 真实价格
+   */
+  public Float getRealPrice() {
+    if(realPrice==null){
+        return DEFAULT_REALPRICE;
+    }
+    return realPrice;
+  }
+
+  /**
    * 礼物id
    */
   public boolean hasGiftID() {
@@ -373,6 +401,13 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
     return description!=null;
   }
 
+  /**
+   * 真实价格
+   */
+  public boolean hasRealPrice() {
+    return realPrice!=null;
+  }
+
   public static final class Builder extends Message.Builder<GiftInfo, Builder> {
     private Integer giftID;
 
@@ -391,6 +426,8 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
     private Boolean canContinue;
 
     private String description;
+
+    private Float realPrice;
 
     public Builder() {
     }
@@ -467,9 +504,17 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
       return this;
     }
 
+    /**
+     * 真实价格
+     */
+    public Builder setRealPrice(Float realPrice) {
+      this.realPrice = realPrice;
+      return this;
+    }
+
     @Override
     public GiftInfo build() {
-      return new GiftInfo(giftID, giftName, giftURL, price, sourceURL, sortID, giftType, canContinue, description, super.buildUnknownFields());
+      return new GiftInfo(giftID, giftName, giftURL, price, sourceURL, sortID, giftType, canContinue, description, realPrice, super.buildUnknownFields());
     }
   }
 
@@ -489,6 +534,7 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
           + EGiftType.ADAPTER.encodedSizeWithTag(7, value.giftType)
           + ProtoAdapter.BOOL.encodedSizeWithTag(8, value.canContinue)
           + ProtoAdapter.STRING.encodedSizeWithTag(9, value.description)
+          + ProtoAdapter.FLOAT.encodedSizeWithTag(10, value.realPrice)
           + value.unknownFields().size();
     }
 
@@ -503,6 +549,7 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
       EGiftType.ADAPTER.encodeWithTag(writer, 7, value.giftType);
       ProtoAdapter.BOOL.encodeWithTag(writer, 8, value.canContinue);
       ProtoAdapter.STRING.encodeWithTag(writer, 9, value.description);
+      ProtoAdapter.FLOAT.encodeWithTag(writer, 10, value.realPrice);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -528,6 +575,7 @@ public final class GiftInfo extends Message<GiftInfo, GiftInfo.Builder> {
           }
           case 8: builder.setCanContinue(ProtoAdapter.BOOL.decode(reader)); break;
           case 9: builder.setDescription(ProtoAdapter.STRING.decode(reader)); break;
+          case 10: builder.setRealPrice(ProtoAdapter.FLOAT.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);
