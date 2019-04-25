@@ -1755,6 +1755,17 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     public void onEvent(GrabSomeOneLightOffEvent event) {
         MyLog.d(TAG, "onEvent" + " event=" + event);
         pretendLightMsgComment(event.roundInfo.getUserID(), event.uid, false);
+        if(event.roundInfo.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()){
+            if(event.roundInfo.getsPkRoundInfoModels().size()>0){
+                pretendLightMsgComment(event.roundInfo.getsPkRoundInfoModels().get(0).getUserID(),event.uid,false);
+            }
+        }else if(event.roundInfo.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()){
+            if(event.roundInfo.getsPkRoundInfoModels().size()>1){
+                pretendLightMsgComment(event.roundInfo.getsPkRoundInfoModels().get(1).getUserID(),event.uid,false);
+            }
+        }else{
+            pretendLightMsgComment(event.roundInfo.getUserID(), event.uid, false);
+        }
     }
 
     /**
@@ -1764,7 +1775,17 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabSomeOneLightBurstEvent event) {
-        pretendLightMsgComment(event.roundInfo.getUserID(), event.uid, true);
+        if(event.roundInfo.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()){
+            if(event.roundInfo.getsPkRoundInfoModels().size()>0){
+                pretendLightMsgComment(event.roundInfo.getsPkRoundInfoModels().get(0).getUserID(),event.uid,true);
+            }
+        }else if(event.roundInfo.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()){
+            if(event.roundInfo.getsPkRoundInfoModels().size()>1){
+                pretendLightMsgComment(event.roundInfo.getsPkRoundInfoModels().get(1).getUserID(),event.uid,true);
+            }
+        }else{
+            pretendLightMsgComment(event.roundInfo.getUserID(), event.uid, true);
+        }
     }
 
     /**
