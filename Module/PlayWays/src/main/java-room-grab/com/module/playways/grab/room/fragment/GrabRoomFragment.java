@@ -1195,7 +1195,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         if (mContinueSendView != null) {
             mContinueSendView.destroy();
         }
-        
+
         if (mGiftPanelView != null) {
             mGiftPanelView.destroy();
         }

@@ -224,6 +224,10 @@ public class InviteFriendFragment2 extends BaseFragment {
                     .setExpanded(false)
                     .setGravity(Gravity.BOTTOM)
                     .create();
+            TextView mTvKouling = (TextView) mShareDialog.findViewById(R.id.tv_kouling);
+            if (!TextUtils.isEmpty(mKouLingToken)) {
+                mTvKouling.setText(mKouLingToken);
+            }
             TextView mTvWeixinShare = (TextView) mShareDialog.findViewById(R.id.tv_weixin_share);
             TextView mTvQqShare = (TextView) mShareDialog.findViewById(R.id.tv_qq_share);
             mTvWeixinShare.setOnClickListener(new DebounceViewClickListener() {
