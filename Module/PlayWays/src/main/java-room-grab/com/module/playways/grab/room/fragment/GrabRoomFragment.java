@@ -1113,7 +1113,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_ROUND_OVER_PLAY_OVER);
         msg.arg1 = playNextSongInfoCard ? 1 : 0;
         msg.obj = now;
-        mUiHanlder.sendMessageDelayed(msg, 2400);
+        mUiHanlder.sendMessageDelayed(msg, 4000);
         mSelfSingCardView.setVisibility(View.GONE);
         mTopContainerView.setVisibility(View.VISIBLE);
         mOthersSingCardView.hide();

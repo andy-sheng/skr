@@ -627,6 +627,7 @@ message QSPKInnerRoundInfo {
     EQRoundOverReason overReason = 6; //切换轮次原因
     EQRoundResultType resultType = 7; //当EQRoundOverReason == ROR_MULTI_NO_PASS 演唱结果信息
     float SPKFinalScore          = 8; //最终得分
+    bool  isWin                     = 9; //是否获胜
 }
 
 message QBLightMsg {

@@ -35,7 +35,7 @@ public class RoundOverCardView {
                 if (lastRoundInfo.getsPkRoundInfoModels().size() >= 2) {
                     if (lastRoundInfo.getsPkRoundInfoModels().get(0).getUserID() != 0
                             && lastRoundInfo.getsPkRoundInfoModels().get(1).getUserID() != 0) {
-                        mPKRoundOverCardView.bindData(lastRoundInfo);
+                        mPKRoundOverCardView.bindData(lastRoundInfo,svgaListener);
                         return;
                     }
                 }

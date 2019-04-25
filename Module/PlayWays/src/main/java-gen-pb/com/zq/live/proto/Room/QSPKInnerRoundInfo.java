@@ -10,6 +10,7 @@ import com.squareup.wire.ProtoWriter;
 import com.squareup.wire.WireField;
 import com.squareup.wire.internal.Internal;
 import java.io.IOException;
+import java.lang.Boolean;
 import java.lang.Float;
 import java.lang.Integer;
 import java.lang.Object;
@@ -35,6 +36,8 @@ public final class QSPKInnerRoundInfo extends Message<QSPKInnerRoundInfo, QSPKIn
   public static final EQRoundResultType DEFAULT_RESULTTYPE = EQRoundResultType.ROT_UNKNOWN;
 
   public static final Float DEFAULT_SPKFINALSCORE = 0.0f;
+
+  public static final Boolean DEFAULT_ISWIN = false;
 
   /**
    * 抢唱成功的玩家id
@@ -110,15 +113,24 @@ public final class QSPKInnerRoundInfo extends Message<QSPKInnerRoundInfo, QSPKIn
   )
   private final Float SPKFinalScore;
 
+  /**
+   * 是否获胜
+   */
+  @WireField(
+      tag = 9,
+      adapter = "com.squareup.wire.ProtoAdapter#BOOL"
+  )
+  private final Boolean isWin;
+
   public QSPKInnerRoundInfo(Integer userID, Integer singBeginMs, Integer singEndMs,
       List<QBLightMsg> bLightInfos, List<QMLightMsg> mLightInfos, EQRoundOverReason overReason,
-      EQRoundResultType resultType, Float SPKFinalScore) {
-    this(userID, singBeginMs, singEndMs, bLightInfos, mLightInfos, overReason, resultType, SPKFinalScore, ByteString.EMPTY);
+      EQRoundResultType resultType, Float SPKFinalScore, Boolean isWin) {
+    this(userID, singBeginMs, singEndMs, bLightInfos, mLightInfos, overReason, resultType, SPKFinalScore, isWin, ByteString.EMPTY);
   }
 
   public QSPKInnerRoundInfo(Integer userID, Integer singBeginMs, Integer singEndMs,
       List<QBLightMsg> bLightInfos, List<QMLightMsg> mLightInfos, EQRoundOverReason overReason,
-      EQRoundResultType resultType, Float SPKFinalScore, ByteString unknownFields) {
+      EQRoundResultType resultType, Float SPKFinalScore, Boolean isWin, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.userID = userID;
     this.singBeginMs = singBeginMs;
@@ -128,6 +140,7 @@ public final class QSPKInnerRoundInfo extends Message<QSPKInnerRoundInfo, QSPKIn
     this.overReason = overReason;
     this.resultType = resultType;
     this.SPKFinalScore = SPKFinalScore;
+    this.isWin = isWin;
   }
 
   @Override
@@ -141,6 +154,7 @@ public final class QSPKInnerRoundInfo extends Message<QSPKInnerRoundInfo, QSPKIn
     builder.overReason = overReason;
     builder.resultType = resultType;
     builder.SPKFinalScore = SPKFinalScore;
+    builder.isWin = isWin;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -158,7 +172,8 @@ public final class QSPKInnerRoundInfo extends Message<QSPKInnerRoundInfo, QSPKIn
         && mLightInfos.equals(o.mLightInfos)
         && Internal.equals(overReason, o.overReason)
         && Internal.equals(resultType, o.resultType)
-        && Internal.equals(SPKFinalScore, o.SPKFinalScore);
+        && Internal.equals(SPKFinalScore, o.SPKFinalScore)
+        && Internal.equals(isWin, o.isWin);
   }
 
   @Override
@@ -174,6 +189,7 @@ public final class QSPKInnerRoundInfo extends Message<QSPKInnerRoundInfo, QSPKIn
       result = result * 37 + (overReason != null ? overReason.hashCode() : 0);
       result = result * 37 + (resultType != null ? resultType.hashCode() : 0);
       result = result * 37 + (SPKFinalScore != null ? SPKFinalScore.hashCode() : 0);
+      result = result * 37 + (isWin != null ? isWin.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -190,6 +206,7 @@ public final class QSPKInnerRoundInfo extends Message<QSPKInnerRoundInfo, QSPKIn
     if (overReason != null) builder.append(", overReason=").append(overReason);
     if (resultType != null) builder.append(", resultType=").append(resultType);
     if (SPKFinalScore != null) builder.append(", SPKFinalScore=").append(SPKFinalScore);
+    if (isWin != null) builder.append(", isWin=").append(isWin);
     return builder.replace(0, 2, "QSPKInnerRoundInfo{").append('}').toString();
   }
 
@@ -284,6 +301,16 @@ public final class QSPKInnerRoundInfo extends Message<QSPKInnerRoundInfo, QSPKIn
   }
 
   /**
+   * 是否获胜
+   */
+  public Boolean getIsWin() {
+    if(isWin==null){
+        return DEFAULT_ISWIN;
+    }
+    return isWin;
+  }
+
+  /**
    * 抢唱成功的玩家id
    */
   public boolean hasUserID() {
@@ -339,6 +366,13 @@ public final class QSPKInnerRoundInfo extends Message<QSPKInnerRoundInfo, QSPKIn
     return SPKFinalScore!=null;
   }
 
+  /**
+   * 是否获胜
+   */
+  public boolean hasIsWin() {
+    return isWin!=null;
+  }
+
   public static final class Builder extends Message.Builder<QSPKInnerRoundInfo, Builder> {
     private Integer userID;
 
@@ -355,6 +389,8 @@ public final class QSPKInnerRoundInfo extends Message<QSPKInnerRoundInfo, QSPKIn
     private EQRoundResultType resultType;
 
     private Float SPKFinalScore;
+
+    private Boolean isWin;
 
     public Builder() {
       bLightInfos = Internal.newMutableList();
@@ -427,9 +463,17 @@ public final class QSPKInnerRoundInfo extends Message<QSPKInnerRoundInfo, QSPKIn
       return this;
     }
 
+    /**
+     * 是否获胜
+     */
+    public Builder setIsWin(Boolean isWin) {
+      this.isWin = isWin;
+      return this;
+    }
+
     @Override
     public QSPKInnerRoundInfo build() {
-      return new QSPKInnerRoundInfo(userID, singBeginMs, singEndMs, bLightInfos, mLightInfos, overReason, resultType, SPKFinalScore, super.buildUnknownFields());
+      return new QSPKInnerRoundInfo(userID, singBeginMs, singEndMs, bLightInfos, mLightInfos, overReason, resultType, SPKFinalScore, isWin, super.buildUnknownFields());
     }
   }
 
@@ -448,6 +492,7 @@ public final class QSPKInnerRoundInfo extends Message<QSPKInnerRoundInfo, QSPKIn
           + EQRoundOverReason.ADAPTER.encodedSizeWithTag(6, value.overReason)
           + EQRoundResultType.ADAPTER.encodedSizeWithTag(7, value.resultType)
           + ProtoAdapter.FLOAT.encodedSizeWithTag(8, value.SPKFinalScore)
+          + ProtoAdapter.BOOL.encodedSizeWithTag(9, value.isWin)
           + value.unknownFields().size();
     }
 
@@ -461,6 +506,7 @@ public final class QSPKInnerRoundInfo extends Message<QSPKInnerRoundInfo, QSPKIn
       EQRoundOverReason.ADAPTER.encodeWithTag(writer, 6, value.overReason);
       EQRoundResultType.ADAPTER.encodeWithTag(writer, 7, value.resultType);
       ProtoAdapter.FLOAT.encodeWithTag(writer, 8, value.SPKFinalScore);
+      ProtoAdapter.BOOL.encodeWithTag(writer, 9, value.isWin);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -492,6 +538,7 @@ public final class QSPKInnerRoundInfo extends Message<QSPKInnerRoundInfo, QSPKIn
             break;
           }
           case 8: builder.setSPKFinalScore(ProtoAdapter.FLOAT.decode(reader)); break;
+          case 9: builder.setIsWin(ProtoAdapter.BOOL.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

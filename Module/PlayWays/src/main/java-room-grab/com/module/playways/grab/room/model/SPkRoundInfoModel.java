@@ -124,7 +124,7 @@ public class SPkRoundInfoModel implements Serializable {
             MyLog.d(TAG, "tryUpdateRoundInfoModel" + " pkRoundInfoModel=" + roundInfo);
             return;
         }
-        if(userID==0){
+        if (userID == 0) {
             setUserID(roundInfo.getUserID());
         }
         if (roundInfo.getUserID() == userID) {
@@ -142,6 +142,9 @@ public class SPkRoundInfoModel implements Serializable {
             }
             if (roundInfo.getResultType() > 0) {
                 this.setResultType(roundInfo.getResultType());
+            }
+            if (roundInfo.getScore() > 0) {
+                this.setScore(roundInfo.getScore());
             }
         }
     }

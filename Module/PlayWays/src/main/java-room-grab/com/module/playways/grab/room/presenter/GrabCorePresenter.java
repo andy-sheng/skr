@@ -1902,11 +1902,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     public void onEvent(QRoundOverMsgEvent event) {
         MyLog.w(TAG, "收到服务器的某一个人轮次结束的push event:" + event);
         ensureInRcRoom();
-        if (mRoomData.getLastSyncTs() >= event.getInfo().getTimeMs()) {
-            MyLog.w(TAG, "但是是个旧数据");
-            return;
-        }
-
+//        if (mRoomData.getLastSyncTs() >= event.getInfo().getTimeMs()) {
+//            MyLog.w(TAG, "但是是个旧数据");
+//            return;
+//        }
         if (RoomDataUtils.isCurrentRunningRound(event.getCurrentRound().getRoundSeq(), mRoomData)) {
             // 如果是当前轮次
             mRoomData.getRealRoundInfo().tryUpdateRoundInfoModel(event.currentRound, true);
@@ -2162,6 +2161,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      * @param line
      */
     public void sendScoreToServer(int score, int line) {
+        //score = (int) (Math.random()*100);
         HashMap<String, Object> map = new HashMap<>();
         GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
         if (infoModel == null) {

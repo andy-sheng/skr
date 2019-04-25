@@ -19,6 +19,7 @@ import com.component.busilib.view.BitmapTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
+import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.SPkRoundInfoModel;
 import com.zq.live.proto.Room.EQRoundOverReason;
@@ -54,11 +55,12 @@ public class PKRoundOverCardView extends RelativeLayout {
 
     UserInfoModel mLeftUserInfoModel;
     UserInfoModel mRightUserInfoModel;
-    float mLeftScore;
-    float mRightScore;
     int mLeftOverReason;
     int mRightOverReason;
+    String mLeftScore;
+    String mRightScore;
     private GrabRoomData mRoomData;
+    SVGAListener mSVGAListener;
 
     public PKRoundOverCardView(Context context) {
         super(context);
@@ -93,22 +95,18 @@ public class PKRoundOverCardView extends RelativeLayout {
         mRightScoreBtv = (BitmapTextView) findViewById(R.id.right_score_btv);
     }
 
-    public void bindData(GrabRoundInfoModel roundInfoModel) {
-
+    public void bindData(GrabRoundInfoModel roundInfoModel, SVGAListener svgaListener) {
+        mSVGAListener = svgaListener;
         mLeftUserInfoModel = null;
         mRightUserInfoModel = null;
-        mLeftScore = 0;
-        mRightScore = 0;
+        mLeftScore = "0.0";
+        mRightScore = "0.0";
         List<SPkRoundInfoModel> list = roundInfoModel.getsPkRoundInfoModels();
         if (list != null && list.size() >= 2) {
             mLeftUserInfoModel = mRoomData.getUserInfo(list.get(0).getUserID());
-            this.mLeftScore = list.get(0).getScore();
-            this.mLeftOverReason = list.get(0).getOverReason();
-
+            this.mLeftScore = String.format("%.1f", list.get(0).getScore());
             mRightUserInfoModel = mRoomData.getUserInfo(list.get(1).getUserID());
-            this.mRightScore = list.get(1).getScore();
-            this.mRightOverReason = list.get(1).getOverReason();
-
+            this.mRightScore = String.format("%.1f", list.get(1).getScore());
         }
 
         if (mLeftUserInfoModel != null) {
@@ -117,7 +115,7 @@ public class PKRoundOverCardView extends RelativeLayout {
                             .setCircle(true)
                             .build());
             mLeftName.setText(mLeftUserInfoModel.getNickname());
-            mLeftScoreBtv.setText(mLeftScore + "");
+            mLeftScoreBtv.setText(mLeftScore);
             showOverReason(mLeftOverReason, mLeftOverReasonIv);
         }
 
@@ -127,7 +125,7 @@ public class PKRoundOverCardView extends RelativeLayout {
                             .setCircle(true)
                             .build());
             mRightName.setText(mRightUserInfoModel.getNickname());
-            mRightScoreBtv.setText(mRightScore + "");
+            mRightScoreBtv.setText(mRightScore);
             showOverReason(mRightOverReason, mRightOverReasonIv);
         }
 
@@ -184,7 +182,7 @@ public class PKRoundOverCardView extends RelativeLayout {
             public void run() {
                 hide();
             }
-        }, 1600);
+        }, 3000);
     }
 
     /**
@@ -207,6 +205,9 @@ public class PKRoundOverCardView extends RelativeLayout {
                 public void onAnimationEnd(Animation animation) {
                     clearAnimation();
                     setVisibility(GONE);
+                    if (mSVGAListener != null) {
+                        mSVGAListener.onFinished();
+                    }
                 }
 
                 @Override
