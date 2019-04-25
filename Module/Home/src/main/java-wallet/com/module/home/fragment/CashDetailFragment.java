@@ -5,8 +5,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.common.base.BaseFragment;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.titlebar.CommonTitleBar;
 import com.module.home.R;
 import com.module.home.adapter.WalletRecordAdapter;
@@ -61,6 +63,13 @@ public class CashDetailFragment extends BaseFragment implements IWalletView {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 mRefreshLayout.finishRefresh();
+            }
+        });
+
+        mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                finish();
             }
         });
 

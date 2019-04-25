@@ -4,11 +4,17 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.common.image.fresco.BaseImageView;
+import com.common.image.fresco.FrescoWorker;
+import com.common.image.model.ImageFactory;
+import com.common.image.model.oss.OssImgFactory;
+import com.common.utils.ImageUtils;
 import com.common.utils.U;
 import com.common.view.ex.ExLinearLayout;
 import com.common.view.ex.drawable.DrawableCreator;
@@ -22,17 +28,10 @@ public class RechargeAdapter extends DiffAdapter<RechargeItemModel, RecyclerView
 
     Drawable mNormalBg = new DrawableCreator.Builder()
             .setCornersRadius(U.getDisplayUtils().dip2px(8))
-            .setSolidColor(Color.parseColor("#D0EFFF"))
-            .setStrokeColor(Color.parseColor("#3B4E79"))
-            .setStrokeWidth(U.getDisplayUtils().dip2px(2))
+            .setSolidColor(Color.parseColor("#BEE9FF"))
             .build();
 
-    Drawable mSelectedBg = new DrawableCreator.Builder()
-            .setCornersRadius(U.getDisplayUtils().dip2px(8))
-            .setSolidColor(Color.parseColor("#77C7F0"))
-            .setStrokeColor(Color.parseColor("#3B4E79"))
-            .setStrokeWidth(U.getDisplayUtils().dip2px(2))
-            .build();
+    Drawable mSelectedBg = U.getDrawable(R.drawable.chongzhizuanshi_xuanzhongzhuangtaibanzi);
 
     @NonNull
     @Override
@@ -63,6 +62,8 @@ public class RechargeAdapter extends DiffAdapter<RechargeItemModel, RecyclerView
         TextView mTvRechargeNum;
         TextView mTvCash;
         ViewGroup mInfoContainer;
+        BaseImageView mIvBg;
+
         RechargeItemModel mRechargeItemModel;
 
         public RechargeItemHolder(View itemView) {
@@ -70,6 +71,7 @@ public class RechargeAdapter extends DiffAdapter<RechargeItemModel, RecyclerView
             mTvRechargeNum = (TextView) itemView.findViewById(R.id.tv_recharge_num);
             mTvCash = (TextView) itemView.findViewById(R.id.tv_cash);
             mInfoContainer = itemView.findViewById(R.id.info_container);
+            mIvBg = (BaseImageView) itemView.findViewById(R.id.iv_bg);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -93,6 +95,12 @@ public class RechargeAdapter extends DiffAdapter<RechargeItemModel, RecyclerView
             } else {
                 mInfoContainer.setBackground(mNormalBg);
             }
+
+            FrescoWorker.loadImage(mIvBg,
+                    ImageFactory.newPathImage(TextUtils.isEmpty(model.getImgPath()) ? "" : model.getImgPath())
+                            .setWidth(U.getDisplayUtils().dip2px(74))
+                            .setHeight(U.getDisplayUtils().dip2px(66))
+                            .build());
         }
     }
 }

@@ -92,9 +92,7 @@ public class BallanceFragment extends BaseFragment implements IBallanceView {
         mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                if (getActivity() != null) {
-                    getActivity().finish();
-                }
+                finish();
             }
         });
 

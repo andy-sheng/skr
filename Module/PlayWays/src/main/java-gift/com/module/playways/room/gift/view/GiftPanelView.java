@@ -154,6 +154,11 @@ public class GiftPanelView extends FrameLayout {
                     return;
                 }
 
+                if (mCurMicroMan == null) {
+                    ToastUtils.showShort("请选择送礼对象");
+                    return;
+                }
+
                 hide();
                 EventBus.getDefault().post(new BuyGiftEvent(mGiftView.getSelectedGift(), mCurMicroMan.getUserID()));
             }

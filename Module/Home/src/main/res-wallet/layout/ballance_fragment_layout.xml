@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_act_container"
     android:layout_width="match_parent"
-    android:orientation="vertical"
     android:layout_height="match_parent"
-    android:background="#7187FF">
+    android:background="#7187FF"
+    android:orientation="vertical">
 
     <com.common.view.titlebar.CommonTitleBar
         android:id="@+id/titlebar"
@@ -23,12 +23,15 @@
         app:showBottomLine="false"
         app:statusBarColor="#7187FF"
         app:titleBarColor="#7187FF"></com.common.view.titlebar.CommonTitleBar>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <com.common.view.ex.ExTextView
                 android:id="@+id/diaomend_last"
                 android:layout_width="wrap_content"
@@ -50,13 +53,13 @@
                 android:textSize="@dimen/textsize_42_dp" />
 
             <android.support.v7.widget.RecyclerView
-                android:layout_marginTop="@dimen/view_18_dp"
-                android:layout_marginRight="@dimen/view_18_dp"
-                android:layout_marginLeft="@dimen/view_18_dp"
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/view_258_dp"
-                android:layout_below="@+id/diaoment_num" />
+                android:layout_below="@+id/diaoment_num"
+                android:layout_marginLeft="@dimen/view_18_dp"
+                android:layout_marginTop="@dimen/view_18_dp"
+                android:layout_marginRight="@dimen/view_18_dp" />
 
             <LinearLayout
                 android:id="@+id/platform_container"
@@ -127,12 +130,17 @@
                 android:orientation="horizontal">
 
                 <CheckBox
-                    android:checked="true"
+                    android:layout_gravity="center_vertical"
                     android:id="@+id/checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="@dimen/view_13_dp"
+                    android:layout_height="@dimen/view_13_dp"
+                    android:background="@drawable/recharge_checkbox_rule_bg"
+                    android:button="@null"
+                    android:checked="true" />
 
                 <TextView
+                    android:layout_marginLeft="@dimen/view_5_dp"
+                    android:layout_gravity="center_vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="同意并阅读"
@@ -140,6 +148,7 @@
                     android:textSize="@dimen/textsize_13_dp" />
 
                 <TextView
+                    android:layout_gravity="center_vertical"
                     android:id="@+id/tv_protocal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -158,9 +167,9 @@
                 android:background="@drawable/yue_chongzhiqian" />
 
             <View
-                android:layout_below="@+id/withdraw_tv"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/view_25_dp"/>
+                android:layout_height="@dimen/view_25_dp"
+                android:layout_below="@+id/withdraw_tv" />
         </RelativeLayout>
     </ScrollView>
 </LinearLayout>
