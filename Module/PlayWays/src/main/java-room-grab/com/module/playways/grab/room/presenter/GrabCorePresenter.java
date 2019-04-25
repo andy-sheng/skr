@@ -269,7 +269,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
         joinRcRoom(0);
         if (mRoomData.getGameId() > 0) {
-            pretenRoomNameSystemMsg(mRoomData.getRoomName(), CommentSysModel.TYPE_ENTER_ROOM);
             for (PlayerInfoModel playerInfoModel : mRoomData.getPlayerInfoList()) {
                 if (!playerInfoModel.isOnline()) {
                     continue;
@@ -289,6 +288,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 CommentMsgEvent msgEvent = new CommentMsgEvent(basePushInfo, CommentMsgEvent.MSG_TYPE_SEND, text);
                 EventBus.getDefault().post(msgEvent);
             }
+            pretenRoomNameSystemMsg(mRoomData.getRoomName(), CommentSysModel.TYPE_ENTER_ROOM);
         }
         if (mRoomData.hasGameBegin()) {
             startSyncGameStateTask(sSyncStateTaskInterval);
