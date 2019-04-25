@@ -77,6 +77,16 @@
                 app:bl_shape="rectangle"
                 app:bl_solid_color="@color/black_trans_20" />
 
+            <com.common.view.ex.ExTextView
+                android:id="@+id/left_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_88_dp"
+                android:textColor="@color/white_trans_80"
+                android:textSize="@dimen/textsize_14_dp"
+                android:visibility="gone" />
+
             <com.module.playways.grab.room.top.CircleAnimationView
                 android:id="@+id/left_circle_animation_view"
                 android:layout_width="@dimen/view_100_dp"
@@ -115,6 +125,16 @@
                 app:bl_corners_radius="@dimen/view_12_dp"
                 app:bl_shape="rectangle"
                 app:bl_solid_color="@color/black_trans_20" />
+
+            <com.common.view.ex.ExTextView
+                android:id="@+id/right_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_88_dp"
+                android:textColor="@color/white_trans_80"
+                android:textSize="@dimen/textsize_14_dp"
+                android:visibility="gone" />
 
             <com.module.playways.grab.room.top.CircleAnimationView
                 android:id="@+id/right_circle_animation_view"

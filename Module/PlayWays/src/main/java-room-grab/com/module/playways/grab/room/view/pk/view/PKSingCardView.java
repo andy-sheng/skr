@@ -28,6 +28,7 @@ import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
+import com.zq.live.proto.Room.EQRoundOverReason;
 
 import java.util.List;
 
@@ -42,11 +43,15 @@ public class PKSingCardView extends RelativeLayout {
     SVGAImageView mLeftSingSvga;
     SVGAImageView mRightSingSvga;
     LinearLayout mPkArea;
+
     SimpleDraweeView mLeftIv;
     ExTextView mLeftName;
+    ExTextView mLeftStatus;
     CircleAnimationView mLeftCircleAnimationView;
+
     SimpleDraweeView mRightIv;
     ExTextView mRightName;
+    ExTextView mRightStatus;
     CircleAnimationView mRightCircleAnimationView;
 
     ScaleAnimation mScaleAnimation;        // 头像放大动画
@@ -54,6 +59,9 @@ public class PKSingCardView extends RelativeLayout {
     boolean mLeftAnimationFlag = false;    //左边动画是否在播标记（不包括SVGA）
     boolean mRightAnimationFlag = false;   //右边动画是否在播标记（不包括SVGA）
     boolean mIsPlaySVGA;                   // 是否播放SVGA
+
+    int mLeftOverReason;
+    int mRightOverReason;
 
     GrabRoomData mGrabRoomData;
     UserInfoModel mLeftUserInfoModel;
@@ -83,9 +91,11 @@ public class PKSingCardView extends RelativeLayout {
         mPkArea = (LinearLayout) findViewById(R.id.pk_area);
         mLeftIv = (SimpleDraweeView) findViewById(R.id.left_iv);
         mLeftName = (ExTextView) findViewById(R.id.left_name);
+        mLeftStatus = (ExTextView) findViewById(R.id.left_status);
         mLeftCircleAnimationView = (CircleAnimationView) findViewById(R.id.left_circle_animation_view);
         mRightIv = (SimpleDraweeView) findViewById(R.id.right_iv);
         mRightName = (ExTextView) findViewById(R.id.right_name);
+        mRightStatus = (ExTextView) findViewById(R.id.right_status);
         mRightCircleAnimationView = (CircleAnimationView) findViewById(R.id.right_circle_animation_view);
 
         int offsetX = (U.getDisplayUtils().getScreenWidth() / 2 - U.getDisplayUtils().dip2px(16)) / 2;
@@ -106,29 +116,70 @@ public class PKSingCardView extends RelativeLayout {
             MyLog.w(TAG, "setRoomData" + " grabRoundInfoModel=" + grabRoundInfoModel);
             return;
         }
+        mLeftStatus.setVisibility(GONE);
+        mRightStatus.setVisibility(GONE);
         mLeftUserInfoModel = null;
         mRightUserInfoModel = null;
         List<SPkRoundInfoModel> list = grabRoundInfoModel.getsPkRoundInfoModels();
         if (list != null && list.size() >= 2) {
             mLeftUserInfoModel = mGrabRoomData.getUserInfo(list.get(0).getUserID());
+            mLeftOverReason = list.get(0).getOverReason();
+
             mRightUserInfoModel = mGrabRoomData.getUserInfo(list.get(1).getUserID());
+            mRightOverReason = list.get(1).getOverReason();
         }
         setVisibility(VISIBLE);
         if (mLeftUserInfoModel != null) {
+            boolean isGray = false;
+            if (mLeftOverReason == EQRoundOverReason.ROR_SELF_GIVE_UP.getValue()) {
+                isGray = true;
+                mLeftStatus.setVisibility(VISIBLE);
+                mLeftStatus.setText("不唱了");
+            } else if (mLeftOverReason == EQRoundOverReason.ROR_MULTI_NO_PASS.getValue()) {
+                isGray = true;
+                mLeftStatus.setVisibility(VISIBLE);
+                mLeftStatus.setText("被灭灯");
+            } else if (mLeftOverReason == EQRoundOverReason.ROR_IN_ROUND_PLAYER_EXIT.getValue()) {
+                isGray = true;
+                mLeftStatus.setVisibility(VISIBLE);
+                mLeftStatus.setText("掉线了");
+            } else {
+                mLeftStatus.setVisibility(GONE);
+                isGray = false;
+            }
             AvatarUtils.loadAvatarByUrl(mLeftIv,
                     AvatarUtils.newParamsBuilder(mLeftUserInfoModel.getAvatar())
                             .setBorderColor(U.getColor(R.color.white))
                             .setBorderWidth(U.getDisplayUtils().dip2px(2))
                             .setCircle(true)
+                            .setGray(isGray)
                             .build());
             mLeftName.setText(mLeftUserInfoModel.getNickname());
         }
         if (mRightUserInfoModel != null) {
+            boolean isGray = false;
+            if (mRightOverReason == EQRoundOverReason.ROR_SELF_GIVE_UP.getValue()) {
+                isGray = true;
+                mRightStatus.setVisibility(VISIBLE);
+                mRightStatus.setText("不唱了");
+            } else if (mRightOverReason == EQRoundOverReason.ROR_MULTI_NO_PASS.getValue()) {
+                isGray = true;
+                mRightStatus.setVisibility(VISIBLE);
+                mRightStatus.setText("被灭灯");
+            } else if (mRightOverReason == EQRoundOverReason.ROR_IN_ROUND_PLAYER_EXIT.getValue()) {
+                isGray = true;
+                mRightStatus.setVisibility(VISIBLE);
+                mRightStatus.setText("掉线了");
+            } else {
+                mRightStatus.setVisibility(GONE);
+                isGray = false;
+            }
             AvatarUtils.loadAvatarByUrl(mRightIv,
                     AvatarUtils.newParamsBuilder(mRightUserInfoModel.getAvatar())
                             .setBorderColor(U.getColor(R.color.white))
                             .setBorderWidth(U.getDisplayUtils().dip2px(2))
                             .setCircle(true)
+                            .setGray(isGray)
                             .build());
             mRightName.setText(mRightUserInfoModel.getNickname());
         }
@@ -252,7 +303,7 @@ public class PKSingCardView extends RelativeLayout {
                 if (mAnimationListerner != null) {
                     mAnimationListerner.onAnimationEndExcludeSvga();
                 }
-                
+
                 if (mIsPlaySVGA) {
                     playSingAnimation(uid);
                 } else {
