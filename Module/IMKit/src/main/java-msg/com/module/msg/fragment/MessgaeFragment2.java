@@ -22,7 +22,6 @@ import com.common.clipboard.ClipboardUtils;
 import com.common.core.kouling.SkrKouLingUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
-import com.common.core.userinfo.model.UserInfoModel;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
@@ -36,7 +35,6 @@ import com.module.common.ICallback;
 import com.module.msg.IMessageFragment;
 import com.module.msg.follow.LastFollowFragment;
 import com.module.msg.follow.LastFollowModel;
-import com.module.msg.friend.FriendStatusModel;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.zq.relation.fragment.SearchFriendFragment;
@@ -54,6 +52,7 @@ public class MessgaeFragment2 extends BaseFragment implements IMessageFragment {
     RelativeLayout mLatestFollowArea;
     ImageView mFollowAreaIcon;
     TextView mFollowTips;
+    TextView mFollowTimeTv;
     RelativeLayout mContent;
 
     PopupWindow mPopupWindow;  // 弹窗
@@ -80,6 +79,7 @@ public class MessgaeFragment2 extends BaseFragment implements IMessageFragment {
         mLatestFollowArea = (RelativeLayout) mRootView.findViewById(R.id.latest_follow_area);
         mFollowAreaIcon = (ImageView) mRootView.findViewById(R.id.follow_area_icon);
         mFollowTips = (TextView) mRootView.findViewById(R.id.follow_tips);
+        mFollowTimeTv = (TextView) mRootView.findViewById(R.id.follow_time_tv);
         mContent = (RelativeLayout) mRootView.findViewById(R.id.content);
 
         mConversationListFragment = initConversationList();
@@ -250,6 +250,7 @@ public class MessgaeFragment2 extends BaseFragment implements IMessageFragment {
         if (list != null && list.size() != 0) {
             LastFollowModel lastFollowModel = list.get(0);
             mFollowTips.setText(lastFollowModel.getStatusDesc());
+            mFollowTimeTv.setText(U.getDateTimeUtils().getDateTimeString(lastFollowModel.getTimeMs(), false, getContext()));
         } else {
             // TODO: 2019/4/24  暂无记录
         }

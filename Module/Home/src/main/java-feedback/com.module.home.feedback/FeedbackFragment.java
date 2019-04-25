@@ -24,6 +24,7 @@ import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.common.view.ex.NoLeakEditText;
 import com.common.view.titlebar.CommonTitleBar;
+import com.dialog.view.StrokeTextView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.module.home.R;
 import com.xiaomi.mistatistic.sdk.MiStatInterface;
@@ -45,7 +46,7 @@ public class FeedbackFragment extends BaseFragment {
     RadioButton mFeedBack;
     NoLeakEditText mFeedbackContent;
     ExTextView mContentTextSize;
-    ExTextView mSubmitTv;
+    StrokeTextView mSubmitTv;
 
     ProgressBar mUploadProgressBar;
 
@@ -65,7 +66,7 @@ public class FeedbackFragment extends BaseFragment {
         mFeedBack = (RadioButton) mRootView.findViewById(R.id.feed_back);
         mFeedbackContent = (NoLeakEditText) mRootView.findViewById(R.id.feedback_content);
         mContentTextSize = (ExTextView) mRootView.findViewById(R.id.content_text_size);
-        mSubmitTv = (ExTextView) mRootView.findViewById(R.id.submit_tv);
+        mSubmitTv = (StrokeTextView) mRootView.findViewById(R.id.submit_tv);
         mUploadProgressBar = (ProgressBar) mRootView.findViewById(R.id.upload_progress_bar);
 
 

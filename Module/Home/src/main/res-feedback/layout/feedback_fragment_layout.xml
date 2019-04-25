@@ -104,14 +104,14 @@
                 android:textStyle="bold" />
         </RadioGroup>
 
-        <com.common.view.ex.ExTextView
+        <com.dialog.view.StrokeTextView
             android:id="@+id/submit_tv"
-            android:layout_width="@dimen/view_206_dp"
+            android:layout_width="@dimen/view_132_dp"
             android:layout_height="@dimen/view_54_dp"
             android:layout_below="@+id/button_area"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/view_20_dp"
-            android:background="@drawable/img_btn_bg_yellow"
+            android:background="@drawable/red_button_icon"
             android:gravity="center"
             android:paddingBottom="@dimen/view_6_dp"
             android:text="提交"

@@ -48,15 +48,15 @@
                 android:layout_height="@dimen/view_48_dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/view_14_dp"
-                android:background="@drawable/b_touxiang" />
+                android:background="@drawable/last_follow_icon" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@id/follow_area_icon"
                 android:layout_marginLeft="@dimen/view_12_dp"
-                android:layout_toRightOf="@id/follow_area_icon"
                 android:layout_marginTop="@dimen/view_5_dp"
+                android:layout_toRightOf="@id/follow_area_icon"
                 android:text="最新关注"
                 android:textColor="#3B4E79"
                 android:textSize="@dimen/textsize_16_dp" />
@@ -66,11 +66,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@id/follow_area_icon"
-                android:layout_marginBottom="@dimen/view_2_dp"
                 android:layout_marginLeft="@dimen/view_12_dp"
-                android:text="暂无消息"
+                android:layout_marginBottom="@dimen/view_2_dp"
                 android:layout_toRightOf="@id/follow_area_icon"
+                android:text="暂无消息"
                 android:textColor="#993B4E79"
+                android:textSize="@dimen/textsize_12_dp" />
+
+            <TextView
+                android:id="@+id/follow_time_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/follow_area_icon"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/view_8_dp"
+                android:layout_marginRight="@dimen/view_16_dp"
+                android:textColor="@color/textColorPrimary"
                 android:textSize="@dimen/textsize_12_dp" />
 
             <View

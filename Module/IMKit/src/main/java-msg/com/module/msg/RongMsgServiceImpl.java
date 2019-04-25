@@ -8,8 +8,6 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.fastjson.JSONObject;
 import com.module.RouterConstants;
 import com.module.common.ICallback;
-
-import com.module.msg.fragment.MessageFragment;
 import com.module.msg.fragment.MessgaeFragment2;
 
 @Route(path = RouterConstants.SERVICE_MSG, name = "消息服务")
