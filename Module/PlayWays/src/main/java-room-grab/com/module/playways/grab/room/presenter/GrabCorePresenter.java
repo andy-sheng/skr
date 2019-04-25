@@ -266,7 +266,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
         joinRcRoom(0);
         if (mRoomData.getGameId() > 0) {
-            pretenSystemMsg("撕歌倡导文明游戏，遇到恶意玩家，可以发起投票将ta踢出房间哦～");
+            pretenRoomNameSystemMsg(mRoomData.getRoomName(), CommentSysModel.TYPE_ENTER_ROOM);
             for (PlayerInfoModel playerInfoModel : mRoomData.getPlayerInfoList()) {
                 if (!playerInfoModel.isOnline()) {
                     continue;
@@ -322,6 +322,11 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
 
     private void pretenSystemMsg(String text) {
         CommentSysModel commentSysModel = new CommentSysModel(mRoomData.getGameType(), text);
+        EventBus.getDefault().post(new PretendCommentMsgEvent(commentSysModel));
+    }
+
+    private void pretenRoomNameSystemMsg(String roomNmae, int type) {
+        CommentSysModel commentSysModel = new CommentSysModel(roomNmae, type);
         EventBus.getDefault().post(new PretendCommentMsgEvent(commentSysModel));
     }
 
@@ -601,10 +606,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", mRoomData.getGameId());
         map.put("roundSeq", roundSeq);
-        if(now.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()){
-            map.put("subRoundSeq",0);
-        }else if(now.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()){
-            map.put("subRoundSeq",1);
+        if (now.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()) {
+            map.put("subRoundSeq", 0);
+        } else if (now.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
+            map.put("subRoundSeq", 1);
         }
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.lightOff(body), new ApiObserver<ApiResult>() {
@@ -648,10 +653,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         int roundSeq = now.getRoundSeq();
         map.put("roundSeq", mRoomData.getRealRoundSeq());
 
-        if(now.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()){
-            map.put("subRoundSeq",0);
-        }else if(now.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()){
-            map.put("subRoundSeq",1);
+        if (now.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()) {
+            map.put("subRoundSeq", 0);
+        } else if (now.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
+            map.put("subRoundSeq", 1);
         }
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.lightBurst(body), new ApiObserver<ApiResult>() {
@@ -928,10 +933,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", mRoomData.getGameId());
         map.put("roundSeq", roundInfoModel.getRoundSeq());
-        if(roundInfoModel.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()){
-            map.put("subRoundSeq",0);
-        }else if(roundInfoModel.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()){
-            map.put("subRoundSeq",1);
+        if (roundInfoModel.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()) {
+            map.put("subRoundSeq", 0);
+        } else if (roundInfoModel.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
+            map.put("subRoundSeq", 1);
         }
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
@@ -970,10 +975,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         if (now.getMusic() != null) {
             map.put("playType", now.getMusic().getPlayType());
         }
-        if(now.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()){
-            map.put("subRoundSeq",0);
-        }else if(now.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()){
-            map.put("subRoundSeq",1);
+        if (now.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()) {
+            map.put("subRoundSeq", 0);
+        } else if (now.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
+            map.put("subRoundSeq", 1);
         }
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
         ApiMethods.subscribe(mRoomServerApi.giveUpSing(body), new ApiObserver<ApiResult>() {
@@ -1348,7 +1353,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         mUiHandler.post(new Runnable() {
             @Override
             public void run() {
-                mIGrabView.roundOver(event.lastRoundInfo, false,null);
+                mIGrabView.roundOver(event.lastRoundInfo, false, null);
             }
         });
         // 销毁引擎，减小成本
@@ -1401,7 +1406,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 mUiHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        mIGrabView.roundOver( event.lastRoundInfo,true ,now);
+                        mIGrabView.roundOver(event.lastRoundInfo, true, now);
                     }
                 });
                 if (event.lastRoundInfo.singBySelf()) {
@@ -1622,7 +1627,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 if (songModel == null) {
                     return;
                 }
-                if(infoModel.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()){
+                if (infoModel.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
                     songModel = songModel.getPkMusic();
                 }
                 if (songModel == null) {
@@ -2033,7 +2038,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     public void onEvent(QChangeRoomNameEvent event) {
         MyLog.d(TAG, "onEvent QChangeRoomNameEvent !!改变房间名 " + event);
         if (mRoomData.getGameId() == event.info.getRoomID()) {
-            pretenSystemMsg(String.format("房主已将房间名修改为 %s ", event.newName));
+            pretenRoomNameSystemMsg(event.newName, CommentSysModel.TYPE_MODIF_ROOM_NAME);
         }
     }
 
@@ -2101,7 +2106,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         });
         //打分传给服务器
         GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
-        if(now!=null && now.isPKRound()){
+        if (now != null && now.isPKRound()) {
             sendScoreToServer(score, line);
         }
     }
@@ -2164,12 +2169,12 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
         map.put("userID", MyUserInfoManager.getInstance().getUid());
 
-        int itemID = 0 ;
-        if(infoModel.getMusic()!=null){
+        int itemID = 0;
+        if (infoModel.getMusic() != null) {
             itemID = infoModel.getMusic().getItemID();
-            if(infoModel.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()){
+            if (infoModel.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
                 SongModel pkSong = infoModel.getMusic().getPkMusic();
-                if(pkSong!=null){
+                if (pkSong != null) {
                     itemID = pkSong.getItemID();
                 }
             }
@@ -2228,7 +2233,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GiftPresentEvent giftPresentEvent) {
         MyLog.d(TAG, "onEvent" + " giftPresentEvent=" + giftPresentEvent);
-        if(giftPresentEvent.info.getRoomID() == mRoomData.getGameId()){
+        if (giftPresentEvent.info.getRoomID() == mRoomData.getGameId()) {
             EventBus.getDefault().post(new GiftBrushMsgEvent(giftPresentEvent.mGPrensentGiftMsg));
         }
     }

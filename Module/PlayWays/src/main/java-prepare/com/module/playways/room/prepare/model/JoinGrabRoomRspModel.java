@@ -193,6 +193,7 @@ public class JoinGrabRoomRspModel implements Serializable {
     private long gameStartTimeMs;// 游戏创建时间,<=0 代表游戏未创建
     private boolean hasGameBegin = true;// 游戏是否已经开始
     private boolean challengeAvailable = false;// 是否有挑战资格
+    private String roomName;    //房间名称
 
     public JoinGrabRoomRspModel() {
 
@@ -330,19 +331,34 @@ public class JoinGrabRoomRspModel implements Serializable {
         this.challengeAvailable = challengeAvailable;
     }
 
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
+    }
+
     @Override
     public String toString() {
         return "JoinGrabRoomRspModel{" +
-                "roomType=" + roomType +
-                ",ownerID=" + ownerID +
+                "coin=" + coin +
                 ", config=" + config +
+                ", currentRound=" + currentRound +
+                ", nextRound=" + nextRound +
                 ", elapsedTimeMs=" + elapsedTimeMs +
                 ", gameOverTimeMs=" + gameOverTimeMs +
                 ", roomID=" + roomID +
                 ", syncStatusTimeMs=" + syncStatusTimeMs +
                 ", tagID=" + tagID +
                 ", isNewGame=" + isNewGame +
-                ", gameCreateMs=" + gameStartTimeMs +
+                ", agoraToken='" + agoraToken + '\'' +
+                ", roomType=" + roomType +
+                ", ownerID=" + ownerID +
+                ", gameStartTimeMs=" + gameStartTimeMs +
+                ", hasGameBegin=" + hasGameBegin +
+                ", challengeAvailable=" + challengeAvailable +
+                ", roomName='" + roomName + '\'' +
                 '}';
     }
 }

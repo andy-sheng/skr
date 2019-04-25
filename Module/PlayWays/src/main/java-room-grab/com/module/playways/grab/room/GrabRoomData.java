@@ -38,6 +38,7 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
     GrabResultData mGrabResultData;    // 游戏结果
     private boolean mSpeaking; // 是否正在抢麦说话，一般用于主播控场
     private boolean mChallengeAvailable;
+    private String roomName;  // 房间名称
 
     public GrabRoomData() {
         mIsAccEnable = U.getPreferenceUtils().getSettingBoolean("grab_acc_enable1", false);
@@ -266,6 +267,7 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
         // 游戏未开始
         this.setHasGameBegin(rsp.hasGameBegin());
         this.setChallengeAvailable(rsp.isChallengeAvailable());
+        this.setRoomName(rsp.getRoomName());
     }
 
     public boolean isChallengeAvailable() {
@@ -274,6 +276,14 @@ public class GrabRoomData extends BaseRoomData<GrabRoundInfoModel> {
 
     public void setChallengeAvailable(boolean challengeAvailable) {
         mChallengeAvailable = challengeAvailable;
+    }
+
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
     }
 
     public Integer getSongLineNum() {
