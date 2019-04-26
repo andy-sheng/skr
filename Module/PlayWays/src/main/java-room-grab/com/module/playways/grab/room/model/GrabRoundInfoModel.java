@@ -601,6 +601,33 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
         return false;
     }
 
+
+    /**
+     * 当前轮次当前阶段是否由 userId 演唱
+     * @param userId
+     * @return
+     */
+    public boolean singByUserId(int userId) {
+        if (getStatus() == EQRoundStatus.QRS_SING.getValue()) {
+            return getUserID() == userId;
+        } else if (getStatus() == EQRoundStatus.QRS_CHO_SING.getValue()) {
+            for (ChorusRoundInfoModel roundInfoModel : chorusRoundInfoModels) {
+                if (roundInfoModel.getUserID() == userId) {
+                    return true;
+                }
+            }
+        } else if (getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()) {
+            if (getsPkRoundInfoModels().size() > 0) {
+                return getsPkRoundInfoModels().get(0).getUserID() == userId;
+            }
+        } else if (getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
+            if (getsPkRoundInfoModels().size() > 1) {
+                return getsPkRoundInfoModels().get(1).getUserID() == userId;
+            }
+        }
+        return false;
+    }
+
     /**
      * 判断是各种演唱阶段
      *

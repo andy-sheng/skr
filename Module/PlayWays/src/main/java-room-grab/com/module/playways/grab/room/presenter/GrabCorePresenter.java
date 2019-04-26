@@ -1893,7 +1893,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
         if (grabRoundInfoModel != null) {
             for (ChorusRoundInfoModel chorusRoundInfoModel : grabRoundInfoModel.getChorusRoundInfoModels()) {
-                if(event.mPlayerInfoModel!=null) {
+                if (event.mPlayerInfoModel != null) {
                     if (chorusRoundInfoModel.getUserID() == event.mPlayerInfoModel.getUserID()) {
                         chorusRoundInfoModel.userExit();
                         pretendGiveUp(mRoomData.getUserInfo(event.mPlayerInfoModel.getUserID()));
@@ -2174,7 +2174,8 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(MachineScoreEvent event) {
         //收到其他人的机器打分消息，比较复杂，暂时简单点，轮次正确就直接展示
-        if (RoomDataUtils.isThisUserRound(mRoomData.getRealRoundInfo(), event.userId)) {
+        GrabRoundInfoModel infoModel = mRoomData.getRealRoundInfo();
+        if (infoModel != null && infoModel.singByUserId(event.userId)) {
             mIGrabView.updateScrollBarProgress(event.score, event.lineNum);
         }
     }
