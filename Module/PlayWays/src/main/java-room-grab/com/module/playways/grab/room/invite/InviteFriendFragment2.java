@@ -1,5 +1,6 @@
 package com.module.playways.grab.room.invite;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -132,18 +133,42 @@ public class InviteFriendFragment2 extends BaseFragment {
                     case ShareModel.SHARE_TYPE_CIPHER:
                         showShareDialog();
                         break;
-                    case ShareModel.SHARE_TYPE_QQ:
-                        shareUrl(SharePlatform.QQ);
-                        break;
-                    case ShareModel.SHARE_TYPE_QQ_QZON:
-                        shareUrl(SharePlatform.QZONE);
-                        break;
-                    case ShareModel.SHARE_TYPE_WECHAT:
-                        shareUrl(SharePlatform.WEIXIN);
-                        break;
-                    case ShareModel.SHARE_TYPE_WECHAT_FRIEND:
-                        shareUrl(SharePlatform.WEIXIN_CIRCLE);
-                        break;
+                    case ShareModel.SHARE_TYPE_QQ: {
+                        Intent intent = U.getActivityUtils().getLaunchIntentForPackage("com.tencent.mobileqq");
+                        if (intent != null && null != intent.resolveActivity(U.app().getPackageManager())) {
+                            shareUrl(SharePlatform.QQ);
+                        } else {
+                            U.getToastUtil().showShort("未安装QQ");
+                        }
+                    }
+                    break;
+                    case ShareModel.SHARE_TYPE_QQ_QZON: {
+                        Intent intent = U.getActivityUtils().getLaunchIntentForPackage("com.tencent.mobileqq");
+                        if (intent != null && null != intent.resolveActivity(U.app().getPackageManager())) {
+                            shareUrl(SharePlatform.QZONE);
+                        } else {
+                            U.getToastUtil().showShort("未安装QQ");
+                        }
+                    }
+                    break;
+                    case ShareModel.SHARE_TYPE_WECHAT: {
+                        Intent intent = U.getActivityUtils().getLaunchIntentForPackage("com.tencent.mm");
+                        if (intent != null && null != intent.resolveActivity(U.app().getPackageManager())) {
+                            shareUrl(SharePlatform.WEIXIN);
+                        } else {
+                            U.getToastUtil().showShort("未安装微信");
+                        }
+                    }
+                    break;
+                    case ShareModel.SHARE_TYPE_WECHAT_FRIEND: {
+                        Intent intent = U.getActivityUtils().getLaunchIntentForPackage("com.tencent.mm");
+                        if (intent != null && null != intent.resolveActivity(U.app().getPackageManager())) {
+                            shareUrl(SharePlatform.WEIXIN_CIRCLE);
+                        } else {
+                            U.getToastUtil().showShort("未安装微信");
+                        }
+                    }
+                    break;
                     default:
                         break;
                 }
