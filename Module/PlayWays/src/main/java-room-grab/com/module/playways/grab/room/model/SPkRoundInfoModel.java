@@ -33,6 +33,7 @@ public class SPkRoundInfoModel implements Serializable {
     private int resultType; // 结果类型
     @JSONField(name = "SPKFinalScore")
     private float score;
+    private boolean isWin;
 
     public static SPkRoundInfoModel parse(QSPKInnerRoundInfo roundInfo) {
         SPkRoundInfoModel roundInfoModel = new SPkRoundInfoModel();
@@ -52,6 +53,7 @@ public class SPkRoundInfoModel implements Serializable {
             roundInfoModel.getMLightInfos().add(MLightInfoModel.parse(m));
         }
         roundInfoModel.setScore(roundInfo.getSPKFinalScore());
+        roundInfoModel.setWin(roundInfo.getIsWin());
         return roundInfoModel;
     }
 
@@ -119,6 +121,14 @@ public class SPkRoundInfoModel implements Serializable {
         this.score = score;
     }
 
+    public boolean isWin() {
+        return isWin;
+    }
+
+    public void setWin(boolean win) {
+        isWin = win;
+    }
+
     public void tryUpdateRoundInfoModel(SPkRoundInfoModel roundInfo, boolean notify, GrabRoundInfoModel grabRoundInfoModel) {
         if (roundInfo == null) {
             MyLog.d(TAG, "tryUpdateRoundInfoModel" + " pkRoundInfoModel=" + roundInfo);
@@ -146,6 +156,7 @@ public class SPkRoundInfoModel implements Serializable {
             if (roundInfo.getScore() > 0) {
                 this.setScore(roundInfo.getScore());
             }
+            this.setWin(roundInfo.isWin());
         }
     }
 
