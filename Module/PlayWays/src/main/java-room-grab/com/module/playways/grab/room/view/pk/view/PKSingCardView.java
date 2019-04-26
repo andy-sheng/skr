@@ -327,8 +327,12 @@ public class PKSingCardView extends RelativeLayout {
     public void playSingAnimation(int uid) {
         if (mLeftUserInfoModel != null && uid == mLeftUserInfoModel.getUserId()) {
             playSingAnimation(mLeftSingSvga);
+            mRightSingSvga.stopAnimation(true);
+            mRightSingSvga.setCallback(null);
         } else if (mRightUserInfoModel != null && uid == mRightUserInfoModel.getUserId()) {
             playSingAnimation(mRightSingSvga);
+            mLeftSingSvga.stopAnimation(true);
+            mLeftSingSvga.setCallback(null);
         }
     }
 

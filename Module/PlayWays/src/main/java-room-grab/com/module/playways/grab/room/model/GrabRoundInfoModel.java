@@ -585,7 +585,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
             return getUserID() == MyUserInfoManager.getInstance().getUid();
         } else if (getStatus() == EQRoundStatus.QRS_CHO_SING.getValue()) {
             for (ChorusRoundInfoModel roundInfoModel : chorusRoundInfoModels) {
-                if (roundInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                if (roundInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid() && isParticipant()) {
                     return true;
                 }
             }

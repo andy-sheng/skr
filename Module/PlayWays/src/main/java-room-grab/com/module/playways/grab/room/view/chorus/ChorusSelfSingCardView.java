@@ -106,7 +106,9 @@ public class ChorusSelfSingCardView extends RelativeLayout {
                 int uid1 = chorusRoundInfoModelList.get(0).getUserID();
                 int uid2 = chorusRoundInfoModelList.get(1).getUserID();
                 mLeft.mUserInfoModel = mRoomData.getUserInfo(uid1);
+                mLeft.mChorusRoundInfoModel = chorusRoundInfoModelList.get(0);
                 mRight.mUserInfoModel = mRoomData.getUserInfo(uid2);
+                mRight.mChorusRoundInfoModel = chorusRoundInfoModelList.get(1);
             }
             mSongModel = infoModel.getMusic();
             playWithNoAcc();
