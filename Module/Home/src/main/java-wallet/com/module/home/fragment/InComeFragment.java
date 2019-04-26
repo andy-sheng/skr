@@ -1,9 +1,11 @@
 package com.module.home.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -14,6 +16,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
 import com.common.base.FragmentDataListener;
 import com.common.core.pay.EPayPlatform;
+import com.common.log.MyLog;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
@@ -30,6 +33,9 @@ import com.module.home.inter.IInComeView;
 import com.module.home.model.RechargeItemModel;
 import com.module.home.presenter.BallencePresenter;
 import com.module.home.presenter.InComePresenter;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.OnClickListener;
+import com.orhanobut.dialogplus.ViewHolder;
 import com.respicker.view.GridSpacingItemDecoration;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -55,6 +61,8 @@ public class InComeFragment extends BaseFragment implements IInComeView {
     StrokeTextView mBtnExchangeCash;
 
     InComePresenter mInComePresenter;
+
+    DialogPlus mDqRuleDialogPlus;
 
     FragmentDataListener mFragmentDataListener = new FragmentDataListener() {
         @Override
@@ -145,6 +153,24 @@ public class InComeFragment extends BaseFragment implements IInComeView {
                                 .setHasAnimation(true)
                                 .setFragmentDataListener(mFragmentDataListener)
                                 .build());
+            }
+        });
+
+        mIvAttention.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mDqRuleDialogPlus == null) {
+                    mDqRuleDialogPlus = DialogPlus.newDialog(getActivity())
+                            .setContentHolder(new ViewHolder(R.layout.dq_rule_layout))
+                            .setGravity(Gravity.CENTER)
+                            .setContentBackgroundResource(R.color.transparent)
+                            .setOverlayBackgroundResource(R.color.black_trans_80)
+                            .setExpanded(false)
+                            .setCancelable(true)
+                            .create();
+                }
+
+                mDqRuleDialogPlus.show();
             }
         });
 
