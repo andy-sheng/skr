@@ -42,7 +42,7 @@
             <ImageView
                 android:layout_width="@dimen/view_23_dp"
                 android:layout_height="@dimen/view_25_dp"
-                android:background="@color/black_trans_20" />
+                android:background="@drawable/dq_guize_1" />
 
             <com.common.view.ex.ExTextView
                 android:layout_width="wrap_content"
@@ -61,7 +61,7 @@
             <ImageView
                 android:layout_width="@dimen/view_23_dp"
                 android:layout_height="@dimen/view_25_dp"
-                android:background="@color/black_trans_20" />
+                android:background="@drawable/dq_guize_2" />
 
             <com.common.view.ex.ExTextView
                 android:layout_width="wrap_content"
@@ -80,7 +80,7 @@
             <ImageView
                 android:layout_width="@dimen/view_23_dp"
                 android:layout_height="@dimen/view_25_dp"
-                android:background="@color/black_trans_20" />
+                android:background="@drawable/dq_guize_3" />
 
             <com.common.view.ex.ExTextView
                 android:layout_width="wrap_content"
