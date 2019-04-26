@@ -31,7 +31,6 @@ import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
-import com.zq.live.proto.Room.EQRoundStatus;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -152,15 +151,17 @@ public class ChorusOthersSingCardView extends RelativeLayout {
         mRightStatus.setVisibility(GONE);
         mLeftStatusArea.setVisibility(GONE);
         mRightStatusArea.setVisibility(GONE);
+        mLeftChorusRoundInfoModel = null;
+        mRightChorusRoundInfoModel = null;
         mLeftUserInfoModel = null;
         mRightUserInfoModel = null;
 
         List<ChorusRoundInfoModel> list = now.getChorusRoundInfoModels();
         if (list != null && list.size() >= 2) {
-            mLeftUserInfoModel = mGrabRoomData.getUserInfo(list.get(0).getUserID());
-            mRightUserInfoModel = mGrabRoomData.getUserInfo(list.get(1).getUserID());
             mLeftChorusRoundInfoModel = list.get(0);
             mRightChorusRoundInfoModel = list.get(1);
+            mLeftUserInfoModel = mGrabRoomData.getUserInfo(mLeftChorusRoundInfoModel.getUserID());
+            mRightUserInfoModel = mGrabRoomData.getUserInfo(mRightChorusRoundInfoModel.getUserID());
         }
 
         if (mLeftUserInfoModel != null && mRightUserInfoModel != null && mLeftChorusRoundInfoModel != null && mRightChorusRoundInfoModel != null) {
@@ -174,6 +175,7 @@ public class ChorusOthersSingCardView extends RelativeLayout {
                             .setCircle(true)
                             .build());
             mLeftName.setText(mLeftUserInfoModel.getNickname());
+
             AvatarUtils.loadAvatarByUrl(mRightIv,
                     AvatarUtils.newParamsBuilder(mRightUserInfoModel.getAvatar())
                             .setBorderColor(U.getColor(R.color.white))
@@ -182,8 +184,8 @@ public class ChorusOthersSingCardView extends RelativeLayout {
                             .build());
             mRightName.setText(mRightUserInfoModel.getNickname());
 
-            showChorusRoundInfo(mLeftChorusRoundInfoModel, mLeftStatusArea, mLeftStatus);
-            showChorusRoundInfo(mRightChorusRoundInfoModel, mRightStatusArea, mRightStatus);
+            setShowFlag(mLeftChorusRoundInfoModel, mLeftStatusArea, mLeftStatus);
+            setShowFlag(mRightChorusRoundInfoModel, mRightStatusArea, mRightStatus);
             animationGo();
 
             mCountDownStatus = COUNT_DOWN_STATUS_WAIT;
@@ -205,7 +207,7 @@ public class ChorusOthersSingCardView extends RelativeLayout {
         }
     }
 
-    private void showChorusRoundInfo(ChorusRoundInfoModel chorusRoundInfoModel, ExRelativeLayout relativeLayout, ExTextView textView) {
+    private void setShowFlag(ChorusRoundInfoModel chorusRoundInfoModel, ExRelativeLayout relativeLayout, ExTextView textView) {
         if (chorusRoundInfoModel.isHasGiveUp()) {
             textView.setVisibility(VISIBLE);
             relativeLayout.setVisibility(VISIBLE);
@@ -356,9 +358,9 @@ public class ChorusOthersSingCardView extends RelativeLayout {
         if (event.mChorusRoundInfoModel != null) {
             stopSingAnimation(event.mChorusRoundInfoModel.getUserID());
             if (mLeftUserInfoModel != null && event.mChorusRoundInfoModel.getUserID() == mLeftUserInfoModel.getUserId()) {
-                showChorusRoundInfo(event.mChorusRoundInfoModel, mLeftStatusArea, mLeftStatus);
+                setShowFlag(event.mChorusRoundInfoModel, mLeftStatusArea, mLeftStatus);
             } else if (mRightUserInfoModel != null && event.mChorusRoundInfoModel.getUserID() == mRightUserInfoModel.getUserId()) {
-                showChorusRoundInfo(event.mChorusRoundInfoModel, mRightStatusArea, mRightStatus);
+                setShowFlag(event.mChorusRoundInfoModel, mRightStatusArea, mRightStatus);
             } else {
                 MyLog.w(TAG, "onEvent" + "不是麦上的人？？？ event=" + event);
             }
