@@ -124,6 +124,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
                 mGamePresenter.initOperationArea(true);
                 mGamePresenter.initQuickRoom(true);
                 mGamePresenter.initRecommendRoom(mRecommendInterval);
+                mGamePresenter.checkTaskRedDot();
 
 
 //                for(int i=0;i<1000;i++)

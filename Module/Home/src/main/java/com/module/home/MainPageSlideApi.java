@@ -54,6 +54,6 @@ public interface MainPageSlideApi {
      *
      * @return
      */
-    @GET(" http://dev.api.inframe.mobi/v1/task/show-red-dot")
+    @GET("http://dev.api.inframe.mobi/v1/task/show-red-dot")
     Observable<ApiResult> taskRedDotState();
 }
