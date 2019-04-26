@@ -128,6 +128,8 @@ public class PKSingCardView extends RelativeLayout {
         }
         mLeftUserInfoModel = null;
         mRightUserInfoModel = null;
+        mLeftOverReason = 0;
+        mRightOverReason = 0;
         List<SPkRoundInfoModel> list = grabRoundInfoModel.getsPkRoundInfoModels();
         if (list != null && list.size() >= 2) {
             mLeftUserInfoModel = mGrabRoomData.getUserInfo(list.get(0).getUserID());
@@ -327,12 +329,8 @@ public class PKSingCardView extends RelativeLayout {
     public void playSingAnimation(int uid) {
         if (mLeftUserInfoModel != null && uid == mLeftUserInfoModel.getUserId()) {
             playSingAnimation(mLeftSingSvga);
-            mRightSingSvga.stopAnimation(true);
-            mRightSingSvga.setCallback(null);
         } else if (mRightUserInfoModel != null && uid == mRightUserInfoModel.getUserId()) {
             playSingAnimation(mRightSingSvga);
-            mLeftSingSvga.stopAnimation(true);
-            mLeftSingSvga.setCallback(null);
         }
     }
 
