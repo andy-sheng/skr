@@ -54,6 +54,14 @@ public class GrabEditView extends RelativeLayout {
                 }
             }
         });
+
+        mRoomName.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mRoomName.requestFocus();
+            }
+        }, 500);
+
     }
 
     public void setListener(Listener listener) {
