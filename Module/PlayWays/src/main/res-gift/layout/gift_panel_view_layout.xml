@@ -92,15 +92,6 @@
                 android:layout_centerVertical="true"
                 android:background="@drawable/fangzhushijiao_chongzhianniu" />
 
-            <ImageView
-                android:id="@+id/iv_diamond_icon"
-                android:layout_width="@dimen/view_26_dp"
-                android:layout_height="30dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/view_12_dp"
-                android:layout_toRightOf="@+id/iv_recharge"
-                android:background="@drawable/diamond_icon" />
-
             <com.common.view.ex.ExTextView
                 android:id="@+id/tv_diamond"
                 android:layout_width="wrap_content"
@@ -114,8 +105,19 @@
                 android:text="158"
                 android:textColor="#D0EFFF"
                 android:textSize="@dimen/textsize_18_dp"
-                app:bl_corners_radius="@dimen/view_14_dp"
+                app:bl_corners_topRightRadius="@dimen/view_14_dp"
+                app:bl_corners_bottomRightRadius="@dimen/view_14_dp"
                 app:bl_solid_color="@color/black_trans_20" />
+
+            <ImageView
+                android:id="@+id/iv_diamond_icon"
+                android:layout_width="@dimen/view_26_dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/view_12_dp"
+                android:layout_toRightOf="@+id/iv_recharge"
+                android:background="@drawable/diamond_icon" />
+
 
             <com.common.view.ex.ExImageView
                 android:id="@+id/iv_send"
