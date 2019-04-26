@@ -164,7 +164,7 @@ public class MessgaeFragment2 extends BaseFragment implements IMessageFragment {
         }
 
         UserInfoServerApi userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
-        ApiMethods.subscribe(userInfoServerApi.getLatestRelation(true), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(userInfoServerApi.getLatestRelation(1), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {

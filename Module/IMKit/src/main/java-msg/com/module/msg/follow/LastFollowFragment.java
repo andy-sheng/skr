@@ -115,7 +115,7 @@ public class LastFollowFragment extends BaseFragment {
 
     private void getLastRelations() {
         UserInfoServerApi userInfoServerApi = ApiManager.getInstance().createService(UserInfoServerApi.class);
-        ApiMethods.subscribe(userInfoServerApi.getLatestRelation(false), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(userInfoServerApi.getLatestRelation(100), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
@@ -128,7 +128,12 @@ public class LastFollowFragment extends BaseFragment {
 
     private void showLastRelation(List<LastFollowModel> list) {
         mRefreshLayout.finishRefresh();
-        mLastFollowAdapter.setDataList(list);
+        if (list != null && list.size() > 0) {
+            mLastFollowAdapter.setDataList(list);
+        } else {
+            MyLog.w(TAG, "showLastRelation" + " list=" + list);
+        }
+
     }
 
     @Override

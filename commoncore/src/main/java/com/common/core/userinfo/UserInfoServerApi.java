@@ -253,6 +253,11 @@ public interface UserInfoServerApi {
     @PUT("/v1/profile/del-pic")
     Observable<ApiResult> deletePhoto(@Body RequestBody body);
 
+    /**
+     *
+     * @param cnt  获取第一条传1 列表最大值100
+     * @return
+     */
     @GET("/v1/mate/latest-relation")
-    Observable<ApiResult> getLatestRelation(@Query("isFirst") boolean isFirst);
+    Observable<ApiResult> getLatestRelation(@Query("cnt") int cnt);
 }
