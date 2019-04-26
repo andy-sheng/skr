@@ -36,6 +36,7 @@
                 android:layout_height="@dimen/view_17_dp"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
+                android:layout_marginBottom="@dimen/view_5_dp"
                 android:text="分"
                 android:textColor="@color/white_trans_50"
                 android:textSize="@dimen/textsize_12_dp" />
@@ -46,6 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/view_60_dp"
                 android:layout_toLeftOf="@id/left_tips_tv"
+                BitmapTextView:scale="0.9"
                 BitmapTextView:text_color="@color/white_trans_80" />
 
         </RelativeLayout>
@@ -60,6 +62,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/view_60_dp"
+                BitmapTextView:scale="0.9"
                 BitmapTextView:text_color="@color/white_trans_80" />
 
             <TextView
@@ -67,6 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/view_17_dp"
                 android:layout_alignParentBottom="true"
+                android:layout_marginBottom="@dimen/view_5_dp"
                 android:layout_toRightOf="@id/right_score_btv"
                 android:text="分"
                 android:textColor="@color/white_trans_50"

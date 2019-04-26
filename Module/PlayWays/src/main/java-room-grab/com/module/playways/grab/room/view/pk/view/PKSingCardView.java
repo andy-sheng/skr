@@ -118,6 +118,14 @@ public class PKSingCardView extends RelativeLayout {
         }
         mLeftStatus.setVisibility(GONE);
         mRightStatus.setVisibility(GONE);
+        if (mLeftSingSvga != null) {
+            mLeftSingSvga.setCallback(null);
+            mLeftSingSvga.stopAnimation(true);
+        }
+        if (mRightSingSvga != null) {
+            mRightSingSvga.setCallback(null);
+            mRightSingSvga.stopAnimation(true);
+        }
         mLeftUserInfoModel = null;
         mRightUserInfoModel = null;
         List<SPkRoundInfoModel> list = grabRoundInfoModel.getsPkRoundInfoModels();
