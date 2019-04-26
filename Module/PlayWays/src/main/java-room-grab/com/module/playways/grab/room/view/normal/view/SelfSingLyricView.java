@@ -71,7 +71,7 @@ public class SelfSingLyricView extends RelativeLayout {
     }
 
     public void initLyric() {
-        if (mRoomData != null) {
+        if (mRoomData == null) {
             MyLog.w(TAG, "playLyric mRoomData = null");
             return;
         }
