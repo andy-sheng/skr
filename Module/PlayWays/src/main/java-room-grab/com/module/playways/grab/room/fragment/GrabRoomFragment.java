@@ -911,9 +911,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
             // 当前我是演唱者
             mDengBigAnimation.setTranslationY(U.getDisplayUtils().dip2px(200));
-            mDengBigAnimation.playBurstAnimation(true);
+            mDengBigAnimation.playBurstAnimation(event.uid == MyUserInfoManager.getInstance().getUid());
         } else {
-            mDengBigAnimation.playBurstAnimation(false);
+            mDengBigAnimation.playBurstAnimation(event.uid == MyUserInfoManager.getInstance().getUid());
         }
     }
 

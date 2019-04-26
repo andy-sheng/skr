@@ -72,10 +72,10 @@ public class GrabDengBigAnimationView extends RelativeLayout {
     // 爆灯
     private void playBurstAnimationInner(PlayData playData, SVGAImageViewEx dengSvgaEx) {
         MyLog.d(TAG, "playBurstAnimationInner" + " playData=" + playData + " dengSvgaEx=" + dengSvgaEx);
-        if (playData.isFlag) {
-            U.getSoundUtils().play(TAG, R.raw.grab_olight_lowervolume);
-        } else {
+        if (playData.isFromSelf) {
             U.getSoundUtils().play(TAG, R.raw.grab_olight);
+        } else {
+            //U.getSoundUtils().play(TAG, R.raw.grab_olight_lowervolume);
         }
 
         SVGAImageView dengSvga = dengSvgaEx.mSVGAImageView;
@@ -165,10 +165,10 @@ public class GrabDengBigAnimationView extends RelativeLayout {
     }
 
     public static class PlayData {
-        boolean isFlag;   //标记是否是演唱者
+        boolean isFromSelf;   //标记爆灯的发送者自己
 
         public PlayData(boolean isFlag) {
-            this.isFlag = isFlag;
+            this.isFromSelf = isFlag;
         }
     }
 
