@@ -332,6 +332,7 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
                     }
                 })
                 .create();
+        U.getKeyBoardUtils().showSoftInputKeyBoard(getActivity());
         mEditRoomDialog.show();
     }
 
