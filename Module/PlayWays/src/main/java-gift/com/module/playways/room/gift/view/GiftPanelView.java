@@ -1,6 +1,8 @@
 package com.module.playways.room.gift.view;
 
 import android.content.Context;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
@@ -175,6 +177,16 @@ public class GiftPanelView extends FrameLayout {
                 int visibleState = mRecyclerView.getVisibility();
                 mRecyclerView.setVisibility(visibleState == VISIBLE ? GONE : VISIBLE);
                 mLlSelectedMan.setVisibility(visibleState == VISIBLE ? VISIBLE : GONE);
+
+                if (mRecyclerView.getVisibility() == VISIBLE) {
+                    Drawable drawable = U.getDrawable(R.drawable.suoyouren_left);
+                    drawable.setBounds(new Rect(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight()));
+                    mTvAllMan.setCompoundDrawables(drawable, null, null, null);
+                } else {
+                    Drawable drawable = U.getDrawable(R.drawable.suoyouren_right);
+                    drawable.setBounds(new Rect(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight()));
+                    mTvAllMan.setCompoundDrawables(drawable, null, null, null);
+                }
             }
         });
 
@@ -279,6 +291,16 @@ public class GiftPanelView extends FrameLayout {
             mGiftAllManAdapter.update(grabPlayerInfoModel);
             mRecyclerView.setVisibility(VISIBLE);
             mLlSelectedMan.setVisibility(GONE);
+        }
+
+        if (mRecyclerView.getVisibility() == VISIBLE) {
+            Drawable drawable = U.getDrawable(R.drawable.suoyouren_left);
+            drawable.setBounds(new Rect(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight()));
+            mTvAllMan.setCompoundDrawables(drawable, null, null, null);
+        } else {
+            Drawable drawable = U.getDrawable(R.drawable.suoyouren_right);
+            drawable.setBounds(new Rect(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight()));
+            mTvAllMan.setCompoundDrawables(drawable, null, null, null);
         }
     }
 

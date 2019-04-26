@@ -57,6 +57,7 @@
                 android:visibility="gone" />
 
             <com.common.view.ex.ExTextView
+                android:drawableLeft="@drawable/suoyouren_left"
                 android:id="@+id/tv_all_man"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
