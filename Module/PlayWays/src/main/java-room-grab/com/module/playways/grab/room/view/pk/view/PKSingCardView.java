@@ -128,6 +128,8 @@ public class PKSingCardView extends RelativeLayout {
         }
         mLeftUserInfoModel = null;
         mRightUserInfoModel = null;
+        mLeftAnimationFlag = false;
+        mLeftAnimationFlag = false;
         mLeftOverReason = 0;
         mRightOverReason = 0;
         List<SPkRoundInfoModel> list = grabRoundInfoModel.getsPkRoundInfoModels();
