@@ -30,6 +30,8 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.zq.dialog.InviteFriendDialog;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 
 public class InviteFriendFragment2 extends BaseFragment {
@@ -195,7 +197,14 @@ public class InviteFriendFragment2 extends BaseFragment {
         StringBuilder sb = new StringBuilder();
         sb.append("http://test.app.inframe.mobi/room/invitation")
                 .append("?skerId=").append(String.valueOf(MyUserInfoManager.getInstance().getUid()))
-                .append("&code=").append(String.valueOf(mKouLingToken));
+                .append("&code=");
+        String code = String.valueOf(mKouLingToken);
+        try {
+            code = URLEncoder.encode(code,"utf-8");
+        } catch (UnsupportedEncodingException e) {
+
+        }
+        sb.append(code);
         String mUrl = ApiManager.getInstance().findRealUrlByChannel(sb.toString());
 
         UMWeb web = new UMWeb(mUrl);
