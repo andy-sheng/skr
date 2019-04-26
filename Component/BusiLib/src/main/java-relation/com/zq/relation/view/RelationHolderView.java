@@ -73,8 +73,9 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
 
         if (mMode == UserInfoManager.RELATION_BLACKLIST) {
             mFollowTv.setVisibility(View.VISIBLE);
+            mFollowTv.setClickable(true);
             mFollowTv.setText("移出黑名单");
-            mFollowTv.setTextColor(Color.parseColor("#0C2275"));
+            mFollowTv.setTextColor(Color.parseColor("#3B4E79"));
             mFollowTv.setBackground(ContextCompat.getDrawable(U.app(), R.drawable.yellow_button_icon));
         } else {
             if (userInfoModel.getUserId() == MyUserInfoManager.getInstance().getUid()) {
@@ -84,16 +85,19 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
                 if (userInfoModel.isFriend()) {
                     mFollowTv.setVisibility(View.VISIBLE);
                     mFollowTv.setText("已互关");
+                    mFollowTv.setClickable(false);
                     mFollowTv.setTextColor(Color.parseColor("#3B4E79"));
                     mFollowTv.setBackground(null);
                 } else if (userInfoModel.isFollow()) {
                     mFollowTv.setVisibility(View.VISIBLE);
                     mFollowTv.setText("已关注");
+                    mFollowTv.setClickable(false);
                     mFollowTv.setTextColor(Color.parseColor("#CC7F00"));
                     mFollowTv.setBackground(null);
                 } else {
                     mFollowTv.setVisibility(View.VISIBLE);
                     mFollowTv.setText("+关注");
+                    mFollowTv.setClickable(true);
                     mFollowTv.setTextColor(Color.parseColor("#3B4E79"));
                     mFollowTv.setBackground(ContextCompat.getDrawable(U.app(), R.drawable.yellow_button_icon));
                 }
