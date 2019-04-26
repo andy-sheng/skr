@@ -184,7 +184,7 @@ public class GamePresenter extends RxLifeCyclePresenter {
                     MyLog.w(TAG, "checkTaskRedDot " + obj.toString());
                 }
             }
-        }, this);
+        }, this, new ApiMethods.RequestControl("checkTaskRedDot", ApiMethods.ControlType.CancelThis));
     }
 
     public void initRecommendRoom(int interval) {
