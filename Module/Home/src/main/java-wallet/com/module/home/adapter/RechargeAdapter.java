@@ -87,7 +87,7 @@ public class RechargeAdapter extends DiffAdapter<RechargeItemModel, RecyclerView
 
         public void bind(RechargeItemModel model) {
             this.mRechargeItemModel = model;
-            mTvRechargeNum.setText(model.getQuantity() + "钻石");
+            mTvRechargeNum.setText(String.valueOf(model.getQuantity()));
             mTvCash.setText(model.getPrice() / 100000 + "");
 
             if (mSelectedItem == mRechargeItemModel) {

@@ -17,14 +17,32 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/view_36_dp" />
 
-    <TextView
-        android:id="@+id/tv_recharge_num"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/view_18_dp"
-        android:textColor="#3B4E79" />
+        android:layout_marginTop="@dimen/view_10_dp">
+
+        <TextView
+            android:id="@+id/tv_recharge_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="60"
+            android:textColor="#3B4E79"
+            android:textSize="@dimen/textsize_22_dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:textStyle="bold"
+            android:layout_marginBottom="@dimen/view_2_dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:text="钻石"
+            android:textColor="#3B4E79"
+            android:textSize="@dimen/textsize_12_dp" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -47,7 +65,7 @@
             android:layout_height="wrap_content"
             android:text="1"
             android:textColor="#3B4E79"
-            android:textSize="@dimen/textsize_20_dp" />
+            android:textSize="@dimen/textsize_12_dp" />
 
     </LinearLayout>
 </com.common.view.ex.ExRelativeLayout>
