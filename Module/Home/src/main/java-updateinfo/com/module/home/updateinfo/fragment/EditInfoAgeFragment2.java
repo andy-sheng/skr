@@ -93,6 +93,31 @@ public class EditInfoAgeFragment2 extends BaseFragment {
             @Override
             public void clickValid(View v) {
                 // 修改个人信息
+                mYearDate = mYear.getText().toString();
+                mMonthDate = mMonth.getText().toString();
+                mDayDate = mDay.getText().toString();
+
+                if (!TextUtils.isEmpty(mYearDate) && mYearDate.length() < 4) {
+                    int length = mYearDate.length();
+                    for (int i = length; i < 4; i++) {
+                        mYearDate = "0" + mYearDate;
+                    }
+                }
+
+                if (!TextUtils.isEmpty(mMonthDate) && mMonthDate.length() < 2) {
+                    int length = mMonthDate.length();
+                    for (int i = length; i < 2; i++) {
+                        mMonthDate = "0" + mMonthDate;
+                    }
+                }
+
+                if (!TextUtils.isEmpty(mDayDate) && mDayDate.length() < 2) {
+                    int length = mDayDate.length();
+                    for (int i = length; i < 2; i++) {
+                        mDayDate = "0" + mDayDate;
+                    }
+                }
+
                 String bir = mYearDate + "-" + mMonthDate + "-" + mDayDate;
                 if (bir.equals(MyUserInfoManager.getInstance().getBirthday())) {
                     // 无任何变化
