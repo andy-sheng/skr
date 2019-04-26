@@ -211,7 +211,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
                         public void run() {
                             IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
                             if (iRankingModeService != null) {
-                                iRankingModeService.tryGoGrabRoom(friendRoomModel.getRoomInfo().getRoomID());
+                                iRankingModeService.tryGoGrabRoom(friendRoomModel.getRoomInfo().getRoomID(),0);
                             }
                         }
                     }, true);

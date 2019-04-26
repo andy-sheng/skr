@@ -56,10 +56,11 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
     Disposable mJoinRoomDisposable;
 
     @Override
-    public void tryGoGrabRoom(int roomID) {
+    public void tryGoGrabRoom(int roomID,int inviteType) {
         GrabRoomServerApi roomServerApi = ApiManager.getInstance().createService(GrabRoomServerApi.class);
         HashMap<String, Object> map = new HashMap<>();
         map.put("roomID", roomID);
+        map.put("inviteType", inviteType);
         RequestBody body = RequestBody.create(MediaType.parse(APPLICATION_JSON), JSON.toJSONString(map));
         mJoinRoomDisposable = ApiMethods.subscribe(roomServerApi.joinGrabRoom(body), new ApiObserver<ApiResult>() {
             @Override

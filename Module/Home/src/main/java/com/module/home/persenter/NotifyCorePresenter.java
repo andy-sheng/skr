@@ -141,7 +141,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
                                         UserInfoManager.getInstance().beFriend(userInfoModel.getUserId(), null);
                                     }
                                 }
-                                tryGoGrabRoom(event.roomId);
+                                tryGoGrabRoom(event.roomId,2);
                             }
                         });
                         confirmDialog.show();
@@ -151,7 +151,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
             });
         } else {
             // 不需要直接进
-            tryGoGrabRoom(event.roomId);
+            tryGoGrabRoom(event.roomId,2);
         }
     }
 
@@ -216,14 +216,14 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
         });
     }
 
-    void tryGoGrabRoom(int roomID) {
+    void tryGoGrabRoom(int roomID,int inviteType) {
         if (mSkrAudioPermission != null) {
             mSkrAudioPermission.ensurePermission(new Runnable() {
                 @Override
                 public void run() {
                     IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
                     if (iRankingModeService != null) {
-                        iRankingModeService.tryGoGrabRoom(roomID);
+                        iRankingModeService.tryGoGrabRoom(roomID,inviteType);
                     }
                 }
             }, true);
@@ -279,7 +279,7 @@ public class NotifyCorePresenter extends RxLifeCyclePresenter {
 
             @Override
             public void onAgree() {
-                tryGoGrabRoom(roomID);
+                tryGoGrabRoom(roomID,1);
                 mUiHandler.removeMessages(MSG_DISMISS_INVITE_FLOAT_WINDOW);
                 FloatWindow.destroy(TAG_INVITE_FOALT_WINDOW);
             }
