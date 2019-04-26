@@ -74,7 +74,7 @@ public class GrabTopView extends RelativeLayout {
         if (mCoin != event.getCoinBalance()) {
             mCoin = event.getCoinBalance();
             mTvCoin.setText(event.getCoinBalance() + "");
-            playCoinChangeAnimation(event.getCoinBalance());
+//            playCoinChangeAnimation(event.getCoinBalance());
         }
     }
 
