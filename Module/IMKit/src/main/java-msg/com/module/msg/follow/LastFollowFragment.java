@@ -24,11 +24,16 @@ import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.common.view.titlebar.CommonTitleBar;
+import com.kingja.loadsir.callback.Callback;
+import com.kingja.loadsir.core.LoadService;
+import com.kingja.loadsir.core.LoadSir;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.zq.person.fragment.OtherPersonFragment2;
+import com.zq.relation.callback.FansEmptyCallback;
+import com.zq.relation.callback.FriendsEmptyCallback;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -44,6 +49,8 @@ public class LastFollowFragment extends BaseFragment {
     RecyclerView mContentRv;
 
     LastFollowAdapter mLastFollowAdapter;
+
+    LoadService mLoadService;
 
     @Override
     public int initView() {
@@ -105,6 +112,16 @@ public class LastFollowFragment extends BaseFragment {
                 U.getFragmentUtils().popFragment(LastFollowFragment.this);
             }
         });
+
+        LoadSir mLoadSir = new LoadSir.Builder()
+                .addCallback(new LastFollowEmptyCallback())
+                .build();
+        mLoadService = mLoadSir.register(mRefreshLayout, new Callback.OnReloadListener() {
+            @Override
+            public void onReload(View v) {
+                getLastRelations();
+            }
+        });
     }
 
     @Override
@@ -129,8 +146,10 @@ public class LastFollowFragment extends BaseFragment {
     private void showLastRelation(List<LastFollowModel> list) {
         mRefreshLayout.finishRefresh();
         if (list != null && list.size() > 0) {
+            mLoadService.showSuccess();
             mLastFollowAdapter.setDataList(list);
         } else {
+            mLoadService.showCallback(LastFollowEmptyCallback.class);
             MyLog.w(TAG, "showLastRelation" + " list=" + list);
         }
 
