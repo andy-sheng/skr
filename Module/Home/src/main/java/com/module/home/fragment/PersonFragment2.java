@@ -44,7 +44,6 @@ import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.common.view.titlebar.CommonTitleBar;
 import com.component.busilib.constans.GameModeType;
-import com.component.busilib.manager.WeakRedDotManager;
 import com.component.busilib.view.BitmapTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.imagebrowse.ImageBrowseView;
@@ -76,7 +75,7 @@ import java.util.List;
 
 import model.RelationNumModel;
 
-public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRedDotManager.WeakRedDotListener {
+public class PersonFragment2 extends BaseFragment implements IPersonView {
 
     SmartRefreshLayout mSmartRefresh;
     ClassicsHeader mClassicsHeader;
@@ -148,10 +147,6 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
         initGameInfoArea();
         initPhotoArea();
 
-        WeakRedDotManager.getInstance().addListener(this);
-        mFansRedDotValue = U.getPreferenceUtils().getSettingInt(WeakRedDotManager.SP_KEY_NEW_FANS, 0);
-        mFriendRedDotValue = U.getPreferenceUtils().getSettingInt(WeakRedDotManager.SP_KEY_NEW_FRIEND, 0);
-        refreshPersonRedDot();
         refreshUserInfoView();
     }
 
@@ -276,7 +271,6 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
         mFriendsArea.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FRIEND_RED_ROD_TYPE, 0);
                 // 好友，双向关注
                 openRelationFragment(UserInfoManager.RELATION_FRIENDS);
             }
@@ -285,7 +279,6 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
         mFansArea.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.FANS_RED_ROD_TYPE, 0);
                 // 粉丝，我关注的
                 openRelationFragment(UserInfoManager.RELATION_FANS);
             }
@@ -669,42 +662,7 @@ public class PersonFragment2 extends BaseFragment implements IPersonView, WeakRe
     }
 
     @Override
-    public int[] acceptType() {
-        return new int[]{
-                WeakRedDotManager.FANS_RED_ROD_TYPE,
-                WeakRedDotManager.FRIEND_RED_ROD_TYPE
-        };
-    }
-
-    @Override
-    public void onWeakRedDotChange(int type, int value) {
-        if (type == WeakRedDotManager.FANS_RED_ROD_TYPE) {
-            mFansRedDotValue = value;
-        } else if (type == WeakRedDotManager.FRIEND_RED_ROD_TYPE) {
-            mFriendRedDotValue = value;
-        }
-
-        refreshPersonRedDot();
-    }
-
-    private void refreshPersonRedDot() {
-        // 关注和粉丝红点
-        if (mFansRedDotValue < 1) {
-            mFansRedDot.setVisibility(View.GONE);
-        } else {
-            mFansRedDot.setVisibility(View.VISIBLE);
-        }
-
-        if (mFriendRedDotValue < 1) {
-            mFriendRedDot.setVisibility(View.GONE);
-        } else {
-            mFriendRedDot.setVisibility(View.VISIBLE);
-        }
-    }
-
-    @Override
     public void destroy() {
         super.destroy();
-        WeakRedDotManager.getInstance().removeListener(this);
     }
 }

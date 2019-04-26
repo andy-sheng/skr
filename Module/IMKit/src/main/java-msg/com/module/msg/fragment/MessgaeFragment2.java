@@ -24,7 +24,9 @@ import com.common.rxretrofit.ApiResult;
 import com.common.utils.FragmentUtils;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
+import com.common.view.ex.ExImageView;
 import com.common.view.titlebar.CommonTitleBar;
+import com.component.busilib.manager.WeakRedDotManager;
 import com.module.RouterConstants;
 import com.module.msg.IMessageFragment;
 import com.module.msg.follow.LastFollowFragment;
@@ -38,12 +40,13 @@ import io.rong.imkit.R;
 import io.rong.imkit.fragment.ConversationListFragment;
 import io.rong.imlib.model.Conversation;
 
-public class MessgaeFragment2 extends BaseFragment implements IMessageFragment {
+public class MessgaeFragment2 extends BaseFragment implements IMessageFragment, WeakRedDotManager.WeakRedDotListener {
 
     RelativeLayout mMainActContainer;
     CommonTitleBar mTitlebar;
     RelativeLayout mLatestFollowArea;
     ImageView mFollowAreaIcon;
+    ExImageView mFollowRedDot;
     TextView mFollowTips;
     TextView mFollowTimeTv;
     RelativeLayout mContent;
@@ -57,6 +60,7 @@ public class MessgaeFragment2 extends BaseFragment implements IMessageFragment {
     Fragment mConversationListFragment; //获取融云的会话列表对象
 
     long mLastUpdateTime = 0;  //最新关注第一条刷新时间
+    int mMessageFollowRedDotValue = 0;
 
     @Override
     public int initView() {
@@ -69,6 +73,7 @@ public class MessgaeFragment2 extends BaseFragment implements IMessageFragment {
         mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
         mLatestFollowArea = (RelativeLayout) mRootView.findViewById(R.id.latest_follow_area);
         mFollowAreaIcon = (ImageView) mRootView.findViewById(R.id.follow_area_icon);
+        mFollowRedDot = (ExImageView) mRootView.findViewById(R.id.follow_red_dot);
         mFollowTips = (TextView) mRootView.findViewById(R.id.follow_tips);
         mFollowTimeTv = (TextView) mRootView.findViewById(R.id.follow_time_tv);
         mContent = (RelativeLayout) mRootView.findViewById(R.id.content);
@@ -138,8 +143,15 @@ public class MessgaeFragment2 extends BaseFragment implements IMessageFragment {
                                 .setAddToBackStack(true)
                                 .setHasAnimation(true)
                                 .build());
+
+                WeakRedDotManager.getInstance().updateWeakRedRot(WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE, 0);
             }
         });
+
+
+        WeakRedDotManager.getInstance().addListener(this);
+        mMessageFollowRedDotValue = U.getPreferenceUtils().getSettingInt(WeakRedDotManager.SP_KEY_NEW_MESSAGE_FOLLOW, 0);
+        refreshMessageRedDot();
     }
 
     private void showShareDialog() {
@@ -208,6 +220,8 @@ public class MessgaeFragment2 extends BaseFragment implements IMessageFragment {
         if (mInviteFriendDialog != null) {
             mInviteFriendDialog.dismiss(false);
         }
+
+        WeakRedDotManager.getInstance().removeListener(this);
     }
 
     @Override
@@ -245,5 +259,28 @@ public class MessgaeFragment2 extends BaseFragment implements IMessageFragment {
     @Override
     public boolean isInViewPager() {
         return true;
+    }
+
+    @Override
+    public int[] acceptType() {
+        return new int[]{
+                WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE};
+    }
+
+    @Override
+    public void onWeakRedDotChange(int type, int value) {
+        if (type == WeakRedDotManager.MESSAGE_FOLLOW_RED_ROD_TYPE) {
+            mMessageFollowRedDotValue = value;
+        }
+
+        refreshMessageRedDot();
+    }
+
+    private void refreshMessageRedDot() {
+        if (mMessageFollowRedDotValue < 1) {
+            mFollowRedDot.setVisibility(View.GONE);
+        } else {
+            mFollowRedDot.setVisibility(View.VISIBLE);
+        }
     }
 }

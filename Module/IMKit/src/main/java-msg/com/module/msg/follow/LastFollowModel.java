@@ -3,8 +3,8 @@ package com.module.msg.follow;
 import java.io.Serializable;
 
 public class LastFollowModel implements Serializable {
-    public static final int RELATION_FOLLOW_ME = 1;       //关注的relation
-    public static final int RELATION_ME_FOLLOW = 2;         //我关注的relation
+    public static final int RELATION_ME_FOLLOW = 1;         //我关注的relation
+    public static final int RELATION_FOLLOW_ME = 2;       //关注的relation
 
     /**
      * userID : 1134740
