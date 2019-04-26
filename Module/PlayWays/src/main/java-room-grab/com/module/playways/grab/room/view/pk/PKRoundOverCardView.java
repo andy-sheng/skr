@@ -111,7 +111,7 @@ public class PKRoundOverCardView extends RelativeLayout {
 
             mRightUserInfoModel = mRoomData.getUserInfo(list.get(1).getUserID());
             this.mRightScore = String.format("%.1f", list.get(1).getScore());
-            this.mRightOverReason = list.get(0).getOverReason();
+            this.mRightOverReason = list.get(1).getOverReason();
         }
 
         if (mLeftUserInfoModel != null) {
