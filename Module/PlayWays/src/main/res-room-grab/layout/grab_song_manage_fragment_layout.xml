@@ -52,20 +52,16 @@
 
         <com.common.view.ex.ExTextView
             android:id="@+id/edit_room_name"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/view_32_dp"
             android:layout_marginLeft="@dimen/view_20_dp"
             android:layout_marginTop="@dimen/view_40_dp"
-            android:layout_marginRight="@dimen/view_20_dp"
-            android:layout_toLeftOf="@+id/tv_selected_song"
             android:gravity="center_vertical"
+            android:paddingRight="@dimen/view_115_dp"
             android:paddingLeft="@dimen/view_25_dp"
             android:text="修改房间名"
-            android:textColor="@color/white_trans_50"
-            android:textSize="@dimen/textsize_14_dp"
-            app:bl_corners_radius="@dimen/view_16_dp"
-            app:bl_shape="rectangle"
-            app:bl_solid_color="@color/black_trans_20" />
+            android:textColor="@color/white_trans_80"
+            android:textSize="@dimen/textsize_14_dp" />
 
         <ImageView
             android:layout_width="@dimen/view_14_dp"
@@ -75,6 +71,15 @@
             android:layout_marginLeft="@dimen/view_8_dp"
             android:layout_marginTop="@dimen/view_10_dp"
             android:background="@drawable/ycdd_owner_icon" />
+        
+        <ImageView
+            android:layout_width="@dimen/view_13_dp"
+            android:layout_height="@dimen/view_13_dp"
+            android:layout_alignTop="@id/edit_room_name"
+            android:layout_toRightOf="@id/edit_room_name"
+            android:layout_marginLeft="-110dp"
+            android:layout_marginTop="@dimen/view_10_dp"
+            android:background="@drawable/ycdd_edit_roomname_icon"/>
 
         <com.common.view.ex.ExLinearLayout
             android:id="@+id/fl_song_list_container"
