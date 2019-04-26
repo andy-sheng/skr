@@ -102,8 +102,13 @@ public class PKSelfSingCardView extends RelativeLayout {
         mPkSingCardView.playScaleAnimation(userId, false, new PKSingCardView.AnimationListerner() {
             @Override
             public void onAnimationEndExcludeSvga() {
-                mPkSingCardView.setVisibility(GONE);
+                mPkSingCardView.playWithDraw();
                 playRealLyric();
+            }
+
+            @Override
+            public void onAnimationEndWithDraw() {
+
             }
         });
 
@@ -202,6 +207,7 @@ public class PKSelfSingCardView extends RelativeLayout {
         if (visibility == GONE) {
             mSingCountDownView.reset();
             mPkSelfSingLyricView.reset();
+            mPkSingCardView.reset();
         }
     }
 

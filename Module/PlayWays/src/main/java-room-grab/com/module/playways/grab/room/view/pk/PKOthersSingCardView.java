@@ -129,6 +129,11 @@ public class PKOthersSingCardView extends RelativeLayout {
                     mCountDownStatus = COUNT_DOWN_STATUS_PLAYING;
                     countDown("动画播放完毕");
                 }
+
+                @Override
+                public void onAnimationEndWithDraw() {
+                    // TODO: 2019/4/26 不会调用
+                }
             });
         }
     }
