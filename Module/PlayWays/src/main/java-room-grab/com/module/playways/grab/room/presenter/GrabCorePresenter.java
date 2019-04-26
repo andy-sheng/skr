@@ -1757,7 +1757,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabSomeOneLightOffEvent event) {
         MyLog.d(TAG, "onEvent" + " event=" + event);
-        pretendLightMsgComment(event.roundInfo.getUserID(), event.uid, false);
         if (event.roundInfo.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()) {
             if (event.roundInfo.getsPkRoundInfoModels().size() > 0) {
                 pretendLightMsgComment(event.roundInfo.getsPkRoundInfoModels().get(0).getUserID(), event.uid, false);
