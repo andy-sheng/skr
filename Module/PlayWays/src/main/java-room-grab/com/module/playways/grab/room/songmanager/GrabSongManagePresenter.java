@@ -334,6 +334,8 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     U.getToastUtil().showShort("修改房间名成功");
+                    mGrabRoomData.setRoomName(roomName);
+                    mIGrabSongManageView.updateRoomNameSuccess();
                 } else {
                     U.getToastUtil().showShort(result.getErrmsg() + "");
                 }

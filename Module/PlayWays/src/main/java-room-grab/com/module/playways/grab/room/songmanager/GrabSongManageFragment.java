@@ -185,6 +185,11 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
     }
 
     @Override
+    public void updateRoomNameSuccess() {
+        mEditRoomName.setText(mRoomData.getRoomName());
+    }
+
+    @Override
     public void hasMoreSongList(boolean hasMore) {
         mRefreshLayout.setEnableLoadMore(hasMore);
         mRefreshLayout.finishLoadMore();
@@ -217,7 +222,6 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
                 showEditRoomDialog();
             }
         });
-
 
         mSearchSongIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
