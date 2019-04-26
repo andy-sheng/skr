@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/view_15_dp">
+    android:layout_height="wrap_content">
 
     <com.common.image.fresco.BaseImageView
         android:id="@+id/avatar_iv"
@@ -21,4 +20,9 @@
         android:textColor="#364E7C"
         android:textSize="@dimen/textsize_18_dp" />
 
+    <View
+        android:id="@+id/blank_view"
+        android:layout_width="1dp"
+        android:layout_height="@dimen/view_15_dp"
+        android:layout_below="@+id/lyric_line_tv" />
 </RelativeLayout>

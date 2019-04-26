@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
@@ -72,75 +73,111 @@ public class ChorusSelfLyricAdapter extends DiffAdapter<String, ChorusSelfLyricA
 
     }
 
+    int colorDisable = Color.parseColor("#beb19d");
+    int colorEnable = Color.parseColor("#364E7C");
+
     class ChorusSelfLyricHolder extends RecyclerView.ViewHolder {
 
+        View mBlankView;
         BaseImageView mAvatarIv;
         ExTextView mLyricLineTv;
 
         public ChorusSelfLyricHolder(View itemView) {
             super(itemView);
-
             mAvatarIv = (BaseImageView) itemView.findViewById(R.id.avatar_iv);
             mLyricLineTv = (ExTextView) itemView.findViewById(R.id.lyric_line_tv);
+            mBlankView =  itemView.findViewById(R.id.blank_view);
         }
 
         public void bindData(String text, int position) {
-
             mLyricLineTv.setText(text);
-            if (position % 2 == 0) {
-                // left
-                if (mLeft.mUserInfoModel != null && !mLeftGiveUp) {
+
+            if (!mLeftGiveUp && !mRightGiveUp) {
+                mBlankView.setVisibility(View.VISIBLE);
+                if (position % 2 == 0) {
                     if (mLeft.mUserInfoModel.getUserId() == MyUserInfoManager.getInstance().getUid()) {
                         // 左边是自己
-                        mLyricLineTv.setTextColor(Color.parseColor("#364E7C"));
+                        mLyricLineTv.setTextColor(colorEnable);
                     } else {
-                        mLyricLineTv.setTextColor(Color.parseColor("#beb19d"));
+                        mLyricLineTv.setTextColor(colorDisable);
                     }
-
-                    mAvatarIv.setVisibility(View.VISIBLE);
-                    AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mLeft.mUserInfoModel.getAvatar())
-                            .setCircle(true)
-                            .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                            .setBorderColor(Color.WHITE)
-                            .build());
+                    if (mLeft.mUserInfoModel != null) {
+                        mAvatarIv.setVisibility(View.VISIBLE);
+                        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mLeft.mUserInfoModel.getAvatar())
+                                .setCircle(true)
+                                .setBorderWidth(U.getDisplayUtils().dip2px(2))
+                                .setBorderColor(Color.WHITE)
+                                .build());
+                    } else {
+                        mAvatarIv.setVisibility(View.GONE);
+                    }
                 } else {
-                    mAvatarIv.setVisibility(View.GONE);
-                    if (mLeft.mUserInfoModel.getUserId() == MyUserInfoManager.getInstance().getUid()) {
-                        // 左边是自己，自己不唱了
-                        mLyricLineTv.setTextColor(Color.parseColor("#beb19d"));
-                    } else {
-                        //对手不唱了
-                        mLyricLineTv.setTextColor(Color.parseColor("#364E7C"));
-                    }
-                    MyLog.w(TAG, "bindData" + " text=" + text + " position=" + position);
-                }
-            } else {
-                // right
-                if (mRight.mUserInfoModel != null && !mRightGiveUp) {
                     if (mRight.mUserInfoModel.getUserId() == MyUserInfoManager.getInstance().getUid()) {
                         // 右边是自己
-                        mLyricLineTv.setTextColor(Color.parseColor("#364E7C"));
+                        mLyricLineTv.setTextColor(colorEnable);
                     } else {
-                        mLyricLineTv.setTextColor(Color.parseColor("#beb19d"));
+                        mLyricLineTv.setTextColor(colorDisable);
                     }
-                    mAvatarIv.setVisibility(View.VISIBLE);
-                    AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mRight.mUserInfoModel.getAvatar())
-                            .setCircle(true)
-                            .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                            .setBorderColor(Color.WHITE)
-                            .build());
+                    if (mRight.mUserInfoModel != null) {
+                        mAvatarIv.setVisibility(View.VISIBLE);
+                        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mRight.mUserInfoModel.getAvatar())
+                                .setCircle(true)
+                                .setBorderWidth(U.getDisplayUtils().dip2px(2))
+                                .setBorderColor(Color.WHITE)
+                                .build());
+                    } else {
+                        mAvatarIv.setVisibility(View.GONE);
+                    }
+                }
+            } else if (mLeftGiveUp) {
+                mBlankView.setVisibility(View.GONE);
+                // 左边的人不唱了
+                if (mLeft.mUserInfoModel.getUserId() == MyUserInfoManager.getInstance().getUid()) {
+                    // 左边是自己 ,自己放弃了,设置成灰色
+                    mLyricLineTv.setTextColor(colorDisable);
+                } else {
+                    mLyricLineTv.setTextColor(colorEnable);
+                }
+                if (position == 0) {
+                    // 只有第一排有头像，头像设置成右边的人
+                    if (mRight.mUserInfoModel != null) {
+                        mAvatarIv.setVisibility(View.VISIBLE);
+                        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mRight.mUserInfoModel.getAvatar())
+                                .setCircle(true)
+                                .setBorderWidth(U.getDisplayUtils().dip2px(2))
+                                .setBorderColor(Color.WHITE)
+                                .build());
+                    } else {
+                        mAvatarIv.setVisibility(View.GONE);
+                    }
                 } else {
                     mAvatarIv.setVisibility(View.GONE);
-                    if (mRight.mUserInfoModel.getUserId() == MyUserInfoManager.getInstance().getUid()) {
-                        // 右边是自己，自己不唱了
-                        mLyricLineTv.setTextColor(Color.parseColor("#beb19d"));
+                }
+            } else if (mRightGiveUp) {
+                mBlankView.setVisibility(View.GONE);
+                if (mRight.mUserInfoModel.getUserId() == MyUserInfoManager.getInstance().getUid()) {
+                    // 右边是自己，自己放弃了,设置成灰色
+                    mLyricLineTv.setTextColor(colorDisable);
+                } else {
+                    mLyricLineTv.setTextColor(colorEnable);
+                }
+                if (position == 0) {
+                    // 只有第一排有头像，头像设置成右边的人
+                    if (mRight.mUserInfoModel != null) {
+                        mAvatarIv.setVisibility(View.VISIBLE);
+                        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mRight.mUserInfoModel.getAvatar())
+                                .setCircle(true)
+                                .setBorderWidth(U.getDisplayUtils().dip2px(2))
+                                .setBorderColor(Color.WHITE)
+                                .build());
                     } else {
-                        //对手不唱了
-                        mLyricLineTv.setTextColor(Color.parseColor("#364E7C"));
+                        mAvatarIv.setVisibility(View.GONE);
                     }
-                    MyLog.w(TAG, "bindData" + " text=" + text + " position=" + position);
+                } else {
+                    mAvatarIv.setVisibility(View.GONE);
                 }
             }
+
         }
     }
 }

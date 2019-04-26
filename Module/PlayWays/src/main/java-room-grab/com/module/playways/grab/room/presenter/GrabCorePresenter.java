@@ -28,7 +28,9 @@ import com.common.upload.UploadCallback;
 import com.common.upload.UploadParams;
 import com.common.utils.ActivityUtils;
 import com.common.utils.HandlerTaskTimer;
+import com.module.playways.grab.room.event.SomeOneLeavePlaySeatEvent;
 import com.module.playways.grab.room.model.ChorusRoundInfoModel;
+import com.module.playways.grab.room.model.SPkRoundInfoModel;
 import com.module.playways.room.msg.event.BigGiftBrushMsgEvent;
 import com.module.playways.room.msg.event.GiftBrushMsgEvent;
 import com.zq.live.proto.Room.ERoundOverReason;
@@ -1511,7 +1513,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 });
                 checkMachineUser(now.getUserID());
             }
-            if(now.getStatus() == EQRoundStatus.QRS_CHO_SING.getValue()){
+            if (now.getStatus() == EQRoundStatus.QRS_CHO_SING.getValue()) {
                 pretendSystemMsg("合唱配对成功");
             }
         }
@@ -1756,15 +1758,15 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
     public void onEvent(GrabSomeOneLightOffEvent event) {
         MyLog.d(TAG, "onEvent" + " event=" + event);
         pretendLightMsgComment(event.roundInfo.getUserID(), event.uid, false);
-        if(event.roundInfo.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()){
-            if(event.roundInfo.getsPkRoundInfoModels().size()>0){
-                pretendLightMsgComment(event.roundInfo.getsPkRoundInfoModels().get(0).getUserID(),event.uid,false);
+        if (event.roundInfo.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()) {
+            if (event.roundInfo.getsPkRoundInfoModels().size() > 0) {
+                pretendLightMsgComment(event.roundInfo.getsPkRoundInfoModels().get(0).getUserID(), event.uid, false);
             }
-        }else if(event.roundInfo.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()){
-            if(event.roundInfo.getsPkRoundInfoModels().size()>1){
-                pretendLightMsgComment(event.roundInfo.getsPkRoundInfoModels().get(1).getUserID(),event.uid,false);
+        } else if (event.roundInfo.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
+            if (event.roundInfo.getsPkRoundInfoModels().size() > 1) {
+                pretendLightMsgComment(event.roundInfo.getsPkRoundInfoModels().get(1).getUserID(), event.uid, false);
             }
-        }else{
+        } else {
             pretendLightMsgComment(event.roundInfo.getUserID(), event.uid, false);
         }
     }
@@ -1776,15 +1778,15 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabSomeOneLightBurstEvent event) {
-        if(event.roundInfo.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()){
-            if(event.roundInfo.getsPkRoundInfoModels().size()>0){
-                pretendLightMsgComment(event.roundInfo.getsPkRoundInfoModels().get(0).getUserID(),event.uid,true);
+        if (event.roundInfo.getStatus() == EQRoundStatus.QRS_SPK_FIRST_PEER_SING.getValue()) {
+            if (event.roundInfo.getsPkRoundInfoModels().size() > 0) {
+                pretendLightMsgComment(event.roundInfo.getsPkRoundInfoModels().get(0).getUserID(), event.uid, true);
             }
-        }else if(event.roundInfo.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()){
-            if(event.roundInfo.getsPkRoundInfoModels().size()>1){
-                pretendLightMsgComment(event.roundInfo.getsPkRoundInfoModels().get(1).getUserID(),event.uid,true);
+        } else if (event.roundInfo.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
+            if (event.roundInfo.getsPkRoundInfoModels().size() > 1) {
+                pretendLightMsgComment(event.roundInfo.getsPkRoundInfoModels().get(1).getUserID(), event.uid, true);
             }
-        }else{
+        } else {
             pretendLightMsgComment(event.roundInfo.getUserID(), event.uid, true);
         }
     }
@@ -1802,10 +1804,10 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         if (singerModel != null && playerInfoModel != null) {
             boolean isChorus = false;
             GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
-            if(now!=null){
+            if (now != null) {
                 isChorus = now.isChorusRound();
             }
-            CommentLightModel commentLightModel = new CommentLightModel(mRoomData.getGameType(), playerInfoModel, singerModel, isBao,isChorus);
+            CommentLightModel commentLightModel = new CommentLightModel(mRoomData.getGameType(), playerInfoModel, singerModel, isBao, isChorus);
             EventBus.getDefault().post(new PretendCommentMsgEvent(commentLightModel));
         }
     }
@@ -1876,17 +1878,32 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             MyLog.d(TAG, "有人离开房间,id=" + event.userID);
             GrabRoundInfoModel grabRoundInfoModel = mRoomData.getExpectRoundInfo();
             grabRoundInfoModel.removeUser(true, event.userID);
-            if (grabRoundInfoModel != null) {
-                for(ChorusRoundInfoModel chorusRoundInfoModel:grabRoundInfoModel.getChorusRoundInfoModels()){
-                    if(chorusRoundInfoModel.getUserID()==event.userID){
-                        chorusRoundInfoModel.userExit();
-                    }
-                }
-            }
+
         } else {
             MyLog.w(TAG, "有人离开房间了,但是不是这个轮次：userID " + event.userID + ", seq " + event.roundSeq + "，当前轮次是 " + mRoomData.getExpectRoundInfo());
         }
     }
+
+    /**
+     * 某人离开选手席
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(SomeOneLeavePlaySeatEvent event) {
+        GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
+        if (grabRoundInfoModel != null) {
+            for (ChorusRoundInfoModel chorusRoundInfoModel : grabRoundInfoModel.getChorusRoundInfoModels()) {
+                if(event.mPlayerInfoModel!=null) {
+                    if (chorusRoundInfoModel.getUserID() == event.mPlayerInfoModel.getUserID()) {
+                        chorusRoundInfoModel.userExit();
+                        pretendGiveUp(mRoomData.getUserInfo(event.mPlayerInfoModel.getUserID()));
+                    }
+                }
+            }
+        }
+    }
+
 
     /**
      * 金币变化
@@ -1934,20 +1951,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                                     U.getToastUtil().showShort(userInfoModel.getNickname() + "已经退出合唱");
                                 }
                             }
-                            if (userInfoModel != null) {
-                                CommentTextModel commentModel = new CommentTextModel();
-                                commentModel.setUserId(userInfoModel.getUserId());
-                                commentModel.setAvatar(userInfoModel.getAvatar());
-                                commentModel.setUserName(userInfoModel.getNickname());
-                                commentModel.setAvatarColor(Color.WHITE);
-                                SpannableStringBuilder stringBuilder;
-                                SpanUtils spanUtils = new SpanUtils()
-                                        .append(userInfoModel.getNickname() + " ").setForegroundColor(Color.parseColor("#DF7900"))
-                                        .append("不唱了").setForegroundColor(Color.parseColor("#586D94"));
-                                stringBuilder = spanUtils.create();
-                                commentModel.setStringBuilder(stringBuilder);
-                                EventBus.getDefault().post(new PretendCommentMsgEvent(commentModel));
-                            }
+                            pretendGiveUp(userInfoModel);
                             break;
                         }
                     }
@@ -1967,26 +1971,36 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             if (now != null) {
                 now.tryUpdateRoundInfoModel(event.mRoundInfoModel, true);
 //                // PK 第一个人不唱了 加个弹幕
-//                if(now.getsPkRoundInfoModels().size()>0){
-//                    if(now.getsPkRoundInfoModels().get(0).getOverReason() == EQRoundOverReason.ROR_SELF_GIVE_UP.getValue()){
-//                        UserInfoModel userInfoModel = mRoomData.getUserInfo(now.getsPkRoundInfoModels().get(0).getUserID());
-//                        if (userInfoModel != null) {
-//                            CommentTextModel commentModel = new CommentTextModel();
-//                            commentModel.setUserId(userInfoModel.getUserId());
-//                            commentModel.setAvatar(userInfoModel.getAvatar());
-//                            commentModel.setUserName(userInfoModel.getNickname());
-//                            commentModel.setAvatarColor(Color.WHITE);
-//                            SpannableStringBuilder stringBuilder;
-//                            SpanUtils spanUtils = new SpanUtils()
-//                                    .append(userInfoModel.getNickname() + " ").setForegroundColor(Color.parseColor("#DF7900"))
-//                                    .append("不唱了").setForegroundColor(Color.parseColor("#586D94"));
-//                            stringBuilder = spanUtils.create();
-//                            commentModel.setStringBuilder(stringBuilder);
-//                            EventBus.getDefault().post(new PretendCommentMsgEvent(commentModel));
-//                        }
-//                    }
-//                }
+                if (now.getsPkRoundInfoModels().size() > 0) {
+                    if (now.getsPkRoundInfoModels().get(0).getOverReason() == EQRoundOverReason.ROR_SELF_GIVE_UP.getValue()) {
+                        UserInfoModel userInfoModel = mRoomData.getUserInfo(now.getsPkRoundInfoModels().get(0).getUserID());
+                        pretendGiveUp(userInfoModel);
+                    }
+                }
+                if (now.getsPkRoundInfoModels().size() > 1) {
+                    if (now.getsPkRoundInfoModels().get(1).getOverReason() == EQRoundOverReason.ROR_SELF_GIVE_UP.getValue()) {
+                        UserInfoModel userInfoModel = mRoomData.getUserInfo(now.getsPkRoundInfoModels().get(1).getUserID());
+                        pretendGiveUp(userInfoModel);
+                    }
+                }
             }
+        }
+    }
+
+    private void pretendGiveUp(UserInfoModel userInfoModel) {
+        if (userInfoModel != null) {
+            CommentTextModel commentModel = new CommentTextModel();
+            commentModel.setUserId(userInfoModel.getUserId());
+            commentModel.setAvatar(userInfoModel.getAvatar());
+            commentModel.setUserName(userInfoModel.getNickname());
+            commentModel.setAvatarColor(Color.WHITE);
+            SpannableStringBuilder stringBuilder;
+            SpanUtils spanUtils = new SpanUtils()
+                    .append(userInfoModel.getNickname() + " ").setForegroundColor(Color.parseColor("#DF7900"))
+                    .append("不唱了").setForegroundColor(Color.parseColor("#586D94"));
+            stringBuilder = spanUtils.create();
+            commentModel.setStringBuilder(stringBuilder);
+            EventBus.getDefault().post(new PretendCommentMsgEvent(commentModel));
         }
     }
 

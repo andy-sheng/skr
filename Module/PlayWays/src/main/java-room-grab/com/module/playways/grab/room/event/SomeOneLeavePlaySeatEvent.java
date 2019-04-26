@@ -6,7 +6,7 @@ import com.module.playways.grab.room.model.GrabPlayerInfoModel;
  * 离开观众席
  */
 public class SomeOneLeavePlaySeatEvent {
-    GrabPlayerInfoModel mPlayerInfoModel;
+    public GrabPlayerInfoModel mPlayerInfoModel;
 
     public SomeOneLeavePlaySeatEvent(GrabPlayerInfoModel playerInfoModel) {
         this.mPlayerInfoModel = playerInfoModel;
