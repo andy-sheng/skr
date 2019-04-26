@@ -239,9 +239,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
         if (now == null) {
             return;
         }
-
         List<Integer> singerUserIds = now.getSingUserIds();
-
         if (!now.isParticipant() && now.getEnterStatus() == now.getStatus()) {
             // 如果是演唱阶段进来的参与者
             syncLight();
@@ -264,7 +262,10 @@ public class GrabPlayerRv2 extends RelativeLayout {
             EventBus.getDefault().post(new LightOffAnimationOverEvent());
             return;
         }
-
+        if (now.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
+            // 第二轮不需要重复播这个动画
+            return;
+        }
         List<Animator> allAnimator = new ArrayList<>();
         List<Animator> animatorSet123s = new ArrayList<>();
         for (int userId : singerUserIds) {
@@ -405,9 +406,9 @@ public class GrabPlayerRv2 extends RelativeLayout {
                 @Override
                 public void onAnimationStart(Animator animation) {
                     super.onAnimationStart(animation);
-                    for(int uid:singerUserIds){
+                    for (int uid : singerUserIds) {
                         VP vp1 = mInfoMap.get(uid);
-                        if(vp1!=null) {
+                        if (vp1 != null) {
                             // 出灯前 圈圈消失
                             GrabTopItemView itemView = vp1.grabTopItemView;
                             itemView.mCircleAnimationView.setVisibility(GONE);

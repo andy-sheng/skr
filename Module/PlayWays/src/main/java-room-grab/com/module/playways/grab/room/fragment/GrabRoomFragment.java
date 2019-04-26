@@ -980,6 +980,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     public void singBySelf() {
         removeAllEnsureMsg();
         mCorePresenter.stopGuide();
+        GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
+        // 第二轮不播这个动画
         mTopContainerView.setModeSing();
         mTopContainerView.setSeqIndex(RoomDataUtils.getSeqOfRoundInfo(mRoomData.getRealRoundInfo()), mRoomData.getGrabConfigModel().getTotalGameRoundSeq());
         mSongInfoCardView.hide();
@@ -991,7 +993,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
         mUiHanlder.sendMessageDelayed(msg, 4000);
-        GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
+
         if (now != null && now.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
             // pk的第二轮，没有 vs 的演唱开始提示了
             onSingBeginTipsPlayOver();
