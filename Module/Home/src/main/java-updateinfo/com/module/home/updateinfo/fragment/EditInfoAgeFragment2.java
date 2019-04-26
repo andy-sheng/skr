@@ -97,6 +97,7 @@ public class EditInfoAgeFragment2 extends BaseFragment {
                 mMonthDate = mMonth.getText().toString();
                 mDayDate = mDay.getText().toString();
 
+                // TODO: 2019/4/26 补全年月日信息，防止过不了验证
                 if (!TextUtils.isEmpty(mYearDate) && mYearDate.length() < 4) {
                     int length = mYearDate.length();
                     for (int i = length; i < 4; i++) {
@@ -131,7 +132,7 @@ public class EditInfoAgeFragment2 extends BaseFragment {
                         mYear.setText("");
                         mYear.requestFocus();
                         mErrorHint.setVisibility(View.VISIBLE);
-                        mErrorHint.setText("输入的出生日期不合法");
+                        mErrorHint.setText("输入的出生日期不合法\n日期示例 20180909");
                     }
                 }
             }
@@ -164,7 +165,7 @@ public class EditInfoAgeFragment2 extends BaseFragment {
                     mYear.setText("");
                     mYear.requestFocus();
                     mErrorHint.setVisibility(View.VISIBLE);
-                    mErrorHint.setText("输入的出生日期不合法");
+                    mErrorHint.setText("输入的出生日期不合法\n日期示例 20180909");
                 }
 
             }
