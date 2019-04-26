@@ -178,8 +178,21 @@ public class MessgaeFragment2 extends BaseFragment implements IMessageFragment {
     private void showLastRelation(List<LastFollowModel> list) {
         if (list != null && list.size() != 0) {
             LastFollowModel lastFollowModel = list.get(0);
-            mFollowTips.setText(lastFollowModel.getStatusDesc());
-            mFollowTimeTv.setText(U.getDateTimeUtils().getDateTimeString(lastFollowModel.getTimeMs(), false, getContext()));
+            if (lastFollowModel != null) {
+                mFollowTimeTv.setText(U.getDateTimeUtils().getDateTimeString(lastFollowModel.getTimeMs(), false, getContext()));
+                if (lastFollowModel.getRelation() == LastFollowModel.RELATION_FOLLOW_ME) {
+                    mFollowTips.setVisibility(View.VISIBLE);
+                    mFollowTimeTv.setVisibility(View.VISIBLE);
+                    mFollowTips.setText(lastFollowModel.getNickname() + "关注了我");
+                } else if (lastFollowModel.getRelation() == LastFollowModel.RELATION_ME_FOLLOW) {
+                    mFollowTips.setVisibility(View.VISIBLE);
+                    mFollowTimeTv.setVisibility(View.VISIBLE);
+                    mFollowTips.setText("你关注了" + lastFollowModel.getNickname());
+                } else {
+                    mFollowTips.setVisibility(View.GONE);
+                    mFollowTimeTv.setVisibility(View.GONE);
+                }
+            }
         } else {
             // TODO: 2019/4/24  暂无记录
         }
