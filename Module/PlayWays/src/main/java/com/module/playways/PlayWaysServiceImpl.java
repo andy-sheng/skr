@@ -74,6 +74,7 @@ public class PlayWaysServiceImpl implements IPlaywaysModeService {
                             return;
                         }
                     }
+                    U.getKeyBoardUtils().hideSoftInputKeyBoard(U.getActivityUtils().getTopActivity());
                     // 页面不存在 跳转 到一唱到底页面
                     ARouter.getInstance().build(RouterConstants.ACTIVITY_GRAB_ROOM)
                             .withSerializable("prepare_data", grabCurGameStateModel)
