@@ -1513,9 +1513,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 });
                 checkMachineUser(now.getUserID());
             }
-            if (now.getStatus() == EQRoundStatus.QRS_CHO_SING.getValue()) {
-                pretendSystemMsg("合唱配对成功");
-            }
+//            if (now.getStatus() == EQRoundStatus.QRS_CHO_SING.getValue()) {
+//                pretendSystemMsg("合唱配对成功");
+//            }
         }
     }
 
