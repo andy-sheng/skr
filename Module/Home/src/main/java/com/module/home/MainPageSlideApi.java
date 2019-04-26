@@ -17,6 +17,7 @@ public interface MainPageSlideApi {
 
     /**
      * 拿到某个人基本的信息
+     *
      * @return
      */
     @GET("v1/kconf/slide-show")
@@ -42,8 +43,17 @@ public interface MainPageSlideApi {
 
     /**
      * 用户是否有未激活的红包
+     *
      * @return
      */
     @GET("http://dev.api.inframe.mobi/v1/redbag/check-newbie-task")
     Observable<ApiResult> checkNewBieTask();
+
+    /**
+     * 做任务要不要显示红点
+     *
+     * @return
+     */
+    @GET(" http://dev.api.inframe.mobi/v1/task/show-red-dot")
+    Observable<ApiResult> taskRedDotState();
 }

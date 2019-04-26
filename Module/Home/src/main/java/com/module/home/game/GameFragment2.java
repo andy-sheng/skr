@@ -65,6 +65,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
     BitmapTextView mCoinNum;
     SmartRefreshLayout mRecyclerLayout;
     RecyclerView mRecyclerView;
+    ExImageView mIvRedDot;
 
     BaseImageView mIvRedPkg;
 
@@ -94,6 +95,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mRecyclerLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.recycler_layout);
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
         mIvRedPkg = (BaseImageView) mRootView.findViewById(R.id.iv_red_pkg);
+        mIvRedDot = (ExImageView) mRootView.findViewById(R.id.iv_red_dot);
 
         mSkrAudioPermission = new SkrAudioPermission();
 
@@ -177,7 +179,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
                 if (iRankingModeService != null) {
                     iRankingModeService.tryGoCreateRoom();
                 }
-                StatisticsAdapter.recordCountEvent("grab","room_create",null);
+                StatisticsAdapter.recordCountEvent("grab", "room_create", null);
             }
 
             @Override
@@ -197,7 +199,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
                 } else {
 
                 }
-                StatisticsAdapter.recordCountEvent("grab","room_click",null);
+                StatisticsAdapter.recordCountEvent("grab", "room_click", null);
             }
 
             @Override
@@ -217,7 +219,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
                 } else {
 
                 }
-                StatisticsAdapter.recordCountEvent("grab","categoryall",null);
+                StatisticsAdapter.recordCountEvent("grab", "categoryall", null);
             }
 
             @Override
@@ -264,6 +266,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mGamePresenter.initRecommendRoom(mRecommendInterval);
         mGamePresenter.initGameKConfig();
         mGamePresenter.initCoinNum(false);
+        mGamePresenter.checkTaskRedDot();
     }
 
     @Override
@@ -351,6 +354,11 @@ public class GameFragment2 extends BaseFragment implements IGameView {
     @Override
     public void hideRedOperationView() {
         mIvRedPkg.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showTaskRedDot(boolean show) {
+        mIvRedDot.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
     // TODO: 2019/4/3 这都是第一次拉数据
