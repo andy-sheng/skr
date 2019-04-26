@@ -58,13 +58,26 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/view_32_dp" />
 
+            <com.common.view.ex.ExRelativeLayout
+                android:id="@+id/left_status_area"
+                android:layout_width="@dimen/view_90_dp"
+                android:layout_height="@dimen/view_90_dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_32_dp"
+                android:padding="@dimen/view_2_dp"
+                android:visibility="gone"
+                app:bl_shape="oval"
+                app:bl_solid_color="@color/black_trans_50" />
+
             <com.common.view.ex.ExTextView
                 android:id="@+id/left_name"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/view_24_dp"
                 android:layout_below="@id/left_iv"
                 android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/view_10_dp"
                 android:layout_marginTop="@dimen/view_24_dp"
+                android:layout_marginRight="@dimen/view_10_dp"
                 android:ellipsize="end"
                 android:gravity="center"
                 android:maxLines="1"
@@ -100,13 +113,26 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/view_32_dp" />
 
+            <com.common.view.ex.ExRelativeLayout
+                android:id="@+id/right_status_area"
+                android:layout_width="@dimen/view_90_dp"
+                android:layout_height="@dimen/view_90_dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/view_32_dp"
+                android:padding="@dimen/view_2_dp"
+                android:visibility="gone"
+                app:bl_shape="oval"
+                app:bl_solid_color="@color/black_trans_50" />
+
             <com.common.view.ex.ExTextView
                 android:id="@+id/right_name"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/view_24_dp"
                 android:layout_below="@id/right_iv"
                 android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/view_10_dp"
                 android:layout_marginTop="@dimen/view_24_dp"
+                android:layout_marginRight="@dimen/view_10_dp"
                 android:ellipsize="end"
                 android:gravity="center"
                 android:maxLines="1"
@@ -139,7 +165,6 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/chorus_other_area"
         android:layout_marginLeft="@dimen/view_10_dp"
-        android:layout_marginTop="-34dp"
-        />
+        android:layout_marginTop="-34dp" />
 
 </merge>

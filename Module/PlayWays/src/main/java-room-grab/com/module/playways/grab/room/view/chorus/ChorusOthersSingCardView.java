@@ -16,6 +16,7 @@ import com.common.core.avatar.AvatarUtils;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.utils.U;
+import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.engine.EngineEvent;
 import com.engine.UserStatus;
@@ -58,10 +59,12 @@ public class ChorusOthersSingCardView extends RelativeLayout {
     LinearLayout mChorusOtherArea;
 
     SimpleDraweeView mLeftIv;
+    ExRelativeLayout mLeftStatusArea;
     ExTextView mLeftStatus;
     ExTextView mLeftName;
 
     SimpleDraweeView mRightIv;
+    ExRelativeLayout mRightStatusArea;
     ExTextView mRightStatus;
     ExTextView mRightName;
 
@@ -89,6 +92,8 @@ public class ChorusOthersSingCardView extends RelativeLayout {
     GrabRoomData mGrabRoomData;
     UserInfoModel mLeftUserInfoModel;
     UserInfoModel mRightUserInfoModel;
+    ChorusRoundInfoModel mLeftChorusRoundInfoModel;
+    ChorusRoundInfoModel mRightChorusRoundInfoModel;
 
     public ChorusOthersSingCardView(Context context) {
         super(context);
@@ -111,12 +116,17 @@ public class ChorusOthersSingCardView extends RelativeLayout {
         mChorusOtherArea = (LinearLayout) findViewById(R.id.chorus_other_area);
         mLeftSingSvga = (SVGAImageView) findViewById(R.id.left_sing_svga);
         mRightSingSvga = (SVGAImageView) findViewById(R.id.right_sing_svga);
+
+        mLeftStatusArea = (ExRelativeLayout) findViewById(R.id.left_status_area);
         mLeftIv = (SimpleDraweeView) findViewById(R.id.left_iv);
         mLeftStatus = (ExTextView) findViewById(R.id.left_status);
         mLeftName = (ExTextView) findViewById(R.id.left_name);
+
+        mRightStatusArea = (ExRelativeLayout) findViewById(R.id.right_status_area);
         mRightIv = (SimpleDraweeView) findViewById(R.id.right_iv);
         mRightStatus = (ExTextView) findViewById(R.id.right_status);
         mRightName = (ExTextView) findViewById(R.id.right_name);
+
         mSingCountDownView = findViewById(R.id.sing_count_down_view);
 
         int offsetX = (U.getDisplayUtils().getScreenWidth() / 2 - U.getDisplayUtils().dip2px(16)) / 2;
@@ -140,6 +150,8 @@ public class ChorusOthersSingCardView extends RelativeLayout {
 
         mLeftStatus.setVisibility(GONE);
         mRightStatus.setVisibility(GONE);
+        mLeftStatusArea.setVisibility(GONE);
+        mRightStatusArea.setVisibility(GONE);
         mLeftUserInfoModel = null;
         mRightUserInfoModel = null;
 
@@ -147,9 +159,11 @@ public class ChorusOthersSingCardView extends RelativeLayout {
         if (list != null && list.size() >= 2) {
             mLeftUserInfoModel = mGrabRoomData.getUserInfo(list.get(0).getUserID());
             mRightUserInfoModel = mGrabRoomData.getUserInfo(list.get(1).getUserID());
+            mLeftChorusRoundInfoModel = list.get(0);
+            mRightChorusRoundInfoModel = list.get(1);
         }
 
-        if (mLeftUserInfoModel != null && mRightUserInfoModel != null) {
+        if (mLeftUserInfoModel != null && mRightUserInfoModel != null && mLeftChorusRoundInfoModel != null && mRightChorusRoundInfoModel != null) {
             mHasPlayFullAnimation = false;
             mUiHandler.removeCallbacksAndMessages(null);
             setVisibility(VISIBLE);
@@ -167,6 +181,9 @@ public class ChorusOthersSingCardView extends RelativeLayout {
                             .setCircle(true)
                             .build());
             mRightName.setText(mRightUserInfoModel.getNickname());
+
+            showChorusRoundInfo(mLeftChorusRoundInfoModel, mLeftStatusArea, mLeftStatus);
+            showChorusRoundInfo(mRightChorusRoundInfoModel, mRightStatusArea, mRightStatus);
             animationGo();
 
             mCountDownStatus = COUNT_DOWN_STATUS_WAIT;
@@ -185,6 +202,21 @@ public class ChorusOthersSingCardView extends RelativeLayout {
                 mUiHandler.removeMessages(MSG_ENSURE_PLAY);
                 mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_PLAY, 3000);
             }
+        }
+    }
+
+    private void showChorusRoundInfo(ChorusRoundInfoModel chorusRoundInfoModel, ExRelativeLayout relativeLayout, ExTextView textView) {
+        if (chorusRoundInfoModel.isHasGiveUp()) {
+            textView.setVisibility(VISIBLE);
+            relativeLayout.setVisibility(VISIBLE);
+            textView.setText("不唱了");
+        } else if (chorusRoundInfoModel.isHasExit()) {
+            textView.setVisibility(VISIBLE);
+            relativeLayout.setVisibility(VISIBLE);
+            textView.setText("退出了");
+        } else {
+            textView.setVisibility(GONE);
+            relativeLayout.setVisibility(GONE);
         }
     }
 
@@ -242,7 +274,7 @@ public class ChorusOthersSingCardView extends RelativeLayout {
     }
 
     public void tryStartCountDown() {
-        if(getVisibility() == GONE){
+        if (getVisibility() == GONE) {
             return;
         }
         MyLog.d(TAG, "tryStartCountDown");
@@ -324,37 +356,9 @@ public class ChorusOthersSingCardView extends RelativeLayout {
         if (event.mChorusRoundInfoModel != null) {
             stopSingAnimation(event.mChorusRoundInfoModel.getUserID());
             if (mLeftUserInfoModel != null && event.mChorusRoundInfoModel.getUserID() == mLeftUserInfoModel.getUserId()) {
-                mLeftStatus.setVisibility(VISIBLE);
-                String text = "";
-                if (event.mChorusRoundInfoModel.isHasGiveUp()) {
-                    text = "不唱了";
-                } else if (event.mChorusRoundInfoModel.isHasExit()) {
-                    text = "掉线了";
-                }
-                mLeftStatus.setText(text);
-                AvatarUtils.loadAvatarByUrl(mLeftIv,
-                        AvatarUtils.newParamsBuilder(mLeftUserInfoModel.getAvatar())
-                                .setBorderColor(U.getColor(R.color.white))
-                                .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                                .setGray(true)
-                                .setCircle(true)
-                                .build());
+                showChorusRoundInfo(event.mChorusRoundInfoModel, mLeftStatusArea, mLeftStatus);
             } else if (mRightUserInfoModel != null && event.mChorusRoundInfoModel.getUserID() == mRightUserInfoModel.getUserId()) {
-                mRightStatus.setVisibility(VISIBLE);
-                String text = "";
-                if (event.mChorusRoundInfoModel.isHasGiveUp()) {
-                    text = "不唱了";
-                } else if (event.mChorusRoundInfoModel.isHasExit()) {
-                    text = "掉线了";
-                }
-                mRightStatus.setText(text);
-                AvatarUtils.loadAvatarByUrl(mRightIv,
-                        AvatarUtils.newParamsBuilder(mRightUserInfoModel.getAvatar())
-                                .setBorderColor(U.getColor(R.color.white))
-                                .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                                .setGray(true)
-                                .setCircle(true)
-                                .build());
+                showChorusRoundInfo(event.mChorusRoundInfoModel, mRightStatusArea, mRightStatus);
             } else {
                 MyLog.w(TAG, "onEvent" + "不是麦上的人？？？ event=" + event);
             }

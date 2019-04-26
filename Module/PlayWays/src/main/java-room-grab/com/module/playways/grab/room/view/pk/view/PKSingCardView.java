@@ -17,6 +17,7 @@ import com.common.core.avatar.AvatarUtils;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.utils.U;
+import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.grab.room.GrabRoomData;
@@ -44,12 +45,16 @@ public class PKSingCardView extends RelativeLayout {
     SVGAImageView mRightSingSvga;
     LinearLayout mPkArea;
 
+    RelativeLayout mLeftArea;
     SimpleDraweeView mLeftIv;
+    ExRelativeLayout mLeftStatusArea;
     ExTextView mLeftName;
     ExTextView mLeftStatus;
     CircleAnimationView mLeftCircleAnimationView;
 
+    RelativeLayout mRightArea;
     SimpleDraweeView mRightIv;
+    ExRelativeLayout mRightStatusArea;
     ExTextView mRightName;
     ExTextView mRightStatus;
     CircleAnimationView mRightCircleAnimationView;
@@ -89,11 +94,16 @@ public class PKSingCardView extends RelativeLayout {
         mLeftSingSvga = (SVGAImageView) findViewById(R.id.left_sing_svga);
         mRightSingSvga = (SVGAImageView) findViewById(R.id.right_sing_svga);
         mPkArea = (LinearLayout) findViewById(R.id.pk_area);
+        mLeftArea = (RelativeLayout) findViewById(R.id.left_area);
         mLeftIv = (SimpleDraweeView) findViewById(R.id.left_iv);
+        mLeftStatusArea = (ExRelativeLayout) findViewById(R.id.left_status_area);
         mLeftName = (ExTextView) findViewById(R.id.left_name);
         mLeftStatus = (ExTextView) findViewById(R.id.left_status);
         mLeftCircleAnimationView = (CircleAnimationView) findViewById(R.id.left_circle_animation_view);
+
+        mRightArea = (RelativeLayout) findViewById(R.id.right_area);
         mRightIv = (SimpleDraweeView) findViewById(R.id.right_iv);
+        mRightStatusArea = (ExRelativeLayout) findViewById(R.id.right_status_area);
         mRightName = (ExTextView) findViewById(R.id.right_name);
         mRightStatus = (ExTextView) findViewById(R.id.right_status);
         mRightCircleAnimationView = (CircleAnimationView) findViewById(R.id.right_circle_animation_view);
@@ -116,6 +126,73 @@ public class PKSingCardView extends RelativeLayout {
             MyLog.w(TAG, "setRoomData" + " grabRoundInfoModel=" + grabRoundInfoModel);
             return;
         }
+
+        reset();
+
+        List<SPkRoundInfoModel> list = grabRoundInfoModel.getsPkRoundInfoModels();
+        if (list != null && list.size() >= 2) {
+            mLeftUserInfoModel = mGrabRoomData.getUserInfo(list.get(0).getUserID());
+            mLeftOverReason = list.get(0).getOverReason();
+
+            mRightUserInfoModel = mGrabRoomData.getUserInfo(list.get(1).getUserID());
+            mRightOverReason = list.get(1).getOverReason();
+        }
+        setVisibility(VISIBLE);
+        if (mLeftUserInfoModel != null) {
+            if (mLeftOverReason == EQRoundOverReason.ROR_SELF_GIVE_UP.getValue()) {
+                mLeftStatusArea.setVisibility(VISIBLE);
+                mLeftStatus.setVisibility(VISIBLE);
+                mLeftStatus.setText("不唱了");
+            } else if (mLeftOverReason == EQRoundOverReason.ROR_MULTI_NO_PASS.getValue()) {
+                mLeftStatusArea.setVisibility(VISIBLE);
+                mLeftStatus.setVisibility(VISIBLE);
+                mLeftStatus.setText("被灭灯");
+            } else if (mLeftOverReason == EQRoundOverReason.ROR_IN_ROUND_PLAYER_EXIT.getValue()) {
+                mLeftStatusArea.setVisibility(VISIBLE);
+                mLeftStatus.setVisibility(VISIBLE);
+                mLeftStatus.setText("退出了");
+            } else {
+                mLeftStatusArea.setVisibility(GONE);
+                mLeftStatus.setVisibility(GONE);
+            }
+            AvatarUtils.loadAvatarByUrl(mLeftIv,
+                    AvatarUtils.newParamsBuilder(mLeftUserInfoModel.getAvatar())
+                            .setBorderColor(U.getColor(R.color.white))
+                            .setBorderWidth(U.getDisplayUtils().dip2px(2))
+                            .setCircle(true)
+                            .build());
+            mLeftName.setText(mLeftUserInfoModel.getNickname());
+        }
+        if (mRightUserInfoModel != null) {
+            if (mRightOverReason == EQRoundOverReason.ROR_SELF_GIVE_UP.getValue()) {
+                mRightStatusArea.setVisibility(VISIBLE);
+                mRightStatus.setVisibility(VISIBLE);
+                mRightStatus.setText("不唱了");
+            } else if (mRightOverReason == EQRoundOverReason.ROR_MULTI_NO_PASS.getValue()) {
+                mRightStatusArea.setVisibility(VISIBLE);
+                mRightStatus.setVisibility(VISIBLE);
+                mRightStatus.setText("被灭灯");
+            } else if (mRightOverReason == EQRoundOverReason.ROR_IN_ROUND_PLAYER_EXIT.getValue()) {
+                mRightStatusArea.setVisibility(VISIBLE);
+                mRightStatus.setVisibility(VISIBLE);
+                mRightStatus.setText("退出了");
+            } else {
+                mRightStatusArea.setVisibility(GONE);
+                mRightStatus.setVisibility(GONE);
+            }
+            AvatarUtils.loadAvatarByUrl(mRightIv,
+                    AvatarUtils.newParamsBuilder(mRightUserInfoModel.getAvatar())
+                            .setBorderColor(U.getColor(R.color.white))
+                            .setBorderWidth(U.getDisplayUtils().dip2px(2))
+                            .setCircle(true)
+                            .build());
+            mRightName.setText(mRightUserInfoModel.getNickname());
+        }
+    }
+
+    private void reset() {
+        mLeftStatusArea.setVisibility(GONE);
+        mLeftStatusArea.setVisibility(GONE);
         mLeftStatus.setVisibility(GONE);
         mRightStatus.setVisibility(GONE);
         if (mLeftSingSvga != null) {
@@ -132,69 +209,6 @@ public class PKSingCardView extends RelativeLayout {
         mLeftAnimationFlag = false;
         mLeftOverReason = 0;
         mRightOverReason = 0;
-        List<SPkRoundInfoModel> list = grabRoundInfoModel.getsPkRoundInfoModels();
-        if (list != null && list.size() >= 2) {
-            mLeftUserInfoModel = mGrabRoomData.getUserInfo(list.get(0).getUserID());
-            mLeftOverReason = list.get(0).getOverReason();
-
-            mRightUserInfoModel = mGrabRoomData.getUserInfo(list.get(1).getUserID());
-            mRightOverReason = list.get(1).getOverReason();
-        }
-        setVisibility(VISIBLE);
-        if (mLeftUserInfoModel != null) {
-            boolean isGray = false;
-            if (mLeftOverReason == EQRoundOverReason.ROR_SELF_GIVE_UP.getValue()) {
-                isGray = true;
-                mLeftStatus.setVisibility(VISIBLE);
-                mLeftStatus.setText("不唱了");
-            } else if (mLeftOverReason == EQRoundOverReason.ROR_MULTI_NO_PASS.getValue()) {
-                isGray = true;
-                mLeftStatus.setVisibility(VISIBLE);
-                mLeftStatus.setText("被灭灯");
-            } else if (mLeftOverReason == EQRoundOverReason.ROR_IN_ROUND_PLAYER_EXIT.getValue()) {
-                isGray = true;
-                mLeftStatus.setVisibility(VISIBLE);
-                mLeftStatus.setText("掉线了");
-            } else {
-                mLeftStatus.setVisibility(GONE);
-                isGray = false;
-            }
-            AvatarUtils.loadAvatarByUrl(mLeftIv,
-                    AvatarUtils.newParamsBuilder(mLeftUserInfoModel.getAvatar())
-                            .setBorderColor(U.getColor(R.color.white))
-                            .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                            .setCircle(true)
-                            .setGray(isGray)
-                            .build());
-            mLeftName.setText(mLeftUserInfoModel.getNickname());
-        }
-        if (mRightUserInfoModel != null) {
-            boolean isGray = false;
-            if (mRightOverReason == EQRoundOverReason.ROR_SELF_GIVE_UP.getValue()) {
-                isGray = true;
-                mRightStatus.setVisibility(VISIBLE);
-                mRightStatus.setText("不唱了");
-            } else if (mRightOverReason == EQRoundOverReason.ROR_MULTI_NO_PASS.getValue()) {
-                isGray = true;
-                mRightStatus.setVisibility(VISIBLE);
-                mRightStatus.setText("被灭灯");
-            } else if (mRightOverReason == EQRoundOverReason.ROR_IN_ROUND_PLAYER_EXIT.getValue()) {
-                isGray = true;
-                mRightStatus.setVisibility(VISIBLE);
-                mRightStatus.setText("掉线了");
-            } else {
-                mRightStatus.setVisibility(GONE);
-                isGray = false;
-            }
-            AvatarUtils.loadAvatarByUrl(mRightIv,
-                    AvatarUtils.newParamsBuilder(mRightUserInfoModel.getAvatar())
-                            .setBorderColor(U.getColor(R.color.white))
-                            .setBorderWidth(U.getDisplayUtils().dip2px(2))
-                            .setCircle(true)
-                            .setGray(isGray)
-                            .build());
-            mRightName.setText(mRightUserInfoModel.getNickname());
-        }
     }
 
     /**
@@ -239,7 +253,7 @@ public class PKSingCardView extends RelativeLayout {
                 this.mIsPlaySVGA = isPlaySVGA;
                 this.mAnimationListerner = animationListerner;
                 mLeftAnimationFlag = true;
-                mLeftIv.startAnimation(mScaleAnimation);
+                mLeftArea.startAnimation(mScaleAnimation);
             } else {
                 MyLog.w(TAG, "playScaleAnimation 动画已经在播放了" + " uid=" + uid);
             }
@@ -249,7 +263,7 @@ public class PKSingCardView extends RelativeLayout {
                 this.mIsPlaySVGA = isPlaySVGA;
                 this.mAnimationListerner = animationListerner;
                 mRightAnimationFlag = true;
-                mRightIv.startAnimation(mScaleAnimation);
+                mRightArea.startAnimation(mScaleAnimation);
             } else {
                 MyLog.w(TAG, "playScaleAnimation 动画已经在播放了" + " uid=" + uid);
             }
