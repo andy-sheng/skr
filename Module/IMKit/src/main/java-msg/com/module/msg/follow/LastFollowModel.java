@@ -18,7 +18,7 @@ public class LastFollowModel implements Serializable {
     private int userID;
     private String avatar;
     private String nickname;
-    private int timeMs;
+    private long timeMs;
     private boolean isFriend;
     private boolean isFollow;
     private int sex;
@@ -49,11 +49,11 @@ public class LastFollowModel implements Serializable {
         this.nickname = nickname;
     }
 
-    public int getTimeMs() {
+    public long getTimeMs() {
         return timeMs;
     }
 
-    public void setTimeMs(int timeMs) {
+    public void setTimeMs(long timeMs) {
         this.timeMs = timeMs;
     }
 
