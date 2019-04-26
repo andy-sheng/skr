@@ -57,12 +57,12 @@
                 android:visibility="gone" />
 
             <com.common.view.ex.ExTextView
-                android:drawableLeft="@drawable/suoyouren_left"
                 android:id="@+id/tv_all_man"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:drawableLeft="@drawable/suoyouren_left"
                 android:drawablePadding="@dimen/view_6_dp"
                 android:gravity="center"
                 android:text="所有人"
@@ -105,8 +105,8 @@
                 android:text="158"
                 android:textColor="#D0EFFF"
                 android:textSize="@dimen/textsize_18_dp"
-                app:bl_corners_topRightRadius="@dimen/view_14_dp"
                 app:bl_corners_bottomRightRadius="@dimen/view_14_dp"
+                app:bl_corners_topRightRadius="@dimen/view_14_dp"
                 app:bl_solid_color="@color/black_trans_20" />
 
             <ImageView
@@ -125,7 +125,6 @@
                 android:layout_height="@dimen/view_38_dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/view_16_dp"
                 android:background="@drawable/fangzhushijiao_fasonganniu" />
         </RelativeLayout>
     </com.common.view.ex.ExRelativeLayout>
