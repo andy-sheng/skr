@@ -15,41 +15,31 @@
         android:background="@drawable/grab_pk_bg"
         android:orientation="horizontal" />
 
-    <com.opensource.svgaplayer.SVGAImageView
-        android:id="@+id/left_sing_svga"
-        android:layout_width="@dimen/view_360_dp"
-        android:layout_height="@dimen/view_360_dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_26_dp"
-        android:visibility="gone"
-        app:antiAlias="true"
-        app:autoPlay="false"
-        app:loopCount="0" />
-
-    <com.opensource.svgaplayer.SVGAImageView
-        android:id="@+id/right_sing_svga"
-        android:layout_width="@dimen/view_360_dp"
-        android:layout_height="@dimen/view_360_dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/view_26_dp"
-        android:visibility="gone"
-        app:antiAlias="true"
-        app:autoPlay="false"
-        app:loopCount="0" />
-
     <LinearLayout
+        android:clipChildren="false"
         android:id="@+id/pk_area"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_200_dp"
-        android:layout_marginLeft="@dimen/view_16_dp"
-        android:layout_marginTop="@dimen/view_125_dp"
-        android:layout_marginRight="@dimen/view_16_dp"
+        android:layout_height="@dimen/view_400_dp"
         android:orientation="horizontal">
 
         <RelativeLayout
+            android:layout_marginLeft="@dimen/view_16_dp"
+            android:layout_marginTop="@dimen/view_125_dp"
             android:layout_width="@dimen/view_0_dp"
             android:layout_height="match_parent"
             android:layout_weight="1">
+
+            <com.opensource.svgaplayer.SVGAImageView
+                android:id="@+id/left_sing_svga"
+                android:layout_width="@dimen/view_360_dp"
+                android:layout_height="@dimen/view_360_dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginRight="-180dp"
+                android:layout_marginTop="-99dp"
+                android:visibility="gone"
+                app:antiAlias="true"
+                app:autoPlay="false"
+                app:loopCount="0" />
 
             <RelativeLayout
                 android:id="@+id/left_area"
@@ -116,9 +106,23 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:layout_marginRight="@dimen/view_16_dp"
+            android:layout_marginTop="@dimen/view_125_dp"
             android:layout_width="@dimen/view_0_dp"
             android:layout_height="match_parent"
             android:layout_weight="1">
+
+            <com.opensource.svgaplayer.SVGAImageView
+                android:id="@+id/right_sing_svga"
+                android:layout_width="@dimen/view_360_dp"
+                android:layout_height="@dimen/view_360_dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginRight="-180dp"
+                android:layout_marginTop="-99dp"
+                android:visibility="gone"
+                app:antiAlias="true"
+                app:autoPlay="false"
+                app:loopCount="0" />
 
             <RelativeLayout
                 android:id="@+id/right_area"

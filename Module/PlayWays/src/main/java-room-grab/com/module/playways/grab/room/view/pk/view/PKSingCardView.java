@@ -108,9 +108,9 @@ public class PKSingCardView extends RelativeLayout {
         mRightStatus = (ExTextView) findViewById(R.id.right_status);
         mRightCircleAnimationView = (CircleAnimationView) findViewById(R.id.right_circle_animation_view);
 
-        int offsetX = (U.getDisplayUtils().getScreenWidth() / 2 - U.getDisplayUtils().dip2px(16)) / 2;
-        mLeftSingSvga.setTranslationX(-offsetX);
-        mRightSingSvga.setTranslationX(offsetX);
+//        int offsetX = (U.getDisplayUtils().getScreenWidth() / 2 - U.getDisplayUtils().dip2px(16)) / 2;
+//        mLeftSingSvga.setTranslationX(-offsetX);
+//        mRightSingSvga.setTranslationX(offsetX);
     }
 
     public void setRoomData(GrabRoomData roomData) {
