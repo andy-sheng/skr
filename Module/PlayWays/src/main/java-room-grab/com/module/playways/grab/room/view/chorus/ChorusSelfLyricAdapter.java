@@ -86,7 +86,7 @@ public class ChorusSelfLyricAdapter extends DiffAdapter<String, ChorusSelfLyricA
             super(itemView);
             mAvatarIv = (BaseImageView) itemView.findViewById(R.id.avatar_iv);
             mLyricLineTv = (ExTextView) itemView.findViewById(R.id.lyric_line_tv);
-            mBlankView =  itemView.findViewById(R.id.blank_view);
+            mBlankView = itemView.findViewById(R.id.blank_view);
         }
 
         public void bindData(String text, int position) {
@@ -163,9 +163,9 @@ public class ChorusSelfLyricAdapter extends DiffAdapter<String, ChorusSelfLyricA
                 }
                 if (position == 0) {
                     // 只有第一排有头像，头像设置成右边的人
-                    if (mRight.mUserInfoModel != null) {
+                    if (mLeft.mUserInfoModel != null) {
                         mAvatarIv.setVisibility(View.VISIBLE);
-                        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mRight.mUserInfoModel.getAvatar())
+                        AvatarUtils.loadAvatarByUrl(mAvatarIv, AvatarUtils.newParamsBuilder(mLeft.mUserInfoModel.getAvatar())
                                 .setCircle(true)
                                 .setBorderWidth(U.getDisplayUtils().dip2px(2))
                                 .setBorderColor(Color.WHITE)

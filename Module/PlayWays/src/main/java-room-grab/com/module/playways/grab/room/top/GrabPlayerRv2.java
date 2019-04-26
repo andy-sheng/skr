@@ -354,6 +354,8 @@ public class GrabPlayerRv2 extends RelativeLayout {
             List<Animator> liangdengList = new ArrayList<>();
             int i = 0;
             for (int uId : mInfoMap.keySet()) {
+                VP vp1 = mInfoMap.get(uId);
+                GrabTopItemView itemView = vp1.grabTopItemView;
                 boolean filter = false;
                 for (int uid2 : singerUserIds) {
                     if (uId == uid2) {
@@ -365,8 +367,6 @@ public class GrabPlayerRv2 extends RelativeLayout {
                     continue;
                 }
 
-                VP vp1 = mInfoMap.get(uId);
-                GrabTopItemView itemView = vp1.grabTopItemView;
 //                if (!itemView.getPlayerInfoModel().isOnline()) {
 //                    continue;
 //                }
@@ -405,6 +405,16 @@ public class GrabPlayerRv2 extends RelativeLayout {
                 @Override
                 public void onAnimationStart(Animator animation) {
                     super.onAnimationStart(animation);
+                    for(int uid:singerUserIds){
+                        VP vp1 = mInfoMap.get(uid);
+                        if(vp1!=null) {
+                            // 出灯前 圈圈消失
+                            GrabTopItemView itemView = vp1.grabTopItemView;
+                            itemView.mCircleAnimationView.setVisibility(GONE);
+                            itemView.hideGrabIcon();
+                        }
+                    }
+
                 }
             });
             animatorSet1s.setStartDelay(20 * 33);
@@ -440,7 +450,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
         mHasBurst = true;
         for (int uId : mInfoMap.keySet()) {
             VP vp = mInfoMap.get(uId);
-            if (vp != null && vp.grabTopItemView != null && !RoomDataUtils.isRoundSinger(mRoomData.getRealRoundInfo(),uId)) {
+            if (vp != null && vp.grabTopItemView != null && !RoomDataUtils.isRoundSinger(mRoomData.getRealRoundInfo(), uId)) {
                 vp.grabTopItemView.startEvasive();
             }
         }
