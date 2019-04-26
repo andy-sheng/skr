@@ -49,7 +49,7 @@ public class CommentSysModel extends CommentModel {
             stringBuilder = new SpanUtils()
                     .append("欢迎加入 ").setForegroundColor(Color.parseColor("#EA596B"))
                     .append(roomName + "").setForegroundColor(Color.parseColor("#DF7900"))
-                    .append("房间 撕歌唱到文明游戏，遇到恶意玩家们可以发起投票将ta踢出房间哦～").setForegroundColor(Color.parseColor("#EA596B"))
+                    .append("房间 撕歌倡导文明游戏，遇到恶意玩家们可以发起投票将ta踢出房间哦～").setForegroundColor(Color.parseColor("#EA596B"))
                     .create();
         } else if (type == TYPE_MODIF_ROOM_NAME) {
             stringBuilder = new SpanUtils()

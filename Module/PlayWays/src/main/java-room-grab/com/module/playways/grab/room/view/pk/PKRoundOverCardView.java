@@ -47,6 +47,7 @@ public class PKRoundOverCardView extends RelativeLayout {
     TextView mLeftTipsTv;
     BitmapTextView mLeftScoreBtv;
     BitmapTextView mRightScoreBtv;
+    TextView mRightTipsTv;
 
     Handler mUiHandler = new Handler();
 
@@ -93,6 +94,7 @@ public class PKRoundOverCardView extends RelativeLayout {
         mLeftTipsTv = (TextView) findViewById(R.id.left_tips_tv);
         mLeftScoreBtv = (BitmapTextView) findViewById(R.id.left_score_btv);
         mRightScoreBtv = (BitmapTextView) findViewById(R.id.right_score_btv);
+        mRightTipsTv = (TextView) findViewById(R.id.right_tips_tv);
     }
 
     public void bindData(GrabRoundInfoModel roundInfoModel, SVGAListener svgaListener) {
@@ -119,7 +121,7 @@ public class PKRoundOverCardView extends RelativeLayout {
                             .build());
             mLeftName.setText(mLeftUserInfoModel.getNickname());
             mLeftScoreBtv.setText(mLeftScore);
-            showOverReason(mLeftOverReason, mLeftOverReasonIv, mLeftScoreBtv);
+            showOverReason(mLeftOverReason, mLeftOverReasonIv, mLeftScoreBtv, mLeftTipsTv);
         }
 
         if (mRightUserInfoModel != null) {
@@ -129,29 +131,33 @@ public class PKRoundOverCardView extends RelativeLayout {
                             .build());
             mRightName.setText(mRightUserInfoModel.getNickname());
             mRightScoreBtv.setText(mRightScore);
-            showOverReason(mRightOverReason, mRightOverReasonIv, mRightScoreBtv);
+            showOverReason(mRightOverReason, mRightOverReasonIv, mRightScoreBtv, mRightTipsTv);
         }
 
         playCardEnterAnimation();
     }
 
-    private void showOverReason(int overReason, ImageView overReasonIv, BitmapTextView bitmapTextView) {
+    private void showOverReason(int overReason, ImageView overReasonIv, BitmapTextView bitmapTextView, TextView scoreTv) {
         if (overReasonIv == null) {
             return;
         }
         if (overReason == EQRoundOverReason.ROR_SELF_GIVE_UP.getValue()) {
             bitmapTextView.setVisibility(GONE);
+            scoreTv.setVisibility(GONE);
             overReasonIv.setVisibility(VISIBLE);
             overReasonIv.setBackgroundResource(R.drawable.grab_pk_buchangle);
         } else if (overReason == EQRoundOverReason.ROR_MULTI_NO_PASS.getValue()) {
             bitmapTextView.setVisibility(GONE);
+            scoreTv.setVisibility(GONE);
             overReasonIv.setVisibility(VISIBLE);
             overReasonIv.setBackgroundResource(R.drawable.grab_pk_miedeng);
         } else if (overReason == EQRoundOverReason.ROR_IN_ROUND_PLAYER_EXIT.getValue()) {
             bitmapTextView.setVisibility(GONE);
+            scoreTv.setVisibility(GONE);
             overReasonIv.setVisibility(VISIBLE);
             overReasonIv.setBackgroundResource(R.drawable.grab_pk_diaoxianle);
         } else {
+            scoreTv.setVisibility(VISIBLE);
             bitmapTextView.setVisibility(VISIBLE);
             overReasonIv.setVisibility(GONE);
         }
