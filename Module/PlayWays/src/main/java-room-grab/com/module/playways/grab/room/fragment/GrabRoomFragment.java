@@ -634,6 +634,36 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         dialogPlus.show();
     }
 
+    DialogPlus getRedPkgFailed;
+
+    @Override
+    public void showGetRedPkgFailed() {
+        TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
+                .setMessageTip("注册账号行为异常，红包激活不成功")
+                .setOkBtnTip("确定")
+                .setOkBtnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (getRedPkgFailed != null) {
+                            getRedPkgFailed.dismiss();
+                        }
+                    }
+                })
+                .build();
+
+        if (getRedPkgFailed == null) {
+            getRedPkgFailed = DialogPlus.newDialog(getContext())
+                    .setContentHolder(new ViewHolder(tipsDialogView))
+                    .setGravity(Gravity.BOTTOM)
+                    .setContentBackgroundResource(R.color.transparent)
+                    .setOverlayBackgroundResource(R.color.black_trans_80)
+                    .setExpanded(false)
+                    .create();
+        }
+
+        getRedPkgFailed.show();
+    }
+
     private void initTopView() {
         // 加上状态栏的高度
         int statusBarHeight = U.getStatusBarUtil().getStatusBarHeight(getContext());

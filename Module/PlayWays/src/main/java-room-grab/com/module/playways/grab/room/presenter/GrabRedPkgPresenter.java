@@ -113,7 +113,8 @@ public class GrabRedPkgPresenter extends RxLifeCyclePresenter {
                         MyLog.w(TAG, "getRedPkg redPkgTaskModelList is null or grabRedPkgTaskModel is not done, " + " traceid is " + result.getTraceId());
                     }
                 } else if (result.getErrno() == ERROR_CODE_RED_RULE) {
-                    ToastUtils.showShort(result.getErrmsg());
+//                    ToastUtils.showShort(result.getErrmsg());
+                    view.showGetRedPkgFailed();
                 } else {
                     MyLog.w(TAG, "getRedPkg failed, " + " traceid is " + result.getTraceId());
                 }
