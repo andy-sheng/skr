@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseFragment;
@@ -12,10 +13,16 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.view.ex.ExImageView;
 import com.common.view.titlebar.CommonTitleBar;
+import com.kingja.loadsir.callback.Callback;
+import com.kingja.loadsir.core.LoadService;
+import com.kingja.loadsir.core.LoadSir;
 import com.module.home.R;
 import com.module.home.WalletServerApi;
 import com.module.home.adapter.RechargeRecordAdapter;
+import com.module.home.loadsir.BalanceEmptyCallBack;
+import com.module.home.loadsir.RechargeHistoryEmptyCallBack;
 import com.module.home.model.RechargeRecordModel;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -30,9 +37,12 @@ public class RechargeRecordlFragment extends BaseFragment {
     RecyclerView mRecyclerView;
     CommonTitleBar mTitlebar;
     SmartRefreshLayout mRefreshLayout;
+    ExImageView mIvBg;
 
     int offset = 0; //偏移量
     int DEFAULT_COUNT = 50; //每次拉去的数量
+
+    LoadService mLoadService;
 
     WalletServerApi mWalletServerApi;
 
@@ -48,10 +58,23 @@ public class RechargeRecordlFragment extends BaseFragment {
         mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
         mRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.refreshLayout);
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
+        mIvBg = (ExImageView) mRootView.findViewById(R.id.iv_bg);
+
         mTitlebar.getCenterTextView().setText("充值记录");
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mWalletRecordAdapter = new RechargeRecordAdapter();
         mRecyclerView.setAdapter(mWalletRecordAdapter);
+
+        LoadSir mLoadSir = new LoadSir.Builder()
+                .addCallback(new RechargeHistoryEmptyCallBack())
+                .build();
+
+        mLoadService = mLoadSir.register(mRefreshLayout, new Callback.OnReloadListener() {
+            @Override
+            public void onReload(View v) {
+                getRechargeList();
+            }
+        });
 
         mRefreshLayout.setEnableRefresh(false);
         mRefreshLayout.setEnableLoadMore(true);
@@ -82,9 +105,13 @@ public class RechargeRecordlFragment extends BaseFragment {
                     if (rechargeRecordModelList == null || rechargeRecordModelList.size() == 0) {
                         mRefreshLayout.finishLoadMore();
                         mRefreshLayout.setEnableLoadMore(false);
+                        if (mWalletRecordAdapter.getItemCount() == 0) {
+                            mLoadService.showCallback(RechargeHistoryEmptyCallBack.class);
+                        }
                         return;
                     }
 
+                    mLoadService.showSuccess();
                     mRechargeRecordModels.addAll(rechargeRecordModelList);
                     offset = JSON.parseObject(result.getData().getString("offset"), Integer.class);
                     mWalletRecordAdapter.setDataList(mRechargeRecordModels);

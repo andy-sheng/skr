@@ -14,12 +14,17 @@ import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
 import com.common.view.DebounceViewClickListener;
+import com.common.view.ex.ExImageView;
 import com.common.view.titlebar.CommonTitleBar;
+import com.kingja.loadsir.callback.Callback;
+import com.kingja.loadsir.core.LoadService;
+import com.kingja.loadsir.core.LoadSir;
 import com.module.home.R;
 import com.module.home.WalletServerApi;
 import com.module.home.adapter.DqRecordAdapter;
 import com.module.home.adapter.WalletRecordAdapter;
 import com.module.home.inter.IWalletView;
+import com.module.home.loadsir.DqEmptyCallBack;
 import com.module.home.model.DqRecordModel;
 import com.module.home.model.WalletRecordModel;
 import com.module.home.model.WithDrawInfoModel;
@@ -37,6 +42,9 @@ public class DqDetailFragment extends BaseFragment {
     RecyclerView mRecyclerView;
     CommonTitleBar mTitlebar;
     SmartRefreshLayout mRefreshLayout;
+    ExImageView mIvBg;
+
+    LoadService mLoadService;
 
     int offset = 0; //偏移量
     int DEFAULT_COUNT = 10; //每次拉去的数量
@@ -55,6 +63,7 @@ public class DqDetailFragment extends BaseFragment {
         mTitlebar = (CommonTitleBar) mRootView.findViewById(R.id.titlebar);
         mRefreshLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.refreshLayout);
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
+        mIvBg = (ExImageView) mRootView.findViewById(R.id.iv_bg);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mWalletRecordAdapter = new DqRecordAdapter();
@@ -83,6 +92,17 @@ public class DqDetailFragment extends BaseFragment {
             }
         });
 
+        LoadSir mLoadSir = new LoadSir.Builder()
+                .addCallback(new DqEmptyCallBack())
+                .build();
+
+        mLoadService = mLoadSir.register(mRefreshLayout, new Callback.OnReloadListener() {
+            @Override
+            public void onReload(View v) {
+                getDqList();
+            }
+        });
+
         mWalletServerApi = ApiManager.getInstance().createService(WalletServerApi.class);
         getDqList();
     }
@@ -96,9 +116,13 @@ public class DqDetailFragment extends BaseFragment {
                     if (dqRecordModelList == null || dqRecordModelList.size() == 0) {
                         mRefreshLayout.finishLoadMore();
                         mRefreshLayout.setEnableLoadMore(false);
+                        if (mDqRecordModelArrayList.size() == 0) {
+                            mLoadService.showCallback(DqEmptyCallBack.class);
+                        }
                         return;
                     }
 
+                    mLoadService.showSuccess();
                     mDqRecordModelArrayList.addAll(dqRecordModelList);
                     offset = JSON.parseObject(result.getData().getString("offset"), Integer.class);
                     mWalletRecordAdapter.setDataList(mDqRecordModelArrayList);
