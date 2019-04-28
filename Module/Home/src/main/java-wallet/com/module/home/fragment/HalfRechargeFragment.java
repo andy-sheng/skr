@@ -121,7 +121,12 @@ public class HalfRechargeFragment extends BallanceFragment {
 
     @Override
     public void rechargeSuccess() {
-        super.rechargeSuccess();
+        U.getToastUtil().showShort("充值成功");
+
+        if (mWaitingDialogPlus != null) {
+            mWaitingDialogPlus.dismiss();
+        }
+
         mUiHanlder.postDelayed(new Runnable() {
             @Override
             public void run() {

@@ -176,6 +176,8 @@ public class BallanceFragment extends BaseFragment implements IBallanceView {
         if (mWaitingDialogPlus != null) {
             mWaitingDialogPlus.dismiss();
         }
+
+        mBallencePresenter.getZSBalance();
     }
 
     @Override
