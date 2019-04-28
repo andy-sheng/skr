@@ -47,7 +47,7 @@
                 android:gravity="center_vertical"
                 android:hint="昵称"
                 android:inputType="text"
-                android:maxLength="16"
+                android:maxLength="20"
                 android:maxLines="1"
                 android:paddingLeft="@dimen/view_25_dp"
                 android:paddingRight="@dimen/view_25_dp"
