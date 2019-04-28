@@ -106,6 +106,9 @@ public class VoiceBottomContainerView extends RelativeLayout {
                 }
             }
         });
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 
     public void dismissPopWindow() {

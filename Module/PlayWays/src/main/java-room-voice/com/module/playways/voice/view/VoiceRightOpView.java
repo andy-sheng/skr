@@ -78,6 +78,10 @@ public class VoiceRightOpView extends RelativeLayout {
                 }
             }
         });
+
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 
     @Override

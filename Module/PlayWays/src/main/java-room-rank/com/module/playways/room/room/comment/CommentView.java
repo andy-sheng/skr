@@ -137,6 +137,10 @@ public class CommentView extends RelativeLayout {
         }
 
         inflate(getContext(), R.layout.comment_view_layout, this);
+        // TODO: 2019/4/28 必须提前注册 
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         mCommentRv = (RecyclerView) this.findViewById(R.id.comment_rv);
         mLinearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, true);
         mLinearLayoutManager.setStackFromEnd(true);
