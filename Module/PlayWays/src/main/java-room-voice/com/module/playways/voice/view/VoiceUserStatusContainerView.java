@@ -48,6 +48,11 @@ public class VoiceUserStatusContainerView extends RelativeLayout {
     private void init() {
         inflate(getContext(), R.layout.voice_user_status_view_container, this);
         mUserStatusContainer = (ExLinearLayout) this.findViewById(R.id.user_status_container);
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }

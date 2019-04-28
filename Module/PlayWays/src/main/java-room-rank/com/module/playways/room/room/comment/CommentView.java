@@ -118,6 +118,9 @@ public class CommentView extends RelativeLayout {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         if (this.getLayoutParams().height > maxHeight) {
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) this.getLayoutParams();
             layoutParams.topMargin = layoutParams.topMargin + (layoutParams.height - maxHeight);
@@ -134,9 +137,6 @@ public class CommentView extends RelativeLayout {
         }
 
         inflate(getContext(), R.layout.comment_view_layout, this);
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
-        }
         mCommentRv = (RecyclerView) this.findViewById(R.id.comment_rv);
         mLinearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, true);
         mLinearLayoutManager.setStackFromEnd(true);
@@ -173,10 +173,13 @@ public class CommentView extends RelativeLayout {
         }
     }
 
+
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        EventBus.getDefault().unregister(this);
+        if (EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().unregister(this);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

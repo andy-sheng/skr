@@ -143,6 +143,11 @@ public class PersonInfoDialogView2 extends RelativeLayout {
         super(context);
         initView();
         initData(context, userID, showReport, showKick);
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }

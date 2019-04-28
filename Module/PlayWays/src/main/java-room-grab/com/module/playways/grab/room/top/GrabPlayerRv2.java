@@ -79,9 +79,6 @@ public class GrabPlayerRv2 extends RelativeLayout {
         inflate(getContext(), R.layout.grab_top_content_view_layout, this);
         mContentLl = (LinearLayout) this.findViewById(R.id.content_ll);
         addChildView();
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
-        }
     }
 
     private void addChildView() {
@@ -612,6 +609,14 @@ public class GrabPlayerRv2 extends RelativeLayout {
             }
         }
         initData();
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 
     @Override

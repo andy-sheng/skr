@@ -78,14 +78,14 @@ public class VoiceRightOpView extends RelativeLayout {
                 }
             }
         });
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
-        }
     }
 
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         Params params = EngineManager.getInstance().getParams();
         if (params != null) {
             MyLog.d(TAG, "onAttachedToWindow audioMute=" + params.isLocalAudioStreamMute());
