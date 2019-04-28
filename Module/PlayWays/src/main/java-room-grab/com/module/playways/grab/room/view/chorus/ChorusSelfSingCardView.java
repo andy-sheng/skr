@@ -52,7 +52,7 @@ public class ChorusSelfSingCardView extends RelativeLayout {
         ChorusRoundInfoModel mChorusRoundInfoModel;
 
         public void reset() {
-            mUserInfoModel =null;
+            mUserInfoModel = null;
             mChorusRoundInfoModel = null;
         }
     }
@@ -79,7 +79,7 @@ public class ChorusSelfSingCardView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.grab_chorus_self_sing_card_layout, this);
-        mLyricRecycleView =  findViewById(R.id.lyric_recycle_view);
+        mLyricRecycleView = findViewById(R.id.lyric_recycle_view);
         mSingCountDownView = findViewById(R.id.sing_count_down_view);
         mLyricRecycleView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         mChorusSelfLyricAdapter = new ChorusSelfLyricAdapter(mLeft, mRight);
@@ -112,7 +112,7 @@ public class ChorusSelfSingCardView extends RelativeLayout {
             }
             mSongModel = infoModel.getMusic();
             playWithNoAcc();
-            mSingCountDownView.startPlay(0,infoModel.getSingTotalMs(),true);
+            mSingCountDownView.startPlay(0, infoModel.getSingTotalMs(), true);
         }
     }
 
@@ -141,6 +141,8 @@ public class ChorusSelfSingCardView extends RelativeLayout {
                         }
                         mChorusSelfLyricAdapter.computeFlag();
                         mChorusSelfLyricAdapter.setDataList(lyrics);
+                        // 移到顶部
+                        mLyricRecycleView.scrollToPosition(0);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -162,6 +164,7 @@ public class ChorusSelfSingCardView extends RelativeLayout {
             mSingCountDownView.reset();
         }
     }
+
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
