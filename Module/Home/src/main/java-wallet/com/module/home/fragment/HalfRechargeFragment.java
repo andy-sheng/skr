@@ -2,6 +2,7 @@ package com.module.home.fragment;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,6 +33,8 @@ public class HalfRechargeFragment extends BallanceFragment {
             .build();
 
     Drawable mSelectedBg = U.getDrawable(R.drawable.chongzhijiemian_dianjiuxuanzhongtai);
+
+    Handler mUiHanlder = new Handler();
 
     @Override
     public int initView() {
@@ -119,5 +122,11 @@ public class HalfRechargeFragment extends BallanceFragment {
     @Override
     public void rechargeSuccess() {
         super.rechargeSuccess();
+        mUiHanlder.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                finish();
+            }
+        }, 500);
     }
 }
