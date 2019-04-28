@@ -262,63 +262,65 @@ public class GrabPlayerRv2 extends RelativeLayout {
             EventBus.getDefault().post(new LightOffAnimationOverEvent());
             return;
         }
-        if (now.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
-            // 第二轮不需要重复播这个动画
-            return;
-        }
+
         List<Animator> allAnimator = new ArrayList<>();
-        List<Animator> animatorSet123s = new ArrayList<>();
-        for (int userId : singerUserIds) {
-            VP vp = mInfoMap.get(userId);
-            if (vp == null) {
-                MyLog.d(TAG, "没有在选手席位找到 id=" + userId + " 相应ui，return");
-                continue;
-            }
-            if (vp.grabTopItemView != null) {
-                vp.grabTopItemView.setGetSingChance();
-            }
-            GrabTopItemView finalGrabTopItemView = vp.grabTopItemView;
-            {
-                // 这是圈圈动画
-                ValueAnimator objectAnimator1 = new ValueAnimator();
-                objectAnimator1.setIntValues(0, 100);
-                objectAnimator1.setDuration(495);
-                objectAnimator1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                    @Override
-                    public void onAnimationUpdate(ValueAnimator animation) {
-                        int p = (int) animation.getAnimatedValue();
-                        finalGrabTopItemView.mCircleAnimationView.setProgress(p);
-                    }
-                });
-                objectAnimator1.addListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationStart(Animator animation) {
-                        super.onAnimationStart(animation);
-                        finalGrabTopItemView.mCircleAnimationView.setVisibility(VISIBLE);
-                    }
 
-                    @Override
-                    public void onAnimationCancel(Animator animation) {
-                        super.onAnimationCancel(animation);
-                        finalGrabTopItemView.mCircleAnimationView.setVisibility(GONE);
-                    }
-                });
+        if (now.getStatus() != EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
+            List<Animator> animatorSet123s = new ArrayList<>();
+            // 第二轮不需要重复播这个动画
+            for (int userId : singerUserIds) {
+                VP vp = mInfoMap.get(userId);
+                if (vp == null) {
+                    MyLog.d(TAG, "没有在选手席位找到 id=" + userId + " 相应ui，return");
+                    continue;
+                }
+                if (vp.grabTopItemView != null) {
+                    vp.grabTopItemView.setGetSingChance();
+                }
+                GrabTopItemView finalGrabTopItemView = vp.grabTopItemView;
+                {
+                    // 这是圈圈动画
+                    ValueAnimator objectAnimator1 = new ValueAnimator();
+                    objectAnimator1.setIntValues(0, 100);
+                    objectAnimator1.setDuration(495);
+                    objectAnimator1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator animation) {
+                            int p = (int) animation.getAnimatedValue();
+                            finalGrabTopItemView.mCircleAnimationView.setProgress(p);
+                        }
+                    });
+                    objectAnimator1.addListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+                            super.onAnimationStart(animation);
+                            finalGrabTopItemView.mCircleAnimationView.setVisibility(VISIBLE);
+                        }
 
-                // 接下来是头像放大一点的动画
-                ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(vp.grabTopItemView.mAvatarIv, View.SCALE_X, 1, 1.08f);
-                ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(vp.grabTopItemView.mAvatarIv, View.SCALE_Y, 1, 1.08f);
-                AnimatorSet animatorSet23 = new AnimatorSet();
-                animatorSet23.playTogether(objectAnimator2, objectAnimator3);
-                animatorSet23.setDuration(4 * 33);
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
+                            super.onAnimationCancel(animation);
+                            finalGrabTopItemView.mCircleAnimationView.setVisibility(GONE);
+                        }
+                    });
 
-                AnimatorSet animatorSet123 = new AnimatorSet();
-                animatorSet123.playTogether(objectAnimator1, animatorSet23);
-                animatorSet123s.add(animatorSet123);
+                    // 接下来是头像放大一点的动画
+                    ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(vp.grabTopItemView.mAvatarIv, View.SCALE_X, 1, 1.08f);
+                    ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(vp.grabTopItemView.mAvatarIv, View.SCALE_Y, 1, 1.08f);
+                    AnimatorSet animatorSet23 = new AnimatorSet();
+                    animatorSet23.playTogether(objectAnimator2, objectAnimator3);
+                    animatorSet23.setDuration(4 * 33);
+
+                    AnimatorSet animatorSet123 = new AnimatorSet();
+                    animatorSet123.playTogether(objectAnimator1, animatorSet23);
+                    animatorSet123s.add(animatorSet123);
+                }
             }
+            AnimatorSet animatorSet123ss = new AnimatorSet();
+            animatorSet123ss.playTogether(animatorSet123s);
+            allAnimator.add(animatorSet123ss);
         }
-        AnimatorSet animatorSet123ss = new AnimatorSet();
-        animatorSet123ss.playTogether(animatorSet123s);
-        allAnimator.add(animatorSet123ss);
+
         // 等待47个节拍
 //            {
 //                // 放大透明度消失
