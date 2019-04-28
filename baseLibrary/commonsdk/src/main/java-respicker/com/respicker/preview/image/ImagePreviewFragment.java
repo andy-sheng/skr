@@ -156,7 +156,7 @@ public class ImagePreviewFragment extends ImageBaseFragment implements ResPicker
             }
         });
         // 初始化 check 按钮
-        if (mCurrentPosition < mImageItems.size()) {
+        if (mCurrentPosition < mImageItems.size() && mCurrentPosition >= 0) {
             ImageItem item = mImageItems.get(mCurrentPosition);
             boolean isSelected = mImagePicker.getSelectedResList().contains(item);
             mCbCheck.setChecked(isSelected);
