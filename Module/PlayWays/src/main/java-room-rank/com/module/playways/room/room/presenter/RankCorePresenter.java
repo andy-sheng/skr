@@ -206,7 +206,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                         .setMode(RecognizeConfig.MODE_MANUAL)
                         .setSongName(mRoomData.getSongModel().getItemName())
                         .setArtist(mRoomData.getSongModel().getOwner())
-                                .build()
+                        .build()
                 );
             }
         }
@@ -218,7 +218,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
             return;
         }
         if (mRoomData.getGameId() > 0) {
-            ModuleServiceManager.getInstance().getMsgService().joinChatRoom(String.valueOf(mRoomData.getGameId()),10, new ICallback() {
+            ModuleServiceManager.getInstance().getMsgService().joinChatRoom(String.valueOf(mRoomData.getGameId()), 10, new ICallback() {
                 @Override
                 public void onSucess(Object obj) {
                     MyLog.d(TAG, "加入融云房间成功");
@@ -1473,22 +1473,22 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(LrcEvent.LineLineEndEvent event) {
         MyLog.d(TAG, "onEvent LineEndEvent lineno=" + event.lineNum);
-            if (RoomDataUtils.isRobotRound(mRoomData.getRealRoundInfo(), mRoomData.getPlayerInfoList())) {
-                // 尝试算机器人的演唱得分
-                if (mRobotScoreHelper != null) {
-                    int score = mRobotScoreHelper.tryGetScoreByLine(event.lineNum);
-                    if (score >= 0) {
+        if (RoomDataUtils.isRobotRound(mRoomData.getRealRoundInfo(), mRoomData.getPlayerInfoList())) {
+            // 尝试算机器人的演唱得分
+            if (mRobotScoreHelper != null) {
+                int score = mRobotScoreHelper.tryGetScoreByLine(event.lineNum);
+                if (score >= 0) {
 //                        U.getToastUtil().showShort("score:" + score);
-                        mUiHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                mIGameRuleView.updateScrollBarProgress(score, mRobotScoreHelper.tryGetTotalScoreByLine(event.lineNum), mRobotScoreHelper.tryGetScoreLineNum());
-                            }
-                        });
-                    }
+                    mUiHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            mIGameRuleView.updateScrollBarProgress(score, mRobotScoreHelper.tryGetTotalScoreByLine(event.lineNum), mRobotScoreHelper.tryGetScoreLineNum());
+                        }
+                    });
                 }
-            } else {
-                // 尝试拿其他人的演唱打分
+            }
+        } else {
+            // 尝试拿其他人的演唱打分
         }
     }
 
@@ -1498,10 +1498,10 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         int acrScore = event.acrScore;
         int melpScore = event.melpScore;
         String from = event.from;
-        if(melpScore>acrScore){
-            processScore(from,melpScore,line);
-        }else{
-            processScore(from,acrScore,line);
+        if (melpScore > acrScore) {
+            processScore(from, melpScore, line);
+        } else {
+            processScore(from, acrScore, line);
         }
     }
 
@@ -1538,6 +1538,11 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
         //收到其他人的机器打分消息，比较复杂，暂时简单点，轮次正确就直接展示
         if (RoomDataUtils.isThisUserRound(mRoomData.getRealRoundInfo(), event.userId)) {
             mIGameRuleView.updateScrollBarProgress(event.score, event.totalScore, event.lineNum);
+        } else {
+            MyLog.d(TAG, "收到个分数，但不是当前演唱者的，event.userId=" + event.userId);
+            if (mRoomData.getRealRoundInfo() != null) {
+                MyLog.d(TAG, "收到个分数 但不是当前演唱者的 演唱者:" + mRoomData.getRealRoundInfo().getUserID());
+            }
         }
     }
 
