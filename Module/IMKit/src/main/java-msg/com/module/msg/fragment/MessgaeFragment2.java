@@ -195,7 +195,7 @@ public class MessgaeFragment2 extends BaseFragment implements IMessageFragment, 
                 if (lastFollowModel.getRelation() == LastFollowModel.RELATION_FOLLOW_ME) {
                     mFollowTips.setVisibility(View.VISIBLE);
                     mFollowTimeTv.setVisibility(View.VISIBLE);
-                    mFollowTips.setText(lastFollowModel.getNickname() + "关注了我");
+                    mFollowTips.setText(lastFollowModel.getNickname() + "关注了你");
                 } else if (lastFollowModel.getRelation() == LastFollowModel.RELATION_ME_FOLLOW) {
                     mFollowTips.setVisibility(View.VISIBLE);
                     mFollowTimeTv.setVisibility(View.VISIBLE);
