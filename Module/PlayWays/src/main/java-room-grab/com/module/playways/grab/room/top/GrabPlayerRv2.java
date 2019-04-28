@@ -203,7 +203,6 @@ public class GrabPlayerRv2 extends RelativeLayout {
         if (mAnimatorAllSet != null) {
             mAnimatorAllSet.cancel();
         }
-        mHasBurst = false;
         initData();
         for (int uId : mInfoMap.keySet()) {
             VP vp = mInfoMap.get(uId);
@@ -239,6 +238,7 @@ public class GrabPlayerRv2 extends RelativeLayout {
         if (now == null) {
             return;
         }
+        mHasBurst = false;
         List<Integer> singerUserIds = now.getSingUserIds();
         if (!now.isParticipant() && now.getEnterStatus() == now.getStatus()) {
             // 如果是演唱阶段进来的参与者
