@@ -16,6 +16,7 @@ import com.common.core.avatar.AvatarUtils;
 import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
 import com.engine.EngineEvent;
@@ -23,6 +24,7 @@ import com.engine.UserStatus;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabChorusUserStatusChangeEvent;
+import com.module.playways.grab.room.event.ShowPersonCardEvent;
 import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.view.normal.view.SingCountDownView;
@@ -131,6 +133,24 @@ public class ChorusOthersSingCardView extends RelativeLayout {
         int offsetX = (U.getDisplayUtils().getScreenWidth() / 2 - U.getDisplayUtils().dip2px(16)) / 2;
         mLeftSingSvga.setTranslationX(-offsetX);
         mRightSingSvga.setTranslationX(offsetX);
+
+        mLeftIv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mLeftUserInfoModel != null) {
+                    EventBus.getDefault().post(new ShowPersonCardEvent(mLeftUserInfoModel.getUserId()));
+                }
+            }
+        });
+
+        mRightIv.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                if (mRightUserInfoModel != null) {
+                    EventBus.getDefault().post(new ShowPersonCardEvent(mRightUserInfoModel.getUserId()));
+                }
+            }
+        });
     }
 
     public void setRoomData(GrabRoomData roomData) {
