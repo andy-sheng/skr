@@ -1072,6 +1072,13 @@ public class RankRoomFragment extends BaseFragment implements IGameRuleView {
             @Override
             public void onLyricEventPost(int eventNum) {
                 mRoomData.setSongLineNum(eventNum);
+                /**
+                 * 更新本地总分
+                 */
+                updateScrollBarProgress(999,0,eventNum);
+                /**
+                 * 通知远端更新总分
+                 */
                 mCorePresenter.sendTotalScoreToOthers(eventNum);
             }
         });

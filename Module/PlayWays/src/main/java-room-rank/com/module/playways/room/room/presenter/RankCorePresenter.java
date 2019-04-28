@@ -1473,6 +1473,9 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(LrcEvent.LineLineEndEvent event) {
         MyLog.d(TAG, "onEvent LineEndEvent lineno=" + event.lineNum);
+        /**
+         * 机器人的轮次
+         */
         if (RoomDataUtils.isRobotRound(mRoomData.getRealRoundInfo(), mRoomData.getPlayerInfoList())) {
             // 尝试算机器人的演唱得分
             if (mRobotScoreHelper != null) {
