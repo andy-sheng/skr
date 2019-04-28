@@ -21,6 +21,7 @@ import com.common.rxretrofit.ApiResult;
 import com.common.upload.UploadCallback;
 import com.common.upload.UploadParams;
 import com.common.utils.ActivityUtils;
+import com.component.busilib.constans.GameModeType;
 import com.zq.lyrics.utils.SongResUtils;
 import com.common.utils.SpanUtils;
 import com.common.utils.U;
@@ -718,7 +719,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
             cancelHeartBeatTask("切换唱将");
 
             if (RoomDataUtils.isMyRound(event.getLastRoundInfoModel())) {
-                if (SkrConfig.getInstance().isNeedUploadAudioForAI()) {
+                if (SkrConfig.getInstance().isNeedUploadAudioForAI(GameModeType.GAME_MODE_CLASSIC_RANK)) {
                     //属于需要上传音频文件的状态
                     // 上一轮是我的轮次，暂停录音
                     EngineManager.getInstance().stopAudioRecording();
@@ -1190,7 +1191,7 @@ public class RankCorePresenter extends RxLifeCyclePresenter {
                     MyLog.w(TAG, "本人开始唱了，歌词和伴奏响起");
                     mRoomData.setSingBeginTs(System.currentTimeMillis());
                     //开始录制声音
-                    if (SkrConfig.getInstance().isNeedUploadAudioForAI()) {
+                    if (SkrConfig.getInstance().isNeedUploadAudioForAI(GameModeType.GAME_MODE_CLASSIC_RANK)) {
                         // 需要上传音频伪装成机器人
                         EngineManager.getInstance().startAudioRecording(RoomDataUtils.getSaveAudioForAiFilePath(), Constants.AUDIO_RECORDING_QUALITY_HIGH);
                     }

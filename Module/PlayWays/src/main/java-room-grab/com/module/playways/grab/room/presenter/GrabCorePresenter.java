@@ -28,6 +28,7 @@ import com.common.upload.UploadCallback;
 import com.common.upload.UploadParams;
 import com.common.utils.ActivityUtils;
 import com.common.utils.HandlerTaskTimer;
+import com.component.busilib.constans.GameModeType;
 import com.module.playways.grab.room.event.SomeOneLeavePlaySeatEvent;
 import com.module.playways.grab.room.model.ChorusRoundInfoModel;
 import com.module.playways.grab.room.model.SPkRoundInfoModel;
@@ -468,7 +469,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         // 打开引擎，变为主播
         BaseRoundInfoModel now = mRoomData.getRealRoundInfo();
         //开始录制声音
-        if (SkrConfig.getInstance().isNeedUploadAudioForAI()) {
+        if (SkrConfig.getInstance().isNeedUploadAudioForAI(GameModeType.GAME_MODE_GRAB)) {
             // 需要上传音频伪装成机器人
             EngineManager.getInstance().startAudioRecording(RoomDataUtils.getSaveAudioForAiFilePath(), Constants.AUDIO_RECORDING_QUALITY_HIGH);
             if (now != null) {
@@ -763,7 +764,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
      */
     private void onSelfRoundOver(GrabRoundInfoModel roundInfoModel) {
         // 上一轮演唱是自己，开始上传资源
-        if (SkrConfig.getInstance().isNeedUploadAudioForAI()) {
+        if (SkrConfig.getInstance().isNeedUploadAudioForAI(GameModeType.GAME_MODE_GRAB)) {
             //属于需要上传音频文件的状态
             // 上一轮是我的轮次，暂停录音
             if (mRoomData.getGameId() > 0) {
