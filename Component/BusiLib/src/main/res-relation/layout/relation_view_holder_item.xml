@@ -44,8 +44,9 @@
             android:id="@+id/sex_iv"
             android:layout_width="@dimen/view_16_dp"
             android:layout_height="@dimen/view_16_dp"
-            android:layout_centerVertical="true"
             android:layout_marginLeft="-116dp"
+            android:layout_alignTop="@id/name_tv"
+            android:layout_marginTop="@dimen/view_3_dp"
             android:layout_toRightOf="@id/name_tv" />
 
 
