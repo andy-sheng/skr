@@ -131,10 +131,6 @@ public class ChorusOthersSingCardView extends RelativeLayout {
         int offsetX = (U.getDisplayUtils().getScreenWidth() / 2 - U.getDisplayUtils().dip2px(16)) / 2;
         mLeftSingSvga.setTranslationX(-offsetX);
         mRightSingSvga.setTranslationX(offsetX);
-
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
-        }
     }
 
     public void setRoomData(GrabRoomData roomData) {
@@ -406,6 +402,14 @@ public class ChorusOthersSingCardView extends RelativeLayout {
                 }
                 break;
             }
+        }
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
         }
     }
 
