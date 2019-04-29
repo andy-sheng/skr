@@ -5,14 +5,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
-import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.common.base.BaseFragment;
-import com.common.clipboard.ClipboardUtils;
 import com.common.core.kouling.SkrKouLingUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.share.SharePlatform;
@@ -28,13 +24,14 @@ import com.common.view.viewpager.SlidingTabLayout;
 import com.module.common.ICallback;
 import com.module.playways.R;
 import com.module.playways.grab.room.GrabRoomData;
-import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.ViewHolder;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
+import com.zq.dialog.InviteFriendDialog;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 
 public class InviteFriendFragment2 extends BaseFragment {
@@ -51,7 +48,7 @@ public class InviteFriendFragment2 extends BaseFragment {
     HashMap<Integer, InviteFriendView> mTitleAndViewMap = new HashMap<>();
     PagerAdapter mTabPagerAdapter;
 
-    DialogPlus mShareDialog;
+    InviteFriendDialog mInviteFriendDialog;
 
     String mKouLingToken = "";
 
@@ -138,19 +135,42 @@ public class InviteFriendFragment2 extends BaseFragment {
                     case ShareModel.SHARE_TYPE_CIPHER:
                         showShareDialog();
                         break;
-                    case ShareModel.SHARE_TYPE_QQ:
-                        // TODO: 2019/4/24 补全下面的分享
-                        shareUrl(SharePlatform.QQ);
-                        break;
-                    case ShareModel.SHARE_TYPE_QQ_QZON:
-                        shareUrl(SharePlatform.QZONE);
-                        break;
-                    case ShareModel.SHARE_TYPE_WECHAT:
-                        shareUrl(SharePlatform.WEIXIN);
-                        break;
-                    case ShareModel.SHARE_TYPE_WECHAT_FRIEND:
-                        shareUrl(SharePlatform.WEIXIN_CIRCLE);
-                        break;
+                    case ShareModel.SHARE_TYPE_QQ: {
+                        Intent intent = U.getActivityUtils().getLaunchIntentForPackage("com.tencent.mobileqq");
+                        if (intent != null && null != intent.resolveActivity(U.app().getPackageManager())) {
+                            shareUrl(SharePlatform.QQ);
+                        } else {
+                            U.getToastUtil().showShort("未安装QQ");
+                        }
+                    }
+                    break;
+                    case ShareModel.SHARE_TYPE_QQ_QZON: {
+                        Intent intent = U.getActivityUtils().getLaunchIntentForPackage("com.tencent.mobileqq");
+                        if (intent != null && null != intent.resolveActivity(U.app().getPackageManager())) {
+                            shareUrl(SharePlatform.QZONE);
+                        } else {
+                            U.getToastUtil().showShort("未安装QQ");
+                        }
+                    }
+                    break;
+                    case ShareModel.SHARE_TYPE_WECHAT: {
+                        Intent intent = U.getActivityUtils().getLaunchIntentForPackage("com.tencent.mm");
+                        if (intent != null && null != intent.resolveActivity(U.app().getPackageManager())) {
+                            shareUrl(SharePlatform.WEIXIN);
+                        } else {
+                            U.getToastUtil().showShort("未安装微信");
+                        }
+                    }
+                    break;
+                    case ShareModel.SHARE_TYPE_WECHAT_FRIEND: {
+                        Intent intent = U.getActivityUtils().getLaunchIntentForPackage("com.tencent.mm");
+                        if (intent != null && null != intent.resolveActivity(U.app().getPackageManager())) {
+                            shareUrl(SharePlatform.WEIXIN_CIRCLE);
+                        } else {
+                            U.getToastUtil().showShort("未安装微信");
+                        }
+                    }
+                    break;
                     default:
                         break;
                 }
@@ -177,7 +197,14 @@ public class InviteFriendFragment2 extends BaseFragment {
         StringBuilder sb = new StringBuilder();
         sb.append("http://test.app.inframe.mobi/room/invitation")
                 .append("?skerId=").append(String.valueOf(MyUserInfoManager.getInstance().getUid()))
-                .append("&code=").append(String.valueOf(mKouLingToken));
+                .append("&code=");
+        String code = String.valueOf(mKouLingToken);
+        try {
+            code = URLEncoder.encode(code,"utf-8");
+        } catch (UnsupportedEncodingException e) {
+
+        }
+        sb.append(code);
         String mUrl = ApiManager.getInstance().findRealUrlByChannel(sb.toString());
 
         UMWeb web = new UMWeb(mUrl);
@@ -214,77 +241,11 @@ public class InviteFriendFragment2 extends BaseFragment {
         }
     }
 
-
     private void showShareDialog() {
-        if (mShareDialog == null) {
-            mShareDialog = DialogPlus.newDialog(getContext())
-                    .setContentHolder(new ViewHolder(R.layout.invite_friend_panel))
-                    .setContentBackgroundResource(R.color.transparent)
-                    .setOverlayBackgroundResource(R.color.black_trans_50)
-                    .setExpanded(false)
-                    .setGravity(Gravity.BOTTOM)
-                    .create();
-            TextView mTvKouling = (TextView) mShareDialog.findViewById(R.id.tv_kouling);
-            if (!TextUtils.isEmpty(mKouLingToken)) {
-                mTvKouling.setText(mKouLingToken);
-            }
-            TextView mTvWeixinShare = (TextView) mShareDialog.findViewById(R.id.tv_weixin_share);
-            TextView mTvQqShare = (TextView) mShareDialog.findViewById(R.id.tv_qq_share);
-            mTvWeixinShare.setOnClickListener(new DebounceViewClickListener() {
-                @Override
-                public void clickValid(View v) {
-                    SkrKouLingUtils.genJoinGrabGameKouling((int) MyUserInfoManager.getInstance().getUid(), mRoomData.getGameId(), new ICallback() {
-                        @Override
-                        public void onSucess(Object obj) {
-                            mShareDialog.dismiss();
-                            ClipboardUtils.setCopy((String) obj);
-                            Intent intent = U.getActivityUtils().getLaunchIntentForPackage("com.tencent.mm");
-                            if (intent != null && null != intent.resolveActivity(U.app().getPackageManager())) {
-                                startActivity(intent);
-                                U.getToastUtil().showLong("请将口令粘贴给你的好友");
-                            } else {
-                                U.getToastUtil().showLong("未安装微信,请将口令粘贴给你的好友");
-                            }
-                        }
-
-                        @Override
-                        public void onFailed(Object obj, int errcode, String message) {
-                            U.getToastUtil().showShort("口令生成失败");
-                        }
-                    });
-
-                }
-            });
-            mTvQqShare.setOnClickListener(new DebounceViewClickListener() {
-                @Override
-                public void clickValid(View v) {
-                    SkrKouLingUtils.genJoinGrabGameKouling((int) MyUserInfoManager.getInstance().getUid(), mRoomData.getGameId(), new ICallback() {
-                        @Override
-                        public void onSucess(Object obj) {
-                            mShareDialog.dismiss();
-                            ClipboardUtils.setCopy((String) obj);
-                            Intent intent = U.getActivityUtils().getLaunchIntentForPackage("com.tencent.mobileqq");
-                            if (intent != null && null != intent.resolveActivity(U.app().getPackageManager())) {
-                                startActivity(intent);
-                                U.getToastUtil().showLong("请将口令粘贴给你的好友");
-                            } else {
-                                U.getToastUtil().showLong("未安装QQ,请将口令粘贴给你的好友");
-                            }
-                        }
-
-                        @Override
-                        public void onFailed(Object obj, int errcode, String message) {
-                            U.getToastUtil().showShort("口令生成失败");
-                        }
-                    });
-                }
-            });
+        if (mInviteFriendDialog == null) {
+            mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_GRAB_GAME, mRoomData.getGameId(), mKouLingToken);
         }
-
-        if (!mShareDialog.isShowing()) {
-            mShareDialog.show();
-        }
-
+        mInviteFriendDialog.show();
     }
 
     @Override
@@ -303,8 +264,8 @@ public class InviteFriendFragment2 extends BaseFragment {
     @Override
     public void destroy() {
         super.destroy();
-        if (mShareDialog != null) {
-            mShareDialog.dismiss(false);
+        if (mInviteFriendDialog != null) {
+            mInviteFriendDialog.dismiss(false);
         }
     }
 }

@@ -9,6 +9,7 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.utils.ToastUtils;
 import com.common.utils.U;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.GrabRoomServerApi;
@@ -268,8 +269,11 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
                         mIGrabSongManageView.showNum(++mTotalNum);
                         updateSongList();
                     }
+
+                    ToastUtils.showShort(songModel.getItemName() + " 添加成功");
                 } else {
                     MyLog.w(TAG, "addSong failed, " + " traceid is " + result.getTraceId());
+                    ToastUtils.showShort(result.getErrmsg());
                 }
             }
 
@@ -334,6 +338,8 @@ public class GrabSongManagePresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     U.getToastUtil().showShort("修改房间名成功");
+                    mGrabRoomData.setRoomName(roomName);
+                    mIGrabSongManageView.updateRoomNameSuccess();
                 } else {
                     U.getToastUtil().showShort(result.getErrmsg() + "");
                 }

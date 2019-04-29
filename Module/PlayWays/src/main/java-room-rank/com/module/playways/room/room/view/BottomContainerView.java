@@ -156,6 +156,7 @@ public abstract class BottomContainerView extends RelativeLayout {
                 }
             }
         });
+
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -272,6 +273,14 @@ public abstract class BottomContainerView extends RelativeLayout {
     public void dismissPopWindow() {
         if (mQuickMsgPopWindow != null) {
             mQuickMsgPopWindow.dismiss();
+        }
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
         }
     }
 

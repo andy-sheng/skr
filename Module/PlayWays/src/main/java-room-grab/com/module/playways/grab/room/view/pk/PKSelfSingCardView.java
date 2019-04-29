@@ -34,7 +34,7 @@ public class PKSelfSingCardView extends RelativeLayout {
     UserInfoModel mRightUserInfoModel;
 
     TranslateAnimation mEnterTranslateAnimation; // 飞入的进场动画
-    TranslateAnimation mLeaveTranslateAnimation; // 飞出的离场动画
+//    TranslateAnimation mLeaveTranslateAnimation; // 飞出的离场动画
 
     public PKSelfSingCardView(Context context) {
         super(context);
@@ -102,8 +102,13 @@ public class PKSelfSingCardView extends RelativeLayout {
         mPkSingCardView.playScaleAnimation(userId, false, new PKSingCardView.AnimationListerner() {
             @Override
             public void onAnimationEndExcludeSvga() {
-                mPkSingCardView.setVisibility(GONE);
+                mPkSingCardView.playWithDraw();
                 playRealLyric();
+            }
+
+            @Override
+            public void onAnimationEndWithDraw() {
+
             }
         });
 
@@ -159,41 +164,51 @@ public class PKSelfSingCardView extends RelativeLayout {
             mPkSingCardView.setRoomData(roomData);
         }
     }
+//
+//    /**
+//     * 离场动画，整个pk结束才执行
+//     */
+//    public void hide() {
+//        if (this != null && this.getVisibility() == VISIBLE) {
+//            if (mLeaveTranslateAnimation == null) {
+//                mLeaveTranslateAnimation = new TranslateAnimation(0.0F, U.getDisplayUtils().getScreenWidth(), 0.0F, 0.0F);
+//                mLeaveTranslateAnimation.setDuration(200);
+//            }
+//            mLeaveTranslateAnimation.setAnimationListener(new Animation.AnimationListener() {
+//                @Override
+//                public void onAnimationStart(Animation animation) {
+//
+//                }
+//
+//                @Override
+//                public void onAnimationEnd(Animation animation) {
+//                    mSingCountDownView.reset();
+//                    clearAnimation();
+//                    setVisibility(GONE);
+//                }
+//
+//                @Override
+//                public void onAnimationRepeat(Animation animation) {
+//
+//                }
+//            });
+//            this.startAnimation(mLeaveTranslateAnimation);
+//        } else {
+//            mSingCountDownView.reset();
+//            clearAnimation();
+//            setVisibility(GONE);
+//        }
+//        mPkSelfSingLyricView.reset();
+//    }
 
-    /**
-     * 离场动画，整个pk结束才执行
-     */
-    public void hide() {
-        if (this != null && this.getVisibility() == VISIBLE) {
-            if (mLeaveTranslateAnimation == null) {
-                mLeaveTranslateAnimation = new TranslateAnimation(0.0F, U.getDisplayUtils().getScreenWidth(), 0.0F, 0.0F);
-                mLeaveTranslateAnimation.setDuration(200);
-            }
-            mLeaveTranslateAnimation.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-
-                }
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    mSingCountDownView.reset();
-                    clearAnimation();
-                    setVisibility(GONE);
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-
-                }
-            });
-            this.startAnimation(mLeaveTranslateAnimation);
-        } else {
+    @Override
+    public void setVisibility(int visibility) {
+        super.setVisibility(visibility);
+        if (visibility == GONE) {
             mSingCountDownView.reset();
-            clearAnimation();
-            setVisibility(GONE);
+            mPkSelfSingLyricView.reset();
+            mPkSingCardView.reset();
         }
-        mPkSelfSingLyricView.reset();
     }
 
     public void destroy() {
@@ -208,10 +223,10 @@ public class PKSelfSingCardView extends RelativeLayout {
             mEnterTranslateAnimation.cancel();
         }
 
-        if (mLeaveTranslateAnimation != null) {
-            mLeaveTranslateAnimation.setAnimationListener(null);
-            mLeaveTranslateAnimation.cancel();
-        }
+//        if (mLeaveTranslateAnimation != null) {
+//            mLeaveTranslateAnimation.setAnimationListener(null);
+//            mLeaveTranslateAnimation.cancel();
+//        }
     }
 
     SelfSingCardView.Listener mListener;

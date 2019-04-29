@@ -634,6 +634,36 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         dialogPlus.show();
     }
 
+    DialogPlus getRedPkgFailed;
+
+    @Override
+    public void showGetRedPkgFailed() {
+        TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
+                .setMessageTip("注册账号行为异常，红包激活不成功")
+                .setOkBtnTip("确定")
+                .setOkBtnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (getRedPkgFailed != null) {
+                            getRedPkgFailed.dismiss();
+                        }
+                    }
+                })
+                .build();
+
+        if (getRedPkgFailed == null) {
+            getRedPkgFailed = DialogPlus.newDialog(getContext())
+                    .setContentHolder(new ViewHolder(tipsDialogView))
+                    .setGravity(Gravity.BOTTOM)
+                    .setContentBackgroundResource(R.color.transparent)
+                    .setOverlayBackgroundResource(R.color.black_trans_80)
+                    .setExpanded(false)
+                    .create();
+        }
+
+        getRedPkgFailed.show();
+    }
+
     private void initTopView() {
         // 加上状态栏的高度
         int statusBarHeight = U.getStatusBarUtil().getStatusBarHeight(getContext());
@@ -878,13 +908,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabSomeOneLightBurstEvent event) {
         // 爆灯
-
         if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
             // 当前我是演唱者
             mDengBigAnimation.setTranslationY(U.getDisplayUtils().dip2px(200));
-            mDengBigAnimation.playBurstAnimation(true);
+            mDengBigAnimation.playBurstAnimation(event.uid == MyUserInfoManager.getInstance().getUid());
         } else {
-            mDengBigAnimation.playBurstAnimation(false);
+            mDengBigAnimation.playBurstAnimation(event.uid == MyUserInfoManager.getInstance().getUid());
         }
     }
 
@@ -925,6 +954,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         // 播放3秒导唱
         mTopContainerView.setVisibility(View.VISIBLE);
         mOthersSingCardView.setVisibility(View.GONE);
+        mSelfSingCardView.setVisibility(View.GONE);
         mTopContainerView.setSeqIndex(seq, mRoomData.getGrabConfigModel().getTotalGameRoundSeq());
         PendingPlaySongCardData pendingPlaySongCardData = new PendingPlaySongCardData(seq, songModel);
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_SONGCARD_OVER);
@@ -980,6 +1010,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     public void singBySelf() {
         removeAllEnsureMsg();
         mCorePresenter.stopGuide();
+        GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
+        // 第二轮不播这个动画
         mTopContainerView.setModeSing();
         mTopContainerView.setSeqIndex(RoomDataUtils.getSeqOfRoundInfo(mRoomData.getRealRoundInfo()), mRoomData.getGrabConfigModel().getTotalGameRoundSeq());
         mSongInfoCardView.hide();
@@ -991,7 +1023,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
 
         Message msg = mUiHanlder.obtainMessage(MSG_ENSURE_SING_BEGIN_TIPS_OVER);
         mUiHanlder.sendMessageDelayed(msg, 4000);
-        GrabRoundInfoModel now = mRoomData.getRealRoundInfo();
+
         if (now != null && now.getStatus() == EQRoundStatus.QRS_SPK_SECOND_PEER_SING.getValue()) {
             // pk的第二轮，没有 vs 的演唱开始提示了
             onSingBeginTipsPlayOver();

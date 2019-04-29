@@ -117,7 +117,7 @@ public class PKOthersSingCardView extends RelativeLayout {
 
         if (!infoModel.isParticipant() && infoModel.isEnterInSingStatus()) {
             // 开始倒计时
-            // 直接播放svga
+            // 直接播放svga 保证声纹动画
             mPkCardView.playSingAnimation(userId);
             mCountDownStatus = COUNT_DOWN_STATUS_PLAYING;
             countDown("中途进来");
@@ -128,6 +128,11 @@ public class PKOthersSingCardView extends RelativeLayout {
                     // 开始倒计时
                     mCountDownStatus = COUNT_DOWN_STATUS_PLAYING;
                     countDown("动画播放完毕");
+                }
+
+                @Override
+                public void onAnimationEndWithDraw() {
+                    // TODO: 2019/4/26 不会调用
                 }
             });
         }
@@ -208,7 +213,7 @@ public class PKOthersSingCardView extends RelativeLayout {
         int progress;  //当前进度条
         int leaveTime; //剩余时间
         MyLog.d(TAG, "countDown isParticipant:" + infoModel.isParticipant() + " enterStatus=" + infoModel.getEnterStatus());
-        if (!infoModel.isParticipant() && infoModel.isEnterInSingStatus()) {
+        if (!infoModel.isParticipant() && infoModel.getStatus() == infoModel.getEnterStatus()) {
             MyLog.d(TAG, "演唱阶段加入的，倒计时没那么多");
             progress = infoModel.getElapsedTimeMs() * 100 / totalMs;
             leaveTime = totalMs - infoModel.getElapsedTimeMs();

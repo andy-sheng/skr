@@ -26,6 +26,7 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
     ExTextView mNameTv;
     ImageView mSexIv;
     ExTextView mFollowTv;
+    ExTextView mStatusTv;
 
     int mMode;
     int position;
@@ -40,6 +41,7 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
         mSexIv = (ImageView) itemView.findViewById(R.id.sex_iv);
         mNameTv = (ExTextView) itemView.findViewById(R.id.name_tv);
         mFollowTv = (ExTextView) itemView.findViewById(R.id.follow_tv);
+        mStatusTv = (ExTextView) itemView.findViewById(R.id.status_tv);
 
         mFollowTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -73,33 +75,53 @@ public class RelationHolderView extends RecyclerView.ViewHolder {
 
         if (mMode == UserInfoManager.RELATION_BLACKLIST) {
             mFollowTv.setVisibility(View.VISIBLE);
-            mFollowTv.setText("移出黑名单");
-            mFollowTv.setTextColor(Color.parseColor("#0C2275"));
+            mFollowTv.setClickable(true);
+            mFollowTv.setText("移出");
+            mFollowTv.setTextColor(Color.parseColor("#3B4E79"));
             mFollowTv.setBackground(ContextCompat.getDrawable(U.app(), R.drawable.yellow_button_icon));
         } else {
             if (userInfoModel.getUserId() == MyUserInfoManager.getInstance().getUid()) {
                 mFollowTv.setVisibility(View.GONE);
                 return;
             } else {
-                if (userInfoModel.isFriend()) {
-                    mFollowTv.setVisibility(View.VISIBLE);
-                    mFollowTv.setText("已互关");
-                    mFollowTv.setTextColor(Color.parseColor("#3B4E79"));
-                    mFollowTv.setBackground(null);
-                } else if (userInfoModel.isFollow()) {
-                    mFollowTv.setVisibility(View.VISIBLE);
-                    mFollowTv.setText("已关注");
-                    mFollowTv.setTextColor(Color.parseColor("#CC7F00"));
-                    mFollowTv.setBackground(null);
+                if (mMode != UserInfoManager.RELATION_FRIENDS) {
+                    if (userInfoModel.isFriend()) {
+                        mFollowTv.setVisibility(View.VISIBLE);
+                        mFollowTv.setText("已互关");
+                        mFollowTv.setClickable(false);
+                        mFollowTv.setTextColor(Color.parseColor("#3B4E79"));
+                        mFollowTv.setBackground(null);
+                    } else if (userInfoModel.isFollow()) {
+                        mFollowTv.setVisibility(View.VISIBLE);
+                        mFollowTv.setText("已关注");
+                        mFollowTv.setClickable(false);
+                        mFollowTv.setTextColor(Color.parseColor("#CC7F00"));
+                        mFollowTv.setBackground(null);
+                    } else {
+                        mFollowTv.setVisibility(View.VISIBLE);
+                        mFollowTv.setText("+关注");
+                        mFollowTv.setClickable(true);
+                        mFollowTv.setTextColor(Color.parseColor("#3B4E79"));
+                        mFollowTv.setBackground(ContextCompat.getDrawable(U.app(), R.drawable.yellow_button_icon));
+                    }
                 } else {
-                    mFollowTv.setVisibility(View.VISIBLE);
-                    mFollowTv.setText("+关注");
-                    mFollowTv.setTextColor(Color.parseColor("#3B4E79"));
-                    mFollowTv.setBackground(ContextCompat.getDrawable(U.app(), R.drawable.yellow_button_icon));
+                    mFollowTv.setVisibility(View.GONE);
                 }
             }
+        }
 
-
+        if (userInfoModel.getStatus() == UserInfoModel.EF_OnLine) {
+            mStatusTv.setCompoundDrawablePadding(U.getDisplayUtils().dip2px(3));
+            mStatusTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.greendot, 0, 0, 0);
+            mStatusTv.setVisibility(View.VISIBLE);
+            mStatusTv.setText(userInfoModel.getStatusDesc());
+        } else if (userInfoModel.getStatus() == UserInfoModel.EF_OffLine) {
+            mStatusTv.setCompoundDrawablePadding(U.getDisplayUtils().dip2px(3));
+            mStatusTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.graydot, 0, 0, 0);
+            mStatusTv.setVisibility(View.VISIBLE);
+            mStatusTv.setText(userInfoModel.getStatusDesc());
+        } else {
+            mStatusTv.setVisibility(View.GONE);
         }
     }
 }

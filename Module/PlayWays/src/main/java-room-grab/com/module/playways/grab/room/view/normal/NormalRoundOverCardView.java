@@ -58,12 +58,12 @@ public class NormalRoundOverCardView extends RelativeLayout {
     }
 
     public void bindData(GrabRoundInfoModel lastRoundInfo, SVGAListener listener) {
-        if(lastRoundInfo==null){
+        if (lastRoundInfo == null) {
             return;
         }
         int songId = 0;
-        if(lastRoundInfo.getMusic()!=null) {
-             songId = lastRoundInfo.getMusic().getItemID();
+        if (lastRoundInfo.getMusic() != null) {
+            songId = lastRoundInfo.getMusic().getItemID();
         }
         int reason = lastRoundInfo.getOverReason();
         int resultType = lastRoundInfo.getResultType();
@@ -88,10 +88,12 @@ public class NormalRoundOverCardView extends RelativeLayout {
             startChorusFailed(songId);
         } else if (reason == EQRoundOverReason.ROR_CHO_NOT_ENOUTH_PLAYER.getValue()) {
             // 合唱人数不够失败
-            // TODO: 2019/4/22  缺svga动画
+            assetsName = "grab_sing_none_with.svga";
+            startChorusNoneWith(songId);
         } else if (reason == EQRoundOverReason.ROR_SPK_NOT_ENOUTH_PLAYER.getValue()) {
             // pk人数不够
-            // TODO: 2019/4/22  缺svga动画
+            assetsName = "grab_sing_none_with.svga";
+            startOKNoneWith(songId);
         } else {
             // 放弃不用单独处理，看在哪个阶段点击放弃的
             if (resultType == EQRoundResultType.ROT_TYPE_1.getValue()) {
@@ -126,6 +128,28 @@ public class NormalRoundOverCardView extends RelativeLayout {
         }
     }
 
+    private void startOKNoneWith(int songId) {
+        LayoutParams lp = (LayoutParams) mSingResultSvga.getLayoutParams();
+        lp.height = U.getDisplayUtils().dip2px(190);
+        lp.topMargin = U.getDisplayUtils().dip2px(139);
+        mSingResultSvga.setLayoutParams(lp);
+
+        // TODO: 2019/4/22 音效和打点？？？
+
+        playAnimation();
+    }
+
+    private void startChorusNoneWith(int songId) {
+        LayoutParams lp = (LayoutParams) mSingResultSvga.getLayoutParams();
+        lp.height = U.getDisplayUtils().dip2px(190);
+        lp.topMargin = U.getDisplayUtils().dip2px(139);
+        mSingResultSvga.setLayoutParams(lp);
+
+        // TODO: 2019/4/22 音效和打点？？？
+
+        playAnimation();
+    }
+
     private void startNoneSing(int songId) {
         LayoutParams lp = (LayoutParams) mSingResultSvga.getLayoutParams();
         lp.height = U.getDisplayUtils().dip2px(560);
@@ -140,7 +164,7 @@ public class NormalRoundOverCardView extends RelativeLayout {
         playAnimation();
     }
 
-    private void startChorusSucess(int songId){
+    private void startChorusSucess(int songId) {
         LayoutParams lp = (LayoutParams) mSingResultSvga.getLayoutParams();
         lp.height = U.getDisplayUtils().dip2px(180);
         lp.topMargin = U.getDisplayUtils().dip2px(150);
@@ -149,7 +173,7 @@ public class NormalRoundOverCardView extends RelativeLayout {
         playAnimation();
     }
 
-    private void startChorusFailed(int songId){
+    private void startChorusFailed(int songId) {
         LayoutParams lp = (LayoutParams) mSingResultSvga.getLayoutParams();
         lp.height = U.getDisplayUtils().dip2px(180);
         lp.topMargin = U.getDisplayUtils().dip2px(139);

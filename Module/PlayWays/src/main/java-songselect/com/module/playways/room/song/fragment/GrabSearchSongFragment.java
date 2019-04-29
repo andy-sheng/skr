@@ -81,7 +81,6 @@ public class GrabSearchSongFragment extends BaseFragment {
                 if (mFragmentDataListener != null) {
                     mFragmentDataListener.onFragmentResult(0, 0, null, songModel);
                 }
-                U.getFragmentUtils().popFragment(GrabSearchSongFragment.this);
             }
         }, false, SongSelectAdapter.GRAB_MODE);
         mSearchResult.setAdapter(mSongSelectAdapter);

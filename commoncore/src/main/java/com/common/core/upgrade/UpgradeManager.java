@@ -245,7 +245,7 @@ public class UpgradeManager {
         if (mNormalUpgradeDialog == null) {
             Activity activity = U.getActivityUtils().getTopActivity();
             if (activity != null) {
-                mNormalUpgradeView = new NormalUpgradeView(activity);
+                mNormalUpgradeView = new NormalUpgradeView(U.app());
                 mNormalUpgradeView.setListener(new NormalUpgradeView.Listener() {
                     @Override
                     public void onUpdateBtnClick() {
@@ -292,7 +292,7 @@ public class UpgradeManager {
         if (mForceUpgradeDialog == null) {
             Activity activity = U.getActivityUtils().getTopActivity();
             if (activity != null) {
-                mForceUpgradeView = new ForceUpgradeView(activity);
+                mForceUpgradeView = new ForceUpgradeView(U.app());
                 mForceUpgradeView.setListener(new ForceUpgradeView.Listener() {
                     @Override
                     public boolean onUpdateBtnClick() {

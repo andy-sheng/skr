@@ -53,6 +53,18 @@
                     android:layout_marginBottom="@dimen/view_12_dp"
                     android:background="@drawable/shouye_task" />
 
+                <com.common.view.ex.ExImageView
+                    android:id="@+id/iv_red_dot"
+                    android:layout_width="@dimen/view_12_dp"
+                    android:layout_height="@dimen/view_12_dp"
+                    android:layout_alignTop="@+id/task_iv"
+                    android:layout_alignRight="@+id/task_iv"
+                    android:visibility="gone"
+                    BitmapTextView:bl_corners_radius="@dimen/view_8_dp"
+                    BitmapTextView:bl_solid_color="#FF8AB6"
+                    BitmapTextView:bl_stroke_color="#CB5883"
+                    BitmapTextView:bl_stroke_width="@dimen/view_2_dp" />
+
                 <com.facebook.drawee.view.SimpleDraweeView
                     android:id="@+id/avatar_iv"
                     android:layout_width="@dimen/view_40_dp"
@@ -98,10 +110,10 @@
                         android:id="@+id/coin_num"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/view_5_dp"
                         android:layout_marginRight="@dimen/view_8_dp"
                         android:layout_toRightOf="@id/coin_iv"
-                        android:layout_centerVertical="true"
                         BitmapTextView:scale="0.4" />
 
                 </com.common.view.ex.ExRelativeLayout>

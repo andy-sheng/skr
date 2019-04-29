@@ -3,6 +3,7 @@ package com.module.playways.grab.room.view.pk;
 import android.content.Context;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
@@ -10,9 +11,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.common.anim.svga.SvgaParserAdapter;
 import com.common.core.avatar.AvatarUtils;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.userinfo.model.UserInfoModel;
+import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.ex.ExTextView;
 import com.component.busilib.view.BitmapTextView;
@@ -22,6 +25,11 @@ import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.listener.SVGAListener;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.grab.room.model.SPkRoundInfoModel;
+import com.opensource.svgaplayer.SVGACallback;
+import com.opensource.svgaplayer.SVGADrawable;
+import com.opensource.svgaplayer.SVGAImageView;
+import com.opensource.svgaplayer.SVGAParser;
+import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.zq.live.proto.Room.EQRoundOverReason;
 
 import java.util.List;
@@ -31,6 +39,8 @@ import java.util.List;
  * PK 结果卡片
  */
 public class PKRoundOverCardView extends RelativeLayout {
+
+    public final static String TAG = "PKRoundOverCardView";
 
     LinearLayout mPkArea;
     ImageView mLeftAvatarBg;
@@ -47,6 +57,12 @@ public class PKRoundOverCardView extends RelativeLayout {
     TextView mLeftTipsTv;
     BitmapTextView mLeftScoreBtv;
     BitmapTextView mRightScoreBtv;
+    TextView mRightTipsTv;
+
+    ImageView mLeftWinIv;
+    ImageView mRightWinIv;
+    SVGAImageView mLeftSvga;
+    SVGAImageView mRightSvga;
 
     Handler mUiHandler = new Handler();
 
@@ -59,6 +75,8 @@ public class PKRoundOverCardView extends RelativeLayout {
     int mRightOverReason;
     String mLeftScore;
     String mRightScore;
+    boolean mLeftWin = false;     // 标记左边是否胜利
+    boolean mRightWin = false;    // 标记右边是否胜利
     private GrabRoomData mRoomData;
     SVGAListener mSVGAListener;
 
@@ -93,20 +111,28 @@ public class PKRoundOverCardView extends RelativeLayout {
         mLeftTipsTv = (TextView) findViewById(R.id.left_tips_tv);
         mLeftScoreBtv = (BitmapTextView) findViewById(R.id.left_score_btv);
         mRightScoreBtv = (BitmapTextView) findViewById(R.id.right_score_btv);
+        mRightTipsTv = (TextView) findViewById(R.id.right_tips_tv);
+
+        mLeftWinIv = (ImageView) findViewById(R.id.left_win_iv);
+        mRightWinIv = (ImageView) findViewById(R.id.right_win_iv);
+        mLeftSvga = (SVGAImageView) findViewById(R.id.left_svga);
+        mRightSvga = (SVGAImageView) findViewById(R.id.right_svga);
     }
 
     public void bindData(GrabRoundInfoModel roundInfoModel, SVGAListener svgaListener) {
         mSVGAListener = svgaListener;
-        mLeftUserInfoModel = null;
-        mRightUserInfoModel = null;
-        mLeftScore = "0.0";
-        mRightScore = "0.0";
+        reset();
         List<SPkRoundInfoModel> list = roundInfoModel.getsPkRoundInfoModels();
         if (list != null && list.size() >= 2) {
             mLeftUserInfoModel = mRoomData.getUserInfo(list.get(0).getUserID());
             this.mLeftScore = String.format("%.1f", list.get(0).getScore());
+            this.mLeftOverReason = list.get(0).getOverReason();
+            this.mLeftWin = list.get(0).isWin();
+
             mRightUserInfoModel = mRoomData.getUserInfo(list.get(1).getUserID());
             this.mRightScore = String.format("%.1f", list.get(1).getScore());
+            this.mRightOverReason = list.get(1).getOverReason();
+            this.mRightWin = list.get(1).isWin();
         }
 
         if (mLeftUserInfoModel != null) {
@@ -116,7 +142,7 @@ public class PKRoundOverCardView extends RelativeLayout {
                             .build());
             mLeftName.setText(mLeftUserInfoModel.getNickname());
             mLeftScoreBtv.setText(mLeftScore);
-            showOverReason(mLeftOverReason, mLeftOverReasonIv);
+            showOverReason(mLeftOverReason, mLeftOverReasonIv, mLeftScoreBtv, mLeftTipsTv);
         }
 
         if (mRightUserInfoModel != null) {
@@ -126,26 +152,53 @@ public class PKRoundOverCardView extends RelativeLayout {
                             .build());
             mRightName.setText(mRightUserInfoModel.getNickname());
             mRightScoreBtv.setText(mRightScore);
-            showOverReason(mRightOverReason, mRightOverReasonIv);
+            showOverReason(mRightOverReason, mRightOverReasonIv, mRightScoreBtv, mRightTipsTv);
         }
 
         playCardEnterAnimation();
     }
 
-    private void showOverReason(int overReason, ImageView overReasonIv) {
+    private void reset() {
+        mLeftUserInfoModel = null;
+        mRightUserInfoModel = null;
+        mLeftWinIv.setVisibility(GONE);
+        mRightWinIv.setVisibility(GONE);
+        if (mLeftSvga != null) {
+            mLeftSvga.setCallback(null);
+            mLeftSvga.stopAnimation(true);
+        }
+        if (mRightSvga != null) {
+            mRightSvga.setCallback(null);
+            mRightSvga.stopAnimation(true);
+        }
+        mLeftWin = false;
+        mRightWin = false;
+        mLeftScore = "0.0";
+        mRightScore = "0.0";
+    }
+
+    private void showOverReason(int overReason, ImageView overReasonIv, BitmapTextView bitmapTextView, TextView scoreTv) {
         if (overReasonIv == null) {
             return;
         }
         if (overReason == EQRoundOverReason.ROR_SELF_GIVE_UP.getValue()) {
+            bitmapTextView.setVisibility(GONE);
+            scoreTv.setVisibility(GONE);
             overReasonIv.setVisibility(VISIBLE);
             overReasonIv.setBackgroundResource(R.drawable.grab_pk_buchangle);
         } else if (overReason == EQRoundOverReason.ROR_MULTI_NO_PASS.getValue()) {
+            bitmapTextView.setVisibility(GONE);
+            scoreTv.setVisibility(GONE);
             overReasonIv.setVisibility(VISIBLE);
             overReasonIv.setBackgroundResource(R.drawable.grab_pk_miedeng);
         } else if (overReason == EQRoundOverReason.ROR_IN_ROUND_PLAYER_EXIT.getValue()) {
+            bitmapTextView.setVisibility(GONE);
+            scoreTv.setVisibility(GONE);
             overReasonIv.setVisibility(VISIBLE);
             overReasonIv.setBackgroundResource(R.drawable.grab_pk_diaoxianle);
         } else {
+            scoreTv.setVisibility(VISIBLE);
+            bitmapTextView.setVisibility(VISIBLE);
             overReasonIv.setVisibility(GONE);
         }
     }
@@ -167,7 +220,7 @@ public class PKRoundOverCardView extends RelativeLayout {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-
+                showPkResult();
             }
 
             @Override
@@ -183,6 +236,75 @@ public class PKRoundOverCardView extends RelativeLayout {
                 hide();
             }
         }, 3000);
+    }
+
+    private void showPkResult() {
+        if (mLeftWin) {
+            mLeftWinIv.setVisibility(VISIBLE);
+            playWinSVGA(mLeftSvga);
+        }
+
+        if (mRightWin) {
+            mRightWinIv.setVisibility(VISIBLE);
+            playWinSVGA(mRightSvga);
+        }
+    }
+
+    private void playWinSVGA(SVGAImageView svgaImageView) {
+
+        if (svgaImageView == null) {
+            MyLog.w(TAG, "playSingAnimation" + " svgaImageView=" + svgaImageView);
+            return;
+        }
+
+        if (svgaImageView != null && svgaImageView.isAnimating()) {
+            // 正在播放
+            return;
+        }
+
+        svgaImageView.setVisibility(View.VISIBLE);
+        svgaImageView.setLoops(1);
+
+        SvgaParserAdapter.parse("grab_pk_result_win.svga", new SVGAParser.ParseCompletion() {
+            @Override
+            public void onComplete(SVGAVideoEntity videoItem) {
+                SVGADrawable drawable = new SVGADrawable(videoItem);
+                svgaImageView.setImageDrawable(drawable);
+                svgaImageView.startAnimation();
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
+
+        svgaImageView.setCallback(new SVGACallback() {
+            @Override
+            public void onPause() {
+
+            }
+
+            @Override
+            public void onFinished() {
+                if (svgaImageView != null) {
+                    svgaImageView.setCallback(null);
+                    svgaImageView.stopAnimation(true);
+                }
+            }
+
+            @Override
+            public void onRepeat() {
+                if (svgaImageView != null && svgaImageView.isAnimating()) {
+                    svgaImageView.stopAnimation(false);
+                }
+            }
+
+            @Override
+            public void onStep(int frame, double percentage) {
+
+            }
+        });
     }
 
     /**
@@ -244,6 +366,14 @@ public class PKRoundOverCardView extends RelativeLayout {
         if (mLeaveTranslateAnimation != null) {
             mLeaveTranslateAnimation.setAnimationListener(null);
             mLeaveTranslateAnimation.cancel();
+        }
+        if (mLeftSvga != null) {
+            mLeftSvga.setCallback(null);
+            mLeftSvga.stopAnimation(true);
+        }
+        if (mRightSvga != null) {
+            mRightSvga.setCallback(null);
+            mLeftSvga.stopAnimation(true);
         }
         mUiHandler.removeCallbacksAndMessages(null);
         clearAnimation();

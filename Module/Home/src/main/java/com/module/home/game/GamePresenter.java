@@ -86,7 +86,7 @@ public class GamePresenter extends RxLifeCyclePresenter {
             public void onError(Throwable e) {
                 U.getToastUtil().showShort("网络异常");
             }
-        },this,new ApiMethods.RequestControl("getKConfig", ApiMethods.ControlType.CancelThis));
+        }, this, new ApiMethods.RequestControl("getKConfig", ApiMethods.ControlType.CancelThis));
     }
 
     public void initCoinNum(boolean isFlag) {
@@ -106,7 +106,7 @@ public class GamePresenter extends RxLifeCyclePresenter {
                     mIGameView.setGrabCoinNum(coinNum);
                 }
             }
-        }, this,new ApiMethods.RequestControl("getCoinNum", ApiMethods.ControlType.CancelThis));
+        }, this, new ApiMethods.RequestControl("getCoinNum", ApiMethods.ControlType.CancelThis));
     }
 
     public void initOperationArea(boolean isFlag) {
@@ -148,7 +148,7 @@ public class GamePresenter extends RxLifeCyclePresenter {
             public void onNetworkError(ErrorType errorType) {
                 U.getToastUtil().showShort("网络超时");
             }
-        },this,new ApiMethods.RequestControl("getSlideList", ApiMethods.ControlType.CancelThis));
+        }, this, new ApiMethods.RequestControl("getSlideList", ApiMethods.ControlType.CancelThis));
     }
 
     public void initQuickRoom(boolean isFlag) {
@@ -170,7 +170,21 @@ public class GamePresenter extends RxLifeCyclePresenter {
                     mIGameView.setQuickRoom(list, offset);
                 }
             }
-        }, this,new ApiMethods.RequestControl("getSepcialList", ApiMethods.ControlType.CancelThis));
+        }, this, new ApiMethods.RequestControl("getSepcialList", ApiMethods.ControlType.CancelThis));
+    }
+
+    public void checkTaskRedDot() {
+        ApiMethods.subscribe(mMainPageSlideApi.taskRedDotState(), new ApiObserver<ApiResult>() {
+            @Override
+            public void process(ApiResult obj) {
+                if (obj.getErrno() == 0) {
+                    Boolean showRedDot = JSON.parseObject(obj.getData().getString("has"), Boolean.class);
+                    mIGameView.showTaskRedDot(showRedDot);
+                } else {
+                    MyLog.w(TAG, "checkTaskRedDot " + obj.toString());
+                }
+            }
+        }, this, new ApiMethods.RequestControl("checkTaskRedDot", ApiMethods.ControlType.CancelThis));
     }
 
     public void initRecommendRoom(int interval) {
@@ -196,7 +210,7 @@ public class GamePresenter extends RxLifeCyclePresenter {
     }
 
     private void loadRecommendRoomData() {
-         ApiMethods.subscribe(mGrabSongApi.getRecommendRoomList(0, 50), new ApiObserver<ApiResult>() {
+        ApiMethods.subscribe(mGrabSongApi.getRecommendRoomList(0, 50), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult obj) {
                 if (obj.getErrno() == 0) {
@@ -207,7 +221,7 @@ public class GamePresenter extends RxLifeCyclePresenter {
                     mIGameView.setRecommendInfo(list, offset, totalNum);
                 }
             }
-        }, this,new ApiMethods.RequestControl("getRecommendRoomList", ApiMethods.ControlType.CancelThis));
+        }, this, new ApiMethods.RequestControl("getRecommendRoomList", ApiMethods.ControlType.CancelThis));
     }
 
     @Override

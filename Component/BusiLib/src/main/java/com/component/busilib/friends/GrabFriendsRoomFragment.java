@@ -90,9 +90,9 @@ public class GrabFriendsRoomFragment extends BaseFragment {
                         mSkrAudioPermission.ensurePermission(new Runnable() {
                             @Override
                             public void run() {
-                                IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
-                                if (iRankingModeService != null) {
-                                    iRankingModeService.tryGoGrabRoom(roomID);
+                                IPlaywaysModeService playWaysService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
+                                if (playWaysService != null) {
+                                    playWaysService.tryGoGrabRoom(roomID,0);
                                 }
                             }
                         }, true);

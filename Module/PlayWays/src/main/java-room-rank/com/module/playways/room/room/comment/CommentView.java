@@ -118,6 +118,9 @@ public class CommentView extends RelativeLayout {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         if (this.getLayoutParams().height > maxHeight) {
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) this.getLayoutParams();
             layoutParams.topMargin = layoutParams.topMargin + (layoutParams.height - maxHeight);
@@ -134,6 +137,7 @@ public class CommentView extends RelativeLayout {
         }
 
         inflate(getContext(), R.layout.comment_view_layout, this);
+        // TODO: 2019/4/28 必须提前注册 
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -173,10 +177,13 @@ public class CommentView extends RelativeLayout {
         }
     }
 
+
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        EventBus.getDefault().unregister(this);
+        if (EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().unregister(this);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

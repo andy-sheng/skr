@@ -141,6 +141,7 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
         if (mRoomData.getSpecialModel() != null) {
             setTagTv(mRoomData.getSpecialModel());
         }
+        mEditRoomName.setText(mRoomData.getRoomName());
 
         mUiHandler.postDelayed(() -> {
             TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f,
@@ -184,6 +185,11 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
     }
 
     @Override
+    public void updateRoomNameSuccess() {
+        mEditRoomName.setText(mRoomData.getRoomName());
+    }
+
+    @Override
     public void hasMoreSongList(boolean hasMore) {
         mRefreshLayout.setEnableLoadMore(hasMore);
         mRefreshLayout.finishLoadMore();
@@ -216,7 +222,6 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
                 showEditRoomDialog();
             }
         });
-
 
         mSearchSongIv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -297,7 +302,7 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
     }
 
     private void showEditRoomDialog() {
-        GrabEditView grabEditView = new GrabEditView(getContext());
+        GrabEditView grabEditView = new GrabEditView(getContext(), mRoomData.getRoomName());
         grabEditView.setListener(new GrabEditView.Listener() {
             @Override
             public void onClickCancel() {
@@ -332,6 +337,7 @@ public class GrabSongManageFragment extends BaseFragment implements IGrabSongMan
                     }
                 })
                 .create();
+        U.getKeyBoardUtils().showSoftInputKeyBoard(getActivity());
         mEditRoomDialog.show();
     }
 

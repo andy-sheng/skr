@@ -61,6 +61,7 @@ public class OthersSingCardView {
 
     public void tryStartCountDown() {
         mNormalOthersSingCardView.tryStartCountDown();
+        mChorusOtherSingCardView.tryStartCountDown();
     }
 
     public void hide() {

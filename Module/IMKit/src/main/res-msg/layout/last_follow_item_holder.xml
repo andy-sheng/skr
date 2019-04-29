@@ -28,7 +28,10 @@
         android:layout_alignTop="@+id/avatar_iv"
         android:layout_marginLeft="@dimen/view_9_dp"
         android:layout_toRightOf="@+id/avatar_iv"
-        android:paddingRight="@dimen/view_20_dp"
+        android:paddingRight="@dimen/view_120_dp"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:ellipsize="end"
         android:gravity="center"
         android:textColor="#0C2275"
         android:textSize="@dimen/textsize_16_dp"
@@ -50,7 +53,7 @@
         android:layout_height="@dimen/view_16_dp"
         android:layout_alignTop="@id/name_tv"
         android:layout_marginTop="@dimen/view_3_dp"
-        android:layout_marginLeft="-16dp"
+        android:layout_marginLeft="-116dp"
         android:layout_toRightOf="@id/name_tv" />
 
     <com.common.view.ex.ExTextView

@@ -3,6 +3,9 @@ package com.module.msg.follow;
 import java.io.Serializable;
 
 public class LastFollowModel implements Serializable {
+    public static final int RELATION_ME_FOLLOW = 1;         //我关注的relation
+    public static final int RELATION_FOLLOW_ME = 2;       //关注的relation
+
     /**
      * userID : 1134740
      * avatar : http://res-static.inframe.mobi/common/avatar_default_2.png
@@ -18,7 +21,7 @@ public class LastFollowModel implements Serializable {
     private int userID;
     private String avatar;
     private String nickname;
-    private int timeMs;
+    private long timeMs;
     private boolean isFriend;
     private boolean isFollow;
     private int sex;
@@ -49,11 +52,11 @@ public class LastFollowModel implements Serializable {
         this.nickname = nickname;
     }
 
-    public int getTimeMs() {
+    public long getTimeMs() {
         return timeMs;
     }
 
-    public void setTimeMs(int timeMs) {
+    public void setTimeMs(long timeMs) {
         this.timeMs = timeMs;
     }
 

@@ -198,7 +198,6 @@ public class InframeProcessor implements ISchemeProcessor {
                     .navigation();
         } else if ("/jump_person_center".equals(path)) {
             // 跳到个人中心
-            U.getActivityUtils().goHomeActivity();
             EventBus.getDefault().post(new JumpHomeFromSchemeEvent(3));
         }
     }
@@ -206,7 +205,6 @@ public class InframeProcessor implements ISchemeProcessor {
     private void processHomeUrl(Uri uri) {
         String path = uri.getPath();
         if ("/jump".equals(path)) {
-            U.getActivityUtils().goHomeActivity();
             EventBus.getDefault().post(new JumpHomeFromSchemeEvent(0));
         }
     }

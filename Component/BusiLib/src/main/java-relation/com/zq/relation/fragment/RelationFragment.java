@@ -47,6 +47,8 @@ import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.zq.dialog.InviteFriendDialog;
+import com.zq.dialog.InviteFriendDialogView;
 import com.zq.relation.activity.RelationActivity;
 import com.zq.relation.view.RelationView;
 
@@ -89,9 +91,7 @@ public class RelationFragment extends BaseFragment {
     int mFansNum = 0;    // 粉丝数
     int mFocusNum = 0;   // 关注数
 
-    DialogPlus mShareDialog;
-    TextView mTvWeixinShare;
-    TextView mTvQqShare;
+    InviteFriendDialog mInviteFriendDialog;
 
     HashMap<Integer, RelationView> mTitleAndViewMap = new HashMap<>();
 
@@ -288,72 +288,10 @@ public class RelationFragment extends BaseFragment {
     }
 
     private void showShareDialog() {
-        if (mShareDialog == null) {
-            mShareDialog = DialogPlus.newDialog(getActivity())
-                    .setContentHolder(new ViewHolder(R.layout.invite_friend_panel))
-                    .setContentBackgroundResource(R.color.transparent)
-                    .setOverlayBackgroundResource(R.color.black_trans_50)
-                    .setExpanded(false)
-                    .setGravity(Gravity.BOTTOM)
-                    .create();
-
-            mTvWeixinShare = (TextView) mShareDialog.findViewById(R.id.tv_weixin_share);
-            mTvQqShare = (TextView) mShareDialog.findViewById(R.id.tv_qq_share);
-            mTvWeixinShare.setOnClickListener(new DebounceViewClickListener() {
-                @Override
-                public void clickValid(View v) {
-                    SkrKouLingUtils.genReqFollowKouling((int) MyUserInfoManager.getInstance().getUid(), MyUserInfoManager.getInstance().getNickName(), new ICallback() {
-                        @Override
-                        public void onSucess(Object obj) {
-                            mShareDialog.dismiss();
-                            ClipboardUtils.setCopy((String) obj);
-                            Intent intent = U.getActivityUtils().getLaunchIntentForPackage("com.tencent.mm");
-                            if (intent != null && null != intent.resolveActivity(U.app().getPackageManager())) {
-                                startActivity(intent);
-                                U.getToastUtil().showLong("请将口令粘贴给你的好友");
-                            } else {
-                                U.getToastUtil().showLong("未安装微信,请将口令粘贴给你的好友");
-                            }
-                        }
-
-                        @Override
-                        public void onFailed(Object obj, int errcode, String message) {
-                            U.getToastUtil().showShort("口令生成失败");
-                        }
-                    });
-                }
-            });
-
-            mTvQqShare.setOnClickListener(new DebounceViewClickListener() {
-                @Override
-                public void clickValid(View v) {
-                    // TODO: 2019/3/24 邀请好友
-                    SkrKouLingUtils.genReqFollowKouling((int) MyUserInfoManager.getInstance().getUid(), MyUserInfoManager.getInstance().getNickName(), new ICallback() {
-                        @Override
-                        public void onSucess(Object obj) {
-                            mShareDialog.dismiss();
-                            ClipboardUtils.setCopy((String) obj);
-                            Intent intent = U.getActivityUtils().getLaunchIntentForPackage("com.tencent.mobileqq");
-                            if (intent != null && null != intent.resolveActivity(U.app().getPackageManager())) {
-                                startActivity(intent);
-                                U.getToastUtil().showLong("请将口令粘贴给你的好友");
-                            } else {
-                                U.getToastUtil().showLong("未安装QQ,请将口令粘贴给你的好友");
-                            }
-                        }
-
-                        @Override
-                        public void onFailed(Object obj, int errcode, String message) {
-                            U.getToastUtil().showShort("口令生成失败");
-                        }
-                    });
-                }
-            });
+        if (mInviteFriendDialog == null) {
+            mInviteFriendDialog = new InviteFriendDialog(getContext(), InviteFriendDialog.INVITE_GRAB_FRIEND, 0, null);
         }
-
-        if (!mShareDialog.isShowing()) {
-            mShareDialog.show();
-        }
+        mInviteFriendDialog.show();
     }
 
     private void getRelationNums() {
@@ -411,8 +349,8 @@ public class RelationFragment extends BaseFragment {
             mPopupWindow.dismiss();
         }
 
-        if (mShareDialog != null) {
-            mShareDialog.dismiss();
+        if (mInviteFriendDialog != null) {
+            mInviteFriendDialog.dismiss(false);
         }
 
         U.getSoundUtils().release(TAG);

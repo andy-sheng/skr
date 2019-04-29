@@ -20,6 +20,8 @@ import com.common.core.permission.SkrAudioPermission;
 import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
+import com.common.statistics.StatisticsAdapter;
+import com.common.statistics.UmengStatistics;
 import com.common.utils.U;
 import com.common.view.AnimateClickListener;
 import com.common.view.DebounceViewClickListener;
@@ -63,6 +65,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
     BitmapTextView mCoinNum;
     SmartRefreshLayout mRecyclerLayout;
     RecyclerView mRecyclerView;
+    ExImageView mIvRedDot;
 
     BaseImageView mIvRedPkg;
 
@@ -92,6 +95,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mRecyclerLayout = (SmartRefreshLayout) mRootView.findViewById(R.id.recycler_layout);
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
         mIvRedPkg = (BaseImageView) mRootView.findViewById(R.id.iv_red_pkg);
+        mIvRedDot = (ExImageView) mRootView.findViewById(R.id.iv_red_dot);
 
         mSkrAudioPermission = new SkrAudioPermission();
 
@@ -120,6 +124,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
                 mGamePresenter.initOperationArea(true);
                 mGamePresenter.initQuickRoom(true);
                 mGamePresenter.initRecommendRoom(mRecommendInterval);
+                mGamePresenter.checkTaskRedDot();
 
 
 //                for(int i=0;i<1000;i++)
@@ -175,6 +180,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
                 if (iRankingModeService != null) {
                     iRankingModeService.tryGoCreateRoom();
                 }
+                StatisticsAdapter.recordCountEvent("grab", "room_create", null);
             }
 
             @Override
@@ -194,6 +200,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
                 } else {
 
                 }
+                StatisticsAdapter.recordCountEvent("grab", "room_click", null);
             }
 
             @Override
@@ -205,7 +212,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
                         public void run() {
                             IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
                             if (iRankingModeService != null) {
-                                iRankingModeService.tryGoGrabRoom(friendRoomModel.getRoomInfo().getRoomID());
+                                iRankingModeService.tryGoGrabRoom(friendRoomModel.getRoomInfo().getRoomID(),0);
                             }
                         }
                     }, true);
@@ -213,6 +220,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
                 } else {
 
                 }
+                StatisticsAdapter.recordCountEvent("grab", "categoryall", null);
             }
 
             @Override
@@ -259,6 +267,7 @@ public class GameFragment2 extends BaseFragment implements IGameView {
         mGamePresenter.initRecommendRoom(mRecommendInterval);
         mGamePresenter.initGameKConfig();
         mGamePresenter.initCoinNum(false);
+        mGamePresenter.checkTaskRedDot();
     }
 
     @Override
@@ -346,6 +355,11 @@ public class GameFragment2 extends BaseFragment implements IGameView {
     @Override
     public void hideRedOperationView() {
         mIvRedPkg.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showTaskRedDot(boolean show) {
+        mIvRedDot.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
     // TODO: 2019/4/3 这都是第一次拉数据

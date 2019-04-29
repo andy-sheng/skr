@@ -10,15 +10,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/view_62_dp"
-        android:background="@drawable/wuhaoyou" />
+        android:background="@drawable/tongxunlu_kongyemianqietu" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/view_20_dp"
-        android:text="你可知道有个按钮叫“关注”"
-        android:textColor="#990C2275"
-        android:textSize="@dimen/textsize_16_dp" />
+        android:text="瞅啥瞅呢，你都没加好友～"
+        android:textColor="#993B4E79"
+        android:textSize="@dimen/textsize_14_dp" />
 
 </LinearLayout>

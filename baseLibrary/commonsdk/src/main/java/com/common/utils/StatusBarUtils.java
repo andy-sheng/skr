@@ -56,7 +56,10 @@ public class StatusBarUtils {
     @TargetApi(Build.VERSION_CODES.KITKAT)
     public void setColorBar(Activity activity, @ColorInt int color, int alpha) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = activity.getWindow();
+            Window window = null;
+            if (activity != null) {
+                window = activity.getWindow();
+            }
             if (window != null) {
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
                 window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);

@@ -82,6 +82,7 @@
             android:layout_below="@+id/edit_avatar">
 
             <com.common.view.ex.ExTextView
+                android:id="@+id/nickname_tips"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -97,7 +98,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/view_55_dp"
                 android:layout_marginRight="@dimen/view_44_dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:singleLine="true"
                 android:text="赤-CHVANS"
                 android:textColor="#80091E77"
                 android:textSize="@dimen/textsize_16_dp"

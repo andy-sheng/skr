@@ -110,15 +110,18 @@ public class LastFollowAdapter extends DiffAdapter<LastFollowModel, LastFollowAd
                 if (lastFollowModel.isIsFriend()) {
                     mFollowTv.setVisibility(View.VISIBLE);
                     mFollowTv.setText("已互关");
+                    mFollowTv.setClickable(false);
                     mFollowTv.setTextColor(Color.parseColor("#3B4E79"));
                     mFollowTv.setBackground(null);
                 } else if (lastFollowModel.isIsFollow()) {
                     mFollowTv.setVisibility(View.VISIBLE);
                     mFollowTv.setText("已关注");
+                    mFollowTv.setClickable(false);
                     mFollowTv.setTextColor(Color.parseColor("#CC7F00"));
                     mFollowTv.setBackground(null);
                 } else {
                     mFollowTv.setVisibility(View.VISIBLE);
+                    mFollowTv.setClickable(true);
                     mFollowTv.setText("+关注");
                     mFollowTv.setTextColor(Color.parseColor("#3B4E79"));
                     mFollowTv.setBackground(ContextCompat.getDrawable(U.app(), com.component.busilib.R.drawable.yellow_button_icon));

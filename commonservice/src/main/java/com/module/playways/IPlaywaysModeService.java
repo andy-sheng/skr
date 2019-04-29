@@ -10,7 +10,7 @@ public interface IPlaywaysModeService extends IProvider {
 
     Class getLeaderboardFragmentClass();
 
-    void tryGoGrabRoom(int roomID);
+    void tryGoGrabRoom(int roomID,int inviteType);
 
     void tryGoCreateRoom();
 

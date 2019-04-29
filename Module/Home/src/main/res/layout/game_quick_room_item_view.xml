@@ -5,7 +5,7 @@
 
     <com.common.view.ex.ExImageView
         android:id="@+id/create_room"
-        android:layout_width="@dimen/view_343_dp"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/view_74_dp"
         android:layout_marginLeft="@dimen/view_16_dp"
         android:layout_marginRight="@dimen/view_16_dp"

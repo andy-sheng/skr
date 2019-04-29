@@ -38,6 +38,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.zq.person.fragment.OtherPersonFragment2;
 import com.zq.relation.adapter.RelationAdapter;
 import com.zq.relation.callback.FansEmptyCallback;
+import com.zq.relation.callback.FollowEmptyCallback;
 import com.zq.relation.callback.FriendsEmptyCallback;
 
 import org.greenrobot.eventbus.EventBus;
@@ -135,6 +136,7 @@ public class RelationView extends RelativeLayout {
         LoadSir mLoadSir = new LoadSir.Builder()
                 .addCallback(new FriendsEmptyCallback())
                 .addCallback(new FansEmptyCallback())
+                .addCallback(new FollowEmptyCallback())
                 .build();
         mLoadService = mLoadSir.register(mRefreshLayout, new Callback.OnReloadListener() {
             @Override
@@ -215,7 +217,7 @@ public class RelationView extends RelativeLayout {
                     } else if (mMode == UserInfoManager.RELATION_FANS) {
                         mLoadService.showCallback(FansEmptyCallback.class);
                     } else if (mMode == RELATION_FOLLOW) {
-                        mLoadService.showCallback(FriendsEmptyCallback.class);
+                        mLoadService.showCallback(FollowEmptyCallback.class);
                     }
                 }
             }

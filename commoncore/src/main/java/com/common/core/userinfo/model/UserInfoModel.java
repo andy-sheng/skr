@@ -20,6 +20,9 @@ import static com.common.core.userinfo.UserInfoLocalApi.UN_FOLLOW;
 // TODO: 2019/1/2 该类会作为json来解析，不要改变量名 
 public class UserInfoModel implements Serializable, Cloneable {
 
+    public static final int EF_OnLine = 1; //在线
+    public static final int EF_OffLine = 2; //离线
+
     /**
      * userID : 11
      * nickname : 不可抗力好吧
@@ -42,6 +45,8 @@ public class UserInfoModel implements Serializable, Cloneable {
     private boolean isFriend;
     private boolean isFollow;
     private int mainLevel; // 主段位
+    private int status;    // 状态
+    private String statusDesc;  //状态描述
 
     public int getUserId() {
         return userId;
@@ -135,6 +140,22 @@ public class UserInfoModel implements Serializable, Cloneable {
         isFollow = follow;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public String getStatusDesc() {
+        return statusDesc;
+    }
+
+    public void setStatusDesc(String statusDesc) {
+        this.statusDesc = statusDesc;
+    }
+
     public int getAge() {
         String[] array = this.birthday.split("-");
         if (!TextUtils.isEmpty(array[0])) {
@@ -226,6 +247,8 @@ public class UserInfoModel implements Serializable, Cloneable {
             Location location = userInfModel.getLocation();
             jsonObject.put("location", location);
             jsonObject.put("mainLevel", userInfModel.getMainLevel());
+            jsonObject.put("status", userInfModel.getStatus());
+            jsonObject.put("statusDesc", userInfModel.getStatusDesc());
             userInfoDB.setExt(jsonObject.toJSONString());
         }
         return userInfoDB;
@@ -249,11 +272,14 @@ public class UserInfoModel implements Serializable, Cloneable {
                 userInfoModel.setLocation(location);
                 int mainLevel = jsonObject.getIntValue("mainLevel");
                 userInfoModel.setMainLevel(mainLevel);
+                int status = jsonObject.getIntValue("status");
+                userInfoModel.setStatus(status);
+                String statusDesc = jsonObject.getString("statusDesc");
+                userInfoModel.setStatusDesc(statusDesc);
             }
         }
         return userInfoModel;
     }
-
 
     @Override
     public String toString() {
@@ -270,6 +296,8 @@ public class UserInfoModel implements Serializable, Cloneable {
                 ", isFriend=" + isFriend +
                 ", isFollow=" + isFollow +
                 ", mainLevel=" + mainLevel +
+                ", status=" + status +
+                ", statusDesc='" + statusDesc + '\'' +
                 '}';
     }
 

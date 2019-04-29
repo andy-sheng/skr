@@ -20,20 +20,12 @@ public class GrabEditView extends RelativeLayout {
     StrokeTextView mSaveTv;
 
     Listener mListener;
+    String mRoomNameText;
 
 
-    public GrabEditView(Context context) {
+    public GrabEditView(Context context, String roomName) {
         super(context);
-        init();
-    }
-
-    public GrabEditView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
-    }
-
-    public GrabEditView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
+        this.mRoomNameText = roomName;
         init();
     }
 
@@ -42,6 +34,7 @@ public class GrabEditView extends RelativeLayout {
         mRoomName = (NoLeakEditText) this.findViewById(R.id.room_name);
         mCancelTv = (StrokeTextView) this.findViewById(R.id.cancel_tv);
         mSaveTv = (StrokeTextView) this.findViewById(R.id.save_tv);
+        mRoomName.setHint(mRoomNameText + "");
 
         mCancelTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -61,6 +54,14 @@ public class GrabEditView extends RelativeLayout {
                 }
             }
         });
+
+        mRoomName.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mRoomName.requestFocus();
+            }
+        }, 500);
+
     }
 
     public void setListener(Listener listener) {

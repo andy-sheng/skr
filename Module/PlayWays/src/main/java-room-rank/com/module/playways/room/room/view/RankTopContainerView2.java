@@ -76,6 +76,8 @@ public class RankTopContainerView2 extends RelativeLayout {
 
     Handler mUiHandler = new Handler();
 
+    boolean mHasBurstPending = false;
+
     static class UserLightInfo {
         int mUserId;
         LightState mLightState;
@@ -283,7 +285,7 @@ public class RankTopContainerView2 extends RelativeLayout {
         PlayerInfoModel voter = RoomDataUtils.getPlayerInfoById(mRoomData, uid);
         PlayerInfoModel model = RoomDataUtils.getPlayerInfoById(mRoomData, currUid);
         if (voter != null && model != null) {
-            CommentLightModel commentLightModel = new CommentLightModel(mRoomData.getGameType(), voter, model, isBao);
+            CommentLightModel commentLightModel = new CommentLightModel(mRoomData.getGameType(), voter, model, isBao, false);
             EventBus.getDefault().post(new PretendCommentMsgEvent(commentLightModel));
         }
     }
@@ -303,8 +305,14 @@ public class RankTopContainerView2 extends RelativeLayout {
                 setLight(2, ul);
             }
         }
-        mCurScore += mRoomData.getGameConfigModel().getpKBLightEnergyPercentage() * mTotalScore;
-        tryPlayProgressAnimation();
+        if (mTotalScore < 0) {
+            // 总分还没过来
+            mHasBurstPending = true;
+        } else {
+            mCurScore += mRoomData.getGameConfigModel().getpKBLightEnergyPercentage() * mTotalScore;
+            tryPlayProgressAnimation();
+        }
+
     }
 
     //轮次结束
@@ -327,6 +335,7 @@ public class RankTopContainerView2 extends RelativeLayout {
         }
         mCurScore = 0;
         mTotalScore = -1;
+        mHasBurstPending = false;
     }
 
     private void initRankLEDViews() {
@@ -430,6 +439,10 @@ public class RankTopContainerView2 extends RelativeLayout {
                     MyLog.w(TAG, "lineNum值不对，为0了");
                 }
                 mTotalScore = (int) (lineNum * 100 * p);
+                if (mHasBurstPending) {
+                    mCurScore += mRoomData.getGameConfigModel().getpKBLightEnergyPercentage() * mTotalScore;
+                    tryPlayProgressAnimation();
+                }
             }
             if (score1 == 999) {
                 //与ios约定，如果传递是分数是999就代表只是想告诉这首歌的总分
@@ -466,7 +479,6 @@ public class RankTopContainerView2 extends RelativeLayout {
             if (mTotalScore <= 0 && mMode == 1) {
                 mTotalScore = (int) (lineNum * 100 * 0.6);
             }
-
             mCurScore += score;
             tryPlayProgressAnimation();
 
@@ -534,9 +546,9 @@ public class RankTopContainerView2 extends RelativeLayout {
         mEnergyFillSvga.setVisibility(VISIBLE);
         mEnergyFillSvga.setLoops(1);
 
-        SvgaParserAdapter.parse( assetsName, new SVGAParser.ParseCompletion() {
+        SvgaParserAdapter.parse(assetsName, new SVGAParser.ParseCompletion() {
             @Override
-            public void onComplete( SVGAVideoEntity svgaVideoEntity) {
+            public void onComplete(SVGAVideoEntity svgaVideoEntity) {
                 SVGADrawable drawable = new SVGADrawable(svgaVideoEntity);
                 mEnergyFillSvga.setImageDrawable(drawable);
                 mEnergyFillSvga.startAnimation();
