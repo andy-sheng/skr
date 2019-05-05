@@ -523,6 +523,8 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                 } else {
                     mGiftPanelView.show(null);
                 }
+
+                mContinueSendView.setVisibility(View.GONE);
             }
         });
         mBottomContainerView.setRoomData(mRoomData);

@@ -167,6 +167,13 @@ public class ContinueSendView extends FrameLayout implements IContinueSendView {
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
         if (visibility == GONE) {
+            if (mScaleAnimatorSet != null) {
+                mScaleAnimatorSet.cancel();
+            }
+            if (mJumpAnimatorSet != null) {
+                mJumpAnimatorSet.cancel();
+            }
+
             mIvBg.clearAnimation();
         } else {
             RotateAnimation rotate = new RotateAnimation(0f, 360f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
