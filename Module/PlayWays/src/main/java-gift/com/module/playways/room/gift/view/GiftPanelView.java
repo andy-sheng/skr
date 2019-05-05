@@ -15,9 +15,12 @@ import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.alibaba.fastjson.JSON;
 import com.common.core.avatar.AvatarUtils;
+import com.common.core.myinfo.MyUserInfo;
+import com.common.core.myinfo.MyUserInfoManager;
 import com.common.image.fresco.BaseImageView;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
@@ -36,16 +39,22 @@ import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabPlaySeatUpdateEvent;
 import com.module.playways.grab.room.model.GrabPlayerInfoModel;
+import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.room.gift.GiftServerApi;
 import com.module.playways.room.gift.adapter.GiftAllManAdapter;
 import com.module.playways.room.gift.event.BuyGiftEvent;
 import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent;
 import com.module.playways.room.gift.event.UpdateCoinAndDiamondEvent;
 import com.orhanobut.dialogplus.DialogPlus;
+import com.zq.live.proto.Room.EQRoundStatus;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class GiftPanelView extends FrameLayout {
     public final static String TAG = "GiftPanelView";
@@ -62,6 +71,7 @@ public class GiftPanelView extends FrameLayout {
     RecyclerView mRecyclerView;
     LinearLayout mLlSelectedMan;
     ExTextView mTvDiamond;
+    RelativeLayout mRlPlayerSelectArea;
 
     GiftView mGiftView;
 
@@ -108,6 +118,7 @@ public class GiftPanelView extends FrameLayout {
     private void inflate() {
         inflate(getContext(), R.layout.gift_panel_view_layout, this);
         mHasInit = true;
+        mRlPlayerSelectArea = (RelativeLayout) findViewById(R.id.rl_player_select_area);
         mGiftPanelArea = (ExRelativeLayout) findViewById(R.id.gift_panel_area);
         mIvSelectedIcon = (BaseImageView) findViewById(R.id.iv_selected_icon);
         mTvSelectedName = (ExTextView) findViewById(R.id.tv_selected_name);
@@ -248,13 +259,15 @@ public class GiftPanelView extends FrameLayout {
         mUiHandler.sendMessageDelayed(mUiHandler.obtainMessage(HIDE_PANEL), ANIMATION_DURATION);
     }
 
+    /**
+     * @param grabPlayerInfoModel 麦上的人
+     */
     public void show(GrabPlayerInfoModel grabPlayerInfoModel) {
         if (!mHasInit) {
             inflate();
         }
 
-        selectSendGiftMan(grabPlayerInfoModel);
-        mGiftAllManAdapter.setDataList(mGrabRoomData.getPlayerInfoList());
+        setSelectArea(grabPlayerInfoModel);
         mUiHandler.removeMessages(HIDE_PANEL);
         clearAnimation();
         TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f,
@@ -266,9 +279,30 @@ public class GiftPanelView extends FrameLayout {
         setVisibility(VISIBLE);
     }
 
+    private void setSelectArea(GrabPlayerInfoModel grabPlayerInfoModel) {
+        if (mGrabRoomData.getPlayerInfoList().size() == 1
+                && mGrabRoomData.getPlayerInfoList().get(0).getUserID() == MyUserInfoManager.getInstance().getUid()) {
+            //只有自己
+            mRlPlayerSelectArea.setVisibility(GONE);
+        } else {
+            mRlPlayerSelectArea.setVisibility(VISIBLE);
+
+            if (grabPlayerInfoModel != null
+                    && grabPlayerInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                //自己在麦上
+                selectSendGiftMan(null);
+            } else {
+                selectSendGiftMan(grabPlayerInfoModel);
+            }
+
+            mGiftAllManAdapter.setDataList(getPlayerInfoListExpectSelf());
+        }
+    }
+
     private void selectSendGiftMan(GrabPlayerInfoModel grabPlayerInfoModel) {
+        //麦上没有人
         if (grabPlayerInfoModel == null) {
-            grabPlayerInfoModel = mCurMicroMan;
+            grabPlayerInfoModel = getFirstPlayerInfo();
         }
 
         if (grabPlayerInfoModel != null) {
@@ -302,6 +336,32 @@ public class GiftPanelView extends FrameLayout {
             drawable.setBounds(new Rect(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight()));
             mTvAllMan.setCompoundDrawables(drawable, null, null, null);
         }
+    }
+
+    private GrabPlayerInfoModel getFirstPlayerInfo() {
+        List<GrabPlayerInfoModel> grabPlayerInfoModelList = mGrabRoomData.getPlayerInfoList();
+
+        for (GrabPlayerInfoModel grabPlayerInfoModel : grabPlayerInfoModelList) {
+            if (grabPlayerInfoModel.getUserID() != MyUserInfoManager.getInstance().getUid()) {
+                return grabPlayerInfoModel;
+            }
+        }
+
+        return null;
+    }
+
+    private List<GrabPlayerInfoModel> getPlayerInfoListExpectSelf() {
+        List<GrabPlayerInfoModel> grabPlayerInfoModelList = new ArrayList<>(mGrabRoomData.getPlayerInfoList());
+
+        Iterator<GrabPlayerInfoModel> it = grabPlayerInfoModelList.iterator();
+        while (it.hasNext()) {
+            GrabPlayerInfoModel grabPlayerInfoModel = it.next();
+            if (grabPlayerInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                it.remove();
+            }
+        }
+
+        return grabPlayerInfoModelList;
     }
 
     public boolean onBackPressed() {

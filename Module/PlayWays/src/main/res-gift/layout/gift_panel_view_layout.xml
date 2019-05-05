@@ -16,6 +16,7 @@
         app:bl_solid_color="#576FE3">
 
         <RelativeLayout
+            android:id="@+id/rl_player_select_area"
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_48_dp"
             android:layout_marginLeft="@dimen/view_16_dp"
