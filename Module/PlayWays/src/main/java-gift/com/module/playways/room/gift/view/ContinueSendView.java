@@ -39,7 +39,7 @@ public class ContinueSendView extends FrameLayout implements IContinueSendView {
 
     ImageView mIvBg;
     ImageView mIvContinueText;
-    TextView mTvContinueNum;
+    ContinueTextView mTvContinueNum;
 
     BaseGift mBaseGift;
 
@@ -102,7 +102,7 @@ public class ContinueSendView extends FrameLayout implements IContinueSendView {
 //        EventBus.getDefault().register(this);
         mIvBg = (ImageView) findViewById(R.id.iv_bg);
         mIvContinueText = (ImageView) findViewById(R.id.iv_continue_text);
-        mTvContinueNum = (TextView) findViewById(R.id.tv_continue_num);
+        mTvContinueNum = (ContinueTextView) findViewById(R.id.tv_continue_num);
 
         mBuyGiftPresenter = new BuyGiftPresenter(this);
 
@@ -130,7 +130,7 @@ public class ContinueSendView extends FrameLayout implements IContinueSendView {
 
     @Override
     public void buySuccess(BaseGift baseGift, int continueCount) {
-        mTvContinueNum.setText("+" + String.valueOf(continueCount));
+        mTvContinueNum.setText(String.valueOf(continueCount));
         ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(mTvContinueNum, "translationY", 0.0f, -40);
         ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(mTvContinueNum, "alpha", 1.0f, 0.7f, 0.0f);
 

@@ -23,12 +23,12 @@ public class BitmapTextView extends View {
 
     public final static String TAG = "BitmapTextView";
 
-    List<Bitmap> mBitmapList = new ArrayList<>();
+    protected List<Bitmap> mBitmapList = new ArrayList<>();
     int diff = U.getDisplayUtils().dip2px(2);  //两张图片的偏移量重合部分
-    int mWidth = 0;// view的宽度
-    int mHeight = 0;// view的高度
+    protected int mWidth = 0;// view的宽度
+    protected int mHeight = 0;// view的高度
 
-    float scale;   //图片放缩比例
+    protected float scale;   //图片放缩比例
     int textColor; //图片文字颜色
     boolean hasShadow;  //是否有阴影
 
@@ -47,7 +47,7 @@ public class BitmapTextView extends View {
         init(context, attrs);
     }
 
-    private void init(Context context, AttributeSet attrs) {
+    protected void init(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BitmapTextView);
         scale = typedArray.getFloat(R.styleable.BitmapTextView_scale, 1.0f);
         textColor = typedArray.getColor(R.styleable.BitmapTextView_text_color, 0);
@@ -72,7 +72,7 @@ public class BitmapTextView extends View {
         drawText(canvas, mBitmapList);
     }
 
-    private void drawText(Canvas canvas, List<Bitmap> bitmaps) {
+    protected void drawText(Canvas canvas, List<Bitmap> bitmaps) {
         float left = 0;
         for (Bitmap bitmap : bitmaps) {
             canvas.drawBitmap(bitmap, left, 0, new Paint());
@@ -80,7 +80,7 @@ public class BitmapTextView extends View {
         }
     }
 
-    private Bitmap getBitmap(char aChar) {
+    protected Bitmap getBitmap(char aChar) {
         if (hasShadow) {
             switch (aChar) {
                 case '0':
