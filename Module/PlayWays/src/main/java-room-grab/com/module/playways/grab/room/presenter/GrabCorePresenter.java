@@ -2061,6 +2061,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
         onGameOver("QRoundAndGameOverMsgEvent", event.roundOverTimeMs);
         if (event.mOverReason == EQGameOverReason.GOR_OWNER_EXIT) {
+            MyLog.w(TAG,"房主离开了游戏，房间解散");
             U.getToastUtil().showLong("房主离开了游戏，房间解散");
         }
     }
