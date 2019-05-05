@@ -174,6 +174,8 @@ public class ContinueSendView extends FrameLayout implements IContinueSendView {
                 mJumpAnimatorSet.cancel();
             }
 
+            mBuyGiftPresenter.endContinueSend();
+
             mIvBg.clearAnimation();
         } else {
             RotateAnimation rotate = new RotateAnimation(0f, 360f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);

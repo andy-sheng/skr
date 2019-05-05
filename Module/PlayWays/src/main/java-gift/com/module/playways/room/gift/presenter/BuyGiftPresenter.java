@@ -146,6 +146,10 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
                 });
     }
 
+    public void endContinueSend() {
+        mContinueSendScheduler.endContinueSend();
+    }
+
     @Override
     public void destroy() {
         super.destroy();
