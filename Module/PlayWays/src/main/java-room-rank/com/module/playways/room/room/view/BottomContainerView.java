@@ -175,24 +175,9 @@ public abstract class BottomContainerView extends RelativeLayout {
                 }
             }
         });
-
-        mEmoji2Btn.setOnClickListener(new DebounceViewClickListener() {
-            @Override
-            public void clickValid(View v) {
-                // 发送动态表情，爱心
-                sendSpecialEmojiMsg(SpecialEmojiMsgType.SP_EMOJI_TYPE_LIKE, "送出爱心");
-                HashMap map = new HashMap();
-                map.put("expressionId2", String.valueOf(SpecialEmojiMsgType.SP_EMOJI_TYPE_LIKE.getValue()));
-                if (mRoomData.getGameType() == GameModeType.GAME_MODE_CLASSIC_RANK) {
-                    StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_RANK), "game_expression", map);
-                } else if (mRoomData.getGameType() == GameModeType.GAME_MODE_GRAB) {
-                    StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB), "game_expression", map);
-                }
-            }
-        });
     }
 
-    void sendSpecialEmojiMsg(SpecialEmojiMsgType type, String actionDesc) {
+    protected void sendSpecialEmojiMsg(SpecialEmojiMsgType type, String actionDesc) {
         if (RoomDataUtils.isMyRound(mRoomData.getRealRoundInfo())) {
             U.getToastUtil().showShort("暂时不能给自己送礼哦");
             return;

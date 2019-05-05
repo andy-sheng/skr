@@ -10,9 +10,13 @@ import android.view.View;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
+import com.common.core.account.UserAccountManager;
+import com.common.statistics.StatConstants;
+import com.common.statistics.StatisticsAdapter;
 import com.common.utils.U;
 import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
+import com.component.busilib.constans.GameModeType;
 import com.module.playways.BaseRoomData;
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.grab.room.event.GrabRoundChangeEvent;
@@ -22,10 +26,13 @@ import com.module.playways.grab.room.dynamicmsg.DynamicMsgView;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
 import com.module.playways.room.room.view.BottomContainerView;
 import com.module.playways.R;
+import com.zq.live.proto.Room.SpecialEmojiMsgType;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.HashMap;
 
 public class GrabBottomContainerView extends BottomContainerView {
 
@@ -71,39 +78,45 @@ public class GrabBottomContainerView extends BottomContainerView {
         mEmoji1Btn.setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-//                // 动态表情按钮
-//                int w = U.getDisplayUtils().getScreenWidth() - U.getDisplayUtils().dip2px(32);
-//                int h = U.getDisplayUtils().dip2px(72);
-//                if (mDynamicMsgView == null) {
-//                    mDynamicMsgView = new DynamicMsgView(getContext());
-//                    mDynamicMsgView.setData(mRoomData);
-//                    mDynamicMsgView.setListener(new DynamicMsgView.Listener() {
-//                        @Override
-//                        public void onSendMsgOver() {
-//                            if (mDynamicMsgPopWindow != null) {
-//                                mDynamicMsgPopWindow.dismiss();
-//                            }
-//                        }
-//                    });
-//                } else {
-//                    mDynamicMsgView.loadEmoji();
-//                }
-//                if (mDynamicMsgPopWindow == null) {
-//                    mDynamicMsgPopWindow = new PopupWindow(mDynamicMsgView, w, h);
-//                    mDynamicMsgPopWindow.setFocusable(true);
-//                    mDynamicMsgPopWindow.setAnimationStyle(R.style.MyPopupWindow_anim_style);
-//                    // 去除动画
-////                      mDynamicMsgPopWindow.setAnimationStyle(R.style.anim_quickmsg_dialog);
-//                    mDynamicMsgPopWindow.setBackgroundDrawable(new BitmapDrawable());
-//                    mDynamicMsgPopWindow.setOutsideTouchable(true);
-//                }
-//                if (!mDynamicMsgPopWindow.isShowing()) {
-//                    int l[] = new int[2];
-//                    mQuickBtn.getLocationInWindow(l);
-//                    mDynamicMsgPopWindow.showAtLocation(mQuickBtn, Gravity.START | Gravity.TOP, l[0], l[1] - h - U.getDisplayUtils().dip2px(5));
-//                } else {
-//                    mDynamicMsgPopWindow.dismiss();
-//                }
+                // 动态表情按钮
+                int w = U.getDisplayUtils().getScreenWidth() - U.getDisplayUtils().dip2px(32);
+                int h = U.getDisplayUtils().dip2px(72);
+                if (mDynamicMsgView == null) {
+                    mDynamicMsgView = new DynamicMsgView(getContext());
+                    mDynamicMsgView.setData(mRoomData);
+                    mDynamicMsgView.setListener(new DynamicMsgView.Listener() {
+                        @Override
+                        public void onSendMsgOver() {
+                            if (mDynamicMsgPopWindow != null) {
+                                mDynamicMsgPopWindow.dismiss();
+                            }
+                        }
+                    });
+                } else {
+                    mDynamicMsgView.loadEmoji();
+                }
+                if (mDynamicMsgPopWindow == null) {
+                    mDynamicMsgPopWindow = new PopupWindow(mDynamicMsgView, w, h);
+                    mDynamicMsgPopWindow.setFocusable(true);
+                    mDynamicMsgPopWindow.setAnimationStyle(R.style.MyPopupWindow_anim_style);
+                    // 去除动画
+//                      mDynamicMsgPopWindow.setAnimationStyle(R.style.anim_quickmsg_dialog);
+                    mDynamicMsgPopWindow.setBackgroundDrawable(new BitmapDrawable());
+                    mDynamicMsgPopWindow.setOutsideTouchable(true);
+                }
+                if (!mDynamicMsgPopWindow.isShowing()) {
+                    int l[] = new int[2];
+                    mQuickBtn.getLocationInWindow(l);
+                    mDynamicMsgPopWindow.showAtLocation(mQuickBtn, Gravity.START | Gravity.TOP, l[0], l[1] - h - U.getDisplayUtils().dip2px(5));
+                } else {
+                    mDynamicMsgPopWindow.dismiss();
+                }
+            }
+        });
+
+        mEmoji2Btn.setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
                 if (mBottomContainerListener != null) {
                     mBottomContainerListener.showGiftPanel();
                 }
