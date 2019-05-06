@@ -160,7 +160,7 @@ public class NormalOthersSingCardView extends RelativeLayout {
             countDown("中途进来");
         } else {
             mUiHandler.removeMessages(MSG_ENSURE_PLAY);
-            mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_PLAY, 3000);
+            mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_PLAY, 1000);
         }
     }
 

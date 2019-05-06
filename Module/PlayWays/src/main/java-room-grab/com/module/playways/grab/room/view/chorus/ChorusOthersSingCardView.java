@@ -218,7 +218,7 @@ public class ChorusOthersSingCardView extends RelativeLayout {
             } else {
                 mSingCountDownView.startPlay(0, grabRoundInfoModel.getSingTotalMs(), false);
                 mUiHandler.removeMessages(MSG_ENSURE_PLAY);
-                mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_PLAY, 3000);
+                mUiHandler.sendEmptyMessageDelayed(MSG_ENSURE_PLAY, 1000);
             }
         }
     }

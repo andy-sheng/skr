@@ -35,9 +35,15 @@ public class UmengInit {
              * 组件化统计SDK内建JVM层错误统计。SDK通过Thread.UncaughtExceptionHandler 捕获程序崩溃日志，并在程序下次启动时发送到服务器。
              * 如不需要错误统计功能，可通过此方法关闭：
              * 代码:复制代码到剪切板
-             *  isEnable: false-关闭错误统计功能；true-打开错误统计功能（默认打开）
+             * isEnable: false-关闭错误统计功能；true-打开错误统计功能（默认打开）
+             *
              */
-            MobclickAgent.setCatchUncaughtExceptions(false);
+            /**
+             * 打开bug统计，umeng只统计java层的，原理也是
+             * Thread.setDefaultUncaughtExceptionHandler();
+             * 是用组合的模式，不会覆盖已有的 handler
+             */
+            MobclickAgent.setCatchUncaughtExceptions(true);
             hasInited = true;
         }
     }
