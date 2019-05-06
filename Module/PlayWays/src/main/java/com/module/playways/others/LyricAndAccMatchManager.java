@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.common.engine.ScoreConfig;
 import com.common.log.MyLog;
+import com.common.rx.RxRetryAssist;
 import com.common.utils.U;
 import com.engine.EngineEvent;
 import com.engine.EngineManager;
@@ -151,6 +152,7 @@ public class LyricAndAccMatchManager {
                 .fetchAndLoadLyrics(mLyricUrl)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .retryWhen(new RxRetryAssist(3, ""))
                 .subscribe(new Consumer<LyricsReader>() {
                     @Override
                     public void accept(LyricsReader lyricsReader) throws Exception {
