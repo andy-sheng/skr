@@ -73,9 +73,6 @@ public class LyricsReader implements Cloneable {
     protected LyricsReader clone() {
         try {
             LyricsReader lyricsReader = (LyricsReader) super.clone();
-            lyricsReader.mLrcLineInfos = new TreeMap<>(mLrcLineInfos);
-            lyricsReader.mTranslateLrcLineInfos = mTranslateLrcLineInfos;
-            lyricsReader.mTransliterationLrcLineInfos = mTransliterationLrcLineInfos;
             lyricsReader.mLyricsInfo = mLyricsInfo;
             return lyricsReader;
         } catch (CloneNotSupportedException e) {
