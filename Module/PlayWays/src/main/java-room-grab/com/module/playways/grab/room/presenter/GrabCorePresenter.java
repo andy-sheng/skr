@@ -2201,7 +2201,9 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         MyLog.d(TAG, "onEvent" + " 得分=" + score);
         MachineScoreItem machineScoreItem = new MachineScoreItem();
         machineScoreItem.setScore(score);
-        long ts = EngineManager.getInstance().getAudioMixingCurrentPosition();
+        // 这有时是个耗时操作
+//        long ts = EngineManager.getInstance().getAudioMixingCurrentPosition();
+        long ts = -1;
         machineScoreItem.setTs(ts);
         machineScoreItem.setNo(line);
         // 打分信息传输给其他人
