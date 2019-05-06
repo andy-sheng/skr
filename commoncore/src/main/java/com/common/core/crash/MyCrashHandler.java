@@ -53,7 +53,7 @@ import io.reactivex.plugins.RxJavaPlugins;
 public class MyCrashHandler implements UncaughtExceptionHandler {
 
     private static final String TAG = "MyCrashHandler";
-
+ 
     private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static final SimpleDateFormat SIMPLE_DATE_FORMAT1 = new SimpleDateFormat("yyyyMMddHHmmss");
 
@@ -72,7 +72,10 @@ public class MyCrashHandler implements UncaughtExceptionHandler {
     public void register(Context context) {
         if (context != null) {
             mOldHandler = Thread.getDefaultUncaughtExceptionHandler();
-            if (mOldHandler != this) {
+            if (mOldHandler == null) {
+                /**
+                 * 其实没什么用，handler 已经被别的sdk注册了
+                 */
                 Thread.setDefaultUncaughtExceptionHandler(this);
             }
             mContext = context;

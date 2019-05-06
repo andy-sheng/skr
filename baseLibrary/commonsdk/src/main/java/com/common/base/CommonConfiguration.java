@@ -23,6 +23,7 @@ import android.util.Log;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.delegate.AppLifecycles;
+import com.common.bugly.BuglyInit;
 import com.common.image.fresco.FrescoInitManager;
 import com.common.jiguang.JiGuangPush;
 import com.common.log.MyLog;
@@ -81,6 +82,7 @@ public class CommonConfiguration implements ConfigModule {
                 CommonReceiver.register();
                 UmengInit.init();
                 JiGuangPush.init();
+                BuglyInit.init(true);
                 //leakCanary 引用
                 LeakCanary.install(application);
             }
@@ -96,6 +98,7 @@ public class CommonConfiguration implements ConfigModule {
                 }else if(U.getProcessName().endsWith(":pushcore")){
                     JiGuangPush.init();
                 }
+                BuglyInit.init(false);
             }
 
             @Override
