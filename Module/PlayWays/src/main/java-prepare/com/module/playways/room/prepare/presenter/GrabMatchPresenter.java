@@ -113,7 +113,7 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
                 if (result.getErrno() == 0) {
 //                    U.getToastUtil().showShort("开始匹配");
                 } else {
-                    onError(new Throwable("开始匹配失败"));
+                    MyLog.e("开始匹配失败");
                 }
             }
 
@@ -198,7 +198,7 @@ public class GrabMatchPresenter extends BaseMatchPresenter {
      */
     private void joinRongRoom() {
         MyLog.d(TAG, "joinRongRoom gameId " + mJoinActionEvent.gameId);
-        ModuleServiceManager.getInstance().getMsgService().joinChatRoom(String.valueOf(mJoinActionEvent.gameId),10, new ICallback() {
+        ModuleServiceManager.getInstance().getMsgService().joinChatRoom(String.valueOf(mJoinActionEvent.gameId), 10, new ICallback() {
             @Override
             public void onSucess(Object obj) {
                 if (mMatchState == MatchState.MatchSucess) {
