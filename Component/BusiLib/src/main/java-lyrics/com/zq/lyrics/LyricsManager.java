@@ -62,6 +62,7 @@ public class LyricsManager {
 
     /**
      * 加载标准歌词 文件名
+     *
      * @param fileName
      * @param hash
      * @return
@@ -73,7 +74,21 @@ public class LyricsManager {
             public void subscribe(ObservableEmitter<LyricsReader> emitter) {
                 MyLog.d(TAG, "loadLyricsUtil 1");
                 LyricsReader lyricsReader = null;
-                if (!mLyricsUtils.containsKey(hash)) {
+
+                if (mLyricsUtils.containsKey(hash)) {
+                    lyricsReader = mLyricsUtils.get(hash);
+                    //没有歌词
+                    if (lyricsReader.getLrcLineInfos() == null || lyricsReader.getLrcLineInfos().size() == 0) {
+                        mLyricsUtils.remove(hash);
+                        File file = new File(fileName);
+                        if (file.exists()) {
+                            file.delete();
+                        }
+
+                        emitter.onError(new Throwable("解析后无歌词"));
+                        return;
+                    }
+                } else {
                     MyLog.d(TAG, "loadLyricsUtil 2");
                     File lrcFile = LyricsUtils.getLrcFile(fileName, SongResUtils.getLyricDir());
                     MyLog.d(TAG, "loadLyricsUtil 3 " + lrcFile);
@@ -88,11 +103,10 @@ public class LyricsManager {
                             return;
                         }
                     }
-                } else {
-                    lyricsReader = mLyricsUtils.get(hash);
                 }
 
-                emitter.onNext(lyricsReader);
+                LyricsReader reader = lyricsReader.clone();
+                emitter.onNext(reader);
                 emitter.onComplete();
             }
         });
@@ -100,6 +114,7 @@ public class LyricsManager {
 
     /**
      * 加载标准歌词 url
+     *
      * @param url
      * @return
      */
@@ -150,6 +165,7 @@ public class LyricsManager {
 
     /**
      * 加载一唱到底普通文本歌词
+     *
      * @param url
      * @return
      */
@@ -169,7 +185,7 @@ public class LyricsManager {
                             MyLog.w(TAG, "已重命名");
                             emitter.onNext(newName);
                         }
-                    }else {
+                    } else {
                         emitter.onError(new IgnoreException("下载失败"));
                     }
                 } else {
@@ -193,7 +209,7 @@ public class LyricsManager {
                     }
                 })
                 .subscribeOn(Schedulers.io())
-                .retryWhen(new RxRetryAssist(3,""))
+                .retryWhen(new RxRetryAssist(3, ""))
                 .observeOn(AndroidSchedulers.mainThread());
     }
 }
