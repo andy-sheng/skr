@@ -113,7 +113,7 @@ public class DialogPlus {
 //        View outmostView = rootView.findViewById(R.id.dialogplus_outmost_container);
         rootView.setBackgroundResource(builder.getOverlayBackgroundResource());
 
-        rootView.setTag(R.id.attach_dialog_ref,this);
+        rootView.setTag(R.id.attach_dialog_ref, this);
         contentContainer = rootView.findViewById(R.id.dialogplus_content_container);
         contentContainer.setLayoutParams(builder.getContentParams());
 
@@ -135,11 +135,11 @@ public class DialogPlus {
         if (builder.isExpanded()) {
             initExpandAnimator(activity, builder.getDefaultContentHeight(), builder.getContentParams().gravity);
         }
-        mHandler = new Handler(Looper.getMainLooper()){
+        mHandler = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
-                if(msg.what == MSG_ENSURE_DISMISS){
+                if (msg.what == MSG_ENSURE_DISMISS) {
                     dismissInner(false);
                 }
             }
@@ -162,16 +162,16 @@ public class DialogPlus {
             View view = decorView.findViewById(R.id.dialogplus_outmost_container);
             if (view != null) {
                 DialogPlus otherDialogPlus = (DialogPlus) view.getTag(R.id.attach_dialog_ref);
-                if(otherDialogPlus!=null){
-                    if(mDialogPriority>otherDialogPlus.getDialogPriority()){
-                        MyLog.d(TAG,"当前要显示的dialog 优先级较高 mDialogPriority="+mDialogPriority);
+                if (otherDialogPlus != null) {
+                    if (mDialogPriority > otherDialogPlus.getDialogPriority()) {
+                        MyLog.d(TAG, "当前要显示的dialog 优先级较高 mDialogPriority=" + mDialogPriority);
                         otherDialogPlus.dismiss(false);
                         onAttached(rootView);
                     }
                 }
             }
             return;
-        }else{
+        } else {
             onAttached(rootView);
         }
     }
@@ -185,7 +185,15 @@ public class DialogPlus {
      */
     public boolean isShowing() {
         View view = decorView.findViewById(R.id.dialogplus_outmost_container);
-        return view != null;
+        // 并且activity 没有销毁才算显示
+        boolean destroyed = false;
+        if (decorView.getContext() instanceof Activity) {
+            Activity activity = (Activity) decorView.getContext();
+            if (activity != null) {
+                destroyed = activity.isDestroyed();
+            }
+        }
+        return view != null && !destroyed;
     }
 
     /**
@@ -196,19 +204,19 @@ public class DialogPlus {
     }
 
     public void dismiss(boolean useAnimation) {
-        MyLog.d(TAG, "dismiss" + " useAnimation=" + useAnimation + " isDismissing=" + isDismissing+" isShowing="+isShowing());
+        MyLog.d(TAG, "dismiss" + " useAnimation=" + useAnimation + " isDismissing=" + isDismissing + " isShowing=" + isShowing());
 
         if (isDismissing) {
             return;
         }
 
-        if(!isShowing()){
+        if (!isShowing()) {
             return;
         }
         dismissInner(useAnimation);
     }
 
-    void dismissInner(boolean useAnimation){
+    void dismissInner(boolean useAnimation) {
         if (useAnimation) {
             // 如果View 不显示，动画是不会走的
             outAnim.setAnimationListener(new Animation.AnimationListener() {
@@ -244,7 +252,7 @@ public class DialogPlus {
             isDismissing = true;
             if (mHandler != null) {
                 mHandler.removeMessages(MSG_ENSURE_DISMISS);
-                mHandler.sendEmptyMessageDelayed(MSG_ENSURE_DISMISS,outAnim.getDuration() > 1000 ? outAnim.getDuration() : 1000);
+                mHandler.sendEmptyMessageDelayed(MSG_ENSURE_DISMISS, outAnim.getDuration() > 1000 ? outAnim.getDuration() : 1000);
             }
         } else {
             if (mHandler != null) {

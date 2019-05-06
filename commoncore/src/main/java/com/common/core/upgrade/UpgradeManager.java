@@ -243,27 +243,30 @@ public class UpgradeManager {
 
     private void showNormalUpgradeDialog() {
         if (mNormalUpgradeDialog == null) {
+            mNormalUpgradeView = new NormalUpgradeView(U.app());
+            mNormalUpgradeView.setListener(new NormalUpgradeView.Listener() {
+                @Override
+                public void onUpdateBtnClick() {
+                    forceDownloadBegin();
+                }
+
+                @Override
+                public void onQuitBtnClick() {
+                    cancelDownload();
+                    dimissDialog();
+                }
+
+                @Override
+                public void onCancelBtnClick() {
+                    cancelDownload();
+                    dimissDialog();
+                }
+            });
+        }
+
+        if (mNormalUpgradeDialog == null || !mNormalUpgradeDialog.isShowing()) {
             Activity activity = U.getActivityUtils().getTopActivity();
             if (activity != null) {
-                mNormalUpgradeView = new NormalUpgradeView(U.app());
-                mNormalUpgradeView.setListener(new NormalUpgradeView.Listener() {
-                    @Override
-                    public void onUpdateBtnClick() {
-                        forceDownloadBegin();
-                    }
-
-                    @Override
-                    public void onQuitBtnClick() {
-                        cancelDownload();
-                        dimissDialog();
-                    }
-
-                    @Override
-                    public void onCancelBtnClick() {
-                        cancelDownload();
-                        dimissDialog();
-                    }
-                });
                 mNormalUpgradeDialog = DialogPlus.newDialog(activity)
                         .setContentHolder(new ViewHolder(mNormalUpgradeView))
                         .setGravity(Gravity.CENTER)
@@ -274,6 +277,7 @@ public class UpgradeManager {
                         .create();
             }
         }
+
         mNormalUpgradeView.bindData(mUpgradeData.getUpgradeInfoModel());
         int localVersionCode = tryGetSaveFileApkVersion();
         if (localVersionCode == mUpgradeData.getUpgradeInfoModel().getLatestVersionCode()) {
@@ -289,30 +293,35 @@ public class UpgradeManager {
     }
 
     private void showForceUpgradeDialog() {
-        if (mForceUpgradeDialog == null) {
-            Activity activity = U.getActivityUtils().getTopActivity();
+        if (mForceUpgradeView == null) {
+            mForceUpgradeView = new ForceUpgradeView(U.app());
+            mForceUpgradeView.setListener(new ForceUpgradeView.Listener() {
+                @Override
+                public boolean onUpdateBtnClick() {
+                    return forceDownloadBegin();
+                }
+
+                @Override
+                public void onQuitBtnClick() {
+                    Process.killProcess(Process.myPid());
+                }
+
+                @Override
+                public void onCancelBtnClick(int progress) {
+                    if (progress == 100) {
+                        install();
+                    } else {
+                        cancelDownload();
+                    }
+                }
+            });
+        }
+        if (mForceUpgradeDialog == null || !mForceUpgradeDialog.isShowing()) {
+            /**
+             * 强更弹窗写死用主activity，避免从别的activity跳导致topactivity失效的问题
+             */
+            Activity activity = U.getActivityUtils().getHomeActivity();
             if (activity != null) {
-                mForceUpgradeView = new ForceUpgradeView(U.app());
-                mForceUpgradeView.setListener(new ForceUpgradeView.Listener() {
-                    @Override
-                    public boolean onUpdateBtnClick() {
-                        return forceDownloadBegin();
-                    }
-
-                    @Override
-                    public void onQuitBtnClick() {
-                        Process.killProcess(Process.myPid());
-                    }
-
-                    @Override
-                    public void onCancelBtnClick(int progress) {
-                        if (progress == 100) {
-                            install();
-                        } else {
-                            cancelDownload();
-                        }
-                    }
-                });
                 mForceUpgradeDialog = DialogPlus.newDialog(activity)
                         .setContentHolder(new ViewHolder(mForceUpgradeView))
                         .setGravity(Gravity.CENTER)
@@ -562,7 +571,7 @@ public class UpgradeManager {
                 int downloaded = cursor.getInt(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
                 //下载文件的总大小
                 int total = cursor.getInt(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
-                if(total!=0) {
+                if (total != 0) {
                     ds.progress = downloaded * 100 / total;
                 }
                 //下载状态
