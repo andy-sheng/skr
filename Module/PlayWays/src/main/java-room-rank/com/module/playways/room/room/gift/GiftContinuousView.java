@@ -20,6 +20,7 @@ import com.common.log.MyLog;
 import com.common.utils.U;
 import com.common.view.ex.ExRelativeLayout;
 import com.common.view.ex.ExTextView;
+import com.module.playways.room.gift.view.ContinueTextView;
 import com.module.playways.room.room.gift.model.GiftDataUtils;
 import com.module.playways.room.room.gift.model.GiftPlayModel;
 import com.module.playways.R;
@@ -44,7 +45,7 @@ public class GiftContinuousView extends RelativeLayout {
     BaseImageView mSendAvatarIv;
     ExTextView mDescTv;
     BaseImageView mGiftImgIv;
-    ExTextView mGiftNumTv;
+    ContinueTextView mGiftNumTv;
     ObjectAnimator mStep1Animator;
     AnimatorSet mStep2Animator;
     ExTextView mSenderNameTv;
@@ -92,7 +93,7 @@ public class GiftContinuousView extends RelativeLayout {
         mSendAvatarIv = (BaseImageView) this.findViewById(R.id.send_avatar_iv);
         mDescTv = (ExTextView) this.findViewById(R.id.desc_tv);
         mGiftImgIv = (BaseImageView) this.findViewById(R.id.gift_img_iv);
-        mGiftNumTv = (ExTextView) this.findViewById(R.id.gift_num_tv);
+        mGiftNumTv = (ContinueTextView) this.findViewById(R.id.gift_num_tv);
         mSenderNameTv = (ExTextView) this.findViewById(R.id.sender_name_tv);
     }
 
@@ -177,7 +178,7 @@ public class GiftContinuousView extends RelativeLayout {
         mCurStatus = STATUS_STEP2;
         mCurNum = count;
         mGiftNumTv.setVisibility(VISIBLE);
-        mGiftNumTv.setText("X" + count);
+        mGiftNumTv.setText(String.valueOf(count));
         if (mStep2Animator == null) {
             ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(mGiftNumTv, View.SCALE_X, 1.2f, 0.9f, 1);
             ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(mGiftNumTv, View.SCALE_Y, 1.2f, 0.9f, 1);

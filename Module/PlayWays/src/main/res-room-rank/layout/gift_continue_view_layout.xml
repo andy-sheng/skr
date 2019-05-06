@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:BitmapTextView="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -76,7 +77,9 @@
             android:layout_height="@dimen/view_53_dp"
             android:layout_toRightOf="@+id/ll_text" />
 
-        <com.common.view.ex.ExTextView
+        <com.module.playways.room.gift.view.ContinueTextView
+            BitmapTextView:scale="1.0"
+            BitmapTextView:has_shadow="true"
             android:id="@+id/gift_num_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -85,8 +88,6 @@
             android:layout_marginTop="@dimen/view_3_dp"
             android:layout_marginRight="@dimen/view_10_dp"
             android:layout_toRightOf="@+id/gift_img_iv"
-            android:text="X3"
-            android:textColor="#FFE36E"
-            android:textSize="@dimen/textsize_16_dp" />
+            />
     </com.common.view.ex.ExRelativeLayout>
 </RelativeLayout>
