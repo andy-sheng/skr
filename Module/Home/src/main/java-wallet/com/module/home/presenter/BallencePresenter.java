@@ -150,7 +150,7 @@ public class BallencePresenter extends RxLifeCyclePresenter {
                 + goodsID + "|"
                 + "dbf555fe9347eef8c74c5ff6b9f047dd" + "|"
                 + ts);
-        map.put("sign", sign);
+        map.put("signV2", sign);
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
 
@@ -193,7 +193,7 @@ public class BallencePresenter extends RxLifeCyclePresenter {
         signMap.put("appSecret", "dbf555fe9347eef8c74c5ff6b9f047dd");
         String sign = U.getMD5Utils().signReq(signMap);
 
-        map.put("sign", sign);
+        map.put("signV2", sign);
 
         RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
 

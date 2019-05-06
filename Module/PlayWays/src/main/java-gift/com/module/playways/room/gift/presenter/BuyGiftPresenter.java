@@ -86,7 +86,7 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
 
                 HashMap<String, Object> signMap = new HashMap<>(map);
                 signMap.put("appSecret", "64c5b47f618489dece9b2f95afb56654");
-                map.put("sign", U.getMD5Utils().signReq(signMap));
+                map.put("signV2", U.getMD5Utils().signReq(signMap));
 
                 RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
                 emitter.onNext(body);
@@ -144,10 +144,6 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
 
                     }
                 });
-    }
-
-    public void endContinueSend() {
-        mContinueSendScheduler.endContinueSend();
     }
 
     @Override
