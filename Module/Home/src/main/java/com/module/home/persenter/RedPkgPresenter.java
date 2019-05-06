@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.common.base.BaseActivity;
 import com.common.core.account.UserAccountManager;
 import com.common.core.global.event.ShowDialogInHomeEvent;
 import com.common.log.MyLog;
@@ -41,9 +42,12 @@ public class RedPkgPresenter extends RxLifeCyclePresenter {
     MainPageSlideApi mMainPageSlideApi;
     DialogPlus mRedPkgView;
 
+    BaseActivity mContext;
+
     boolean mIsHasReq = false;
 
-    public RedPkgPresenter() {
+    public RedPkgPresenter(BaseActivity context) {
+        mContext = context;
         mMainPageSlideApi = ApiManager.getInstance().createService(MainPageSlideApi.class);
     }
 
@@ -97,12 +101,12 @@ public class RedPkgPresenter extends RxLifeCyclePresenter {
         }
 
         Activity activity = U.getActivityUtils().getTopActivity();
-        GetRedPkgCashView getRedPkgCashView = new GetRedPkgCashView(activity);
+        GetRedPkgCashView getRedPkgCashView = new GetRedPkgCashView(U.app());
         TextView tvCash = getRedPkgCashView.findViewById(R.id.tv_cash);
         tvCash.setText("" + cash);
 
         if (mRedPkgView == null) {
-            mRedPkgView = DialogPlus.newDialog(activity)
+            mRedPkgView = DialogPlus.newDialog(mContext)
                     .setContentHolder(new ViewHolder(getRedPkgCashView))
                     .setGravity(Gravity.CENTER)
                     .setContentBackgroundResource(R.color.transparent)

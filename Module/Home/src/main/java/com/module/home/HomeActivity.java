@@ -195,7 +195,7 @@ public class HomeActivity extends BaseActivity implements IHomeActivity, WeakRed
             }
         });
 
-        mRedPkgPresenter = new RedPkgPresenter();
+        mRedPkgPresenter = new RedPkgPresenter(this);
         addPresent(mRedPkgPresenter);
 
         mNotifyCorePresenter = new NotifyCorePresenter();
