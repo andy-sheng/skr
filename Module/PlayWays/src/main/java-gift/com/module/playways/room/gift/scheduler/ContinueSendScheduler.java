@@ -50,7 +50,7 @@ public class ContinueSendScheduler {
         continueCount++;
     }
 
-    public void endContinueSend() {
+    private void endContinueSend() {
         mBaseGift = null;
         continueCount = 1;
     }
