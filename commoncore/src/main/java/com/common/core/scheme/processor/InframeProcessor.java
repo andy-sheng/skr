@@ -28,7 +28,7 @@ import org.greenrobot.eventbus.EventBus;
 public class InframeProcessor implements ISchemeProcessor {
     private static final String TAG = SchemeConstants.LOG_PREFIX + "InframeProcessor";
 
-    SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
+    SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission(U.getActivityUtils().getHomeActivity());
 
     @Override
     public ProcessResult process(Uri uri, boolean beforeHomeExistJudge) {
