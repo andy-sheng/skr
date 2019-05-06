@@ -597,6 +597,26 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
             if (getsPkRoundInfoModels().size() > 1) {
                 return getsPkRoundInfoModels().get(1).getUserID() == MyUserInfoManager.getInstance().getUid();
             }
+        } else if (getStatus() == EQRoundStatus.QRS_END.getValue()) {
+            // 如果轮次都结束了 还要判断出这个轮次是不是自己唱的
+            if (getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                return true;
+            }
+            for (ChorusRoundInfoModel roundInfoModel : chorusRoundInfoModels) {
+                if (roundInfoModel.getUserID() == MyUserInfoManager.getInstance().getUid() && isParticipant()) {
+                    return true;
+                }
+            }
+            if (getsPkRoundInfoModels().size() > 0) {
+                if (getsPkRoundInfoModels().get(0).getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                    return true;
+                }
+            }
+            if (getsPkRoundInfoModels().size() > 1) {
+                if (getsPkRoundInfoModels().get(1).getUserID() == MyUserInfoManager.getInstance().getUid()) {
+                    return true;
+                }
+            }
         }
         return false;
     }
@@ -604,6 +624,7 @@ public class GrabRoundInfoModel extends BaseRoundInfoModel {
 
     /**
      * 当前轮次当前阶段是否由 userId 演唱
+     *
      * @param userId
      * @return
      */
