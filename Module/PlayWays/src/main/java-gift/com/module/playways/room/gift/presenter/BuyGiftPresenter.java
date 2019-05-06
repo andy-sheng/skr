@@ -60,7 +60,7 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
     }
 
     public void buyGift(BaseGift baseGift, long roomId, long userID) {
-        MyLog.d(TAG, "buyGift" + " baseGift=" + baseGift + " roomId=" + roomId + " userID=" + userID);
+        MyLog.w(TAG, "buyGift" + " baseGift=" + baseGift + " roomId=" + roomId + " userID=" + userID);
 
         final int[] continueCount = new int[1];
 
@@ -107,7 +107,7 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
 
                     @Override
                     public void onNext(ApiResult result) {
-                        MyLog.d(TAG, "buyGift process" + " result=" + result);
+                        MyLog.w(TAG, "buyGift process" + " result=" + result);
                         //{"coinBalance":207,"zuanBalance":14586340}
                         //还是在购买线程处理的
 

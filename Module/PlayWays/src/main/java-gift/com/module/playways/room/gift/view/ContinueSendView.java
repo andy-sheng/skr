@@ -148,7 +148,7 @@ public class ContinueSendView extends FrameLayout implements IContinueSendView {
     public void buyFaild(int erroCode, String errorMsg) {
         switch (erroCode) {
             case ErrZSNotEnough:
-                ToastUtils.showShort("钻石余额不足 充值后就可以送礼啦");
+                ToastUtils.showShort("钻石余额不足，充值后就可以送礼啦");
                 EventBus.getDefault().post(new ShowHalfRechargeFragmentEvent());
                 break;
             case ErrPresentObjLeave:
@@ -158,6 +158,9 @@ public class ContinueSendView extends FrameLayout implements IContinueSendView {
                 ToastUtils.showShort("金币余额不足");
                 break;
             case ErrSystem:
+                ToastUtils.showShort(errorMsg);
+                break;
+            default:
                 ToastUtils.showShort(errorMsg);
                 break;
         }
