@@ -59,7 +59,7 @@ public class GrabRedPkgPresenter extends RxLifeCyclePresenter {
         ApiMethods.subscribe(mGrabRoomServerApi.checkNewBieTask(), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
-                MyLog.d(TAG, "process" + " result=" + result.getErrno());
+                MyLog.w(TAG, "process" + " result=" + result);
                 if (result.getErrno() == 0) {
                     GrabRedPkgTaskModel grabRedPkgTaskModel = JSONObject.parseObject(result.getData().getString("task"), GrabRedPkgTaskModel.class);
                     if (grabRedPkgTaskModel != null && !grabRedPkgTaskModel.isDone()) {
@@ -101,7 +101,7 @@ public class GrabRedPkgPresenter extends RxLifeCyclePresenter {
         ApiMethods.subscribe(mGrabRoomServerApi.triggerNewBieTask(body), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
-                MyLog.d(TAG, "process" + " result=" + result.getErrno());
+                MyLog.w(TAG, "process" + " result=" + result);
                 if (result.getErrno() == 0) {
                     GrabRedPkgTaskModel grabRedPkgTaskModel = JSONObject.parseObject(result.getData().getString("task"), GrabRedPkgTaskModel.class);
                     if (grabRedPkgTaskModel != null && grabRedPkgTaskModel.isDone()) {

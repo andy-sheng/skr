@@ -68,7 +68,7 @@ public class RedPkgPresenter extends RxLifeCyclePresenter {
         ApiMethods.subscribe(mMainPageSlideApi.checkNewBieTask(), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult result) {
-                MyLog.d(TAG, "process" + " result=" + result.getErrno());
+                MyLog.w(TAG, "process" + " result=" + result);
                 if (result.getErrno() == 0) {
                     mIsHasReq = true;
                     RedPkgTaskModel redPkgTaskModel = JSONObject.parseObject(result.getData().getString("task"), RedPkgTaskModel.class);
@@ -91,6 +91,7 @@ public class RedPkgPresenter extends RxLifeCyclePresenter {
 
 
     public void showGetCashView(float cash, String scheme) {
+        MyLog.w(TAG, "showGetCashView" + " cash=" + cash + " scheme=" + scheme);
         if (mRedPkgView != null) {
             mRedPkgView.dismiss();
         }
