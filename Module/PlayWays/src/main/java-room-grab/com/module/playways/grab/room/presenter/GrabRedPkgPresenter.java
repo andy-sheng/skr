@@ -105,9 +105,6 @@ public class GrabRedPkgPresenter extends RxLifeCyclePresenter {
                 if (result.getErrno() == 0) {
                     GrabRedPkgTaskModel grabRedPkgTaskModel = JSONObject.parseObject(result.getData().getString("task"), GrabRedPkgTaskModel.class);
                     if (grabRedPkgTaskModel != null && grabRedPkgTaskModel.isDone()) {
-                        mIsHasShow = true;
-                        mCanReceive = false;
-                        U.getPreferenceUtils().setSettingBoolean(KEY_HAS_RESEIVE_RED_PKG, true);
                         view.getCashSuccess(Float.parseFloat(grabRedPkgTaskModel.getRedbagExtra().getCash()));
                     } else {
                         MyLog.w(TAG, "getRedPkg redPkgTaskModelList is null or grabRedPkgTaskModel is not done, " + " traceid is " + result.getTraceId());
@@ -118,6 +115,10 @@ public class GrabRedPkgPresenter extends RxLifeCyclePresenter {
                 } else {
                     MyLog.w(TAG, "getRedPkg failed, " + " traceid is " + result.getTraceId());
                 }
+
+                U.getPreferenceUtils().setSettingBoolean(KEY_HAS_RESEIVE_RED_PKG, true);
+                mIsHasShow = true;
+                mCanReceive = false;
             }
 
             @Override
