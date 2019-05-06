@@ -345,20 +345,30 @@ public class ActivityUtils {
         return false;
     }
 
+    public Activity getHomeActivity() {
+        for (Activity activity : getActivityList()) {
+            if (isHomeActivity(activity)) {
+                return activity;
+            }
+        }
+        return null;
+    }
+
     public boolean goHomeActivity() {
         boolean homeExist = false;
-        for(Activity activity :getActivityList()){
-            if(isHomeActivity(activity)){
-                homeExist =true;
-            }else{
+        for (Activity activity : getActivityList()) {
+            if (isHomeActivity(activity)) {
+                homeExist = true;
+            } else {
                 activity.finish();
             }
         }
-        if(!homeExist){
+        if (!homeExist) {
 
         }
         return homeExist;
     }
+
     /**
      * 是否在后台回调
      */
