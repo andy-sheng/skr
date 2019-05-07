@@ -32,6 +32,7 @@ public class DoraemonManager {
                 List<SysInfoItem> extras = new ArrayList<>();
                 //extras.add(new SysInfoItem("友盟push DeviceToken", com.common.umeng.UmengPush.getDeviceToken()));
                 extras.add(new SysInfoItem("translucent_no_bug", U.app().getResources().getBoolean(R.bool.translucent_no_bug) + ""));
+                extras.add(new SysInfoItem("通知栏权限",  U.getPermissionUtils().checkNotification(U.app())?"开启":"关闭"));
                 return extras;
             }
 
