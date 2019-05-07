@@ -51,6 +51,17 @@ public class GiftAdapter extends DiffAdapter<BaseGift, RecyclerView.ViewHolder> 
     };
 
     @Override
+    public void update(BaseGift data) {
+        for (int i = 0; i < mDataList.size(); i++) {
+            if (mDataList.get(i).equals(data)) {
+                mDataList.set(i, data);
+                notifyItemChanged(i, 0);
+                return;
+            }
+        }
+    }
+
+    @Override
     public int getItemCount() {
         return mDataList.size();
     }
@@ -75,7 +86,7 @@ public class GiftAdapter extends DiffAdapter<BaseGift, RecyclerView.ViewHolder> 
             itemView.setOnClickListener(view -> {
                 if (mIGiftOpListener != null) {
                     mIGiftOpListener.select(mBaseGift, mGiftUpdateListner);
-                    update(mBaseGift);
+                    mIvSelectedBg.setVisibility(View.VISIBLE);
                 }
             });
         }
