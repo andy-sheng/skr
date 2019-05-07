@@ -1028,6 +1028,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
             public void process(ApiResult result) {
                 if (result.getErrno() == 0) {
                     if (mRoomData.isOwner()) {
+                        mIGrabView.addKickTimes();
                         U.getToastUtil().showShort("踢人成功");
                     } else {
                         U.getToastUtil().showShort("发起踢人请求成功");
@@ -1037,7 +1038,6 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                 } else {
                     U.getToastUtil().showShort("" + result.getErrmsg());
                 }
-                mIGrabView.addKickTimes();
             }
 
             @Override
