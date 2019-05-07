@@ -229,7 +229,11 @@ public class GiftPanelView extends FrameLayout {
         getZSBalance();
     }
 
-    public void getZSBalance() {
+    public void updateZS() {
+        getZSBalance();
+    }
+
+    private void getZSBalance() {
         ApiMethods.subscribe(mGiftServerApi.getZSBalance(), new ApiObserver<ApiResult>() {
             @Override
             public void process(ApiResult obj) {

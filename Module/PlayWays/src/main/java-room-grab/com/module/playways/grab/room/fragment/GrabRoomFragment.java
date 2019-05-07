@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
+import com.common.base.FragmentDataListener;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrAudioPermission;
@@ -904,6 +905,15 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
                         .setEnterAnim(R.anim.slide_in_bottom)
                         .setExitAnim(R.anim.slide_out_bottom)
                         .setAddToBackStack(true)
+                        .setFragmentDataListener(new FragmentDataListener() {
+                            @Override
+                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
+                                //充值成功
+                                if(requestCode == 100 && resultCode == 0){
+                                    mGiftPanelView.updateZS();
+                                }
+                            }
+                        })
                         .setHasAnimation(true)
                         .build());
     }
