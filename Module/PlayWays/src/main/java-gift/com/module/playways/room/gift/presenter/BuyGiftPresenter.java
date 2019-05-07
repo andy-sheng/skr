@@ -61,7 +61,7 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
     }
 
     public void buyGift(BaseGift baseGift, long roomId, long userID) {
-        MyLog.w(TAG, "buyGift" + " baseGift=" + baseGift + " roomId=" + roomId + " userID=" + userID);
+        MyLog.w(TAG, "buyGift" + " giftId=" + baseGift.getGiftID() + " roomId=" + roomId + " userID=" + userID);
 
         final int[] continueCount = new int[1];
 
@@ -88,6 +88,15 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
                 HashMap<String, Object> signMap = new HashMap<>(map);
                 signMap.put("appSecret", "64c5b47f618489dece9b2f95afb56654");
                 map.put("signV2", U.getMD5Utils().signReq(signMap));
+
+                MyLog.w(TAG, "buyGift param is "
+                        + " giftID=" + baseGift.getGiftID()
+                        + " continueCnt=" + continueCount[0]
+                        + " continueID=" + buyGiftParam.getContinueId()
+                        + " count=" + 1
+                        + " receiveUserID=" + userID
+                        + " roomID=" + roomId
+                        + " timestamp=" + ts);
 
                 RequestBody body = RequestBody.create(MediaType.parse(ApiManager.APPLICATION_JSON), JSON.toJSONString(map));
                 emitter.onNext(body);
