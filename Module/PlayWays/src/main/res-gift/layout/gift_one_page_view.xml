@@ -18,5 +18,5 @@
         android:background="@color/black_trans_50"
         android:layout_gravity="center_vertical"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_1_dp" />
+        android:layout_height="1px" />
 </merge>
