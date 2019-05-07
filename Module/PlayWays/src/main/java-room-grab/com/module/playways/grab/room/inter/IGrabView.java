@@ -67,6 +67,11 @@ public interface IGrabView {
      */
     void dimissKickDialog();
 
+    /**
+     * 踢人次数增加
+     */
+    void addKickTimes();
+
     void showPracticeFlag(boolean flag);
 
     void hideInviteTipView();

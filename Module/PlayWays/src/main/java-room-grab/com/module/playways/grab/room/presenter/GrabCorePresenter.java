@@ -1032,12 +1032,12 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
                     } else {
                         U.getToastUtil().showShort("发起踢人请求成功");
                     }
-
                     int coin = result.getData().getIntValue("coin");
                     mRoomData.setCoin(coin);
                 } else {
                     U.getToastUtil().showShort("" + result.getErrmsg());
                 }
+                mIGrabView.addKickTimes();
             }
 
             @Override
@@ -2061,7 +2061,7 @@ public class GrabCorePresenter extends RxLifeCyclePresenter {
         }
         onGameOver("QRoundAndGameOverMsgEvent", event.roundOverTimeMs);
         if (event.mOverReason == EQGameOverReason.GOR_OWNER_EXIT) {
-            MyLog.w(TAG,"房主离开了游戏，房间解散");
+            MyLog.w(TAG, "房主离开了游戏，房间解散");
             U.getToastUtil().showLong("房主离开了游戏，房间解散");
         }
     }

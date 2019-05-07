@@ -197,6 +197,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
     ImageView mIvChanllengeTipView;
 
     int mShowOwnerTipTimes = 0;
+    int mOwnerKickTimes = 0;  // 房主踢人的次数
 
     SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
 
@@ -1234,6 +1235,7 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
             mGiftPanelView.destroy();
         }
 
+        mOwnerKickTimes = 0;
         U.getSoundUtils().release(TAG);
         BgMusicManager.getInstance().setRoom(false);
     }
@@ -1389,11 +1391,22 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
         int type;
         if (mRoomData.isOwner()) {
-            type = ConfirmDialog.TYPE_OWNER_KICK_CONFIRM;
+            if (mOwnerKickTimes < 2) {
+                type = ConfirmDialog.TYPE_OWNER_KICK_CONFIRM;
+            } else {
+                type = ConfirmDialog.TYPE_KICK_CONFIRM;
+            }
         } else {
+            mOwnerKickTimes = 0;
             type = ConfirmDialog.TYPE_KICK_CONFIRM;
         }
-        mGrabKickDialog = new ConfirmDialog(U.getActivityUtils().getTopActivity(), userInfoModel, type, mRoomData.getGrabConfigModel().getKickUserConsumCoinCnt());
+
+        if (mRoomData.isOwner()) {
+            // 房主不消耗金币
+            mGrabKickDialog = new ConfirmDialog(U.getActivityUtils().getTopActivity(), userInfoModel, type, 0);
+        } else {
+            mGrabKickDialog = new ConfirmDialog(U.getActivityUtils().getTopActivity(), userInfoModel, type, mRoomData.getGrabConfigModel().getKickUserConsumCoinCnt());
+        }
         mGrabKickDialog.setListener(new ConfirmDialog.Listener() {
             @Override
             public void onClickConfirm(UserInfoModel userInfoModel) {
@@ -1460,6 +1473,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabView, IRedPkg
         if (mGrabKickDialog != null) {
             mGrabKickDialog.dismiss();
         }
+    }
+
+    @Override
+    public void addKickTimes() {
+        mOwnerKickTimes++;
     }
 
     @Override
