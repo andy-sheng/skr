@@ -30,6 +30,7 @@ import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
@@ -97,7 +98,24 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
             public ObservableSource<ApiResult> apply(RequestBody requestBody) throws Exception {
                 return mGiftServerApi.buyGift(requestBody);
             }
-        }).subscribeOn(Schedulers.from(mBuyGiftExecutor))
+        }).map(new Function<ApiResult, ApiResult>() {
+            @Override
+            public ApiResult apply(ApiResult result) throws Exception {
+                //需要在购买礼物线程处理的问题
+                if (result.getErrno() == 0) {
+                    if (baseGift.isCanContinue()) {
+                        mContinueSendScheduler.sendGiftSuccess();
+                    }
+
+                    int coin = JSON.parseObject(result.getData().getString("coinBalance"), Integer.class);
+                    int diamond = JSON.parseObject(result.getData().getString("zuanBalance"), Integer.class);
+                    EventBus.getDefault().post(new UpdateCoinAndDiamondEvent(coin, diamond));
+                }
+                return result;
+            }
+        })
+                .subscribeOn(Schedulers.from(mBuyGiftExecutor))
+                .observeOn(AndroidSchedulers.mainThread())
                 .compose(bindUntilEvent(PresenterEvent.DESTROY))
                 .subscribe(new Observer<ApiResult>() {
                     @Override
@@ -108,30 +126,11 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
                     @Override
                     public void onNext(ApiResult result) {
                         MyLog.w(TAG, "buyGift process" + " result=" + result);
-                        //{"coinBalance":207,"zuanBalance":14586340}
-                        //还是在购买线程处理的
-
-                        {
-                            if (result.getErrno() == 0) {
-                                {
-                                    if (baseGift.isCanContinue()) {
-                                        mContinueSendScheduler.sendGiftSuccess();
-                                    }
-
-                                    int coin = JSON.parseObject(result.getData().getString("coinBalance"), Integer.class);
-                                    int diamond = JSON.parseObject(result.getData().getString("zuanBalance"), Integer.class);
-                                    EventBus.getDefault().post(new UpdateCoinAndDiamondEvent(coin, diamond));
-                                }
-                            }
+                        if (result.getErrno() == 0) {
+                            mIContinueSendView.buySuccess(baseGift, continueCount[0]);
+                        } else {
+                            mIContinueSendView.buyFaild(result.getErrno(), result.getErrmsg());
                         }
-
-                        mHandler.post(() -> {
-                            if (result.getErrno() == 0) {
-                                mIContinueSendView.buySuccess(baseGift, continueCount[0]);
-                            } else {
-                                mIContinueSendView.buyFaild(result.getErrno(), result.getErrmsg());
-                            }
-                        });
                     }
 
                     @Override
@@ -141,7 +140,7 @@ public class BuyGiftPresenter extends RxLifeCyclePresenter {
 
                     @Override
                     public void onComplete() {
-
+                        MyLog.d(TAG, "buyGift onComplete");
                     }
                 });
     }
