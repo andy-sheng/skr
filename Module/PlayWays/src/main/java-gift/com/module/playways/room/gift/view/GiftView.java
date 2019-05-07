@@ -77,10 +77,9 @@ public class GiftView extends ExFrameLayout implements IGiftView {
 
     private void init() {
         inflate(getContext(), R.layout.gift_view_layout, this);
-        Drawable drawableBg = new DrawableCreator.Builder().setCornersRadius(U.getDisplayUtils().dip2px(20))
+        Drawable drawableBg = new DrawableCreator.Builder()
                 .setShape(DrawableCreator.Shape.Rectangle)
                 .setSolidColor(U.getColor(R.color.black_trans_20))
-                .setCornersRadius(U.getDisplayUtils().dip2px(16))
                 .build();
 
         setBackground(drawableBg);

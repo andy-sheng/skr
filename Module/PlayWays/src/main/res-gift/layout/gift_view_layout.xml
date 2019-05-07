@@ -3,12 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    app:bl_corners_radius="@dimen/view_16_dp"
-    app:bl_solid_color="@color/black_trans_20">
+    android:orientation="vertical">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <ImageView
+        android:background="@drawable/liwujiemian_zhezhao"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
 </merge>
