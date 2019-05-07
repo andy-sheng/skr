@@ -84,7 +84,7 @@ public class GiftAdapter extends DiffAdapter<BaseGift, RecyclerView.ViewHolder> 
             mIvCurrency = (ImageView) itemView.findViewById(R.id.iv_currency);
 
             itemView.setOnClickListener(view -> {
-                if (mIGiftOpListener != null) {
+                if (mIGiftOpListener != null && mIGiftOpListener.getCurSelectedGift() != mBaseGift) {
                     mIGiftOpListener.select(mBaseGift, mGiftUpdateListner);
                     mIvSelectedBg.setVisibility(View.VISIBLE);
                 }
