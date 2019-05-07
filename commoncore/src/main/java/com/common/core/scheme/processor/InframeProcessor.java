@@ -28,7 +28,7 @@ import org.greenrobot.eventbus.EventBus;
 public class InframeProcessor implements ISchemeProcessor {
     private static final String TAG = SchemeConstants.LOG_PREFIX + "InframeProcessor";
 
-    SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission(U.getActivityUtils().getHomeActivity());
+    SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
 
     @Override
     public ProcessResult process(Uri uri, boolean beforeHomeExistJudge) {
@@ -168,7 +168,7 @@ public class InframeProcessor implements ISchemeProcessor {
             }
         } else if ("/jump_match".equals(path)) {
             final int tagId = SchemeUtils.getInt(uri, "tagId", 0);
-            mSkrAudioPermission.ensurePermission(new Runnable() {
+            mSkrAudioPermission.ensurePermission(U.getActivityUtils().getHomeActivity(),new Runnable() {
                 @Override
                 public void run() {
                     IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();
@@ -179,7 +179,7 @@ public class InframeProcessor implements ISchemeProcessor {
             }, true);
 
         } else if ("/jump_create".equals(path)) {
-            mSkrAudioPermission.ensurePermission(new Runnable() {
+            mSkrAudioPermission.ensurePermission(U.getActivityUtils().getHomeActivity(),new Runnable() {
                 @Override
                 public void run() {
                     IPlaywaysModeService iRankingModeService = (IPlaywaysModeService) ARouter.getInstance().build(RouterConstants.SERVICE_RANKINGMODE).navigation();

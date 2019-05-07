@@ -23,21 +23,16 @@ public abstract class SkrBasePermission {
     String mPermissionStr;
     String mGoPermissionManagerTips;
     boolean mCannable = true;
-    Activity mActivity;
+
 
     public SkrBasePermission(String permissionStr, String goPermissionManagerTips, boolean cannable) {
-        this(null, permissionStr, goPermissionManagerTips, cannable);
-    }
-
-    public SkrBasePermission(Activity activity, String permissionStr, String goPermissionManagerTips, boolean cannable) {
-        mActivity = activity;
         mPermissionStr = permissionStr;
         mGoPermissionManagerTips = goPermissionManagerTips;
         mCannable = cannable;
     }
 
     public void ensurePermission(final Runnable ifAgreeAction, final boolean goSettingIfRefuse) {
-        ensurePermission(getActivity(), ifAgreeAction, goSettingIfRefuse);
+        ensurePermission(U.getActivityUtils().getTopActivity(), ifAgreeAction, goSettingIfRefuse);
     }
 
     public void ensurePermission(Activity activity, final Runnable ifAgreeAction, final boolean goSettingIfRefuse) {
@@ -93,7 +88,7 @@ public abstract class SkrBasePermission {
                         @Override
                         public void click(View view) {
                             mHasGoPermission = true;
-                            U.getPermissionUtils().goToPermissionManager(activity);
+                            goSettingPage(activity);
                         }
                     })
                     .build();
@@ -109,6 +104,10 @@ public abstract class SkrBasePermission {
         }
         mTipsDialogView.mMessageTv.setText(text);
         mPerTipsDialogPlus.show();
+    }
+
+    protected void goSettingPage(Activity activity){
+        U.getPermissionUtils().goToPermissionManager(activity);
     }
 
     private void onAgree() {
@@ -133,10 +132,4 @@ public abstract class SkrBasePermission {
         return false;
     }
 
-    Activity getActivity() {
-        if (mActivity == null) {
-            return U.getActivityUtils().getTopActivity();
-        }
-        return mActivity;
-    }
 }

@@ -40,7 +40,7 @@ import io.rong.imkit.R;
 import io.rong.imkit.fragment.ConversationListFragment;
 import io.rong.imlib.model.Conversation;
 
-public class MessgaeFragment2 extends BaseFragment implements IMessageFragment, WeakRedDotManager.WeakRedDotListener {
+public class MessageFragment2 extends BaseFragment implements IMessageFragment, WeakRedDotManager.WeakRedDotListener {
 
     RelativeLayout mMainActContainer;
     CommonTitleBar mTitlebar;

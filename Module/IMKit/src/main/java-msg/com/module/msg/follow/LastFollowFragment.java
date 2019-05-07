@@ -10,6 +10,8 @@ import android.view.View;
 import com.alibaba.fastjson.JSON;
 import com.common.base.BaseActivity;
 import com.common.base.BaseFragment;
+import com.common.core.permission.SkrAudioPermission;
+import com.common.core.permission.SkrNotificationPermission;
 import com.common.core.userinfo.UserInfoManager;
 import com.common.core.userinfo.UserInfoServerApi;
 import com.common.core.userinfo.event.RelationChangeEvent;
@@ -109,7 +111,7 @@ public class LastFollowFragment extends BaseFragment {
         mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
             @Override
             public void clickValid(View v) {
-                U.getFragmentUtils().popFragment(LastFollowFragment.this);
+                finish();
             }
         });
 
@@ -160,6 +162,29 @@ public class LastFollowFragment extends BaseFragment {
         return true;
     }
 
+    @Override
+    protected boolean onBackPressed() {
+        finish();
+        return true;
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        /**
+         * 如果没有通知栏权限，提示一次
+         */
+        if (U.getPermissionUtils().checkNotification(getContext())) {
+            // 有权限
+        } else {
+            long lastShowTs = U.getPreferenceUtils().getSettingLong("show_go_notification_page", 0);
+            if (System.currentTimeMillis() - lastShowTs > 24 * 3600 * 1000) {
+                U.getPreferenceUtils().setSettingLong("show_go_notification_page", System.currentTimeMillis());
+                SkrNotificationPermission skrNotificationPermission = new SkrNotificationPermission();
+                skrNotificationPermission.ensurePermission(getActivity(), null, true);
+            }
+        }
+    }
 
     /**
      * 别人关注的事件,所有的关系都是从我出发

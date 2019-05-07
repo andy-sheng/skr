@@ -217,7 +217,7 @@ public class GrabBottomContainerView extends BottomContainerView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabRoundChangeEvent event) {
-        if (mGrabRoomData.isOwner()) {
+        if (mGrabRoomData!=null && mGrabRoomData.isOwner()) {
             mQuickBtn.setEnabled(true);
             if (mGrabRoomData.isSpeaking()) {
                 // 正在说话，就算了
