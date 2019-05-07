@@ -9,7 +9,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
@@ -85,8 +84,6 @@ public class GiftPanelView extends FrameLayout {
 
     private boolean mHasInit = false;
 
-    private boolean mIsHiding = false;
-
     GiftServerApi mGiftServerApi;
 
     Handler mUiHandler = new Handler() {
@@ -95,7 +92,6 @@ public class GiftPanelView extends FrameLayout {
             if (msg.what == HIDE_PANEL) {
                 clearAnimation();
                 setVisibility(GONE);
-                mIsHiding = false;
             }
         }
     };
@@ -117,22 +113,6 @@ public class GiftPanelView extends FrameLayout {
 
     private void init() {
         mGiftServerApi = ApiManager.getInstance().createService(GiftServerApi.class);
-
-        setOnKeyListener(new OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                MyLog.d(TAG, "onKey" + " v=" + v + " keyCode=" + keyCode + " event=" + event);
-                if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == MotionEvent.ACTION_DOWN && getVisibility() == VISIBLE && !mIsHiding) {
-                    hide();
-                    return true;
-                }
-
-                return false;
-            }
-        });
-
-        setFocusable(true);
-        setFocusableInTouchMode(true);
     }
 
     private void inflate() {
@@ -270,7 +250,6 @@ public class GiftPanelView extends FrameLayout {
 
     public void hide() {
         mUiHandler.removeMessages(HIDE_PANEL);
-        mIsHiding = true;
         clearAnimation();
         TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f,
                 Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 1.0f);
@@ -292,7 +271,6 @@ public class GiftPanelView extends FrameLayout {
 
         setSelectArea(grabPlayerInfoModel);
         mUiHandler.removeMessages(HIDE_PANEL);
-        mIsHiding = false;
         clearAnimation();
         TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f,
                 Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0);
@@ -301,8 +279,6 @@ public class GiftPanelView extends FrameLayout {
         animation.setFillAfter(true);
         startAnimation(animation);
         setVisibility(VISIBLE);
-
-        requestFocus();
     }
 
     private void setSelectArea(GrabPlayerInfoModel grabPlayerInfoModel) {
@@ -388,6 +364,15 @@ public class GiftPanelView extends FrameLayout {
         }
 
         return grabPlayerInfoModelList;
+    }
+
+    public boolean onBackPressed() {
+        if (getVisibility() == VISIBLE) {
+            hide();
+            return true;
+        }
+
+        return false;
     }
 
     public void destroy() {
