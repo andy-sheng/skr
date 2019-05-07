@@ -13,6 +13,7 @@ import com.common.view.recyclerview.DiffAdapter;
 
 import com.module.playways.grab.room.GrabRoomData;
 import com.module.playways.R;
+import com.zq.live.proto.Common.StandPlayType;
 
 public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerView.ViewHolder> {
     OnClickDeleteListener mOnClickDeleteListener;
@@ -69,6 +70,8 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
         ExTextView mTvSongName;
         ExTextView mTvAuther;
         ExTextView mTvManage;
+        ExTextView mChorusSongTag;
+        ExTextView mPkSongTag;
 
         GrabRoomSongModel mSongModel;
         int mPosition;
@@ -78,6 +81,8 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
             mTvSongName = (ExTextView) itemView.findViewById(R.id.tv_song_name);
             mTvAuther = (ExTextView) itemView.findViewById(R.id.tv_auther);
             mTvManage = (ExTextView) itemView.findViewById(R.id.tv_manage);
+            mChorusSongTag = (ExTextView) itemView.findViewById(R.id.chorus_song_tag);
+            mPkSongTag = (ExTextView) itemView.findViewById(R.id.pk_song_tag);
 
             mTvManage.setOnClickListener(new DebounceViewClickListener() {
                 @Override
@@ -115,6 +120,20 @@ public class ManageSongAdapter extends DiffAdapter<GrabRoomSongModel, RecyclerVi
                     mTvManage.setEnabled(true);
                     mTvManage.setBackground(U.getDrawable(R.drawable.fz_shanchu));
                 }
+            }
+
+            if (model.getPlayType() == StandPlayType.PT_SPK_TYPE.getValue()) {
+                mTvSongName.setPadding(0, 0, U.getDisplayUtils().dip2px(130), 0);
+                mPkSongTag.setVisibility(View.VISIBLE);
+                mChorusSongTag.setVisibility(View.GONE);
+            } else if (model.getPlayType() == StandPlayType.PT_CHO_TYPE.getValue()) {
+                mTvSongName.setPadding(0, 0, U.getDisplayUtils().dip2px(130), 0);
+                mPkSongTag.setVisibility(View.GONE);
+                mChorusSongTag.setVisibility(View.VISIBLE);
+            } else {
+                mTvSongName.setPadding(0, 0, U.getDisplayUtils().dip2px(80), 0);
+                mPkSongTag.setVisibility(View.GONE);
+                mChorusSongTag.setVisibility(View.GONE);
             }
 
         }
