@@ -36,6 +36,7 @@ import static com.module.playways.room.gift.presenter.BuyGiftPresenter.ErrZSNotE
 
 public class ContinueSendView extends FrameLayout implements IContinueSendView {
     public static final int MSG_HIDE = 101;
+    public static final int MSG_SHOW_RECHARGE = 102;
 
     ImageView mIvBg;
     ImageView mIvContinueText;
@@ -60,6 +61,8 @@ public class ContinueSendView extends FrameLayout implements IContinueSendView {
         public void handleMessage(Message msg) {
             if (msg.what == MSG_HIDE) {
                 setVisibility(GONE);
+            } else if (msg.what == MSG_SHOW_RECHARGE) {
+                EventBus.getDefault().post(new ShowHalfRechargeFragmentEvent());
             }
         }
     };
@@ -149,13 +152,20 @@ public class ContinueSendView extends FrameLayout implements IContinueSendView {
         switch (erroCode) {
             case ErrZSNotEnough:
                 ToastUtils.showShort("钻石余额不足，充值后就可以送礼啦");
-                EventBus.getDefault().post(new ShowHalfRechargeFragmentEvent());
+                mHandler.removeMessages(MSG_SHOW_RECHARGE);
+                mHandler.sendEmptyMessageDelayed(MSG_SHOW_RECHARGE, 1000);
+                mHandler.removeMessages(MSG_HIDE);
+                mHandler.sendMessageDelayed(mHandler.obtainMessage(MSG_HIDE), 0);
                 break;
             case ErrPresentObjLeave:
                 ToastUtils.showShort("送礼对象已离开，请重新选择");
+                mHandler.removeMessages(MSG_HIDE);
+                mHandler.sendEmptyMessageDelayed(MSG_HIDE, 0);
                 break;
             case ErrCoinNotEnough:
                 ToastUtils.showShort("金币余额不足");
+                mHandler.removeMessages(MSG_HIDE);
+                mHandler.sendEmptyMessageDelayed(MSG_HIDE, 0);
                 break;
             case ErrSystem:
                 ToastUtils.showShort(errorMsg);
