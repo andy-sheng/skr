@@ -34,11 +34,11 @@ public class GiftLocalApi {
         return baseGiftList;
     }
 
-    public void deleteAll() {
+    public static void deleteAll() {
         getGiftDBDao().deleteAll();
     }
 
-    public void deleteById(long id) {
+    public static void deleteById(long id) {
         getGiftDBDao().deleteByKey(id);
     }
 }

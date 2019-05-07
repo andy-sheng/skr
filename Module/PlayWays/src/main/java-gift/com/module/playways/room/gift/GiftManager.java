@@ -103,6 +103,7 @@ public class GiftManager {
 
     private void cacheToDb(List<GiftServerModel> giftServerModelList) {
         Observable.create(emitter -> {
+            GiftLocalApi.deleteAll();
             GiftLocalApi.insertAll(giftServerModelList);
             emitter.onComplete();
         }).subscribeOn(Schedulers.io())
