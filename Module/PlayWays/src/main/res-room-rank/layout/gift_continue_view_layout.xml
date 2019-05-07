@@ -74,7 +74,6 @@
 
         <com.common.image.fresco.BaseImageView
             android:layout_marginTop="@dimen/view_d_12_dp"
-            android:layout_marginLeft="@dimen/view_5_dp"
             android:id="@+id/gift_img_iv"
             android:layout_width="@dimen/view_55_dp"
             android:layout_height="@dimen/view_55_dp"
@@ -87,7 +86,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/view_3_dp"
             android:layout_marginTop="@dimen/view_3_dp"
             android:layout_marginRight="@dimen/view_10_dp"
             android:layout_toRightOf="@+id/gift_img_iv"
