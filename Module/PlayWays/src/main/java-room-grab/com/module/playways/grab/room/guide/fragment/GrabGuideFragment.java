@@ -1,95 +1,61 @@
-package com.module.playways.grab.room.fragment;
+package com.module.playways.grab.room.guide.fragment;
 
 import android.animation.Animator;
-import android.animation.ValueAnimator;
-import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.common.base.BaseFragment;
-import com.common.base.FragmentDataListener;
 import com.common.core.account.UserAccountManager;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.permission.SkrAudioPermission;
-import com.common.core.userinfo.model.UserInfoModel;
 import com.common.log.MyLog;
 import com.common.statistics.StatConstants;
 import com.common.statistics.StatisticsAdapter;
-import com.common.utils.FragmentUtils;
 import com.common.utils.U;
-import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.component.busilib.constans.GrabRoomType;
 import com.component.busilib.manager.BgMusicManager;
-import com.dialog.view.TipsDialogView;
 import com.module.RouterConstants;
-import com.module.home.IHomeService;
+import com.module.playways.R;
 import com.module.playways.RoomDataUtils;
 import com.module.playways.grab.room.GrabRoomData;
-import com.module.playways.grab.room.event.GrabWantInviteEvent;
-import com.module.playways.grab.room.event.LightOffAnimationOverEvent;
-import com.module.playways.grab.room.event.ShowPersonCardEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightBurstEvent;
 import com.module.playways.grab.room.event.GrabSomeOneLightOffEvent;
+import com.module.playways.grab.room.event.LightOffAnimationOverEvent;
+import com.module.playways.grab.room.guide.presenter.GrabGuidePresenter;
+import com.module.playways.grab.room.inter.IGrabGuideView;
 import com.module.playways.grab.room.inter.IGrabRoomView;
-import com.module.playways.grab.room.invite.InviteFriendFragment2;
 import com.module.playways.grab.room.listener.SVGAListener;
-import com.module.playways.grab.room.model.GrabPlayerInfoModel;
 import com.module.playways.grab.room.model.GrabRoundInfoModel;
-import com.module.playways.grab.room.model.WantSingerInfo;
-import com.module.playways.grab.room.presenter.GrabCorePresenter;
-import com.module.playways.grab.room.presenter.GrabRedPkgPresenter;
-import com.module.playways.grab.room.songmanager.GrabSongManageFragment;
 import com.module.playways.grab.room.top.GrabTopContainerView;
 import com.module.playways.grab.room.top.GrabTopView;
-import com.module.playways.grab.room.view.GrabChangeRoomTransitionView;
 import com.module.playways.grab.room.view.GrabDengBigAnimationView;
 import com.module.playways.grab.room.view.GrabGameOverView;
-import com.module.playways.grab.room.view.GrabOpView;
-
 import com.module.playways.grab.room.view.GrabGiveupView;
+import com.module.playways.grab.room.view.GrabOpView;
 import com.module.playways.grab.room.view.GrabScoreTipsView;
-import com.module.playways.grab.room.view.GrabVoiceControlPanelView;
-import com.module.playways.grab.room.view.IRedPkgCountDownView;
+import com.module.playways.grab.room.view.SongInfoCardView;
+import com.module.playways.grab.room.view.TurnInfoCardView;
 import com.module.playways.grab.room.view.control.OthersSingCardView;
 import com.module.playways.grab.room.view.control.RoundOverCardView;
 import com.module.playways.grab.room.view.control.SelfSingCardView;
 import com.module.playways.grab.room.view.control.SingBeginTipsCardView;
-import com.module.playways.grab.room.view.RedPkgCountDownView;
-import com.module.playways.grab.room.view.SongInfoCardView;
-import com.module.playways.grab.room.view.TurnInfoCardView;
-import com.module.playways.room.gift.event.BuyGiftEvent;
-import com.module.playways.room.gift.event.ShowHalfRechargeFragmentEvent;
-import com.module.playways.room.gift.view.ContinueSendView;
-import com.module.playways.room.gift.view.GiftPanelView;
-import com.module.playways.room.prepare.model.OnlineInfoModel;
 import com.module.playways.room.prepare.model.BaseRoundInfoModel;
-import com.module.playways.room.room.comment.listener.CommentItemListener;
+import com.module.playways.room.prepare.model.OnlineInfoModel;
 import com.module.playways.room.room.comment.CommentView;
+import com.module.playways.room.room.comment.listener.CommentItemListener;
 import com.module.playways.room.room.gift.GiftBigAnimationViewGroup;
 import com.module.playways.room.room.gift.GiftContinueViewGroup;
 import com.module.playways.room.room.view.BottomContainerView;
 import com.module.playways.room.room.view.InputContainerView;
 import com.module.playways.room.song.model.SongModel;
-import com.module.playways.R;
-import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.OnClickListener;
-import com.orhanobut.dialogplus.ViewHolder;
-import com.zq.dialog.ConfirmDialog;
-import com.zq.dialog.PersonInfoDialog;
 import com.zq.live.proto.Room.EQRoundStatus;
-import com.zq.toast.CommonToastView;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -98,13 +64,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRedPkgCountDownView {
+public class GrabGuideFragment extends BaseFragment implements IGrabGuideView {
 
-    public final static String TAG = "GrabRoomFragment";
-
-    public final static String KEY_OWNER_SHOW_TIMES = "ownerShowTimes";
-
-//    public static final int MSG_ENSURE_READYGO_OVER = 1;
+    public final static String TAG = "GrabGuideFragment";
 
     public static final int MSG_ENSURE_SONGCARD_OVER = 2;
 
@@ -128,11 +90,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     InputContainerView mInputContainerView;
 
     ViewGroup mBottomBgVp;
+
     BottomContainerView mBottomContainerView;
 
 //    GrabVoiceControlPanelView mVoiceControlView;
 
-    RedPkgCountDownView mRedPkgView;
+//    RedPkgCountDownView mRedPkgView;
 
     CommentView mCommentView;
 
@@ -140,9 +103,9 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
     ExImageView mPracticeFlagIv; // 练习中
 
-    GrabCorePresenter mCorePresenter;
+    GrabGuidePresenter mCorePresenter;
 
-    GrabRedPkgPresenter mGrabRedPkgPresenter;
+//    GrabRedPkgPresenter mGrabRedPkgPresenter;
 
 //    DownLoadScoreFilePresenter mDownLoadScoreFilePresenter;
 
@@ -164,40 +127,40 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
     GrabDengBigAnimationView mDengBigAnimation;
 
-    GrabChangeRoomTransitionView mGrabChangeRoomTransitionView;
+//    GrabChangeRoomTransitionView mGrabChangeRoomTransitionView;
 
     GrabScoreTipsView mGrabScoreTipsView;
 
-    DialogPlus mQuitTipsDialog;
+//    DialogPlus mQuitTipsDialog;
 
-    PersonInfoDialog mPersonInfoDialog;
+//    PersonInfoDialog mPersonInfoDialog;
 
-    DialogPlus mGameRuleDialog;
+//    DialogPlus mGameRuleDialog;
 
-    ConfirmDialog mGrabKickDialog;
+//    ConfirmDialog mGrabKickDialog;
 
-    GrabVoiceControlPanelView mGrabVoiceControlPanelView;
+//    GrabVoiceControlPanelView mGrabVoiceControlPanelView;
 
-    GiftPanelView mGiftPanelView;
+//    GiftPanelView mGiftPanelView;
 
-    ContinueSendView mContinueSendView;
+//    ContinueSendView mContinueSendView;
 
-    DialogPlus mVoiceControlDialog;
+//    DialogPlus mVoiceControlDialog;
 
     List<Animator> mAnimatorList = new ArrayList<>();  //存放所有需要尝试取消的动画
 
     boolean mIsGameEndAniamtionShow = false; // 标记对战结束动画是否播放
 
-    long mBeginChangeRoomTs;
+//    long mBeginChangeRoomTs;
 
-    ImageView mOwnerBeginGameIv;
+//    ImageView mOwnerBeginGameIv;
 
-    ImageView mIvInviteTip;
-    ImageView mIvManageSongTipView;
-    ImageView mIvChanllengeTipView;
+//    ImageView mIvInviteTip;
+//    ImageView mIvManageSongTipView;
+//    ImageView mIvChanllengeTipView;
 
-    int mShowOwnerTipTimes = 0;
-    int mOwnerKickTimes = 0;  // 房主踢人的次数
+//    int mShowOwnerTipTimes = 0;
+//    int mOwnerKickTimes = 0;  // 房主踢人的次数
 
     SkrAudioPermission mSkrAudioPermission = new SkrAudioPermission();
 
@@ -233,19 +196,11 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
     @Override
     public int initView() {
-        return R.layout.grab_room_fragment_layout;
+        return R.layout.grab_guide_fragment_layout;
     }
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        if (System.currentTimeMillis() - mRoomData.getGameStartTs() > 3 * 60 * 1000) {
-            Log.w(TAG, "隔了很久从后台返回的，直接finish Activity");
-            if (getActivity() != null) {
-                getActivity().finish();
-            }
-            return;
-        }
-
         // 请保证从下面的view往上面的view开始初始化
         mRankingContainer = mRootView.findViewById(R.id.ranking_container);
         mRankingContainer.setOnClickListener(new View.OnClickListener() {
@@ -263,19 +218,10 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         initGiftDisplayView();
         initGrabOpView();
         initSingStageView();
-        initChangeRoomTransitionView();
-        initCountDownView();
         initScoreView();
-        initGiftPanelView();
 
-        mShowOwnerTipTimes = U.getPreferenceUtils().getSettingInt(KEY_OWNER_SHOW_TIMES, 0);
-
-        mCorePresenter = new GrabCorePresenter(this, mRoomData);
+        mCorePresenter = new GrabGuidePresenter(this, mRoomData);
         addPresent(mCorePresenter);
-        mGrabRedPkgPresenter = new GrabRedPkgPresenter(this);
-        addPresent(mGrabRedPkgPresenter);
-        mGrabRedPkgPresenter.checkRedPkg();
-        mCorePresenter.setGrabRedPkgPresenter(mGrabRedPkgPresenter);
 
         U.getSoundUtils().preLoad(TAG, R.raw.grab_challengelose, R.raw.grab_challengewin,
                 R.raw.grab_gameover, R.raw.grab_iwannasing,
@@ -291,174 +237,13 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             }
         }, 500);
         BgMusicManager.getInstance().setRoom(true);
-        if (mRoomData.isOwner()) {
-            if (!mRoomData.hasGameBegin() && mOwnerBeginGameIv == null) {
-                // 是房主并且游戏未开始，增加一个 开始游戏 的按钮
-                mOwnerBeginGameIv = new ExImageView(getContext());
-                mOwnerBeginGameIv.setImageResource(R.drawable.fz_kaishiyouxi);
-                RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-                lp.rightMargin = U.getDisplayUtils().dip2px(10);
-                lp.addRule(RelativeLayout.ALIGN_TOP, R.id.bottom_bg_vp);
-                lp.topMargin = -U.getDisplayUtils().dip2px(55);
-                int index = mRankingContainer.indexOfChild(mInputContainerView);
-                mRankingContainer.addView(mOwnerBeginGameIv, index, lp);
-                mOwnerBeginGameIv.setOnClickListener(new DebounceViewClickListener() {
-                    @Override
-                    public void clickValid(View v) {
-                        mCorePresenter.ownerBeginGame();
-                    }
-                });
-            }
-
-            if (mShowOwnerTipTimes < 3) {
-                tryShowInviteTipView();
-                tryShowManageSongTipView();
-                tipViewAnimate(mIvInviteTip, mIvManageSongTipView);
-            }
-        }
     }
 
-    private void tryShowInviteTipView() {
-        if (mIvInviteTip == null) {
-            mIvInviteTip = new ImageView(getContext());
-            mIvInviteTip.setBackground(U.getDrawable(R.drawable.fz_yaoqing_tishi));
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(142), U.getDisplayUtils().dip2px(74));
-            mIvInviteTip.setLayoutParams(layoutParams);
-            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            layoutParams.setMargins(0, U.getDisplayUtils().dip2px(127), U.getDisplayUtils().dip2px(13), 0);
-            ((ViewGroup) mRankingContainer).addView(mIvInviteTip);
-            U.getPreferenceUtils().setSettingInt(KEY_OWNER_SHOW_TIMES, ++mShowOwnerTipTimes);
-        }
-    }
-
-    private void tryShowManageSongTipView() {
-        if (mIvManageSongTipView == null) {
-            mIvManageSongTipView = new ImageView(getContext());
-            mIvManageSongTipView.setBackground(U.getDrawable(R.drawable.fz_kongzhi_tishi));
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(142), U.getDisplayUtils().dip2px(74));
-            mIvManageSongTipView.setLayoutParams(layoutParams);
-            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-            layoutParams.setMargins(0, 0, U.getDisplayUtils().dip2px(13), U.getDisplayUtils().dip2px(78));
-            int index = mRankingContainer.indexOfChild(mInputContainerView);
-            mRankingContainer.addView(mIvManageSongTipView, index, layoutParams);
-        }
-    }
-
-    private void tryShowChallengeTipView() {
-        if (mIvChanllengeTipView == null) {
-            mIvChanllengeTipView = new ImageView(getContext());
-            mIvChanllengeTipView.setBackground(U.getDrawable(R.drawable.fz_tiaozhan_tishi));
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(U.getDisplayUtils().dip2px(142), U.getDisplayUtils().dip2px(74));
-            mIvChanllengeTipView.setLayoutParams(layoutParams);
-            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            layoutParams.addRule(RelativeLayout.BELOW, R.id.grab_op_btn);
-            layoutParams.setMargins(0, U.getDisplayUtils().dip2px(2), U.getDisplayUtils().dip2px(10), 0);
-            int index = mRankingContainer.indexOfChild(mInputContainerView);
-            mRankingContainer.addView(mIvChanllengeTipView, index, layoutParams);
-            startChallengeTipViewAnimator(mIvChanllengeTipView);
-        }
-    }
-
-    private void removeInviteTipView() {
-        Activity activity = getActivity();
-        if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
-            if (mIvInviteTip != null) {
-                ((ViewGroup) mRankingContainer).removeView(mIvInviteTip);
-                mIvInviteTip = null;
-            }
-        }
-    }
-
-    private void removeManageSongTipView() {
-        Activity activity = getActivity();
-        if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
-            if (mIvManageSongTipView != null) {
-                ((ViewGroup) mRankingContainer).removeView(mIvManageSongTipView);
-                mIvManageSongTipView = null;
-            }
-        }
-    }
-
-    private void removeChallengeTipView() {
-        Activity activity = getActivity();
-        if (activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
-            if (mIvChanllengeTipView != null) {
-                ((ViewGroup) mRankingContainer).removeView(mIvChanllengeTipView);
-                mIvChanllengeTipView = null;
-                mChallengeTipViewAnimator.cancel();
-            }
-        }
-    }
-
-    ValueAnimator mTipViewAnimator;
-
-    ValueAnimator mChallengeTipViewAnimator;
-
-    private void tipViewAnimate(View... viewList) {
-        if (mTipViewAnimator != null) {
-            mTipViewAnimator.removeAllUpdateListeners();
-            mTipViewAnimator.cancel();
-        }
-        mTipViewAnimator = ValueAnimator.ofInt(0, 20, 0);
-        mTipViewAnimator.setRepeatCount(ValueAnimator.INFINITE);
-        mTipViewAnimator.setDuration(2500);
-        mTipViewAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                boolean hasSetableView = false;
-                for (View view : viewList) {
-                    if (view != null && view.getParent() != null) {
-                        hasSetableView = true;
-                        view.setTranslationY((int) animation.getAnimatedValue());
-                    }
-                }
-
-                if (!hasSetableView) {
-                    mTipViewAnimator.cancel();
-                }
-            }
-        });
-
-        mTipViewAnimator.start();
-    }
-
-    private void startChallengeTipViewAnimator(View view) {
-        if (mChallengeTipViewAnimator != null) {
-            mChallengeTipViewAnimator.removeAllUpdateListeners();
-            mChallengeTipViewAnimator.cancel();
-        }
-        mChallengeTipViewAnimator = ValueAnimator.ofInt(0, 20, 0);
-        mChallengeTipViewAnimator.setRepeatCount(ValueAnimator.INFINITE);
-        mChallengeTipViewAnimator.setDuration(2500);
-        mChallengeTipViewAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                boolean hasSetableView = false;
-
-                if (view.getParent() != null) {
-                    hasSetableView = true;
-                    view.setTranslationY((int) animation.getAnimatedValue());
-                }
-
-                if (!hasSetableView) {
-                    mChallengeTipViewAnimator.cancel();
-                }
-            }
-        });
-
-        mChallengeTipViewAnimator.start();
-    }
 
     @Override
     public void onStart() {
         super.onStart();
         mSkrAudioPermission.ensurePermission(null, true);
-    }
-
-    private void initCountDownView() {
-        mRedPkgView = (RedPkgCountDownView) mRootView.findViewById(R.id.red_pkg_view);
     }
 
     private void initBgView() {
@@ -472,13 +257,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         } else if (mRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_PUBLIC) {
             mGrabRoomBgFlag.setImageResource(R.drawable.fz_bj_haohua);
         }
-    }
-
-    private void initGiftPanelView() {
-        mGiftPanelView = (GiftPanelView) mRootView.findViewById(R.id.gift_panel_view);
-        mGiftPanelView.setGrabRoomData(mRoomData);
-        mContinueSendView = (ContinueSendView) mRootView.findViewById(R.id.continue_send_view);
-        mContinueSendView.setBaseRoomData(mRoomData);
     }
 
     private void initInputView() {
@@ -498,31 +276,15 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         mBottomContainerView.setListener(new BottomContainerView.Listener() {
             @Override
             public void showInputBtnClick() {
-                if (mPersonInfoDialog != null && mPersonInfoDialog.isShowing()) {
-                    mPersonInfoDialog.dismiss();
-                }
                 mInputContainerView.showSoftInput();
             }
 
             @Override
             public void clickRoomManagerBtn() {
-                U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(GrabRoomFragment.this.getActivity(), GrabSongManageFragment.class)
-                        .setAddToBackStack(true)
-                        .setHasAnimation(false)
-                        .addDataBeforeAdd(0, mRoomData)
-                        .build());
-                removeManageSongTipView();
             }
 
             @Override
             public void showGiftPanel() {
-                if (mRoomData.getRealRoundInfo() != null) {
-                    mGiftPanelView.show(RoomDataUtils.getPlayerInfoById(mRoomData, mRoomData.getRealRoundInfo().getUserID()));
-                } else {
-                    mGiftPanelView.show(null);
-                }
-
-                mContinueSendView.setVisibility(View.GONE);
             }
         });
         mBottomContainerView.setRoomData(mRoomData);
@@ -533,7 +295,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         mCommentView.setListener(new CommentItemListener() {
             @Override
             public void clickAvatar(int userId) {
-                showPersonInfoView(userId);
             }
 
             @Override
@@ -546,122 +307,10 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 //        layoutParams.height = U.getDisplayUtils().getPhoneHeight() - U.getDisplayUtils().dip2px(430 + 60);
     }
 
-    private void initChangeRoomTransitionView() {
-        mGrabChangeRoomTransitionView = mRootView.findViewById(R.id.change_room_transition_view);
-        mGrabChangeRoomTransitionView.setVisibility(View.GONE);
-    }
-
     @Override
     public void onResume() {
         super.onResume();
         mSkrAudioPermission.onBackFromPermisionManagerMaybe();
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(ShowPersonCardEvent event) {
-        showPersonInfoView(event.getUid());
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(BuyGiftEvent event) {
-        mContinueSendView.startBuy(event.getBaseGift(), event.getReceiverId());
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(GrabWantInviteEvent event) {
-        // 房主想要邀请别人加入游戏
-        // 打开邀请面板
-        U.getFragmentUtils().addFragment(FragmentUtils.newAddParamsBuilder(getActivity(), InviteFriendFragment2.class)
-                        .setAddToBackStack(true)
-                        .setHasAnimation(true)
-                        .addDataBeforeAdd(0, mRoomData)
-//                .setEnterAnim(R.anim.slide_in_bottom)
-//                .setExitAnim(R.anim.slide_out_bottom)
-                        .build()
-        );
-
-        removeInviteTipView();
-    }
-
-    private void showPersonInfoView(int userID) {
-        if (!U.getNetworkUtils().hasNetwork()) {
-            U.getToastUtil().showShort("网络异常，请检查网络后重试!");
-            return;
-        }
-        mInputContainerView.hideSoftInput();
-
-        if (mRoomData.getRoomType() == GrabRoomType.ROOM_TYPE_COMMON) {
-            // 普通房
-            mPersonInfoDialog = new PersonInfoDialog(getActivity(), userID, true, true);
-        } else {
-            if (mRoomData.isOwner()) {
-                mPersonInfoDialog = new PersonInfoDialog(getActivity(), userID, true, true);
-            } else {
-                mPersonInfoDialog = new PersonInfoDialog(getActivity(), userID, true, false);
-            }
-        }
-
-        mPersonInfoDialog.setListener(new PersonInfoDialog.KickListener() {
-
-            @Override
-            public void onClickKick(UserInfoModel userInfoModel) {
-                showKickConfirmDialog(userInfoModel);
-            }
-        });
-        mPersonInfoDialog.show();
-    }
-
-    @Override
-    public void getCashSuccess(float cash) {
-        DialogPlus dialogPlus = DialogPlus.newDialog(getContext())
-                .setContentHolder(new ViewHolder(R.layout.congratulation_get_cash_view_layout))
-                .setGravity(Gravity.CENTER)
-                .setContentBackgroundResource(R.color.transparent)
-                .setOverlayBackgroundResource(R.color.black_trans_80)
-                .setMargin(0, 0, 0, 0)
-                .setExpanded(false)
-                .setCancelable(true)
-                .setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(@NonNull DialogPlus dialog, @NonNull View view) {
-                        dialog.dismiss();
-                    }
-                })
-                .create();
-
-        TextView textView = (TextView) dialogPlus.findViewById(R.id.tv_cash);
-        textView.setText(String.valueOf(cash));
-        dialogPlus.show();
-    }
-
-    DialogPlus getRedPkgFailed;
-
-    @Override
-    public void showGetRedPkgFailed() {
-        TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
-                .setMessageTip("注册账号行为异常，红包激活不成功")
-                .setOkBtnTip("确定")
-                .setOkBtnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (getRedPkgFailed != null) {
-                            getRedPkgFailed.dismiss();
-                        }
-                    }
-                })
-                .build();
-
-        if (getRedPkgFailed == null) {
-            getRedPkgFailed = DialogPlus.newDialog(getContext())
-                    .setContentHolder(new ViewHolder(tipsDialogView))
-                    .setGravity(Gravity.BOTTOM)
-                    .setContentBackgroundResource(R.color.transparent)
-                    .setOverlayBackgroundResource(R.color.black_trans_80)
-                    .setExpanded(false)
-                    .create();
-        }
-
-        getRedPkgFailed.show();
     }
 
     private void initTopView() {
@@ -680,21 +329,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         mTopContainerView.getGrabTopView().setListener(new GrabTopView.Listener() {
             @Override
             public void changeRoom() {
-                GrabRoundInfoModel grabRoundInfoModel = mRoomData.getRealRoundInfo();
-                if (grabRoundInfoModel != null) {
-                    for (WantSingerInfo wantSingerInfo :
-                            grabRoundInfoModel.getWantSingInfos()) {
-                        if (wantSingerInfo.getUserID() == MyUserInfoManager.getInstance().getUid()) {
-                            U.getToastUtil().showShort("演唱时不能切换房间哦～");
-                            return;
-                        }
-                    }
-                }
-
-                mBeginChangeRoomTs = System.currentTimeMillis();
-                mGrabChangeRoomTransitionView.setVisibility(View.VISIBLE);
-                mCorePresenter.changeRoom();
-                mGrabGiveupView.hideWithAnimation(false);
             }
 
             @Override
@@ -705,22 +339,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             @Override
             public void onClickVoiceAudition() {
                 U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-                if (mGrabVoiceControlPanelView == null) {
-                    mGrabVoiceControlPanelView = new GrabVoiceControlPanelView(getContext());
-                    mGrabVoiceControlPanelView.setRoomData(mRoomData);
-                }
-                mGrabVoiceControlPanelView.bindData();
-                if (mVoiceControlDialog == null) {
-                    mVoiceControlDialog = DialogPlus.newDialog(getContext())
-                            .setContentHolder(new ViewHolder(mGrabVoiceControlPanelView))
-                            .setContentBackgroundResource(R.color.transparent)
-                            .setOverlayBackgroundResource(R.color.black_trans_50)
-                            .setExpanded(false)
-                            .setCancelable(true)
-                            .setGravity(Gravity.BOTTOM)
-                            .create();
-                }
-                mVoiceControlDialog.show();
             }
         });
 
@@ -748,39 +366,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
         @Override
         public void onClickGameRule() {
-            if (mGameRuleDialog != null) {
-                mGameRuleDialog.dismiss();
-            }
             U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-            mGameRuleDialog = DialogPlus.newDialog(getContext())
-                    .setContentHolder(new ViewHolder(R.layout.grab_game_rule_view_layout))
-                    .setContentBackgroundResource(R.color.transparent)
-                    .setOverlayBackgroundResource(R.color.black_trans_50)
-                    .setExpanded(false)
-                    .setGravity(Gravity.CENTER)
-                    .create();
-            mGameRuleDialog.show();
         }
 
         @Override
         public void onClickVoiceVoiceAudition() {
             U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-            if (mGrabVoiceControlPanelView == null) {
-                mGrabVoiceControlPanelView = new GrabVoiceControlPanelView(getContext());
-                mGrabVoiceControlPanelView.setRoomData(mRoomData);
-            }
-            mGrabVoiceControlPanelView.bindData();
-            if (mVoiceControlDialog == null) {
-                mVoiceControlDialog = DialogPlus.newDialog(getContext())
-                        .setContentHolder(new ViewHolder(mGrabVoiceControlPanelView))
-                        .setContentBackgroundResource(R.color.transparent)
-                        .setOverlayBackgroundResource(R.color.black_trans_50)
-                        .setExpanded(false)
-                        .setCancelable(true)
-                        .setGravity(Gravity.BOTTOM)
-                        .create();
-            }
-            mVoiceControlDialog.show();
         }
     };
 
@@ -844,12 +435,10 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
             @Override
             public void showChallengeTipView() {
-                tryShowChallengeTipView();
             }
 
             @Override
             public void hideChallengeTipView() {
-                removeChallengeTipView();
             }
         });
 
@@ -890,28 +479,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         if (event.getUid() == MyUserInfoManager.getInstance().getUid()) {
             U.getSoundUtils().play(TAG, R.raw.grab_xlight);
         }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(ShowHalfRechargeFragmentEvent event) {
-        IHomeService channelService = (IHomeService) ARouter.getInstance().build(RouterConstants.SERVICE_HOME).navigation();
-        Class<BaseFragment> baseFragmentClass = (Class) channelService.getData(2, null);
-        U.getFragmentUtils().addFragment(
-                FragmentUtils.newAddParamsBuilder(getActivity(), baseFragmentClass)
-                        .setEnterAnim(R.anim.slide_in_bottom)
-                        .setExitAnim(R.anim.slide_out_bottom)
-                        .setAddToBackStack(true)
-                        .setFragmentDataListener(new FragmentDataListener() {
-                            @Override
-                            public void onFragmentResult(int requestCode, int resultCode, Bundle bundle, Object obj) {
-                                //充值成功
-                                if(requestCode == 100 && resultCode == 0){
-                                    mGiftPanelView.updateZS();
-                                }
-                            }
-                        })
-                        .setHasAnimation(true)
-                        .build());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -956,10 +523,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     public void grabBegin(int seq, SongModel songModel) {
         MyLog.d(TAG, "grabBegin" + " seq=" + seq + " songModel=" + songModel);
         removeAllEnsureMsg();
-        if (mOwnerBeginGameIv != null) {
-            // 如果房主开始游戏的按钮还在的话，将其移除
-            mRankingContainer.removeView(mOwnerBeginGameIv);
-        }
         // 播放3秒导唱
         mTopContainerView.setVisibility(View.VISIBLE);
         mOthersSingCardView.setVisibility(View.GONE);
@@ -1178,18 +741,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     }
 
     @Override
-    public void redPkgCountDown(long duration) {
-        mRedPkgView.setVisibility(View.VISIBLE);
-        mRedPkgView.startCountDown(duration);
-        mUiHanlder.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mRedPkgView.setVisibility(View.GONE);
-            }
-        }, duration);
-    }
-
-    @Override
     public boolean useEventBus() {
         return true;
     }
@@ -1207,10 +758,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         super.destroy();
         MyLog.d(TAG, "destroy");
         dismissDialog();
-        if (mQuitTipsDialog != null && mQuitTipsDialog.isShowing()) {
-            mQuitTipsDialog.dismiss(false);
-            mQuitTipsDialog = null;
-        }
         if (mSelfSingCardView != null) {
             mSelfSingCardView.destroy();
         }
@@ -1225,23 +772,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             mAnimatorList.clear();
         }
 
-        if (mTipViewAnimator != null) {
-            mTipViewAnimator.cancel();
-        }
-
-        if (mChallengeTipViewAnimator != null) {
-            mChallengeTipViewAnimator.cancel();
-        }
-
-        if (mContinueSendView != null) {
-            mContinueSendView.destroy();
-        }
-
-        if (mGiftPanelView != null) {
-            mGiftPanelView.destroy();
-        }
-
-        mOwnerKickTimes = 0;
         U.getSoundUtils().release(TAG);
         BgMusicManager.getInstance().setRoom(false);
     }
@@ -1252,9 +782,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
             return true;
         }
 
-        if (mGiftPanelView.onBackPressed()) {
-            return true;
-        }
         quitGame();
         return true;
     }
@@ -1271,45 +798,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
 
     private void quitGame() {
         dismissDialog();
-        if (mQuitTipsDialog == null) {
-            String msg = "提前退出会破坏其他玩家的对局体验\n确定退出么？";
-            if (mRoomData.isOwner()) {
-                msg = "房主退出后房间将解散,是否确认退出?";
-            }
-            TipsDialogView tipsDialogView = new TipsDialogView.Builder(getContext())
-                    .setMessageTip(msg)
-                    .setConfirmTip("确定")
-                    .setCancelTip("取消")
-                    .setConfirmBtnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (mQuitTipsDialog != null) {
-                                mQuitTipsDialog.dismiss(false);
-                            }
-                            mCorePresenter.exitRoom();
-                            StatisticsAdapter.recordCountEvent(UserAccountManager.getInstance().getGategory(StatConstants.CATEGORY_GRAB),
-                                    "game_exit", null);
-                        }
-                    })
-                    .setCancelBtnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (mQuitTipsDialog != null) {
-                                mQuitTipsDialog.dismiss();
-                            }
-                        }
-                    })
-                    .build();
-
-            mQuitTipsDialog = DialogPlus.newDialog(getContext())
-                    .setContentHolder(new ViewHolder(tipsDialogView))
-                    .setGravity(Gravity.BOTTOM)
-                    .setContentBackgroundResource(R.color.transparent)
-                    .setOverlayBackgroundResource(R.color.black_trans_80)
-                    .setExpanded(false)
-                    .create();
-        }
-        mQuitTipsDialog.show();
     }
 
     @Override
@@ -1346,27 +834,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
     }
 
     @Override
-    public void onChangeRoomResult(boolean success, String errMsg) {
-        long t = System.currentTimeMillis() - mBeginChangeRoomTs;
-        if (t > 1500) {
-            mGrabChangeRoomTransitionView.setVisibility(View.GONE);
-            if (!success) {
-                U.getToastUtil().showShort(errMsg);
-            }
-        } else {
-            mUiHanlder.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (!success) {
-                        U.getToastUtil().showShort(errMsg);
-                    }
-                    mGrabChangeRoomTransitionView.setVisibility(View.GONE);
-                }
-            }, 1500 - t);
-        }
-    }
-
-    @Override
     public void giveUpSuccess(int seq) {
         mGrabGiveupView.giveUpSuccess();
     }
@@ -1393,101 +860,12 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
                 .navigation();
     }
 
-    // 确认踢人弹窗
-    private void showKickConfirmDialog(UserInfoModel userInfoModel) {
-        MyLog.d(TAG, "showKickConfirmDialog" + " userInfoModel=" + userInfoModel);
-        dismissDialog();
-        U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-        int type;
-        if (mRoomData.isOwner()) {
-            if (mOwnerKickTimes < 2) {
-                type = ConfirmDialog.TYPE_OWNER_KICK_CONFIRM;
-            } else {
-                type = ConfirmDialog.TYPE_KICK_CONFIRM;
-            }
-        } else {
-            mOwnerKickTimes = 0;
-            type = ConfirmDialog.TYPE_KICK_CONFIRM;
-        }
-
-        if (mRoomData.isOwner()) {
-            // 房主不消耗金币
-            mGrabKickDialog = new ConfirmDialog(U.getActivityUtils().getTopActivity(), userInfoModel, type, 0);
-        } else {
-            mGrabKickDialog = new ConfirmDialog(U.getActivityUtils().getTopActivity(), userInfoModel, type, mRoomData.getGrabConfigModel().getKickUserConsumCoinCnt());
-        }
-        mGrabKickDialog.setListener(new ConfirmDialog.Listener() {
-            @Override
-            public void onClickConfirm(UserInfoModel userInfoModel) {
-                // 发起踢人请求
-                mCorePresenter.reqKickUser(userInfoModel.getUserId());
-            }
-        });
-        mGrabKickDialog.show();
-    }
-
     private void dismissDialog() {
-        if (mGameRuleDialog != null) {
-            mGameRuleDialog.dismiss(false);
-        }
         if (mBottomContainerView != null) {
             mBottomContainerView.dismissPopWindow();
         }
-        if (mPersonInfoDialog != null) {
-            mPersonInfoDialog.dismiss();
-        }
-        if (mGrabKickDialog != null) {
-            mGrabKickDialog.dismiss(false);
-        }
-        if (mVoiceControlDialog != null) {
-            mVoiceControlDialog.dismiss(false);
-        }
     }
 
-    // 请求踢人弹窗
-    @Override
-    public void showKickVoteDialog(int userId, int sourceUserId) {
-        MyLog.d(TAG, "showKickReqDialog" + " userId=" + userId + " sourceUserId=" + sourceUserId);
-        dismissDialog();
-        U.getKeyBoardUtils().hideSoftInputKeyBoard(getActivity());
-
-        GrabPlayerInfoModel playerInfoModel = RoomDataUtils.getPlayerInfoById(mRoomData, userId);
-        if (playerInfoModel != null) {
-            UserInfoModel userInfoModel = playerInfoModel.getUserInfo();
-            mGrabKickDialog = new ConfirmDialog(U.getActivityUtils().getTopActivity(), userInfoModel, ConfirmDialog.TYPE_KICK_REQUEST, 5);
-            mGrabKickDialog.setListener(new ConfirmDialog.Listener() {
-                @Override
-                public void onClickConfirm(UserInfoModel userInfoModel) {
-                    // 同意踢人
-                    mCorePresenter.voteKickUser(true, userId, sourceUserId);
-                }
-            });
-            mGrabKickDialog.show();
-        }
-    }
-
-    @Override
-    public void kickBySomeOne(boolean isOwner) {
-        MyLog.d(TAG, "kickBySomeOne" + " isOwner=" + isOwner);
-        //onGrabGameOver("kickBySomeOne");
-        U.getToastUtil().showSkrCustomLong(new CommonToastView.Builder(U.app())
-                .setImage(R.drawable.touxiangshezhishibai_icon)
-                .setText(isOwner ? "房主将你请出了房间" : "超过半数玩家请你出房间，要友好文明游戏哦~")
-                .build());
-        mCorePresenter.exitRoom();
-    }
-
-    @Override
-    public void dimissKickDialog() {
-        if (mGrabKickDialog != null) {
-            mGrabKickDialog.dismiss();
-        }
-    }
-
-    @Override
-    public void addKickTimes() {
-        mOwnerKickTimes++;
-    }
 
     @Override
     public void showPracticeFlag(boolean flag) {
@@ -1496,16 +874,6 @@ public class GrabRoomFragment extends BaseFragment implements IGrabRoomView, IRe
         } else {
             mPracticeFlagIv.setVisibility(View.GONE);
         }
-    }
-
-    @Override
-    public void hideInviteTipView() {
-        removeInviteTipView();
-    }
-
-    @Override
-    public void hideManageTipView() {
-        removeManageSongTipView();
     }
 
     static class PendingPlaySongCardData {

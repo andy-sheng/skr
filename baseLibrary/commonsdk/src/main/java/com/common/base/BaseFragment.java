@@ -113,8 +113,12 @@ public abstract class BaseFragment extends Fragment implements IFragment, Fragme
     }
 
     /**
-     * 可以在此恢复数据
-     *
+     * 不可以在此恢复数据
+     * Fragment 生命周期
+     * onAttach()
+     * onCreate()
+     * onCreateView()
+     * onActivityCreated()
      * @param savedInstanceState
      */
     @Override

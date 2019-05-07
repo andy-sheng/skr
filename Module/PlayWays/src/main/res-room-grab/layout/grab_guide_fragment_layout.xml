@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:VoiceControlPanelView="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:gameType="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ranking_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#404A9A">
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/grab_room_bg_flag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottom_bg_vp" />
+
+    <!-- 会在代码中按比例动态适配 -->
+    <com.common.view.ex.ExRelativeLayout
+        android:id="@+id/bottom_bg_vp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_284_dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="@dimen/view_d_2_dp"
+        android:layout_marginRight="@dimen/view_d_2_dp"
+        app:bl_corners_topLeftRadius="@dimen/view_20_dp"
+        app:bl_corners_topRightRadius="@dimen/view_20_dp"
+        app:bl_solid_color="#7088FF"
+        app:bl_stroke_color="#3B4E79"
+        app:bl_stroke_width="@dimen/view_2_dp">
+
+        <!--这里面是软键盘弹出时 需要上移的布局-->
+        <com.module.playways.grab.room.bottom.GrabBottomContainerView
+            android:id="@+id/bottom_container_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/input_container_view"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/view_25_dp"
+            gameType:type="grab" />
+
+        <com.module.playways.room.room.comment.CommentView
+            android:id="@+id/comment_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="@dimen/view_20_dp"
+            android:layout_marginRight="@dimen/view_100_dp"
+            android:layout_marginBottom="@dimen/view_66_dp"
+            android:paddingLeft="@dimen/view_18_dp"
+            android:paddingBottom="@dimen/view_7_dp"
+            gameType:type="grab" />
+
+        <com.common.view.ex.ExImageView
+            android:id="@+id/cover_iv"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_22_dp"
+            android:layout_alignTop="@+id/comment_view"
+            android:layout_marginRight="@dimen/view_100_dp"
+            android:background="@drawable/ycdd_zhezhao" />
+
+    </com.common.view.ex.ExRelativeLayout>
+
+
+    <com.module.playways.grab.room.top.GrabTopContainerView
+        android:id="@+id/top_container_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_200_dp"
+        android:layout_marginTop="0dp" />
+
+    <com.common.view.ex.ExImageView
+        android:id="@+id/practice_flag_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/view_18_dp"
+        android:layout_marginTop="@dimen/view_150_dp"
+        android:src="@drawable/grab_inpractice" />
+
+    <!-- 转场的一些卡片-->
+    <com.module.playways.grab.room.view.TurnInfoCardView
+        android:id="@+id/turn_info_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone" />
+
+    <com.module.playways.grab.room.view.SongInfoCardView
+        android:id="@+id/turn_change_song_info_card_view"
+        android:layout_width="@dimen/view_335_dp"
+        android:layout_height="@dimen/view_148_dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_182_dp"
+        android:visibility="gone" />
+
+    <!--演唱开始页面-->
+    <include
+        layout="@layout/grab_sing_begin_tips_card_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <!--他人唱歌时场景-->
+    <include
+        layout="@layout/grab_other_sing_card_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <!--自己唱歌场景-->
+    <include
+        layout="@layout/grab_self_sing_card_view_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <!--轮次结束卡片-->
+    <include
+        layout="@layout/grab_round_over_card_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.module.playways.grab.room.view.GrabScoreTipsView
+        android:id="@+id/grab_score_tips_view"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginTop="@dimen/view_30_dp" />
+
+    <com.module.playways.grab.room.view.GrabGameOverView
+        android:id="@+id/grab_game_over_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/view_148_dp"
+        android:visibility="gone" />
+
+    <!--抢按钮以及倒计时按钮-->
+    <com.module.playways.grab.room.view.GrabOpView
+        android:id="@+id/grab_op_btn"
+        android:layout_width="@dimen/view_141_dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/bottom_bg_vp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/view_20_dp"
+        android:layout_marginRight="@dimen/view_10_dp" />
+
+    <com.module.playways.grab.room.view.GrabGiveupView
+        android:id="@+id/grab_pass_view"
+        android:layout_width="@dimen/view_97_dp"
+        android:layout_height="@dimen/view_60_dp"
+        android:layout_alignTop="@+id/bottom_bg_vp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/view_20_dp" />
+
+    <com.module.playways.room.room.gift.GiftContinueViewGroup
+        android:id="@+id/gift_continue_vg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/bottom_bg_vp"
+        android:layout_marginTop="-30dp"
+        android:layout_marginBottom="@dimen/view_10_dp"
+        android:paddingLeft="@dimen/view_16_dp" />
+
+    <com.module.playways.room.room.gift.GiftBigAnimationViewGroup
+        android:id="@+id/gift_big_animation_vg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!--爆灭等大礼物区域-->
+    <com.module.playways.grab.room.view.GrabDengBigAnimationView
+        android:id="@+id/deng_big_animation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+    <!--<com.module.playways.grab.room.view.RedPkgCountDownView-->
+        <!--android:id="@+id/red_pkg_view"-->
+        <!--android:layout_width="@dimen/view_54_dp"-->
+        <!--android:layout_height="@dimen/view_54_dp"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_marginRight="@dimen/view_26_dp"-->
+        <!--android:layout_marginBottom="@dimen/view_79_dp"-->
+        <!--android:visibility="gone" />-->
+
+    <!--<com.module.playways.room.gift.view.ContinueSendView-->
+        <!--android:id="@+id/continue_send_view"-->
+        <!--android:layout_width="@dimen/view_78_dp"-->
+        <!--android:layout_height="@dimen/view_120_dp"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_marginRight="@dimen/view_18_dp"-->
+        <!--android:layout_marginBottom="@dimen/view_10_dp"-->
+        <!--android:paddingBottom="@dimen/view_8_dp"-->
+        <!--android:visibility="gone" />-->
+
+    <!--<com.module.playways.room.gift.view.GiftPanelView-->
+        <!--android:id="@+id/gift_panel_view"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:visibility="gone" />-->
+
+    <com.module.playways.room.room.view.InputContainerView
+        android:id="@+id/input_container_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+
+
+    <!--<com.module.playways.grab.room.view.GrabChangeRoomTransitionView-->
+        <!--android:id="@+id/change_room_transition_view"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="@color/black_trans_80" />-->
+</RelativeLayout>
