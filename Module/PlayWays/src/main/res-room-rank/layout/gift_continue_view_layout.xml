@@ -65,7 +65,8 @@
                 android:layout_marginTop="@dimen/view_1_dp"
                 android:gravity="left|center_vertical"
                 android:singleLine="true"
-                android:text="金三字元宝送出"
+                android:maxWidth="@dimen/view_152_dp"
+                android:text=""
                 android:textColor="@color/white"
                 android:textSize="@dimen/textsize_14_dp" />
         </LinearLayout>
