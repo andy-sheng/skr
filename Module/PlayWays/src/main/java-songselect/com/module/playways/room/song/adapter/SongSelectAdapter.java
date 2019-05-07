@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import com.common.view.recyclerview.DiffAdapter;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
+import com.module.playways.room.song.holder.GrabSongInfoHolder;
 import com.module.playways.room.song.holder.SongInfoHolder;
 import com.module.playways.room.song.holder.SongSearchFooter;
 import com.module.playways.room.song.model.SongModel;
@@ -51,9 +52,15 @@ public class SongSelectAdapter extends DiffAdapter<SongModel, RecyclerView.ViewH
             SongSearchFooter songSearchFooter = new SongSearchFooter(view, mRecyclerOnItemClickListener);
             return songSearchFooter;
         } else {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.song_view_holder_item, parent, false);
-            SongInfoHolder viewHolder = new SongInfoHolder(view, mode, mRecyclerOnItemClickListener);
-            return viewHolder;
+            if (mode == GRAB_MODE) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grab_song_view_holder_item, parent, false);
+                GrabSongInfoHolder viewHolder = new GrabSongInfoHolder(view, mRecyclerOnItemClickListener);
+                return viewHolder;
+            } else {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.song_view_holder_item, parent, false);
+                SongInfoHolder viewHolder = new SongInfoHolder(view, mRecyclerOnItemClickListener);
+                return viewHolder;
+            }
         }
     }
 
@@ -63,6 +70,10 @@ public class SongSelectAdapter extends DiffAdapter<SongModel, RecyclerView.ViewH
             SongInfoHolder songInfoHolder = (SongInfoHolder) holder;
             SongModel songModel = mDataList.get(position);
             songInfoHolder.bind(position, songModel);
+        } else if (holder instanceof GrabSongInfoHolder) {
+            GrabSongInfoHolder grabSongInfoHolder = (GrabSongInfoHolder)holder;
+            SongModel songModel = mDataList.get(position);
+            grabSongInfoHolder.bind(position, songModel);
         } else if (holder instanceof SongSearchFooter) {
             SongSearchFooter songSearchFooter = (SongSearchFooter) holder;
             songSearchFooter.bind(position);

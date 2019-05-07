@@ -14,26 +14,30 @@ import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExTextView;
 import com.common.view.recyclerview.RecyclerOnItemClickListener;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.module.playways.room.song.model.SongModel;
 import com.module.playways.R;
+import com.module.playways.room.song.model.SongModel;
+import com.zq.live.proto.Common.StandPlayType;
 
-public class SongInfoHolder extends RecyclerView.ViewHolder {
-
+public class GrabSongInfoHolder extends RecyclerView.ViewHolder {
     SongModel mSongModel;
     int position;
 
     SimpleDraweeView mSongCoverIv;
-    ExTextView mSongNameTv;
-    ExTextView mSongOwnerTv;
     ExTextView mSongSelectTv;
+    ExTextView mSongNameTv;
+    ExTextView mChorusSongTag;
+    ExTextView mPkSongTag;
+    ExTextView mSongOwnerTv;
 
-    public SongInfoHolder(View itemView, RecyclerOnItemClickListener recyclerOnItemClickListener) {
+    public GrabSongInfoHolder(View itemView, RecyclerOnItemClickListener recyclerOnItemClickListener) {
         super(itemView);
 
         mSongCoverIv = (SimpleDraweeView) itemView.findViewById(R.id.song_cover_iv);
-        mSongNameTv = (ExTextView) itemView.findViewById(R.id.song_name_tv);
-        mSongOwnerTv = (ExTextView) itemView.findViewById(R.id.song_owner_tv);
         mSongSelectTv = (ExTextView) itemView.findViewById(R.id.song_select_tv);
+        mSongNameTv = (ExTextView) itemView.findViewById(R.id.song_name_tv);
+        mChorusSongTag = (ExTextView) itemView.findViewById(R.id.chorus_song_tag);
+        mPkSongTag = (ExTextView) itemView.findViewById(R.id.pk_song_tag);
+        mSongOwnerTv = (ExTextView) itemView.findViewById(R.id.song_owner_tv);
 
         mSongSelectTv.setOnClickListener(new DebounceViewClickListener() {
             @Override
@@ -51,7 +55,7 @@ public class SongInfoHolder extends RecyclerView.ViewHolder {
 
         mSongNameTv.setText(mSongModel.getItemName());
         mSongOwnerTv.setText(mSongModel.getOwner());
-        int strokeColor = Color.parseColor("#202239");
+        int strokeColor = Color.parseColor("#0C2275");
         if (!TextUtils.isEmpty(mSongModel.getCover())) {
             FrescoWorker.loadImage(mSongCoverIv, ImageFactory.newPathImage(mSongModel.getCover())
                     .setCornerRadius(U.getDisplayUtils().dip2px(4))
@@ -67,6 +71,19 @@ public class SongInfoHolder extends RecyclerView.ViewHolder {
                     .setBorderColor(strokeColor)
                     .build());
         }
-    }
 
+        if (mSongModel.getPlayType() == StandPlayType.PT_SPK_TYPE.getValue()) {
+            mSongNameTv.setPadding(0, 0, U.getDisplayUtils().dip2px(125), 0);
+            mPkSongTag.setVisibility(View.VISIBLE);
+            mChorusSongTag.setVisibility(View.GONE);
+        } else if (mSongModel.getPlayType() == StandPlayType.PT_CHO_TYPE.getValue()) {
+            mSongNameTv.setPadding(0, 0, U.getDisplayUtils().dip2px(125), 0);
+            mPkSongTag.setVisibility(View.GONE);
+            mChorusSongTag.setVisibility(View.VISIBLE);
+        } else {
+            mSongNameTv.setPadding(0, 0, U.getDisplayUtils().dip2px(80), 0);
+            mPkSongTag.setVisibility(View.GONE);
+            mChorusSongTag.setVisibility(View.GONE);
+        }
+    }
 }
