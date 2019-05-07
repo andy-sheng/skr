@@ -13,6 +13,7 @@ import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
 import com.common.rxretrofit.ApiObserver;
 import com.common.rxretrofit.ApiResult;
+import com.common.view.DebounceViewClickListener;
 import com.common.view.ex.ExImageView;
 import com.common.view.titlebar.CommonTitleBar;
 import com.kingja.loadsir.callback.Callback;
@@ -64,6 +65,13 @@ public class RechargeRecordlFragment extends BaseFragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mWalletRecordAdapter = new RechargeRecordAdapter();
         mRecyclerView.setAdapter(mWalletRecordAdapter);
+
+        mTitlebar.getLeftTextView().setOnClickListener(new DebounceViewClickListener() {
+            @Override
+            public void clickValid(View v) {
+                finish();
+            }
+        });
 
         LoadSir mLoadSir = new LoadSir.Builder()
                 .addCallback(new RechargeHistoryEmptyCallBack())
