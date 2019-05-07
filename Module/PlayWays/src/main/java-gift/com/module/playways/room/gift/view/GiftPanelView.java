@@ -231,7 +231,7 @@ public class GiftPanelView extends FrameLayout {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GrabPlaySeatUpdateEvent event) {
         MyLog.d(TAG, "onEvent" + " event=" + event);
-        mGiftAllManAdapter.setDataList(event.list);
+        mGiftAllManAdapter.setDataList(getPlayerInfoListExpectSelf());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
