@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipChildren="false"
     tools:parentTag="android.widget.RelativeLayout">
 
     <com.common.view.ex.ExRelativeLayout
@@ -72,10 +73,11 @@
         </LinearLayout>
 
         <com.common.image.fresco.BaseImageView
+            android:layout_marginTop="@dimen/view_d_12_dp"
             android:layout_marginLeft="@dimen/view_5_dp"
             android:id="@+id/gift_img_iv"
-            android:layout_width="@dimen/view_42_dp"
-            android:layout_height="@dimen/view_53_dp"
+            android:layout_width="@dimen/view_55_dp"
+            android:layout_height="@dimen/view_55_dp"
             android:layout_toRightOf="@+id/ll_text" />
 
         <com.module.playways.room.gift.view.ContinueTextView
