@@ -373,7 +373,7 @@ public class ActivityUtils {
 
     public void safeGo(Intent intent) {
         if (U.app().getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY).size() > 0) {
-            U.app().startActivity(intent);
+            getTopActivity().startActivity(intent);
         }
     }
 

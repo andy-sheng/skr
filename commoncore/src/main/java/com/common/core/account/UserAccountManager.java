@@ -11,14 +11,12 @@ import com.common.callback.Callback;
 import com.common.core.account.event.AccountEvent;
 import com.common.core.account.event.VerifyCodeErrorEvent;
 import com.common.core.channel.HostChannelManager;
-import com.common.core.db.UserInfoDBDao;
 import com.common.core.myinfo.Location;
 import com.common.core.myinfo.MyUserInfo;
 import com.common.core.myinfo.MyUserInfoLocalApi;
 import com.common.core.myinfo.MyUserInfoManager;
 import com.common.core.myinfo.MyUserInfoServerApi;
 import com.common.core.userinfo.UserInfoLocalApi;
-import com.common.jiguang.JiGuangPush;
 import com.common.log.MyLog;
 import com.common.rxretrofit.ApiManager;
 import com.common.rxretrofit.ApiMethods;
@@ -130,7 +128,7 @@ public class UserAccountManager {
                 mHasTryConnentRM = false;
             }
 
-            trySetUmengPushAlias();
+            trySetPushAlias();
 //            ScreenLogView.addInfo("用户id", account.getUid());
         } else {
 
@@ -558,13 +556,13 @@ public class UserAccountManager {
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onEvent(UmengPushRegisterSuccessEvent event) {
-        trySetUmengPushAlias();
+        trySetPushAlias();
     }
 
     /**
      * 给Umeng的push通道设置 Alias
      */
-    void trySetUmengPushAlias() {
+    void trySetPushAlias() {
         if (UserAccountManager.getInstance().hasAccount()) {
             //com.common.umeng.UmengPush.UmengPush.setAlias(UserAccountManager.getInstance().getUuid());
             com.common.jiguang.JiGuangPush.setAlias(UserAccountManager.getInstance().getUuid());

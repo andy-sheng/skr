@@ -1,7 +1,10 @@
 package com.doraemon;
 
+import android.view.View;
+
 import com.common.core.R;
 import com.common.utils.U;
+import com.common.view.DebounceViewClickListener;
 import com.didichuxing.doraemonkit.DoraemonKit;
 import com.didichuxing.doraemonkit.kit.sysinfo.ExtraInfoProvider;
 import com.didichuxing.doraemonkit.kit.sysinfo.SysInfoItem;
@@ -32,7 +35,12 @@ public class DoraemonManager {
                 List<SysInfoItem> extras = new ArrayList<>();
                 //extras.add(new SysInfoItem("友盟push DeviceToken", com.common.umeng.UmengPush.getDeviceToken()));
                 extras.add(new SysInfoItem("translucent_no_bug", U.app().getResources().getBoolean(R.bool.translucent_no_bug) + ""));
-                extras.add(new SysInfoItem("通知栏权限",  U.getPermissionUtils().checkNotification(U.app())?"开启":"关闭"));
+                extras.add(new SysInfoItem("通知栏权限", U.getPermissionUtils().checkNotification(U.app()) ? "开启" : "关闭", new DebounceViewClickListener() {
+                    @Override
+                    public void clickValid(View v) {
+                        U.getPermissionUtils().goNotificationSettingPage();
+                    }
+                }));
                 return extras;
             }
 

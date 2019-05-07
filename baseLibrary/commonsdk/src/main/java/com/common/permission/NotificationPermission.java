@@ -5,10 +5,10 @@ import android.app.AppOpsManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
+import android.support.v4.app.NotificationManagerCompat;
 
 import com.common.utils.U;
 
@@ -24,7 +24,11 @@ public class NotificationPermission {
          */
         Intent localIntent = new Intent();
         //直接跳转到应用通知设置的代码：
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            localIntent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+            localIntent.putExtra(Settings.EXTRA_APP_PACKAGE, U.app().getPackageName());
+            localIntent.putExtra(Settings.EXTRA_CHANNEL_ID, U.app().getApplicationInfo().uid);
+        } else if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             localIntent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
             localIntent.putExtra("app_package", U.app().getPackageName());
             localIntent.putExtra("app_uid", U.app().getApplicationInfo().uid);
@@ -48,12 +52,26 @@ public class NotificationPermission {
     }
 
     /**
-     * 获取通知权限
+     * 判断是否获取通知权限
+     *
+     * @param context
+     * @return
+     */
+    public static boolean isNotificationEnabled(Context context) {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            return isNotificationEnabled2(context);
+        } else {
+            return isNotificationEnabled2(context);
+        }
+    }
+
+    /**
+     * 判断是否取通知权限1 oppo 准确，小米，华为不准确
      *
      * @param context
      */
     @TargetApi(Build.VERSION_CODES.KITKAT)
-    public static boolean isNotificationEnabled(Context context) {
+    private static boolean isNotificationEnabled1(Context context) {
 
         String CHECK_OP_NO_THROW = "checkOpNoThrow";
         String OP_POST_NOTIFICATION = "OP_POST_NOTIFICATION";
@@ -78,4 +96,15 @@ public class NotificationPermission {
         }
         return false;
     }
+
+    /**
+     * 判断是否取通知权限2
+     *
+     * @param context
+     */
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    private static boolean isNotificationEnabled2(Context context) {
+        return NotificationManagerCompat.from(context).areNotificationsEnabled();
+    }
+
 }
