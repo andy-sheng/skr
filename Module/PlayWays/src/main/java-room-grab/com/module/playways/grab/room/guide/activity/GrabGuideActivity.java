@@ -74,10 +74,12 @@ public class GrabGuideActivity extends BaseActivity {
                 userInfoModel.setAvatar(MyUserInfoManager.getInstance().getAvatar());
                 userInfoModel.setUserId((int) MyUserInfoManager.getInstance().getUid());
                 userInfoModel.setNickname("用户：" + i);
+                playerInfoModel.setUserID((int) MyUserInfoManager.getInstance().getUid());
             } else {
                 userInfoModel.setAvatar(UserAccountManager.SYSTEM_AVATAR);
                 userInfoModel.setUserId(1 + i * 2);
                 userInfoModel.setNickname("用户：" + i);
+                playerInfoModel.setUserID(1 + i * 2);
             }
 
             playerInfoModel.setUserInfo(userInfoModel);
